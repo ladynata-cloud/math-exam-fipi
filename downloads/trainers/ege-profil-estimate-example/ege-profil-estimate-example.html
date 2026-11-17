@@ -58,7 +58,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Оценка плюс пример · MathExam</title>
-  <meta name="description" content="От первых числовых оценок до ЕГЭ: целые числа, делимость, двойные неравенства, оценка и пример. Интерактивный курс для №20 профиля и №21 базы.">
+  <meta name="description" content="От первых числовых оценок до ЕГЭ: целые числа, делимость, двойные неравенства, оценка и пример. Интерактивный курс для №19 профиля и №21 базы.">
   <link rel="canonical" href="https://mathexam.space/trainers/ege-methods.html">
   <style data-inline-source="/trainers/ege-methods/style.css">
 :root {
@@ -208,10 +208,10 @@ progress { width: 100%; height: .75rem; margin-bottom: .45rem; accent-color: var
   <p class="save-warning" id="save-warning" role="status" hidden></p>
   <main id="main" tabindex="-1">
     <h1>Оценка плюс пример</h1>
-    <p>Восемь уроков от числовых оценок до задач №20 профильного и №21 базового ЕГЭ.</p>
+    <p>Восемь уроков от числовых оценок до задач №19 профильного и №21 базового ЕГЭ.</p>
     <h2>Как доказать максимум</h2>
     <p>Разложили 15 карандашей в три коробки, по меньшей мере по 3 в каждую. В двух других коробках вместе как минимум 6 карандашей, поэтому в выбранной не больше 9. Расклад 9, 3, 3 даёт ровно 9. Значит, 9 — максимум.</p>
-    <p><a href="/ege-profil/part-two/#exam/20">Задание №20 профильного ЕГЭ</a> · <a href="/ege-baza/#task?pos=21">Задание №21 базового ЕГЭ</a></p>
+    <p><a href="/ege-profil/part-two/#fipi/2027/19">Задание №19 профильного ЕГЭ</a> · <a href="/ege-baza/#task?pos=21">Задание №21 базового ЕГЭ</a></p>
     <noscript>
       <p>Для интерактивных заданий включи JavaScript.</p>
     </noscript>
@@ -241,7 +241,7 @@ const api={gcd,rational,parse,value,equal,operate,text,exponential,logarithm};ro
   const list = (label, ...answer) => ({ label, answer, kind: 'list' });
   const choice = (label, answer, options) => ({ label, answer, options, kind: 'choice' });
   const step = (title, field, hint, explain, error = '') => ({ title, field, hint, explain, error });
-  const profile = (id, title) => ({ href: '/ege-profil/part-two/#lesson/' + id, title: 'Профиль №20 · ' + title });
+  const profile = (id, title) => ({ href: '/ege-profil/part-two/#lesson/' + id, title: 'Профиль №19 · ' + title });
   const base = (id, title) => ({ href: '/ege-baza/path/index.html#lesson=practice-' + id, title: 'База №21 · ' + title });
   const links = {
     extremum: profile('numbers-extremum', 'Оценка и достигающий её пример'),
@@ -429,7 +429,7 @@ const api={gcd,rational,parse,value,equal,operate,text,exponential,logarithm};ro
           size: 10, min: 2, max: 5, total: 34, target: 5, targetCount: 4 }
       ],
       proof: 'Кратко запиши, почему больше таких стендов быть не может.',
-      success: 'Сопоставь два разных применения метода. В №20 профиля нужно доказать границу и построить пример. В №21 базы границы помогают найти возможное целое число участников.',
+      success: 'Сопоставь два разных применения метода. В №19 профиля нужно доказать границу и построить пример. В №21 базы границы помогают найти возможное целое число участников.',
       criteria: [
         'В обосновании учтены все десять стендов и минимальное число рисунков на остальных.',
         'Пример даёт ровно 34 рисунка, соблюдает границы на каждом стенде и достигает найденного максимума.'
@@ -838,7 +838,7 @@ const api={gcd,rational,parse,value,equal,operate,text,exponential,logarithm};ro
       next ? courseLink(go, next.lesson.id, started ? 'Продолжить' : 'Начать с оценок', 'button primary') :
         courseLink('progress', null, 'Посмотреть прогресс', 'button primary');
     main.innerHTML = `<section class="hero" aria-labelledby="course-title">
-      <div><p class="eyebrow">ЕГЭ · профиль №20 и база №21</p><h1 id="course-title">${title}</h1>
+      <div><p class="eyebrow">ЕГЭ · профиль №19 и база №21</p><h1 id="course-title">${title}</h1>
         <p class="lead">Находи границы, отбирай целые значения и строй примеры. Затем проверь себя на новом условии.</p>
         <div class="actions">${primary}
         ${showPracticeEntry ? courseLink('practice', 'maximum', 'Самопроверка по максимуму', 'button secondary') : ''}

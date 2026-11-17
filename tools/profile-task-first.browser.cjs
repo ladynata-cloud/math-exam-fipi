@@ -13,7 +13,7 @@ const retained=s=>({taskId:s.taskId,started:s.started,step:s.step,draft:s.draft,
 (async()=>{let browser;await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port,base=origin+'/ege-profil/start/';try{
   browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,headless:true,args:['--no-sandbox']});
   const errors=[],bad=[];const context=await browser.newContext({viewport:{width:1280,height:900}});const page=await context.newPage();page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400&&r.url().startsWith(origin))bad.push(r.url());});
-  await page.goto(base);await page.locator('[data-calm-exam="13"]').waitFor();
+  await page.goto(base);await page.locator('[data-calm-exam="12"]').waitFor();
   let count=0;
   for(const lesson of lessons){
     await page.goto(base+'#practice/'+lesson.id+'/independent');await page.locator('#answer-form').waitFor();

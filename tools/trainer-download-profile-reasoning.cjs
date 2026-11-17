@@ -105,6 +105,7 @@ async function finishGuidedLesson(page, apiName, stepsCount, wrongChoice, report
 }
 
 async function practiceMethods(page) {
+  assert.equal(await page.locator('main .eyebrow').first().innerText(), 'ЕГЭ · профиль №19 и база №21');
   const submit = () => page.locator('#practice-form button[type=submit]').click();
   await page.evaluate(() => { location.hash = '#practice/divisibility'; });
   await page.locator('#practice-form').waitFor();
