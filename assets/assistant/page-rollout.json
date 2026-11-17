@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "312a3a8e37d2276e1b7dbac7c4fde571a4c45801",
+  "baseSha": "5b52ac0a55f45f365441198f9d46a505d0bc7774",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -338,8 +338,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/expert.html": {
-      "beforeSha256": "10a169cd9195a4c6c356236ee9709fa7c960888aceb1c073207e4f372ed84b10",
-      "afterSha256": "f1f5faeb0215269574c8289ae3291932955534f415eaab6eeb9467b7f54ca2db",
+      "beforeSha256": "df9a79e546e1639929b3f01d31f1b92d64baadf5d414dfbb80767b5ad387f716",
+      "afterSha256": "66d9280bf591e07bfde60d8079b9e2d350e617d90ae4773c5d8c6fcbc184b606",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/finance.html": {
@@ -5344,6 +5344,15 @@
       "changedPaths": [
         "ege-profil/exam/full-exam.html",
         "ege-profil/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "312a3a8e37d2276e1b7dbac7c4fde571a4c45801",
+      "sourceBaseSha": "5b52ac0a55f45f365441198f9d46a505d0bc7774",
+      "task": "docs/tasks/PROFILE_EXPERT_EXAMPLES_2027_20261117.md",
+      "changedPaths": [
+        "ege-profil/trainers/expert.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
