@@ -130,6 +130,13 @@ for(let seed=0;seed<18;seed++){
   assert.ok(copy.includes((ask?'BC':'AC')+' ('+(ask?b:a)+')')&&copy.includes('AB ('+c+')'),'the named numerator and denominator match the requested function');
  }
 }
+const independent=vm.createContext({});
+vm.runInContext(fs.readFileSync(path.join(__dirname,'../ege-baza/path/task-hints.js'),'utf8'),independent);
+for(const id of ['practice-displacement','practice-cone-area','practice-similar-volume']){
+ const issued=withoutAnswers(D.task(id,5));
+ for(let i=0;i<issued.steps.length;i++)
+  assert.equal(independent.PathTaskHints.hint(issued,i),H.hint(issued,i),'issued tasks work with an independently cached hint catalogue');
+}
 assert.equal(H.hint(unknown),'Как найти неизвестную сторону?','unregistered curricula retain their own question');
 assert.equal(H.hint(notebooks,-1),notebookHint);
 assert.equal(H.hint(notebooks,NaN),notebookHint);
