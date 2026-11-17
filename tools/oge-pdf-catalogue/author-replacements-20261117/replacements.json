@@ -1,0 +1,410 @@
+{
+  "task": "OGE_SOURCE_ALIGNMENT_PDF104_20261116",
+  "review_pr": "https://github.com/ladynata-cloud/math-exam-fipi/pull/634",
+  "bank_path": "materials/bank.json",
+  "bank_sha256": "719ecb2ed53b59a78a3f8ad3cefef2c2260d3d2d0a7ff88607f5d202761f1404",
+  "replacements": [
+    {
+      "variant": 1,
+      "variant_id": "MX-OGE27-B01-R3-01",
+      "task": 7,
+      "expected": {
+        "figure_asset": "assets/part1_a/fipi_07.png",
+        "answer": "4"
+      },
+      "replacement": {
+        "number": 7,
+        "part": 1,
+        "points": 1,
+        "skill": "Числа и прямая",
+        "problem": "Координата одной из четырёх отмеченных точек равна $\\sqrt{54}$. Укажите номер этой точки.\\par 1) $A$\\qquad 2) $B$\\qquad 3) $C$\\qquad 4) $D$.",
+        "answer": "3",
+        "answer_tex": "3",
+        "solution": [
+          "$7^2=49<54<56{,}25=7{,}5^2$. Поэтому $7<\\sqrt{54}<7{,}5$. На рисунке в этой части отрезка находится точка $C$. Ответ: 3."
+        ],
+        "oracle": {
+          "kind": "number_choice",
+          "params": {
+            "mode": "marked_value",
+            "value": "sqrt(54)",
+            "dots": [
+              6.22,
+              6.68,
+              "sqrt(54)",
+              7.81
+            ]
+          }
+        },
+        "figure_asset": "assets/part1_a/pr634_v001_07.pdf",
+        "figure_width_mm": 105,
+        "figure_height_mm": 21,
+        "author_origin": "MathExam: авторское условие, рисунок построен по данным задачи",
+        "source_role": "original_task_in_standard_format",
+        "prototype": {
+          "source_title": "ФИПИ, утверждённая демоверсия ОГЭ-2027",
+          "source_url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+          "task_number": 7,
+          "adaptation": "Сохранено проверяемое умение. Условие, числа и рисунок подготовлены заново."
+        }
+      }
+    },
+    {
+      "variant": 1,
+      "variant_id": "MX-OGE27-B01-R3-01",
+      "task": 11,
+      "expected": {
+        "figure_asset": "assets/part1_a/fipi_11.png",
+        "answer": "132"
+      },
+      "replacement": {
+        "number": 11,
+        "part": 1,
+        "points": 1,
+        "skill": "Функции и графики",
+        "problem": "Подберите формулу для каждого графика. Запишите номера формул в порядке А, Б, В без пробелов.\\par 1) $y=x^2-3$\\qquad 2) $y=-\\dfrac{4}{x}$\\qquad 3) $y=-2x+1$.",
+        "answer": "312",
+        "answer_tex": "312",
+        "solution": [
+          "А — убывающая прямая, пересекающая ось y в точке (0; 1). Формула 3.",
+          "Б — парабола с ветвями вверх и вершиной (0; −3). Формула 1.",
+          "В — гипербола во II и IV четвертях. При x = 1 получаем y = −4. Формула 2.",
+          "В порядке А, Б, В получаем 312."
+        ],
+        "oracle": {
+          "kind": "graph_match",
+          "params": {
+            "functions": [
+              [
+                "parabola",
+                [
+                  1,
+                  0,
+                  -3
+                ]
+              ],
+              [
+                "hyperbola",
+                [
+                  -4
+                ]
+              ],
+              [
+                "line",
+                [
+                  -2,
+                  1
+                ]
+              ]
+            ],
+            "permutation": [
+              2,
+              0,
+              1
+            ]
+          }
+        },
+        "figure_asset": "assets/part1_a/pr634_v001_11.pdf",
+        "figure_width_mm": 144,
+        "figure_height_mm": 47,
+        "author_origin": "MathExam: авторское условие, рисунок построен по данным задачи",
+        "source_role": "original_task_in_standard_format",
+        "prototype": {
+          "source_title": "ФИПИ, утверждённая демоверсия ОГЭ-2027",
+          "source_url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+          "task_number": 11,
+          "adaptation": "Сохранено проверяемое умение. Условие, числа и рисунок подготовлены заново."
+        },
+        "figure_model": {
+          "kind": "graph_match",
+          "functions": [
+            [
+              "parabola",
+              [
+                1,
+                0,
+                -3
+              ]
+            ],
+            [
+              "hyperbola",
+              [
+                -4
+              ]
+            ],
+            [
+              "line",
+              [
+                -2,
+                1
+              ]
+            ]
+          ],
+          "permutation": [
+            2,
+            0,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "variant": 1,
+      "variant_id": "MX-OGE27-B01-R3-01",
+      "task": 13,
+      "expected": {
+        "figure_asset": "assets/part1_a/fipi_13.png",
+        "answer": "2"
+      },
+      "replacement": {
+        "number": 13,
+        "part": 1,
+        "points": 1,
+        "skill": "Неравенства",
+        "problem": "Выберите рисунок, на котором показано множество решений системы $\\begin{cases}x-2\\ge-5,\\\\x-4\\ge-2\\end{cases}$. Запишите номер рисунка.",
+        "answer": "4",
+        "answer_tex": "4",
+        "solution": [
+          "Первое неравенство даёт $x\\ge-3$, второе --- $x\\ge2$. Их пересечение --- луч $[2;+\\infty)$. Точка 2 включена. Ответ: 4."
+        ],
+        "oracle": {
+          "kind": "inequality_choice",
+          "params": {
+            "relations": [
+              "x-2>=-5",
+              "x-4>=-2"
+            ],
+            "set": "[2,oo)",
+            "options": [
+              "[-3;+\\infty)",
+              "(2;+\\infty)",
+              "[-3;2]",
+              "[2;+\\infty)"
+            ]
+          }
+        },
+        "figure_asset": "assets/part1_a/pr634_v001_13.pdf",
+        "figure_width_mm": 134,
+        "figure_height_mm": 36,
+        "author_origin": "MathExam: авторское условие, рисунок построен по данным задачи",
+        "source_role": "original_task_in_standard_format",
+        "prototype": {
+          "source_title": "ФИПИ, утверждённая демоверсия ОГЭ-2027",
+          "source_url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+          "task_number": 13,
+          "adaptation": "Сохранено проверяемое умение. Условие, числа и рисунок подготовлены заново."
+        },
+        "figure_model": {
+          "kind": "interval_options",
+          "options": [
+            "[-3;+\\infty)",
+            "(2;+\\infty)",
+            "[-3;2]",
+            "[2;+\\infty)"
+          ]
+        }
+      }
+    },
+    {
+      "variant": 6,
+      "variant_id": "MX-OGE27-B01-R3-06",
+      "task": 7,
+      "expected": {
+        "figure_asset": "assets/part1_a/fipi_07.png",
+        "answer": "4"
+      },
+      "replacement": {
+        "number": 7,
+        "part": 1,
+        "points": 1,
+        "skill": "Числа и прямая",
+        "problem": "Координата одной из четырёх отмеченных точек равна $\\sqrt{95}$. Укажите номер этой точки.\\par 1) $A$\\qquad 2) $B$\\qquad 3) $C$\\qquad 4) $D$.",
+        "answer": "2",
+        "answer_tex": "2",
+        "solution": [
+          "$9{,}5^2=90{,}25<95<100=10^2$. Поэтому $9{,}5<\\sqrt{95}<10$. На рисунке в этой части отрезка находится точка $B$. Ответ: 2."
+        ],
+        "oracle": {
+          "kind": "number_choice",
+          "params": {
+            "mode": "marked_value",
+            "value": "sqrt(95)",
+            "dots": [
+              9.19,
+              "sqrt(95)",
+              10.34,
+              10.77
+            ]
+          }
+        },
+        "figure_asset": "assets/part1_a/pr634_v006_07.pdf",
+        "figure_width_mm": 105,
+        "figure_height_mm": 21,
+        "author_origin": "MathExam: авторское условие, рисунок построен по данным задачи",
+        "source_role": "original_task_in_standard_format",
+        "prototype": {
+          "source_title": "ФИПИ, утверждённая демоверсия ОГЭ-2027",
+          "source_url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+          "task_number": 7,
+          "adaptation": "Сохранено проверяемое умение. Условие, числа и рисунок подготовлены заново."
+        }
+      }
+    },
+    {
+      "variant": 6,
+      "variant_id": "MX-OGE27-B01-R3-06",
+      "task": 11,
+      "expected": {
+        "figure_asset": "assets/part1_a/fipi_11.png",
+        "answer": "132"
+      },
+      "replacement": {
+        "number": 11,
+        "part": 1,
+        "points": 1,
+        "skill": "Функции и графики",
+        "problem": "Подберите формулу для каждого графика. Запишите номера формул в порядке А, Б, В без пробелов.\\par 1) $y=1{,}5x-2$\\qquad 2) $y=-(x-1)^2+2$\\qquad 3) $y=\\dfrac{5}{x}$.",
+        "answer": "231",
+        "answer_tex": "231",
+        "solution": [
+          "А — парабола с ветвями вниз и вершиной (1; 2). Формула 2.",
+          "Б — гипербола в I и III четвертях. При x = 2 получаем y = 2,5. Формула 3.",
+          "В — возрастающая прямая, пересекающая ось y в точке (0; −2). Формула 1.",
+          "В порядке А, Б, В получаем 231."
+        ],
+        "oracle": {
+          "kind": "graph_match",
+          "params": {
+            "functions": [
+              [
+                "line",
+                [
+                  1.5,
+                  -2
+                ]
+              ],
+              [
+                "parabola",
+                [
+                  -1,
+                  2,
+                  1
+                ]
+              ],
+              [
+                "hyperbola",
+                [
+                  5
+                ]
+              ]
+            ],
+            "permutation": [
+              1,
+              2,
+              0
+            ]
+          }
+        },
+        "figure_asset": "assets/part1_a/pr634_v006_11.pdf",
+        "figure_width_mm": 144,
+        "figure_height_mm": 47,
+        "author_origin": "MathExam: авторское условие, рисунок построен по данным задачи",
+        "source_role": "original_task_in_standard_format",
+        "prototype": {
+          "source_title": "ФИПИ, утверждённая демоверсия ОГЭ-2027",
+          "source_url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+          "task_number": 11,
+          "adaptation": "Сохранено проверяемое умение. Условие, числа и рисунок подготовлены заново."
+        },
+        "figure_model": {
+          "kind": "graph_match",
+          "functions": [
+            [
+              "line",
+              [
+                1.5,
+                -2
+              ]
+            ],
+            [
+              "parabola",
+              [
+                -1,
+                2,
+                1
+              ]
+            ],
+            [
+              "hyperbola",
+              [
+                5
+              ]
+            ]
+          ],
+          "permutation": [
+            1,
+            2,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "variant": 6,
+      "variant_id": "MX-OGE27-B01-R3-06",
+      "task": 13,
+      "expected": {
+        "figure_asset": "assets/part1_a/fipi_13.png",
+        "answer": "2"
+      },
+      "replacement": {
+        "number": 13,
+        "part": 1,
+        "points": 1,
+        "skill": "Неравенства",
+        "problem": "Выберите рисунок, на котором показано множество решений системы $\\begin{cases}x-2\\le3,\\\\x+4<2\\end{cases}$. Запишите номер рисунка.",
+        "answer": "3",
+        "answer_tex": "3",
+        "solution": [
+          "Первое неравенство даёт $x\\le5$, второе --- $x<-2$. Их пересечение --- луч $(-\\infty;-2)$. Точка $-2$ исключена. Ответ: 3."
+        ],
+        "oracle": {
+          "kind": "inequality_choice",
+          "params": {
+            "relations": [
+              "x-2<=3",
+              "x+4<2"
+            ],
+            "set": "(-oo,-2)",
+            "options": [
+              "(-\\infty;5]",
+              "(-\\infty;-2]",
+              "(-\\infty;-2)",
+              "(-2;5]"
+            ]
+          }
+        },
+        "figure_asset": "assets/part1_a/pr634_v006_13.pdf",
+        "figure_width_mm": 134,
+        "figure_height_mm": 36,
+        "author_origin": "MathExam: авторское условие, рисунок построен по данным задачи",
+        "source_role": "original_task_in_standard_format",
+        "prototype": {
+          "source_title": "ФИПИ, утверждённая демоверсия ОГЭ-2027",
+          "source_url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+          "task_number": 13,
+          "adaptation": "Сохранено проверяемое умение. Условие, числа и рисунок подготовлены заново."
+        },
+        "figure_model": {
+          "kind": "interval_options",
+          "options": [
+            "(-\\infty;5]",
+            "(-\\infty;-2]",
+            "(-\\infty;-2)",
+            "(-2;5]"
+          ]
+        }
+      }
+    }
+  ]
+}
