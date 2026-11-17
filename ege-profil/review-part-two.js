@@ -108,12 +108,15 @@
       import('./part-two/content-algebra.js'),
       import('./part-two/content-geometry.js'),
       import('./part-two/content-models.js'),
+      import('./part-two/content-finance.js'),
     ]).then(() => {
       const map = root.ProfileExamMap;
-      return root.ProfilePartTwoLessons.flatMap(lesson => {
+      const practice = root.ProfilePartTwoLessons.flatMap(lesson => {
         const entry = map.fromLegacyPartTwo(lesson.exam);
         return entry?.lessonIds.includes(lesson.id) ? [{ lesson, label: map.label(entry) }] : [];
       });
+      const finance = root.ProfileFinanceWrittenLessons.map(lesson => ({ lesson, label: map.label(16) }));
+      return practice.concat(finance);
     }).catch(error => {
       catalog = undefined;
       throw error;

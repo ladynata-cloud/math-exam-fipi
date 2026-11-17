@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "2fc3b1362c8f97d4010218385e525206481a03be",
+  "baseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,18 +313,18 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "73941ba84119b40d1a78eab600f5aba40c6253fc9ff34c91c8108324ded74b64",
-      "afterSha256": "4aeaf32d7f86c1f61ca008ce6ee52f84bd91c360d7ccaaff93c9c7ed9b77a1db",
+      "beforeSha256": "0dba595cec179134a5aa4f484d4cf882f4f7877ab9612beacbdaa217a4da1004",
+      "afterSha256": "e9be0fcebe951cdecf124749abc8f1b366b65da011f66a86cf020527f6e5e178",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
-      "beforeSha256": "5effe8293bf705faef8f72b5f9d1c780cb5eaea3fde3bd7d052c6688ea9ee411",
-      "afterSha256": "1f954f635a1f960d5bb0fb765d2362c44753067272f047cb8a89a496d3cf8420",
+      "beforeSha256": "c4d660bb546fc299e2432d9a0a4c0d2c129bd01a4fc1d379fdfb087b1d769f50",
+      "afterSha256": "8cc94d362b9ac0632dacbd9512ea8b91e33f6790b31388b6a6ac88f0c2533be2",
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "2edb53a1971a8bb6f9a97321528d5c314f225cd4422ad888a3929b6b79c848bd",
-      "afterSha256": "8714a7ddee13c064e7e612e21f893d59f7c197d1f7c10c41b08e2b2f509da699",
+      "beforeSha256": "3155e5fc4c717e7935b1a7bf7b8d5ad5333708cc8465a6b779f2f1ce217f1f82",
+      "afterSha256": "ce3843b6397a2a164773a23d1ee4da33ca1554eff66ff2f8bbe58c1282a91bda",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -5367,10 +5367,20 @@
     },
     {
       "previousBaseSha": "3a144c4f8417a6ce8e19ba1300e28ac2189030fe",
-      "sourceBaseSha": "2fc3b1362c8f97d4010218385e525206481a03be",
-      "task": "docs/tasks/PROFILE_PART_TWO_ERROR_JOURNAL_20261117.md",
+      "sourceBaseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
+      "task": "docs/tasks/PROFILE_START_RESEARCH_20261117.md",
       "changedPaths": [
-        "ege-profil/review.html"
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
+      "sourceBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "task": "docs/tasks/PROFILE_FINANCE_WRITTEN_20261117.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

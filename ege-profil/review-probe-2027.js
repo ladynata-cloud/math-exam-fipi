@@ -53,7 +53,7 @@
     title.append(node('span', map.label(entry), 'pillline'), node('span', entry.title, 'name'));
     if (status) title.append(node('div', status, 'meta'));
     const link = node('a', 'Отработать тему', 'btn ghost');
-    link.href = map.href(entry);
+    link.href = entry.part === 2 ? '/ege-profil/part-two/' + map.hash(entry) : map.href(entry);
     link.setAttribute('aria-label', 'Отработать задание № ' + entry.number + ' · ' + entry.title);
     row.append(title, link);
     return row;

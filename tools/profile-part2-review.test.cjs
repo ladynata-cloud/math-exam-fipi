@@ -11,12 +11,15 @@ const state = require('../ege-profil/part-two/state.js');
 const map = require('../ege-profil/exam-map.js');
 const lessons = ['algebra', 'geometry', 'models'].flatMap(name =>
   require('../ege-profil/part-two/content-' + name + '.js'));
-const catalog = lessons.map(lesson => ({ lesson, label: map.label(map.fromLegacyPartTwo(lesson.exam)) }));
+const financeLessons = require('../ege-profil/part-two/content-finance.js');
+const catalog = lessons.map(lesson => ({ lesson, label: map.label(map.fromLegacyPartTwo(lesson.exam)) }))
+  .concat(financeLessons.map(lesson => ({ lesson, label: map.label(16) })));
 const projection = lessons.find(lesson => lesson.id === 'p2-15-projection');
 const guided = projection.tasks[0];
 const firstFinal = projection.tasks[1];
 const independent = projection.tasks[3];
 const model = lessons.find(lesson => lesson.id === 'model-fence').tasks[3];
+const finance = financeLessons[0].tasks[4];
 const legacyKey = 'mathExamCourseProgress.v1';
 const startKey = 'mathexam.profileStart2027.v1';
 
@@ -86,6 +89,16 @@ test('Part Two journal isolates malformed records and skips proof, incomplete or
   assert.equal(rows[0].stage, 'Шаг 1');
   assert.equal(rows[0].corrected, false);
   assert.deepEqual([...saved], before);
+});
+
+test('the written finance bank and older inequalities have different official numbers', async () => {
+  const { attempt, readOnly } = records();
+  const inequality = lessons.find(lesson => lesson.exam === 16).tasks[0];
+  await attempt(inequality, 'step-0', false);
+  await attempt(finance, 'final', false);
+  const rows = readOnly();
+  assert.deepEqual(rows.map(row => row.label), ['№ 16', '№ 15']);
+  assert.equal(rows[0].href, 'part-two/#task/' + finance.id + '/independent');
 });
 
 const browserEnabled = Boolean(process.env.CI || process.env.H02_NATIVE_BROWSER);
@@ -179,7 +192,7 @@ test('Chromium: course and 2027 probe journal, correction and preserved storage 
         assert.equal(await section.locator('.row').count(), 1);
         assert.match(await remaining.innerText(), /№ 14/);
         assert.equal(await journal.locator('#summaryCard h2').textContent(), 'В прежних подборках ошибок пока нет');
-        assert.equal(new Set(catalogRequests).size, 3);
+        assert.equal(new Set(catalogRequests).size, 4);
         await journal.reload();
         await remaining.getByText('Итоговый ответ', { exact: false }).waitFor();
         const link = remaining.getByRole('link', { name: /Вернуться к условию 4/ });
@@ -266,7 +279,7 @@ test('Chromium: course and 2027 probe journal, correction and preserved storage 
         for (const number of [14, 15, 16, 17, 18, 19]) {
           const line = written.locator('.row').filter({ hasText: '№ ' + number });
           assert.match(await line.innerText(), /К проверке/);
-          assert.equal(await line.getByRole('link').getAttribute('href'), map.href(number));
+          assert.equal(await line.getByRole('link').getAttribute('href'), '/ege-profil/part-two/' + map.hash(number));
         }
         assert.match(await journal.locator('#examMeta').innerText(), /12 перв\. · 54 тест\./);
         await stable(actual, 'timed probe read preserves both editions and course');
@@ -274,6 +287,25 @@ test('Chromium: course and 2027 probe journal, correction and preserved storage 
         await journal.reload();
         await probe.getByText('Письменные задания · к проверке 6 · самооценка 1').waitFor();
         await stable(actual, 'timed probe reload preserves both editions and course');
+
+        const financePath = 'part-two/#task/' + finance.id + '/independent';
+        await learner.goto(base + financePath);
+        await learner.locator('#final-0').fill('99');
+        await learner.locator('#final-form button[type=submit]').click();
+        const financeLink = remaining.locator('a[href="' + financePath + '"]');
+        await financeLink.waitFor();
+        assert.match(await financeLink.locator('..').innerText(), /№ 16/);
+        await stable(await snapshot(learner), 'finance journal preserves saved work');
+        await financeLink.click();
+        assert.equal(await journal.locator('#final-0').inputValue(), '99');
+        await journal.locator('#final-0').fill(String(finance.final[0].answers[0]));
+        await journal.locator('#final-form button[type=submit]').click();
+        await journal.locator('#completion').waitFor();
+        const financeSolved = await snapshot(journal);
+        await journal.goBack();
+        await corrected.locator('a[href="' + financePath + '"]').waitFor({ state: 'attached' });
+        assert.equal(await financeLink.count(), 0);
+        await stable(financeSolved, 'finance correction preserves probe and original conditions');
         await context.close();
       }
     } finally {

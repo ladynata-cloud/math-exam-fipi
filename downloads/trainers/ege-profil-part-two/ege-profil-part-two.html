@@ -93,6 +93,7 @@
 
 
 
+
 <style data-inline-source="/ege-profil/skill-map.css">
 .profile-skill-entry {
   display: inline-flex;
@@ -1090,6 +1091,164 @@ add('numbers-diophantine',20,'Разность квадратов: полный 
 ],[links.numbers],i=>{const Nn=[15,21,45,63,99,105][i],pairs=[];for(let d=1;d*d<Nn;d++)if(Nn%d===0)pairs.push([d,Nn/d]);const count=pairs.length,maxV=(Nn-1)/2,maxU=(Nn+1)/2;return {prompt:`Найдите количество пар положительных целых чисел (u; v), для которых u > v и u² − v² = ${Nn}. Найдите наибольшее возможное v и соответствующее ему u. В доказательстве перечислите все пары множителей.`,meta:{family:'diophantine',N:Nn},steps:[step('Каково наименьшее возможное положительное u − v?',1,'Число 1 является делителем любого натурального N.',`Пара множителей 1 и ${Nn} допустима по чётности.`),step('При этой паре множителей найдите v.',maxV,'Вычтите равенства u + v = N и u − v = 1.',`v = (${Nn} − 1)/2 = ${maxV}.`),step('Сколько пар различных положительных множителей d < e даёт произведение N?',count,'Перебирайте только делители d < √N; все множители здесь нечётные.',`Пары: ${pairs.map(p=>p.join(' · ')).join('; ')}.`)],final:[field('Количество пар (u; v)',count),field('Наибольшее v',maxV),field('Соответствующее u',maxU)],solution:[`Положим d = u − v, e = u + v. Тогда de = ${Nn}, 0 < d < e, d и e нечётны.`,`Все пары: ${pairs.map(([d,e])=>`(${d}; ${e}) → (u; v) = (${(d+e)/2}; ${(e-d)/2})`).join('; ')}. Всего ${count}.`,`При d ≥ 1 имеем e ≤ ${Nn}, поэтому v = (e − d)/2 ≤ ${maxV}. Равенство достигается при d = 1, e = ${Nn}; тогда u = ${maxU}, v = ${maxV}.`],proof:proof('Докажите соответствие между парами множителей и решениями, затем максимальность v.', ['Проведена факторизация.','Проверены положительность, порядок и чётность множителей.','Перечислены все делители до квадратного корня.','Для максимума даны оценка и достигающая её пара.'])};});
 
 root.ProfilePartTwoLessons=(root.ProfilePartTwoLessons||[]).concat(lessons);
+if(typeof module!=='undefined'&&module.exports)module.exports=lessons;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+</script>
+<script data-inline-source="/ege-profil/part-two/content-finance.js">
+(function(root){
+'use strict';
+
+// The written finance bank has its own stable IDs. It uses the existing
+// second-part answer, draft and help contracts.
+const criteria=[
+ 'Я обозначил денежные величины и написал, когда начисляют проценты и когда делают платёж.',
+ 'Я составил формулу платежа или уравнения остатков и объяснил, из каких условий они следуют.',
+ 'Я вычислил нужную величину и указал единицу измерения в ответе.'
+];
+const prerequisites=[{title:'Вспомнить проценты и остаток долга',href:'/ege-profil/start/#fipi/2027/16'}];
+const money='тыс. рублей';
+const format=value=>String(value).replace('.',',');
+// The catalog stores principal and balance in thousands, and calculates
+// interest in hundredths of a thousand before summation.
+const amount=cents=>format(cents/100);
+const sum=values=>values.reduce((total,value)=>total+value,0);
+const step=(prompt,answer,hint,explanation)=>({prompt,answers:[answer],hint,explanation,answerFormat:'number'});
+const lesson=(id,title,goal,theory,tasks)=>({
+ id,exam:16,title,goal,theory,prerequisites,tasks:tasks.map((task,index)=>({...task,id:id+'-'+(index+1)}))
+});
+const result=(label,answer,prompt,steps,solution)=>({
+ prompt,steps,final:[{label,answers:[answer],answerFormat:'number'}],
+ proof:{prompt:'Запишите календарь начислений, модель платежей и расчёт ответа.',criteria},
+ solution
+});
+
+function calendar({principal,phases,first,last,ask}){
+ const balances=[principal],rows=[];
+ for(const {count,end,rate} of phases){
+  const decrease=(balances.at(-1)-end)/count;
+  for(let period=0;period<count;period++){
+   const before=balances.at(-1),after=before-decrease;
+   rows.push({before,after,rate,principalCents:decrease*100,interestCents:before*rate});
+   balances.push(after);
+  }
+ }
+ const n=rows.length, selected=rows.slice(first-1,last);
+ const principalCents=sum(selected.map(row=>row.principalCents));
+ const interestCents=sum(selected.map(row=>row.interestCents));
+ const paymentCents=principalCents+interestCents;
+ const span=first===last?'за платёж №'+first:first===1&&last===n?'за весь срок':'с '+first+'-го по '+last+'-й платёж включительно';
+ const question=ask==='rate'
+  ?'Всего '+span+' внесли '+amount(paymentCents)+' '+money+'. Найдите месячную ставку в процентах.'
+  :ask==='interest'
+   ?'Найдите, сколько '+span+' уплачено именно в виде процентов. Ответ дайте в тысячах рублей.'
+   :'Найдите общую сумму выплат '+span+'. Ответ дайте в тысячах рублей.';
+ const timeline=['Пятого числа каждого месяца, до платежа, долг увеличивают на '+(ask==='rate'?'один и тот же процент r каждый месяц.':phases.length===1?phases[0].rate+'% каждый месяц.':'ставку своего этапа: '+phases.map((p,i)=>'этап '+(i+1)+' — '+p.rate+'%').join(', ')+'.'),
+  'После начисления с 6-го по 20-е число вносят один платёж. Остаток фиксируют в конце 20-го числа.'];
+ const equal=phases.length===1
+  ?'После каждого платежа остаток на одну и ту же сумму меньше, чем после предыдущего. До первого платежа сравнивают с первоначальным долгом.'
+  :'На каждом из двух этапов остаток уменьшают равными долями внутри этапа. После '+phases[0].count+'-го платежа заканчивается первый этап, а остаток равен '+phases[0].end+' '+money+'.';
+ const prompt='<p>Банк выдал '+principal+' '+money+' на '+n+' мес. Первый расчётный месяц следует за месяцем выдачи. '+timeline.join(' ')+'</p><p>'+equal+' После '+n+'-го платежа долг равен нулю.</p><p><strong>'+question+'</strong></p>';
+ const reductions=phases.map((p,i)=>i===0?(principal-p.end)/p.count:(phases[i-1].end-p.end)/p.count);
+ const balanceLine='Остатки после платежей, начиная с первоначального: '+balances.join(' → ')+' '+money+'. Уменьшение остатка за месяц '+(reductions.length===1?'равно '+reductions[0]+' '+money:'на первом этапе '+reductions[0]+', на втором — '+reductions[1]+' '+money)+'.';
+ const model='Пусть B — долг перед начислением, C — долг после платежа, r — ставка в процентах. Платёж равен B · (1 + r/100) − C = (B − C) + B · r/100. Проценты начисляются на B.';
+ const details='Для выбранных месяцев остатки перед начислением: '+selected.map(row=>row.before).join(', ')+' '+money+'. На основной долг за эти месяцы уходит '+amount(principalCents)+' '+money+'.';
+ const wanted=ask==='rate'?phases[0].rate:(ask==='interest'?interestCents:paymentCents)/100;
+ const finalLine=ask==='rate'
+  ?'Из общей выплаты вычтем погашение основного долга: '+amount(paymentCents)+' − '+amount(principalCents)+' = '+amount(interestCents)+'. Поэтому ('+selected.map(row=>row.before).join(' + ')+') · r/100 = '+amount(interestCents)+'. Получаем r = '+wanted+'%.'
+  :'Сумма процентов равна '+selected.map(row=>row.before+' · '+format(row.rate/100)).join(' + ')+' = '+amount(interestCents)+' '+money+'. '+(ask==='interest'?'Это искомая сумма.':'Общая выплата равна '+amount(principalCents)+' + '+amount(interestCents)+' = '+amount(paymentCents)+' '+money+'.');
+ return result(ask==='rate'?'Ставка, в процентах':'Сумма, тыс. рублей',wanted,prompt,[
+  step('На сколько тысяч рублей уменьшается основной долг за первый месяц?',reductions[0],
+   'Разделите снижение остатка первого этапа на число платежей этого этапа.',balanceLine),
+  step('Каков остаток долга перед начислением в первом из нужных месяцев, в тысячах рублей?',selected[0].before,
+   'Возьмите остаток после предыдущего платежа. Для первого месяца это сумма кредита.',model+' '+details),
+  step(ask==='rate'?'Найдите ставку, в процентах.':'Вычислите требуемую сумму, в тысячах рублей.',wanted,
+   'Сначала выделите часть платежей, которая ушла на основной долг.',finalLine)
+ ],[balanceLine,model,details,finalLine]);
+}
+
+// Inverse equal-principal model, approved FIPI 2027 demo, task 16 (second example).
+function principalFromSelectedPayments(){
+ const months=18,rate=2,first=8,last=13;
+ const weights=Array.from({length:last-first+1},(_,i)=>months-first+1-i);
+ const coefficientCents=100*weights.length+rate*sum(weights);
+ const totalCents=126360;
+ const share=totalCents/coefficientCents;
+ const principal=months*share;
+ const prompt='<p>В сентябре 2028 года заёмщик взял кредит на '+months+' месяцев. Первый расчётный месяц — октябрь 2028 года. Третьего числа каждого расчётного месяца банк увеличивает остаток долга на '+rate+'%. С 4-го по 17-е число заёмщик вносит один платёж.</p><p>После каждого платежа остаток долга уменьшается на одну и ту же сумму по сравнению с остатком после предыдущего платежа. В первый месяц сравнивают с суммой кредита. Последний платёж полностью гасит долг.</p><p>С мая по октябрь 2029 года включительно заёмщик внёс в сумме '+amount(totalCents)+' '+money+'. <strong>Какую сумму он взял в кредит? Ответ дайте в тысячах рублей.</strong></p>';
+ const calendarLine='Май 2029 года — расчётный месяц №'+first+', октябрь — №'+last+'. Обозначим через d одинаковое уменьшение основного долга за месяц в тысячах рублей. Сумма кредита равна '+months+'d. Перед начислением процентов в выбранных месяцах долги равны '+weights.map(weight=>weight+'d').join(', ')+' тыс. рублей.';
+ const paymentLine='За месяц погашается d тыс. рублей основного долга и уплачиваются проценты. Если перед начислением остаток равен kd, то платёж равен d + '+format(rate/100)+' · kd.';
+ const sumLine='За '+weights.length+' месяцев погашено '+weights.length+'d основного долга. Сумма остатков, на которые начислены проценты, равна ('+weights.join(' + ')+')d = '+sum(weights)+'d. Поэтому за эти месяцы выплачено '+weights.length+'d + '+format(rate/100)+' · '+sum(weights)+'d = '+amount(coefficientCents)+'d.';
+ const finalLine='По условию '+amount(coefficientCents)+'d = '+amount(totalCents)+'. Отсюда d = '+share+' тыс. рублей. Сумма кредита равна '+months+' · '+share+' = '+principal+' тыс. рублей.';
+ return result('Сумма, тыс. рублей',principal,prompt,[
+  step('Сколько долей основного долга остаётся перед майским начислением?',weights[0],
+   'Отсчитайте расчётные месяцы от октября 2028 года. Из 18 долей уже погашены доли за все предыдущие месяцы.',calendarLine),
+  step('Каким числом надо умножить долю основного долга, чтобы получить сумму шести нужных платежей?',coefficientCents/100,
+   'Сложите шесть единиц основного долга и 2% от числа долей, оставшихся перед каждым начислением.',paymentLine+' '+sumLine),
+  step('Какую сумму взяли в кредит, в тысячах рублей?',principal,
+   'Найдите сначала одну долю, разделив сумму платежей на найденный коэффициент.',finalLine)
+ ],[calendarLine,paymentLine,sumLine,finalLine]);
+}
+
+function equalPayments({rate,base,ask}){
+ const k=format((100+rate)/100),initial=(200+rate)*base,after=(100+rate)*base;
+ const cents=(100+rate)**2*base;
+ const prior=initial*(100+rate),interest=2*cents-initial*100;
+ const asked={
+  payment:{answer:cents/100,sentence:'Вычислите величину одного платежа.'},
+  balance:{answer:after,sentence:'Каков остаток долга сразу после первого платежа?'},
+  interest:{answer:interest/100,sentence:'На сколько суммарные выплаты больше суммы кредита?'},
+  principal:{answer:initial,sentence:'Какую сумму банк первоначально выдал?'}
+ }[ask];
+ const given=ask==='principal'?'Каждый платёж составляет '+amount(cents)+' '+money+'.':'Первоначальная сумма кредита равна '+initial+' '+money+'.';
+ const prompt='<p>Кредит выдан на два года. В конце каждого года остаток сначала увеличивают на '+rate+'%, затем в тот же день вносят платёж. Размер обоих платежей одинаков. После второго платежа остаток равен нулю.</p><p>'+given+' <strong>'+asked.sentence+' Ответ дайте в тысячах рублей.</strong></p>';
+ const description='Обозначим первоначальный долг через S, единый платёж через P. Коэффициент начисления k = '+k+'. Учитываем начисление до платежа.';
+ const expression='После первого платежа остаётся kS − P. После второго остаётся k(kS − P) − P. По условию этот остаток нулевой, поэтому k²S = (k + 1)P.';
+ const calculation=ask==='principal'
+  ?'Отсюда S = (k + 1)P/k². Подставим k = '+k+' и P = '+amount(cents)+'. Получаем S = '+initial+' '+money+'.'
+  :'Отсюда P = k²S/(k + 1). Подставим S = '+initial+' и k = '+k+' и получим P = '+amount(cents)+' '+money+'.';
+ const check='Перед первым платежом долг равен '+amount(prior)+'. После первого платежа остаётся '+amount(prior)+' − '+amount(cents)+' = '+after+'. После следующего начисления он равен '+amount(cents)+', поэтому ровно закрывается вторым платежом. Переплата 2P − S = '+amount(interest)+' '+money+'.';
+ return result('Сумма, тыс. рублей',asked.answer,prompt,[
+  step('Во сколько раз увеличивается долг перед каждым платежом?',Number(k.replace(',','.')),
+    'Увеличение на r% означает умножение на 1 + r/100.',description),
+  step(ask==='principal'?'Сколько тысяч рублей остаётся сразу после первого платежа?':'Сколько тысяч рублей должен заёмщик перед первым платежом?',
+   ask==='principal'?after:prior/100,
+    ask==='principal'?'Перед последним платежом весь долг равен P. Разделите его на k.':'Умножьте первоначальный долг на коэффициент начисления.',
+   expression),
+  step('Найдите сумму, которую спрашивают в условии, в тысячах рублей.',asked.answer,
+   'Используйте уравнение для нулевого остатка после второго платежа.',calculation+' '+check)
+ ],[description,expression,calculation,check]);
+}
+
+const periods=(principal,count,rate,first,last,ask)=>calendar({principal,phases:[{count,end:0,rate}],first,last,ask});
+const split=(principal,middle,a,b,r,s,first,last,ask)=>calendar({
+ principal,phases:[{count:a,end:middle,rate:r},{count:b,end:0,rate:s}],first,last,ask
+});
+const fixed=(rate,base,ask)=>equalPayments({rate,base,ask});
+const lessons=[
+ lesson('h12-monthly-balance','Остаток уменьшается равными долями',
+  'Составьте ряд остатков и выделите платежи, о которых спрашивают.',
+  ['Падение остатка одинаково: делим сумму кредита на число месяцев.',
+   'Платёж состоит из этой доли основного долга и процентов на остаток до начисления.'],[
+  periods(880,4,7,1,4,'total'),periods(1050,5,6,1,5,'interest'),periods(980,7,9,6,7,'total'),
+  periods(930,6,12,5,6,'rate'),principalFromSelectedPayments(),periods(1175,5,4,2,5,'interest')
+ ]),
+ lesson('h12-two-stage-balance','Долг погашают в два этапа',
+  'Найдите шаг уменьшения для каждого этапа и не начисляйте проценты дважды.',
+  ['Из первоначальной суммы вычтите промежуточный остаток и разделите разность на число первых платежей.',
+   'На втором этапе разделите промежуточный остаток на число оставшихся платежей. Начальный долг для следующего начисления — фактический остаток.'],[
+  split(1340,620,3,4,7,7,1,7,'total'),split(1250,550,4,5,8,5,4,6,'total'),split(1080,480,3,4,10,10,1,7,'rate'),
+  split(1590,690,3,3,6,9,3,5,'total'),split(1430,650,3,5,9,9,2,7,'rate'),split(1710,750,4,5,7,11,5,8,'interest')
+ ]),
+ lesson('h12-equal-annual-payments','Одинаковые платежи в конце года',
+  'Запишите два остатка подряд и используйте нулевой долг после второй выплаты.',
+  ['Одинаковая выплата не означает одинаковое уменьшение основного долга.',
+   'При коэффициенте начисления k и платеже P после первого платежа остаётся kS − P. После второго остаток равен нулю.'],[
+  fixed(8,7,'payment'),fixed(6,9,'balance'),fixed(5,11,'interest'),
+  fixed(9,6,'principal'),fixed(7,5,'interest'),fixed(12,8,'balance')
+ ])
+];
+root.ProfileFinanceWrittenLessons=lessons;
 if(typeof module!=='undefined'&&module.exports)module.exports=lessons;
 })(typeof globalThis!=='undefined'?globalThis:this);
 
@@ -2986,15 +3145,22 @@ const api={create,valid,matches,openAnswer,recognize,canonical,summary,normalize
 (function(root){
 'use strict';
 const lessons=(root.ProfilePartTwoLessons||[]).slice().sort((a,b)=>a.exam-b.exam);
+const financeLessons=root.ProfileFinanceWrittenLessons||[];
+const financeIds=new Set(financeLessons.map(lesson=>lesson.id));
+const isFinance=lesson=>financeIds.has(lesson.id);
+const allLessons=lessons.concat(financeLessons);
+const lessonSequence=lesson=>isFinance(lesson)?financeLessons:lessons;
 const examMap=root.ProfileExamMap;
 // Legacy exam keys identify the existing lessons, labs and saved work.
 const entryFor=number=>examMap?.fromLegacyPartTwo(number);
 const labelFor=number=>{const entry=entryFor(number);return entry?examMap.label(entry):'Учебная тема';};
 const groupURL=number=>{const entry=entryFor(number);return entry?examMap.hash(entry):'#exam/'+number;};
 const titles={14:'Уравнения и отбор корней',15:'Стереометрия с доказательством',16:'Неравенства',17:'Моделирование и оптимизация',18:'Планиметрия с доказательством',19:'Задачи с параметром',20:'Числа и их свойства'};
+const lessonLabel=lesson=>isFinance(lesson)?examMap.label(16):labelFor(lesson.exam);
+const lessonGroupURL=lesson=>isFinance(lesson)?examMap.hash(16):groupURL(lesson.exam);
 const main=document.getElementById('main'),banner=document.getElementById('save-warning'),API=root.ProfilePartTwoState;
-const byLesson=new Map(lessons.map(l=>[l.id,l])),byTask=new Map();
-lessons.forEach(lesson=>lesson.tasks.forEach((task,index)=>byTask.set(task.id,{lesson,task,index})));
+const byLesson=new Map(allLessons.map(l=>[l.id,l])),byTask=new Map();
+allLessons.forEach(lesson=>lesson.tasks.forEach((task,index)=>byTask.set(task.id,{lesson,task,index})));
 let storage;try{storage=root.localStorage;}catch(_){}
 const store=API.create(storage,{locks:root.navigator?.locks,validate:(v,id)=>{const task=byTask.get(id)?.task;return !!task&&v.solvedSteps.length<=task.steps.length&&v.drafts.steps.length<=task.steps.length&&v.drafts.final.length<=task.final.length&&v.solutionSteps<=task.solution.length;},onWarning:text=>{banner.hidden=false;banner.textContent=text;}});
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -3055,20 +3221,25 @@ function correctedWithoutHelp(record){return record.independent&&record.attempts
 function status(task,record){if(record.independent)return `<span class="tag ok">${correctedWithoutHelp(record)?'Исправлено без подсказки':'Ответы самостоятельно'}</span>`;if(record.completed)return '<span class="tag help">Ответы с опорой</span>';if(record.attemptCount||record.drafts.proof||record.drafts.openFinal?.trim()||record.drafts.final.some(Boolean)||record.drafts.steps.some(Boolean)||record.solvedSteps.length)return '<span class="tag">Продолжить работу</span>';return '<span class="tag">Можно начать</span>';}
 function stats(items){const out={total:0,completed:0,independent:0,helped:0,pending:0};items.forEach(l=>l.tasks.forEach(task=>{const r=store.read(task.id);out.total++;if(r.completed)out.completed++;if(r.independent)out.independent++;else if(r.completed)out.helped++;if(r.completed&&task.proof)out.pending++;}));return out;}
 function badges(s){return `<div class="stats"><span class="tag">${s.total} условий</span><span class="tag ok">Самостоятельные ответы: ${s.independent}</span><span class="tag help">С опорой: ${s.helped}</span></div>`;}
-function resume(items=lessons){let best=null;for(const lesson of items)for(let index=0;index<lesson.tasks.length;index++){const task=lesson.tasks[index],r=store.read(task.id);if(r.updatedAt&&!r.completed&&(!best||r.updatedAt>best.r.updatedAt))best={lesson,task,index,r};}return best;}
+function resume(items=allLessons){let best=null;for(const lesson of items)for(let index=0;index<lesson.tasks.length;index++){const task=lesson.tasks[index],r=store.read(task.id);if(r.updatedAt&&!r.completed&&(!best||r.updatedAt>best.r.updatedAt))best={lesson,task,index,r};}return best;}
 function courseCard(entry){
- if(!entry.legacyPartTwo)return `<section class="card"><h2><span class="number">${entry.number}</span>${esc(entry.title)}</h2><p>Подготовка по процентам и кредитам: 16 тем · 96 числовых упражнений.</p><p class="caption">Эта практика помогает составлять и считать финансовые модели. Полное письменное решение №16 требует отдельного обоснования и проверки преподавателем.</p><a class="button" href="${esc(examMap.href(entry))}">К финансовой подготовке</a></section>`;
+ if(!entry.legacyPartTwo){
+  const count=stats(financeLessons).total;
+  return `<section class="card"><h2><span class="number">${entry.number}</span>${esc(entry.title)}</h2><p>${count?count+' условий с письменным решением.':'Подготовка по процентам и кредитам.'}</p><p class="caption">Проверьте расчёт и запишите полное обоснование.</p><div class="actions"><a class="button" href="${examMap.hash(entry)}">Открыть №16</a><a class="button quiet" href="${esc(examMap.href(entry))}">К финансовой подготовке</a></div></section>`;
+ }
  const group=lessons.filter(l=>l.exam===entry.legacyPartTwo),s=stats(group);
  return `<section class="card"><h2><span class="number">${entry.number??'+'}</span>${esc(entry.title)}</h2><p>${group.length} тем · ${s.total} условий</p><p class="caption">Самостоятельные ответы: ${s.independent}; с опорой: ${s.helped}.</p><a class="button" href="${examMap.hash(entry)}">${entry.number?'Открыть №'+entry.number:'Открыть дополнительную тему'}</a></section>`;
 }
 function home(){
  const official=examMap.entries.filter(entry=>entry.part===2),extras=examMap.extras.filter(entry=>entry.legacyPartTwo);
  const s=stats(lessons.filter(lesson=>entryFor(lesson.exam)?.number)),last=resume();
- main.innerHTML=`<p class="eyebrow">Профильный ЕГЭ · ФИПИ 2027</p><h1>Вторая часть: от метода до обоснования</h1><p class="lead">Задания экзамена №13–19. Выберите тему: три условия с опорой, затем три других условия для самостоятельной проверки. Сохраняются ответы, первая попытка и ваше обоснование.</p><p>Здесь 36 тем и 216 условий по уравнениям, геометрии, неравенствам, параметрам и числам. Для №16 откройте финансовую подготовку. Ещё 6 тем и 36 условий по оптимизации сохранены в дополнительном разделе ниже.</p>${badges(s)}${last?`<a class="button" href="${taskURL(last.task.id,last.r.helped&&!last.r.drafts.openFinal?.trim()?'guided':modeFor(last.index))}">Продолжить: ${esc(last.lesson.title)}</a>`:''}<h2>Подготовка к №13–19</h2><div class="grid">${official.map(courseCard).join('')}</div><h2>Дополнительная подготовка</h2><p>Оптимизация развивает работу с моделью и ограничениями. Это дополнительная тема, а не отдельный официальный номер экзамена.</p><div class="grid">${extras.map(courseCard).join('')}</div><aside class="panel"><h2>Как оценивать результат</h2><p>Верный числовой ответ ещё не означает полное решение второй части. Запишите ход рассуждений и проверьте его по критериям. Доказательство остаётся на проверку преподавателю.</p><p>После подсказки условие отмечается как работа с опорой. Для новой самостоятельной проверки откройте другое условие.</p><a href="/ege-profil/start/#calm">Первая часть №1–12 и школьные основы →</a></aside>`;
+ main.innerHTML=`<p class="eyebrow">Профильный ЕГЭ · ФИПИ 2027</p><h1>Вторая часть: от метода до обоснования</h1><p class="lead">Задания экзамена №13–19. Выберите тему: три условия с опорой, затем три других условия для самостоятельной проверки. Сохраняются ответы, первая попытка и ваше обоснование.</p><p>Здесь 36 тем и 216 условий по уравнениям, геометрии, неравенствам, параметрам и числам. Отдельный раздел №16 посвящён письменному решению финансовых задач. Ещё 6 тем и 36 условий по оптимизации сохранены в дополнительном разделе ниже.</p>${badges(s)}${last?`<a class="button" href="${taskURL(last.task.id,last.r.helped&&!last.r.drafts.openFinal?.trim()?'guided':modeFor(last.index))}">Продолжить: ${esc(last.lesson.title)}</a>`:''}<h2>Подготовка к №13–19</h2><div class="grid">${official.map(courseCard).join('')}</div><h2>Дополнительная подготовка</h2><p>Оптимизация развивает работу с моделью и ограничениями. Это дополнительная тема, а не отдельный официальный номер экзамена.</p><div class="grid">${extras.map(courseCard).join('')}</div><aside class="panel"><h2>Как оценивать результат</h2><p>Верный числовой ответ ещё не означает полное решение второй части. Запишите ход рассуждений и проверьте его по критериям. Доказательство остаётся на проверку преподавателю.</p><p>После подсказки условие отмечается как работа с опорой. Для новой самостоятельной проверки откройте другое условие.</p><a href="/ege-profil/start/#calm">Первая часть №1–12 и школьные основы →</a></aside>`;
 }
 function finance(){
- const entry=examMap.get(16);
- main.innerHTML=`<a class="back" href="#map">← Карта второй части</a><p class="eyebrow">ЕГЭ 2027 · №16</p><h1>${esc(entry.title)}</h1><p class="lead">Начните с процентов, платежей и финансовых моделей в подготовительном курсе.</p><p>В существующем курсе 16 тем и 96 числовых упражнений. Они тренируют отдельные вычисления и построение моделей; это не полный письменный курс по №16. Для экзамена нужно обосновать модель и ход решения, а полную запись проверить с преподавателем.</p><a class="button" href="${esc(examMap.href(entry))}">Открыть финансовую подготовку</a>`;
+ const entry=examMap.get(16),last=resume(financeLessons);
+ const cards=financeLessons.map(lesson=>`<section class="card"><h2>${esc(lesson.title)}</h2><p>${esc(lesson.goal)}</p><p class="caption">Условий с верным числовым ответом: ${stats([lesson]).completed} из ${lesson.tasks.length}.</p><div class="actions"><a class="button" href="#lesson/${lesson.id}">К условиям</a><a class="button quiet" href="${taskURL((lesson.tasks.slice(3).find(task=>{const r=store.read(task.id);return !r.completed&&!r.helped;})||lesson.tasks[3]).id,'independent')}">Решить самостоятельно</a></div></section>`).join('');
+ const continuing=last?`<p><a class="button" href="${taskURL(last.task.id,modeFor(last.index))}">Продолжить сохранённое условие</a></p>`:'';
+ main.innerHTML=`<a class="back" href="#map">← Карта второй части</a><p class="eyebrow">ЕГЭ 2027 · №16</p><h1>${esc(entry.title)}</h1><p class="lead">Разберите календарь выплат и запишите, откуда берётся каждый платёж. Тренажёр сверит числовой ответ. Полное решение можно сверить с образцом и показать преподавателю.</p>${continuing}<div class="grid">${cards}</div><section class="panel"><h2>Вспомнить проценты и платежи</h2><p>16 тем и 96 числовых упражнений для подготовки к письменным задачам.</p><a class="button quiet" href="${esc(examMap.href(entry))}">Открыть финансовую подготовку</a></section>`;
 }
 function exam(number){
  const group=lessons.filter(l=>l.exam===number);if(!group.length)return missing();const s=stats(group),last=resume(group);
@@ -3093,10 +3264,10 @@ function exam(number){
 }
 function prerequisites(lesson){return lesson.prerequisites?.length?`<details class="prerequisites"><summary>Вспомнить основу и прежние материалы</summary><ul>${lesson.prerequisites.map(p=>`<li><a href="${esc(p.href)}">${esc(p.title)}</a></li>`).join('')}</ul><p class="caption">Черновик сохранится. Вернитесь кнопкой браузера, чтобы продолжить это условие.</p></details>`:'';}
 function lessonView(lesson){
- const index=lessons.indexOf(lesson),next=lessons[index+1];
- main.innerHTML=`<a class="back" href="${groupURL(lesson.exam)}">← Все темы · ${esc(labelFor(lesson.exam))}</a><p class="eyebrow">${esc(labelFor(lesson.exam))} · учебная тема</p><h1>${esc(lesson.title)}</h1><p class="lead">${esc(lesson.goal)}</p><div class="panel"><h2>Начать с задачи</h2><p>Попробуйте первый шаг сами; объяснение и помощь можно открыть рядом с условием.</p><div class="actions"><a class="button" href="${taskURL(lesson.tasks[0].id,'guided')}">Первое условие по шагам</a><a class="button quiet" href="${taskURL(lesson.tasks[3].id,'independent')}">Проверить себя</a></div></div><details><summary>Короткая теория и выбор метода</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<details id="model-lab"><summary>Исследование на модели · не зачёт</summary><div id="model-lab-content" class="panel"></div></details><h2>Сначала — разобраться</h2><div class="task-grid">${lesson.tasks.slice(0,3).map((task,i)=>taskCard(task,i,'guided')).join('')}</div><h2>Затем — другое условие самостоятельно</h2><p class="caption">Это отдельные условия. Если открыть подсказку или разбор, результат будет отмечен как работа с опорой.</p><div class="task-grid">${lesson.tasks.slice(3).map((task,i)=>taskCard(task,i+3,'independent')).join('')}</div>${next?`<p class="next"><a href="#lesson/${next.id}">Следующая тема: ${esc(next.title)} →</a></p>`:''}`;
- mountSkills(lesson.exam,lesson);
- const lab=document.getElementById('model-lab');if(!root.ProfilePartTwoLabs)lab.hidden=true;else lab.addEventListener('toggle',()=>{if(lab.open&&!labCleanup)labCleanup=root.ProfilePartTwoLabs.mount(document.getElementById('model-lab-content'),lesson.exam,{storage});});
+ const sequence=lessonSequence(lesson),next=sequence[sequence.indexOf(lesson)+1];
+ main.innerHTML=`<a class="back" href="${lessonGroupURL(lesson)}">← Все темы · ${esc(lessonLabel(lesson))}</a><p class="eyebrow">${esc(lessonLabel(lesson))} · учебная тема</p><h1>${esc(lesson.title)}</h1><p class="lead">${esc(lesson.goal)}</p><div class="panel"><h2>Начать с задачи</h2><p>Попробуйте первый шаг сами; объяснение и помощь можно открыть рядом с условием.</p><div class="actions"><a class="button" href="${taskURL(lesson.tasks[0].id,'guided')}">Первое условие по шагам</a><a class="button quiet" href="${taskURL(lesson.tasks[3].id,'independent')}">Проверить себя</a></div></div><details><summary>Короткая теория и выбор метода</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<details id="model-lab"><summary>Исследование на модели · не зачёт</summary><div id="model-lab-content" class="panel"></div></details><h2>Сначала — разобраться</h2><div class="task-grid">${lesson.tasks.slice(0,3).map((task,i)=>taskCard(task,i,'guided')).join('')}</div><h2>Затем — другое условие самостоятельно</h2><p class="caption">Это отдельные условия. Если открыть подсказку или разбор, результат будет отмечен как работа с опорой.</p><div class="task-grid">${lesson.tasks.slice(3).map((task,i)=>taskCard(task,i+3,'independent')).join('')}</div>${next?`<p class="next"><a href="#lesson/${next.id}">Следующая тема: ${esc(next.title)} →</a></p>`:''}`;
+ if(!isFinance(lesson))mountSkills(lesson.exam,lesson);
+ const lab=document.getElementById('model-lab');if(isFinance(lesson)||!root.ProfilePartTwoLabs)lab.hidden=true;else lab.addEventListener('toggle',()=>{if(lab.open&&!labCleanup)labCleanup=root.ProfilePartTwoLabs.mount(document.getElementById('model-lab-content'),lesson.exam,{storage});});
 }
 function taskCard(task,i,mode){return `<a class="task-link" href="${taskURL(task.id,mode)}"><strong>Условие ${i+1}</strong><small>${i<3?'Учимся решать':'Проверяем себя'}</small>${status(task,store.read(task.id))}</a>`;}
 function feedback(text,kind=''){const box=document.getElementById('feedback');if(box){box.className='feedback '+kind;box.hidden=false;box.textContent=text;}}
@@ -3276,13 +3447,13 @@ function parameterPracticeLink(lesson,task){return practiceLink(task)||`<a class
 function completion(item,r,mode,nextIndependent,review){
  if(!r.completed)return '';
  const {lesson,task,index}=item;
- const nextTask=lesson.tasks[index+1],nextLesson=lessons[lessons.indexOf(lesson)+1];
+ const sequence=lessonSequence(lesson),nextTask=lesson.tasks[index+1],nextLesson=sequence[sequence.indexOf(lesson)+1];
  const offerFresh=mode!=='independent'||r.helped;
  const nextLink=review?parameterPracticeLink(lesson,nextIndependent):
   nextIndependent&&offerFresh?practiceLink(nextIndependent):
   nextTask?`<a class="button" href="${taskURL(nextTask.id,modeFor(index+1))}">Следующее условие →</a>`:
   nextLesson?`<a class="button" href="#lesson/${nextLesson.id}">Следующая тема →</a>`:'';
- return `<section class="panel complete" id="completion"><h2>Ответы приняты</h2><p>${correctedWithoutHelp(r)?'Ответ исправлен самостоятельно после первой попытки.':r.independent?'Вычислительная часть решена самостоятельно.':'Это работа с опорой или повтор учебного условия.'}${task.proof?' Письменное обоснование требует проверки.':''}</p><div class="actions">${nextLink}<a class="button quiet" href="${groupURL(lesson.exam)}">Все темы · ${esc(labelFor(lesson.exam))}</a></div>${!nextIndependent?'<p class="caption">Новые самостоятельные условия этой темы закончились. Повтор знакомого условия не увеличивает счётчик.</p>':''}</section>`;
+ return `<section class="panel complete" id="completion"><h2>Ответы приняты</h2><p>${correctedWithoutHelp(r)?'Ответ исправлен самостоятельно после первой попытки.':r.independent?'Вычислительная часть решена самостоятельно.':'Это работа с опорой или повтор учебного условия.'}${task.proof?' Письменное обоснование требует проверки.':''}</p><div class="actions">${nextLink}<a class="button quiet" href="${lessonGroupURL(lesson)}">Все темы · ${esc(lessonLabel(lesson))}</a></div>${!nextIndependent?'<p class="caption">Новые самостоятельные условия этой темы закончились. Повтор знакомого условия не увеличивает счётчик.</p>':''}</section>`;
 }
 function guidedView(task,r){const stepIndex=r.solvedSteps.length,step=task.steps[stepIndex];return `<section class="panel"><h2>Решение по шагам</h2>${r.solvedSteps.length?`<ol class="steps">${r.solvedSteps.map(i=>`<li class="step-done">${task.steps[i].prompt}<br><strong>${task.steps[i].explanation}</strong></li>`).join('')}</ol>`:''}${step?`<form id="step-form"><p class="eyebrow">Шаг ${stepIndex+1} из ${task.steps.length}</p><label class="field"><span>${step.prompt}</span><input id="step-answer" type="text" maxlength="500" autocomplete="off" value="${esc(r.drafts.steps[stepIndex]||'')}"></label><div class="actions"><button type="submit">Проверить шаг</button><button type="button" id="step-hint" class="quiet">Нужна подсказка</button></div></form>${r.hints.includes(stepIndex)?`<p class="hint">${step.hint}</p>`:''}`:'<p class="feedback ok">Шаги пройдены. Теперь соберите итоговые ответы ниже.</p>'}</section>`;}
 async function taskView(item,mode,viewVersion=routeVersion,previous=active){
@@ -3327,12 +3498,12 @@ async function taskView(item,mode,viewVersion=routeVersion,previous=active){
   actions.append(button);
   document.getElementById('feedback').after(actions);
  }
- main.innerHTML=`<a class="back" href="#lesson/${lesson.id}">← ${esc(lesson.title)}</a><p class="eyebrow">${esc(labelFor(lesson.exam))} · условие ${index+1} из ${lesson.tasks.length}</p><h1>${esc(lesson.title)}</h1><nav class="modes" aria-label="Способ работы">${Object.entries(modeLabels).map(([key,label])=>`<a href="${taskURL(task.id,key)}" ${mode===key?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${mode==='independent'&&(r.helped||!independentEligible)?'<p class="hint">Это знакомое учебное условие или условие с уже открытой помощью. Его повтор не считается новой самостоятельной проверкой.</p>':''}<div class="task-layout"><section class="panel condition"><h2>Условие</h2><div>${openFinal?.prompt||task.prompt}</div>${task.diagram?`<div class="diagram">${task.diagram}</div>`:''}${task.diagram?'<p class="caption">Рисунок относится к этому условию. Для доказательства используйте данные и свойства, а не измерения по экрану.</p>':''}</section><div class="work">${mode==='guided'?guidedView(task,r):mode==='plan'?`<section class="panel"><h2>План решения</h2><ol class="steps">${task.steps.map(s=>`<li>${s.prompt}</li>`).join('')}</ol><p class="caption">План — опора. Для самостоятельного зачёта затем откройте другое условие.</p></section>`:''}<section class="panel"><h2>Итоговые ответы</h2><form id="final-form">${finalFields.map((field,i)=>`<label class="field"><span>${field.label}</span><input id="final-${i}" data-final="${i}" type="text" maxlength="500" autocomplete="off" value="${esc(finalDraft[i]||'')}"></label>`).join('')}<p class="caption">${openFinal?esc(openFinal.format):'Можно вводить дроби, π и корни: 3/4, π/6, sqrt(2). Ограничения и формат ответа указаны у поля.'}</p><button type="submit">${openFinal?'Проверить ответ':'Проверить ответы'}</button></form>${earlierDraft}<div id="feedback" class="feedback" role="status" hidden></div>${review?'<button id="proof-jump" type="button" class="quiet" hidden>К критериям обоснования</button>':''}<div class="actions"><button type="button" id="request-help" class="quiet">Хочу подсказку</button><button type="button" id="show-solution" class="quiet">Открыть разбор</button></div>${r.hints.includes(99)?`<p class="hint">${task.steps[0]?.hint||lesson.goal}</p>`:''}${r.solution?`<div class="hint"><h3>Разбор с опорой</h3><ol class="solution-list">${task.solution.slice(0,r.solutionSteps).map(p=>`<li>${p}</li>`).join('')}</ol>${r.solutionSteps<task.solution.length?'<button type="button" id="solution-next" class="quiet">Следующий шаг разбора</button>':''}</div>`:''}${review?`<div id="task-trace">${recentTrace(r,review)}</div>`:recentTrace(r)}</section></div></div>${proofView(openFinal?{...task,proof:{...task.proof,prompt:'Объясните, как нашли все решения и почему других нет.'}}:task,r,review,review&&parameterPracticeLink(lesson,nextIndependent))}${completion(item,r,mode,nextIndependent,review)}<details class="task-theory"><summary>Теория для этой темы</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<p><a href="${groupURL(lesson.exam)}">Вернуться к темам · ${esc(labelFor(lesson.exam))}</a> · <a href="#map">Все задания второй части</a></p>`;
+ main.innerHTML=`<a class="back" href="#lesson/${lesson.id}">← ${esc(lesson.title)}</a><p class="eyebrow">${esc(lessonLabel(lesson))} · условие ${index+1} из ${lesson.tasks.length}</p><h1>${esc(lesson.title)}</h1><nav class="modes" aria-label="Способ работы">${Object.entries(modeLabels).map(([key,label])=>`<a href="${taskURL(task.id,key)}" ${mode===key?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${mode==='independent'&&(r.helped||!independentEligible)?'<p class="hint">Это знакомое учебное условие или условие с уже открытой помощью. Его повтор не считается новой самостоятельной проверкой.</p>':''}<div class="task-layout"><section class="panel condition"><h2>Условие</h2><div>${openFinal?.prompt||task.prompt}</div>${task.diagram?`<div class="diagram">${task.diagram}</div>`:''}${task.diagram?'<p class="caption">Рисунок относится к этому условию. Для доказательства используйте данные и свойства, а не измерения по экрану.</p>':''}</section><div class="work">${mode==='guided'?guidedView(task,r):mode==='plan'?`<section class="panel"><h2>План решения</h2><ol class="steps">${task.steps.map(s=>`<li>${s.prompt}</li>`).join('')}</ol><p class="caption">План — опора. Для самостоятельного зачёта затем откройте другое условие.</p></section>`:''}<section class="panel"><h2>Итоговые ответы</h2><form id="final-form">${finalFields.map((field,i)=>`<label class="field"><span>${field.label}</span><input id="final-${i}" data-final="${i}" type="text" maxlength="500" autocomplete="off" value="${esc(finalDraft[i]||'')}"></label>`).join('')}<p class="caption">${openFinal?esc(openFinal.format):'Можно вводить дроби, π и корни: 3/4, π/6, sqrt(2). Ограничения и формат ответа указаны у поля.'}</p><button type="submit">${openFinal?'Проверить ответ':'Проверить ответы'}</button></form>${earlierDraft}<div id="feedback" class="feedback" role="status" hidden></div>${review?'<button id="proof-jump" type="button" class="quiet" hidden>К критериям обоснования</button>':''}<div class="actions"><button type="button" id="request-help" class="quiet">Хочу подсказку</button><button type="button" id="show-solution" class="quiet">Открыть разбор</button></div>${r.hints.includes(99)?`<p class="hint">${task.steps[0]?.hint||lesson.goal}</p>`:''}${r.solution?`<div class="hint"><h3>Разбор с опорой</h3><ol class="solution-list">${task.solution.slice(0,r.solutionSteps).map(p=>`<li>${p}</li>`).join('')}</ol>${r.solutionSteps<task.solution.length?'<button type="button" id="solution-next" class="quiet">Следующий шаг разбора</button>':''}</div>`:''}${review?`<div id="task-trace">${recentTrace(r,review)}</div>`:recentTrace(r)}</section></div></div>${proofView(openFinal?{...task,proof:{...task.proof,prompt:'Объясните, как нашли все решения и почему других нет.'}}:task,r,review,review&&parameterPracticeLink(lesson,nextIndependent))}${completion(item,r,mode,nextIndependent,review)}<details class="task-theory"><summary>Теория для этой темы</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<p><a href="${lessonGroupURL(lesson)}">Вернуться к темам · ${esc(lessonLabel(lesson))}</a> · <a href="#map">Все задания второй части</a></p>`;
  if(parameterCondition){
   const layout=main.querySelector('.task-layout'),modes=main.querySelector('.modes');
   layout.querySelector('.work').prepend(modes);
  }
- mountSkills(lesson.exam,lesson);
+ if(!isFinance(lesson))mountSkills(lesson.exam,lesson);
  offerGraph(r);
  main.querySelectorAll('.modes a').forEach(link=>link.addEventListener('click',event=>{if(link.getAttribute('href')===root.location.hash){event.preventDefault();render();}}));
  document.querySelectorAll('[data-final]').forEach(input=>input.addEventListener('input',()=>{
@@ -3433,7 +3604,10 @@ function parameterProofProgress(){
  const continuation=resume?` <a href="${taskURL(resume.task.id,'independent')}">Вернуться к обоснованию</a>`:'';
  return `<section class="panel"><h2>Самопроверка обоснований · ${esc(labelFor(19))}</h2><p>Вы отметили все пункты в ${reviewed} из ${drafts} обоснований.${continuation}</p></section>`;
 }
-function progress(){const s=stats(lessons);main.innerHTML=`<a class="back" href="#map">← Все номера второй части</a><h1>Мой прогресс</h1><p>Все 42 темы и 252 условия этого курса, включая дополнительную оптимизацию. Финансовая подготовка №16 сохраняется в своём курсе.</p>${badges(s)}<p>Это результаты проверки ответов. Письменные обоснования автоматически не оцениваются. На проверку обоснования: <strong>${s.pending}</strong>.</p>${parameterProofProgress()}<div class="table-wrap"><table><thead><tr><th>Тема</th><th>Самостоятельные ответы</th><th>С опорой</th><th>Всего условий</th></tr></thead><tbody>${lessons.map(l=>{const a=stats([l]);return `<tr><td><a href="#lesson/${l.id}">${esc(labelFor(l.exam))} · ${esc(l.title)}</a></td><td>${a.independent} / ${l.tasks.slice(3).length}</td><td>${a.helped}</td><td>${a.total}</td></tr>`;}).join('')}</tbody></table></div><section class="panel"><h2>Как продолжить</h2><p>После помощи решите другое условие. После завершения темы вернитесь к ней через несколько дней и попробуйте объяснить способ без подсказок. Знакомый повтор не добавляет новое самостоятельное решение.</p><a class="button" href="#map">Выбрать номер</a></section>`;}
+function progress(){
+ const s=stats(lessons);
+ const written=stats(financeLessons);
+ main.innerHTML=`<a class="back" href="#map">← Все номера второй части</a><h1>Мой прогресс</h1><p>Все 42 темы и 252 условия этого курса, включая дополнительную оптимизацию.</p>${badges(s)}<p>Это результаты проверки ответов. Письменные обоснования автоматически не оцениваются. На проверку обоснования: <strong>${s.pending}</strong>.</p>${parameterProofProgress()}<section class="panel" aria-labelledby="finance-progress-title"><h2 id="finance-progress-title">№16 · Письменные финансовые задачи</h2>${badges(written)}<a href="#fipi/2027/16">К задачам и сохранённым решениям №16 →</a></section><div class="table-wrap"><table><thead><tr><th>Тема</th><th>Самостоятельные ответы</th><th>С опорой</th><th>Всего условий</th></tr></thead><tbody>${lessons.map(l=>{const a=stats([l]);return `<tr><td><a href="#lesson/${l.id}">${esc(labelFor(l.exam))} · ${esc(l.title)}</a></td><td>${a.independent} / ${l.tasks.slice(3).length}</td><td>${a.helped}</td><td>${a.total}</td></tr>`;}).join('')}</tbody></table></div><section class="panel"><h2>Как продолжить</h2><p>После помощи решите другое условие. После завершения темы вернитесь к ней через несколько дней и попробуйте объяснить способ без подсказок. Знакомый повтор не добавляет новое самостоятельное решение.</p><a class="button" href="#map">Выбрать номер</a></section>`;}
 function missing(){main.innerHTML='<section class="panel"><h1>Такое условие не найдено</h1><p>Выберите тему из карты курса. Сохранённая работа остаётся в браузере.</p><a class="button" href="#map">Открыть карту</a></section>';}
 async function render(){const version=++routeVersion;await store.flush();if(version!==routeVersion)return;const previous=active;active=null;if(labCleanup){labCleanup();labCleanup=null;}const route=root.location.hash.slice(1).split('/');if(!lessons.length||!examMap){main.innerHTML='<section class="panel"><h1>Не удалось загрузить темы</h1><p>Обновите страницу. Если ошибка остаётся, <a href="/ege-profil/">откройте прежние материалы курса</a>.</p></section>';return;}if(route[0]==='fipi'&&route[1]==='2027'){const entry=examMap.get(route[2]);if(entry?.legacyPartTwo)exam(entry.legacyPartTwo);else if(entry?.number===16)finance();else missing();}else if(route[0]==='topic'){const entry=examMap.topic(route[1]);if(entry?.legacyPartTwo&&!entry.number)exam(entry.legacyPartTwo);else missing();}else if(route[0]==='exam')exam(Number(route[1]));else if(route[0]==='lesson'&&byLesson.has(route[1]))lessonView(byLesson.get(route[1]));else if(route[0]==='task'&&byTask.has(route[1])){const item=byTask.get(route[1]),mode=modeLabels[route[2]]?route[2]:modeFor(item.index);await taskView(item,mode,version,previous);}else if(route[0]==='progress')progress();else if(!route[0]||route[0]==='map')home();else missing();main.focus({preventScroll:true});}
 root.addEventListener('hashchange',async()=>{
@@ -3450,7 +3624,7 @@ root.addEventListener('storage',event=>{
  banner.hidden=false;
  banner.textContent='Работа обновлена в другой вкладке. Перед следующей проверкой будет прочитано свежее сохранение; текущий ввод остаётся на экране.';
 });
-root.ProfilePartTwoApp={render,store,lessons,byTask};render();
+root.ProfilePartTwoApp={render,store,lessons,financeLessons,byTask};render();
 })(globalThis);
 
 </script>
