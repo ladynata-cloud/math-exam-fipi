@@ -30,7 +30,13 @@ const server=http.createServer((req,res)=>{let file;try{file=path.resolve(ROOT,'
  if(OUT)fs.mkdirSync(OUT,{recursive:true});
  for(const width of [360,768,1280]){await page.setViewportSize({width,height:900});for(const id of ['practice-delivery','practice-grid-cut','practice-graph-match','practice-number-match','practice-percent-part','practice-right-ratio','box']){await page.goto(base+'#lesson='+id);await openModel(page);const sizes=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,view:innerWidth}));assert(sizes.scroll<=sizes.view+1,`${id}: horizontal overflow at ${width}: ${JSON.stringify(sizes)}`);if(OUT&&((width===360&&id==='practice-delivery')||(width===768&&id==='practice-graph-match')||(width===1280&&id==='practice-grid-cut')))await page.screenshot({path:path.join(OUT,`${id}-${width}.png`),fullPage:true});}}
  // Figure construction and a keyboard-operable interactive fraction model.
- await page.goto(base+'#lesson=practice-grid-cut');await openModel(page);await page.locator('#auxRect').click();assert((await page.locator('#constructionRead').innerText()).includes('вычесть'));
+ await page.goto(base+'#lesson=practice-grid-cut');await openModel(page);await page.locator('#auxRect').click();
+ const gridEstimate=await page.evaluate(()=>{
+  const id='practice-grid-cut',lesson=PathCourse.state().lessons[id];
+  return !!PathData.practice.taskForBankVersion(id,lesson.seed,lesson.bankVersion).params.estimate;
+ });
+ const constructionFeedback=await page.locator('#constructionRead').innerText();
+ assert(constructionFeedback.includes(gridEstimate?'незакрашенных треугольников':'вычесть лишние части'));
  await page.goto(base+'#lesson=practice-fraction-percent');await openModel(page);const n=await page.evaluate(()=>{let l=PathCourse.state().lessons['practice-fraction-percent'];return PathData.task('practice-fraction-percent',l.seed).model.fractions[0][0];});for(let i=0;i<n;i++){await page.locator(`[data-share="${i}"]`).focus();await page.keyboard.press('Space');}await page.locator('#checkShares').click();assert((await page.locator('#modelFeedback').innerText()).includes('верно'));
  // The board catalog contains every new family and the opening query is correct.
  const catalog=await (await page.request.get(origin+'/trainers/board-picker-data.json')).json();for(const id of ids)assert(catalog.entries.some(x=>x.href==='/ege-baza/path/index.html#lesson='+id));const board=page.locator('a[href*="trainer-board.html"]');assert((await board.getAttribute('href')).includes('trainer='));
