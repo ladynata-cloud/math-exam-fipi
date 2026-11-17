@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+  "baseSha": "e71ca1ed18fb9b5a26de54336922f5a7f2a9cd3d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "3155e5fc4c717e7935b1a7bf7b8d5ad5333708cc8465a6b779f2f1ce217f1f82",
-      "afterSha256": "ce3843b6397a2a164773a23d1ee4da33ca1554eff66ff2f8bbe58c1282a91bda",
+      "beforeSha256": "4b1def2d8d4ff5d6cd333409feed7aba23adac77b6aa466019505bdfc8a71103",
+      "afterSha256": "659c62e7b8702d822ddd8a5b1386e43c530329ae8f2c748561a2e7b2fb76db2a",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -5380,6 +5380,15 @@
       "task": "docs/tasks/PROFILE_FINANCE_WRITTEN_20261117.md",
       "changedPaths": [
         "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "sourceBaseSha": "e71ca1ed18fb9b5a26de54336922f5a7f2a9cd3d",
+      "task": "docs/tasks/PROFILE_VECTOR_OPPOSITES_20261117.md",
+      "changedPaths": [
         "ege-profil/start/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
