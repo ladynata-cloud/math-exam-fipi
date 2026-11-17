@@ -22,5 +22,6 @@
 - Входы по двум разрядам из карт и курса, сохранение этапов, состояние действующих заданий ЕГЭ базы.
 - Проверки `tools/quotient-estimate.test.cjs`, `tools/learning-quotient-estimate.dom.cjs`, `tools/learning-rounding-preparation.dom.cjs`, `tools/rounding-stepwise.dom.cjs`, `tools/rounding-focus.test.cjs`, `tools/oge-basics-special-help.dom.cjs`, `tools/division-skill-map.test.cjs`, `tools/ege-baza-skill-map.test.cjs`, `tools/oge-skill-course.test.cjs`, `tools/division-guided.test.cjs`, `tools/division-course.test.cjs`, `tools/division-path.test.cjs` и `tools/division-offline-export.test.cjs`.
 - Детерминированная сборка карт ОГЭ, валидатор карт деления, неизменность банка кабинета и `git diff --check`.
+- `tools/rounding-stepwise.browser.cjs` и `tools/division-path.browser.cjs` проверяют реальные ссылки, решение в обоих режимах округления и продолжение работы.
 
 Независимую консультацию внешнего провайдера не проводили. Основной риск — перепутать прикидку с точной цифрой или нарушить возобновление прежней попытки. При необходимости откатить отдельный коммит этой задачи по обычной процедуре Git.

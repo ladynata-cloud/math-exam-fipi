@@ -57,6 +57,7 @@ function render(focus){
  source.steps.slice(0,i).forEach((step,n)=>{const p=document.createElement('p');p.textContent='✓ '+step.record;if(n===i-1)p.className='latest';trail.append(p);});
  $('estimate-form').hidden=done;$('estimate-hint').hidden=done;$('estimate-solution').hidden=done;
  $('estimate-new').textContent=done?'Следующий пример →':'Другой пример';
+ const apply=$('estimate-apply');if(apply)apply.hidden=!done;
  const f=$('estimate-feedback'),help=$('estimate-help'),kind=state.feedback?.kind;
  const html=q&&['hint','solution'].includes(kind)?S?.render(source,q,{scope:'step',step:i,level:kind==='solution'?3:2})||'':'';
  // render() escapes its canonical numbers and text. Raw drafts and stored
