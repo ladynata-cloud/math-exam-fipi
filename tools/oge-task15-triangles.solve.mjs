@@ -179,6 +179,11 @@ S.bisExt = (t) => {
   const [A, C, B] = byTwoAngles(a, c), D = bisectorFoot(A, B, C);
   return { ans: /Найдите угол ADB/.test(t) ? angle(D, A, B) : angle(D, A, C), pts: { A, B, C, D } };
 };
+S.bisHalf = (t) => {
+  const a = grab(t, 'Угол BAC треугольника ABC равен NUM°');
+  const [A, C, B] = byTwoAngles(a, 38), K = bisectorFoot(A, B, C);
+  return { ans: angle(A, K, /Найдите угол BAK/.test(t) ? B : C), pts: { A, B, C, K } };
+};
 S.twoExt = (t) => {
   let e1, e2, m = /Внешние углы треугольника ABC при вершинах A и B равны NUM° и NUM°/.source.replace(/NUM/g, NUM);
   const mm = new RegExp(m).exec(t);
@@ -310,6 +315,15 @@ S.medianRt = (t) => {
   const M = mul(add(P.A, P.B), 0.5);
   return { ans: dist(P.C, M), pts: { ...P, M } };
 };
+S.medianCenter = (t) => {
+  const A = V(-5, 0), C = V(5, 0), B = V(-2, 7);
+  const M = mul(add(A, C), 0.5), N = mul(add(B, C), 0.5);
+  const G = meet(B, sub(M, B), A, sub(N, A));
+  const whole = /Найдите длину отрезка GM/.test(t);
+  const scale = whole ? grab(t, 'Длина медианы BM равна NUM') / dist(B, M) : grab(t, 'GM = NUM') / dist(G, M);
+  const pts = Object.fromEntries(Object.entries({ A, B, C, M, N, G }).map(([key, point]) => [key, mul(point, scale)]));
+  return { ans: whole ? dist(pts.G, pts.M) : dist(pts.B, pts.G), pts };
+};
 /* правильный треугольник со стороной s: A(0;0), C(s;0), B — поворот C вокруг A на 60° */
 function eqTri(s) { const A = V(0, 0), C = V(s, 0); return { A, C, B: rot(C, A, 60) }; }
 const eqR = (P) => dist(circumcenter(P.A, P.B, P.C), P.A);
@@ -358,6 +372,8 @@ export function shapeFixed(k, html) {
   const t = plainText(html);
   if (k === 'altAlt' && !/угол A равен/.test(t)) return false;
   if (k === 'areaBH' && !/Найдите площадь/.test(t)) return false;
+  if (k === 'bisHalf') return false;
+  if (k === 'medianCenter') return false;
   return true;
 }
 export const TYPES = Object.keys(S);

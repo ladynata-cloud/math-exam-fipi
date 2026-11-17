@@ -308,3 +308,75 @@ test('building primary diagrams have persistent idempotent zoom without awarding
     } finally { ctx.dom.window.close(); }
   }
 });
+
+test('land plots: the authored plan grades all five answers independently derived from the figure and tables', async () => {
+  const ctx = await open('land-plots');
+  try {
+    const legacyPlan = ctx.doc.querySelector('[data-pv-plot-plan]').outerHTML;
+    Array.from(ctx.doc.querySelectorAll('.pv-controls button')).find(node => node.textContent === 'Дорожки и площадка').click();
+    assert.equal(ctx.window.PracticalNativeVariant.get().variant, 1000001);
+    assert.equal(new URL(ctx.window.location.href).searchParams.get('v'), '1000001');
+    const figure = ctx.doc.querySelector('[data-pv-plot-plan]');
+    assert.notEqual(figure.outerHTML, legacyPlan);
+    const ids = Array.from(ctx.doc.querySelectorAll('.pv-question')).map(node => node.dataset.taskId);
+    assert.deepEqual(ids, [1,2,3,4,5].map(number => 'plot-paving-' + number));
+
+    const paving = Array.from(figure.querySelectorAll(':scope > rect[data-plot-paving]'));
+    assert.equal(paving.length, 3);
+    const rectangles = paving.map(node => ['x','y','width','height'].map(key => Number(node.getAttribute(key))));
+    const cell = 28, cellArea = 2 ** 2;
+    const paintedCells = new Set();
+    for (const [left, top, width, height] of rectangles) {
+      assert.equal(width % cell + height % cell, 0, 'paving aligns with complete cells');
+      for (let x = left; x < left + width; x += cell) for (let y = top; y < top + height; y += cell) {
+        const id = x + ':' + y;
+        assert.equal(paintedCells.has(id), false, 'paved footprints do not overlap');
+        paintedCells.add(id);
+      }
+    }
+    const neededTiles = paintedCells.size * cellArea;
+    const packSize = Number(card(ctx,2).querySelector('.pv-question-condition').textContent.match(/по (\d+) штук/)[1]);
+    const packs = Math.ceil(neededTiles / packSize);
+    assert.equal(neededTiles, 52);
+    assert.ok((packs - 1) * packSize < neededTiles && packs * packSize >= neededTiles);
+    assert.equal(card(ctx,2).querySelector('.pv-platform-inset'), null);
+
+    const polygon = figure.querySelector(':scope > polygon');
+    const corners = polygon.getAttribute('points').split(' ').map(pair => pair.split(',').map(Number));
+    const sum = corners.reduce((total, [x,y], index) => {
+      const [nx,ny] = corners[(index+1) % corners.length];
+      return total + x*ny - nx*y;
+    }, 0);
+    const houseArea = Math.abs(sum) / 2 / cell ** 2 * cellArea;
+    assert.equal(houseArea, 56);
+    const garageMark = Array.from(figure.querySelectorAll('text')).find(node => node.textContent === '3');
+    const garage = Array.from(figure.querySelectorAll(':scope > rect[fill="var(--build)"]')).map(node => ['x','y','width','height'].map(key => Number(node.getAttribute(key)))).find(([left,top,width,height]) => {
+      const x = Number(garageMark.getAttribute('x')), y = Number(garageMark.getAttribute('y'));
+      return left < x && x < left + width && top < y && y < top + height;
+    });
+    assert.ok(garage);
+    const [left, top] = garage;
+    assert.ok(corners.every(([x,y]) => x < left && y < top), 'nearest garage point is its upper-left corner');
+    const nearestDistance = Math.min(...corners.map(([x,y]) => Math.hypot(left-x, top-y))) / cell * 2;
+    assert.equal(nearestDistance, 10);
+    const rows = Array.from(card(ctx,5).querySelectorAll('.pv-question-condition table tr')).slice(1);
+    const [gas,electric] = rows.map(row => Array.from(row.cells).slice(1).map(cell => Number(cell.textContent.replace(/\s/g,'').replace(',','.').match(/^\d+(?:\.\d+)?/)[0])));
+    const payback = (gas[0]+gas[1]-electric[0]-electric[1]) / (electric[2]*electric[3]-gas[2]*gas[3]);
+    assert.equal(payback, 540);
+
+    const before = progress(ctx);
+    card(ctx,2).querySelector('.pv-help-button').click();
+    assert.equal(progress(ctx), before);
+    const expected = ['6341', packs, houseArea, nearestDistance, payback];
+    for (let number = 1; number <= 5; number++) {
+      const host = await submit(ctx, number, expected[number-1]);
+      assert.equal(host.dataset.result, 'correct', host.querySelector('.pv-feedback').textContent);
+      assert.equal(host.querySelector('input').disabled, true);
+    }
+    Array.from(ctx.doc.querySelectorAll('.pv-controls button')).find(node => node.textContent === 'Новый вариант').click();
+    assert.equal(ctx.doc.querySelector('[data-pv-plot-plan]').outerHTML, legacyPlan);
+    assert.equal(card(ctx,1).querySelector('input').disabled, false, 'the checked result belongs to the new descriptor only');
+    assert.equal(JSON.parse(ctx.window.localStorage.getItem('landPlotsTrainer.v2')).perType.geom, 2);
+    assert.deepEqual(ctx.errors, []);
+  } finally { ctx.dom.window.close(); }
+});

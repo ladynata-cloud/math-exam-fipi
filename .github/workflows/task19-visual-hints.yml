@@ -29,11 +29,11 @@ jobs:
   visual-hints:
     name: visual-hints (${{ matrix.suite }})
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: ${{ matrix.suite == 'major' && 25 || 15 }}
     strategy:
       fail-fast: false
       matrix:
-        suite: [existing, owner]
+        suite: [existing, owner, major]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -68,6 +68,11 @@ jobs:
         run: |
           node tools/task19-current-models.browser.cjs
           node tools/task19-textbook-reference.browser.cjs
+      - name: All 135 source additions, narrow screens, saved drafts and offline parity
+        if: matrix.suite == 'major'
+        env:
+          TASK19_MAJOR_BROWSER_ARTIFACTS: artifacts/task19-major-source-models
+        run: node tools/task19-major-source-models.browser.cjs
       - name: Keep visual evidence
         if: always() && matrix.suite == 'existing'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -93,4 +98,12 @@ jobs:
           name: task19-owner-feedback
           path: artifacts/task19-owner-feedback
           if-no-files-found: ignore
+          retention-days: 7
+      - name: Keep major source coverage and visual evidence
+        if: always() && matrix.suite == 'major'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: task19-major-source-models
+          path: artifacts/task19-major-source-models
+          if-no-files-found: error
           retention-days: 7

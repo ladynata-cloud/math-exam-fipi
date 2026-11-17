@@ -5,6 +5,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
+const {restoreAlignment} = require('./oge-source-alignment-06-09-preservation.cjs');
+const alignmentFile='trainers/oge-task7-number-line.html';
 
 const source = fs.readFileSync(path.join(__dirname, '../trainers/oge-task7-number-line.html'), 'utf8');
 function between(start, end) {
@@ -273,12 +275,12 @@ test('the exact input receipt preserves the full pinned source and rejects every
   const {createHash} = require('node:crypto');
   const {restoreOge7Input, BEFORE, AFTER} = require('./oge7-number-input-preservation.cjs');
   const sha = value => createHash('sha256').update(value).digest('hex');
-  const restoreSource = html => restoreOge7Input(restoreTrainerDownload('trainers/oge-task7-number-line.html', html));
+  const restoreSource = html => restoreOge7Input(restoreAlignment(alignmentFile, restoreTrainerDownload(alignmentFile, html)));
   const originalHash = '327b041bf929619f3ced888e576ce12c560def6fd918aa637fc967ee355504ca';
   assert.equal(sha(restoreSource(source)), originalHash, 'all original main198 HTML bytes recovered');
   const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
     .filter(x => !(/\bsrc\s*=/.test(x[1]))).map(x => x[2]).join('\n');
-  assert.equal(sha(restoreOge7Input(scripts)),
+  assert.equal(sha(restoreOge7Input(restoreAlignment(alignmentFile,scripts))),
     '1c8377171051d6cd9582537dcfca1d270f00300b0b1a8f15fb0cd0f40f7348dc',
     'the existing full native-engine pin is unchanged');
   for (const altered of [

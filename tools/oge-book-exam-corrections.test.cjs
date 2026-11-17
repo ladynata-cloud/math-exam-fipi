@@ -6,12 +6,35 @@ const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
 const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
 const {restoreVideoModels,restoreGraphScale}=require('./oge-video-models-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
+const {restoreAlignment}=require('./oge-source-alignment-06-09-preservation.cjs');
+const {restoreSourceAlignment}=require('./oge-source-alignment-20-22.cjs');
 const root=path.resolve(__dirname,'..');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
 // These frozen inverses describe only the already reviewed PR340 board hooks.
 // The book check still seals the original pre-mirror bytes. Separate native
 // engine pins, transport and event-order gates test the current board engines.
 const boardInverse=require('./fixtures/oge-book-reviewed-board-inverse.json');
+// The active course replaced a claim about the entire FIPI bank with a
+// description of its practice variants. Only these two visible strings and
+// the corresponding three authored JavaScript lines may be reversed here.
+const tirePage='trainers/oge-1-5-trainers/practice-1-5-tires.html';
+const tireSubtitleBefore='Все 20 вариантов банка устроены одинаково. Секрет — не считать диаметр заново в каждой задаче, а один раз собрать таблицу для всех шин варианта и потом просто читать из неё ответы.';
+const tireSubtitleAfter='У каждого варианта одна таблица допустимых размеров. Вычисли диаметр для каждого размера один раз, затем используй таблицу в следующих заданиях.';
+const tireCopy=[
+ ['<div class="eyebrow">задачи 1–5 ОГЭ · весь банк ФИПИ</div>', '<div class="eyebrow">задачи 1–5 ОГЭ · тренировочные варианты</div>'],
+ ['<p class="subtitle">'+tireSubtitleBefore+'</p>', '<p class="subtitle">'+tireSubtitleAfter+'</p>'],
+ ["document.title=author ? 'Шины · '+v.label : 'Шины · тренажёр 1–5 (весь банк ФИПИ)';", "document.title=author ? 'Шины · '+v.label : 'Шины · тренажёр 1–5 ОГЭ';"],
+ ["document.querySelector('.eyebrow').textContent=author ? 'задачи 1–5 ОГЭ · авторский комплект MathExam' : 'задачи 1–5 ОГЭ · весь банк ФИПИ';", "document.querySelector('.eyebrow').textContent=author ? 'задачи 1–5 ОГЭ · авторский комплект MathExam' : 'задачи 1–5 ОГЭ · тренировочные варианты';"],
+ [": '"+tireSubtitleBefore+"';", ": '"+tireSubtitleAfter+"';"],
+];
+function restoreTireCopy(source){
+ for(const [before,after] of tireCopy){
+  assert.equal(source.split(after).length,2,'one exact reviewed tire wording fragment');
+  assert(!source.includes(before),'historical and new tire wording cannot coexist');
+  source=source.replace(after,before);
+ }
+ return source;
+}
 function withoutReturnShell(html) {
   const head = '<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">\n<script defer src="/assets/oge-wayfinding.js"></script>\n';
   const bar = '\n<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>\n';
@@ -20,15 +43,16 @@ function withoutReturnShell(html) {
   return html.replace(head, '').replace(bar, '');
 }
 function currentPage(file){
- const publicHtml=restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8');
+ const publicHtml=restoreSourceAlignment(file,restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8'));
  let html=restoreVideoModels(file,withoutReturnShell(restoreTrainerDownload(file,publicHtml)));
  if(file==='trainers/oge-task6-fractions.html'){
-  html=restoreFractionMultiplicationStep(html);
+  html=restoreFractionMultiplicationStep(restoreAlignment(file,html));
   const replacement='<main class="wrap">\n\n<header>';
   assert.equal(html.split(replacement).length,2,'Exact removed legacy return position');
   html=html.replace(replacement,'<main class="wrap">\n<nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>\n<header>');
  }
- return restoreGraphScale(file,html);
+ const current=restoreGraphScale(file,html);
+ return file===tirePage?restoreTireCopy(current):current;
 }
 function beforeMirror(file,source){
  const rule=boardInverse[file];if(!rule)return source;
@@ -42,6 +66,14 @@ function beforeMirror(file,source){
  assert.equal(sha(result),rule.baseSha256,'unreviewed changes outside board fragments');
  return result;
 }
+test('tire wording inverse refuses missing, changed and duplicated copy',()=>{
+ const current=fs.readFileSync(path.join(root,tirePage),'utf8');
+ restoreTireCopy(current);
+ for(const [,after] of tireCopy) {
+  for(const changed of ['',after.slice(1),after+after])
+   assert.throws(()=>restoreTireCopy(current.replace(after,changed)),/one exact reviewed tire wording fragment/);
+ }
+});
 for(const [file,rule]of Object.entries(corrections)){
  test(file+': exact inverse preserves the reviewed historical bytes',()=>{
   const current=currentPage(file);

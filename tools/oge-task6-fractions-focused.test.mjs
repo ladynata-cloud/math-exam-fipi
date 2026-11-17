@@ -9,6 +9,7 @@ import vm from 'node:vm';
 import bookCorrections from './oge-book-exam-corrections.cjs';
 import taskScope from './task6-scope.cjs';
 import { restoreFractionMultiplicationStep } from './task6-numerator-instruction.cjs';
+import {restoreAlignment} from './oge-source-alignment-06-09-preservation.cjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const trainerPath = 'trainers/oge-task6-fractions.html';
@@ -25,7 +26,7 @@ const tasksBlock = source => {
   assert.equal(matches.length, 1, 'Exactly one frozen JSON TASKS declaration is required');
   return { bytes: Buffer.from(matches[0][0], 'utf8'), tasks: JSON.parse(matches[0][1]) };
 };
-const tasks = tasksBlock(html).tasks;
+const frozenTasks = tasksBlock(html).tasks;
 const allScripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
 const navigation = allScripts.filter(([, attrs]) => attrs.includes('/assets/oge-wayfinding.js'));
 assert.equal(navigation.length, 1, 'Exactly one reviewed navigation script');
@@ -64,6 +65,7 @@ const context = vm.createContext({
 const initialization = script.search(/\n(?:\/\/ Initialize trainer[^\n]*\n)?\$\('shuffle'\)\.(?:onchange|addEventListener)/);
 assert.ok(initialization > 0, 'Find the explicit initialization boundary without executing DOM wiring');
 vm.runInContext(script.slice(0, initialization), context, { timeout: 1000 });
+const tasks = vm.runInContext('TASKS', context);
 const api = vm.runInContext('({ parseInput, eqFrac, createRecord, applyTaskEvent, summarizeRecords, Task6Hints })', context);
 const plain = value => JSON.parse(JSON.stringify(value));
 const sourceMatches = (pattern, message = String(pattern)) => assert.ok(pattern.test(html), message);
@@ -76,11 +78,12 @@ test('inline JavaScript syntax is valid', () => {
 
 test('TASKS bytes, count, categories, order and duplicate data remain frozen', () => {
   assert.deepEqual(tasksBlock(html).bytes, tasksBlock(baseline).bytes, 'STOP: TASKS differs from approved baseline');
-  assert.equal(tasks.length, 174);
-  assert.deepEqual(tasks.reduce((counts, t) => {
+  assert.equal(frozenTasks.length, 174);
+  assert.deepEqual(JSON.parse(JSON.stringify(tasks.slice(0, 174))), frozenTasks);
+  assert.deepEqual(frozenTasks.reduce((counts, t) => {
     counts[t.cat] = (counts[t.cat] || 0) + 1; return counts;
   }, {}), { bank: 81, progon: 26, dec: 21, frac: 18, combo: 18, adv: 10 });
-  const codes = tasks.map(t => t.code).filter(Boolean);
+  const codes = frozenTasks.map(t => t.code).filter(Boolean);
   assert.equal(new Set(codes).size, codes.length);
 });
 
@@ -244,7 +247,7 @@ test('independent evaluator checks precedence, signs, mixed and nested fractions
   assert.throws(() => evaluateTokens([atom('1'), atom('2')]));
 });
 
-test('all 174 displayed expressions independently match n/d, display, termination and mode', () => {
+test('all 175 displayed expressions independently match n/d, display, termination and mode', () => {
   let verified = 0, numerator = 0;
   for (const task of tasks) {
     const id = task.code || task.cat + '#' + task.num;
@@ -269,7 +272,7 @@ test('all 174 displayed expressions independently match n/d, display, terminatio
     verified++;
   }
   assert.equal(numerator, 3);
-  assert.equal(verified, 174);
+  assert.equal(verified, 175);
 });
 
 function pairValue(pair, label) {
@@ -309,7 +312,7 @@ function evaluateAudit(audit, label) {
   assert.fail(label + ': unsupported audit operation ' + audit.op);
 }
 
-test('all 174 pure hint plans and intermediate calculations agree with independent exact arithmetic', () => {
+test('all 175 pure hint plans and intermediate calculations agree with independent exact arithmetic', () => {
   let verifiedSteps = 0;
   const kinds = new Set();
   for (const task of tasks) {
@@ -530,7 +533,7 @@ test('native trainer remains offline with only the reviewed local board integrat
   }
   sourceRejects(/@import\b|url\(\s*["']?(?:https?:)?\/\//i);
   scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|sessionStorage|indexedDB)\b/);
-  const historical=bookCorrections.restoreHistoricalBytes(trainerPath,html.replace('  if(window.OgeCourseSharedMode)return;\n','').replace('  if(window.OgeCourseSharedMode)return false;\n',''));
+  const historical=bookCorrections.restoreHistoricalBytes(trainerPath,restoreAlignment(trainerPath,html).replace('  if(window.OgeCourseSharedMode)return;\n','').replace('  if(window.OgeCourseSharedMode)return false;\n',''));
   assert.doesNotMatch(historical,/\blocalStorage\b/,'Only the exact reviewed adapter may use localStorage');
   scriptRejects(/\beval\s*\(|\bnew\s+Function\b|\bimport\s*(?:\(|["'{*])/);
   scriptRejects(/document\.cookie|navigator\.serviceWorker/);
@@ -568,13 +571,13 @@ test('two scoped relative help links resolve to existing offline files', () => {
   sourceMatches(/Потренировать общий знаменатель/);
 });
 
-test('only the explicit numerator instruction differs from the reviewed native engine and progress adapter', () => {
+test('only explicitly reviewed numerator and source alignment fragments differ from the prior engine', () => {
   // A whole-repository diff against the historical interactive-help release
   // misclassified later published courses and integrations as task-6 changes.
   // Pin the actual native engine instead; retain the frozen TASKS comparison,
   // independent arithmetic, local-script allowlist and offline/API checks.
   assert.equal(taskScope.auditHistoricalTask6(root).status, 'PASS');
-  const historicalScript = restoreFractionMultiplicationStep(script);
+  const historicalScript = restoreFractionMultiplicationStep(restoreAlignment(trainerPath, script));
   assert.equal(createHash('sha256').update(historicalScript, 'utf8').digest('hex'), nativeScriptSha256,
     'The reviewed native task-6 engine must match outside the exact instruction');
 });

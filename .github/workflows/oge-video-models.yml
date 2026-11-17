@@ -26,6 +26,7 @@ on:
       - 'tools/oge-video-models-book-context.test.py'
       - 'tools/oge_video_models_book_context.py'
       - 'tools/fixtures/oge-video-models-native-bytes.json'
+      - 'tools/fixtures/oge-source-alignment-geometry-bytes.json'
       - 'tools/fixtures/oge22-intersections-display.json'
       - 'tools/oge-book-exam.browser.cjs'
       - 'tools/oge-book-exam-math.py'
@@ -60,6 +61,7 @@ on:
       - 'tools/oge-video-models-book-context.test.py'
       - 'tools/oge_video_models_book_context.py'
       - 'tools/fixtures/oge-video-models-native-bytes.json'
+      - 'tools/fixtures/oge-source-alignment-geometry-bytes.json'
       - 'tools/fixtures/oge22-intersections-display.json'
       - 'tools/oge-book-exam.browser.cjs'
       - 'tools/oge-book-exam-math.py'
@@ -85,7 +87,16 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - name: Fetch explicit preservation baseline
-        run: git fetch --no-tags --depth=1 origin 89ee66bfe5068f16364d61d091fcbf1a1cbd6287 7a7169c35c54351ace4f7844b7730899b4a61831 18b44244753ac806d449a2040ad4b8c8af9acaf3
+        run: |
+          source_commit=$(node -p 'require("./trainers/oge-sources/coverage-23-25.json").sourceBinding.sourceCommit')
+          task19_source=$(node -p 'require("./tools/fixtures/task19-major-source-cache-versions.json").sourceCommit')
+          [[ "$task19_source" =~ ^[a-f0-9]{40}$ ]]
+          git fetch --no-tags --depth=1 origin 89ee66bfe5068f16364d61d091fcbf1a1cbd6287 7a7169c35c54351ace4f7844b7730899b4a61831 18b44244753ac806d449a2040ad4b8c8af9acaf3 "$source_commit" "$task19_source"
+      - name: Fetch reviewed OGE geometry source alignment
+        run: |
+          geometry_source="$(python3 -c 'import json; print(json.load(open("tools/fixtures/oge-source-alignment-geometry-bytes.json"))["sourceCommit"])')"
+          [[ "$geometry_source" =~ ^[a-f0-9]{40}$ ]]
+          git fetch --no-tags --depth=1 origin "$geometry_source"
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'

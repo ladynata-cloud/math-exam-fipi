@@ -12,6 +12,8 @@ const I = (v) => R(v);
 /* степень с полуцелым показателем e/2 у точного квадрата */
 const halfPow = (b, twiceE) => (twiceE % 2 === 0 ? pow(I(b), twiceE / 2) : pow(root(I(b)), twiceE));
 
+const productPowers = (b, [left, right, outer]) => pow(mul(pow(I(b), left), pow(I(b), right)), outer);
+
 export const VALUE = {
   rootpow: (p) => root(pow(I(p.b), p.n)),                                        // √(bⁿ)
   rootmono: (p) => root(mul(I(p.c), mul(pow(I(p.x), p.p), pow(I(p.y), p.q)))),     // √(c·xᵖ·y^q)
@@ -27,6 +29,7 @@ export const VALUE = {
   distrib: (p) => { const s = root(mul(I(p.A), I(p.B))); return p.sign < 0 ? sub(s, I(p.B)) : add(s, I(p.B)); }, // (√A ± √B)·√B
   pow_mul_div: (p) => pow(I(p.b), p.p + p.q - p.r),
   pow_pow_div: (p) => pow(I(p.b), p.p * p.q - p.r),
+  pow_products_quotient: (p) => div(productPowers(p.b, p.numerator), productPowers(p.b, p.denominator)),
   pow_mul_pow: (p) => pow(I(p.b), p.p + p.q * p.r),
   pow_prodbase_div: (p) => div(mul(pow(I(p.b1), p.p), pow(I(p.b2), p.q)), pow(I(p.b1 * p.b2), p.r)),
   prodbase_over: (p) => div(pow(I(p.b1 * p.b2), p.p), mul(pow(I(p.b1), p.q), pow(I(p.b2), p.r))),

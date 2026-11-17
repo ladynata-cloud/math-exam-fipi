@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process');
 const {receipt,geometryReceipt,pins,sourcePin,label,summaryHtml,hash}=require('./oge-video-models-book-context.cjs');
-const {entries,assets,snippet}=require('./oge-video-models-preservation.cjs');
+const {entries,activeEntries,assets,snippet,restoreVideoModels,restoreTask19CacheVersions}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..');
 const dom={count:1,tag:'DETAILS',id:'oge-video-models',closed:true,summaryCount:1,summaryHtml,visibleText:label};
 const assetHashes=Object.fromEntries(assets.map(file=>['/'+file,hash(fs.readFileSync(path.join(ROOT,file)))]));
@@ -16,8 +16,8 @@ test('nine native-byte pins independently match the preserved89ee source and exi
   assert.equal(book.find(row=>new URL(row.sourceUrl).pathname==='/'+file)?.id||null,pin.bookId,file);
  }
 });
-test('receipt accepts the exact middle-position closed summary on each covered source route',()=>{
- for(const file of Object.values(entries)){
+test('receipt accepts the exact middle-position closed summary on each active source route',()=>{
+ for(const file of Object.values(activeEntries)){
   const x=fixture(file);if(!x.id){assert.throws(()=>receipt(x));continue;}
   const result=receipt(x);assert.equal(result.beforeText+result.label+result.afterText,x.visible);
   assert.equal(result.nativeSha256,sourcePin(file).sha256);assert.equal(result.sourceSha256,hash(x.raw));
@@ -25,17 +25,41 @@ test('receipt accepts the exact middle-position closed summary on each covered s
  const x=fixture(entries[11]);x.visible='🧭 '+x.visible;const result=receipt(x);
  assert.equal(result.offsetCodePoints,[...result.beforeText].length);assert.notEqual(result.offsetCodePoints,result.beforeText.length);
 });
+test('task19 current source has no addon and still matches its full native teaching pin',()=>{
+ const x=fixture(entries[19]);
+ assert.doesNotMatch(x.raw,/OGE video-model investigations|oge-video-(?:models|graphs|geometry)/);
+ assert.equal(hash(restoreTask19CacheVersions(x.file,x.raw)),sourcePin(x.file).sha256,'removing the addon cannot excuse any native byte change');
+ assert.throws(()=>receipt(x),/exact optional include block is required/,'a historical pin alone cannot attest a nonexistent current addon');
+});
 test('later teaching receipts remain limited to four committed pages and reject native mutations',()=>{
  const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
  assert.equal(updates.task,'docs/tasks/OGE18_STEPS_PAN_20261110.md');
  assert.deepEqual(Object.keys(updates.pages).sort(),[entries[16],entries[17],entries[19],entries[24]].sort());
  assert.equal(updates.pages[entries[24]].taskDoc,'docs/tasks/EXAM_AND_TEXTBOOK_LEARNING_20261114.md');
  for(const file of Object.keys(updates.pages)){
-  const x=fixture(file), result=receipt(x);
-  assert.equal(result.sourceBase,updates.pages[file].sourceCommit);
+  const x=fixture(file);
+  // Retain the historical task19 receipt and all its negative probes, without
+  // claiming that a removed addon still exists on the current page.
+  if(file===entries[19])x.raw=x.raw.replace('</head>',snippet(19)+'</head>');
+  const result=receipt(x);
+  const original=execFileSync('git',['show',updates.pages[file].sourceCommit+':'+file],{cwd:ROOT,encoding:'utf8'});
+  assert.equal(hash(restoreVideoModels(file,original)),updates.pages[file].sha256,'historical teaching bytes remain pinned');
+  assert.equal(result.sourceBase,sourcePin(file).sourceCommit);
+
   for(const mutate of [s=>s+'\n',s=>s.replace('<title>','<title>Changed '),s=>s.replace(snippet(pins.pages[file].task),'')]){
    assert.throws(()=>receipt({...x,raw:mutate(x.raw)}),file+' preserves exact native bytes');
   }
+ }
+});
+test('current geometry receipts seal the reviewed 23–25 sources and reject nearby mutations',()=>{
+ const row=require('../trainers/oge-sources/coverage-23-25.json').sourceBinding;
+ assert.deepEqual(Object.keys(row.pages).sort(),[entries[23],entries[24],entries[25]].sort());
+ for(const [file,expected] of Object.entries(row.pages)){
+  const original=execFileSync('git',['show',row.sourceCommit+':'+file],{cwd:ROOT,encoding:'utf8'});
+  assert.equal(hash(restoreVideoModels(file,original)),expected.sha256);
+  const x=fixture(file);
+  assert.equal(receipt(x).sourceBase,row.sourceCommit);
+  assert.throws(()=>receipt({...x,raw:x.raw.replace('<title>','<title>Непроверенное условие ')}));
  }
 });
 test('one exact serialized L8 preview may be attested only inside the closed prediction container',()=>{

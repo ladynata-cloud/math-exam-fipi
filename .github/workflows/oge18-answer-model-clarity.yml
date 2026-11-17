@@ -1,0 +1,55 @@
+name: OGE18 answer and diagram clarity
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task18-grid.html'
+      - 'trainers/oge-course-geometry.*'
+      - 'downloads/trainers/oge-task18-grid/**'
+      - 'tools/oge18-*'
+      - 'tools/oge-course-geometry.test.cjs'
+      - 'tools/fixtures/oge18-*'
+      - 'docs/tasks/OGE18_ANSWER_MODEL_CLARITY_20261116.md'
+      - '.github/workflows/oge18-answer-model-clarity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: oge18-answer-model-clarity-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  exact-task-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated pinned DOM and browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge18-clarity" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge18-clarity/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge18-clarity/node_modules" >> "$GITHUB_ENV"
+      - name: Mathematics, retained work and exact source preservation
+        run: |
+          node --test tools/oge18-answer-model-clarity.test.cjs tools/oge18-clarity-preservation.test.cjs
+          node tools/oge-geometry-contract.test.mjs
+          node --test tools/oge-course-geometry.test.cjs tools/oge-geometry-board.test.cjs tools/oge-course-geometry-model-sync.test.cjs
+          git diff --check
+      - name: Actual desktop, narrow-screen and offline learner flows
+        run: node tools/oge18-answer-model-clarity.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge18-answer-model-clarity-evidence
+          path: artifacts/oge18-answer-model-clarity
+          if-no-files-found: error
+          retention-days: 14

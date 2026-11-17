@@ -124,7 +124,7 @@
   <header class="top">
     <span class="eyebrow">🏡 ОГЭ · задачи 1–5 · участок</span>
     <h1>Участок</h1>
-    <p class="sub">Классический план ФИПИ. Читай по клеткам: площади, забор, проценты, стоимость.</p>
+    <p class="sub">Читай план по клеткам. Решай задачи о площади, расстоянии и расходах.</p>
   </header>
 
   <div class="card scen">
@@ -133,6 +133,7 @@
       <span class="addr">п. Синицыно, ул. Красная, 34</span>
       <span class="addr" id="vnum">вариант 1</span>
       <button class="newvar" id="newvar-btn">↻ Новые задания</button>
+      <button class="newvar" id="plot-exam-btn">Дорожки и площадка</button>
     </div>
     <div class="plan-wrap">
       <svg class="plan" id="plan" viewBox="0 0 452 316" xmlns="http://www.w3.org/2000/svg"></svg>
@@ -204,6 +205,29 @@ const plot={
   paint:{ area:232, stores:[{rate:0.6,bankKg:5,bankPrice:2400,delivery:400},{rate:0.4,bankKg:4,bankPrice:2300,delivery:600}] },
 };
 const R=plot.rects, TOTAL_CELLS=plot.cols*plot.rows;
+
+// Existing assigned variants use 1–1,000,000. Reserve a separate descriptor for
+// the authored case so no saved or shared variant is given a different condition.
+const EXAM_VARIANT=1000001;
+const EXAM_PLOT={
+  house:[{x:2,y:1,w:4,h:3},{x:2,y:4,w:2,h:1}],
+  objects:[
+    {name:'сарай',num:1,x:10,y:1,w:3,h:2,marker:[11.5,2]},
+    {name:'огород',num:2,x:0,y:6,w:4,h:4,marker:[3,7]},
+    {name:'гараж',num:3,x:9,y:8,w:3,h:2,marker:[10.5,9]},
+    {name:'теплица',num:4,x:1,y:7,w:1,h:2,marker:[1.5,8]},
+    {name:'баня',num:5,x:6,y:7,w:2,h:2,marker:[7,8]},
+    {name:'жилой дом',num:6,marker:[4,2.5]},
+    {name:'яблони',num:7,marker:[13,4]},
+  ],
+  paved:[{x:8,y:5,w:3,h:2},{x:8,y:7,w:1,h:3},{x:11,y:5,w:4,h:1}],
+  opening:[5,7],
+  packSize:9,
+  heating:[
+    {name:'Газовое',equipment:27000,installation:9500,rate:1.4,price:10,rateUnit:'м³/ч',priceUnit:'₽/м³'},
+    {name:'Электрическое',equipment:21400,installation:7000,rate:5,price:5.8,rateUnit:'кВт',priceUnit:'₽/(кВт·ч)'},
+  ],
+};
 
 /* ===================== ГЕНЕРАТОРЫ 5 КАТЕГОРИЙ ===================== */
 const OBJECTS=[
@@ -286,6 +310,51 @@ function gEcon(){
 const TASK_FNS=[gMatch,gGeom,gTiles,gPercent,gEcon];
 const TASK_LABEL=['Сопоставление','Геометрия','Плитка','Проценты','Экономика'];
 const TYPES=['match','geom','tiles','percent','econ'];
+function examTasks(){
+  const {objects,house,paved,packSize,heating}=EXAM_PLOT;
+  const matching=['жилой дом','гараж','теплица','сарай'].map(name=>objects.find(object=>object.name===name));
+  const garage=matching[1];
+  const code=matching.map(object=>object.num).join('');
+  const tileCells=paved.map(rectCells);
+  const tileCount=areaM(tileCells.reduce((sum,cells)=>sum+cells,0));
+  const packCount=packs(tileCount,packSize);
+  const houseCells=house.map(rectCells);
+  const houseArea=areaM(houseCells.reduce((sum,cells)=>sum+cells,0));
+  const [main,annex]=house;
+  const [dx,annexDx]=house.map(part=>garage.x-part.x-part.w);
+  const [dy,annexDy]=house.map(part=>garage.y-part.y-part.h);
+  const distance=lenM(Math.min(...house.map(part=>rectGap(part,garage))));
+  const investments=heating.map(option=>option.equipment+option.installation);
+  const hourly=heating.map(option=>option.rate*option.price);
+  const extra=investments[0]-investments[1], saving=hourly[1]-hourly[0];
+  const hours=extra/saving;
+  const format=value=>value.toLocaleString('ru-RU');
+  const matchingTable=`<div class="mini"><table><tr><th>Объект</th>${matching.map(object=>`<td>${object.name}</td>`).join('')}</tr><tr><th>Цифра</th>${matching.map(()=>'<td>?</td>').join('')}</tr></table></div>`;
+  const heatingTable=`<div class="mini"><table><tr><th>Отопление</th><th>Оборудование, ₽</th><th>Монтаж, ₽</th><th>Расход</th><th>Цена</th></tr>${heating.map(option=>`<tr><th scope="row">${option.name}</th><td>${format(option.equipment)}</td><td>${format(option.installation)}</td><td>${format(option.rate)} ${option.rateUnit}</td><td>${format(option.price)} ${option.priceUnit}</td></tr>`).join('')}</table></div>`;
+  return [
+    {type:'match',kind:'digits',maxlen:4,answer:code,
+      q:`Определите, какими цифрами обозначены объекты на плане. Запишите четыре цифры в порядке таблицы.${matchingTable}`,
+      sol:`${matching.map(object=>`${object.name} — ${object.num}`).join('; ')}. Ответ: <b>${code}</b>.`},
+    {type:'tiles',kind:'num',unit:'уп',answer:packCount,
+      q:`Дорожки и площадка вымощены квадратными плитками со стороной 1 м. Плитка продаётся упаковками по ${packSize} штук. Сколько упаковок нужно купить, чтобы вымостить все выделенные на плане дорожки и площадку?`,
+      sol:`Площадка занимает ${tileCells[0]} клеток, две дорожки — ${tileCells[1]} и ${tileCells[2]} клетки. Площадь одной клетки ${CELL_M} × ${CELL_M} = ${CA} м². На всю площадь нужно (${tileCells.join(' + ')}) × ${CA} = ${tileCount} плитки. В ${packCount-1} упаковках всего ${(packCount-1)*packSize} плиток, в ${packCount} — ${packCount*packSize}. Ответ: <b>${packCount}</b>.`},
+    {type:'geom',kind:'num',unit:'кв.м',answer:houseArea,
+      q:'Найдите площадь жилого дома по плану. Ответ дайте в квадратных метрах.',
+      sol:`Разделим дом на прямоугольники ${main.w} × ${main.h} и ${annex.w} × ${annex.h} клетки. В сумме ${houseCells.join(' + ')} = ${houseArea/CA} клеток. Умножаем на ${CA} м². Ответ: <b>${houseArea}</b>.`},
+    {type:'geom',kind:'num',unit:'м',answer:distance,
+      q:'Найдите кратчайшее расстояние между жилым домом и гаражом. Ответ дайте в метрах.',
+      sol:`От нижнего правого угла большой части дома до верхнего левого угла гаража по горизонтали ${dx} клетки, по вертикали — ${dy}. Для выступа эти расстояния равны ${annexDx} и ${annexDy} клеткам. Сравним квадраты расстояний: ${annexDx}² + ${annexDy}² &gt; ${dx}² + ${dy}². Кратчайший отрезок равен √(${dx}² + ${dy}²) = ${distance/CELL_M} клеток. Ответ: <b>${distance}</b>.`},
+    {type:'econ',kind:'num',unit:'ч',answer:hours,
+      q:`Для жилого дома выбирают систему отопления. В таблице приведены затраты на оборудование и монтаж, а также расход и тариф.${heatingTable}Через сколько часов работы отопления экономия на газе компенсирует разницу в начальных затратах?`,
+      sol:`Газовое отопление дороже при установке на ${format(investments[0])} − ${format(investments[1])} = ${format(extra)} рублей. За час работы газовое отопление стоит ${format(heating[0].rate)} × ${format(heating[0].price)} = ${format(hourly[0])} руб., электрическое — ${format(heating[1].rate)} × ${format(heating[1].price)} = ${format(hourly[1])} руб. Экономия за час равна ${saving} руб. Ответ: ${format(extra)} : ${saving} = <b>${hours}</b>.`},
+  ];
+}
+function tasksFor(variant){
+  if(variant===EXAM_VARIANT) return examTasks();
+  const old=RAND;
+  RAND=mulberry32((0x85EBCA6B^variant)>>>0);
+  try{return TASK_FNS.map(f=>f());}finally{RAND=old;}
+}
 const MASTERY=3, TOTAL_TYPES=5;
 
 /* ===================== ПРОГРЕСС + КАРТА ===================== */
@@ -300,7 +369,7 @@ function save(){
 }
 
 /* ===================== ОТРИСОВКА ПЛАНА ===================== */
-function drawPlan(){
+function drawPlan(exam=false){
   const NS='http://www.w3.org/2000/svg', svg=document.getElementById('plan');
   while(svg.firstChild) svg.removeChild(svg.firstChild);
   const add=(t,a,tx)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(tx!=null)e.textContent=tx;svg.appendChild(e);return e;};
@@ -317,6 +386,26 @@ function drawPlan(){
   // сетка
   for(let x=0;x<=plot.cols;x++) add('line',{x1:px(x),y1:py(0),x2:px(x),y2:py(plot.rows),stroke:'#d9e7dd','stroke-width':1});
   for(let y=0;y<=plot.rows;y++) add('line',{x1:px(0),y1:py(y),x2:px(plot.cols),y2:py(y),stroke:'#d9e7dd','stroke-width':1});
+
+  if(exam){
+    const rect=(r,fill,stroke,extra={})=>add('rect',{x:px(r.x),y:py(r.y),width:r.w*C,height:r.h*C,fill,stroke,'stroke-width':1.5,...extra});
+    EXAM_PLOT.paved.forEach(r=>rect(r,'#e9ba7e','#805421',{'data-plot-paving':'1','stroke-dasharray':'5 2'}));
+    EXAM_PLOT.objects.filter(o=>o.w).forEach(o=>{
+      const color=o.num===2?['#dcfce7','#22c55e']:o.num===4?['#99f6e4','#14b8a6']:['var(--build)','var(--build-line)'];
+      rect(o,...color);
+    });
+    const [main,annex]=EXAM_PLOT.house;
+    const right=main.x+main.w, middle=annex.x+annex.w, bottom=annex.y+annex.h;
+    const outline=[[main.x,main.y],[right,main.y],[right,annex.y],[middle,annex.y],[middle,bottom],[main.x,bottom]];
+    add('polygon',{points:outline.map(([x,y])=>`${px(x)},${py(y)}`).join(' '),fill:'var(--build)',stroke:'var(--build-line)','stroke-width':1.5});
+    tree(12,3.75);tree(13.9,3.7);tree(13.8,4.5);
+    EXAM_PLOT.objects.forEach(o=>circle(...o.marker,String(o.num)));
+    const [gateTop,gateBottom]=EXAM_PLOT.opening;
+    add('rect',{x:px(0),y:py(0),width:plot.cols*C,height:plot.rows*C,fill:'none',stroke:'#2f4f38','stroke-width':2.5});
+    add('line',{x1:px(plot.cols),y1:py(gateTop),x2:px(plot.cols),y2:py(gateBottom),stroke:'#eefaf1','stroke-width':4});
+    add('text',{x:px(plot.cols)-6,y:py(gateBottom)+18,'text-anchor':'end','font-size':14,'font-weight':800,fill:'#3f7d5a'},'ворота');
+    return;
+  }
 
   // площадка (плитка) между сараем и гаражом
   tiles(12,2,2,3);
@@ -352,9 +441,9 @@ function drawPlan(){
   // граница участка
   add('rect',{x:px(0),y:py(0),width:plot.cols*C,height:plot.rows*C,fill:'none',stroke:'#2f4f38','stroke-width':2.5});
 }
-function drawLegend(){
+function drawLegend(exam=false){
   const box=document.getElementById('legend'); box.innerHTML='';
-  OBJECTS.slice().sort((a,b)=>a.num-b.num).forEach(o=>{const d=document.createElement('div');d.className='li';
+  (exam?EXAM_PLOT.objects:OBJECTS).forEach(o=>{const d=document.createElement('div');d.className='li';
     d.innerHTML=`<span class="num">${o.num}</span>${o.name}`;box.appendChild(d);});
 }
 
@@ -366,13 +455,22 @@ function renderProgress(){
   TYPES.forEach((t,i)=>{const c=state.perType[t],d=c>=MASTERY;const el=document.createElement('span');
     el.className='tchip'+(d?' done':'');el.innerHTML=`${d?'✓ ':''}${TASK_LABEL[i]} <span class="cnt">${Math.min(c,MASTERY)}/${MASTERY}</span>`;box.appendChild(el);});
 }
-function newVariant(){RAND=mulberry32((0x85EBCA6B ^ state.vcount)>>>0);try{history.replaceState(null,'','?v='+state.vcount);}catch(e){}var _vn=document.getElementById('vnum');if(_vn)_vn.textContent='вариант '+state.vcount;state.tasks=TASK_FNS.map(f=>f());state.results=state.tasks.map(()=>({answered:false,correct:null,input:''}));state.idx=0;renderTabs();showTask();}
+function newVariant(){
+  const exam=state.vcount===EXAM_VARIANT;
+  try{const url=new URL(location.href);url.searchParams.set('v',state.vcount);history.replaceState(null,'',url);}catch(e){}
+  document.getElementById('vnum').textContent=exam?'Дорожки и площадка · MathExam':'вариант '+state.vcount;
+  drawPlan(exam);drawLegend(exam);
+  state.tasks=tasksFor(state.vcount);
+  state.results=state.tasks.map(()=>({answered:false,correct:null,input:''}));
+  state.idx=0;renderTabs();showTask();
+}
 function renderTabs(){
   const box=document.getElementById('task-tabs');box.innerHTML='';
   state.tasks.forEach((t,i)=>{const r=state.results[i];const b=document.createElement('button');
     b.className='ttab'+(i===state.idx?' active':'')+(r.answered?(r.correct?' ok':' no'):'');
     b.setAttribute('role','tab');b.setAttribute('aria-selected',i===state.idx?'true':'false');
-    b.innerHTML=`<span class="tn">${i+1}</span><span class="tl">${TASK_LABEL[i]}</span>`+(r.answered?`<span class="tk">${r.correct?'✓':'✗'}</span>`:'');
+    b.dataset.plotType=t.type;
+    b.innerHTML=`<span class="tn">${i+1}</span><span class="tl">${TASK_LABEL[TYPES.indexOf(t.type)]}</span>`+(r.answered?`<span class="tk">${r.correct?'✓':'✗'}</span>`:'');
     b.addEventListener('click',()=>gotoTask(i));box.appendChild(b);});
 }
 function stashInput(){const inp=document.getElementById('in');if(inp&&!state.results[state.idx].answered)state.results[state.idx].input=inp.value;}
@@ -383,7 +481,7 @@ function updateNextBtn(){const nb=document.getElementById('next-btn');const all=
   else{nb.textContent='Следующая нерешённая →';nb.dataset.mode='next';nb.disabled=!state.results[state.idx].answered;}}
 function showTask(){
   const q=state.tasks[state.idx], r=state.results[state.idx];
-  document.getElementById('task-badge').textContent=`Задача ${state.idx+1} · ${TASK_LABEL[state.idx]}`;
+  document.getElementById('task-badge').textContent=`Задача ${state.idx+1} · ${TASK_LABEL[TYPES.indexOf(q.type)]}`;
   document.getElementById('task-q').innerHTML=q.q;
   if(window.PracticalMinimal) PracticalMinimal.mountHint(document.getElementById('task-q'),'land',q.type,q.q);
   const ph=q.kind==='digits'?'цифры':'ответ';
@@ -420,12 +518,14 @@ function doCheck(){
   document.getElementById('check-btn').disabled=true;updateNextBtn();
   const nb=document.getElementById('next-btn');if(!nb.disabled)nb.focus();
 }
-function nextStep(){const nb=document.getElementById('next-btn');if(nb.dataset.mode==='new'){state.vcount++;save();newVariant();}else{const i=nextUnanswered();if(i>=0)gotoTask(i);}}
+function nextStandardVariant(){state.vcount=state.vcount>=EXAM_VARIANT-1?1:state.vcount+1;save();newVariant();}
+function nextStep(){const nb=document.getElementById('next-btn');if(nb.dataset.mode==='new'){nextStandardVariant();}else{const i=nextUnanswered();if(i>=0)gotoTask(i);}}
 
 document.getElementById('task-tabs').addEventListener('keydown',function(e){if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;e.preventDefault();var d=e.key==='ArrowRight'?1:-1;gotoTask((state.idx+d+state.tasks.length)%state.tasks.length);var t=document.querySelectorAll('#task-tabs .ttab')[state.idx];if(t)t.focus();});
 document.getElementById('check-btn').addEventListener('click',doCheck);
 document.getElementById('next-btn').addEventListener('click',nextStep);
-document.getElementById('newvar-btn').addEventListener('click',()=>{state.vcount++;save();newVariant();});
+document.getElementById('newvar-btn').addEventListener('click',nextStandardVariant);
+document.getElementById('plot-exam-btn').addEventListener('click',()=>{if(state.vcount!==EXAM_VARIANT){state.vcount=EXAM_VARIANT;save();newVariant();}});
 document.getElementById('reset-btn').addEventListener('click',()=>{
   if(confirm('Сбросить прогресс по участку?')){
     TYPES.forEach(t=>state.perType[t]=0);state.streak=0;
@@ -435,12 +535,12 @@ document.getElementById('reset-btn').addEventListener('click',()=>{
 });
 drawPlan();drawLegend();load();try{var _vq=parseInt(new URLSearchParams(location.search).get('v'),10);if(_vq>0)state.vcount=_vq;}catch(e){}
 renderProgress();save();newVariant();
-window.PracticalNativeVariant={get:()=>({variant:state.vcount}),valid:d=>{const B=window.PracticalBoard;return B.exact(d,['variant'])&&Number.isInteger(d.variant)&&d.variant>=1&&d.variant<=1000000;},
- describe:d=>{const B=window.PracticalBoard,old=RAND;RAND=mulberry32((0x85EBCA6B^d.variant)>>>0);try{return TASK_FNS.map(f=>{const t=f();return B.description(B.kind('land',t.type,t.q),{answer:null},t.type==='match'?4:2,t.type==='tiles'&&/площадка/.test(t.q)?1:0);});}finally{RAND=old;}},
+window.PracticalNativeVariant={get:()=>({variant:state.vcount}),isExam:()=>state.vcount===EXAM_VARIANT,valid:d=>{const B=window.PracticalBoard;return B.exact(d,['variant'])&&Number.isInteger(d.variant)&&d.variant>=1&&d.variant<=EXAM_VARIANT;},
+ describe:d=>{const B=window.PracticalBoard;return tasksFor(d.variant).map(t=>B.description(B.kind('land',t.type,t.q),{answer:null},t.type==='match'?4:2,d.variant!==EXAM_VARIANT&&t.type==='tiles'&&/площадка/.test(t.q)?1:0));},
  set:d=>{state.vcount=d.variant;state.perType=Object.fromEntries(TYPES.map(t=>[t,0]));state.streak=0;newVariant();}};
 })();
 </script>
 <script src="practical-variant.js?v=20261025-oge-course-mirror"></script>
-<script src="practical-variant-buildings.js?v=20261025-oge-course-mirror"></script>
+<script src="practical-variant-buildings.js?v=20261117-plot-exam"></script>
 </body>
 </html>

@@ -26,8 +26,8 @@ test('exam bank covers the seven prototype shapes with varied divisors and indep
   assert.deepEqual([...new Set(bank.map(task => task.examKind))].sort(), examKinds);
   assert.equal(new Set(bank.map(task => task.id)).size, bank.length);
   assert.deepEqual([...new Set(bank.map(task => task.src))].sort(), ['analog', 'catalog', 'fipi', 'fipi-demo']);
-  assert.equal(bank[0].id, 'exam-demo-2027');
-  assert.equal(bank[0].exp, '-32');
+  assert.equal(bank[0].id, 'exam-author-demo-type-2027');
+  assert.equal(bank[0].exp, '-13');
   assert.equal(bank.find(task => task.id === 'exam-demo-2026').exp, '0,5');
 
   const getNorm = trainer.run('taskNorm');
@@ -98,10 +98,10 @@ test('source disclosure distinguishes official demos, indirect bank verification
   const bank = trainer.run('EXAM_BANK');
   const sourceHTML = trainer.run('taskSourceHTML');
   assert.equal(bank.filter(task => task.src === 'fipi').length, 17);
-  assert.equal(bank.filter(task => task.src === 'fipi-demo').length, 2);
-  assert.equal(bank.filter(task => task.src === 'analog').length, 99);
+  assert.equal(bank.filter(task => task.src === 'fipi-demo').length, 1);
+  assert.equal(bank.filter(task => task.src === 'analog').length, 100);
   assert.equal(bank.filter(task => task.src === 'catalog').length, 22);
-  assert.equal(bank.find(task => task.id === 'exam-demo-2027').tag, 'Проект демоверсии ФИПИ 2027');
+  assert.equal(bank.find(task => task.id === 'exam-author-demo-type-2027').tag, 'Авторский аналог · по демоверсии ФИПИ 2027');
   for (const task of bank) {
     const text = sourceHTML(task);
     if (task.src === 'fipi') {

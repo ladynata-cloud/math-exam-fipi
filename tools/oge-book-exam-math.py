@@ -7,7 +7,7 @@ Only explicitly reviewed prompt+geometry fixtures may receive a PASS.
 import argparse, datetime, hashlib, json, math, pathlib, re, sys
 import xml.etree.ElementTree as ET
 from fractions import Fraction
-from oge_video_models_book_context import verified_context
+from oge_video_models_book_context import ALIGNMENT_23_25, verified_context
 from oge_worked_steps_book_context import matches_worked_steps_ui
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -39,6 +39,29 @@ TRAINER_ENTRY_PREFIXES = {
     ('71', '/trainers/task19-trainer.html'):
         'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Третий угол треугольника Контрпример к утверждению',
 }
+
+PLOT_SOURCE_ROUTE = '/trainers/oge-1-5-trainers/practice-1-5-land-plots.html'
+PLOT_SOURCE_PAYLOADS = {
+    PLOT_SOURCE_ROUTE: '23635b8dda306565d437d280c647ee3fe047cdfefba7e0f106059954c93979ff',
+    '/trainers/oge-1-5-trainers/practical-variant-buildings.js':
+        '72b1d69d3884515894bd2344f7ea16b246cae68f9b7a62661b7dc6f586779e91',
+}
+PLOT_CONTROLS = 'вариант 1 Новый вариант Дорожки и площадка На плане '
+PLOT_HISTORICAL_CONTROLS = 'вариант 1 Новый вариант На плане '
+
+
+def without_authored_plot_entry(record, text):
+    """Remove the single reviewed opening button before comparing case 06."""
+    if (record.get('prefix') or record.get('id') != '06' or
+            record.get('route') != PLOT_SOURCE_ROUTE or record.get('finalPath') != PLOT_SOURCE_ROUTE):
+        return text
+    resources = record.get('resources', {})
+    if any(resources.get(route, {}).get('sha256') != sha
+           for route, sha in PLOT_SOURCE_PAYLOADS.items()):
+        return text
+    if text.count(PLOT_CONTROLS) != 1:
+        return text
+    return text.replace(PLOT_CONTROLS, PLOT_HISTORICAL_CONTROLS, 1)
 
 
 def without_trainer_entry(record, text):
@@ -120,9 +143,13 @@ def graph_atoms(expected):
 def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
     """Replay only the changed drawing controls on the verified source route."""
     route = '/trainers/oge-task24-proofs.html'
+    wrapper_by_source = {
+        '18b44244753ac806d449a2040ad4b8c8af9acaf3': '6f11e5d93a0124005729387e1ca8f93c3d5a0100224017c9ded2d22be4ba3b2d',
+        ALIGNMENT_23_25['sourceCommit']: ALIGNMENT_23_25['proofWrapperSha256'],
+    }
+    wrapper = wrapper_by_source.get((record.get('videoModelContext') or {}).get('sourceBase'))
     if (record['id'] != '65' or record['prefix'] or record.get('route') != route or
-            record.get('finalPath') != route or (record.get('videoModelContext') or {}).get('sourceBase') !=
-            '18b44244753ac806d449a2040ad4b8c8af9acaf3'):
+            record.get('finalPath') != route or not wrapper):
         return False
     old = 'Показать целиком Крупный чертёж: двигай его в стороны и вверх-вниз. С клавиатуры — стрелками после выбора рисунка.'
     captions = {
@@ -135,7 +162,7 @@ def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
         return False
     assets = {
         '/trainers/oge-course-proof.css': 'b98618bba320cdad70fb9f2e31cdf64bc4e7763e745abef33343717058708f66',
-        '/trainers/oge-course-proof.js': '6f11e5d93a0124005729387e1ca8f93c3d5a0100224017c9ded2d22be4ba3b2d',
+        '/trainers/oge-course-proof.js': wrapper,
     }
     for path, expected in assets.items():
         loaded = record.get('resources', {}).get(path, {})
@@ -159,6 +186,9 @@ def exact_reviewed_context(record, oracle, fixtures):
     if fixture is None:return False
     if not record['prefix']:
         fixture = fixture.get('sourceVariant', fixture)
+        source_route = fixture.get('sourceOnlyRoute')
+        if source_route and (record.get('route') != source_route or record.get('finalPath') != source_route):
+            return False
     navigation = record.get('publicWayfinding')
     fixture_texts = [fixture['visibleText'], *fixture.get('alternativeVisibleTexts', [])]
     if navigation:
@@ -186,6 +216,7 @@ def exact_reviewed_context(record, oracle, fixtures):
     if context is None:return False
     text, native_geometry = context
     text = without_trainer_entry(record, text)
+    text = without_authored_plot_entry(record, text)
     if record['prefix']:
         banner = BOOK_BANNERS.get(record['prefix'])
         if banner is None:return False
@@ -210,6 +241,18 @@ def exact_reviewed_context(record, oracle, fixtures):
 
 def wayfinding_context_selftest(fixtures):
     """The one removed link cannot excuse changes to questions or payloads."""
+    plot_record = {
+        'id': '06', 'prefix': '', 'route': PLOT_SOURCE_ROUTE,
+        'finalPath': PLOT_SOURCE_ROUTE,
+        'resources': {route: {'sha256': sha} for route, sha in PLOT_SOURCE_PAYLOADS.items()},
+    }
+    assert without_authored_plot_entry(plot_record, PLOT_CONTROLS) == PLOT_HISTORICAL_CONTROLS
+    for key, invalid in [('id', '13'), ('prefix', VARIANT_PREFIXES['frozen']),
+                         ('route', '/other.html'), ('finalPath', '/redirected.html'),
+                         ('resources', {})]:
+        assert without_authored_plot_entry(dict(plot_record, **{key: invalid}), PLOT_CONTROLS) == PLOT_CONTROLS
+    for text in (PLOT_CONTROLS * 2, PLOT_CONTROLS.replace('площадка', 'площадки')):
+        assert without_authored_plot_entry(plot_record, text) == text
     import copy
     fixture = fixtures['67'].get('sourceVariant',fixtures['67'])
     route = '/trainers/oge-task6-fractions.html'
@@ -486,6 +529,8 @@ def reviewed(record, oracle, index):
         return False,'Контрпример: вершины(2,0),(0,1),(−2,0),(0,−1) образуют ромб со сторонами√5, но диагонали4 и2 не равны.','PASS',None
     if ident=='71' and p=='Если при пересечении двух прямых секущей накрест лежащие углы равны, то прямые параллельны.':
         return True,'Это обратный признак параллельности по накрест лежащим углам. Проведённая через точку второй прямой параллель первой образует тот же накрест лежащий угол; единственность луча с данным углом даёт совпадение со второй прямой.','PASS',None
+    if ident=='71' and p=='При пересечении параллельных прямых секущей соответственные углы равны.':
+        return True,'Пусть P и Q — точки пересечения секущей с параллельными прямыми. Перенос на вектор PQ переводит первую прямую во вторую, а секущую в себя. Он сохраняет направления лучей и величины углов, поэтому переводит каждый угол при P в соответственный угол при Q. Следовательно, соответственные углы равны. Ответ получен из свойства переноса, без чтения ключа тренажёра.','PASS',None
     return None,'Новый точный вопрос ещё не прошёл независимое математическое рассмотрение.','PENDING','Unreviewed exact prompt.'
 
 def main():

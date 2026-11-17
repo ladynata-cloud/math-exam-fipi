@@ -244,11 +244,11 @@ test('keyboard checks one step per press and ignores held or composing Enter', t
   assert.equal(ui.evaluate('pos'), 1);
 });
 
-test('all 174 tasks render and open a nonempty first hint without runtime errors', t => {
+test('all 175 tasks render and open a nonempty first hint without runtime errors', t => {
   const ui = boot(t);
   ui.evaluate("cat='all';startSet()");
   const count = ui.evaluate('TASKS.length');
-  assert.equal(count, 174);
+  assert.equal(count, 175);
   for (let index = 0; index < count; index++) {
     ui.evaluate(`pos=${index};renderTask()`);
     assert.equal(ui.document.querySelectorAll('#card > .expr, #card .task-expression').length, 1);

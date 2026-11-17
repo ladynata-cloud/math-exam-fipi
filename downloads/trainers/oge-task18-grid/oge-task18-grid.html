@@ -169,6 +169,22 @@ a.crumbs{display:inline-flex;align-items:center;min-height:44px}
 body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}.minimal-course .app,.minimal-course>.wrap{max-width:1000px;margin:auto;padding:24px 18px 56px;background:transparent;box-shadow:none;border:0}.minimal-course>.wrap>.app{padding:0}.minimal-course .head{margin-bottom:24px;padding:0;border:0;background:transparent;box-shadow:none}.minimal-course .head,.minimal-course .head h1{color:#202820}.minimal-course h1{font-family:inherit;font-size:24px;line-height:1.4;margin:10px 0}.minimal-course .crumbs{font-size:15px;color:#216342}.minimal-course #main,.minimal-course #view{padding:0;background:transparent}.minimal-course .grid,.minimal-course .row{gap:24px}.minimal-course .task,.minimal-course .card,.minimal-course .givens,.minimal-course .q-text,.minimal-course .cond,.minimal-course .qtext{font-size:18px;line-height:1.8}.minimal-course .task,.minimal-course .card,.minimal-course .givens{background:#fff;border-color:#dbe1da;border-radius:12px;box-shadow:none}.minimal-course .grid{padding:24px;background:#fff;border:1px solid #dbe1da;border-radius:14px}.minimal-course .grid .task{padding:0;border:0}.minimal-course .fig,.minimal-course .figbox,.minimal-course .figwrap,.minimal-course .fig-wrap{max-width:100%;background:#fff;box-shadow:none}.minimal-course svg{max-width:100%;height:auto}.minimal-course button,.minimal-course input,.minimal-course select,.minimal-course summary{min-height:44px;font-family:inherit}.minimal-course button{font-size:16px;border-radius:8px}.minimal-course button.primary,.minimal-course .btn.primary,.minimal-course .btn.blue,.minimal-course .btn.dark,.minimal-course button.act,.minimal-course button.blue,.minimal-course #check{background:#216342;color:white;border-color:#216342}.minimal-course input{font-size:20px;max-width:100%}.minimal-course .ansrow,.minimal-course .ans-row,.minimal-course .controls{gap:12px;margin-top:24px;flex-wrap:wrap}.minimal-course .minimal-settings{margin-top:28px;border-top:1px solid #dbe1da;padding-top:18px;font-size:16px}.minimal-course summary{cursor:pointer;color:#216342}.minimal-course .minimal-settings .tabs{margin:18px 0;padding:0;flex-wrap:wrap;display:flex;background:transparent;border:0}.minimal-course .minimal-settings .sub{font-size:15px;margin:16px 0}.minimal-course .minimal-settings .stats{justify-content:flex-start}.minimal-course .minimal-settings .stat{font-size:14px}.minimal-course .minimal-task-settings{margin:20px 0}.minimal-course .minimal-hint{margin:20px 0;padding:20px;background:#eef5ed;border:1px solid #dbe7da;border-radius:12px}.minimal-course .minimal-hint-toggle{display:block;background:white;color:#216342;border:1px solid #b8cbbb;margin:22px 0 16px;min-height:46px;padding:10px 16px}.minimal-course .minimal-hint p{margin:0 0 18px}.minimal-course .minimal-hint .hintbox,.minimal-course .minimal-hint .guidebox{margin:0}.minimal-course .minimal-hint .row,.minimal-course .minimal-hint .bar{gap:12px}.minimal-course [hidden]{display:none!important}.minimal-course button:focus-visible,.minimal-course input:focus-visible,.minimal-course select:focus-visible,.minimal-course summary:focus-visible,.minimal-course a:focus-visible{outline:3px solid #77a488;outline-offset:3px}.minimal-course .minimal-part2-note{font-size:15px;color:#626b63;line-height:1.7;margin:18px 0}.minimal-course .pool{gap:12px}.minimal-course .pool .card{padding:16px;font-size:17px}.minimal-course .chain .citem{margin-bottom:18px}.minimal-course .step,.minimal-course .gsteps>li{line-height:1.8;margin-bottom:18px}.minimal-course .guidehead{font-size:16px}.minimal-course .minimal-hint-toggle[aria-expanded=true]{background:#edf4ea}.minimal-course .minimal-help-actions{margin-top:20px}.minimal-course .minimal-help-actions>button{margin:12px 8px 0 0}
 @media(max-width:600px){.minimal-course .app,.minimal-course>.wrap{padding:18px 12px 40px}.minimal-course .grid{padding:18px 14px;grid-template-columns:1fr}.minimal-course .row{flex-wrap:wrap}.minimal-course .col{min-width:0;width:100%}.minimal-course h1{font-size:21px}.minimal-course .minimal-hint{padding:16px 12px}.minimal-course .task,.minimal-course .card,.minimal-course .givens{font-size:17px}.minimal-course .tabs{gap:8px}}
 @media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* OGE18: readable task-bound explanations, without changing other trainers. */
+body[data-oge-geometry="18"].minimal-course .task,body[data-oge-geometry="18"].minimal-course .card,body[data-oge-geometry="18"].minimal-course .givens{font-size:18px}
+body[data-oge-geometry="18"].minimal-course .step{font-size:20px;line-height:1.65;padding:14px 16px}
+body[data-oge-geometry="18"].minimal-course .step h4{font-size:20px;line-height:1.4;margin:0 0 10px}
+body[data-oge-geometry="18"].minimal-course .minimal-hint h3{font-size:22px;line-height:1.4}
+body[data-oge-geometry="18"].minimal-course .step p{margin:8px 0}
+body[data-oge-geometry="18"].minimal-course .step .frac{font-size:1em}
+body[data-oge-geometry="18"].minimal-course #ansIn{font-size:22px;width:190px;font-weight:600;text-align:left}
+body[data-oge-geometry="18"].minimal-course #ansIn::placeholder{font-size:18px;font-weight:400}
+body[data-oge-geometry="18"] .oge18-source-note{font-size:18px;line-height:1.5;color:#526357;margin:0 0 12px}
+body[data-oge-geometry="18"] #answerState{font-size:18px;line-height:1.55;margin:12px 0 0;color:#344c3e}
+body[data-oge-geometry="18"] #answerState:empty{display:none}
+body[data-oge-geometry="18"] .figwrap[data-oge18-task-diagram]{width:100%;max-width:100%;overflow:visible;padding:0;background:#fff}
+body[data-oge-geometry="18"] .figwrap[data-oge18-task-diagram] svg{display:block;width:100%;min-width:0;max-width:720px;height:auto;margin:0 auto}
+body[data-oge-geometry="18"] .oge18-step-action{min-height:48px;font-size:19px}
+@media(max-width:600px){body[data-oge-geometry="18"].minimal-course .card{padding:14px 10px}body[data-oge-geometry="18"].minimal-course .minimal-hint{padding:14px 10px}body[data-oge-geometry="18"].minimal-course .step{padding:12px 10px}}
 </style>
 <style data-inline-source="/trainers/oge-course-reference.css">
 .ocr-card{margin:20px 0;padding:0;border-top:1px solid #d6dfd5;font-size:17px;line-height:1.8;overflow-wrap:anywhere}.ocr-card>summary{cursor:pointer;min-height:48px;padding:12px 0;color:#216342;font-size:17px;font-weight:600}.ocr-card[open]>summary{margin-bottom:8px}.ocr-card p{margin:14px 0}.ocr-topic{padding:8px 0}.ocr-topic h4{font-size:18px;line-height:1.6;margin:8px 0}.ocr-topic ul{padding-left:22px}.ocr-topic li{margin:14px 0}.ocr-card a{color:#176747;text-decoration:underline;text-underline-offset:3px}.ocr-edition,.ocr-note{display:block;font-size:15px!important;line-height:1.75;color:#58645b}.ocr-card img{display:block;max-width:100%;height:auto;background:white}.ocr-card figure{margin:18px 0}.ocr-card figcaption{font-size:17px;margin-bottom:12px}.ocr-card .ocr-close{min-height:44px;padding:8px 14px;margin:10px 0;border:1px solid #aac4b3;border-radius:8px;color:#176747;background:#fff;font-size:17px;cursor:pointer}.ocr-card :focus-visible{outline:3px solid #77a488;outline-offset:3px}.ocr-full-sheet img{width:100%;max-width:850px}.ocr-card .ocr-card{margin-left:0}@media(max-width:540px){.ocr-card{font-size:17px}.ocr-close{width:100%}}
@@ -1217,7 +1233,7 @@ function poolArch(){
     return true;});
 }
 function nextTrainTask(){
-  TR.hintUsed=false; TR.done=false; TR.missed=false; TR.shown=false;
+  TR.hintUsed=false; TR.done=false; TR.missed=false; TR.shown=false; TR.closeReason=null;
   if(REVIEW.on){   // работа над ошибками: только открытые типы журнала, задачи генератора
     const open=CP.openTypes().filter(k=>SUBS[k]);
     if(open.length){TR.task=genTask(pick(open));TR.exhausted=false;logE({e:'task_start',kind:'review',sub:TR.task.sub});return;}
@@ -1260,11 +1276,12 @@ function drawTrain(state){
     '<h3>'+SUBS[t.sub].name+(t.id?'':' · генератор')+'</h3>'+
     '<div class="task">'+t.text+'</div>'+
     '<div class="figwrap">'+t.fig+'</div>'+
-    '<div class="row"><input class="ans" id="ansIn" inputmode="decimal" placeholder="ответ" autocomplete="off">'+
+    '<div class="row"><input class="ans" id="ansIn" inputmode="decimal" placeholder="Введите число" autocomplete="off" aria-describedby="answerState">'+
     '<button class="act" id="chkBtn">Проверить</button>'+
     '<button class="sec" id="hintBtn">Подсказка</button>'+
     '<button class="sec" id="giveBtn">Сдаюсь — решение</button>'+
     '<button class="sec" id="nextBtn">Другая задача →</button></div>'+
+    '<div id="answerState" role="status" aria-live="polite"></div>'+
     '<div class="msg" id="fb" role="status" aria-live="polite"></div>'+
     '<div id="solBox"></div>'+
     '<div class="note">Ответ — число; десятичная дробь через запятую (1,5), можно обыкновенной (3/2). '+refJump(t)+'</div>'+
@@ -1278,7 +1295,13 @@ function drawTrain(state){
   });
   const fb=$('fb'),inp=$('ansIn');
   /* после верного ответа или «Сдаюсь» задача закрыта: «Проверить» не работает до следующей */
-  const close=()=>{TR.done=true;$('chkBtn').disabled=true;inp.disabled=true;$('giveBtn').disabled=true;};
+  const close=(reason)=>{
+    TR.done=true;TR.closeReason=reason||TR.closeReason||'correct';
+    $('chkBtn').disabled=true;inp.disabled=true;$('giveBtn').disabled=true;
+    $('answerState').textContent=TR.closeReason==='solution'
+      ?'Решение открыто. Ввод закрыт для этого примера. Чтобы решать дальше, нажми «Другая задача».'
+      :'Ответ принят. Этот пример завершён. Чтобы ввести новый ответ, нажми «Другая задача».';
+  };
   if(TR.done)close();
   $('chkBtn').onclick=()=>{
     if(TR.done)return;
@@ -1291,7 +1314,7 @@ function drawTrain(state){
       /* решено без показа результата — в счёт; журнал: один вердикт на задачу */
       if(window.OgeGeometryHelpUsed)fb.textContent += " Решено с подсказкой.";
       if(!TR.shown&&!window.OgeGeometryHelpUsed){CP.solvedOne(t.sub); if(!TR.missed)CP.mlog(t.sub,true);}
-      close();
+      close('correct');
     }else{
       if(!TR.missed){TR.missed=true;CP.mlog(t.sub,false);}
       const d=t.diag.find(d=>near(v,d.v,d.e));
@@ -1312,7 +1335,7 @@ function drawTrain(state){
     TR.shown=true;
     $('solBox').innerHTML=solHtml(t)+'<div class="msg ok on">Ответ: <b>'+fmt(t.ans)+'</b></div>';
     logE({e:'give_up',sub:t.sub,id:t.id});
-    close();
+    close('solution');
   };
   $('nextBtn').onclick=()=>{nextTrainTask();drawTrain();};
   const rj=main.querySelector('[data-act="ref"]');
@@ -1631,6 +1654,166 @@ if(typeof location!=='undefined'&&/[?&]selftest=1/.test(location.search)){
   try{window.__selftestFails=runSelftest();}catch(e){const d=document.createElement('div');d.className='selftest';d.textContent='СЕЛФТЕСТ УПАЛ: '+e.message;main.parentNode.insertBefore(d,main);window.__selftestFails=1;}
 }
 
+/* The three diagrams below use only the current native task parameters.
+ * Rendering never selects a task, changes its answer, or writes progress.
+ * Step counts stay identical to the native solution for board action replay. */
+const Oge18TaskDiagram = (() => {
+  'use strict';
+  const supported = new Set(['segCmp', 'areaPar', 'circRatio']);
+  const ink = '#25382c', grid = '#d6ddcf', blue = '#216b9c', orange = '#a7500a';
+  const green = '#216342', pale = '#e8f0e9', warm = '#f5dfbf';
+  const fmt = n => String(Number(n.toFixed(8))).replace('.', ',');
+  const cells = n => n === 1 ? 'клетка' : n >= 2 && n <= 4 ? 'клетки' : 'клеток';
+  function decompose(n) {
+    for (let a = Math.floor(Math.sqrt(n)); a >= 0; a--) {
+      const b = Math.round(Math.sqrt(n - a*a));
+      if (a*a + b*b === n) return [a, b];
+    }
+    return null;
+  }
+  function supports(task) {
+    if (!task || !supported.has(task.sub) || !Array.isArray(task.p)) return false;
+    const p = task.p;
+    if (!p.every(Number.isFinite)) return false;
+    if (task.sub === 'segCmp') return p.length === 2 && p[0] > 0 && p[1] > p[0] && p.every(Number.isInteger);
+    if (task.sub === 'areaPar') return p.length === 3 && p[0] > 0 && p[1] > 0 && p[2] >= 0 && p[2] <= p[0] && p.every(Number.isInteger);
+    return p.length === 2 && p[0] > 0 && p[1] > p[0] && p.every(Number.isInteger) && p.every(n => decompose(n));
+  }
+  function actions(task) {
+    if (!supports(task)) return [];
+    return task.sub === 'segCmp'
+      ? ['Выделить отрезки и посчитать клетки', 'Сравнить длины']
+      : task.sub === 'areaPar'
+        ? ['Показать основание и высоту', 'Составить прямоугольник']
+        : ['Найти радиусы по клеткам', 'Сравнить квадраты радиусов', 'Вычислить отношение площадей'];
+  }
+  function radiusWords(n, name) {
+    const radius = Math.sqrt(n), [up, right] = decompose(n);
+    if (Number.isInteger(radius)) return `${name}: от центра до края — <strong>${radius} ${cells(radius)}</strong>.`;
+    return `${name}: по клеткам <strong>${right} вправо и ${up} вверх</strong>; сам радиус идёт наискось.`;
+  }
+  function squareWords(n, symbol) {
+    const radius = Math.sqrt(n), [up, right] = decompose(n);
+    return Number.isInteger(radius)
+      ? `${symbol}² = ${radius} × ${radius} = <strong>${n}</strong>`
+      : `${symbol}² = ${up}² + ${right}² = <strong>${n}</strong>`;
+  }
+  function steps(task) {
+    if (!supports(task)) return [];
+    const p = task.p;
+    if (task.sub === 'segCmp') return [
+      `Считаем клетки вдоль AC: <strong>AM = ${p[0]}</strong>, <strong>MC = ${p[1]}</strong>. Каждый короткий штрих отделяет одну клетку.`,
+      `Чтобы узнать, во сколько раз MC длиннее AM, делим длины: <strong>${p[1]} : ${p[0]} = ${fmt(p[1]/p[0])}</strong>.`
+    ];
+    if (task.sub === 'areaPar') return [
+      `Основание — <strong>${p[0]} ${cells(p[0])}</strong>. Высота — <strong>${p[1]} ${cells(p[1])}</strong> по вертикали между основаниями. Прямой угол отмечен квадратиком.`,
+      `Перенесли выделенный треугольник вправо — получили прямоугольник. Площадь сохранилась: <strong>${p[0]} × ${p[1]} = ${p[0]*p[1]}</strong>.`
+    ];
+    const diagonal = !Number.isInteger(Math.sqrt(p[0])) || !Number.isInteger(Math.sqrt(p[1]));
+    return [
+      radiusWords(p[0], 'Малый круг') + '<br>' + radiusWords(p[1], 'Большой круг'),
+      `${diagonal ? 'Для наклонного радиуса используем теорему Пифагора. ' : ''}Квадраты на тех же радиусах:<br>${squareWords(p[0], 'r')}; ${squareWords(p[1], 'R')}.`,
+      `Площадь круга равна π · радиус². При делении двух площадей π сокращается: <strong>${p[1]} : ${p[0]} = ${fmt(p[1]/p[0])}</strong>. Ответ: <strong>${fmt(p[1]/p[0])}</strong>.`
+    ];
+  }
+  function render(task, step, requestedWidth) {
+    if (!supports(task)) return task && typeof task.fig === 'string' ? task.fig : '';
+    const width = Math.max(240, Math.min(1000, Number.isFinite(requestedWidth) && requestedWidth > 0 ? requestedWidth : 640));
+    const stage = Math.max(0, Math.min(actions(task).length, Math.floor(Number(step)) || 0));
+    const p = task.p;
+    let W, H, foot = 96, top = 30;
+    if (task.sub === 'segCmp') { W = p[0]+p[1]+2; H = Math.min(5, Math.max(3, Math.round((p[0]+p[1])/2)))+2; }
+    else if (task.sub === 'areaPar') { W = p[0]+p[2]+2; H = p[1]+2; foot = 60; }
+    else { W = Math.ceil(Math.sqrt(p[0]))*2 + Math.ceil(Math.sqrt(p[1]))*2 + 3; H = Math.ceil(Math.sqrt(p[1]))*2+2; top = 48; foot = stage >= 3 ? 100 : 64; }
+    const unit = Math.min(46, (width-48)/W);
+    const offset = (width-W*unit)/2;
+    const height = top+H*unit+foot;
+    const x = v => offset+v*unit, y = v => top+(H-v)*unit;
+    const xy = point => `${x(point[0])},${y(point[1])}`;
+    const attr = role => role ? ` data-oge18-role="${role}"` : '';
+    const label = (X,Y,value,anchor='middle') => `<text x="${X}" y="${Y}" text-anchor="${anchor}" fill="${ink}" font-family="system-ui,sans-serif" font-size="20" font-weight="600">${value}</text>`;
+    const line = (a,b,color=ink,weight=2,role='',dash='') => `<line${attr(role)} x1="${x(a[0])}" y1="${y(a[1])}" x2="${x(b[0])}" y2="${y(b[1])}" stroke="${color}" stroke-width="${weight}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+    const polygon = (points,fill=pale,stroke=ink,role='',opacity=1,dash='') => `<polygon${attr(role)} points="${points.map(xy).join(' ')}" fill="${fill}" fill-opacity="${opacity}" stroke="${stroke}" stroke-width="2"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+    const dot = (point,role='') => `<circle${attr(role)} cx="${x(point[0])}" cy="${y(point[1])}" r="4" fill="${ink}"/>`;
+    const ticks = (a,b,color,role) => {
+      const horizontal = a[1] === b[1];
+      const length = Math.abs(horizontal ? b[0]-a[0] : b[1]-a[1]);
+      let result = line(a,b,color,5,role);
+      for (let n=0;n<=length;n++) {
+        const X = x(horizontal ? Math.min(a[0],b[0])+n : a[0]);
+        const Y = y(horizontal ? a[1] : Math.min(a[1],b[1])+n);
+        result += `<line x1="${X-(horizontal?0:4)}" y1="${Y-(horizontal?4:0)}" x2="${X+(horizontal?0:4)}" y2="${Y+(horizontal?4:0)}" stroke="${color}" stroke-width="2"/>`;
+      }
+      return result;
+    };
+    let body = '';
+    for(let gx=0;gx<=W;gx++) body += line([gx,0],[gx,H],grid,1);
+    for(let gy=0;gy<=H;gy++) body += line([0,gy],[W,gy],grid,1);
+    let description;
+    if (task.sub === 'segCmp') {
+      const [am,mc] = p, ac=am+mc, h=H-2;
+      const A=[1,1], M=[1+am,1], C=[1+ac,1], B=[1+Math.round(ac*.4),1+h];
+      body += polygon([A,B,C],pale,ink,'shape');
+      if(stage>0) body += ticks(A,M,blue,'seg-am')+ticks(M,C,orange,'seg-mc');
+      body += dot(A)+dot(M)+dot(C);
+      body += label(x(A[0])-12,y(A[1])+29,'A')+label(x(M[0]),y(M[1])+55,'M')+label(x(C[0])+12,y(C[1])+29,'C')+label(x(B[0]),y(B[1])-13,'B');
+      if(stage>0) body += label(24,y(1)+84,`AM = ${am}`,'start')+label(width-24,y(1)+84,`MC = ${mc}`,'end');
+      description = `Треугольник ABC с M на AC. AM занимает ${am} клеток, MC — ${mc}; все точки и длины соответствуют текущей задаче.`;
+    } else if (task.sub === 'areaPar') {
+      const [a,h,s]=p, A=[1,1], B=[1+a,1], C=[1+a+s,1+h], D=[1+s,1+h], E=[1+s,1], F=[1+a+s,1];
+      if(stage<2) body += polygon([A,B,C,D],pale,ink,'shape');
+      else {
+        body += polygon([A,B,C,D],'none','#7d877f','shape',1,'5 4');
+        body += `<rect data-oge18-role="area-rectangle" x="${x(E[0])}" y="${y(D[1])}" width="${a*unit}" height="${h*unit}" fill="${pale}" stroke="${green}" stroke-width="2"/>`;
+        body += polygon([A,E,D],warm,orange,'cut-triangle',.15,'5 4');
+        body += polygon([B,F,C],warm,orange,'moved-triangle',.9);
+        const from=[1+2*s/3,1+h/3], to=[1+a+2*s/3,1+h/3];
+        body += line(from,to,orange,2,'translation','4 4');
+        body += `<path d="M${x(to[0])-8},${y(to[1])-5} L${x(to[0])},${y(to[1])} L${x(to[0])-8},${y(to[1])+5}" fill="none" stroke="${orange}" stroke-width="2"/>`;
+      }
+      if(stage>0) {
+        const baseStart=stage<2?A:E, baseEnd=stage<2?B:F;
+        body += ticks(baseStart,baseEnd,blue,'base')+ticks(E,D,orange,'height');
+        const size=Math.min(10,unit*.4), X=x(E[0]), Y=y(E[1]);
+        body += `<path data-oge18-role="right-angle" d="M${X+size},${Y} v${-size} h${-size}" fill="none" stroke="${orange}" stroke-width="2"/>`;
+        body += label((x(baseStart[0])+x(baseEnd[0]))/2,y(1)+34,`Основание ${a}`);
+        body += label(x(E[0])-11,(y(1)+y(1+h))/2+7,String(h),'end');
+      }
+      description = `Параллелограмм: основание ${a}, перпендикулярная высота ${h}, горизонтальный сдвиг ${s}.` + (stage>=2 ? ` Перенос треугольника на ${a} клеток вправо составляет прямоугольник с теми же основанием и высотой.` : '');
+    } else {
+      const [smallSquared,largeSquared]=p;
+      const r=Math.sqrt(smallSquared), R=Math.sqrt(largeSquared), cw=Math.ceil(r), CW=Math.ceil(R);
+      const centers=[[1+cw,1+CW],[cw*2+2+CW,1+CW]];
+      const titleNudge=Math.max(0,(100-(x(centers[1][0])-x(centers[0][0])))/2);
+      for(let i=0;i<2;i++) {
+        const n=i?largeSquared:smallSquared, radius=Math.sqrt(n), [up,right]=decompose(n), c=centers[i];
+        const key=i?'large':'small', color=i?orange:blue, symbol=i?'R':'r';
+        const end=[c[0]+right,c[1]+up], corner=[c[0]+right,c[1]];
+        body += `<circle data-oge18-role="${key}-circle" cx="${x(c[0])}" cy="${y(c[1])}" r="${radius*unit}" fill="${i?warm:pale}" fill-opacity=".4" stroke="${ink}" stroke-width="2"/>`;
+        if(stage>=2) {
+          const square=[c,end,[end[0]-up,end[1]+right],[c[0]-up,c[1]+right]];
+          body += polygon(square,i?warm:pale,color,`${key}-radius-square`,.7);
+        }
+        body += line(c,end,color,stage>0?4:2,`${key}-radius`)+dot(c,`${key}-center`);
+        if(stage>0) {
+          if(right) {
+            body += ticks(c,corner,color,`${key}-leg-x`)+ticks(corner,end,color,`${key}-leg-y`);
+            body += label((x(c[0])+x(corner[0]))/2,y(c[1])+26,String(right));
+            body += label(x(corner[0])+13,(y(corner[1])+y(end[1]))/2+7,String(up),'start');
+          } else body += ticks(c,end,color,`${key}-leg-y`);
+        }
+        body += label(x(c[0])+(i?titleNudge:-titleNudge),28,i?'Большой':'Малый');
+        const value=stage>=2?`${symbol}² = ${n}`:stage>0&&Number.isInteger(radius)?`${symbol} = ${radius}`:symbol;
+        body += label(x(c[0]),y(c[1]-radius)+33,value);
+      }
+      if(stage>=3) body += label(width/2,height-20,`Ответ: ${fmt(largeSquared/smallSquared)}`);
+      description = `Два круга текущей задачи. Квадрат малого радиуса ${smallSquared}, большого ${largeSquared}.` + (stage>0 ? ' Радиусы проведены от отмеченного центра до края; у наклонных радиусов показаны горизонтальный и вертикальный катеты.' : '') + (stage>=2?' На тех же радиусах построены квадраты: их площади относятся так же, как площади кругов.':'');
+    }
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="${description}" data-task-kind="${task.sub}" data-step="${stage}" data-unit="${unit}" style="display:block;width:100%;max-width:100%;height:auto"><title>${description}</title>${body}</svg>`;
+  }
+  return { supports, render, steps, actions };
+})();
+
 /* Minimal course shell. Moves live controls, retaining their original handlers. */
 const MinimalGeometry=(()=>{
   const q=s=>document.querySelector(s);
@@ -1674,26 +1857,55 @@ const MinimalGeometry=(()=>{
 if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.nodeType===1){
   MinimalGeometry.shell('#main','ОГЭ №18 · Фигуры на клетках');
   const originalDrawTrain=drawTrain;
+  let task18FigureObserver=null;
   drawTrain=function(state){originalDrawTrain(state);const main=document.getElementById('main');
+    if(task18FigureObserver){task18FigureObserver.disconnect();task18FigureObserver=null;}
     MinimalGeometry.secondary(main,[':scope > .chips',':scope > .pnote',':scope > .card > h3',':scope > .card > .note']);
     const card=main.querySelector('.card'),oldHint=document.getElementById('hintBtn');if(!card||!oldHint)return;
-    const t=TR.task,help=MinimalGeometry.hint(card.querySelector('.figwrap'),'<h3>Разбор этой задачи по шагам</h3><p>Смотрим на рисунок выше. Открывай по одному шагу — предыдущие останутся видны.</p>');
+    const t=TR.task,taskBound=Oge18TaskDiagram.supports(t),figure=card.querySelector('.figwrap');
+    const explanations=taskBound?Oge18TaskDiagram.steps(t):t.sol;
+    const actions=taskBound?Oge18TaskDiagram.actions(t):null;
+    if(taskBound){
+      figure.setAttribute('data-oge18-task-diagram',t.sub);
+      const provenance=document.createElement('p');provenance.className='oge18-source-note';
+      provenance.textContent=t.sub==='segCmp'?'Тренировочный аналог · отношение отрезков по клеткам':'Тренировочный аналог';
+      card.querySelector('.task').before(provenance);
+    }
+    const help=MinimalGeometry.hint(figure,'<h3>Разбор этой задачи по шагам</h3><p>'+(taskBound?'Нажми кнопку — нужные линии появятся на этом рисунке.':'Смотрим на рисунок выше. Открывай по одному шагу — предыдущие останутся видны.')+'</p>');
     help.button.textContent='Разобрать по шагам';help.panel.setAttribute('aria-label','Пошаговое объяснение текущей задачи');
-    let step=0;
+    let step=0,diagramStep=0,lastFigureWidth=0,lastFigureStep=-1;
+    const redraw=()=>{
+      if(!taskBound)return;
+      const width=Math.max(240,Math.min(720,figure.getBoundingClientRect().width||600));
+      if(width===lastFigureWidth&&diagramStep===lastFigureStep)return;
+      lastFigureWidth=width;lastFigureStep=diagramStep;
+      figure.innerHTML=Oge18TaskDiagram.render(t,diagramStep,width);
+    };
+    if(taskBound){redraw();if(typeof ResizeObserver!=='undefined'){task18FigureObserver=new ResizeObserver(redraw);task18FigureObserver.observe(figure);}}
     const shown=document.createElement('div');shown.id='task18Steps';shown.className='minimal-first-step';help.panel.appendChild(shown);
     const status=document.createElement('p');status.setAttribute('role','status');status.setAttribute('aria-live','polite');help.panel.appendChild(status);
-    oldHint.textContent='Начать разбор';help.panel.appendChild(oldHint);oldHint.setAttribute('aria-controls',shown.id);
+    oldHint.textContent=actions?actions[0]:'Начать разбор';help.panel.appendChild(oldHint);oldHint.setAttribute('aria-controls',shown.id);oldHint.classList.add('oge18-step-action');
     oldHint.onclick=()=>{
       if(step>=t.sol.length)return;
       if(!TR.hintUsed){TR.hintUsed=true;logE({e:'hint',sub:t.sub});}TR.shown=true;
-      const block=document.createElement('section');block.className='step';block.innerHTML='<h4>Шаг '+(step+1)+' из '+t.sol.length+'</h4>'+t.sol[step];shown.appendChild(block);step++;
-      const figure=card.querySelector('.figwrap'),oldSvg=figure.querySelector('svg'),style=oldSvg?.style.cssText||'';
-      figure.innerHTML=t.sub==='segAB'?SUBS.segAB.fig(t.p,step).svg():t.figAux;
-      figure.querySelector('svg').style.cssText=style;
+      const block=document.createElement('section');block.className='step';block.innerHTML='<h4>Шаг '+(step+1)+' из '+t.sol.length+'</h4>'+explanations[step];shown.appendChild(block);step++;
+      if(taskBound){diagramStep=step;redraw();}
+      else{const oldSvg=figure.querySelector('svg'),style=oldSvg?.style.cssText||'';
+        figure.innerHTML=t.sub==='segAB'?SUBS.segAB.fig(t.p,step).svg():t.figAux;
+        figure.querySelector('svg').style.cssText=style;}
       status.textContent=step===t.sol.length?'Все шаги открыты. Ответ: '+fmt(t.ans)+'. Можно проверить свой ответ или перейти к другой задаче.':'Открыт шаг '+step+' из '+t.sol.length+'.';
-      oldHint.textContent=step===t.sol.length?'Все шаги открыты':'Следующий шаг ('+(step+1)+' из '+t.sol.length+')';oldHint.disabled=step===t.sol.length;
+      oldHint.textContent=step===t.sol.length?'Все шаги открыты':actions?actions[step]:'Следующий шаг ('+(step+1)+' из '+t.sol.length+')';oldHint.disabled=step===t.sol.length;
     };
     const give=document.getElementById('giveBtn');give.textContent='Показать решение целиком';
+    if(taskBound){
+      const nativeGive=give.onclick;
+      give.onclick=()=>{
+        if(TR.done)return;
+        nativeGive();
+        document.getElementById('solBox').innerHTML=explanations.map((html,i)=>'<section class="step"><h4>Шаг '+(i+1)+' из '+explanations.length+'</h4>'+html+'</section>').join('')+'<div class="msg ok on">Ответ: <b>'+fmt(t.ans)+'</b></div>';
+        diagramStep=t.sol.length;redraw();
+      };
+    }
     const complete=MinimalGeometry.disclosure(help.panel,[give]);complete.querySelector('summary').textContent='Посмотреть все шаги сразу';complete.appendChild(document.getElementById('solBox'));
     document.getElementById('courseSettings').querySelectorAll('.chip').forEach(node=>{node.tabIndex=0;node.setAttribute('role','button');node.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();node.click();}};});
   };
@@ -3028,6 +3240,86 @@ const data = {
           "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=132"
         }
       ]
+    },
+    "symmetry_axis": {
+      "title": "Осевая симметрия",
+      "explanation": "Ось симметрии отражает всю фигуру в неё саму. Для проверки нужно сопоставить каждой точке её отражение; совпадение только нескольких отдельных точек ещё не доказывает симметрию всей фигуры.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 47, определение оси симметрии и примеры фигур",
+          "printedPage": "111",
+          "pdfPage": 113,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=113"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 18, определение симметричной фигуры и примеры её осей",
+          "printedPage": "161–162",
+          "pdfPage": 162,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000051.pdf#page=162"
+        }
+      ]
+    },
+    "symmetry_center": {
+      "title": "Центральная симметрия",
+      "explanation": "При центральной симметрии точка O является серединой отрезка между точкой и её образом. Центр симметрии фигуры должен переводить всю фигуру в неё саму. Центр окружности и пересечение диагоналей параллелограмма обладают этим свойством; у треугольника его нет.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 47, определение центра симметрии и примеры",
+          "printedPage": "111–112",
+          "pdfPage": 113,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=113"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 19, определения центральной симметрии и центра фигуры, примеры",
+          "printedPage": "166–168",
+          "pdfPage": 167,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000051.pdf#page=167"
+        }
+      ]
+    },
+    "intersecting_chords": {
+      "title": "Произведения отрезков пересекающихся хорд",
+      "explanation": "Если хорды AB и CD одной окружности пересекаются внутри неё в P, то PA · PB = PC · PD. Равенство относится к произведениям двух частей каждой хорды. Его получают из подобия треугольников и равенства вписанных углов.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 71, теорема о произведениях отрезков пересекающихся хорд",
+          "printedPage": "173",
+          "pdfPage": 175,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=175"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 13, ключевая задача 2: свойство пересекающихся хорд",
+          "printedPage": "90–91",
+          "pdfPage": 91,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000030.pdf#page=91"
+        }
+      ]
+    },
+    "tangent_secant": {
+      "title": "Касательная и секущая из одной точки",
+      "explanation": "Из внешней точки P касательная касается окружности в T, а секущая встречает её сначала в A, затем в B. В равенстве PT² = PA · PB отрезок PA является внешней частью, а PB — всей секущей от P до дальней точки пересечения. Хорда AB не заменяет PB.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 71, задача 670 о касательной и секущей",
+          "printedPage": "175",
+          "pdfPage": 177,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=177"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 13, ключевая задача 3: свойство касательной и секущей",
+          "printedPage": "91",
+          "pdfPage": 92,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000030.pdf#page=92"
+        }
+      ]
     }
   },
   "cards": {
@@ -3798,6 +4090,560 @@ const data = {
     ],
     "reference-106": [
       "tangent"
+    ],
+    "isosceles_trapezoid_diagonal_equal_triangles": [
+      "trapezoid",
+      "isosceles_trapezoid",
+      "triangle_area"
+    ],
+    "triangle_exterior_gt_nonadjacent": [
+      "triangle_exterior"
+    ],
+    "triangle_exterior_sum_all_angles": [
+      "triangle_exterior",
+      "triangle_angles"
+    ],
+    "equilateral_triangle_is_isosceles": [
+      "isosceles"
+    ],
+    "rectangle_always_has_incircle": [
+      "incircle",
+      "rectangle"
+    ],
+    "right_triangles_always_similar": [
+      "triangle_similarity",
+      "triangle_types"
+    ],
+    "equilateral_triangle_is_acute": [
+      "isosceles",
+      "triangle_angles",
+      "triangle_types"
+    ],
+    "right_trapezoid_diagonals_equal": [
+      "trapezoid",
+      "parallel_angles"
+    ],
+    "parallelogram_equal_perpendicular_diagonals_square": [
+      "rectangle",
+      "rhombus",
+      "square"
+    ],
+    "parallelogram_equal_diagonals_square": [
+      "rectangle",
+      "square"
+    ],
+    "parallel_lines_alternate_interior_equal": [
+      "parallel_angles"
+    ],
+    "isosceles_has_central_symmetry": [
+      "symmetry_center",
+      "isosceles"
+    ],
+    "isosceles_has_axis_symmetry": [
+      "symmetry_axis",
+      "isosceles"
+    ],
+    "equilateral_has_central_symmetry": [
+      "symmetry_center",
+      "isosceles"
+    ],
+    "unique_point_equidistant_segment_endpoints": [
+      "perpendicular_bisector"
+    ],
+    "equilateral_has_three_symmetry_axes": [
+      "symmetry_axis",
+      "isosceles"
+    ],
+    "equidistant_endpoints_point_on_perp_bisector": [
+      "perpendicular_bisector"
+    ],
+    "any_two_lines_exactly_one_common_point": [
+      "points_lines",
+      "parallel_point"
+    ],
+    "alternate_interior_right_angles_imply_parallel": [
+      "parallel_alternate",
+      "perpendicular"
+    ],
+    "vertical_angle_of_108_is_108": [
+      "adjacent_vertical"
+    ],
+    "adjacent_angles_sum_90": [
+      "adjacent_vertical"
+    ],
+    "adjacent_53_123": [
+      "adjacent_vertical"
+    ],
+    "equal_corresponding_angles_parallel": [
+      "parallel_alternate",
+      "parallel_angles"
+    ],
+    "oblique_lt_perpendicular_3": [
+      "perpendicular_point",
+      "pythagoras"
+    ],
+    "adjacent_81_99": [
+      "adjacent_vertical"
+    ],
+    "same_side_sum90_parallel": [
+      "parallel_same_side",
+      "parallel_angles"
+    ],
+    "corresponding_angles90_parallel": [
+      "perpendicular",
+      "parallel_angles"
+    ],
+    "two_lines_at_most_one_common_point": [
+      "points_lines"
+    ],
+    "two_distinct_points_multiple_lines": [
+      "points_lines"
+    ],
+    "three_lines_at_least_one_common_point": [
+      "points_lines",
+      "parallel_point"
+    ],
+    "corresponding_angles67_parallel": [
+      "parallel_alternate",
+      "parallel_angles"
+    ],
+    "any_two_lines_more_than_one_common_point": [
+      "points_lines",
+      "adjacent_vertical"
+    ],
+    "two_distinct_points_at_most_one_line": [
+      "points_lines"
+    ],
+    "three_lines_one_common_point": [
+      "points_lines",
+      "parallel_point"
+    ],
+    "parallel_line_perpendicular_transfer": [
+      "perpendicular",
+      "parallel_angles"
+    ],
+    "vertical_40_140": [
+      "adjacent_vertical"
+    ],
+    "same_side50_110_parallel": [
+      "parallel_same_side",
+      "parallel_angles"
+    ],
+    "adjacent_50_120": [
+      "adjacent_vertical"
+    ],
+    "same_side30_120_parallel": [
+      "parallel_same_side",
+      "parallel_angles"
+    ],
+    "point_at_most_two_lines": [
+      "points_lines"
+    ],
+    "circle_exactly_two_symmetry_axes": [
+      "symmetry_axis",
+      "circle_definition"
+    ],
+    "line_no_symmetry_axes": [
+      "symmetry_axis",
+      "points_lines"
+    ],
+    "regular_hexagon_six_symmetry_axes": [
+      "symmetry_axis",
+      "regular_polygon"
+    ],
+    "rectangle_no_symmetry_center": [
+      "symmetry_center",
+      "rectangle"
+    ],
+    "circle_no_symmetry_center": [
+      "symmetry_center",
+      "circle_definition"
+    ],
+    "line_at_least_two_symmetry_axes": [
+      "symmetry_axis",
+      "points_lines"
+    ],
+    "square_four_symmetry_axes": [
+      "symmetry_axis",
+      "square"
+    ],
+    "rhombus_symmetry_center_diagonals": [
+      "symmetry_center",
+      "rhombus"
+    ],
+    "three_concurrent_lines_not_exist": [
+      "points_lines"
+    ],
+    "rectangle_diagonal_pythagoras": [
+      "rectangle",
+      "pythagoras"
+    ],
+    "nonrectangle_parallelogram_exists": [
+      "parallelogram",
+      "rectangle"
+    ],
+    "rectangle_diagonals_squares_sum_equals_sides": [
+      "rectangle",
+      "pythagoras"
+    ],
+    "trapezoid_area_midline_times_height": [
+      "trapezoid_area",
+      "trapezoid_midline"
+    ],
+    "orthodiagonal_quadrilateral_is_rhombus": [
+      "rhombus",
+      "polygon_angles"
+    ],
+    "no_rectangle_perpendicular_diagonals": [
+      "rectangle",
+      "square"
+    ],
+    "nonparallelogram_rectangle_exists": [
+      "rectangle",
+      "parallelogram"
+    ],
+    "nonsquare_rhombus_exists": [
+      "rhombus",
+      "square"
+    ],
+    "square_diagonals_bisect": [
+      "square",
+      "parallelogram"
+    ],
+    "nonrhombus_square_exists": [
+      "square",
+      "rhombus"
+    ],
+    "rectangle_all_angles_equal": [
+      "rectangle"
+    ],
+    "trapezoid_perpendicular_diagonals_exists": [
+      "trapezoid",
+      "perpendicular",
+      "coordinates"
+    ],
+    "parallelogram_opposite_angles_equal": [
+      "parallelogram"
+    ],
+    "rectangle_not_square_exists": [
+      "rectangle",
+      "square"
+    ],
+    "convex_quadrilateral_angle_sum_180": [
+      "polygon_angles",
+      "triangle_angles"
+    ],
+    "parallelogram_adjacent_angles_sum_180": [
+      "parallelogram",
+      "parallel_angles"
+    ],
+    "rhombus_all_sides_parallel": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "rhombus_opposite80_100": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "trapezoid_equal_diagonals_isosceles": [
+      "trapezoid",
+      "isosceles_trapezoid"
+    ],
+    "quadrilateral_opposite_pair_equal_parallel": [
+      "parallelogram_tests"
+    ],
+    "quadrilateral_two_equal_angles_parallelogram": [
+      "parallelogram_tests",
+      "isosceles_trapezoid"
+    ],
+    "convex_quad_three_sum220_fourth130": [
+      "polygon_angles",
+      "triangle_angles"
+    ],
+    "all_rhombi_cyclic": [
+      "rhombus",
+      "circumcircle"
+    ],
+    "any_trapezoid_two_equal_angles": [
+      "trapezoid",
+      "parallel_angles"
+    ],
+    "trapezoid_midline_equal_areas": [
+      "trapezoid_area",
+      "trapezoid_midline"
+    ],
+    "cyclic_quadrilateral_opposite_side_sums_equal": [
+      "circumcircle",
+      "incircle"
+    ],
+    "tangential_quadrilateral_opposite_side_sums_equal": [
+      "incircle",
+      "tangent"
+    ],
+    "parallelogram_diagonals_square_sum": [
+      "parallelogram",
+      "pythagoras",
+      "coordinates"
+    ],
+    "isosceles_all_altitudes_are_bisectors": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_incenter_circumcenter_coincide": [
+      "isosceles",
+      "incircle",
+      "circumcircle"
+    ],
+    "triangle_larger_side_smaller_opposite_angle": [
+      "triangle_sides_angles"
+    ],
+    "triangle_always_has_incircle": [
+      "incircle"
+    ],
+    "right_triangles_hypotenuse_acute_angle_congruent": [
+      "right_triangle",
+      "triangle_congruence"
+    ],
+    "triangle_sas_similarity": [
+      "triangle_similarity"
+    ],
+    "isosceles_all_medians_are_bisectors": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "obtuse_triangle_angles_sum_180": [
+      "triangle_angles",
+      "triangle_types"
+    ],
+    "triangle_area_not_exceed_product_two_sides": [
+      "triangle_sine_area",
+      "triangle_area"
+    ],
+    "isosceles_base_median_is_altitude": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_base_median_is_bisector": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "triangle_40_70_70_is_isosceles": [
+      "isosceles",
+      "triangle_sides_angles"
+    ],
+    "isosceles_apex_bisector_bisects_base": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_all_altitudes_medians": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_lateral_median_altitude": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "triangle_side_opposite_angle_congruence": [
+      "triangle_congruence"
+    ],
+    "triangle_angle_strictly_gt60_exists": [
+      "triangle_angles",
+      "isosceles"
+    ],
+    "triangle_bisector_equal_areas": [
+      "triangle_area",
+      "angle_bisector",
+      "triangle_parts"
+    ],
+    "circumcenter_is_bisectors_intersection": [
+      "circumcircle",
+      "incircle",
+      "perpendicular_bisector"
+    ],
+    "incenter_vertex_distance_radius": [
+      "incircle",
+      "angle_bisector_locus"
+    ],
+    "circumcenter_side_distance_radius": [
+      "circumcircle",
+      "circle_definition"
+    ],
+    "isosceles_all_medians_equal": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_base_altitude_gt_lateral": [
+      "isosceles",
+      "triangle_area"
+    ],
+    "triangle_congruence_sss": [
+      "triangle_congruence"
+    ],
+    "triangle_circumcircle_at_most_one": [
+      "circumcircle",
+      "perpendicular_bisector"
+    ],
+    "equidistant_two_vertices_on_third_altitude": [
+      "perpendicular_bisector",
+      "triangle_parts"
+    ],
+    "incenter_equidistant_vertices": [
+      "incircle",
+      "circumcircle"
+    ],
+    "three_distinct_points_at_most_one_circle": [
+      "circumcircle",
+      "perpendicular_bisector",
+      "circle_line"
+    ],
+    "isosceles_circumcenter_midpoint_altitude": [
+      "isosceles",
+      "circumcircle",
+      "perpendicular_bisector"
+    ],
+    "circumcenter_equidistant_sides": [
+      "circumcircle",
+      "incircle"
+    ],
+    "triangle_5_12_13_circumcenter_on_side": [
+      "pythagoras",
+      "median_hypotenuse",
+      "circumcircle"
+    ],
+    "equilateral_circumcenter_bisectors": [
+      "isosceles",
+      "circumcircle",
+      "incircle"
+    ],
+    "triangle_20_21_29_circumcenter_on_side": [
+      "pythagoras",
+      "median_hypotenuse",
+      "circumcircle"
+    ],
+    "obtuse_circumcenter_on_side": [
+      "circumcircle",
+      "inscribed_angles",
+      "triangle_types"
+    ],
+    "triangle_4_5_9_exists": [
+      "triangle_inequality"
+    ],
+    "right_triangle_area_hypotenuse_times_altitude": [
+      "triangle_area",
+      "right_triangle"
+    ],
+    "triangle_6_8_2_not_exist": [
+      "triangle_inequality"
+    ],
+    "sin_hypotenuse_over_opposite": [
+      "trigonometry"
+    ],
+    "circle_area_less_than_diameter_squared": [
+      "circle_length_area",
+      "rectangle_area"
+    ],
+    "point_inside_disk_distance_less_radius": [
+      "circle_definition"
+    ],
+    "equidistant_points_lie_on_circle": [
+      "circle_definition"
+    ],
+    "point_outside_disk_distance_greater_radius": [
+      "circle_definition"
+    ],
+    "tangent_circles_contact_equidistant_centers": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "square_always_cyclic": [
+      "square",
+      "circumcircle"
+    ],
+    "chord_always_gt_radius": [
+      "circle_definition",
+      "pythagoras"
+    ],
+    "circle_point_distance_less_radius": [
+      "circle_definition"
+    ],
+    "any_two_chords_intersect": [
+      "circle_definition",
+      "parallel_point"
+    ],
+    "any_two_diameters_perpendicular": [
+      "circle_definition",
+      "perpendicular"
+    ],
+    "point_distance5_radius4_inside": [
+      "circle_definition"
+    ],
+    "circles_r1_r6_d4_intersect": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "line_distance3_radius5_tangent": [
+      "circle_line",
+      "tangent"
+    ],
+    "inscribed40_arc80": [
+      "inscribed_angles"
+    ],
+    "inscribed_equals_central_same_chord": [
+      "inscribed_angles"
+    ],
+    "circles_r3_r2_d4_disjoint": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "line_distance10_radius7_disjoint": [
+      "circle_line"
+    ],
+    "inscribed40_arc40": [
+      "inscribed_angles"
+    ],
+    "two_points_multiple_circles": [
+      "perpendicular_bisector",
+      "circle_definition"
+    ],
+    "circles_distance_gt_sum_diameters_disjoint": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "circles_r2_r5_d1_intersect": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "arc100_inscribed50": [
+      "inscribed_angles"
+    ],
+    "circles_distance_lt_sum_diameters_disjoint": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "circles_r2_r5_d6_intersect": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "arc60_inscribed30": [
+      "inscribed_angles"
+    ],
+    "regular_heptagon_no_circumcircle": [
+      "regular_polygon",
+      "circumcircle"
+    ],
+    "regular_nonagon_no_incircle": [
+      "regular_polygon",
+      "incircle"
+    ],
+    "tangent_secant_power": [
+      "tangent_secant"
+    ],
+    "external_point_at_most_one_tangent": [
+      "tangent",
+      "circle_line"
+    ],
+    "intersecting_chords_products_equal": [
+      "intersecting_chords"
     ]
   }
 };
@@ -4044,7 +4890,7 @@ doc.addEventListener('toggle',()=>global.requestAnimationFrame(()=>figureFrames.
 function frame(host,title){const wrap=el('div',null,'ocg-figure-scroll');const figure=el('div',null,'ocg-figure');wrap.append(figure);host.append(wrap);figureNavigation(wrap,title);return svg=>{figure.innerHTML=`<svg viewBox="0 0 440 290" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title>${svg}</svg>`;};}
 function controls(host){const box=el('div',null,'ocg-controls');host.append(box);return box;}
 function watch(inputs,run){inputs.forEach(i=>i.addEventListener('input',run));run();}
-const captions={adjacent:'Меняй внутренний угол. Что происходит с соседним внешним углом?',tangentChord:'Меняй дугу AB. Сравни её с углом между касательной в A и хордой AB.',cyclic:'Двигай вершину D по окружности. Сравни противоположные углы A и C.',sine:'Меняй радиус и угол. Сравни длину хорды BC с синусом вписанного угла A.',isosceles:'Меняй угол при основании. Сравни два угла при основании и угол при вершине.',trapezoidAngles:'Меняй нижний угол равнобедренной трапеции. Сравни углы при каждом основании.',circleAngle:'Двигай точку C по большой дуге AB. Затем меняй центральный угол: сравни два угла над одной и той же малой дугой AB.',tangent:'Отодвигай точку P от окружности. Посмотри, какой угол между радиусом OT и касательной PT сохраняется.',chord:'Отодвигай хорду от центра. Сравни расстояние OM и длину хорды AB.',incircle:'Меняй радиус. Сравни его с расстоянием между двумя параллельными касательными.',squareIncircle:'Меняй радиус вписанной окружности. Сравни диаметр со стороной квадрата, затем найди площадь.',trapezoidMidSegments:'Меняй основания трапеции. Проведи диагональ и сравни два отрезка средней линии с основаниями.',regular:'Выбери число сторон. Сравни радиус описанной окружности с расстоянием от центра до стороны.',power:'Передвигай точку P внутри окружности. Сравни произведения отрезков двух хорд.',area:'Меняй наклон, сохраняя основание и высоту. Изменится ли площадь?',square:'Меняй сторону квадрата. Сравни сторону, периметр и площадь: как пройти от периметра к площади?',rhombArea:'Меняй диагонали ромба. Дострой прямоугольник и сравни площади: какую его часть занимает ромб?',rhombHeight:'Меняй сторону и угол ромба. Сравни сторону с высотой; затем найди площадь по основанию и высоте.',diagonal:'Меняй фигуру. Следи за длинами диагоналей и точкой их пересечения.',angles:'Меняй угол. Сравни соседние и противоположные углы.',gridLength:'Меняй горизонтальный и вертикальный шаги. Как найти прямое расстояние между концами?',gridArea:'Сначала выбери основание и высоту. Нажми «Достроить прямоугольник» и сравни площади.',midline:'Меняй размеры. Нажми «Показать среднюю линию»: какие стороны она соединяет?',ratio:'Меняй коэффициент подобия. Сравни, во сколько раз меняются длины и площади.'};
+const captions={arcLength:'Меняй угол и длину окружности. Сравни длины двух дуг.',sector:'Меняй угол и площадь круга. Следи, какую часть круга занимает сектор.',adjacent:'Меняй внутренний угол. Что происходит с соседним внешним углом?',tangentChord:'Меняй дугу AB. Сравни её с углом между касательной в A и хордой AB.',cyclic:'Двигай вершину D по окружности. Сравни противоположные углы A и C.',sine:'Меняй радиус и угол. Сравни длину хорды BC с синусом вписанного угла A.',isosceles:'Меняй угол при основании. Сравни два угла при основании и угол при вершине.',trapezoidAngles:'Меняй нижний угол равнобедренной трапеции. Сравни углы при каждом основании.',circleAngle:'Двигай точку C по большой дуге AB. Затем меняй центральный угол: сравни два угла над одной и той же малой дугой AB.',tangent:'Отодвигай точку P от окружности. Посмотри, какой угол между радиусом OT и касательной PT сохраняется.',chord:'Отодвигай хорду от центра. Сравни расстояние OM и длину хорды AB.',incircle:'Меняй радиус. Сравни его с расстоянием между двумя параллельными касательными.',squareIncircle:'Меняй радиус вписанной окружности. Сравни диаметр со стороной квадрата, затем найди площадь.',trapezoidMidSegments:'Меняй основания трапеции. Проведи диагональ и сравни два отрезка средней линии с основаниями.',regular:'Выбери число сторон. Сравни радиус описанной окружности с расстоянием от центра до стороны.',power:'Передвигай точку P внутри окружности. Сравни произведения отрезков двух хорд.',area:'Меняй наклон, сохраняя основание и высоту. Изменится ли площадь?',square:'Меняй сторону квадрата. Сравни сторону, периметр и площадь: как пройти от периметра к площади?',rhombArea:'Меняй диагонали ромба. Дострой прямоугольник и сравни площади: какую его часть занимает ромб?',rhombHeight:'Меняй сторону и угол ромба. Сравни сторону с высотой; затем найди площадь по основанию и высоте.',diagonal:'Меняй фигуру. Следи за длинами диагоналей и точкой их пересечения.',angles:'Меняй угол. Сравни соседние и противоположные углы.',gridLength:'Меняй горизонтальный и вертикальный шаги. Как найти прямое расстояние между концами?',gridArea:'Сначала выбери основание и высоту. Нажми «Достроить прямоугольник» и сравни площади.',midline:'Меняй размеры. Нажми «Показать среднюю линию»: какие стороны она соединяет?',ratio:'Меняй коэффициент подобия. Сравни, во сколько раз меняются длины и площади.'};
 function model(host,kind,shape){
  host.dataset.geometryModel=kind;host.append(el('p',captions[kind],'ocg-instruction'),el('p','Это отдельная учебная модель. Её числа не являются ответом к твоей задаче.','ocg-note'));
  const ctl=controls(host),draw=frame(host,captions[kind]),out=el('output',null,'ocg-reading');out.setAttribute('aria-live','polite');host.append(out);
@@ -4054,6 +4900,27 @@ function model(host,kind,shape){
  }else if(kind==='circleAngle'){
   const angle=range(ctl,'central','Центральный угол AOB, °',40,180,80,2),position=range(ctl,'vertex','Положение точки C на большой дуге, °',220,340,255,5);
   watch([angle,position],()=>{const a=+angle.value,A=circ(220,145,105,20),B=circ(220,145,105,20+a),C=circ(220,145,105,+position.value);draw(`<circle cx="220" cy="145" r="105" class="ocg-circle"/>`+line(...A,...B,'ocg-dashed')+line(220,145,...A)+line(220,145,...B)+line(...C,...A,'ocg-blue')+line(...C,...B,'ocg-blue')+point(...A,'A')+point(...B,'B')+point(...C,'C',8,22)+point(220,145,'O',-24,6));out.textContent=`Центральный угол: ${a}°. Вписанный угол ACB: ${a/2}°. При движении C по этой дуге вписанный угол не меняется.`;});
+ }else if(kind==='sector'){
+  const angle=range(ctl,'central','Центральный угол, °',30,150,90,15);
+  const area=range(ctl,'area','Площадь круга, см²',60,300,120,30);
+  watch([angle,area],()=>{
+   const a=+angle.value,s=+area.value,r=105;
+   const A=circ(220,145,r,90-a/2),B=circ(220,145,r,90+a/2);
+   const sector=`<path d="M 220 145 L ${A.join(' ')} A ${r} ${r} 0 0 0 ${B.join(' ')} Z" class="ocg-shape"/>`;
+   draw(`<circle cx="220" cy="145" r="${r}" class="ocg-circle"/>`+sector+point(220,145,'O',0,22)+point(...A,'A')+point(...B,'B',-22,-8)+label(220,124,a+'°'));
+   out.textContent=`Сектор занимает ${a} из 360 градусов. Его площадь равна ${s} · ${a} : 360 = ${fmt(s*a/360)} см².`;
+  });
+ }else if(kind==='arcLength'){
+  const angle=range(ctl,'central','Угол меньшей дуги, °',36,144,72,9);
+  const perimeter=range(ctl,'perimeter','Длина всей окружности, см',40,240,120,40);
+  watch([angle,perimeter],()=>{
+   const a=+angle.value,c=+perimeter.value,r=73+c/8;
+   const A=circ(220,145,r,90-a/2),B=circ(220,145,r,90+a/2);
+   const minor=`<path d="M ${A.join(' ')} A ${r} ${r} 0 0 0 ${B.join(' ')}" class="ocg-blue" fill="none"/>`;
+   draw(`<circle cx="220" cy="145" r="${r}" class="ocg-circle"/>`+minor+line(220,145,...A)+line(220,145,...B)
+    +point(220,145,'O',0,25)+point(...A,'A')+point(...B,'B',-22,-8)+label(220,124,a+'°'));
+   out.textContent=`Меньшей дуге соответствует ${a}°, её длина ${fmt(c*a/360)} см. Большая дуга соответствует ${360-a}°, её длина ${fmt(c*(360-a)/360)} см.`;
+  });
  }else if(kind==='tangentChord'){
   const angle=range(ctl,'arc','Дуга AB, °',40,160,100,5);
   watch([angle],()=>{const a=+angle.value,A=[325,145],B=circ(220,145,105,a);draw(`<circle cx="220" cy="145" r="105" class="ocg-circle"/>`+line(325,25,325,260,'ocg-dashed')+line(...A,...B,'ocg-blue')+line(220,145,...A)+point(...A,'A',10,20)+point(...B,'B',-20,-8)+point(220,145,'O',-20,20)+label(365,30,'касательная'));out.textContent=`Угол между хордой AB и верхним лучом касательной равен ${a/2}° — половине дуги AB (${a}°). Радиус OA перпендикулярен касательной.`;});
@@ -4148,7 +5015,7 @@ function model(host,kind,shape){
  }
  return host;
 }
-const refs16={insc:['circleAngle',['inscribed_angles'],[]],radiso:['circleAngle',['isosceles','circle_definition'],[]],cyclq:['cyclic',['inscribed_angles','circumcircle'],[]],reg:['regular',['regular_polygon'],['equilateral-triangle']],sinr:['sine',['circumcircle','trigonometry'],['sine-cosine']],chord:['chord',['equal_chords','pythagoras'],['pythagoras']],spr:['incircle',['incircle','triangle_area'],['triangle-area']],tangq:['tangent',['tangent','incircle'],[]],tang:['tangent',['tangent'],[]],power:['power',['triangle_similarity','inscribed_angles'],[]]};
+const refs16={arcLength:['arcLength',['circle_length_area'],['circle']],sector:['sector',['circle_length_area'],['circle']],insc:['circleAngle',['inscribed_angles'],[]],radiso:['circleAngle',['isosceles','circle_definition'],[]],cyclq:['cyclic',['inscribed_angles','circumcircle'],[]],reg:['regular',['regular_polygon'],['equilateral-triangle']],sinr:['sine',['circumcircle','trigonometry'],['sine-cosine']],chord:['chord',['equal_chords','pythagoras'],['pythagoras']],spr:['incircle',['incircle','triangle_area'],['triangle-area']],tangq:['tangent',['tangent','incircle'],[]],tang:['tangent',['tangent'],[]],power:['power',['triangle_similarity','inscribed_angles'],[]]};
 const refs17={sqf:['square',['square','pythagoras'],['pythagoras']],rectd:['diagonal',['rectangle','pythagoras'],['pythagoras']],rhombprop:['diagonal',['rhombus'],[]],parprop:['angles',['parallelogram'],[]],parallel:['angles',['parallel_angles'],[]],anglesum:['angles',['polygon_angles'],['polygon-angles']],isotri:['isosceles',['isosceles'],[]],isotrap:['trapezoidAngles',['isosceles_trapezoid'],[]],simtri:['ratio',['triangle_similarity'],[]],spar:['area',['parallelogram_area'],['parallelogram-area']],srhomb:['diagonal',['rhombus_area'],['rhombus-area']],strap:['area',['trapezoid_area'],['trapezoid-area']]};
 const refs18={pyth:['gridLength',['pythagoras'],['pythagoras']],midtri:['midline',['triangle_midline'],['midlines']],midtrap:['midline',['trapezoid_midline'],['midlines']],stri:['gridArea',['triangle_area'],['triangle-area']],spar:['area',['parallelogram_area'],['parallelogram-area']],srhomb:['diagonal',['rhombus_area'],['rhombus-area']],strap:['area',['trapezoid_area'],['trapezoid-area']],tan:['gridLength',['trigonometry'],['pythagoras','trig-values']],sim:['ratio',['triangle_similarity'],[]],circ:['ratio',['circle_length_area','similarity_area'],['circle']],cells:['gridArea',['equal_area','triangle_area'],['triangle-area']]};
 function current(){
@@ -4161,9 +5028,9 @@ function config(info){if(page===16&&info.key==='sqCircum')return ['squareIncircl
 function answerInstruction(info){
  const d=doc.createElement('div');d.innerHTML=info.text;const text=d.textContent;
  if(info.task.ansFmt==='concat')return 'Найди длины и запиши их подряд в порядке, который указан в условии.';
- const sentences=text.split(/(?<=[.!?])\s+/);let ask=sentences.filter(s=>/найд|определ|вычисл|чему рав/i.test(s)).pop()||'Найди величину, которую спрашивают в условии.';
+ const sentences=text.split(/(?<=[.!?])\s+/);let ask=sentences.filter(s=>/найд|определ|вычисл|чему рав/i.test(s)||(page===18&&/во сколько раз/i.test(s))).pop()||'Найди величину, которую спрашивают в условии.';
  ask=ask.replace(/^.*?(?=Найдите|Найди|Определите|Вычислите)/,'').trim();
- const unit=/градус/i.test(text)?' Запиши число градусов без значка °.':/площад/i.test(ask)?' Запиши числовое значение площади в единицах условия.':/отношени|тангенс|косинус|синус/i.test(ask)?' Запиши число.':' Запиши число в единицах условия.';
+ const unit=page===18&&/во сколько раз/i.test(ask)?' Введи число: во сколько раз.':/градус/i.test(text)?' Запиши число градусов без значка °.':/площад/i.test(ask)?' Запиши числовое значение площади в единицах условия.':/отношени|тангенс|косинус|синус/i.test(ask)?' Запиши число.':' Запиши число в единицах условия.';
  return ask+unit;
 }
 function preserveDraft(input,identity){
@@ -4178,17 +5045,35 @@ function enhance(){
  const panel=q('#courseHintPanel'),toggle=q('#courseHintToggle'),input=q(page===18?'#ansIn':'#ans'),info=current();
  if(!panel||!toggle||!input||!info||panel.dataset.geometryReady)return;
  panel.dataset.geometryReady='1';doc.body.classList.add('ocg-page');
- const identity=page+'|'+info.key+'|'+info.text;
+ const identity=page+'|'+info.key+'|'+info.text+(page===18?'|'+JSON.stringify(info.task.p):'');
  input.setAttribute('aria-label',answerInstruction(info));preserveDraft(input,identity);
  const prompt=el('label',answerInstruction(info),'ocg-answer-label');prompt.htmlFor=input.id;input.parentElement.before(prompt);
+ const taskBound=page===18&&typeof Oge18TaskDiagram!=='undefined'&&Oge18TaskDiagram.supports(info.task);
  const [kind,topics,crops]=config(info),explore=details('Дополнительно: попробовать на других числах');explore.dataset.geometryDiscovery='1';model(explore,kind,info.shape);panel.append(explore);
+ // Older room packets carry this model's controls. Keep that state round-trip
+ // compatible, while teaching only with the actual task's diagram and numbers.
+ // It is intentionally absent from both the visible UI and accessibility tree.
+ if(taskBound){explore.hidden=true;explore.setAttribute('aria-hidden','true');explore.dataset.oge18LegacyModel='1';}
  const applied=details('Как применить это к моему заданию?');applied.append(el('p','1. Найди на своём рисунке отрезки или углы, о которых говорит правило.'),el('p','2. Сверь все условия правила: прямой угол, параллельность, касание или положение точек.'),el('p','3. Подставь данные своей задачи. Запиши ответ в поле под условием.'));const law=el('div',null,'ocg-law');law.innerHTML=info.law;applied.append(law);panel.append(applied);
  const referenceBox=el('section',null,'ocg-reference-box');references(referenceBox,topics,crops);panel.append(referenceBox);
- const returnButton=button('Вернуться к моему ответу',()=>{if(!panel.hidden)toggle.click();input.focus();});panel.append(returnButton);
+ if(taskBound){
+  applied.replaceChildren(el('summary','Правило для этой задачи'),el('p',SUBS[info.key].law));
+  // The old segCmp metadata points to Pythagoras. This horizontal-segment
+  // exercise only needs division; retain packet slots without showing that link.
+  if(info.key==='segCmp'){
+   referenceBox.hidden=true;referenceBox.setAttribute('aria-hidden','true');
+   for(const link of all('#courseSettings [data-act="ref"]')){
+    link.textContent='Правило для этой задачи';
+    link.onclick=()=>{if(panel.hidden)toggle.click();applied.open=true;q('summary',applied)?.focus();};
+   }
+  }
+ }
+ const returnButton=button('Вернуться к моему ответу',()=>{if(!panel.hidden)toggle.click();if(page===18&&input.disabled)q('#nextBtn')?.focus();else input.focus();});panel.append(returnButton);
  const update=()=>toggle.textContent=panel.hidden?'Разобрать по шагам':'Скрыть объяснение';toggle.addEventListener('click',update);update();
  // Same-page references must not replace the task or discard its typed answer.
  const main=q('#main');if(main&&!main.dataset.geometryReferences){main.dataset.geometryReferences='1';main.addEventListener('click',event=>{const link=event.target.closest('.refcall,[data-act="ref"],#toRef2,#toSheet2');if(!link||!q('#courseHintPanel'))return;event.preventDefault();event.stopImmediatePropagation();const live=q('#courseHintPanel');if(live.hidden)q('#courseHintToggle').click();const box=q('.ocg-reference-box',live);if(box){all('details',box).forEach(d=>d.open=true);box.scrollIntoView?.({block:'nearest'});q('summary',box)?.focus();}},true);}
  for(const figure of all('#main .diagram,#main .fig,#main .figwrap')){if(figure.closest('#courseHintPanel'))continue;figure.classList.add('ocg-primary-figure');
+  if(page===18&&figure.hasAttribute('data-oge18-task-diagram')){figure.setAttribute('role','region');figure.setAttribute('aria-label','Чертёж к условию');continue;}
   const svg=q('svg',figure);if(svg){const vb=(svg.getAttribute('viewBox')||'0 0 440 290').split(/\s+/).map(Number),fonts=all('text',svg).map(t=>+t.getAttribute('font-size')).filter(n=>n>0),smallest=fonts.length?Math.min(...fonts):18;svg.style.width=Math.max(440,vb[2]*Math.max(1,18/smallest))+'px';svg.style.maxWidth='none';}
   figureNavigation(figure,'Чертёж к условию');
  }

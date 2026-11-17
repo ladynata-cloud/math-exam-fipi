@@ -1,10 +1,12 @@
 'use strict';
-// Invert only the nine reviewed, additive lesson includes. The historical
-// candidate/engine hashes remain the authority for every other byte.
+// Invert only the reviewed lesson includes and exact page-specific deltas.
+// Historical candidate/engine hashes remain the authority for every other byte.
 const assert = require('node:assert/strict');
 const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const graphIntersections = require('./fixtures/oge22-intersections-display.json');
+const {restoreSourceAlignment} = require('./oge-source-alignment-20-22.cjs');
+const task19CacheVersions = require('./fixtures/task19-major-source-cache-versions.json');
 const entries = Object.freeze({
   11: 'trainers/oge-task11-graphs-trainer.html',
   15: 'trainers/oge-task15-triangles.html',
@@ -16,6 +18,9 @@ const entries = Object.freeze({
   24: 'trainers/oge-task24-proofs.html',
   25: 'trainers/oge-task25-geometry.html'
 });
+// Keep all historical routes above for exact inverses and immutable book pins.
+// Task 19 now uses only its card-specific help; other live entries retain lessons.
+const activeEntries = Object.freeze(Object.fromEntries(Object.entries(entries).filter(([number]) => number !== '19')));
 const assets = Object.freeze(['trainers/oge-video-models.css', 'trainers/oge-video-graphs.js', 'trainers/oge-video-geometry.js', 'trainers/oge-video-models.js']);
 function snippet(number) {
   assert(Object.hasOwn(entries, number), 'Unknown video-model task');
@@ -37,11 +42,21 @@ function restoreVideoModels(file, source) {
   assert(teaching.includes(include + '</head>'), file + ': video models stay at the reviewed head boundary');
   const restored = teaching.replace(include, '');
   assert(!marker.test(restored), file + ': no altered, duplicate or hidden lesson dependency');
-  return restored;
+  // Keep the marker-absent branch unchanged: receipts require the exact addon
+  // block, not merely a cache-version difference, before comparing native pins.
+  return restoreTask19CacheVersions(file, restored);
+}
+function restoreTask19CacheVersions(file, source) {
+  if (file !== task19CacheVersions.file) return source;
+  const fragments = task19CacheVersions.fragments;
+  // One indivisible six-tag delta. Mixed versions, altered tags and duplicates
+  // stay untouched and fail the existing full native HTML hash.
+  if (!fragments.every(({before, after}) => source.split(after).length === 2 && !source.includes(before))) return source;
+  return fragments.reduce((restored, {before, after}) => restored.replace(after, before), source);
 }
 function restoreGraphScale(file, source) {
   if (file !== graphScale.file) return source;
-  const parts = source.split(graphScale.after);
+  const parts = restoreSourceAlignment(file, source).split(graphScale.after);
   // An ambiguous projection must remain untouched, including any later delta.
   return parts.length === 2 ? restoreGraphIntersections(file, parts.join(graphScale.before)) : source;
 }
@@ -53,4 +68,4 @@ function restoreGraphIntersections(file, source) {
   if (!fragments.every(fragment => source.split(fragment.after).length === 2)) return source;
   return fragments.reduce((restored, fragment) => restored.replace(fragment.after, fragment.before), source);
 }
-module.exports = { entries, assets, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections };
+module.exports = { entries, activeEntries, assets, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections, restoreTask19CacheVersions };
