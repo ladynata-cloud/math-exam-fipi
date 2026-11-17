@@ -53,8 +53,10 @@
     current=null;
     main.innerHTML=`<nav class="crumb"><a href="#">Все разделы</a><span>›</span><span>${u.grade} класс · § ${u.id}</span></nav><p class="eyebrow">К учебнику · с. ${u.pages[0]}–${u.pages[1]}</p><h1>${esc(u.title)}</h1><p class="intro">Выбери номер из своего учебника. В этом разделе ${u.tasks.length} тренажёров; выбранные подпункты указаны у каждого.</p><details class="card rules"><summary>Короткая памятка к параграфу</summary>${rules(u)}</details><div class="task-list">${u.tasks.map(t=>taskCard(u,t)).join('')}</div><p class="footer-line">Пройденные задания показывают выполненную работу. Они не означают, что весь параграф уже освоен. Для проверки без помощи выбери ещё не разобранный номер.</p>`;
   }
+  let modelCase = 0;
+  const shownModel = t => modelCase === 1 && t.anotherModel ? t.anotherModel : t.model;
   function svg(t,phase,full=false){
-    const v=t.model,ps=v.points,all=Object.values(ps), xs=all.map(p=>p.x),ys=all.map(p=>p.y);
+    const v=shownModel(t),ps=v.points,all=Object.values(ps), xs=all.map(p=>p.x),ys=all.map(p=>p.y);
     (v.circles||[]).forEach(c=>{xs.push(c.x-c.r,c.x+c.r);ys.push(c.y-c.r,c.y+c.r);});
     if(v.axes){xs.push(0);ys.push(0);}
     let minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys);
@@ -88,7 +90,7 @@
   function draw(t,p){
     const el=document.getElementById('drawing');if(el)el.innerHTML=svg(t,phase(t,p));
     el?.querySelectorAll('[data-line]').forEach(g=>{
-      const select=()=>{selectedLine=g.dataset.line;draw(t,p);const e=t.model.lines[Number(selectedLine)];document.getElementById('model-tip').textContent='Выбран отрезок '+e.a+e.b+'.';document.querySelector(`[data-line="${selectedLine}"]`)?.focus();};
+      const select=()=>{selectedLine=g.dataset.line;draw(t,p);const e=shownModel(t).lines[Number(selectedLine)];document.getElementById('model-tip').textContent='Выбран отрезок '+e.a+e.b+'.';document.querySelector(`[data-line="${selectedLine}"]`)?.focus();};
       g.addEventListener('click',select);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select();}});
     });
   }
@@ -104,10 +106,17 @@
   }
   function taskView(u,t){
     current=t.id;const r=record(t),p=r.p;const localIndex=u.tasks.findIndex(x=>x.id===t.id);
-    main.innerHTML=`<nav class="crumb"><a href="#">Все разделы</a><span>›</span><a href="${unitLink(u)}">§ ${u.id}. ${esc(u.title)}</a></nav>${source(u,t)}<h1 class="task-heading">${esc(t.title)}</h1><p class="intro">${fmt(t.goal)}</p>${r.blocked?`<div class="alert">${esc(r.reason)} <button id="reload-state" type="button">Открыть сохранённую версию</button></div>`:''}<div class="workspace"><div class="workpane"><div class="mode-switch"><button id="independent" type="button" class="${p.mode==='independent'?'selected':''}">Решаю сам</button><button id="guided" type="button" class="${p.mode==='guided'?'selected':''}">Разобрать по шагам</button></div><details id="theory" class="card rules" ${p.theory?'open':''}><summary>Нужное правило</summary>${rules(u)}</details>${p.mode==='guided'?t.steps.slice(0,Math.min(t.steps.length,p.done+1)).map((_,i)=>renderStep(t,p,i)).join(''):''}${p.mode==='guided'&&p.done===t.steps.length?'<p class="complete">Разбор завершён. Все шаги остались на экране. Теперь запиши итог.</p>':''}${p.mode==='independent'||p.done===t.steps.length?finalForm(t,p):''}</div><aside class="model-card"><figure><div id="drawing"></div><figcaption>${esc(t.model.caption)}</figcaption></figure><div class="model-tools"><button id="enlarge" type="button">Увеличить чертёж</button>${maxPhase(t)>0?`<button id="construction" type="button" ${phase(t,p)>=maxPhase(t)?'disabled':''}>Следующее построение</button>`:''}</div><p class="model-tip" id="model-tip">Нажми на отрезок, чтобы выделить его.</p>${t.notes?`<p class="info">${fmt(t.notes)}</p>`:''}</aside></div><div class="task-footer"><a class="button" href="${unitLink(u)}">Все задачи § ${u.id}</a>${localIndex+1<u.tasks.length?`<a class="button" href="${link(u.tasks[localIndex+1])}">Следующий тренажёр →</a>`:u.id<15?`<a class="button" href="#section/${u.id+1}">Следующий параграф →</a>`:''}</div><p class="footer-line">${p.assisted?'Помощь использована — эта отметка сохранится и после закрытия подсказки.':'Можно сначала решить без помощи, затем проверить ответ.'} Условие задачи находится в учебнике; здесь — авторский учебный разбор MathExam.</p>`;
+    main.innerHTML=`<nav class="crumb"><a href="#">Все разделы</a><span>›</span><a href="${unitLink(u)}">§ ${u.id}. ${esc(u.title)}</a></nav>${source(u,t)}<h1 class="task-heading">${esc(t.title)}</h1><p class="intro">${fmt(t.goal)}</p>${r.blocked?`<div class="alert">${esc(r.reason)} <button id="reload-state" type="button">Открыть сохранённую версию</button></div>`:''}<div class="workspace"><div class="workpane"><div class="mode-switch"><button id="independent" type="button" class="${p.mode==='independent'?'selected':''}">Решаю сам</button><button id="guided" type="button" class="${p.mode==='guided'?'selected':''}">Разобрать по шагам</button></div><details id="theory" class="card rules" ${p.theory?'open':''}><summary>Нужное правило</summary>${rules(u)}</details>${p.mode==='guided'?t.steps.slice(0,Math.min(t.steps.length,p.done+1)).map((_,i)=>renderStep(t,p,i)).join(''):''}${p.mode==='guided'&&p.done===t.steps.length?'<p class="complete">Разбор завершён. Все шаги остались на экране. Теперь запиши итог.</p>':''}${p.mode==='independent'||p.done===t.steps.length?finalForm(t,p):''}</div><aside class="model-card">${t.modelCases?`<label class="case-picker" for="model-case">Положение на чертеже<select id="model-case">${t.modelCases.map((name,i)=>`<option value="${i}" ${i===modelCase?'selected':''}>${esc(name)}</option>`).join('')}</select></label>`:''}<figure><div id="drawing"></div><figcaption>${esc(shownModel(t).caption)}</figcaption></figure><div class="model-tools"><button id="enlarge" type="button">Увеличить чертёж</button>${maxPhase(t)>0?`<button id="construction" type="button" ${phase(t,p)>=maxPhase(t)?'disabled':''}>Следующее построение</button>`:''}</div><p class="model-tip" id="model-tip">Нажми на отрезок, чтобы выделить его.</p>${t.notes?`<p class="info">${fmt(t.notes)}</p>`:''}</aside></div><div class="task-footer"><a class="button" href="${unitLink(u)}">Все задачи § ${u.id}</a>${localIndex+1<u.tasks.length?`<a class="button" href="${link(u.tasks[localIndex+1])}">Следующий тренажёр →</a>`:u.id<15?`<a class="button" href="#section/${u.id+1}">Следующий параграф →</a>`:''}</div><p class="footer-line">${p.assisted?'Помощь использована — эта отметка сохранится и после закрытия подсказки.':'Можно сначала решить без помощи, затем проверить ответ.'} Условие задачи находится в учебнике; здесь — авторский учебный разбор MathExam.</p>`;
     draw(t,p);
     const on=(id,event,fn)=>document.getElementById(id)?.addEventListener(event,fn);
     const rerender=()=>{save(t);taskView(u,t);};
+    on('model-case','change',e=>{
+      modelCase=Number(e.target.value);
+      selectedLine='';
+      draw(t,p);
+      main.querySelector('figcaption').textContent=shownModel(t).caption;
+      document.getElementById('model-tip').textContent='Нажми на отрезок, чтобы выделить его.';
+    });
     on('independent','click',()=>{p.mode='independent';feedback=null;rerender();});
     on('guided','click',()=>{p.mode='guided';help(t);feedback=null;rerender();});
     const theory=document.getElementById('theory');theory.addEventListener('toggle',()=>{if(current!==t.id||!theory.isConnected)return;if(theory.open===p.theory)return;p.theory=theory.open;if(p.theory)help(t);save(t);const badge=document.querySelector('#final-answer .badge');if(badge)badge.textContent=M.status(p,t);if(p.assisted)document.querySelector('.footer-line').textContent='Помощь использована — эта отметка сохранится и после закрытия подсказки. Условие задачи находится в учебнике; здесь — авторский учебный разбор MathExam.';});
@@ -133,12 +142,12 @@
     on('save-proof','click',()=>{p.manual=!!p.notes.trim();feedback={area:'manual',kind:p.manual?'success':'error',text:p.manual?'Запись сохранена для обсуждения с преподавателем.':'Добавь рассуждение или напиши, что построение выполнено в тетради.'};rerender();});
     on('construction','click',()=>{p.modelStage=Math.min(maxPhase(t),phase(t,p)+1);help(t);rerender();});
     on('enlarge','click',()=>{
-      dialog=document.createElement('dialog');dialog.innerHTML=`<div class="dialog-top"><h2>${esc(t.title)}</h2><button type="button" id="close-model">Закрыть</button></div>${svg(t,phase(t,p),true)}<p class="info">${esc(t.model.caption)}</p>`;document.body.append(dialog);dialog.showModal();dialog.querySelector('button').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{dialog.remove();dialog=null;document.getElementById('enlarge')?.focus();});
+      dialog=document.createElement('dialog');dialog.innerHTML=`<div class="dialog-top"><h2>${esc(t.title)}</h2><button type="button" id="close-model">Закрыть</button></div>${svg(t,phase(t,p),true)}<p class="info">${esc(shownModel(t).caption)}</p>`;document.body.append(dialog);dialog.showModal();dialog.querySelector('button').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{dialog.remove();dialog=null;document.getElementById('enlarge')?.focus();});
     });
     on('reload-state','click',()=>{cache.delete(t.id);feedback=null;taskView(u,t);});
   }
   function route(){
-    if(dialog)dialog.close();feedback=null;selectedLine='';
+    if(dialog)dialog.close();feedback=null;selectedLine='';modelCase=0;
     const hash=location.hash.slice(1),m=hash.match(/^task\/(p\d+-n\d+(?:-[a-zа-я0-9-]+)?)$/),s=hash.match(/^section\/(\d+)$/);
     if(m&&tasks.has(m[1])){const {u,t}=tasks.get(m[1]);taskView(u,t);}
     else if(s&&units.has(Number(s[1])))section(units.get(Number(s[1])));
