@@ -235,6 +235,13 @@ async function standalone(browser, origin) {
       await page.getByText('Проверь ответы в отмеченных полях', { exact: false }).waitFor();
       assert.equal(await page.locator('#answer-0').getAttribute('aria-invalid'), 'true');
       await setAnswer(page, lesson.practice.fields[0], 0);
+    } else {
+      await setAnswer(page, lesson.practice.fields[0], 0, '-999');
+      await page.getByRole('button', { name: 'Проверить ответы' }).click();
+      await page.getByText(lesson.practice.retry[0], { exact: true }).waitFor();
+      assert.equal(await page.locator('#answer-0').inputValue(), '-999');
+      assert.equal(await page.locator('#sample').count(), 0);
+      await setAnswer(page, lesson.practice.fields[0], 0);
     }
     if (lesson.practice.proof) await page.locator('#proof-draft').fill('Моё обоснование: 5 < x; пример.');
     await page.getByRole('button', { name: 'Проверить ответы' }).click();

@@ -15,7 +15,17 @@ const cases=[
 {id:'fraction',title:'Дробь: ноль и запрет',expr:'(x + 2) / (x − 3) > 0',roots:[-2,3],zones:[true,false,true],closed:[false,false],domain:x=>Math.abs(x-3)>eps,value:x=>(x+2)/(x-3),accept:v=>v>eps,domainOptions:['Все действительные числа','x ≠ 3','x > −2'],domainAnswer:1,boundary:'Нуль числителя и нуль знаменателя',boundaryAnswer:[-2,3],why:'Снаружи двух границ числитель и знаменатель одного знака. −2 даёт ноль, но нужен плюс. При 3 дробь не определена.',hint:'Нельзя умножать на x − 3, не учитывая его знак. Используйте интервалы.',answer:'(−∞; −2) ∪ (3; +∞)'},
 {id:'reciprocal',title:'Почему знак ≥ не включает все границы',expr:'1 / ((x + 2)(x − 3)) ≥ 0',roots:[-2,3],zones:[true,false,true],closed:[false,false],domain:x=>Math.abs((x+2)*(x-3))>eps,value:x=>1/((x+2)*(x-3)),accept:v=>v>=-eps,domainOptions:['Все действительные числа','x ≠ −2 и x ≠ 3','x ≥ −2'],domainAnswer:1,boundary:'Нули знаменателя',boundaryAnswer:[-2,3],why:'Числитель 1 никогда не равен нулю. Знаменатель должен быть положительным; обе границы запрещены даже при знаке ≥.',hint:'Сначала ОДЗ: равенство нулю в знаменателе запрещено при любом знаке.',answer:'(−∞; −2) ∪ (3; +∞)'},
 {id:'log',title:'Логарифм: сначала область определения',expr:'log₂(x − 1) ≤ 2',roots:[1,5],zones:[false,true,false],closed:[false,true],domain:x=>x>1,value:x=>Math.log2(x-1)-2,accept:v=>v<=eps,domainOptions:['x ≥ 1','x > 1','Все действительные числа'],domainAnswer:1,boundary:'Граница ОДЗ и корень log₂(x − 1) = 2',boundaryAnswer:[1,5],why:'Аргумент x − 1 > 0. При основании 2 логарифм возрастает: x − 1 ≤ 4. Пересечение условий: 1 < x ≤ 5.',hint:'Граница ОДЗ не входит. При основании больше 1 направление неравенства сохраняется.',answer:'(1; 5]'},
-{id:'exponential',title:'Основание между нулём и единицей',expr:'(1/2)^(x − 1) ≥ 4',roots:[-1],zones:[true,false],closed:[true],domain:x=>true,value:x=>Math.pow(.5,x-1)-4,accept:v=>v>=-eps,domainOptions:['x > 1','x ≠ −1','Все действительные числа'],domainAnswer:2,boundary:'x − 1 = −2, поскольку 4 = (1/2)⁻²',boundaryAnswer:[-1],why:'Степенная функция с основанием 1/2 убывает. Поэтому x − 1 ≤ −2, откуда x ≤ −1.',hint:'Сравните (1/2)¹ и (1/2)²: большему показателю соответствует меньшее число.',answer:'(−∞; −1]'}
+{id:'exponential',title:'Основание между нулём и единицей',expr:'(1/2)^(x − 1) ≥ 4',roots:[-1],zones:[true,false],closed:[true],domain:x=>true,value:x=>Math.pow(.5,x-1)-4,accept:v=>v>=-eps,domainOptions:['x > 1','x ≠ −1','Все действительные числа'],domainAnswer:2,boundary:'x − 1 = −2, поскольку 4 = (1/2)⁻²',boundaryAnswer:[-1],why:'Степенная функция с основанием 1/2 убывает. Поэтому x − 1 ≤ −2, откуда x ≤ −1.',hint:'Сравните (1/2)¹ и (1/2)²: большему показателю соответствует меньшее число.',answer:'(−∞; −1]'},
+{
+ id:'double-zero',title:'Квадрат в числителе',expr:'(x + 2)² / (x − 3) ≥ 0',
+ roots:[-2,3],zones:[false,false,true],closed:[true,false],
+ domain:x=>x!==3,value:x=>(x+2)**2/(x-3),accept:v=>v>=0,
+ domainOptions:['Все действительные числа','x ≠ 3','x ≠ −2 и x ≠ 3'],domainAnswer:1,
+ boundary:'При каких x числитель или знаменатель равен нулю?',boundaryAnswer:[-2,3],
+ hint:'Сравните значения при x = −3 и x = −1. Что получается в самой точке −2?',
+ why:'Слева от 3 знаменатель отрицателен. Числитель положителен всюду, кроме −2. В самой точке −2 дробь равна нулю, поэтому эта отдельная точка входит. Справа от 3 дробь положительна.',
+ answer:'{−2} ∪ (3; +∞)'
+}
 ];
 function contains(t,x){if(!t.domain(x))return false;return t.accept(t.value(x));}
 function selectedContains(t,x,zones,closed){const i=t.roots.findIndex(r=>Math.abs(x-r)<eps);if(i>=0)return closed[i];return zones[t.roots.filter(r=>x>r).length];}

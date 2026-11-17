@@ -1786,12 +1786,30 @@ function renderExamResult(){
 }
 
 /* ---------- проверка ---------- */
+function answerRatio(raw){
+  const value = String(raw ?? '').trim().replace(/−/g, '-').replace(/,/g, '.');
+  if (value.length > 120) return null;
+  const parts = value.split('/').map(part => part.trim());
+  if (parts.length > 2 || parts.some(part => !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(part))) return null;
+  function decimal(part){
+    const [whole, digits = ''] = part.replace(/^[+-]/, '').split('.');
+    const numerator = BigInt(whole + digits) * (part.startsWith('-') ? -1n : 1n);
+    return [numerator, 10n ** BigInt(digits.length)];
+  }
+  const [top, scale] = decimal(parts[0]);
+  if (parts.length === 1) return [top, scale];
+  const [bottom, divisorScale] = decimal(parts[1]);
+  return bottom === 0n ? null : [top * divisorScale, scale * bottom];
+}
 function parseNum(str){
-  let s = String(str == null ? '' : str).trim().replace(/\s+/g, '').replace(',', '.').replace('\u2212', '-');
-  if (!s) return NaN;
-  const m = s.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);
-  if (m) return Number(m[1]) / Number(m[2]);
-  return /^-?\d+(?:\.\d+)?$/.test(s) ? Number(s) : NaN;
+  const value = answerRatio(str);
+  return value ? Number(value[0]) / Number(value[1]) : NaN;
+}
+function matchesAnswer(raw, expected){
+  const value = answerRatio(raw);
+  // Both generators display finite decimals with at most six places.
+  const key = answerRatio(expected.toFixed(6));
+  return !!(value && key && value[0] * key[1] === key[0] * value[1]);
 }
 const EPS = 1e-6;
 function diagnose(x, t){
@@ -1805,7 +1823,7 @@ function checkTrain(){
   inp.classList.remove('ok', 'bad');
   if (isNaN(x)){ inp.classList.add('bad'); state.fb = { type: 'hint', html: 'Введите число: с запятой (0,5), с точкой или обыкновенной дробью (1/2).' }; return renderTrainCard(); }
   const s = tstat(t.id);
-  if (Math.abs(x - t.ans) < EPS){
+  if (matchesAnswer(inp.value, t.ans)){
     state.finished = true;
     if (!state.counted){
       state.counted = true; s.solved++;
@@ -1834,7 +1852,7 @@ function examCheck(){
   const inp = $('#taskArea input.num');
   const x = parseNum(inp.value);
   if (isNaN(x)){ state.fb = { type: 'hint', html: 'Введите число — иначе ответ не засчитается.' }; return renderExam(); }
-  const mathematicallyCorrect = Math.abs(x - t.ans) < EPS;
+  const mathematicallyCorrect = matchesAnswer(inp.value, t.ans);
   const okAns = mathematicallyCorrect&&!z.assisted?.[z.i];
   z.marks[z.i] = okAns; z.answers[z.i] = inp.value.trim();
   if(!z.assisted?.[z.i]||!mathematicallyCorrect)mlog(t.id, mathematicallyCorrect);
