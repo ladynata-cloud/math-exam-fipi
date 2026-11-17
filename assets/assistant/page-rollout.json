@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
+  "baseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "73941ba84119b40d1a78eab600f5aba40c6253fc9ff34c91c8108324ded74b64",
-      "afterSha256": "4aeaf32d7f86c1f61ca008ce6ee52f84bd91c360d7ccaaff93c9c7ed9b77a1db",
+      "beforeSha256": "0dba595cec179134a5aa4f484d4cf882f4f7877ab9612beacbdaa217a4da1004",
+      "afterSha256": "e9be0fcebe951cdecf124749abc8f1b366b65da011f66a86cf020527f6e5e178",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "7cd5fb4f187dacdb75788aaf739ec90a1401674aa199ae2a74980a2ec1fb9660",
-      "afterSha256": "c5e2aa8e3a8c583232dc6c6e60d90362c9a03f3f7547f967e5f2854c5afa14c0",
+      "beforeSha256": "3155e5fc4c717e7935b1a7bf7b8d5ad5333708cc8465a6b779f2f1ce217f1f82",
+      "afterSha256": "ce3843b6397a2a164773a23d1ee4da33ca1554eff66ff2f8bbe58c1282a91bda",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -5370,6 +5370,16 @@
       "sourceBaseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
       "task": "docs/tasks/PROFILE_START_RESEARCH_20261117.md",
       "changedPaths": [
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
+      "sourceBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "task": "docs/tasks/PROFILE_FINANCE_WRITTEN_20261117.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html",
         "ege-profil/start/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
