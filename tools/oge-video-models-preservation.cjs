@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const graphIntersections = require('./fixtures/oge22-intersections-display.json');
+const quadrilateralAngles = require('./fixtures/oge17-right-angles-display.json');
 const entries = Object.freeze({
   11: 'trainers/oge-task11-graphs-trainer.html',
   15: 'trainers/oge-task15-triangles.html',
@@ -46,11 +47,19 @@ function restoreGraphScale(file, source) {
   return parts.length === 2 ? restoreGraphIntersections(file, parts.join(graphScale.before)) : source;
 }
 function restoreGraphIntersections(file, source) {
-  if (file !== graphIntersections.file) return source;
-  const fragments = graphIntersections.fragments;
+  return restoreDisplayFragments(file, source, graphIntersections);
+}
+function restoreReviewedDrawing(file, source) {
+  return file === quadrilateralAngles.file
+    ? restoreDisplayFragments(file, source, quadrilateralAngles)
+    : restoreGraphScale(file, source);
+}
+function restoreDisplayFragments(file, source, rule) {
+  if (file !== rule.file) return source;
+  const fragments = rule.fragments;
   // Match the whole renderer and both call sites as one exact reviewed delta.
   // Partial edits, duplicates and other engine bytes still fail the old pins.
   if (!fragments.every(fragment => source.split(fragment.after).length === 2)) return source;
   return fragments.reduce((restored, fragment) => restored.replace(fragment.after, fragment.before), source);
 }
-module.exports = { entries, assets, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections };
+module.exports = { entries, assets, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections, restoreReviewedDrawing };
