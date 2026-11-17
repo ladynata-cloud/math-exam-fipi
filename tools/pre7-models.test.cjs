@@ -20,7 +20,7 @@ for(const family of D.meta.filter(m=>m.pre7))for(let seed=0;seed<360;seed++){
  else throw Error('Unexpected diagram '+d.type);
  const html=models.drawing(task,m.elements[0].id);assert(!/undefined|NaN|Infinity|<script/i.test(html));assert(html.includes('data-pre7-part'));
  const spec={id:task.id,seed,contentVersion:1,task};
- const restored=state.fresh(spec);restored.work.model={kind:'pre7-lab',selected:m.elements[0].id,revealed:2};assert.deepEqual(state.validate(restored,spec).work.model,restored.work.model);restorations++;
+ const restored=state.fresh(spec);restored.work.model={kind:'pre7-lab',selected:m.elements[0].id,revealed:Math.min(2,task.steps.length)};assert.deepEqual(state.validate(restored,spec).work.model,restored.work.model);restorations++;
  for(const bad of [{kind:'pre7-lab',selected:'foreign-task-part',revealed:0},{kind:'pre7-lab',selected:null,revealed:task.steps.length+1},{kind:'pre7-lab',selected:null,revealed:0,answers:[1]},{kind:'pre7-lab',selected:null,revealed:0.5}])assert.throws(()=>state.model(bad,task));
  variants++;
 }

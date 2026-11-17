@@ -90,7 +90,10 @@
   state.last={skill:id,mode:mode,seed:seed};save();
   if(location.hash!=='#lesson/'+id)location.hash='#lesson/'+id;else lesson();
  }
- function steps(){return session.task.steps.concat([{prompt:'Теперь запиши окончательный ответ к задаче.',answer:session.task.answer,answerFormat:session.task.answerFormat,why:'Сопоставь результат с условием и единицами.',v6Full:session.task.v6Full,errors:session.task.errors,hints:[session.task.m9Full?'Сверь результат с вопросом. Все корни и допустимые границы учтены?':'Сопоставь ответ с вопросом: часть, целое, значение или изменение?','Используй результаты предыдущих шагов. Проверь знак и единицы.']}]);}
+ function steps(){
+  var t=session.task;
+  if(t.steps.length===1&&t.steps[0].prompt===t.prompt&&t.steps[0].answer===t.answer)return t.steps;
+  return t.steps.concat([{prompt:'Теперь запиши окончательный ответ к задаче.',answer:session.task.answer,answerFormat:session.task.answerFormat,why:'Сопоставь результат с условием и единицами.',v6Full:session.task.v6Full,errors:session.task.errors,hints:[session.task.m9Full?'Сверь результат с вопросом. Все корни и допустимые границы учтены?':'Сопоставь ответ с вопросом: часть, целое, значение или изменение?','Используй результаты предыдущих шагов. Проверь знак и единицы.']}]);}
  function formatNote(target){return {'m9-pairs':'Все пары: (1;2);(3;4). Порядок пар не важен, порядок координат в паре важен.','m9-set':'Интервалы: (1;3), [1;3], (-∞;1)∪[3;+∞). Вместо ∪ можно U или «или»; вместо ∞ — inf. Отдельная точка: {2}.','decimal':'Запиши десятичную дробь с запятой или точкой, например 0,25.','improper-fraction':'Запиши неправильную дробь, например 7/3.','reduced-fraction':'Запиши несократимую дробь или целое число.','unordered':'Запиши все ответы через точку с запятой; порядок не важен.','prime-factors':'Запиши произведение простых чисел, например 2 · 2 · 3. Вместо · можно использовать * или ×.'}[target.answerFormat]||'Можно ввести целое число, десятичную дробь (с запятой), обычную дробь 3/4 или смешанное число 2 1/3. Для координат: 2; −3. Для вопроса словами — указанный в нём ответ.';}
  function lesson(){
   if(!session){var id=location.hash.split('/')[1];return begin(id,'learn');}
