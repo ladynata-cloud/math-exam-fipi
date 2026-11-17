@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+  "baseSha": "f69afefce6c0bd301c2dac9c95506b032cd87113",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3138,8 +3138,8 @@
       "placement": "before-head-close"
     },
     "trainers/vpr-math/index.html": {
-      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
-      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
+      "beforeSha256": "a7379782fae1bb71883a59d4d1c11291581e2ed00d308979aa63067dcc2efccc",
+      "afterSha256": "ef04867039076a1c5ff6457f6bf9c87e3d76d47bb60256563d46ef7f4c290211",
       "placement": "before-head-close"
     },
     "trainers/who-is-stronger.html": {
@@ -5473,6 +5473,15 @@
         "geometry-pogorelov/atlas/pogorelov-base-9-127.html",
         "geometry-pogorelov/atlas/pogorelov-base-9-131.html",
         "geometry-pogorelov/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+      "sourceBaseSha": "f69afefce6c0bd301c2dac9c95506b032cd87113",
+      "task": "docs/tasks/VPR_GEOMETRY_DRAWINGS_20261118.md",
+      "changedPaths": [
+        "trainers/vpr-math/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
