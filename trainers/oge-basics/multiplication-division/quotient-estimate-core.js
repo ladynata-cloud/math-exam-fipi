@@ -18,18 +18,14 @@
     [177,24], [139,24], [269,34], [160,24], [135,23],
     [184,23], [150,30], [96,24], [164,41], [236,59]
   ].map(pair => Object.freeze(pair)));
-  const round = (value, place = 10) => Math.floor((value + place / 2) / place) * place;
+  const round = value => Math.floor((value + 5) / 10) * 10;
   function roundHint(value) {
     const last = value % 10, rounded = round(value);
     return last === 0 ? value + ' уже оканчивается на 0. Оставь это число.'
       : 'Последняя цифра — ' + last + '. ' + (last < 5 ? 'Она меньше 5: берём предыдущее круглое число.' : 'Это 5 или больше: берём следующее круглое число.') + ' Получается ' + rounded + '.';
   }
-  function hundredHint(value) {
-    const tens = Math.floor(value / 10) % 10;
-    return 'Цифра десятков — ' + tens + '. ' + (tens < 5 ? 'Оставь цифру сотен.' : 'Увеличь цифру сотен на 1.') + ' Замени десятки и единицы нулями. Получается ' + round(value, 100) + '.';
-  }
-  function plan(n, d, place = 10) {
-    if (![10, 100].includes(place) || !Number.isInteger(n) || !Number.isInteger(d) || d < 10 || d > (place === 100 ? 999 : 99) || n < 0 || n >= 10 * d) {
+  function plan(n, d) {
+    if (!Number.isInteger(n) || !Number.isInteger(d) || d < 10 || d > 99 || n < 0 || n >= 10 * d) {
       throw Error('Нужен один шаг деления: целое число от 0 до 9 × второе число и ещё небольшой остаток.');
     }
     const steps = [];
@@ -42,20 +38,13 @@
         'Мы уже начали делить. После переноса очередной цифры получилось число меньше ' + d + '. На этом месте нужна цифра 0.', 'На этом месте уголка пишем 0. Затем можно перенести следующую цифру.');
       return {n,d,roundedN:null,roundedD:null,estimate:null,initialDigit:1,digit,steps};
     }
-    const divisorPlace = d < 100 ? 10 : 100;
-    const roundedN = round(n, place), roundedD = round(d, divisorPlace);
+    const roundedN = round(n), roundedD = round(d);
     if (roundedN % roundedD !== 0) throw Error('В этом тренажёре круглые числа должны делиться без остатка.');
     const estimate = roundedN / roundedD, initialDigit = Math.min(9, estimate);
-    const roundingStep = (value, unit, prefix) => {
-      const rounded = round(value, unit);
-      const target = unit === 100 ? 'до сотен' : 'до ближайшего числа с нулём на конце';
-      add('round', prefix + ' ' + value + ' ' + target + '.', rounded,
-        unit === 100 ? hundredHint(value) : roundHint(value), 'Для прикидки: ' + value + ' → ' + rounded + '.');
-    };
-    roundingStep(d, divisorPlace, 'Округли');
-    roundingStep(n, place, 'Теперь округли');
+    add('round', 'Округли ' + d + ' до ближайшего числа с нулём на конце.', roundedD, roundHint(d), 'Для прикидки: ' + d + ' → ' + roundedD + '.');
+    add('round', 'Теперь округли ' + n + ' до ближайшего числа с нулём на конце.', roundedN, roundHint(n), 'Для прикидки: ' + n + ' → ' + roundedN + '.');
     add('estimate', 'Прикинь: ' + roundedN + ' : ' + roundedD + ' = ?', estimate,
-      'У круглых чисел можно убрать ' + (divisorPlace === 100 ? 'по два нуля' : 'по одному нулю') + ': ' + roundedN / divisorPlace + ' : ' + roundedD / divisorPlace + ' = ' + estimate + '. Это пока только прикидка.', 'Прикидка: ' + roundedN + ' : ' + roundedD + ' = ' + estimate + '.');
+      'У круглых чисел можно убрать по одному нулю: ' + roundedN / 10 + ' : ' + roundedD / 10 + ' = ' + estimate + '. Это пока только прикидка.', 'Прикидка: ' + roundedN + ' : ' + roundedD + ' = ' + estimate + '.');
     add('digit', estimate > 9 ? 'Прикидка дала число из двух цифр. Нам нужна одна цифра. Какую самую большую цифру попробуем?' : 'Какую цифру попробуем первой? Возьми её из прикидки.', initialDigit,
       estimate > 9 ? 'Самая большая цифра — 9. Начнём с неё и проверим.' : 'Прикидка дала ' + estimate + '. Попробуем эту цифру, затем проверим по исходным числам.', 'Первая проба: ' + initialDigit + '.');
     let trial = initialDigit;
@@ -141,17 +130,5 @@
       ? 'Мы уже начали делить. После переноса следующей цифры получилось '+n+'. Подбери одну цифру для '+n+' : '+d+' на этом месте уголка.'
       : 'Подбери одну цифру для '+n+' : '+d+'. Сначала прикинь, затем проверь.'},lessons:lessons(),steps:p.steps};
   }
-  // Separate practice keeps the examples and saved steps in versions 1 and 2.
-  const hundredsExamples = Object.freeze([
-    [364,52], [138,46], [159,53], [198,24], [1242,348], [1799,251],
-    [386,52], [249,48], [274,48], [145,23], [284,58], [457,102],
-    [1799,248], [1774,279], [3186,415], [4807,598], [5581,684], [3203,841],
-    [350,46], [150,39], [850,96], [995,182]
-  ].map(pair => Object.freeze(pair)));
-  function makeHundreds(seed) {
-    if (!Number.isInteger(seed) || seed < 0 || seed > 4294967295) throw Error('Некорректный вариант задания.');
-    const [n,d] = hundredsExamples[(seed === 0 ? 0 : seed - 1) % hundredsExamples.length];
-    return {family:'division',title,rule,task:{kind:'input',prompt:'Подбери одну цифру для ' + n + ' : ' + d + '. Сначала прикинь, затем проверь.'},steps:plan(n,d,100).steps};
-  }
-  return Object.freeze({id,title,make,makeV2,makeHundreds,plan,examples});
+  return Object.freeze({id,title,make,makeV2,plan,examples});
 });

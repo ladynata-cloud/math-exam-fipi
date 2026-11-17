@@ -7,7 +7,7 @@ const currentVersion=hundreds?3:2;
 const key=hundreds?'mathExamBasics.quotientEstimate.hundreds.v1':'mathExamBasics.quotientEstimate.v1';
 const $=id=>document.getElementById(id);
 const fresh=()=>({answers:[],answer:'',help:false,feedback:null});
-const generators=[null,core.make,core.makeV2,core.makeHundreds];
+const generators=[null,core.make,core.makeV2,window.QuotientEstimateHundreds?.make];
 const make=(seed,version)=>({...generators[version](seed),contentId:core.id});
 let seed=1,generatorVersion=currentVersion,source=make(seed,generatorVersion),state=fresh(),storage,blocked=false,warning='';
 let contextualHelp=null,contextualHost=null,contextualContent=null;

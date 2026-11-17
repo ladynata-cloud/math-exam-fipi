@@ -188,6 +188,7 @@ assert.throws(() => contracts.normalize('oge-basics', spec, skipped));
 
 // The public page uses the same actions while keeping its own browser-local draft.
 const core = require('../trainers/oge-basics/multiplication-division/quotient-estimate-core');
+const hundredsCore = require('../trainers/oge-basics/multiplication-division/quotient-estimate-hundreds');
 const publicHtml = fs.readFileSync(require.resolve('../trainers/oge-basics/multiplication-division/quotient-estimate.html'), 'utf8');
 const publicSource = fs.readFileSync(require.resolve('../trainers/oge-basics/multiplication-division/quotient-estimate'), 'utf8');
 const publicScaffoldsSource = fs.readFileSync(require.resolve('../trainers/oge-basics/learning-scaffolds'), 'utf8');
@@ -203,6 +204,7 @@ function publicMount(saved, options = {}) {
   if (options.writeFailure) window.Storage.prototype.setItem = () => { throw Error('quota'); };
   window.MathExamRemediationManaged = false;
   window.QuotientEstimate = core;
+  window.QuotientEstimateHundreds = hundredsCore;
   window.DivisionLab = division;
   // This page does not load DivisionCourse. Shared help must support that.
   window.eval(publicScaffoldsSource);
@@ -260,7 +262,7 @@ assert.equal(standalone.state().answers.at(-1), '8');
 const completedPublic = standalone.savedText();
 standalone.dom.window.close();
 
-const hundredsTask = core.makeHundreds(1);
+const hundredsTask = hundredsCore.make(1);
 let hundreds = publicMount(undefined, {hundreds:true, tensSaved:completedPublic});
 assert.equal(hundreds.$('estimate-hundreds').getAttribute('aria-current'), 'true');
 assert.equal(hundreds.$('estimate-task').textContent, hundredsTask.task.prompt);
@@ -283,7 +285,7 @@ assert.equal(hundreds.state().answers.at(-1), '7');
 assert.equal(JSON.parse(hundreds.savedText()).generatorVersion, 3);
 assert.equal(hundreds.dom.window.localStorage.getItem(storageKey), completedPublic);
 hundreds.$('estimate-new').click();
-assert.equal(hundreds.$('estimate-task').textContent, core.makeHundreds(2).task.prompt);
+assert.equal(hundreds.$('estimate-task').textContent, hundredsCore.make(2).task.prompt);
 assert.equal(hundreds.state().answers.length, 0);
 hundreds.dom.window.close();
 
