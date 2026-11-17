@@ -16,6 +16,17 @@ const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b
 // The fraction controls were reviewed on this immutable published source. Keep
 // the complete inline engine and static controls comparison, including fixes.
 taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348d5460fdd940dc8cac3';
+// Reviewed practical work adds one opening control on the plot and updates
+// tire wording. Keep the full engine and controls comparisons on both routes.
+const practicalSource=require('../assets/assistant/page-rollout.json').sourceBindingUpdates.findLast(update=>update.task==='docs/tasks/OGE_SOURCE_ALIGNMENT_01_05_20261116.md');
+if(practicalSource){
+ assert.deepEqual(practicalSource.changedPaths,[
+  'trainers/oge-1-5-trainers/practice-1-5-land-plots.html',
+  'trainers/oge-1-5-trainers/practice-1-5-tires.html'
+ ]);
+ for(const p of practicalSource.changedPaths)taskSources[p]=practicalSource.sourceBaseSha;
+}
+
 // PR #539/#548 behavior plus the reviewed explanation-only accuracy correction.
 // Exact source: 679421ce3057ffbcdab89b80fcd591337f67f9e8.
 // Evidence: docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md and its report.

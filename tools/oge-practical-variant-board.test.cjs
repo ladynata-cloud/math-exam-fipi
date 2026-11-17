@@ -40,3 +40,26 @@ for(const page of ['roads-schema','stoves','paper-sheets','tariffs','apartments'
 test('short-answer graders reject fractional packs, nearby wrong amounts and trailing garbage',async()=>{for(const page of ['apartments','stoves','paper-sheets','roads-schema','land-plots','tariffs']){const c=await boot(page);try{const index=page==='stoves'?2:1;let answer;if(c.w.__nativeAnswers)answer=Number(c.w.__nativeAnswers()[index]);else if(page==='apartments')answer=12;else if(page==='roads-schema')answer=8;else if(page==='stoves')answer=c.w.eval('GROUPS[2].tasks[0].gen(false).answer');else{const d=snap(c).descriptor;answer=c.w.eval('PracticalBoard.seeded('+d.seeds[1]+',()=>TYPES[1].make()).spec.value');}const start=snap(c);for(const wrong of [String(answer+0.4),String(answer)+'cats']){c.api.applyState(c.w.JSON.parse(JSON.stringify(start)));const card=cards(c)[index],e=card.querySelector('[data-pv-field]');input(c,e,wrong);card.querySelector('form').dispatchEvent(new c.w.Event('submit',{bubbles:true,cancelable:true}));await tick();assert.notEqual(card.dataset.result,'correct',page+' must reject '+wrong+' for '+answer);}c.api.applyState(c.w.JSON.parse(JSON.stringify(start)));const card=cards(c)[index];input(c,card.querySelector('[data-pv-field]'),String(answer).replace('.',','));card.querySelector('form').dispatchEvent(new c.w.Event('submit',{bubbles:true,cancelable:true}));await tick();assert.equal(card.dataset.result,'correct',page+' exact answer retained');}finally{c.w.close();}}});
 
 test('capacity model feedback follows current selections after slider edits and deselection',async()=>{const a=await boot('stoves'),b=await boot('stoves');try{const left=a.d.createElement('section'),right=b.d.createElement('section');a.d.body.append(left);b.d.body.append(right);a.w.PracticalDiscovery.build(left,{page:'stoves',boardKind:'capacity'});b.w.PracticalDiscovery.build(right,{page:'stoves',boardKind:'capacity'});const sync=()=>{right.replaceChildren();b.w.PracticalDiscovery.build(right,{page:'stoves',boardKind:'capacity'});b.w.PracticalDiscovery.applyState(right,b.w.JSON.parse(JSON.stringify(a.w.PracticalDiscovery.captureState(left))));assert.equal(right.querySelector('.pd-reading').textContent,left.querySelector('.pd-reading').textContent);};sync();left.querySelector('[data-pd-choice="capacity-1"]').click();sync();input(a,left.querySelector('[data-pd-key="need"]'),'14.5');sync();left.querySelector('[data-pd-choice="capacity-1"]').click();sync();left.querySelector('[data-pd-choice="cell-1-2"]').click();sync();}finally{a.w.close();b.w.close();}});
+
+test('land plots: share the authored paving plan, attempts and help through a bounded descriptor', async () => {
+ const a=await boot('land-plots'),b=await boot('land-plots');
+ try{
+  Array.from(a.d.querySelectorAll('.pv-controls button')).find(button=>button.textContent==='Дорожки и площадка').click();
+  assert.equal(snap(a).descriptor.variant,1000001);
+  send(a,b);
+  const paving=cards(a)[1];
+  input(a,paving.querySelector('input'),'5');
+  paving.querySelector('.pv-help-button').click();
+  paving.querySelector('form').dispatchEvent(new a.w.Event('submit',{bubbles:true,cancelable:true}));
+  await tick();
+  assert.equal(paving.dataset.result,'incorrect');
+  send(a,b);
+  assert.equal(cards(b)[1].dataset.result,'incorrect');
+  attack(b,s=>{s.descriptor.variant=1000002;});
+  for(const context of [a,b]){
+   assert.deepEqual(context.errors,[]);
+   assert.deepEqual(context.reads,[]);
+   assert.deepEqual(context.writes,[]);
+  }
+ }finally{a.w.close();b.w.close();}
+});

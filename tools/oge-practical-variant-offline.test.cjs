@@ -50,6 +50,18 @@ for (const slug of ['roads-grid', 'roads-schema', 'apartments', 'land-plots', 's
         assert.ok(fs.existsSync(localFile), 'relocated shared script also resolves for file://');
         assert.ok(doc.querySelector('script[src="practical-discovery.js?v=20261021-exam-variants"]'), 'cache version preserved');
       }
+      if (slug === 'land-plots') {
+        const choice = Array.from(doc.querySelectorAll('.pv-controls button')).find(button => button.textContent === 'Дорожки и площадка');
+        assert.ok(choice);
+        choice.click();
+        const card = doc.querySelector('[data-task-id="plot-paving-2"]');
+        card.querySelector('input').value = '6';
+        card.querySelector('form').dispatchEvent(new dom.window.Event('submit', { bubbles: true, cancelable: true }));
+        await new Promise(resolve => setTimeout(resolve, 0));
+        assert.equal(card.dataset.result, 'correct');
+        assert.deepEqual(missing, []);
+        assert.deepEqual(errors, []);
+      }
     } finally { dom.window.close(); }
   });
 }

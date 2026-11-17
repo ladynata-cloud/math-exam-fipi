@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+  "baseSha": "35db96f8ac4af8609cbeb9f964cf7a6ab1290660",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2528,8 +2528,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-land-plots.html": {
-      "beforeSha256": "547a7368ac7526f860bdd6d82e9e9298f4a12967e151c77faa8ddcb05849d82e",
-      "afterSha256": "7cee93a4a79c0b8b3cd0eda9ffbd42342cb2bb3b4005f8b48d36f835c7decb11",
+      "beforeSha256": "87cac267ab6db9d86be27c7434f2c3684306f2815ab0420452a2022a7267d282",
+      "afterSha256": "23635b8dda306565d437d280c647ee3fe047cdfefba7e0f106059954c93979ff",
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-map.html": {
@@ -2573,8 +2573,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-tires.html": {
-      "beforeSha256": "8dc00003b63a4ccb23735ae748d9eb68aea62339d41b84072be06d40eda731e5",
-      "afterSha256": "f9f3e7fd3574a9527e55fa390cce608757481acad967fba62bcc6049f5b3034a",
+      "beforeSha256": "0f595f7f06eccb7f4bc9651e5edc50c9b3b24a06ddb0249a8605912dd28a6f84",
+      "afterSha256": "507fa902fc12304884e16a87d3fc2296f8b5ed034df3bc5fadb8a067ec55ca9a",
       "placement": "before-head-close"
     },
     "trainers/oge-2027-analogue-1.html": {
@@ -5270,6 +5270,16 @@
       "task": "docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md",
       "changedPaths": [
         "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+      "sourceBaseSha": "35db96f8ac4af8609cbeb9f964cf7a6ab1290660",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_01_05_20261116.md",
+      "changedPaths": [
+        "trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+        "trainers/oge-1-5-trainers/practice-1-5-tires.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
