@@ -24,6 +24,22 @@
   if(labels.h!==undefined)s+=label(43,189,F(labels.h),'height');
   return s;
  }
+ function steppedBox({width,baseHeight,upperWidth,raise,depth}){
+  const unit=Math.min(195/width,176/(baseHeight+raise)),x=83,y=277;
+  const dx=18+6*depth,dy=-.64*dx,full=x+width*unit,upper=x+upperWidth*unit,step=y-baseHeight*unit,top=step-raise*unit;
+  const front=[[x,y],[full,y],[full,step],[upper,step],[upper,top],[x,top]];
+  const back=front.map(([px,py])=>[px+dx,py+dy]);
+  const face=(points,fill)=>path('M'+points.map(p=>p.join(',')).join('L')+'Z',{fill});
+  let picture=face(front,'#f5faf7');
+  for(const [i,j,fill] of [[1,2,'#e3efe7'],[2,3,'#edf6f0'],[3,4,'#e3efe7'],[4,5,'#edf6f0']]){
+   picture+=face([front[i],front[j],back[j],back[i]],fill);
+  }
+  const rear={dash:true,color:'#8da99a',width:2};
+  picture+=path('M'+[front[0],back[0],back[1]].map(p=>p.join(',')).join('L'),rear)+line(back[0],back[5],rear);
+  picture+=label((x+full)/2,y+35,F(width)+' см','width')+label(x-39,(y+step)/2,F(baseHeight)+' см','base-height');
+  picture+=label((x+upper)/2,top-13,F(upperWidth)+' см','upper-width')+label(x-39,(top+step)/2,F(raise)+' см','raise');
+  return picture+label(full+dx+23,y+dy-4,F(depth)+' см','depth');
+ }
  function cylinder({radius='r',height,unknown=false,water=false,radiusSize=100}={}){
   const left=210-radiusSize,right=210+radiusSize,rim=radiusSize*.26;
   let s=water?path(`M${left+1} 135Q210 ${135+rim} ${right-1} 135V265Q210 ${265+rim} ${left+1} 265Z`,{fill:'#d9edf6',color:'#5e9db6',width:0}):'';
@@ -88,7 +104,7 @@
   let givens;
   switch(t.id){
    case 'grid': case 'practical': if(m)givens={a:m.a,b:m.b};break;
-   case 'triangle': if(m)givens={base:2*m.a,side:m.b};break;
+   case 'triangle': if(m)givens=p?.perimeter===undefined?{base:2*m.a,side:m.b}:{base:p.base,perimeter:p.perimeter};break;
    case 'quadrilateral': case 'box': if(m)givens={a:m.a,b:m.b,h:m.h};break;
    case 'pyramid': if(m)givens={a:m.a,h:m.h};break;
    case 'circle': if(m)givens={r:m.r,d:m.d};break;
@@ -102,7 +118,7 @@
    case 'practice-diameter-chord': if(p)givens={r:p.r,chord:p.chord};break;
    case 'practice-displacement': if(p)givens=p.before===undefined?{litres:p.litres,factor:p.factor}:{litres:p.litres,before:p.before,after:p.after};break;
    case 'practice-pour': if(p)givens={ratio:p.ratio,oldH:p.oldH};break;
-   case 'practice-joined-surface': if(p)givens={a:p.a};break;
+   case 'practice-joined-surface': if(p)givens=p.width===undefined?{a:p.a}:{width:p.width,baseHeight:p.baseHeight,upperWidth:p.upperWidth,raise:p.raise,depth:p.depth};break;
    case 'practice-cone-area': if(p)givens={r:p.r,l:p.l,ratio:p.ratio};break;
    case 'practice-pyramid-lateral': if(p)givens=p.perimeter===undefined?{n:p.n,side:10*p.s,edge:13*p.s}:{n:p.n,perimeter:p.perimeter,edge:p.edge};break;
    case 'practice-box-diagonal': if(p)givens={a:p.a,b:p.b,d:p.d};break;
@@ -130,7 +146,10 @@
     note+=' Схема вертикального сечения бака. Деталь целиком под водой; вода не вылилась.';break;
    }
    case 'practice-pour':figures=[figure('Первый цилиндр',cylinder({radius:'r',height:p.oldH,water:true,radiusSize:100/p.ratio})),figure('Второй цилиндр',cylinder({radius:F(p.ratio)+'r',unknown:true}))];note+=' Воду переливают полностью. Радиус второго основания указан относительно первого.';break;
-   case 'practice-joined-surface':figures=[figure('Два куба, склеенные целыми гранями',box({a:p.a,b:p.a,h:p.a},true))];note+=' Рыжим отмечены линии соединения кубов.';break;
+   case 'practice-joined-surface':
+    if(p.width===undefined){figures=[figure('Два куба, склеенные целыми гранями',box({a:p.a,b:p.a,h:p.a},true))];note+=' Рыжим отмечены линии соединения кубов.';}
+    else figures=[figure('Ступенчатое тело из двух призм',steppedBox(p))];
+    break;
    case 'practice-faces':figures=[figure(nName(p.n)+' и пирамида',composite(p.n))];note+=' Рыжим отмечены рёбра соединения. Соседние внешние грани не лежат в одной плоскости.';break;
    case 'practice-cone-area':{const r2=p.r*p.ratio,l2=p.l*2,unitScale=Math.min(108/r2,228/Math.max(Math.sqrt(p.l*p.l-p.r*p.r),Math.sqrt(l2*l2-r2*r2)));figures=[figure('Первый конус',cone({radius:p.r,slant:p.l,unitScale})),figure('Второй конус',cone({radius:r2,slant:l2,unitScale}))];note+=' l — образующая конуса. Оба конуса показаны в одном масштабе.';break;}
    case 'practice-pyramid-lateral':{

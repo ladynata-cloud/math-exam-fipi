@@ -10,7 +10,7 @@
     20: ['practice-meeting', 'practice-river', 'practice-work', 'practice-average-speed', 'motion', 'mixtures']
   });
   function select(meta, position) {
-    return meta.filter(item => item.pos === position && (fixed[position] ? fixed[position].includes(item.id) : item.expanded && !item.trainingOnly));
+    return meta.filter(item => item.pos === position && (fixed[position] ? fixed[position].includes(item.id) : (item.expanded || item.id === 'triangle') && !item.trainingOnly));
   }
   root.PathExamPool = { select };
   if (typeof module !== 'undefined') module.exports = root.PathExamPool;

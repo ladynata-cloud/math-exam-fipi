@@ -12,7 +12,7 @@ const expectedLabels=t=>{
  case 'scale':return {'whole-volume':'V большого = '+27*(2+t.seed%7),'height-ratio':'1 / 3'};
  case 'practice-displacement':return {litres:D.F(p.litres)+' л воды',...(p.before===undefined?{'level-factor':D.F(p.factor)+'h'}:{'water-depth':p.before+' см'})};
  case 'practice-pour':return {height:p.oldH};
- case 'practice-joined-surface':return {a:p.a,b:p.a,height:p.a};
+ case 'practice-joined-surface':return p.width===undefined?{a:p.a,b:p.a,height:p.a}:{width:p.width+' см','base-height':p.baseHeight+' см','upper-width':p.upperWidth+' см',raise:p.raise+' см',depth:p.depth+' см'};
  case 'practice-faces':return {};
  case 'practice-cone-area':return {};
  case 'practice-pyramid-lateral':return p.perimeter===undefined?{side:'a = '+10*p.s,'lateral-edge':13*p.s}:{perimeter:'P основания = '+p.perimeter+' см','lateral-edge':p.edge};
@@ -72,5 +72,5 @@ const t=w.PathData.task('practice-displacement',0),session=w.PathModels.mount(ho
 assert(host.querySelector('.stereo-figures'));assert.equal(host.querySelectorAll('#plan p').length,1);assert.equal(host.pathModel,session);
 host.querySelector('#revealPlan').click();assert.equal(host.querySelectorAll('#plan p').length,2);assert.equal(session.getState().revealed,2);assert.equal(changes.at(-1).revealed,2);
 const snapshot=session.getState();w.PathModels.mount(host,t,{state:snapshot});assert.equal(host.querySelectorAll('#plan p').length,2,'existing plan state survives remount');
-const seam=D.task('practice-joined-surface',0);assert.match(seam.steps[1].q,/квадратов/);assert.match(seam.steps[1].why,/6 граней/);assert.equal(seam.answer,40);
+const seam=D.practice.taskForBankVersion('practice-joined-surface',0,1);assert.match(seam.steps[1].q,/квадратов/);assert.match(seam.steps[1].why,/6 граней/);assert.equal(seam.answer,40);
 w.close();console.log(`EGE_BAZA_STEREO_FIGURES_OK: ${cases} condition diagrams across 12 families; given labels, no solution leakage, horizontal ratios, retained plan state and unassisted first view.`);

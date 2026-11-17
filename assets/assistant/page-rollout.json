@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
+  "baseSha": "9cd40c1919cd76584b80ddb9906699145dc6d38b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "3c50e113978708c28f89e1ed2f2cdde13b503ed8c2379bc395d35191471592ef",
-      "afterSha256": "4ad52df37a4dd33fea13205a7c1755b47407afda7b803c0dcd56583392ff659f",
+      "beforeSha256": "f300693b6c6b5970fb0b721d6079252e1e1da20ff623aae8efab1c34b56cb535",
+      "afterSha256": "b61a494ff196ab4c8ea55bac9a478fa6d95b7e954ec9ff6c9bf5235ad6540da2",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "fac79a8baa6c54844e8f21949783f252efc0e020af229608338b8fd3a15f493f",
-      "afterSha256": "3c30c539b0f25a0506516a0f3ebebfa6971365c31a5b56e2f8126bc272aec2e7",
+      "beforeSha256": "c11831a9a2150adcc27d6e28fe46c2a57c1935233bd04828710d77b6f1ad5d1d",
+      "afterSha256": "d38a4e656f11e35fad1aedfd554d4a079a465176e1a571090da6266dc1dcb79a",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -238,8 +238,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/reasoning/index.html": {
-      "beforeSha256": "deb9ff1291a57b82b976851885926622898eaea90060bd4e2ecaaf54f4ac9f8f",
-      "afterSha256": "e1e212cfc4a69355f51cca963c9ee6c84eb38e4d24cc8b442c2c0f853f282129",
+      "beforeSha256": "bf76f6bf3bf39f5b1597d19ee1489c389b31af7046989951eff1be93e69fd146",
+      "afterSha256": "687ecf41ed257dd604fd2bde8a437f61a2cbc9f650a893ac59e8c5f691f7b8fe",
       "placement": "before-head-close"
     },
     "ege-baza/reference/exam.html": {
@@ -5288,6 +5288,17 @@
       "task": "docs/tasks/OGE_DIAGNOSTIC_PRACTICE_20261117.md",
       "changedPaths": [
         "trainers/oge-2027-analogue-1.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
+      "sourceBaseSha": "9cd40c1919cd76584b80ddb9906699145dc6d38b",
+      "task": "docs/tasks/EGE_BAZA_HARMONIZATION_20261117.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html",
+        "ege-baza/reasoning/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

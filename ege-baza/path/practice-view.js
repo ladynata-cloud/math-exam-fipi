@@ -50,11 +50,11 @@ function tangentFigures(d){
 function polygon(d,construction=false){
  const xs=d.points.map(p=>p[0]),ys=d.points.map(p=>p[1]),w=Math.max(...xs),h=Math.max(...ys),scale=Math.min(450/(w||1),230/(h||1)),X=x=>60+x*scale,Y=y=>280-y*scale;let grid='';
  if(d.grid){for(let x=0;x<=w;x++)grid+=`<path d="M${X(x)} ${Y(0)}V${Y(h)}"/>`;for(let y=0;y<=h;y++)grid+=`<path d="M${X(0)} ${Y(y)}H${X(w)}"/>`;}
- return `<svg class="task-figure" viewBox="0 0 600 330" role="img" aria-label="Фигура на единичной сетке; координаты вершин приведены под рисунком"><g stroke="#c9d9ce" stroke-width="1">${grid}</g><polygon points="${d.points.map(([x,y])=>X(x)+','+Y(y)).join(' ')}" fill="#6caa8870" stroke="#185940" stroke-width="3"/>${construction?`<path d="M${X(0)} ${Y(0)}H${X(w)}V${Y(h)}H${X(0)}Z" fill="none" stroke="#a44629" stroke-width="3" stroke-dasharray="6"/>`:''}${d.points.map(([x,y],i)=>`<circle cx="${X(x)}" cy="${Y(y)}" r="4" fill="#185940"/><text x="${X(x)+8}" y="${Y(y)-9}">${'ABCDEF'[i]}</text>`).join('')}<text x="60" y="318">Сторона клетки = 1</text></svg><details><summary>Координаты вершин по порядку</summary><p>${d.points.map(([x,y],i)=>`${'ABCDEF'[i]}(${x}; ${y})`).join(', ')}</p></details>`;
+ return `<svg class="task-figure" viewBox="0 0 600 330" role="img" aria-label="Фигура на единичной сетке; координаты вершин приведены под рисунком"><g stroke="#c9d9ce" stroke-width="1">${grid}</g><polygon points="${d.points.map(([x,y])=>X(x)+','+Y(y)).join(' ')}" fill="#6caa8870" stroke="#185940" stroke-width="3"/>${construction?`<path d="M${X(0)} ${Y(0)}H${X(w)}V${Y(h)}H${X(0)}Z" fill="none" stroke="#a44629" stroke-width="3" stroke-dasharray="6"/>`:''}${d.points.map(([x,y],i)=>`<circle cx="${X(x)}" cy="${Y(y)}" r="4" fill="#185940"/><text x="${X(x)+8}" y="${Y(y)-9}">${'ABCDEF'[i]}</text>`).join('')}<text x="60" y="318">Сторона клетки = 1${d.gridUnit?' '+E(d.gridUnit):''}</text></svg><details><summary>Координаты вершин по порядку</summary><p>${d.points.map(([x,y],i)=>`${'ABCDEF'[i]}(${x}; ${y})`).join(', ')}</p></details>`;
 }
 function numberline(d){const lo=Math.floor(Math.min(...d.values))-1,hi=Math.ceil(Math.max(...d.values))+1,X=v=>45+(v-lo)/(hi-lo)*510;let s='';for(let n=lo;n<=hi;n++)s+=`<path d="M${X(n)} 110v12" stroke="#617a6b"/><text x="${X(n)}" y="150" text-anchor="middle">${n}</text>`;return `<svg class="task-figure" viewBox="0 0 600 180" role="img" aria-label="Точки расположены слева направо; интервалы приведены ниже"><path d="M30 116H565" stroke="#617a6b"/>${s}${d.values.map((v,i)=>`<circle cx="${X(v)}" cy="116" r="5" fill="#a44629"/><text x="${X(v)}" y="88" text-anchor="middle">${E(d.names[i])}</text>`).join('')}</svg><p class="muted">${d.values.map((v,i)=>`${d.names[i]}: ${Number.isInteger(v)?'ровно '+v:'между '+Math.floor(v)+' и '+Math.ceil(v)}`).join('; ')}.</p>`;}
 function planarCondition(d){
- const {a,b,c,g,h,r,n,between,chord,base,side}=d.givens;
+ const {a,b,c,g,h,r,n,between,chord,base,side,perimeter}=d.givens;
  const line=(shape,fill='none')=>`<path d="${shape}" fill="${fill}" stroke="#216e56" stroke-width="3"/>`;
  const label=(x,y,text)=>`<text x="${x}" y="${y}" text-anchor="middle">${E(text)}</text>`;
  const surface='#edf6f0';
@@ -67,7 +67,13 @@ function planarCondition(d){
    break;
   case 'triangle':
    caption='Равнобедренный треугольник';
-   picture=line('M130 250H430L280 50Z',surface)+label(280,286,base)+label(197,132,side)+label(363,132,side);
+   picture=line('M130 250H430L280 50Z',surface);
+   if(perimeter===undefined)picture+=label(280,286,base)+label(197,132,side)+label(363,132,side);
+   else {
+    caption='Равнобедренный треугольник ABC с медианой BM';
+    picture+=line('M280 50V250')+label(113,257,'A')+label(280,37,'B')+label(447,257,'C')+label(280,270,'M')
+     +label(280,298,'AC = '+base+' см')+label(436,83,'P = '+perimeter+' см');
+   }
    break;
   case 'quadrilateral':
    caption='Трапеция с отмеченной высотой';
@@ -197,7 +203,7 @@ PathModels.mount=function(el,t,options={}){
  if(m.kind==='polygon-build'){
   v.constructed=!!v.constructed;v.choice=v.choice||'';
   el.innerHTML='<p>Выбери вспомогательное построение, которое помогает найти площадь.</p><div class="actions"><button id="auxRect">Достроить до прямоугольника</button><button id="auxDiagonal">Провести произвольную диагональ</button></div><div id="construction"></div><p id="constructionRead" role="status"></p>';
-  const draw=()=>{el.querySelector('#construction').innerHTML=polygon(t.display,v.constructed);el.querySelector('#constructionRead').textContent=v.choice==='rectangle'?'Теперь можно вычесть лишние части. У параллелограмма их можно перенести, сохранив основание и высоту. Найди нужные длины по клеткам.':v.choice==='diagonal'?'Диагональ разделяет фигуру, но площади получившихся частей ещё нужно найти. Попробуй построение по линиям сетки.':'';};
+  const draw=()=>{el.querySelector('#construction').innerHTML=polygon(t.display,v.constructed);el.querySelector('#constructionRead').textContent=v.choice==='rectangle'?(t.params?.estimate?'Вычти площади двух незакрашенных треугольников. Если граница проходит посередине клетки, учти половину.':'Теперь можно вычесть лишние части. У параллелограмма их можно перенести, сохранив основание и высоту. Найди нужные длины по клеткам.'):v.choice==='diagonal'?'Диагональ разделяет фигуру, но площади получившихся частей ещё нужно найти. Попробуй построение по линиям сетки.':'';};
   el.querySelector('#auxRect').onclick=()=>{v.constructed=true;v.choice='rectangle';draw();changed();};el.querySelector('#auxDiagonal').onclick=()=>{v.choice='diagonal';draw();changed();};draw();return session;
  }
  if(m.kind==='interval-signs'){
