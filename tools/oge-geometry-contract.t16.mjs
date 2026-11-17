@@ -335,6 +335,12 @@ function tanTrapFind(ab, bc, cd) {
 /* ================= Решатели подтипов ================= */
 
 export const solve = {
+  arcLength(p) {
+    const A = pt(10), B = pt(10 + p.angle);
+    const sweep = Math.atan2(cross(A, B), dot(A, B));
+    const r = p.length / sweep;
+    return 2 * Math.PI * r - p.length;
+  },
   sectorArea(p) {
     const r = Math.sqrt(p.area / Math.PI);
     const A = pt(17, r), B = pt(17 + p.angle, r);
@@ -760,6 +766,8 @@ function domain(k, p) {
       return inOpen(p.arc, 0, 180) ? '' : 'меньшая дуга должна быть между 0° и 180°';
     case 'sectorArea':
       return allPos(p.area) && inOpen(p.angle, 0, 180) ? '' : 'нужны положительная площадь и угол меньшего сектора между 0° и 180°';
+    case 'arcLength':
+      return allPos(p.length) && inOpen(p.angle, 0, 180) ? '' : 'нужны положительная длина и угол меньшей дуги между 0° и 180°';
     default:
       return 'неизвестный подтип';
   }

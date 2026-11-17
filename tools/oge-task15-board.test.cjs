@@ -31,12 +31,12 @@ function create(board = true) {
   };
   return { dom, w, local, click, input, registration: () => registration, counters: () => ({ reads, writes, notifications }) };
 }
-test('existing 27 types/67 variants retain mathematical and figure selftests', () => {
+test('existing 28 types/69 variants retain mathematical and figure selftests', () => {
   const c = create();
   try {
     const bank = c.w.__oge15;
-    assert.equal(bank.TYPE_IDS.length, 27);
-    assert.equal(bank.TASK_VARIANTS.length, 67);
+    assert.equal(bank.TYPE_IDS.length, 28);
+    assert.equal(bank.TASK_VARIANTS.length, 69);
     const checked = bank.selftest(40);
     assert.equal(checked.ok, true, JSON.stringify(checked.errs));
     const demo = bank.build('bisIso', c.local({ d: 'B', L: 'K', g: 25, f: 0 }), c.local({ kind: 'gen' }));
@@ -78,7 +78,7 @@ test('answer, incorrect feedback, help and reference synchronize atomically with
     assert.equal(a.counters().writes, 0);
   } finally { a.dom.window.close(); b.dom.window.close(); }
 });
-test('all 67 variants complete retained guided steps and roundtrip without losing answers', () => {
+test('all 69 variants complete retained guided steps and roundtrip without losing answers', () => {
   const a = create(), b = create();
   try {
     const template = a.w.OGE15Board.getState();
@@ -109,7 +109,7 @@ test('all 67 variants complete retained guided steps and roundtrip without losin
     assert.equal(b.counters().reads, 0);
   } finally { a.dom.window.close(); b.dom.window.close(); }
 });
-test('independent geometric solver checks 1340 generated conditions from all 67 variants', async () => {
+test('independent geometric solver checks 1380 generated conditions from all 69 variants', async () => {
   const { solve } = await import('./oge-task15-triangles.solve.mjs');
   const c = create();
   try {
@@ -121,7 +121,7 @@ test('independent geometric solver checks 1340 generated conditions from all 67 
       assert.ok(Math.abs(independent.ans - task.ans) < 1e-6 * Math.max(1, Math.abs(task.ans)), variant.id + ': ' + task.text);
       count++;
     }
-    assert.equal(count, 1340);
+    assert.equal(count, 1380);
   } finally { c.dom.window.close(); }
 });
 test('revealed steps and contextual help remain visible after restoration and are never independent', () => {
