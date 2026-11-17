@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>№9 и №12 курса · Графики функций и экстремумы</title>
+<title>№11 и №12 курса · Графики функций и экстремумы</title>
 <link rel="canonical" href="https://mathexam.space/ege-profil/trainers/functions-t1112.html">
 <style>
   :root{
@@ -78,13 +79,13 @@
   .view{display:none}
   .view.on{display:block}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261115-fipi-map"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="12 functions-extrema" data-profile-skill-topics="graphs=12 extrema=functions-extrema"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="12 functions-extrema" data-profile-skill-topics="graphs=12 extrema=functions-extrema"></script>
 <link rel="stylesheet" href="/assets/download-panel.css">
 <link rel="stylesheet" href="/assets/download-adaptation.css">
 <script defer src="/assets/download-adaptation.js"></script>
@@ -92,7 +93,7 @@
 <body>
 <div class="wrap">
   <a class="back" href="../index.html">← Курс</a>
-  <p class="eyebrow">№9 и №12 курса · графики функций и экстремумы</p>
+  <p class="eyebrow">№11 и №12 курса · графики функций и экстремумы</p>
   <h1>Графики и наибольшее значение</h1>
   <p class="lede">Восстановите функцию по графику. Отдельный режим поможет потренировать поиск наибольшего и наименьшего значения.</p>
 
@@ -118,8 +119,8 @@
     </div>
     <div class="card">
       <h2>Две разные работы</h2>
-      <details class="support"><summary>№12 курса — читаем график</summary><p>Вид функции написан в условии, неизвестны только коэффициенты. Найдите на картинке точки, где график проходит ровно через узел клетки, подставьте их координаты и решите систему. Для параболы берут вершину и ещё одну точку.</p></details>
-      <details class="support"><summary>№9 курса — экстремумы и производная</summary><p>Найдите критические точки внутри отрезка, вычислите значения функции в них и на концах отрезка и сравните. Если спрашивают точку максимума или минимума, исследуйте смену знака производной. Учитывайте область определения функции.</p></details>
+      <details class="support"><summary>№11 курса — читаем график</summary><p>Вид функции написан в условии, неизвестны только коэффициенты. Найдите на картинке точки, где график проходит ровно через узел клетки, подставьте их координаты и решите систему. Для параболы берут вершину и ещё одну точку.</p></details>
+      <details class="support"><summary>№12 курса — экстремумы и производная</summary><p>Найдите критические точки внутри отрезка, вычислите значения функции в них и на концах отрезка и сравните. Если спрашивают точку максимума или минимума, исследуйте смену знака производной. Учитывайте область определения функции.</p></details>
       <details class="support"><summary>Частые потери</summary><p>В графике легко перепутать знак сдвига: вправо на 3 означает <span class="mono">(x − 3)</span> в формуле. В задаче на экстремумы проверьте концы отрезка и положение критических точек.</p></details>
     </div>
   </section>
@@ -542,7 +543,7 @@ if (typeof module !== "undefined") module.exports = FN;
     document.getElementById("stStreak").textContent = streak;
   }
   function show(t, ids){
-    document.getElementById(ids.tag).textContent = ids.prefix + (t.line === 11 ? "№12 курса · график функции" : "№9 курса · экстремумы");
+    document.getElementById(ids.tag).textContent = ids.prefix + (t.line === 11 ? "№11 курса · график функции" : "№12 курса · экстремумы");
     document.getElementById(ids.text).textContent = t.text || "";
     document.getElementById(ids.text).style.display = t.text ? "block" : "none";
     document.getElementById(ids.formula).textContent = t.formula;

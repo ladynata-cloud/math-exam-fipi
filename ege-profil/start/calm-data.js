@@ -97,7 +97,45 @@
     prerequisites:['bridge-triangle','bridge-fractions','bridge-coordinates','bridge-signs','bridge-roots'],
     nextLessonIds:['algebra-cosine','algebra-double-angle']
   };
-  const api={exams,milestones,trigFoundations};
+  // Legacy numeric groups are stable learning/storage identities. The public
+  // exam view is projected through the shared FIPI map; it never renumbers data.
+  const examMap=root.ProfileExamMap||(typeof module!=='undefined'&&module.exports?require('../exam-map.js'):null);
+  function project(entry){
+    if(!entry||entry.source!=='start')return null;
+    const legacy=exams.find(exam=>entry.legacyStart!==null?exam.number===entry.legacyStart:entry.lessonIds.some(id=>exam.lessonIds.includes(id)));
+    if(!legacy)return null;
+    const lessonIds=entry.lessonIds.filter(id=>legacy.lessonIds.includes(id));
+    const value={...legacy,...entry,legacyNumber:legacy.number,lessonIds,
+      entry:lessonIds.includes(legacy.entry)?legacy.entry:lessonIds[0]};
+    if(entry.number===8){
+      value.prerequisites=[...new Set([...legacy.prerequisites,...(entry.preparationIds||[])])];
+      value.goal='Читать графики функции и производной, находить наклон касательной и связывать первообразную с площадью.';
+      value.plan=['Уточните, что дано: функция, производная, касательная или первообразная.','Выберите связь с величиной из вопроса.','Вычислите или прочитайте значение и проверьте его по условию.'];
+    }
+    if(entry.number===12){
+      value.goal='Находить наибольшее и наименьшее значение функции, проверяя критические точки и границы промежутка.';
+      value.plan=['Определите область поиска и найдите производную.','Найдите критические точки, которые принадлежат промежутку.','Сравните значения функции в этих точках и на границах.'];
+      value.prerequisites=['calc-value','calc-special','calc-sign'];
+    }
+    if(entry.id==='calculus-legacy')value.aggregate=true;
+    if(entry.id==='integral')value.goal='Связывать первообразную, интеграл и площадь под графиком.';
+    if(entry.number===16)value.coverage='16 тем · 96 задач на проценты, долг и платежи. Это подготовительные числовые упражнения: полное письменное решение и экзаменационные баллы здесь не проверяются.';
+    return value;
+  }
+  const official=examMap?examMap.entries.filter(entry=>entry.source==='start').map(project):[];
+  const extras=examMap?examMap.extras.filter(entry=>entry.source==='start').map(project):[];
+  function fromLegacy(number){
+    const legacy=exams.find(exam=>exam.number===Number(number));
+    if(!legacy)return null;
+    // The old calculus bookmark includes derivatives, extrema and integration.
+    // Keeping the whole group is necessary even though two official lines now
+    // have separate entry points.
+    if(legacy.number===9)return {...project(examMap?.fromLegacyStart(9)),aggregate:true};
+    return project(examMap?.fromLegacyStart(legacy.number))||legacy;
+  }
+  function label(entry){return entry?.number?'№'+entry.number:entry?.aggregate?'Общая подготовка к №8 и №12':'Дополнительная тема';}
+  function hash(entry){return entry?.aggregate?'#calm/9':examMap?examMap.hash(entry):'#calm/'+entry.number;}
+  const api={exams,milestones,trigFoundations,official,extras,project,fromLegacy,label,hash};
   root.ProfileCalmData=api;
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:window);
