@@ -1,6 +1,6 @@
 {
   "stage": "8",
-  "updated": "2026-11-15",
+  "updated": "2026-11-17",
   "notes": "Этап 8 добавляет курс «Делимость, остатки и инварианты» и 186 карточек «Сечения с нуля».",
   "trainers": [
     {
@@ -707,6 +707,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -735,16 +736,17 @@
     },
     {
       "slug": "ege-profil-part-two",
-      "title": "Профильный ЕГЭ — вторая часть №14–20",
+      "title": "Профильный ЕГЭ — подготовка ко второй части №13–19",
       "sourceHtml": "/ege-profil/part-two/index.html",
       "subject": "математика",
       "level": "10–11 класс, ЕГЭ профиль",
-      "topic": "42 темы и 252 авторские задачи второй части",
-      "description": "Действующий курс с пошаговыми заданиями, самостоятельными ответами, моделями и разбором обоснования.",
+      "topic": "36 основных тем и 216 задач; дополнительно 6 тем и 36 задач по моделированию и оптимизации",
+      "description": "Курс с пошаговыми заданиями, самостоятельными ответами, моделями и разбором обоснования. Финансовая подготовка №16 доступна по ссылке на сайт; проверка числового ответа не заменяет проверку письменного решения.",
       "mode": "single",
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/part-two/style.css",
         "/ege-profil/start/checks.js",
         "/ege-profil/part-two/content-algebra.js",
@@ -1632,6 +1634,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/start/style.css",
         "/ege-profil/start/finance.css",
         "/ege-profil/start/journey-ui.css",
@@ -1717,6 +1720,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1758,6 +1762,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1800,6 +1805,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1841,6 +1847,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1882,6 +1889,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1923,6 +1931,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/azbuka-metodov/styles.css",
         "/ege-profil/azbuka-metodov/catalog.js",
         "/ege-profil/azbuka-metodov/data.js",
@@ -1966,6 +1975,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2007,6 +2017,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2047,6 +2058,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2088,6 +2100,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/trainers/ege-profile/log-inequalities/style.css",
         "/trainers/ege-profile/log-inequalities/engine.js",
         "/trainers/ege-profile/log-inequalities/app.js",
@@ -2133,6 +2146,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/trainers/ege-profile/log-inequalities/lesson.css",
         "/trainers/ege-profile/log-inequalities/lesson.js",
         "/trainers/ege-profile/log-inequalities/guided-lesson.js",
@@ -2177,6 +2191,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/trainers/ege-profile/log-inequalities/lesson.css",
         "/trainers/ege-profile/log-inequalities/nested.js",
         "/trainers/ege-profile/log-inequalities/guided-lesson.js",
@@ -2262,6 +2277,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"

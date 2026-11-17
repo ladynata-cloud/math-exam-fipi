@@ -5,7 +5,7 @@
   const list = (label, ...answer) => ({ label, answer, kind: 'list' });
   const choice = (label, answer, options) => ({ label, answer, options, kind: 'choice' });
   const step = (title, field, hint, explain, error = '') => ({ title, field, hint, explain, error });
-  const profile = (id, title) => ({ href: '/ege-profil/part-two/#lesson/' + id, title: 'Профиль №20 · ' + title });
+  const profile = (id, title) => ({ href: '/ege-profil/part-two/#lesson/' + id, title: 'Профиль №19 · ' + title });
   const base = (id, title) => ({ href: '/ege-baza/path/index.html#lesson=practice-' + id, title: 'База №21 · ' + title });
   const links = {
     extremum: profile('numbers-extremum', 'Оценка и достигающий её пример'),
@@ -193,7 +193,7 @@
           size: 10, min: 2, max: 5, total: 34, target: 5, targetCount: 4 }
       ],
       proof: 'Кратко запиши, почему больше таких стендов быть не может.',
-      success: 'Сопоставь два разных применения метода. В №20 профиля нужно доказать границу и построить пример. В №21 базы границы помогают найти возможное целое число участников.',
+      success: 'Сопоставь два разных применения метода. В №19 профиля нужно доказать границу и построить пример. В №21 базы границы помогают найти возможное целое число участников.',
       criteria: [
         'В обосновании учтены все десять стендов и минимальное число рисунков на остальных.',
         'Пример даёт ровно 34 рисунка, соблюдает границы на каждом стенде и достигает найденного максимума.'

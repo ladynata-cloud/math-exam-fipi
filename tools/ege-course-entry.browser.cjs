@@ -79,14 +79,14 @@ async function checkProfileClock(page, width) {
  await stage.scrollIntoViewIfNeeded();
  assert.deepEqual(await links.evaluateAll(all => all.map(link => link.getAttribute('href'))),
   await page.locator('#profile-2027 .first-three-link[data-exam-number]').evaluateAll(all => all.map(link => link.getAttribute('href'))));
- assert.equal(await links.count(), 20);
+ assert.equal(await links.count(), 19);
  const dials = await stage.locator('.profile-clock-dial').evaluateAll(groups => groups.map(group => ({
   part:group.dataset.clockDial,
   width:group.getBoundingClientRect().width,
   numbers:[...group.querySelectorAll('.profile-clock-number')].map(link => Number(link.textContent))
  })));
  assert.deepEqual(dials.map(dial => dial.part), ['first', 'second', 'second', 'second']);
- assert.deepEqual(dials.map(dial => dial.numbers), [Array.from({length:13}, (_, i) => i + 1), [14,15,16], [17,18], [19,20]]);
+ assert.deepEqual(dials.map(dial => dial.numbers), [Array.from({length:12}, (_, i) => i + 1), [13,14,15], [16,17], [18,19]]);
  assert(dials[0].width > 0 && dials.slice(1).every(dial => dial.width > dials[0].width), 'all second-part gears are larger at ' + width);
  assert.deepEqual(await courses.evaluateAll(all => all.map(link => link.getAttribute('href'))), clockCourses);
  assert(await stage.locator('.profile-clock-number, .profile-clock-course').evaluateAll(all => {
@@ -111,9 +111,9 @@ async function checkProfileClock(page, width) {
  }
  await workshop.getByRole('link', {name:'№2 · Векторы с нуля'}).focus();
  assert.equal(await workshop.locator('.profile-clock-topic').textContent(), '№2 · Векторы с нуля');
- await links.nth(12).focus();
+ await links.nth(11).focus();
  await page.keyboard.press('Tab');
- assert.equal(await page.evaluate(() => document.activeElement.textContent), '14', 'keyboard continues from the first part to the second');
+ assert.equal(await page.evaluate(() => document.activeElement.textContent), '13', 'keyboard continues from the first part to the second');
  await links.last().focus();
  await page.keyboard.press('Tab');
  assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), clockCourses[0], 'extra courses follow exam tasks by keyboard');
@@ -124,8 +124,8 @@ async function checkProfileClock(page, width) {
  for(const name of ['Метод координат в стереометрии','Функции и графики для задач с параметром','Методы решения задач с параметром']){
   assert.equal(await alphabetNav.getByRole('link',{name,exact:true}).count(),1);
  }
- await workshop.getByRole('link', {name:/^№16 ·/}).focus();
- assert.equal(await workshop.getByRole('link', {name:'Основы для №16'}).getAttribute('href'), '/ege-profil/azbuka-metodov/?exam=16');
+ await workshop.getByRole('link', {name:/^№15 ·/}).focus();
+ assert.equal(await workshop.getByRole('link', {name:'Основы для №15'}).getAttribute('href'), '/ege-profil/azbuka-metodov/?fipi=2027%2F15');
 
  const pause = workshop.getByRole('button', {name:'Пауза анимации'});
  const play = workshop.getByRole('button', {name:'Запустить анимацию'});
@@ -263,7 +263,7 @@ async function checkParameterGraphs(page, origin) {
   for(const family of ['param-modules','param-hole'])for(const number of [4,5,6])localStorage.removeItem(prefix+family+'-'+number);
  },prefix);
  await page.reload();
- const routes=page.getByRole('region',{name:'От графика к задаче №19'});
+ const routes=page.getByRole('region',{name:'От графика к задаче №18'});
  const plateau=routes.getByRole('article').filter({hasText:'Горизонтальный участок'});
  const hole=routes.getByRole('article').filter({hasText:'Выколотая точка'});
  const answerCount=page.locator('.az-atlas-count');
@@ -299,7 +299,7 @@ async function checkParameterGraphs(page, origin) {
  await check.click();
  await page.locator('#feedback.ok').waitFor();
  assert.equal((await record('param-modules-4')).independent,true);
- await page.getByRole('link',{name:'Все темы №19',exact:true}).click();
+ await page.getByRole('link',{name:'Все темы · № 18',exact:true}).click();
  assert.match(await plateau.getByRole('link',{name:'Решить новое условие'}).getAttribute('href'),/#task\/param-modules-5\/independent$/);
 
  await hole.getByRole('link',{name:'Исследовать график'}).click();
@@ -317,10 +317,10 @@ async function checkParameterGraphs(page, origin) {
  await check.click();
  await page.locator('#feedback.error').waitFor();
  assert.equal(await help.count(),0);
- await page.getByRole('link',{name:'Вернуться к темам №19'}).click();
+ await page.getByRole('link',{name:'Вернуться к темам · № 18'}).click();
  assert.match(await hole.getByRole('link',{name:'Продолжить условие'}).getAttribute('href'),/#task\/param-hole-4\/independent$/);
  await hole.getByRole('link',{name:'Продолжить условие'}).click();
- await page.getByText('№19 · условие 4 из 6',{exact:true}).waitFor();
+ await page.getByText('№ 18 · условие 4 из 6',{exact:true}).waitFor();
  const firstScreen=await page.locator('.condition').evaluate(condition=>{
   const figure=condition.querySelector('svg').getBoundingClientRect();
   return {top:condition.getBoundingClientRect().top,bottom:figure.bottom,viewport:innerHeight,scroll:scrollY};
@@ -349,7 +349,7 @@ async function checkParameterGraphs(page, origin) {
  assert.equal((await record('param-hole-4')).independent,false);
  await page.getByRole('link',{name:/Другое условие самостоятельно/}).click();
  assert.match(page.url(),/#task\/param-hole-5\/independent$/);
- await page.getByText('№19 · условие 5 из 6',{exact:true}).waitFor();
+ await page.getByText('№ 18 · условие 5 из 6',{exact:true}).waitFor();
  assert.equal(await proof.inputValue(),'');
  await first.fill('6');
  await second.fill('12');
@@ -357,12 +357,12 @@ async function checkParameterGraphs(page, origin) {
  await page.locator('#feedback.ok').waitFor();
  assert.equal((await record('param-hole-5')).independent,true);
  await page.getByRole('link',{name:/Другое условие самостоятельно/}).click();
- await page.getByText('№19 · условие 6 из 6',{exact:true}).waitFor();
+ await page.getByText('№ 18 · условие 6 из 6',{exact:true}).waitFor();
  await first.fill('7');
  await second.fill('14');
  await check.click();
  await page.locator('#feedback.ok').waitFor();
- await page.getByRole('link',{name:'Все темы №19',exact:true}).click();
+ await page.getByRole('link',{name:'Все темы · № 18',exact:true}).click();
  assert.match(await hole.getByRole('link',{name:'Открыть условия для повторения'}).getAttribute('href'),/#lesson\/param-hole$/);
  await hole.getByRole('link',{name:'Исследовать график'}).click();
  await page.getByRole('link',{name:'К условиям темы'}).click();
@@ -414,12 +414,12 @@ async function checkParameterProofReview(page,origin,width){
  await proof.fill('На уровне a = 10 подходит каждый x из [−5; 5].');
  await page.getByText('Вы отметили 0 из 4 пунктов.',{exact:true}).waitFor();
  await page.getByRole('link',{name:'Мой прогресс',exact:true}).click();
- await page.getByRole('heading',{name:'Самопроверка обоснований №19'}).waitFor();
+ await page.getByRole('heading',{name:'Самопроверка обоснований · № 18'}).waitFor();
  await page.getByRole('link',{name:'Вернуться к обоснованию',exact:true}).click();
  assert.match(await proof.inputValue(),/\[−5; 5\]/);
  await page.getByRole('link',{name:/Другое условие самостоятельно/}).click();
  await page.waitForURL('**/#task/param-modules-5/independent');
- await page.getByText('№19 · условие 5 из 6',{exact:true}).waitFor();
+ await page.getByText('№ 18 · условие 5 из 6',{exact:true}).waitFor();
  assert.equal(await proof.inputValue(),'');
  assert.equal(await criteria.isVisible(),false);
 
@@ -472,8 +472,8 @@ async function checkParameterProofReview(page,origin,width){
     await page.goto(origin+'/ege-profil/');
     // The complete-course entrance deliberately exposes every exam number
     // and the existing course. No summary click is allowed before these checks.
-    for(let number=1;number<=20;number++){
-     const href=number<=13?'start/index.html#calm/'+number:'part-two/index.html#exam/'+number;
+    for(let number=1;number<=19;number++){
+     const href=(number<=12||number===16?'start':'part-two')+'/index.html#fipi/2027/'+number;
      const entry=page.locator('#profile-2027 a[href="'+href+'"]');
      assert.equal(await entry.count(),1,'one current route for profile '+number);
      assert(await entry.isVisible(),'profile '+number+' visible without expanding a section at '+width);
@@ -518,5 +518,5 @@ async function checkParameterProofReview(page,origin,width){
  await page.goto(origin+'/ege-profil/#%');assert(await page.locator('#myCode').textContent(),'malformed anchor does not prevent progress UI');
  await page.goto(origin+'/ege-baza/#today');await page.locator('.course-recommendation summary').click();assert(await page.locator('[data-recommendation] a.btn').first().isVisible(),'old module recommendations remain accessible');
  await checkClockWithoutMediaEvent(page, origin);
- assert.deepEqual(errors,[]);console.log('EGE_COURSE_ENTRIES_OK: 2027, all 20 profile routes and expanded legacy links, restored first-part draft, all 21 base numbers and optional checks, preserved deep links, 320/1280px');
+ assert.deepEqual(errors,[]);console.log('EGE_COURSE_ENTRIES_OK: 2027, all 19 official profile routes and expanded legacy links, restored first-part draft, all 21 base numbers and optional checks, preserved deep links, 320/1280px');
 }finally{await browser?.close();if(server.listening)await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

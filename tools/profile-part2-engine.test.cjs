@@ -131,8 +131,8 @@ test('malformed saves are preserved and a failed save keeps current working memo
 
 test('all seven sections and every lesson/task render with the authored answer fields',async()=>{
  const dom=await boot(),w=dom.window,d=w.document;
- assert.equal(d.querySelectorAll('.grid .card').length,7);
- for(const lesson of bank){await go(w,'lesson/'+lesson.id);assert.equal(d.querySelectorAll('.task-link').length,6);assert(d.querySelector('a[href="#exam/'+lesson.exam+'"]'));}
+ assert.equal(d.querySelectorAll('.grid .card').length,8,'seven official entries, including finance, plus optimization');
+ for(const lesson of bank){await go(w,'lesson/'+lesson.id);assert.equal(d.querySelectorAll('.task-link').length,6);assert(d.querySelector('a[href="'+w.ProfileExamMap.hash(w.ProfileExamMap.fromLegacyPartTwo(lesson.exam))+'"]'));}
  for(const lesson of bank)for(const [index,task] of lesson.tasks.entries()){await go(w,'task/'+task.id+'/independent');assert.equal(d.querySelectorAll('[data-final]').length,index>=3&&task.independentFinal?1:task.final.length,task.id);assert(d.querySelector('#proof-draft'),task.id+' proof');assert.match(d.querySelector('.proof-status').textContent,/требует проверки/);}
  w.close();
 });
@@ -535,3 +535,7 @@ test('new proof review preserves submit locking and whole-answer self-correction
  assert.equal(record.drafts.openFinal,open.independentFinal.answers[0]);
  w.close();
 });
+
+// The existing CI profile driver invokes H02 contract and mandatory native gates.
+require('./profile-fipi-2027-contract.test.cjs');
+require('./profile-fipi-2027-browser.cjs');

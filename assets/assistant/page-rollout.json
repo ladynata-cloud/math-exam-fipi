@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ba917c13d1222d1fad93fc6e1e3504a468b0c6a5",
+  "baseSha": "08d80f14da385f7a72247640996f1f06032d20c3",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -273,8 +273,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/index.html": {
-      "beforeSha256": "0c51405915514a81da7d6374d32e32d5a4b0d08bbce0af9615bc3b9a68a31278",
-      "afterSha256": "cc4e9dc33560502c7733c77c03d164b9f7e85eb5f12eefe5ee32ce1a8ffbe0d9",
+      "beforeSha256": "70b3eafd7344488001c0377675ed079303ef64db889e4d1be5347ee04e66dd1e",
+      "afterSha256": "3c3009ca914e25db1b1853367be415c82d110c428e006c82f6b28ed34522d183",
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/lesson.html": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "20c64cb211f3054f4c148991d4b9e68e28b10f7c79c909873a8943b780d7f823",
-      "afterSha256": "7f71c71c8481bf51a700670012b6f87a0574f7217e42e64fcf832ac4ddfa9fc3",
+      "beforeSha256": "fd73ab61b3fa42664016237cd795da3d5b416896700f2676ffd58848a39e31cb",
+      "afterSha256": "c77d8d0f57eeebbbc36b24402c436608e04526cd19249e268d2f1222fdba3b15",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "5670db450d825dbcfee0353fbd3d96182cb60987d36f4d926d7fd9643e3c4449",
-      "afterSha256": "97117ee527371467275d4b03cf35007b1ebc41143962b324ad5890062df9ed85",
+      "beforeSha256": "9cb4ab84f1498cedff1503a13100688afc1271f880de3d13ff7b3686a8d774e6",
+      "afterSha256": "b1f8f7db472befa17062132b37cb45652f8198f127199fb15f7d7c3f076be330",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,48 +323,48 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "9481b703fc23b11f830239cedf6ee4dcf3fe6a1757badc05be8528c5561d961e",
-      "afterSha256": "504e2a744b6500159f33e33620a07d6843e9391d78bde6992c1796f23125ae9b",
+      "beforeSha256": "2edb53a1971a8bb6f9a97321528d5c314f225cd4422ad888a3929b6b79c848bd",
+      "afterSha256": "8714a7ddee13c064e7e612e21f893d59f7c197d1f7c10c41b08e2b2f509da699",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
-      "beforeSha256": "197774485bbc868895e91778aefe30fe1d14a1e2d20d2d678d9dc01dc588b3c8",
-      "afterSha256": "f4f1dc946107e50c8ab37321fa9ce8a82de2ccc9bff264819146066c62e58ca9",
+      "beforeSha256": "b149755312de601e6e46def156145df0081a5f86d566925fd1c4b8ff504aeb85",
+      "afterSha256": "7cd621df2f4a66c26995f2f25c00ac6089910fd0c71aee888ef1a925dfaeb99a",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/derivative-t8.html": {
-      "beforeSha256": "3813a97670b2eb5cf5084b57902117b520b0847ac2578851b47dba347e89c70a",
-      "afterSha256": "de91b4d93182b9af4e8d6364a7bd663444e32a6fb7c708e6cf73377a21fa5e8c",
+      "beforeSha256": "7605b11f37201b6591bc28cb4af84190a86b9543ba8bdc54d5d396ef63808e65",
+      "afterSha256": "f0a440a66b885d96003540eb4aa7f8aebddd0150e46bc747a6e9dd92e4a3d2c1",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/expert.html": {
-      "beforeSha256": "ce4a3722cda25d4fa75149910198b4abe439ebcab1a0f83bf8493d8ea0fec119",
-      "afterSha256": "1377ce8e9699ddb615d0779097f48e7fa0ebb67b21b54013c4541cf4061ae295",
+      "beforeSha256": "10a169cd9195a4c6c356236ee9709fa7c960888aceb1c073207e4f372ed84b10",
+      "afterSha256": "f1f5faeb0215269574c8289ae3291932955534f415eaab6eeb9467b7f54ca2db",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/finance.html": {
-      "beforeSha256": "915614b35a602990eac442d511fd6a591d4aac8295f64c1b76378eb6c57de868",
-      "afterSha256": "179dd4150df330472f8866cda67b6ceaa8908264e526bce3865a89c1db288d0c",
+      "beforeSha256": "52a88b87260fa112486c0c22661d27052fcfe63edebddcb1cef9b845a6b85ac1",
+      "afterSha256": "50bd7a90bc24b7195380b9e6ad4cf71ce39f22f692b1ebbacfa987fa320f52ed",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/functions-t1112.html": {
-      "beforeSha256": "ae2d2ab79b4f94c5ac1d817f81c6635f2239f2debdbed387583931f8101cc5c8",
-      "afterSha256": "ab5011aea0ff450f45f2b59563f2148c9f221a7f1a9f1871b488497505616152",
+      "beforeSha256": "a8b6f96ff64da0780d85bbb0bc6ba6511764c55e2d86b32f6e7d119ba248a501",
+      "afterSha256": "e4b62858b98103f5bcee4f3f37daf13a86775f30840a3e6e271c2bbb04c12dd0",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/inequalities.html": {
-      "beforeSha256": "111f664ec530128fa06a618e3e5ce82d34e5cdb4267b9facebc11d82abdb5eff",
-      "afterSha256": "ccd58741a6db95d426e8678c5195a6c12e6045a580d07c44eee737997ab5ea17",
+      "beforeSha256": "1e5329708622226bc40d011714ff217dd2047725039f36003ff05f9470c33a9f",
+      "afterSha256": "d2fdd0c31244d6133b59e07ac739564eb931b7adb32832373ca327a69f800016",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/interval-method.html": {
-      "beforeSha256": "f9b65cbdac05fe9531abe112ab36bf942a5612afe7d266c86851725f902cbdf4",
-      "afterSha256": "699bbbab1f9c96a0a61dc6a964e86423551154113ba6e2093d17ebaadd60a4b1",
+      "beforeSha256": "61ee9a37be4c752ebf9355df6c303ca4df96effc40f0bb782c1d92f81468037d",
+      "afterSha256": "e56960dc4e5746ca1d6def04dbd310a9d9e701d3f2177565b30a177451713d88",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/numbers-t19.html": {
-      "beforeSha256": "7f964e53141916f36d7b96d129ff53711ca6819cae68f731f56a0c8d9291217d",
-      "afterSha256": "d079259ce9ec8998165fdea0e9cbb1a1636bbcdca00d1ec225f7f60262758b35",
+      "beforeSha256": "ee4abf3f99f45a6d540afe2ba2391e564d7f14ee1982b121c0c74b2578bab63b",
+      "afterSha256": "490db1153543ee78cc1be5462d1fd793d6416db2c78d499b89fb4fa7dc51f849",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/fractional.html": {
@@ -403,38 +403,38 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-t18.html": {
-      "beforeSha256": "c0c9b68c790190cd0d9c112af0523227f4c6ae2101cab120475de65f998d8a6f",
-      "afterSha256": "1c7696b59bcf2b420cb080455da26b75e00cafc2a1e0fa919f023195fdd4a676",
+      "beforeSha256": "166a571739f538c873f92225fd0ed892cb186d2e548702d4905f757bc52426be",
+      "afterSha256": "9e17956b326b5b06e0ba7a4c1e53d1543606fa84ece4d184cbc67bda5f3d09cc",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-t1.html": {
-      "beforeSha256": "3bc01ff8ceb1f12200ef856601f0752ea7177bc3fdf3f6f81e61f5d4c6640e61",
-      "afterSha256": "dbcd8e3e013f808182c02a53ed379fdf08f56da0e658559b170ebfee6d26fde2",
+      "beforeSha256": "c682f9bbfacc9fb0d36563e19ae1fb9c4d22d72994eee59bfae03c3b363b72fb",
+      "afterSha256": "4a2b0a1025ce66899bf79c10e3ab83a32a500b8f62cfbb1114136fe6e9b4d46a",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-t17.html": {
-      "beforeSha256": "6e2bfc8b9d6d3f6df42ca31571afa29058715526289487e52489bb163d5a5340",
-      "afterSha256": "a20c54817296cd7f4da7e49489cc21761fac94483dc2ff7fdae65dec7e3dc2a2",
+      "beforeSha256": "ab89d344ca5ab16d723cc0d0cb3406a53d1527a3549aadc5b5acf6eda1ec34fc",
+      "afterSha256": "647a7ff6cc68f135fef590eb49c66ea97595ad6fda88ad16954c43ca307aa111",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-yashchenko-t1.html": {
-      "beforeSha256": "45ecc6d9c10009b71fb79504c909dd8d9b540b6232da02fb1c712dd920e56545",
-      "afterSha256": "3f42757bc95898e7e2c16933376280a07164d906eb502c053dd9de2302fe9449",
+      "beforeSha256": "2d48c7c20d1d3c6147efc02792dc003655b1d0e6b0eefb7f31efa0e143dc0a18",
+      "afterSha256": "0c62ed41c3ab6496c9b583cf92a03d8f47f5844a1cf9d90ad9e2c398f61d3e86",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/probability-t45.html": {
-      "beforeSha256": "b63db4d64f786db643913a41ce18167fcd78afe5e973bec58ffefe2651b79b3c",
-      "afterSha256": "399b981bbdebe261f78d36ee89fc9f23c118546b50f74f26945b363c96c50973",
+      "beforeSha256": "9485ee2193d3150d9be646f42e90efb72e66501a774aa06eefec45715c79da8e",
+      "afterSha256": "d7bf993eda4735a0ff7412339f211fcb71f1d453f9af43f2337e2ae4551cd7eb",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html": {
-      "beforeSha256": "4209c3070572d66c79889abcbf38a5fc7f447b2a96ac7059c170973ddafa8f70",
-      "afterSha256": "9662edd1321c26d25b3e868e61d53f2197d2fb2a7f46dfecae7315f1fbe8b9a5",
+      "beforeSha256": "11ec18254eeedf9484be0ded0b76985ef1767d64d28a75b66b140f91434a3ed3",
+      "afterSha256": "634e6edc756681d301653b1942e26aa2c7c02bfa4543f5f51730a84ebf8f0277",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/stereo-t14.html": {
-      "beforeSha256": "5f84d8edcd44dc2307cd68b971398d6712da7e7c79d69d8d34e1d97917576a3e",
-      "afterSha256": "e1e2bf688f29574d08425e0a6d907cc90f88f5147894c048918ad4bdba483c76",
+      "beforeSha256": "a27b36de81e91fd32c5a32912456ace144df4e4ac436789b1327cc626e7c4ed8",
+      "afterSha256": "1c05f7cc63c63787babd7eb3a710b21e31f56abba4e03e27ce5d6af501fae5da",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/stereo/index.html": {
@@ -448,23 +448,23 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trig-sum-to-product.html": {
-      "beforeSha256": "7ddf4ca4b72e41f69f5a5acadd531cd0a33f8c060862fcc322398a9b975d32ca",
-      "afterSha256": "4e92b1a90e705b1aaee24bf90cd5688bc1caadaabfc6f3772210cbfbfb3d5d49",
+      "beforeSha256": "37d05e6067b55dff0c1f57dd7cea2c5d40ef9fb247c1e949956404620f39f048",
+      "afterSha256": "459355ba3fc3f14d5a6bb36054aeedf4f41011c307b91e6d50abe8ba3c52572f",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trigonometry.html": {
-      "beforeSha256": "c92120a7be736c988bae6039a920b7f341ebec8bd19f3145cd1613ef61bfd3e9",
-      "afterSha256": "55cfae4327a8d203ec7c7990a8559528490a549ade8f250ddc27f424f084b1b5",
+      "beforeSha256": "f06f98231f8ec39c536724a6ca1d067b6bbd52669d5fcbfaa4908c081cb89c91",
+      "afterSha256": "ab5e25351c406c98b9d07e7e9fdd26fa19d6a01d32ef4ac41aa0b57fa8aba905",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
-      "beforeSha256": "ecbd4e21de48233cb895d972864ab87a88aae20ffc7139889e821a3fff4dd73f",
-      "afterSha256": "e1367a359d60bd5d94f6c23f85325113f1c22daa2b94c43f8940cd040ed10d3e",
+      "beforeSha256": "8a97190be5c17eba044d3e640e0d2dbaf85ccea446cebfd746087e8f7f77b244",
+      "afterSha256": "a6f204bfcca37ab283bd3f69ba1c76326d29f0bb8e7c7fd082d777e3707fbf54",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-yashchenko-t2.html": {
-      "beforeSha256": "3b2306d522d184f54cee9cfa9872fbf0ead084c1d029a6f19cde0cabe3ac1b77",
-      "afterSha256": "502a3f8f2cc45ca3f812eb27ccf9c2c1b6a2625b407f2390e2e6c6999ac105d5",
+      "beforeSha256": "ddb745e7258b0020c3e43d2db3f7a1b31964055304d324c496d33ca3420453e8",
+      "afterSha256": "78182b86c478baf6e04d87c728582d50ce3fe705580eb86a2888ee2c547a6d76",
       "placement": "before-head-close"
     },
     "ege-profil/trigonometry/index.html": {
@@ -2333,8 +2333,8 @@
       "placement": "before-head-close"
     },
     "trainers/ege-methods.html": {
-      "beforeSha256": "89e0dfdf0088f28bca3c9ad796f2e2f08944ad8dfe6d204af92f0cbcf79498cc",
-      "afterSha256": "b78f8f2a3cde3f72d806a5f955c3cfe5e008f642f9ceab2825415c6eb137bae3",
+      "beforeSha256": "ea19e4daeee5f7814e037879c18a443a9109cb5b71db2595040183f938e8bebf",
+      "afterSha256": "a9e12c86f7dbccafd85f2e649957b3c9cabe8c8ad497d37122166e12a91e1f45",
       "placement": "before-head-close"
     },
     "trainers/ege-profile-task3-stereometry-catalog.html": {
@@ -2348,28 +2348,28 @@
       "placement": "before-head-close"
     },
     "trainers/ege-profile/inequalities/index.html": {
-      "beforeSha256": "cb2b552e4f039dd8fa5a3dd7fd2b2dbdf606b7dd117c2f598b5bd32e880216b4",
-      "afterSha256": "3ad480c53077b3c7b8e7bb3bb953c2e8b6c81d97247da4a790cfb894840605e5",
+      "beforeSha256": "07e930e920b0787c7c3106aa55b4785d2124e39a78410105ad23bebffd48cdec",
+      "afterSha256": "312235cf5107a46cfe8a034aa108aeea5c3c522c2163bed60fb2a84ffdaf8b1a",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/inequalities/lesson.html": {
-      "beforeSha256": "89863722dbe7468747e3b4397e2ce89783cb0862d0be9caa4acb329e076585ff",
-      "afterSha256": "c774de6a226d6caa8ec745743023b49f0e93eadae8d9883e4fd44421d0400419",
+      "beforeSha256": "c9d5b4da00db1543f128cd34638093a61b6550950f8bfb8d5fd6037acb2f669b",
+      "afterSha256": "430b57c777a4d8eb3b4e0f523c0c4fa66b4fb7183cb6a67abbc11c5483457ba8",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/log-inequalities/index.html": {
-      "beforeSha256": "67cd3d823ce5047e3587c295464d8f205eddfb8f3ec48592e718137fc3b97ea9",
-      "afterSha256": "3b7c996cf79e23dc09234a52c7aae4abf01c998e0b20e12ae918ee82c392c92e",
+      "beforeSha256": "4da73ea24fe41e9de659039fcf4fca654d672fd881abe0945b9ae33fab8b1ac5",
+      "afterSha256": "61855c49fbcf13721eaa6de7df82dac85784ddde6dddaeb594a868ec02a03679",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/log-inequalities/lesson.html": {
-      "beforeSha256": "0596932597b872cfce437f15c9cf02b4d58a732b5122307f0965c71754feead5",
-      "afterSha256": "f6f66e21c7bab28e5a96272685a7b4d2bbe2b4d58fab1e4c3a4631317f7dd0ca",
+      "beforeSha256": "8ea2c3b211bd402b49aee8c94e486dd25fb46c5b440638a91107827947844ba4",
+      "afterSha256": "3cb512328ea589b7124ec13f95afc252327efcc7834c6e15695a3a4fecfbf5fa",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/log-inequalities/nested.html": {
-      "beforeSha256": "cbe9ae4734bb0956904f64a2380daf7ad8ca2d229daf2e4f4101daabce341bb2",
-      "afterSha256": "8d61b35f228b283bf7ea9fee818674b427e9b0008ed3e123898703588412c8c5",
+      "beforeSha256": "6e970f35d087bc2a03e613c3a7c2aa2aa323d5d164363b274aadc86b027218d7",
+      "afterSha256": "d50f59fa9dcc5ac5d5fb0060495562b84312738f834bc0b7e248b5b08dc12452",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/yashchenko-lines-1-2.html": {
@@ -2578,8 +2578,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-2027-analogue-1.html": {
-      "beforeSha256": "93f0681997bc522ac815e905a4757f3d65c12b75ac28c35517161348b5542a43",
-      "afterSha256": "adeb912caa9d500fb6aa326390730e3b4d28abf51c37dfe64553e5347e94edf1",
+      "beforeSha256": "391306468ebb767fd6bddc6b90099979c9bcc5fe7c00cb99c75ae0a0cd78d68e",
+      "afterSha256": "4b8337331e378a6e2648480aca8d2ad9f984cc0b16f9864240e48c28a893c980",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/arithmetic-route.html": {
@@ -2933,8 +2933,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "91d10e796282966d2b2f12377fecda1c25a62fbb0c988af913ea6416da7107af",
-      "afterSha256": "a9c41b338c2d1805860941eb824a62a409702deb60b86d2971d9f4b538acf03c",
+      "beforeSha256": "68cc823e8faf86a6c7398491097ae93fee054c598224bcc8284f57b56279f48e",
+      "afterSha256": "9f00500b74f2b25b3c56d64a08bef6abc672b8872125f910a56d7d65110a05cc",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3033,8 +3033,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
-      "beforeSha256": "f4be1e2e94faa1ab8c3658c579f10196dcb348371ebdb45250e0c0300cec2482",
-      "afterSha256": "b6a7f36ab057617180acf9ed3f60ed251a2e1afc8ac6d5763cc2bf40fbff7351",
+      "beforeSha256": "c9282acf51910af3abfc070fa2002ce4291aa33aa75170e66ca8c3f97319a100",
+      "afterSha256": "b941c4587339740271867642f456874d6cf555ab11d78f8899bbf7205f6bd68b",
       "placement": "before-head-close"
     },
     "trainers/oge13-inequalities-series.html": {
@@ -5266,10 +5266,65 @@
     },
     {
       "previousBaseSha": "fd430e974e4674a5b76c04b04939ff1f48365afe",
-      "sourceBaseSha": "ba917c13d1222d1fad93fc6e1e3504a468b0c6a5",
-      "task": "docs/tasks/PROFILE19_PROOF_COMPLETION_20261114.md",
+      "sourceBaseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+      "task": "docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md",
       "changedPaths": [
-        "ege-profil/part-two/index.html"
+        "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+      "sourceBaseSha": "262eaadc6e076aad4c3d1cb88cd1a38ad0bc5a2f",
+      "task": "docs/tasks/OGE_COURSE_RESUME_20261117.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "262eaadc6e076aad4c3d1cb88cd1a38ad0bc5a2f",
+      "sourceBaseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
+      "task": "docs/tasks/OGE_DIAGNOSTIC_PRACTICE_20261117.md",
+      "changedPaths": [
+        "trainers/oge-2027-analogue-1.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
+      "sourceBaseSha": "08d80f14da385f7a72247640996f1f06032d20c3",
+      "task": "docs/tasks/PROFILE_FIPI_2027_ALIGNMENT_20261115.md",
+      "changedPaths": [
+        "ege-profil/atanasyan-10-11/index.html",
+        "ege-profil/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html",
+        "ege-profil/trainers/applied-t910.html",
+        "ege-profil/trainers/derivative-t8.html",
+        "ege-profil/trainers/expert.html",
+        "ege-profil/trainers/finance.html",
+        "ege-profil/trainers/functions-t1112.html",
+        "ege-profil/trainers/inequalities.html",
+        "ege-profil/trainers/interval-method.html",
+        "ege-profil/trainers/numbers-t19.html",
+        "ege-profil/trainers/parameters-t18.html",
+        "ege-profil/trainers/planimetry-t1.html",
+        "ege-profil/trainers/planimetry-t17.html",
+        "ege-profil/trainers/planimetry-yashchenko-t1.html",
+        "ege-profil/trainers/probability-t45.html",
+        "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html",
+        "ege-profil/trainers/stereo-t14.html",
+        "ege-profil/trainers/trig-sum-to-product.html",
+        "ege-profil/trainers/trigonometry.html",
+        "ege-profil/trainers/vectors-t2.html",
+        "ege-profil/trainers/vectors-yashchenko-t2.html",
+        "trainers/ege-methods.html",
+        "trainers/ege-profile/inequalities/index.html",
+        "trainers/ege-profile/inequalities/lesson.html",
+        "trainers/ege-profile/log-inequalities/index.html",
+        "trainers/ege-profile/log-inequalities/lesson.html",
+        "trainers/ege-profile/log-inequalities/nested.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
