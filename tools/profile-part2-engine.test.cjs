@@ -394,7 +394,7 @@ test('parameter proof criteria stay closed for an unrecognized final form and op
  }finally{w.close();}
 });
 
-test('earlier №19 draft, proof marks and independently accepted answers are retained',async()=>{
+test('earlier №19 draft and accepted answers remain, while unbound marks are historical',async()=>{
  const task=bank.find(l=>l.id==='param-hole').tasks[3],storage=memory(),state=api.create(storage);
  const answers=task.final.map(field=>String(field.answers[0]));
  await state.patch(task.id,r=>{r.drafts.final=answers;r.drafts.proof='Старый довод о знаменателе.';r.proofChecks=[0,3];});
@@ -402,7 +402,8 @@ test('earlier №19 draft, proof marks and independently accepted answers are re
  const key=state.key(task.id),saved=storage.getItem(key),dom=await boot('task/'+task.id+'/independent',[[key,saved]]),w=dom.window,d=w.document;
  assert.equal(w.localStorage.getItem(key),saved,'viewing an existing record does not rewrite it');
  assert.equal(d.getElementById('proof-draft').value,'Старый довод о знаменателе.');
- assert.match(d.getElementById('proof-review-count').textContent,/2 из 4/);
+ assert.match(d.getElementById('proof-review-count').textContent,/0 из 4/);
+ assert.deepEqual(Array.from(w.ProfilePartTwoApp.store.read(task.id).proofChecks),[0,3]);
  assert.match(d.getElementById('completion').textContent,/Вычислительная часть решена самостоятельно/);
  input(w,'proof-draft','   ');
  await settle(w);
@@ -443,7 +444,10 @@ test('stale parameter checkboxes cannot certify a newer draft from another tab',
  input(w,'proof-draft','Первый довод о горизонтальном участке.');
  task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));
  await submit(w,'final-form');
- await w.ProfilePartTwoApp.store.patch(task.id,r=>{r.drafts.proof='Свежий довод из другого окна.';r.proofChecks=[1,3];});
+ await w.ProfilePartTwoApp.store.patch(task.id,r=>{
+  r.drafts.proof='Свежий довод из другого окна.';r.proofChecks=[1,3];
+  r.proofReviewSnapshot={proof:r.drafts.proof,checks:[...r.proofChecks]};
+ });
  d.querySelector('[data-proof-check="0"]').click();
  await settle(w);
  const r=w.ProfilePartTwoApp.store.read(task.id);
@@ -514,6 +518,83 @@ test('a proof with a leading empty line is restored verbatim with the checklist'
  assert(!d.getElementById('proof-draft').readOnly);
  assert(!d.getElementById('proof-review').hidden);
  restored.window.close();
+});
+
+test('a general proof binds checks to written content, preserves outer formatting edits and never grants proof credit',async()=>{
+ const task=bank.find(l=>l.id==='p2-15-projection').tasks[3],hash='task/'+task.id+'/independent';
+ let dom=await boot(hash),w=dom.window;
+ try{
+  const record=()=>w.ProfilePartTwoApp.store.read(task.id);
+  const checkbox=()=>w.document.querySelector('[data-proof-check="0"]');
+  assert(checkbox().disabled,'an empty proof cannot be marked');
+  w.document.querySelector('.proof-criteria').open=true;
+  await settle(w);
+  assert.equal(record().helped,false,'viewing a checklist is neutral');
+  const proof='Первый довод.\nВторой довод.';
+  input(w,'proof-draft','  '+proof+'\n');
+  await settle(w);
+  assert(!checkbox().disabled);
+  checkbox().click();await settle(w);
+  assert.equal(record().proofReviewSnapshot.proof,proof);
+  assert.deepEqual(Array.from(record().proofChecks),[0]);
+  assert.equal(record().completed,false);
+  input(w,'proof-draft','\r\n'+proof.replace('\n','\r\n')+'  ');
+  await settle(w);
+  assert(checkbox().checked,'outer spaces and line endings do not invalidate a mark');
+  const entries=Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]);
+  w.close();dom=await boot(hash,entries);w=dom.window;
+  assert(checkbox().checked,'the exact mark remains after opening the same argument');
+  input(w,'proof-draft',proof.replace('Второй довод','Второй  довод'));
+  await settle(w);
+  assert(!checkbox().checked,'inner spacing is a substantive change');
+  assert.equal(record().proofReviewSnapshot,undefined);
+  input(w,'proof-draft',proof);await settle(w);
+  assert(!checkbox().checked,'restoring old wording does not restore a check');
+  checkbox().click();await settle(w);
+  input(w,'proof-draft','   ');await settle(w);
+  assert(checkbox().disabled&&!checkbox().checked);
+  assert.equal(record().proofChecks.length,0);
+  task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));
+  await submit(w,'final-form');
+  assert(record().completed&&record().independent&&!record().helped);
+  assert.match(w.document.querySelector('.proof-status').textContent,/Обоснование требует проверки/);
+ }finally{w.close();}
+});
+
+test('generic stale writes and former client updates cannot attach a mark to the current proof',async()=>{
+ const task=bank.find(l=>l.id==='p2-18-altitude').tasks[3],hash='task/'+task.id+'/independent';
+ const dom=await boot(hash),w=dom.window,d=w.document,store=w.ProfilePartTwoApp.store,key=store.key(task.id);
+ try{
+  input(w,'proof-draft','Видимый прежний текст.');await settle(w);
+  await store.patch(task.id,r=>{
+   r.drafts.proof='Свежий текст в соседней вкладке.';r.proofChecks=[1];
+   r.proofReviewSnapshot={proof:r.drafts.proof,checks:[...r.proofChecks]};
+  });
+  const latest=w.localStorage.getItem(key);
+  d.querySelector('[data-proof-check="0"]').click();await settle(w);
+  assert.equal(w.localStorage.getItem(key),latest);
+  assert(d.getElementById('proof-draft').readOnly);
+  assert.match(d.getElementById('proof-sync-warning').textContent,/в другой вкладке/);
+  assert(!d.getElementById('proof-open-saved').hidden);
+  input(w,'proof-draft','Несохранённое продолжение.');await settle(w);
+  assert.equal(w.localStorage.getItem(key),latest);
+  assert.equal(d.getElementById('proof-draft').value,'Несохранённое продолжение.');
+  await store.patch(task.id,r=>{
+   r.drafts.proof='Видимый прежний текст.';r.proofChecks=[];delete r.proofReviewSnapshot;
+  });
+  w.dispatchEvent(new w.StorageEvent('storage',{key}));
+  assert(!d.getElementById('proof-open-saved').hidden,'a rejected edit can be recovered even after the saved wording returns');
+  d.getElementById('proof-open-saved').click();await settle(w);
+  assert.equal(d.getElementById('proof-draft').value,'Видимый прежний текст.');
+  assert(!d.getElementById('proof-draft').readOnly);
+  d.querySelector('[data-proof-check="0"]').click();await settle(w);
+  assert(d.querySelector('[data-proof-check="0"]').checked);
+  await store.patch(task.id,r=>{r.proofChecks.push(1);});
+  const historical=w.localStorage.getItem(key);
+  w.dispatchEvent(new w.StorageEvent('storage',{key}));
+  assert.equal(d.querySelectorAll('[data-proof-check]:checked').length,0);
+  assert.equal(w.localStorage.getItem(key),historical,'showing an old-client update does not rewrite it');
+ }finally{w.close();}
 });
 
 test('new proof review preserves submit locking and whole-answer self-correction outside task 19',async()=>{
