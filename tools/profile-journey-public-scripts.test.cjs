@@ -4,9 +4,11 @@ const {canonicalProfileLearningScripts}=require('./public-page-script.cjs');
 const shared=['../exam-map.js?v=20261115-fipi-map'];
 const map=['../skill-map-data.js?v=20261115-fipi-map','../azbuka-metodov/catalog.js?v=20261115-fipi-map','../skill-map.js?v=20261115-fipi-map','journey.js?v=20261115-fipi-map',
  'second-part.js?v=20261115-fipi-map','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity',
- 'vector-basics-data.js?v=20261113-foundations','vector-basics-models.js?v=20261112-vectors'];
-const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity','calm-data.js?v=20261115-fipi-map','calm-ui.js?v=20261115-fipi-map','app.js?v=20261115-fipi-map','checks.js?v=20261114-numeric-domain'];
-const boardRuntime=[...shared,'geometry-data.js','state.js?v=20261101-trainer-repair','calm-data.js?v=20261115-fipi-map','calm-ui.js?v=20261115-fipi-map','app.js?v=20261115-fipi-map','checks.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
+ 'vector-basics-data.js?v=20261113-foundations','vector-basics-models.js?v=20261112-vectors','/assets/trainer-skill-gif.js?v=20261117-research'];
+const publicCourseLinks='course-links.js?v=20261117-h12';
+const boardCourseLinks='course-links.js?v=20261115-fipi-map';
+const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity',publicCourseLinks,'calm-data.js?v=20261115-fipi-map','calm-ui.js?v=20261115-fipi-map','app.js?v=20261117-research','checks.js?v=20261114-numeric-domain'];
+const boardRuntime=[...shared,'geometry-data.js','state.js?v=20261101-trainer-repair',boardCourseLinks,'calm-data.js?v=20261115-fipi-map','calm-ui.js?v=20261115-fipi-map','app.js?v=20261115-fipi-map','checks.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
 const html=sources=>sources.map(src=>'<script defer src="'+src+'"></script>').join('\n');
 const canonical=html([...shared,...map,...runtime]),wrapper=html(boardRuntime);
 function parity(page=canonical,board=wrapper){
@@ -21,6 +23,7 @@ test('board contract excludes public-only modules and permits only the reviewed 
 test('adding, removing or reordering any learning script breaks parity in either page',()=>{
  for(const changed of [
   [...runtime,'unreviewed.js'], runtime.filter(src=>!src.startsWith('state.js')),
+  runtime.filter(src=>src!==publicCourseLinks), [...runtime,publicCourseLinks],
   [runtime[1],runtime[0],...runtime.slice(2)]
  ])assert.throws(()=>parity(html([...shared,...map,...changed]),wrapper));
  for(const changed of [
@@ -45,7 +48,8 @@ test('public-only modules must appear once, first, in order and as exact deferre
 test('board wrappers explicitly reject any public-only module, including equivalent local paths',()=>{
  for(const src of map){
   const filename=src.split('?')[0];
-  for(const alias of [new URL(src,'https://mathexam.space/ege-profil/start/index.html').pathname,'./'+filename,'../start/'+filename])
+  const aliases=filename.startsWith('/')?[filename,'../../'+filename.slice(1)]:[new URL(src,'https://mathexam.space/ege-profil/start/index.html').pathname,'./'+filename,'../start/'+filename];
+  for(const alias of aliases)
    assert.throws(()=>canonicalProfileLearningScripts(canonical,wrapper+html([alias])),/Board wrappers must not load public-only modules/);
  }
 });

@@ -752,12 +752,14 @@
         "/ege-profil/part-two/content-algebra.js",
         "/ege-profil/part-two/content-geometry.js",
         "/ege-profil/part-two/content-models.js",
+        "/ege-profil/part-two/content-finance.js",
         "/ege-profil/part-two/state.js",
         "/ege-profil/part-two/models.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/azbuka-metodov/catalog.js",
         "/ege-profil/skill-map.js",
+        "/ege-profil/part-two/parameter-proof.js",
         "/ege-profil/part-two/app.js"
       ],
       "offlineOmitAssets": [],
@@ -1685,7 +1687,10 @@
         "/ege-profil/learning/data.js",
         "/ege-profil/learning/route.js"
       ],
-      "offlineOmitAssets": [],
+      "offlineOmitAssets": [
+        "/assets/trainer-lesson-choice.css",
+        "/assets/trainer-skill-gif.js"
+      ],
       "adaptation": {
         "preserveSourceSpacing": true,
         "localEditing": true,
