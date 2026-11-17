@@ -250,7 +250,7 @@ const server = http.createServer((req, res) => {
     await go('#practice/geo-right/guided');
     await finish('geo-right');
     await go('#lesson/trig-angle');
-    await page.locator('#explore-lab summary').click();
+    await page.locator('#explore-lab > summary').click();
     await page.locator('#lab svg').first().waitFor();
     await go('#practice/algebra-logarithmic/guided');
     await finish('algebra-logarithmic');

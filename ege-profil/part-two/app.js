@@ -1,15 +1,22 @@
 (function(root){
 'use strict';
 const lessons=(root.ProfilePartTwoLessons||[]).slice().sort((a,b)=>a.exam-b.exam);
+const financeLessons=root.ProfileFinanceWrittenLessons||[];
+const financeIds=new Set(financeLessons.map(lesson=>lesson.id));
+const isFinance=lesson=>financeIds.has(lesson.id);
+const allLessons=lessons.concat(financeLessons);
+const lessonSequence=lesson=>isFinance(lesson)?financeLessons:lessons;
 const examMap=root.ProfileExamMap;
 // Legacy exam keys identify the existing lessons, labs and saved work.
 const entryFor=number=>examMap?.fromLegacyPartTwo(number);
 const labelFor=number=>{const entry=entryFor(number);return entry?examMap.label(entry):'Учебная тема';};
 const groupURL=number=>{const entry=entryFor(number);return entry?examMap.hash(entry):'#exam/'+number;};
 const titles={14:'Уравнения и отбор корней',15:'Стереометрия с доказательством',16:'Неравенства',17:'Моделирование и оптимизация',18:'Планиметрия с доказательством',19:'Задачи с параметром',20:'Числа и их свойства'};
+const lessonLabel=lesson=>isFinance(lesson)?examMap.label(16):labelFor(lesson.exam);
+const lessonGroupURL=lesson=>isFinance(lesson)?examMap.hash(16):groupURL(lesson.exam);
 const main=document.getElementById('main'),banner=document.getElementById('save-warning'),API=root.ProfilePartTwoState;
-const byLesson=new Map(lessons.map(l=>[l.id,l])),byTask=new Map();
-lessons.forEach(lesson=>lesson.tasks.forEach((task,index)=>byTask.set(task.id,{lesson,task,index})));
+const byLesson=new Map(allLessons.map(l=>[l.id,l])),byTask=new Map();
+allLessons.forEach(lesson=>lesson.tasks.forEach((task,index)=>byTask.set(task.id,{lesson,task,index})));
 let storage;try{storage=root.localStorage;}catch(_){}
 const store=API.create(storage,{locks:root.navigator?.locks,validate:(v,id)=>{const task=byTask.get(id)?.task;return !!task&&v.solvedSteps.length<=task.steps.length&&v.drafts.steps.length<=task.steps.length&&v.drafts.final.length<=task.final.length&&v.solutionSteps<=task.solution.length;},onWarning:text=>{banner.hidden=false;banner.textContent=text;}});
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -70,20 +77,25 @@ function correctedWithoutHelp(record){return record.independent&&record.attempts
 function status(task,record){if(record.independent)return `<span class="tag ok">${correctedWithoutHelp(record)?'Исправлено без подсказки':'Ответы самостоятельно'}</span>`;if(record.completed)return '<span class="tag help">Ответы с опорой</span>';if(record.attemptCount||record.drafts.proof||record.drafts.openFinal?.trim()||record.drafts.final.some(Boolean)||record.drafts.steps.some(Boolean)||record.solvedSteps.length)return '<span class="tag">Продолжить работу</span>';return '<span class="tag">Можно начать</span>';}
 function stats(items){const out={total:0,completed:0,independent:0,helped:0,pending:0};items.forEach(l=>l.tasks.forEach(task=>{const r=store.read(task.id);out.total++;if(r.completed)out.completed++;if(r.independent)out.independent++;else if(r.completed)out.helped++;if(r.completed&&task.proof)out.pending++;}));return out;}
 function badges(s){return `<div class="stats"><span class="tag">${s.total} условий</span><span class="tag ok">Самостоятельные ответы: ${s.independent}</span><span class="tag help">С опорой: ${s.helped}</span></div>`;}
-function resume(items=lessons){let best=null;for(const lesson of items)for(let index=0;index<lesson.tasks.length;index++){const task=lesson.tasks[index],r=store.read(task.id);if(r.updatedAt&&!r.completed&&(!best||r.updatedAt>best.r.updatedAt))best={lesson,task,index,r};}return best;}
+function resume(items=allLessons){let best=null;for(const lesson of items)for(let index=0;index<lesson.tasks.length;index++){const task=lesson.tasks[index],r=store.read(task.id);if(r.updatedAt&&!r.completed&&(!best||r.updatedAt>best.r.updatedAt))best={lesson,task,index,r};}return best;}
 function courseCard(entry){
- if(!entry.legacyPartTwo)return `<section class="card"><h2><span class="number">${entry.number}</span>${esc(entry.title)}</h2><p>Подготовка по процентам и кредитам: 16 тем · 96 числовых упражнений.</p><p class="caption">Эта практика помогает составлять и считать финансовые модели. Полное письменное решение №16 требует отдельного обоснования и проверки преподавателем.</p><a class="button" href="${esc(examMap.href(entry))}">К финансовой подготовке</a></section>`;
+ if(!entry.legacyPartTwo){
+  const count=stats(financeLessons).total;
+  return `<section class="card"><h2><span class="number">${entry.number}</span>${esc(entry.title)}</h2><p>${count?count+' условий с письменным решением.':'Подготовка по процентам и кредитам.'}</p><p class="caption">Проверьте расчёт и запишите полное обоснование.</p><div class="actions"><a class="button" href="${examMap.hash(entry)}">Открыть №16</a><a class="button quiet" href="${esc(examMap.href(entry))}">К финансовой подготовке</a></div></section>`;
+ }
  const group=lessons.filter(l=>l.exam===entry.legacyPartTwo),s=stats(group);
  return `<section class="card"><h2><span class="number">${entry.number??'+'}</span>${esc(entry.title)}</h2><p>${group.length} тем · ${s.total} условий</p><p class="caption">Самостоятельные ответы: ${s.independent}; с опорой: ${s.helped}.</p><a class="button" href="${examMap.hash(entry)}">${entry.number?'Открыть №'+entry.number:'Открыть дополнительную тему'}</a></section>`;
 }
 function home(){
  const official=examMap.entries.filter(entry=>entry.part===2),extras=examMap.extras.filter(entry=>entry.legacyPartTwo);
  const s=stats(lessons.filter(lesson=>entryFor(lesson.exam)?.number)),last=resume();
- main.innerHTML=`<p class="eyebrow">Профильный ЕГЭ · ФИПИ 2027</p><h1>Вторая часть: от метода до обоснования</h1><p class="lead">Задания экзамена №13–19. Выберите тему: три условия с опорой, затем три других условия для самостоятельной проверки. Сохраняются ответы, первая попытка и ваше обоснование.</p><p>Здесь 36 тем и 216 условий по уравнениям, геометрии, неравенствам, параметрам и числам. Для №16 откройте финансовую подготовку. Ещё 6 тем и 36 условий по оптимизации сохранены в дополнительном разделе ниже.</p>${badges(s)}${last?`<a class="button" href="${taskURL(last.task.id,last.r.helped&&!last.r.drafts.openFinal?.trim()?'guided':modeFor(last.index))}">Продолжить: ${esc(last.lesson.title)}</a>`:''}<h2>Подготовка к №13–19</h2><div class="grid">${official.map(courseCard).join('')}</div><h2>Дополнительная подготовка</h2><p>Оптимизация развивает работу с моделью и ограничениями. Это дополнительная тема, а не отдельный официальный номер экзамена.</p><div class="grid">${extras.map(courseCard).join('')}</div><aside class="panel"><h2>Как оценивать результат</h2><p>Верный числовой ответ ещё не означает полное решение второй части. Запишите ход рассуждений и проверьте его по критериям. Доказательство остаётся на проверку преподавателю.</p><p>После подсказки условие отмечается как работа с опорой. Для новой самостоятельной проверки откройте другое условие.</p><a href="/ege-profil/start/#calm">Первая часть №1–12 и школьные основы →</a></aside>`;
+ main.innerHTML=`<p class="eyebrow">Профильный ЕГЭ · ФИПИ 2027</p><h1>Вторая часть: от метода до обоснования</h1><p class="lead">Задания экзамена №13–19. Выберите тему: три условия с опорой, затем три других условия для самостоятельной проверки. Сохраняются ответы, первая попытка и ваше обоснование.</p><p>Здесь 36 тем и 216 условий по уравнениям, геометрии, неравенствам, параметрам и числам. Отдельный раздел №16 посвящён письменному решению финансовых задач. Ещё 6 тем и 36 условий по оптимизации сохранены в дополнительном разделе ниже.</p>${badges(s)}${last?`<a class="button" href="${taskURL(last.task.id,last.r.helped&&!last.r.drafts.openFinal?.trim()?'guided':modeFor(last.index))}">Продолжить: ${esc(last.lesson.title)}</a>`:''}<h2>Подготовка к №13–19</h2><div class="grid">${official.map(courseCard).join('')}</div><h2>Дополнительная подготовка</h2><p>Оптимизация развивает работу с моделью и ограничениями. Это дополнительная тема, а не отдельный официальный номер экзамена.</p><div class="grid">${extras.map(courseCard).join('')}</div><aside class="panel"><h2>Как оценивать результат</h2><p>Верный числовой ответ ещё не означает полное решение второй части. Запишите ход рассуждений и проверьте его по критериям. Доказательство остаётся на проверку преподавателю.</p><p>После подсказки условие отмечается как работа с опорой. Для новой самостоятельной проверки откройте другое условие.</p><a href="/ege-profil/start/#calm">Первая часть №1–12 и школьные основы →</a></aside>`;
 }
 function finance(){
- const entry=examMap.get(16);
- main.innerHTML=`<a class="back" href="#map">← Карта второй части</a><p class="eyebrow">ЕГЭ 2027 · №16</p><h1>${esc(entry.title)}</h1><p class="lead">Начните с процентов, платежей и финансовых моделей в подготовительном курсе.</p><p>В существующем курсе 16 тем и 96 числовых упражнений. Они тренируют отдельные вычисления и построение моделей; это не полный письменный курс по №16. Для экзамена нужно обосновать модель и ход решения, а полную запись проверить с преподавателем.</p><a class="button" href="${esc(examMap.href(entry))}">Открыть финансовую подготовку</a>`;
+ const entry=examMap.get(16),last=resume(financeLessons);
+ const cards=financeLessons.map(lesson=>`<section class="card"><h2>${esc(lesson.title)}</h2><p>${esc(lesson.goal)}</p><p class="caption">Условий с верным числовым ответом: ${stats([lesson]).completed} из ${lesson.tasks.length}.</p><div class="actions"><a class="button" href="#lesson/${lesson.id}">К условиям</a><a class="button quiet" href="${taskURL((lesson.tasks.slice(3).find(task=>{const r=store.read(task.id);return !r.completed&&!r.helped;})||lesson.tasks[3]).id,'independent')}">Решить самостоятельно</a></div></section>`).join('');
+ const continuing=last?`<p><a class="button" href="${taskURL(last.task.id,modeFor(last.index))}">Продолжить сохранённое условие</a></p>`:'';
+ main.innerHTML=`<a class="back" href="#map">← Карта второй части</a><p class="eyebrow">ЕГЭ 2027 · №16</p><h1>${esc(entry.title)}</h1><p class="lead">Разберите календарь выплат и запишите, откуда берётся каждый платёж. Тренажёр сверит числовой ответ. Полное решение можно сверить с образцом и показать преподавателю.</p>${continuing}<div class="grid">${cards}</div><section class="panel"><h2>Вспомнить проценты и платежи</h2><p>16 тем и 96 числовых упражнений для подготовки к письменным задачам.</p><a class="button quiet" href="${esc(examMap.href(entry))}">Открыть финансовую подготовку</a></section>`;
 }
 function exam(number){
  const group=lessons.filter(l=>l.exam===number);if(!group.length)return missing();const s=stats(group),last=resume(group);
@@ -108,10 +120,10 @@ function exam(number){
 }
 function prerequisites(lesson){return lesson.prerequisites?.length?`<details class="prerequisites"><summary>Вспомнить основу и прежние материалы</summary><ul>${lesson.prerequisites.map(p=>`<li><a href="${esc(p.href)}">${esc(p.title)}</a></li>`).join('')}</ul><p class="caption">Черновик сохранится. Вернитесь кнопкой браузера, чтобы продолжить это условие.</p></details>`:'';}
 function lessonView(lesson){
- const index=lessons.indexOf(lesson),next=lessons[index+1];
- main.innerHTML=`<a class="back" href="${groupURL(lesson.exam)}">← Все темы · ${esc(labelFor(lesson.exam))}</a><p class="eyebrow">${esc(labelFor(lesson.exam))} · учебная тема</p><h1>${esc(lesson.title)}</h1><p class="lead">${esc(lesson.goal)}</p><div class="panel"><h2>Начать с задачи</h2><p>Попробуйте первый шаг сами; объяснение и помощь можно открыть рядом с условием.</p><div class="actions"><a class="button" href="${taskURL(lesson.tasks[0].id,'guided')}">Первое условие по шагам</a><a class="button quiet" href="${taskURL(lesson.tasks[3].id,'independent')}">Проверить себя</a></div></div><details><summary>Короткая теория и выбор метода</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<details id="model-lab"><summary>Исследование на модели · не зачёт</summary><div id="model-lab-content" class="panel"></div></details><h2>Сначала — разобраться</h2><div class="task-grid">${lesson.tasks.slice(0,3).map((task,i)=>taskCard(task,i,'guided')).join('')}</div><h2>Затем — другое условие самостоятельно</h2><p class="caption">Это отдельные условия. Если открыть подсказку или разбор, результат будет отмечен как работа с опорой.</p><div class="task-grid">${lesson.tasks.slice(3).map((task,i)=>taskCard(task,i+3,'independent')).join('')}</div>${next?`<p class="next"><a href="#lesson/${next.id}">Следующая тема: ${esc(next.title)} →</a></p>`:''}`;
- mountSkills(lesson.exam,lesson);
- const lab=document.getElementById('model-lab');if(!root.ProfilePartTwoLabs)lab.hidden=true;else lab.addEventListener('toggle',()=>{if(lab.open&&!labCleanup)labCleanup=root.ProfilePartTwoLabs.mount(document.getElementById('model-lab-content'),lesson.exam,{storage});});
+ const sequence=lessonSequence(lesson),next=sequence[sequence.indexOf(lesson)+1];
+ main.innerHTML=`<a class="back" href="${lessonGroupURL(lesson)}">← Все темы · ${esc(lessonLabel(lesson))}</a><p class="eyebrow">${esc(lessonLabel(lesson))} · учебная тема</p><h1>${esc(lesson.title)}</h1><p class="lead">${esc(lesson.goal)}</p><div class="panel"><h2>Начать с задачи</h2><p>Попробуйте первый шаг сами; объяснение и помощь можно открыть рядом с условием.</p><div class="actions"><a class="button" href="${taskURL(lesson.tasks[0].id,'guided')}">Первое условие по шагам</a><a class="button quiet" href="${taskURL(lesson.tasks[3].id,'independent')}">Проверить себя</a></div></div><details><summary>Короткая теория и выбор метода</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<details id="model-lab"><summary>Исследование на модели · не зачёт</summary><div id="model-lab-content" class="panel"></div></details><h2>Сначала — разобраться</h2><div class="task-grid">${lesson.tasks.slice(0,3).map((task,i)=>taskCard(task,i,'guided')).join('')}</div><h2>Затем — другое условие самостоятельно</h2><p class="caption">Это отдельные условия. Если открыть подсказку или разбор, результат будет отмечен как работа с опорой.</p><div class="task-grid">${lesson.tasks.slice(3).map((task,i)=>taskCard(task,i+3,'independent')).join('')}</div>${next?`<p class="next"><a href="#lesson/${next.id}">Следующая тема: ${esc(next.title)} →</a></p>`:''}`;
+ if(!isFinance(lesson))mountSkills(lesson.exam,lesson);
+ const lab=document.getElementById('model-lab');if(isFinance(lesson)||!root.ProfilePartTwoLabs)lab.hidden=true;else lab.addEventListener('toggle',()=>{if(lab.open&&!labCleanup)labCleanup=root.ProfilePartTwoLabs.mount(document.getElementById('model-lab-content'),lesson.exam,{storage});});
 }
 function taskCard(task,i,mode){return `<a class="task-link" href="${taskURL(task.id,mode)}"><strong>Условие ${i+1}</strong><small>${i<3?'Учимся решать':'Проверяем себя'}</small>${status(task,store.read(task.id))}</a>`;}
 function feedback(text,kind=''){const box=document.getElementById('feedback');if(box){box.className='feedback '+kind;box.hidden=false;box.textContent=text;}}
@@ -126,7 +138,11 @@ function bindSubmit(id,fn){
  });
 }
 function recentTrace(r,review){if(!r.attempts.length)return '';const first=r.attempts[0],last=r.attempts[r.attempts.length-1];return `<details class="history"><summary>Первая попытка и последнее исправление</summary><dl><dt>Первая отправка</dt><dd>${esc(first.answers.join('; '))} · ${first.correct?'верно':'нужна проверка'} · ${first.helped?'с опорой':'без подсказки'}</dd><dt>Последняя отправка</dt><dd>${esc(last.answers.join('; '))} · ${last.correct?'верно':'нужна проверка'} · ${last.helped?'с опорой':'без подсказки'}</dd></dl><p>Отправок: ${r.attemptCount}. Сохраняются первая и последние 59 отправок этого условия.</p>${review?'<p id="proof-help-history" hidden></p>':''}</details>`;}
-function reviewCount(review,r){return review.criteria.reduce((count,_,i)=>count+Number(r.proofChecks.includes(i)),0);}
+const {normalizedProof,currentProofChecks}=API;
+function reviewCount(review,r){
+ const checks=currentProofChecks(r);
+ return review.criteria.reduce((count,_,i)=>count+Number(checks.includes(i)),0);
+}
 function parameterProofView(review,r,nextLink){
  const catalog=root.ProfileAlphabetCatalog,skill=catalog?.index['parameter-methods']?.skills[review.skill];
  const back=(root.MathExamTrainerOffline?'/ege-profil/part-two/':root.location.pathname)+root.location.search+root.location.hash;
@@ -138,7 +154,7 @@ function parameterProofView(review,r,nextLink){
    <p>Отметьте пункты, для которых нашли довод в своём тексте. Остальные можно дописать после подсказки.</p>
    <ol class="proof-review-list">${review.criteria.map(([title,criterion,hint],i)=>`
     <li>
-     <label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span><strong>${esc(title)}</strong>${esc(criterion)}</span></label>
+     <label><input type="checkbox" data-proof-check="${i}" disabled><span><strong>${esc(title)}</strong>${esc(criterion)}</span></label>
      <details data-proof-help="${proofHintStart+i}"><summary aria-label="Подсказка к пункту «${esc(title)}»">Подсказка</summary><p class="hint">${esc(hint)}</p></details>
     </li>`).join('')}
    </ol>
@@ -154,13 +170,12 @@ function parameterProofView(review,r,nextLink){
 }
 function proofView(task,r,review,nextLink){
  if(!task.proof)return '';
- const criteria=review?parameterProofView(review,r,nextLink):`<details class="proof-criteria"><summary>Критерии самопроверки</summary><div class="checklist">${task.proof.criteria.map((c,i)=>`<label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span>${c}</span></label>`).join('')}</div></details>`;
+ const criteria=review?parameterProofView(review,r,nextLink):`<p id="proof-sync-warning" class="caption" role="status" hidden>Обоснование изменилось в другой вкладке. Можно скопировать текст на экране или открыть сохранённый вариант.</p><button type="button" id="proof-open-saved" class="button quiet" hidden>Открыть сохранённое обоснование</button><details class="proof-criteria"><summary>Критерии самопроверки</summary><p id="proof-needs-draft" class="caption">Запишите хотя бы один довод, чтобы отметить пункты.</p><div class="checklist">${task.proof.criteria.map((c,i)=>`<label><input type="checkbox" data-proof-check="${i}" disabled><span>${c}</span></label>`).join('')}</div></details>`;
  return `<section class="panel" aria-labelledby="proof-heading"><h2 id="proof-heading">Ваше обоснование</h2><p>${task.proof.prompt}</p><label class="field"><span>Запишите ход решения</span><textarea id="proof-draft" maxlength="12000" placeholder="Почему выбранный способ работает? Какие ограничения проверены?"></textarea></label>${criteria}<p class="proof-status"><strong>Обоснование требует проверки.</strong> ${review?'Ответы сверяет тренажёр. Полноту доводов оцениваете вы по своему тексту.':'Галочки — ваша самопроверка; они не подтверждают правильность доказательства автоматически.'}</p></section>`;
 }
-function updateProofReview(review,r,staleDraft){
+function updateProofReview(review,r,staleDraft,ready){
  const reviewPanel=document.getElementById('proof-review'),instruction=document.getElementById('proof-review-instruction');
- const draft=document.getElementById('proof-draft');
- const attempted=hasFinalAttempt(r),ready=attempted&&!!draft.value.trim()&&!staleDraft;
+ const attempted=hasFinalAttempt(r);
  reviewPanel.hidden=!ready;
  if(!ready)reviewPanel.open=false;
  instruction.hidden=ready;
@@ -178,38 +193,78 @@ function updateProofReview(review,r,staleDraft){
   history.textContent=opened.length?`Помощь к обоснованию — ${opened.join(', ')}.`:'';
  }
 }
-function bindProof(task,review,r,isCurrent){
+function bindProof(task,review,r,isCurrent,conflictingDraft){
  const draft=document.getElementById('proof-draft');
+ if(!draft)return;
  const inputs=main.querySelectorAll('[data-proof-check]');
+ const syncWarning=document.getElementById('proof-sync-warning');
+ const openSaved=document.getElementById('proof-open-saved');
+ const needsDraft=document.getElementById('proof-needs-draft');
  let savedProof=r.drafts.proof;
- if(draft)draft.value=savedProof;
+ draft.value=conflictingDraft??savedProof;
+ draft.readOnly=conflictingDraft!==null;
+ function captureProofConflict(storedProof){
+  if(!draft.isConnected)return null;
+  const visible=draft.value,stored=normalizedProof(storedProof);
+  const conflict=draft.readOnly||stored!==normalizedProof(savedProof);
+  return conflict&&normalizedProof(visible)!==stored?visible:null;
+ }
  function refresh(record){
-  if(!review||!isCurrent()||!draft.isConnected)return;
-  const staleDraft=record.drafts.proof!==savedProof;
-  if(!staleDraft&&draft.value!==savedProof)return;
+  if(!isCurrent()||!draft.isConnected)return;
+  const stored=normalizedProof(record.drafts.proof),shown=normalizedProof(draft.value);
+  const staleDraft=stored!==normalizedProof(savedProof)||(draft.readOnly&&shown!==stored);
+  if(!staleDraft&&shown!==stored)return;
+  const ready=!staleDraft&&!!shown&&(!review||hasFinalAttempt(record));
+  const checks=ready?currentProofChecks(record):[];
   draft.readOnly=staleDraft;
-  inputs.forEach(input=>{input.disabled=staleDraft;input.checked=!staleDraft&&record.proofChecks.includes(Number(input.dataset.proofCheck));});
-  updateProofReview(review,record,staleDraft);
+  inputs.forEach(input=>{input.disabled=!ready;input.checked=checks.includes(Number(input.dataset.proofCheck));});
+  if(review)updateProofReview(review,record,staleDraft,ready);
+  else{
+   syncWarning.hidden=!staleDraft;
+   openSaved.hidden=!staleDraft;
+   needsDraft.hidden=ready||staleDraft;
+  }
  }
  bind('proof-draft','input',event=>{
+  if(draft.readOnly)return;
   const value=event.target.value;
   store.patch(task.id,record=>{
-   if(review&&record.drafts.proof!==savedProof)return false;
-   if(review&&record.drafts.proof.trim()!==value.trim())record.proofChecks=[];
+   const stored=normalizedProof(record.drafts.proof);
+   if(stored!==normalizedProof(savedProof))return false;
+   if(stored!==normalizedProof(value)){
+    record.proofChecks=[];
+    delete record.proofReviewSnapshot;
+   }
    record.drafts.proof=value;
    savedProof=value;
   }).then(refresh);
  });
  inputs.forEach(input=>input.addEventListener('change',()=>{
   const index=Number(input.dataset.proofCheck),checked=input.checked;
-  const proof=draft.value;
+  const proof=normalizedProof(draft.value);
   store.patch(task.id,record=>{
-   if(review&&(!hasFinalAttempt(record)||!proof.trim()||record.drafts.proof!==proof))return false;
-   record.proofChecks=record.proofChecks.filter(i=>i!==index);
-   if(checked)record.proofChecks.push(index);
+   if(!proof||normalizedProof(savedProof)!==proof||normalizedProof(record.drafts.proof)!==proof||(review&&!hasFinalAttempt(record)))return false;
+   const checks=currentProofChecks(record);
+   if(checked===checks.includes(index))return false;
+   record.proofChecks=checked?[...checks,index]:checks.filter(i=>i!==index);
+   if(record.proofChecks.length)record.proofReviewSnapshot={proof,checks:[...record.proofChecks]};
+   else delete record.proofReviewSnapshot;
   }).then(refresh);
  }));
- if(!review)return refresh;
+ async function restoreDraft(){
+  await store.flush();
+  if(!isCurrent()||!draft.isConnected)return false;
+  const saved=store.read(task.id);
+  if(!draft.readOnly&&normalizedProof(saved.drafts.proof)===normalizedProof(savedProof))return false;
+  draft.value=savedProof=saved.drafts.proof;
+  refresh(saved);
+  draft.focus();
+  return true;
+ }
+ bind('proof-open-saved','click',restoreDraft);
+ refresh(r);
+ const hooks={refreshProof:refresh,captureProofConflict};
+ if(!review)return hooks;
  function recordHelp(index){
   return store.patch(task.id,record=>{
    record.helped=true;
@@ -217,15 +272,7 @@ function bindProof(task,review,r,isCurrent){
   }).then(refresh);
  }
  bind('proof-jump','click',async()=>{
-  await store.flush();
-  if(!isCurrent()||!draft.isConnected)return;
-  const saved=store.read(task.id);
-  if(saved.drafts.proof!==savedProof){
-   draft.value=savedProof=saved.drafts.proof;
-   refresh(saved);
-   draft.focus();
-   return;
-  }
+  if(await restoreDraft()||!isCurrent()||!draft.isConnected)return;
   const panel=document.getElementById('proof-review');
   if(panel.hidden)draft.focus();
   else{panel.open=true;panel.querySelector('summary').focus();}
@@ -246,8 +293,7 @@ function bindProof(task,review,r,isCurrent){
  bind('proof-skill','auxclick',event=>{
   if(event.button===1)recordHelp(proofSkillHint);
  });
- refresh(r);
- return refresh;
+ return hooks;
 }
 function nextPractice(lesson,task){
  return lesson.tasks.slice(3).find(t=>{const r=store.read(t.id);return t.id!==task.id&&!r.completed&&!r.helped;});
@@ -257,22 +303,25 @@ function parameterPracticeLink(lesson,task){return practiceLink(task)||`<a class
 function completion(item,r,mode,nextIndependent,review){
  if(!r.completed)return '';
  const {lesson,task,index}=item;
- const nextTask=lesson.tasks[index+1],nextLesson=lessons[lessons.indexOf(lesson)+1];
+ const sequence=lessonSequence(lesson),nextTask=lesson.tasks[index+1],nextLesson=sequence[sequence.indexOf(lesson)+1];
  const offerFresh=mode!=='independent'||r.helped;
  const nextLink=review?parameterPracticeLink(lesson,nextIndependent):
   nextIndependent&&offerFresh?practiceLink(nextIndependent):
   nextTask?`<a class="button" href="${taskURL(nextTask.id,modeFor(index+1))}">Следующее условие →</a>`:
   nextLesson?`<a class="button" href="#lesson/${nextLesson.id}">Следующая тема →</a>`:'';
- return `<section class="panel complete" id="completion"><h2>Ответы приняты</h2><p>${correctedWithoutHelp(r)?'Ответ исправлен самостоятельно после первой попытки.':r.independent?'Вычислительная часть решена самостоятельно.':'Это работа с опорой или повтор учебного условия.'}${task.proof?' Письменное обоснование требует проверки.':''}</p><div class="actions">${nextLink}<a class="button quiet" href="${groupURL(lesson.exam)}">Все темы · ${esc(labelFor(lesson.exam))}</a></div>${!nextIndependent?'<p class="caption">Новые самостоятельные условия этой темы закончились. Повтор знакомого условия не увеличивает счётчик.</p>':''}</section>`;
+ return `<section class="panel complete" id="completion"><h2>Ответы приняты</h2><p>${correctedWithoutHelp(r)?'Ответ исправлен самостоятельно после первой попытки.':r.independent?'Вычислительная часть решена самостоятельно.':'Это работа с опорой или повтор учебного условия.'}${task.proof?' Письменное обоснование требует проверки.':''}</p><div class="actions">${nextLink}<a class="button quiet" href="${lessonGroupURL(lesson)}">Все темы · ${esc(lessonLabel(lesson))}</a></div>${!nextIndependent?'<p class="caption">Новые самостоятельные условия этой темы закончились. Повтор знакомого условия не увеличивает счётчик.</p>':''}</section>`;
 }
 function guidedView(task,r){const stepIndex=r.solvedSteps.length,step=task.steps[stepIndex];return `<section class="panel"><h2>Решение по шагам</h2>${r.solvedSteps.length?`<ol class="steps">${r.solvedSteps.map(i=>`<li class="step-done">${task.steps[i].prompt}<br><strong>${task.steps[i].explanation}</strong></li>`).join('')}</ol>`:''}${step?`<form id="step-form"><p class="eyebrow">Шаг ${stepIndex+1} из ${task.steps.length}</p><label class="field"><span>${step.prompt}</span><input id="step-answer" type="text" maxlength="500" autocomplete="off" value="${esc(r.drafts.steps[stepIndex]||'')}"></label><div class="actions"><button type="submit">Проверить шаг</button><button type="button" id="step-hint" class="quiet">Нужна подсказка</button></div></form>${r.hints.includes(stepIndex)?`<p class="hint">${step.hint}</p>`:''}`:'<p class="feedback ok">Шаги пройдены. Теперь соберите итоговые ответы ниже.</p>'}</section>`;}
-async function taskView(item,mode,viewVersion=routeVersion){
+async function taskView(item,mode,viewVersion=routeVersion,previous=active){
  if(viewVersion!==routeVersion)return;
- const {lesson,task,index}=item;active={item,mode};
+ const {lesson,task,index}=item;
+ const captureProofConflict=previous?.item.task.id===task.id?previous.captureProofConflict:null;
+ active={item,mode,captureProofConflict};
  if(mode!=='independent')await store.patch(task.id,r=>{r.helped=true;});
  if(viewVersion!==routeVersion)return;
  const isCurrent=()=>viewVersion===routeVersion&&active?.item.task.id===task.id&&active.mode===mode;
  const r=store.read(task.id),displayedStep=r.solvedSteps.length,independentEligible=index>=3;
+ const conflictingDraft=captureProofConflict?.(r.drafts.proof)??null;
  const openFinal=mode==='independent'&&independentEligible&&typeof API.openAnswer==='function'?task.independentFinal:null;
  const finalFields=openFinal?[openFinal]:task.final;
  const finalDraft=openFinal?[r.drafts.openFinal]:r.drafts.final;
@@ -305,12 +354,12 @@ async function taskView(item,mode,viewVersion=routeVersion){
   actions.append(button);
   document.getElementById('feedback').after(actions);
  }
- main.innerHTML=`<a class="back" href="#lesson/${lesson.id}">← ${esc(lesson.title)}</a><p class="eyebrow">${esc(labelFor(lesson.exam))} · условие ${index+1} из ${lesson.tasks.length}</p><h1>${esc(lesson.title)}</h1><nav class="modes" aria-label="Способ работы">${Object.entries(modeLabels).map(([key,label])=>`<a href="${taskURL(task.id,key)}" ${mode===key?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${mode==='independent'&&(r.helped||!independentEligible)?'<p class="hint">Это знакомое учебное условие или условие с уже открытой помощью. Его повтор не считается новой самостоятельной проверкой.</p>':''}<div class="task-layout"><section class="panel condition"><h2>Условие</h2><div>${openFinal?.prompt||task.prompt}</div>${task.diagram?`<div class="diagram">${task.diagram}</div>`:''}${task.diagram?'<p class="caption">Рисунок относится к этому условию. Для доказательства используйте данные и свойства, а не измерения по экрану.</p>':''}</section><div class="work">${mode==='guided'?guidedView(task,r):mode==='plan'?`<section class="panel"><h2>План решения</h2><ol class="steps">${task.steps.map(s=>`<li>${s.prompt}</li>`).join('')}</ol><p class="caption">План — опора. Для самостоятельного зачёта затем откройте другое условие.</p></section>`:''}<section class="panel"><h2>Итоговые ответы</h2><form id="final-form">${finalFields.map((field,i)=>`<label class="field"><span>${field.label}</span><input id="final-${i}" data-final="${i}" type="text" maxlength="500" autocomplete="off" value="${esc(finalDraft[i]||'')}"></label>`).join('')}<p class="caption">${openFinal?esc(openFinal.format):'Можно вводить дроби, π и корни: 3/4, π/6, sqrt(2). Ограничения и формат ответа указаны у поля.'}</p><button type="submit">${openFinal?'Проверить ответ':'Проверить ответы'}</button></form>${earlierDraft}<div id="feedback" class="feedback" role="status" hidden></div>${review?'<button id="proof-jump" type="button" class="quiet" hidden>К критериям обоснования</button>':''}<div class="actions"><button type="button" id="request-help" class="quiet">Хочу подсказку</button><button type="button" id="show-solution" class="quiet">Открыть разбор</button></div>${r.hints.includes(99)?`<p class="hint">${task.steps[0]?.hint||lesson.goal}</p>`:''}${r.solution?`<div class="hint"><h3>Разбор с опорой</h3><ol class="solution-list">${task.solution.slice(0,r.solutionSteps).map(p=>`<li>${p}</li>`).join('')}</ol>${r.solutionSteps<task.solution.length?'<button type="button" id="solution-next" class="quiet">Следующий шаг разбора</button>':''}</div>`:''}${review?`<div id="task-trace">${recentTrace(r,review)}</div>`:recentTrace(r)}</section></div></div>${proofView(openFinal?{...task,proof:{...task.proof,prompt:'Объясните, как нашли все решения и почему других нет.'}}:task,r,review,review&&parameterPracticeLink(lesson,nextIndependent))}${completion(item,r,mode,nextIndependent,review)}<details class="task-theory"><summary>Теория для этой темы</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<p><a href="${groupURL(lesson.exam)}">Вернуться к темам · ${esc(labelFor(lesson.exam))}</a> · <a href="#map">Все задания второй части</a></p>`;
+ main.innerHTML=`<a class="back" href="#lesson/${lesson.id}">← ${esc(lesson.title)}</a><p class="eyebrow">${esc(lessonLabel(lesson))} · условие ${index+1} из ${lesson.tasks.length}</p><h1>${esc(lesson.title)}</h1><nav class="modes" aria-label="Способ работы">${Object.entries(modeLabels).map(([key,label])=>`<a href="${taskURL(task.id,key)}" ${mode===key?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${mode==='independent'&&(r.helped||!independentEligible)?'<p class="hint">Это знакомое учебное условие или условие с уже открытой помощью. Его повтор не считается новой самостоятельной проверкой.</p>':''}<div class="task-layout"><section class="panel condition"><h2>Условие</h2><div>${openFinal?.prompt||task.prompt}</div>${task.diagram?`<div class="diagram">${task.diagram}</div>`:''}${task.diagram?'<p class="caption">Рисунок относится к этому условию. Для доказательства используйте данные и свойства, а не измерения по экрану.</p>':''}</section><div class="work">${mode==='guided'?guidedView(task,r):mode==='plan'?`<section class="panel"><h2>План решения</h2><ol class="steps">${task.steps.map(s=>`<li>${s.prompt}</li>`).join('')}</ol><p class="caption">План — опора. Для самостоятельного зачёта затем откройте другое условие.</p></section>`:''}<section class="panel"><h2>Итоговые ответы</h2><form id="final-form">${finalFields.map((field,i)=>`<label class="field"><span>${field.label}</span><input id="final-${i}" data-final="${i}" type="text" maxlength="500" autocomplete="off" value="${esc(finalDraft[i]||'')}"></label>`).join('')}<p class="caption">${openFinal?esc(openFinal.format):'Можно вводить дроби, π и корни: 3/4, π/6, sqrt(2). Ограничения и формат ответа указаны у поля.'}</p><button type="submit">${openFinal?'Проверить ответ':'Проверить ответы'}</button></form>${earlierDraft}<div id="feedback" class="feedback" role="status" hidden></div>${review?'<button id="proof-jump" type="button" class="quiet" hidden>К критериям обоснования</button>':''}<div class="actions"><button type="button" id="request-help" class="quiet">Хочу подсказку</button><button type="button" id="show-solution" class="quiet">Открыть разбор</button></div>${r.hints.includes(99)?`<p class="hint">${task.steps[0]?.hint||lesson.goal}</p>`:''}${r.solution?`<div class="hint"><h3>Разбор с опорой</h3><ol class="solution-list">${task.solution.slice(0,r.solutionSteps).map(p=>`<li>${p}</li>`).join('')}</ol>${r.solutionSteps<task.solution.length?'<button type="button" id="solution-next" class="quiet">Следующий шаг разбора</button>':''}</div>`:''}${review?`<div id="task-trace">${recentTrace(r,review)}</div>`:recentTrace(r)}</section></div></div>${proofView(openFinal?{...task,proof:{...task.proof,prompt:'Объясните, как нашли все решения и почему других нет.'}}:task,r,review,review&&parameterPracticeLink(lesson,nextIndependent))}${completion(item,r,mode,nextIndependent,review)}<details class="task-theory"><summary>Теория для этой темы</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<p><a href="${lessonGroupURL(lesson)}">Вернуться к темам · ${esc(lessonLabel(lesson))}</a> · <a href="#map">Все задания второй части</a></p>`;
  if(parameterCondition){
   const layout=main.querySelector('.task-layout'),modes=main.querySelector('.modes');
   layout.querySelector('.work').prepend(modes);
  }
- mountSkills(lesson.exam,lesson);
+ if(!isFinance(lesson))mountSkills(lesson.exam,lesson);
  offerGraph(r);
  main.querySelectorAll('.modes a').forEach(link=>link.addEventListener('click',event=>{if(link.getAttribute('href')===root.location.hash){event.preventDefault();render();}}));
  document.querySelectorAll('[data-final]').forEach(input=>input.addEventListener('input',()=>{
@@ -323,8 +372,8 @@ async function taskView(item,mode,viewVersion=routeVersion){
   });
  }));
  bind('step-answer','input',e=>{const value=e.target.value;observedStep=value;store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=value;});});
- const refreshProof=bindProof(task,review,r,isCurrent);
- if(review)active.refreshProof=refreshProof;
+ const proofBindings=bindProof(task,review,r,isCurrent,conflictingDraft);
+ Object.assign(active,proofBindings);
  bindSubmit('final-form',async()=>{
   const fields=finalFields.map((_,i)=>document.getElementById('final-'+i)),rawValues=fields.map(f=>f.value),values=rawValues.map(v=>v.trim());
   const formats=finalFields.map((field,i)=>API.recognize(field,values[i],root.ProfileCheck));
@@ -366,7 +415,7 @@ async function taskView(item,mode,viewVersion=routeVersion){
     trace.innerHTML=recentTrace(updated,review);
     if(wasOpen)trace.querySelector('details').open=true;
    }
-   refreshProof(updated);
+   proofBindings?.refreshProof(updated);
   }
  });
  bindSubmit('step-form',async()=>{
@@ -396,7 +445,7 @@ async function taskView(item,mode,viewVersion=routeVersion){
  bind('request-help','click',async()=>{await store.patch(task.id,s=>{s.helped=true;if(!s.hints.includes(99))s.hints.push(99);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Подсказка открыта. Для самостоятельной проверки потом выберите другое условие.');});
  bind('show-solution','click',async()=>{await store.patch(task.id,s=>{s.helped=true;s.solution=true;s.solutionSteps=Math.max(1,s.solutionSteps);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Разбор открыт; это условие отмечено как работа с опорой.');});
  bind('solution-next','click',async()=>{await store.patch(task.id,s=>{s.helped=true;s.solutionSteps=Math.min(task.solution.length,s.solutionSteps+1);});await taskView(item,mode,viewVersion);});
- main.querySelectorAll('.task-theory,.prerequisites,.proof-criteria,.earlier-final').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)store.patch(task.id,s=>{s.helped=true;});}));
+ main.querySelectorAll('.task-theory,.prerequisites,.earlier-final').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)store.patch(task.id,s=>{s.helped=true;});}));
 }
 function parameterProofProgress(){
  let drafts=0,reviewed=0,resume=null;
@@ -411,9 +460,12 @@ function parameterProofProgress(){
  const continuation=resume?` <a href="${taskURL(resume.task.id,'independent')}">Вернуться к обоснованию</a>`:'';
  return `<section class="panel"><h2>Самопроверка обоснований · ${esc(labelFor(19))}</h2><p>Вы отметили все пункты в ${reviewed} из ${drafts} обоснований.${continuation}</p></section>`;
 }
-function progress(){const s=stats(lessons);main.innerHTML=`<a class="back" href="#map">← Все номера второй части</a><h1>Мой прогресс</h1><p>Все 42 темы и 252 условия этого курса, включая дополнительную оптимизацию. Финансовая подготовка №16 сохраняется в своём курсе.</p>${badges(s)}<p>Это результаты проверки ответов. Письменные обоснования автоматически не оцениваются. На проверку обоснования: <strong>${s.pending}</strong>.</p>${parameterProofProgress()}<div class="table-wrap"><table><thead><tr><th>Тема</th><th>Самостоятельные ответы</th><th>С опорой</th><th>Всего условий</th></tr></thead><tbody>${lessons.map(l=>{const a=stats([l]);return `<tr><td><a href="#lesson/${l.id}">${esc(labelFor(l.exam))} · ${esc(l.title)}</a></td><td>${a.independent} / ${l.tasks.slice(3).length}</td><td>${a.helped}</td><td>${a.total}</td></tr>`;}).join('')}</tbody></table></div><section class="panel"><h2>Как продолжить</h2><p>После помощи решите другое условие. После завершения темы вернитесь к ней через несколько дней и попробуйте объяснить способ без подсказок. Знакомый повтор не добавляет новое самостоятельное решение.</p><a class="button" href="#map">Выбрать номер</a></section>`;}
+function progress(){
+ const s=stats(lessons);
+ const written=stats(financeLessons);
+ main.innerHTML=`<a class="back" href="#map">← Все номера второй части</a><h1>Мой прогресс</h1><p>Все 42 темы и 252 условия этого курса, включая дополнительную оптимизацию.</p>${badges(s)}<p>Это результаты проверки ответов. Письменные обоснования автоматически не оцениваются. На проверку обоснования: <strong>${s.pending}</strong>.</p>${parameterProofProgress()}<section class="panel" aria-labelledby="finance-progress-title"><h2 id="finance-progress-title">№16 · Письменные финансовые задачи</h2>${badges(written)}<a href="#fipi/2027/16">К задачам и сохранённым решениям №16 →</a></section><div class="table-wrap"><table><thead><tr><th>Тема</th><th>Самостоятельные ответы</th><th>С опорой</th><th>Всего условий</th></tr></thead><tbody>${lessons.map(l=>{const a=stats([l]);return `<tr><td><a href="#lesson/${l.id}">${esc(labelFor(l.exam))} · ${esc(l.title)}</a></td><td>${a.independent} / ${l.tasks.slice(3).length}</td><td>${a.helped}</td><td>${a.total}</td></tr>`;}).join('')}</tbody></table></div><section class="panel"><h2>Как продолжить</h2><p>После помощи решите другое условие. После завершения темы вернитесь к ней через несколько дней и попробуйте объяснить способ без подсказок. Знакомый повтор не добавляет новое самостоятельное решение.</p><a class="button" href="#map">Выбрать номер</a></section>`;}
 function missing(){main.innerHTML='<section class="panel"><h1>Такое условие не найдено</h1><p>Выберите тему из карты курса. Сохранённая работа остаётся в браузере.</p><a class="button" href="#map">Открыть карту</a></section>';}
-async function render(){const version=++routeVersion;await store.flush();if(version!==routeVersion)return;active=null;if(labCleanup){labCleanup();labCleanup=null;}const route=root.location.hash.slice(1).split('/');if(!lessons.length||!examMap){main.innerHTML='<section class="panel"><h1>Не удалось загрузить темы</h1><p>Обновите страницу. Если ошибка остаётся, <a href="/ege-profil/">откройте прежние материалы курса</a>.</p></section>';return;}if(route[0]==='fipi'&&route[1]==='2027'){const entry=examMap.get(route[2]);if(entry?.legacyPartTwo)exam(entry.legacyPartTwo);else if(entry?.number===16)finance();else missing();}else if(route[0]==='topic'){const entry=examMap.topic(route[1]);if(entry?.legacyPartTwo&&!entry.number)exam(entry.legacyPartTwo);else missing();}else if(route[0]==='exam')exam(Number(route[1]));else if(route[0]==='lesson'&&byLesson.has(route[1]))lessonView(byLesson.get(route[1]));else if(route[0]==='task'&&byTask.has(route[1])){const item=byTask.get(route[1]),mode=modeLabels[route[2]]?route[2]:modeFor(item.index);await taskView(item,mode,version);}else if(route[0]==='progress')progress();else if(!route[0]||route[0]==='map')home();else missing();main.focus({preventScroll:true});}
+async function render(){const version=++routeVersion;await store.flush();if(version!==routeVersion)return;const previous=active;active=null;if(labCleanup){labCleanup();labCleanup=null;}const route=root.location.hash.slice(1).split('/');if(!lessons.length||!examMap){main.innerHTML='<section class="panel"><h1>Не удалось загрузить темы</h1><p>Обновите страницу. Если ошибка остаётся, <a href="/ege-profil/">откройте прежние материалы курса</a>.</p></section>';return;}if(route[0]==='fipi'&&route[1]==='2027'){const entry=examMap.get(route[2]);if(entry?.legacyPartTwo)exam(entry.legacyPartTwo);else if(entry?.number===16)finance();else missing();}else if(route[0]==='topic'){const entry=examMap.topic(route[1]);if(entry?.legacyPartTwo&&!entry.number)exam(entry.legacyPartTwo);else missing();}else if(route[0]==='exam')exam(Number(route[1]));else if(route[0]==='lesson'&&byLesson.has(route[1]))lessonView(byLesson.get(route[1]));else if(route[0]==='task'&&byTask.has(route[1])){const item=byTask.get(route[1]),mode=modeLabels[route[2]]?route[2]:modeFor(item.index);await taskView(item,mode,version,previous);}else if(route[0]==='progress')progress();else if(!route[0]||route[0]==='map')home();else missing();main.focus({preventScroll:true});}
 root.addEventListener('hashchange',async()=>{
  const hash=root.location.hash,[page,id]=hash.slice(1).split('/');
  const lessonId=page==='task'?byTask.get(id)?.lesson.id:page==='lesson'?id:'';
@@ -428,5 +480,5 @@ root.addEventListener('storage',event=>{
  banner.hidden=false;
  banner.textContent='Работа обновлена в другой вкладке. Перед следующей проверкой будет прочитано свежее сохранение; текущий ввод остаётся на экране.';
 });
-root.ProfilePartTwoApp={render,store,lessons,byTask};render();
+root.ProfilePartTwoApp={render,store,lessons,financeLessons,byTask};render();
 })(globalThis);

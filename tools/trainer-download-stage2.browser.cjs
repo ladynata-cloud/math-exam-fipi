@@ -80,7 +80,20 @@ async function checkPartTwoExamRoutes(page, taskId) {
   await page.reload();
   const link = page.getByRole('link', { name: 'Открыть финансовую подготовку', exact: true });
   assert.equal(await link.getAttribute('href'), 'https://mathexam.space/ege-profil/start/#fipi/2027/16');
-  assert.match(await page.locator('#main').innerText(), /не полный письменный курс/);
+  assert.match(await page.locator('#main').innerText(), /Полное решение можно сверить с образцом и показать преподавателю/);
+  await page.locator('a[href="#task/h12-equal-annual-payments-4/independent"]').click();
+  await page.locator('#proof-draft').fill('Нулевой остаток после второго платежа.');
+  await page.locator('#final-0').fill('1254');
+  await submit(page, '#final-form');
+  await page.locator('#completion').waitFor();
+  assert.match(await page.locator('.proof-status').innerText(), /требует проверки/);
+  await page.reload();
+  await page.locator('#proof-draft').waitFor();
+  assert.equal(await page.locator('#proof-draft').inputValue(), 'Нулевой остаток после второго платежа.');
+  await page.getByRole('link',{name:'Мой прогресс',exact:true}).click();
+  const financeProgress=page.getByRole('region',{name:'№16 · Письменные финансовые задачи'});
+  assert.match(await financeProgress.innerText(), /Самостоятельные ответы: 1/);
+  assert.match(await page.locator('#main > .stats').innerText(), /252 условий/);
   assert.deepEqual(await readSavedWork(), saved, 'legacy and official routes preserve completed work, attempts and proof under the existing task key');
 }
 
