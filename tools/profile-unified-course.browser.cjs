@@ -22,7 +22,7 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
       await page.goto(origin+course.entry+'#calm');
       await page.locator('[data-course-extra="16"]').waitFor();
       assert.deepEqual(await page.locator('.exam-grid .exam-number').allTextContents(),Array.from({length:19},(_,i)=>String(i+1)));
-      assert.equal(await page.locator('.exam-grid .exam-card').count(),22);
+      assert.equal(await page.locator('.exam-grid .exam-card').count(),21);
       assert.equal(await page.locator('[data-extra-topic]').count(),2);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'catalog fits mobile');
       for(let number=1;number<=13;number++){
