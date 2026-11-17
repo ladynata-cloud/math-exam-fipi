@@ -19,7 +19,32 @@ class Board{
  object(id){return this.objects.find(o=>o.id===id);}
  pointName(){for(const n of 'MNPQHDEFGIJKLSTUVWXYZ'.split(''))if(!this.point(n))return n;return 'P'+(this.points.length+1);}
  objName(){return 'o'+(this.objects.length+1);}
- geometry(o){if(typeof o==='string')o=this.object(o);if(!o)return null;const p=this.point(o.a),q=this.point(o.b);if(!p||!q||p.valid===false||q.valid===false)return null;if(o.type==='circle')return {type:'circle',o:p,r:dist(p,q)};return {type:'line',p,q};}
+ geometry(o){
+  if(typeof o==='string')o=this.object(o);
+  if(!o)return null;
+  const p=this.point(o.a),q=this.point(o.b);
+  if(!p||!q||p.valid===false||q.valid===false)return null;
+  if(o.added&&o.type==='line'&&o.extent==='line'&&q.a===p.id&&['foot','normal'].includes(q.kind)&&dist(p,q)<EPS){
+   // The foot still lies on AB when C reaches it. The constructed line
+   // through C keeps its direction, which is determined by AB alone.
+   const a=this.point(q.b),b=this.point(q.c);
+   if(!a||!b||a.valid===false||b.valid===false||dist(a,b)<EPS)return null;
+   return {type:'line',p,q:add(p,rot(sub(b,a))),extent:o.extent};
+  }
+  if(o.type==='circle')return {type:'circle',o:p,r:dist(p,q)};
+  return {type:'line',p,q};
+ }
+ perpendicularThrough(id,a,b){
+  for(const o of this.objects){
+   if(o.type!=='line'||o.extent!=='line'||!o.added||o.a!==id)continue;
+   const q=this.point(o.b);
+   if(q?.a===id&&['foot','normal'].includes(q.kind)&&((q.b===a&&q.c===b)||(q.b===b&&q.c===a))){
+    const line=this.geometry(o);
+    if(line&&dist(line.p,line.q)>EPS)return line;
+   }
+  }
+  return null;
+ }
  update(){for(const p of this.points){p.valid=true;if(!p.kind||p.kind==='free')continue;const a=this.point(p.a),b=this.point(p.b),c=this.point(p.c);let v=null;
   if(p.kind==='midpoint'&&a&&b)v=mul(add(a,b),.5);
   if(p.kind==='sum'&&a&&b&&c)v=add(b,sub(c,a));
@@ -64,7 +89,7 @@ class Board{
   if(kind==='diagonal')return {ok:lineThrough('A','C')||lineThrough('B','D'),message:'Проведи диагональ: она соединяет несоседние вершины и создаёт два треугольника.'};
   if(kind==='midpoint')return {ok:derived.some(p=>p.kind==='midpoint'&&same(p,'A','B')),message:'Построй середину AB как зависимую точку. Точка, поставленная на глаз, не сохраняет равенство при движении.'};
   if(kind==='median'){const m=derived.find(p=>p.kind==='midpoint'&&same(p,'A','B'));return {ok:!!m&&lineThrough('C',m.id),message:'Сначала построй середину AB, затем соедини её с C.'};}
-  if(kind==='perpendicular')return {ok:derived.some(p=>['foot','normal'].includes(p.kind)&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'))&&lineThrough('C',p.id)&&dist(C,p)>EPS),message:'Нужен перпендикуляр через C к прямой AB: выбери C, затем A и B (или B и A).'};
+  if(kind==='perpendicular')return {ok:!!this.perpendicularThrough('C','A','B'),message:'Нужен перпендикуляр через C к прямой AB: выбери C, затем A и B (или B и A).'};
   if(kind==='altitude'){return {ok:derived.some(p=>p.kind==='foot'&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'))),message:'Нужен перпендикуляр из C к прямой AB. Основание может оказаться на продолжении стороны.'};}
   if(kind==='bisector')return {ok:derived.some(p=>p.kind==='bisector'&&p.b==='C'&&((p.a==='A'&&p.c==='B')||(p.a==='B'&&p.c==='A'))),message:'Построй биссектрису угла ACB. Вершину C выбирают второй.'};
   if(kind==='reflection')return {ok:derived.some(p=>p.kind==='reflection'&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.a==='B'&&p.c==='A'))),message:'Отрази C относительно прямой AB. Затем двигай C и проверь расстояния до оси.'};

@@ -33,14 +33,16 @@ function mount(el,spec,onChange){
  function text(p,t){ctx.font='600 16px system-ui';ctx.lineWidth=5;ctx.strokeStyle='#fffdf7';ctx.strokeText(t,p.x,p.y);ctx.fillStyle='#17233c';ctx.fillText(t,p.x,p.y);}
  function draw(){board.update();ctx.clearRect(0,0,640,420);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,640,420);ctx.fillStyle='#e3e4df';for(let x=15;x<640;x+=25)for(let y=15;y<420;y+=25){ctx.beginPath();ctx.arc(x,y,1,0,7);ctx.fill();}
   ctx.save();ctx.beginPath();ctx.rect(3,3,634,414);ctx.clip();
-  const poly=['A','B','C','D'].map(id=>board.point(id)).filter(Boolean);if(poly.length>=3&&spec.figure!=='angle'&&spec.figure!=='segment'){ctx.beginPath();poly.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle='#2d70b317';ctx.fill();}
+  const poly=['A','B','C','D'].map(id=>board.point(id)).filter(Boolean);if(spec.paint)spec.paint(board,ctx);
+  else if(poly.length>=3&&spec.figure!=='angle'&&spec.figure!=='segment'){ctx.beginPath();poly.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle='#2d70b317';ctx.fill();}
   for(const o of board.objects){const g=board.geometry(o);if(!g)continue;ctx.strokeStyle=highlight.includes(o.a+o.b)||highlight.includes(o.b+o.a)?'#ca6224':o.added?'#118469':'#294564';ctx.lineWidth=highlight.includes(o.a+o.b)?5:o.added?2.6:2.3;ctx.setLineDash(o.added?[7,4]:[]);ctx.beginPath();if(g.type==='circle')ctx.arc(g.o.x,g.o.y,g.r,0,Math.PI*2);else{let p=g.p,q=g.q;if(o.extent!=='segment'){const u=G.unit(G.sub(q,p));q=G.add(p,G.mul(u,1800));if(o.extent==='line')p=G.add(p,G.mul(u,-1800));}ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);}ctx.stroke();}
   ctx.setLineDash([]);
   const a=board.point('A'),b=board.point('B'),c=board.point('C');let report=[];
   if(a&&b){report.push('AB = '+(G.dist(a,b)/50).toFixed(2));}
-  if(a&&b&&c){const ang=G.angle(a,c,b);report.push('∠ACB = '+(ang===null?'не определён':ang.toFixed(1)+'°'));report.push('S△ABC = '+(Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))/5000).toFixed(2));if(ang!==null){let s=Math.atan2(a.y-c.y,a.x-c.x),t=Math.atan2(b.y-c.y,b.x-c.x),delta=(t-s+Math.PI*3)%(Math.PI*2)-Math.PI;ctx.strokeStyle='#bd6b27';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,Math.min(29,G.dist(a,c)/3,G.dist(b,c)/3),s,s+delta,delta<0);ctx.stroke();}}
+  if(a&&b&&c&&!spec.measure){const ang=G.angle(a,c,b);report.push('∠ACB = '+(ang===null?'не определён':ang.toFixed(1)+'°'));report.push('S△ABC = '+(Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))/5000).toFixed(2));if(ang!==null){let s=Math.atan2(a.y-c.y,a.x-c.x),t=Math.atan2(b.y-c.y,b.x-c.x),delta=(t-s+Math.PI*3)%(Math.PI*2)-Math.PI;ctx.strokeStyle='#bd6b27';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,Math.min(29,G.dist(a,c)/3,G.dist(b,c)/3),s,s+delta,delta<0);ctx.stroke();}}
   ctx.restore();
   for(const p of board.points){if(p.valid===false)continue;ctx.beginPath();ctx.arc(p.x,p.y,selectedPoint===p.id?7:5,0,7);ctx.fillStyle=movable(p)?'#2d70b3':'#118469';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#fff';ctx.stroke();text({x:Math.max(8,Math.min(603,p.x+10)),y:Math.max(19,Math.min(405,p.y-10))},p.id);}
+  if(spec.measure)report=spec.measure(board);
   readout.textContent=report.join(' · ')+(board.points.some(p=>p.valid===false)?' · Некоторые построения сейчас не существуют.':'');
  }
  options();instruction();draw();return {board,highlight(ids){highlight=ids||[];draw();},redraw(){options();draw();},destroy(){active=null;}};
