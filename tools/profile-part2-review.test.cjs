@@ -6,6 +6,7 @@ const http = require('node:http');
 const path = require('node:path');
 const test = require('node:test');
 const { collectErrors } = require('../ege-profil/review-part-two.js');
+const { latestAttempt } = require('../ege-profil/review-probe-2027.js');
 const state = require('../ege-profil/part-two/state.js');
 const map = require('../ege-profil/exam-map.js');
 const lessons = ['algebra', 'geometry', 'models'].flatMap(name =>
@@ -89,7 +90,30 @@ test('Part Two journal isolates malformed records and skips proof, incomplete or
 
 const browserEnabled = Boolean(process.env.CI || process.env.H02_NATIVE_BROWSER);
 
-test('Chromium: course submission, journal return, correction and preserved storage at 320, 390 and 1280 px',
+test('2027 probe history recognises a completed score and keeps unverified writing separate', () => {
+  const lines = Object.fromEntries(map.entries.map(entry => [entry.number, entry.part === 1 ? 1 : 0]));
+  lines[2] = 0;
+  lines[13] = 1;
+  lines[18] = 4;
+  const valid = { ts: 1795000000000, seed: 7, spent: 900, primary: 16, test: null, lines };
+  const oldEdition = { ...valid, ts: valid.ts + 1, test: 72 };
+  const incomplete = { ...valid, ts: valid.ts + 2, primary: 0, lines: {} };
+  const outOfRange = { ...valid, ts: valid.ts + 3, lines: { ...lines, 18: 8 } };
+  const inconsistent = { ...valid, ts: valid.ts + 4, primary: 17 };
+  const invalidDate = { ...valid, ts: 8.64e15 + 1 };
+  const saved = [valid, oldEdition, incomplete, outOfRange, inconsistent, invalidDate];
+  const before = JSON.stringify(saved);
+  const journal = latestAttempt(saved, map.entries);
+  assert.equal(journal.date, valid.ts);
+  assert.equal(journal.shortPoints, 11);
+  assert.deepEqual(journal.losses.map(result => result.entry.number), [2]);
+  assert.deepEqual(journal.written.filter(result => result.points > 0).map(result => [result.entry.number, result.points]), [[13, 1], [18, 4]]);
+  assert.deepEqual(journal.written.filter(result => result.points === 0).map(result => result.entry.number), [14, 15, 16, 17, 19]);
+  assert.equal(latestAttempt(saved.slice(1), map.entries), null);
+  assert.equal(JSON.stringify(saved), before);
+});
+
+test('Chromium: course and 2027 probe journal, correction and preserved storage at 320, 390 and 1280 px',
   { skip: !browserEnabled, timeout: 90000 }, async () => {
     const { chromium } = require('playwright');
     const root = path.resolve(__dirname, '..');
@@ -213,6 +237,43 @@ test('Chromium: course submission, journal return, correction and preserved stor
           assert.equal(await journal.locator('#final-0').inputValue(), '99');
           assert.match(await journal.locator('#main').innerText(), /повтор не считается новой самостоятельной проверкой/);
         }
+
+        await journal.goto(base + 'review.html');
+        const probe = journal.locator('#probe2027');
+        await probe.getByText(/Разбор появится после завершения пробника/).waitFor();
+        assert.equal(await probe.getByRole('link', { name: /Открыть пробник 2027/ }).getAttribute('href'),
+          'exam/full-exam.html?edition=2027');
+        await learner.goto(base + 'exam/full-exam.html?edition=2027');
+        await learner.locator('#startBtn').click();
+        const keys = await learner.evaluate(() => ProfilePractice2027.slice(0, 12).map(task => task.t.answer));
+        for (let i = 0; i < keys.length; i++) {
+          await learner.locator('#task-' + (i + 1) + ' input').fill(String(i === 1 ? 99 : keys[i]));
+        }
+        await learner.locator('#finishBtn2').click();
+        await learner.locator('.chips[data-line="13"] button').nth(1).click();
+        await learner.locator('.chips[data-line="14"] button').first().click();
+        const shortLink = probe.getByRole('link', { name: /Отработать задание № 2 · Векторы/ });
+        const actual = await snapshot(learner);
+        await probe.getByText(/Краткие ответы: 11 из 12/).waitFor();
+        await probe.getByText('Письменные задания · к проверке 6 · самооценка 1').waitFor();
+        assert.equal(await probe.locator('#probe2027Result > div .row').count(), 1);
+        assert.equal(await shortLink.getAttribute('href'), map.href(2));
+        const written = probe.locator('details');
+        await written.locator('summary').click();
+        const writing13 = written.locator('.row').filter({ hasText: '№ 13' });
+        assert.match(await writing13.innerText(), /Самооценка · 1 из 2/);
+        assert.equal(await writing13.getByRole('link').getAttribute('href'), map.href(13));
+        for (const number of [14, 15, 16, 17, 18, 19]) {
+          const line = written.locator('.row').filter({ hasText: '№ ' + number });
+          assert.match(await line.innerText(), /К проверке/);
+          assert.equal(await line.getByRole('link').getAttribute('href'), map.href(number));
+        }
+        assert.match(await journal.locator('#examMeta').innerText(), /12 перв\. · 54 тест\./);
+        await stable(actual, 'timed probe read preserves both editions and course');
+        await probe.screenshot({ path: path.join(shots, 'probe-2027-' + width + '.png') });
+        await journal.reload();
+        await probe.getByText('Письменные задания · к проверке 6 · самооценка 1').waitFor();
+        await stable(actual, 'timed probe reload preserves both editions and course');
         await context.close();
       }
     } finally {

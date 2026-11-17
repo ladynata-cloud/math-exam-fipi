@@ -68,7 +68,6 @@
 
   const document = root.document;
   const list = document.getElementById('partTwoMistakeList');
-  const emptyJournalTitle = document.getElementById('emptyJournalTitle');
   const state = root.ProfilePartTwoState;
   let catalog;
   let refreshVersion = 0;
@@ -131,9 +130,6 @@
       }
       const items = hasPartTwo ? collectErrors(storage, await getCatalog(), state) : [];
       if (version !== refreshVersion) return;
-      if (emptyJournalTitle) {
-        emptyJournalTitle.textContent = items.length ? 'В прежних подборках ошибок пока нет' : 'Журнал пока пуст';
-      }
       const remaining = items.filter(item => !item.corrected);
       const corrected = items.filter(item => item.corrected);
       const groups = [];
