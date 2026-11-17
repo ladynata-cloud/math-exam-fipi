@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+  "baseSha": "34a08fc84d260a2e96be245c1b2d77b4d3dd6734",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -818,8 +818,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/textbook/index.html": {
-      "beforeSha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
-      "afterSha256": "f6fe2c259cd4e65c169071760301818df1f4188ef56c880c7400c3af0fffce44",
+      "beforeSha256": "c26e8f026e5560c39bd0f9a841c0458b7ff4d260c038a42b4ccb2ed7a060ec2e",
+      "afterSha256": "706cd7def6810a4692834081378f1d994a804e073709f8f209ecf2ca4a9d119d",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
@@ -2198,8 +2198,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
-      "beforeSha256": "a9da6498f42936ac165b7694a102e1372d11f06a1b265482479de4d340de381b",
-      "afterSha256": "6711ae14d8a2e51546e69c681cde31910c1ab291de0e080de09b895ac624b988",
+      "beforeSha256": "8f6e1ab08917f7beacc279d9308c8f06d23c95ac07f5737bb0a0dfa1a990f7ec",
+      "afterSha256": "e18dab6cb02b9ed5d4edf842e9247f435ee1b070cdca4cebb7fb298abb00c79a",
       "placement": "before-head-close"
     },
     "stereo-course/sections/index.html": {
@@ -3013,8 +3013,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
-      "beforeSha256": "52bb7e9ac26227ec1c94f9c18cca715725750c57c77c5206b4d21a4f5a8aed27",
-      "afterSha256": "9e0b7b081e3609cb4657fa61cfe9cb04e78f4952eb976354340506873cc9f1d7",
+      "beforeSha256": "075163e380df8c7c3c830f4b2c7d0893a1e7b048c9b68c1863cafe1c66f01ee4",
+      "afterSha256": "68d8104b7c6729e7ba8008c3b61d0df97141f0e6adfba60e1fd8f862e18cf97e",
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
@@ -5496,6 +5496,17 @@
         "ege-profil/trainers/trigonometry.html",
         "ege-profil/trainers/vectors-yashchenko-t2.html",
         "trainers/oge-informatics-1-10-tutor.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+      "sourceBaseSha": "34a08fc84d260a2e96be245c1b2d77b4d3dd6734",
+      "task": "docs/tasks/GEOMETRY_SEVEN_CONSTRUCTIONS_20261118.md",
+      "changedPaths": [
+        "geometry-course/textbook/index.html",
+        "stereo-course/merzlyak-10-base/index.html",
+        "trainers/oge-task25-geometry.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
