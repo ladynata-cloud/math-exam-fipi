@@ -155,6 +155,16 @@ fs.mkdirSync(out,{recursive:true});
    assert.equal(await p.locator('#course-continue').getAttribute('href'),'/trainers/oge-task11-graphs-trainer.html');
    await p.screenshot({path:path.join(out,'continue-after-return.png')});
    report.scenarios.push('Selected topic survives return; real links navigate');
+   await p.locator('#all-topics [data-oge-topic="18"] span').last().click();
+   await p.waitForURL(base+'/trainers/oge-task18-grid.html');
+   const trainerResults=await p.evaluate(k=>localStorage.getItem(k),KEY);
+   await p.getByRole('link',{name:'← Все темы ОГЭ',exact:true}).click();
+   await p.waitForURL(base+course);
+   assert.equal(await p.locator('#course-continue').getAttribute('href'),'/trainers/oge-task18-grid.html');
+   assert.match(await p.locator('#course-continue').innerText(),/Продолжить/);
+   assert.equal(await p.locator('#course-track-list [data-course-step="task-18"]').getAttribute('data-started'),'false');
+   assert.equal(await p.evaluate(k=>localStorage.getItem(k),KEY),trainerResults,'Return does not rewrite native trainer data');
+   report.scenarios.push('Numbered list and actual trainer return preserve continuation without recording practice');
    await c.close();
   }
   {
