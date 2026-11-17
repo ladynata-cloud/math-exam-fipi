@@ -123,6 +123,7 @@ async function checkMethodsEntrance(page, origin, javaScriptEnabled) {
     // Use the same public links a learner sees, then preserve a synthetic draft
     // through reload and a return to the catalog. No live account is involved.
     await page.locator('.az-catalog a[href$="#/domain"]').click();
+    await page.locator('.az-skill-list a[href$="#/domain/denominator"]').click();
     const answer = page.locator('#az-answer');
     await answer.waitFor();
     await answer.fill(`Проверяю ограничения, ширина ${width}`);
@@ -134,6 +135,7 @@ async function checkMethodsEntrance(page, origin, javaScriptEnabled) {
     assert.equal(await page.locator('.az-catalog > a').count(), 11);
     assert.equal(await page.evaluate(() => JSON.stringify({ ...localStorage })), saved);
     await page.locator('.az-catalog a[href$="#/domain"]').click();
+    await page.locator('.az-skill-list a[href$="#/domain/denominator"]').click();
     assert.equal(await answer.inputValue(), draft);
   }
   console.log(`SEO_METHODS_ENTRANCE_BROWSER_OK: 11 topics, 320/390/1280px, JavaScript ${javaScriptEnabled}, reading links and retained draft`);
