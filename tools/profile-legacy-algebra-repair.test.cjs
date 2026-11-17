@@ -30,6 +30,22 @@ function fixture(w, line = 12) {
   return () => calls;
 }
 
+test('function answers accept decimal notation and reject malformed grouping or other bases', () => {
+  const p = page('functions-t1112.html');
+  try {
+    const check = (input, answer) => p.w.FN.check(input, {answer});
+    for (const value of ['+12', '12,00', '1.2e1']) assert.ok(check(value, 12), value);
+    assert.ok(check('−1 234,5', -1234.5));
+    for (const prefix of ['d', 'z']) {
+      if (prefix === 'z') p.$('#zStart').click();
+      p.$('#'+prefix+'Answer').value = '1 2'; p.$('#'+prefix+'Check').click();
+      assert.match(p.$('#'+prefix+'Fb').textContent, /Введите одно число/);
+      assert.equal(p.$('#'+prefix+'Answer').disabled, false);
+    }
+    for (const value of ['1 2', '0xC', '0b1100', '12abc', 'Infinity']) assert.equal(check(value, 12), false, value);
+  } finally { p.close(); }
+});
+
 test('functions: assistance, wrong feedback and repeated answers preserve honest progress', () => {
   const p = page('functions-t1112.html', '', { [KEY]: seeded });
   try {

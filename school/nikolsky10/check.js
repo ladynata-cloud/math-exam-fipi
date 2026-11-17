@@ -13,7 +13,18 @@ function piCoefficient(value){
  const a=M.parse(m[1]===''||m[1]==='+'?'1':m[1]==='-'?'-1':m[1]),d=BigInt(m[2]||'1');
  return a&&d!==0n?String(d<0n?-a.n:a.n)+'/'+String(BigInt(a.d)*(d<0n?-d:d)):null;
 }
-function textEqual(a,b){if(normalize(a)===normalize(b))return true;const x=piCoefficient(a),y=piCoefficient(b);return x!==null&&y!==null&&M.equal(x,y);}
+function scalarEqual(a,b){
+ if(normalize(a)===normalize(b)||M.equal(a,b))return true;
+ const x=piCoefficient(a),y=piCoefficient(b);
+ return x!==null&&y!==null&&M.equal(x,y);
+}
+function textEqual(a,b){
+ if(scalarEqual(a,b))return true;
+ const interval=/^([[(])([^;]+);([^;]+)([)\]])$/;
+ const left=interval.exec(normalize(a)),right=interval.exec(normalize(b));
+ return !!(left&&right&&left[1]===right[1]&&left[4]===right[4]&&
+  scalarEqual(left[2],right[2])&&scalarEqual(left[3],right[3]));
+}
 function setEqual(user,expected){
  const empty=s=>/^(нет|неткорней|корнейнет|пусто|∅|\{\})$/.test(normalize(s));
  if(empty(user)||empty(expected))return empty(user)&&empty(expected);

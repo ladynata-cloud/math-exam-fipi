@@ -7,12 +7,28 @@ function normalize(value){return String(value??'').trim().toLowerCase()
  .replace(/≤/g,'<=').replace(/≥/g,'>=').replace(/≠/g,'!=')
  .replace(/([0-9a-zа-я)])\*(?=[a-zа-я(])/g,'$1').replace(/∈/g,'in').replace(/\bpi\b/g,'π')
  .replace(/([0-9]),(?=[0-9])/g,'$1.').replace(/[х]/g,'x');}
+function setEntries(value){
+ let body=String(value).trim();
+ if(body.startsWith('{')&&body.endsWith('}'))body=body.slice(1,-1);
+ if(/[{}]/.test(body))return null;
+ const entries=[];
+ for(const token of body.split(';')){
+  const term=token.trim().replace(/[−–—]/g,'-').replace(/^([+-])\s+/,'$1');
+  if(!term)continue;
+  const pair=/^(?:±|\+\/-)\s*(.*)$/.exec(term);
+  if(!pair){entries.push(term);continue;}
+  const magnitude=M.parse(pair[1]);
+  if(!magnitude)return null;
+  entries.push(M.answer(magnitude));
+  if(magnitude.n!==0)entries.push(M.answer({n:-magnitude.n,d:magnitude.d}));
+ }
+ return entries.length?entries:null;
+}
 function setEqual(user,expected){
  const empty=s=>/^(нет|неткорней|корнейнет|пусто|∅|\{\})$/.test(normalize(s));
  if(empty(user)||empty(expected))return empty(user)&&empty(expected);
- const split=s=>String(s).replace(/[{}]/g,'').split(';').map(x=>x.trim()).filter(Boolean);
- const a=split(user),b=split(expected);if(!a.length||a.length!==b.length)return false;
- const used=new Set();return a.every(x=>{const i=b.findIndex((y,j)=>!used.has(j)&&(M.equal(x,y)||normalize(x)===normalize(y)));if(i<0)return false;used.add(i);return true;});
+ const a=setEntries(user),b=setEntries(expected);if(!a||!b||a.length!==b.length)return false;
+ const used=new Set();return a.every(x=>{const i=b.findIndex((y,j)=>!used.has(j)&&(M.parse(y)?M.equal(x,y):normalize(x)===normalize(y)));if(i<0)return false;used.add(i);return true;});
 }
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
@@ -28,5 +44,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {check,normalize,setEqual};
+return {setEntries,check,normalize,setEqual};
 });
