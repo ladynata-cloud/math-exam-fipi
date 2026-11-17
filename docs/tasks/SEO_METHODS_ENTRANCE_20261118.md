@@ -42,6 +42,8 @@
 - Метаданные и canonical существующего `/ege-profil/azbuka-metodov/`.
 - Статический каталог, воспроизводимый из действующего каталога курса.
 - Включение раздела в reviewed sitemap и проверки SEO/совпадения каталогов.
+- Штатное подключение общего навигатора на новом адресе sitemap и точная
+  запись его покрытия; код навигатора и прежние контрольные суммы не меняются.
 - Проверка прежних упражнений и сохранённых ответов после замены начального HTML.
 - Редакторская записка о полезных поисковых статьях, существующих дублях,
   конкретных пилотах и критериях оценки результата без выдуманной частотности.
@@ -68,6 +70,8 @@ trainer packages, private pages, robots exclusions and learner records.
   описаниям, порядку и адресам; не создаётся второй список после загрузки.
 - [ ] Чтение списка не записывает прогресс; прежние deep links работают.
 - [ ] На 320/390/1280 px нет горизонтальной прокрутки и дублированного H1.
+- [ ] Новый публичный адрес покрыт существующим навигатором; прежняя
+  проверка полного покрытия sitemap проходит без новых исключений.
 - [ ] SEO-записка различает подтверждённые наблюдения и гипотезы.
 - [ ] Все применимые проверки пройдены, ограничения перечислены честно.
 
@@ -77,6 +81,8 @@ trainer packages, private pages, robots exclusions and learner records.
   `tools/profile-fipi-2027-contract.test.cjs`, `tools/seo-catalog.test.cjs`.
 - Required static checks: reproducible entrance build, `seo-sitemap.test.py`,
   `build-sitemap.py --check`, `seo-check.py`, `git diff --check`.
+- Navigator checks: `public-navigator-preservation.test.cjs`,
+  `public_navigator_bindings.test.py`, existing regression and browser workflows.
 - Manual checks: Chromium, JS on/off, 320/390/1280 px; каталог, переход
   к навыку, ввод/восстановление ответа, возврат к каталогу.
 - Final gate marker: `SEO_METHODS_ENTRANCE_20261118_OK`.
