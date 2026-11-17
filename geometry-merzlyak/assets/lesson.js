@@ -15,6 +15,8 @@ function proofUI(){const done=new Set(state.proofDone),remaining=P.steps.filter(
 for(const s of P.steps.filter(s=>done.has(s.id)))h+='<li><strong>'+E(s.text)+'</strong><small>'+E(s.reason)+'</small></li>';h+='</ol>';
 if(!remaining.length)h+='<div class="callout"><strong>Цепочка собрана с опорой.</strong><p>Закрой карточки и попробуй восстановить рассуждение в разделе «Своими словами». Самостоятельное доказательство проверяет учитель.</p></div><button data-action="proof-reset">Собрать ещё раз</button>';
 else{h+='<p>Какой переход сейчас можно обосновать?</p><div class="proof-options">';for(const s of shuffle(remaining.slice(0,3)))h+='<button data-proof="'+s.id+'">'+E(s.text)+'</button>';h+='<button class="trap" data-action="proof-trap">Это верно, потому что на рисунке выглядит именно так.</button></div><div id="reason"></div><p id="proof-feedback" class="feedback" role="status"></p>';}
+const angleCases=document.getElementById('inscribed-angle-cases');
+if(angleCases)h+=angleCases.innerHTML;
 h+='<details><summary>Свободное поле для чертежа к доказательству</summary><p>Добавляй точки и линии. Имена точек на этом поле задаются автоматически: в записи можно явно указать соответствие своим обозначениям. Чертёж не проверяет логическое доказательство.</p><div id="proof-board"></div></details>';return h;}
 const resultText={
  first:'Верно с первой попытки без подсказки. Этот вариант учтён один раз.',
