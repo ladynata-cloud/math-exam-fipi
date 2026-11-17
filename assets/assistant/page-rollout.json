@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "a0cd456159ad6bca9c27ecc9294dd5cf75f93399",
+  "baseSha": "77529fae397f554bb8805017bf46a5e20760e057",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2578,8 +2578,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-2027-analogue-1.html": {
-      "beforeSha256": "fe6300d020325c0984f2a82481caf20a26c067a26b487e53a23f7b29c212b602",
-      "afterSha256": "d49595d32effcc81fc3b6cee7150dd6d51e001c3a457e5e01bfbed639fcdc65c",
+      "beforeSha256": "53ad6b5562b4cc40882a57c927d9b7f440c79cd507798a8e0c4a7b3a1d2e2a2d",
+      "afterSha256": "346607ff1cd8fd88c58d08e330bf347525df4b2aa4c81eb5ea8063da1db656e5",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/arithmetic-route.html": {
@@ -5311,6 +5311,15 @@
       "previousBaseSha": "262eaadc6e076aad4c3d1cb88cd1a38ad0bc5a2f",
       "sourceBaseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
       "task": "docs/tasks/OGE_DIAGNOSTIC_PRACTICE_20261117.md",
+      "changedPaths": [
+        "trainers/oge-2027-analogue-1.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "a0cd456159ad6bca9c27ecc9294dd5cf75f93399",
+      "sourceBaseSha": "77529fae397f554bb8805017bf46a5e20760e057",
+      "task": "docs/tasks/OGE_BOOK_V3_READINESS_20261116.md",
       "changedPaths": [
         "trainers/oge-2027-analogue-1.html"
       ],
