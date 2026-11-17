@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+  "baseSha": "a5a3610498ee7270b374ca3d8f71650a7e320dea",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2123,23 +2123,23 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "359864447bcaa6f710c66dd6194f3258146293ce1dbb8c572f4a02d3de45b9cc",
-      "afterSha256": "95b8e6e435b9b9e0ae56db46658b5a2ddced4762f1f9ed36644f71d2e9c76d52",
+      "beforeSha256": "726e1e7d63daa2895fce340727034304c30eb110d277e1ac85291542e4a34b6f",
+      "afterSha256": "c1cf2ef3b82ded24d8de5a24bac18a6c485b60ea08b57cb3862f8fd6341a5f7c",
       "placement": "before-head-close"
     },
     "school/m9-exercises/index.html": {
-      "beforeSha256": "50f6aef6993511475931499d227a2512265194d660396178ec2b732c59c04fb6",
-      "afterSha256": "aac26dc0a82ab69c7b1793e98373db6ceca315a226ceb04a74405655a0271da8",
+      "beforeSha256": "b5771a7b4135f1d70d7195caff53f6896e366faa77cc60b51c7f448d1972ba42",
+      "afterSha256": "03a0352860bd1f219c4ba44bd4f90162ca9668ffb4dccd66778fda3be97df4ac",
       "placement": "before-head-close"
     },
     "school/makarychev7/index.html": {
-      "beforeSha256": "30ff7761d8453683c4cbbe5ab3657fc4fbb087e074fe26781d0892e61da1c956",
-      "afterSha256": "88d62c85bb57c26a9eb0ef790b198db9e89a06ec61a217adaa090f0a8a98f84a",
+      "beforeSha256": "99c04ccbf1b7340bff836959d02bd217d01e6a1359f42e2b25f1b358e6d7ee95",
+      "afterSha256": "73665a1ce6db529b779137c1325140eb71ed0545be8696c5cbedaeca6d311c00",
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "64f1e9d53eb1f07aef0d9e04b0861db2357f8e43d9f17ab69918f94194dddbe6",
-      "afterSha256": "877d952d78805979f56f323b947caf9884e799076b35ee68721c3b97eb975397",
+      "beforeSha256": "de12e54cb2376320c728cd14cbdff606779478928b4a5f60e74e4be368329cf3",
+      "afterSha256": "2294d87b806f87fa592e1ca42ef982b2872f705dae314c71dad439c1b91dfdae",
       "placement": "before-head-close"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
@@ -5381,6 +5381,18 @@
       "changedPaths": [
         "ege-profil/part-two/index.html",
         "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "sourceBaseSha": "a5a3610498ee7270b374ca3d8f71650a7e320dea",
+      "task": "docs/tasks/MAKARYCHEV_COURSES_20261118.md",
+      "changedPaths": [
+        "school/index.html",
+        "school/m9-exercises/index.html",
+        "school/makarychev7/index.html",
+        "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
