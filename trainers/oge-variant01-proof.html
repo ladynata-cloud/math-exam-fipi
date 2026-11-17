@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ОГЭ · Вариант 01, №24 · Подобие по двум углам | MathExam</title>
+  <meta name="description" content="Почему две секущие дают подобные треугольники? Отметьте углы при двух расположениях точек и запишите доказательство для нового чертежа.">
+  <link rel="canonical" href="https://mathexam.space/trainers/oge-variant01-proof.html">
+  <style>
+    :root { color-scheme:light; --green:#216342; --ink:#202c25; --muted:#536158; --line:#cbd6cc; }
+    * { box-sizing:border-box }
+    body { margin:0; background:#f6f7f5; color:var(--ink); font:18px/1.55 system-ui,sans-serif }
+    nav, main { width:min(860px,100%); margin:auto; padding:16px clamp(14px,4vw,32px) }
+    a { color:var(--green); text-underline-offset:3px }
+    nav { display:flex; gap:8px 22px; flex-wrap:wrap; font-size:16px }
+    h1,h2,h3,legend { line-height:1.25; text-wrap:balance }
+    h1 { font-size:clamp(1.8rem,5vw,2.5rem); margin:.2em 0 }
+    h2 { font-size:1.45rem; margin:0 0 12px }
+    h3, legend { font-size:1.08rem; font-weight:700 }
+    p { margin:8px 0 14px }
+    section { background:white; border:1px solid var(--line); border-radius:12px; padding:clamp(14px,3vw,24px); margin:18px 0 }
+    .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+    .diagram { display:block; width:100%; max-width:460px; margin:6px auto; aspect-ratio:340/242; }
+    .diagram text { font:600 15px system-ui; fill:var(--ink); paint-order:stroke; stroke:white; stroke-width:3px }
+    .row button, .choice, .action { font:inherit; min-height:44px; padding:8px 13px; background:white; color:var(--ink); border:1px solid #899c90; border-radius:7px; cursor:pointer }
+    button[aria-pressed="true"] { background:#dcefe2; border:2px solid var(--green); padding:7px 12px; }
+    button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visible { outline:3px solid #136cbb; outline-offset:3px }
+    .action { background:var(--green); border-color:var(--green); color:white; font-weight:650 }
+    .note { color:var(--muted); font-size:.94rem }
+    .feedback { font-weight:600; color:#2c4940; margin:10px 0 }
+    fieldset { border:0; margin:14px 0; padding:0 }
+    legend { margin:6px 0 }
+    .choice { margin:6px 0; display:flex; gap:10px; align-items:baseline }
+    input { accent-color:var(--green) }
+    input[type=radio], input[type=checkbox] { min-width:18px; min-height:18px }
+    textarea { width:100%; margin:6px 0; padding:10px; font:inherit; border:1px solid #85968c; border-radius:6px }
+    .paper { display:block; padding:8px 0 }
+    .review { background:#f2f7f2; border-left:3px solid var(--green); padding:12px 16px; margin:16px 0 }
+    [hidden] { display:none !important }
+    @media(max-width:480px) { nav { font-size:15px } section { padding:13px } }
+  </style>
+</head>
+<body>
+<nav aria-label="Навигация">
+  <a href="/oge/variants/2027/#variant-01">← Вариант 01</a>
+  <a href="/trainers/oge-task24-proofs.html">Другие доказательства №24</a>
+  <a href="/" data-mathexam-home-link target="_self">На главную</a>
+</nav>
+<main>
+  <p class="note">ОГЭ · Печатный вариант 01 · Задание 24</p>
+  <h1>Подобие по двум углам</h1>
+  <p>Четырёхугольник ABCD вписан в окружность. Продолжения сторон AB и CD пересекаются в точке M. Докажите, что △MBC ∼ △MDA.</p>
+  <noscript>Для отметок на чертеже включите JavaScript. <a href="/oge/variants/2027/files/OGE_2027_001_reshenie.pdf#page=4">Открыть разбор на странице 4 PDF</a>.</noscript>
+  <section id="guided" aria-labelledby="guided-title">
+    <h2 id="guided-title">Найдите вторую пару равных углов</h2>
+    <div class="row" aria-label="Расположение точек">
+      <button type="button" data-case="0" aria-pressed="true">Рисунок 1</button>
+      <button type="button" data-case="1" aria-pressed="false">Рисунок 2</button>
+    </div>
+    <p id="order" class="note"></p>
+    <svg class="diagram" viewBox="0 0 340 242" id="model" role="img" aria-label="Чертёж двух секущих"></svg>
+    <p>Угол при M общий. Отметьте по одному углу каждого треугольника: нажмите на вершины рисунка или на названия углов ниже.</p>
+    <fieldset><legend>В треугольнике MBC</legend>
+      <div class="row"><button type="button" data-vertex="B">∠MBC</button><button type="button" data-vertex="C">∠MCB</button></div>
+    </fieldset>
+    <fieldset><legend>В треугольнике MDA</legend>
+      <div class="row"><button type="button" data-vertex="A">∠MAD</button><button type="button" data-vertex="D">∠MDA</button></div>
+    </fieldset>
+    <button class="action" type="button" id="check-pair">Проверить пару</button>
+    <p id="pair-feedback" class="feedback" role="status"></p>
+    <form id="reason" hidden>
+      <fieldset><legend>Чем обосновано равенство?</legend>
+        <label class="choice"><input type="radio" name="why" value="parallel"> Стороны этих углов попарно параллельны.</label>
+        <label class="choice"><input type="radio" name="why" value="cyclic"> Внешний угол вписанного четырёхугольника равен внутреннему углу при противоположной вершине.</label>
+        <label class="choice"><input type="radio" name="why" value="vertical"> Это вертикальные углы.</label>
+      </fieldset>
+      <button class="action">Проверить обоснование</button>
+      <p id="why-feedback" class="feedback" role="status"></p>
+    </form>
+    <form id="conclusion" hidden>
+      <fieldset><legend>Какой вывод следует из двух равенств углов?</legend>
+        <label class="choice"><input type="radio" name="result" value="equal"> Треугольники равны.</label>
+        <label class="choice"><input type="radio" name="result" value="similar"> Треугольники подобны по двум углам.</label>
+      </fieldset>
+      <button class="action">Проверить вывод</button>
+      <p id="result-feedback" class="feedback" role="status"></p>
+    </form>
+    <button class="action" type="button" id="continue" hidden></button>
+  </section>
+  <section id="independent" aria-labelledby="independent-title">
+    <h2 id="independent-title" tabindex="-1">Новый чертёж для самостоятельного решения</h2>
+    <p>Хорды AC и BD пересекаются внутри окружности в точке X. Докажите, что △AXB ∼ △DXC.</p>
+    <svg class="diagram" viewBox="0 0 340 242" id="transfer" role="img" aria-label="Четыре точки A, B, C и D лежат на окружности в этом порядке. Хорды AC и BD пересекаются в точке X. Проведены AB и DC."></svg>
+    <label for="draft"><b>Ваше доказательство</b></label>
+    <textarea id="draft" rows="4" placeholder="Запишите равенства, их основания и вывод."></textarea>
+    <p id="saved" class="note" aria-live="polite"></p>
+    <label class="paper"><input type="checkbox" id="paper"> Я записал(а) доказательство на бумаге.</label>
+    <button type="button" class="action" id="compare" aria-expanded="false" aria-controls="sample">Сверить с образцом</button>
+    <p class="feedback" role="status" id="review-feedback"></p>
+    <div id="sample" class="review" hidden>
+      <h3>Один из способов доказательства</h3>
+      <p>∠AXB = ∠DXC как вертикальные. Лучи BX и BD совпадают, а лучи CX и CA совпадают. Поэтому ∠ABX = ∠ABD и ∠DCX = ∠DCA. Вписанные углы ABD и DCA опираются на одну дугу AD. Получили вторую пару равных углов. Следовательно, △AXB ∼ △DXC по двум углам.</p>
+      <p>Можно также сравнить ∠BAX и ∠CDX: они опираются на одну дугу BC.</p>
+      <p>Сверьте свою запись: указаны две пары углов, к каждой дано обоснование, вершины в выводе стоят в соответствующем порядке. Другой верный способ можно обсудить с преподавателем.</p>
+    </div>
+  </section>
+  <p><a href="/oge/variants/2027/#variant-01">Вернуться к варианту 01</a></p>
+</main>
+<script>
+'use strict';
+const $ = (id) => document.getElementById(id);
+const cases = [
+  {order:'От M идут точки B, A на первой секущей и C, D на второй.', names:['B','A','C','D'],
+   whyB:'Лучи BM и BA противоположны, а DM и DC совпадают. Поэтому ∠MBC = 180° − ∠ABC = ∠CDA = ∠MDA.',
+   whyC:'Лучи CM и CD противоположны, а AM и AB совпадают. Поэтому ∠MCB = 180° − ∠BCD = ∠BAD = ∠MAD.'},
+  {order:'От M идут точки A, B на первой секущей и D, C на второй.', names:['A','B','D','C'],
+   whyB:'Лучи BM и BA совпадают, а DM и DC противоположны. Поэтому ∠MBC = ∠ABC = 180° − ∠CDA = ∠MDA.',
+   whyC:'Лучи CM и CD совпадают, а AM и AB противоположны. Поэтому ∠MCB = ∠BCD = 180° − ∠BAD = ∠MAD.'}
+];
+// Intersect each unit ray from M with the same circle. The paired roots are the near and far points.
+const M=[29,150], center=[219,128], radius=91;
+function intersections(angle) {
+  const u=Math.cos(angle), v=Math.sin(angle);
+  const dx=center[0]-M[0], dy=center[1]-M[1];
+  const along=dx*u+dy*v, cross=dx*v-dy*u;
+  const half=Math.sqrt(radius**2-cross**2);
+  return [along-half,along+half].map(t=>[M[0]+t*u,M[1]+t*v]);
+}
+const locations=[...intersections(-0.34),...intersections(0.2)];
+const offsets=[[-16,-8],[5,-8],[-15,18],[5,18]];
+const svgNS='http://www.w3.org/2000/svg';
+function shape(svg, tag, attrs) {
+  const item=document.createElementNS(svgNS,tag);
+  for(const [k,v] of Object.entries(attrs)) item.setAttribute(k,v);
+  svg.append(item);
+  return item;
+}
+function line(svg,p,q,color='#42594b') {
+  shape(svg,'line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:color,'stroke-width':2});
+}
+function circle(svg,p,r) {
+  shape(svg,'circle',{cx:p[0],cy:p[1],r,fill:'none',stroke:'#819481','stroke-width':1.6});
+}
+function point(svg,p,name,offset) {
+  shape(svg,'circle',{cx:p[0],cy:p[1],r:3.5,fill:'#23392c'});
+  shape(svg,'text',{x:p[0]+offset[0],y:p[1]+offset[1]}).textContent=name;
+}
+function arc(svg,at,a,b,r,color) {
+  const start=Math.atan2(a[1]-at[1],a[0]-at[0]), end=Math.atan2(b[1]-at[1],b[0]-at[0]);
+  const delta=Math.atan2(Math.sin(end-start),Math.cos(end-start));
+  const onArc = (angle) => [at[0]+r*Math.cos(angle),at[1]+r*Math.sin(angle)].join(' ');
+  shape(svg,'path',{d:'M '+onArc(start)+' A '+r+' '+r+' 0 0 '+(delta>0?1:0)+' '+onArc(end),
+    fill:'none',stroke:color,'stroke-width':2.8,'stroke-linecap':'round'});
+}
+const answers=cases.map(()=>({first:'',second:'',pair:false,why:false,done:false,pairNote:'',whyNote:'',resultNote:''}));
+let current=0;
+function drawSecants() {
+  const svg=$('model');
+  svg.replaceChildren();
+  const {names,order}=cases[current];
+  const points=Object.fromEntries(names.map((name,i)=>[name,locations[i]]));
+  circle(svg,center,radius);
+  line(svg,M,locations[1]); line(svg,M,locations[3]);
+  line(svg,points.B,points.C); line(svg,points.A,points.D);
+  arc(svg,M,points.B,points.C,29,'#6651a4');
+  const mates={B:'C',C:'B',D:'A',A:'D'};
+  const {first,second}=answers[current];
+  for(const name of [first,second].filter(Boolean)) {
+    arc(svg,points[name],M,points[mates[name]],16,'#b04e1b');
+  }
+  point(svg,M,'M',[-13,-7]);
+  names.forEach((name,i)=>{
+    point(svg,locations[i],name,offsets[i]);
+    const hit=shape(svg,'circle',{cx:locations[i][0],cy:locations[i][1],r:24,fill:'transparent',cursor:'pointer','data-pick':name});
+    hit.addEventListener('click',()=>selectVertex(name));
+  });
+  svg.setAttribute('aria-label',order+' Общий угол при M.'+(first||second?' Отмечены вершины '+[first,second].filter(Boolean).join(' и ')+'.':''));
+}
+function reasonText(state) {
+  return cases[current][state.first==='B'?'whyB':'whyC']+' Противоположные углы ABCD в сумме дают 180°.';
+}
+function render() {
+  const state=answers[current];
+  $('order').textContent=cases[current].order;
+  document.querySelectorAll('[data-case]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.case)===current)));
+  document.querySelectorAll('[data-vertex]').forEach(b=>b.setAttribute('aria-pressed',String([state.first,state.second].includes(b.dataset.vertex))));
+  $('pair-feedback').textContent=state.pairNote;
+  $('reason').hidden=!state.pair;
+  $('why-feedback').textContent=state.why?reasonText(state):state.whyNote;
+  $('conclusion').hidden=!state.why;
+  $('result-feedback').textContent=state.done?'△MBC ∼ △MDA по двум углам.':state.resultNote;
+  $('continue').hidden=!state.done;
+  $('continue').textContent=answers[1-current].done?'Перейти к самостоятельному доказательству':'Разобрать второй порядок точек';
+  for (const input of $('reason').elements.why) input.checked=state.why && input.value==='cyclic';
+  for (const input of $('conclusion').elements.result) input.checked=state.done && input.value==='similar';
+  drawSecants();
+}
+function switchCase(index) {
+  current=index;
+  render();
+}
+document.querySelectorAll('[data-case]').forEach(b=>b.addEventListener('click',()=>switchCase(Number(b.dataset.case))));
+function selectVertex(vertex) {
+  const state=answers[current], group='BC'.includes(vertex)?'first':'second';
+  if(state[group]===vertex) return;
+  state[group]=vertex;
+  Object.assign(state,{pair:false,why:false,done:false,pairNote:'',whyNote:'',resultNote:''});
+  render();
+}
+document.querySelectorAll('[data-vertex]').forEach(b=>b.addEventListener('click',()=>selectVertex(b.dataset.vertex)));
+$('check-pair').addEventListener('click',()=>{
+  const s=answers[current];
+  s.pair=(s.first==='B' && s.second==='D') || (s.first==='C' && s.second==='A');
+  s.pairNote=s.pair?'Пара подходит. Теперь объясните равенство.':(!s.first || !s.second)?
+    'Выберите один угол в каждом треугольнике.':'Сравните отмеченные дужки. Найдите внутренний угол при вершине, противоположной внешнему углу.';
+  render();
+});
+$('reason').addEventListener('submit',event=>{
+  event.preventDefault();
+  const s=answers[current],value=event.target.elements.why.value;
+  s.why=value==='cyclic';
+  if(!s.why) {s.done=false;s.resultNote='';}
+  s.whyNote=value==='vertical'?'У вертикальных углов одна вершина. У выбранных углов вершины разные.':
+    value==='parallel'?'В условии не дана параллельность. Рассмотрите свойство четырёх точек на окружности.':'Выберите обоснование.';
+  render();
+});
+$('conclusion').addEventListener('submit',event=>{
+  event.preventDefault();
+  const s=answers[current];
+  s.done=event.target.elements.result.value==='similar';
+  s.resultNote='Равные углы определяют форму треугольника. Что известно о его размерах?';
+  render();
+});
+$('continue').addEventListener('click',()=>{
+  if(!answers[1-current].done) {
+    switchCase(1-current);
+    document.querySelector('[data-case="'+current+'"]').focus();
+  } else $('independent-title').focus();
+});
+function drawChords() {
+  const svg=$('transfer'), c=[173,121], r=89;
+  circle(svg,c,r);
+  const points={};
+  [219,310,34,148].forEach((degrees,i)=>{
+    const a=degrees*Math.PI/180;
+    points['ABCD'[i]]=[c[0]+r*Math.cos(a),c[1]+r*Math.sin(a)];
+  });
+  const {A,B,C,D}=points, cross=(p,q)=>p[0]*q[1]-p[1]*q[0], diff=(p,q)=>[p[0]-q[0],p[1]-q[1]];
+  const ac=diff(C,A),bd=diff(D,B),fraction=cross(diff(B,A),bd)/cross(ac,bd);
+  const X=[A[0]+fraction*ac[0],A[1]+fraction*ac[1]];
+  for(const [p,q] of [[A,C],[B,D],[A,B],[C,D]]) line(svg,p,q);
+  point(svg,A,'A',[-16,-5]);point(svg,B,'B',[5,-7]);point(svg,C,'C',[7,10]);point(svg,D,'D',[-18,10]);point(svg,X,'X',[-6,-9]);
+}
+const draft=$('draft'), saved=$('saved'), key='oge-v01-proof-chords-draft-v1';
+try {draft.value=localStorage.getItem(key)||'';} catch {/* Writing on this page remains available. */}
+if(draft.value) saved.textContent='Черновик восстановлен в этом браузере.';
+draft.addEventListener('input',()=>{
+  try {localStorage.setItem(key,draft.value);saved.textContent='Черновик сохранён в этом браузере.';}
+  catch {saved.textContent='Черновик доступен до закрытия страницы.';}
+});
+$('compare').addEventListener('click',()=>{
+  if($('sample').hidden && !draft.value.trim() && !$('paper').checked) {
+    $('review-feedback').textContent='Сначала запишите свой ход решения здесь или отметьте, что он уже на бумаге.';
+    return;
+  }
+  $('review-feedback').textContent='';
+  $('sample').hidden=!$('sample').hidden;
+  $('compare').setAttribute('aria-expanded',String(!$('sample').hidden));
+  $('compare').textContent=$('sample').hidden?'Сверить с образцом':'Скрыть образец';
+});
+render();
+drawChords();
+</script>
+</body>
+</html>

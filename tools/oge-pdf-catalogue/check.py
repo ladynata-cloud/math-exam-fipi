@@ -14,6 +14,8 @@ import xml.etree.ElementTree as ET
 
 import fitz
 
+from repair_tire_captions import verify_captions
+
 ROOT = Path(__file__).resolve().parents[2]
 PUBLIC = ROOT / 'oge/variants/2027'
 KINDS = ('variant', 'otvety', 'reshenie')
@@ -134,6 +136,8 @@ def main():
                 source_matches += 1
             with fitz.open(path) as document:
                 assert not document.is_encrypted and len(document) == meta['pages'], rel
+                if kind == 'variant' and variant['type'] == 'tires':
+                    verify_captions(document[0])
                 pages[kind] += len(document)
                 task_numbers = []
                 text = '\n'.join(page.get_text() for page in document)
@@ -184,6 +188,8 @@ def main():
             offset = 0
             for variant in manifest['variants']:
                 with fitz.open(PUBLIC / variant['files'][kind]['path']) as individual:
+                    if kind == 'variant' and variant['type'] == 'tires':
+                        verify_captions(collection[offset])
                     for page in individual:
                         other = collection[offset]
                         assert page.rect == other.rect

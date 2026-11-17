@@ -22,8 +22,8 @@
         "variant": {
           "path": "files/OGE_2027_001_variant.pdf",
           "pages": 4,
-          "bytes": 701351,
-          "sha256": "af6cab7323f112a234f733c298029f052b0583f81f0f7f0434dbed7f35b728ad"
+          "bytes": 451649,
+          "sha256": "998a01e832c5fd92ed874439c92d4635776720ecf65726d9ca1686e1c3cc9555"
         },
         "otvety": {
           "path": "files/OGE_2027_001_otvety.pdf",
@@ -147,8 +147,8 @@
         "variant": {
           "path": "files/OGE_2027_006_variant.pdf",
           "pages": 4,
-          "bytes": 701428,
-          "sha256": "ff053764111652106cd92486d5c18ffe26baf37995400fb5fb403c7de804a339"
+          "bytes": 451710,
+          "sha256": "5f4ae6dc5964e6ae158879c587ec78641c0acfb432e4305207a34d27892920bb"
         },
         "otvety": {
           "path": "files/OGE_2027_006_otvety.pdf",
@@ -472,8 +472,8 @@
         "variant": {
           "path": "files/OGE_2027_019_variant.pdf",
           "pages": 4,
-          "bytes": 694995,
-          "sha256": "0ee3e8016d3f9a110dea43d18135feea3d3615f7497004f2ef82b4bc3bae4bf8"
+          "bytes": 454555,
+          "sha256": "d25cd5896d9a8a8e400dcddf71731efa77168734f47ad7dbb2b351fe6779cd91"
         },
         "otvety": {
           "path": "files/OGE_2027_019_otvety.pdf",
@@ -647,8 +647,8 @@
         "variant": {
           "path": "files/OGE_2027_026_variant.pdf",
           "pages": 5,
-          "bytes": 679248,
-          "sha256": "cbc5ed0197574f6ad6c22b5874251690e4b54a726d55b28790ef6e94dd712099"
+          "bytes": 437342,
+          "sha256": "83102fc9bec9cd44b9ed807a2286a296e6410a6911535216f72c23242f433ff2"
         },
         "otvety": {
           "path": "files/OGE_2027_026_otvety.pdf",
@@ -822,8 +822,8 @@
         "variant": {
           "path": "files/OGE_2027_033_variant.pdf",
           "pages": 4,
-          "bytes": 672248,
-          "sha256": "123d67fa71d16eedb85b80fa9df7ee3d7748c67906d8311e9f4c5f0df6c63ecd"
+          "bytes": 429880,
+          "sha256": "2cfa907e0e19d7786f895d3a43393841575cefa58ef2300edfc3fb1fd64a4c0c"
         },
         "otvety": {
           "path": "files/OGE_2027_033_otvety.pdf",
@@ -1022,8 +1022,8 @@
         "variant": {
           "path": "files/OGE_2027_041_variant.pdf",
           "pages": 5,
-          "bytes": 679977,
-          "sha256": "162dfb37ac10c431e1aa160668b6abe81a00d65b794234d28db01b47d7d70aa2"
+          "bytes": 438371,
+          "sha256": "7835173cbddb57de39ecbf84ecc45442645ff17c555cc142226d8d9bfa6d401a"
         },
         "otvety": {
           "path": "files/OGE_2027_041_otvety.pdf",
@@ -1222,8 +1222,8 @@
         "variant": {
           "path": "files/OGE_2027_049_variant.pdf",
           "pages": 4,
-          "bytes": 694760,
-          "sha256": "ed1efd1146f04f52cf97f26dcb93a08cd804ec6c8a2736fc8fcba7118e825f1f"
+          "bytes": 454334,
+          "sha256": "fae6bd09df85cbe902a999a0c1009ce3528da9f4e1fff76724ec902cdf5818a1"
         },
         "otvety": {
           "path": "files/OGE_2027_049_otvety.pdf",
@@ -1422,8 +1422,8 @@
         "variant": {
           "path": "files/OGE_2027_057_variant.pdf",
           "pages": 4,
-          "bytes": 673060,
-          "sha256": "3ab61a58f17d606e0b7a01d484342e97a1c4582554357e09e56ea09e4cb29b79"
+          "bytes": 430674,
+          "sha256": "6d01c443dc23751725b783a76339066929ed5c958c2d0d3975fcb6357717ef5d"
         },
         "otvety": {
           "path": "files/OGE_2027_057_otvety.pdf",
@@ -1622,8 +1622,8 @@
         "variant": {
           "path": "files/OGE_2027_065_variant.pdf",
           "pages": 5,
-          "bytes": 682065,
-          "sha256": "bcf6bdfc53d075d96b1fad0f1208e601f117af195134613c7a851e82c5acb1c6"
+          "bytes": 440918,
+          "sha256": "34b29705fe6bada723d2ffb8f5cf69e1794135bb9d65e4de752a7b3527352213"
         },
         "otvety": {
           "path": "files/OGE_2027_065_otvety.pdf",
@@ -1822,8 +1822,8 @@
         "variant": {
           "path": "files/OGE_2027_073_variant.pdf",
           "pages": 4,
-          "bytes": 674105,
-          "sha256": "5d9aee65a22b1cee4dece02815df1c5f74eac58075bbe10e373be893a9d8a400"
+          "bytes": 432106,
+          "sha256": "120dca64e9e36d469339359635a1d9b4c3240851538695bf450f62dd8a6fa124"
         },
         "otvety": {
           "path": "files/OGE_2027_073_otvety.pdf",
@@ -2022,8 +2022,8 @@
         "variant": {
           "path": "files/OGE_2027_081_variant.pdf",
           "pages": 4,
-          "bytes": 672746,
-          "sha256": "829b0eb58cc58269965aed297ecdc6578c93edd0fe90a28058b2397aaef2ab4e"
+          "bytes": 430367,
+          "sha256": "a3c72bac616243dfa9cc64f6980e3f039107b37ca00a779e21ee5f7aa357d981"
         },
         "otvety": {
           "path": "files/OGE_2027_081_otvety.pdf",
@@ -2222,8 +2222,8 @@
         "variant": {
           "path": "files/OGE_2027_089_variant.pdf",
           "pages": 5,
-          "bytes": 700998,
-          "sha256": "d8f6d4b1ecc7d96e36624f527c42cbb24d8312da5a752bf99f3d7dbd77bd5fec"
+          "bytes": 460963,
+          "sha256": "585e343fe7c6d38ed1c3304c0b8329a78c541377f0d3b5b15f51726398183cf1"
         },
         "otvety": {
           "path": "files/OGE_2027_089_otvety.pdf",
@@ -2422,8 +2422,8 @@
         "variant": {
           "path": "files/OGE_2027_097_variant.pdf",
           "pages": 4,
-          "bytes": 675111,
-          "sha256": "4f6aeedd7c0376f7ef73f305e0cfc970468ebf544dc0091ccf6c2d03537f2e7d"
+          "bytes": 433117,
+          "sha256": "6a590b3e7e2bd8d3117dfa12e9405d57ba0930d6415ef7127449c300d5974b4c"
         },
         "otvety": {
           "path": "files/OGE_2027_097_otvety.pdf",

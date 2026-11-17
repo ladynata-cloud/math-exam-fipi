@@ -124,6 +124,18 @@
       catch (error) { return false; }
     });
   }
+  function answerStatus(run, index) {
+    const answer = run.answers[index];
+    if (answer?.value.trim()) return answer.correct ? 'correct' : 'incorrect';
+    // The original writer padded an interrupted run to 21 rows. The cursor
+    // counts submissions, including the pupil's explicit “Пока не знаю”.
+    return index < run.i ? 'skipped' : 'unchecked';
+  }
+  function runCounts(run) {
+    const counts = { correct: 0, incorrect: 0, skipped: 0, unchecked: 0 };
+    for (let index = 0; index < run.ids.length; index++) counts[answerStatus(run, index)]++;
+    return { ...counts, answered: counts.correct + counts.incorrect };
+  }
   function counts(items) {
     const known = name => items.filter(item => item[name] === true).length;
     const result = { total: items.length };
@@ -200,7 +212,7 @@
       if (checksUnknown) return unknown(item, 'path');
       const run = runs.filter(value => value.kind === kind).at(-1), resume = active?.kind === kind;
       return { ...item, status: resume ? 'started' : run ? 'completed' : 'unstarted', started: resume || !!run, independent: false, confirmed: false, resume,
-        completed: !!run, result: run ? { correct: run.answers.filter(answer => answer.correct).length, total: 21, assisted: run.assisted === true,
+        completed: !!run, result: run ? { ...runCounts(run), total: 21, assisted: run.assisted === true,
           interrupted: run.interrupted === true, previouslySeen: run.answers.some(answer => answer.previouslySeen), at: run.finished } : null };
     });
     const exam = lines[6];
@@ -234,6 +246,6 @@
         ...(key === 'path' ? { resumeCompatible: canResume, resumeStatus: compatibility === 'compatible' && !canResume ? 'unverified' : compatibility } : {}) }])),
       checks: { active: activeCheck, latest: checksUnknown ? null : runs.at(-1) ? checkItems.find(item => item.id === runs.at(-1).kind).result : null } };
   }
-  root.EgeBazaJourney = { snapshot, catalog, lineForLesson, nextLesson, keys: { path: PATH_KEY, ...legacyKeys } };
+  root.EgeBazaJourney = { snapshot, catalog, lineForLesson, nextLesson, answerStatus, runCounts, keys: { path: PATH_KEY, ...legacyKeys } };
   if (typeof module !== 'undefined') module.exports = root.EgeBazaJourney;
 })(typeof window === 'undefined' ? globalThis : window);
