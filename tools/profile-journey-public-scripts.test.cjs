@@ -4,7 +4,7 @@ const {canonicalProfileLearningScripts}=require('./public-page-script.cjs');
 const shared=['../exam-map.js?v=20261115-fipi-map'];
 const map=['../skill-map-data.js?v=20261115-fipi-map','../azbuka-metodov/catalog.js?v=20261115-fipi-map','../skill-map.js?v=20261115-fipi-map','journey.js?v=20261115-fipi-map',
  'second-part.js?v=20261115-fipi-map','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity',
- 'vector-basics-data.js?v=20261113-foundations','vector-basics-models.js?v=20261112-vectors','/assets/trainer-skill-gif.js?v=20261117-research'];
+ 'vector-basics-data.js?v=20261117-opposites','vector-basics-models.js?v=20261112-vectors','/assets/trainer-skill-gif.js?v=20261117-research'];
 const publicCourseLinks='course-links.js?v=20261117-h12';
 const boardCourseLinks='course-links.js?v=20261115-fipi-map';
 const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity',publicCourseLinks,'calm-data.js?v=20261115-fipi-map','calm-ui.js?v=20261115-fipi-map','app.js?v=20261117-research','checks.js?v=20261114-numeric-domain'];
