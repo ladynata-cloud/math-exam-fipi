@@ -367,7 +367,7 @@ nav.oge-wayfinding[hidden]{display:none!important}
   <div class="head">
     <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
     <h1>Задание 23 · Геометрические задачи на вычисление</h1>
-    <p class="sub">Все 20 типов ОГЭ: треугольники, четырёхугольники, окружности. Разбирай, тренируйся, сдавай зачёт.</p>
+    <p class="sub">21 тип задач на вычисления: треугольники, четырёхугольники, окружности. Разбирай, тренируйся, сдавай зачёт.</p>
     <div id="badge"></div>
   </div>
   <div class="tabs">
@@ -405,7 +405,7 @@ const TID='oge23-vychisleniya';
    столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
    свои записи журнала, после свежего чтения ключа — две вкладки не
    затирают друг друга. В ?selftest=1 ничего не пишется. */
-const TYPE_IDS=["rhombH","pgramBis","trapBis","trapLeg","rhombAng","trapEF","circR","hAB","hAC","projAB","paraBN","paraMC","chordDist","chordLen","secKP1","secKP2","rectPK","rectBH","tanSecAC","tanSecD"];
+const TYPE_IDS=["rhombH","pgramBis","trapBis","trapLeg","rhombAng","trapEF","circR","hAB","hAC","projAB","paraBN","paraMC","chordDist","chordLen","secKP1","secKP2","rectPK","rectBH","tanSecAC","tanSecD","arcRadius"];
 const QUIZ_TOTAL=10;   // размер зачёта
 const PASS_AT=8;       // зачёт сдан при 8 из 10
 const CP=(function(){
@@ -734,9 +734,12 @@ SUBS.pgramBis={theme:'quad',name:'Периметр параллелограмм�
 
 /* 3. trapBis — боковая сторона AB; биссектрисы углов A и B при боковой стороне; дано AF,BF */
 SUBS.trapBis={theme:'quad',name:'Боковая сторона трапеции',
-  gen(){const tr=pick([[3,4],[5,12],[8,15],[7,24],[20,21],[9,40],[6,8],[9,12],[12,16],[10,24],[15,20],[8,6],[12,5],[24,7],[24,10]]);const s=pick([1,1,2]);let AF=tr[0]*s,BF=tr[1]*s;if(Math.random()<0.5){const t=AF;AF=BF;BF=t;}return {AF,BF};},
+  gen(){const tr=pick([[3,4],[10,24],[8,15],[7,24],[20,21],[9,40],[6,8],[9,12],[12,16],[27,36],[15,20],[8,6],[12,35],[24,7],[28,45]]);
+    const s=pick([1,1,2]);
+    const AF=tr[0]*s,BF=tr[1]*s;
+    return Math.random()<0.5?{AF:BF,BF:AF}:{AF,BF};},
   calc(p){return Math.hypot(p.AF,p.BF);},
-  text(p){return `Биссектрисы углов <b>A</b> и <b>B</b>, прилежащих к боковой стороне <b>AB</b> трапеции <b>ABCD</b>, пересекаются в точке <b>F</b>, причём <b>AF = ${p.AF}</b>, <b>BF = ${p.BF}</b>. Найдите <b>AB</b>.`;},
+  text(p){return `В трапеции <b>ABCD</b> основаниями служат <b>AD</b> и <b>BC</b>. Биссектрисы углов <b>DAB</b> и <b>ABC</b> пересекаются в точке <b>F</b>. Известно, что <b>AF = ${p.AF}</b> и <b>BF = ${p.BF}</b>. Найдите длину боковой стороны <b>AB</b>.`;},
   fig(p){const c=Math.hypot(p.AF,p.BF);
     const A={x:0,y:0},B={x:0,y:c};
     const fy=(p.AF*p.AF-p.BF*p.BF+c*c)/(2*c),fx=Math.sqrt(Math.max(p.AF*p.AF-fy*fy,1e-9));
@@ -1285,7 +1288,61 @@ function lineCircle2nd(P0,P1,O,R,known){    // 2-е пересечение пр�
 
 
 'use strict';
-/* ============ GUIDE: пошаговые обучающие цепочки для всех 20 типов ============
+/* Радиус через отношение дуг и длину наибольшей стороны. */
+const ARC_RADIUS_FACTORS={90:2,120:Math.sqrt(3),135:Math.SQRT2,150:1};
+function arcRadiusData({ab,bc,ca,k}){
+  const arcs=[{name:'AB',vertex:'C',parts:ab},{name:'BC',vertex:'A',parts:bc},{name:'CA',vertex:'B',parts:ca}];
+  const total=ab+bc+ca,max=arcs.reduce((a,b)=>a.parts>b.parts?a:b);
+  const angle=Math.round(180*max.parts/total),factor=ARC_RADIUS_FACTORS[angle];
+  const chord=(angle===120?k+'√3':angle===135?k+'√2':fmt(k*factor));
+  const sine=({90:'1',120:'√3/2',135:'√2/2',150:'1/2'})[angle];
+  return {total,max,angle,chord,sine};
+}
+SUBS.arcRadius={theme:'circ',name:'Радиус окружности через отношения дуг',
+  gen(){
+    const ratio=pick([[2,3,5],[1,3,8],[1,2,9],[1,2,15]]),i=rnd(0,2);
+    return {ab:ratio[i],bc:ratio[(i+1)%3],ca:ratio[(i+2)%3],k:rnd(5,16)};
+  },
+  calc(p){return p.k;},
+  text(p){
+    const g=arcRadiusData(p);
+    return `Точки <b>A</b>, <b>B</b> и <b>C</b> делят окружность на три дуги <b>AB</b>, <b>BC</b> и <b>CA</b> (каждая не содержит третьей точки). Длины дуг относятся как <b>${p.ab} : ${p.bc} : ${p.ca}</b>. Наибольшая сторона треугольника <b>ABC</b> равна <b>${g.chord}</b>. Найдите радиус окружности.`;
+  },
+  fig(p){
+    const g=arcRadiusData(p),O={x:0,y:0};
+    const point=part=>{const t=0.2+2*Math.PI*part/g.total;return {x:p.k*Math.cos(t),y:p.k*Math.sin(t)};};
+    const A=point(0),B=point(p.ab),C=point(p.ab+p.bc);
+    const f=mkFig(380,300,40);
+    f.circ(O,p.k,{col:CO.ink,w:1.65});
+    f.poly([A,B,C],{fill:CO.bluefill,col:CO.blue,w:2.2});
+    for(const [point,name] of [[A,'A'],[B,'B'],[C,'C']]){
+      f.dot(point,{r:3,col:CO.blue});
+      f.lbl(point,name,{dx:13*point.x/p.k,dy:-13*point.y/p.k});
+    }
+    f.dot(O,{r:2.5,col:CO.ink});f.lbl(O,'O',{dx:0,dy:13});
+    const measured=({A:V.angDeg(A,B,C),B:V.angDeg(B,C,A),C:V.angDeg(C,A,B)})[g.max.vertex];
+    f.nearAssert('наибольший вписанный угол',measured,g.angle,1e-6);
+    const longest=Math.max(V.dist(A,B),V.dist(B,C),V.dist(C,A));
+    f.nearAssert('наибольшая сторона',longest,p.k*ARC_RADIUS_FACTORS[g.angle],1e-6);
+    return f;
+  },
+  sol(p){
+    const g=arcRadiusData(p);
+    return [
+      `В полной окружности <b>${g.total}</b> частей. Наибольшая дуга <b>${g.max.name}</b> занимает ${g.max.parts} из них. Её градусная мера равна 360° · ${g.max.parts}/${g.total} = <b>${2*g.angle}°</b>.`,
+      `Угол <b>${g.max.vertex}</b> опирается на эту дугу, поэтому равен <b>${g.angle}°</b>. Он больше остальных углов. Напротив него лежит наибольшая сторона <b>${g.max.name} = ${g.chord}</b>.`,
+      `По теореме синусов <b>${g.max.name} = 2R·sin ${g.angle}°</b>. Подставим sin ${g.angle}° = ${g.sine}: <b>R = ${g.chord}/(2 · ${g.sine}) = ${fmt(p.k)}</b>.`
+    ];
+  },
+  traps(p){return [
+    {v:2*p.k,m:'Получился диаметр. В теореме синусов сторона, делённая на синус противолежащего угла, равна 2R.'},
+    {v:p.k/2,m:'Радиус уже выражен после деления на 2·sin угла. Ещё раз делить на 2 не нужно.'}
+  ];},
+  ref:'R = a/(2·sin A), где A — половина дуги напротив стороны a.',
+  refWhy:'Из отношения дуг вычисляем градусную меру каждой дуги. Наибольшая дуга задаёт наибольший угол треугольника, а значит и наибольшую сторону. Для этой пары применяем теорему синусов.'
+};
+
+/* ============ GUIDE: пошаговые обучающие цепочки для всех типов ============
    Ученик сам проходит каждый шаг рассуждения (найти величину / выбрать теорему),
    получает разбор шага и строит решение своими руками — учится методу.
    Шаг: {t:'num'|'choice', q, ans|ci, opts, tip, ok, res, accept?}. */
@@ -1349,6 +1406,15 @@ GUIDE.circR=p=>{const A=180-p.be-p.ga,BC=2*p.R*Math.sin(A*Math.PI/180);return [
    ok:'Верно: a / sin A = 2R, значит BC = 2R·sin A.',res:'BC = 2R·sin A'},
   {t:'num',ans:BC,q:'Подставь: <b>BC = 2·'+p.R+'·sin '+A+'°</b>. Найди BC.',
    tip:'sin '+A+'° = '+fmt(Math.sin(A*Math.PI/180))+', умножь на 2·'+p.R+'.',ok:'Готово!',res:'BC = '+fmt(BC)}];};
+
+GUIDE.arcRadius=p=>{
+  const g=arcRadiusData(p);
+  return [
+    {t:'num',ans:2*g.angle,q:`Полная окружность — 360°. Наибольшая дуга ${g.max.name} занимает ${g.max.parts} из ${g.total} частей. Какова её градусная мера?`,tip:`Умножь 360° на ${g.max.parts}/${g.total}.`,ok:'Верно: длины дуг относятся так же, как их градусные меры.',res:`${g.max.name}: ${2*g.angle}°`},
+    {t:'num',ans:g.angle,q:`Угол ${g.max.vertex} опирается на дугу ${g.max.name}. Чему равен этот вписанный угол?`,tip:'Вписанный угол равен половине дуги, на которую он опирается.',ok:'Это наибольший угол, поэтому данная наибольшая сторона лежит напротив него.',res:`∠${g.max.vertex} = ${g.angle}°`},
+    {t:'num',ans:p.k,q:`По теореме синусов ${g.max.name} = 2R·sin ${g.angle}°. Сторона равна ${g.chord}. Найди R.`,tip:`Раздели ${g.chord} на 2·sin ${g.angle}°. Синус равен ${g.sine}.`,ok:'Радиус найден.',res:`R = ${fmt(p.k)}`}
+  ];
+};
 
 GUIDE.hAB=p=>{const c=Math.hypot(p.a,p.b),h=p.a*p.b/c;return [
   {t:'num',ans:c,q:'Сначала гипотенуза по Пифагору: <b>c = √('+p.a+'² + '+p.b+'²)</b>. Чему равна c?',
@@ -1452,6 +1518,7 @@ const RECOG={
   rhombAng:{cue:'Ромб, где дано расстояние от центра до стороны и диагональ; ищут углы.',key:'sin(полуугла) = 2d/D, угол ромба вдвое больше'},
   trapEF:{cue:'Трапеция и отрезок, параллельный основаниям, делящий боковую в отношении.',key:'Линейная доля между основаниями: EF = BC + (AD−BC)·CF/CD'},
   circR:{cue:'Треугольник, где даны два угла и радиус описанной окружности.',key:'Теорема синусов: сторона = 2R·sin(противолежащего угла)'},
+  arcRadius:{cue:'Даны отношение дуг окружности и наибольшая сторона вписанного треугольника.',key:'Из отношения дуг найти угол; затем выразить радиус по теореме синусов'},
   hAB:{cue:'Прямоугольный треугольник с двумя катетами; ищут высоту к гипотенузе.',key:'Высота к гипотенузе через площадь: h = a·b/c'},
   hAC:{cue:'Прямоугольный треугольник с катетом и гипотенузой; ищут высоту к гипотенузе.',key:'Сначала второй катет (Пифагор), затем h = a·b/c'},
   projAB:{cue:'Прямоугольный треугольник, высота из прямого угла делит гипотенузу; ищут катет.',key:'Катет — среднее пропорциональное: AB² = AH·AC'},
@@ -1480,15 +1547,15 @@ function recogOptions(sub){
 
 
 'use strict';
-/* ============ ARCHIVE: банк из 150 задач (сквозной технический id) ============
+/* ============ ARCHIVE: банк из 154 задач (сквозной технический id) ============
    Ключи задач зашиты; независимый аудит перепроверяет их формулами, написанными ЗАНОВО. */
 
 
-/* [ ...params, ключ-открытый банк ]; ключ радикала — строка 'k√m'; углы ромба — 60 */
+/* [ ...params, ключ, необязательная ревизия условия ]; ключ радикала — строка 'k√m'; углы ромба — 60 */
 const RAW={
   rhombH:{keys:['DH','CH'],rows:[[8,2,6],[12,1,5],[12,3,9],[15,2,8],[16,4,12],[20,5,15],[24,1,7],[24,2,10],[21,8,20],[24,6,18]]},
   pgramBis:{keys:['BK','CK'],rows:[[7,12,52],[5,14,48],[8,13,58],[3,19,50],[6,10,44],[4,19,54],[9,15,66],[11,20,84],[10,18,76],[12,16,80]]},
-  trapBis:{keys:['AF','BF'],rows:[[24,10,26],[12,5,13],[12,9,15],[15,8,17],[16,12,20],[20,15,25],[24,7,25],[21,20,29],[24,18,30],[32,24,40]]},
+  trapBis:{keys:['AF','BF'],rows:[[24,10,26],[36,27,45,'v2'],[12,9,15],[15,8,17],[16,12,20],[20,15,25],[24,7,25],[21,20,29],[24,18,30],[32,24,40]]},
   trapLeg:{keys:['al','be','CD'],rows:[[45,150,26,'13√2'],[30,120,25,'25√3'],[45,120,40,'20√6'],[45,120,34,'17√6'],[60,135,36,'12√6'],[60,135,24,'8√6'],[30,135,29,'29√2'],[30,135,17,'17√2'],[60,150,33,'11√3'],[45,150,32,'16√2']]},
   rhombAng:{keys:['d','D'],rows:[[15,60,60],[10,40,60],[11,44,60],[12,48,60],[13,52,60],[14,56,60],[16,64,60],[17,68,60],[18,72,60],[19,76,60]]},
   trapEF:{keys:['AD','BC','m','n'],rows:[[42,14,4,3,30],[25,15,3,2,21],[44,24,3,1,39],[33,18,2,1,28],[45,20,4,1,40],[36,18,7,2,32],[35,21,5,2,31],[48,16,5,3,36],[45,27,5,4,37],[50,30,7,3,44]]},
@@ -1505,10 +1572,11 @@ const RAW={
   rectPK:{keys:['BH'],rows:[[14,14],[13,13],[12,12],[11,11],[15,15]]},
   rectBH:{keys:['PK'],rows:[[15,15],[14,14],[13,13],[12,12],[11,11]]},
   tanSecAC:{keys:['D','AB'],rows:[[3.6,8,10],[6.4,6,10],[8.4,4,10],[15,4,16],[16,15,25]]},
-  tanSecD:{keys:['AB','AC'],rows:[[9,12,5.25],[3,5,3.2],[2,8,7.5],[1,5,4.8],[3,9,8]]}
+  tanSecD:{keys:['AB','AC'],rows:[[9,12,5.25],[3,5,3.2],[2,8,7.5],[1,5,4.8],[3,9,8]]},
+  arcRadius:{keys:['ab','bc','ca','k'],rows:[[2,3,5,7,7],[1,3,8,11,11],[9,1,2,12,12],[2,15,1,16,16]]}
 };
 
-const ORDER=['rhombH','pgramBis','trapBis','trapLeg','rhombAng','trapEF','circR','hAB','hAC','projAB','paraBN','paraMC','chordDist','chordLen','secKP1','secKP2','rectPK','rectBH','tanSecAC','tanSecD'];
+const ORDER=['rhombH','pgramBis','trapBis','trapLeg','rhombAng','trapEF','circR','hAB','hAC','projAB','paraBN','paraMC','chordDist','chordLen','secKP1','secKP2','rectPK','rectBH','tanSecAC','tanSecD','arcRadius'];
 
 function keyNum(k){return typeof k==='number'?k:(function(){const m=String(k).match(/^(\d+)?√(\d+)$/);return m?(m[1]?+m[1]:1)*Math.sqrt(+m[2]):parseFloat(k);})();}
 
@@ -1517,7 +1585,10 @@ let _id=1;
 for(const sub of ORDER){const R=RAW[sub];for(const row of R.rows){
   const p={};R.keys.forEach((k,i)=>p[k]=row[i]);
   const keyRaw=row[R.keys.length];
-  ARCHIVE.push({id:'q'+String(_id++).padStart(3,'0'),sub,theme:SUBS[sub].theme,p,exp:keyNum(keyRaw),key:keyRaw});
+  const revision=row[R.keys.length+1];
+  const number='q'+String(_id++).padStart(3,'0');
+  const id=revision?number+'-'+revision:number;
+  ARCHIVE.push({id,sub,theme:SUBS[sub].theme,p,exp:keyNum(keyRaw),key:keyRaw});
 }}
 
 /* ---------- независимый мат-аудит: формулы написаны ЗАНОВО ---------- */
@@ -1529,6 +1600,12 @@ const IND={
   rhombAng:p=>2*Math.round(Math.asin(2*p.d/p.D)*180/Math.PI),
   trapEF:p=>p.BC+(p.AD-p.BC)*(p.m/(p.m+p.n)),
   circR:p=>2*p.R*Math.sin((180-p.be-p.ga)*Math.PI/180),
+  arcRadius:p=>{
+    const m=Math.max(p.ab,p.bc,p.ca),a=Math.PI*m/(p.ab+p.bc+p.ca);
+    const factors={90:2,120:Math.sqrt(3),135:Math.SQRT2,150:1};
+    const chord=p.k*factors[Math.round(a*180/Math.PI)];
+    return chord/(2*Math.sin(a));
+  },
   hAB:p=>p.a*p.b/Math.sqrt(p.a*p.a+p.b*p.b),
   hAC:p=>p.a*Math.sqrt(p.c*p.c-p.a*p.a)/p.c,
   projAB:p=>Math.sqrt(p.AH*p.AC),
@@ -2127,11 +2204,11 @@ function sheetMapHTML(o){
 /* блоки листа, которые работают в задании 23: типы задач и заметка */
 const SHEETUSE={
   midline:{uses:['trapEF'],note:'Отрезок EF в задаче — обобщение средней линии.'},
-  sinLaw:{uses:['circR']},
+  sinLaw:{uses:['circR','arcRadius']},
   sTri:{uses:['hAB','hAC'],note:'Высота к гипотенузе: ½ab = ½ch ⟹ h = ab/c.'},
   rightTri:{uses:['trapLeg','rhombAng']},
   pyth:{uses:['rhombH','trapBis','hAC','chordDist','chordLen']},
-  trigTable:{uses:['trapLeg','rhombAng','circR'],note:'Нужны значения для 30°, 45°, 60°, 120°, 135°, 150°.'}
+  trigTable:{uses:['trapLeg','rhombAng','circR','arcRadius'],note:'Нужны значения для 30°, 45°, 60°, 120°, 135°, 150°.'}
 };
 const NOTSHEET=[
  {k:'bis-pgram',t:'Биссектриса в параллелограмме → равнобедренный треугольник (AB = BK)',subs:['pgramBis']},
@@ -2142,7 +2219,7 @@ const NOTSHEET=[
  {k:'rectcirc',t:'Прямоугольник, вписанный в высоту: PK = BH (равные диагонали)',subs:['rectPK','rectBH']},
  {k:'tansec',t:'Касательная и секущая: AB² = AC · (AC − D)',subs:['tanSecAC','tanSecD']}
 ];
-const SHEETREF={circR:'sinLaw',rhombH:'pyth',hAC:'pyth',chordDist:'pyth',chordLen:'pyth',
+const SHEETREF={circR:'sinLaw',arcRadius:'sinLaw',rhombH:'pyth',hAC:'pyth',chordDist:'pyth',chordLen:'pyth',
  hAB:'sTri',trapLeg:'rightTri',rhombAng:'rightTri',trapEF:'midline',
  trapBis:'ns:bis-trap',pgramBis:'ns:bis-pgram',projAB:'ns:geommean',paraBN:'ns:similar',paraMC:'ns:similar',
  secKP1:'ns:cyclic',secKP2:'ns:cyclic',rectPK:'ns:rectcirc',rectBH:'ns:rectcirc',tanSecAC:'ns:tansec',tanSecD:'ns:tansec'};
@@ -2314,10 +2391,10 @@ function stkTask(sub,p,tag,errs){
 function selftest(){
   const out=[];let fail=0;
   function A(cond,msg){if(!cond){fail++;out.push('FAIL: '+msg);}}
-  // 1) банк 150, темы, квоты
-  A(ARCHIVE.length===150,'ARCHIVE=150 (got '+ARCHIVE.length+')');
+  // 1) банк 154, темы, квоты
+  A(ARCHIVE.length===154,'ARCHIVE=154 (got '+ARCHIVE.length+')');
   const th={};ARCHIVE.forEach(it=>th[it.theme]=(th[it.theme]||0)+1);
-  A(th.quad===60&&th.tri===50&&th.circ===40,'темы 60/50/40');
+  A(th.quad===60&&th.tri===50&&th.circ===44,'темы 60/50/44');
   // 2) мат-аудит
   const au=auditArchive();A(au.bad===0,'мат-аудит расхождений='+au.bad);
   // 3) геоаудит всех фигур банка + генераций
@@ -4737,9 +4814,9 @@ const taskNo=+(root.location.pathname.match(/oge-task(23|24|25)-/)||[])[1];if(!t
 const q=(s,r=d)=>r.querySelector(s),qa=(s,r=d)=>Array.from(r.querySelectorAll(s));
 const e=(tag,text,cls)=>{const n=d.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
 const text=html=>{const n=e('div');n.innerHTML=html||'';return n.textContent;};
-const topic23={rhombH:['rhombus','pythagoras'],pgramBis:['angle_bisector','parallel_angles','isosceles','parallelogram'],trapBis:['parallel_angles','angle_bisector','triangle_angles','pythagoras'],trapLeg:['trapezoid','trigonometry'],rhombAng:['rhombus','trigonometry'],trapEF:['trapezoid','triangle_similarity'],circR:['triangle_angles','inscribed_angles','sine_law'],hAB:['triangle_area','trigonometry'],hAC:['triangle_area','trigonometry'],projAB:['right_triangle','pythagoras'],paraBN:['parallel_angles','triangle_similarity'],paraMC:['parallel_angles','triangle_similarity'],chordDist:['equal_chords','pythagoras'],chordLen:['equal_chords','pythagoras'],secKP1:['triangle_similarity','inscribed_angles'],secKP2:['triangle_similarity','inscribed_angles'],rectPK:['rectangle','triangle_similarity'],rectBH:['rectangle','triangle_similarity'],tanSecAC:['tangent','triangle_similarity'],tanSecD:['tangent','triangle_similarity']};
+const topic23={arcRadius:['circle_definition','inscribed_angles','sine_law','trig_reduction'],rhombH:['rhombus','pythagoras'],pgramBis:['angle_bisector','parallel_angles','isosceles','parallelogram'],trapBis:['parallel_angles','angle_bisector','triangle_angles','pythagoras'],trapLeg:['trapezoid','trigonometry'],rhombAng:['rhombus','trigonometry'],trapEF:['trapezoid','triangle_similarity'],circR:['triangle_angles','inscribed_angles','sine_law'],hAB:['triangle_area','trigonometry'],hAC:['triangle_area','trigonometry'],projAB:['right_triangle','pythagoras'],paraBN:['parallel_angles','triangle_similarity'],paraMC:['parallel_angles','triangle_similarity'],chordDist:['equal_chords','pythagoras'],chordLen:['equal_chords','pythagoras'],secKP1:['triangle_similarity','inscribed_angles'],secKP2:['triangle_similarity','inscribed_angles'],rectPK:['rectangle','triangle_similarity'],rectBH:['rectangle','triangle_similarity'],tanSecAC:['tangent','triangle_similarity'],tanSecD:['tangent','triangle_similarity']};
 const topic24={t1:['trapezoid','parallel_angles','triangle_similarity'],t10:['circumcircle','adjacent_vertical','triangle_similarity'],t13:['triangle_angles','right_triangle','triangle_similarity'],t15:['tangent','adjacent_vertical','triangle_similarity'],t2:['parallelogram','adjacent_vertical','triangle_congruence'],t3:['isosceles','angle_bisector','parallel_angles'],t4:['isosceles','angle_bisector','parallel_angles'],t5:['angle_bisector_locus','triangle_angles'],t7:['parallelogram','triangle_area'],t6:['trapezoid_midline','triangle_area'],t8:['triangle_area','triangle_midline'],t9:['triangle_area','triangle_similarity','parallel_angles'],t12:['inscribed_angles','circumcircle'],t11:['inscribed_angles','circumcircle'],t14:['circle_definition','perpendicular_bisector'],t16:['regular_polygon','inscribed_angles','triangle_congruence'],t17:['regular_polygon','circle_definition','isosceles'],t18:['regular_polygon','inscribed_angles','rectangle'],t19:['regular_polygon','inscribed_angles','right_triangle'],t20:['regular_polygon','inscribed_angles','isosceles']};
-const topic25={1:['triangle_parts','angle_bisector','median_length','bisector_length'],2:['parallelogram','angle_bisector','parallel_angles','triangle_area'],3:['trapezoid','angle_bisector','triangle_similarity'],4:['trapezoid','triangle_midline','pythagoras'],5:['circle_definition','inscribed_angles','sine_law','trig_reduction'],6:['isosceles_trapezoid','incircle','tangent','triangle_similarity'],7:['tangent','inscribed_angles','triangle_similarity'],8:['circumcircle','tangent','inscribed_angles','triangle_similarity'],9:['triangle_parts','inscribed_angles','triangle_similarity'],10:['tangent','pythagoras','triangle_similarity'],11:['circumcircle','inscribed_angles','sine_law','trig_sum_identity'],12:['tangent','triangle_similarity','trigonometry','trig_sum_identity'],13:['angle_bisector_locus','trigonometry','trig_reduction','sine_law'],14:['trapezoid','tangent','triangle_similarity'],15:['incircle','angle_bisector_locus','triangle_area','parallelogram_area'],16:['incircle_area','isosceles','heron_formula']};
+const topic25={1:['triangle_parts','angle_bisector','median_length','bisector_length'],2:['parallelogram','angle_bisector','parallel_angles','triangle_area'],3:['trapezoid','angle_bisector','triangle_similarity'],4:['trapezoid','triangle_midline','pythagoras'],5:['circle_definition','inscribed_angles','sine_law','trig_reduction'],6:['isosceles_trapezoid','incircle','tangent','triangle_similarity'],7:['tangent','inscribed_angles','triangle_similarity'],8:['circumcircle','tangent','inscribed_angles','triangle_similarity'],9:['triangle_parts','inscribed_angles','triangle_similarity'],10:['tangent','pythagoras','triangle_similarity'],11:['circumcircle','inscribed_angles','sine_law','trig_sum_identity'],12:['tangent','triangle_similarity','trigonometry','trig_sum_identity'],13:['angle_bisector_locus','trigonometry','trig_reduction','sine_law'],14:['trapezoid','tangent','triangle_similarity'],15:['incircle','angle_bisector_locus','triangle_area','parallelogram_area'],16:['incircle_area','isosceles','heron_formula'],17:['perpendicular','triangle_similarity','trigonometry','pythagoras','incircle']};
 // Explicit mappings follow the actual mathematical dependency of each native proof step.
 // Given facts and arithmetic retain the definition/formula from which they follow.
 const proofStepTopics={
@@ -4780,7 +4857,8 @@ const calculationStepTopics={
  13:[['angle_bisector_locus','triangle_parts'],['angle_bisector_locus','trigonometry'],['trig_reduction'],['sine_law']],
  14:[['triangle_angles'],['triangle_similarity','parallel_angles'],['perpendicular_bisector','tangent'],['triangle_similarity'],['triangle_similarity']],
  15:[['incircle','angle_bisector','trigonometry'],['parallel_angles','trigonometry'],['triangle_angles'],['incircle_area','trigonometry','parallelogram']],
- 16:[['isosceles'],['incircle_area'],['heron_formula','incircle_area'],['incircle_area']]
+ 16:[['isosceles'],['incircle_area'],['heron_formula','incircle_area'],['incircle_area']],
+ 17:[['right_triangle','triangle_similarity'],['trigonometry','pythagoras'],['incircle','triangle_similarity'],['triangle_similarity']]
 };
 const extraReasons25={
  '1:1':'Опусти биссектрису-высоту BP на AD. Прямоугольные треугольники ABP и DBP имеют общую сторону BP и равные углы при B; по второму признаку они равны. Поэтому AB = BD. Затем используй определение медианы AD.',
@@ -4878,7 +4956,7 @@ let current23=null;
 function decorate23(){const main=q('.train-host');if(!main)return;const card=q('.card',main),condition=card&&q('.q-text',card);if(!condition)return;let task=current23;const name=q('.q-theme',card)?.textContent||'';if(!task){const sub=Object.keys(topic23).find(k=>typeof SUBS!=='undefined'&&name.includes(SUBS[k].name));if(sub)task={sub};}if(!task)return;const topics=topic23[task.sub]||[];referencePanel(q('#courseHintPanel',card)||condition,topics);draft(condition,'23|'+condition.textContent);
  const steps=task.p&&typeof GUIDE!=='undefined'?GUIDE[task.sub](task.p):[];qa('.ladder .step',card).forEach(node=>{const n=q('.step-num',node)?.textContent.match(/^Шаг (\d+)/);if(n&&steps[+n[1]-1])explain(node,steps[+n[1]-1],topics,!node.classList.contains('done'));});qa('.sol li,.solution li',card).forEach(node=>explain(node,{h:node.textContent},topics));
 }
-function decorate24(){const main=q('#view');if(!main||typeof ST==='undefined'||!ST.queue||ST.mode==='exam')return;const t=curTask(),given=q('.givens',main);if(!given||!t)return;const topics=topic24[t.id]||[];referencePanel(q('#courseHintPanel',main)||given,topics);draft(given,'24|'+t.id,true);let revealed=false;
+function decorate24(){const main=q('#view');if(!main||typeof ST==='undefined'||!ST.queue||ST.mode==='exam')return;const t=curTask(),given=q('.givens',main);if(!given||!t)return;const topics=topic24[t.id]||[];referencePanel(q('#courseHintPanel',main)||given,topics);draft(given,'24|'+(t.revision?`${t.id}-${t.revision}`:t.id),true);let revealed=false;
  qa('.chain .citem',main).forEach((node,i)=>{
   const step=t.steps[i];if(!step)return;
   revealed=revealed||!!step.lit?.showcirc;

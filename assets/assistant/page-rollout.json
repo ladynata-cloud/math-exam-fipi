@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+  "baseSha": "54545684d576f1038a0c2d53784ad7da258b59dc",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3003,18 +3003,18 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task23-geometry-calculations.html": {
-      "beforeSha256": "6668811aa12bcc07603dfb1d314ff424d973c926ddd14005f2657bfa74c1607c",
-      "afterSha256": "86ecf98b7f79cb036fd3c9d8c4aced12b338e3f618131bcf69129c89b7439b2c",
+      "beforeSha256": "c2bafd9674728cc5012d4d7d969f27dfc701e5130e77288df775aed0811282cc",
+      "afterSha256": "5da44a40903ad11b95c8a3c855b994e460dcc08252804c3305c458c7af90f1f2",
       "placement": "before-head-close"
     },
     "trainers/oge-task24-proofs.html": {
-      "beforeSha256": "4ae3a4d7044f504f68576854d99966a162eba3159161d24d04f25dbe2b4811b1",
-      "afterSha256": "b058bdfd540926485e13e24d8a82b5734b00ba865f22dbaa267c1d36a8100252",
+      "beforeSha256": "9dca63611dc199d13597b3434e056129fcca512de4347d7c0343029f81fde8b7",
+      "afterSha256": "e0ef0ae3e0c896fd92f94b45404570fa61ad410119fcbf0c04d034b6d881b4c1",
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
-      "beforeSha256": "52bb7e9ac26227ec1c94f9c18cca715725750c57c77c5206b4d21a4f5a8aed27",
-      "afterSha256": "9e0b7b081e3609cb4657fa61cfe9cb04e78f4952eb976354340506873cc9f1d7",
+      "beforeSha256": "5c7efaa9abaefec4961e0b7d7a92b4fee702e52b66e660ff08bb3a8070e6870c",
+      "afterSha256": "35211999d26a59ed7f698fe6275e9261ae074f852f2bacd35ef4f7e0ea89f717",
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
@@ -5270,6 +5270,27 @@
       "task": "docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md",
       "changedPaths": [
         "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+      "sourceBaseSha": "ef6e7e56967611618dfc73edf89ff7702b1d972d",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_23_25_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task23-geometry-calculations.html",
+        "trainers/oge-task24-proofs.html",
+        "trainers/oge-task25-geometry.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ef6e7e56967611618dfc73edf89ff7702b1d972d",
+      "sourceBaseSha": "54545684d576f1038a0c2d53784ad7da258b59dc",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_23_25_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task23-geometry-calculations.html",
+        "trainers/oge-task25-geometry.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

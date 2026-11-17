@@ -1,6 +1,6 @@
 /*
   Независимый решатель задания №23 ОГЭ «Геометрические задачи на вычисление»
-  для тренажёра trainers/oge-task23-geometry-calculations.html (20 подтипов SUBS).
+  для тренажёра trainers/oge-task23-geometry-calculations.html (21 подтип SUBS).
 
   Зачем. Гейт OGE_COURSE_03A требует пересчитывать каждый ответ ДРУГИМ кодом,
   «через геометрию в координатах». Поэтому здесь нет ни формул-ответов из
@@ -289,6 +289,18 @@ export const solve = {
     return dist(B, C) * (R / dist(O, A));
   },
 
+  /* Сопоставляем данную сторону с самой длинной хордой единичной
+     окружности, построенной по всем трём долям дуг. */
+  arcRadius(p) {
+    const parts = [p.ab, p.bc, p.ca];
+    const total = parts.reduce((a, b) => a + b, 0);
+    const [A, B, C] = [0, parts[0], parts[0] + parts[1]].map(x => ray(360*x/total));
+    const chordInUnitCircle = Math.max(dist(A, B), dist(B, C), dist(A, C));
+    const a = 180*Math.max(...parts)/total;
+    const chord = p.k*({90:2, 120:Math.sqrt(3), 135:Math.sqrt(2), 150:1})[a];
+    return chord/chordInUnitCircle;
+  },
+
   /* 8. Высота к гипотенузе по двум катетам. C(0,0), A(b,0), B(0,a); H — основание
      перпендикуляра из C на AB; измеряется CH. */
   hAB(p) {
@@ -523,6 +535,13 @@ export function validity(k, p) {
       if ((r = need('be', 'ga', 'R'))) return r;
       if (v('be') + v('ga') >= 180) return 'сумма двух углов треугольника должна быть меньше 180°';
       return '';
+    case 'arcRadius': {
+      if ((r = need('ab', 'bc', 'ca', 'k'))) return r;
+      const [ab, bc, ca] = [v('ab'), v('bc'), v('ca')];
+      const angle = 180*Math.max(ab,bc,ca)/(ab+bc+ca);
+      if (![90,120,135,150].includes(angle)) return 'нет точного синуса для записи наибольшей стороны';
+      return '';
+    }
     case 'hAB':
       return need('a', 'b');
     case 'hAC':

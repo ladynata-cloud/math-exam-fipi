@@ -107,7 +107,7 @@ class WorkedStepContext(unittest.TestCase):
                      for asset in assets}
         for width, caption in [(320, phone), (390, phone), (1280, desktop)]:
             record = dict(id='65', prefix='', route=route, finalPath=route, width=width, resources=resources,
-                          videoModelContext=dict(sourceBase='18b44244753ac806d449a2040ad4b8c8af9acaf3'))
+                          videoModelContext=dict(sourceBase=math.ALIGNMENT_23_25['sourceCommit']))
             text = fixture['visibleText'].replace(old, caption, 1)
             oracle = fixture['oracles'][0]
             updated = dict(oracle, prompt=oracle['prompt'].replace(old, caption, 1))
