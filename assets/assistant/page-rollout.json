@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "312a3a8e37d2276e1b7dbac7c4fde571a4c45801",
+  "baseSha": "c7dc2fcf5a2107320e0db936de30b0016297a37d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "8916604f99ebda2b1f3c1f77728e02b46bd12b9b4c653e596fd7948436155870",
-      "afterSha256": "c4ba1a3994e776263b2ccfdaea81974b1db7cf5111ae338222cbcc582d18a137",
+      "beforeSha256": "013bc64db9b098b6cbca82846a6ae59a72a142b343423eef20fb091064ca0215",
+      "afterSha256": "a3b33d34eef4274320236cc0c58d8f72f9c9edad5e3a0d3c37fa57b85af099f4",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -448,13 +448,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trig-sum-to-product.html": {
-      "beforeSha256": "37d05e6067b55dff0c1f57dd7cea2c5d40ef9fb247c1e949956404620f39f048",
-      "afterSha256": "459355ba3fc3f14d5a6bb36054aeedf4f41011c307b91e6d50abe8ba3c52572f",
+      "beforeSha256": "201ab8686ee2138da311354d3baf9ed447290e4f9038e2865a83ab57ca2d4cd3",
+      "afterSha256": "d9fcac46d454556c5d97e47a00f7da50e6df30207b0d76674238a9564c243fdb",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trigonometry.html": {
-      "beforeSha256": "f06f98231f8ec39c536724a6ca1d067b6bbd52669d5fcbfaa4908c081cb89c91",
-      "afterSha256": "ab5e25351c406c98b9d07e7e9fdd26fa19d6a01d32ef4ac41aa0b57fa8aba905",
+      "beforeSha256": "93934803cd569c573de8119c1cc16f7033494b2efe874310f18abab3019b9a51",
+      "afterSha256": "c6ec4d26e07e3f9c6bc8cbe5e76034fb34a7a96361b22f17ee5247517ec41c69",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
@@ -468,8 +468,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trigonometry/index.html": {
-      "beforeSha256": "ce1654e9302f13a29a03e6688461cfef2483c677adadef28569c7c65160c5a17",
-      "afterSha256": "5059be62f0d5ca01652e9162934b6b6faa1277e9c9a6eadee39c5c071e8c694f",
+      "beforeSha256": "d7a5925fc7b9be5d13f7efdc78d0e33b288af0ce917e2fac042a9d6a538c2f05",
+      "afterSha256": "57f8de8e32457eaf0395a61591e8b7f78f7bcc3d25f809a6141e7a48fe0907e4",
       "placement": "before-head-close"
     },
     "equations/index.html": {
@@ -5344,6 +5344,18 @@
       "changedPaths": [
         "ege-profil/exam/full-exam.html",
         "ege-profil/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "312a3a8e37d2276e1b7dbac7c4fde571a4c45801",
+      "sourceBaseSha": "c7dc2fcf5a2107320e0db936de30b0016297a37d",
+      "task": "docs/tasks/PROFILE_TRIG_FORMULA_ALPHABET_20261116.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/trainers/trig-sum-to-product.html",
+        "ege-profil/trainers/trigonometry.html",
+        "ege-profil/trigonometry/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
