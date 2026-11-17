@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+  "baseSha": "de56648f894df0a54b4f7062168801a0065f8535",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -5496,6 +5496,16 @@
         "ege-profil/trainers/trigonometry.html",
         "ege-profil/trainers/vectors-yashchenko-t2.html",
         "trainers/oge-informatics-1-10-tutor.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+      "sourceBaseSha": "de56648f894df0a54b4f7062168801a0065f8535",
+      "task": "docs/tasks/GEOMETRY_RIGHT_ANGLES_20261118.md",
+      "changedPaths": [
+        "stereo-course/index.html",
+        "trainers/oge-task17-quadrilaterals.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
