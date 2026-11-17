@@ -6,6 +6,7 @@ const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
 const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
 const {restoreGraphScale}=require('./oge-video-models-preservation.cjs');
+const alignment10To14=require('./fixtures/oge-source-alignment-10-14.json');
 const root=path.resolve(__dirname,'..');
 const files={7:'number-line',8:'powers-roots',10:'probability',12:'formulas-trainer',14:'progressions',20:'equations',21:'word-problems',22:'functions-graphs'};
 const cards={7:'#marTask',8:'#marGrid>.mtask:not([hidden])',10:'#mar-root>.card',12:'#taskArea>.card',14:'#m-task>.card',20:'#body .qbox',21:'#content>.card',22:'.panel:not(.hidden) .mode-host[data-mode="marathon"]'};
@@ -60,11 +61,18 @@ const inlineHashes={
   "21": "6b266bbaa9ffbd40adaccbd9a5f93c6b290b15566780dbcd770d71622c5982f8",
   "22": "5298f2da7b65280813d2a97b4353c7c0029182359614625076e5939d2a39c5af"
 };
-test('all eight inline engines match the mirror-audit snapshots after exact approved display changes',()=>{
+test('all eight inline engines match their exact reviewed snapshots',()=>{
  for(const [n,suffix]of Object.entries(files)){
   const file='trainers/oge-task'+n+'-'+suffix+'.html';
   const html=restoreGraphScale(file,restoreHistoricalBytes(file,fs.readFileSync(path.join(root,file),'utf8')));
-  let scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');
+  const inline=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]);
+  if(n==='10'||n==='14'){
+   // These approved exercise additions have their own exact engine snapshots.
+   const hashes=inline.map(script=>crypto.createHash('sha256').update(script).digest('hex'));
+   assert.deepEqual(hashes,alignment10To14.inlineScripts[file],'task '+n+' reviewed native engine');
+   continue;
+  }
+  let scripts=inline.join('\n');
   // The 2027 copy update changes these two displayed sentences only.
   // Keep the reviewed full-engine digest, including all mathematics and grading.
   if(n==='7')scripts=restoreOge7Input(scripts);
