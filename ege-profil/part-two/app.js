@@ -16,7 +16,10 @@ const lessonLabel=lesson=>isFinance(lesson)?examMap.label(16):labelFor(lesson.ex
 const lessonGroupURL=lesson=>isFinance(lesson)?examMap.hash(16):groupURL(lesson.exam);
 const main=document.getElementById('main'),banner=document.getElementById('save-warning'),API=root.ProfilePartTwoState;
 const byLesson=new Map(allLessons.map(l=>[l.id,l])),byTask=new Map();
-allLessons.forEach(lesson=>lesson.tasks.forEach((task,index)=>byTask.set(task.id,{lesson,task,index})));
+allLessons.forEach(lesson=>lesson.tasks.forEach((task,index)=>{
+ const presentation=root.ProfileDihedralView?.(task.id);
+ byTask.set(task.id,{lesson,task:presentation?{...task,...presentation}:task,index});
+}));
 let storage;try{storage=root.localStorage;}catch(_){}
 const store=API.create(storage,{locks:root.navigator?.locks,validate:(v,id)=>{const task=byTask.get(id)?.task;return !!task&&v.solvedSteps.length<=task.steps.length&&v.drafts.steps.length<=task.steps.length&&v.drafts.final.length<=task.final.length&&v.solutionSteps<=task.solution.length;},onWarning:text=>{banner.hidden=false;banner.textContent=text;}});
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
