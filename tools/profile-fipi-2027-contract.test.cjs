@@ -198,13 +198,14 @@ test('H02 preserves the approved base curriculum, all task IDs, answers and orde
   assert.equal(digest(Object.entries(skills.trainers).map(([key, value]) => [key, value.challenges])), 'b1f864936a7b3521099dbf0dd4dba18a47205388427a7f635c2eba65c237cb68');
 });
 
-test('H02 leaves H01 parsing, START persistence and the existing 19-task exam unchanged', () => {
+test('H02 preserves H01 parsing, START persistence and the existing exam bank', () => {
+  // The shared timed exam page serves both editions. The 2027 exam browser
+  // suite checks the legacy page using fixed 2026 task and scoring fixtures.
   const files = {
     'ege-profil/start/checks.js': 'cf2db7ec857df82b6aa5a2097a827f96f2da6e2c0e9a56f79c8087664715f242',
     'ege-profil/start/state.js': '3ebfbbd56d01d0a710e253acbc086c3a9a6b0a59d2302ee3ae8904dce29d2bac',
     'ege-profil/exam/bank.js': '305b6bf3477df7c7c238f2b5885c177a144b2e7753d589c1357db8819fa377b8',
-    'ege-profil/exam/variant.html': '5e434dd78f68e58425998d00375b7c79bcbef14c77086f1bc01f8e246709d34d',
-    'ege-profil/exam/full-exam.html': '34d7074fec1dc63b7fd6e80c79c0ce7c0cd24f39b138a7273e772b3d30ab40d8'
+    'ege-profil/exam/variant.html': '5e434dd78f68e58425998d00375b7c79bcbef14c77086f1bc01f8e246709d34d'
   };
   for (const [file, expected] of Object.entries(files)) assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root, file))).digest('hex'), expected, file);
 });
