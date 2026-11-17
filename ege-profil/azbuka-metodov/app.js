@@ -11,7 +11,9 @@
   try { storage = localStorage; } catch { /* The page can still be used for the current session. */ }
   const store = engine.create(storage);
   const params = new URLSearchParams(location.search);
-  const number = Number(params.get('exam'));
+  const context = catalog.readContext(params);
+  const number = context.number;
+  const contextLabel = context.kind !== 'legacy' && context.entry ? globalThis.ProfileExamMap.label(context.entry) : catalog.displayLabel(number);
   const back = catalog.safeBack(params.get('back'));
   const inCabinet = Boolean(site);
   const teacher = inCabinet && params.get('mode') === 'teacher';
@@ -23,7 +25,7 @@
   const escape = value => String(value ?? '').replace(/[&<>"']/g, letter =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[letter]);
   const linkTo = (id, skill) => {
-    const url = new URL(catalog.href(id, skill, number, back, base), location.href);
+    const url = new URL(catalog.href(id, skill, context, back, base), location.href);
     if (teacher) url.searchParams.set('mode', 'teacher');
     return url.protocol === 'file:' ? url.href : url.pathname + url.search + url.hash;
   };
@@ -53,7 +55,7 @@
   function returnLinks(alphabet) {
     const selected = alphabet?.numbers.includes(number) ? number : null;
     const returnLink = back ? '<a class="az-button secondary" href="' + escape(site + back) + '">Вернуться к исходному заданию</a>' :
-      selected ? '<a class="az-button secondary" href="' + examLink(selected) + '">Вернуться к №' + selected + '</a>' : '';
+      selected ? '<a class="az-button secondary" href="' + examLink(selected) + '">Вернуться: ' + catalog.displayLabel(selected) + '</a>' : '';
     return '<nav class="az-navigation" aria-label="Навигация по теме">' +
       '<a href="' + escape(linkTo('')) + '">← К списку тем</a>' +
       (alphabet && location.hash.split('/').length === 3 ? '<a href="' + escape(linkTo(alphabet.id)) + '">К навыкам темы</a>' : '') +
@@ -71,8 +73,8 @@
   }
 
   function resources(alphabet) {
-    return '<section class="az-panel az-resources"><h2>Задачи ЕГЭ</h2><div class="az-numbers">' +
-      alphabet.numbers.map(n => '<a href="' + examLink(n) + '">№' + n + '</a>').join('') +
+    return '<section class="az-panel az-resources"><h2>Подготовка к экзамену и дополнительные темы</h2><div class="az-numbers">' +
+      alphabet.numbers.map(n => '<a href="' + examLink(n) + '">' + catalog.displayLabel(n) + '</a>').join('') +
       '</div><h2>Материалы MathExam</h2><ul>' +
       alphabet.refs.map(([label, url]) => '<li><a href="' + site + url + '">' + label + '</a></li>').join('') +
       '</ul></section>';
@@ -94,22 +96,22 @@
     const target = nextId ? linkTo(alphabet.id, nextId) : alphabet.next ?
       linkTo(alphabet.next) : examLink(alphabet.numbers[0]);
     const label = nextId ? 'Следующий шаг' : alphabet.next ? 'К методам решения задач с параметром' :
-      'К экзаменационным задачам №' + alphabet.numbers[0];
+      'К подготовке: ' + catalog.displayLabel(alphabet.numbers[0]);
     return '<a class="az-button primary" href="' + escape(target) + '">' + label + '</a>';
   }
 
   function renderCatalog() {
     const selected = catalog.forNumber(number);
-    const title = selected.length ? 'Основы для №' + number : 'Основы и методы';
+    const title = selected.length ? context.entry?.number == null ? 'Основы: ' + (context.entry?.title || contextLabel) : 'Основы для ' + contextLabel : 'Основы и методы';
     main.innerHTML = (selected.length ? '<nav class="az-navigation" aria-label="Навигация по теме"><a href="' +
-      escape(base) + '">← Все темы</a><a class="az-button secondary" href="' + examLink(number) + '">К заданию №' +
-      number + '</a></nav>' : '') + '<p class="az-kicker">ЕГЭ профиль · 2027</p><h1>' + title + '</h1>' +
+      escape(base) + '">← Все темы</a><a class="az-button secondary" href="' + examLink(number) + '">К подготовке: ' +
+      contextLabel + '</a></nav>' : '') + '<p class="az-kicker">ЕГЭ профиль · 2027</p><h1>' + title + '</h1>' +
       '<p class="az-lead">Разбери один приём, проверь себя на другом примере и переходи к задачам ЕГЭ.</p>' +
       '<div class="az-catalog">' + (selected.length ? selected : catalog.list).map(alphabet => {
         const total = Object.keys(alphabet.skills).length;
         const count = Object.keys(alphabet.skills).filter(id => statusOf(alphabet.id, id) === 'verified').length;
         return '<a class="az-panel az-card" href="' + escape(linkTo(alphabet.id)) + '"><span class="az-kicker">' +
-          alphabet.numbers.map(n => '№' + n).join(' · ') + '</span><h2>' + alphabet.title + '</h2><p>' +
+          alphabet.numbers.map(catalog.displayLabel).join(' · ') + '</span><h2>' + alphabet.title + '</h2><p>' +
           alphabet.description + '</p><span class="az-count">Самостоятельно: ' + count + ' из ' + total + '</span></a>';
       }).join('') + '</div>';
   }
@@ -258,7 +260,7 @@
     const tips = assisted ? '<p class="az-hint">' + [...help].map(field => graph.hints[Number(field) - 1]).join(' ') + '</p>' : '';
     const label = assisted ? 'Вернуться к своему условию' : task ? 'К самостоятельному условию' : 'К условиям темы';
     main.innerHTML = '<nav class="az-navigation" aria-label="Навигация по теме"><a href="' + examLink(19) +
-      '">← Задачи №19</a></nav><h1>' + graph.title + '</h1><p class="az-lead">' + graph.prompt + '</p>' +
+      '">← Задачи №18</a></nav><h1>' + graph.title + '</h1><p class="az-lead">' + graph.prompt + '</p>' +
       tips + '<div data-az-atlas></div><div class="az-actions"><a class="az-button primary" href="' + escape(back) +
       '">' + label + '</a><a href="' + escape(catalog.href('function-atlas', '', 19)) + '">Полный атлас функций</a></div>';
     globalThis.ProfileFunctionAtlas.mount(main.querySelector('[data-az-atlas]'), key);

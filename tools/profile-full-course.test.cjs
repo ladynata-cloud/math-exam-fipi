@@ -39,7 +39,7 @@ for (const l of D) {
     }
   }
 }
-for (let n=1; n<=13; n++) assert(D.some(l => l.position===n), 'missing first-part position '+n);
+for (let n=1; n<=13; n++) assert(D.some(l => l.position===n), 'missing preserved legacy group '+n);
 assert.equal(S.KEY, 'mathexam.profileStart2027.v1', 'old progress identity');
 const values = new Map([['mathExamCourseProgress.v1', 'unchanged']]);
 const storage = {getItem:k=>values.get(k)||null, setItem:(k,v)=>values.set(k,v)};
@@ -60,5 +60,5 @@ assert.equal(values.get('mathExamCourseProgress.v1'),'unchanged');
 assert.equal(state.export().storage,'local-browser');
 const html=fs.readFileSync(path.join(root,'ege-profil/start/index.html'),'utf8');
 for(const name of modules)assert(html.includes(name+'-data.js'),name+' loaded');
-assert(html.includes('href="#part-one"'));assert(html.includes('href="#exam/16"'));
-console.log(JSON.stringify({gate:'PROFILE_FULL_COURSE_DATA_OK',positions:13,lessons:D.length,tasks:taskIds.size,steps,legacyKeyPreserved:true,independentConditionsSeparate:true}));
+assert(html.includes('href="#part-one"'));assert(html.includes('href="#fipi/2027/15"'));
+console.log(JSON.stringify({gate:'PROFILE_FULL_COURSE_DATA_OK',legacyGroups:13,lessons:D.length,tasks:taskIds.size,steps,legacyKeyPreserved:true,independentConditionsSeparate:true}));

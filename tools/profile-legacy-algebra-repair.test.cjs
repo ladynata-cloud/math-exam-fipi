@@ -95,12 +95,16 @@ test('functions: zero coefficient is a punctured horizontal line, with controls 
 });
 
 test('functions: topic links select existing practice and retain storage and unknown coefficients', () => {
-  for (const [topic, label, number] of [['graphs', 'графики', '№12'], ['extrema', 'экстремумы', '№9']]) {
+  for (const [topic, label, number] of [['graphs', 'графики', '№11'], ['extrema', 'экстремумы', '№12']]) {
     const p = page('functions-t1112.html', '?topic=' + topic, { [KEY]: seeded });
     try {
       assert.ok(p.$('#view-drill').classList.contains('on'));
       assert.equal(p.$('#modeChips [aria-pressed=true]').textContent, label);
       assert.ok(p.$('#dTag').textContent.startsWith(number));
+      assert.match(p.w.document.title, /№11 и №12/);
+      assert.match(p.$('.eyebrow').textContent, /№11 и №12/);
+      assert.match(p.w.document.querySelector('#view-idea').textContent, /№11 курса — читаем график/);
+      assert.match(p.w.document.querySelector('#view-idea').textContent, /№12 курса — экстремумы/);
       assert.deepEqual(JSON.parse(p.w.localStorage.getItem(KEY)), seeded);
       assert.equal(p.w.FN.G11[4]().formula, 'f(x) = log_b(x + a)');
       assert.equal(p.w.FN.G11[5]().formula, 'f(x) = √(x + p) + q');

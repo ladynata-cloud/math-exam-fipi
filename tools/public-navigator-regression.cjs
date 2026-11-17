@@ -5,6 +5,9 @@ const fs = require('fs'), path = require('path');
 const api = require(path.resolve(process.argv[2] || 'assets/assistant/navigator-data.js'));
 const cabinet = 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route';
 const cases = [
+ {id:'profile-fipi-2027-15', turns:['ЕГЭ профиль 2027 задание 15'], first:'/ege-profil/part-two/#fipi/2027/15', text:/15.*неравенства/},
+ {id:'profile-fipi-2027-16', turns:['ЕГЭ профиль 2027 задание 16'], first:'/ege-profil/start/#fipi/2027/16', text:/16.*финансовая/},
+ {id:'profile-current-16', turns:['ЕГЭ профиль','Задание 16'], first:'/ege-profil/start/#fipi/2027/16', kind:'topic'},
  {id:'exam-bare-number', turns:['ЕГЭ база','11'], goal:'ege-base', first:'/ege-baza/path/index.html#map'},
  {id:'oge-bare-number', turns:['Готовлюсь к ОГЭ','11'], goal:'oge', first:'/trainers/oge-task11-graphs-trainer.html'},
  {id:'no-exam-bare-grade', turns:['6'], goal:'school', kind:'clarify'},

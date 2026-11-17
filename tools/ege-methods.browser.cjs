@@ -98,7 +98,7 @@ async function independentReview(browser, origin) {
   assert.equal(await page.locator('#sample').isVisible(), false);
   await page.getByRole('button', { name: 'Показать разбор' }).click();
   await page.getByRole('heading', { name: 'Сверь обоснование' }).waitFor();
-  await page.getByRole('link', { name: /Профиль №20 · Оценка/ }).waitFor();
+  await page.getByRole('link', { name: /Профиль №19 · Оценка/ }).waitFor();
   await page.getByRole('link', { name: /База №21 · Оценка/ }).waitFor();
   const at = new Date(await page.locator('time').getAttribute('datetime')).getTime();
   await page.goto(origin + trainer + '#repeat');
@@ -129,7 +129,7 @@ async function standalone(browser, origin) {
   monitor(continuing, origin);
   await continuing.goto(origin + '/ege-profil/');
   const quickEntry = continuing.getByRole('navigation', { name: 'Быстрые входы' })
-    .getByRole('link', { name: 'Оценка плюс пример · №20', exact: true });
+    .getByRole('link', { name: 'Оценка плюс пример · №19', exact: true });
   const entryBox = await quickEntry.boundingBox();
   assert(entryBox && entryBox.x >= 0 && entryBox.x + entryBox.width <= 320 && entryBox.y + entryBox.height < 900);
   await quickEntry.click();
@@ -272,7 +272,7 @@ async function standalone(browser, origin) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(origin + '/ege-profil/#profile-clock');
     const clock = page.locator('#profile-clock');
-    const shortcut = clock.getByRole('link', { name: 'Оценка плюс пример · №20', exact: true });
+    const shortcut = clock.getByRole('link', { name: 'Оценка плюс пример · №19', exact: true });
     await shortcut.waitFor();
     const area = await shortcut.boundingBox();
     assert(area && area.x >= 0 && area.x + area.width <= width && area.height >= 44,
@@ -311,7 +311,7 @@ async function standalone(browser, origin) {
   assert.equal(await stepAnswer.inputValue(), '1');
 
   for (const [url, heading, linkText] of [
-    ['/ege-profil/part-two/#exam/20', 'Числа и их свойства', /Профиль №20 · Оценка/],
+    ['/ege-profil/part-two/#exam/20', 'Числа и их свойства', /Профиль №19 · Оценка/],
     ['/ege-baza/#task?pos=21', 'Задачи на рассуждение', /База №21 · Оценка/]
   ]) {
     await page.goto(origin + url);

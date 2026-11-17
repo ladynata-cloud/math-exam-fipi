@@ -149,7 +149,7 @@
       next ? courseLink(go, next.lesson.id, started ? 'Продолжить' : 'Начать с оценок', 'button primary') :
         courseLink('progress', null, 'Посмотреть прогресс', 'button primary');
     main.innerHTML = `<section class="hero" aria-labelledby="course-title">
-      <div><p class="eyebrow">ЕГЭ · профиль №20 и база №21</p><h1 id="course-title">${title}</h1>
+      <div><p class="eyebrow">ЕГЭ · профиль №19 и база №21</p><h1 id="course-title">${title}</h1>
         <p class="lead">Находи границы, отбирай целые значения и строй примеры. Затем проверь себя на новом условии.</p>
         <div class="actions">${primary}
         ${showPracticeEntry ? courseLink('practice', 'maximum', 'Самопроверка по максимуму', 'button secondary') : ''}
