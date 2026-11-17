@@ -173,6 +173,15 @@ const scenarios = {
     assert.equal(hash(bank), originalBankHash, 'all original lesson, answer, step and drawing data survive the export');
     assert.equal(bank.filter(lesson => lesson.vectorBasics).length, 9);
 
+    await page.evaluate(() => { location.hash = '#lesson/geo-quadrilaterals'; });
+    const lab = page.locator('#explore-lab');
+    await lab.locator(':scope > summary').click();
+    assert.match(await lab.locator('.research-instructions').innerText(), /Провести диагональ/);
+    await finiteFigure(page, '#lab svg');
+    await lab.getByRole('button', { name: 'Провести диагональ', exact: true }).click();
+    assert.equal(await lab.getByRole('button', { name: 'Провести диагональ', exact: true }).getAttribute('aria-pressed'), 'true');
+    assert.equal(await lab.locator('#research-demo').count(), 0, 'standalone has the research without an online-only demo control');
+
     await page.evaluate(() => { location.hash = '#practice/vec-basics-reading/guided'; });
     await page.locator('#answer-form').waitFor();
     await finiteFigure(page, '#task-model svg');

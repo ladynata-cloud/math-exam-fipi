@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "a368f998575cae496c6d16f413448cd8bcf0d6d0",
+  "baseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "5c9c1b1f49f68cd42ddfa0430da5f3267dcca73eb9efcd3382ed1857966c3897",
-      "afterSha256": "833c3c8edb2157b479bc2bac2a1b6ae95ffd796fa7945b3a4210e2bfe8ec076e",
+      "beforeSha256": "73941ba84119b40d1a78eab600f5aba40c6253fc9ff34c91c8108324ded74b64",
+      "afterSha256": "4aeaf32d7f86c1f61ca008ce6ee52f84bd91c360d7ccaaff93c9c7ed9b77a1db",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "c6455ee797b82a5ec18b1534de60ce8a3f174a403d49c367539a28edc1fdab8b",
-      "afterSha256": "d2ed29f5cd61e7da8e2c14f7a6e45bd870c176531565832f6075c053e82d163b",
+      "beforeSha256": "7cd5fb4f187dacdb75788aaf739ec90a1401674aa199ae2a74980a2ec1fb9660",
+      "afterSha256": "c5e2aa8e3a8c583232dc6c6e60d90362c9a03f3f7547f967e5f2854c5afa14c0",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -338,8 +338,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/expert.html": {
-      "beforeSha256": "10a169cd9195a4c6c356236ee9709fa7c960888aceb1c073207e4f372ed84b10",
-      "afterSha256": "f1f5faeb0215269574c8289ae3291932955534f415eaab6eeb9467b7f54ca2db",
+      "beforeSha256": "df9a79e546e1639929b3f01d31f1b92d64baadf5d414dfbb80767b5ad387f716",
+      "afterSha256": "66d9280bf591e07bfde60d8079b9e2d350e617d90ae4773c5d8c6fcbc184b606",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/finance.html": {
@@ -5349,10 +5349,27 @@
     },
     {
       "previousBaseSha": "312a3a8e37d2276e1b7dbac7c4fde571a4c45801",
-      "sourceBaseSha": "a368f998575cae496c6d16f413448cd8bcf0d6d0",
-      "task": "docs/tasks/PROFILE_FINANCE_WRITTEN_20261117.md",
+      "sourceBaseSha": "5b52ac0a55f45f365441198f9d46a505d0bc7774",
+      "task": "docs/tasks/PROFILE_EXPERT_EXAMPLES_2027_20261117.md",
       "changedPaths": [
-        "ege-profil/part-two/index.html",
+        "ege-profil/trainers/expert.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5b52ac0a55f45f365441198f9d46a505d0bc7774",
+      "sourceBaseSha": "3a144c4f8417a6ce8e19ba1300e28ac2189030fe",
+      "task": "docs/tasks/PROFILE_PART_TWO_PROOF_FRESHNESS_20261116.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "3a144c4f8417a6ce8e19ba1300e28ac2189030fe",
+      "sourceBaseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
+      "task": "docs/tasks/PROFILE_START_RESEARCH_20261117.md",
+      "changedPaths": [
         "ege-profil/start/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."

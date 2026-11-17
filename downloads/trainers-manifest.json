@@ -1687,7 +1687,10 @@
         "/ege-profil/learning/data.js",
         "/ege-profil/learning/route.js"
       ],
-      "offlineOmitAssets": [],
+      "offlineOmitAssets": [
+        "/assets/trainer-lesson-choice.css",
+        "/assets/trainer-skill-gif.js"
+      ],
       "adaptation": {
         "preserveSourceSpacing": true,
         "localEditing": true,

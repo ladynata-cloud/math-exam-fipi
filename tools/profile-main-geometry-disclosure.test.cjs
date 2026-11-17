@@ -42,7 +42,7 @@ test('All geometry lessons keep the drawing before requested help, with draft an
   }
 });
 
-test('Catalogue guidance and lesson references start closed, construction stays interactive when requested',()=>{
+test('Lesson research precedes practice and references, construction stays interactive when requested',()=>{
   for(const number of [1,2,3]){
     const dom=page('#calm/'+number),d=dom.window.document;
     try{
@@ -53,8 +53,13 @@ test('Catalogue guidance and lesson references start closed, construction stays 
   }
   const dom=page('#lesson/geo-quadrilaterals'),w=dom.window,d=w.document;
   try{
-    assert.equal(d.querySelector('details.theory').open,false);
-    const lab=d.querySelector('#explore-lab');assert.equal(lab.open,false);lab.querySelector('summary').click();
+    const lab=d.querySelector('#explore-lab'),theory=d.querySelector('details.theory');
+    assert.equal(theory.open,false);
+    assert(lab.compareDocumentPosition(d.querySelector('#guided'))&w.Node.DOCUMENT_POSITION_FOLLOWING);
+    assert(lab.compareDocumentPosition(theory)&w.Node.DOCUMENT_POSITION_FOLLOWING);
+    assert.match(d.querySelector('.research-prediction').textContent,/площади .* диагонали AC/);
+    assert.equal(lab.open,false);lab.querySelector('summary').click();
+    assert.match(lab.querySelector('.research-instructions').textContent,/Провести диагональ.*общую высоту/);
     const input=d.querySelector('[name="prof-construction-height"]'),select=d.querySelector('#lab select');
     input.value='5.75';input.dispatchEvent(new w.Event('input',{bubbles:true}));
     select.value='diagonal';select.dispatchEvent(new w.Event('change',{bubbles:true}));
