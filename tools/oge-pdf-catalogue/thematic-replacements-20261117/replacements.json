@@ -1,0 +1,259 @@
+[
+  {
+    "variant": 11,
+    "variant_id": "OGE2027-STD-011",
+    "task": 10,
+    "expected": {
+      "number": 10,
+      "answer": "0.44",
+      "oracle": {
+        "kind": "part1_generated",
+        "params": {
+          "counts": [
+            36,
+            44,
+            20
+          ],
+          "target": 1,
+          "family": "balls_probability"
+        }
+      }
+    },
+    "replacement": {
+      "number": 10,
+      "part": 1,
+      "points": 1,
+      "problem": "На практикуме ученик получает образец из контейнера А или Б. По дереву вероятностей определите, какова вероятность получить прозрачный образец.",
+      "answer": "0.43",
+      "answer_tex": "$0{,}43$",
+      "solution": [
+        "Вероятность получить прозрачный образец из контейнера А равна $0{,}6\\cdot0{,}25=0{,}15$.",
+        "Вероятность получить прозрачный образец из контейнера Б равна $0{,}4\\cdot0{,}7=0{,}28$.",
+        "Эти исходы несовместны, поэтому складываем их вероятности: $0{,}15+0{,}28=0{,}43$."
+      ],
+      "skill": "Сложение вероятностей двух путей дерева",
+      "oracle": {
+        "kind": "print_probability_tree",
+        "params": {
+          "draw": [
+            "0.6",
+            "0.4"
+          ],
+          "transparent": [
+            "0.25",
+            "0.7"
+          ]
+        }
+      },
+      "source_role": "original_task_in_standard_format",
+      "author_origin": "MathExam: авторское условие, данные и оформление.",
+      "prototype": {
+        "source_title": "СтатГрад МА2690101, дерево вероятностей; сверка MathExam",
+        "source_url": "https://github.com/ladynata-cloud/math-exam-fipi/pull/639",
+        "task_number": 10,
+        "adaptation": "Самостоятельно составленное условие, свои данные и решение."
+      },
+      "figure_asset": "assets/part1_a/math_exam_v011_10.pdf",
+      "figure_width_mm": 122,
+      "figure_height_mm": 36
+    }
+  },
+  {
+    "variant": 11,
+    "variant_id": "OGE2027-STD-011",
+    "task": 14,
+    "expected": {
+      "number": 14,
+      "answer": "96",
+      "oracle": {
+        "kind": "part1_generated",
+        "params": {
+          "a": 6,
+          "q": 2,
+          "k": 5,
+          "family": "geometric_progression"
+        }
+      }
+    },
+    "replacement": {
+      "number": 14,
+      "part": 1,
+      "points": 1,
+      "problem": "В начале наблюдения масса вещества составляет $150$ г. За каждые три часа масса уменьшается вдвое. Сколько граммов вещества останется через $12$ часов?",
+      "answer": "9.375",
+      "answer_tex": "$9{,}375$",
+      "solution": [
+        "За $12:3=4$ периода масса четыре раза уменьшится вдвое.",
+        "Останется $150\\cdot(\\frac12)^4=\\frac{150}{16}=9{,}375$ г."
+      ],
+      "skill": "Геометрическая прогрессия с дробным остатком",
+      "oracle": {
+        "kind": "print_halving",
+        "params": {
+          "initial": 150,
+          "duration": 12,
+          "period": 3
+        }
+      },
+      "source_role": "original_task_in_standard_format",
+      "author_origin": "MathExam: авторское условие, данные и оформление.",
+      "prototype": {
+        "source_title": "Полураспад и геометрическая прогрессия; сверка MathExam",
+        "source_url": "https://github.com/ladynata-cloud/math-exam-fipi/pull/639",
+        "task_number": 14,
+        "adaptation": "Самостоятельно составленное условие, свои данные и решение."
+      }
+    }
+  },
+  {
+    "variant": 12,
+    "variant_id": "OGE2027-STD-012",
+    "task": 14,
+    "expected": {
+      "number": 14,
+      "answer": "84",
+      "oracle": {
+        "kind": "part1_generated",
+        "params": {
+          "a": 12,
+          "d": 4,
+          "k": 19,
+          "family": "arithmetic_progression"
+        }
+      }
+    },
+    "replacement": {
+      "number": 14,
+      "part": 1,
+      "points": 1,
+      "problem": "Самокат начал тормозить. За первую секунду он проехал $7{,}2$ м, а за каждую следующую секунду на $0{,}8$ м меньше, чем за предыдущую. Сколько метров самокат проехал за первые шесть секунд торможения?",
+      "answer": "31.2",
+      "answer_tex": "$31{,}2$",
+      "solution": [
+        "Расстояния за отдельные секунды образуют арифметическую прогрессию с разностью $-0{,}8$ м.",
+        "За шестую секунду самокат проехал $7{,}2-5\\cdot0{,}8=3{,}2$ м.",
+        "Общий путь равен $\\dfrac{7{,}2+3{,}2}{2}\\cdot6=31{,}2$ м."
+      ],
+      "skill": "Сумма убывающей арифметической прогрессии",
+      "oracle": {
+        "kind": "print_braking",
+        "params": {
+          "first": "7.2",
+          "decrease": "0.8",
+          "seconds": 6
+        }
+      },
+      "source_role": "original_task_in_standard_format",
+      "author_origin": "MathExam: авторское условие, данные и оформление.",
+      "prototype": {
+        "source_title": "СтатГрад МА2690101, сумма пути по секундам; сверка MathExam",
+        "source_url": "https://github.com/ladynata-cloud/math-exam-fipi/pull/639",
+        "task_number": 14,
+        "adaptation": "Самостоятельно составленное условие, свои данные и решение."
+      }
+    }
+  },
+  {
+    "variant": 11,
+    "variant_id": "OGE2027-STD-011",
+    "task": 16,
+    "expected": {
+      "number": 16,
+      "answer": "3",
+      "oracle": {
+        "kind": "part1_generated",
+        "params": {
+          "radius": 5,
+          "chord": 8,
+          "family": "chord_distance"
+        }
+      }
+    },
+    "replacement": {
+      "number": 16,
+      "part": 1,
+      "points": 1,
+      "problem": "Площадь круга равна $96$. Найдите площадь закрашенного сектора $AOB$, если $O$ --- центр круга и $\\angle AOB=135^\\circ$.",
+      "answer": "36",
+      "answer_tex": "$36$",
+      "solution": [
+        "Площади секторов одного круга пропорциональны их центральным углам.",
+        "Угол сектора составляет $\\dfrac{135}{360}=\\dfrac{3}{8}$ полного угла. Поэтому площадь сектора равна $96\\cdot\\dfrac{3}{8}=36$."
+      ],
+      "skill": "Площадь сектора по центральному углу",
+      "oracle": {
+        "kind": "print_sector",
+        "params": {
+          "circle_area": 96,
+          "degrees": 135
+        }
+      },
+      "source_role": "original_task_in_standard_format",
+      "author_origin": "MathExam: авторское условие, данные и оформление.",
+      "prototype": {
+        "source_title": "Геометрия окружности и площадь сектора; сверка MathExam",
+        "source_url": "https://github.com/ladynata-cloud/math-exam-fipi/pull/638",
+        "task_number": 16,
+        "adaptation": "Самостоятельно составленное условие, свои данные и решение."
+      },
+      "figure_asset": "assets/part1_a/math_exam_v011_16.pdf"
+    }
+  },
+  {
+    "variant": 12,
+    "variant_id": "OGE2027-STD-012",
+    "task": 22,
+    "expected": {
+      "number": 22,
+      "answer": "m=- \\dfrac{9}{4}\\ \\text{или}\\ m=-2",
+      "oracle": {
+        "kind": "generated_standard_part2",
+        "params": {
+          "family": "absolute_quadratic",
+          "h": -4,
+          "c": -2,
+          "p": -2,
+          "q": 3,
+          "target": 3,
+          "critical": [
+            "-33/4",
+            "-9/4",
+            -2
+          ]
+        }
+      }
+    },
+    "replacement": {
+      "number": 22,
+      "part": 2,
+      "points": 2,
+      "problem": "Постройте график функции $y=-\\dfrac{9(x^2-16)}{|x|(x^2-16)}$. При каких значениях $k$ прямая $y=kx$ не имеет с этим графиком общих точек?",
+      "answer": "k\\in\\left\\{-\\dfrac{9}{16};\\ 0;\\ \\dfrac{9}{16}\\right\\}",
+      "answer_tex": "$k\\in\\left\\{-\\dfrac{9}{16};\\ 0;\\ \\dfrac{9}{16}\\right\\}$",
+      "solution": [
+        "Область определения задаётся условиями $x\\ne0$ и $x\\ne\\pm4$. При этих $x$ получаем $y=-9/|x|$. График имеет две симметричные ветви ниже оси $Ox$, с выколотыми точками $(-4;-9/4)$ и $(4;-9/4)$.",
+        "При $k=0$ общих точек нет, поскольку $y$ на обеих ветвях отрицательно.",
+        "Пусть $k>0$. Тогда общая точка возможна только при $x<0$. На этой ветви $y=9/x$, поэтому из $kx=9/x$ получаем единственного кандидата $x=-\\sqrt{9/k}$. Он исключён ровно при $x=-4$, то есть при $k=9/16$.",
+        "Отражение относительно оси $Oy$ меняет знак $k$ и сохраняет график функции. Поэтому для $k<0$ ровно при $k=-9/16$ точка пересечения исключена.",
+        "Искомые значения: $-9/16$, $0$ и $9/16$."
+      ],
+      "skill": "Прямая y=kx и чётная дробная функция с двумя выколотыми точками",
+      "oracle": {
+        "kind": "print_even_holes",
+        "params": {
+          "coefficient": 9,
+          "hole": 4
+        }
+      },
+      "source_role": "original_task_in_standard_format",
+      "author_origin": "MathExam: авторское условие, данные и оформление.",
+      "prototype": {
+        "source_title": "СтатГрад МА2590501, чётная дробная функция; сверка MathExam",
+        "source_url": "https://github.com/ladynata-cloud/math-exam-fipi/pull/635",
+        "task_number": 22,
+        "adaptation": "Самостоятельно составленное условие, свои данные и решение."
+      },
+      "solution_figure_tex": "\\begin{tikzpicture}[x=.39cm,y=.4cm,font=\\scriptsize]\\draw[step=1,black!18,very thin](-8,-8)grid(8,2);\\draw[->](-8,0)--(8.5,0)node[right]{$x$};\\draw[->](0,-8)--(0,2.35)node[above]{$y$};\\node[above left,fill=white,inner sep=.4pt]at(0,0){$0$};\\draw(1,-.1)--(1,.1)node[above,fill=white,inner sep=.4pt]{1};\\draw(-.1,1)--(.1,1)node[left,fill=white,inner sep=.4pt]{1};\\begin{scope}\\clip(-8,-8)rectangle(8,2);\\draw[thick,domain=-8:-.8,samples=96]plot(\\x,{9/(\\x)});\\draw[thick,domain=.8:8,samples=96]plot(\\x,{-9/(\\x)});\\end{scope}\\draw[fill=white](-4,-2.25)circle(2pt)node[below left,fill=white,inner sep=.7pt]{$(-4;-9/4)$};\\draw[fill=white](4,-2.25)circle(2pt)node[below right,fill=white,inner sep=.7pt]{$(4;-9/4)$};\\end{tikzpicture}"
+    }
+  }
+]

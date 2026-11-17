@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "16341ac36bff4be3cd7d50fbd469e6f8a8db406f",
+  "baseSha": "e63fbd34b307bd0e040c16f6c3323accf56807f9",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2068,8 +2068,8 @@
       "placement": "before-head-close"
     },
     "oge/variants/2027/index.html": {
-      "beforeSha256": "f4ebd559db86046a198b7cd35c6f2ea31c27a9ebe249f59f3cb2bd19730358c0",
-      "afterSha256": "544e409fbba9ffcdcce436c4cc206f7dad7ad8a0ca1ebd0d70447c7202f679d0",
+      "beforeSha256": "b21a9569fc33a25ac076121a21683962e99990a70fd98f788f9a580efe815489",
+      "afterSha256": "7bc59da0917463b229879771b33428d3a1440c47e0d63c995c7a6ea9f7276acf",
       "placement": "before-head-close"
     },
     "okruglenie-trener.html": {
@@ -5276,6 +5276,15 @@
     {
       "previousBaseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
       "sourceBaseSha": "16341ac36bff4be3cd7d50fbd469e6f8a8db406f",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_PDF104_20261116.md",
+      "changedPaths": [
+        "oge/variants/2027/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "16341ac36bff4be3cd7d50fbd469e6f8a8db406f",
+      "sourceBaseSha": "e63fbd34b307bd0e040c16f6c3323accf56807f9",
       "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_PDF104_20261116.md",
       "changedPaths": [
         "oge/variants/2027/index.html"

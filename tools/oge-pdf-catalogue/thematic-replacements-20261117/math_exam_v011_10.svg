@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="205" viewBox="0 0 700 205">
+  <path d="M83 102L211 53M83 102L211 152M333 53L448 26M333 53L448 80M333 152L448 125M333 152L448 179" fill="none" stroke="#222" stroke-width="1.8"/>
+  <g fill="#222" font-family="DejaVu Sans" font-size="18" dominant-baseline="middle">
+    <text x="15" y="102">Выбор</text>
+    <text x="132" y="67">0,6</text><text x="132" y="139">0,4</text>
+    <text x="217" y="53">Контейнер А</text><text x="217" y="152">Контейнер Б</text>
+    <text x="348" y="29">0,25</text><text x="348" y="79">0,75</text>
+    <text x="348" y="128">0,7</text><text x="348" y="179">0,3</text>
+    <text x="459" y="26">Прозрачный образец</text>
+    <text x="459" y="80">Непрозрачный образец</text>
+    <text x="459" y="125">Прозрачный образец</text>
+    <text x="459" y="179">Непрозрачный образец</text>
+  </g>
+</svg>

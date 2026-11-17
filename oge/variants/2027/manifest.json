@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "edition": "2027-104-v1",
-  "date": "2026-11-01",
+  "edition": "2027-104-v2",
+  "date": "2026-11-17",
   "total": 104,
   "family_counts": {
     "tires": 13,
@@ -22,20 +22,20 @@
         "variant": {
           "path": "files/OGE_2027_001_variant.pdf",
           "pages": 4,
-          "bytes": 701351,
-          "sha256": "af6cab7323f112a234f733c298029f052b0583f81f0f7f0434dbed7f35b728ad"
+          "bytes": 894322,
+          "sha256": "fca2b866c7d2968a38c4e10ed12f8bbdc8789e16cec16784ad978bd75246c6c0"
         },
         "otvety": {
           "path": "files/OGE_2027_001_otvety.pdf",
           "pages": 1,
-          "bytes": 39233,
-          "sha256": "6247c9a58e5cb46f7a1c72a04457ecbcd993f0abef70f41246d0c231fc51d07a"
+          "bytes": 39236,
+          "sha256": "cccf147e8a6d03a315a1f5abd6d1f59a5792c685e2576825f912a49f5bfbf3cf"
         },
         "reshenie": {
           "path": "files/OGE_2027_001_reshenie.pdf",
           "pages": 5,
-          "bytes": 94282,
-          "sha256": "ece723b57a3c01ee36e9d093f51311064f9b08e6d428bad0f6bb7f453f6cd6ef"
+          "bytes": 95009,
+          "sha256": "a02821b236cb4365426153067bbd6ca60fd840420af234126c8c9f023af48976"
         }
       }
     },
@@ -147,20 +147,20 @@
         "variant": {
           "path": "files/OGE_2027_006_variant.pdf",
           "pages": 4,
-          "bytes": 701428,
-          "sha256": "ff053764111652106cd92486d5c18ffe26baf37995400fb5fb403c7de804a339"
+          "bytes": 894426,
+          "sha256": "a984d90bba23318bf012b8587aa7d567ff9a8c1185b0272a19aa4d3b67e68c17"
         },
         "otvety": {
           "path": "files/OGE_2027_006_otvety.pdf",
           "pages": 1,
-          "bytes": 39603,
-          "sha256": "7fe2cf30edbb95e1c3db89f4f274d11bf8038bca1dda3763d0de0fe9804ad690"
+          "bytes": 39609,
+          "sha256": "37f7c5d0e233e93df4b5011803fc2b30744a39f969e617d84f658c96a59ae26b"
         },
         "reshenie": {
           "path": "files/OGE_2027_006_reshenie.pdf",
           "pages": 4,
-          "bytes": 92933,
-          "sha256": "1d47e2a552e488873c432bc63f5e46e01063a3da8004a5b91b4c80bb4fdb932b"
+          "bytes": 93532,
+          "sha256": "56be5b07217205a489db89e3638a6cf8a1cf7f2274cd54bcbf33d5b56fb5f424"
         }
       }
     },
@@ -272,20 +272,20 @@
         "variant": {
           "path": "files/OGE_2027_011_variant.pdf",
           "pages": 4,
-          "bytes": 213012,
-          "sha256": "af73ccbd12c458fbbf5890db8aa747e25dd42d54e9ac69ae33e6d4b859b0267f"
+          "bytes": 281519,
+          "sha256": "3fbe296005bc44f6c84259c8a18795e235cfe68692bd7d4440332445f2d024c2"
         },
         "otvety": {
           "path": "files/OGE_2027_011_otvety.pdf",
           "pages": 1,
-          "bytes": 39061,
-          "sha256": "a119c3da38576dacd2de971af6585c535debdd1de973d3c5775710dca07e404a"
+          "bytes": 39074,
+          "sha256": "3c448e46c2449bc9f14f9fd12efb58fc9def7aec6794555135a8f202c33722ea"
         },
         "reshenie": {
           "path": "files/OGE_2027_011_reshenie.pdf",
           "pages": 5,
-          "bytes": 73960,
-          "sha256": "3c7d71f30c5c6c0e4121731c840d59e78388bb692d9fefa88c6ad88a97e3e2d0"
+          "bytes": 73958,
+          "sha256": "99466103ce450c1207c2ec02a756564e9d272e681517edce9b98f1beca79ea91"
         }
       }
     },
@@ -297,20 +297,20 @@
         "variant": {
           "path": "files/OGE_2027_012_variant.pdf",
           "pages": 5,
-          "bytes": 230832,
-          "sha256": "1eb5e1e9cc01b6f1ca859507b00df2583cf1efd1459c7e3e769b05758054c127"
+          "bytes": 230777,
+          "sha256": "d8b9f7510b110e76d2d804c65d3a1d8aba58c4ef7b10f95d1964ba93b262b5be"
         },
         "otvety": {
           "path": "files/OGE_2027_012_otvety.pdf",
           "pages": 1,
-          "bytes": 38909,
-          "sha256": "7c3c102688cda3026ed7cba7af4d32329e69ba309be285d0c8606d07c8534845"
+          "bytes": 40083,
+          "sha256": "c5b19ab8d787c0e9bcd9159e7c6a979ff85ef50e1ce0c0a716a6a95962baf7a8"
         },
         "reshenie": {
           "path": "files/OGE_2027_012_reshenie.pdf",
           "pages": 5,
-          "bytes": 77049,
-          "sha256": "8f26a2e94af8333555cbede9203299e195bfcd82d28a04ae629f9c0d6fc36f4f"
+          "bytes": 77548,
+          "sha256": "5c06ffbb43824a69e9f12e778d1d53dd89cc885eeeabed7320abef903bc95900"
         }
       }
     },
