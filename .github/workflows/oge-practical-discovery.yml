@@ -23,7 +23,11 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-          fetch-depth: 0
+          fetch-depth: 1
+      - name: Fetch the exact diff and practical comparison bases
+        env:
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: git fetch --no-tags --depth=1 origin "$REVIEW_BASE" 83e1fc15a1b6b87f0133e0dec6753381e423bd92
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'

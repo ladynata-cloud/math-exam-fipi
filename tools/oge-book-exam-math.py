@@ -40,6 +40,29 @@ TRAINER_ENTRY_PREFIXES = {
         'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Третий угол треугольника Контрпример к утверждению',
 }
 
+PLOT_SOURCE_ROUTE = '/trainers/oge-1-5-trainers/practice-1-5-land-plots.html'
+PLOT_SOURCE_PAYLOADS = {
+    PLOT_SOURCE_ROUTE: '23635b8dda306565d437d280c647ee3fe047cdfefba7e0f106059954c93979ff',
+    '/trainers/oge-1-5-trainers/practical-variant-buildings.js':
+        '72b1d69d3884515894bd2344f7ea16b246cae68f9b7a62661b7dc6f586779e91',
+}
+PLOT_CONTROLS = 'вариант 1 Новый вариант Дорожки и площадка На плане '
+PLOT_HISTORICAL_CONTROLS = 'вариант 1 Новый вариант На плане '
+
+
+def without_authored_plot_entry(record, text):
+    """Remove the single reviewed opening button before comparing case 06."""
+    if (record.get('prefix') or record.get('id') != '06' or
+            record.get('route') != PLOT_SOURCE_ROUTE or record.get('finalPath') != PLOT_SOURCE_ROUTE):
+        return text
+    resources = record.get('resources', {})
+    if any(resources.get(route, {}).get('sha256') != sha
+           for route, sha in PLOT_SOURCE_PAYLOADS.items()):
+        return text
+    if text.count(PLOT_CONTROLS) != 1:
+        return text
+    return text.replace(PLOT_CONTROLS, PLOT_HISTORICAL_CONTROLS, 1)
+
 
 def without_trainer_entry(record, text):
     route = record.get('route')
@@ -186,6 +209,7 @@ def exact_reviewed_context(record, oracle, fixtures):
     if context is None:return False
     text, native_geometry = context
     text = without_trainer_entry(record, text)
+    text = without_authored_plot_entry(record, text)
     if record['prefix']:
         banner = BOOK_BANNERS.get(record['prefix'])
         if banner is None:return False
@@ -210,6 +234,18 @@ def exact_reviewed_context(record, oracle, fixtures):
 
 def wayfinding_context_selftest(fixtures):
     """The one removed link cannot excuse changes to questions or payloads."""
+    plot_record = {
+        'id': '06', 'prefix': '', 'route': PLOT_SOURCE_ROUTE,
+        'finalPath': PLOT_SOURCE_ROUTE,
+        'resources': {route: {'sha256': sha} for route, sha in PLOT_SOURCE_PAYLOADS.items()},
+    }
+    assert without_authored_plot_entry(plot_record, PLOT_CONTROLS) == PLOT_HISTORICAL_CONTROLS
+    for key, invalid in [('id', '13'), ('prefix', VARIANT_PREFIXES['frozen']),
+                         ('route', '/other.html'), ('finalPath', '/redirected.html'),
+                         ('resources', {})]:
+        assert without_authored_plot_entry(dict(plot_record, **{key: invalid}), PLOT_CONTROLS) == PLOT_CONTROLS
+    for text in (PLOT_CONTROLS * 2, PLOT_CONTROLS.replace('площадка', 'площадки')):
+        assert without_authored_plot_entry(plot_record, text) == text
     import copy
     fixture = fixtures['67'].get('sourceVariant',fixtures['67'])
     route = '/trainers/oge-task6-fractions.html'
