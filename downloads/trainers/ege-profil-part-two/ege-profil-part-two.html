@@ -73,7 +73,7 @@
 .task-layout{overflow-wrap:anywhere}.task-layout>*{min-width:0}
 
 #proof-jump{margin:0 0 10px}
-#proof-jump[hidden],#proof-open-saved[hidden]{display:none}
+#proof-jump[hidden]{display:none}
 .proof-review-list{list-style:none;padding:0;margin:12px 0}
 .proof-review-list li{border-top:1px solid var(--line);padding:6px 0}
 .proof-review-list label{display:flex;align-items:flex-start;gap:10px;padding:6px 0;min-height:44px;cursor:pointer}
@@ -3088,16 +3088,7 @@ function bindSubmit(id,fn){
  });
 }
 function recentTrace(r,review){if(!r.attempts.length)return '';const first=r.attempts[0],last=r.attempts[r.attempts.length-1];return `<details class="history"><summary>Первая попытка и последнее исправление</summary><dl><dt>Первая отправка</dt><dd>${esc(first.answers.join('; '))} · ${first.correct?'верно':'нужна проверка'} · ${first.helped?'с опорой':'без подсказки'}</dd><dt>Последняя отправка</dt><dd>${esc(last.answers.join('; '))} · ${last.correct?'верно':'нужна проверка'} · ${last.helped?'с опорой':'без подсказки'}</dd></dl><p>Отправок: ${r.attemptCount}. Сохраняются первая и последние 59 отправок этого условия.</p>${review?'<p id="proof-help-history" hidden></p>':''}</details>`;}
-function normalizedProof(value){return value.replace(/\r\n?/g,'\n').trim();}
-function currentProofChecks(record){
- const proof=normalizedProof(record.drafts.proof),snapshot=record.proofReviewSnapshot,checks=record.proofChecks;
- if(!proof||snapshot?.proof!==proof||!Array.isArray(snapshot.checks)||snapshot.checks.length!==checks.length)return [];
- return snapshot.checks.every((index,position)=>index===checks[position])?checks:[];
-}
-function reviewCount(review,r){
- const checks=currentProofChecks(r);
- return review.criteria.reduce((count,_,i)=>count+Number(checks.includes(i)),0);
-}
+function reviewCount(review,r){return review.criteria.reduce((count,_,i)=>count+Number(r.proofChecks.includes(i)),0);}
 function parameterProofView(review,r,nextLink){
  const catalog=root.ProfileAlphabetCatalog,skill=catalog?.index['parameter-methods']?.skills[review.skill];
  const back=(root.MathExamTrainerOffline?'/ege-profil/part-two/':root.location.pathname)+root.location.search+root.location.hash;
@@ -3109,7 +3100,7 @@ function parameterProofView(review,r,nextLink){
    <p>Отметьте пункты, для которых нашли довод в своём тексте. Остальные можно дописать после подсказки.</p>
    <ol class="proof-review-list">${review.criteria.map(([title,criterion,hint],i)=>`
     <li>
-     <label><input type="checkbox" data-proof-check="${i}" disabled><span><strong>${esc(title)}</strong>${esc(criterion)}</span></label>
+     <label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span><strong>${esc(title)}</strong>${esc(criterion)}</span></label>
      <details data-proof-help="${proofHintStart+i}"><summary aria-label="Подсказка к пункту «${esc(title)}»">Подсказка</summary><p class="hint">${esc(hint)}</p></details>
     </li>`).join('')}
    </ol>
@@ -3125,12 +3116,13 @@ function parameterProofView(review,r,nextLink){
 }
 function proofView(task,r,review,nextLink){
  if(!task.proof)return '';
- const criteria=review?parameterProofView(review,r,nextLink):`<p id="proof-sync-warning" class="caption" role="status" hidden>Обоснование изменилось в другой вкладке. Можно скопировать текст на экране или открыть сохранённый вариант.</p><button type="button" id="proof-open-saved" class="button quiet" hidden>Открыть сохранённое обоснование</button><details class="proof-criteria"><summary>Критерии самопроверки</summary><p id="proof-needs-draft" class="caption">Запишите хотя бы один довод, чтобы отметить пункты.</p><div class="checklist">${task.proof.criteria.map((c,i)=>`<label><input type="checkbox" data-proof-check="${i}" disabled><span>${c}</span></label>`).join('')}</div></details>`;
+ const criteria=review?parameterProofView(review,r,nextLink):`<details class="proof-criteria"><summary>Критерии самопроверки</summary><div class="checklist">${task.proof.criteria.map((c,i)=>`<label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span>${c}</span></label>`).join('')}</div></details>`;
  return `<section class="panel" aria-labelledby="proof-heading"><h2 id="proof-heading">Ваше обоснование</h2><p>${task.proof.prompt}</p><label class="field"><span>Запишите ход решения</span><textarea id="proof-draft" maxlength="12000" placeholder="Почему выбранный способ работает? Какие ограничения проверены?"></textarea></label>${criteria}<p class="proof-status"><strong>Обоснование требует проверки.</strong> ${review?'Ответы сверяет тренажёр. Полноту доводов оцениваете вы по своему тексту.':'Галочки — ваша самопроверка; они не подтверждают правильность доказательства автоматически.'}</p></section>`;
 }
-function updateProofReview(review,r,staleDraft,ready){
+function updateProofReview(review,r,staleDraft){
  const reviewPanel=document.getElementById('proof-review'),instruction=document.getElementById('proof-review-instruction');
- const attempted=hasFinalAttempt(r);
+ const draft=document.getElementById('proof-draft');
+ const attempted=hasFinalAttempt(r),ready=attempted&&!!draft.value.trim()&&!staleDraft;
  reviewPanel.hidden=!ready;
  if(!ready)reviewPanel.open=false;
  instruction.hidden=ready;
@@ -3150,66 +3142,35 @@ function updateProofReview(review,r,staleDraft,ready){
 }
 function bindProof(task,review,r,isCurrent){
  const draft=document.getElementById('proof-draft');
- if(!draft)return ()=>{};
  const inputs=main.querySelectorAll('[data-proof-check]');
- const syncWarning=document.getElementById('proof-sync-warning');
- const openSaved=document.getElementById('proof-open-saved');
- const needsDraft=document.getElementById('proof-needs-draft');
  let savedProof=r.drafts.proof;
- draft.value=savedProof;
+ if(draft)draft.value=savedProof;
  function refresh(record){
-  if(!isCurrent()||!draft.isConnected)return;
-  const stored=normalizedProof(record.drafts.proof),shown=normalizedProof(draft.value);
-  const staleDraft=stored!==normalizedProof(savedProof)||(draft.readOnly&&shown!==stored);
-  if(!staleDraft&&shown!==stored)return;
-  const ready=!staleDraft&&!!shown&&(!review||hasFinalAttempt(record));
-  const checks=ready?currentProofChecks(record):[];
+  if(!review||!isCurrent()||!draft.isConnected)return;
+  const staleDraft=record.drafts.proof!==savedProof;
+  if(!staleDraft&&draft.value!==savedProof)return;
   draft.readOnly=staleDraft;
-  inputs.forEach(input=>{input.disabled=!ready;input.checked=checks.includes(Number(input.dataset.proofCheck));});
-  if(review)updateProofReview(review,record,staleDraft,ready);
-  else{
-   syncWarning.hidden=!staleDraft;
-   openSaved.hidden=!staleDraft;
-   needsDraft.hidden=ready||staleDraft;
-  }
+  inputs.forEach(input=>{input.disabled=staleDraft;input.checked=!staleDraft&&record.proofChecks.includes(Number(input.dataset.proofCheck));});
+  updateProofReview(review,record,staleDraft);
  }
  bind('proof-draft','input',event=>{
   const value=event.target.value;
   store.patch(task.id,record=>{
-   const stored=normalizedProof(record.drafts.proof);
-   if(stored!==normalizedProof(savedProof))return false;
-   if(stored!==normalizedProof(value)){
-    record.proofChecks=[];
-    delete record.proofReviewSnapshot;
-   }
+   if(review&&record.drafts.proof!==savedProof)return false;
+   if(review&&record.drafts.proof.trim()!==value.trim())record.proofChecks=[];
    record.drafts.proof=value;
    savedProof=value;
   }).then(refresh);
  });
  inputs.forEach(input=>input.addEventListener('change',()=>{
   const index=Number(input.dataset.proofCheck),checked=input.checked;
-  const proof=normalizedProof(draft.value);
+  const proof=draft.value;
   store.patch(task.id,record=>{
-   if(!proof||normalizedProof(savedProof)!==proof||normalizedProof(record.drafts.proof)!==proof||(review&&!hasFinalAttempt(record)))return false;
-   const checks=currentProofChecks(record);
-   if(checked===checks.includes(index))return false;
-   record.proofChecks=checked?[...checks,index]:checks.filter(i=>i!==index);
-   if(record.proofChecks.length)record.proofReviewSnapshot={proof,checks:[...record.proofChecks]};
-   else delete record.proofReviewSnapshot;
+   if(review&&(!hasFinalAttempt(record)||!proof.trim()||record.drafts.proof!==proof))return false;
+   record.proofChecks=record.proofChecks.filter(i=>i!==index);
+   if(checked)record.proofChecks.push(index);
   }).then(refresh);
  }));
- async function restoreDraft(){
-  await store.flush();
-  if(!isCurrent()||!draft.isConnected)return false;
-  const saved=store.read(task.id);
-  if(!draft.readOnly&&normalizedProof(saved.drafts.proof)===normalizedProof(savedProof))return false;
-  draft.value=savedProof=saved.drafts.proof;
-  refresh(saved);
-  draft.focus();
-  return true;
- }
- bind('proof-open-saved','click',restoreDraft);
- refresh(r);
  if(!review)return refresh;
  function recordHelp(index){
   return store.patch(task.id,record=>{
@@ -3218,7 +3179,15 @@ function bindProof(task,review,r,isCurrent){
   }).then(refresh);
  }
  bind('proof-jump','click',async()=>{
-  if(await restoreDraft()||!isCurrent()||!draft.isConnected)return;
+  await store.flush();
+  if(!isCurrent()||!draft.isConnected)return;
+  const saved=store.read(task.id);
+  if(saved.drafts.proof!==savedProof){
+   draft.value=savedProof=saved.drafts.proof;
+   refresh(saved);
+   draft.focus();
+   return;
+  }
   const panel=document.getElementById('proof-review');
   if(panel.hidden)draft.focus();
   else{panel.open=true;panel.querySelector('summary').focus();}
@@ -3239,6 +3208,7 @@ function bindProof(task,review,r,isCurrent){
  bind('proof-skill','auxclick',event=>{
   if(event.button===1)recordHelp(proofSkillHint);
  });
+ refresh(r);
  return refresh;
 }
 function nextPractice(lesson,task){
@@ -3316,7 +3286,7 @@ async function taskView(item,mode,viewVersion=routeVersion){
  }));
  bind('step-answer','input',e=>{const value=e.target.value;observedStep=value;store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=value;});});
  const refreshProof=bindProof(task,review,r,isCurrent);
- if(task.proof)active.refreshProof=refreshProof;
+ if(review)active.refreshProof=refreshProof;
  bindSubmit('final-form',async()=>{
   const fields=finalFields.map((_,i)=>document.getElementById('final-'+i)),rawValues=fields.map(f=>f.value),values=rawValues.map(v=>v.trim());
   const formats=finalFields.map((field,i)=>API.recognize(field,values[i],root.ProfileCheck));
@@ -3388,7 +3358,7 @@ async function taskView(item,mode,viewVersion=routeVersion){
  bind('request-help','click',async()=>{await store.patch(task.id,s=>{s.helped=true;if(!s.hints.includes(99))s.hints.push(99);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Подсказка открыта. Для самостоятельной проверки потом выберите другое условие.');});
  bind('show-solution','click',async()=>{await store.patch(task.id,s=>{s.helped=true;s.solution=true;s.solutionSteps=Math.max(1,s.solutionSteps);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Разбор открыт; это условие отмечено как работа с опорой.');});
  bind('solution-next','click',async()=>{await store.patch(task.id,s=>{s.helped=true;s.solutionSteps=Math.min(task.solution.length,s.solutionSteps+1);});await taskView(item,mode,viewVersion);});
- main.querySelectorAll('.task-theory,.prerequisites,.earlier-final').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)store.patch(task.id,s=>{s.helped=true;});}));
+ main.querySelectorAll('.task-theory,.prerequisites,.proof-criteria,.earlier-final').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)store.patch(task.id,s=>{s.helped=true;});}));
 }
 function parameterProofProgress(){
  let drafts=0,reviewed=0,resume=null;

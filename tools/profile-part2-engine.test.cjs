@@ -597,6 +597,40 @@ test('generic stale writes and former client updates cannot attach a mark to the
  }finally{w.close();}
 });
 
+test('a pre-update tab cannot resurrect a review after replacing and restoring the argument',async()=>{
+ const task=bank.find(l=>l.id==='p2-15-projection').tasks[3],storage=memory(),store=api.create(storage),key=store.key(task.id);
+ const proof='Мой прежний довод.';
+ const marked=await store.patch(task.id,record=>{
+  record.drafts.proof=proof;
+  record.proofChecks=[0];
+  record.proofReviewSnapshot={proof,checks:[0]};
+ });
+ assert.deepEqual(api.currentProofChecks(marked),[0]);
+ const attempt=await store.attempt(task.id,{kind:'final',answers:['9'],correct:false,mode:'independent'});
+ assert.deepEqual(api.currentProofChecks(attempt),[0],'a numerical attempt in the current version retains existing marks');
+
+ // The earlier state layer sets integer Date.now() and retains unknown fields.
+ const previousVersion=JSON.parse(storage.getItem(key));
+ previousVersion.updatedAt=Math.floor(previousVersion.updatedAt);
+ previousVersion.drafts.proof='Другая версия довода.';
+ storage.setItem(key,JSON.stringify(previousVersion));
+ assert.deepEqual(api.currentProofChecks(store.read(task.id)),[]);
+ previousVersion.drafts.proof=proof;
+ storage.setItem(key,JSON.stringify(previousVersion));
+ const restored=store.read(task.id);
+ assert.deepEqual(restored.proofChecks,[0],'legacy data remains available until a new mark is set');
+ assert.deepEqual(api.currentProofChecks(restored),[],'same text and same whole millisecond cannot restore marks');
+ assert.equal(restored.attemptCount,1);
+ const dom=await boot('task/'+task.id+'/independent',[[key,storage.getItem(key)]]);
+ try{
+  assert.equal(dom.window.document.getElementById('proof-draft').value,proof);
+  assert(!dom.window.document.querySelector('[data-proof-check="0"]').checked);
+  input(dom.window,'proof-draft',`  ${proof} `);await settle(dom.window);
+  assert(!dom.window.document.querySelector('[data-proof-check="0"]').checked);
+  assert.equal(dom.window.ProfilePartTwoApp.store.read(task.id).attemptCount,1);
+ }finally{dom.window.close();}
+});
+
 test('new proof review preserves submit locking and whole-answer self-correction outside task 19',async()=>{
  const task=bank.find(l=>l.id==='param-linear').tasks[3],dom=await boot('task/'+task.id+'/independent'),w=dom.window;
  task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));

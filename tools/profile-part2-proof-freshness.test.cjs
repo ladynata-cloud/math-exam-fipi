@@ -83,6 +83,47 @@ test('native Chromium keeps the review attached to the correct proof on two tabs
       assert.equal(await draft(first).inputValue(), '');
       assert.deepEqual((await record(first)).proofChecks, []);
       assert(!(await record(first)).helped);
+
+      const key = `mathExam.profile.partTwo.v1.${taskId}`;
+      const conflictingDraft = 'Мой несохранённый довод.\nХочу сохранить эту запись.';
+      await first.evaluate(key => new Promise(ready => {
+        navigator.locks.request(key, () => new Promise(release => {
+          window.releaseProofLock = release;
+          ready();
+        }));
+      }), key);
+      try {
+        await draft(second).fill(later);
+        await second.waitForFunction(async key =>
+          (await navigator.locks.query()).pending.filter(lock => lock.name === key).length === 1, key);
+        await draft(first).fill(conflictingDraft);
+        await first.waitForFunction(async key =>
+          (await navigator.locks.query()).pending.filter(lock => lock.name === key).length === 2, key);
+      } finally {
+        await first.evaluate(() => window.releaseProofLock());
+      }
+      await written(second, later);
+      await first.locator('#proof-sync-warning').waitFor();
+      assert.equal(await draft(first).inputValue(), conflictingDraft);
+
+      await first.locator('#request-help').click();
+      await first.locator('#feedback').waitFor();
+      assert(await first.locator('#proof-sync-warning').isVisible());
+      assert(await draft(first).evaluate(element => element.readOnly));
+      assert.equal(await draft(first).inputValue(), conflictingDraft);
+      const afterHelp = await record(first);
+      assert.equal(afterHelp.drafts.proof, later);
+      assert(afterHelp.helped && afterHelp.hints.includes(99));
+      assert.equal(afterHelp.attemptCount, 0);
+
+      await first.locator('.modes a[href$="/plan"]').click();
+      await first.locator('.modes a[aria-current="page"][href$="/plan"]').waitFor();
+      assert(await first.locator('#proof-sync-warning').isVisible());
+      assert.equal(await draft(first).inputValue(), conflictingDraft);
+      await first.locator('#proof-open-saved').click();
+      await first.locator('#proof-sync-warning').waitFor({ state: 'hidden' });
+      assert.equal(await draft(first).inputValue(), later);
+      assert(!(await draft(first).evaluate(element => element.readOnly)));
       assert(await first.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
       assert.deepEqual(errors, []);
     } finally {
