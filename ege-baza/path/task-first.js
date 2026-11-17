@@ -113,7 +113,7 @@
    if(l.done)return feedback('Этот вариант уже проверен. Нажми «Ещё задача этого типа».');
    const ok=D.correct(t,value),independent=!l.attempted&&!l.help&&!seen(t);
    l.attempted=true;expose(t);
-   if(ok){root.EgeRemediation.clear();l.done=true;const next=$('[data-journey-next]');if(next)next.hidden=false;if(independent)l.independent++;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent}).slice(-100);feedback(independent?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');}
+   if(ok){root.EgeRemediation.clear?.();l.done=true;const next=$('[data-journey-next]');if(next)next.hidden=false;if(independent)l.independent++;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent}).slice(-100);feedback(independent?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');}
    else{l.help=true;if(learningCycle)u.mistakes=Math.min(1000,u.mistakes+1);feedback(root.PathPracticeView.wrongFeedback(t,value,learningCycle?learningFeedback(t,value):'Пока неверно. Проверь, что нужно найти, знак и единицы. Если трудно, открой подсказку.'),true);root.EgeRemediation.show({id:meta.id,meta,task:t,value,expected:t.answer,openSteps});}
    save();
   };
@@ -160,7 +160,7 @@
    if(!step)return;
    const field=$('#stepAnswer');field.value=u.stepDraft;
    const writeStep=value=>{u.stepDraft=value.slice(0,10000);save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
-   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){root.EgeRemediation.clear();u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:meta.id,meta,task:t,stepIndex:l.step,value,expected:step.a,feedback:$('#stepFeedback')});save();}};
+   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){root.EgeRemediation.clear?.();u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:meta.id,meta,task:t,stepIndex:l.step,value,expected:step.a,feedback:$('#stepFeedback')});save();}};
    const why=$('#stepWhy');why.open=u.whyOpen;why.querySelector('summary').addEventListener('click',()=>{if(!why.open)markHelp();});why.ontoggle=()=>{if(!root.document||!why.isConnected)return;u.whyOpen=why.open;if(why.open)markHelp();else save();};
   }
   renderSteps();
@@ -171,7 +171,7 @@
    if(element.open)onOpen?.();
   };
   bindDisclosure(help,'helpOpen');bindDisclosure(model,'modelOpen',mountModel);bindDisclosure(steps,'stepsOpen');
-  const openSteps=()=>{root.EgeRemediation.clear();help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
+  const openSteps=()=>{root.EgeRemediation.clear?.();help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
   $('#startSteps').onclick=openSteps;
   // The route describes the guided steps of this variant. Exam and board modes
   // keep using their existing renderer and progress rules.

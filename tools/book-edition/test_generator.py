@@ -90,7 +90,8 @@ class GeneratorTests(unittest.TestCase):
         bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
         self.assertEqual(page.count(bootstrap), 1)
         for asset in reviewed:
-            frozen = '/' + edition.prefix + asset + '?v=20261109'
+            version = '20261117' if asset == 'oge/learning-map-view.js' else '20261109'
+            frozen = '/' + edition.prefix + asset + '?v=' + version
             self.assertEqual(page.count(frozen), 1)
             self.assertNotIn('"/' + asset, page)
             self.assertLess(page.index(bootstrap), page.index(frozen))
@@ -327,6 +328,19 @@ class GeneratorTests(unittest.TestCase):
         for name in excluded:
             self.assertNotIn(edition.prefix + name, output)
         self.assertNotIn(b"skill-support", output[edition.prefix + source])
+
+    def test_public_fraction_return_is_excluded_from_the_fixed_candidate(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        route = "trainers/oge-task6-fractions.html"
+        asset = "assets/oge-fractions-return.js"
+        original = (ROOT / route).read_bytes()
+        loader = b'<script defer src="/assets/oge-fractions-return.js?v=20261118-drafts"></script>'
+        self.assertEqual(original.count(loader), 1)
+        output, manifest = builder.build(edition)
+        self.assertNotIn(edition.prefix + asset, output)
+        self.assertNotIn(asset, {record["path"] for record in manifest["sourceFiles"]})
+        self.assertFalse(any(asset in record["dependencies"] for record in manifest["sourceFiles"]))
+        self.assertNotIn(asset.encode(), output[edition.prefix + route])
 
     def test_no_implicit_write_base(self):
         with self.assertRaisesRegex(ValueError, "explicit full --base"):

@@ -54,6 +54,7 @@ REMOVED = {
     "assets/assistant/navigator-data.js",
     "assets/assistant/navigator-widget.js",
     "assets/assistant/widget.css",
+    "assets/oge-fractions-return.js",
     # Live prerequisite detours may leave the fixed inventory. They are public
     # navigation, like the navigator above; the original in-trainer help stays.
     "trainers/oge-basics/skill-support.js",

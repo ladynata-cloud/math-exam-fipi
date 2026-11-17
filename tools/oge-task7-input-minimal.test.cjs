@@ -273,7 +273,14 @@ test('the exact input receipt preserves the full pinned source and rejects every
   const {createHash} = require('node:crypto');
   const {restoreOge7Input, BEFORE, AFTER} = require('./oge7-number-input-preservation.cjs');
   const sha = value => createHash('sha256').update(value).digest('hex');
-  const restoreSource = html => restoreOge7Input(restoreTrainerDownload('trainers/oge-task7-number-line.html', html));
+  const heading = '  <h1>Задание 7 ОГЭ. Координатная прямая</h1>\n';
+  const supportLink = '  <p><a href="./oge-basics/negative-number-line.html" target="_blank" rel="noopener">Повторить сравнение чисел на прямой и противоположные числа ↗</a></p>\n';
+  const restoreSource = html => {
+    const document = restoreOge7Input(restoreTrainerDownload('trainers/oge-task7-number-line.html', html));
+    assert.equal(document.split(supportLink).length, 2, 'OGE7 support: exactly one reviewed link');
+    assert(document.includes(heading + supportLink), 'OGE7 support: link follows the heading');
+    return document.replace(heading + supportLink, heading);
+  };
   const originalHash = '327b041bf929619f3ced888e576ce12c560def6fd918aa637fc967ee355504ca';
   assert.equal(sha(restoreSource(source)), originalHash, 'all original main198 HTML bytes recovered');
   const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
@@ -289,6 +296,15 @@ test('the exact input receipt preserves the full pinned source and rejects every
   ]) {
     assert.notEqual(altered, source, 'effective missing/duplicate/modified fragment probe');
     assert.throws(() => restoreSource(altered), /OGE7 input:/);
+  }
+  for (const altered of [
+    source.replace(supportLink, ''),
+    source + supportLink,
+    source.replace(supportLink, supportLink.replace('negative-number-line.html', 'rounding.html')),
+    source.replace(heading + supportLink, supportLink + heading)
+  ]) {
+    assert.notEqual(altered, source, 'effective missing/duplicate/modified/moved link probe');
+    assert.throws(() => restoreSource(altered), /OGE7 support:/);
   }
   for (const altered of [
     source + '\n<!-- unreviewed source -->',

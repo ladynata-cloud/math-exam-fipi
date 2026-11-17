@@ -375,7 +375,8 @@
       "inlineAssets": [
         "/trainers/oge-course-shared-mode.js",
         "/assets/oge-wayfinding.css",
-        "/assets/oge-wayfinding.js"
+        "/assets/oge-wayfinding.js",
+        "/assets/oge-fractions-return.js"
       ],
       "offlineOmitAssets": [
         "/trainers/board-bridge.js",

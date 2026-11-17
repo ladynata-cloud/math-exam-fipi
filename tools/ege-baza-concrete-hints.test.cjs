@@ -15,6 +15,48 @@ const ids=Array.from(D.meta,m=>m.id);
 assert.equal(ids.length,113,'the EGE catalogue contains 113 families');
 assert.deepEqual(Array.from(H.familyIds).sort(),ids.slice().sort(),'every existing family has authored hints');
 
+const remediationFile=path.join(__dirname,'../ege-baza/remediation.js');
+vm.runInContext(fs.readFileSync(remediationFile,'utf8'),context,{filename:remediationFile});
+const R=context.EgeRemediation;
+function recommendation(id,seed,stepIndex){
+ const task=D.task(id,seed),meta=D.meta.find(row=>row.id===id);
+ return R.recommend({id,task,meta,stepIndex,value:'9999',expected:task.answer});
+}
+for(const meta of D.meta){
+ const {id}=meta;
+ for(let seed=0;seed<5;seed++){
+  const task=D.task(id,seed);
+  const route=R.recommend({id,task,meta,value:'9999',expected:task.answer});
+  assert(route?.why,id+' provides a next action for the same variant');
+  if(route.path)assert.equal(route.path,R.skills[route.key].path,id+' uses a registered trainer');
+  else assert.equal(route.key,null,id+' uses the existing guided task');
+  assert.deepEqual(task,D.task(id,seed),id+' does not alter the mathematics');
+ }
+}
+for(const id of [
+ 'practice-inverse-formula','probability','practice-probability-draw','practice-probability-opposite',
+ 'practice-graph-match','practice-graph-slope','practice-right-ratio','practice-log-value','expressions',
+ 'practice-quadratic','practice-radical-equation','practice-log-equation','practice-exponential-equation',
+ 'practice-rational-equation','practice-number-match','practice-inequality-match','practice-average-speed'
+]){
+ for(let seed=0;seed<6;seed++){
+  const route=recommendation(id,seed);
+  assert.equal(route.path,undefined,id+' keeps the next action in this task');
+  assert.equal(route.why,H.hint(D.task(id,seed)),id+' uses the exact authored first step');
+ }
+}
+for(let seed=0;seed<15;seed++){
+ const route=recommendation('equations',seed);
+ assert.equal(route.path,seed%5===0?R.skills.equations.path:undefined,'only the linear variant uses linear training');
+ assert.equal(route.why,H.hint(D.task('equations',seed)));
+}
+assert.equal(recommendation('practice-fraction-expression',2).path,undefined,'division comes first');
+assert.equal(recommendation('practice-fraction-expression',2,0),null);
+assert.equal(recommendation('practice-fraction-expression',2,1).path,R.skills.fractions.path,'the addition step uses the common denominator');
+assert.equal(recommendation('practice-temperature',2,1).path,R.skills.signs.path,'adding a negative term uses signed arithmetic');
+assert.equal(recommendation('practice-temperature',12,1),null,'no signed operation in this variant');
+assert.equal(recommendation('practice-percent-whole',5).path,R.skills.percent.path,'finding the whole keeps a direct training route');
+
 function freeze(value){
  if(value&&typeof value==='object'&&!Object.isFrozen(value)){
   Object.freeze(value);

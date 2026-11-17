@@ -41,25 +41,61 @@ const targeted={
  'practice-time': nextStep('Переведи целые часы в минуты и только затем прибавь оставшиеся минуты.', 'lengthTime'),
  'practice-units-match': nextStep('Представь размер каждого предмета. Если сравнение трудно, переведи близкие варианты в одинаковые единицы длины.', 'lengthTime'),
  'practice-trig-angle': nextStep('Один полный оборот — 360°. Убери полные обороты, затем найди на окружности синус оставшегося угла.'),
+ 'practice-temperature': ({stepIndex,task})=>stepIndex===1&&task?.params?.c<0
+   ?nextStep('Прибавь 32 к уже найденному отрицательному слагаемому.', 'signs')
+   :null,
+ 'practice-fraction-expression': ({stepIndex})=>stepIndex===1
+   ?nextStep('После деления приведи слагаемые к общему знаменателю.', 'fractions')
+   :null,
  'practice-fraction-divide': nextStep('Запиши дробь, на которую делишь. Поменяй в ней местами числитель и знаменатель и замени деление умножением.'),
  'practice-fraction-percent': nextStep('Прими целое за 100%. Сначала запиши данную долю десятичной дробью, затем умножь её на 100.', 'percent'),
  'practice-percent-change': nextStep('Сначала найди процент от исходной цены. Затем по условию прибавь его денежное значение или вычти.', 'change'),
  'practice-percent-reverse': nextStep('Прими прежнюю цену за 100%. Сколько процентов старой цены осталось после скидки?', 'change')
 };
+// These external trainers rehearse the operation actually required by the
+// family. Mixed tasks use the authored in-place step instead of a category tag.
+const examSkills={
+ 'practice-fraction-add':'fractions',
+ percent:'change',
+ 'practice-percent-part':'percent',
+ 'practice-percent-whole':'percent',
+ 'practice-percent-rate':'percent',
+ 'practice-percent-chain':'change',
+ 'practice-direct-proportion':'proportion',
+ 'practice-inverse-proportion':'proportion',
+ powers:'powers',
+ 'practice-root-product':'powers',
+ 'practice-power-rules':'powers',
+ 'equations-linear':'equations',
+ 'equations-signs':'equations',
+ 'equations-fractions':'equations',
+ 'equations-brackets':'equations'
+};
 const gapRoutes={fractions:'fractions',fraction:'share',percent:'choice',change:'percent',proportion:'ratio',division:'ratio',equations:'equations',powers:'powers',signs:'numberline'};
 function specificRoute(id,context){
- if(id==='functions'&&/sin/.test(context.task?.q||''))return targeted['practice-trig-angle'];
  const route=Object.hasOwn(targeted,id)?targeted[id]:null;
  return typeof route==='function'?route(context):route;
 }
 function numeric(s){const m=String(s).trim().replace('−','-').replace(',','.').match(/^([+-]?[\d.]+)(?:\s*\/\s*([+-]?[\d.]+))?$/);if(!m||m[2]!==undefined&&+m[2]===0)return null;const n=+m[1]/(m[2]===undefined?1:+m[2]);return Number.isFinite(n)?n:null;}
+function examRoute(id,task,stepIndex){
+ if(!task?.steps?.length)return null;
+ const linearVariant=id==='equations'&&task.model?.kind==='equation';
+ const familySkill=Object.hasOwn(examSkills,id)?examSkills[id]:null;
+ const key=linearVariant?'equations':familySkill;
+ if(!key&&stepIndex!==undefined)return null;
+ const index=stepIndex??0;
+ const why=root.PathTaskHints?.hint(task,index)||task.steps[index]?.q;
+ if(!why)return null;
+ return key?{key,why,...skills[key]}:nextStep(why);
+}
 function recommend(context){
- const {id,value,expected,meta,stepIndex}=context;
+ const {id,value,expected,meta,task,stepIndex}=context;
  const routine=specificRoute(id,context);
  if(routine){
   if(routine.key)return {...routine,...skills[routine.key]};
   return stepIndex===undefined?routine:null;
  }
+ if(meta?.pos&&!meta.grade7&&!meta.pre7)return examRoute(id,task,stepIndex);
  const family=meta?.expanded?gapRoutes[meta.gap]||id:id;
  const n=numeric(value);let key,why;
  if(Number.isFinite(expected)&&expected!==0&&n!==null&&Math.abs(n+expected)<1e-7){key='signs';why='Получился ответ с противоположным знаком. Возможно, стоит проверить действие со знаками.';}

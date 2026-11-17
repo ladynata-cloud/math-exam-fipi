@@ -54,7 +54,17 @@ async function testTargetedRemediation(w,d){
   assert.equal(restored.w.PathCourse.state().lessons[id].seed,w.PathCourse.state().lessons[id].seed,id);
   restored.w.close();
  }
- for(const [id,hint] of [['choice','полную стоимость'],['practice-delivery','точном равенстве'],['practice-trig-angle','360°']]){
+ for(const [id,hint] of [
+  ['choice','полную стоимость'],
+  ['practice-delivery','точном равенстве'],
+  ['practice-trig-angle','360°'],
+  ['practice-inverse-formula','Сложи основания'],
+  ['practice-probability-draw','зелёного жетона'],
+  ['practice-probability-opposite','неисправных насосов'],
+  ['practice-right-ratio','гипотенуз'],
+  ['practice-quadratic','Подбери два множителя'],
+  ['practice-log-equation','По определению логарифма']
+ ]){
   await go(w,'lesson='+id);
   click(d,'#new');
   enter(w,d,9999);
