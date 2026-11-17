@@ -116,6 +116,34 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
         check('existing independent credit preserved exactly', savedStart.records[seed.id].independent, [seed.completedId]);
         check('navigation adds no START attempts', savedStart.records[seed.id].attempts, 2);
         await capture('finance-saved');
+        await go(map.href(16));
+        const written = page.getByRole('link', {name:'Решить №16 письменно', exact:true});
+        check('official START finance links to written practice', await written.getAttribute('href'), '/ege-profil/part-two/#fipi/2027/16');
+        await written.click();
+        await page.getByRole('heading', {name:'Остаток уменьшается равными долями'}).waitFor();
+        const firstWrittenTask = page.locator('a[href="#task/h12-monthly-balance-4/independent"]');
+        await firstWrittenTask.click();
+        await page.locator('#proof-draft').fill('Ставку применяю к остатку перед начислением.');
+        await page.locator('#final-0').fill('9');
+        await page.locator('#final-form button').click();
+        await page.locator('#feedback.error').waitFor();
+        await page.locator('#final-0').fill('12');
+        await page.locator('#final-form button').click();
+        await page.locator('#completion').waitFor();
+        check('numeric success does not certify the written reasoning', /требует проверки/.test(await page.locator('.proof-status').innerText()));
+        await noOverflow('written finance');
+        await page.reload(); await page.locator('#proof-draft').waitFor();
+        check('written finance proof survives reload', await page.locator('#proof-draft').inputValue(), 'Ставку применяю к остатку перед начислением.');
+        check('written finance first attempt survives correction', await page.evaluate(()=>window.ProfilePartTwoApp.store.read('h12-monthly-balance-4').attempts[0].answers[0]), '9');
+        check('written finance preserves START practice', await page.evaluate(()=>JSON.parse(localStorage.getItem('mathexam.profileStart2027.v1'))), savedStart);
+        await capture('finance-written');
+        await page.getByRole('link',{name:'Мой прогресс',exact:true}).click();
+        const financeProgress = page.getByRole('region',{name:'№16 · Письменные финансовые задачи'});
+        await financeProgress.waitFor();
+        check('only the new written result appears in finance progress', /Самостоятельные ответы: 1/.test(await financeProgress.innerText()));
+        check('old progress retains its totals without written results', /252 условий.*Самостоятельные ответы: 0/s.test(await page.locator('#main > .stats').innerText()));
+        await noOverflow('written finance progress');
+
 
         await go('/ege-profil/part-two/#map');
         const savedPart = await page.evaluate(async () => {
