@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "025bcf9d48d93fe480d37c6807687b1169219122",
+  "baseSha": "8ea6aa61a804ec53a18b6c255ee2430dde9a8114",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -203,8 +203,8 @@
       "placement": "before-head-close"
     },
     "courses/vilenkin-6-part-1/textbook.html": {
-      "beforeSha256": "80e82db7d3da2939a3122fa1688d5c14059a6a5c5d699c35316c2d4b1b2d09dd",
-      "afterSha256": "29acd2dde161949bf5782de1dfd257a32e5bc50142f79f44d9c79124e532c9b0",
+      "beforeSha256": "1e5749f8ed7c3a4f90b6d3aa37881ba8bc8620c4d6be4ca175addab0c81d1f28",
+      "afterSha256": "6c8532d2b624fd069df626a228d7805773ba2f0b589deac6ea45140ffa64a3b8",
       "placement": "before-head-close"
     },
     "credit-payment-table-trainer.html": {
@@ -1208,8 +1208,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-8-8-menelaus.html": {
-      "beforeSha256": "d0487b443850def4eec758b69a69b05c6245f09385d98f20510d84803ddcb6e6",
-      "afterSha256": "f7adcfadcb91d2cfdeab7b07d8d53ca2a682b1070f44474354eadf9278b10d34",
+      "beforeSha256": "df7d893f7fe1f74ae020bd6869f0470515e2cd296450c91fb75a66bde8dbedb9",
+      "afterSha256": "d5e5c2d4e244c3cd57ea029da421a558c5df78a68f8b3225e9c1ea7f75bd9ec8",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-8-9.html": {
@@ -1238,23 +1238,23 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-9-9-ceva.html": {
-      "beforeSha256": "2ea84d9f5a931c3e62bdeac0351fc7ce3dd60d4147e200c85140615d7c724f8b",
-      "afterSha256": "0fe874d603025348ef23ec4471c2cedb2517ac234bfda5290fc0442131bf6d8f",
+      "beforeSha256": "1de378efccd42a616a4fb399342a33e13957247a701597aabb93ae9d793c244a",
+      "afterSha256": "0567dee3e2b4c119e1ec1bbfd041245fa505b15b6685a86fa63019e14642faea",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-9-9-inversion.html": {
-      "beforeSha256": "20a601765e73be08f4097c68d8dbe8653b9b459a1bafa6235dafa3491ce5daae",
-      "afterSha256": "67f0c1dc3d55f753b1d75ab12966781e8c2269a4ab6eb708a7d29114782ba488",
+      "beforeSha256": "adf4d7722e1299302e38931cf9ae2e912b39e9c8ecfd54aa0506360575740fa9",
+      "afterSha256": "ace193722e4f58739667e061ccb598323ef9b672a60d40eec37f393a45248f66",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-9-9-radical.html": {
-      "beforeSha256": "3e6374ba5134b684e1f63159b47608835ea0182380fcc946ededbf2e1b57069b",
-      "afterSha256": "f429eaa82cb6636fd9665fd0b3e259287b29f781cc9af0a897f0dc8ed56d6013",
+      "beforeSha256": "b83db6c66dc5b753d1646017e4cc7f5929696ab092c623b7d2cbb5abf1164982",
+      "afterSha256": "26a41524e566b499c159675dcd5c5066efa53b3cb0cbdfdbde074aa61516bcb4",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-1.html": {
-      "beforeSha256": "47c60fe49b131d1d6e20d121293733b1a413cb5c947f7b6c790df5e9d91631a7",
-      "afterSha256": "94a1d27ebe512b0a3cb6059198f275e4270fc3fae8aa30ca39575891035bb550",
+      "beforeSha256": "de17ead654392c64ccf2dcf59ebee394587d05329723938292f7738fb1ebf088",
+      "afterSha256": "8655a16a8432f966d16d76cc923d1ec433d7a4b14db60d8abe94fa76b9835922",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-10.html": {
@@ -1263,8 +1263,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-11.html": {
-      "beforeSha256": "c7561987c9222b2253c3d22aaffd6af0d5b0384aeee21ce0602891bec791b6eb",
-      "afterSha256": "4dbe92844ed2c9cac356b89bdfefcb1ab70c6d686c2debf357eaf9c3c4705661",
+      "beforeSha256": "983d0e7828a15c647203a40b337c6f377ca1144a3958807ebb0d0ae65cdbe405",
+      "afterSha256": "90b03c9fb314fc31462ba7bcc85b8d03dabc705c068077d317d0b12493925451",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-12.html": {
@@ -1273,13 +1273,13 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-13.html": {
-      "beforeSha256": "f32447863e9fc031c4789cc3059905080310c7b3ab95153f314d6ab52e7c0978",
-      "afterSha256": "a32dd491cff6d0d5a6506a27df0a3050910bbae4c0f9a905a69aa201132cc814",
+      "beforeSha256": "64713d1287229da460fa2469d62a5efa48726a40cbfeb9ade959932727f29d17",
+      "afterSha256": "ef3108b04c92e3c60588eace927bdb7c852cc11e53b832b3ffe03b2d269ffcab",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-14.html": {
-      "beforeSha256": "8c2dafc6913b15835a3618c72b3df2e145b1bf38588a909c0961fdb3f4a2811f",
-      "afterSha256": "b89a5a726aa65002c1ad1973c8d92ffdba5084789e00fef2628033e0509f1163",
+      "beforeSha256": "fc987732cdeae20739a3dc85165cc0b57638d2591f7aadae8dfd3d0cf166a8fc",
+      "afterSha256": "d93d0ff90d86955872fac04a7b21f884c8176bfd071749a2180c98a3300856b4",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-15.html": {
@@ -1293,13 +1293,13 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-17.html": {
-      "beforeSha256": "40d5c3e80abbe600aac3d1059dbebcdefb1d8ed09a53fec607bfa4ecdf0d311f",
-      "afterSha256": "f1c664a9d515782667fe95b09371f66a6acc9b17ad78a9aa6af53aaed105348e",
+      "beforeSha256": "6df08b06b55891ac5e37edae976ecb748a5fd70e35e5a4015f95cb67f1d44f65",
+      "afterSha256": "237ed80c208faf51341fe8a23a5eab0d448b5891a90714b459d02eb6709f856f",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-18.html": {
-      "beforeSha256": "95a80886614709c1870fde6e62fc9c969850233112e797fc8e614a204dc8984c",
-      "afterSha256": "5b8506fdb7c01cd1c409282cf74bebe26ee6a69ba52752265b70882a7abe7929",
+      "beforeSha256": "51455b43b472aca50651444e5c57dbd03037ca3e4f9cfac12bd2755406bbb166",
+      "afterSha256": "02deb6ad27fd6f1e5126a0aaebf2eab85f02a200bcee2bede6cbc452251e8e05",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-19.html": {
@@ -1338,13 +1338,13 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-4.html": {
-      "beforeSha256": "e8a7f8a76fd984e71da5e077543c65159bc9762ab9ac617332b6cb23729e5eb8",
-      "afterSha256": "d44226251c363264f700a821550c730cecd65f42da7483273b56d5d9233f096f",
+      "beforeSha256": "f6fba894be2ee16f70f25f5a14450cdbe6b03dc3a59ed6f484eb5b6d1899174f",
+      "afterSha256": "6fd83c6aa13f852ebeb9dd392c7351cb7909cd505d20045060d253831e479509",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-5.html": {
-      "beforeSha256": "3c8aacb0ccda524624d662d473481e546ad1d9bc34f3f4eaef58667c289f2d86",
-      "afterSha256": "fa86e1457d7b782d8d50320262b3da2100eb9693bdbe628500c1d86868fcee15",
+      "beforeSha256": "dd5326da8e6bf0fbd279b3464b05935737f7e797a38fe068d9510eabde5eba28",
+      "afterSha256": "2e3aece494189731e35a32f4d4aa4ed02fde599476138601b109e2dd0ae8c8b5",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-6.html": {
@@ -1353,18 +1353,18 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-7.html": {
-      "beforeSha256": "3c974a0cd806cd94f4379c40920fe964f904858642f2467c355d404843eab087",
-      "afterSha256": "52c7a9885fed8bea2f4b02fadb2ce3634c5040b589f7af3506e55037835e5463",
+      "beforeSha256": "14678acfcdb51d90b297b0088dd1851e3a82a991a675dfdf73c75d5b83d4e8c4",
+      "afterSha256": "8e3fb28daa85eb3c00298251c9b4bdae78141c631e66e489d8699785a5a21366",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-8.html": {
-      "beforeSha256": "5271eca354ae4bcdf4beb6d41dc089dbf551746d1034053201200e4ba0ba837b",
-      "afterSha256": "4ad13e741383d815f8227d731dcc3a667ebf52a0420a541b8843c37862dccbef",
+      "beforeSha256": "f780cbbebad89a0cdc721435519b5afce0d96508635543e9c53da0188fd3486d",
+      "afterSha256": "46eda452fca245aafde8cf672e9c2e294c46d64b38e0b7f04a307de7c5d0b395",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-9.html": {
-      "beforeSha256": "02be736df1625859e5d18ecad9e413fc4e239cf7abb0681ad088fbfe07532e7a",
-      "afterSha256": "af2f6a7e6af475d8c4da9973b1067bbeb2e575fcc25aa08f7e8a0cdf6c8f53e0",
+      "beforeSha256": "43dff31674b6982e4d84890253e6536970731383109588dcbf40af68d4fd0310",
+      "afterSha256": "ffcf1d516e091ba62179caf79d05ec4b1eb939afb067386c9467f9bd5c1fa75f",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-1.html": {
@@ -1408,13 +1408,13 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-17.html": {
-      "beforeSha256": "a3c0b0b3ff58565ca877a450c17e06b7d4ed468bce15748c07f58c2eae0fa235",
-      "afterSha256": "17e5f9544b6e22a9069ab6b774eadca4b0e70379e5451fe143ba8dad0c0d0e04",
+      "beforeSha256": "f1233e1e7949c2b508f2cd4d82c4df29eb534b4ec93bf2c83c7a6611ec8b92a2",
+      "afterSha256": "3a2a3649fef354c0d52a89e5edf6306ad20e2aaec64ae07e4781883e56f88992",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-18.html": {
-      "beforeSha256": "86c207f831cbd782cb1dfe91cad7e62bcd693bf5b6ce690ca4abb7863e7537fa",
-      "afterSha256": "4d60ffdac8afbfc85f461c6467ef479f11035610cf14c82f9b713a3373f1a59f",
+      "beforeSha256": "077ef8bc9cae9c2d5c2823707b580cbb57b787a68412467549e88d4a1a4a79cf",
+      "afterSha256": "06620789c3fbbc38505db2f08500a09f448048cc0f465e5921ac98b529a49d0e",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-19.html": {
@@ -1478,8 +1478,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-9.html": {
-      "beforeSha256": "4528112c7a8ee5907f01150e8b62c8afc2c6a31ccf6d154a2d17553856df3048",
-      "afterSha256": "ae0278cf5b8c11f8c986c901c1bc2fdd8f0c85f25274126b32ca4f05e8594ca4",
+      "beforeSha256": "243a852b92222b5fc6b62959f8fbb99088feb567f18ea6a6886503f154fdbc3c",
+      "afterSha256": "04a6b33e5fce7a29096c2a175def8d0527bb5dc91444e00e03cb03e00779d8d9",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-9-1.html": {
@@ -1503,8 +1503,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-9-13.html": {
-      "beforeSha256": "2a05d7e7ea8cf3fb748d89217310e216437c4fb35605bbfc32da5b382808ceaf",
-      "afterSha256": "e3c79020345a1e902e7365fd5f1786ac52dac8436d9719273e6d37886cc2b5ae",
+      "beforeSha256": "581afa47df70d1b767c3ae5f181d51bd9c5b02f58cf020da69d7691642e4f02e",
+      "afterSha256": "fd01dd747051fe2e04f49083b49497ef5641b88dccf705f8d074d4c970f60d94",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-9-14.html": {
@@ -1593,8 +1593,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/index.html": {
-      "beforeSha256": "9230edd546339ef86aef9bb9043825acbc9bf0d67b5cf671c6192797af966f3e",
-      "afterSha256": "ac499f8b267a5542a22ece380aa9fe6f2c027d4752d8ce9fd8270db0b3478e0c",
+      "beforeSha256": "6af76610cda46f70d748b9920be9262755e3aed2e6f6dbfc82054424c689b275",
+      "afterSha256": "a887c4cd5130219f26c06ac6f0d7ca29fea08ef786439892cb186d498a918f33",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-1.html": {
@@ -1618,8 +1618,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-16.html": {
-      "beforeSha256": "1fa79583689cdca01a96188a5284be0f7cbf41cd9e1a17e5c936e82ca9ec48ca",
-      "afterSha256": "cce430b71fb409f2666bbd5dc41e19df27542b44c24e80cfa135f8dfd36277c5",
+      "beforeSha256": "bd60450f1540d39e27241221d54d04bed6898c7fb23420dc726eb8a38a8516cc",
+      "afterSha256": "26c9eaef282ccc0e379774a68fb169ac4624ce90a9c088a5ae62777eb6c55b1c",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-17.html": {
@@ -1638,8 +1638,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-20.html": {
-      "beforeSha256": "0dc6351cb30487767107d18716ae6182c7e6047e0eba77469d3bb2fc9ebaefe0",
-      "afterSha256": "fee05fbea0806022881e30f94ce776d326d3e5a4d9d9e20c2ad1b34293a49277",
+      "beforeSha256": "89a77a7485b2fa4aebacf1f5d19bca2e3016369b95e96fa5031c3575e0ec27b1",
+      "afterSha256": "77ce59473d3c590f2a7b4327989df5c960b69795591e2e25e442bf23743769c3",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-23.html": {
@@ -1703,8 +1703,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-39.html": {
-      "beforeSha256": "e61fcaa555764d88ef4a095f548116dd7a01f678515fcea4f12293594de054d6",
-      "afterSha256": "f4b12ab9ac1b18c0637d3443cd29df75de325573177de9dcfbb631f923c76e7b",
+      "beforeSha256": "3649807a09b238f10b55f07d93ea9ae1453587d69e759e9fa2bdc0b05953d6e7",
+      "afterSha256": "e9a8dee9250aceb0c3f2794c46ce44ef54862905f15dc1e917f6f3bf94870990",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-40.html": {
@@ -1793,13 +1793,13 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-61.html": {
-      "beforeSha256": "c67357143ef344f17a5b0f553f9888c88826f6f209f78c97edffcb46e8994eb8",
-      "afterSha256": "9c7b47a07bdccda1dc2d96686e00a3cf300c6ea255c9d0d587ffb9a43b25ec31",
+      "beforeSha256": "fb25574edb7d0e077df29f7b76439ad3ce9fe3053912591644e7cd0cf6003761",
+      "afterSha256": "612a101e75a00cb65c4a59b1a9810feacc5294793f4c94631f310d1cdccac1de",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-62.html": {
-      "beforeSha256": "5970ce9b940b77843b6daba79d0a4f17325b2cab542e1287a405b2b63fb4a99c",
-      "afterSha256": "3db0f6089a23c404338cfc1ab03f2587ed9dce5617b1c78a13febe0d6f306356",
+      "beforeSha256": "da89e1f1338c6eea4d4fc8a070a1854a99dc7c2ce5eafd52d455e0078d1a6867",
+      "afterSha256": "1571b8bf1633cc390ccca140918a757400eff007f3b3dd9b617e5897173776e4",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-63.html": {
@@ -1818,8 +1818,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-67.html": {
-      "beforeSha256": "3ac136c58e47a1c6fc8f4a8dae5ee6f8f5874a0031d0bdaf99a2d14dd2f3f2f5",
-      "afterSha256": "420ab3a9816308d9b12522424b363c7abdce3f68c8d6c2b7f6ca1fa33cc04031",
+      "beforeSha256": "e2a05ca05d5c881ba028c375d233a77a44634362530e6f72824eb1f5e48c4ebd",
+      "afterSha256": "a1f35cd016f81323bb59240bfaf6a6864db35557314250a640135fe89b553ea2",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-71.html": {
@@ -1843,8 +1843,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-80.html": {
-      "beforeSha256": "4e480e9e2fedb3b63075e745a43610de52bd9ece9ca524475de9a94fef6f18a7",
-      "afterSha256": "05916befd1a024588e198387e30203509113b25535595d2777d80f06af01ae19",
+      "beforeSha256": "cb8e0c468d5b161f5502bb534554fd4d6fa80324c488a7bd2e352a8ad33aa8f0",
+      "afterSha256": "4be267afe1e5b86782890ff18268fd602b4a2bd2b46fa218f13e123a7898e353",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-81.html": {
@@ -1903,8 +1903,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-98.html": {
-      "beforeSha256": "d7a1e3e3239c44c3b3be16e44f2ef8909741f248e2f3bfc3dbcc020fef08b315",
-      "afterSha256": "d6d3e1d593e50aa066e08724cc06322807c5b5bcc0f8f376c70a01faf33892a9",
+      "beforeSha256": "95699a20df7881c092ffd919f4ff34f0783d8d01e8f971b91fa529d69554b7b5",
+      "afterSha256": "5de751a84a6ae315e8b870a6878072df84504463fb26ecfe8c5904af98b3530e",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-100.html": {
@@ -1923,8 +1923,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-107.html": {
-      "beforeSha256": "8dc77778c272d31f9bfe065a4b3fbcd43e4641e00f284a24cd505638caf2cfc5",
-      "afterSha256": "f2cefe574a4bfa6a08827186b6f9cfac2e10c0ff7621e77c6c2ea0350a3e932c",
+      "beforeSha256": "fa271d80fbdef0c32a08b7aaeec8d6a1200b9e0a1552145795c05f77a27ea132",
+      "afterSha256": "70170596d0cfdad3c6369aabf88d98e51df100bd78e629fd9ce36ed2338bd275",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-108.html": {
@@ -1943,8 +1943,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-112.html": {
-      "beforeSha256": "6577e1b3808d7f5f5e3517ecaac6efc60101c891e8c9528217b97f107a320544",
-      "afterSha256": "374d20b2f4e0c8f77f3270a0d03da3faae67a1d9a0856a1296b5ae7cb75e6218",
+      "beforeSha256": "5c5d23e97d1351b2fc4ee3b2a9958e9a6c39c91ceb790fa1df1125f450526657",
+      "afterSha256": "0f8c6612c9ca1a1475a8982357e987c61d6c5a606e6852f15f7b2e1f204f648c",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-113.html": {
@@ -1993,8 +1993,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-127.html": {
-      "beforeSha256": "2c6ad808539d12c38829b832dc71f8a659a255aa414feb09918247d1fb453ca0",
-      "afterSha256": "5d6b6e1eba9271495575a0eacb78e34238ddefa25ff050dc59d11ae3c88cdf6d",
+      "beforeSha256": "855bdc75510a5994e852c8d7da9d9a98b569357e95315ba45f0494f2542acc49",
+      "afterSha256": "d1574fae39017c2cb041f406986eef3d18db462857b02317fa2db040607ac9d6",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-128.html": {
@@ -2013,8 +2013,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-131.html": {
-      "beforeSha256": "53fec8c6963943397f2919c7d63ead54e38ec5e69aee65959d8f011a18e3fb39",
-      "afterSha256": "b161bc56427433e2790cd38dbfb0c9c37525715d1e660a957b081bb6ff311442",
+      "beforeSha256": "491f47a0d54eca174c79b7ee48aa7522f9ffc47d6edbb619b099a39beae3600a",
+      "afterSha256": "170b260684070e7ee0b0a36cbb1fbea57ee78ea254bcd407ef380e444cabca30",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-132.html": {
@@ -2038,8 +2038,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/index.html": {
-      "beforeSha256": "0dcc5bc607b98acab011d8188bb9a309787444f837f7f4975006b51073917e88",
-      "afterSha256": "98392bb8c41a2f1ecfd92f58613e15079b29480509b102a0ff60b1e41b30b70a",
+      "beforeSha256": "f6ba290f14ded11bb654ba1fbc5f4f08f2c5a177e124e40f9a0cc8e2737c08ab",
+      "afterSha256": "25541f966c69ed1c2b926e341a7cbfe95dd0fb7b1b1b2612e64cfc9db72fb3a3",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/textbook/index.html": {
@@ -2163,8 +2163,8 @@
       "placement": "before-head-close"
     },
     "school/peterson5/index.html": {
-      "beforeSha256": "1a52d74533fcb8569000f1f64717b1647313e0ffaa4b38ec2f0cd82ef36cdce3",
-      "afterSha256": "d545c38b6d0ad4657ea8b662cc0e430e8c474306d1dabec413aedd06b3530854",
+      "beforeSha256": "6df54c6ffc5190c9118eaa947c12dffc9d1f08d7f5216bac2230dd82e14f8c4c",
+      "afterSha256": "3c3ac2beba7d3c1aa7ad369a5b892bf16c9c10a441af0d01f6727bc80f14bc4b",
       "placement": "before-head-close"
     },
     "school/peterson6/topics/droby-i-desyatichnye/index.html": {
@@ -5422,6 +5422,16 @@
         "geometry-pogorelov/atlas/pogorelov-base-9-127.html",
         "geometry-pogorelov/atlas/pogorelov-base-9-131.html",
         "geometry-pogorelov/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "sourceBaseSha": "8ea6aa61a804ec53a18b6c255ee2430dde9a8114",
+      "task": "docs/tasks/GRADE56_SOURCE_AUDIT_20261118.md",
+      "changedPaths": [
+        "courses/vilenkin-6-part-1/textbook.html",
+        "school/peterson5/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
