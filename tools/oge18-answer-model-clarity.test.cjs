@@ -13,7 +13,8 @@ const BASE = '35e718ca74852857a86dfe9dcc68d091ce165308';
 const ROUTE = 'trainers/oge-task18-grid.html';
 const KEY = 'mathExamCourseProgress.v1';
 const TARGETS = ['segCmp', 'areaPar', 'circRatio'];
-const baseline = file => execFileSync('git', ['show', `${BASE}:${file}`], { cwd: ROOT });
+const baseline = (file, ref = BASE) => execFileSync('git', ['show', `${ref}:${file}`], { cwd: ROOT });
+const thematicGeometry = require('./fixtures/oge-source-alignment-geometry-bytes.json');
 const modules = Promise.all([
   import(pathToFileURL(path.join(__dirname, 'oge-geometry-contract.lib.mjs')).href),
   import(pathToFileURL(path.join(__dirname, 'oge-geometry-contract.t18.mjs')).href),
@@ -383,10 +384,10 @@ for (const fixture of [
   } finally { source.dom.window.close(); peer.dom.window.close(); }
 });
 
-test('public task16/17 HTML and their visible independent discoveries remain unchanged', async () => {
+test('task16/17 retain exact reviewed thematic HTML and visible independent discoveries', async () => {
   for (const number of [16,17]) {
     const route = `trainers/oge-task${number}-${number === 16 ? 'circle' : 'quadrilaterals'}.html`;
-    assert.deepEqual(fs.readFileSync(path.join(ROOT, route)), baseline(route));
+    assert.deepEqual(fs.readFileSync(path.join(ROOT, route)), baseline(route, thematicGeometry.sourceCommit));
     const { dom, d } = await load(number);
     try {
       d.querySelector('#courseHintToggle').click();

@@ -66,19 +66,18 @@ class GeneratorTests(unittest.TestCase):
     def test_reviewed_course_map_closure_retains_dependencies_and_storage_boundary(self):
         edition = builder.Edition("v2", builder.PUBLISHED_V1)
         output, manifest = builder.build(edition)
-        # Exact additions from the published OGE map (30e1af62), not a relaxed
-        # minimum count. Replacing only the entry HTML with pre-map 8bd4c47
-        # reproduces 228 outputs; these four paths are the complete 232-228 delta.
+        # These four paths are the complete closure addition from the OGE map.
+        # The live view script received its own cache version in #642.
         reviewed = {
-            "oge/learning-map-view.js": [],
-            "oge/learning-map.css": [],
-            "oge/learning-map.js": ["oge/registry.js"],
-            "oge/registry.js": [],
+            "oge/learning-map-view.js": ("20261117", []),
+            "oge/learning-map.css": ("20261109", []),
+            "oge/learning-map.js": ("20261109", ["oge/registry.js"]),
+            "oge/registry.js": ("20261109", []),
         }
         sources = {record["path"]: record for record in manifest["sourceFiles"]}
         entry = "trainers/oge-course/index.html"
         self.assertTrue(set(reviewed).issubset(sources[entry]["dependencies"]))
-        for asset, dependencies in reviewed.items():
+        for asset, (_, dependencies) in reviewed.items():
             with self.subTest(asset=asset):
                 self.assertIn(asset, sources)
                 self.assertEqual(sources[asset]["dependencies"], dependencies)
@@ -89,8 +88,8 @@ class GeneratorTests(unittest.TestCase):
         page = output[edition.prefix + entry].decode()
         bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
         self.assertEqual(page.count(bootstrap), 1)
-        for asset in reviewed:
-            frozen = '/' + edition.prefix + asset + '?v=20261109'
+        for asset, (version, _) in reviewed.items():
+            frozen = '/' + edition.prefix + asset + '?v=' + version
             self.assertEqual(page.count(frozen), 1)
             self.assertNotIn('"/' + asset, page)
             self.assertLess(page.index(bootstrap), page.index(frozen))
