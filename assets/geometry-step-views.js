@@ -69,7 +69,7 @@
     const steps=lesson.steps.map((step,i)=>({...step,view:'step-'+(i+1),prompt:prompts[i],explanation:reasons[i],
       ...(i===0?{justifications:[{kind:'definition',text:'Высота опущена из вершины перпендикулярно прямой основания.'}]}:{})}));
     return {...lesson,steps,visualization:{...lesson.visualization,caption:triangle?'Основание BC = 10 см. Прямая m проходит через A перпендикулярно плоскости ABC.':'AB = 6 см. Прямая a проходит через B перпендикулярно плоскости ABCD.',model},
-      statement:{...lesson.statement,goal:triangle?'Найди площадь ABC.':'Найди расстояние между a и CD.'},
+      statement:{...lesson.statement,text:lesson.statement.text.split(' Найдите ')[0],goal:triangle?'Найдите площадь ABC.':'Найдите расстояние между a и CD.'},
       answer:{...lesson.answer,prompt:'Запиши вычисление и объясни, почему построенный отрезок перпендикулярен обеим прямым.'}};
   }
 
