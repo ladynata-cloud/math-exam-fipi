@@ -209,6 +209,13 @@ assert.equal(C.check('4/2', integerResult), false);
 assert.equal(C.check('1,550', legacyMake('decimal-add', 0).steps.at(-1)), true);
 assert.equal(C.check('1.55', legacyMake('decimal-add', 0).steps.at(-1)), true);
 assert.equal(C.check('1,56', legacyMake('decimal-add', 0).steps.at(-1)), false);
+const decimalSum = legacyMake('decimal-add', 0).steps.at(-1);
+for (const value of ['31/20', '1 11/20', '3,10 / 2']) assert.equal(C.check(value, decimalSum), true, value);
+for (const value of ['1,5500000001', '1,55000000000000000001', '1,5 5', '31/0']) {
+  assert.equal(C.check(value, decimalSum), false, value);
+}
+assert.equal(C.check('1 2', { answer: 12 }), false);
+assert.equal(C.check('0.33333333333333333333', { answer: '1/3' }), false);
 
 // Check both browser and Node loading paths, including delegated division checks.
 const browser = {};
