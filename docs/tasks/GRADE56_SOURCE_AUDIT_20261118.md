@@ -47,7 +47,7 @@ separate progress; their counts must not be added as unique curriculum coverage.
 | --- | --- | --- |
 | Vilenkin 5, first part | 24 textbook topics, introductory review and four applications: 29 modules, 87 worked examples and 522 practice/check cards | Author exercises by topic; not every numbered exercise |
 | Vilenkin 5, two-part workshop | 134 lessons across 51 textbook points, plus bridges/practice | Topic coverage; not every numbered exercise |
-| Vilenkin 6, current first-part textbook | Introductory review + 23 topics; 194 selected cards: 185 numbered exercise cards, eight textbook examples, one question; separate 48-card author supplement on LCM of three or more integers | Selected cards and complete textbook numbers differ; full textbook coverage is false |
+| Vilenkin 6, current first-part textbook | Introductory review + 23 topics; 194 selected cards: 185 numbered exercise cards, eight textbook examples, one question; separate 44-card author supplement on LCM of three or more integers | Selected cards and complete textbook numbers differ; full textbook coverage is false |
 | Vilenkin 6, two-part workshop | 194 lessons across 44 points; three projects | Separate older topic route, not a second 194-card textbook bank |
 | Peterson 5 | 43 topics in parts 1–2; 131 selected cards | Not every exercise |
 | Peterson 6 | 14 topics and 224 cards from part 1 | Parts 2–3 in open #469 are not published scope of this task |
