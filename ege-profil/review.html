@@ -50,6 +50,9 @@
   .closedbar span.on{background:var(--ink)}
   .bigcount{font:800 34px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
   .okline{color:var(--ok);font-weight:700}
+  .part-two-review-group summary{cursor:pointer;color:var(--ink-strong);font-weight:700;padding:8px 0;min-height:44px}
+  .part-two-review-group+.part-two-review-group{border-top:1px solid var(--line)}
+  #partTwoMistakeList .row>div{min-width:0;overflow-wrap:anywhere}
 </style>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
@@ -78,6 +81,12 @@
     <div id="closedList"></div>
   </div>
   <section class="card" id="profileCourseMistakes"></section>
+  <section class="card" id="partTwoMistakes" aria-labelledby="partTwoMistakeTitle">
+    <h2 id="partTwoMistakeTitle">Ошибки второй части</h2>
+    <p class="small muted">Здесь видны ошибки в проверяемых шагах и ответах. Письменное обоснование проверяет преподаватель.</p>
+    <div id="partTwoMistakeList" aria-live="polite"></div>
+    <a href="part-two/#map">К темам второй части →</a>
+  </section>
   <p><button class="btn ghost" id="clearBtn">Очистить журнал старых подборок</button></p>
 </div>
 
@@ -136,7 +145,7 @@
 
   var sc = document.getElementById("summaryCard");
   if (!open.length && !closed.length){
-    sc.innerHTML = '<h2>'+(hasCourseErrors?'В прежних подборках ошибок пока нет':'Журнал пока пуст')+'</h2>' +
+    sc.innerHTML = (hasCourseErrors?'<h2>В прежних подборках ошибок пока нет</h2>':'<h2 id="emptyJournalTitle">Журнал пока пуст</h2>') +
       '<p>Ошибки появятся здесь сами: тренажёры записывают каждый промах в тренировках и зачётах. ' +
       'Начните с любого тренажёра или напишите <a href="exam/full-exam.html">пробный экзамен</a> — он покажет, какие линии проседают.</p>';
   } else {
@@ -214,5 +223,7 @@
   });
 })();
 </script>
+<script src="part-two/state.js"></script>
+<script src="review-part-two.js"></script>
 </body>
 </html>
