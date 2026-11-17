@@ -76,16 +76,45 @@ async function courseDOM(hash = 'map') {
  return dom;
 }
 
-test('second-part home separates six written topics, financial preparation and extra optimization',async()=>{
+test('second-part home links written finance and keeps numerical preparation and extra optimization',async()=>{
  const dom=await courseDOM(),d=dom.window.document;
  for(const number of [13,14,15,17,18,19])assert.ok(d.querySelector('a[href="#fipi/2027/'+number+'"]'),'official '+number);
  const finance=d.querySelector('a[href="/ege-profil/start/#fipi/2027/16"]');assert.ok(finance);
- assert.match(finance.closest('.card').textContent,/числовых упражнений/);
- assert.match(finance.closest('.card').textContent,/письменное решение.*отдельного обоснования/);
+ const written=finance.closest('.card').querySelector('a[href="#fipi/2027/16"]');
+ assert.ok(written);
+ assert.match(written.closest('.card').textContent,/18 условий с письменным решением/);
+ assert.match(written.closest('.card').textContent,/запишите полное обоснование/);
+ const domFinance=await courseDOM('fipi/2027/16'), financeDocument=domFinance.window.document;
+ assert.equal(financeDocument.querySelectorAll('.grid .card a[href^="#lesson/h12-"]').length,3);
+ assert.match(financeDocument.querySelector('#main').textContent,/16 тем и 96 числовых упражнений/);
+ domFinance.window.close();
  assert.ok(d.querySelector('a[href="#topic/optimization"]'));
  assert.equal(d.querySelectorAll('.grid .card').length,8);
  assert.match(d.querySelector('#main').textContent,/36 тем и 216 условий/);
  dom.window.close();
+});
+
+test('written finance progress leaves the original 42 lessons and their results separate',async()=>{
+ const dom=await courseDOM('progress'),w=dom.window,d=w.document;
+ try{
+  const {store,financeLessons}=w.ProfilePartTwoApp;
+  const original=lessons[0].tasks[3],written=financeLessons[0].tasks;
+  const save=(task,mode)=>store.attempt(task.id,{kind:'final',answers:task.final.map(field=>field.answers[0]),correct:true,mode,independentEligible:mode==='independent'});
+  await save(original,'independent');
+  await save(written[3],'independent');
+  await save(written[0],'guided');
+  await w.ProfilePartTwoApp.render();
+  const originalStats=d.querySelector('#main > .stats');
+  assert.match(originalStats.textContent,/252 условий/);
+  assert.match(originalStats.textContent,/Самостоятельные ответы: 1/);
+  assert.match(originalStats.textContent,/С опорой: 0/);
+  assert.equal(d.querySelectorAll('.table-wrap tbody tr').length,42);
+  const financeProgress=d.querySelector('[aria-labelledby="finance-progress-title"]');
+  assert.match(financeProgress.textContent,/18 условий/);
+  assert.match(financeProgress.textContent,/Самостоятельные ответы: 1/);
+  assert.match(financeProgress.textContent,/С опорой: 1/);
+  assert.ok(financeProgress.querySelector('a[href="#fipi/2027/16"]'));
+ }finally{w.close();}
 });
 
 test('legacy second-part routes retain their topics and show current labels without renumbering lessons',async()=>{
