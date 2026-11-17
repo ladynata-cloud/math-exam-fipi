@@ -6,6 +6,7 @@ const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs')
 const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const {restoreGraphScale}=require('./oge-video-models-preservation.cjs');
+const alignment10To14=require('./fixtures/oge-source-alignment-10-14.json');
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
@@ -84,6 +85,9 @@ for(const p of routes.pages){
   if(p==='trainers/oge-task9-equations.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
     assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),task9ReviewedScript,p+' exact reviewed inline engine');
+  }else if(alignment10To14.inlineScripts[p]){
+    const actual=actualScripts.map(script=>createHash('sha256').update(script).digest('hex'));
+    assert.deepEqual(actual,alignment10To14.inlineScripts[p],p+' exact reviewed alignment engines');
   }else{
     assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   }

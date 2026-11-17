@@ -10,7 +10,7 @@ const input=(w,el,v,type='input')=>{el.value=v;el.dispatchEvent(new w.Event(type
 const state=w=>JSON.stringify(w.getBoardTrainerState());
 function projection(d,n){const el=stage(d,n);return {text:el.textContent.replace(/\s+/g,' ').trim(),fields:[...el.querySelectorAll('input,select,textarea')].map(e=>[e.type,e.value,e.disabled]),buttons:[...el.querySelectorAll('button')].map(e=>[e.textContent,e.disabled,e.getAttribute('aria-pressed'),e.getAttribute('aria-expanded')]),labs:[...el.querySelectorAll('[data-probe-x]')].map(e=>[e.dataset.probeX,e.dataset.operation,e.dataset.activeRegion]),graphs:[...el.querySelectorAll('svg')].map(e=>e.innerHTML)};}
 async function mirror(a,b,n){const s=a.w.getBoardTrainerState();assert.ok(Buffer.byteLength(JSON.stringify(s))<=65536);assert.equal(a.w.MathExamBoard.validateState(s).ok,true,'SDK size/depth contract');b.w.applyBoardTrainerState(copy(b.w,s));await tick();assert.equal(state(b.w),state(a.w),`state №${n} ${s.task.type}`);assert.deepEqual(projection(b.d,n),projection(a.d,n),`native view №${n} ${s.task.type}`);}
-test('OGE13: all 26 worked explanations replay without replacing selected answers',async()=>{
+test('OGE13: all 27 worked explanations replay without replacing selected answers',async()=>{
  const a=await load(13),b=await load(13);try{
   const picker=a.d.getElementById('oge-board-type');
   for(const option of [...picker.options]){input(a.w,picker,option.value,'change');await tick();a.d.getElementById('hintToggle').click();a.d.querySelector('#chips button,#choices button').click();
@@ -22,7 +22,7 @@ test('OGE13: all 26 worked explanations replay without replacing selected answer
 });
 for(const n of [10,11,12,13,14])test(`OGE${n}: every native family restores draft, feedback, assistance and controls in two windows`,async()=>{
  const a=await load(n),b=await load(n);try{
- const picker=a.d.getElementById('oge-board-type');assert.equal(picker.options.length,{10:7,11:5,12:40,13:26,14:9}[n]);
+ const picker=a.d.getElementById('oge-board-type');assert.equal(picker.options.length,{10:7,11:5,12:40,13:27,14:9}[n]);
  for(const option of [...picker.options]){
   input(a.w,picker,option.value,'change');await tick();
   const s=stage(a.d,n),answer=s.querySelector(n===11?'#m4-answer':'input:not([type=range]):not([type=checkbox])');

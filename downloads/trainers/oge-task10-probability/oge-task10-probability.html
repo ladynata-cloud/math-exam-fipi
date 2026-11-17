@@ -575,7 +575,30 @@ const OBJ102=[
   {what:'воздушных шариков', one:'шарик', verb:'Аниматор наугад берёт один шарик'}
 ];
 const COLORS=[['красных','красным'],['синих','синим'],['зелёных','зелёным'],['жёлтых','жёлтым'],['оранжевых','оранжевым'],['фиолетовых','фиолетовым']];
+function gen102Split(pk){
+  const total=pk.of([80,100,125,160]);
+  const wool=pk.ri(8,18), linen=pk.ri(7,16), half=pk.ri(12,22);
+  const remainder=2*half, cotton=total-wool-linen-remainder;
+  const fav=wool+half, answer=F(fav,total);
+  const text=`Для театральных костюмов приготовили <b>${total}</b> лент: <b>${wool}</b> шерстяных, <b>${linen}</b> льняных и <b>${cotton}</b> хлопковых. Остальные ленты шёлковые и вискозные, их поровну. Из всех лент наугад выбирают одну. Найдите вероятность выбрать шерстяную или вискозную ленту.`;
+  return {
+    code:'10.2', name:'Один выбор предмета', text, answer,
+    meta:{total,fav,wool,linen,cotton,remainder},
+    hints:[
+      'Сначала вычти из общего числа ленты с известным количеством. Что осталось?',
+      'Половина остатка — вискозные ленты. Прибавь к ним шерстяные и раздели на число всех лент.'
+    ],
+    steps:[
+      pStep('Сколько шёлковых и вискозных лент вместе?',F(remainder),`Остаток: ${total} − ${wool} − ${linen} − ${cotton} = ${remainder}.`,'число лент двух оставшихся видов'),
+      pStep('Сколько вискозных лент?',F(half),`Вискозных ${remainder} : 2 = ${half}.`,'половину остатка'),
+      pStep('Сколько лент подходит под условие?',F(fav),`Шерстяных или вискозных: ${wool} + ${half} = ${fav}.`,'число лент обоих нужных видов'),
+      pStep('Найди вероятность: '+probStepText(),answer,`P = ${fav} : ${total}.`,'деление нужных на все')
+    ],
+    razbor:`Шёлковых и вискозных лент вместе ${total} − ${wool} − ${linen} − ${cotton} = ${remainder}. Вискозных ${remainder} : 2 = ${half}. Число подходящих лент: ${wool} + ${half} = ${fav}. P = ${fracHTMLraw(fav,total)} = ${fToDec(answer)}.`
+  };
+}
 function gen102(pk){
+  if(!window.OgeCourseSharedMode && pk.ri(1,3)===1) return gen102Split(pk);
   const obj=pk.of(OBJ102);
   const [c1,c2]=pk.shuf(COLORS).slice(0,2);
   const total=pk.of(NICE_DEN);
@@ -949,8 +972,9 @@ function trapsRaw10(t){
     add(F(m.k,m.N-m.k),'Благоприятные разделены на неблагоприятные. Делить нужно на все исходы — их '+m.N+'.');
   }else if(c==='10.2'){
     add(F(m.total,m.fav),'Дробь перевёрнута: все предметы разделены на нужные.');
-    add(F(m.total-m.fav,m.total),'Это вероятность другого цвета. Перечитай вопрос: про какой цвет спрашивают?');
-    add(F(m.fav,m.total-m.fav),'Нужные разделены на ненужные. В знаменателе — все предметы: сложи оба числа.');
+    add(F(m.total-m.fav,m.total),m.remainder?'Это вероятность выбрать неподходящую ленту.':'Это вероятность другого цвета. Перечитай вопрос: про какой цвет спрашивают?');
+    add(F(m.fav,m.total-m.fav),'Нужные разделены на ненужные. В знаменателе — все предметы.');
+    if(m.remainder) add(F(m.wool+m.remainder,m.total),'В остатке два вида лент. Вискозных только половина остатка.');
   }else if(c==='10.3'){
     const T3=m.total, g=m.g, y=m.y;
     add(F(g,T3),'Так было бы, если бы первую '+m.acc+' вернули в мешочек. Её не вернули — пересчитай, что осталось.');
@@ -1050,7 +1074,12 @@ function fuzz10(itersPerType){
       // независимая перепроверка по meta
       const m=t.meta;
       if(code==='10.1'){ if(!fEq(A,F(m.k,m.N))) fail('10.1 key'); }
-      if(code==='10.2'){ if(m.a+m.b!==m.total) fail('10.2 sum'); if(!fEq(A,F(m.fav,m.total))) fail('10.2 key'); }
+      if(code==='10.2'){
+        if(m.remainder){
+          if(m.wool+m.linen+m.cotton+m.remainder!==m.total || m.remainder%2!==0 || m.fav!==m.wool+m.remainder/2) fail('10.2 split');
+        }else if(m.a+m.b!==m.total) fail('10.2 sum');
+        if(!fEq(A,F(m.fav,m.total))) fail('10.2 key');
+      }
       if(code==='10.3'){ if(!fEq(A,F(m.g-1,m.total-1))) fail('10.3 key'); if(m.g<2) fail('10.3 g<2'); }
       if(code==='10.4'){ if(!fEq(A,F(m.t,m.N))) fail('10.4 key'); if(m.h+m.t!==m.N) fail('10.4 sum'); }
       if(code==='10.5'){

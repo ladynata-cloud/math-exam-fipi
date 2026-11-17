@@ -1776,6 +1776,25 @@ function gen44(){
   };
 }
 function gen45(){
+  if (!window.OgeCourseSharedMode && ri(1, 3) === 1){
+    const lines = [-1, 1].map(kSign => {
+      const L = genLine({ kSign, bNonZero: true });
+      return { family: "lin", L, params: {k:L.k,b:L.b}, desc: '<span class="math">' + fmtLin(L.k, L.b) + "</span>",
+        plot: { fn: x => L.k * x + L.b, color: COLORS.ink },
+        explain: (L.k > 0 ? "прямая возрастает" : "прямая убывает") + "; её точка на оси <i>y</i> — (0; " + fnum(L.b) + ")",
+        sig: "lin:" + kSign };
+    });
+    const m = genHyp().m;
+    const hyperbola = { family: "hyp", params: {k:m}, desc: '<span class="math">' + fmtHyp(m) + "</span>",
+      plot: { fn: x => m / x, color: COLORS.ink },
+      explain: "две отдельные ветви принадлежат гиперболе", sig: "hyp" };
+    return {
+      title: "Две прямые и гипербола", inverse: ri(0, 1) === 1,
+      taskline: "Установи соответствие между графиками и формулами.", items: shuffle([...lines, hyperbola]),
+      hint: "Отдельные ветви выдают гиперболу. Две прямые сравни по направлению и по точке на оси y.",
+      notice: "Сначала узнай гиперболу, затем сравни, какая прямая возрастает и какая убывает."
+    };
+  }
   const fams = shuffle(["lin", "par", "hyp", "root", "const"]).slice(0, 3);
   const items = fams.map(f => {
     if (f === "lin"){
@@ -1845,7 +1864,7 @@ function m4Make(type){
   }
   T.type = type;
   T.order = shuffle([0, 1, 2]);
-  T.key = LETTERS.map((_, i) => T.order.indexOf(i) + 1);
+  T.key = T.inverse ? T.order.map(i => i + 1) : LETTERS.map((_, i) => T.order.indexOf(i) + 1);
   return T;
 }
 /* признаки типа — что проверить у каждого пункта (решение D32) */
@@ -1870,6 +1889,10 @@ function pairFeatures(type, u, v){
   else if (type === "t42"){ if (s(u.p.a) !== s(v.p.a)) out.push("a"); if (s(u.p.x0) !== s(v.p.x0)) out.push("side"); }
   else if (type === "t43"){ if (s(u.L.k) !== s(v.L.k)) out.push("k"); if (s(u.L.b) !== s(v.L.b)) out.push("b"); }
   else if (type === "t44") out.push(s(u.m) !== s(v.m) ? "hypq" : "hypm");
+  else if (u.family === "lin" && v.family === "lin") {
+    if (s(u.L.k) !== s(v.L.k)) out.push("k");
+    if (s(u.L.b) !== s(v.L.b)) out.push("b");
+  }
   else out.push("family");
   return out;
 }
@@ -1879,24 +1902,29 @@ function m4Diag(T, ans){
   LETTERS.forEach((_, i) => {
     if (ans[i] === T.key[i]) return;
     wrong.push(i);
-    const j = T.order[ans[i] - 1];   // пункт, чей график выбран для буквы i
-    pairFeatures(T.type, T.items[i], T.items[j]).forEach(c => { if (cats.indexOf(c) < 0) cats.push(c); });
+    const actual = T.inverse ? ans[i] - 1 : T.order[ans[i] - 1];
+    const expected = T.inverse ? T.order[i] : i;
+    pairFeatures(T.type, T.items[expected], T.items[actual]).forEach(c => { if (cats.indexOf(c) < 0) cats.push(c); });
   });
   return { right: 3 - wrong.length, wrong, cats, featText: cats.map(c => FEAT_NAME[c]).join(" и ") };
 }
 /* разметка задачи: графики плиткой (на узком экране три колонки, нажатие разворачивает) и списки букв */
 function renderMatch(T, host, idp){
+  const functionHelp = i => idp === 'm4' ? '<button type="button" class="function-help" data-i="'+i+'" aria-label="Нужна помощь с функцией '+(T.inverse ? i+1 : LETTERS[i])+'?" aria-expanded="false" aria-controls="t11-help-panel">Нужна помощь?</button>' : '';
   let h = '<div class="graphrow match" id="' + idp + '-graphs">';
   T.order.forEach((itemIdx, pos) => {
-    h += '<button type="button" class="gitem" aria-expanded="false" aria-label="график ' + (pos + 1) + '"><div class="gnum">' + (pos + 1) + ')</div>' +
+    const label = T.inverse ? LETTERS[pos] : pos + 1;
+    h += '<button type="button" class="gitem" aria-expanded="false" aria-label="график ' + label + '"><div class="gnum">' + label + ')</div>' +
       '<div class="graphwrap">' + svgGraph([T.items[itemIdx].plot], [], { size: 300 }) + "</div></button>";
   });
   h += '</div><p class="graph-help">Нажми на график, чтобы рассмотреть его крупнее.</p><div class="match-desc" id="' + idp + '-desc">';
+  if (T.inverse) h += '<ol aria-label="Формулы">' + T.items.map((it, i) => '<li><div class="row">' + it.desc + functionHelp(i) + '</div></li>').join('') + '</ol>';
   T.items.forEach((it, i) => {
-    h += '<div class="row"><span class="letter">' + LETTERS[i] + ')</span> <span>' + it.desc + '</span>' +
-      '<select data-i="' + i + '" aria-label="график для пункта ' + LETTERS[i] + '">' +
-      '<option value="">график…</option><option>1</option><option>2</option><option>3</option></select>' +
-      (idp==='m4' ? '<button type="button" class="function-help" data-i="'+i+'" aria-label="Нужна помощь с функцией '+LETTERS[i]+'?" aria-expanded="false" aria-controls="t11-help-panel">Нужна помощь?</button>' : '') + '</div>';
+    const selectorLabel = T.inverse ? 'формула для графика ' + LETTERS[i] : 'график для пункта ' + LETTERS[i];
+    h += '<div class="row"><span class="letter">' + LETTERS[i] + ')</span>' + (T.inverse ? '' : ' <span>' + it.desc + '</span>') +
+      '<select data-i="' + i + '" aria-label="' + selectorLabel + '">' +
+      '<option value="">' + (T.inverse ? 'формула…' : 'график…') + '</option><option>1</option><option>2</option><option>3</option></select>' +
+      (T.inverse ? '' : functionHelp(i)) + '</div>';
   });
   h += '</div><div class="answer-line"><label for="' + idp + '-answer">Ответ одной строкой:</label>' +
     '<input class="ans" id="' + idp + '-answer" inputmode="numeric" maxlength="3" placeholder="312" autocomplete="off"></div>';
@@ -1935,6 +1963,10 @@ function m4Msg(T, d, attempts){
   return msg;
 }
 function m4Banner(html){ const b = $("m4-review"); if (!b) return; b.classList.toggle("show", !!html); b.innerHTML = html; }
+function m4Explanation(T, i){
+  const it = T.items[T.inverse ? T.order[i] : i];
+  return '<p class="math"><b>' + LETTERS[i] + " → " + T.key[i] + ":</b> " + it.explain + ".</p>";
+}
 function m4New(){
   if(window.Task11Discovery) Task11Discovery.resetForTask();
   fbHide($("m4-hintbox"), $("m4-soft"), $("m4-good"), $("m4-razbor"));
@@ -1948,8 +1980,8 @@ function m4New(){
   Object.assign(M4, { task: T, attempts: 0, lastTry: null, missed: false, shown: false, done: false, razborStep: 0 });
   const topicNames = {t41:"Знаки a и c",t42:"Параболы",t43:"Прямые",t44:"Гиперболы",t45:"Разные виды графиков"};
   $("m4-title").textContent = topicNames[T.type];
-  $("m4-heading").textContent = T.type === "t41" ? "Найди график для каждого описания" : "Найди график каждой функции";
-  $("m4-taskline").innerHTML = T.type === "t41" ? T.taskline : "Выбери номер графика для каждого пункта. Каждый график используется один раз.";
+  $("m4-heading").textContent = T.inverse ? "Найди формулу для каждого графика" : T.type === "t41" ? "Найди график для каждого описания" : "Найди график каждой функции";
+  $("m4-taskline").innerHTML = T.inverse ? "Выбери номер формулы для каждого графика. Каждая формула используется один раз." : T.type === "t41" ? T.taskline : "Выбери номер графика для каждого пункта. Каждый график используется один раз.";
   $("m4-hintbox").hidden = true;
   $("m4-hintbox").innerHTML = "";
   $("m4-hint").setAttribute("aria-expanded", "false");
@@ -1964,7 +1996,7 @@ $("m4-check").addEventListener("click", () => {
   if (M4.done){ fb($("m4-soft"), "Это задание уже решено — жми «Следующее задание»."); return; }
   const ans = M4.form.read();
   if (!ans){ fb($("m4-soft"), "Заполни соответствие для всех трёх букв — списками или строкой из трёх цифр."); return; }
-  if (new Set(ans).size !== 3){ fb($("m4-soft"), "Каждый график используется ровно один раз — проверь, нет ли повторов."); return; }
+  if (new Set(ans).size !== 3){ fb($("m4-soft"), "Каждый номер используется ровно один раз — проверь, нет ли повторов."); return; }
   const sig = ans.join("");
   if (sig === M4.lastTry){ fb($("m4-soft"), "Ответ не изменился — поменяй соответствие и проверь снова."); return; }   // не попытка
   M4.lastTry = sig; M4.attempts++;
@@ -1978,7 +2010,7 @@ $("m4-check").addEventListener("click", () => {
     const ok = !M4.shown && M4.attempts <= 2;   // после второй ошибки — «не засчитано» (D19, D33)
     if (ok){ CP.solvedOne(T.type); if (!M4.missed) CP.mlog(T.type, true); recordSkill("oge", M4.attempts === 1); }
     let ex = '<div class="notice-title">Верно! Короткий разбор:</div>';
-    T.items.forEach((it, i) => { ex += '<p class="math"><b>' + LETTERS[i] + " → " + T.key[i] + ":</b> " + it.explain + ".</p>"; });
+    LETTERS.forEach((_, i) => { ex += m4Explanation(T, i); });
     if (!ok) ex += "<p>" + (M4.shown ? "Разбор был показан — задание в счёт решённых не идёт." : "Было две ошибки — задание в счёт решённых не идёт.") + "</p>";
     fb($("m4-good"), ex);
     return;
@@ -2001,7 +2033,7 @@ $("m4-show").addEventListener("click", () => {
   if (!M4.done) M4.shown = true;
   M4.razborStep++;
   let h = '<div class="notice-title">Разбор по пунктам</div>';
-  for (let i = 0; i < M4.razborStep; i++) h += '<p class="math"><b>' + LETTERS[i] + " → " + T.key[i] + ":</b> " + T.items[i].explain + ".</p>";
+  for (let i = 0; i < M4.razborStep; i++) h += m4Explanation(T, i);
   if (M4.razborStep >= 3){
     h += "<p>Ответ: <b>" + T.key.join("") + "</b>.</p>";
     h += '<div class="notice-title" style="margin-top:8px">Что стоило заметить</div><p class="math">' + T.notice + "</p>";
@@ -2326,7 +2358,8 @@ const Task11Discovery = (() => {
     if(!button)return;
     button.setAttribute('aria-expanded',String(on));
     button.textContent=on?'Скрыть помощь':'Нужна помощь?';
-    button.setAttribute('aria-label',(on?'Скрыть помощь с функцией ':'Нужна помощь с функцией ')+LETTERS[Number(button.dataset.i)]+'?');
+    const i=Number(button.dataset.i);
+    button.setAttribute('aria-label',(on?'Скрыть помощь с функцией ':'Нужна помощь с функцией ')+(M4.task.inverse?i+1:LETTERS[i])+'?');
   }
   function close(returnFocus=true){
     if(panel.hidden)return;
@@ -2344,7 +2377,7 @@ const Task11Discovery = (() => {
       const d=descriptor(M4.task.items[i]);
       states[i]={kind:d.kind,original:Object.assign({},d.values),values:d.values,pointX:initialX(d.kind,d.values),started:false,highlighted:false};
     }
-    get('title').textContent='Функция '+LETTERS[i];
+    get('title').textContent='Функция '+(M4.task.inverse?i+1:LETTERS[i]);
     controls();draw();
     trigger.closest('.row').insertAdjacentElement('afterend',panel);
     panel.hidden=false;expanded(trigger,true);
@@ -2411,6 +2444,7 @@ $("m5-reset").addEventListener("click", () => {
 /* =================== МОДУЛЬ 6. ЗАЧЁТ (решения D15, D34) =================== */
 /* формулировка зачёта — как в КИМ: без подсказки метода (D15, D34) */
 function examLine(T){
+  if(T.inverse) return "Установи соответствие между графиками А, Б, В и формулами 1, 2, 3. Запиши три цифры в порядке А, Б, В.";
   return T.type === "t41"
     ? 'На рисунках изображены графики функций вида <span class="math"><i>y</i> = <i>a</i><i>x</i><sup>2</sup> + <i>b</i><i>x</i> + <i>c</i></span>. Установи соответствие между знаками коэффициентов и графиками.'
     : "Установи соответствие между формулами и графиками.";
@@ -2439,7 +2473,7 @@ function runQuiz11(){
     $("m6-ok").addEventListener("click", () => {
       if (answered) return;   // двойное касание — один ответ
       const ans = form.read();
-      if (!ans || new Set(ans).size !== 3){ fb($("m6-fb"), "Заполни соответствие для всех трёх букв, каждый график — один раз. Попытка не потрачена."); $("m6-fb").className = "fb soft show"; return; }
+      if (!ans || new Set(ans).size !== 3){ fb($("m6-fb"), "Заполни соответствие для всех трёх букв, каждый номер — один раз. Попытка не потрачена."); $("m6-fb").className = "fb soft show"; return; }
       answered = true;
       const d = m4Diag(T, ans), ok = !d.wrong.length;
       res.push({ T, ans, ok, d });
@@ -2723,7 +2757,7 @@ function selftest11(){
     for (let n = 0; n < 300; n++){
       const T = m4Make(type), tag = type + " #" + n;
       if (new Set(T.items.map(it => it.sig)).size !== 3) errs.push(tag + ": у пунктов совпадают признаки");
-      T.items.forEach((_, i) => { if (T.order[T.key[i] - 1] !== i) errs.push(tag + ": ключ не совпадает с порядком графиков"); });
+      T.items.forEach((_, i) => { if (T.inverse ? T.order[i] !== T.key[i] - 1 : T.order[T.key[i] - 1] !== i) errs.push(tag + ": ключ не совпадает с порядком графиков"); });
       T.order.forEach((ix, pos) => ASTK.svg(svgGraph([T.items[ix].plot], [], { size: 300 }), tag + " график " + (pos + 1), errs));
       [T.title, T.taskline, T.hint, T.notice].concat(T.items.map(it => it.desc), T.items.map(it => it.explain)).forEach(h => ASTK.text(h, tag, errs));
       /* каждая пара пунктов различается хотя бы одним признаком; первое сообщение не называет ни букв, ни признака пары */

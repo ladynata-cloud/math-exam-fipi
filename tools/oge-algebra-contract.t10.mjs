@@ -42,6 +42,15 @@ function diceCount(text) {
   return c;
 }
 
+function splitRibbonCounts(text) {
+  const m = /приготовили (\d+) лент: (\d+) шерстяных, (\d+) льняных и (\d+) хлопковых\. Остальные ленты шёлковые и вискозные, их поровну\..*шерстяную или вискозную ленту\./.exec(text);
+  if (!m) return null;
+  const [total, wool, linen, cotton] = m.slice(1).map(BigInt);
+  const remainder = total - wool - linen - cotton;
+  if ([wool, linen, cotton, remainder].some(v => v <= 0n) || remainder % 2n !== 0n) throw new Error('10.2: числа лент несовместимы с условием');
+  return { total, wool, remainder, fav: wool + remainder / 2n };
+}
+
 /*
   solve(task) → { key, rounded|null, parts } или { bad: 'почему' }.
   task: { code, text, svg } — как у тренажёра; code — «10.1» … «10.7» или «10_1» … «10_7».
@@ -55,14 +64,18 @@ export function solve(task) {
     if (!m) return { bad: '10.1: не разобрано условие' };
     key = R(BigInt(m[2]), BigInt(m[1]));
   } else if (code === '10.2') {
-    // «лежат 7 красных и 13 синих значков … окажется синим»
-    const m = /лежат (\d+) ([а-яё]+) и (\d+) ([а-яё]+) .*? окажется ([а-яё]+)\./.exec(t);
-    if (!m) return { bad: '10.2: не разобрано условие' };
-    const st = (w) => w.slice(0, -1);
-    const a = BigInt(m[1]), b = BigInt(m[3]);
-    const fav = st(m[5]) === st(m[2]) ? a : st(m[5]) === st(m[4]) ? b : null;
-    if (fav === null) return { bad: '10.2: цвет вопроса не найден среди цветов условия' };
-    key = R(fav, a + b);
+    const split = splitRibbonCounts(t);
+    if (split) key = R(split.fav, split.total);
+    else {
+      // «лежат 7 красных и 13 синих значков … окажется синим»
+      const m = /лежат (\d+) ([а-яё]+) и (\d+) ([а-яё]+) .*? окажется ([а-яё]+)\./.exec(t);
+      if (!m) return { bad: '10.2: не разобрано условие' };
+      const st = (w) => w.slice(0, -1);
+      const a = BigInt(m[1]), b = BigInt(m[3]);
+      const fav = st(m[5]) === st(m[2]) ? a : st(m[5]) === st(m[4]) ? b : null;
+      if (fav === null) return { bad: '10.2: цвет вопроса не найден среди цветов условия' };
+      key = R(fav, a + b);
+    }
   } else if (code === '10.3') {
     // «лежат 9 оранжевых и 12 голубых фишек … первая фишка оказалась оранжевой … вторая фишка тоже окажется оранжевой»
     const m = /лежат (\d+) ([а-яё]+) и (\d+) ([а-яё]+) .*? по очереди достают .*? первая [а-яё]+ оказалась ([а-яё]+)\. .*? вторая [а-яё]+ тоже окажется ([а-яё]+)\./.exec(t);
@@ -132,10 +145,17 @@ export function trapValues(task) {
     const N = BigInt(m[1]), k = BigInt(m[2]);
     add(R(N, k)); add(R(N - k, N)); if (N - k) add(R(k, N - k));
   } else if (code === '10.2') {
-    const m = /лежат (\d+) ([а-яё]+) и (\d+) ([а-яё]+) .*? окажется ([а-яё]+)\./.exec(t);
-    const st = (w) => w.slice(0, -1), a = BigInt(m[1]), b = BigInt(m[3]);
-    const fav = st(m[5]) === st(m[2]) ? a : b, tot = a + b;
-    add(R(tot, fav)); add(R(tot - fav, tot)); add(R(fav, tot - fav));
+    const split = splitRibbonCounts(t);
+    if (split) {
+      const { fav, total, wool, remainder } = split;
+      add(R(total, fav)); add(R(total - fav, total)); add(R(fav, total - fav));
+      add(R(wool + remainder, total));
+    } else {
+      const m = /лежат (\d+) ([а-яё]+) и (\d+) ([а-яё]+) .*? окажется ([а-яё]+)\./.exec(t);
+      const st = (w) => w.slice(0, -1), a = BigInt(m[1]), b = BigInt(m[3]);
+      const fav = st(m[5]) === st(m[2]) ? a : b, tot = a + b;
+      add(R(tot, fav)); add(R(tot - fav, tot)); add(R(fav, tot - fav));
+    }
   } else if (code === '10.3') {
     const m = /лежат (\d+) ([а-яё]+) и (\d+) ([а-яё]+) .*? тоже окажется ([а-яё]+)\./.exec(t);
     const st = (w) => w.slice(0, -2), n1 = BigInt(m[1]), n2 = BigInt(m[3]);
