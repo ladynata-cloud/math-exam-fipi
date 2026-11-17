@@ -127,9 +127,13 @@ function mountVilenkin6(){
 const profileCourseURL='https://mathexam.space/ege-profil/start/index.html';
 function profileExamCatalog(){
  const catalog=window.ProfileExamCatalog,exams=catalog?.exams;
- if(!Array.isArray(exams)||exams.length!==12||exams.some((exam,index)=>exam.number!==index+1))return `<section class="empty"><h2>Каталог не загрузился</h2><p>Можно открыть все 12 заданий первой части на странице курса.</p><a class="button primary" href="${profileCourseURL}#calm">Открыть каталог заданий →</a></section>`;
+ if(!Array.isArray(exams)||exams.length!==12||exams.some((exam,index)=>exam.number!==index+1))return `<section class="empty"><h2>Каталог не загрузился</h2><p>Можно открыть все 12 заданий первой части на странице курса.</p><a class="button primary" data-profile-full-course href="${profileCourseURL}#calm">Открыть каталог заданий →</a></section>`;
  const links=(items,numbered)=>items.map(item=>`<li><a href="https://mathexam.space${E(item.href)}">${numbered?'№ '+E(item.number)+' · ':''}${E(item.title)}</a></li>`).join('');
- return `<section aria-labelledby="profile-exam-title"><div class="section-heading"><h2 id="profile-exam-title">Первая часть · выбери задание №1–12</h2></div><ol class="profile-exam-grid" data-profile-exam-catalog>${exams.map(exam=>`<li class="profile-exam-card" data-profile-exam="${E(exam.number)}"><span class="badge">№ ${E(exam.number)}</span><h3>${E(exam.title)}</h3><a class="button primary" data-profile-exam-start href="${profileCourseURL}#practice/${encodeURIComponent(exam.entry)}/independent" aria-label="Решать задание № ${E(exam.number)} · ${E(exam.title)}">Решать задачу →</a></li>`).join('')}</ol></section>
+ const cards=exams.map(exam=>{
+  const basics=exam.number===2?`<a class="button primary" data-profile-vector-basics href="https://mathexam.space${E(exam.href)}">Векторы с нуля →</a>`:'';
+  return `<li class="profile-exam-card" data-profile-exam="${E(exam.number)}"><span class="badge">№ ${E(exam.number)}</span><h3>${E(exam.title)}</h3>${basics}<a class="button${basics?'':' primary'}" data-profile-exam-start href="${profileCourseURL}#practice/${encodeURIComponent(exam.entry)}/independent" aria-label="Решать задание № ${E(exam.number)} · ${E(exam.title)}">Решать задачу →</a></li>`;
+ });
+ return `<section aria-labelledby="profile-exam-title"><div class="section-heading"><h2 id="profile-exam-title">Первая часть · выбери задание №1–12</h2></div><ol class="profile-exam-grid" data-profile-exam-catalog>${cards.join('')}</ol></section>
  <section class="panel" data-profile-second-part><h2>Вторая часть · №13–19</h2><p>Выбери тему для подготовки. Автопроверка вычислений помогает учиться; полный балл требует обоснованного письменного решения. Для финансовой задачи №16 доступны основы, модели и учебные задачи.</p><ul>${links(catalog.secondPart||[],true)}</ul></section>
  <section class="panel" data-profile-extra-topics><h2>Дополнительные темы</h2><p>Эти темы расширяют подготовку и не являются отдельными номерами ЕГЭ.</p><ul>${links(catalog.extras||[],false)}</ul></section>`;
 }
