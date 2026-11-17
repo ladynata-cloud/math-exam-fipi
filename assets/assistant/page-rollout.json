@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+  "baseSha": "28d6a02376f97d37ec7c6e1d64cbdbb070169f5b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2123,8 +2123,8 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "359864447bcaa6f710c66dd6194f3258146293ce1dbb8c572f4a02d3de45b9cc",
-      "afterSha256": "95b8e6e435b9b9e0ae56db46658b5a2ddced4762f1f9ed36644f71d2e9c76d52",
+      "beforeSha256": "85822b7bc84d00ce0cd68c1aff022af6c1f02e12b11955ccc8716b9b451545ce",
+      "afterSha256": "cfdee8bacbd074e9a1d4ea8b59767d63cb208be1c3e0e9a1cc4064ebf8fb8af4",
       "placement": "before-head-close"
     },
     "school/m9-exercises/index.html": {
@@ -5473,6 +5473,15 @@
         "geometry-pogorelov/atlas/pogorelov-base-9-127.html",
         "geometry-pogorelov/atlas/pogorelov-base-9-131.html",
         "geometry-pogorelov/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+      "sourceBaseSha": "28d6a02376f97d37ec7c6e1d64cbdbb070169f5b",
+      "task": "docs/tasks/VILENKIN56_WORKSHOP_RESUME_20261118.md",
+      "changedPaths": [
+        "school/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
