@@ -2158,8 +2158,8 @@ if(typeof module!=='undefined'&&module.exports)module.exports={link,snapshot,ids
     define(7, 'expressions', 'Вычисления и преобразования', 'start', 8,
       ['algebra-cosine', 'algebra-double-angle', 'expr-powers', 'expr-roots', 'expr-fractions', 'expr-logarithms'],
       ['trig-angle', 'trig-coordinates', 'trig-special', 'trig-tangent']),
-    define(8, 'derivative', 'Производная и графики', 'start', 9,
-      ['calc-tangent', 'calc-sign', 'calc-graph'], ['calc-value', 'calc-special']),
+    define(8, 'derivative', 'Производная и первообразная', 'start', 9,
+      ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-integral'], ['calc-value', 'calc-special']),
     define(9, 'formulas', 'Прикладные формулы', 'start', 10,
       ['applied-formula', 'applied-formula-limit']),
     define(10, 'word-problems', 'Текстовые задачи', 'start', 11,
@@ -2192,16 +2192,18 @@ if(typeof module!=='undefined'&&module.exports)module.exports={link,snapshot,ids
     define(null, 'random-variables', 'Случайные величины', 'start', 6,
       ['prob-distribution', 'prob-variance', 'prob-continuous']),
     define(null, 'optimization', 'Моделирование и оптимизация', 'part-two', 17,
-      ['model-fence', 'model-revenue', 'model-boundary', 'model-discrete', 'model-box', 'model-motion']),
-    define(null, 'integral', 'Первообразная и площадь', 'start', null, ['calc-integral'])
+      ['model-fence', 'model-revenue', 'model-boundary', 'model-discrete', 'model-box', 'model-motion'])
   ]);
+  // Keep the earlier topic URL as an exact entrance to the same lesson.
+  const integral = define(8, 'integral', 'Первообразная и площадь', 'start', 9, ['calc-integral']);
   const calculus = define(null, 'calculus-legacy', 'Производная, экстремумы и первообразная', 'start', 9,
     ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-value', 'calc-special', 'calc-extreme', 'calc-integral']);
   const all = [...entries, ...extras];
   const numberValue = value => typeof value === 'number' && Number.isInteger(value) ? value :
     typeof value === 'string' && /^(?:[1-9]|1[0-9]|20)$/.test(value) ? Number(value) : null;
   const get = number => entries.find(item => item.number === numberValue(number)) || null;
-  const topic = id => typeof id === 'string' ? all.find(item => item.id === id) || (id === calculus.id ? calculus : null) : null;
+  const topics = [...all, calculus, integral];
+  const topic = id => typeof id === 'string' ? topics.find(item => item.id === id) || null : null;
   const resolve = value => value && typeof value === 'object' ? topic(value.id) : get(value) || topic(value);
   const fromLegacyStart = value => {
     const number = numberValue(value);
@@ -3036,7 +3038,7 @@ if(typeof module!=='undefined'&&module.exports)module.exports={link,snapshot,ids
         constraints: { title: 'Учитываю ограничения из условия', numbers: [10, 11, 13, 17] },
         optimum: { title: 'Выбираю лучший допустимый вариант', numbers: [17] }
       },
-      refs: [['Производная · №8 и №12; первообразная — дополнительная тема', '/ege-profil/start/index.html#calm/9']]
+      refs: [['Производная и первообразная · №8; экстремумы · №12', '/ege-profil/start/index.html#calm/9']]
     },
     {
       id: 'domain', title: 'ОДЗ и отбор решений', short: 'ОДЗ и отбор', numbers: [7, 14, 16, 19],
@@ -3356,7 +3358,7 @@ if(typeof module!=='undefined'&&module.exports)module.exports={link,snapshot,ids
     const number = Number(key);
     const entry = number <= 13 ? registry?.fromLegacyStart(number) : registry?.fromLegacyPartTwo(number);
     if (!entry) return map.title;
-    if (number === 9) return 'Производная: №8 и №12; первообразная — дополнительная тема';
+    if (number === 9) return 'Производная и первообразная · №8; экстремумы · №12';
     return registry.label(entry) + (map.title ? ' · ' + map.title : '');
   }
 
@@ -55752,8 +55754,8 @@ const api={checks,foundation,trig,routes,next,prerequisites,recommend};root.Prof
       entry:lessonIds.includes(legacy.entry)?legacy.entry:lessonIds[0]};
     if(entry.number===8){
       value.prerequisites=[...new Set([...legacy.prerequisites,...(entry.preparationIds||[])])];
-      value.goal='Читать график функции, производной и касательной; связывать знак производной с изменением функции.';
-      value.plan=['Уточните, какой график или какая касательная даны.','Свяжите наклон и знак производной с вопросом задачи.','Прочитайте нужное значение и проверьте его по графику.'];
+      value.goal='Читать графики функции и производной, находить наклон касательной и связывать первообразную с площадью.';
+      value.plan=['Уточните, что дано: функция, производная, касательная или первообразная.','Выберите связь с величиной из вопроса.','Вычислите или прочитайте значение и проверьте его по условию.'];
     }
     if(entry.number===12){
       value.goal='Находить наибольшее и наименьшее значение функции, проверяя критические точки и границы промежутка.';
@@ -55761,7 +55763,7 @@ const api={checks,foundation,trig,routes,next,prerequisites,recommend};root.Prof
       value.prerequisites=['calc-value','calc-special','calc-sign'];
     }
     if(entry.id==='calculus-legacy')value.aggregate=true;
-    if(entry.id==='integral')value.goal='Связывать первообразную, интеграл и площадь под графиком в дополнительной практике.';
+    if(entry.id==='integral')value.goal='Связывать первообразную, интеграл и площадь под графиком.';
     if(entry.number===16)value.coverage='16 тем · 96 задач на проценты, долг и платежи. Это подготовительные числовые упражнения: полное письменное решение и экзаменационные баллы здесь не проверяются.';
     return value;
   }
@@ -56166,7 +56168,7 @@ function create(A){
    const next=nextChoice(e),starters=(e.starterIds||[]).map(id=>byId.get(id)).filter(Boolean);
    if(starters.length&&root.ProfileJourney)return vectorRoute(e,starters,next);
    const currentLabel=D.label(e),numbered=!!e.number;
-   const related=e.aggregate?'<p class="note">Эта старая ссылка сохраняет все прежние темы. Отдельно доступны <a href="#fipi/2027/8">№8 · производная и графики</a>, <a href="#fipi/2027/12">№12 · наибольшее и наименьшее значение</a> и <a href="#topic/integral">первообразная и площадь</a>.</p>':'';
+   const related=e.aggregate?'<p class="note">Эта старая ссылка сохраняет все прежние темы. Отдельно доступны <a href="#fipi/2027/8">№8 · производная и первообразная</a> и <a href="#fipi/2027/12">№12 · наибольшее и наименьшее значение</a>.</p>':'';
    shell('<p class="breadcrumb"><a href="#calm">← Весь маршрут профиля</a></p><section class="lesson-head"><p class="eyebrow">ЕГЭ профиль · '+esc(currentLabel)+'</p><h1>'+esc(e.title)+'</h1><p class="lead">'+esc(e.goal)+'</p>'+choiceLink(next,e)+'<p class="small">'+esc(next.reason||'Сначала попробуйте решить задачу. Если станет трудно, рядом будет помощь.')+'</p>'+(e.coverage?'<p class="course-coverage">'+esc(e.coverage)+'</p>':'')+'</section>'+related+'<details class="panel calm-start-help"><summary>Если решение не получается</summary><ol class="plain-steps"><li>Вспомните только нужное правило школьной математики или тригонометрии.</li><li>Вернитесь к той же задаче: условие и введённый ответ сохранятся.</li><li>После разбора попробуйте другое условие самостоятельно.</li></ol><p>Проходить весь школьный курс перед заданиями ЕГЭ не нужно.</p><a href="#example/'+e.entry+'">Посмотреть разобранный образец</a></details><details class="panel calm-number-foundations"><summary>Вспомнить основу, если трудно</summary>'+e.prerequisites.map(id=>item(id)).join('')+'</details>'+(e.legacyNumber===8?'<details class="panel calm-trig-foundations"><summary>Если трудно с тригонометрией</summary>'+D.trigFoundations.lessonIds.map(id=>item(id)).join('')+'</details>':'')+'<section class="panel"><h2>'+(numbered?'Все темы этого номера':'Все темы раздела')+'</h2><p>Попробуйте разные типы задач '+(numbered?'этого номера':'этой темы')+'.</p>'+e.lessonIds.map(id=>item(id,true)).join('')+'</section>'+root.ProfileCourse.resourcesFor(e)+'<a href="#checkpoint">Смешанная проверка первой части · №1–12</a>');
    bindStarts();return;
   }

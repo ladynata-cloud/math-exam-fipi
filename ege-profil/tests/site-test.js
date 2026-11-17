@@ -227,7 +227,7 @@ const KEY = 'mathExamCourseProgress.v1';
   ok(/ФИПИ 2027: 19 заданий.*№1–12.*№13–19.*32/.test(d.querySelector('header .facts').textContent), 'index: карта соответствует спецификации ФИПИ 2027');
   const current = Array.from(d.querySelectorAll('#profile-2027 [data-exam-number]'));
   ok(current.length === 19 && current.every((a, i) => Number(a.dataset.examNumber) === i + 1 && a.hash === '#fipi/2027/' + (i + 1)), 'index: ровно 19 официальных входов в правильном порядке');
-  ok(d.querySelectorAll('#profile-2027 a[href*="#topic/"]').length === 3, 'index: три дополнительные темы доступны отдельно');
+  ok(d.querySelectorAll('#profile-2027 a[href*="#topic/"]').length === 2, 'index: две дополнительные темы доступны отдельно');
   ok(!!d.querySelector('#profile-2027 a[href="start/index.html"]'), 'index: новый маршрут доступен');
   ok(/2026/.test(d.querySelector('#route-h').textContent), 'index: прежняя нумерация обозначена 2026');
   const facts = d.querySelector('#legacy-facts').textContent;

@@ -423,8 +423,8 @@ h1,h2,h3,.brand{overflow-wrap:anywhere;hyphens:auto}
     define(7, 'expressions', 'Вычисления и преобразования', 'start', 8,
       ['algebra-cosine', 'algebra-double-angle', 'expr-powers', 'expr-roots', 'expr-fractions', 'expr-logarithms'],
       ['trig-angle', 'trig-coordinates', 'trig-special', 'trig-tangent']),
-    define(8, 'derivative', 'Производная и графики', 'start', 9,
-      ['calc-tangent', 'calc-sign', 'calc-graph'], ['calc-value', 'calc-special']),
+    define(8, 'derivative', 'Производная и первообразная', 'start', 9,
+      ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-integral'], ['calc-value', 'calc-special']),
     define(9, 'formulas', 'Прикладные формулы', 'start', 10,
       ['applied-formula', 'applied-formula-limit']),
     define(10, 'word-problems', 'Текстовые задачи', 'start', 11,
@@ -457,16 +457,18 @@ h1,h2,h3,.brand{overflow-wrap:anywhere;hyphens:auto}
     define(null, 'random-variables', 'Случайные величины', 'start', 6,
       ['prob-distribution', 'prob-variance', 'prob-continuous']),
     define(null, 'optimization', 'Моделирование и оптимизация', 'part-two', 17,
-      ['model-fence', 'model-revenue', 'model-boundary', 'model-discrete', 'model-box', 'model-motion']),
-    define(null, 'integral', 'Первообразная и площадь', 'start', null, ['calc-integral'])
+      ['model-fence', 'model-revenue', 'model-boundary', 'model-discrete', 'model-box', 'model-motion'])
   ]);
+  // Keep the earlier topic URL as an exact entrance to the same lesson.
+  const integral = define(8, 'integral', 'Первообразная и площадь', 'start', 9, ['calc-integral']);
   const calculus = define(null, 'calculus-legacy', 'Производная, экстремумы и первообразная', 'start', 9,
     ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-value', 'calc-special', 'calc-extreme', 'calc-integral']);
   const all = [...entries, ...extras];
   const numberValue = value => typeof value === 'number' && Number.isInteger(value) ? value :
     typeof value === 'string' && /^(?:[1-9]|1[0-9]|20)$/.test(value) ? Number(value) : null;
   const get = number => entries.find(item => item.number === numberValue(number)) || null;
-  const topic = id => typeof id === 'string' ? all.find(item => item.id === id) || (id === calculus.id ? calculus : null) : null;
+  const topics = [...all, calculus, integral];
+  const topic = id => typeof id === 'string' ? topics.find(item => item.id === id) || null : null;
   const resolve = value => value && typeof value === 'object' ? topic(value.id) : get(value) || topic(value);
   const fromLegacyStart = value => {
     const number = numberValue(value);
@@ -2208,7 +2210,7 @@ h1,h2,h3,.brand{overflow-wrap:anywhere;hyphens:auto}
     const number = Number(key);
     const entry = number <= 13 ? registry?.fromLegacyStart(number) : registry?.fromLegacyPartTwo(number);
     if (!entry) return map.title;
-    if (number === 9) return 'Производная: №8 и №12; первообразная — дополнительная тема';
+    if (number === 9) return 'Производная и первообразная · №8; экстремумы · №12';
     return registry.label(entry) + (map.title ? ' · ' + map.title : '');
   }
 

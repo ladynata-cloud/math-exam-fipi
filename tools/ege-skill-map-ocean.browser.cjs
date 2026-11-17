@@ -50,7 +50,7 @@ async function checkProfileRoutes(page, origin) {
     const map = await openSkillMap(page);
     const entry = number <= 13 ? examMap.fromLegacyStart(number) : examMap.fromLegacyPartTwo(number);
     const subtitle = await map.locator('.profile-skill-subtitle').innerText();
-    if (number === 9) assert.match(subtitle, /^Производная: №8 и №12; первообразная — дополнительная тема$/);
+    if (number === 9) assert.match(subtitle, /^Производная и первообразная · №8; экстремумы · №12$/);
     else if (entry.number) assert.match(subtitle, new RegExp(`^№\\s*${entry.number}(?:\\s|$)`));
     else assert.match(subtitle, /^Дополнительная тема/, 'legacy topic is retained outside official numbering');
     assert(await map.locator(challenge).first().isVisible(), `creative exercise for profile number ${number}`);
