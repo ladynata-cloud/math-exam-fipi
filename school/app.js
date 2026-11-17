@@ -230,6 +230,11 @@
   else if(parts[0]==='m9-unit')m9Unit(parts[1]);else if(parts[0]==='v5-unit')v5Unit(parts[1]);else if(parts[0]==='v6-unit')v6Unit(parts[1]);else if(parts[0]==='courses')courses();else if(parts[0]==='course')course(parts[1]);else if(parts[0]==='map')map();else if(parts[0]==='books')books();else if(parts[0]==='book')book(parts[1]);else if(parts[0]==='progress')progress();else if(parts[0]==='review')review();else if(parts[0]==='teacher')teacherView();else if(parts[0]==='concept')concept();else if(parts[0]==='diagnostic-result')diagnosticResult();else home();
   if(parts[0]==='course'&&['7','8','makarychev7-start'].includes(parts[1])){var nativeGrade=parts[1]==='8'?'8':'7';main.insertAdjacentHTML('afterbegin','<p class="panel"><a href="makarychev'+nativeGrade+'/">Макарычев '+nativeGrade+': полный курс и тренажёры →</a><br><span class="tiny">Работа в этом обзорном маршруте сохранена отдельно.</span></p>');}
  }
+ document.querySelector('.skip[href="#main"]')?.addEventListener('click',function(event){
+  event.preventDefault();
+  main.focus();
+  main.scrollIntoView({block:'start'});
+ });
  window.addEventListener('hashchange',function(){render();main.focus({preventScroll:true});window.scrollTo(0,0);});
  window.addEventListener('storage',function(e){if(e.key===S.TEACHER){teacherBlocked=true;notice.textContent='Кабинет изменился в другой вкладке. Обновите страницу перед продолжением.';}if(e.key===S.KEY){blocked=true;notice.textContent='Прогресс изменился в другой вкладке. Чтобы не перезаписать его, обновите эту страницу перед продолжением.';}});
  var exerciseReturn=new URLSearchParams(location.search).get('exerciseReturn');
