@@ -33,6 +33,19 @@ main{max-width:820px}.minimal-header{display:flex;align-items:baseline;justify-c
 <header class="minimal-header"><p class="eyebrow">ОГЭ · авторский вариант</p><h1>Вариант 1</h1></header>
 <div id="tyre-context"></div><div id="part1"></div><div id="part2"></div>
 <nav class="task-pager no-print" aria-label="Переход между заданиями"><button id="previous-task">← Назад</button><span id="task-position" aria-live="polite"></span><button id="next-task">Дальше →</button></nav>
+<details id="variant-results" class="no-print">
+<summary>Проверить ответы и выбрать практику</summary>
+<div class="toolbar"><button class="primary" id="check-all">Проверить часть 1</button></div>
+<section class="scoreboard no-print" aria-label="Результаты" aria-live="polite">
+<div><strong><span id="score-part1">0</span> / 19</strong><p>Часть 1<br><span class="small">Самостоятельно: <span id="score-independent">0</span> · с подсказкой: <span id="score-assisted">0</span></span></p></div>
+<div><strong><span id="score-manual">0</span> / 12</strong><p>Часть 2<br><span class="small">Ручная оценка · заполнено <span id="manual-count">0</span> из 6</span></p></div>
+<div><strong><span id="score-total">0</span> / 31</strong><p>Учебный итог<br><span class="small">Не официальный результат экзамена</span></p></div>
+</section>
+<section class="instructions" id="practice-results" aria-labelledby="practice-title" hidden>
+<h2 id="practice-title">Что повторить</h2>
+<ul id="practice-list"></ul>
+</section>
+</details>
 <details id="variant-settings" class="no-print"><summary id="mode-summary">Режим экзамена · настройки варианта</summary>
 <div class="task-navigation"><label for="task-jump">Перейти к заданию</label><select id="task-jump" aria-label="Перейти к заданию"></select></div>
 <section class="instructions" aria-label="Как работать">
@@ -44,12 +57,6 @@ main{max-width:820px}.minimal-header{display:flex;align-items:baseline;justify-c
 <div id="reset-dialog" hidden class="no-print" role="group" aria-label="Подтверждение нового прохождения"><p>Очистить ответы, черновики, историю ошибок и ручные оценки этого варианта?</p><div class="toolbar"><button id="confirm-reset">Да, начать заново</button><button id="cancel-reset">Продолжить работу</button></div></div>
 <p id="storage-notice" role="status">Ответы и черновики сохраняются только в этом браузере. Данные никуда не отправляются.</p>
 </section>
-<section class="scoreboard no-print" aria-label="Результаты" aria-live="polite">
-<div><strong><span id="score-part1">0</span> / 19</strong><p>Часть 1<br><span class="small">Самостоятельно: <span id="score-independent">0</span> · с подсказкой: <span id="score-assisted">0</span></span></p></div>
-<div><strong><span id="score-manual">0</span> / 12</strong><p>Часть 2<br><span class="small">Ручная оценка · заполнено <span id="manual-count">0</span> из 6</span></p></div>
-<div><strong><span id="score-total">0</span> / 31</strong><p>Учебный итог<br><span class="small">Не официальный результат экзамена</span></p></div>
-</section>
-<div class="toolbar"><button class="primary" id="check-all">Проверить часть 1</button></div>
 <details id="variant-info"><summary>Об этом варианте</summary><p class="disclaimer">Авторский тренировочный вариант MathExam, составленный по структуре проекта демоверсии ОГЭ 2027 года. Не является официальным материалом ФИПИ.</p>
 <div class="meta"><span>25 заданий</span><span>19 + 6</span><span>Ориентир: 235 минут</span><span>Максимум: 31 балл</span></div>
 <p>Часть 1: 19 заданий с коротким ответом, каждое — 1 балл. Часть 2: 6 заданий с обоснованием, каждое — до 2 баллов.</p><footer>MathExam · Авторские задания и иллюстрации. Ручные оценки — инструмент самопроверки, а не экспертная проверка экзамена.</footer></details>
@@ -194,7 +201,32 @@ function updateFeedback(t){
   el.textContent=msg;el.dataset.status=status;
 }
 function diagnostic(t,e){if(t.part===1&&e.checked&&!e.correct){const p=M.parseAnswer(t,e.input);if(p.valid){if(t.answerType==='sequence'){const n=String(p.value).split('').filter((x,i)=>x===t.answer[i]).length;return `Совпало позиций: ${n} из 3. Проверьте порядок АБВ. `+t.hint;}if(t.errors[String(p.value)])return t.errors[String(p.value)]+' '+t.hint;}}return t.hint;}
-function update(){document.body.dataset.mode=state.mode;$('mode-summary').textContent=(state.mode==='exam'?'Режим экзамена':'Режим разбора')+' · настройки варианта';$('mode-exam').setAttribute('aria-pressed',String(state.mode==='exam'));$('mode-review').setAttribute('aria-pressed',String(state.mode==='review'));const s=M.score(state);for(const k of ['independent','assisted','part1','manual','total'])$(`score-${k}`).textContent=s[k];$('manual-count').textContent=state.entries.slice(19).filter(e=>e.manual!==null).length;for(const t of M.TASKS){const n=t.number,e=state.entries[n-1];$(`hint-${n}`).hidden=!openHints.has(n);$(`hint-${n}`).querySelector('p').textContent=diagnostic(t,e);$(`solution-${n}`).hidden=!e.revealed;document.querySelector(`[data-action="hint"][data-number="${n}"]`).setAttribute('aria-expanded',String(openHints.has(n)));document.querySelector(`[data-action="reveal"][data-number="${n}"]`).setAttribute('aria-expanded',String(e.revealed));updateFeedback(t);}}
+function practiceReason(task, entry) {
+  if (task.part === 2) {
+    return entry.manual !== null && entry.manual < 2 ? `Ручная оценка ${entry.manual} из 2` : '';
+  }
+  if (entry.credit === 'independent') return '';
+  if (entry.credit === 'assisted') return 'Решено с подсказкой';
+  if (entry.revealed) return 'Решение просмотрено';
+  if (!entry.checked || !entry.input.trim()) return '';
+  return M.parseAnswer(task, entry.input).valid ? 'Неверный ответ' : 'Проверьте формат ответа';
+}
+let lastPracticeMarkup = '';
+function updatePractice() {
+  const items = [];
+  for (const task of M.TASKS) {
+    const reason = practiceReason(task, state.entries[task.number - 1]);
+    if (!reason) continue;
+    items.push(`<li><a class="nav" href="/oge/skills/?topic=n${task.number}">№${task.number} · ${M.esc(task.topic)}</a> · ${reason}</li>`);
+  }
+  const markup = items.join('');
+  if (markup !== lastPracticeMarkup) {
+    $('practice-list').innerHTML = markup;
+    lastPracticeMarkup = markup;
+  }
+  $('practice-results').hidden = items.length === 0;
+}
+function update(){document.body.dataset.mode=state.mode;$('mode-summary').textContent=(state.mode==='exam'?'Режим экзамена':'Режим разбора')+' · настройки варианта';$('mode-exam').setAttribute('aria-pressed',String(state.mode==='exam'));$('mode-review').setAttribute('aria-pressed',String(state.mode==='review'));const s=M.score(state);for(const k of ['independent','assisted','part1','manual','total'])$(`score-${k}`).textContent=s[k];$('manual-count').textContent=state.entries.slice(19).filter(e=>e.manual!==null).length;for(const t of M.TASKS){const n=t.number,e=state.entries[n-1];$(`hint-${n}`).hidden=!openHints.has(n);$(`hint-${n}`).querySelector('p').textContent=diagnostic(t,e);$(`solution-${n}`).hidden=!e.revealed;document.querySelector(`[data-action="hint"][data-number="${n}"]`).setAttribute('aria-expanded',String(openHints.has(n)));document.querySelector(`[data-action="reveal"][data-number="${n}"]`).setAttribute('aria-expanded',String(e.revealed));updateFeedback(t);}updatePractice();}
 $('tyre-context').innerHTML=M.tyreContext();$('part1').innerHTML=M.TASKS.filter(t=>t.part===1).map(renderTask).join('');$('part2').innerHTML=M.TASKS.filter(t=>t.part===2).map(renderTask).join('');
 function restoreInputs(){for(const t of M.TASKS){const e=state.entries[t.number-1];$(t.part===1?`answer-${t.number}`:`work-${t.number}`).value=e.input;if(t.part===2)$(`manual-${t.number}`).value=e.manual===null?'':String(e.manual);}}
 function showTask(number,focus=false){currentTask=Math.max(1,Math.min(M.TASKS.length,Number(number)||1));for(const task of M.TASKS)$(`task-${task.number}`).hidden=task.number!==currentTask;const article=$(`task-${currentTask}`),context=$('tyre-context');context.hidden=currentTask>5;if(currentTask<=5)article.querySelector('.prompt').after(context);$('task-position').textContent=`Задание ${currentTask} из ${M.TASKS.length}`;$('task-jump').value=String(currentTask);$('previous-task').disabled=currentTask===1;$('next-task').disabled=currentTask===M.TASKS.length;if(focus)article.focus({preventScroll:true});}
@@ -206,7 +238,16 @@ document.addEventListener('change',event=>{const hit=/^manual-(\d+)$/.exec(event
 document.addEventListener('click',event=>{const btn=event.target.closest('button[data-action]');if(!btn)return;const n=Number(btn.dataset.number),t=M.TASKS[n-1],e=state.entries[n-1];if(btn.dataset.action==='check')state.entries[n-1]=M.checkAnswer(t,e);if(btn.dataset.action==='hint'){if(openHints.has(n))openHints.delete(n);else openHints.add(n);state.entries[n-1]=M.hint(e);}if(btn.dataset.action==='reveal')state.entries[n-1]=M.reveal(e);save();update();});
 document.addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.repeat&&!event.isComposing&&event.target.id.startsWith('answer-')){event.preventDefault();const n=Number(event.target.id.slice(7));state.entries[n-1]=M.checkAnswer(M.TASKS[n-1],state.entries[n-1]);save();update();}});
 for(const mode of ['exam','review'])$(`mode-${mode}`).addEventListener('click',()=>{state.mode=mode;save();update();});
-$('check-all').addEventListener('click',()=>{state.entries=state.entries.map((e,i)=>i<19?M.checkAnswer(M.TASKS[i],e):e);save();update();});
+$('check-all').addEventListener('click', () => {
+  state.entries = state.entries.map((entry, index) => {
+    const task = M.TASKS[index];
+    return task.part === 1 && !entry.checked && entry.input.trim()
+      ? M.checkAnswer(task, entry)
+      : entry;
+  });
+  save();
+  update();
+});
 window.addEventListener('beforeprint',()=>{$('part1').before($('tyre-context'));$('tyre-context').hidden=false;});window.addEventListener('afterprint',()=>showTask(currentTask));$('print').addEventListener('click',()=>window.print());$('reset').addEventListener('click',()=>{$('reset-dialog').hidden=false;$('cancel-reset').focus();});$('cancel-reset').addEventListener('click',()=>{$('reset-dialog').hidden=true;$('reset').focus();});$('confirm-reset').addEventListener('click',()=>{state=M.blankState();openHints.clear();save();restoreInputs();update();showTask(1);$('reset-dialog').hidden=true;$('answer-1').focus();});
 if(selftest){const issues=[];if(M.TASKS.length!==25||new Set(M.TASKS.map(t=>t.id)).size!==25)issues.push('task structure');for(const t of M.TASKS){for(const d of [t.diagram,t.solutionDiagram])if(d&&/NaN|undefined|Infinity/.test(M.renderDiagram(d)))issues.push(`diagram ${t.number}`);for(const key of Object.keys(t.errors||{}))if(Number(key)===t.answer)issues.push(`trap ${t.number}`);}for(const svg of document.querySelectorAll('svg')){const vb=svg.viewBox.baseVal;for(const el of svg.querySelectorAll('circle,line,text')){for(const pair of [['cx','cy'],['x1','y1'],['x2','y2'],['x','y']]){if(el.hasAttribute(pair[0])){const x=Number(el.getAttribute(pair[0])),y=Number(el.getAttribute(pair[1]));if(!Number.isFinite(x)||!Number.isFinite(y)||x<0||x>vb.width||y<0||y>vb.height)issues.push('svg bounds');}}}}if(issues.length)throw Error(issues.join('; '));console.info('OGE_2027_AUTHOR_ANALOGUE_1_SELFTEST_OK');}
 })();

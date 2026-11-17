@@ -23,6 +23,9 @@ taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
 const task9ReviewedScript='a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02';
+// Reviewed results-to-practice UI. The model is still compared to its baseline.
+const analogue='trainers/oge-2027-analogue-1.html';
+const analogueReviewedApp='593d785fa27ad62d4b073066e414e029fbe283437f47b8e64f59cb1e08830b01';
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 const exportsByPage=new Map(JSON.parse(read('downloads/trainers-manifest.json')).trainers
@@ -84,6 +87,10 @@ for(const p of routes.pages){
   if(p==='trainers/oge-task9-equations.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
     assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),task9ReviewedScript,p+' exact reviewed inline engine');
+  }else if(p===analogue){
+    assert.equal(actualScripts.length,2,p+' one model and one app');
+    assert.equal(actualScripts[0],scripts(baseline)[0],p+' task data and grading preserved');
+    assert.equal(createHash('sha256').update(actualScripts[1]).digest('hex'),analogueReviewedApp,p+' exact reviewed practice route');
   }else{
     assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   }
@@ -98,7 +105,17 @@ for(const p of routes.pages){
   }
   const controls=(doc,externalPanel)=>[...doc.querySelectorAll('input,select,textarea,button')]
     .filter(e=>!externalPanel?.contains(e)).map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
-  assert.deepEqual(controls(d,panel),controls(baseline),p+' teaching controls preserved');
+  const oldControls=controls(baseline);
+  if(p===analogue){
+    const oldCheck=oldControls.findIndex(([,id])=>id==='check-all');
+    assert(oldCheck>=0,p+' original check button');
+    const [button]=oldControls.splice(oldCheck,1);
+    const pagerEnd=oldControls.findIndex(([,id])=>id==='next-task');
+    assert(pagerEnd>=0,p+' original task pager');
+    oldControls.splice(pagerEnd+1,0,button);
+    assert(d.querySelector('#variant-results #check-all'),p+' check button in results');
+  }
+  assert.deepEqual(controls(d,panel),oldControls,p+' teaching controls preserved');
   if(taskSource)taskSource.window.close();
  }
  dom.window.close();old.window.close();
