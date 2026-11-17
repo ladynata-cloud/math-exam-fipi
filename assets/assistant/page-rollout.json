@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "262eaadc6e076aad4c3d1cb88cd1a38ad0bc5a2f",
+  "baseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2578,8 +2578,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-2027-analogue-1.html": {
-      "beforeSha256": "93f0681997bc522ac815e905a4757f3d65c12b75ac28c35517161348b5542a43",
-      "afterSha256": "adeb912caa9d500fb6aa326390730e3b4d28abf51c37dfe64553e5347e94edf1",
+      "beforeSha256": "391306468ebb767fd6bddc6b90099979c9bcc5fe7c00cb99c75ae0a0cd78d68e",
+      "afterSha256": "4b8337331e378a6e2648480aca8d2ad9f984cc0b16f9864240e48c28a893c980",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/arithmetic-route.html": {
@@ -5279,6 +5279,15 @@
       "task": "docs/tasks/OGE_COURSE_RESUME_20261117.md",
       "changedPaths": [
         "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "262eaadc6e076aad4c3d1cb88cd1a38ad0bc5a2f",
+      "sourceBaseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
+      "task": "docs/tasks/OGE_DIAGNOSTIC_PRACTICE_20261117.md",
+      "changedPaths": [
+        "trainers/oge-2027-analogue-1.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
