@@ -6,7 +6,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const files = ['ege-baza/registry.js', 'ege-baza/foundation-reference.js', 'ege-baza/data-reference.js', 'ege-baza/course-definitions.js',
-  'ege-baza/course-state.js', 'ege-baza/backup.js', 'ege-baza/path/data.js', 'ege-baza/path/practice.js', 'ege-baza/path/equation-practice.js', 'ege-baza/course-journey.js'];
+  'ege-baza/course-state.js', 'ege-baza/backup.js', 'ege-baza/path/data.js', 'ege-baza/path/practice.js', 'ege-baza/path/equation-practice.js', 'ege-baza/path/exam-pool.js', 'ege-baza/course-journey.js'];
 function runtime(minimal = false) {
   const context = vm.createContext({});
   for (const file of minimal ? ['ege-baza/course-journey.js'] : files) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), context, { filename: file });
@@ -213,5 +213,39 @@ test('optional personal learning-cycle fields resume safely and malformed siblin
     assert.equal(result.sources.path.resumeCompatible, false);
     assert.equal(result.recommendation.kind, 'recovery');
     assert.equal(JSON.stringify(store.text), before);
+  }
+});
+
+
+test('the browser exam rotation reaches both variants of a family under the real selection policy', () => {
+  const ctx = runtime(), pool = ctx.PathExamPool, data = ctx.PathData;
+  const cases = [
+    [3, 'practice-chart', task => task.display.kind === 'graph'],
+    [6, 'practice-rental', task => task.params.rating === true],
+    [9, 'practice-grid-cut', task => task.params.estimate === true],
+    [11, 'practice-joined-surface', task => task.params.width !== undefined]
+  ];
+  for (const [position, id, isNewVariant] of cases) {
+    const kinds = new Set();
+    for (let serial = 11; serial <= 603; serial++) {
+      const {ids, taskSeeds} = pool.planBrowserRun(data.meta, serial);
+      assert.equal(ids.length, 21);
+      assert.equal(taskSeeds.length, ids.length);
+      if (ids[position - 1] === id) kinds.add(isNewVariant(data.task(id, taskSeeds[position - 1])));
+    }
+    assert.deepEqual(kinds, new Set([true, false]), id);
+  }
+});
+
+
+test('an invalid per-position seed vector does not promise an exact resume', () => {
+  const ctx = runtime(), save = pathSave(), validator = actualPathValidator(ctx);
+  save.active = activeRun(ctx, 'exam', 0);
+  for (const taskSeeds of [Array(20).fill(1), [...Array(20).fill(1), -1], 'old']) {
+    save.active.taskSeeds = taskSeeds;
+    const state = vm.runInContext('JSON.parse(' + JSON.stringify(JSON.stringify(save)) + ')', ctx);
+    assert.equal(validator(state), false);
+    const snapshot = ctx.EgeBazaJourney.snapshot(storage({ [ctx.EgeBazaJourney.keys.path]: save }));
+    assert.equal(snapshot.checks.active, null);
   }
 });

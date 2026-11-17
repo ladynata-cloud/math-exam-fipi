@@ -92,6 +92,10 @@
     return plain(value) && value.version === 1 && integer(value.serial) && plain(value.lessons) && plain(value.seen) &&
       Object.keys(value.seen).length < 20000 && Object.values(value.seen).every(item => item === true) && Array.isArray(value.runs) && value.runs.length <= 200;
   }
+  function runSeedsValid(run) {
+    return run.taskSeeds === undefined || (Array.isArray(run.taskSeeds) && run.taskSeeds.length === 21 &&
+      run.taskSeeds.every(seed => integer(seed)));
+  }
   function loaderCompatibility(value, knownIds) {
     if (!pathRootValid(value)) return 'rejected';
     let unverified = false;
@@ -101,7 +105,7 @@
     const lessonShape = row => plain(row) && integer(row.seed) && integer(row.stage, 4) && integer(row.step, 20) &&
       integer(row.independent) && integer(row.guided) && string(row.note) && string(row.draft) && typeof row.help === 'boolean' &&
       typeof row.attempted === 'boolean' && Array.isArray(row.checks) && taskFirstValid(row.taskFirst);
-    const runShape = run => plain(run) && ['exam', 'diagnostic'].includes(run.kind) && Array.isArray(run.ids) && run.ids.length === 21 &&
+    const runShape = run => plain(run) && runSeedsValid(run) && ['exam', 'diagnostic'].includes(run.kind) && Array.isArray(run.ids) && run.ids.length === 21 &&
       run.ids.every(known) && Array.isArray(run.answers) && run.answers.length <= 21 && run.answers.every(answer => plain(answer) &&
         known(answer.id) && integer(answer.seed) && typeof answer.value === 'string' && answer.value.length < 10000 && typeof answer.correct === 'boolean') &&
       integer(run.seed) && integer(run.i, 21) && Number.isFinite(run.start) && (run.draft === undefined || string(run.draft));
@@ -112,15 +116,20 @@
     return unverified ? 'unverified' : 'compatible';
   }
   function checkValid(run, ids, active) {
-    if (!plain(run) || !['diagnostic', 'exam'].includes(run.kind) || !Array.isArray(run.ids) || run.ids.length !== 21 || !run.ids.every(id => ids.has(id)) ||
+    if (!plain(run) || !runSeedsValid(run) || !['diagnostic', 'exam'].includes(run.kind) || !Array.isArray(run.ids) || run.ids.length !== 21 || !run.ids.every(id => ids.has(id)) ||
       !Array.isArray(run.answers) || run.answers.length > 21 || !integer(run.seed) || !integer(run.i, 21) || !Number.isFinite(run.start) || run.start < 0 ||
       run.draft !== undefined && !string(run.draft) || run.assisted !== undefined && typeof run.assisted !== 'boolean' ||
       run.interrupted !== undefined && typeof run.interrupted !== 'boolean') return false;
     if (active ? run.answers.length !== run.i : !Number.isFinite(run.finished) || run.finished <= 0 || run.answers.length !== 21) return false;
     return run.answers.every((answer, index) => {
-      if (!plain(answer) || answer.id !== run.ids[index] || answer.seed !== run.seed + index || !string(answer.value) || typeof answer.correct !== 'boolean' ||
+      if (!plain(answer) || answer.id !== run.ids[index] || answer.seed !== (run.taskSeeds?.[index] ?? run.seed + index) || !string(answer.value) || typeof answer.correct !== 'boolean' ||
         answer.previouslySeen !== undefined && typeof answer.previouslySeen !== 'boolean' || answer.skipped !== undefined && typeof answer.skipped !== 'boolean') return false;
-      try { return answer.correct === (answer.value.trim() !== '' && root.PathData.correct(root.PathData.task(answer.id, answer.seed), answer.value)); }
+      if (!answer.value.trim()) return !answer.correct;
+      try {
+        const data = root.PathData;
+        const task = data.practice.taskForBankVersion(answer.id, answer.seed, run.bankVersion);
+        return answer.correct === data.correct(task, answer.value);
+      }
       catch (error) { return false; }
     });
   }

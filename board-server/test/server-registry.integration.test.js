@@ -391,7 +391,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
       ...['engine.js', 'board-adapter.js', 'style.css'].map(file => '/geometry-course/textbook/assets/' + file)]) {
       assert.equal((await fetch(server.baseUrl + blocked)).status, 404, blocked);
     }
-    for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js', ...['base', 'foundations', 'triangles', 'relations'].map(name => '/ege-baza/path/grade7-geometry-rebuild-' + name + '.js')]) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
+    for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js', '/ege-baza/path/stereo-figures.js', ...['base', 'foundations', 'triangles', 'relations'].map(name => '/ege-baza/path/grade7-geometry-rebuild-' + name + '.js')]) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
     for (const file of vilenkinSupportAssets) {
       const response = await fetch(server.baseUrl + '/courses/vilenkin-6-part-1/' + file);
       assert.equal(response.status, 200, file);
@@ -400,19 +400,19 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     }
     const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
     const originalTrainers = new Set(['ege-path', 'oge-basics', 'motion-grade6']);
-    assert.equal(learningStatus.trainers.filter(item => originalTrainers.has(item.trainerId) && !item.geometryRebuild).length, 250); // Includes the two new task-21 practice families.
+    assert.equal(learningStatus.trainers.filter(item => originalTrainers.has(item.trainerId) && !item.geometryRebuild).length, 254);
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'vilenkin6-part1').map(item => item.contentId).sort(),
       Array.from({ length: 27 }, (_, id) => 'lesson-' + id).sort());
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'atanasyan-7-9').map(item => item.contentId),
       ['atanasyan-7-9-main-92-part-1']);
-    for (const id of ['practice-mushroom-count', 'practice-vase-order']) {
+    for (const id of ['practice-mushroom-count', 'practice-vase-order', 'practice-overnight', 'practice-tangent-match', 'practice-digit-pair', 'practice-missing-perimeter']) {
       assert(learningStatus.trainers.some(item => item.trainerId === 'ege-path' && item.contentId === id), id);
     }
     const revisedTextbook = require('../../learning/vilenkin6-textbook-catalog');
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'vilenkin6-textbook').map(item => item.contentId).sort(), revisedTextbook.map(item => item.contentId).sort());
-    assert.equal(learningStatus.trainers.filter(item => item.trainerId !== 'vilenkin6-textbook' && item.trainerId !== 'oge-public').length, 384);
+    assert.equal(learningStatus.trainers.filter(item => item.trainerId !== 'vilenkin6-textbook' && item.trainerId !== 'oge-public').length, 388);
     assert.deepEqual(learningStatus.trainers.filter(item=>item.trainerId==='oge-public').map(item=>item.contentId),['11','15','16','17','18','19']);
-    assert.equal(learningStatus.trainers.length, 390 + revisedTextbook.length);
+    assert.equal(learningStatus.trainers.length, 394 + revisedTextbook.length);
     for(const id of ['course-column-one-digit','course-column-two-digit','course-column-three-by-one','course-column-four-by-one','course-column-three-by-two','course-column-two-by-three','course-column-three-by-three','course-column-zeros','course-column-mixed']) assert(learningStatus.trainers.some(item=>item.contentId==='multiplication-division/'+id));
     assert.equal(learningStatus.trainers.filter(item => item.geometryRebuild).length, require('../../learning/catalog').items.filter(item => item.geometryRebuild).length);
     assert.equal(learningStatus.trainers.filter(item => item.grade6 && item.trainerId !== 'vilenkin6-textbook').length, 39); // 12 motion lessons + all 27 legacy Vilenkin modules.

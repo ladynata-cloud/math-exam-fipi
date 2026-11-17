@@ -12,6 +12,17 @@
   function select(meta, position) {
     return meta.filter(item => item.pos === position && (fixed[position] ? fixed[position].includes(item.id) : (item.expanded || item.id === 'triangle') && !item.trainingOnly));
   }
-  root.PathExamPool = { select };
+  function planBrowserRun(meta, serial) {
+    const ids = [], taskSeeds = [];
+    for (let position = 1; position <= 21; position++) {
+      const pool = select(meta, position);
+      const cycle = Math.floor((serial + 1) / pool.length);
+      ids.push(pool[(serial + 1) % pool.length].id);
+      // A family's seed advances each time that family recurs.
+      taskSeeds.push(cycle + position - 1);
+    }
+    return { ids, taskSeeds };
+  }
+  root.PathExamPool = { select, planBrowserRun };
   if (typeof module !== 'undefined') module.exports = root.PathExamPool;
 })(typeof window === 'undefined' ? globalThis : window);
