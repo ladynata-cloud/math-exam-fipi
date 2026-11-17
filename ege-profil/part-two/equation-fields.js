@@ -8,11 +8,11 @@
 
   const angularInterval = Object.freeze(['0', '2', true, true]);
   const general = Object.freeze({ key: 'general', label: 'а) Общее решение', type: 'periodic-pi',
-    format: 'Запишите серии вида x = aπ + bπn с числовыми a и b, n ∈ ℤ. Несколько серий разделите точкой с запятой или словом «или».' });
+    format: 'Запишите серии вида x = aπ + bπn, где n — целое число. Можно написать pi. Несколько серий разделите точкой с запятой или словом «или».' });
   const selected = Object.freeze({ key: 'selected', label: 'б) Корни в заданном промежутке', type: 'finite-pi',
-    format: 'Запишите сами углы с π и разделите их точкой с запятой. Ноль можно записать как 0. Пустое множество обозначьте ∅.' });
+    format: 'Запишите углы с π или pi через точку с запятой. Ноль запишите как 0. Если таких корней нет, введите «нет корней» или ∅.' });
   const roots = Object.freeze({ key: 'roots', label: 'Все корни уравнения', type: 'finite-rational',
-    format: 'Запишите числа через точку с запятой в любом порядке. Пустое множество обозначьте ∅.' });
+    format: 'Запишите числа через точку с запятой в любом порядке. Если корней нет, введите «нет решений» или ∅.' });
   const trigFields = Object.freeze([general, selected]);
   const numberFields = Object.freeze([roots]);
 
