@@ -109,7 +109,7 @@ for (const file of ['textbook-source-labels.js', 'textbook-support.js', 'textboo
   app.get('/courses/vilenkin-6-part-1/' + file, learningHeaders, (_req, res) =>
     res.sendFile(path.join(__dirname, '../courses/vilenkin-6-part-1', file)));
 }
-for (const file of ['data.js', 'practice.js', 'equation-practice.js', 'grade7-algebra.js', 'grade7-geometry.js', 'grade7-geometry-core.js', 'grade7-geometry-core-models.js', 'grade7-geometry-practice.js', 'grade7-geometry-rebuild-base.js', 'grade7-geometry-rebuild-foundations.js', 'grade7-geometry-rebuild-triangles.js', 'grade7-geometry-rebuild-relations.js', 'grade7-geometry-rebuild-workbook.js', 'grade7-foundations.js', 'pre7-arithmetic.js', 'pre7-applications.js', 'practice-view.js']) {
+for (const file of ['data.js', 'practice.js', 'equation-practice.js', 'grade7-algebra.js', 'grade7-geometry.js', 'grade7-geometry-core.js', 'grade7-geometry-core-models.js', 'grade7-geometry-practice.js', 'grade7-geometry-rebuild-base.js', 'grade7-geometry-rebuild-foundations.js', 'grade7-geometry-rebuild-triangles.js', 'grade7-geometry-rebuild-relations.js', 'grade7-geometry-rebuild-workbook.js', 'grade7-foundations.js', 'pre7-arithmetic.js', 'pre7-applications.js', 'practice-view.js', 'stereo-figures.js']) {
   app.get('/ege-baza/path/' + file, learningHeaders, (_req, res) => res.sendFile(path.join(__dirname, '../ege-baza/path', file)));
 }
 process.once('exit', () => learning.close());
