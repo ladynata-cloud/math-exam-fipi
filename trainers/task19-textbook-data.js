@@ -2096,6 +2096,47 @@ const data = {
     ],
     "reference-106": [
       "tangent"
+    ],
+    "isosceles_trapezoid_diagonal_equal_triangles": [
+      "trapezoid",
+      "isosceles_trapezoid",
+      "triangle_area"
+    ],
+    "triangle_exterior_gt_nonadjacent": [
+      "triangle_exterior"
+    ],
+    "triangle_exterior_sum_all_angles": [
+      "triangle_exterior",
+      "triangle_angles"
+    ],
+    "equilateral_triangle_is_isosceles": [
+      "isosceles"
+    ],
+    "rectangle_always_has_incircle": [
+      "incircle",
+      "rectangle"
+    ],
+    "right_triangles_always_similar": [
+      "triangle_similarity",
+      "triangle_types"
+    ],
+    "equilateral_triangle_is_acute": [
+      "isosceles",
+      "triangle_angles",
+      "triangle_types"
+    ],
+    "right_trapezoid_diagonals_equal": [
+      "trapezoid",
+      "parallel_angles"
+    ],
+    "parallelogram_equal_perpendicular_diagonals_square": [
+      "rectangle",
+      "rhombus",
+      "square"
+    ],
+    "parallelogram_equal_diagonals_square": [
+      "rectangle",
+      "square"
     ]
   }
 };

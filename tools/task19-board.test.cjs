@@ -87,7 +87,7 @@ test('reference sheets and hidden models survive applying and opening the same s
   assert.equal(b.state().current.helpUsed, true);
 });
 
-test('all 234 existing card models round-trip without accepting their mathematical premises from the peer', async t => {
+test('all active card models round-trip without accepting their mathematical premises from the peer', async t => {
   const e = boot(t), seed = e.state();
   for (const card of cards) {
     const snapshot = copy(seed); snapshot.current.id = card.id; e.apply(snapshot);

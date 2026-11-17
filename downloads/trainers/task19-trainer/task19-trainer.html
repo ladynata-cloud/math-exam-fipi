@@ -5756,6 +5756,232 @@ const data = {
         "observe": "Сохраняются ли равные углы? Во сколько раз меняется каждая сторона?",
         "preserve": "Все три угла первого треугольника равны соответствующим углам второго."
       }
+    },
+    {
+      "id": "isosceles_trapezoid_diagonal_equal_triangles",
+      "aliases": [
+        "isosceles_trapezoid_diagonal_equal_triangles"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Диагональ равнобедренной трапеции делит её на два равных треугольника.",
+      "truth": false,
+      "explanation": "Возьмём равнобедренную трапецию с основаниями AB = 6 и CD = 2 и высотой 3. Диагональ AC даёт треугольники с площадями 6 · 3 : 2 = 9 и 2 · 3 : 2 = 3. У равных треугольников площади равны, поэтому эти два треугольника не равны.",
+      "hint": {
+        "model": "trapezoid",
+        "params": {
+          "bottom": 6,
+          "top": 2,
+          "height": 3,
+          "offset": 0,
+          "locked": [
+            "offset"
+          ],
+          "focus": "diagonals"
+        },
+        "prompt": "Рассмотри треугольники ABC и ACD по разные стороны диагонали AC. Меняй основания или высоту, сохраняя равные боковые стороны.",
+        "observe": "Длины оснований AB и CD указаны у ползунков. Сравни площади треугольников ABC и ACD по этим основаниям и общей высоте. Могут ли равные треугольники иметь разные площади?",
+        "preserve": "Основания параллельны; боковые стороны AD и BC равны."
+      }
+    },
+    {
+      "id": "triangle_exterior_gt_nonadjacent",
+      "aliases": [
+        "triangle_exterior_gt_nonadjacent"
+      ],
+      "theme": "Треугольники",
+      "text": "Внешний угол треугольника больше не смежного с ним внутреннего угла.",
+      "truth": true,
+      "explanation": "Внешний угол равен сумме двух внутренних углов, не смежных с ним. Оба слагаемых положительны, поэтому эта сумма больше каждого из них.",
+      "hint": {
+        "model": "triangleExplore",
+        "params": {
+          "a": 55,
+          "b": 65,
+          "focus": "exterior"
+        },
+        "prompt": "Меняй углы треугольника. Измерь внешний угол CBE и сравни его по отдельности с углами A и C.",
+        "observe": "Угол ABC смежный с внешним, а углы A и C — не смежные с ним. Какие два положительных слагаемых показаны в измерениях?",
+        "preserve": "Треугольник остаётся невырожденным; BE продолжает сторону AB."
+      }
+    },
+    {
+      "id": "triangle_exterior_sum_all_angles",
+      "aliases": [
+        "triangle_exterior_sum_all_angles"
+      ],
+      "theme": "Треугольники",
+      "text": "Внешний угол треугольника равен сумме его внутренних углов.",
+      "truth": false,
+      "explanation": "Сумма всех трёх внутренних углов равна 180°. Например, у равностороннего треугольника внешний угол равен 120°, а не 180°. В формуле внешнего угла складываются только два внутренних угла, не смежных с ним.",
+      "hint": {
+        "model": "triangleExplore",
+        "params": {
+          "a": 60,
+          "b": 60,
+          "focus": "exterior"
+        },
+        "prompt": "Измерь внешний угол CBE. Найди сумму всех трёх внутренних углов: A, ABC и C. Затем измени форму треугольника и сравни снова.",
+        "observe": "Какие именно внутренние углы входят в формулу внешнего угла: все три или два не смежных с ним?",
+        "preserve": "Треугольник остаётся невырожденным; BE продолжает сторону AB."
+      }
+    },
+    {
+      "id": "equilateral_triangle_is_isosceles",
+      "aliases": [
+        "equilateral_triangle_is_isosceles"
+      ],
+      "theme": "Треугольники",
+      "text": "Всякий равносторонний треугольник является равнобедренным.",
+      "truth": true,
+      "explanation": "Равнобедренным называют треугольник, у которого две стороны равны. У равностороннего равны все три стороны, значит, равны и любые две. Определение не требует, чтобы третья сторона отличалась от них.",
+      "hint": {
+        "model": "triangleExplore",
+        "params": {
+          "mode": "equilateral",
+          "scale": 5,
+          "focus": "angles"
+        },
+        "prompt": "Меняй размер равностороннего треугольника. Измерь три стороны и выбери любые две из них.",
+        "observe": "Есть ли у такого треугольника две равные стороны? Сверь это с определением равнобедренного треугольника.",
+        "preserve": "Все три стороны остаются равными."
+      }
+    },
+    {
+      "id": "rectangle_always_has_incircle",
+      "aliases": [
+        "rectangle_always_has_incircle"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "В любой прямоугольник можно вписать окружность.",
+      "truth": false,
+      "explanation": "Например, в прямоугольнике 6 × 3 окружность не может касаться всех четырёх сторон: касание одной пары противоположных сторон потребовало бы диаметра 6, а другой пары — диаметра 3. Окружность можно вписать в прямоугольник только тогда, когда он является квадратом.",
+      "hint": {
+        "model": "circleRectangle",
+        "params": {
+          "mode": "incircle",
+          "width": 6,
+          "height": 3
+        },
+        "prompt": "Меняй стороны прямоугольника. Сравни расстояния от точки O до всех четырёх сторон и посмотри, каких сторон касается окружность.",
+        "observe": "Может ли одна окружность касаться одновременно всех четырёх сторон, если расстояния до них различны? Попробуй получить касание всех сторон.",
+        "preserve": "Фигура остаётся прямоугольником; O — точка пересечения диагоналей. Окружность находится внутри фигуры."
+      }
+    },
+    {
+      "id": "right_triangles_always_similar",
+      "aliases": [
+        "right_triangles_always_similar"
+      ],
+      "theme": "Треугольники",
+      "text": "Все прямоугольные треугольники подобны.",
+      "truth": false,
+      "explanation": "У прямоугольного треугольника острые углы могут быть 45° и 45°, а у другого — 30° и 60°. Прямые углы равны, но наборы острых углов различаются. Такие треугольники не подобны.",
+      "hint": {
+        "model": "triangleExplore",
+        "params": {
+          "mode": "right",
+          "a": 90,
+          "b": 45,
+          "focus": "angles"
+        },
+        "prompt": "Открой измерения при угле B = 45°. Запомни три угла. Затем установи B = 30° и сравни новый прямоугольный треугольник с предыдущим.",
+        "observe": "В обоих положениях угол A прямой. Совпадают ли два набора острых углов? Что требуется для подобия?",
+        "preserve": "Угол A всегда равен 90°; сравниваются два положения одной модели."
+      }
+    },
+    {
+      "id": "equilateral_triangle_is_acute",
+      "aliases": [
+        "equilateral_triangle_is_acute"
+      ],
+      "theme": "Треугольники",
+      "text": "Всякий равносторонний треугольник является остроугольным.",
+      "truth": true,
+      "explanation": "Все три угла равностороннего треугольника равны, а их сумма равна 180°. Поэтому каждый равен 60° и меньше 90°. Все три угла острые — треугольник остроугольный.",
+      "hint": {
+        "model": "triangleExplore",
+        "params": {
+          "mode": "equilateral",
+          "scale": 5,
+          "focus": "angles"
+        },
+        "prompt": "Меняй размер равностороннего треугольника. Затем измерь все три его угла.",
+        "observe": "Сравни каждый угол с 90°. Сколько острых углов нужно для определения остроугольного треугольника?",
+        "preserve": "Все три стороны остаются равными."
+      }
+    },
+    {
+      "id": "right_trapezoid_diagonals_equal",
+      "aliases": [
+        "right_trapezoid_diagonals_equal"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Диагонали прямоугольной трапеции равны.",
+      "truth": false,
+      "explanation": "У прямоугольной трапеции с основаниями 8 и 4 и высотой 3 диагонали имеют длины √(4² + 3²) = 5 и √(8² + 3²) = √73. Они не равны. Прямой угол у боковой стороны сам по себе не обеспечивает равенства диагоналей.",
+      "hint": {
+        "model": "trapezoid",
+        "params": {
+          "bottom": 8,
+          "top": 4,
+          "height": 3,
+          "offset": -2,
+          "locked": [
+            "bottom",
+            "top",
+            "offset"
+          ],
+          "focus": "diagonals"
+        },
+        "prompt": "Меняй высоту прямоугольной трапеции. Затем измерь две диагонали AC и BD.",
+        "observe": "Какая боковая сторона перпендикулярна обоим основаниям? Сравни длины диагоналей, сохраняя это условие.",
+        "preserve": "AD остаётся перпендикулярной основаниям AB и CD; трапеция остаётся прямоугольной."
+      }
+    },
+    {
+      "id": "parallelogram_equal_perpendicular_diagonals_square",
+      "aliases": [
+        "parallelogram_equal_perpendicular_diagonals_square"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Если в параллелограмме диагонали равны и перпендикулярны, то этот параллелограмм является квадратом.",
+      "truth": true,
+      "explanation": "Параллелограмм с равными диагоналями является прямоугольником, а параллелограмм с перпендикулярными диагоналями — ромбом. Значит, у данной фигуры все углы прямые и все стороны равны. Это квадрат.",
+      "hint": {
+        "model": "squareMeasure",
+        "params": {
+          "side": 4,
+          "focus": "diagonals",
+          "neutralSideControl": true,
+          "title": "Исследуй параллелограмм ABCD"
+        },
+        "prompt": "Меняй длину стороны, сохраняя условия. Измерь диагонали и угол их пересечения. Сравни стороны фигуры и посмотри на отметки углов.",
+        "observe": "Какое свойство параллелограмма следует из равенства диагоналей? А из их перпендикулярности? Соедини два вывода.",
+        "preserve": "ABCD остаётся параллелограммом; диагонали равны и перпендикулярны."
+      }
+    },
+    {
+      "id": "parallelogram_equal_diagonals_square",
+      "aliases": [
+        "parallelogram_equal_diagonals_square"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Если диагонали параллелограмма равны, то этот параллелограмм является квадратом.",
+      "truth": false,
+      "explanation": "Прямоугольник 6 × 3 — параллелограмм с равными диагоналями: обе равны √(6² + 3²) = √45. Но его соседние стороны не равны, поэтому он не квадрат. Равенства диагоналей достаточно для прямоугольника, а для квадрата этого условия недостаточно.",
+      "hint": {
+        "model": "rectangle",
+        "params": {
+          "width": 6,
+          "height": 3,
+          "focus": "diagonals",
+          "measureSides": true,
+          "title": "Исследуй параллелограмм ABCD"
+        },
+        "prompt": "Меняй соседние стороны параллелограмма. Измерь диагонали и сравни выбранные длины соседних сторон.",
+        "observe": "Сохраняется ли равенство диагоналей, когда соседние стороны разной длины? Сравни фигуру с определением квадрата.",
+        "preserve": "Противоположные стороны остаются параллельными; диагонали равны."
+      }
     }
   ],
   "aliases": {
@@ -6066,14 +6292,25 @@ const data = {
     "fipi-066": "prev-023",
     "fipi-067": "median_bisects_angle",
     "fipi-071": "prev-040",
-    "fipi-073": "prev-006"
+    "fipi-073": "prev-006",
+    "isosceles_trapezoid_diagonal_equal_triangles": "isosceles_trapezoid_diagonal_equal_triangles",
+    "triangle_exterior_gt_nonadjacent": "triangle_exterior_gt_nonadjacent",
+    "triangle_exterior_sum_all_angles": "triangle_exterior_sum_all_angles",
+    "equilateral_triangle_is_isosceles": "equilateral_triangle_is_isosceles",
+    "rectangle_always_has_incircle": "rectangle_always_has_incircle",
+    "right_triangles_always_similar": "right_triangles_always_similar",
+    "equilateral_triangle_is_acute": "equilateral_triangle_is_acute",
+    "right_trapezoid_diagonals_equal": "right_trapezoid_diagonals_equal",
+    "parallelogram_equal_perpendicular_diagonals_square": "parallelogram_equal_perpendicular_diagonals_square",
+    "parallelogram_equal_diagonals_square": "parallelogram_equal_diagonals_square"
   },
   "sourceCounts": {
     "expanded": 105,
     "basic": 63,
-    "unique": 234,
+    "unique": 244,
     "summer": 178,
-    "reference": 106
+    "reference": 106,
+    "auditedMirrorAdded": 10
   }
 };
 if(typeof module==='object' && module.exports) module.exports=data;
@@ -6613,6 +6850,7 @@ if(root) root.Task19Data=data;
 
   defs.squareMeasure={
     title:'Измерения квадрата',values:{side:4,focus:'sides',compare:false},controls:[['side','Измени сторону квадрата',2,6,0.5,'']],
+    controlsFor:p=>p.neutralSideControl===true?[['side','Измени длину стороны',2,6,0.5,'']]:defs.squareMeasure.controls,
     sample:p=>({points:{A:[0,0],B:[p.side,0],C:[p.side,p.side],D:[0,p.side],O:[p.side/2,p.side/2]},metrics:{side:p.side,area:p.side*p.side,perimeter:4*p.side,diagonal:p.side*Math.SQRT2,diagonalProduct:2*p.side*p.side,angle:90,otherArea:16}}),
     render:s=>{const p=s.values,P=s.points,M=s.metrics,u=p.compare?25:36,T=q=>[p.compare?315+q[0]*u:280+(q[0]-p.side/2)*u,270-q[1]*u],names=['A','B','C','D'],points=names.map(n=>T(P[n])),groups=equalityGroups([p.side,p.side,p.side,p.side,...(p.compare?[4,4,4,4]:[])]);let body=poly(points)+labelPoints(P,names,T)+polygonMarks(points,names,{sideGroups:groups.slice(0,4)});
       if(p.focus==='diagonals')body+=linked('AC',line(T(P.A),T(P.C),AMBER)+offsetTick(T(P.A),T(P.C),2,AMBER),'AC')+linked('BD',line(T(P.B),T(P.D),AMBER)+offsetTick(T(P.B),T(P.D),2,AMBER),'BD')+dot(T(P.O))+text(T(P.O)[0]+24,T(P.O)[1]+10,'O')+linked('diagonal-angle',rightMark(T(P.A),T(P.O),T(P.B),GREEN),'Прямой угол между диагоналями');
@@ -9411,6 +9649,47 @@ const data = {
     ],
     "reference-106": [
       "tangent"
+    ],
+    "isosceles_trapezoid_diagonal_equal_triangles": [
+      "trapezoid",
+      "isosceles_trapezoid",
+      "triangle_area"
+    ],
+    "triangle_exterior_gt_nonadjacent": [
+      "triangle_exterior"
+    ],
+    "triangle_exterior_sum_all_angles": [
+      "triangle_exterior",
+      "triangle_angles"
+    ],
+    "equilateral_triangle_is_isosceles": [
+      "isosceles"
+    ],
+    "rectangle_always_has_incircle": [
+      "incircle",
+      "rectangle"
+    ],
+    "right_triangles_always_similar": [
+      "triangle_similarity",
+      "triangle_types"
+    ],
+    "equilateral_triangle_is_acute": [
+      "isosceles",
+      "triangle_angles",
+      "triangle_types"
+    ],
+    "right_trapezoid_diagonals_equal": [
+      "trapezoid",
+      "parallel_angles"
+    ],
+    "parallelogram_equal_perpendicular_diagonals_square": [
+      "rectangle",
+      "rhombus",
+      "square"
+    ],
+    "parallelogram_equal_diagonals_square": [
+      "rectangle",
+      "square"
     ]
   }
 };
