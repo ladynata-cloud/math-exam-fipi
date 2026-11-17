@@ -26,7 +26,7 @@
     return manifestRequest;
   }
 
-  function render(details, slug, example) {
+  function render(details, slug, example, directory) {
     const { title, steps } = example;
     const panel = element('div', '', { class: 'trainer-skill-gif-panel' });
     const viewport = element('div', '', { class: 'trainer-skill-gif-viewport' });
@@ -48,8 +48,8 @@
     details.querySelector('[data-trainer-gif-status]')?.remove();
     details.append(panel);
 
-    const framesPath = `${assetPath}${slug}.png`;
-    const gifPath = `${assetPath}${slug}.gif`;
+    const framesPath = `${directory}${slug}.png`;
+    const gifPath = `${directory}${slug}.gif`;
     let frame = 0;
     let playing = false;
 
@@ -91,13 +91,12 @@
     showFrame();
   }
 
-  async function mount(details, slug) {
-    const data = await manifest();
-    const example = data[slug];
+  async function mount(details, slug, source) {
+    const example = source?.example || (await manifest())[slug];
     if (!example || typeof example.title !== 'string' || !Array.isArray(example.steps)) {
       throw new Error('GIF example missing');
     }
-    if (details.isConnected) render(details, slug, example);
+    if (details.isConnected) render(details, slug, example, source?.directory || assetPath);
   }
 
   root.addEventListener('pagehide', () => stopPlaying?.());

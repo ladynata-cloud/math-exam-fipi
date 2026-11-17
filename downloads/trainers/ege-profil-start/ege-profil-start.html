@@ -266,7 +266,16 @@ body:has(.focused-practice) .breadcrumb{margin-bottom:14px}
 
 .course-menu{position:relative}.course-menu summary{cursor:pointer;min-height:32px}.course-menu>div{position:absolute;z-index:5;right:0;top:100%;display:grid;gap:14px;min-width:220px;padding:18px;background:white;border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 20px #153d2614}.course-menu>div a{min-height:28px}
 
+.lesson-research{margin:16px 0 20px}
+.research-prediction{margin:0 0 8px}
+.lesson-research #explore-lab{margin:0;padding:10px 16px;border-color:#b9d2c7;background:#f5faf7}
+.lesson-research #explore-lab>summary{padding:8px 0;color:#194e3c;font-weight:700}
+.research-instructions{margin:0 0 12px}
+.research-instructions p{margin:0 0 6px}
+.lesson-research #research-demo{max-width:640px;margin:0 0 16px}
+
 </style>
+
   <style data-inline-source="/ege-profil/start/finance.css">
 .finance-model {
   --finance-green: #176047;
@@ -818,6 +827,7 @@ body:has(.finance-practice) #pause-practice { min-height: 44px; padding: 9px 12p
 .profile-skill-alphabet-group a { color: #294e9c; text-underline-offset: 3px; }
 
 </style>
+
 
 
 
@@ -57656,11 +57666,72 @@ function exam(n){
  const next=ongoing?.l||(list.some(l=>state.record(l.id).attempts)?list.find(l=>!state.record(l.id).guided.length):initial)||initial;
  shell('<p class="breadcrumb"><a href="#calm">← Все задания: №1–19 и дополнительные темы</a></p><section class="exam-head"><p class="eyebrow">ЕГЭ профиль · ФИПИ 2027 · '+esc(globalThis.ProfileCalmData.label(entry))+'</p><h1>'+examNames[n]+'</h1><p class="lead">'+examDescriptions[n]+'</p><a class="button" id="exam-start" href="#practice/'+next.id+'/'+(ongoing?.mode||'independent')+'">'+(ongoing?(ongoing.mode==='independent'?'Продолжить самостоятельно':'Продолжить по шагам'):'Попробовать задачу')+' →</a><p class="small">'+esc(next.title)+'</p>'+(entry?.coverage?'<p class="course-coverage">'+esc(entry.coverage)+'</p>':'')+([1,2,3,4,6,7,8].includes(n)?board('#exam/'+n):'')+'</section><h2 class="topic-heading">Или выберите тему</h2><div class="exam-topics">'+list.map((l,i)=>'<article class="exam-topic"><span class="topic-number">'+String(i+1).padStart(2,'0')+'</span><div><h3>'+esc(l.title)+'</h3><p>'+esc(l.summary)+'</p><span class="small">'+status(l)+'</span></div><div class="topic-actions"><a class="button" href="#practice/'+l.id+'/independent">Решить самому</a><a href="#practice/'+l.id+'/guided">По шагам</a><a href="#lesson/'+l.id+'">Вспомнить правило</a></div></article>').join('')+'</div><p class="small">'+list.reduce((n,l)=>n+l.tasks.length,0)+' задач в этом маршруте.'+'</p>'+globalThis.ProfileCourse.resourcesFor(entry));
 }
+const researchInstructions={
+ 'geo-area':[
+  'Предположите, изменится ли площадь треугольника при сдвиге вершины C параллельно основанию.',
+  'Нажмите «Сдвинуть C на единицу вправо», оставив высоту прежней. Сравните две площади.',
+  'Объясните результат через длину основания AB и высоту CH.'
+ ],
+ 'geo-quadrilaterals':[
+  'Предположите, равны ли площади двух треугольников по разные стороны диагонали AC.',
+  'В поле «Что требуется найти?» выберите площади двух треугольников и нажмите «Провести диагональ». Измените высоту и сравните площади ещё раз.',
+  'Объясните результат через длины оснований AB и DC и общую высоту.'
+ ],
+ 'vec-coordinates':[
+  'Предположите, какая координата вектора AB изменится, если сдвинуть B на клетку вправо.',
+  'Выберите «От точки A к точке B». Увеличьте число в поле «b: x» на 1. Точка A остаётся на месте.',
+  'Объясните результат через правило «координаты конца минус координаты начала».'
+ ]
+};
+const researchDemos={
+ 'geo-quadrilaterals':{
+  slug:'trapezoid',title:'Исследование: диагональ трапеции',steps:[
+   'В списке «Что требуется найти?» выберите площади двух треугольников. Как вы думаете, будут ли они равны?',
+   'Нажмите «Провести диагональ». При высоте 5 площади треугольников ABC и ACD равны 35 и 15.',
+   'В поле «Высота модели» введите 6. Площади стали 42 и 18. Отношение сохранилось и равно 7 : 3.'
+  ]
+ },
+ 'vec-coordinates':{
+  slug:'vector-coordinates',title:'Исследование: сдвигаем конец вектора',steps:[
+   'Выберите «От точки A к точке B». Координаты вектора AB равны (−6; 1).',
+   'В поле «b: x» замените −2 на −1. Конец B сдвинется на клетку вправо, а A останется на месте.',
+   'Координаты AB стали (−5; 1). Первая выросла на 1, вторая сохранилась.'
+  ]
+ }
+};
+function lessonResearch(l){
+ if(!l.model||!globalThis.ProfileModels?.[l.model])return '';
+ const note='<p class="small muted">Это свободная модель. Во время решения будет рисунок именно к вашей задаче.</p>';
+ if(boardSession)return '<details class="panel model-panel" id="explore-lab"><summary>Исследовать правило на модели</summary><div id="lab"></div>'+note+'</details>';
+ const [predict,change,explain]=researchInstructions[l.id]||[
+  'Предположите, что на рисунке изменится, а что останется прежним.',
+  'Прочитайте указание над моделью. Измените один параметр и сравните рисунок и значения до и после.',
+  'Объясните своими словами, почему получился такой результат.'
+ ];
+ const demo=researchDemos[l.id]&&globalThis.MathExamTrainerSkillGif?'<details class="trainer-skill-gif" id="research-demo"><summary>Посмотреть, как работать с моделью (GIF)</summary><p data-trainer-gif-status role="status">Загружаем демонстрацию…</p></details>':'';
+ return '<div class="lesson-research"><p class="research-prediction">'+esc(predict)+'</p><details class="panel model-panel" id="explore-lab"><summary>Исследовать правило на модели</summary><div class="research-instructions"><p>'+esc(change)+'</p><p>'+esc(explain)+'</p></div>'+demo+'<div id="lab"></div>'+note+'</details></div>';
+}
 function lesson(l){
  const active=activeIndependent(l);if(active&&!active.done&&!active.answers.length)markHelp(active,'independent');
- const s=state.data.sessions[l.id+':guided'];
- shell(breadcrumb(l)+'<section class="lesson-head"><p class="eyebrow">'+position(l)+'</p><h1>'+esc(l.title)+'</h1><p class="lead">'+esc(l.summary)+'</p><div class="actions">'+button(s&&!s.done?'Продолжить по шагам':'Решать по шагам','guided')+button('Решить с коротким планом','plan','button quiet')+button('Проверить себя','independent','button quiet')+'</div></section><details class="panel theory"><summary>Что понадобится: открыть справку</summary><p><a href="#example/'+l.id+'">Сначала посмотреть разобранный образец</a></p>'+l.intro+'</details>'+prerequisiteLinks(l)+(l.model?'<details class="panel model-panel" id="explore-lab"><summary>Исследовать правило на модели</summary><div id="lab"></div><p class="small muted">Это свободная модель. Во время решения будет рисунок именно к вашей задаче.</p></details>':'')+'<details class="panel extra-help"><summary>Дополнительные материалы</summary><ul class="resource-list">'+(l.links||[]).map(x=>'<li><a href="'+esc(x.href)+'">'+esc(x.title)+'</a></li>').join('')+'</ul>'+(l.vectorBasics?'':board('#lesson/'+l.id))+'</details>');
- if(l.model&&ProfileModels[l.model])cleanup=trackBoardView('model',ProfileModels[l.model](document.getElementById('lab'))||(()=>{}));formatDisplay();
+ const s=state.data.sessions[l.id+':guided'],research=lessonResearch(l);
+ const actions='<div class="actions">'+button(s&&!s.done?'Продолжить по шагам':'Решать по шагам','guided')+button('Решить с коротким планом','plan','button quiet')+button('Проверить себя','independent','button quiet')+'</div>';
+ shell(breadcrumb(l)+'<section class="lesson-head"><p class="eyebrow">'+position(l)+'</p><h1>'+esc(l.title)+'</h1><p class="lead">'+esc(l.summary)+'</p>'+(boardSession?'':research)+actions+'</section><details class="panel theory"><summary>Что понадобится: открыть справку</summary><p><a href="#example/'+l.id+'">Сначала посмотреть разобранный образец</a></p>'+l.intro+'</details>'+prerequisiteLinks(l)+(boardSession?research:'')+'<details class="panel extra-help"><summary>Дополнительные материалы</summary><ul class="resource-list">'+(l.links||[]).map(x=>'<li><a href="'+esc(x.href)+'">'+esc(x.title)+'</a></li>').join('')+'</ul>'+(l.vectorBasics?'':board('#lesson/'+l.id))+'</details>');
+ if(research)cleanup=trackBoardView('model',ProfileModels[l.model](document.getElementById('lab'))||(()=>{}));
+ const demo=document.getElementById('research-demo');
+ if(demo){
+  const lab=document.getElementById('explore-lab');
+  demo.addEventListener('toggle',function loadDemo(){
+   if(!demo.open)return;
+   demo.removeEventListener('toggle',loadDemo);
+   const example=researchDemos[l.id];
+   globalThis.MathExamTrainerSkillGif.mount(demo,example.slug,{example,directory:'/ege-profil/start/research/'}).catch(()=>{
+    const status=demo.querySelector('[data-trainer-gif-status]');
+    if(status)status.textContent='GIF не загрузился. Шаги исследования доступны выше.';
+   });
+  });
+  lab.addEventListener('toggle',()=>{if(!lab.open)demo.open=false;});
+ }
+ formatDisplay();
  for(const mode of ['guided','plan','independent'])document.getElementById(mode).onclick=()=>{state.start(l.id,mode,!!state.data.sessions[l.id+':'+mode]?.done);location.hash='practice/'+l.id+'/'+mode;};
 }
 function current(l,mode){const s=state.start(l.id,mode),t=l.tasks.find(t=>t.id===s.taskId);return {s,t};}
