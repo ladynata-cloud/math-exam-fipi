@@ -5376,6 +5376,16 @@
     },
     {
       "previousBaseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
+      "sourceBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "task": "docs/tasks/PROFILE_FINANCE_WRITTEN_20261117.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
       "sourceBaseSha": "a6cd213e99ae13b5d691a50914a6bf5e4d530051",
       "task": "docs/tasks/PROFILE_EQUATIONS_ROOT_SELECTION_20261115.md",
       "changedPaths": [
