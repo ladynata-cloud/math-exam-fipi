@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "08d80f14da385f7a72247640996f1f06032d20c3",
+  "baseSha": "1012e38534809282c38091cca1318dfe1041d309",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -288,8 +288,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/exam/full-exam.html": {
-      "beforeSha256": "0160cfc99632159a7927a32d6a60c6809a8dd981307ba7f5c486b13462beb632",
-      "afterSha256": "34d7074fec1dc63b7fd6e80c79c0ce7c0cd24f39b138a7273e772b3d30ab40d8",
+      "beforeSha256": "93c521cbba36b97d2321a33bef0563ab9bb10082f9a925641466de8aba4a1951",
+      "afterSha256": "38ba52d4e7fbbeb5d61ae93342e203c261c604edda671d860d77c2d14d1448c1",
       "placement": "before-head-close"
     },
     "ege-profil/exam/variant.html": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "fd73ab61b3fa42664016237cd795da3d5b416896700f2676ffd58848a39e31cb",
-      "afterSha256": "c77d8d0f57eeebbbc36b24402c436608e04526cd19249e268d2f1222fdba3b15",
+      "beforeSha256": "8916604f99ebda2b1f3c1f77728e02b46bd12b9b4c653e596fd7948436155870",
+      "afterSha256": "c4ba1a3994e776263b2ccfdaea81974b1db7cf5111ae338222cbcc582d18a137",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -5325,6 +5325,16 @@
         "trainers/ege-profile/log-inequalities/index.html",
         "trainers/ege-profile/log-inequalities/lesson.html",
         "trainers/ege-profile/log-inequalities/nested.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "08d80f14da385f7a72247640996f1f06032d20c3",
+      "sourceBaseSha": "1012e38534809282c38091cca1318dfe1041d309",
+      "task": "docs/tasks/PROFILE_FULL_PRACTICE_2027_20261117.md",
+      "changedPaths": [
+        "ege-profil/exam/full-exam.html",
+        "ege-profil/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
