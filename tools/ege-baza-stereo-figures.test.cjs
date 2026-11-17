@@ -42,6 +42,27 @@ for(const {id} of families)for(let seed=0;seed<84;seed++)for(const t of variants
   const sides=[...doc.querySelectorAll('svg')].map(svg=>{const match=svg.querySelector('path').getAttribute('d').match(/^M([\d.]+) 268L210 ([\d.]+)L/);return Math.hypot(210-Number(match[1]),268-Number(match[2]));});assert(Math.abs(sides[1]/sides[0]-2)<1e-10,'paired cone slants share one scale');
  }
  if(id==='practice-pour'){assert.deepEqual([...doc.querySelectorAll('[data-stereo-given="radius"]')].map(e=>e.textContent),['r',t.params.ratio+'r']);const rims=[...doc.querySelectorAll('svg')].map(svg=>svg.querySelector('ellipse'));for(const dim of ['rx','ry'])assert(Math.abs(Number(rims[1].getAttribute(dim))/Number(rims[0].getAttribute(dim))-t.params.ratio)<1e-10,'paired cylinder radii and perspective share one scale');}
+ if(id==='practice-faces'){
+  const {n}=t.params,svg=doc.querySelector('svg');
+  if(n<=4){
+   assert.equal(svg.getAttribute('aria-label'),(n===3?'Треугольная призма':'Прямоугольный параллелепипед')+' и пирамида');
+   assert.equal(svg.querySelectorAll('[data-stereo-edge]').length,0);
+  }else{
+   assert.equal(svg.getAttribute('aria-label'),n+'-угольная призма и пирамида');
+   assert.equal(t.answer,2*n+1);
+   for(const kind of ['base','seam','vertical','pyramid']){
+    const edges=[...svg.querySelectorAll(`[data-stereo-edge="${kind}"] path`)];
+    assert.equal(edges.length,n,`all ${kind} edges for the ${n}-gon`);
+    assert.equal(new Set(edges.map(edge=>edge.getAttribute('d'))).size,n,'every edge is distinct');
+    assert(edges.some(edge=>edge.hasAttribute('stroke-dasharray')),'rear edges are dashed');
+    assert(edges.some(edge=>!edge.hasAttribute('stroke-dasharray')),'exposed edges remain solid');
+    for(const edge of edges){
+     const [x0,y0,x1,y1]=edge.getAttribute('d').match(/\d+/g).map(Number);
+     assert([x0,x1].every(x=>x>=32&&x<=388)&&[y0,y1].every(y=>y>=32&&y<=348),'figure remains within viewBox margins');
+    }
+   }
+  }
+ }
  if((id==='practice-similar-volume'&&t.params.height===undefined)||id==='scale')assert(doc.querySelector('g[aria-label] path'),'height ratio must use a horizontal fraction bar');
  if(id==='practice-similar-volume'&&t.params.height!==undefined)assert(!doc.querySelector('[data-stereo-given="height-ratio"]'),'computed height ratio is not a given');
  if(id==='practice-displacement'&&t.params.before!==undefined)assert.deepEqual([...doc.querySelectorAll('[data-stereo-given="water-depth"]')].map(el=>el.textContent),[t.params.before+' см',t.params.after+' см']);

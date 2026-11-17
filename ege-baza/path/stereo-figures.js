@@ -77,6 +77,7 @@
   return s;
  }
  function composite(n){
+  if(n>4)return polygonComposite(n);
   const lower=n===3?[[95,270],[300,270],[235,220]]:[[85,275],[275,275],[337,221],[147,221]],upper=lower.map(([x,y])=>[x,y-100]),apex=[211,42];
   const front=n===3?2:3;
   let s=path('M'+lower.map(p=>p.join(',')).join('L')+'Z',{fill:'#f5faf7',width:0});
@@ -87,6 +88,30 @@
   s+=path('M'+upper.slice(front-1).concat([upper[0]]).map(p=>p.join(',')).join('L'),{color:'#a66a37',dash:true});
   upper.forEach((p,i)=>{s+=line(p,apex,{dash:i===upper.length-1});});
   return s;
+ }
+ function polygonComposite(n){
+  const apex=[210,46];
+  const lower=Array.from({length:n},(_,i)=>{
+   const angle=.31+2*Math.PI*i/n;
+   return [Math.round(210+123*Math.cos(angle)),Math.round(264+47*Math.sin(angle))];
+  });
+  const upper=lower.map(([x,y])=>[x,y-94]);
+  const next=i=>(i+1)%n, previous=i=>(i+n-1)%n;
+  const visibleSides=lower.map(([x],i)=>lower[next(i)][0]<x);
+  // The winding of the projected triangle identifies the exposed roof faces.
+  const visibleRoof=upper.map(([x,y],i)=>{
+   const [nx,ny]=upper[next(i)];
+   return (nx-x)*(apex[1]-y)-(ny-y)*(apex[0]-x)>0;
+  });
+  const edges={base:[],seam:[],vertical:[],pyramid:[]};
+  lower.forEach((bottom,i)=>{
+   const after=next(i),before=previous(i),top=upper[i];
+   edges.base.push(line(bottom,lower[after],{dash:!visibleSides[i]}));
+   edges.seam.push(line(top,upper[after],{color:'#a66a37',dash:!visibleSides[i]&&!visibleRoof[i]}));
+   edges.vertical.push(line(bottom,top,{dash:!visibleSides[before]&&!visibleSides[i]}));
+   edges.pyramid.push(line(top,apex,{dash:!visibleRoof[before]&&!visibleRoof[i]}));
+  });
+  return '<g aria-hidden="true">'+Object.entries(edges).map(([kind,segments])=>`<g data-stereo-edge="${kind}">${segments.join('')}</g>`).join('')+'</g>';
  }
  function tank(litres,factor,after,depth){
   const top=270-100*(after?factor:1);
@@ -166,7 +191,7 @@
   }
   return `<div class="stereo-figures" data-stereo-task="${E(id)}"><div style="display:flex;flex-wrap:wrap;gap:16px;align-items:start">${figures.join('')}</div><p class="muted">${E(note)}</p></div>`;
  }
- function nName(n){return n===3?'Треугольная призма':'Прямоугольный параллелепипед';}
+ function nName(n){return n>4?n+'-угольная призма':n===3?'Треугольная призма':'Прямоугольный параллелепипед';}
  root.PathStereoFigures=Object.freeze({supports,visual,condition});
  // Six current families use a step-plan model. Add their diagram while leaving
  // the plan controller, semantic state and persistence callback unchanged.

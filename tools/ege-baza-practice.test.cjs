@@ -18,7 +18,11 @@ const numeric=(r,p)=>{
  case 'transport':{let n=0;while(n*p.seats<p.children+p.adults)n++;return n;}
  case 'time':return sum(Array(p.h).fill(60))+p.m;
  case 'area-units':return p.a/10*100*100;
- case 'chart':return p.ask?Math.max(...p.values):p.values.indexOf(Math.min(...p.values))+1;
+ case 'chart':{
+  const target = p.ask ? Math.max(...p.values) : Math.min(...p.values);
+  assert.equal(p.values.filter(value=>value===target).length,1,'The diagram must have one requested extreme');
+  return p.ask ? target : p.values.indexOf(target)+1;
+ }
  case 'ranking':return p.rows.map(r=>sum(r.slice(1))).slice().sort((a,b)=>b-a).indexOf(sum(p.rows[p.target].slice(1)))+1;
  case 'interval-data':{let v=0;for(let i=p.a;i<=p.b;i++)v+=p.values[i];return v;}
  case 'electric':return p.speed!==undefined?(p.speed/p.radius)*p.speed:p.i===undefined?(p.u/p.r)*p.u:p.r*p.i*p.i;
@@ -191,7 +195,8 @@ let tested=0;
 for(const {id,tasks} of old)assert.deepEqual([0,1,2,11,45,100].map(s=>JSON.stringify(D.practice.taskForBankVersion(id,s))),tasks,'Legacy task changed: '+id);
 for(let pos=1;pos<=21;pos++)assert(D.practice.catalog.some(m=>m.pos===pos),'Empty position '+pos);
 for(const m of D.practice.catalog){
- const variants = ['practice-mushroom-count', 'practice-vase-order'].includes(m.id) ? 240 : 80;
+ // The chart factories repeat across residues modulo 3, 4, 5 and 7.
+ const variants = m.id === 'practice-chart' ? 420 : ['practice-mushroom-count', 'practice-vase-order'].includes(m.id) ? 240 : 80;
  const conditions = new Set();
  for(let seed=0;seed<variants;seed++){
   const t=D.task(m.id,seed);assert(t.q&&t.steps.length&&t.steps.length<=20);assert.equal(t.pos,m.pos);
@@ -225,6 +230,8 @@ for(const m of D.practice.catalog){
 assert.equal(D.task('practice-chart',0).display.kind,'graph');
 assert.equal(D.task('practice-chart',1).display.kind,'bars');
 assert.equal(D.practice.taskForBankVersion('practice-chart',0).display.kind,'bars');
+assert.deepEqual(D.practice.taskForBankVersion('practice-chart',4).display.values,[10,6,7,19,6]);
+assert.equal(D.practice.taskForBankVersion('practice-chart',4).answer,2);
 assert.equal(D.task('practice-rental',1).params.rating,true);
 assert.ok(Number.isFinite(D.task('practice-rental',0).params.km));
 assert.ok(Number.isFinite(D.practice.taskForBankVersion('practice-rental',1).params.km));
