@@ -11,7 +11,7 @@ const exactPeers=bundle.lessons.filter(item=>item.source.collection===exact.sour
 const manual=bundle.lessons.find(item=>item.source.collection==='main'&&item.answer?.mode==='manual');
 const first=bundle.lessons.find(item=>item.id==='merz-theory-01');
 // Use real authored cards, keeping tests small; schema-runtime and board suite cover all 989.
-const chosen=new Set([exact.id,...exactPeers.map(item=>item.id),'research-sections-001','merz-project-1',manual.id,...bundle.lessons.filter(item=>item.kind==='theory'&&item.source.subpart==='обзор').map(item=>item.id),...bundle.lessons.filter(item=>item.source.collection==='main'&&item.source.exercise.startsWith('1.')).slice(0,2).map(item=>item.id)]);
+const chosen=new Set([exact.id,...exactPeers.map(item=>item.id),'research-sections-001','merz-project-1','ex-06-034','ex-03-032',manual.id,...bundle.lessons.filter(item=>item.kind==='theory'&&item.source.subpart==='обзор').map(item=>item.id),...bundle.lessons.filter(item=>item.source.collection==='main'&&item.source.exercise.startsWith('1.')).slice(0,2).map(item=>item.id)]);
 const sample={...bundle,catalog:{...bundle.catalog,entries:bundle.catalog.entries.filter(item=>chosen.has(item.id))},lessons:bundle.lessons.filter(item=>chosen.has(item.id))};
 const key=lesson=>'mathExamTextbook.v1:'+bundle.catalog.book.id+':'+lesson.id+':r'+lesson.revision;
 const resumeKey='mathExamTextbook.route.v1:'+bundle.catalog.book.id;
@@ -130,4 +130,85 @@ test('research cards without a known paragraph never propose an unrelated projec
 
 test('shared-board entry stays outside collapsed navigation and restores its original parent on destroy',()=>{
  const f=boot();try{const boardLink=f.doc.querySelector('#course-board-link'),href=boardLink.getAttribute('href');let clicks=0;boardLink.addEventListener('click',event=>{event.preventDefault();clicks++;});assert.equal(boardLink.closest('details'),null);assert.equal(f.doc.querySelector('.merzlyak-navigation-links').open,false);boardLink.click();f.app.open(exact.id);assert.equal(f.doc.querySelector('#course-board-link'),boardLink);assert.equal(boardLink.closest('details'),null);assert.equal(boardLink.getAttribute('href'),href);assert.equal(boardLink.parentElement.className,'merzlyak-navigation');f.app.home();assert.equal(boardLink.closest('details'),null);f.app.destroy();assert.equal(f.doc.querySelector('body>.course-nav>#course-board-link'),boardLink);assert.equal(f.doc.querySelector('body>.course-nav').children.length,2);assert.equal(boardLink.previousElementSibling.getAttribute('href'),'/');boardLink.click();assert.equal(clicks,2,'moving the original anchor retains its event listeners');}finally{f.close();}
+});
+
+
+test('equivalent exact numbers and area ratios receive the same credit in personal and shared work', () => {
+ for (const board of [false, true]) {
+  const f = boot({}, board);
+  try {
+   for (const [id, values] of [
+    ['ex-06-034', ['1,50', '1.500', '6 / 4']],
+    ['ex-03-032', ['8 : 18', '16/36']],
+    [exact.id, ['3,0', '9/3']]
+   ]) {
+    f.app.open(id);
+    for (const value of values) {
+     answer(f, value);
+     if (board) {
+      const snapshot = f.w.__merzlyakBoard.getState();
+      assert.equal(snapshot.work.checked, true);
+      assert.equal(snapshot.work.draft, value);
+      assert(['independent', 'already'].includes(snapshot.view.feedback.final));
+     } else {
+      const saved = f.state({id, revision: 1});
+      assert.equal(saved.outcome, 'first');
+      assert.equal(saved.draft, value);
+      assert.match(f.doc.querySelector('[data-final-feedback]').textContent, /Ответ совпал/);
+     }
+    }
+   }
+  } finally { f.close(); }
+ }
+});
+
+test('zero divisors, distinct fractions, units and malformed ratios do not earn credit', () => {
+ for (const board of [false, true]) {
+  const f = boot({}, board);
+  try {
+   for (const [id, values] of [
+    ['ex-06-034', ['1,5000000000000001', '3/0', '3:2', '1 5', '1,5 см', '3/2/1', '0/0', 'NaN']],
+    ['ex-03-032', ['18:8', '0:0', '4:0', '4::9', '4:-9', '-4:-9', '4:9:1', '0,4444']]
+   ]) {
+    f.app.open(id);
+    for (const value of values) {
+     answer(f, value);
+     if (board) {
+      const snapshot = f.w.__merzlyakBoard.getState();
+      assert.equal(snapshot.work.checked, false, value);
+      assert.equal(snapshot.view.feedback.final, 'wrong', value);
+     } else assert.equal(f.state({id, revision: 1}).checked, false, value);
+    }
+   }
+  } finally { f.close(); }
+ }
+});
+
+
+test('return from a catalog card restores its search, page and keyboard focus', () => {
+ const f = boot();
+ try {
+  const next = f.doc.querySelector('[data-catalog-ready] nav button:last-child');
+  next.click();
+  const secondPage = f.doc.querySelector('[data-lesson]');
+  const selected = secondPage.dataset.lesson;
+  secondPage.click();
+  f.doc.querySelector('main>header>button').click();
+  assert.equal(f.doc.activeElement.dataset.lesson, selected);
+  assert.equal(f.doc.querySelector('[data-lesson]').dataset.lesson, selected);
+  assert.equal(f.doc.querySelector('[data-catalog-ready] nav button').disabled, false);
+
+  const search = f.doc.querySelector('#catalog-search');
+  search.value = '№ 6.34';
+  search.dispatchEvent(new f.w.Event('input', {bubbles:true}));
+  const collection = f.doc.querySelector('#catalog-collection');
+  collection.value = 'main';
+  collection.dispatchEvent(new f.w.Event('change', {bubbles:true}));
+  f.doc.querySelector('[data-lesson="ex-06-034"]').click();
+  f.doc.querySelector('main>header>button').click();
+  assert.equal(f.doc.querySelector('#catalog-search').value, '№ 6.34');
+  assert.equal(f.doc.querySelector('#catalog-collection').value, 'main');
+  assert.equal(f.doc.activeElement.dataset.lesson, 'ex-06-034');
+  assert.equal(f.doc.querySelectorAll('[data-lesson]').length, 1);
+ } finally { f.close(); }
 });

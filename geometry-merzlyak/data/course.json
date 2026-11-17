@@ -10,9 +10,9 @@
       ],
       "title": "Точки и прямые",
       "figure": "segment",
-      "goal": "midpoint",
-      "calc": "segment",
-      "proof": "segment",
+      "goal": "line-ab",
+      "calc": "line-incidence",
+      "proof": "line-uniqueness",
       "idea": "Через две различные точки проходит ровно одна прямая. Нарисованная линия — лишь видимая часть бесконечной прямой. На местности направление отмечают вехами: новая веха должна оказаться на одной линии с двумя известными.",
       "bridge": "Различай прямую AB и отрезок AB: у отрезка есть концы и длина. Одной точки для выбора направления недостаточно.",
       "trap": "По одному рисунку можно считать три точки лежащими на прямой.",
@@ -44,8 +44,9 @@
       "tid": "atlas-segments",
       "topic": "segments",
       "track": "base",
-      "investigation": "Построй середину AB, затем двигай A и B. Объясни сохранение двух равных частей.",
-      "experiment": null
+      "investigation": "Построй прямую через A и B. Передвинь C на эту прямую, затем в сторону. В каком положении прямая AC совпадает с AB? Проверь инструментом «Прямая».",
+      "experiment": null,
+      "contentVersion": 2
     },
     {
       "id": "merzlyak-base-7-2",
@@ -171,16 +172,6 @@
           "title": "Смежные и вертикальные углы",
           "topic": "perpendicular",
           "unit": "merzlyak-base-7-4"
-        },
-        {
-          "track": "advanced",
-          "grade": 7,
-          "point": 5,
-          "chapter": 1,
-          "page": 36,
-          "title": "Перпендикулярные прямые",
-          "topic": "perpendicular",
-          "unit": "merzlyak-base-7-4"
         }
       ],
       "tid": "atlas-perpendicular",
@@ -195,13 +186,13 @@
         5
       ],
       "title": "Перпендикулярные прямые",
-      "figure": "angle",
+      "figure": "perpendicular-base",
       "goal": "perpendicular",
-      "calc": "adjacent",
-      "proof": "vertical",
-      "idea": "Смежные углы имеют общую сторону, а две другие — противоположные лучи; их сумма 180°. Вертикальные углы равны. Перпендикулярные прямые пересекаются под прямым углом; остальные углы при пересечении тоже прямые.",
-      "bridge": "На местности прямой угол можно построить угольником или египетским треугольником после изучения Пифагора. До этой теоремы тройка 3–4–5 не служит объяснением.",
-      "trap": "Любые два угла с общей стороной являются смежными.",
+      "calc": "perpendicular-lines",
+      "proof": "perpendicular-angles",
+      "idea": "Перпендикулярные прямые пересекаются под прямым углом. Если один из четырёх углов при пересечении прямой, то каждый из трёх остальных тоже равен 90°.",
+      "bridge": "Укажи, какие две прямые образуют прямой угол, и объясни, откуда известна его величина. Прямой угол можно получить, например, из равенства смежных углов.",
+      "trap": "Если две прямые пересекаются и их вертикальные углы равны, то прямые перпендикулярны.",
       "chapter": 1,
       "grade": 7,
       "requires": [],
@@ -215,13 +206,24 @@
           "title": "Перпендикулярные прямые",
           "topic": "perpendicular",
           "unit": "merzlyak-base-7-5"
+        },
+        {
+          "track": "advanced",
+          "grade": 7,
+          "point": 5,
+          "chapter": 1,
+          "page": 36,
+          "title": "Перпендикулярные прямые",
+          "topic": "perpendicular",
+          "unit": "merzlyak-base-7-5"
         }
       ],
       "tid": "atlas-perpendicular",
       "topic": "perpendicular",
       "track": "base",
-      "investigation": "Проведи через C перпендикуляр к AB. Двигай исходные точки и объясни, что сохраняется.",
-      "experiment": "angles"
+      "investigation": "Через C построй перпендикуляр к прямой AB: выбери инструмент «Перпендикуляр», затем точки C, A и B. Передвинь B, чтобы прямая AB стала наклонной. Сравни угол между прямыми до и после движения.",
+      "experiment": null,
+      "contentVersion": 2
     },
     {
       "id": "merzlyak-base-7-6",
@@ -304,16 +306,6 @@
           "title": "Равные треугольники. Высота, медиана, биссектриса треугольника",
           "topic": "cevians",
           "unit": "merzlyak-base-7-7"
-        },
-        {
-          "track": "advanced",
-          "grade": 7,
-          "point": 9,
-          "chapter": 2,
-          "page": 63,
-          "title": "Равнобедренный треугольник и его свойства",
-          "topic": "cevians",
-          "unit": "merzlyak-base-7-7"
         }
       ],
       "tid": "atlas-cevians",
@@ -329,11 +321,11 @@
       ],
       "title": "Первый и второй признаки равенства треугольников",
       "figure": "triangle",
-      "goal": "median",
-      "calc": "perimeter",
+      "goal": "congruence-median",
+      "calc": "congruence-sas-asa",
       "proof": "sas",
-      "idea": "У треугольника три вершины, стороны и угла. В первом признаке равенства нужны две стороны и угол МЕЖДУ ними. Совмести вершину угла и его стороны: равные длины определяют положения двух остальных вершин.",
-      "bridge": "Сначала запиши соответствие вершин, затем равенства. Угол не между данными сторонами в общем случае допускает два разных треугольника.",
+      "idea": "По первому признаку треугольники равны, если соответственно равны две стороны и угол между ними. По второму — если равны сторона и два прилежащих к ней угла. Отметь соответствующие вершины перед тем, как назвать равные стороны.",
+      "bridge": "Для первого признака найди общую вершину двух данных сторон. Для второго проверь оба конца данной стороны. Затем выпиши вершины обоих треугольников в соответствующем порядке.",
       "trap": "Двух сторон и любого угла достаточно для равенства треугольников.",
       "chapter": 2,
       "grade": 7,
@@ -365,8 +357,9 @@
       "tid": "atlas-triangle-sas",
       "topic": "triangle-sas",
       "track": "base",
-      "investigation": "Построй середину AB и соедини её с C. Исследуй изменение медианы.",
-      "experiment": null
+      "investigation": "Построй середину AB и соедини её с C. Обозначим середину через M. У треугольников AMC и BMC уже есть две пары равных сторон. Передвинь C так, чтобы CM было перпендикулярно AB, затем отведи C в сторону. Когда равны углы между этими сторонами? В каком из двух положений можно применить первый признак?",
+      "experiment": null,
+      "contentVersion": 2
     },
     {
       "id": "merzlyak-base-7-9",
@@ -393,6 +386,16 @@
           "point": 9,
           "chapter": 2,
           "page": 61,
+          "title": "Равнобедренный треугольник и его свойства",
+          "topic": "cevians",
+          "unit": "merzlyak-base-7-9"
+        },
+        {
+          "track": "advanced",
+          "grade": 7,
+          "point": 9,
+          "chapter": 2,
+          "page": 63,
           "title": "Равнобедренный треугольник и его свойства",
           "topic": "cevians",
           "unit": "merzlyak-base-7-9"
@@ -455,11 +458,11 @@
         11
       ],
       "title": "Третий признак равенства треугольников",
-      "figure": "triangle",
-      "goal": "median",
-      "calc": "congruence",
-      "proof": "sss",
-      "idea": "Второй признак использует сторону и два прилежащих к ней угла; третий — три стороны. Для применения выпиши три пары соответствующих элементов. Равенство, которое требуется доказать, нельзя заранее включать в данные.",
+      "figure": "sss-triangle",
+      "goal": "sss-reflection",
+      "calc": "congruence-sss",
+      "proof": "sss-on-base",
+      "idea": "Если три стороны одного треугольника соответственно равны трём сторонам другого, треугольники равны. Выпиши пары сторон и найди, какие вершины соответствуют друг другу. Даже если третьи вершины лежат по разные стороны основания, признак работает.",
       "bridge": "Смена ориентации рисунка не меняет соответствия. Зеркальную фигуру иногда надо перевернуть, а не только повернуть.",
       "trap": "Для третьего признака нужно дополнительно знать равенство углов.",
       "chapter": 2,
@@ -492,8 +495,9 @@
       "tid": "atlas-triangle-signs",
       "topic": "triangle-signs",
       "track": "base",
-      "investigation": "Построй середину AB и соедини её с C. Исследуй изменение медианы.",
-      "experiment": null
+      "investigation": "Построй окружности с центрами A и B через C. Найди их пересечения. Одна точка совпадёт с C. Соедини другую с A и B отрезками. Запиши три пары равных сторон у двух получившихся треугольников и объясни каждое равенство.",
+      "experiment": null,
+      "contentVersion": 2
     },
     {
       "id": "merzlyak-base-7-12",
@@ -574,16 +578,6 @@
           "title": "Параллельные прямые",
           "topic": "parallels",
           "unit": "merzlyak-base-7-13"
-        },
-        {
-          "track": "advanced",
-          "grade": 7,
-          "point": 14,
-          "chapter": 3,
-          "page": 91,
-          "title": "Признаки параллельности двух прямых",
-          "topic": "parallels",
-          "unit": "merzlyak-base-7-13"
         }
       ],
       "tid": "atlas-parallels",
@@ -615,6 +609,16 @@
           "point": 14,
           "chapter": 3,
           "page": 88,
+          "title": "Признаки параллельности двух прямых",
+          "topic": "parallels",
+          "unit": "merzlyak-base-7-14"
+        },
+        {
+          "track": "advanced",
+          "grade": 7,
+          "point": 14,
+          "chapter": 3,
+          "page": 91,
           "title": "Признаки параллельности двух прямых",
           "topic": "parallels",
           "unit": "merzlyak-base-7-14"
@@ -756,16 +760,6 @@
           "title": "Прямоугольный треугольник",
           "topic": "right-triangle",
           "unit": "merzlyak-base-7-17"
-        },
-        {
-          "track": "advanced",
-          "grade": 7,
-          "point": 19,
-          "chapter": 3,
-          "page": 129,
-          "title": "Свойства прямоугольного треугольника",
-          "topic": "right-triangle",
-          "unit": "merzlyak-base-7-17"
         }
       ],
       "tid": "atlas-right-triangle",
@@ -799,6 +793,16 @@
           "point": 18,
           "chapter": 3,
           "page": 116,
+          "title": "Свойства прямоугольного треугольника",
+          "topic": "right-triangle",
+          "unit": "merzlyak-base-7-18"
+        },
+        {
+          "track": "advanced",
+          "grade": 7,
+          "point": 19,
+          "chapter": 3,
+          "page": 129,
           "title": "Свойства прямоугольного треугольника",
           "topic": "right-triangle",
           "unit": "merzlyak-base-7-18"
@@ -1758,16 +1762,6 @@
           "title": "Тригонометрические функции острого угла прямоугольного треугольника",
           "topic": "trig-right",
           "unit": "merzlyak-base-8-17"
-        },
-        {
-          "track": "advanced",
-          "grade": 8,
-          "point": 22,
-          "chapter": 4,
-          "page": 158,
-          "title": "Решение прямоугольных треугольников",
-          "topic": "trig-right",
-          "unit": "merzlyak-base-8-17"
         }
       ],
       "tid": "atlas-trig-right",
@@ -1799,6 +1793,16 @@
           "point": 18,
           "chapter": 3,
           "page": 127,
+          "title": "Решение прямоугольных треугольников",
+          "topic": "trig-right",
+          "unit": "merzlyak-base-8-18"
+        },
+        {
+          "track": "advanced",
+          "grade": 8,
+          "point": 22,
+          "chapter": 4,
+          "page": 158,
           "title": "Решение прямоугольных треугольников",
           "topic": "trig-right",
           "unit": "merzlyak-base-8-18"
@@ -2558,13 +2562,13 @@
         13
       ],
       "title": "Координаты вектора",
-      "figure": "triangle",
-      "goal": "parallel",
-      "calc": "basis",
-      "proof": "vectors",
-      "idea": "Любой вектор плоскости единственным образом выражается через два неколлинеарных вектора. Если направления коллинеарны, они не охватывают всю плоскость.",
-      "bridge": "Координаты зависят от выбранных базисных направлений. В прямоугольной системе длина вектора (x;y) равна √(x²+y²); для произвольного косого базиса эта формула не сохраняется.",
-      "trap": "Любые два ненулевых вектора образуют базис плоскости.",
+      "figure": "vector-grid",
+      "goal": "vector-translation",
+      "calc": "displacement",
+      "proof": "vector-components",
+      "idea": "Начни в A и пройди до B. Первая координата вектора AB показывает смещение по оси x, вторая — по оси y. Из координат конца вычти координаты начала: (xB − xA; yB − yA).",
+      "bridge": "Влево и вниз — отрицательные смещения. Если поменять начало и конец местами, оба знака изменятся на противоположные. При переносе обеих точек на одно и то же смещение разности координат сохраняются.",
+      "trap": "Координаты вектора AB всегда совпадают с координатами точки B.",
       "chapter": 4,
       "grade": 9,
       "requires": [],
@@ -2593,8 +2597,9 @@
       "tid": "atlas-vector-basis",
       "topic": "vector-basis",
       "track": "base",
-      "investigation": "Проведи через C параллельную AB. Передвинь исходные точки.",
-      "experiment": null
+      "investigation": "Пройди по пунктиру от A до B: сколько клеток вправо или влево, сколько вверх или вниз? Начни такой же путь в C. Выбери D, введи координаты конца и проверь перенос. Затем передвинь B и попробуй ещё раз.",
+      "experiment": null,
+      "contentVersion": 2
     },
     {
       "id": "merzlyak-base-9-14",
@@ -3416,11 +3421,13 @@
           "track": "advanced",
           "grade": 9,
           "point": "9-ceva",
-          "chapter": 7,
+          "chapter": 1,
           "page": 29,
           "title": "Тригонометрическая форма теоремы Чевы",
           "topic": "trig-ceva",
-          "unit": "merzlyak-advanced-9-9-ceva"
+          "unit": "merzlyak-advanced-9-9-ceva",
+          "kind": "article",
+          "paragraph": 3
         }
       ],
       "chapter": 7,
@@ -3451,11 +3458,13 @@
           "track": "advanced",
           "grade": 9,
           "point": "9-radical",
-          "chapter": 7,
+          "chapter": 3,
           "page": 109,
           "title": "Радикальная ось двух окружностей",
           "topic": "radical-axis",
-          "unit": "merzlyak-advanced-9-9-radical"
+          "unit": "merzlyak-advanced-9-9-radical",
+          "kind": "article",
+          "paragraph": 12
         }
       ],
       "chapter": 7,
@@ -3486,11 +3495,13 @@
           "track": "advanced",
           "grade": 9,
           "point": "9-inversion",
-          "chapter": 7,
+          "chapter": 5,
           "page": 224,
           "title": "Инверсия",
           "topic": "inversion",
-          "unit": "merzlyak-advanced-9-9-inversion"
+          "unit": "merzlyak-advanced-9-9-inversion",
+          "kind": "article",
+          "paragraph": 23
         }
       ],
       "chapter": 7,
@@ -3521,11 +3532,13 @@
           "track": "advanced",
           "grade": 8,
           "point": "8-menelaus",
-          "chapter": 7,
+          "chapter": 3,
           "page": 120,
           "title": "Менелай: прямая через стороны треугольника",
           "topic": "menelaus",
-          "unit": "merzlyak-advanced-8-8-menelaus"
+          "unit": "merzlyak-advanced-8-8-menelaus",
+          "kind": "practice",
+          "paragraph": 16
         }
       ],
       "chapter": 7,
@@ -4266,7 +4279,7 @@
       "page": 36,
       "title": "Перпендикулярные прямые",
       "topic": "perpendicular",
-      "unit": "merzlyak-base-7-4"
+      "unit": "merzlyak-base-7-5"
     },
     {
       "track": "advanced",
@@ -4306,7 +4319,7 @@
       "page": 63,
       "title": "Равнобедренный треугольник и его свойства",
       "topic": "cevians",
-      "unit": "merzlyak-base-7-7"
+      "unit": "merzlyak-base-7-9"
     },
     {
       "track": "advanced",
@@ -4356,7 +4369,7 @@
       "page": 91,
       "title": "Признаки параллельности двух прямых",
       "topic": "parallels",
-      "unit": "merzlyak-base-7-13"
+      "unit": "merzlyak-base-7-14"
     },
     {
       "track": "advanced",
@@ -4406,7 +4419,7 @@
       "page": 129,
       "title": "Свойства прямоугольного треугольника",
       "topic": "right-triangle",
-      "unit": "merzlyak-base-7-17"
+      "unit": "merzlyak-base-7-18"
     },
     {
       "track": "advanced",
@@ -4686,7 +4699,7 @@
       "page": 158,
       "title": "Решение прямоугольных треугольников",
       "topic": "trig-right",
-      "unit": "merzlyak-base-8-17"
+      "unit": "merzlyak-base-8-18"
     },
     {
       "track": "advanced",
@@ -4992,41 +5005,49 @@
       "track": "advanced",
       "grade": 9,
       "point": "9-ceva",
-      "chapter": 7,
+      "chapter": 1,
       "page": 29,
       "title": "Тригонометрическая форма теоремы Чевы",
       "topic": "trig-ceva",
-      "unit": "merzlyak-advanced-9-9-ceva"
+      "unit": "merzlyak-advanced-9-9-ceva",
+      "kind": "article",
+      "paragraph": 3
     },
     {
       "track": "advanced",
       "grade": 9,
       "point": "9-radical",
-      "chapter": 7,
+      "chapter": 3,
       "page": 109,
       "title": "Радикальная ось двух окружностей",
       "topic": "radical-axis",
-      "unit": "merzlyak-advanced-9-9-radical"
+      "unit": "merzlyak-advanced-9-9-radical",
+      "kind": "article",
+      "paragraph": 12
     },
     {
       "track": "advanced",
       "grade": 9,
       "point": "9-inversion",
-      "chapter": 7,
+      "chapter": 5,
       "page": 224,
       "title": "Инверсия",
       "topic": "inversion",
-      "unit": "merzlyak-advanced-9-9-inversion"
+      "unit": "merzlyak-advanced-9-9-inversion",
+      "kind": "article",
+      "paragraph": 23
     },
     {
       "track": "advanced",
       "grade": 8,
       "point": "8-menelaus",
-      "chapter": 7,
+      "chapter": 3,
       "page": 120,
       "title": "Менелай: прямая через стороны треугольника",
       "topic": "menelaus",
-      "unit": "merzlyak-advanced-8-8-menelaus"
+      "unit": "merzlyak-advanced-8-8-menelaus",
+      "kind": "practice",
+      "paragraph": 16
     }
   ]
 }
