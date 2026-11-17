@@ -35,14 +35,14 @@ test('additional banks are requested explicitly, and every bank/prerequisite exi
  }
  for(const bank of course.banks)for(const id of bank.help)assert(lessons.some(l=>l.id===id),bank.path+' prerequisite '+id);
 });
-test('nineteen official entries, three extra topics and the earlier catalogue are visible; board numbers stay stable',()=>{
+test('nineteen official entries, two extra topics and the earlier catalogue are visible; board numbers stay stable',()=>{
  const dom=doc('ege-profil/index.html'),d=dom.window.document;
  const entries=[...d.querySelectorAll('#profile-2027 .first-three-link[data-exam-number]')];
  assert.deepEqual(entries.map(a=>a.getAttribute('href')),Array.from({length:19},(_,i)=>(i<12||i===15?'start':'part-two')+'/index.html#fipi/2027/'+(i+1)));
  assert.deepEqual(entries.map(a=>Number(a.dataset.examNumber)),Array.from({length:19},(_,i)=>i+1));
  for(const link of entries)assert.equal(link.closest('details:not([open])'),null,'each current number is directly available');
  const extras=[...d.querySelectorAll('#profile-2027 .first-three-link:not([data-exam-number])')];
- assert.deepEqual(extras.map(a=>a.getAttribute('href')),['start/index.html#topic/random-variables','part-two/index.html#topic/optimization','start/index.html#topic/integral']);
+ assert.deepEqual(extras.map(a=>a.getAttribute('href')),['start/index.html#topic/random-variables','part-two/index.html#topic/optimization']);
  for(const link of extras)assert.equal(link.closest('details:not([open])'),null,'every additional topic remains directly available');
  const board=[...d.querySelectorAll('a[href*="trainer-board.html"]')].map(a=>new URL(a.href).searchParams.get('trainer'));
  assert.deepEqual(board,['/ege-profil/start/index.html#exam/1','/ege-profil/start/index.html#exam/2','/ege-profil/start/index.html#exam/3']);

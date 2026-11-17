@@ -90,7 +90,7 @@
     const number = Number(key);
     const entry = number <= 13 ? registry?.fromLegacyStart(number) : registry?.fromLegacyPartTwo(number);
     if (!entry) return map.title;
-    if (number === 9) return 'Производная: №8 и №12; первообразная — дополнительная тема';
+    if (number === 9) return 'Производная и первообразная · №8; экстремумы · №12';
     return registry.label(entry) + (map.title ? ' · ' + map.title : '');
   }
 

@@ -138,7 +138,8 @@ async function checkStartExamRoutes(page) {
     ['#calm/13', 'Экономическая задача', 16, ['finance-lesson-07-equal-payments']],
     ['#fipi/2027/16', 'Экономическая задача', 16, ['finance-lesson-07-equal-payments']],
     ['#calm/9', 'Производная, экстремумы и первообразная', null, ['calc-tangent', 'calc-extreme', 'calc-integral']],
-    ['#fipi/2027/8', 'Производная и графики', 8, ['calc-tangent']],
+    ['#fipi/2027/8', 'Производная и первообразная', 8, ['calc-tangent', 'calc-integral']],
+    ['#topic/integral', 'Первообразная и площадь', 8, ['calc-integral']],
     ['#fipi/2027/12', 'Наибольшее и наименьшее значение', 12, ['calc-extreme']],
     ['#exam/16', 'Неравенства.', 15, []],
     ['#fipi/2027/15', 'Неравенства.', 15, []]

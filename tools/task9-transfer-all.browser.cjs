@@ -231,6 +231,32 @@ async function examBankJourney(page,url,width){
  assert.equal(await card.evaluate(el=>el.classList.contains('solved')),true,'changing filters preserves the result');
  return {demoAnswerAccepted:true,quadraticRootPrompt:true,retainedProgress:true};
 }
+async function explanationJourney(page,width){
+ // Longer explanations must remain readable in the optional reference and
+ // learning views; retain screenshots for mathematical/visual review in CI.
+ const captured=[];
+ async function capture(panel,name){
+  await panel.scrollIntoViewIfNeeded();
+  assert.equal(await panel.isVisible(),true,name+' is reachable through learner controls');
+  const overflow=await panel.evaluate(root=>[root,...root.querySelectorAll('p,.case-row,h3')]
+   .filter(el=>el.getClientRects().length)
+   .map(el=>({tag:el.tagName,left:el.getBoundingClientRect().left,right:el.getBoundingClientRect().right,width:innerWidth}))
+   .filter(r=>r.left < -1 || r.right > r.width+1));
+  assert.deepEqual(overflow,[],name+' explanation blocks fit the viewport');
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),name+' page fits');
+  const file=width+'-'+name+'.png';await panel.screenshot({path:path.join(artifacts,file)});captured.push(file);
+ }
+ await changeMode(page,'ref');
+ for(const [heading,name] of [['Линейные уравнения','linear-reference'],['Квадратные уравнения','quadratic-reference']]){
+  await capture(page.locator('#pane-ref > .card').filter({has:page.getByRole('heading',{name:heading,exact:true})}),name);
+ }
+ await changeMode(page,'learn');
+ for(const [number,name] of [['2','linear-learning'],['5','linear-zero-coefficient'],['11','quadratic-learning']]){
+  const point=page.locator('#pane-learn .point').filter({has:page.locator(':scope > .num').filter({hasText:new RegExp('^'+number+'$')})});
+  await capture(point,name);
+ }
+ return{screenshots:captured,referenceAndLearningReachable:true};
+}
 (async()=>{
  fs.mkdirSync(artifacts,{recursive:true});const{server,url}=await serve();let browser,livePage,liveContext;const errors=[],evidence=[],kinds=new Set();
  try{
@@ -240,7 +266,8 @@ async function examBankJourney(page,url,width){
    const page=await context.newPage();livePage=page;page.setDefaultTimeout(15000);
    page.on('pageerror',e=>errors.push(width+': '+e.message));page.on('console',m=>{if(m.type()==='error')errors.push(width+': '+m.text());});
    const exam=await examBankJourney(page,url,width),bank=await bankJourney(page,url,width,kinds),generators=await generatedJourney(page,width,kinds),completed=await completedStepJourney(page,url,width);
-   evidence.push({width,exam,bank,generators,completed});assert.deepEqual(errors,[],'no runtime errors across every route');
+   const explanations=await explanationJourney(page,width);
+   evidence.push({width,exam,bank,generators,completed,explanations});assert.deepEqual(errors,[],'no runtime errors across every route');
    await context.tracing.stop({path:path.join(artifacts,width+'-trace.zip')});await context.close();livePage=null;liveContext=null;console.log('PASS '+width+'px: '+bank.length+' bank families, '+generators.length+' generator routes, retained live accepted steps');
   }
   assert.deepEqual([...kinds].sort(),[...KINDS].sort(),'every kind of optional discovery was opened and used');fs.writeFileSync(path.join(artifacts,'coverage.json'),JSON.stringify({evidence,discoveryKinds:[...kinds],errors},null,2));

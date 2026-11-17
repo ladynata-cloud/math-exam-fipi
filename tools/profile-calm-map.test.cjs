@@ -61,13 +61,13 @@ test('both browser and Node exports are data-only and preserve task banks',()=>{
 test('official START projection separates derivative, extrema, finance and extra topics without renumbering legacy groups',()=>{
  const registry=require('../ege-profil/exam-map.js');
  assert.deepEqual(map.official.map(entry=>entry.number),[1,2,3,4,5,6,7,8,9,10,11,12,16]);
- assert.deepEqual(map.official.find(entry=>entry.number===8).lessonIds,['calc-tangent','calc-sign','calc-graph']);
+ assert.deepEqual(map.official.find(entry=>entry.number===8).lessonIds,['calc-tangent','calc-sign','calc-graph','calc-integral']);
  assert.deepEqual(map.official.find(entry=>entry.number===12).lessonIds,['calc-extreme']);
  assert.equal(map.official.find(entry=>entry.number===12).entry,'calc-extreme');
  assert.equal(map.official.find(entry=>entry.number===16).lessonIds.length,16);
  assert.match(map.official.find(entry=>entry.number===16).coverage,/подготовительные числовые.*письменное решение.*не проверяются/);
- assert.deepEqual(map.extras.map(entry=>entry.id),['random-variables','integral']);
- assert.deepEqual(map.extras.find(entry=>entry.id==='integral').lessonIds,['calc-integral']);
+ assert.deepEqual(map.extras.map(entry=>entry.id),['random-variables']);
+ assert.deepEqual(map.project(registry.topic('integral')).lessonIds,['calc-integral']);
  assert.equal(map.fromLegacy(6).id,'random-variables');
  assert.equal(map.fromLegacy(7).number,6);
  assert.equal(map.fromLegacy(13).number,16);

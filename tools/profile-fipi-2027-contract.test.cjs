@@ -148,7 +148,7 @@ test('H02 official registry has exactly 19 positions, correct parts and 32 prima
   assert.deepEqual(map.entries.filter(entry => entry.part === 1).map(entry => entry.number), Array.from({length: 12}, (_, i) => i + 1));
   assert.deepEqual(map.entries.filter(entry => entry.part === 2).map(entry => entry.points), [2, 3, 2, 2, 3, 4, 4]);
   assert.equal(map.entries.reduce((sum, entry) => sum + entry.points, 0), 32);
-  assert.deepEqual(map.extras.map(entry => entry.id), ['random-variables', 'optimization', 'integral']);
+  assert.deepEqual(map.extras.map(entry => entry.id), ['random-variables', 'optimization']);
   const startIds = new Set(start.map(lesson => lesson.id)), partIds = new Set(partTwo.map(lesson => lesson.id));
   for (const entry of [...map.entries, ...map.extras]) {
     assert(Object.isFrozen(entry) && Object.isFrozen(entry.lessonIds));
@@ -170,7 +170,8 @@ test('H02 legacy routing identities preserve their subjects and the split calcul
   assert.equal(map.forLesson('calc-extreme').number, 12);
   assert.equal(map.forLesson('calc-tangent').number, 8);
   assert.equal(map.forLesson('calc-value').number, 8);
-  assert.equal(map.forLesson('calc-integral').id, 'integral');
+  assert.equal(map.forLesson('calc-integral').number, 8);
+  assert.deepEqual(map.topic('integral').lessonIds, ['calc-integral']);
   assert.equal(map.get(16).lessonIds.length, 16);
   assert.equal(map.fromLegacyPartTwo(17).id, 'optimization');
   assert.deepEqual([14, 15, 16, 18, 19, 20].map(number => map.fromLegacyPartTwo(number).number), [13, 14, 15, 17, 18, 19]);

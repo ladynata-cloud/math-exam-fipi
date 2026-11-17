@@ -306,9 +306,9 @@ test('new official checkpoint samples exactly 12 lines, with derivatives and ext
   const current=c.current();visited.push(current.number);
   assert.equal(current.total,12);assert.equal(current.legacy,false);
   assert(fipi.get(current.number).lessonIds.includes(current.lesson.id));
-  assert(!['prob-distribution','prob-variance','prob-continuous','calc-integral'].includes(current.lesson.id));
+  assert(!['prob-distribution','prob-variance','prob-continuous'].includes(current.lesson.id));
   if(current.number===12)assert.equal(current.lesson.id,'calc-extreme');
-  if(current.number===8)assert(['calc-tangent','calc-sign','calc-graph'].includes(current.lesson.id));
+  if(current.number===8)assert(['calc-tangent','calc-sign','calc-graph','calc-integral'].includes(current.lesson.id));
   c.submit(String(current.task.answer),Check.check,current.token);c.next(current.token);
  }
  assert.deepEqual(visited,Checkpoint.FIPI_ORDER);

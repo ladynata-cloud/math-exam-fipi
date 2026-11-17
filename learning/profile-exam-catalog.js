@@ -47,7 +47,7 @@
   },
   {
     "number": 8,
-    "title": "Производная и графики",
+    "title": "Производная и первообразная",
     "entry": "calc-tangent",
     "href": "/ege-profil/start/#fipi/2027/8"
   },
@@ -132,12 +132,6 @@
     "title": "Моделирование и оптимизация",
     "entry": "model-fence",
     "href": "/ege-profil/part-two/#topic/optimization"
-  },
-  {
-    "number": null,
-    "title": "Первообразная и площадь",
-    "entry": "calc-integral",
-    "href": "/ege-profil/start/#topic/integral"
   }
 ];
   const api={exams,secondPart,extras};

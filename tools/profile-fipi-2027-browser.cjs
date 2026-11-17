@@ -65,7 +65,7 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
           const url = new URL(link.href);
           return {number: link.getAttribute('data-exam-number'), href: url.pathname.replace(/\/index\.html$/, '/') + url.hash};
         }));
-        check('main has three ordered extra topics without exam numbers', extras, map.extras.map(entry => ({number: null, href: map.href(entry)})));
+        check('main has the ordered extra topics without exam numbers', extras, map.extras.map(entry => ({number: null, href: map.href(entry)})));
         check('main map contains only its official and extra cards', await page.locator('#profile-2027 a.first-three-link').count(), map.entries.length + map.extras.length);
         await noOverflow('main'); await capture('main');
         for (const entry of map.entries) {
@@ -84,6 +84,7 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
         for (const [area, hash, entry] of [
           ['start', '#calm/13', map.get(16)], ['start', '#exam/13', map.get(16)],
           ['start', '#calm/9', map.fromLegacyStart(9)], ['start', '#exam/9', map.fromLegacyStart(9)],
+          ['start', '#topic/integral', map.topic('integral')],
           ...[14, 15, 16, 17, 18, 19, 20].map(number => ['part-two', '#exam/' + number, map.fromLegacyPartTwo(number)])
         ]) {
           await go('/ege-profil/' + area + '/' + hash); await lessonsVisible(entry.lessonIds);
@@ -93,6 +94,10 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
         check('old START inequality bookmark keeps its theme', /Неравенства/.test(await page.locator('main h1').innerText()));
         check('old START inequality bookmark shows 15', /№\s*15/.test(await page.locator('main').innerText()));
         row.legacy.push('start#exam/16');
+        await go('/trainers/ege-methods.html');
+        await page.locator('main .eyebrow').first().waitFor();
+        check('estimate and example header shows the current profile number',
+          await page.locator('main .eyebrow').first().innerText(), 'ЕГЭ · профиль №19 и база №21');
         check('browsing did not create START progress', await page.evaluate(() => localStorage.getItem('mathexam.profileStart2027.v1')), null);
         check('browsing did not create Part Two credit', await page.evaluate(() => Object.keys(localStorage).filter(key => key.startsWith('mathExam.profile.partTwo.v1.')).length), 0);
 

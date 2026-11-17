@@ -4,6 +4,10 @@
   var root = document.getElementById('learning-map');
   if (!model || !root) return;
   var CURSOR_KEY = 'mathexam.oge.course-navigation.v1';
+  var stepsByPath = new Map();
+  model.tracks.forEach(function (track) {
+    track.steps.forEach(function (step) { stepsByPath.set(step.href, step.id); });
+  });
   var storage;
   try { storage = window.localStorage; } catch (_) { storage = null; }
   var memoryCursor = null;
@@ -87,11 +91,11 @@
   }
   // Save only a validated navigation choice. Never write trainer results.
   document.addEventListener('click', function (event) {
-    var target = event.target.closest && event.target.closest('a[data-course-step]');
+    var target = event.target.closest && event.target.closest('a[href]');
     if (!target || event.defaultPrevented || (event.button !== undefined && event.button !== 0)) return;
-    var id = target.dataset.courseStep;
-    var allowed = model.tracks.some(function (track) { return track.steps.some(function (step) { return step.id === id; }); });
-    if (!allowed) return;
+    if (target.origin !== window.location.origin || target.search || target.hash || target.hasAttribute('download')) return;
+    var id = stepsByPath.get(target.pathname);
+    if (!id) return;
     memoryCursor = {stepId:id, at:Date.now()};
     try { storage.setItem(CURSOR_KEY, JSON.stringify(memoryCursor)); } catch (_) {}
   });

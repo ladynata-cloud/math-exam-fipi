@@ -20,7 +20,7 @@
         constraints: { title: 'Учитываю ограничения из условия', numbers: [10, 11, 13, 17] },
         optimum: { title: 'Выбираю лучший допустимый вариант', numbers: [17] }
       },
-      refs: [['Производная · №8 и №12; первообразная — дополнительная тема', '/ege-profil/start/index.html#calm/9']]
+      refs: [['Производная и первообразная · №8; экстремумы · №12', '/ege-profil/start/index.html#calm/9']]
     },
     {
       id: 'domain', title: 'ОДЗ и отбор решений', short: 'ОДЗ и отбор', numbers: [7, 14, 16, 19],
