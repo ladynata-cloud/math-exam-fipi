@@ -147,7 +147,7 @@ var RV = (function(){
     "oge18-kletki|segAB": { n:"Отношения: Отрезок по данным чертежа (подобие)", line:18 },
     "oge18-kletki|segCmp": { n:"Отношения: Во сколько раз длиннее", line:18 },
     "oge18-kletki|circRatio": { n:"Отношения: Отношение площадей кругов", line:18 },
-    /* 23 · trainers/oge-task23-geometry-calculations.html · 20 типов (ключи тренажёра) */
+    /* 23 · trainers/oge-task23-geometry-calculations.html · 21 тип (ключи тренажёра) */
     "oge23-vychisleniya|rhombH": { n:"Четырёхугольники: Высота ромба", line:23 },
     "oge23-vychisleniya|pgramBis": { n:"Четырёхугольники: Периметр параллелограмма", line:23 },
     "oge23-vychisleniya|trapBis": { n:"Четырёхугольники: Боковая сторона трапеции", line:23 },
@@ -168,7 +168,8 @@ var RV = (function(){
     "oge23-vychisleniya|rectBH": { n:"Окружность: Прямоугольник в высоте (найти BH)", line:23 },
     "oge23-vychisleniya|tanSecAC": { n:"Окружность: Касательная и секущая (найти AC)", line:23 },
     "oge23-vychisleniya|tanSecD": { n:"Окружность: Касательная и секущая (найти диаметр)", line:23 },
-    /* 25 · trainers/oge-task25-geometry.html · 16 типов (ключи тренажёра) */
+    "oge23-vychisleniya|arcRadius": { n:"Окружность: Радиус через отношения дуг", line:23 },
+    /* 25 · trainers/oge-task25-geometry.html · 17 типов (ключи тренажёра) */
     "oge25-geometriya|1": { n:"Треугольник: Биссектриса и медиана: ⟂ и равны", line:25 },
     "oge25-geometriya|2": { n:"Параллелограмм: биссектрисы углов A и B", line:25 },
     "oge25-geometriya|3": { n:"Трапеция: биссектриса угла D через середину боковой", line:25 },
@@ -185,6 +186,7 @@ var RV = (function(){
     "oge25-geometriya|14": { n:"Трапеция: Окружность через вершины трапеции, касающаяся боковой стороны", line:25 },
     "oge25-geometriya|15": { n:"Параллелограмм: Площадь параллелограмма через инцентр треугольника", line:25 },
     "oge25-geometriya|16": { n:"Треугольник: Вписанная и вневписанная окружности равнобедренного треугольника", line:25 },
+    "oge25-geometriya|17": { n:"Треугольник: Вписанные окружности и высота к гипотенузе", line:25 },
     /* 24 · trainers/oge-task24-proofs.html · 20 типов (ключи тренажёра) */
     "oge24-dokazatelstva|t1": { n:"Подобие: Подобие треугольников в трапеции", line:24 },
     "oge24-dokazatelstva|t10": { n:"Подобие: Продолжения сторон вписанного четырёхугольника", line:24 },
@@ -423,8 +425,8 @@ var RV = (function(){
     "oge-task16-circle": ["insCen","twoDiam","diamMON","diamsPair","mnDiam","diamTri","diamPif","cyclQuad","cyclTrap","eqR2a","eqDist2a","sqR2a","sinR","sqMidO","rectDiag","rtHyp45","sqCircum","trapH","Spr","sqInD","sqInR","eqA2r","eqR2h","eqR2aIn","tanQuad","tanTrap","rhombR","tanExt","twoTan","chordDist","secTan","chordsX","tanChord"],
     "oge17-chetyrehugolniki": ["sqDiag","sqAreaSide","sqAreaPerim","rectDiagAngle","rectDiagBO","rhombAngle","rhombACD","rhombHeight","rhombAreaDiag","rhombAreaPerim","rhombAreaDist","rhombPerpDiag","rhombHeightBigDiag","rhombSideSmallDiag","rhombHeightSegments","parTrapDAEC","parTriCBE","parDiagHalf","parHeights","parAngle","parDiagAngles","parBisector","trapMid","trapArea","trapIso","trapSum","trapRect","trapDiagAO","trapMidSeg","trapDiagFindC","trapDiagBS","trapCutBase","trapDiag45h","trap45Base","trap45Area","trapBisector","trapDiagSmallBase","trapBDA"],
     "oge18-kletki": ["dist","midBC","leg","rhombDiag","midTri","midTrap","areaTri","areaPar","areaRhomb","areaTrap","areaFig","tanA","segAB","segCmp","circRatio"],
-    "oge23-vychisleniya": ["rhombH","pgramBis","trapBis","trapLeg","rhombAng","trapEF","circR","hAB","hAC","projAB","paraBN","paraMC","chordDist","chordLen","secKP1","secKP2","rectPK","rectBH","tanSecAC","tanSecD"],
-    "oge25-geometriya": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
+    "oge23-vychisleniya": ["rhombH","pgramBis","trapBis","trapLeg","rhombAng","trapEF","circR","hAB","hAC","projAB","paraBN","paraMC","chordDist","chordLen","secKP1","secKP2","rectPK","rectBH","tanSecAC","tanSecD","arcRadius"],
+    "oge25-geometriya": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],
     "oge24-dokazatelstva": ["t1","t10","t13","t15","t2","t3","t4","t5","t7","t6","t8","t9","t12","t11","t14","t16","t17","t18","t19","t20"],
     "oge-t20-algebra": ["A","B1","B2","RAZL","B5","BIQ","SQ","POW","SYS","INEQ","DR","QIDS","SYM"],
     "oge-t21-tekst": ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11"],
