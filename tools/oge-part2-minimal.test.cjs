@@ -56,10 +56,10 @@ test('task20: main answer survives help and correct checking advances only once'
  }finally{t.close();}
 });
 
-test('task21: all 12 types keep exact current data in optional help and leave saved counts intact',async()=>{
+test('task21: all 13 types keep exact current data in optional help and leave saved counts intact',async()=>{
  const t=await boot(21,{saved:{t1:4,unrelated:3}});try{
-  const before=t.w.localStorage.getItem('oge21_prog');assert.equal(t.w.__T.MODULES.length,12);
-  for(let i=0;i<12;i++){
+  const before=t.w.localStorage.getItem('oge21_prog');assert.equal(t.w.__T.MODULES.length,13);
+  for(let i=0;i<13;i++){
    t.d.querySelector('.chip[data-idx="'+i+'"]').click();const main=t.d.querySelector('#content .problem'),beforeHTML=snapshot(main),hint=byText(t.d,'Хочешь подсказку?');
    const input=t.d.querySelector('#content .card > div:not(.minimal-hint) .af input');input.value='123';hint.click();
    assert.equal(snapshot(main),beforeHTML);assert.equal(input.value,'123');assert(t.d.querySelector('#task21Help .stepcard'),String(i));assert(t.d.querySelector('#task21Help svg'),i+' visualization');
@@ -70,9 +70,9 @@ test('task21: all 12 types keep exact current data in optional help and leave sa
  }finally{t.close();}
 });
 
-test('task21: 12 synthetic learners solve every type, and answers revealed never earn independent credit',async()=>{
+test('task21: 13 synthetic learners solve every type, and answers revealed never earn independent credit',async()=>{
  const t=await boot(21);try{
-  for(let i=0;i<12;i++){
+  for(let i=0;i<13;i++){
    const module=t.w.__T.MODULES[i],seed=108+i;t.w.Math.random=seeded(seed);const p=module.gen();t.w.Math.random=seeded(seed);t.d.querySelector('.chip[data-idx="'+i+'"]').click();
    const fields=[...t.d.querySelectorAll('#content .card > div:not(.minimal-hint) .af')],parts=module.finalParts(p);assert.equal(fields.length,parts.length);
    for(let j=0;j<fields.length;j++){const part=parts[j],answer=part.ans instanceof t.w.__T.Rn?part.ans:t.w.__T.Rn.from(part.ans);fields[j].querySelector('input').value=String(answer.toNumber());byText(fields[j],'Проверить').click();assert(fields[j].classList.contains('ok'),module.key+' part '+j);}
@@ -303,4 +303,72 @@ test('source alignment inverse preserves historical pins and rejects partial or 
   const extra=raw.replace('</body>','<!-- an unrelated change --></body>');
   assert.notEqual(restoreSourceAlignment(file,extra),base);
  }
+});
+
+test('task21 three counts preserve both comparisons and the exact total',async()=>{
+ const t=await boot(21);try{
+  const module=t.w.__T.MODULES.find(entry=>entry.key==='t13');
+  for(let m=12;m<=26;m++)for(let factor=2;factor<=4;factor++)for(let extra=3;extra<=10;extra++){
+   for(const compareSmall of [true,false]){
+    const samples=[(m-12+.1)/15,(factor-2+.1)/3,(extra-3+.1)/8,compareSmall ? .1 : .8];
+    t.w.Math.random=()=>samples.shift()??.2;
+    const p=module.gen();
+    assert.equal(p.medium,m);
+    assert.equal(p.large,p.medium*factor);
+    assert.equal(p.small,p.medium+extra);
+    assert.equal((p.total-extra)/(factor+2),p.medium);
+    const compare=compareSmall?p.small:p.medium;
+    assert.equal(module.finalParts(p)[0].ans.toNumber(),p.large-compare);
+    assert(p.large>compare);
+    assert.match(p.stmt,compareSmall?/чем маленьких/:/чем средних/);
+    assert.equal(module.steps(p).at(-1).ans.toNumber(),p.large-compare);
+   }
+  }
+  const p=module.gen(),holder=t.d.createElement('div');
+  module.viz(holder,p);
+  assert.equal([...holder.querySelectorAll('svg text')].filter(label=>label.textContent==='x').length,p.factor+2);
+  assert([...holder.querySelectorAll('svg text')].some(label=>label.textContent==='+'+p.extra));
+ }finally{t.close();}
+});
+
+test('task22 shifted parabola excludes each point and handles coincident hole heights',async()=>{
+ const t=await boot(22);try{
+  const {genParabolaTwoHoles,Fr,countH,stepPlan}=t.w.__api;
+  for(let vx=-2;vx<=2;vx++)for(let vy=-3;vy<=2;vy++)for(const fromLeft of [1,2])for(const fromRight of [1,2]){
+   const samples=[(vx+2+.1)/5,(vy+3+.1)/6,(fromLeft-1+.1)/2,(fromRight-1+.1)/2];
+   t.w.Math.random=()=>samples.shift()??.2;
+   const p=genParabolaTwoHoles(),values=Array.from(p.vals,val=>val.toNum());
+   assert.equal(p.left,vx-fromLeft);assert.equal(p.right,vx+fromRight);
+   const exactlyOne=[];
+   for(const m of [vy-1,vy,vy+1,vy+2,vy+3,vy+4,vy+5]){
+    const delta=m-vy;
+    const candidates=delta<0?[]:delta===0?[vx]:[vx-Math.sqrt(delta),vx+Math.sqrt(delta)];
+    const actual=candidates.filter(x=>x!==p.left&&x!==p.right);
+    assert.equal(countH(p.pieces,Fr(m)),actual.length);
+    if(actual.length===1)exactlyOne.push(m);
+   }
+   assert.deepEqual(values,exactlyOne);
+   assert.equal(stepPlan(p).at(-1).answer,p.vals);
+  }
+  t.d.querySelector('.mod-btn[data-mod="m3"]').click();
+  const host=t.d.querySelector('.panel[data-mod="m3"] .mode-host[data-mode="marathon"]');
+  const cases=[[[.1,.1,.1,.1],0],[[.1,.1,.1,.8],1]];
+  for(const [samples,atHole] of cases){
+   t.w.Math.random=()=>samples.shift()??.2;
+   byText(host,'Парабола с двумя выколотыми точками').click();
+   const p=host.__problem;
+   assert.equal(p.sub,'parab_m_twoholes');
+   byText(host,'Хочешь подсказку?').click();
+   assert.equal(host.querySelectorAll('.grapher .dot-open').length,2);
+   const slider=host.querySelector('input[type="range"]');
+   for(const [level,count] of [[p.vertexY-1,0],[p.vertexY,1],[p.vertexY+1,atHole],[p.vertexY+2,2]]){
+    slider.value=String(level);slider.dispatchEvent(new t.w.Event('input'));
+    assert.equal(host.querySelector('.badge-t2').textContent,String(count));
+   }
+   const ans=host.querySelector('.ans-host'),check=host.querySelector(':scope > .btn-row > .btn-check');
+   ans.querySelector('.v-dec').value=String(p.vertexY-1);
+   check.click();assert(!check.disabled);
+   fill22(ans,p);check.click();assert(check.disabled);
+  }
+ }finally{t.close();}
 });

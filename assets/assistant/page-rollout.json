@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "99682223674e2875074e39674378175979160ca5",
+  "baseSha": "adbdcae59e79f228654d35202b95a2b6ae324e85",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2993,13 +2993,13 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task21-word-problems.html": {
-      "beforeSha256": "d59f9955ca0be2d495793f23fbd4016ea7ac13e1a8deac11dc0d7efa28de7a91",
-      "afterSha256": "7f3cd9c66e92c7c8d299a35776e0a9f36404424a65d58faddbfa42abb5560d91",
+      "beforeSha256": "9c104e96ad0ef4292f0b8da6aecb94dbd661bc5242156745f599a3136b32d563",
+      "afterSha256": "201f6d78995c63cdf42acd964ed7958843c5e34ce8fcb31b87378574ed115009",
       "placement": "before-head-close"
     },
     "trainers/oge-task22-functions-graphs.html": {
-      "beforeSha256": "b886821c3f8decbbb98e0431e6363af3ffd5e30f646236baac6b5516dfbdbb2d",
-      "afterSha256": "49edddbe6052757dedb9ea5cd478cb7a90fa99850f0f9c0298eaa79d0fbfc965",
+      "beforeSha256": "23a44ebcc75b8e1be6b56c125364b8404b3d2ca1c4a292da31614f7fc28aae9f",
+      "afterSha256": "aca8c9d2d30bbf63922a0fc79ba5536198675ec2d0f6104ae86e7b0ec93af43c",
       "placement": "before-head-close"
     },
     "trainers/oge-task23-geometry-calculations.html": {
@@ -5290,6 +5290,16 @@
       "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_20_22_20261116.md",
       "changedPaths": [
         "trainers/oge-task20-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "99682223674e2875074e39674378175979160ca5",
+      "sourceBaseSha": "adbdcae59e79f228654d35202b95a2b6ae324e85",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_20_22_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task21-word-problems.html",
+        "trainers/oge-task22-functions-graphs.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

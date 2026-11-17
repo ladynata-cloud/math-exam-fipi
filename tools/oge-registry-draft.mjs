@@ -54,7 +54,7 @@ const extractors = {
     return all(/(?:\b([A-Z][A-Z0-9]*):|\bMODULES\.([A-Z][A-Z0-9]*)=)\{\s*num:'([\d.]+)',[^]{0,120}?title:'([^']*)'/g, s, (m) => ({ id: m[1] || m[2], group: '№' + m[3], n: m[4] }));
   } },
   'oge-t21-tekst': { line: 21, file: 'oge-task21-word-problems.html', get(s) {
-    const cats = { move: 'Движение', work: 'Работа', perc: 'Проценты' };
+    const cats = { move: 'Движение', work: 'Работа', perc: 'Проценты', counts: 'Количество предметов' };
     return all(/MODULES\.push\(\{\s*key:'(\w+)',\s*title:'([^']*)',\s*cat:'(\w+)'/g, s, (m) => ({ id: m[1], group: cats[m[3]] || m[3], n: m[2] }));
   } },
   'oge-t22-grafiki': { line: 22, file: 'oge-task22-functions-graphs.html', get() {
@@ -70,6 +70,7 @@ const extractors = {
       { id: 'shift_m', group: 'Выколотая точка', n: 'Сдвиг и выколотая точка' },
       { id: 'parab_kx', group: 'Выколотая точка', n: 'Парабола с выколотой точкой' },
       { id: 'even_kx_none', group: 'Выколотые точки', n: 'Прямая y=kx без пересечений' },
+      { id: 'parab_m_twoholes', group: 'Выколотые точки', n: 'Парабола с двумя выколотыми точками' },
     ];
   } },
   'oge-t12-formuly': { line: 12, file: 'oge-task12-formulas-trainer.html', get(s) {

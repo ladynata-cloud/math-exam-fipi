@@ -862,11 +862,11 @@ function fullSolution(m,p){
 /* ==================================================================
    MODULE REGISTRY
    Each module: {key,title,cat,blurb, learn():html, gen():p, statement(p):html, steps(p):[], finalParts(p):[{label,ans,unit}]}
-   cat in {move,work,perc}
+   cat in {move,work,perc,counts}
    ================================================================== */
 const MODULES=[];
-const CAT={ move:{name:'Движение',color:'var(--move)',deep:'#26379c'}, work:{name:'Работа',color:'var(--work)',deep:'#0a5f5f'}, perc:{name:'Проценты',color:'var(--perc)',deep:'#573a94'} };
-const CATHEX={ move:'#3453d6', work:'#0f8a8a', perc:'#7c53c8' };
+const CAT={ move:{name:'Движение',color:'var(--move)',deep:'#26379c'}, work:{name:'Работа',color:'var(--work)',deep:'#0a5f5f'}, perc:{name:'Проценты',color:'var(--perc)',deep:'#573a94'}, counts:{name:'Количество предметов',color:'var(--move)',deep:'#26379c'} };
+const CATHEX={ move:'#3453d6', work:'#0f8a8a', perc:'#7c53c8', counts:'#3453d6' };
 
 function gcdInt(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=a%b;a=b;b=t;}return a||1;}
 function lcm(a,b){return a/gcdInt(a,b)*b;}
@@ -1767,6 +1767,49 @@ MODULES.push({
   }
 });
 
+/* ---------- t13: три группы с общим количеством ---------- */
+MODULES.push({
+  key:'t13', title:'Три группы', cat:'counts',
+  blurb:'в несколько раз, на несколько штук',
+  long:'Выбираем одну группу за x, записываем количества двух остальных и складываем все три.',
+  learn(){
+    return '<div class="tcard"><span class="n">1</span><h3>Запиши три количества</h3>'+
+      '<p>Если средних x, больших в k раз больше, а маленьких на d больше, то больших kx, маленьких x + d.</p></div>'+
+      '<div class="tcard"><span class="n">2</span><h3>Сложи всё и ответь на вопрос</h3>'+
+      '<p>Приравняй сумму трёх количеств к общему числу. Найди x, затем вычисли разность нужных групп.</p></div>';
+  },
+  gen(){
+    const medium=rnd(12,26), factor=rnd(2,4), extra=rnd(3,10);
+    const large=factor*medium, small=medium+extra, total=medium+large+small;
+    const compareSmall=pick([true,false]);
+    const compare=compareSmall?'маленьких':'средних';
+    const difference=large-(compareSmall?small:medium);
+    const stmt='Для школьной выставки напечатали открытки трёх размеров, всего <b>'+total+'</b>. '+
+      'Больших открыток было в <b>'+factor+' раза</b> больше, чем средних, а маленьких — на <b>'+extra+'</b> больше, чем средних. '+
+      '<span class="q">На сколько больших открыток было больше, чем '+compare+'?</span>';
+    return {medium,factor,extra,large,small,total,compareSmall,difference,stmt,
+      finalParts:[{label:'На сколько открыток больше:',ans:Rn.from(difference)}]};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){
+    const f=p.factor,e=p.extra,t=p.total, m=p.medium;
+    const compare=p.compareSmall?'маленьких':'средних', comparedCount=p.compareSmall?p.small:p.medium;
+    return [
+      {t:'note',html:'Пусть <b>x</b> — количество средних открыток. Больших тогда '+f+'x, маленьких x + '+e+'.'},
+      {t:'pick',q:'Какое уравнение описывает общее количество открыток?',options:[
+        {h:'x + '+f+'x + (x + '+e+') = '+t,ok:true,eq:true},
+        {h:'x + '+f+'x + (x − '+e+') = '+t,why:'Маленьких больше на '+e+', поэтому '+e+' надо прибавить.'},
+        {h:'x + '+f+'x = '+t,why:'Нужно учесть и маленькие открытки.'}]},
+      {t:'num',q:'Сколько средних открыток получится из этого уравнения?',ans:Rn.from(m),
+       revealHTML:'<div class="eqline">'+(f+2)+'x = '+t+' − '+e+' = '+(t-e)+', x = '+m+'</div>'},
+      {t:'num',q:'На сколько больших открыток больше, чем '+compare+'?',ans:Rn.from(p.difference),
+       revealHTML:'<div class="eqline">Больших: '+f+' · '+m+' = '+p.large+'. Маленьких: '+m+' + '+e+' = '+p.small+'.</div>'+
+         '<div class="eqline">'+p.large+' − '+comparedCount+' = '+p.difference+'. Проверка: '+m+' + '+p.large+' + '+p.small+' = '+t+'.</div>'}
+    ];
+  }
+});
+
 /* ---------- inline theory mini-checks (one per module) ---------- */
 const MINIS={
   t1:function(){ const tau=pick([36,48,54,24,30,45,12,6]); return {q:'Остановка <b>'+tau+' мин</b> — сколько это часов? (десятичной дробью)', ans:new Rn(tau,60), allowFrac:true}; },
@@ -2035,6 +2078,24 @@ const VIZ={
       svg.appendChild(sv('rect',{x:27,y:top,width:mass*unit,height:32,fill:'#8fc0ef'}));
       svg.appendChild(sv('rect',{x:27,y:top,width:salt*unit,height:32,fill:V_GREEN}));
     }
+  },
+  t13:function(host,p){
+    const card=vcard(host,'Три группы в одном уравнении','Каждый синий блок обозначает x средних открыток. Зелёный блок обозначает известную добавку. В сумме получается '+p.total+'.');
+    const svg=svgRoot('0 0 440 165');
+    card.appendChild(svg);
+    for (const [index,label,count,add] of [[0,'Средние',1,0],[1,'Большие',p.factor,0],[2,'Маленькие',1,p.extra]]){
+      const top=16+index*49;
+      svg.appendChild(svT(10,top+19,label,{'font-size':'16','font-weight':'700',fill:V_INK}));
+      for (let i=0;i<count;i++){
+        const left=113+i*47;
+        svg.appendChild(sv('rect',{x:left,y:top,width:43,height:30,rx:4,fill:'#8fc0ef'}));
+        svg.appendChild(svT(left+21.5,top+20,'x',{'text-anchor':'middle','font-size':'17',fill:V_INK}));
+      }
+      if(add){
+        svg.appendChild(sv('rect',{x:160,y:top,width:43,height:30,rx:4,fill:'#9ddbbd'}));
+        svg.appendChild(svT(181.5,top+20,'+'+add,{'text-anchor':'middle','font-size':'17',fill:V_INK}));
+      }
+    }
   }
 };
 MODULES.forEach(m=>{ if(VIZ[m.key]) m.viz=VIZ[m.key]; });
@@ -2102,9 +2163,9 @@ let CUR=0, MODE='drill';
 
 function buildRail(){
   const rail=$('#rail'); rail.innerHTML='';
-  const byCat={move:[],work:[],perc:[]};
+  const byCat={move:[],work:[],perc:[],counts:[]};
   MODULES.forEach((m,idx)=>byCat[m.cat].push({m,idx}));
-  ['move','work','perc'].forEach(cat=>{
+  Object.keys(byCat).forEach(cat=>{
     if(!byCat[cat].length)return;
     const g=el('div','catgroup');
     g.innerHTML='<div class="catlabel" style="color:'+CAT[cat].color+'"><span class="dot" style="background:'+CAT[cat].color+'"></span>'+CAT[cat].name+'</div>';
