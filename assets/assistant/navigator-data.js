@@ -44,7 +44,8 @@
     ["ege-profile-probability", "Профильный ЕГЭ: вероятность", "/ege-profil/trainers/probability-t45.html", "ЕГЭ", ["вероятность", "монета", "кубик", "дерево событий", "бернулли"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-applied", "Профильный ЕГЭ: формулы и текстовые задачи", "/ege-profil/trainers/applied-t910.html", "ЕГЭ", ["текстовые задачи", "формулы", "движение", "работа", "смеси"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-functions", "Профильный ЕГЭ: графики и наибольшее значение", "/ege-profil/trainers/functions-t1112.html", "ЕГЭ", ["функции", "графики", "максимум", "минимум", "экстремум"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
-    ["ege-profile-full-exam", "Профильный ЕГЭ: пробный экзамен в формате 2026", "/ege-profil/exam/full-exam.html", "ЕГЭ", ["пробник", "полный вариант", "экзамен с таймером"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "formatYear": 2026}],
+    ["ege-profile-full-exam", "Профильный ЕГЭ: пробный экзамен в формате 2026", "/ege-profil/exam/full-exam.html", "ЕГЭ", ["пробник 2026", "полный вариант 2026", "экзамен с таймером 2026"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "formatYear": 2026}],
+    ["ege-profile-full-exam-2027", "Профильный ЕГЭ: пробник 2027", "/ege-profil/exam/full-exam.html?edition=2027", "ЕГЭ", ["пробник", "полный вариант", "экзамен с таймером"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "formatYear": 2027}],
     ["ege-profile-review", "Профильный ЕГЭ: работа над ошибками", "/ege-profil/review.html", "ЕГЭ", ["работа над ошибками", "журнал ошибок", "повторение"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-expert", "Профильный ЕГЭ: проверь как эксперт", "/ege-profil/trainers/expert.html", "ЕГЭ", ["критерии", "проверка решений", "эксперт", "развёрнутый ответ"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["oge-tires", "ОГЭ 1–5: Шины: маркировка и размеры колеса", "/trainers/oge-1-5-trainers/practice-1-5-tires.html", "ОГЭ", ["шины", "колёса", "покрышки", "резина", "маркировка", "195/65 r15"], {"grades": [9], "exam": "ОГЭ", "tasks": [1, 2, 3, 4, 5]}],
@@ -600,9 +601,9 @@
     if (examLevel === 'ege-profile' && !oge) {
       if (number === 15 && !/кредит|финанс|геометр/.test(text)) return one('ege-profile-inequalities-2027', 'По ФИПИ 2027 задание 15 — неравенства второй части.');
       if (number === 16 && !/неравен|геометр/.test(text)) return one('ege-profile-finance', 'По ФИПИ 2027 задание 16 — финансовая задача. Здесь доступны основы, модели и учебные задачи.');
-      if (/пробник|полный вариант|экзамен.{0,12}целиком/.test(text) && byId['ege-profile-full-exam']) {
+      if (/пробник|пробн[а-яё]*\s+экзамен|полный вариант|экзамен.{0,12}целиком/.test(text) && byId['ege-profile-full-exam']) {
         if (/2026/.test(text)) return one('ege-profile-full-exam', 'Этот пробный экзамен использует формат 2026.');
-        return result('clarify', 'На сайте есть пробный экзамен в формате 2026 и учебный маршрут 2027. Что открыть?', ['ege-profile-full-exam','ege-profile-start'], state, [choice('Пробник 2026', 'ЕГЭ профиль: пробник 2026'),choice('Маршрут 2027', 'ЕГЭ профиль: карта курса 2027')]);
+        return one('ege-profile-full-exam-2027', 'Пробник ЕГЭ-2027: 19 заданий, таймер и проверка по первичным баллам.');
       }
       var topic = /работ.{0,10}над ошиб|журнал.{0,10}ошиб|разобрат.{0,12}ошиб/.test(text) ? 'ege-profile-review'
         : /критери|эксперт|провер.{0,12}(?:развернут|решени)/.test(text) ? 'ege-profile-expert'

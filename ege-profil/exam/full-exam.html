@@ -50,6 +50,7 @@
   .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(30,58,159,.07);
     border-radius:6px;padding:1px 6px;white-space:nowrap}
   svg.graph{display:block;margin:10px 0;max-width:100%;background:#fff;border-radius:8px}
+  [data-practice-edition="2027"] .formula{white-space:normal;overflow-wrap:anywhere}
   /* Шапка экзамена — одна строка: часы · бланк · «Завершить». Бланк на
      узком экране не переносится, а прокручивается внутри шапки: шапка
      остаётся низкой и не съедает экран с условием. */
@@ -115,9 +116,10 @@
 
   <!-- СТАРТ -->
   <section class="view on" id="view-start">
-    <p class="eyebrow">пробный экзамен · 19 заданий · 3 часа 55 минут</p>
-    <h1>Экзамен целиком</h1>
-    <p class="lede">Вариант собирается заново из банка всех 19 линий. Первая часть проверяется автоматически, вторую вы решаете на бумаге и оцениваете по критериям — как эксперт. В конце — первичный балл и перевод в тестовый по шкале 2026 года.</p>
+    <p class="eyebrow" id="examEdition">пробный экзамен · 19 заданий · 3 часа 55 минут</p>
+    <h1 id="examHeading">Экзамен целиком</h1>
+    <p class="lede" id="examDescription">Вариант собирается заново из банка всех 19 линий. Первая часть проверяется автоматически, вторую вы решаете на бумаге и оцениваете по критериям — как эксперт. В конце — первичный балл и перевод в тестовый по шкале 2026 года.</p>
+    <p class="small" id="examLoadingError" role="status" hidden></p>
 <details class="kim-ref" style="margin:16px 0;border:1.5px dashed #C22F2A;border-radius:10px;background:rgba(255,255,255,.85);padding:0 16px;max-width:660px;">
   <summary style="cursor:pointer;padding:11px 0;font-weight:800;color:#16307F;">Справочные материалы КИМ — этот листок выдают на экзамене</summary>
   <div style="padding:2px 0 13px;font-size:16.5px;line-height:1.85;color:#2A2F38;">
@@ -169,11 +171,11 @@
   <section class="view" id="view-result">
     <div class="card red">
       <h2 id="resTitle">Результат</h2>
-      <p class="score"><span id="resPrimary">0</span><small> из 32 первичных</small> · <span id="resTest">0</span><small> из 100 тестовых</small></p>
+      <p class="score"><span id="resPrimary">0</span><small> из 32 первичных</small><span id="resTestBlock"> · <span id="resTest">0</span><small> из 100 тестовых</small></span></p>
       <p class="small muted" id="resTime"></p>
       <p class="small" id="resThreshold"></p>
       <p class="small muted">Во второй части поставьте себе баллы по критериям под каждым заданием — итог пересчитается сам.</p>
-      <details class="support"><summary>Шкала перевода 2026 года</summary><div id="scaleHost" style="overflow-x:auto;margin-top:8px"></div></details>
+      <details class="support" id="resultScale"><summary>Шкала перевода 2026 года</summary><div id="scaleHost" style="overflow-x:auto;margin-top:8px"></div></details>
     </div>
     <div id="resultHost"></div>
     <p><a class="btn ghost" href="../index.html">← На главную курса</a> <button class="btn ghost" id="againBtn">Новый вариант</button></p>
@@ -181,6 +183,7 @@
 </div>
 
 <script src="bank.js"></script>
+<script src="practice-2027.js?v=20261117"></script>
 <script>
 /* ================= ЛОГИКА (без DOM) ================= */
 var FE = (function(){
@@ -217,12 +220,25 @@ var FE = (function(){
     var v = parse(input);
     return !isNaN(v) && Math.abs(v - answer) < 1e-6;
   }
+  function decimalKey(input){
+    const raw = String(input ?? "").trim().replace(/−/g, "-").replace(",", ".");
+    const match = /^([+-]?)(\d*)(?:\.(\d+))?$/.exec(raw);
+    if (!match || !match[2] && !match[3]) return null;
+    const integer = (match[2] || "0").replace(/^0+(?=\d)/, "");
+    const fraction = (match[3] || "").replace(/0+$/, "");
+    const sign = match[1] === "-" && (integer !== "0" || fraction) ? "-" : "";
+    return sign + integer + (fraction ? "." + fraction : "");
+  }
+  function checkDecimal(input, answer){
+    const key = decimalKey(input);
+    return key !== null && key === decimalKey(answer);
+  }
   function clampMark(line, m){
     m = Math.round(Number(m) || 0);
     return Math.max(0, Math.min(MAXP[line] || 0, m));
   }
   /* part1ok — объект {1:true/false,...,12:...}, selfMarks — {13:0..2,...,19:0..4} */
-  function scoreExam(part1ok, selfMarks){
+  function scoreExam(part1ok, selfMarks, withScale = true){
     var primary = 0, lines = {}, i;
     for (i = 1; i <= 12; i++){
       var ok = !!(part1ok && part1ok[i]);
@@ -234,7 +250,7 @@ var FE = (function(){
       lines[i] = m;
       primary += m;
     }
-    return { primary: primary, test: toTest(primary), lines: lines };
+    return { primary: primary, test: withScale ? toTest(primary) : null, lines: lines };
   }
   function fmtNum(n){
     return Number.isInteger(n) ? String(n) : String(Number(n.toFixed(6))).replace(".", ",");
@@ -245,7 +261,7 @@ var FE = (function(){
     return h + ":" + String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
   }
   return { MAXP:MAXP, SCALE:SCALE, DURATION:DURATION, TRAINER:TRAINER, maxPrimary:maxPrimary,
-           toTest:toTest, parse:parse, checkShort:checkShort, clampMark:clampMark,
+           toTest:toTest, parse:parse, checkShort:checkShort, checkDecimal:checkDecimal, clampMark:clampMark,
            scoreExam:scoreExam, fmtNum:fmtNum, fmtClock:fmtClock };
 })();
 if (typeof module !== "undefined") module.exports = FE;
@@ -255,6 +271,29 @@ if (typeof module !== "undefined") module.exports = FE;
 /* ================= ИНТЕРФЕЙС ================= */
 (function(){
   "use strict";
+  const edition2027 = new URLSearchParams(window.location.search).get("edition") === "2027";
+  const practice = window.ProfilePractice2027;
+  const ready = !edition2027 || Array.isArray(practice) && practice.length === 19 &&
+    practice.every((item, index) => item.id === index + 1 && item.detailed === (index >= 12) && !!item.t);
+  const historyKey = edition2027 ? "full-exam-2027-v1" : "full-exam";
+  const activeKey = historyKey + "-active";
+  if (edition2027) {
+    document.documentElement.dataset.practiceEdition = "2027";
+    document.title = "Пробный ЕГЭ 2027 по профильной математике · MathExam";
+    document.getElementById("examEdition").textContent = "ЕГЭ 2027 · 19 заданий · 3 часа 55 минут";
+    document.getElementById("examHeading").textContent = "Пробный ЕГЭ 2027";
+    document.getElementById("examDescription").textContent =
+      "Учебный вариант по утверждённой модели ФИПИ. В первой части 12 заданий с кратким ответом, во второй — 7 с развёрнутым. После завершения вы получите первичный балл из 32 и сможете сверить письменную работу с решениями и критериями.";
+    document.getElementById("resTestBlock").hidden = true;
+    document.getElementById("resultScale").hidden = true;
+    document.getElementById("againBtn").textContent = "К началу варианта";
+    if (!ready) {
+      const notice = document.getElementById("examLoadingError");
+      notice.hidden = false;
+      notice.textContent = "Условия варианта не загрузились. Обновите страницу и попробуйте ещё раз.";
+      document.getElementById("startBtn").disabled = true;
+    }
+  }
   var KEY = "mathExamCourseProgress.v1";
   /* Восстановление проверяет схему и молча отбрасывает мусор: ключ принимается,
      только если это объект; своя запись (full-exam, full-exam-active) и её поля
@@ -276,13 +315,13 @@ if (typeof module !== "undefined") module.exports = FE;
   function cleanAttempt(x){
     if (!isObj(x) || !isNum(x.ts)) return null;
     if (!isNum(x.primary) || x.primary < 0) x.primary = 0;
-    if (!isNum(x.test) || x.test < 0) x.test = 0;
+    if (!edition2027 && (!isNum(x.test) || x.test < 0)) x.test = 0;
     if (!isObj(x.lines)) x.lines = {};
     return x;
   }
-  /* ветка full-exam из all: всегда { attempts: [...] } без мусорных попыток */
+  /* Своя история выбранной редакции. */
   function examBranch(all){
-    var fe = isObj(all["full-exam"]) ? all["full-exam"] : (all["full-exam"] = {});
+    var fe = isObj(all[historyKey]) ? all[historyKey] : (all[historyKey] = {});
     fe.attempts = (Array.isArray(fe.attempts) ? fe.attempts : []).map(cleanAttempt).filter(Boolean);
     return fe;
   }
@@ -310,21 +349,27 @@ if (typeof module !== "undefined") module.exports = FE;
     syncTopbar();
   }
   function loadActive(){
-    return cleanActive(readAll()["full-exam-active"]);
+    return ready ? cleanActive(readAll()[activeKey]) : null;
   }
   function saveActive(){
     var all = readAll();
-    all["full-exam-active"] = A;
+    all[activeKey] = A;
     writeAll(all);
   }
   function dropActive(){
     var all = readAll();
-    delete all["full-exam-active"];
+    delete all[activeKey];
     writeAll(all);
   }
   function genTasks(seed){
+    if (edition2027) return practice;
     bankSeed(seed);
     return modules.map(function(m){ return { id:m.id, title:m.title, detailed:!!m.detailed, t:m.make() }; });
+  }
+  function trainerHref(line){
+    if (!edition2027) return FE.TRAINER[line];
+    const section = line <= 12 || line === 16 ? "start" : "part-two";
+    return "../" + section + "/index.html#fipi/2027/" + line;
   }
 
   /* ---------- стартовый экран ---------- */
@@ -341,11 +386,13 @@ if (typeof module !== "undefined") module.exports = FE;
     if (hist.length){
       hc.style.display = "block";
       document.getElementById("historyList").innerHTML = hist.slice(-8).reverse().map(function(x){
-        return esc(new Date(x.ts).toLocaleDateString("ru-RU") + " — " + x.primary + " перв. · " + x.test + " тест.");
+        const scale = edition2027 ? "" : " · " + x.test + " тест.";
+        return esc(new Date(x.ts).toLocaleDateString("ru-RU") + " — " + x.primary + " перв." + scale);
       }).join("<br>");
     } else hc.style.display = "none";
   }
   document.getElementById("startBtn").addEventListener("click", function(){
+    if (!ready) return;
     A = { seed: (Date.now() ^ (Math.random()*1e9)) >>> 0, start: Date.now(),
           noTimer: document.getElementById("optNoTimer").checked, answers:{}, marks:{}, done:false };
     saveActive();
@@ -431,10 +478,12 @@ if (typeof module !== "undefined") module.exports = FE;
   }
   function askFinish(){
     var empty = TASKS.filter(function(x){
+      if (edition2027 && x.detailed) return false;
       var v = A.answers[x.id];
       return v == null || String(v).trim() === "";
     }).length;
-    if (empty && !confirm("Без ответа осталось заданий: " + empty + ". Завершить экзамен?")) return;
+    const label = edition2027 ? "Без краткого ответа осталось заданий: " : "Без ответа осталось заданий: ";
+    if (empty && !confirm(label + empty + ". Завершить экзамен?")) return;
     finish(false);
   }
   document.getElementById("finishBtn").addEventListener("click", askFinish);
@@ -451,7 +500,10 @@ if (typeof module !== "undefined") module.exports = FE;
 
     var part1ok = {};
     TASKS.forEach(function(x){
-      if (!x.detailed) part1ok[x.id] = FE.checkShort(A.answers[x.id], x.t.answer);
+      if (!x.detailed) {
+        const check = edition2027 ? FE.checkDecimal : FE.checkShort;
+        part1ok[x.id] = check(A.answers[x.id], x.t.answer);
+      }
     });
     var all = readAll();
     var fe = examBranch(all);
@@ -469,13 +521,17 @@ if (typeof module !== "undefined") module.exports = FE;
     window.scrollTo(0, 0);
   }
   function recount(part1ok){
-    var r = FE.scoreExam(part1ok, A.marks);
+    var r = FE.scoreExam(part1ok, A.marks, !edition2027);
     document.getElementById("resPrimary").textContent = r.primary;
-    document.getElementById("resTest").textContent = r.test;
     var th = document.getElementById("resThreshold");
-    th.textContent = r.test >= 27
-      ? "Минимальный порог 27 тестовых пройден."
-      : "Минимальный порог — 27 тестовых баллов: пока не достигнут.";
+    if (edition2027) {
+      th.textContent = "Итог включает вашу оценку письменных решений. Учитель может уточнить баллы после проверки работы.";
+    } else {
+      document.getElementById("resTest").textContent = r.test;
+      th.textContent = r.test >= 27
+        ? "Минимальный порог 27 тестовых пройден."
+        : "Минимальный порог — 27 тестовых баллов: пока не достигнут.";
+    }
     /* обновляем СВОЮ попытку (attemptRef: время и seed), а не последнюю:
        в другой вкладке за это время могла завершиться новая */
     if (!attemptRef) return;
@@ -496,13 +552,14 @@ if (typeof module !== "undefined") module.exports = FE;
     writeAll(all);
   }
   function renderResult(part1ok){
-    /* шкала */
-    var sc = '<table class="scale"><tr><th>перв.</th>';
-    for (var p = 0; p <= 32; p++) sc += "<td>" + p + "</td>";
-    sc += '</tr><tr><th>тест.</th>';
-    for (p = 0; p <= 32; p++) sc += "<td>" + FE.SCALE[p] + "</td>";
-    sc += "</tr></table>";
-    document.getElementById("scaleHost").innerHTML = sc;
+    if (!edition2027) {
+      var sc = '<table class="scale"><tr><th>перв.</th>';
+      for (var p = 0; p <= 32; p++) sc += "<td>" + p + "</td>";
+      sc += '</tr><tr><th>тест.</th>';
+      for (p = 0; p <= 32; p++) sc += "<td>" + FE.SCALE[p] + "</td>";
+      sc += "</tr></table>";
+      document.getElementById("scaleHost").innerHTML = sc;
+    }
 
     var host = document.getElementById("resultHost");
     host.innerHTML = "";
@@ -517,7 +574,7 @@ if (typeof module !== "undefined") module.exports = FE;
         head += '<p><span class="verdict ' + (ok ? "ok" : "bad") + '">' + (ok ? "верно · 1 балл" : "неверно · 0 баллов") + '</span></p>' +
           '<p class="small">ваш ответ: <b class="mono">' + esc(mine) + '</b> · верный: <b class="mono">' + FE.fmtNum(x.t.answer) + '</b></p>' +
           '<details class="support"><summary>Как решать</summary><p>' + x.t.hint + '</p><p>' + x.t.explain + '</p></details>';
-        if (!ok) head += '<p class="practice"><a href="' + FE.TRAINER[x.id] + '">→ отработать эту линию в тренажёре</a></p>';
+        if (!ok) head += '<p class="practice"><a href="' + trainerHref(x.id) + '">→ отработать эту линию в тренажёре</a></p>';
         card.innerHTML = head;
       } else {
         var mine2 = A.answers[x.id] ? esc(A.answers[x.id]) : "—";
@@ -525,9 +582,12 @@ if (typeof module !== "undefined") module.exports = FE;
           '<details class="support" open><summary>Эталонное решение</summary><ol class="model">' +
           x.t.model.map(function(s){ return "<li>" + s + "</li>"; }).join("") +
           '</ol><p class="answerline">' + x.t.answerLine + '</p></details>' +
-          '<p class="small muted" style="margin-top:10px">Сверьте свою запись на бумаге и поставьте балл, как поставил бы эксперт (максимум ' + FE.MAXP[x.id] + '):</p>' +
+          rubricView(x.t) +
+          '<p class="small muted" style="margin-top:10px">' +
+          (edition2027 ? "Сверьте свою запись и поставьте учебный балл" : "Сверьте свою запись на бумаге и поставьте балл, как поставил бы эксперт") +
+          ' (максимум ' + FE.MAXP[x.id] + '):</p>' +
           '<div class="chips" data-line="' + x.id + '"></div>' +
-          '<p class="practice"><a href="' + FE.TRAINER[x.id] + '">→ отработать эту линию в тренажёре</a></p>';
+          '<p class="practice"><a href="' + trainerHref(x.id) + '">→ отработать эту линию в тренажёре</a></p>';
         card.innerHTML = head;
         var chips = card.querySelector(".chips");
         for (var m = 0; m <= FE.MAXP[x.id]; m++)(function(m){
@@ -545,6 +605,12 @@ if (typeof module !== "undefined") module.exports = FE;
       }
       host.appendChild(card);
     });
+  }
+  function rubricView(task){
+    if (!edition2027 || !Array.isArray(task.rubric)) return "";
+    const points = task.rubric.map(row => "<li><b>" + esc(row.points) + "</b>. " + esc(row.criterion) + "</li>").join("");
+    const source = task.criteriaUrl ? '<p><a href="' + esc(task.criteriaUrl) + '">Критерии ФИПИ</a></p>' : "";
+    return '<details class="support"><summary>Учебные критерии</summary><ul>' + points + '</ul>' + source + '</details>';
   }
   document.getElementById("againBtn").addEventListener("click", function(){
     A = null; TASKS = [];

@@ -758,6 +758,7 @@
         "/ege-profil/skill-map-data.js",
         "/ege-profil/azbuka-metodov/catalog.js",
         "/ege-profil/skill-map.js",
+        "/ege-profil/part-two/parameter-proof.js",
         "/ege-profil/part-two/app.js"
       ],
       "offlineOmitAssets": [],

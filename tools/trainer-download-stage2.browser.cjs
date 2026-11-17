@@ -299,6 +299,25 @@ const scenarios = {
     assert.equal(await page.locator('#proof-draft').inputValue(), 'Проверяю перпендикулярность по условию.');
     await checkPartTwoNumericDomain(page);
     await checkPartTwoExamRoutes(page, task.id);
+
+    const parameter = partTwoLessons.find(lesson => lesson.id === 'param-hole').tasks[3];
+    const argument = '\nОграничиваю область допустимых значений.';
+    await page.evaluate(id => { location.hash = `#task/${id}/independent`; }, parameter.id);
+    await page.locator('#proof-review').waitFor({ state: 'attached' });
+    await page.locator('#proof-draft').fill(argument);
+    for (let i = 0; i < parameter.final.length; i++) await page.locator(`#final-${i}`).fill('987654321');
+    await submit(page, '#final-form');
+    await page.locator('#feedback.error').waitFor();
+    await page.locator('#proof-jump').click();
+    const marks = page.locator('#proof-review').getByRole('checkbox');
+    assert.equal(await marks.count(), 4);
+    await marks.first().check();
+    await page.locator('#proof-review-count').getByText('Вы отметили 1 из 4 пунктов.').waitFor();
+    await page.reload();
+    assert.equal(await page.locator('#proof-draft').inputValue(), argument);
+    await page.locator('#proof-jump').click();
+    await marks.first().waitFor();
+    assert(await marks.first().isChecked());
   },
   'makarychev8-algebra': page => textbook(page, 'MakarychevApp', 'MakarychevCourse', 'p16'),
   'peterson6-math': page => textbook(page, 'PetersonApp', 'PetersonCourse', 'p12')
