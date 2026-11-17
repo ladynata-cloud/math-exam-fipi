@@ -93,7 +93,7 @@ async function checkPartTwoExamRoutes(page, taskId) {
   await page.getByRole('link',{name:'Мой прогресс',exact:true}).click();
   const financeProgress=page.getByRole('region',{name:'№16 · Письменные финансовые задачи'});
   assert.match(await financeProgress.innerText(), /Самостоятельные ответы: 1/);
-  assert.match(await page.locator('#main > .stats').innerText(), /252 условий/);
+  assert.match(await page.locator('#main > .stats').innerText(), /264 условий/);
   assert.deepEqual(await readSavedWork(), saved, 'legacy and official routes preserve completed work, attempts and proof under the existing task key');
 }
 

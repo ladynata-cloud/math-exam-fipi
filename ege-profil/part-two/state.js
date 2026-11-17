@@ -13,8 +13,60 @@ function proofReviewCurrent(record){
  return !Number.isInteger(record.updatedAt)&&record.proofReviewSnapshot?.savedAt===record.updatedAt&&proofFieldsMatch(record);
 }
 function currentProofChecks(record){return proofReviewCurrent(record)?record.proofChecks:[];}
+const equationKeys = Object.freeze(['general', 'selected', 'roots']);
+const statusPattern = /^(?:correct|missing|(?:missing-)?extra(?:-outside-interval|-outside-domain|-not-root)?)$/;
+const own = (object, key) => Object.hasOwn(object, key);
+const recordObject = value => !!value && typeof value === 'object' && !Array.isArray(value);
+const smallText = value => typeof value === 'string' && value.length <= 500;
+
+function keyed(value, validate) {
+  return value === undefined || (recordObject(value) &&
+    Object.entries(value).every(([key, item]) => equationKeys.includes(key) && validate(item)));
+}
+
+function validEquationState(record) {
+  return keyed(record.drafts.equationFinal, smallText) && keyed(record.equationChecks, check =>
+    recordObject(check) && smallText(check.value) && typeof check.status === 'string' && statusPattern.test(check.status));
+}
+
+function equationDraft(record, key) {
+  return record.drafts.equationFinal?.[key] ?? '';
+}
+
+function equationCheck(record, key) {
+  const check = record.equationChecks?.[key];
+  return check?.value === equationDraft(record, key) ? check.status : '';
+}
+
+function updateEquationDraft(record, expected, changes) {
+  if (!Object.entries(expected).every(([key, value]) => equationDraft(record, key) === value)) return 'conflict';
+  let changed = false;
+  for (const [key, value] of Object.entries(changes)) {
+    if (!equationKeys.includes(key) || !smallText(value) || !own(expected, key)) throw new TypeError('Invalid equation field update');
+    if (equationDraft(record, key) === value) continue;
+    (record.drafts.equationFinal ||= {})[key] = value;
+    if (record.equationChecks) delete record.equationChecks[key];
+    changed = true;
+  }
+  return changed ? 'updated' : 'unchanged';
+}
+
+function setEquationChecks(record, visible, statuses) {
+  const fields = Object.keys(visible);
+  if (!fields.length || fields.length !== Object.keys(statuses).length ||
+      !fields.every(key => equationKeys.includes(key) && typeof statuses[key] === 'string' && statusPattern.test(statuses[key]))) {
+    throw new TypeError('Invalid equation check');
+  }
+  if (!fields.every(key => equationDraft(record, key) === visible[key])) return 'conflict';
+  const correct = fields.every(key => statuses[key] === 'correct');
+  if (correct && fields.every(key => equationCheck(record, key) === 'correct')) return 'duplicate';
+  const checks = record.equationChecks ||= {};
+  for (const key of fields) checks[key] = { value: visible[key], status: statuses[key] };
+  return correct ? 'correct' : 'wrong';
+}
+
 const fresh=id=>({version:1,taskId:id,drafts:{final:[],steps:[],proof:''},solvedSteps:[],hints:[],proofChecks:[],attempts:[],attemptCount:0,wrong:0,helped:false,solution:false,solutionSteps:0,completed:false,independent:false,updatedAt:0});
-function valid(v,id){return plain(v)&&v.version===1&&v.taskId===id&&plain(v.drafts)&&(v.drafts.openFinal===undefined||typeof v.drafts.openFinal==='string'&&v.drafts.openFinal.length<=500)&&Array.isArray(v.drafts.final)&&v.drafts.final.length<=20&&v.drafts.final.every(x=>typeof x==='string'&&x.length<=500)&&Array.isArray(v.drafts.steps)&&v.drafts.steps.length<=100&&v.drafts.steps.every(x=>typeof x==='string'&&x.length<=500)&&typeof v.drafts.proof==='string'&&v.drafts.proof.length<=12000&&['solvedSteps','hints','proofChecks'].every(k=>Array.isArray(v[k])&&v[k].length<=100&&v[k].every(n=>Number.isInteger(n)&&n>=0&&n<100))&&v.solvedSteps.every((n,i)=>n===i)&&Array.isArray(v.attempts)&&v.attempts.length<=60&&v.attempts.every(a=>plain(a)&&typeof a.id==='string'&&typeof a.kind==='string'&&Array.isArray(a.answers)&&a.answers.length<=20&&a.answers.every(x=>typeof x==='string'&&x.length<=500)&&typeof a.correct==='boolean'&&typeof a.helped==='boolean'&&Number.isFinite(a.at))&&['attemptCount','wrong','updatedAt','solutionSteps'].every(k=>Number.isFinite(v[k])&&v[k]>=0)&&['helped','solution','completed','independent'].every(k=>typeof v[k]==='boolean');}
+function valid(v,id){return plain(v)&&v.version===1&&v.taskId===id&&plain(v.drafts)&&(v.drafts.openFinal===undefined||typeof v.drafts.openFinal==='string'&&v.drafts.openFinal.length<=500)&&Array.isArray(v.drafts.final)&&v.drafts.final.length<=20&&v.drafts.final.every(x=>typeof x==='string'&&x.length<=500)&&Array.isArray(v.drafts.steps)&&v.drafts.steps.length<=100&&v.drafts.steps.every(x=>typeof x==='string'&&x.length<=500)&&typeof v.drafts.proof==='string'&&v.drafts.proof.length<=12000&&validEquationState(v)&&['solvedSteps','hints','proofChecks'].every(k=>Array.isArray(v[k])&&v[k].length<=100&&v[k].every(n=>Number.isInteger(n)&&n>=0&&n<100))&&v.solvedSteps.every((n,i)=>n===i)&&Array.isArray(v.attempts)&&v.attempts.length<=60&&v.attempts.every(a=>plain(a)&&typeof a.id==='string'&&typeof a.kind==='string'&&Array.isArray(a.answers)&&a.answers.length<=20&&a.answers.every(x=>typeof x==='string'&&x.length<=500)&&typeof a.correct==='boolean'&&typeof a.helped==='boolean'&&Number.isFinite(a.at))&&['attemptCount','wrong','updatedAt','solutionSteps'].every(k=>Number.isFinite(v[k])&&v[k]>=0)&&['helped','solution','completed','independent'].every(k=>typeof v[k]==='boolean');}
 function create(storage,options={}){
  const memory=new Map(),blocked=new Set();let queue=Promise.resolve(),serial=0;
  const warn=()=>{if(typeof options.onWarning==='function')options.onWarning('Не удалось сохранить часть работы в браузере. Текущая работа остаётся на экране; прежнее сохранение не перезаписано.');};
@@ -44,6 +96,19 @@ function create(storage,options={}){
    return options.locks?.request?options.locks.request(PREFIX+id,action):action();};
   const result=queue.then(run);queue=result.catch(()=>{});return result;
  }
+ function recordAttempt(v,{kind,answers,correct,mode,independentEligible}){
+  const record={id:String(Date.now())+'-'+(++serial),kind,answers:answers.map(x=>String(x).slice(0,500)),correct:!!correct,helped:v.helped||mode!=='independent',at:Date.now()};
+  v.attemptCount++;if(!correct)v.wrong++;v.attempts.push(record);
+  // Preserve the first submission and the most recent 59. This is a bounded
+  // attempt trace, not an unbounded learner-history export.
+  if(v.attempts.length>60)v.attempts.splice(1,v.attempts.length-60);
+  if(kind==='final'&&correct){v.completed=true;if(mode==='independent'&&!v.helped&&independentEligible)v.independent=true;}
+ }
+ function finishEquation(v,visible,statuses,{mode,independentEligible}){
+  const outcome=setEquationChecks(v,visible,statuses);
+  if(outcome==='correct'||outcome==='wrong')recordAttempt(v,{kind:'final',answers:Object.values(visible).map(value=>value.trim()),correct:outcome==='correct',mode,independentEligible});
+  return outcome;
+ }
  function attempt(id,{kind,answers,correct,mode,independentEligible=false,openFinal=false,saveFinalDraft=false}){return patch(id,v=>{
   if(kind==='final'&&saveFinalDraft){
    if(openFinal){
@@ -52,14 +117,9 @@ function create(storage,options={}){
     v.drafts.openFinal=answers[0];
    }else v.drafts.final=answers;
   }
-  const record={id:String(Date.now())+'-'+(++serial),kind,answers:answers.map(x=>String(x).slice(0,500)),correct:!!correct,helped:v.helped||mode!=='independent',at:Date.now()};
-  v.attemptCount++;if(!correct)v.wrong++;v.attempts.push(record);
-  // Preserve the first submission and the most recent 59. This is a bounded
-  // attempt trace, not an unbounded learner-history export.
-  if(v.attempts.length>60)v.attempts.splice(1,v.attempts.length-60);
-  if(kind==='final'&&correct){v.completed=true;if(mode==='independent'&&!v.helped&&independentEligible)v.independent=true;}
+  recordAttempt(v,{kind,answers,correct,mode,independentEligible});
  });}
- return {read,patch,attempt,flush:()=>queue,key:id=>PREFIX+id};
+ return {read,patch,attempt,finishEquation,flush:()=>queue,key:id=>PREFIX+id};
 }
 function canonical(value){return String(value).trim().toLowerCase().replace(/−|–/g,'-').replace(/\s+/g,'').replace(/\\pi|\bpi\b/g,'π').replace(/\\infty|infinity|бесконечность/g,'∞').replace(/(?:x|а|a)∈/g,'').replace(/или|∪/g,'U').replace(/\+∞/g,'∞').replace(/[{}]/g,'');}
 function matches(answers,input,checker){
@@ -210,5 +270,5 @@ function summary(storage,lessons){
  }
  return result;
 }
-const api={create,valid,matches,openAnswer,recognize,canonical,summary,normalizedProof,currentProofChecks,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
+const api={create,valid,matches,openAnswer,recognize,canonical,summary,normalizedProof,currentProofChecks,equationDraft,equationCheck,updateEquationDraft,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

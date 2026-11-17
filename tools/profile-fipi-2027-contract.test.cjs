@@ -185,13 +185,18 @@ test('H02 preserves the approved base curriculum, all task IDs, answers and orde
   assert.equal(start.length, 90);
   assert.equal(start.reduce((count, lesson) => count + lesson.tasks.length, 0), 540);
   assert.equal(partTwo.length, 42);
-  assert.equal(partTwo.reduce((count, lesson) => count + lesson.tasks.length, 0), 252);
+  assert.equal(partTwo.reduce((count, lesson) => count + lesson.tasks.length, 0), 264);
+  for (const lesson of partTwo) {
+    assert.deepEqual(lesson.tasks.slice(6).map(task => task.id),
+      lesson.exam === 14 ? [`${lesson.id}-7`, `${lesson.id}-8`] : []);
+  }
+  const preservedPartTwo = partTwo.map(lesson => ({ ...lesson, tasks: lesson.tasks.slice(0, 6) }));
   assert.equal(digest(start), 'c60b1e343d35b0039601e5e41d8a3862537807adb0d1c64c6cc671a2f5211d9b');
   // Accepted H04 adds explicit answerFormat descriptors without changing the
   // mathematical bank. Preserve its full snapshot from main 1469ad50 as well
   // as the original H02 snapshot with only that metadata removed.
-  assert.equal(digest(partTwo), '1e81234793712d0c5f61ce416b62a6044aada8598b0ee4766aa81f1fb59cfbdd');
-  const beforeAnswerFormat = JSON.parse(JSON.stringify(partTwo, (key, value) => key === 'answerFormat' ? undefined : value));
+  assert.equal(digest(preservedPartTwo), '1e81234793712d0c5f61ce416b62a6044aada8598b0ee4766aa81f1fb59cfbdd');
+  const beforeAnswerFormat = JSON.parse(JSON.stringify(preservedPartTwo, (key, value) => key === 'answerFormat' ? undefined : value));
   assert.equal(digest(beforeAnswerFormat), '826602f90743e1e0fe8d4e0f825441eb8fa090a63575f1fa6dc99d9a1bdd74e7');
   const skills = require('../ege-profil/skill-map-data.js');
   assert.equal(digest(Object.entries(skills.maps).map(([key, value]) => [key, value.challenges])), '99ecc0b2b022473b160f41537a346022e162973ed8350ad67e500fb85ca5b37a');
