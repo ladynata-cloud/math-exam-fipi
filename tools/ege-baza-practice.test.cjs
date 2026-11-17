@@ -2,6 +2,13 @@ const assert=require('node:assert/strict');
 const D=require('../ege-baza/path/data.js');
 const old=D.meta.map(m=>({id:m.id,tasks:[0,1,2,11,45,100].map(s=>JSON.stringify(D.task(m.id,s)))}));
 require('../ege-baza/path/practice.js');
+for (const [id, seed, retained] of [['practice-temperature',1,-20], ['practice-root-product',19,5]]) {
+  const current=D.task(id,seed);
+  assert.notEqual(id==='practice-temperature'?current.params.c:current.params.a,retained,'source data are independently selected');
+}
+assert.notEqual(D.task('practice-inverse-formula',167).params.a,8);
+assert.notDeepEqual(D.task('practice-grid-parallelogram',18).display.points,[[0,0],[3,0],[5,5],[2,5]]);
+
 const sum=a=>a.reduce((x,y)=>x+y,0);
 const roots=(fn,from=-100,to=100)=>Array.from({length:to-from+1},(_,i)=>i+from).filter(x=>Math.abs(fn(x))<1e-10);
 const numeric=(r,p)=>{

@@ -58,7 +58,7 @@ const server=http.createServer((req,res)=>{let file;try{file=path.resolve(ROOT,'
    await page.locator('#start').click();
    const geometryFigures = [];
    for(let i=0;i<21;i++) {
-     const task=await page.evaluate(()=>{const r=PathCourse.state().active;return PathData.task(r.ids[r.i],r.seed+r.i);});
+     const task=await page.evaluate(()=>{const r=PathCourse.state().active;return PathData.practice.taskForBankVersion(r.ids[r.i],r.taskSeeds?.[r.i]??r.seed+r.i,r.bankVersion);});
      assert.equal(task.pos,i+1);
      if (task.pos >= 9 && task.pos <= 13) {
        const diagram=page.locator('#main .task-support svg').first();

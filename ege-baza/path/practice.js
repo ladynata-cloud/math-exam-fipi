@@ -337,9 +337,9 @@ revised['practice-units-match'] = seed => {
 revised['practice-inverse-formula'] = seed => {
   if (seed % 2 === 0) return factories['practice-inverse-formula'](seed / 2);
   const k = Math.floor(seed / 2);
-  const a = 6 + k % 9, b = a + 3 + k % 5, h = 4 + k % 7;
+  const a = 6.5 + k % 9, b = a + 3 + k % 5, h = 4 + k % 7;
   const area = (a + b)*h/2;
-  return make(`Лицевая сторона щита имеет форму трапеции. Её площадь вычисляют по формуле S=(a+b)h/2. Основания равны ${a} и ${b} дм, высота равна ${h} дм. Найди площадь в квадратных дециметрах.`,area,steps(
+  return make(`Лицевая сторона щита имеет форму трапеции. Её площадь вычисляют по формуле S=(a+b)h/2. Длины параллельных кромок на чертеже равны ${F(a)} и ${F(b)} дм, расстояние между ними — ${h} дм. Сколько квадратных дециметров занимает эта сторона?`,area,steps(
     ['Сумма оснований?',a+b,'Сложи две параллельные стороны.'],
     ['Площадь щита?',area,'Умножь сумму на высоту и раздели на 2.']
   ),'area-formula',{a,b,h});
@@ -380,6 +380,16 @@ revised['practice-graph-match'] = seed => {
   return make(q,answer,seq(q,labels,choices,answer,why).steps,'graph-match-criteria',{values,order,signs,base},
     {answerKind:'match',labels,choices,display:{kind:'graph',values,labels:['0','1','2','3','4'],yLabel:signs?'y':'Уровень, см'},
      model:{kind:'data-read'}});
+};
+
+revised['practice-root-product'] = seed => {
+  const a = 11 + seed % 7;
+  const b = 2 + Math.floor(seed / 7) % 6;
+  const first = a*b*b;
+  return make(`Запиши одним числом произведение √${a} и √${first}.`,a*b,steps(
+    ['Чему равно произведение подкоренных чисел?',a*first,'Под одним корнем перемножаем оба неотрицательных подкоренных числа.'],
+    ['Каково значение произведения корней?',a*b,'Возьми квадратный корень из полученного числа.']
+  ),'root-product',{a,b});
 };
 
 revised['practice-log-equation'] = seed => {
@@ -453,8 +463,8 @@ revised['practice-electric'] = seed => {
 };
 
 revised['practice-temperature'] = seed => {
-  const c = -24 + 4 * (seed % 13);
-  return make(`Электронный термометр показывает градусы Фаренгейта. Для пересчёта из градусов Цельсия используют формулу F = 1,8 · C + 32. Что покажет прибор при ${F(c)} °C?`, 1.8 * c + 32, steps(
+  const c = -32.5 + 3 * (seed % 19);
+  return make(`Датчик передал показание ${F(c)} °C. Панель управления переводит градусы Цельсия C в градусы Фаренгейта F по формуле F = 1,8 · C + 32. Какое число появится на панели?`, 1.8 * c + 32, steps(
     ['Чему равно 1,8 · C?', 1.8 * c, 'Учитывай знак температуры в градусах Цельсия.'],
     ['Сколько градусов покажет термометр?', 1.8 * c + 32, 'К результату умножения прибавь 32.']
   ), 'temperature', { c });
@@ -528,6 +538,17 @@ revised['practice-rental'] = seed => {
 };
 
 // Retain an exact area exercise alongside the official estimation format.
+revised['practice-grid-parallelogram'] = seed => {
+  const a = 4 + seed % 6, h = 3 + Math.floor(seed/6) % 5;
+  const offset = 1 + Math.floor(seed/30) % 4;
+  const points = [[0,0],[a,0],[a+offset,h],[offset,h]];
+  return make('На сетке отмечены вершины параллелограмма. Каждая клетка — квадрат со стороной 1. Какова площадь фигуры?',a*h,steps(
+    ['Сколько единиц в длине нижней стороны?',a,'Посчитай клетки вдоль основания.'],
+    ['Чему равна высота, проведённая к этой стороне?',h,'Посчитай клетки по вертикали между параллельными основаниями.'],
+    ['Найди площадь параллелограмма.',a*h,'Перемножь длину основания и перпендикулярную высоту.']
+  ),'grid-parallelogram',{a,h},{display:{kind:'polygon',points,grid:true},model:{kind:'polygon-build'}});
+};
+
 revised['practice-grid-cut']=k=>{
  if(k%2)return factories['practice-grid-cut'](k);
  const i=k/2,w=8+i%3,h=5+i%4,leftWidth=1+2*(i%2),leftHeight=1.5+i%2,rightWidth=2+2*(i%2),rightHeight=1+i%3;
@@ -692,6 +713,16 @@ revised['practice-integer-budget'] = seed => {
     ['Сколько было неверных ответов?', wrong, `За один пропуск теряют ${reward} баллов. Вычитай из разницы ${loss} потери за 1, 2, 3… ошибки: остаток должен быть неотрицательным и делиться на ${reward}.`],
     ['Сколько было верных ответов?', right, `После вычета потерь за ${wrong} неверных ответов остаются потери за ${skipped} пропусков. Из ${n} вычти число ошибок и пропусков.`]
   ), 'integer-budget', { n, reward, penalty, score, allowsSkips: true });
+};
+
+revised['practice-work'] = seed => {
+  const joint = 3 + 2*(seed % 7);
+  const a = joint*1.5, b = 3*joint;
+  return make(`Две бригады размечают спортивную площадку, каждая на своём участке. Первой бригаде на всю разметку потребовалось бы ${F(a)} ч, второй — ${F(b)} ч. Сколько часов займёт вся работа, если бригады начнут одновременно и будут работать с прежней скоростью?`,joint,steps(
+    ['Какую долю всей разметки первая бригада выполняет за один час?',fraction(1,a),'Одну целую работу делим на время первой бригады.'],
+    ['Какую долю всей разметки вторая бригада выполняет за один час?',fraction(1,b),'Для второй бригады делим ту же целую работу на её время.'],
+    ['Через сколько часов разметка закончится?',joint,'Сложи доли за час. Раздели единицу на общую долю за час.']
+  ),'work',{a,b});
 };
 
 revised.motion = seed => {

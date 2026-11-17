@@ -150,7 +150,7 @@ async function roundHintRegression(){
  // Grade 7 and check controllers retain their original presentation and restrictions.
  const grade7=w.PathData.meta.find(m=>m.grade7&&!m.geometryRebuild);await go(w,grade7.id);assert(!d.querySelector('.task-first-course'));assert(d.querySelector('[data-stage]'));
  w.location.hash='exam';await tick();d.querySelector('#start').click();assert(!d.querySelector('#taskHelp'));assert.equal(w.PathCourse.state().active.ids.length,21);
- for(let i=0;i<21;i++){const run=w.PathCourse.state().active,t=w.PathData.task(run.ids[run.i],run.seed+run.i);submit(w,d,'answer',solution(w.PathData,t));await tick();}
+ for(let i=0;i<21;i++){const run=w.PathCourse.state().active,t=w.PathData.practice.taskForBankVersion(run.ids[run.i],run.taskSeeds?.[run.i]??run.seed+run.i,run.bankVersion);submit(w,d,'answer',solution(w.PathData,t));await tick();}
  assert.equal(w.PathCourse.state().runs.at(-1).answers.filter(a=>a.correct).length,21);assert.equal(w.localStorage.getItem('legacy-sentinel'),'unchanged');assert(w.PathCourse.valid(w.PathCourse.state()));assert.deepEqual(errors,[]);w.close();
  console.log('EGE_BAZA_TASK_FIRST_OK: 117 concrete hint/model/guided/final paths; 49÷9 one-click steps 5→4→6, continuing hints and reload; retained givens/two drafts, saved model, legacy stages, honest credit, grade7 exclusion and 21-task exam');
 })().catch(e=>{console.error(e);process.exitCode=1;});

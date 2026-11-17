@@ -28,7 +28,7 @@ const remediation = require('../board-server/learning-remediation-contracts.js')
 function contentGate() {
   const pathItems = C.items.filter(item => item.trainerId === 'ege-path');
   assert.equal(pathItems.length, D.meta.length);
-  assert.equal(pathItems.filter(item => !item.geometryRebuild).length, 175);
+  assert.equal(pathItems.filter(item => !item.geometryRebuild).length, 179);
   assert.equal(pathItems.filter(item => item.geometryRebuild).length, D.geometryRebuild.families.length);
   assert.equal(pathItems.filter(item => item.grade7 && !item.geometryRebuild).length, 62);
   assert.equal(pathItems.filter(item => item.pre7).length, 18);
@@ -72,7 +72,7 @@ function contentGate() {
   const source = JSON.parse(fs.readFileSync(path.join(root, 'learning/reference-assets/source.json')));
   const hash = file => crypto.createHash('sha256').update(fs.readFileSync(path.join(root, file))).digest('hex');
   assert.equal(hash(source.source), source.sourceSha256);
-  assert.equal(source.status, 'project');
+  assert.equal(source.status, 'approved');
   assert.deepEqual(source.referencePrintedPages, [4, 5, 6, 7]);
   assert.equal(R.pages.length, 4);
   assert.deepEqual(source.assets.map(asset => asset.file), R.pages.map(page => page.file));
@@ -107,6 +107,19 @@ function contentGate() {
   const boxVolume = R.buildHelp(D.task('box', 2));
   assert.equal(boxSurface.formula, 'S = 2(ab + ac + bc)');
   assert.equal(boxVolume.formula, 'V = abc');
+  const circuit = R.buildHelp(D.task('practice-electric', 0));
+  assert.equal(circuit.substitution, 'P = 2² · 3');
+  assert.ok(circuit.bindings.includes('I = 2 — сила тока'));
+  const bend = R.buildHelp(D.task('practice-electric', 1));
+  assert.equal(bend.substitution, 'a = 8² / 25');
+  assert.ok(bend.bindings.includes('R = 25 — радиус'));
+  const voltage = D.practice.taskForBankVersion('practice-electric', 0, 1);
+  assert.equal(R.buildHelp(voltage).substitution, `P = ${voltage.params.u}² / ${voltage.params.r}`);
+  assert.equal(R.buildHelp(D.task('triangle', 0)).substitution, 'b = (36 − 10) / 2; BM² = b² − (10 / 2)²');
+  assert.equal(R.buildHelp(D.task('practice-inverse-formula', 1)).substitution, 'S = (6,5 + 9,5) · 4 / 2');
+  assert.equal(R.buildHelp(D.task('practice-grid-cut', 0)).substitution, 'S = ширина · высота − S₁ − S₂');
+  assert.equal(R.buildHelp(D.task('practice-meeting', 1)).substitution, 't = (2 · 13,5) / (14 + 22); s = 14 · t');
+  assert.equal(R.buildHelp(D.task('practice-meeting', 2)).substitution, 'v₁ = (160 − 90) / 2');
   const quadratic = R.buildHelp(D.task('practice-quadratic', 5));
   assert.ok(quadratic.bindings.includes('b = -13'));
   assert.ok(quadratic.substitution.includes('(-13)²'));
@@ -160,7 +173,7 @@ async function browserGate() {
       const img = page.locator('dialog img').nth(i); await img.scrollIntoViewIfNeeded();
       await img.evaluate(el => el.decode()); assert.equal(await img.evaluate(el => el.naturalWidth), 842);
     }
-    assert.ok((await page.locator('dialog').innerText()).includes('проект демоверсии'));
+    assert.match(await page.locator('dialog').innerText(), /утверждённая демоверсия базового ЕГЭ 2027/);
     await page.getByRole('button', { name: 'Закрыть', exact: true }).click();
     await page.locator('[data-reference-level="3"]').click();
     assert.equal(await page.locator('.reference-help-output').innerText(), '');
