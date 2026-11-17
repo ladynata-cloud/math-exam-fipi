@@ -94,6 +94,23 @@ for(let seed=0;seed<12;seed++){
  assert.match(H.hint(body,1),body.model.body==='sphere'?/4r³\/3/:body.model.body==='cone'?/r²h\/3/:/r²h/);
 }
 const unknown={id:'another-curriculum',steps:[{q:'Как найти неизвестную сторону?'}]};
+for(let seed=0;seed<18;seed++){
+ const water=D.task('practice-pour',seed),{ratio,oldH}=water.params,areaFactor=ratio**2;
+ const depth=water.steps[1];
+ assert.equal(water.steps[0].a,areaFactor);
+ assert.equal(depth.a*areaFactor,oldH,'same water volume in both cylinders');
+ assert.ok(depth.q.includes(oldH+' см')&&depth.q.includes('в '+areaFactor+' раз'),'the second step repeats both operands beside the input');
+ for(const copy of [depth.why,H.hint(withoutAnswers(water),1)]){
+  assert.ok(copy.includes(oldH+' см')&&copy.includes('на '+areaFactor+'.'),'both guided entry points divide the given depth by the area factor');
+  assert.doesNotMatch(copy,/равн[ао] \d+ см|= \d+ см/,'the learner still works out the new depth');
+ }
+ const trig=D.task('practice-right-ratio',seed),{a,b,c,ask}=trig.params;
+ assert.match(trig.steps[1].q,/длина катета/,'a numeric input asks for a length');
+ assert.ok(trig.steps[2].q.includes(ask?'sin A':'cos A'));
+ for(const copy of [trig.steps[2].why,H.hint(withoutAnswers(trig),2)]){
+  assert.ok(copy.includes((ask?'BC':'AC')+' ('+(ask?b:a)+')')&&copy.includes('AB ('+c+')'),'the named numerator and denominator match the requested function');
+ }
+}
 assert.equal(H.hint(unknown),'Как найти неизвестную сторону?','unregistered curricula retain their own question');
 assert.equal(H.hint(notebooks,-1),notebookHint);
 assert.equal(H.hint(notebooks,NaN),notebookHint);
