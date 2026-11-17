@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ba26b45ae81512452a45baffa4ef3705ecbc7f0b",
+  "baseSha": "cae97ca2565687d70aace5555c23dbc65b073d6d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2968,13 +2968,13 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
-      "beforeSha256": "1f090cc7835f645578e57530afb0a984727783f3e16d332a642901bc5a5fa3c4",
-      "afterSha256": "68b52967e471860aa3054644749eeafe81093456f41beba29225d17e2467e867",
+      "beforeSha256": "e7d4d731fe9c58201050722d84e8c0a7bb5e68701e68664ba984f16d4d408dac",
+      "afterSha256": "63fbbe8216343700b96176525819db4f559996c45ccc1e04ee746c9ffc300866",
       "placement": "before-head-close"
     },
     "trainers/oge-task16-circle.html": {
-      "beforeSha256": "fdc69fb202af343f8fcfcafab4c1fcb1f74bbe39a3fbc89d04c91db8ac2756a7",
-      "afterSha256": "fcaf136f8c955b42357abc2dc05a8b6567a34accbb603b5a4174a20d8c1b7a98",
+      "beforeSha256": "ef779412194e45c2e138b5b2432025980d4bf614473a0556fce60398bd7be1df",
+      "afterSha256": "5b4ef83b32f0ef5730d229250304ab36c6a426888bc87e80d22f92ac9a8404c9",
       "placement": "before-head-close"
     },
     "trainers/oge-task17-quadrilaterals.html": {
@@ -5281,6 +5281,16 @@
         "trainers/oge-task15-triangles.html",
         "trainers/oge-task16-circle.html",
         "trainers/oge-task17-quadrilaterals.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ba26b45ae81512452a45baffa4ef3705ecbc7f0b",
+      "sourceBaseSha": "cae97ca2565687d70aace5555c23dbc65b073d6d",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_15_18_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task15-triangles.html",
+        "trainers/oge-task16-circle.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
