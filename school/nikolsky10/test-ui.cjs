@@ -8,7 +8,13 @@ const click=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.click();}
 const input=(s,v)=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.value=v;el.dispatchEvent(new w.Event('input',{bubbles:true}));};
 const submit=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));};
 const state=()=>api.getState();
-assert(d.querySelector('h1').textContent.includes('Увидеть'));let renders=0,walkedSteps=0;
+assert(d.querySelector('h1').textContent.includes('Увидеть'));
+nav('#lesson/p01/1');
+input('#final-answer','27/99');submit('#answer-form');
+assert.match(d.querySelector('.feedback').textContent,/Значение верное/);
+assert.equal(state().tasks['n10-1.1-2'].attempts,0);
+const legacy={version:1,tasks:{'n10-1.1-2':{value:'27/99',correct:true,attempts:1,independent:true}},practice:{}};
+assert(api.validateState(legacy).tasks['n10-1.1-2'].independent);let renders=0,walkedSteps=0;
 for(const l of w.NikolskyCourse.lessons){for(let i=0;i<l.tasks.length;i++){
  const t=l.tasks[i];nav('#lesson/'+l.id+'/'+i);assert(d.querySelector('.prompt'),t.id);assert(!d.querySelector('.error-page'));assert(d.querySelector('#model').textContent.trim(),l.id+' model');assert(d.querySelector('.answer-form label').textContent.trim());
  click('[data-action="guided"]');
