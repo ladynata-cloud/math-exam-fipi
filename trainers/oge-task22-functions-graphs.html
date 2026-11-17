@@ -535,6 +535,24 @@ function genEvenHyperbola(){
     target:0,answer:fmtVals(vals,'k')};
 }
 
+// График дроби: парабола со сдвинутой вершиной и двумя запрещёнными абсциссами.
+function genParabolaTwoHoles(){
+  const vertexX=rint(-2,2),vertexY=rint(-3,2);
+  const fromLeft=rint(1,2),fromRight=rint(1,2);
+  const left=vertexX-fromLeft,right=vertexX+fromRight;
+  const levels=[vertexY];
+  if(fromLeft!==fromRight)levels.push(vertexY+1,vertexY+4);
+  const vals=levels.map(value=>Fr(value));
+  const a=1,b=-2*vertexX,c=vertexX*vertexX+vertexY;
+  const pieces=[
+    segQuad(a,b,c,NEG_INF,Fr(left),false,false),
+    segQuad(a,b,c,Fr(left),Fr(right),false,false),
+    segQuad(a,b,c,Fr(right),POS_INF,false,false)
+  ];
+  return {kind:'hyperbola',sub:'parab_m_twoholes',left,right,vertexX,vertexY,
+    fromLeft,fromRight,a,b,c,pieces,vals,varname:'m',target:1,answer:fmtVals(vals,'m')};
+}
+
 /* ---------- (A) Module 3: parabola with hole, y=kx one common point ---------- */
 // downward parabola y = -(x^2+p), hole at x_h. line kx: x^2 + k x + p = 0.
 function countPH(p,xh,k){
@@ -929,6 +947,7 @@ function feedbackPeek(node,msg){node.className='fb fb-peek';node.textContent=msg
    ============================================================ */
 function graphSpec(problem){
   if(problem.kind==='hyperbola'){
+    if(problem.sub==='parab_m_twoholes')return {type:'pieces',pieces:problem.pieces,measure:'H'};
     if(problem.sub==='even_kx_none'){
       const {hole,c}=problem;
       return {type:'hyper',fn:x=>-c/Math.abs(x),holeX:hole,holes:[-hole,hole],measure:'K',
@@ -1108,6 +1127,10 @@ m3:`
 <div class="card"><div class="cnum">6</div><div class="cbody">
 <h3>Две выколотые точки: y=kx без пересечений</h3>
 <p>У y=−c/|x| при c&gt;0 обе ветви ниже оси x. При k=0 пересечений нет. При k≠0 пересечение лежит в той полуплоскости, где kx&lt;0. Если оно совпало с выколотой точкой, общих точек тоже нет.</p>
+</div></div>
+<div class="card"><div class="cnum">7</div><div class="cbody">
+<h3>Парабола с двумя выколотыми точками</h3>
+<p>У горизонтали выше вершины обычно два пересечения. Если на её уровне выколота одна точка, остаётся одно. Если на одном уровне выколоты обе, пересечений на нём нет.</p>
 </div></div>`
 };
 
@@ -1220,6 +1243,29 @@ function stepPlan(problem){
 
   /* -------- Module 3: hyperbola -------- */
   const spec=graphSpec(P);
+  if(P.sub==='parab_m_twoholes'){
+    const curve=g=>g.drawCurvePieces(P.pieces);
+    const drawLevels=g=>{curve(g);P.vals.forEach(value=>g.drawHLine(value.toNum(),'asymptote'));};
+    const leftY=P.vertexY+P.fromLeft**2,rightY=P.vertexY+P.fromRight**2;
+    const holes=`(${P.left}; ${leftY}) и (${P.right}; ${rightY})`;
+    const conclusion=leftY===rightY
+      ? `На уровне ${leftY} выколоты сразу обе точки. Пересечений на этом уровне нет.`
+      : `На уровнях ${leftY} и ${rightY} исчезает по одной из двух точек. На каждом из этих уровней остаётся ровно одна.`;
+    return [
+      {title:'Сохраняем ограничения',kind:'choice',draw:curve,
+       promptHtml:'При каких x исходный знаменатель обращается в ноль?',
+       options:[`x = ${P.left} и x = ${P.right}`,`только x = ${P.left}`,'знаменатель нигде не равен нулю'],answer:0,
+       showHtml:`Сокращаем общий множитель и получаем параболу y = ${quadStr(P.a,P.b,P.c)}. Точки ${holes} на ней выколоты.`},
+      {title:'Уровень вершины',kind:'value',draw:curve,
+       promptHtml:'Чему равна ордината вершины параболы? Через неё проходит горизонталь с одним пересечением.',
+       hintHtml:`Подставь x = ${P.vertexX} в упрощённую формулу.`,answer:Fr(P.vertexY),
+       showHtml:`Вершина (${P.vertexX}; ${P.vertexY}) входит в график. Уровень m = ${P.vertexY} даёт ровно одну общую точку.`},
+      {title:'Проверяем уровни выколотых точек',kind:'vals',varname:'m',draw:drawLevels,
+       promptHtml:'Укажи все значения m, при которых прямая имеет ровно одну общую точку. Учти вершину и обе выколотые точки.',
+       hintHtml:'Сравни ординаты выколотых точек. На уровне каждой из них проверь, сколько пересечений осталось.',
+       answer:P.vals,showHtml:`${conclusion} Ниже вершины точек нет, а на прочих уровнях выше вершины их две. Ответ: <b>${P.answer}</b>.`}
+    ];
+  }
   if(P.sub==='even_kx_none'){
     const curve=g=>g.drawHyperbola(spec.fn,spec.holes);
     const atHole=g=>{curve(g);g.addLineK(P.vals[2].toNum(),spec.intersectK);};
@@ -1303,6 +1349,7 @@ function genM3(){
   const type=Math.random();
   if(type<0.33)return genParabHole()||genHyperbola();
   if(type<0.5)return genEvenHyperbola();
+  if(type<0.65)return genParabolaTwoHoles();
   return genHyperbola();
 }
 const MODULES=[
@@ -1312,10 +1359,10 @@ const MODULES=[
 ];
 MODULES[0].subs=[{k:null,l:'Все'},{k:'parline',l:'Парабола + прямая'},{k:'parhyp',l:'Парабола + гипербола'}];
 MODULES[1].subs=[{k:null,l:'Все'},{k:'absquad',l:'|квадрат|'},{k:'xabsx',l:'x|x|'},{k:'sqminuslin',l:'x² − |лин|'},{k:'alinplusquad',l:'a|x+p| + квадрат'}];
-MODULES[2].subs=[{k:null,l:'Все'},{k:'inv_kx',l:'Гипербола 1/x'},{k:'shift_m',l:'Сдвинутая гипербола'},{k:'parab_kx',l:'Парабола с дыркой'},{k:'even_kx_none',l:'Две выколотые точки · y = kx'}];
+MODULES[2].subs=[{k:null,l:'Все'},{k:'inv_kx',l:'Гипербола 1/x'},{k:'shift_m',l:'Сдвинутая гипербола'},{k:'parab_kx',l:'Парабола с дыркой'},{k:'even_kx_none',l:'Две выколотые точки · y = kx'},{k:'parab_m_twoholes',l:'Парабола с двумя выколотыми точками'}];
 function genProblem(mod){for(let i=0;i<120;i++){const p=mod.gen();if(p)return p;}return mod.explorer();}
 function subtypeOf(p){if(p.kind==='piecewise')return p.variant||'parline';if(p.kind==='modulus')return p.meta.type;if(p.kind==='hyperbola')return p.sub;return 'other';}
-function genProblemFiltered(mod,key){if(!key)return genProblem(mod);if(key==='even_kx_none')return genEvenHyperbola();for(let i=0;i<600;i++){const p=mod.gen();if(p&&subtypeOf(p)===key)return p;}return genProblem(mod);}
+function genProblemFiltered(mod,key){if(!key)return genProblem(mod);if(key==='even_kx_none')return genEvenHyperbola();if(key==='parab_m_twoholes')return genParabolaTwoHoles();for(let i=0;i<600;i++){const p=mod.gen();if(p&&subtypeOf(p)===key)return p;}return genProblem(mod);}
 function demoM1(){return {kind:'piecewise',pieces:[
   {kind:'quad',coef:[Fr(-1),Fr(2),Fr(3)],lo:Fr(-1),hi:POS_INF,loCl:true,hiCl:true},
   {kind:'lin',coef:[Fr(-1),Fr(1)],lo:NEG_INF,hi:Fr(-1),loCl:true,hiCl:false}],target:2};}
@@ -1365,7 +1412,12 @@ function statementHtml(P){
          expr=`y = ${stem}${coefAdd(m.A,'x²')}${coefAdd(m.bq,'x')}${constAdd(m.cq)}`;}
     task=`Определите, при каких значениях <i>m</i> прямая <b>y = m</b> имеет с графиком ровно <b>${P.target}</b> общих точки.`;
   }else{
-    if(P.sub==='even_kx_none'){
+    if(P.sub==='parab_m_twoholes'){
+      const numerator=`(${quadStr(P.a,P.b,P.c)})(${linStr(1,-P.left)})(${linStr(1,-P.right)})`;
+      const denominator=quadStr(1,-P.left-P.right,P.left*P.right);
+      expr=`y = ${fracFromParts(numerator,denominator,true)}`;
+      task='Определите все значения <i>m</i>, при которых прямая <b>y = m</b> имеет с графиком ровно одну общую точку.';
+    }else if(P.sub==='even_kx_none'){
       const square=P.hole*P.hole;
       expr=`y = ${fracFromParts(quadStr(-P.c,0,P.c*square),`|x|(${quadStr(1,0,-square)})`,true)}`;
       task='Определите все значения <i>k</i>, при которых прямая <b>y = kx</b> не имеет с графиком общих точек.';
@@ -1576,7 +1628,7 @@ function boot(){
       [...panels.children].forEach(p=>p.classList.toggle('hidden',p.dataset.mod!==mod.id));};
   });
 }
-if(typeof window!=='undefined'&&window.__TESTHOOK__)window.__api={genPiecewise,genModulus,genHyperbola,genEvenHyperbola,graphSpec,statementHtml,stepPlan,setsEqual,valsEqual,solveTarget,fmtAnswer,Frac,Fr,NEG_INF,POS_INF,pieceVal};
+if(typeof window!=='undefined'&&window.__TESTHOOK__)window.__api={genPiecewise,genModulus,genHyperbola,genEvenHyperbola,genParabolaTwoHoles,countH,graphSpec,statementHtml,stepPlan,setsEqual,valsEqual,solveTarget,fmtAnswer,Frac,Fr,NEG_INF,POS_INF,pieceVal};
 if(window.OgeCourseSharedMode){
   const sharedModules=[];
   MODULES.forEach((m,i)=>{sharedModules.push({key:m.id,label:m.title,index:i,sub:null});(m.subs||[]).filter(s=>s.k!==null).forEach(s=>sharedModules.push({key:m.id+':'+s.k,label:m.title+' · '+s.l,index:i,sub:s.k}));});

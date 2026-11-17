@@ -234,6 +234,7 @@ var RV = (function(){
     "oge-t21-tekst|t10": { n:"Проценты: Сушка фруктов", line:21 },
     "oge-t21-tekst|t11": { n:"Проценты: Сплавы и смеси", line:21 },
     "oge-t21-tekst|t12": { n:"Проценты: Разбавление раствора", line:21 },
+    "oge-t21-tekst|t13": { n:"Количество предметов: Три группы", line:21 },
     /* 22 · trainers/oge-task22-functions-graphs.html · 9 типов (ключи тренажёра) */
     "oge-t22-grafiki|parline": { n:"Кусочные функции: Парабола и прямая", line:22 },
     "oge-t22-grafiki|parhyp": { n:"Кусочные функции: Парабола и гипербола", line:22 },
@@ -245,6 +246,7 @@ var RV = (function(){
     "oge-t22-grafiki|shift_m": { n:"Выколотая точка: Сдвиг и выколотая точка", line:22 },
     "oge-t22-grafiki|parab_kx": { n:"Выколотая точка: Парабола с выколотой точкой", line:22 },
     "oge-t22-grafiki|even_kx_none": { n:"Выколотые точки: прямая y=kx без пересечений", line:22 },
+    "oge-t22-grafiki|parab_m_twoholes": { n:"Парабола с двумя выколотыми точками", line:22 },
     /* 12 · trainers/oge-task12-formulas-trainer.html · 10 типов (ключи тренажёра) */
     "oge-t12-formuly|1": { n:"Расчёты по формулам: Прямая подстановка", line:12 },
     "oge-t12-formuly|2": { n:"Расчёты по формулам: Выразить неизвестную", line:12 },
@@ -430,8 +432,8 @@ var RV = (function(){
     "oge25-geometriya": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
     "oge24-dokazatelstva": ["t1","t10","t13","t15","t2","t3","t4","t5","t7","t6","t8","t9","t12","t11","t14","t16","t17","t18","t19","t20"],
     "oge-t20-algebra": ["A","B1","B2","RAZL","B5","BIQ","SQ","POW","SYS","INEQ","DR","QIDS","SYM","DR3"],
-    "oge-t21-tekst": ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12"],
-    "oge-t22-grafiki": ["parline","parhyp","absquad","xabsx","sqminuslin","alinplusquad","inv_kx","shift_m","parab_kx","even_kx_none"],
+    "oge-t21-tekst": ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13"],
+    "oge-t22-grafiki": ["parline","parhyp","absquad","xabsx","sqminuslin","alinplusquad","inv_kx","shift_m","parab_kx","even_kx_none","parab_m_twoholes"],
     "oge-t12-formuly": ["1","2","3","4","5","6","7","8","9","10"],
     "oge-t14-progressii": ["AP-VAL","AP-SUM","AP-2PT","AP-SUM2DAY","GP-VAL","GP-COMPL","THRESH","PIC","TAXI"],
     "oge-t10-veroyatnost": ["10_1","10_2","10_3","10_4","10_5","10_6","10_7"],
