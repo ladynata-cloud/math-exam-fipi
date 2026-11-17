@@ -4123,7 +4123,18 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
   function select(meta, position) {
     return meta.filter(item => item.pos === position && (fixed[position] ? fixed[position].includes(item.id) : (item.expanded || item.id === 'triangle') && !item.trainingOnly));
   }
-  root.PathExamPool = { select };
+  function planBrowserRun(meta, serial) {
+    const ids = [], taskSeeds = [];
+    for (let position = 1; position <= 21; position++) {
+      const pool = select(meta, position);
+      const cycle = Math.floor((serial + 1) / pool.length);
+      ids.push(pool[(serial + 1) % pool.length].id);
+      // A family's seed advances each time that family recurs.
+      taskSeeds.push(cycle + position - 1);
+    }
+    return { ids, taskSeeds };
+  }
+  root.PathExamPool = { select, planBrowserRun };
   if (typeof module !== 'undefined') module.exports = root.PathExamPool;
 })(typeof window === 'undefined' ? globalThis : window);
 
@@ -4898,6 +4909,10 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     return plain(value) && value.version === 1 && integer(value.serial) && plain(value.lessons) && plain(value.seen) &&
       Object.keys(value.seen).length < 20000 && Object.values(value.seen).every(item => item === true) && Array.isArray(value.runs) && value.runs.length <= 200;
   }
+  function runSeedsValid(run) {
+    return run.taskSeeds === undefined || (Array.isArray(run.taskSeeds) && run.taskSeeds.length === 21 &&
+      run.taskSeeds.every(seed => integer(seed)));
+  }
   function loaderCompatibility(value, knownIds) {
     if (!pathRootValid(value)) return 'rejected';
     let unverified = false;
@@ -4907,7 +4922,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     const lessonShape = row => plain(row) && integer(row.seed) && integer(row.stage, 4) && integer(row.step, 20) &&
       integer(row.independent) && integer(row.guided) && string(row.note) && string(row.draft) && typeof row.help === 'boolean' &&
       typeof row.attempted === 'boolean' && Array.isArray(row.checks) && taskFirstValid(row.taskFirst);
-    const runShape = run => plain(run) && ['exam', 'diagnostic'].includes(run.kind) && Array.isArray(run.ids) && run.ids.length === 21 &&
+    const runShape = run => plain(run) && runSeedsValid(run) && ['exam', 'diagnostic'].includes(run.kind) && Array.isArray(run.ids) && run.ids.length === 21 &&
       run.ids.every(known) && Array.isArray(run.answers) && run.answers.length <= 21 && run.answers.every(answer => plain(answer) &&
         known(answer.id) && integer(answer.seed) && typeof answer.value === 'string' && answer.value.length < 10000 && typeof answer.correct === 'boolean') &&
       integer(run.seed) && integer(run.i, 21) && Number.isFinite(run.start) && (run.draft === undefined || string(run.draft));
@@ -4918,15 +4933,20 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     return unverified ? 'unverified' : 'compatible';
   }
   function checkValid(run, ids, active) {
-    if (!plain(run) || !['diagnostic', 'exam'].includes(run.kind) || !Array.isArray(run.ids) || run.ids.length !== 21 || !run.ids.every(id => ids.has(id)) ||
+    if (!plain(run) || !runSeedsValid(run) || !['diagnostic', 'exam'].includes(run.kind) || !Array.isArray(run.ids) || run.ids.length !== 21 || !run.ids.every(id => ids.has(id)) ||
       !Array.isArray(run.answers) || run.answers.length > 21 || !integer(run.seed) || !integer(run.i, 21) || !Number.isFinite(run.start) || run.start < 0 ||
       run.draft !== undefined && !string(run.draft) || run.assisted !== undefined && typeof run.assisted !== 'boolean' ||
       run.interrupted !== undefined && typeof run.interrupted !== 'boolean') return false;
     if (active ? run.answers.length !== run.i : !Number.isFinite(run.finished) || run.finished <= 0 || run.answers.length !== 21) return false;
     return run.answers.every((answer, index) => {
-      if (!plain(answer) || answer.id !== run.ids[index] || answer.seed !== run.seed + index || !string(answer.value) || typeof answer.correct !== 'boolean' ||
+      if (!plain(answer) || answer.id !== run.ids[index] || answer.seed !== (run.taskSeeds?.[index] ?? run.seed + index) || !string(answer.value) || typeof answer.correct !== 'boolean' ||
         answer.previouslySeen !== undefined && typeof answer.previouslySeen !== 'boolean' || answer.skipped !== undefined && typeof answer.skipped !== 'boolean') return false;
-      try { return answer.correct === (answer.value.trim() !== '' && root.PathData.correct(root.PathData.task(answer.id, answer.seed), answer.value)); }
+      if (!answer.value.trim()) return !answer.correct;
+      try {
+        const data = root.PathData;
+        const task = data.practice.taskForBankVersion(answer.id, answer.seed, run.bankVersion);
+        return answer.correct === data.correct(task, answer.value);
+      }
       catch (error) { return false; }
     });
   }
@@ -10861,8 +10881,10 @@ const integer=(n,max=1e9)=>Number.isSafeInteger(n)&&n>=0&&n<=max;
 const currentBank=D.practice.bankVersion;
 const taskAt=(id,seed,bank)=>D.practice.taskForBankVersion(id,seed,bank);
 const bankOK=bank=>bank===undefined||bank===currentBank;
+const runTaskSeed=(run,index)=>run.taskSeeds?.[index]??run.seed+index;
+const runSeedsOK=run=>run.taskSeeds===undefined||(Array.isArray(run.taskSeeds)&&run.taskSeeds.length===21&&run.taskSeeds.every(seed=>integer(seed)));
 const answerOK=a=>a&&D.meta.some(m=>m.id===a.id)&&integer(a.seed)&&typeof a.value==='string'&&a.value.length<10000&&typeof a.correct==='boolean';
-const runOK=r=>r&&bankOK(r.bankVersion)&&['exam','diagnostic'].includes(r.kind)&&Array.isArray(r.ids)&&r.ids.length===21&&r.ids.every(id=>D.meta.some(l=>l.id===id))&&Array.isArray(r.answers)&&r.answers.length<=21&&r.answers.every(answerOK)&&integer(r.seed)&&integer(r.i,21)&&Number.isFinite(r.start)&&(r.draft===undefined||typeof r.draft==='string'&&r.draft.length<=10000);
+const runOK=r=>r&&bankOK(r.bankVersion)&&runSeedsOK(r)&&['exam','diagnostic'].includes(r.kind)&&Array.isArray(r.ids)&&r.ids.length===21&&r.ids.every(id=>D.meta.some(l=>l.id===id))&&Array.isArray(r.answers)&&r.answers.length<=21&&r.answers.every(answerOK)&&integer(r.seed)&&integer(r.i,21)&&Number.isFinite(r.start)&&(r.draft===undefined||typeof r.draft==='string'&&r.draft.length<=10000);
 function valid(x){return x&&x.version===1&&integer(x.serial)&&x.lessons&&typeof x.lessons==='object'&&!Array.isArray(x.lessons)&&x.seen&&typeof x.seen==='object'&&!Array.isArray(x.seen)&&Object.keys(x.seen).length<20000&&Object.values(x.seen).every(v=>v===true)&&Array.isArray(x.runs)&&x.runs.length<=200&&x.runs.every(runOK)&&Object.entries(x.lessons).every(([k,l])=>D.meta.some(m=>m.id===k)&&l&&bankOK(l.bankVersion)&&integer(l.seed)&&integer(l.stage,4)&&integer(l.step,20)&&integer(l.independent)&&integer(l.guided)&&typeof l.note==='string'&&l.note.length<=10000&&typeof l.draft==='string'&&l.draft.length<=10000&&typeof l.help==='boolean'&&typeof l.attempted==='boolean'&&Array.isArray(l.checks)&&(!window.PathTaskFirst||PathTaskFirst.valid(l.taskFirst)))&&(!x.active||runOK(x.active));}
 
 function readProgress(raw){const value=JSON.parse(raw);return D.practice?.expandTask21Progress?.(value)??value;}
@@ -10949,9 +10971,8 @@ function showPhotoProof(id,t,l){
 }
 function nextLesson(id){const list=D.practice.foundation;if(list.includes(id)&&list.indexOf(id)<list.length-1)return list[list.indexOf(id)+1];const rebuild=D.meta.find(m=>m.id===id)?.geometryRebuild===true,photo=id.startsWith('grade7-r-photo-proof-');if(photo){const photos=['grade7-r-photo-proof-1','grade7-r-photo-proof-3','grade7-r-photo-proof-2'];return photos[photos.indexOf(id)+1]||null;}const course=D.meta.filter(m=>(m.geometryRebuild===true)===rebuild&&!m.id.startsWith('grade7-r-photo-proof-'));if(rebuild)course.sort((a,b)=>a.section-b.section);const next=course.findIndex(m=>m.id===id)+1;return rebuild?(course[next]?.id||null):course[next%course.length].id;}
 function answerForm(t){return PathPracticeView.answerForm(t,10000);}
-function examPool(pos){return PathExamPool.select(D.meta,pos);}
-function startRun(kind){if(state.active&&state.active.kind!==kind){root.innerHTML='<h1>Есть незавершённая проверка</h1><p>Сначала завершите её или сохраните как прерванную.</p><button id="resume">Продолжить</button> <button id="finish">Завершить с текущими ответами</button>';$('#resume').onclick=()=>setHash(state.active.kind);$('#finish').onclick=()=>finishRun(true);return;}if(!state.active){root.innerHTML=`<h1>${kind==='exam'?'Пробная работа':'Найдём точку старта'}</h1><p>21 авторская задача, по одной на позицию. Можно пропускать. Ответы и разбор появятся после завершения. Эта выборка не охватывает все подтипы экзамена.</p><p>${kind==='exam'?'Ориентир — 180 минут. Часы не отправляют работу автоматически.':'Время не ограничено. Диагностика нужна для выбора темы, а не для отметки.'}</p><button id="start" class="primary">Начать</button>`;$('#start').onclick=()=>{state.active={kind,bankVersion:currentBank,seed:state.serial++,ids:Array.from({length:21},(_,i)=>examPool(i+1)[state.serial%examPool(i+1).length].id),i:0,answers:[],start:Date.now(),assisted:false};save();render();};return;}const r=state.active;if(r.i>=21)return finishRun(false);let id=r.ids[r.i],t=taskAt(id,r.seed+r.i,r.bankVersion);root.innerHTML=`<p class="eyebrow">${r.kind==='exam'?'Пробная работа':'Диагностика'} · ${r.i+1}/21</p><div class="meter"><span style="width:${r.i/21*100}%"></span></div><section class="panel"><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" role="status"></p><div class="actions"><button id="skip">Пока не знаю</button><button id="finish">Завершить сейчас</button></div><p class="muted">Прошло ${Math.floor((Date.now()-r.start)/60000)} мин. Открытие обучения во время проверки будет отмечено как помощь.</p></section>`;$('#answer').value=r.draft||'';$('#answer').oninput=e=>{r.draft=e.target.value.slice(0,10000);save();};const next=skip=>{let v=skip?'':$('#answer').value;if(!skip&&!v.trim())return feedback('Введите ответ или выберите «Пока не знаю».',true);r.answers.push({id,seed:r.seed+r.i,value:v,correct:!skip&&D.correct(t,v),previouslySeen:seen(t)});expose(t);r.draft='';r.i++;save();render();};$('#answerForm').onsubmit=e=>{e.preventDefault();next(false);};$('#skip').onclick=()=>next(true);$('#finish').onclick=()=>finishRun(true);}
-function finishRun(interrupted){let r=state.active;if(!r)return;while(r.answers.length<21){let i=r.answers.length;r.answers.push({id:r.ids[i],seed:r.seed+i,value:'',correct:false,skipped:true});}r.finished=Date.now();r.interrupted=interrupted;state.runs.push(r);state.runs=state.runs.slice(-200);state.active=null;save();setHash('report');}
+function startRun(kind){if(state.active&&state.active.kind!==kind){root.innerHTML='<h1>Есть незавершённая проверка</h1><p>Сначала завершите её или сохраните как прерванную.</p><button id="resume">Продолжить</button> <button id="finish">Завершить с текущими ответами</button>';$('#resume').onclick=()=>setHash(state.active.kind);$('#finish').onclick=()=>finishRun(true);return;}if(!state.active){root.innerHTML=`<h1>${kind==='exam'?'Пробная работа':'Найдём точку старта'}</h1><p>21 авторская задача, по одной на позицию. Можно пропускать. Ответы и разбор появятся после завершения. Эта выборка не охватывает все подтипы экзамена.</p><p>${kind==='exam'?'Ориентир — 180 минут. Часы не отправляют работу автоматически.':'Время не ограничено. Диагностика нужна для выбора темы, а не для отметки.'}</p><button id="start" class="primary">Начать</button>`;$('#start').onclick=()=>{const seed=state.serial++,plan=PathExamPool.planBrowserRun(D.meta,seed);state.active={kind,bankVersion:currentBank,seed,...plan,i:0,answers:[],start:Date.now(),assisted:false};save();render();};return;}const r=state.active;if(r.i>=21)return finishRun(false);let id=r.ids[r.i],seed=runTaskSeed(r,r.i),t=taskAt(id,seed,r.bankVersion);root.innerHTML=`<p class="eyebrow">${r.kind==='exam'?'Пробная работа':'Диагностика'} · ${r.i+1}/21</p><div class="meter"><span style="width:${r.i/21*100}%"></span></div><section class="panel"><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" role="status"></p><div class="actions"><button id="skip">Пока не знаю</button><button id="finish">Завершить сейчас</button></div><p class="muted">Прошло ${Math.floor((Date.now()-r.start)/60000)} мин. Открытие обучения во время проверки будет отмечено как помощь.</p></section>`;$('#answer').value=r.draft||'';$('#answer').oninput=e=>{r.draft=e.target.value.slice(0,10000);save();};const next=skip=>{let v=skip?'':$('#answer').value;if(!skip&&!v.trim())return feedback('Введите ответ или выберите «Пока не знаю».',true);r.answers.push({id,seed,value:v,correct:!skip&&D.correct(t,v),previouslySeen:seen(t)});expose(t);r.draft='';r.i++;save();render();};$('#answerForm').onsubmit=e=>{e.preventDefault();next(false);};$('#skip').onclick=()=>next(true);$('#finish').onclick=()=>finishRun(true);}
+function finishRun(interrupted){let r=state.active;if(!r)return;while(r.answers.length<21){let i=r.answers.length;r.answers.push({id:r.ids[i],seed:runTaskSeed(r,i),value:'',correct:false,skipped:true});}r.finished=Date.now();r.interrupted=interrupted;state.runs.push(r);state.runs=state.runs.slice(-200);state.active=null;save();setHash('report');}
 function report(){let latest=state.runs.at(-1),wrong=latest?.answers.filter(x=>!x.correct)||[];root.innerHTML=`<h1>Что уже получается</h1><p>Подсказки, исправления и ранее показанные условия учитываются отдельно. Отчёт не означает полного освоения позиции экзамена.</p>${latest?`<section class="panel"><h2>Последняя ${latest.kind==='exam'?'пробная работа':'диагностика'}: ${latest.answers.filter(x=>x.correct).length}/21</h2><p>${latest.interrupted?'Завершена досрочно. ':''}${latest.assisted?'С обращением к обучению. ':''}${latest.answers.some(x=>x.previouslySeen)?'Часть условий была показана раньше.':''}</p>${wrong.length?`<div class="callout"><b>Следующий шаг</b><p>Начни с темы «${E(D.meta.find(m=>m.id===wrong[0].id).title)}».</p><a class="btn primary" href="#lesson=${wrong[0].id}">Разобраться в первой трудности</a></div>`:'<p>Эта выборка решена. Попробуй новые варианты и вернись к темам через день.</p>'}<details><summary>Ответы и объяснения</summary><ol>${latest.answers.map(a=>{let t=taskAt(a.id,a.seed,latest.bankVersion),last=t.steps.at(-1);return `<li><b>${a.correct?'Верно':'Повторить'} · ${E(D.meta.find(m=>m.id===a.id).title)}</b><p>${M(t.q)}</p>${support(t)}<p>Ваш ответ: ${M(a.value||'пропуск')}. ${t.rule||t.answerKind==='solutions'?'Возможны разные ответы; проверяются все условия.':'Ответ: '+M(D.answerText(t))+'.'} ${M(last.why)}</p><a href="#lesson=${a.id}">Урок</a></li>`;}).join('')}</ol></details></section>`:''}<div class="scroll"><table><thead><tr><th>Тема</th><th>Разборов</th><th>Новых самостоятельных</th></tr></thead><tbody>${D.meta.map(m=>{let l=state.lessons[m.id]||{};return `<tr><td><a href="#lesson=${m.id}">${m.grade7?'7 класс':m.pos+'.'} ${E(m.title)}</a></td><td>${l.guided||0}</td><td>${l.independent||0}</td></tr>`;}).join('')}</tbody></table></div><div class="actions"><button id="export">Скачать работу и резервную копию</button><label>Восстановить свою копию <input type="file" id="import" accept="application/json"></label></div><p id="feedback" role="status"></p><p class="muted">Восстановление заменяет только данные этого нового маршрута. Старые модули, тренажёры и их ключи не затрагиваются.</p>`;$('#export').onclick=()=>download(state);$('#import').onchange=async e=>{try{let f=e.target.files[0];if(!f||f.size>2000000)throw Error();let x=readProgress(await f.text());if(!valid(x))throw Error();download(state,'before-import.json');state=x;writable=true;save();report();feedback('Копия восстановлена; предыдущая работа выгружена отдельным файлом.');}catch(e){feedback('Файл не подходит. Текущая работа не изменена.',true);}};}
 function download(x,name='EGE_baza_work.json'){let u=URL.createObjectURL(new Blob([JSON.stringify(writeProgress(x),null,2)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
 function render(){
