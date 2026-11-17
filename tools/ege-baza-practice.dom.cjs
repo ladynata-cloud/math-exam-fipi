@@ -29,7 +29,14 @@ async function go(w,s){w.location.hash=s;await tick();}
   await go(w,'lesson='+m.id);assert(d.querySelector('#typeSelect'));
   d.querySelector('#taskHelp').open=true;d.querySelector('#taskModel').open=true;await tick();assert(d.querySelector('#model'));
   d.querySelector('#taskSteps').open=true;await tick();let t=w.PathData.task(m.id,w.PathCourse.state().lessons[m.id].seed);
-  for(const s of t.steps)enter(w,d,s.a,'stepAnswer');
+  for(const [i,step] of t.steps.entries()){
+   if(m.id==='practice-diameter-chord'&&i===1){
+    assert(!d.querySelector('#stepAnswer'),'First justify the right angle on the diameter');
+    click(d,'#taskStepsBody [data-construct="yes"]');
+    assert(d.querySelector('#taskStepsBody svg .construction'),'Right-angle mark after the theorem');
+   }
+   enter(w,d,step.a,'stepAnswer');
+  }
   assert(d.querySelector('#taskStepsBody').textContent.includes('Разбор завершён'),m.id);
   click(d,'#new');t=w.PathData.task(m.id,w.PathCourse.state().lessons[m.id].seed);
   if(t.display)assert(d.querySelector('.task-support svg,.task-support table'),m.id+' missing exam figure');
