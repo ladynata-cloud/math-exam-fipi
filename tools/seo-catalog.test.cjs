@@ -81,6 +81,49 @@ const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 assert(sitemap.includes(`<loc>${target}</loc>`));
 assert(!sitemap.includes(`<loc>${origin}/${course}</loc>`));
 
+// The initial methods page and the actual application must describe the same
+// course. This catches catalog/app drift, beyond checking generated text alone.
+const methodsPath = 'ege-profil/azbuka-metodov/';
+const methodsUrl = origin + '/' + methodsPath;
+const methodsHtml = fs.readFileSync(path.join(root, methodsPath, 'index.html'), 'utf8');
+const methodsSource = new JSDOM(methodsHtml, { url: methodsUrl });
+const methodsApp = new JSDOM(methodsHtml, { url: methodsUrl, runScripts: 'outside-only' });
+const methodCards = doc => [...doc.querySelectorAll('#alphabet-main .az-catalog > a')].map(card => ({
+  title: card.querySelector('h2').textContent.trim(),
+  description: card.querySelector('p').textContent.trim(),
+  exam: card.querySelector('.az-kicker').textContent.trim(),
+  href: card.getAttribute('href'),
+}));
+const methodsFallback = methodCards(methodsSource.window.document);
+assert(methodsFallback.length > 0, 'Methods: the source catalog cannot be empty');
+for (const file of ['ege-profil/exam-map.js', ...[
+  'catalog', 'data', 'routes', 'engine', 'diagrams', 'function-atlas', 'parameter-plane', 'app',
+].map(name => methodsPath + name + '.js')]) {
+  methodsApp.window.eval(fs.readFileSync(path.join(root, file), 'utf8'));
+}
+assert.deepEqual(methodCards(methodsApp.window.document), methodsFallback,
+  'Methods: source and actual JavaScript catalog must have identical topics, descriptions, exam labels and links');
+assert.equal(methodsFallback.length, methodsApp.window.ProfileAlphabetCatalog.list.length);
+assert.equal(methodsSource.window.document.querySelectorAll('h1').length, 1);
+assert.equal(methodsApp.window.document.querySelectorAll('h1').length, 1);
+assert(!methodsApp.window.document.querySelector('#alphabet-main').innerHTML.includes('profile-methods-catalog:'),
+  'Methods: the application must replace the fallback, not append to it');
+assert.equal(methodsApp.window.localStorage.length, 0, 'Opening the catalog must not create progress');
+for (const { href } of methodsFallback) {
+  const url = assertDestination(href, methodsUrl, 'Methods');
+  const id = url.hash.replace(/^#\//, '');
+  assert(methodsApp.window.ProfileAlphabetCatalog.index[id], 'Methods: link must select an existing topic');
+  links++;
+}
+for (const link of methodsSource.window.document.querySelectorAll('noscript a')) {
+  assertDestination(link.getAttribute('href'), methodsUrl, 'Methods without JavaScript');
+  links++;
+}
+assert.equal(sitemap.split(`<loc>${methodsUrl}</loc>`).length - 1, 1,
+  'Methods: sitemap needs exactly one document URL, without fragment/query variants');
+console.log(`Methods: ${methodsFallback.length} identical source/rendered topics; no duplicate H1 or new progress`);
+methodsSource.window.close(); methodsApp.window.close();
+
 // Compatibility addresses remain usable for saved links, but the catalog links
 // directly to their working destinations. A one-byte placeholder is not a page.
 const compatibility = [
