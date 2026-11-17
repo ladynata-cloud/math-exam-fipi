@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ef6e7e56967611618dfc73edf89ff7702b1d972d",
+  "baseSha": "54545684d576f1038a0c2d53784ad7da258b59dc",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3003,8 +3003,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task23-geometry-calculations.html": {
-      "beforeSha256": "537c14abf9a436c2ba832e9cc29867176066ae60994ff06b2b3aeee5756af702",
-      "afterSha256": "e2cd7231dba28b580bca75d9d5527800f7dab63aa16e78719aa0063f77109649",
+      "beforeSha256": "c2bafd9674728cc5012d4d7d969f27dfc701e5130e77288df775aed0811282cc",
+      "afterSha256": "5da44a40903ad11b95c8a3c855b994e460dcc08252804c3305c458c7af90f1f2",
       "placement": "before-head-close"
     },
     "trainers/oge-task24-proofs.html": {
@@ -3013,8 +3013,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
-      "beforeSha256": "b9581d96c701242194b5c985d983a99d676ad4eed9993837f9e017a5124b26fb",
-      "afterSha256": "369d1b84b267d0639c411d32e2a89d4add2c8b07f8cc0f6363df9c0b0fed523a",
+      "beforeSha256": "5c7efaa9abaefec4961e0b7d7a92b4fee702e52b66e660ff08bb3a8070e6870c",
+      "afterSha256": "35211999d26a59ed7f698fe6275e9261ae074f852f2bacd35ef4f7e0ea89f717",
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
@@ -5280,6 +5280,16 @@
       "changedPaths": [
         "trainers/oge-task23-geometry-calculations.html",
         "trainers/oge-task24-proofs.html",
+        "trainers/oge-task25-geometry.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ef6e7e56967611618dfc73edf89ff7702b1d972d",
+      "sourceBaseSha": "54545684d576f1038a0c2d53784ad7da258b59dc",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_23_25_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task23-geometry-calculations.html",
         "trainers/oge-task25-geometry.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."

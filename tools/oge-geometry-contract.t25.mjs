@@ -141,7 +141,7 @@ const positive = (...xs) => check(xs.every((x) => x > 0), 'длины должн
 const LABELS = {
   1: ['AB', 'BC', 'AC'], 2: ['S'], 3: ['S'], 4: ['a (большее)', 'b (меньшее)'], 5: ['AD'], 6: ['d'],
   7: ['EK'], 8: ['CD'], 9: ['AH'], 10: ['расстояние'], 11: ['R'], 12: ['R'], 13: ['R'], 14: ['R'],
-  15: ['S'], 16: ['r'],
+  15: ['S'], 16: ['r'], 17: ['r'],
 };
 
 /* ---------------- построения по типам ---------------- */
@@ -560,6 +560,21 @@ const BUILD = {
     check(tA > 1 && tC > 1 && tAC > 0 && tAC < 1, 'окружность касается не основания и продолжений боковых сторон');
     const s = (a + b + c) / 2;
     return { ans: { r }, ask: { 's − AB': s - c, r } };
+  },
+
+  /* Из площади и периметра находим радиусы для пробного
+     треугольника. Масштаб восстанавливаем по известному радиусу. */
+  17(p) {
+    const [a, b, smallRadius] = nums(p, 3);
+    positive(a, b, smallRadius);
+    const A = [a, 0], B = [0, b], C = [0, 0];
+    const { X: H } = foot(C, A, B);
+    const radius = (x, y, z) => Math.abs(cross(sub(y,x), sub(z,x))) /
+      (dist(x,y) + dist(y,z) + dist(z,x));
+    const smallUnit = radius(A,H,C);
+    check(smallUnit>0 && near(dot(sub(A,H), sub(C,H)),0), 'высота не построена');
+    const r = smallRadius*radius(A,B,C)/smallUnit;
+    return { ans: { r }, ask: { r } };
   },
 };
 
