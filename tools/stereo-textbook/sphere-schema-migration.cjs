@@ -43,8 +43,16 @@ function assertSphereSchemaMigration(file, expected, read = name => fs.readFileS
   let after;
   try { after = JSON.parse(bytes); }
   catch { assert.fail('exact additive sphere schema migration requires valid JSON'); }
+  // Preserve the exact earlier schema after removing only the two angle fields.
+  const rightAngles = {type: 'array', items: {type: 'array', items: {type: 'string', minLength: 1},
+    minItems: 3, maxItems: 3, uniqueItems: true}};
+  for (const kind of ['model', 'view']) {
+    assert.deepEqual(after.$defs[kind].properties.rightAngles, rightAngles, 'exact optional right-angle schema');
+    delete after.$defs[kind].properties.rightAngles;
+  }
+  assert.equal(hash(Buffer.from(JSON.stringify(after, null, 2) + '\n')), AFTER_SHA256, 'exact additive sphere schema migration before right angles');
   assert.deepEqual(after, addition, 'exact additive sphere schema migration: only optional model.spheres');
-  assert.equal(hash(bytes), AFTER_SHA256, 'exact additive sphere schema migration bytes');
+  assert.equal(hash(bytes), '26c877296c167e4889a72ff67e569364cc03fc1912c3c6261b578c6d8887c2e0', 'exact additive sphere schema migration bytes with right angles');
 }
 
 module.exports = {assertSphereSchemaMigration, originals, SCHEMA_PATH, BEFORE_FIXTURE,

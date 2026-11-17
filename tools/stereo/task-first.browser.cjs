@@ -69,6 +69,7 @@ async function checkFigureLabels(page,id,width,stage){
   const latest=await second.evaluate(()=>localStorage.getItem('mathExamStereo.v1'));await page.locator('[data-recover-latest]').waitFor({state:'visible'});assert(await page.locator('#answer-form button').isDisabled());
   await page.locator('#answer-form').evaluate(el=>el.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));assert.equal(await second.evaluate(()=>localStorage.getItem('mathExamStereo.v1')),latest);assert.equal(await page.locator('[data-recovery-drafts] textarea').first().inputValue(),'старый локальный черновик');
   await page.locator('[data-recover-latest]').click();assert.equal(await page.inputValue('#answer'),'новая сохранённая работа');assert.equal(await page.locator('[data-recovery-drafts] textarea').first().inputValue(),'старый локальный черновик');await second.close();
+  await require('../geometry/right-angles.browser.cjs')(browser, out);
   assert.deepEqual(errors,[]);console.log('STEREO_TASK_FIRST_BROWSER_OK: all39units, retained live models/drafts, honest help,320/768/1280px');
  }catch(error){await page.screenshot({path:path.join(out,'failure.png'),fullPage:true});console.error(error);process.exitCode=1;}finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

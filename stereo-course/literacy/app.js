@@ -309,6 +309,7 @@
       viewer?.destroy();
       modelNode = target;
       viewer = win.TaskSceneViewer.mount(target, current.visualization.model, {
+        lessonId: current.id,
         savedCamera: work.camera,
         onChange(camera) {
           work.camera = camera;

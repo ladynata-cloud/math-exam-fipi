@@ -17,7 +17,14 @@ function historicalRead(file,read=name=>fs.readFileSync(path.join(root,name))){
  const row=manifest.files[file];assert.equal(row.beforeSHA256,originals[file]);
  assert.equal(row.beforeFixture,'tools/stereo-textbook/fixtures/mobile-layout-before/'+path.basename(file));
  assert.match(row.afterSHA256,/^[a-f0-9]{64}$/);
- assert.equal(hash(restorePublicNavigator(file,read(file))),row.afterSHA256,'exact reviewed companion migration / reading layout: '+file);
+ let bytes = restorePublicNavigator(file, read(file));
+ if (file === 'stereo-course/textbook/assets/engine.js') {
+  const before = 'sceneViewer.mount(model,lesson.visualization.model,{savedCamera:';
+  const after = before.replace('{savedCamera:', '{lessonId:lesson.id,savedCamera:');
+  assert.equal(bytes.toString().split(after).length, 3, 'the two textbook mounts identify their lesson');
+  bytes = Buffer.from(bytes.toString().replaceAll(after, before));
+ }
+ assert.equal(hash(bytes),row.afterSHA256,'exact reviewed companion migration / reading layout: '+file);
  const before=read(row.beforeFixture);assert.equal(hash(before),originals[file],'archived pre-layout bytes: '+file);
  return before;
 }

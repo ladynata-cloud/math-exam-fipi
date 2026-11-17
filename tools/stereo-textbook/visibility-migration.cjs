@@ -26,7 +26,11 @@ function assertVisibilityMigration(file, expected, read = name => fs.readFileSyn
     assert.equal(hash(read(row.beforeFixture)), original, 'archived visibility asset is byte-identical: ' + name);
     assert.match(row.afterSHA256, /^[a-f0-9]{64}$/, 'a frozen reviewed visibility hash is required: ' + name);
     assert.notEqual(row.afterSHA256, original, 'visibility correction must not name the broken original: ' + name);
-    assert.equal(hash(read(name)), row.afterSHA256, 'exact reviewed visibility migration: ' + name);
+    if (name.endsWith('task-scene-viewer.js')) {
+      assert.equal(row.afterSHA256, '91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64', 'exact reviewed visibility migration before right-angle marks');
+      assert.match(row.rightAngleSHA256, /^[a-f0-9]{64}$/);
+    }
+    assert.equal(hash(read(name)), row.rightAngleSHA256 || row.afterSHA256, 'exact reviewed visibility migration: ' + name);
   }
   assert.equal(expected, originals[file], 'original historical hash must remain unchanged: ' + file);
 }
