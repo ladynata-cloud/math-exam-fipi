@@ -401,3 +401,56 @@ test('old skill-map hosts load the common exam map once before presenting labels
   assert.match(w.document.querySelector('aside .profile-skill-subtitle').textContent, /№\s*18/);
   w.close();
 });
+
+test('interval signs continues to each unfinished skill and then to the editable number line', async () => {
+  const dom = new JSDOM(source(directory + '/index.html'), {
+    url: 'https://mathexam.space/ege-profil/azbuka-metodov/?exam=16#/interval-signs/intersect-domain',
+    runScripts: 'outside-only'
+  });
+  try {
+    const w = dom.window, d = w.document;
+    w.scrollTo = () => {};
+    w.eval(source('ege-profil/exam-map.js'));
+    for (const file of ['catalog', 'data', 'engine', 'diagrams', 'app']) w.eval(source(directory + '/' + file + '.js'));
+    const enter = value => {
+      d.querySelector('#az-answer').value = value;
+      d.querySelector('#az-form').dispatchEvent(new w.Event('submit', { bubbles: true, cancelable: true }));
+      d.querySelector('[data-advance]').click();
+    };
+    const follow = async link => {
+      const loaded = new Promise(resolve => w.addEventListener('hashchange', resolve, { once: true }));
+      link.click();
+      await loaded;
+    };
+    const steps = [
+      ['(1;5]', '[-1;4)', 'mark-points'],
+      ['-2', '3', 'test-sign'],
+      ['-', '4', null]
+    ];
+    for (const [warmup, independent, next] of steps) {
+      enter(warmup); enter(independent);
+      assert.match(d.querySelector('.az-exercise h2').textContent, /Самостоятельная проверка пройдена/);
+      assert.ok(d.querySelector('[data-restart]'));
+      const link = d.querySelector('.az-exercise a.az-button.primary');
+      if (next) {
+        assert.equal(new URL(link.href).hash, '#/interval-signs/' + next);
+        assert.equal(new URL(link.href).searchParams.get('exam'), '16');
+        assert.match(link.textContent, new RegExp(catalog.index['interval-signs'].skills[next].title));
+        await follow(link);
+      } else {
+        const target = new URL(link.href);
+        assert.equal(target.pathname, '/ege-profil/trainers/interval-method.html');
+        assert.equal(target.hash, '#t3');
+        assert.match(source(target.pathname.slice(1)), /<div class="tr" id="t3">/);
+      }
+    }
+    const snapshot = new Map([...Array(w.localStorage.length)].map((_, i) => {
+      const key = w.localStorage.key(i); return [key, w.localStorage.getItem(key)];
+    }));
+    await follow(d.querySelector('.az-skill-list a[href$="/mark-points"]'));
+    assert.match(d.querySelector('.az-exercise h2').textContent, /Самостоятельная проверка пройдена/);
+    for (const [key, value] of snapshot) assert.equal(w.localStorage.getItem(key), value);
+  } finally {
+    dom.window.close();
+  }
+});

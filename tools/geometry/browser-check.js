@@ -38,6 +38,37 @@ await page.locator('[data-stage="3"]').click();await page.locator('[data-stage="
 assert.match(await page.locator('#lesson').innerText(),/Знакомое условие/);
 await page.locator('#answer').fill('7');await page.locator('#answer-form button').click();
 assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem(GeoStore.KEY)).units.cevians.independent),saved.independent+1);
+// Reading an angle should teach notation before asking for a construction.
+for(const width of [320,1280]){
+ await page.setViewportSize({width,height:850});
+ await page.goto(base+'atlas/angles.html');
+ if(await page.locator('[data-stage="4"][aria-current="step"]').count()){
+  await page.locator('[data-action="new-task"]').click();
+ }else{
+  await page.locator('[data-stage="4"]').click();
+ }
+ await page.locator('[data-stage="0"]').click();
+ await page.getByRole('button',{name:'Точка A',exact:true}).click();
+ assert.match(await page.locator('#angle-notation-feedback').innerText(),/общее начало/);
+ const vertex=page.getByRole('button',{name:'Точка B',exact:true});
+ await vertex.press('Enter');
+ await page.getByRole('button',{name:'Луч BD',exact:true}).click();
+ assert.match(await page.locator('#angle-notation-feedback').innerText(),/краю отмеченной дуги/);
+ for(const ray of ['BC','BA'])await page.getByRole('button',{name:'Луч '+ray,exact:true}).click();
+ assert.match(await page.locator('#angle-reverse').innerText(),/∠ABC и ∠CBA/);
+ assert.equal(await page.locator('path.angle-selected').count(),2);
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ await page.locator('[data-stage="1"]').click();
+ assert.equal(await page.getByRole('button',{name:'Проверить построение',exact:true}).count(),0);
+ await page.locator('[data-stage="3"]').click();
+ assert.equal(await page.locator('.angle-task-drawing svg').count(),1);
+ await page.locator('#answer').fill('∠ACD');
+ await page.locator('#answer-form button').click();
+ assert.match(await page.locator('#answer-feedback').innerText(),/внешних луча/);
+ await page.locator('#answer').fill(width===320?'∠ВСА':'BCA');
+ await page.locator('#answer-form button').click();
+ assert.equal(await page.locator('label[for="answer"]').innerText(),'Градусная мера');
+}
 // Actual download must contain the new writing after a browser quota failure.
 await page.goto(base+'atlas/segments.html');await page.locator('[data-stage="5"]').click();
 await page.evaluate(()=>{const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k===GeoStore.KEY)throw new DOMException('Quota exceeded','QuotaExceededError');return original.call(this,k,v);};});

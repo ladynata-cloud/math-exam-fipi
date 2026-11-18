@@ -71,6 +71,22 @@ for(const row of Core.rows){const id='core-'+row[0],l=C.byId[id];assert.equal(l.
  const variants=new Set(Array.from({length:240},(_,seed)=>S.fingerprint(id,M.generate(id,seed))));assert(variants.size>=4,id+' insufficient unseen variants');
  const config=Models.config(row[4]);for(let p=config.min;p<=config.max;p+=config.step){const ex=Models.investigate(row[0],row[4],p,M);assert(ex.caption&&ex.question&&ex.svg);assert(!/NaN|Infinity/.test(ex.svg));assert(M.equal(fmt(ex.target),ex.target));}
 }
+// The model must ask about the current probability or statistics concept.
+const modelOracles={
+ permutations:n=>[1,1,2,6,24][n],
+ combinations:n=>Array.from({length:n},(_,i)=>i).reduce((a,b)=>a+b,0),
+ independence:n=>n/6*0.5,
+ binomial:k=>[1,3,3,1][k]/8,
+ weighted:n=>(2*4+n*10)/(2+n),
+ chart:()=>25
+};
+for(const [id,expected] of Object.entries(modelOracles)){
+ const family=Core.rows.find(r=>r[0]===id)[4],cfg=Models.config(family);
+ for(let position=cfg.min;position<=cfg.max;position+=cfg.step){
+  const model=Models.investigate(id,family,position,M);
+  close(value(model.target),expected(position));
+ }
+}
 // Every path references real lessons; every new lesson is reachable, with no prerequisite cycles.
 assert.equal(C.pathById.constructor,undefined);assert.equal(C.pathById.__proto__,undefined);
 const covered=new Set(C.paths.flatMap(p=>p.ids));for(const r of Core.rows)assert(covered.has('core-'+r[0]),r[0]);
