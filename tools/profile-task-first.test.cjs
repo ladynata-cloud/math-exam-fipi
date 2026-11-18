@@ -42,7 +42,7 @@ for(const offline of [false,true])test(`Optional opposite-vector check ${offline
   try{
     if(offline){
       assert.equal(w.document.querySelectorAll('script[src]').length,0,'No remote scripts in the standalone download');
-      for(const name of ['app','vector-basics-data','geometry-data','stereo-data']){
+      for(const name of ['app','calm-ui','vector-basics-data','geometry-data','stereo-data']){
         const embedded=w.document.querySelector(`script[data-inline-source="/ege-profil/start/${name}.js"]`);
         assert(embedded);assert.equal(embedded.textContent.trim(),fs.readFileSync(path.join(start,name+'.js'),'utf8').replace(/<\/script/gi,'<\\/script').trim(),'The actual combined source is embedded: '+name);
       }
