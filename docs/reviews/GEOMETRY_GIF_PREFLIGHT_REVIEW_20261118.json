@@ -1,0 +1,21 @@
+{
+  "verdict": "PASS",
+  "actualPreflightReadOnlyExecuted": true,
+  "staleOrMissing": 63,
+  "missingNewClip": "atanasyan-explore-angle",
+  "batchSizes": [
+    26,
+    27,
+    10
+  ],
+  "runtimeSources": 9,
+  "negativeControls": [
+    "missing_new_clip",
+    "duplicate_clip",
+    "pinned_future_clip",
+    "missing_dependency",
+    "changed_scenario",
+    "changed_recorder"
+  ],
+  "nativeRecordingRun": false
+}
