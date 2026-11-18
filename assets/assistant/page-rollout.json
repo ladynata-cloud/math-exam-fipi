@@ -228,8 +228,9 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "063a06a94b4cfed234d543fabad67d6c346c6c57c7b803c9b80633b3444c3e98",
-      "afterSha256": "0fbb8454422c6606e2f0074c197a46136a4e7ca58e179deee817b0b3ed35648c",
+      "beforeSha256": "7ccdd1a16c019d8b4cf9734200b346308c34022510adfd525b02f6556732dbba",
+      "afterSha256": "9a3154ac658ebbe4cdfbfbb514a8d73d8a8e2c12afc1313158f7dc72d173a97b",
+      "sourceSha": "36e84c2840364257007e7a800c8fc9a2e5946923",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -509,8 +510,9 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-triangle.html": {
-      "beforeSha256": "6535a04aab25606ef864e60b98ec6482fac25f04bb9de0e29ca4ab66f4779ad8",
-      "afterSha256": "0e6c3eb4aea85ced75dd7c4f1918fb6514c9f545b2c16ae042138a2e687fe0f5",
+      "beforeSha256": "2750f21c15931c34951dcb7cc96d66080c5f0d34bbe6830a3e3303f072feb2e3",
+      "afterSha256": "ccedc100197b6a8613b85a187c41c81fc47c590b8b59d83b952636d58ea2cbe7",
+      "sourceSha": "36e84c2840364257007e7a800c8fc9a2e5946923",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/axis.html": {
@@ -1439,8 +1441,9 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-22.html": {
-      "beforeSha256": "194eb614326fdf667b27843268f7bed2ce85808fa6197eb36996643c068fc60b",
-      "afterSha256": "4065d7a36fe26fc55e4b7d0a5779470414255454fdcfaf2a54c69d79865b630d",
+      "beforeSha256": "b6ef1ff4b482f59693e385be2fe9acfb8ee36261660b458c1e2d16afa8b781d7",
+      "afterSha256": "313c0950a0367291479678d9d98aec930ad1b3fb58e97eed7f2d24923eb40418",
+      "sourceSha": "36e84c2840364257007e7a800c8fc9a2e5946923",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-23.html": {
@@ -1989,8 +1992,9 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-126.html": {
-      "beforeSha256": "6ea6a9408c804e664e541fe4358add3555ab2aa542f4a704a84f957c773e7194",
-      "afterSha256": "840755208ea4de189d31a2791dd7feb1973ba4fea93eb646d8618a4982dbf58a",
+      "beforeSha256": "faeabe24642a99f4ffce5d7ef88eef41142722039def78d670018fff1d608788",
+      "afterSha256": "e7ae7d27b85dee2642665a9108c846a0983e6bb4a5c7a33f9a04446f5a2c8244",
+      "sourceSha": "36e84c2840364257007e7a800c8fc9a2e5946923",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-127.html": {
@@ -6125,6 +6129,18 @@
       "task": "docs/tasks/PROFILE_VECTOR_OPPOSITES_20261117.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "95ee4b197171fd84fd0fe7198e62f47ebc34a328",
+      "sourceBaseSha": "36e84c2840364257007e7a800c8fc9a2e5946923",
+      "task": "docs/tasks/GEOMETRY_PRACTICE_AND_AREA_20261118.md",
+      "changedPaths": [
+        "ege-baza/path/index.html",
+        "geometry-course/atlas/area-triangle.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-22.html",
+        "geometry-pogorelov/atlas/pogorelov-base-9-126.html"
+      ],
+      "boundary": "Exact source identities for the normal two-parent #651/#674 composition; not a new mathematical or publication approval."
     }
   ],
   "coverageUpdates": [
