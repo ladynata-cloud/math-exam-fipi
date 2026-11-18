@@ -155,12 +155,42 @@ function submit(env) {
       assert(student.doc.querySelector('.literacy-model svg'));
     }
   }
+  assert.equal(student.doc.querySelector('[data-literacy-return]'), null);
+  assert.equal(student.doc.querySelector('.literacy-footer a[href*="sections/#"]'), null);
   teacher.app.open(angle);
   student.bridge.applyState(student.clone(teacher.bridge.getState()));
   assert.match(student.doc.querySelector('h1').textContent, /линейный угол/);
   assert.equal(student.doc.querySelector('[data-literacy-step]'), null);
   teacher.destroy();
   student.destroy();
+  // The task number is searchable in the route. Each angle problem contains
+  // the metric data that perspective alone cannot establish.
+  publicApp.app.open(null);
+  assert.match(publicApp.doc.querySelector('[data-literacy-lesson="' + tetrahedron + '"]').textContent, /№167/);
+  for (const [id, given] of [['theory-022-right', /90°/], ['theory-022-obtuse', /смежный.*70°/]]) {
+    publicApp.app.open(id);
+    assert.doesNotMatch(publicApp.doc.querySelector('h1').textContent, /прямой|тупой/i);
+    assert.match(publicApp.doc.querySelector('.literacy-condition').textContent, given);
+    assert.equal(publicApp.doc.querySelector('.literacy-model svg').dataset.view, 'linear');
+    assert.equal(publicApp.app.getState().work.assisted, false);
+  }
+  publicApp.app.open(tetrahedron);
+  click(publicApp, '[data-literacy-help-toggle]');
+  click(publicApp, '[data-literacy-hint="0"]');
+  click(publicApp, '[data-literacy-related="theory-022"]');
+  assert.equal(publicApp.app.getState().lessonId, angle);
+  const returned = new Promise(resolve => publicApp.win.addEventListener('hashchange', resolve, { once: true }));
+  click(publicApp, '[data-literacy-return="' + tetrahedron + '"]');
+  await returned;
+  assert.equal(publicApp.app.getState().lessonId, tetrahedron);
+  assert.equal(publicApp.doc.querySelector('[data-literacy-answer]').value, 'Моё доказательство');
+  assert.equal(publicApp.doc.querySelectorAll('[data-literacy-step]').length, 2);
+  const practice = require('../stereo-course/sections/data/course.json');
+  for (const [id, targetId] of [['theory-014', 'starter-04'], ['theory-014-example-1', 'auth-core-02'], [section, 'starter-23']]) {
+    publicApp.app.open(id);
+    assert(publicApp.doc.querySelector('.literacy-footer a[href="/stereo-course/sections/#' + targetId + '"]'));
+    assert(practice.lessons.some(lesson => lesson.id === targetId));
+  }
   publicApp.destroy();
 
   const checking = open(course, { hash: '#ex-main-0018-a' });

@@ -4,9 +4,10 @@
 const assert=require('node:assert/strict'),crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../..'),manifest=require('./mobile-layout-migration.json');
 const {restorePublicNavigator}=require('../public-navigator-preservation.cjs');
-const renderer = 'stereo-course/assets/task-scene-viewer.js';
-const rendererPin = require('./visibility-migration.json').files[renderer];
-const rendererInverse = require('./fixtures/right-angle-renderer-inverse.json');
+const {beforeHarmonization}=require('./harmonization-input-migration.cjs');
+const {beforeCompactPreview}=require('./harmonization-preview-migration.cjs');
+const {beforeRightAngles}=require('./right-angle-renderer-migration.cjs');
+const {beforeProfileComposition}=require('./visibility-profile-runtime-migration.cjs');
 const {SCHEMA_PATH, beforeRightAngleSchema} = require('./sphere-schema-migration.cjs');
 const originals={
  'stereo-course/textbook/assets/engine.js':'9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74',
@@ -15,29 +16,14 @@ const originals={
 };
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 function historicalRead(file,read=name=>fs.readFileSync(path.join(root,name))){
- if (file === renderer) {
-  const current = read(file);
-  assert.equal(hash(current), rendererPin.rightAngleSHA256, 'exact renderer with right-angle marks');
-  const lines = current.toString('utf8').split('\n');
-  for (const edit of [...rendererInverse].reverse()) lines.splice(edit.start, edit.remove, ...edit.restore);
-  const previous = Buffer.from(lines.join('\n'));
-  assert.equal(hash(previous), rendererPin.afterSHA256, 'exact previous visibility renderer');
-  return previous;
- }
  if (file === SCHEMA_PATH) return beforeRightAngleSchema(read(file));
- if(!Object.hasOwn(originals,file))return read(file);
+ if(!Object.hasOwn(originals,file))return beforeProfileComposition(file,beforeRightAngles(file,beforeCompactPreview(file,read(file))));
  assert.equal(manifest.base,'0d96ad84f0dd9dcadf123b3845db75c5476be93a');
  assert.deepEqual(Object.keys(manifest.files).sort(),Object.keys(originals).sort());
  const row=manifest.files[file];assert.equal(row.beforeSHA256,originals[file]);
  assert.equal(row.beforeFixture,'tools/stereo-textbook/fixtures/mobile-layout-before/'+path.basename(file));
  assert.match(row.afterSHA256,/^[a-f0-9]{64}$/);
- let bytes = restorePublicNavigator(file, read(file));
- if (file === 'stereo-course/textbook/assets/engine.js') {
-  const before = 'sceneViewer.mount(model,lesson.visualization.model,{savedCamera:';
-  const after = before.replace('{savedCamera:', '{lessonId:lesson.id,savedCamera:');
-  assert.equal(bytes.toString().split(after).length, 3, 'the two textbook mounts identify their lesson');
-  bytes = Buffer.from(bytes.toString().replaceAll(after, before));
- }
+ const bytes = beforeHarmonization(file, restorePublicNavigator(file, read(file)));
  assert.equal(hash(bytes),row.afterSHA256,'exact reviewed companion migration / reading layout: '+file);
  const before=read(row.beforeFixture);assert.equal(hash(before),originals[file],'archived pre-layout bytes: '+file);
  return before;

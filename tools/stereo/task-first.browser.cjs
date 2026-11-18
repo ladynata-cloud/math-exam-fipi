@@ -39,7 +39,7 @@ async function checkFigureLabels(page,id,width,stage){
   await checkHomeHero(page);heroEvidence.negativeControl='solid rear stroke rejected';assert.deepEqual(heroSources(),heroEvidence.sourceHashes);
   fs.writeFileSync(path.join(out,'home-hero-visibility-evidence.json'),JSON.stringify(heroEvidence,null,2)+'\n');
   for(const u of C.units){
-   await page.locator('[data-unit="'+u.id+'"]').first().click();await page.locator('#task-model svg').waitFor({state:'visible'});assert(await page.locator('#answer').isVisible(),u.id+' answer visible before help');assert.equal(await page.locator('#task-help').evaluate(e=>e.open),false);
+   await page.locator('[data-unit="'+u.id+'"]').first().click();await page.locator('[data-investigation-model] svg').waitFor({state:'visible'});await page.locator('[data-stage="4"]').first().click();await page.locator('#task-model svg').waitFor({state:'visible'});assert(await page.locator('#answer').isVisible(),u.id+' answer visible before help');assert.equal(await page.locator('#task-help').evaluate(e=>e.open),false);
    const condition=await page.locator('.task-question').innerText();assert.ok(condition.length>15);
    await page.fill('#answer','мой ответ '+u.id);await page.evaluate(()=>{window.keptModel=document.querySelector('#task-model svg');window.keptInput=document.querySelector('#answer');});
    const rotate=page.locator('#task-model button[aria-label="Повернуть влево"]');if(await rotate.count())await rotate.click();
@@ -47,7 +47,7 @@ async function checkFigureLabels(page,id,width,stage){
    await page.locator('[data-action=help]').click();await page.locator('#task-guide>summary').click();await page.locator('#step-answer').waitFor({state:'visible'});await page.fill('#step-answer','промежуточный');
    await page.locator('#task-help>summary').click();await page.locator('[data-action=help]').click();
    assert(await page.evaluate(()=>window.keptModel===document.querySelector('#task-model svg')&&window.keptInput===document.querySelector('#answer')),u.id+' preserved nodes');assert.equal(await page.inputValue('#answer'),'мой ответ '+u.id);assert.equal(await page.inputValue('#step-answer'),'промежуточный');
-   const rec=await page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamStereo.v1')).units[id],u.id),t=T.make(u.task,rec.seed);assert.equal(rec.assisted,true);
+   const rec=await page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamStereo.v1')).units[id],u.id),t=T.make(u.task,rec.seed,rec.practiceVersion,u.id);assert.equal(rec.assisted,true);
    await page.fill('#step-answer',A.format(t.steps[0].a));await page.locator('#step-answer-form button').click();assert.equal(await page.inputValue('#answer'),'мой ответ '+u.id);
    await page.fill('#answer',A.format(t.a));await page.locator('#answer-form button').click();assert.equal(await page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamStereo.v1')).units[id].independent,u.id),0);
    await page.locator('[data-action=close-help]').click();assert(await page.evaluate(()=>window.keptModel===document.querySelector('#task-model svg')));assert.equal(await page.locator('#task-model svg').innerHTML(),shapeBefore,u.id+' camera and initial figure after help');

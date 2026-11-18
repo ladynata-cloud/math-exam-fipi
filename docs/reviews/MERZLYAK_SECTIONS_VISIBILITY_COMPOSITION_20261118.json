@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "review": "Independent review of the exact Merzlyak section 004 surface-profile repair",
+  "reviewer": "/root/geometry_release_review",
+  "implementationAuthor": "/root/oge_finish",
+  "reviewedAt": "2026-11-18T10:28:57.729664+00:00",
+  "verdict": "PASS_WITH_STATED_LIMITS",
+  "baseCommit": "5439d927feb3b7f9a29a9c0d7b764f6d340864f2",
+  "scope": "Exact working-tree hashes below; not a remote-head, full-CI or production release approval.",
+  "inspectedFilesSHA256": {
+    ".github/workflows/atanasyan-textbook.yml": "9c6e2f31c8db38a1a92fe562b9c6ab6e1a20d15fb72c8b79e4c631675017b5a7",
+    "stereo-course/assets/task-scene-viewer.js": "da832009a652165c1d673d14237a5df04c34937fd858e2ed5971dbf5c3e1ec86",
+    "tools/stereo-textbook/build_visibility_profiles.cjs": "0187d0f3107425fd34051c1ac5b7aa04220fa49ed0c62ddebc6d171fc69701d9",
+    "tools/stereo-textbook/mobile-layout-migration.cjs": "570fbc1e3bb3fbddde08eea01e9920b738dcc904fdd1baa65f17b4b9f2c1bbda",
+    "tools/stereo-textbook/visibility-migration.cjs": "637e4b864851e24ed07decd8de373170596d2a4c90e1c3bd7b6874e08d64f0f6",
+    "tools/stereo-textbook/visibility-profile-composition.cjs": "dbae242fea616f3ffa415d07e01b1f9944596088b1c042db73aaf67406a5cfab",
+    "tools/stereo-textbook/visibility-profile-composition.test.cjs": "d01c680e504fecc7dd1a4c0bbadc2b21afe5f8aa4beec41f6d5c05fa1b8c4572",
+    "tools/stereo-textbook/visibility-profile-runtime-migration.cjs": "801d9e1b15fcf5ae84e521fc66d26ff4309dbd91f49938ddd46fcc91950a8c75",
+    "tools/stereo-textbook/visibility-profiles/merzlyak-sections-composition.json": "cbd45bd04121cba38c00f14a9e1fb68cc9ab2ed7b2f9f651f33d7ebe376f928d",
+    "tools/stereo-textbook/visibility-profiles/merzlyak.json": "10184ec658e1fec8e574c89cc898a58e118d99205ebdf367d324a64780639605",
+    "stereo-course/index.html": "14b9c2d98e589d40ae620467c786085a96ade734389c4d7b26ee07acb4d84e61",
+    "stereo-course/merzlyak-10-base/index.html": "9e6fa54b2444f74fbb89e6ef51bfbde8d4b1c100a22fa137f503933958476755",
+    "trainers/merzlyak-10-base.html": "f092b17825b9dedd543b58a48d1dc86ae20f711981b18eb4f5008c8ed18e717a",
+    "tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs": "9c094724234409ee052f6fd47f4a479faef6701e273dc1ea7f3f980eba6fe62e"
+  },
+  "findings": [
+    "Confirmed production path: Merzlyak index fetches course.json, GeometryStepViews preserves research-sections-004, custom engine mounts the shared TaskSceneViewer. Exact earlier runtime gave 6 faces/4 view surfaces; #627 gave 0/0.",
+    "The repair adds exactly one full-signature profile. All 245 previous profile entries remain deeply identical; there are 246 after repair.",
+    "Actual TaskSceneViewer.prepare restores 6 faces and 7 view surfaces. first-ratio and parallel-bases retain first-prism faces; second-ratio uses the pre-existing second-section faces. All four old view surfaces remain unchanged.",
+    "The source lesson/bundle bytes are untouched. The strict compiler validates the complete reviewed model, all three added views and the exact former signature. Arbitrary source changes cannot inherit the approved profile.",
+    "The exact runtime inverse removes only the added profile entry and restores SHA256 91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64. Historical guards retain their frozen expectations.",
+    "Workflow path triggers now include both other course bundles consumed by this shared profile compiler; the new regression is executed in the existing verification step.",
+    "Added backward-compatibility assertions delete exactly the three new views from a cloned model; the new runtime still prepares the original six faces/four view surfaces. Re-ran the full focused oracle successfully.",
+    "The mutable stereo-course/index.html differs from the prior source solely by the exact complete renderer embed. Both Merzlyak entry pages differ solely by the explicit v=20261118-da832009 script cache version. The reviewer wrapper check changes the same single expected src while preserving the strict array assertion."
+  ],
+  "executedChecks": [
+    "build_visibility_profiles.cjs --check: 246 exact signatures PASS",
+    "visibility-profile-composition.test.cjs: 6 cards,51 authored views,86 rotated views,35421 rays,519 hidden paths,10 negative composition controls PASS",
+    "visibility-migration.test.cjs: seven historical baselines and21 negative controls PASS",
+    "Independent comparison of all previous profile entries and actual runtime prepare result PASS",
+    "Exact whole-HTML inverse comparisons for workshop renderer embed and two cache-version entries PASS; updated visibility composition test PASS with cached-old-model assertions."
+  ],
+  "limitations": [
+    "Initial local test attempt lacked NODE_PATH; after supplying existing jsdom dependencies the same test passed without code changes.",
+    "Native-browser screenshots, full fresh CI, source-book re-review and pupil acceptance were not performed in this focused review.",
+    "The later #623/#667 combinations must compose their own exact inverse steps and be checked again against final runtime bytes."
+  ],
+  "blockingFindings": []
+}

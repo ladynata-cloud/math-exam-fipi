@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "9dca62777195981269f3d4efd5bd2a1d4102de4f",
+  "baseSha": "e44a97a95030b3f032a01418f473494adb3cac39",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -273,13 +273,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/index.html": {
-      "beforeSha256": "70b3eafd7344488001c0377675ed079303ef64db889e4d1be5347ee04e66dd1e",
-      "afterSha256": "3c3009ca914e25db1b1853367be415c82d110c428e006c82f6b28ed34522d183",
+      "beforeSha256": "dbf1bf5fb8bc1c2cbd224554831b584e47c4f98b6ceb51ad12a148d051392682",
+      "afterSha256": "2d9d039053e21f6fc575ca334e8fe7c45c4245927c58a6c610e8764c424a2df6",
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/lesson.html": {
-      "beforeSha256": "bfed363a64a67e5a85ee23ab8a799b71c19555d4cdbd724b25cae942a5c64bff",
-      "afterSha256": "6e3561a2d8cdf6cf96f1b928479fb235f1bdc27ec11002a217d7f1c03304ed5a",
+      "beforeSha256": "fe636797d2c4752fb65fdf5a7b1dd6c218b8f039c4ab37b8c1bf215a27a9d209",
+      "afterSha256": "2b64087a1659d4c953b21f0ca61298f84b3af0e34f3f525d07b57a2587d4a4cc",
       "placement": "before-head-close"
     },
     "ege-profil/circle/index.html": {
@@ -478,318 +478,318 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angle-locus.html": {
-      "beforeSha256": "966d59188ec822c76bf016da34ce8df9466e74ab01942a3c5c769f8bd12a7101",
-      "afterSha256": "94b5f30b9d0b0dc9cc3bb5ed08efa26ba2f87169ef3be3b4bd4d0219da253a79",
+      "beforeSha256": "fd1ae8ee137e91a5b1c45f63d2d61cf9fdff4e03faea4052dc5a03c6ae1d1f4e",
+      "afterSha256": "07aae188296c803afe9a3d64a0166a41bcbd42334019a27f7c7fdb2f3d7d3725",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angles.html": {
-      "beforeSha256": "048f8e89f0e424b83ceb4a5b6be80f9a0a8a2027b6f2f78795676b8fe66894f3",
-      "afterSha256": "c533e651300dfd440c2be832dfb6b28a26ab26654a74bd6415f7ac4efb85fe1c",
+      "beforeSha256": "b590c1e94fa6f99b346fd45923ff2e727baf2dbe64a0dc9118df37770e5d3f59",
+      "afterSha256": "bc22fbd8a63f9ffc1bc300959c5967420f2839df4b2e86ed8a0b7eb1f403d908",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-basics.html": {
-      "beforeSha256": "6919079b5b44e263a5aea2f05cec1638e501432a559c445b5cb16f6e3d121509",
-      "afterSha256": "491b36c5376bf411adb2b3feefb92313045900b8a44f99cf8245606783383505",
+      "beforeSha256": "83d2e5f79029b5804ffe93f9f1d2c7488f8be21222100c725e48453f0351b836",
+      "afterSha256": "79c8f3ca1ba99b400cf0e1dab09c912564c29cad4e7f36ec5e5b7d90337ca957",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-parallelogram.html": {
-      "beforeSha256": "90a97d77007cbc107a7f752a719616028c8ef1806bf1e53b14f0cae3421f9fec",
-      "afterSha256": "95b7271c968878912bfdccb619ced853db2e2ee622ec08892304906e1f385d09",
+      "beforeSha256": "2f31cdbb2b3b0bf882a2b2c3123ca3de59785891e88a73444c5cde14d891d890",
+      "afterSha256": "b9786e57d1059d56ce127c9fe1edccef2c73dfb52ebfe497150f4b130d9de0bc",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-sine.html": {
-      "beforeSha256": "0f063dcde968b99d30b7bc5adefc20bc1faffb338dd0af00ae1ac5a47c640172",
-      "afterSha256": "be3f9075add1ee735183e8eebe4b30dd70b900f2d6294067307e366d39775228",
+      "beforeSha256": "288c034be8db5eb6adcbb41c59946976c4726eee320b2016f09a27ab1262ed6f",
+      "afterSha256": "7a90b46259148773d277da7865105cfc1cb6c64f58d16d8f575c23a0be9c6235",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-trapezoid.html": {
-      "beforeSha256": "5717bd19963eb7605f2ed382687d2289c103d1ff3603c09e11a2c01ffae12b12",
-      "afterSha256": "3a5c5f466752102b925824d67ae7158963d6bc60ac1c02736927f1dbb1988b61",
+      "beforeSha256": "6aa77bdc181d8d9e3a545e9d7f2a70867b6befbfaa68b95bef83ac621f2cd68d",
+      "afterSha256": "754858ef87b3ed4db504e1d8db34478a8884f675230503dcebcba776cc729cda",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-triangle.html": {
-      "beforeSha256": "9ba69a3112d0cc92d7e3bc044f30031fa09ffbfcbfc9657384c71ddd5af676c8",
-      "afterSha256": "bcee8494e1851e326f1e3b9b48827fd1eddf9b4a30f37fa5d504759cb9f8fce5",
+      "beforeSha256": "44fd4b0802e3414e17aa093b192833f601fc40cb85299f874c9c362332484eb2",
+      "afterSha256": "b9badd54407f4ad1b49c9ce9e02171382633d3b0a23b9d331c46174c2d403506",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/axis.html": {
-      "beforeSha256": "bdca3d6a3509f0cd7eda1c6f236123d86da35284caabd0f12d801a9744c9c04f",
-      "afterSha256": "6a283fc80e8f246268223ee6c9fa81eeeea1345862294794374156aedf41ceab",
+      "beforeSha256": "9083ca7f66da4c77bf64c49ab85ab970b6ea31a6a0392cb7bdb27fc6d24b3d75",
+      "afterSha256": "7b22807d94de26598af8a7a24c873e3aacaad2149971c561dc656b3b142c1260",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/centers.html": {
-      "beforeSha256": "aa854cc06749075dc08c32604b537aab98ba1f99b60b60f4cff8b0759aa68c45",
-      "afterSha256": "dea04492db920219d023019b6515fcda013447b1c66d4aaf34c8c6530834235d",
+      "beforeSha256": "ebc3b8bfeb6de74363b65ce2d2a316d567860e7112e011bc3ea23fc647a71ecd",
+      "afterSha256": "0352cb76fe6abddaaa7dc59f3e2f2ddd35ff2db066aff81fbf2a13fac1ef6718",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/central.html": {
-      "beforeSha256": "4677061edc03e7aed52225b5ea1b3e88f737440a3da414789a4cec733f4b5246",
-      "afterSha256": "c38ce7d2b6927cc1fc4dce1b65ae3c0b34e62566d58f38684ae72c5d19efea32",
+      "beforeSha256": "df9ec3dd2f8c95f05047d44440da17c31f8d8608939a99f4e72133cf289a22a4",
+      "afterSha256": "3249874c39979b6a7b844ce232c4441444f28821f7d3923dbb0becc69daf1c3e",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/cevians.html": {
-      "beforeSha256": "7ccd1466a36016862a75aa572fb90c4d0d1409d55c83844572859d1e8d44c7e3",
-      "afterSha256": "1263b2d0d19ec8cd3de630c055150d58faf9b25e647288dd7ef08c3048234f8e",
+      "beforeSha256": "fb09caeb350cfe46c3c89d550b93be60a19eff34acd9e91aef9c7752a081936a",
+      "afterSha256": "87cd869efb5de0a2c5cbb7d59a11532cc58266ee98cb6bcae07d13ea29857655",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/chord-angles.html": {
-      "beforeSha256": "e6ef0a693cb04ea273d66d6ac9df9e343486a3b8daca6cf23358cbf704df8d20",
-      "afterSha256": "731d9801e7d3b5a673a7634d186c619f348b85e12227477e1d286cb47c8bde65",
+      "beforeSha256": "cbbebb53016e0130e29586fb1d7b64ec6841278e1042c0d7f9d0ec8ce4254d3c",
+      "afterSha256": "8c4e62f04ea45e0be07b863954763d89465587d3a5b106778361b64209ace2f7",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/chords-tangent.html": {
-      "beforeSha256": "d864f61199837876cb11731524cbb074f8df72c51300e292a17339a75b99f477",
-      "afterSha256": "f4b8bb76431edf3d251b008d7767131fc1c56a8d80d28fa406aa301a608d9e48",
+      "beforeSha256": "e89c10396506d4d87f5cb19667bb96c73c9e6f1c390adf9828baa7116c2ebbf5",
+      "afterSha256": "996e053402649f7c5ce4c5182b8fd8665f9061dcfc8a8729c39cb9d4e220ba06",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/circle-metric.html": {
-      "beforeSha256": "674277bbe1eac180cb9061eb95526366db0e3174a3d240bd06c1f2ec3b4f6d27",
-      "afterSha256": "7797d8ce2441b8e19fd2bf967808d27c3de2e2c2c01eec4b3d79deaee9c223c7",
+      "beforeSha256": "16b3770e4d485a261efed43051fd823fe7f2eb5ac8c71e95acc8bafa18fd6aa7",
+      "afterSha256": "69375ef726ca7c429ed2b953a2b8e6d7bc8b1f75032d22f752dffa00aca8f1df",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/circle-position.html": {
-      "beforeSha256": "bec9895c647196a1f79f3691c691e9f1b3eb64d9312dd4f53926eb317a143b4c",
-      "afterSha256": "009e2db3bf926f9affec8d095403b0251f6ef098149e6c7b14814cc4b92c6692",
+      "beforeSha256": "0600e140f066aa7d90d55f20294a72584d287990c79dfc71059d089beae0b2ee",
+      "afterSha256": "5e23dae27391541421f41927d5ab638bbb6b21e678756262971f4b92d22c1e9c",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/compass.html": {
-      "beforeSha256": "25c6c3b0de10a658069d4eff2bd5d144a0c23f9b7348e08e1bf14eec2b1dc178",
-      "afterSha256": "a3281eabba1abbb672ccb8bff550e953b08caf3d08e8bcd3748f5ea3d8ea8120",
+      "beforeSha256": "62e33bcb3a674434858724fb84c264a2cb2869fb63735c26d09daf9a59e48dbb",
+      "afterSha256": "87f0cd15c3bf7e9a7239f493b7df86427364e41413a22402a999ac57c863aec5",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/coordinates.html": {
-      "beforeSha256": "8b26dc2935460ed74aec7f355cffa2524745ddd872685330a7cb9d5a86737427",
-      "afterSha256": "000ce24f45c882a5d9099b401cb6c6a3b0b7e144a3f8dd9fb26c95134ef5869c",
+      "beforeSha256": "05113f4e45727fe5bca66b92e6ee92ed1d4ef93452ad2c24806ed628b519759c",
+      "afterSha256": "4e3c1881bc0849f67a052c9cbfd4d44ee91672de831efdc8fcda6c5555a36fb1",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/cosine-rule.html": {
-      "beforeSha256": "9fd7e60030e339ed57c0170f779f76971bdb0541f58382c3dfbeb9b4410f5fcf",
-      "afterSha256": "fad9916e37e625ad541c462c5ac482c67bf14de96a599ada4930cbc88d785eea",
+      "beforeSha256": "bfda46caa1513b9eb0ee9521a19aed23a3202c965d1d4964765c9a51c9a9e15d",
+      "afterSha256": "10254e7b746dcd87ac56e55302184f3a2b3ab6c77e3e4d36a4f968b9d2df2d46",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/cyclic-quad.html": {
-      "beforeSha256": "2d62dbcdb3b627e425f6b99c89af08b9c0a441d359aab44a373f0f38aaa7b08f",
-      "afterSha256": "79f8c5251e3f983f0ef5bc442807d5a725e2e9d4bdbb1eeda194c07ffde8f3a0",
+      "beforeSha256": "2037046ef8308f06b9373f418835c887f1c76c87ee6064426bfcdb3ef62251f7",
+      "afterSha256": "e8a678850c5af4e10b6f6dc835e59d95800109673068aa5cd9ef9f332ed0ca01",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/distance.html": {
-      "beforeSha256": "087f7531d10503178adf1ba485a03420f806578a971c943c4d32e47c3a4a469e",
-      "afterSha256": "834632f0b3e3efb34818b3c27ecda4044e4abd666eb96f3465e6de0ec2eb9a8f",
+      "beforeSha256": "3113be5467a1995373d1ccb7a2397e2abbbd8b9c0a48f7db7fccbf8fce6a817b",
+      "afterSha256": "39cbf4c0d37ae5905e68c186688faea2232980b1edb96b915ceb80aaf832bcd7",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/dot-product.html": {
-      "beforeSha256": "44e1803581c16ddbf1db66b93f3abbebe3bbea668e5ae46983671587c427f752",
-      "afterSha256": "480bfdec21d1f312c167c2ce72771be2bd2f1ede357e4c9af6a916389f49b991",
+      "beforeSha256": "ad05071e75ba6b6f95555e3c66fb3815f987091f2ab869db819e50cb2a1b924d",
+      "afterSha256": "754b95ef305a7f4c39b2011b995c9cfd2d29784137345c212a1469f6a0b0b3c2",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/equality.html": {
-      "beforeSha256": "7f21212e128ab4b73426fbeaa10235dad6f24d00a242f348246d0a5b5da0236f",
-      "afterSha256": "26278fe1102fdf544a290b71908ade8e2509d751fb7be216304e86e7d5c0d9f7",
+      "beforeSha256": "254cb301c05deffa79e8364e746370904a315d3342bac670065f5ddd0c379e7e",
+      "afterSha256": "13b1c728cac8ee793573837252d164557a474a8b81559683263284559b9a8176",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/heron.html": {
-      "beforeSha256": "b845401df69eff5e1259ee776e94b4058a0210ee7e9075c3fb5d070d85ee9808",
-      "afterSha256": "d6b3a99230527d7e853d9f5aba33b2e81a2715d00bbb84d260ed0c073e5d48ae",
+      "beforeSha256": "f5d25ae648a0e507c04033e7d3756b6e544172258b5409ec935d63e93ffc8a35",
+      "afterSha256": "942238f869330e997ac66cad676aa4ffb40400e37d1738261db2aa69575c1c2a",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/homothety.html": {
-      "beforeSha256": "ed373ae4218964576c8755a39da897230e8790839ececec4492ed0718217bf96",
-      "afterSha256": "5fadf897c3c6a2e8b9cceef7cb5c96a83ef944a75f9f2069206638ca408b11a2",
+      "beforeSha256": "5611291bc206ef6e9bdcaeba520e9c1d3233aa51e7ca1dfe8c818b27d6d89d11",
+      "afterSha256": "1b8c639eafbb6da6e1b40733336696e6a95c13d28d0ac986a63886840696fae2",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/inscribed.html": {
-      "beforeSha256": "a1ae273517a17547db3cb6ae9cf2eea4af09af674e2ee06b573685ac6b7267fc",
-      "afterSha256": "2f363dae2941c2fdfc49f1ab007b9b286613fbaac5ae7762676f709bc3fa215f",
+      "beforeSha256": "0fc554359b20328106814ed2428b56489cc6f47885aa3b10836e60c0fcaa7983",
+      "afterSha256": "fc4a44e943aec2e65d02cdb44d27ba36a6ecc98e1dc2283a4395ed2b4316565e",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/length.html": {
-      "beforeSha256": "9da547c46e29e2f38aefa17939f872704f4490534bd68af9fae44b301fd74660",
-      "afterSha256": "9fbcb7b034b8e7ba5b502113de3c1d6e3680fc9295f107e2d3ae69d136d3d774",
+      "beforeSha256": "e8ea71f3aeadcc59ed1f1181fa6859f58a6031c268ea44c6b5e93546fc45a0fd",
+      "afterSha256": "d6fe167a4faecd71f13102ba7ce4f0ab55bc7d54093e7af9ccf78afecca7c75b",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/line-circle-equations.html": {
-      "beforeSha256": "21a77b6fa7dbe7cfcc83a6b47f501996ee3d3006ca7d894d10d3a2ac7d619fd8",
-      "afterSha256": "4ccac49861e3455e7fe07dac667a2fba2decc995e39a3c2342d58ea0334c906f",
+      "beforeSha256": "54e869744c81fed86d4a9ac39ddef72c5a494c4f410bc01aed497a31eeb5cfc5",
+      "afterSha256": "9b613747212585eedf588ff8cbfd309c34f62edb17ad0f9c2b87b035d994fd75",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/measure-angle.html": {
-      "beforeSha256": "c78ce787133e73fa4758fdec221698a6d73e7208d56849d8292860e4a76d8ba7",
-      "afterSha256": "221bff5c8b253ad8a756631a1788429a6905627b4ef9a4ff2dc184a178fcabed",
+      "beforeSha256": "0585cf25e7891c2a00b8eb819626f44b9a86ff27b72eb8b8030a57ecdf479afa",
+      "afterSha256": "6518992044c1eccf84fc368af751f67cd123ae0a6b7cd207dace0763924c1ac7",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/midline.html": {
-      "beforeSha256": "6a4e655aa750b3f75017549eede8ca3d86b74bf2a8f6aac281228f17fdd6b5fd",
-      "afterSha256": "1de892cd0de32b5bf942b2b864519b13654b4c350c5535fc015450683683f555",
+      "beforeSha256": "3bcc6b397f77edb99e26ccd4289c555f89fbc6d0f9b6d618ff9c14d117fd216b",
+      "afterSha256": "437a6317234dd437cddc499c0f0b22c0292e57ccb00b9c39f8b13a45ce6106af",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/movement.html": {
-      "beforeSha256": "1cace716ce76c481db1444078b6bb1d90cb35493747dcfdcd1e09d97f2284769",
-      "afterSha256": "ed8ecafc6fba395580cb3b8bd82c493e7dae72d40bb7b95b0104a1b2c5a229ed",
+      "beforeSha256": "fb51b6c932523b434271e6a538fc7806b6bff987d08537445184df6fbc340083",
+      "afterSha256": "81f4faabe583140e3f237f7f23c2964806cb60b6a1fbc404a3541eb6912b2d1c",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/parallel-angles.html": {
-      "beforeSha256": "0813a42cfc19d10bd0a7820d9551d766d6fa97c5158fe68315707db17b0f7d38",
-      "afterSha256": "34afa781cdf338e9db28eca9c2106359378640110d5f52a0fdbdcc8ece0026e7",
+      "beforeSha256": "36ba76b59d1e3be74c95c8301fa9a135540b8e49d46043cb36d602c309147502",
+      "afterSha256": "949d9408fc530fa0c775c2894580287d0b7acd78a1addf0c9feb6aef9d38f440",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/parallelogram.html": {
-      "beforeSha256": "c597ee05c95fe1185e091ba281770668a0c0e09d606e093b6c5748e555bcf6cf",
-      "afterSha256": "ec8e161743c6e0084e8b0c4473ee131f5cf29292d8b61a0d1fc6fe9f04340b44",
+      "beforeSha256": "0f89204531a2ee2339706a5e23b8f83e69215e2791896b77a5a63d20bd7fe0bd",
+      "afterSha256": "47761a7305c1f9132a0bf37fcb108ed15944eeee25bdaafe5f279e93aa1fa28d",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/parallels.html": {
-      "beforeSha256": "17bbeb47f284977e7db82bd4b688c27435c8070f87b49f7a94cec8f9cca4fc8a",
-      "afterSha256": "536ed2d063fa3a63aad626723d0d8936cba3d151d51dca341068317768e30e04",
+      "beforeSha256": "f6249ae12ced1c4da1c57925623307c12f62b4b1bd4e354f8ad6a7fb53dde586",
+      "afterSha256": "f7ecb0f597ed50a98a7e8e6b93c4f230663718a2360f3a9c4b708bac263a5843",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/perp-locus.html": {
-      "beforeSha256": "9dccd760dc17b12385ddcf512cb788fa57e10611f38c6f637471f8e979952f88",
-      "afterSha256": "ac3026552f5978e6e369900e4d2d9a88ed6a258074dcf522239d5c3ef1d07358",
+      "beforeSha256": "de9c54b5644ecebca1e2042a7bd40857967a15bd8001fafa07e326f26cc176ea",
+      "afterSha256": "372541645599a6948dfcdc73d1c1839d99b1a50921d218701031667a8957ef4b",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/perpendicular.html": {
-      "beforeSha256": "8e21e401fe20fbec6b3ee917a544e953900fe34d569473076a915a31729ff856",
-      "afterSha256": "dd25c794f1ef294046c9790c6e77343afee6bb1017f7fb5358113820f95336a6",
+      "beforeSha256": "2cad62e64ed6eb62ced085a4607621666328f3f881f3964ccef46cf16b9fccd3",
+      "afterSha256": "d82760e914edb858443706dbeda18be4ba6b3bfc2ffc41088ffea8ddd8589766",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/polygon-similarity.html": {
-      "beforeSha256": "70a178a04eabb27d2616bf2c2091152a7809e78a8c4efb7990141e2a1ad37dc7",
-      "afterSha256": "0caf1305c00e7a4435a11aaaf64ec9b7e4cedfe4e9b52f1572ebf5bc66e3d7f2",
+      "beforeSha256": "e5b625d75d02b7c599a0a17b3cc721df3b4fbcae822f0b279f8619bba2b45984",
+      "afterSha256": "e99fe0427d175166ceaf371d0f03ed5a788d1461d46ed968f325628517bc510c",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/polygons.html": {
-      "beforeSha256": "0b3e55ca39b25d1207c4af42f7d3dceef410f8b313a72aa1cf90ae6c75435a8e",
-      "afterSha256": "53a259ba5698e6ee5775387ee4fd4a322379c9829447e45e855d83833a468905",
+      "beforeSha256": "2a1263e449fb80b3e55609beac089bbc9e2aadea5098bd7eec3c94a48cc7b698",
+      "afterSha256": "b98a08f5e5fb9890934d64c636e6e60347cd2bab41c1eb5de81816572dbf51fb",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/projections.html": {
-      "beforeSha256": "1ad9e4cdf8222f58270124d3ba1b269ce1c362e667b21eacbfd8d49794580c1a",
-      "afterSha256": "184eb1c0756ea23cdfb9b02eb503f87bf732d8138d8df233c302157861d7fef7",
+      "beforeSha256": "d22f38d28cd54b67b8c2db0e611bcb08fc68f0d436221cad9b0b9d58a0586df6",
+      "afterSha256": "57c91af60c761257bbaee63ff38940c44bc1b71ced42d7d3762fb6b22c7e3cbf",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/pythagoras.html": {
-      "beforeSha256": "0b620213aeb0b0cd1e568aee36e3057dfa5bd794db8ba3a74b0cc36cb1eae725",
-      "afterSha256": "8b67ed20581e1afe98964f5bd726abaf6c4dee719876e10273bc01e5f5d538c2",
+      "beforeSha256": "f350635454f108124dd1fced593faba7804917dcc20f626cbc4ab9072fd216b0",
+      "afterSha256": "5adef7925d8117c5d45e005833b9eb36b5a41b56e9ed13165f98ffa92e52bc37",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/rectangle.html": {
-      "beforeSha256": "4edb8568340916a6e86e22413a587b4496901c4f6b09dcedde6798715d16268d",
-      "afterSha256": "0eac2a003d39ee7fed1c4516f9b6c7db461fa3ecdc305a2bc74165492895ca97",
+      "beforeSha256": "484c9e55050d1c3f1f57ce59026350c2e364a3f17627928bab39b3337d459e98",
+      "afterSha256": "0689ec855c0fb614230095a541f3132e5dfaa5ebf90aced82afc28465719bb9c",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/regular-polygons.html": {
-      "beforeSha256": "34a107752c5780a31a6e879908ae7c1c25a8682df83e10322df6d70baf559264",
-      "afterSha256": "16c1a8d7f1c9e0885e9401079cc468c04629204b8cb65a64f2c5ef471bf2aa75",
+      "beforeSha256": "ee4a51d7aae53af600378787f215ffee08f873cd6e05742e114d50ffcbf17e8f",
+      "afterSha256": "c4996647aebc90a99d3d3923c72b0f53da7f4d1eb3bd26a151755b98fd30ac8f",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/rhombus.html": {
-      "beforeSha256": "1001c9df41acdb9cf5a7507fd210c4e46effd9fc8646fbb93a8fbec68dbc7b39",
-      "afterSha256": "d864e5ff9b42193e43d5a1d6982ba090f7416e03e878bd246453b8a2fc08d2cd",
+      "beforeSha256": "32cb476ac97ac02f4f486287a1c7dfeecf2470d2a2a50d5e4755f126b51d983d",
+      "afterSha256": "022f4b439a43e7f2a42fdbf2e868ca3c571d937d08dce7f14f37583d171c49ee",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/right-triangle.html": {
-      "beforeSha256": "29e1197d1a0204607ccb17d3729c5a0ea284f30a6973423a7c0cab3a463bf987",
-      "afterSha256": "dcc813107a3b4278f1e8d742f85563af757d3513e3c1c687915af75116089610",
+      "beforeSha256": "99039a2e8df76fc5e923d6f3396d4256c299f6fa07ce92f0ce7dbcfc5d69a724",
+      "afterSha256": "69406df2cb907739346a08259ad9f22cf0c5f8911d9ce2f02e72acae415c013b",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/segments.html": {
-      "beforeSha256": "a38bd157eb0c8003b67959be40702581f627d7b7b60a14c942f52974ea222969",
-      "afterSha256": "48b8bc55f187b901ccd14f2c9b95e93609579c4fb50456d8af41e58ab8d3c122",
+      "beforeSha256": "ca1418f3acfa23b2ec160f4fd5d304b879fa0c3a4cb147fb5851080560f9c4cf",
+      "afterSha256": "ab9b7ed24dc417e4986dfd53861384e055c3b3cb8b1c69be9b0c10aa5cde4a50",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity-measure.html": {
-      "beforeSha256": "808237408d9e5f8e0c655d05aebf56d892b49d35e5beaa7facf07f201739094f",
-      "afterSha256": "c0f446d71c1a93d9a691815a9cf55bcc5ffedcf0c62fadcfe4c1718caed081cb",
+      "beforeSha256": "72b2dccc52eed5d96e4b63a00686d4326885d0b2456cdb1595995249798eb585",
+      "afterSha256": "5217e184579b70f52940ce9292b597ba99fdc2a2e7c77322850a4178da7dff45",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity-method.html": {
-      "beforeSha256": "0cdb4d3a6e87f846f4f1394191341429baeae099114772b8b367de03033ea982",
-      "afterSha256": "daa7da5305ba7a1e8b662ae9c9d3a6742dd2b972d7fcc45df793b5e8cda5aede",
+      "beforeSha256": "410ce5621efe1dd347207a246d2dd206a6fbfaa0da0bb474889fa11324604241",
+      "afterSha256": "7bd01888eabbf265e2f1d0b5647f2389b1b38bebb9475fdada38f9e32f06f7ae",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity-signs.html": {
-      "beforeSha256": "bd8b09a9186da2ed940d4bd7cc7760bbb84bf51c32a1a48fa3f23095c8c7b644",
-      "afterSha256": "e66af7e1fdb250d105685e601eff3b8f5d1da7fe74d6dead603b5d1c6ec5dc0f",
+      "beforeSha256": "2fb635b9d1082fdf81b4047231b9450714e218e19335c21e0de129b40407f442",
+      "afterSha256": "10d446061d10e711c743aa54f324dbd9f67ca302ce5e160857c4332038fea530",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity.html": {
-      "beforeSha256": "e4cc8a12fa34ab38a9677fb7ea57c81dde6b88a1c28dbb06f68e23f66de8cc21",
-      "afterSha256": "97ecc846db2a7dc915fd4d8d3952c39ceba067f381fa59b3a92d3fb629cf9a3c",
+      "beforeSha256": "6bd1cbad5c75b494f3e42e80f8c837390c96297bc6594e5fd81651602e9a2aa2",
+      "afterSha256": "f3ab7eb070170cf07893e8d8561949972af98afd8f8ff9c14e20971b7234366f",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/sine-rule.html": {
-      "beforeSha256": "5820f026d4462067e93f7fa786f38ed807bafb2ba295358843e8dc3c9e881418",
-      "afterSha256": "887b462ec17bb73f68b79ecec975d92c295e936218eb73307fb7f924b8a51bdd",
+      "beforeSha256": "b90e36c86fe6790bdbc0fa124fdb0a0a36e1d6eb72694922c71755ee7eed4611",
+      "afterSha256": "cef1f9e10fc83150c008b4937efce12a1f776f2fa3217956d8c8edbf13b74739",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/solve-triangle.html": {
-      "beforeSha256": "03abff9eb6c9a68c098b99532d1bbf8316fc91dc9950b4cfc84661ac8f56b71b",
-      "afterSha256": "d0c23480d73faf8639cc259a8daedc642340812213a0ba9d2ca60a57883e311e",
+      "beforeSha256": "f98317eef9843953cf68bc2445fd1db2e09e91c0c30f39a18ede9dc22ce50622",
+      "afterSha256": "2e60add27c45ef7ee8f24c88225b6aba9d9da14aa9694a5db607b64ece2768f3",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/symmetry-method.html": {
-      "beforeSha256": "833ddaa5b1c92610e263fc744045b32f023c63a6f300ef287b60b96cfa798953",
-      "afterSha256": "2c9fa0be551ee4d4ae855afecc0f87410adcf10da6c5a84fc894c45ebf973286",
+      "beforeSha256": "9c588a1073afaa3c26b2f6614f8c6649ecc71f906272911d0871b91fd7da809d",
+      "afterSha256": "2d45d231701937c96bbdd5c65c9ae983d4bfa97be894c6d405f5473817ec6ba5",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/translation-rotation.html": {
-      "beforeSha256": "60ff11bc451cf00f0344ebde43d3f3bf05f20c3690b198e51e3662e001473512",
-      "afterSha256": "6883ac269b4a1c5f709682610a9469e2f975ef5c5e9f30553f88ecfea738c817",
+      "beforeSha256": "7b21ffaf17f948d83cdc548ffa8b9366eba9b17fda8c91d60e8a1017ba509dcd",
+      "afterSha256": "441cc705f4c0a4abefa024e1f4bdcab0a79a37c3f6397fac7187c71af8496792",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/trapezoid.html": {
-      "beforeSha256": "880f4299cf6d96520ba66d303c6d08be617ff82dad88c3c893538de67571d04c",
-      "afterSha256": "4fb7fc52bc978cfc289fd84502b28682ca05d1cf87c46bbb46ef4905f904f9af",
+      "beforeSha256": "e60278a4d1f9578b3d2e57c2e641aa6c2213a0ab2f4360723fba1b1bfa3a8f7c",
+      "afterSha256": "19cc6db1d0931b9e7b72bf6761c1fae7d4f6fc02e1e781b075293ae59329f5dc",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-angles.html": {
-      "beforeSha256": "f42903fb41e636300dd728e9205a79306a7246cd613bd9b889c96c5389ed588a",
-      "afterSha256": "5988d090ab903994fe5fb8999f0ac26faae9e64fef254888a39095c2c7ee4a3f",
+      "beforeSha256": "438d4f99a21e573723b24f61211de7e6d6099335bd3cfb413c700277340c96bd",
+      "afterSha256": "583d0974d7a37e542d8740b3c0ad5cf5580b0e7195424580d201b47865244c3e",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-circles.html": {
-      "beforeSha256": "240f9405152dd4640a4b0254892ecb4a6f3044e641f2d8b22d93013e8aa17657",
-      "afterSha256": "09d51ce38798a9d9b948f30e636bd8660f87f346acbf9ffc0371abb251298445",
+      "beforeSha256": "986bb77b295479741a816d23ad469abe9e7be82596a9165fb17edd8ab0c9c4b9",
+      "afterSha256": "9554a382654255c4e40bf4785ff7443f2565156ae426a31faf1c1413816bc23a",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-sas.html": {
-      "beforeSha256": "db08dfca3a7097353ce615d1f307ced081580d98a7311d3eb84bf4a3dff0094e",
-      "afterSha256": "b7ad20616858ee40d09e3ebc71b9a35a43fdc48c50a4eeb7104bc5d80abd4668",
+      "beforeSha256": "df749adc34f2db4ac17659c13aead05080da70df6294707b2412a96552f45703",
+      "afterSha256": "9a10d257f48f7ea4a89c24540b9be12f4f206bf9914171a86caf652fab5492d8",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-signs.html": {
-      "beforeSha256": "8e5af8f430dc7073027f1c688c2573ad1a4a89491bc6bfd8f333433616698e3d",
-      "afterSha256": "ae6faf7f6fe5b94a3c5eb2adacbf34167de6fc56c48fa7628196232e09291a80",
+      "beforeSha256": "1f3a9cdca3b909146598e23d923867745b07e0d1396dea8360043765ed9675f6",
+      "afterSha256": "6752823fa8bb640e39a27064a1dee713f9fd8350047d1a94b9ea1ada353757f1",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/trig-circle.html": {
-      "beforeSha256": "40e30fda3cc42881e4b7438479c9370f8488e86bba7b0add7de4925061e7ec70",
-      "afterSha256": "88655a1e1dea38a0d7e89386b53020e5939be14cf005172944aec1b7b70f29c8",
+      "beforeSha256": "d3032aa462d1f57235f869ed544fc09caf114004b2c7ad002c5813d614dcafe8",
+      "afterSha256": "47c12c3b96baed9ff8a10f93c3262f9ac1d4eddc54f8f657af8e14bf0771abdb",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/trig-right.html": {
-      "beforeSha256": "9070ba6ad930b652e90c8d162dca07395f6b32798dce8f859f9df1f4573bf8ce",
-      "afterSha256": "3fcf07739419d1c4e612032b1d6e78a41b4d817185ef1a46a1b4d316892803e9",
+      "beforeSha256": "c8d28ac661588244029c3df003fc44f6ae8ba85c60fc4af0f4f23701fd3e69f5",
+      "afterSha256": "3fbf445d0c74b67b6a21e988b76e1def45395c628c4eef177855b76544ed6d2a",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/vector-add.html": {
-      "beforeSha256": "cf16225157283e5d905cb753e4f87c915fc4358a2aae6e518b699f0820b0bd81",
-      "afterSha256": "04568f8583631e0c4ebfa54d1d9f8241b0da6392b2b3cf7f1083c3464c75a8e1",
+      "beforeSha256": "7a1e6a404bbf30d3bf377706852bd20ef99049456a1504af2be0dd355a21abc0",
+      "afterSha256": "3a46a5b7704a61c65c5b97e942530942d96ce7a9f65861a5049a493e021d4f70",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/vector-basis.html": {
-      "beforeSha256": "190d2ed163e94ccdf980cfd4ceaf06073347ec7dd43dc860834a82f4cf2e50ce",
-      "afterSha256": "0e7bbf232edaee3ed32e2f36df17d6c8a4209be83dda3aacd9857dd5737b462c",
+      "beforeSha256": "bac87b67ff577bbc4dbf8f88b30834404705af451c99389b43687057e71da3dd",
+      "afterSha256": "cf62a9c475dec0dde36d062bea702281ba8c23617a3df4aaba4703250c55dedb",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/vector-scale.html": {
-      "beforeSha256": "74f086c3bd04a00ddae7fa36eaec91edc3b38474449adc0f6d53515d8fb85d58",
-      "afterSha256": "99886d52506b334629e710e7265a05270e640de5dbc7523710e97cf68d5eb777",
+      "beforeSha256": "a0e6b2250c75396f823194190ef2a701ee8e87b35678c5a6ddc010f18f5a9d33",
+      "afterSha256": "a1bb93e0a2594098a16102cbb3e5445e93b14b6922912048d2613c661046c1bf",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/vectors.html": {
-      "beforeSha256": "f57c830de448b3d76d919cf657fc617e7ae9ab19c47b2be6c23958115274eb82",
-      "afterSha256": "457e7d44d9967424e01474a8d92b3ea69198ae1e909556bdce9272015f438d20",
+      "beforeSha256": "ff8b02b41c53eee97e9a7931f0715f3cd76a535e643d04126f2cb86e1b91abc6",
+      "afterSha256": "922200716f48b0d0dd566c789b34735d5301eae23e78a237dc1eabddae5026ac",
       "placement": "before-head-close"
     },
     "geometry-course/first-steps/index.html": {
@@ -808,8 +808,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/index.html": {
-      "beforeSha256": "0b4b500260f75532e7f9e68710f85d11fb67a94858eff91b477495d2d2c6df44",
-      "afterSha256": "cac8874aa067b6fc55c6a825a40652a28e96fe8c6940cd4a0b8793d2ab7fc75a",
+      "beforeSha256": "64be9ae152e9a1715a082ec1033e2030aed9a0d1bdcd6aa2a94a0084f80e3f1d",
+      "afterSha256": "a6838723066f00afb0107e4a82e99cb851930a5fa2686ce9b4c8a8673c817b89",
       "placement": "before-head-close"
     },
     "geometry-course/legacy7.html": {
@@ -2193,13 +2193,13 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "175760ce1117aa0350dd6a8e0876c165112499654a6061846a6fb269847c2cfe",
-      "afterSha256": "2aeeaa882360935c1772e61ec32f9af5cc5fbe1aa5863edf977341f1499a3530",
+      "beforeSha256": "61ab5562bfd1afaf90f5d6cf9ab5a1a4f9a98b2e9d03c552f59c22d8ce5acf08",
+      "afterSha256": "3aea302930afc00aade07cfa6481a33a723d458668aead2e264826d4a952ed01",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
-      "beforeSha256": "8f6e1ab08917f7beacc279d9308c8f06d23c95ac07f5737bb0a0dfa1a990f7ec",
-      "afterSha256": "e18dab6cb02b9ed5d4edf842e9247f435ee1b070cdca4cebb7fb298abb00c79a",
+      "beforeSha256": "a2d1ffb5458ba4ee714b25ec578b021e257c730d84887ffd995ff87ecabcda00",
+      "afterSha256": "3c5c221992f5e4d8e4f34f26ebc165c18f25fa59c5afe7b4351f44496163db59",
       "placement": "before-head-close"
     },
     "stereo-course/sections/index.html": {
@@ -2978,8 +2978,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task17-quadrilaterals.html": {
-      "beforeSha256": "24aab3967d00ee03622d979637b58f2d01c9bd551dc729ca42f39926fad8dcb5",
-      "afterSha256": "fd4172be848c98ecec4c69dd4831da53b9b21f2728745c29855958f74bdb5fba",
+      "beforeSha256": "7342d41d728bd959b47a3993d8420411d627b4921a082b321637dd1649d77cec",
+      "afterSha256": "aa59782168a0d3eb8cfb90361b60796e85ee924e9d82825670b8dc3f73eca112",
       "placement": "before-head-close"
     },
     "trainers/oge-task18-grid.html": {
@@ -5609,6 +5609,110 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
+      "task": "docs/tasks/GEOMETRY_COURSES_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-profil/atanasyan-10-11/index.html",
+        "ege-profil/atanasyan-10-11/lesson.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
+      "sourceBaseSha": "2d0651864042658fed9a28ca621d8cfb139b1e42",
+      "task": "docs/tasks/ATANASYAN_7_11_HARMONIZATION_20261116.md",
+      "changedPaths": [
+        "geometry-course/atlas/angle-locus.html",
+        "geometry-course/atlas/angles.html",
+        "geometry-course/atlas/area-basics.html",
+        "geometry-course/atlas/area-parallelogram.html",
+        "geometry-course/atlas/area-sine.html",
+        "geometry-course/atlas/area-trapezoid.html",
+        "geometry-course/atlas/area-triangle.html",
+        "geometry-course/atlas/axis.html",
+        "geometry-course/atlas/centers.html",
+        "geometry-course/atlas/central.html",
+        "geometry-course/atlas/cevians.html",
+        "geometry-course/atlas/chord-angles.html",
+        "geometry-course/atlas/chords-tangent.html",
+        "geometry-course/atlas/circle-metric.html",
+        "geometry-course/atlas/circle-position.html",
+        "geometry-course/atlas/compass.html",
+        "geometry-course/atlas/coordinates.html",
+        "geometry-course/atlas/cosine-rule.html",
+        "geometry-course/atlas/cyclic-quad.html",
+        "geometry-course/atlas/distance.html",
+        "geometry-course/atlas/dot-product.html",
+        "geometry-course/atlas/equality.html",
+        "geometry-course/atlas/heron.html",
+        "geometry-course/atlas/homothety.html",
+        "geometry-course/atlas/inscribed.html",
+        "geometry-course/atlas/length.html",
+        "geometry-course/atlas/line-circle-equations.html",
+        "geometry-course/atlas/measure-angle.html",
+        "geometry-course/atlas/midline.html",
+        "geometry-course/atlas/movement.html",
+        "geometry-course/atlas/parallel-angles.html",
+        "geometry-course/atlas/parallelogram.html",
+        "geometry-course/atlas/parallels.html",
+        "geometry-course/atlas/perp-locus.html",
+        "geometry-course/atlas/perpendicular.html",
+        "geometry-course/atlas/polygon-similarity.html",
+        "geometry-course/atlas/polygons.html",
+        "geometry-course/atlas/projections.html",
+        "geometry-course/atlas/pythagoras.html",
+        "geometry-course/atlas/rectangle.html",
+        "geometry-course/atlas/regular-polygons.html",
+        "geometry-course/atlas/rhombus.html",
+        "geometry-course/atlas/right-triangle.html",
+        "geometry-course/atlas/segments.html",
+        "geometry-course/atlas/similarity-measure.html",
+        "geometry-course/atlas/similarity-method.html",
+        "geometry-course/atlas/similarity-signs.html",
+        "geometry-course/atlas/similarity.html",
+        "geometry-course/atlas/sine-rule.html",
+        "geometry-course/atlas/solve-triangle.html",
+        "geometry-course/atlas/symmetry-method.html",
+        "geometry-course/atlas/translation-rotation.html",
+        "geometry-course/atlas/trapezoid.html",
+        "geometry-course/atlas/triangle-angles.html",
+        "geometry-course/atlas/triangle-circles.html",
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/atlas/triangle-signs.html",
+        "geometry-course/atlas/trig-circle.html",
+        "geometry-course/atlas/trig-right.html",
+        "geometry-course/atlas/vector-add.html",
+        "geometry-course/atlas/vector-basis.html",
+        "geometry-course/atlas/vector-scale.html",
+        "geometry-course/atlas/vectors.html",
+        "geometry-course/index.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
+      "sourceBaseSha": "12887c59d2a9ebfa08fa7200fbcf1b36d782ebaf",
+      "task": "docs/tasks/GEOMETRY_COURSES_AUDIT_20261118.md",
+      "changedPaths": [
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "12887c59d2a9ebfa08fa7200fbcf1b36d782ebaf",
+      "sourceBaseSha": "ff5d0d070eee7d4df2527dfc25a9f69cc912d828",
+      "task": "docs/tasks/ATANASYAN_7_11_HARMONIZATION_20261116.md",
+      "changedPaths": [
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
       "previousBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
       "sourceBaseSha": "6b150dbddd42b7989c61e69c2fcb70520a38a6fb",
       "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
@@ -5620,6 +5724,20 @@
     {
       "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
       "sourceBaseSha": "665534b33e019d486913534a7668f1a8a23ef7ce",
+      "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2d0651864042658fed9a28ca621d8cfb139b1e42",
+      "sourceBaseSha": "337f0b29e67d3fb36100f1719a25c37bbed34814",
+      "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ff5d0d070eee7d4df2527dfc25a9f69cc912d828",
+      "sourceBaseSha": "747426ef9788ced70c51cc86ab809de915d1885e",
       "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
@@ -5639,6 +5757,30 @@
     {
       "previousBaseSha": "665534b33e019d486913534a7668f1a8a23ef7ce",
       "sourceBaseSha": "2f72268fd5cc8232e6773422f1ab47d52df6c595",
+      "task": "docs/tasks/ROUNDING_QUOTIENT_DIGIT_20261118.md",
+      "changedPaths": [
+        "trainers/oge-basics/index.html",
+        "trainers/oge-basics/multiplication-division/course-estimate.html",
+        "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+        "trainers/oge-basics/multiplication-division/quotient-estimate.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "337f0b29e67d3fb36100f1719a25c37bbed34814",
+      "sourceBaseSha": "216346d391680d81a87baf03b2ec687903e126bc",
+      "task": "docs/tasks/ROUNDING_QUOTIENT_DIGIT_20261118.md",
+      "changedPaths": [
+        "trainers/oge-basics/index.html",
+        "trainers/oge-basics/multiplication-division/course-estimate.html",
+        "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+        "trainers/oge-basics/multiplication-division/quotient-estimate.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "747426ef9788ced70c51cc86ab809de915d1885e",
+      "sourceBaseSha": "e44a97a95030b3f032a01418f473494adb3cac39",
       "task": "docs/tasks/ROUNDING_QUOTIENT_DIGIT_20261118.md",
       "changedPaths": [
         "trainers/oge-basics/index.html",

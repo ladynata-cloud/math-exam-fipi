@@ -129,16 +129,21 @@
 
   const root = document.getElementById('lesson');
   const originalEqual = GeoTasks.equal;
+  const originalCheck = GeoTasks.check;
   const originalTask = GeoTasks.task;
 
   // The shared atlas still grades attempts and saves progress for this lesson.
-  GeoTasks.equal = (value, expected) => {
-    if (typeof expected === 'number') return originalEqual(value.replace(/°\s*$/, ''), expected);
-    if (expected !== 'ACB') return originalEqual(value, expected);
-    const name = value.toUpperCase().replace(/^\s*∠/, '').replace(/\s/g, '')
+  function angleAnswer(value, expected) {
+    if (typeof expected === 'number') return String(value).replace(/°\s*$/, '');
+    if (expected !== 'ACB') return value;
+    const name = String(value).toUpperCase().replace(/^\s*∠/, '').replace(/\s/g, '')
       .replace(/[АВСД]/g, letter => cyrillic[letter]);
-    return name === 'ACB' || name === 'BCA';
-  };
+    return name === 'BCA' ? 'ACB' : name;
+  }
+  GeoTasks.equal = (value, expected) => originalEqual(angleAnswer(value, expected), expected);
+  // The harmonized lesson uses classified input without consuming empty or
+  // malformed attempts. Keep the same reviewed angle aliases on that path.
+  if (originalCheck) GeoTasks.check = (value, expected) => originalCheck(angleAnswer(value, expected), expected);
 
   GeoTasks.task = (kind, seed) => {
     const task = originalTask(kind, seed);
@@ -169,7 +174,8 @@
       text.textContent = COURSE_CONFIG.unit.idea;
       rule.append(title, text);
       const restoreFocus = document.activeElement === heading;
-      root.replaceChildren(root.querySelector('.step-label'), rule, footer);
+      const retained = root.querySelector('.retained-work');
+      root.replaceChildren(root.querySelector('.step-label'), rule, footer, ...(retained ? [retained] : []));
       rule.insertAdjacentHTML('beforebegin', markup());
       mount(root);
       if (restoreFocus) root.querySelector('h2').focus({preventScroll: true});
@@ -186,7 +192,8 @@
       if (!answer) return;
       const label = root.querySelector('label[for="answer"]');
       const form = answer.form;
-      const hasAngleName = stage === '3' && root.querySelector('.callout strong')?.textContent === 'Шаг 1 из 2';
+      const stepLabel = root.querySelector('.guided-step strong, .callout strong')?.textContent || '';
+      const hasAngleName = stage === '3' && /^Шаг 1 из 2\.?$/.test(stepLabel);
       label.textContent = hasAngleName ? 'Название угла' : 'Градусная мера';
       answer.removeAttribute('placeholder');
       if (hasAngleName) answer.setAttribute('autocapitalize', 'characters');

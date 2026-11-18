@@ -14,6 +14,13 @@ const amendment=JSON.parse(fs.readFileSync(path.join(__dirname,'first-viewport-a
 function historicalFile(file){
  let raw=fs.readFileSync(file),name=path.relative(path.join(root,prefix),file),change=amendment.files[name];
  if(!change)return raw;
+ const quantity=require('./quantity-amendment.json');
+ if(name===quantity.file){
+  assert.equal(crypto.createHash('sha256').update(raw).digest('hex'),quantity.afterSha256,'Live quantitative self-check');
+  const text=raw.toString();
+  for(const marker of [quantity.start,quantity.end,quantity.call])assert.equal(text.split(marker).length,2);
+  raw=Buffer.from((text.slice(0,text.indexOf(quantity.start))+text.slice(text.indexOf(quantity.end)+quantity.end.length)).replace(quantity.call,''));
+ }
  assert.equal(crypto.createHash('sha256').update(raw).digest('hex'),change.afterSha256,'Actual amended bytes');
  let text=raw.toString();for(const row of [...change.changes].reverse()){assert.equal(text.split(row.after).length,2);text=text.replace(row.after,row.before)}
  assert.equal(crypto.createHash('sha256').update(text).digest('hex'),change.beforeSha256,'Exact original screenshot source');return text;
@@ -77,7 +84,13 @@ async function interactions(){
   const model=page.locator('[data-main-model]');await model.getByRole('button',{name:'На весь экран',exact:true}).click();await page.waitForFunction(()=>document.fullscreenElement||document.querySelector('.planar-expanded'));await page.keyboard.press('Escape');await page.waitForFunction(()=>!document.fullscreenElement&&!document.querySelector('.planar-expanded'));assert.equal(await page.locator('#final-answer').inputValue(),saved.draft);
   await page.locator('[data-final-form] button').click();assert.match(await page.locator('[data-final-feedback]').innerText(),/обсудить с учителем/);
   await page.getByRole('button',{name:'← Все материалы курса',exact:true}).click();assert.equal(await page.locator('#catalog-search').count(),1);await open(id);assert.equal(await page.locator('#final-answer').inputValue(),saved.draft);
-  evidence.interactions.push({width:size.width,draft:true,steps:2,camera:true,fullscreen:true,manualProof:true,bibliography:true,catalog:true});
+  await open('atanasyan-7-9-main-545-part-2',true);
+  const result=page.locator('[data-quantity-feedback]'),verify=page.getByRole('button',{name:'Проверить численный ответ'});
+  await page.locator('#final-answer').fill('Возвожу сторону в квадрат.\n56,25 см²');await verify.click();
+  assert.match(await result.innerText(),/Численный ответ верен/);
+  await page.locator('#final-answer').fill('9/16 см²');await verify.click();assert.match(await result.innerText(),/другое число/);
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  evidence.interactions.push({width:size.width,quantityWithUnits:true,draft:true,steps:2,camera:true,fullscreen:true,manualProof:true,bibliography:true,catalog:true});
  }
 }
 (async()=>{try{

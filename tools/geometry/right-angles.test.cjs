@@ -60,6 +60,47 @@ target.querySelector('svg').dispatchEvent(new win.KeyboardEvent('keydown', { key
 assert.deepEqual(markers(), ['A H C', 'M A H']);
 assert.notEqual(initialPath, target.querySelector('[data-right-angle]').getAttribute('d'));
 actual.destroy();
+// Follow the exact production preparation before checking proof-dependent marks.
+win.eval(read('assets/geometry-step-views.js'));
+const preparedLesson = win.GeometryStepViews.prepare({lessons:[data('stereo-course/merzlyak-10-base/lessons/ex-10-032.json')]}).lessons[0];
+const preparedBefore = JSON.stringify(preparedLesson.visualization.model);
+const preparedView = win.TaskSceneViewer.mount(target, preparedLesson.visualization.model, {lessonId:id});
+assert.deepEqual(markers(), [], 'the question does not draw the not-yet-constructed AH');
+assert.doesNotMatch(target.querySelector('desc').textContent, /Прямые углы:/);
+preparedView.setView('step-1');
+assert.deepEqual(markers(), ['A H C'], 'the first step establishes the altitude only');
+assert.equal(target.querySelectorAll('[data-segment^="_rH"]').length, 0, 'the obsolete decorative corner does not duplicate the standard mark');
+assert(target.querySelector('[data-segment="A-H"]'), 'the actual constructed altitude stays drawn');
+assert.doesNotMatch(target.querySelector('desc').textContent, /_r/, 'hidden decorative point IDs are not announced');
+assert.match(target.querySelector('desc').textContent, /A — H/, 'the actual altitude is announced');
+assert.doesNotMatch(target.querySelector('desc').textContent, /между прямой m и AH|∠mAH/);
+for (const step of ['step-2','step-3']) {
+  preparedView.setView(step);
+  assert.deepEqual(markers(), ['A H C','M A H'], step + ': both proved perpendiculars are marked');
+  assert.match(target.querySelector('desc').textContent, /∠AHC, между прямой m и AH/);
+  assert.doesNotMatch(target.querySelector('desc').textContent, /∠mAH/);
+  assert.equal(target.querySelectorAll('[data-segment^="_r"]').length, 0, 'one standard square per proved angle');
+  assert(target.querySelector('[data-segment="A-H"]'), 'actual rays remain');
+  assert.doesNotMatch(target.querySelector('desc').textContent, /_r/);
+  assert.match(target.querySelector('desc').textContent, /A — H/);
+}
+preparedView.setView('neutral');
+assert.deepEqual(markers(), [], 'return to the question hides proof-dependent signs');
+preparedView.destroy();
+assert.equal(JSON.stringify(preparedLesson.visualization.model), preparedBefore, 'draw filtering never mutates the authored source');
+const extraSegment = JSON.parse(preparedBefore);
+extraSegment.views['step-1'].segments.push(['_rH1','_rH3']);
+const extraView = win.TaskSceneViewer.mount(target, extraSegment, {lessonId:id});
+extraView.setView('step-1');
+assert(target.querySelector('[data-segment="_rH1-_rH3"]'), 'only the two exact corner strokes are replaced, not another segment among those points');
+extraView.destroy();
+const withoutRay = JSON.parse(preparedBefore);
+withoutRay.views['step-1'].segments = withoutRay.views['step-1'].segments.filter(edge => edge.join(' ') !== 'A H');
+const fallbackView = win.TaskSceneViewer.mount(target, withoutRay, {lessonId:id});
+fallbackView.setView('step-1');
+assert.deepEqual(markers(), [], 'no valid mark when the altitude ray is absent');
+assert.equal(target.querySelectorAll('[data-segment^="_rH"]').length, 2, 'without a validated standard mark the previous two strokes remain');
+fallbackView.destroy();
 const staged = { planar: true, points: { A: [0, 3, 0], H: [0, 0, 0], C: [4, 0, 0], D: [1, 2, 1] },
   edges: [['A', 'H'], ['H', 'C']], views: { neutral: { label: 'Условие' },
     proof: { label: 'Обоснование', rightAngles: [['A', 'H', 'C'], ['C', 'H', 'A'], ['A', 'H', 'D']] } } };
