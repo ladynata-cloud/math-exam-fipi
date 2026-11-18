@@ -7,6 +7,7 @@ const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
 const {tyrePage,restoreTyreHints}=require('./oge-tyre-hints-preservation.cjs');
 const {restoreVideoModels,restoreGraphScale}=require('./oge-video-models-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
+const {fractionsReturn,restoreFractionsReturn}=require('./oge-fractions-return-preservation.cjs');
 const root=path.resolve(__dirname,'..');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
 // These frozen inverses describe only the already reviewed PR340 board hooks.
@@ -21,8 +22,8 @@ function withoutReturnShell(html) {
   return html.replace(head, '').replace(bar, '');
 }
 function currentPage(file){
- const current=fs.readFileSync(path.join(root,file));
- const publicHtml=restorePublicNavigator(file,current).toString('utf8');
+ let publicHtml=restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8');
+ if(file==='trainers/oge-task6-fractions.html') publicHtml=restoreFractionsReturn(publicHtml);
  const teaching=restoreTyreHints(file,publicHtml);
  let html=restoreVideoModels(file,withoutReturnShell(restoreTrainerDownload(file,teaching)));
  if(file==='trainers/oge-task6-fractions.html'){
@@ -33,6 +34,17 @@ function currentPage(file){
  }
  return restoreGraphScale(file,html);
 }
+test('6: the fraction return include has an exact, bounded inverse',()=>{
+ const source=fs.readFileSync(path.join(root,'trainers/oge-task6-fractions.html'),'utf8');
+ assert(!restoreFractionsReturn(source).includes('oge-fractions-return.js'));
+ for(const changed of [
+  source.replace(fractionsReturn,''),
+  source.replace(fractionsReturn,fractionsReturn+fractionsReturn),
+  source.replace(fractionsReturn,fractionsReturn.replace('defer','async')),
+  source.replace(fractionsReturn,fractionsReturn.replace('20261118-drafts','unreviewed')),
+  source.replace(fractionsReturn,'').replace('</head>',fractionsReturn+'</head>'),
+ ]) assert.throws(()=>restoreFractionsReturn(changed),/fraction return script/);
+});
 function beforeMirror(file,source){
  const rule=boardInverse[file];if(!rule)return source;
  let result=source;

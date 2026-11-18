@@ -33,6 +33,59 @@ for(const [model,answer] of Object.entries({hundred:10,compare:25,ratio:50,shop:
  await page.fill('#number',String(answer));await page.click('#submit');assert.match(await page.locator('#feedback').innerText(),/^Верно/);
  await page.click('#back');assert.equal(await page.locator('[data-model][aria-pressed="true"]').getAttribute('data-model'),model);
 }
+// Enter solves the current problem. The next Enter starts a new attempt of the same skill.
+for(const [width,expectedQuestion,expectedHint,expectedAnswer] of [
+ [320,/Цена рюкзака/,/после скидки/,720],
+ [1280,/Цену лампы/,/цену перед скидкой/,100]
+]){
+ await page.setViewportSize({width,height:880});await page.click('[data-model="shop"]');
+ const before=await page.evaluate(()=>MathExamPercent.getState().modelRounds.shop);
+ await page.click('#guess');const first=await page.locator('#singleQuestion').innerText();assert.match(first,expectedQuestion);
+ assert.equal(await page.locator('#nextModelTask').isVisible(),false);
+ await page.fill('#number','0');await page.keyboard.press('Enter');
+ assert.match(await page.locator('#feedback').innerText(),expectedHint);
+ assert.equal(await page.locator('#nextModelTask').isVisible(),false);
+ await page.click('#showReason');
+ await page.fill('#number',String(expectedAnswer));await page.keyboard.down('Enter');
+ await page.keyboard.down('Enter');await page.keyboard.up('Enter');
+ assert.equal(await page.locator('#singleQuestion').innerText(),first);
+ assert.match(await page.locator('#feedback').innerText(),/^Верно/);
+ assert.equal(await page.locator('#nextModelTask:focus').count(),1);
+ assert.equal(await page.locator('#number').evaluate(e=>e.readOnly),true);
+ await page.locator('#submit').evaluate(e=>e.click());
+ assert.equal(await page.evaluate(()=>MathExamPercent.getState().modelRounds.shop),before+1);
+ assert.equal(await page.evaluate(()=>MathExamPercent.getState().records.length),0);
+ await page.keyboard.press('Enter');
+ assert.notEqual(await page.locator('#singleQuestion').innerText(),first);
+ assert.equal(await page.locator('.lessoncard .badge').innerText(),'Магазин двух скидок');
+ assert.match(await page.locator('#singleQuestion').innerText(),width===320?/сэкономил покупатель/:/итоговая цена ниже/);
+ assert.equal(await page.locator('#number:focus').count(),1);
+ assert.equal(await page.locator('#number').inputValue(),'');
+ assert.equal(await page.locator('#feedback').innerText(),'');
+ assert.equal(await page.locator('#nextModelTask').isVisible(),false);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ await page.click('#back');assert.equal(await page.locator('[data-model][aria-pressed="true"]').getAttribute('data-model'),'shop');
+ await page.reload();await page.waitForSelector('[data-model][aria-pressed="true"]');
+ assert.equal(await page.evaluate(()=>MathExamPercent.getState().modelRounds.shop),before+2);
+ assert.equal(await page.evaluate(()=>MathExamPercent.getState().quiz),null);
+}
+// Go directly from the second warm-up to a changed question and check its specific hint.
+await page.setViewportSize({width:320,height:880});
+for(const [model,warmup,transfer,question,hint] of [
+ ['hundred','20','100',/Сколько всего учебников/,/одному проценту/],
+ ['compare','20','10',/по сравнению с первой неделей/,/первую неделю/],
+ ['ratio','100','100',/Сколько миллилитров морса/,/объём сока/],
+ ['mix','9','15',/добавили 40 г/,/новую общую массу/],
+ ['growth','32','36',/после двух сезонов/,/первого сезона/]
+]){
+ await page.click(`[data-model="${model}"]`);await page.click('#guess');
+ await page.fill('#number',warmup);await page.keyboard.press('Enter');await page.keyboard.press('Enter');
+ assert.match(await page.locator('#singleQuestion').innerText(),question);
+ await page.fill('#number','0');await page.keyboard.press('Enter');assert.match(await page.locator('#feedback').innerText(),hint);
+ await page.fill('#number',transfer);await page.keyboard.press('Enter');assert.match(await page.locator('#feedback').innerText(),/^Верно/);
+ await page.click('#back');
+}
+await page.setViewportSize({width:1280,height:880});
 await page.click('[data-model="compare"]');await move('#A',80);assert.match(await page.locator('#meaning').innerText(),/Величины равны/);
 await move('#A',120);await page.click('[data-model="hundred"]');
 const pctAnswer=async(a)=>{if(typeof a==='number')await page.click(`[data-choice="${a}"]`);else await page.fill('#number',a);await page.click('#submit');};

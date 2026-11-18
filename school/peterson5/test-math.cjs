@@ -17,10 +17,88 @@ assert.equal(M.check('2.0','2','integer'),false);assert.equal(M.check('2','2','i
 assert.equal(M.format('3/4'),'{{frac:3:4}}');assert.equal(M.format('-7/3'),'−{{frac:7:3}}');assert.equal(M.format(5),'5');assert.equal(M.decimal('1/125'),'0,008');assert.equal(M.decimal('-3/4'),'-0,75');assert.throws(()=>M.decimal('1/3'));
 const known=[['add','1/3','0.25','7/12'],['subtract','1/4','1/2','-1/4'],['multiply','1 1/2','0.2','3/10'],['divide','0.4','2/3','3/5']];
 for(const [op,a,b,expected]of known)assert.equal(M.equal(M.operation(op,a,b),expected),true,op);
-assert.equal(M.skills.length,25);const ids=new Set(M.skills.map(s=>s.id));assert.equal(ids.size,25);for(const s of M.skills)for(const p of s.prerequisites)assert(ids.has(p));
+// Progress files identify a generated exercise by skill, level and seed. Keep the
+// published prompt, answer and required form for all 25 previously available skills.
+const legacySkills=['fraction-reduce','fraction-mixed','fraction-add','fraction-subtract','fraction-multiply','fraction-divide','decimal-add','decimal-subtract','decimal-multiply','decimal-divide','decimal-to-fraction','fraction-to-decimal','mixed-multiply','mixed-divide','unlike-multiply','unlike-divide','order-operations','percent-part','percent-whole','percent-ratio','natural-multiply','natural-divide','natural-order','gcd','lcm'];
+const newSkills=['letter-product','unlike-fraction-subtract','decimal-place-subtract'];
+const ids=new Set(M.skills.map(s=>s.id));
+assert.deepEqual([...ids].sort(),[...legacySkills,...newSkills].sort());
+assert.equal(M.skills.length,ids.size);
+for(const s of M.skills)for(const p of s.prerequisites)assert(ids.has(p));
+const signatures=[];
+for(const id of legacySkills)for(const seed of [1,2,43,991])for(const level of [1,2,3]){
+ const t=M.generate(id,seed,level);
+ signatures.push([id,seed,level,t.prompt,t.answer,t.answerFormat||'']);
+}
+const digest=require('node:crypto').createHash('sha256').update(JSON.stringify(signatures)).digest('hex');
+assert.equal(digest,'775a5013be2b04409848a9dddacba8661e88088ed128ae84412a4d97d23ef0e8','300 published exercise signatures');
+
+function checkLetterProduct(t,level){
+ const expression=t.prompt.match(/(?:[a-z]|\d+)(?:\s*[·×*]\s*(?:[a-z]|\d+))+/);
+ assert(expression,t.prompt);
+ const factors=expression[0].split(/\s*[·×*]\s*/);
+ const coefficients=factors.filter(v=>/^\d+$/.test(v)),letters=factors.filter(v=>/^[a-z]$/.test(v)).sort();
+ assert.equal(coefficients.length,1,t.prompt);
+ assert.equal(letters.length,level,t.prompt);
+ // Letter order may be interchanged. Two such choices would make the question ambiguous.
+ const valid=t.choices.filter(choice=>{
+  const match=/^(\d+)([a-z]+)$/.exec(choice.trim());
+  return match&&match[1]===coefficients[0]&&[...match[2]].sort().join('')===letters.join('');
+ });
+ assert.deepEqual(valid,[t.answer],t.prompt+' | '+t.choices.join(', '));
+ assert.equal(t.kind,'choice');
+ assert(t.choices.length>=3);
+ assert.equal(new Set(t.choices).size,t.choices.length);
+ assert.deepEqual(q(t.steps[0].answer),[BigInt(coefficients[0]),1n]);
+ assert.deepEqual(q(t.steps[1].answer),[BigInt(letters.length),1n]);
+}
+
+function checkNewSubtraction(t,id,level){
+ const prompt=t.prompt.replace(/\{\{frac:(\d+):(\d+)\}\}/g,'$1/$2');
+ if(id==='unlike-fraction-subtract'){
+  const pair=/(\d+)\/(\d+)\s*[−-]\s*(\d+)\/(\d+)/.exec(prompt);
+  assert(pair,t.prompt);
+  const [a,b,c,d]=pair.slice(1).map(BigInt);
+  assert(a>0n&&a<b&&c>0n&&c<d&&b!==d,t.prompt);
+  const common=b*d/gcd(b,d),first=a*(common/b),second=c*(common/d);
+  assert.deepEqual(t.steps.map(step=>step.answer),[common,first,second,first-second].map(String),t.prompt);
+  const expected=norm(a*d-c*b,b*d);
+  assert(expected[0]>0n,t.prompt);
+  assert.deepEqual(q(t.answer),expected,t.prompt);
+  assert.equal(t.answerFormat,'reduced-fraction');
+  const sum=norm(a*d+c*b,b*d);
+  assert(!M.check(sum.join('/'),t.answer,t.answerFormat),'adding the numerators is not subtraction');
+  assert(!M.check((expected[0]*2n)+'/'+(expected[1]*2n),t.answer,t.answerFormat));
+ }else{
+  const pair=/(\d+[.,]\d+)\s*[−-]\s*(\d+[.,]\d+)/.exec(prompt);
+  assert(pair,t.prompt);
+  const digits=pair.slice(1).map(v=>v.split(/[.,]/)[1]);
+  assert.notEqual(digits[0].length,digits[1].length,t.prompt);
+  if(level<=2)assert.equal(Math.max(digits[0].length,digits[1].length),level+1,t.prompt);
+  const padded=digits.map(part=>part.padEnd(Math.max(...digits.map(d=>d.length)),'0'));
+  assert([...padded[0]].some((digit,i)=>digit<padded[1][i]),'borrow between places: '+t.prompt);
+  const expected=calc('subtract',pair[1],pair[2]);
+  assert(expected[0]>0n,t.prompt);
+  assert.deepEqual(q(t.answer),expected,t.prompt);
+  assert.equal(t.answerFormat,'decimal');
+  const places=Math.max(...digits.map(part=>part.length));
+  const units=pair.slice(1).map(v=>{const [whole,part]=v.split(/[.,]/);return BigInt(whole+part.padEnd(places,'0'));});
+  assert.deepEqual(t.steps.map(step=>step.answer),[...units,units[0]-units[1]].map(String),t.prompt);
+  const misaligned=BigInt(pair[1].replace(/[.,]/,''))-BigInt(pair[2].replace(/[.,]/,''));
+  assert.notDeepEqual(norm(misaligned,10n**BigInt(places)),expected,'left-alignment error must change the answer');
+  assert(!M.check(expected[0]+'/'+expected[1],t.answer,t.answerFormat));
+ }
+ assert(!M.check('0',t.answer,t.answerFormat));
+}
 let generated=0,steps=0;const diversity={};
 for(const skill of M.skills){const prompts=new Set();for(let level=1;level<=3;level++){for(let seed=1;seed<=100;seed++){
- const t=M.generate(skill.id,seed,level);generated++;prompts.add(t.prompt);assert.deepEqual(t,M.generate(skill.id,seed,level),'deterministic');assert.deepEqual(q(t.answer),solve(t.calculation),skill.id+' '+seed+' level '+level);assert(M.check(t.answer,t.answer,t.answerFormat),skill.id+' answer format');assert(t.finalLabel&&t.prompt&&t.hint&&t.explanation);assert(t.steps.length>=2&&t.steps.length<=5);assert.equal(t.kind,'number');assert.deepEqual(t.skills,[skill.id]);assert(!/(undefined|NaN|Infinity)/.test(JSON.stringify(t)));
+ const t=M.generate(skill.id,seed,level);generated++;prompts.add(t.prompt);assert.deepEqual(t,M.generate(skill.id,seed,level),'deterministic');
+ if(skill.id==='letter-product')checkLetterProduct(t,level);
+ else{
+  assert.equal(t.kind,'number');assert.deepEqual(q(t.answer),solve(t.calculation),skill.id+' '+seed+' level '+level);assert(M.check(t.answer,t.answer,t.answerFormat),skill.id+' answer format');
+  if(newSkills.includes(skill.id))checkNewSubtraction(t,skill.id,level);
+ }
+ assert(t.finalLabel&&t.prompt&&t.hint&&t.explanation);assert(t.steps.length>=2&&t.steps.length<=5);assert.deepEqual(t.skills,[skill.id]);assert(!/(undefined|NaN|Infinity)/.test(JSON.stringify(t)));
  for(const s of t.steps){steps++;assert(M.parse(s.answer),'valid step '+skill.id);assert(M.check(s.answer,s.answer,s.answerFormat),'step format '+skill.id);assert(s.prompt&&s.hint&&s.explanation);}
  if(t.answerFormat==='decimal')assert(/^-?\d+(?:,\d+)?$/.test(t.answer));
  }}diversity[skill.id]=prompts.size;assert(prompts.size>=120,skill.id+' diverse generated prompts '+prompts.size);}
