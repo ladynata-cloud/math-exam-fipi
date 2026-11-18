@@ -8,6 +8,7 @@ on:
       - 'trainers/oge-video-geometry.js'
       - 'trainers/oge-task11-graphs-trainer.html'
       - 'trainers/oge-task15-triangles.html'
+      - 'trainers/oge-task15-model.js'
       - 'trainers/oge-task16-circle.html'
       - 'trainers/oge-task17-quadrilaterals.html'
       - 'trainers/task19-trainer.html'
@@ -21,6 +22,7 @@ on:
       - 'tools/oge-video-models-preservation.cjs'
       - 'tools/oge-video-models-preservation.test.cjs'
       - 'tools/oge-video-models.browser.cjs'
+      - 'tools/oge-task15-model.browser.cjs'
       - 'tools/oge-video-models-book-context.cjs'
       - 'tools/oge-video-models-book-context.test.cjs'
       - 'tools/oge-video-models-book-context.test.py'
@@ -43,6 +45,7 @@ on:
       - 'trainers/oge-video-geometry.js'
       - 'trainers/oge-task11-graphs-trainer.html'
       - 'trainers/oge-task15-triangles.html'
+      - 'trainers/oge-task15-model.js'
       - 'trainers/oge-task16-circle.html'
       - 'trainers/oge-task17-quadrilaterals.html'
       - 'trainers/task19-trainer.html'
@@ -56,6 +59,7 @@ on:
       - 'tools/oge-video-models-preservation.cjs'
       - 'tools/oge-video-models-preservation.test.cjs'
       - 'tools/oge-video-models.browser.cjs'
+      - 'tools/oge-task15-model.browser.cjs'
       - 'tools/oge-video-models-book-context.cjs'
       - 'tools/oge-video-models-book-context.test.cjs'
       - 'tools/oge-video-models-book-context.test.py'
@@ -91,7 +95,7 @@ jobs:
           source_commit=$(node -p 'require("./trainers/oge-sources/coverage-23-25.json").sourceBinding.sourceCommit')
           task19_source=$(node -p 'require("./tools/fixtures/task19-major-source-cache-versions.json").sourceCommit')
           [[ "$task19_source" =~ ^[a-f0-9]{40}$ ]]
-          git fetch --no-tags --depth=1 origin 89ee66bfe5068f16364d61d091fcbf1a1cbd6287 7a7169c35c54351ace4f7844b7730899b4a61831 18b44244753ac806d449a2040ad4b8c8af9acaf3 "$source_commit" "$task19_source"
+          git fetch --no-tags --depth=1 origin 89ee66bfe5068f16364d61d091fcbf1a1cbd6287 7a7169c35c54351ace4f7844b7730899b4a61831 18b44244753ac806d449a2040ad4b8c8af9acaf3 d26f2e8936a7008ac792671533fcf66cbb21c4a4 "$source_commit" "$task19_source"
       - name: Fetch reviewed OGE geometry source alignment
         run: |
           geometry_source="$(python3 -c 'import json; print(json.load(open("tools/fixtures/oge-source-alignment-geometry-bytes.json"))["sourceCommit"])')"

@@ -85,6 +85,26 @@ const ok=(value,label)=>{assert.ok(value,label);checks++;};
   ok(await page.locator('.journey-lesson-nav,[data-journey-next]').count()===0,'grade7 stays outside EGE journey UI');
   await page.goto(lesson+'?learning=1#lesson=box');await page.locator('body.learning-managed').waitFor();
   ok(await page.locator('.journey-lesson-nav,[data-journey-next]').count()===0,'managed task has no autonomous continuation');
+  await page.goto(home+'#today');
+  const partial=await page.evaluate(key=>{
+   const saved=JSON.parse(localStorage.getItem(key));
+   Object.assign(saved.lessons.box,{seed:123,done:false,draft:'12/'});delete saved.lessons.box.taskFirst;
+   saved.lessons.fractions={broken:true};
+   const raw=JSON.stringify(saved);localStorage.setItem(key,raw);return raw;
+  },KEY);
+  await page.reload();await page.locator('.journey-continue').click();await page.locator('#answer').waitFor();
+  const separateTask=await page.evaluate(()=>PathData.task('box',PathCourse.state().lessons.box.seed));
+  ok(new URL(page.url()).hash==='#lesson=box'&&separateTask.q!==await page.evaluate(()=>PathData.task('box',123).q),'separate entry shows a fresh condition in the same family');
+  await page.locator('#answer').fill('3/');await page.reload();
+  ok(await page.locator('#answer').inputValue()==='3/','fresh practice has its own reloadable draft');
+  await page.locator('#answer').fill(String(separateTask.answer));await page.locator('#answer').press('Enter');
+  ok(await page.evaluate(()=>PathCourse.state().lessons.box.independent)===1,'separate practice records its independent answer');
+  await page.locator('#completionAction [data-journey-next]').click();await page.locator('#answer').waitFor();
+  ok(new URL(page.url()).searchParams.get('practice')==='recovery'&&new URL(page.url()).hash!=='#lesson=box','primary next family remains in separate practice');
+  await page.locator('#answer').fill('5/');
+  ok(await page.evaluate(()=>PathCourse.state().lessons[location.hash.slice(8)].draft)==='5/','next family also records the separate draft');
+  await page.locator('a[href="../index.html#today"]').click();await page.locator('.journey-continue').waitFor();
+  ok(await page.evaluate(key=>localStorage.getItem(key),KEY)===partial,'back from separate practice keeps original history and draft byte-for-byte');
   ok(errors.length===0,'no browser errors: '+errors.join('; '));
   console.log(`EGE_BAZA_JOURNEY_BROWSER_OK: ${checks} checks; 1280/320/390 widths, all 21 exam positions and seven secondary lines, first-screen box controls, keyboard, actual success/return, exact draft resume, grade7/managed exclusions.`);
  }finally{await browser?.close();if(server.listening)await new Promise(resolve=>server.close(resolve));}

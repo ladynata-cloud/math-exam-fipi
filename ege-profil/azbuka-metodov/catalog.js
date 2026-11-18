@@ -20,7 +20,7 @@
         constraints: { title: 'Учитываю ограничения из условия', numbers: [10, 11, 13, 17] },
         optimum: { title: 'Выбираю лучший допустимый вариант', numbers: [17] }
       },
-      refs: [['Производная и интеграл, №9', '/ege-profil/start/index.html#calm/9']]
+      refs: [['Производная и первообразная · №8; экстремумы · №12', '/ege-profil/start/index.html#calm/9']]
     },
     {
       id: 'domain', title: 'ОДЗ и отбор решений', short: 'ОДЗ и отбор', numbers: [7, 14, 16, 19],
@@ -35,6 +35,7 @@
     {
       id: 'interval-signs', title: 'Знаки и метод интервалов', short: 'Метод интервалов', numbers: [16, 19],
       description: 'Отметь границы, проверь знаки и собери ответ с учётом ОДЗ.',
+      practiceAfterSkills: { label: 'Решить неравенство на числовой оси', href: '/ege-profil/trainers/interval-method.html#t3' },
       skills: {
         'mark-points': { title: 'Различаю нули и исключённые точки', numbers: [16, 19] },
         'test-sign': { title: 'Определяю знак между границами', numbers: [16, 19] },
@@ -53,7 +54,7 @@
         'difference-squares': { title: 'Сокращаю через разность квадратов', numbers: [8, 14, 16] },
         substitution: { title: 'Делаю замену переменной', numbers: [14, 16] }
       },
-      refs: [['Практикум по выражениям, №8', '/ege-profil/start/index.html#calm/8']]
+      refs: [['Практикум по выражениям, №7', '/ege-profil/start/index.html#fipi/2027/7']]
     },
     {
       id: 'space-drawing', title: 'Чтение пространственного чертежа', short: 'Чертёж в 3D', numbers: [3, 15],
@@ -127,7 +128,7 @@
         range: { title: 'Проверяю возможные значения функции', numbers: [19] }
       },
       refs: [
-        ['Функции и графики · №12', '/ege-profil/start/index.html#calm/12'],
+        ['Функции и графики · №11', '/ege-profil/start/index.html#fipi/2027/11'],
         ['Функции в формулах и на графиках', '/ege-profil/trainers/functions-t1112.html']
       ]
     },
@@ -149,10 +150,10 @@
       },
       refs: [
         ['Прежний практикум по задачам с параметром', '/ege-profil/trainers/parameters-18/'],
-        ['№19 · дискриминант и положительные корни', '/ege-profil/part-two/index.html#lesson/param-positive-roots'],
-        ['№19 · модули и число решений', '/ege-profil/part-two/index.html#lesson/param-modules'],
-        ['№19 · касание', '/ege-profil/part-two/index.html#lesson/param-tangent'],
-        ['№19 · системы', '/ege-profil/part-two/index.html#lesson/param-system']
+        ['№18 · дискриминант и положительные корни', '/ege-profil/part-two/index.html#lesson/param-positive-roots'],
+        ['№18 · модули и число решений', '/ege-profil/part-two/index.html#lesson/param-modules'],
+        ['№18 · касание', '/ege-profil/part-two/index.html#lesson/param-tangent'],
+        ['№18 · системы', '/ege-profil/part-two/index.html#lesson/param-system']
       ]
     }
   ];
@@ -164,9 +165,43 @@
   const sourceTask = /^#(?:calm|example|exam)\/[a-z0-9-]+$|^#(?:lesson\/[a-z0-9-]+|(?:practice|repair)\/[a-z0-9-]+\/(?:guided|plan|independent))$/;
   const trainerPath = /^\/ege-profil\/trainers\/(?:[a-z0-9-]+\.html|[a-z0-9-]+\/index\.html)$|^\/trainers\/ege-profile\/[a-z0-9-]+(?:\.html|\/(?:index\.html)?)$/;
 
+  // Catalog numbers are legacy topic identities, shared with existing skill-map keys.
+  function legacyEntry(number) {
+    const map = globalThis.ProfileExamMap;
+    return Number(number) <= 13 ? map?.fromLegacyStart(number) : map?.fromLegacyPartTwo(number);
+  }
+
+  function legacyNumber(entry) {
+    return entry?.legacyPartTwo ?? entry?.legacyStart ?? NaN;
+  }
+
+  function displayLabel(number) {
+    if (Number(number) === 9) return '№8 и №12';
+    const entry = legacyEntry(number);
+    return entry ? entry.number == null ? 'Дополнительная тема: ' + entry.title : globalThis.ProfileExamMap.label(entry) : 'Учебная тема';
+  }
+
   function examHref(number) {
+    const entry = legacyEntry(number);
+    if (entry && Number(number) !== 9) return globalThis.ProfileExamMap.href(entry);
     return number <= 13 ? '/ege-profil/start/index.html#calm/' + number :
       '/ege-profil/part-two/index.html#exam/' + number;
+  }
+
+  function readContext(input) {
+    const params = input?.get ? input : new URLSearchParams(input);
+    const map = globalThis.ProfileExamMap;
+    if (params.has('fipi')) {
+      const match = /^2027\/([1-9]|1[0-9])$/.exec(params.get('fipi'));
+      const entry = match ? map?.get(Number(match[1])) : null;
+      return { kind: 'fipi', number: legacyNumber(entry), entry };
+    }
+    if (params.has('topic')) {
+      const entry = map?.topic(params.get('topic'));
+      return { kind: 'topic', number: legacyNumber(entry), entry };
+    }
+    const number = Number(params.get('exam'));
+    return { kind: 'legacy', number: numbers(number) ? number : NaN, entry: legacyEntry(number) };
   }
 
   function safeBack(input) {
@@ -178,14 +213,20 @@
     if (url.searchParams.has('skills')) url.searchParams.delete('skills');
     const partTwo = ['/ege-profil/part-two/', '/ege-profil/part-two/index.html'].includes(url.pathname);
     const start = ['/ege-profil/start/', '/ege-profil/start/index.html'].includes(url.pathname);
-    const safePartTwo = partTwo && (exactTask.test(url.hash) || /^#(?:exam\/\d{1,2}|lesson\/[a-z0-9-]+|map|progress)$/.test(url.hash));
-    if (!safePartTwo && !(start && sourceTask.test(url.hash)) && !trainerPath.test(url.pathname)) return '';
+    const mapped = /^#fipi\/2027\/(?:[1-9]|1[0-9])$|^#topic\/[a-z0-9-]+$/.test(url.hash);
+    const safePartTwo = partTwo && (exactTask.test(url.hash) || mapped || /^#(?:exam\/\d{1,2}|lesson\/[a-z0-9-]+|map|progress)$/.test(url.hash));
+    if (!safePartTwo && !(start && (sourceTask.test(url.hash) || mapped)) && !trainerPath.test(url.pathname)) return '';
     return url.pathname + url.search + url.hash;
   }
 
   function href(id = '', skill = '', number, back = '', base = path) {
     const query = new URLSearchParams();
-    if (numbers(Number(number))) query.set('exam', String(number));
+    if (number && typeof number === 'object') {
+      const entry = number.entry || (number.id ? number : null);
+      if (number.kind === 'legacy' && numbers(number.number)) query.set('exam', String(number.number));
+      else if (entry?.number) query.set('fipi', '2027/' + entry.number);
+      else if (entry?.id) query.set('topic', entry.id);
+    } else if (numbers(Number(number))) query.set('exam', String(number));
     const returnPath = safeBack(back);
     if (returnPath) query.set('back', returnPath);
     return base + (query.size ? '?' + query : '') + (id ? '#/' + id + (skill ? '/' + skill : '') : '');
@@ -195,5 +236,13 @@
     return list.filter(alphabet => alphabet.numbers.includes(Number(number)));
   }
 
-  globalThis.ProfileAlphabetCatalog = { path, list, index, examHref, href, forNumber, safeBack };
+  function forOfficial(number) {
+    return forNumber(legacyNumber(globalThis.ProfileExamMap?.get(number)));
+  }
+
+  function officialHref(id = '', skill = '', number, back = '', base = path) {
+    return href(id, skill, { kind: 'fipi', entry: globalThis.ProfileExamMap?.get(number) }, back, base);
+  }
+
+  globalThis.ProfileAlphabetCatalog = { path, list, index, examHref, href, forNumber, safeBack, displayLabel, readContext, forOfficial, officialHref };
 })();

@@ -290,3 +290,52 @@ test('real course pools cover all 13 numbers and exclude foundational lessons',(
  assert.equal(new Set(taskIds).size,13);assert.equal(Object.keys(state.data.seen).length,13);
  assert.equal(c.snapshot().summary.attempted,13);
 });
+
+
+const realCourse=()=>['geometry','stereo','algebra','probability','equations','functions','applied','finance','readiness','vector-basics'].flatMap(name=>require('../ege-profil/start/'+name+'-data.js'));
+const fipi=require('../ege-profil/exam-map.js');
+function officialSetup(storage=memory()){
+ const lessons=realCourse(),state=State.create(lessons,storage);
+ return {storage,state,checkpoint:Checkpoint.create(lessons,storage,state,fipi)};
+}
+test('new official checkpoint samples exactly 12 lines, with derivatives and extrema in distinct pools',()=>{
+ const {checkpoint:c,state}=officialSetup(),visited=[];
+ assert.equal(c.snapshot().round,null);assert.equal(c.snapshot().summary.total,12);
+ c.startRound();
+ for(let i=0;i<12;i++){
+  const current=c.current();visited.push(current.number);
+  assert.equal(current.total,12);assert.equal(current.legacy,false);
+  assert(fipi.get(current.number).lessonIds.includes(current.lesson.id));
+  assert(!['prob-distribution','prob-variance','prob-continuous'].includes(current.lesson.id));
+  if(current.number===12)assert.equal(current.lesson.id,'calc-extreme');
+  if(current.number===8)assert(['calc-tangent','calc-sign','calc-graph','calc-integral'].includes(current.lesson.id));
+  c.submit(String(current.task.answer),Check.check,current.token);c.next(current.token);
+ }
+ assert.deepEqual(visited,Checkpoint.FIPI_ORDER);
+ assert.equal(new Set(visited).size,12);assert.equal(Checkpoint.isCurrentRound(c.snapshot().round),true);assert.equal(Object.hasOwn(c.snapshot().round,'map'),false);
+ assert.equal(c.snapshot().round.complete,true);assert.equal(c.snapshot().summary.total,12);
+ assert.equal(Object.keys(state.data.seen).length,12);
+});
+test('a saved 13-group round and financial result survive the upgrade; the following round uses 12 official lines',()=>{
+ const legacy=setup(memory(),realCourse()),c=legacy.checkpoint;
+ c.startRound();
+ for(let i=0;i<12;i++){const current=c.current();c.submit(String(current.task.answer),Check.check,current.token);c.next(current.token);}
+ const finance=c.current();assert.equal(finance.number,13);assert.equal(finance.lesson.position,13);
+ c.persistDraft('125/2',finance.token);c.help(finance.token);
+ const before=legacy.storage.getItem(Checkpoint.KEY),upgraded=officialSetup(legacy.storage),shown=upgraded.checkpoint.current();
+ assert.equal(shown.total,13);assert.equal(shown.legacy,true);assert.equal(shown.task.id,finance.task.id);
+ assert.equal(shown.draft,'125/2');assert.equal(shown.assisted,true);
+ assert.equal(legacy.storage.getItem(Checkpoint.KEY),before,'opening the old round does not rewrite its schema or identities');
+ upgraded.checkpoint.submit(String(shown.task.answer),Check.check,shown.token);upgraded.checkpoint.next(shown.token);
+ const next=upgraded.checkpoint.startRound(true);assert.equal(next.total,12);assert.equal(next.number,4);
+ const history=upgraded.checkpoint.snapshot().history[0];assert.equal(history.items.length,13);assert.equal(Checkpoint.isCurrentRound(history),false);assert.equal(Object.hasOwn(history,'map'),false);
+ assert.equal(history.items[12].taskId,finance.task.id);assert.equal(history.items[12].assisted,true);
+});
+test('official checkpoint reload retains the exact attempt and rejects a mismatched number/lesson instead of rewriting it',()=>{
+ const original=officialSetup(),first=original.checkpoint.startRound();original.checkpoint.persistDraft('7/11',first.token);
+ const resumed=officialSetup(original.storage);assert.equal(resumed.checkpoint.current().task.id,first.task.id);assert.equal(resumed.checkpoint.current().draft,'7/11');
+ const value=JSON.parse(original.storage.getItem(Checkpoint.KEY));value.round.items[0].number=6;
+ const bad=JSON.stringify(value);original.storage.setItem(Checkpoint.KEY,bad);
+ const rejected=officialSetup(original.storage);assert(rejected.checkpoint.warning);rejected.checkpoint.current();
+ assert.equal(original.storage.getItem(Checkpoint.KEY),bad);
+});

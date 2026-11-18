@@ -335,3 +335,21 @@ test('cross-course, malformed and descriptor states are rejected before memory o
     }
   } finally { fixtures.forEach(f => f.dom.window.close()); }
 });
+
+test('official and extra-topic aliases retain registered board scope and hydrate calm disclosures',async()=>{
+ const map=require('../ege-profil/exam-map.js');
+ for(const [key,legacy] of [['planimetry',1],['vectors',2],['stereometry',3],['probability',4],['randomVariables',6],['equations',7],['expressions',8]]){
+  const f=fixture(key),entry=map.fromLegacyStart(legacy),hash=map.hash(entry);
+  try{
+   const before=f.state().progress;
+   await f.navigate(hash);
+   assert.equal(f.w.location.hash,hash,key+': current entry stays in this wrapper');
+   assert.deepEqual(f.state().progress,before,key+': opening the alias does not change task identities or evidence');
+   const help=f.query('.calm-start-help');assert(help,key+': current entry presents the calm route');help.open=true;
+   const basics=f.query('.calm-number-foundations');if(basics)basics.open=true;
+   f.roundtrip(key+' canonical calm alias');
+   const invalid=f.state();invalid.route=key==='equations'?'#fipi/2027/7':'#fipi/2027/6';
+   assert.equal(f.valid(invalid),false,key+': foreign canonical scope stays rejected');
+  }finally{f.w.close();}
+ }
+});

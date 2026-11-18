@@ -31,11 +31,12 @@ test('task19 current source has no addon and still matches its full native teach
  assert.equal(hash(restoreTask19CacheVersions(x.file,x.raw)),sourcePin(x.file).sha256,'removing the addon cannot excuse any native byte change');
  assert.throws(()=>receipt(x),/exact optional include block is required/,'a historical pin alone cannot attest a nonexistent current addon');
 });
-test('later teaching receipts remain limited to four committed pages and reject native mutations',()=>{
+test('later teaching receipts remain limited to five committed pages and reject native mutations',()=>{
  const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
  assert.equal(updates.task,'docs/tasks/OGE18_STEPS_PAN_20261110.md');
- assert.deepEqual(Object.keys(updates.pages).sort(),[entries[16],entries[17],entries[19],entries[24]].sort());
+ assert.deepEqual(Object.keys(updates.pages).sort(),[entries[16],entries[17],entries[19],entries[24],entries[25]].sort());
  assert.equal(updates.pages[entries[24]].taskDoc,'docs/tasks/EXAM_AND_TEXTBOOK_LEARNING_20261114.md');
+ assert.equal(updates.pages[entries[25]].taskDoc,'docs/tasks/GEOMETRY_SEVEN_CONSTRUCTIONS_20261118.md');
  for(const file of Object.keys(updates.pages)){
   const x=fixture(file);
   // Retain the historical task19 receipt and all its negative probes, without
