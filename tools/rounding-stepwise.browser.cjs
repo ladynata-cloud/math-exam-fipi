@@ -135,7 +135,7 @@ async function solve(page, place, injectMistakes) {
         assert.equal(await page.locator('[data-foundation-track] .division-course-step').count(),12);
         assert.deepEqual(await page.locator('[data-arithmetic-track] > header progress').evaluateAll(nodes => nodes.map(node => node.max)),[16,15]);
         assert(await preparation.evaluate(node => node.nextElementSibling.querySelector('a').getAttribute('href').startsWith('course-estimate.html')), 'Rounding immediately precedes estimation');
-        const [practice] = await Promise.all([page.waitForEvent('popup'),preparation.locator('a').click()]);
+        const [practice] = await Promise.all([page.waitForEvent('popup'),preparation.getByRole('link',{name:/до десятков/}).click()]);
         await practice.locator('#prompt').waitFor({state:'visible'});
         await practice.locator('#digits .digit').first().waitFor({state:'visible'});
         assert.equal(await practice.locator('#rounding-options').getAttribute('open'),null,'The exercise starts with optional settings folded');
@@ -146,6 +146,14 @@ async function solve(page, place, injectMistakes) {
         await solve(practice,1,true);
         assert.equal(await progressValue(practice,'#right'),0,'A corrected example is not marked immediately correct');
         await layout(practice,'tens at ' + width);
+        const [hundreds] = await Promise.all([page.waitForEvent('popup'),preparation.getByRole('link',{name:/до сотен/}).click()]);
+        await hundreds.locator('#digits .digit').first().waitFor({state:'visible'});
+        assert.equal(new URL(hundreds.url()).searchParams.get('place'),'2');
+        assert.equal(await hundreds.locator('#place').inputValue(),'2');
+        await solve(hundreds,2,false);
+        await layout(hundreds,'hundreds at ' + width);
+        await hundreds.close();
+        assert.equal(new URL(page.url()).pathname,route);
         for (const place of [2,3,4,5,6,0,-1,-2]) {
           await choosePlace(practice,place);
           const previous = await solve(practice,place,false);
@@ -167,10 +175,37 @@ async function solve(page, place, injectMistakes) {
         await roundingOptions(practice,false);
         await solve(practice,6,false);
         await layout(practice,'larger numbers at ' + width);
-        console.log('PASS: ' + width + 'px route link, four visible steps, retry, nine places, continued examples and digit row');
+        const estimate = await context.newPage();
+        await estimate.goto(origin + '/trainers/oge-basics/multiplication-division/quotient-estimate.html');
+        await estimate.getByRole('link',{name:'Делимое до сотен'}).click();
+        assert.equal(new URL(estimate.url()).searchParams.get('round'),'hundreds');
+        await estimate.locator('#estimate-task').waitFor({state:'visible'});
+        assert.match(await estimate.locator('#estimate-task').innerText(), /364 : 52/);
+        const check = async value => {
+          await estimate.locator('#estimate-answer').fill(value);
+          await estimate.locator('#estimate-check').click();
+        };
+        for (const value of ['50','400','8','8','416','7','364']) await check(value);
+        assert.match(await estimate.locator('#estimate-prompt').innerText(),/□ × 52/);
+        await check('8');
+        assert.equal(await estimate.locator('#estimate-feedback').getAttribute('class'),'incorrect');
+        await check('7');
+        assert.match(await estimate.locator('#estimate-count').innerText(),/Пример завершён/);
+        assert(await estimate.getByRole('link',{name:/Применить в делении уголком/}).isVisible());
+        assert(await estimate.locator('#view-practice').evaluate(node=>node.scrollWidth<=node.clientWidth+1));
+        await estimate.getByRole('link',{name:'Делимое до десятков'}).click();
+        await estimate.locator('#estimate-task').waitFor({state:'visible'});
+        assert.match(await estimate.locator('#estimate-task').innerText(),/266 : 33/);
+        await estimate.getByRole('link',{name:'Делимое до сотен'}).click();
+        await estimate.locator('#estimate-count').waitFor({state:'visible'});
+        assert.match(await estimate.locator('#estimate-count').innerText(),/Пример завершён/);
+        await estimate.getByRole('link',{name:/Применить в делении уголком/}).click();
+        await estimate.locator('#problem').waitFor({state:'visible'});
+        assert.equal(new URL(estimate.url()).hash,'#twoDigit');
+        console.log('PASS: ' + width + 'px two route links, rounding practice, and exact quotient digit after estimation');
       } finally { await context.close(); }
     }
     assert.deepEqual(errors,[],'No browser JavaScript exceptions');
-    console.log('ROUNDING_STEPWISE_BROWSER_OK: public route popup, original tab retained, 30 solved examples from visible prompts, wrong retries and continued practice at 320/390/1060px.');
+    console.log('ROUNDING_STEPWISE_BROWSER_OK: rounding and quotient estimation through public links at 320/390/1060px.');
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); if(errors.length)console.error(errors);server.close();process.exitCode=1; });
