@@ -55,6 +55,10 @@ test('the percent link opens 80 of 100 cells and accepts four fifths', () => {
     doc.querySelector('#ansDenominator').value = '5';
     doc.querySelector('#checkBtn').click();
     assert.match(doc.querySelector('#feedback').textContent, /Верно/);
+    dom.window.Math.random = () => 0;
+    doc.querySelector('#nextBtn').click();
+    assert.equal(dom.window.__current.p, 1, 'the next exercise uses the normal generator');
+    assert.equal(doc.querySelectorAll('#bar .g-cell.fill').length, 1);
     doc.querySelector('[data-mode="whole"]').click();
     assert.equal(dom.window.__current.type, 'whole');
   } finally { dom.window.close(); }
