@@ -240,7 +240,7 @@ function createApp(root,options){
   dialog.append(close,title,el('p',lesson.statement.text),model,el('p',lesson.statement.goal),el('p',lesson.visualization.caption),sourceNode(lesson));
   const nestedHelp=el('div');mountHelp(lesson.help,nestedHelp,()=>({setView:selectTheoryView}));dialog.append(nestedHelp);
   const steps=el('div');for(const step of lesson.steps){const d=el('details');d.append(el('summary',step.title),el('p',step.prompt),el('p',step.explanation));justifications(step,d);d.addEventListener('toggle',()=>{if(d.isConnected&&d.open)selectTheoryView(step.view||'neutral');});steps.append(d);}dialog.append(steps);root.append(dialog);
-  dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:backState?.camera});
+  dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{lessonId:lesson.id,savedCamera:backState?.camera});
   if(backState){
    const details=[...dialog.querySelectorAll('details')],pendingToggles=new Set((backState.opened||[]).map(index=>details[index]).filter(Boolean));
    const restoreSelected=()=>{if(dialog!==shownDialog)return;restoring=false;selectTheoryView(backState.view||'neutral');};
@@ -320,7 +320,7 @@ function createApp(root,options){
   next.addEventListener('click',revealStep);
   function personalHint(){if(locked)return;if(state.revealed<lesson.steps.length)revealStep();if(locked)return;help.open=true;steps.lastElementChild?.scrollIntoView?.({block:'start'});}
   hintButton?.addEventListener('click',personalHint);hintOffer?.addEventListener('click',personalHint);
-  side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
+  side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{lessonId:lesson.id,savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
   if(!options.boardSession){
    // Move only the neutral drawing's reading notes behind the model action. Controls
    // and the selected authored view stay next to the drawing; no help is implied.

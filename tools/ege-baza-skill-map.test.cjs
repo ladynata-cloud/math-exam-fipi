@@ -86,6 +86,19 @@ test('trigonometric ratios and glued surface evidence stay attached to the right
   assert(!faces.practiceIds.includes('practice-joined-surface'),'counting external square patches for area does not prove counting geometric faces');
 });
 
+test('division preparation offers both rounding places and leaves packaging arithmetic intact',()=>{
+  const api=bank().EgeBazaSkillMaps;
+  for(const map of [api.forLesson('practice-decimal-division'),api.forLegacy('m01','division')]){
+    const links=map.prerequisites.map(item=>internalLink(item.href));
+    const focused=links.filter(url=>url.pathname==='/trainers/rounding-stepwise.html');
+    assert.deepEqual(plain(focused.map(url=>url.searchParams.get('place'))),['1','2']);
+    assert(focused.every(url=>url.searchParams.get('from')==='division'));
+  }
+  const packaging=api.forLesson('round');
+  assert(packaging.skills.some(skill=>skill.id==='round-up'));
+  assert(!packaging.prerequisites.some(item=>item.href.includes('rounding-stepwise.html')));
+});
+
 test('viewing the route never writes progress or turns family evidence into mastery',()=>{
   const instance=dom(),w=instance.window;
   try{

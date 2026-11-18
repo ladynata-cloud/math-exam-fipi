@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/sections_technical_audit",
+  "reviewedAt": "2026-11-15T21:15:58Z",
+  "reviewKind": "independent-internal-content-review",
+  "baseCommit": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "verdict": "PASS",
+  "unresolved": [],
+  "releaseApproval": false,
+  "externalProviderReview": false,
+  "scope": [
+    "Six frozen draft lesson files only: research-sections-001 through 006.",
+    "Independent examination of each revised question, nested help, input answer and its corresponding authored model view.",
+    "Exact preservation against base of source references, original statement.text and answer, storage revision, coordinates/edges/faces, original views and 27 step IDs/explanations/justifications."
+  ],
+  "checks": [
+    "All six lessons passed the official JSON schema (AJV2020) and unchanged Merzlyak runtime validateLesson.",
+    "supplementary-models.test.py: 4/4 passed, including source incidence/ratios, complete finite cuts and model-view references.",
+    "Independent byte/JSON preservation comparisons passed for all six files.",
+    "Final recheck: 18 additive views; all original views and 27 source proof steps preserved. Required action/ratio endpoints are present in each corrected focused view; contextual plane names and explicitly excluded helper points are not treated as mandatory highlights."
+  ],
+  "resolvedFindings": [
+    {
+      "lessonId": "research-sections-004",
+      "finding": "The new first-ratio view omitted upper points T,D1,C1 asked in the question.",
+      "resolution": "Author added the upper trace and edges, plus T; the final view has exactly 8 required labelled points."
+    },
+    {
+      "lessonId": "research-sections-005",
+      "finding": "The new side-trace question referenced an upper construction while its model could not label every referenced point within the existing 8-point focus limit.",
+      "resolution": "Author scoped that question/view to the side transfer with 7 required labels; the upper construction retains its separate top-view help."
+    },
+    {
+      "lessonId": "research-sections-002",
+      "finding": "Midline and centre questions referred to points absent from the selected focus.",
+      "resolution": "Added middle-lines and centre-mq; the first centre question is limited to the displayed parallelogram; other centre helpers retain their matching views."
+    },
+    {
+      "lessonId": "research-sections-003",
+      "finding": "Trace construction and comparison questions omitted required edge/intersection endpoints.",
+      "resolution": "Added trace-givens and coplanar-traces, preserving all original views."
+    },
+    {
+      "lessonId": "research-sections-004",
+      "finding": "The parallel-bases and second-ratio questions required additional points from two planes.",
+      "resolution": "Added bounded parallel-bases and second-ratio views; preserved source label aliases C-prime and Y-prime and the two different admissible ratios."
+    },
+    {
+      "lessonId": "research-sections-005",
+      "finding": "Questions about intersection with BC and length DR lacked their required endpoints.",
+      "resolution": "Added base-trace with B and D and included D in side-ratio."
+    },
+    {
+      "lessonId": "research-sections-006",
+      "finding": "The AP/AB and centroid question omitted A and D.",
+      "resolution": "Added centroid-ratio with the actual median and side endpoints."
+    }
+  ],
+  "limits": [
+    "Source fidelity was reviewed by exact preservation against the approved repository base, not by reopening the original textbook scan.",
+    "This review concerns the six content deltas, not publication, the complete course engine or the new standalone sections interface.",
+    "Pixel/browser acceptance and a real-learner trial were not performed in this review; browser launch was previously blocked by this environment.",
+    "The final proof remains manually assessed; intermediate input checks are guided work and do not certify an independent proof."
+  ],
+  "files": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
+      "lessonId": "research-sections-001",
+      "sha256": "7e17275a641786604006057cdcea8454deaac22f3615e9cce48b85b7ca341c6b",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "notes": [
+        "Verified concurrent traces through the single intersection of BD with plane MNK; side-of-plane argument and finite/exterior distinctions are unchanged.",
+        "New common-edge answer accepts both BD and DB; new sides view names all points asked in its prompt."
+      ]
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
+      "lessonId": "research-sections-002",
+      "sha256": "6ab5fce215380521f261fb5e88c9dd079db37c135b94f8480fd0a7c8b14adc26",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "notes": [
+        "Verified midpoint identities, noncollinearity of M,N,P, MNPO parallelogram and the three central lines MQ, NR, PS.",
+        "Added separate centre views correspond to their nested questions; intermediate answers 1/2 and six sides are correct."
+      ]
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-003.json",
+      "lessonId": "research-sections-003",
+      "sha256": "159d1c1b64a54df4e4bb715c774e7ddba1741ceb2370deb4a6b2f3c7ed79a44f",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "notes": [
+        "Verified equal edge fractions imply XY parallel AB, and coplanar UV,XY are parallel because XY misses the base plane.",
+        "No screen-angle inference is introduced; AB and BA are accepted as the same edge."
+      ]
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-004.json",
+      "lessonId": "research-sections-004",
+      "sha256": "cdd06fab32cb9c98db5641b865cbabb809d06a535a4719426ac1245594ec4944",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "notes": [
+        "Verified the source remains underdetermined: a parallelogram base yields 2:3, the displayed admissible trapezoid yields 1:3.",
+        "Corrected first-ratio view now contains all eight required points A,X,A1,P,Y,T,D1,C1 and both upper/side triangle groups.",
+        "Both numerical ratios remain explicitly confined to their respective examples; the final answer remains manual and nonunique."
+      ]
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
+      "lessonId": "research-sections-005",
+      "sha256": "1d7e61db4038e0599b40bfe8c0a5bbc76064eb6b0dfab11230c6301af6ab0e16",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "notes": [
+        "Verified the pentagonal finite boundary APNQM; outer helper points T and R are excluded.",
+        "Verified QC1/a=1/3, DR/a=4/3 and BP:PC=3:1 with preserved original proof.",
+        "Corrected side-trace prompt/view focuses Q,N and the CDD1C1 face; the existing top help separately presents construction of Q from M,T."
+      ]
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-006.json",
+      "lessonId": "research-sections-006",
+      "sha256": "72e900ef2966981eb7f5375509be23ab4e8df0636d7c4d1d8f9e604893a5298c",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "notes": [
+        "Verified midpoint/centroid reasoning, AP/AB=1/3, C in the section, and A outside it; intersection with AC is C and distance is 12 cm.",
+        "Distance view displays AC together with the resulting triangular section; proof is still assessed manually."
+      ]
+    }
+  ]
+}

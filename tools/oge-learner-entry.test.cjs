@@ -5,7 +5,7 @@ const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
 const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
-const {restoreGraphScale}=require('./oge-video-models-preservation.cjs');
+const {restoreReviewedDrawing}=require('./oge-video-models-preservation.cjs');
 const {tyrePage,restoreTyreHints}=require('./oge-tyre-hints-preservation.cjs');
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
@@ -95,7 +95,7 @@ for(const p of routes.pages){
   const scripts=doc=>[...doc.scripts].filter(s=>!s.src).map(s=>s.textContent.replace(/\r\n/g,'\n'));
   const taskSource=taskSources[p]?parse(execFileSync('git',['show',taskSources[p]+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
   const baseline=taskSource?taskSource.window.document:od;
-  const actualScripts=scripts(d).map(script=>restoreGraphScale(p,script));
+  const actualScripts=scripts(d).map(script=>restoreReviewedDrawing(p,script));
   if(p===tyrePage){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
     actualScripts[0]=restoreTyreHints(p,actualScripts[0]);

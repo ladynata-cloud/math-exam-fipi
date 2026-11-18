@@ -61,7 +61,7 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   const publicModules = ['../skill-map-data.js?v=20261115-fipi-map', '../azbuka-metodov/catalog.js?v=20261115-fipi-map',
     '../skill-map.js?v=20261115-fipi-map',
     'journey.js?v=20261115-fipi-map', 'second-part.js?v=20261115-fipi-map', 'practice-feedback.js?v=20261109-active',
-    'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261117-opposites',
+    'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261118-opposites',
     'vector-basics-models.js?v=20261112-vectors', '/assets/trainer-skill-gif.js?v=20261117-research'];
   const pathname = src => new URL(src, 'https://mathexam.space/ege-profil/start/index.html').pathname;
   const publicPaths = new Set(publicModules.map(pathname));
@@ -84,7 +84,8 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
     ['geometry-data.js?v=20261112-vectors', 'geometry-data.js'],
     ['checks.js?v=20261114-numeric-domain', 'checks.js?v=20261101-trainer-repair'],
     ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261117-research', 'app.js?v=20261115-fipi-map'],
+    ['app.js?v=20261118-opposites', 'app.js?v=20261115-fipi-map'],
+    ['calm-ui.js?v=20261118-opposites', 'calm-ui.js?v=20261115-fipi-map'],
     ['course-links.js?v=20261117-h12', 'course-links.js?v=20261115-fipi-map']
   ]);
   for (const current of cacheStamps.keys())

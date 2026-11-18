@@ -188,17 +188,23 @@ assert.throws(() => contracts.normalize('oge-basics', spec, skipped));
 
 // The public page uses the same actions while keeping its own browser-local draft.
 const core = require('../trainers/oge-basics/multiplication-division/quotient-estimate-core');
+const hundredsCore = require('../trainers/oge-basics/multiplication-division/quotient-estimate-hundreds');
 const publicHtml = fs.readFileSync(require.resolve('../trainers/oge-basics/multiplication-division/quotient-estimate.html'), 'utf8');
 const publicSource = fs.readFileSync(require.resolve('../trainers/oge-basics/multiplication-division/quotient-estimate'), 'utf8');
 const publicScaffoldsSource = fs.readFileSync(require.resolve('../trainers/oge-basics/learning-scaffolds'), 'utf8');
 const storageKey = 'mathExamBasics.quotientEstimate.v1';
+const hundredsStorageKey = 'mathExamBasics.quotientEstimate.hundreds.v1';
 function publicMount(saved, options = {}) {
-  const dom = new JSDOM(publicHtml, { url: 'https://example.test/quotient-estimate.html', runScripts: 'outside-only' });
+  const url = 'https://example.test/trainers/oge-basics/multiplication-division/quotient-estimate.html' + (options.hundreds ? '?round=hundreds' : '');
+  const activeKey = options.hundreds ? hundredsStorageKey : storageKey;
+  const dom = new JSDOM(publicHtml, { url, runScripts: 'outside-only' });
   const { window } = dom;
-  if (saved !== undefined) window.localStorage.setItem(storageKey, saved);
+  if (saved !== undefined) window.localStorage.setItem(activeKey, saved);
+  if (options.tensSaved !== undefined) window.localStorage.setItem(storageKey, options.tensSaved);
   if (options.writeFailure) window.Storage.prototype.setItem = () => { throw Error('quota'); };
   window.MathExamRemediationManaged = false;
   window.QuotientEstimate = core;
+  window.QuotientEstimateHundreds = hundredsCore;
   window.DivisionLab = division;
   // This page does not load DivisionCourse. Shared help must support that.
   window.eval(publicScaffoldsSource);
@@ -206,7 +212,7 @@ function publicMount(saved, options = {}) {
   const $ = id => window.document.getElementById(id);
   $('practice').click();
   assert.equal($('view-practice').hidden, false);
-  const savedText = () => window.localStorage.getItem(storageKey);
+  const savedText = () => window.localStorage.getItem(activeKey);
   const state = () => JSON.parse(savedText()).state;
   const type = value => {
     $('estimate-answer').value = value;
@@ -255,6 +261,34 @@ assert.match(standalone.$('estimate-feedback').textContent, /с подсказк
 assert.equal(standalone.state().answers.at(-1), '8');
 const completedPublic = standalone.savedText();
 standalone.dom.window.close();
+
+const hundredsTask = hundredsCore.make(1);
+let hundreds = publicMount(undefined, {hundreds:true, tensSaved:completedPublic});
+assert.equal(hundreds.$('estimate-hundreds').getAttribute('aria-current'), 'true');
+assert.equal(hundreds.$('estimate-task').textContent, hundredsTask.task.prompt);
+assert.equal(hundreds.savedText(), null);
+hundreds.check('50');
+assert.match(hundreds.$('estimate-prompt').textContent, /364 до сотен/);
+hundreds.$('estimate-hint').click();
+assert.match(hundreds.$('estimate-help').textContent, /цифру десятков/);
+assert.doesNotMatch(hundreds.$('estimate-help').textContent, /\b400\b/);
+const partialHundreds = hundreds.savedText();
+hundreds.dom.window.close();
+hundreds = publicMount(partialHundreds, {hundreds:true, tensSaved:completedPublic});
+assert.equal(hundreds.savedText(), partialHundreds);
+hundredsTask.steps.slice(1, -1).forEach(step => hundreds.check(step.answer));
+hundreds.check('8');
+assert.equal(hundreds.state().answers.length, hundredsTask.steps.length - 1);
+hundreds.check('7');
+assert.equal(hundreds.$('estimate-form').hidden, true);
+assert.equal(hundreds.state().answers.at(-1), '7');
+assert.equal(JSON.parse(hundreds.savedText()).generatorVersion, 3);
+assert.equal(hundreds.dom.window.localStorage.getItem(storageKey), completedPublic);
+hundreds.$('estimate-new').click();
+assert.equal(hundreds.$('estimate-task').textContent, hundredsCore.make(2).task.prompt);
+assert.equal(hundreds.state().answers.length, 0);
+hundreds.dom.window.close();
+
 standalone = publicMount(completedPublic);
 assert.equal(standalone.$('estimate-form').hidden, true);
 assert.equal(standalone.$('estimate-trail').children.length, publicTask.steps.length);
