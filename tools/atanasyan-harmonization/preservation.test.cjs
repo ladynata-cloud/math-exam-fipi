@@ -9,20 +9,42 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '../..');
 const baseline = require('./preservation-baseline.json');
-const supplement = require('./preservation-supplement-658.json');
+const supplements = [
+  require('./preservation-supplement-658.json'),
+  require('./preservation-supplement-651.json')
+];
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 assert.equal(baseline.schemaVersion, 1);
 assert.equal(baseline.base, '5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae');
-assert.equal(supplement.schemaVersion, 1);
-assert.equal(supplement.base, baseline.base);
-assert.equal(supplement.sourceCommit, '5d58b20a9aad26fbddc479f038d7df0faa62c68a');
-assert.equal(supplement.task, 'GEOMETRY_COURSES_AUDIT_20261118');
-assert.deepEqual(Object.keys(supplement.files).sort(), [
+const [auditSupplement, compositionSupplement] = supplements;
+for (const supplement of supplements) {
+  assert.equal(supplement.schemaVersion, 1);
+  assert.equal(supplement.base, baseline.base);
+}
+assert.equal(auditSupplement.sourceCommit, '5d58b20a9aad26fbddc479f038d7df0faa62c68a');
+assert.equal(auditSupplement.task, 'GEOMETRY_COURSES_AUDIT_20261118');
+assert.deepEqual(Object.keys(auditSupplement.files).sort(), [
   'geometry-course/textbook/assets/engine.js',
   'geometry-course/textbook/assets/grade7-board-engine.js',
   'stereo-course/literacy/app.js',
   ...['course.js', 'lesson-model.js', 'lesson.html', 'lesson.js', 'lessons-a.js', 'lessons-b.js', 'lessons.js'].map(name => 'ege-profil/atanasyan-10-11/' + name)
 ].sort(), 'only the ten exact previously reviewed files may differ');
+assert.equal(compositionSupplement.sourceCommit, '64ce01049377b4289f46979c52f2c50daf84b92f');
+assert.equal(compositionSupplement.task, 'FINAL651_APPROVED_COMPOSITION_20261118');
+assert.deepEqual(Object.keys(compositionSupplement.files).sort(), [
+  'ege-profil/atanasyan-10-11/lessons-a.js',
+  'ege-profil/atanasyan-10-11/model.js',
+  'stereo-course/literacy/app.js',
+  'stereo-course/textbook/schema/lesson.schema.json'
+].sort(), 'only the four exact composed right-angle amendments may extend the frozen inventory');
+const amendmentChains = {};
+for (const supplement of supplements) {
+  for (const [file, amendment] of Object.entries(supplement.files)) {
+    const chain = amendmentChains[file] ||= [];
+    if (chain.length) assert.equal(amendment.beforeSHA256, chain.at(-1).afterSHA256, 'exact amendment chain: ' + file);
+    chain.push(amendment);
+  }
+}
 assert.deepEqual(baseline.groups.map(group => group.group), ['geometry_textbook', 'first_steps', 'legacy_trainers', 'stereo_textbook', 'literacy', 'ege_bridge']);
 function filesAt(relative) {
   const name = path.join(root, relative);
@@ -37,12 +59,12 @@ function verify(group, read = file => fs.readFileSync(path.join(root, file)), ex
   assert.equal(files.length, group.fileCount, group.group + ': exact protected file set size');
   const digest = crypto.createHash('sha256');
   for (const file of files) {
-    const current = hash(read(file)), amendment = supplement.files[file];
-    if (amendment) {
-      assert.equal(current, amendment.afterSHA256, 'exact previously reviewed #658 amendment: ' + file);
-      assert.match(amendment.beforeSHA256, /^[a-f0-9]{64}$/);
+    const current = hash(read(file)), chain = amendmentChains[file];
+    if (chain) {
+      assert.equal(current, chain.at(-1).afterSHA256, 'exact reviewed amendment: ' + file);
+      assert.match(chain[0].beforeSHA256, /^[a-f0-9]{64}$/);
     }
-    digest.update(file + '\0' + (amendment ? amendment.beforeSHA256 : current) + '\n');
+    digest.update(file + '\0' + (chain ? chain[0].beforeSHA256 : current) + '\n');
   }
   assert.equal(digest.digest('hex'), group.sha256, group.group + ': every source path and byte must match the authorized base');
 }
@@ -63,9 +85,9 @@ const sample = baseline.groups.find(group => group.group === 'literacy');
 const protectedFile = 'stereo-course/literacy/data/course.json';
 assert.throws(() => verify(sample, file => file === protectedFile ? Buffer.from('CHANGED') : fs.readFileSync(path.join(root, file))), /every source path and byte/);
 assert.throws(() => verify(sample, undefined, ['stereo-course/literacy/unapproved.json']), /exact protected file set size/);
-for (const file of Object.keys(supplement.files)) {
+for (const file of Object.keys(amendmentChains)) {
   const group = baseline.groups.find(group => group.paths.some(prefix => file === prefix || file.startsWith(prefix)));
   assert(group, 'every exact amendment remains inside the original protected inventory');
-  assert.throws(() => verify(group, name => name === file ? Buffer.concat([fs.readFileSync(path.join(root, name)), Buffer.from('\nUNREVIEWED')]) : fs.readFileSync(path.join(root, name))), /exact previously reviewed #658 amendment/);
+  assert.throws(() => verify(group, name => name === file ? Buffer.concat([fs.readFileSync(path.join(root, name)), Buffer.from('\nUNREVIEWED')]) : fs.readFileSync(path.join(root, name))), /exact reviewed amendment/);
 }
-console.log('ATANASYAN_HARMONIZATION_PRESERVATION_OK ' + JSON.stringify({geometryCards: 1425, stereoCards: 674, firstSteps: 255, literacy: 36, legacy: 70, protectedFiles: baseline.groups.reduce((n, group) => n + group.fileCount, 0), exactReviewedAmendments: 10, negativeControls: 12}));
+console.log('ATANASYAN_HARMONIZATION_PRESERVATION_OK ' + JSON.stringify({geometryCards: 1425, stereoCards: 674, firstSteps: 255, literacy: 36, legacy: 70, protectedFiles: baseline.groups.reduce((n, group) => n + group.fileCount, 0), exactReviewedAmendments: 14, amendedFiles: 12, negativeControls: 14}));

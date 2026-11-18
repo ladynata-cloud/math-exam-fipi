@@ -44,11 +44,8 @@ assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem(GeoStore.KE
 for(const width of [320,1280]){
  await page.setViewportSize({width,height:850});
  await page.goto(base+'atlas/angles.html');
- if(await page.locator('[data-stage="4"][aria-current="step"]').count()){
-  await page.locator('[data-action="new-task"]').click();
- }else{
-  await page.locator('[data-stage="4"]').click();
- }
+ await page.locator('[data-stage="4"]').click();
+ await page.locator('[data-action="new-task"]').click();
  await page.locator('[data-stage="0"]').click();
  await page.getByRole('button',{name:'Точка A',exact:true}).click();
  assert.match(await page.locator('#angle-notation-feedback').innerText(),/общее начало/);
