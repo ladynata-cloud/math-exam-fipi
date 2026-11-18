@@ -35,6 +35,7 @@
     {
       id: 'interval-signs', title: 'Знаки и метод интервалов', short: 'Метод интервалов', numbers: [16, 19],
       description: 'Отметь границы, проверь знаки и собери ответ с учётом ОДЗ.',
+      practiceAfterSkills: { label: 'Решить неравенство на числовой оси', href: '/ege-profil/trainers/interval-method.html#t3' },
       skills: {
         'mark-points': { title: 'Различаю нули и исключённые точки', numbers: [16, 19] },
         'test-sign': { title: 'Определяю знак между границами', numbers: [16, 19] },

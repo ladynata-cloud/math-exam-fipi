@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "546df450c8e6465e5186f31e71332567269dc93c",
+  "baseSha": "34a08fc84d260a2e96be245c1b2d77b4d3dd6734",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "ae9fde7f43755b99f97f6c3ee0abec0861065a3f73e4b1431a94e1ceaf4866af",
-      "afterSha256": "543d0dc74340393f074f30e6d071d8fba8f1b398e7a4ae97b54863d4f3928874",
+      "beforeSha256": "3c50e113978708c28f89e1ed2f2cdde13b503ed8c2379bc395d35191471592ef",
+      "afterSha256": "4ad52df37a4dd33fea13205a7c1755b47407afda7b803c0dcd56583392ff659f",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "4f1763bf539f01aea1f3a9ebe8949bf59501a04d42a7c5ebc1cf63b0c190fffd",
-      "afterSha256": "aef95ce9b4fc6c2a56098e03790b72912504e4a84dc77af3879cff30e1e5ee0a",
+      "beforeSha256": "fac79a8baa6c54844e8f21949783f252efc0e020af229608338b8fd3a15f493f",
+      "afterSha256": "3c30c539b0f25a0506516a0f3ebebfa6971365c31a5b56e2f8126bc272aec2e7",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -818,8 +818,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/textbook/index.html": {
-      "beforeSha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
-      "afterSha256": "f6fe2c259cd4e65c169071760301818df1f4188ef56c880c7400c3af0fffce44",
+      "beforeSha256": "c26e8f026e5560c39bd0f9a841c0458b7ff4d260c038a42b4ccb2ed7a060ec2e",
+      "afterSha256": "706cd7def6810a4692834081378f1d994a804e073709f8f209ecf2ca4a9d119d",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
@@ -2198,8 +2198,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
-      "beforeSha256": "a9da6498f42936ac165b7694a102e1372d11f06a1b265482479de4d340de381b",
-      "afterSha256": "6711ae14d8a2e51546e69c681cde31910c1ab291de0e080de09b895ac624b988",
+      "beforeSha256": "8f6e1ab08917f7beacc279d9308c8f06d23c95ac07f5737bb0a0dfa1a990f7ec",
+      "afterSha256": "e18dab6cb02b9ed5d4edf842e9247f435ee1b070cdca4cebb7fb298abb00c79a",
       "placement": "before-head-close"
     },
     "stereo-course/sections/index.html": {
@@ -2968,8 +2968,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
-      "beforeSha256": "c2c9bb9adfea61847635f30f19a311fff2247dcad83f85581c2bf3ed2fd09e13",
-      "afterSha256": "489e1e06c9f63ad8c8af42e6a790b0377c282605629e0693110a3cdaec4df9e7",
+      "beforeSha256": "ee9e122d03c3335f3105f73683987dbaee58e8c7b24acb745fa90a5e709ab035",
+      "afterSha256": "1cae3382357173dc670624d24cfa3429136479693c80ace776ea669c59cedbe5",
       "placement": "before-head-close"
     },
     "trainers/oge-task16-circle.html": {
@@ -3013,8 +3013,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
-      "beforeSha256": "52bb7e9ac26227ec1c94f9c18cca715725750c57c77c5206b4d21a4f5a8aed27",
-      "afterSha256": "9e0b7b081e3609cb4657fa61cfe9cb04e78f4952eb976354340506873cc9f1d7",
+      "beforeSha256": "075163e380df8c7c3c830f4b2c7d0893a1e7b048c9b68c1863cafe1c66f01ee4",
+      "afterSha256": "68d8104b7c6729e7ba8008c3b61d0df97141f0e6adfba60e1fd8f862e18cf97e",
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
@@ -5501,12 +5501,12 @@
     },
     {
       "previousBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
-      "sourceBaseSha": "546df450c8e6465e5186f31e71332567269dc93c",
-      "task": "docs/tasks/STUDENT_NEXT_STEP_AUDIT_20261118.md",
+      "sourceBaseSha": "34a08fc84d260a2e96be245c1b2d77b4d3dd6734",
+      "task": "docs/tasks/GEOMETRY_SEVEN_CONSTRUCTIONS_20261118.md",
       "changedPaths": [
-        "ege-baza/index.html",
-        "ege-baza/path/index.html",
-        "trainers/oge-task15-triangles.html"
+        "geometry-course/textbook/index.html",
+        "stereo-course/merzlyak-10-base/index.html",
+        "trainers/oge-task25-geometry.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
