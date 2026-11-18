@@ -90,10 +90,13 @@ class GeneratorTests(unittest.TestCase):
         bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
         self.assertEqual(page.count(bootstrap), 1)
         # The selected-topic return in #642 versioned the view script alone.
+        source_page = (ROOT / entry).read_text()
         for asset in reviewed:
-            version = "20261117" if asset == "oge/learning-map-view.js" else "20261109"
-            frozen = '/' + edition.prefix + asset + '?v=' + version
-            self.assertEqual(page.count(frozen), 1)
+            version = '20261117' if asset == 'oge/learning-map-view.js' else '20261109'
+            ref = asset + '?v=' + version
+            self.assertEqual(source_page.count('"/' + ref + '"'), 1, asset)
+            frozen = '/' + edition.prefix + ref
+            self.assertEqual(page.count('"' + frozen + '"'), 1, asset)
             self.assertNotIn('"/' + asset, page)
             self.assertLess(page.index(bootstrap), page.index(frozen))
         # The map reads localStorage only after the fixed-edition bootstrap has
@@ -161,6 +164,8 @@ class GeneratorTests(unittest.TestCase):
                      '<script defer src="oge-video-graphs.js"></script>\n'
                      '<script defer src="oge-video-geometry.js"></script>\n'
                      f'<script defer src="oge-video-models.js" data-oge-video-task="{number}"></script>\n')
+            if number == 15:
+                block += '<script defer src="oge-task15-model.js"></script>\n'
             raw = (ROOT / entry).read_bytes()
             self.assertEqual(raw.count(block.encode()), 1)
             adaptation = (b'<link rel="stylesheet" href="/assets/download-panel.css">\n'

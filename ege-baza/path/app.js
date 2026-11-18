@@ -1,34 +1,63 @@
-(function(){'use strict';if(new URLSearchParams(location.search).get('learning')==='1')return;const D=PathData,$=s=>document.querySelector(s),root=$('#main'),KEY='mathexam.ege-baza.path.v1',E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let writable=true,state={version:1,serial:11,lessons:{},seen:{},runs:[],active:null};
+(function(){'use strict';if(new URLSearchParams(location.search).get('learning')==='1')return;const D=PathData,$=s=>document.querySelector(s),root=$('#main'),E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let writable=true,state={version:1,serial:11,lessons:{},seen:{},runs:[],active:null};
+const separatePractice=new URLSearchParams(location.search).get('practice')==='recovery';
+const courseKey='mathexam.ege-baza.path.v1';
+const KEY=separatePractice?courseKey+'.separate':courseKey;
+let lastSeparateSave=null;
 const M=text=>PathPracticeView.math(text);
 const integer=(n,max=1e9)=>Number.isSafeInteger(n)&&n>=0&&n<=max;
 const answerOK=a=>a&&D.meta.some(m=>m.id===a.id)&&integer(a.seed)&&typeof a.value==='string'&&a.value.length<10000&&typeof a.correct==='boolean';
 const runOK=r=>r&&['exam','diagnostic'].includes(r.kind)&&Array.isArray(r.ids)&&r.ids.length===21&&r.ids.every(id=>D.meta.some(l=>l.id===id))&&Array.isArray(r.answers)&&r.answers.length<=21&&r.answers.every(answerOK)&&integer(r.seed)&&integer(r.i,21)&&Number.isFinite(r.start)&&(r.draft===undefined||typeof r.draft==='string'&&r.draft.length<=10000);
-function valid(x){return x&&x.version===1&&integer(x.serial)&&x.lessons&&typeof x.lessons==='object'&&!Array.isArray(x.lessons)&&x.seen&&typeof x.seen==='object'&&!Array.isArray(x.seen)&&Object.keys(x.seen).length<20000&&Object.values(x.seen).every(v=>v===true)&&Array.isArray(x.runs)&&x.runs.length<=200&&x.runs.every(runOK)&&Object.entries(x.lessons).every(([k,l])=>D.meta.some(m=>m.id===k)&&l&&integer(l.seed)&&integer(l.stage,4)&&integer(l.step,20)&&integer(l.independent)&&integer(l.guided)&&typeof l.note==='string'&&l.note.length<=10000&&typeof l.draft==='string'&&l.draft.length<=10000&&typeof l.help==='boolean'&&typeof l.attempted==='boolean'&&Array.isArray(l.checks)&&(!window.PathTaskFirst||PathTaskFirst.valid(l.taskFirst)))&&(!x.active||runOK(x.active));}
+function valid(x){return x&&x.version===1&&integer(x.serial)&&x.lessons&&typeof x.lessons==='object'&&!Array.isArray(x.lessons)&&x.seen&&typeof x.seen==='object'&&!Array.isArray(x.seen)&&Object.keys(x.seen).length<20000&&Object.values(x.seen).every(v=>v===true)&&Array.isArray(x.runs)&&x.runs.length<=200&&x.runs.every(runOK)&&Object.entries(x.lessons).every(([k,l])=>D.meta.some(m=>m.id===k)&&l&&integer(l.seed)&&(l.roundVersion===undefined||k==='round'&&l.roundVersion===2)&&integer(l.stage,4)&&integer(l.step,20)&&integer(l.independent)&&integer(l.guided)&&typeof l.note==='string'&&l.note.length<=10000&&typeof l.draft==='string'&&l.draft.length<=10000&&typeof l.help==='boolean'&&typeof l.attempted==='boolean'&&Array.isArray(l.checks)&&(!window.PathTaskFirst||PathTaskFirst.valid(l.taskFirst)))&&(!x.active||runOK(x.active));}
 
 function readProgress(raw){const value=JSON.parse(raw);return D.practice?.expandTask21Progress?.(value)??value;}
 function writeProgress(value){return D.practice?.packTask21Progress?.(value)??value;}
-try{let raw=localStorage.getItem(KEY);if(raw){let x=readProgress(raw);if(!valid(x))throw Error();state=x;}}catch(e){writable=false;notice('Сохранение недоступно или повреждено. Исходные данные оставлены без изменений. Текущую работу можно скачать.');}
+try{let raw=localStorage.getItem(KEY);if(separatePractice)lastSeparateSave=raw;if(raw){let x=readProgress(raw);if(!valid(x))throw Error();state=x;}}catch(e){writable=false;notice('Сохранение недоступно или повреждено. Исходные данные оставлены без изменений. Текущую работу можно скачать.');}
 function notice(t){$('#storage').hidden=false;$('#storage').textContent=t;}
-function save(){if(!writable)return;try{localStorage.setItem(KEY,JSON.stringify(writeProgress(state)));}catch(e){writable=false;notice('Не удалось сохранить работу в браузере. Скачайте отчёт и резервную копию.');}}
+if(separatePractice){
+ const banner=document.createElement('p');
+ banner.className='notice';
+ banner.innerHTML='Отдельная тренировка. Прежние решения остаются в курсе. <a href="#report">Результаты тренировки</a> · <a href="../index.html#today">Вернуться к курсу</a>';
+ $('#storage').before(banner);
+}
+function save(){
+ if(!writable)return;
+ try{
+  if(separatePractice&&localStorage.getItem(KEY)!==lastSeparateSave){
+   writable=false;notice('Эту тренировку изменили в другой вкладке. Текущие ответы можно скачать в отчёте.');return;
+  }
+  const raw=JSON.stringify(writeProgress(state));
+  localStorage.setItem(KEY,raw);
+  if(separatePractice)lastSeparateSave=raw;
+ }catch(e){writable=false;notice('Не удалось сохранить работу в браузере. Скачайте отчёт и резервную копию.');}
+}
 function lesson(id){return state.lessons[id]||(state.lessons[id]={seed:id==='equations'?10:state.serial++,stage:0,step:0,help:false,attempted:false,independent:0,guided:0,note:'',draft:'',checks:[]});}
 function setHash(s){location.hash=s;}
 function feedback(s,bad=false){let f=$('#feedback');if(f){f.innerHTML=M(s);f.className='feedback '+(bad?'bad':'good');}}
-function taskKey(t){if(t.geometryRebuild===true)return JSON.stringify([t.q,t.model?.diagram||null,(t.choices||[]).map(choice=>choice.label).sort()]);return !t.display&&!t.choices?t.q:JSON.stringify([t.q,t.display||null,(t.labels||[]).slice().sort(),(t.choices||[]).slice().sort()]);}
+function taskKey(t){if(t.progressKey)return t.progressKey;if(t.geometryRebuild===true)return JSON.stringify([t.q,t.model?.diagram||null,(t.choices||[]).map(choice=>choice.label).sort()]);return !t.display&&!t.choices?t.q:JSON.stringify([t.q,t.display||null,(t.labels||[]).slice().sort(),(t.choices||[]).slice().sort()]);}
 function seen(t){return !!state.seen[t.q]||!!state.seen[taskKey(t)];}function expose(t){state.seen[taskKey(t)]=true;}
 const initialHeader=document.querySelector('header').innerHTML,initialFooter=document.querySelector('footer').innerHTML;
 const grade7Subjects={algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'};
 function courseChrome(meta){const grade7=!!meta?.grade7,header=document.querySelector('header'),footer=document.querySelector('footer');if(grade7){header.innerHTML='<strong>MathExam · 7 класс</strong><nav aria-label="Учебная навигация"><a class="btn" href="../../grade7/">Мой курс · 7 класс</a><a class="btn" href="#grade7">Все тренажёры курса</a><a class="btn" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Мой кабинет</a><a class="btn" href="#report">Работа в этом браузере</a></nav>';footer.innerHTML='<p>Авторские задания для 7 класса и повторения основ. Для общей истории и сдачи преподавателю открывай задания в своём кабинете. На этой отдельной странице результаты сохраняются только в текущем браузере.</p>';if(meta.geometryRebuild){header.querySelector('nav').insertAdjacentHTML('afterbegin','<a class="btn" href="../../grade7/geometry-rebuild/">Сначала понятно · все темы</a>');}}else if(header.innerHTML!==initialHeader){header.innerHTML=initialHeader;footer.innerHTML=initialFooter;}}
 function grade7Map(){courseChrome({grade7:true});document.title='7 класс и основы · MathExam';const subjects=[...Object.entries(grade7Subjects),['pre7','Основы до 7 класса']];root.innerHTML='<p class="eyebrow">МОЖНО ИДТИ В СВОЁМ ТЕМПЕ</p><h1>Алгебра, геометрия и основы</h1><p class="lead">Выбирай любую тему. Посмотри модель, пройди шаги и проверь себя на новом примере.</p><p><a class="btn primary" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Заниматься с сохранением в кабинете →</a> <a class="btn" href="../../grade7/">Курс, шпаргалки и видео →</a></p><div class="cards">'+subjects.map(([subject,title])=>'<section class="card"><h2>'+title+'</h2><ul class="trainer-list">'+D.meta.filter(m=>m.grade7&&(subject==='pre7'?m.pre7:!m.pre7&&m.subject===subject)).map(m=>'<li><a href="#lesson='+m.id+'">'+E(m.title)+'</a></li>').join('')+'</ul></section>').join('')+'</div>'; }
 const stageLabels=['Понять','Исследовать','Решить по шагам','Самостоятельно','Объяснить'];
+// Older personal drafts, exams and shared lessons keep the numbers they opened with.
+function personalTask(id,row){
+ return id==='round' && row.roundVersion===2 ? D.roundPractice(row.seed) : D.task(id,row.seed);
+}
 function fresh(id,stage=3){
- const l=lesson(id),meta=D.meta.find(m=>m.id===id),ege=meta&&!meta.grade7&&!meta.pre7,previous=ege?D.task(id,l.seed):null;
+ const l=lesson(id),meta=D.meta.find(m=>m.id===id),ege=meta&&!meta.grade7&&!meta.pre7,previous=ege?personalTask(id,l):null;
  const takeSeed=()=>{if(!ege)return state.serial++;const seed=state.serial;state.serial=seed>=1e9?11:seed+1;return seed;};
+ if(id==='round'&&typeof D.roundPractice==='function')l.roundVersion=2;
  l.seed=takeSeed();
  if(ege){
   const limit=D.equationPractice?.has(id)?D.equationPractice.count:256;
-  for(let n=1;n<limit&&(seen(D.task(id,l.seed))||taskKey(D.task(id,l.seed))===taskKey(previous));n++)l.seed=takeSeed();
+  let candidate=personalTask(id,l);
+  for(let n=1;n<limit&&(seen(candidate)||taskKey(candidate)===taskKey(previous));n++){
+   l.seed=takeSeed();
+   candidate=personalTask(id,l);
+  }
   // Finite banks may only offer the same condition. A changed seed alone is not a new task.
-  if(taskKey(D.task(id,l.seed))===taskKey(previous))expose(D.task(id,l.seed));
+  if(taskKey(candidate)===taskKey(previous))expose(candidate);
  }
  if(ege)delete l.taskFirst; // A fresh attempt resets its UI even when the bounded serial reuses the same seed.
  l.stage=stage;l.step=0;l.help=false;l.attempted=false;l.draft='';l.done=false;save();render();
@@ -45,7 +74,19 @@ function support(t,omitVisual=false){return window.PathPracticeView?PathPractice
 function remediationId(meta){if(!meta.expanded)return meta.id;return ({fractions:'fractions',fraction:'share',decimals:'fractions',percent:'choice',change:'percent',proportion:'ratio',division:'ratio',equations:'equations',powers:'powers',signs:'numberline'})[meta.gap]||meta.id;}
 function equationPracticeLinks(id){if(id!=='equations'&&!D.equationPractice?.has(id))return '';return `<section class="panel equation-practice-menu"><h2>Потренироваться на похожих уравнениях</h2><p>Четыре набора по 240 разных условий. Выбери один тип: новые варианты останутся линейными уравнениями этого типа.</p><div class="actions">${D.equationPractice.families.map(m=>`<a class="btn ${id===m.id?'primary':''}" href="#lesson=${m.id}" ${id===m.id?'aria-current="page"':''}>${E(m.title)}</a>`).join('')}</div>${D.equationPractice.has(id)?'<p>Кнопки «Ещё по шагам» и «Ещё задача этого типа» дают новое условие выбранного типа. После 240 показанных условий начнутся повторы; они не добавляют новых самостоятельных успехов.</p>':''}</section>`;}
 function fractionPracticeLink(id){return ['fractions','practice-fraction-expression'].includes(id)?'<section class="panel fraction-extra-practice"><h2>Ещё выражения с дробями</h2><p>Скобки и порядок действий: решай новые примеры по одному шагу.</p><a class="btn" href="https://mathexam.space/school/index.html?course=vilenkin6#lesson/v6f-fraction-order" target="_blank" rel="noopener">Открыть тренировку →</a><p>Она откроется в другой вкладке. Эта работа останется здесь.</p></section>':'';}
-function showLesson(id){const meta=D.meta.find(m=>m.id===id);if(!meta)return map();courseChrome(meta);let l=lesson(id),t=D.task(id,l.seed);if(l.step>t.steps.length)l.step=0;document.title=meta.title+(meta.grade7?' · 7 класс':' · ЕГЭ база');if(!meta.grade7&&!meta.pre7&&window.PathTaskFirst){PathTaskFirst.mount(root,{meta,task:t,lesson:l,save,seen,expose,fresh,setHash,remediationId,equationPracticeLinks,fractionPracticeLink,learningCycle:true,journey:window.EgeBazaExamMap?{line:EgeBazaExamMap.forLesson(id),next:EgeBazaExamMap.nextLesson(id)}:window.EgeBazaJourney?{line:EgeBazaJourney.lineForLesson(id),next:EgeBazaJourney.nextLesson(id)}:null});return;}if(PathPracticeView.photoProof?.supports(t)){showPhotoProof(id,t,l);return;}const source=meta.grade7?'<p class="source">Авторская практика для 7 класса: свои условия, пошаговый разбор и новые варианты. <a href="../../grade7/">Вернуться к курсу</a>.</p>':`<p class="source">Связь: базовый ЕГЭ, позиция ${meta.pos}. Задача авторская. <a href="../sources/index.html#p${meta.pos}">Что сверено с ФИПИ</a>.</p>`;
+function keepSeparateLessonLinks(){
+ // Course maps use absolute public URLs. A lesson-to-lesson move in this practice
+ // must keep this document and its storage scope, including when opened in a new tab.
+ for(const link of root.querySelectorAll('a[href^="/ege-baza/path/index.html#lesson="]')){
+  link.setAttribute('href',link.hash);
+ }
+}
+function showLesson(id){const meta=D.meta.find(m=>m.id===id);if(!meta)return map();courseChrome(meta);const l=lesson(id);
+ if(l.roundVersion===2 && typeof D.roundPractice!=='function'){
+  root.innerHTML='<p>Чтобы открыть сохранённый пример с теми же числами, обнови страницу.</p><a href="#map">Все задания</a>';
+  return;
+ }
+ const t=personalTask(id,l);if(l.step>t.steps.length)l.step=0;document.title=meta.title+(meta.grade7?' · 7 класс':' · ЕГЭ база');if(!meta.grade7&&!meta.pre7&&window.PathTaskFirst){PathTaskFirst.mount(root,{meta,task:t,lesson:l,save,seen,expose,fresh,setHash,remediationId,equationPracticeLinks,fractionPracticeLink,learningCycle:true,journey:window.EgeBazaExamMap?{line:EgeBazaExamMap.forLesson(id),next:EgeBazaExamMap.nextLesson(id)}:window.EgeBazaJourney?{line:EgeBazaJourney.lineForLesson(id),next:EgeBazaJourney.nextLesson(id)}:null});if(separatePractice)keepSeparateLessonLinks();return;}if(PathPracticeView.photoProof?.supports(t)){showPhotoProof(id,t,l);return;}const source=meta.grade7?'<p class="source">Авторская практика для 7 класса: свои условия, пошаговый разбор и новые варианты. <a href="../../grade7/">Вернуться к курсу</a>.</p>':`<p class="source">Связь: базовый ЕГЭ, позиция ${meta.pos}. Задача авторская. <a href="../sources/index.html#p${meta.pos}">Что сверено с ФИПИ</a>.</p>`;
 root.innerHTML=`<a href="${meta.grade7?'#grade7':'#map'}">← Все темы</a><p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+grade7Subjects[meta.subject]:'Задание '+meta.pos}</p><h1>${E(meta.title)}</h1><label>${meta.grade7?'Тема для тренировки':'Тип задачи в этой позиции'} <select id="typeSelect">${D.meta.filter(m=>meta.grade7?m.grade7&&!!m.pre7===!!meta.pre7&&m.subject===meta.subject:m.pos===meta.pos).map(m=>`<option value="${m.id}" ${m.id===id?'selected':''}>${E(m.title)}</option>`).join('')}</select></label><nav class="stage-nav" aria-label="Шаги урока">${(meta.geometryRebuild?['Главная идея','Мастерская','По шагам','Мой ответ','Объясняю']:stageLabels).map((s,i)=>`<button data-stage="${i}" ${i===l.stage?'aria-current="step"':''}>${i+1}. ${s}</button>`).join('')}</nav>${meta.geometryRebuild&&[2,3].includes(l.stage)?'<aside class="geometry-entry" aria-label="Как пройти задание"><strong>Одна задача — маленькая миссия</strong><p>Впервые здесь? Найди элементы на рисунке и собери рассуждение. Ошибки можно исправлять, подсказки — брать без штрафа.</p><button type="button" class="primary" data-geometry-explore>Сначала в мастерскую</button></aside>':''}<div id="lesson"></div>${equationPracticeLinks(id)}${fractionPracticeLink(id)}${id==='motion'?'<p class="callout">Ещё один вид текстовых задач: <a href="../work-rate/index.html">землекопы и совместная работа без уравнений</a>.</p>':''}${source}`;
 $('#typeSelect').onchange=e=>setHash('lesson='+e.target.value);root.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{let n=+b.dataset.stage;if(n===3&&l.stage!==3){fresh(id,3);return;}l.stage=n;if(n<3){l.help=true;expose(t);}save();render();});let box=$('#lesson');
 if(meta.geometryRebuild&&$('[data-geometry-explore]'))$('[data-geometry-explore]').onclick=()=>{l.stage=1;l.help=true;save();render();};
@@ -83,5 +124,19 @@ function startRun(kind){if(state.active&&state.active.kind!==kind){root.innerHTM
 function finishRun(interrupted){let r=state.active;if(!r)return;while(r.answers.length<21){let i=r.answers.length;r.answers.push({id:r.ids[i],seed:r.seed+i,value:'',correct:false,skipped:true});}r.finished=Date.now();r.interrupted=interrupted;state.runs.push(r);state.runs=state.runs.slice(-200);state.active=null;save();setHash('report');}
 function report(){let latest=state.runs.at(-1),wrong=latest?.answers.filter(x=>!x.correct)||[];root.innerHTML=`<h1>Что уже получается</h1><p>Подсказки, исправления и ранее показанные условия учитываются отдельно. Отчёт не означает полного освоения позиции экзамена.</p>${latest?`<section class="panel"><h2>Последняя ${latest.kind==='exam'?'пробная работа':'диагностика'}: ${latest.answers.filter(x=>x.correct).length}/21</h2><p>${latest.interrupted?'Завершена досрочно. ':''}${latest.assisted?'С обращением к обучению. ':''}${latest.answers.some(x=>x.previouslySeen)?'Часть условий была показана раньше.':''}</p>${wrong.length?`<div class="callout"><b>Следующий шаг</b><p>Начни с темы «${E(D.meta.find(m=>m.id===wrong[0].id).title)}».</p><a class="btn primary" href="#lesson=${wrong[0].id}">Разобраться в первой трудности</a></div>`:'<p>Эта выборка решена. Попробуй новые варианты и вернись к темам через день.</p>'}<details><summary>Ответы и объяснения</summary><ol>${latest.answers.map(a=>{let t=D.task(a.id,a.seed),last=t.steps.at(-1);return `<li><b>${a.correct?'Верно':'Повторить'} · ${E(D.meta.find(m=>m.id===a.id).title)}</b><p>${M(t.q)}</p><p>Ваш ответ: ${M(a.value||'пропуск')}. ${t.rule||t.answerKind==='solutions'?'Возможны разные ответы; проверяются все условия.':'Ответ: '+M(D.answerText(t))+'.'} ${M(last.why)}</p><a href="#lesson=${a.id}">Урок</a></li>`;}).join('')}</ol></details></section>`:''}<div class="scroll"><table><thead><tr><th>Тема</th><th>Разборов</th><th>Новых самостоятельных</th></tr></thead><tbody>${D.meta.map(m=>{let l=state.lessons[m.id]||{};return `<tr><td><a href="#lesson=${m.id}">${m.grade7?'7 класс':m.pos+'.'} ${E(m.title)}</a></td><td>${l.guided||0}</td><td>${l.independent||0}</td></tr>`;}).join('')}</tbody></table></div><div class="actions"><button id="export">Скачать работу и резервную копию</button><label>Восстановить свою копию <input type="file" id="import" accept="application/json"></label></div><p id="feedback" role="status"></p><p class="muted">Восстановление заменяет только данные этого нового маршрута. Старые модули, тренажёры и их ключи не затрагиваются.</p>`;$('#export').onclick=()=>download(state);$('#import').onchange=async e=>{try{let f=e.target.files[0];if(!f||f.size>2000000)throw Error();let x=readProgress(await f.text());if(!valid(x))throw Error();download(state,'before-import.json');state=x;writable=true;save();report();feedback('Копия восстановлена; предыдущая работа выгружена отдельным файлом.');}catch(e){feedback('Файл не подходит. Текущая работа не изменена.',true);}};}
 function download(x,name='EGE_baza_work.json'){let u=URL.createObjectURL(new Blob([JSON.stringify(writeProgress(x),null,2)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
-function render(){let h=location.hash.slice(1)||'map';if(!h.startsWith('lesson=')&&h!=='grade7')courseChrome(null);if(state.active&&!['exam','diagnostic','report'].includes(h)){state.active.assisted=true;save();}if(h.startsWith('lesson='))showLesson(h.slice(7));else if(h==='diagnostic'||h==='exam')startRun(h);else if(h==='report')report();else if(h==='foundation')foundation();else if(h==='grade7')grade7Map();else map();}
+function openSeparateLesson(hash){
+ const params=new URLSearchParams(hash),id=params.get('practice');
+ if(!separatePractice||!D.meta.some(meta=>meta.id===id&&!meta.grade7&&!meta.pre7))return map();
+ const row=state.lessons[id];
+ const previous=params.get('previous');
+ if(previous!==null&&/^\d{1,10}$/.test(previous)&&integer(Number(previous))){
+  expose(D.task(id,Number(previous)));
+  if(id==='round'&&D.roundPractice)expose(D.roundPractice(Number(previous)));
+ }
+ // Drop the entry action from the URL so reload restores the new problem/draft.
+ history.replaceState(null,'','#lesson='+id);
+ if(row&&(!row.done||row.roundVersion===2&&typeof D.roundPractice!=='function')){render();return;}
+ fresh(id);
+}
+function render(){let h=location.hash.slice(1)||'map';if(h.startsWith('practice='))return openSeparateLesson(h);if(!h.startsWith('lesson=')&&h!=='grade7')courseChrome(null);if(state.active&&!['exam','diagnostic','report'].includes(h)){state.active.assisted=true;save();}if(h.startsWith('lesson='))showLesson(h.slice(7));else if(h==='diagnostic'||h==='exam')startRun(h);else if(h==='report')report();else if(h==='foundation')foundation();else if(h==='grade7')grade7Map();else map();}
 window.addEventListener('hashchange',()=>{render();root.focus({preventScroll:true});});window.addEventListener('pagehide',save);window.PathCourse={state:()=>state,valid,KEY};render();})();

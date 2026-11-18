@@ -60,6 +60,31 @@ const changedGiven={...notebooks,q:notebooks.q.replace('49 тетрадей','67
 assert.match(H.hint(changedGiven),/Раздели 67 на 9/,'use visible operands rather than the hidden seed');
 assert.equal(H.hint({...notebooks,seed:999,model:{kind:'round',k:999}}),notebookHint,'hidden generator values do not change the hint');
 
+// The personal practice bank includes exact division and different nonzero remainders.
+const packSizes=new Set(),remainders=new Set(),conditions=new Set(),legacyByCondition=new Map();
+for(let seed=0;seed<7;seed++){
+ const old=D.task('round',seed),{total,pack}=old.params;
+ assert.equal(pack,9);assert.equal(total,(2+seed)*9+4);
+ assert.deepEqual(Array.from(old.steps,step=>step.a),[2+seed,4,3+seed]);
+ legacyByCondition.set(old.q,old.progressKey);
+}
+for(let seed=0;seed<140;seed++){
+ const t=D.roundPractice(seed),{total,pack}=t.params,count=Math.ceil(total/pack),remainder=total%pack;
+ assert.deepEqual(Array.from(t.steps,step=>step.a),[Math.floor(total/pack),remainder,count]);
+ assert.equal(t.answer,count);assert.equal(count,D.task('round',seed).answer,'same final key on older clients');
+ assert.equal(t.q,D.roundPractice(seed+140).q,'same finite family after full period');
+ assert.equal(t.progressKey,`Для класса нужно ${total} тетрадей. В упаковке ${pack} тетрадей. Сколько упаковок нужно купить?`);
+ if(legacyByCondition.has(t.q))assert.equal(t.progressKey,legacyByCondition.get(t.q));
+ if(remainder===0){
+  assert.match(t.steps[2].why,/Остаток равен нулю/);
+  assert.doesNotMatch(t.steps[2].why,/Этого мало/);
+ }
+ for(let step=0;step<t.steps.length;step++)assert.equal(H.hint(t,step),H.hint(withoutAnswers(t),step));
+ assert.match(H.hint(t,2),/Если он равен нулю/);
+ conditions.add(t.progressKey);packSizes.add(pack);remainders.add(remainder);
+}
+assert.equal(conditions.size,140);assert.equal(packSizes.size,5);assert(remainders.has(0)&&remainders.size>=4);
+
 // The opening task asks for affordability, but its first scaffold question asks
 // for the COST of a stated number of tickets: that step needs multiplication.
 // Its chosen count is also the final answer, so do not copy it into a hint that
