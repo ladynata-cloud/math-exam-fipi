@@ -28,10 +28,11 @@ test('HTML loads the presentation helper before the learner engine',()=>{
   assert.match(html,/ЕГЭ профиль 2027/);
 });
 
-test('Optional opposite-vector check gives feedback after a choice and preserves an unfinished attempt',()=>{
+for(const offline of [false,true])test(`Optional opposite-vector check ${offline?'in the standalone download':'online'} gives feedback after a choice and preserves an unfinished attempt`,()=>{
   const {JSDOM}=require('jsdom'),path=require('node:path');
   const start=path.resolve('ege-profil/start');
-  const dom=new JSDOM(fs.readFileSync(path.join(start,'index.html'),'utf8'),{url:'https://mathexam.space/ege-profil/start/#lesson/vec-basics-equality',runScripts:'outside-only',pretendToBeVisual:true});
+  const source=offline?'downloads/trainers/ege-profil-start/ege-profil-start.html':path.join(start,'index.html');
+  const dom=new JSDOM(fs.readFileSync(source,'utf8'),{url:'https://mathexam.space/ege-profil/start/#lesson/vec-basics-equality',runScripts:'outside-only',pretendToBeVisual:true});
   const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
   const api=require('../ege-profil/start/state.js'),vectors=require('../ege-profil/start/vector-basics-data.js');
   const values=new Map(),storage={getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value)};
@@ -39,7 +40,17 @@ test('Optional opposite-vector check gives feedback after a choice and preserves
   attempt.draft='BA';saved.persist();
   for(const [key,value] of values)w.localStorage.setItem(key,value);
   try{
-    for(const script of w.document.querySelectorAll('script[src]'))w.eval(fs.readFileSync(resolvePublicScript(path.resolve(__dirname,'..'),start,script.getAttribute('src')),'utf8'));
+    if(offline){
+      assert.equal(w.document.querySelectorAll('script[src]').length,0,'No remote scripts in the standalone download');
+      for(const name of ['app','vector-basics-data','geometry-data','stereo-data']){
+        const embedded=w.document.querySelector(`script[data-inline-source="/ege-profil/start/${name}.js"]`);
+        assert(embedded);assert.equal(embedded.textContent.trim(),fs.readFileSync(path.join(start,name+'.js'),'utf8').replace(/<\/script/gi,'<\\/script').trim(),'The actual combined source is embedded: '+name);
+      }
+    }
+    for(const script of w.document.scripts){
+      if(script.type&&script.type!=='text/javascript')continue;
+      w.eval(script.src?fs.readFileSync(resolvePublicScript(path.resolve(__dirname,'..'),start,script.getAttribute('src')),'utf8'):script.textContent);
+    }
     const d=w.document,box=d.querySelector('#opposite-vector-check');assert(box);assert.equal(box.open,false);
     const snapshot=()=>JSON.stringify(Object.entries(w.localStorage).sort());const before=snapshot();
     const feedback=box.querySelector('[data-opposite-direction-feedback]'),length=box.querySelector('[data-opposite-length-step]');
