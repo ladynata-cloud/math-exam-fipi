@@ -3910,7 +3910,7 @@ function validateLogicOperationsTrainer() {
   });
 
   // no external script/style URLs in this document
-  const optionalSiteChrome = new Set(["/assets/assistant/navigator-data.js", "/assets/assistant/navigator-widget.js"]);
+  const optionalSiteChrome = new Set(["navigator-data", "navigator-widget"].map(name => "/assets/assistant/" + name + ".js"));
   const scripts = Array.from(document.querySelectorAll("script[src], link[rel=stylesheet]")).filter(el =>
     !optionalSiteChrome.has((el.getAttribute("src") || "").split("?")[0]));
   if (scripts.length > 0) errors.push("Обнаружены внешние ссылки в <script src> или <link rel=stylesheet>: " + scripts.length);
