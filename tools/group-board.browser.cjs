@@ -118,11 +118,46 @@ async function watchFrame(page, assignmentId) {
 async function drawStroke(page, dx = 100) {
   const canvas = page.locator('#boardCanvas');
   await canvas.scrollIntoViewIfNeeded();
-  const box = await canvas.boundingBox();
-  assert.ok(box && box.width > 100 && box.height > 100, 'usable drawing surface');
-  await page.mouse.move(box.x + 30, box.y + 40);
+  // The pupil's split view scrolls inside workspace-panels. A canvas can be
+  // taller than that viewport, so its bounding-box top is not necessarily a
+  // visible pointer target after scrollIntoViewIfNeeded(). Draw on the actual
+  // unclipped surface, without changing the material or bypassing pointer input.
+  const visible = await canvas.evaluate((element, dx) => {
+    const box = element.getBoundingClientRect();
+    const area = { left: Math.max(0, box.left), top: Math.max(0, box.top),
+      right: Math.min(innerWidth, box.right), bottom: Math.min(innerHeight, box.bottom) };
+    for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+      const style = getComputedStyle(parent), rect = parent.getBoundingClientRect();
+      if (/(auto|scroll|hidden|clip)/.test(style.overflowX)) {
+        area.left = Math.max(area.left, rect.left + parent.clientLeft);
+        area.right = Math.min(area.right, rect.left + parent.clientLeft + parent.clientWidth);
+      }
+      if (/(auto|scroll|hidden|clip)/.test(style.overflowY)) {
+        area.top = Math.max(area.top, rect.top + parent.clientTop);
+        area.bottom = Math.min(area.bottom, rect.top + parent.clientTop + parent.clientHeight);
+      }
+    }
+    const oldStart = document.elementFromPoint(box.left + 30, box.top + 40);
+    const oldEnd = document.elementFromPoint(box.left + Math.min(dx, box.width - 20), box.top + 90);
+    return { ...area, legacyPointsHitCanvas: oldStart === element && oldEnd === element };
+  }, dx);
+  const width = visible.right - visible.left, height = visible.bottom - visible.top;
+  if (!visible.legacyPointsHitCanvas) console.log('DRAW_STROKE_CLIPPED_TARGET: using visible canvas coordinates', { width, height });
+  if (!(width > 100 && height > 100)) {
+    await page.screenshot({ path: path.join(ARTIFACTS, 'drawing-surface-failure.png'), fullPage: true });
+  }
+  assert.ok(width > 100 && height > 100, 'usable visible drawing surface');
+  const start = { x: visible.left + 30, y: visible.top + 30 };
+  const end = { x: visible.left + Math.min(dx, width - 20), y: visible.top + 80 };
+  for (const point of [start, end]) {
+    const hitsCanvas = await canvas.evaluate((element, point) => document.elementFromPoint(point.x, point.y) === element, point);
+    if (!hitsCanvas) await page.screenshot({ path: path.join(ARTIFACTS, 'drawing-pointer-failure.png'), fullPage: true });
+    assert.ok(hitsCanvas,
+      'handwriting pointer hits the canvas rather than clipped content or an overlay');
+  }
+  await page.mouse.move(start.x, start.y);
   await page.mouse.down();
-  await page.mouse.move(box.x + Math.min(dx, box.width - 20), box.y + 90, { steps: 8 });
+  await page.mouse.move(end.x, end.y, { steps: 8 });
   await page.mouse.up();
 }
 
@@ -343,7 +378,7 @@ async function main() {
       for (let index = 0; index < queuedAnswers.length; index++) {
         await interruptedFrame.locator('#val').fill(queuedAnswers[index]);
         await poll(async () => interrupted.evaluate(({ key, count }) => JSON.parse(sessionStorage.getItem(key) || '{}').outbox?.length >= count,
-          { key: `mathexam.group.outbox.${id}`, count: index + 2 }), 'later student states queued behind unacknowledged action');
+          { key: 'mathexam.group.outbox.v2.' + encodeURIComponent(JSON.stringify([api.origin,id,'s3'])), count: index + 2 }), 'later student states queued behind unacknowledged action');
       }
       releaseAckLoss();
       await teacher.locator('#roster button').nth(2).click();
@@ -360,7 +395,7 @@ async function main() {
       await poll(async () => interrupted.evaluate(({ key, answers }) => {
         const queue = JSON.parse(sessionStorage.getItem(key) || '{}');
         return queue.outbox?.length === 0 && answers.every(answer => queue.rejected?.some(item => item.action?.payload?.state?.answerValue === answer));
-      }, { key: `mathexam.group.outbox.${id}`, answers: queuedAnswers }), 'all dependent queued edits rejected after deduplicated A');
+      }, { key: 'mathexam.group.outbox.v2.' + encodeURIComponent(JSON.stringify([api.origin,id,'s3'])), answers: queuedAnswers }), 'all dependent queued edits rejected after deduplicated A');
       assert.deepEqual(await work('s3'), corrected, 'stale queued state never overwrites teacher correction');
       await poll(async () => (await snapshotState(interruptedFrame)).answerValue === '-2', 'student sees preserved teacher correction after reconnect');
       console.log('PASS lost acknowledgement, deduplicated retry and stale queued update preserve teacher correction');
@@ -471,7 +506,7 @@ async function main() {
       assert.equal(await restoredPendingFrame.locator('#val').inputValue(), '616', 'tab roundtrip preserves pending input before its acknowledgement');
       await restoredPendingFrame.locator('#val').fill('617');
       await poll(async () => pendingPupil.evaluate(key => JSON.parse(sessionStorage.getItem(key) || '{}').outbox?.length >= 2,
-        `mathexam.group.outbox.${id}`), 'new input queues behind the preserved pending edit');
+        'mathexam.group.outbox.v2.' + encodeURIComponent(JSON.stringify([api.origin,id,'s6']))), 'new input queues behind the preserved pending edit');
       releaseInputAck();
       await poll(async () => (await work('s6')).trainerState.answerValue === '617', 'continued input survives acknowledgement and tab switching');
       assert.equal(await restoredPendingFrame.locator('#val').inputValue(), '617');
