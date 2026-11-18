@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "complete": true,
+  "head": "1cba4fbd27e7acd9a956eab6549a48e7e1e751cc",
+  "tree": "c0307491166657a483cceb75cfe9b6dc7027d0cc",
+  "batch": "atanasyan",
+  "clips": [
+    "atanasyan-altitude-iso",
+    "atanasyan-altitude-quad",
+    "atanasyan-altitude-right",
+    "atanasyan-altitude-triangle",
+    "atanasyan-bisector-angle",
+    "atanasyan-bisector-triangle",
+    "atanasyan-diagonal-quad",
+    "atanasyan-diagonal-rectangle",
+    "atanasyan-diagonal-rhombus",
+    "atanasyan-diagonal-trapezoid",
+    "atanasyan-explore-angle",
+    "atanasyan-explore-circle",
+    "atanasyan-explore-triangle",
+    "atanasyan-explore-two-circles",
+    "atanasyan-median-right",
+    "atanasyan-median-triangle",
+    "atanasyan-midline-triangle-build",
+    "atanasyan-midline-triangle-move",
+    "atanasyan-midpoint-quad",
+    "atanasyan-midpoint-segment",
+    "atanasyan-midpoint-triangle",
+    "atanasyan-parallel-angle",
+    "atanasyan-parallel-triangle",
+    "atanasyan-perpbisector-segment",
+    "atanasyan-perpendicular-angle",
+    "atanasyan-reflection-triangle"
+  ],
+  "sourceHashes": {
+    "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+    "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+    "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347",
+    "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
+    "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+    "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+    "geometry-pogorelov/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
+    "geometry-pogorelov/assets/extra-models.js": "ad5230388f7b8690ca6c5967b21f55263de78f8369313d2bad10c567c12ef2b2",
+    "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+  },
+  "sourceHashesByClip": {
+    "atanasyan-altitude-iso": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-altitude-quad": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-altitude-right": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-altitude-triangle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-bisector-angle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-bisector-triangle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-diagonal-quad": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-diagonal-rectangle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-diagonal-rhombus": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-diagonal-trapezoid": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-explore-angle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-explore-circle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-explore-triangle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-explore-two-circles": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-median-right": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-median-triangle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-midline-triangle-build": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-midline-triangle-move": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-midpoint-quad": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-midpoint-segment": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-midpoint-triangle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-parallel-angle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-parallel-triangle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-perpbisector-segment": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-perpendicular-angle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    },
+    "atanasyan-reflection-triangle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347"
+    }
+  },
+  "scenarioSha256": {
+    "atanasyan-altitude-iso": "b28556bc7bd3e150b54697dd60df9cb140f08a993e4f26539a6885be4c9083cc",
+    "atanasyan-altitude-quad": "8bdc9d5128728079c7ec867d321b693b778d39e81dd6d6dfd00e6f0fea941a74",
+    "atanasyan-altitude-right": "74dcefc88ead0b0c12daef924091ae073a3bd69609fbe40573298e7a0e3e90f3",
+    "atanasyan-altitude-triangle": "59394a90bb5fc8af7e990e6657eb1b597501434dd9af8f278ecb38fb344847d1",
+    "atanasyan-bisector-angle": "bbedf15b85322bdc9d05fece5002d425fd59047b0a6b07c96a5fcec6eb8e73f0",
+    "atanasyan-bisector-triangle": "932c192cc75330dec5afdb890d9669298efd6ea8b4dc100dc2bb9a2c564917d6",
+    "atanasyan-diagonal-quad": "d9c8f69f9141befff664c1747a386eb7893d11a3186df3745a2fdee0cabd8b59",
+    "atanasyan-diagonal-rectangle": "150e522383a90824caf7e37dcdad05f751ef9d79c0894d7170bcaa2e1b4bb53e",
+    "atanasyan-diagonal-rhombus": "bd61bcc6b6f0ae3db85cc9f466dc53d365e9cfaa680e66cd1b19875224b8d1e1",
+    "atanasyan-diagonal-trapezoid": "6db7c611804d3d5c5538279ed3433103bd051ba42e8408f7eca5c3f85f81e649",
+    "atanasyan-explore-angle": "b095ed7b95f426780ec6c54fed3c57fc0acd20dc9dd556f58a3a1b7073e135aa",
+    "atanasyan-explore-circle": "7444164401f359c20103b583931ccabc600ec682afec6e8c2252a835ef83e2a6",
+    "atanasyan-explore-triangle": "4d3231a7636a55662b5dd2833f6831ed286289f1851f9a95dd7413f3197f9ebb",
+    "atanasyan-explore-two-circles": "b8ac94ac162598ea85475aaba156ac3bb027269607ab3e0cd85fc155686d71ae",
+    "atanasyan-median-right": "fdced57c8c7e6f0c80a7432d7d3ed292858c90a81b7086bcf1af39bac8137a80",
+    "atanasyan-median-triangle": "23e2e5e6659b5ad9cfb3addbda9d38f7864e8820cc72d783ceeacadb86ae3624",
+    "atanasyan-midline-triangle-build": "a8c70b68cf1e5cdc651b16b31701451a1ba3acbc6fa3647e189a67c46530d5e6",
+    "atanasyan-midline-triangle-move": "e27bb14882cfb2733a5ab95e0d86fbec6fc415277da111e6c9efc6df4aa1608b",
+    "atanasyan-midpoint-quad": "f9e84af5a8f1ae5690778d743a92c0b9e1a6f5e538d18d11a81baeb7811bd037",
+    "atanasyan-midpoint-segment": "43c57673ab2cb653991c561be32a1ce73a9427e8417aaeb94b3f6bd215a063c1",
+    "atanasyan-midpoint-triangle": "7efb198d630c3d134d2cdb8c148276ed187a28786fc5b989015bc998e223c6ac",
+    "atanasyan-parallel-angle": "bd4c7914725baf61087b8a259105c94ef069d822b8f0bc2523dc0a375cac0045",
+    "atanasyan-parallel-triangle": "2a87582a5d73d353a28ca54b2168fd07e6d3bb86b88360eeff2bd8548575d43c",
+    "atanasyan-perpbisector-segment": "63cb7acb59a0c90f47efdaabf5d7ec3dd6a8431b91d6252749fcf89ce243a7f7",
+    "atanasyan-perpendicular-angle": "b7a75644967e26e174f5accefc6426bc5a5a60020848556976bc64a1c04889d6",
+    "atanasyan-reflection-triangle": "595ef9610346e93e6af0e886c6e24d858984534ef43ff5ce33e2e975e344d268"
+  },
+  "toolHashes": {
+    "tools/geometry-experiment-gifs.browser.cjs": "fe19bd937673c009e1d207de358dfcc91e6d9aba7aa83802f84b3a7fb722f743",
+    "tools/build-geometry-experiment-gifs.py": "dbdfd08b2ee888a43b93cf6d4b3f256e9d52fdf4e3160ddd32067e680a81f82e"
+  },
+  "catalogSha256": "55e5bfc666d9c7362da9542432f584546d10af75eab37567e0402ebb6bca5727",
+  "planSha256": "a322a1a3f839ee5189b9c5159ec1434b5d41d40f5870092fc61948772f513b63",
+  "toolchain": {
+    "node": "v22.14.0",
+    "playwright": "1.62.1",
+    "pillow": "11.3.0",
+    "python": "Python 3.12.3"
+  },
+  "encodedMediaSha256": "c0f1fff655e56c78c77ee2b484e196a83a661e118f5bb43b95982a55536bd9ba",
+  "browserVersions": [
+    "151.0.7922.34"
+  ]
+}
