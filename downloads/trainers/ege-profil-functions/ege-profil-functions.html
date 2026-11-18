@@ -659,8 +659,10 @@ var FN = (function(){
   }
   function parse(s){
     if (s == null) return NaN;
-    s = String(s).trim().replace(",", ".").replace("−", "-").replace(/\s+/g, "");
-    return s ? Number(s) : NaN;
+    s = String(s).trim().replace(",", ".").replace("−", "-");
+    if (!/^[+-]?(?:(?:\d+|\d{1,3}(?:[ \u00a0\u202f]\d{3})+)(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(s)) return NaN;
+    var value = Number(s.replace(/[ \u00a0\u202f]/g, ""));
+    return Number.isFinite(value) ? value : NaN;
   }
   function check(input, t){
     var v = parse(input);
@@ -839,9 +841,15 @@ if (typeof module !== "undefined") module.exports = FN;
     document.getElementById("dFb").className = "feedback";
     refreshStats();
   }
+  function validInput(input, feedback){
+    if (Number.isFinite(FN.parse(input.value))) return true;
+    feedback.className = "feedback on hint";
+    feedback.textContent = "Введите одно число, например −2 или 0,5. Можно использовать точку или запятую.";
+    return false;
+  }
   document.getElementById("dCheck").addEventListener("click", function(){
     if (dAnswered) return;
-    if (isNaN(FN.parse(document.getElementById("dAnswer").value))) return;
+    if (!validInput(document.getElementById("dAnswer"), document.getElementById("dFb"))) return;
     var fb = document.getElementById("dFb");
     if (FN.check(document.getElementById("dAnswer").value, D)){
       dAnswered = true;
@@ -906,7 +914,7 @@ if (typeof module !== "undefined") module.exports = FN;
   });
   document.getElementById("zCheck").addEventListener("click", function(){
     if (!Z.active || Z.waiting) return;
-    if (isNaN(FN.parse(document.getElementById("zAnswer").value))) return;
+    if (!validInput(document.getElementById("zAnswer"), document.getElementById("zFb"))) return;
     var ok = FN.check(document.getElementById("zAnswer").value, Z.cur);
     Z.waiting = true;
     document.getElementById("zAnswer").disabled = true;

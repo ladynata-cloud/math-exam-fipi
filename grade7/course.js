@@ -125,7 +125,12 @@
     });
   }
   document.querySelectorAll('[data-subject]').forEach(button => {
-    button.addEventListener('click', () => filter(button.dataset.subject));
+    button.addEventListener('click', () => {
+      const subject = button.dataset.subject;
+      filter(subject);
+      const hash = subject === 'all' ? '#practice' : '#new-' + subject;
+      if (location.hash !== hash) history.replaceState(history.state, '', hash);
+    });
   });
   function fromHash() {
     const subject = location.hash.match(/^#new-(algebra|geometry|foundation|pre7)$/)?.[1];

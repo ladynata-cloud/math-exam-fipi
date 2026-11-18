@@ -60,6 +60,13 @@ def historical_bytes(path, raw=None):
     raw = before_quantity_check(path, raw)
     if path.name == 'index.html':
         raw = restore_public_navigator('geometry-course/textbook/index.html', raw)
+        # Restore the textbook entry as it was reviewed before the three-card
+        # construction supplement. Historical receipts cover the original course.
+        if sha(raw) == 'c26e8f026e5560c39bd0f9a841c0458b7ff4d260c038a42b4ccb2ed7a060ec2e':
+            restored = raw.replace(b'<script src="/assets/geometry-step-views.js"></script>\n', b'', 1)
+            restored = restored.replace(b'GeometryStepViews.prepare(bundle)', b'bundle', 1)
+            assert sha(restored) == '098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804', 'Invalid step-view entry amendment'
+            raw = restored
     name = 'assets/' + path.name if path.parent.name == 'assets' else ''
     if name not in BASE or sha(raw) == BASE[name]:
         return raw

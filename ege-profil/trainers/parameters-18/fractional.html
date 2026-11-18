@@ -205,6 +205,7 @@
   </section>
 </div>
 
+<script src="number-input.js"></script>
 <script>
 (function(){
   "use strict";
@@ -253,17 +254,10 @@
   });
 
   /* парсеры: 0.5 / 0,5 / 1/2 ; множества через ; или пробел */
-  function pnum(v){
-    v=(v==null?"":(""+v)).trim().replace(",",".");
-    if(v==="") return null;
-    var m=v.match(/^(-?)(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
-    if(m){ var n=parseFloat(m[2])/parseFloat(m[3]); return m[1]?-n:n; }
-    var n2=parseFloat(v); return isNaN(n2)?NaN:n2;
-  }
   function pset(v){
     v=(v||"").trim();
     if(!v) return null;
-    var parts=v.split(/[;\s]+/).filter(Boolean).map(pnum);
+    var parts=v.replace(/\s*\/\s*/g,"/").split(/[;\s]+/).filter(Boolean).map(parseParameterNumber);
     if(parts.some(function(x){return x==null||isNaN(x);})) return NaN;
     parts.sort(function(a,b){return a-b;});
     return parts.filter(function(x,i){return i===0||Math.abs(x-parts[i-1])>1e-9;});
@@ -393,15 +387,16 @@
     }
     $("#hCheck").addEventListener("click",function(){
       if(!cur) return;
-      var k=pnum($("#hk").value), h=pnum($("#hh").value), v=pnum($("#hv").value);
+      var k=parseParameterNumber($("#hk").value), h=parseParameterNumber($("#hh").value), v=parseParameterNumber($("#hv").value);
       if(k===null||h===null||v===null){ fb.className="feedback warn on"; fb.textContent="Впиши все три коэффициента."; return; }
       var ok=Math.abs(k-cur.k)<1e-9&&Math.abs(h-cur.h)<1e-9&&Math.abs(v-cur.v)<1e-9;
       if(ok){
         streak++; if(streak>best){best=streak; save({drillBest:best});}
         $("#hStreak").textContent=streak; $("#hBest").textContent=best;
         fb.className="feedback ok on";
-        fb.textContent="Верно: y = "+cur.k+"/(x "+(cur.h>=0?"− "+cur.h:"+ "+(-cur.h))+") "+(cur.v>=0?"+ "+cur.v:"− "+(-cur.v))+". Следующий график →";
-        setTimeout(gen,700);
+        fb.textContent="Верно: y = "+cur.k+"/(x "+(cur.h>=0?"− "+cur.h:"+ "+(-cur.h))+") "+(cur.v>=0?"+ "+cur.v:"− "+(-cur.v))+". Нажми «Новый график», чтобы продолжить.";
+        cur=null;
+        $("#hNew").focus();
       } else {
         streak=0; $("#hStreak").textContent=0;
         fb.className="feedback bad on";

@@ -2,13 +2,21 @@ name: Pogorelov textbook companion
 on:
   pull_request:
     paths:
-      - 'geometry-pogorelov/textbook/**'
+      - 'geometry-pogorelov/**'
+      - 'assets/geometry-experiment-gifs/pogorelov-*'
+      - 'tools/pogorelov/**'
+      - 'tools/geometry-inscribed-angle/**'
+      - 'geometry-merzlyak/atlas/merzlyak-base-8-9.html'
       - 'tools/pogorelov-textbook/**'
       - '.github/workflows/pogorelov-companion.yml'
   push:
     branches: [main]
     paths:
-      - 'geometry-pogorelov/textbook/**'
+      - 'geometry-pogorelov/**'
+      - 'assets/geometry-experiment-gifs/pogorelov-*'
+      - 'tools/pogorelov/**'
+      - 'tools/geometry-inscribed-angle/**'
+      - 'geometry-merzlyak/atlas/merzlyak-base-8-9.html'
       - 'tools/pogorelov-textbook/**'
       - '.github/workflows/pogorelov-companion.yml'
 permissions:
@@ -41,3 +49,22 @@ jobs:
           node --check geometry-pogorelov/textbook/app.js
           node --check geometry-pogorelov/textbook/core.js
           git diff --check
+
+  atlas-and-drawings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - run: node tools/pogorelov/check.cjs
+      - run: node tools/pogorelov/browser.cjs
+      - run: node tools/pogorelov/tab-conflict.browser.cjs
+      - run: node tools/pogorelov/topic-guides.browser.cjs
+      - run: node tools/pogorelov-textbook/model-cases.browser.cjs
+      - run: node tools/geometry-inscribed-angle/browser.cjs

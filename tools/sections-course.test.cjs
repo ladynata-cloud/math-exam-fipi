@@ -122,6 +122,36 @@ test('previous explanations, draft, camera and help survive navigation and a fre
   } finally { await reloaded?.close(); await f.close(); }
 });
 
+test('a delayed result toggle from a detached longer lesson cannot change the next lesson scene or saved work', async () => {
+  const previous = course.lessons.find(lesson => lesson.id === 'auth-method-04');
+  const next = course.lessons.find(lesson => lesson.id === 'auth-metric-09');
+  assert(previous.steps.length > next.steps.length, 'the regression crosses from eight steps to five');
+  const f = boot({hash:'#' + previous.id,storage:{[course.storageKey]:JSON.stringify({version:1,current:previous.id,tasks:{
+    [previous.id]:{mode:'study',revealed:previous.steps.length,viewCount:previous.steps.length,
+      calculationRevealed:(previous.calculationSteps || []).length,showResult:true,draft:'Сохранённое объяснение предыдущего построения.'}
+  }})}});
+  try {
+    await tick();
+    const detached = f.doc.querySelector('.result-details'); assert(detached?.open);
+    f.open(next.id); await tick();
+    assert.equal(detached.isConnected, false);
+    const before = f.state(), saved = f.saved(), drawing = f.doc.querySelector('.course-main .model-svg').outerHTML;
+    // Browsers can deliver a queued native toggle after the old card has been
+    // replaced. Exercise both its opening and closing callbacks explicitly.
+    detached.dispatchEvent(new f.w.Event('toggle'));
+    detached.open = false; detached.dispatchEvent(new f.w.Event('toggle')); await tick();
+    assert.deepEqual(f.state(), before, 'stale events do not alter either lesson or its help/result history');
+    assert.deepEqual(f.saved(), saved, 'stale events cannot save work from a replaced disclosure');
+    assert.equal(f.doc.querySelector('.course-main .model-svg').outerHTML, drawing);
+    assert.equal(f.current().revealed, 0);
+    click(f, '[data-action="start-study"]'); construct(f, 1);
+    const camera = f.current().camera;
+    click(f, '[aria-label="Повернуть вправо"]'); assert.notDeepEqual(f.current().camera, camera);
+    click(f, '.plane-toggle'); assert.equal(f.current().planeView, true);
+    assert.equal(f.current().revealed, 1, 'the actual next lesson still constructs and changes views normally');
+  } finally { try { await f.close(); } finally { f.w.close(); } }
+});
+
 test('a known direct link opens its actual card instead of a hidden learning portal', async () => {
   const f = boot({ hash: '#auth-method-04' });
   try {
