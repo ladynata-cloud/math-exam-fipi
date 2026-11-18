@@ -3514,35 +3514,161 @@ const skills={
  proportion:{title:'Пропорции и связь величин',path:'/trainers/oge-basics/percentages/proportion.html'},
  equations:{title:'Простые уравнения по шагам',path:'/trainers/simple-equations-stepwise.html'},
  powers:{title:'Степени и корни',path:'/trainers/oge-task8-powers-roots.html'},
- line:{title:'Отрицательные числа на прямой',path:'/trainers/oge-basics/negative-number-line.html'}
+ line:{title:'Отрицательные числа на прямой',path:'/trainers/oge-basics/negative-number-line.html'},
+ decimalMultiply:{title:'Умножение десятичных дробей',path:'/trainers/arifmetika.html?level=n5c'},
+ decimalDivide:{title:'Деление на десятичную дробь',path:'/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html'},
+ decimalAdd:{title:'Сложение десятичных дробей по разрядам',path:'/trainers/oge-basics/decimal-add-subtract.html'},
+ area:{title:'Единицы площади',path:'/trainers/oge-basics/units-area.html'},
+ lengthTime:{title:'Единицы длины и времени',path:'/trainers/oge-basics/units-length-time.html'},
+ height:{title:'Основание и высота параллелограмма',path:'/geometry-course/atlas/area-parallelogram.html'}
 };
+const nextStep=(why,key=null)=>({why,key});
+const targeted={
+ choice: nextStep('Запиши полную стоимость для одного магазина: цена набора × количество + доставка. После этого сравни магазины.'),
+ units: nextStep('Нарисуй куб со стороной 1 дм. Сколько сантиметров по одному ребру? Почему для объёма нужно умножить это число на себя три раза?'),
+ 'practice-delivery': nextStep('Сначала посчитай стоимость товаров в одном магазине. Сравни её с порогом: при точном равенстве доставка остаётся платной.'),
+ 'practice-luggage': nextStep('Возьми одну сумку и проверь её размеры и массу по очереди. Одного нарушения достаточно, чтобы исключить сумку.'),
+ 'practice-rental': nextStep('Сколько стокилометровых отрезков в маршруте? Используй это число, чтобы найти расход на всю поездку, а затем прибавь к цене топлива аренду.'),
+ 'practice-grid-parallelogram': nextStep('Выбери горизонтальное основание. Отметь перпендикуляр к нему и посчитай его длину в клетках.', 'height'),
+ 'practice-parallelogram': nextStep('Найди высоту к указанному основанию. Подставь длины основания и перпендикулярной к нему высоты в формулу площади.', 'height'),
+ 'practice-grid-cut': nextStep('Дострой фигуру до прямоугольника. Найди его площадь и вычти площадь выреза.'),
+ 'practice-decimals': ({stepIndex,value,task})=>{
+  const foundProduct=stepIndex===undefined&&numeric(value)===task?.steps?.[0]?.a;
+  return stepIndex===1||foundProduct
+   ?nextStep('Поставь запятые двух слагаемых друг под другом и сложи одинаковые разряды.', 'decimalAdd')
+   :nextStep('Проверь произведение первых двух чисел отдельно. Посчитай знаки после запятой в обоих множителях и оцени, где должна стоять запятая в произведении.', 'decimalMultiply');
+ },
+ 'practice-decimal-division': ({stepIndex})=>stepIndex===2
+   ?nextStep('Раздели целые числа, которые уже получил.')
+   :nextStep('Во сколько раз надо увеличить делитель, чтобы он стал целым? Увеличь делимое во столько же раз.', 'decimalDivide'),
+ 'practice-area-units': ({stepIndex})=>stepIndex===0
+   ?nextStep('Сначала переведи один метр в сантиметры.', 'lengthTime')
+   :nextStep('Представь квадрат 1 м × 1 м. Сколько квадратов 1 см × 1 см в одном ряду? Сколько таких рядов?', 'area'),
+ 'practice-time': nextStep('Переведи целые часы в минуты и только затем прибавь оставшиеся минуты.', 'lengthTime'),
+ 'practice-units-match': nextStep('Представь размер каждого предмета. Если сравнение трудно, переведи близкие варианты в одинаковые единицы длины.', 'lengthTime'),
+ 'practice-trig-angle': nextStep('Один полный оборот — 360°. Убери полные обороты, затем найди на окружности синус оставшегося угла.'),
+ 'practice-temperature': ({stepIndex,task})=>stepIndex===1&&task?.params?.c<0
+   ?nextStep('Прибавь 32 к уже найденному отрицательному слагаемому.', 'signs')
+   :null,
+ 'practice-fraction-expression': ({stepIndex})=>stepIndex===1
+   ?nextStep('После деления приведи слагаемые к общему знаменателю.', 'fractions')
+   :null,
+ 'practice-fraction-divide': nextStep('Запиши дробь, на которую делишь. Поменяй в ней местами числитель и знаменатель и замени деление умножением.'),
+ 'practice-fraction-percent': nextStep('Прими целое за 100%. Сначала запиши данную долю десятичной дробью, затем умножь её на 100.', 'percent'),
+ 'practice-percent-change': nextStep('Сначала найди процент от исходной цены. Затем по условию прибавь его денежное значение или вычти.', 'change'),
+ 'practice-percent-reverse': nextStep('Прими прежнюю цену за 100%. Сколько процентов старой цены осталось после скидки?', 'change')
+};
+// These external trainers rehearse the operation actually required by the
+// family. Mixed tasks use the authored in-place step instead of a category tag.
+const examSkills={
+ 'practice-fraction-add':'fractions',
+ percent:'change',
+ 'practice-percent-part':'percent',
+ 'practice-percent-whole':'percent',
+ 'practice-percent-rate':'percent',
+ 'practice-percent-chain':'change',
+ 'practice-direct-proportion':'proportion',
+ 'practice-inverse-proportion':'proportion',
+ powers:'powers',
+ 'practice-root-product':'powers',
+ 'practice-power-rules':'powers',
+ 'equations-linear':'equations',
+ 'equations-signs':'equations',
+ 'equations-fractions':'equations',
+ 'equations-brackets':'equations'
+};
+const gapRoutes={fractions:'fractions',fraction:'share',percent:'choice',change:'percent',proportion:'ratio',division:'ratio',equations:'equations',powers:'powers',signs:'numberline'};
+function specificRoute(id,context){
+ const route=Object.hasOwn(targeted,id)?targeted[id]:null;
+ return typeof route==='function'?route(context):route;
+}
 function numeric(s){const m=String(s).trim().replace('−','-').replace(',','.').match(/^([+-]?[\d.]+)(?:\s*\/\s*([+-]?[\d.]+))?$/);if(!m||m[2]!==undefined&&+m[2]===0)return null;const n=+m[1]/(m[2]===undefined?1:+m[2]);return Number.isFinite(n)?n:null;}
-function recommend({id,value,expected}){
- const n=numeric(value);let key,why;
- if(Number.isFinite(expected)&&expected!==0&&n!==null&&Math.abs(n+expected)<1e-7){key='signs';why='Получился ответ с противоположным знаком. Возможно, стоит проверить действие со знаками.';}
- else if(/\/\s*[+-]?0(?:[.,]0*)?\s*$/.test(String(value))){key='part';why='У дроби не может быть нулевого знаменателя. Вспомним, что означает деление целого на части.';}
- else if(id==='percent'){key='change';why='На этом шаге важно, от какого числа считаются проценты: после изменения база может стать другой.';}
- else if(id==='choice'||id==='mixtures'){key='percent';why='Здесь помогает связь процента, части и целого. Проверь, какая величина принята за 100%.';}
- else if(['fractions','share','gardens'].includes(id)){key='fractions';why='Для этого шага нужны доли одного целого и действия с дробями. Можно отдельно потренировать общий знаменатель.';}
- else if(['joint','reverse','delay','leave'].includes(id)){key='part';why='Время на всю работу и доля работы за час — разные величины. Вспомним смысл единичной дроби.';}
- else if(['crew','minimum','ratio','motion','practical','scale'].includes(id)){key='proportion';why='Сначала установи, как связаны величины: увеличение одной не всегда увеличивает другую.';}
- else if(id==='equations'||id==='expressions'){key='equations';why='Если трудно выполнить преобразование, можно вернуться к простому уравнению и действию с обеими частями.';}
- else if(['powers','functions','triangle','circle','roundbody','pyramid'].includes(id)){key='powers';why='В этом шаге используются степени или корни. Проверь базовое действие отдельно от всей задачи.';}
- else if(id==='numberline'){key='line';why='Вспомним порядок чисел на прямой и положение отрицательных чисел.';}
+function examRoute(id,task,stepIndex){
+ if(!task?.steps?.length)return null;
+ const linearVariant=id==='equations'&&task.model?.kind==='equation';
+ const familySkill=Object.hasOwn(examSkills,id)?examSkills[id]:null;
+ const key=linearVariant?'equations':familySkill;
+ if(!key&&stepIndex!==undefined)return null;
+ const index=stepIndex??0;
+ const why=root.PathTaskHints?.hint(task,index)||task.steps[index]?.q;
+ if(!why)return null;
+ return key?{key,why,...skills[key]}:nextStep(why);
+}
+function recommend(context){
+ const {id,value,expected,meta,task,stepIndex}=context;
+ // Concrete input errors take precedence over the broad exam task family.
+ const n=numeric(value);
+ if(/\/\s*[+-]?0(?:[.,]0*)?\s*$/.test(String(value)))return {key:'part',...skills.part,why:'У дроби не может быть нулевого знаменателя. Вспомним, что означает деление целого на части.'};
+ if(Number.isFinite(expected)&&expected!==0&&n!==null&&Math.abs(n+expected)<1e-7)return {key:'signs',...skills.signs,why:'Получился ответ с противоположным знаком. Возможно, стоит проверить действие со знаками.'};
+ const routine=specificRoute(id,context);
+ if(routine){
+  if(routine.key)return {...routine,...skills[routine.key]};
+  return stepIndex===undefined?routine:null;
+ }
+ if(meta?.pos&&!meta.grade7&&!meta.pre7)return examRoute(id,task,stepIndex);
+ const family=meta?.expanded?gapRoutes[meta.gap]||id:id;
+ let key,why;
+ if(family==='percent'){key='change';why='На этом шаге важно, от какого числа считаются проценты: после изменения база может стать другой.';}
+ else if(family==='choice'||family==='mixtures'){key='percent';why='Здесь помогает связь процента, части и целого. Проверь, какая величина принята за 100%.';}
+ else if(['fractions','share','gardens'].includes(family)){key='fractions';why='Для этого шага нужны доли одного целого и действия с дробями. Можно отдельно потренировать общий знаменатель.';}
+ else if(['joint','reverse','delay','leave'].includes(family)){key='part';why='Время на всю работу и доля работы за час — разные величины. Вспомним смысл единичной дроби.';}
+ else if(['crew','minimum','ratio','motion','practical','scale'].includes(family)){key='proportion';why='Сначала установи, как связаны величины: увеличение одной не всегда увеличивает другую.';}
+ else if(family==='equations'||family==='expressions'){key='equations';why='Если трудно выполнить преобразование, можно вернуться к простому уравнению и действию с обеими частями.';}
+ else if(['powers','functions','triangle','circle','roundbody','pyramid'].includes(family)){key='powers';why='В этом шаге используются степени или корни. Проверь базовое действие отдельно от всей задачи.';}
+ else if(family==='numberline'){key='line';why='Вспомним порядок чисел на прямой и положение отрицательных чисел.';}
  if(!key)return null;return {key,...skills[key],why};
 }
-function show(context){const hint=recommend(context);document.getElementById('ege-remediation')?.remove();if(!hint)return;
- const feedback=document.getElementById('feedback');if(!feedback)return;
- const box=document.createElement('aside');box.id='ege-remediation';box.className='callout';box.setAttribute('aria-label','Вспомнить нужный навык');
- const title=document.createElement('strong');title.textContent='Можно вернуться к основе';
- const text=document.createElement('p');text.textContent=hint.why;
- const link=document.createElement('a');link.className='btn';link.textContent=hint.title+' →';
- const origin=location.protocol==='file:'?'https://mathexam.space':location.origin;
- const url=new URL(hint.path,origin);url.searchParams.set('returnTo',location.protocol==='file:'?'/ege-baza/path/index.html#map':location.pathname+location.hash);link.href=url.href;
- const note=document.createElement('p');note.className='muted';note.textContent='Текущий шаг и ответ сохранены. В тренажёре есть кнопка возврата к этой задаче. Рекомендация — предположение о трудности, а не оценка твоих способностей.';
- box.append(title,text,link,note);feedback.after(box);
+function clear(){document.getElementById('ege-remediation')?.remove();}
+function show(context){
+ const hint=recommend(context);
+ clear();
+ if(!hint)return;
+ const feedback=context.feedback||document.getElementById('feedback');
+ if(!feedback)return;
+ const box=document.createElement('aside');
+ box.id='ege-remediation';
+ box.className='callout';
+ box.setAttribute('aria-label','Вспомнить нужный навык');
+ const title=document.createElement('strong');
+ title.textContent=hint.path?'Можно потренировать этот навык':'Проверь следующий шаг';
+ const text=document.createElement('p');
+ text.textContent=hint.why;
+ box.append(title,text);
+ if(hint.path){
+  const link=document.createElement('a');
+  link.className='btn';
+  link.textContent=hint.title+' →';
+  const offline=location.protocol==='file:';
+  const storageNotice=document.getElementById('storage');
+  const keepTab=offline||Boolean(storageNotice&&!storageNotice.hidden);
+  const url=new URL(hint.path,offline?'https://mathexam.space':location.origin);
+  if(!keepTab){
+   // The separate practice has its own storage key. Returning without this
+   // exact mode would open course progress instead of the saved attempt.
+   const separate=location.pathname==='/ege-baza/path/index.html'&&new URLSearchParams(location.search).get('practice')==='recovery';
+   url.searchParams.set('returnTo',location.pathname+(separate?'?practice=recovery':'')+location.hash);
+  }
+  link.href=url.href;
+  const note=document.createElement('p');
+  note.className='muted';
+  if(keepTab){
+   link.target='_blank';
+   link.rel='noopener';
+   note.textContent='Тренажёр откроется в новой вкладке. Текущая работа останется здесь.';
+  }else{
+   note.textContent='Вернись кнопкой в тренажёре. Твоя запись останется в задаче.';
+  }
+  box.append(link,note);
+ }else if(context.openSteps){
+  const button=document.createElement('button');
+  button.type='button';
+  button.textContent='Открыть разбор этой задачи';
+  button.onclick=context.openSteps;
+  box.append(button);
+ }
+ feedback.after(box);
 }
-const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof module!=='undefined')module.exports=api;
+const api={skills,recommend,numeric,show,clear};root.EgeRemediation=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);
 
 </script><script data-inline-source="/ege-baza/path/exam-pool.js">
@@ -9974,7 +10100,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   return picture?`<svg class="task-figure" viewBox="0 0 560 310" role="img" aria-label="Чертёж к условию задачи; заданные длины подписаны">${picture}</svg><p class="muted">Чертёж схематический. Значения берём из условия.</p>`:'';
  }
  function mount(host,context) {
-  const {meta,task:t,lesson:l,save,seen,expose,fresh,remediationId}=context,D=root.PathData,M=root.PathPracticeView.math;
+  const {meta,task:t,lesson:l,save,seen,expose,fresh}=context,D=root.PathData,M=root.PathPracticeView.math;
   const learningCycle=context.learningCycle===true;
   const construction=constructions[t.id];
   let skillMap=null;
@@ -10059,7 +10185,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    const ok=D.correct(t,value),independent=!l.attempted&&!l.help&&!seen(t);
    l.attempted=true;expose(t);
    if(ok){
-    l.done=true;
+    root.EgeRemediation.clear?.();l.done=true;
     if(independent)l.independent++;
     l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent}).slice(-100);
     if(learningCycle){
@@ -10070,7 +10196,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
      feedback(independent?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');
     }
    }
-   else{l.help=true;if(learningCycle)u.mistakes=Math.min(1000,u.mistakes+1);feedback(root.PathPracticeView.wrongFeedback(t,value,learningCycle?learningFeedback(t,value):'Пока неверно. Проверь, что нужно найти, знак и единицы. Если трудно, открой подсказку.'),true);root.EgeRemediation.show({id:remediationId(meta),value,expected:t.answer});}
+   else{l.help=true;if(learningCycle)u.mistakes=Math.min(1000,u.mistakes+1);feedback(root.PathPracticeView.wrongFeedback(t,value,learningCycle?learningFeedback(t,value):'Пока неверно. Проверь, что нужно найти, знак и единицы. Если трудно, открой подсказку.'),true);root.EgeRemediation.show({id:meta.id,meta,task:t,value,expected:t.answer,openSteps});}
    save();
   };
   let mountedModel=false;
@@ -10130,7 +10256,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    if(!step||!$('#stepAnswer'))return;
    const field=$('#stepAnswer');field.value=u.stepDraft;
    const writeStep=value=>{u.stepDraft=value.slice(0,10000);save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
-   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:remediationId(meta),value,expected:step.a});save();}};
+   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){root.EgeRemediation.clear?.();u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:meta.id,meta,task:t,stepIndex:l.step,value,expected:step.a,feedback:$('#stepFeedback')});save();}};
    const why=$('#stepWhy');why.open=u.whyOpen;why.querySelector('summary').addEventListener('click',()=>{if(!why.open)markHelp();});why.ontoggle=()=>{if(!root.document||!why.isConnected)return;u.whyOpen=why.open;if(why.open)markHelp();else save();};
   }
   renderSteps();
@@ -10141,7 +10267,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    if(element.open)onOpen?.();
   };
   bindDisclosure(help,'helpOpen');bindDisclosure(model,'modelOpen',mountModel);bindDisclosure(steps,'stepsOpen');
-  const openSteps=()=>{help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
+  const openSteps=()=>{root.EgeRemediation.clear?.();help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
   $('#startSteps').onclick=openSteps;
   // The route describes the guided steps of this variant. Exam and board modes
   // keep using their existing renderer and progress rules.
@@ -10278,7 +10404,6 @@ function foundation(){
  root.innerHTML='<a href="#map">← Все тренажёры</a><p class="eyebrow">Общий маршрут для школьной математики и ЕГЭ</p><h1>Дроби. Проценты. Пропорции.</h1><p class="lead">Начни с первого непонятного шага. Если умеешь решать без подсказок, переходи дальше. Завершение разбора — подготовка, самостоятельное новое решение — отдельный результат.</p><ol class="foundation-route">'+D.practice.foundation.map(id=>{let m=D.meta.find(x=>x.id===id),l=state.lessons[id];return `<li><h2><a href="#lesson=${id}">${E(m.title)}</a></h2><p>${E(m.idea)}</p><span>${l?`Самостоятельно: ${l.independent||0}. Разборов: ${l.guided||0}.`:'Ещё не открывали.'}</span></li>`;}).join('')+'</ol><div class="actions"><a class="btn" href="../algebra/index.html#base">Базовые действия</a><a class="btn" href="../percent/index.html">Лаборатория процентов</a><a class="btn primary" href="#report">Мои результаты</a></div>';
 }
 function support(t,omitVisual=false){return window.PathPracticeView?PathPracticeView.markup(t,omitVisual):'';}
-function remediationId(meta){if(!meta.expanded)return meta.id;return ({fractions:'fractions',fraction:'share',decimals:'fractions',percent:'choice',change:'percent',proportion:'ratio',division:'ratio',equations:'equations',powers:'powers',signs:'numberline'})[meta.gap]||meta.id;}
 function equationPracticeLinks(id){if(id!=='equations'&&!D.equationPractice?.has(id))return '';return `<section class="panel equation-practice-menu"><h2>Потренироваться на похожих уравнениях</h2><p>Четыре набора по 240 разных условий. Выбери один тип: новые варианты останутся линейными уравнениями этого типа.</p><div class="actions">${D.equationPractice.families.map(m=>`<a class="btn ${id===m.id?'primary':''}" href="#lesson=${m.id}" ${id===m.id?'aria-current="page"':''}>${E(m.title)}</a>`).join('')}</div>${D.equationPractice.has(id)?'<p>Кнопки «Ещё по шагам» и «Ещё задача этого типа» дают новое условие выбранного типа. После 240 показанных условий начнутся повторы; они не добавляют новых самостоятельных успехов.</p>':''}</section>`;}
 function fractionPracticeLink(id){return ['fractions','practice-fraction-expression'].includes(id)?'<section class="panel fraction-extra-practice"><h2>Ещё выражения с дробями</h2><p>Скобки и порядок действий: решай новые примеры по одному шагу.</p><a class="btn" href="https://mathexam.space/school/index.html?course=vilenkin6#lesson/v6f-fraction-order" target="_blank" rel="noopener">Открыть тренировку →</a><p>Она откроется в другой вкладке. Эта работа останется здесь.</p></section>':'';}
 function keepSeparateLessonLinks(){
@@ -10293,14 +10418,14 @@ function showLesson(id){const meta=D.meta.find(m=>m.id===id);if(!meta)return map
   root.innerHTML='<p>Чтобы открыть сохранённый пример с теми же числами, обнови страницу.</p><a href="#map">Все задания</a>';
   return;
  }
- const t=personalTask(id,l);if(l.step>t.steps.length)l.step=0;document.title=meta.title+(meta.grade7?' · 7 класс':' · ЕГЭ база');if(!meta.grade7&&!meta.pre7&&window.PathTaskFirst){PathTaskFirst.mount(root,{meta,task:t,lesson:l,save,seen,expose,fresh,setHash,remediationId,equationPracticeLinks,fractionPracticeLink,learningCycle:true,journey:window.EgeBazaExamMap?{line:EgeBazaExamMap.forLesson(id),next:EgeBazaExamMap.nextLesson(id)}:window.EgeBazaJourney?{line:EgeBazaJourney.lineForLesson(id),next:EgeBazaJourney.nextLesson(id)}:null});if(separatePractice)keepSeparateLessonLinks();return;}if(PathPracticeView.photoProof?.supports(t)){showPhotoProof(id,t,l);return;}const source=meta.grade7?'<p class="source">Авторская практика для 7 класса: свои условия, пошаговый разбор и новые варианты. <a href="../../grade7/">Вернуться к курсу</a>.</p>':`<p class="source">Связь: базовый ЕГЭ, позиция ${meta.pos}. Задача авторская. <a href="../sources/index.html#p${meta.pos}">Что сверено с ФИПИ</a>.</p>`;
+ const t=personalTask(id,l);if(l.step>t.steps.length)l.step=0;document.title=meta.title+(meta.grade7?' · 7 класс':' · ЕГЭ база');if(!meta.grade7&&!meta.pre7&&window.PathTaskFirst){PathTaskFirst.mount(root,{meta,task:t,lesson:l,save,seen,expose,fresh,setHash,equationPracticeLinks,fractionPracticeLink,learningCycle:true,journey:window.EgeBazaExamMap?{line:EgeBazaExamMap.forLesson(id),next:EgeBazaExamMap.nextLesson(id)}:window.EgeBazaJourney?{line:EgeBazaJourney.lineForLesson(id),next:EgeBazaJourney.nextLesson(id)}:null});if(separatePractice)keepSeparateLessonLinks();return;}if(PathPracticeView.photoProof?.supports(t)){showPhotoProof(id,t,l);return;}const source=meta.grade7?'<p class="source">Авторская практика для 7 класса: свои условия, пошаговый разбор и новые варианты. <a href="../../grade7/">Вернуться к курсу</a>.</p>':`<p class="source">Связь: базовый ЕГЭ, позиция ${meta.pos}. Задача авторская. <a href="../sources/index.html#p${meta.pos}">Что сверено с ФИПИ</a>.</p>`;
 root.innerHTML=`<a href="${meta.grade7?'#grade7':'#map'}">← Все темы</a><p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+grade7Subjects[meta.subject]:'Задание '+meta.pos}</p><h1>${E(meta.title)}</h1><label>${meta.grade7?'Тема для тренировки':'Тип задачи в этой позиции'} <select id="typeSelect">${D.meta.filter(m=>meta.grade7?m.grade7&&!!m.pre7===!!meta.pre7&&m.subject===meta.subject:m.pos===meta.pos).map(m=>`<option value="${m.id}" ${m.id===id?'selected':''}>${E(m.title)}</option>`).join('')}</select></label><nav class="stage-nav" aria-label="Шаги урока">${(meta.geometryRebuild?['Главная идея','Мастерская','По шагам','Мой ответ','Объясняю']:stageLabels).map((s,i)=>`<button data-stage="${i}" ${i===l.stage?'aria-current="step"':''}>${i+1}. ${s}</button>`).join('')}</nav>${meta.geometryRebuild&&[2,3].includes(l.stage)?'<aside class="geometry-entry" aria-label="Как пройти задание"><strong>Одна задача — маленькая миссия</strong><p>Впервые здесь? Найди элементы на рисунке и собери рассуждение. Ошибки можно исправлять, подсказки — брать без штрафа.</p><button type="button" class="primary" data-geometry-explore>Сначала в мастерскую</button></aside>':''}<div id="lesson"></div>${equationPracticeLinks(id)}${fractionPracticeLink(id)}${id==='motion'?'<p class="callout">Ещё один вид текстовых задач: <a href="../work-rate/index.html">землекопы и совместная работа без уравнений</a>.</p>':''}${source}`;
 $('#typeSelect').onchange=e=>setHash('lesson='+e.target.value);root.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{let n=+b.dataset.stage;if(n===3&&l.stage!==3){fresh(id,3);return;}l.stage=n;if(n<3){l.help=true;expose(t);}save();render();});let box=$('#lesson');
 if(meta.geometryRebuild&&$('[data-geometry-explore]'))$('[data-geometry-explore]').onclick=()=>{l.stage=1;l.help=true;save();render();};
 if(l.stage===0){expose(t);box.innerHTML=`<section class="panel"><h2>Главная идея</h2><p class="lead">${M(meta.idea)}</p><div class="callout"><b>Перед вычислением спроси себя</b><p>${(id==='equations'||D.equationPractice?.has(id))?'Что именно я переношу: слагаемое или множитель? Почему равенство останется верным?':'Что дано, что неизвестно и какая связь между ними? Какие единицы нужны в ответе?'}</p></div><p class="task">${M(t.q)}</p>${support(t)}<button class="primary" id="next">Исследовать модель →</button></section>`;$('#next').onclick=()=>{l.stage=1;save();render();};}
 if(l.stage===1){expose(t);l.help=true;box.innerHTML=`<section class="panel"><p class="task">${M(t.q)}</p>${support(t,['polygon-build','pre7-lab','grade7-construction'].includes(t.model.kind))}${t.model.expansion?`<p class="callout">${M(t.model.expansion)}</p>`:''}<div id="model"></div><button id="next" class="primary">Перейти к решению →</button></section>`;PathModels.mount($('#model'),t);$('#next').onclick=()=>{l.stage=2;save();render();};}
-if(l.stage===2){expose(t);box.innerHTML=`<section class="panel"><p class="task">${M(t.q)}</p>${support(t)}<ol class="steps">${t.steps.slice(0,l.step).map(s=>`<li>${M(s.q)} <b>${M(s.a===undefined?'Условия выполнены':PathPracticeView.answerText(s))}</b><br>${M(s.why)}</li>`).join('')}</ol>${l.step<t.steps.length?`<div class="callout"><b>Шаг ${l.step+1}/${t.steps.length}</b><p>${M(t.steps[l.step].q)}</p></div>${answerForm(t.steps[l.step])}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`:'<h2>Разбор завершён</h2><p>Теперь реши новый вариант, выбрав способ самостоятельно.</p><button id="new" class="primary">Новый самостоятельный вариант</button>'}${(id==='equations'||D.equationPractice?.has(id))?'<button id="moreGuided">Ещё по шагам: похожее уравнение</button>':''}<p id="feedback" class="feedback" role="status"></p><details id="gap"><summary>Мешает пробел в основе?</summary><p>Откройте нужный навык; эта вкладка сохраняет текущий шаг. После тренировки вернитесь сюда.</p><a class="btn" href="#foundation">Маршрут: дроби, проценты, пропорции</a><a class="btn" target="_blank" rel="noopener" href="../algebra/index.html">Знаки, дроби и действия</a> <a class="btn" target="_blank" rel="noopener" href="../percent/index.html">Проценты и пропорции</a></details></section>`;if($('#answerForm')){$('#answer').value=l.draft||'';PathPracticeView.bindChoices(root,value=>{l.draft=value;save();});$('#answer').oninput=e=>{l.draft=e.target.value.slice(0,10000);save();};$('#answerForm').onsubmit=e=>{e.preventDefault();if(!$('#answer').value.trim())return feedback('Сначала введи ответ.',true);let s=t.steps[l.step];if(D.correct(s,$('#answer').value)){l.step++;l.draft='';if(l.step===t.steps.length)l.guided=(l.guided||0)+1;save();render();$('#answer')?.focus();}else{l.help=true;save();feedback(PathPracticeView.wrongFeedback(s,$('#answer').value,'Проверь именно этот шаг. '+s.why),true);EgeRemediation.show({id:remediationId(meta),value:$('#answer').value,expected:s.a});}};$('#hint').onclick=()=>{l.help=true;$('#hintText').innerHTML=M(t.steps[l.step].why);save();};}else $('#new').onclick=()=>fresh(id);if($('#moreGuided'))$('#moreGuided').onclick=()=>{const target=id==='equations'?'equations-linear':id;if(target!==id)setHash('lesson='+target);fresh(target,2);};$('#gap').ontoggle=()=>{if($('#gap').open){l.help=true;save();}};}
-if(l.stage===3){box.innerHTML=`<section class="panel"><span class="badge">${t.geometryRebuild ? (id.startsWith('grade7-r-photo-proof-') ? 'Мой ответ по рисунку' : 'Мой ответ') : 'Новый вариант · без открытого разбора'}</span><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" class="feedback" role="status"></p><div class="actions"><button id="explain">Разобрать этот вариант</button><button id="new">Другие числа</button><button id="next">Объяснить своими словами →</button></div><p class="muted">Засчитывается первая верная попытка без подсказки на ранее не показанном условии. Повтор и исправление полезны, но отмечаются отдельно.</p></section>`;$('#answer').value=l.draft||'';PathPracticeView.bindChoices(root,value=>{l.draft=value;save();});$('#answer').oninput=e=>{l.draft=e.target.value.slice(0,10000);save();};$('#answerForm').onsubmit=e=>{e.preventDefault();const v=$('#answer').value;if(!v.trim())return feedback('Сначала введи ответ.',true);if(l.done)return feedback('Этот вариант уже проверен. Возьми другие числа.');const ok=D.correct(t,v),clean=!l.attempted&&!l.help&&!seen(t);l.attempted=true;expose(t);if(ok){l.done=true;if(clean)l.independent=(l.independent||0)+1;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent:clean}).slice(-100);feedback(clean?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');}else{l.help=true;feedback(PathPracticeView.wrongFeedback(t,v,'Пока неверно. Проверь знак, единицы и то, что спрашивается. Можно разобрать этот вариант по шагам.'),true);EgeRemediation.show({id:remediationId(meta),value:v,expected:t.answer});}save();};$('#explain').onclick=()=>{l.help=true;l.stage=2;expose(t);save();render();};$('#new').onclick=()=>fresh(id);$('#next').onclick=()=>{l.stage=4;save();render();};}
+if(l.stage===2){expose(t);box.innerHTML=`<section class="panel"><p class="task">${M(t.q)}</p>${support(t)}<ol class="steps">${t.steps.slice(0,l.step).map(s=>`<li>${M(s.q)} <b>${M(s.a===undefined?'Условия выполнены':PathPracticeView.answerText(s))}</b><br>${M(s.why)}</li>`).join('')}</ol>${l.step<t.steps.length?`<div class="callout"><b>Шаг ${l.step+1}/${t.steps.length}</b><p>${M(t.steps[l.step].q)}</p></div>${answerForm(t.steps[l.step])}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`:'<h2>Разбор завершён</h2><p>Теперь реши новый вариант, выбрав способ самостоятельно.</p><button id="new" class="primary">Новый самостоятельный вариант</button>'}${(id==='equations'||D.equationPractice?.has(id))?'<button id="moreGuided">Ещё по шагам: похожее уравнение</button>':''}<p id="feedback" class="feedback" role="status"></p><details id="gap"><summary>Мешает пробел в основе?</summary><p>Откройте нужный навык; эта вкладка сохраняет текущий шаг. После тренировки вернитесь сюда.</p><a class="btn" href="#foundation">Маршрут: дроби, проценты, пропорции</a><a class="btn" target="_blank" rel="noopener" href="../algebra/index.html">Знаки, дроби и действия</a> <a class="btn" target="_blank" rel="noopener" href="../percent/index.html">Проценты и пропорции</a></details></section>`;if($('#answerForm')){$('#answer').value=l.draft||'';PathPracticeView.bindChoices(root,value=>{l.draft=value;save();});$('#answer').oninput=e=>{l.draft=e.target.value.slice(0,10000);save();};$('#answerForm').onsubmit=e=>{e.preventDefault();if(!$('#answer').value.trim())return feedback('Сначала введи ответ.',true);let s=t.steps[l.step];if(D.correct(s,$('#answer').value)){l.step++;l.draft='';if(l.step===t.steps.length)l.guided=(l.guided||0)+1;save();render();$('#answer')?.focus();}else{l.help=true;save();feedback(PathPracticeView.wrongFeedback(s,$('#answer').value,'Проверь именно этот шаг. '+s.why),true);EgeRemediation.show({id,meta,task:t,stepIndex:l.step,value:$('#answer').value,expected:s.a});}};$('#hint').onclick=()=>{l.help=true;$('#hintText').innerHTML=M(t.steps[l.step].why);save();};}else $('#new').onclick=()=>fresh(id);if($('#moreGuided'))$('#moreGuided').onclick=()=>{const target=id==='equations'?'equations-linear':id;if(target!==id)setHash('lesson='+target);fresh(target,2);};$('#gap').ontoggle=()=>{if($('#gap').open){l.help=true;save();}};}
+if(l.stage===3){box.innerHTML=`<section class="panel"><span class="badge">${t.geometryRebuild ? (id.startsWith('grade7-r-photo-proof-') ? 'Мой ответ по рисунку' : 'Мой ответ') : 'Новый вариант · без открытого разбора'}</span><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" class="feedback" role="status"></p><div class="actions"><button id="explain">Разобрать этот вариант</button><button id="new">Другие числа</button><button id="next">Объяснить своими словами →</button></div><p class="muted">Засчитывается первая верная попытка без подсказки на ранее не показанном условии. Повтор и исправление полезны, но отмечаются отдельно.</p></section>`;$('#answer').value=l.draft||'';PathPracticeView.bindChoices(root,value=>{l.draft=value;save();});$('#answer').oninput=e=>{l.draft=e.target.value.slice(0,10000);save();};$('#answerForm').onsubmit=e=>{e.preventDefault();const v=$('#answer').value;if(!v.trim())return feedback('Сначала введи ответ.',true);if(l.done)return feedback('Этот вариант уже проверен. Возьми другие числа.');const ok=D.correct(t,v),clean=!l.attempted&&!l.help&&!seen(t);l.attempted=true;expose(t);if(ok){EgeRemediation.clear();l.done=true;if(clean)l.independent=(l.independent||0)+1;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent:clean}).slice(-100);feedback(clean?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');}else{l.help=true;feedback(PathPracticeView.wrongFeedback(t,v,'Пока неверно. Проверь знак, единицы и то, что спрашивается. Можно разобрать этот вариант по шагам.'),true);EgeRemediation.show({id,meta,task:t,value:v,expected:t.answer,openSteps:()=>$('#explain').click()});}save();};$('#explain').onclick=()=>{l.help=true;l.stage=2;expose(t);save();render();};$('#new').onclick=()=>fresh(id);$('#next').onclick=()=>{l.stage=4;save();render();};}
 if(l.stage===4){box.innerHTML=`<section class="panel"><h2>Объясни ход мысли</h2><p>Какую связь ты использовал? Почему действие допустимо? Как можно проверить ответ другим способом?</p><textarea id="note" placeholder="Я выбрал(а)… потому что… Проверил(а)…">${E(l.note||'')}</textarea><p class="muted">Текст сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает качество объяснения.</p><div class="actions"><a class="btn" href="#report">Мой отчёт</a>${nextLesson(id)?`<a class="btn primary" href="#lesson=${nextLesson(id)}">Следующая тема →</a>`:`<a class="btn primary" href="../../grade7/geometry-rebuild/">Конец списка · выбрать, что повторить</a>`}</div></section>`;$('#note').oninput=e=>{l.note=e.target.value.slice(0,10000);save();};}if(id.startsWith('grade7-r-photo-proof-')){if($('#new'))$('#new').textContent='Повторить этот рисунок';const note=document.createElement('p');note.className='muted';note.textContent='Этот рисунок повторяется. Для нового условия выбери похожий урок в маршруте; полноту доказательства проверит преподаватель.';box.append(note);if(l.stage===2&&l.step===t.steps.length)box.querySelector('h2 + p').textContent='Теперь объясни доказательство своими словами.';}save();}
 function showPhotoProof(id,t,l){
  const P=PathPracticeView.photoProof,data=P.lesson(t);
@@ -10329,7 +10454,29 @@ function answerForm(t){return PathPracticeView.answerForm(t,10000);}
 function examPool(pos){return PathExamPool.select(D.meta,pos);}
 function startRun(kind){if(state.active&&state.active.kind!==kind){root.innerHTML='<h1>Есть незавершённая проверка</h1><p>Сначала завершите её или сохраните как прерванную.</p><button id="resume">Продолжить</button> <button id="finish">Завершить с текущими ответами</button>';$('#resume').onclick=()=>setHash(state.active.kind);$('#finish').onclick=()=>finishRun(true);return;}if(!state.active){root.innerHTML=`<h1>${kind==='exam'?'Пробная работа':'Найдём точку старта'}</h1><p>21 авторская задача, по одной на позицию. Можно пропускать. Ответы и разбор появятся после завершения. Эта выборка не охватывает все подтипы экзамена.</p><p>${kind==='exam'?'Ориентир — 180 минут. Часы не отправляют работу автоматически.':'Время не ограничено. Диагностика нужна для выбора темы, а не для отметки.'}</p><button id="start" class="primary">Начать</button>`;$('#start').onclick=()=>{state.active={kind,seed:state.serial++,ids:Array.from({length:21},(_,i)=>examPool(i+1)[state.serial%examPool(i+1).length].id),i:0,answers:[],start:Date.now(),assisted:false};save();render();};return;}const r=state.active;if(r.i>=21)return finishRun(false);let id=r.ids[r.i],t=D.task(id,r.seed+r.i);root.innerHTML=`<p class="eyebrow">${r.kind==='exam'?'Пробная работа':'Диагностика'} · ${r.i+1}/21</p><div class="meter"><span style="width:${r.i/21*100}%"></span></div><section class="panel"><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" role="status"></p><div class="actions"><button id="skip">Пока не знаю</button><button id="finish">Завершить сейчас</button></div><p class="muted">Прошло ${Math.floor((Date.now()-r.start)/60000)} мин. Открытие обучения во время проверки будет отмечено как помощь.</p></section>`;$('#answer').value=r.draft||'';$('#answer').oninput=e=>{r.draft=e.target.value.slice(0,10000);save();};const next=skip=>{let v=skip?'':$('#answer').value;if(!skip&&!v.trim())return feedback('Введите ответ или выберите «Пока не знаю».',true);r.answers.push({id,seed:r.seed+r.i,value:v,correct:!skip&&D.correct(t,v),previouslySeen:seen(t)});expose(t);r.draft='';r.i++;save();render();};$('#answerForm').onsubmit=e=>{e.preventDefault();next(false);};$('#skip').onclick=()=>next(true);$('#finish').onclick=()=>finishRun(true);}
 function finishRun(interrupted){let r=state.active;if(!r)return;while(r.answers.length<21){let i=r.answers.length;r.answers.push({id:r.ids[i],seed:r.seed+i,value:'',correct:false,skipped:true});}r.finished=Date.now();r.interrupted=interrupted;state.runs.push(r);state.runs=state.runs.slice(-200);state.active=null;save();setHash('report');}
-function report(){let latest=state.runs.at(-1),wrong=latest?.answers.filter(x=>!x.correct)||[];root.innerHTML=`<h1>Что уже получается</h1><p>Подсказки, исправления и ранее показанные условия учитываются отдельно. Отчёт не означает полного освоения позиции экзамена.</p>${latest?`<section class="panel"><h2>Последняя ${latest.kind==='exam'?'пробная работа':'диагностика'}: ${latest.answers.filter(x=>x.correct).length}/21</h2><p>${latest.interrupted?'Завершена досрочно. ':''}${latest.assisted?'С обращением к обучению. ':''}${latest.answers.some(x=>x.previouslySeen)?'Часть условий была показана раньше.':''}</p>${wrong.length?`<div class="callout"><b>Следующий шаг</b><p>Начни с темы «${E(D.meta.find(m=>m.id===wrong[0].id).title)}».</p><a class="btn primary" href="#lesson=${wrong[0].id}">Разобраться в первой трудности</a></div>`:'<p>Эта выборка решена. Попробуй новые варианты и вернись к темам через день.</p>'}<details><summary>Ответы и объяснения</summary><ol>${latest.answers.map(a=>{let t=D.task(a.id,a.seed),last=t.steps.at(-1);return `<li><b>${a.correct?'Верно':'Повторить'} · ${E(D.meta.find(m=>m.id===a.id).title)}</b><p>${M(t.q)}</p><p>Ваш ответ: ${M(a.value||'пропуск')}. ${t.rule||t.answerKind==='solutions'?'Возможны разные ответы; проверяются все условия.':'Ответ: '+M(D.answerText(t))+'.'} ${M(last.why)}</p><a href="#lesson=${a.id}">Урок</a></li>`;}).join('')}</ol></details></section>`:''}<div class="scroll"><table><thead><tr><th>Тема</th><th>Разборов</th><th>Новых самостоятельных</th></tr></thead><tbody>${D.meta.map(m=>{let l=state.lessons[m.id]||{};return `<tr><td><a href="#lesson=${m.id}">${m.grade7?'7 класс':m.pos+'.'} ${E(m.title)}</a></td><td>${l.guided||0}</td><td>${l.independent||0}</td></tr>`;}).join('')}</tbody></table></div><div class="actions"><button id="export">Скачать работу и резервную копию</button><label>Восстановить свою копию <input type="file" id="import" accept="application/json"></label></div><p id="feedback" role="status"></p><p class="muted">Восстановление заменяет только данные этого нового маршрута. Старые модули, тренажёры и их ключи не затрагиваются.</p>`;$('#export').onclick=()=>download(state);$('#import').onchange=async e=>{try{let f=e.target.files[0];if(!f||f.size>2000000)throw Error();let x=readProgress(await f.text());if(!valid(x))throw Error();download(state,'before-import.json');state=x;writable=true;save();report();feedback('Копия восстановлена; предыдущая работа выгружена отдельным файлом.');}catch(e){feedback('Файл не подходит. Текущая работа не изменена.',true);}};}
+function checkReport(run){
+ if(!run)return '';
+ const diagnostic=run.kind==='diagnostic';
+ // Older saves use skipped:true only for slots filled in when finishing early.
+ // A deliberate «Пока не знаю» was recorded as an empty submitted answer.
+ const checked=diagnostic?run.answers.filter(answer=>!answer.skipped):run.answers;
+ const unchecked=run.ids.length-checked.length;
+ const correct=checked.filter(answer=>answer.correct).length;
+ const difficulty=checked.find(answer=>!answer.correct);
+ const topic=answer=>D.meta.find(m=>m.id===answer.id).title;
+ const next=difficulty?`<div class="callout"><b>Следующий шаг</b><p>Начни с темы «${E(topic(difficulty))}».</p><a class="btn primary" href="#lesson=${difficulty.id}">Разобраться в первой трудности</a></div>`:
+  unchecked?`<p>${checked.length?'В проверенных заданиях все ответы верны.':'Диагностика завершилась до первого ответа.'}</p><a class="btn" href="#diagnostic">Начать диагностику</a>`:'<p>Эта выборка решена. Попробуй новые варианты и вернись к темам через день.</p>';
+ const review=run.answers.map(answer=>{
+  const title=E(topic(answer));
+  if(diagnostic&&answer.skipped)return `<li><b>Не проверено · ${title}</b></li>`;
+  const task=D.task(answer.id,answer.seed),last=task.steps.at(-1);
+  const status=answer.correct?'Верно':diagnostic?(answer.value?'Ошибка':'Пока не знаю'):'Повторить';
+  const solution=task.rule||task.answerKind==='solutions'?'Возможны разные ответы; проверяются все условия.':'Ответ: '+M(D.answerText(task))+'.';
+  return `<li><b>${status} · ${title}</b><p>${M(task.q)}</p><p>Ваш ответ: ${M(answer.value||'пропуск')}. ${solution} ${M(last.why)}</p><a href="#lesson=${answer.id}">Урок</a></li>`;
+ }).join('');
+ return `<section class="panel"><h2>Последняя ${diagnostic?'диагностика':'пробная работа'}${unchecked?'':': '+correct+'/'+run.ids.length}</h2>${unchecked?`<p>Верно ${correct} из ${checked.length} проверенных. Ещё не проверено: ${unchecked} из ${run.ids.length}.</p>`:''}<p>${run.interrupted?'Завершена досрочно. ':''}${run.assisted?'С обращением к обучению. ':''}${run.answers.some(answer=>answer.previouslySeen)?'Часть условий была показана раньше.':''}</p>${next}<details><summary>Ответы и объяснения</summary><ol>${review}</ol></details></section>`;
+}
+function report(){root.innerHTML=`<h1>Что уже получается</h1><p>Подсказки, исправления и ранее показанные условия учитываются отдельно. Отчёт не означает полного освоения позиции экзамена.</p>${checkReport(state.runs.at(-1))}<div class="scroll"><table><thead><tr><th>Тема</th><th>Разборов</th><th>Новых самостоятельных</th></tr></thead><tbody>${D.meta.map(m=>{let l=state.lessons[m.id]||{};return `<tr><td><a href="#lesson=${m.id}">${m.grade7?'7 класс':m.pos+'.'} ${E(m.title)}</a></td><td>${l.guided||0}</td><td>${l.independent||0}</td></tr>`;}).join('')}</tbody></table></div><div class="actions"><button id="export">Скачать работу и резервную копию</button><label>Восстановить свою копию <input type="file" id="import" accept="application/json"></label></div><p id="feedback" role="status"></p><p class="muted">Восстановление заменяет только данные этого нового маршрута. Старые модули, тренажёры и их ключи не затрагиваются.</p>`;$('#export').onclick=()=>download(state);$('#import').onchange=async e=>{try{let f=e.target.files[0];if(!f||f.size>2000000)throw Error();let x=readProgress(await f.text());if(!valid(x))throw Error();download(state,'before-import.json');state=x;writable=true;save();report();feedback('Копия восстановлена; предыдущая работа выгружена отдельным файлом.');}catch(e){feedback('Файл не подходит. Текущая работа не изменена.',true);}};}
 function download(x,name='EGE_baza_work.json'){let u=URL.createObjectURL(new Blob([JSON.stringify(writeProgress(x),null,2)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
 function openSeparateLesson(hash){
  const params=new URLSearchParams(hash),id=params.get('practice');

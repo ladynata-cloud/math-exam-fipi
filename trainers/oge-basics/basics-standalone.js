@@ -24,7 +24,7 @@
     if (!firstHint || !start) return false;
 
     // The original action chooses the first practice task exactly once.
-    start.click();
+    if (practice.hidden) start.click();
     if (practice.hidden) return false;
     d.body.dataset.basicsStandalone = percent ? 'percent' : division ? 'division' : 'basic';
     d.body.classList.add('basics-task-first');
