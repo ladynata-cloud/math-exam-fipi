@@ -67,6 +67,19 @@ async function run(){
           assert((await page.locator('.context .task').textContent()).includes('/task/'+source));
         }
       }
+      if(name==='yandex') {
+        for(const [id,explanation,answer] of [
+          ['13282321-cbb9-4e69-9897-3f09c5edeb6b','существовать хотя бы один ответ','44 25'],
+          ['e8659395-cc54-4918-bc86-d3d70362a071','число снимаемых камней','11']
+        ]) {
+          const option=await select.locator('option').evaluateAll((opts,id)=>opts.find(o=>o.value.includes(id)).value,id);
+          await select.selectOption(option);
+          assert(await page.locator('.correction').isVisible());
+          assert((await page.locator('.correction').innerText()).includes(explanation));
+          await input.fill(answer);await input.press('Enter');
+          assert.match(await page.locator('section.game-practice [role=status]').innerText(),/Верно/);
+        }
+      }
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     }
     await go('recursion_ladder_paths');
