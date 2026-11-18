@@ -158,8 +158,9 @@ def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
 
 def uses_source_fixture(record):
     prefix = record['prefix']
-    # The frozen v3 paper-sheets route renders the same reviewed set as v1/v2.
-    return prefix == '' or (prefix == V3['prefix'] and record['id'] != '08')
+    # These v3 pages retain the reviewed frozen paper-sheet cases (08),
+    # triangle drawing (66), and number-line text without the source link (68).
+    return prefix == '' or (prefix == V3['prefix'] and record['id'] not in {'08', '66', '68'})
 
 
 def exact_reviewed_context(record, oracle, fixtures):
