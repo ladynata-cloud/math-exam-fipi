@@ -14,6 +14,34 @@ const questions=doc=>taskIds.map(id=>copy(doc.querySelector('#section-'+id+' .ca
 const keys=w=>JSON.parse(w.eval('JSON.stringify(Object.fromEntries(Object.entries(CHECKS).map(([id,c])=>[id,{correct:c.correct,tol:c.tol,stepIdx:c.stepIdx,isFinal:c.isFinal}])))'));
 function visible(node,w){assert.ok(node,'required node exists');for(let p=node;p;p=p.parentElement){assert.equal(p.hidden,false,p.id+' is not hidden');assert.notEqual(w.getComputedStyle(p).display,'none',p.id+' is displayed');if(p.tagName==='DETAILS')assert.equal(p.open,true,'no closed disclosure hides the required node');}}
 
+test('percentage feedback uses the factory wheel as the base for both increases and decreases',async()=>{
+ const {w,doc}=await open(),directions=new Set(),fmt=n=>String(n).replace('.',',');
+ try{
+  const count=doc.querySelector('#variant-select').options.length;
+  for(let i=0;i<count;i++){
+   w.loadVariant(i);
+   const {factory,t2,t5}=w.eval('VD');
+   const relative=Math.round(1000*t5.D/factory.D)/10;
+   const change=Math.round(1000*Math.abs(t5.D-factory.D)/factory.D)/10;
+   directions.add(Math.sign(t5.D-factory.D));
+   const percent=doc.querySelector('#t5-prop'),final=doc.querySelector('#t5-final');
+   percent.querySelector('input').value=String(100*factory.D/t5.D);
+   w.handleSubstepCheck('t5-prop');
+   const percentHelp=percent.querySelector('.substep-feedback').textContent;
+   assert.ok(percentHelp.includes('нового колеса ('+fmt(t5.D)+' мм) на заводской диаметр ('+fmt(factory.D)+' мм)'));
+   assert.ok(!percentHelp.includes('≈ '+fmt(relative)),'feedback leaves the division to the pupil');
+   final.querySelector('input').value=String(relative);
+   w.handleSubstepCheck('t5-final');
+   const changeHelp=final.querySelector('.substep-feedback').textContent;
+   assert.ok(changeHelp.includes(t5.D<factory.D?'вычти '+fmt(relative)+' из 100':'вычти 100 из '+fmt(relative)));
+   assert.equal(doc.querySelector('#t2-H .substep-hint').textContent.includes(t2.B+' мм на '+t2.p+'/100'),true);
+   final.querySelector('input').value=fmt(change);w.handleSubstepCheck('t5-final');
+   assert.ok(final.querySelector('.substep-feedback').classList.contains('correct'));
+  }
+  assert.deepEqual([...directions].sort(),[-1,1]);
+ }finally{w.close();}
+});
+
 // The baseline runs only the unmodified native inline engine. It does not read
 // a copy of the new layout's question text or share its presentation adapters.
 test('all 21 variants show the native five questions and exact givens together without changing answer keys',async()=>{

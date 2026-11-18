@@ -1,0 +1,153 @@
+name: Atanasyan 7–11 harmonization
+on:
+  pull_request:
+    paths:
+      - 'geometry-course/**'
+      - 'stereo-course/**'
+      - 'tools/geometry/**'
+      - 'tools/stereo/**'
+      - 'tools/stereo-textbook/**'
+      - 'tools/atanasyan-harmonization/**'
+      - 'scripts/geometry-download-offline.mjs'
+      - 'scripts/build-trainer-downloads.mjs'
+      - 'downloads/trainers-manifest.json'
+      - 'downloads/trainers/geometry-course/**'
+      - '.github/workflows/atanasyan-harmonization.yml'
+permissions:
+  contents: read
+concurrency:
+  group: atanasyan-harmonization-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  mathematics-state-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+      - name: Preserve the textbook banks and the legacy courses
+        run: |
+          node tools/atanasyan-harmonization/preservation.test.cjs
+          node tools/geometry-textbook/check_course.cjs --require-reviewed
+          node tools/stereo-textbook/model-geometry.test.cjs
+          node tools/stereo-textbook/schema.test.cjs
+      - name: Topic mathematics and retained geometry work
+        run: |
+          node tools/geometry/check.js
+          node --test tools/geometry/harmonization-models.test.cjs
+          node --test tools/geometry/atlas-diagrams.test.cjs
+          node --test tools/geometry/harmonization-state-dom.test.cjs
+          node --test tools/geometry/offline-checkpoint.test.cjs
+          node --test tools/geometry/manual-construction.test.cjs tools/geometry/object-labels.test.cjs
+      - name: Topic mathematics and retained stereometry work
+        run: |
+          node tools/stereo/check.js
+          node tools/stereo/regression-check.js
+          node tools/stereo/stale-state.test.cjs
+          node tools/stereo/harmonization-models.test.cjs
+          node tools/stereo/harmonization-dom.test.cjs
+          node tools/stereo/task-first.test.cjs
+          node tools/stereo/task-first.integration.test.cjs
+          node tools/stereo/task-proof-scenes.test.cjs
+          node tools/stereo/task-scenes-math.test.cjs
+      - name: Strict input and exact historical runtime projections
+        run: |
+          node tools/stereo-textbook/harmonization-input.test.cjs
+          node tools/stereo-textbook/harmonization-input-migration.test.cjs
+          node tools/stereo-textbook/harmonization-preview-migration.test.cjs
+          node tools/stereo-textbook/runtime.test.cjs
+      - name: Reproduce standalone lessons and the existing geometry package
+        run: |
+          python3 tools/geometry/build_content.py
+          python3 tools/geometry/build_proofs.py
+          python3 tools/geometry/build_site.py
+          python3 tools/stereo/build_site.py
+          git diff --exit-code -- geometry-course stereo-course
+          node --test tools/public-navigator-preservation.test.cjs
+          PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.test.py
+          node scripts/build-trainer-downloads.mjs --only=geometry-course --downloads-only
+          git diff --exit-code -- downloads/trainers/geometry-course
+          node tools/atanasyan-harmonization/download.test.cjs
+          node tools/atanasyan-harmonization/preservation.test.cjs
+          git diff --check
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: geometry
+            command: node tools/geometry/harmonization-browser.cjs
+          - suite: stereometry
+            command: node tools/stereo/harmonization.browser.cjs
+          - suite: textbook-input
+            command: node tools/stereo-textbook/harmonization-input.browser.cjs
+          - suite: offline-package
+            command: node tools/atanasyan-harmonization/download.browser.cjs
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Measure native file storage across immediate reloads
+        run: node tools/geometry/offline-storage-probe.browser.cjs
+      - name: Real viewport, actions, retained work and offline behavior
+        env:
+          GEOMETRY_HARMONIZATION_ARTIFACTS: artifacts/atanasyan-harmonization/geometry
+          STEREO_HARMONIZATION_ARTIFACTS: artifacts/atanasyan-harmonization/stereometry
+          HARMONIZATION_TEXTBOOK_ARTIFACTS: artifacts/atanasyan-harmonization/textbook
+          HARMONIZATION_DOWNLOAD_ARTIFACTS: artifacts/atanasyan-harmonization/download
+        run: ${{ matrix.command }}
+      - name: Preserve measurements and screenshots including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-harmonization-${{ matrix.suite }}
+          path: |
+            artifacts/atanasyan-harmonization/
+            artifacts/geometry-harmonization/
+            artifacts/stereo-harmonization/
+          retention-days: 14
+          include-hidden-files: false
+          if-no-files-found: error
+  acceptance-map:
+    needs: [mathematics-state-build, browser]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          pattern: atanasyan-harmonization-*
+          path: artifacts/harmonization-shards
+          merge-multiple: false
+      - name: Require evidence for each of the 102 topics and both viewports
+        env:
+          HARMONIZATION_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node tools/atanasyan-harmonization/collect-acceptance.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-harmonization-acceptance
+          path: artifacts/atanasyan-acceptance/
+          retention-days: 30
+          if-no-files-found: error
