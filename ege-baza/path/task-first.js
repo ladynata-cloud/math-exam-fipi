@@ -13,7 +13,7 @@
    ['helpOpen','modelOpen','stepsOpen','whyOpen','noteOpen'].every(k=>typeof value[k]==='boolean')&&
    (value.model===null||plain(value.model)&&JSON.stringify(value.model).length<=16000)&&
    (value.mistakes===undefined||Number.isInteger(value.mistakes)&&value.mistakes>=0&&value.mistakes<=1000)&&
-   ['ideaOpen','repeatedVariant'].every(k=>value[k]===undefined||typeof value[k]==='boolean');
+   ['constructionDone','ideaOpen','repeatedVariant'].every(k=>value[k]===undefined||typeof value[k]==='boolean');
  }
  function question(task) {
   // The final input label comes only from the condition. A worked step may ask
@@ -50,21 +50,78 @@
   if(kind==='multi')return 'Проверь каждое утверждение по условию. В ответ запиши только номера подходящих утверждений.';
   return 'Пока не получилось. Начни с вопроса: '+(task.steps[0]?.q||question(task))+' Сохрани свой ответ и проверь этот шаг.';
  }
+ // One coordinate system per family. Only constructions reached by the learner
+ // appear in the guided sketch. Lengths come from the current variant.
+ const constructions={
+  triangle:{at:0,action:'Провести высоту BH к основанию AC',reason:'BH ⟂ AC. Высота к основанию равнобедренного треугольника делит AC пополам, поэтому AH = HC.'},
+  circle:{at:0,action:'Провести радиус OA и опустить OM на хорду AB',reason:'OM ⟂ AB. Перпендикуляр из центра делит хорду пополам, значит AM = MB.'},
+  'practice-diameter-chord':{at:1,action:'Почему угол ACB прямой?',reason:'Вписанный угол ACB опирается на диаметр AB, поэтому ∠ACB = 90°.'}
+ };
+ function planeFigure(t,stage=-1,built=false) {
+  const m=t.model, stroke=(d,extra='')=>`<path d="${d}" ${extra}/>`;
+  const label=(x,y,text)=>`<text x="${x}" y="${y}">${E(text)}</text>`;
+  const ring=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" class="outline"/>`;
+  const dot=(x,y)=>`<circle cx="${x}" cy="${y}" r="2.7" fill="currentColor"/>`;
+  let drawing,marks='',labels,caption;
+  if(t.id==='triangle'){
+   drawing=stroke('M64 182L154 62L244 182Z','class="outline"');
+   labels=label(51,186,'A')+label(154,49,'B')+label(258,186,'C')+label(93,116,m.b)+label(216,116,m.b)+label(154,216,'AC = '+2*m.a);
+   caption=`Треугольник ABC, AB = BC = ${m.b}, AC = ${2*m.a}.`;
+   if(built){
+    if(stage===1||stage===2)drawing+=stroke('M64 182L154 62V182Z','class="active-plane"');
+    marks=stroke('M154 62V182 M154 171H165V182 M107 178l4 8 M197 178l4 8','class="construction"')+dot(154,182);
+    labels+=label(154,200,'H');
+    if(stage>=1)labels+=label(112,173,m.a)+label(201,173,m.a);
+    if(stage>=3)labels+=label(168,127,m.h);
+   }
+  } else if(t.id==='circle'){
+   drawing=ring(153,113,85)+stroke('M85 164H221')+dot(153,113);
+   labels=label(153,104,'O')+label(70,172,'A')+label(234,172,'B');
+   caption=`Окружность с центром O и хордой AB. Радиус ${m.r}, расстояние до хорды ${m.d}.`;
+   if(built){
+    if(stage>=0&&stage<=1)drawing+=stroke('M85 164L153 113V164Z','class="active-plane"');
+    marks=stroke('M85 164L153 113V164 M153 154H163V164 M117 160l4 8 M186 160l4 8','class="construction"');
+    labels+=label(153,185,'M')+label(113,131,m.r)+label(168,142,m.d);
+    if(stage>=2)labels+=label(122,157,t.answer/2);
+   }
+  } else {
+   const {r,chord}=t.params;
+   drawing=ring(155,120,90)+stroke('M65 120H245L129.8 33.6Z')+dot(155,120);
+   labels=label(52,125,'A')+label(258,125,'B')+label(129,22,'C')+label(155,140,'O')+label(84,73,chord)+label(111,139,r);
+   caption=`Треугольник ABC вписан в окружность с диаметром AB. AO = ${r}, AC = ${chord}.`;
+   if(stage>=1)labels+=label(155,183,'AB = '+2*r);
+   if(built)marks=stroke('M123.8 41.6l8 6 6-8','class="construction"');
+  }
+  if(built)caption+=' '+constructions[t.id].reason;
+  return `<svg class="task-figure plane-figure" viewBox="0 0 310 225" role="img" aria-label="${E(caption)}"><title>${E(caption)}</title><g class="plane-lines">${drawing}${marks}</g><g class="plane-labels">${labels}</g></svg>`;
+ }
+ function workingEquation(t,step){
+  if(t.id==='triangle'){
+   const {a,b,h}=t.model;
+   return [`AH = AC / 2 = ${2*a} / 2`,`BH² = AB² − AH² = ${b}² − ${a}²`,`BH = √${h*h}`,`S = AC · BH / 2 = ${2*a} · ${h} / 2`][step];
+  }
+  if(t.id==='circle'){
+   const {r,d}=t.model,m=t.answer/2;
+   return [`AM² = OA² − OM² = ${r}² − ${d}²`,`AM = √${m*m}`,`AB = 2 · AM = 2 · ${m}`][step];
+  }
+  const {r,chord}=t.params;
+  return [`AB = 2 · AO = 2 · ${r}`,`BC² = AB² − AC² = ${2*r}² − ${chord}²`,`BC = √${t.answer*t.answer}`][step];
+ }
  function primaryVisual(task) {
+  if(constructions[task.id])return planeFigure(task);
   if(root.PathStereoFigures?.supports(task))return root.PathStereoFigures.visual(task);
   if(task.display)return '';
   const m=task.model, line=(d)=>`<path d="${d}" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>`,label=(x,y,text)=>`<text x="${x}" y="${y}" text-anchor="middle">${E(text)}</text>`;
   let picture='';
   if(task.id==='grid')picture=line('M70 250H470L70 50Z')+line('M70 230h20v20')+label(270,284,m.a)+label(42,150,m.b);
   if(task.id==='practical')picture=line('M100 60H460V240H100Z')+label(280,278,m.a+' см')+label(64,155,'3 см');
-  if(task.id==='triangle')picture=line('M70 250H490L280 45Z')+label(280,286,2*m.a)+label(158,132,m.b)+label(402,132,m.b);
   if(task.id==='quadrilateral')picture=line('M55 250H505L405 65H155Z')+label(280,42,m.a)+label(280,286,m.b)+`<path d="M155 65V250m0-20h20v20" fill="none" stroke="#a64f2e" stroke-width="2" stroke-dasharray="5"/>`+label(132,163,'h = '+m.h);
-  if(task.id==='circle')picture=`<circle cx="280" cy="150" r="120" fill="#edf6f0" stroke="#216e56" stroke-width="3"/><path d="M184 222H376L280 150V222m0-16h16v16" fill="none" stroke="#a64f2e" stroke-width="3"/>`+label(330,176,'R = '+m.r)+label(245,194,m.d)+label(280,132,'O');
   return picture?`<svg class="task-figure" viewBox="0 0 560 310" role="img" aria-label="Чертёж к условию задачи; заданные длины подписаны">${picture}</svg><p class="muted">Чертёж схематический. Значения берём из условия.</p>`:'';
  }
  function mount(host,context) {
   const {meta,task:t,lesson:l,save,seen,expose,fresh}=context,D=root.PathData,M=root.PathPracticeView.math;
   const learningCycle=context.learningCycle===true;
+  const construction=constructions[t.id];
   let skillMap=null;
   let u=l.taskFirst;
   if(!valid(u)||!u||u.seed!==l.seed) {
@@ -84,7 +141,7 @@
   const hintText=()=>l.step>=t.steps.length?'Все шаги пройдены. Запиши ответ на вопрос задачи.':root.PathTaskHints?.hint(t,l.step)||t.steps[l.step].q;
   const idea=`<p id="taskHint" class="task-first-start" aria-live="polite">${M(hintText())}</p>`+(learningCycle?`<details id="taskIdea"><summary>Короткое правило</summary><p class="task-first-idea">${M(meta.idea)}</p></details>`:'');
   const learningActions=learningCycle?'<button id="repairStep" type="button" hidden>Разобрать первый трудный шаг</button><p id="variantStatus" class="task-first-variant muted" role="status"></p>':'';
-  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningActions}<div class="actions task-first-help-actions"><button id="startSteps" type="button">Решать по шагам</button></div><details id="taskHelp" class="task-first-help"><summary>Подсказка к задаче</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Ещё задача этого типа</button><a class="btn" href="#map">Выбрать задание</a></div></section><div class="task-first-skill-map"></div><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
+  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem${construction?' plane-problem':''}" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningActions}<div class="actions task-first-help-actions"><button id="startSteps" type="button">Решать по шагам</button></div><details id="taskHelp" class="task-first-help"><summary>Подсказка к задаче</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Ещё задача этого типа</button><a class="btn" href="#map">Выбрать задание</a></div></section><div class="task-first-skill-map"></div><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
   const $=selector=>host.querySelector(selector),help=$('#taskHelp'),model=$('#taskModel'),steps=$('#taskSteps'),note=$('#taskNote');
   const answer=$('#answer');answer.value=u.finalDraft;
   if(learningCycle && root.self===root.top && new URLSearchParams(root.location.search).get('learning')!=='1') root.MathExamCourseExamples?.mount(host.querySelector('.task-first-problem'),'ege-baza',meta.id,markHelp);
@@ -154,13 +211,27 @@
   function renderSteps(){
    const step=t.steps[l.step],body=$('#taskStepsBody');
    $('#taskHint').innerHTML=M(hintText());
-   body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
+   const history=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>`;
+   const current=`${step?`${construction?'':`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>`}${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':construction?'Введи число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
+   if(construction){
+    const built=l.step>construction.at || (l.step===construction.at&&u.constructionDone===true);
+    const waiting=l.step===construction.at&&!built;
+    const theorem=t.id==='practice-diameter-chord';
+    const build=waiting?(theorem?`<p>${construction.action}</p><div class="actions"><button type="button" data-construct="yes">Он опирается на диаметр AB</button><button type="button" data-construct="no">Хорды AC и BC равны</button></div><p id="angleFeedback" role="status"></p>`:`<button type="button" data-construct="yes">${construction.action}</button>`):'';
+    const previous=l.step?`<details class="plane-history"${step?'':' open'}><summary>Решение в тетради</summary>${built?`<p>${construction.reason}</p>`:''}${history}</details>`:'';
+    body.innerHTML=`${step?`<h2 class="plane-step-title">Шаг ${l.step+1} из ${t.steps.length}</h2>`:''}${built&&l.step===construction.at?`<p>${construction.reason}</p>`:''}<div class="plane-work"><div>${planeFigure(t,l.step,built)}</div><div>${build}${!waiting&&step?`<p class="working-equation">${M(workingEquation(t,l.step))}</p>`:''}${waiting?'':current}</div></div>${previous}`;
+    if(waiting){
+     body.querySelector('[data-construct="yes"]').onclick=()=>{markHelp();u.constructionDone=true;save();renderSteps();$('#stepAnswer')?.focus({preventScroll:true});};
+     const other=body.querySelector('[data-construct="no"]');
+     if(other)other.onclick=()=>{body.querySelector('#angleFeedback').textContent='Сравни стороны по условию. На какой отрезок опирается угол ACB?';};
+    }
+   } else body.innerHTML=history+current;
    refreshReasoningMap();
    skillMap?.refresh();
-   if(!step)return;
+   if(!step||!$('#stepAnswer'))return;
    const field=$('#stepAnswer');field.value=u.stepDraft;
    const writeStep=value=>{u.stepDraft=value.slice(0,10000);save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
-   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){root.EgeRemediation.clear?.();u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:meta.id,meta,task:t,stepIndex:l.step,value,expected:step.a,feedback:$('#stepFeedback')});save();}};
+   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){root.EgeRemediation.clear?.();u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:meta.id,meta,task:t,stepIndex:l.step,value,expected:step.a,feedback:$('#stepFeedback')});save();}};
    const why=$('#stepWhy');why.open=u.whyOpen;why.querySelector('summary').addEventListener('click',()=>{if(!why.open)markHelp();});why.ontoggle=()=>{if(!root.document||!why.isConnected)return;u.whyOpen=why.open;if(why.open)markHelp();else save();};
   }
   renderSteps();
@@ -171,7 +242,7 @@
    if(element.open)onOpen?.();
   };
   bindDisclosure(help,'helpOpen');bindDisclosure(model,'modelOpen',mountModel);bindDisclosure(steps,'stepsOpen');
-  const openSteps=()=>{root.EgeRemediation.clear?.();help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
+  const openSteps=()=>{root.EgeRemediation.clear?.();help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
   $('#startSteps').onclick=openSteps;
   // The route describes the guided steps of this variant. Exam and board modes
   // keep using their existing renderer and progress rules.
