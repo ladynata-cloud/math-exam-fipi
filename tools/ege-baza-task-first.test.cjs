@@ -64,7 +64,11 @@ async function roundHintRegression(){
   await open(w,d,'taskHelp');await open(w,d,'taskModel');assert(d.querySelector('#model').textContent.trim(),id+' model');
   assert.equal(l.help,true,id+' help accounted');assert.equal(d.querySelector('#answer'),answer,id+' original input mounted');
   await open(w,d,'taskSteps');
-  for(const step of t.steps){assertCurrentHint(w,d,t,l.step);submit(w,d,'stepAnswer',solution(w.PathData,step));}
+  for(const step of t.steps){
+   assertCurrentHint(w,d,t,l.step);
+   d.querySelector('#taskStepsBody [data-construct="yes"]')?.click();
+   submit(w,d,'stepAnswer',solution(w.PathData,step));
+  }
   assert(d.querySelector('#taskStepsBody').textContent.includes('Разбор завершён'),id+' guided completion');
   assert.equal(d.querySelector('#answer').value,'12/',id+' final draft preserved through guided work');
   d.querySelector('#taskHelp').open=false;await tick();assert.equal(d.querySelector('#answer').value,'12/');

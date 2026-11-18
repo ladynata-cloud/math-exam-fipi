@@ -197,6 +197,21 @@ header nav>a.btn{min-height:44px;display:inline-flex;align-items:center}
 .task-first-start{padding:.7rem 0;line-height:1.6}
 .task-first-next #new.primary{order:-1;flex-basis:100%;text-align:left;white-space:normal}
 
+.plane-figure .plane-lines{fill:none;stroke:#24674e;stroke-width:2.5;stroke-linejoin:round}
+.plane-figure .outline{fill:#f0f7f2}
+.plane-figure .construction{stroke:#a74924}
+.plane-figure .plane-labels{fill:#20382c;font:16px system-ui,sans-serif;text-anchor:middle;paint-order:stroke;stroke:white;stroke-width:3px;stroke-linejoin:round}
+.plane-problem:has(#taskHelp[open] #taskSteps[open])>.task-support{display:none}
+.plane-work{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:1rem}
+.plane-work .task-figure{margin:0;max-height:285px}
+.plane-work h2,.plane-work .task-first-form label{margin-top:.25rem}
+.plane-history{margin-top:.75rem}
+@media(max-width:650px){.plane-work{grid-template-columns:minmax(0,1fr);gap:.4rem}.plane-work .task-figure{max-height:205px}}
+
+.plane-figure .active-plane{fill:#d4ebdc;stroke:none}.working-equation{font-size:1.12rem;font-weight:600;margin:.35rem 0}
+
+.plane-work #stepAnswerFormat{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.plane-step-title{font-size:1.2rem;margin:.5rem 0}
+
 </style><style data-inline-source="/ege-baza/path/geometry-journey.css">
 /* Scoped presentation for the existing grade-7 geometry model. */
 .geometry-active-host{--journey-green:#246954;--journey-border:#d3dfd2;--journey-soft:#f4f8ee}
@@ -345,9 +360,9 @@ case 'logic':set('В группе все 12 участников изучают 
 case 'grid':set(`Катеты прямоугольного треугольника по линиям сетки равны ${k} и ${k+2} клеткам. Сторона клетки 1. Найдите площадь.`,k*(k+2)/2,[S('Площадь достроенного прямоугольника?',k*(k+2),'Произведение двух перпендикулярных сторон.'),S('Площадь треугольника?',k*(k+2)/2,'Диагональ делит прямоугольник на две равные части.')],{kind:'triangle',a:k,b:k+2});break;
 case 'practical':set(`Прямоугольный участок на плане ${k} см на 3 см. Масштаб 1:1000. Найдите площадь участка в м².`,k*300,[S('Сколько метров в 1 см плана?',10,'1000 см = 10 м.'),S(`Сторона длиной ${k} см на плане в метрах?`,k*10,'Умножь длину на плане на 10.'),S('Площадь в м²?',k*300,'Вторая сторона 30 м. Коэффициент к площади — 100.')],{kind:'rectangle',a:k,b:3});break;
 case 'box':{let a=k,b=k+1,c=3,area=j===1;set(`Размеры закрытой коробки ${a}×${b}×${c} см. Найдите ${area?'площадь всей поверхности в см²':'объём в см³'}.`,area?2*(a*b+a*c+b*c):a*b*c,[S('Площадь основания ab?',a*b,'Умножь две стороны основания.'),S(area?'Сумма площадей трёх разных граней?':'Объём?',area?a*b+a*c+b*c:a*b*c,area?'ab+ac+bc. Каждой грани соответствует равная противоположная.':'В каждом слое ab единичных кубиков, слоёв c.'),...(area?[S('Площадь всех шести граней?',2*(a*b+a*c+b*c),'Удваиваем сумму трёх площадей.')]:[])],{kind:'solid',body:'box',a,b,h:c});break;}
-case 'triangle':{let a=3*k,h=4*k,b=5*k;set(`Равнобедренный треугольник имеет боковую сторону ${b}, основание ${2*a}. Найдите площадь.`,a*h,[S('Половина основания?',a,'Высота к основанию равнобедренного треугольника является медианой.'),S('Квадрат высоты?',h*h,'Из квадрата боковой стороны вычти квадрат половины основания.'),S('Высота?',h,'Положительный квадратный корень.'),S('Площадь?',a*h,'Основание·высота/2.')],{kind:'iso',a,b,h});break;}
+case 'triangle':{let a=3*k,h=4*k,b=5*k;set(`В равнобедренном треугольнике ABC боковые стороны AB = BC = ${b}, основание AC = ${2*a}. Найдите площадь треугольника.`,a*h,[S('Чему равен AH?',a,`Высота BH к основанию равнобедренного треугольника служит и медианой. AH = HC = ${2*a}/2 = ${a}.`),S('Найди BH² в прямоугольном треугольнике ABH.',h*h,`AB — гипотенуза. BH² = AB² − AH² = ${b}² − ${a}² = ${h*h}.`),S('Какова длина высоты BH?',h,`BH = √${h*h} = ${h}.`),S('Чему равна площадь ABC с основанием AC?',a*h,`S = AC · BH / 2 = ${2*a} · ${h} / 2 = ${a*h}.`)],{kind:'iso',a,b,h});break;}
 case 'quadrilateral':set(`Основания трапеции ${k} и ${k+4}, высота 3. Найдите площадь.`,3*(k+2),[S('Средняя линия?',k+2,'Полусумма оснований.'),S('Площадь?',3*(k+2),'Умножь среднюю линию на высоту.')],{kind:'trapezoid',a:k,b:k+4,h:3});break;
-case 'circle':set(`Радиус окружности ${5*k}, расстояние от центра до хорды ${3*k}. Найдите длину хорды.`,8*k,[S('Квадрат половины хорды?',16*k*k,'Радиус — гипотенуза. Вычитаем квадрат расстояния от центра.'),S('Половина хорды?',4*k,'Извлекаем положительный корень.'),S('Вся хорда?',8*k,'Перпендикуляр из центра делит хорду пополам.')],{kind:'chord',r:5*k,d:3*k});break;
+case 'circle':set(`Радиус окружности с центром O равен ${5*k}. Расстояние от O до хорды AB равно ${3*k}. Найдите длину AB.`,8*k,[S('Найди AM² в прямоугольном треугольнике OMA.',16*k*k,`OA — гипотенуза. AM² = OA² − OM² = ${5*k}² − ${3*k}² = ${16*k*k}.`),S('Чему равна длина AM?',4*k,`AM = √${16*k*k} = ${4*k}.`),S('Чему равна вся хорда AB?',8*k,`M — середина AB, поэтому AB = 2 · AM = 2 · ${4*k} = ${8*k}.`)],{kind:'chord',r:5*k,d:3*k});break;
 case 'roundbody':{let body=['cylinder','cone','sphere'][j],a=body==='sphere'?4*k**3/3:body==='cone'?k*k:k*k*3;set(`У ${body==='sphere'?'шара':body==='cone'?'конуса':'цилиндра'} радиус ${k}${body==='sphere'?'':', высота 3'}. Найдите V/π.`,a,[S(body==='sphere'?'Чему равно r³?':'Чему равно r²?',body==='sphere'?k**3:k*k,'Сначала вычислим степень радиуса.'),S('Найдите V/π.',a,'Используй формулу выбранного тела; множитель π уже вынесен.')],{kind:'solid',body,a:k,b:k,h:3});break;}
 case 'pyramid':set(`Пирамида с квадратным основанием стороны ${k} и высотой 6. Найдите объём.`,2*k*k,[S('Площадь основания?',k*k,'Основание — квадрат.'),S('Объём призмы с теми же основанием и высотой?',6*k*k,'Площадь основания·высота.'),S('Объём пирамиды?',2*k*k,'Треть соответствующего объёма призмы.')],{kind:'solid',body:'pyramid',a:k,b:k,h:6});break;
 case 'scale':set(`Конус объёмом ${k*27} пересекли плоскостью, параллельной основанию, на трети высоты от вершины. Найдите объём малого конуса.`,k,[S('Во сколько раз высота большого конуса больше высоты малого?',3,'Расстояние отсчитывается от вершины.'),S('Во сколько раз объёмы отличаются?',27,'Куб коэффициента подобия.'),S('Объём малого конуса?',k,'Раздели большой объём на 27.')],{kind:'solid',body:'cone',a:3,b:3,h:6,section:true});break;
@@ -445,7 +460,7 @@ add('faces',11,'Считать внешние грани','Грань — пло
 add('right-ratio',12,'Синус и косинус в прямоугольном треугольнике','Гипотенуза лежит против прямого угла. Косинус — прилежащий катет, делённый на гипотенузу.','fraction',13,k=>{let s=1+k%9,a=3*s,b=4*s,c=5*s,ask=k%2;return make(`В прямоугольном треугольнике ABC угол C прямой, AC=${a}, BC=${b}, AB=${c}. Найди ${ask?'sin A':'cos A'}.`,(ask?b:a)/c,steps(['Длина гипотенузы?',c,'Против прямого угла C лежит AB.'],[ask?'Противолежащий углу A катет?':'Прилежащий углу A катет?',ask?b:a,ask?'Против A лежит BC.':'С углом A граничит катет AC.'],['Нужное отношение?',(ask?b:a)/c,'Раздели выбранный катет на гипотенузу.']),'right-ratio',{a,b,c,ask},{display:{kind:'triangle-label',a,b,c},model:{kind:'triangle',a,b}});});
 add('triangle-angle',12,'Углы треугольника','Сумма внутренних углов треугольника равна 180°.','add',13,k=>{let a=30+5*(k%8),b=40+5*(k%6);return make(`Два угла треугольника равны ${a}° и ${b}°. Найди третий угол.`,180-a-b,steps(['Сумма известных углов?',a+b,'Складываем углы внутри треугольника.'],['Третий угол?',180-a-b,'Вычитаем из 180°.']),'triangle-angle',{a,b});});
 add('parallelogram',12,'Площадь через высоту','Высота должна быть проведена именно к выбранному основанию.','fraction',13,k=>{let a=5+k%9,h=3+k%7;return make(`Основание параллелограмма равно ${a}, высота к нему — ${h}. Найди площадь.`,a*h,steps(['Какая высота соответствует основанию?',h,'Берём указанную перпендикулярную высоту.'],['Площадь?',a*h,'S=a·h.']),'parallelogram',{a,h},{display:{kind:'polygon',points:[[0,0],[a,0],[a+2,h],[2,h]],grid:true},model:{kind:'polygon-build'}});});
-add('diameter-chord',12,'Треугольник на диаметре','Угол, опирающийся на диаметр, прямой. Поэтому диаметр становится гипотенузой.','powers',12,k=>{let s=1+k%9,r=5*s,chord=6*s;return make(`AB — диаметр окружности радиуса ${r}. Точка C на окружности, AC=${chord}. Найди BC.`,8*s,steps(['Длина AB?',2*r,'Диаметр вдвое больше радиуса.'],['Квадрат BC?',64*s*s,'Угол C прямой: BC²=AB²−AC².'],['Длина BC?',8*s,'Длина — положительный квадратный корень.']),'diameter-chord',{r,chord});});
+add('diameter-chord',12,'Треугольник на диаметре','Угол, опирающийся на диаметр, прямой. Поэтому диаметр становится гипотенузой.','powers',12,k=>{let s=1+k%9,r=5*s,chord=6*s;return make(`AB — диаметр окружности радиуса ${r}. Точка C на окружности, AC=${chord}. Найди BC.`,8*s,steps(['Чему равен диаметр AB?',2*r,`AB = 2 · ${r} = ${2*r}.`],['Найди BC² в треугольнике ABC.',64*s*s,`AB — гипотенуза. BC² = AB² − AC² = ${2*r}² − ${chord}² = ${64*s*s}.`],['Какова длина хорды BC?',8*s,`BC = √${64*s*s} = ${8*s}.`]),'diameter-chord',{r,chord});});
 
 add('cone-area',13,'Боковая поверхность конуса','Боковая площадь конуса равна πrl. Здесь нужна образующая l, а не вертикальная высота.','proportion',13,k=>{let r=2+k%6,l=3*r,ratio=2+k%3;return make(`У первого конуса радиус ${r} и образующая ${l}. У второго радиус ${r*ratio} и образующая ${l*2}. Во сколько раз боковая площадь второго больше первой?`,ratio*2,steps(['Произведение r·l для первого конуса?',r*l,'Площадь — πrl.'],['Произведение r·l для второго конуса?',r*ratio*l*2,'Число π в отношении сократится.'],['Отношение площадей?',ratio*2,'Раздели второе произведение на первое.']),'cone-area',{r,l,ratio});});
 add('pyramid-lateral',13,'Боковая площадь правильной пирамиды','Боковая грань — равнобедренный треугольник. Сначала найди высоту грани, затем её площадь.','powers',13,k=>{let s=1+k%5,a=10*s,edge=13*s,h=12*s,n=k%2?4:6;return make(`Правильная ${n===4?'четырёхугольная':'шестиугольная'} пирамида имеет сторону основания ${a} и боковое ребро ${edge}. Найди площадь боковой поверхности.`,n*a*h/2,steps(['Половина стороны основания?',a/2,'Высота боковой грани делит основание пополам.'],['Высота боковой грани?',h,'По Пифагору: √(боковое ребро²−половина основания²).'],['Площадь одной боковой грани?',a*h/2,'Половина произведения основания на высоту грани.'],['Площадь всех боковых граней?',n*a*h/2,'Умножь на число сторон основания.']),'pyramid-lateral',{s,n});});
@@ -4585,7 +4600,7 @@ add('box',(t,i)=>at([
 ],i));
 add('triangle',['Проведи высоту к основанию. Она делит основание равнобедренного треугольника пополам.','Примени теорему Пифагора к половине треугольника: из квадрата боковой стороны вычти квадрат половины основания.','Из найденного квадрата высоты извлеки положительный квадратный корень.','Умножь всё основание на высоту и раздели на 2.']);
 add('quadrilateral',(t,i)=>i===0?`Сложи основания ${F(t.model.a)} и ${F(t.model.b)}, затем раздели сумму пополам.`:'Умножь среднюю линию трапеции на её высоту.');
-add('circle',(t,i)=>at([`Радиус — гипотенуза. Для квадрата половины хорды вычисли ${F(t.model.r)}² − ${F(t.model.d)}².`,'Из полученной разности извлеки положительный квадратный корень.','Перпендикуляр из центра делит хорду пополам. Удвой найденную половину хорды.'],i));
+add('circle',(t,i)=>at([`Соедини O с A и опусти OM на AB. Перпендикуляр из центра делит хорду пополам. Как найти AM по катету OM и гипотенузе OA?`,'Из полученной разности извлеки положительный квадратный корень.','Перпендикуляр из центра делит хорду пополам. Удвой найденную половину хорды.'],i));
 add('roundbody',(t,i)=>{
  const body=t.model.body;
  if(i===0)return `Возведи радиус ${F(t.model.a)} ${body==='sphere'?'в куб':'в квадрат'}.`;
@@ -9797,7 +9812,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    ['helpOpen','modelOpen','stepsOpen','whyOpen','noteOpen'].every(k=>typeof value[k]==='boolean')&&
    (value.model===null||plain(value.model)&&JSON.stringify(value.model).length<=16000)&&
    (value.mistakes===undefined||Number.isInteger(value.mistakes)&&value.mistakes>=0&&value.mistakes<=1000)&&
-   ['ideaOpen','repeatedVariant'].every(k=>value[k]===undefined||typeof value[k]==='boolean');
+   ['constructionDone','ideaOpen','repeatedVariant'].every(k=>value[k]===undefined||typeof value[k]==='boolean');
  }
  function question(task) {
   // The final input label comes only from the condition. A worked step may ask
@@ -9834,21 +9849,78 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   if(kind==='multi')return 'Проверь каждое утверждение по условию. В ответ запиши только номера подходящих утверждений.';
   return 'Пока не получилось. Начни с вопроса: '+(task.steps[0]?.q||question(task))+' Сохрани свой ответ и проверь этот шаг.';
  }
+ // One coordinate system per family. Only constructions reached by the learner
+ // appear in the guided sketch. Lengths come from the current variant.
+ const constructions={
+  triangle:{at:0,action:'Провести высоту BH к основанию AC',reason:'BH ⟂ AC. Высота к основанию равнобедренного треугольника делит AC пополам, поэтому AH = HC.'},
+  circle:{at:0,action:'Провести радиус OA и опустить OM на хорду AB',reason:'OM ⟂ AB. Перпендикуляр из центра делит хорду пополам, значит AM = MB.'},
+  'practice-diameter-chord':{at:1,action:'Почему угол ACB прямой?',reason:'Вписанный угол ACB опирается на диаметр AB, поэтому ∠ACB = 90°.'}
+ };
+ function planeFigure(t,stage=-1,built=false) {
+  const m=t.model, stroke=(d,extra='')=>`<path d="${d}" ${extra}/>`;
+  const label=(x,y,text)=>`<text x="${x}" y="${y}">${E(text)}</text>`;
+  const ring=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" class="outline"/>`;
+  const dot=(x,y)=>`<circle cx="${x}" cy="${y}" r="2.7" fill="currentColor"/>`;
+  let drawing,marks='',labels,caption;
+  if(t.id==='triangle'){
+   drawing=stroke('M64 182L154 62L244 182Z','class="outline"');
+   labels=label(51,186,'A')+label(154,49,'B')+label(258,186,'C')+label(93,116,m.b)+label(216,116,m.b)+label(154,216,'AC = '+2*m.a);
+   caption=`Треугольник ABC, AB = BC = ${m.b}, AC = ${2*m.a}.`;
+   if(built){
+    if(stage===1||stage===2)drawing+=stroke('M64 182L154 62V182Z','class="active-plane"');
+    marks=stroke('M154 62V182 M154 171H165V182 M107 178l4 8 M197 178l4 8','class="construction"')+dot(154,182);
+    labels+=label(154,200,'H');
+    if(stage>=1)labels+=label(112,173,m.a)+label(201,173,m.a);
+    if(stage>=3)labels+=label(168,127,m.h);
+   }
+  } else if(t.id==='circle'){
+   drawing=ring(153,113,85)+stroke('M85 164H221')+dot(153,113);
+   labels=label(153,104,'O')+label(70,172,'A')+label(234,172,'B');
+   caption=`Окружность с центром O и хордой AB. Радиус ${m.r}, расстояние до хорды ${m.d}.`;
+   if(built){
+    if(stage>=0&&stage<=1)drawing+=stroke('M85 164L153 113V164Z','class="active-plane"');
+    marks=stroke('M85 164L153 113V164 M153 154H163V164 M117 160l4 8 M186 160l4 8','class="construction"');
+    labels+=label(153,185,'M')+label(113,131,m.r)+label(168,142,m.d);
+    if(stage>=2)labels+=label(122,157,t.answer/2);
+   }
+  } else {
+   const {r,chord}=t.params;
+   drawing=ring(155,120,90)+stroke('M65 120H245L129.8 33.6Z')+dot(155,120);
+   labels=label(52,125,'A')+label(258,125,'B')+label(129,22,'C')+label(155,140,'O')+label(84,73,chord)+label(111,139,r);
+   caption=`Треугольник ABC вписан в окружность с диаметром AB. AO = ${r}, AC = ${chord}.`;
+   if(stage>=1)labels+=label(155,183,'AB = '+2*r);
+   if(built)marks=stroke('M123.8 41.6l8 6 6-8','class="construction"');
+  }
+  if(built)caption+=' '+constructions[t.id].reason;
+  return `<svg class="task-figure plane-figure" viewBox="0 0 310 225" role="img" aria-label="${E(caption)}"><title>${E(caption)}</title><g class="plane-lines">${drawing}${marks}</g><g class="plane-labels">${labels}</g></svg>`;
+ }
+ function workingEquation(t,step){
+  if(t.id==='triangle'){
+   const {a,b,h}=t.model;
+   return [`AH = AC / 2 = ${2*a} / 2`,`BH² = AB² − AH² = ${b}² − ${a}²`,`BH = √${h*h}`,`S = AC · BH / 2 = ${2*a} · ${h} / 2`][step];
+  }
+  if(t.id==='circle'){
+   const {r,d}=t.model,m=t.answer/2;
+   return [`AM² = OA² − OM² = ${r}² − ${d}²`,`AM = √${m*m}`,`AB = 2 · AM = 2 · ${m}`][step];
+  }
+  const {r,chord}=t.params;
+  return [`AB = 2 · AO = 2 · ${r}`,`BC² = AB² − AC² = ${2*r}² − ${chord}²`,`BC = √${t.answer*t.answer}`][step];
+ }
  function primaryVisual(task) {
+  if(constructions[task.id])return planeFigure(task);
   if(root.PathStereoFigures?.supports(task))return root.PathStereoFigures.visual(task);
   if(task.display)return '';
   const m=task.model, line=(d)=>`<path d="${d}" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>`,label=(x,y,text)=>`<text x="${x}" y="${y}" text-anchor="middle">${E(text)}</text>`;
   let picture='';
   if(task.id==='grid')picture=line('M70 250H470L70 50Z')+line('M70 230h20v20')+label(270,284,m.a)+label(42,150,m.b);
   if(task.id==='practical')picture=line('M100 60H460V240H100Z')+label(280,278,m.a+' см')+label(64,155,'3 см');
-  if(task.id==='triangle')picture=line('M70 250H490L280 45Z')+label(280,286,2*m.a)+label(158,132,m.b)+label(402,132,m.b);
   if(task.id==='quadrilateral')picture=line('M55 250H505L405 65H155Z')+label(280,42,m.a)+label(280,286,m.b)+`<path d="M155 65V250m0-20h20v20" fill="none" stroke="#a64f2e" stroke-width="2" stroke-dasharray="5"/>`+label(132,163,'h = '+m.h);
-  if(task.id==='circle')picture=`<circle cx="280" cy="150" r="120" fill="#edf6f0" stroke="#216e56" stroke-width="3"/><path d="M184 222H376L280 150V222m0-16h16v16" fill="none" stroke="#a64f2e" stroke-width="3"/>`+label(330,176,'R = '+m.r)+label(245,194,m.d)+label(280,132,'O');
   return picture?`<svg class="task-figure" viewBox="0 0 560 310" role="img" aria-label="Чертёж к условию задачи; заданные длины подписаны">${picture}</svg><p class="muted">Чертёж схематический. Значения берём из условия.</p>`:'';
  }
  function mount(host,context) {
   const {meta,task:t,lesson:l,save,seen,expose,fresh,remediationId}=context,D=root.PathData,M=root.PathPracticeView.math;
   const learningCycle=context.learningCycle===true;
+  const construction=constructions[t.id];
   let skillMap=null;
   let u=l.taskFirst;
   if(!valid(u)||!u||u.seed!==l.seed) {
@@ -9868,7 +9940,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   const hintText=()=>l.step>=t.steps.length?'Все шаги пройдены. Запиши ответ на вопрос задачи.':root.PathTaskHints?.hint(t,l.step)||t.steps[l.step].q;
   const idea=`<p id="taskHint" class="task-first-start" aria-live="polite">${M(hintText())}</p>`+(learningCycle?`<details id="taskIdea"><summary>Короткое правило</summary><p class="task-first-idea">${M(meta.idea)}</p></details>`:'');
   const learningActions=learningCycle?'<button id="repairStep" type="button" hidden>Разобрать первый трудный шаг</button><p id="variantStatus" class="task-first-variant muted" role="status"></p>':'';
-  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningActions}<div class="actions task-first-help-actions"><button id="startSteps" type="button">Решать по шагам</button></div><details id="taskHelp" class="task-first-help"><summary>Подсказка к задаче</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Ещё задача этого типа</button><a class="btn" href="#map">Выбрать задание</a></div></section><div class="task-first-skill-map"></div><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
+  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem${construction?' plane-problem':''}" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningActions}<div class="actions task-first-help-actions"><button id="startSteps" type="button">Решать по шагам</button></div><details id="taskHelp" class="task-first-help"><summary>Подсказка к задаче</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Ещё задача этого типа</button><a class="btn" href="#map">Выбрать задание</a></div></section><div class="task-first-skill-map"></div><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
   const $=selector=>host.querySelector(selector),help=$('#taskHelp'),model=$('#taskModel'),steps=$('#taskSteps'),note=$('#taskNote');
   const answer=$('#answer');answer.value=u.finalDraft;
   if(learningCycle && root.self===root.top && new URLSearchParams(root.location.search).get('learning')!=='1') root.MathExamCourseExamples?.mount(host.querySelector('.task-first-problem'),'ege-baza',meta.id,markHelp);
@@ -9938,13 +10010,27 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   function renderSteps(){
    const step=t.steps[l.step],body=$('#taskStepsBody');
    $('#taskHint').innerHTML=M(hintText());
-   body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
+   const history=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>`;
+   const current=`${step?`${construction?'':`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>`}${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':construction?'Введи число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
+   if(construction){
+    const built=l.step>construction.at || (l.step===construction.at&&u.constructionDone===true);
+    const waiting=l.step===construction.at&&!built;
+    const theorem=t.id==='practice-diameter-chord';
+    const build=waiting?(theorem?`<p>${construction.action}</p><div class="actions"><button type="button" data-construct="yes">Он опирается на диаметр AB</button><button type="button" data-construct="no">Хорды AC и BC равны</button></div><p id="angleFeedback" role="status"></p>`:`<button type="button" data-construct="yes">${construction.action}</button>`):'';
+    const previous=l.step?`<details class="plane-history"${step?'':' open'}><summary>Решение в тетради</summary>${built?`<p>${construction.reason}</p>`:''}${history}</details>`:'';
+    body.innerHTML=`${step?`<h2 class="plane-step-title">Шаг ${l.step+1} из ${t.steps.length}</h2>`:''}${built&&l.step===construction.at?`<p>${construction.reason}</p>`:''}<div class="plane-work"><div>${planeFigure(t,l.step,built)}</div><div>${build}${!waiting&&step?`<p class="working-equation">${M(workingEquation(t,l.step))}</p>`:''}${waiting?'':current}</div></div>${previous}`;
+    if(waiting){
+     body.querySelector('[data-construct="yes"]').onclick=()=>{markHelp();u.constructionDone=true;save();renderSteps();$('#stepAnswer')?.focus({preventScroll:true});};
+     const other=body.querySelector('[data-construct="no"]');
+     if(other)other.onclick=()=>{body.querySelector('#angleFeedback').textContent='Сравни стороны по условию. На какой отрезок опирается угол ACB?';};
+    }
+   } else body.innerHTML=history+current;
    refreshReasoningMap();
    skillMap?.refresh();
-   if(!step)return;
+   if(!step||!$('#stepAnswer'))return;
    const field=$('#stepAnswer');field.value=u.stepDraft;
    const writeStep=value=>{u.stepDraft=value.slice(0,10000);save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
-   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:remediationId(meta),value,expected:step.a});save();}};
+   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:remediationId(meta),value,expected:step.a});save();}};
    const why=$('#stepWhy');why.open=u.whyOpen;why.querySelector('summary').addEventListener('click',()=>{if(!why.open)markHelp();});why.ontoggle=()=>{if(!root.document||!why.isConnected)return;u.whyOpen=why.open;if(why.open)markHelp();else save();};
   }
   renderSteps();
@@ -9955,7 +10041,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    if(element.open)onOpen?.();
   };
   bindDisclosure(help,'helpOpen');bindDisclosure(model,'modelOpen',mountModel);bindDisclosure(steps,'stepsOpen');
-  const openSteps=()=>{help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
+  const openSteps=()=>{help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
   $('#startSteps').onclick=openSteps;
   // The route describes the guided steps of this variant. Exam and board modes
   // keep using their existing renderer and progress rules.

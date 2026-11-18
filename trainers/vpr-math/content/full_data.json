@@ -12229,27 +12229,27 @@
           "prompt": "Из точки P проведена касательная PA к окружности с центром O. OA = 5 см, PA = 12 см. Найдите OP.",
           "steps": [
             {
-              "prompt": "Почему угол OAP прямой?",
+              "prompt": "Радиус OA проведён к точке касания. Чему равен угол OAP и почему?",
               "answer": {
                 "kind": "choice",
                 "value": 1
               },
               "options": [
-                "Любая хорда перпендикулярна радиусу.",
-                "Радиус проведён к точке касания.",
-                "Прямая PA проходит через центр."
+                "180°, потому что O, A и P лежат на одной прямой.",
+                "90°, потому что OA перпендикулярен касательной в A.",
+                "45°, потому что треугольник OAP равнобедренный."
               ],
-              "hint": "Посмотри, в какой точке прямая PA касается окружности и куда проведён радиус OA.",
+              "hint": "Радиус проведён к точке касания.",
               "solution": "Радиус к точке касания перпендикулярен касательной."
             },
             {
-              "prompt": "Найдите квадрат OP.",
+              "prompt": "OP² = OA² + AP². Чему равна сумма 5² + 12²?",
               "answer": {
                 "kind": "number",
                 "value": 169.0
               },
               "hint": "OP — гипотенуза прямоугольного треугольника.",
-              "solution": "OP² = 5² + 12² = 169.",
+              "solution": "В прямоугольном треугольнике OAP отрезок OP — гипотенуза. OP² = OA² + AP² = 5² + 12² = 169.",
               "oracle": "5**2+12**2"
             },
             {
@@ -12266,34 +12266,35 @@
           "finalExplanation": "Свойство касательной превращает задачу об окружности в задачу на теорему Пифагора.",
           "id": "g8-circle-3",
           "level": "practice",
-          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 340 200\" role=\"img\" aria-label=\"Окружность с центром O. Радиус OA равен 5 см. Касательная из P касается окружности в A, PA равен 12 см. Прямой угол отмечен у A.\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><title>Окружность с центром O. Радиус OA равен 5 см. Касательная из P касается окружности в A, PA равен 12 см. Прямой угол отмечен у A.</title><circle cx=\"91\" cy=\"92\" r=\"67\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\"/><polyline points=\"64 159 275.8 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"1.5\"/><polyline points=\"91 92 91 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\" data-segment=\"OA\"/><polyline points=\"91 159 251.8 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\" data-segment=\"PA\"/><g data-construction=\"OP\"><polyline points=\"91 92 251.8 159\" fill=\"none\" stroke=\"#9d492a\" stroke-width=\"2.3\" stroke-dasharray=\"5 4\" data-segment=\"OP\"/></g><polyline points=\"91 149 101 149 101 159\" fill=\"none\" stroke=\"#9d492a\" stroke-width=\"1.7\" data-segment=\"right-angle\"/><circle cx=\"91\" cy=\"92\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><circle cx=\"91\" cy=\"159\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><circle cx=\"251.8\" cy=\"159\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><text x=\"78\" y=\"85\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">O</text><text x=\"85\" y=\"182\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">A</text><text x=\"255.8\" y=\"149\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">P</text><text x=\"82\" y=\"131.51\" text-anchor=\"end\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">5 см</text><text x=\"174.62\" y=\"183\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">12 см</text></svg>",
-          "constructionNote": "Соединяем O и P. В треугольнике OAP отрезок OP лежит напротив прямого угла."
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 340 200\" role=\"img\" aria-label=\"Окружность с центром O. Радиус OA равен 5 см. Касательная из P касается окружности в A, PA равен 12 см.\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><title>Окружность с центром O. Радиус OA равен 5 см. Касательная из P касается окружности в A, PA равен 12 см.</title><circle cx=\"91\" cy=\"92\" r=\"67\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\"/><polyline points=\"64 159 275.8 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"1.5\"/><polyline points=\"91 92 91 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\" data-segment=\"OA\"/><polyline points=\"91 159 251.8 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\" data-segment=\"PA\"/><g data-construction=\"OP\"><polyline points=\"91 92 251.8 159\" fill=\"none\" stroke=\"#9d492a\" stroke-width=\"2.3\" stroke-dasharray=\"5 4\" data-segment=\"OP\"/></g><polyline points=\"91 149 101 149 101 159\" fill=\"none\" stroke=\"#9d492a\" stroke-width=\"1.7\" data-segment=\"right-angle\" data-construction=\"right-angle\" data-angle=\"OAP\"/><circle cx=\"91\" cy=\"92\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><circle cx=\"91\" cy=\"159\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><circle cx=\"251.8\" cy=\"159\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><text x=\"78\" y=\"85\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">O</text><text x=\"85\" y=\"182\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">A</text><text x=\"255.8\" y=\"149\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">P</text><text x=\"82\" y=\"131.51\" text-anchor=\"end\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">5 см</text><text x=\"174.62\" y=\"183\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">12 см</text></svg>",
+          "constructionNote": "Соединяем O и P. Угол OAP прямой, значит OP — гипотенуза.",
+          "workWithFigure": "OA = 5 см, AP = 12 см. Найдите OP."
         },
         {
           "prompt": "Из точки P проведена касательная PA к окружности с центром O. OA = 8 см, PA = 15 см. Найдите OP.",
           "steps": [
             {
-              "prompt": "Почему угол OAP прямой?",
+              "prompt": "Радиус OA проведён к точке касания. Чему равен угол OAP и почему?",
               "answer": {
                 "kind": "choice",
                 "value": 0
               },
               "options": [
-                "Радиус проведён к точке касания.",
-                "Любая хорда перпендикулярна радиусу.",
-                "Прямая PA проходит через центр."
+                "90°, потому что OA перпендикулярен касательной в A.",
+                "45°, потому что треугольник OAP равнобедренный.",
+                "180°, потому что O, A и P лежат на одной прямой."
               ],
-              "hint": "Посмотри, в какой точке прямая PA касается окружности и куда проведён радиус OA.",
+              "hint": "Радиус проведён к точке касания.",
               "solution": "Радиус к точке касания перпендикулярен касательной."
             },
             {
-              "prompt": "Найдите квадрат OP.",
+              "prompt": "OP² = OA² + AP². Чему равна сумма 8² + 15²?",
               "answer": {
                 "kind": "number",
                 "value": 289.0
               },
               "hint": "OP — гипотенуза прямоугольного треугольника.",
-              "solution": "OP² = 8² + 15² = 289.",
+              "solution": "В прямоугольном треугольнике OAP отрезок OP — гипотенуза. OP² = OA² + AP² = 8² + 15² = 289.",
               "oracle": "8**2+15**2"
             },
             {
@@ -12310,8 +12311,9 @@
           "finalExplanation": "Свойство касательной превращает задачу об окружности в задачу на теорему Пифагора.",
           "id": "g8-circle-4",
           "level": "practice",
-          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 340 200\" role=\"img\" aria-label=\"Окружность с центром O. Радиус OA равен 8 см. Касательная из P касается окружности в A, PA равен 15 см. Прямой угол отмечен у A.\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><title>Окружность с центром O. Радиус OA равен 8 см. Касательная из P касается окружности в A, PA равен 15 см. Прямой угол отмечен у A.</title><circle cx=\"91\" cy=\"92\" r=\"67\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\"/><polyline points=\"64 159 240.62 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"1.5\"/><polyline points=\"91 92 91 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\" data-segment=\"OA\"/><polyline points=\"91 159 216.62 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\" data-segment=\"PA\"/><g data-construction=\"OP\"><polyline points=\"91 92 216.62 159\" fill=\"none\" stroke=\"#9d492a\" stroke-width=\"2.3\" stroke-dasharray=\"5 4\" data-segment=\"OP\"/></g><polyline points=\"91 149 101 149 101 159\" fill=\"none\" stroke=\"#9d492a\" stroke-width=\"1.7\" data-segment=\"right-angle\"/><circle cx=\"91\" cy=\"92\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><circle cx=\"91\" cy=\"159\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><circle cx=\"216.62\" cy=\"159\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><text x=\"78\" y=\"85\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">O</text><text x=\"85\" y=\"182\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">A</text><text x=\"220.62\" y=\"149\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">P</text><text x=\"82\" y=\"131.51\" text-anchor=\"end\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">8 см</text><text x=\"156.33\" y=\"183\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">15 см</text></svg>",
-          "constructionNote": "Соединяем O и P. В треугольнике OAP отрезок OP лежит напротив прямого угла."
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 340 200\" role=\"img\" aria-label=\"Окружность с центром O. Радиус OA равен 8 см. Касательная из P касается окружности в A, PA равен 15 см.\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><title>Окружность с центром O. Радиус OA равен 8 см. Касательная из P касается окружности в A, PA равен 15 см.</title><circle cx=\"91\" cy=\"92\" r=\"67\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\"/><polyline points=\"64 159 240.62 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"1.5\"/><polyline points=\"91 92 91 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\" data-segment=\"OA\"/><polyline points=\"91 159 216.62 159\" fill=\"none\" stroke=\"#17674f\" stroke-width=\"2.3\" data-segment=\"PA\"/><g data-construction=\"OP\"><polyline points=\"91 92 216.62 159\" fill=\"none\" stroke=\"#9d492a\" stroke-width=\"2.3\" stroke-dasharray=\"5 4\" data-segment=\"OP\"/></g><polyline points=\"91 149 101 149 101 159\" fill=\"none\" stroke=\"#9d492a\" stroke-width=\"1.7\" data-segment=\"right-angle\" data-construction=\"right-angle\" data-angle=\"OAP\"/><circle cx=\"91\" cy=\"92\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><circle cx=\"91\" cy=\"159\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><circle cx=\"216.62\" cy=\"159\" r=\"2.8\" fill=\"#183c37\" stroke=\"#183c37\" stroke-width=\"0.5\"/><text x=\"78\" y=\"85\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">O</text><text x=\"85\" y=\"182\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">A</text><text x=\"220.62\" y=\"149\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">P</text><text x=\"82\" y=\"131.51\" text-anchor=\"end\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">8 см</text><text x=\"156.33\" y=\"183\" text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-size=\"16\" fill=\"#183c37\" stroke=\"#f6f8f3\" stroke-width=\"3\" paint-order=\"stroke\">15 см</text></svg>",
+          "constructionNote": "Соединяем O и P. Угол OAP прямой, значит OP — гипотенуза.",
+          "workWithFigure": "OA = 8 см, AP = 15 см. Найдите OP."
         },
         {
           "prompt": "Радиус окружности равен 5 см, длина хорды — 8 см. Найдите расстояние от центра до хорды.",
