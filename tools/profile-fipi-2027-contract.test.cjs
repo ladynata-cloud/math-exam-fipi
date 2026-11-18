@@ -186,7 +186,25 @@ test('H02 preserves the approved base curriculum, all task IDs, answers and orde
   assert.equal(start.reduce((count, lesson) => count + lesson.tasks.length, 0), 540);
   assert.equal(partTwo.length, 42);
   assert.equal(partTwo.reduce((count, lesson) => count + lesson.tasks.length, 0), 252);
-  assert.equal(digest(start), 'c60b1e343d35b0039601e5e41d8a3862537807adb0d1c64c6cc671a2f5211d9b');
+  // PR 664 clarifies only 20 prompt/hint/why strings in similar-triangle and
+  // cube-edge steps. Seal the reviewed copy and independently restore the H02
+  // bank: IDs, numerical answers, task ordering and every other field stay exact.
+  assert.equal(digest(start), '02963d11bf3b6fafb4c83e431dab81f6656591969ad1dbdbb38b4f0c44fbe478');
+  const restoredModules = {};
+  const inverse = require('./fixtures/profile-reviewed-ratio-copy.json');
+  assert.equal(inverse.length, 20);
+  for (const entry of inverse) {
+    assert(['ege-profil/start/geometry-data.js', 'ege-profil/start/stereo-data.js'].includes(entry.file));
+    assert(['prompt', 'hint', 'why'].includes(entry.path.at(-1)));
+    const rows = restoredModules[entry.file] ||= plain(require('../' + entry.file));
+    const parent = entry.path.slice(0, -1).reduce((value, key) => value[key], rows);
+    const key = entry.path.at(-1);
+    assert.equal(parent[key], entry.after, entry.file + ':' + entry.path.join('.'));
+    parent[key] = entry.before;
+  }
+  const beforeRatioCopy = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'finance', 'readiness', 'vector-basics']
+    .flatMap(name => restoredModules['ege-profil/start/' + name + '-data.js'] || require('../ege-profil/start/' + name + '-data.js'));
+  assert.equal(digest(beforeRatioCopy), 'c60b1e343d35b0039601e5e41d8a3862537807adb0d1c64c6cc671a2f5211d9b');
   // Accepted H04 adds explicit answerFormat descriptors without changing the
   // mathematical bank. Preserve its full snapshot from main 1469ad50 as well
   // as the original H02 snapshot with only that metadata removed.
