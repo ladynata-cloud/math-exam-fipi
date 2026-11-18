@@ -13,18 +13,6 @@
 @media(max-width:760px){.catalog-filters{grid-template-columns:1fr 1fr}.catalog-filters select{font-size:.85rem;padding:.6rem}.lesson-tags{gap:.35rem}.lesson-tags span{font-size:.72rem}.calculation-expression{font-size:.98rem!important}.reason-choice button{min-height:50px}.proof-checklist label{font-size:.87rem}.model-extras .clean-view{margin-left:0}}
 @media print{.practice-step,.clean-view,.calculation-next,.reason-choice button{display:none!important}.calculations{border:0;background:#fff}.calculation-step{break-inside:avoid}.proof-checklist input{appearance:none;width:.8rem;height:.8rem;border:1px solid #789581}.catalog-filters{display:none}}
 
-/* Personal geometric choices reuse the existing lesson model and remain usable on narrow screens. */
-.construction-heading{padding:.85rem 1rem;background:#edf5ef;border:1px solid #cbded0;border-radius:.8rem;margin-bottom:.85rem}
-.construction-heading h3{margin:0 0 .45rem}.construction-status,.construction-evidence{margin:.35rem 0;font-size:.92rem}
-.construction-action,.construction-finish{min-width:0}.construction-action h4,.construction-finish h4{margin-top:0}
-.construction-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1rem 0}
-.construction-field{min-width:0}.construction-field label{display:block;margin:0 0 .35rem;font-size:.9rem;font-weight:600}
-.construction-field select{width:100%;min-width:0;min-height:46px;font:inherit;background:#fff;border:1px solid #9ab4a4;border-radius:.45rem;padding:.55rem}
-.construction-controls,.construction-boundary-options{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0}
-.construction-controls button,.construction-boundary-options button{min-height:44px;max-width:100%;white-space:normal}
-.construction-boundary-order{overflow-wrap:anywhere;line-height:1.7}.construction-preview{stroke:#9b580e;stroke-width:3;stroke-dasharray:7 5;fill:none;opacity:.9}
-@media(max-width:600px){.construction-fields{grid-template-columns:minmax(0,1fr)}.construction-heading{padding:.7rem}.construction-controls>*{flex:1 1 100%}.construction-action button,.construction-finish button{white-space:normal}}
-
 /* Calm presentation for introductory and intermediate scaffolded cards. */
 .starter-layout{grid-template-columns:minmax(0,1fr);max-width:1360px}
 .starter-layout .catalog{position:static;max-height:none;padding:.65rem 1rem}
@@ -221,27 +209,3 @@ body[data-sections-board="true"] .app-header .brand{font-size:.75rem}
 @media print{.sections-tour,.sections-tour-shade{display:none!important}}
 
 .sections-tour-links{display:flex;flex-wrap:wrap;gap:.5rem;padding:.7rem 0 .2rem}.sections-tour-links button{min-height:44px;max-width:100%;white-space:normal;overflow-wrap:anywhere;text-align:left}
-
-/* A research question has one visible next action and keeps its own record. */
-.research-card{max-width:920px;margin-inline:auto;overflow-wrap:anywhere}
-.research-card .master-section-heading{margin-bottom:1rem}
-.research-card .master-section-heading h2{font-size:clamp(1.3rem,3vw,1.85rem);line-height:1.35}
-.research-steps{color:#375d48;font-weight:650;line-height:1.65}
-.research-card>label{display:block;font-weight:650;margin:1rem 0 .45rem;line-height:1.5}
-.research-card select,.research-card textarea{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;font:inherit;line-height:1.6;padding:.65rem;border:1px solid #a9c5b5;border-radius:.55rem;background:#fff;color:#203b2b}
-.research-card select{min-height:48px}
-.research-card textarea{min-height:120px;resize:vertical}
-.research-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}
-.research-actions button{flex:1 1 170px;min-height:48px;max-width:100%;white-space:normal;line-height:1.5;text-align:left}
-.research-actions button:disabled{opacity:.55;cursor:not-allowed}
-.research-current{border-left:4px solid #358060;background:#edf6ef;padding:.65rem .85rem;line-height:1.65}
-.research-model{margin:1rem 0}
-.research-model .model-svg{display:block;width:100%;height:350px;touch-action:none}
-.research-observation,.research-conclusion{padding:1rem;margin:1rem 0;border:1px solid #c9ded0;border-radius:.7rem;background:#f7fbf6;line-height:1.7}
-.research-observation h3,.research-conclusion h3{margin-top:0;font-size:1.12rem}
-.research-result{font-weight:650}
-.research-entry-question{padding-top:.65rem;line-height:1.6}
-.research-transfer{font-weight:600}
-.research-card .master-actions{flex-wrap:wrap;margin-top:1rem;gap:.5rem}
-.research-card .master-actions button{white-space:normal;max-width:100%;line-height:1.5}
-@media(max-width:480px){.research-card{padding:.8rem}.research-actions{gap:.5rem}.research-actions button{flex-basis:100%;font-size:1rem}.research-model .model-svg{height:280px}.research-card select{font-size:.96rem}.research-observation,.research-conclusion{padding:.75rem}}
