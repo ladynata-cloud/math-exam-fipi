@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "337f0b29e67d3fb36100f1719a25c37bbed34814",
+  "baseSha": "ff5d0d070eee7d4df2527dfc25a9f69cc912d828",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2193,13 +2193,13 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "5448a9d7891d8c6fde1d41b1b9ea755937da632f34babc87e1d15cfab6dfadcb",
-      "afterSha256": "e138c22c399f97b8e7e6b25eacbe667910d96507e0e8d3798bfac14491f85ad0",
+      "beforeSha256": "61ab5562bfd1afaf90f5d6cf9ab5a1a4f9a98b2e9d03c552f59c22d8ce5acf08",
+      "afterSha256": "3aea302930afc00aade07cfa6481a33a723d458668aead2e264826d4a952ed01",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
-      "beforeSha256": "8f6e1ab08917f7beacc279d9308c8f06d23c95ac07f5737bb0a0dfa1a990f7ec",
-      "afterSha256": "e18dab6cb02b9ed5d4edf842e9247f435ee1b070cdca4cebb7fb298abb00c79a",
+      "beforeSha256": "a2d1ffb5458ba4ee714b25ec578b021e257c730d84887ffd995ff87ecabcda00",
+      "afterSha256": "3c5c221992f5e4d8e4f34f26ebc165c18f25fa59c5afe7b4351f44496163db59",
       "placement": "before-head-close"
     },
     "stereo-course/sections/index.html": {
@@ -5689,6 +5689,26 @@
         "geometry-course/atlas/vectors.html",
         "geometry-course/index.html",
         "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
+      "sourceBaseSha": "12887c59d2a9ebfa08fa7200fbcf1b36d782ebaf",
+      "task": "docs/tasks/GEOMETRY_COURSES_AUDIT_20261118.md",
+      "changedPaths": [
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "12887c59d2a9ebfa08fa7200fbcf1b36d782ebaf",
+      "sourceBaseSha": "ff5d0d070eee7d4df2527dfc25a9f69cc912d828",
+      "task": "docs/tasks/ATANASYAN_7_11_HARMONIZATION_20261116.md",
+      "changedPaths": [
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
