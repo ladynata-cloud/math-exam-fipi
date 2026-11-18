@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "19185b9e8c5f05253837feefdb0523d9fd14bd79",
+  "baseSha": "1f05b3ff5effae756e58b67ecc075358c68a2349",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -453,8 +453,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trigonometry.html": {
-      "beforeSha256": "16d55a1a2047548d2761fefbc9c7bb10d27bc5bffd8fe03514a02c3ce8c21c94",
-      "afterSha256": "c950ed997b0e5d2f85f9239a8426c6cd8a1a4b216fc911681069d75a0503ce75",
+      "beforeSha256": "fe48009c7a49df432e77c8751cd8c6692ff8cc9eb2788e7dc87395105a96c154",
+      "afterSha256": "144cb7a38afc80668dc30277775c728beb339f51f3104340a403263d2f2d328c",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
@@ -3048,8 +3048,8 @@
       "placement": "before-head-close"
     },
     "trainers/percent-part-whole-trainer.html": {
-      "beforeSha256": "87a2d74c80ff4e3f6fee4706024989437b8416e9797e19361ff6af4b87ac6e94",
-      "afterSha256": "df6118a12615757514752529fb361f6fc83ba02f001b8b032b203128f3ea29b3",
+      "beforeSha256": "7b2698f0853d0d754321797ba6711496ef06db7b61cf5e631f5235ff1fe53a78",
+      "afterSha256": "9759ad52b45b17ba98e98275afe4d02f35f9b618a1024fbd9fbccb4cca4c63f0",
       "placement": "before-head-close"
     },
     "trainers/pitosha-python-trainer.html": {
@@ -5638,6 +5638,16 @@
         "articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/index.html",
         "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html",
         "articles/stroynost-kursa-geometrii/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "19185b9e8c5f05253837feefdb0523d9fd14bd79",
+      "sourceBaseSha": "1f05b3ff5effae756e58b67ecc075358c68a2349",
+      "task": "docs/tasks/HABR_BOARD_ENTRY_20261119.md",
+      "changedPaths": [
+        "ege-profil/trainers/trigonometry.html",
+        "trainers/percent-part-whole-trainer.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
