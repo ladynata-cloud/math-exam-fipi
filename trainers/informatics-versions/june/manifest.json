@@ -1,0 +1,57 @@
+[
+  {
+    "file": "oge-informatics-1-10-tutor.html.txt",
+    "title": "ОГЭ №1–10 · самостоятельная работа и разбор",
+    "slug": "oge-informatics-1-10-tutor"
+  },
+  {
+    "file": "ege-informatics-task1-graphs-trainer.html.txt",
+    "title": "ЕГЭ №1 · графы и таблицы",
+    "slug": "ege-informatics-task1-graphs-trainer"
+  },
+  {
+    "file": "ege-informatics-task15-logic-operations.html.txt",
+    "title": "ЕГЭ №15 · логические операции и законы",
+    "slug": "ege-informatics-task15-logic-operations"
+  },
+  {
+    "file": "ege-informatics-task15-logic-operations-mini.html.txt",
+    "title": "ЕГЭ №15 · мини-тренажёр по логике",
+    "slug": "ege-informatics-task15-logic-operations-mini"
+  },
+  {
+    "file": "ege-informatics-19-21-fipi.html.txt",
+    "title": "ЕГЭ №19–21 · подборка игр ФИПИ",
+    "slug": "ege-informatics-19-21-fipi"
+  },
+  {
+    "file": "ege-informatics-19-21-yandex.html.txt",
+    "title": "ЕГЭ №19–21 · подборка игр Яндекса",
+    "slug": "ege-informatics-19-21-yandex"
+  },
+  {
+    "file": "fipi-oge-informatics-report.html.txt",
+    "title": "Материалы ОГЭ · программы с переменной A",
+    "slug": "fipi-oge-informatics-report"
+  },
+  {
+    "file": "recursion_ladder_paths.html.txt",
+    "title": "Рекурсивная лестница и дерево путей",
+    "slug": "recursion_ladder_paths"
+  },
+  {
+    "file": "turing-trainer-polish.html.txt",
+    "title": "Машина Тьюринга · тренажёр",
+    "slug": "turing-trainer-polish"
+  },
+  {
+    "file": "pitosha-python-trainer.html.txt",
+    "title": "Питоша · основы Python",
+    "slug": "pitosha-python-trainer"
+  },
+  {
+    "file": "python-for-nested-if-trainer.html.txt",
+    "title": "Python · ветвление внутри цикла",
+    "slug": "python-for-nested-if-trainer"
+  }
+]

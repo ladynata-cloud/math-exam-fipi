@@ -1,0 +1,53 @@
+name: Informatics lessons and edition comparison
+on:
+  pull_request:
+    paths:
+      - 'trainers/*informatics*'
+      - 'trainers/informatics-versions/**'
+      - 'trainers/recursion_ladder_paths.html'
+      - 'trainers/turing-trainer-polish.html'
+      - 'trainers/pitosha-python-trainer.html'
+      - 'trainers/python-for-nested-if-trainer.html'
+      - 'tools/*informatics*'
+      - 'tools/inf-*.cjs'
+      - '.github/workflows/informatics-editions.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install test dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/inf-check" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/inf-check/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/inf-check/node_modules" >> "$GITHUB_ENV"
+          python -m pip install --quiet Pillow==11.3.0
+      - name: Reproduce the two student journeys
+        run: |
+          node tools/informatics-editions.browser.cjs
+          python tools/informatics-editions-gif.py
+      - name: Archive screenshot and GIF evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: informatics-editions
+          path: artifacts/informatics-editions
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Check generators, solutions and equivalent inputs
+        run: |
+          node --test tools/oge-informatics-practice.test.cjs tools/inf-graphs-logic.test.cjs
+      - name: Run student interactions
+        run: |
+          node tools/oge-informatics.browser.cjs
+          node tools/inf-graphs-logic.browser.cjs
+          node tools/inf-algorithms.browser.cjs

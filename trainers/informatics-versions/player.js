@@ -12,7 +12,18 @@
     catch { return {}; }
   }
   // One opaque frame, one edition key, separate lifetimes for the two stores.
-  const bridge = function(initial) {
+  const bridge = function(initial, exampleEdition) {
+    if (exampleEdition) {
+      // Replay the same graph on explicit request. Restore randomness immediately.
+      addEventListener('load', () => {
+        const previous = Math.random;
+        let seed = 19;
+        Math.random = exampleEdition === 'november' ? () => seed / 4294967296 :
+          () => ((seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296);
+        try { document.querySelector('[data-topic="9"]')?.click(); }
+        finally { Math.random = previous; }
+      }, {once:true});
+    }
     for (const [name, entries] of Object.entries(initial)) {
       const map = new Map(Object.entries(entries || {}));
       const notify = (op, key, value) => parent.postMessage({type:'edition-storage', name, op, key, value}, '*');
@@ -46,7 +57,8 @@
   let raw = await read(period + '/' + item.file, 'text');
   const init = JSON.stringify(state).replace(/</g,'\\u003c');
   const policy = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; base-uri 'none'; form-action 'none'";
-  const prelude = '<meta http-equiv="Content-Security-Policy" content="'+policy+'"><script>('+bridge.toString()+')('+init+');<\/script>';
+  const replay = item.slug === 'oge-informatics-1-10-tutor' && args.get('example') === 'paths-article' ? period : null;
+  const prelude = '<meta http-equiv="Content-Security-Policy" content="'+policy+'"><script>('+bridge.toString()+')('+init+','+JSON.stringify(replay)+');<\/script>';
   if (!/<head(?:\s[^>]*)?>/i.test(raw)) throw Error('Не удалось прочитать сохранённый HTML.');
   frame.srcdoc = raw.replace(/<head(?:\s[^>]*)?>/i, tag => tag + prelude);
   const title = (period === 'june' ? 'Июнь' : 'Ноябрь') + ' 2026 · ' + item.title;
