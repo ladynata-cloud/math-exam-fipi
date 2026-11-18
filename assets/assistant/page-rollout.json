@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "2d0651864042658fed9a28ca621d8cfb139b1e42",
+  "baseSha": "12887c59d2a9ebfa08fa7200fbcf1b36d782ebaf",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2198,8 +2198,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
-      "beforeSha256": "8f6e1ab08917f7beacc279d9308c8f06d23c95ac07f5737bb0a0dfa1a990f7ec",
-      "afterSha256": "e18dab6cb02b9ed5d4edf842e9247f435ee1b070cdca4cebb7fb298abb00c79a",
+      "beforeSha256": "56d83c328884bab9fcec111b9d481cacb0fffe6a6fed477ceb88badb33e6933c",
+      "afterSha256": "9e6fa54b2444f74fbb89e6ef51bfbde8d4b1c100a22fa137f503933958476755",
       "placement": "before-head-close"
     },
     "stereo-course/sections/index.html": {
@@ -5689,6 +5689,16 @@
         "geometry-course/atlas/vectors.html",
         "geometry-course/index.html",
         "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
+      "sourceBaseSha": "12887c59d2a9ebfa08fa7200fbcf1b36d782ebaf",
+      "task": "docs/tasks/GEOMETRY_COURSES_AUDIT_20261118.md",
+      "changedPaths": [
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

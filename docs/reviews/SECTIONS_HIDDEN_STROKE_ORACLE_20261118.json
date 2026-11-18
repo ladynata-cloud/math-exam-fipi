@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/math_release_review",
+  "createdAt": "2026-11-18T10:42:00.711635+00:00",
+  "reviewType": "independent test-oracle mathematics and scope review",
+  "externalReview": false,
+  "releaseApproval": false,
+  "verdict": "PASS",
+  "candidate": {
+    "path": "tools/sections-harmonization.browser.cjs",
+    "sha256": "a9d2370c090c38e8a8fca3911073964aa5138ea4e2775c727a895abf805229ee",
+    "workingBaseCommit": "a17ce53f9bb7734b57a470f97ea8b6b46430cadf",
+    "productionAppSha256": "0e683deacc5ee989f3ae9fd5ac4dea6e6a7526de1161798a0e3342142452036c"
+  },
+  "scope": [
+    "Finite convex face membership and camera-based boundary visibility",
+    "Independence from production data-hidden/style and renderer caches",
+    "Hidden/visible/helper stroke acceptance and negative controls",
+    "No production or authored lesson changes"
+  ],
+  "mathematicalFindings": [
+    "Newell normals are oriented away from the body center; the world camera direction matches the orthographic depth direction. A boundary segment is hidden only when both endpoints belong to at least one finite supporting face and all such faces are back-facing.",
+    "Coplanarity plus consistent edge-cross-product signs is valid for the planar convex polygons used here. An independent scan verified planarity, convexity and convex-solid containment for every face of all 186 authored models.",
+    "Checking all supporting faces handles silhouette edges. A reverse winding does not change visibility. Infinite plane extensions are excluded by finite polygon membership. Flat projection and helper roles retain their explicit display contract."
+  ],
+  "checks": {
+    "authoredConvexSolids": 186,
+    "facesPerSolid": {
+      "6": 125,
+      "4": 25,
+      "5": 32,
+      "8": 4
+    },
+    "independentRayTriangleCrossCheck": {
+      "cards": 186,
+      "worldBoundarySegments": 2271,
+      "rayOccluded": 1091,
+      "unsupportedInteriorOrExtensionSegments": 12,
+      "negativeControls": 6
+    },
+    "additionalBoundaryControls": [
+      "shared edge with two back-facing adjacent faces is hidden",
+      "reversed face winding preserves classification",
+      "shared edge with front/back adjacency is visible"
+    ],
+    "builtInGeometryAssertions": 8,
+    "builtInAcceptanceMutationControls": 6
+  },
+  "limitations": [
+    "No fresh native Chromium/layout execution was performed by this reviewer. Final browser CI remains required.",
+    "This is a finite boundary-face visibility oracle, not a general-purpose interior-segment ray-occlusion rule. Existing interior constructions ii-self-9 B1-D, ii-self-7 O-T and ii-self-8 P-Q retain the current solid-line convention; 12 unsupported segment/camera occurrences were excluded from the independent boundary-ray comparison.",
+    "The independent ray comparison used all 186 authored cards in initial/intermediate/final states at the default and two additional cameras, not arbitrary nonconvex models or every possible floating-point tangent camera."
+  ],
+  "notes": [
+    "The six mutation controls reject wrong dash styles for hidden/visible/helper lines and wrong hidden flags for each role. No golden baseline was changed and no production hidden flag was used as expected output.",
+    "The full saved-artifact reanalysis was performed separately by /root/geometry_release_review; it is not represented here as a new browser run."
+  ]
+}

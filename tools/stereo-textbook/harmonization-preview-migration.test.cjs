@@ -4,13 +4,15 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const {beforeCompactPreview, FILE, BEFORE} = require('./harmonization-preview-migration.cjs');
+const {beforeProfileComposition, AFTER: PROFILE_AFTER} = require('./visibility-profile-runtime-migration.cjs');
 const {historicalRead} = require('./mobile-layout-migration.cjs');
 const root = path.resolve(__dirname, '../..');
 const read = file => fs.readFileSync(path.join(root, file));
 const bytes = read(FILE), restored = beforeCompactPreview(FILE, bytes);
 const sha256 = value => crypto.createHash('sha256').update(value).digest('hex');
 const gitBlob = value => crypto.createHash('sha1').update('blob ' + value.length + '\0').update(value).digest('hex');
-assert.equal(sha256(restored), BEFORE);
+assert.equal(sha256(restored), PROFILE_AFTER, 'the compact inverse preserves the exact reviewed profile renderer');
+assert.equal(sha256(beforeProfileComposition(FILE, restored)), BEFORE, 'the profile inverse then restores the unchanged historical renderer');
 // Exercise the same historicalRead path as all three later frozen consumers;
 // their old SHA-256/Git-blob literals remain the authorities.
 assert.equal(require('./sphere-baseline.json').immutableFiles[FILE], BEFORE);
