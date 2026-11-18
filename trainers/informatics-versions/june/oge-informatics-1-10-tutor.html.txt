@@ -1,0 +1,2045 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тренажёр ОГЭ по информатике: задания 1–10</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --ink:#152033;
+      --muted:#617089;
+      --line:#dbe3ef;
+      --accent:#3757ff;
+      --accent2:#00a884;
+      --bad:#d83b3b;
+      --warn:#f39c12;
+      --soft:#edf1ff;
+      --soft2:#eafaf5;
+      --shadow:0 18px 40px rgba(20,32,51,.10);
+      --radius:22px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at top left, rgba(55,87,255,.12), transparent 34rem),
+        radial-gradient(circle at top right, rgba(0,168,132,.10), transparent 30rem),
+        var(--bg);
+      color:var(--ink);
+      font-family:var(--sans);
+      line-height:1.5;
+    }
+    .wrap{max-width:1220px;margin:0 auto;padding:24px}
+    header.hero{
+      display:grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap:20px;
+      align-items:stretch;
+      margin-bottom:20px;
+    }
+    .hero-card, .side-card, .task-card, .variant-card{
+      background:rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border:1px solid rgba(219,227,239,.9);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .hero-card{padding:30px;position:relative;overflow:hidden}
+    .hero-card:after{
+      content:"";position:absolute;right:-80px;top:-120px;width:260px;height:260px;border-radius:50%;
+      background:linear-gradient(135deg, rgba(55,87,255,.17), rgba(0,168,132,.15));
+    }
+    .eyebrow{font-weight:800;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+    h1{margin:8px 0 10px;font-size:clamp(30px, 5vw, 56px);line-height:.98;letter-spacing:-.04em}
+    .lead{max-width:780px;color:var(--muted);font-size:18px;margin:0}
+    .pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--soft);font-size:13px;font-weight:700;color:#263a8d}
+    .side-card{padding:22px;display:flex;flex-direction:column;gap:14px}
+    .score-big{font-size:42px;font-weight:900;letter-spacing:-.04em}
+    .small-muted{font-size:13px;color:var(--muted)}
+    .progressbar{height:12px;background:#edf1f7;border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+    .progressbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:.25s}
+    .layout{display:grid;grid-template-columns: 280px 1fr;gap:20px;align-items:start}
+    nav.panel{position:sticky;top:18px;display:flex;flex-direction:column;gap:14px}
+    .nav-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .nav-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:900}
+    .topic-grid{display:grid;grid-template-columns:1fr;gap:8px}
+    .topic-btn{
+      width:100%;display:flex;gap:10px;align-items:center;justify-content:flex-start;
+      border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 12px;cursor:pointer;color:var(--ink);
+      font-weight:700;text-align:left;transition:.18s;
+    }
+    .topic-btn:hover{transform:translateY(-1px);border-color:#b7c5f9;background:#f8faff}
+    .topic-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .topic-num{width:28px;height:28px;border-radius:10px;display:inline-grid;place-items:center;background:rgba(55,87,255,.10);font-weight:900;flex:none}
+    .topic-btn.active .topic-num{background:rgba(255,255,255,.20)}
+    .topic-name{font-size:13px;line-height:1.2}
+    .actions{display:grid;gap:10px}
+    button.primary, button.secondary, button.ghost, button.danger{
+      border:0;border-radius:15px;padding:12px 14px;font-weight:900;cursor:pointer;transition:.18s;font-family:var(--sans);
+    }
+    button.primary{background:var(--accent);color:#fff;box-shadow:0 12px 26px rgba(55,87,255,.22)}
+    button.secondary{background:#13233f;color:#fff}
+    button.ghost{background:#f1f4fa;color:#22324d;border:1px solid var(--line)}
+    button.danger{background:#fff1f1;color:var(--bad);border:1px solid #ffd3d3}
+    button.primary:hover, button.secondary:hover, button.ghost:hover, button.danger:hover{transform:translateY(-1px)}
+    button:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
+    main{display:flex;flex-direction:column;gap:20px}
+    .task-card{padding:24px;min-height:480px}
+    .meta-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+    .meta-chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:var(--soft2);color:#09745d;font-weight:900;font-size:13px;padding:8px 12px}
+    .timer-chip{background:#fff7e6;color:#8b5a00}
+    h2{margin:0 0 10px;font-size:28px;letter-spacing:-.02em}
+    .task-text{font-size:17px;color:#1d2a42}
+    .task-text p{margin:10px 0}
+    .answer-row{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;margin-top:22px;align-items:center}
+    input.answer{
+      width:100%;border:2px solid var(--line);border-radius:16px;padding:14px 16px;font-size:20px;font-weight:800;outline:none;background:#fff;color:var(--ink);
+    }
+    input.answer:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(55,87,255,.10)}
+    .feedback{margin-top:16px;border-radius:18px;padding:14px 16px;display:none;font-weight:750}
+    .feedback.good{display:block;background:#eafaf5;color:#067259;border:1px solid #a7ead8}
+    .feedback.bad{display:block;background:#fff1f1;color:#b92525;border:1px solid #ffc7c7}
+    .feedback.neutral{display:block;background:#f1f4fa;color:#36445c;border:1px solid var(--line)}
+    .hint-box,.solution-box{display:none;margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:18px;background:#f8faff;color:#293a59}
+    .hint-box.show,.solution-box.show{display:block}
+    .solution-box{background:#fffdf7;border-color:#ffe3a6}
+    table.matrix, table.query-table, table.code-table{border-collapse:collapse;margin:14px 0;max-width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+    table.matrix th, table.matrix td, table.query-table th, table.query-table td, table.code-table th, table.code-table td{
+      border:1px solid var(--line);padding:8px 10px;text-align:center;min-width:42px;
+    }
+    table.query-table th, table.code-table th{background:#f1f4fa;font-weight:900}
+    table.matrix th{background:#f1f4fa;font-weight:900}
+    table.matrix td.diag{background:#eef2f8;color:#9aa7ba}
+    .program{font-family:var(--mono);background:#0f172a;color:#e5e7eb;border-radius:16px;padding:14px 16px;overflow:auto;font-size:14px;line-height:1.45;margin:12px 0}
+    .mono{font-family:var(--mono)}
+    .fragments{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:14px 0}
+    .fragment{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px;font-weight:800}
+    .fragment span{color:var(--accent);font-weight:950;margin-right:8px}
+    .graph-svg{width:100%;max-width:650px;height:auto;border:1px solid var(--line);border-radius:18px;background:#fff;margin:12px 0}
+    .variant-card{padding:22px;display:none}
+    .variant-card.show{display:block}
+    .variant-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+    .variant-grid{display:grid;gap:14px}
+    .mini-task{border:1px solid var(--line);border-radius:18px;background:#fff;padding:16px}
+    .mini-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px;font-weight:950}
+    .mini-task .task-text{font-size:15px}
+    .mini-answer-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-top:12px}
+    .mini-answer-row input{border:2px solid var(--line);border-radius:14px;padding:11px 12px;font-weight:800;font-size:16px;outline:none}
+    .mini-result{font-weight:900;padding:8px 10px;border-radius:999px;background:#f1f4fa;color:#56627a}
+    .mini-result.ok{background:#eafaf5;color:#067259}
+    .mini-result.no{background:#fff1f1;color:#b92525}
+    .cheats{display:grid;gap:8px}
+    details.cheat{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px 12px}
+    details.cheat summary{cursor:pointer;font-weight:900}
+    details.cheat p{margin:8px 0 0;color:var(--muted);font-size:14px}
+    .footer-note{margin:26px 0 4px;color:var(--muted);font-size:13px;text-align:center}
+    .toast{position:fixed;right:22px;bottom:22px;background:#13233f;color:#fff;border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);display:none;max-width:340px;z-index:20;font-weight:800}
+    .toast.show{display:block;animation:pop .18s ease-out}
+    @keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+    /* ===== TUTOR / РЕЖИМЫ ===== */
+    .mode-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+    .mode-row .mode-label{font-size:13px;color:var(--muted);font-weight:800}
+    .mode-btn{
+      border:1px solid var(--line);background:#fff;color:var(--ink);
+      border-radius:999px;padding:7px 12px;font-weight:800;font-size:13px;cursor:pointer;
+      transition:.16s;font-family:var(--sans);
+    }
+    .mode-btn:hover{border-color:#b7c5f9;background:#f8faff}
+    .mode-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 6px 14px rgba(55,87,255,.18)}
+    .mode-hint{font-size:12px;color:var(--muted);margin-top:6px}
+
+    .tutor-box{
+      display:none;margin-top:14px;padding:16px 18px;border:1px solid #c4d1ff;border-radius:18px;
+      background:linear-gradient(180deg,#f3f6ff 0%,#fbfcff 100%);color:#1d2a45;
+    }
+    .tutor-box.show{display:block}
+    .tutor-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+    .tutor-counter{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+    .tutor-close{
+      background:transparent;border:1px solid var(--line);color:var(--muted);
+      border-radius:10px;padding:4px 10px;font-weight:800;font-size:12px;cursor:pointer;
+    }
+    .tutor-close:hover{color:var(--ink);border-color:#b7c5f9}
+    .tutor-progress{height:6px;background:#e3e9ff;border-radius:999px;overflow:hidden;margin:6px 0 14px}
+    .tutor-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:.25s}
+    .tutor-title{font-size:18px;font-weight:900;margin:2px 0 4px;letter-spacing:-.01em}
+    .tutor-goal{font-size:14px;color:#3c4a66;margin:0 0 10px}
+    .tutor-question{font-size:15px;font-weight:700;margin:8px 0;color:#1d2a45}
+    .tutor-input-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin:8px 0 6px}
+    .tutor-input{
+      width:100%;border:2px solid #c4d1ff;border-radius:14px;padding:11px 13px;
+      font-size:16px;font-weight:800;outline:none;background:#fff;color:var(--ink);font-family:var(--sans);
+    }
+    .tutor-input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(55,87,255,.10)}
+    .tutor-check-btn{
+      background:var(--accent);color:#fff;border:0;border-radius:14px;padding:0 16px;
+      font-weight:900;cursor:pointer;font-family:var(--sans);transition:.16s;
+    }
+    .tutor-check-btn:hover{transform:translateY(-1px)}
+    .tutor-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .tutor-controls button{
+      border:1px solid var(--line);background:#fff;color:#22324d;
+      border-radius:12px;padding:8px 12px;font-weight:800;cursor:pointer;font-size:13px;font-family:var(--sans);
+      transition:.16s;
+    }
+    .tutor-controls button:hover{border-color:#b7c5f9;background:#f4f7ff}
+    .tutor-controls button.primary-step{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .tutor-controls button.primary-step:hover{background:#2a47e6}
+    .tutor-controls button:disabled{opacity:.5;cursor:not-allowed}
+    .tutor-fb{margin-top:10px;padding:10px 12px;border-radius:12px;font-weight:750;font-size:14px;display:none}
+    .tutor-fb.good{display:block;background:#eafaf5;color:#067259;border:1px solid #a7ead8}
+    .tutor-fb.bad{display:block;background:#fff1f1;color:#b92525;border:1px solid #ffc7c7}
+    .tutor-fb.neutral{display:block;background:#f1f4fa;color:#36445c;border:1px solid var(--line)}
+    .tutor-hint{
+      margin-top:8px;padding:10px 12px;border-radius:12px;font-size:13.5px;
+      background:#fff8e1;border:1px solid #ffe39c;color:#7a5400;display:none;
+    }
+    .tutor-hint.show{display:block}
+    .tutor-final{
+      margin-top:10px;padding:12px 14px;border-radius:14px;
+      background:#eafaf5;border:1px solid #a7ead8;color:#067259;font-weight:800;display:none;
+    }
+    .tutor-final.show{display:block}
+    .tutor-open-btn{
+      background:#eef2ff;color:#22356d;border:1px solid #c4d1ff;border-radius:15px;
+      padding:12px 14px;font-weight:900;cursor:pointer;font-family:var(--sans);transition:.16s;
+    }
+    .tutor-open-btn:hover{background:#dfe6ff;transform:translateY(-1px)}
+    .tutor-open-btn.mini{padding:8px 12px;font-size:13px;border-radius:12px}
+    .tutor-locked{
+      padding:10px 12px;border-radius:12px;background:#f1f4fa;color:#56627a;
+      font-size:13px;border:1px dashed var(--line);margin-top:10px;display:none;
+    }
+    .tutor-locked.show{display:block}
+    .stats-extra{margin-top:10px;font-size:13px;color:var(--muted)}
+    .stats-extra b{color:var(--ink)}
+    .stats-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}
+    .stats-table th, .stats-table td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left}
+    .stats-table th{color:var(--muted);font-weight:800;text-transform:uppercase;font-size:11px;letter-spacing:.04em}
+    .stats-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+    .weak-row{background:#fff5f5}
+    .answer-row.has-tutor{grid-template-columns:1fr auto auto auto auto}
+    @media (max-width:560px){
+      .answer-row.has-tutor{grid-template-columns:1fr}
+      .answer-row.has-tutor button{width:100%}
+    }
+    @media (max-width:900px){
+      header.hero,.layout{grid-template-columns:1fr}
+      nav.panel{position:static}
+      .topic-grid{grid-template-columns:repeat(2,1fr)}
+      .answer-row{grid-template-columns:1fr}
+      .answer-row button{width:100%}
+    }
+    @media (max-width:560px){
+      .wrap{padding:14px}
+      .hero-card,.task-card,.variant-card{padding:18px}
+      .topic-grid{grid-template-columns:1fr}
+      .mini-answer-row{grid-template-columns:1fr}
+      .score-big{font-size:34px}
+    }
+    @media print{
+      body{background:#fff}.nav-card,.side-card,.answer-row,.actions,.feedback,.hint-box,.solution-box{display:none!important}.layout,header.hero{display:block}.task-card,.variant-card{box-shadow:none;border:1px solid #aaa}.variant-card{display:block!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <section class="hero-card">
+        <div class="eyebrow">ОГЭ информатика · часть 1</div>
+        <h1>Быстрый тренажёр заданий 1–10</h1>
+        <p class="lead">Генерирует новые варианты в стиле ОГЭ: проверка ответа, подсказка, короткое решение и мини-вариант на 30 минут. Работает офлайн в одном HTML-файле.</p>
+        <div class="pill-row">
+          <span class="pill">⚡ 10 типов заданий</span>
+          <span class="pill">✅ автопроверка</span>
+          <span class="pill">🧠 разбор после ответа</span>
+          <span class="pill">⏱ режим варианта</span>
+        </div>
+      </section>
+      <aside class="side-card">
+        <div>
+          <div class="small-muted">Твой результат в этом браузере</div>
+          <div class="score-big" id="scoreBig">0%</div>
+        </div>
+        <div class="progressbar"><span id="scoreBar"></span></div>
+        <div class="small-muted" id="scoreText">Пока нет попыток. Погнали с одного задания — и уже будет статистика.</div>
+        <div>
+          <div class="mode-row" role="group" aria-label="Режим тренировки">
+            <span class="mode-label">Режим:</span>
+            <button class="mode-btn" data-mode="learn" type="button">Учусь</button>
+            <button class="mode-btn" data-mode="practice" type="button">Закрепляю</button>
+            <button class="mode-btn" data-mode="exam" type="button">Экзамен</button>
+          </div>
+          <div class="mode-hint" id="modeHint"></div>
+        </div>
+        <div class="stats-extra" id="statsExtra"></div>
+      </aside>
+    </header>
+
+    <div class="layout">
+      <nav class="panel">
+        <section class="nav-card">
+          <div class="nav-title"><span>Выбери номер</span><span class="small-muted">1–10</span></div>
+          <div class="topic-grid" id="topicGrid"></div>
+        </section>
+        <section class="nav-card actions">
+          <button class="primary" id="newTaskBtn">Новое задание</button>
+          <button class="secondary" id="variantBtn">Собрать вариант 1–10</button>
+          <button class="ghost" id="printBtn">Распечатать вариант</button>
+          <button class="danger" id="resetBtn">Сбросить прогресс</button>
+        </section>
+        <section class="nav-card">
+          <div class="nav-title">Шпаргалка без воды</div>
+          <div class="cheats" id="cheats"></div>
+        </section>
+      </nav>
+
+      <main>
+        <section class="task-card" id="trainingCard">
+          <div class="meta-row">
+            <span class="meta-chip" id="taskMeta">Задание №1</span>
+            <span class="meta-chip timer-chip" id="quickTip">Совет: сначала реши, потом смотри разбор</span>
+          </div>
+          <h2 id="taskTitle"></h2>
+          <div class="task-text" id="taskText"></div>
+          <div class="answer-row has-tutor">
+            <input class="answer" id="answerInput" autocomplete="off" placeholder="Ответ без пробелов">
+            <button class="primary" id="checkBtn">Проверить</button>
+            <button class="ghost" id="hintBtn">Подсказка</button>
+            <button class="ghost" id="solutionBtn">Решение</button>
+            <button class="tutor-open-btn" id="tutorOpenBtn" type="button">Разобрать по шагам</button>
+          </div>
+          <div class="feedback" id="feedback"></div>
+          <div class="tutor-locked" id="tutorLocked">В режиме «Экзамен» пошаговый разбор открывается после проверки задания или варианта. Сначала попробуй сам.</div>
+          <div class="hint-box" id="hintBox"></div>
+          <div class="solution-box" id="solutionBox"></div>
+          <div class="tutor-box" id="tutorBox" aria-live="polite"></div>
+        </section>
+
+        <section class="variant-card" id="variantCard">
+          <div class="variant-head">
+            <div>
+              <div class="eyebrow">мини-вариант</div>
+              <h2 style="margin:4px 0 0">10 заданий · цель — 30 минут</h2>
+            </div>
+            <div class="pill-row" style="margin:0">
+              <span class="pill" id="variantTimer">30:00</span>
+              <span class="pill" id="variantScore">ещё не проверено</span>
+            </div>
+          </div>
+          <div class="variant-grid" id="variantGrid"></div>
+          <div class="answer-row" style="grid-template-columns:1fr auto auto;">
+            <div class="small-muted">Ответы можно проверять по одному или весь вариант сразу.</div>
+            <button class="primary" id="checkVariantBtn">Проверить вариант</button>
+            <button class="ghost" id="newVariantBtn">Новый вариант</button>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div class="footer-note">Сделано для быстрой тренировки первой части ОГЭ по информатике. Ответы проверяются локально, данные никуда не отправляются.</div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const TOPICS = [
+    {n:1, name:'Информационный объём', cheat:'В Unicode 16 бит = 2 байта на символ. Если удалили слово, запятую и пробел, то разница = (длина слова + 2) × байт на символ.'},
+    {n:2, name:'Кодирование сообщений', cheat:'Идём слева направо: подбираем код буквы, отрезаем его от радиограммы, повторяем. Если сомневаешься — выпиши дерево вариантов.'},
+    {n:3, name:'Логика и неравенства', cheat:'НЕ меняет истину на ложь. Для “ложно A ИЛИ B” нужно, чтобы оба куска были ложными. Часто быстрее проверить x = 1, 2, 3…'},
+    {n:4, name:'Кратчайший путь', cheat:'Положительные веса: перебирай короткие маршруты без повторов или веди таблицу расстояний. Не забывай, что прямой путь не всегда лучший.'},
+    {n:5, name:'Команды исполнителя', cheat:'Работай от цели назад: если последняя команда “+1”, отними 1; если “квадрат”, возьми корень. Потом проверь прямым ходом.'},
+    {n:6, name:'Программа с параметром A', cheat:'Сначала переведи условие вывода. Например, при if s>A or t>K печатается NO ровно тогда, когда s≤A и t≤K.'},
+    {n:7, name:'Адрес файла в Интернете', cheat:'Шаблон адреса: протокол://сервер.домен/имя.расширение. Сначала найди протокол и “://”, потом сервер, слэш и файл.'},
+    {n:8, name:'Запросы поисковика', cheat:'A&(B|C) = A&B плюс A&C минус A&B&C. Пересечение трёх слов вычитается, потому что попало в две группы сразу.'},
+    {n:9, name:'Количество путей в графе', cheat:'Ставим у конечного города 1. Для каждой вершины число путей = сумма чисел в вершинах, куда из неё можно пойти.'},
+    {n:10, name:'Системы счисления', cheat:'Переводи каждое число в десятичную: двоичная — степени 2, восьмеричная — степени 8, шестнадцатеричная — A=10, B=11, … F=15.'}
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const rnd = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+  const pick = (arr) => arr[rnd(0, arr.length-1)];
+  const shuffle = (arr) => arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const normalize = (s) => String(s ?? '').trim().replace(/\s+/g,'').replace(/ё/g,'е').replace(/Ё/g,'Е').toLowerCase();
+  const numNorm = (s) => String(s ?? '').trim().replace(/\s+/g,'').replace(',', '.');
+  const sub = (x) => String(x).split('').map(ch => '₀₁₂₃₄₅₆₇₈₉'[Number(ch)]).join('');
+
+  let currentTopic = 1;
+  let currentTask = null;
+  let variantTasks = [];
+  let variantTimer = null;
+  let variantSeconds = 30 * 60;
+  let variantChecked = false;
+  let currentMode = loadMode();
+
+  const MODES = {
+    learn:    {label:'Учусь',     hint:'Кнопка «Разобрать по шагам» открыта сразу. Подсказки доступны без штрафа.'},
+    practice: {label:'Закрепляю', hint:'Сначала пробуй сам. После ошибки появится приглашение разобрать по шагам.'},
+    exam:     {label:'Экзамен',   hint:'Без подсказок и шагов. Разбор откроется только после проверки задания или варианта.'}
+  };
+
+  function loadMode(){
+    try{
+      const m = localStorage.getItem('ogeInfoTrainerMode');
+      return (m && MODES[m]) ? m : 'practice';
+    }catch(e){ return 'practice'; }
+  }
+  function saveMode(){ try{ localStorage.setItem('ogeInfoTrainerMode', currentMode); }catch(e){} }
+
+  function defaultTaskStat(){ return {attempts:0, correct:0, tutorOpened:0, stepsAttempted:0, stepsCorrect:0, solutionViewed:0, hintViewed:0}; }
+  const defaultStats = () => ({attempts:0, correct:0, byTask:Object.fromEntries(TOPICS.map(t=>[t.n, defaultTaskStat()]))});
+  let stats = loadStats();
+
+  function ensureTaskStat(n){
+    if(!stats.byTask[n]) stats.byTask[n] = defaultTaskStat();
+    const base = defaultTaskStat();
+    for(const k of Object.keys(base)){
+      if(typeof stats.byTask[n][k] !== 'number') stats.byTask[n][k] = base[k];
+    }
+  }
+  function loadStats(){
+    try{
+      const raw = localStorage.getItem('ogeInfoTrainerStats');
+      if(!raw) return defaultStats();
+      const parsed = JSON.parse(raw);
+      const base = defaultStats();
+      const merged = {...base, ...parsed, byTask:{...base.byTask, ...(parsed.byTask || {})}};
+      // миграция: гарантируем все поля
+      for(const n of Object.keys(merged.byTask)){
+        const cur = merged.byTask[n] || {};
+        merged.byTask[n] = {...defaultTaskStat(), ...cur};
+      }
+      return merged;
+    }catch(e){ return defaultStats(); }
+  }
+  function saveStats(){ try{ localStorage.setItem('ogeInfoTrainerStats', JSON.stringify(stats)); }catch(e){} }
+  function record(n, ok){
+    stats.attempts += 1;
+    if(ok) stats.correct += 1;
+    ensureTaskStat(n);
+    stats.byTask[n].attempts += 1;
+    if(ok) stats.byTask[n].correct += 1;
+    saveStats(); renderStats();
+  }
+  function recordTutorUsage(n, event){
+    ensureTaskStat(n);
+    if(event === 'open') stats.byTask[n].tutorOpened += 1;
+    if(event === 'stepAttempt') stats.byTask[n].stepsAttempted += 1;
+    if(event === 'stepCorrect'){ stats.byTask[n].stepsAttempted += 1; stats.byTask[n].stepsCorrect += 1; }
+    if(event === 'solution') stats.byTask[n].solutionViewed += 1;
+    if(event === 'hint') stats.byTask[n].hintViewed += 1;
+    saveStats(); renderStats();
+  }
+  function renderStats(){
+    const pct = stats.attempts ? Math.round(stats.correct / stats.attempts * 100) : 0;
+    $('scoreBig').textContent = pct + '%';
+    $('scoreBar').style.width = pct + '%';
+    if(!stats.attempts){
+      $('scoreText').textContent = 'Пока нет попыток. Погнали с одного задания — и уже будет статистика.';
+    }else{
+      const weak = TOPICS
+        .map(t => ({...t, s: stats.byTask[t.n] || defaultTaskStat()}))
+        .filter(x => x.s.attempts >= 2)
+        .sort((a,b) => (a.s.correct/a.s.attempts) - (b.s.correct/b.s.attempts))[0];
+      $('scoreText').textContent = `${stats.correct} верно из ${stats.attempts}. ${weak ? 'Слабое место сейчас: №' + weak.n + ' — ' + weak.name + '.' : 'Сделай ещё пару задач, и покажу слабые места.'}`;
+    }
+    // расширенный блок
+    const extra = $('statsExtra');
+    if(!extra) return;
+    const rows = TOPICS.map(t => {
+      const s = stats.byTask[t.n] || defaultTaskStat();
+      const acc = s.attempts ? Math.round(s.correct / s.attempts * 100) : null;
+      const weak = (s.attempts >= 2 && acc !== null && acc < 70) || s.solutionViewed >= 3;
+      return {t, s, acc, weak};
+    });
+    const anyData = rows.some(r => r.s.attempts > 0 || r.s.tutorOpened > 0);
+    if(!anyData){ extra.innerHTML = ''; return; }
+    const weakList = rows.filter(r => r.weak).map(r => `№${r.t.n}`);
+    extra.innerHTML = `
+      <div><b>Подробно по номерам:</b></div>
+      <table class="stats-table" role="table" aria-label="Статистика по номерам">
+        <thead><tr><th>№</th><th>верно</th><th>точн.</th><th>tutor</th><th>шаги</th><th>решение</th></tr></thead>
+        <tbody>${rows.map(r => `<tr class="${r.weak?'weak-row':''}"><td>${r.t.n}</td><td class="num">${r.s.correct}/${r.s.attempts}</td><td class="num">${r.acc===null?'—':r.acc+'%'}</td><td class="num">${r.s.tutorOpened}</td><td class="num">${r.s.stepsCorrect}/${r.s.stepsAttempted}</td><td class="num">${r.s.solutionViewed}</td></tr>`).join('')}</tbody>
+      </table>
+      ${weakList.length ? `<div style="margin-top:6px">Слабые темы: <b>${weakList.join(', ')}</b></div>` : '<div style="margin-top:6px">Пока без явных слабых тем — приятно 👌</div>'}
+    `;
+  }
+
+  function renderModeBar(){
+    const btns = document.querySelectorAll('.mode-btn');
+    btns.forEach(b => b.classList.toggle('active', b.dataset.mode === currentMode));
+    const mh = $('modeHint');
+    if(mh) mh.textContent = MODES[currentMode].hint;
+    // применить ограничения к текущей задаче
+    applyModeToTask();
+  }
+  function applyModeToTask(){
+    if(!currentTask) return;
+    const tutorBtn = $('tutorOpenBtn');
+    const tutorBox = $('tutorBox');
+    const hintBtn = $('hintBtn');
+    const solBtn = $('solutionBtn');
+    const locked = $('tutorLocked');
+    if(currentMode === 'learn'){
+      if(tutorBtn) tutorBtn.style.display = '';
+      if(hintBtn) hintBtn.disabled = false;
+      if(solBtn) solBtn.disabled = false;
+      if(locked) locked.classList.remove('show');
+    }else if(currentMode === 'practice'){
+      // показываем кнопку (мы хотим разрешить добровольный разбор), но подсказку и решение
+      // показываем как обычно
+      if(tutorBtn) tutorBtn.style.display = '';
+      if(hintBtn) hintBtn.disabled = false;
+      if(solBtn) solBtn.disabled = false;
+      if(locked) locked.classList.remove('show');
+    }else{ // exam
+      if(tutorBtn) tutorBtn.style.display = 'none';
+      if(hintBtn) hintBtn.disabled = true;
+      if(solBtn) solBtn.disabled = true;
+      if(tutorBox) tutorBox.classList.remove('show');
+      if(locked) locked.classList.add('show');
+    }
+  }
+
+  function renderNav(){
+    $('topicGrid').innerHTML = TOPICS.map(t => `
+      <button class="topic-btn ${t.n===currentTopic?'active':''}" data-topic="${t.n}">
+        <span class="topic-num">${t.n}</span><span class="topic-name">${esc(t.name)}</span>
+      </button>`).join('');
+    [...document.querySelectorAll('.topic-btn')].forEach(btn => btn.addEventListener('click', () => {
+      currentTopic = Number(btn.dataset.topic);
+      renderNav(); newTask(currentTopic);
+    }));
+
+    $('cheats').innerHTML = TOPICS.map(t => `<details class="cheat" ${t.n===currentTopic?'open':''}><summary>№${t.n}. ${esc(t.name)}</summary><p>${esc(t.cheat)}</p></details>`).join('');
+  }
+
+  const generators = {
+    1: gen1, 2: gen2, 3: gen3, 4: gen4, 5: gen5,
+    6: gen6, 7: gen7, 8: gen8, 9: gen9, 10: gen10
+  };
+
+  function newTask(n=currentTopic){
+    currentTopic = n;
+    renderNav();
+    currentTask = generators[n]();
+    $('taskMeta').textContent = `Задание №${n}`;
+    $('taskTitle').textContent = currentTask.title;
+    $('taskText').innerHTML = currentTask.html;
+    $('answerInput').value = '';
+    $('feedback').className = 'feedback';
+    $('feedback').textContent = '';
+    $('hintBox').className = 'hint-box';
+    $('solutionBox').className = 'solution-box';
+    $('hintBox').innerHTML = currentTask.hint;
+    $('solutionBox').innerHTML = currentTask.solution;
+    // сбрасываем tutor
+    if(tutorState && tutorState.host === 'single') closeTutor();
+    applyModeToTask();
+    $('answerInput').focus();
+  }
+
+  function checkTask(task, input){
+    if(task.customCheck){
+      const r = task.customCheck(input, task);
+      if(r && typeof r === 'object' && 'ok' in r) return !!r.ok;
+      return !!r;
+    }
+    const expected = Array.isArray(task.answer) ? task.answer.map(normalize) : [normalize(task.answer)];
+    return expected.includes(normalize(input));
+  }
+  function showFeedback(ok, task, input, shouldRecord=true){
+    const fb = $('feedback');
+    fb.className = 'feedback ' + (ok ? 'good' : 'bad');
+    if(ok){
+      fb.innerHTML = 'Верно. Вот это темп 👌';
+    }else{
+      // В режиме экзамен — после проверки разрешаем разбор; в practice — предлагаем
+      let extra = '';
+      if(currentMode !== 'learn' && task.steps && task.steps.length){
+        extra = ` <button class="tutor-open-btn mini" type="button" id="fbTutorBtn" style="margin-left:8px">Разобрать по шагам</button>`;
+      }
+      fb.innerHTML = `Пока нет. Правильный ответ: <span class="mono">${esc(task.displayAnswer ?? task.answer)}</span>${extra}`;
+      // в экзамене после проверки также снимаем блокировку tutor
+      if(currentMode === 'exam'){
+        const tb = $('tutorOpenBtn');
+        if(tb) tb.style.display = '';
+        const lk = $('tutorLocked');
+        if(lk) lk.classList.remove('show');
+      }
+      const fbBtn = $('fbTutorBtn');
+      if(fbBtn) fbBtn.addEventListener('click', () => startTutor(currentTask, $('tutorBox'), {host:'single'}));
+    }
+    if(shouldRecord) record(task.num, ok);
+  }
+
+  function gen1(){
+    const sets = [
+      {kind:'героев мультфильмов', intro:'Ученик написал текст', items:['Шрек','Пумба','Маугли','Рататуй','Пиноккио','Белоснежка','Малефисента','Человек-паук','Конёк-Горбунок']},
+      {kind:'городов', intro:'Ученица написала список городов', items:['Пермь','Самара','Вологда','Кострома','Новосибирск','Екатеринбург','Петрозаводск','Владивосток']},
+      {kind:'пород собак', intro:'Ученик написал список пород собак', items:['мопс','бигль','басенджи','далматин','ротвейлер','шнауцер','доберман','лабрадор']}
+    ];
+    const data = pick(sets);
+    const bytes = pick([1,2]);
+    const bits = bytes * 8;
+    const counts = {};
+    data.items.forEach(x => counts[x.length] = (counts[x.length] || 0) + 1);
+    const candidates = data.items.filter(x => counts[x.length] === 1);
+    const item = pick(candidates);
+    const diff = (item.length + 2) * bytes;
+    const list = data.items.join(', ');
+    const totalCharsDeleted = diff / bytes;
+    return {
+      num:1,
+      title:'Информационный объём текста',
+      answer:item,
+      displayAnswer:item,
+      html:`<p>В одной из кодировок каждый символ кодируется <b>${bits} битами</b>.</p>
+        <p>${esc(data.intro)}: «${esc(list)}».</p>
+        <p>Из списка удалили одно название, а также лишние запятую и пробел. Размер нового текста оказался на <b>${diff} байт</b> меньше. Напишите удалённое название.</p>`,
+      hint:`${bits} бит = ${bytes} байт на символ. Разницу в байтах раздели на ${bytes}, потом вычти 2 символа: запятую и пробел.`,
+      solution:`Удалено ${diff} / ${bytes} = <b>${diff/bytes}</b> символов. Из них 2 символа — это запятая и пробел, значит длина названия ${diff/bytes} − 2 = <b>${item.length}</b>. В списке такую длину имеет «<b>${esc(item)}</b>».`,
+      steps:[
+        {
+          title:'Размер одного символа',
+          goal:'Перевести биты в байты.',
+          question:`Каждый символ кодируется ${bits} битами. Сколько это байт?`,
+          expected:String(bytes),
+          normalize:'number',
+          hint:'В 1 байте 8 бит, поэтому биты делятся на 8.',
+          explanation:`${bits} / 8 = ${bytes}. Один символ занимает ${bytes} байт.`,
+          mistake:'Похоже, не перевёл биты в байты. Раздели биты на 8.'
+        },
+        {
+          title:'Сколько символов всего удалили',
+          goal:'По разнице в байтах найти количество удалённых символов вместе с разделителями.',
+          question:`Размер уменьшился на ${diff} байт. Сколько всего символов было удалено (включая запятую и пробел)?`,
+          expected:String(totalCharsDeleted),
+          normalize:'number',
+          hint:`Раздели разницу в байтах (${diff}) на байты на символ (${bytes}).`,
+          explanation:`${diff} / ${bytes} = ${totalCharsDeleted}. Вместе с разделителями удалили ${totalCharsDeleted} символов.`,
+          mistake:'Похоже, забыл, что один символ занимает несколько байт. Раздели разницу на байты на символ.'
+        },
+        {
+          title:'Убираем запятую и пробел',
+          goal:'Отделить длину названия от длины разделителей.',
+          question:'Сколько символов в самом удалённом названии (без запятой и пробела)?',
+          expected:String(item.length),
+          normalize:'number',
+          hint:'Кроме самого названия удалили ещё запятую и пробел: это 2 символа.',
+          explanation:`${totalCharsDeleted} − 2 = ${item.length}. Значит, в названии ${item.length} букв.`,
+          mistake:'Похоже, не вычел запятую и пробел: их всегда два лишних символа.'
+        },
+        {
+          title:'Находим название',
+          goal:'Сопоставить длину со списком.',
+          question:`Какое название в списке имеет длину ${item.length}? Запиши его без кавычек.`,
+          expected:item,
+          normalize:'text',
+          hint:'Посчитай буквы в каждом названии. Дефис тоже символ.',
+          explanation:`Нужную длину имеет «${item}». Это и есть итоговый ответ.`,
+          mistake:'Похоже, не туда посмотрел. Перепроверь длину каждого слова — иногда дефис или ё считают неправильно.',
+          revealFinal:true
+        }
+      ]
+    };
+  }
+
+  function countDecodings(encoded, letters, codes, limit=2){
+    const memo = new Map();
+    function rec(pos){
+      if(pos === encoded.length) return [''];
+      if(memo.has(pos)) return memo.get(pos);
+      let out = [];
+      for(const ch of letters){
+        const code = codes[ch];
+        if(encoded.startsWith(code, pos)){
+          for(const tail of rec(pos + code.length)){
+            out.push(ch + tail);
+            if(out.length >= limit) break;
+          }
+        }
+        if(out.length >= limit) break;
+      }
+      memo.set(pos, out);
+      return out;
+    }
+    return rec(0);
+  }
+
+  function gen2(){
+    const tables = [
+      {letters:['А','Д','Ж','Л','Т'], codes:{'А':'•–','Д':'–•','Ж':'––','Л':'••–','Т':'•••'}},
+      {letters:['К','О','Т','М','Р'], codes:{'К':'–•','О':'––','Т':'•–','М':'••–','Р':'•••'}},
+      {letters:['Б','Е','Р','С','У'], codes:{'Б':'•–','Е':'–•','Р':'––','С':'••–','У':'•••'}}
+    ];
+    const tab = pick(tables);
+    let word, encoded, dec;
+    for(let tries=0; tries<200; tries++){
+      const len = rnd(5,8);
+      word = Array.from({length:len}, () => pick(tab.letters)).join('');
+      encoded = word.split('').map(ch => tab.codes[ch]).join('');
+      dec = countDecodings(encoded, tab.letters, tab.codes, 2);
+      if(dec.length === 1 && dec[0] === word) break;
+    }
+    const codeRows = tab.letters.map(ch => `<tr><td><b>${ch}</b></td><td class="mono">${tab.codes[ch].split('').join(' ')}</td></tr>`).join('');
+    const wordLetters = word.split('');
+    const firstLetter = wordLetters[0];
+    const firstCode = tab.codes[firstLetter];
+    const secondLetter = wordLetters[1];
+    const secondCode = tab.codes[secondLetter];
+    const afterFirst = encoded.slice(firstCode.length);
+    const normalizeCode = (s) => String(s ?? '').replace(/\s+/g,'').replace(/·|\./g,'•').replace(/—|-/g,'–');
+    const stepCheckCode = (input, expectedCode) => normalizeCode(input) === normalizeCode(expectedCode);
+    const acceptedFirstCode = [firstCode, firstCode.split('').join(' '), firstCode.replace(/•/g,'.').replace(/–/g,'-')];
+    return {
+      num:2,
+      title:'Декодирование сообщения',
+      answer:word,
+      displayAnswer:word,
+      html:`<p>При передаче сообщения потерялось разбиение на буквы. Известно, что использовались только буквы из таблицы.</p>
+        <p class="mono" style="font-size:24px;font-weight:900;letter-spacing:.08em">${encoded.split('').join(' ')}</p>
+        <table class="code-table"><tr><th>Буква</th><th>Код</th></tr>${codeRows}</table>
+        <p>Определите исходное слово. В ответе запишите только буквы без пробелов.</p>`,
+      hint:'Начни с первых символов радиограммы. Подбери код буквы, который стоит в начале, отрежь его и продолжай. Если появились два варианта — проверь, какой можно довести до конца.',
+      solution:`Единственное разбиение радиограммы по таблице даёт слово <b>${word}</b>. Проверка: ${word.split('').map(ch => `${ch}=${tab.codes[ch]}`).join(', ')}.`,
+      steps:[
+        {
+          title:'С чего начинаем',
+          goal:'Понять стратегию: подбирать код буквы с начала строки.',
+          question:'С какого края радиограммы нужно начинать разбор?',
+          expected:'слева',
+          accepted:['слева','с начала','начала','с лева','снова'].filter(x=>x!=='снова'),
+          normalize:'text',
+          hint:'Радиограмму всегда читают так же, как обычный текст — от первой точки/тире.',
+          explanation:'Начинаем слева: подбираем код, совпадающий с самым началом строки.',
+          mistake:'Похоже, начал не с того конца. Двигаемся слева направо, отрезая распознанные буквы.'
+        },
+        {
+          title:'Первая буква',
+          goal:'Найти код, совпадающий с началом радиограммы.',
+          question:`Какой код из таблицы совпадает с началом строки «${encoded.split('').join(' ')}»? Запиши код символами • и –.`,
+          expected:firstCode,
+          accepted:acceptedFirstCode,
+          customCheck:(input)=>({ok: stepCheckCode(input, firstCode)}),
+          normalize:'text',
+          hint:'Возьми каждый код по очереди и проверь, совпадает ли он с первыми символами строки.',
+          explanation:`Это код «${firstCode}» — буква «${firstLetter}».`,
+          mistake:'Похоже, выбрал код не из начала радиограммы. Сравни первые символы строки с каждым кодом таблицы.'
+        },
+        {
+          title:'Буква под кодом',
+          goal:'Сопоставить найденный код с буквой.',
+          question:`Какая буква в таблице имеет код ${firstCode}?`,
+          expected:firstLetter,
+          normalize:'text',
+          hint:'Найди этот код в правой колонке таблицы и посмотри букву слева.',
+          explanation:`Это буква «${firstLetter}». Отрезаем код «${firstCode}» — остаётся «${afterFirst.split('').join(' ')}».`,
+          mistake:'Похоже, перепутал строки таблицы. Сверь код буква-в-букву.'
+        },
+        {
+          title:'Следующая буква',
+          goal:'Применить тот же приём к остатку.',
+          question:`После отрезания первого кода остаётся «${afterFirst.split('').join(' ')}». Какая буква стоит дальше?`,
+          expected:secondLetter,
+          normalize:'text',
+          hint:`Снова смотри на самый начало остатка. Подбери код буквы.`,
+          explanation:`Дальше идёт код «${secondCode}» — это буква «${secondLetter}».`,
+          mistake:'Похоже, опять не от начала. Каждый раз отрезаем уже найденную часть и смотрим на новый «начало».'
+        },
+        {
+          title:'Собираем слово',
+          goal:'Записать все буквы подряд.',
+          question:`Продолжи декодирование до конца и запиши всё слово без пробелов.`,
+          expected:word,
+          normalize:'text',
+          hint:'После каждой буквы проверь, что разбиение единственное: другой вариант не должен доходить до конца строки.',
+          explanation:`Полное слово — <b>${word}</b>. Проверка: ${word.split('').map(ch => `${ch}=${tab.codes[ch]}`).join(', ')}.`,
+          mistake:'Где-то потерял букву или, наоборот, добавил лишнюю. Перепроверь длину каждого кода.',
+          revealFinal:true
+        }
+      ]
+    };
+  }
+
+  function gen3(){
+    const type = rnd(1,3);
+    let html, answer, hint, solution, steps, title='Логическое выражение';
+    if(type === 1){
+      const c = rnd(1,9), b = c + rnd(3,6), a = rnd(c+1, b-1);
+      const good = [];
+      for(let x=1; x<=50; x++){
+        const expr = (x > a) || !((x < b) && (x > c));
+        if(!expr) good.push(x);
+      }
+      answer = good[0];
+      html = `<p>Напишите <b>наименьшее натуральное число x</b>, для которого <b>ложно</b> высказывание:</p>
+        <p class="mono" style="font-size:20px">(x &gt; ${a}) ИЛИ НЕ ((x &lt; ${b}) И (x &gt; ${c}))</p>`;
+      hint = 'Чтобы выражение “A ИЛИ B” было ложным, оба куска должны быть ложными. Значит, x не больше первого порога и одновременно проходит внутренние неравенства.';
+      solution = `Ложность всего выражения означает: <span class="mono">x ≤ ${a}</span> и <span class="mono">(x &lt; ${b}) и (x &gt; ${c})</span>. Подходящие натуральные x: ${good.join(', ')}. Наименьшее — <b>${answer}</b>.`;
+      steps = [
+        {
+          title:'Главная связка',
+          goal:'Понять, какая операция объединяет две части.',
+          question:'Какая связка в выражении главная: И или ИЛИ?',
+          expected:'или',
+          accepted:['или','or','v','∨'],
+          normalize:'text',
+          hint:'Главная связка стоит между двумя «большими» кусками.',
+          explanation:'Главная связка — ИЛИ. Внутри второй части ещё есть НЕ и И, но самый внешний уровень — это ИЛИ.',
+          mistake:'Похоже, посмотрел на внутреннюю связку. Главная — та, что объединяет две большие части.'
+        },
+        {
+          title:'Когда ИЛИ ложно',
+          goal:'Сформулировать условие ложности для A ИЛИ B.',
+          question:'Чтобы выражение «A ИЛИ B» было ложным, какими должны быть A и B?',
+          expected:'оба ложны',
+          accepted:['обаложны','обаложные','обеложны','обе ложны','оба ложные','обаложно','обa ложны','оба должны быть ложны','оба ложно'],
+          normalize:'text',
+          hint:'Достаточно одной истинной части, чтобы ИЛИ было истинным.',
+          explanation:'A ИЛИ B ложно только когда обе части ложны.',
+          mistake:'Похоже, спутал с правилом для И. Для ИЛИ ложным нужно одновременно ложить обе части.'
+        },
+        {
+          title:'Раскрываем первую часть',
+          goal:'Перевести «(x > a) ложно» в неравенство.',
+          question:`Если «x > ${a}» ложно, то какое неравенство выполняется для x?`,
+          expected:`x<=${a}`,
+          accepted:[`x<=${a}`,`x≤${a}`,`x⩽${a}`,`x<${a+1}`],
+          customCheck:(input)=>{
+            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/≤/g,'<=').replace(/⩽/g,'<=');
+            return {ok: s===`x<=${a}` || s===`x<${a+1}`};
+          },
+          normalize:'text',
+          hint:'Отрицание «больше» — это «не больше», то есть «меньше или равно».',
+          explanation:`«x > ${a}» ложно ↔ «x ≤ ${a}».`,
+          mistake:'Похоже, оставил строгое неравенство. Отрицание «>» — это «≤», а не «<».'
+        },
+        {
+          title:'Раскрываем вторую часть',
+          goal:'Перевести «НЕ ((x < b) И (x > c)) ложно» обратно во внутреннее.',
+          question:`Если «НЕ ((x < ${b}) И (x > ${c}))» ложно, то что должно быть истинно?`,
+          expected:`${c}<x<${b}`,
+          accepted:[`${c}<x<${b}`,`x>${c}иx<${b}`,`x<${b}иx>${c}`],
+          customCheck:(input)=>{
+            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/и/g,'&');
+            const ok = s===`${c}<x<${b}` || s===`x>${c}&x<${b}` || s===`x<${b}&x>${c}`;
+            return {ok};
+          },
+          normalize:'text',
+          hint:'Если ложно НЕ(P), то истинно P.',
+          explanation:`Получаем условие <b>${c} &lt; x &lt; ${b}</b>.`,
+          mistake:'Похоже, оставил отрицание. НЕ перед ложным выражением даёт истину — и наоборот.'
+        },
+        {
+          title:'Объединяем условия',
+          goal:'Свести в один промежуток и выбрать наименьшее натуральное x.',
+          question:`Подходящие x: x ≤ ${a} и ${c} < x < ${b}. Какое наименьшее натуральное x?`,
+          expected:String(answer),
+          normalize:'number',
+          hint:`Натуральные начинаются с 1. Возьми первое натуральное больше ${c}.`,
+          explanation:`Подходят: ${good.join(', ')}. Наименьшее — <b>${answer}</b>.`,
+          mistake:'Похоже, выбрал не наименьшее или забыл, что натуральное — это положительное целое.',
+          revealFinal:true
+        }
+      ];
+    }else if(type === 2){
+      const c = rnd(1,8), a = c + rnd(2,8);
+      answer = a;
+      html = `<p>Напишите <b>наибольшее натуральное число x</b>, для которого <b>истинно</b> высказывание:</p>
+        <p class="mono" style="font-size:20px">НЕ (x &gt; ${a}) И (x &gt; ${c})</p>`;
+      hint = 'НЕ (x > a) означает x ≤ a. Дальше пересекаем это с x > c.';
+      solution = `Получаем условия <span class="mono">x ≤ ${a}</span> и <span class="mono">x &gt; ${c}</span>. Наибольшее натуральное x в этом промежутке — <b>${answer}</b>.`;
+      steps = [
+        {
+          title:'Главная связка',
+          goal:'Понять структуру выражения.',
+          question:'Какая связка главная: И или ИЛИ?',
+          expected:'и',
+          accepted:['и','and','&','∧'],
+          normalize:'text',
+          hint:'Главная связка — самая «внешняя».',
+          explanation:'Главная связка — И. Значит обе части должны быть истинными.',
+          mistake:'Похоже, не заметил И между двумя кусками.'
+        },
+        {
+          title:'Снимаем НЕ',
+          goal:'Раскрыть отрицание у первой части.',
+          question:`Во что превращается «НЕ (x > ${a})»?`,
+          expected:`x<=${a}`,
+          accepted:[`x<=${a}`,`x≤${a}`,`x<${a+1}`],
+          customCheck:(input)=>{
+            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/≤/g,'<=').replace(/⩽/g,'<=');
+            return {ok: s===`x<=${a}` || s===`x<${a+1}`};
+          },
+          normalize:'text',
+          hint:'Отрицание «больше» — «меньше или равно».',
+          explanation:`НЕ (x > ${a})  ↔  x ≤ ${a}.`,
+          mistake:'Похоже, оставил строгое «<». После НЕ к «>» получается «≤», а не «<».'
+        },
+        {
+          title:'Собираем промежуток',
+          goal:'Перечислить, что должно быть истинно одновременно.',
+          question:`Какому двойному неравенству должен удовлетворять x?`,
+          expected:`${c}<x<=${a}`,
+          accepted:[`${c}<x<=${a}`,`${c}<x≤${a}`,`x>${c}иx<=${a}`,`x<=${a}иx>${c}`],
+          customCheck:(input)=>{
+            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/≤/g,'<=').replace(/⩽/g,'<=').replace(/и/g,'&');
+            return {ok: s===`${c}<x<=${a}` || s===`x>${c}&x<=${a}` || s===`x<=${a}&x>${c}`};
+          },
+          normalize:'text',
+          hint:`Это пересечение «x > ${c}» и «x ≤ ${a}».`,
+          explanation:`Получаем ${c} &lt; x ≤ ${a}.`,
+          mistake:'Похоже, перепутал направление одного из неравенств.'
+        },
+        {
+          title:'Наибольшее натуральное',
+          goal:'Найти ответ.',
+          question:`Какое наибольшее натуральное x в промежутке ${c} < x ≤ ${a}?`,
+          expected:String(answer),
+          normalize:'number',
+          hint:`Раз x ≤ ${a}, верхняя граница — само ${a}.`,
+          explanation:`Наибольшее натуральное — <b>${answer}</b>.`,
+          mistake:`Похоже, испугался, что x ≤ ${a} не включает ${a}. Знак ≤ — нестрогий, значит ${a} подходит.`,
+          revealFinal:true
+        }
+      ];
+    }else{
+      const a = rnd(2,10), b = a + rnd(3,8);
+      answer = a + 1;
+      html = `<p>Напишите <b>наименьшее натуральное число x</b>, для которого <b>истинно</b> высказывание:</p>
+        <p class="mono" style="font-size:20px">(x &gt; ${a}) И НЕ (x ≥ ${b})</p>`;
+      hint = 'НЕ (x ≥ b) — это x < b. Значит, нужен первый натуральный x строго больше a, но меньше b.';
+      solution = `Условия превращаются в <span class="mono">x &gt; ${a}</span> и <span class="mono">x &lt; ${b}</span>. Наименьшее такое число — <b>${answer}</b>.`;
+      steps = [
+        {
+          title:'Главная связка',
+          goal:'Понять структуру.',
+          question:'Какая связка главная: И или ИЛИ?',
+          expected:'и',
+          accepted:['и','and','&'],
+          normalize:'text',
+          hint:'Самый внешний уровень.',
+          explanation:'Главная связка — И. Обе части должны быть истинны.',
+          mistake:'Это И, а не ИЛИ. Смотри на внешний уровень выражения.'
+        },
+        {
+          title:'Снимаем НЕ',
+          goal:'Раскрыть отрицание неравенства.',
+          question:`Во что превращается «НЕ (x ≥ ${b})»?`,
+          expected:`x<${b}`,
+          accepted:[`x<${b}`,`x<=${b-1}`,`x≤${b-1}`],
+          customCheck:(input)=>{
+            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/≤/g,'<=').replace(/⩽/g,'<=');
+            return {ok: s===`x<${b}` || s===`x<=${b-1}`};
+          },
+          normalize:'text',
+          hint:'Отрицание «≥» — это «<».',
+          explanation:`НЕ (x ≥ ${b})  ↔  x &lt; ${b}.`,
+          mistake:'Похоже, оставил знак нестрогим. Отрицание «≥» — это строгое «<», а не «≤».'
+        },
+        {
+          title:'Собираем промежуток',
+          goal:'Записать итоговое двойное неравенство.',
+          question:`Какому двойному неравенству должен удовлетворять x?`,
+          expected:`${a}<x<${b}`,
+          accepted:[`${a}<x<${b}`,`x>${a}иx<${b}`,`x<${b}иx>${a}`],
+          customCheck:(input)=>{
+            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/и/g,'&');
+            return {ok: s===`${a}<x<${b}` || s===`x>${a}&x<${b}` || s===`x<${b}&x>${a}`};
+          },
+          normalize:'text',
+          hint:`Это «x > ${a}» и одновременно «x < ${b}».`,
+          explanation:`Получаем ${a} &lt; x &lt; ${b}.`,
+          mistake:'Похоже, не объединил два условия правильно.'
+        },
+        {
+          title:'Наименьшее натуральное',
+          goal:'Найти ответ.',
+          question:`Какое наименьшее натуральное x в промежутке ${a} < x < ${b}?`,
+          expected:String(answer),
+          normalize:'number',
+          hint:`Строгое «больше ${a}» — значит x начинается с ${a+1}.`,
+          explanation:`Наименьшее натуральное — <b>${answer}</b>.`,
+          mistake:`Похоже, забыл, что строгое неравенство x > ${a} не включает само ${a}. Считаем с ${a+1}.`,
+          revealFinal:true
+        }
+      ];
+    }
+    return {num:3,title,answer:String(answer),displayAnswer:String(answer),html,hint,solution,steps};
+  }
+
+  function gen4(){
+    const nodes = ['A','B','C','D','E'];
+    let edges, result;
+    for(let tries=0; tries<200; tries++){
+      edges = [];
+      const add = (u,v,w) => edges.push({u,v,w});
+      const chain = shuffle(nodes.slice());
+      for(let i=0;i<chain.length-1;i++) add(chain[i], chain[i+1], rnd(1,8));
+      for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
+        if(Math.random() < .48 && !edges.some(e => (e.u===nodes[i]&&e.v===nodes[j]) || (e.u===nodes[j]&&e.v===nodes[i]))) add(nodes[i], nodes[j], rnd(1,9));
+      }
+      const targets = ['D','E'];
+      const start = 'A', end = pick(targets);
+      result = shortestPath(nodes, edges, start, end);
+      if(result && result.dist >= 3 && result.dist <= 20){
+        result.start = start; result.end = end; break;
+      }
+    }
+    const matrix = nodes.map(r => nodes.map(c => {
+      if(r===c) return '';
+      const e = edges.find(x => (x.u===r&&x.v===c)||(x.u===c&&x.v===r));
+      return e ? e.w : '';
+    }));
+    const table = `<table class="matrix"><tr><th></th>${nodes.map(n=>`<th>${n}</th>`).join('')}</tr>` +
+      nodes.map((r,i)=>`<tr><th>${r}</th>${nodes.map((c,j)=>`<td class="${i===j?'diag':''}">${i===j?'—':matrix[i][j]}</td>`).join('')}</tr>`).join('') + '</table>';
+    // Соседи стартовой вершины
+    const startNeighbors = edges
+      .filter(e => e.u===result.start || e.v===result.start)
+      .map(e => e.u===result.start ? e.v : e.u)
+      .sort();
+    const startNeighborsText = startNeighbors.join(',');
+    const directEdge = edges.find(e => (e.u===result.start&&e.v===result.end)||(e.u===result.end&&e.v===result.start));
+    const directLen = directEdge ? directEdge.w : null;
+    const pathWeightsArr = pathWeights(result.path, edges);
+    return {
+      num:4,
+      title:'Кратчайший путь в графе',
+      answer:String(result.dist),
+      displayAnswer:String(result.dist),
+      html:`<p>Между населёнными пунктами построены дороги, протяжённость которых дана в таблице.</p>${table}
+        <p>Определите длину кратчайшего пути между пунктами <b>${result.start}</b> и <b>${result.end}</b>. Передвигаться можно только по указанным дорогам, каждый пункт можно посетить не более одного раза.</p>`,
+      hint:'Записывай текущую минимальную длину до каждой вершины или перебери простые маршруты. Все веса положительные, поэтому петли не помогают.',
+      solution:`Кратчайший маршрут: <b>${result.path.join(' → ')}</b>. Его длина: ${pathWeightsArr.join(' + ')} = <b>${result.dist}</b>.`,
+      steps:[
+        {
+          title:'Соседи стартовой вершины',
+          goal:'Перечислить, куда из старта можно пойти за один шаг.',
+          question:`Какие вершины соединены с ${result.start} напрямую? Перечисли через запятую без пробелов, в алфавитном порядке.`,
+          expected:startNeighborsText,
+          accepted:[startNeighborsText, startNeighbors.join('')],
+          customCheck:(input)=>{
+            const parts = String(input).toUpperCase().replace(/\s+/g,'').split(/[,;\.\/\-]+/).filter(Boolean);
+            const norm = parts.slice().sort().join(',');
+            return {ok: norm === startNeighborsText};
+          },
+          normalize:'text',
+          hint:`В строке «${result.start}» таблицы непустые ячейки и есть соседи.`,
+          explanation:`Из ${result.start} напрямую можно попасть в: ${startNeighbors.join(', ')}.`,
+          mistake:'Похоже, посмотрел не на ту строку/столбец. Соседи — те, у кого с этой вершиной указана длина.'
+        },
+        {
+          title:directEdge ? 'Прямой путь' : 'Прямого пути нет',
+          goal:directEdge ? 'Узнать длину прямой дороги.' : 'Понять, что придётся идти через промежуточные вершины.',
+          question:directEdge
+            ? `Какова длина прямой дороги ${result.start}—${result.end}?`
+            : `Существует ли прямая дорога ${result.start}—${result.end}? Ответь «да» или «нет».`,
+          expected:directEdge ? String(directLen) : 'нет',
+          accepted:directEdge ? [String(directLen)] : ['нет','no'],
+          normalize:directEdge ? 'number' : 'text',
+          hint:directEdge ? 'Загляни в ячейку таблицы на пересечении нужной строки и столбца.' : 'В таблице на этом пересечении должна быть пустая ячейка.',
+          explanation:directEdge
+            ? `Прямой путь ${result.start}—${result.end} = ${directLen}.`
+            : `Прямой дороги ${result.start}—${result.end} нет, поэтому идём через посредников.`,
+          mistake:'Похоже, перепутал вершины или счёл пустую ячейку нулём.'
+        },
+        {
+          title:'Длина выбранного маршрута',
+          goal:'Сложить веса рёбер кратчайшего пути.',
+          question:`Возьми маршрут ${result.path.join(' → ')}. Какова его суммарная длина?`,
+          expected:String(result.dist),
+          normalize:'number',
+          hint:`Сложи веса всех рёбер: ${pathWeightsArr.join(' + ')}.`,
+          explanation:`${pathWeightsArr.join(' + ')} = <b>${result.dist}</b>.`,
+          mistake:'Похоже, ошибся в сложении или взял длину не того ребра. Веса берутся прямо из таблицы.'
+        },
+        {
+          title:'Итоговый ответ',
+          goal:'Записать длину кратчайшего пути.',
+          question:`Какова длина кратчайшего пути ${result.start} → ${result.end}?`,
+          expected:String(result.dist),
+          normalize:'number',
+          hint:'В ответе записывается число, а не сам маршрут.',
+          explanation:`Кратчайший маршрут — ${result.path.join(' → ')}, длина <b>${result.dist}</b>.`,
+          mistake:'Похоже, записал сам маршрут, а нужно только число.',
+          revealFinal:true
+        }
+      ]
+    };
+  }
+
+  function shortestPath(nodes, edges, start, end){
+    const adj = Object.fromEntries(nodes.map(n=>[n,[]]));
+    edges.forEach(e => { adj[e.u].push([e.v,e.w]); adj[e.v].push([e.u,e.w]); });
+    let best = {dist: Infinity, path: []};
+    function dfs(u, seen, dist, path){
+      if(dist >= best.dist) return;
+      if(u === end){ best = {dist, path:path.slice()}; return; }
+      for(const [v,w] of adj[u]) if(!seen.has(v)){
+        seen.add(v); path.push(v); dfs(v, seen, dist+w, path); path.pop(); seen.delete(v);
+      }
+    }
+    dfs(start, new Set([start]), 0, [start]);
+    return Number.isFinite(best.dist) ? best : null;
+  }
+  function pathWeights(path, edges){
+    const out=[];
+    for(let i=0;i<path.length-1;i++){
+      const a=path[i], b=path[i+1];
+      out.push(edges.find(e => (e.u===a&&e.v===b)||(e.u===b&&e.v===a)).w);
+    }
+    return out;
+  }
+
+  function gen5(){
+    let start, seq, target;
+    for(let tries=0; tries<500; tries++){
+      start = rnd(2,7);
+      const len = rnd(3,5);
+      seq = Array.from({length:len}, (_,i) => Math.random() < (i===0 ? .35 : .45) ? '1' : '2').join('');
+      let squares = (seq.match(/1/g)||[]).length;
+      if(squares > 2) continue;
+      target = applyQuadrator(start, seq);
+      if(target > start && target <= 1200 && target !== null) break;
+    }
+    const limit = 5;
+    // Восстановим обратный путь от target к start для подсказок
+    const trace = [];
+    {
+      let x = start;
+      trace.push(x);
+      for(const ch of seq){
+        if(ch==='1') x = x*x; else x = x+1;
+        trace.push(x);
+      }
+    }
+    const reverseFirstCmd = seq[seq.length-1]; // последняя команда (с точки зрения прямого хода)
+    const beforeLastValue = trace[trace.length-2];
+    return {
+      num:5,
+      title:'Алгоритм для исполнителя',
+      answer:seq,
+      displayAnswer:seq,
+      customCheck:(input) => {
+        const s = String(input).trim().replace(/\s+/g,'');
+        if(!/^[12]+$/.test(s) || s.length > limit) return false;
+        return applyQuadrator(start, s) === target;
+      },
+      html:`<p>У исполнителя <b>Квадратор</b> две команды:</p>
+        <p><b>1)</b> возведи в квадрат &nbsp;&nbsp; <b>2)</b> прибавь 1</p>
+        <p>Составьте алгоритм получения из числа <b>${start}</b> числа <b>${target}</b>, содержащий не более <b>${limit}</b> команд. В ответе запишите только номера команд.</p>`,
+      hint:'Можно идти от цели назад: если число получилось командой 2, уменьши его на 1; если командой 1, попробуй извлечь квадратный корень.',
+      solution:`Один из подходящих алгоритмов: <span class="mono"><b>${seq}</b></span>. Проверка: ${traceQuadrator(start, seq)}.`,
+      steps:[
+        {
+          title:'Стартовое число',
+          goal:'Зафиксировать, с чего начинаем.',
+          question:`Какое число у Квадратора в начале?`,
+          expected:String(start),
+          normalize:'number',
+          hint:'Оно написано прямо в условии.',
+          explanation:`Стартуем с числа <b>${start}</b>.`,
+          mistake:'Похоже, перепутал стартовое число с целевым.'
+        },
+        {
+          title:'Целевое число',
+          goal:'Зафиксировать, к чему стремимся.',
+          question:`Какое число нужно получить?`,
+          expected:String(target),
+          normalize:'number',
+          hint:'Оно тоже указано в условии.',
+          explanation:`Цель — число <b>${target}</b>.`,
+          mistake:'Похоже, записал начало. Цель — то число, которое должно получиться в конце.'
+        },
+        {
+          title:'Последнее действие',
+          goal:'Применить обратный ход.',
+          question:`Если последней командой была ${reverseFirstCmd==='1' ? '«возведи в квадрат» (1)' : '«прибавь 1» (2)'}, то какое число было перед ней?`,
+          expected:String(beforeLastValue),
+          normalize:'number',
+          hint:reverseFirstCmd==='1' ? 'Извлеки квадратный корень из цели — он должен быть целым.' : `Отними 1 от ${target}.`,
+          explanation:`Перед последней командой было <b>${beforeLastValue}</b>, потом ${reverseFirstCmd==='1' ? `${beforeLastValue}² = ${target}` : `${beforeLastValue}+1 = ${target}`}.`,
+          mistake:'Похоже, применил прямое действие вместо обратного. От цели идём назад: «+1» становится «−1», «квадрат» — «корень».'
+        },
+        {
+          title:'Записываем последовательность',
+          goal:'Собрать все номера команд по порядку (от старта к цели).',
+          question:`Запиши последовательность команд из чисел 1 и 2, не более ${limit} команд, переводящую ${start} в ${target}.`,
+          expected:seq,
+          customCheck:(input)=>{
+            const s = String(input).trim().replace(/\s+/g,'');
+            if(!/^[12]+$/.test(s)) return {ok:false, message:'Используй только цифры 1 и 2 без пробелов.'};
+            if(s.length > limit) return {ok:false, message:`Команд не больше ${limit}.`};
+            if(applyQuadrator(start, s) !== target) return {ok:false, message:'Алгоритм не приводит к нужному числу.'};
+            return {ok:true};
+          },
+          normalize:'sequence',
+          hint:'Можно записать в обратном порядке найденный обратный путь — и проверить прямым ходом.',
+          explanation:`Подходит, например, <b>${seq}</b>. Проверка: ${traceQuadrator(start, seq)}.`,
+          mistake:'Похоже, перепутал порядок команд или поставил нецифру. В ответе только 1 и 2, и команды идут в прямом порядке от старта.',
+          revealFinal:true
+        }
+      ]
+    };
+  }
+  function applyQuadrator(start, seq){
+    let x = start;
+    for(const ch of seq){
+      if(ch === '1') x = x*x;
+      else if(ch === '2') x += 1;
+      else return null;
+      if(x > 1000000) return null;
+    }
+    return x;
+  }
+  function traceQuadrator(start, seq){
+    let x=start, parts=[String(x)];
+    for(const ch of seq){
+      if(ch==='1'){ x=x*x; parts.push(`квадрат → ${x}`); }
+      else { x=x+1; parts.push(`+1 → ${x}`); }
+    }
+    return parts.join(' → ');
+  }
+
+  function gen6(){
+    let K, pairs, qual, m, ans;
+    for(let tries=0; tries<500; tries++){
+      K = rnd(8,14);
+      pairs = [];
+      const used = new Set();
+      while(pairs.length < 9){
+        const s = rnd(-12,18), t = rnd(-10,18);
+        const key = s+','+t;
+        if(!used.has(key)){ used.add(key); pairs.push([s,t]); }
+      }
+      qual = [...new Set(pairs.filter(p => p[1] <= K).map(p => p[0]))].sort((a,b)=>a-b);
+      if(qual.length >= 4){
+        m = rnd(2, qual.length-1);
+        ans = qual[m] - 1;
+        const count = pairs.filter(([s,t]) => t <= K && s <= ans).length;
+        const countNext = pairs.filter(([s,t]) => t <= K && s <= ans+1).length;
+        if(count === m && countNext > m) break;
+      }
+    }
+    const pairsText = pairs.map(p => `(${p[0]}, ${p[1]})`).join('; ');
+    const filteredByT = pairs.filter(p => p[1] <= K);
+    const filteredCount = filteredByT.length;
+    const qualText = qual.join(', ');
+    return {
+      num:6,
+      title:'Анализ программы с параметром',
+      answer:String(ans),
+      displayAnswer:String(ans),
+      html:`<p>Ниже приведена программа на Python.</p>
+        <pre class="program">s = int(input())
+t = int(input())
+A = int(input())
+if (s &gt; A) or (t &gt; ${K}):
+    print("YES")
+else:
+    print("NO")</pre>
+        <p>Было проведено 9 запусков программы. В качестве значений <span class="mono">s</span> и <span class="mono">t</span> вводились пары:</p>
+        <p><b>${pairsText}</b>.</p>
+        <p>Укажите <b>наибольшее целое значение A</b>, при котором программа напечатает <b>NO ровно ${m} раз(а)</b>.</p>`,
+      hint:`NO печатается только если оба условия для YES ложны: s ≤ A и t ≤ ${K}. Оставь пары с t ≤ ${K}, отсортируй их s.`,
+      solution:`Для вывода NO нужно <span class="mono">s ≤ A</span> и <span class="mono">t ≤ ${K}</span>. Значения s у подходящих по t запусков: ${qual.join(', ')}. Нужно ровно ${m} значений s, не превосходящих A. Следующий порог — ${qual[m]}, значит наибольшее A равно ${qual[m]} − 1 = <b>${ans}</b>.`,
+      steps:[
+        {
+          title:'Когда печатается NO',
+          goal:'Перевести условие if на язык неравенств.',
+          question:`Программа печатает NO, когда условие if ложно. Запиши это условие неравенствами через «и». Используй знак ≤ или <= и подставь ${K}.`,
+          expected:`s<=Aиt<=${K}`,
+          accepted:[`s<=aиt<=${K}`,`s≤aиt≤${K}`,`s<=a&t<=${K}`,`t<=${K}иs<=a`,`s≤a&t≤${K}`],
+          customCheck:(input)=>{
+            const s = String(input).toLowerCase().replace(/\s+/g,'').replace(/≤/g,'<=').replace(/⩽/g,'<=').replace(/и/g,'&');
+            const ok = s===`s<=a&t<=${K}` || s===`t<=${K}&s<=a`;
+            return {ok};
+          },
+          normalize:'text',
+          hint:`Отрицание «(s > A) or (t > ${K})» — это «s ≤ A и t ≤ ${K}».`,
+          explanation:`NO ↔ s ≤ A и t ≤ ${K}.`,
+          mistake:'Похоже, забыл инвертировать «or» в «and» (закон де Моргана: НЕ(A или B) = НЕ A и НЕ B).'
+        },
+        {
+          title:`Фильтр по t ≤ ${K}`,
+          goal:`Оставить только пары, у которых t не больше ${K}.`,
+          question:`Сколько пар (s, t) удовлетворяют условию t ≤ ${K}?`,
+          expected:String(filteredCount),
+          normalize:'number',
+          hint:`Просмотри второе число в каждой паре. Считай те, где оно ≤ ${K}.`,
+          explanation:`Подходящих по t — ${filteredCount} пар(ы).`,
+          mistake:'Похоже, перепутал t с s или строгое и нестрогое неравенство.'
+        },
+        {
+          title:'Значения s, которые останутся',
+          goal:'Выписать s-значения подходящих пар, отсортированные по возрастанию.',
+          question:`Какие значения s остаются у пар с t ≤ ${K}? Перечисли через запятую в порядке возрастания, без повторов.`,
+          expected:qualText,
+          customCheck:(input)=>{
+            const parts = String(input).replace(/\s+/g,'').split(/[,;]+/).filter(Boolean).map(x=>x.replace(/[^\-\d]/g,'')).filter(Boolean).map(Number);
+            const uniqSorted = [...new Set(parts)].sort((a,b)=>a-b);
+            return {ok: uniqSorted.length===qual.length && uniqSorted.every((v,i)=>v===qual[i])};
+          },
+          normalize:'text',
+          hint:'Выпиши все s из отфильтрованных пар, убери повторы и упорядочь по возрастанию.',
+          explanation:`Уникальные s: <b>${qualText}</b>.`,
+          mistake:'Похоже, забыл убрать дубль или взял пару с большим t.'
+        },
+        {
+          title:'Подбираем порог A',
+          goal:`Найти наибольшее целое A, при котором ровно ${m} значений из списка ≤ A.`,
+          question:`Нужно, чтобы ровно ${m} значений из ${qualText} удовлетворяли s ≤ A. Какое наибольшее целое A подходит?`,
+          expected:String(ans),
+          normalize:'number',
+          hint:`Возьми ${m}-е по возрастанию значение и следующее за ним. A должно быть на 1 меньше следующего.`,
+          explanation:`Первые ${m} значений: ${qual.slice(0,m).join(', ')}. Следующее — ${qual[m]}. Наибольшее A = ${qual[m]} − 1 = <b>${ans}</b>.`,
+          mistake:`Похоже, дал A = ${qual[m]} (тогда подойдёт ${m+1} пар) или A = ${qual[m-1]} − 1. Чтобы было ровно ${m}, A должно «доходить» до ${m}-го значения, но не достигать (${m}+1)-го.`,
+          revealFinal:true
+        }
+      ]
+    };
+  }
+
+  function gen7(){
+    const protocol = pick(['http','https','ftp']);
+    const domain = pick(['school','smile','demo','info','data','robot','class']);
+    const zone = pick(['.ru','.net','.org']);
+    const file = pick(['index','lesson','task','answer','table','page']);
+    const ext = pick(['txt','html','csv','dat']);
+    const ordered = [protocol, '://', domain, zone, '/', file + '.', ext];
+    const shuffled = shuffle(ordered.map((text, idx) => ({text, idx})));
+    const numbered = shuffled.map((x,i) => ({...x, label:i+1}));
+    const answer = ordered.map((_, idx) => numbered.find(x => x.idx === idx).label).join('');
+    const protocolLabel = numbered.find(x=>x.idx===0).label;
+    const sepLabel = numbered.find(x=>x.idx===1).label;
+    const domainLabel = numbered.find(x=>x.idx===2).label;
+    const zoneLabel = numbered.find(x=>x.idx===3).label;
+    const slashLabel = numbered.find(x=>x.idx===4).label;
+    const fileLabel = numbered.find(x=>x.idx===5).label;
+    const extLabel = numbered.find(x=>x.idx===6).label;
+    return {
+      num:7,
+      title:'Адрес файла в Интернете',
+      answer,
+      displayAnswer:answer,
+      html:`<p>Доступ к файлу <b>${file}.${ext}</b>, находящемуся на сервере <b>${domain}${zone}</b>, осуществляется по протоколу <b>${protocol}</b>.</p>
+        <p>Фрагменты адреса закодированы цифрами. Запишите последовательность цифр, кодирующую полный адрес файла.</p>
+        <div class="fragments">${numbered.map(x => `<div class="fragment"><span>${x.label})</span><span class="mono">${esc(x.text)}</span></div>`).join('')}</div>`,
+      hint:'Собери по шаблону: протокол://сервер.домен/имя.расширение.',
+      solution:`Полный адрес: <span class="mono"><b>${protocol}://${domain}${zone}/${file}.${ext}</b></span>. Значит, последовательность фрагментов: <b>${answer}</b>.`,
+      steps:[
+        {
+          title:'Шаблон URL',
+          goal:'Вспомнить общий вид адреса.',
+          question:'Какой первый элемент идёт в начале URL — протокол или сервер?',
+          expected:'протокол',
+          accepted:['протокол','protokol','protocol'],
+          normalize:'text',
+          hint:'Общий вид: протокол://сервер.домен/файл.расширение.',
+          explanation:'В начале — протокол (http, https, ftp), затем «://» и так далее.',
+          mistake:'Похоже, начал не с того конца. Адрес всегда начинается с протокола.'
+        },
+        {
+          title:'Цифра протокола',
+          goal:'Найти, под каким номером в списке фрагмент-протокол.',
+          question:`Под какой цифрой записан фрагмент «${protocol}»?`,
+          expected:String(protocolLabel),
+          normalize:'number',
+          hint:'Найди этот текст среди пронумерованных фрагментов.',
+          explanation:`Фрагмент «${protocol}» имеет номер <b>${protocolLabel}</b>.`,
+          mistake:'Похоже, спутал номер с длиной или с порядковой позицией в адресе.'
+        },
+        {
+          title:'Имя сервера и зона',
+          goal:'Собрать сервер с доменом.',
+          question:`После протокола и «://» идёт сервер. Под какими номерами записаны фрагменты «${domain}» и «${zone}»? Запиши две цифры подряд в этом порядке.`,
+          expected:`${domainLabel}${zoneLabel}`,
+          accepted:[`${domainLabel}${zoneLabel}`,`${domainLabel},${zoneLabel}`,`${domainLabel} ${zoneLabel}`],
+          customCheck:(input)=>{
+            const s = String(input).replace(/\D+/g,'');
+            return {ok: s === `${domainLabel}${zoneLabel}`};
+          },
+          normalize:'sequence',
+          hint:`«${domain}» — имя сервера; «${zone}» — доменная зона со «.»`,
+          explanation:`Сервер «${domain}» — №${domainLabel}, зона «${zone}» — №${zoneLabel}.`,
+          mistake:'Похоже, поменял местами имя и зону или вставил между ними лишнюю цифру.'
+        },
+        {
+          title:'Файл и расширение',
+          goal:'Найти номера для имени файла с точкой и расширения.',
+          question:`Под какими номерами записаны фрагменты «${file}.» и «${ext}»? Запиши две цифры в этом порядке.`,
+          expected:`${fileLabel}${extLabel}`,
+          customCheck:(input)=>{
+            const s = String(input).replace(/\D+/g,'');
+            return {ok: s === `${fileLabel}${extLabel}`};
+          },
+          normalize:'sequence',
+          hint:'У имени файла обычно есть точка прямо после имени.',
+          explanation:`Имя файла «${file}.» — №${fileLabel}, расширение «${ext}» — №${extLabel}.`,
+          mistake:'Похоже, перепутал номера, либо забыл, что «.» идёт вместе с именем файла, а не отдельно.'
+        },
+        {
+          title:'Итоговая последовательность',
+          goal:'Собрать всё по шаблону и записать цифры подряд.',
+          question:`Запиши последовательность номеров фрагментов по шаблону протокол://сервер.домен/файл.расширение (7 цифр, без пробелов).`,
+          expected:answer,
+          customCheck:(input)=>{
+            const s = String(input).replace(/\D+/g,'');
+            return {ok: s === answer};
+          },
+          normalize:'sequence',
+          hint:`Порядок: ${protocolLabel}, ${sepLabel}, ${domainLabel}, ${zoneLabel}, ${slashLabel}, ${fileLabel}, ${extLabel}.`,
+          explanation:`Полный адрес «${protocol}://${domain}${zone}/${file}.${ext}» = <b>${answer}</b>.`,
+          mistake:'Похоже, отсортировал цифры или поменял пару местами. Цифры записываются в порядке шаблона, а не по возрастанию.',
+          revealFinal:true
+        }
+      ]
+    };
+  }
+
+  function gen8(){
+    const groups = shuffle(['Динамо','Зенит','Спартак','Рубин','Сокол','Метеор']).slice(0,3);
+    const [A,B,C] = groups;
+    const abc = rnd(50,220);
+    const abOnly = rnd(180,620);
+    const acOnly = rnd(160,600);
+    const ab = abOnly + abc;
+    const ac = acOnly + abc;
+    const total = ab + ac - abc;
+    return {
+      num:8,
+      title:'Запросы поискового сервера',
+      answer:String(ac),
+      displayAnswer:String(ac),
+      html:`<p>В языке запросов символ <span class="mono">|</span> обозначает «ИЛИ», а <span class="mono">&amp;</span> — «И».</p>
+        <table class="query-table"><tr><th>Запрос</th><th>Найдено страниц, тыс.</th></tr>
+          <tr><td>${A} &amp; (${B} | ${C})</td><td>${total}</td></tr>
+          <tr><td>${A} &amp; ${B}</td><td>${ab}</td></tr>
+          <tr><td>${A} &amp; ${B} &amp; ${C}</td><td>${abc}</td></tr>
+        </table>
+        <p>Сколько страниц, в тысячах, будет найдено по запросу <b>${A} &amp; ${C}</b>?</p>`,
+      hint:'Объединение A&B и A&C содержит общую часть A&B&C. Формула: A&(B|C) = A&B + A&C − A&B&C.',
+      solution:`Обозначим неизвестное <span class="mono">${A}&amp;${C}=x</span>. Тогда ${total} = ${ab} + x − ${abc}. Отсюда x = ${total} − ${ab} + ${abc} = <b>${ac}</b>.`,
+      steps:[
+        {
+          title:'Что обозначаем за x',
+          goal:'Договориться, какое количество ищем.',
+          question:`Какой запрос мы ищем? Запиши его в виде «${A}&${C}», «${A}&${B}» или «${B}&${C}».`,
+          expected:`${A}&${C}`,
+          accepted:[`${A}&${C}`,`${C}&${A}`,`${A}и${C}`,`${C}и${A}`],
+          customCheck:(input)=>{
+            const s = String(input).toLowerCase().replace(/\s+и\s+/g,'&').replace(/\s+/g,'');
+            const a=A.toLowerCase(), c=C.toLowerCase();
+            return {ok: s===`${a}&${c}` || s===`${c}&${a}`};
+          },
+          normalize:'text',
+          hint:'Прочитай вопрос ещё раз: спрашивают именно про этот запрос.',
+          explanation:`Ищем количество страниц по запросу <b>${A}&${C}</b>.`,
+          mistake:`Похоже, посмотрел на запрос ${A}&${B}. Внимательно прочитай вопрос.`
+        },
+        {
+          title:'Формула включения-исключения',
+          goal:'Связать данное в таблице A&(B|C) с двумя пересечениями.',
+          question:`Допиши формулу: ${A}&(${B}|${C}) = ${A}&${B} + ${A}&${C} − ?`,
+          expected:`${A}&${B}&${C}`,
+          accepted:[`${A}&${B}&${C}`,`${A}&${C}&${B}`,`${B}&${A}&${C}`,`${B}&${C}&${A}`,`${C}&${A}&${B}`,`${C}&${B}&${A}`],
+          customCheck:(input)=>{
+            const s = String(input).toLowerCase().replace(/\s+и\s+/g,'&').replace(/\s+/g,'');
+            const parts = s.split('&').filter(Boolean).sort();
+            const target = [A.toLowerCase(), B.toLowerCase(), C.toLowerCase()].sort();
+            return {ok: parts.length===3 && parts.every((v,i)=>v===target[i])};
+          },
+          normalize:'text',
+          hint:'Те страницы, где есть и B, и C одновременно, попадут в A&B и в A&C. Нужно вычесть их один раз.',
+          explanation:`Формула: ${A}&(${B}|${C}) = ${A}&${B} + ${A}&${C} − ${A}&${B}&${C}.`,
+          mistake:'Похоже, вычел не то пересечение или забыл вычесть общее пересечение трёх.'
+        },
+        {
+          title:'Подстановка чисел',
+          goal:'Записать уравнение с известными числами.',
+          question:`Подставь числа в формулу и запиши результат как уравнение вида «${total} = ${ab} + x − ${abc}» (где x = ${A}&${C}). Какое значение x?`,
+          expected:String(ac),
+          normalize:'number',
+          hint:`Выразим x: x = ${total} − ${ab} + ${abc}.`,
+          explanation:`x = ${total} − ${ab} + ${abc} = <b>${ac}</b>.`,
+          mistake:`Похоже, ошибся со знаком: x = total − ab + abc, а не наоборот. Учти, что общее пересечение прибавляется при выражении x.`
+        },
+        {
+          title:'Ответ в тысячах',
+          goal:'Записать число в нужных единицах.',
+          question:`Сколько страниц в тысячах найдётся по запросу ${A}&${C}?`,
+          expected:String(ac),
+          normalize:'number',
+          hint:'В таблице числа уже даны в тысячах — переводить не надо.',
+          explanation:`Итог: <b>${ac}</b> тыс. страниц.`,
+          mistake:'Похоже, перепутал единицы или взял другое число из таблицы.',
+          revealFinal:true
+        }
+      ]
+    };
+  }
+
+  function gen9(){
+    const nodes = ['A','B','C','D','E','F','G','H'];
+    const coords = {A:[55,160],B:[175,75],C:[175,160],D:[175,245],E:[315,90],F:[315,205],G:[455,115],H:[575,180]};
+    const candidates = [['A','B'],['A','C'],['A','D'],['B','E'],['B','F'],['C','E'],['C','F'],['C','D'],['D','F'],['E','G'],['E','F'],['F','G'],['F','H'],['G','H'],['E','H']];
+    let edges, counts, ans;
+    for(let tries=0; tries<300; tries++){
+      const mandatory = [['A','B'],['A','C'],['B','E'],['C','F'],['E','G'],['F','H'],['G','H']];
+      edges = mandatory.slice();
+      for(const e of candidates){
+        if(mandatory.some(m => m[0]===e[0]&&m[1]===e[1])) continue;
+        if(Math.random() < .48) edges.push(e);
+      }
+      counts = countPathsDAG(nodes, edges, 'H');
+      ans = counts['A'];
+      if(ans >= 5 && ans <= 35) break;
+    }
+    const svg = renderDagSvg(nodes, edges, coords);
+    const formula = nodes.slice().reverse().map(n => `${n}=${counts[n]}`).join(', ');
+    // Подготовим объяснение по узлам
+    const outNeighbors = (n) => edges.filter(([u,v]) => u===n).map(([u,v]) => v);
+    const explainNode = (n) => {
+      const out = outNeighbors(n);
+      if(!out.length) return `Из ${n} нет исходящих дорог.`;
+      return `Из ${n} стрелки ведут в: ${out.join(', ')}. Путей из ${n}: ${out.map(v=>counts[v]).join(' + ')} = <b>${counts[n]}</b>.`;
+    };
+    const intermediates = ['F','E','B'].filter(n => counts[n] > 0);
+    return {
+      num:9,
+      title:'Количество путей в ориентированном графе',
+      answer:String(ans),
+      displayAnswer:String(ans),
+      html:`<p>На рисунке — схема дорог. По каждой дороге можно двигаться только в направлении стрелки.</p>
+        ${svg}
+        <p>Сколько существует различных путей из города <b>A</b> в город <b>H</b>?</p>`,
+      hint:'Начни с конца: у H поставь 1. Для каждой вершины сложи числа у всех вершин, в которые из неё выходят стрелки.',
+      solution:`Считаем с конца: ${formula}. Поэтому из A в H существует <b>${ans}</b> путей.`,
+      steps:[
+        {
+          title:'С какого конца считаем',
+          goal:'Понять направление подсчёта.',
+          question:'С какой вершины удобно начать подсчёт: со стартовой A или с конечной H?',
+          expected:'h',
+          accepted:['h','с h','начала с h','с конечной','с конца'],
+          normalize:'text',
+          hint:'Идём «справа налево» — от цели к старту.',
+          explanation:'Удобно начать с H: путей из H в H ровно 1. Затем поднимаемся к предыдущим вершинам.',
+          mistake:'Похоже, начал со старта. Тогда придётся каждый раз спускаться рекурсивно — это сложнее.'
+        },
+        {
+          title:'Старт подсчёта',
+          goal:'Закрепить базовый случай.',
+          question:'Сколько путей из H в H?',
+          expected:'1',
+          normalize:'number',
+          hint:'Стоять на месте — это один «пустой» путь.',
+          explanation:'count[H] = 1.',
+          mistake:'Похоже, написал 0. На самой конечной вершине число путей всегда 1.'
+        },
+        {
+          title:`Считаем count[${intermediates[0]}]`,
+          goal:'Сложить количества путей у вершин, в которые ведут стрелки.',
+          question:`Сколько путей из ${intermediates[0]} в H?`,
+          expected:String(counts[intermediates[0]]),
+          normalize:'number',
+          hint:`Посмотри, в какие вершины ведут стрелки из ${intermediates[0]}. Сложи числа путей у этих вершин.`,
+          explanation:explainNode(intermediates[0]),
+          mistake:`Похоже, посчитал входящие стрелки (откуда приходят в ${intermediates[0]}). Нужно складывать число путей у тех вершин, в которые ${intermediates[0]} ведёт.`
+        },
+        {
+          title:`Считаем count[${intermediates[1] || 'B'}]`,
+          goal:'Применить то же правило к следующей вершине.',
+          question:`Сколько путей из ${intermediates[1] || 'B'} в H?`,
+          expected:String(counts[intermediates[1] || 'B']),
+          normalize:'number',
+          hint:`Снова: смотри, в какие вершины ведут стрелки из ${intermediates[1] || 'B'}, и сложи их count.`,
+          explanation:explainNode(intermediates[1] || 'B'),
+          mistake:'Похоже, забыл одну из исходящих дорог или взял уже неверно посчитанный count.'
+        },
+        {
+          title:'count[A] — финальный ответ',
+          goal:'Сложить count тех вершин, куда ведут стрелки из A.',
+          question:'Сколько путей из A в H?',
+          expected:String(ans),
+          normalize:'number',
+          hint:'Из A выходят стрелки в B и C (и возможно D). Сложи их count.',
+          explanation:explainNode('A'),
+          mistake:'Похоже, ошибся в сумме на одном из предыдущих шагов, либо взял count входящих.',
+          revealFinal:true
+        }
+      ]
+    };
+  }
+  function countPathsDAG(nodes, edges, end){
+    const adj = Object.fromEntries(nodes.map(n=>[n,[]]));
+    edges.forEach(([u,v]) => adj[u].push(v));
+    const count = Object.fromEntries(nodes.map(n=>[n,0]));
+    count[end] = 1;
+    for(let i=nodes.length-2; i>=0; i--){
+      const u = nodes[i];
+      count[u] = adj[u].reduce((sum,v) => sum + count[v], 0);
+    }
+    return count;
+  }
+  function renderDagSvg(nodes, edges, coords){
+    const edgeSvg = edges.map(([u,v],i) => {
+      const [x1,y1] = coords[u], [x2,y2] = coords[v];
+      const dx=x2-x1, dy=y2-y1, len=Math.sqrt(dx*dx+dy*dy), pad=22;
+      const sx=x1+dx/len*pad, sy=y1+dy/len*pad, ex=x2-dx/len*pad, ey=y2-dy/len*pad;
+      const curve = Math.abs(y2-y1) > 90 ? `Q ${(sx+ex)/2} ${(sy+ey)/2 + (i%2?18:-18)} ${ex} ${ey}` : `L ${ex} ${ey}`;
+      return `<path d="M ${sx} ${sy} ${curve}" stroke="#24324f" stroke-width="2.4" fill="none" marker-end="url(#arrow)"/>`;
+    }).join('');
+    const nodeSvg = nodes.map(n => {
+      const [x,y]=coords[n];
+      return `<g><circle cx="${x}" cy="${y}" r="18" fill="#fff" stroke="#3757ff" stroke-width="3"/><text x="${x}" y="${y+6}" text-anchor="middle" font-family="Arial" font-size="17" font-weight="800" fill="#152033">${n}</text></g>`;
+    }).join('');
+    return `<svg class="graph-svg" viewBox="0 0 630 320" role="img" aria-label="Ориентированный граф">
+      <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#24324f"/></marker></defs>
+      ${edgeSvg}${nodeSvg}
+    </svg>`;
+  }
+
+  function gen10(){
+    const bases = [2,8,16];
+    const terms = bases.map(base => {
+      const val = base === 2 ? rnd(20,120) : base === 8 ? rnd(20,200) : rnd(20,240);
+      return {val, base, text: val.toString(base).toUpperCase()};
+    });
+    const shuffled = shuffle(terms);
+    const total = shuffled.reduce((s,t)=>s+t.val,0);
+    const expr = shuffled.map(t => `${t.text}<sub>${t.base}</sub>`).join(' + ');
+    const conv = shuffled.map(t => `<span class="mono">${t.text}${sub(t.base)}</span> = ${t.val}`).join('; ');
+    return {
+      num:10,
+      title:'Системы счисления',
+      answer:String(total),
+      displayAnswer:String(total),
+      html:`<p>Вычислите значение арифметического выражения:</p>
+        <p style="font-size:26px;font-weight:950">${expr}</p>
+        <p>В ответе запишите десятичное число. Основание системы счисления указывать не нужно.</p>`,
+      hint:'Переведи каждое число в десятичную систему, потом сложи. В шестнадцатеричной системе A=10, B=11, C=12, D=13, E=14, F=15.',
+      solution:`Переводим: ${conv}. Сумма: ${shuffled.map(t=>t.val).join(' + ')} = <b>${total}</b>.`,
+      steps:[
+        {
+          title:'Первое число → десятичная',
+          goal:'Перевести первый терм.',
+          question:`Чему равно ${shuffled[0].text} в системе с основанием ${shuffled[0].base} в десятичной записи?`,
+          expected:String(shuffled[0].val),
+          normalize:'number',
+          hint:shuffled[0].base===2 ? 'Двоичная: складывай степени двойки на местах с 1.' : shuffled[0].base===8 ? 'Восьмеричная: каждая цифра умножается на степень 8 (8⁰, 8¹, 8², ...).' : 'Шестнадцатеричная: A=10, B=11, …, F=15; вес — степени 16.',
+          explanation:`${shuffled[0].text}${sub(shuffled[0].base)} = <b>${shuffled[0].val}</b>.`,
+          mistake:'Похоже, прочитал как десятичное или забыл вес разряда.'
+        },
+        {
+          title:'Второе число → десятичная',
+          goal:'Перевести второй терм.',
+          question:`Чему равно ${shuffled[1].text} в системе с основанием ${shuffled[1].base} в десятичной записи?`,
+          expected:String(shuffled[1].val),
+          normalize:'number',
+          hint:shuffled[1].base===2 ? 'Двоичная: степени двойки.' : shuffled[1].base===8 ? 'Восьмеричная: степени восьмёрки.' : 'Шестнадцатеричная: помни про A–F.',
+          explanation:`${shuffled[1].text}${sub(shuffled[1].base)} = <b>${shuffled[1].val}</b>.`,
+          mistake:'Похоже, перепутал основание этого числа.'
+        },
+        {
+          title:'Третье число → десятичная',
+          goal:'Перевести третий терм.',
+          question:`Чему равно ${shuffled[2].text} в системе с основанием ${shuffled[2].base} в десятичной записи?`,
+          expected:String(shuffled[2].val),
+          normalize:'number',
+          hint:shuffled[2].base===2 ? 'Двоичная: степени двойки.' : shuffled[2].base===8 ? 'Восьмеричная: степени восьмёрки.' : 'Шестнадцатеричная: A=10, …, F=15.',
+          explanation:`${shuffled[2].text}${sub(shuffled[2].base)} = <b>${shuffled[2].val}</b>.`,
+          mistake:'Похоже, не учёл основание или ошибся в одном разряде.'
+        },
+        {
+          title:'Складываем',
+          goal:'Получить итог в десятичной системе.',
+          question:`Чему равна сумма ${shuffled.map(t=>t.val).join(' + ')}?`,
+          expected:String(total),
+          normalize:'number',
+          hint:'Просто сложи три десятичных числа.',
+          explanation:`${shuffled.map(t=>t.val).join(' + ')} = <b>${total}</b>.`,
+          mistake:'Похоже, ошибся в одном из переводов. Перепроверь каждое слагаемое.',
+          revealFinal:true
+        }
+      ]
+    };
+  }
+
+  function showHint(){
+    $('hintBox').classList.toggle('show');
+    if(currentTask && $('hintBox').classList.contains('show')) recordTutorUsage(currentTask.num, 'hint');
+  }
+  function showSolution(){
+    $('solutionBox').classList.toggle('show');
+    if(currentTask && $('solutionBox').classList.contains('show')) recordTutorUsage(currentTask.num, 'solution');
+  }
+
+  // ===== TUTOR =====
+  let tutorState = {task:null, mount:null, stepIndex:0, solvedSteps:[], host:'single', miniIdx:null, revealed:[]};
+
+  function normalizeStep(input, mode){
+    const s = String(input ?? '');
+    if(mode === 'number'){
+      const n = s.trim().replace(/\s+/g,'').replace(',', '.').replace(/^\+/, '');
+      return n;
+    }
+    if(mode === 'sequence'){
+      return s.trim().replace(/\s+/g,'');
+    }
+    // text по умолчанию
+    return s.trim().replace(/\s+/g,'').replace(/ё/g,'е').replace(/Ё/g,'Е').toLowerCase();
+  }
+  function stepIsCorrect(step, input){
+    if(typeof step.customCheck === 'function'){
+      const r = step.customCheck(input, tutorState.task, step);
+      if(r && typeof r === 'object') return !!r.ok;
+      return !!r;
+    }
+    const mode = step.normalize || 'text';
+    const norm = normalizeStep(input, mode);
+    const candidates = [step.expected, ...(step.accepted || [])].filter(x => x !== undefined && x !== null);
+    if(mode === 'number'){
+      const inN = Number(norm);
+      return candidates.some(c => {
+        const cN = Number(normalizeStep(c, 'number'));
+        return Number.isFinite(inN) && Number.isFinite(cN) && Math.abs(inN - cN) < 1e-9;
+      });
+    }
+    const normCandidates = candidates.map(c => normalizeStep(c, mode));
+    return normCandidates.includes(norm);
+  }
+
+  function startTutor(task, mount, opts={}){
+    if(!task || !task.steps || !task.steps.length){
+      mount.innerHTML = '<div class="tutor-fb neutral" style="display:block">У этого задания пока нет пошагового разбора.</div>';
+      mount.classList.add('show');
+      return;
+    }
+    tutorState = {
+      task,
+      mount,
+      stepIndex:0,
+      solvedSteps:new Array(task.steps.length).fill(false),
+      revealed:new Array(task.steps.length).fill(false),
+      host: opts.host || 'single',
+      miniIdx: opts.miniIdx ?? null
+    };
+    mount.classList.add('show');
+    recordTutorUsage(task.num, 'open');
+    renderTutor();
+  }
+
+  function closeTutor(){
+    if(!tutorState.mount) return;
+    tutorState.mount.classList.remove('show');
+    tutorState.mount.innerHTML = '';
+    tutorState = {task:null, mount:null, stepIndex:0, solvedSteps:[], host:'single', miniIdx:null, revealed:[]};
+  }
+
+  function renderTutor(){
+    const t = tutorState;
+    if(!t.task || !t.mount) return;
+    const steps = t.task.steps;
+    const i = t.stepIndex;
+    const step = steps[i];
+    const total = steps.length;
+    const pct = Math.round(((i + (t.solvedSteps[i]?1:0)) / total) * 100);
+    const allSolved = t.solvedSteps.every(Boolean);
+    const idPref = (t.host === 'mini' ? `m${t.miniIdx}_` : 's_');
+    const finalHint = allSolved
+      ? `<div class="tutor-final show">Готово! Теперь запиши финальный ответ в формате ОГЭ: <b>${esc(t.task.displayAnswer ?? t.task.answer)}</b>.</div>`
+      : '';
+    const stepBadge = `Шаг ${i+1} из ${total}${t.solvedSteps[i]?' · решено':''}`;
+    t.mount.innerHTML = `
+      <div class="tutor-head">
+        <span class="tutor-counter">${stepBadge}</span>
+        <button class="tutor-close" type="button" data-tutor-close>Свернуть разбор</button>
+      </div>
+      <div class="tutor-progress"><span style="width:${pct}%"></span></div>
+      <div class="tutor-title">${esc(step.title || ('Шаг ' + (i+1)))}</div>
+      ${step.goal ? `<div class="tutor-goal">${esc(step.goal)}</div>` : ''}
+      <div class="tutor-question">${esc(step.question)}</div>
+      <div class="tutor-input-row">
+        <input class="tutor-input" id="${idPref}tutorInput" autocomplete="off" placeholder="Ответ на шаг" ${t.solvedSteps[i] || t.revealed[i] ? 'disabled' : ''} value="${t.solvedSteps[i] || t.revealed[i] ? esc(step.expected) : ''}">
+        <button class="tutor-check-btn" type="button" data-tutor-check ${t.solvedSteps[i] || t.revealed[i] ? 'disabled' : ''}>Проверить шаг</button>
+      </div>
+      <div class="tutor-controls">
+        <button type="button" data-tutor-hint>Подсказка</button>
+        <button type="button" data-tutor-reveal ${t.solvedSteps[i] || t.revealed[i] ? 'disabled' : ''}>Показать ответ шага</button>
+        <button type="button" data-tutor-prev ${i===0?'disabled':''}>Назад</button>
+        <button type="button" class="primary-step" data-tutor-next ${i>=total-1?'disabled':''}>Дальше</button>
+      </div>
+      <div class="tutor-hint" data-tutor-hint-box>${step.hint ? esc(step.hint) : ''}</div>
+      <div class="tutor-fb" data-tutor-fb></div>
+      ${finalHint}
+    `;
+    // навешиваем обработчики
+    const $$ = (sel) => t.mount.querySelector(sel);
+    const inp = $$('#'+idPref+'tutorInput');
+    if(inp && !t.solvedSteps[i] && !t.revealed[i]){
+      inp.focus();
+      inp.addEventListener('keydown', (e) => { if(e.key === 'Enter') { e.preventDefault(); checkTutorStep(); } });
+    }
+    $$('[data-tutor-check]')?.addEventListener('click', checkTutorStep);
+    $$('[data-tutor-hint]')?.addEventListener('click', () => {
+      const hb = $$('[data-tutor-hint-box]');
+      if(hb) hb.classList.toggle('show');
+      if(hb && hb.classList.contains('show') && t.task) recordTutorUsage(t.task.num, 'hint');
+    });
+    $$('[data-tutor-reveal]')?.addEventListener('click', revealTutorStep);
+    $$('[data-tutor-prev]')?.addEventListener('click', prevTutorStep);
+    $$('[data-tutor-next]')?.addEventListener('click', nextTutorStep);
+    $$('[data-tutor-close]')?.addEventListener('click', closeTutor);
+    // если шаг уже решён — покажем объяснение
+    if(t.solvedSteps[i] || t.revealed[i]){
+      const fb = $$('[data-tutor-fb]');
+      if(fb){
+        fb.className = 'tutor-fb ' + (t.solvedSteps[i] ? 'good' : 'neutral');
+        fb.innerHTML = (t.solvedSteps[i] ? '✓ ' : 'Ответ шага: ') + (step.explanation || ('Ответ: ' + esc(step.expected)));
+      }
+    }
+  }
+
+  function checkTutorStep(){
+    const t = tutorState;
+    if(!t.task) return;
+    const step = t.task.steps[t.stepIndex];
+    const idPref = (t.host === 'mini' ? `m${t.miniIdx}_` : 's_');
+    const inp = t.mount.querySelector('#'+idPref+'tutorInput');
+    const fb = t.mount.querySelector('[data-tutor-fb]');
+    const val = inp ? inp.value : '';
+    if(!val.trim()){
+      if(fb){ fb.className = 'tutor-fb neutral'; fb.innerHTML = 'Введи ответ на шаг.'; }
+      return;
+    }
+    const ok = stepIsCorrect(step, val);
+    if(ok){
+      t.solvedSteps[t.stepIndex] = true;
+      recordTutorUsage(t.task.num, 'stepCorrect');
+      if(fb){ fb.className = 'tutor-fb good'; fb.innerHTML = '✓ Верно. ' + (step.explanation || ''); }
+      if(inp) inp.disabled = true;
+      const checkBtn = t.mount.querySelector('[data-tutor-check]');
+      if(checkBtn) checkBtn.disabled = true;
+      const revealBtn = t.mount.querySelector('[data-tutor-reveal]');
+      if(revealBtn) revealBtn.disabled = true;
+      const nextBtn = t.mount.querySelector('[data-tutor-next]');
+      if(nextBtn && t.stepIndex < t.task.steps.length - 1){
+        nextBtn.focus();
+      }else if(t.stepIndex === t.task.steps.length - 1){
+        // дошли до конца — фокус на финальный input
+        setTimeout(() => {
+          if(t.host === 'single'){
+            const aInput = $('answerInput');
+            if(aInput) { aInput.focus(); aInput.value = step.revealFinal ? (t.task.displayAnswer ?? t.task.answer) : aInput.value; }
+          }else if(t.host === 'mini' && t.miniIdx !== null){
+            const aInput = $('miniAnswer'+t.miniIdx);
+            if(aInput){ aInput.focus(); if(step.revealFinal) aInput.value = t.task.displayAnswer ?? t.task.answer; }
+          }
+        }, 50);
+        renderTutor();
+      }
+    }else{
+      recordTutorUsage(t.task.num, 'stepAttempt');
+      if(fb){
+        fb.className = 'tutor-fb bad';
+        const diagnostic = step.mistake || 'Не совсем. Попробуй ещё раз.';
+        fb.innerHTML = '✗ ' + esc(diagnostic) + ' <span style="opacity:.8">Попробуй заново или открой подсказку.</span>';
+      }
+      // авто-показ подсказки
+      const hb = t.mount.querySelector('[data-tutor-hint-box]');
+      if(hb && step.hint) hb.classList.add('show');
+    }
+  }
+
+  function revealTutorStep(){
+    const t = tutorState;
+    if(!t.task) return;
+    const step = t.task.steps[t.stepIndex];
+    t.revealed[t.stepIndex] = true;
+    recordTutorUsage(t.task.num, 'solution');
+    renderTutor();
+  }
+  function nextTutorStep(){
+    const t = tutorState;
+    if(!t.task) return;
+    if(t.stepIndex < t.task.steps.length - 1){
+      t.stepIndex += 1;
+      renderTutor();
+    }
+  }
+  function prevTutorStep(){
+    const t = tutorState;
+    if(!t.task) return;
+    if(t.stepIndex > 0){
+      t.stepIndex -= 1;
+      renderTutor();
+    }
+  }
+
+  function makeVariant(){
+    variantTasks = TOPICS.map(t => generators[t.n]());
+    variantChecked = false;
+    $('variantCard').classList.add('show');
+    renderVariant();
+    startVariantTimer();
+    toast('Вариант собран. Таймер на 30 минут пошёл — но без паники, это тренировка.');
+    $('variantCard').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  function renderVariant(){
+    const inExam = currentMode === 'exam';
+    $('variantGrid').innerHTML = variantTasks.map((task, idx) => {
+      const hintDisabled = inExam ? 'disabled' : '';
+      const tutorHidden = inExam && !variantChecked ? 'style="display:none"' : '';
+      return `
+      <div class="mini-task" data-idx="${idx}">
+        <div class="mini-head"><span>№${task.num}. ${esc(task.title)}</span><span class="mini-result" id="miniResult${idx}">—</span></div>
+        <div class="task-text">${task.html}</div>
+        <div class="mini-answer-row">
+          <input id="miniAnswer${idx}" placeholder="Ответ" autocomplete="off">
+          <button class="ghost" data-mini-hint="${idx}" ${hintDisabled}>Подсказка</button>
+          <button class="primary" data-mini-check="${idx}">Проверить</button>
+        </div>
+        <div class="hint-box" id="miniHint${idx}">${task.hint}</div>
+        ${task.steps && task.steps.length ? `<div style="margin-top:6px"><button class="tutor-open-btn mini" data-mini-tutor="${idx}" id="miniTutorBtn${idx}" ${tutorHidden}>Разобрать по шагам</button></div>` : ''}
+        <div class="tutor-box" id="miniTutor${idx}" aria-live="polite"></div>
+        <div class="solution-box" id="miniSolution${idx}">${task.solution}</div>
+      </div>`;
+    }).join('');
+    [...document.querySelectorAll('[data-mini-check]')].forEach(btn => btn.addEventListener('click', () => checkMini(Number(btn.dataset.miniCheck), true)));
+    [...document.querySelectorAll('[data-mini-hint]')].forEach(btn => btn.addEventListener('click', () => {
+      if(btn.disabled) return;
+      $('miniHint'+btn.dataset.miniHint).classList.toggle('show');
+    }));
+    [...document.querySelectorAll('[data-mini-tutor]')].forEach(btn => btn.addEventListener('click', () => {
+      const i = Number(btn.dataset.miniTutor);
+      startTutor(variantTasks[i], $('miniTutor'+i), {host:'mini', miniIdx:i});
+    }));
+  }
+  function checkMini(idx, shouldRecord=false){
+    const task = variantTasks[idx];
+    const input = $('miniAnswer'+idx).value;
+    const ok = checkTask(task, input);
+    const badge = $('miniResult'+idx);
+    badge.textContent = ok ? 'верно' : `ответ: ${task.displayAnswer ?? task.answer}`;
+    badge.className = 'mini-result ' + (ok ? 'ok' : 'no');
+    // В режиме «Экзамен» одиночная проверка не раскрывает решение раньше времени —
+    // решения откроются после общей проверки варианта.
+    if(currentMode !== 'exam' || variantChecked){
+      $('miniSolution'+idx).classList.add('show');
+    }
+    if(shouldRecord) record(task.num, ok);
+    return ok;
+  }
+  function checkVariant(){
+    if(!variantTasks.length) return;
+    variantChecked = true;
+    let okCount = 0;
+    variantTasks.forEach((_, idx) => { if(checkMini(idx, true)) okCount += 1; });
+    // открыть все решения и кнопки разбора по шагам
+    variantTasks.forEach((_, idx) => {
+      $('miniSolution'+idx).classList.add('show');
+      const tb = $('miniTutorBtn'+idx);
+      if(tb) tb.style.display = '';
+    });
+    $('variantScore').textContent = `${okCount}/10 верно`;
+    toast(okCount >= 8 ? `Сильно! ${okCount}/10 — уже пахнет уверенной первой частью.` : `${okCount}/10. Нормальная разминка: посмотри решения и добей слабые номера.`);
+  }
+  function startVariantTimer(){
+    if(variantTimer) clearInterval(variantTimer);
+    variantSeconds = 30 * 60;
+    updateTimer();
+    variantTimer = setInterval(() => {
+      variantSeconds -= 1;
+      updateTimer();
+      if(variantSeconds <= 0){ clearInterval(variantTimer); variantTimer = null; toast('30 минут вышли. Проверь вариант и отметь номера, где зависал дольше всего.'); }
+    }, 1000);
+  }
+  function updateTimer(){
+    const s = Math.max(0, variantSeconds);
+    const m = Math.floor(s/60), sec = s%60;
+    $('variantTimer').textContent = `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  }
+  function toast(msg){
+    const t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast._timer); toast._timer = setTimeout(()=>t.classList.remove('show'), 3600);
+  }
+
+  $('newTaskBtn').addEventListener('click', () => newTask(currentTopic));
+  $('checkBtn').addEventListener('click', () => {
+    const ok = checkTask(currentTask, $('answerInput').value);
+    showFeedback(ok, currentTask, $('answerInput').value, true);
+    // В «Учусь» / «Закрепляю» — поведение как раньше: показать решение при ошибке.
+    // В «Экзамен» — решение не раскрываем автоматически: пусть ученик сам решит,
+    // открыть ли «Разобрать по шагам» или «Показать решение».
+    if(!ok && currentMode !== 'exam') $('solutionBox').classList.add('show');
+  });
+  $('hintBtn').addEventListener('click', showHint);
+  $('solutionBtn').addEventListener('click', showSolution);
+  $('variantBtn').addEventListener('click', makeVariant);
+  $('newVariantBtn').addEventListener('click', makeVariant);
+  $('checkVariantBtn').addEventListener('click', checkVariant);
+  $('printBtn').addEventListener('click', () => window.print());
+  $('resetBtn').addEventListener('click', () => {
+    if(confirm('Сбросить статистику тренировок?')){ stats = defaultStats(); saveStats(); renderStats(); toast('Статистика сброшена. Чистый лист — тоже кайф.'); }
+  });
+  $('answerInput').addEventListener('keydown', (e) => { if(e.key === 'Enter') $('checkBtn').click(); });
+
+  // «Разобрать по шагам» для одиночного задания
+  const _tutorOpenBtn = $('tutorOpenBtn');
+  if(_tutorOpenBtn) _tutorOpenBtn.addEventListener('click', () => {
+    if(_tutorOpenBtn.style.display === 'none') return;
+    startTutor(currentTask, $('tutorBox'), {host:'single'});
+  });
+
+  // Переключатель режимов
+  [...document.querySelectorAll('.mode-btn')].forEach(btn => btn.addEventListener('click', () => {
+    currentMode = btn.dataset.mode;
+    saveMode();
+    renderModeBar();
+    // Если открыт мини-вариант — перерисуем, чтобы применить ограничения режима
+    if(variantTasks.length){
+      const wasChecked = variantChecked;
+      renderVariant();
+      if(wasChecked){
+        // восстановить «открытое» состояние после проверки
+        variantTasks.forEach((_, idx) => {
+          $('miniSolution'+idx).classList.add('show');
+          const tb = $('miniTutorBtn'+idx);
+          if(tb) tb.style.display = '';
+        });
+      }
+    }
+    toast(`Режим: ${MODES[currentMode].label}. ${MODES[currentMode].hint}`);
+  }));
+
+  // Скрытый self-test для разработчика: window.__selfTestGenerators(100)
+  window.__selfTestGenerators = function(iterations=50){
+    const report = {};
+    for(let n=1; n<=10; n++){
+      let ok = 0, fail = 0; const errors = [];
+      for(let i=0;i<iterations;i++){
+        try{
+          const t = generators[n]();
+          const ans = Array.isArray(t.answer) ? t.answer[0] : t.answer;
+          if(checkTask(t, String(ans))) ok++; else { fail++; errors.push({i, ans, displayAnswer:t.displayAnswer}); }
+        }catch(e){ fail++; errors.push({i, error:String(e)}); }
+      }
+      report[n] = {ok, fail, errors: errors.slice(0,3)};
+    }
+    console.table(Object.fromEntries(Object.entries(report).map(([k,v]) => [k, {ok:v.ok, fail:v.fail}])));
+    return report;
+  };
+
+  renderNav(); renderStats(); renderModeBar(); newTask(1);
+})();
+</script>
+</body>
+</html>
