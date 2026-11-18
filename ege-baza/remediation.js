@@ -136,7 +136,12 @@ function show(context){
   const storageNotice=document.getElementById('storage');
   const keepTab=offline||Boolean(storageNotice&&!storageNotice.hidden);
   const url=new URL(hint.path,offline?'https://mathexam.space':location.origin);
-  if(!keepTab)url.searchParams.set('returnTo',location.pathname+location.hash);
+  if(!keepTab){
+   // The separate practice has its own storage key. Returning without this
+   // exact mode would open course progress instead of the saved attempt.
+   const separate=location.pathname==='/ege-baza/path/index.html'&&new URLSearchParams(location.search).get('practice')==='recovery';
+   url.searchParams.set('returnTo',location.pathname+(separate?'?practice=recovery':'')+location.hash);
+  }
   link.href=url.href;
   const note=document.createElement('p');
   note.className='muted';

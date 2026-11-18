@@ -3,11 +3,11 @@ const {JSDOM,VirtualConsole}=require('jsdom');
 const assert=require('node:assert/strict'),fs=require('fs'),path=require('path');
 const base=path.resolve(__dirname,'..'),errors=[];
 const tick=()=>new Promise(resolve=>setTimeout(resolve,2));
-function create(saved,hash='map'){
+function create(saved,hash='map',search=''){
  const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));
- const dom=new JSDOM(fs.readFileSync(path.join(base,'ege-baza/path/index.html'),'utf8'),{url:'https://course.test/ege-baza/path/index.html#'+hash,runScripts:'outside-only',virtualConsole:vc});
+ const dom=new JSDOM(fs.readFileSync(path.join(base,'ege-baza/path/index.html'),'utf8'),{url:'https://course.test/ege-baza/path/index.html'+search+'#'+hash,runScripts:'outside-only',virtualConsole:vc});
  const w=dom.window;w.structuredClone=structuredClone;w.matchMedia=()=>({matches:true});w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};
- w.localStorage.setItem('legacy-course-sentinel','keep');if(saved!==undefined)w.localStorage.setItem('mathexam.ege-baza.path.v1',saved);
+ w.localStorage.setItem('legacy-course-sentinel','keep');if(saved!==undefined)w.localStorage.setItem('mathexam.ege-baza.path.v1'+(search==='?practice=recovery'?'.separate':''),saved);
  // Keep the fixture's dependencies and execution order identical to the page.
  for(const script of w.document.querySelectorAll('script')){
   assert(!script.type||script.type==='text/javascript','unsupported script type '+script.type);
@@ -151,9 +151,31 @@ async function testTargetedRemediation(w,d){
  // Restore the exact lesson step and unfinished answer from the existing schema.
  await go(w,'lesson=practice-fraction-add');const current=w.PathCourse.state().lessons['practice-fraction-add'];current.step=1;current.stage=2;current.draft='3/';delete current.taskFirst;w.dispatchEvent(new w.Event('pagehide'));const saved=w.localStorage.getItem(w.PathCourse.KEY);const b=create(saved,'lesson=practice-fraction-add');assert.equal(b.d.querySelector('#stepAnswer').value,'3/');assert.equal(b.w.PathCourse.state().lessons['practice-fraction-add'].step,1);b.w.close();
  await testTargetedRemediation(w,d);
+ // A support visit from the separately saved practice must not enter the course's store.
+ const isolated=create(undefined,'lesson=practice-fraction-add','?practice=recovery');
+ const courseKey='mathexam.ege-baza.path.v1';
+ isolated.w.localStorage.setItem(courseKey,saved);
+ click(isolated.d,'#startSteps');
+ enter(isolated.w,isolated.d,'1/0','stepAnswer');
+ const separateLesson=isolated.w.PathCourse.state().lessons['practice-fraction-add'];
+ const separateLink=new URL(isolated.d.querySelector('#ege-remediation a').href);
+ assert.equal(separateLink.searchParams.get('returnTo'),'/ege-baza/path/index.html?practice=recovery#lesson=practice-fraction-add');
+ const supportPage=new JSDOM('<body></body>',{url:separateLink.href,runScripts:'outside-only'});
+ supportPage.window.eval(fs.readFileSync(path.join(base,'ege-baza/return-to-course.js'),'utf8'));
+ const destination=new URL(supportPage.window.document.querySelector('#ege-return a').href);
+ assert.equal(destination.search,'?practice=recovery');
+ const returned=create(isolated.w.localStorage.getItem(isolated.w.PathCourse.KEY),destination.hash.slice(1),destination.search);
+ assert.equal(returned.w.PathCourse.KEY,courseKey+'.separate');
+ assert.equal(returned.d.querySelector('#stepAnswer').value,'1/0');
+ assert.equal(returned.w.PathCourse.state().lessons['practice-fraction-add'].seed,separateLesson.seed);
+ assert.equal(returned.w.PathCourse.state().lessons['practice-fraction-add'].step,separateLesson.step);
+ assert.equal(returned.w.PathCourse.state().lessons['practice-fraction-add'].independent,0);
+ assert.equal(isolated.w.localStorage.getItem(courseKey),saved);
+ assert.equal(returned.w.localStorage.getItem(courseKey),null,'isolated restore never writes course progress');
+ isolated.w.close();supportPage.window.close();returned.w.close();
  // New hyphenated lesson IDs return through the existing restricted return bridge.
  const back=new JSDOM('<body></body>',{url:returnLink.href,runScripts:'outside-only'});back.window.eval(fs.readFileSync(path.join(base,'ege-baza/return-to-course.js'),'utf8'));assert.equal(back.window.document.querySelector('#ege-return a').hash,'#lesson='+id);back.window.close();
- for(const bad of ['https://evil.example/','/trainers/trainer-board.html#map','/ege-baza/path/index.html?admin=1#map']){const x=new JSDOM('<body></body>',{url:'https://course.test/trainers/oge-basics/fraction-meaning.html?returnTo='+encodeURIComponent(bad),runScripts:'outside-only'});x.window.eval(fs.readFileSync(path.join(base,'ege-baza/return-to-course.js'),'utf8'));assert(!x.window.document.querySelector('#ege-return'));x.window.close();}
+ for(const bad of ['https://evil.example/','/trainers/trainer-board.html#map','/ege-baza/path/index.html?admin=1#map','/ege-baza/path/index.html?practice=other#map','/ege-baza/path/index.html?practice=recovery&admin=1#map','/ege-baza/path/index.html?practice=recovery&practice=recovery#map','/ege-baza/work-rate/index.html?practice=recovery#practice']){const x=new JSDOM('<body></body>',{url:'https://course.test/trainers/oge-basics/fraction-meaning.html?returnTo='+encodeURIComponent(bad),runScripts:'outside-only'});x.window.eval(fs.readFileSync(path.join(base,'ege-baza/return-to-course.js'),'utf8'));assert(!x.window.document.querySelector('#ege-return'));x.window.close();}
  // Exam must contain all 21 positions and display the data required to solve it.
  await go(w,'exam');click(d,'#start');let r=w.PathCourse.state().active;assert.equal(r.ids.length,21);
  const input=d.querySelector('#answer');input.value='draft';input.dispatchEvent(new w.Event('input'));const backup=w.localStorage.getItem(w.PathCourse.KEY);const c=create(backup,'exam');assert.equal(c.d.querySelector('#answer').value,'draft');c.w.close();

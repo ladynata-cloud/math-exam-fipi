@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "80ffbdb4ab91806e51f99b674158dab1c1c4c4ad",
+  "baseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "ae9fde7f43755b99f97f6c3ee0abec0861065a3f73e4b1431a94e1ceaf4866af",
-      "afterSha256": "543d0dc74340393f074f30e6d071d8fba8f1b398e7a4ae97b54863d4f3928874",
+      "beforeSha256": "c0b702a6267cd7ba88972fc415547eb17e2a48a4e268d3cef6bf45d5795b1bd5",
+      "afterSha256": "eb2ff7bf73e28312c6170b928a8c54775856489dd702cae4213e9035f99392ef",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "4f1763bf539f01aea1f3a9ebe8949bf59501a04d42a7c5ebc1cf63b0c190fffd",
-      "afterSha256": "aef95ce9b4fc6c2a56098e03790b72912504e4a84dc77af3879cff30e1e5ee0a",
+      "beforeSha256": "063a06a94b4cfed234d543fabad67d6c346c6c57c7b803c9b80633b3444c3e98",
+      "afterSha256": "0fbb8454422c6606e2f0074c197a46136a4e7ca58e179deee817b0b3ed35648c",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -5596,6 +5596,16 @@
       "sourceBaseSha": "72539d8c7a4abd104c9d9a17f2a3dd3aea74ae64",
       "task": "docs/tasks/FOUNDATION_PRACTICE_AUDIT_20261118.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "80ffbdb4ab91806e51f99b674158dab1c1c4c4ad",
+      "sourceBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "task": "docs/tasks/FOUNDATION_PRACTICE_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

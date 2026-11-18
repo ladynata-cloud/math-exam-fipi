@@ -22,6 +22,27 @@ assert.equal(after.seed,before.seed);
 assert.equal(after.step,before.step);
 assert.equal(await p.locator('#stepAnswer').inputValue(),'1/0');
 assert.equal(after.independent,0);
+// Separate practice returns to its own attempt, without opening the course save.
+await p.goto(base+'/ege-baza/path/index.html?practice=recovery#lesson=practice-fraction-add');
+const courseBeforeSeparate=await p.evaluate(()=>localStorage.getItem('mathexam.ege-baza.path.v1'));
+assert.equal(await p.evaluate(()=>PathCourse.KEY),'mathexam.ege-baza.path.v1.separate');
+await openSteps(p);
+const separateBefore=await p.evaluate(()=>PathCourse.state().lessons['practice-fraction-add']);
+await p.fill('#stepAnswer','1/0');
+await p.click('#stepAnswerForm button[type=submit]');
+const detour=new URL(await p.locator('#ege-remediation a').getAttribute('href'));
+assert.equal(detour.searchParams.get('returnTo'),'/ege-baza/path/index.html?practice=recovery#lesson=practice-fraction-add');
+await p.locator('#ege-remediation a').click();
+await p.locator('#ege-return a').click();
+await p.waitForLoadState('load');
+assert.equal(new URL(p.url()).search,'?practice=recovery');
+assert.equal(await p.evaluate(()=>PathCourse.KEY),'mathexam.ege-baza.path.v1.separate');
+const separateAfter=await p.evaluate(()=>PathCourse.state().lessons['practice-fraction-add']);
+assert.equal(separateAfter.seed,separateBefore.seed);
+assert.equal(separateAfter.step,separateBefore.step);
+assert.equal(separateAfter.independent,separateBefore.independent);
+assert.equal(await p.locator('#stepAnswer').inputValue(),'1/0');
+assert.equal(await p.evaluate(()=>localStorage.getItem('mathexam.ege-baza.path.v1')),courseBeforeSeparate);
 // Sign mistake: same magnitude, opposite sign gets sign practice, not harder equations.
 await p.goto(base+'/ege-baza/path/index.html#lesson=equations');await openSteps(p);before=await p.evaluate(()=>PathCourse.state().lessons.equations);let t=D.task('equations',before.seed);await p.fill('#stepAnswer',String(-t.steps[0].a));await p.click('#stepAnswerForm button[type=submit]');assert.match(await p.locator('#ege-remediation a').innerText(),/разными знаками/);
 // Wrong percentage base: targeted percentage change practice.
