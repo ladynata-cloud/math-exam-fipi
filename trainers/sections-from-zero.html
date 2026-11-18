@@ -25,6 +25,16 @@
   <script src="/trainers/board-bridge.js"></script>
   <script src="/stereo-course/sections/assets/board-session.js"></script>
   <script src="/stereo-course/sections/assets/app.js"></script>
+  <script>
+    // The shared room opens on the lesson. Keep the catalogue and the rule reachable after it.
+    const course = document.getElementById('sections-app');
+    const lessonLayout = course.querySelector('.layout');
+    if (lessonLayout) {
+      course.querySelector('.app-header').classList.add('sr-only');
+      lessonLayout.append(lessonLayout.querySelector('.catalog'));
+      lessonLayout.after(course.querySelector('.principle'));
+    }
+  </script>
   <script defer src="/assets/assistant/home-link.js?v=20261110"></script>
 </body>
 </html>

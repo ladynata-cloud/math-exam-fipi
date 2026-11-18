@@ -197,7 +197,10 @@ test('an article demonstration starts on a fresh sheet and keeps the regular boa
     f.frame.onload();
     f.sendFrame('mathexam:trainer-ready');
     f.timers.get(f.evaluate('bridgeHydrationTimer')).callback();
-    assert.equal(f.status(), 'solo');
+    assert.equal(f.status(), 'bridge-timeout', 'the handshake diagnostic remains available');
+    const status = f.w.document.getElementById('mirrorStatus');
+    assert.equal(status.textContent, 'Для работы вдвоём откройте «Участники»');
+    assert.equal(status.classList.contains('bad'), false);
     f.w.document.getElementById('addSheet').click();
     f.w.dispatchEvent(new f.w.Event('beforeunload'));
     assert.equal(JSON.parse(f.w.sessionStorage.getItem(key)).pages.length, 2);

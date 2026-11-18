@@ -259,9 +259,15 @@
     function registryFailure(code,retryable=false){const error=new Error(code);error.code=code;error.retryable=retryable;return error}
     function setMirrorStatus(code){
       if(shared.roomError)code='room-unavailable';
-      else if(!shared.roomId&&shared.role==='teacher'&&['pending','bridge-timeout','connected'].includes(code))code='solo';
       else if(code==='connected'&&(!shared.connected||!roomStateReceived))code='pending';
-      const item=mirrorStatuses[code]||mirrorStatuses['registry-unavailable'];if(!mirrorStatus)return;mirrorStatus.textContent=item.text;mirrorStatus.className=`status ${item.kind}`.trim();mirrorStatus.dataset.mirrorStatus=code;retryTrainerRegistry?.classList.toggle('hidden',!item.retry)}
+      if(!mirrorStatus)return;
+      const workingAlone=!shared.roomId&&shared.role==='teacher'&&(code==='pending'||code==='bridge-timeout');
+      const item=workingAlone?mirrorStatuses.solo:mirrorStatuses[code]||mirrorStatuses['registry-unavailable'];
+      mirrorStatus.dataset.mirrorStatus=code;
+      mirrorStatus.textContent=item.text;
+      mirrorStatus.className=`status ${item.kind}`.trim();
+      retryTrainerRegistry?.classList.toggle('hidden',!item.retry);
+    }
     function unsafePathText(value){return /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069\u2044\u2215\u29f8\uff0f\uff3c]/u.test(value)}
     function canonicalRegistryFile(value){if(typeof value!=='string'||!value||value!==value.trim()||value.length>TRAINER_PATH_LIMITS.maxTotalLength||!value.startsWith('trainers/')||value.includes('\\')||value.includes('%')||value.includes('?')||value.includes('#')||unsafePathText(value))return'';const components=value.slice('trainers/'.length).split('/');if(!components.length||components.length>TRAINER_PATH_LIMITS.maxComponents)return'';for(const component of components){if(!component||component.length>TRAINER_PATH_LIMITS.maxComponentLength||component==='.'||component==='..'||component.endsWith('.')||!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(component)||WINDOWS_RESERVED_STEMS.has(component.split('.',1)[0].toUpperCase()))return''}return components.at(-1).endsWith('.html')?value:''}
     function rawPathPart(value){if(value.startsWith('//'))return null;const absolute=value.match(/^([a-z][a-z\d+.-]*):\/\//i);if(absolute){if(!/^https?$/i.test(absolute[1]))return null;const authorityStart=absolute[0].length,offset=value.slice(authorityStart).search(/[\/?#]/);if(offset<0)return'/';const index=authorityStart+offset;return value[index]==='/'?value.slice(index).split(/[?#]/,1)[0]:'/'}if(/^[a-z][a-z\d+.-]*:/i.test(value))return null;return value.split(/[?#]/,1)[0]}

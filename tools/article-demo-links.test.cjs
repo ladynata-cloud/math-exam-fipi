@@ -20,6 +20,31 @@ function openTrainer(file, suffix) {
   return dom;
 }
 
+test('the board entry renders the selected cube before the catalogue and the rule', () => {
+  const file = 'trainers/sections-from-zero.html';
+  const root = path.join(__dirname, '..');
+  const dom = new JSDOM(readFileSync(path.join(root, file), 'utf8'), {
+    url: 'https://mathexam.space/' + file + '#starter-18',
+    runScripts: 'outside-only', pretendToBeVisual: true
+  });
+  try {
+    const win = dom.window;
+    const doc = win.document;
+    win.TextEncoder = TextEncoder;
+    win.SVGElement.prototype.getBBox = function () { return {x:0, y:-12, width:15, height:16}; };
+    for (const script of doc.querySelectorAll('script:not([defer])')) {
+      const src = script.getAttribute('src');
+      win.eval(src ? readFileSync(path.join(root, src), 'utf8') : script.textContent);
+    }
+    const main = doc.querySelector('.course-main');
+    assert.match(main.querySelector('#lesson-title').textContent, /Наклонный срез/);
+    assert.ok(main.querySelector('.model-svg [data-point="M"]'));
+    assert.ok(main.querySelector('.model-svg [data-point="N"]'));
+    assert.equal(main.nextElementSibling, doc.querySelector('details.catalog'));
+    assert.equal(main.parentElement.nextElementSibling, doc.querySelector('details.principle'));
+  } finally { dom.window.close(); }
+});
+
 test('the percent link opens 80 of 100 cells and accepts four fifths', () => {
   const dom = openTrainer('trainers/percent-part-whole-trainer.html', '?percent=80#exercise');
   try {
