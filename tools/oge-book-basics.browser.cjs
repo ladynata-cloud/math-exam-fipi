@@ -171,18 +171,8 @@ async function hint(page,rec,promptSelector,percent=false) {
   await usable(toggle,rec,'Help toggle');
   await toggle.click();
   const panel=page.locator('.bh-panel:visible');await panel.waitFor();
-  const second=page.locator(percent?'#p-h2':'#hint2');if(await second.isVisible())await second.click();
-  // Opening the panel and moving the live hint into it are separate browser
-  // updates on the managed long-division route. Under a loaded CI runner the
-  // panel can become visible one frame before its text is painted. Keep the
-  // same visible-text contract, but wait for that contract instead of sampling
-  // the intermediate empty frame.
-  await page.waitForFunction(() => {
-    const panel=[...document.querySelectorAll('.bh-panel')].find(node =>
-      node.getClientRects().length && getComputedStyle(node).visibility!=='hidden');
-    return !!panel && panel.innerText.trim().length>30;
-  },null,{timeout:5000});
   const text=await observed(panel);
+  const second=page.locator(percent?'#p-h2':'#hint2');if(await second.isVisible())await second.click();
   check(rec,'hints',text.length>30&&await observed(page.locator(promptSelector))===prompt,{visibleText:text,prompt});
   await layout(page,rec,'help-open');
   await toggle.click();
@@ -314,7 +304,12 @@ async function guided(page,rec){
   check(rec,'start',original==='48 : 2',{prompt:original});
   await page.locator('#answer').fill('987654321');await page.locator('#primary').click();
   check(rec,'wrong-answer',(await observed(page.locator('#step-counter'))).startsWith('Шаг 1 '),{observed:await observed(page.locator('#feedback'))});
-  const toggle=page.locator('.bh-toggle');await toggle.click();check(rec,'hints',(await observed(page.locator('#hint-text'))).length>30,{visibleText:await observed(page.locator('#hint-text'))});await layout(page,rec,'help-open');await toggle.click();
+  const toggle=page.locator('.bh-toggle');await toggle.click();
+  const nativeHint=page.locator('#help-content details').first();
+  if(await nativeHint.count()&&(await nativeHint.getAttribute('open'))===null)await nativeHint.locator('summary').click();
+  const hintText=page.locator('#hint-text:visible');await hintText.waitFor();
+  check(rec,'hints',(await observed(hintText)).length>30,{visibleText:await observed(hintText)});
+  await layout(page,rec,'help-open');await toggle.click();
   let count=0;
   while(!await page.locator('#completion').isVisible()){
     const p=await observed(page.locator('#prompt')),n=nums(p);let answer;
