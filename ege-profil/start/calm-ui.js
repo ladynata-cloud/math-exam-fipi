@@ -54,7 +54,7 @@ function create(A){
   const first=starters.find(l=>root.ProfileJourney.starterProgress(l,state)<3);
   const stages=starters.map(l=>{
    const count=root.ProfileJourney.starterProgress(l,state);
-   return '<li><a href="#lesson/'+l.id+'">'+esc(l.title)+'</a><span class="small"> · '+(count===3?'пройдено':count+' из 3 задач')+'</span></li>';
+   return '<li><a href="#lesson/'+l.id+'">'+esc(l.title).replace('противоположные','противо&shy;положные')+'</a><span class="small"> · '+(count===3?'пройдено':count+' из 3 задач')+'</span></li>';
   }).join('');
   const savedExam=next.kind==='resume'&&e.lessonIds.includes(next.lessonId);
   const classroom=A.board?.('#exam/2','Задачи ЕГЭ на доске с преподавателем');
