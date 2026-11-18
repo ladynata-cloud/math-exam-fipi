@@ -116,7 +116,7 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=ege-methods-20261113"></script>
+  <script src="board-picker.js?v=20261119-lesson-title"></script>
   <script src="board-bridge.js"></script>
   <script src="board-ink.js?v=20261024-writing-1"></script>
   <script src="board-images.js?v=20261024-writing-1"></script>
@@ -127,6 +127,8 @@
     const TEACHER_SESSION_KEY='mathexam.trainerBoard.teacherRoomSession.v1';
     const DEFAULT_SERVER='https://mathexam-board-ladynata.msk1.amvera.tech';
     const params=new URLSearchParams(location.search);
+    // Article demonstrations keep their sheets in this tab, separately from lesson work.
+    function sheetStorage(){return params.get('demo')==='1'?sessionStorage:localStorage}
     const initialRole=params.get('role')==='student'?'student':'teacher';
     const teacherRoomMarkerId=params.get('role')==='teacher'?params.get('room')||'':'';
     const hasTeacherRoomMarker=!!teacherRoomMarkerId;
@@ -156,8 +158,8 @@
     let state=load();
     const shared={role:initialRole,roomId:initialRole==='student'?params.get('room')||'':restoredTeacherRoomSession?.roomId||'',token:initialRole==='student'?params.get('token')||'':restoredTeacherRoomSession?.teacherToken||'',server:normalizeServer(restoredTeacherRoomSession?.server||params.get('server')||localStorage.getItem(SERVER_KEY)||DEFAULT_SERVER),studentToken:restoredTeacherRoomSession?.studentToken||'',studentLink:'',socket:null,connected:false,roomError:'',loadingClient:null,clientServer:'',participants:[],me:null,control:'',controlVersion:0,restoredTeacherSession:!!restoredTeacherRoomSession};
 
-    function load(){try{if(initialRole==='student')return defaults();const raw=localStorage.getItem(KEY);if(!raw)return defaults();const s=JSON.parse(raw);if(!s.pages?.length)return defaults();s.current=Math.min(Math.max(s.current||0,0),s.pages.length-1);s.pages.forEach((p,i)=>{p.id=p.id||`page-${i+1}`;p.bg=p.bg||'grid';p.strokes=Array.isArray(p.strokes)?p.strokes:[];p.redo=Array.isArray(p.redo)?p.redo:[]});s.trainerUrl=s.trainerUrl||'negative-numbers-line.html';return s}catch(_e){return defaults()}}
-    function persistLocalBoard(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){boardMessage('Не удалось сохранить копию в этом браузере. Скачайте текущий вид PNG.')}}
+    function load(){try{if(initialRole==='student')return defaults();const raw=sheetStorage().getItem(KEY);if(!raw)return defaults();const s=JSON.parse(raw);if(!s.pages?.length)return defaults();s.current=Math.min(Math.max(s.current||0,0),s.pages.length-1);s.pages.forEach((p,i)=>{p.id=p.id||`page-${i+1}`;p.bg=p.bg||'grid';p.strokes=Array.isArray(p.strokes)?p.strokes:[];p.redo=Array.isArray(p.redo)?p.redo:[]});s.trainerUrl=s.trainerUrl||'negative-numbers-line.html';return s}catch(_e){return defaults()}}
+    function persistLocalBoard(){try{sheetStorage().setItem(KEY,JSON.stringify(state))}catch(_){boardMessage('Не удалось сохранить копию в этом браузере. Скачайте текущий вид PNG.')}}
     function save(){if(shared.role==='student'||applyingRemote)return;clearTimeout(timer);timer=setTimeout(persistLocalBoard,140)}
     function page(){return state.pages[state.current]}
     function canWrite(){return shared.connected?!!(shared.me&&shared.control===shared.me.participantId):shared.role==='teacher'}
@@ -242,6 +244,7 @@
     const WINDOWS_RESERVED_STEMS=new Set(['CON','PRN','AUX','NUL',...Array.from({length:9},(_value,index)=>`COM${index+1}`),...Array.from({length:9},(_value,index)=>`LPT${index+1}`)]);
     const trainerRegistry={status:'idle',server:'',digest:'',byId:new Map(),byFile:new Map(),request:null,controller:null,requestGeneration:0,errorCode:'',lastValid:null};
     const mirrorStatuses=Object.freeze({
+      solo:{text:'Для работы вдвоём откройте «Участники»',kind:'',retry:false},
       pending:{text:'Подключаем синхронизацию…',kind:'wait',retry:false},
       connected:{text:'Синхронизация включена',kind:'ok',retry:false},
       'room-unavailable':{text:'Синхронизация отключена',kind:'bad',retry:false},
@@ -254,7 +257,11 @@
 
     function isPlainObject(value){return !!value&&typeof value==='object'&&!Array.isArray(value)&&Object.getPrototypeOf(value)===Object.prototype}
     function registryFailure(code,retryable=false){const error=new Error(code);error.code=code;error.retryable=retryable;return error}
-    function setMirrorStatus(code){if(shared.roomError)code='room-unavailable';else if(code==='connected'&&(!shared.connected||!roomStateReceived))code='pending';const item=mirrorStatuses[code]||mirrorStatuses['registry-unavailable'];if(!mirrorStatus)return;mirrorStatus.textContent=item.text;mirrorStatus.className=`status ${item.kind}`.trim();mirrorStatus.dataset.mirrorStatus=code;retryTrainerRegistry?.classList.toggle('hidden',!item.retry)}
+    function setMirrorStatus(code){
+      if(shared.roomError)code='room-unavailable';
+      else if(!shared.roomId&&shared.role==='teacher'&&['pending','bridge-timeout','connected'].includes(code))code='solo';
+      else if(code==='connected'&&(!shared.connected||!roomStateReceived))code='pending';
+      const item=mirrorStatuses[code]||mirrorStatuses['registry-unavailable'];if(!mirrorStatus)return;mirrorStatus.textContent=item.text;mirrorStatus.className=`status ${item.kind}`.trim();mirrorStatus.dataset.mirrorStatus=code;retryTrainerRegistry?.classList.toggle('hidden',!item.retry)}
     function unsafePathText(value){return /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069\u2044\u2215\u29f8\uff0f\uff3c]/u.test(value)}
     function canonicalRegistryFile(value){if(typeof value!=='string'||!value||value!==value.trim()||value.length>TRAINER_PATH_LIMITS.maxTotalLength||!value.startsWith('trainers/')||value.includes('\\')||value.includes('%')||value.includes('?')||value.includes('#')||unsafePathText(value))return'';const components=value.slice('trainers/'.length).split('/');if(!components.length||components.length>TRAINER_PATH_LIMITS.maxComponents)return'';for(const component of components){if(!component||component.length>TRAINER_PATH_LIMITS.maxComponentLength||component==='.'||component==='..'||component.endsWith('.')||!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(component)||WINDOWS_RESERVED_STEMS.has(component.split('.',1)[0].toUpperCase()))return''}return components.at(-1).endsWith('.html')?value:''}
     function rawPathPart(value){if(value.startsWith('//'))return null;const absolute=value.match(/^([a-z][a-z\d+.-]*):\/\//i);if(absolute){if(!/^https?$/i.test(absolute[1]))return null;const authorityStart=absolute[0].length,offset=value.slice(authorityStart).search(/[\/?#]/);if(offset<0)return'/';const index=authorityStart+offset;return value[index]==='/'?value.slice(index).split(/[?#]/,1)[0]:'/'}if(/^[a-z][a-z\d+.-]*:/i.test(value))return null;return value.split(/[?#]/,1)[0]}

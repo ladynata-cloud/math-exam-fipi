@@ -182,6 +182,31 @@ const SECTIONS_REGISTRY = {
   trainers: [{ ...REGISTRY.trainers[0], trainerId: 'sections-from-zero', file: SECTIONS_WRAPPER.slice(1) }]
 };
 
+test('an article demonstration starts on a fresh sheet and keeps the regular board intact', async () => {
+  const trainerUrl = SECTIONS_WRAPPER + '#starter-18';
+  const f = await createBoardFixture({
+    role: 'teacher', trainer: 'sections-from-zero', trainerUrl, registry: SECTIONS_REGISTRY,
+    querySuffix: new URLSearchParams({ trainer: trainerUrl, demo: '1' }).toString()
+  });
+  try {
+    const key = 'mathexam.trainerBoard.v1';
+    const regular = f.w.localStorage.getItem(key);
+    assert.equal(JSON.parse(regular).pages[0].id, 'fixture-page');
+    assert.notEqual(f.snapshot().pages[0].id, 'fixture-page');
+    assert.equal(f.snapshot().trainerUrl, trainerUrl);
+    f.frame.onload();
+    f.sendFrame('mathexam:trainer-ready');
+    f.timers.get(f.evaluate('bridgeHydrationTimer')).callback();
+    assert.equal(f.status(), 'solo');
+    f.w.document.getElementById('addSheet').click();
+    f.w.dispatchEvent(new f.w.Event('beforeunload'));
+    assert.equal(JSON.parse(f.w.sessionStorage.getItem(key)).pages.length, 2);
+    assert.equal(f.w.localStorage.getItem(key), regular);
+    await f.connect();
+    assert.equal(f.w.localStorage.getItem(key), regular);
+  } finally { f.close(); }
+});
+
 test('restored sections room retains its selected card and hydrates when child ready precedes room state', async () => {
   const trainerUrl = SECTIONS_WRAPPER + '?seed=fixture-room#starter-18';
   const querySuffix = new URLSearchParams({ trainer: SECTIONS_WRAPPER, layout: 'trainer', note: 'keep + &' }) + '#host-review';

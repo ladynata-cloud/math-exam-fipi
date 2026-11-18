@@ -590,7 +590,13 @@
     footer.append(para(board ? 'Общий разбор не меняет личный прогресс. При выборе другой карточки начинается новое построение. Ответы на доказательства проверяются с преподавателем.' : 'Прогресс и черновик сохраняются в этом браузере. Поворот модели меняет вид, но не геометрию. Ответы на доказательства проверяются с преподавателем.'));
     if (!board && location.protocol !== 'file:') footer.append(el('a', { href: '/stereo-course/sections/download/Sections_From_Zero.html', download: 'Sections_From_Zero.html' }, 'Скачать весь курс для работы без интернета'));
     live = el('div', { class: 'sr-only', 'aria-live': 'polite', 'aria-atomic': 'true' });
-    host.replaceChildren(header, rule, layout, footer, live);
+    if (board) {
+      header.classList.add('sr-only');
+      layout.append(catalog);
+      host.replaceChildren(header, layout, rule, footer, live);
+    } else {
+      host.replaceChildren(header, rule, layout, footer, live);
+    }
     renderCatalog(); renderLesson();
   }
 
