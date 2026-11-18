@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "665534b33e019d486913534a7668f1a8a23ef7ce",
+  "baseSha": "2f72268fd5cc8232e6773422f1ab47d52df6c595",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2603,8 +2603,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/index.html": {
-      "beforeSha256": "5249a4749f195b1e177917a7931ebd2e133a80b72b8dc10a02295fc60ed7843d",
-      "afterSha256": "4fb0c25ea983425f6929de815a89fffd0d5e9bf33d14acb697ff600d593e40b6",
+      "beforeSha256": "39fd55e265834cb0e7d113391408836e881c7e2c25fef718d7b4644dc3fae257",
+      "afterSha256": "38958c07bf86ff5f391f62b8cc5c9578e6f4247196352f16062822adf725d5f4",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division.html": {
@@ -2698,8 +2698,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/course-estimate.html": {
-      "beforeSha256": "6200a99a0f230dd9632cc55ab125b72b55cbb7606052d4147149669350e490a7",
-      "afterSha256": "d717c38d8449c3b830218c236d3f956f272b0532780a93c516e0bd42a25be6d5",
+      "beforeSha256": "8185dfc2c62a450bc8c8af9febb3e3ae203ba2cbfbba6679137b18ae41e64345",
+      "afterSha256": "9be1552df5130c974289c4168ffa73fb437cdabe6eb82e02d70cc9038bb4c422",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/course-first-part.html": {
@@ -2798,8 +2798,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html": {
-      "beforeSha256": "c3d9579a46c0a56872fa846d48097c6240f70f6b70cfa2f47ed695f07d58fc89",
-      "afterSha256": "d508d3b13a1d3f62bd2a99b6a476f35b090452517591d680aa178c7c6702a3b2",
+      "beforeSha256": "01685c0be741a9e8002822cd04ed2261456a17e19b856797ab0686d09031511e",
+      "afterSha256": "5c75dd1ab4c2623d042b5dbabc1c4cb565bbb1a83e06a6e2938af394145a3365",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html": {
@@ -2858,8 +2858,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/quotient-estimate.html": {
-      "beforeSha256": "f225704113f0afa27f43f188f92016989a515e78543442b3edd681b851150521",
-      "afterSha256": "5b1ae5023c8fa1b81bee1ddd260b0468b91dc3bafffe3cee5f1d9c428aebf694",
+      "beforeSha256": "0fa9c2dfa3e4168de353cb47020bce5cf2a1752837b33cc49be9adb0ce1457c8",
+      "afterSha256": "4433caf68fb7378b8e0245ddd44819866b40a81f58b833a78ffc8325d56dbaa9",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/tabular-division.html": {
@@ -5627,6 +5627,18 @@
     {
       "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
       "sourceBaseSha": "77bd1dec2e9718c8a621af27837aca92da737e58",
+      "task": "docs/tasks/ROUNDING_QUOTIENT_DIGIT_20261118.md",
+      "changedPaths": [
+        "trainers/oge-basics/index.html",
+        "trainers/oge-basics/multiplication-division/course-estimate.html",
+        "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+        "trainers/oge-basics/multiplication-division/quotient-estimate.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "665534b33e019d486913534a7668f1a8a23ef7ce",
+      "sourceBaseSha": "2f72268fd5cc8232e6773422f1ab47d52df6c595",
       "task": "docs/tasks/ROUNDING_QUOTIENT_DIGIT_20261118.md",
       "changedPaths": [
         "trainers/oge-basics/index.html",
