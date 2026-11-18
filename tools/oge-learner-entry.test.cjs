@@ -22,7 +22,11 @@ taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348
 // Prior bracket source: 88d8eb2cd8fdefa95b0aae7d6954a60c914e118d;
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
-const task9ReviewedScript='a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02';
+const reviewedSingleScripts={
+  'trainers/oge-task9-equations.html':'a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02',
+  // The labelled bisector, median and equal halves in d26f2e8. Original controls stay pinned.
+  'trainers/oge-task25-geometry.html':'fe246b1d188a53ff3e88245a483edc3cb7321bac034fa9068d8dd2d7cad8e133'
+};
 // Reviewed results-to-practice UI. The model is still compared to its baseline.
 const analogue='trainers/oge-2027-analogue-1.html';
 const analogueReviewedApp='593d785fa27ad62d4b073066e414e029fbe283437f47b8e64f59cb1e08830b01';
@@ -84,9 +88,9 @@ for(const p of routes.pages){
     const index=actualScripts.indexOf(matches[0]);
     actualScripts[index]=restoreRootTeaching(restoreRootAcceptance(matches[0],'learning'));
   }
-  if(p==='trainers/oge-task9-equations.html'){
+  if(Object.hasOwn(reviewedSingleScripts,p)){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
-    assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),task9ReviewedScript,p+' exact reviewed inline engine');
+    assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),reviewedSingleScripts[p],p+' exact reviewed inline engine');
   }else if(p===analogue){
     assert.equal(actualScripts.length,2,p+' one model and one app');
     assert.equal(actualScripts[0],scripts(baseline)[0],p+' task data and grading preserved');
