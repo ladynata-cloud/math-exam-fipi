@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 284" role="img" aria-labelledby="title desc">
+<title id="title">Два угла, смежные с одним и тем же углом</title>
+<desc id="desc">Прямые AC и BD пересекаются в O. Дугой и буквой x обозначен только угол BOC.</desc>
+<style>text{font:21px Arial,sans-serif;fill:#213f49}.pt{font:italic 24px Georgia,serif}.side{fill:none;stroke:#213f49;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.aux{fill:none;stroke:#a44d38;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.known{fill:none;stroke:#16695e;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.guide{fill:none;stroke:#637b7d;stroke-width:2;stroke-dasharray:7 6}.small{font:18px Arial,sans-serif}</style>
+<rect width="510" height="284" rx="18" fill="#f5f6ef"/>
+<path class="side" d="M44 169 H461 M151 269 L371 49"/>
+<path class="known" d="M282.82 137.18 A45 45 0 0 1 296 169"/>
+<text x="303" y="148" class="pt">x</text>
+<circle cx="251" cy="169" r="4" fill="#213f49"/>
+<text class="pt" x="253" y="197">O</text>
+<text class="pt" x="46" y="158">A</text><text class="pt" x="448" y="158">C</text>
+<text class="pt" x="374" y="64">B</text><text class="pt" x="130" y="259">D</text>
+</svg>
