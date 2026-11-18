@@ -21,9 +21,10 @@ function withoutReturnShell(html) {
   return html.replace(head, '').replace(bar, '');
 }
 function currentPage(file){
- const current=fs.readFileSync(path.join(root,file),'utf8');
- const publicHtml=restorePublicNavigator(file,restoreTyreHints(file,current)).toString('utf8');
- let html=restoreVideoModels(file,withoutReturnShell(restoreTrainerDownload(file,publicHtml)));
+ const current=fs.readFileSync(path.join(root,file));
+ const publicHtml=restorePublicNavigator(file,current).toString('utf8');
+ const teaching=restoreTyreHints(file,publicHtml);
+ let html=restoreVideoModels(file,withoutReturnShell(restoreTrainerDownload(file,teaching)));
  if(file==='trainers/oge-task6-fractions.html'){
   html=restoreFractionMultiplicationStep(html);
   const replacement='<main class="wrap">\n\n<header>';
