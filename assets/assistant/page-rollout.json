@@ -483,8 +483,9 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angles.html": {
-      "beforeSha256": "ffef7a295b9e4540e5fa0a43b7b2f8895014dd65a383610551bea227d86519be",
-      "afterSha256": "ee7ab03fd7a96762ae7f844468e68a3f0ce75004a8350387a91f3663bc0cbbb3",
+      "beforeSha256": "c9eacac6c937c2f9bcb95214be00c6e72714186a519af3c6c5e1666194d510cc",
+      "afterSha256": "20b16f9dd23622837bdd45fea24800ddf27e88edaf15ae8dc6807663844bd22d",
+      "sourceSha": "6a14fb281a9bf062742b68c15f8b40c0dbbad879",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-basics.html": {
