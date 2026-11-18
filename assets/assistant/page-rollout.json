@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "60de461544aa5f998ddb2266a8446bdda38239ca",
+  "baseSha": "72539d8c7a4abd104c9d9a17f2a3dd3aea74ae64",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -5578,6 +5578,13 @@
         "trainers/oge-task6-fractions.html",
         "trainers/oge-task7-number-line.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "60de461544aa5f998ddb2266a8446bdda38239ca",
+      "sourceBaseSha": "72539d8c7a4abd104c9d9a17f2a3dd3aea74ae64",
+      "task": "docs/tasks/FOUNDATION_PRACTICE_AUDIT_20261118.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

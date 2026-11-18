@@ -269,6 +269,44 @@ test('DOM: native one- and two-field routes reject zero denominators on click an
   }
 });
 
+test('seeded book mathematics stays unchanged when the source adds its prerequisite link', async () => {
+  const {JSDOM, VirtualConsole} = require('jsdom');
+  const {createHash} = require('node:crypto');
+  const fixture = require('./fixtures/oge-book-exam-math.json').fixtures['68'];
+  const {sourceVariant, ...frozen} = fixture;
+  const label = 'Повторить сравнение чисел на прямой и противоположные числа ↗';
+  const anchor = '← Курс ОГЭ ОГЭ №7 · Координатная прямая ';
+  assert.deepEqual(sourceVariant, {...frozen,
+    visibleText: frozen.visibleText.replace(anchor, anchor + label + ' ')},
+  'only the source navigation caption changes; frozen context, prompts, geometry and answers remain sealed');
+  const route = '/trainers/oge-task7-number-line.html';
+  let seed = createHash('sha256').update('oge-book-edition-20261031-v1' + route).digest().readUInt32LE(0) || 1;
+  const dom = new JSDOM(source, {
+    url: 'https://mathexam.test' + route, runScripts: 'dangerously',
+    pretendToBeVisual: true, virtualConsole: new VirtualConsole(),
+    beforeParse(w) {
+      w.scrollTo = () => {};
+      w.HTMLElement.prototype.scrollIntoView = () => {};
+      w.TextEncoder = TextEncoder;
+      w.Math.random = () => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return (seed >>> 0) / 4294967296; };
+    }
+  });
+  try {
+    await new Promise(resolve => dom.window.addEventListener('load', resolve, {once: true}));
+    const d = dom.window.document;
+    assert.equal(d.querySelector('header h1 + p a').textContent, label);
+    assert.equal(d.querySelector('header h1 + p a').getAttribute('href'), './oge-basics/negative-number-line.html');
+    // Use the displayed coordinates, never BANK keys or the production checker.
+    const labels = Object.fromEntries([...d.querySelectorAll('#marTask svg text')]
+      .filter(e => ['0', '1', 'a'].includes(e.textContent))
+      .map(e => [e.textContent, Number(e.getAttribute('x'))]));
+    const a = (labels.a - labels['0']) / (labels['1'] - labels['0']);
+    assert(Math.abs(a + 4.5) < 1e-8);
+    assert.deepEqual([a + 4 > 0, a + 5 < 0, 2 - a > 0, 3 - a < 0], [false, false, true, false]);
+    assert.equal(sourceVariant.oracles[0].expected, 3);
+  } finally { dom.window.close(); }
+});
+
 test('the exact input receipt preserves the full pinned source and rejects every other change', () => {
   const {createHash} = require('node:crypto');
   const {restoreOge7Input, BEFORE, AFTER} = require('./oge7-number-input-preservation.cjs');
