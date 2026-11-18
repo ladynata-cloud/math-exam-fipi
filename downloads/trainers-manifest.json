@@ -1075,7 +1075,8 @@
         "/trainers/oge-video-models.css",
         "/trainers/oge-video-graphs.js",
         "/trainers/oge-video-geometry.js",
-        "/trainers/oge-video-models.js"
+        "/trainers/oge-video-models.js",
+        "/trainers/oge-task15-model.js"
       ],
       "offlineOmitAssets": [
         "/trainers/board-bridge.js",

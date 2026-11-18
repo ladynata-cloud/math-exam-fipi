@@ -45,7 +45,7 @@ async function roundHintRegression(){
  assert.deepEqual(Array.from(l.taskFirst.stepAnswers),['5']);assert(d.querySelector('#taskHelp').open);assert(d.querySelector('#taskSteps').open);assertCurrentHint(w,d,t,1);
  submit(w,d,'stepAnswer',4);assert.equal(l.step,2);assertCurrentHint(w,d,t,2);
  submit(w,d,'stepAnswer',6);assert.equal(l.step,3);assert.equal(l.guided,1);assert.match(d.querySelector('#taskStepsBody').textContent,/Разбор завершён/);assert.match(d.querySelector('#taskHint').textContent,/Все шаги пройдены/);assert.equal(d.querySelector('#answer').value,'7/');
- submit(w,d,'answer',6);assert.equal(l.independent,0);assert.equal(l.checks.at(-1).independent,false);assert.equal(d.querySelector('#new').textContent,'Ещё задача этого типа');
+ submit(w,d,'answer',6);assert.equal(l.independent,0);assert.equal(l.checks.at(-1).independent,false);assert.equal(d.querySelector('#new').textContent,'Решить похожую без подсказки');
  d.querySelector('#new').click();await tick();assert.notEqual(w.PathData.task('round',l.seed).q,t.q);assert.equal(l.step,0);assert.equal(l.help,false);assert.equal(l.taskFirst.stepDraft,'');assert.equal(d.querySelector('#answer').value,'');assert.equal(d.querySelector('#stepAnswer').value,'');assert(!d.querySelector('#taskHelp').open);assert(!d.querySelector('#taskSteps').open);
  submit(w,d,'answer',w.PathData.task('round',l.seed).answer);assert.equal(l.independent,1);assert(w.PathCourse.valid(w.PathCourse.state()));assert.equal(w.localStorage.getItem('legacy-sentinel'),'unchanged');w.close();
 }

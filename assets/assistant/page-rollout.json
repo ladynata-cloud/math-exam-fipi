@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "72539d8c7a4abd104c9d9a17f2a3dd3aea74ae64",
+  "baseSha": "80ffbdb4ab91806e51f99b674158dab1c1c4c4ad",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "d0bf0ba2c340063739b543117fb49806b71212a35fb98ad7a4b19f6ebe5f48af",
-      "afterSha256": "412ba40631e79e4c31ac1746d73f0ec63a84126bc566987bdde128e30def4bf5",
+      "beforeSha256": "ae9fde7f43755b99f97f6c3ee0abec0861065a3f73e4b1431a94e1ceaf4866af",
+      "afterSha256": "543d0dc74340393f074f30e6d071d8fba8f1b398e7a4ae97b54863d4f3928874",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "e651f469de1c3bc3f05babce414b99c4e869f3059eca8dceea1f4d5767ad718a",
-      "afterSha256": "441d4ae1d3432458d093e0b52b9b9d1c27b85feb4b66c78165edafd2c2f9ac99",
+      "beforeSha256": "4f1763bf539f01aea1f3a9ebe8949bf59501a04d42a7c5ebc1cf63b0c190fffd",
+      "afterSha256": "aef95ce9b4fc6c2a56098e03790b72912504e4a84dc77af3879cff30e1e5ee0a",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -2968,8 +2968,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
-      "beforeSha256": "ee9e122d03c3335f3105f73683987dbaee58e8c7b24acb745fa90a5e709ab035",
-      "afterSha256": "1cae3382357173dc670624d24cfa3429136479693c80ace776ea669c59cedbe5",
+      "beforeSha256": "c2c9bb9adfea61847635f30f19a311fff2247dcad83f85581c2bf3ed2fd09e13",
+      "afterSha256": "489e1e06c9f63ad8c8af42e6a790b0377c282605629e0693110a3cdaec4df9e7",
       "placement": "before-head-close"
     },
     "trainers/oge-task16-circle.html": {
@@ -5538,6 +5538,17 @@
         "articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/index.html",
         "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html",
         "articles/stroynost-kursa-geometrii/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "60de461544aa5f998ddb2266a8446bdda38239ca",
+      "sourceBaseSha": "80ffbdb4ab91806e51f99b674158dab1c1c4c4ad",
+      "task": "docs/tasks/STUDENT_NEXT_STEP_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html",
+        "trainers/oge-task15-triangles.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
