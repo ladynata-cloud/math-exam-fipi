@@ -79,7 +79,7 @@ async function testTargetedRemediation(w,d){
   ['practice-inverse-formula','Сложи основания'],
   ['practice-probability-draw','зелёного жетона'],
   ['practice-probability-opposite','неисправных насосов'],
-  ['practice-right-ratio','гипотенуз'],
+  ['practice-right-ratio','Найди сторону напротив прямого угла C. Введи её длину.'],
   ['practice-quadratic','Подбери два множителя'],
   ['practice-log-equation','По определению логарифма']
  ]){
