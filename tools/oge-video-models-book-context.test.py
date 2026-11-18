@@ -266,6 +266,12 @@ class ContextTests(unittest.TestCase):
     def test_task19_seeded_source_case_is_independent_and_keeps_every_frozen_fixture_exact(self):
         before = copy.deepcopy(self.fixtures)
         source = before['71'].pop('sourceVariant')
+        # Later published main added only source variants for the labelled №25
+        # diagram (#669) and prerequisite link in №7 (#663). Keep both exact
+        # before comparing the complete original canonical map below.
+        published_source_variants = {'66': '34bedd7ca9b4595316ffc17666627254283778825fd30116c90b0e17ccc2695b', '68': '1b21afe34ff4f66eb82724171bc2455601b5da051c3248d363de6b849e4c72ab'}
+        for key, digest in published_source_variants.items():
+            self.assertEqual(sha(math.stable(before[key].pop('sourceVariant')).encode()), digest)
         # Entire canonical fixture map at 403eba9d. A shallow CI checkout does
         # not need that historical Git object to enforce the immutable pin.
         self.assertEqual(sha(math.stable(before).encode()),

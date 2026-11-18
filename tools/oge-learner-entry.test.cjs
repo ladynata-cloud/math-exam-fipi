@@ -50,8 +50,8 @@ for(const p of geometryPaths){
 // Controls retain the baseline; the complete inline engine remains pinned.
 const reviewedSingleScripts={
   'trainers/oge-task9-equations.html':'a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02',
-  // The labelled bisector, median and equal halves in d26f2e8. Original controls stay pinned.
-  'trainers/oge-task25-geometry.html':'fe246b1d188a53ff3e88245a483edc3cb7321bac034fa9068d8dd2d7cad8e133'
+  // The reviewed source-alignment tasks plus labelled bisector/median from main. Original controls stay pinned.
+  'trainers/oge-task25-geometry.html':'da54efa4f52baeddfcc129d183fd52e35dc132cbfdf2f93eef063d0999d9e92b'
 };
 const geometryAlignment=require('./fixtures/oge-source-alignment-geometry-bytes.json');
 // Reviewed results-to-practice UI. The model is still compared to its baseline.

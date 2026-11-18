@@ -37,7 +37,16 @@ test('each source delta restores the complete predecessor and rejects missing or
   for (const row of tasks) {
     const source = fs.readFileSync(row.trainer, 'utf8');
     const original = execFileSync('git', ['show', `${require('../trainers/oge-sources/coverage-06-09.json').base}:${row.trainer}`], {encoding:'utf8'});
-    assert.equal(restoreAlignment(row.trainer, source), original);
+    let restored = restoreAlignment(row.trainer, source);
+    if (row.number === 6) restored = require('./oge-fractions-return-preservation.cjs').restoreFractionsReturn(restored);
+    if (row.number === 7) {
+      const heading = '  <h1>Задание 7 ОГЭ. Координатная прямая</h1>\n';
+      const support = '  <p><a href="./oge-basics/negative-number-line.html" target="_blank" rel="noopener">Повторить сравнение чисел на прямой и противоположные числа ↗</a></p>\n';
+      assert.equal(restored.split(support).length, 2, 'one exact published prerequisite link');
+      assert(restored.includes(heading + support), 'support stays directly after the heading');
+      restored = restored.replace(heading + support, heading);
+    }
+    assert.equal(restored, original);
     for (const {after} of edits[row.trainer]) {
       assert.throws(() => restoreAlignment(row.trainer, source.replace(after, '')), /fragment/);
       assert.throws(() => restoreAlignment(row.trainer, source + after), /fragment/);
