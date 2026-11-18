@@ -89,11 +89,14 @@ class GeneratorTests(unittest.TestCase):
         page = output[edition.prefix + entry].decode()
         bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
         self.assertEqual(page.count(bootstrap), 1)
+        # The selected-topic return in #642 versioned the view script alone.
+        source_page = (ROOT / entry).read_text()
         for asset in reviewed:
-            # PR #642 revised only the map view's cache key.
             version = '20261117' if asset == 'oge/learning-map-view.js' else '20261109'
-            frozen = '/' + edition.prefix + asset + '?v=' + version
-            self.assertEqual(page.count(frozen), 1)
+            ref = asset + '?v=' + version
+            self.assertEqual(source_page.count('"/' + ref + '"'), 1, asset)
+            frozen = '/' + edition.prefix + ref
+            self.assertEqual(page.count('"' + frozen + '"'), 1, asset)
             self.assertNotIn('"/' + asset, page)
             self.assertLess(page.index(bootstrap), page.index(frozen))
         # The map reads localStorage only after the fixed-edition bootstrap has
@@ -161,6 +164,8 @@ class GeneratorTests(unittest.TestCase):
                      '<script defer src="oge-video-graphs.js"></script>\n'
                      '<script defer src="oge-video-geometry.js"></script>\n'
                      f'<script defer src="oge-video-models.js" data-oge-video-task="{number}"></script>\n')
+            if number == 15:
+                block += '<script defer src="oge-task15-model.js"></script>\n'
             raw = (ROOT / entry).read_bytes()
             self.assertEqual(raw.count(block.encode()), 1)
             adaptation = (b'<link rel="stylesheet" href="/assets/download-panel.css">\n'
@@ -329,6 +334,19 @@ class GeneratorTests(unittest.TestCase):
         for name in excluded:
             self.assertNotIn(edition.prefix + name, output)
         self.assertNotIn(b"skill-support", output[edition.prefix + source])
+
+    def test_public_fraction_return_is_excluded_from_the_fixed_candidate(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        route = "trainers/oge-task6-fractions.html"
+        asset = "assets/oge-fractions-return.js"
+        original = (ROOT / route).read_bytes()
+        loader = b'<script defer src="/assets/oge-fractions-return.js?v=20261118-drafts"></script>'
+        self.assertEqual(original.count(loader), 1)
+        output, manifest = builder.build(edition)
+        self.assertNotIn(edition.prefix + asset, output)
+        self.assertNotIn(asset, {record["path"] for record in manifest["sourceFiles"]})
+        self.assertFalse(any(asset in record["dependencies"] for record in manifest["sourceFiles"]))
+        self.assertNotIn(asset.encode(), output[edition.prefix + route])
 
     def test_no_implicit_write_base(self):
         with self.assertRaisesRegex(ValueError, "explicit full --base"):

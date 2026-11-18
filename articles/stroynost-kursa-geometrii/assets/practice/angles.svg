@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="180" viewBox="0 0 340 180" role="img" aria-labelledby="title">
+<title id="title">Прямые AC и BD пересекаются в точке O</title>
+<style>
+ .edge,.aux,.dash,.mark {fill:none;stroke:#243b50;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+ .aux,.dash {stroke:#216282} .dash {stroke-dasharray:5 5} .mark {stroke:#a33a35}
+ circle {fill:#243b50} text {font:italic 18px Georgia,serif; fill:#122f42}
+</style>
+<polyline class="edge" points="57,42 283,138"/>
+<polyline class="edge" points="97,147 243,33"/>
+<circle cx="57" cy="42" r="3"/><text x="42" y="38">A</text>
+<circle cx="97" cy="147" r="3"/><text x="84" y="166">B</text>
+<circle cx="283" cy="138" r="3"/><text x="290" y="147">C</text>
+<circle cx="243" cy="33" r="3"/><text x="246" y="27">D</text>
+<circle cx="170" cy="90" r="3"/><text x="163" y="113">O</text>
+</svg>

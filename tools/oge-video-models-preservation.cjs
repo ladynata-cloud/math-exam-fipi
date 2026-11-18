@@ -18,22 +18,25 @@ const entries = Object.freeze({
   25: 'trainers/oge-task25-geometry.html'
 });
 const assets = Object.freeze(['trainers/oge-video-models.css', 'trainers/oge-video-graphs.js', 'trainers/oge-video-geometry.js', 'trainers/oge-video-models.js']);
+const triangleModel = '<script defer src="oge-task15-model.js"></script>\n';
 function snippet(number) {
   assert(Object.hasOwn(entries, number), 'Unknown video-model task');
   return '<!-- OGE video-model investigations: standalone practice -->\n'
     + '<link rel="stylesheet" href="oge-video-models.css">\n'
     + '<script defer src="oge-video-graphs.js"></script>\n'
     + '<script defer src="oge-video-geometry.js"></script>\n'
-    + '<script defer src="oge-video-models.js" data-oge-video-task="' + number + '"></script>\n';
+    + '<script defer src="oge-video-models.js" data-oge-video-task="' + number + '"></script>\n'
+    + (Number(number) === 15 ? triangleModel : '');
 }
 function restoreVideoModels(file, source) {
   const original = String(source);
   const row = Object.entries(entries).find(([, name]) => name === file);
   if (!row) return original;
-  const marker = /OGE video-model investigations|oge-video-(?:models|graphs|geometry)/;
+  const marker = /OGE video-model investigations|oge-video-(?:models|graphs|geometry)|oge-task15-model\.js/;
   if (!marker.test(original)) return original;
   const teaching = restoreTrainerDownload(file, original);
-  const include = snippet(row[0]);
+  const block = snippet(row[0]);
+  const include = Number(row[0]) === 15 && !teaching.includes('oge-task15-model.js') ? block.replace(triangleModel, '') : block;
   assert.equal(teaching.split(include).length, 2, file + ': one exact reviewed video-model include block');
   assert(teaching.includes(include + '</head>'), file + ': video models stay at the reviewed head boundary');
   const restored = teaching.replace(include, '');

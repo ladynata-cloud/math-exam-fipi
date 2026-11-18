@@ -31,6 +31,9 @@ function mount(el,spec,onChange){
  });
  el.querySelector('.point-select').addEventListener('change',e=>{selectedPoint=e.target.value;syncFields();draw();});
  function text(p,t){ctx.font='600 16px system-ui';ctx.lineWidth=5;ctx.strokeStyle='#fffdf7';ctx.strokeText(t,p.x,p.y);ctx.fillStyle='#17233c';ctx.fillText(t,p.x,p.y);}
+ function labelAnchor(p){
+  return {x:Math.max(8,Math.min(603,p.x+10)),y:Math.max(19,Math.min(405,p.y-10))};
+ }
  // A square belongs to a named construction or given figure. Its sides
  // follow the current rays after a point is dragged or the view is fitted.
  function drawRightAngles() {
@@ -93,7 +96,17 @@ function mount(el,spec,onChange){
   if(a&&b){report.push('AB = '+(G.dist(a,b)/50).toFixed(2));}
   if(a&&b&&c&&!spec.measure){const ang=G.angle(a,c,b);report.push('∠ACB = '+(ang===null?'не определён':ang.toFixed(1)+'°'));report.push('S△ABC = '+(Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))/5000).toFixed(2));if(ang!==null&&!rightAngles.has('C A B')){let s=Math.atan2(a.y-c.y,a.x-c.x),t=Math.atan2(b.y-c.y,b.x-c.x),delta=(t-s+Math.PI*3)%(Math.PI*2)-Math.PI;ctx.strokeStyle='#bd6b27';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,Math.min(29,G.dist(a,c)/3,G.dist(b,c)/3),s,s+delta,delta<0);ctx.stroke();}}
   ctx.restore();
-  for(const p of board.points){if(p.valid===false)continue;ctx.beginPath();ctx.arc(p.x,p.y,selectedPoint===p.id?7:5,0,7);ctx.fillStyle=movable(p)?'#2d70b3':'#118469';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#fff';ctx.stroke();text({x:Math.max(8,Math.min(603,p.x+10)),y:Math.max(19,Math.min(405,p.y-10))},p.id);}
+  for(const p of board.points){if(p.valid===false)continue;ctx.beginPath();ctx.arc(p.x,p.y,selectedPoint===p.id?7:5,0,7);ctx.fillStyle=movable(p)?'#2d70b3':'#118469';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#fff';ctx.stroke();const pos=labelAnchor(p);
+   const partnerId=spec.scene?.labelPartners?.[p.id];
+   const partner=partnerId&&board.point(partnerId);
+   if(partner){
+    const anchor=labelAnchor(partner);
+    if(Math.abs(pos.x-anchor.x)<18&&Math.abs(pos.y-anchor.y)<18){
+     const below=Math.min(405,Math.max(anchor.y+22,p.y+22,partner.y+22));
+     pos.y=below-anchor.y>=20?below:anchor.y-22;
+    }
+   }
+   text(pos,p.id);}
   if(spec.measure)report=spec.measure(board);
   readout.textContent=report.join(' · ')+(board.points.some(p=>p.valid===false)?' · Некоторые построения сейчас не существуют.':'');
  }

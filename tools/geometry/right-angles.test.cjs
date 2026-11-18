@@ -77,3 +77,55 @@ assert.deepEqual(markers(), [], 'a named point alone does not draw a ray');
 undrawn.destroy();
 win.close();
 console.log('GEOMETRY_RIGHT_ANGLES_OK', visited.size, 'reviewed cards,', stages, 'marked views,', planarMarks, 'planar marks, rotation and proof timing');
+
+// Exercise the real canvas consumers after composing the general standard with
+// Pogorelov's topic guides: inferred-looking angles remain unmarked, constructed
+// perpendiculars survive movement and undo, and the guide's label spacing stays.
+for (const course of ['geometry-course', 'geometry-merzlyak', 'geometry-pogorelov']) {
+  const d = new JSDOM('<main></main>', { runScripts: 'outside-only' });
+  const w = d.window, strokes = [], labels = [];
+  let current = [], style = '';
+  const ctx = new Proxy({}, {
+    get: (_, method) => (...args) => {
+      if (method === 'beginPath') current = [];
+      if (method === 'moveTo' || method === 'lineTo') current.push(args);
+      if (method === 'stroke') strokes.push({ style, points: current.map(p => [...p]) });
+      if (method === 'fillText') labels.push(args);
+    },
+    set: (_, key, value) => { if (key === 'strokeStyle') style = value; return true; }
+  });
+  w.HTMLCanvasElement.prototype.getContext = () => ctx;
+  for (const asset of ['geometry.js', 'lab.js']) w.eval(read(course + '/assets/' + asset));
+  const el = w.document.querySelector('main');
+  const scene = { type: 'triangle', points: [
+    { id: 'A', x: 140, y: 300, kind: 'free' },
+    { id: 'B', x: 500, y: 300, kind: 'free' },
+    { id: 'C', x: 140, y: 100, kind: 'free' }
+  ], objects: [['A','B'], ['B','C'], ['C','A']].map(([a,b]) => ({id:a+b,a,b,type:'line',extent:'segment'})) };
+  const lab = w.GeoLab.mount(el, { scene, figure: 'triangle', goal: 'explore' });
+  const squares = () => strokes.filter(s => s.style === '#196a56' && s.points.length === 3);
+  assert.equal(squares().length, 0, course + ': coordinates alone do not establish a right angle');
+  lab.board.make('perpendicular', ['C', 'A', 'B']);
+  strokes.length = 0; lab.redraw();
+  assert.equal(squares().length, 1, course + ': a constructed perpendicular is marked without an opt-in flag');
+  lab.board.move('B', 480, 250);
+  strokes.length = 0; lab.redraw();
+  assert.equal(squares().length, 1, course + ': movement retains the mark');
+  const [a,b,c] = squares()[0].points;
+  const u = [a[0]-b[0],a[1]-b[1]], v = [c[0]-b[0],c[1]-b[1]];
+  assert(Math.abs(u[0]*v[0]+u[1]*v[1]) < 1e-8, course + ': mark rotates with its rays');
+  strokes.length = 0; el.querySelector('[data-act="undo"]').click();
+  assert.equal(squares().length, 0, course + ': undo removes the constructed mark');
+  lab.destroy();
+  if (course === 'geometry-pogorelov') {
+    const linked = { ...scene, labelPartners: {C:'A'}, points: scene.points.map(p => ({...p})) };
+    linked.points[2].x = 141; linked.points[2].y = 301;
+    labels.length = 0;
+    const guide = w.GeoLab.mount(el, {scene: linked, figure:'triangle', goal:'explore'});
+    const A = labels.filter(p=>p[0]==='A').at(-1), C = labels.filter(p=>p[0]==='C').at(-1);
+    assert(Math.abs(A[2]-C[2]) >= 20, 'Pogorelov guide keeps linked labels separated');
+    guide.destroy();
+  }
+  w.close();
+}
+console.log('RIGHT_ANGLE_CANVAS_COMPOSITION_OK: three constructors, negative case, rotation, undo and Pogorelov labels');

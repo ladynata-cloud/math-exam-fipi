@@ -51,6 +51,15 @@ const sourcePath=(script,file)=>{
 // engine. Keep every historical dependency and reject any changed/extra tag.
 function exerciseScripts(html,file){
  html=require('./public-navigator-preservation.cjs').restorePublicNavigator(file,html).toString('utf8');
+ // Permit only the reviewed return adapter on the decimal entry. Preserve
+ // every mathematical source pin and reject altered or extra executable tags.
+ if(file===decimalEntry){
+  const tag='<script src="../../../ege-baza/return-to-course.js"></script>';
+  assert.equal(html.split(tag).length,2,file+': exactly one course return adapter');
+  assert(html.includes(tag+'</body>'),file+': return adapter follows the legacy engine');
+  assert.equal(sourcePath(scripts(tag)[0],file),'/ege-baza/return-to-course.js');
+  html=html.replace(tag,'');
+ }
  const nodes=scripts(html),navigation=nodes.filter(node=>node.attrs.includes('oge-wayfinding'));
  assert.equal(navigation.length,1,file+': exactly one reviewed public navigation script');
  const node=navigation[0];
@@ -147,6 +156,11 @@ rejects(oneDigit,'</body>','<script>window.unexpected=true;</script></body>','re
 rejects(decimalEntry,"const preparing=['shiftCount'","const preparing=['wrongPhase'",'reject unapproved normalization UI delta');
 rejects(decimalEntry,'factor=pow10(t.shift),places','factor=pow10(t.shift+1),places','reject wrong decimal hint factor');
 rejects(decimalEntry,'Math.floor(cur/d)','Math.ceil(cur/d)','reject decimal generator changes outside the approved UI delta');
+const returnTag='<script src="../../../ege-baza/return-to-course.js"></script>';
+rejects(decimalEntry,returnTag,'','reject missing course return adapter');
+rejects(decimalEntry,returnTag,returnTag+returnTag,'reject duplicate course return adapter');
+rejects(decimalEntry,returnTag,returnTag.replace('<script src=','<script async src='),'reject changed course return attributes');
+rejects(decimalEntry,returnTag,returnTag.replace('</script>','window.unexpected=true;</script>'),'reject course return inline payload');
 rejects(course,'"answer": "147"','"answer": "148"','reject changed retained course bank');
 rejects(course,'type="text/plain"','type="text/javascript"','reject reactivated legacy teaching source');
 rejects(course,'division-guided-core.js','division-lab-core.js','reject missing guided core or duplicate dependency');

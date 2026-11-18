@@ -2,10 +2,42 @@
 
 /* Construction controls and next action stay together above the drawing. */
 .lab-mission{padding:10px 14px;background:#e8f2ed;border-left:4px solid #147c78;border-radius:10px;font-weight:650;font-size:.9rem}.lab-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}.lab-primary{margin:0;flex:1}.lab-controls>[data-act=undo]{font-size:.78rem;padding:.5rem .7rem}.tool-instruction{margin:8px 0;min-height:42px}.lab-feedback:empty{display:none}.object-panel select{max-width:100%}.object-panel label{max-width:100%;min-width:0}.canvas-wrap{margin-top:8px}.extra-tools summary{font-size:.85rem}.lab-readout{overflow-wrap:anywhere}.construction-active .lesson-head{padding-bottom:8px}.construction-active .lesson-head h1{font-size:1.7rem}.construction-active #lesson>h2{font-size:1.35rem}.construction-active .canvas-wrap{max-width:640px;margin-left:auto;margin-right:auto}.construction-active #lesson{padding:18px}.construction-active #lesson>.step-label{margin:0}.construction-active .stage-nav{padding-bottom:8px}@media(max-width:480px){.lab-controls>[data-act=undo]{width:100%}.lab-mission{font-size:.83rem;padding:8px 10px}.construction-active .container{padding-top:12px}.construction-active .lesson-head h1{font-size:1.35rem}.construction-active #lesson{padding:12px}.tool-instruction{font-size:.8rem}.lab-controls button{min-height:44px}}
+.angle-figure, .angle-task-drawing {
+  position: relative;
+  max-width: 440px;
+  margin: 1rem 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #f3f6f0;
+}
+
+.angle-figure svg, .angle-task-drawing svg {
+  display: block;
+  width: 100%;
+}
+
+.angle-figure button {
+  position: absolute;
+  padding: 0;
+  width: 44px;
+  min-height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.angle-figure button:disabled,
+.angle-notation button[aria-pressed="true"]:disabled {
+  opacity: 1;
+}
+
+.angle-figure .angle-selected {
+  color: var(--teal);
+  stroke-width: 5px;
+}
 </style>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html">MathExam <span class="muted">/ Геометрия</span></a><nav class="toplinks"><a href="../index.html">Карта курса</a><a href="../teacher-atlas.html">Учителю</a><button id="export-progress">Скачать прогресс</button></nav></header><div class="container"><p id="storage-notice" class="warning" hidden role="alert"></p><div class="lesson-head"><p class="eyebrow">7 класс · глава 1</p><h1>Читаем угол и выбираем его вершину</h1><span class="pill">Двигаем → строим → объясняем</span></div><nav class="stage-nav" aria-label="Этапы урока"></nav><div class="layout"><section class="panel" id="lesson"></section><aside class="panel sidebar"><p class="eyebrow">Путь к пониманию</p><h3>Если есть пробел</h3><a href="segments.html">Прямая: что задают две точки</a><p>Открой нужную тему, затем вернись кнопкой браузера: текущий шаг сохраняется.</p><details><summary>Нужна помощь с вычислениями?</summary><p><strong>Знаки.</strong> Разность a−(−b)=a+b. Квадрат отрицательного числа положителен: (−3)²=9.</p><p><strong>Дроби.</strong> 2/3+1/4=8/12+3/12=11/12. При делении умножай на обратную дробь: (2/3):(4/5)=5/6.</p><p><strong>Пропорция.</strong> Из a/b=c/d при ненулевых b,d следует ad=bc. Сначала сопоставь одинаковые роли сторон.</p><p><strong>Корни.</strong> √(a²)=модуль a. Длина положительна. √(a+b) обычно не равен √a+√b.</p><p><strong>Формулы.</strong> (a±b)²=a²±2ab+b², a²−b²=(a−b)(a+b).</p><p><strong>Единицы.</strong> 1 м=100 см, но 1 м²=10000 см². Сначала переведи к одним единицам.</p></details><details><summary>Связь с учебником</summary><p>п. 3 «Луч», с. 9; п. 4 «Угол», с. 10</p><p>Разборы и числовые варианты авторские. Это не сборник решений всех упражнений.</p></details><a href="../legacy7.html">Ранее созданные тренажёры 7 класса</a></aside></div><footer>Авторские объяснения и задачи по темам учебника Атанасяна и др., 7–9 классы, 2023. Измерение на чертеже помогает исследовать; доказательство объясняет общий случай. Прогресс хранится в этом браузере — скачивай файл для переноса.</footer></div><script>window.COURSE_CONFIG={"unit": {"id": "angles", "points": [3, 4], "title": "Читаем угол и выбираем его вершину", "figure": "angle", "goal": "bisector", "calc": "angle", "proof": "angles", "idea": "У луча есть начало и одно направление. Угол образован двумя лучами с общим началом. В записи ∠ACB вершина C находится в середине; первую и последнюю буквы можно поменять местами.", "bridge": "Если из вершины выходит несколько лучей, запись одной буквой может стать неоднозначной. Дуга показывает, какой именно угол рассматривается.", "trap": "В записи ∠ABC вершина A.", "chapter": 1, "grade": 7, "requires": ["segments"], "source": [{"point": 3, "chapter": 1, "page": 9, "title": "Луч"}, {"point": 4, "chapter": 1, "page": 10, "title": "Угол"}], "tid": "atlas-angles"}, "proof": {"id": "angles", "title": "Биссектриса делит именно угол", "given": "Луч CM — биссектриса угла ACB, равного 70°.", "goal": "Найти угол ACM.", "steps": [{"id": "s1", "text": "∠ACM=∠MCB", "reason": "Определение биссектрисы угла.", "depends": []}, {"id": "s2", "text": "∠ACM+∠MCB=70°", "reason": "Луч CM проходит внутри данного угла.", "depends": ["s1"]}, {"id": "s3", "text": "∠ACM=35°", "reason": "Две равные части вместе составляют 70°.", "depends": ["s2"]}]}, "catalog": [{"id": "segments", "title": "Прямая: что задают две точки", "grade": 7, "chapter": 1, "points": [1, 2], "requires": []}, {"id": "angles", "title": "Читаем угол и выбираем его вершину", "grade": 7, "chapter": 1, "points": [3, 4], "requires": ["segments"]}, {"id": "equality", "title": "Совместить, сравнить, объяснить", "grade": 7, "chapter": 1, "points": [5, 6], "requires": ["segments", "angles"]}, {"id": "length", "title": "Части отрезка и единая мера", "grade": 7, "chapter": 1, "points": [7, 8], "requires": ["segments"]}, {"id": "measure-angle", "title": "Измеряем и складываем углы", "grade": 7, "chapter": 1, "points": [9, 10], "requires": ["angles"]}, {"id": "perpendicular", "title": "Смежные, вертикальные, прямые", "grade": 7, "chapter": 1, "points": [11, 12, 13], "requires": ["measure-angle"]}, {"id": "triangle-sas", "title": "Какие данные удерживают треугольник", "grade": 7, "chapter": 2, "points": [14, 15], "requires": ["equality", "angles"]}, {"id": "cevians", "title": "Три линии из вершины: не путать роли", "grade": 7, "chapter": 2, "points": [16, 17, 18], "requires": ["triangle-sas", "perpendicular"]}, {"id": "triangle-signs", "title": "Признаки равенства и соответствие вершин", "grade": 7, "chapter": 2, "points": [19, 20], "requires": ["triangle-sas"]}, {"id": "compass", "title": "Циркуль и линейка: создаём точные связи", "grade": 7, "chapter": 2, "points": [21, 22, 23], "requires": ["length", "triangle-signs"]}, {"id": "parallels", "title": "Параллельность: свойство и признак", "grade": 7, "chapter": 3, "points": [24, 25, 26, 27, 28], "requires": ["perpendicular"]}, {"id": "parallel-angles", "title": "Углы при секущей и направление лучей", "grade": 7, "chapter": 3, "points": [29, 30], "requires": ["parallels"]}, {"id": "triangle-angles", "title": "Сумма углов, большая сторона, существование", "grade": 7, "chapter": 4, "points": [31, 32, 33, 34], "requires": ["parallel-angles"]}, {"id": "right-triangle", "title": "Прямоугольный треугольник: особые связи", "grade": 7, "chapter": 4, "points": [35, 36], "requires": ["triangle-angles", "cevians"]}, {"id": "distance", "title": "Кратчайшее расстояние и три элемента", "grade": 7, "chapter": 4, "points": [37, 38], "requires": ["right-triangle"]}, {"id": "angle-locus", "title": "Почему биссектриса — место равноудалённых точек", "grade": 7, "chapter": 5, "points": [39], "requires": ["right-triangle", "cevians"]}, {"id": "perp-locus", "title": "Серединный перпендикуляр: две стороны утверждения", "grade": 7, "chapter": 5, "points": [40], "requires": ["triangle-signs", "compass"]}, {"id": "chords-tangent", "title": "Радиус, хорда и касательная", "grade": 7, "chapter": 5, "points": [41, 42], "requires": ["distance", "compass"]}, {"id": "triangle-circles", "title": "Где искать центры двух окружностей", "grade": 7, "chapter": 5, "points": [43], "requires": ["angle-locus", "perp-locus"]}, {"id": "axis", "title": "Отразить фигуру и сохранить расстояния", "grade": 7, "chapter": 5, "points": [44, 45], "requires": ["perp-locus"]}, {"id": "polygons", "title": "Многоугольник: внутренняя область и диагонали", "grade": 8, "chapter": 6, "points": [46, 47], "requires": ["triangle-angles"]}, {"id": "parallelogram", "title": "Параллелограмм: что дано и что следует", "grade": 8, "chapter": 6, "points": [48, 49], "requires": ["parallel-angles", "triangle-signs"]}, {"id": "trapezoid", "title": "Трапеция: основания и средняя линия", "grade": 8, "chapter": 6, "points": [50], "requires": ["parallelogram"]}, {"id": "rectangle", "title": "Прямоугольник и равные диагонали", "grade": 8, "chapter": 6, "points": [51], "requires": ["parallelogram"]}, {"id": "rhombus", "title": "Ромб, квадрат и иерархия фигур", "grade": 8, "chapter": 6, "points": [52], "requires": ["parallelogram", "triangle-signs"]}, {"id": "central", "title": "Центральная симметрия и середина", "grade": 8, "chapter": 6, "points": [53], "requires": ["parallelogram", "axis"]}, {"id": "area-basics", "title": "Площадь: единичный квадрат и разрезание", "grade": 8, "chapter": 7, "points": [54, 55, 56], "requires": ["length", "rectangle"]}, {"id": "area-parallelogram", "title": "Почему работает основание на высоту", "grade": 8, "chapter": 7, "points": [57], "requires": ["area-basics", "parallelogram"]}, {"id": "area-triangle", "title": "Половина параллелограмма", "grade": 8, "chapter": 7, "points": [58], "requires": ["area-parallelogram"]}, {"id": "area-trapezoid", "title": "Собираем площадь трапеции", "grade": 8, "chapter": 7, "points": [59], "requires": ["area-triangle", "trapezoid"]}, {"id": "pythagoras", "title": "Пифагор и обратная проверка", "grade": 8, "chapter": 7, "points": [60, 61], "requires": ["area-triangle", "right-triangle"]}, {"id": "heron", "title": "Три стороны дают площадь", "grade": 8, "chapter": 7, "points": [62], "requires": ["pythagoras", "area-triangle"]}, {"id": "similarity", "title": "Подобие: длины и площади меняются по-разному", "grade": 8, "chapter": 8, "points": [63, 64, 65], "requires": ["area-triangle", "triangle-signs"]}, {"id": "similarity-signs", "title": "Как доказать подобие", "grade": 8, "chapter": 8, "points": [66, 67, 68], "requires": ["similarity", "triangle-angles"]}, {"id": "midline", "title": "Средняя линия и метод параллельной", "grade": 8, "chapter": 8, "points": [69], "requires": ["similarity-signs"]}, {"id": "centers", "title": "Четыре центра: каждому своя роль", "grade": 8, "chapter": 8, "points": [70], "requires": ["midline", "cevians"]}, {"id": "projections", "title": "Высота к гипотенузе и три подобных треугольника", "grade": 8, "chapter": 8, "points": [71], "requires": ["similarity-signs", "pythagoras"]}, {"id": "similarity-measure", "title": "Дотянуться до недоступной высоты", "grade": 8, "chapter": 8, "points": [72, 73], "requires": ["similarity-signs", "distance"]}, {"id": "trig-right", "title": "Синус и косинус: сначала выбери угол", "grade": 8, "chapter": 8, "points": [74, 75], "requires": ["similarity-signs", "pythagoras"]}, {"id": "circle-position", "title": "Две окружности: когда они встретятся", "grade": 8, "chapter": 9, "points": [76, 77, 78], "requires": ["distance", "compass"]}, {"id": "inscribed", "title": "Вписанный угол видит дугу", "grade": 8, "chapter": 9, "points": [79, 80], "requires": ["triangle-angles", "compass"]}, {"id": "chord-angles", "title": "Углы и произведения отрезков", "grade": 8, "chapter": 9, "points": [81], "requires": ["inscribed", "similarity-signs"]}, {"id": "cyclic-quad", "title": "Когда у четырёхугольника есть окружность", "grade": 8, "chapter": 9, "points": [82, 83], "requires": ["inscribed", "chords-tangent"]}, {"id": "vectors", "title": "Вектор: переносим направление и длину", "grade": 9, "chapter": 10, "points": [84, 85, 86], "requires": ["axis", "parallelogram"]}, {"id": "vector-add", "title": "Маршрут векторов и его итог", "grade": 9, "chapter": 10, "points": [87, 88, 89, 90], "requires": ["vectors"]}, {"id": "vector-scale", "title": "Число меняет длину и направление вектора", "grade": 9, "chapter": 10, "points": [91, 92], "requires": ["vector-add"]}, {"id": "vector-basis", "title": "Два направления как система отсчёта", "grade": 9, "chapter": 11, "points": [93, 94], "requires": ["vector-scale"]}, {"id": "coordinates", "title": "Координаты помогают доказать геометрию", "grade": 9, "chapter": 11, "points": [95, 96], "requires": ["vector-basis", "pythagoras"]}, {"id": "line-circle-equations", "title": "Уравнение как условие принадлежности", "grade": 9, "chapter": 11, "points": [97, 98, 99], "requires": ["coordinates", "compass"]}, {"id": "trig-circle", "title": "Тригонометрия выходит за пределы острого угла", "grade": 9, "chapter": 12, "points": [100, 101, 102, 103], "requires": ["trig-right", "coordinates"]}, {"id": "area-sine", "title": "Площадь через две стороны и угол", "grade": 9, "chapter": 12, "points": [104], "requires": ["trig-circle", "area-triangle"]}, {"id": "sine-rule", "title": "Теорема синусов и описанная окружность", "grade": 9, "chapter": 12, "points": [105], "requires": ["area-sine", "inscribed"]}, {"id": "cosine-rule", "title": "Пифагор с поправкой на угол", "grade": 9, "chapter": 12, "points": [106], "requires": ["trig-circle", "coordinates"]}, {"id": "solve-triangle", "title": "Выбираем метод для целого треугольника", "grade": 9, "chapter": 12, "points": [107, 108], "requires": ["sine-rule", "cosine-rule"]}, {"id": "dot-product", "title": "Скалярное произведение видит угол", "grade": 9, "chapter": 12, "points": [109, 110, 111, 112], "requires": ["cosine-rule", "vector-basis"]}, {"id": "regular-polygons", "title": "Правильный многоугольник из равных секторов", "grade": 9, "chapter": 13, "points": [113, 114, 115, 116, 117], "requires": ["triangle-circles", "trig-right"]}, {"id": "circle-metric", "title": "Дуга, радиан и сектор", "grade": 9, "chapter": 13, "points": [118, 119, 120, 121], "requires": ["regular-polygons", "area-basics"]}, {"id": "movement", "title": "Что мы раньше называли наложением", "grade": 9, "chapter": 14, "points": [122, 123, 124], "requires": ["axis", "central"]}, {"id": "translation-rotation", "title": "Перенос и поворот: один закон для всех точек", "grade": 9, "chapter": 14, "points": [125, 126], "requires": ["movement", "vectors"]}, {"id": "symmetry-method", "title": "Симметрия как способ найти короткий путь", "grade": 9, "chapter": 14, "points": [127, 128, 129], "requires": ["movement", "distance"]}, {"id": "polygon-similarity", "title": "От треугольников к подобным фигурам", "grade": 9, "chapter": 15, "points": [130, 131, 132], "requires": ["similarity-signs", "area-basics"]}, {"id": "homothety", "title": "Гомотетия: центр и коэффициент", "grade": 9, "chapter": 15, "points": [133, 134, 135], "requires": ["vector-scale", "polygon-similarity"]}, {"id": "similarity-method", "title": "Одна задача на нескольких языках", "grade": 9, "chapter": 15, "points": [136, 137], "requires": ["homothety", "midline"]}], "investigation": "Построй биссектрису угла ACB: выбери A, C, B. Передвинь исходные точки и проверь две части угла.", "experiment": null};</script><script>(function(root){'use strict';
+</head><body><header class="topbar"><a class="brand" href="../index.html">MathExam <span class="muted">/ Геометрия</span></a><nav class="toplinks"><a href="../index.html">Карта курса</a><a href="../teacher-atlas.html">Учителю</a><button id="export-progress">Скачать прогресс</button></nav></header><div class="container"><p id="storage-notice" class="warning" hidden role="alert"></p><div class="lesson-head"><p class="eyebrow">7 класс · глава 1</p><h1>Читаем угол и выбираем его вершину</h1><span class="pill">Находим вершину и стороны</span></div><nav class="stage-nav" aria-label="Этапы урока"></nav><div class="layout"><section class="panel" id="lesson"></section><aside class="panel sidebar"><p class="eyebrow">Путь к пониманию</p><h3>Если есть пробел</h3><a href="segments.html">Прямая: что задают две точки</a><p>Открой нужную тему, затем вернись кнопкой браузера: текущий шаг сохраняется.</p><details><summary>Связь с учебником</summary><p>п. 3 «Луч», с. 9; п. 4 «Угол», с. 10</p><p>Разборы и числовые варианты авторские. Это не сборник решений всех упражнений.</p></details><a href="../legacy7.html">Ранее созданные тренажёры 7 класса</a></aside></div><footer>Авторские объяснения и задачи по темам учебника Атанасяна и др., 7–9 классы, 2023. Измерение на чертеже помогает исследовать; доказательство объясняет общий случай. Прогресс хранится в этом браузере — скачивай файл для переноса.</footer></div><script>window.COURSE_CONFIG={"unit": {"id": "angles", "points": [3, 4], "title": "Читаем угол и выбираем его вершину", "figure": "angle", "goal": "explore", "calc": "angle", "proof": "angles", "idea": "У луча есть начало и одно направление. Угол образован двумя лучами с общим началом. В записи ∠ACB вершина C находится в середине; первую и последнюю буквы можно поменять местами.", "bridge": "Если из вершины выходит несколько лучей, запись одной буквой может стать неоднозначной. Дуга показывает, какой именно угол рассматривается.", "trap": "В записи ∠ABC вершина A.", "chapter": 1, "grade": 7, "requires": ["segments"], "source": [{"point": 3, "chapter": 1, "page": 9, "title": "Луч"}, {"point": 4, "chapter": 1, "page": 10, "title": "Угол"}], "tid": "atlas-angles"}, "proof": {"id": "angles", "title": "Биссектриса делит именно угол", "given": "Луч CM — биссектриса угла ACB, равного 70°.", "goal": "Найти угол ACM.", "steps": [{"id": "s1", "text": "∠ACM=∠MCB", "reason": "Определение биссектрисы угла.", "depends": []}, {"id": "s2", "text": "∠ACM+∠MCB=70°", "reason": "Луч CM проходит внутри данного угла.", "depends": ["s1"]}, {"id": "s3", "text": "∠ACM=35°", "reason": "Две равные части вместе составляют 70°.", "depends": ["s2"]}]}, "catalog": [{"id": "segments", "title": "Прямая: что задают две точки", "grade": 7, "chapter": 1, "points": [1, 2], "requires": []}, {"id": "angles", "title": "Читаем угол и выбираем его вершину", "grade": 7, "chapter": 1, "points": [3, 4], "requires": ["segments"]}, {"id": "equality", "title": "Совместить, сравнить, объяснить", "grade": 7, "chapter": 1, "points": [5, 6], "requires": ["segments", "angles"]}, {"id": "length", "title": "Части отрезка и единая мера", "grade": 7, "chapter": 1, "points": [7, 8], "requires": ["segments"]}, {"id": "measure-angle", "title": "Измеряем и складываем углы", "grade": 7, "chapter": 1, "points": [9, 10], "requires": ["angles"]}, {"id": "perpendicular", "title": "Смежные, вертикальные, прямые", "grade": 7, "chapter": 1, "points": [11, 12, 13], "requires": ["measure-angle"]}, {"id": "triangle-sas", "title": "Какие данные удерживают треугольник", "grade": 7, "chapter": 2, "points": [14, 15], "requires": ["equality", "angles"]}, {"id": "cevians", "title": "Три линии из вершины: не путать роли", "grade": 7, "chapter": 2, "points": [16, 17, 18], "requires": ["triangle-sas", "perpendicular"]}, {"id": "triangle-signs", "title": "Признаки равенства и соответствие вершин", "grade": 7, "chapter": 2, "points": [19, 20], "requires": ["triangle-sas"]}, {"id": "compass", "title": "Циркуль и линейка: создаём точные связи", "grade": 7, "chapter": 2, "points": [21, 22, 23], "requires": ["length", "triangle-signs"]}, {"id": "parallels", "title": "Параллельность: свойство и признак", "grade": 7, "chapter": 3, "points": [24, 25, 26, 27, 28], "requires": ["perpendicular"]}, {"id": "parallel-angles", "title": "Углы при секущей и направление лучей", "grade": 7, "chapter": 3, "points": [29, 30], "requires": ["parallels"]}, {"id": "triangle-angles", "title": "Сумма углов, большая сторона, существование", "grade": 7, "chapter": 4, "points": [31, 32, 33, 34], "requires": ["parallel-angles"]}, {"id": "right-triangle", "title": "Прямоугольный треугольник: особые связи", "grade": 7, "chapter": 4, "points": [35, 36], "requires": ["triangle-angles", "cevians"]}, {"id": "distance", "title": "Кратчайшее расстояние и три элемента", "grade": 7, "chapter": 4, "points": [37, 38], "requires": ["right-triangle"]}, {"id": "angle-locus", "title": "Почему биссектриса — место равноудалённых точек", "grade": 7, "chapter": 5, "points": [39], "requires": ["right-triangle", "cevians"]}, {"id": "perp-locus", "title": "Серединный перпендикуляр: две стороны утверждения", "grade": 7, "chapter": 5, "points": [40], "requires": ["triangle-signs", "compass"]}, {"id": "chords-tangent", "title": "Радиус, хорда и касательная", "grade": 7, "chapter": 5, "points": [41, 42], "requires": ["distance", "compass"]}, {"id": "triangle-circles", "title": "Где искать центры двух окружностей", "grade": 7, "chapter": 5, "points": [43], "requires": ["angle-locus", "perp-locus"]}, {"id": "axis", "title": "Отразить фигуру и сохранить расстояния", "grade": 7, "chapter": 5, "points": [44, 45], "requires": ["perp-locus"]}, {"id": "polygons", "title": "Многоугольник: внутренняя область и диагонали", "grade": 8, "chapter": 6, "points": [46, 47], "requires": ["triangle-angles"]}, {"id": "parallelogram", "title": "Параллелограмм: что дано и что следует", "grade": 8, "chapter": 6, "points": [48, 49], "requires": ["parallel-angles", "triangle-signs"]}, {"id": "trapezoid", "title": "Трапеция: основания и средняя линия", "grade": 8, "chapter": 6, "points": [50], "requires": ["parallelogram"]}, {"id": "rectangle", "title": "Прямоугольник и равные диагонали", "grade": 8, "chapter": 6, "points": [51], "requires": ["parallelogram"]}, {"id": "rhombus", "title": "Ромб, квадрат и иерархия фигур", "grade": 8, "chapter": 6, "points": [52], "requires": ["parallelogram", "triangle-signs"]}, {"id": "central", "title": "Центральная симметрия и середина", "grade": 8, "chapter": 6, "points": [53], "requires": ["parallelogram", "axis"]}, {"id": "area-basics", "title": "Площадь: единичный квадрат и разрезание", "grade": 8, "chapter": 7, "points": [54, 55, 56], "requires": ["length", "rectangle"]}, {"id": "area-parallelogram", "title": "Почему работает основание на высоту", "grade": 8, "chapter": 7, "points": [57], "requires": ["area-basics", "parallelogram"]}, {"id": "area-triangle", "title": "Половина параллелограмма", "grade": 8, "chapter": 7, "points": [58], "requires": ["area-parallelogram"]}, {"id": "area-trapezoid", "title": "Собираем площадь трапеции", "grade": 8, "chapter": 7, "points": [59], "requires": ["area-triangle", "trapezoid"]}, {"id": "pythagoras", "title": "Пифагор и обратная проверка", "grade": 8, "chapter": 7, "points": [60, 61], "requires": ["area-triangle", "right-triangle"]}, {"id": "heron", "title": "Три стороны дают площадь", "grade": 8, "chapter": 7, "points": [62], "requires": ["pythagoras", "area-triangle"]}, {"id": "similarity", "title": "Подобие: длины и площади меняются по-разному", "grade": 8, "chapter": 8, "points": [63, 64, 65], "requires": ["area-triangle", "triangle-signs"]}, {"id": "similarity-signs", "title": "Как доказать подобие", "grade": 8, "chapter": 8, "points": [66, 67, 68], "requires": ["similarity", "triangle-angles"]}, {"id": "midline", "title": "Средняя линия и метод параллельной", "grade": 8, "chapter": 8, "points": [69], "requires": ["similarity-signs"]}, {"id": "centers", "title": "Четыре центра: каждому своя роль", "grade": 8, "chapter": 8, "points": [70], "requires": ["midline", "cevians"]}, {"id": "projections", "title": "Высота к гипотенузе и три подобных треугольника", "grade": 8, "chapter": 8, "points": [71], "requires": ["similarity-signs", "pythagoras"]}, {"id": "similarity-measure", "title": "Дотянуться до недоступной высоты", "grade": 8, "chapter": 8, "points": [72, 73], "requires": ["similarity-signs", "distance"]}, {"id": "trig-right", "title": "Синус и косинус: сначала выбери угол", "grade": 8, "chapter": 8, "points": [74, 75], "requires": ["similarity-signs", "pythagoras"]}, {"id": "circle-position", "title": "Две окружности: когда они встретятся", "grade": 8, "chapter": 9, "points": [76, 77, 78], "requires": ["distance", "compass"]}, {"id": "inscribed", "title": "Вписанный угол видит дугу", "grade": 8, "chapter": 9, "points": [79, 80], "requires": ["triangle-angles", "compass"]}, {"id": "chord-angles", "title": "Углы и произведения отрезков", "grade": 8, "chapter": 9, "points": [81], "requires": ["inscribed", "similarity-signs"]}, {"id": "cyclic-quad", "title": "Когда у четырёхугольника есть окружность", "grade": 8, "chapter": 9, "points": [82, 83], "requires": ["inscribed", "chords-tangent"]}, {"id": "vectors", "title": "Вектор: переносим направление и длину", "grade": 9, "chapter": 10, "points": [84, 85, 86], "requires": ["axis", "parallelogram"]}, {"id": "vector-add", "title": "Маршрут векторов и его итог", "grade": 9, "chapter": 10, "points": [87, 88, 89, 90], "requires": ["vectors"]}, {"id": "vector-scale", "title": "Число меняет длину и направление вектора", "grade": 9, "chapter": 10, "points": [91, 92], "requires": ["vector-add"]}, {"id": "vector-basis", "title": "Два направления как система отсчёта", "grade": 9, "chapter": 11, "points": [93, 94], "requires": ["vector-scale"]}, {"id": "coordinates", "title": "Координаты помогают доказать геометрию", "grade": 9, "chapter": 11, "points": [95, 96], "requires": ["vector-basis", "pythagoras"]}, {"id": "line-circle-equations", "title": "Уравнение как условие принадлежности", "grade": 9, "chapter": 11, "points": [97, 98, 99], "requires": ["coordinates", "compass"]}, {"id": "trig-circle", "title": "Тригонометрия выходит за пределы острого угла", "grade": 9, "chapter": 12, "points": [100, 101, 102, 103], "requires": ["trig-right", "coordinates"]}, {"id": "area-sine", "title": "Площадь через две стороны и угол", "grade": 9, "chapter": 12, "points": [104], "requires": ["trig-circle", "area-triangle"]}, {"id": "sine-rule", "title": "Теорема синусов и описанная окружность", "grade": 9, "chapter": 12, "points": [105], "requires": ["area-sine", "inscribed"]}, {"id": "cosine-rule", "title": "Пифагор с поправкой на угол", "grade": 9, "chapter": 12, "points": [106], "requires": ["trig-circle", "coordinates"]}, {"id": "solve-triangle", "title": "Выбираем метод для целого треугольника", "grade": 9, "chapter": 12, "points": [107, 108], "requires": ["sine-rule", "cosine-rule"]}, {"id": "dot-product", "title": "Скалярное произведение видит угол", "grade": 9, "chapter": 12, "points": [109, 110, 111, 112], "requires": ["cosine-rule", "vector-basis"]}, {"id": "regular-polygons", "title": "Правильный многоугольник из равных секторов", "grade": 9, "chapter": 13, "points": [113, 114, 115, 116, 117], "requires": ["triangle-circles", "trig-right"]}, {"id": "circle-metric", "title": "Дуга, радиан и сектор", "grade": 9, "chapter": 13, "points": [118, 119, 120, 121], "requires": ["regular-polygons", "area-basics"]}, {"id": "movement", "title": "Что мы раньше называли наложением", "grade": 9, "chapter": 14, "points": [122, 123, 124], "requires": ["axis", "central"]}, {"id": "translation-rotation", "title": "Перенос и поворот: один закон для всех точек", "grade": 9, "chapter": 14, "points": [125, 126], "requires": ["movement", "vectors"]}, {"id": "symmetry-method", "title": "Симметрия как способ найти короткий путь", "grade": 9, "chapter": 14, "points": [127, 128, 129], "requires": ["movement", "distance"]}, {"id": "polygon-similarity", "title": "От треугольников к подобным фигурам", "grade": 9, "chapter": 15, "points": [130, 131, 132], "requires": ["similarity-signs", "area-basics"]}, {"id": "homothety", "title": "Гомотетия: центр и коэффициент", "grade": 9, "chapter": 15, "points": [133, 134, 135], "requires": ["vector-scale", "polygon-similarity"]}, {"id": "similarity-method", "title": "Одна задача на нескольких языках", "grade": 9, "chapter": 15, "points": [136, 137], "requires": ["homothety", "midline"]}], "investigation": "У угла ACB вершина C. Потяни A вдоль луча CA, затем поверни луч. В каком случае изменился угол? Запиши, почему ∠ACB можно назвать ∠BCA.", "experiment": null};</script><script>(function(root){'use strict';
 const EPS=1e-8, add=(a,b)=>({x:a.x+b.x,y:a.y+b.y}),sub=(a,b)=>({x:a.x-b.x,y:a.y-b.y}),mul=(a,k)=>({x:a.x*k,y:a.y*k}),dot=(a,b)=>a.x*b.x+a.y*b.y,cross=(a,b)=>a.x*b.y-a.y*b.x,norm=a=>Math.hypot(a.x,a.y),dist=(a,b)=>norm(sub(a,b)),unit=a=>mul(a,1/(norm(a)||1)),rot=a=>({x:-a.y,y:a.x});
 function foot(p,a,b){const v=sub(b,a),q=dot(v,v);return q<EPS?null:add(a,mul(v,dot(sub(p,a),v)/q));}
 function angle(a,o,b){const u=sub(a,o),v=sub(b,o);if(norm(u)*norm(v)<EPS)return null;return Math.acos(Math.max(-1,Math.min(1,dot(u,v)/norm(u)/norm(v))))*180/Math.PI;}
@@ -387,26 +419,241 @@ function open(allowed,onError){let blocked=false,memory={version:1,units:{}};con
 function download(data,name){const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);}
 const api={open,clean,validate,drawing,download,KEY};root.GeoStore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
+</script><script>(function () {
+  'use strict';
+
+  const vertex = 'B';
+  const sides = ['BA', 'BC'];
+  const names = {A: [75, 25], B: [14, 61], C: [81, 63], D: [64, 84]};
+  const cyrillic = {А: 'A', В: 'B', С: 'C', Д: 'D'};
+
+  function markup() {
+    return `<div id="angle-notation" class="angle-notation">
+      <h2 tabindex="-1">Укажи вершину угла ∠ABC</h2>
+      <p id="angle-instruction">Нажми точку на рисунке, где начинаются обе стороны угла.</p>
+      <div class="angle-figure">
+        <svg viewBox="0 0 360 224" aria-hidden="true">
+          <defs><marker id="angle-notation-tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0 0 L8 4 L0 8 Z" fill="context-stroke"/>
+          </marker></defs>
+          <g fill="none" stroke="currentColor" stroke-width="3" marker-end="url(#angle-notation-tip)">
+            <path data-angle-ray="BA" d="M50 137 L316 39"/>
+            <path data-angle-ray="BC" d="M50 137 L336 144"/>
+            <path data-angle-ray="BD" d="M50 137 L273 200"/>
+          </g>
+          <path d="M111 115 A65 65 0 0 1 115 139" fill="none" stroke="#9a520e" stroke-width="4"/>
+        </svg>
+        ${Object.entries(names).map(([point, [x, y]]) =>
+          `<button type="button" data-angle-point="${point}" style="left:${x}%;top:${y}%" aria-label="Точка ${point}">${point}</button>`).join('')}
+      </div>
+      <div id="angle-side-choices" class="row" hidden role="group" aria-label="Выбрать стороны">
+        ${['BA', 'BC', 'BD'].map(ray =>
+          `<button type="button" data-angle-side="${ray}" aria-pressed="false">Луч ${ray}</button>`).join('')}
+      </div>
+      <p id="angle-notation-feedback" class="feedback" role="status"></p>
+      <div id="angle-reverse" class="callout" hidden>
+        <p><strong>∠ABC и ∠CBA — один угол.</strong> Вершина B по-прежнему посередине записи. Лучи BA и BC остались на месте.</p>
+        <p>Утверждение «В записи ∠ABC вершина A» ошибочно. A лежит на стороне угла.</p>
+      </div>
+    </div>`;
+  }
+
+  function mount(root) {
+    const diagram = root.querySelector('#angle-notation');
+    if (!diagram) return;
+
+    const feedback = diagram.querySelector('#angle-notation-feedback');
+    const instruction = diagram.querySelector('#angle-instruction');
+    const choices = diagram.querySelector('#angle-side-choices');
+    const selected = new Set();
+
+    for (const button of diagram.querySelectorAll('[data-angle-point]')) {
+      button.onclick = () => {
+        if (button.dataset.anglePoint !== vertex) {
+          feedback.className = 'feedback error';
+          feedback.textContent = 'Найди общее начало двух лучей у отмеченной дуги.';
+          return;
+        }
+        diagram.querySelectorAll('[data-angle-point]').forEach(point => { point.disabled = true; });
+        button.classList.add('primary');
+        feedback.className = 'feedback good';
+        feedback.textContent = 'Верно, вершина B.';
+        instruction.textContent = 'Теперь выбери два луча, между которыми проведена дуга.';
+        choices.hidden = false;
+        choices.querySelector('button').focus();
+      };
+    }
+
+    for (const button of choices.querySelectorAll('[data-angle-side]')) {
+      button.onclick = () => {
+        const ray = button.dataset.angleSide;
+        if (!sides.includes(ray)) {
+          feedback.className = 'feedback error';
+          feedback.textContent = 'Луч BD выходит из B. Проверь, проходит ли он по краю отмеченной дуги.';
+          return;
+        }
+        selected.add(ray);
+        button.setAttribute('aria-pressed', 'true');
+        button.classList.add('primary');
+        diagram.querySelector(`[data-angle-ray="${ray}"]`).classList.add('angle-selected');
+        feedback.className = 'feedback good';
+        if (selected.size === 1) {
+          feedback.textContent = 'Найди второй луч на краю отмеченной дуги.';
+        } else {
+          choices.querySelectorAll('button').forEach(choice => { choice.disabled = true; });
+          feedback.textContent = 'Стороны угла ∠ABC — лучи BA и BC.';
+          diagram.querySelector('#angle-reverse').hidden = false;
+          root.querySelector('[data-action="next"]')?.focus();
+        }
+      };
+    }
+  }
+
+  function taskFigure(left, right) {
+    const polar = (radius, degrees) => {
+      const radians = degrees * Math.PI / 180;
+      return [180 + radius * Math.cos(radians), 173 - radius * Math.sin(radians)]
+        .map(value => value.toFixed(1)).join(' ');
+    };
+    const first = 18;
+    const middle = first + right;
+    const last = middle + left;
+    function label(radius, angle, value) {
+      const [x, y] = polar(radius, angle).split(' ');
+      return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central">${value}</text>`;
+    }
+    return `<div class="angle-task-drawing"><svg viewBox="0 0 360 205" role="img" aria-label="Из вершины C выходят лучи CA, CD и CB. Луч CD проведён внутри угла между CA и CB. Угол ACD равен ${left} градусам, угол DCB — ${right}.">
+      <defs><marker id="angle-task-tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0 0 L8 4 L0 8 Z" fill="context-stroke"/>
+      </marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="3" marker-end="url(#angle-task-tip)">
+        ${[first, middle, last].map(angle => `<path d="M180 173 L${polar(142, angle)}"/>`).join('')}
+      </g>
+      <path d="M${polar(42, first)} A42 42 0 0 0 ${polar(42, middle)} M${polar(42, middle)} A42 42 0 0 0 ${polar(42, last)}" fill="none" stroke="#9a520e" stroke-width="3"/>
+      <g fill="currentColor">
+        <circle cx="180" cy="173" r="4"/>
+        ${[first, middle, last].map(angle => {
+          const [x, y] = polar(119, angle).split(' ');
+          return `<circle cx="${x}" cy="${y}" r="4"/>`;
+        }).join('')}
+      </g>
+      <g fill="currentColor" font-size="21" font-weight="700">
+        ${label(119, first - 8, 'B')}${label(119, middle - 8, 'D')}${label(119, last + 8, 'A')}
+        <text x="173" y="196">C</text>
+      </g>
+      <g fill="#814811" font-size="19" font-weight="650">
+        ${label(73, (first + middle) / 2, `${right}°`)}
+        ${label(73, (middle + last) / 2, `${left}°`)}
+      </g>
+    </svg></div>`;
+  }
+
+  const root = document.getElementById('lesson');
+  const originalEqual = GeoTasks.equal;
+  const originalTask = GeoTasks.task;
+
+  // The shared atlas still grades attempts and saves progress for this lesson.
+  GeoTasks.equal = (value, expected) => {
+    if (typeof expected === 'number') return originalEqual(value.replace(/°\s*$/, ''), expected);
+    if (expected !== 'ACB') return originalEqual(value, expected);
+    const name = value.toUpperCase().replace(/^\s*∠/, '').replace(/\s/g, '')
+      .replace(/[АВСД]/g, letter => cyrillic[letter]);
+    return name === 'ACB' || name === 'BCA';
+  };
+
+  GeoTasks.task = (kind, seed) => {
+    const task = originalTask(kind, seed);
+    if (kind === 'angle') {
+      task.steps[0].question = 'Запиши целый угол тремя буквами.';
+      task.steps[0].reason = 'Луч CD лежит между CA и CB. В имени целого угла вершина C стоит посередине.';
+    }
+    return task;
+  };
+
+  function helpForStep(hasAngleName) {
+    return hasAngleName
+      ? 'Проверь, какие два внешних луча образуют целый угол. Укажи их точки по краям записи.'
+      : 'Найди две отмеченные части целого угла и проверь их сумму.';
+  }
+
+  function decorate() {
+    const stage = document.querySelector('.stage-nav [aria-current="step"]')?.dataset.stage;
+    const heading = root.querySelector('h2');
+
+    if (stage === '0' && !root.querySelector('#angle-notation')) {
+      const footer = root.querySelector('.stage-footer');
+      const rule = document.createElement('details');
+      const title = document.createElement('summary');
+      const text = document.createElement('p');
+      title.textContent = 'Правило записи угла';
+      text.className = 'law';
+      text.textContent = COURSE_CONFIG.unit.idea;
+      rule.append(title, text);
+      const restoreFocus = document.activeElement === heading;
+      root.replaceChildren(root.querySelector('.step-label'), rule, footer);
+      rule.insertAdjacentHTML('beforebegin', markup());
+      mount(root);
+      if (restoreFocus) root.querySelector('h2').focus({preventScroll: true});
+    }
+
+    if (stage === '1' && heading) heading.textContent = 'Поменяй положение стороны';
+
+    const problem = root.querySelector('.task-question');
+    if ((stage === '3' || stage === '4') && problem && !root.querySelector('.angle-task-drawing')) {
+      const angles = problem.textContent.match(/ACD = (\d+)° и DCB = (\d+)°/);
+      if (angles) problem.insertAdjacentHTML('afterend', taskFigure(Number(angles[1]), Number(angles[2])));
+
+      const answer = root.querySelector('#answer');
+      if (!answer) return;
+      const label = root.querySelector('label[for="answer"]');
+      const form = answer.form;
+      const hasAngleName = stage === '3' && root.querySelector('.callout strong')?.textContent === 'Шаг 1 из 2';
+      label.textContent = hasAngleName ? 'Название угла' : 'Градусная мера';
+      answer.removeAttribute('placeholder');
+      if (hasAngleName) answer.setAttribute('autocapitalize', 'characters');
+      else answer.setAttribute('inputmode', 'numeric');
+      if (form.nextElementSibling?.classList.contains('muted')) form.nextElementSibling.remove();
+      const outcome = root.querySelector('#answer-feedback');
+      const message = helpForStep(hasAngleName);
+      new MutationObserver(() => {
+        if (outcome.classList.contains('error') && outcome.textContent !== message) {
+          outcome.textContent = message;
+        }
+      }).observe(outcome, {childList: true});
+    }
+  }
+
+  new MutationObserver(decorate).observe(root, {childList: true});
+})();
 </script><script>(function(){'use strict';const C=window.COURSE_CONFIG,U=C.unit,P=C.proof,T=GeoTasks,E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const notice=document.getElementById('storage-notice'),store=GeoStore.open(C.catalog.map(x=>x.id),m=>{notice.hidden=false;notice.textContent=m;}),root=document.getElementById('lesson'),labels=['Понять','Исследовать','Доказать','Решить с опорой','Самостоятельно','Своими словами'];let state=store.get(U.id),lab=null,timer=null,pending=null,showHint=false;
 function save(event){store.put(U.id,state,event);}function defer(){clearTimeout(timer);timer=setTimeout(()=>save(),200);}window.addEventListener('pagehide',()=>{clearTimeout(timer);save();});
 function task(){return T.task(U.calc,state.seed);}function shuffle(a,s=state.seed){return a.map((v,i)=>({v,key:Math.sin((i+1)*19.17+s*2.39)})).sort((a,b)=>a.key-b.key).map(x=>x.v);}
 function nav(){document.querySelector('.stage-nav').innerHTML=labels.map((l,i)=>'<button data-stage="'+i+'" class="'+(i===state.stage?'on':'')+'"'+(i===state.stage?' aria-current="step"':'')+'>'+String(i+1).padStart(2,'0')+' '+l+'</button>').join('');}
 function footer(){return '<div class="stage-footer">'+(state.stage?'<button data-action="prev">← '+labels[state.stage-1]+'</button>':'<a href="../index.html">Все темы</a>')+(state.stage<5?'<button class="primary" data-action="next">'+labels[state.stage+1]+' →</button>':'<button class="primary" data-action="finish">Завершить занятие</button>')+'</div>';}
-function proofUI(){const done=new Set(state.proofDone),remaining=P.steps.filter(s=>!done.has(s.id));let h='<p class="step-label">Доказательство · '+done.size+' / '+P.steps.length+'</p><h2>'+E(P.title)+'</h2><div class="callout"><p><strong>Дано.</strong> '+E(P.given)+'</p><p><strong>Цель.</strong> '+E(P.goal)+'</p></div><p class="muted">Это отдельная задача со своими обозначениями. Сначала набросай её чертёж на бумаге или на свободном поле ниже. Затем собери обоснование. Не используй требуемый результат как известный факт.</p><ol class="proof-list">';
+const hasMidlineDiagram=U.id==='midline'&&!!window.MathExamMidlineDiagram;
+if(hasMidlineDiagram)window.MathExamMidlineDiagram.preparePage();
+function midlineDiagram(proof=false,step=state.proofDone.length,computing=false){
+ return hasMidlineDiagram?
+  window.MathExamMidlineDiagram.figure({proof:proof?U.proof:'',step,computing}):'';
+}
+function proofUI(){const done=new Set(state.proofDone),remaining=P.steps.filter(s=>!done.has(s.id));let h='<p class="step-label">Доказательство · '+done.size+' / '+P.steps.length+'</p><h2>'+E(P.title)+'</h2><div class="callout"><p><strong>Дано.</strong> '+E(P.given)+'</p><p><strong>Цель.</strong> '+E(P.goal)+'</p></div>'+midlineDiagram(true)+(hasMidlineDiagram?(remaining.length?'<p>Сверь обозначения на чертеже и выбери следующий довод.</p>':''):'<p class="muted">Это отдельная задача со своими обозначениями. Сначала набросай её чертёж на бумаге или на свободном поле ниже. Затем собери обоснование. Не используй требуемый результат как известный факт.</p>')+'<ol class="proof-list">';
 for(const s of P.steps.filter(s=>done.has(s.id)))h+='<li><strong>'+E(s.text)+'</strong><small>'+E(s.reason)+'</small></li>';h+='</ol>';
 if(!remaining.length)h+='<div class="callout"><strong>Цепочка собрана с опорой.</strong><p>Закрой карточки и попробуй восстановить рассуждение в разделе «Своими словами». Самостоятельное доказательство проверяет учитель.</p></div><button data-action="proof-reset">Собрать ещё раз</button>';
 else{h+='<p>Какой переход сейчас можно обосновать?</p><div class="proof-options">';for(const s of shuffle(remaining.slice(0,3)))h+='<button data-proof="'+s.id+'">'+E(s.text)+'</button>';h+='<button class="trap" data-action="proof-trap">Это верно, потому что на рисунке выглядит именно так.</button></div><div id="reason"></div><p id="proof-feedback" class="feedback" role="status"></p>';}
 h+='<details><summary>Свободное поле для чертежа к доказательству</summary><p>Добавляй точки и линии. Имена точек на этом поле задаются автоматически: в записи можно явно указать соответствие своим обозначениям. Чертёж не проверяет логическое доказательство.</p><div id="proof-board"></div></details>';return h;}
 function render(){clearTimeout(timer);if(lab)lab.destroy();lab=null;pending=null;showHint=false;document.body.classList.toggle('construction-active',state.stage===1);nav();let h='<p class="step-label">'+String(state.stage+1).padStart(2,'0')+' / '+labels.length+'</p>';
-if(state.stage===0){h+='<h2>Что будем понимать</h2><p class="law">'+E(U.idea)+'</p><div class="callout"><strong>Связь с тем, что уже известно</strong><p>'+E(U.bridge)+'</p></div><h3>Найди слабое место в утверждении</h3><p>«'+E(U.trap)+'»</p><label>Какое условие пропущено? Придумай пример или контрпример.<textarea id="diagnosis" placeholder="Например: это сработает только если…"></textarea></label><button data-action="diagnosis">Сравнить с объяснением</button><div id="diagnosis-feedback" role="status"></div><div id="extra-model"></div>';}
+if(state.stage===0&&hasMidlineDiagram){
+ h+='<h2>Сначала посмотри на рисунок</h2>'+midlineDiagram()+'<p>Точки M и N — середины сторон CA и CB. Предположи, как длина MN связана с длиной AB.</p><button class="primary" data-action="next">Проверить на модели</button><details><summary>Открыть формулировку</summary><p class="law">'+E(U.idea)+'</p></details>';
+}
+else if(state.stage===0){h+='<h2>Что будем понимать</h2><p class="law">'+E(U.idea)+'</p><div class="callout"><strong>Связь с тем, что уже известно</strong><p>'+E(U.bridge)+'</p></div><h3>Найди слабое место в утверждении</h3><p>«'+E(U.trap)+'»</p><label>Какое условие пропущено? Придумай пример или контрпример.<textarea id="diagnosis" placeholder="Например: это сработает только если…"></textarea></label><button data-action="diagnosis">Сравнить с объяснением</button><div id="diagnosis-feedback" role="status"></div><div id="extra-model"></div>';}
 if(state.stage===1){h+='<h2>Построй и проверь</h2><p>'+E(C.investigation)+'</p><div id="geo-board"></div><label>Моя догадка: что сохраняется и почему?<textarea id="observation" placeholder="Я изменил(а)… При этом… Думаю, причина в том, что…">'+E(state.observation)+'</textarea></label><p class="muted">Числа на экране округлены. Проверка построения опирается на его связи, а для общего вывода понадобится доказательство.</p><div id="extra-model"></div>';}
 if(state.stage===2)h=proofUI();
-if(state.stage===3){const t=task(),i=state.taskStep;h+='<h2>Решение с опорой</h2><p class="task-question">'+E(t.question)+'</p><ol class="proof-list">'+t.steps.slice(0,i).map(s=>'<li><strong>'+E(s.question)+' '+E(T.format(s.answer))+'</strong><small>'+E(s.reason)+'</small></li>').join('')+'</ol>';if(i<t.steps.length)h+='<div class="callout"><strong>Шаг '+(i+1)+' из '+t.steps.length+'</strong><p>'+E(t.steps[i].question)+'</p></div>'+answerUI('guided')+'<button data-action="hint">Показать смысл шага</button><div id="hint-box"></div>';else h+='<div class="callout"><strong>Разбор завершён.</strong><p>Ответ: '+E(T.format(t.answer))+'. Теперь попробуй новый вариант без подсказок.</p></div><button data-action="independent-start" class="primary">Перейти к новому варианту</button>';}
-if(state.stage===4){const t=task();h+='<h2>Проверим самостоятельность</h2><p class="muted">Задание того же типа. Первая верная попытка в новом условии без открытого разбора учитывается отдельно. Проверка одного типа задач не означает освоения всей темы.</p>'+(state.repeatedTask?'<p class="callout"><strong>Знакомое условие.</strong> Ты уже открывал(а) эту задачу. Повтори её для тренировки; новый самостоятельный успех за неё не добавляется.</p>':'')+'<p class="task-question">'+E(t.question)+'</p>'+answerUI('independent')+'<div class="row"><button data-action="show-solution">Нужен разбор</button><button data-action="new-task">Другой вариант</button></div><div id="hint-box"></div><p class="muted">Успешных самостоятельных вариантов в этом узле: '+state.independent+'.</p>';}
-if(state.stage===5)h+='<h2>Теперь объясни сам</h2><p><strong>Задача для письменного доказательства:</strong> '+E(P.given)+' '+E(P.goal)+'</p><label>Моё доказательство<textarea id="written" rows="10" placeholder="Дано… Нужно доказать… Проведём… Это полезно, потому что… По… получаем… Следовательно…">'+E(state.written)+'</textarea></label><div class="rubric"><label><input type="checkbox"> Я отделил(а) условие от того, что нужно доказать.</label><label><input type="checkbox"> Объяснил(а) назначение дополнительного построения, если использовал(а) его.</label><label><input type="checkbox"> У каждого перехода есть основание; нет ссылки «видно на рисунке».</label><label><input type="checkbox"> Проверил(а) особые случаи и не использовал(а) вывод в качестве предпосылки.</label></div><p class="muted">Эти отметки — самопроверка. Система сохраняет текст для учителя и не выдаёт его за автоматически проверенное доказательство.</p><button data-action="download">Скачать работу и прогресс</button>';
+if(state.stage===3){const t=task(),i=state.taskStep;h+='<h2>Решение с опорой</h2><p class="task-question">'+E(t.question)+'</p>'+midlineDiagram(false,0,true)+'<ol class="proof-list">'+t.steps.slice(0,i).map(s=>'<li><strong>'+E(s.question)+' '+E(T.format(s.answer))+'</strong><small>'+E(s.reason)+'</small></li>').join('')+'</ol>';if(i<t.steps.length)h+='<div class="callout"><strong>Шаг '+(i+1)+' из '+t.steps.length+'</strong><p>'+E(t.steps[i].question)+'</p></div>'+answerUI('guided')+'<button data-action="hint">Показать смысл шага</button><div id="hint-box"></div>';else h+='<div class="callout"><strong>Разбор завершён.</strong><p>Ответ: '+E(T.format(t.answer))+'. Теперь попробуй новый вариант без подсказок.</p></div><button data-action="independent-start" class="primary">Перейти к новому варианту</button>';}
+if(state.stage===4){const t=task();h+='<h2>Проверим самостоятельность</h2><p class="muted">Задание того же типа. Первая верная попытка в новом условии без открытого разбора учитывается отдельно. Проверка одного типа задач не означает освоения всей темы.</p>'+(state.repeatedTask?'<p class="callout"><strong>Знакомое условие.</strong> Ты уже открывал(а) эту задачу. Повтори её для тренировки; новый самостоятельный успех за неё не добавляется.</p>':'')+'<p class="task-question">'+E(t.question)+'</p>'+midlineDiagram(false,0,true)+answerUI('independent')+'<div class="row"><button data-action="show-solution">Нужен разбор</button><button data-action="new-task">Другой вариант</button></div><div id="hint-box"></div><p class="muted">Успешных самостоятельных вариантов в этом узле: '+state.independent+'.</p>';}
+if(state.stage===5)h+='<h2>Теперь объясни сам</h2><p><strong>Задача для письменного доказательства:</strong> '+E(P.given)+' '+E(P.goal)+'</p>'+midlineDiagram(true,0)+'<label>Моё доказательство<textarea id="written" rows="10" placeholder="Дано… Нужно доказать… Проведём… Это полезно, потому что… По… получаем… Следовательно…">'+E(state.written)+'</textarea></label><div class="rubric"><label><input type="checkbox"> Я отделил(а) условие от того, что нужно доказать.</label><label><input type="checkbox"> Объяснил(а) назначение дополнительного построения, если использовал(а) его.</label><label><input type="checkbox"> У каждого перехода есть основание; нет ссылки «видно на рисунке».</label><label><input type="checkbox"> Проверил(а) особые случаи и не использовал(а) вывод в качестве предпосылки.</label></div><p class="muted">Эти отметки — самопроверка. Система сохраняет текст для учителя и не выдаёт его за автоматически проверенное доказательство.</p><button data-action="download">Скачать работу и прогресс</button>';
 root.innerHTML=h+footer();
-if(state.stage===0){GeoExperiments.mount(document.getElementById('extra-model'),C.experiment);}
+if(state.stage===0&&document.getElementById('extra-model')){GeoExperiments.mount(document.getElementById('extra-model'),C.experiment);}
 if(state.stage===1){lab=GeoLab.mount(document.getElementById('geo-board'),{figure:U.figure,goal:U.goal},ev=>{state.moved=ev.moved||state.moved;state.drawing=JSON.parse(ev.board.snapshot());state.construction=ev.board.goal(U.goal).ok;if(ev.type==='reset')state.moved=false;defer();});if(state.drawing){lab.board.points=state.drawing.points;lab.board.objects=state.drawing.objects;lab.board.update();lab.redraw();}GeoExperiments.mount(document.getElementById('extra-model'),C.experiment);}
 if(state.stage===2){const el=document.getElementById('proof-board');GeoLab.mount(el,{figure:'triangle',goal:'explore'},()=>{});}
 if(state.stage===3||state.stage===4){const a=document.getElementById('answer');if(a)a.value=state.draft;}
@@ -420,7 +667,7 @@ function finish(){save('finish');const done=state.guided&&state.proof&&(U.goal==
 document.querySelector('.stage-nav').addEventListener('click',e=>{const b=e.target.closest('[data-stage]');if(b)stage(+b.dataset.stage);});
 root.addEventListener('input',e=>{if(e.target.id==='observation')state.observation=e.target.value;if(e.target.id==='written')state.written=e.target.value;if(e.target.id==='answer')state.draft=e.target.value;defer();});
 root.addEventListener('submit',e=>{if(e.target.id!=='answer-form')return;e.preventDefault();const t=task(),mode=e.target.dataset.mode,feedback=document.getElementById('answer-feedback'),a=document.getElementById('answer').value.trim();if(!a){feedback.textContent='Сначала введи ответ.';return;}const expected=mode==='guided'?t.steps[state.taskStep]?.answer:t.answer;if(expected===undefined)return;const ok=T.equal(a,expected);if(mode==='guided'){if(ok){state.taskStep++;state.draft='';if(state.taskStep===t.steps.length)state.guided=true;save('solved');render();}else{feedback.className='feedback error';feedback.textContent='Пока не совпало. Проверь, какую величину нужно найти именно на этом шаге, знаки и единицы. Можно открыть объяснение шага.';save('attempt');}}else{const first=!state.checked;state.checked=true;if(first)state.attempts++;if(ok){if(first&&!state.assisted&&!state.repeatedTask)state.independent++;feedback.className='feedback good';feedback.textContent=state.repeatedTask?'Верно. Это знакомое условие: повторение не добавляет новый самостоятельный успех.':first&&!state.assisted?'Верно с первой попытки без подсказки. Этот вариант учтён как самостоятельный.':'Верно. Этот вариант решён с помощью или после исправления; для самостоятельной проверки возьми другой.';save('solved');}else{state.assisted=true;feedback.className='feedback error';feedback.textContent='Пока неверно. Проверь единицы, знак и смысл искомой величины. Можно разобрать этот вариант и затем решить новый самостоятельно.';save('attempt');}}});
-root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.proof){const s=P.steps.find(s=>s.id===b.dataset.proof),done=new Set(state.proofDone),f=document.getElementById('proof-feedback');if(!s.depends.every(x=>done.has(x))){f.textContent='Этот вывод появится позже. Сначала установи факт, на который он опирается.';f.className='feedback error';save('proof_order_error');return;}pending=s;const candidates=shuffle([{text:s.reason,ok:true},{text:'Это следует из того утверждения, которое мы сейчас должны доказать.',ok:false},{text:'Я измерил(а) линии или углы на одном чертеже и получил(а) подходящее число.',ok:false}],state.seed+state.proofDone.length);document.getElementById('reason').innerHTML='<div class="reason-panel"><strong>'+E(s.text)+'</strong><label>Какое основание разрешает этот переход?<select id="reason-choice"><option value="">Выбери основание</option>'+candidates.map((r,i)=>'<option value="'+(r.ok?'yes':'no'+i)+'">'+E(r.text)+'</option>').join('')+'</select></label><button data-action="reason-check" class="primary">Обосновать переход</button></div>';return;}
+root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.proof){const s=P.steps.find(s=>s.id===b.dataset.proof),done=new Set(state.proofDone),f=document.getElementById('proof-feedback');if(!s.depends.every(x=>done.has(x))){f.textContent='Этот вывод появится позже. Сначала установи факт, на который он опирается.';f.className='feedback error';save('proof_order_error');return;}pending=s;const candidates=shuffle([{text:s.reason,ok:true},{text:'Это следует из того утверждения, которое мы сейчас должны доказать.',ok:false},{text:'Я измерил(а) линии или углы на одном чертеже и получил(а) подходящее число.',ok:false}],state.seed+state.proofDone.length);document.getElementById('reason').innerHTML='<div class="reason-panel">'+midlineDiagram(true,P.steps.indexOf(s)+1)+'<strong>'+E(s.text)+'</strong><label>Какое основание разрешает этот переход?<select id="reason-choice"><option value="">Выбери основание</option>'+candidates.map((r,i)=>'<option value="'+(r.ok?'yes':'no'+i)+'">'+E(r.text)+'</option>').join('')+'</select></label><button data-action="reason-check" class="primary">Обосновать переход</button></div>';return;}
 const a=b.dataset.action;
 if(a==='next')stage(Math.min(5,state.stage+1));if(a==='prev')stage(Math.max(0,state.stage-1));
 if(a==='diagnosis'){const text=document.getElementById('diagnosis').value.trim();document.getElementById('diagnosis-feedback').innerHTML='<div class="callout"><p>'+E(U.bridge)+'</p><p>'+E(U.idea)+'</p><small>'+(text?'Сравни свою формулировку: указаны ли нужные условия?':'Попробуй теперь сформулировать исправление своими словами.')+'</small></div>';save('diagnosis');}
