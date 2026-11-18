@@ -1,1 +1,8 @@
 *{box-sizing:border-box}body{margin:0;color:#192c3a;background:#f6f8fb;font:1.1rem/1.55 system-ui,sans-serif}main,.intro{max-width:58rem;margin:auto;padding:1.5rem}h1{line-height:1.12;font-size:clamp(2.1rem,5vw,3.5rem);max-width:19ch;margin:.6em 0}h2{line-height:1.25}a{color:#125a76;text-underline-offset:.17em}a:focus-visible{outline:3px solid #cc6910;outline-offset:3px}header.intro{padding-bottom:0}.route{border-top:1px solid #bfccd4;padding:.9rem 0}.route strong{display:block}.route a{display:inline-block;margin:.25rem 1rem .25rem 0}.toolbar{display:flex;flex-wrap:wrap;gap:.2rem 1.2rem;align-items:center;padding:.45rem 1rem;background:white;border-bottom:1px solid #ccd7df;font-size:.95rem}.toolbar strong{flex:1}.toolbar a{padding:.4rem}.player{height:100vh;height:100dvh;display:flex;flex-direction:column}.player iframe{border:0;flex:1;width:100%;min-height:0;background:white}.player p{margin:1rem}.player [hidden]{display:none}details{margin:1rem 0}summary{cursor:pointer}
+
+a[data-mathexam-home-link] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: .4rem;
+}
