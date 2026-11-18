@@ -8,5 +8,6 @@ const families=[
  {id:'skew-distance',title:'Скрещивающиеся прямые',text:'Первый разбор: общий перпендикуляр. Почему расстояние измеряется именно по нему.'}
 ];
 const lessons=[...(root.AtanasyanLessonsA||[]),...(root.AtanasyanLessonsB||[])].map(l=>({...l,storageKey:'mathexam.atanasyan15.'+l.id+'.v1',trainerId:'profile-atanasyan-'+l.id,apiName:'__atanasyanLesson',reportName:'stereometry-'+l.id+'.txt',reportPath:'lesson.html?lesson='+l.id,domainStepIndex:-1,initialDomainStepIndex:-1,solvedDomainHtml:''}));
-root.AtanasyanCourse={families,lessons};
+const sectionPractice = {href: '../../stereo-course/sections/#starter-23', label: 'Построить сечение пирамиды по трём точкам'};
+root.AtanasyanCourse={families,lessons,sectionPractice};
 })(typeof window!=='undefined'?window:globalThis);

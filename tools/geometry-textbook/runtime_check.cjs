@@ -14,6 +14,55 @@ const sample=bundle.lessons.find(l=>l.kind==='exercise'&&l.steps.length>2);
 const key='mathExamTextbook.v1:'+sample.source.bookId+':'+sample.id+':r'+sample.revision;
 let checks=0;
 {
+ const {dom,w,d,app}=setup();
+ function open(number,part=1){app.open('atanasyan-7-9-main-'+number+'-part-'+part);}
+ function submit(text){
+  const input=d.getElementById('final-answer');input.value=text;input.dispatchEvent(new w.Event('input',{bubbles:true}));
+  d.querySelector('[data-quantity-check]').click();
+  return d.querySelector('[data-quantity-feedback]').textContent;
+ }
+ // Independently computed quantities, indexed by textbook subpart. A null is
+ // a construction, a symbolic result or another form outside this checker.
+ const answers={
+  41:['10,5 см','1,5 см'],51:['121°',null],52:['48°'],53:['85°'],55:['60°'],62:['69°','90°','165°'],
+  78:['8 см','16 см'],95:['75 см'],114:['8 см'],117:['50°'],228:['58°','26°',null,null],
+  255:['7 см','8 см','10 см'],261:['17,6 см'],264:['18 см'],276:['5 см'],279:['8 см'],
+  286:['3 см'],344:['7 см'],357:['4 см'],371:['60 см'],391:['18,1 см'],463:['540°','720°','1440°'],
+  545:['1,44 см²','9/16 дм²','18 м²'],546:['4 см','1,5 дм',null],547:['2400 мм²','0,24 дм²'],
+  553:['12 м'],555:['180 см²','4 см','18 см',null],556:['156 см²'],557:['84 см²'],558:['18 см²'],
+  559:['56,7 см²'],564:['38,5 см²',null,'5,4 см',null],565:['8 см'],566:['5,625 см'],
+  567:['22 см²','1,8 дм²'],578:['133 см²','24 см²','72 см²'],585:['15 см'],597:['168/25 см','120/17 см'],
+  598:['10/3 см'],599:['60 см','40 см'],600:['5 см','18 см'],629:['30 см²'],651:['4,5 м'],
+  672:['10 см'],673:['5 см'],674:['42 см'],751:['4 см'],752:['16 см']
+ };
+ let numericCards=0;
+ for(const [number,parts] of Object.entries(answers))for(const [index,answer] of parts.entries()){
+  open(number,index+1);
+  if(answer===null){assert.equal(d.querySelector('[data-quantity-check]'),null);continue;}
+  numericCards++;assert.match(submit(answer),/Численный ответ верен/,number+' part '+(index+1));
+ }
+ assert.equal(numericCards,70);
+ open(545,2); // Square with side 3/4 dm. Area = 9/16 dm².
+ for(const answer of ['9/16','Мой способ.\nОтвет: 0,5625 дм².','56.25 см^2','0,5625 дм^²','0,5625 дм ^ ²','5625 мм2']){
+  assert.match(submit(answer),/Численный ответ верен/);
+ }
+ for(const answer of ['9/16 см²','0,56251 дм²','9/16 дм','9/0','0,56 дм²','9/16 или 1','-9/16','']){
+  assert.doesNotMatch(submit(answer),/Численный ответ верен/);
+ }
+ open(547,1);assert.match(submit('24 см²'),/в единицах, указанных в задании/);assert.match(submit('2400'),/Численный ответ верен/);
+ open(597,2);assert.match(submit('240/34 см'),/Численный ответ верен/);assert.doesNotMatch(submit('7,06 см'),/Численный ответ верен/);
+ open(228);assert.match(submit('116/2°'),/Численный ответ верен/);assert.doesNotMatch(submit('58 см'),/Численный ответ верен/);
+ open(751);assert.match(submit('0,04 м'),/Численный ответ верен/);
+ const key='mathExamTextbook.v1:atanasyan-2023-7-9:atanasyan-7-9-main-751-part-1:r1';
+ assert.equal(JSON.parse(w.localStorage.getItem(key)).checked,false);assert.equal(JSON.parse(w.localStorage.getItem(key)).assisted,false);
+ const input=d.getElementById('final-answer');input.value='Обоснование записано отдельно.\n4 см';input.dispatchEvent(new w.Event('input',{bubbles:true}));
+ assert.equal(d.querySelector('[data-quantity-feedback]').textContent,'');app.home();open(751);assert.equal(d.getElementById('final-answer').value,input.value);
+ open(46);assert.equal(d.querySelector('[data-quantity-check]'),null,'Construction needs more than the given angle');
+ open(228,3);assert.equal(d.querySelector('[data-quantity-check]'),null,'Symbolic dependence is not a single number');
+ checks++;app.destroy();dom.window.close();
+}
+
+{
  const {dom,w,d,app}=setup();assert(app.open(sample.id));
  const input=d.getElementById('final-answer');input.value='Доказательство с обоснованием';input.dispatchEvent(new w.Event('input',{bubbles:true}));
  const next=[...d.querySelectorAll('button')].find(b=>b.textContent==='Разобрать по шагам');next.click();next.click();
