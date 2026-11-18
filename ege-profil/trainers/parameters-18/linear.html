@@ -202,6 +202,7 @@
   </section>
 </div>
 
+<script src="number-input.js"></script>
 <script>
 (function(){
   "use strict";
@@ -387,18 +388,18 @@
         +'<path d="M'+ox+' '+PY(ymax)+' l-4 7 h8 z" fill="#2A2F38"/>'
         +line+dots+'</svg>';
     }
-    function norm(v){ return (v==null?"":(""+v).trim().replace(",",".")); }
     $("#gCheck").addEventListener("click",function(){
       if(!cur) return;
-      var ak=norm(gk.value), ab=norm(gb.value);
-      if(ak===""||ab===""){ fb.className="feedback warn on"; fb.textContent="Впиши оба коэффициента."; return; }
-      var ok=(+ak===cur.k)&&(+ab===cur.b);
+      var ak=parseParameterNumber(gk.value), ab=parseParameterNumber(gb.value);
+      if(ak===null||ab===null){ fb.className="feedback warn on"; fb.textContent="Впиши оба коэффициента."; return; }
+      var ok=(ak===cur.k)&&(ab===cur.b);
       if(ok){
         streak++; if(streak>best){best=streak; save({drillBest:best});}
         streakEl.textContent=streak; bestEl.textContent=best;
         fb.className="feedback ok on";
-        fb.textContent="Верно: y = "+cur.k+"x "+(cur.b>=0?"+ "+cur.b:"− "+(-cur.b))+". Следующий график →";
-        setTimeout(gen,650);
+        fb.textContent="Верно: y = "+cur.k+"x "+(cur.b>=0?"+ "+cur.b:"− "+(-cur.b))+". Нажми «Новый график», чтобы продолжить.";
+        cur=null;
+        $("#gNew").focus();
       } else {
         streak=0; streakEl.textContent=0;
         fb.className="feedback bad on";
@@ -498,11 +499,10 @@
     $$("[data-sol]",list).forEach(function(btn){
       btn.addEventListener("click",function(){ $("#qsol"+btn.dataset.sol).classList.toggle("on"); });
     });
-    function num(v){ v=(v||"").trim().replace(",","."); if(v==="") return null; var n=parseFloat(v); return isNaN(n)?NaN:n; }
     $("#quizCheck").addEventListener("click",function(){
       var right=0, filled=0;
       $$("input[data-i]",list).forEach(function(inp,i){
-        var n=num(inp.value); var d=dots.children[i];
+        var n=parseParameterNumber(inp.value); var d=dots.children[i];
         d.className="";
         if(n===null){ return; }
         filled++;

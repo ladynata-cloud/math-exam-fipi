@@ -109,6 +109,7 @@ module.exports = {
     assert.equal(await page.locator('#ansIn').inputValue(), '');
   },
   async 'oge-task15-triangles'(page) {
+    await require('./oge-task15-model.browser.cjs')(page);
     const task = await page.evaluate(() => ({ answer: tr.t.ans, steps: tr.t.steps.length }));
     await graphic(page.locator('#main .diagram svg'));
     const model = page.locator('#oge-video-models');

@@ -6,6 +6,11 @@ const server=http.createServer((req,res)=>{let f=path.resolve(root,'.'+decodeURI
 const page=await browser.newPage({viewport:{width:1280,height:900}});page.setDefaultTimeout(10000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
 const go=async(route)=>{await page.goto(base+'#'+route);await page.locator('h1').waitFor();if(await page.locator('.m9-model-details').count()){await page.locator('.m9-model-details > summary').click();}if(await page.locator('#v6-theory').count()){await page.locator('details:has(> #v6-theory) > summary').click();}};
 const answerFor=()=>page.evaluate(()=>{const s=JSON.parse(localStorage.getItem(WorkshopState.KEY)),t=WorkshopMath.generate(s.last.skill,s.last.seed),fmt=a=>Array.isArray(a)?a.map(fmt).join(';'):typeof a==='object'?WorkshopMath.fmt(a):String(a);return t.answerFormat==='m9-pairs'?t.answer.map(p=>'('+p.map(fmt).join(';')+')').join(';'):fmt(t.answer);});
+await go('lesson/m9f-root-square');
+await page.locator('.skip').focus();
+await page.keyboard.press('Enter');
+assert.equal(await page.evaluate(()=>location.hash),'#lesson/m9f-root-square');
+assert.equal(await page.evaluate(()=>document.activeElement.id),'main');
 await go('course/makarychev9');assert.equal(await page.locator('.m9-unit-card').count(),31);assert.equal(await page.locator('.m9-unit-card .warm').count(),5);assert.match(await page.locator('main').innerText(),/2023/);await page.locator('#m9-search').fill('пункт 17');assert.equal(await page.locator('#m9-search-results a').count(),3);await page.screenshot({path:path.join(shots,'course-desktop.png'),fullPage:true});
 await go('m9-unit/10');assert.equal(await page.locator('.skill-row').count(),3);await page.locator('summary').click();await page.locator('a[href="#lesson/m9-10"]').click();await page.locator('h1').waitFor();assert.match(page.url(),/lesson\/m9-10/);
 const ids=await page.evaluate(()=>WorkshopCurriculum.pathById.makarychev9.ids);

@@ -123,7 +123,27 @@ const taskKeySource=read('ege-baza/path/app.js').match(/^function taskKey\(t\)\{
 const taskKey=vm.runInNewContext('('+taskKeySource+')');
 const oldIdentity=spec=>crypto.createHash('sha256').update(JSON.stringify({trainerId:spec.trainerId,contentId:spec.contentId,prompt:spec.task.q||spec.task.prompt,choices:spec.task.choices,labels:spec.task.labels,display:spec.task.display,model:spec.task.model,divisionTask:spec.divisionTask})).digest('hex');
 const oldPublicKey=task=>!task.display&&!task.choices?task.q:JSON.stringify([task.q,task.display||null,(task.labels||[]).slice().sort(),(task.choices||[]).slice().sort()]);
-for(const before of legacy){const spec=contracts.create('ege-path',before.id,23).taskSpec;assert.equal(contracts.questionIdentity(spec),oldIdentity(spec),before.id+' legacy managed identity');assert.equal(taskKey(spec.task),oldPublicKey(spec.task),before.id+' legacy standalone identity');}
+function archivedNotebookTask(id, task) {
+ if (id === 'round') {
+  const {k} = task.model;
+  return {...task, q: `Для класса нужно ${k * 9 + 4} тетрадей. В упаковке 9 тетрадей. Сколько упаковок нужно купить?`};
+ }
+ if (id === 'practice-change') {
+  const {n, price, paid} = task.params;
+  return {...task, q: `Купили ${n} тетрадей по ${price} рублей и отдали ${paid} рублей. Сколько рублей сдачи получат?`};
+ }
+ return task;
+}
+for (const before of legacy) {
+ const seeds = ['round', 'practice-change'].includes(before.id) ? [0, 1, 2, 7, 23, 29] : [23];
+ for (const seed of seeds) {
+  const spec = contracts.create('ege-path', before.id, seed).taskSpec;
+  const archived = {...archivedNotebookTask(before.id, spec.task)};
+  delete archived.progressKey;
+  assert.equal(contracts.questionIdentity(spec), oldIdentity({...spec, task: archived}), before.id + ' legacy managed identity');
+  assert.equal(taskKey(spec.task), oldPublicKey(archived), before.id + ' legacy standalone identity');
+ }
+}
 let reshuffles=0;
 for(const meta of families){
  const spec=contracts.create('ege-path',meta.id,23).taskSpec;if(!spec.task.choices)continue;
