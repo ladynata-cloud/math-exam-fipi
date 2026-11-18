@@ -8,6 +8,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '../..');
 const manifest = require('./visibility-migration.json');
+const {beforeProfileComposition} = require('./visibility-profile-runtime-migration.cjs');
 const originals = Object.freeze({
   'stereo-course/assets/task-scene-viewer.js': 'a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6',
   'stereo-course/assets/task-scenes.css': '5dbecdc2c98fbb030bcc4dba224f3b4ae89af292579a5136942810be75fd2cbf'
@@ -26,7 +27,7 @@ function assertVisibilityMigration(file, expected, read = name => fs.readFileSyn
     assert.equal(hash(read(row.beforeFixture)), original, 'archived visibility asset is byte-identical: ' + name);
     assert.match(row.afterSHA256, /^[a-f0-9]{64}$/, 'a frozen reviewed visibility hash is required: ' + name);
     assert.notEqual(row.afterSHA256, original, 'visibility correction must not name the broken original: ' + name);
-    assert.equal(hash(read(name)), row.afterSHA256, 'exact reviewed visibility migration: ' + name);
+    assert.equal(hash(beforeProfileComposition(name, read(name))), row.afterSHA256, 'exact reviewed visibility migration: ' + name);
   }
   assert.equal(expected, originals[file], 'original historical hash must remain unchanged: ' + file);
 }
