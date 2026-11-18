@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const {chromium} = require('playwright');
+const checkPracticeAndArea = require('./geometry-practice-and-area.browser.cjs');
 const root = path.resolve(__dirname, '..');
 const origin = 'https://mathexam.space';
 const mime = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.json':'application/json', '.svg':'image/svg+xml'};
@@ -168,6 +169,8 @@ async function oge(page) {
       for(const id of ['triangle','circle','practice-diameter-chord'])await base(page,id);
       await oge(page);await vpr(page,3);await vpr(page,4);await textbooks(page);
       for(let i=1;i<=6;i++)await profile(page,i);
+      await checkPracticeAndArea(page,origin);
+      await checkPracticeAndArea.checkManaged(page,origin);
       assert.deepEqual(errors,[]);
       console.log('All seven corrections and six dihedral variants at '+width+'px');
     }finally{await browser.close();}

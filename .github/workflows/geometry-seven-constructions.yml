@@ -1,4 +1,4 @@
-name: Geometry constructions in seven course exercises
+name: Geometry constructions across courses
 on:
   pull_request:
     paths:
@@ -11,6 +11,14 @@ on:
       - 'trainers/oge-task25-geometry.html'
       - 'trainers/merzlyak-10-base.html'
       - 'trainers/vpr-math/**'
+      - 'geometry-course/assets/area-triangle-proof.js'
+      - 'geometry-course/assets/lesson.js'
+      - 'geometry-course/atlas/area-triangle.html'
+      - 'geometry-merzlyak/assets/lesson.js'
+      - 'geometry-pogorelov/assets/lesson.js'
+      - 'geometry-merzlyak/atlas/merzlyak-base-8-22.html'
+      - 'geometry-pogorelov/atlas/pogorelov-base-9-126.html'
+      - 'tools/geometry-practice-and-area.browser.cjs'
       - 'tools/geometry-seven-constructions.browser.cjs'
       - '.github/workflows/geometry-seven-constructions.yml'
 permissions:
