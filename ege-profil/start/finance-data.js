@@ -21850,7 +21850,7 @@
     },
     "links": [
       {
-        "title": "ФИПИ: проект демоверсии ЕГЭ-2027, профильная математика (ZIP)",
+        "title": "ФИПИ: демоверсия ЕГЭ-2027, профильная математика (ZIP)",
         "href": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip"
       }
     ],
@@ -22262,8 +22262,8 @@
               {
                 "catalogueId": "fipi-demo-2027-profile-13",
                 "url": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip",
-                "label": "Проект демоверсии 2027, №13",
-                "printedPage": 13
+                "label": "Демоверсия ЕГЭ-2027, №16: общая структура; условия упражнений авторские",
+                "printedPage": 15
               }
             ]
           }
@@ -23280,8 +23280,8 @@
               {
                 "catalogueId": "fipi-demo-2027-profile-13",
                 "url": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip",
-                "label": "Проект демоверсии 2027, №13",
-                "printedPage": 13
+                "label": "Демоверсия ЕГЭ-2027, №16: общая структура; условия упражнений авторские",
+                "printedPage": 15
               }
             ]
           }

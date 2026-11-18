@@ -22,14 +22,42 @@ taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348
 // Prior bracket source: 88d8eb2cd8fdefa95b0aae7d6954a60c914e118d;
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
-const task9ReviewedScript='545a2cfec5f8de1cbb3528650d16f9df885fe3f160522184a17216ff18020432';
-// Reviewed height diagnostic and exact tangent-area method; full engines stay pinned.
+// Reviewed v3 wording and exact area method composed with main's labelled median diagram.
+// Controls remain compared with the original reviewed source, not the composed hash.
 for(const page of ['trainers/oge-task16-circle.html','trainers/oge-task24-proofs.html','trainers/oge-task25-geometry.html']){
  taskSources[page]='11449d27f9e6e1ffa208195b0d534e72f6a7f40b';
 }
+const reviewedSingleScripts={
+  'trainers/oge-task9-equations.html':'545a2cfec5f8de1cbb3528650d16f9df885fe3f160522184a17216ff18020432',
+  'trainers/oge-task25-geometry.html':'66c669d4a3becbebab28ffb86665875e1c1f2ef0662d244bb6d98974595a2ec3'
+};
 // Reviewed results-to-practice UI. The model is still compared to its baseline.
 const analogue='trainers/oge-2027-analogue-1.html';
 const analogueReviewedApp='593d785fa27ad62d4b073066e414e029fbe283437f47b8e64f59cb1e08830b01';
+// Exact script bytes for the reviewed foundation audit.
+const foundationAuditScripts={
+  "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html": "1fd0ad712d475a8ec0d209df540ccb547ca6d9a4947bc5cf3977598af6a3d69a",
+  "trainers/oge-basics/decimal-add-subtract.html": "5b29dec7331f20a06d1b4d2f13e3b1cc1e8037176c61875e63cf22f9d5d35e82",
+  "trainers/oge-basics/fraction-common-denominator.html": "35d28ebf601603246777c91af8e46b7c23f54ccba32de45387acc9d57c90da5c",
+  "trainers/oge-basics/fraction-meaning.html": "79a9cc5f34d364d97ba341c718dab8aa3ee60e5edc82f86493740fe6173f35a7",
+  "trainers/oge-basics/index.html": "bf06d6a1e1b657d1db183168bf9b8f647369b401a84e314e9b89543a7b3826bc",
+  "trainers/oge-basics/multiplication-division.html": "13d8c60bdaadb67805ee7bc642af7a733d5c56a6782ea3fc60da0fc35a9ac193",
+  "trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html": "f88b8b368ef68bc871c66b33ee387550eecf00148cfa7b76d829e6e9be311d94",
+  "trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html": "9b6588088205b6194c9ce80be0919a70e8300ab997d80c34dfc6579952b40da3",
+  "trainers/oge-basics/multiplication-division/division-with-remainder.html": "de0d00d21f7d0437a8b6181cf1c766d5d8b4e45b81b6785920a2b719545a633c",
+  "trainers/oge-basics/multiplication-division/multiplication-ladder.html": "0241ecb25b52c794f8d1ea82939f753c3cb19abc10607b4c58d4e32be7881e14",
+  "trainers/oge-basics/multiplication-division/multiplication-meaning.html": "c446d09f2b9daf65d837c771e26e7f1e2a26c5457993dd28224dafd6ebda4565",
+  "trainers/oge-basics/multiplication-division/multiplication-mixed.html": "1857bb69d8c3ec5fde402623725f3bab095da9c35e97442e6e0ed49f4d905efc",
+  "trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html": "3f0321aaf0c6416c4907eb8c346d9deabc8beebba87d6d37d7f5d550bdc7fe8e",
+  "trainers/oge-basics/multiplication-division/multiplication-tricks.html": "af1044919b0c9d98094aba52bfb6d3366a83388f9358e7c896fa7edd0ba73b84",
+  "trainers/oge-basics/multiplication-division/tabular-division.html": "db1c26b98a54a38dcd461feb05b27df508d8d3c90f58d357a4bd028b267e6ca3",
+  "trainers/oge-basics/negative-add-subtract.html": "544876c7cd3afe09325897a33a856d8bdcab51c1c8479fee9e9e9db780ac5bc6",
+  "trainers/oge-basics/negative-number-line.html": "684aafc6f79aa1d2ecf6e5d523ba440eaef41990723835c49e65c401355598ff",
+  "trainers/oge-basics/order-of-operations.html": "31809bfb5ec6f25865cc9b5e6f64adec7a43e6b5f15875da688a62cf91708958",
+  "trainers/oge-basics/rounding.html": "b55415ff9db22b14147ed725f9fabca9f7196acb3c5946fb923a45ea04d50c23",
+  "trainers/oge-basics/units-area.html": "88468737e4f1ed5c06b8ba9363bdb06eada8f5e3380268b96cdc4b0632f00163",
+  "trainers/oge-basics/units-length-time.html": "8cfa0c0556040ac07e629010814d0c5e8fc93558c6277e5cc0bad94017cf2a51"
+};
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 const exportsByPage=new Map(JSON.parse(read('downloads/trainers-manifest.json')).trainers
@@ -88,13 +116,15 @@ for(const p of routes.pages){
     const index=actualScripts.indexOf(matches[0]);
     actualScripts[index]=restoreRootTeaching(restoreRootAcceptance(matches[0],'learning'));
   }
-  if(p==='trainers/oge-task9-equations.html'){
+  if(Object.hasOwn(reviewedSingleScripts,p)){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
-    assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),task9ReviewedScript,p+' exact reviewed inline engine');
+    assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),reviewedSingleScripts[p],p+' exact reviewed inline engine');
   }else if(p===analogue){
     assert.equal(actualScripts.length,2,p+' one model and one app');
     assert.equal(actualScripts[0],scripts(baseline)[0],p+' task data and grading preserved');
     assert.equal(createHash('sha256').update(actualScripts[1]).digest('hex'),analogueReviewedApp,p+' exact reviewed practice route');
+  }else if(Object.hasOwn(foundationAuditScripts,p)){
+    assert.equal(createHash('sha256').update(JSON.stringify(scripts(d))).digest('hex'),foundationAuditScripts[p],p+' exact reviewed foundation scripts');
   }else{
     assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   }

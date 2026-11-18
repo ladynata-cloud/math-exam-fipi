@@ -30,9 +30,11 @@ const assert=require('node:assert/strict');
 const WAYFINDING_HEAD='<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">\n<script defer src="/assets/oge-wayfinding.js"></script>\n';
 const WAYFINDING_BAR='\n<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>\n';
 const FRACTIONS_ROUTE='/trainers/oge-task6-fractions.html';
+const {fractionsReturn,restoreFractionsReturn}=require('./oge-fractions-return-preservation.cjs');
 const REMOVED_RETURN_POSITION='<main class="wrap">\n\n<header>';
 const ORIGINAL_RETURN_POSITION='<main class="wrap">\n<nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>\n<header>';
 function originalWayfindingHtml(html,route=''){
+ if(route===FRACTIONS_ROUTE) html=restoreFractionsReturn(html);
  assert.equal(html.split(WAYFINDING_HEAD).length,2,'one exact wayfinding asset pair');
  assert.equal(html.split(WAYFINDING_BAR).length,2,'one exact wayfinding bar');
  let original=html.replace(WAYFINDING_HEAD,'').replace(WAYFINDING_BAR,'');
@@ -49,7 +51,8 @@ function originalWayfindingHtml(html,route=''){
  const fixture=original.replace('</head>',WAYFINDING_HEAD+'</head>').replace('<body>','<body>'+WAYFINDING_BAR);
  assert.equal(originalWayfindingHtml(fixture),original);
  for(const mutated of [fixture.replace(WAYFINDING_BAR,''),fixture.replace(WAYFINDING_BAR,WAYFINDING_BAR+WAYFINDING_BAR),fixture.replace('aria-label="Навигация ОГЭ"','onclick="changed()" aria-label="Навигация ОГЭ"'),fixture.replace(' defer ',' async '),fixture.replace('/trainers/oge-course/','/changed/')])assert.throws(()=>originalWayfindingHtml(mutated));
- const fractions=fixture.replace('<p>Exact condition</p>',REMOVED_RETURN_POSITION+'Exact condition</header></main>');
+ const fractions=fixture.replace(WAYFINDING_HEAD,WAYFINDING_HEAD+fractionsReturn)
+  .replace('<p>Exact condition</p>',REMOVED_RETURN_POSITION+'Exact condition</header></main>');
  assert.equal(originalWayfindingHtml(fractions,FRACTIONS_ROUTE),original.replace('<p>Exact condition</p>',ORIGINAL_RETURN_POSITION+'Exact condition</header></main>'));
  for(const mutated of [fractions.replace(REMOVED_RETURN_POSITION,'<main class="wrap">\n<header>'),fractions.replace(REMOVED_RETURN_POSITION,REMOVED_RETURN_POSITION+REMOVED_RETURN_POSITION),fractions.replace(REMOVED_RETURN_POSITION,ORIGINAL_RETURN_POSITION),fractions.replace('</main>','<nav class="course-return">relocated</nav></main>')])assert.throws(()=>originalWayfindingHtml(mutated,FRACTIONS_ROUTE));
  assert(originalWayfindingHtml(fractions,'/other.html').includes(REMOVED_RETURN_POSITION),'legacy inverse is route-specific');

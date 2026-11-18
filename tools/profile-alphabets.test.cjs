@@ -8,6 +8,7 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const directory = 'ege-profil/azbuka-metodov';
 const source = name => fs.readFileSync(path.join(root, name), 'utf8');
+globalThis.ProfileExamMap = require('../ege-profil/exam-map.js');
 for (const file of ['catalog', 'data', 'routes', 'engine', 'function-atlas', 'parameter-plane']) require('../' + directory + '/' + file + '.js');
 const catalog = globalThis.ProfileAlphabetCatalog;
 const lessons = globalThis.ProfileAlphabetLessons;
@@ -74,6 +75,7 @@ test('the new routes resume an unfinished step and the atlas hides the previous 
     runScripts: 'outside-only'
   });
   const w = dom.window;
+  w.eval(source('ege-profil/exam-map.js'));
   const engine = globalThis.ProfileAlphabetEngine;
   const draft = {
     phase: 1, attempts: [], helped: false, draft: 'первый черновик', events: [], independent: false
@@ -131,6 +133,7 @@ test('parameter-plane prediction, written reasoning and an independent check wor
   const dom = new JSDOM(source(directory + '/index.html'), { url: entry.href, runScripts: 'outside-only' });
   index.window.close();
   const w = dom.window;
+  w.eval(source('ege-profil/exam-map.js'));
   for (const file of ['catalog', 'data', 'routes', 'engine', 'diagrams', 'function-atlas', 'parameter-plane', 'app'])
     w.eval(source(directory + '/' + file + '.js'));
   const d = w.document;
@@ -181,7 +184,7 @@ test('parameter-plane prediction, written reasoning and an independent check wor
   assert.match(saved.note, /беру x = −a/);
   assert.ok(saved.events.some(event => event.type === 'hint'));
   assert.ok(saved.events.some(event => event.type === 'wrong'));
-  assert.match(d.querySelector('.az-exercise a').href, /#exam\/19$/);
+  assert.match(d.querySelector('.az-exercise a').href, /#fipi\/2027\/18$/);
   w.close();
 });
 
@@ -255,6 +258,7 @@ test('skill map opens the specific lesson with a return path, and existing chall
     runScripts: 'outside-only'
   });
   const w = dom.window;
+  w.eval(source('ege-profil/exam-map.js'));
   for (const file of [directory + '/catalog.js', 'ege-profil/skill-map-data.js', 'ege-profil/skill-map.js']) w.eval(source(file));
   const container = w.document.querySelector('main');
   w.ProfileSkillMap.mount(container, [16]);
@@ -282,6 +286,7 @@ test('skill checks, hint recovery, reload and journal work through the learner i
     runScripts: 'outside-only'
   });
   const w = dom.window;
+  w.eval(source('ege-profil/exam-map.js'));
   for (const file of ['catalog', 'data', 'engine', 'diagrams', 'app']) w.eval(source(directory + '/' + file + '.js'));
   const d = w.document;
   const click = selector => d.querySelector(selector).click();
@@ -303,9 +308,149 @@ test('skill checks, hint recovery, reload and journal work through the learner i
   assert.match(d.querySelector('.az-exercise').textContent, /Самостоятельная проверка пройдена/);
   assert.match(d.querySelector('.az-history').textContent, /Подсказка/);
   assert.equal(d.querySelector('.az-skill-list [aria-current] .az-status').textContent, 'Самостоятельно');
-  assert.equal(d.querySelector('.az-navigation .az-button').getAttribute('href'), '/ege-profil/part-two/index.html#exam/16');
+  assert.equal(d.querySelector('.az-navigation .az-button').getAttribute('href'), '/ege-profil/part-two/#fipi/2027/15');
   const data = JSON.parse(w.localStorage.getItem(engine.storageKey + 'domain/denominator'));
   assert.equal(data.independent, true);
   assert.equal(data.events.filter(event => event.type === 'correct').length, 3);
   w.close();
+});
+
+
+test('official method contexts and legacy query contexts keep their distinct topic identity', () => {
+  const contexts = [
+    ['exam=19', 19, 18, 'parameter-methods'],
+    ['fipi=2027/18', 19, 18, 'parameter-methods'],
+    ['topic=parameters', 19, 18, 'parameter-methods'],
+    ['exam=16', 16, 15, 'interval-signs'],
+    ['fipi=2027/16', 13, 16, 'modeling'],
+    ['exam=17', 17, null, 'modeling'],
+    ['topic=optimization', 17, null, 'modeling'],
+    ['fipi=2027/19', 20, 19, 'written-solution']
+  ];
+  for (const [query, legacy, official, alphabet] of contexts) {
+    const context = catalog.readContext(new URLSearchParams(query));
+    assert.equal(context.number, legacy, query);
+    assert.equal(context.entry.number, official, query);
+    assert.ok(catalog.forNumber(context.number).some(item => item.id === alphabet), query);
+    const href = new URL(catalog.href(alphabet, '', context), 'https://mathexam.space');
+    assert.equal(catalog.readContext(href.searchParams).number, legacy, href.href);
+  }
+  assert.equal(catalog.readContext(new URLSearchParams('fipi=2027/20&exam=19')).entry, null);
+  assert.equal(catalog.readContext(new URLSearchParams('fipi=2026/18')).entry, null);
+  assert.equal(catalog.forOfficial(18).find(item => item.id === 'parameter-methods').route, true);
+  assert.ok(!catalog.forOfficial(19).some(item => item.id === 'parameter-methods'));
+  assert.equal(new URL(catalog.officialHref('parameter-methods', '', 18), 'https://mathexam.space').searchParams.get('fipi'), '2027/18');
+  assert.match(catalog.displayLabel(19), /№\s*18/);
+  assert.match(catalog.displayLabel(17), /Дополнительная тема.*оптимизация/);
+  assert.equal(catalog.safeBack('/ege-profil/part-two/#fipi/2027/18'), '/ege-profil/part-two/#fipi/2027/18');
+  assert.equal(catalog.safeBack('/ege-profil/part-two/#topic/optimization'), '/ege-profil/part-two/#topic/optimization');
+  assert.equal(catalog.safeBack('/ege-profil/part-two/#fipi/2027/20'), '');
+});
+
+test('method catalog shows official labels for both old and new parameter links', () => {
+  for (const query of ['exam=19', 'fipi=2027/18', 'topic=parameters']) {
+    const dom = new JSDOM(source(directory + '/index.html'), {
+      url: 'https://mathexam.space/ege-profil/azbuka-metodov/?' + query,
+      runScripts: 'outside-only'
+    });
+    const w = dom.window;
+    w.eval(source('ege-profil/exam-map.js'));
+    for (const file of ['catalog', 'data', 'routes', 'engine', 'diagrams', 'app']) w.eval(source(directory + '/' + file + '.js'));
+    assert.match(w.document.querySelector('h1').textContent, /Основы для №\s*18/);
+    assert.ok(w.document.querySelector('a[href*="#/parameter-methods"]'));
+    assert.equal(w.document.querySelector('.az-navigation .az-button').getAttribute('href'), '/ege-profil/part-two/#fipi/2027/18');
+    w.close();
+  }
+});
+
+test('skill map keeps legacy progress keys while presenting the official task number', () => {
+  const dom = new JSDOM('<main></main>', { url: 'https://mathexam.space/ege-profil/part-two/#fipi/2027/18', runScripts: 'outside-only' });
+  const w = dom.window;
+  for (const file of ['ege-profil/exam-map.js', directory + '/catalog.js', 'ege-profil/skill-map-data.js', 'ege-profil/skill-map.js']) w.eval(source(file));
+  const map = w.ProfileSkillMapData.maps[19];
+  const first = map.challenges[0];
+  const storageKey = 'mathexam.profile-skill-map.v1.19:' + (first.id || 0);
+  const saved = JSON.stringify({ values: ['мой ответ'], hinted: false, solved: true, mistakes: 0 });
+  w.localStorage.setItem(storageKey, saved);
+  const container = w.document.querySelector('main');
+  w.ProfileSkillMap.mount(container, [19]);
+  container.querySelector('[data-profile-skill-trigger]').click();
+  assert.match(container.querySelector('.profile-skill-subtitle').textContent, /№\s*18/);
+  assert.match(container.querySelector('[data-profile-skill-progress]').textContent, /^Решено 1 из /);
+  assert.equal(w.localStorage.getItem(storageKey), saved);
+  assert.equal(w.localStorage.length, 1);
+  w.close();
+});
+
+test('old skill-map hosts load the common exam map once before presenting labels', async () => {
+  const dom = new JSDOM('<main></main><aside></aside>', { url: 'https://mathexam.space/ege-profil/atanasyan-10-11/lesson.html', runScripts: 'outside-only' });
+  const w = dom.window;
+  for (const file of ['ege-profil/skill-map-data.js', 'ege-profil/skill-map.js']) w.eval(source(file));
+  w.ProfileSkillMap.mount(w.document.querySelector('main'), [15]);
+  w.ProfileSkillMap.mount(w.document.querySelector('aside'), [19]);
+  const scripts = [...w.document.querySelectorAll('script[src]')];
+  assert.equal(scripts.length, 1);
+  assert.equal(scripts[0].getAttribute('src'), '/ege-profil/exam-map.js?v=20261115-fipi-map');
+  assert.equal(w.document.querySelectorAll('[data-profile-skill-trigger]').length, 0);
+  w.eval(source('ege-profil/exam-map.js'));
+  scripts[0].dispatchEvent(new w.Event('load'));
+  await w.ProfileExamMapReady;
+  await Promise.resolve();
+  assert.equal(w.document.querySelectorAll('[data-profile-skill-trigger]').length, 2);
+  assert.match(w.document.querySelector('main .profile-skill-subtitle').textContent, /№\s*14/);
+  assert.match(w.document.querySelector('aside .profile-skill-subtitle').textContent, /№\s*18/);
+  w.close();
+});
+
+test('interval signs continues to each unfinished skill and then to the editable number line', async () => {
+  const dom = new JSDOM(source(directory + '/index.html'), {
+    url: 'https://mathexam.space/ege-profil/azbuka-metodov/?exam=16#/interval-signs/intersect-domain',
+    runScripts: 'outside-only'
+  });
+  try {
+    const w = dom.window, d = w.document;
+    w.scrollTo = () => {};
+    w.eval(source('ege-profil/exam-map.js'));
+    for (const file of ['catalog', 'data', 'engine', 'diagrams', 'app']) w.eval(source(directory + '/' + file + '.js'));
+    const enter = value => {
+      d.querySelector('#az-answer').value = value;
+      d.querySelector('#az-form').dispatchEvent(new w.Event('submit', { bubbles: true, cancelable: true }));
+      d.querySelector('[data-advance]').click();
+    };
+    const follow = async link => {
+      const loaded = new Promise(resolve => w.addEventListener('hashchange', resolve, { once: true }));
+      link.click();
+      await loaded;
+    };
+    const steps = [
+      ['(1;5]', '[-1;4)', 'mark-points'],
+      ['-2', '3', 'test-sign'],
+      ['-', '4', null]
+    ];
+    for (const [warmup, independent, next] of steps) {
+      enter(warmup); enter(independent);
+      assert.match(d.querySelector('.az-exercise h2').textContent, /Самостоятельная проверка пройдена/);
+      assert.ok(d.querySelector('[data-restart]'));
+      const link = d.querySelector('.az-exercise a.az-button.primary');
+      if (next) {
+        assert.equal(new URL(link.href).hash, '#/interval-signs/' + next);
+        assert.equal(new URL(link.href).searchParams.get('exam'), '16');
+        assert.match(link.textContent, new RegExp(catalog.index['interval-signs'].skills[next].title));
+        await follow(link);
+      } else {
+        const target = new URL(link.href);
+        assert.equal(target.pathname, '/ege-profil/trainers/interval-method.html');
+        assert.equal(target.hash, '#t3');
+        assert.match(source(target.pathname.slice(1)), /<div class="tr" id="t3">/);
+      }
+    }
+    const snapshot = new Map([...Array(w.localStorage.length)].map((_, i) => {
+      const key = w.localStorage.key(i); return [key, w.localStorage.getItem(key)];
+    }));
+    await follow(d.querySelector('.az-skill-list a[href$="/mark-points"]'));
+    assert.match(d.querySelector('.az-exercise h2').textContent, /Самостоятельная проверка пройдена/);
+    for (const [key, value] of snapshot) assert.equal(w.localStorage.getItem(key), value);
+  } finally {
+    dom.window.close();
+  }
 });

@@ -30,6 +30,11 @@ for (const [number, file] of Object.entries(entries)) {
     }
     const outside = current.replace('</head>', '</head><script>void "unreviewed";</script>');
     assert.notEqual(restoreVideoModels(file, outside), baseline, 'extra engine bytes are never normalized');
+    if (Number(number) === 15) {
+      const helper = '<script defer src="oge-task15-model.js"></script>\n';
+      assert.equal(restoreVideoModels(file, current.replace(helper, '')), baseline, 'older published page keeps its original native bytes');
+      assert.throws(() => restoreVideoModels(file, current.replace(helper, helper + helper)));
+    }
     if (current.includes('data-trainer-download')) {
       const editedPanel = current.replace('Скачать и изменить', 'Изменённая панель');
       assert.throws(() => restoreVideoModels(file, editedPanel), /exact download panel/);

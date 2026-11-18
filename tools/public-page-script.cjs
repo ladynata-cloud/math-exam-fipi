@@ -48,7 +48,8 @@ function sourceForProfileBoard(root, wrapper) {
   return canonical;
 }
 
-// The public page has scoped map, coaching and introductory vector modules. Board wrappers
+// The official numbering registry is shared and loads first in both surfaces.
+// The public page also has scoped map, coaching and introductory vector modules. Board wrappers
 // deliberately omit them, but must retain every shared learning script in order.
 // Only the explicitly reviewed public cache-stamp changes differ from wrapper URLs;
 // this is not a general query-string normalizer or script ignore list.
@@ -56,31 +57,39 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)]
     .map(match => ({tag: match[0], src: match[1]}));
   const page = scripts(canonical), board = scripts(wrapper);
-  const publicModules = ['../skill-map-data.js?v=20261112-vectors', '../azbuka-metodov/catalog.js?v=20261113-routes',
-    '../skill-map.js?v=20261113-foundations',
-    'journey.js?v=20261113-foundations', 'second-part.js?v=20261109', 'practice-feedback.js?v=20261109-active',
+  const sharedPrefix = ['../exam-map.js?v=20261115-fipi-map'];
+  const publicModules = ['../skill-map-data.js?v=20261115-fipi-map', '../azbuka-metodov/catalog.js?v=20261115-fipi-map',
+    '../skill-map.js?v=20261115-fipi-map',
+    'journey.js?v=20261115-fipi-map', 'second-part.js?v=20261115-fipi-map', 'practice-feedback.js?v=20261109-active',
     'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261113-foundations',
-    'vector-basics-models.js?v=20261112-vectors'];
+    'vector-basics-models.js?v=20261112-vectors', '/assets/trainer-skill-gif.js?v=20261117-research'];
   const pathname = src => new URL(src, 'https://mathexam.space/ege-profil/start/index.html').pathname;
   const publicPaths = new Set(publicModules.map(pathname));
+  const registryPath = pathname(sharedPrefix[0]);
+  assert.deepEqual(page.filter(script => pathname(script.src) === registryPath).map(script => script.src), sharedPrefix,
+    'The public registry is loaded exactly once with the reviewed stamp');
+  assert.equal(page[0]?.tag, '<script defer src="' + sharedPrefix[0] + '"></script>', 'Shared registry precedes all public consumers');
+  const boardRegistry = '/ege-profil/start/' + sharedPrefix[0];
+  assert.deepEqual(board.filter(script => pathname(script.src) === registryPath).map(script => script.src), [boardRegistry],
+    'The board registry is loaded exactly once with the reviewed stamp');
+  assert.equal(board[0]?.tag, '<script defer src="' + boardRegistry + '"></script>', 'Shared registry precedes all board consumers');
   assert.deepEqual(page.filter(script => publicPaths.has(pathname(script.src))).map(script => script.src), publicModules,
     'The public page contains exactly the reviewed public modules, once and in order');
-  assert.deepEqual(page.slice(0, publicModules.length).map(script => script.src), publicModules,
-    'Public-only modules precede the canonical learning runtime');
+  assert.deepEqual(page.slice(sharedPrefix.length, sharedPrefix.length + publicModules.length).map(script => script.src), publicModules,
+    'Public-only modules follow the shared registry and precede the learning runtime');
   for (let index = 0; index < publicModules.length; index++)
-    assert.equal(page[index].tag, '<script defer src="' + publicModules[index] + '"></script>', 'Exact deferred public-module include');
+    assert.equal(page[index + sharedPrefix.length].tag, '<script defer src="' + publicModules[index] + '"></script>', 'Exact deferred public-module include');
   assert.ok(board.every(script => !publicPaths.has(pathname(script.src))), 'Board wrappers must not load public-only modules');
   const cacheStamps = new Map([
     ['geometry-data.js?v=20261112-vectors', 'geometry-data.js'],
-    ['calm-data.js?v=20261112-vectors', 'calm-data.js?v=20261101-finance'],
-    ['calm-ui.js?v=20261113-foundations', 'calm-ui.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261113-foundations', 'app.js?v=20261101-trainer-repair'],
     ['checks.js?v=20261114-numeric-domain', 'checks.js?v=20261101-trainer-repair'],
-    ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair']
+    ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair'],
+    ['app.js?v=20261117-research', 'app.js?v=20261115-fipi-map'],
+    ['course-links.js?v=20261117-h12', 'course-links.js?v=20261115-fipi-map']
   ]);
   for (const current of cacheStamps.keys())
     assert.deepEqual(page.filter(script => pathname(script.src) === pathname(current)).map(script => script.src), [current],
       'Only the reviewed public runtime cache stamp may differ: ' + current.split('?')[0]);
-  return page.slice(publicModules.length).map(script => cacheStamps.get(script.src) || script.src);
+  return [...sharedPrefix, ...page.slice(sharedPrefix.length + publicModules.length).map(script => cacheStamps.get(script.src) || script.src)];
 }
 module.exports = {resolvePublicScript, loadSchoolModels, sourceForProfileBoard, canonicalProfileLearningScripts};

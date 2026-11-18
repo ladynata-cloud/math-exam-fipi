@@ -108,3 +108,45 @@
   font-weight: 700;
 }
 .motion-next { margin: .55rem 0 1rem; }
+
+/* Geometry is read from the drawing to the question on every screen. */
+figure.diagram {
+  display: block;
+  margin: 0;
+}
+figure.diagram svg {
+  width: 100%;
+  margin-inline: auto;
+}
+.diagram + .task-prompt, .worked-example .diagram + p {
+  margin-top: 12px;
+}
+.task-prompt + .task-top {
+  margin: 10px 0 0;
+}
+.task-prompt + .diagram {
+  margin-top: 12px;
+}
+.diagram:not(.constructed) [data-construction] {
+  display: none;
+}
+.diagram figcaption {
+  padding: 3px 14px 9px;
+  font-size: .94rem;
+  line-height: 1.4;
+  color: var(--ink);
+  text-align: center;
+}
+.figure-work .step.current {margin:.5rem 0 0;padding:.4rem 0 0;border:0;border-radius:0;box-shadow:none;}
+.figure-work .step-head {margin-bottom:.25rem;}
+.figure-work .step.current h3 {margin:.2rem 0 .45rem;}
+.figure-work > .diagram + .task-prompt {margin:.4rem 0 0;}
+.figure-work figcaption {padding:.15rem .4rem .3rem;}
+.figure-work .task-top, .figure-work .figure-condition {margin: .6rem 0 0;}
+.figure-work ~ .mode-note {display: none;}
+@media (min-width: 750px) {
+  .task-card.figure-work {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:1rem;align-items:start;}
+  .figure-work > figure {grid-column:1;grid-row:1 / span 4;}
+  .figure-work > :is(.task-prompt,.step,.task-top,.figure-condition) {grid-column:2;}
+  .figure-work > .task-prompt {margin-top:0;}
+}

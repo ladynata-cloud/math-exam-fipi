@@ -3,9 +3,9 @@
 import argparse
 import hashlib
 import json
-import shutil
 from copy import deepcopy
 from pathlib import Path
+from build_candidate import copy_review_site
 from build_course import ROOT, COURSE, read, digest
 from advanced8_release import historical_ix_projection, previous_scope, serialized, BASE_BUNDLE_SHA
 
@@ -63,7 +63,7 @@ def build(output):
     output=Path(output).resolve()
     if output==ROOT or ROOT in output.parents or output.exists():
         raise ValueError('Choose a new output directory outside the repository')
-    target=output/'geometry-course/textbook';shutil.copytree(COURSE,target)
+    target=copy_review_site(output)
     bundle=candidate()
     (target/'data/course.json').write_text(json.dumps(bundle,ensure_ascii=False,separators=(',',':'))+'\n')
     scope=previous_scope(read(ROOT/'tools/geometry-textbook/release-scope.json'))
@@ -71,7 +71,7 @@ def build(output):
     scope['totalCards']+=18
     dest=output/'tools/geometry-textbook';dest.mkdir(parents=True)
     (dest/'release-scope.json').write_text(json.dumps(scope,ensure_ascii=False,indent=2)+'\n')
-    preview='''<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Атанасян: проверка задач 824–841</title><link rel="stylesheet" href="assets/style.css"><div id="textbook-app">Загрузка материалов на проверке…</div><script src="assets/math-text.js"></script><script src="assets/planar-viewer.js"></script><script src="assets/engine.js"></script><script>fetch('data/course.json').then(r=>r.json()).then(bundle=>{window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),{...bundle,allowInReview:true});});</script></html>'''
+    preview='''<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Атанасян: проверка задач 824–841</title><link rel="stylesheet" href="assets/style.css"><div id="textbook-app">Загрузка материалов на проверке…</div><script src="assets/math-text.js"></script><script src="assets/planar-viewer.js"></script><script src="assets/engine.js"></script><script src="/assets/geometry-step-views.js"></script><script>fetch('data/course.json').then(r=>r.json()).then(bundle=>{window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),{...GeometryStepViews.prepare(bundle),allowInReview:true});});</script></html>'''
     (target/'review.html').write_text(preview)
     # index.html is the unchanged ordinary entry: it still excludes candidates.
     (output/'candidate-evidence.json').write_text(json.dumps(dict(sourceSha256=hashlib.sha256(AUTHOR.read_bytes()).hexdigest(),

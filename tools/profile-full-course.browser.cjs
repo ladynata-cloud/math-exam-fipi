@@ -13,6 +13,7 @@ const prerequisiteLessons = require('../ege-profil/start/readiness-data');
 const vectorBasics = require('../ege-profil/start/vector-basics-data');
 const lessons = [...oldLessons, ...addedLessons, ...prerequisiteLessons, ...vectorBasics];
 const KEY = 'mathexam.profileStart2027.v1';
+const currentExams = require('../ege-profil/start/calm-data.js').official.filter(entry => entry.part === 1);
 const root = path.resolve(__dirname, '..');
 const shots = process.env.PROFILE_FULL_COURSE_SHOTS || '/tmp/profile-full-course-shots';
 const mime = {'.js':'text/javascript', '.css':'text/css', '.json':'application/json', '.svg':'image/svg+xml'};
@@ -37,7 +38,7 @@ const server = http.createServer((req, res) => {
     fs.mkdirSync(shots, {recursive:true});
     assert.equal(new Set(lessons.map(l => l.id)).size, lessons.length, 'Lesson IDs are unique across old and new banks');
     assert.equal(new Set(lessons.flatMap(l => l.tasks.map(t => t.id))).size, lessons.reduce((n,l) => n+l.tasks.length,0), 'Task IDs are unique');
-    for (const n of Array.from({length:13}, (_,i) => i+1)) assert(lessons.some(l => l.position===n), 'Real content for first-part position '+n);
+    for (const n of Array.from({length:13}, (_,i) => i+1)) assert(lessons.some(l => l.position===n), 'Preserved content for legacy group '+n);
     async function learner(width = 1280) {
       const context = await browser.newContext({viewport:{width,height:900}});
       contexts.push(context);
@@ -112,18 +113,19 @@ const server = http.createServer((req, res) => {
       }
     }
 
-    // All thirteen cards lead to their own real topics and first learning activity.
+    // All twelve official cards lead to their current topic; old numeric URLs are checked separately.
     await go('#part-one');
-    assert.equal(await page.locator('.exam-card[href^="#exam/"]').count(), 13);
+    assert.equal(await page.locator('[data-calm-exam]').count(), 12);
+    assert.deepEqual(await page.locator('[data-calm-exam]').evaluateAll(nodes=>nodes.map(node=>Number(node.dataset.calmExam))), Array.from({length:12},(_,i)=>i+1));
     const actualIds = await page.evaluate(() => globalThis.ProfileLessons.map(l => l.id).sort());
     assert.deepEqual(actualIds, lessons.map(l => l.id).sort(), 'No script overwrite or missing bank');
     // Keep navigation-only attempts separate from the pupil who later learns a
     // topic and earns fresh independent credit. Reading a rule must continue to
     // mark any already-open independent attempt as assisted.
     const catalogue = await learner();
-    for (let number=1; number<=13; number++) {
+    for (let number=1; number<=12; number++) {
       await go('#part-one', catalogue);
-      await catalogue.locator('.exam-card[href="#exam/'+number+'"]').click();
+      await catalogue.locator('[data-calm-exam="'+number+'"] a[href="#fipi/2027/'+number+'"]').click();
       if (number === 2) {
         const vectorEntry = catalogue.locator('[data-vector-basics-entry]');
         await vectorEntry.waitFor();
@@ -134,16 +136,22 @@ const server = http.createServer((req, res) => {
         await noOverflow(catalogue, 'position 2 introduction');
         continue;
       }
-      await catalogue.locator('.exam-topic').first().waitFor();
-      assert.equal(await catalogue.locator('.exam-topic').count(), lessons.filter(l => l.position===number).length, 'All topics discoverable for position '+number);
-      await catalogue.locator('#exam-start').click();
+      const expected = currentExams.find(entry=>entry.number===number);
+      await catalogue.locator('section.panel > .readiness-card').first().waitFor();
+      assert.deepEqual(await catalogue.locator('section.panel > .readiness-card a[href^="#practice/"]').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('href').split('/')[1])), expected.lessonIds, 'All current topic IDs discoverable for position '+number);
+      await catalogue.locator('[data-exam-start="'+number+'"]').click();
       await catalogue.locator('#answer-form').waitFor();
       const practiceHash = new URL(catalogue.url()).hash;
       assert.match(practiceHash, /^#practice\/.+\/independent$/);
       const entryId = practiceHash.split('/')[1];
-      assert.equal(lessons.find(lesson => lesson.id === entryId).position, number, 'The task belongs to the selected exam number');
+      assert(expected.lessonIds.includes(entryId), 'The task belongs to the selected official exam number');
       assert.equal((await session(entryId, 'independent', catalogue)).assisted, false, 'Starting an exam task does not supply help');
       await noOverflow(catalogue, 'position '+number);
+    }
+    for(let legacy=1;legacy<=13;legacy++){
+      await go('#exam/'+legacy,catalogue);
+      if(legacy===2)await catalogue.locator('[data-vector-basics-entry]').waitFor();
+      else assert.equal(await catalogue.locator('.exam-topic').count(),lessons.filter(lesson=>lesson.position===legacy).length,'Legacy route preserves its complete topic group '+legacy);
     }
     await go('#first-three');
     assert.equal(await page.locator('.exam-card').count(), 3, 'Previous first-three link still opens the short route');
@@ -242,7 +250,7 @@ const server = http.createServer((req, res) => {
     await go('#practice/geo-right/guided');
     await finish('geo-right');
     await go('#lesson/trig-angle');
-    await page.locator('#explore-lab summary').click();
+    await page.locator('#explore-lab > summary').click();
     await page.locator('#lab svg').first().waitFor();
     await go('#practice/algebra-logarithmic/guided');
     await finish('algebra-logarithmic');

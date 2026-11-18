@@ -143,7 +143,39 @@
     }
     draw();
   }
+  function squareEquationModel(host) {
+    const ui = frame(host, 'Какие числа в квадрате дают a?', 'Меняй правую часть уравнения. Точка на числовой прямой отмечает каждое подходящее значение x.');
+    let a = 16;
+    slider(ui.controls, 'Правая часть a', -16, 100, a, 1, value => { a = value; draw(); });
+    function draw() {
+      const side = rootValue(a);
+      const roots = side === null ? [] : side === 0 ? [0] : [-side, side];
+      const label = 'Корни уравнения x² = ' + n(a);
+      const axis = chart(label, 520, 100), x = value => 260 + 21 * value;
+      line(axis, x(-11), 45, x(11), 45);
+      for (let tick = -10; tick <= 10; tick += 2) {
+        line(axis, x(tick), 40, x(tick), 50);
+        text(axis, x(tick), 77, n(tick));
+      }
+      text(axis, x(11), 32, 'x');
+      roots.forEach(value => circle(axis, x(value), 45, 6, GREEN));
+      ui.visual.replaceChildren(equation('x² = ' + n(a)), axis);
+      if (a < 0) {
+        ui.result.textContent = 'Действительных корней нет. Квадрат любого действительного числа больше или равен нулю.';
+      } else if (a === 0) {
+        ui.result.textContent = 'Один корень: x = 0. Только ноль при возведении в квадрат даёт ноль.';
+      } else {
+        const exact = Number.isInteger(side);
+        const rootsText = exact ? 'x₁ = ' + n(-side) + ', x₂ = ' + n(side) + '.'
+          : 'x₁ = −√' + n(a) + ' ≈ ' + n(-side) + ', x₂ = √' + n(a) + ' ≈ ' + n(side) + '.';
+        ui.result.replaceChildren(el('p', 'm8-roots', 'Два корня: ' + rootsText),
+          el('p', '', 'Два противоположных числа дают один и тот же квадрат. Знак √ обозначает только неотрицательный корень.'));
+      }
+    }
+    draw();
+  }
   function rootModel(host, lesson) {
+    if (Number(lesson.order) === 12) return squareEquationModel(host);
     const signed = [16, 17, 18].includes(Number(lesson.order));
     const ui = frame(host, signed ? 'Корень из квадрата — модуль' : 'Площадь известна. Найди сторону.', signed ? 'Сдвинь число через нуль. Длина стороны остаётся неотрицательной.' : 'Меняй площадь квадрата. Проследи, как меняются длина стороны и ближайшие целые числа.');
     let value = signed ? -4 : 16;
@@ -318,6 +350,14 @@
     const order=Number(lesson.order);
     if(lesson.model==='rational')return { question:'После сокращения (x² − a²)/(x − a) можно подставить x = a?', options:['Можно: осталось x + a.','Нельзя: исходный знаменатель равен нулю.'], answer:1, challenge:'Выбери a, затем нажми «Проверить x = a». Сравни две записи.', explanation:'Почему запрет сохраняется?', choices:['Мы сравниваем значения исходного выражения; при x = a его нет.','Сокращение определяет дробь в любой точке.'], correct:0, goal:v=>Number(v[0])===Number(v[1])};
     if(lesson.model==='root'&&[16,17,18].includes(order))return {question:'При a < 0 чему равно √(a²)?',options:['a','−a'],answer:1,challenge:'Введи отрицательное a, отличное от начального. Сравни число и сторону квадрата.',explanation:'Почему результат не отрицательный?',choices:['Арифметический корень равен |a|, а длина неотрицательна.','Возведение в квадрат сохраняет знак a.'],correct:0,goal:v=>Number(v[0])<0};
+    if (lesson.model === 'root' && order === 12) return {
+      question: 'Если положительное a в уравнении x² = a увеличить в 4 раза, как изменится положительный корень?',
+      options: ['Увеличится в 2 раза.', 'Увеличится в 4 раза.'], answer: 0,
+      challenge: 'Сравни положительные корни при a = 4 и a = 16. Можно также проверить, сколько корней останется при нуле и при отрицательном a.',
+      explanation: 'Как найти положительный корень уравнения x² = a при a > 0?',
+      choices: ['Взять арифметический квадратный корень из a.', 'Разделить a пополам.'], correct: 0,
+      goal: v => [4, 16].includes(Number(v[0]))
+    };
     if(lesson.model==='root')return {question:'Если площадь увеличить в 4 раза, как изменится сторона квадрата?',options:['Увеличится в 2 раза.','Увеличится в 4 раза.'],answer:0,challenge:'Сравни площади 4 и 16. Запиши наблюдение о сторонах.',explanation:'Как объяснить найденную связь?',choices:['Сторона равна квадратному корню из площади.','Сторона равна половине площади.'],correct:0,goal:v=>[4,16].includes(Number(v[0]))};
     if(lesson.model==='quadratic')return {question:'При a = 0 уравнение ax² + bx + c = 0 всегда имеет два корня?',options:['Да.','Нет: нужно исследовать bx + c = 0.'],answer:1,challenge:'Поставь a = 0. Затем меняй b и c; проверь один корень, отсутствие корней и тождество.',explanation:'Почему формула с делением на 2a здесь не подходит?',choices:['Нельзя делить на 0; это уже не квадратное уравнение.','Любое уравнение без x² не имеет корней.'],correct:0,goal:v=>Number(v[0])===0};
     if(lesson.model==='inequalities')return {question:'Можно ли умножить неравенство на 0 и получить равносильное?',options:['Можно.','Нельзя: разные числа станут одинаковыми.'],answer:1,challenge:'Поставь m = 0, затем сравни положительный и отрицательный множители.',explanation:'При отрицательном множителе…',choices:['направление неравенства меняется.','направление неравенства сохраняется.'],correct:0,goal:v=>Number(v[1])<0};

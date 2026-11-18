@@ -48,7 +48,7 @@ const server = http.createServer((req, res) => {
       assert.equal(await page.locator('h1').innerText(), 'Лаборатория репетитора');
       await page.locator('.site-nav a[href="/trainers/oge-basics/"]').click();
       await page.waitForURL(origin + '/trainers/oge-basics/');
-      assert.equal(await page.locator('[data-topic="ogeBasicsDecimals"] .topic-progress').innerText(), '3/5');
+      assert.equal(await page.locator('[data-topic="ogeBasicsDecimals"] .topic-progress').innerText(), 'Лучший · 3/5');
       assert.deepEqual(await page.evaluate(() => JSON.parse(localStorage.getItem('mathExamCourseProgress.v1'))), { ogeBasicsDecimals: { best: 3 } });
       const division = page.locator('.map-hero .btn.primary');
       assert((await division.getAttribute('href')).endsWith('long-division-from-simple-to-decimals.html'));
