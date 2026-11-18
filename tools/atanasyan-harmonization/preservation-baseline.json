@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "base": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "groups": [
+    {
+      "group": "geometry_textbook",
+      "paths": [
+        "geometry-course/textbook/"
+      ],
+      "excluded": [
+        "geometry-course/textbook/index.html"
+      ],
+      "fileCount": 109,
+      "sha256": "42bbde1829fc8ce03e002f8856354d4dae7486e1c31da1c2291f32f72180737b"
+    },
+    {
+      "group": "first_steps",
+      "paths": [
+        "learning/atanasyan-first-steps/",
+        "geometry-course/first-steps/"
+      ],
+      "excluded": [
+        "geometry-course/first-steps/index.html"
+      ],
+      "fileCount": 5,
+      "sha256": "af178339e5e17c4f277149fb95790390cb3f13896911cad37ab16a15d0b7506d"
+    },
+    {
+      "group": "legacy_trainers",
+      "paths": [
+        "geometry-course/trainers/",
+        "geometry-course/data/legacy.json"
+      ],
+      "excluded": [],
+      "fileCount": 71,
+      "sha256": "d286aaab278f42c5e3d4930e11292aa54d1b169f3e15bc2298c8564a9f926434"
+    },
+    {
+      "group": "stereo_textbook",
+      "paths": [
+        "stereo-course/textbook/data/",
+        "stereo-course/textbook/lessons/",
+        "stereo-course/textbook/schema/",
+        "stereo-course/textbook/source-index.json"
+      ],
+      "excluded": [],
+      "fileCount": 678,
+      "sha256": "b483146902d3c23a5e0604eae14a36e971b84c8e14109bfda5d324a8734f608f"
+    },
+    {
+      "group": "literacy",
+      "paths": [
+        "stereo-course/literacy/"
+      ],
+      "excluded": [
+        "stereo-course/literacy/index.html"
+      ],
+      "fileCount": 4,
+      "sha256": "31f0a391a89f9cc5d9ecbde53879476787542269d96ab9a27751be3f17994f40"
+    },
+    {
+      "group": "ege_bridge",
+      "paths": [
+        "ege-profil/atanasyan-10-11/"
+      ],
+      "excluded": [
+        "ege-profil/atanasyan-10-11/index.html"
+      ],
+      "fileCount": 11,
+      "sha256": "abf8dbbae724b3d681680d7ebca236a7bd6a682c7513355e0556b2b87f3a336e"
+    }
+  ]
+}
