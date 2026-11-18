@@ -10038,7 +10038,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   function renderSteps(){
    const step=t.steps[l.step],body=$('#taskStepsBody');
    $('#taskHint').innerHTML=M(hintText());
-   body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2>'+(!l.done?'<p id="guidedFinalPrompt">Запиши ответ в поле задачи выше.</p>':'')}`;
+   body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:`<h2>Разбор завершён</h2><p id="guidedFinalPrompt" ${learningCycle&&l.done?'hidden':''}>Запиши ответ в поле задачи выше.</p>`}`;
    refreshReasoningMap();
    skillMap?.refresh();
    if(!step)return;
