@@ -89,9 +89,13 @@ class GeneratorTests(unittest.TestCase):
         page = output[edition.prefix + entry].decode()
         bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
         self.assertEqual(page.count(bootstrap), 1)
+        source_page = (ROOT / entry).read_text()
         for asset in reviewed:
-            frozen = '/' + edition.prefix + asset + '?v=20261109'
-            self.assertEqual(page.count(frozen), 1)
+            version = '20261117' if asset == 'oge/learning-map-view.js' else '20261109'
+            ref = asset + '?v=' + version
+            self.assertEqual(source_page.count('"/' + ref + '"'), 1, asset)
+            frozen = '/' + edition.prefix + ref
+            self.assertEqual(page.count('"' + frozen + '"'), 1, asset)
             self.assertNotIn('"/' + asset, page)
             self.assertLess(page.index(bootstrap), page.index(frozen))
         # The map reads localStorage only after the fixed-edition bootstrap has
