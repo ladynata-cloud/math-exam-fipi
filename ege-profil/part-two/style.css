@@ -22,3 +22,5 @@
 .proof-review-list .hint{margin:0 0 6px}
 .proof-example{border-top:1px solid var(--line);padding-top:6px}
 #proof-review{overflow-wrap:anywhere}
+
+.solution-figure{max-width:360px;margin:.4rem auto .85rem}.solution-figure figcaption{font-size:1rem;line-height:1.45;color:var(--ink)}
