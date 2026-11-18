@@ -5,6 +5,12 @@ compulsory introductory lesson screens for the revised practical trainers.
 
 - The initial page resembles the actual task or variant. Show its condition,
   essential data, primary visualization and answer controls immediately.
+- A geometry task starts with the drawing, then the statement and first
+  question. When the source gives only text, construct the named figures from
+  its givens. Label the points and known measurements, mark right angles with a
+  small square and use dashed lines for hidden edges. Introduce auxiliary
+  segments on the same drawing at the step that uses them. This order also
+  applies to worked examples, independent practice and shared-board views.
 - A group of questions1–5 is one continuous variant. Do not make the learner
   select a lesson step merely to see another question or recover its givens.
 - Tables needed throughout a variant stay mounted and available until it is

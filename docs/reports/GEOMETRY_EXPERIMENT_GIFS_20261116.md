@@ -98,3 +98,26 @@ Scoped-пересборка сохраняет существующий HTML и 
 Помощь объясняет действие, а математическое наблюдение и доказательство остаются работой ученика. Автоматическая техническая приёмка не заменяет наблюдение за первым самостоятельным прохождением реальным учеником.
 
 Изменение обратимо обычным revert task-коммитов после соответствующего разрешения. Формат сохранений и пользовательские данные не меняются; миграция не требуется.
+
+## 2026-11-18: проверенная композиция, до нового browser capture
+
+Старые результаты выше относятся к прежним recorded sources. Текущая
+композиция наследует reviewed #651 `64ce01049377b4289f46979c52f2c50daf84b92f`.
+Original comparison base `1469ad50a8659f66c8613164009e7387a3a68f2b` сохранён;
+147 page-preservation checks выполнены явно относительно нового predecessor.
+Отдельный JSON фиксирует 74 upstream configuration changes (#623 и #670).
+
+63 pinned investigation records, source/scenario/image hashes сохранены.
+62 старые active recordings требуют новой записи по actual sources;
+добавлен 1 explore-angle. У 3 прежних сценариев изменена только sourcePage
+на текущий подходящий урок, действия сохранены. Exact plan содержит
+63 capture IDs (26 Atanasyan, 27 Pogorelov, 10 experiments), 9 runtime hashes
+и 2 неизменённых инструмента. Старые media.sourceHashes не переписаны.
+
+Independent internal reviews подтвердили оба lab.js, математику угла,
+отсутствие готового вывода и 6 negative controls actual preflight. Эти
+проверки не являются native browser capture, внешней экспертизой или
+разрешением публикации. Новый capture ещё не выполнен; strict media gate
+пока должен отклонять stale/missing records. После actual capture/import
+будут обновлены GIF, media и встроенные страницы; temporary capture job
+будет удалён, approved strict job с explicit final651 base останется.

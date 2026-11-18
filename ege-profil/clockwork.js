@@ -5,7 +5,12 @@
   if (!workshop) return;
 
   const route = [...document.querySelectorAll("#profile-2027 .first-three-link[data-exam-number]")];
-  if (route.length !== 20 || route.some((link, index) => Number(link.dataset.examNumber) !== index + 1)) return;
+  const examMap = globalThis.ProfileExamMap;
+  if (!examMap || route.length !== 19 || route.some((link, index) => {
+    const entry = examMap.get(index + 1);
+    return Number(link.dataset.examNumber) !== entry?.number ||
+      new URL(link.href, location.href).hash !== examMap.hash(entry);
+  })) return;
 
   const stage = workshop.querySelector(".profile-clock-case");
   const canvas = stage.querySelector("canvas");
@@ -87,7 +92,9 @@
     return {
       width: isCompact ? 360 : 1000,
       height: isCompact ? 1540 : 900,
-      dials: [{ wheel: first, ring: isCompact ? 122 : 117 },
+      // Twelve first-part links put one target directly above the written dial.
+      // Keep their 44px touch targets separate on a 320px viewport.
+      dials: [{ wheel: first, ring: 117 },
         ...written.map(wheel => ({ wheel, ring: wheel.radius - (isCompact ? 44 : 22) }))],
       wheels: [first, ...written, ...courses],
       pinions: written.flatMap(pinions),
@@ -332,10 +339,10 @@
   const toggle = workshop.querySelector(".profile-clock-toggle");
   const topic = workshop.querySelector(".profile-clock-topic");
   const parts = [
-    ["Первая часть", "Часть I", 13],
-    ["Вторая часть · №14–16", "Часть II · №14–16", 16],
-    ["Вторая часть · №17–18", "Часть II · №17–18", 18],
-    ["Вторая часть · №19–20", "Часть II · №19–20", 20]
+    ["Первая часть · №1–12", "Часть I", 12],
+    ["Вторая часть · №13–15", "Часть II · №13–15", 15],
+    ["Вторая часть · №16–17", "Часть II · №16–17", 17],
+    ["Вторая часть · №18–19", "Часть II · №18–19", 19]
   ].map(([name, caption, last], index) => {
     const group = document.createElement("div");
     group.className = "profile-clock-dial";
@@ -357,11 +364,11 @@
   function describeLink(link, label, number) {
     function describe() {
       topic.textContent = label;
-      if (number && !alphabets?.forNumber(number).length) {
+      if (number && !alphabets?.forOfficial(number).length) {
         alphabetShortcut.hidden = true;
       } else if (number) {
         alphabetShortcut.hidden = false;
-        alphabetShortcut.href = alphabets.href("", "", number);
+        alphabetShortcut.href = alphabets.officialHref("", "", number);
         alphabetShortcut.textContent = "Основы для №" + number;
       }
     }
@@ -375,7 +382,7 @@
     const label = "№" + number + " · " + link.querySelector("strong").textContent.trim().replace(/^\d+\.\s*/, "");
     const entry = document.createElement("a");
     entry.className = "profile-clock-number";
-    if (number > 13) entry.classList.add("profile-clock-number--written");
+    if (examMap.get(number).part === 2) entry.classList.add("profile-clock-number--written");
     entry.href = link.getAttribute("href");
     entry.textContent = number;
     entry.setAttribute("aria-label", label);
@@ -396,7 +403,7 @@
     const label = document.createElement("span");
     label.textContent = alphabet.short;
     const numbers = document.createElement("small");
-    numbers.textContent = "№" + alphabet.numbers.join(", ");
+    numbers.textContent = alphabet.numbers.map(alphabets.displayLabel).join(", ");
     label.append(numbers);
     link.append(wheel, label);
     describeLink(link, alphabet.title);

@@ -853,6 +853,7 @@
       },
       {
         topic: 'apartments', title: 'Упаковки покрытия', unit: 'упаковок', type: 'number', answer: packsAnswer,
+        practice: {url: '../oge-basics/rounding.html?practice=packages', label: 'Целые упаковки: потренировать округление вверх →'},
         text: `Для комнаты размером <b>${fmt(v.apartments.l)} × ${fmt(v.apartments.w)} м</b> покупают напольное покрытие. Одной упаковки хватает на <b>${fmt(v.apartments.pack)} м²</b>. Сколько упаковок нужно купить?`,
         visual: apartmentSvg(v.apartments),
         explanation: `Площадь комнаты: ${fmt(v.apartments.l)} · ${fmt(v.apartments.w)} = ${fmt(v.apartments.l*v.apartments.w)} м². ${fmt(v.apartments.l*v.apartments.w)} / ${fmt(v.apartments.pack)} = ${fmt((v.apartments.l*v.apartments.w)/v.apartments.pack)}. Округляем вверх: ${packsAnswer} упаковок.`
@@ -1001,6 +1002,19 @@
     box.className = `review-box ${correct ? 'correct' : 'incorrect'} show`;
     const given = isAnswered(state.answers[state.current]) ? escapeHtml(state.answers[state.current]) : 'ответ не дан';
     box.innerHTML = `<div class="review-title">${correct ? 'Верно' : 'Нужно разобрать'}</div><div>Ваш ответ: <b>${given}</b>.</div><div style="margin-top:5px;">${q.explanation}</div><div class="answer-pill">Правильный ответ: ${fmtAnswer(q)}</div>`;
+    if (!correct && isAnswered(state.answers[state.current])) appendPracticeLink(box, q.practice);
+  }
+
+  function appendPracticeLink(host, practice) {
+    if (!practice) return;
+    const row = document.createElement('p');
+    const link = document.createElement('a');
+    link.href = practice.url;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = practice.label;
+    row.append(link);
+    host.append(row);
   }
 
   function fmtAnswer(q) {
@@ -1120,7 +1134,7 @@
   }
 
   function renderResult() {
-    const { score, topicStats } = state.result;
+    const { score, topicStats, checks } = state.result;
     const level = levelFor(score);
     $('score-val').textContent = score;
     $('score-circle').style.setProperty('--score', String(score * 10));
@@ -1138,6 +1152,9 @@
       else { cls = 'mixed'; status = `${stat.correct} из ${stat.total} — нужна тренировка`; }
       card.className = `topic-result ${cls}`;
       card.innerHTML = `<h4>${escapeHtml(meta.title)}</h4><p>${escapeHtml(status)}</p><a href="${escapeHtml(meta.url)}" target="_blank" rel="noopener">Открыть тренажёр →</a>`;
+      state.questions.forEach((q, i) => {
+        if (q.topic === topicId && !checks[i] && isAnswered(state.answers[i])) appendPracticeLink(card, q.practice);
+      });
       topicContainer.appendChild(card);
     });
 

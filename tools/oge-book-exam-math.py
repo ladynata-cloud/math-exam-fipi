@@ -575,6 +575,11 @@ def main():
     thin_output.write_text(json.dumps(thin,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'totals':totals,'missingReports':sum(len(c['missingReports'])for c in coverage),
                       'unreviewedSourceDerivedOracles':len(unreviewed),'detailedReview':str(output.relative_to(root))}))
+    # Keep failed/pending cases visible in CI logs as well as the full artifact.
+    # The fail-closed verdict and required report coverage remain unchanged.
+    for record in records:
+        if record['verdict'] != 'PASS':
+            print(json.dumps({'independentMathCase':record},ensure_ascii=False))
     if not args.allow_pending and (totals['PENDING'] or totals['FAIL'] or unreviewed or any(c['missingReports']for c in coverage)):
         return 1
     return 0

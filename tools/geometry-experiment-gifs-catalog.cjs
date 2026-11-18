@@ -14,6 +14,10 @@ const {execFileSync} = require('node:child_process');
 const ROOT = path.resolve(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'assets/geometry-experiment-gifs/catalog.json');
 const SOURCE_BASE = '1469ad50a8659f66c8613164009e7387a3a68f2b';
+// The original comparison base remains provenance; integration is checked
+// against the independently reviewed upstream release, before these guides.
+const INTEGRATION_BASE = '64ce01049377b4289f46979c52f2c50daf84b92f';
+const OWNED_POGORELOV_TOPICS = new Set(['pogorelov-base-7-16','pogorelov-base-7-20','pogorelov-base-7-39','pogorelov-base-8-61','pogorelov-base-8-62','pogorelov-base-8-67','pogorelov-base-8-80','pogorelov-base-8-98','pogorelov-base-9-112','pogorelov-base-9-127','pogorelov-base-9-131']);
 const INVESTIGATION_REF = '99b3bfb9c231d5fd3b5cdda2c543231171a57618';
 const INVESTIGATION_SNAPSHOT = 'assets/geometry-experiment-gifs/atanasyan-investigations-99b3bfb9.json';
 const courses = [
@@ -150,7 +154,13 @@ function manualSteps(course, kind, figure, variant) {
   ];
   if(kind==='explore') {
     let steps;
-    if(figure==='circle') steps=[
+    if(figure==='angle') steps=[
+      step('Нажми «Двигать».',tool('move')),
+      step('Потяни A ближе к C по тому же лучу. Сравни показание угла.',drag('A',430,290)),
+      step('Теперь передвинь B. Сравни новое положение луча.',drag('B',370,130)),
+      step('Запиши, что ты менял и что заметил.')
+    ];
+    else if(figure==='circle') steps=[
       step('Нажми «Двигать».',tool('move')),
       step('Потяни B по окружности. Следи за чертежом.',drag('B',250,100)),
       step('Потяни A, чтобы изменить радиус окружности.',drag('A',490,220)),
@@ -388,7 +398,10 @@ function addPinnedInvestigations(pages,clips,sources) {
     }
     steps.push(step('Вернись к своему прогнозу и запиши, что заметил.',{type:'observation'}));
     const id='atanasyan-topic-'+topic;
-    clips[id]=media({id,surface:'investigation',title:'Как провести опыт: '+topics[topic].title,topic,sourceCourse:'geometry-course',sourcePage:'/'+page,sourceRef:INVESTIGATION_REF,renderer,style,figure:pages[page].figure,goal:pages[page].goal,experiment:null,setup:[],steps,note:'В примере выбран ответ «Пока не знаю». Свой прогноз и наблюдение формулируй самостоятельно.'});
+    // This recording is pinned to 99b3bfb9, where angles still had the
+    // bisector manual goal. Its metadata must not follow the later live task.
+    const recordedGoal = topic==='angles' ? 'bisector' : pages[page].goal;
+    clips[id]=media({id,surface:'investigation',title:'Как провести опыт: '+topics[topic].title,topic,sourceCourse:'geometry-course',sourcePage:'/'+page,sourceRef:INVESTIGATION_REF,renderer,style,figure:pages[page].figure,goal:recordedGoal,experiment:null,setup:[],steps,note:'В примере выбран ответ «Пока не знаю». Свой прогноз и наблюдение формулируй самостоятельно.'});
     pages[page].investigations=[id];
   }
 }
@@ -417,6 +430,13 @@ function buildCatalog() {
       if(!match) throw Error('Missing generated COURSE_CONFIG: '+page);
       const cfg=JSON.parse(match[1]);
       if(cfg.unit.id!==unit.id||cfg.unit.goal!==unit.goal||cfg.unit.figure!==unit.figure) throw Error('Data and generated page disagree: '+page);
+      const ownedTopic = course.key==='pogorelov' && !!unit.topicQuestion;
+      if(course.key==='pogorelov' && ownedTopic !== OWNED_POGORELOV_TOPICS.has(unit.id)) throw Error('Unreviewed topic-guide ownership: '+unit.id);
+      if(ownedTopic) {
+        if(!reading(page).includes('../assets/topic-labs.js')) throw Error('Missing existing topic-guide runtime: '+page);
+        pages[page]={unitId:unit.id,course:course.dir,title:unit.title,figure:unit.figure,goal:unit.goal,manual:[],experiments:[],investigations:[],primarySurface:'existing-topic-guide'};
+        continue;
+      }
       if(!names[unit.goal]) throw Error('No goal recipe: '+unit.goal);
       const variants=unit.goal==='midline'?['build','move']:[''];
       const ids=[];
@@ -452,7 +472,7 @@ function buildCatalog() {
   addPinnedInvestigations(pages,clips,sources);
   const sorted = obj => Object.fromEntries(Object.entries(obj).sort(([a],[b])=>a.localeCompare(b,'en')));
   if(Object.keys(pages).length!==147) throw Error('Expected 147 page mappings');
-  return {version:1,sourceBase:SOURCE_BASE,sources:sorted(sources),coverage:{pogorelov:84,atanasyan:63,manualClips:Object.values(clips).filter(x=>x.surface==='manual').length,experimentClips:Object.values(clips).filter(x=>x.surface==='experiment').length,investigationClips:Object.values(clips).filter(x=>x.surface==='investigation').length},compatibility:{primarySurface:'manual',pendingAtanasyanPR:623,pendingHead:INVESTIGATION_REF,note:'The proposed GeoInvestigations runtime is not adopted here. Pinned topic recordings are separate assets for a checked integration; manual guides belong with the retained construction board.'},pages:sorted(pages),clips:sorted(clips)};
+  return {version:1,sourceBase:SOURCE_BASE,integrationBase:INTEGRATION_BASE,sources:sorted(sources),coverage:{pogorelov:84,atanasyan:63,manualClips:Object.values(clips).filter(x=>x.surface==='manual').length,experimentClips:Object.values(clips).filter(x=>x.surface==='experiment').length,investigationClips:Object.values(clips).filter(x=>x.surface==='investigation').length},compatibility:{primarySurface:'manual',pendingAtanasyanPR:623,pendingHead:INVESTIGATION_REF,note:'Pinned topic recordings are active only with their exact reviewed sources. Manual guides belong with the retained construction board; existing Pogorelov topic guides keep ownership of their scenes.'},pages:sorted(pages),clips:sorted(clips)};
 }
 
 if(require.main===module) {

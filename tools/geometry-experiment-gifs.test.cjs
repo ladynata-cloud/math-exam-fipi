@@ -69,7 +69,10 @@ function pngInfo(bytes) {
 }
 
 test('exactly 84 Pogorelov and 63 Atanasyan 2D lessons have explicit action mappings', () => {
+  assert.equal(catalogue.sourceBase, '1469ad50a8659f66c8613164009e7387a3a68f2b', 'original comparison provenance is retained');
+  assert.match(catalogue.integrationBase, /^[a-f0-9]{40}$/, 'explicit reviewed upstream integration base');
   const expected = [];
+  let ownedTopics = 0;
   for (const course of ['geometry-course', 'geometry-pogorelov']) {
     const units = JSON.parse(fs.readFileSync(path.join(ROOT, course, 'data/course.json'))).units;
     for (const unit of units.filter(unit => !unit.space)) {
@@ -80,6 +83,13 @@ test('exactly 84 Pogorelov and 63 Atanasyan 2D lessons have explicit action mapp
       assert.equal(entry.unitId, unit.id);
       assert.equal(entry.figure, unit.figure);
       assert.equal(entry.goal, unit.goal);
+      if (course === 'geometry-pogorelov' && unit.topicQuestion) {
+        ownedTopics++;
+        assert.equal(entry.primarySurface, 'existing-topic-guide');
+        for (const surface of ['manual','experiments','investigations']) assert.deepEqual(entry[surface], [], 'existing topic guide owns this scene');
+        assert(fs.readFileSync(path.join(ROOT, filename), 'utf8').includes('../assets/topic-labs.js'));
+        continue;
+      }
       assert(entry.manual.length > 0, filename + ': construction instruction present');
       for (const surface of ['manual', 'experiments', 'investigations']) {
         for (const id of entry[surface]) {
@@ -97,6 +107,7 @@ test('exactly 84 Pogorelov and 63 Atanasyan 2D lessons have explicit action mapp
       else assert.equal(entry.investigations.length, 0, 'no invented topic runtime');
     }
   }
+  assert.equal(ownedTopics, 11, 'exact reviewed Pogorelov topic-guide ownership');
   assert.equal(expected.length, 147);
   assert.deepEqual(Object.keys(catalogue.pages).sort(), expected.sort());
   assert.equal(expected.filter(name => name.startsWith('geometry-pogorelov/')).length, 84);
@@ -156,7 +167,7 @@ test('147 generated pages keep their full training configuration and embed only 
   for (const [filename, mapping] of Object.entries(catalogue.pages)) {
     const html = fs.readFileSync(path.join(ROOT, filename), 'utf8');
     const current = configOf(html);
-    const original = configOf(readSource(filename, catalogue.sourceBase).toString('utf8'));
+    const original = configOf(readSource(filename, catalogue.integrationBase).toString('utf8'));
     const guides = current.experimentGuides;
     delete current.experimentGuides;
     assert.deepEqual(current, original, filename + ': conditions, proofs, seeds and catalogue unchanged');
@@ -232,3 +243,35 @@ for (const course of ['geometry-course', 'geometry-pogorelov']) {
     } finally { window.close(); }
   });
 }
+
+test('the new angle exploration uses the live controls without supplying a conclusion', () => {
+  const clip = catalogue.clips['atanasyan-explore-angle'];
+  assert.equal(clip.sourcePage, '/geometry-course/atlas/angles.html');
+  assert.equal(clip.figure, 'angle');
+  assert.equal(clip.goal, 'explore');
+  const dom = new JSDOM('<main></main>', {runScripts: 'outside-only'}), window = dom.window;
+  window.HTMLCanvasElement.prototype.getContext = () => new Proxy({}, {get: () => () => {}, set: () => true});
+  try {
+    for (const file of ['geometry.js', 'lab.js']) window.eval(fs.readFileSync(path.join(ROOT, 'geometry-course/assets', file), 'utf8'));
+    const host = window.document.querySelector('main');
+    const lab = window.GeoLab.mount(host, {figure: clip.figure, goal: clip.goal}, () => {}), board = lab.board;
+    const angle = () => window.GeoMath.angle(board.point('A'), board.point('C'), board.point('B'));
+    const originalAngle = angle(), originalVertex = [board.point('C').x, board.point('C').y];
+    host.querySelector('[data-tool="move"]').click();
+    const drags = clip.steps.flatMap(step => step.actions).filter(action => action.type === 'drag');
+    assert.deepEqual(drags.map(action => action.id), ['A', 'B']);
+    for (const [index, action] of drags.entries()) {
+      const select = host.querySelector('.point-select'); select.value = action.id;
+      select.dispatchEvent(new window.Event('change', {bubbles: true}));
+      host.querySelector('.point-x').value = action.to[0]; host.querySelector('.point-y').value = action.to[1];
+      host.querySelector('[data-act="move"]').click();
+      assert.deepEqual([board.point('C').x, board.point('C').y], originalVertex, 'the angle vertex remains fixed');
+      if (index === 0) assert(Math.abs(angle() - originalAngle) < 1e-9, 'moving along the same ray preserves the angle');
+      else assert(Math.abs(angle() - originalAngle) > 10, 'moving the other arm visibly changes the angle');
+    }
+    host.querySelector('[data-act="goal"]').click();
+    assert.match(host.querySelector('.lab-feedback').textContent, /Запиши.*наблюдение/);
+    assert.doesNotMatch(clip.steps.map(step => step.caption).join(' '), /угол сохраняется|угол равен|угол не меняется/);
+    assert.equal(board.goal('explore').ok, false, 'a demonstration does not count as a proved construction');
+  } finally { window.close(); }
+});

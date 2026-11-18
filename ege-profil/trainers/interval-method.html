@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Метод интервалов · интерактивный тренажёр</title>
@@ -368,13 +369,13 @@ footer{padding-bottom:76px;}
   .bp-task, .bp-red, .bp-note, .bp-ans{min-width:0; max-width:100%; overflow-x:auto; overflow-y:hidden;}
 }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261115-fipi-map"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="interval-method"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="interval-method"></script>
 </head>
 <body>
 
@@ -758,9 +759,10 @@ footer{padding-bottom:76px;}
     <div class="tr-axis" id="t2-axis"></div>
     <div class="tr-actions">
       <button class="btn btn-primary" id="t2-check" type="button">Проверить</button>
+      <button class="btn btn-ghost" id="t2-solbtn" type="button">Показать разбор</button>
       <button class="btn btn-ghost" id="t2-new" type="button">Новое задание</button>
     </div>
-    <div class="fb" id="t2-fb"></div>
+    <div class="fb" id="t2-fb" role="status"></div>
     <div class="tr-sol" id="t2-sol"><ul class="tr-notes" id="t2-notes"></ul></div>
   </div>
 
@@ -1024,7 +1026,7 @@ function renderAxis(container, V){
     if(x===Infinity){ return W-16; }
     return PAD+(x-V.min)/span*(W-2*PAD);
   }
-  var svg=sv('svg',{viewBox:'0 0 '+W+' '+H, role:'img'});
+  var svg=sv('svg',{viewBox:'0 0 '+W+' '+H, role:V.clickable?'group':'img'});
   svg.setAttribute('aria-label', V.aria || 'Числовая ось');
   container.appendChild(svg);
   var pxs=V.pts.map(function(p){ return X(p.x); });
@@ -1043,14 +1045,31 @@ function renderAxis(container, V){
     txt(svg,(bounds[i]+bounds[i+1])/2, AXY-19, '!',
         {'font-family':FONTM,'font-weight':'700','font-size':'15',fill:C.neg,'text-anchor':'middle'});
   });
+  function bindChoice(node, kind, index, label){
+    var id=kind+'-'+index;
+    node.setAttribute('role','button');
+    node.setAttribute('tabindex','0');
+    node.setAttribute('data-axis-choice',id);
+    node.setAttribute('aria-label',label);
+    node.addEventListener('click',function(){ V.clickable[kind](index); });
+    node.addEventListener('keydown',function(event){
+      if(event.key!=='Enter' && event.key!==' '){ return; }
+      event.preventDefault();
+      V.clickable[kind](index);
+      var next=container.querySelector('[data-axis-choice="'+id+'"]');
+      if(next){ next.focus(); }
+    });
+  }
   /* кликабельные зоны промежутков */
   if(V.clickable && V.clickable.interval){
-    V.pts.forEach(function(_,i){ void i; });
     for(var bi=0; bi+1 < bounds.length; bi++){
       (function(i){
         var r=sv('rect',{x:bounds[i], y:0, width:Math.max(1,bounds[i+1]-bounds[i]),
                          height:H, fill:'transparent', 'pointer-events':'all', cursor:'pointer'}, svg);
-        r.addEventListener('click', function(){ V.clickable.interval(i); });
+        var left=i===0?'−∞':V.pts[i-1].lab;
+        var right=i===V.pts.length?'+∞':V.pts[i].lab;
+        var status=V.signs ? 'знак '+V.signs[i].ch : V.intervalSelected[i]?'выбран':'не выбран';
+        bindChoice(r,'interval',i,'Промежуток от '+left+' до '+right+', '+status);
       })(bi);
     }
   }
@@ -1118,10 +1137,8 @@ function renderAxis(container, V){
       (function(i){
         var h=sv('circle',{cx:px, cy:AXY, r:18, fill:'transparent',
                            'pointer-events':'all', cursor:'pointer'}, svg);
-        h.addEventListener('click', function(ev){
-          if(ev && ev.stopPropagation){ ev.stopPropagation(); }
-          V.clickable.point(i);
-        });
+        var states={ask:'не отмечена',fill:'закрашена',open:'выколота',sel:'выбрана',tick:'не выбрана'};
+        bindChoice(h,'point',i,'Точка '+p.lab+', '+states[p.kind]);
       })(i);
     }
   });
@@ -1456,7 +1473,7 @@ function genTask(level){
     }
     if(ok){
       total++; streak++; setScore(); state.done=true;
-      var v=view(); v.signs=state.marks.map(function(m){ return {btn:true, ch:m, state:'good'}; });
+      var v=view(); v.clickable=null; v.signs=state.marks.map(function(m){ return {btn:true, ch:m, state:'good'}; });
       M.renderAxis(elAxis, v);
       if(elFb){ elFb.className='fb good'; elFb.textContent='Верно! Все знаки на месте. 👍'; }
     }else{
@@ -1493,14 +1510,14 @@ function genTask(level){
       elSol=M.byId('t2-sol'), elNotes=M.byId('t2-notes');
 
   function setScore(){ if(elScore){ elScore.innerHTML='решено <b>'+total+'</b> · серия <b>'+streak+'</b>'; } }
-  function view(reveal){
+  function view(reveal, markErrors){
     var a=state.ana;
     var pts=a.pts.map(function(p,i){
       var k;
       if(reveal){ k=p.fill?'fill':'open'; }
       else{ k= state.marks[i]===null ? 'ask' : (state.marks[i]?'fill':'open'); }
       return {x:p.x, lab:p.lab, kind:k,
-              wrong: reveal && (state.marks[i]!==null) && (state.marks[i]!==p.fill)};
+              wrong: markErrors && (state.marks[i]!==null) && (state.marks[i]!==p.fill)};
     });
     return { min:a.xs[0]-1.7, max:a.xs[a.xs.length-1]+1.7, pts:pts, signs:null, shade:[],
              clickable: reveal?null:{ point:function(i){ toggle(i); } },
@@ -1552,7 +1569,23 @@ function genTask(level){
       if(elFb){ elFb.className='fb info'; elFb.textContent='Отметь каждую точку — три клика по кругу: закрашена, выколота, сброс.'; }
       return;
     }
+    if(ok){
+      total++; streak++; setScore();
+      if(elFb){ elFb.className='fb good'; elFb.textContent='Верно! Все точки отмечены правильно.'; }
+      showSolution();
+      return;
+    }
+    streak=0; setScore();
+    var index=a.pts.findIndex(function(p,i){ return state.marks[i]!==p.fill; });
+    var point=a.pts[index];
+    var hint=point.isDen?'Подставь это число в знаменатель. Можно ли выполнить деление?':
+      'Подставь это число в числитель. Допускает ли знак неравенства равенство нулю?';
+    M.renderAxis(elAxis, view(false,true));
+    if(elFb){ elFb.className='fb bad'; elFb.textContent='Проверь точку '+point.lab+'. '+hint+' Исправь отметку и проверь снова.'; }
+  }
+  function showSolution(){
     state.done=true;
+    var a=state.ana;
     M.renderAxis(elAxis, view(true));
     if(elNotes){
       elNotes.innerHTML='';
@@ -1563,18 +1596,15 @@ function genTask(level){
       });
     }
     if(elSol){ elSol.className='tr-sol open'; }
-    if(ok){
-      total++; streak++; setScore();
-      if(elFb){ elFb.className='fb good'; elFb.textContent='Верно! Все точки отмечены правильно. 👍'; }
-    }else{
-      streak=0; setScore();
-      if(elFb){ elFb.className='fb bad'; elFb.textContent='Есть ошибки — красным обведены неверные точки. Разбор ниже.'; }
-    }
   }
   M.initT2=function(){
     var b1=M.byId('t2-check'), b2=M.byId('t2-new');
     if(b1){ b1.addEventListener('click', check); }
     if(b2){ b2.addEventListener('click', fresh); }
+    M.byId('t2-solbtn').addEventListener('click', function(){
+      if(!state.done && elFb){ elFb.className='fb info'; elFb.textContent='Сверь каждую точку с разбором. Затем реши новое задание.'; }
+      showSolution();
+    });
     setScore(); fresh();
   };
 })();
@@ -1603,7 +1633,7 @@ function genTask(level){
     var pts=a.pts.map(function(p,idx){
       return {x:p.x, lab:p.lab, kind: state.ptSel[idx]?'sel':'tick'};
     });
-    return { min:xs[0]-1.7, max:xs[xs.length-1]+1.7, pts:pts, signs:null, shade:shade,
+    return { min:xs[0]-1.7, max:xs[xs.length-1]+1.7, pts:pts, signs:null, shade:shade, intervalSelected:state.ivSel,
              clickable:{ interval:function(i){ if(!state.done){ state.ivSel[i]=!state.ivSel[i]; if(elFb){ elFb.className='fb'; elFb.textContent=''; } M.renderAxis(elAxis, view()); } },
                          point:function(i){ if(!state.done){ state.ptSel[i]=!state.ptSel[i]; if(elFb){ elFb.className='fb'; elFb.textContent=''; } M.renderAxis(elAxis, view()); } } },
              aria:'Соберите множество решений на оси' };

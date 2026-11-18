@@ -69,6 +69,11 @@
   function validRoute(hash, config) {
     if (config.defaultRoute && hash === config.defaultRoute) return true;
     if (config.number && (hash === '#exam/' + config.number || hash === '#calm/' + config.number)) return true;
+    // Current public links are aliases for the same registered legacy scope.
+    // They cannot add a lesson or expand the synchronized payload boundary.
+    const entry = config.number && root.ProfileExamMap?.fromLegacyStart(config.number);
+    if (entry && hash === root.ProfileExamMap.hash(entry) && entry.source === 'start' &&
+        entry.lessonIds.every(id => config.lessonIds.includes(id))) return true;
     const match = /^#(lesson|example|practice|repair|pause)\/([a-z0-9-]+)(?:\/(guided|plan|independent))?$/.exec(hash || '');
     return !!match && config.lessonIds.includes(match[2]) &&
       (['lesson', 'example'].includes(match[1]) ? !match[3] : !!match[3]);
@@ -130,7 +135,11 @@
       });
     }
     function context(value) {
-      const [page, id, mode] = value.route.slice(1).split('/'), lesson = known.get(id);
+      let [page, id, mode] = value.route.slice(1).split('/');
+      // The canonical hash renders the same calm section; saved room schemas
+      // and the registered legacy number remain unchanged.
+      if (page === 'fipi' || page === 'topic') { page = 'calm'; id = String(config.number); mode = undefined; }
+      const lesson = known.get(id);
       const session = value.progress.sessions[id + ':' + mode];
       const task = page === 'example' ? lesson.tasks[0] : session ? tasks.get(session.taskId) : null;
       const live = page === 'practice' && !session.done;
@@ -170,7 +179,7 @@
               known.has(id) && integer(n, 0, root.ProfileSolutions.steps(known.get(id).tasks[0]).length - 1))) return false;
         const [page, id, mode] = value.route.slice(1).split('/');
         if (['practice', 'repair', 'pause'].includes(page) && !data.sessions[id + ':' + mode]) return false;
-        if (['calm', 'example'].includes(page) && !prefs.enabled) return false;
+        if (['calm', 'example', 'fipi', 'topic'].includes(page) && !prefs.enabled) return false;
         if (value.returnToTask !== null) {
           if (!routeValid(value.returnToTask) || !value.returnToTask.startsWith('#practice/') || value.returnToTask === value.route) return false;
           const [, lessonId, returnMode] = value.returnToTask.slice(1).split('/');

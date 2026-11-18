@@ -1,6 +1,6 @@
 {
   "stage": "8",
-  "updated": "2026-11-15",
+  "updated": "2026-11-18",
   "notes": "Этап 8 добавляет курс «Делимость, остатки и инварианты» и 186 карточек «Сечения с нуля».",
   "trainers": [
     {
@@ -327,13 +327,13 @@
     },
     {
       "slug": "geometry-course",
-      "title": "Геометрия 7 класс",
+      "title": "Геометрия 7–9 классы",
       "sourceHtml": "/geometry-course/index.html",
       "sourceDir": "/geometry-course",
       "subject": "геометрия",
-      "level": "7 класс",
-      "topic": "интерактивный курс геометрии 7 класса",
-      "description": "Большой интерактивный курс геометрии с уроками, практикой, зачётами и режимом учителя.",
+      "level": "7–9 классы",
+      "topic": "интерактивный курс геометрии 7–9 классов",
+      "description": "63 тематических урока геометрии 7–9 классов: исследования, чертежи, доказательства, практика и режим учителя. В комплекте сохранены задачник и прежние тренажёры.",
       "mode": "folder",
       "assets": [
         "/assets/site.css"
@@ -375,7 +375,8 @@
       "inlineAssets": [
         "/trainers/oge-course-shared-mode.js",
         "/assets/oge-wayfinding.css",
-        "/assets/oge-wayfinding.js"
+        "/assets/oge-wayfinding.js",
+        "/assets/oge-fractions-return.js"
       ],
       "offlineOmitAssets": [
         "/trainers/board-bridge.js",
@@ -707,6 +708,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -735,27 +737,30 @@
     },
     {
       "slug": "ege-profil-part-two",
-      "title": "Профильный ЕГЭ — вторая часть №14–20",
+      "title": "Профильный ЕГЭ — подготовка ко второй части №13–19",
       "sourceHtml": "/ege-profil/part-two/index.html",
       "subject": "математика",
       "level": "10–11 класс, ЕГЭ профиль",
-      "topic": "42 темы и 252 авторские задачи второй части",
-      "description": "Действующий курс с пошаговыми заданиями, самостоятельными ответами, моделями и разбором обоснования.",
+      "topic": "36 основных тем и 216 задач; дополнительно 6 тем и 36 задач по моделированию и оптимизации",
+      "description": "Курс с пошаговыми заданиями, самостоятельными ответами, моделями и разбором обоснования. Финансовая подготовка №16 доступна по ссылке на сайт; проверка числового ответа не заменяет проверку письменного решения.",
       "mode": "single",
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/part-two/style.css",
         "/ege-profil/start/checks.js",
         "/ege-profil/part-two/content-algebra.js",
         "/ege-profil/part-two/content-geometry.js",
         "/ege-profil/part-two/content-models.js",
+        "/ege-profil/part-two/content-finance.js",
         "/ege-profil/part-two/state.js",
         "/ege-profil/part-two/models.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/azbuka-metodov/catalog.js",
         "/ege-profil/skill-map.js",
+        "/ege-profil/part-two/parameter-proof.js",
         "/ege-profil/part-two/app.js"
       ],
       "offlineOmitAssets": [],
@@ -1070,7 +1075,8 @@
         "/trainers/oge-video-models.css",
         "/trainers/oge-video-graphs.js",
         "/trainers/oge-video-geometry.js",
-        "/trainers/oge-video-models.js"
+        "/trainers/oge-video-models.js",
+        "/trainers/oge-task15-model.js"
       ],
       "offlineOmitAssets": [
         "/trainers/board-bridge.js",
@@ -1631,6 +1637,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/start/style.css",
         "/ege-profil/start/finance.css",
         "/ege-profil/start/journey-ui.css",
@@ -1682,7 +1689,10 @@
         "/ege-profil/learning/data.js",
         "/ege-profil/learning/route.js"
       ],
-      "offlineOmitAssets": [],
+      "offlineOmitAssets": [
+        "/assets/trainer-lesson-choice.css",
+        "/assets/trainer-skill-gif.js"
+      ],
       "adaptation": {
         "preserveSourceSpacing": true,
         "localEditing": true,
@@ -1716,6 +1726,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1757,6 +1768,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1799,6 +1811,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1840,6 +1853,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1881,6 +1895,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1922,6 +1937,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/azbuka-metodov/styles.css",
         "/ege-profil/azbuka-metodov/catalog.js",
         "/ege-profil/azbuka-metodov/data.js",
@@ -1965,6 +1981,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2006,6 +2023,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2046,6 +2064,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2087,6 +2106,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/trainers/ege-profile/log-inequalities/style.css",
         "/trainers/ege-profile/log-inequalities/engine.js",
         "/trainers/ege-profile/log-inequalities/app.js",
@@ -2132,6 +2152,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/trainers/ege-profile/log-inequalities/lesson.css",
         "/trainers/ege-profile/log-inequalities/lesson.js",
         "/trainers/ege-profile/log-inequalities/guided-lesson.js",
@@ -2176,6 +2197,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/trainers/ege-profile/log-inequalities/lesson.css",
         "/trainers/ege-profile/log-inequalities/nested.js",
         "/trainers/ege-profile/log-inequalities/guided-lesson.js",
@@ -2261,6 +2283,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2305,13 +2328,17 @@
         "edits": {
           "Карточка": "В блоке window.COURSE найди шаг «Сторона MN» в карточке starter-18. Правь поле hint у этого шага.",
           "Модель": "Для правки текста сохрани точки, принадлежность рёбрам, грани, линии сечения и поворот. При замене построения проверь положения точек и пересечения на каждой грани.",
-          "Учебный путь": "Сохрани ID карточек, порядок шагов, доступность модели с клавиатуры и возможность продолжить сохранённую работу."
+          "Учебный путь": "Сохрани ID карточек, порядок шагов, доступность модели с клавиатуры и возможность продолжить сохранённую работу.",
+          "Исследование": "В learningPath каждого из 26 этапов сохрани вопрос, прогноз до открытия результата, действия с моделью и запись собственного вывода. Неверный прогноз не блокирует опыт; предыдущая запись остаётся в истории.",
+          "Самостоятельное построение": "В 24 самостоятельных и резервных карточках сохрани геометрическую проверку выбранных точек, плоскостей и линий, равносильные варианты, отмену и отметки помощи. Не подменяй реальные выборы раскрытием готового шага."
         },
         "checks": [
           "В карточке «Находим одну грань» точка M лежит внутри грани ABCD. Выбор верхней грани отклоняется.",
-          "В карточке starter-18 точки M и N лежат на рёбрах одной грани AEFB. Проверь построение MN, поворот модели и восстановление черновика после перезагрузки."
+          "В карточке starter-18 точки M и N лежат на рёбрах одной грани AEFB. Проверь построение MN, поворот модели и восстановление черновика после перезагрузки.",
+          "На первом этапе до прогноза действия недоступны. Выбери «Пока не могу предположить», проверь оба положения, запиши вывод и перейди к задаче; перезагрузка сохраняет исходный прогноз.",
+          "В starter-06 открой «Построить самостоятельно»: одинаковые точки отклоняются, M и N в грани DHEA принимаются в любом порядке. Отмени действие и проверь сохранение работы после перезагрузки."
         ],
-        "limit": "Модели, 186 карточек, короткая практика и собственный прогресс доступны в HTML. Совместная доска открывается на сайте."
+        "limit": "Модели, 186 карточек, 26 исследований, 24 самостоятельных построения, короткая практика и собственный прогресс доступны в HTML. Совместная доска открывается на сайте; новые личные исследования и построения в неё не передаются."
       },
       "downloadHtml": "/downloads/trainers/ege-profil-sections-from-zero/ege-profil-sections-from-zero.html",
       "prompt": "/downloads/trainers/ege-profil-sections-from-zero/ege-profil-sections-from-zero-deepseek-prompt.md",

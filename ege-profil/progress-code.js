@@ -309,7 +309,7 @@ var PROGRESS_CODE = (function(){
     options=options||{};host.replaceChildren();var d=host.ownerDocument,rows=profileRows(report);
     if(options.mistakesOnly)rows=rows.filter(function(row){return row.mistakes>0;});
     function text(tag,value,parent){var e=d.createElement(tag);e.textContent=value;(parent||host).appendChild(e);return e;}
-    text('h2',options.mistakesOnly?'Ошибки основного курса №1–13':'Основной курс №1–13 и школьные основы');
+    text('h2',options.mistakesOnly?'Ошибки курса подготовки':'Первая часть, финансовые модели и дополнительные темы');
     text('p',options.mistakesOnly?'Сохранены условия, в которых были ошибки. Отметка о закреплении учитывает последующую практику; прежние ошибки остаются в истории.':'Новые самостоятельные решения и чистые повторы показаны отдельно. Это локальные учебные результаты, не прогноз балла ЕГЭ.');
     var begun=options.mistakesOnly?rows:rows.filter(function(row){return row.started||row.attempts||row.guided||row.independent||row.recovered||row.mistakes;}),remaining=rows.filter(function(row){return !begun.includes(row);});
     if(!begun.length)text('p',options.mistakesOnly?'Сохранённых ошибок основного курса пока нет.':'В этом отчёте ещё нет работы в основном курсе.');
@@ -325,7 +325,7 @@ var PROGRESS_CODE = (function(){
       var checkpoint=isObj(report.checkpoint)?report.checkpoint:{},round=checkpoint.round;
       if(isObj(round)&&Array.isArray(round.items)){
         var submitted=round.items.filter(function(i){return isObj(i)&&i.submitted===true;}),independent=submitted.filter(function(i){return i.correct===true&&i.assisted===false;});
-        text('p','Последняя смешанная проверка: отвечено '+submitted.length+' из 13; без ошибок и помощи '+independent.length+'. '+(round.complete?'Круг завершён.':'Можно продолжить.'));
+        text('p','Последняя смешанная проверка: отвечено '+submitted.length+' из '+round.items.length+'; без ошибок и помощи '+independent.length+'. '+(round.complete?'Круг завершён.':'Можно продолжить.'));
       }
       var diagnostic=report.diagnostic;
       if(isObj(diagnostic)&&isObj(diagnostic.results))text('p','Проверка школьной основы: отвечено '+Object.keys(diagnostic.results).length+' из 12; верно '+Object.values(diagnostic.results).filter(function(v){return v===true;}).length+'.');

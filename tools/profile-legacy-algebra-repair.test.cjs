@@ -30,6 +30,22 @@ function fixture(w, line = 12) {
   return () => calls;
 }
 
+test('function answers accept decimal notation and reject malformed grouping or other bases', () => {
+  const p = page('functions-t1112.html');
+  try {
+    const check = (input, answer) => p.w.FN.check(input, {answer});
+    for (const value of ['+12', '12,00', '1.2e1']) assert.ok(check(value, 12), value);
+    assert.ok(check('−1 234,5', -1234.5));
+    for (const prefix of ['d', 'z']) {
+      if (prefix === 'z') p.$('#zStart').click();
+      p.$('#'+prefix+'Answer').value = '1 2'; p.$('#'+prefix+'Check').click();
+      assert.match(p.$('#'+prefix+'Fb').textContent, /Введите одно число/);
+      assert.equal(p.$('#'+prefix+'Answer').disabled, false);
+    }
+    for (const value of ['1 2', '0xC', '0b1100', '12abc', 'Infinity']) assert.equal(check(value, 12), false, value);
+  } finally { p.close(); }
+});
+
 test('functions: assistance, wrong feedback and repeated answers preserve honest progress', () => {
   const p = page('functions-t1112.html', '', { [KEY]: seeded });
   try {
@@ -95,12 +111,16 @@ test('functions: zero coefficient is a punctured horizontal line, with controls 
 });
 
 test('functions: topic links select existing practice and retain storage and unknown coefficients', () => {
-  for (const [topic, label, number] of [['graphs', 'графики', '№12'], ['extrema', 'экстремумы', '№9']]) {
+  for (const [topic, label, number] of [['graphs', 'графики', '№11'], ['extrema', 'экстремумы', '№12']]) {
     const p = page('functions-t1112.html', '?topic=' + topic, { [KEY]: seeded });
     try {
       assert.ok(p.$('#view-drill').classList.contains('on'));
       assert.equal(p.$('#modeChips [aria-pressed=true]').textContent, label);
       assert.ok(p.$('#dTag').textContent.startsWith(number));
+      assert.match(p.w.document.title, /№11 и №12/);
+      assert.match(p.$('.eyebrow').textContent, /№11 и №12/);
+      assert.match(p.w.document.querySelector('#view-idea').textContent, /№11 курса — читаем график/);
+      assert.match(p.w.document.querySelector('#view-idea').textContent, /№12 курса — экстремумы/);
       assert.deepEqual(JSON.parse(p.w.localStorage.getItem(KEY)), seeded);
       assert.equal(p.w.FN.G11[4]().formula, 'f(x) = log_b(x + a)');
       assert.equal(p.w.FN.G11[5]().formula, 'f(x) = √(x + p) + q');

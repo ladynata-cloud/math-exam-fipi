@@ -7,8 +7,8 @@
   const option = (id, html) => ({ id, html });
   const choice = (id, label, correct, options) => ({ id, kind: 'choice', label, correct, options });
   const number = (id, label, correct) => ({ id, kind: 'number', label, correct: String(correct) });
-  const step = (title, phase, body, field, hint, record, modelView) => ({
-    title, phase, body, fields: [field], hint, record, modelView
+  const step = (title, phase, body, field, hint, record, modelView, promptView) => ({
+    title, phase, body, fields: [field], hint, record, modelView, ...(promptView ? { promptView } : {})
   });
   const view = (label, segments, polygon = []) => ({ label, segments, polygon });
 
@@ -32,6 +32,7 @@
           A: [0, 0, 0], B: [ab, 0, 0], C: [0, ac, 0], S: [2, 2, height],
           M: [1, 1, height / 2], N: [(ab + 2) / 2, 1, height / 2], P: [1, (ac + 2) / 2, height / 2]
         },
+        rightAngles: [['B', 'A', 'C']],
         edges: [['A', 'B'], ['B', 'C'], ['C', 'A'], ['S', 'A'], ['S', 'B'], ['S', 'C']],
         faces: [['A', 'B', 'C'], ['S', 'A', 'B'], ['S', 'B', 'C'], ['S', 'C', 'A']],
         views: {
@@ -49,7 +50,7 @@
           '<p>M лежит на SA, а N — на SB. В каком треугольнике эти точки являются серединами двух сторон?</p>',
           choice('triangle', 'Выберите треугольник', 'sab', [option('abc', 'ABC'), option('sab', 'SAB'), option('sbc', 'SBC')]),
           'Нужный треугольник содержит обе стороны: SA и SB.',
-          '<p>M и N — середины сторон SA и SB треугольника SAB.</p>', 'sab'),
+          '<p>M и N — середины сторон SA и SB треугольника SAB.</p>', 'sab', 'neutral'),
         step('Применим теорему о средней линии', proof,
           '<p>Отрезок соединяет середины двух сторон треугольника — это средняя линия. Она параллельна третьей стороне и равна её половине. Что получаем в треугольнике SAB?</p>',
           choice('midline', 'Выберите верное утверждение', 'parallel-half', [option('parallel-full', 'MN ∥ AB, MN = AB'), option('perpendicular', 'MN ⟂ AB, MN = AB/2'), option('parallel-half', 'MN ∥ AB, MN = AB/2')]),
@@ -125,11 +126,11 @@
         faces: [['A', 'B', 'C', 'D'], ['A₁', 'B₁', 'C₁', 'D₁'], ['A', 'B', 'B₁', 'A₁'], ['B', 'C', 'C₁', 'B₁'], ['C', 'D', 'D₁', 'C₁'], ['D', 'A', 'A₁', 'D₁']],
         views: {
           neutral: view('Параллелепипед и пространственная диагональ', [['A', 'C₁']]),
-          sideBC: view('Прямоугольная грань BCC₁B₁', [['B', 'C'], ['C', 'C₁']], ['B', 'C', 'C₁', 'B₁']),
-          sideCD: view('Прямоугольная грань DCC₁D₁', [['C', 'D'], ['C', 'C₁']], ['D', 'C', 'C₁', 'D₁']),
-          perpendicular: view('CC₁ и две пересекающиеся прямые основания', [['C', 'C₁'], ['B', 'C'], ['C', 'D']], ['A', 'B', 'C', 'D']),
-          projection: view('Отрезки AC₁, AC и CC₁', [['A', 'C₁'], ['A', 'C'], ['C', 'C₁']], ['A', 'C', 'C₁']),
-          base: view('Прямоугольный треугольник ABC', [['A', 'B'], ['B', 'C'], ['A', 'C']], ['A', 'B', 'C'])
+          sideBC: { ...view('Прямоугольная грань BCC₁B₁', [['B', 'C'], ['C', 'C₁']], ['B', 'C', 'C₁', 'B₁']), rightAngles: [['B','C','C₁']] },
+          sideCD: { ...view('Прямоугольная грань DCC₁D₁', [['C', 'D'], ['C', 'C₁']], ['D', 'C', 'C₁', 'D₁']), rightAngles: [['D','C','C₁']] },
+          perpendicular: { ...view('CC₁ и две пересекающиеся прямые основания', [['C', 'C₁'], ['B', 'C'], ['C', 'D']], ['A', 'B', 'C', 'D']), rightAngles: [['B','C','C₁'], ['D','C','C₁']] },
+          projection: { ...view('Отрезки AC₁, AC и CC₁', [['A', 'C₁'], ['A', 'C'], ['C', 'C₁']], ['A', 'C', 'C₁']), rightAngles: [['A','C','C₁']] },
+          base: { ...view('Прямоугольный треугольник ABC', [['A', 'B'], ['B', 'C'], ['A', 'C']], ['A', 'B', 'C']), rightAngles: [['A','B','C']] }
         }
       },
       steps: [
@@ -142,7 +143,7 @@
           '<p>Теперь рассмотрим прямоугольную грань DCC₁D₁. Какая ещё прямая основания перпендикулярна CC₁?</p>',
           choice('cd-perpendicular', 'Выберите прямую', 'cd', [option('dc1', 'DC₁'), option('cc1', 'CC₁'), option('cd', 'CD')]),
           'Возьмите соседнюю с CC₁ сторону прямоугольника в плоскости основания.',
-          '<p>Грань DCC₁D₁ — прямоугольник, поэтому CC₁ ⟂ CD.</p>', 'sideCD'),
+          '<p>Грань DCC₁D₁ — прямоугольник, поэтому CC₁ ⟂ CD.</p>', 'sideCD', 'neutral'),
         step('Докажем перпендикулярность плоскости', proof,
           '<p>BC и CD лежат в основании и пересекаются в C. Мы доказали CC₁ ⟂ BC и CC₁ ⟂ CD. Что следует по признаку перпендикулярности прямой и плоскости?</p>',
           choice('plane-perpendicular', 'Выберите вывод', 'perpendicular', [option('perpendicular', 'CC₁ ⟂ (ABCD)'), option('parallel', 'CC₁ ∥ (ABCD)'), option('lies', 'CC₁ лежит в плоскости ABCD')]),
@@ -152,12 +153,12 @@
           '<p>Ортогональная проекция точки — основание перпендикуляра из неё на плоскость. В какую точку основания проектируется C₁?</p>',
           choice('point-projection', 'Выберите точку', 'c', [option('a', 'A'), option('c', 'C'), option('d', 'D')]),
           'Уже доказано: C₁C перпендикулярна плоскости основания.',
-          '<p>Ортогональная проекция C₁ на плоскость ABCD — точка C.</p>', 'projection'),
+          '<p>Ортогональная проекция C₁ на плоскость ABCD — точка C.</p>', 'projection', 'neutral'),
         step('Найдём проекцию диагонали', proof,
           '<p>A уже лежит в плоскости основания, поэтому проектируется сама в себя. C₁ проектируется в C. Какой отрезок соединяет проекции концов AC₁?</p>',
           choice('segment-projection', 'Выберите проекцию AC₁', 'ac', [option('cc1', 'CC₁'), option('ac1', 'AC₁'), option('ac', 'AC')]),
           'Соедините A и C — проекции двух концов исходного отрезка.',
-          '<p>Проекции концов AC₁ — A и C. Поэтому ортогональная проекция AC₁ — AC. Пункт а) доказан.</p>', 'projection'),
+          '<p>Проекции концов AC₁ — A и C. Поэтому ортогональная проекция AC₁ — AC. Пункт а) доказан.</p>', 'projection', 'neutral'),
         step('Назовём угол между прямой и плоскостью', calculation,
           '<p>Угол между наклонной и плоскостью — острый угол между наклонной и её ортогональной проекцией. Выберите угол между AC₁ и AC.</p>',
           choice('angle', 'Какой угол нужно найти?', 'c1ac', [option('c1ac', '∠C₁AC'), option('acc1', '∠ACC₁'), option('ac1c', '∠AC₁C')]),
@@ -213,10 +214,10 @@
         faces: [['A', 'B', 'C', 'D'], ['S', 'A', 'B'], ['S', 'B', 'C'], ['S', 'C', 'D'], ['S', 'D', 'A']],
         views: {
           neutral: { ...view('Пирамида SABCD, центр O и середина M', [['S', 'O']]), points: ['O', 'M'] },
-          side: view('Равнобедренный треугольник SAB', [['S', 'A'], ['S', 'B'], ['A', 'B'], ['S', 'M']], ['S', 'A', 'B']),
-          base: view('Равнобедренный треугольник OAB', [['O', 'A'], ['O', 'B'], ['A', 'B'], ['O', 'M']], ['O', 'A', 'B']),
-          angle: view('Отрезки SM и OM при ребре AB', [['S', 'M'], ['O', 'M'], ['A', 'B']], ['S', 'O', 'M']),
-          section: view('Перпендикулярный разрез SOM', [['S', 'M'], ['O', 'M'], ['S', 'O'], ['A', 'B']], ['S', 'O', 'M']),
+          side: { ...view('Равнобедренный треугольник SAB', [['S', 'A'], ['S', 'B'], ['A', 'B'], ['S', 'M']], ['S', 'A', 'B']), rightAngles: [['S','M','A']] },
+          base: { ...view('Равнобедренный треугольник OAB', [['O', 'A'], ['O', 'B'], ['A', 'B'], ['O', 'M']], ['O', 'A', 'B']), rightAngles: [['O','M','A']] },
+          angle: { ...view('Отрезки SM и OM при ребре AB', [['S', 'M'], ['O', 'M'], ['A', 'B']], ['S', 'O', 'M']), rightAngles: [['S','M','A'], ['O','M','A']] },
+          section: { ...view('Перпендикулярный разрез SOM', [['S', 'M'], ['O', 'M'], ['S', 'O'], ['A', 'B']], ['S', 'O', 'M']), rightAngles: [['S','O','M'], ['S','M','A'], ['O','M','A']] },
           midline: view('OM — средняя линия треугольника ABD', [['A', 'B'], ['B', 'D'], ['D', 'A'], ['O', 'M']], ['A', 'B', 'D'])
         }
       },
@@ -245,7 +246,7 @@
           '<p>Две грани пересекаются по AB. В точке M луч MS лежит в боковой грани, луч MO — в основании, и оба перпендикулярны AB. Какой угол является линейным углом этого двугранного угла?</p>',
           choice('linear-angle', 'Выберите угол', 'smo', [option('sao', '∠SAO'), option('smo', '∠SMO'), option('mso', '∠MSO')]),
           'Угол образуют лучи MS и MO. Их общая вершина M стоит в середине названия.',
-          '<p>MS ⟂ AB и MO ⟂ AB; лучи лежат в соответствующих гранях. Поэтому ∠SMO — линейный угол двугранного угла при AB. Пункт а) доказан.</p>', 'angle'),
+          '<p>MS ⟂ AB и MO ⟂ AB; лучи лежат в соответствующих гранях. Поэтому ∠SMO — линейный угол двугранного угла при AB. Пункт а) доказан.</p>', 'angle', 'neutral'),
         step('Проверим плоскость разреза', proof,
           '<p>SM и OM пересекаются в M и лежат в плоскости SOM. Прямая AB перпендикулярна каждой из них. Как расположены AB и плоскость SOM?</p>',
           choice('normal-section', 'Выберите верное утверждение', 'perpendicular', [option('lies', 'AB лежит в плоскости SOM.'), option('parallel', 'AB параллельна плоскости SOM.'), option('perpendicular', 'AB перпендикулярна плоскости SOM.')]),

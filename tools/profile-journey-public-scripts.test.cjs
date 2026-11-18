@@ -1,13 +1,16 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict');
 const {canonicalProfileLearningScripts}=require('./public-page-script.cjs');
-const map=['../skill-map-data.js?v=20261112-vectors','../azbuka-metodov/catalog.js?v=20261113-routes','../skill-map.js?v=20261113-foundations','journey.js?v=20261113-foundations',
- 'second-part.js?v=20261109','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity',
- 'vector-basics-data.js?v=20261113-foundations','vector-basics-models.js?v=20261112-vectors'];
-const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity','calm-data.js?v=20261112-vectors','calm-ui.js?v=20261113-foundations','app.js?v=20261113-foundations','checks.js?v=20261114-numeric-domain'];
-const boardRuntime=['geometry-data.js','state.js?v=20261101-trainer-repair','calm-data.js?v=20261101-finance','calm-ui.js?v=20261101-trainer-repair','app.js?v=20261101-trainer-repair','checks.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
+const shared=['../exam-map.js?v=20261115-fipi-map'];
+const map=['../skill-map-data.js?v=20261115-fipi-map','../azbuka-metodov/catalog.js?v=20261115-fipi-map','../skill-map.js?v=20261115-fipi-map','journey.js?v=20261115-fipi-map',
+ 'second-part.js?v=20261115-fipi-map','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity',
+ 'vector-basics-data.js?v=20261118-opposites','vector-basics-models.js?v=20261112-vectors','/assets/trainer-skill-gif.js?v=20261117-research'];
+const publicCourseLinks='course-links.js?v=20261117-h12';
+const boardCourseLinks='course-links.js?v=20261115-fipi-map';
+const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity',publicCourseLinks,'calm-data.js?v=20261115-fipi-map','calm-ui.js?v=20261118-opposites','app.js?v=20261118-opposites','checks.js?v=20261114-numeric-domain'];
+const boardRuntime=[...shared,'geometry-data.js','state.js?v=20261101-trainer-repair',boardCourseLinks,'calm-data.js?v=20261115-fipi-map','calm-ui.js?v=20261115-fipi-map','app.js?v=20261115-fipi-map','checks.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
 const html=sources=>sources.map(src=>'<script defer src="'+src+'"></script>').join('\n');
-const canonical=html([...map,...runtime]),wrapper=html(boardRuntime);
+const canonical=html([...shared,...map,...runtime]),wrapper=html(boardRuntime);
 function parity(page=canonical,board=wrapper){
  const actual=[...board.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match=>match[1]);
  assert.deepEqual(actual,canonicalProfileLearningScripts(page,board).map(src=>'/ege-profil/start/'+src));
@@ -20,8 +23,9 @@ test('board contract excludes public-only modules and permits only the reviewed 
 test('adding, removing or reordering any learning script breaks parity in either page',()=>{
  for(const changed of [
   [...runtime,'unreviewed.js'], runtime.filter(src=>!src.startsWith('state.js')),
+  runtime.filter(src=>src!==publicCourseLinks), [...runtime,publicCourseLinks],
   [runtime[1],runtime[0],...runtime.slice(2)]
- ])assert.throws(()=>parity(html([...map,...changed]),wrapper));
+ ])assert.throws(()=>parity(html([...shared,...map,...changed]),wrapper));
  for(const changed of [
   [...boardRuntime,'/ege-profil/start/unreviewed.js'],boardRuntime.slice(1),
   [boardRuntime[1],boardRuntime[0],...boardRuntime.slice(2)]
@@ -33,8 +37,8 @@ test('unknown cache queries are rejected for reviewed and ordinary learning scri
 });
 test('public-only modules must appear once, first, in order and as exact deferred includes',()=>{
  for(const changed of [
-  html([...map.slice(1),...runtime]),html([...map,...map,...runtime]),html([...map].reverse().concat(runtime)),
-  html([runtime[0],...map,...runtime.slice(1)])
+  html([...shared,...map.slice(1),...runtime]),html([...shared,...map,...map,...runtime]),html([...shared,...map.slice().reverse(),...runtime]),
+  html([...shared,runtime[0],...map,...runtime.slice(1)])
  ])assert.throws(()=>canonicalProfileLearningScripts(changed,wrapper));
  for(const src of map){
   assert.throws(()=>canonicalProfileLearningScripts(canonical.replace(src,src.split('?')[0]+'?v=unreviewed'),wrapper));
@@ -44,9 +48,25 @@ test('public-only modules must appear once, first, in order and as exact deferre
 test('board wrappers explicitly reject any public-only module, including equivalent local paths',()=>{
  for(const src of map){
   const filename=src.split('?')[0];
-  for(const alias of [new URL(src,'https://mathexam.space/ege-profil/start/index.html').pathname,'./'+filename,'../start/'+filename])
+  const aliases=filename.startsWith('/')?[filename,'../../'+filename.slice(1)]:[new URL(src,'https://mathexam.space/ege-profil/start/index.html').pathname,'./'+filename,'../start/'+filename];
+  for(const alias of aliases)
    assert.throws(()=>canonicalProfileLearningScripts(canonical,wrapper+html([alias])),/Board wrappers must not load public-only modules/);
  }
+});
+
+test('the shared official registry is required once, first and deferred on both surfaces',()=>{
+ for(const [page,board] of [
+  [canonical.replace(html(shared),'') ,wrapper],
+  [canonical,html(boardRuntime.slice(1))],
+  [canonical+html(shared),wrapper],
+  [canonical,wrapper+html([boardRuntime[0]])],
+  [canonical.replace(shared[0],shared[0].replace('20261115-fipi-map','unknown')),wrapper],
+  [canonical,wrapper.replace(boardRuntime[0],boardRuntime[0].replace('20261115-fipi-map','unknown'))],
+  [canonical.replace('defer','async'),wrapper],
+  [canonical,wrapper.replace('defer','async')],
+  [html([...map,...shared,...runtime]),wrapper],
+  [canonical,html([...boardRuntime.slice(1),boardRuntime[0]])]
+ ])assert.throws(()=>parity(page,board));
 });
 
 // The live START entry adds a public download panel. Its full-page navigator

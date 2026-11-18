@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "effc1e2d4e802abfa998a4edfb53a0ba8ac5ace3",
+  "baseSha": "95ee4b197171fd84fd0fe7198e62f47ebc34a328",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -38,53 +38,53 @@
   ],
   "addedPages": {
     "articles/index.html": {
-      "beforeSha256": "c2b5eff93b4a552c835518fa096926ce850d83ae39394e8fa9e0895fb4f1c606",
-      "afterSha256": "9c9376c114c4943e76c23eb88fc28b399f23c10d44bf2448da9dbe984fc32b8f",
+      "beforeSha256": "2a528e5e2335f74cd11b0a09069c9fc1c7379674e8465e2378dcf9204486ec2c",
+      "afterSha256": "e8744a0200f90748113aa04d96f2cbdd39693a2866c5cf99ef4eaf06ecee83aa",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html": {
-      "beforeSha256": "e969f1d82d77af3ab8b28f802e42328a1ecfb1ff6c13139e08e26addc751d085",
-      "afterSha256": "c722be154db42a89f91c965d8570a60e1573ef42bf9be6980af88a3537d57c5e",
+      "beforeSha256": "2fad3c8ac7c17e0da27f88d82ed6db548d8ec1562e9784c23f8e76b7dfe8f821",
+      "afterSha256": "545cb17ed08c3d7c4cb83d200bea78b9e14077776c0011581cc36d129b1419f8",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/02-uslovie-i-dokazatelstvo/index.html": {
-      "beforeSha256": "9a9a1a189791d806d6f031bff359c21828ad53f85715d3d32277c33ff8cdc53c",
-      "afterSha256": "53d9313f0c037c57f2a861c500409845d96a7b1f663b68195f579e0a7ea7a735",
+      "beforeSha256": "df8860e8329370fc16e1b5b464418223584f59b4c254044b4fc03655615d25bb",
+      "afterSha256": "02a8f2e292ea0cd691dc5ac1309a57bce90d3341f664897a08e68e3f3ab84fdb",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/03-nalozhenie-figur/index.html": {
-      "beforeSha256": "d5b20f42b5ef2e76305b734ac6baef663b905d47132b7cdcbe0df987e8663608",
-      "afterSha256": "58d1151f70054f7d3f164d3d2d7125fafabe0715368e99c73161165898b0f764",
+      "beforeSha256": "712f87823a9ed6fac40ba92529dd7e1acf560552f22119602dc0f54cf9133dad",
+      "afterSha256": "d4b05680bcf8e2b3710741b565f810a636402f6bd37787c460c5fe627667d627",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/04-pervyi-priznak/index.html": {
-      "beforeSha256": "f66aa5874c044973ba0dd5aff8b9d1f50c8a2aaae378dc71bdb22403939c53fd",
-      "afterSha256": "8da2b44ee2e49d543cc808fb11e49f13c2bb9e5d2547ac1907d1ea2649f05548",
+      "beforeSha256": "923583fc087fa1c1a4a61bb3ec7bee195ed7f0407ccb67e16dde7fec3a041750",
+      "afterSha256": "9a6046e9ac3b27065724ba5bfb49df48bdb7a9372e7cea69607ca45b50dc3378",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/05-mediana-bissektrisa-vysota/index.html": {
-      "beforeSha256": "2ed2b04111786ef9caaff5b732c844d661f60c8bfa48bff74045521507b33ff5",
-      "afterSha256": "5454d0377d8e96b23fba6b5aa3d35b128db7a84b7039aa77a7bdf8a5a1c70c92",
+      "beforeSha256": "ae58a9ce537a86e9bd817c881ee9d1667a830fd64163fceb38b3c12b9f58ae38",
+      "afterSha256": "5b391aeb06ef2e6d7e5ca830afc9c535b3035c757ad6c2257f1693118e03f2a0",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/06-ravnobedrennyi-treugolnik/index.html": {
-      "beforeSha256": "dc98e2d7238c22539a9b4feeb1da64250bb065129d99f8ff3208cf02bfbca23d",
-      "afterSha256": "1e1265cb4996a569fafc344104a7ff781d6c69551015f68ec74b954b70ac5451",
+      "beforeSha256": "979effb2c4463c7ae7413ca6baf6478183c917f383c96db67942aea0b8b47dbd",
+      "afterSha256": "d68685957847a61956ce0797d2c62b41139fb7e6e8fe60e48c6a7ebb8568c6fb",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/07-chitat-chertezh/index.html": {
-      "beforeSha256": "c0cc6184a5191e64008b4c2732c30b0f56373938d260158ebbf0109122ea167d",
-      "afterSha256": "9415f4821f4564b0ccf99065bd6326713675a3c7114772da60a4b7315f1f0f40",
+      "beforeSha256": "a2f4698eed6b3f855706e1380c35f480a84092731b1c40abaf1790048bb4e6d3",
+      "afterSha256": "213ad20a48661b6cc16cfacca9a248ebbffd649e6d0ab693161573942400277e",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/08-marshrut-po-geometrii/index.html": {
-      "beforeSha256": "1f43979169b25ac82b5afadf3acc820806c0b0a2a5c217aba335fa34440359d8",
-      "afterSha256": "f5ce89b8fd714975e1370c4f286ab6558154a56b28db58546bcbe35f052d661e",
+      "beforeSha256": "bf37896ad3b36c63a86da7580cfae64d0f51f90b51851b0dac6dbe83b7e5c43b",
+      "afterSha256": "5899eb90c52e42aaea61a59dbe857acec87173f42b74b245a4af872642a01f0b",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/index.html": {
-      "beforeSha256": "7d87f2f602abee06b5283b1edd79e05aaad273660c9f8f3ff2df1f3745806888",
-      "afterSha256": "9f765dbcff362f9dcf7622a7f2b532c0b0518d383192d98e33888565bcf3e529",
+      "beforeSha256": "631a6cc67a9e2730390efebc7007f0da8f36741588752bbc06475bbfa08be925",
+      "afterSha256": "d5bd28dbf47db04eda6db6687c90526a28167de234fc9cefe5dc1e5128e8c56a",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/sources.html": {
@@ -98,68 +98,68 @@
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/01-chto-takoe-stroynost/index.html": {
-      "beforeSha256": "9502e277e694cab34031862b9c6d818717e4de389cc565c296eb87176989cb02",
-      "afterSha256": "a197cd17bdabe8cfb286c1d0246ae9300336a626d2a217ebf5ffdfe1350c0258",
+      "beforeSha256": "07e2f857b419b96700a6df3de748d1b1c56c1977a05204ac21abf625856694fe",
+      "afterSha256": "fb3b11c288e10d00d5dfbbc3d60d5f531443bc429c4498d5f3f99c0ed7cef309",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/02-vhod-v-geometriyu/index.html": {
-      "beforeSha256": "8b2e71366e184bcd0e4afff607f367874165bb099b72aafae73695a6ef917261",
-      "afterSha256": "043caf0bf56cae5273d0b3891be2b9c9dbc82cf63b6362ed61b786aab1568511",
+      "beforeSha256": "01e0131aa65e1cdf518d590611724d3396dec1e906a266beda89dc4a87c7daa3",
+      "afterSha256": "d4d658e1843786d22144132cb399abde25aaa0a707cc657d23d3923f4f0f1020",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/03-akciomy-i-pravila-igry/index.html": {
-      "beforeSha256": "2d8c21670f66d7ff834f5b618bfa70ca98d2660d8a13ff97ceedc515fae56185",
-      "afterSha256": "70636ce225bdd0201704067e5b2af164807cd28170bef4ab3dcf0535b1db3fd2",
+      "beforeSha256": "6186a5bd5b5f50b80d3c8a57dee9473af3b8e37c2bdf1acaaa161fc12717a949",
+      "afterSha256": "6a010c0a680f4165ce2af6ed62f3280cb10495b91acb027f3dcdc5ed834dcc1b",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/04-ravenstvo-nalozhenie-dvizhenie/index.html": {
-      "beforeSha256": "c40814a4f3c3c1ddc599d70617cf37ac236428b98bf82c7220e1e96e4fd3ec35",
-      "afterSha256": "e24331d63ab6a5c8a5add01db0a58ccea50c06ec870c911f21b194ca2388d8bd",
+      "beforeSha256": "803ad548b4baf55e7d427c737ecbecba8862cef522404d04fba24a15777bf9e7",
+      "afterSha256": "9287324c1e7df97b0ead65eb632f8527c757bb0fe6a6c9c8f2436a20939f6cea",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/05-pervyi-priznak-ravenstva/index.html": {
-      "beforeSha256": "3b8a00159198f096c8b651317c2de47fa35091c43ba07614db4fc8ce524e9cb7",
-      "afterSha256": "c841aad9119f28a485382360526d7b95b88898440e880c1f920db32e01d41e2d",
+      "beforeSha256": "ecb18fee173176339dd439143f12d1b58544b18a2f01024b2978e09699bab5d7",
+      "afterSha256": "f1f1c8d320f40cb4879343b1074f5b15d01b001a91b6ab8587a059717f7e2646",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/06-kak-uchat-dokazyvat/index.html": {
-      "beforeSha256": "3c674f6b20b1381febc1c89440f7589af82992c627d7f1c1919ab269506947ef",
-      "afterSha256": "d31785342aeaf67ea8f10374279f48560ae40c257dbe1a3de386fef9b64fddba",
+      "beforeSha256": "f3df678ca458f76ef5ab42849e705d75426fc6049eadf754c2fba4100f733465",
+      "afterSha256": "82cfc44d7923242cd6beb752b1a60c44e6d22884ecef71a975aa3dfbdbd8aa43",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/07-neobhodimo-i-dostatochno/index.html": {
-      "beforeSha256": "d488a46bfe94e36113c8202076aa92874158a965685ab16bd2afc27d46a53825",
-      "afterSha256": "c61073cb1caff2a2cf469e531f30d9d2cbcb7fc49205e14227df6ac139f1c1f9",
+      "beforeSha256": "e68de98d9d246e83769f3ecfdee95ce1c80a7dd1011faa3482d8b0ca0faf4acd",
+      "afterSha256": "f5f918082fe86347f75d54b3fcefb7bb1705843ceeffe9de6ec6372536176268",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/08-sistema-zadach/index.html": {
-      "beforeSha256": "6ba736b85bbe24b9df4dfd1ba207cb55ce64e91af681ad775c0289ca4a7c49f1",
-      "afterSha256": "c2f4dfd84abf9ab4ae4b39324f99d6d93e24524eae0df53ff0d0a6beda5756ba",
+      "beforeSha256": "9acd6a6331b33a78470471432561cd9b3edff599fd1f9e252dcd578c768e553c",
+      "afterSha256": "6a1586083cfe3b3bd983d23828afdd682cca3574e027c51674caf7be8b9e484e",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/09-chertezh-i-dokazatelstvo/index.html": {
-      "beforeSha256": "58b082f9a5131a1283537d61e2ba9ffebae03159c3ee3095ceeea4c72ae13534",
-      "afterSha256": "a1ae10b4e7bfc54ce33c9bd4dd05eecf7f9f0e2060aca97eb2d4e81210881e76",
+      "beforeSha256": "c0221406fbe480f21ac0a32e61a2f225d3fae536a242ae3e5298d3de8c315444",
+      "afterSha256": "a1df25a6d78c082327c1c83c49d8a92b779b8dac6fc1cdda0da7dd86dee34377",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/10-tri-arhitektury-kursa/index.html": {
-      "beforeSha256": "407a463471c7e98aeff4139bcf362ca50e6a237fd546836e4e4fac6441112b26",
-      "afterSha256": "a921715dbb2f9d0a7c2d25f83169345bb80016396018d70d0aa220c65e84fb1a",
+      "beforeSha256": "85e12efe06ec2687006c5032ba6844ad981daefd415c8ff77d518c97364b309e",
+      "afterSha256": "5cca010c3e70cac959dd93f568e4ea0f5b38e52acc45c8e33fcf7e1315eb3923",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/index.html": {
-      "beforeSha256": "c686908bc92608af4b73b1807a269e89093ce3b9701bd73e76bb7c7dab83a407",
-      "afterSha256": "3605dd344a96bda51ab3dcd88744f676cd22c6da1ead894b5e99e59f0a2929d1",
+      "beforeSha256": "5265e9e1df8d7178351866ca1aa694138bccf5e2d4defa2eaa9c1e9afc76aa34",
+      "afterSha256": "2f1c1284156b9d56199b7c132a8ec4e34ae2341b74bc32712aaa358c5694c22b",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html": {
-      "beforeSha256": "a65cf670faba5c7b636faf2284ad705aeb3432c8c9faaf3703a766ce7583783f",
-      "afterSha256": "ca73e4a3d8f419648422d0807a75a58b45d17685709afc9c9dd73e99a12ab9d5",
+      "beforeSha256": "62bf81f5b123c51f2358ea2b0abd4c06e10d2a9a168057722ee5e614b18a9665",
+      "afterSha256": "ca85f9c93b3d962aa3c1d9c20f69df38abe529d65f97a930fd800991c66ea118",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/index.html": {
-      "beforeSha256": "3278b827b0dfe59143e3276e7343829bc21b3b73be0cee92bed098492fd00afe",
-      "afterSha256": "fe9ecd871cfc4e87ef17426284ed2c5882583f1afcd2f7edf1b4772f2a5c7d3e",
+      "beforeSha256": "5cc6a90a39652b60784d11843cfdbc7cf00c6f55e691417e4a9e9cb4a24431ce",
+      "afterSha256": "438952d9dea35671246472075fd1d3180e657bebadd1074c3516a5a0dbca0777",
       "placement": "before-head-close"
     },
     "azbuka-postroeniy-reviewed/index.html": {
@@ -203,8 +203,8 @@
       "placement": "before-head-close"
     },
     "courses/vilenkin-6-part-1/textbook.html": {
-      "beforeSha256": "80e82db7d3da2939a3122fa1688d5c14059a6a5c5d699c35316c2d4b1b2d09dd",
-      "afterSha256": "29acd2dde161949bf5782de1dfd257a32e5bc50142f79f44d9c79124e532c9b0",
+      "beforeSha256": "1e5749f8ed7c3a4f90b6d3aa37881ba8bc8620c4d6be4ca175addab0c81d1f28",
+      "afterSha256": "6c8532d2b624fd069df626a228d7805773ba2f0b589deac6ea45140ffa64a3b8",
       "placement": "before-head-close"
     },
     "credit-payment-table-trainer.html": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "3c50e113978708c28f89e1ed2f2cdde13b503ed8c2379bc395d35191471592ef",
-      "afterSha256": "4ad52df37a4dd33fea13205a7c1755b47407afda7b803c0dcd56583392ff659f",
+      "beforeSha256": "c0b702a6267cd7ba88972fc415547eb17e2a48a4e268d3cef6bf45d5795b1bd5",
+      "afterSha256": "eb2ff7bf73e28312c6170b928a8c54775856489dd702cae4213e9035f99392ef",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "fac79a8baa6c54844e8f21949783f252efc0e020af229608338b8fd3a15f493f",
-      "afterSha256": "3c30c539b0f25a0506516a0f3ebebfa6971365c31a5b56e2f8126bc272aec2e7",
+      "beforeSha256": "063a06a94b4cfed234d543fabad67d6c346c6c57c7b803c9b80633b3444c3e98",
+      "afterSha256": "0fbb8454422c6606e2f0074c197a46136a4e7ca58e179deee817b0b3ed35648c",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -273,13 +273,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/index.html": {
-      "beforeSha256": "0c51405915514a81da7d6374d32e32d5a4b0d08bbce0af9615bc3b9a68a31278",
-      "afterSha256": "cc4e9dc33560502c7733c77c03d164b9f7e85eb5f12eefe5ee32ce1a8ffbe0d9",
+      "beforeSha256": "dbf1bf5fb8bc1c2cbd224554831b584e47c4f98b6ceb51ad12a148d051392682",
+      "afterSha256": "2d9d039053e21f6fc575ca334e8fe7c45c4245927c58a6c610e8764c424a2df6",
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/lesson.html": {
-      "beforeSha256": "bfed363a64a67e5a85ee23ab8a799b71c19555d4cdbd724b25cae942a5c64bff",
-      "afterSha256": "6e3561a2d8cdf6cf96f1b928479fb235f1bdc27ec11002a217d7f1c03304ed5a",
+      "beforeSha256": "fe636797d2c4752fb65fdf5a7b1dd6c218b8f039c4ab37b8c1bf215a27a9d209",
+      "afterSha256": "2b64087a1659d4c953b21f0ca61298f84b3af0e34f3f525d07b57a2587d4a4cc",
       "placement": "before-head-close"
     },
     "ege-profil/circle/index.html": {
@@ -288,8 +288,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/exam/full-exam.html": {
-      "beforeSha256": "0160cfc99632159a7927a32d6a60c6809a8dd981307ba7f5c486b13462beb632",
-      "afterSha256": "34d7074fec1dc63b7fd6e80c79c0ce7c0cd24f39b138a7273e772b3d30ab40d8",
+      "beforeSha256": "93c521cbba36b97d2321a33bef0563ab9bb10082f9a925641466de8aba4a1951",
+      "afterSha256": "38ba52d4e7fbbeb5d61ae93342e203c261c604edda671d860d77c2d14d1448c1",
       "placement": "before-head-close"
     },
     "ege-profil/exam/variant.html": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "20c64cb211f3054f4c148991d4b9e68e28b10f7c79c909873a8943b780d7f823",
-      "afterSha256": "7f71c71c8481bf51a700670012b6f87a0574f7217e42e64fcf832ac4ddfa9fc3",
+      "beforeSha256": "8916604f99ebda2b1f3c1f77728e02b46bd12b9b4c653e596fd7948436155870",
+      "afterSha256": "c4ba1a3994e776263b2ccfdaea81974b1db7cf5111ae338222cbcc582d18a137",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "0ee5c09d46b6fd32bc896aed574b64dd453c449bf5237c4261982551ecde662d",
-      "afterSha256": "1019ea336cbe76ffa34aa2b5db5bad333d0005d6c5c2d237b1ccd77c9ee16028",
+      "beforeSha256": "0dba595cec179134a5aa4f484d4cf882f4f7877ab9612beacbdaa217a4da1004",
+      "afterSha256": "e9be0fcebe951cdecf124749abc8f1b366b65da011f66a86cf020527f6e5e178",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,58 +323,58 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "9481b703fc23b11f830239cedf6ee4dcf3fe6a1757badc05be8528c5561d961e",
-      "afterSha256": "504e2a744b6500159f33e33620a07d6843e9391d78bde6992c1796f23125ae9b",
+      "beforeSha256": "c3e17d6c76e1b276009af94ba6ee7f6066bc9024b21a9aba4c7ebc2861ece7a5",
+      "afterSha256": "55be214709d06c3b625ffeda50f7fe559bcd0bf69fa7c5a3a0f78ab71bd99de9",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
-      "beforeSha256": "197774485bbc868895e91778aefe30fe1d14a1e2d20d2d678d9dc01dc588b3c8",
-      "afterSha256": "f4f1dc946107e50c8ab37321fa9ce8a82de2ccc9bff264819146066c62e58ca9",
+      "beforeSha256": "b149755312de601e6e46def156145df0081a5f86d566925fd1c4b8ff504aeb85",
+      "afterSha256": "7cd621df2f4a66c26995f2f25c00ac6089910fd0c71aee888ef1a925dfaeb99a",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/derivative-t8.html": {
-      "beforeSha256": "3813a97670b2eb5cf5084b57902117b520b0847ac2578851b47dba347e89c70a",
-      "afterSha256": "de91b4d93182b9af4e8d6364a7bd663444e32a6fb7c708e6cf73377a21fa5e8c",
+      "beforeSha256": "c8c0815d57e56f71568873c373f34f86fcfae12f35c06d5431cd766ad3833c89",
+      "afterSha256": "15eb0dbe12f23582e67a1408536251fb95c5085846c9eaa13deda4e707fdc4d2",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/expert.html": {
-      "beforeSha256": "ce4a3722cda25d4fa75149910198b4abe439ebcab1a0f83bf8493d8ea0fec119",
-      "afterSha256": "1377ce8e9699ddb615d0779097f48e7fa0ebb67b21b54013c4541cf4061ae295",
+      "beforeSha256": "df9a79e546e1639929b3f01d31f1b92d64baadf5d414dfbb80767b5ad387f716",
+      "afterSha256": "66d9280bf591e07bfde60d8079b9e2d350e617d90ae4773c5d8c6fcbc184b606",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/finance.html": {
-      "beforeSha256": "915614b35a602990eac442d511fd6a591d4aac8295f64c1b76378eb6c57de868",
-      "afterSha256": "179dd4150df330472f8866cda67b6ceaa8908264e526bce3865a89c1db288d0c",
+      "beforeSha256": "52a88b87260fa112486c0c22661d27052fcfe63edebddcb1cef9b845a6b85ac1",
+      "afterSha256": "50bd7a90bc24b7195380b9e6ad4cf71ce39f22f692b1ebbacfa987fa320f52ed",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/functions-t1112.html": {
-      "beforeSha256": "ae2d2ab79b4f94c5ac1d817f81c6635f2239f2debdbed387583931f8101cc5c8",
-      "afterSha256": "ab5011aea0ff450f45f2b59563f2148c9f221a7f1a9f1871b488497505616152",
+      "beforeSha256": "774663d15b54d7c50588c91cb566c881a48eec9b755050f17998b51e782a8324",
+      "afterSha256": "71103cd7b3db8bee4f22ed521366d1e8bc4189be18a0a778b09c0f512fdee95b",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/inequalities.html": {
-      "beforeSha256": "111f664ec530128fa06a618e3e5ce82d34e5cdb4267b9facebc11d82abdb5eff",
-      "afterSha256": "ccd58741a6db95d426e8678c5195a6c12e6045a580d07c44eee737997ab5ea17",
+      "beforeSha256": "9ebf2433025dfc58cb59b8ef193b14fd544ed032133e115b212741649a7f9f05",
+      "afterSha256": "bd4e9aa36fe918a5287dcc1a029eaa4b8cf99626bf4deb25d6880455e8905396",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/interval-method.html": {
-      "beforeSha256": "f9b65cbdac05fe9531abe112ab36bf942a5612afe7d266c86851725f902cbdf4",
-      "afterSha256": "699bbbab1f9c96a0a61dc6a964e86423551154113ba6e2093d17ebaadd60a4b1",
+      "beforeSha256": "603dd15de7a5d60bdcd730f2a8425e985f4ce163673dc2d376cbbf2abd52600f",
+      "afterSha256": "575c3872f6cefed54fd434ae50f4851f8a125ae9d6a6e89fe18b60a9005aa4a8",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/numbers-t19.html": {
-      "beforeSha256": "7f964e53141916f36d7b96d129ff53711ca6819cae68f731f56a0c8d9291217d",
-      "afterSha256": "d079259ce9ec8998165fdea0e9cbb1a1636bbcdca00d1ec225f7f60262758b35",
+      "beforeSha256": "470ec7aca4edb50640911c3af779a3ef0137d434acf56846c706726ce35b912d",
+      "afterSha256": "68f15360eb5ca094c3252ad374a4a1ab80b2db88d75cf51bb59b111d13f8781c",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/fractional.html": {
-      "beforeSha256": "2b958d09679b2a62fcee8df49168e77b6396a29350a6ddb4fb73cd5785899d67",
-      "afterSha256": "b076dc4096f4027d60d8569840a11aa881493fff7535799aa495c7b84e57fe11",
+      "beforeSha256": "624c7c73b128186825554a34ccc487ccb85409476a1100be3f53c230740bacb5",
+      "afterSha256": "bd1b3e7a9221381e8e2b628f96992c1a02465231299caa276c5effdb7b25189b",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/graphic.html": {
-      "beforeSha256": "0894ef1782d13a1edab600002ff36868996813b58f87a2916acff9b958b80897",
-      "afterSha256": "8b1688d8c081d305f383beeb752471ee083c259e0012dce76e84e0812ce5b4c3",
+      "beforeSha256": "718240aad28c8c2d2e4acbce8eb2e5582ea8252555910af3c9d8ef0aa36637f0",
+      "afterSha256": "c17fe2e60bd61b9e4aeced62b05101e5d21d36cc816d184d60c19177a70c4bba",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/index.html": {
@@ -383,58 +383,58 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/intro.html": {
-      "beforeSha256": "ced38d6eebd23a3e865af24128c112f25c8ba791fbcf14b3d42df9ecad217d66",
-      "afterSha256": "31f6cde95c7fc23c9f718bf8bc82209b024c3120b0e159223883f4b6fb819c67",
+      "beforeSha256": "c2d405f918bd255ff4b49e4f442f4e1c5d9dc789156582911cf6866a0f69896e",
+      "afterSha256": "64c1e7c976d9825160c7756d6ccccb72b249160f03b47ab8592f11cf5d9ed4a1",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/irrational.html": {
-      "beforeSha256": "c660bd7b4a13534d47dd46eacc697805b824a4002250c90aa57eb2208ab5192b",
-      "afterSha256": "4d12ce8c52a39b9aa475c029a2894a16b49a5f4be54371ed19ed0c5752fb6902",
+      "beforeSha256": "872dcaacbb7409e8bed0e837b9ed300ffe0d4744eb17169662457b25c765c841",
+      "afterSha256": "a9d7a9439b8fe001c012adebd9651aa94a1d4e99101aa666a5ef8698d4e98ca8",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/linear.html": {
-      "beforeSha256": "28f187ac09b0b9f1b10202ffd5ac65abe1c8dfacd16f8b460286095ca266ab2b",
-      "afterSha256": "75e0812e41ea663a3e81bc5a7b7ff07ad201440e5790ddafcb295fe58828e22c",
+      "beforeSha256": "16e18e1be318ed10bb2063b1e3af4b0f1e4b2b144470d5a5e90ec8ab922a1641",
+      "afterSha256": "3771e73ae0a19da265982f14f6374c90ded708eeee289401e43302cbe74eb89f",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/quadratic.html": {
-      "beforeSha256": "4d6cebccb96f023f24e9be7c9c1f476a67c4e5ceac0d605fbb5fa0131afd7c4d",
-      "afterSha256": "86f51bed044de87d85e0e8529d6e29a0cda92724dbde32e3fb32ccf477728dc2",
+      "beforeSha256": "206fe3efde70460588270ab0c95dfd5a47acb0d761ef205d3ab20676386ee5fb",
+      "afterSha256": "a6dd75a5bf0af333497eb0a81e786555fb23a59e355684472f3bc010377004c0",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-t18.html": {
-      "beforeSha256": "c0c9b68c790190cd0d9c112af0523227f4c6ae2101cab120475de65f998d8a6f",
-      "afterSha256": "1c7696b59bcf2b420cb080455da26b75e00cafc2a1e0fa919f023195fdd4a676",
+      "beforeSha256": "166a571739f538c873f92225fd0ed892cb186d2e548702d4905f757bc52426be",
+      "afterSha256": "9e17956b326b5b06e0ba7a4c1e53d1543606fa84ece4d184cbc67bda5f3d09cc",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-t1.html": {
-      "beforeSha256": "3bc01ff8ceb1f12200ef856601f0752ea7177bc3fdf3f6f81e61f5d4c6640e61",
-      "afterSha256": "dbcd8e3e013f808182c02a53ed379fdf08f56da0e658559b170ebfee6d26fde2",
+      "beforeSha256": "c682f9bbfacc9fb0d36563e19ae1fb9c4d22d72994eee59bfae03c3b363b72fb",
+      "afterSha256": "4a2b0a1025ce66899bf79c10e3ab83a32a500b8f62cfbb1114136fe6e9b4d46a",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-t17.html": {
-      "beforeSha256": "6e2bfc8b9d6d3f6df42ca31571afa29058715526289487e52489bb163d5a5340",
-      "afterSha256": "a20c54817296cd7f4da7e49489cc21761fac94483dc2ff7fdae65dec7e3dc2a2",
+      "beforeSha256": "ab89d344ca5ab16d723cc0d0cb3406a53d1527a3549aadc5b5acf6eda1ec34fc",
+      "afterSha256": "647a7ff6cc68f135fef590eb49c66ea97595ad6fda88ad16954c43ca307aa111",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-yashchenko-t1.html": {
-      "beforeSha256": "45ecc6d9c10009b71fb79504c909dd8d9b540b6232da02fb1c712dd920e56545",
-      "afterSha256": "3f42757bc95898e7e2c16933376280a07164d906eb502c053dd9de2302fe9449",
+      "beforeSha256": "3dfdfd6aa93d86dec58c067ce415bf80d471aa9ef0384edafb94efa24ed8ea1e",
+      "afterSha256": "51e33dd4c1408458bcd9c747d604a73b87c6a7ae72ca5221332191ef500c196a",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/probability-t45.html": {
-      "beforeSha256": "b63db4d64f786db643913a41ce18167fcd78afe5e973bec58ffefe2651b79b3c",
-      "afterSha256": "399b981bbdebe261f78d36ee89fc9f23c118546b50f74f26945b363c96c50973",
+      "beforeSha256": "9485ee2193d3150d9be646f42e90efb72e66501a774aa06eefec45715c79da8e",
+      "afterSha256": "d7bf993eda4735a0ff7412339f211fcb71f1d453f9af43f2337e2ae4551cd7eb",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html": {
-      "beforeSha256": "4209c3070572d66c79889abcbf38a5fc7f447b2a96ac7059c170973ddafa8f70",
-      "afterSha256": "9662edd1321c26d25b3e868e61d53f2197d2fb2a7f46dfecae7315f1fbe8b9a5",
+      "beforeSha256": "11ec18254eeedf9484be0ded0b76985ef1767d64d28a75b66b140f91434a3ed3",
+      "afterSha256": "634e6edc756681d301653b1942e26aa2c7c02bfa4543f5f51730a84ebf8f0277",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/stereo-t14.html": {
-      "beforeSha256": "5f84d8edcd44dc2307cd68b971398d6712da7e7c79d69d8d34e1d97917576a3e",
-      "afterSha256": "e1e2bf688f29574d08425e0a6d907cc90f88f5147894c048918ad4bdba483c76",
+      "beforeSha256": "a27b36de81e91fd32c5a32912456ace144df4e4ac436789b1327cc626e7c4ed8",
+      "afterSha256": "1c05f7cc63c63787babd7eb3a710b21e31f56abba4e03e27ce5d6af501fae5da",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/stereo/index.html": {
@@ -448,23 +448,23 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trig-sum-to-product.html": {
-      "beforeSha256": "7ddf4ca4b72e41f69f5a5acadd531cd0a33f8c060862fcc322398a9b975d32ca",
-      "afterSha256": "4e92b1a90e705b1aaee24bf90cd5688bc1caadaabfc6f3772210cbfbfb3d5d49",
+      "beforeSha256": "37d05e6067b55dff0c1f57dd7cea2c5d40ef9fb247c1e949956404620f39f048",
+      "afterSha256": "459355ba3fc3f14d5a6bb36054aeedf4f41011c307b91e6d50abe8ba3c52572f",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trigonometry.html": {
-      "beforeSha256": "c92120a7be736c988bae6039a920b7f341ebec8bd19f3145cd1613ef61bfd3e9",
-      "afterSha256": "55cfae4327a8d203ec7c7990a8559528490a549ade8f250ddc27f424f084b1b5",
+      "beforeSha256": "16d55a1a2047548d2761fefbc9c7bb10d27bc5bffd8fe03514a02c3ce8c21c94",
+      "afterSha256": "c950ed997b0e5d2f85f9239a8426c6cd8a1a4b216fc911681069d75a0503ce75",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
-      "beforeSha256": "ecbd4e21de48233cb895d972864ab87a88aae20ffc7139889e821a3fff4dd73f",
-      "afterSha256": "e1367a359d60bd5d94f6c23f85325113f1c22daa2b94c43f8940cd040ed10d3e",
+      "beforeSha256": "8a97190be5c17eba044d3e640e0d2dbaf85ccea446cebfd746087e8f7f77b244",
+      "afterSha256": "a6f204bfcca37ab283bd3f69ba1c76326d29f0bb8e7c7fd082d777e3707fbf54",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-yashchenko-t2.html": {
-      "beforeSha256": "3b2306d522d184f54cee9cfa9872fbf0ead084c1d029a6f19cde0cabe3ac1b77",
-      "afterSha256": "502a3f8f2cc45ca3f812eb27ccf9c2c1b6a2625b407f2390e2e6c6999ac105d5",
+      "beforeSha256": "2c63b7c72bf1c3ecfd5b934c9f54ae3d97fbd048898b45f65ed5791aa668033f",
+      "afterSha256": "69f99d6033e4064817c520b03ae66db535e5cd44b4295ed881d94eace386fdcb",
       "placement": "before-head-close"
     },
     "ege-profil/trigonometry/index.html": {
@@ -478,318 +478,318 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angle-locus.html": {
-      "beforeSha256": "f58a22734cbb119a766146df7b018aa8763b39534bb9c0e3e23a0ff9852c3872",
-      "afterSha256": "67d43fbbdbfa24c34e3e6c2acac4d39018816d9a4c24554559e14d9629997636",
+      "beforeSha256": "f7a78e589a221d2b210d97b76998741b10704b8b761745c422416ac14c76731f",
+      "afterSha256": "8434383d084d56a22fdac53fe083e08ac614cd6e0f1c34cb0bfb922c196eb9ed",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angles.html": {
-      "beforeSha256": "2201339f3e539d5554a2d929fa7b6cd2b6b866621f25ce6a93b05a2edf9da5b3",
-      "afterSha256": "ba911b76385fb572433dff0c7f17e5ee2d329f2667da49fe3471ee4f8ce01ec3",
+      "beforeSha256": "ffef7a295b9e4540e5fa0a43b7b2f8895014dd65a383610551bea227d86519be",
+      "afterSha256": "ee7ab03fd7a96762ae7f844468e68a3f0ce75004a8350387a91f3663bc0cbbb3",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-basics.html": {
-      "beforeSha256": "aad765a0a2ac35db17af9c19b2872ef415cf379f94f18e3a546e8876644b053c",
-      "afterSha256": "0e31d4f251cce24e422c862b9735a150f8980249904fd4ef7e3531375022238c",
+      "beforeSha256": "206037048afe4cb48899408e4daddb0d42a1c23b71cb842ccc22b008a7c9e181",
+      "afterSha256": "0d29c3f975dac0f3065c97668215023c3b3326e1a0c5e18d79072fb7aaa722db",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-parallelogram.html": {
-      "beforeSha256": "17e37fd2a21960a098616684784d9d7956df50332f75a3c2ef63adea7d7bcb70",
-      "afterSha256": "bfce50148c54a43340b6a91b7b8a0e34b7dc55e138c630ddeab313ff27445004",
+      "beforeSha256": "dc3a1b291cb057c230570b1cfbb3e08e35d047dd1a84c835d4474f84b489a888",
+      "afterSha256": "9f4c1c76378dcbfdb94d0993bd378fa3084ffa7c31e877a0c5c86575868e2cdc",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-sine.html": {
-      "beforeSha256": "60bebd3ec0edebe208249ebe7a38cabecd8874d7e5385cd4187d5c6a4a1c6c75",
-      "afterSha256": "a65b4aacb45a71525fd1b7ed673d4d66b30919a7422fe3a2eba0bd3c337d9e25",
+      "beforeSha256": "bd13e7e8a4a02747ae14b625bc48861a95170d99577ef906fda8153747e8c7d4",
+      "afterSha256": "5295a68e25601fecc1a056b3c0f9cf1d9cf3d0da63679d0cd5cca5bc4bb21085",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-trapezoid.html": {
-      "beforeSha256": "ffd49ba330d4382b7e216adfd6b36daf00783ab1bf115758d992918def96c413",
-      "afterSha256": "3c60310a5ca74abfe4cb6f7091d6a26836f6eac3998ec125fe4f7c114224d874",
+      "beforeSha256": "45ad8f9bf095e96e57bfb9123a04bf8adb9d48886f3f1ceef60d10157f928ba8",
+      "afterSha256": "fdc401b9e78959ccb22d68ae316ecd63a28a8d85596f3a62d101f30f713f0982",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-triangle.html": {
-      "beforeSha256": "e1430682b25ae6256dbc340e7eb9558280c709f77f69c7045b01a6c298bdc860",
-      "afterSha256": "38df7093797355d62a14e1597f100ca290271cb01cf259f5b2947bee487b687c",
+      "beforeSha256": "6535a04aab25606ef864e60b98ec6482fac25f04bb9de0e29ca4ab66f4779ad8",
+      "afterSha256": "0e6c3eb4aea85ced75dd7c4f1918fb6514c9f545b2c16ae042138a2e687fe0f5",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/axis.html": {
-      "beforeSha256": "12014a68b90b9170c2efcaa0c95d3f1908d5baa3b6ae59342ea00cc8c7ffecea",
-      "afterSha256": "931e8d44394d6e60809a21f26045f542d7845b336a032b57d018ab3ea0acd070",
+      "beforeSha256": "6d57d9512054124825b856c0808253addd974f8d44d423ea8f676cf0f8179550",
+      "afterSha256": "0353bff58152b75ad2c915149e35f88c6dbfe39dfc1b894af16296b7e1bd33e0",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/centers.html": {
-      "beforeSha256": "7e7aef4f55c464426e693439de3699a83653048d08e570865df8b79188a80dae",
-      "afterSha256": "262c7703cf12096488f0b88c4c58b535220821807c6b4d70d2a90369dfb0ea18",
+      "beforeSha256": "36b52dddc5d3ecc087a83c97bf04c4d2986f3a628a70eaa587ba85071d8b5155",
+      "afterSha256": "9241c022a0d83a56a5cf2cbecf2aa5a34fd403308459d78c6641855b493230b7",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/central.html": {
-      "beforeSha256": "d050d4d7c61e93df6702f2b3292a1c161bad6771d520636e34b0025073f3bfe9",
-      "afterSha256": "3d2383ab7146b076c6c79139edb05bd93c24e687ee2011a73291300d48cd310f",
+      "beforeSha256": "8c34efde1e5101a7ca48a7bfca1c24f31e7bb4ce625207be84950db6fd6f1517",
+      "afterSha256": "b9689c6cf760c980ceb34888a04073e47712cb34e22d9b3e573514522d5de5da",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/cevians.html": {
-      "beforeSha256": "4fee127a1953f50875f9360e225f7c2533cd9d8933458f193379a98865538b73",
-      "afterSha256": "c604e72031fa307066c028c72d6acf76810755f53bab610467c51ec5b1194d48",
+      "beforeSha256": "ff9d12e730fb95a7da5ea6f8535666a914566ebbf20979b78f377e66a1ebf52d",
+      "afterSha256": "e890ce1aa8f643d24f9d274d55df36e0e5538bbb6c08edf0a2c674bf46c54e5f",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/chord-angles.html": {
-      "beforeSha256": "b1d83b5a8de29753569aec30e5ae93fa4213c3cb0baeb738fa5727b74e5908f9",
-      "afterSha256": "172bfd6daa53d158c0a714e66cb1961fe234f06caccf95681156823372854b0e",
+      "beforeSha256": "5868120628b80be805c7da5e0fb02db3dbbd2631aece1e726f1670ef198b25ec",
+      "afterSha256": "23f1d94c0009a8ce07f70a5bdb59d08b40344b9379bb1102f384a0d44ea8c30b",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/chords-tangent.html": {
-      "beforeSha256": "7b21893af7ecf6dc26f43616de802beb434d36f41b9d418fe575f40dc1f20db5",
-      "afterSha256": "e08a57284312d13ebce1ed0342ba0315a95813e76adeafb3ec9d9178a2cbf366",
+      "beforeSha256": "c9b8ce19145ec1b5df3588dd7b1c31c4403330ecdcc2fab062a018488e6e9d2c",
+      "afterSha256": "c7c2e79ceed501f60aa3127725f45ba580c8e80c8d54997838cad7b12eed5ed5",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/circle-metric.html": {
-      "beforeSha256": "30c91f119319cd2f50888e6a41d92e89a008a41d56e8ebbd22bb98731a29754a",
-      "afterSha256": "c799563b9d8610535d5d4792dff3a0ac68f217b658b3c2818bcb284e38759ee1",
+      "beforeSha256": "203f76e6490c7c618ebdc5bd11c6165a342cf95ad7b52bcc947c1f5d3db8f6d0",
+      "afterSha256": "f0fe2ab015696a63bf8941ad2cffacbf716c6eba44e862e22eff4293af17e056",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/circle-position.html": {
-      "beforeSha256": "c36169c082ae9184f326cfe062581af8ab7fe04c7e9b0b21edebb9277f5b5b79",
-      "afterSha256": "3d88a87bcbed53b33e63acf33125344e9336366f88b9f9600309a5cf61aad662",
+      "beforeSha256": "7d1d4eb6b182a72bb07de48f797ae7b7b148cfa5bc7037aa696d493fb7745cf1",
+      "afterSha256": "6c5df4e91e5c9be24cc916d485431c81f55001690b710e96f23801a30bfb3a11",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/compass.html": {
-      "beforeSha256": "42d5533b7314a089131af1d5b50d98394d3dcf30a7272cdac072c4528649c8f9",
-      "afterSha256": "a03658ccc5d16e2775678cff8d8b755ba472f7e44e69c0b9911c7d7cfa5ad21d",
+      "beforeSha256": "12979a489de43e2279d35595460aad52446286aa5b76faa2a822c5d5c57f5960",
+      "afterSha256": "3ec04bb795c24c0f7f6706f59dc649772054355f53585838d8c69477e050e8ea",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/coordinates.html": {
-      "beforeSha256": "344ae30be5376319ff6830fa69fa0f48365f57c497b3fc1f5001dd793a8cc198",
-      "afterSha256": "b32dcb8e012633b4e14489f8ce395249c6c95c88bb41c068e3c8e02e9db8b7f5",
+      "beforeSha256": "1fa510ac1ddf7d90ade53d196ce223d9a8e78d524b5549082504d2769feaeba9",
+      "afterSha256": "9297c848a4584d4c4ef5d4d6c4ca27975f6a0a2001ac6d458b012d124cccd185",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/cosine-rule.html": {
-      "beforeSha256": "ad9fe11c992e6a4c2b9a826cbdb8fd3f6a94e44199edc65c4c2ab0e68b5c695f",
-      "afterSha256": "373e59e8a5ed70ea498aa25e87401d12d83eda3e7d24f7db8fd123823c32046f",
+      "beforeSha256": "da5b28d26cc47d9a99a409b39a0d77944db5386eaf95441d95909ab301b5ed5f",
+      "afterSha256": "712338ad849106f332dd7d1510da9e0bc7c5152ae134bc42a132cc15b5dfc256",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/cyclic-quad.html": {
-      "beforeSha256": "d3353bfc640eea21bbbf58c5157c269f6f8bf058174387fd945f9380abb3f825",
-      "afterSha256": "e8e5a040c473262ae70ce2d3a74e36259a242282d8eb12e27856b3c80b53fb6c",
+      "beforeSha256": "6d3719a099dbf8c7c97d0cc39f2b0b76a293be2b5ad1ab0f92a182db27167754",
+      "afterSha256": "e83d6bb35cb824f5f14ae750cd9928028a1fdbdb32ecf535bffc125ec11a04cb",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/distance.html": {
-      "beforeSha256": "65cf10e04f16c1a31728fb54b5e580bd1a6c75d304628f4c1ad3075ef18a3c5c",
-      "afterSha256": "f1fc26ff08ea652a499100a3232620202ecf3cadf0c2d1f4fe5850fd8dbdcba5",
+      "beforeSha256": "396e41cc44f2f6722ce3da67b3be2ac1233cd9ac9b852444f9cc7e63004b858d",
+      "afterSha256": "495e7aacd7d4f9323c497cf768c91ebadf7174bb7ed74b0929e75d48cedf9843",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/dot-product.html": {
-      "beforeSha256": "c4b7d9bbb698d7b1ff3774b6f87defd09e0bab63e4d4beb61f0a1bd5e6a41998",
-      "afterSha256": "aa77b1f4ae2619e4fcce5ae7c51b72015f5236f93da451f32890d097c6c37da5",
+      "beforeSha256": "ee9efbc5aa7074279cf9ac8da14d4f66e73e5eb6e0dd7c5a6defbfad7210cf84",
+      "afterSha256": "71ca5207a64b9dcca1033b38592188be4632021859936c8221bf7b1ee43c6f4b",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/equality.html": {
-      "beforeSha256": "c675897777061e369e5362541d36859ac4593d8158a350119383ab06215b72e0",
-      "afterSha256": "ebf5e60e8f31decc2c1367c3c3716b0d4218775fcb69652b5df96a1545d00b87",
+      "beforeSha256": "5278ec98fb4a4e328c568acb00305c87f1c297317bbd4306f9274eaca535554b",
+      "afterSha256": "da5a4453c347d54944b76633a753ac2a42af35c4e1b99624d2da2e7c8bb22a98",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/heron.html": {
-      "beforeSha256": "723083d088d8983f8adf2312c18440b60ad2a1cff3b7da2256f00b276f8fd8f5",
-      "afterSha256": "940fafcaeffbf0f2d75e8bbe3f69f61743967a98373debf00e976e99861618d9",
+      "beforeSha256": "c3d430d86a66d184c9a761c2933485d699aaecafda3dd86c40de486c018a255a",
+      "afterSha256": "e33a6b5345f3103f3d9dfdedfbe9272bc0c4eb2ee74412646a042a4dd803d5f0",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/homothety.html": {
-      "beforeSha256": "0ff0df123afa8a1236069ed5586b8468e004272d8f20c42e13078eaa3f42cdc7",
-      "afterSha256": "c06bb30818d4b6a603877f7097be31ad7b0173527fde3432190aaf88887e049c",
+      "beforeSha256": "bdb2446503241945b7f55029cae318c97421b5993ef4e52ce7b4a5c96c71f7f5",
+      "afterSha256": "5c54fd105f0eb7e45b1da99f00ef1618be8b4cc61d6f92f738093a665adc73b2",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/inscribed.html": {
-      "beforeSha256": "1b4222f171e4b7ed9b28d2d65ca6b0f344823e2eeef8d1f26b9d4e7bc74d6095",
-      "afterSha256": "820da3246690b4db6514611f2ac0017e6a6d9ee0dadca4d3f52bd21935fab5e6",
+      "beforeSha256": "127fa4ebb0b150e3e330e79434fbba8c036220e983dae317e80e27452f20af10",
+      "afterSha256": "0d80921552f20ebcbf4074e2843e353bdf73dabedefb5a4f9949680000dee5c7",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/length.html": {
-      "beforeSha256": "da634c916441d8b9d67e0856f236ef52de561f0e016351d8cae9e26fbb0d4f47",
-      "afterSha256": "ca87ca6bbdce39bcc0d50fef9884ed59974dfb429df8cfe4622d2e038474e9a0",
+      "beforeSha256": "d7aaad06b332bae12298bc3a36a42425aa765e03494aec630ff1e3163c358a6a",
+      "afterSha256": "522f3b483f16d4f70db6ebf4dc9995b57bd97252123388d12180cb9425ba5e8f",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/line-circle-equations.html": {
-      "beforeSha256": "8dffeb6f6bc0c43e25238cbc45c73139ee8c394cc0d54969968caeb990d6f671",
-      "afterSha256": "9f68269d723fbc2d22cb32956775584cf7e39eb48efff825472d2ef203f8a88d",
+      "beforeSha256": "77655a6cfe4988b62cfb7d0b9221efa4f72a5b505b169691c7629d1a793b114a",
+      "afterSha256": "3fbb174d9a204c0804d6c3d12da62932f3c633fdb8e2b66412faed65deb1e1c4",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/measure-angle.html": {
-      "beforeSha256": "6e054ffab25090f6939171ee3d096c2ee6a34f6c6ff5726352b164a4188b681d",
-      "afterSha256": "ae1b8ea913a9ef78b32f3cb6f24f7eee5d74432b56bdd60bdb31eb9c4c33bfb6",
+      "beforeSha256": "465e8d5d42362174ceb37959c6dbe4361c6879a3e5fa67620fc21b497ded9ad9",
+      "afterSha256": "d6993566e2a28447aaac2870495b1f4f3dd8acd2b6cf5409498a5fa756a7dacb",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/midline.html": {
-      "beforeSha256": "341a1e2704b7d6eee4701a6d5bdfabf9a6aa7c475e95445ec251ddb9361ee691",
-      "afterSha256": "37041c5626ae162d97170c8b86aed9ede8af9a77fcf90bf2512b739a590c653b",
+      "beforeSha256": "f2812ec78ae92c350035a6168f49e46b50697f73f78702ca6c33771106ab1190",
+      "afterSha256": "061664cfee2cfaacc693d512bdf30c49e63441325f0769130fb84084fa52a225",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/movement.html": {
-      "beforeSha256": "7975824a5c73754f38c76a6dbe645cfde5d570dbb323dd1bfff6bca04ef83c01",
-      "afterSha256": "e24022834a0141078a8deea2cbb0784215b4b0011ee56c05f8adbb4f18b7a71a",
+      "beforeSha256": "25a144c6939329544311f34c16ea238e298ebb52c906e8062d43b28ab4a38c9c",
+      "afterSha256": "3669b8da2dbff5cc5ec039e78cd5eb1c3e77ba7e781d1dc9cd09d6aeec8925bc",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/parallel-angles.html": {
-      "beforeSha256": "cdec4785b329f8c780c8fc556352ba5d608e964a7eb34b0b2e7a950a9ab78794",
-      "afterSha256": "5ac1503cbf84ae9e0d2d0f4321d9d0e7e61650fbc92cb7a56e7f3cd46281e6a0",
+      "beforeSha256": "55c162cad7ec22c26a403fcaf2b3a613201efa86e12c413f968c8e73945a0f27",
+      "afterSha256": "4f593411708d95ca1193f8296f786154eee11788954d0cb690ca561975254b0a",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/parallelogram.html": {
-      "beforeSha256": "fdd9802b3ef19774e5aba996f97dd40bfe174268bde0d0173a9917e6ef515ce5",
-      "afterSha256": "7d7b10fc38687243dc1502bd6d50e30499440615ec9d11d5d14cb877cd21566b",
+      "beforeSha256": "49157dcf20c693bd82957bea7261ddd2384357bc505c628161b2d28c3936af81",
+      "afterSha256": "514d9dc9346e59e8e06ec483926a8cb36063debca7e413c6d3cc63ef96036af3",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/parallels.html": {
-      "beforeSha256": "878f63e1d74de71f1288050d7fcb539987ad3f7d412e5a578190ba3f1421664a",
-      "afterSha256": "3a521bb30eaaf1f4c4dd1fdd4de287a25c56ce3caa72ec91f470f883776e9c26",
+      "beforeSha256": "10a6a8af921446218e6c8edbf1af620fb7d44722a1961a404d8c18a965447ba8",
+      "afterSha256": "067bd8899f2526c4b90525447f93bb8f403312f8a805b3b99b23483a03356984",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/perp-locus.html": {
-      "beforeSha256": "8c04fe4ab2a576c3d71af245e7494ce5264386da0f6789273e98f8d7f44dc82e",
-      "afterSha256": "ab504ee2b94542f044df463579e42ac8f789a17c756548e624dc3a47bb73a0fb",
+      "beforeSha256": "f60855f570075b1a61a0e75fae61b1fef8bfae9d739d3d2353ebfba899586832",
+      "afterSha256": "b4fa22c9fbddd0d16d5ec402311b547e7751e2a957aaddc8308ec4479f05f39f",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/perpendicular.html": {
-      "beforeSha256": "16e1bddbf615b26105256749f91623350a5adf9c2c9b8c282ab66ce67045e894",
-      "afterSha256": "7359fc67c6ac551e7bfb9d76bb5a5a34333a20b7c328d3e9b3b8a562a5c3e220",
+      "beforeSha256": "69612f795f5e79bc6405e3432f001cb2ab914b5c98d69514564a902263a2fb34",
+      "afterSha256": "d270c799744b38a76e0858429036c26ac74147c24cf88b60323c590dbe9fd598",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/polygon-similarity.html": {
-      "beforeSha256": "3acaccc7248fe69756ac8f29adaef06970c077e752fc6dac9e7c475ce71a0820",
-      "afterSha256": "6e5e99188a6b4468f319784650d7e54474ae0a5491ddfd94c04cc24f6bca2e84",
+      "beforeSha256": "4c0626b868e6074327842ef7a9e84489ed53d932cad938b11d5489bce2469574",
+      "afterSha256": "6ba2e3bcdf1f592d213f10b6cc6c2177cd706110b993ef723467a2e20b9008ac",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/polygons.html": {
-      "beforeSha256": "7aa1476cf4c4b148afd4392f97aae5f36f39e4c328ac000197a60937fd375a0d",
-      "afterSha256": "7ce68ff6b0aca818ea157b0fb586f84b2dd41affe1c93aa0d38f26c8255cc6ba",
+      "beforeSha256": "3fddec564c044c759b0cf63f800574df7e5446d378aeee0e924dcaa64b2d03a0",
+      "afterSha256": "05e2534ef180a119790a72ebe8d452a8e4e05bb41059785e0d3d987d8093a700",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/projections.html": {
-      "beforeSha256": "48cf92a725ce1e285262e0ad5bdb51448aedc1a109e407d429966ad78cc8c681",
-      "afterSha256": "5743622664b0fa3ed77588ca3c71161ccd47e2c126046d31161450a294a10d09",
+      "beforeSha256": "ae2c95844e2a1f461c0733ea3a7fa8da3db0d8e7491ffc6ad10afcfe21ede787",
+      "afterSha256": "8a50daddd66a6463d6250ddca321a9f7c1a8898b308f56b4d67d9a3d7fac2568",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/pythagoras.html": {
-      "beforeSha256": "6578a19b0878ae6da942b45572f7917f1f31741357e5679455d2c335d1bd8dcd",
-      "afterSha256": "1d55d109bd6d5dd26b509d8644d4414f9d1dadf37e1496e7b71dbc306d33b025",
+      "beforeSha256": "96cb85aeb4868aa4f9f7870e19dcc3c95550a671dbef5e168384fb177d8061fe",
+      "afterSha256": "d9e7ef3fc7436e013c86c5fcfe2405bac17c21c97b341fb612c536283044d083",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/rectangle.html": {
-      "beforeSha256": "2beb7056914db4194db40ab1582126aa1f7044093d3d062171bc5d1d9a1019d2",
-      "afterSha256": "93f2fe0d54a7d734493dbf11980475bf3321ba683d37ab49c8fcf0e417dfe443",
+      "beforeSha256": "450e47f668de7811a2066ccf21b6787ffb51aac55c81e466b045f4cad2f90590",
+      "afterSha256": "d1c737dd17bd3662be370167edee7a6363d1e17a9110cab16d3a204aff6c15da",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/regular-polygons.html": {
-      "beforeSha256": "276a6bac538ba2b2540a29da9685e9f7e16cdbfca02557ff0743f05f9a805557",
-      "afterSha256": "6087eba011ecf2d07aa275a51cf67e3448aea486b76b2f9afc08fa220a1f4f37",
+      "beforeSha256": "3bcfe8b284d1e20afac21d344729f8a7c71c716d6e0eddf0fc05c353125c5597",
+      "afterSha256": "f98af89ff92754b90901d9cde9a9aeb2664acb66cca1a6f870200ff12369fcf2",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/rhombus.html": {
-      "beforeSha256": "e1d4586f3707e4e9a2c1ba4d1afe98c042433964c238587ab93de8d99ff951a7",
-      "afterSha256": "20cfc550476dc17df0cd5af29df678bd6ff554304da1cade38e4b4c5d5593d4d",
+      "beforeSha256": "d1c607e61ca221d56af2ef7672812ba3dca587e7e32f7c66f56ba77f758bda0c",
+      "afterSha256": "8317309b90edca818f9c6c7693dc1843bf4344d6593ddf71bb8d6b3d11eed0dc",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/right-triangle.html": {
-      "beforeSha256": "1a91c2dbc6cf29aaf86ebc455095a14c2065b5292dcca3cbd567dc11b2d40f82",
-      "afterSha256": "ee8371b050d0b1c06a5cbd5f091738da162e8e5e2dcdc087a9aaa76b375dcb5c",
+      "beforeSha256": "9ee84eea8d7940a9e870ae379a74b659911483f53f7145d753c3d4d4e4c37804",
+      "afterSha256": "d9e8c1376b1103de8691d25c03a94f9fb134011a54edee7450ff002df185d5d7",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/segments.html": {
-      "beforeSha256": "a64d907bacccbfb899fc6c0850c14ed5f818e529b07a63e3f5da2a60f6108027",
-      "afterSha256": "a66caa67e3296d58ead7c73b415b5f065613302851e3f9d4a76f641ddd526827",
+      "beforeSha256": "23702037ee333d988d029b55fa56c7845a8ac349f46164c10060ae61d3e20cd7",
+      "afterSha256": "abc10cc073e7688d3bedfbd6b868a8dbccdefcc28fd0f3e945d8c6806cfe4779",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity-measure.html": {
-      "beforeSha256": "319d90d13a833c28099edb51d4f501c4ed41a0b4068ee5b0fb11397c6bdab8b9",
-      "afterSha256": "bce7b17f2bc30aee8da5151fa937059defeadb55d878298a6053ece6b9e2400a",
+      "beforeSha256": "ba6365be42f88fc35e9f3495bce0623a4417d02ca637e1bb3d2f5b743d5b0b1d",
+      "afterSha256": "6bb91d19e120956b4310889c930c56561308a36f2a28c82dfd03128c326b30af",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity-method.html": {
-      "beforeSha256": "a0453c80204830b692eac61839057e035194304229e04504955918cd05560288",
-      "afterSha256": "0bebed445c877ba31cad04811646e84570942439847074c8d18a4f54fc872223",
+      "beforeSha256": "3d3731109f60b5273fda296c6dd4c4adde4686592af9175e48122aa9129589be",
+      "afterSha256": "8dbb9fa427c436dd138ac611c3aa2c4e92d2dc51c2068983783e2d8692add5d9",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity-signs.html": {
-      "beforeSha256": "e56c4ed768684e259eaec2dc2146a0425ec6f376c551b30fc9770e84817b1a11",
-      "afterSha256": "860ef4e49e56ef3943b5a0f154856bedd19d38455a9800eed9c8898a19e5b782",
+      "beforeSha256": "175999985ef7fdc37ed800a60b4ca5e3d713d7cdc388a559e8088fa1e4a6aa99",
+      "afterSha256": "ad345cff67c22fcab7e1421da143f400bc1d2981ad937860aca6e22ac4b69a09",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity.html": {
-      "beforeSha256": "e32a6684722b5968d100fb7fbcc079c4e13f778f2be63e4dcc09fe41d4284c98",
-      "afterSha256": "01fcd5cccda2dec6218260de5dabdf6b4a1068ff85e035e9202384f94ccb1079",
+      "beforeSha256": "ea38801c9bdd163a5b38bab3adb5f44e88dece30b13e68c40218b237fcae0f83",
+      "afterSha256": "8988a743ebe99c4b106a21eeac7fb5bbd8142af46ac3fb186d97d4f654f84517",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/sine-rule.html": {
-      "beforeSha256": "04ec7f2a2a08d078f615262dae4c75d955c129f2073068aa1191cb83c75213e4",
-      "afterSha256": "7286975f9cf1950e9614af5d32caaecc77a98d735cfe2e413555315aaa9b3b37",
+      "beforeSha256": "6f895e97b1dafddad369f604924fe1bcc8cdb3e34588c73d214a8280ea72dfbb",
+      "afterSha256": "69ac20ed39dbbd87858572bb764462082cd5da2286c7ba2ecc94ccd0c9aa069a",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/solve-triangle.html": {
-      "beforeSha256": "5e7e0fb5dbd2ce1d4aed31d3e9ebd1b9fc7c61a8ddb9ccd3ca349677812fa01e",
-      "afterSha256": "167f79ead54121b0482f9a78ff280286b8940910efb322893fac1d664a28566f",
+      "beforeSha256": "e638e2d973dfe534043d7dcd99eb787b349c34a5c2ef1acd2dc1040b39f65df1",
+      "afterSha256": "4cd01f05d2a63d9424b9b23bb29033f8330f6745ce7747290f6bd41eba2fc645",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/symmetry-method.html": {
-      "beforeSha256": "43d008bf2880ce0a36b193b560409a639fe67309b7509638ac19f568553553e5",
-      "afterSha256": "8b160249f2fb109ff5421fbe17a3ad4b9fc5a61ec8c7b65b7be806b9bb299c6e",
+      "beforeSha256": "325ea323b775c6ba8a49236191f4b511d9b5df9c7f70a658f3b355c83d0217f3",
+      "afterSha256": "961211ec9430676001e868e00d31a09f8390e9e9f446ea019ac23d80129af082",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/translation-rotation.html": {
-      "beforeSha256": "d032e789d27c4093ae92baee77fc46451fcc2ab7b32eca0958bf575268a8fb3d",
-      "afterSha256": "280aba74da1deeb02d52e051d0d43e15445ccf819adc82fd29dbada095a2b212",
+      "beforeSha256": "4fba239814953e00039b70a816262ff3304f3976dfa4887315a758bbfd835d1f",
+      "afterSha256": "5ad66270156baaa3f1d8cefc06917a7ca804f51b3535f910383544c495c47c63",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/trapezoid.html": {
-      "beforeSha256": "9b81e94c824bcea45e546215219ecac684bd3dde7c27e8bab52520c3960f27fb",
-      "afterSha256": "43ff7afddc53be57ef911fae0238970a36cef0ce266793dd250f71ae855dabb7",
+      "beforeSha256": "b79b6217528d87b6b08113de8934fede04ebf8db44b79d090e6e517a21f3f954",
+      "afterSha256": "2936c5cc05497e9ed69c3da5b7862a229e6e0776c9f96ce267802a59ebc775a3",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-angles.html": {
-      "beforeSha256": "95b92d0212338eaf22e19283c312917b4e3ae86cb941298e6d88041235fb5a07",
-      "afterSha256": "30a3247ebfadec9bbb5ffd11207fc9b2bf73b4ed8ac927c386287f5b8ac4a6da",
+      "beforeSha256": "eff738992691366f6abe795588e968998a5fb9ae4dd29f3b58cce9d38764e566",
+      "afterSha256": "04da51940051b1ca723f2b52a730b260dc61a832fc5bba5fd4be0e47259cb1a6",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-circles.html": {
-      "beforeSha256": "c4ddca1b2c615617bde6924856eeb2ecbe5b7bf6cb42b435a72c372bc6fc49b4",
-      "afterSha256": "2b5862397c0612d87ac15168a6c62daffb10f8e31fef3d93d573ddad70ff0fdc",
+      "beforeSha256": "e8e51ec72bf9f1d5aee1c2123b0ed2b2a660fd1913a97bf942dea75b26bd01d0",
+      "afterSha256": "d90bb247e0fd66607adf6afd954c138b8cc6667eba14c5c3d8d152ed7714a6d8",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-sas.html": {
-      "beforeSha256": "6d2ef67b3c9134058201a1a76d9baebce38368b0687a87deeeafc0e28d0d82a7",
-      "afterSha256": "970fa9ec64a589c8dbadc6904648928f817076f56d675079fda489e09ce3d50c",
+      "beforeSha256": "865ef358b98ac54c29c1c1fae33acf33737a9afc8d12028093557ba729f04c62",
+      "afterSha256": "a56b7504342cd6a6a9c64c6c7bf858109d5747e7058b9d9864146e65fe98e54f",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-signs.html": {
-      "beforeSha256": "860e9f12049ed9e560f0279398f7c3d954640ee7fd2f02fc43f7284fab6e68f8",
-      "afterSha256": "163c02af297f5279123727ff8abb4db1717375d649500589696f0bda5c2f722f",
+      "beforeSha256": "e9cf621419d3bec3fa744d4a1ef85c17bdb8d8077023c4404ecccd9d0e6ba99c",
+      "afterSha256": "6aa0d3a32d4a27c526074d35f03419f75f2481bdc0ef0f92cdce8002cb453f9c",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/trig-circle.html": {
-      "beforeSha256": "342b28b8e1556f74002f944f3f3bbe069d15514fe107f5cb677a777820b00514",
-      "afterSha256": "4c1895c36fd8a1eafc4f147f85bbd149535f3ebc2132dbb6066c831043b71bb1",
+      "beforeSha256": "6d14c21b67f786b39a889503ffc43569c4343d4f22e8bb75077fd89e1a00675a",
+      "afterSha256": "9e8f65ea163a9f9f2d8f25337dc22beaad4a242733e062ed401fbf854cb8982e",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/trig-right.html": {
-      "beforeSha256": "2c69c8af5d8aac773ea2a769f6060d8ece1d0ddfd797567a539fab75b1c65354",
-      "afterSha256": "0a6786df7bad32bd2ff702511e00818eec991638fb826fb9b99d8e247e65d190",
+      "beforeSha256": "01c0fb6dea295865f2c76bf128a63701dde521f5325767a38f75a124128eae6b",
+      "afterSha256": "9e6dcca766d9b3b2755fbf2346dd24974a2704cc6af18d7ad486cc4caf76e683",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/vector-add.html": {
-      "beforeSha256": "80b029cd3af645b95ed3de080abaf873dedf5585fc68d9dc587b9ef1f5d8132b",
-      "afterSha256": "67cf00c6965225415b6581d873c7d3ad3bac31f433b4d427fa7f11fd5d11abfc",
+      "beforeSha256": "6e53da49e4eb24a9d02f30f1c69d13db276fabe233b1373e9edd9c77f3344a40",
+      "afterSha256": "d1d9536960eb9d4080fe813d8b5bf4444928ee6e5b267e8c2df644ca89227fe5",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/vector-basis.html": {
-      "beforeSha256": "6efe85cdf82b8103949fc71aeabc136051bd8ad8201346e1020c42df729d9a01",
-      "afterSha256": "fd14d498595822af759efbe9d70d09f44b597ab78e2b4112415900c0e5120d05",
+      "beforeSha256": "b32c1da63ab4ff1894f31bb097abe29def0658f393ffb5e7c27981f9b2fd8600",
+      "afterSha256": "d18bbfa291d595521f56b08b5d13ad281d8ef217d1cafbf36b9057d59b049471",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/vector-scale.html": {
-      "beforeSha256": "641a0b9c296cd99cc05414069cfeedf13798fb7f9b9be113f2a704dd50a1faf4",
-      "afterSha256": "e5a70e1378095dfb31dac135dfa0394b53e0a41546e2327d5584f584d93019a0",
+      "beforeSha256": "8dfaab9634bcac47c783c82cf13e057920f563914e805a24fae405f581192e4e",
+      "afterSha256": "86db17a6c41f840254a1f279d03ed9bb28d53bdd9151e6ee33c05f090fd24247",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/vectors.html": {
-      "beforeSha256": "ba82fff2fae5dad53caf8f67b861fb526954330c1cc1b0cd6b9612eec7b5da9f",
-      "afterSha256": "7a331c2c87811eb82d4d5fc13b975065790818f006b61469899bf7c28b7ddbe5",
+      "beforeSha256": "68be40d4850501084dc5282706d67dbb77fc3fa81112b6b82d78b6e0fbd1ea92",
+      "afterSha256": "0cde9b5ba4dc0cac1f1826f39edcd8a87deb4b9a8ca5d1e23e4c2c8e48b6529d",
       "placement": "before-head-close"
     },
     "geometry-course/first-steps/index.html": {
@@ -808,8 +808,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/index.html": {
-      "beforeSha256": "a704136cd0ee413ad0f0a843f21a9270a0864d3669f496f2b9061a490bc6ad97",
-      "afterSha256": "c1591035779b8f46125322f1b554edf4072ca4883cbaf3e58b3e725ce32db8f0",
+      "beforeSha256": "64be9ae152e9a1715a082ec1033e2030aed9a0d1bdcd6aa2a94a0084f80e3f1d",
+      "afterSha256": "a6838723066f00afb0107e4a82e99cb851930a5fa2686ce9b4c8a8673c817b89",
       "placement": "before-head-close"
     },
     "geometry-course/legacy7.html": {
@@ -818,8 +818,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/textbook/index.html": {
-      "beforeSha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
-      "afterSha256": "f6fe2c259cd4e65c169071760301818df1f4188ef56c880c7400c3af0fffce44",
+      "beforeSha256": "c26e8f026e5560c39bd0f9a841c0458b7ff4d260c038a42b4ccb2ed7a060ec2e",
+      "afterSha256": "706cd7def6810a4692834081378f1d994a804e073709f8f209ecf2ca4a9d119d",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
@@ -1208,8 +1208,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-8-8-menelaus.html": {
-      "beforeSha256": "df7d893f7fe1f74ae020bd6869f0470515e2cd296450c91fb75a66bde8dbedb9",
-      "afterSha256": "d5e5c2d4e244c3cd57ea029da421a558c5df78a68f8b3225e9c1ea7f75bd9ec8",
+      "beforeSha256": "d0487b443850def4eec758b69a69b05c6245f09385d98f20510d84803ddcb6e6",
+      "afterSha256": "f7adcfadcb91d2cfdeab7b07d8d53ca2a682b1070f44474354eadf9278b10d34",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-8-9.html": {
@@ -1238,23 +1238,23 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-9-9-ceva.html": {
-      "beforeSha256": "1de378efccd42a616a4fb399342a33e13957247a701597aabb93ae9d793c244a",
-      "afterSha256": "0567dee3e2b4c119e1ec1bbfd041245fa505b15b6685a86fa63019e14642faea",
+      "beforeSha256": "2ea84d9f5a931c3e62bdeac0351fc7ce3dd60d4147e200c85140615d7c724f8b",
+      "afterSha256": "0fe874d603025348ef23ec4471c2cedb2517ac234bfda5290fc0442131bf6d8f",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-9-9-inversion.html": {
-      "beforeSha256": "adf4d7722e1299302e38931cf9ae2e912b39e9c8ecfd54aa0506360575740fa9",
-      "afterSha256": "ace193722e4f58739667e061ccb598323ef9b672a60d40eec37f393a45248f66",
+      "beforeSha256": "20a601765e73be08f4097c68d8dbe8653b9b459a1bafa6235dafa3491ce5daae",
+      "afterSha256": "67f0c1dc3d55f753b1d75ab12966781e8c2269a4ab6eb708a7d29114782ba488",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-9-9-radical.html": {
-      "beforeSha256": "b83db6c66dc5b753d1646017e4cc7f5929696ab092c623b7d2cbb5abf1164982",
-      "afterSha256": "26a41524e566b499c159675dcd5c5066efa53b3cb0cbdfdbde074aa61516bcb4",
+      "beforeSha256": "3e6374ba5134b684e1f63159b47608835ea0182380fcc946ededbf2e1b57069b",
+      "afterSha256": "f429eaa82cb6636fd9665fd0b3e259287b29f781cc9af0a897f0dc8ed56d6013",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-1.html": {
-      "beforeSha256": "de17ead654392c64ccf2dcf59ebee394587d05329723938292f7738fb1ebf088",
-      "afterSha256": "8655a16a8432f966d16d76cc923d1ec433d7a4b14db60d8abe94fa76b9835922",
+      "beforeSha256": "47c60fe49b131d1d6e20d121293733b1a413cb5c947f7b6c790df5e9d91631a7",
+      "afterSha256": "94a1d27ebe512b0a3cb6059198f275e4270fc3fae8aa30ca39575891035bb550",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-10.html": {
@@ -1263,8 +1263,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-11.html": {
-      "beforeSha256": "983d0e7828a15c647203a40b337c6f377ca1144a3958807ebb0d0ae65cdbe405",
-      "afterSha256": "90b03c9fb314fc31462ba7bcc85b8d03dabc705c068077d317d0b12493925451",
+      "beforeSha256": "c7561987c9222b2253c3d22aaffd6af0d5b0384aeee21ce0602891bec791b6eb",
+      "afterSha256": "4dbe92844ed2c9cac356b89bdfefcb1ab70c6d686c2debf357eaf9c3c4705661",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-12.html": {
@@ -1273,13 +1273,13 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-13.html": {
-      "beforeSha256": "64713d1287229da460fa2469d62a5efa48726a40cbfeb9ade959932727f29d17",
-      "afterSha256": "ef3108b04c92e3c60588eace927bdb7c852cc11e53b832b3ffe03b2d269ffcab",
+      "beforeSha256": "f32447863e9fc031c4789cc3059905080310c7b3ab95153f314d6ab52e7c0978",
+      "afterSha256": "a32dd491cff6d0d5a6506a27df0a3050910bbae4c0f9a905a69aa201132cc814",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-14.html": {
-      "beforeSha256": "fc987732cdeae20739a3dc85165cc0b57638d2591f7aadae8dfd3d0cf166a8fc",
-      "afterSha256": "d93d0ff90d86955872fac04a7b21f884c8176bfd071749a2180c98a3300856b4",
+      "beforeSha256": "8c2dafc6913b15835a3618c72b3df2e145b1bf38588a909c0961fdb3f4a2811f",
+      "afterSha256": "b89a5a726aa65002c1ad1973c8d92ffdba5084789e00fef2628033e0509f1163",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-15.html": {
@@ -1293,13 +1293,13 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-17.html": {
-      "beforeSha256": "6df08b06b55891ac5e37edae976ecb748a5fd70e35e5a4015f95cb67f1d44f65",
-      "afterSha256": "237ed80c208faf51341fe8a23a5eab0d448b5891a90714b459d02eb6709f856f",
+      "beforeSha256": "40d5c3e80abbe600aac3d1059dbebcdefb1d8ed09a53fec607bfa4ecdf0d311f",
+      "afterSha256": "f1c664a9d515782667fe95b09371f66a6acc9b17ad78a9aa6af53aaed105348e",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-18.html": {
-      "beforeSha256": "51455b43b472aca50651444e5c57dbd03037ca3e4f9cfac12bd2755406bbb166",
-      "afterSha256": "02deb6ad27fd6f1e5126a0aaebf2eab85f02a200bcee2bede6cbc452251e8e05",
+      "beforeSha256": "95a80886614709c1870fde6e62fc9c969850233112e797fc8e614a204dc8984c",
+      "afterSha256": "5b8506fdb7c01cd1c409282cf74bebe26ee6a69ba52752265b70882a7abe7929",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-19.html": {
@@ -1338,13 +1338,13 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-4.html": {
-      "beforeSha256": "f6fba894be2ee16f70f25f5a14450cdbe6b03dc3a59ed6f484eb5b6d1899174f",
-      "afterSha256": "6fd83c6aa13f852ebeb9dd392c7351cb7909cd505d20045060d253831e479509",
+      "beforeSha256": "e8a7f8a76fd984e71da5e077543c65159bc9762ab9ac617332b6cb23729e5eb8",
+      "afterSha256": "d44226251c363264f700a821550c730cecd65f42da7483273b56d5d9233f096f",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-5.html": {
-      "beforeSha256": "dd5326da8e6bf0fbd279b3464b05935737f7e797a38fe068d9510eabde5eba28",
-      "afterSha256": "2e3aece494189731e35a32f4d4aa4ed02fde599476138601b109e2dd0ae8c8b5",
+      "beforeSha256": "3c8aacb0ccda524624d662d473481e546ad1d9bc34f3f4eaef58667c289f2d86",
+      "afterSha256": "fa86e1457d7b782d8d50320262b3da2100eb9693bdbe628500c1d86868fcee15",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-6.html": {
@@ -1353,18 +1353,18 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-7.html": {
-      "beforeSha256": "14678acfcdb51d90b297b0088dd1851e3a82a991a675dfdf73c75d5b83d4e8c4",
-      "afterSha256": "8e3fb28daa85eb3c00298251c9b4bdae78141c631e66e489d8699785a5a21366",
+      "beforeSha256": "3c974a0cd806cd94f4379c40920fe964f904858642f2467c355d404843eab087",
+      "afterSha256": "52c7a9885fed8bea2f4b02fadb2ce3634c5040b589f7af3506e55037835e5463",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-8.html": {
-      "beforeSha256": "f780cbbebad89a0cdc721435519b5afce0d96508635543e9c53da0188fd3486d",
-      "afterSha256": "46eda452fca245aafde8cf672e9c2e294c46d64b38e0b7f04a307de7c5d0b395",
+      "beforeSha256": "5271eca354ae4bcdf4beb6d41dc089dbf551746d1034053201200e4ba0ba837b",
+      "afterSha256": "4ad13e741383d815f8227d731dcc3a667ebf52a0420a541b8843c37862dccbef",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-7-9.html": {
-      "beforeSha256": "43dff31674b6982e4d84890253e6536970731383109588dcbf40af68d4fd0310",
-      "afterSha256": "ffcf1d516e091ba62179caf79d05ec4b1eb939afb067386c9467f9bd5c1fa75f",
+      "beforeSha256": "02be736df1625859e5d18ecad9e413fc4e239cf7abb0681ad088fbfe07532e7a",
+      "afterSha256": "af2f6a7e6af475d8c4da9973b1067bbeb2e575fcc25aa08f7e8a0cdf6c8f53e0",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-1.html": {
@@ -1408,13 +1408,13 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-17.html": {
-      "beforeSha256": "f1233e1e7949c2b508f2cd4d82c4df29eb534b4ec93bf2c83c7a6611ec8b92a2",
-      "afterSha256": "3a2a3649fef354c0d52a89e5edf6306ad20e2aaec64ae07e4781883e56f88992",
+      "beforeSha256": "a3c0b0b3ff58565ca877a450c17e06b7d4ed468bce15748c07f58c2eae0fa235",
+      "afterSha256": "17e5f9544b6e22a9069ab6b774eadca4b0e70379e5451fe143ba8dad0c0d0e04",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-18.html": {
-      "beforeSha256": "077ef8bc9cae9c2d5c2823707b580cbb57b787a68412467549e88d4a1a4a79cf",
-      "afterSha256": "06620789c3fbbc38505db2f08500a09f448048cc0f465e5921ac98b529a49d0e",
+      "beforeSha256": "86c207f831cbd782cb1dfe91cad7e62bcd693bf5b6ce690ca4abb7863e7537fa",
+      "afterSha256": "4d60ffdac8afbfc85f461c6467ef479f11035610cf14c82f9b713a3373f1a59f",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-19.html": {
@@ -1478,8 +1478,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-9.html": {
-      "beforeSha256": "243a852b92222b5fc6b62959f8fbb99088feb567f18ea6a6886503f154fdbc3c",
-      "afterSha256": "04a6b33e5fce7a29096c2a175def8d0527bb5dc91444e00e03cb03e00779d8d9",
+      "beforeSha256": "4528112c7a8ee5907f01150e8b62c8afc2c6a31ccf6d154a2d17553856df3048",
+      "afterSha256": "ae0278cf5b8c11f8c986c901c1bc2fdd8f0c85f25274126b32ca4f05e8594ca4",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-9-1.html": {
@@ -1503,8 +1503,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-9-13.html": {
-      "beforeSha256": "581afa47df70d1b767c3ae5f181d51bd9c5b02f58cf020da69d7691642e4f02e",
-      "afterSha256": "fd01dd747051fe2e04f49083b49497ef5641b88dccf705f8d074d4c970f60d94",
+      "beforeSha256": "2a05d7e7ea8cf3fb748d89217310e216437c4fb35605bbfc32da5b382808ceaf",
+      "afterSha256": "e3c79020345a1e902e7365fd5f1786ac52dac8436d9719273e6d37886cc2b5ae",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-9-14.html": {
@@ -1593,428 +1593,428 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/index.html": {
-      "beforeSha256": "6af76610cda46f70d748b9920be9262755e3aed2e6f6dbfc82054424c689b275",
-      "afterSha256": "a887c4cd5130219f26c06ac6f0d7ca29fea08ef786439892cb186d498a918f33",
+      "beforeSha256": "9230edd546339ef86aef9bb9043825acbc9bf0d67b5cf671c6192797af966f3e",
+      "afterSha256": "ac499f8b267a5542a22ece380aa9fe6f2c027d4752d8ce9fd8270db0b3478e0c",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-1.html": {
-      "beforeSha256": "fbf2c8d27d4c5f567a47f1673212ac9c8730cee1bcfd411f96d46fdeb03c29da",
-      "afterSha256": "3b0bbe643bde0272b46bbd8457d48978c81cb3b67213e97b047589dd141857c9",
+      "beforeSha256": "9c093b8ea3a0ee587b606e557a5d7b7e8a06c80189868a80b211f59d4f146b50",
+      "afterSha256": "4dcf88c66efaba38dd7ad4076a6a10314c0ade75df2a796c82c4bd42bf827351",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-11.html": {
-      "beforeSha256": "0b5b349114b511d35c658f8a2ae4c72d46f82fb2ffe726587aa294557f4af126",
-      "afterSha256": "357776656c3456e732476fd9d5b55e092bb67dd2e6cd81de9bdcb510f500cbfb",
+      "beforeSha256": "c7201befb2a9d466f6ae895fb32f23e4baabe6339d9ca6cb6c9818ea686da000",
+      "afterSha256": "87ae858409f40a897260dfd19d6273c93574362b57a96600afc63eb5e0ed8160",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-12.html": {
-      "beforeSha256": "060bc01ce604528fdcf310d706c96f379961ece9435c5bcd0b1f7d5441378e0c",
-      "afterSha256": "8d72026c14a794af8d4e7ca929f29119ab9fd7e3125fa9c14082379be18ec8bc",
+      "beforeSha256": "695403e7c6fffc32070a5b36b86d134f9434d046708cd2392827dd0d48bf0ee6",
+      "afterSha256": "a04d3397a7fb21053c2dc9fef2961676698ebb9fe07ef874e94d4c3920b59fd3",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-14.html": {
-      "beforeSha256": "5749894c04f7d0579fba6c95e2849bcf85dda469d264aeaaee33c6fc9159097b",
-      "afterSha256": "603f239f6e75415fbc47b2122e80086d63f10c7d4c86ef66cb4d96b52e0065f0",
+      "beforeSha256": "c672478aecb05cfbb4124bc9670e2bb3f229875b86d89619cc8ada426d82509f",
+      "afterSha256": "19a102eea452d3ad57e8f849d039588f0cdb7dc50d07d9d436234bebc5e1c0e9",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-16.html": {
-      "beforeSha256": "aad0766c319584f28bc1fee27a919e578ec94b1cf9672d1e65d8477843236f8d",
-      "afterSha256": "4bc28ed2bc177e54df6e44dd359e9310f47c0adaeb8739c0f7dbfd793ca72fed",
+      "beforeSha256": "1fa79583689cdca01a96188a5284be0f7cbf41cd9e1a17e5c936e82ca9ec48ca",
+      "afterSha256": "cce430b71fb409f2666bbd5dc41e19df27542b44c24e80cfa135f8dfd36277c5",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-17.html": {
-      "beforeSha256": "60f65834550b5c67f82690dc438761405d96f7063f397acdda6c1302e5b6094d",
-      "afterSha256": "f71e9c399999b5667b442c642a41b20027e64602696036522e030f2149d4f881",
+      "beforeSha256": "1017bf66b424c88ab94751e3d2c37f6dfca2e7d15bb30d3e85944c9f7fea2469",
+      "afterSha256": "ad518662c9ca772854c2cb5832395e3ef30932f3dafe76b1ae439eb12019d852",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-18.html": {
-      "beforeSha256": "fb83d0336fb18919fdeb177770edf94c1a5477d4da078a5e59d5f486d6e31299",
-      "afterSha256": "a63fbaaaf0568313d154f42b42bc3910610b79b395691a63cc0942c66aa332aa",
+      "beforeSha256": "0d9e25e2166b6a563a6bbb6d20a609b28f2e196432650b7db055fa8bceff4f46",
+      "afterSha256": "03de64ce2ca6900cde332ab0427d577ed8c9d3869148a1c8b27e6e7ec7e9e577",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-19.html": {
-      "beforeSha256": "317acfc4e2672d2eb7e70b7ebc3f9e0003a60eff1eeaabb96922bf28284f728c",
-      "afterSha256": "625bb06a2bb62cbaf46d9e3aa1702c6ceb78b5783c0e9337fec3b7be715b2da9",
+      "beforeSha256": "dfb885d5a2de6066de38619af7ea4ad567c01b8db786234a81a0f81d14d47f5b",
+      "afterSha256": "b8284fcad70b783e1955c7a89c1858596e15027a57da85dd04f1f72e8a958623",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-20.html": {
-      "beforeSha256": "d2d4a6c89bafef440b951ead2cc81e61eeeaae2ed02284f5624ccc66647cb861",
-      "afterSha256": "d6cde3d7ae5c5628f52f1dc94a8c0a9d3f52058a5ef24de3cb06437f2ca19c64",
+      "beforeSha256": "0dc6351cb30487767107d18716ae6182c7e6047e0eba77469d3bb2fc9ebaefe0",
+      "afterSha256": "fee05fbea0806022881e30f94ce776d326d3e5a4d9d9e20c2ad1b34293a49277",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-23.html": {
-      "beforeSha256": "7c9d4287932a132db8758a60477ae382457277f188b64e62a9d133ff8333e80d",
-      "afterSha256": "d072dee4ba4e4775f115c6c1b043724c92487af2f42d65f454ed1ef763121f12",
+      "beforeSha256": "ebc6c5e5a61bfefc6c280151c84b4c7ae73310b4e34ecc5e95f4a1dbd2757e69",
+      "afterSha256": "e197b60d240350bed727e28b017f268dd1f7f93e9d17b424a4fdee3157168901",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-24.html": {
-      "beforeSha256": "10adf280a26a98fa7a5d8da6837925b080e6cb13a64c8d981640f38556aa92f2",
-      "afterSha256": "dc55630ea365470b3eaf49d50f713b69fc2d123fea4197d3d5f1f6a6134a17f9",
+      "beforeSha256": "f4ec61f111231730cac62098cc982ef61362959e25557686e94c8a04f25633b7",
+      "afterSha256": "bde942b9ad1da422ccb9eded32257137176ef8318c0b2e5394607943f5d2a05a",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-25.html": {
-      "beforeSha256": "e213e9711b2130d0fc92df06497bc0f3195dd227b0edf48b34cb18275c73cc03",
-      "afterSha256": "0fabe953bedaa2e131ca3d26bdbf8965e0308e2488651e4056df2dab229993b4",
+      "beforeSha256": "2d6a8369333cdfa4cb87d99de3488a5f30a87eaec7668aa54afd5dd24f6bfc9b",
+      "afterSha256": "65b722571119074e49ce89232a12df1e7ef740fa0deb197d2b99816fdc86cf1c",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-27.html": {
-      "beforeSha256": "c1f0fff0127a122e8853265e8a752adb71b2759522514fbc315fbd4588bdcac5",
-      "afterSha256": "f866553bc5c0ff58603255d8621871832503474882b90ba666aafb72c98e7ff0",
+      "beforeSha256": "fa0df082da87d0e46b0e589f4b772f6e47b539ff8f25ec5e789ebc76f0742a55",
+      "afterSha256": "f23e8c4226cb382bbb56bcf00360d1481c68c10033994cec8c148b7e9067966e",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-28.html": {
-      "beforeSha256": "ec430281e152d2ad666a3213f7487cb5653818228a4e69f34c2226b638d33539",
-      "afterSha256": "052d0f55783c0b0700c50e17c1216f221ae0953231ec86d1f526c4a41b216f47",
+      "beforeSha256": "fd47755ac3d22050276bc801d6a614a42d00b25e1c0324817ba6ca609b3ddf20",
+      "afterSha256": "eabcd2d15de85e8baf4d659fbb449a8f4b5baeb54f33454de6b3e9371a53eef8",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-29.html": {
-      "beforeSha256": "adce3b5757de27f940b5787c4c02465be8f387df77a2d20c3beea5ef07f159fb",
-      "afterSha256": "c4126ad0b445ec14b4521bf182169999cf0db6ce94da10b60517535b389254cc",
+      "beforeSha256": "4205ab61a06c935771d8fdf7e8ee9ebb0d93730967e4fa01d387f99b4eafd51d",
+      "afterSha256": "c42cad83b1ee032d22c9d6387c1f29bd893142276b88f28308e380b0b91268b3",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-32.html": {
-      "beforeSha256": "0019b2690534e6158b0a80f9619cd8422d70aa5ac4f7e56cd0e0428699d3f745",
-      "afterSha256": "283a5fbfbf9e870db5b9b9ece2513737819170504f04d3c5aa79bfd8539bba16",
+      "beforeSha256": "774e70ef94fb1d229095126f14cfa60306fb102c87624d48cd55cad242c604f8",
+      "afterSha256": "38bc8947ef5a9b5d0aafc32e15f7e039298d21b3b8154461dd690a26d8f30e53",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-33.html": {
-      "beforeSha256": "fdd75ae3b6df85fbd3b626bbd294127908ef2f6ab7fdc67f93ffbddccecc6673",
-      "afterSha256": "9c2a982d2e091dc1b80544b4b1988f9484722337fdfdee5d7adcf0f1c87f2ee0",
+      "beforeSha256": "03ff48eb47d0b9f1e6c5137d8a149ee1a75650feb3a59d2e80d1b8fd9f7f95d3",
+      "afterSha256": "66bfb64dd1a2ef9393513dca2232bbf56a424af4e77673bbff9b44c55fd87cd3",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-35.html": {
-      "beforeSha256": "0c4ccdb36b11cbea9f98260c61cce077626da68552d41353978021debf6f953e",
-      "afterSha256": "827bb7bb2f0d9fe321125dde70477ff0b416a4a15d8490aa6582dd881ca422f1",
+      "beforeSha256": "d1c8f1c89a662bb66f304dad076a123f0fe88c83414283c5bfadbc0dad6677c1",
+      "afterSha256": "c4689ac9a8e0b8dece1edd8e6e10b9e6001ab02874ece63f5189fe13591e21b9",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-36.html": {
-      "beforeSha256": "5e8216395755a1a804be50a3f583f1904ccf6fe3e9c2475ad904a95662494ae4",
-      "afterSha256": "a6cb056cb7ebaab649e0621f05585b19281a03fd25d03f2f885539ac0da21db6",
+      "beforeSha256": "e83c686da79e0337751da5affc5bff84c2d2b1fd346ad7294c78327759c7b00e",
+      "afterSha256": "8a93997e9be41bda3cdf6edf50aa819c2ee0470f146ddc838fa1a2317f39b153",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-37.html": {
-      "beforeSha256": "57709fda231261fdfd47962dde90231d0ec9f0aa5290b04d659d0fe3d3b39d35",
-      "afterSha256": "907fd31abb81538a10f3c05a975e2c94584ef7d97bda1517c3ec9206b0cf6097",
+      "beforeSha256": "204f0158230b0e9cd776e0da222057fe249a3321caf4e0c9f0276d7c09235e4f",
+      "afterSha256": "13b00f00965f1689c13cb04a6464ed9df05750ce4f5da5a041d4a8eb604a60af",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-38.html": {
-      "beforeSha256": "c9ce33e36a2ea38ac776d10e3172a79979ad531c2accf943bf03f733a1b28fe6",
-      "afterSha256": "c81970333d5634de4c6c227f0778f38d30f04c7f9002ffc83c5ed780d1e4c99f",
+      "beforeSha256": "f644e13e4f4ad888fb7c064a9cb19023868adff4a33e7763d831b9ad1dfb0a31",
+      "afterSha256": "26c78f876e76df197c85e1d40bb8d16f44566b1df8bfc4a549d0a487a41749d3",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-39.html": {
-      "beforeSha256": "b60e31713c203c6c7ecbc817c8fea5130b1af83b844e1891ddc8de35fdea2cdb",
-      "afterSha256": "462ea48831526ae170550c9a700ce260cd235a08a7ff0d939e841f0c58f517fc",
+      "beforeSha256": "e61fcaa555764d88ef4a095f548116dd7a01f678515fcea4f12293594de054d6",
+      "afterSha256": "f4b12ab9ac1b18c0637d3443cd29df75de325573177de9dcfbb631f923c76e7b",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-40.html": {
-      "beforeSha256": "77107959b1f4e2ef579b71c1e41a08c238d37549dbc63d938509a178ed135f66",
-      "afterSha256": "3a8402face384114f9fc1fc7ada0f529395375d5a3434c2a2570a1a7a8b4af47",
+      "beforeSha256": "f76bdffedde71aac2d49de4052d0ff11f74b14d0a80d300bab886e8be3816cd2",
+      "afterSha256": "edd97816ad4add9ca6eca850d9cd607d43c72d1355145f9729828ba88956cf5f",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-41.html": {
-      "beforeSha256": "dbaec3199e5044c4b91908b8cb5ff206d87b10119ab944158594970f97b82844",
-      "afterSha256": "87248752c11aa0fd8e5fc8c4a3731d9d629ef6273dfc83a7ee60f22169d40de6",
+      "beforeSha256": "8d364ef86a43cbc7ae2fea830a2d290e44aea5eee367af771b0723c43f6cb4e6",
+      "afterSha256": "24cf6bf1b8353134d16a5ab9c70912edecfd3f9e7b149d12867f398c232b6e9e",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-42.html": {
-      "beforeSha256": "dd2b0b8218045a204f52ca584f48c9c2a7b40345cc39561fc04a6c5a14397637",
-      "afterSha256": "8494029394d82368b69f1c66bcced8d26b3ebfbbf71ac1f57aa507cc67bbc97d",
+      "beforeSha256": "de4171097287735e955f4194ddb3fb0d601d644a1a07f8c6191eec1547d144ef",
+      "afterSha256": "8e676cb79933fc57dd337878ed55f8a809f4c8e134cbea8c2d866a0a188ee088",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-45.html": {
-      "beforeSha256": "29ab7e3bb6e7009f7cd86281afbaaa0c293a04fc93f81c242a32e349886b52bb",
-      "afterSha256": "4bfadc3e8df5356d4f06ff706dd1fdaf93c5ca3d4962a921b7b1f78c1775f117",
+      "beforeSha256": "256c460c1c8d968e90597e26e1aae931cd0b427494fa6a051c04c7a80fd8ca2c",
+      "afterSha256": "233c02e2a60e679e88aacec0297d9fffd3cd476a620a80032e053dd9d94e3dd0",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-46.html": {
-      "beforeSha256": "45883f6791822c5090a23cb826b4c4ccc34a790fa50cff8d01c54e905bd19bfa",
-      "afterSha256": "c20f9bf7e39986a1b2ed62ae74beff4456adb36e52b6af68b13d7f3ff7b13abb",
+      "beforeSha256": "d869593210505dad244191529fdeee9b7d630d104994430d6d0e5046343a0781",
+      "afterSha256": "0cef42963cbe5ed2284f2a63c57180c703ef13e2ea9e63923e53323bc5ddbc38",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-48.html": {
-      "beforeSha256": "d538953022fef146d66dff7a1c12c93b9821080e3cdc0819dc83ad2740dc9a0c",
-      "afterSha256": "882e1056623259c69cdb264db8cf6a2e464a13163941ad85e542db9bcc8e153d",
+      "beforeSha256": "c5c62d0d0c4996b26b298d6707eae863a00368c83100e0b5647b1db61ecdac0c",
+      "afterSha256": "acd09235327392eb7d27b02a73b5bd9213ac6a1672b307d55cd41528f540ab33",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-7.html": {
-      "beforeSha256": "5ef4ebcce94ef05f0d3b11507141ad70e3b4d4c7beb55ae616103f083a991494",
-      "afterSha256": "9e79ab338e7df0ba94c12fcb1792f2c84d78362cf7e7e1af00e64a6c49bb5873",
+      "beforeSha256": "51ccc00385a221d25cdc869764df501530419576bc384e88832fac52fcf7d82e",
+      "afterSha256": "1cbdb853f958dc61a7fd886516eceb00b8d96bbc28d1173f1b087ac773d3a668",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-9.html": {
-      "beforeSha256": "de0d029ef6caa43665c9c6e8658c45f3b6787af4f9d376308a9b4f3bb9e538d7",
-      "afterSha256": "0d15e16eb190e4c490d180fa65a596c74c36cfaa66039a87c73bba54027ccb3a",
+      "beforeSha256": "8b9127b23ae17f5dfc2a9461e8bc12f59d1aa399208cbc0380dd22ad46c131be",
+      "afterSha256": "a6501d77e65e2e37fa1ceadfd090a0bc5d03374fc6213f6ced4ae73c7ae40a2e",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-50.html": {
-      "beforeSha256": "100ce84e579b863dbbdc6e06cb085c8a72dbc7ad25f0490e4a1108a557e14ceb",
-      "afterSha256": "ec3b7ec0ec1dc6134115a431b499e1535a7c4d5c617c772c2927b115ef9478cd",
+      "beforeSha256": "def4303d7db48f5e2c5fc597017a259bdff70a771e35fd576a250b752f98dddc",
+      "afterSha256": "405cdef9f8844073c650d4eb12b68385325b4a13101a08af13b51981daec222e",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-51.html": {
-      "beforeSha256": "8f36f0d3dc6a1b3d34df26bc0058ae1b6e41ed38fb7d353b23abae2c747e1d89",
-      "afterSha256": "e116ec0d800d8fba2ed5890b59f8e60a6615243a7ba2af50a4770180e73aa89f",
+      "beforeSha256": "aad0c47b487d7933cdc056783a99a9c73a2ba32b2a522ab70474efeec2928a6c",
+      "afterSha256": "55d771c1513a7c4f0d9481e502780c78eeb35c00d90a2315f031dc149ea33561",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-54.html": {
-      "beforeSha256": "c465e7d8d966b3b4e69fcbbb6ec35b3d16f8c8ef1e10d36297fb7ebccfb290b4",
-      "afterSha256": "6f2cdd3dcbbc61fb2fd9cde50e6b96e86ee07a7fa93922ae9e72cf5d595efc59",
+      "beforeSha256": "ba07e8284e789b5b028070e446147f1db75ce8a4a0043451b8ec104f0c9a6478",
+      "afterSha256": "589d6e02fda2904171e909edece70f848a5d0e51515383c7a00f6cc1ca98007a",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-55.html": {
-      "beforeSha256": "d0cf631310e2fd68e29f9c8b7ea4a433b121df93ba9090ba74e8da57a9c4d2b5",
-      "afterSha256": "688b1c9cb3e8cb73915983bc9dd50688368b442ead0ad1764ebe5e3e94bd7f0f",
+      "beforeSha256": "6a56a7192b521ade0e85dbf6dc37ef0cb3af2c4e0dade1f2ef5fccc6894a0788",
+      "afterSha256": "84d069c5041b0d04008261c108500306be4af0f628a910eea40b1c8eea41931b",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-56.html": {
-      "beforeSha256": "6b7b0a73c2ae3db3dce5205c8e0f3b9f7b3b1b17ca1c1162aac533331b2ef54f",
-      "afterSha256": "bfa261562c9fd8448d65f9eb675edb5e2a53d2339377b48f0f59714aae097b4d",
+      "beforeSha256": "300d32663a682b8ed8ef7bb22c3033668669a1781a25d0dc7bf39647456dbdc2",
+      "afterSha256": "f661dc3ae2481b8966773937ac0406c590a181be3f26b8cd13c719e42293d003",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-57.html": {
-      "beforeSha256": "f70130296e464c3b645c387c70bc77d1244df2a7f52d23f08acb7baa383b9939",
-      "afterSha256": "b7a5fdd146993a93404d08e9adadf92ca2db259fbe398706d8ada17ea665c9fd",
+      "beforeSha256": "e17df2d3a75de03c83c202028d0d90135dda8ae307e48913c0341eedeb089857",
+      "afterSha256": "117962390c7d2a4847def21732366f3c1b6a4700926f0d582c47e1ee137ee3d1",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-58.html": {
-      "beforeSha256": "cdd466d09bc4aff491c6e5fd40498f98a70e320593bb7fc03ef6922c4a56225d",
-      "afterSha256": "d235be539980316dd0308ba6629c2684a8ca63a6e1b4bd52ea5e8b4d4972f4c1",
+      "beforeSha256": "5258dbffbc70fb46280ac48417b29d79b6820ef9f26701f8ab7f65e5e4d8fea5",
+      "afterSha256": "228d1c086593e4018e72ed05530f54d11ae8d108b770946cb624997e831ce97f",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-59.html": {
-      "beforeSha256": "0123359634a90bf39cbc894d7ea0a4c879ac361ad0ff4301f97d467d8a8e8239",
-      "afterSha256": "b223e0ad2544b4cedd8bc10ff10c855c4404fa2c7ef3e6e41548ce1ad461e5ed",
+      "beforeSha256": "26acb1c09709f68ef9f7514190816f39157ac870281290b264813f6c9b11e1bb",
+      "afterSha256": "0c82692ac3e4f986729fe32f4b36ca99215ad809c77f9d866eb25d64421ca827",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-60.html": {
-      "beforeSha256": "65afad6173e3178faf15dc8aea36c1a7faaee6c0d641882160f72085dd747c89",
-      "afterSha256": "29524de1d2bd1c0124ba55cb5310d4e0123badeaa84d57cd4cd3914d67f7487f",
+      "beforeSha256": "35aeeb6a0115818756ce375260cf4e379f34fc5e1e55db78f33a236209dc6964",
+      "afterSha256": "9bbe744884f5bc169a1d00f6780a3d7f73c215bb867c436a7fc1d7394f87a9f3",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-61.html": {
-      "beforeSha256": "61fc9897ca0fa43ca40d6e44662df3ed4108f567911384c144b4a38ed8ddfe00",
-      "afterSha256": "992eb509d1c5a3d322b437752b57b403434aa1be82516056ecba400e35e23caf",
+      "beforeSha256": "c67357143ef344f17a5b0f553f9888c88826f6f209f78c97edffcb46e8994eb8",
+      "afterSha256": "9c7b47a07bdccda1dc2d96686e00a3cf300c6ea255c9d0d587ffb9a43b25ec31",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-62.html": {
-      "beforeSha256": "78d371ce750807ee6739aa9d521fe42a6cbd3e161ab685a6e38209a3691b5fdc",
-      "afterSha256": "80916abee91b5fbb3df3b771e1007b5a9f0025b5c7758e2f5030673a83bcaca0",
+      "beforeSha256": "5970ce9b940b77843b6daba79d0a4f17325b2cab542e1287a405b2b63fb4a99c",
+      "afterSha256": "3db0f6089a23c404338cfc1ab03f2587ed9dce5617b1c78a13febe0d6f306356",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-63.html": {
-      "beforeSha256": "9a6c69ea1904ba3d885b6e05e547d69ed0b6c3a5bfd6cad797da8632766bb005",
-      "afterSha256": "b7dc31f2d9e0ce8b1edc234ede8cad612b40355e0f9ae3f839ef8a451bc9bc11",
+      "beforeSha256": "e8e5e7d15a99d7d7adb5889811bc19b4f4c373edcf23173cd8907253d481202c",
+      "afterSha256": "e5c1d3c1c875f22d7803689fffcd67f99793783c3aa321613e7bb47d96d1b1f6",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-65.html": {
-      "beforeSha256": "90a055a2041b62621bad6011f26dff389020fdbcb78d08132973576d431ad2aa",
-      "afterSha256": "60ee386f5e36f415f97360e06375e8f2891c95612c627903efe687be53062ac5",
+      "beforeSha256": "991234253eaa3ead5f1d057501f6aa01b3f654fe8a02cb7ac02758a7cf3bf103",
+      "afterSha256": "970833aea5c154ab0393ac919d3edc23d7a2f863fcf55f020106933de641ba6f",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-66.html": {
-      "beforeSha256": "47d4380387e1c16df5eb6682cea090062b30f16801a184b4f264a8ae1f961053",
-      "afterSha256": "67b86ec0e2b3ccfc2a02d57a92d17d79728deca55639a81b6a02830d91c81834",
+      "beforeSha256": "743b65eb09ced00ffbcbd2f80bf2f6ec6af2e28e9a98f6c37456ae1ecf4016cb",
+      "afterSha256": "972f7347d907f117a80f976bda217cb39a252cce3e8a0d65d4c9066e2f56b4e0",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-67.html": {
-      "beforeSha256": "4e9be6ba59c472eb98f801b042abb4cf7670bef0d9d519a47bf86cbc18e5d4c3",
-      "afterSha256": "299f39adac1462daa30b888cb7adb4c96330cbee26f3c49ca15604c1e1fc6ff1",
+      "beforeSha256": "3ac136c58e47a1c6fc8f4a8dae5ee6f8f5874a0031d0bdaf99a2d14dd2f3f2f5",
+      "afterSha256": "420ab3a9816308d9b12522424b363c7abdce3f68c8d6c2b7f6ca1fa33cc04031",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-71.html": {
-      "beforeSha256": "da58317b866e4a332b219fbf0b2820f09ee80263f50df77a365f6a9bc994f0c5",
-      "afterSha256": "7eba7280854da59c2ac42062ac1d8e263159b35f2df0bf0407ce4284dd401dcb",
+      "beforeSha256": "48f51d0002ca2efd3c882e7d4d689d943455a107bb772db26b5e2cce48c3cf8b",
+      "afterSha256": "29cc2e5f5dbbbd1d1a704b23d535d45144af4fd83e75aa2c36818d36487e7bc6",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-74.html": {
-      "beforeSha256": "4f6c2d20a0726db98471d8508cfa78507524d1fa5e92b7ea4f9bb94f1dd9d3ef",
-      "afterSha256": "76a65b1aa354013561900de7c0474d82d24fcb37d41a6f7ec2f2b0470443daef",
+      "beforeSha256": "26a0982d2410a596a774080b21033faf70c42ece7987ea0c399eaebd47ec5cfa",
+      "afterSha256": "a487529206f58b3b8fb094f662040f1dc6831e9bfda968316826d7cbb63ae2cd",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-75.html": {
-      "beforeSha256": "0b46aefff37dae45318aba6995a5fa353ca8a788ffeb0beaaeec8da0e264ca6b",
-      "afterSha256": "b967c03b107f66de6f0550080daa480b78790eda14bc29f1d164bb3976bf1f7d",
+      "beforeSha256": "b6e706bb0907c647b1dc772ebcbd1259549059749c5e6c39f8462d61eaea95e5",
+      "afterSha256": "9f2c702ed30e1d5533f7958753b4bbfbaf50cfd577a0743a36742fcd106c8751",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-78.html": {
-      "beforeSha256": "d6132d4e67eb0c75fc5bf5e3628cca7788539c22817f5abeb8a255c39b299a7f",
-      "afterSha256": "73107a960b9ec9cd395d9ded0d028ec199cdca962dfc56b46c048d63dec0c72f",
+      "beforeSha256": "315beb132a40871f98d0940f7e749dbef0864ad6b0c3d3d92059804efef7f2d7",
+      "afterSha256": "86aa16ee6b00abaffa4db292153aa68f5d7a637aee3c9979c528a857ba8318cd",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-80.html": {
-      "beforeSha256": "42acf372ad4f2dc93792dab9d5e02ba7571368994d6ae19830f78c042f0b458c",
-      "afterSha256": "fa1a7dc3c9c044652319ea751f7be78a68c71d7cdc974d88b68e608f7ecc0d8d",
+      "beforeSha256": "4e480e9e2fedb3b63075e745a43610de52bd9ece9ca524475de9a94fef6f18a7",
+      "afterSha256": "05916befd1a024588e198387e30203509113b25535595d2777d80f06af01ae19",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-81.html": {
-      "beforeSha256": "4697a5fd564d276d4c7f5411800a06fec10209aac7d03ce6781f36c057fe4238",
-      "afterSha256": "e1519abd87f143e6886d8c1b87ef12000f6c3e85a70a013e596f6b4cca4d9d30",
+      "beforeSha256": "29021d11ce8b6a31955347479b788e4cee598e3cd511490af3f1809a2e3a3fc5",
+      "afterSha256": "12865eade83ce00d1735b28981fe8ac5fcb45a66de92e3538336712267962d3b",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-82.html": {
-      "beforeSha256": "48b1239f967658dcf0c8d1ca08af2a60dcb2e6aee75739abfaac76b1d169236a",
-      "afterSha256": "6437b73125d97097f32d3228b52ea26cf37817d5bebdb2986a29a8b029c9eb1d",
+      "beforeSha256": "e8884aff09c43ae18fd2784cb604229682af44414299a9177b6e260d2819dd05",
+      "afterSha256": "fd0acce36b673bdf195c828957609e0f9d2f1f171fab6c1f0ff781407636821e",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-84.html": {
-      "beforeSha256": "0ab5d654f732f665554c71c8410402a4479ef0687d84b6d3ea1a80524793c9dc",
-      "afterSha256": "03199a36980f2e9328a065771a6dce261e9455e56a794ea91c9c1d35ea7da051",
+      "beforeSha256": "0b3228ae7fcfc42eba4adc032872658c508933d50ced8617e009fbc110bb4ddc",
+      "afterSha256": "018dc1097dc8692f0444e75b4c310543cf6b4cf2d7f586ca23353c0c1bfe54c5",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-85.html": {
-      "beforeSha256": "6bb85bc1ceb28f735e18d970141dd56ffee9cd409108f964a939f21a826c1707",
-      "afterSha256": "b566700921c0198ab9df712d58c6b0fd272ccc7418153de3cac2b2e3aa4911db",
+      "beforeSha256": "e96971c7e678350e4ab38989e3c2e3251a1bde0d8635e881b6157af370070b31",
+      "afterSha256": "fa46d9745dab916879937c9ecb61336574028f427dafd306911f632a67e26d78",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-86.html": {
-      "beforeSha256": "834e37edeb42dc2d5c0ebb25c1cf985a2ffad254458b75a32d131b8e25eb5356",
-      "afterSha256": "ba026854b7e41de058d114a0d90bf64fee249cc0bda4e8c509068e9289fd3ecf",
+      "beforeSha256": "c4440cba9de77bcb223496ca127deed9c37fa863c5a78da09d9510682f12f4e1",
+      "afterSha256": "99392f821d0007687a9f439f0d3d2a0b6c086354d20463626759c7691252c96e",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-87.html": {
-      "beforeSha256": "5b7d0e7e076485c78422b0fdf977bbefeaef9fc9dfd7972efdc3f221cbd04c6e",
-      "afterSha256": "3bbb7362c15b6a03f151df9cdc7a00427e216b033fff6f4dc8e56bdb814d7600",
+      "beforeSha256": "4888225394fd40ed6a841983bc85a483827d421b408137146e2f345e4ac259a8",
+      "afterSha256": "1ab4ae00ced47c4c63824a8a5750daf58657d508c2fae181c48e0a115eb30e22",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-91.html": {
-      "beforeSha256": "d91c795ff0623801e71aabe113321f976ec0aabc8844efcbac849dc1e717201b",
-      "afterSha256": "5a5131661cf0452e391048d30d4e6e7dcd6a082d648e6e12f1d8debb5277311e",
+      "beforeSha256": "1c610f5d1054482fd138f389c9a7f214c29b08d2b368eab41bb9d46d0cea1972",
+      "afterSha256": "3888fc13bb247333d2704dce328ec1c5e99f1616e49fb061d78bb7ac04bfd6d5",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-93.html": {
-      "beforeSha256": "8b8b5f46ec752b0a7c0a8e75eca00caff3f853f7c0c4e7616e2f15e13e7f1890",
-      "afterSha256": "6427140f49cf0c7f14bb988f03c655c0630ef0ed98f3ec5a6d9a0c22c6c7a31a",
+      "beforeSha256": "d50e0509ee5756ec2cca94016d0d057cd1281e5479cefff8d3ecd187fb02857d",
+      "afterSha256": "fca89fdf6fc18eb13304821d1a130d34b26e4e8ba378e4481e545e5220070a79",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-94.html": {
-      "beforeSha256": "97ccef0e7e56d52d186622b74901a628af0fef75e69c18e44be9cf0ff588c3d2",
-      "afterSha256": "146dccd68812facbceffd1742111552beb9c794fa5cbb0c94ec80b580c84e742",
+      "beforeSha256": "342c1528d821a7b586de46d42852cea8fd535846d52aab8a3c69774b5e962751",
+      "afterSha256": "b6665b95f306de2c895909ac6201840f9144d1eda815a81e556328118da4cf6c",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-96.html": {
-      "beforeSha256": "af871fcb3e1844357ce8724131943e2160097b254f6723660ed259dc616a94e5",
-      "afterSha256": "6b14df44c8169dc5e7296727c76f830c1497f60e0259da09033aeb433c361596",
+      "beforeSha256": "961bca10caa0bb740df2d400fe7378a0420248d2d30a1e35858b22c3cc733f43",
+      "afterSha256": "ce036a85bab484b5eb851341bae8f530d6c1a163887dfe28e45d51b476cf9a9a",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-97.html": {
-      "beforeSha256": "22c392de058e64ba90cbc3e9b6ce6f03f68e6e9fb50818e62fb8b01a529dd904",
-      "afterSha256": "d582ee6d7e6456bae76d889f579b4468f41ed7950e08df2691cb1d389bc772c1",
+      "beforeSha256": "2adf21fe470328ffe90333cfa0ed0d13daed76d42c650730a3bc113376145a25",
+      "afterSha256": "5a53bc9052f30496e043c6173d8773774b3db92e094623cce2935281b31e4ec6",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-98.html": {
-      "beforeSha256": "4838a16cb715fd1e9516f4c284a8749626bd8fab262631ff63d9b6d95cea156a",
-      "afterSha256": "84880b8ecc2a51cc6724c911f30798a561b6f9c85d8643c98b3a96e90657107b",
+      "beforeSha256": "d7a1e3e3239c44c3b3be16e44f2ef8909741f248e2f3bfc3dbcc020fef08b315",
+      "afterSha256": "d6d3e1d593e50aa066e08724cc06322807c5b5bcc0f8f376c70a01faf33892a9",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-100.html": {
-      "beforeSha256": "fb34062e84bfb43776c6c8a80424315314f504dbd7b0384578ede9ba1ba1e02f",
-      "afterSha256": "260bf60a2a60323a340c909c9f2c02d8683936336dd64a15574328674a26c26a",
+      "beforeSha256": "ef4daaf42895f99f746382e207174f427e349f45952b7a5687db81491f021982",
+      "afterSha256": "15144a49d3a30afd1a53d33f8a47161fa92a1fe6eb6ea5acefe0041daaca0841",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-103.html": {
-      "beforeSha256": "45bd29da9658a11a0fc58dc87eb40520f2e2c40b536baa38c6ee038633516f0c",
-      "afterSha256": "295f1818eec60128dc68fcbd7fc8dffd5445fd694caef2d367b5b2ba72d9bd02",
+      "beforeSha256": "00920ef7a280a0a2f5fce1e7b408f90e203889f6120bdbef07b45eb4c5a1cd1d",
+      "afterSha256": "72c1e99c2647269ed2cc4c71a56ae7f8355876cacc989f6b0c3e060c9b818508",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-106.html": {
-      "beforeSha256": "e8f40c3cbb7f006c880270f8a3a6a8c363985124002744e07ba36d3265bceffe",
-      "afterSha256": "b65dbaee63e6a96d45e1b521134e5c483e58cb63941bae384d3bcd09b782efa2",
+      "beforeSha256": "86e358c5f82f77dc5374ff33ad20dafdc16de5465d3cb5cc8dab88a1901b86e1",
+      "afterSha256": "c9d9f100735c641ff17dbac3654bb117035cd6e2053507671e567b6733416b22",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-107.html": {
-      "beforeSha256": "14da51e0fbedfb9d047ac65a356be3f20ec73e597455132b93bd111563b5e7fa",
-      "afterSha256": "681604e2dc96536b3a539407d7c770a1f6abfe71d8d1fc599cf1d66f3aec577a",
+      "beforeSha256": "8dc77778c272d31f9bfe065a4b3fbcd43e4641e00f284a24cd505638caf2cfc5",
+      "afterSha256": "f2cefe574a4bfa6a08827186b6f9cfac2e10c0ff7621e77c6c2ea0350a3e932c",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-108.html": {
-      "beforeSha256": "efd7128a45c6957f2d142185087a0ea977f585e7d2bed0a7ea7c12ba0843f0b7",
-      "afterSha256": "345e57dfabe98d040fd8511f5365bba8ef02ac563f92c2f01bb751d113c537f9",
+      "beforeSha256": "64b85f1dbba9ad0f7d3b94dfd99c480ab0d4f0aff1126bbcc739becb5dec6559",
+      "afterSha256": "35143c894b1a4fc7811d40df0d783278902f41b1f4e8e0c9cf54304ae7052cab",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-110.html": {
-      "beforeSha256": "0ec7b83ca25c94a3883599afd0ab4452407dac15e11cc0cbaffbc19cb9d6aeb7",
-      "afterSha256": "9c837fa4f1bb0ce46625060949b5562c3013ec7892f357be50c0bdc56f388b6c",
+      "beforeSha256": "bc76edec9be82c9ed7a0427c21d63a0fe71db9d378c125be2e9fbae0a88ea83b",
+      "afterSha256": "24712458d72c8fdc7bad979ec0378320bd14cc66705e655665b1f50d71d248a1",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-111.html": {
-      "beforeSha256": "aa75cfba6d7ea405b6614f145812132763f6ab1610ecaeb103467d2d26c39369",
-      "afterSha256": "3c4a7d27972ec0f208f2855c80f8c4998b28a2a528e83139ae46cccd38b2ebc5",
+      "beforeSha256": "0c1a45e0476eebdc93001332f9f29aafaacbf6ad884c1d24cf59dfb00b2f049f",
+      "afterSha256": "cd4e019cbeff3c8e51e80adb4565ac4650a2e6c9a77ad4bc72918cf8fb4cb382",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-112.html": {
-      "beforeSha256": "c8c9e21e7cfcf9f66819b3bbe3c169d58d7785efbfbce4ddd6ab7092b61a71a8",
-      "afterSha256": "47dc63005022ad5a756cb287da15169e8234ddc9e3c0f3316e3d22c3a82e579c",
+      "beforeSha256": "6577e1b3808d7f5f5e3517ecaac6efc60101c891e8c9528217b97f107a320544",
+      "afterSha256": "374d20b2f4e0c8f77f3270a0d03da3faae67a1d9a0856a1296b5ae7cb75e6218",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-113.html": {
-      "beforeSha256": "f72364ca80305ed068807cf2d0d488c92d0cb726cb5a0d116703a5a0677b4f8a",
-      "afterSha256": "fedf18d69c6416b4eb0ca3546e1a5a116497d179c1c751a2d88ae093090d6a63",
+      "beforeSha256": "8c541bdd6d514cf1d60583925014a416c87c8a70322276de99ab98f34bc6a61f",
+      "afterSha256": "6d9e00aef21bd399c36113f532960d27d543db6898399f53f4f92ed631649fa0",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-114.html": {
-      "beforeSha256": "5879813bf11619229e84fcdb766b64738602f827ef4ed058ebf3ee434a25a001",
-      "afterSha256": "82384854bb1ff1f86e3d666c9fcd228cfff1db4f2da84ac9dd7b12439ff759fa",
+      "beforeSha256": "4c9bb29db2b02adb99462a38ed49205035d315298d7151b5db64ef158281a391",
+      "afterSha256": "1ba3c4130fabd933b18737a974064977afa8f3961a80b6f0678bce79a32ab7f8",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-116.html": {
-      "beforeSha256": "f38f82c70b4aa7b082753caa1222af8566b066182ebbdbb95e227f99e9190415",
-      "afterSha256": "fb12f8857212b3bafdd0039f982ac8576746eaf2ea673fa7031f9d9e92250ad7",
+      "beforeSha256": "59f6b0a60779d6ea4bb17c23cfa2585b91c5530d0f05f0a3049add82290c7515",
+      "afterSha256": "d20f4b672ec9ee9447b714c5204039d4162acf03f8777981f95d16a6d5cbde81",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-119.html": {
-      "beforeSha256": "5ac76d8f1f8f8cfce51bbb4b4643c223a5c3e802e4586fd4a54dbcd0bb32a800",
-      "afterSha256": "984b58555cd9b3093f2851640ad44eca18f583f0c521f8b180ad24b200de6939",
+      "beforeSha256": "aac0d0fda04562fca2dc113a1696732cfad52d80e5a53637fcc9c72a0aff7321",
+      "afterSha256": "eb9fb1dace13479ee1cf03e1d0bcfd9bff36598faff8a8babd16ccd9fcb9cbeb",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-120.html": {
-      "beforeSha256": "e6dbe0fd599fb4007528dec6421c16b30d387c7e0980fcf50f1e13d45486b7ce",
-      "afterSha256": "3052eae6ff3544adfb2eebfcfc0eac9589995d6dab882554c57bb0ddb29af73e",
+      "beforeSha256": "0df0d5ee91a182d1741a4f5275825a28efef78e3600027a7812ffa246aad896f",
+      "afterSha256": "940318846e53db2cb60fcf1ea6b4f42dde98a75a6d08a40dcb1cc62ba5acfc47",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-121.html": {
-      "beforeSha256": "9b2153195325ad3eeb59ee4683d00e08152540427c20c8af41e55d26433c1a78",
-      "afterSha256": "2d5b84c76d62904e8e5b20478296c39770bfd645ced22e6e4d61c390c6a0e897",
+      "beforeSha256": "07fc1b1181ce84a069ce439d77b0b48c8807186cd8ea3ad8d3be47c2c1fd3145",
+      "afterSha256": "62259fb6145af57d80fa7f48f32ada3ff765fe430a71efa834324fbd08d3ce46",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-123.html": {
-      "beforeSha256": "fb4858a516216356e88771874cafc8f6be586c9b4d96e81acafcd6b98376c095",
-      "afterSha256": "e6c88976be5ebec72f3174d9dfb5332186187717610bee634d0af6c94db35456",
+      "beforeSha256": "ea21433c638cf7a138649f0eebb7851c017271c2dbb6953a171df98da5918e5a",
+      "afterSha256": "15f3c8d27af7937436dedc241ae71af2edc939a142575ef5d2b4d66e277db794",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-125.html": {
-      "beforeSha256": "b98b3ce24f0fdb734960eecfaa1fe611d1f0a91f585b7e833a77669a13cda4ff",
-      "afterSha256": "d10c440621a2f012d30ba6c9a32c29f62ff20db67e88e97497f569315d945e52",
+      "beforeSha256": "28cdf0a4020ee5fbc4f2b210427124713e4faa3aa8bb5bb15a7388566339be92",
+      "afterSha256": "b715851e40a2cceef6573476d17b3e1178fe250669dcf951ac2a2e816f2a0d67",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-126.html": {
-      "beforeSha256": "0f5f7e3efbb8a571a5d8c1f72354b15373e97a992fe42f94f787cae24ce8703f",
-      "afterSha256": "739fc412b8edbbe5eb7b3118128605b603d34683513a30a66e3a48f009c268ce",
+      "beforeSha256": "6ea6a9408c804e664e541fe4358add3555ab2aa542f4a704a84f957c773e7194",
+      "afterSha256": "840755208ea4de189d31a2791dd7feb1973ba4fea93eb646d8618a4982dbf58a",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-127.html": {
-      "beforeSha256": "2814f5bd5abd4ba1e051665ff5e4704eb17f049f2e9bc084f7ae231707f4642f",
-      "afterSha256": "cd292b4c5fd485835ea58c26cd5017a0c1d74ee8e09283e0c9062305470a9cd0",
+      "beforeSha256": "2c6ad808539d12c38829b832dc71f8a659a255aa414feb09918247d1fb453ca0",
+      "afterSha256": "5d6b6e1eba9271495575a0eacb78e34238ddefa25ff050dc59d11ae3c88cdf6d",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-128.html": {
-      "beforeSha256": "af89b8a0862f60c745b69d0c55855175c1bb1fa5660129fb512ea28abcdd2dc6",
-      "afterSha256": "87ad6eab0326073e1c9929a69de00ba03119d75f8ce17ecb51c296cc8d226d92",
+      "beforeSha256": "7293eedcb2366964a062584a0a0f0d150184fcbe463e1669d741d0ce05cff6e4",
+      "afterSha256": "998078c2cea6b3db4ea86734833c074cba763b8f1cf24dd64777d9fff844ca33",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-129.html": {
-      "beforeSha256": "0c5dd541f3dcf9c3e39bd2d79f20df27812316439b8efc6738d70e3a192bb7aa",
-      "afterSha256": "f079ecfcf3df43b436e2c1151b9edde787e1f767253e9b3a36943692d37497a6",
+      "beforeSha256": "d1373b7a17891e43e48222cfbd1dc73cc01844ebac8ef1134be13aa1021d8ec8",
+      "afterSha256": "b9d98086240d66f7867664d0bb1288b4d9fe979f5619480a914ed46f16bf521b",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-130.html": {
-      "beforeSha256": "833fbb091d97462e582b4747fceb5fa3d34ab8d4e9979a9688278f55574f7867",
-      "afterSha256": "bf9edcf5d5c35c80508a3df767a8b369a93d6a68c25631fefcf184fac21bfc61",
+      "beforeSha256": "7039931ef7c9c0b2325b77b9192f6292aa0a52d39485daa84a467b286a934f16",
+      "afterSha256": "1328684560b57cf5ad4019f219c0260d33d09c511d2da368c08b578012ffc534",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-131.html": {
-      "beforeSha256": "fcae2b6101da18e470dcd02dc52a5eeec6557ca37c55baeb38c4277377cbba7f",
-      "afterSha256": "ff71e445746b0b4a3258678a2b21a129f675177bbccd8245e20ad3b4ecd85e4d",
+      "beforeSha256": "53fec8c6963943397f2919c7d63ead54e38ec5e69aee65959d8f011a18e3fb39",
+      "afterSha256": "b161bc56427433e2790cd38dbfb0c9c37525715d1e660a957b081bb6ff311442",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-132.html": {
@@ -2038,8 +2038,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/index.html": {
-      "beforeSha256": "f6ba290f14ded11bb654ba1fbc5f4f08f2c5a177e124e40f9a0cc8e2737c08ab",
-      "afterSha256": "25541f966c69ed1c2b926e341a7cbfe95dd0fb7b1b1b2612e64cfc9db72fb3a3",
+      "beforeSha256": "0dcc5bc607b98acab011d8188bb9a309787444f837f7f4975006b51073917e88",
+      "afterSha256": "98392bb8c41a2f1ecfd92f58613e15079b29480509b102a0ff60b1e41b30b70a",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/textbook/index.html": {
@@ -2163,8 +2163,8 @@
       "placement": "before-head-close"
     },
     "school/peterson5/index.html": {
-      "beforeSha256": "1a52d74533fcb8569000f1f64717b1647313e0ffaa4b38ec2f0cd82ef36cdce3",
-      "afterSha256": "d545c38b6d0ad4657ea8b662cc0e430e8c474306d1dabec413aedd06b3530854",
+      "beforeSha256": "6df54c6ffc5190c9118eaa947c12dffc9d1f08d7f5216bac2230dd82e14f8c4c",
+      "afterSha256": "3c3ac2beba7d3c1aa7ad369a5b892bf16c9c10a441af0d01f6727bc80f14bc4b",
       "placement": "before-head-close"
     },
     "school/peterson6/topics/droby-i-desyatichnye/index.html": {
@@ -2193,13 +2193,13 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
-      "afterSha256": "18eb72f3db935d2a242eddd31b723c8ec7ce77eeef5ddb006595918bcacc02fe",
+      "beforeSha256": "55872530edc3ec6e29bf5585b649cd322882e7922dd5b5de4f4dcc49339d4b2c",
+      "afterSha256": "7d039da497be36c544da989a3a34bb8439e70c526f9cc59c710f012c9be4532f",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
-      "beforeSha256": "a9da6498f42936ac165b7694a102e1372d11f06a1b265482479de4d340de381b",
-      "afterSha256": "6711ae14d8a2e51546e69c681cde31910c1ab291de0e080de09b895ac624b988",
+      "beforeSha256": "5ec4467e0bffdc283921d9bc2aac8449f549474b77be4f7fbba7d29289758cfb",
+      "afterSha256": "6e89a5d2d190e4252087512d406e1e6d147ca8e8111fd2c45e75d76f2386a8e5",
       "placement": "before-head-close"
     },
     "stereo-course/sections/index.html": {
@@ -2248,8 +2248,8 @@
       "placement": "before-head-close"
     },
     "trainers/arifmetika.html": {
-      "beforeSha256": "908ac357ee1e65a0348583c2713538afe3f622affe4ebb7ae80ef0d5982349ca",
-      "afterSha256": "8b29ffb555157ad0b8c844493a58e04c6ceb9af48033044388927a957810b54f",
+      "beforeSha256": "357665d4ba4c17898b0cce415f64f3683891600e943ddf9bd88b68a1660dcb89",
+      "afterSha256": "039e9928ae068e7b2633ee94cf16286460150a10401c3859413d7a4e3b2a49e8",
       "placement": "before-head-close"
     },
     "trainers/attestaciya-1-kurs.html": {
@@ -2333,8 +2333,8 @@
       "placement": "before-head-close"
     },
     "trainers/ege-methods.html": {
-      "beforeSha256": "89e0dfdf0088f28bca3c9ad796f2e2f08944ad8dfe6d204af92f0cbcf79498cc",
-      "afterSha256": "b78f8f2a3cde3f72d806a5f955c3cfe5e008f642f9ceab2825415c6eb137bae3",
+      "beforeSha256": "ea19e4daeee5f7814e037879c18a443a9109cb5b71db2595040183f938e8bebf",
+      "afterSha256": "a9e12c86f7dbccafd85f2e649957b3c9cabe8c8ad497d37122166e12a91e1f45",
       "placement": "before-head-close"
     },
     "trainers/ege-profile-task3-stereometry-catalog.html": {
@@ -2348,28 +2348,28 @@
       "placement": "before-head-close"
     },
     "trainers/ege-profile/inequalities/index.html": {
-      "beforeSha256": "cb2b552e4f039dd8fa5a3dd7fd2b2dbdf606b7dd117c2f598b5bd32e880216b4",
-      "afterSha256": "3ad480c53077b3c7b8e7bb3bb953c2e8b6c81d97247da4a790cfb894840605e5",
+      "beforeSha256": "07e930e920b0787c7c3106aa55b4785d2124e39a78410105ad23bebffd48cdec",
+      "afterSha256": "312235cf5107a46cfe8a034aa108aeea5c3c522c2163bed60fb2a84ffdaf8b1a",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/inequalities/lesson.html": {
-      "beforeSha256": "89863722dbe7468747e3b4397e2ce89783cb0862d0be9caa4acb329e076585ff",
-      "afterSha256": "c774de6a226d6caa8ec745743023b49f0e93eadae8d9883e4fd44421d0400419",
+      "beforeSha256": "c9d5b4da00db1543f128cd34638093a61b6550950f8bfb8d5fd6037acb2f669b",
+      "afterSha256": "430b57c777a4d8eb3b4e0f523c0c4fa66b4fb7183cb6a67abbc11c5483457ba8",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/log-inequalities/index.html": {
-      "beforeSha256": "67cd3d823ce5047e3587c295464d8f205eddfb8f3ec48592e718137fc3b97ea9",
-      "afterSha256": "3b7c996cf79e23dc09234a52c7aae4abf01c998e0b20e12ae918ee82c392c92e",
+      "beforeSha256": "4da73ea24fe41e9de659039fcf4fca654d672fd881abe0945b9ae33fab8b1ac5",
+      "afterSha256": "61855c49fbcf13721eaa6de7df82dac85784ddde6dddaeb594a868ec02a03679",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/log-inequalities/lesson.html": {
-      "beforeSha256": "0596932597b872cfce437f15c9cf02b4d58a732b5122307f0965c71754feead5",
-      "afterSha256": "f6f66e21c7bab28e5a96272685a7b4d2bbe2b4d58fab1e4c3a4631317f7dd0ca",
+      "beforeSha256": "8ea2c3b211bd402b49aee8c94e486dd25fb46c5b440638a91107827947844ba4",
+      "afterSha256": "3cb512328ea589b7124ec13f95afc252327efcc7834c6e15695a3a4fecfbf5fa",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/log-inequalities/nested.html": {
-      "beforeSha256": "cbe9ae4734bb0956904f64a2380daf7ad8ca2d229daf2e4f4101daabce341bb2",
-      "afterSha256": "8d61b35f228b283bf7ea9fee818674b427e9b0008ed3e123898703588412c8c5",
+      "beforeSha256": "6e970f35d087bc2a03e613c3a7c2aa2aa323d5d164363b274aadc86b027218d7",
+      "afterSha256": "d50f59fa9dcc5ac5d5fb0060495562b84312738f834bc0b7e248b5b08dc12452",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/yashchenko-lines-1-2.html": {
@@ -2523,8 +2523,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html": {
-      "beforeSha256": "92681a5f970c5c76722bdc0107aae9f8d896d673a3c1d6540a0147d7b1ba3474",
-      "afterSha256": "a8c6c5ef9a32f1aa88ffdc486742bf270a2c2a5872bbca69756074adb49b2ade",
+      "beforeSha256": "8b8ed95196b322e11af5e2f9a78610972965e8f6ba3afdb6159a1964e3dd548e",
+      "afterSha256": "b2866a9bc1371e2fe5aca9fbe2fa33d3646f8b743337b50c627c34d94cfb8d4d",
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-land-plots.html": {
@@ -2573,13 +2573,13 @@
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-tires.html": {
-      "beforeSha256": "8dc00003b63a4ccb23735ae748d9eb68aea62339d41b84072be06d40eda731e5",
-      "afterSha256": "f9f3e7fd3574a9527e55fa390cce608757481acad967fba62bcc6049f5b3034a",
+      "beforeSha256": "bb93a2bad6df1382f7ee93cf65b3a29ed30bcb8d8edc0ea5c183d08b7d2bcc3e",
+      "afterSha256": "248595abc0709bb1f13cac1a9d4fe70d03c57f8aac6fbf20616640a0149df752",
       "placement": "before-head-close"
     },
     "trainers/oge-2027-analogue-1.html": {
-      "beforeSha256": "93f0681997bc522ac815e905a4757f3d65c12b75ac28c35517161348b5542a43",
-      "afterSha256": "adeb912caa9d500fb6aa326390730e3b4d28abf51c37dfe64553e5347e94edf1",
+      "beforeSha256": "391306468ebb767fd6bddc6b90099979c9bcc5fe7c00cb99c75ae0a0cd78d68e",
+      "afterSha256": "4b8337331e378a6e2648480aca8d2ad9f984cc0b16f9864240e48c28a893c980",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/arithmetic-route.html": {
@@ -2588,28 +2588,28 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/decimal-add-subtract.html": {
-      "beforeSha256": "b0870494548b4d7dadef052419211f527d2943f95b0b26c7f9abbe5fb5134e75",
-      "afterSha256": "85dc4b59cd20333b06b7dae52e10f6c22bad3bb0b31c7ffdb63760df62e79490",
+      "beforeSha256": "1cc0d99d037d7ff964fc83afbc4477172f5b35a2413888608d57bc21071d6c57",
+      "afterSha256": "1fa6b89233b04c952201d24b1ec9ef68b4daeaefd35070337de7b0741bf8d683",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/fraction-common-denominator.html": {
-      "beforeSha256": "2cf5fc759496b9176a584d98571e807db893e91cbb978bf029e737700d1a5cac",
-      "afterSha256": "0410884e0e820fb75a74c8a8146d42d8b5939d372d924734e6df8d52e6d422f7",
+      "beforeSha256": "07289a0127e049d37911bd0fdeb3b7e03f1a91d9564d53516e9dde8d8d208eb6",
+      "afterSha256": "da7056688fff7b1a17cd78841134f83012b5f82663ad7404d77f85716b6ad5d8",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/fraction-meaning.html": {
-      "beforeSha256": "893892c48333c6e297837450d12e33aae416c281f3290ee57ad15f1f3a6cedfd",
-      "afterSha256": "ad9e1f4a0e4785593c88082235dd77b2c428dadfe562b75b266e9e38341aa53f",
+      "beforeSha256": "8c9d8c6fe7734e25566c913944829bef08dd62617f70fbfb6f6f9ae4096e8040",
+      "afterSha256": "aecd20992589f388cf11c163d590dff8e6eb7dd06302eab3e0424769c39b6f8e",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/index.html": {
-      "beforeSha256": "1bcb4c6478280cb4cb7c2fd733b418d0ec65ff88da253afc53d0efd0888e4c63",
-      "afterSha256": "8cf3c5965f60b0e9ba2f4ec96a19767eb28c6b49c282018ddc8e2320df4be8e4",
+      "beforeSha256": "39fd55e265834cb0e7d113391408836e881c7e2c25fef718d7b4644dc3fae257",
+      "afterSha256": "38958c07bf86ff5f391f62b8cc5c9578e6f4247196352f16062822adf725d5f4",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division.html": {
-      "beforeSha256": "26dc1f00ef0a45c6d9c1b3e488e2f8d6de0dba3edc3ab7b5abacedf8e7f96ca4",
-      "afterSha256": "62526e96b7bf5188247c872d7e14e89ff098c49067edc9c0d088f7a7d847ef07",
+      "beforeSha256": "d07e510baad0f61e76f0f8af9efb3f5141028982554cae7e78d0de0dca7e4f58",
+      "afterSha256": "d1dcf99152349a7388fa993ee60c194029269df79fbe036758a92101aff3a5c9",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/arithmetic-foundations.html": {
@@ -2618,13 +2618,13 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html": {
-      "beforeSha256": "e24d1f8dce40c372b179514afee45078daa3e6cf826d3eb77e239fb4ad9dd6c9",
-      "afterSha256": "84752045c336dc3677db959874f6b5ed95bb1b47de741a12cf3730f6f290326a",
+      "beforeSha256": "81ab8bd006a53230d363c554a4d7b3e124d90650df993afce985ebee395260d5",
+      "afterSha256": "4818555acdd87eee0f0f741766fdd879d21cf2349f567019ec50049dd6187084",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html": {
-      "beforeSha256": "6cbda19b82e7d6f4338e8400754a267f823aa1bb028b38cfd9fb51d7cc2e37be",
-      "afterSha256": "82611e01828f6cbea8ac7684a36509473f75c90bc432472f75196b45704bfb79",
+      "beforeSha256": "8e70907f3db195488526760fb090aaf9f4eab47c16ecddbd79e577a8c642aff6",
+      "afterSha256": "d2be255dea713cb813ab9299e7710f378d760dfa202554cf0f0626bf2a5b0681",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/course-append-zeros.html": {
@@ -2698,8 +2698,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/course-estimate.html": {
-      "beforeSha256": "6200a99a0f230dd9632cc55ab125b72b55cbb7606052d4147149669350e490a7",
-      "afterSha256": "d717c38d8449c3b830218c236d3f956f272b0532780a93c516e0bd42a25be6d5",
+      "beforeSha256": "8185dfc2c62a450bc8c8af9febb3e3ae203ba2cbfbba6679137b18ae41e64345",
+      "afterSha256": "9be1552df5130c974289c4168ffa73fb437cdabe6eb82e02d70cc9038bb4c422",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/course-first-part.html": {
@@ -2763,8 +2763,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/decimal-divisor-shift.html": {
-      "beforeSha256": "60695842d26f6585d349f4bd19d02d994b8f466680fd14f9174bd2c31a5f7e92",
-      "afterSha256": "c6829a9daf75f52cf0bb747cce6eb03482e1547a0e5ae273d20ef45dde17c749",
+      "beforeSha256": "4a962bcfaaa9677aae8ab8a0e09610d456fbfc20bcf4e5ce20091c4dc1ccd3c2",
+      "afterSha256": "6e36760303cae58a8d483b0eaef1010d26856ee3c71675eddc440287a7003674",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/division-append-zeros.html": {
@@ -2788,8 +2788,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/division-with-remainder.html": {
-      "beforeSha256": "cc8e36156c50570da05227d310a36b4a51a7cb695f138841b6ce394176ca2b97",
-      "afterSha256": "9a88178a41d12f0a538f9262fe45280e6ec9f6d1a272d239091ad1635bb98586",
+      "beforeSha256": "5d4efde7a751a03d356fbd4d9cc7620280233ae46799a6742eca891d46f93ed2",
+      "afterSha256": "ef4f92bad8170ac192b53634aeb931a58cd141807dd6df18a8812ff7e7536f3a",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/index.html": {
@@ -2798,8 +2798,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html": {
-      "beforeSha256": "c3d9579a46c0a56872fa846d48097c6240f70f6b70cfa2f47ed695f07d58fc89",
-      "afterSha256": "d508d3b13a1d3f62bd2a99b6a476f35b090452517591d680aa178c7c6702a3b2",
+      "beforeSha256": "01685c0be741a9e8002822cd04ed2261456a17e19b856797ab0686d09031511e",
+      "afterSha256": "5c75dd1ab4c2623d042b5dbabc1c4cb565bbb1a83e06a6e2938af394145a3365",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html": {
@@ -2833,53 +2833,53 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/multiplication-ladder.html": {
-      "beforeSha256": "5b88332de01d19efafe815e80d1a3655de5e368b9d0f5062f971d0e867e30411",
-      "afterSha256": "27ab5a6ffb0df7536eec331a851f30d556deb0ba033c9c17f635931bd97fa956",
+      "beforeSha256": "7642edfd87ce156c05d42cddcc53d9070f407cf9f52968b19896802e0fde02e1",
+      "afterSha256": "c37c085f03e38ed16ea4bc2ee66afcaf923b4b9f7e443c0e0b7380733d9b1302",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/multiplication-meaning.html": {
-      "beforeSha256": "7d8f9615248e9b10c71a81a18ad8993171de82db7e2896ed2a4ecd85e76c4373",
-      "afterSha256": "01942fc5b8345654a66d50402d4a917f2636853a3d45f9a9c34bac73283a40c8",
+      "beforeSha256": "20f8c694bd2a59064f26721654cdc6e93fb81fd2cde0b04a71d27fa98ae17dfd",
+      "afterSha256": "51ce0edf915ac56547d029c1e26451221d5e18b55ab692a6cdc6ad720cca07d3",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/multiplication-mixed.html": {
-      "beforeSha256": "1353bb87246dec1c6bf9dedf893041400affe24883a465b20aadd24fd495139b",
-      "afterSha256": "4005d17c5f8e06e098e22f9322f313f9319720cc2494aa2e6dbf795090c3fba8",
+      "beforeSha256": "159bdfebd01a5f0e4f70bf71162b1ddcf01f73e8b13c5425f3e42e5765261dca",
+      "afterSha256": "7e500cf008d3012f3a9ac540fa9d5f2b4af7a7414a555811d98ef2241b917767",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html": {
-      "beforeSha256": "6f8377abbb0dff623af577ce9111d007d460cf95f60fa8321d5a1563a5e2e79b",
-      "afterSha256": "34f94d2ab81715544a665aaaba8aec7e6ccd702c7228eccf8b1dadb3de6a1b29",
+      "beforeSha256": "3b96b86b03d08ebc69c4b933add4c30d6bdd0a57d55860bda938858472bcc694",
+      "afterSha256": "815c03db0dc219d0ba79a98ab04ab6c6d1db632b64673dbbfb353b350d71bbd8",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/multiplication-tricks.html": {
-      "beforeSha256": "54974ad8077c674c61391f68512bae0b9a5b1849aa57a15784b873ac1c9d96e6",
-      "afterSha256": "09edc7119f39febcae5b2b8ee7f1b57ba02d09a667a1acecbc5db7a00a5bcff4",
+      "beforeSha256": "a387b79f73e0c59944c014912c27303fdb84e237f5dfacca03356603bf84e729",
+      "afterSha256": "f2af01ed8ad89822de4f7a3715f18d6951dd127ac91b160435dc2b844fc2650e",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/quotient-estimate.html": {
-      "beforeSha256": "f225704113f0afa27f43f188f92016989a515e78543442b3edd681b851150521",
-      "afterSha256": "5b1ae5023c8fa1b81bee1ddd260b0468b91dc3bafffe3cee5f1d9c428aebf694",
+      "beforeSha256": "0fa9c2dfa3e4168de353cb47020bce5cf2a1752837b33cc49be9adb0ce1457c8",
+      "afterSha256": "4433caf68fb7378b8e0245ddd44819866b40a81f58b833a78ffc8325d56dbaa9",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/tabular-division.html": {
-      "beforeSha256": "13d2c8fbab2c7d6c79b3f10886edc5dd430aab40b390aaa2f4f1ff8b8a66de6d",
-      "afterSha256": "97191a7629f97b58b308c9fa3a31ef6462693146ff4dfe99fbf72820f9748a9a",
+      "beforeSha256": "3e4253619751d180716b97320c030c59fe85ddc690226f7909e8cb9bd2a0eeb7",
+      "afterSha256": "80c27f7a71e6562d21ac0b840548094598b6f1e9d6f93014bf6f2dc660235c63",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/negative-add-subtract.html": {
-      "beforeSha256": "a3e7fb0bf2e655a3b1ee3163c50fda6e3aa895dd767d379e61b789c5f1f8d27c",
-      "afterSha256": "db80ac29cd2552237bc55c7b9297698927a2cd6a8bc6a50fba95fbbffc872833",
+      "beforeSha256": "09bdab366cd572bd77bf850286b395d4611eafa0b7bccb1752464bd57470d114",
+      "afterSha256": "466f6ad38521dfd3dcee0cba7da6e46c37f10299c2a7b71eab5b5cd1845beccb",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/negative-number-line.html": {
-      "beforeSha256": "e8c316084bf513660c13f833dcce31430a4bb4bebda30fc1723b6442f88d3ef6",
-      "afterSha256": "ac88e80cf7ea006c1decda645f05b6f0a1da0c0c826dd718d2a1af09608fc923",
+      "beforeSha256": "c0c7a5cc20bf6611729778f1b92fa5b06941e287fff9623fa277092a908f5a61",
+      "afterSha256": "ebf6c5b209f768f938f518cf328c404a8c3c8729f2235c74216bd7f9864bdf95",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/order-of-operations.html": {
-      "beforeSha256": "1e13bb05177ae9620fdf22f3e6a7a5414c850a0730297bc2d68d0b10ec6db086",
-      "afterSha256": "3caab669e650b719e3a74ac515fad85920e738430523ebcfa29542bfc39bc11e",
+      "beforeSha256": "7dbfd0503876cab10783b421111b93a85d226f0c4fa9dc04c6e97053d0361bfd",
+      "afterSha256": "b9404d9dd8176bef43b7530111fc0ca624370b5b3bdbeb37e2aa7a86b16fe831",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/percentages/index.html": {
@@ -2918,28 +2918,28 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/rounding.html": {
-      "beforeSha256": "a87da1a4fba93af487abd22b20ec8764de3a5335328325aad8d6a0413bb91ee7",
-      "afterSha256": "0fa121d56fdc9b739ccb7812f59c63487fdbee8e7965b8d55aee0debf059114c",
+      "beforeSha256": "c2a7c531487dd974d0fa392b8a189bfb9715ccd78e3816b7006ce971b3908dfb",
+      "afterSha256": "95436a46e937fd233e35569aa556d4c1c6c56372a330745fbd3f6903c55e039c",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/units-area.html": {
-      "beforeSha256": "563c4a8e52f8f5f3a7add258c2c69b5bb575ef2314fe235dbfc477b4353c55f9",
-      "afterSha256": "84e2e60854f945adaaa7ddad615fea76bdbe2fcfb1cfd8d8cbc9492457303f0b",
+      "beforeSha256": "4cb1534ebb84db4dfd49005809d6e431a97016d70458fbc0e936a4aad5fef7ef",
+      "afterSha256": "cff344427349c85b0799754083997ccc0369f8ad1853a3fb4751cff403d3f8e4",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/units-length-time.html": {
-      "beforeSha256": "aa40c1efe196946c524dc2f7efa5b4b0fbee39075e7ca265928df4b3383947b9",
-      "afterSha256": "39ae24defda0ba3fb856c8801e11f2abcb283f1c94c27406b091107cb5cdff43",
+      "beforeSha256": "b90ed29f70764dfb7067db322ec8207c90258513bd04baf9daf272c07c3eb0e2",
+      "afterSha256": "e333af2d9ebe61132b69f84a611788a58cbc5219260f707af90dcb87ea4d6d2d",
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "91d10e796282966d2b2f12377fecda1c25a62fbb0c988af913ea6416da7107af",
-      "afterSha256": "a9c41b338c2d1805860941eb824a62a409702deb60b86d2971d9f4b538acf03c",
+      "beforeSha256": "f0d3caeaf080c49459430abc844fe3b99cc4c0542446c5ec3b0b5701d62b12af",
+      "afterSha256": "8efecc32aa9314fac00dd30b60a0853fcbb2ba6b4a4111f9b94b560d2f11970a",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
-      "beforeSha256": "b391215abcfea6a368bfbb5992088c251b8f4f4c9325619571f55897f9e83cf1",
-      "afterSha256": "44b5b8c1580e1f4bc007a39ac7172b765f5dbb86f9b08617e486fb6eb70a8874",
+      "beforeSha256": "e1ad5bdeb3df48d151a76c7689c674487e103194d50932b178e0ac66b0bc6098",
+      "afterSha256": "15eaf1103c3807b868f6ed20b42b37d4129f1f7e15a477cb3dae6a1db84ca5b0",
       "placement": "before-head-close"
     },
     "trainers/oge-task10-probability.html": {
@@ -2968,8 +2968,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
-      "beforeSha256": "ee9e122d03c3335f3105f73683987dbaee58e8c7b24acb745fa90a5e709ab035",
-      "afterSha256": "1cae3382357173dc670624d24cfa3429136479693c80ace776ea669c59cedbe5",
+      "beforeSha256": "c2c9bb9adfea61847635f30f19a311fff2247dcad83f85581c2bf3ed2fd09e13",
+      "afterSha256": "489e1e06c9f63ad8c8af42e6a790b0377c282605629e0693110a3cdaec4df9e7",
       "placement": "before-head-close"
     },
     "trainers/oge-task16-circle.html": {
@@ -2978,8 +2978,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task17-quadrilaterals.html": {
-      "beforeSha256": "7342d41d728bd959b47a3993d8420411d627b4921a082b321637dd1649d77cec",
-      "afterSha256": "aa59782168a0d3eb8cfb90361b60796e85ee924e9d82825670b8dc3f73eca112",
+      "beforeSha256": "24aab3967d00ee03622d979637b58f2d01c9bd551dc729ca42f39926fad8dcb5",
+      "afterSha256": "fd4172be848c98ecec4c69dd4831da53b9b21f2728745c29855958f74bdb5fba",
       "placement": "before-head-close"
     },
     "trainers/oge-task18-grid.html": {
@@ -3013,18 +3013,18 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
-      "beforeSha256": "52bb7e9ac26227ec1c94f9c18cca715725750c57c77c5206b4d21a4f5a8aed27",
-      "afterSha256": "9e0b7b081e3609cb4657fa61cfe9cb04e78f4952eb976354340506873cc9f1d7",
+      "beforeSha256": "075163e380df8c7c3c830f4b2c7d0893a1e7b048c9b68c1863cafe1c66f01ee4",
+      "afterSha256": "68d8104b7c6729e7ba8008c3b61d0df97141f0e6adfba60e1fd8f862e18cf97e",
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
-      "beforeSha256": "e45ab54309153422af9f09ed8245f33edf8398c348614a6153d6151e143b088f",
-      "afterSha256": "3260bfffb7a467c101d7dd1fe3a94711c2f9cbf02daa7ef010033f7391bb9541",
+      "beforeSha256": "39b0cb433507e6f4a411825516b766a9dde02296edf4ebfeb672b0acbec34ea4",
+      "afterSha256": "92c28b210123e6151fab96b6845ac8605e23ccee677d585a2a60e3acecb7e4cf",
       "placement": "before-head-close"
     },
     "trainers/oge-task7-number-line.html": {
-      "beforeSha256": "5f915d3c116a9906ea02724568046f3f91eebc849310a50daca6aa623bde030f",
-      "afterSha256": "8e01a4a24c19c210a729e819b6f91c9227205d15a82a48e26bec87f755b05983",
+      "beforeSha256": "7c4a2788375da7da39d111cda59458268c995c4cba98b4364f378c816886ae07",
+      "afterSha256": "864454d38377a128827a5831fcf8d4ba02ad430e9feb5ddf024c6de5a0eb06cb",
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
@@ -5271,6 +5271,858 @@
       "changedPaths": [
         "trainers/oge-task9-equations.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+      "sourceBaseSha": "262eaadc6e076aad4c3d1cb88cd1a38ad0bc5a2f",
+      "task": "docs/tasks/OGE_COURSE_RESUME_20261117.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "262eaadc6e076aad4c3d1cb88cd1a38ad0bc5a2f",
+      "sourceBaseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
+      "task": "docs/tasks/OGE_DIAGNOSTIC_PRACTICE_20261117.md",
+      "changedPaths": [
+        "trainers/oge-2027-analogue-1.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
+      "sourceBaseSha": "08d80f14da385f7a72247640996f1f06032d20c3",
+      "task": "docs/tasks/PROFILE_FIPI_2027_ALIGNMENT_20261115.md",
+      "changedPaths": [
+        "ege-profil/atanasyan-10-11/index.html",
+        "ege-profil/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html",
+        "ege-profil/trainers/applied-t910.html",
+        "ege-profil/trainers/derivative-t8.html",
+        "ege-profil/trainers/expert.html",
+        "ege-profil/trainers/finance.html",
+        "ege-profil/trainers/functions-t1112.html",
+        "ege-profil/trainers/inequalities.html",
+        "ege-profil/trainers/interval-method.html",
+        "ege-profil/trainers/numbers-t19.html",
+        "ege-profil/trainers/parameters-t18.html",
+        "ege-profil/trainers/planimetry-t1.html",
+        "ege-profil/trainers/planimetry-t17.html",
+        "ege-profil/trainers/planimetry-yashchenko-t1.html",
+        "ege-profil/trainers/probability-t45.html",
+        "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html",
+        "ege-profil/trainers/stereo-t14.html",
+        "ege-profil/trainers/trig-sum-to-product.html",
+        "ege-profil/trainers/trigonometry.html",
+        "ege-profil/trainers/vectors-t2.html",
+        "ege-profil/trainers/vectors-yashchenko-t2.html",
+        "trainers/ege-methods.html",
+        "trainers/ege-profile/inequalities/index.html",
+        "trainers/ege-profile/inequalities/lesson.html",
+        "trainers/ege-profile/log-inequalities/index.html",
+        "trainers/ege-profile/log-inequalities/lesson.html",
+        "trainers/ege-profile/log-inequalities/nested.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "08d80f14da385f7a72247640996f1f06032d20c3",
+      "sourceBaseSha": "e5aa2df927981272ef64214761205c2ba7f6b2a7",
+      "task": "docs/tasks/PROFILE19_PROOF_COMPLETION_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e5aa2df927981272ef64214761205c2ba7f6b2a7",
+      "sourceBaseSha": "312a3a8e37d2276e1b7dbac7c4fde571a4c45801",
+      "task": "docs/tasks/PROFILE_FULL_PRACTICE_2027_20261117.md",
+      "changedPaths": [
+        "ege-profil/exam/full-exam.html",
+        "ege-profil/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "312a3a8e37d2276e1b7dbac7c4fde571a4c45801",
+      "sourceBaseSha": "5b52ac0a55f45f365441198f9d46a505d0bc7774",
+      "task": "docs/tasks/PROFILE_EXPERT_EXAMPLES_2027_20261117.md",
+      "changedPaths": [
+        "ege-profil/trainers/expert.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5b52ac0a55f45f365441198f9d46a505d0bc7774",
+      "sourceBaseSha": "3a144c4f8417a6ce8e19ba1300e28ac2189030fe",
+      "task": "docs/tasks/PROFILE_PART_TWO_PROOF_FRESHNESS_20261116.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "3a144c4f8417a6ce8e19ba1300e28ac2189030fe",
+      "sourceBaseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
+      "task": "docs/tasks/PROFILE_START_RESEARCH_20261117.md",
+      "changedPaths": [
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
+      "sourceBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "task": "docs/tasks/PROFILE_FINANCE_WRITTEN_20261117.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "sourceBaseSha": "025bcf9d48d93fe480d37c6807687b1169219122",
+      "task": "docs/tasks/POGORELOV_MERZLYAK_QUALITY_20261118.md",
+      "changedPaths": [
+        "geometry-merzlyak/atlas/merzlyak-advanced-8-8-menelaus.html",
+        "geometry-merzlyak/atlas/merzlyak-advanced-9-9-ceva.html",
+        "geometry-merzlyak/atlas/merzlyak-advanced-9-9-inversion.html",
+        "geometry-merzlyak/atlas/merzlyak-advanced-9-9-radical.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-1.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-11.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-13.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-14.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-17.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-18.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-4.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-5.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-7.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-8.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-9.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-17.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-18.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-9.html",
+        "geometry-merzlyak/atlas/merzlyak-base-9-13.html",
+        "geometry-merzlyak/index.html",
+        "geometry-pogorelov/atlas/pogorelov-base-7-16.html",
+        "geometry-pogorelov/atlas/pogorelov-base-7-20.html",
+        "geometry-pogorelov/atlas/pogorelov-base-7-39.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-61.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-62.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-67.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-80.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-98.html",
+        "geometry-pogorelov/atlas/pogorelov-base-9-107.html",
+        "geometry-pogorelov/atlas/pogorelov-base-9-112.html",
+        "geometry-pogorelov/atlas/pogorelov-base-9-127.html",
+        "geometry-pogorelov/atlas/pogorelov-base-9-131.html",
+        "geometry-pogorelov/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "sourceBaseSha": "8ea6aa61a804ec53a18b6c255ee2430dde9a8114",
+      "task": "docs/tasks/GRADE56_SOURCE_AUDIT_20261118.md",
+      "changedPaths": [
+        "courses/vilenkin-6-part-1/textbook.html",
+        "school/peterson5/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8ea6aa61a804ec53a18b6c255ee2430dde9a8114",
+      "sourceBaseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+      "task": "docs/tasks/POGORELOV_MERZLYAK_QUALITY_20261118.md",
+      "changedPaths": [
+        "geometry-merzlyak/atlas/merzlyak-advanced-8-8-menelaus.html",
+        "geometry-merzlyak/atlas/merzlyak-advanced-9-9-ceva.html",
+        "geometry-merzlyak/atlas/merzlyak-advanced-9-9-inversion.html",
+        "geometry-merzlyak/atlas/merzlyak-advanced-9-9-radical.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-1.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-11.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-13.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-14.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-17.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-18.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-4.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-5.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-7.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-8.html",
+        "geometry-merzlyak/atlas/merzlyak-base-7-9.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-17.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-18.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-9.html",
+        "geometry-merzlyak/atlas/merzlyak-base-9-13.html",
+        "geometry-merzlyak/index.html",
+        "geometry-pogorelov/atlas/pogorelov-base-7-16.html",
+        "geometry-pogorelov/atlas/pogorelov-base-7-20.html",
+        "geometry-pogorelov/atlas/pogorelov-base-7-39.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-61.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-62.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-67.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-80.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-98.html",
+        "geometry-pogorelov/atlas/pogorelov-base-9-107.html",
+        "geometry-pogorelov/atlas/pogorelov-base-9-112.html",
+        "geometry-pogorelov/atlas/pogorelov-base-9-127.html",
+        "geometry-pogorelov/atlas/pogorelov-base-9-131.html",
+        "geometry-pogorelov/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+      "sourceBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+      "task": "docs/tasks/LINKED_COURSES_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-profil/trainers/derivative-t8.html",
+        "ege-profil/trainers/functions-t1112.html",
+        "ege-profil/trainers/inequalities.html",
+        "ege-profil/trainers/interval-method.html",
+        "ege-profil/trainers/numbers-t19.html",
+        "ege-profil/trainers/parameters-18/fractional.html",
+        "ege-profil/trainers/parameters-18/graphic.html",
+        "ege-profil/trainers/parameters-18/intro.html",
+        "ege-profil/trainers/parameters-18/irrational.html",
+        "ege-profil/trainers/parameters-18/linear.html",
+        "ege-profil/trainers/parameters-18/quadratic.html",
+        "ege-profil/trainers/planimetry-yashchenko-t1.html",
+        "ege-profil/trainers/trigonometry.html",
+        "ege-profil/trainers/vectors-yashchenko-t2.html",
+        "trainers/oge-informatics-1-10-tutor.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+      "sourceBaseSha": "34a08fc84d260a2e96be245c1b2d77b4d3dd6734",
+      "task": "docs/tasks/GEOMETRY_SEVEN_CONSTRUCTIONS_20261118.md",
+      "changedPaths": [
+        "geometry-course/textbook/index.html",
+        "stereo-course/merzlyak-10-base/index.html",
+        "trainers/oge-task25-geometry.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "34a08fc84d260a2e96be245c1b2d77b4d3dd6734",
+      "sourceBaseSha": "60de461544aa5f998ddb2266a8446bdda38239ca",
+      "task": "docs/tasks/PLANIMETRY_ARTICLE_CYCLES_20261118.md",
+      "changedPaths": [
+        "articles/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/02-uslovie-i-dokazatelstvo/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/03-nalozhenie-figur/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/04-pervyi-priznak/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/05-mediana-bissektrisa-vysota/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/06-ravnobedrennyi-treugolnik/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/07-chitat-chertezh/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/08-marshrut-po-geometrii/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/index.html",
+        "articles/stroynost-kursa-geometrii/01-chto-takoe-stroynost/index.html",
+        "articles/stroynost-kursa-geometrii/02-vhod-v-geometriyu/index.html",
+        "articles/stroynost-kursa-geometrii/03-akciomy-i-pravila-igry/index.html",
+        "articles/stroynost-kursa-geometrii/04-ravenstvo-nalozhenie-dvizhenie/index.html",
+        "articles/stroynost-kursa-geometrii/05-pervyi-priznak-ravenstva/index.html",
+        "articles/stroynost-kursa-geometrii/06-kak-uchat-dokazyvat/index.html",
+        "articles/stroynost-kursa-geometrii/07-neobhodimo-i-dostatochno/index.html",
+        "articles/stroynost-kursa-geometrii/08-sistema-zadach/index.html",
+        "articles/stroynost-kursa-geometrii/09-chertezh-i-dokazatelstvo/index.html",
+        "articles/stroynost-kursa-geometrii/10-tri-arhitektury-kursa/index.html",
+        "articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/index.html",
+        "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html",
+        "articles/stroynost-kursa-geometrii/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "60de461544aa5f998ddb2266a8446bdda38239ca",
+      "sourceBaseSha": "80ffbdb4ab91806e51f99b674158dab1c1c4c4ad",
+      "task": "docs/tasks/STUDENT_NEXT_STEP_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html",
+        "trainers/oge-task15-triangles.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+      "sourceBaseSha": "0e7de9a0c550de166e2349e91bc7886276d14fa5",
+      "task": "docs/tasks/FOUNDATION_PRACTICE_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html",
+        "geometry-course/atlas/angles.html",
+        "geometry-course/atlas/area-parallelogram.html",
+        "geometry-course/index.html",
+        "trainers/arifmetika.html",
+        "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+        "trainers/oge-basics/decimal-add-subtract.html",
+        "trainers/oge-basics/fraction-common-denominator.html",
+        "trainers/oge-basics/fraction-meaning.html",
+        "trainers/oge-basics/index.html",
+        "trainers/oge-basics/multiplication-division.html",
+        "trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+        "trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+        "trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+        "trainers/oge-basics/multiplication-division/division-with-remainder.html",
+        "trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+        "trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+        "trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+        "trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+        "trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+        "trainers/oge-basics/multiplication-division/tabular-division.html",
+        "trainers/oge-basics/negative-add-subtract.html",
+        "trainers/oge-basics/negative-number-line.html",
+        "trainers/oge-basics/order-of-operations.html",
+        "trainers/oge-basics/rounding.html",
+        "trainers/oge-basics/units-area.html",
+        "trainers/oge-basics/units-length-time.html",
+        "trainers/oge-course/index.html",
+        "trainers/oge-task6-fractions.html",
+        "trainers/oge-task7-number-line.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "60de461544aa5f998ddb2266a8446bdda38239ca",
+      "sourceBaseSha": "72539d8c7a4abd104c9d9a17f2a3dd3aea74ae64",
+      "task": "docs/tasks/FOUNDATION_PRACTICE_AUDIT_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "80ffbdb4ab91806e51f99b674158dab1c1c4c4ad",
+      "sourceBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "task": "docs/tasks/FOUNDATION_PRACTICE_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
+      "task": "docs/tasks/GEOMETRY_COURSES_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-profil/atanasyan-10-11/index.html",
+        "ege-profil/atanasyan-10-11/lesson.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
+      "sourceBaseSha": "2d0651864042658fed9a28ca621d8cfb139b1e42",
+      "task": "docs/tasks/ATANASYAN_7_11_HARMONIZATION_20261116.md",
+      "changedPaths": [
+        "geometry-course/atlas/angle-locus.html",
+        "geometry-course/atlas/angles.html",
+        "geometry-course/atlas/area-basics.html",
+        "geometry-course/atlas/area-parallelogram.html",
+        "geometry-course/atlas/area-sine.html",
+        "geometry-course/atlas/area-trapezoid.html",
+        "geometry-course/atlas/area-triangle.html",
+        "geometry-course/atlas/axis.html",
+        "geometry-course/atlas/centers.html",
+        "geometry-course/atlas/central.html",
+        "geometry-course/atlas/cevians.html",
+        "geometry-course/atlas/chord-angles.html",
+        "geometry-course/atlas/chords-tangent.html",
+        "geometry-course/atlas/circle-metric.html",
+        "geometry-course/atlas/circle-position.html",
+        "geometry-course/atlas/compass.html",
+        "geometry-course/atlas/coordinates.html",
+        "geometry-course/atlas/cosine-rule.html",
+        "geometry-course/atlas/cyclic-quad.html",
+        "geometry-course/atlas/distance.html",
+        "geometry-course/atlas/dot-product.html",
+        "geometry-course/atlas/equality.html",
+        "geometry-course/atlas/heron.html",
+        "geometry-course/atlas/homothety.html",
+        "geometry-course/atlas/inscribed.html",
+        "geometry-course/atlas/length.html",
+        "geometry-course/atlas/line-circle-equations.html",
+        "geometry-course/atlas/measure-angle.html",
+        "geometry-course/atlas/midline.html",
+        "geometry-course/atlas/movement.html",
+        "geometry-course/atlas/parallel-angles.html",
+        "geometry-course/atlas/parallelogram.html",
+        "geometry-course/atlas/parallels.html",
+        "geometry-course/atlas/perp-locus.html",
+        "geometry-course/atlas/perpendicular.html",
+        "geometry-course/atlas/polygon-similarity.html",
+        "geometry-course/atlas/polygons.html",
+        "geometry-course/atlas/projections.html",
+        "geometry-course/atlas/pythagoras.html",
+        "geometry-course/atlas/rectangle.html",
+        "geometry-course/atlas/regular-polygons.html",
+        "geometry-course/atlas/rhombus.html",
+        "geometry-course/atlas/right-triangle.html",
+        "geometry-course/atlas/segments.html",
+        "geometry-course/atlas/similarity-measure.html",
+        "geometry-course/atlas/similarity-method.html",
+        "geometry-course/atlas/similarity-signs.html",
+        "geometry-course/atlas/similarity.html",
+        "geometry-course/atlas/sine-rule.html",
+        "geometry-course/atlas/solve-triangle.html",
+        "geometry-course/atlas/symmetry-method.html",
+        "geometry-course/atlas/translation-rotation.html",
+        "geometry-course/atlas/trapezoid.html",
+        "geometry-course/atlas/triangle-angles.html",
+        "geometry-course/atlas/triangle-circles.html",
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/atlas/triangle-signs.html",
+        "geometry-course/atlas/trig-circle.html",
+        "geometry-course/atlas/trig-right.html",
+        "geometry-course/atlas/vector-add.html",
+        "geometry-course/atlas/vector-basis.html",
+        "geometry-course/atlas/vector-scale.html",
+        "geometry-course/atlas/vectors.html",
+        "geometry-course/index.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
+      "sourceBaseSha": "12887c59d2a9ebfa08fa7200fbcf1b36d782ebaf",
+      "task": "docs/tasks/GEOMETRY_COURSES_AUDIT_20261118.md",
+      "changedPaths": [
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "12887c59d2a9ebfa08fa7200fbcf1b36d782ebaf",
+      "sourceBaseSha": "ff5d0d070eee7d4df2527dfc25a9f69cc912d828",
+      "task": "docs/tasks/ATANASYAN_7_11_HARMONIZATION_20261116.md",
+      "changedPaths": [
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+      "sourceBaseSha": "6b150dbddd42b7989c61e69c2fcb70520a38a6fb",
+      "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
+      "changedPaths": [
+        "trainers/oge-1-5-trainers/practice-1-5-tires.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "665534b33e019d486913534a7668f1a8a23ef7ce",
+      "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2d0651864042658fed9a28ca621d8cfb139b1e42",
+      "sourceBaseSha": "337f0b29e67d3fb36100f1719a25c37bbed34814",
+      "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ff5d0d070eee7d4df2527dfc25a9f69cc912d828",
+      "sourceBaseSha": "747426ef9788ced70c51cc86ab809de915d1885e",
+      "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "77bd1dec2e9718c8a621af27837aca92da737e58",
+      "task": "docs/tasks/ROUNDING_QUOTIENT_DIGIT_20261118.md",
+      "changedPaths": [
+        "trainers/oge-basics/index.html",
+        "trainers/oge-basics/multiplication-division/course-estimate.html",
+        "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+        "trainers/oge-basics/multiplication-division/quotient-estimate.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "665534b33e019d486913534a7668f1a8a23ef7ce",
+      "sourceBaseSha": "2f72268fd5cc8232e6773422f1ab47d52df6c595",
+      "task": "docs/tasks/ROUNDING_QUOTIENT_DIGIT_20261118.md",
+      "changedPaths": [
+        "trainers/oge-basics/index.html",
+        "trainers/oge-basics/multiplication-division/course-estimate.html",
+        "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+        "trainers/oge-basics/multiplication-division/quotient-estimate.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "337f0b29e67d3fb36100f1719a25c37bbed34814",
+      "sourceBaseSha": "216346d391680d81a87baf03b2ec687903e126bc",
+      "task": "docs/tasks/ROUNDING_QUOTIENT_DIGIT_20261118.md",
+      "changedPaths": [
+        "trainers/oge-basics/index.html",
+        "trainers/oge-basics/multiplication-division/course-estimate.html",
+        "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+        "trainers/oge-basics/multiplication-division/quotient-estimate.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "747426ef9788ced70c51cc86ab809de915d1885e",
+      "sourceBaseSha": "e44a97a95030b3f032a01418f473494adb3cac39",
+      "task": "docs/tasks/ROUNDING_QUOTIENT_DIGIT_20261118.md",
+      "changedPaths": [
+        "trainers/oge-basics/index.html",
+        "trainers/oge-basics/multiplication-division/course-estimate.html",
+        "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+        "trainers/oge-basics/multiplication-division/quotient-estimate.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+      "sourceBaseSha": "de56648f894df0a54b4f7062168801a0065f8535",
+      "task": "docs/tasks/GEOMETRY_RIGHT_ANGLES_20261118.md",
+      "changedPaths": [
+        "stereo-course/index.html",
+        "trainers/oge-task17-quadrilaterals.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "de56648f894df0a54b4f7062168801a0065f8535",
+      "sourceBaseSha": "2d0008eccf76a14d683ceb4325a611acc97852a5",
+      "task": "docs/tasks/GEOMETRY_RIGHT_ANGLES_20261118.md",
+      "changedPaths": [
+        "geometry-course/atlas/angle-locus.html",
+        "geometry-course/atlas/angles.html",
+        "geometry-course/atlas/area-basics.html",
+        "geometry-course/atlas/area-parallelogram.html",
+        "geometry-course/atlas/area-sine.html",
+        "geometry-course/atlas/area-trapezoid.html",
+        "geometry-course/atlas/area-triangle.html",
+        "geometry-course/atlas/axis.html",
+        "geometry-course/atlas/centers.html",
+        "geometry-course/atlas/central.html",
+        "geometry-course/atlas/cevians.html",
+        "geometry-course/atlas/chord-angles.html",
+        "geometry-course/atlas/chords-tangent.html",
+        "geometry-course/atlas/circle-metric.html",
+        "geometry-course/atlas/circle-position.html",
+        "geometry-course/atlas/compass.html",
+        "geometry-course/atlas/coordinates.html",
+        "geometry-course/atlas/cosine-rule.html",
+        "geometry-course/atlas/cyclic-quad.html",
+        "geometry-course/atlas/distance.html",
+        "geometry-course/atlas/dot-product.html",
+        "geometry-course/atlas/equality.html",
+        "geometry-course/atlas/heron.html",
+        "geometry-course/atlas/homothety.html",
+        "geometry-course/atlas/inscribed.html",
+        "geometry-course/atlas/length.html",
+        "geometry-course/atlas/line-circle-equations.html",
+        "geometry-course/atlas/measure-angle.html",
+        "geometry-course/atlas/midline.html",
+        "geometry-course/atlas/movement.html",
+        "geometry-course/atlas/parallel-angles.html",
+        "geometry-course/atlas/parallelogram.html",
+        "geometry-course/atlas/parallels.html",
+        "geometry-course/atlas/perp-locus.html",
+        "geometry-course/atlas/perpendicular.html",
+        "geometry-course/atlas/polygon-similarity.html",
+        "geometry-course/atlas/polygons.html",
+        "geometry-course/atlas/projections.html",
+        "geometry-course/atlas/pythagoras.html",
+        "geometry-course/atlas/rectangle.html",
+        "geometry-course/atlas/regular-polygons.html",
+        "geometry-course/atlas/rhombus.html",
+        "geometry-course/atlas/right-triangle.html",
+        "geometry-course/atlas/segments.html",
+        "geometry-course/atlas/similarity-measure.html",
+        "geometry-course/atlas/similarity-method.html",
+        "geometry-course/atlas/similarity-signs.html",
+        "geometry-course/atlas/similarity.html",
+        "geometry-course/atlas/sine-rule.html",
+        "geometry-course/atlas/solve-triangle.html",
+        "geometry-course/atlas/symmetry-method.html",
+        "geometry-course/atlas/translation-rotation.html",
+        "geometry-course/atlas/trapezoid.html",
+        "geometry-course/atlas/triangle-angles.html",
+        "geometry-course/atlas/triangle-circles.html",
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/atlas/triangle-signs.html",
+        "geometry-course/atlas/trig-circle.html",
+        "geometry-course/atlas/trig-right.html",
+        "geometry-course/atlas/vector-add.html",
+        "geometry-course/atlas/vector-basis.html",
+        "geometry-course/atlas/vector-scale.html",
+        "geometry-course/atlas/vectors.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "cb8bc6dd6550a267a3535bae74c7ba0198c31b97",
+      "task": "docs/tasks/GEOMETRY_RIGHT_ANGLES_20261118.md",
+      "changedPaths": [
+        "geometry-course/atlas/angle-locus.html",
+        "geometry-course/atlas/angles.html",
+        "geometry-course/atlas/area-basics.html",
+        "geometry-course/atlas/area-parallelogram.html",
+        "geometry-course/atlas/area-sine.html",
+        "geometry-course/atlas/area-trapezoid.html",
+        "geometry-course/atlas/area-triangle.html",
+        "geometry-course/atlas/axis.html",
+        "geometry-course/atlas/centers.html",
+        "geometry-course/atlas/central.html",
+        "geometry-course/atlas/cevians.html",
+        "geometry-course/atlas/chord-angles.html",
+        "geometry-course/atlas/chords-tangent.html",
+        "geometry-course/atlas/circle-metric.html",
+        "geometry-course/atlas/circle-position.html",
+        "geometry-course/atlas/compass.html",
+        "geometry-course/atlas/coordinates.html",
+        "geometry-course/atlas/cosine-rule.html",
+        "geometry-course/atlas/cyclic-quad.html",
+        "geometry-course/atlas/distance.html",
+        "geometry-course/atlas/dot-product.html",
+        "geometry-course/atlas/equality.html",
+        "geometry-course/atlas/heron.html",
+        "geometry-course/atlas/homothety.html",
+        "geometry-course/atlas/inscribed.html",
+        "geometry-course/atlas/length.html",
+        "geometry-course/atlas/line-circle-equations.html",
+        "geometry-course/atlas/measure-angle.html",
+        "geometry-course/atlas/midline.html",
+        "geometry-course/atlas/movement.html",
+        "geometry-course/atlas/parallel-angles.html",
+        "geometry-course/atlas/parallelogram.html",
+        "geometry-course/atlas/parallels.html",
+        "geometry-course/atlas/perp-locus.html",
+        "geometry-course/atlas/perpendicular.html",
+        "geometry-course/atlas/polygon-similarity.html",
+        "geometry-course/atlas/polygons.html",
+        "geometry-course/atlas/projections.html",
+        "geometry-course/atlas/pythagoras.html",
+        "geometry-course/atlas/rectangle.html",
+        "geometry-course/atlas/regular-polygons.html",
+        "geometry-course/atlas/rhombus.html",
+        "geometry-course/atlas/right-triangle.html",
+        "geometry-course/atlas/segments.html",
+        "geometry-course/atlas/similarity-measure.html",
+        "geometry-course/atlas/similarity-method.html",
+        "geometry-course/atlas/similarity-signs.html",
+        "geometry-course/atlas/similarity.html",
+        "geometry-course/atlas/sine-rule.html",
+        "geometry-course/atlas/solve-triangle.html",
+        "geometry-course/atlas/symmetry-method.html",
+        "geometry-course/atlas/translation-rotation.html",
+        "geometry-course/atlas/trapezoid.html",
+        "geometry-course/atlas/triangle-angles.html",
+        "geometry-course/atlas/triangle-circles.html",
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/atlas/triangle-signs.html",
+        "geometry-course/atlas/trig-circle.html",
+        "geometry-course/atlas/trig-right.html",
+        "geometry-course/atlas/vector-add.html",
+        "geometry-course/atlas/vector-basis.html",
+        "geometry-course/atlas/vector-scale.html",
+        "geometry-course/atlas/vectors.html",
+        "stereo-course/index.html",
+        "trainers/oge-task17-quadrilaterals.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2f72268fd5cc8232e6773422f1ab47d52df6c595",
+      "sourceBaseSha": "9dca62777195981269f3d4efd5bd2a1d4102de4f",
+      "task": "docs/tasks/GEOMETRY_RIGHT_ANGLES_20261118.md",
+      "changedPaths": [
+        "geometry-course/atlas/angle-locus.html",
+        "geometry-course/atlas/angles.html",
+        "geometry-course/atlas/area-basics.html",
+        "geometry-course/atlas/area-parallelogram.html",
+        "geometry-course/atlas/area-sine.html",
+        "geometry-course/atlas/area-trapezoid.html",
+        "geometry-course/atlas/area-triangle.html",
+        "geometry-course/atlas/axis.html",
+        "geometry-course/atlas/centers.html",
+        "geometry-course/atlas/central.html",
+        "geometry-course/atlas/cevians.html",
+        "geometry-course/atlas/chord-angles.html",
+        "geometry-course/atlas/chords-tangent.html",
+        "geometry-course/atlas/circle-metric.html",
+        "geometry-course/atlas/circle-position.html",
+        "geometry-course/atlas/compass.html",
+        "geometry-course/atlas/coordinates.html",
+        "geometry-course/atlas/cosine-rule.html",
+        "geometry-course/atlas/cyclic-quad.html",
+        "geometry-course/atlas/distance.html",
+        "geometry-course/atlas/dot-product.html",
+        "geometry-course/atlas/equality.html",
+        "geometry-course/atlas/heron.html",
+        "geometry-course/atlas/homothety.html",
+        "geometry-course/atlas/inscribed.html",
+        "geometry-course/atlas/length.html",
+        "geometry-course/atlas/line-circle-equations.html",
+        "geometry-course/atlas/measure-angle.html",
+        "geometry-course/atlas/midline.html",
+        "geometry-course/atlas/movement.html",
+        "geometry-course/atlas/parallel-angles.html",
+        "geometry-course/atlas/parallelogram.html",
+        "geometry-course/atlas/parallels.html",
+        "geometry-course/atlas/perp-locus.html",
+        "geometry-course/atlas/perpendicular.html",
+        "geometry-course/atlas/polygon-similarity.html",
+        "geometry-course/atlas/polygons.html",
+        "geometry-course/atlas/projections.html",
+        "geometry-course/atlas/pythagoras.html",
+        "geometry-course/atlas/rectangle.html",
+        "geometry-course/atlas/regular-polygons.html",
+        "geometry-course/atlas/rhombus.html",
+        "geometry-course/atlas/right-triangle.html",
+        "geometry-course/atlas/segments.html",
+        "geometry-course/atlas/similarity-measure.html",
+        "geometry-course/atlas/similarity-method.html",
+        "geometry-course/atlas/similarity-signs.html",
+        "geometry-course/atlas/similarity.html",
+        "geometry-course/atlas/sine-rule.html",
+        "geometry-course/atlas/solve-triangle.html",
+        "geometry-course/atlas/symmetry-method.html",
+        "geometry-course/atlas/translation-rotation.html",
+        "geometry-course/atlas/trapezoid.html",
+        "geometry-course/atlas/triangle-angles.html",
+        "geometry-course/atlas/triangle-circles.html",
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/atlas/triangle-signs.html",
+        "geometry-course/atlas/trig-circle.html",
+        "geometry-course/atlas/trig-right.html",
+        "geometry-course/atlas/vector-add.html",
+        "geometry-course/atlas/vector-basis.html",
+        "geometry-course/atlas/vector-scale.html",
+        "geometry-course/atlas/vectors.html",
+        "stereo-course/index.html",
+        "trainers/oge-task17-quadrilaterals.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e44a97a95030b3f032a01418f473494adb3cac39",
+      "sourceBaseSha": "29ae6e0aba869ab3de0380c2a43af7a9fe86fda8",
+      "task": "docs/tasks/GEOMETRY_RIGHT_ANGLES_20261118.md",
+      "changedPaths": [
+        "geometry-course/atlas/angle-locus.html",
+        "geometry-course/atlas/angles.html",
+        "geometry-course/atlas/area-basics.html",
+        "geometry-course/atlas/area-parallelogram.html",
+        "geometry-course/atlas/area-sine.html",
+        "geometry-course/atlas/area-trapezoid.html",
+        "geometry-course/atlas/area-triangle.html",
+        "geometry-course/atlas/axis.html",
+        "geometry-course/atlas/centers.html",
+        "geometry-course/atlas/central.html",
+        "geometry-course/atlas/cevians.html",
+        "geometry-course/atlas/chord-angles.html",
+        "geometry-course/atlas/chords-tangent.html",
+        "geometry-course/atlas/circle-metric.html",
+        "geometry-course/atlas/circle-position.html",
+        "geometry-course/atlas/compass.html",
+        "geometry-course/atlas/coordinates.html",
+        "geometry-course/atlas/cosine-rule.html",
+        "geometry-course/atlas/cyclic-quad.html",
+        "geometry-course/atlas/distance.html",
+        "geometry-course/atlas/dot-product.html",
+        "geometry-course/atlas/equality.html",
+        "geometry-course/atlas/heron.html",
+        "geometry-course/atlas/homothety.html",
+        "geometry-course/atlas/inscribed.html",
+        "geometry-course/atlas/length.html",
+        "geometry-course/atlas/line-circle-equations.html",
+        "geometry-course/atlas/measure-angle.html",
+        "geometry-course/atlas/midline.html",
+        "geometry-course/atlas/movement.html",
+        "geometry-course/atlas/parallel-angles.html",
+        "geometry-course/atlas/parallelogram.html",
+        "geometry-course/atlas/parallels.html",
+        "geometry-course/atlas/perp-locus.html",
+        "geometry-course/atlas/perpendicular.html",
+        "geometry-course/atlas/polygon-similarity.html",
+        "geometry-course/atlas/polygons.html",
+        "geometry-course/atlas/projections.html",
+        "geometry-course/atlas/pythagoras.html",
+        "geometry-course/atlas/rectangle.html",
+        "geometry-course/atlas/regular-polygons.html",
+        "geometry-course/atlas/rhombus.html",
+        "geometry-course/atlas/right-triangle.html",
+        "geometry-course/atlas/segments.html",
+        "geometry-course/atlas/similarity-measure.html",
+        "geometry-course/atlas/similarity-method.html",
+        "geometry-course/atlas/similarity-signs.html",
+        "geometry-course/atlas/similarity.html",
+        "geometry-course/atlas/sine-rule.html",
+        "geometry-course/atlas/solve-triangle.html",
+        "geometry-course/atlas/symmetry-method.html",
+        "geometry-course/atlas/translation-rotation.html",
+        "geometry-course/atlas/trapezoid.html",
+        "geometry-course/atlas/triangle-angles.html",
+        "geometry-course/atlas/triangle-circles.html",
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/atlas/triangle-signs.html",
+        "geometry-course/atlas/trig-circle.html",
+        "geometry-course/atlas/trig-right.html",
+        "geometry-course/atlas/vector-add.html",
+        "geometry-course/atlas/vector-basis.html",
+        "geometry-course/atlas/vector-scale.html",
+        "geometry-course/atlas/vectors.html",
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html",
+        "trainers/oge-task17-quadrilaterals.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "sourceBaseSha": "e71ca1ed18fb9b5a26de54336922f5a7f2a9cd3d",
+      "task": "docs/tasks/PROFILE_VECTOR_OPPOSITES_20261117.md",
+      "changedPaths": [
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "665534b33e019d486913534a7668f1a8a23ef7ce",
+      "sourceBaseSha": "7fe53474bcc592c71ce55b9aef943c94297e400e",
+      "task": "docs/tasks/PROFILE_VECTOR_OPPOSITES_20261117.md",
+      "changedPaths": [
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7fe53474bcc592c71ce55b9aef943c94297e400e",
+      "sourceBaseSha": "74c44a9979b3677240fb997e05a52eed02e2e9dd",
+      "task": "docs/tasks/PROFILE_VECTOR_OPPOSITES_20261117.md",
+      "changedPaths": [
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "29ae6e0aba869ab3de0380c2a43af7a9fe86fda8",
+      "sourceBaseSha": "95ee4b197171fd84fd0fe7198e62f47ebc34a328",
+      "task": "docs/tasks/PROFILE_VECTOR_OPPOSITES_20261117.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {

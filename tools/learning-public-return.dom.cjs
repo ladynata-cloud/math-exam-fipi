@@ -25,6 +25,30 @@ test('untrusted origins and account-entry routes cannot become iframe or return 
     for(const route of ['home','route','course=oge','program-course=school7','student=synthetic-pupil','preview=synthetic-pupil'])assert.equal(api.returnRoute(route),route);
   }finally{w.close();}
 });
+test('a profile-course click preserves a shareable destination and opens the existing returnable workspace',()=>{
+  const dom=fixture('course=ege-profile'),{window:w}=dom,host=w.document.querySelector('main'),api=w.LearningPublicPractice;
+  try{
+    const publicURL='https://mathexam.space/ege-profil/start/#fipi/2027/2';
+    host.innerHTML=`<section data-profile-course><a data-profile-vector-basics href="${publicURL}">Векторы с нуля</a></section>`;
+    const link=host.querySelector('a');
+    assert.equal(link.href,publicURL);
+    const ctrl=new w.MouseEvent('click',{button:0,ctrlKey:true,bubbles:true,cancelable:true});
+    link.addEventListener('click',event=>{if(event.ctrlKey)event.preventDefault();});
+    link.dispatchEvent(ctrl);
+    assert.equal(w.location.hash,'#course=ege-profile');
+    link.click();
+    const params=new w.URLSearchParams(w.location.hash.slice(1));
+    assert.equal(params.get('public-practice'),'/ege-profil/start/#fipi/2027/2');
+    assert.equal(params.get('return'),'course=ege-profile');
+    assert.equal(link.href,publicURL);
+    const cleanup=api.mount(host,w.location.hash.slice(1));
+    assert.equal(host.querySelector('iframe').src,publicURL);
+    assert.equal(host.querySelector('[data-cabinet-return]').hash,'#course=ege-profile');
+    assert.equal(host.querySelector('[data-public-home-return]').href,'https://mathexam.space/');
+    assert.equal(host.querySelector('details').contains(host.querySelector('[data-public-home-return]')),false);
+    cleanup();
+  }finally{w.close();}
+});
 test('public frame is isolated, gets no cabinet route, and cleanup leaves no hidden shell',()=>{
   const dom=fixture('preview=synthetic-pupil'),{window:w}=dom,host=w.document.querySelector('main'),api=w.LearningPublicPractice;
   try{

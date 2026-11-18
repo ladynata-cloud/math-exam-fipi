@@ -388,3 +388,35 @@ Next user decision: после проверенного Draft PR — отдел�
 | Атанасян | [От треугольников к подобным фигурам](https://mathexam.space/geometry-course/atlas/polygon-similarity.html) | `diagonal` |
 | Атанасян | [Гомотетия: центр и коэффициент](https://mathexam.space/geometry-course/atlas/homothety.html) | `parallel` |
 | Атанасян | [Одна задача на нескольких языках](https://mathexam.space/geometry-course/atlas/similarity-method.html) | `midline` |
+
+## Композиция с завершёнными изменениями, 2026-11-18
+
+Сохранены изменения #670: 11 тематических страниц Погорелова не получают
+повторные generic-руководства. Все 147 страниц восстановлены из проверенного
+предшественника и получают только собственную интеграцию GIF; 63 актуальных
+исследования #623 подключают прежние записи с точными исходными хэшами.
+
+После композиции #667 источники всех 62 активных прежних записей отличаются:
+25 manual Atanasyan, 27 manual Pogorelov, 10 дополнительных опытов.
+Их прежние source hashes пока сохранены: требуется настоящая перезапись
+существующим recorder, а не изменение provenance. К этим 62 записям добавляется новый actual explore-angle для изменённой
+задачи #623: A перемещается вдоль того же луча, затем меняется положение B,
+а ученик формулирует наблюдение сам. План фиксирует точные 63 clip ID
+(26/27/10), 9 runtime-source hashes, сценарии и оба инструмента.
+Три старых примера получают подходящую текущую sourcePage; их действия
+не меняются, но provenance/scenario проходят настоящую новую запись.
+
+Временный capture-reviewed-clips job использует три независимых batch jobs,
+contents: read и artifact output, без commit/push. Существующий строгий gate
+не ослабляется: промежуточный head может корректно FAIL из-за устаревших GIF.
+После скачивания, проверки и импорта всех новых recordings/GIF необходимо
+удалить только временный capture job, сохранив approved strict job подготовленного capture head побайтно,
+включая две явные команды fetch final651 и preservation --base final651,
+а reviewed plan и source receipts оставить для аудита. Затем обязателен
+свежий полный strict CI на итоговом head. Захват ещё не выполнен.
+
+Original comparison SOURCE_BASE 1469ad50 сохраняется как provenance.
+Отдельный integrationBase указывает проверенный финальный predecessor;
+неизменённая preservation.check получает его явно через --base.
+74 upstream configuration changes (#623 + #670) записываются отдельно;
+они не выдаются за изменения GIF-интеграции или новое математическое одобрение.

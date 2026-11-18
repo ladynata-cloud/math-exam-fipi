@@ -22,6 +22,80 @@ const entries = manifest.trainers.filter(entry => entry.adaptation);
 const read = file => fs.readFileSync(path.join(root, file));
 const assetDir = 'assets/trainer-skill-gifs';
 const guide = '/pedagogam/kak-skachat-i-adaptirovat-trenazher/';
+const profileMapSlugs = new Set([
+  ...Object.keys(profileFirst.scenarios), ...Object.keys(profileNext.scenarios),
+  'ege-profil-vectors-t2', 'ege-profil-part-two', 'ege-profil-divisibility',
+  'ege-profil-log-inequalities', 'ege-profil-log-variable-base', 'ege-profil-log-nested'
+]);
+
+async function checkOfflineProfileMap(page, entry) {
+  if (entry.slug === 'ege-profil-estimate-example') {
+    const link = page.getByRole('link', { name: 'Профиль №19 · Оценка и достигающий её пример', exact: true });
+    assert.equal(await link.getAttribute('href'), 'https://mathexam.space/ege-profil/part-two/#lesson/numbers-extremum');
+  }
+  if (!profileMapSlugs.has(entry.slug)) return;
+  assert.equal(await page.locator('script[data-inline-source="/ege-profil/exam-map.js"]').count(), 1, entry.slug);
+  const actual = await page.evaluate(() => ({
+    year: ProfileExamMap.YEAR,
+    entries: ProfileExamMap.entries.map(item => [item.number, item.part, item.points]),
+    themes: [8, 12, 16].map(number => ProfileExamMap.get(number).id),
+    start: [6, 9, 13, 16].map(number => ProfileExamMap.fromLegacyStart(number).id),
+    partTwo: [14, 15, 16, 17, 18, 19, 20].map(number => ProfileExamMap.fromLegacyPartTwo(number).id)
+  }));
+  assert.equal(actual.year, 2027);
+  assert.deepEqual(actual.entries, Array.from({ length: 19 }, (_, index) => [index + 1, index < 12 ? 1 : 2, index < 12 ? 1 : [2, 3, 2, 2, 3, 4, 4][index - 12]]));
+  assert.equal(actual.entries.reduce((total, item) => total + item[2], 0), 32);
+  assert.deepEqual(actual.themes, ['derivative', 'extrema', 'finance']);
+  assert.deepEqual(actual.start, ['random-variables', 'calculus-legacy', 'finance', 'inequalities']);
+  assert.deepEqual(actual.partTwo, ['part-two-equations', 'part-two-stereometry', 'inequalities', 'optimization', 'part-two-planimetry', 'parameters', 'numbers']);
+}
+
+async function checkPartTwoExamRoutes(page, taskId) {
+  const readSavedWork = () => page.evaluate(async id => {
+    await ProfilePartTwoApp.store.flush();
+    return localStorage.getItem(ProfilePartTwoApp.store.key(id));
+  }, taskId);
+  const saved = await readSavedWork();
+  for (const [hash, title, number, lesson] of [
+    ['#exam/19', 'Задачи с параметром', 18, 'param-linear'],
+    ['#fipi/2027/18', 'Задачи с параметром', 18, 'param-linear'],
+    ['#exam/20', 'Числа и их свойства', 19, 'numbers-remainders'],
+    ['#fipi/2027/19', 'Числа и их свойства', 19, 'numbers-remainders'],
+    ['#exam/17', 'Моделирование и оптимизация', null, 'model-fence'],
+    ['#topic/optimization', 'Моделирование и оптимизация', null, 'model-fence']
+  ]) {
+    const url = new URL(page.url());
+    url.hash = hash;
+    await page.goto(url.href);
+    await page.reload();
+    await page.locator('#main h1').waitFor();
+    assert.equal(new URL(page.url()).protocol, 'file:');
+    assert.equal(await page.locator('#main h1').innerText(), title, hash);
+    assert.match(await page.locator('#main > .eyebrow').innerText(), number ? new RegExp('№\\s*' + number + '(?:\\D|$)') : /ДОПОЛНИТЕЛЬНАЯ ТЕМА/, hash);
+    assert.equal(await page.locator('#main a[href$="#lesson/' + lesson + '"]').count(), 1, hash);
+  }
+  const finance = new URL(page.url());
+  finance.hash = '#fipi/2027/16';
+  await page.goto(finance.href);
+  await page.reload();
+  const link = page.getByRole('link', { name: 'Открыть финансовую подготовку', exact: true });
+  assert.equal(await link.getAttribute('href'), 'https://mathexam.space/ege-profil/start/#fipi/2027/16');
+  assert.match(await page.locator('#main').innerText(), /Полное решение можно сверить с образцом и показать преподавателю/);
+  await page.locator('a[href="#task/h12-equal-annual-payments-4/independent"]').click();
+  await page.locator('#proof-draft').fill('Нулевой остаток после второго платежа.');
+  await page.locator('#final-0').fill('1254');
+  await submit(page, '#final-form');
+  await page.locator('#completion').waitFor();
+  assert.match(await page.locator('.proof-status').innerText(), /требует проверки/);
+  await page.reload();
+  await page.locator('#proof-draft').waitFor();
+  assert.equal(await page.locator('#proof-draft').inputValue(), 'Нулевой остаток после второго платежа.');
+  await page.getByRole('link',{name:'Мой прогресс',exact:true}).click();
+  const financeProgress=page.getByRole('region',{name:'№16 · Письменные финансовые задачи'});
+  assert.match(await financeProgress.innerText(), /Самостоятельные ответы: 1/);
+  assert.match(await page.locator('#main > .stats').innerText(), /252 условий/);
+  assert.deepEqual(await readSavedWork(), saved, 'legacy and official routes preserve completed work, attempts and proof under the existing task key');
+}
 
 async function submit(page, selector) {
   await page.locator(`${selector} button[type=submit]`).click();
@@ -186,11 +260,39 @@ const scenarios = {
     await input.fill(expected);
     await submit(page, '#answerForm');
     assert(await page.locator('#feedback').evaluate(el => el.classList.contains('good')));
+    assert(await input.isDisabled(), 'the accepted answer is locked in the offline edition');
+    const another = page.getByRole('button', { name: 'Решить похожую без подсказки' });
+    assert(await another.evaluate(button => button === document.activeElement));
+    const statement = page.locator('.task-first-problem .task');
+    const firstStatement = await statement.innerText();
+    await another.click();
+    const newStatement = await statement.innerText();
+    assert.notEqual(newStatement, firstStatement);
+    assert.equal(await input.inputValue(), '');
+    assert.equal(await page.locator('#feedback').innerText(), '');
+    const [needed, perPack] = newStatement.match(/\d+/g).map(Number);
+    await input.fill(String(Math.ceil(needed / perPack)));
+    await submit(page, '#answerForm');
     const next = page.locator('[data-journey-next]');
+    assert(await next.evaluate(link => link === document.activeElement));
     assert.match(await next.getAttribute('href'), /^file:.*#lesson=/);
     const previous = page.url();
     await next.click();
     await page.waitForURL(url => url.href !== previous && url.protocol === 'file:' && url.hash.startsWith('#lesson='));
+    const key = await page.evaluate(() => PathCourse.KEY);
+    const recovery = new URL(page.url());
+    recovery.search = '?practice=recovery';
+    recovery.hash = 'practice=round';
+    await page.goto(recovery.href);
+    const saved = await page.evaluate(key => localStorage.getItem(key), key);
+    const recoveryNumbers = (await statement.innerText()).match(/\d+/g).map(Number);
+    await input.fill(String(Math.ceil(recoveryNumbers[0] / recoveryNumbers[1])));
+    await submit(page, '#answerForm');
+    await next.click();
+    await page.waitForURL(url => url.protocol === 'file:' && url.hash === '#lesson=practice-change');
+    assert.equal(new URL(page.url()).searchParams.get('practice'), 'recovery');
+    assert.equal(await page.evaluate(() => PathCourse.KEY), key + '.separate');
+    assert.equal(await page.evaluate(key => localStorage.getItem(key), key), saved);
   },
   async 'ege-profil-vectors-t2'(page) {
     assert(!(await page.locator('#connectBtn').isVisible()));
@@ -237,6 +339,26 @@ const scenarios = {
     await page.reload();
     assert.equal(await page.locator('#proof-draft').inputValue(), 'Проверяю перпендикулярность по условию.');
     await checkPartTwoNumericDomain(page);
+    await checkPartTwoExamRoutes(page, task.id);
+
+    const parameter = partTwoLessons.find(lesson => lesson.id === 'param-hole').tasks[3];
+    const argument = '\nОграничиваю область допустимых значений.';
+    await page.evaluate(id => { location.hash = `#task/${id}/independent`; }, parameter.id);
+    await page.locator('#proof-review').waitFor({ state: 'attached' });
+    await page.locator('#proof-draft').fill(argument);
+    for (let i = 0; i < parameter.final.length; i++) await page.locator(`#final-${i}`).fill('987654321');
+    await submit(page, '#final-form');
+    await page.locator('#feedback.error').waitFor();
+    await page.locator('#proof-jump').click();
+    const marks = page.locator('#proof-review').getByRole('checkbox');
+    assert.equal(await marks.count(), 4);
+    await marks.first().check();
+    await page.locator('#proof-review-count').getByText('Вы отметили 1 из 4 пунктов.').waitFor();
+    await page.reload();
+    assert.equal(await page.locator('#proof-draft').inputValue(), argument);
+    await page.locator('#proof-jump').click();
+    await marks.first().waitFor();
+    assert(await marks.first().isChecked());
   },
   'makarychev8-algebra': page => textbook(page, 'MakarychevApp', 'MakarychevCourse', 'p16'),
   'peterson6-math': page => textbook(page, 'PetersonApp', 'PetersonCourse', 'p12')
@@ -328,6 +450,14 @@ async function run() {
   assert.equal(manifest.trainers.filter(entry => !entry.adaptation).length, 17);
   assert.equal(new Set(manifest.trainers.map(entry => entry.slug)).size, manifest.trainers.length);
   assert.deepEqual(new Set(entries.map(entry => entry.slug)), new Set(Object.keys(scenarios)));
+  assert.equal(profileMapSlugs.size, 16);
+  for (const entry of entries.filter(entry => profileMapSlugs.has(entry.slug))) {
+    assert.equal(entry.inlineAssets.filter(asset => asset === '/ege-profil/exam-map.js').length, 1, entry.slug);
+  }
+  const estimateExample = entries.find(entry => entry.slug === 'ege-profil-estimate-example');
+  assert(!estimateExample.inlineAssets.includes('/ege-profil/exam-map.js'));
+  assert.match(read(estimateExample.downloadHtml).toString('utf8'),
+    /<a href="\/ege-profil\/part-two\/#fipi\/2027\/19">Задание №19 профильного ЕГЭ<\/a>/);
   const filter = process.argv[2];
   const groups = {
     '--oge-next': ogeNext,
@@ -364,6 +494,7 @@ async function run() {
         await page.goto(url.href);
         assert(await page.locator('h1').first().isVisible(), entry.slug);
         assert.equal(await page.locator('[data-trainer-download]').count(), 0);
+        await checkOfflineProfileMap(page, entry);
         if (width === 320 || entry.slug === 'ege-profil-part-two' || Object.values(groups).some(group => group[entry.slug])) {
           await scenarios[entry.slug](page, loadImage);
         }

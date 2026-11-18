@@ -1,24 +1,25 @@
 {
   "version": 1,
   "sourceBase": "1469ad50a8659f66c8613164009e7387a3a68f2b",
+  "integrationBase": "64ce01049377b4289f46979c52f2c50daf84b92f",
   "sources": {
     "99b3bfb9c231d5fd3b5cdda2c543231171a57618:geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
     "99b3bfb9c231d5fd3b5cdda2c543231171a57618:geometry-course/assets/investigations.js": "2ad27874b55aa5cdb0b468bbbcddde891be9a1b302e71f398d8cb6dbf856e61b",
     "assets/geometry-experiment-gifs/atanasyan-investigations-99b3bfb9.json": "f90606523c2f47d372e2a5538832293a85790b17e7219022e3573a939a07c0ee",
     "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
     "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
-    "geometry-course/assets/lab.js": "a77384d07840c0a2ee098f630de6c0596ecb17f8df593e90530faa277e99039e",
-    "geometry-course/data/course.json": "55282a92b933f6d8f5788110812915ee883cdb133dfe73a1267584921544e6e6",
+    "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347",
+    "geometry-course/data/course.json": "10c87960ee38a80fa8fc3e03e0f8d8ab3b7d4ffdd4c88bb20896109fbd68aa5a",
     "geometry-pogorelov/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
     "geometry-pogorelov/assets/extra-models.js": "ad5230388f7b8690ca6c5967b21f55263de78f8369313d2bad10c567c12ef2b2",
-    "geometry-pogorelov/assets/geometry.js": "4b2cb38c8e3f03a1ea6ed8f704a6b9496e0f3b7e0c69271e8e747f5f4b7c8c6b",
-    "geometry-pogorelov/assets/lab.js": "94810c4726167599ed7cc74adf71716a5807fb9abbec5db13740d0458b9d3d03",
-    "geometry-pogorelov/data/course.json": "4f51e3a13befbb0103b7010fb06f02722dbd63ccfb0db3ffe35dce49af29d7cd"
+    "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+    "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979",
+    "geometry-pogorelov/data/course.json": "20bbd0128f98c7d18918a59a7d8d49541882702585008872c1290be671925a4f"
   },
   "coverage": {
     "pogorelov": 84,
     "atanasyan": 63,
-    "manualClips": 52,
+    "manualClips": 53,
     "experimentClips": 10,
     "investigationClips": 63
   },
@@ -26,7 +27,7 @@
     "primarySurface": "manual",
     "pendingAtanasyanPR": 623,
     "pendingHead": "99b3bfb9c231d5fd3b5cdda2c543231171a57618",
-    "note": "The proposed GeoInvestigations runtime is not adopted here. Pinned topic recordings are separate assets for a checked integration; manual guides belong with the retained construction board."
+    "note": "Pinned topic recordings are active only with their exact reviewed sources. Manual guides belong with the retained construction board; existing Pogorelov topic guides keep ownership of their scenes."
   },
   "pages": {
     "geometry-course/atlas/angle-locus.html": {
@@ -49,9 +50,9 @@
       "course": "geometry-course",
       "title": "Читаем угол и выбираем его вершину",
       "figure": "angle",
-      "goal": "bisector",
+      "goal": "explore",
       "manual": [
-        "atanasyan-bisector-angle"
+        "atanasyan-explore-angle"
       ],
       "experiments": [],
       "investigations": [
@@ -1068,16 +1069,12 @@
       "unitId": "pogorelov-base-7-16",
       "course": "geometry-pogorelov",
       "title": "Перпендикулярные прямые",
-      "figure": "angle",
+      "figure": "segment",
       "goal": "perpendicular",
-      "manual": [
-        "pogorelov-perpendicular-angle"
-      ],
-      "experiments": [
-        "experiment-angles"
-      ],
+      "manual": [],
+      "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-17.html": {
       "unitId": "pogorelov-base-7-17",
@@ -1125,13 +1122,11 @@
       "course": "geometry-pogorelov",
       "title": "Какие данные удерживают треугольник",
       "figure": "triangle",
-      "goal": "median",
-      "manual": [
-        "pogorelov-median-triangle"
-      ],
+      "goal": "explore",
+      "manual": [],
       "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-23.html": {
       "unitId": "pogorelov-base-7-23",
@@ -1296,13 +1291,11 @@
       "course": "geometry-pogorelov",
       "title": "Окружность, описанная около треугольника",
       "figure": "triangle",
-      "goal": "bisector",
-      "manual": [
-        "pogorelov-bisector-triangle"
-      ],
+      "goal": "explore",
+      "manual": [],
       "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-40.html": {
       "unitId": "pogorelov-base-7-40",
@@ -1537,28 +1530,22 @@
       "course": "geometry-pogorelov",
       "title": "Замечательные точки в треугольнике",
       "figure": "triangle",
-      "goal": "median",
-      "manual": [
-        "pogorelov-median-triangle"
-      ],
+      "goal": "explore",
+      "manual": [],
       "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-62.html": {
       "unitId": "pogorelov-base-8-62",
       "course": "geometry-pogorelov",
       "title": "Косинус угла",
       "figure": "right",
-      "goal": "altitude",
-      "manual": [
-        "pogorelov-altitude-right"
-      ],
-      "experiments": [
-        "experiment-trig"
-      ],
+      "goal": "explore",
+      "manual": [],
+      "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-63.html": {
       "unitId": "pogorelov-base-8-63",
@@ -1608,15 +1595,11 @@
       "course": "geometry-pogorelov",
       "title": "Синус и косинус: сначала выбери угол",
       "figure": "right",
-      "goal": "altitude",
-      "manual": [
-        "pogorelov-altitude-right"
-      ],
-      "experiments": [
-        "experiment-trig"
-      ],
+      "goal": "explore",
+      "manual": [],
+      "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-71.html": {
       "unitId": "pogorelov-base-8-71",
@@ -1680,12 +1663,10 @@
       "title": "Пересечение прямой с окружностью",
       "figure": "circle",
       "goal": "explore",
-      "manual": [
-        "pogorelov-explore-circle"
-      ],
+      "manual": [],
       "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-81.html": {
       "unitId": "pogorelov-base-8-81",
@@ -1846,13 +1827,11 @@
       "course": "geometry-pogorelov",
       "title": "Скалярное произведение видит угол",
       "figure": "triangle",
-      "goal": "parallel",
-      "manual": [
-        "pogorelov-parallel-triangle"
-      ],
+      "goal": "explore",
+      "manual": [],
       "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-100.html": {
       "unitId": "pogorelov-base-9-100",
@@ -1953,14 +1932,10 @@
       "title": "Соотношение между углами треугольника и противолежащими сторонами",
       "figure": "triangle",
       "goal": "explore",
-      "manual": [
-        "pogorelov-explore-triangle"
-      ],
-      "experiments": [
-        "experiment-triangle-exists"
-      ],
+      "manual": [],
+      "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-113.html": {
       "unitId": "pogorelov-base-9-113",
@@ -2090,13 +2065,11 @@
       "course": "geometry-pogorelov",
       "title": "Равновеликие фигуры",
       "figure": "triangle",
-      "goal": "altitude",
-      "manual": [
-        "pogorelov-altitude-triangle"
-      ],
+      "goal": "explore",
+      "manual": [],
       "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     },
     "geometry-pogorelov/atlas/pogorelov-base-9-128.html": {
       "unitId": "pogorelov-base-9-128",
@@ -2145,12 +2118,10 @@
       "title": "Площадь круга",
       "figure": "circle",
       "goal": "explore",
-      "manual": [
-        "pogorelov-explore-circle"
-      ],
+      "manual": [],
       "experiments": [],
       "investigations": [],
-      "primarySurface": "manual"
+      "primarySurface": "existing-topic-guide"
     }
   },
   "clips": {
@@ -2495,7 +2466,7 @@
       "surface": "manual",
       "title": "Как построить биссектрису",
       "sourceCourse": "geometry-course",
-      "sourcePage": "/geometry-course/atlas/angles.html",
+      "sourcePage": "/geometry-course/atlas/measure-angle.html",
       "figure": "angle",
       "goal": "bisector",
       "experiment": null,
@@ -2953,6 +2924,75 @@
         "atanasyan-diagonal-trapezoid-05.png"
       ],
       "poster": "atanasyan-diagonal-trapezoid-01.png"
+    },
+    "atanasyan-explore-angle": {
+      "id": "atanasyan-explore-angle",
+      "surface": "manual",
+      "title": "Как изменять этот чертёж",
+      "sourceCourse": "geometry-course",
+      "sourcePage": "/geometry-course/atlas/angles.html",
+      "figure": "angle",
+      "goal": "explore",
+      "experiment": null,
+      "setup": [],
+      "steps": [
+        {
+          "caption": "Нажми «Двигать».",
+          "actions": [
+            {
+              "type": "tool",
+              "tool": "move"
+            }
+          ]
+        },
+        {
+          "caption": "Потяни A ближе к C по тому же лучу. Сравни показание угла.",
+          "actions": [
+            {
+              "type": "drag",
+              "id": "A",
+              "to": [
+                430,
+                290
+              ]
+            }
+          ]
+        },
+        {
+          "caption": "Теперь передвинь B. Сравни новое положение луча.",
+          "actions": [
+            {
+              "type": "drag",
+              "id": "B",
+              "to": [
+                370,
+                130
+              ]
+            }
+          ]
+        },
+        {
+          "caption": "Запиши, что ты менял и что заметил.",
+          "actions": []
+        },
+        {
+          "caption": "Нажми «Что записать в наблюдение?».",
+          "actions": [
+            {
+              "type": "goal"
+            }
+          ]
+        }
+      ],
+      "gif": "atanasyan-explore-angle.gif",
+      "frames": [
+        "atanasyan-explore-angle-01.png",
+        "atanasyan-explore-angle-02.png",
+        "atanasyan-explore-angle-03.png",
+        "atanasyan-explore-angle-04.png",
+        "atanasyan-explore-angle-05.png"
+      ],
+      "poster": "atanasyan-explore-angle-01.png"
     },
     "atanasyan-explore-circle": {
       "id": "atanasyan-explore-circle",
@@ -10200,7 +10240,7 @@
       "surface": "manual",
       "title": "Как построить высоту",
       "sourceCourse": "geometry-pogorelov",
-      "sourcePage": "/geometry-pogorelov/atlas/pogorelov-base-8-62.html",
+      "sourcePage": "/geometry-pogorelov/atlas/pogorelov-base-8-63.html",
       "figure": "right",
       "goal": "altitude",
       "experiment": null,
@@ -10536,7 +10576,7 @@
       "surface": "manual",
       "title": "Как построить биссектрису",
       "sourceCourse": "geometry-pogorelov",
-      "sourcePage": "/geometry-pogorelov/atlas/pogorelov-base-7-39.html",
+      "sourcePage": "/geometry-pogorelov/atlas/pogorelov-base-9-129.html",
       "figure": "triangle",
       "goal": "bisector",
       "experiment": null,

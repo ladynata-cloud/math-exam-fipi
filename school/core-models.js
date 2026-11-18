@@ -35,6 +35,19 @@ function graph(fn,p={}){
   text(X(Math.max(xmin,Math.min(xmax,0)))+14,top-11,'y');
 }
 function config(family){
+ const controls={
+  permutations:[2,4,3,'Сколько разных книг поставить в ряд'],
+  combinations:[2,5,3,'Сколько учеников в группе'],
+  independence:[1,6,3,'Верхняя граница на первом кубике'],
+  binomial:[0,3,1,'Сколько орлов должно выпасть'],
+  weighted:[1,6,2,'Число учеников во второй группе'],
+  chart:[0,70,0,'Начало вертикальной шкалы']
+ };
+ if(controls[family]){
+  const [min,max,initial,label]=controls[family];
+  return {min,max,initial,label,step:family==='chart'?10:1};
+ }
+
  if(['parabola','derivative','absolute','interval','sign','hole','inverse'].includes(family))return {min:-4,max:4,step:1,initial:1,label:family==='parabola'?'Горизонтальный сдвиг h':family==='derivative'?'Точка касания x':family==='absolute'?'Координата точки':family==='interval'||family==='sign'?'Проверяемое число x':'Значение x'};
  if(family==='circle')return {min:0,max:360,step:30,initial:60,label:'Угол, градусы'};
  if(family==='log')return {min:1,max:4,step:1,initial:2,label:'Аргумент x = 2 в выбранной степени'};
@@ -79,6 +92,59 @@ function investigate(id,family,p,M){let svg='',caption='',question='',target;
   svg=graph(x=>x*x,{ymax:16,point:[p,p*p],extra:(X,Y)=>line(X(Math.max(-5,p-1)),Y(p*p+2*p*(Math.max(-5,p-1)-p)),X(Math.min(5,p+1)),Y(p*p+2*p*(Math.min(5,p+1)-p)),'#c66b34')});caption=`Для y = x² наклон касательной в x = ${p} равен 2x. Высота точки и наклон — разные величины.`;question='Каково значение производной в отмеченной точке?';target=2*p;
  }else if(family==='integral'){
   svg=graph(t=>2*t+1,{xmin:0,xmax:6,ymin:0,ymax:14,ystep:2,extra:(X,Y)=>`<polygon points="${X(0)},${Y(0)} ${X(0)},${Y(1)} ${X(p)},${Y(2*p+1)} ${X(p)},${Y(0)}" fill="#d99a64" opacity=".3"/>`});caption='Скорость v = 2t + 1 положительна. Путь от 0 до выбранного времени равен площади закрашенной трапеции.';question='Каков пройденный путь?';target=p*p+p;
+ }else if(family==='permutations'){
+  const books=['А','Б','В','Г'].slice(0,p);
+  for(let i=0;i<p;i++)svg+=text(90+i*110,80,books[i])+text(90+i*110,155,p-i);
+  svg+=text(280,210,'Число свободных книг перед каждым выбором');
+  caption='Все книги различны. После каждого выбора доступных книг становится на одну меньше. Поменяй первые две книги местами мысленно: получится другой порядок.';
+  question='Сколько разных порядков можно получить, поставив все книги?';
+  target=books.reduce((count,_,index)=>count*(p-index),1);
+ }else if(family==='combinations'){
+  const names=['Аня','Боря','Вера','Глеб','Даша'].slice(0,p);
+  names.forEach((name,i)=>{
+   svg+=text(110+70*i,55,name)+text(56,84+36*i,name);
+   names.forEach((_,j)=>{
+    const same=i===j,duplicate=j<i;
+    svg+=text(110+70*j,84+36*i,same?'×':duplicate?'↔':'●');
+   });
+  });
+  caption='Строка и столбец обозначают двух учеников. На диагонали один человек выбран дважды. Под диагональю те же пары записаны в обратном порядке.';
+  question='Сколько разных пар можно выбрать, если роли одинаковые?';target=p*(p-1)/2;
+ }else if(family==='independence'){
+  for(let first=1;first<=6;first++){
+   svg+=text(110+52*first,34,first)+text(113,44+33*first,first);
+   for(let second=1;second<=6;second++){
+    const good=first<=p&&second%2===0;
+    svg+='<rect x="'+(92+52*first)+'" y="'+(27+33*second)+'" width="37" height="25" fill="'+(good?'#8ecfbc':'#e4ece9')+'"/>';
+    if(good)svg+=text(110+52*first,45+33*second,'✓');
+   }
+  }
+  caption='Бросаем два честных кубика независимо. Вверху указан результат первого кубика, слева — второго. Отмечены клетки, где на первом выпало не больше '+p+', а на втором чётное число.';
+  question='Какова вероятность, что оба условия выполнятся?';target=M.q(3*p,36);
+ }else if(family==='binomial'){
+  const outcomes=['ООО','ООР','ОРО','ОРР','РОО','РОР','РРО','РРР'];
+  const good=outcomes.filter(outcome=>[...outcome].filter(letter=>letter==='О').length===p);
+  outcomes.forEach((outcome,i)=>{
+   const x=100+(i%4)*115,y=95+Math.floor(i/4)*75;
+   svg+='<rect x="'+(x-38)+'" y="'+(y-31)+'" width="76" height="45" rx="5" fill="'+(good.includes(outcome)?'#8ecfbc':'#e4ece9')+'"/>'+text(x,y,outcome);
+  });
+  caption='Три независимых броска честной монеты дают восемь равновозможных последовательностей. О означает орла, Р — решку. Посчитай записи с выбранным числом орлов.';
+  question='Какова вероятность, что орлов выпадет ровно '+p+'?';target=M.q(good.length,8);
+ }else if(family==='weighted'){
+  for(let i=0;i<2;i++)svg+=dot(100+i*60,86);
+  for(let i=0;i<p;i++)svg+=dot(100+i*60,169,false,'#387b70');
+  svg+=text(267,56,'Первая группа: средний результат 4 балла')+text(267,140,'Вторая группа: средний результат 10 баллов');
+  caption='Каждая точка обозначает одного ученика. Восстанови сумму баллов каждой группы и раздели общий результат на число всех учеников.';
+  question='Какой средний балл у двух групп вместе?';target=M.q(8+10*p,2+p);
+ }else if(family==='chart'){
+  const Y=value=>215-(value-p)*1.6;
+  for(const [i,value] of [80,100].entries()){
+   const x=155+i*150;
+   svg+='<rect x="'+x+'" y="'+Y(value)+'" width="66" height="'+(215-Y(value))+'" fill="#8ecfbc"/>'+text(x+33,Y(value)-10,value)+text(x+33,245,i?'Стало':'Было');
+  }
+  svg+=line(100,215,440,215)+text(72,219,p);
+  caption='Начало шкалы меняет видимую высоту столбиков. Сами значения остаются прежними. Для относительного прироста сравни прибавку с исходным значением.';
+  question='На сколько процентов выросло значение?';target=25;
  }else if(family==='tree'){
   for(let i=0;i<p;i++){const xx=45+i*85;svg+=line(280,35,xx+20,115,'#829691',1)+dot(xx+20,115)+line(xx+20,115,xx,195,'#829691',1)+line(xx+20,115,xx+40,195,'#829691',1)+dot(xx,195)+dot(xx+40,195);}caption=`На первом шаге ${p} вариантов, на втором у каждого ровно 2 продолжения. Каждый конечный узел — отдельная пара.`;question='Сколько конечных вариантов?';target=p*2;
  }else if(family==='frequency'){
