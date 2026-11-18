@@ -1,7 +1,12 @@
 (function(root){'use strict';
 const F=n=>Number.isInteger(n)?String(n):String(+n.toFixed(6)).replace('.',','),S=(q,a,why)=>({q,a,why});
+const russianCounts=new Intl.PluralRules('ru');
+function counted(n,one,few,many){
+ const form=russianCounts.select(n);
+ return n+' '+(form==='one'?one:form==='few'?few:many);
+}
 const meta=[
-['round',1,'Покупка целых упаковок','Раздели нужное количество на вместимость. Если последняя упаковка заполнена не целиком, её всё равно нужно купить.','rounding'],
+['round',1,'Покупка целых упаковок','Раздели нужное число тетрадей на число тетрадей в упаковке. Если есть остаток, к целому частному прибавь одну упаковку.','rounding'],
 ['units',2,'Величины в реальном мире','Сначала назови величину: длина, площадь, объём или масса. У единиц площади и объёма другой коэффициент перевода, чем у длины.','units'],
 ['data',3,'Читать таблицу и диаграмму','Определи, что показывает одна отметка шкалы. Сравнивай одинаковые величины и считай только указанный промежуток.','add'],
 ['formulas',4,'Подстановка в формулу','Сначала приведи данные к единицам формулы. Возведи в степень всё указанное выражение, затем выполни умножение и деление.','order'],
@@ -30,9 +35,36 @@ const meta=[
 ['mixtures',20,'Растворы и сохранение вещества','Масса вещества равна массе раствора, умноженной на долю вещества. При добавлении воды масса вещества не меняется, а общая масса растёт.','percent'],
 ['reasoning',21,'Кольцо с неизвестной длиной','Между точками кольца две дуги. Данное кратчайшее расстояние может идти в любую сторону. Сначала восстанови взаимное положение точек; длину всего кольца нельзя назначать произвольно.','logic']
 ].map(([id,pos,title,idea,gap])=>({id,pos,title,idea,gap}));
+function notebookTask(seed,total,pack){
+ const quotient=Math.floor(total/pack),remainder=total%pack,answer=Math.ceil(total/pack);
+ const notebooks=n=>counted(n,'тетрадь','тетради','тетрадей');
+ const packs=n=>counted(n,'упаковку','упаковки','упаковок');
+ const supplied=quotient*pack;
+ return {
+  id:'round',seed,pos:1,model:{kind:'round',k:quotient},answer,params:{total,pack},
+  // This pair of givens was stored verbatim as a progress key before declension was fixed.
+  progressKey:`Для класса нужно ${total} тетрадей. В упаковке ${pack} тетрадей. Сколько упаковок нужно купить?`,
+  q:`Для класса нужно купить ${notebooks(total)}. В упаковке ${notebooks(pack)}. Сколько упаковок нужно купить?`,
+  steps:[
+   S(`Раздели ${total} на ${pack}. Какое целое частное получилось?`,quotient,`Найди наибольшее целое число, при умножении которого на ${pack} результат не превышает ${total}.`),
+   S(`Если купить ${packs(quotient)}, получится ${notebooks(supplied)}. Сколько тетрадей не хватает до ${total}?`,remainder,`Вычти ${supplied} из ${total}. Если числа равны, тетрадей уже достаточно.`),
+   S('Сколько упаковок нужно купить, чтобы тетрадей хватило для класса?',answer,
+    remainder
+     ? `Если купить ${packs(quotient)}, получится ${notebooks(supplied)}. Этого мало. Ещё одна упаковка даст в сумме ${notebooks(answer*pack)}. Теперь тетрадей хватит.`
+     : `${quotient} · ${pack} = ${total}. Тетрадей ровно столько, сколько нужно. Остаток равен нулю, поэтому добавлять упаковку не нужно.`)
+  ]
+ };
+}
+function roundPractice(seed=1){
+ const sizes=[6,8,9,10,12],pack=sizes[seed%sizes.length];
+ const answer=3+seed%7;
+ const remainder=[0,1,Math.floor(pack/2),pack-1][seed%4];
+ const quotient=remainder===0?answer:answer-1;
+ return notebookTask(seed,quotient*pack+remainder,pack);
+}
 function task(id,seed=1){let k=2+(seed%7),j=seed%3,t={id,seed,pos:meta.find(x=>x.id===id)?.pos,steps:[],model:{kind:id,k},answer:0};const set=(q,a,steps,model)=>Object.assign(t,{q,answer:a,steps,model:model||t.model});
 switch(id){
-case 'round':{let n=k*9+4,c=9;set(`Для класса нужно ${n} тетрадей. В упаковке ${c} тетрадей. Сколько упаковок нужно купить?`,k+1,[S(`Раздели ${n} на ${c} с остатком. Какое целое частное получилось?`,k,`Найди наибольшее целое число, при умножении которого на ${c} результат не превышает ${n}.`),S(`Если купить ${k} упаковок, получится ${k*c} тетрадей. Сколько тетрадей не хватает до ${n}?`,4,`Вычти ${k*c} из ${n}. Даже ради недостающих тетрадей придётся купить целую упаковку.`),S(`Сколько упаковок нужно купить, чтобы хватило ${n} тетрадей?`,k+1,`${k} упаковок — это ${k*c} тетрадей: мало. Ещё одна упаковка даст ${(k+1)*c} тетрадей: этого хватит.`)]);break;}
+case 'round':return notebookTask(seed,k*9+4,9);
 case 'units':set(`${k} л воды перелили в сосуд. Какой объём в см³ занимает вода?`,k*1000,[S('Сколько сантиметров в 1 дм?',10,'Литр — кубический дециметр.'),S('Сколько см³ в 1 дм³?',1000,'10·10·10, потому что измерений три.'),S('Каков весь объём?',k*1000,'Умножь количество литров на 1000.')]);break;
 case 'data':{let vs=[k,k+2,2*k,k+1];set(`Количество посетителей по дням: Пн ${vs[0]}, Вт ${vs[1]}, Ср ${vs[2]}, Чт ${vs[3]}. Сколько посетителей было во вторник и среду вместе?`,3*k+2,[S('Посетителей во вторник?',k+2,'Считай значение нужного столбца.'),S('Во вторник и среду вместе?',3*k+2,'Сложи значения, указанные в вопросе.')],{kind:'bars',values:vs});break;}
 case 'formulas':{let a=k,tim=3;set(`Путь при разгоне из покоя: s=at²/2. a=${a} м/с², t=${tim} с. Найдите s в метрах.`,a*4.5,[S('Чему равно t²?',9,'В квадрат возводится время.'),S('Чему равно at²?',a*9,'Теперь умножаем на ускорение.'),S('Чему равно s?',a*4.5,'Делим всё произведение на 2.')]);break;}
@@ -83,5 +115,5 @@ function answerText(item){
  }
  return String(value).replace('.',',');
 }
-const api={meta,task,parse,correct,digits22,F,answerText};root.PathData=api;if(typeof module!=='undefined')module.exports=api;
+const api={meta,task,parse,correct,digits22,F,answerText,counted,roundPractice};root.PathData=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);

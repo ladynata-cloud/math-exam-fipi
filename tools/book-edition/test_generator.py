@@ -159,6 +159,8 @@ class GeneratorTests(unittest.TestCase):
                      '<script defer src="oge-video-graphs.js"></script>\n'
                      '<script defer src="oge-video-geometry.js"></script>\n'
                      f'<script defer src="oge-video-models.js" data-oge-video-task="{number}"></script>\n')
+            if number == 15:
+                block += '<script defer src="oge-task15-model.js"></script>\n'
             raw = (ROOT / entry).read_bytes()
             self.assertEqual(raw.count(block.encode()), 1)
             adaptation = (b'<link rel="stylesheet" href="/assets/download-panel.css">\n'

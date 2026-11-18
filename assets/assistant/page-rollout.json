@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+  "baseSha": "546df450c8e6465e5186f31e71332567269dc93c",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "3c50e113978708c28f89e1ed2f2cdde13b503ed8c2379bc395d35191471592ef",
-      "afterSha256": "4ad52df37a4dd33fea13205a7c1755b47407afda7b803c0dcd56583392ff659f",
+      "beforeSha256": "ae9fde7f43755b99f97f6c3ee0abec0861065a3f73e4b1431a94e1ceaf4866af",
+      "afterSha256": "543d0dc74340393f074f30e6d071d8fba8f1b398e7a4ae97b54863d4f3928874",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "fac79a8baa6c54844e8f21949783f252efc0e020af229608338b8fd3a15f493f",
-      "afterSha256": "3c30c539b0f25a0506516a0f3ebebfa6971365c31a5b56e2f8126bc272aec2e7",
+      "beforeSha256": "4f1763bf539f01aea1f3a9ebe8949bf59501a04d42a7c5ebc1cf63b0c190fffd",
+      "afterSha256": "aef95ce9b4fc6c2a56098e03790b72912504e4a84dc77af3879cff30e1e5ee0a",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -2968,8 +2968,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
-      "beforeSha256": "ee9e122d03c3335f3105f73683987dbaee58e8c7b24acb745fa90a5e709ab035",
-      "afterSha256": "1cae3382357173dc670624d24cfa3429136479693c80ace776ea669c59cedbe5",
+      "beforeSha256": "c2c9bb9adfea61847635f30f19a311fff2247dcad83f85581c2bf3ed2fd09e13",
+      "afterSha256": "489e1e06c9f63ad8c8af42e6a790b0377c282605629e0693110a3cdaec4df9e7",
       "placement": "before-head-close"
     },
     "trainers/oge-task16-circle.html": {
@@ -5496,6 +5496,17 @@
         "ege-profil/trainers/trigonometry.html",
         "ege-profil/trainers/vectors-yashchenko-t2.html",
         "trainers/oge-informatics-1-10-tutor.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "023377856f2d3707207d4f6117a77af17a07d054",
+      "sourceBaseSha": "546df450c8e6465e5186f31e71332567269dc93c",
+      "task": "docs/tasks/STUDENT_NEXT_STEP_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html",
+        "trainers/oge-task15-triangles.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

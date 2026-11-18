@@ -18,6 +18,7 @@
     tg: { top: 'BC', bottom: 'AC' }
   };
   const medianTopics = new Set(['areaBH', 'medianRt', 'regH']);
+  investigation.querySelector('summary').textContent = 'Исследовать медиану и высоту на другом треугольнике';
   const element = (tag, text) => {
     const node = document.createElement(tag);
     if (text) node.textContent = text;
@@ -52,6 +53,7 @@
     const {top, bottom} = ratios[fn];
     const panel = element('details');
     panel.className = 'pnote';
+    panel.style.fontSize = '1rem';
     panel.dataset.triangleModel = '';
     panel.append(element('summary', 'Разобраться на модели'));
     const prompt = element('p', top === 'BC' ? 'Какой катет лежит напротив угла A?' : 'Какой катет прилежит к углу A?');
