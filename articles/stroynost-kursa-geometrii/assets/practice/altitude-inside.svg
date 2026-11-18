@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="180" viewBox="0 0 340 180" role="img" aria-labelledby="title">
+<title id="title">Высота AH с основанием на стороне BC</title>
+<style>
+ .edge,.aux,.dash,.mark {fill:none;stroke:#243b50;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+ .aux,.dash {stroke:#216282} .dash {stroke-dasharray:5 5} .mark {stroke:#a33a35}
+ circle {fill:#243b50} text {font:italic 18px Georgia,serif; fill:#122f42}
+</style>
+<polyline class="edge" points="167,32 110,136 273,136 167,32"/>
+<polyline class="aux" points="167,32 167,136"/>
+<polyline class="mark" points="167,126 177,126 177,136"/>
+<circle cx="167" cy="32" r="3"/><text x="172" y="27">A</text>
+<circle cx="110" cy="136" r="3"/><text x="98" y="156">B</text>
+<circle cx="273" cy="136" r="3"/><text x="279" y="143">C</text>
+<circle cx="167" cy="136" r="3"/><text x="170" y="156">H</text>
+</svg>

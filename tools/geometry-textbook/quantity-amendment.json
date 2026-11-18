@@ -1,0 +1,26 @@
+{
+  "file": "assets/engine.js",
+  "beforeSha256": "15511e2d45d3ab847ca31a9a65e2549245c17801021b35fce8ab08a5ef1c5817",
+  "afterSha256": "50d8ef944320f6c5f135597caf39899e1c75906e25e01453871ef75714ad6959",
+  "start": "// Begin quantity self-check.\n",
+  "end": "// End quantity self-check.\n",
+  "call": "   mountQuantityCheck(lesson,form,input,el);\n",
+  "releaseGate": {
+    "beforeSha256": "af4a7b4d6d207721cb88ac8091eb68a3899111738673d761f302c5e4e22c8f18",
+    "afterSha256": "4bd36a67a1907e3c4757d435d7c66a60590a9cb4a8b1927ee3a65e835009e382",
+    "changes": [
+      {
+        "before": "from layout_amendment import historical_bytes",
+        "after": "from layout_amendment import advanced8_binding_bytes"
+      },
+      {
+        "before": "sha(historical_bytes(course / name) if name == 'index.html'\n                                        else (course / name).read_bytes())",
+        "after": "sha(advanced8_binding_bytes(course / name))"
+      },
+      {
+        "before": "sha((root / name).read_bytes()) for name in IMPLEMENTATION",
+        "after": "sha(advanced8_binding_bytes(root / name)) for name in IMPLEMENTATION"
+      }
+    ]
+  }
+}

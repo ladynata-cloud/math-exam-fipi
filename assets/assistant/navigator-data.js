@@ -29,14 +29,14 @@
     ["ege-base-path", "Базовый ЕГЭ: тренажёры по позициям 1–21", "/ege-baza/path/index.html#map", "ЕГЭ", ["задания по номерам", "экзаменационные задания", "1–21"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
     ["ege-base-teacher", "Базовый ЕГЭ: преподавателю", "/ege-baza/#teacher", "ЕГЭ", ["учитель", "преподаватель", "режим учителя"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
     ["ege-profile-start", "Профильный ЕГЭ: учебный маршрут", "/ege-profil/start/index.html", "ЕГЭ", ["маршрут", "с нуля", "начать подготовку", "курс"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
-    ["ege-profile-inequalities-2027", "Профильный ЕГЭ 2027: неравенства второй части", "/ege-profil/start/index.html#exam/16", "ЕГЭ", ["неравенства", "вторая часть", "номер 16"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 16, "taskYear": 2027}],
-    ["ege-profile-planimetry-start", "Профильный ЕГЭ: планиметрия по шагам", "/ege-profil/start/index.html#calm/1", "ЕГЭ", ["планиметрия", "первое задание", "углы", "площади"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 1, "taskYear": 2027}],
-    ["ege-profile-vectors-start", "Профильный ЕГЭ: векторы по шагам", "/ege-profil/start/index.html#calm/2", "ЕГЭ", ["векторы", "второе задание", "скалярное произведение"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 2, "taskYear": 2027}],
-    ["ege-profile-stereo-start", "Профильный ЕГЭ: стереометрия по шагам", "/ege-profil/start/index.html#calm/3", "ЕГЭ", ["стереометрия", "третье задание", "пространственные фигуры"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 3, "taskYear": 2027}],
+    ["ege-profile-inequalities-2027", "Профильный ЕГЭ 2027: неравенства второй части", "/ege-profil/part-two/#fipi/2027/15", "ЕГЭ", ["неравенства", "вторая часть", "номер 15"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 15, "taskYear": 2027}],
+    ["ege-profile-planimetry-start", "Профильный ЕГЭ: планиметрия по шагам", "/ege-profil/start/#fipi/2027/1", "ЕГЭ", ["планиметрия", "первое задание", "углы", "площади"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 1, "taskYear": 2027}],
+    ["ege-profile-vectors-start", "Профильный ЕГЭ: векторы по шагам", "/ege-profil/start/#fipi/2027/2", "ЕГЭ", ["векторы", "второе задание", "скалярное произведение"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 2, "taskYear": 2027}],
+    ["ege-profile-stereo-start", "Профильный ЕГЭ: стереометрия по шагам", "/ege-profil/start/#fipi/2027/3", "ЕГЭ", ["стереометрия", "третье задание", "пространственные фигуры"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 3, "taskYear": 2027}],
     ["ege-profile-trigonometry-course", "Профильный ЕГЭ: единый курс тригонометрии", "/ege-profil/trigonometry/index.html", "ЕГЭ", ["тригонометрия", "мордкович", "единичная окружность", "синус", "косинус", "тангенс"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-log-inequalities", "Профильный ЕГЭ: логарифмические неравенства", "/trainers/ege-profile/log-inequalities/index.html", "ЕГЭ", ["логарифмические неравенства", "одз", "логарифмы", "метод интервалов"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-derivative", "Профильный ЕГЭ: производная по графику", "/ege-profil/trainers/derivative-t8.html", "ЕГЭ", ["производная", "касательная", "монотонность", "график производной"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
-    ["ege-profile-finance", "Профильный ЕГЭ: финансовая математика", "/ege-profil/trainers/finance.html", "ЕГЭ", ["кредит", "вклад", "платежи", "финансовая математика", "экономическая задача"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
+    ["ege-profile-finance", "Профильный ЕГЭ: финансовая математика", "/ege-profil/start/#fipi/2027/16", "ЕГЭ", ["кредит", "вклад", "платежи", "финансовая математика", "экономическая задача", "номер 16"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 16, "taskYear": 2027}],
     ["ege-profile-parameters", "Профильный ЕГЭ: параметры с нуля", "/ege-profil/trainers/parameters-18/index.html", "ЕГЭ", ["параметры", "задача с параметром", "число решений"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-intervals", "Профильный ЕГЭ: метод интервалов", "/ege-profil/trainers/interval-method.html", "ЕГЭ", ["метод интервалов", "знаки", "рациональные неравенства"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-inequalities", "Профильный ЕГЭ: курс неравенств", "/ege-profil/trainers/inequalities.html", "ЕГЭ", ["неравенства", "рационализация", "показательные", "логарифмические"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
@@ -44,7 +44,8 @@
     ["ege-profile-probability", "Профильный ЕГЭ: вероятность", "/ege-profil/trainers/probability-t45.html", "ЕГЭ", ["вероятность", "монета", "кубик", "дерево событий", "бернулли"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-applied", "Профильный ЕГЭ: формулы и текстовые задачи", "/ege-profil/trainers/applied-t910.html", "ЕГЭ", ["текстовые задачи", "формулы", "движение", "работа", "смеси"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-functions", "Профильный ЕГЭ: графики и наибольшее значение", "/ege-profil/trainers/functions-t1112.html", "ЕГЭ", ["функции", "графики", "максимум", "минимум", "экстремум"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
-    ["ege-profile-full-exam", "Профильный ЕГЭ: пробный экзамен в формате 2026", "/ege-profil/exam/full-exam.html", "ЕГЭ", ["пробник", "полный вариант", "экзамен с таймером"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "formatYear": 2026}],
+    ["ege-profile-full-exam", "Профильный ЕГЭ: пробный экзамен в формате 2026", "/ege-profil/exam/full-exam.html", "ЕГЭ", ["пробник 2026", "полный вариант 2026", "экзамен с таймером 2026"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "formatYear": 2026}],
+    ["ege-profile-full-exam-2027", "Профильный ЕГЭ: пробник 2027", "/ege-profil/exam/full-exam.html?edition=2027", "ЕГЭ", ["пробник", "полный вариант", "экзамен с таймером"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "formatYear": 2027}],
     ["ege-profile-review", "Профильный ЕГЭ: работа над ошибками", "/ege-profil/review.html", "ЕГЭ", ["работа над ошибками", "журнал ошибок", "повторение"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-expert", "Профильный ЕГЭ: проверь как эксперт", "/ege-profil/trainers/expert.html", "ЕГЭ", ["критерии", "проверка решений", "эксперт", "развёрнутый ответ"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["oge-tires", "ОГЭ 1–5: Шины: маркировка и размеры колеса", "/trainers/oge-1-5-trainers/practice-1-5-tires.html", "ОГЭ", ["шины", "колёса", "покрышки", "резина", "маркировка", "195/65 r15"], {"grades": [9], "exam": "ОГЭ", "tasks": [1, 2, 3, 4, 5]}],
@@ -598,13 +599,11 @@
       if (/карта|маршрут|план подгот|все тем/.test(text)) return one('ege-base-map', 'В карте базового ЕГЭ выберите одну тему и начните с первого шага.');
     }
     if (examLevel === 'ege-profile' && !oge) {
-      if (number === 16 && !/неравен|геометр|кредит|финанс/.test(text)) {
-        if (/2027/.test(text)) return one('ege-profile-inequalities-2027', 'В маршруте ЕГЭ 2027 задание 16 посвящено неравенствам второй части.');
-        if (!/2026/.test(text) && byId['ege-profile-inequalities-2027']) return result('clarify', 'Какой формат нужен: неравенства в маршруте 2027 или финансовые задачи в подборке 2026?', ['ege-profile-inequalities-2027','ege-profile-finance'], state, [choice('2027: неравенства', 'ЕГЭ профиль 2027: задание 16'),choice('2026: финансовые задачи', 'ЕГЭ профиль 2026: финансовые задачи')]);
-      }
-      if (/пробник|полный вариант|экзамен.{0,12}целиком/.test(text) && byId['ege-profile-full-exam']) {
+      if (number === 15 && !/кредит|финанс|геометр/.test(text)) return one('ege-profile-inequalities-2027', 'По ФИПИ 2027 задание 15 — неравенства второй части.');
+      if (number === 16 && !/неравен|геометр/.test(text)) return one('ege-profile-finance', 'По ФИПИ 2027 задание 16 — финансовая задача. Здесь доступны основы, модели и учебные задачи.');
+      if (/пробник|пробн[а-яё]*\s+экзамен|полный вариант|экзамен.{0,12}целиком/.test(text) && byId['ege-profile-full-exam']) {
         if (/2026/.test(text)) return one('ege-profile-full-exam', 'Этот пробный экзамен использует формат 2026.');
-        return result('clarify', 'На сайте есть пробный экзамен в формате 2026 и учебный маршрут 2027. Что открыть?', ['ege-profile-full-exam','ege-profile-start'], state, [choice('Пробник 2026', 'ЕГЭ профиль: пробник 2026'),choice('Маршрут 2027', 'ЕГЭ профиль: карта курса 2027')]);
+        return one('ege-profile-full-exam-2027', 'Пробник ЕГЭ-2027: 19 заданий, таймер и проверка по первичным баллам.');
       }
       var topic = /работ.{0,10}над ошиб|журнал.{0,10}ошиб|разобрат.{0,12}ошиб/.test(text) ? 'ege-profile-review'
         : /критери|эксперт|провер.{0,12}(?:развернут|решени)/.test(text) ? 'ege-profile-expert'

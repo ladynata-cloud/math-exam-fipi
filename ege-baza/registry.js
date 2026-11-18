@@ -67,5 +67,40 @@
   resource('p-decimal','Десятичные дроби','Разряды, сложение и вычитание.','decimal-add-subtract.html'),
   resource('p-proportion','Пропорция','Связь величин и поиск неизвестного.','percentages/proportion.html')
  ];
- root.EgeBazaRegistry={version:1,modulePath,modules,prerequisites};
+ const byId=Object.fromEntries(prerequisites.map(item=>[item.id,item]));
+ const entry=(id,title,description,href)=>({id,title,description,href});
+ const dataLesson=(id,title,description)=>entry(id,title,description,'../trainers/ege-baza/data-course/#learn-'+id);
+ const practiceLesson=(id,title,description)=>entry(id,title,description,'path/index.html#lesson='+id);
+ const geometryLesson=(id,title,description)=>entry(id,title,description,'../geometry-course/atlas/'+id+'.html');
+ const rounding=resource('p-rounding','Округление по смыслу','Различай обычное округление и покупку целых упаковок.','rounding.html');
+ const units=resource('p-units','Длина и время','Переводи метры, сантиметры, часы и минуты.','units-length-time.html');
+ const areaUnits=resource('p-area-units','Единицы площади','Проверь, сколько маленьких квадратов помещается в большом.','units-area.html');
+ const area=geometryLesson('area-basics','Как измерять площадь','Найди площадь по клеткам и разбей фигуру на простые части.');
+ const parallelogram=geometryLesson('area-parallelogram','Основание и высота','Найди перпендикуляр к выбранному основанию.');
+ const percent=resource('p-percent','Часть, целое и процент','Определи, что в задаче принято за 100%.','percentages/percent-of-number-and-whole.html');
+ const equations=entry('p-equations','Линейные уравнения','Выполни одно и то же действие с обеими частями.','../equations/linear-pilot/');
+ const pathFoundation={
+  1:[rounding,practiceLesson('practice-change','Цена, количество и сдача','Посчитай стоимость покупки и найди остаток.')],
+  2:[units,areaUnits],
+  3:[dataLesson('data','Как читать диаграммы','Смотри на шкалу, подпись величины и единицы.')],
+  4:[byId['p-order'],units],
+  5:[dataLesson('probability','Подходящие исходы','Выдели подходящие исходы из всех возможных.'),byId['p-fraction']],
+  6:[practiceLesson('practice-change','Цена и количество','Посчитай расход для одного варианта.'),practiceLesson('practice-delivery','Стоимость с доставкой','Уточни, включена ли доставка, и сравни итоговые расходы.')],
+  7:[dataLesson('graphs','Чтение графика','Находи значение и различай рост и убывание.'),byId['p-signs']],
+  8:[dataLesson('logic','Утверждения и контрпримеры','Проверь, следует ли вывод из условий.')],
+  9:[area,parallelogram],
+  10:[byId['p-proportion'],areaUnits],
+  11:[practiceLesson('box','Объём и поверхность коробки','Рассмотри модель и различи, что измеряется в квадратных и кубических единицах.'),areaUnits],
+  12:[parallelogram,geometryLesson('pythagoras','Прямоугольный треугольник','Отличи катеты и гипотенузу на чертеже.')],
+  13:[practiceLesson('roundbody','Цилиндр, конус и шар','Покажи радиус, высоту и образующую на модели.')],
+  14:[byId['p-common'],resource('p-decimal-divisor','Деление на десятичную дробь','Перенеси запятую в делимом и делителе на одинаковое число разрядов.','multiplication-division/decimal-divisor-shift.html'),entry('p-decimal-product','Умножение десятичных дробей','Выполни произведение и объясни положение запятой.','../trainers/arifmetika.html?level=n5c'),byId['p-order']],
+  15:[percent,resource('p-percent-change','Изменение на процент','Выбери, от какой величины считать процент на каждом шаге.','percentages/percent-change.html'),byId['p-proportion']],
+  16:[entry('p-powers','Степени и корни','Вспомни свойства степеней и значения квадратных корней.','../trainers/oge-task8-powers-roots.html'),geometryLesson('trig-circle','Углы и тригонометрическая окружность','Проверь, как полный оборот меняет запись угла.'),practiceLesson('practice-log-value','Логарифм как показатель степени','Перепиши логарифм в виде равенства со степенью.')],
+  17:[equations,byId['p-order']],
+  18:[byId['p-signs'],practiceLesson('practice-inequality-match','Неравенства и числовая прямая','Различай строгую и нестрогую границы промежутка.')],
+  19:[practiceLesson('practice-digits-multiple','Признаки делимости','Выбери цифры, которые удовлетворяют условиям делимости.')],
+  20:[entry('p-work','Совместная работа','Найди долю всей работы, которую каждый выполняет за единицу времени.','work-rate/index.html'),byId['p-proportion'],percent],
+  21:[dataLesson('logic','Утверждения и контрпримеры','Прикинь возможную границу и проверь утверждение конкретным примером.'),entry('p-estimate','Оценка и пример','Найди границу, а затем построй пример, на котором она достигается.','../trainers/ege-methods.html')]
+ };
+ root.EgeBazaRegistry={version:1,modulePath,modules,prerequisites,pathFoundation};
 })(globalThis);

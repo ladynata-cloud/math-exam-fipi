@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "task": "SECTIONS_COURSES_HARMONIZATION_20261116",
+  "recordedAt": "2026-11-15T21:36:04Z",
+  "reviewLevel": "HIGH",
+  "reviewer": "sections_pr_inventory — independent internal technical reviewer",
+  "reviewType": "Independent review of another agent's implementation, followed by verification of the fixes",
+  "baseCommit": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "reviewedRevision": "Uncommitted task working tree; exact file hashes below identify the reviewed content",
+  "verdict": "PASS",
+  "scope": [
+    "The first IIFE in stereo-course/sections/assets/app.js: bounded construction actions for the approved 24 cards",
+    "Mathematical validation, premature answer disclosure, accepted-action rendering, personal state, help, undo and board isolation",
+    "tools/sections-construction.test.cjs and static inspection of browser fixture restoration and manual undo/help selectors"
+  ],
+  "reviewedFiles": {
+    "stereo-course/sections/assets/app.js": {
+      "sha256": "9560728e01591672bcb6672ea19f9af89964b2a5c1222193dd0d3069cd5c4af6",
+      "firstIife": {
+        "sha256": "4a9871c307525074b0e6d45e44a8a336bd4a2c4b024d75b61bc4ff6ba067331a",
+        "byteLength": 132674,
+        "definition": "UTF-8 bytes from the start of the file up to, but excluding, the following boundary marker; includes the whitespace preceding the marker",
+        "boundaryMarker": "/* Pure data and exact-coordinate activities. No network, eval or dependencies. */"
+      }
+    },
+    "tools/sections-construction.test.cjs": {
+      "sha256": "c34ee90f7480a6a946b46a65761560df44685416880a572c72ba8e1a4842572d"
+    }
+  },
+  "tests": {
+    "command": "NODE_PATH=<test-dependencies> node --test tools/sections-construction.test.cjs",
+    "passed": 37,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 51187.954773,
+    "counting": "The 37 tests include all 24 card journeys. A duplicate direct-node execution also passed and is not counted as additional coverage.",
+    "coverage": [
+      "All 24 cards start without selected answers and complete through real element choices",
+      "Reversed endpoints and line order, alternative valid plane triples, coordinate aliases and reversed half-length parallel direction",
+      "Invalid spatial actions, finite edges versus extensions, cyclic boundary order and rejection of crossing boundaries",
+      "Neutral headings, role prompts and edge-location labels before selection",
+      "Accepted-only text and geometry, deferred finite-section classification and actual undo",
+      "Sticky help and historical earned evidence, unfinished selections and draft restoration",
+      "Preservation of guided records and exclusion of personal construction from the existing board state"
+    ]
+  },
+  "independentProbes": [
+    {
+      "kind": "Exhaustive parallel-action candidate enumeration after the fix",
+      "cards": ["bridge-03", "bridge-19"],
+      "candidateSelections": 14520,
+      "result": "PASS: only transfer through P in the direction MN is accepted for the current known points; reversed direction and edge endpoints also pass"
+    },
+    {
+      "kind": "Exhaustive pairs of lines through currently known points",
+      "intersectionSteps": 14,
+      "result": "PASS: only the intended geometric intersections are accepted; no analogous accidental-coordinate acceptance found in the bounded bank"
+    }
+  ],
+  "findings": [
+    {
+      "id": "CONSTRUCTION-01",
+      "status": "closed",
+      "finding": "Authored step titles disclosed expected endpoints, roles or planes before a choice.",
+      "resolution": "Neutral titles and task-specific route goals replace the revealing titles; prompts do not provide the correct role. Route goals identify a meaningful order without requiring guesses about the author's order."
+    },
+    {
+      "id": "CONSTRUCTION-02",
+      "status": "closed",
+      "finding": "The location-field label disclosed the authored target edge before line selection.",
+      "resolution": "The label asks about a finite edge or its extension without printing the expected edge."
+    },
+    {
+      "id": "CONSTRUCTION-03",
+      "status": "closed",
+      "finding": "bridge-19 accepted a line through A parallel to GM, or through E parallel to CM, because it happened to hit Q; rendering then substituted the authored PQ action.",
+      "resolution": "Validation now requires an anchor on the actual section trace and a direction parallel to the established trace. Both false examples are rejected; geometric alias and scaled/reversed equivalents remain accepted. Rendering records the accepted anchor."
+    },
+    {
+      "id": "CONSTRUCTION-04",
+      "status": "closed",
+      "finding": "In bridge-06/20, accepted intersection text and geometry revealed YP and its section role before the subsequent endpoint/role choice.",
+      "resolution": "Confirmation and history describe only accepted selections. Intersections render chosen helper lines and the found point; YP becomes a section side only after its own accepted choice and disappears on undo."
+    },
+    {
+      "id": "CONSTRUCTION-05",
+      "status": "closed",
+      "finding": "Deferring section classification also required preserving the final QP boundary in bridge-18/24.",
+      "resolution": "QP is drawn as a section side after explicit confirmation of the complete boundary; editing the boundary removes that confirmation and classification."
+    }
+  ],
+  "unresolvedFindings": [],
+  "stateAndBoardAssessment": "PASS within the reviewed scope: saved action prefixes are revalidated; help and earned history remain sticky; undo removes an actual action; old guided records are retained; construction is disabled on the board and does not enter its existing strict state schema.",
+  "limitations": [
+    "Mathematical probes cover the approved fixed bank, not an arbitrary construction editor.",
+    "The application checks geometric selections; it does not automatically grade a complete proof.",
+    "Browser-harness inspection was static. Real browser rendering, visual acceptance and production acceptance are separate gates.",
+    "This is internal independent review evidence, not a review from an external model provider and not release authorization."
+  ],
+  "productFilesEditedByReviewer": false,
+  "browserAcceptance": false,
+  "externalProviderReview": false,
+  "releaseApproval": false,
+  "followUpReviews": [
+    {
+      "recordedAt": "2026-11-15T21:57:44Z",
+      "reviewer": "sections_pr_inventory — independent internal technical reviewer",
+      "verdict": "PASS",
+      "baseCommit": "09934f48cbc0483da4738c8f28854150b7132cff",
+      "priorReviewRecordSha256": "b44900db76179aef4043815e370153f738892e34794ec696b616c99f0682007c",
+      "scope": "Read-only independent review of the detached-disclosure runtime fix and the bounded label-placement fallback; the earlier review record is preserved unchanged.",
+      "reviewedFiles": {
+        "stereo-course/sections/assets/app.js": {
+          "sha256": "b11a1187fbdd34bc3c3383819f9b763257c9a3c230876956c7b47e5f64566e6b",
+          "firstIife": {
+            "sha256": "3ff94ca68046469350b46768dc44aeb3e8e14ddd79dd460b79ba85346cde97be",
+            "byteLength": 133758,
+            "definition": "The same UTF-8 prefix and boundary marker defined in the initial review"
+          }
+        },
+        "tools/sections-course.test.cjs": {
+          "sha256": "ac097d3aef182100c5af34f4c9b46a934d21bc5add14f4c1fce9845d5a6ac231"
+        },
+        "tools/sections-label-layout.test.cjs": {
+          "sha256": "25b541e79e91202a7d37d034c375904c792cb65584e361f4b1a903e7a9c26784"
+        }
+      },
+      "sourceEvidence": {
+        "workflowRun": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43765237685",
+        "artifact": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43765237685/artifacts/14182505738",
+        "headCommit": "09934f48cbc0483da4738c8f28854150b7132cff",
+        "inspectedArtifactFindings": [
+          "The report contains 2600 inspected scenes and one layout failure: final ii-example-7 at viewport 320, where label Z masks points A1 and B1.",
+          "The report records three undefined-points runtime errors during rotated/flat auth-metric-09 at widths 320, 390 and 768."
+        ]
+      },
+      "reviewedDeltas": [
+        {
+          "change": "The existing capture-phase guard against toggle events from detached details elements now applies in personal mode as well as board mode.",
+          "assessment": "PASS: board behavior is retained. Both stale opening and closing callbacks are stopped before they can mutate an old lesson, save stale work or redraw the next lesson using the previous lesson's step count.",
+          "regression": "Navigation from the completed eight-step auth-method-04 to five-step auth-metric-09 preserves state, storage and SVG under delayed detached toggles; live construction, rotation and flat view on the new lesson still work."
+        },
+        {
+          "change": "After the existing two placement passes, an overlapping label may move to an unoccupied location on a bounded six-pixel grid inside the SVG frame.",
+          "assessment": "PASS: fallback runs only for a colliding padded box, rejects every candidate overlapping another label or point, preserves the label and font, and retains the existing leader connection. It does not change model coordinates, edges, action state or displayed label membership.",
+          "regression": "The actual CI glyph-width fixture for the dense 267-by-205 prism SVG retains all 26 labels and points, with no clipped painted labels, label-to-label overlaps or glyph-to-point overlaps."
+        }
+      ],
+      "tests": {
+        "command": "NODE_PATH=<test-dependencies> node --test tools/sections-course.test.cjs tools/sections-label-layout.test.cjs",
+        "passed": 17,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 27518.630121,
+        "counting": "One combined execution against the final joint app bytes. Earlier separate 16-test and 1-test executions are not counted again."
+      },
+      "unresolvedFindings": [],
+      "requiredNextGate": "Rerun the full real-Chromium acceptance matrix on the published corrected head; local measured-glyph and DOM regressions do not substitute for that gate.",
+      "productFilesEditedByReviewer": false,
+      "browserAcceptance": false,
+      "externalProviderReview": false,
+      "releaseApproval": false
+    }
+  ]
+}

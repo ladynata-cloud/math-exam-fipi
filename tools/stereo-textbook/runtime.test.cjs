@@ -89,5 +89,39 @@ function submit(e,selector){e.doc.querySelector(selector).dispatchEvent(new e.w.
  const list=boot(large);assert.equal(list.doc.querySelectorAll('[data-catalog-ready] [data-lesson]').length,3);assert.equal(list.doc.querySelectorAll('[data-catalog-pending] article').length,24);assert.equal(list.doc.querySelectorAll('[data-catalog-pending] [data-lesson]').length,0);input(list,'#catalog-search','1253');assert.equal(list.doc.querySelectorAll('[data-catalog-pending] article').length,1);assert.match(list.doc.querySelector('[data-catalog-pending] article').textContent,/1253/);
  input(list,'#catalog-search','1');const kind=list.doc.querySelector('#catalog-kind');kind.value='theory';kind.dispatchEvent(new list.w.Event('change',{bubbles:true}));assert.equal(list.doc.querySelectorAll('[data-catalog-ready] [data-lesson]').length,1);assert.equal(list.doc.querySelector('[data-catalog-ready] [data-lesson]').dataset.lesson,'fixture-theory');
  input(list,'#catalog-search','');kind.value='';kind.dispatchEvent(new list.w.Event('change',{bubbles:true}));const chapter=list.doc.querySelector('#catalog-chapter');chapter.value='2';chapter.dispatchEvent(new list.w.Event('change',{bubbles:true}));assert.equal(list.doc.querySelectorAll('[data-catalog-ready] [data-lesson]').length,1);assert.equal(list.doc.querySelector('[data-catalog-ready] [data-lesson]').dataset.lesson,'fixture-proof');list.close();
+ // Returning from a real card keeps the complete filtered list, including its page.
+ const route=boot(production);
+ const selectFilter=(id,value)=>{
+  const field=route.doc.getElementById(id);
+  field.value=value;
+  field.dispatchEvent(new route.w.Event('change',{bubbles:true}));
+ };
+ selectFilter('catalog-kind','exercise');
+ selectFilter('catalog-collection','main');
+ selectFilter('catalog-chapter','II. Перпендикулярность прямых и плоскостей');
+ selectFilter('catalog-paragraph','II:3');
+ input(route,'#catalog-search','двугранный');
+ const ids=()=>[...route.doc.querySelectorAll('[data-catalog-ready] [data-lesson]')].map(button=>button.dataset.lesson);
+ const firstPage=ids();
+ click(route,'[data-catalog-ready] nav button:last-child');
+ const secondPage=ids();
+ assert.notDeepEqual(secondPage,firstPage);
+ const original=click(route,'[data-catalog-ready] [data-lesson]');
+ assert.equal(route.doc.querySelector('#catalog-search'),null);
+ click(route,'.textbook-lesson-header > button');
+ assert.equal(route.doc.activeElement,original);
+ assert.deepEqual(ids(),secondPage);
+ for(const [id,value] of Object.entries({'catalog-search':'двугранный','catalog-kind':'exercise','catalog-collection':'main','catalog-chapter':'II. Перпендикулярность прямых и плоскостей','catalog-paragraph':'II:3'})){
+  assert.equal(route.doc.getElementById(id).value,value);
+ }
+ input(route,'#catalog-search','167');
+ assert.deepEqual(ids(),['ex-main-0167']);
+ click(route,'[data-lesson=ex-main-0167]');
+ input(route,'#final-answer','MB и MD перпендикулярны ребру AC.');
+ click(route,'.textbook-lesson-header > button');
+ assert.deepEqual(ids(),['ex-main-0167']);
+ click(route,'[data-lesson=ex-main-0167]');
+ assert.equal(route.doc.querySelector('#final-answer').value,'MB и MD перпендикулярны ребру AC.');
+ route.close();
  assert.equal(e.errors.length,0);console.log('ATANASYAN_TEXTBOOK_RUNTIME_OK: publication gate, source identities, exact models, help/camera/drafts, proof honesty, revision and stale recovery');
 })().catch(error=>{console.error(error);process.exitCode=1;});

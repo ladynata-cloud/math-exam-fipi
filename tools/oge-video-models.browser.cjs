@@ -8,6 +8,7 @@ const http = require('node:http');
 const crypto = require('node:crypto');
 const {execFileSync} = require('node:child_process');
 const {chromium} = require('playwright');
+const checkTriangleHelp = require('./oge-task15-model.browser.cjs');
 const {entries, assets, restoreVideoModels} = require('./oge-video-models-preservation.cjs');
 const lessons = [...require('../trainers/oge-video-graphs.js'), ...require('../trainers/oge-video-geometry.js')];
 const ROOT = path.resolve(__dirname, '..');
@@ -101,6 +102,9 @@ async function context(width,managed=false){
  await c.addInitScript(()=>{if(!sessionStorage.getItem('video-model-synthetic')){localStorage.setItem('video-model-native-sentinel','unchanged');sessionStorage.setItem('video-model-synthetic','1');}});
  return c;
 }
+async function selectMedianTask(page) {
+ await page.evaluate(() => window.__oge15.trainWith('areaBH', window.__oge15.SUBS.areaBH.proto));
+}
 async function openLesson(page,lesson){
  const details=page.locator('#oge-video-models');
  if(await details.getAttribute('open')===null)await page.locator('[data-ovm-open]').click();
@@ -163,6 +167,7 @@ fs.mkdirSync(OUT,{recursive:true});
     const c=await context(width),p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
     try{
      await p.goto(base+'/'+file,{waitUntil:'load'});
+     if(Number(number)===15)await checkTriangleHelp(p);
      await p.locator('#oge-video-models').waitFor();
      assert.equal(await p.locator('#oge-video-models').getAttribute('open'),null);
      assert.equal(await p.evaluate(prefix=>Object.keys(localStorage).filter(key=>key.startsWith(prefix)).length,PREFIX),0);
@@ -178,6 +183,7 @@ fs.mkdirSync(OUT,{recursive:true});
     const c=await context(width),p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
     try{
      await p.goto(base+'/'+entries[lesson.tasks[0]],{waitUntil:'load'});
+     if(lesson.tasks[0]===15)await selectMedianTask(p);
      await p.locator('#oge-video-models').waitFor();
      let previousStorage=await localState(p),previousInputs=await nativeInputs(p);
      assert(await p.evaluate(()=>typeof navigator.locks?.request==='function'),'real browser supports durable cross-tab saving');
@@ -186,6 +192,7 @@ fs.mkdirSync(OUT,{recursive:true});
      // each actual lesson-interaction segment with its native starting state.
      const reloadLesson=async()=>{
       await preserveNative();const started=await p.evaluate(()=>Date.now());await p.reload({waitUntil:'load'});
+      if(lesson.tasks[0]===15)await selectMedianTask(p);
       const after=await localState(p);assertNativeReload(previousStorage,after,lesson.tasks[0],started,await p.evaluate(()=>Date.now()));
       previousStorage=after;previousInputs=await nativeInputs(p);await openLesson(p,lesson);
      };

@@ -233,9 +233,15 @@ async function enterCheckpoint(page) {
   await page.locator(UI.checkpoint.form).waitFor();
 }
 async function transferLearner(page, out, p) {
-  check(out, 'thirteen-calm-cards', await page.locator('[data-calm-exam] a[href^="#calm/"]').count() === 13);
-  check(out, 'seven-second-part-cards', same(await page.locator('.second-part-grid [data-course-extra]').evaluateAll(nodes => nodes.map(node => Number(node.dataset.courseExtra))), [14, 15, 16, 17, 18, 19, 20]));
+  check(out, 'twelve-official-cards', await page.locator('[data-calm-exam] a[href^="#fipi/2027/"]').count() === 12);
+  check(out, 'seven-second-part-cards', same(await page.locator('.second-part-grid [data-course-extra]').evaluateAll(nodes => nodes.map(node => Number(node.dataset.courseExtra))), [13, 14, 15, 16, 17, 18, 19]));
   check(out, 'both-part-tabs-available', await page.locator('.journey-tabs a[href="#calm/first"]').count() === 1 && await page.locator('.journey-tabs a[href="#calm/second"]').count() === 1);
+  // This unchanged persona is an existing 13-group saved round. It proves
+  // backward compatibility while the protocol scenarios start new 12-line rounds.
+  await page.evaluate(({key,numbers})=>localStorage.setItem(key,JSON.stringify({version:1,history:[],round:{
+    id:'h02-existing-legacy-round',index:0,complete:false,started:'2026-11-14T10:00:00.000Z',finished:'',
+    items:numbers.map(number=>({number,lessonId:null,taskId:null,draft:'',submitted:false,correct:false,assisted:false,unavailable:false}))
+  }})),{key:CHECKPOINT_KEY,numbers:p.items.map(item=>item.number)});
   await enterCheckpoint(page);
   const beforeRecords = (await saved(page)).records;
   for (let i = 0; i < p.items.length; i++) {
@@ -269,7 +275,7 @@ async function transferLearner(page, out, p) {
   const final = await saved(page, CHECKPOINT_KEY), entries = final.round.items;
   const summary = { attempted: entries.filter(item => item.submitted).length, independent: entries.filter(item => item.submitted && item.correct && !item.assisted && !item.unavailable).length,
     assisted: entries.filter(item => item.assisted).length, unavailable: entries.filter(item => item.unavailable).length, total: entries.length };
-  check(out, 'strict-score-is-twelve-of-thirteen', same(summary, p.expectedResult), summary, p.expectedResult);
+  check(out, 'legacy-round-score-is-twelve-of-thirteen', same(summary, p.expectedResult), summary, p.expectedResult);
   const expectedRecords=JSON.parse(JSON.stringify(beforeRecords));
   for(const item of entries)if(item.submitted&&item.correct&&!item.assisted&&!item.unavailable){
     const row=expectedRecords[item.lessonId]||(expectedRecords[item.lessonId]={guided:[],independent:[],attempts:0});

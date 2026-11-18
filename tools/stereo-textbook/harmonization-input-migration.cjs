@@ -5,6 +5,7 @@
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const manifest = require('./harmonization-input-migration.json');
+const {beforeCombinedCatalogReturn} = require('./catalog-return-composition.cjs');
 const FILE = 'stereo-course/textbook/assets/engine.js';
 const BEFORE = '14cb7f4c44b7e6aa78da563503592cd97a8f62ae7d6e57dc23942565a7d3a413';
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
@@ -16,6 +17,7 @@ function replaceOnce(source, from, to) {
 }
 function beforeHarmonization(file, bytes, record = manifest) {
   if (file !== FILE) return bytes;
+  bytes = beforeCombinedCatalogReturn(file, bytes);
   assert.equal(record.schemaVersion, 1);
   assert.equal(record.base, '5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae');
   assert.equal(record.task, 'ATANASYAN_7_11_HARMONIZATION_20261116');

@@ -191,6 +191,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
 
 
 
+
 </head>
 <body>
   <header class="az-header"><div><a class="az-brand" href="/" target="_self" data-mathexam-home-link aria-label="На главную MathExam">MathExam</a><a href="/ege-profil/#profile-clock">Пещера сокровищ ЕГЭ</a></div></header>
@@ -200,6 +201,117 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
       <noscript><h1>Основы и методы</h1><p>Для проверки ответов включи JavaScript. <a href="/ege-profil/">К курсу ЕГЭ</a>.</p></noscript>
     </main>
   </div>
+<script data-inline-source="/ege-profil/exam-map.js">
+(function (root, factory) {
+  'use strict';
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.ProfileExamMap = api;
+})(typeof globalThis === 'object' ? globalThis : this, function () {
+  'use strict';
+
+  // Official display numbers are not routing, lesson or saved-progress keys.
+  // Source: FIPI 2027 mathematics specification; approved H02 task table.
+  const YEAR = 2027;
+  const teachingEntry = {1: 'geo-right', 6: 'eq-linear', 7: 'expr-powers'};
+  const define = (number, id, title, source, legacy, lessonIds, preparationIds = []) => Object.freeze({
+    year: YEAR, number, id, title, source,
+    part: number == null ? null : number <= 12 ? 1 : 2,
+    points: number == null ? null : number <= 12 ? 1 : [2, 3, 2, 2, 3, 4, 4][number - 13],
+    legacyStart: source === 'start' ? legacy : number === 15 ? 16 : null,
+    legacyPartTwo: source === 'part-two' ? legacy : null,
+    lessonIds: Object.freeze(lessonIds), preparationIds: Object.freeze(preparationIds),
+    entry: teachingEntry[number] || lessonIds[0]
+  });
+  const entries = Object.freeze([
+    define(1, 'planimetry', 'Планиметрия', 'start', 1,
+      ['geo-angles', 'geo-right', 'geo-similarity', 'geo-area', 'geo-quadrilaterals', 'geo-circle']),
+    define(2, 'vectors', 'Векторы', 'start', 2,
+      ['vec-coordinates', 'vec-length', 'vec-operations', 'vec-dot'],
+      ['vec-basics-reading', 'vec-basics-equality', 'vec-basics-triangle', 'vec-basics-parallelogram',
+        'vec-basics-difference', 'vec-basics-scale', 'vec-basics-coordinates', 'vec-basics-length', 'vec-basics-dot']),
+    define(3, 'stereometry', 'Стереометрия', 'start', 3,
+      ['stereo-box', 'stereo-cube', 'stereo-prism', 'stereo-pyramid', 'stereo-cylinder', 'stereo-cone', 'stereo-sphere', 'stereo-compound']),
+    define(4, 'probability', 'Простая вероятность', 'start', 4,
+      ['prob-count', 'prob-complement', 'prob-range']),
+    define(5, 'compound-probability', 'Вероятности сложных событий', 'start', 5,
+      ['prob-independent', 'prob-conditional', 'prob-exact']),
+    define(6, 'equations', 'Уравнения первой части', 'start', 7,
+      ['algebra-exponential', 'algebra-logarithmic', 'eq-linear', 'eq-rational', 'eq-quadratic', 'eq-root']),
+    define(7, 'expressions', 'Вычисления и преобразования', 'start', 8,
+      ['algebra-cosine', 'algebra-double-angle', 'expr-powers', 'expr-roots', 'expr-fractions', 'expr-logarithms'],
+      ['trig-angle', 'trig-coordinates', 'trig-special', 'trig-tangent']),
+    define(8, 'derivative', 'Производная и первообразная', 'start', 9,
+      ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-integral'], ['calc-value', 'calc-special']),
+    define(9, 'formulas', 'Прикладные формулы', 'start', 10,
+      ['applied-formula', 'applied-formula-limit']),
+    define(10, 'word-problems', 'Текстовые задачи', 'start', 11,
+      ['applied-motion', 'applied-work', 'applied-mixture']),
+    define(11, 'functions', 'Функции и графики', 'start', 12,
+      ['fn-line', 'fn-parabola', 'fn-hyperbola', 'fn-explog']),
+    define(12, 'extrema', 'Наибольшее и наименьшее значение', 'start', 9,
+      ['calc-extreme'], ['calc-value', 'calc-special']),
+    define(13, 'part-two-equations', 'Уравнения второй части', 'part-two', 14,
+      ['p14-circle-selection', 'p14-trig-factors', 'p14-exponential-substitution', 'p14-log-domain', 'p14-radical-check', 'p14-rational-hole']),
+    define(14, 'part-two-stereometry', 'Стереометрия с доказательством', 'part-two', 15,
+      ['p2-15-projection', 'p2-15-line-plane', 'p2-15-dihedral', 'p2-15-distance', 'p2-15-section-volume', 'p2-15-coordinate-angle']),
+    define(15, 'inequalities', 'Неравенства', 'part-two', 16,
+      ['p16-repeated-root', 'p16-exponential-interval', 'p16-fixed-log', 'p16-variable-base', 'p16-radical-inequality', 'p16-cancelled-hole']),
+    define(16, 'finance', 'Экономическая задача', 'start', 13,
+      ['applied-percent', 'applied-loan-linear', 'applied-loan-equal',
+        'finance-lesson-01-ledger', 'finance-lesson-02-deposits', 'finance-lesson-03-interest-progression',
+        'finance-lesson-04-first-last-payment', 'finance-lesson-05-balance-tables', 'finance-lesson-06-payment-bounds',
+        'finance-lesson-07-equal-payments', 'finance-lesson-08-unknown-in-ledger', 'finance-lesson-09-rates',
+        'finance-lesson-10-inverse-equal-payments', 'finance-lesson-11-changing-conditions', 'finance-lesson-12-calendar',
+        'finance-lesson-13-two-stages']),
+    define(17, 'part-two-planimetry', 'Планиметрия с доказательством', 'part-two', 18,
+      ['p2-18-similarity', 'p2-18-tangents', 'p2-18-cyclic', 'p2-18-bisector', 'p2-18-cevians', 'p2-18-altitude']),
+    define(18, 'parameters', 'Задачи с параметром', 'part-two', 19,
+      ['param-linear', 'param-positive-roots', 'param-modules', 'param-hole', 'param-tangent', 'param-system']),
+    define(19, 'numbers', 'Числа и их свойства', 'part-two', 20,
+      ['numbers-remainders', 'numbers-digits', 'numbers-extremum', 'numbers-counterexample', 'numbers-invariant', 'numbers-diophantine'])
+  ]);
+  const extras = Object.freeze([
+    define(null, 'random-variables', 'Случайные величины', 'start', 6,
+      ['prob-distribution', 'prob-variance', 'prob-continuous']),
+    define(null, 'optimization', 'Моделирование и оптимизация', 'part-two', 17,
+      ['model-fence', 'model-revenue', 'model-boundary', 'model-discrete', 'model-box', 'model-motion'])
+  ]);
+  // Keep the earlier topic URL as an exact entrance to the same lesson.
+  const integral = define(8, 'integral', 'Первообразная и площадь', 'start', 9, ['calc-integral']);
+  const calculus = define(null, 'calculus-legacy', 'Производная, экстремумы и первообразная', 'start', 9,
+    ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-value', 'calc-special', 'calc-extreme', 'calc-integral']);
+  const all = [...entries, ...extras];
+  const numberValue = value => typeof value === 'number' && Number.isInteger(value) ? value :
+    typeof value === 'string' && /^(?:[1-9]|1[0-9]|20)$/.test(value) ? Number(value) : null;
+  const get = number => entries.find(item => item.number === numberValue(number)) || null;
+  const topics = [...all, calculus, integral];
+  const topic = id => typeof id === 'string' ? topics.find(item => item.id === id) || null : null;
+  const resolve = value => value && typeof value === 'object' ? topic(value.id) : get(value) || topic(value);
+  const fromLegacyStart = value => {
+    const number = numberValue(value);
+    if (number === 9) return calculus;
+    return number == null ? null : all.find(item => item.legacyStart === number) || null;
+  };
+  const fromLegacyPartTwo = value => {
+    const number = numberValue(value);
+    return number == null ? null : all.find(item => item.legacyPartTwo === number) || null;
+  };
+  const forLesson = id => typeof id === 'string' ? all.find(item => item.lessonIds.includes(id)) ||
+    all.find(item => item.preparationIds.includes(id)) || null : null;
+  const label = value => { const item = resolve(value); return item ? item.number == null ? 'Дополнительная тема' : '№ ' + item.number : ''; };
+  const hash = value => {
+    const item = resolve(value);
+    return item ? item.number == null ? '#topic/' + item.id : '#fipi/' + YEAR + '/' + item.number : '';
+  };
+  const href = value => {
+    const item = resolve(value);
+    return item ? '/ege-profil/' + item.source + '/' + hash(item) : '';
+  };
+  return Object.freeze({YEAR, entries, extras, get, topic, fromLegacyStart, fromLegacyPartTwo, forLesson, label, hash, href});
+});
+
+</script>
 <script data-inline-source="/ege-profil/azbuka-metodov/catalog.js">
 (() => {
   'use strict';
@@ -223,7 +335,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
         constraints: { title: 'Учитываю ограничения из условия', numbers: [10, 11, 13, 17] },
         optimum: { title: 'Выбираю лучший допустимый вариант', numbers: [17] }
       },
-      refs: [['Производная и интеграл, №9', '/ege-profil/start/index.html#calm/9']]
+      refs: [['Производная и первообразная · №8; экстремумы · №12', '/ege-profil/start/index.html#calm/9']]
     },
     {
       id: 'domain', title: 'ОДЗ и отбор решений', short: 'ОДЗ и отбор', numbers: [7, 14, 16, 19],
@@ -256,7 +368,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
         'difference-squares': { title: 'Сокращаю через разность квадратов', numbers: [8, 14, 16] },
         substitution: { title: 'Делаю замену переменной', numbers: [14, 16] }
       },
-      refs: [['Практикум по выражениям, №8', '/ege-profil/start/index.html#calm/8']]
+      refs: [['Практикум по выражениям, №7', '/ege-profil/start/index.html#fipi/2027/7']]
     },
     {
       id: 'space-drawing', title: 'Чтение пространственного чертежа', short: 'Чертёж в 3D', numbers: [3, 15],
@@ -330,7 +442,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
         range: { title: 'Проверяю возможные значения функции', numbers: [19] }
       },
       refs: [
-        ['Функции и графики · №12', '/ege-profil/start/index.html#calm/12'],
+        ['Функции и графики · №11', '/ege-profil/start/index.html#fipi/2027/11'],
         ['Функции в формулах и на графиках', '/ege-profil/trainers/functions-t1112.html']
       ]
     },
@@ -352,10 +464,10 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
       },
       refs: [
         ['Прежний практикум по задачам с параметром', '/ege-profil/trainers/parameters-18/'],
-        ['№19 · дискриминант и положительные корни', '/ege-profil/part-two/index.html#lesson/param-positive-roots'],
-        ['№19 · модули и число решений', '/ege-profil/part-two/index.html#lesson/param-modules'],
-        ['№19 · касание', '/ege-profil/part-two/index.html#lesson/param-tangent'],
-        ['№19 · системы', '/ege-profil/part-two/index.html#lesson/param-system']
+        ['№18 · дискриминант и положительные корни', '/ege-profil/part-two/index.html#lesson/param-positive-roots'],
+        ['№18 · модули и число решений', '/ege-profil/part-two/index.html#lesson/param-modules'],
+        ['№18 · касание', '/ege-profil/part-two/index.html#lesson/param-tangent'],
+        ['№18 · системы', '/ege-profil/part-two/index.html#lesson/param-system']
       ]
     }
   ];
@@ -367,9 +479,43 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
   const sourceTask = /^#(?:calm|example|exam)\/[a-z0-9-]+$|^#(?:lesson\/[a-z0-9-]+|(?:practice|repair)\/[a-z0-9-]+\/(?:guided|plan|independent))$/;
   const trainerPath = /^\/ege-profil\/trainers\/(?:[a-z0-9-]+\.html|[a-z0-9-]+\/index\.html)$|^\/trainers\/ege-profile\/[a-z0-9-]+(?:\.html|\/(?:index\.html)?)$/;
 
+  // Catalog numbers are legacy topic identities, shared with existing skill-map keys.
+  function legacyEntry(number) {
+    const map = globalThis.ProfileExamMap;
+    return Number(number) <= 13 ? map?.fromLegacyStart(number) : map?.fromLegacyPartTwo(number);
+  }
+
+  function legacyNumber(entry) {
+    return entry?.legacyPartTwo ?? entry?.legacyStart ?? NaN;
+  }
+
+  function displayLabel(number) {
+    if (Number(number) === 9) return '№8 и №12';
+    const entry = legacyEntry(number);
+    return entry ? entry.number == null ? 'Дополнительная тема: ' + entry.title : globalThis.ProfileExamMap.label(entry) : 'Учебная тема';
+  }
+
   function examHref(number) {
+    const entry = legacyEntry(number);
+    if (entry && Number(number) !== 9) return globalThis.ProfileExamMap.href(entry);
     return number <= 13 ? '/ege-profil/start/index.html#calm/' + number :
       '/ege-profil/part-two/index.html#exam/' + number;
+  }
+
+  function readContext(input) {
+    const params = input?.get ? input : new URLSearchParams(input);
+    const map = globalThis.ProfileExamMap;
+    if (params.has('fipi')) {
+      const match = /^2027\/([1-9]|1[0-9])$/.exec(params.get('fipi'));
+      const entry = match ? map?.get(Number(match[1])) : null;
+      return { kind: 'fipi', number: legacyNumber(entry), entry };
+    }
+    if (params.has('topic')) {
+      const entry = map?.topic(params.get('topic'));
+      return { kind: 'topic', number: legacyNumber(entry), entry };
+    }
+    const number = Number(params.get('exam'));
+    return { kind: 'legacy', number: numbers(number) ? number : NaN, entry: legacyEntry(number) };
   }
 
   function safeBack(input) {
@@ -381,14 +527,20 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
     if (url.searchParams.has('skills')) url.searchParams.delete('skills');
     const partTwo = ['/ege-profil/part-two/', '/ege-profil/part-two/index.html'].includes(url.pathname);
     const start = ['/ege-profil/start/', '/ege-profil/start/index.html'].includes(url.pathname);
-    const safePartTwo = partTwo && (exactTask.test(url.hash) || /^#(?:exam\/\d{1,2}|lesson\/[a-z0-9-]+|map|progress)$/.test(url.hash));
-    if (!safePartTwo && !(start && sourceTask.test(url.hash)) && !trainerPath.test(url.pathname)) return '';
+    const mapped = /^#fipi\/2027\/(?:[1-9]|1[0-9])$|^#topic\/[a-z0-9-]+$/.test(url.hash);
+    const safePartTwo = partTwo && (exactTask.test(url.hash) || mapped || /^#(?:exam\/\d{1,2}|lesson\/[a-z0-9-]+|map|progress)$/.test(url.hash));
+    if (!safePartTwo && !(start && (sourceTask.test(url.hash) || mapped)) && !trainerPath.test(url.pathname)) return '';
     return url.pathname + url.search + url.hash;
   }
 
   function href(id = '', skill = '', number, back = '', base = path) {
     const query = new URLSearchParams();
-    if (numbers(Number(number))) query.set('exam', String(number));
+    if (number && typeof number === 'object') {
+      const entry = number.entry || (number.id ? number : null);
+      if (number.kind === 'legacy' && numbers(number.number)) query.set('exam', String(number.number));
+      else if (entry?.number) query.set('fipi', '2027/' + entry.number);
+      else if (entry?.id) query.set('topic', entry.id);
+    } else if (numbers(Number(number))) query.set('exam', String(number));
     const returnPath = safeBack(back);
     if (returnPath) query.set('back', returnPath);
     return base + (query.size ? '?' + query : '') + (id ? '#/' + id + (skill ? '/' + skill : '') : '');
@@ -398,7 +550,15 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
     return list.filter(alphabet => alphabet.numbers.includes(Number(number)));
   }
 
-  globalThis.ProfileAlphabetCatalog = { path, list, index, examHref, href, forNumber, safeBack };
+  function forOfficial(number) {
+    return forNumber(legacyNumber(globalThis.ProfileExamMap?.get(number)));
+  }
+
+  function officialHref(id = '', skill = '', number, back = '', base = path) {
+    return href(id, skill, { kind: 'fipi', entry: globalThis.ProfileExamMap?.get(number) }, back, base);
+  }
+
+  globalThis.ProfileAlphabetCatalog = { path, list, index, examHref, href, forNumber, safeBack, displayLabel, readContext, forOfficial, officialHref };
 })();
 
 </script>
@@ -919,7 +1079,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
 
   const views = {
     'coordinate-box': ['Из вершины O ребро OA идёт вдоль оси x, OB вдоль оси y, OC вдоль оси z. P прямо над A. Q — верхняя вершина, противоположная O.',
-      '<path d="M48 102H148L190 72H90ZM48 102V40H148L190 10H90L48 40M148 40V102M190 72V10M90 10V72"/><path class="accent-edge" d="M148 102H162M90 72l16-11M48 40V27"/><text x="32" y="115">O</text><text x="144" y="121">A</text><text x="90" y="92">B</text><text x="30" y="42">C</text><text x="151" y="37">P</text><text x="194" y="17">Q</text><text x="164" y="107">x</text><text x="109" y="67">y</text><text x="44" y="22">z</text>'],
+      '<path d="M48 102H148L190 72H90ZM48 102V40H148L190 10H90L48 40M148 40V102M190 72V10M90 10V72"/><path class="accent-edge" d="M148 102H162M90 72l16-11M48 40V27"/><text x="32" y="115">O</text><text x="144" y="121">A</text><text x="90" y="92">B</text><text x="30" y="42">C</text><text x="138" y="34">P</text><text x="194" y="17">Q</text><text x="164" y="107">x</text><text x="109" y="67">y</text><text x="44" y="22">z</text>'],
     box: ['Прямоугольный параллелепипед. Нижняя грань ABCD, верхняя A₁B₁C₁D₁.',
       '<path class="hidden-edge" d="M44 105 79 76H203M79 76V26"/><path d="M44 105H169L203 76V26H79L44 55ZM44 55H169L203 26M169 55V105"/><text x="26" y="118">A</text><text x="174" y="120">B</text><text x="207" y="84">C</text><text x="67" y="73">D</text><text x="23" y="56">A₁</text><text x="152" y="52">B₁</text><text x="205" y="23">C₁</text><text x="61" y="21">D₁</text>'],
     triangle: ['Треугольник ABC с высотой AH к основанию BC.',
@@ -935,7 +1095,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
   globalThis.ProfileAlphabetDiagram = id => {
     if (!Object.hasOwn(views, id)) return '';
     const [label, drawing] = views[id];
-    return '<svg class="alphabet-diagram" role="img" aria-label="' + label + '" viewBox="0 0 230 128">' + drawing + '</svg>';
+    return '<svg class="alphabet-diagram az-diagram" role="img" aria-label="' + label + '" viewBox="0 0 230 128">' + drawing + '</svg>';
   };
 })();
 
@@ -1228,7 +1388,9 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
   try { storage = localStorage; } catch { /* The page can still be used for the current session. */ }
   const store = engine.create(storage);
   const params = new URLSearchParams(location.search);
-  const number = Number(params.get('exam'));
+  const context = catalog.readContext(params);
+  const number = context.number;
+  const contextLabel = context.kind !== 'legacy' && context.entry ? globalThis.ProfileExamMap.label(context.entry) : catalog.displayLabel(number);
   const back = catalog.safeBack(params.get('back'));
   const inCabinet = Boolean(site);
   const teacher = inCabinet && params.get('mode') === 'teacher';
@@ -1240,7 +1402,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
   const escape = value => String(value ?? '').replace(/[&<>"']/g, letter =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[letter]);
   const linkTo = (id, skill) => {
-    const url = new URL(catalog.href(id, skill, number, back, base), location.href);
+    const url = new URL(catalog.href(id, skill, context, back, base), location.href);
     if (teacher) url.searchParams.set('mode', 'teacher');
     return url.protocol === 'file:' ? url.href : url.pathname + url.search + url.hash;
   };
@@ -1270,7 +1432,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
   function returnLinks(alphabet) {
     const selected = alphabet?.numbers.includes(number) ? number : null;
     const returnLink = back ? '<a class="az-button secondary" href="' + escape(site + back) + '">Вернуться к исходному заданию</a>' :
-      selected ? '<a class="az-button secondary" href="' + examLink(selected) + '">Вернуться к №' + selected + '</a>' : '';
+      selected ? '<a class="az-button secondary" href="' + examLink(selected) + '">Вернуться: ' + catalog.displayLabel(selected) + '</a>' : '';
     return '<nav class="az-navigation" aria-label="Навигация по теме">' +
       '<a href="' + escape(linkTo('')) + '">← К списку тем</a>' +
       (alphabet && location.hash.split('/').length === 3 ? '<a href="' + escape(linkTo(alphabet.id)) + '">К навыкам темы</a>' : '') +
@@ -1288,8 +1450,8 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
   }
 
   function resources(alphabet) {
-    return '<section class="az-panel az-resources"><h2>Задачи ЕГЭ</h2><div class="az-numbers">' +
-      alphabet.numbers.map(n => '<a href="' + examLink(n) + '">№' + n + '</a>').join('') +
+    return '<section class="az-panel az-resources"><h2>Подготовка к экзамену и дополнительные темы</h2><div class="az-numbers">' +
+      alphabet.numbers.map(n => '<a href="' + examLink(n) + '">' + catalog.displayLabel(n) + '</a>').join('') +
       '</div><h2>Материалы MathExam</h2><ul>' +
       alphabet.refs.map(([label, url]) => '<li><a href="' + site + url + '">' + label + '</a></li>').join('') +
       '</ul></section>';
@@ -1311,22 +1473,22 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
     const target = nextId ? linkTo(alphabet.id, nextId) : alphabet.next ?
       linkTo(alphabet.next) : examLink(alphabet.numbers[0]);
     const label = nextId ? 'Следующий шаг' : alphabet.next ? 'К методам решения задач с параметром' :
-      'К экзаменационным задачам №' + alphabet.numbers[0];
+      'К подготовке: ' + catalog.displayLabel(alphabet.numbers[0]);
     return '<a class="az-button primary" href="' + escape(target) + '">' + label + '</a>';
   }
 
   function renderCatalog() {
     const selected = catalog.forNumber(number);
-    const title = selected.length ? 'Основы для №' + number : 'Основы и методы';
+    const title = selected.length ? context.entry?.number == null ? 'Основы: ' + (context.entry?.title || contextLabel) : 'Основы для ' + contextLabel : 'Основы и методы';
     main.innerHTML = (selected.length ? '<nav class="az-navigation" aria-label="Навигация по теме"><a href="' +
-      escape(base) + '">← Все темы</a><a class="az-button secondary" href="' + examLink(number) + '">К заданию №' +
-      number + '</a></nav>' : '') + '<p class="az-kicker">ЕГЭ профиль · 2027</p><h1>' + title + '</h1>' +
+      escape(base) + '">← Все темы</a><a class="az-button secondary" href="' + examLink(number) + '">К подготовке: ' +
+      contextLabel + '</a></nav>' : '') + '<p class="az-kicker">ЕГЭ профиль · 2027</p><h1>' + title + '</h1>' +
       '<p class="az-lead">Разбери один приём, проверь себя на другом примере и переходи к задачам ЕГЭ.</p>' +
       '<div class="az-catalog">' + (selected.length ? selected : catalog.list).map(alphabet => {
         const total = Object.keys(alphabet.skills).length;
         const count = Object.keys(alphabet.skills).filter(id => statusOf(alphabet.id, id) === 'verified').length;
         return '<a class="az-panel az-card" href="' + escape(linkTo(alphabet.id)) + '"><span class="az-kicker">' +
-          alphabet.numbers.map(n => '№' + n).join(' · ') + '</span><h2>' + alphabet.title + '</h2><p>' +
+          alphabet.numbers.map(catalog.displayLabel).join(' · ') + '</span><h2>' + alphabet.title + '</h2><p>' +
           alphabet.description + '</p><span class="az-count">Самостоятельно: ' + count + ' из ' + total + '</span></a>';
       }).join('') + '</div>';
   }
@@ -1475,7 +1637,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
     const tips = assisted ? '<p class="az-hint">' + [...help].map(field => graph.hints[Number(field) - 1]).join(' ') + '</p>' : '';
     const label = assisted ? 'Вернуться к своему условию' : task ? 'К самостоятельному условию' : 'К условиям темы';
     main.innerHTML = '<nav class="az-navigation" aria-label="Навигация по теме"><a href="' + examLink(19) +
-      '">← Задачи №19</a></nav><h1>' + graph.title + '</h1><p class="az-lead">' + graph.prompt + '</p>' +
+      '">← Задачи №18</a></nav><h1>' + graph.title + '</h1><p class="az-lead">' + graph.prompt + '</p>' +
       tips + '<div data-az-atlas></div><div class="az-actions"><a class="az-button primary" href="' + escape(back) +
       '">' + label + '</a><a href="' + escape(catalog.href('function-atlas', '', 19)) + '">Полный атлас функций</a></div>';
     globalThis.ProfileFunctionAtlas.mount(main.querySelector('[data-az-atlas]'), key);

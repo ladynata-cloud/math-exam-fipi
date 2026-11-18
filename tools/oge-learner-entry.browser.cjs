@@ -11,6 +11,102 @@ for(const file of Object.keys(courseParents)){
 }
 const report={pages:[],cases:[]};let server,base=process.env.OGE_ENTRY_BASE_URL;
 const types={'.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml'};
+
+async function checkPracticeRoute(page, width) {
+ const variant = base + '/trainers/oge-2027-analogue-1.html';
+ await page.goto(variant + '#task-9');
+ await page.locator('#answer-9').fill('999');
+ await page.locator('#variant-results summary').click();
+ const check = page.getByRole('button', {name:'Проверить часть 1', exact:true});
+ await check.click();
+ await check.click();
+ const practice = page.locator('#practice-list li');
+ assert.equal(await practice.count(), 1, 'Only the attempted task needs practice');
+ assert.match(await practice.first().textContent(), /Неверный ответ/);
+ assert.match(await page.locator('#feedback-9').textContent(), /Неверных попыток: 1\./);
+ assert.equal(await page.locator('#score-part1').textContent(), '0');
+ const link = practice.first().getByRole('link');
+ const box = await link.boundingBox();
+ assert(box && box.x >= 0 && box.x + box.width <= width + 1 && box.height >= 44, 'Practice link fits');
+ await link.focus();
+ await link.press('Enter');
+ await page.waitForURL(base + '/oge/skills/?topic=n9');
+ assert.equal((await page.locator('main').count()), 1, 'The existing skill course opens');
+ await page.goto(variant + '#task-9');
+ assert.equal(await page.locator('#answer-9').inputValue(), '999', 'An answer survives the practice visit');
+ await page.locator('#answer-9').fill('-7');
+ await page.locator('#variant-results summary').click();
+ await check.click();
+ assert.equal(await practice.count(), 0, 'Independent correct answers need no recommendation');
+ await page.goto(variant + '#task-22');
+ await page.locator('#work-22').fill('Построение и пересечения');
+ assert.equal(await practice.count(), 0, 'Writing a draft does not grade it');
+ await page.locator('#mode-summary').click();
+ await page.locator('#mode-review').click();
+ await page.locator('#task-22 .rubric-details summary').click();
+ await page.locator('#manual-22').selectOption('1');
+ assert.match(await practice.first().textContent(), /Ручная оценка 1 из 2/);
+ assert.equal(await practice.first().getByRole('link').getAttribute('href'), '/oge/skills/?topic=n22');
+ await page.reload();
+ assert.equal(await page.locator('#work-22').inputValue(), 'Построение и пересечения');
+ assert.equal(await page.locator('#score-manual').textContent(), '1');
+ await page.goto(variant + '#task-11');
+ await page.locator('#task-11 [data-action="hint"]').click();
+ await page.locator('#answer-11').fill('231');
+ await page.locator('#task-11 [data-action="check"]').click();
+ assert.equal(await practice.count(), 2, 'A correct assisted answer still leads to practice');
+ assert.match(await practice.first().textContent(), /Решено с подсказкой/);
+ assert.equal(await page.locator('#score-assisted').textContent(), '1');
+ report.cases.push({width,case:'exam results lead to practice with preserved work and manual grading',status:'PASS'});
+}
+
+async function checkFractionHintReturn(page, width) {
+ const exercise = base + '/trainers/oge-task6-fractions.html';
+ // The native card is parsed before this deferred restoration script. Exercise
+ // a slow response explicitly: a committed navigation is not a loaded page.
+ const adapterPattern = base + '/assets/oge-fractions-return.js*';
+ const delayedAdapter = async route => {
+  await new Promise(resolve => setTimeout(resolve, 250));
+  await route.continue();
+ };
+ await page.route(adapterPattern, delayedAdapter);
+ await page.goto(exercise);
+ await page.locator('#hintToggle').click();
+ await page.locator('#stepAnswer').fill(await page.evaluate(() => {
+  const [n,d] = hintSession().plan.steps[0].expected;
+  return `${n}/${d}`;
+ }));
+ await page.locator('#stepCheck').click();
+ const earlierSteps = await page.locator('#hintSteps').innerText();
+ const prompt = await page.locator('#stepPrompt').innerText();
+ assert(earlierSteps.trim(), 'The first step was actually accepted');
+ await page.locator('#ans').fill('5/');
+ await page.locator('#stepAnswer').fill('17/');
+ await page.locator('#stepHelpToggle').click();
+ const originalProgress = await page.evaluate(() => localStorage.getItem('mathExam.oge6.practice.v1'));
+ await page.locator('#settings > summary').click();
+ await page.getByRole('link', {name:'Потренировать общий знаменатель', exact:true}).click();
+ await page.getByRole('link', {name:'← Вернуться к задаче ОГЭ №6', exact:true}).click();
+ await page.waitForLoadState('load');
+ assert(await page.locator('#hintPanel').isVisible(), 'The original hint opens on return');
+ assert(await page.locator('#stepLab').isVisible(), 'The current investigation remains open');
+ assert.equal(await page.locator('#hintSteps').innerText(), earlierSteps);
+ assert.equal(await page.locator('#stepPrompt').innerText(), prompt);
+ assert.equal(await page.locator('#stepAnswer').inputValue(), '17/');
+ assert.equal(await page.locator('#ans').inputValue(), '5/');
+ assert.equal(await page.evaluate(() => localStorage.getItem('mathExam.oge6.practice.v1')), originalProgress);
+
+ await page.locator('#stepAnswer').fill('18/');
+ await page.locator('#settings > summary').click();
+ await page.getByRole('link', {name:'Повторить смысл дроби', exact:true}).click();
+ await page.goBack();
+ assert(await page.locator('#hintPanel').isVisible(), 'The browser Back button also restores the hint');
+ assert.equal(await page.locator('#stepPrompt').innerText(), prompt);
+ assert.equal(await page.locator('#stepAnswer').inputValue(), '18/');
+ await page.unroute(adapterPattern, delayedAdapter);
+ report.cases.push({width,case:'fraction support returns to the open step and both unsent answers',status:'PASS'});
+}
+
 (async()=>{let browser;try{
  if(!base){server=http.createServer((req,res)=>{try{const u=new URL(req.url,'http://local');let file=path.resolve(root,'.'+decodeURIComponent(u.pathname));assert(file.startsWith(root+path.sep)||file===root);if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res);}catch{res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));base='http://127.0.0.1:'+server.address().port;}
  browser=await chromium.launch({headless:true});
@@ -83,12 +179,17 @@ const types={'.html':'text/html; charset=utf-8','.js':'application/javascript','
   await page.getByRole('link',{name:'К развёрнутым решениям →',exact:true}).click();await page.waitForURL(base+'/trainers/oge-course/#part2');
   await page.getByRole('link',{name:'Проверить себя: интерактивный вариант',exact:true}).click();await page.waitForURL(base+'/trainers/oge-2027-analogue-1.html');
   report.cases.push({width,case:'three learner starts, instructions and complete interactive variant',status:'PASS'});
+  await checkPracticeRoute(page, width);
+  await checkFractionHintReturn(page, width);
   // Embedded exercise must leave return control to its board/cabinet host.
   await page.goto(base+'/trainers/task19-trainer.html?board=1');assert(!await page.locator('nav.oge-wayfinding').isVisible());
   await page.goto(base+'/trainers/task19-trainer.html');await page.evaluate(()=>{const frame=document.createElement('iframe');frame.src='/trainers/oge-task6-fractions.html';document.body.append(frame);});
   await page.frameLocator('iframe').locator('nav.oge-wayfinding[hidden]').waitFor({state:'attached'});
   report.cases.push({width,case:'board and embedded navigation preserved',status:'PASS'});await context.close();
  }
+ const phone = await browser.newContext({viewport:{width:390,height:900},reducedMotion:'reduce'});
+ await checkPracticeRoute(await phone.newPage(), 390);
+ await phone.close();
  const nojs=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}}),page=await nojs.newPage();
  for(const file of routes.wayfinding){await page.goto(base+'/'+file);assert(await page.getByRole('link',{name:'← Все темы ОГЭ',exact:true}).isVisible(),file+' no-JS return');}
  await page.getByRole('link',{name:'← Все темы ОГЭ',exact:true}).click();await page.waitForURL(base+'/trainers/oge-course/');

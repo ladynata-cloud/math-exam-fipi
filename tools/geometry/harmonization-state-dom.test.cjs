@@ -57,3 +57,21 @@ test('a stale successful answer cannot award credit after another tab used help 
 test('equal timestamps do not hide external work after a quota failure',()=>{
  const frozen={now:()=>1000},shared=storage(),a=store(shared,['segments'],frozen),b=store(shared,['segments'],frozen),x=a.s.get('segments'),y=b.s.get('segments');a.backend.setWriteFailure(true);x.written='local first';a.s.put('segments',x);assert.equal(x.updated,1000);a.backend.setWriteFailure(false);y.written='remote new';b.s.put('segments',y);assert.equal(JSON.parse(shared.data.get(KEY)).units.segments.updated,1000);x.written='local second';const result=a.s.put('segments',x),disk=JSON.parse(shared.data.get(KEY)).units.segments;assert.equal(result._conflict,true);assert.equal(disk.written,'remote new');assert(disk.recoveries.some(r=>r.written==='local first'));assert(disk.recoveries.some(r=>r.written==='local second'));assert.equal(disk.updated,1001);
 });
+
+test('current angle notation survives harmonization with classified answers and retained proof work',async()=>{
+ const f=dom('angles',{stage:0,seed:4,proofDone:['s1'],proof:true,written:'Прежнее доказательство биссектрисы.',complete:true});
+ const settle=()=>new Promise(resolve=>f.w.setTimeout(resolve,0));
+ try{
+  await settle();assert(f.q('#angle-notation'));assert(f.q('.retained-work'));assert.equal(f.q('#angle-reverse').hidden,true);
+  f.click('[data-angle-point="A"]');assert.match(f.q('#angle-notation-feedback').textContent,/общее начало/);
+  f.click('[data-angle-point="B"]');f.click('[data-angle-side="BD"]');assert.match(f.q('#angle-notation-feedback').textContent,/краю отмеченной дуги/);
+  f.click('[data-angle-side="BC"]');f.click('[data-angle-side="BA"]');assert.equal(f.q('#angle-reverse').hidden,false);
+  f.stage(1);await settle();assert(f.q('.topic-investigation'));assert.equal(f.q('.topic-investigation').dataset.topic,'angles');
+  f.stage(3);await settle();assert.equal(f.q('label[for="answer"]').textContent,'Название угла');assert(f.q('.angle-task-drawing svg'));
+  const before=f.state();answer(f,'');await settle();assert.equal(f.state().errors,before.errors);assert.equal(f.state().taskStep,0);
+  answer(f,'∠ACD');await settle();assert.equal(f.state().taskStep,0);assert.match(f.q('#answer-feedback').textContent,/внешних луча/);
+  answer(f,'∠ВСА');await settle();assert.equal(f.state().taskStep,1);assert.equal(f.q('label[for="answer"]').textContent,'Градусная мера');
+  const t=f.w.GeoTasks.task('angle',f.state().seed);answer(f,f.w.GeoTasks.format(t.answer)+'°');await settle();assert.equal(f.state().guided,true);
+  assert.equal(f.state().retainedProof.written,'Прежнее доказательство биссектрисы.');assert.deepEqual(f.errors,[]);
+ }finally{f.close();}
+});
