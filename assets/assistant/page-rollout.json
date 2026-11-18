@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "29ae6e0aba869ab3de0380c2a43af7a9fe86fda8",
+  "baseSha": "95ee4b197171fd84fd0fe7198e62f47ebc34a328",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -6116,6 +6116,13 @@
       "changedPaths": [
         "ege-profil/start/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "29ae6e0aba869ab3de0380c2a43af7a9fe86fda8",
+      "sourceBaseSha": "95ee4b197171fd84fd0fe7198e62f47ebc34a328",
+      "task": "docs/tasks/PROFILE_VECTOR_OPPOSITES_20261117.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
