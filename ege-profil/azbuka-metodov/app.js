@@ -90,9 +90,17 @@
   }
 
   function routeContinuation(alphabet, current) {
-    if (!alphabet.route) return '';
+    if (!alphabet.route && !alphabet.practiceAfterSkills) return '';
     const ids = Object.keys(alphabet.skills);
-    const nextId = ids[ids.indexOf(current) + 1];
+    const index = ids.indexOf(current);
+    if (alphabet.practiceAfterSkills) {
+      const otherSkills = ids.slice(index + 1).concat(ids.slice(0, index));
+      const next = otherSkills.find(id => engine.question(store.read(keyFor(alphabet.id, id)), lessons[alphabet.id][id]));
+      const href = next ? linkTo(alphabet.id, next) : site + alphabet.practiceAfterSkills.href;
+      const label = next ? alphabet.skills[next].title : alphabet.practiceAfterSkills.label;
+      return '<a class="az-button primary" href="' + escape(href) + '">' + escape(label) + '</a>';
+    }
+    const nextId = ids[index + 1];
     const target = nextId ? linkTo(alphabet.id, nextId) : alphabet.next ?
       linkTo(alphabet.next) : examLink(alphabet.numbers[0]);
     const label = nextId ? 'Следующий шаг' : alphabet.next ? 'К методам решения задач с параметром' :

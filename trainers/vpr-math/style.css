@@ -108,3 +108,32 @@
   font-weight: 700;
 }
 .motion-next { margin: .55rem 0 1rem; }
+
+/* Geometry is read from the drawing to the question on every screen. */
+figure.diagram {
+  display: block;
+  margin: 0;
+}
+figure.diagram svg {
+  width: 100%;
+  margin-inline: auto;
+}
+.diagram + .task-prompt, .worked-example .diagram + p {
+  margin-top: 12px;
+}
+.task-prompt + .task-top {
+  margin: 10px 0 0;
+}
+.task-prompt + .diagram {
+  margin-top: 12px;
+}
+.diagram:not(.constructed) [data-construction] {
+  display: none;
+}
+.diagram figcaption {
+  padding: 3px 14px 9px;
+  font-size: .94rem;
+  line-height: 1.4;
+  color: var(--ink);
+  text-align: center;
+}

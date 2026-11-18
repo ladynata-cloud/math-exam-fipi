@@ -1,7 +1,45 @@
 (function () {
 'use strict';
-const D=window.PetersonCourse,M=window.PetersonMath,main=document.getElementById('main');
-if(!D||!M){main.innerHTML='<h1>Не все файлы курса загрузились</h1><p>Обнови страницу, чтобы открыть курс.</p>';return;}
+const main=document.getElementById('main');
+let loading=false;
+function missingAssets(){
+ const math=window.PetersonMath,lessons=window.PetersonCourse?.lessons,missing=[];
+ const expected=['letter-product','unlike-fraction-subtract','decimal-place-subtract'];
+ if(!Array.isArray(math?.skills)||!expected.every(id=>math.skills.some(skill=>skill.id===id)))
+  missing.push('math.js?v=p5-transfer-20261118');
+ const mapped=new Set();
+ for(const lesson of Array.isArray(lessons)?lessons:[]){
+  for(const task of lesson.tasks||[]){
+   if([1,2,3].includes(task.transfer?.level))mapped.add(task.transfer.skill);
+  }
+ }
+ if(!expected.every(id=>mapped.has(id)))
+  missing.push('data.js?v=p5-transfer-20261118');
+ return missing;
+}
+function loadScript(src){
+ return new Promise(resolve=>{
+  const script=document.createElement('script');
+  script.src=src;
+  script.onload=script.onerror=()=>{script.remove();resolve();};
+  document.head.appendChild(script);
+ });
+}
+function openCourse(){
+ if(loading||window.PetersonApp)return;
+ const missing=missingAssets();
+ if(!missing.length){startCourse();return;}
+ loading=true;
+ main.innerHTML='<h1>Загружаем задания</h1><p role="status">Курс обновляется.</p>';
+ Promise.allSettled(missing.map(loadScript)).then(()=>{
+  loading=false;
+  if(!missingAssets().length){startCourse();return;}
+  main.innerHTML='<h1>Не удалось загрузить обновление курса</h1><p>Проверь подключение к интернету и попробуй ещё раз. Сохранённые ответы останутся в этом браузере.</p><button type="button" id="retry-course-assets">Повторить загрузку</button>';
+  document.getElementById('retry-course-assets').onclick=openCourse;
+ });
+}
+function startCourse(){
+const D=window.PetersonCourse,M=window.PetersonMath;
 const KEY='mathexam.peterson5.v1', blank=()=>({version:1,tasks:{},practice:{},last:null,origin:null});
 let state=blank(),writable=true,active=null,cleanup=null;
 const e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -20,7 +58,9 @@ const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])),skills=Object.fromEntr
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
 function boundedModel(raw){if(!record(raw))return {};const out={};for(const [k,v]of Object.entries(raw).slice(0,30)){if(!/^[a-zA-Z][\w-]{0,40}$/.test(k)||['constructor','prototype','__proto__'].includes(k))continue;if(typeof v==='number'&&Number.isFinite(v)&&Math.abs(v)<=1e9)out[k]=v;else if(typeof v==='string')out[k]=v.slice(0,300);else if(typeof v==='boolean')out[k]=v;}return out;}
 function fresh(){return {value:'',values:[],step:0,revealed:0,guided:false,assisted:false,hint:false,stepHints:{},reveals:{},attempts:0,correct:false,independent:false,reviewed:false,note:'',feedback:'',signature:'',repeated:false,completion:null,model:{},firstErrors:{steps:{}}};}
-function taskSignature(t){return t.prompt+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
+function taskSignature(t){
+ if(t.transfer?.skill==='letter-product'||t.skills?.[0]==='letter-product')return 'letter-product:'+t.answer;
+ return t.prompt+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
 function resolveTask(id){if(Object.prototype.hasOwnProperty.call(taskById,id))return taskById[id];const m=/^practice:([a-z-]+):([123]):(\d+)$/.exec(id);if(!m||!skills[m[1]])return null;const seed=Number(m[3]);if(!Number.isSafeInteger(seed)||seed<1||seed>=1000000)return null;try{const t=M.generate(m[1],seed,Number(m[2]));t.id=id;return t;}catch(_){return null;}}
 function check(user,q){if(!q||typeof q==='string'||q.kind==='manual')return false;if(q.kind==='choice'||q.kind==='comparison')return user.trim()===String(q.answer).trim();return M.check(user,q.answer,q.answerFormat);}
 
@@ -72,7 +112,12 @@ function warn(msg){const el=document.getElementById('storage-warning');el.hidden
 try{const raw=localStorage.getItem(KEY);if(raw)state=sanitizeState(JSON.parse(raw));}catch(_){writable=false;warn('Не удалось прочитать сохранение. Оно не перезаписано. Текущую работу можно скачать в разделе результатов.');}
 function save(){if(!writable)return;try{localStorage.setItem(KEY,JSON.stringify(state));}catch(_){writable=false;warn('Браузер не смог сохранить работу. Скачай результаты перед закрытием страницы.');}}
 function ts(id){if(!state.tasks[id])state.tasks[id]=fresh();return state.tasks[id];}
-function markAssisted(s){if(!s.correct)s.assisted=true;}
+function markAssisted(s){
+ if(s.correct||s.assisted)return;
+ s.assisted=true;
+ const slot=document.getElementById('transfer-action');
+ if(slot&&active?.task.transfer)slot.innerHTML=transferButton(active.task,s);
+}
 function button(label,action,extra='',quiet=false){return '<button type="button" data-action="'+action+'" '+extra+(quiet?' class="quiet"':'')+'>'+label+'</button>';}
 function go(hash){if(location.hash===hash)route();else location.hash=hash;}
 function count(l){return l.tasks.filter(t=>ts(t.id).correct).length;}
@@ -106,12 +151,23 @@ function practiceView(id,level){
  document.getElementById('level').value=level;document.getElementById('level').onchange=ev=>go('#practice/'+id+'/'+ev.target.value);renderProblem();
 }
 function inputNote(t){return {'canonical-decimal':'Убери лишние нули слева от целой части и справа от дробной. Введи десятичную запись.','decimal':'Введи десятичную дробь с запятой или точкой.','reduced-fraction':'Введи несократимую дробь, например 3/4, или целое число.','improper-fraction':'Введи неправильную дробь, например 7/3.','mixed-number':'Введи смешанное число с пробелом: 2 1/3.','integer':'Введи целое число.'}[t.answerFormat]||'Можно ввести 3/4, 0,75 или 2 1/3. Единицы измерения не вводи.';}
+function transferButton(t,s){
+ if(t.transfer&&s.assisted&&!s.independent){
+  return '<div class="independent-check">'+button('Решить похожий пример самостоятельно','independent-check')+
+   '<p class="small">'+e(skills[t.transfer.skill].title)+'. Твои записи к этой задаче сохранятся.</p></div>';
+ }
+ if(!s.correct||s.independent)return '';
+ if(active.practice)return '<div class="independent-check">'+button('Проверить себя на новом примере','independent-check')+'</div>';
+ const skill=(t.skills||[]).find(id=>skills[id]);
+ return skill?'<div class="independent-check">'+button('Потренировать отдельный навык','independent-check')+
+  '<p class="small">'+e(skills[skill].title)+'.</p></div>':'';
+}
 function renderProblem(){
  if(!active)return;const t=active.task,s=ts(t.id),host=document.getElementById('problem');
  if(active.lesson)main.querySelectorAll('.side-list [data-index]').forEach(el=>{const q=ts(active.lesson.tasks[Number(el.dataset.index)].id);el.querySelector('.status').textContent=q.correct?'✓':q.reviewed?'•':'';});
  const manual=t.kind==='manual',label=t.finalLabel||(t.kind==='choice'?'Выбери верный ответ на вопрос задачи.':'Чему равен результат? Введи число.');
  const answer=manual?'<section class="manual-work"><h3>Запиши рассуждение</h3><p>Выполни задание в тетради или в записях ниже. Затем сверь шаги и покажи решение учителю.</p>'+button(s.reviewed?'Самопроверка отмечена':'Я записал и сверил решение','reviewed','',true)+'<p class="small">Самопроверка сохраняется отдельно. Автоматической оценки доказательства здесь нет.</p></section>':'<form class="answer-form" id="answer-form"><label '+(t.kind==='choice'?'':'for="final-answer"')+'>'+fmt(label)+'</label>'+(t.kind==='choice'?'<div class="choices" role="group" aria-label="Варианты ответа">'+t.choices.map((v,i)=>'<button type="button" data-action="choice" data-choice="'+i+'" class="'+(s.value===v?'selected':'')+'" aria-pressed="'+(s.value===v)+'">'+fmt(v)+'</button>').join('')+'</div><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button>':'<p class="small">'+e(inputNote(t))+'</p><div class="answer-controls"><input id="final-answer" name="final-answer" type="text" autocomplete="off" spellcheck="false" maxlength="200" value="'+e(s.value)+'" '+(s.correct?'readonly':'')+'><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button></div><div id="answer-preview" class="answer-preview small" aria-live="polite"></div>')+'</form>';
- host.innerHTML='<article class="problem"><div class="task-heading"><h2>'+e(t.title)+'</h2><span class="tag">'+(s.correct?s.independent?'Самостоятельно':'С помощью / после попыток':s.reviewed?'Самопроверка записана':'Твоя задача')+'</span></div>'+(t.source?'<p class="source-note">'+e(t.source.type==='textbook'?'К задаче '+t.source.reference+' · часть '+(t.source.part||active.lesson?.part)+' · с. '+t.source.page:'Авторский пример по теме учебника')+'</p>':'')+'<div class="prompt">'+fmt(t.prompt)+'</div><div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+((t.steps||[]).length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило темы.')+'</p></div>':'')+(s.guided?renderSteps(t,s):'')+answer+firstErrorsHTML(t,s)+'<div class="feedback '+(s.feedback&&!s.correct?'error':'')+'" role="status">'+e(s.feedback)+'</div>'+(s.correct?'<div class="feedback"><strong>'+(s.independent?'Верно, самостоятельно.':'Верно. Теперь закрепи навык на новом примере.')+'</strong><p>'+fmt(t.explanation||'')+'</p></div>':'')+(s.correct&&!s.independent&&(active.practice||(t.skills||[]).some(id=>skills[id]))?'<div class="independent-check">'+button('Проверить себя на новом примере','independent-check')+'<p class="small">Разбор сохранён. Новая попытка проверяет навык без открытых подсказок.</p></div>':'')+((t.skills||[]).length?'<section class="detour"><h3>С вычислением нужна помощь?</h3><p class="small">Потренируй отдельное действие. Затем вернись к этому же условию и записям.</p><div class="row">'+skillLinks(t.skills)+'</div></section>':'')+'<details '+(s.note||manual?'open':'')+'><summary>Мои записи к задаче</summary><label class="small" for="notebook">'+(manual?'Запиши рассуждение или укажи, что решение находится в тетради.':'Сохраняются вместе с этой задачей.')+'</label><textarea id="notebook" maxlength="15000" placeholder="Мои вычисления и рассуждения">'+e(s.note)+'</textarea></details></article>';
+ host.innerHTML='<article class="problem"><div class="task-heading"><h2>'+e(t.title)+'</h2><span class="tag">'+(s.correct?s.independent?'Самостоятельно':'С помощью / после попыток':s.reviewed?'Самопроверка записана':'Твоя задача')+'</span></div>'+(t.source?'<p class="source-note">'+e(t.source.type==='textbook'?'К задаче '+t.source.reference+' · часть '+(t.source.part||active.lesson?.part)+' · с. '+t.source.page:'Авторский пример по теме учебника')+'</p>':'')+'<div class="prompt">'+fmt(t.prompt)+'</div><div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+((t.steps||[]).length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило темы.')+'</p></div>':'')+(s.guided?renderSteps(t,s):'')+answer+firstErrorsHTML(t,s)+'<div class="feedback '+(s.feedback&&!s.correct?'error':'')+'" role="status">'+e(s.feedback)+'</div>'+(s.correct?'<div class="feedback"><strong>'+(s.independent?'Верно, самостоятельно.':'Верно. Теперь закрепи навык на новом примере.')+'</strong><p>'+fmt(t.explanation||'')+'</p></div>':'')+'<div id="transfer-action">'+transferButton(t,s)+'</div>'+((t.skills||[]).length?'<section class="detour"><h3>С вычислением нужна помощь?</h3><p class="small">Потренируй отдельное действие. Затем вернись к этому же условию и записям.</p><div class="row">'+skillLinks(t.skills)+'</div></section>':'')+'<details '+(s.note||manual?'open':'')+'><summary>Мои записи к задаче</summary><label class="small" for="notebook">'+(manual?'Запиши рассуждение или укажи, что решение находится в тетради.':'Сохраняются вместе с этой задачей.')+'</label><textarea id="notebook" maxlength="15000" placeholder="Мои вычисления и рассуждения">'+e(s.note)+'</textarea></details></article>';
  const form=document.getElementById('answer-form');if(form)form.onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{if(s.correct)return;s.value=inp.value.slice(0,200);save();preview(inp.value);};preview(inp.value);}
  document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);if(!s.note.trim())s.reviewed=false;save();};
  host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,200);save();};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});
@@ -138,13 +194,34 @@ function progress(){
 function download(){const blob=new Blob([JSON.stringify({course:'peterson5',exportedAt:new Date().toISOString(),state},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Peterson5-progress.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function hasRecordedWork(s){return !!s&&(!!s.value||!!s.note||s.step>0||s.revealed>0||s.attempts>0||s.correct||s.reviewed||s.assisted||s.guided||s.hint||(s.values||[]).some(Boolean)||Object.keys(s.stepHints||{}).length>0||Object.keys(s.reveals||{}).length>0||Object.keys(s.model||{}).length>0||s.firstErrors?.final||Object.keys(s.firstErrors?.steps||{}).length>0);}
 async function importState(ev){const file=ev.target.files[0],status=document.getElementById('import-status');if(!file)return;try{if(file.size>5000000)throw Error('Файл слишком большой.');const data=JSON.parse(await file.text());if(data.course!=='peterson5')throw Error('Это не сохранение данного курса.');const incoming=sanitizeState(data.state);for(const [id,s]of Object.entries(incoming.tasks)){const current=state.tasks[id];if(!hasRecordedWork(current))state.tasks[id]=s;}for(const [key,p]of Object.entries(incoming.practice))state.practice[key]={seed:Math.max(p.seed,state.practice[key]?.seed||1)};state=sanitizeState(state);save();progress();document.getElementById('import-status').textContent='Добавлены задания, к которым здесь ещё нет записей. Текущие ответы, шаги и черновики сохранены.';}catch(err){status.textContent='Не удалось открыть: '+err.message;}}
-function newPractice(){const used=new Set(Object.values(state.tasks).map(s=>s.signature).filter(Boolean));let seed=state.practice[active.key].seed;for(let i=0;i<1000&&seed<999999;i++){seed++;const t=M.generate(active.skill,seed,active.level);if(!used.has(taskSignature(t))){state.practice[active.key].seed=seed;save();practiceView(active.skill,active.level);return;}}ts(active.task.id).feedback='В этой подборке пока не нашёлся новый пример. Выбери другую сложность или навык.';renderProblem();}
-
+function nextPracticeSeed(id,level,source){
+ const used=new Set(Object.values(state.tasks).map(s=>s.signature).filter(Boolean));
+ if(source)used.add(taskSignature(source));
+ let seed=state.practice[id+':'+level]?.seed||0;
+ for(let i=0;i<1000&&seed<999999;i++){
+  const task=M.generate(id,++seed,level);
+  if(used.has(taskSignature(task)))continue;
+  // A different wording can still expose the same answer that was just shown in the source.
+  if(source?.transfer?.skill===id&&(task.answer===source.answer||M.equal(task.answer,source.answer)))continue;
+  return seed;
+ }
+ return null;
+}
+function newPractice(){
+ const [,lesson,index]=state.origin?.hash.split('/')||[];
+ const seed=nextPracticeSeed(active.skill,active.level,byId[lesson]?.tasks[index]);
+ if(seed){state.practice[active.key].seed=seed;save();practiceView(active.skill,active.level);return;}
+ ts(active.task.id).feedback='В этой подборке пока не нашёлся новый пример. Выбери другую сложность или навык.';renderProblem();
+}
 function independentCheck(){
  if(!active)return;if(active.practice){newPractice();return;}
- const id=(active.task.skills||[]).find(id=>skills[id]);if(!id)return;
- const key=id+':1',used=new Set(Object.values(state.tasks).map(s=>s.signature).filter(Boolean));used.add(taskSignature(active.task));let seed=state.practice[key]?.seed||0;
- for(let i=0;i<1000&&seed<999999;i++){seed++;const t=M.generate(id,seed,1);if(!used.has(taskSignature(t))){state.origin={hash:'#lesson/'+active.lesson.id+'/'+active.index,scroll:window.scrollY};state.practice[key]={seed};save();go('#practice/'+id+'/1');return;}}
+ const target=active.task.transfer,id=target?.skill||(active.task.skills||[]).find(id=>skills[id]);
+ if(!skills[id])return;
+ const level=target?.level||1,seed=nextPracticeSeed(id,level,active.task);
+ if(seed){
+  state.origin={hash:'#lesson/'+active.lesson.id+'/'+active.index,scroll:window.scrollY};
+  state.practice[id+':'+level]={seed};save();go('#practice/'+id+'/'+level);return;
+ }
  ts(active.task.id).feedback='Новый пример пока не найден. Выбери другой навык или сложность.';renderProblem();
 }
 
@@ -173,4 +250,6 @@ function route(){
 }
 window.addEventListener('hashchange',route);route();
 window.PetersonApp={getState:()=>JSON.parse(JSON.stringify(state)),format:fmt,route,validateState:sanitizeState,check,findNumber,storageKey:KEY};
+}
+openCourse();
 })();

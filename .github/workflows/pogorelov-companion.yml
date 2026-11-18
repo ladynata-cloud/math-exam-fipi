@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'geometry-pogorelov/**'
+      - 'assets/geometry-experiment-gifs/pogorelov-*'
       - 'tools/pogorelov/**'
       - 'tools/geometry-inscribed-angle/**'
       - 'geometry-merzlyak/atlas/merzlyak-base-8-9.html'
@@ -12,6 +13,7 @@ on:
     branches: [main]
     paths:
       - 'geometry-pogorelov/**'
+      - 'assets/geometry-experiment-gifs/pogorelov-*'
       - 'tools/pogorelov/**'
       - 'tools/geometry-inscribed-angle/**'
       - 'geometry-merzlyak/atlas/merzlyak-base-8-9.html'
@@ -63,5 +65,6 @@ jobs:
       - run: node tools/pogorelov/check.cjs
       - run: node tools/pogorelov/browser.cjs
       - run: node tools/pogorelov/tab-conflict.browser.cjs
+      - run: node tools/pogorelov/topic-guides.browser.cjs
       - run: node tools/pogorelov-textbook/model-cases.browser.cjs
       - run: node tools/geometry-inscribed-angle/browser.cjs
