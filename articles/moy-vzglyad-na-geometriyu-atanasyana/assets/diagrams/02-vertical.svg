@@ -7,7 +7,7 @@
 <path class="known" d="M282.82 137.18 A45 45 0 0 1 296 169"/>
 <text x="303" y="148" class="pt">x</text>
 <circle cx="251" cy="169" r="4" fill="#213f49"/>
-<text class="pt" x="218" y="198">O</text>
+<text class="pt" x="253" y="197">O</text>
 <text class="pt" x="46" y="158">A</text><text class="pt" x="448" y="158">C</text>
 <text class="pt" x="374" y="64">B</text><text class="pt" x="130" y="259">D</text>
 </svg>
