@@ -253,7 +253,7 @@
         "task_number": 22,
         "adaptation": "Самостоятельно составленное условие, свои данные и решение."
       },
-      "solution_figure_tex": "\\begin{tikzpicture}[x=.39cm,y=.4cm,font=\\scriptsize]\\draw[step=1,black!18,very thin](-8,-8)grid(8,2);\\draw[->](-8,0)--(8.5,0)node[right]{$x$};\\draw[->](0,-8)--(0,2.35)node[above]{$y$};\\node[above left,fill=white,inner sep=.4pt]at(0,0){$0$};\\draw(1,-.1)--(1,.1)node[above,fill=white,inner sep=.4pt]{1};\\draw(-.1,1)--(.1,1)node[left,fill=white,inner sep=.4pt]{1};\\begin{scope}\\clip(-8,-8)rectangle(8,2);\\draw[thick,domain=-8:-.8,samples=96]plot(\\x,{9/(\\x)});\\draw[thick,domain=.8:8,samples=96]plot(\\x,{-9/(\\x)});\\end{scope}\\draw[fill=white](-4,-2.25)circle(2pt)node[below left,fill=white,inner sep=.7pt]{$(-4;-9/4)$};\\draw[fill=white](4,-2.25)circle(2pt)node[below right,fill=white,inner sep=.7pt]{$(4;-9/4)$};\\end{tikzpicture}"
+      "solution_figure_tex": "\\begin{tikzpicture}[x=.4cm,y=.4cm,font=\\scriptsize]\\draw[step=1,black!18,very thin](-8,-8)grid(8,2);\\draw[->](-8,0)--(8.5,0)node[right]{$x$};\\draw[->](0,-8)--(0,2.35)node[above]{$y$};\\node[above left,fill=white,inner sep=.4pt]at(0,0){$0$};\\draw(1,-.1)--(1,.1)node[above,fill=white,inner sep=.4pt]{1};\\draw(-.1,1)--(.1,1)node[left,fill=white,inner sep=.4pt]{1};\\begin{scope}\\clip(-8,-8)rectangle(8,2);\\draw[thick,domain=-8:-.8,samples=96]plot(\\x,{9/(\\x)});\\draw[thick,domain=.8:8,samples=96]plot(\\x,{-9/(\\x)});\\end{scope}\\draw[fill=white](-4,-2.25)circle(2pt)node[below left,fill=white,inner sep=.7pt]{$(-4;-9/4)$};\\draw[fill=white](4,-2.25)circle(2pt)node[below right,fill=white,inner sep=.7pt]{$(4;-9/4)$};\\end{tikzpicture}"
     }
   }
 ]

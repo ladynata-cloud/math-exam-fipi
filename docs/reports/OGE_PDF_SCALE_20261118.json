@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "baseHead": "64dd631c88df89c7863b49961cad1a047eadf402",
+  "scope": "Only equal axis units for variant12 task22 solution figure; all mathematical task fields/answers/URLs remain unchanged.",
+  "sourceLiteralBefore": "x=.39cm,y=.4cm",
+  "sourceLiteralAfter": "x=.4cm,y=.4cm",
+  "oldBankSHA256": "d161244496a7eda9766243ae225e162912062377f53ea9287bac20755ae17635",
+  "newBankSHA256": "152da4d8d9aebbbdefcfaeac3c0692c380c64aac8ffb0db2a8630cea7a6d3d03",
+  "recompiledOldPagesTextAndRasterIdentical": 5,
+  "changedSolutionPages": [
+    4
+  ],
+  "changedCollectionPages": [
+    50
+  ],
+  "allSolutionTextUnchanged": 507,
+  "solutionCollectionBookmarksUnchanged": 104,
+  "pdfUnitsPoints": {
+    "oldX": 11.055228233337402,
+    "oldY": 11.338546752929688,
+    "newX": 11.338546752929688,
+    "newY": 11.338546752929688
+  },
+  "fullCatalogueCheck": {
+    "pdfs": 315,
+    "pairedPages": 1084,
+    "studentTasks": 2600,
+    "solutionHeadings": 2600
+  },
+  "regeneratedFilesSHA256": {
+    "Исходники/Банк/bank.json": "152da4d8d9aebbbdefcfaeac3c0692c380c64aac8ffb0db2a8630cea7a6d3d03",
+    "Исходники/TeX/OGE_2027_012_reshenie.tex": "69a87a30f98c3b3beded377c2f31c35e5c97d46c44e62bfa009568fa247453c3",
+    "tools/oge-pdf-catalogue/thematic-replacements-20261117/replacements.json": "5187be8efae6db47507f634e99e55dcf7a04933dde9fc9ed494c0a01aa402647",
+    "oge/variants/2027/files/OGE_2027_012_reshenie.pdf": "5f73da30d4b3ea66cc002ab031d9db987705aeef9f6b7c023950825ed6fc1845",
+    "oge/variants/2027/collections/OGE_2027_resheniya_104_varianta.pdf": "1b5e83a918586d4ec64629fa52095357080d6def00e2f643968e98f3db7adb8b",
+    "oge/variants/2027/manifest.json": "47a155fd2627d82c50b70dc313d26618c9de493897c2bf160e00ac50f328de3e"
+  },
+  "limitations": [
+    "No fresh native-browser CI for this new candidate yet.",
+    "No new independent full mathematical audit of the unchanged2600tasks."
+  ],
+  "independentMathReview": {
+    "reviewer": "Independent internal agent /root/math_release_review",
+    "sourceVerdict": "PASS: domain, both branches, holes, answer {-9/16,0,9/16}, clipping and equal-scale adjustment.",
+    "visualVerdict": "PASS: inspected newly rendered solution page4; square cells, symmetric branches, readable unobstructed hole labels and answer; no clipping.",
+    "boundary": "Only source algebra and new solution page4; not a fresh audit of all unchanged tasks or every collection page."
+  },
+  "sourceArchive": {
+    "file": "MathExam_OGE2027_104_edition_2026-11-17.zip",
+    "sha256": "1dff6c7a918d55768d80db9e7a728a500b74fac9d5063b772fc69c226f7f8ebd",
+    "bytes": 33834344,
+    "changedEntries": [
+      "README.md",
+      "Для печати/Варианты/OGE_2027_012_reshenie.pdf",
+      "Исходники/TeX/OGE_2027_012_reshenie.tex",
+      "Для печати/Сборники/OGE_2027_resheniya_104_varianta.pdf",
+      "Исходники/Банк/bank.json",
+      "Исходники/Сборка/thematic-replacements-20261117/replacements.json",
+      "Проверки/manifest.json"
+    ],
+    "unchangedEntries": 743
+  }
+}
