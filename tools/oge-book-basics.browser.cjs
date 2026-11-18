@@ -171,8 +171,18 @@ async function hint(page,rec,promptSelector,percent=false) {
   await usable(toggle,rec,'Help toggle');
   await toggle.click();
   const panel=page.locator('.bh-panel:visible');await panel.waitFor();
-  const text=await observed(panel);
   const second=page.locator(percent?'#p-h2':'#hint2');if(await second.isVisible())await second.click();
+  // Opening the panel and moving the live hint into it are separate browser
+  // updates on the managed long-division route. Under a loaded CI runner the
+  // panel can become visible one frame before its text is painted. Keep the
+  // same visible-text contract, but wait for that contract instead of sampling
+  // the intermediate empty frame.
+  await page.waitForFunction(() => {
+    const panel=[...document.querySelectorAll('.bh-panel')].find(node =>
+      node.getClientRects().length && getComputedStyle(node).visibility!=='hidden');
+    return !!panel && panel.innerText.trim().length>30;
+  },null,{timeout:5000});
+  const text=await observed(panel);
   check(rec,'hints',text.length>30&&await observed(page.locator(promptSelector))===prompt,{visibleText:text,prompt});
   await layout(page,rec,'help-open');
   await toggle.click();
