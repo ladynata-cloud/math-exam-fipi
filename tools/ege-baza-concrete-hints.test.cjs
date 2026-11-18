@@ -18,6 +18,21 @@ assert.deepEqual(Array.from(H.familyIds).sort(),ids.slice().sort(),'every existi
 const remediationFile=path.join(__dirname,'../ege-baza/remediation.js');
 vm.runInContext(fs.readFileSync(remediationFile,'utf8'),context,{filename:remediationFile});
 const R=context.EgeRemediation;
+// Exam-family routing must not swallow a concrete input error. These cases
+// used to work only for non-exam lessons, breaking the learner's return path.
+for(const id of ['fractions','equations','practice-decimals','practice-percent-change']){
+ const task=D.task(id,10),meta=D.meta.find(row=>row.id===id);
+ const before=JSON.stringify(task),expected=task.steps[0].a;
+ for(const value of ['1/0','-2/0,00']){
+  const route=R.recommend({id,task,meta,stepIndex:0,value,expected});
+  assert.equal(route.path,R.skills.part.path,id+' explains the zero denominator');
+ }
+ if(Number.isFinite(expected)&&expected!==0){
+  const route=R.recommend({id,task,meta,stepIndex:0,value:String(-expected),expected});
+  assert.equal(route.path,R.skills.signs.path,id+' offers help for the actual sign error');
+ }
+ assert.equal(JSON.stringify(task),before,id+' keeps task data unchanged');
+}
 function recommendation(id,seed,stepIndex){
  const task=D.task(id,seed),meta=D.meta.find(row=>row.id===id);
  return R.recommend({id,task,meta,stepIndex,value:'9999',expected:task.answer});

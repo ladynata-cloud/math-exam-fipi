@@ -3542,6 +3542,10 @@ function examRoute(id,task,stepIndex){
 }
 function recommend(context){
  const {id,value,expected,meta,task,stepIndex}=context;
+ // Concrete input errors take precedence over the broad exam task family.
+ const n=numeric(value);
+ if(/\/\s*[+-]?0(?:[.,]0*)?\s*$/.test(String(value)))return {key:'part',...skills.part,why:'У дроби не может быть нулевого знаменателя. Вспомним, что означает деление целого на части.'};
+ if(Number.isFinite(expected)&&expected!==0&&n!==null&&Math.abs(n+expected)<1e-7)return {key:'signs',...skills.signs,why:'Получился ответ с противоположным знаком. Возможно, стоит проверить действие со знаками.'};
  const routine=specificRoute(id,context);
  if(routine){
   if(routine.key)return {...routine,...skills[routine.key]};
@@ -3549,10 +3553,8 @@ function recommend(context){
  }
  if(meta?.pos&&!meta.grade7&&!meta.pre7)return examRoute(id,task,stepIndex);
  const family=meta?.expanded?gapRoutes[meta.gap]||id:id;
- const n=numeric(value);let key,why;
- if(Number.isFinite(expected)&&expected!==0&&n!==null&&Math.abs(n+expected)<1e-7){key='signs';why='Получился ответ с противоположным знаком. Возможно, стоит проверить действие со знаками.';}
- else if(/\/\s*[+-]?0(?:[.,]0*)?\s*$/.test(String(value))){key='part';why='У дроби не может быть нулевого знаменателя. Вспомним, что означает деление целого на части.';}
- else if(family==='percent'){key='change';why='На этом шаге важно, от какого числа считаются проценты: после изменения база может стать другой.';}
+ let key,why;
+ if(family==='percent'){key='change';why='На этом шаге важно, от какого числа считаются проценты: после изменения база может стать другой.';}
  else if(family==='choice'||family==='mixtures'){key='percent';why='Здесь помогает связь процента, части и целого. Проверь, какая величина принята за 100%.';}
  else if(['fractions','share','gardens'].includes(family)){key='fractions';why='Для этого шага нужны доли одного целого и действия с дробями. Можно отдельно потренировать общий знаменатель.';}
  else if(['joint','reverse','delay','leave'].includes(family)){key='part';why='Время на всю работу и доля работы за час — разные величины. Вспомним смысл единичной дроби.';}

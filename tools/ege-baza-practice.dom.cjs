@@ -23,6 +23,24 @@ const click=(d,s)=>{const e=d.querySelector(s);assert(e,'missing '+s);e.click();
 const enter=(w,d,v,prefix='answer')=>{const e=d.querySelector('#'+prefix);assert(e);e.value=String(v);e.dispatchEvent(new w.Event('input',{bubbles:true}));d.querySelector('#'+prefix+'Form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));};
 async function go(w,s){w.location.hash=s;await tick();}
 async function testTargetedRemediation(w,d){
+ // Input-specific help must survive exam-family routing and a page reload.
+ for(const id of ['fractions','equations']){
+  await go(w,'lesson='+id);
+  click(d,'#startSteps');
+  const lesson=w.PathCourse.state().lessons[id];
+  const seed=lesson.seed,step=lesson.step,independent=lesson.independent;
+  const task=w.PathData.task(id,seed);
+  const value=id==='fractions'?'1/0':String(-task.steps[step].a);
+  enter(w,d,value,'stepAnswer');
+  assert.match(d.querySelector('#ege-remediation a').textContent,id==='fractions'?/Смысл дроби/:/разными знаками/);
+  assert.equal(new URL(d.querySelector('#ege-remediation a').href).searchParams.get('returnTo'),'/ege-baza/path/index.html#lesson='+id);
+  const restored=create(w.localStorage.getItem(w.PathCourse.KEY),'lesson='+id);
+  assert.equal(restored.d.querySelector('#stepAnswer').value,value);
+  assert.equal(restored.w.PathCourse.state().lessons[id].seed,seed);
+  assert.equal(restored.w.PathCourse.state().lessons[id].step,step);
+  assert.equal(restored.w.PathCourse.state().lessons[id].independent,independent);
+  restored.w.close();
+ }
  const cases=[
   ['practice-decimals','/trainers/arifmetika.html?level=n5c'],
   ['practice-decimal-division','/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html'],
