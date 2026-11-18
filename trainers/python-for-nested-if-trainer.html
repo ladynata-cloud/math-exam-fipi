@@ -113,26 +113,88 @@ function resetOwnProgress(key, own, storage) {
   return status;
 }
 /*__RESET_OWN_PROGRESS_END__*/
-function load(){try{const d=JSON.parse(localStorage.getItem(KEY));const t=d&&d.topics&&d.topics[TOPIC];if(t)state={...state,...t,built:[],step:0}}catch(e){}}
-function save(){let d;try{d=JSON.parse(localStorage.getItem(KEY))||{topics:{}}}catch(e){d={topics:{}}}d.topics=d.topics||{};const solved=Object.keys(state.solved).length;d.topics[TOPIC]={...state,total:state.tries,right:state.right,solved,homeworkSolved:solved,homeworkTotal:tasks.length,lastAt:new Date().toISOString()};localStorage.setItem(KEY,JSON.stringify(d))}
+function load(){
+  try {
+    const saved=JSON.parse(localStorage.getItem(KEY))?.topics?.[TOPIC];
+    if (!saved || !tasks[saved.i]) return;
+    state.i=saved.i;
+    state.tries=Number(saved.tries)||0;
+    state.right=Number(saved.right)||0;
+    state.solved=saved.solvedTasks||{};
+    state.legacySolved=Number(saved.solved)||0;
+    const expected=lines(tasks[state.i]);
+    if (Array.isArray(saved.built) && saved.built.length<=expected.length && saved.built.every((s,i)=>s===expected[i])) {
+      state.built=saved.built;
+      state.step=saved.built.length;
+    }
+  } catch {}
+}
+function solvedCount(){return Math.max(state.legacySolved||0,Object.keys(state.solved).length)}
+function save(){
+  try {
+    const d=JSON.parse(localStorage.getItem(KEY))||{};
+    d.topics=d.topics||{};
+    const solved=solvedCount();
+    d.topics[TOPIC]={...state,solvedTasks:state.solved,total:state.tries,solved,homeworkSolved:solved,homeworkTotal:tasks.length,lastAt:new Date().toISOString()};
+    localStorage.setItem(KEY,JSON.stringify(d));
+  } catch {}
+}
 function sol(t){return (t.setup?t.setup+'\n\n':'')+'for '+t.item+' in '+t.col+':\n    if '+t.conds[0]+':\n        if '+t.conds[1]+':\n            print('+t.item+')'}
 function lines(t){const a=[];if(t.setup)a.push(t.setup);a.push('for '+t.item+' in '+t.col+':');a.push('    if '+t.conds[0]+':');a.push('        if '+t.conds[1]+':');a.push('            print('+t.item+')');return a}
 function stepChoices(t){const good=lines(t)[state.step];const bad=[
 'for '+t.col+' in '+t.item+':','if '+t.item+' in '+t.col+':','    if '+t.conds[1]+':','if '+t.conds[0]+':','        if '+t.conds[0]+':','    print('+t.item+')','            print('+t.col+')'
 ].filter(x=>x!==good);return [good,...bad.slice(0,3)].sort(()=>Math.random()-.5)}
 function render(){const t=tasks[state.i];$('taskTitle').textContent=t.title;$('taskText').textContent='Собери программу, которая выводит только элементы, проходящие обе проверки.';$('pills').innerHTML=t.req.map(r=>'<span class="pill">'+esc(r)+'</span>').join('');$('setup').textContent=t.setup||'for '+t.item+' in '+t.col+':';$('prev').disabled=state.i===0;$('next').disabled=state.i===tasks.length-1;renderStats();renderTaskList();renderStep()}
-function renderStats(){const solved=Object.keys(state.solved).length;$('solved').textContent=solved;$('tries').textContent=state.tries;$('acc').textContent=state.tries?Math.round(state.right/state.tries*100)+'%':'0%'}
+function renderStats(){const solved=solvedCount();$('solved').textContent=solved;$('tries').textContent=state.tries;$('acc').textContent=state.tries?Math.round(state.right/state.tries*100)+'%':'0%'}
 function renderTaskList(){$('taskList').innerHTML=tasks.map((t,i)=>'<button class="btn taskBtn '+(state.solved[t.id]?'solved':'')+'" data-task="'+i+'">'+(i+1)+'. '+esc(t.title)+'</button>').join('')}
-function renderStep(){const t=tasks[state.i];$('dots').innerHTML=[0,1,2,3,4].map(i=>'<span class="dot '+(i<state.step?'done':i===state.step?'on':'')+'"></span>').join('');if(state.step<lines(t).length){$('stepBox').innerHTML='<div class="code">'+esc(state.built.join('\n')||'# здесь пока пусто')+'</div><h3>Шаг '+(state.step+1)+' из '+lines(t).length+': выбери следующую строку</h3><div class="choices">'+stepChoices(t).map(x=>'<button class="choice" data-choice="'+esc(x)+'"><code>'+esc(x)+'</code></button>').join('')+'</div>';return} $('stepBox').innerHTML='<h3>Код собран</h3><div class="code">'+esc(sol(t))+'</div><label><b>Какой будет вывод?</b><input id="out" placeholder="например: 12, 18, 16"></label><div class="row" style="margin-top:10px"><button class="btn primary" id="checkOut">Проверить вывод</button><button class="btn" id="writeMode">Написать код самому</button></div><div id="writeBox" class="hide" style="margin-top:12px"><textarea id="codeTry" spellcheck="false">'+esc(t.setup+(t.setup?'\n\n':'')+'for '+t.item+' in '+t.col+':\n    if __________________:\n        if __________________:\n            print('+t.item+')')+'</textarea><button class="btn primary" id="checkCode" style="margin-top:8px">Проверить код</button></div>'}
-function pick(value,btn){const t=tasks[state.i],good=lines(t)[state.step];document.querySelectorAll('.choice').forEach(b=>{b.disabled=true;if(b.dataset.choice===good)b.classList.add('good');if(b===btn&&value!==good)b.classList.add('bad')});state.tries++;if(value===good){state.right++;state.built.push(good);state.step++;msg('Верно. Идём дальше.','ok');setTimeout(()=>{save();renderStep();renderStats()},450)}else{msg('Пока нет. Зелёным показана правильная строка, я добавлю её в код.','err');state.built.push(good);state.step++;setTimeout(()=>{save();renderStep();renderStats()},900)}save();renderStats()}
-function norm(s){return s.replace(/\s+/g,'')}function checkCode(){const t=tasks[state.i],raw=$('codeTry').value,miss=[];if(t.setup&&!raw.includes(t.setup.split('=')[0].trim()))miss.push('добавь исходный список');if(!norm(raw).includes(norm('for '+t.item+' in '+t.col+':')))miss.push('строка for написана неверно');if(!norm(raw).includes(norm(t.conds[0])))miss.push('не найден первый if: '+t.conds[0]);if(!norm(raw).includes(norm(t.conds[1])))miss.push('не найден второй if: '+t.conds[1]);if(!norm(raw).includes(norm('print('+t.item+')')))miss.push('нужен print('+t.item+')');state.tries++;if(miss.length){msg('Нужно поправить: '+miss.join('; ')+'.','err')}else{state.right++;state.solved[t.id]=true;msg('Отлично. Задача отмечена решённой.','ok')}save();renderStats();renderTaskList()}
-function checkOut(){const t=tasks[state.i],v=$('out').value.split(/[ ,;]+/).filter(Boolean).map(Number),ok=JSON.stringify(v)===JSON.stringify(t.ans);state.tries++;if(ok){state.right++;state.solved[t.id]=true;msg('Верно: '+t.ans.join(', ')+'. Задача отмечена решённой.','ok')}else msg('Проверь ещё раз. Правильный вывод: '+t.ans.join(', ')+'.','err');save();renderStats();renderTaskList()}
+function renderStep(){const t=tasks[state.i];$('dots').innerHTML=lines(t).map((_,i)=>'<span class="dot '+(i<state.step?'done':i===state.step?'on':'')+'"></span>').join('');if(state.step<lines(t).length){$('stepBox').innerHTML='<div class="code">'+esc(state.built.join('\n')||'# здесь пока пусто')+'</div><h3>Шаг '+(state.step+1)+' из '+lines(t).length+': выбери следующую строку</h3><div class="choices">'+stepChoices(t).map(x=>'<button class="choice" data-choice="'+esc(x)+'"><code>'+esc(x)+'</code></button>').join('')+'</div>';return} $('stepBox').innerHTML='<h3>Код собран</h3><div class="code">'+esc(sol(t))+'</div><label><b>Какой будет вывод?</b><input id="out" placeholder="Числа по порядку через пробел"></label><div class="row" style="margin-top:10px"><button class="btn primary" id="checkOut">Проверить вывод</button><button class="btn" id="writeMode">Написать код самому</button></div><div id="writeBox" class="hide" style="margin-top:12px"><textarea id="codeTry" spellcheck="false">'+esc(t.setup+(t.setup?'\n\n':'')+'for '+t.item+' in '+t.col+':\n    if __________________:\n        if __________________:\n            print('+t.item+')')+'</textarea><button class="btn primary" id="checkCode" style="margin-top:8px">Проверить код</button></div>'}
+function pick(value,btn){
+  const t=tasks[state.i], good=lines(t)[state.step];
+  state.tries++;
+  if (value===good) {
+    state.right++; state.built.push(good); state.step++;
+    renderStep(); msg('Верно. Продолжайте с текущей строки.','ok');
+  } else {
+    btn.classList.add('bad');
+    msg('Сверьте назначение строки и отступ. Выберите ещё раз.','err');
+  }
+  save(); renderStats();
+}
+function pythonTokens(line){
+  return JSON.stringify(line.trim().match(/[A-Za-z_]\w*|\d+|==|!=|>=|<=|[^\s]/g)||[]);
+}
+function checkCode(){
+  const task=tasks[state.i];
+  const program=$('codeTry').value.split(/\r?\n/).map(line=>line.split('#')[0].trimEnd()).filter(Boolean);
+  const expected=lines(task);
+  let issue='';
+  if(program.length!==expected.length) issue='Проверьте число строк. Нужны цикл, два вложенных if и вывод.';
+  const header=task.setup ? 1 : 0;
+  const swapped=expected.slice();
+  swapped[header+1]='if '+task.conds[1]+':'; swapped[header+2]='if '+task.conds[0]+':';
+  if(!issue && ![expected,swapped].some(rows=>rows.every((ln,i)=>pythonTokens(ln)===pythonTokens(program[i])))) {
+    issue='Проверьте имена, исходные данные и выражения в строках. Условия можно менять местами.';
+  }
+  if(!issue){
+    const prefixes=program.map(ln=>ln.match(/^[ \t]*/)[0]);
+    const top=prefixes.slice(0,header+1);
+    const body=prefixes.slice(header+1);
+    if(top.some(Boolean)||body.some((v,i)=> !v || (i && (!v.startsWith(body[i-1]) || v.length===body[i-1].length))) || / /.test(prefixes.join('')) && /\t/.test(prefixes.join(''))) issue='Каждый вложенный блок требует большего отступа. Используйте пробелы или табуляцию единообразно.';
+  }
+  state.tries++;
+  if(issue) msg(issue,'err');
+  else {state.right++;state.solved[task.id]=true;msg('Верно собрана программа с двумя вложенными условиями.','ok');}
+  save();renderStats();renderTaskList();
+}
+function checkOut(){const t=tasks[state.i],raw=$('out').value.trim(),v=/^-?\d+(?:[\s,;]+-?\d+)*$/.test(raw)?raw.split(/[\s,;]+/).map(Number):[],ok=JSON.stringify(v)===JSON.stringify(t.ans);state.tries++;if(ok){state.right++;state.solved[t.id]=true;msg('Верно: '+t.ans.join(', ')+'. Задача отмечена решённой.','ok')}else msg('Пройдите список слева направо. Записывайте элемент каждый раз, когда выполнены оба условия.','err');save();renderStats();renderTaskList()}
 function msg(text,kind=''){$('msg').className='msg '+kind;$('msg').textContent=text}
 function openTask(i){state.i=i;state.step=0;state.built=[];save();render();msg('Выбери первую строку кода.')}
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.choice)pick(b.dataset.choice,b);if(b.dataset.task!==undefined)openTask(Number(b.dataset.task));if(b.id==='prev')openTask(state.i-1);if(b.id==='next')openTask(state.i+1);if(b.id==='checkOut')checkOut();if(b.id==='writeMode')$('writeBox').classList.toggle('hide');if(b.id==='checkCode')checkCode();if(b.id==='showSolution'){const t=tasks[state.i];$('stepBox').innerHTML='<h3>Готовое решение</h3><div class="code">'+esc(sol(t))+'</div><p><b>Вывод:</b> '+t.ans.join(', ')+'</p>';msg('Разбери решение и попробуй следующую задачу.')}if(b.id==='reset'&&confirm('Сбросить прогресс этой страницы? Прогресс других тренажёров и курса ЕГЭ сохранится.')){const r=resetOwnProgress(KEY,{topics:[TOPIC]});if(r==='failed'){msg('Не удалось сбросить прогресс: хранилище браузера недоступно или переполнено. Попробуйте ещё раз.','err');return}state={i:0,step:0,built:[],tries:0,right:0,solved:{}};render();msg(r==='cleaned'?'Прогресс этой страницы сброшен. Запись прогресса в этом браузере была повреждена: она очищена, и прогресс снова сохраняется.':'Прогресс этой страницы сброшен.')}});
+document.addEventListener('keydown',e=>{if(e.target.id==='out' && e.key==='Enter')checkOut()});
 load();render();
 </script>
 
 <script defer src="/assets/assistant/home-link.js?v=20261110"></script>
+<a style="display:inline-block;margin:0.35rem 0.75rem;padding:0.45rem;color:inherit;text-decoration:underline" href="./informatics-versions/">Версии тренажёров по информатике</a>
 </body>
 </html>

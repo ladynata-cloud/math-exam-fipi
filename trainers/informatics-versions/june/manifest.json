@@ -10,6 +10,11 @@
     "slug": "ege-informatics-task1-graphs-trainer"
   },
   {
+    "file": "logic-course.html.gz",
+    "title": "ЕГЭ №15 · курс по алгебре логики (автономная демонстрация)",
+    "slug": "logic-course"
+  },
+  {
     "file": "ege-informatics-task15-logic-operations.html.txt",
     "title": "ЕГЭ №15 · логические операции и законы",
     "slug": "ege-informatics-task15-logic-operations"
@@ -25,7 +30,7 @@
     "slug": "ege-informatics-19-21-fipi"
   },
   {
-    "file": "ege-informatics-19-21-yandex.html.txt",
+    "file": "ege-informatics-19-21-yandex.html.gz",
     "title": "ЕГЭ №19–21 · подборка игр Яндекса",
     "slug": "ege-informatics-19-21-yandex"
   },
@@ -53,5 +58,10 @@
     "file": "python-for-nested-if-trainer.html.txt",
     "title": "Python · ветвление внутри цикла",
     "slug": "python-for-nested-if-trainer"
+  },
+  {
+    "file": "oge-informatics-early.html.txt",
+    "title": "ОГЭ · раннее сохранение 3 июня",
+    "slug": "oge-informatics-early"
   }
 ]

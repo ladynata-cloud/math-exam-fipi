@@ -4,9 +4,11 @@
   const period = args.get('edition') === 'november' ? 'november' : 'june';
   const entries = await read(period + '/manifest.json', 'json');
   const item = entries.find(entry => entry.slug === args.get('task'));
-  if (!item || !/^[a-z0-9_.-]+\.html\.txt$/i.test(item.file)) throw Error('Этот выпуск отсутствует.');
+  if (!item || !/^[a-z0-9_.-]+\.html\.(?:txt|gz)$/i.test(item.file)) throw Error('Этот выпуск отсутствует.');
   const frame = document.querySelector('iframe');
-  const key = ['mathexam', 'informatics', '2026', period, item.slug].join('.');
+  const replay = item.slug === 'oge-informatics-1-10-tutor' && args.get('example') === 'paths-article' ? period : null;
+  const editionKey = ['mathexam', 'informatics', '2026', period, item.slug].join('.');
+  const key = replay ? editionKey + '.example.paths-article' : editionKey;
   function readSaved(storageName) {
     try { return JSON.parse(window[storageName].getItem(key) || '{}'); }
     catch { return {}; }
@@ -16,6 +18,13 @@
     if (exampleEdition) {
       // Replay the same graph on explicit request. Restore randomness immediately.
       addEventListener('load', () => {
+        if (exampleEdition === 'november') {
+          // The trainer restores its task before load. Re-selecting that topic requests a new example.
+          let saved;
+          try { saved = JSON.parse(initial.sessionStorage['ogeInfoPracticeSession-v1']); } catch {}
+          if (saved?.topic === 9 && saved.seed === 19 && document.querySelector('[data-topic="9"].active')) return;
+          if (document.querySelector('[data-topic="9"].active')) document.querySelector('[data-topic="1"]')?.click();
+        }
         const previous = Math.random;
         let seed = 19;
         Math.random = exampleEdition === 'november' ? () => seed / 4294967296 :
@@ -54,10 +63,13 @@
     } catch { /* Private browsing keeps the active session in memory. */ }
   });
   const state = {localStorage:readSaved('localStorage'), sessionStorage:readSaved('sessionStorage')};
-  let raw = await read(period + '/' + item.file, 'text');
+  const body = await read(period + '/' + item.file, 'arrayBuffer');
+  const bytes = new Uint8Array(body);
+  const raw = bytes[0] === 31 && bytes[1] === 139
+    ? await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text()
+    : new TextDecoder().decode(bytes);
   const init = JSON.stringify(state).replace(/</g,'\\u003c');
   const policy = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; base-uri 'none'; form-action 'none'";
-  const replay = item.slug === 'oge-informatics-1-10-tutor' && args.get('example') === 'paths-article' ? period : null;
   const prelude = '<meta http-equiv="Content-Security-Policy" content="'+policy+'"><script>('+bridge.toString()+')('+init+','+JSON.stringify(replay)+');<\/script>';
   if (!/<head(?:\s[^>]*)?>/i.test(raw)) throw Error('Не удалось прочитать сохранённый HTML.');
   frame.srcdoc = raw.replace(/<head(?:\s[^>]*)?>/i, tag => tag + prelude);

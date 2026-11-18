@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Задачи на машину Тьюринга</title>
+<link rel="canonical" href="https://mathexam.space/trainers/turing-trainer-polish.html">
 <style>
   :root {
     --bg: #f3f1ea;
@@ -835,6 +836,9 @@
     .goal-card .goal-key { min-width: unset; }
   }
 </style>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
 </head>
 <body>
 <header class="page-header">
@@ -1016,9 +1020,9 @@ function escapeHTML(s) {
   return String(s).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[ch]));
 }
 function parseStrictInt(raw) {
-  if (raw === "" || raw == null) return { ok: false, error: "Поле не должно быть пустым" };
+  if (raw == null || String(raw).trim() === "") return { ok: false, error: "Поле не должно быть пустым" };
   const v = Number(String(raw).trim());
-  if (!Number.isInteger(v)) return { ok: false, error: "Нужно целое число" };
+  if (!/^[+-]?\d+$/.test(String(raw).trim()) || !Number.isSafeInteger(v)) return { ok: false, error: "Введите целое число в десятичной записи" };
   return { ok: true, value: v };
 }
 function zeroWord(K) {
@@ -1442,6 +1446,295 @@ function getTaskPattern(task) {
 function getTaskFoundationSkills(task) {
   const p = PATTERN_TAXONOMY[getTaskPattern(task)] || PATTERN_TAXONOMY.unknown;
   return p.foundationSkills.slice();
+}
+
+/* ============================================================
+   АНАЛИЗ ПРОИЗВОЛЬНОЙ ТАБЛИЦЫ МТ
+   Три функции:
+     • analyzeStateSemantics(program, state, alphabet, blank) — короткая роль состояния
+     • detectPatternFromProgram(program, alphabet, blank, headStart) — распознавание паттерна
+     • runOnSampleInputs(program, headStart, startState, blank, inputs) — прогон на наборе входов
+   ============================================================ */
+
+/** Короткое описание роли одного состояния по структуре строки таблицы.
+ *  В нашем движке move === "S" фактически означает halt (после S машина finished),
+ *  поэтому S-команды трактуем как «выход в halt», а L/R с next===state — как реальный цикл.
+ */
+function analyzeStateSemantics(program, state, alphabet, blank) {
+  const row = program[state] || {};
+  const cmds = alphabet.map(s => ({ sym: s, cmd: row[s] })).filter(x => x.cmd);
+  if (cmds.length === 0) return "пустое состояние — машина сюда не идёт";
+
+  const dirWord = m => m === "L" ? "влево" : (m === "R" ? "вправо" : "без сдвига");
+  const symLabel = s => s === blank ? "λ" : s;
+
+  const haltCmds = cmds.filter(c => c.cmd.move === "S");
+  const cycleCmds = cmds.filter(c => c.cmd.move !== "S" && c.cmd.next === state);
+  const transitionCmds = cmds.filter(c => c.cmd.move !== "S" && c.cmd.next !== state);
+
+  // Случай 1: одна команда только на blank, переход в другое состояние — типичный «вход»
+  if (cmds.length === 1 && cmds[0].sym === blank && transitionCmds.length === 1) {
+    const c = cmds[0].cmd;
+    if (c.move === "L") return "вход справа: один шаг влево, попадаем на последний символ строки, переход в " + c.next;
+    if (c.move === "R") return "вход слева: один шаг вправо, попадаем на первый символ строки, переход в " + c.next;
+  }
+
+  // Случай 2: все команды halt (S) — эффективный halt-стейт (любая команда останавливает)
+  if (haltCmds.length === cmds.length) {
+    // Может быть «копирование» — машина переписывает символы, но S после первого же шага halt.
+    // По факту: машина сюда заходит и сразу останавливается. Пытаемся описать что записывается.
+    const changes = haltCmds.filter(c => c.cmd.write !== c.sym).map(c => `${symLabel(c.sym)}→${symLabel(c.cmd.write)}`);
+    if (changes.length > 0) return `halt-стейт: входим сюда, записываем (${changes.join(", ")}) и останавливаемся`;
+    return "halt-стейт: любая команда останавливает машину (S без действий)";
+  }
+
+  // Случай 3: цикл (L/R) + halt (S) — самый частый случай в наших задачах
+  if (cycleCmds.length > 0 && haltCmds.length > 0 && transitionCmds.length === 0) {
+    const moves = new Set(cycleCmds.map(c => c.cmd.move));
+    if (moves.size === 1) {
+      const dir = cycleCmds[0].cmd.move;
+      const cycleSyms = cycleCmds.map(c => symLabel(c.sym)).join("/");
+      const cycleTransforms = cycleCmds.filter(c => c.cmd.write !== c.sym)
+        .map(c => `${symLabel(c.sym)}→${symLabel(c.cmd.write)}`);
+      const cycleDesc = cycleTransforms.length > 0
+        ? `цикл ${dirWord(dir)} по символам ${cycleSyms}, преобразование: ${cycleTransforms.join(", ")}`
+        : `проход ${dirWord(dir)} по символам ${cycleSyms} без изменений`;
+      const haltDesc = haltCmds.map(c => {
+        const change = c.cmd.write !== c.sym ? `, записав ${symLabel(c.cmd.write)}` : "";
+        return `на ${symLabel(c.sym)} → остановка${change}`;
+      }).join("; ");
+      return `${cycleDesc}; ${haltDesc}`;
+    }
+  }
+
+  // Случай 4: только цикл, единое направление, без halt — «проход по ленте»
+  if (cycleCmds.length === cmds.length) {
+    const moves = new Set(cycleCmds.map(c => c.cmd.move));
+    if (moves.size === 1) {
+      const dir = cycleCmds[0].cmd.move;
+      const transforms = cycleCmds.filter(c => c.cmd.write !== c.sym && c.sym !== blank)
+        .map(c => `${symLabel(c.sym)}→${symLabel(c.cmd.write)}`);
+      if (transforms.length > 0) return `проход ${dirWord(dir)} с преобразованием: ${transforms.join(", ")}`;
+      return `проход ${dirWord(dir)} без изменений`;
+    }
+  }
+
+  // Случай 5: смешанный с переходами — описываем по-точечно
+  if (transitionCmds.length > 0) {
+    const parts = [];
+    if (cycleCmds.length > 0) {
+      const moves = new Set(cycleCmds.map(c => c.cmd.move));
+      const dir = moves.size === 1 ? cycleCmds[0].cmd.move : null;
+      const syms = cycleCmds.map(c => symLabel(c.sym)).join("/");
+      parts.push(dir ? `цикл ${dirWord(dir)} (пока видим ${syms})` : `смешанная петля по ${syms}`);
+    }
+    transitionCmds.forEach(c => {
+      parts.push(`на ${symLabel(c.sym)} → переход в ${c.cmd.next}`);
+    });
+    haltCmds.forEach(c => {
+      parts.push(`на ${symLabel(c.sym)} → остановка`);
+    });
+    return parts.join("; ");
+  }
+
+  return "состояние со смешанной логикой";
+}
+
+/** Каталог известных паттернов: эталонная таблица + метаинформация. */
+const PROGRAM_PATTERNS_CATALOG = [
+  {
+    id: "right-tail-zeros",
+    title: "Правый хвост нулей",
+    program: "PROG_right_invert_first1", // имя глобальной программы
+    typicalHeadStart: "nearest_blank_right",
+    mainIdea: "Машина идёт справа налево по нулям, превращая их в единицы. На первой 1 заменяет её на 0 и останавливается. Меняет лишь правый хвост нулей и одну ближайшую единицу слева от него."
+  },
+  {
+    id: "left-prefix-ones",
+    title: "Левый префикс единиц",
+    program: "PROG_left_invert_first0",
+    typicalHeadStart: "nearest_blank_left",
+    mainIdea: "Машина идёт слева направо по единицам, превращая их в нули. На первом 0 заменяет его на 1 и останавливается. Меняет лишь левый префикс единиц и один ближайший 0 справа от него."
+  },
+  {
+    id: "binary-inversion",
+    title: "Побитовое отрицание",
+    program: "PROG_bitwise_invert",
+    typicalHeadStart: "nearest_blank_right",
+    mainIdea: "Машина проходит всю двоичную запись справа налево и меняет каждый бит на противоположный. Для n-битной записи N результат = 2ⁿ − 1 − N."
+  },
+  {
+    id: "clear-lowest-one",
+    title: "Обнуление младшей единицы",
+    program: "PROG_clear_lowest_one",
+    typicalHeadStart: "nearest_blank_right",
+    mainIdea: "Машина идёт справа налево по нулям, не меняя их. На первой 1 заменяет её на 0 и останавливается. Эффект: вычитание степени двойки на позиции младшей единицы."
+  },
+  {
+    id: "clear-left-one",
+    title: "Обнуление старшей единицы",
+    program: "PROG_clear_first_left_one",
+    typicalHeadStart: "nearest_blank_left",
+    mainIdea: "Машина входит слева, на первой 1 заменяет её на 0 и продолжает. Для записи без ведущих нулей это снимает старший бит, то есть вычитает 2^(n−1)."
+  },
+  {
+    id: "first-zero-to-one",
+    title: "Первый ноль слева → единица",
+    program: "PROG_left_first_zero_to_one",
+    typicalHeadStart: "nearest_blank_left",
+    mainIdea: "Машина идёт слева направо по единицам, на первом 0 заменяет его на 1 и останавливается. К числу прибавляется одна степень двойки."
+  }
+];
+
+/** Сравнить две программы. Программы равны если: одинаковый набор состояний,
+ *  одинаковый набор символов, и для каждой пары (state, sym) либо обе команды
+ *  отсутствуют, либо обе присутствуют и (write, move, next) совпадают.
+ *  blank-эквивалентность не делаем — на наших примерах blank всегда λ.
+ */
+function programsEqual(p1, p2) {
+  if (!p1 || !p2) return false;
+  const states1 = Object.keys(p1).sort();
+  const states2 = Object.keys(p2).sort();
+  if (states1.join(",") !== states2.join(",")) return false;
+  for (const st of states1) {
+    const r1 = p1[st] || {}, r2 = p2[st] || {};
+    const syms1 = Object.keys(r1).sort();
+    const syms2 = Object.keys(r2).sort();
+    if (syms1.join("|") !== syms2.join("|")) return false;
+    for (const sym of syms1) {
+      const c1 = r1[sym], c2 = r2[sym];
+      if (!c1 && !c2) continue;
+      if (!c1 || !c2) return false;
+      if (c1.write !== c2.write || c1.move !== c2.move || c1.next !== c2.next) return false;
+    }
+  }
+  return true;
+}
+
+/** Попытка распознать паттерн программы. Возвращает {id, title, mainIdea} | null. */
+function detectPatternFromProgram(program, alphabet, blank, headStart) {
+  // Глобальные программы для сравнения
+  const ref = {
+    PROG_right_invert_first1: typeof PROG_right_invert_first1 !== "undefined" ? PROG_right_invert_first1 : null,
+    PROG_left_invert_first0:  typeof PROG_left_invert_first0  !== "undefined" ? PROG_left_invert_first0  : null,
+    PROG_bitwise_invert:      typeof PROG_bitwise_invert      !== "undefined" ? PROG_bitwise_invert      : null,
+    PROG_clear_lowest_one:    typeof PROG_clear_lowest_one    !== "undefined" ? PROG_clear_lowest_one    : null,
+    PROG_clear_first_left_one:typeof PROG_clear_first_left_one!== "undefined" ? PROG_clear_first_left_one: null,
+    PROG_left_first_zero_to_one: typeof PROG_left_first_zero_to_one !== "undefined" ? PROG_left_first_zero_to_one : null,
+    PROG_binary_decrement:    typeof PROG_binary_decrement    !== "undefined" ? PROG_binary_decrement    : null
+  };
+  for (const meta of PROGRAM_PATTERNS_CATALOG) {
+    const refProg = ref[meta.program];
+    if (!refProg) continue;
+    if (programsEqual(program, refProg)) {
+      return { id: meta.id, title: meta.title, mainIdea: meta.mainIdea, matchType: "exact" };
+    }
+  }
+  // Двоичный декремент имеет ту же таблицу, что и «правый хвост нулей»,
+  // но по семантике это вычитание 1. Различаем по контексту headStart и алфавиту.
+  if (ref.PROG_binary_decrement && programsEqual(program, ref.PROG_binary_decrement)) {
+    return {
+      id: "binary-decrement", title: "Двоичный декремент",
+      mainIdea: "Эта же таблица, интерпретируемая на двоичной записи числа, реализует вычитание единицы: N − 1.",
+      matchType: "exact"
+    };
+  }
+  return null;
+}
+
+/** Прогон программы на наборе тестовых входов. Возвращает массив результатов. */
+function runOnSampleInputs(program, headStart, startState, blank, alphabet, inputs, maxSteps) {
+  maxSteps = maxSteps || 200;
+  const out = [];
+  for (const input of inputs) {
+    // Проверяем, что все символы входа допустимы алфавитом (без blank)
+    let invalidChar = null;
+    const allowed = new Set(alphabet.filter(s => s !== blank));
+    for (const ch of input) if (!allowed.has(ch)) { invalidChar = ch; break; }
+    if (invalidChar) {
+      out.push({ input, output: null, steps: 0, error: `Символ «${invalidChar}» не в алфавите.` });
+      continue;
+    }
+    try {
+      const sim = createTMSimulation(input, headStart, startState, blank, 0);
+      const r = runTMFull(sim, program, maxSteps);
+      // Финальная лента — обрезаем blank-края
+      let s = sim.minPos, e = sim.maxPos;
+      while (s <= e && (sim.tape.get(s) ?? blank) === blank) s++;
+      while (e >= s && (sim.tape.get(e) ?? blank) === blank) e--;
+      let final = "";
+      if (s <= e) for (let i = s; i <= e; i++) final += (sim.tape.get(i) ?? blank);
+      out.push({ input, output: final, steps: sim.step, error: r.ok ? null : r.error });
+    } catch (e) {
+      out.push({ input, output: null, steps: 0, error: e.message });
+    }
+  }
+  return out;
+}
+
+/** Сгенерировать «умный» набор тестовых входов для программы. */
+function defaultSampleInputsFor(alphabet, blank) {
+  const syms = alphabet.filter(s => s !== blank);
+  if (syms.length === 2 && syms.includes("0") && syms.includes("1")) {
+    // Двоичный алфавит
+    return ["1", "10", "11", "100", "101", "111", "1010", "1100"];
+  }
+  // Общий случай: коротенькие комбинации первых двух символов
+  const a = syms[0] || "", b = syms[1] || a;
+  return [a, b, a + b, b + a, a + a + b, a + b + a, b + a + b].filter(x => x.length > 0);
+}
+
+/** Полный HTML-блок «Что делает программа» по таблице. */
+function analyzeProgramHTML(program, alphabet, states, blank, headStart, startState) {
+  const pattern = detectPatternFromProgram(program, alphabet, blank, headStart);
+  const semantics = states.map(st => ({
+    state: st,
+    desc: analyzeStateSemantics(program, st, alphabet, blank)
+  }));
+
+  const patternBlock = pattern
+    ? `<div class="cmd-explain-card" style="background:#eef5e8; border-color:#a9d8a9;">
+        <h5>📌 Распознанный паттерн: ${escapeHTML(pattern.title)}</h5>
+        <p><b>Главная идея:</b> ${escapeHTML(pattern.mainIdea)}</p>
+      </div>`
+    : `<div class="cmd-explain-card" style="background:#fbf3e0; border-color:#e3c4a8;">
+        <h5>📌 Паттерн не распознан автоматически</h5>
+        <p>Таблица не совпадает ни с одной из эталонных программ из библиотеки. Это либо новый тип задачи, либо вариация — изучай по семантике состояний ниже и по прогонам на коротких примерах.</p>
+      </div>`;
+
+  const semHTML = `
+    <div class="cmd-explain-card">
+      <h5>🔍 Роль каждого состояния</h5>
+      <ul style="margin: 4px 0 0 0; padding-left: 20px;">
+        ${semantics.map(s => `<li><code>${escapeHTML(s.state)}</code> — ${escapeHTML(s.desc)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+
+  return patternBlock + semHTML;
+}
+
+/** HTML-таблица с результатами прогона на наборе входов. */
+function sampleRunsHTML(results) {
+  if (!results || results.length === 0) return `<p class="muted small">Нет результатов.</p>`;
+  const rows = results.map(r => {
+    if (r.error) return `<tr><td><code class="mono">${escapeHTML(r.input)}</code></td><td colspan="2" class="muted">${escapeHTML(r.error)}</td></tr>`;
+    return `<tr>
+      <td><code class="mono">${escapeHTML(r.input)}</code></td>
+      <td><code class="mono">${escapeHTML(r.output)}</code></td>
+      <td class="muted small">${r.steps} ${r.steps === 1 ? "шаг" : (r.steps < 5 ? "шага" : "шагов")}</td>
+    </tr>`;
+  }).join("");
+  return `
+    <div class="cmd-explain-card">
+      <h5>🧪 Прогон на коротких входах</h5>
+      <p class="muted small">Программа автоматически прогнана на нескольких простых входах. Сравни столбцы input → output, чтобы увидеть закономерность.</p>
+      <table class="autotest-table" style="margin-top:6px">
+        <thead><tr><th>вход</th><th>результат</th><th>шагов</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
 }
 
 /* ============================================================
@@ -2146,14 +2439,18 @@ const ProgressStore = (function () {
     today,
     getProgress, getMistakes, getFoundation, getSettings, getStreak,
 
+    markHelp(taskId) {
+      const p = getProgress(); p.usedGuide[taskId] = (p.usedGuide[taskId] || 0) + 1; safeSet(PROGRESS_KEYS.progress, p);
+    },
     markAttempt(taskId) {
       const p = getProgress(); p.attempted[taskId] = (p.attempted[taskId] || 0) + 1; safeSet(PROGRESS_KEYS.progress, p);
     },
     markSolved(taskId, opts) {
       const p = getProgress();
-      p.solved[taskId] = (p.solved[taskId] || 0) + 1;
+      if (p.solved[taskId]) return;
+      p.solved[taskId] = 1;
       if (opts && opts.withoutGuide) p.solvedNoGuide[taskId] = (p.solvedNoGuide[taskId] || 0) + 1;
-      if (opts && opts.usedGuide) p.usedGuide[taskId] = (p.usedGuide[taskId] || 0) + 1;
+
       safeSet(PROGRESS_KEYS.progress, p);
       // streak
       const s = getStreak();
@@ -3576,7 +3873,7 @@ function binRunPipeline() {
   const r = simulateOnce(bin, item.headStart, item.program);
   if (!r.ok) { out.innerHTML = `<div class="feedback show err">Симулятор: ${escapeHTML(r.error)}</div>`; return; }
   const finalBin = r.finalTape;
-  const finalDec = /^[01]+$/.test(finalBin) ? binToDec(finalBin) : "—";
+  const finalDec = /^[01]+$/.test(finalBin) ? BigInt("0b" + finalBin).toString() : "—";
   out.innerHTML = `
     <div class="soft-box">
       <h4>Шаг 1. Десятичное → двоичное</h4>
@@ -3615,15 +3912,15 @@ function initTabBinary() {
   binRenderRelated();
   document.getElementById("conv-to-bin").addEventListener("click", () => {
     const err = document.getElementById("conv-err"); err.className = "feedback err"; err.textContent = "";
-    const p = parseStrictInt(document.getElementById("conv-dec").value);
-    if (!p.ok || p.value < 0) { err.textContent = "Введите неотрицательное целое число."; err.classList.add("show"); return; }
-    document.getElementById("conv-bin-out").textContent = decToBin(p.value);
+    const decimal = document.getElementById("conv-dec").value.trim();
+    if (!/^\d{1,100}$/.test(decimal)) { err.textContent = "Введите неотрицательное целое число."; err.classList.add("show"); return; }
+    document.getElementById("conv-bin-out").textContent = BigInt(decimal).toString(2);
   });
   document.getElementById("conv-to-dec").addEventListener("click", () => {
     const err = document.getElementById("conv-err"); err.className = "feedback err"; err.textContent = "";
     const s = document.getElementById("conv-bin").value.trim();
     if (!/^[01]+$/.test(s)) { err.textContent = "Двоичная запись должна состоять только из 0 и 1."; err.classList.add("show"); return; }
-    document.getElementById("conv-dec-out").textContent = binToDec(s);
+    document.getElementById("conv-dec-out").textContent = BigInt("0b" + s).toString();
   });
   document.getElementById("bin-run-pipeline").addEventListener("click", binRunPipeline);
   binRunPipeline();
@@ -3687,6 +3984,14 @@ function renderTabUniversal() {
         Текущие строка (состояние) и столбец (символ под головкой) подсвечены, а активная команда — в зелёной рамке.</p>
         <div id="uni-program-table"></div>
         <div id="uni-cmd-explain"></div>
+
+        <h3>Что делает программа</h3>
+        <p class="muted small">Автоматический анализ таблицы: распознанный паттерн, роль каждого состояния и прогон на коротких входах.</p>
+        <div id="uni-analysis-host"></div>
+        <div class="form-row" style="margin-top:6px;">
+          <button class="btn small ghost" id="uni-run-samples">🧪 Изучить на коротких примерах</button>
+        </div>
+        <div id="uni-samples-host"></div>
 
         <h3>Алфавит и состояния</h3>
         <p class="small" id="uni-alpha"></p>
@@ -3784,6 +4089,14 @@ function renderTabUniversal() {
         <p class="muted small">Каждая ячейка — команда вида <code class="mono">запись,движение,новое_состояние</code>. Пустая ячейка или «—» означает halt. Клик по ячейке откроет разбор команды.</p>
         <div id="cust-table-host"></div>
         <div id="cust-cmd-explain"></div>
+
+        <h4 style="margin-top:14px;">3a. Что делает эта таблица</h4>
+        <p class="muted small">Автоматический анализ: распознанный паттерн, роли состояний, прогон на коротких входах.</p>
+        <div id="cust-analysis-host"></div>
+        <div class="form-row" style="margin-top:6px;">
+          <button class="btn small ghost" id="cust-run-samples">🧪 Изучить на коротких примерах</button>
+        </div>
+        <div id="cust-samples-host"></div>
 
         <h4 style="margin-top:14px;">4. Вставить таблицу текстом</h4>
         <p class="muted small">
@@ -3887,6 +4200,30 @@ function uniRenderDetail() {
 
   document.getElementById("uni-head").textContent =
     `Головка стартует ${headStartLabel(task.initialTape.headStart)}.`;
+
+  // Анализ программы: распознанный паттерн + семантика состояний
+  const analysisHost = document.getElementById("uni-analysis-host");
+  if (analysisHost) {
+    analysisHost.innerHTML = analyzeProgramHTML(
+      task.program, task.alphabet, task.states, task.blankSymbol,
+      task.initialTape.headStart, task.startState
+    );
+  }
+  // Сбрасываем предыдущий блок прогонов на примерах
+  const samplesHost = document.getElementById("uni-samples-host");
+  if (samplesHost) samplesHost.innerHTML = "";
+  // Привязываем кнопку «Изучить на коротких примерах»
+  const runSamplesBtn = document.getElementById("uni-run-samples");
+  if (runSamplesBtn) {
+    runSamplesBtn.onclick = () => {
+      const inputs = defaultSampleInputsFor(task.alphabet, task.blankSymbol);
+      const results = runOnSampleInputs(
+        task.program, task.initialTape.headStart, task.startState,
+        task.blankSymbol, task.alphabet, inputs, 200
+      );
+      samplesHost.innerHTML = sampleRunsHTML(results);
+    };
+  }
 
   // Пример первой непустой команды
   let example = null;
@@ -4524,7 +4861,39 @@ function custRenderTable(opts = {}) {
 function custRerender() {
   custWriteConfigToInputs();
   custRenderTable();
+  custRenderAnalysis();
   custRenderSimView(); // обновим и симулятор (на случай если states/alphabet поменялись)
+}
+
+/** Рендер блока «Что делает эта таблица». */
+function custRenderAnalysis() {
+  const host = document.getElementById("cust-analysis-host");
+  if (!host) return;
+  try {
+    const program = custBuildProgramFromConfig();
+    host.innerHTML = analyzeProgramHTML(
+      program, custConfig.alphabet, custConfig.states,
+      custConfig.blank, custConfig.headMode, custConfig.startState
+    );
+  } catch (e) {
+    host.innerHTML = `<p class="muted small">Не удалось проанализировать таблицу: ${escapeHTML(e.message)}</p>`;
+  }
+}
+
+/** Прогон своей таблицы на наборе коротких входов. */
+function custRunSamples() {
+  const host = document.getElementById("cust-samples-host"); if (!host) return;
+  try {
+    const program = custBuildProgramFromConfig();
+    const inputs = defaultSampleInputsFor(custConfig.alphabet, custConfig.blank);
+    const results = runOnSampleInputs(
+      program, custConfig.headMode, custConfig.startState,
+      custConfig.blank, custConfig.alphabet, inputs, 200
+    );
+    host.innerHTML = sampleRunsHTML(results);
+  } catch (e) {
+    host.innerHTML = `<p class="muted small">Не удалось прогнать: ${escapeHTML(e.message)}</p>`;
+  }
 }
 
 /** Симулятор: загрузка стартовой конфигурации. */
@@ -4953,6 +5322,7 @@ function custWireUI() {
   document.getElementById("cust-sim-run").addEventListener("click", custSimRunToEnd);
   document.getElementById("cust-sim-clear").addEventListener("click", custSimReset);
   document.getElementById("cust-sim-predict").addEventListener("click", custStartPredict);
+  document.getElementById("cust-run-samples").addEventListener("click", custRunSamples);
 }
 
 function initTabUniversal() {
@@ -5172,13 +5542,13 @@ function libGetTask() {
    с уже посчитанным ответом. Используют те же программы PROG_*.
    ============================================================ */
 let _genCounter = 0;
-function _newGenId(kind) { _genCounter += 1; return { id: `turing-generated-${kind}-${_genCounter}`, shortId: `gen${_genCounter}` }; }
+function _newGenId(kind, ...params) { _genCounter += 1; return { id: `turing-generated-${kind}-${params.join("-")}`, shortId: `gen${_genCounter}` }; }
 function _rand(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
 
 function generateRightTailZerosTask() {
   // Случайные N (длина) и c0 (нулей). Спрашиваем максимум финальных нулей при фиксированном составе.
   const c1 = _rand(2, 8), c0 = _rand(2, 12);
-  const ids = _newGenId("rt");
+  const ids = _newGenId("rt", c0, c1);
   const t = {
     ...ids,
     taskType: "right_tail_zero_flip_find_max_final_zeros",
@@ -5199,7 +5569,7 @@ function generateRightTailZerosTask() {
 }
 function generateLeftPrefixOnesTask() {
   const c1 = _rand(2, 8), c0 = _rand(2, 10);
-  const ids = _newGenId("lp");
+  const ids = _newGenId("lp", c0, c1);
   const t = {
     ...ids,
     taskType: "left_prefix_ones_flip_find_max_final_zeros",
@@ -5220,7 +5590,7 @@ function generateLeftPrefixOnesTask() {
 }
 function generateBinaryDecrementTask() {
   const dec = _rand(8, 1024);
-  const ids = _newGenId("dec");
+  const ids = _newGenId("dec", dec);
   const t = {
     ...ids,
     taskType: "binary_decrement_decimal_result",
@@ -5241,7 +5611,7 @@ function generateBinaryDecrementTask() {
 }
 function generateBitwiseInversionTask() {
   const dec = _rand(5, 1023);
-  const ids = _newGenId("inv");
+  const ids = _newGenId("inv", dec);
   const t = {
     ...ids,
     taskType: "bitwise_inversion_decimal_result",
@@ -5262,7 +5632,7 @@ function generateBitwiseInversionTask() {
 }
 function generateClearLowestOneTask() {
   const dec = _rand(10, 1023);
-  const ids = _newGenId("clo");
+  const ids = _newGenId("clo", dec);
   const t = {
     ...ids,
     taskType: "clear_lowest_one_decimal_result",
@@ -5283,7 +5653,7 @@ function generateClearLowestOneTask() {
 }
 function generateClearLeftmostOneTask() {
   const dec = _rand(8, 1023);
-  const ids = _newGenId("cll");
+  const ids = _newGenId("cll", dec);
   const t = {
     ...ids,
     taskType: "clear_first_left_one_decimal_result",
@@ -5521,14 +5891,13 @@ function libCheckAnswer() {
   const raw = document.getElementById("lib-answer-input").value.trim();
   const p = parseStrictInt(raw);
 
-  // Отметим попытку в прогрессе
-  ProgressStore.markAttempt(task.id);
 
   if (!p.ok) {
     fb.className = "feedback err show";
     fb.textContent = "Введите целое число.";
     return;
   }
+  ProgressStore.markAttempt(task.id);
   if (p.value === task.answer) {
     fb.className = "feedback ok show";
     fb.textContent = `Верно. Ответ: ${task.answer}.`;
@@ -5565,6 +5934,7 @@ function libCheckAnswer() {
 
 function libShowHint() {
   const task = libGetTask(); if (!task) return;
+  ProgressStore.markHelp(task.id);
   const hints = libTieredHints(task);
   const idx = Math.min(libHintLevel, hints.length - 1);
   libHintLevel = Math.min(libHintLevel + 1, hints.length);
@@ -5578,6 +5948,7 @@ function libShowHint() {
 
 function libRevealAnswer() {
   const task = libGetTask(); if (!task) return;
+  ProgressStore.markHelp(task.id);
   const sol = document.getElementById("lib-answer-solution");
   sol.hidden = false;
   sol.innerHTML = `
@@ -5612,10 +5983,10 @@ function libRunSim() {
   }
   let extra = "";
   if (task.initialTape.form === "binary_number" && /^[01]+$/.test(r.finalTape)) {
-    const inDec = /^[01]+$/.test(raw) ? binToDec(raw) : null;
+    const inDec = /^[01]+$/.test(raw) ? BigInt("0b" + raw).toString() : null;
     extra = `<p class="small">Если читать вход и выход как двоичные числа:
       ${inDec != null ? `<code>${raw}</code><sub>2</sub> = <code>${inDec}</code><sub>10</sub> → ` : ""}
-      <code>${escapeHTML(r.finalTape)}</code><sub>2</sub> = <code>${binToDec(r.finalTape)}</code><sub>10</sub>.</p>`;
+      <code>${escapeHTML(r.finalTape)}</code><sub>2</sub> = <code>${BigInt("0b" + r.finalTape).toString()}</code><sub>10</sub>.</p>`;
   } else if (task.initialTape.form === "binary_string") {
     const c0in = countChar(raw, "0"), c1in = countChar(raw, "1");
     const c0out = countChar(r.finalTape, "0"), c1out = countChar(r.finalTape, "1");
@@ -5654,6 +6025,7 @@ function initTabLibrary() {
   libRenderFilter();
   libRenderGrid();
   document.getElementById("lib-answer-check").addEventListener("click", libCheckAnswer);
+  document.getElementById("lib-answer-input").addEventListener("keydown", event => { if (event.key === "Enter") libCheckAnswer(); });
   document.getElementById("lib-answer-hint").addEventListener("click", libShowHint);
   document.getElementById("lib-answer-reveal").addEventListener("click", libRevealAnswer);
   document.getElementById("lib-answer-guide").addEventListener("click", libStartGuide);
@@ -6031,9 +6403,7 @@ function libStartGuide() {
   libGuide = { steps: buildLibraryTaskGuide(task), idx: 0, taskId: task.shortId };
   ProgressStore.markAttempt(task.id);
   // отмечаем, что пользователь использовал гайд
-  const p = ProgressStore.getProgress();
-  p.usedGuide[task.id] = (p.usedGuide[task.id] || 0) + 1;
-  try { localStorage.setItem("turingTrainer.progress", JSON.stringify(p)); } catch (e) {}
+  ProgressStore.markHelp(task.id);
   libRenderGuide();
 }
 function libCloseGuide() { libGuide = null; libRenderGuide(); }
@@ -6271,5 +6641,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
+<a style="display:inline-block;margin:0.35rem 0.75rem;padding:0.45rem;color:inherit;text-decoration:underline" href="./informatics-versions/">Версии тренажёров по информатике</a>
 </body>
 </html>

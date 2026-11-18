@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'trainers/*informatics*'
+      - 'trainers/logic-trainer/**'
+      - 'trainers/turing-trainer-*.html'
       - 'trainers/informatics-versions/**'
       - 'trainers/recursion_ladder_paths.html'
       - 'trainers/turing-trainer-polish.html'

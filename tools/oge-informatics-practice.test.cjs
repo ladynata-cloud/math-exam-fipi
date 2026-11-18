@@ -189,3 +189,38 @@ test('all ten generators match independent answers recovered from the displayed 
     }
   }
 });
+
+test('a tab reload resumes the same graph with solved city labels and first-attempt statistics',t=>{
+  const route='https://example.test/trainers/oge-informatics-1-10-tutor.html';
+  function open(url,previous){
+    const dom=new JSDOM(source,{url,runScripts:'outside-only'});
+    t.after(()=>dom.window.close());
+    const w=dom.window;
+    if(previous){
+      for(const kind of ['localStorage','sessionStorage']){
+        for(const key of Object.keys(previous[kind])) w[kind].setItem(key,previous[kind].getItem(key));
+      }
+    }
+    w.eval(w.document.querySelector('script:not([src])').textContent);
+    return w;
+  }
+  let w=open(route);
+  const pick=selector=>w.document.querySelector(selector);
+  pick('[data-topic="9"]').click();
+  const roads=pick('#taskText .graph-key').textContent;
+  pick('#answerInput').value='0'; pick('#checkBtn').click();
+  pick('#tutorOpenBtn').click(); pick('#s_tutorInput').value='1'; pick('[data-tutor-check]').click();
+  pick('[data-tutor-next]').click(); pick('[data-tutor-close]').click(); pick('#tutorOpenBtn').click();
+  assert.equal(pick('[data-city="H"] .path-count').textContent,'1');
+  w=open(route,w);
+  assert.equal(pick('#taskText .graph-key').textContent,roads);
+  assert.equal(pick('#s_tutorInput').value,'');
+  assert.equal(pick('.active-city').dataset.city,'G');
+  assert.equal(pick('[data-city="H"] .path-count').textContent,'1');
+  assert.equal(pick('#answerInput').value,'0');
+  pick('#checkBtn').click();
+  assert.equal(JSON.parse(w.localStorage.getItem('ogeInfoTrainerStats')).attempts,1);
+  w=open(route+'?example=paths-article',w);
+  pick('#answerInput').value='6'; pick('#checkBtn').click();
+  assert.ok(pick('#feedback.good'));
+});
