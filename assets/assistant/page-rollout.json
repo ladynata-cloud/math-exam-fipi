@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "34a08fc84d260a2e96be245c1b2d77b4d3dd6734",
+  "baseSha": "60de461544aa5f998ddb2266a8446bdda38239ca",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -38,53 +38,53 @@
   ],
   "addedPages": {
     "articles/index.html": {
-      "beforeSha256": "c2b5eff93b4a552c835518fa096926ce850d83ae39394e8fa9e0895fb4f1c606",
-      "afterSha256": "9c9376c114c4943e76c23eb88fc28b399f23c10d44bf2448da9dbe984fc32b8f",
+      "beforeSha256": "2a528e5e2335f74cd11b0a09069c9fc1c7379674e8465e2378dcf9204486ec2c",
+      "afterSha256": "e8744a0200f90748113aa04d96f2cbdd39693a2866c5cf99ef4eaf06ecee83aa",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html": {
-      "beforeSha256": "e969f1d82d77af3ab8b28f802e42328a1ecfb1ff6c13139e08e26addc751d085",
-      "afterSha256": "c722be154db42a89f91c965d8570a60e1573ef42bf9be6980af88a3537d57c5e",
+      "beforeSha256": "2fad3c8ac7c17e0da27f88d82ed6db548d8ec1562e9784c23f8e76b7dfe8f821",
+      "afterSha256": "545cb17ed08c3d7c4cb83d200bea78b9e14077776c0011581cc36d129b1419f8",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/02-uslovie-i-dokazatelstvo/index.html": {
-      "beforeSha256": "9a9a1a189791d806d6f031bff359c21828ad53f85715d3d32277c33ff8cdc53c",
-      "afterSha256": "53d9313f0c037c57f2a861c500409845d96a7b1f663b68195f579e0a7ea7a735",
+      "beforeSha256": "df8860e8329370fc16e1b5b464418223584f59b4c254044b4fc03655615d25bb",
+      "afterSha256": "02a8f2e292ea0cd691dc5ac1309a57bce90d3341f664897a08e68e3f3ab84fdb",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/03-nalozhenie-figur/index.html": {
-      "beforeSha256": "d5b20f42b5ef2e76305b734ac6baef663b905d47132b7cdcbe0df987e8663608",
-      "afterSha256": "58d1151f70054f7d3f164d3d2d7125fafabe0715368e99c73161165898b0f764",
+      "beforeSha256": "712f87823a9ed6fac40ba92529dd7e1acf560552f22119602dc0f54cf9133dad",
+      "afterSha256": "d4b05680bcf8e2b3710741b565f810a636402f6bd37787c460c5fe627667d627",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/04-pervyi-priznak/index.html": {
-      "beforeSha256": "f66aa5874c044973ba0dd5aff8b9d1f50c8a2aaae378dc71bdb22403939c53fd",
-      "afterSha256": "8da2b44ee2e49d543cc808fb11e49f13c2bb9e5d2547ac1907d1ea2649f05548",
+      "beforeSha256": "923583fc087fa1c1a4a61bb3ec7bee195ed7f0407ccb67e16dde7fec3a041750",
+      "afterSha256": "9a6046e9ac3b27065724ba5bfb49df48bdb7a9372e7cea69607ca45b50dc3378",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/05-mediana-bissektrisa-vysota/index.html": {
-      "beforeSha256": "2ed2b04111786ef9caaff5b732c844d661f60c8bfa48bff74045521507b33ff5",
-      "afterSha256": "5454d0377d8e96b23fba6b5aa3d35b128db7a84b7039aa77a7bdf8a5a1c70c92",
+      "beforeSha256": "ae58a9ce537a86e9bd817c881ee9d1667a830fd64163fceb38b3c12b9f58ae38",
+      "afterSha256": "5b391aeb06ef2e6d7e5ca830afc9c535b3035c757ad6c2257f1693118e03f2a0",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/06-ravnobedrennyi-treugolnik/index.html": {
-      "beforeSha256": "dc98e2d7238c22539a9b4feeb1da64250bb065129d99f8ff3208cf02bfbca23d",
-      "afterSha256": "1e1265cb4996a569fafc344104a7ff781d6c69551015f68ec74b954b70ac5451",
+      "beforeSha256": "979effb2c4463c7ae7413ca6baf6478183c917f383c96db67942aea0b8b47dbd",
+      "afterSha256": "d68685957847a61956ce0797d2c62b41139fb7e6e8fe60e48c6a7ebb8568c6fb",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/07-chitat-chertezh/index.html": {
-      "beforeSha256": "c0cc6184a5191e64008b4c2732c30b0f56373938d260158ebbf0109122ea167d",
-      "afterSha256": "9415f4821f4564b0ccf99065bd6326713675a3c7114772da60a4b7315f1f0f40",
+      "beforeSha256": "a2f4698eed6b3f855706e1380c35f480a84092731b1c40abaf1790048bb4e6d3",
+      "afterSha256": "213ad20a48661b6cc16cfacca9a248ebbffd649e6d0ab693161573942400277e",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/08-marshrut-po-geometrii/index.html": {
-      "beforeSha256": "1f43979169b25ac82b5afadf3acc820806c0b0a2a5c217aba335fa34440359d8",
-      "afterSha256": "f5ce89b8fd714975e1370c4f286ab6558154a56b28db58546bcbe35f052d661e",
+      "beforeSha256": "bf37896ad3b36c63a86da7580cfae64d0f51f90b51851b0dac6dbe83b7e5c43b",
+      "afterSha256": "5899eb90c52e42aaea61a59dbe857acec87173f42b74b245a4af872642a01f0b",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/index.html": {
-      "beforeSha256": "7d87f2f602abee06b5283b1edd79e05aaad273660c9f8f3ff2df1f3745806888",
-      "afterSha256": "9f765dbcff362f9dcf7622a7f2b532c0b0518d383192d98e33888565bcf3e529",
+      "beforeSha256": "631a6cc67a9e2730390efebc7007f0da8f36741588752bbc06475bbfa08be925",
+      "afterSha256": "d5bd28dbf47db04eda6db6687c90526a28167de234fc9cefe5dc1e5128e8c56a",
       "placement": "before-head-close"
     },
     "articles/moy-vzglyad-na-geometriyu-atanasyana/sources.html": {
@@ -98,68 +98,68 @@
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/01-chto-takoe-stroynost/index.html": {
-      "beforeSha256": "9502e277e694cab34031862b9c6d818717e4de389cc565c296eb87176989cb02",
-      "afterSha256": "a197cd17bdabe8cfb286c1d0246ae9300336a626d2a217ebf5ffdfe1350c0258",
+      "beforeSha256": "07e2f857b419b96700a6df3de748d1b1c56c1977a05204ac21abf625856694fe",
+      "afterSha256": "fb3b11c288e10d00d5dfbbc3d60d5f531443bc429c4498d5f3f99c0ed7cef309",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/02-vhod-v-geometriyu/index.html": {
-      "beforeSha256": "8b2e71366e184bcd0e4afff607f367874165bb099b72aafae73695a6ef917261",
-      "afterSha256": "043caf0bf56cae5273d0b3891be2b9c9dbc82cf63b6362ed61b786aab1568511",
+      "beforeSha256": "01e0131aa65e1cdf518d590611724d3396dec1e906a266beda89dc4a87c7daa3",
+      "afterSha256": "d4d658e1843786d22144132cb399abde25aaa0a707cc657d23d3923f4f0f1020",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/03-akciomy-i-pravila-igry/index.html": {
-      "beforeSha256": "2d8c21670f66d7ff834f5b618bfa70ca98d2660d8a13ff97ceedc515fae56185",
-      "afterSha256": "70636ce225bdd0201704067e5b2af164807cd28170bef4ab3dcf0535b1db3fd2",
+      "beforeSha256": "6186a5bd5b5f50b80d3c8a57dee9473af3b8e37c2bdf1acaaa161fc12717a949",
+      "afterSha256": "6a010c0a680f4165ce2af6ed62f3280cb10495b91acb027f3dcdc5ed834dcc1b",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/04-ravenstvo-nalozhenie-dvizhenie/index.html": {
-      "beforeSha256": "c40814a4f3c3c1ddc599d70617cf37ac236428b98bf82c7220e1e96e4fd3ec35",
-      "afterSha256": "e24331d63ab6a5c8a5add01db0a58ccea50c06ec870c911f21b194ca2388d8bd",
+      "beforeSha256": "803ad548b4baf55e7d427c737ecbecba8862cef522404d04fba24a15777bf9e7",
+      "afterSha256": "9287324c1e7df97b0ead65eb632f8527c757bb0fe6a6c9c8f2436a20939f6cea",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/05-pervyi-priznak-ravenstva/index.html": {
-      "beforeSha256": "3b8a00159198f096c8b651317c2de47fa35091c43ba07614db4fc8ce524e9cb7",
-      "afterSha256": "c841aad9119f28a485382360526d7b95b88898440e880c1f920db32e01d41e2d",
+      "beforeSha256": "ecb18fee173176339dd439143f12d1b58544b18a2f01024b2978e09699bab5d7",
+      "afterSha256": "f1f1c8d320f40cb4879343b1074f5b15d01b001a91b6ab8587a059717f7e2646",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/06-kak-uchat-dokazyvat/index.html": {
-      "beforeSha256": "3c674f6b20b1381febc1c89440f7589af82992c627d7f1c1919ab269506947ef",
-      "afterSha256": "d31785342aeaf67ea8f10374279f48560ae40c257dbe1a3de386fef9b64fddba",
+      "beforeSha256": "f3df678ca458f76ef5ab42849e705d75426fc6049eadf754c2fba4100f733465",
+      "afterSha256": "82cfc44d7923242cd6beb752b1a60c44e6d22884ecef71a975aa3dfbdbd8aa43",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/07-neobhodimo-i-dostatochno/index.html": {
-      "beforeSha256": "d488a46bfe94e36113c8202076aa92874158a965685ab16bd2afc27d46a53825",
-      "afterSha256": "c61073cb1caff2a2cf469e531f30d9d2cbcb7fc49205e14227df6ac139f1c1f9",
+      "beforeSha256": "e68de98d9d246e83769f3ecfdee95ce1c80a7dd1011faa3482d8b0ca0faf4acd",
+      "afterSha256": "f5f918082fe86347f75d54b3fcefb7bb1705843ceeffe9de6ec6372536176268",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/08-sistema-zadach/index.html": {
-      "beforeSha256": "6ba736b85bbe24b9df4dfd1ba207cb55ce64e91af681ad775c0289ca4a7c49f1",
-      "afterSha256": "c2f4dfd84abf9ab4ae4b39324f99d6d93e24524eae0df53ff0d0a6beda5756ba",
+      "beforeSha256": "9acd6a6331b33a78470471432561cd9b3edff599fd1f9e252dcd578c768e553c",
+      "afterSha256": "6a1586083cfe3b3bd983d23828afdd682cca3574e027c51674caf7be8b9e484e",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/09-chertezh-i-dokazatelstvo/index.html": {
-      "beforeSha256": "58b082f9a5131a1283537d61e2ba9ffebae03159c3ee3095ceeea4c72ae13534",
-      "afterSha256": "a1ae10b4e7bfc54ce33c9bd4dd05eecf7f9f0e2060aca97eb2d4e81210881e76",
+      "beforeSha256": "c0221406fbe480f21ac0a32e61a2f225d3fae536a242ae3e5298d3de8c315444",
+      "afterSha256": "a1df25a6d78c082327c1c83c49d8a92b779b8dac6fc1cdda0da7dd86dee34377",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/10-tri-arhitektury-kursa/index.html": {
-      "beforeSha256": "407a463471c7e98aeff4139bcf362ca50e6a237fd546836e4e4fac6441112b26",
-      "afterSha256": "a921715dbb2f9d0a7c2d25f83169345bb80016396018d70d0aa220c65e84fb1a",
+      "beforeSha256": "85e12efe06ec2687006c5032ba6844ad981daefd415c8ff77d518c97364b309e",
+      "afterSha256": "5cca010c3e70cac959dd93f568e4ea0f5b38e52acc45c8e33fcf7e1315eb3923",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/index.html": {
-      "beforeSha256": "c686908bc92608af4b73b1807a269e89093ce3b9701bd73e76bb7c7dab83a407",
-      "afterSha256": "3605dd344a96bda51ab3dcd88744f676cd22c6da1ead894b5e99e59f0a2929d1",
+      "beforeSha256": "5265e9e1df8d7178351866ca1aa694138bccf5e2d4defa2eaa9c1e9afc76aa34",
+      "afterSha256": "2f1c1284156b9d56199b7c132a8ec4e34ae2341b74bc32712aaa358c5694c22b",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html": {
-      "beforeSha256": "a65cf670faba5c7b636faf2284ad705aeb3432c8c9faaf3703a766ce7583783f",
-      "afterSha256": "ca73e4a3d8f419648422d0807a75a58b45d17685709afc9c9dd73e99a12ab9d5",
+      "beforeSha256": "62bf81f5b123c51f2358ea2b0abd4c06e10d2a9a168057722ee5e614b18a9665",
+      "afterSha256": "ca85f9c93b3d962aa3c1d9c20f69df38abe529d65f97a930fd800991c66ea118",
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/index.html": {
-      "beforeSha256": "3278b827b0dfe59143e3276e7343829bc21b3b73be0cee92bed098492fd00afe",
-      "afterSha256": "fe9ecd871cfc4e87ef17426284ed2c5882583f1afcd2f7edf1b4772f2a5c7d3e",
+      "beforeSha256": "5cc6a90a39652b60784d11843cfdbc7cf00c6f55e691417e4a9e9cb4a24431ce",
+      "afterSha256": "438952d9dea35671246472075fd1d3180e657bebadd1074c3516a5a0dbca0777",
       "placement": "before-head-close"
     },
     "azbuka-postroeniy-reviewed/index.html": {
@@ -5507,6 +5507,37 @@
         "geometry-course/textbook/index.html",
         "stereo-course/merzlyak-10-base/index.html",
         "trainers/oge-task25-geometry.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "34a08fc84d260a2e96be245c1b2d77b4d3dd6734",
+      "sourceBaseSha": "60de461544aa5f998ddb2266a8446bdda38239ca",
+      "task": "docs/tasks/PLANIMETRY_ARTICLE_CYCLES_20261118.md",
+      "changedPaths": [
+        "articles/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/02-uslovie-i-dokazatelstvo/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/03-nalozhenie-figur/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/04-pervyi-priznak/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/05-mediana-bissektrisa-vysota/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/06-ravnobedrennyi-treugolnik/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/07-chitat-chertezh/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/08-marshrut-po-geometrii/index.html",
+        "articles/moy-vzglyad-na-geometriyu-atanasyana/index.html",
+        "articles/stroynost-kursa-geometrii/01-chto-takoe-stroynost/index.html",
+        "articles/stroynost-kursa-geometrii/02-vhod-v-geometriyu/index.html",
+        "articles/stroynost-kursa-geometrii/03-akciomy-i-pravila-igry/index.html",
+        "articles/stroynost-kursa-geometrii/04-ravenstvo-nalozhenie-dvizhenie/index.html",
+        "articles/stroynost-kursa-geometrii/05-pervyi-priznak-ravenstva/index.html",
+        "articles/stroynost-kursa-geometrii/06-kak-uchat-dokazyvat/index.html",
+        "articles/stroynost-kursa-geometrii/07-neobhodimo-i-dostatochno/index.html",
+        "articles/stroynost-kursa-geometrii/08-sistema-zadach/index.html",
+        "articles/stroynost-kursa-geometrii/09-chertezh-i-dokazatelstvo/index.html",
+        "articles/stroynost-kursa-geometrii/10-tri-arhitektury-kursa/index.html",
+        "articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/index.html",
+        "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html",
+        "articles/stroynost-kursa-geometrii/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

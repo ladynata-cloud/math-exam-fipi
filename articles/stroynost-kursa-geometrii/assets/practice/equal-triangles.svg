@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="180" viewBox="0 0 340 180" role="img" aria-labelledby="title">
+<title id="title">Прямые AC и BD пересекаются в точке O, отмечены пары равных отрезков</title>
+<style>
+ .edge,.aux,.dash,.mark {fill:none;stroke:#243b50;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+ .aux,.dash {stroke:#216282} .dash {stroke-dasharray:5 5} .mark {stroke:#a33a35}
+ circle {fill:#243b50} text {font:italic 18px Georgia,serif; fill:#122f42}
+</style>
+<polyline class="edge" points="57,42 283,138"/>
+<polyline class="edge" points="97,147 243,33"/>
+<polyline class="edge" points="57,42 97,147"/>
+<polyline class="edge" points="283,138 243,33"/>
+<polyline class="mark" points="111.936,69.6816 115.064,62.3184"/>
+<polyline class="mark" points="228.064,110.318 224.936,117.682"/>
+<polyline class="mark" points="133.597,123.499 128.674,117.194"/>
+<polyline class="mark" points="138.326,119.806 133.403,113.501"/>
+<polyline class="mark" points="206.403,56.5009 211.326,62.8064"/>
+<polyline class="mark" points="201.674,60.1936 206.597,66.4991"/>
+<circle cx="57" cy="42" r="3"/><text x="42" y="38">A</text>
+<circle cx="97" cy="147" r="3"/><text x="84" y="166">B</text>
+<circle cx="283" cy="138" r="3"/><text x="290" y="147">C</text>
+<circle cx="243" cy="33" r="3"/><text x="246" y="27">D</text>
+<circle cx="170" cy="90" r="3"/><text x="163" y="113">O</text>
+</svg>
