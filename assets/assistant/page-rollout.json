@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "19185b9e8c5f05253837feefdb0523d9fd14bd79",
+  "baseSha": "2d2119889591a38e561f69e9362803f2cec8432b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2323,13 +2323,13 @@
       "placement": "before-head-close"
     },
     "trainers/ege-informatics-task1-graphs-trainer.html": {
-      "beforeSha256": "5a9388d6ba0f34018d7019e1cbc5ee8000eda218dfc234c2b71f11995c6d54ed",
-      "afterSha256": "0e13be256808ebe744d9f78bf63b63b5a81501445140d53d90d9566dd82d7bd2",
+      "beforeSha256": "70364228c9bf91a4c209ac8d90651611d512cc02b8edb51eb06ebcfdbbf46824",
+      "afterSha256": "7cbb16ce0edbee6c369b0348968dfffd4846a1cbb15b7120528d4c9323151004",
       "placement": "before-head-close"
     },
     "trainers/ege-informatics-task15-logic-operations.html": {
-      "beforeSha256": "4f31bf21dd3433798eaec0e821710cfffe4b58f12aba911c2f24372e27e3aca9",
-      "afterSha256": "f9339bdef10f06b84cf8f930c12ca8253c1817ce25af17eee814f7e27bbb1740",
+      "beforeSha256": "d77301fe162e602c6720ed09ebddd56ec9b3fbc7ab6385366be073a4e47734f3",
+      "afterSha256": "c278a4eda08e213a535e1f7e60915a47180cd8dc39575193bb5baa5af77a1606",
       "placement": "before-head-close"
     },
     "trainers/ege-methods.html": {
@@ -2473,8 +2473,8 @@
       "placement": "before-head-close"
     },
     "trainers/logic-trainer/index.html": {
-      "beforeSha256": "28533febe440d4c3116b1aee14f486c49c2cadbde2b4492452954ec4b6b67e8b",
-      "afterSha256": "921e08dd6988bab28ff9c4876e97aafeb41b955c99982ae24fa1a2a0b20d9362",
+      "beforeSha256": "04bd2e33e9313278976f6b4bfcaae078fc47cb78577711017e5a9ed1dd9c2d1e",
+      "afterSha256": "74344b071f5b31131d6f2d64e27de9d560167043f8822095a2ffe046ca852ef2",
       "placement": "before-head-close"
     },
     "trainers/long-division-stepwise.html": {
@@ -2938,8 +2938,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
-      "beforeSha256": "e1ad5bdeb3df48d151a76c7689c674487e103194d50932b178e0ac66b0bc6098",
-      "afterSha256": "15eaf1103c3807b868f6ed20b42b37d4129f1f7e15a477cb3dae6a1db84ca5b0",
+      "beforeSha256": "0e39da889db1cc680c0af374e6b81c36745946587fc1aacd628b8ff0bd27105a",
+      "afterSha256": "51207ab0604989506d4cb1e1f9a374579fbdc0c6460839031e04678d38378dcc",
       "placement": "before-head-close"
     },
     "trainers/oge-task10-probability.html": {
@@ -3053,8 +3053,8 @@
       "placement": "before-head-close"
     },
     "trainers/pitosha-python-trainer.html": {
-      "beforeSha256": "c3150abeab1eac826643cfe6cd45df4bd0c15ccf936e21be495ccb3d16c59b17",
-      "afterSha256": "3c42b540b1c3e7dd8209c3ce229eabcc0e89edae7829602bc1bef5a870476a11",
+      "beforeSha256": "7f8a181cfdae9e2738ca3f7bebf8476ae8005590048e7e321172acaebd2781ea",
+      "afterSha256": "5cdb8e84de67c93ec7328fc6f52b392a32c14c5196b88a8c270ed75a27234409",
       "placement": "before-head-close"
     },
     "trainers/quadratic-inequalities-lab.html": {
@@ -3068,8 +3068,8 @@
       "placement": "before-head-close"
     },
     "trainers/recursion_ladder_paths.html": {
-      "beforeSha256": "11d6687d03ad6062f62dd3252744ab1112d04b2b5e6ef47ed4b2505bc8094c1a",
-      "afterSha256": "4872d834dcc2171a2f30595abb5d0fc39cfbe29dcc7600c0f1e816529263215a",
+      "beforeSha256": "96e61b301ae0234460909d052bda8161d9b43e0c93ba4cb6463b2418ff52fad3",
+      "afterSha256": "4dd62b2aef21c5c75f4a442d036806a23bc2425767f034ec649012596e5b5938",
       "placement": "before-head-close"
     },
     "trainers/rounding-stepwise.html": {
@@ -3113,23 +3113,23 @@
       "placement": "before-head-close"
     },
     "trainers/turing-trainer-modular-v3.html": {
-      "beforeSha256": "858c58f6987d8444d471c3d139d4736d43d98c62087aea86fb6652a9418be7ac",
-      "afterSha256": "2225c5a2153e1af164115ebd9ca52c26d7c60172d56ca41c2c8d75a5f5e2674e",
+      "beforeSha256": "1ee3d84842ceda5ee350ece0d3dfb17f7b894e82074f46921528e9a3dbf28022",
+      "afterSha256": "d7dbfd9020a22845bc329e2b06335a5bec98a59f31c7a121eef3040c33c289ec",
       "placement": "before-head-close"
     },
     "trainers/turing-trainer-polish.html": {
-      "beforeSha256": "c5b466c9fa4e956e6e0c680a296d96994738a58a8bfd73dfbb0a4b81849f1877",
-      "afterSha256": "f65a973cca9e6ed641a2cb2b9aae8017664fd9a20e0a2be5d4c335fc9629cf6a",
+      "beforeSha256": "a424b142da9bdef2e0b22cf35236c0be1d47a11cbd65739ba3d12ff1c0a7709d",
+      "afterSha256": "50cbf02568b8b789a7c5b105cf024028a49d3f09851b8f5585fc3bbbb3e98e77",
       "placement": "before-head-close"
     },
     "trainers/turing-trainer-universal.html": {
-      "beforeSha256": "eb5d6b6bb992942f7371f553a91e73ae42ba36db89869baff13323b49392bcb1",
-      "afterSha256": "d1dac6b89f08286717269ae60ef537f1617849759c0a047188b30ea59ff2a102",
+      "beforeSha256": "773c6c0d922da46756eb475ad5b3319a0af552f3d86b5b04c85921a7da3aa5f1",
+      "afterSha256": "3632eeb55740439049a8908eda7f7305f8fb08530795ccb3c44fe93ea8f83b67",
       "placement": "before-head-close"
     },
     "trainers/turing-trainer-upgrade.html": {
-      "beforeSha256": "d89657fdc273d50760dd0f7d2e810fa66e008b6d15da97dfc03450e8da78a073",
-      "afterSha256": "9963eb90758819fc66d04acdb4b8dbf7e514bc4f120acae42bc8789b8a6ea05f",
+      "beforeSha256": "a46f70e8270980097e27c7f8b5932e61b0ab770e870a649a188229bddd98f634",
+      "afterSha256": "a010151a79c86e4e5dfdd4c41438312001e94917a88635bef4c9db77556c71d4",
       "placement": "before-head-close"
     },
     "trainers/veronika-logarithms.html": {
@@ -5638,6 +5638,24 @@
         "articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/index.html",
         "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html",
         "articles/stroynost-kursa-geometrii/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "19185b9e8c5f05253837feefdb0523d9fd14bd79",
+      "sourceBaseSha": "2d2119889591a38e561f69e9362803f2cec8432b",
+      "task": "docs/tasks/INFORMATICS_VERSIONS_20261119.md",
+      "changedPaths": [
+        "trainers/ege-informatics-task1-graphs-trainer.html",
+        "trainers/ege-informatics-task15-logic-operations.html",
+        "trainers/logic-trainer/index.html",
+        "trainers/oge-informatics-1-10-tutor.html",
+        "trainers/pitosha-python-trainer.html",
+        "trainers/recursion_ladder_paths.html",
+        "trainers/turing-trainer-modular-v3.html",
+        "trainers/turing-trainer-polish.html",
+        "trainers/turing-trainer-universal.html",
+        "trainers/turing-trainer-upgrade.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
