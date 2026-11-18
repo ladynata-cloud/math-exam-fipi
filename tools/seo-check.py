@@ -22,6 +22,7 @@ ENTRANCES = [
     "trainers/oge-basics/index.html", "foundations/index.html",
     "soviet-math/index.html", "grade7/index.html", "courses/index.html",
     "articles/index.html", "pedagogam/index.html", "ege-profil/index.html",
+    "ege-profil/azbuka-metodov/index.html",
     "ege-profil/start/index.html", "geometry-course/index.html",
     "geometry-merzlyak/index.html", "geometry-pogorelov/index.html",
     "equations/index.html",

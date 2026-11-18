@@ -13,6 +13,9 @@ on:
       - 'tools/course-entrances*'
       - 'tools/build-course-*'
       - 'tools/build-sitemap.py'
+      - 'tools/build-profile-methods-entrance.cjs'
+      - 'ege-profil/exam-map.js'
+      - 'ege-profil/azbuka-metodov/*.js'
       - 'tools/seo-*'
       - '.github/workflows/seo-quality.yml'
   workflow_dispatch:
@@ -31,6 +34,7 @@ jobs:
           persist-credentials: false
       - name: Sitemap exclusions, canonical routes and public entrances
         run: |
+          node tools/build-profile-methods-entrance.cjs --check
           python3 tools/seo-sitemap.test.py
           python3 tools/build-sitemap.py --check
           python3 tools/seo-check.py
@@ -40,10 +44,21 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/seo-catalog-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
           NODE_PATH="$RUNNER_TEMP/seo-catalog-qa/node_modules" node tools/seo-catalog.test.cjs
       - name: Public compatibility routes and actual catalog clicks
+        env:
+          SEO_SCREENSHOT_DIR: ${{ runner.temp }}/seo-methods-qa
         run: |
           npm install --prefix "$RUNNER_TEMP/seo-browser-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
           "$RUNNER_TEMP/seo-browser-qa/node_modules/.bin/playwright" install --with-deps chromium
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/seo-entrypoints.browser.cjs
+
+      - name: Methods entrance screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: seo-methods-entrance
+          path: ${{ runner.temp }}/seo-methods-qa
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Course entrances, mathematical GIFs and retained work
         run: |

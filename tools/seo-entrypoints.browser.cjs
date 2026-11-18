@@ -96,6 +96,67 @@ async function checkVilenkinEntrances(page, origin, javaScriptEnabled) {
   console.log(`SEO_VILENKIN_ENTRANCES_OK: two catalog entrances, eight topic links and original workshop routes, JavaScript ${javaScriptEnabled}`);
 }
 
+async function checkMethodsEntrance(page, origin, javaScriptEnabled) {
+  const route = '/ege-profil/azbuka-metodov/';
+  const domainUrl = origin + route + '#/domain';
+  async function openDenominatorSkill() {
+    await page.locator('.az-catalog').getByRole('link', { name: /ОДЗ и отбор решений/ }).click();
+    await page.waitForURL(domainUrl);
+    const map = page.locator('.az-skill-list');
+    await map.getByRole('heading', { name: 'Карта навыков', exact: true }).waitFor();
+    await map.getByRole('link', { name: /Исключаю нули знаменателя/ }).click();
+    await page.waitForURL(domainUrl + '/denominator');
+    await page.getByRole('heading', { level: 1, name: 'Исключаю нули знаменателя', exact: true }).waitFor();
+  }
+  for (const [width, draft] of [[320, '3'], [390, '+3'], [1280, '3,0']]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(origin + route);
+    assert.equal(await page.locator('#alphabet-main h1').innerText(), 'Основы и методы');
+    assert.equal(await page.locator('h1').count(), 1);
+    assert.equal(await page.locator('.az-catalog > a').count(), 11);
+    assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'),
+      'https://mathexam.space' + route);
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      `Methods: catalog fits ${width}px with JavaScript ${javaScriptEnabled}`);
+    if (process.env.SEO_SCREENSHOT_DIR) {
+      fs.mkdirSync(process.env.SEO_SCREENSHOT_DIR, { recursive: true });
+      await page.screenshot({ path: path.join(process.env.SEO_SCREENSHOT_DIR,
+        `methods-${javaScriptEnabled ? 'js' : 'nojs'}-${width}.png`), fullPage: true });
+    }
+    if (!javaScriptEnabled) {
+      for (const target of ['/topics/lineynye-uravneniya/', '/topics/oge-geometriya/']) {
+        const reading = page.locator(`noscript a[href="${target}"]`);
+        assert(await reading.isVisible(), `Methods: visible reading link to ${target}`);
+        await Promise.all([page.waitForURL(origin + target), reading.click()]);
+        assert(await page.locator('h1').isVisible());
+        await page.goBack();
+      }
+      continue;
+    }
+    // Use the same public links a learner sees, then preserve a synthetic draft
+    // through reload and a return to the catalog. No live account is involved.
+    await openDenominatorSkill();
+    const answer = page.locator('#az-answer');
+    await answer.waitFor();
+    assert.equal(await page.getByLabel('Запрещённое x', { exact: true }).getAttribute('id'), 'az-answer');
+    await answer.fill(draft);
+    if (process.env.SEO_SCREENSHOT_DIR) {
+      await page.screenshot({ path: path.join(process.env.SEO_SCREENSHOT_DIR, `methods-answer-${width}.png`) });
+    }
+    const saved = await page.evaluate(() => JSON.stringify({ ...localStorage }));
+    await page.reload();
+    assert.equal(await answer.inputValue(), draft);
+    await page.getByRole('link', { name: '← К списку тем', exact: true }).click();
+    await page.getByRole('heading', { level: 1, name: 'Основы и методы', exact: true }).waitFor();
+    assert.equal(await page.locator('.az-catalog > a').count(), 11);
+    assert.equal(await page.evaluate(() => JSON.stringify({ ...localStorage })), saved);
+    await openDenominatorSkill();
+    assert.equal(await answer.inputValue(), draft);
+  }
+  const checked = javaScriptEnabled ? 'skill map, answer and retained draft' : 'both reading links';
+  console.log(`SEO_METHODS_ENTRANCE_BROWSER_OK: 11 topics, 320/390/1280px, JavaScript ${javaScriptEnabled}, ${checked}`);
+}
+
 (async () => {
   let browser;
   try {
@@ -108,6 +169,7 @@ async function checkVilenkinEntrances(page, origin, javaScriptEnabled) {
       const page = await context.newPage();
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
+      await checkMethodsEntrance(page, origin, javaScriptEnabled);
       await checkVilenkinEntrances(page, origin, javaScriptEnabled);
       for (let i = 0; i < legacy.length; i++) {
         await page.goto(`${origin}/trainers/multiplication-table/${legacy[i]}?source=compat-check#saved-route`, { waitUntil: 'commit' });

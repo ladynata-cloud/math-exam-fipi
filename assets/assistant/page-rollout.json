@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+  "baseSha": "ed5ae81b5664ccf281123bcad2d981501511c419",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 582,
-    "covered": 581,
+    "total": 583,
+    "covered": 582,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -280,6 +280,11 @@
     "ege-profil/atanasyan-10-11/lesson.html": {
       "beforeSha256": "bfed363a64a67e5a85ee23ab8a799b71c19555d4cdbd724b25cae942a5c64bff",
       "afterSha256": "6e3561a2d8cdf6cf96f1b928479fb235f1bdc27ec11002a217d7f1c03304ed5a",
+      "placement": "before-head-close"
+    },
+    "ege-profil/azbuka-metodov/index.html": {
+      "beforeSha256": "6c1e8b378e51a34cfb270f8ba103c361a4bf66468115c27c6f510a5f791f4f94",
+      "afterSha256": "f72210c6a63d599e9d299548f291ab3bff4da4c45834a3e379f4ad57381cb577",
       "placement": "before-head-close"
     },
     "ege-profil/circle/index.html": {
@@ -3211,6 +3216,7 @@
     "ege-baza/work-rate/index.html": "courses/index.html",
     "ege-profil/atanasyan-10-11/index.html": "ege-profil/index.html",
     "ege-profil/atanasyan-10-11/lesson.html": "ege-profil/atanasyan-10-11/index.html",
+    "ege-profil/azbuka-metodov/index.html": "sitemap; existing public methods entrance (SEO_METHODS_ENTRANCE_20261118 source commit)",
     "ege-profil/circle/index.html": "sitemap",
     "ege-profil/exam/full-exam.html": "sitemap",
     "ege-profil/exam/variant.html": "sitemap",
@@ -3668,6 +3674,7 @@
     "trainers/linear-inequalities-stepwise.html": "sitemap",
     "trainers/linear-systems-trainer.html": "sitemap",
     "trainers/logic-trainer/index.html": "trainers/index.html",
+    "trainers/long-division-claude.html": "sitemap",
     "trainers/long-division-stepwise.html": "sitemap",
     "trainers/motion-grade6/index.html": "learning/catalog.js",
     "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
@@ -3727,9 +3734,11 @@
     "trainers/oge-basics/multiplication-division/decimal-division-natural.html": "sitemap",
     "trainers/oge-basics/multiplication-division/decimal-divisor-shift.html": "sitemap",
     "trainers/oge-basics/multiplication-division/division-append-zeros.html": "sitemap",
+    "trainers/oge-basics/multiplication-division/division-checkpoint.html": "sitemap",
     "trainers/oge-basics/multiplication-division/division-course.html": "sitemap",
     "trainers/oge-basics/multiplication-division/division-diagnostic.html": "trainers/oge-basics/arithmetic-route.html",
     "trainers/oge-basics/multiplication-division/division-lab.html": "sitemap",
+    "trainers/oge-basics/multiplication-division/division-path.html": "sitemap",
     "trainers/oge-basics/multiplication-division/division-with-remainder.html": "sitemap",
     "trainers/oge-basics/multiplication-division/index.html": "sitemap",
     "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html": "trainers/oge-basics/arithmetic-route.html",
@@ -3803,10 +3812,7 @@
     "trainers/vpr-math/index.html": "sitemap; vpr/index.html; learning/course-program.js (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "trainers/who-is-stronger.html": "sitemap",
     "video-lessons/cheatsheets.html": "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html",
-    "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)",
-    "trainers/long-division-claude.html": "sitemap",
-    "trainers/oge-basics/multiplication-division/division-path.html": "sitemap",
-    "trainers/oge-basics/multiplication-division/division-checkpoint.html": "sitemap"
+    "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -5607,6 +5613,27 @@
         "ege-baza/path/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8ea6aa61a804ec53a18b6c255ee2430dde9a8114",
+      "sourceBaseSha": "67d66812305e22559bbd2a0f232c008110f1f9b7",
+      "task": "docs/tasks/SEO_METHODS_ENTRANCE_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+      "sourceBaseSha": "0f6e95f703af7e020a676923e3179ac226e4ba2e",
+      "task": "docs/tasks/SEO_METHODS_ENTRANCE_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "ed5ae81b5664ccf281123bcad2d981501511c419",
+      "task": "docs/tasks/SEO_METHODS_ENTRANCE_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -5674,6 +5701,14 @@
         "trainers/ege-methods.html"
       ],
       "reason": "Existing course added to the public sitemap with the shared navigator and a static worked example."
+    },
+    {
+      "sourceBaseSha": "67d66812305e22559bbd2a0f232c008110f1f9b7",
+      "task": "docs/tasks/SEO_METHODS_ENTRANCE_20261118.md",
+      "addedPages": [
+        "ege-profil/azbuka-metodov/index.html"
+      ],
+      "reason": "Existing methods entrance added to the public sitemap; keep the unchanged shared navigator with exact committed before/after identity."
     }
   ]
 }
