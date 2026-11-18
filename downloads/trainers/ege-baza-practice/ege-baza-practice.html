@@ -2911,7 +2911,7 @@ root.PathModels={mount,session,solidModel,discoveryMarkup,discovery};})(window);
       `<circle cx="${x}" cy="${y}" r="3" fill="${ink}"/>` + label(x, 192, 'Число спиц — ' + count);
     return {svg, title: `Колесо с ${count} равномерно расположенными спицами. ` +
       (full ? 'Выделен полный оборот.' : 'Выделен промежуток между двумя соседними спицами.'),
-      equation: ['Один полный оборот', 'Каждой спице соответствует один следующий промежуток', `Угол между спицами = 360° / ${count}`][step]};
+      equation: ['Один полный оборот', '1 спица → 1 промежуток', `Угол между спицами = 360° / ${count}`][step]};
   }
 
   function triangleAngles({a, b}, step) {

@@ -66,8 +66,13 @@ async function solve(page, origin, id) {
     if(id==='practice-free-area') assert.equal(await drawing.locator('[data-highlight]').getAttribute('data-highlight'),['plot','house','free'][i]);
     if(id==='practice-fence') assert.equal(await drawing.locator('[data-highlight="perimeter"]').count(),i===0?1:0);
     if(id==='practice-spokes') assert.equal(await drawing.locator('[data-highlight="sector"]').count(),i===0?0:1);
-    const fig=await drawing.boundingBox(), box=await field.boundingBox();
-    assert(box.y-fig.y-fig.height<180,'Current input stays beside or under its drawing');
+    const layout=await drawing.evaluate(svg=>{
+      const figure=svg.getBoundingClientRect();
+      const input=svg.closest('.plane-work').querySelector('#stepAnswer').getBoundingClientRect();
+      return {width:innerWidth, gap:input.top-figure.bottom, beside:input.left>=figure.right-1};
+    });
+    assert(layout.gap<180, `${id}, step ${i+1} at ${layout.width}px: input is ${Math.round(layout.gap)}px below drawing`);
+    if(layout.width>650) assert(layout.beside, `${id}, step ${i+1}: input must be beside drawing`);
     if(i===0){
       await field.fill('-1');await submit.click();
       assert(await drawing.isVisible(),'An incorrect answer must keep the current drawing');
