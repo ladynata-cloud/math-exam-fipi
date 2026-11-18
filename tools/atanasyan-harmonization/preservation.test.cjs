@@ -12,12 +12,13 @@ const baseline = require('./preservation-baseline.json');
 const supplements = [
   require('./preservation-supplement-658.json'),
   require('./preservation-supplement-651.json'),
-  require('./preservation-supplement-651-ci.json')
+  require('./preservation-supplement-651-ci.json'),
+  require('./preservation-supplement-651-legacy-segments.json')
 ];
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 assert.equal(baseline.schemaVersion, 1);
 assert.equal(baseline.base, '5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae');
-const [auditSupplement, compositionSupplement, ciSupplement] = supplements;
+const [auditSupplement, compositionSupplement, ciSupplement, legacySegmentsSupplement] = supplements;
 for (const supplement of supplements) {
   assert.equal(supplement.schemaVersion, 1);
   assert.equal(supplement.base, baseline.base);
@@ -43,6 +44,9 @@ assert.equal(ciSupplement.task, 'FINAL651_EXACT_RENDERER_SYNC_20261119');
 assert.deepEqual(Object.keys(ciSupplement.files), [
   'ege-profil/atanasyan-10-11/model.js'
 ], 'only the exact generated legacy renderer may be synchronized with the reviewed shared implementation');
+assert.equal(legacySegmentsSupplement.sourceCommit, '78853df87a48dddd5a96bf5f2ad4947a9016225b');
+assert.equal(legacySegmentsSupplement.task, 'FINAL651_LEGACY_VIEW_SEGMENTS_20261119');
+assert.deepEqual(Object.keys(legacySegmentsSupplement.files), ['ege-profil/atanasyan-10-11/model.js']);
 const amendmentChains = {};
 for (const supplement of supplements) {
   for (const [file, amendment] of Object.entries(supplement.files)) {
@@ -96,4 +100,4 @@ for (const file of Object.keys(amendmentChains)) {
   assert(group, 'every exact amendment remains inside the original protected inventory');
   assert.throws(() => verify(group, name => name === file ? Buffer.concat([fs.readFileSync(path.join(root, name)), Buffer.from('\nUNREVIEWED')]) : fs.readFileSync(path.join(root, name))), /exact reviewed amendment/);
 }
-console.log('ATANASYAN_HARMONIZATION_PRESERVATION_OK ' + JSON.stringify({geometryCards: 1425, stereoCards: 674, firstSteps: 255, literacy: 36, legacy: 70, protectedFiles: baseline.groups.reduce((n, group) => n + group.fileCount, 0), exactReviewedAmendments: 15, amendedFiles: 12, negativeControls: 15}));
+console.log('ATANASYAN_HARMONIZATION_PRESERVATION_OK ' + JSON.stringify({geometryCards: 1425, stereoCards: 674, firstSteps: 255, literacy: 36, legacy: 70, protectedFiles: baseline.groups.reduce((n, group) => n + group.fileCount, 0), exactReviewedAmendments: Object.values(amendmentChains).reduce((n, chain) => n + chain.length, 0), amendedFiles: Object.keys(amendmentChains).length, negativeControls: 2 + Object.keys(amendmentChains).length}));

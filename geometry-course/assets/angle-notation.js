@@ -101,7 +101,7 @@
       const [x, y] = polar(radius, angle).split(' ');
       return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central">${value}</text>`;
     }
-    return `<div class="angle-task-drawing"><svg viewBox="0 0 360 205" role="img" aria-label="Из вершины C выходят лучи CA, CD и CB. Луч CD проведён внутри угла между CA и CB. Угол ACD равен ${left} градусам, угол DCB — ${right}.">
+    return `<figure class="angle-task-drawing"><svg viewBox="0 0 360 205" role="img" aria-label="Из вершины C выходят лучи CA, CD и CB. Луч CD проведён внутри угла между CA и CB. Угол ACD равен ${left} градусам, угол DCB — ${right}.">
       <defs><marker id="angle-task-tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
         <path d="M0 0 L8 4 L0 8 Z" fill="context-stroke"/>
       </marker></defs>
@@ -124,7 +124,7 @@
         ${label(73, (first + middle) / 2, `${right}°`)}
         ${label(73, (middle + last) / 2, `${left}°`)}
       </g>
-    </svg></div>`;
+    </svg></figure>`;
   }
 
   const root = document.getElementById('lesson');

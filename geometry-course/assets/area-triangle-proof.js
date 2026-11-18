@@ -5,7 +5,7 @@
   const ink = '#244d41', accent = '#9a461e';
   const path = (d, color = ink, width = 2.5, attrs = '') =>
     `<path d="${d}" fill="none" stroke="${color}" stroke-width="${width}" stroke-linejoin="round" stroke-linecap="round" ${attrs}/>`;
-  const text = (x,y,s) => `<text x="${x}" y="${y}" fill="#18382c" font-family="system-ui,sans-serif" font-size="16" text-anchor="middle" paint-order="stroke" stroke="white" stroke-width="3">${s}</text>`;
+  const text = (x,y,s) => `<text x="${x}" y="${y}" fill="#18382c" font-family="system-ui,sans-serif" font-size="17" text-anchor="middle" paint-order="stroke" stroke="white" stroke-width="3">${s}</text>`;
 
   function arc(v, p, q, r) {
     const onRay = end => {

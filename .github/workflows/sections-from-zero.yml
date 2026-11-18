@@ -275,10 +275,22 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
-      - name: Fetch the exact recorded navigator source
+      - name: Fetch the recorded navigator sources
         run: |
-          navigator_source_sha="$(node -e 'const value=require("./assets/assistant/page-rollout.json").baseSha;if(!/^[a-f0-9]{40}$/.test(value))process.exit(1);process.stdout.write(value)')"
-          git fetch --no-tags --depth=1 origin "$navigator_source_sha"
+          node <<'NODE'
+          const { execFileSync } = require('node:child_process');
+          const { baseSha, addedPages } = require('./assets/assistant/page-rollout.json');
+          const sources = new Set([baseSha]);
+          for (const page of Object.values(addedPages)) {
+            sources.add(page.sourceSha ?? baseSha);
+          }
+          for (const sha of sources) {
+            if (typeof sha !== 'string' || !/^[0-9a-f]{40}$/.test(sha)) {
+              throw new Error('Invalid navigator source commit');
+            }
+          }
+          execFileSync('git', ['fetch', '--no-tags', '--depth=1', 'origin', ...sources], { stdio: 'inherit' });
+          NODE
       - name: Install pinned public-page test tools
         run: |
           npm install --prefix "$RUNNER_TEMP/sections-public-discovery" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0

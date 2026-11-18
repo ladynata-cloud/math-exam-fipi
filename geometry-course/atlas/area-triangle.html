@@ -1351,7 +1351,7 @@ const api={open,clean,validate,drawing,download,KEY,HISTORY_KEY,fresh,mergeConcu
   const ink = '#244d41', accent = '#9a461e';
   const path = (d, color = ink, width = 2.5, attrs = '') =>
     `<path d="${d}" fill="none" stroke="${color}" stroke-width="${width}" stroke-linejoin="round" stroke-linecap="round" ${attrs}/>`;
-  const text = (x,y,s) => `<text x="${x}" y="${y}" fill="#18382c" font-family="system-ui,sans-serif" font-size="16" text-anchor="middle" paint-order="stroke" stroke="white" stroke-width="3">${s}</text>`;
+  const text = (x,y,s) => `<text x="${x}" y="${y}" fill="#18382c" font-family="system-ui,sans-serif" font-size="17" text-anchor="middle" paint-order="stroke" stroke="white" stroke-width="3">${s}</text>`;
 
   function arc(v, p, q, r) {
     const onRay = end => {
@@ -1391,7 +1391,6 @@ const api={open,clean,validate,drawing,download,KEY,HISTORY_KEY,fresh,mergeConcu
 
   root.MathExamAreaProof = {figure, preview};
 })(globalThis);
-
 </script><script>(function(){'use strict';const C=window.COURSE_CONFIG,U=C.unit,P=C.topicProof||C.proof,T=GeoTasks,E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const notice=document.getElementById('storage-notice'),store=GeoStore.open(C.catalog.map(x=>x.id),m=>{notice.hidden=false;notice.textContent=m;},U.id),root=document.getElementById('lesson'),labels=['Понять','Исследовать','Доказать','Решить с опорой','Самостоятельно','Своими словами'],sequence=[1,0,2,3,4,5];let state=store.get(U.id),lab=null,timer=null,pending=null,showHint=false;
 function save(event){state=store.put(U.id,state,event)||state;if(state._conflict)setTimeout(render,0);}function defer(){store.checkpoint(U.id,state);clearTimeout(timer);timer=setTimeout(()=>save(),200);}window.addEventListener('pagehide',()=>{clearTimeout(timer);save();});

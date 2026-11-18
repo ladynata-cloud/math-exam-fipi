@@ -266,7 +266,7 @@
 
   // END GENERATED SURFACE PREPARATION
 
-  function mount(container, source) {
+  function mount(container, source, options = {}) {
     if (!container || typeof container.replaceChildren !== 'function') throw new TypeError('Нужен контейнер модели.');
     const data = prepare(source);
     if (instances.has(container)) instances.get(container).destroy();
@@ -314,6 +314,7 @@
     function render() {
       if (destroyed) return;
       const view = data.views[selected];
+      const visibleSegments = view.segments;
       const title = element('title', { id: id + '-title' }, source.title || 'Пространственная модель задачи', true);
       const description = element('desc', { id: id + '-description' }, [view.label, view.segments.length ? 'Выделены отрезки: ' + view.segments.map(segment => segment.map(displayName).join(' — ')).join(', ') + '.' : '', view.polygon.length ? 'Выделена часть плоскости: ' + view.polygon.map(displayName).join(', ') + '.' : '', 'Это проекция точной пространственной конфигурации.'].filter(Boolean).join(' '), true);
   // BEGIN GENERATED LINE DRAWING
