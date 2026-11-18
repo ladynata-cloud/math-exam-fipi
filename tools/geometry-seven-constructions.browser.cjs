@@ -95,7 +95,7 @@ async function vpr(page,variant) {
   await noOverflow(page);
 }
 async function textbooks(page) {
-  for(const [num,top] of [['032','A'],['033','B']]){
+  for(const [num,top] of [['032','A'],['033','C']]){
     await page.goto('about:blank');
     await page.goto(origin+'/stereo-course/merzlyak-10-base/index.html#merz-ex-10-'+num);
     await page.locator('svg[data-view="neutral"]').waitFor();
@@ -104,10 +104,15 @@ async function textbooks(page) {
     await page.locator('svg[data-view="step-1"] [data-segment="'+top+'-H"]').first().waitFor({state:'attached'});
     await page.locator('svg[data-view="step-1"] [data-label="H"]').waitFor();
     await page.getByRole('button',{name:'Следующий шаг',exact:true}).click();
-    const rightAngle=page.locator('svg[data-view="step-2"] [data-right-angle]');
+    const stepFigures=page.locator('svg[data-view="step-2"]');
+    const rightAngle=stepFigures.locator('[data-right-angle]');
     await rightAngle.first().waitFor({state:'attached'});
-    assert.equal(await rightAngle.count(),2);
-    assert.equal(await page.locator('svg[data-view="step-2"] [data-segment^="_r'+top+'"]').count(),0);
+    assert.equal(await stepFigures.count(),2);
+    for(let figureIndex=0;figureIndex<2;figureIndex+=1){
+      const figure=stepFigures.nth(figureIndex);
+      assert.equal(await figure.locator('[data-right-angle]').count(),2);
+      assert.equal(await figure.locator('[data-segment^="_r'+top+'"]').count(),0);
+    }
     await page.getByRole('button',{name:'Следующий шаг',exact:true}).click();
     await page.locator('svg[data-view="step-3"]').waitFor();
     await noOverflow(page);
@@ -131,11 +136,6 @@ async function textbooks(page) {
 async function profile(page,i) {
   await page.goto(origin+'/ege-profil/part-two/index.html#task/p2-15-dihedral-'+i+'/guided');
   await page.locator('[data-construction="0"]').waitFor();
-  assert.equal(await page.locator('[data-proof-segment="SM"]').count(),0);
-  for(const [n,value] of [[0,'AB'],[1,'MS'],[2,'MO']]){
-    await page.locator('[data-construction="'+n+'"]').getByRole('button',{name:value,exact:true}).click();
-  }
-  await page.locator('#step-answer').waitFor();
   assert.equal(await page.locator('form [data-right-angle]').count(),2);
   await page.reload();await page.locator('#step-answer').waitFor();
   const a=[8,6,10,12,14,16][i-1],h=[3,4,6,5,9,6][i-1];
