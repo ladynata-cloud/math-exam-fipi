@@ -52,6 +52,7 @@ if(state.previousEdition){
 root.innerHTML=h+footer();
 if(state.stage===0&&document.getElementById('extra-model')){GeoExperiments.mount(document.getElementById('extra-model'),C.experiment);}
 if(state.stage===1&&U.space){SpaceViewer.mount(document.getElementById('geo-board'),{kind:U.space,saved:state.model},ev=>{state.model=ev.state;state.moved=true;if(ev.type==='solved-construction')state.construction=true;defer();});}if(state.stage===1&&!U.space){lab=GeoLab.mount(document.getElementById('geo-board'),topicLab(),ev=>{state.moved=ev.moved||state.moved;state.drawing=JSON.parse(ev.board.snapshot());state.construction=ev.board.goal(U.goal).ok;if(ev.type==='reset')state.moved=false;defer();});if(state.drawing){lab.board.points=state.drawing.points;lab.board.objects=state.drawing.objects;lab.board.update();lab.redraw();}GeoExperiments.mount(document.getElementById('extra-model'),C.experiment);}
+if(state.stage===1 && topicNumber && !U.space) window.PogorelovTopicLabs?.mountGuide(document.getElementById('geo-board'),topicNumber);
 if(state.stage===2){const el=document.getElementById('proof-board');GeoLab.mount(el,{figure:'triangle',goal:'explore'},()=>{});}
 if(state.stage===3||state.stage===4){const a=document.getElementById('answer');if(a)a.value=state.draft;}
 root.querySelector('h2')?.setAttribute('tabindex','-1');}

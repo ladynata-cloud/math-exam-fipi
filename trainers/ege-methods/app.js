@@ -304,7 +304,7 @@
       }[checks[index]];
       if (message) return { index, text: message };
     }
-    return { index, text: 'Проверь ответы в отмеченных полях и попробуй ещё раз.' };
+    return { index, text: lesson.practice.retry?.[index] || 'Проверь ответы в отмеченных полях и попробуй ещё раз.' };
   }
 
   function practiceView(lesson, { practice }, assessment = false) {
