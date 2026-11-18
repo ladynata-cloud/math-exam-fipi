@@ -1564,7 +1564,12 @@ const api={open,clean,validate,drawing,download,KEY,HISTORY_KEY,fresh,mergeConcu
     const problem = root.querySelector('.task-question');
     if ((stage === '3' || stage === '4') && problem && !root.querySelector('.angle-task-drawing')) {
       const angles = problem.textContent.match(/ACD = (\d+)° и DCB = (\d+)°/);
-      if (angles) problem.insertAdjacentHTML('afterend', taskFigure(Number(angles[1]), Number(angles[2])));
+      if (angles) {
+        const figure = taskFigure(Number(angles[1]), Number(angles[2]));
+        const generic = problem.nextElementSibling;
+        if (generic?.classList.contains('lesson-figure')) generic.outerHTML = figure;
+        else problem.insertAdjacentHTML('afterend', figure);
+      }
 
       const answer = root.querySelector('#answer');
       if (!answer) return;

@@ -364,7 +364,7 @@
         const side = [name, view.polygon[(index + 1) % view.polygon.length]];
         drawLine(side, 'am-plane-border', { 'data-boundary': side.join('-') });
       });
-      view.segments.forEach(segment => drawLine(segment, 'am-segment', { 'data-highlight': 'segment', 'data-segment': segment.join('-') }));
+      visibleSegments.forEach(segment => drawLine(segment, 'am-segment', { 'data-highlight': 'segment', 'data-segment': segment.join('-') }));
       data.arrows.forEach(segment => drawLine(segment, 'am-segment', { 'data-vector': segment.join('-') }, true));
       const angleBoxes = [];
       for (const { names, vertex, first, second } of view.rightAngles) {
@@ -387,7 +387,11 @@
           top: Math.min(...pixels.map(p => p[1])) - 1, bottom: Math.max(...pixels.map(p => p[1])) + 1 });
       }
       if (view.rightAngles.length) {
-        const names = view.rightAngles.map(mark => '∠' + mark.names.map(name => source.labels?.[name] || displayName(name)).join(''));
+        const names = view.rightAngles.map(mark => {
+          if (options.lessonId === 'merz-ex-10-032' && source.labels?.M === 'm' && mark.names.join(' ') === 'M A H')
+            return 'между прямой m и AH';
+          return '∠' + mark.names.map(name => source.labels?.[name] || displayName(name)).join('');
+        });
         description.textContent += ' Прямые углы: ' + names.join(', ') + '.';
       }
       // Draw all hidden strokes before visible strokes. A rear construction must
