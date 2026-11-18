@@ -223,7 +223,50 @@ async function componentLifecycle(browser) {
     assert.match(await host.locator('.geg-transcript').innerText(), /Нажми кнопку «Двигать»/);
     await page.screenshot({ path: path.join(OUTPUT, 'image-error-text-fallback.png') });
     results.push({ componentLifecycle: true, width: 320, keyboardTrap: true, reducedMotionBothViews: true, parentClose: true, pagehide: true, visibilityEvent: true, destroyAndRemount: true, imageErrorFallback: true });
+    await pogorelovTopicOwnership(page);
   } finally { await context.close(); }
+}
+
+async function pogorelovTopicOwnership(page) {
+  const rel = 'geometry-pogorelov/atlas/pogorelov-base-7-1.html';
+  const oldPage = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+  const flagged = rel.replace('.html', '-test-topic.html');
+  const withQuestion = oldPage.replace(/(window\.COURSE_CONFIG=)(.*?)(;<\/script>)/s, (_, start, raw, end) => {
+    const config = JSON.parse(raw);
+    config.unit.topicQuestion = 'Какие точки задают прямую?';
+    return start + JSON.stringify(config).replace(/</g, '\\u003c') + end;
+  });
+  assert.notEqual(withQuestion, oldPage);
+  fixtureFiles.set(flagged, withQuestion);
+  try {
+    await page.goto(ORIGIN + '/' + flagged);
+    await page.locator('[data-stage="1"]').click();
+    await page.locator('#geo-board canvas').waitFor();
+    assert.equal(await page.locator(manualHost).count(), 0, 'a topic question owns the board without a marker');
+
+    await page.goto(ORIGIN + '/' + rel);
+    await page.locator('[data-stage="1"]').click();
+    const oldGuide = page.locator(manualHost);
+    await oldGuide.waitFor();
+    await byRoleButton(oldGuide, 'Смотреть GIF').click();
+    await page.locator('.geometry-experiment-guide[data-playing="true"]').waitFor();
+    await page.locator('#geo-board').evaluate(board => {
+      const own = document.createElement('details');
+      own.dataset.pogorelovTopicGuide = '';
+      own.innerHTML = '<summary>Опыт с прямой</summary>';
+      board.before(own);
+    });
+    await oldGuide.waitFor({ state: 'detached' });
+    assert.equal(await page.locator('[data-pogorelov-topic-guide]').count(), 1);
+    assert.equal(await page.locator('.geometry-experiment-guide[data-playing="true"]').count(), 0);
+    await page.locator('[data-stage="0"]').click();
+    await page.locator('[data-stage="1"]').click();
+    await page.locator('#geo-board canvas').waitFor();
+    assert.equal(await oldGuide.count(), 0, 'an obsolete player stays detached across stage changes');
+    results.push({ pogorelovTopicOwnsBoard: true, lateTopicGuideReleasesPlayer: true });
+  } finally {
+    fixtureFiles.delete(flagged);
+  }
 }
 
 async function allPages(browser) {
@@ -235,6 +278,13 @@ async function allPages(browser) {
       await page.goto(ORIGIN + '/' + filename);
       await page.locator('[data-stage="1"]').click();
       const host = page.locator(manualHost);
+      if (mapping.course === 'geometry-pogorelov' && await page.evaluate(() =>
+        Boolean(window.COURSE_CONFIG.unit.topicQuestion || document.querySelector('#lesson [data-pogorelov-topic-guide]')))) {
+        await page.locator('#geo-board canvas').waitFor();
+        assert.equal(await page.locator('[data-geometry-guide-surface]').count(), 0, filename + ': no legacy player for a topic scene');
+        results.push({ filename, topicOwnsGuide: true });
+        continue;
+      }
       await host.waitFor();
       assert.equal(await host.count(), 1, filename + ': one guide beside the manual board');
       assert.equal(await host.locator('.geometry-experiment-guide').getAttribute('data-clip'), mapping.manual[0]);

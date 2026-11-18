@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
@@ -16,6 +17,22 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets/geometry-experiment-gifs'
 CONFIG = re.compile(r'(<script>\s*window\.COURSE_CONFIG=)(.*?)(;\s*</script>)', re.S)
 GUIDE_TAG = re.compile(r'<(script|style)\b[^>]*\bdata-geometry-experiment-gifs(?:="[^"]*")?[^>]*>.*?</\1>\s*', re.S)
+
+
+class TopicGuideMarker(HTMLParser):
+    found = False
+
+    def handle_starttag(self, tag, attrs):
+        if any(name == 'data-pogorelov-topic-guide' for name, _ in attrs):
+            self.found = True
+
+
+def has_topic_guide(html: str) -> bool:
+    if 'data-pogorelov-topic-guide' not in html.lower():
+        return False
+    marker = TopicGuideMarker()
+    marker.feed(html)
+    return marker.found
 
 
 def _script(source: str) -> str:
@@ -77,6 +94,14 @@ def with_guides(relative: str, html: str, *, refresh_sources: bool = False) -> s
     if not match:
         raise ValueError('Missing course configuration: ' + relative)
     unit = json.loads(match[2])
+    if course == 'geometry-pogorelov' and (unit['unit'].get('topicQuestion') or has_topic_guide(html)):
+        # A generic recording of the base figure cannot demonstrate a different topic scene.
+        # Strip an earlier embed, preserving the current lesson configuration and scripts.
+        if 'experimentGuides' in unit:
+            del unit['experimentGuides']
+            value = json.dumps(unit, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
+            html = html[:match.start(2)] + value + html[match.end(2):]
+        return html.replace('../assets/lab.js?v=20261116-gifs"', '../assets/lab.js"')
     unit['experimentGuides'] = conf
     value = json.dumps(unit, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
     html = html[:match.start(2)] + value + html[match.end(2):]

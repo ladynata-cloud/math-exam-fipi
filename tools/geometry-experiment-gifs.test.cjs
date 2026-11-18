@@ -158,9 +158,15 @@ test('147 generated pages keep their full training configuration and embed only 
     const current = configOf(html);
     const original = configOf(readSource(filename, catalogue.sourceBase).toString('utf8'));
     const guides = current.experimentGuides;
-    assert(guides, filename + ': guide configuration exists');
     delete current.experimentGuides;
     assert.deepEqual(current, original, filename + ': conditions, proofs, seeds and catalogue unchanged');
+    if (mapping.course === 'geometry-pogorelov' && (current.unit.topicQuestion ||
+        (html.includes('data-pogorelov-topic-guide') && new JSDOM(html).window.document.querySelector('[data-pogorelov-topic-guide]')))) {
+      assert.equal(guides, undefined, filename + ': topic scene has no generic recordings');
+      assert(!html.includes('data-geometry-experiment-gifs="runtime"'), filename);
+      continue;
+    }
+    assert(guides, filename + ': guide configuration exists');
     for (const surface of ['manual', 'experiments', 'investigations']) assert.deepEqual(guides[surface], mapping[surface]);
     const ids = [...new Set([...mapping.manual, ...mapping.experiments, ...mapping.investigations])];
     assert.deepEqual(guides.clips.map(clip => clip.id).sort(), ids.sort(), filename + ': only this lesson’s examples');

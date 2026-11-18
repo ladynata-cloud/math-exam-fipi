@@ -6,10 +6,28 @@ from pathlib import Path
 import re
 import subprocess
 
-from geometry_experiment_guides import CONFIG, GUIDE_TAG, ROOT, _script
+from geometry_experiment_guides import CONFIG, GUIDE_TAG, ROOT, _script, has_topic_guide, with_guides
+
+
+def check_topic_guide_ownership():
+    path = 'geometry-pogorelov/atlas/pogorelov-base-7-1.html'
+    legacy = (ROOT / path).read_text()
+    match = CONFIG.search(legacy)
+    config = json.loads(match[2])
+    config['unit']['topicQuestion'] = 'Какие точки задают прямую?'
+    flagged = legacy[:match.start(2)] + json.dumps(config, ensure_ascii=False) + legacy[match.end(2):]
+    marked = legacy.replace('<body>', '<body><details data-pogorelov-topic-guide></details>', 1)
+    assert has_topic_guide(marked)
+    assert not has_topic_guide('<script>const example = "<div data-pogorelov-topic-guide>";</script>')
+    for source in (flagged, marked):
+        cleaned = with_guides(path, source)
+        assert 'experimentGuides' not in json.loads(CONFIG.search(cleaned)[2])
+        assert not GUIDE_TAG.search(cleaned)
+        assert with_guides(path, cleaned) == cleaned
 
 
 def check(base):
+    check_topic_guide_ownership()
     def original(path):
         return subprocess.check_output(['git', 'show', base + ':' + path], cwd=ROOT).decode()
     catalogue = json.loads((ROOT/'assets/geometry-experiment-gifs/catalog.json').read_text())
@@ -21,10 +39,14 @@ def check(base):
         before = CONFIG.search(old)
         after = CONFIG.search(new)
         assert before and after, relative + ': configuration missing'
+        old_config = json.loads(before[2])
         new_config = json.loads(after[2])
-        guides = new_config.pop('experimentGuides')
-        assert guides['unitId'] == catalogue['pages'][relative]['unitId'], relative
-        assert new_config == json.loads(before[2]), relative + ': teaching config changed'
+        guides = new_config.pop('experimentGuides', None)
+        if relative.startswith('geometry-pogorelov/') and (old_config['unit'].get('topicQuestion') or has_topic_guide(old)):
+            assert guides is None and not GUIDE_TAG.search(new), relative + ': generic guide on a topic scene'
+        else:
+            assert guides and guides['unitId'] == catalogue['pages'][relative]['unitId'], relative
+        assert new_config == old_config, relative + ': teaching config changed'
         restored = GUIDE_TAG.sub('', new)
         match = CONFIG.search(restored)
         restored = restored[:match.start()] + before[0] + restored[match.end():]

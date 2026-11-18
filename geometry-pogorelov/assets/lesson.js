@@ -1,5 +1,23 @@
 (function(){'use strict';const C=window.COURSE_CONFIG,U=C.unit,P=C.proof,T=GeoTasks,E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const notice=document.getElementById('storage-notice'),store=GeoStore.open(C.catalog.map(x=>x.id),m=>{notice.hidden=false;notice.textContent=m;}),root=document.getElementById('lesson'),labels=['Понять','Исследовать','Доказать','Решить с опорой','Самостоятельно','Своими словами'];let state=store.get(U.id),lab=null,timer=null,pending=null,showHint=false;
+// Standalone pages may still contain the older guide runtime after their scene changes.
+// Release that runtime, including any open player, as soon as the topic owns the board.
+if (C.experimentGuides && window.MathExamGeometryExperimentGifs) {
+  const releaseLegacyGuide = () => {
+    // Attaching first disposes the previous owner of this lesson; no guides are mounted.
+    window.MathExamGeometryExperimentGifs.attach(root, {}).destroy();
+  };
+  if (U.topicQuestion || root.querySelector('[data-pogorelov-topic-guide]')) {
+    releaseLegacyGuide();
+  } else {
+    const ownership = new MutationObserver(() => {
+      if (!root.querySelector('[data-pogorelov-topic-guide]')) return;
+      ownership.disconnect();
+      releaseLegacyGuide();
+    });
+    ownership.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-pogorelov-topic-guide'] });
+  }
+}
 function save(event){store.put(U.id,state,event);}function defer(){clearTimeout(timer);timer=setTimeout(()=>save(),200);}window.addEventListener('pagehide',()=>{clearTimeout(timer);save();});
 function task(){return T.task(U.calc,state.seed);}function shuffle(a,s=state.seed){return a.map((v,i)=>({v,key:Math.sin((i+1)*19.17+s*2.39)})).sort((a,b)=>a.key-b.key).map(x=>x.v);}
 function nav(){document.querySelector('.stage-nav').innerHTML=labels.map((l,i)=>'<button data-stage="'+i+'" class="'+(i===state.stage?'on':'')+'"'+(i===state.stage?' aria-current="step"':'')+'>'+String(i+1).padStart(2,'0')+' '+l+'</button>').join('');}
