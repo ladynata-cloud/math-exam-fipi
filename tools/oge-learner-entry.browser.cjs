@@ -62,6 +62,14 @@ async function checkPracticeRoute(page, width) {
 
 async function checkFractionHintReturn(page, width) {
  const exercise = base + '/trainers/oge-task6-fractions.html';
+ // The native card is parsed before this deferred restoration script. Exercise
+ // a slow response explicitly: a committed navigation is not a loaded page.
+ const adapterPattern = base + '/assets/oge-fractions-return.js*';
+ const delayedAdapter = async route => {
+  await new Promise(resolve => setTimeout(resolve, 250));
+  await route.continue();
+ };
+ await page.route(adapterPattern, delayedAdapter);
  await page.goto(exercise);
  await page.locator('#hintToggle').click();
  await page.locator('#stepAnswer').fill(await page.evaluate(() => {
@@ -79,6 +87,7 @@ async function checkFractionHintReturn(page, width) {
  await page.locator('#settings > summary').click();
  await page.getByRole('link', {name:'Потренировать общий знаменатель', exact:true}).click();
  await page.getByRole('link', {name:'← Вернуться к задаче ОГЭ №6', exact:true}).click();
+ await page.waitForLoadState('load');
  assert(await page.locator('#hintPanel').isVisible(), 'The original hint opens on return');
  assert(await page.locator('#stepLab').isVisible(), 'The current investigation remains open');
  assert.equal(await page.locator('#hintSteps').innerText(), earlierSteps);
@@ -94,6 +103,7 @@ async function checkFractionHintReturn(page, width) {
  assert(await page.locator('#hintPanel').isVisible(), 'The browser Back button also restores the hint');
  assert.equal(await page.locator('#stepPrompt').innerText(), prompt);
  assert.equal(await page.locator('#stepAnswer').inputValue(), '18/');
+ await page.unroute(adapterPattern, delayedAdapter);
  report.cases.push({width,case:'fraction support returns to the open step and both unsent answers',status:'PASS'});
 }
 
