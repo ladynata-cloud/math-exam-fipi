@@ -279,6 +279,20 @@ const scenarios = {
     const previous = page.url();
     await next.click();
     await page.waitForURL(url => url.href !== previous && url.protocol === 'file:' && url.hash.startsWith('#lesson='));
+    const key = await page.evaluate(() => PathCourse.KEY);
+    const recovery = new URL(page.url());
+    recovery.search = '?practice=recovery';
+    recovery.hash = 'practice=round';
+    await page.goto(recovery.href);
+    const saved = await page.evaluate(key => localStorage.getItem(key), key);
+    const recoveryNumbers = (await statement.innerText()).match(/\d+/g).map(Number);
+    await input.fill(String(Math.ceil(recoveryNumbers[0] / recoveryNumbers[1])));
+    await submit(page, '#answerForm');
+    await next.click();
+    await page.waitForURL(url => url.protocol === 'file:' && url.hash === '#lesson=practice-change');
+    assert.equal(new URL(page.url()).searchParams.get('practice'), 'recovery');
+    assert.equal(await page.evaluate(() => PathCourse.KEY), key + '.separate');
+    assert.equal(await page.evaluate(key => localStorage.getItem(key), key), saved);
   },
   async 'ege-profil-vectors-t2'(page) {
     assert(!(await page.locator('#connectBtn').isVisible()));
