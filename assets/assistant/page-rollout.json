@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+  "baseSha": "b2f9142c327a77cc528669409526b520d954855f",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -5615,6 +5615,13 @@
       "changedPaths": [
         "ege-profil/review.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "b2f9142c327a77cc528669409526b520d954855f",
+      "task": "docs/tasks/PROFILE_PART_TWO_ERROR_JOURNAL_20261117.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
