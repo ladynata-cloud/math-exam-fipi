@@ -10,7 +10,7 @@
   if (endpoint.protocol !== 'https:' && !(local && endpoint.protocol === 'http:')) return;
 
   async function ask(request, {signal} = {}) {
-    if (!request || !['uzel', 'mathexam'].includes(request.site) || signal?.aborted) return null;
+    if (!request || !['uzel', 'mathexam', 'tarot'].includes(request.site) || signal?.aborted) return null;
     const controller = new AbortController();
     const abort = () => controller.abort();
     signal?.addEventListener('abort', abort, {once: true});

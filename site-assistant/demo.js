@@ -8,6 +8,7 @@ const sendButton = document.querySelector('#send');
 const scenes = {
   reader: {site: 'uzel', cue: 'Вы вспоминаете книгу по одному эпизоду. Обсуждение прочитанного можно открыть после выбора произведения.', examples: ['Не помню рассказ про незаметное добро.', 'Да, там была горница, а рассказ я ещё не дочитала.']},
   navigator: {site: 'mathexam', cue: 'Вы ищете подходящий тренажёр на MathExam.', examples: ['Хочу научиться делить', 'Да, на двузначное число.']},
+  symbols: {site: 'tarot', cue: 'Вы читаете атлас карт. Назовите карту, рассмотрите её изображение и спросите, откуда взялось толкование.', examples: ['Что изображено на карте Отшельник?', 'А это слова Уэйта?']},
   division: {site: 'mathexam', cue: 'В делении уголком вы дошли до числа 37. Делитель — 6. Сейчас нужно подобрать цифру частного.', examples: ['Какую цифру пробовать?', 'Объясни этот же шаг проще.']}
 };
 
@@ -102,7 +103,8 @@ async function query(message, chosenWork) {
   workId = state?.mode === 'after_reading' ? state.workId : undefined;
   turns += 1;
   statusLine.textContent = '';
-  const response = addTurn(current === 'reader' ? 'Узел тоски по миру' : 'MathExam', result.reply);
+  const name = {uzel:'Узел тоски по миру', mathexam:'MathExam', tarot:'Каббала и Таро'}[result.site];
+  const response = addTurn(name, result.reply);
   addLinks(response, result);
   input.value = '';
   input.focus();

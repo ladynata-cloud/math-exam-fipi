@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node server.mjs",
     "test": "node --test test/*.test.mjs",
-    "sync:reader": "node scripts/sync-reader.mjs"
+    "sync:reader": "node scripts/sync-reader.mjs",
+    "sync:tarot": "node scripts/sync-tarot.mjs"
   }
 }

@@ -10,6 +10,14 @@ const assets = new Map([
   ['/', ['demo.html', 'text/html; charset=utf-8']], ['/demo.js', ['demo.js', 'text/javascript; charset=utf-8']],
   ['/demo.css', ['demo.css', 'text/css; charset=utf-8']], ['/client.js', ['client.js', 'text/javascript; charset=utf-8']],
 ]);
+const sitesInfo = [
+  {id:'mathexam', origin:'https://mathexam.space', surfaces:['navigator','division'], env:'SITE_ASSISTANT_MATH_ORIGINS'},
+  {id:'uzel', origin:'https://usel-toski-po-miru.art', surfaces:['reader'], env:'SITE_ASSISTANT_READER_ORIGINS'},
+  {id:'tarot', origin:'https://kabbala-tarot.online', surfaces:['symbols'], env:'SITE_ASSISTANT_TAROT_ORIGINS'},
+];
+const capabilities = {version:1, mode:'offline', dialogue:'/api/v1/dialogue',
+  sites:sitesInfo.map(({id,origin,surfaces}) => ({id,origin,surfaces}))};
+
 function originValue(value) {
   const url = new URL(value);
   const loopback = ['localhost','127.0.0.1','[::1]'].includes(url.hostname);
@@ -46,10 +54,7 @@ function send(res, status, body, headers={}) {
 
 // No per-user identifiers, prompts or responses are stored by this handler.
 export function createHandler({env=process.env, now=Date.now, requestsPerMinute=1200}={}) {
-  const sites = {
-    mathexam: origins(env.SITE_ASSISTANT_MATH_ORIGINS, ['https://mathexam.space']),
-    uzel: origins(env.SITE_ASSISTANT_READER_ORIGINS, ['https://usel-toski-po-miru.art']),
-  };
+  const sites = Object.fromEntries(sitesInfo.map(site => [site.id, origins(env[site.env], [site.origin])]));
   const publicOrigin = env.SITE_ASSISTANT_PUBLIC_ORIGIN ? originValue(env.SITE_ASSISTANT_PUBLIC_ORIGIN) : '';
   let windowStart = now();
   let count = 0;
@@ -58,6 +63,9 @@ export function createHandler({env=process.env, now=Date.now, requestsPerMinute=
     try {
       const endpoint = req.url;
       if (req.method === 'GET' && endpoint === '/healthz') return send(res, 200, {ok:true, version:1, mode:'offline'});
+      if (req.method === 'GET' && endpoint === '/api/v1/capabilities') {
+        return send(res, 200, capabilities, {'Access-Control-Allow-Origin':'*'});
+      }
       if (req.method === 'GET' && assets.has(endpoint)) {
         const [name, contentType] = assets.get(endpoint);
         const body = await readFile(new URL(name, import.meta.url));
@@ -71,7 +79,7 @@ export function createHandler({env=process.env, now=Date.now, requestsPerMinute=
       const localDemo = /^http:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/.test(origin || '') &&
                         origin === 'http://' + req.headers.host;
       const demo = localDemo || (publicOrigin && origin === publicOrigin);
-      if (origin && !demo && !sites.mathexam.has(origin) && !sites.uzel.has(origin)) {
+      if (origin && !demo && !Object.values(sites).some(allowed => allowed.has(origin))) {
         throw new HttpFailure(403, 'origin_not_allowed');
       }
       if (origin) cors = {'Access-Control-Allow-Origin':origin};
