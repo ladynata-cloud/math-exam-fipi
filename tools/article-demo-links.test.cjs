@@ -75,3 +75,36 @@ test('a direct sine-wave link selects the function panel and positions the model
     assert.equal(doc.querySelector('[data-p="intro"]').getAttribute('aria-selected'), 'true');
   } finally { dom.window.close(); }
 });
+
+test('the circle, sine graph and angle slider agree at four angles, the endpoint and reset', () => {
+  const dom = openTrainer('ege-profil/trainers/trigonometry.html', '#sine-wave');
+  try {
+    const win = dom.window;
+    const doc = win.document;
+    const svg = doc.getElementById('wvSvg');
+    const circle = svg.querySelector('circle');
+    const point = svg.querySelector('circle[fill="var(--arc)"]');
+    const graphPoint = svg.querySelector('circle[fill="var(--sin)"]');
+    const slider = doc.getElementById('wvT');
+    const graphOrigin = Number(graphPoint.getAttribute('cx'));
+    const zero = Number(circle.getAttribute('cy'));
+    const radius = Number(circle.getAttribute('r'));
+    let previousX = graphOrigin;
+    for (const t of [1.57, 3.14, 4.71, 5.24]) {
+      slider.value = String(t);
+      slider.dispatchEvent(new win.Event('input'));
+      const y = Number(point.getAttribute('cy'));
+      const x = Number(graphPoint.getAttribute('cx'));
+      assert.ok(Math.abs((zero - y) / radius - Math.sin(t)) < 1e-9);
+      assert.equal(Number(graphPoint.getAttribute('cy')), y);
+      assert.ok(x > previousX);
+      previousX = x;
+    }
+    doc.getElementById('wvPlay').click(); // reduced-motion preference: jump to the end
+    assert.equal(slider.value, doc.getElementById('wvTval').textContent);
+    assert.ok(Math.abs(Number(graphPoint.getAttribute('cy')) - zero) < 1e-9);
+    doc.getElementById('wvReset').click();
+    assert.equal(Number(slider.value), 0);
+    assert.equal(Number(graphPoint.getAttribute('cx')), graphOrigin);
+  } finally { dom.window.close(); }
+});
