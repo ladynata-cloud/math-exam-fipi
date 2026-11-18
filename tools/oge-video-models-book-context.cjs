@@ -9,7 +9,8 @@ const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
 const v3=require('./fixtures/oge-book-v3-context.json');
 const ROOT=path.resolve(__dirname,'..');
 const sourcePin=file=>({...pins.pages[file],sourceCommit:pins.baseCommit,...updates.pages[file],
- ...(v3.publicSourceOverrides.includes(file)?{sourceCommit:v3.sourceCommit,sha256:v3.videoPages[file].nativeSha256}:{})});
+ ...(v3.publicSourceOverrides.includes(file)?{sourceCommit:v3.sourceCommit,sha256:v3.videoPages[file].nativeSha256}:{}),
+ ...(v3.publicSourceCompositions[file]||{})});
 const label='Разобраться на модели',summaryHtml='<summary data-ovm-open="">'+label+'</summary>';
 const hash=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 const wayfindingLabel='← Все темы ОГЭ Главная';

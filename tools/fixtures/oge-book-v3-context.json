@@ -100,5 +100,17 @@
     "trainers/oge-course-geometry.js": "93fcfa0b454746cb9fc139475daacfbae80c58273240c8f55986dd5c426cdb02",
     "trainers/oge-course-proof.css": "b98618bba320cdad70fb9f2e31cdf64bc4e7763e745abef33343717058708f66",
     "trainers/oge-course-proof.js": "e93b0b1018f6c692be100cb883aa8931ada8524d2f4af7c6da1bf06649974c8f"
+  },
+  "publicSourceCompositions": {
+    "trainers/oge-task25-geometry.html": {
+      "sourceCommit": "7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c",
+      "sourceSha256": "7df73fc7c4311ca7470b7c6554130acf09361f4df1f32c07f846e11cb92a89e3",
+      "sha256": "b7e7dfad20ca3ba4f728fba97919e5424999d16a015ce66eb650cc40b67d56f2",
+      "taskDoc": "docs/tasks/OGE_BOOK_V3_READINESS_20261116.md",
+      "previousSourceCommits": [
+        "11449d27f9e6e1ffa208195b0d534e72f6a7f40b",
+        "d26f2e8936a7008ac792671533fcf66cbb21c4a4"
+      ]
+    }
   }
 }

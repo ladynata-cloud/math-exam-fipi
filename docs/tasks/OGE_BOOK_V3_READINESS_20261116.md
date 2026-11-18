@@ -121,3 +121,11 @@ and the PR handoff so that this task does not require a self-referential commit.
 
 Use the repository `EXECUTIVE STATUS` fields: Task, PR, Base, Head, Gate, Tests,
 Failures, Not run, Scope deviations, Recommendation and Next user decision.
+
+## Authorized continuation — 18 November 2026
+
+Finish the existing branch by an ordinary history-preserving composition with
+main `dcf771600a49a5f34a9695c0d10522db78ce2478`, resolve routine conflicts and
+request CI on the exact resulting head. Preserve fixed v3 bytes and both
+published editions; do not modify the separately saved corrected private book.
+The merge/deployment hold in Permissions remains unchanged.

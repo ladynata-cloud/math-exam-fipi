@@ -151,3 +151,66 @@ The printed v3 URLs become publicly usable only after separately authorized
 merge, deployment and complete live verification. A physical proof copy,
 publisher acceptance, full cover spread/spine and real-pupil pilot are not
 claimed by automated or screen-based checks.
+
+## Branch maintenance — 18 November 2026
+
+The existing Draft PR #641 was composed with current main
+`dcf771600a49a5f34a9695c0d10522db78ce2478` by an ordinary two-parent merge.
+The source checkpoint is `7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c`, with tree
+`8ac841147128ddac9d295561cbedb40340db8e53`; its parents are the previous PR
+head `a909772ccff2678987706bd51478689227f0563a` and that main commit.
+All 28 intervening main commits remain in the history. Nine textual/binary
+merge conflicts were resolved without changing the fixed v3 package, its 71
+aliases, or either published historical edition.
+
+The current task25 source combines the labelled bisector/median, equal-angle
+arcs and equal-half marks from main with the exact tangent-area method and
+bisector-theorem explanation from this PR. Task7 retains both main's prerequisite
+link and the v3 explanation that an improper fraction includes equality.
+The independent internal reviewer recomputed all ten type15 areas from circle
+and tangent geometry: 168, 1008, 924, 720, 420, 1120, 1320, 728, 806.4 and 520.
+No external-provider review is claimed.
+
+The navigator keeps both branches' provenance history and binds only the two
+newly composed HTML files to the source checkpoint. Rebuilding only the task7
+and task25 standalone packages with the normal builder reproduced the merged
+HTML and ZIP bytes exactly. Other package changes belong to the accepted main
+history; this maintenance did not regenerate them.
+
+The current task25 evidence uses a separate, single-page composition receipt.
+Its complete source SHA-256 is
+`7df73fc7c4311ca7470b7c6554130acf09361f4df1f32c07f846e11cb92a89e3`,
+and its native teaching SHA-256 is
+`b7e7dfad20ca3ba4f728fba97919e5424999d16a015ce66eb650cc40b67d56f2`.
+The original v3 manifest, source-file pins and frozen-page pins are unchanged.
+Both JavaScript and Python checks bind the new public receipt to the committed
+source; negative controls reject changed mathematics, labels and extra bytes.
+
+Local verification on the composed candidate:
+
+- Base verifier and proposed verifier: three editions valid, two historical
+  editions protected; old-head-to-candidate diff for `book/` and `b/` is empty.
+- Replay at pinned `2c14de966bbb09a2d57261948d376f66fdfd4268`: 71 entries,
+  165 sources, 240 files, 8,820,563 bytes, exact deterministic match. The replay
+  executes that checkpoint's builder. The live builder independently retains
+  main's prerequisite-detour handling and passes all 19 generator checks.
+- Package guards 17/17, deployment-verifier tests 14/14, algebra contract
+  668 checks, geometry contract 1,873 checks, current/frozen v3 geometry 5/5
+  each, proof DOM 10/10, task7 input/preservation 17/17.
+- Video/source/frozen context and preservation 22/22, including the independent
+  Python negative controls; worked-step context 9/9; navigator-binding tests 5/5.
+- Learner-entry static gate: 147 documents and 1,692 links. Focus-navigation
+  gate: 526 internal links. ZIP integrity and matching standalone members pass.
+- Local browser execution was attempted but Chromium stopped before opening
+  a page: `socket() failed: Operation not permitted`. It is not counted as a
+  browser pass. Full browser and independent-recorded-math checks are requested
+  in GitHub CI for the final branch head; final results belong in the PR.
+
+The earlier 20/20 CI result applies only to `a909772`, not this continuation.
+The independent maintenance review checked the source composition, exact
+inverse controls, unchanged frozen bytes, and the pinned historical replay.
+The final PR identifies the reviewed final head and its CI status.
+
+This continuation does not alter the separately delivered private book files,
+does not switch their working v2 links, and does not claim a v3 publication.
+The task-specific merge/deployment hold remains in effect; PR #641 stays Draft.

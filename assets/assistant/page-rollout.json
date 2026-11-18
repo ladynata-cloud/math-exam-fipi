@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+  "baseSha": "7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3013,8 +3013,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
-      "beforeSha256": "075163e380df8c7c3c830f4b2c7d0893a1e7b048c9b68c1863cafe1c66f01ee4",
-      "afterSha256": "68d8104b7c6729e7ba8008c3b61d0df97141f0e6adfba60e1fd8f862e18cf97e",
+      "beforeSha256": "dc1894ef61f81d8442c5b1f49492849c38630e4350f00219709e04c944755da7",
+      "afterSha256": "7df73fc7c4311ca7470b7c6554130acf09361f4df1f32c07f846e11cb92a89e3",
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
@@ -3023,8 +3023,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task7-number-line.html": {
-      "beforeSha256": "7c4a2788375da7da39d111cda59458268c995c4cba98b4364f378c816886ae07",
-      "afterSha256": "864454d38377a128827a5831fcf8d4ba02ad430e9feb5ddf024c6de5a0eb06cb",
+      "beforeSha256": "63a6381b7046e8004d2509ef7a77a169b7e8f514fa59a76d92dd9fef4cad1545",
+      "afterSha256": "81240e0150f2ed65f5cbc1fd36f8150f0abc6e9bc7aa1f3b20048ee79fd13e58",
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
@@ -5639,6 +5639,16 @@
       "task": "docs/tasks/OGE_BOOK_V3_READINESS_20261116.md",
       "changedPaths": [
         "trainers/oge-2027-analogue-1.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c",
+      "task": "docs/tasks/OGE_BOOK_V3_READINESS_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task25-geometry.html",
+        "trainers/oge-task7-number-line.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

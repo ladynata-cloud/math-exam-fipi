@@ -39,7 +39,7 @@ test('later teaching receipts remain limited to five committed pages and reject 
   }
  }
 });
-test('v3 corrections bind exactly four public revisions to the independently reviewed source commit',()=>{
+test('v3 corrections retain four exact historical public revisions and their separate live composition',()=>{
  assert.equal(v3.sourceCommit,'11449d27f9e6e1ffa208195b0d534e72f6a7f40b');
  assert.deepEqual(v3.publicSourceOverrides,[entries[11],entries[16],entries[24],entries[25]]);
  assert.equal(v3.manifestSha256,hash(fs.readFileSync(path.join(ROOT,v3.prefix.slice(1),'manifest.json'))));
@@ -48,9 +48,26 @@ test('v3 corrections bind exactly four public revisions to the independently rev
   assert.equal(hash(committed),expected,file+' immutable source provenance');
  }
  for(const file of v3.publicSourceOverrides){
-  const x=fixture(file);assert.equal(receipt(x).sourceBase,v3.sourceCommit);
+  const x=fixture(file);assert.equal(receipt(x).sourceBase,sourcePin(file).sourceCommit);
   assert.throws(()=>receipt({...x,raw:x.raw+'\n'}));
  }
+});
+test('only the composed public task25 uses its exact new pin; frozen and parent receipts stay sealed',()=>{
+ const file=entries[25],composed=v3.publicSourceCompositions[file];
+ assert.deepEqual(Object.keys(v3.publicSourceCompositions),[file]);
+ assert.equal(composed.sourceCommit,'7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c');
+ assert.deepEqual(composed.previousSourceCommits,[v3.sourceCommit,'d26f2e8936a7008ac792671533fcf66cbb21c4a4']);
+ const raw=execFileSync('git',['show',composed.sourceCommit+':'+file],{cwd:ROOT,encoding:'utf8'});
+ assert.equal(hash(raw),composed.sourceSha256,'complete committed source identity');
+ assert.equal(raw,fixture(file).raw,'current source is the reviewed composition');
+ const {restoreVideoModels,restoreGraphScale}=require('./oge-video-models-preservation.cjs');
+ assert.equal(hash(restoreGraphScale(file,restoreVideoModels(file,raw))),composed.sha256);
+ const x=fixture(file);
+ for(const mutate of [s=>s+'\n',s=>s.replace('const tangent=Math.sqrt','const tangent=2*Math.sqrt'),s=>s.replace('BE — биссектриса, AD — медиана','BE — медиана, AD — биссектриса')]){
+  const changed=mutate(raw);assert.notEqual(changed,raw);assert.throws(()=>receipt({...x,raw:changed}));
+ }
+ assert.notEqual(composed.sha256,v3.videoPages[file].nativeSha256,'frozen v3 retains its own original pin');
+ for(const other of v3.publicSourceOverrides.filter(page=>page!==file))assert.equal(sourcePin(other).sourceCommit,v3.sourceCommit);
 });
 const frozenFixture=file=>{
  const x=fixture(file);x.prefix=v3.prefix;

@@ -100,6 +100,7 @@ jobs:
           18b44244753ac806d449a2040ad4b8c8af9acaf3
           11449d27f9e6e1ffa208195b0d534e72f6a7f40b
           d26f2e8936a7008ac792671533fcf66cbb21c4a4
+          7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'

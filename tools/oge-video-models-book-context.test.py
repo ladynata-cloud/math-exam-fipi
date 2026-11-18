@@ -13,6 +13,20 @@ spec.loader.exec_module(math)
 
 
 class ContextTests(unittest.TestCase):
+    def test_public_composition_is_one_committed_page_and_never_rewrites_frozen_pins(self):
+        file = 'trainers/oge-task25-geometry.html'
+        self.assertEqual(list(V3['publicSourceCompositions']), [file])
+        pin = V3['publicSourceCompositions'][file]
+        self.assertEqual(pin['sourceCommit'], '7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c')
+        raw = subprocess.check_output(['git', 'show', pin['sourceCommit'] + ':' + file], cwd=ROOT)
+        self.assertEqual(sha(raw), pin['sourceSha256'])
+        self.assertEqual(raw, (ROOT / file).read_bytes())
+        self.assertEqual(source_pin(file)['sha256'], pin['sha256'])
+        self.assertNotEqual(pin['sha256'], V3['videoPages'][file]['nativeSha256'])
+        for other in V3['publicSourceOverrides']:
+            if other != file:
+                self.assertEqual(source_pin(other)['sourceCommit'], V3['sourceCommit'])
+
     def setUp(self):
         self.fixtures = json.loads((ROOT / 'tools/fixtures/oge-book-exam-math.json').read_text())['fixtures']
         fixture = self.fixtures['63'].get('sourceVariant', self.fixtures['63'])

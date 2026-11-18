@@ -126,7 +126,10 @@ jobs:
           V3_SOURCE_BASE: 83e1fc15a1b6b87f0133e0dec6753381e423bd92
         run: |
           # Replay the reviewed source tree while the append-only check above uses the live PR base.
-          git diff --exit-code "$V3_CANDIDATE" HEAD -- book/oge/2026-11-16/v3/ b/oge26-3/ scripts/build-oge-book-edition.py scripts/oge-book-edition/
+          # The live builder evolves with reviewed source dependencies; the 19
+          # generator checks above cover it. Replay below uses the pinned old
+          # builder, while all frozen bytes and edition templates remain exact.
+          git diff --exit-code "$V3_CANDIDATE" HEAD -- book/oge/2026-11-16/v3/ b/oge26-3/ scripts/oge-book-edition/
           replay=$(mktemp -d "$RUNNER_TEMP/book-v3.XXXXXX")
           git worktree add --quiet --detach "$replay" "$V3_CANDIDATE"
           trap 'git worktree remove "$replay"' EXIT

@@ -30,13 +30,14 @@ def sha(raw):
 
 
 def source_pin(file):
-    """Keep historical receipts and override only the four reviewed corrections."""
+    """Keep frozen receipts while binding the exact later public-source composition."""
     pin = PINS['pages'].get(file)
     if not pin:
         return None
     pin = dict(pin, sourceCommit=PINS['baseCommit']) | UPDATES['pages'].get(file, {})
     if file in V3['publicSourceOverrides']:
         pin |= dict(sourceCommit=V3['sourceCommit'], sha256=V3['videoPages'][file]['nativeSha256'])
+    pin |= V3['publicSourceCompositions'].get(file, {})
     return pin
 
 
