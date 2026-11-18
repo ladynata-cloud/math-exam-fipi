@@ -128,7 +128,7 @@ function openSeparateLesson(hash){
  }
  // Drop the entry action from the URL so reload restores the new problem/draft.
  history.replaceState(null,'','#lesson='+id);
- if(row&&!row.done){render();return;}
+ if(row&&(!row.done||row.roundVersion===2&&typeof D.roundPractice!=='function')){render();return;}
  fresh(id);
 }
 function render(){let h=location.hash.slice(1)||'map';if(h.startsWith('practice='))return openSeparateLesson(h);if(!h.startsWith('lesson=')&&h!=='grade7')courseChrome(null);if(state.active&&!['exam','diagnostic','report'].includes(h)){state.active.assisted=true;save();}if(h.startsWith('lesson='))showLesson(h.slice(7));else if(h==='diagnostic'||h==='exam')startRun(h);else if(h==='report')report();else if(h==='foundation')foundation();else if(h==='grade7')grade7Map();else map();}
