@@ -107,3 +107,8 @@
 .lesson-case summary { width: fit-content; max-width: 100%; padding: 8px 0; cursor: pointer; font-weight: 700; color: var(--pen); }
 .lesson-case details p { margin-top: 6px; }
 @media print { .lesson-case details > * { display: block; } }
+.lesson-case { scroll-margin-top: 6rem; }
+@media screen and (max-width: 700px) {
+  .site-header { position: static; }
+  .lesson-case { scroll-margin-top: .5rem; }
+}
