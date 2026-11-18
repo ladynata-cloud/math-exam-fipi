@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const F=(n,d)=>'{{frac:'+n+':'+d+'}}';
 const step=(prompt,answer,explanation,hint,kind='number')=>({prompt,answer:String(answer),explanation,hint:hint||explanation,kind});
-const task=(prompt,answer,steps,finalLabel,kind='number',extra={})=>({title:'',prompt,answer:String(answer),kind,steps,finalLabel,hint:steps[0].hint,explanation:steps.map(s=>s.explanation).join('\n'),skills:['fraction-multiply','fraction-divide'],source:{type:'authored'},...extra});
+const task=(prompt,answer,steps,finalLabel,kind='number',extra={})=>({title:'',prompt,answer:String(answer),kind,steps,finalLabel,hint:steps[0].hint,explanation:steps.map(s=>s.explanation).join('\n'),source:{type:'authored'},...extra});
 const fact=n=>n<2?1:n*fact(n-1),choose=(n,k)=>fact(n)/fact(k)/fact(n-k);
 function make(n,j){const k=j+1,a=j+2,b=j+3;switch(n){
 case 1:return task(`Запиши ${k},25 в виде несократимой обыкновенной дроби.`,`${4*k+1}/4`,[step('Запиши числитель дроби со знаменателем 100.',100*k+25,`${k},25 = ${F(100*k+25,100)}.`,'Два знака после запятой — сотые.'),step('На какое наибольшее число делятся числитель и 100?',25,'Оба числа делятся на 25.','Проверь делимость на 25.'),step('Запиши сокращённую дробь.',`${4*k+1}/4`,`${F(100*k+25,100)} = ${F(4*k+1,4)}.`)],'Введи несократимую дробь.', 'number',{answerFormat:'reduced-fraction'});
@@ -97,7 +97,16 @@ const finalStepTopics=new Set([
   39,40,41,42,43,44,45,46,47,48,49,50,51,53,54,55,56,57,58,59,60,61,62,63,64,
   65,66,67,68,69,70,71,72,73,74,75,76,
 ]);
-const lessons=rows.map(([no,page,title,meaning,method,example])=>{const n=+no,c=chapters.find(c=>n>=c.topics[0]&&n<=c.topics[1]),id='p'+String(n).padStart(2,'0');const tasks=[0,1,2].map(j=>({...make(n,j),...(finalStepTopics.has(n)||(n===34&&j>0)?{lastStepIsFinal:true}:{}),id:id+'-a'+(j+1),title:['Разбираемся','Закрепляем','Проверяем себя'][j]}));return {id,order:n,title,page:+page,chapter:c.title,sourceRange:'выбранные разборы',advanced:[10,30,37,43,53,59].includes(n),model:modelFor(n),skills:['fraction-multiply','fraction-divide'],goals:[meaning],theory:[{title:'Смысл',text:meaning},{title:'Как действовать',text:method},{title:'Пример и важное ограничение',text:example}],tasks};});
+// Offer a computation detour only when its operation is used in these three authored variants.
+const computationSkills={
+  1:['decimal-to-fraction','fraction-reduce'],3:['fraction-subtract','fraction-divide'],
+  21:['fraction-reduce'],23:['fraction-reduce'],25:['fraction-multiply','fraction-subtract'],
+  28:['fraction-multiply','fraction-add'],29:['fraction-multiply'],30:['fraction-subtract','fraction-divide'],
+  32:['fraction-add'],39:['fraction-reduce'],42:['fraction-reduce'],
+  66:['decimal-subtract'],67:['fraction-reduce'],68:['decimal-add','decimal-subtract'],
+  69:['decimal-multiply'],70:['fraction-reduce','fraction-to-decimal'],71:['decimal-multiply']
+};
+const lessons=rows.map(([no,page,title,meaning,method,example])=>{const n=+no,c=chapters.find(c=>n>=c.topics[0]&&n<=c.topics[1]),id='p'+String(n).padStart(2,'0');const tasks=[0,1,2].map(j=>({...make(n,j),skills:computationSkills[n]||[],...(finalStepTopics.has(n)||(n===34&&j>0)?{lastStepIsFinal:true}:{}),id:id+'-a'+(j+1),title:['Разбираемся','Закрепляем','Проверяем себя'][j]}));return {id,order:n,title,page:+page,chapter:c.title,sourceRange:'выбранные разборы',advanced:[10,30,37,43,53,59].includes(n),model:modelFor(n),skills:computationSkills[n]||[],goals:[meaning],theory:[{title:'Смысл',text:meaning},{title:'Как действовать',text:method},{title:'Пример и важное ограничение',text:example}],tasks};});
 if(fs.existsSync(path.join(__dirname,'textbook.json'))){for(const item of JSON.parse(fs.readFileSync(path.join(__dirname,'textbook.json'),'utf8'))){const l=lessons[item.topic-1];l.tasks.push({...item.task,id:l.id+'-book-'+l.tasks.length});}}
 const sourceMap={edition:'Алимов и др., Алгебра и начала математического анализа. 10–11 классы, 2016',pdfPageOffset:3,chapters,sections:lessons.map(l=>({id:l.order,title:l.title,printedPage:l.page,kind:l.order<=73?'topic':'appendix'}))};
 const data={edition:'alimov10-11-2016',chapters,sourceMap,lessons};

@@ -114,6 +114,9 @@ async function solveBasic(prompt,answers) {
     if (/^В дроби \d+\/\d+ (?:какое число показывает количество всех равных частей|на сколько равных частей разделили целое)\?$/.test(p)) {
       return choose(x => number(x) === values[1]);
     }
+    if (/^В дроби \d+\/\d+ сколько таких частей взяли\?$/.test(p)) {
+      return choose(x => number(x) === values[0]);
+    }
     if(/Какая дробь больше/.test(p)) {const ratios=options.map(x=>arithmetic(x));const max=Math.max(...ratios);return choose(x=>arithmetic(x)===max);}
     if(/Какое число больше/.test(p)){
       if(values[0]===values[1])throw Error('The displayed comparison asks for a larger number but both numbers are equal: '+p);
@@ -129,7 +132,11 @@ async function solveBasic(prompt,answers) {
   else if(/^Приведите/.test(p)) answer=values[0]*values[2]/values[1];
   else if(/^Сократите/.test(p)) answer=fraction(values[0],values[1]);
   else if(/^Заполните пропуск/.test(p)) answer=values[0]*values[2]/values[1];
-  else if(/Вычислите и сократите/.test(p)) answer=fraction(values[0]*values[3]+values[2]*values[1],values[1]*values[3]);
+  else if(/^Вычислите(?: и сократите:)? \d+\/\d+ [+-] \d+\/\d+\./.test(p)) {
+    const [leftNumerator,leftDenominator,rightNumerator,rightDenominator]=values;
+    const sign=p.includes(' - ')?-1:1;
+    answer=fraction(leftNumerator*rightDenominator+sign*rightNumerator*leftDenominator,leftDenominator*rightDenominator);
+  }
   else if(/неполное частное|цифру частного/i.test(p)) answer=Math.floor(values[0]/values[1]);
   else if(/^Найдите остаток/.test(p)) answer=values[0]%values[1];
   else if(/противоположное/.test(p)) answer=-values[0];

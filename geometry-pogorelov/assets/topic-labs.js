@@ -9,10 +9,10 @@
     return {id,x,y,kind:'free',...extra};
   }
   function scene(topic){
-    if(topic===16)return {points:[point('A',140,245),point('B',505,245),point('C',310,110)],objects:[line('A','B','line')]};
+    if(topic===16)return {markConstructedPerpendicular:true,points:[point('A',140,245),point('B',505,245),point('C',310,110)],objects:[line('A','B','line')]};
     if(topic===20){
       const translate=(id,source)=>point(id,0,0,{kind:'sum',a:'A',b:'D',c:source});
-      return {points:[point('A',105,240),point('B',245,240),point('C',145,105),point('D',345,265),translate('E','B'),translate('F','C')],objects:[line('A','B'),line('B','C'),line('C','A'),line('D','E'),line('E','F'),line('F','D')]};
+      return {labelPartners:{D:'A',E:'B',F:'C'},points:[point('A',105,240),point('B',245,240),point('C',145,105),point('D',345,265),translate('E','B'),translate('F','C')],objects:[line('A','B'),line('B','C'),line('C','A'),line('D','E'),line('E','F'),line('F','D')]};
     }
     if(topic===61){
       const board=G.scene('triangle');
@@ -26,9 +26,11 @@
     if(topic===80){
       return {points:[point('O',320,220),point('A',420,220),point('C',190,160),point('D',0,0,{kind:'parallel',a:'C',b:'O',c:'A',k:1})],objects:[{id:'circle',a:'O',b:'A',type:'circle'},line('O','A'),line('C','D','line')]};
     }
-    if(topic===67)return G.scene('right');
-    if(topic===62){
+    if(topic===62||topic===67){
       const scene=G.scene('right');
+      // These lessons mark the angles used in the ratios on their own canvas.
+      scene.type='right-triangle-ratios';
+      if(topic===67)return scene;
       scene.points.push(point('D',0,0,{kind:'midpoint',a:'A',b:'B'}),point('E',0,0,{kind:'foot',a:'D',b:'A',c:'C'}));
       scene.objects.push(line('D','E'));
       return scene;
@@ -109,6 +111,15 @@
       return ['Радиус OA = '+fmt(r),'Площадь круга ≈ '+fmt(Math.PI*r*r)+' кв. ед.'];
     }
   }
+  function rightAngleCorner(vertex,a,b,maxSize){
+    if([vertex,a,b].some(p=>!p||p.valid===false))return null;
+    const first=G.sub(a,vertex),second=G.sub(b,vertex);
+    const l1=G.norm(first),l2=G.norm(second);
+    if(Math.min(l1,l2)<1||Math.abs(G.dot(first,second))>1e-7*l1*l2)return null;
+    const size=Math.min(maxSize,l1/4,l2/4);
+    const u=G.mul(first,size/l1),v=G.mul(second,size/l2);
+    return [G.add(vertex,u),G.add(G.add(vertex,u),v),G.add(vertex,v)];
+  }
   function paint(topic,board,ctx){
     function polygon(ids,color){
       const pts=ids.map(id=>board.point(id));
@@ -118,6 +129,19 @@
     }
     function disk(x,y,r,color){
       ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
+    }
+    function markRight(vertex,a,b){
+      const corners=rightAngleCorner(board.point(vertex),board.point(a),board.point(b),13);
+      if(!corners)return;
+      ctx.beginPath();ctx.moveTo(corners[0].x,corners[0].y);
+      ctx.lineTo(corners[1].x,corners[1].y);ctx.lineTo(corners[2].x,corners[2].y);
+      ctx.strokeStyle='#196a56';ctx.lineWidth=2;ctx.stroke();
+    }
+    if(topic===62||topic===67)markRight('C','A','B');
+    if(topic===62)markRight('E','A','D');
+    if(topic===112){
+      markRight('B','A','C');
+      markRight('C','A','B');
     }
     if(topic===127){
       polygon(['A','B','C'],'#3187a42b');
@@ -131,6 +155,7 @@
       for(const p of G.intersections(board.geometry('circle'),board.geometry('CD')))disk(p.x,p.y,6,'#ad4a19');
     }
     if(topic===98){
+      markRight('O','A','B');
       const o=board.point('O');
       for(const name of ['A','B']){
         const p=board.point(name),v=G.sub(p,o),length=G.norm(v);
@@ -145,23 +170,28 @@
   // Schematic coordinates are in one scale; the accompanying caption states the givens.
   function proofFigure(topic){
     const figures={
-      16:{pts:{A:[30,75],B:[270,75],O:[141,75],C:[141,25],D:[141,125]},segments:['AB','CD'],caption:'Прямые AB и CD пересекаются в O. Известно, что угол AOC прямой.'},
+      16:{pts:{A:[30,75],B:[270,75],O:[141,75],C:[141,25],D:[141,125]},segments:['AB','CD'],right:['AOC'],caption:'Прямые AB и CD пересекаются в O. Известно, что угол AOC прямой.'},
       20:{pts:{A:[25,113],B:[115,113],C:[47,48],D:[169,109],E:[259,109],F:[191,44]},segments:['AB','BC','CA','DE','EF','FD'],caption:'A соответствует D, B — E, C — F. Две стороны сходятся при A и D.'},
       61:{pts:{A:[24,121],B:[264,121],C:[99,19],D:[181.5,70],E:[61.5,70],G:[129,87],M:[76.5,104],N:[196.5,104]},segments:['AB','BC','CA','AD','BE'],aux:['ED','MN','ME','ND'],caption:'G — пересечение медиан AD и BE. M и N — середины AG и BG. Выдели параллелограмм MNDE.'},
-      39:{pts:{A:[75,120],B:[195,120],C:[195,40],O:[135,80],M:[135,120],N:[195,80]},segments:['AB','BC','CA','OA','OB','OC'],aux:['OM','ON'],circle:[135,80,Math.hypot(60,40)],caption:'M и N — середины AB и BC. Серединные перпендикуляры встречаются в O. Изображён частный случай прямоугольного треугольника.'},
-      62:{pts:{A:[35,130],C:[245,130],B:[245,25],D:[140,77.5],E:[140,130]},segments:['AB','BC','CA'],aux:['DE'],caption:'DE параллельна BC. Сравни прилежащие к углу A катеты AE и AC.'},
-      67:{pts:{A:[35,130],C:[245,130],B:[245,25]},segments:['AB','BC','CA'],caption:'Угол C прямой. Для угла A катет BC противолежащий, а для угла B он прилежащий.'},
-      80:{pts:{O:[130,65],H:[130,105],X:[175,105],A:[130+Math.hypot(45,40),65]},segments:['OH','OX'],aux:['OA'],free:[[30,105,265,105]],circle:[130,65,Math.hypot(45,40)],caption:'OH — расстояние до прямой. Показан случай d < R. Точка X — одно из пересечений.'},
+      39:{pts:{A:[75,120],B:[195,120],C:[195,40],O:[135,80],M:[135,120],N:[195,80]},segments:['AB','BC','CA','OA','OB','OC'],aux:['OM','ON'],right:['OMA','ONB','ABC'],circle:[135,80,Math.hypot(60,40)],caption:'M и N — середины AB и BC. Серединные перпендикуляры встречаются в O. Изображён частный случай прямоугольного треугольника.'},
+      62:{pts:{A:[35,130],C:[245,130],B:[245,25],D:[140,77.5],E:[140,130]},segments:['AB','BC','CA'],aux:['DE'],right:['ACB','AED'],caption:'DE параллельна BC. Сравни прилежащие к углу A катеты AE и AC.'},
+      67:{pts:{A:[35,130],C:[245,130],B:[245,25]},segments:['AB','BC','CA'],right:['ACB'],caption:'Угол C прямой. Для угла A катет BC противолежащий, а для угла B он прилежащий.'},
+      80:{pts:{O:[130,65],H:[130,105],X:[175,105],A:[130+Math.hypot(45,40),65]},segments:['OH','OX'],aux:['OA'],right:['OHX'],free:[[30,105,265,105]],circle:[130,65,Math.hypot(45,40)],caption:'OH — расстояние до прямой. Показан случай d < R. Точка X — одно из пересечений.'},
       98:{pts:{O:[40,125],A:[245,125],B:[165,30]},segments:['OA','OB'],aux:['AB'],arrows:['OA','OB'],caption:'OA и OB — векторы u и v. Отрезок AB имеет длину |u − v|.'},
       112:{pts:{A:[35,125],C:[265,125],B:[107,29],D:[155,125]},segments:['AB','BC','CA'],aux:['BD'],caption:'D лежит на AC. Отрезки AB и AD равны, поэтому можно сравнить углы при B и D.'},
       127:{pts:{A:[45,125],B:[220,125],C:[80,40],D:[190,40]},segments:['AB','AC','BC'],aux:['AD','BD'],free:[[25,40,265,40]],caption:'Общее основание AB. Вершины C и D лежат на одной параллельной прямой.'},
     };
     const line=(a,b,attr='')=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" ${attr}/>`;
+    function square(vertex,a,b,size=9){
+      const asPoint=([x,y])=>({x,y});
+      const corners=rightAngleCorner(asPoint(vertex),asPoint(a),asPoint(b),size);
+      return corners?'<polyline fill="none" stroke="#196a56" points="'+corners.map(p=>[p.x,p.y].join(',')).join(' ')+'"/>':'';
+    }
     let diagram='',caption='';
     if(topic===131){
       const center=[146,76],vertices=Array.from({length:8},(_,i)=>[center[0]+62*Math.cos(i*Math.PI/4),center[1]+62*Math.sin(i*Math.PI/4)]);
       const a=vertices[0],b=vertices[1],mid=[(a[0]+b[0])/2,(a[1]+b[1])/2];
-      diagram=`<circle cx="146" cy="76" r="62" fill="none"/><polygon points="${vertices.map(p=>p.join(',')).join(' ')}" fill="#d8ede6"/>`+vertices.map(v=>line(center,v)).join('')+line(center,mid,'stroke="#b25816" stroke-width="3"')+'<text x="153" y="68">R</text><text x="166" y="100">h</text>';
+      diagram=`<circle cx="146" cy="76" r="62" fill="none"/><polygon points="${vertices.map(p=>p.join(',')).join(' ')}" fill="#d8ede6"/>`+vertices.map(v=>line(center,v)).join('')+line(center,mid,'stroke="#b25816" stroke-width="3"')+square(mid,center,a,6)+'<text x="153" y="68">R</text><text x="166" y="100">h</text>';
       caption='Радиус R идёт к вершине, апофема h — к середине стороны правильного многоугольника.';
     }else{
       const f=figures[topic];
@@ -171,11 +201,92 @@
       for(const [x,y,z,w] of f.free||[])diagram+=line([x,y],[z,w],'stroke="#65837d"');
       for(const seg of f.segments)diagram+=line(f.pts[seg[0]],f.pts[seg[1]],f.arrows?.includes(seg)?'marker-end="url(#vector-tip)"':'');
       for(const seg of f.aux||[])diagram+=line(f.pts[seg[0]],f.pts[seg[1]],'stroke-dasharray="5 3" stroke="#97501c"');
+      for(const [a,vertex,b] of f.right||[])diagram+=square(f.pts[vertex],f.pts[a],f.pts[b]);
       for(const [k,[x,y]] of Object.entries(f.pts)){
         diagram+=`<circle cx="${x}" cy="${y}" r="2.8"/><text x="${x+(k==='H'?-14:4)}" y="${y+(y>=100?16:-6)}">${k}</text>`;
       }
     }
     return `<figure class="topic-proof-figure"><svg viewBox="0 0 300 150" role="img" aria-label="${caption}" style="width:100%;max-width:430px"><defs><marker id="vector-tip" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#214f65"/></marker></defs><g stroke="#214f65" stroke-width="1.6" fill="#214f65" style="font:13px sans-serif"><style>.topic-proof-figure text{stroke:none;fill:#17344a}</style>${diagram}</g></svg><figcaption>${caption}</figcaption></figure>`;
   }
-  root.PogorelovTopicLabs={scene,measure,proofFigure,paint};
+  let guideIndexRequest;
+  function guideIndex() {
+    if (root.PogorelovTopicGuideIndex) return Promise.resolve(root.PogorelovTopicGuideIndex);
+    if (guideIndexRequest) return guideIndexRequest;
+    guideIndexRequest = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = '../assets/topic-guide-index.js';
+      script.onload = () => resolve(root.PogorelovTopicGuideIndex);
+      script.onerror = () => {
+        guideIndexRequest = null;
+        script.remove();
+        reject(new Error('guide-index'));
+      };
+      document.head.append(script);
+    });
+    return guideIndexRequest;
+  }
+
+  async function mountGuide(board, topic) {
+    let index;
+    try { index = await guideIndex(); } catch { return; }
+    const guide = index?.[topic];
+    if (!guide || !board.isConnected) return;
+
+    const details = document.createElement('details');
+    details.dataset.pogorelovTopicGuide = String(topic);
+    details.innerHTML = '<summary>Как выполнить опыт</summary><div class="topic-guide-body">' +
+      '<h3></h3><figure><img width="672" height="700" alt=""><figcaption aria-live="polite" aria-atomic="true">' +
+      '<small data-guide-position></small><p data-guide-caption></p><p data-guide-readout></p></figcaption></figure>' +
+      '<div class="topic-guide-controls"><button type="button" data-guide-prev>← Назад</button>' +
+      '<button type="button" data-guide-next>Дальше →</button>' +
+      '<button type="button" data-guide-play aria-pressed="false">Смотреть анимацию</button></div>' +
+      '<p class="muted" data-guide-error role="status" hidden></p></div>';
+    details.querySelector('h3').textContent = guide.title;
+    const img = details.querySelector('img');
+    const position = details.querySelector('[data-guide-position]');
+    const caption = details.querySelector('[data-guide-caption]');
+    const readout = details.querySelector('[data-guide-readout]');
+    const previous = details.querySelector('[data-guide-prev]');
+    const next = details.querySelector('[data-guide-next]');
+    const play = details.querySelector('[data-guide-play]');
+    const error = details.querySelector('[data-guide-error]');
+    const base = '../../assets/geometry-experiment-gifs/' + guide.id;
+    let step = 0;
+    let playing = false;
+    function draw() {
+      error.hidden = true;
+      img.hidden = false;
+      img.src = playing ? base + '.gif' : base + '-' + String(step + 1).padStart(2, '0') + '.png';
+      position.textContent = playing ? 'Анимация' : 'Шаг ' + (step + 1) + ' из ' + guide.steps.length;
+      caption.textContent = playing ? guide.title : guide.steps[step];
+      readout.textContent = playing ? '' : guide.readouts[step];
+      readout.hidden = !readout.textContent;
+      previous.disabled = playing || step === 0;
+      next.disabled = playing || step === guide.steps.length - 1;
+      play.textContent = playing ? 'Остановить анимацию' : 'Смотреть анимацию';
+      play.setAttribute('aria-pressed', String(playing));
+    }
+    details.addEventListener('toggle', () => {
+      playing = false;
+      if (details.open) draw();
+      else {
+        img.removeAttribute('src');
+        play.setAttribute('aria-pressed', 'false');
+      }
+    });
+    previous.onclick = () => { step--; draw(); };
+    next.onclick = () => { step++; draw(); };
+    play.onclick = () => { playing = !playing; draw(); };
+    img.onerror = () => {
+      if (!details.open || !img.hasAttribute('src')) return;
+      const failedAnimation = playing;
+      if (failedAnimation) { playing = false; draw(); }
+      else img.hidden = true;
+      error.textContent = failedAnimation ? 'Анимация не загрузилась. Можно пройти опыт по шагам.' :
+        'Изображение не загрузилось. Действие для этого шага описано выше.';
+      error.hidden = false;
+    };
+    board.before(details);
+  }
+  root.PogorelovTopicLabs={scene,measure,proofFigure,paint,mountGuide};
 })(typeof window!=='undefined'?window:globalThis);
