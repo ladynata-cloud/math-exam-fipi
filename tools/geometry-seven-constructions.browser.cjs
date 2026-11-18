@@ -66,12 +66,22 @@ async function base(page,id) {
 async function vpr(page,variant) {
   const id='g8-circle-'+variant,leg=variant===3?12:15,r=variant===3?5:8;
   await page.goto(origin+'/trainers/vpr-math/index.html#task='+id);
-  await page.locator('.tangent-diagram svg').waitFor();
-  assert.equal(await page.locator('.tangent-diagram [data-segment="OA"]').count(),1);
-  assert.equal(await page.locator('.tangent-diagram [data-angle]').count(),0);
+  const figure=page.locator('.task-card > figure:first-child');
+  const angle=figure.locator('[data-angle="OAP"]'),hypotenuse=figure.locator('[data-segment="OP"]');
+  await figure.locator('svg').waitFor();
+  const radius=figure.locator('[data-segment="OA"]');
+  assert.equal(await radius.count(),1);
+  assert(await radius.evaluate(node=>getComputedStyle(node).visibility==='visible'&&node.getTotalLength()>0));
+  assert.equal(await angle.count(),1);
+  assert.equal(await angle.isVisible(),false);
+  assert.equal(await hypotenuse.isVisible(),false);
   await page.getByRole('radio',{name:'90°'}).click();
   await page.locator('.step.current [data-action="check"]').click();
-  await page.locator('.step.current [data-angle="OAP"]').waitFor();
+  await angle.waitFor();await hypotenuse.waitFor();
+  assert.equal(await page.locator('.task-card .step.current input').count(),1);
+  const gap=await page.locator('.task-card').evaluate(card=>
+    card.querySelector('.step.current input').getBoundingClientRect().top-card.querySelector('svg').getBoundingClientRect().bottom);
+  assert(gap<240,'The tangent calculation stays next to its drawing: '+gap);
   await page.locator('.step.current input').fill(String(r*r+leg*leg));
   await page.locator('.step.current [data-action="check"]').click();
   await page.locator('.step.current input').fill(String(Math.hypot(r,leg)));
@@ -79,7 +89,8 @@ async function vpr(page,variant) {
   await page.locator('.complete').waitFor();
   await page.locator('[data-action="mode"][data-mode="solo"]').first().click();
   await page.locator('.step.current').waitFor();
-  assert.equal(await page.locator('.tangent-diagram [data-angle]').count(),0);
+  assert.equal(await angle.isVisible(),false);
+  assert.equal(await hypotenuse.isVisible(),false);
   await noOverflow(page);
 }
 async function textbooks(page) {
