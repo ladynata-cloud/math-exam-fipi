@@ -186,7 +186,16 @@
       document.getElementById('next').onclick = () => changeStage(2);
     } else if (work.stage === 2) {
       const finished = work.step >= task.steps.length;
-      box.innerHTML = `<section class="panel">${condition}${support}<ol class="steps">${task.steps.slice(0, work.step).map(step => `<li>${M(step.q)} <b>${M(step.a === undefined ? 'Условия выполнены' : root.PathPracticeView.answerText(step))}</b><br>${M(step.why)}</li>`).join('')}</ol>${finished ? '<h2>Разбор завершён</h2><p>Проверь себя на новом условии.</p><button id="new" class="primary">Новый самостоятельный вариант</button>' : `<div class="callout"><b>Шаг ${work.step + 1}/${task.steps.length}</b><p>${M(task.steps[work.step].q)}</p></div>${form()}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`}<details id="gap"><summary>Мешает пробел в основе?</summary><p>Обсуди с Натальей Михайловной, какое действие затрудняет решение: знак, дробь, единицы или выбор формулы. Эта попытка сохранит текущий шаг.</p></details></section>`;
+      const history = `<ol class="steps">${task.steps.slice(0, work.step).map(step => `<li>${M(step.q)} <b>${M(step.a === undefined ? 'Условия выполнены' : root.PathPracticeView.answerText(step))}</b><br>${M(step.why)}</li>`).join('')}</ol>`;
+      const question = finished ? '<h2>Разбор завершён</h2><p>Проверь себя на новом условии.</p><button id="new" class="primary">Новый самостоятельный вариант</button>' : `<div class="callout"><b>Шаг ${work.step + 1}/${task.steps.length}</b><p>${M(task.steps[work.step].q)}</p></div>${form()}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`;
+      let body = support + history + question;
+      if (root.PathPlanePractice?.supports(task)) {
+        const frame = root.PathPlanePractice.frame(task, work.step);
+        const formula = frame.equation ? `<p class="working-equation">${M(frame.equation)}</p>` : '';
+        const previous = work.step ? `<details class="plane-history"${finished ? ' open' : ''}><summary>Решение в тетради</summary>${history}</details>` : '';
+        body = `<div class="plane-work"><div>${frame.svg}</div><div>${formula}${question}</div></div>${previous}`;
+      }
+      box.innerHTML = `<section class="panel">${condition}${body}<details id="gap"><summary>Мешает пробел в основе?</summary><p>Обсуди с Натальей Михайловной, какое действие затрудняет решение: знак, дробь, единицы или выбор формулы. Эта попытка сохранит текущий шаг.</p></details></section>`;
       if (finished && photoTask()) { box.querySelector('h2 + p').textContent = 'Теперь объясни доказательство своими словами. Для нового условия выбери похожий урок в маршруте.'; document.getElementById('new').textContent = 'Повторить этот рисунок'; }
       if (finished) document.getElementById('new').onclick = () => newTask();
       else {
