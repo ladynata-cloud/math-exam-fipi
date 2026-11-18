@@ -2,7 +2,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{JSDOM}=require('jsdom');
 const D=require('../school/m9-exercises/data'),S=require('../school/m9-exercises/app'),Models=require('../school/m9-exercises/models');
 const base=path.join(__dirname,'../school/m9-exercises');
-function app(hash='#21/0',saved){const dom=new JSDOM('<div id="notice"></div><main id="main" tabindex="-1"></main><input id="import" type="file">',{url:'https://mathexam.test/school/m9-exercises/index.html'+hash,runScripts:'outside-only'});const w=dom.window;w.HTMLElement.prototype.scrollIntoView=function(){};w.scrollTo=()=>{};if(saved)w.localStorage.setItem(S.KEY,typeof saved==='string'?saved:JSON.stringify(saved));for(const f of ['checks.js','data.js','models.js','app.js'])w.eval(fs.readFileSync(path.join(base,f),'utf8'));return dom;}
+function app(hash='#21/0',saved){const dom=new JSDOM('<a class="skip" href="#main">К заданию</a><div id="notice"></div><main id="main" tabindex="-1"></main><input id="import" type="file">',{url:'https://mathexam.test/school/m9-exercises/index.html'+hash,runScripts:'outside-only'});const w=dom.window;w.HTMLElement.prototype.scrollIntoView=function(){};w.scrollTo=()=>{};if(saved)w.localStorage.setItem(S.KEY,typeof saved==='string'?saved:JSON.stringify(saved));for(const f of ['checks.js','data.js','models.js','app.js'])w.eval(fs.readFileSync(path.join(base,f),'utf8'));return dom;}
 function click(w,s){const e=w.document.querySelector(s);assert(e,'Missing '+s);e.click();}
 function fill(w,s,v){const e=w.document.querySelector(s);assert(e,'Missing '+s);e.value=v;e.dispatchEvent(new w.Event('input',{bubbles:true}));}
 function submit(w){w.document.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}
@@ -31,4 +31,51 @@ test('empty and malformed entries across task types are not mathematical attempt
 test('board iframe uses ephemeral work and cannot load or overwrite personal records',()=>{
  const dom=new JSDOM('<iframe></iframe>',{url:'https://mathexam.test/trainers/trainer-board.html',runScripts:'outside-only'});
  try{const w=dom.window.document.querySelector('iframe').contentWindow;w.document.body.innerHTML='<div id="notice"></div><main id="main"></main><input id="import" type="file">';w.HTMLElement.prototype.scrollIntoView=function(){};w.scrollTo=()=>{};w.location.hash='#21/0';const personal=S.blank();personal.records['21:0']={seen:true,learn:true,check:true,independent:true};const sentinel=JSON.stringify(personal);w.localStorage.setItem(S.KEY,sentinel);for(const f of ['checks.js','data.js','models.js','app.js'])w.eval(fs.readFileSync(path.join(base,f),'utf8'));assert.match(w.document.querySelector('#notice').textContent,/демонстрационная/);assert(w.document.querySelector('#start-check'),'personal prior session must not load');click(w,'#start-check');fill(w,'#answer','123');submit(w);click(w,'#hint');for(const t of D.byNumber[21].parts[0].steps.filter(t=>t.final))answer(w,t);assert.equal(w.localStorage.getItem(S.KEY),sentinel);w.location.hash='#progress';w.dispatchEvent(new w.HashChangeEvent('hashchange'));assert.equal(w.document.querySelector('#import-button').disabled,true);assert.equal(w.localStorage.getItem(S.KEY),sentinel);}finally{dom.window.close();}
+});
+
+test('periodic notation is exact and a format correction leaves the first attempt available',()=>{
+ const Check=require('../school/m9-exercises/checks');
+ const third=D.byNumber[7].parts[0].steps.find(t=>t.rule.type==='period');
+ for(const raw of ['1/3','(1/3)','(1)/3','0,3333'])assert.equal(Check.check(third,raw).invalid,true,raw);
+ for(const raw of ['0,(3)','0, (3)','0.3(33)','0,('+'3'.repeat(30)+')'])assert.equal(Check.check(third,raw).ok,true,raw);
+ const wrong=Check.check(third,'0,'+'3'.repeat(25)+'(4)');
+ assert.equal(wrong.ok,false);
+ assert.ok(!wrong.invalid);
+ const dom=app('#7/0');
+ try{
+  const w=dom.window;
+  click(w,'#start-check');
+  fill(w,'#answer','(1/3)');
+  submit(w);
+  assert.equal(stored(w).records['7:0'].firstAnswer,undefined);
+  assert.equal(stored(w).sessions['7:0'].mistake,false);
+  fill(w,'#answer','0,(3)');
+  submit(w);
+  assert.ok(w.document.querySelector('.feedback.good'));
+ }finally{dom.window.close();}
+});
+
+test('skip link keeps the exercise and the restored number line uses the written coordinate',()=>{
+ let dom=app('#14/0');
+ try{
+  let w=dom.window;
+  click(w,'#start-check');
+  for(const raw of ['2,65','265/100','sqrt(7)']){
+   fill(w,'#answer',raw);
+   const before=w.document.querySelector('.line .point').getAttribute('cx');
+   click(w,'.skip');
+   assert.equal(w.location.hash,'#14/0');
+   assert.equal(w.document.activeElement.id,'main');
+   const saved=stored(w);
+   dom.window.close();
+   dom=app('#14/0',saved);
+   w=dom.window;
+   assert.equal(w.document.querySelector('#answer').value,raw);
+   assert.equal(w.document.querySelector('.line .point').getAttribute('cx'),before);
+  }
+  fill(w,'#answer','');
+  assert.equal(w.document.querySelector('.line .point'),null);
+ }finally{dom.window.close();}
+ const bookmarked=app('#main');
+ try{assert.ok(bookmarked.window.document.querySelector('#find'));}finally{bookmarked.window.close();}
 });

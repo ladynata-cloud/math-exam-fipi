@@ -48,8 +48,8 @@ test('actual final form never completes a task for an invalid expression that fo
    assert(!w.document.getElementById('completion'));
    assert.equal(r.drafts.final[0],invalid);
    assert.equal(r.drafts.proof,'Моё обоснование остаётся на месте');
-   // The existing ordinary-final-format attempt policy is intentionally not
-   // changed here; H04 separately classifies unreadable input without penalty.
+   // H04 retains an invalid real expression before any mathematical attempt.
+   assert.equal(r.attemptCount,0);assert.equal(r.wrong,0);
    const entries=Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]);
    w.close();dom=await boot(hash,entries);w=dom.window;
    assert.equal(w.document.getElementById('final-0').value,invalid);
@@ -131,8 +131,8 @@ test('malformed saves are preserved and a failed save keeps current working memo
 
 test('all seven sections and every lesson/task render with the authored answer fields',async()=>{
  const dom=await boot(),w=dom.window,d=w.document;
- assert.equal(d.querySelectorAll('.grid .card').length,7);
- for(const lesson of bank){await go(w,'lesson/'+lesson.id);assert.equal(d.querySelectorAll('.task-link').length,6);assert(d.querySelector('a[href="#exam/'+lesson.exam+'"]'));}
+ assert.equal(d.querySelectorAll('.grid .card').length,8,'seven official entries, including finance, plus optimization');
+ for(const lesson of bank){await go(w,'lesson/'+lesson.id);assert.equal(d.querySelectorAll('.task-link').length,6);assert(d.querySelector('a[href="'+w.ProfileExamMap.hash(w.ProfileExamMap.fromLegacyPartTwo(lesson.exam))+'"]'));}
  for(const lesson of bank)for(const [index,task] of lesson.tasks.entries()){await go(w,'task/'+task.id+'/independent');assert.equal(d.querySelectorAll('[data-final]').length,index>=3&&task.independentFinal?1:task.final.length,task.id);assert(d.querySelector('#proof-draft'),task.id+' proof');assert.match(d.querySelector('.proof-status').textContent,/требует проверки/);}
  w.close();
 });
@@ -266,7 +266,8 @@ test('native Chromium H01 numeric-domain forms at 320, 390 and 1280 pixels',{
       check('literal invalid draft stored',record.drafts.final[0],row.invalidInput);
       check('proof draft retained',record.drafts.proof,proof);
       row.invalidFeedback=await page.locator('#feedback').innerText();
-      // H04 owns malformed-answer attempt classification; it is not altered here.
+      check('invalid expression creates no mathematical attempt',record.attemptCount,0);
+      check('invalid expression creates no mathematical error',record.wrong,0);
       row.invalidAttemptCount=record.attemptCount;
       await capture('invalid');await page.reload();await page.locator('#final-form').waitFor();
       check('literal invalid draft survives native reload',await page.locator('#final-0').inputValue(),row.invalidInput);
@@ -330,3 +331,326 @@ test('native Chromium H01 numeric-domain forms at 320, 390 and 1280 pixels',{
  }
  assert.equal(report.summary.passed,27,'all 27 native form cases must pass');
 });
+
+test('all six parameter methods reveal proof criteria only after an answer submission and a written argument',async()=>{
+ const dom=await boot(),w=dom.window,d=w.document;
+ w.scrollTo=()=>{};
+ for(const lesson of bank.filter(l=>l.exam===19)){
+  const task=lesson.tasks[3];
+  await go(w,'task/'+task.id+'/independent');
+  const review=d.getElementById('proof-review');
+  assert(review.hidden,lesson.id);
+  input(w,'proof-draft','Мой первый довод.');
+  await submit(w,'final-form');
+  assert(review.hidden,'a blank submission is not an attempt');
+  task.final.forEach((_,i)=>input(w,'final-'+i,'99999'));
+  await submit(w,'final-form');
+  assert(!review.hidden,lesson.id+' unlocks after a wrong answer');
+  assert.equal(review.querySelectorAll('[data-proof-check]').length,task.proof.criteria.length);
+  assert.equal(review.querySelectorAll('details[data-proof-help]').length,task.proof.criteria.length+1);
+  assert.match(review.querySelector('#proof-skill').getAttribute('href'),/#\/parameter-methods\//);
+  review.open=true;
+  review.querySelector('[data-proof-check]').click();
+  await settle(w);
+  const r=w.ProfilePartTwoApp.store.read(task.id);
+  assert.deepEqual(Array.from(r.proofChecks),[0]);
+  assert.equal(r.completed,false);
+  assert.equal(r.helped,false);
+ }
+ w.close();
+});
+
+test('parameter proof criteria stay closed for an unrecognized final form and open after a meaningful wrong answer',async()=>{
+ const dom=await boot(),w=dom.window,d=w.document;
+ try{
+  for(const lesson of bank.filter(l=>l.exam===19)){
+   const task=lesson.tasks[3],proof='Проверяю отдельные значения параметра и ограничения.';
+   await go(w,'task/'+task.id+'/independent');
+   input(w,'proof-draft',proof);
+   task.final.forEach((field,i)=>input(w,'final-'+i,i===0?'1/0':field.answers[0]));
+   await submit(w,'final-form');
+   let saved=w.ProfilePartTwoApp.store.read(task.id);
+   assert.equal(saved.attemptCount,0,lesson.id+' format correction is not an attempt');
+   assert.equal(saved.wrong,0);
+   assert.equal(saved.completed,false);
+   assert.equal(saved.helped,false);
+   assert.equal(saved.drafts.final[0],'1/0');
+   assert.equal(saved.drafts.proof,proof);
+   assert.deepEqual(Array.from(saved.proofChecks),[]);
+   assert(d.getElementById('proof-review').hidden,lesson.id+' requires a meaningful attempt');
+   assert(d.getElementById('proof-jump').hidden);
+   assert.match(d.getElementById('feedback').textContent,/формат/);
+   task.final.forEach((_,i)=>input(w,'final-'+i,'99999'));
+   await submit(w,'final-form');
+   saved=w.ProfilePartTwoApp.store.read(task.id);
+   assert.equal(saved.attemptCount,1,lesson.id+' first meaningful answer is recorded once');
+   assert.equal(saved.wrong,1);
+   assert.equal(saved.attempts[0].correct,false);
+   assert.equal(saved.helped,false);
+   assert.equal(saved.drafts.proof,proof);
+   assert(!d.getElementById('proof-review').hidden,lesson.id+' allows review after a wrong answer');
+   assert(!d.getElementById('proof-jump').hidden);
+  }
+ }finally{w.close();}
+});
+
+test('earlier №19 draft and accepted answers remain, while unbound marks are historical',async()=>{
+ const task=bank.find(l=>l.id==='param-hole').tasks[3],storage=memory(),state=api.create(storage);
+ const answers=task.final.map(field=>String(field.answers[0]));
+ await state.patch(task.id,r=>{r.drafts.final=answers;r.drafts.proof='Старый довод о знаменателе.';r.proofChecks=[0,3];});
+ await state.attempt(task.id,{kind:'final',answers,correct:true,mode:'independent',independentEligible:true});
+ const key=state.key(task.id),saved=storage.getItem(key),dom=await boot('task/'+task.id+'/independent',[[key,saved]]),w=dom.window,d=w.document;
+ assert.equal(w.localStorage.getItem(key),saved,'viewing an existing record does not rewrite it');
+ assert.equal(d.getElementById('proof-draft').value,'Старый довод о знаменателе.');
+ assert.match(d.getElementById('proof-review-count').textContent,/0 из 4/);
+ assert.deepEqual(Array.from(w.ProfilePartTwoApp.store.read(task.id).proofChecks),[0,3]);
+ assert.match(d.getElementById('completion').textContent,/Вычислительная часть решена самостоятельно/);
+ input(w,'proof-draft','   ');
+ await settle(w);
+ assert(d.getElementById('proof-review').hidden);
+ assert.deepEqual(Array.from(w.ProfilePartTwoApp.store.read(task.id).proofChecks),[]);
+ assert(w.ProfilePartTwoApp.store.read(task.id).independent);
+ w.close();
+});
+
+test('parameter proof help survives reload and never becomes unassisted credit after correction',async()=>{
+ const task=bank.find(l=>l.id==='param-hole').tasks[3],hash='task/'+task.id+'/independent';
+ const dom=await boot(hash),w=dom.window,d=w.document;
+ input(w,'proof-draft','Сокращение выполнено, но запрет ещё проверяю.');
+ task.final.forEach((_,i)=>input(w,'final-'+i,'99999'));
+ await submit(w,'final-form');
+ d.getElementById('proof-review').open=true;
+ d.querySelector('[data-proof-help="80"] summary').click();
+ await settle(w);
+ assert(w.ProfilePartTwoApp.store.read(task.id).helped);
+ assert.match(d.getElementById('proof-help-history').textContent,/ОДЗ/);
+ const entries=Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]);
+ w.close();
+ const next=await boot(hash,entries),v=next.window;
+ assert.equal(v.document.getElementById('proof-draft').value,'Сокращение выполнено, но запрет ещё проверяю.');
+ task.final.forEach((field,i)=>input(v,'final-'+i,field.answers[0]));
+ await submit(v,'final-form');
+ const record=v.ProfilePartTwoApp.store.read(task.id);
+ assert(record.completed&&record.helped&&!record.independent);
+ assert.equal(record.attemptCount,2);
+ assert.equal(record.attempts[0].correct,false);
+ assert(record.hints.includes(80));
+ assert.match(v.document.querySelector('#completion a').getAttribute('href'),/param-hole-5\/independent/);
+ v.close();
+});
+
+test('stale parameter checkboxes cannot certify a newer draft from another tab',async()=>{
+ const task=bank.find(l=>l.id==='param-modules').tasks[3],dom=await boot('task/'+task.id+'/independent'),w=dom.window,d=w.document;
+ input(w,'proof-draft','Первый довод о горизонтальном участке.');
+ task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));
+ await submit(w,'final-form');
+ await w.ProfilePartTwoApp.store.patch(task.id,r=>{
+  r.drafts.proof='Свежий довод из другого окна.';r.proofChecks=[1,3];
+  r.proofReviewSnapshot={proof:r.drafts.proof,checks:[...r.proofChecks]};
+ });
+ d.querySelector('[data-proof-check="0"]').click();
+ await settle(w);
+ const r=w.ProfilePartTwoApp.store.read(task.id);
+ assert.equal(r.drafts.proof,'Свежий довод из другого окна.');
+ assert.deepEqual(Array.from(r.proofChecks),[1,3]);
+ assert(!d.querySelector('[data-proof-check="0"]').checked);
+ assert.equal(d.querySelectorAll('[data-proof-check]:checked').length,0);
+ assert(d.getElementById('proof-review').hidden);
+ assert.match(d.getElementById('proof-review-instruction').textContent,/другой вкладке/);
+ assert.equal(d.getElementById('proof-draft').value,'Первый довод о горизонтальном участке.');
+ d.getElementById('proof-jump').click();await settle(w);
+ assert.equal(d.getElementById('proof-draft').value,'Свежий довод из другого окна.');
+ assert.deepEqual(Array.from(d.querySelectorAll('[data-proof-check]:checked'),input=>Number(input.dataset.proofCheck)),[1,3]);
+ assert(!d.getElementById('proof-review').hidden);
+ w.close();
+});
+
+test('opening a parameter skill with the middle button records help without cancelling the new tab',async()=>{
+ const task=bank.find(l=>l.id==='param-hole').tasks[3],dom=await boot('task/'+task.id+'/independent'),w=dom.window;
+ input(w,'proof-draft','Запрет знаменателя ещё проверяю.');
+ task.final.forEach((_,i)=>input(w,'final-'+i,'99999'));
+ await submit(w,'final-form');
+ const link=w.document.getElementById('proof-skill');
+ const right=new w.MouseEvent('auxclick',{button:2,bubbles:true,cancelable:true});
+ link.dispatchEvent(right);await settle(w);
+ assert.equal(w.ProfilePartTwoApp.store.read(task.id).helped,false);
+ const middle=new w.MouseEvent('auxclick',{button:1,bubbles:true,cancelable:true});
+ link.dispatchEvent(middle);await settle(w);
+ assert.equal(middle.defaultPrevented,false);
+ const helped=w.ProfilePartTwoApp.store.read(task.id);
+ assert(helped.helped&&helped.hints.includes(85));
+ task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));
+ await submit(w,'final-form');
+ assert.equal(w.ProfilePartTwoApp.store.read(task.id).independent,false);
+ w.close();
+});
+
+test('a stale proof edit leaves a newer saved argument and its marks intact',async()=>{
+ const task=bank.find(l=>l.id==='param-hole').tasks[3],dom=await boot('task/'+task.id+'/independent'),w=dom.window,d=w.document;
+ const store=w.ProfilePartTwoApp.store;
+ input(w,'proof-draft','Старый довод.');
+ await settle(w);
+ await store.patch(task.id,r=>{r.drafts.proof='Свежий довод.';r.proofChecks=[1];});
+ const key=store.key(task.id),stored=w.localStorage.getItem(key);
+ input(w,'proof-draft','Продолжение старого довода.');
+ await settle(w);
+ assert.equal(w.localStorage.getItem(key),stored);
+ assert.equal(d.getElementById('proof-draft').value,'Продолжение старого довода.');
+ assert(d.getElementById('proof-draft').readOnly);
+ assert(d.getElementById('proof-review').hidden);
+ assert(!d.getElementById('proof-jump').hidden,'saved draft is available before an answer');
+ d.getElementById('proof-jump').click();await settle(w);
+ assert.equal(d.getElementById('proof-draft').value,'Свежий довод.');
+ assert(!d.getElementById('proof-draft').readOnly);
+ w.close();
+});
+
+test('a proof with a leading empty line is restored verbatim with the checklist',async()=>{
+ const task=bank.find(l=>l.id==='param-linear').tasks[3],hash='task/'+task.id+'/independent';
+ const dom=await boot(hash),w=dom.window,text='\nПроверяю особое значение параметра.\nОстальные случаи делю на группы.';
+ input(w,'proof-draft',text);
+ task.final.forEach((_,i)=>input(w,'final-'+i,'99999'));
+ await submit(w,'final-form');
+ const entries=Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]);
+ w.close();
+ const restored=await boot(hash,entries),d=restored.window.document;
+ assert.equal(d.getElementById('proof-draft').value,text);
+ assert(!d.getElementById('proof-draft').readOnly);
+ assert(!d.getElementById('proof-review').hidden);
+ restored.window.close();
+});
+
+test('a general proof binds checks to written content, preserves outer formatting edits and never grants proof credit',async()=>{
+ const task=bank.find(l=>l.id==='p2-15-projection').tasks[3],hash='task/'+task.id+'/independent';
+ let dom=await boot(hash),w=dom.window;
+ try{
+  const record=()=>w.ProfilePartTwoApp.store.read(task.id);
+  const checkbox=()=>w.document.querySelector('[data-proof-check="0"]');
+  assert(checkbox().disabled,'an empty proof cannot be marked');
+  w.document.querySelector('.proof-criteria').open=true;
+  await settle(w);
+  assert.equal(record().helped,false,'viewing a checklist is neutral');
+  const proof='Первый довод.\nВторой довод.';
+  input(w,'proof-draft','  '+proof+'\n');
+  await settle(w);
+  assert(!checkbox().disabled);
+  checkbox().click();await settle(w);
+  assert.equal(record().proofReviewSnapshot.proof,proof);
+  assert.deepEqual(Array.from(record().proofChecks),[0]);
+  assert.equal(record().completed,false);
+  input(w,'proof-draft','\r\n'+proof.replace('\n','\r\n')+'  ');
+  await settle(w);
+  assert(checkbox().checked,'outer spaces and line endings do not invalidate a mark');
+  const entries=Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]);
+  w.close();dom=await boot(hash,entries);w=dom.window;
+  assert(checkbox().checked,'the exact mark remains after opening the same argument');
+  input(w,'proof-draft',proof.replace('Второй довод','Второй  довод'));
+  await settle(w);
+  assert(!checkbox().checked,'inner spacing is a substantive change');
+  assert.equal(record().proofReviewSnapshot,undefined);
+  input(w,'proof-draft',proof);await settle(w);
+  assert(!checkbox().checked,'restoring old wording does not restore a check');
+  checkbox().click();await settle(w);
+  input(w,'proof-draft','   ');await settle(w);
+  assert(checkbox().disabled&&!checkbox().checked);
+  assert.equal(record().proofChecks.length,0);
+  task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));
+  await submit(w,'final-form');
+  assert(record().completed&&record().independent&&!record().helped);
+  assert.match(w.document.querySelector('.proof-status').textContent,/Обоснование требует проверки/);
+ }finally{w.close();}
+});
+
+test('generic stale writes and former client updates cannot attach a mark to the current proof',async()=>{
+ const task=bank.find(l=>l.id==='p2-18-altitude').tasks[3],hash='task/'+task.id+'/independent';
+ const dom=await boot(hash),w=dom.window,d=w.document,store=w.ProfilePartTwoApp.store,key=store.key(task.id);
+ try{
+  input(w,'proof-draft','Видимый прежний текст.');await settle(w);
+  await store.patch(task.id,r=>{
+   r.drafts.proof='Свежий текст в соседней вкладке.';r.proofChecks=[1];
+   r.proofReviewSnapshot={proof:r.drafts.proof,checks:[...r.proofChecks]};
+  });
+  const latest=w.localStorage.getItem(key);
+  d.querySelector('[data-proof-check="0"]').click();await settle(w);
+  assert.equal(w.localStorage.getItem(key),latest);
+  assert(d.getElementById('proof-draft').readOnly);
+  assert.match(d.getElementById('proof-sync-warning').textContent,/в другой вкладке/);
+  assert(!d.getElementById('proof-open-saved').hidden);
+  input(w,'proof-draft','Несохранённое продолжение.');await settle(w);
+  assert.equal(w.localStorage.getItem(key),latest);
+  assert.equal(d.getElementById('proof-draft').value,'Несохранённое продолжение.');
+  await store.patch(task.id,r=>{
+   r.drafts.proof='Видимый прежний текст.';r.proofChecks=[];delete r.proofReviewSnapshot;
+  });
+  w.dispatchEvent(new w.StorageEvent('storage',{key}));
+  assert(!d.getElementById('proof-open-saved').hidden,'a rejected edit can be recovered even after the saved wording returns');
+  d.getElementById('proof-open-saved').click();await settle(w);
+  assert.equal(d.getElementById('proof-draft').value,'Видимый прежний текст.');
+  assert(!d.getElementById('proof-draft').readOnly);
+  d.querySelector('[data-proof-check="0"]').click();await settle(w);
+  assert(d.querySelector('[data-proof-check="0"]').checked);
+  await store.patch(task.id,r=>{r.proofChecks.push(1);});
+  const historical=w.localStorage.getItem(key);
+  w.dispatchEvent(new w.StorageEvent('storage',{key}));
+  assert.equal(d.querySelectorAll('[data-proof-check]:checked').length,0);
+  assert.equal(w.localStorage.getItem(key),historical,'showing an old-client update does not rewrite it');
+ }finally{w.close();}
+});
+
+test('a pre-update tab cannot resurrect a review after replacing and restoring the argument',async()=>{
+ const task=bank.find(l=>l.id==='p2-15-projection').tasks[3],storage=memory(),store=api.create(storage),key=store.key(task.id);
+ const proof='Мой прежний довод.';
+ const marked=await store.patch(task.id,record=>{
+  record.drafts.proof=proof;
+  record.proofChecks=[0];
+  record.proofReviewSnapshot={proof,checks:[0]};
+ });
+ assert.deepEqual(api.currentProofChecks(marked),[0]);
+ const attempt=await store.attempt(task.id,{kind:'final',answers:['9'],correct:false,mode:'independent'});
+ assert.deepEqual(api.currentProofChecks(attempt),[0],'a numerical attempt in the current version retains existing marks');
+
+ // The earlier state layer sets integer Date.now() and retains unknown fields.
+ const previousVersion=JSON.parse(storage.getItem(key));
+ previousVersion.updatedAt=Math.floor(previousVersion.updatedAt);
+ previousVersion.drafts.proof='Другая версия довода.';
+ storage.setItem(key,JSON.stringify(previousVersion));
+ assert.deepEqual(api.currentProofChecks(store.read(task.id)),[]);
+ previousVersion.drafts.proof=proof;
+ storage.setItem(key,JSON.stringify(previousVersion));
+ const restored=store.read(task.id);
+ assert.deepEqual(restored.proofChecks,[0],'legacy data remains available until a new mark is set');
+ assert.deepEqual(api.currentProofChecks(restored),[],'same text and same whole millisecond cannot restore marks');
+ assert.equal(restored.attemptCount,1);
+ const dom=await boot('task/'+task.id+'/independent',[[key,storage.getItem(key)]]);
+ try{
+  assert.equal(dom.window.document.getElementById('proof-draft').value,proof);
+  assert(!dom.window.document.querySelector('[data-proof-check="0"]').checked);
+  input(dom.window,'proof-draft',`  ${proof} `);await settle(dom.window);
+  assert(!dom.window.document.querySelector('[data-proof-check="0"]').checked);
+  assert.equal(dom.window.ProfilePartTwoApp.store.read(task.id).attemptCount,1);
+ }finally{dom.window.close();}
+});
+
+test('new proof review preserves submit locking and whole-answer self-correction outside task 19',async()=>{
+ const task=bank.find(l=>l.id==='param-linear').tasks[3],dom=await boot('task/'+task.id+'/independent'),w=dom.window;
+ task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));
+ const form=w.document.getElementById('final-form');
+ for(let i=0;i<3;i++)form.dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
+ await settle(w);
+ assert.equal(w.ProfilePartTwoApp.store.read(task.id).attemptCount,1);
+ const open=bank.find(l=>l.id==='p16-cancelled-hole').tasks[3];
+ await go(w,'task/'+open.id+'/independent');
+ assert.equal(w.document.querySelectorAll('[data-final]').length,1);
+ assert.equal(w.document.getElementById('proof-review'),null);
+ input(w,'final-0','(-∞; +∞)');await submit(w,'final-form');
+ input(w,'final-0',open.independentFinal.answers[0]);await submit(w,'final-form');
+ const record=w.ProfilePartTwoApp.store.read(open.id);
+ assert(record.completed&&record.independent);
+ assert.match(w.document.getElementById('completion').textContent,/исправлен самостоятельно/);
+ assert.equal(record.drafts.openFinal,open.independentFinal.answers[0]);
+ w.close();
+});
+
+// The existing CI profile driver invokes H02 contract and mandatory native gates.
+require('./profile-fipi-2027-contract.test.cjs');
+require('./profile-fipi-2027-browser.cjs');

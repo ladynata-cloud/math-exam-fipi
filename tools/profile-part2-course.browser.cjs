@@ -3,6 +3,7 @@
 // the keys; this gate enters them through the rendered student controls.
 const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const {chromium}=require('playwright');
+const examMap=require('../ege-profil/exam-map.js');
 const lessons=['algebra','geometry','models'].flatMap(n=>require('../ege-profil/part-two/content-'+n+'.js'));
 const root=path.resolve(__dirname,'..'),shots='/tmp/profile-part2-shots',errors=[],bad=[];
 const mime={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.json':'application/json'};
@@ -21,7 +22,7 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
     for(let i=0;i<fields.length;i++)await page.locator('#final-'+i).fill(String(fields[i].answers[0]));
    }
    await page.goto(origin+'/ege-profil/');
-   for(let n=1;n<=20;n++){const href=n<=13?'start/index.html#calm/'+n:'part-two/index.html#exam/'+n;assert(await page.locator('#profile-2027 a[href="'+href+'"]').isVisible(),'visible entrance '+n);}
+   for(const entry of [...examMap.entries,...examMap.extras]){const href=entry.source+'/index.html'+examMap.hash(entry);assert(await page.locator('#profile-2027 a[href="'+href+'"]').isVisible(),'visible entrance '+entry.id);}
    assert(await page.locator('#legacy-course[open]').isVisible());
    await page.screenshot({path:path.join(shots,'entrance-'+width+'.png'),fullPage:false});
    for(const lesson of lessons){

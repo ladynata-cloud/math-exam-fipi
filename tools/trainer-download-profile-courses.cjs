@@ -18,7 +18,8 @@ async function divisibility(page, { limit = 2025, example = 2030, maximum = 2039
   const firstCheck = first.getByRole('button', { name: 'Проверить' });
   assert.match(await first.locator('h3').innerText(), new RegExp(String(limit)));
   await firstCheck.click();
-  assert(await first.locator('.feedback.bad').isVisible());
+  assert.match(await first.locator('.feedback.hint').innerText(), /Введите одно число/);
+  assert(await exampleInput.isEditable());
   await exampleInput.fill(String(example === 2030 ? 2050 : 2030));
   await firstCheck.click();
   assert(await first.locator('.feedback.bad').isVisible());

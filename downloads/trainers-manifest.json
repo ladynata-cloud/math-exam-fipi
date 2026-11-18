@@ -1,6 +1,6 @@
 {
   "stage": "8",
-  "updated": "2026-11-15",
+  "updated": "2026-11-18",
   "notes": "Этап 8 добавляет курс «Делимость, остатки и инварианты» и 186 карточек «Сечения с нуля».",
   "trainers": [
     {
@@ -375,7 +375,8 @@
       "inlineAssets": [
         "/trainers/oge-course-shared-mode.js",
         "/assets/oge-wayfinding.css",
-        "/assets/oge-wayfinding.js"
+        "/assets/oge-wayfinding.js",
+        "/assets/oge-fractions-return.js"
       ],
       "offlineOmitAssets": [
         "/trainers/board-bridge.js",
@@ -707,6 +708,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -735,41 +737,45 @@
     },
     {
       "slug": "ege-profil-part-two",
-      "title": "Профильный ЕГЭ — вторая часть №14–20",
+      "title": "Профильный ЕГЭ — подготовка ко второй части №13–19",
       "sourceHtml": "/ege-profil/part-two/index.html",
       "subject": "математика",
       "level": "10–11 класс, ЕГЭ профиль",
-      "topic": "42 темы и 252 авторские задачи второй части",
-      "description": "Действующий курс с пошаговыми заданиями, самостоятельными ответами, моделями и разбором обоснования.",
+      "topic": "36 основных тем и 216 задач; дополнительно 6 тем и 36 задач по моделированию и оптимизации",
+      "description": "Курс с пошаговыми заданиями, самостоятельными ответами, моделями и разбором обоснования. Финансовая подготовка №16 доступна по ссылке на сайт; проверка числового ответа не заменяет проверку письменного решения.",
       "mode": "single",
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/part-two/style.css",
         "/ege-profil/start/checks.js",
         "/ege-profil/part-two/content-algebra.js",
         "/ege-profil/part-two/content-geometry.js",
         "/ege-profil/part-two/content-models.js",
+        "/ege-profil/part-two/content-finance.js",
         "/ege-profil/part-two/state.js",
         "/ege-profil/part-two/models.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/azbuka-metodov/catalog.js",
         "/ege-profil/skill-map.js",
+        "/ege-profil/part-two/parameter-proof.js",
         "/ege-profil/part-two/app.js"
       ],
       "offlineOmitAssets": [],
       "adaptation": {
         "example": "Добавь одно условие на отбор корней тригонометрического уравнения.",
         "edits": {
-          "Задачи": "Найди блоки `content-algebra.js`, `content-geometry.js` и `content-models.js`. Меняй одну серию, сохраняя уникальные ID.",
+          "Задачи": "Найди блоки `content-algebra.js`, `content-geometry.js` и `content-models.js`. Меняй одну серию, сохраняя уникальные ID и явный `answerFormat` каждого поля. Тип записи не должен зависеть от правильного ответа.",
           "Числа": "Свяжи новые параметры с областью допустимых значений, заключительными полями `final`, рисунком и разбором.",
           "Подсказки": "В выбранной серии найди функцию шага и поля `hint` и `explanation`. Сохрани разницу между учебной подсказкой и самостоятельным решением.",
           "Оформление": "В блоке `part-two/style.css` меняй оформление карточек, не скрывая поля ответа, рисунок и письменное обоснование."
         },
         "checks": [
           "Для sin x = 1/2 на [0; π/2] подходит π/6. Корень 5π/6 лежит вне отрезка.",
-          "В задачах на экстремум проверь отдельно существование примера и невозможность лучшего результата. Проверка чисел не подтверждает письменное доказательство."
+          "В задачах на экстремум проверь отдельно существование примера и невозможность лучшего результата. Проверка чисел не подтверждает письменное доказательство.",
+          "Пустой или нераспознанный ответ сохраняется без математической попытки. Осмысленный неверный ответ учитывается; исправление формата не сбрасывает ранее использованную помощь. Проверь итоговую форму и текущий шаг."
         ],
         "limit": "Встроенные модели работают локально. Отдельный атлас графиков, другие курсы и связанный переход обратно к заданию доступны на сайте."
       },
@@ -1069,7 +1075,8 @@
         "/trainers/oge-video-models.css",
         "/trainers/oge-video-graphs.js",
         "/trainers/oge-video-geometry.js",
-        "/trainers/oge-video-models.js"
+        "/trainers/oge-video-models.js",
+        "/trainers/oge-task15-model.js"
       ],
       "offlineOmitAssets": [
         "/trainers/board-bridge.js",
@@ -1630,6 +1637,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/start/style.css",
         "/ege-profil/start/finance.css",
         "/ege-profil/start/journey-ui.css",
@@ -1681,7 +1689,10 @@
         "/ege-profil/learning/data.js",
         "/ege-profil/learning/route.js"
       ],
-      "offlineOmitAssets": [],
+      "offlineOmitAssets": [
+        "/assets/trainer-lesson-choice.css",
+        "/assets/trainer-skill-gif.js"
+      ],
       "adaptation": {
         "preserveSourceSpacing": true,
         "localEditing": true,
@@ -1715,6 +1726,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1756,6 +1768,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1798,6 +1811,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1839,6 +1853,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1880,6 +1895,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -1921,6 +1937,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/azbuka-metodov/styles.css",
         "/ege-profil/azbuka-metodov/catalog.js",
         "/ege-profil/azbuka-metodov/data.js",
@@ -1964,6 +1981,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2005,6 +2023,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2045,6 +2064,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"
@@ -2086,6 +2106,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/trainers/ege-profile/log-inequalities/style.css",
         "/trainers/ege-profile/log-inequalities/engine.js",
         "/trainers/ege-profile/log-inequalities/app.js",
@@ -2131,6 +2152,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/trainers/ege-profile/log-inequalities/lesson.css",
         "/trainers/ege-profile/log-inequalities/lesson.js",
         "/trainers/ege-profile/log-inequalities/guided-lesson.js",
@@ -2175,6 +2197,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/trainers/ege-profile/log-inequalities/lesson.css",
         "/trainers/ege-profile/log-inequalities/nested.js",
         "/trainers/ege-profile/log-inequalities/guided-lesson.js",
@@ -2260,6 +2283,7 @@
       "assets": [],
       "public": true,
       "inlineAssets": [
+        "/ege-profil/exam-map.js",
         "/ege-profil/skill-map.css",
         "/ege-profil/skill-map-data.js",
         "/ege-profil/skill-map.js"

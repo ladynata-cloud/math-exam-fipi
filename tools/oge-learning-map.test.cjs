@@ -41,6 +41,7 @@ test('seven learning lines cover every published OGE number with unique, existin
  assert.equal(new Set(model.tracks.map(t=>t.id)).size,7);
  const all=model.tracks.flatMap(t=>t.steps);
  assert.equal(new Set(all.map(s=>s.id)).size,all.length);
+ assert.equal(new Set(all.map(s=>s.href)).size,all.length,'Each route identifies one resumable topic');
  for(const s of all){
   assert(s.title&&s.href.startsWith('/'));
   const u=new URL(s.href,'https://mathexam.space');
@@ -187,6 +188,54 @@ test('plain HTML keeps seven learning lines and exam-number navigation usable wi
  assert(d.querySelector('#course-continue[href]'));
  for(let n=6;n<=25;n++)assert([...d.querySelectorAll('h3 a')].some(a=>a.textContent.trim()==='Задание '+n));
  const ids=[...d.querySelectorAll('[id]')].map(n=>n.id);assert.equal(new Set(ids).size,ids.length);
+});
+test('the numbered list and practical stories save the same navigation cursor as the learning lines',()=>{
+ const seed={[KEY]:{'oge-t7-pryamaya':{solvedByType:{'ris/one':2},updatedAt:Date.now()-1000}}};
+ const dom=page(seed),w=dom.window,d=w.document;
+ try {
+  d.addEventListener('click',event=>event.preventDefault());
+  const click=(element,button=0)=>element.dispatchEvent(new w.MouseEvent('click',{bubbles:true,cancelable:true,button}));
+  const before=w.localStorage.getItem(KEY);
+  for(const link of d.querySelectorAll('#all-topics [data-oge-topic], #practical-types [data-oge-practical]')){
+   const number=Number(link.dataset.ogeTopic);
+   const expected=model.tracks.flatMap(track=>track.steps).find(step=>step.href===link.pathname);
+   if(number>=1&&number<=5){
+    assert.equal(expected,undefined,'The shared story menu is not an individual topic');
+    click(link.firstElementChild);
+    assert.equal(w.localStorage.getItem(NAV),null);
+    continue;
+   }
+   assert(expected,link.pathname+' has a learning-map topic');
+   click(link.firstElementChild);
+   const cursor=JSON.parse(w.localStorage.getItem(NAV));
+   assert.deepEqual(Object.keys(cursor).sort(),['at','stepId']);
+   assert.equal(cursor.stepId,expected.id);
+   w.dispatchEvent(new w.Event('pageshow'));
+   assert.equal(d.querySelector('#course-continue').getAttribute('href'),expected.href);
+   assert.equal(d.querySelector('#course-continue').textContent,'Продолжить →');
+  }
+  const saved=w.localStorage.getItem(NAV);
+  for(const selector of ['a[href="#all-topics"]','[data-oge-skill-topic="n18"]','a[download]'])click(d.querySelector(selector));
+  click(d.querySelector('[data-oge-topic="18"]'),1);
+  const fake=d.createElement('a');
+  fake.dataset.courseStep='task-18';
+  fake.href='https://example.test/trainers/oge-task18-grid.html';
+  d.body.append(fake);
+  click(fake);
+  assert.equal(w.localStorage.getItem(NAV),saved,'Unrelated and external destinations do not set the cursor');
+  assert.equal(w.localStorage.getItem(KEY),before,'Real trainer results stay byte-identical');
+ } finally {
+  w.close();
+ }
+});
+test('the author practice variant points to the approved official specification',()=>{
+ const d=new JSDOM(read('trainers/oge-course/index.html')).window.document;
+ const fipi=d.querySelectorAll('a[href="https://fipi.ru/oge/demoversii-specifikacii-kodifikatory"]');
+ assert.equal(fipi.length,1);
+ assert.match(fipi[0].textContent,/утверждённой спецификации ФИПИ/);
+ assert.match(fipi[0].parentElement.textContent,/19 заданий с кратким ответом, во второй — 6 с развёрнутым решением/);
+ assert.doesNotMatch(fipi[0].parentElement.textContent,/проекта демоверсии/);
+ assert(fipi[0].closest('article').querySelector('a[href$="/oge-2027-analogue-1.html"]'));
 });
 test('view renders current results, refreshes after storage events, and leaves trainer records untouched',()=>{
  const seed={[KEY]:{'oge-t7-pryamaya':{solvedByType:{'ris/one':2},updatedAt:Date.now()-1000}}};

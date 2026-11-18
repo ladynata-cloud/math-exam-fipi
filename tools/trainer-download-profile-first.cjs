@@ -124,6 +124,46 @@ async function checkStartNumericDomain(page) {
   assert((await read()).earned);
 }
 
+async function checkStartExamRoutes(page) {
+  const readSavedWork = () => page.evaluate(key => {
+    const state = JSON.parse(localStorage.getItem(key));
+    const ids = ['vec-basics-reading', 'vec-coordinates'];
+    return {
+      records: ids.map(id => state.records[id]),
+      sessions: Object.fromEntries(Object.entries(state.sessions).filter(([id]) => ids.some(lesson => id.startsWith(lesson + ':'))))
+    };
+  }, startKey);
+  const saved = await readSavedWork();
+  for (const [hash, title, number, lessons] of [
+    ['#calm/13', 'Экономическая задача', 16, ['finance-lesson-07-equal-payments']],
+    ['#fipi/2027/16', 'Экономическая задача', 16, ['finance-lesson-07-equal-payments']],
+    ['#calm/9', 'Производная, экстремумы и первообразная', null, ['calc-tangent', 'calc-extreme', 'calc-integral']],
+    ['#fipi/2027/8', 'Производная и первообразная', 8, ['calc-tangent', 'calc-integral']],
+    ['#topic/integral', 'Первообразная и площадь', 8, ['calc-integral']],
+    ['#fipi/2027/12', 'Наибольшее и наименьшее значение', 12, ['calc-extreme']],
+    ['#exam/16', 'Неравенства.', 15, []],
+    ['#fipi/2027/15', 'Неравенства.', 15, []]
+  ]) {
+    const url = new URL(page.url());
+    url.hash = hash;
+    await page.goto(url.href);
+    await page.reload();
+    await page.locator('main h1').waitFor();
+    assert.equal(new URL(page.url()).protocol, 'file:');
+    assert.equal(await page.locator('main h1').innerText(), title, hash);
+    if (number) assert.match(await page.locator('main p.eyebrow').first().innerText(), new RegExp('№\\s*' + number + '(?:\\D|$)'), hash);
+    const links = await page.locator('main a[href]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')));
+    for (const lesson of lessons) assert(links.some(href => href.includes('/' + lesson)), hash + ': ' + lesson);
+    if(number===16) assert(links.includes('https://mathexam.space/ege-profil/part-two/#fipi/2027/16'), hash + ': written course online bridge');
+  }
+  const sources = new URL(page.url());
+  sources.hash = '#sources';
+  await page.goto(sources.href);
+  const integralGuide = page.locator('main p').filter({hasText: 'Первообразную и площадь изучаем'});
+  assert.equal(await integralGuide.getByRole('link', {name: 'задании №8', exact: true}).getAttribute('href'), '#fipi/2027/8');
+  assert.deepEqual(await readSavedWork(), saved, 'legacy and official routes preserve existing START answers, drafts, attempts and earned work');
+}
+
 const scenarios = {
   async 'ege-profil-start'(page) {
     await seedOtherProgress(page);
@@ -132,6 +172,15 @@ const scenarios = {
     assert.equal(bank.reduce((count, lesson) => count + lesson.tasks.length, 0), 540);
     assert.equal(hash(bank), originalBankHash, 'all original lesson, answer, step and drawing data survive the export');
     assert.equal(bank.filter(lesson => lesson.vectorBasics).length, 9);
+
+    await page.evaluate(() => { location.hash = '#lesson/geo-quadrilaterals'; });
+    const lab = page.locator('#explore-lab');
+    await lab.locator(':scope > summary').click();
+    assert.match(await lab.locator('.research-instructions').innerText(), /Провести диагональ/);
+    await finiteFigure(page, '#lab svg');
+    await lab.getByRole('button', { name: 'Провести диагональ', exact: true }).click();
+    assert.equal(await lab.getByRole('button', { name: 'Провести диагональ', exact: true }).getAttribute('aria-pressed'), 'true');
+    assert.equal(await lab.locator('#research-demo').count(), 0, 'standalone has the research without an online-only demo control');
 
     await page.evaluate(() => { location.hash = '#practice/vec-basics-reading/guided'; });
     await page.locator('#answer-form').waitFor();
@@ -213,6 +262,7 @@ const scenarios = {
     assert.deepEqual(state.records['vec-basics-reading'].independent, ['vec-basics-read-km']);
     assert.match(await page.locator('.result-panel h1').innerText(), /самостоятельно/);
     await checkStartNumericDomain(page);
+    await checkStartExamRoutes(page);
     await otherProgressIntact(page);
   },
 
@@ -301,7 +351,7 @@ const scenarios = {
     const touch = await plottedPoints(page, '#taskFig svg', 'line[stroke="rgba(88,140,190,.28)"]', 'circle[fill="#C22F2A"]');
     assert.deepEqual(touch.points, [[2, -0.5]]);
     await page.locator('#taskCheck').click();
-    assert.match(await page.locator('#taskFb').innerText(), /Впишите ответ числом/);
+    assert.match(await page.locator('#taskFb').innerText(), /Введите число или дробь/);
     await page.locator('#taskAnswer').fill('2');
     await page.locator('#taskCheck').click();
     assert(await page.locator('#taskFb.bad').isVisible(), 'the old slope is rejected');

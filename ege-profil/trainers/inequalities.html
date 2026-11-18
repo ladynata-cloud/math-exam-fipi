@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Неравенства · Профильный ЕГЭ — интерактивный курс</title>
@@ -425,13 +426,13 @@ window.MathJax = {
     .lm-row > div{align-self:stretch;}
   }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261115-fipi-map"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="inequalities-course rationalization" data-profile-skill-hashes="m8=rationalization"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="inequalities-course rationalization" data-profile-skill-hashes="m8=rationalization"></script>
 </head>
 <body>
 
@@ -876,7 +877,7 @@ window.MathJax = {
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M12 3v18M5 14l7-7 7 7"/></svg></span>
           <h3>Геометрия: где график выше порога</h3>
         </div>
-        <p>График \(y=|f(x)|\) лежит над прямой \(y=b\) ровно там, где \(|f(x)|>b\). На примере \(y=|x|\) и \(y=2\) хорошо видно, как получается совокупность \(x\leq-2\) или \(x\geq2\).</p>
+        <p>Предскажи, какие \(x\) подходят для \(|2x-3|\leq b\), когда горизонтальная прямая опускается до вершины графика и ниже. Выставь \(b=0\), затем \(b=-1\). Что изменится, если выбрать знак \(\geq\)?</p>
         <div class="figure" id="fig-m3-graph"></div>
       </div>
 
@@ -2006,7 +2007,7 @@ function mountQuadTrainer(box){
     add(unionTex(quadSolution(r1,r2,relFlipDir(rel))));
     add(unionTex(quadSolution(r1,r2,relFlipStrict(rel))));
     add(unionTex(quadSolution(r1,r2,relFlipStrict(relFlipDir(rel)))));
-    add('x\\in\\mathbb{R}');
+    add('\\mathbb{R}');
     add('\\varnothing');
     const distract=shuffle(cand.filter(t=>t!==correctTex)).slice(0,3);
     const opts=shuffle([correctTex].concat(distract));
@@ -2102,7 +2103,8 @@ function mountModulusExplorer(box){
   box.appendChild(holder);box.appendChild(ctr);box.appendChild(ans);
   const rseg=segControl([{v:'le',label:'|2x&minus;3|&nbsp;&leq;&nbsp;b'},{v:'ge',label:'|2x&minus;3|&nbsp;&geq;&nbsp;b'}],()=>S.rel,v=>{S.rel=v;draw();});
   const sl=document.createElement('div');sl.className='slider-wrap';
-  const inp=document.createElement('input');inp.type='range';inp.min='0.5';inp.max='6';inp.step='0.5';inp.value=S.b;
+  const inp=document.createElement('input');inp.type='range';inp.min='-2';inp.max='6';inp.step='0.5';inp.value=S.b;
+  inp.setAttribute('aria-label','Порог b');
   const val=document.createElement('span');
   inp.oninput=()=>{S.b=parseFloat(inp.value);draw();};
   sl.appendChild(document.createTextNode('порог b'));sl.appendChild(inp);sl.appendChild(val);
@@ -2112,16 +2114,20 @@ function mountModulusExplorer(box){
     val.textContent='b = '+fmtNum(b).replace('-','−');
     const f=x=>Math.abs(2*x-3);
     const pred = S.rel==='le' ? (x=>f(x)<=b) : (x=>f(x)>=b);
-    const svg=buildPlot({width:720,height:300,xMin:xl-1.9,xMax:xr+1.9,yMin:-0.6,yMax:Math.max(b+1.6,4.4),
+    const xMax=Math.max(3.5,xr+1.9);
+    const boundaries=b<0 ? [] : (b===0 ? [xl] : [xl,xr]);
+    const svg=buildPlot({width:720,height:300,xMin:3-xMax,xMax:xMax,yMin:Math.min(-0.6,b-0.6),yMax:Math.max(b+1.6,4.4),
       curves:[{fn:f,color:C.brand,width:2.8}],
       hlines:[{y:b,color:C.amber,label:'y = b'}],
       shadeWhere:pred,
-      xMarks:[{x:xl,open:false,label:lbl(xl)},{x:xr,open:false,label:lbl(xr)}],
+      xMarks:boundaries.map(x=>({x,open:false,label:lbl(x)})),
       labels:[{x:xr+1.8,y:Math.min(b+1.4,f(xr+1.8)),text:'y=|2x−3|',anchor:'end',color:C.ink3}],
       aria:'Модуль и порог'});
     while(holder.firstChild)holder.removeChild(holder.firstChild);holder.appendChild(svg);
     const op=S.rel==='le'?'\\leq':'\\geq';
-    const F = S.rel==='le'
+    let F;
+    if(b<=0) F=modulusAtNonPositiveThreshold(1.5,b,S.rel==='le'?'<=':'>=');
+    else F = S.rel==='le'
       ? intervalTex(xl,xr,false,false)
       : intervalTex(-Infinity,xl,true,false)+'\\cup '+intervalTex(xr,Infinity,false,true);
     ans.innerHTML=`\\(|2x-3| \\;${op}\\; ${fmtNum(b)} \\;\\Rightarrow\\; x\\in ${F}\\)`;
@@ -2189,6 +2195,13 @@ function ratSolution(rn, rd, rel){
   const openAt=r=>(r===rd)||strict;
   if(rel==='>'||rel==='>=') return [{from:-Infinity,to:lo,oa:true,ob:openAt(lo)},{from:hi,to:Infinity,oa:openAt(hi),ob:true}];
   return [{from:lo,to:hi,oa:openAt(lo),ob:openAt(hi)}];
+}
+function modulusAtNonPositiveThreshold(center, threshold, rel){
+  if(threshold<0) return rel==='>'||rel==='>=' ? '\\mathbb{R}' : '\\varnothing';
+  if(rel==='<') return '\\varnothing';
+  if(rel==='<=') return '\\{'+fmtNum(center)+'\\}';
+  if(rel==='>') return intervalTex(-Infinity,center,true,true)+'\\cup '+intervalTex(center,Infinity,true,true);
+  return '\\mathbb{R}';
 }
 function modSolution(p,b,rel){
   const lo=p-b, hi=p+b;
@@ -2274,7 +2287,7 @@ function mountRationalTrainer(box){
     diag[dDir]='Перепутано направление: знак неравенства решает, берём промежуток между корнями или два луча снаружи.';
     diag[dStrict]='Перепутана строгость: нуль числителя входит только при \\(\\leq\\) или \\(\\geq\\).';
     diag[dHole]='Вы закрасили нуль знаменателя. В этой точке дробь не определена — её всегда выкалывают.';
-    const distract=[dDir,dStrict,dHole,'x\\in\\mathbb{R}','\\varnothing'];
+    const distract=[dDir,dStrict,dHole,'\\mathbb{R}','\\varnothing'];
     P.task.innerHTML=`\\(\\dfrac{${denTex(p)}}{${denTex(q)}} \\;${REL_TEX[rel]}\\; 0\\)`;
     renderSetOptions(P, correctTex, distract,
       'Верно! Нуль знаменателя всегда выколот, а нуль числителя входит лишь при нестрогом знаке.',
@@ -2293,8 +2306,17 @@ function mountModulusTrainer(box){
   function gen(){
     P.fb.className='feedback';P.fb.innerHTML='';
     const p=[-4,-3,-2,-1,0,1,2,3,4][Math.floor(Math.random()*9)];
-    const b=[1,2,3,4,5][Math.floor(Math.random()*5)];
+    const b=[-2,0,1,2,3,4,5][Math.floor(Math.random()*7)];
     const rel=['>','<','>=','<='][Math.floor(Math.random()*4)];
+    P.task.innerHTML=`\\(${absTex(p)} \\;${REL_TEX[rel]}\\; ${b}\\)`;
+    if(b<=0){
+      const choices=['<','<=','>','>='].map(sign=>modulusAtNonPositiveThreshold(p,0,sign));
+      const reason=b<0 ? 'Любой модуль больше отрицательного числа.' :
+        'Модуль равен нулю только в центре. Во всех остальных точках он положителен.';
+      renderSetOptions(P,modulusAtNonPositiveThreshold(p,b,rel),choices,
+        reason,'Сначала сравните ноль с правой частью. Затем проверьте центр, где модуль равен нулю.');
+      return;
+    }
     const correctTex=unionTex(modSolution(p,b,rel));
     const dDir=unionTex(modSolution(p,b,relFlipDir(rel)));        /* перепутали < и > */
     const dStrict=unionTex(modSolution(p,b,relFlipStrict(rel)));  /* перепутали строгость */
@@ -2303,8 +2325,8 @@ function mountModulusTrainer(box){
     diag[dDir]='Перепутаны «внутри» и «снаружи»: \\(|x-p|< b\\) — один промежуток вокруг центра, \\(|x-p|>b\\) — два луча.';
     diag[dStrict]='Перепутана строгость: при \\(\\leq,\\geq\\) границы включаются, при \\(<,>\\) — нет.';
     diag[dBoth]='Развёрнуто и направление, и строгость — проверьте оба момента.';
-    const distract=[dDir,dStrict,dBoth,'x\\in\\mathbb{R}','\\varnothing'];
-    P.task.innerHTML=`\\(${absTex(p)} \\;${REL_TEX[rel]}\\; ${b}\\)`;
+    const distract=[dDir,dStrict,dBoth,'\\mathbb{R}','\\varnothing'];
+
     renderSetOptions(P, correctTex, distract,
       'Верно! \\(|x-p|< b\\) — это «внутри» промежутка \\((p-b;\\,p+b)\\), а \\(|x-p|>b\\) — два луча «снаружи».',
       'Не то. Знак «меньше» даёт один промежуток вокруг центра, «больше» — совокупность двух лучей.', diag, ()=>atomsModulus(p,b,rel));
@@ -2342,7 +2364,7 @@ function mountExpSolveTrainer(box){
     diag[dNoFlip]='Похоже, забыли: основание меньше 1 — функция убывает, поэтому знак должен поменяться.';
     diag[dStrict]='Перепутана строгость границы.';
     diag[dOver]='Знак развёрнут не в ту сторону. Сначала решите, возрастает функция или убывает.';
-    const distract=[dNoFlip,dStrict,dOver,'x\\in\\mathbb{R}','\\varnothing'];
+    const distract=[dNoFlip,dStrict,dOver,'\\mathbb{R}','\\varnothing'];
     P.task.innerHTML=`\\(${baseTex}^{\\,x} \\;${REL_TEX[rel]}\\; ${value}\\)`;
     renderSetOptions(P, correctTex, distract,
       decreasing

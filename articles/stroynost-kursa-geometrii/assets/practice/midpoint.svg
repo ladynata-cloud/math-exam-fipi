@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="180" viewBox="0 0 340 180" role="img" aria-labelledby="title">
+<title id="title">Треугольник PAB, M — середина AB</title>
+<style>
+ .edge,.aux,.dash,.mark {fill:none;stroke:#243b50;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+ .aux,.dash {stroke:#216282} .dash {stroke-dasharray:5 5} .mark {stroke:#a33a35}
+ circle {fill:#243b50} text {font:italic 18px Georgia,serif; fill:#122f42}
+</style>
+<polyline class="edge" points="54,136 286,136"/>
+<polyline class="edge" points="54,136 170,30 286,136"/>
+<polyline class="aux" points="170,30 170,136"/>
+<polyline class="mark" points="112,140 112,132"/>
+<polyline class="mark" points="228,140 228,132"/>
+<circle cx="54" cy="136" r="3"/><text x="37" y="143">A</text>
+<circle cx="286" cy="136" r="3"/><text x="292" y="143">B</text>
+<circle cx="170" cy="30" r="3"/><text x="177" y="27">P</text>
+<circle cx="170" cy="136" r="3"/><text x="175" y="158">M</text>
+</svg>

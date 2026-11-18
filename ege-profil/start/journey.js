@@ -78,7 +78,7 @@
         kind:'next',fresh:!!old?.done};
     }
     if(candidates.length)return {lessonId:null,mode:null,href:'#checkpoint',label:'Смешанная проверка',
-      reason:selected?'Темы этого номера пройдены. Попробуйте выбирать способ в смешанной проверке.':'Темы первой части пройдены. Проверьте выбор способа на новых условиях разных номеров.',kind:'checkpoint',fresh:false};
+      reason:selected?'Темы этого номера пройдены. Попробуйте выбирать способ в смешанной проверке.':'Темы учебного маршрута пройдены. Проверьте выбор способа на новых условиях первой части.',kind:'checkpoint',fresh:false};
     return {lessonId:null,mode:null,href:'#calm',label:'Выбрать тему',reason:'Откройте карту курса и выберите раздел.',kind:'empty',fresh:false};
   }
   const api={choose,lessonSummary,summarize,starterProgress};root.ProfileJourney=api;

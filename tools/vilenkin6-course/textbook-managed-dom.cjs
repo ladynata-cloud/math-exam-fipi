@@ -131,3 +131,18 @@ test('blank textbook submission preserves attempts, current draft and bridge che
  assert.equal(JSON.stringify(f.changes()),before,'blank submit emits no check or progress');assert.equal(f.w.document.activeElement,input);assert(f.w.document.querySelector('.feedback').textContent.includes('не считается попыткой'));
  f.input('0');f.submit();const change=f.changes().at(-1);assert.equal(change.kind,'check');assert.equal(change.state.task.attempts,1);C.normalize(a.taskSpec,change.state);
 });
+
+test('middle-button source help respects owned, read-only and stale cloud tasks',async t=>{
+ const f=await fixture(t),task=tasks.find(x=>x.role==='check'&&x.answerType==='integer'),a=C.create(task.id,47);
+ await f.hydrate(a.taskSpec,a.state,true);
+ const middle=()=>new f.w.MouseEvent('auxclick',{bubbles:true,cancelable:true,button:1});
+ let link=f.w.document.querySelector('.source a'),event=middle();link.dispatchEvent(event);
+ assert(event.defaultPrevented,'Read-only source navigation is blocked');assert.equal(f.changes().length,0);
+ await f.hydrate(a.taskSpec,a.state,false);f.input('123');
+ link=f.w.document.querySelector('.source a');event=middle();link.dispatchEvent(event);
+ assert.equal(event.defaultPrevented,false,'Writable source remains available');
+ const helped=f.changes().at(-1).state;assert.equal(helped.task.helped,true);assert.equal(helped.task.draft,'123');assert.equal(helped.task.attempts,0);C.normalize(a.taskSpec,helped,a.state);
+ const b=C.create(tasks.find(x=>x.id!==task.id).id,48);await f.hydrate(b.taskSpec,b.state);
+ const count=f.changes().length;event=middle();link.dispatchEvent(event);
+ assert(event.defaultPrevented,'Detached source navigation is blocked');assert.equal(f.changes().length,count);assert.equal(f.w.location.hash,b.state.route);assert.equal(f.storageReads(),0);
+});
