@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ff5d0d070eee7d4df2527dfc25a9f69cc912d828",
+  "baseSha": "747426ef9788ced70c51cc86ab809de915d1885e",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -5731,6 +5731,13 @@
     {
       "previousBaseSha": "2d0651864042658fed9a28ca621d8cfb139b1e42",
       "sourceBaseSha": "337f0b29e67d3fb36100f1719a25c37bbed34814",
+      "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ff5d0d070eee7d4df2527dfc25a9f69cc912d828",
+      "sourceBaseSha": "747426ef9788ced70c51cc86ab809de915d1885e",
       "task": "docs/tasks/EXAM_LEARNER_RATIOS_20261118.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
