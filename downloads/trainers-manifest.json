@@ -1,6 +1,6 @@
 {
   "stage": "8",
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "notes": "Этап 8 добавляет курс «Делимость, остатки и инварианты» и 186 карточек «Сечения с нуля».",
   "trainers": [
     {
@@ -375,7 +375,8 @@
       "inlineAssets": [
         "/trainers/oge-course-shared-mode.js",
         "/assets/oge-wayfinding.css",
-        "/assets/oge-wayfinding.js"
+        "/assets/oge-wayfinding.js",
+        "/assets/oge-fractions-return.js"
       ],
       "offlineOmitAssets": [
         "/trainers/board-bridge.js",
@@ -1074,7 +1075,8 @@
         "/trainers/oge-video-models.css",
         "/trainers/oge-video-graphs.js",
         "/trainers/oge-video-geometry.js",
-        "/trainers/oge-video-models.js"
+        "/trainers/oge-video-models.js",
+        "/trainers/oge-task15-model.js"
       ],
       "offlineOmitAssets": [
         "/trainers/board-bridge.js",

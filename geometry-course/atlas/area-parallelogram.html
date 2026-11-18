@@ -383,4 +383,4 @@ document.getElementById('export-progress').onclick=()=>{save();GeoStore.download
 // Restore only steps from this proof; corrupt/obsolete state cannot skip its prerequisites.
 state.proofDone=state.proofDone.filter((id,i)=>P.steps[i]?.id===id);state.proof=state.proofDone.length===P.steps.length;state.taskStep=Math.min(state.taskStep,task().steps.length);if(state.stage===3)rememberTask();if(state.stage===4&&state.currentTaskKey!==T.fingerprint(task()))openIndependentTask();save('start');render();
 })();
-</script></body></html>
+</script><script src="../../ege-baza/return-to-course.js"></script></body></html>

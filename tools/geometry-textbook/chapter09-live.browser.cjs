@@ -10,7 +10,8 @@ if(process.env.ATANASYAN_IX_HEAD)assert.equal(head,process.env.ATANASYAN_IX_HEAD
 const out=path.resolve(process.env.ATANASYAN_IX_ARTIFACTS||'artifacts/atanasyan-chapter09-live');fs.mkdirSync(out,{recursive:true});
 const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const names=['index.html','data/course.json','source-inventory.json','assets/engine.js','assets/style.css','assets/math-text.js','assets/planar-viewer.js'];
-const files=Object.fromEntries(names.map(name=>[prefix+name,fs.readFileSync(path.join(root,prefix.slice(1),name))]));
+const resources=[...names.map(name=>prefix+name),'/assets/geometry-step-views.js'];
+const files=Object.fromEntries(resources.map(name=>[name,fs.readFileSync(path.join(root,name.slice(1)))]));
 const expected=Object.fromEntries(Object.entries(files).map(([name,bytes])=>[name,sha(bytes)]));
 for(const name of Object.keys(files))assert.equal(expected[name],sha(execFileSync('git',['show',head+':'+name.slice(1)],{cwd:root,maxBuffer:32*1024*1024})),name+' matches the source commit');
 const bundle=JSON.parse(files[prefix+'data/course.json']),ix=bundle.lessons.filter(l=>l.source.chapter==='IX');
@@ -103,7 +104,7 @@ async function retainedWork(page,lesson,pending,width){
   for(const lesson of lessons)await visit(page,lesson,pending,width);
   await retainedWork(page,sample,pending,width);await context.close();
  }
- for(const name of names.filter(n=>n!=='source-inventory.json'))assert.equal(evidence.browserMatchedHashes[prefix+name],expected[prefix+name],'Browser loaded '+name);
+ for(const name of resources.filter(n=>n!==prefix+'source-inventory.json'))assert.equal(evidence.browserMatchedHashes[name],expected[name],'Browser loaded '+name);
  await verifyBytes();assert.deepEqual(evidence.errors,[]);evidence.completed=true;
  evidence.localSmokePassed=mode==='local';evidence.httpsReleaseVerified=mode==='https'&&ix.length===160;
  console.log((evidence.httpsReleaseVerified?'ATANASYAN_IX_HTTPS_RELEASE_OK':'ATANASYAN_IX_LOCAL_PUBLIC_SMOKE_OK')+' '+JSON.stringify({head,lessons:bundle.lessons.length,ix:ix.length}));
