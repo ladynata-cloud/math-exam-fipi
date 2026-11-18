@@ -1020,9 +1020,9 @@ function escapeHTML(s) {
   return String(s).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[ch]));
 }
 function parseStrictInt(raw) {
-  if (raw === "" || raw == null) return { ok: false, error: "Поле не должно быть пустым" };
+  if (raw == null || String(raw).trim() === "") return { ok: false, error: "Поле не должно быть пустым" };
   const v = Number(String(raw).trim());
-  if (!Number.isInteger(v)) return { ok: false, error: "Нужно целое число" };
+  if (!/^[+-]?\d+$/.test(String(raw).trim()) || !Number.isSafeInteger(v)) return { ok: false, error: "Введите целое число в десятичной записи" };
   return { ok: true, value: v };
 }
 function zeroWord(K) {
@@ -2439,14 +2439,18 @@ const ProgressStore = (function () {
     today,
     getProgress, getMistakes, getFoundation, getSettings, getStreak,
 
+    markHelp(taskId) {
+      const p = getProgress(); p.usedGuide[taskId] = (p.usedGuide[taskId] || 0) + 1; safeSet(PROGRESS_KEYS.progress, p);
+    },
     markAttempt(taskId) {
       const p = getProgress(); p.attempted[taskId] = (p.attempted[taskId] || 0) + 1; safeSet(PROGRESS_KEYS.progress, p);
     },
     markSolved(taskId, opts) {
       const p = getProgress();
-      p.solved[taskId] = (p.solved[taskId] || 0) + 1;
+      if (p.solved[taskId]) return;
+      p.solved[taskId] = 1;
       if (opts && opts.withoutGuide) p.solvedNoGuide[taskId] = (p.solvedNoGuide[taskId] || 0) + 1;
-      if (opts && opts.usedGuide) p.usedGuide[taskId] = (p.usedGuide[taskId] || 0) + 1;
+
       safeSet(PROGRESS_KEYS.progress, p);
       // streak
       const s = getStreak();
@@ -3869,7 +3873,7 @@ function binRunPipeline() {
   const r = simulateOnce(bin, item.headStart, item.program);
   if (!r.ok) { out.innerHTML = `<div class="feedback show err">Симулятор: ${escapeHTML(r.error)}</div>`; return; }
   const finalBin = r.finalTape;
-  const finalDec = /^[01]+$/.test(finalBin) ? binToDec(finalBin) : "—";
+  const finalDec = /^[01]+$/.test(finalBin) ? BigInt("0b" + finalBin).toString() : "—";
   out.innerHTML = `
     <div class="soft-box">
       <h4>Шаг 1. Десятичное → двоичное</h4>
@@ -3908,15 +3912,15 @@ function initTabBinary() {
   binRenderRelated();
   document.getElementById("conv-to-bin").addEventListener("click", () => {
     const err = document.getElementById("conv-err"); err.className = "feedback err"; err.textContent = "";
-    const p = parseStrictInt(document.getElementById("conv-dec").value);
-    if (!p.ok || p.value < 0) { err.textContent = "Введите неотрицательное целое число."; err.classList.add("show"); return; }
-    document.getElementById("conv-bin-out").textContent = decToBin(p.value);
+    const decimal = document.getElementById("conv-dec").value.trim();
+    if (!/^\d{1,100}$/.test(decimal)) { err.textContent = "Введите неотрицательное целое число."; err.classList.add("show"); return; }
+    document.getElementById("conv-bin-out").textContent = BigInt(decimal).toString(2);
   });
   document.getElementById("conv-to-dec").addEventListener("click", () => {
     const err = document.getElementById("conv-err"); err.className = "feedback err"; err.textContent = "";
     const s = document.getElementById("conv-bin").value.trim();
     if (!/^[01]+$/.test(s)) { err.textContent = "Двоичная запись должна состоять только из 0 и 1."; err.classList.add("show"); return; }
-    document.getElementById("conv-dec-out").textContent = binToDec(s);
+    document.getElementById("conv-dec-out").textContent = BigInt("0b" + s).toString();
   });
   document.getElementById("bin-run-pipeline").addEventListener("click", binRunPipeline);
   binRunPipeline();
@@ -5538,13 +5542,13 @@ function libGetTask() {
    с уже посчитанным ответом. Используют те же программы PROG_*.
    ============================================================ */
 let _genCounter = 0;
-function _newGenId(kind) { _genCounter += 1; return { id: `turing-generated-${kind}-${_genCounter}`, shortId: `gen${_genCounter}` }; }
+function _newGenId(kind, ...params) { _genCounter += 1; return { id: `turing-generated-${kind}-${params.join("-")}`, shortId: `gen${_genCounter}` }; }
 function _rand(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
 
 function generateRightTailZerosTask() {
   // Случайные N (длина) и c0 (нулей). Спрашиваем максимум финальных нулей при фиксированном составе.
   const c1 = _rand(2, 8), c0 = _rand(2, 12);
-  const ids = _newGenId("rt");
+  const ids = _newGenId("rt", c0, c1);
   const t = {
     ...ids,
     taskType: "right_tail_zero_flip_find_max_final_zeros",
@@ -5565,7 +5569,7 @@ function generateRightTailZerosTask() {
 }
 function generateLeftPrefixOnesTask() {
   const c1 = _rand(2, 8), c0 = _rand(2, 10);
-  const ids = _newGenId("lp");
+  const ids = _newGenId("lp", c0, c1);
   const t = {
     ...ids,
     taskType: "left_prefix_ones_flip_find_max_final_zeros",
@@ -5586,7 +5590,7 @@ function generateLeftPrefixOnesTask() {
 }
 function generateBinaryDecrementTask() {
   const dec = _rand(8, 1024);
-  const ids = _newGenId("dec");
+  const ids = _newGenId("dec", dec);
   const t = {
     ...ids,
     taskType: "binary_decrement_decimal_result",
@@ -5607,7 +5611,7 @@ function generateBinaryDecrementTask() {
 }
 function generateBitwiseInversionTask() {
   const dec = _rand(5, 1023);
-  const ids = _newGenId("inv");
+  const ids = _newGenId("inv", dec);
   const t = {
     ...ids,
     taskType: "bitwise_inversion_decimal_result",
@@ -5628,7 +5632,7 @@ function generateBitwiseInversionTask() {
 }
 function generateClearLowestOneTask() {
   const dec = _rand(10, 1023);
-  const ids = _newGenId("clo");
+  const ids = _newGenId("clo", dec);
   const t = {
     ...ids,
     taskType: "clear_lowest_one_decimal_result",
@@ -5649,7 +5653,7 @@ function generateClearLowestOneTask() {
 }
 function generateClearLeftmostOneTask() {
   const dec = _rand(8, 1023);
-  const ids = _newGenId("cll");
+  const ids = _newGenId("cll", dec);
   const t = {
     ...ids,
     taskType: "clear_first_left_one_decimal_result",
@@ -5887,14 +5891,13 @@ function libCheckAnswer() {
   const raw = document.getElementById("lib-answer-input").value.trim();
   const p = parseStrictInt(raw);
 
-  // Отметим попытку в прогрессе
-  ProgressStore.markAttempt(task.id);
 
   if (!p.ok) {
     fb.className = "feedback err show";
     fb.textContent = "Введите целое число.";
     return;
   }
+  ProgressStore.markAttempt(task.id);
   if (p.value === task.answer) {
     fb.className = "feedback ok show";
     fb.textContent = `Верно. Ответ: ${task.answer}.`;
@@ -5931,6 +5934,7 @@ function libCheckAnswer() {
 
 function libShowHint() {
   const task = libGetTask(); if (!task) return;
+  ProgressStore.markHelp(task.id);
   const hints = libTieredHints(task);
   const idx = Math.min(libHintLevel, hints.length - 1);
   libHintLevel = Math.min(libHintLevel + 1, hints.length);
@@ -5944,6 +5948,7 @@ function libShowHint() {
 
 function libRevealAnswer() {
   const task = libGetTask(); if (!task) return;
+  ProgressStore.markHelp(task.id);
   const sol = document.getElementById("lib-answer-solution");
   sol.hidden = false;
   sol.innerHTML = `
@@ -5978,10 +5983,10 @@ function libRunSim() {
   }
   let extra = "";
   if (task.initialTape.form === "binary_number" && /^[01]+$/.test(r.finalTape)) {
-    const inDec = /^[01]+$/.test(raw) ? binToDec(raw) : null;
+    const inDec = /^[01]+$/.test(raw) ? BigInt("0b" + raw).toString() : null;
     extra = `<p class="small">Если читать вход и выход как двоичные числа:
       ${inDec != null ? `<code>${raw}</code><sub>2</sub> = <code>${inDec}</code><sub>10</sub> → ` : ""}
-      <code>${escapeHTML(r.finalTape)}</code><sub>2</sub> = <code>${binToDec(r.finalTape)}</code><sub>10</sub>.</p>`;
+      <code>${escapeHTML(r.finalTape)}</code><sub>2</sub> = <code>${BigInt("0b" + r.finalTape).toString()}</code><sub>10</sub>.</p>`;
   } else if (task.initialTape.form === "binary_string") {
     const c0in = countChar(raw, "0"), c1in = countChar(raw, "1");
     const c0out = countChar(r.finalTape, "0"), c1out = countChar(r.finalTape, "1");
@@ -6020,6 +6025,7 @@ function initTabLibrary() {
   libRenderFilter();
   libRenderGrid();
   document.getElementById("lib-answer-check").addEventListener("click", libCheckAnswer);
+  document.getElementById("lib-answer-input").addEventListener("keydown", event => { if (event.key === "Enter") libCheckAnswer(); });
   document.getElementById("lib-answer-hint").addEventListener("click", libShowHint);
   document.getElementById("lib-answer-reveal").addEventListener("click", libRevealAnswer);
   document.getElementById("lib-answer-guide").addEventListener("click", libStartGuide);
@@ -6397,9 +6403,7 @@ function libStartGuide() {
   libGuide = { steps: buildLibraryTaskGuide(task), idx: 0, taskId: task.shortId };
   ProgressStore.markAttempt(task.id);
   // отмечаем, что пользователь использовал гайд
-  const p = ProgressStore.getProgress();
-  p.usedGuide[task.id] = (p.usedGuide[task.id] || 0) + 1;
-  try { localStorage.setItem("turingTrainer.progress", JSON.stringify(p)); } catch (e) {}
+  ProgressStore.markHelp(task.id);
   libRenderGuide();
 }
 function libCloseGuide() { libGuide = null; libRenderGuide(); }
@@ -6637,5 +6641,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
+<a style="display:inline-block;margin:0.35rem 0.75rem;padding:0.45rem;color:inherit;text-decoration:underline" href="./informatics-versions/">Версии тренажёров по информатике</a>
 </body>
 </html>

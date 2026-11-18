@@ -481,6 +481,7 @@
   .h-badge.err { background: var(--red); }
   .hist-item .h-text { color: var(--muted); flex: 1; }
   .hist-item .h-ans { color: var(--text); }
+@media(max-width:640px){.tree-layout>*{min-width:0}.tree-canvas-wrap{max-width:100%;overflow:auto}.choice-btn,.btn,.mode-btn{min-height:44px}}
 </style>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
@@ -577,7 +578,7 @@
         <div class="answer-slots" id="l-answer-display"></div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           <span style="font-size:13px;color:var(--muted);">Ответ G(<span id="l-final-n" style="font-family:var(--mono);color:var(--accent)"></span>) =</span>
-          <input type="number" class="num-input" id="l-answer-input" placeholder="?"/>
+          <input type="number" class="num-input" id="l-answer-input" aria-label="Значение функции" required min="0" step="1" placeholder="?"/>
         </div>
         <div class="feedback" id="l-fb3"></div>
       </div>
@@ -606,10 +607,10 @@
     <!-- LEFT: tree canvas -->
     <div style="display:flex;flex-direction:column;gap:14px;">
       <div class="card">
-        <div class="card-title">Дерево переходов</div>
+        <div class="card-title">Первые пять ходов</div>
         <div class="legend">
           <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Обычный узел</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Цель (finish)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Финиш</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Запрещённый</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div> Обязательная точка</div>
         </div>
@@ -658,7 +659,7 @@
         <div class="phase-label">Ваш ответ</div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
           <span style="font-size:14px;color:var(--muted);">Количество программ =</span>
-          <input type="number" class="num-input" id="t-answer-input" placeholder="?"/>
+          <input type="number" class="num-input" id="t-answer-input" aria-label="Количество программ" required min="0" step="1" placeholder="?"/>
         </div>
         <div class="feedback" id="t-fb"></div>
       </div>
@@ -750,7 +751,7 @@ function renderHistories() {
       d.className = 'hist-item';
       d.innerHTML = `<div class="h-badge ${h.correct?'ok':'err'}">${h.correct?'✓':'✗'}</div>
         <span class="h-text">${h.label}</span>
-        <span class="h-ans">${h.userAns} ${h.correct?'':'→ '+h.rightAns}</span>`;
+        <span class="h-ans">${h.userAns} </span>`;
       el.appendChild(d);
     });
   });
@@ -779,18 +780,15 @@ function setMode(m, btn) {
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   if (currentTab === 'tree') applyTreeMode();
-  if (currentTab === 'ladder') applyLadderMode();
+  if (currentTab === 'ladder') lRenderLadder();
 }
 
-function applyLadderMode() {
-  // In train mode, choices are hidden until phase
-  lInit(ladderTask);
-}
 
 function applyTreeMode() {
   document.getElementById('t-formula-card').style.display = currentMode==='learn' ? 'flex' : 'none';
   document.getElementById('t-table-card').style.display   = currentMode==='learn' ? 'flex' : 'none';
   if (currentMode==='learn') tBuildTable();
+  tDrawTree();
 }
 
 /* ═══════════════════════════════════════════════════
@@ -817,7 +815,7 @@ let ladderTask = LADDER_TASKS[ladderTaskIdx];
 let lTrace = [];
 let lPhase = 1;   // 1=unroll, 2=base, 3=final
 let lStep  = 0;   // which unroll step we're at
-let lHintUsed = false;
+let pendingLadderStep;
 let lSolutionShown = false;
 
 function lInit(n) {
@@ -825,7 +823,7 @@ function lInit(n) {
   lTrace = ladderTrace(n);
   lPhase = 1;
   lStep  = 0;
-  lHintUsed = false;
+  clearTimeout(pendingLadderStep);
   lSolutionShown = false;
 
   document.getElementById('l-task-expr').textContent = `G(${n})`;
@@ -896,17 +894,14 @@ function lRenderUnrollPhase() {
 
 function lChooseUnroll(chosen, correct, btn, row) {
   const fb = document.getElementById('l-fb1');
-  Array.from(row.children).forEach(b => {
-    if (+b.textContent.replace('G(','').replace(')','') === correct)
-      b.classList.add('correct');
-  });
   if (chosen === correct) {
+    Array.from(row.children).forEach(b => { b.disabled = true; });
     btn.classList.add('correct');
     fb.className = 'feedback ok';
     fb.textContent = `Верно! G(${lTrace[lStep].n}) = G(${correct}) + 1`;
     lStep++;
     lRenderLadder();
-    setTimeout(() => {
+    pendingLadderStep = setTimeout(() => {
       fb.className = 'feedback';
       const nextS = lTrace[lStep];
       if (nextS.isBase) {
@@ -924,13 +919,13 @@ function lChooseUnroll(chosen, correct, btn, row) {
   } else {
     btn.classList.add('wrong');
     fb.className = 'feedback err';
-    fb.textContent = `Не верно. G(${lTrace[lStep].n}) = G(${correct}) + 1, так как n = ${lTrace[lStep].n} ≥ 10.`;
+    fb.textContent = `Аргумент нового вызова на 2 меньше текущего. Пересчитайте ${lTrace[lStep].n} − 2.`;
   }
 }
 
 function lRenderBaseChoices(bn) {
   const correct = 2*bn;
-  const wrongs = [2*bn+2, 2*bn-2, 2*(bn+1), bn+10].filter(v=>v!==correct);
+  const wrongs = [2*bn+2, 2*bn-2, bn+1, bn-1].filter(v=>v!==correct);
   const opts = shuffle([correct, ...wrongs.slice(0,3)]);
   const row = document.getElementById('l-choices2');
   row.innerHTML = '';
@@ -945,15 +940,13 @@ function lRenderBaseChoices(bn) {
 
 function lChooseBase(chosen, correct, btn, row, bn) {
   const fb = document.getElementById('l-fb2');
-  Array.from(row.children).forEach(b => {
-    if (+b.textContent === correct) b.classList.add('correct');
-  });
   if (chosen === correct) {
+    Array.from(row.children).forEach(b => { b.disabled = true; });
     btn.classList.add('correct');
     fb.className = 'feedback ok';
     fb.textContent = `Верно! G(${bn}) = 2 · ${bn} = ${correct}`;
     lRenderLadder();
-    setTimeout(() => {
+    pendingLadderStep = setTimeout(() => {
       fb.className = 'feedback';
       lPhase = 3;
       document.getElementById('l-phase2').style.display = 'none';
@@ -974,47 +967,50 @@ function lChooseBase(chosen, correct, btn, row, bn) {
   } else {
     btn.classList.add('wrong');
     fb.className = 'feedback err';
-    fb.textContent = `Не верно. G(${bn}) = 2 · ${bn} = ${correct}, так как ${bn} < 10.`;
+    fb.textContent = `При n < 10 действует базовая формула. Удвойте ${bn}.`;
   }
 }
 
 function lCheck() {
   if (lPhase !== 3) { return; }
-  const val = parseInt(document.getElementById('l-answer-input').value);
+  const input = document.getElementById('l-answer-input');
+  if (!input.reportValidity()) return;
+  const val = input.valueAsNumber;
   const right = G(ladderTask);
   const fb = document.getElementById('l-fb3');
   const isOk = val === right;
   fb.className = 'feedback ' + (isOk?'ok':'err');
   fb.textContent = isOk
     ? `✓ Правильно! G(${ladderTask}) = ${right}`
-    : `✗ Неверно. Правильный ответ: ${right}`;
+    : 'Пересчитайте прибавления при возврате из рекурсии.';
   if (!lSolutionShown) {
     recordAttempt(isOk, `G(${ladderTask})`, val, right);
   }
-  lSolutionShown = true;
+  lSolutionShown = lSolutionShown || isOk;
 }
 
 function lHint() {
-  lHintUsed = true;
+
   const fb = document.getElementById('l-fb1');
   if (lPhase === 1) {
     const cur = lTrace[lStep];
     fb.className = 'feedback info';
-    fb.textContent = `Подсказка: ${cur.n} ≥ 10, поэтому G(${cur.n}) = G(${cur.n-2}) + 1`;
+    fb.textContent = `Подсказка: ${cur.n} ≥ 10, поэтому новый аргумент получается вычитанием 2`;
   } else if (lPhase === 2) {
     const bn = lTrace[lStep].n;
     document.getElementById('l-fb2').className = 'feedback info';
-    document.getElementById('l-fb2').textContent = `Подсказка: ${bn} < 10, поэтому G(${bn}) = 2 · ${bn} = ${2*bn}`;
+    document.getElementById('l-fb2').textContent = `Подсказка: ${bn} < 10, поэтому G(${bn}) = 2 · ${bn}`;
   } else {
     const right = G(ladderTask);
     const bn    = lTrace[lTrace.length-1].n;
     const plus  = lTrace.length-1;
     document.getElementById('l-fb3').className = 'feedback info';
-    document.getElementById('l-fb3').textContent = `Подсказка: ${2*bn} + ${plus} = ${right}`;
+    document.getElementById('l-fb3').textContent = `Подсказка: к базовому значению ${2*bn} прибавьте по единице за каждый из ${plus} обратных шагов`;
   }
 }
 
 function lShowSolution() {
+  clearTimeout(pendingLadderStep);
   lSolutionShown = true;
   const right = G(ladderTask);
   const bn = lTrace[lTrace.length-1].n;
@@ -1074,6 +1070,7 @@ let tSolutionShown = false;
 
 function countPaths(n, finish, bad, cp, memo) {
   if (memo[n] !== undefined) return memo[n];
+  if (n === bad) return 0;
   if (n === finish) { memo[n]=1; return 1; }
   if (n < finish || n === bad) { memo[n]=0; return 0; }
   const res = countPaths(n-1,finish,bad,cp,memo)
@@ -1084,13 +1081,16 @@ function countPaths(n, finish, bad, cp, memo) {
 }
 
 function countPathsCP(start, finish, bad, cp, memo) {
-  if (!cp) return countPaths(start,finish,bad,cp,memo);
-  // must pass through cp
+  if (cp == null) return countPaths(start,finish,bad,cp,memo);
+  // The checkpoint must lie on the strictly decreasing route.
+  if (cp < finish || cp > start || cp === bad) return 0;
   const m1={}, m2={};
   const a = countPaths(start,cp,bad,null,m1);
   const b = countPaths(cp,finish,bad,null,m2);
-  // store partial memos for display
-  Object.assign(memo, m1, m2);
+  // Below the checkpoint, display the second leg. Above it, count full legal completions.
+  for (let n = finish; n <= start; n++) {
+    memo[n] = n <= cp ? countPaths(n,finish,bad,null,m2) : countPaths(n,cp,bad,null,m1) * b;
+  }
   return a*b;
 }
 
@@ -1155,8 +1155,8 @@ function tBuildTable() {
     let val, note='', color='var(--text)';
     if (n === bad) { val=0; note='запрещён'; color='var(--red)'; }
     else if (n === finish) { val=1; note='финиш'; color='var(--green)'; }
-    else if (cp && n === cp) { color='var(--yellow)'; note='обяз.точка'; val=tMemo[n]!==undefined?tMemo[n]:'—'; }
-    else { val=tMemo[n]!==undefined?tMemo[n]:0; }
+    else if (cp != null && n === cp) { color='var(--yellow)'; note='обяз.точка'; val=tMemo[n]!==undefined?tMemo[n]:'—'; }
+    else { val=tMemo[n] ?? countPaths(n,finish,bad,null,tMemo); }
     const tr = tbody.insertRow();
     [n,val,note].forEach((c,i) => {
       const td = tr.insertCell();
@@ -1177,7 +1177,7 @@ function tDrawTree() {
   const DEPTH_LIMIT = 5;
   const nodes = {}; // n -> {x,y,depth,parent,cmd}
   const edges = [];
-  const queue = [{ n: start, depth: 0, parentKey: null, cmd: null }];
+  const queue = [{ n: start, depth: 0, parentKey: null, cmd: null, crossed: start === cp }];
   const visited = new Set();
 
   // Layout params
@@ -1190,24 +1190,24 @@ function tDrawTree() {
   const nodeList = [];
 
   while (queue.length) {
-    const { n, depth, parentKey, cmd } = queue.shift();
+    const { n, depth, parentKey, cmd, crossed } = queue.shift();
     if (depth > DEPTH_LIMIT) continue;
-    const key = `${n}_${depth}_${parentKey}`;
+    const key = `${n}_${depth}_${cmd}_${parentKey}`;
     if (!depthCols[depth]) depthCols[depth] = 0;
     const col = depthCols[depth]++;
-    nodes[key] = { n, depth, col, parentKey, cmd };
+    nodes[key] = { n, depth, col, parentKey, cmd, crossed };
     nodeList.push(key);
 
     // Do not expand terminal nodes
-    if (n !== finish && n > finish && n !== bad) {
+    if (depth < DEPTH_LIMIT && n > finish && n !== bad && (cp == null || crossed || n >= cp)) {
       const nexts = [
         { nn: n-1, c:'A' },
         { nn: n-4, c:'B' },
         { nn: Math.floor(n/3), c:'C' }
       ].filter(({nn}) => nn >= 0);
       nexts.forEach(({nn,c}) => {
-        queue.push({ n:nn, depth:depth+1, parentKey:key, cmd:c });
-        edges.push({ from:key, to:`${nn}_${depth+1}_${key}`, cmd:c });
+        queue.push({ n:nn, depth:depth+1, parentKey:key, cmd:c, crossed:crossed || nn===cp });
+        edges.push({ from:key, to:`${nn}_${depth+1}_${c}_${key}`, cmd:c });
       });
     }
   }
@@ -1259,9 +1259,10 @@ function tDrawTree() {
     const nd = nodes[key];
     const n = nd.n;
     let color = '#4f8ef7';
-    if (n === finish) color = '#22c55e';
+    if (cp != null && n < cp && !nd.crossed) color = '#ef4444';
+    else if (n === finish) color = '#22c55e';
     else if (n === bad) color = '#ef4444';
-    else if (cp && n === cp) color = '#f59e0b';
+    else if (cp != null && n === cp) color = '#f59e0b';
 
     const circle = document.createElementNS(ns,'circle');
     circle.setAttribute('cx',nd.x); circle.setAttribute('cy',nd.y);
@@ -1289,7 +1290,7 @@ function tDrawTree() {
       flbl.setAttribute('fill','#64748b');
       flbl.setAttribute('font-size','9');
       flbl.setAttribute('font-family','Consolas,monospace');
-      flbl.textContent = `f=${tMemo[n]}`;
+      flbl.textContent = `f=${cp != null && n < cp && !nodes[key].crossed ? 0 : tMemo[n]}`;
       svg.appendChild(flbl);
     }
   });
@@ -1301,17 +1302,19 @@ function tCheck() {
   const right = cp
     ? countPathsCP(start,finish,bad,cp,memo)
     : countPaths(start,finish,bad,null,memo);
-  const val = parseInt(document.getElementById('t-answer-input').value);
+  const input = document.getElementById('t-answer-input');
+  if (!input.reportValidity()) return;
+  const val = input.valueAsNumber;
   const fb = document.getElementById('t-fb');
   const isOk = val === right;
   fb.className = 'feedback ' + (isOk?'ok':'err');
   fb.textContent = isOk
     ? `✓ Правильно! Количество программ = ${right}`
-    : `✗ Неверно. Правильный ответ: ${right}`;
+    : 'Проверьте запрещённую точку и вклад каждой команды. Можно исправить ответ.';
   if (!tSolutionShown) {
     recordAttempt(isOk, `[${start}→${finish}]`, val, right);
   }
-  tSolutionShown = true;
+  tSolutionShown = tSolutionShown || isOk;
 }
 
 function tHint() {
@@ -1319,17 +1322,10 @@ function tHint() {
   const fb = document.getElementById('t-fb');
   fb.className = 'feedback info';
   if (cp) {
-    const m1={},m2={};
-    const a = countPaths(start,cp,bad,null,m1);
-    const b = countPaths(cp,finish,bad,null,m2);
-    fb.textContent = `Подсказка: пути(${start}→${cp}) = ${a}, пути(${cp}→${finish}) = ${b}. Ответ = ${a}×${b} = ${a*b}`;
+    fb.textContent = `Разделите путь в точке ${cp}. Каждый путь первого участка можно продолжить каждым путём второго. Как соединить два количества?`;
   } else {
     const n1 = start-1, n4 = start-4, n3 = Math.floor(start/3);
-    const m={};
-    const v1 = countPaths(n1,finish,bad,null,m);
-    const v4 = n1>=3?countPaths(n4,finish,bad,null,m):0;
-    const v3 = countPaths(n3,finish,bad,null,m);
-    fb.textContent = `Подсказка: f(${start}) = f(${n1}) + f(${n4}) + f(${n3}) = ${v1} + ${v4} + ${v3} = ${v1+v4+v3}`;
+    fb.textContent = `Из ${start} ведут три команды: к ${n1}, ${n4}, ${n3}. Сложите количества допустимых продолжений. В запрещённой точке продолжений нет.`;
   }
 }
 
@@ -1380,8 +1376,11 @@ function shuffle(arr) {
   return arr;
 }
 
+document.getElementById('t-answer-input').addEventListener('keydown', e => {if (e.key === 'Enter') tCheck();});
+document.getElementById('l-answer-input').addEventListener('keydown', e => {if (e.key === 'Enter') lCheck();});
 // Init tree
 tInit(tTask);
 </script>
+<a style="display:inline-block;margin:0.35rem 0.75rem;padding:0.45rem;color:inherit;text-decoration:underline" href="./informatics-versions/">Версии тренажёров по информатике</a>
 </body>
 </html>

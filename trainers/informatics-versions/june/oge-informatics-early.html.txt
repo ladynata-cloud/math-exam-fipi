@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тренажёр ОГЭ по информатике: задания 1–10</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --ink:#152033;
+      --muted:#617089;
+      --line:#dbe3ef;
+      --accent:#3757ff;
+      --accent2:#00a884;
+      --bad:#d83b3b;
+      --warn:#f39c12;
+      --soft:#edf1ff;
+      --soft2:#eafaf5;
+      --shadow:0 18px 40px rgba(20,32,51,.10);
+      --radius:22px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at top left, rgba(55,87,255,.12), transparent 34rem),
+        radial-gradient(circle at top right, rgba(0,168,132,.10), transparent 30rem),
+        var(--bg);
+      color:var(--ink);
+      font-family:var(--sans);
+      line-height:1.5;
+    }
+    .wrap{max-width:1220px;margin:0 auto;padding:24px}
+    header.hero{
+      display:grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap:20px;
+      align-items:stretch;
+      margin-bottom:20px;
+    }
+    .hero-card, .side-card, .task-card, .variant-card{
+      background:rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border:1px solid rgba(219,227,239,.9);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .hero-card{padding:30px;position:relative;overflow:hidden}
+    .hero-card:after{
+      content:"";position:absolute;right:-80px;top:-120px;width:260px;height:260px;border-radius:50%;
+      background:linear-gradient(135deg, rgba(55,87,255,.17), rgba(0,168,132,.15));
+    }
+    .eyebrow{font-weight:800;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+    h1{margin:8px 0 10px;font-size:clamp(30px, 5vw, 56px);line-height:.98;letter-spacing:-.04em}
+    .lead{max-width:780px;color:var(--muted);font-size:18px;margin:0}
+    .pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--soft);font-size:13px;font-weight:700;color:#263a8d}
+    .side-card{padding:22px;display:flex;flex-direction:column;gap:14px}
+    .score-big{font-size:42px;font-weight:900;letter-spacing:-.04em}
+    .small-muted{font-size:13px;color:var(--muted)}
+    .progressbar{height:12px;background:#edf1f7;border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+    .progressbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:.25s}
+    .layout{display:grid;grid-template-columns: 280px 1fr;gap:20px;align-items:start}
+    nav.panel{position:sticky;top:18px;display:flex;flex-direction:column;gap:14px}
+    .nav-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .nav-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:900}
+    .topic-grid{display:grid;grid-template-columns:1fr;gap:8px}
+    .topic-btn{
+      width:100%;display:flex;gap:10px;align-items:center;justify-content:flex-start;
+      border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 12px;cursor:pointer;color:var(--ink);
+      font-weight:700;text-align:left;transition:.18s;
+    }
+    .topic-btn:hover{transform:translateY(-1px);border-color:#b7c5f9;background:#f8faff}
+    .topic-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .topic-num{width:28px;height:28px;border-radius:10px;display:inline-grid;place-items:center;background:rgba(55,87,255,.10);font-weight:900;flex:none}
+    .topic-btn.active .topic-num{background:rgba(255,255,255,.20)}
+    .topic-name{font-size:13px;line-height:1.2}
+    .actions{display:grid;gap:10px}
+    button.primary, button.secondary, button.ghost, button.danger{
+      border:0;border-radius:15px;padding:12px 14px;font-weight:900;cursor:pointer;transition:.18s;font-family:var(--sans);
+    }
+    button.primary{background:var(--accent);color:#fff;box-shadow:0 12px 26px rgba(55,87,255,.22)}
+    button.secondary{background:#13233f;color:#fff}
+    button.ghost{background:#f1f4fa;color:#22324d;border:1px solid var(--line)}
+    button.danger{background:#fff1f1;color:var(--bad);border:1px solid #ffd3d3}
+    button.primary:hover, button.secondary:hover, button.ghost:hover, button.danger:hover{transform:translateY(-1px)}
+    button:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
+    main{display:flex;flex-direction:column;gap:20px}
+    .task-card{padding:24px;min-height:480px}
+    .meta-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+    .meta-chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:var(--soft2);color:#09745d;font-weight:900;font-size:13px;padding:8px 12px}
+    .timer-chip{background:#fff7e6;color:#8b5a00}
+    h2{margin:0 0 10px;font-size:28px;letter-spacing:-.02em}
+    .task-text{font-size:17px;color:#1d2a42}
+    .task-text p{margin:10px 0}
+    .answer-row{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;margin-top:22px;align-items:center}
+    input.answer{
+      width:100%;border:2px solid var(--line);border-radius:16px;padding:14px 16px;font-size:20px;font-weight:800;outline:none;background:#fff;color:var(--ink);
+    }
+    input.answer:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(55,87,255,.10)}
+    .feedback{margin-top:16px;border-radius:18px;padding:14px 16px;display:none;font-weight:750}
+    .feedback.good{display:block;background:#eafaf5;color:#067259;border:1px solid #a7ead8}
+    .feedback.bad{display:block;background:#fff1f1;color:#b92525;border:1px solid #ffc7c7}
+    .feedback.neutral{display:block;background:#f1f4fa;color:#36445c;border:1px solid var(--line)}
+    .hint-box,.solution-box{display:none;margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:18px;background:#f8faff;color:#293a59}
+    .hint-box.show,.solution-box.show{display:block}
+    .solution-box{background:#fffdf7;border-color:#ffe3a6}
+    table.matrix, table.query-table, table.code-table{border-collapse:collapse;margin:14px 0;max-width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+    table.matrix th, table.matrix td, table.query-table th, table.query-table td, table.code-table th, table.code-table td{
+      border:1px solid var(--line);padding:8px 10px;text-align:center;min-width:42px;
+    }
+    table.query-table th, table.code-table th{background:#f1f4fa;font-weight:900}
+    table.matrix th{background:#f1f4fa;font-weight:900}
+    table.matrix td.diag{background:#eef2f8;color:#9aa7ba}
+    .program{font-family:var(--mono);background:#0f172a;color:#e5e7eb;border-radius:16px;padding:14px 16px;overflow:auto;font-size:14px;line-height:1.45;margin:12px 0}
+    .mono{font-family:var(--mono)}
+    .fragments{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:14px 0}
+    .fragment{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px;font-weight:800}
+    .fragment span{color:var(--accent);font-weight:950;margin-right:8px}
+    .graph-svg{width:100%;max-width:650px;height:auto;border:1px solid var(--line);border-radius:18px;background:#fff;margin:12px 0}
+    .variant-card{padding:22px;display:none}
+    .variant-card.show{display:block}
+    .variant-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+    .variant-grid{display:grid;gap:14px}
+    .mini-task{border:1px solid var(--line);border-radius:18px;background:#fff;padding:16px}
+    .mini-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px;font-weight:950}
+    .mini-task .task-text{font-size:15px}
+    .mini-answer-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-top:12px}
+    .mini-answer-row input{border:2px solid var(--line);border-radius:14px;padding:11px 12px;font-weight:800;font-size:16px;outline:none}
+    .mini-result{font-weight:900;padding:8px 10px;border-radius:999px;background:#f1f4fa;color:#56627a}
+    .mini-result.ok{background:#eafaf5;color:#067259}
+    .mini-result.no{background:#fff1f1;color:#b92525}
+    .cheats{display:grid;gap:8px}
+    details.cheat{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px 12px}
+    details.cheat summary{cursor:pointer;font-weight:900}
+    details.cheat p{margin:8px 0 0;color:var(--muted);font-size:14px}
+    .footer-note{margin:26px 0 4px;color:var(--muted);font-size:13px;text-align:center}
+    .toast{position:fixed;right:22px;bottom:22px;background:#13233f;color:#fff;border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);display:none;max-width:340px;z-index:20;font-weight:800}
+    .toast.show{display:block;animation:pop .18s ease-out}
+    @keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @media (max-width:900px){
+      header.hero,.layout{grid-template-columns:1fr}
+      nav.panel{position:static}
+      .topic-grid{grid-template-columns:repeat(2,1fr)}
+      .answer-row{grid-template-columns:1fr}
+      .answer-row button{width:100%}
+    }
+    @media (max-width:560px){
+      .wrap{padding:14px}
+      .hero-card,.task-card,.variant-card{padding:18px}
+      .topic-grid{grid-template-columns:1fr}
+      .mini-answer-row{grid-template-columns:1fr}
+      .score-big{font-size:34px}
+    }
+    @media print{
+      body{background:#fff}.nav-card,.side-card,.answer-row,.actions,.feedback,.hint-box,.solution-box{display:none!important}.layout,header.hero{display:block}.task-card,.variant-card{box-shadow:none;border:1px solid #aaa}.variant-card{display:block!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <section class="hero-card">
+        <div class="eyebrow">ОГЭ информатика · часть 1</div>
+        <h1>Быстрый тренажёр заданий 1–10</h1>
+        <p class="lead">Генерирует новые варианты в стиле ОГЭ: проверка ответа, подсказка, короткое решение и мини-вариант на 30 минут. Работает офлайн в одном HTML-файле.</p>
+        <div class="pill-row">
+          <span class="pill">⚡ 10 типов заданий</span>
+          <span class="pill">✅ автопроверка</span>
+          <span class="pill">🧠 разбор после ответа</span>
+          <span class="pill">⏱ режим варианта</span>
+        </div>
+      </section>
+      <aside class="side-card">
+        <div>
+          <div class="small-muted">Твой результат в этом браузере</div>
+          <div class="score-big" id="scoreBig">0%</div>
+        </div>
+        <div class="progressbar"><span id="scoreBar"></span></div>
+        <div class="small-muted" id="scoreText">Пока нет попыток. Погнали с одного задания — и уже будет статистика.</div>
+      </aside>
+    </header>
+
+    <div class="layout">
+      <nav class="panel">
+        <section class="nav-card">
+          <div class="nav-title"><span>Выбери номер</span><span class="small-muted">1–10</span></div>
+          <div class="topic-grid" id="topicGrid"></div>
+        </section>
+        <section class="nav-card actions">
+          <button class="primary" id="newTaskBtn">Новое задание</button>
+          <button class="secondary" id="variantBtn">Собрать вариант 1–10</button>
+          <button class="ghost" id="printBtn">Распечатать вариант</button>
+          <button class="danger" id="resetBtn">Сбросить прогресс</button>
+        </section>
+        <section class="nav-card">
+          <div class="nav-title">Шпаргалка без воды</div>
+          <div class="cheats" id="cheats"></div>
+        </section>
+      </nav>
+
+      <main>
+        <section class="task-card" id="trainingCard">
+          <div class="meta-row">
+            <span class="meta-chip" id="taskMeta">Задание №1</span>
+            <span class="meta-chip timer-chip" id="quickTip">Совет: сначала реши, потом смотри разбор</span>
+          </div>
+          <h2 id="taskTitle"></h2>
+          <div class="task-text" id="taskText"></div>
+          <div class="answer-row">
+            <input class="answer" id="answerInput" autocomplete="off" placeholder="Ответ без пробелов">
+            <button class="primary" id="checkBtn">Проверить</button>
+            <button class="ghost" id="hintBtn">Подсказка</button>
+            <button class="ghost" id="solutionBtn">Решение</button>
+          </div>
+          <div class="feedback" id="feedback"></div>
+          <div class="hint-box" id="hintBox"></div>
+          <div class="solution-box" id="solutionBox"></div>
+        </section>
+
+        <section class="variant-card" id="variantCard">
+          <div class="variant-head">
+            <div>
+              <div class="eyebrow">мини-вариант</div>
+              <h2 style="margin:4px 0 0">10 заданий · цель — 30 минут</h2>
+            </div>
+            <div class="pill-row" style="margin:0">
+              <span class="pill" id="variantTimer">30:00</span>
+              <span class="pill" id="variantScore">ещё не проверено</span>
+            </div>
+          </div>
+          <div class="variant-grid" id="variantGrid"></div>
+          <div class="answer-row" style="grid-template-columns:1fr auto auto;">
+            <div class="small-muted">Ответы можно проверять по одному или весь вариант сразу.</div>
+            <button class="primary" id="checkVariantBtn">Проверить вариант</button>
+            <button class="ghost" id="newVariantBtn">Новый вариант</button>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div class="footer-note">Сделано для быстрой тренировки первой части ОГЭ по информатике. Ответы проверяются локально, данные никуда не отправляются.</div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const TOPICS = [
+    {n:1, name:'Информационный объём', cheat:'В Unicode 16 бит = 2 байта на символ. Если удалили слово, запятую и пробел, то разница = (длина слова + 2) × байт на символ.'},
+    {n:2, name:'Кодирование сообщений', cheat:'Идём слева направо: подбираем код буквы, отрезаем его от радиограммы, повторяем. Если сомневаешься — выпиши дерево вариантов.'},
+    {n:3, name:'Логика и неравенства', cheat:'НЕ меняет истину на ложь. Для “ложно A ИЛИ B” нужно, чтобы оба куска были ложными. Часто быстрее проверить x = 1, 2, 3…'},
+    {n:4, name:'Кратчайший путь', cheat:'Положительные веса: перебирай короткие маршруты без повторов или веди таблицу расстояний. Не забывай, что прямой путь не всегда лучший.'},
+    {n:5, name:'Команды исполнителя', cheat:'Работай от цели назад: если последняя команда “+1”, отними 1; если “квадрат”, возьми корень. Потом проверь прямым ходом.'},
+    {n:6, name:'Программа с параметром A', cheat:'Сначала переведи условие вывода. Например, при if s>A or t>K печатается NO ровно тогда, когда s≤A и t≤K.'},
+    {n:7, name:'Адрес файла в Интернете', cheat:'Шаблон адреса: протокол://сервер.домен/имя.расширение. Сначала найди протокол и “://”, потом сервер, слэш и файл.'},
+    {n:8, name:'Запросы поисковика', cheat:'A&(B|C) = A&B плюс A&C минус A&B&C. Пересечение трёх слов вычитается, потому что попало в две группы сразу.'},
+    {n:9, name:'Количество путей в графе', cheat:'Ставим у конечного города 1. Для каждой вершины число путей = сумма чисел в вершинах, куда из неё можно пойти.'},
+    {n:10, name:'Системы счисления', cheat:'Переводи каждое число в десятичную: двоичная — степени 2, восьмеричная — степени 8, шестнадцатеричная — A=10, B=11, … F=15.'}
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const rnd = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+  const pick = (arr) => arr[rnd(0, arr.length-1)];
+  const shuffle = (arr) => arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const normalize = (s) => String(s ?? '').trim().replace(/\s+/g,'').replace(/ё/g,'е').replace(/Ё/g,'Е').toLowerCase();
+  const numNorm = (s) => String(s ?? '').trim().replace(/\s+/g,'').replace(',', '.');
+  const sub = (x) => String(x).split('').map(ch => '₀₁₂₃₄₅₆₇₈₉'[Number(ch)]).join('');
+
+  let currentTopic = 1;
+  let currentTask = null;
+  let variantTasks = [];
+  let variantTimer = null;
+  let variantSeconds = 30 * 60;
+
+  const defaultStats = () => ({attempts:0, correct:0, byTask:Object.fromEntries(TOPICS.map(t=>[t.n,{attempts:0,correct:0}]))});
+  let stats = loadStats();
+
+  function loadStats(){
+    try{
+      const raw = localStorage.getItem('ogeInfoTrainerStats');
+      if(!raw) return defaultStats();
+      const parsed = JSON.parse(raw);
+      const base = defaultStats();
+      return {...base, ...parsed, byTask:{...base.byTask, ...(parsed.byTask || {})}};
+    }catch(e){ return defaultStats(); }
+  }
+  function saveStats(){ localStorage.setItem('ogeInfoTrainerStats', JSON.stringify(stats)); }
+  function record(n, ok){
+    stats.attempts += 1;
+    if(ok) stats.correct += 1;
+    if(!stats.byTask[n]) stats.byTask[n] = {attempts:0, correct:0};
+    stats.byTask[n].attempts += 1;
+    if(ok) stats.byTask[n].correct += 1;
+    saveStats(); renderStats();
+  }
+  function renderStats(){
+    const pct = stats.attempts ? Math.round(stats.correct / stats.attempts * 100) : 0;
+    $('scoreBig').textContent = pct + '%';
+    $('scoreBar').style.width = pct + '%';
+    if(!stats.attempts){
+      $('scoreText').textContent = 'Пока нет попыток. Погнали с одного задания — и уже будет статистика.';
+      return;
+    }
+    const weak = TOPICS
+      .map(t => ({...t, s: stats.byTask[t.n] || {attempts:0, correct:0}}))
+      .filter(x => x.s.attempts >= 2)
+      .sort((a,b) => (a.s.correct/a.s.attempts) - (b.s.correct/b.s.attempts))[0];
+    $('scoreText').textContent = `${stats.correct} верно из ${stats.attempts}. ${weak ? 'Слабое место сейчас: №' + weak.n + ' — ' + weak.name + '.' : 'Сделай ещё пару задач, и покажу слабые места.'}`;
+  }
+
+  function renderNav(){
+    $('topicGrid').innerHTML = TOPICS.map(t => `
+      <button class="topic-btn ${t.n===currentTopic?'active':''}" data-topic="${t.n}">
+        <span class="topic-num">${t.n}</span><span class="topic-name">${esc(t.name)}</span>
+      </button>`).join('');
+    [...document.querySelectorAll('.topic-btn')].forEach(btn => btn.addEventListener('click', () => {
+      currentTopic = Number(btn.dataset.topic);
+      renderNav(); newTask(currentTopic);
+    }));
+
+    $('cheats').innerHTML = TOPICS.map(t => `<details class="cheat" ${t.n===currentTopic?'open':''}><summary>№${t.n}. ${esc(t.name)}</summary><p>${esc(t.cheat)}</p></details>`).join('');
+  }
+
+  const generators = {
+    1: gen1, 2: gen2, 3: gen3, 4: gen4, 5: gen5,
+    6: gen6, 7: gen7, 8: gen8, 9: gen9, 10: gen10
+  };
+
+  function newTask(n=currentTopic){
+    currentTopic = n;
+    renderNav();
+    currentTask = generators[n]();
+    $('taskMeta').textContent = `Задание №${n}`;
+    $('taskTitle').textContent = currentTask.title;
+    $('taskText').innerHTML = currentTask.html;
+    $('answerInput').value = '';
+    $('feedback').className = 'feedback';
+    $('feedback').textContent = '';
+    $('hintBox').className = 'hint-box';
+    $('solutionBox').className = 'solution-box';
+    $('hintBox').innerHTML = currentTask.hint;
+    $('solutionBox').innerHTML = currentTask.solution;
+    $('answerInput').focus();
+  }
+
+  function checkTask(task, input){
+    if(task.customCheck) return task.customCheck(input);
+    const expected = Array.isArray(task.answer) ? task.answer.map(normalize) : [normalize(task.answer)];
+    return expected.includes(normalize(input));
+  }
+  function showFeedback(ok, task, input, shouldRecord=true){
+    const fb = $('feedback');
+    fb.className = 'feedback ' + (ok ? 'good' : 'bad');
+    fb.innerHTML = ok ? 'Верно. Вот это темп 👌' : `Пока нет. Правильный ответ: <span class="mono">${esc(task.displayAnswer ?? task.answer)}</span>`;
+    if(shouldRecord) record(task.num, ok);
+  }
+
+  function gen1(){
+    const sets = [
+      {kind:'героев мультфильмов', intro:'Ученик написал текст', items:['Шрек','Пумба','Маугли','Рататуй','Пиноккио','Белоснежка','Малефисента','Человек-паук','Конёк-Горбунок']},
+      {kind:'городов', intro:'Ученица написала список городов', items:['Пермь','Самара','Вологда','Кострома','Новосибирск','Екатеринбург','Петрозаводск','Владивосток']},
+      {kind:'пород собак', intro:'Ученик написал список пород собак', items:['мопс','бигль','басенджи','далматин','ротвейлер','шнауцер','доберман','лабрадор']}
+    ];
+    const data = pick(sets);
+    const bytes = pick([1,2]);
+    const bits = bytes * 8;
+    const counts = {};
+    data.items.forEach(x => counts[x.length] = (counts[x.length] || 0) + 1);
+    const candidates = data.items.filter(x => counts[x.length] === 1);
+    const item = pick(candidates);
+    const diff = (item.length + 2) * bytes;
+    const list = data.items.join(', ');
+    return {
+      num:1,
+      title:'Информационный объём текста',
+      answer:item,
+      displayAnswer:item,
+      html:`<p>В одной из кодировок каждый символ кодируется <b>${bits} битами</b>.</p>
+        <p>${esc(data.intro)}: «${esc(list)}».</p>
+        <p>Из списка удалили одно название, а также лишние запятую и пробел. Размер нового текста оказался на <b>${diff} байт</b> меньше. Напишите удалённое название.</p>`,
+      hint:`${bits} бит = ${bytes} байт на символ. Разницу в байтах раздели на ${bytes}, потом вычти 2 символа: запятую и пробел.`,
+      solution:`Удалено ${diff} / ${bytes} = <b>${diff/bytes}</b> символов. Из них 2 символа — это запятая и пробел, значит длина названия ${diff/bytes} − 2 = <b>${item.length}</b>. В списке такую длину имеет «<b>${esc(item)}</b>».`
+    };
+  }
+
+  function countDecodings(encoded, letters, codes, limit=2){
+    const memo = new Map();
+    function rec(pos){
+      if(pos === encoded.length) return [''];
+      if(memo.has(pos)) return memo.get(pos);
+      let out = [];
+      for(const ch of letters){
+        const code = codes[ch];
+        if(encoded.startsWith(code, pos)){
+          for(const tail of rec(pos + code.length)){
+            out.push(ch + tail);
+            if(out.length >= limit) break;
+          }
+        }
+        if(out.length >= limit) break;
+      }
+      memo.set(pos, out);
+      return out;
+    }
+    return rec(0);
+  }
+
+  function gen2(){
+    const tables = [
+      {letters:['А','Д','Ж','Л','Т'], codes:{'А':'•–','Д':'–•','Ж':'––','Л':'••–','Т':'•••'}},
+      {letters:['К','О','Т','М','Р'], codes:{'К':'–•','О':'––','Т':'•–','М':'••–','Р':'•••'}},
+      {letters:['Б','Е','Р','С','У'], codes:{'Б':'•–','Е':'–•','Р':'––','С':'••–','У':'•••'}}
+    ];
+    const tab = pick(tables);
+    let word, encoded, dec;
+    for(let tries=0; tries<200; tries++){
+      const len = rnd(5,8);
+      word = Array.from({length:len}, () => pick(tab.letters)).join('');
+      encoded = word.split('').map(ch => tab.codes[ch]).join('');
+      dec = countDecodings(encoded, tab.letters, tab.codes, 2);
+      if(dec.length === 1 && dec[0] === word) break;
+    }
+    const codeRows = tab.letters.map(ch => `<tr><td><b>${ch}</b></td><td class="mono">${tab.codes[ch].split('').join(' ')}</td></tr>`).join('');
+    return {
+      num:2,
+      title:'Декодирование сообщения',
+      answer:word,
+      displayAnswer:word,
+      html:`<p>При передаче сообщения потерялось разбиение на буквы. Известно, что использовались только буквы из таблицы.</p>
+        <p class="mono" style="font-size:24px;font-weight:900;letter-spacing:.08em">${encoded.split('').join(' ')}</p>
+        <table class="code-table"><tr><th>Буква</th><th>Код</th></tr>${codeRows}</table>
+        <p>Определите исходное слово. В ответе запишите только буквы без пробелов.</p>`,
+      hint:'Начни с первых символов радиограммы. Подбери код буквы, который стоит в начале, отрежь его и продолжай. Если появились два варианта — проверь, какой можно довести до конца.',
+      solution:`Единственное разбиение радиограммы по таблице даёт слово <b>${word}</b>. Проверка: ${word.split('').map(ch => `${ch}=${tab.codes[ch]}`).join(', ')}.`
+    };
+  }
+
+  function gen3(){
+    const type = rnd(1,3);
+    let html, answer, hint, solution, title='Логическое выражение';
+    if(type === 1){
+      const c = rnd(1,9), b = c + rnd(3,6), a = rnd(c+1, b-1);
+      const good = [];
+      for(let x=1; x<=50; x++){
+        const expr = (x > a) || !((x < b) && (x > c));
+        if(!expr) good.push(x);
+      }
+      answer = good[0];
+      html = `<p>Напишите <b>наименьшее натуральное число x</b>, для которого <b>ложно</b> высказывание:</p>
+        <p class="mono" style="font-size:20px">(x &gt; ${a}) ИЛИ НЕ ((x &lt; ${b}) И (x &gt; ${c}))</p>`;
+      hint = 'Чтобы выражение “A ИЛИ B” было ложным, оба куска должны быть ложными. Значит, x не больше первого порога и одновременно проходит внутренние неравенства.';
+      solution = `Ложность всего выражения означает: <span class="mono">x ≤ ${a}</span> и <span class="mono">(x &lt; ${b}) и (x &gt; ${c})</span>. Подходящие натуральные x: ${good.join(', ')}. Наименьшее — <b>${answer}</b>.`;
+    }else if(type === 2){
+      const c = rnd(1,8), a = c + rnd(2,8);
+      answer = a;
+      html = `<p>Напишите <b>наибольшее натуральное число x</b>, для которого <b>истинно</b> высказывание:</p>
+        <p class="mono" style="font-size:20px">НЕ (x &gt; ${a}) И (x &gt; ${c})</p>`;
+      hint = 'НЕ (x > a) означает x ≤ a. Дальше пересекаем это с x > c.';
+      solution = `Получаем условия <span class="mono">x ≤ ${a}</span> и <span class="mono">x &gt; ${c}</span>. Наибольшее натуральное x в этом промежутке — <b>${answer}</b>.`;
+    }else{
+      const a = rnd(2,10), b = a + rnd(3,8);
+      answer = a + 1;
+      html = `<p>Напишите <b>наименьшее натуральное число x</b>, для которого <b>истинно</b> высказывание:</p>
+        <p class="mono" style="font-size:20px">(x &gt; ${a}) И НЕ (x ≥ ${b})</p>`;
+      hint = 'НЕ (x ≥ b) — это x < b. Значит, нужен первый натуральный x строго больше a, но меньше b.';
+      solution = `Условия превращаются в <span class="mono">x &gt; ${a}</span> и <span class="mono">x &lt; ${b}</span>. Наименьшее такое число — <b>${answer}</b>.`;
+    }
+    return {num:3,title,answer:String(answer),displayAnswer:String(answer),html,hint,solution};
+  }
+
+  function gen4(){
+    const nodes = ['A','B','C','D','E'];
+    let edges, result;
+    for(let tries=0; tries<200; tries++){
+      edges = [];
+      const add = (u,v,w) => edges.push({u,v,w});
+      const chain = shuffle(nodes.slice());
+      for(let i=0;i<chain.length-1;i++) add(chain[i], chain[i+1], rnd(1,8));
+      for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
+        if(Math.random() < .48 && !edges.some(e => (e.u===nodes[i]&&e.v===nodes[j]) || (e.u===nodes[j]&&e.v===nodes[i]))) add(nodes[i], nodes[j], rnd(1,9));
+      }
+      const targets = ['D','E'];
+      const start = 'A', end = pick(targets);
+      result = shortestPath(nodes, edges, start, end);
+      if(result && result.dist >= 3 && result.dist <= 20){
+        result.start = start; result.end = end; break;
+      }
+    }
+    const matrix = nodes.map(r => nodes.map(c => {
+      if(r===c) return '';
+      const e = edges.find(x => (x.u===r&&x.v===c)||(x.u===c&&x.v===r));
+      return e ? e.w : '';
+    }));
+    const table = `<table class="matrix"><tr><th></th>${nodes.map(n=>`<th>${n}</th>`).join('')}</tr>` +
+      nodes.map((r,i)=>`<tr><th>${r}</th>${nodes.map((c,j)=>`<td class="${i===j?'diag':''}">${i===j?'—':matrix[i][j]}</td>`).join('')}</tr>`).join('') + '</table>';
+    return {
+      num:4,
+      title:'Кратчайший путь в графе',
+      answer:String(result.dist),
+      displayAnswer:String(result.dist),
+      html:`<p>Между населёнными пунктами построены дороги, протяжённость которых дана в таблице.</p>${table}
+        <p>Определите длину кратчайшего пути между пунктами <b>${result.start}</b> и <b>${result.end}</b>. Передвигаться можно только по указанным дорогам, каждый пункт можно посетить не более одного раза.</p>`,
+      hint:'Записывай текущую минимальную длину до каждой вершины или перебери простые маршруты. Все веса положительные, поэтому петли не помогают.',
+      solution:`Кратчайший маршрут: <b>${result.path.join(' → ')}</b>. Его длина: ${pathWeights(result.path, edges).join(' + ')} = <b>${result.dist}</b>.`
+    };
+  }
+
+  function shortestPath(nodes, edges, start, end){
+    const adj = Object.fromEntries(nodes.map(n=>[n,[]]));
+    edges.forEach(e => { adj[e.u].push([e.v,e.w]); adj[e.v].push([e.u,e.w]); });
+    let best = {dist: Infinity, path: []};
+    function dfs(u, seen, dist, path){
+      if(dist >= best.dist) return;
+      if(u === end){ best = {dist, path:path.slice()}; return; }
+      for(const [v,w] of adj[u]) if(!seen.has(v)){
+        seen.add(v); path.push(v); dfs(v, seen, dist+w, path); path.pop(); seen.delete(v);
+      }
+    }
+    dfs(start, new Set([start]), 0, [start]);
+    return Number.isFinite(best.dist) ? best : null;
+  }
+  function pathWeights(path, edges){
+    const out=[];
+    for(let i=0;i<path.length-1;i++){
+      const a=path[i], b=path[i+1];
+      out.push(edges.find(e => (e.u===a&&e.v===b)||(e.u===b&&e.v===a)).w);
+    }
+    return out;
+  }
+
+  function gen5(){
+    let start, seq, target;
+    for(let tries=0; tries<500; tries++){
+      start = rnd(2,7);
+      const len = rnd(3,5);
+      seq = Array.from({length:len}, (_,i) => Math.random() < (i===0 ? .35 : .45) ? '1' : '2').join('');
+      let squares = (seq.match(/1/g)||[]).length;
+      if(squares > 2) continue;
+      target = applyQuadrator(start, seq);
+      if(target > start && target <= 1200 && target !== null) break;
+    }
+    const limit = 5;
+    return {
+      num:5,
+      title:'Алгоритм для исполнителя',
+      answer:seq,
+      displayAnswer:seq,
+      customCheck:(input) => {
+        const s = String(input).trim().replace(/\s+/g,'');
+        if(!/^[12]+$/.test(s) || s.length > limit) return false;
+        return applyQuadrator(start, s) === target;
+      },
+      html:`<p>У исполнителя <b>Квадратор</b> две команды:</p>
+        <p><b>1)</b> возведи в квадрат &nbsp;&nbsp; <b>2)</b> прибавь 1</p>
+        <p>Составьте алгоритм получения из числа <b>${start}</b> числа <b>${target}</b>, содержащий не более <b>${limit}</b> команд. В ответе запишите только номера команд.</p>`,
+      hint:'Можно идти от цели назад: если число получилось командой 2, уменьши его на 1; если командой 1, попробуй извлечь квадратный корень.',
+      solution:`Один из подходящих алгоритмов: <span class="mono"><b>${seq}</b></span>. Проверка: ${traceQuadrator(start, seq)}.`
+    };
+  }
+  function applyQuadrator(start, seq){
+    let x = start;
+    for(const ch of seq){
+      if(ch === '1') x = x*x;
+      else if(ch === '2') x += 1;
+      else return null;
+      if(x > 1000000) return null;
+    }
+    return x;
+  }
+  function traceQuadrator(start, seq){
+    let x=start, parts=[String(x)];
+    for(const ch of seq){
+      if(ch==='1'){ x=x*x; parts.push(`квадрат → ${x}`); }
+      else { x=x+1; parts.push(`+1 → ${x}`); }
+    }
+    return parts.join(' → ');
+  }
+
+  function gen6(){
+    let K, pairs, qual, m, ans;
+    for(let tries=0; tries<500; tries++){
+      K = rnd(8,14);
+      pairs = [];
+      const used = new Set();
+      while(pairs.length < 9){
+        const s = rnd(-12,18), t = rnd(-10,18);
+        const key = s+','+t;
+        if(!used.has(key)){ used.add(key); pairs.push([s,t]); }
+      }
+      qual = [...new Set(pairs.filter(p => p[1] <= K).map(p => p[0]))].sort((a,b)=>a-b);
+      if(qual.length >= 4){
+        m = rnd(2, qual.length-1);
+        ans = qual[m] - 1;
+        const count = pairs.filter(([s,t]) => t <= K && s <= ans).length;
+        const countNext = pairs.filter(([s,t]) => t <= K && s <= ans+1).length;
+        if(count === m && countNext > m) break;
+      }
+    }
+    const pairsText = pairs.map(p => `(${p[0]}, ${p[1]})`).join('; ');
+    return {
+      num:6,
+      title:'Анализ программы с параметром',
+      answer:String(ans),
+      displayAnswer:String(ans),
+      html:`<p>Ниже приведена программа на Python.</p>
+        <pre class="program">s = int(input())
+t = int(input())
+A = int(input())
+if (s &gt; A) or (t &gt; ${K}):
+    print("YES")
+else:
+    print("NO")</pre>
+        <p>Было проведено 9 запусков программы. В качестве значений <span class="mono">s</span> и <span class="mono">t</span> вводились пары:</p>
+        <p><b>${pairsText}</b>.</p>
+        <p>Укажите <b>наибольшее целое значение A</b>, при котором программа напечатает <b>NO ровно ${m} раз(а)</b>.</p>`,
+      hint:`NO печатается только если оба условия для YES ложны: s ≤ A и t ≤ ${K}. Оставь пары с t ≤ ${K}, отсортируй их s.`,
+      solution:`Для вывода NO нужно <span class="mono">s ≤ A</span> и <span class="mono">t ≤ ${K}</span>. Значения s у подходящих по t запусков: ${qual.join(', ')}. Нужно ровно ${m} значений s, не превосходящих A. Следующий порог — ${qual[m]}, значит наибольшее A равно ${qual[m]} − 1 = <b>${ans}</b>.`
+    };
+  }
+
+  function gen7(){
+    const protocol = pick(['http','https','ftp']);
+    const domain = pick(['school','smile','demo','info','data','robot','class']);
+    const zone = pick(['.ru','.net','.org']);
+    const file = pick(['index','lesson','task','answer','table','page']);
+    const ext = pick(['txt','html','csv','dat']);
+    const ordered = [protocol, '://', domain, zone, '/', file + '.', ext];
+    const shuffled = shuffle(ordered.map((text, idx) => ({text, idx})));
+    const numbered = shuffled.map((x,i) => ({...x, label:i+1}));
+    const answer = ordered.map((_, idx) => numbered.find(x => x.idx === idx).label).join('');
+    return {
+      num:7,
+      title:'Адрес файла в Интернете',
+      answer,
+      displayAnswer:answer,
+      html:`<p>Доступ к файлу <b>${file}.${ext}</b>, находящемуся на сервере <b>${domain}${zone}</b>, осуществляется по протоколу <b>${protocol}</b>.</p>
+        <p>Фрагменты адреса закодированы цифрами. Запишите последовательность цифр, кодирующую полный адрес файла.</p>
+        <div class="fragments">${numbered.map(x => `<div class="fragment"><span>${x.label})</span><span class="mono">${esc(x.text)}</span></div>`).join('')}</div>`,
+      hint:'Собери по шаблону: протокол://сервер.домен/имя.расширение.',
+      solution:`Полный адрес: <span class="mono"><b>${protocol}://${domain}${zone}/${file}.${ext}</b></span>. Значит, последовательность фрагментов: <b>${answer}</b>.`
+    };
+  }
+
+  function gen8(){
+    const groups = shuffle(['Динамо','Зенит','Спартак','Рубин','Сокол','Метеор']).slice(0,3);
+    const [A,B,C] = groups;
+    const abc = rnd(50,220);
+    const abOnly = rnd(180,620);
+    const acOnly = rnd(160,600);
+    const ab = abOnly + abc;
+    const ac = acOnly + abc;
+    const total = ab + ac - abc;
+    return {
+      num:8,
+      title:'Запросы поискового сервера',
+      answer:String(ac),
+      displayAnswer:String(ac),
+      html:`<p>В языке запросов символ <span class="mono">|</span> обозначает «ИЛИ», а <span class="mono">&amp;</span> — «И».</p>
+        <table class="query-table"><tr><th>Запрос</th><th>Найдено страниц, тыс.</th></tr>
+          <tr><td>${A} &amp; (${B} | ${C})</td><td>${total}</td></tr>
+          <tr><td>${A} &amp; ${B}</td><td>${ab}</td></tr>
+          <tr><td>${A} &amp; ${B} &amp; ${C}</td><td>${abc}</td></tr>
+        </table>
+        <p>Сколько страниц, в тысячах, будет найдено по запросу <b>${A} &amp; ${C}</b>?</p>`,
+      hint:'Объединение A&B и A&C содержит общую часть A&B&C. Формула: A&(B|C) = A&B + A&C − A&B&C.',
+      solution:`Обозначим неизвестное <span class="mono">${A}&amp;${C}=x</span>. Тогда ${total} = ${ab} + x − ${abc}. Отсюда x = ${total} − ${ab} + ${abc} = <b>${ac}</b>.`
+    };
+  }
+
+  function gen9(){
+    const nodes = ['A','B','C','D','E','F','G','H'];
+    const coords = {A:[55,160],B:[175,75],C:[175,160],D:[175,245],E:[315,90],F:[315,205],G:[455,115],H:[575,180]};
+    const candidates = [['A','B'],['A','C'],['A','D'],['B','E'],['B','F'],['C','E'],['C','F'],['C','D'],['D','F'],['E','G'],['E','F'],['F','G'],['F','H'],['G','H'],['E','H']];
+    let edges, counts, ans;
+    for(let tries=0; tries<300; tries++){
+      const mandatory = [['A','B'],['A','C'],['B','E'],['C','F'],['E','G'],['F','H'],['G','H']];
+      edges = mandatory.slice();
+      for(const e of candidates){
+        if(mandatory.some(m => m[0]===e[0]&&m[1]===e[1])) continue;
+        if(Math.random() < .48) edges.push(e);
+      }
+      counts = countPathsDAG(nodes, edges, 'H');
+      ans = counts['A'];
+      if(ans >= 5 && ans <= 35) break;
+    }
+    const svg = renderDagSvg(nodes, edges, coords);
+    const formula = nodes.slice().reverse().map(n => `${n}=${counts[n]}`).join(', ');
+    return {
+      num:9,
+      title:'Количество путей в ориентированном графе',
+      answer:String(ans),
+      displayAnswer:String(ans),
+      html:`<p>На рисунке — схема дорог. По каждой дороге можно двигаться только в направлении стрелки.</p>
+        ${svg}
+        <p>Сколько существует различных путей из города <b>A</b> в город <b>H</b>?</p>`,
+      hint:'Начни с конца: у H поставь 1. Для каждой вершины сложи числа у всех вершин, в которые из неё выходят стрелки.',
+      solution:`Считаем с конца: ${formula}. Поэтому из A в H существует <b>${ans}</b> путей.`
+    };
+  }
+  function countPathsDAG(nodes, edges, end){
+    const adj = Object.fromEntries(nodes.map(n=>[n,[]]));
+    edges.forEach(([u,v]) => adj[u].push(v));
+    const count = Object.fromEntries(nodes.map(n=>[n,0]));
+    count[end] = 1;
+    for(let i=nodes.length-2; i>=0; i--){
+      const u = nodes[i];
+      count[u] = adj[u].reduce((sum,v) => sum + count[v], 0);
+    }
+    return count;
+  }
+  function renderDagSvg(nodes, edges, coords){
+    const edgeSvg = edges.map(([u,v],i) => {
+      const [x1,y1] = coords[u], [x2,y2] = coords[v];
+      const dx=x2-x1, dy=y2-y1, len=Math.sqrt(dx*dx+dy*dy), pad=22;
+      const sx=x1+dx/len*pad, sy=y1+dy/len*pad, ex=x2-dx/len*pad, ey=y2-dy/len*pad;
+      const curve = Math.abs(y2-y1) > 90 ? `Q ${(sx+ex)/2} ${(sy+ey)/2 + (i%2?18:-18)} ${ex} ${ey}` : `L ${ex} ${ey}`;
+      return `<path d="M ${sx} ${sy} ${curve}" stroke="#24324f" stroke-width="2.4" fill="none" marker-end="url(#arrow)"/>`;
+    }).join('');
+    const nodeSvg = nodes.map(n => {
+      const [x,y]=coords[n];
+      return `<g><circle cx="${x}" cy="${y}" r="18" fill="#fff" stroke="#3757ff" stroke-width="3"/><text x="${x}" y="${y+6}" text-anchor="middle" font-family="Arial" font-size="17" font-weight="800" fill="#152033">${n}</text></g>`;
+    }).join('');
+    return `<svg class="graph-svg" viewBox="0 0 630 320" role="img" aria-label="Ориентированный граф">
+      <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#24324f"/></marker></defs>
+      ${edgeSvg}${nodeSvg}
+    </svg>`;
+  }
+
+  function gen10(){
+    const bases = [2,8,16];
+    const terms = bases.map(base => {
+      const val = base === 2 ? rnd(20,120) : base === 8 ? rnd(20,200) : rnd(20,240);
+      return {val, base, text: val.toString(base).toUpperCase()};
+    });
+    const shuffled = shuffle(terms);
+    const total = shuffled.reduce((s,t)=>s+t.val,0);
+    const expr = shuffled.map(t => `${t.text}<sub>${t.base}</sub>`).join(' + ');
+    const conv = shuffled.map(t => `<span class="mono">${t.text}${sub(t.base)}</span> = ${t.val}`).join('; ');
+    return {
+      num:10,
+      title:'Системы счисления',
+      answer:String(total),
+      displayAnswer:String(total),
+      html:`<p>Вычислите значение арифметического выражения:</p>
+        <p style="font-size:26px;font-weight:950">${expr}</p>
+        <p>В ответе запишите десятичное число. Основание системы счисления указывать не нужно.</p>`,
+      hint:'Переведи каждое число в десятичную систему, потом сложи. В шестнадцатеричной системе A=10, B=11, C=12, D=13, E=14, F=15.',
+      solution:`Переводим: ${conv}. Сумма: ${shuffled.map(t=>t.val).join(' + ')} = <b>${total}</b>.`
+    };
+  }
+
+  function showHint(){ $('hintBox').classList.toggle('show'); }
+  function showSolution(){ $('solutionBox').classList.toggle('show'); }
+
+  function makeVariant(){
+    variantTasks = TOPICS.map(t => generators[t.n]());
+    $('variantCard').classList.add('show');
+    renderVariant();
+    startVariantTimer();
+    toast('Вариант собран. Таймер на 30 минут пошёл — но без паники, это тренировка.');
+    $('variantCard').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  function renderVariant(){
+    $('variantGrid').innerHTML = variantTasks.map((task, idx) => `
+      <div class="mini-task" data-idx="${idx}">
+        <div class="mini-head"><span>№${task.num}. ${esc(task.title)}</span><span class="mini-result" id="miniResult${idx}">—</span></div>
+        <div class="task-text">${task.html}</div>
+        <div class="mini-answer-row">
+          <input id="miniAnswer${idx}" placeholder="Ответ" autocomplete="off">
+          <button class="ghost" data-mini-hint="${idx}">Подсказка</button>
+          <button class="primary" data-mini-check="${idx}">Проверить</button>
+        </div>
+        <div class="hint-box" id="miniHint${idx}">${task.hint}</div>
+        <div class="solution-box" id="miniSolution${idx}">${task.solution}</div>
+      </div>`).join('');
+    [...document.querySelectorAll('[data-mini-check]')].forEach(btn => btn.addEventListener('click', () => checkMini(Number(btn.dataset.miniCheck), true)));
+    [...document.querySelectorAll('[data-mini-hint]')].forEach(btn => btn.addEventListener('click', () => $('miniHint'+btn.dataset.miniHint).classList.toggle('show')));
+  }
+  function checkMini(idx, shouldRecord=false){
+    const task = variantTasks[idx];
+    const input = $('miniAnswer'+idx).value;
+    const ok = checkTask(task, input);
+    const badge = $('miniResult'+idx);
+    badge.textContent = ok ? 'верно' : `ответ: ${task.displayAnswer ?? task.answer}`;
+    badge.className = 'mini-result ' + (ok ? 'ok' : 'no');
+    $('miniSolution'+idx).classList.add('show');
+    if(shouldRecord) record(task.num, ok);
+    return ok;
+  }
+  function checkVariant(){
+    if(!variantTasks.length) return;
+    let okCount = 0;
+    variantTasks.forEach((_, idx) => { if(checkMini(idx, true)) okCount += 1; });
+    $('variantScore').textContent = `${okCount}/10 верно`;
+    toast(okCount >= 8 ? `Сильно! ${okCount}/10 — уже пахнет уверенной первой частью.` : `${okCount}/10. Нормальная разминка: посмотри решения и добей слабые номера.`);
+  }
+  function startVariantTimer(){
+    if(variantTimer) clearInterval(variantTimer);
+    variantSeconds = 30 * 60;
+    updateTimer();
+    variantTimer = setInterval(() => {
+      variantSeconds -= 1;
+      updateTimer();
+      if(variantSeconds <= 0){ clearInterval(variantTimer); variantTimer = null; toast('30 минут вышли. Проверь вариант и отметь номера, где зависал дольше всего.'); }
+    }, 1000);
+  }
+  function updateTimer(){
+    const s = Math.max(0, variantSeconds);
+    const m = Math.floor(s/60), sec = s%60;
+    $('variantTimer').textContent = `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  }
+  function toast(msg){
+    const t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast._timer); toast._timer = setTimeout(()=>t.classList.remove('show'), 3600);
+  }
+
+  $('newTaskBtn').addEventListener('click', () => newTask(currentTopic));
+  $('checkBtn').addEventListener('click', () => {
+    const ok = checkTask(currentTask, $('answerInput').value);
+    showFeedback(ok, currentTask, $('answerInput').value, true);
+    if(!ok) $('solutionBox').classList.add('show');
+  });
+  $('hintBtn').addEventListener('click', showHint);
+  $('solutionBtn').addEventListener('click', showSolution);
+  $('variantBtn').addEventListener('click', makeVariant);
+  $('newVariantBtn').addEventListener('click', makeVariant);
+  $('checkVariantBtn').addEventListener('click', checkVariant);
+  $('printBtn').addEventListener('click', () => window.print());
+  $('resetBtn').addEventListener('click', () => {
+    if(confirm('Сбросить статистику тренировок?')){ stats = defaultStats(); saveStats(); renderStats(); toast('Статистика сброшена. Чистый лист — тоже кайф.'); }
+  });
+  $('answerInput').addEventListener('keydown', (e) => { if(e.key === 'Enter') $('checkBtn').click(); });
+
+  renderNav(); renderStats(); newTask(1);
+})();
+</script>
+</body>
+</html>

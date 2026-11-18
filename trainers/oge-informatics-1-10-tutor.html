@@ -50,7 +50,7 @@
       box-shadow:var(--shadow);
     }
     .hero-card{padding:30px;position:relative;overflow:hidden}
-    .hero-card:after{
+    .hero-card:after{pointer-events:none;
       content:"";position:absolute;right:-80px;top:-120px;width:260px;height:260px;border-radius:50%;
       background:linear-gradient(135deg, rgba(55,87,255,.17), rgba(0,168,132,.15));
     }
@@ -247,8 +247,21 @@
       .solution-box,.tutor-box,.hint-box{overflow-wrap:anywhere}
       .score-big{font-size:34px}
     }
+    .graph-svg .active-road {stroke:#b24700;stroke-width:4}
+    .graph-svg .active-city circle {stroke:#b24700;stroke-width:5}
+    .graph-svg .path-count {fill:#104d36;font-size:18px;font-weight:800;paint-order:stroke;stroke:white;stroke-width:5px}
+    .graph-key {font-size:1rem}
+    .topic-name,.small-muted{font-size:.93rem}
+    .task-card,.variant-card,main,.mini-task{min-width:0}
+    .variant-actions{grid-template-columns:minmax(0,1fr) auto auto}
+    :focus-visible{outline:3px solid #955500;outline-offset:3px}
+    @media(max-width:760px){
+      .stats-extra{overflow-x:auto}
+      .answer-row.has-tutor,.variant-actions{grid-template-columns:minmax(0,1fr)}
+      .task-text{font-size:1.075rem}
+    }
     @media print{
-      body{background:#fff}.nav-card,.side-card,.answer-row,.actions,.feedback,.hint-box,.solution-box{display:none!important}.layout,header.hero{display:block}.task-card,.variant-card{box-shadow:none;border:1px solid #aaa}.variant-card{display:block!important}
+      body{background:#fff}.nav-card,.side-card,.answer-row,.actions,.feedback,.hint-box,.solution-box,.tutor-box,.mini-answer-row,.mini-result,#trainingCard,.graph-key{display:none!important}.layout,header.hero{display:block}.task-card,.variant-card{box-shadow:none;border:1px solid #aaa}.variant-card{display:block!important}
     }
   </style>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
@@ -261,13 +274,8 @@
       <section class="hero-card">
         <div class="eyebrow">ОГЭ информатика · часть 1</div>
         <h1>Быстрый тренажёр заданий 1–10</h1>
-        <p class="lead">Генерирует новые варианты в стиле ОГЭ: проверка ответа, подсказка, короткое решение и мини-вариант на 30 минут. Работает офлайн в одном HTML-файле.</p>
-        <div class="pill-row">
-          <span class="pill">⚡ 10 типов заданий</span>
-          <span class="pill">✅ автопроверка</span>
-          <span class="pill">🧠 разбор после ответа</span>
-          <span class="pill">⏱ режим варианта</span>
-        </div>
+        <p class="lead">Выбери номер и попробуй решить задачу. Если застрянешь, открой один шаг разбора. Можно собрать десять заданий на 30 минут. Для тренировки без интернета сохрани этот HTML-файл.</p>
+        <p><a href="#trainingCard">Перейти к текущему заданию</a></p>
       </section>
       <aside class="side-card">
         <div>
@@ -308,7 +316,7 @@
       </nav>
 
       <main>
-        <section class="task-card" id="trainingCard">
+        <section class="task-card" id="trainingCard" tabindex="-1">
           <div class="meta-row">
             <span class="meta-chip" id="taskMeta">Задание №1</span>
             <span class="meta-chip timer-chip" id="quickTip">Совет: сначала реши, потом смотри разбор</span>
@@ -316,12 +324,13 @@
           <h2 id="taskTitle"></h2>
           <div class="task-text" id="taskText"></div>
           <div class="answer-row has-tutor">
-            <input class="answer" id="answerInput" autocomplete="off" placeholder="Ответ без пробелов">
+            <input class="answer" id="answerInput" autocomplete="off" placeholder="Твой ответ" aria-label="Ответ на задание">
             <button class="primary" id="checkBtn">Проверить</button>
             <button class="ghost" id="hintBtn">Подсказка</button>
             <button class="ghost" id="solutionBtn">Решение</button>
             <button class="tutor-open-btn" id="tutorOpenBtn" type="button">Разобрать по шагам</button>
           </div>
+          <button class="secondary" type="button" hidden id="similarBtn">Решить похожее самостоятельно</button>
           <div class="feedback" id="feedback" aria-live="polite"></div>
           <div class="tutor-locked" id="tutorLocked">В режиме «Экзамен» пошаговый разбор открывается после проверки задания или варианта. Сначала попробуй сам.</div>
           <div class="hint-box" id="hintBox"></div>
@@ -349,6 +358,8 @@
         </section>
       </main>
     </div>
+    <div class="footer-note"><a href="https://fipi.ru/oge/demoversii-specifikacii-kodifikatory">Демоверсия и спецификация ФИПИ</a>. Эти десять тем соответствуют номерам 1–10 демоверсии ОГЭ 2027. Здесь представлены отдельные модели задач. В №5 тренируем две команды Квадратора, в №6 ищем границу параметра при выводе NO.</div>
+    <p class="footer-note"><a href="./informatics-versions/">Июньская и ноябрьская версии: открыть и сравнить</a></p>
     <div class="footer-note">Сделано для быстрой тренировки первой части ОГЭ по информатике. Ответы проверяются локально, данные никуда не отправляются.</div>
   </div>
   <div class="toast" id="toast"></div>
@@ -369,16 +380,73 @@
   ];
 
   const $ = (id) => document.getElementById(id);
-  const rnd = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+  let random = Math.random;
+  const rnd = (a,b) => Math.floor(random()*(b-a+1))+a;
   const pick = (arr) => arr[rnd(0, arr.length-1)];
-  const shuffle = (arr) => arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  const shuffle = (arr) => arr.map(v=>[random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
   const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const normalize = (s) => String(s ?? '').trim().replace(/\s+/g,'').replace(/ё/g,'е').replace(/Ё/g,'Е').toLowerCase();
-  const numNorm = (s) => String(s ?? '').trim().replace(/\s+/g,'').replace(',', '.');
+  function decimal(s){
+    const value = String(s).trim().replace(/−/g,'-').replace(',','.');
+    return /^[+-]?\d+(?:\.0+)?$/.test(value) ? Number(value) : NaN;
+  }
+  const sequence = s => String(s).trim().replace(/[\s,;]+/g,'');
   const sub = (x) => String(x).split('').map(ch => '₀₁₂₃₄₅₆₇₈₉'[Number(ch)]).join('');
 
   let currentTopic = 1;
   let currentTask = null;
+  const tutorWork = new WeakMap();
+  const articleExample=new URLSearchParams(location.search).get('example')==='paths-article';
+  const sessionKey = articleExample ? 'ogeInfoArticleSession-v1' : 'ogeInfoPracticeSession-v1';
+  const diagnostics = [
+    '', 'Переведи разницу в байтах в число символов. Запятая и пробел тоже занимали место.',
+    'Сверь каждый отрезок радиограммы с кодом одной буквы. Дойди до последнего знака.',
+    'Подставь выбранное число в исходное выражение. Проверь также соседнее целое у границы.',
+    'Посмотри, есть ли дорога для каждого перехода. В ответ запиши суммарную длину.',
+    'Начни со стартового числа и выполни команды слева направо. Проверь, за сколько команд достигнута цель.',
+    'Посчитай запуски с NO для своего A, а затем для A + 1. Одинаковые значения s могут встретиться в разных запусках.',
+    'Расположи фрагменты от протокола до расширения. Каждая цифра используется ровно один раз.',
+    'Какие страницы вошли сразу в обе группы? Сверь знак перед их количеством и единицы таблицы.',
+    'Выбери город. Проследи каждую выходящую из него стрелку и сложи числа продолжений.',
+    'Проверь основание у каждого числа. Крайний правый разряд имеет вес 1, следующий — вес основания.'
+  ];
+  function buildTask(topic, seed = Math.floor(Math.random() * 4294967296)){
+    let state = seed;
+    random = () => {
+      state = (Math.imul(1664525,state) + 1013904223) >>> 0;
+      return state / 4294967296;
+    };
+    try { return {...generators[topic](), seed}; }
+    finally { random = Math.random; }
+  }
+  function saveSession(){
+    if(!currentTask) return;
+    const work = tutorWork.get(currentTask);
+    const active = tutorState.task === currentTask;
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({topic:currentTopic, seed:currentTask.seed,
+        answer:$('answerInput').value, checked:checkedTasks.has(currentTask), work, active}));
+    } catch(e) {}
+  }
+  function restoreSession(){
+    try {
+      const s = JSON.parse(sessionStorage.getItem(sessionKey));
+      if(!s || !Number.isInteger(s.topic) || !generators[s.topic] || !Number.isInteger(s.seed) || s.seed<0 || s.seed>4294967295) return false;
+      newTask(s.topic,s.seed,false);
+      $('answerInput').value = typeof s.answer === 'string' ? s.answer : '';
+      if(s.checked) checkedTasks.add(currentTask);
+      const w=s.work, length=currentTask.steps.length;
+      if(w && Number.isInteger(w.stepIndex) && w.stepIndex>=0 && w.stepIndex<length &&
+         Array.isArray(w.solvedSteps) && w.solvedSteps.length===length && w.solvedSteps.every(x=>x===false||typeof x==='string') &&
+         Array.isArray(w.revealed) && w.revealed.length===length && w.revealed.every(x=>typeof x==='boolean')){
+        tutorWork.set(currentTask,w);
+        if(s.active && (currentMode!=='exam'||s.checked)) startTutor(currentTask,$('tutorBox'),{restore:true});
+      }
+      applyModeToTask();
+      $('similarBtn').hidden = !s.checked;
+      return true;
+    } catch(e) {return false;}
+  }
   let variantTasks = [];
   let variantTimer = null;
   let variantSeconds = 30 * 60;
@@ -482,7 +550,10 @@
 
   function renderModeBar(){
     const btns = document.querySelectorAll('.mode-btn');
-    btns.forEach(b => b.classList.toggle('active', b.dataset.mode === currentMode));
+    btns.forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === currentMode);
+      b.setAttribute('aria-pressed', String(b.dataset.mode === currentMode));
+    });
     const mh = $('modeHint');
     if(mh) mh.textContent = MODES[currentMode].hint;
     // применить ограничения к текущей задаче
@@ -528,10 +599,23 @@
     6: gen6, 7: gen7, 8: gen8, 9: gen9, 10: gen10
   };
 
-  function newTask(n=currentTopic){
+  function newTask(n=currentTopic,seed,focus=true){
     currentTopic = n;
     renderNav();
-    currentTask = generators[n]();
+    if(tutorState.host === 'single') closeTutor();
+    const previous=currentTask;
+    currentTask = buildTask(n,seed);
+    if(seed===undefined && previous?.num===n){
+      // A new attempt should give a different condition even in small word banks.
+      const pictureKey = html=>html.replace(/road-arrow-\d+/g,'road-arrow');
+      for(let retry=1; retry<=12 && pictureKey(previous.html)===pictureKey(currentTask.html); retry++){
+        currentTask=buildTask(n,(currentTask.seed+retry)>>>0);
+      }
+    }
+    $('similarBtn').hidden = true;
+    $('answerInput').inputMode = [3,4,8,9,10].includes(n) ? 'numeric' : 'text';
+    $('taskMeta').setAttribute('aria-label',`Задание ${n} из 10`);
+    $('quickTip').textContent = ['','Найди удалённое название','Расшифруй сообщение','Найди подходящее целое число','Найди длину кратчайшего пути','Запиши номера команд','Найди наибольший целый параметр','Собери адрес из фрагментов','Сосчитай тысячи страниц','Сосчитай пути по стрелкам','Вычисли сумму в десятичной системе'][n];
     $('taskMeta').textContent = `Задание №${n}`;
     $('taskTitle').textContent = currentTask.title;
     $('taskText').innerHTML = currentTask.html;
@@ -542,10 +626,8 @@
     $('solutionBox').className = 'solution-box';
     $('hintBox').innerHTML = currentTask.hint;
     $('solutionBox').innerHTML = currentTask.solution;
-    // сбрасываем tutor
-    if(tutorState && tutorState.host === 'single') closeTutor();
     applyModeToTask();
-    $('answerInput').focus();
+    if(focus){ $('answerInput').focus(); saveSession(); }
   }
 
   function checkTask(task, input){
@@ -554,6 +636,8 @@
       if(r && typeof r === 'object' && 'ok' in r) return !!r.ok;
       return !!r;
     }
+    if([3,4,6,8,9,10].includes(task.num)) return decimal(input) === Number(task.answer);
+    if(task.num === 7) return sequence(input) === task.answer;
     const expected = Array.isArray(task.answer) ? task.answer.map(normalize) : [normalize(task.answer)];
     return expected.includes(normalize(input));
   }
@@ -578,7 +662,9 @@
     fb.className = 'feedback ' + (ok ? 'good' : 'bad');
     fb.textContent = ok
       ? 'Верно. Нажми «Новое задание», чтобы проверить себя на другом примере.'
-      : 'Пока не сходится. Проверь свой ответ ещё раз или открой подсказку.';
+      : diagnostics[currentTopic];
+    $('similarBtn').hidden = !ok;
+    saveSession();
   }
 
   function gen1(){
@@ -770,6 +856,32 @@
     };
   }
 
+  // All x in these three problems are natural numbers. Compare integer bounds,
+  // including reversed, chained and conjunctive inequalities.
+  function naturalBounds(expression){
+    const parts=String(expression).toLowerCase().replace(/\s+/g,'').replace(/х/g,'x')
+      .replace(/[≤⩽]/g,'<=').replace(/[≥⩾]/g,'>=').split(/и|&|∧/);
+    let low=1,high=Infinity;
+    for(const part of parts){
+      if(!/^(?:x|\d+)(?:(?:<=|>=|<|>)(?:x|\d+)){1,2}$/.test(part)) return null;
+      const terms=part.split(/(<=|>=|<|>)/);
+      for(let i=0;i<terms.length-2;i+=2){
+        let [left,op,right]=terms.slice(i,i+3);
+        if(left!=='x'){
+          if(right!=='x') return null;
+          [left,right]=[right,left];
+          op={'<':'>','>':'<','<=':'>=','>=':'<='}[op];
+        }
+        if(right==='x') return null;
+        const n=Number(right);
+        if(!Number.isSafeInteger(n)) return null;
+        if(op==='>' || op==='>=') low=Math.max(low,n+(op==='>'?1:0));
+        else high=Math.min(high,n-(op==='<'?1:0));
+      }
+    }
+    return [low,high];
+  }
+
   function gen3(){
     const type = rnd(1,3);
     let html, answer, hint, solution, steps, title='Логическое выражение';
@@ -814,11 +926,7 @@
           question:`Если «x > ${a}» ложно, то какое неравенство выполняется для x?`,
           expected:`x<=${a}`,
           accepted:[`x<=${a}`,`x≤${a}`,`x⩽${a}`,`x<${a+1}`],
-          customCheck:(input)=>{
-            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/≤/g,'<=').replace(/⩽/g,'<=');
-            return {ok: s===`x<=${a}` || s===`x<${a+1}`};
-          },
-          normalize:'text',
+          normalize:'naturalBounds',
           hint:'Отрицание «больше» — это «не больше», то есть «меньше или равно».',
           explanation:`«x > ${a}» ложно ↔ «x ≤ ${a}».`,
           mistake:'Похоже, оставил строгое неравенство. Отрицание «>» — это «≤», а не «<».'
@@ -829,12 +937,7 @@
           question:`Если «НЕ ((x < ${b}) И (x > ${c}))» ложно, то что должно быть истинно?`,
           expected:`${c}<x<${b}`,
           accepted:[`${c}<x<${b}`,`x>${c}иx<${b}`,`x<${b}иx>${c}`],
-          customCheck:(input)=>{
-            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/и/g,'&');
-            const ok = s===`${c}<x<${b}` || s===`x>${c}&x<${b}` || s===`x<${b}&x>${c}`;
-            return {ok};
-          },
-          normalize:'text',
+          normalize:'naturalBounds',
           hint:'Если ложно НЕ(P), то истинно P.',
           explanation:`Получаем условие <b>${c} &lt; x &lt; ${b}</b>.`,
           mistake:'Похоже, оставил отрицание. НЕ перед ложным выражением даёт истину — и наоборот.'
@@ -876,11 +979,7 @@
           question:`Во что превращается «НЕ (x > ${a})»?`,
           expected:`x<=${a}`,
           accepted:[`x<=${a}`,`x≤${a}`,`x<${a+1}`],
-          customCheck:(input)=>{
-            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/≤/g,'<=').replace(/⩽/g,'<=');
-            return {ok: s===`x<=${a}` || s===`x<${a+1}`};
-          },
-          normalize:'text',
+          normalize:'naturalBounds',
           hint:'Отрицание «больше» — «меньше или равно».',
           explanation:`НЕ (x > ${a})  ↔  x ≤ ${a}.`,
           mistake:'Похоже, оставил строгое «<». После НЕ к «>» получается «≤», а не «<».'
@@ -891,11 +990,7 @@
           question:`Какому двойному неравенству должен удовлетворять x?`,
           expected:`${c}<x<=${a}`,
           accepted:[`${c}<x<=${a}`,`${c}<x≤${a}`,`x>${c}иx<=${a}`,`x<=${a}иx>${c}`],
-          customCheck:(input)=>{
-            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/≤/g,'<=').replace(/⩽/g,'<=').replace(/и/g,'&');
-            return {ok: s===`${c}<x<=${a}` || s===`x>${c}&x<=${a}` || s===`x<=${a}&x>${c}`};
-          },
-          normalize:'text',
+          normalize:'naturalBounds',
           hint:`Это пересечение «x > ${c}» и «x ≤ ${a}».`,
           explanation:`Получаем ${c} &lt; x ≤ ${a}.`,
           mistake:'Похоже, перепутал направление одного из неравенств.'
@@ -937,11 +1032,7 @@
           question:`Во что превращается «НЕ (x ≥ ${b})»?`,
           expected:`x<${b}`,
           accepted:[`x<${b}`,`x<=${b-1}`,`x≤${b-1}`],
-          customCheck:(input)=>{
-            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/≤/g,'<=').replace(/⩽/g,'<=');
-            return {ok: s===`x<${b}` || s===`x<=${b-1}`};
-          },
-          normalize:'text',
+          normalize:'naturalBounds',
           hint:'Отрицание «≥» — это «<».',
           explanation:`НЕ (x ≥ ${b})  ↔  x &lt; ${b}.`,
           mistake:'Похоже, оставил знак нестрогим. Отрицание «≥» — это строгое «<», а не «≤».'
@@ -952,11 +1043,7 @@
           question:`Какому двойному неравенству должен удовлетворять x?`,
           expected:`${a}<x<${b}`,
           accepted:[`${a}<x<${b}`,`x>${a}иx<${b}`,`x<${b}иx>${a}`],
-          customCheck:(input)=>{
-            const s = String(input).replace(/\s+/g,'').toLowerCase().replace(/и/g,'&');
-            return {ok: s===`${a}<x<${b}` || s===`x>${a}&x<${b}` || s===`x<${b}&x>${a}`};
-          },
-          normalize:'text',
+          normalize:'naturalBounds',
           hint:`Это «x > ${a}» и одновременно «x < ${b}».`,
           explanation:`Получаем ${a} &lt; x &lt; ${b}.`,
           mistake:'Похоже, не объединил два условия правильно.'
@@ -967,7 +1054,7 @@
           question:`Какое наименьшее натуральное x в промежутке ${a} < x < ${b}?`,
           expected:String(answer),
           normalize:'number',
-          hint:`Строгое «больше ${a}» — значит x начинается с ${a+1}.`,
+          hint:`Начни с числа ${a}. Какое целое идёт следующим?`,
           explanation:`Наименьшее натуральное — <b>${answer}</b>.`,
           mistake:`Похоже, забыл, что строгое неравенство x > ${a} не включает само ${a}. Считаем с ${a+1}.`,
           revealFinal:true
@@ -986,14 +1073,12 @@
       const chain = shuffle(nodes.slice());
       for(let i=0;i<chain.length-1;i++) add(chain[i], chain[i+1], rnd(1,8));
       for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
-        if(Math.random() < .48 && !edges.some(e => (e.u===nodes[i]&&e.v===nodes[j]) || (e.u===nodes[j]&&e.v===nodes[i]))) add(nodes[i], nodes[j], rnd(1,9));
+        if(random() < .48 && !edges.some(e => (e.u===nodes[i]&&e.v===nodes[j]) || (e.u===nodes[j]&&e.v===nodes[i]))) add(nodes[i], nodes[j], rnd(1,9));
       }
       const targets = ['D','E'];
       const start = 'A', end = pick(targets);
-      result = shortestPath(nodes, edges, start, end);
-      if(result && result.dist >= 3 && result.dist <= 20){
-        result.start = start; result.end = end; break;
-      }
+      result = {...shortestPath(nodes,edges,start,end),start,end};
+      if(result.dist >= 3 && result.dist <= 20) break;
     }
     const matrix = nodes.map(r => nodes.map(c => {
       if(r===c) return '';
@@ -1011,12 +1096,34 @@
     const directEdge = edges.find(e => (e.u===result.start&&e.v===result.end)||(e.u===result.end&&e.v===result.start));
     const directLen = directEdge ? directEdge.w : null;
     const pathWeightsArr = pathWeights(result.path, edges);
+    const labels = {[result.start]:0}, visited=new Set();
+    const distanceSteps=[];
+    let city=result.start;
+    while(city !== result.end){
+      visited.add(city);
+      for(const {u,v,w} of edges){
+        if(u!==city && v!==city) continue;
+        const dest=u===city?v:u;
+        if(!visited.has(dest)) labels[dest]=Math.min(labels[dest]??Infinity,labels[city]+w);
+      }
+      const open=nodes.filter(v=>!visited.has(v) && Number.isFinite(labels[v]));
+      const closest=open.reduce((best,v)=>labels[v]<labels[best]?v:best);
+      distanceSteps.push({
+        title:`Расстояния после пункта ${city}`,
+        question:`До ${city} от старта ${labels[city]} км. Учти дороги из ${city}. Какова теперь самая короткая из известных длин до ${closest}?`,
+        expected:String(labels[closest]),normalize:'number',
+        hint:`Для дороги из ${city} прибавь её длину к ${labels[city]}. Если до пункта уже был более короткий путь, сохрани прежнее число.`,
+        explanation:`Длины до ещё не пройденных пунктов: ${open.map(v=>v+' — '+labels[v]+' км').join(', ')}. Берём ${closest} с минимальной длиной.`,
+        mistake:'Сравни новый путь через выбранный пункт с тем, который уже был найден.'
+      });
+      city=closest;
+    }
     return {
       num:4,
       title:'Кратчайший путь в графе',
       answer:String(result.dist),
       displayAnswer:String(result.dist),
-      html:`<p>Между населёнными пунктами построены дороги, протяжённость которых дана в таблице.</p>${table}
+      html:`<p>Между населёнными пунктами построены дороги, длина которых указана в километрах. Пустая ячейка означает, что прямой дороги нет.</p>${table}
         <p>Определите длину кратчайшего пути между пунктами <b>${result.start}</b> и <b>${result.end}</b>. Передвигаться можно только по указанным дорогам, каждый пункт можно посетить не более одного раза.</p>`,
       hint:'Записывай текущую минимальную длину до каждой вершины или перебери простые маршруты. Все веса положительные, поэтому петли не помогают.',
       solution:`Кратчайший маршрут: <b>${result.path.join(' → ')}</b>. Его длина: ${pathWeightsArr.join(' + ')} = <b>${result.dist}</b>.`,
@@ -1024,11 +1131,11 @@
         {
           title:'Соседи стартовой вершины',
           goal:'Перечислить, куда из старта можно пойти за один шаг.',
-          question:`Какие вершины соединены с ${result.start} напрямую? Перечисли через запятую без пробелов, в алфавитном порядке.`,
+          question:`Какие вершины соединены с ${result.start} напрямую? Перечисли их буквы.`,
           expected:startNeighborsText,
           accepted:[startNeighborsText, startNeighbors.join('')],
           customCheck:(input)=>{
-            const parts = String(input).toUpperCase().replace(/\s+/g,'').split(/[,;\.\/\-]+/).filter(Boolean);
+            const parts = String(input).toUpperCase().replace(/[\s,;.\/-]+/g,'').split('');
             const norm = parts.slice().sort().join(',');
             return {ok: norm === startNeighborsText};
           },
@@ -1052,16 +1159,7 @@
             : `Прямой дороги ${result.start}—${result.end} нет, поэтому идём через посредников.`,
           mistake:'Похоже, перепутал вершины или счёл пустую ячейку нулём.'
         },
-        {
-          title:'Длина выбранного маршрута',
-          goal:'Сложить веса рёбер кратчайшего пути.',
-          question:`Возьми маршрут ${result.path.join(' → ')}. Какова его суммарная длина?`,
-          expected:String(result.dist),
-          normalize:'number',
-          hint:`Сложи веса всех рёбер: ${pathWeightsArr.join(' + ')}.`,
-          explanation:`${pathWeightsArr.join(' + ')} = <b>${result.dist}</b>.`,
-          mistake:'Похоже, ошибся в сложении или взял длину не того ребра. Веса берутся прямо из таблицы.'
-        },
+        ...distanceSteps,
         {
           title:'Итоговый ответ',
           goal:'Записать длину кратчайшего пути.',
@@ -1105,11 +1203,14 @@
     for(let tries=0; tries<500; tries++){
       start = rnd(2,7);
       const len = rnd(3,5);
-      seq = Array.from({length:len}, (_,i) => Math.random() < (i===0 ? .35 : .45) ? '1' : '2').join('');
+      seq = Array.from({length:len}, (_,i) => random() < (i===0 ? .35 : .45) ? '1' : '2').join('');
       let squares = (seq.match(/1/g)||[]).length;
       if(squares > 2) continue;
       target = applyQuadrator(start, seq);
       if(target > start && target <= 1200 && target !== null) break;
+    }
+    if(!Number.isInteger(target) || target < start + 1 || target > 1200 || applyQuadrator(start,seq)!==target){
+      seq='212'; target=applyQuadrator(start,seq);
     }
     const limit = 5;
     // Восстановим обратный путь от target к start для подсказок
@@ -1215,9 +1316,12 @@
     // Три различных подходящих s гарантируют хотя бы один внутренний порог.
     const values = shuffle(Array.from({length:31}, (_, i) => i-12));
     const pairs = values.slice(0,3).map(s => [s,rnd(-10,K)]);
-    while(pairs.length < 9){
+    for(let draw = 0; pairs.length < 9 && draw < 100; draw++){
       const s = rnd(-12,18), t = rnd(-10,18);
       if(!pairs.some(([a,b]) => a === s && b === t)) pairs.push([s,t]);
+    }
+    for(let s=-12; pairs.length<9; s++){
+      if(!pairs.some(([a,b])=>a===s && b===K+1)) pairs.push([s,K+1]);
     }
     const qual = pairs.filter(([,t]) => t <= K).map(([s]) => s).sort((a,b) => a-b);
     const cuts = [];
@@ -1315,10 +1419,8 @@ else:
     const numbered = shuffled.map((x,i) => ({...x, label:i+1}));
     const answer = ordered.map((_, idx) => numbered.find(x => x.idx === idx).label).join('');
     const protocolLabel = numbered.find(x=>x.idx===0).label;
-    const sepLabel = numbered.find(x=>x.idx===1).label;
     const domainLabel = numbered.find(x=>x.idx===2).label;
     const zoneLabel = numbered.find(x=>x.idx===3).label;
-    const slashLabel = numbered.find(x=>x.idx===4).label;
     const fileLabel = numbered.find(x=>x.idx===5).label;
     const extLabel = numbered.find(x=>x.idx===6).label;
     return {
@@ -1360,7 +1462,7 @@ else:
           expected:`${domainLabel}${zoneLabel}`,
           accepted:[`${domainLabel}${zoneLabel}`,`${domainLabel},${zoneLabel}`,`${domainLabel} ${zoneLabel}`],
           customCheck:(input)=>{
-            const s = String(input).replace(/\D+/g,'');
+            const s = sequence(input);
             return {ok: s === `${domainLabel}${zoneLabel}`};
           },
           normalize:'sequence',
@@ -1374,7 +1476,7 @@ else:
           question:`Под какими номерами записаны фрагменты «${file}.» и «${ext}»? Запиши две цифры в этом порядке.`,
           expected:`${fileLabel}${extLabel}`,
           customCheck:(input)=>{
-            const s = String(input).replace(/\D+/g,'');
+            const s = sequence(input);
             return {ok: s === `${fileLabel}${extLabel}`};
           },
           normalize:'sequence',
@@ -1388,11 +1490,11 @@ else:
           question:`Запиши последовательность номеров фрагментов по шаблону протокол://сервер.домен/файл.расширение (7 цифр, без пробелов).`,
           expected:answer,
           customCheck:(input)=>{
-            const s = String(input).replace(/\D+/g,'');
+            const s = sequence(input);
             return {ok: s === answer};
           },
           normalize:'sequence',
-          hint:`Порядок: ${protocolLabel}, ${sepLabel}, ${domainLabel}, ${zoneLabel}, ${slashLabel}, ${fileLabel}, ${extLabel}.`,
+          hint:'Проверь разделители. После протокола идёт ://, между сервером и именем файла стоит /.',
           explanation:`Полный адрес «${protocol}://${domain}${zone}/${file}.${ext}» = <b>${answer}</b>.`,
           mistake:'Похоже, отсортировал цифры или поменял пару местами. Цифры записываются в порядке шаблона, а не по возрастанию.',
           revealFinal:true
@@ -1449,7 +1551,7 @@ else:
           accepted:[`${A}&${B}&${C}`,`${A}&${C}&${B}`,`${B}&${A}&${C}`,`${B}&${C}&${A}`,`${C}&${A}&${B}`,`${C}&${B}&${A}`],
           customCheck:(input)=>{
             const s = String(input).toLowerCase().replace(/\s+и\s+/g,'&').replace(/\s+/g,'');
-            const parts = s.split('&').filter(Boolean).sort();
+            const parts = s.split('&').sort();
             const target = [A.toLowerCase(), B.toLowerCase(), C.toLowerCase()].sort();
             return {ok: parts.length===3 && parts.every((v,i)=>v===target[i])};
           },
@@ -1460,13 +1562,13 @@ else:
         },
         {
           title:'Подстановка чисел',
-          goal:'Записать уравнение с известными числами.',
-          question:`Подставь числа в формулу и запиши результат как уравнение вида «${total} = ${ab} + x − ${abc}» (где x = ${A}&${C}). Какое значение x?`,
-          expected:String(ac),
+          goal:'Отделить страницы вне первой группы.',
+          question:`Сколько тысяч страниц содержат ${A} и ${C}, но не содержат ${B}? Вычти из объединения все страницы с ${A} и ${B}.`,
+          expected:String(acOnly),
           normalize:'number',
-          hint:`Выразим x: x = ${total} − ${ab} + ${abc}.`,
-          explanation:`x = ${total} − ${ab} + ${abc} = <b>${ac}</b>.`,
-          mistake:`Похоже, ошибся со знаком: x = total − ab + abc, а не наоборот. Учти, что общее пересечение прибавляется при выражении x.`
+          hint:`В объединении ${total} тысяч страниц. Из них ${ab} тысяч уже входят в первую группу.`,
+          explanation:`${total} − ${ab} = <b>${acOnly}</b> тыс. страниц вне первой группы.`,
+          mistake:'Вычти размер первой группы из размера объединения. Общее пересечение пока не добавляй.'
         },
         {
           title:'Ответ в тысячах',
@@ -1474,7 +1576,7 @@ else:
           question:`Сколько страниц в тысячах найдётся по запросу ${A}&${C}?`,
           expected:String(ac),
           normalize:'number',
-          hint:'В таблице числа уже даны в тысячах — переводить не надо.',
+          hint:'К найденной на прошлом шаге части добавь страницы, в которых встречаются все три слова. Оставь результат в тысячах.',
           explanation:`Итог: <b>${ac}</b> тыс. страниц.`,
           mistake:'Похоже, перепутал единицы или взял другое число из таблицы.',
           revealFinal:true
@@ -1493,7 +1595,7 @@ else:
       edges = mandatory.slice();
       for(const e of candidates){
         if(mandatory.some(m => m[0]===e[0]&&m[1]===e[1])) continue;
-        if(Math.random() < .48) edges.push(e);
+        if(random() < .48) edges.push(e);
       }
       counts = countPathsDAG(nodes, edges, 'H');
       ans = counts['A'];
@@ -1508,71 +1610,26 @@ else:
       if(!out.length) return `Из ${n} нет исходящих дорог.`;
       return `Из ${n} стрелки ведут в: ${out.join(', ')}. Путей из ${n}: ${out.map(v=>counts[v]).join(' + ')} = <b>${counts[n]}</b>.`;
     };
-    const intermediates = ['F','E','B'].filter(n => counts[n] > 0);
+    const targetsFrom = city => outNeighbors(city).join(', ') || 'дорог нет';
+    const roads = nodes.slice(0,-1).map(city => `<li>${city} → ${targetsFrom(city)}</li>`).join('');
     return {
-      num:9,
-      title:'Количество путей в ориентированном графе',
-      answer:String(ans),
-      displayAnswer:String(ans),
-      html:`<p>На рисунке — схема дорог. По каждой дороге можно двигаться только в направлении стрелки.</p>
-        ${svg}
-        <p>Сколько существует различных путей из города <b>A</b> в город <b>H</b>?</p>`,
-      hint:'Начни с конца: у H поставь 1. Для каждой вершины сложи числа у всех вершин, в которые из неё выходят стрелки.',
-      solution:`Считаем с конца: ${formula}. Поэтому из A в H существует <b>${ans}</b> путей.`,
-      steps:[
-        {
-          title:'С какого конца считаем',
-          goal:'Понять направление подсчёта.',
-          question:'С какой вершины удобно начать подсчёт: со стартовой A или с конечной H?',
-          expected:'h',
-          accepted:['h','с h','начала с h','с конечной','с конца'],
-          normalize:'text',
-          hint:'Идём «справа налево» — от цели к старту.',
-          explanation:'Удобно начать с H: путей из H в H ровно 1. Затем поднимаемся к предыдущим вершинам.',
-          mistake:'Похоже, начал со старта. Тогда придётся каждый раз спускаться рекурсивно — это сложнее.'
-        },
-        {
-          title:'Старт подсчёта',
-          goal:'Закрепить базовый случай.',
-          question:'Сколько путей из H в H?',
-          expected:'1',
-          normalize:'number',
-          hint:'Стоять на месте — это один «пустой» путь.',
-          explanation:'count[H] = 1.',
-          mistake:'Похоже, написал 0. На самой конечной вершине число путей всегда 1.'
-        },
-        {
-          title:`Считаем count[${intermediates[0]}]`,
-          goal:'Сложить количества путей у вершин, в которые ведут стрелки.',
-          question:`Сколько путей из ${intermediates[0]} в H?`,
-          expected:String(counts[intermediates[0]]),
-          normalize:'number',
-          hint:`Посмотри, в какие вершины ведут стрелки из ${intermediates[0]}. Сложи числа путей у этих вершин.`,
-          explanation:explainNode(intermediates[0]),
-          mistake:`Похоже, посчитал входящие стрелки (откуда приходят в ${intermediates[0]}). Нужно складывать число путей у тех вершин, в которые ${intermediates[0]} ведёт.`
-        },
-        {
-          title:`Считаем count[${intermediates[1] || 'B'}]`,
-          goal:'Применить то же правило к следующей вершине.',
-          question:`Сколько путей из ${intermediates[1] || 'B'} в H?`,
-          expected:String(counts[intermediates[1] || 'B']),
-          normalize:'number',
-          hint:`Снова: смотри, в какие вершины ведут стрелки из ${intermediates[1] || 'B'}, и сложи их count.`,
-          explanation:explainNode(intermediates[1] || 'B'),
-          mistake:'Похоже, забыл одну из исходящих дорог или взял уже неверно посчитанный count.'
-        },
-        {
-          title:'count[A] — финальный ответ',
-          goal:'Сложить count тех вершин, куда ведут стрелки из A.',
-          question:'Сколько путей из A в H?',
-          expected:String(ans),
-          normalize:'number',
-          hint:'Из A выходят стрелки в B и C (и возможно D). Сложи их count.',
-          explanation:explainNode('A'),
-          mistake:'Похоже, ошибся в сумме на одном из предыдущих шагов, либо взял count входящих.',
-          revealFinal:true
-        }
-      ]
+      num:9, title:'Количество путей в ориентированном графе', answer:String(ans), displayAnswer:String(ans),
+      html:`<p>Сколько разных путей ведут из A в H? По дороге можно ехать только по стрелке.</p>
+        ${svg}<details class="graph-key"><summary>Прочитать схему списком дорог</summary><ul>${roads}</ul></details>`,
+      hint:'Можно считать от старта или от финиша. При счёте от финиша подпиши у H число 1. Для каждого другого города сложи числа у концов его исходящих стрелок.',
+      solution:`Число у города показывает, сколько из него путей до H. Считаем от финиша: ${formula}. ${explainNode('A')}`,
+      steps:[{
+        title:'Начни с финиша H', city:'H', question:'Мы уже в H. Сколько есть способов закончить путь здесь, не делая ни одного перехода?',
+        expected:'1',normalize:'number',hint:'Можно остановиться на месте. Такой способ учитывается при подсчёте.',
+        explanation:'У H ставим 1. Из города с единственной дорогой прямо в H получится один путь.',
+        mistake:'Считаем способы завершить путь. В H есть один способ — остановиться.'
+      }, ...nodes.slice(0,-1).reverse().map(city=>({
+        title:`Из ${city} до H`, city, question:`Сколько путей из ${city} в H? Смотри на стрелки, выходящие из ${city}.`,
+        expected:String(counts[city]),normalize:'number',
+        hint:outNeighbors(city).length ? `Из ${city} можно сделать первый переход в ${targetsFrom(city)}. Сложи числа путей из этих городов.` : 'Если из города нет исходящих дорог и это не финиш, доехать до H нельзя.',
+        explanation:explainNode(city),mistake:'Проверь начало каждой подсвеченной стрелки. Возьми по одному числу с каждого её конца.',
+        revealFinal:city==='A'
+      }))]
     };
   }
   function countPathsDAG(nodes, edges, end){
@@ -1586,20 +1643,22 @@ else:
     }
     return count;
   }
+  let graphId=0;
   function renderDagSvg(nodes, edges, coords){
+    const arrowId = 'road-arrow-' + ++graphId;
     const edgeSvg = edges.map(([u,v],i) => {
       const [x1,y1] = coords[u], [x2,y2] = coords[v];
       const dx=x2-x1, dy=y2-y1, len=Math.sqrt(dx*dx+dy*dy), pad=22;
       const sx=x1+dx/len*pad, sy=y1+dy/len*pad, ex=x2-dx/len*pad, ey=y2-dy/len*pad;
       const curve = Math.abs(y2-y1) > 90 ? `Q ${(sx+ex)/2} ${(sy+ey)/2 + (i%2?18:-18)} ${ex} ${ey}` : `L ${ex} ${ey}`;
-      return `<path d="M ${sx} ${sy} ${curve}" stroke="#24324f" stroke-width="2.4" fill="none" marker-end="url(#arrow)"/>`;
+      return `<path data-from="${u}" d="M ${sx} ${sy} ${curve}" stroke="#24324f" stroke-width="2.4" fill="none" marker-end="url(#${arrowId})"/>`;
     }).join('');
     const nodeSvg = nodes.map(n => {
       const [x,y]=coords[n];
-      return `<g><circle cx="${x}" cy="${y}" r="18" fill="#fff" stroke="#3757ff" stroke-width="3"/><text x="${x}" y="${y+6}" text-anchor="middle" font-family="Arial" font-size="17" font-weight="800" fill="#152033">${n}</text></g>`;
+      return `<g data-city="${n}"><circle cx="${x}" cy="${y}" r="18" fill="#fff" stroke="#3757ff" stroke-width="3"/><text x="${x}" y="${y+6}" text-anchor="middle" font-family="Arial" font-size="17" font-weight="800" fill="#152033">${n}</text><text class="path-count" x="${x}" y="${y-25}" text-anchor="middle"></text></g>`;
     }).join('');
     return `<svg class="graph-svg" viewBox="0 0 630 320" role="img" aria-label="Ориентированный граф">
-      <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#24324f"/></marker></defs>
+      <defs><marker id="${arrowId}" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#24324f"/></marker></defs>
       ${edgeSvg}${nodeSvg}
     </svg>`;
   }
@@ -1613,7 +1672,8 @@ else:
     const shuffled = shuffle(terms);
     const total = shuffled.reduce((s,t)=>s+t.val,0);
     const expr = shuffled.map(t => `${t.text}<sub>${t.base}</sub>`).join(' + ');
-    const conv = shuffled.map(t => `<span class="mono">${t.text}${sub(t.base)}</span> = ${t.val}`).join('; ');
+    const expansion = t => Array.from(t.text,(digit,i) => `${parseInt(digit,16)} × ${t.base**(t.text.length-i-1)}`).join(' + ');
+    const conv = shuffled.map(t => `<span class="mono">${t.text}${sub(t.base)}</span> = ${expansion(t)} = ${t.val}`).join('; ');
     return {
       num:10,
       title:'Системы счисления',
@@ -1632,7 +1692,7 @@ else:
           expected:String(shuffled[0].val),
           normalize:'number',
           hint:shuffled[0].base===2 ? 'Двоичная: складывай степени двойки на местах с 1.' : shuffled[0].base===8 ? 'Восьмеричная: каждая цифра умножается на степень 8 (8⁰, 8¹, 8², ...).' : 'Шестнадцатеричная: A=10, B=11, …, F=15; вес — степени 16.',
-          explanation:`${shuffled[0].text}${sub(shuffled[0].base)} = <b>${shuffled[0].val}</b>.`,
+          explanation:`${shuffled[0].text}${sub(shuffled[0].base)} = ${expansion(shuffled[0])} = <b>${shuffled[0].val}</b>.`,
           mistake:'Похоже, прочитал как десятичное или забыл вес разряда.'
         },
         {
@@ -1642,7 +1702,7 @@ else:
           expected:String(shuffled[1].val),
           normalize:'number',
           hint:shuffled[1].base===2 ? 'Двоичная: степени двойки.' : shuffled[1].base===8 ? 'Восьмеричная: степени восьмёрки.' : 'Шестнадцатеричная: помни про A–F.',
-          explanation:`${shuffled[1].text}${sub(shuffled[1].base)} = <b>${shuffled[1].val}</b>.`,
+          explanation:`${shuffled[1].text}${sub(shuffled[1].base)} = ${expansion(shuffled[1])} = <b>${shuffled[1].val}</b>.`,
           mistake:'Похоже, перепутал основание этого числа.'
         },
         {
@@ -1652,7 +1712,7 @@ else:
           expected:String(shuffled[2].val),
           normalize:'number',
           hint:shuffled[2].base===2 ? 'Двоичная: степени двойки.' : shuffled[2].base===8 ? 'Восьмеричная: степени восьмёрки.' : 'Шестнадцатеричная: A=10, …, F=15.',
-          explanation:`${shuffled[2].text}${sub(shuffled[2].base)} = <b>${shuffled[2].val}</b>.`,
+          explanation:`${shuffled[2].text}${sub(shuffled[2].base)} = ${expansion(shuffled[2])} = <b>${shuffled[2].val}</b>.`,
           mistake:'Похоже, не учёл основание или ошибся в одном разряде.'
         },
         {
@@ -1676,6 +1736,7 @@ else:
   }
   function showSolution(){
     $('solutionBox').classList.toggle('show');
+    if($('solutionBox').classList.contains('show')) $('similarBtn').hidden = false;
     if(currentTask && $('solutionBox').classList.contains('show')) recordTutorUsage(currentTask.num, 'solution');
   }
 
@@ -1701,13 +1762,17 @@ else:
       return !!r;
     }
     const mode = step.normalize || 'text';
+    if(mode==='naturalBounds'){
+      const actual=naturalBounds(input), expected=naturalBounds(step.expected);
+      return actual && expected && actual[0]===expected[0] && actual[1]===expected[1];
+    }
     const norm = normalizeStep(input, mode);
     const candidates = [step.expected, ...(step.accepted || [])].filter(x => x !== undefined && x !== null);
     if(mode === 'number'){
-      const inN = Number(norm);
+      const inN = decimal(input);
       return candidates.some(c => {
         const cN = Number(normalizeStep(c, 'number'));
-        return Number.isFinite(inN) && Number.isFinite(cN) && Math.abs(inN - cN) < 1e-9;
+        return Number.isFinite(inN) && Number.isFinite(cN) && inN === cN;
       });
     }
     const normCandidates = candidates.map(c => normalizeStep(c, mode));
@@ -1724,19 +1789,34 @@ else:
     tutorState = {
       task,
       mount,
-      stepIndex:0,
-      solvedSteps:new Array(task.steps.length).fill(false),
-      revealed:new Array(task.steps.length).fill(false),
+      ...(tutorWork.get(task) || {stepIndex:0,solvedSteps:new Array(task.steps.length).fill(false),revealed:new Array(task.steps.length).fill(false)}),
       host: opts.host || 'single',
       miniIdx: opts.miniIdx ?? null
     };
     mount.classList.add('show');
-    recordTutorUsage(task.num, 'open');
+    if(!opts.restore) recordTutorUsage(task.num, 'open');
     renderTutor();
   }
 
+  function rememberTutor(){
+    const {task,stepIndex,solvedSteps,revealed}=tutorState;
+    if(task) tutorWork.set(task,{stepIndex,solvedSteps,revealed});
+  }
+  function markGraph(t,show){
+    if(t.task?.num !== 9 || !t.mount) return;
+    const svg=t.mount.closest('.mini-task,.task-card').querySelector('.graph-svg');
+    const city=show?t.task.steps[t.stepIndex].city:null;
+    svg.querySelectorAll('[data-from]').forEach(p=>p.classList.toggle('active-road',p.dataset.from===city));
+    t.task.steps.forEach((step,i)=>{
+      const node=svg.querySelector('[data-city="'+step.city+'"]');
+      node.classList.toggle('active-city',step.city===city);
+      node.querySelector('.path-count').textContent=show && (t.solvedSteps[i] || t.revealed[i]) ? step.expected : '';
+    });
+  }
   function closeTutor(){
     if(!tutorState.mount) return;
+    rememberTutor();
+    markGraph(tutorState,false);
     tutorState.mount.classList.remove('show');
     tutorState.mount.innerHTML = '';
     tutorState = {task:null, mount:null, stepIndex:0, solvedSteps:[], host:'single', miniIdx:null, revealed:[]};
@@ -1745,6 +1825,9 @@ else:
   function renderTutor(){
     const t = tutorState;
     if(!t.task || !t.mount) return;
+    rememberTutor();
+    saveSession();
+    markGraph(t,true);
     const steps = t.task.steps;
     const i = t.stepIndex;
     const step = steps[i];
@@ -1765,8 +1848,9 @@ else:
       <div class="tutor-title">${esc(step.title || ('Шаг ' + (i+1)))}</div>
       ${step.goal ? `<div class="tutor-goal">${esc(step.goal)}</div>` : ''}
       <div class="tutor-question">${esc(step.question)}</div>
+      ${step.city && steps.some((_,k)=>t.solvedSteps[k]||t.revealed[k]) ? `<p>Уже известно: ${steps.filter((_,k)=>t.solvedSteps[k]||t.revealed[k]).map(v=>v.city+' = '+v.expected).join(', ')}.</p>` : ''}
       <div class="tutor-input-row">
-        <input class="tutor-input" id="${idPref}tutorInput" autocomplete="off" placeholder="Ответ на шаг" ${t.solvedSteps[i] || t.revealed[i] ? 'disabled' : ''} value="${esc(t.solvedSteps[i] || (t.revealed[i] ? step.expected : ''))}">
+        <input class="tutor-input" id="${idPref}tutorInput" aria-label="Ответ на текущий шаг" autocomplete="off" placeholder="Ответ на шаг" ${t.solvedSteps[i] || t.revealed[i] ? 'disabled' : ''} value="${esc(t.solvedSteps[i] || (t.revealed[i] ? step.expected : ''))}">
         <button class="tutor-check-btn" type="button" data-tutor-check ${t.solvedSteps[i] || t.revealed[i] ? 'disabled' : ''}>Проверить шаг</button>
       </div>
       <div class="tutor-controls">
@@ -1795,7 +1879,7 @@ else:
     $$('[data-tutor-reveal]')?.addEventListener('click', revealTutorStep);
     $$('[data-tutor-prev]')?.addEventListener('click', prevTutorStep);
     $$('[data-tutor-next]')?.addEventListener('click', nextTutorStep);
-    $$('[data-tutor-close]')?.addEventListener('click', closeTutor);
+    $$('[data-tutor-close]')?.addEventListener('click', () => {closeTutor(); saveSession();});
     // если шаг уже решён — покажем объяснение
     if(t.solvedSteps[i] || t.revealed[i]){
       const fb = $$('[data-tutor-fb]');
@@ -1821,9 +1905,13 @@ else:
     const ok = stepIsCorrect(step, val);
     if(ok){
       t.solvedSteps[t.stepIndex] = val.trim();
+      rememberTutor();
+      saveSession();
+      markGraph(t,true);
       recordTutorUsage(t.task.num, 'stepCorrect');
       if(fb){ fb.className = 'tutor-fb good'; fb.innerHTML = '✓ Верно. ' + (step.explanation || ''); }
       if(inp) inp.disabled = true;
+      if(t.solvedSteps.every(Boolean) && t.host==='single') $('similarBtn').hidden=false;
       const checkBtn = t.mount.querySelector('[data-tutor-check]');
       if(checkBtn) checkBtn.disabled = true;
       const revealBtn = t.mount.querySelector('[data-tutor-reveal]');
@@ -1904,10 +1992,14 @@ else:
         <div class="solution-box" id="miniSolution${idx}">${task.solution}</div>
       </div>`;
     }).join('');
+    document.querySelectorAll('.mini-answer-row input').forEach((input,idx) => input.addEventListener('keydown', e=>{
+      if(e.key==='Enter' && !variantChecked) checkMini(idx);
+    }));
     [...document.querySelectorAll('[data-mini-check]')].forEach(btn => btn.addEventListener('click', () => checkMini(Number(btn.dataset.miniCheck))));
     [...document.querySelectorAll('[data-mini-hint]')].forEach(btn => btn.addEventListener('click', () => {
       if(btn.disabled) return;
-      $('miniHint'+btn.dataset.miniHint).classList.toggle('show');
+      const box=$('miniHint'+btn.dataset.miniHint);
+      if(box.classList.toggle('show')) recordTutorUsage(variantTasks[Number(btn.dataset.miniHint)].num,'hint');
     }));
     [...document.querySelectorAll('[data-mini-tutor]')].forEach(btn => btn.addEventListener('click', () => {
       const i = Number(btn.dataset.miniTutor);
@@ -1966,6 +2058,8 @@ else:
     clearTimeout(toast._timer); toast._timer = setTimeout(()=>t.classList.remove('show'), 3600);
   }
 
+  $('similarBtn').addEventListener('click', () => newTask(currentTopic));
+  $('answerInput').addEventListener('input',saveSession);
   $('newTaskBtn').addEventListener('click', () => newTask(currentTopic));
   $('checkBtn').addEventListener('click', checkCurrentAnswer);
   $('hintBtn').addEventListener('click', showHint);
@@ -1973,9 +2067,9 @@ else:
   $('variantBtn').addEventListener('click', makeVariant);
   $('newVariantBtn').addEventListener('click', makeVariant);
   $('checkVariantBtn').addEventListener('click', checkVariant);
-  $('printBtn').addEventListener('click', () => window.print());
+  $('printBtn').addEventListener('click', () => { if(!variantTasks.length) makeVariant(); window.print(); });
   $('resetBtn').addEventListener('click', () => {
-    if(confirm('Сбросить статистику тренировок?')){ stats = defaultStats(); saveStats(); renderStats(); toast('Статистика сброшена. Чистый лист — тоже кайф.'); }
+    if(confirm('Сбросить статистику и начать новое задание?')){ stats = defaultStats(); saveStats(); renderStats(); newTask(currentTopic); toast('Статистика сброшена.'); }
   });
   $('answerInput').addEventListener('keydown', (e) => { if(e.key === 'Enter') $('checkBtn').click(); });
 
@@ -1991,6 +2085,7 @@ else:
     currentMode = btn.dataset.mode;
     saveMode();
     renderModeBar();
+    saveSession();
     toast(`Режим: ${MODES[currentMode].label}. ${MODES[currentMode].hint}`);
   }));
 
@@ -2012,7 +2107,12 @@ else:
     return report;
   };
 
-  renderNav(); renderStats(); renderModeBar(); newTask(1);
+  renderNav(); renderStats(); renderModeBar();
+  if(articleExample){
+    newTask(9,19,false);
+  }else if(!restoreSession()){
+    newTask(1,undefined,false);
+  }
 })();
 </script>
 </body>

@@ -582,12 +582,14 @@ function joinTokens(toks){
 }
 function lineKey(line){ return "\t".repeat(line.indent)+joinTokens(line.tokens); }
 function normForCompare(str){
-  let s=str.trim().replace(/\s+/g," ");
-  s=s.replace(/\s+([:,)\]\(\[.])/g,"$1");
-  s=s.replace(/([\(\[.])\s+/g,"$1");
-  s=s.replace(/,\s*/g,",");
-  s=s.replace(/\s*(==|>=|<=|!=|[+\-*/%<>=])\s*/g,"$1");
-  return s;
+  // Token boundaries preserve == versus = = and the contents of string literals.
+  const tokens = String(str).match(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[\p{L}_][\p{L}\p{N}_]*|\d+|==|!=|<=|>=|\/\/|\*\*|[^\s]/gu) || [];
+  return JSON.stringify(tokens.map(token => {
+    if (token.length >= 2 && ['"', "'"].includes(token[0]) && token.endsWith(token[0])) {
+      return ['literal',token.slice(1,-1)];
+    }
+    return token;
+  }));
 }
 function cmpKey(str){ return normForCompare(str); }
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
@@ -676,7 +678,7 @@ function saveProgress(){
     const data={
       screen:state.screen, xp:state.xp, streak:state.streak, best:state.best,
       completed:[...state.completed], muted:state.muted, lessonId:state.lessonId,
-      hearts:state.hearts, qi:state.qi
+      hearts:state.hearts, qi:state.qi, ex:state.ex, answered:state.answered, ok:state.ok, dead:state.dead, solution:state.solution
     };
     localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
   }catch(e){}
@@ -699,7 +701,17 @@ function restoreProgress(){
       state.hearts=Math.max(1,Math.min(Number(data.hearts)||5,5));
       state.dead=false;
       state.screen=(data.screen==="lesson"||data.screen==="complete")?data.screen:"map";
-      if(state.screen==="lesson") loadEx();
+      if(state.screen==="lesson") {
+        loadEx();
+        if(data.ex?.type===state.ex.type) {
+          state.ex=data.ex;
+          state.answered=!!data.answered;
+          state.ok=!!data.ok;
+          state.dead=!!data.dead;
+          state.hearts=state.dead ? 0 : state.hearts;
+          state.solution=data.solution;
+        }
+      }
     } else {
       state.screen="map";
     }
@@ -745,7 +757,7 @@ function loadEx(){
   } else if(d.type==="type"){
     state.ex={type:"type",cur:0,reveal:false,wrongShake:false};
   } else if(d.type==="predict"){
-    const opts=shuffle([L.output,...L.wrong]);
+    const opts=shuffle([...new Set([L.output,...L.wrong])]);
     state.ex={type:"predict",opts,sel:null};
   }
 }
@@ -770,23 +782,24 @@ function checkPredict(){
 function checkTypeLine(){
   const L=lessonById(state.lessonId), ex=state.ex;
   const inp=document.getElementById('typeInput');
-  if(!inp) return;
+  if(!inp || state.answered) return;
   const line=L.lines[ex.cur];
   if(cmpKey(inp.value)===cmpKey(joinTokens(line.tokens))){
     dingOk();
-    ex.reveal=false; ex.cur++;
+    ex.reveal=false; ex.draft=""; ex.cur++;
     if(ex.cur>=L.lines.length){
       state.ok=true; state.answered=true; state.streak++; state.best=Math.max(state.best,state.streak);
       state.xp+=10; confetti();
     }
     render(); focusType();
   } else {
-    dingBad(); ex.wrongShake=true; render(); focusType();
+    ex.draft=inp.value; dingBad(); ex.wrongShake=true; render(); focusType();
     setTimeout(()=>{ if(state.ex) state.ex.wrongShake=false; },420);
-    toast("Не совсем — посмотри внимательнее ✏️");
+    toast("Сверь имена, знаки и скобки в этой строке. Предыдущие строки уже приняты.");
   }
 }
 function finish(ok, sol){
+  if(state.answered) return;
   state.answered=true; state.ok=ok; state.solution=sol;
   if(ok){
     state.streak++; state.best=Math.max(state.best,state.streak); state.xp+=10;
@@ -880,7 +893,7 @@ function renderLesson(){
 
 function viewAssemble(L,ex){
   const tiles=ex.answer.map(id=>`<button class="tile pop" data-action="unpick" data-id="${id}">${esc(ex.bank[id].t)}</button>`).join("");
-  const bank=ex.bank.map((b,i)=>`<button class="tile${ex.used[i]?' ghost-used':''}" data-action="pick" data-i="${i}" ${ex.used[i]?'tabindex="-1"':''}>${esc(b.t)}</button>`).join("");
+  const bank=ex.bank.map((b,i)=>`<button class="tile${ex.used[i]?' ghost-used':''}" data-action="pick" data-i="${i}" ${ex.used[i]?'disabled tabindex="-1"':''}>${esc(b.t)}</button>`).join("");
   return `
     ${codeBlock(L.lines,{slotAt:ex.line,dimExcept:ex.line})}
     <div class="answer ${ex.answer.length?'':'empty'}">${tiles}</div>
@@ -927,7 +940,7 @@ function viewPredict(L,ex){
   const opts=ex.opts.map((o,i)=>{
     let cls="opt";
     if(state.answered){
-      if(o===L.output) cls+=" correct";
+      if(state.ok && o===L.output) cls+=" correct";
       else if(i===ex.sel) cls+=" wrong";
     } else if(i===ex.sel) cls+=" sel";
     return `<button class="${cls}" ${state.answered?'disabled':''} data-action="choose" data-i="${i}"><pre>${esc(o)}</pre></button>`;
@@ -946,13 +959,9 @@ function renderFooter(L,ex){
       return `<div class="footer win"><div class="fb win"><span class="ic">✓</span><span>Верно! +10 XP</span></div>
         <button class="btn win" data-action="next">Продолжить</button></div>`;
     } else {
-      const sol = ex.type==="predict"
-        ? `<div class="fb fail"><span class="ic">✕</span><span>Правильный ответ — <span class="sol">${esc(L.output).replace(/\n/g,' ⏎ ')}</span></span></div>`
-        : (state.solution
-            ? `<div class="fb fail"><span class="ic">✕</span><span>Почти! ${esc(state.solution)}</span></div>`
-            : `<div class="fb fail"><span class="ic">✕</span><span>Не совсем</span></div>`);
-      const label = state.dead ? "Повторить урок" : "Продолжить";
-      return `<div class="footer fail">${sol}<button class="btn fail" data-action="next">${label}</button></div>`;
+      const advice={predict:"Пройдите цикл вручную. Запишите вывод только для тех проходов, где выполняется условие.",order:"Проверьте отступы. До первого обращения к переменной ей нужно присвоить значение.",assemble:"Сверьте порядок блоков, знаки операции и закрывающие скобки."};
+      return `<div class="footer fail"><div class="fb fail" role="status">${advice[ex.type]}</div>
+        <button class="btn fail" data-action="${state.dead?'next':'retry'}">${state.dead?'Повторить урок':'Исправить'}</button></div>`;
     }
   }
   if(ex.type==="type"){
@@ -1016,14 +1025,14 @@ function render(){
   saveProgress();
   renderBar();
   if(state.screen==="map") renderMap();
-  else if(state.screen==="lesson") renderLesson();
+  else if(state.screen==="lesson") { renderLesson(); const field=document.getElementById("typeInput"); if(field) field.value=state.ex.draft || ""; }
   else if(state.screen==="complete") renderComplete();
   window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
 }
 function focusType(){
   if(state.screen==="lesson" && state.ex && state.ex.type==="type" && !state.answered){
     const inp=document.getElementById('typeInput');
-    if(inp){ inp.focus(); }
+    if(inp){ inp.value=state.ex.draft || ""; inp.focus(); }
   }
 }
 
@@ -1034,6 +1043,7 @@ const handlers={
   startnext(el){ startLesson(el.dataset.id); },
   exit(){ openExitConfirm(); },
   map(){ state.screen="map"; render(); },
+  retry(){ if(!state.dead){ state.answered=false; state.solution=null; render(); } },
   next(){ next(); },
   check(){
     const t=state.ex.type;
@@ -1065,8 +1075,11 @@ document.getElementById('barIn').addEventListener('click',e=>{
   const el=e.target.closest('[data-action]'); if(!el) return;
   const a=el.dataset.action; if(handlers[a]) handlers[a](el);
 });
+document.addEventListener('input',e=>{
+  if(e.target.id==='typeInput' && state.ex?.type==='type'){state.ex.draft=e.target.value; saveProgress();}
+});
 document.addEventListener('keydown',e=>{
-  if(e.key==="Enter" && state.screen==="lesson" && state.ex && state.ex.type==="type" && !state.answered){
+  if(e.key==="Enter" && e.target.id==="typeInput" && state.screen==="lesson" && state.ex && state.ex.type==="type" && !state.answered){
     e.preventDefault(); checkTypeLine();
   }
 });
@@ -1118,5 +1131,6 @@ function snakeMascot(sz){
 restoreProgress();
 render();
 </script>
+<a style="display:inline-block;margin:0.35rem 0.75rem;padding:0.45rem;color:inherit;text-decoration:underline" href="./informatics-versions/">Версии тренажёров по информатике</a>
 </body>
 </html>

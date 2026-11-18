@@ -520,6 +520,7 @@
   .vennLegendStrip .swatch.outline { background: transparent; border: 1.5px solid var(--ink-soft); }
   .vennLegendStrip .swatch.universe { background: var(--surface-2); border-style: dashed; }
 
+.stepHint{margin:1rem 0;padding:.75rem;border:1px solid var(--line,#bbb);border-radius:.5rem}.stepHint summary{cursor:pointer;font-weight:600}.stepHint p{line-height:1.5} @media(max-width:480px){.exActions{flex-wrap:wrap}.exInputRow{flex-wrap:wrap}.exInput{max-width:100%;min-width:0}}
 </style>
 <style>
   /* ---------- truth table ---------- */
@@ -1125,6 +1126,7 @@
     margin-top: 14px;
     flex-wrap: wrap;
   }
+.stepHint{margin:1rem 0;padding:.75rem;border:1px solid var(--line,#bbb);border-radius:.5rem}.stepHint summary{cursor:pointer;font-weight:600}.stepHint p{line-height:1.5} @media(max-width:480px){.exActions{flex-wrap:wrap}.exInputRow{flex-wrap:wrap}.exInput{max-width:100%;min-width:0}}
 </style>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
@@ -1628,14 +1630,14 @@ const EXERCISES = [
     id: "ex5", type: "fill-symbol", lawId: "demorgan",
     prompt: "Заполни пропуск: ¬(A ∨ B) = ¬A ? ¬B",
     placeholder: "введи ∧ или ∨",
-    accept: ["∧", "and", "и", "^"],
+    accept: ["∧", "and", "и", "^", "&", "&&"],
     explanation: "После отрицания ∨ превращается в ∧ — это де Морган."
   },
   {
     id: "ex6", type: "fill-symbol", lawId: "demorgan",
     prompt: "Заполни пропуск: ¬(A ∧ B) = ¬A ? ¬B",
     placeholder: "введи ∧ или ∨",
-    accept: ["∨", "or", "или", "v"],
+    accept: ["∨", "or", "или", "v", "|", "||"],
     explanation: "После отрицания ∧ превращается в ∨ — это де Морган."
   },
   {
@@ -2404,6 +2406,33 @@ const state = {
   quiz: null
 };
 
+
+function saveQuizSession(quiz) {
+  return quiz ? {...quiz, questions: quiz.questions.map(ex => ex.id)} : null;
+}
+function restoreQuizSession(saved) {
+  if (!saved || !Array.isArray(saved.questions) || !Array.isArray(saved.answers)) return null;
+  const ids = saved.questions;
+  if (ids.length < 1 || ids.length > 10 || new Set(ids).size !== ids.length ||
+      saved.answers.length > ids.length || !Number.isInteger(saved.idx) || saved.idx < 0 || saved.idx >= ids.length) return null;
+  const questions = ids.map(id => EXERCISES.find(ex => ex.id === id));
+  if (questions.some(ex => !ex) || saved.answers.some(a => !a || typeof a !== 'object')) return null;
+  return {...saved, questions};
+}
+function stepHint(ex) {
+  const hints = {
+    demorgan: "Подставьте два разных значения, например A = 1 и B = 0. Вычислите сначала выражение в скобках, затем его отрицание.",
+    constants: "Подставьте вместо переменной сначала 0, затем 1. Сравните обе строки с вариантами ответа.",
+    excluded: "Выпишите два случая для A. Рядом с каждым запишите противоположное значение.",
+    noncontradiction: "Могут ли высказывание и его отрицание оказаться истинными одновременно?",
+    doublenot: "Начните с A = 0. Примените каждое отрицание отдельно. Повторите для A = 1."
+  };
+  const hint = hints[ex.lawId] || (ex.type.includes('venn') || ex.type.includes('region') || ex.type.includes('diagram')
+    ? "Выберите одну область диаграммы. Для каждого круга определите, лежит ли точка внутри. Подставьте эти значения в формулу."
+    : "Проверьте выражение на одной строке таблицы истинности. Чтобы отвергнуть вариант, достаточно строки, в которой значения расходятся. Для подтверждения проверьте остальные строки.");
+  return `<details class="stepHint"><summary>Подсказка к упражнению</summary><p>${hint}</p></details>`;
+}
+
 function loadProgress() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -2413,6 +2442,12 @@ function loadProgress() {
     if (typeof p.studyLawIdx === "number" && p.studyLawIdx >= 0 && p.studyLawIdx < LAWS.length) state.studyLawIdx = p.studyLawIdx;
     if (typeof p.showMnemonic === "boolean") state.showMnemonic = p.showMnemonic;
     if (typeof p.practiceIdx === "number" && p.practiceIdx >= 0 && p.practiceIdx < EXERCISES.length) state.practice.idx = p.practiceIdx;
+    if (p.practiceAnswer?.idx === state.practice.idx && Array.isArray(p.practiceAnswer.shadeSelected)) {
+      const a = p.practiceAnswer;
+      state.practice = {...state.practice, answered:a.answered===true, picked:a.picked, pickedText:typeof a.pickedText==='string'?a.pickedText:'',
+        correct:a.correct===true, shadeChecked:a.shadeChecked===true, shadeSelected:new Set(a.shadeSelected.filter(id => REGION_ORDER_2.includes(id)))};
+    }
+    state.quiz = restoreQuizSession(p.quiz);
     if (typeof p.builderExprId === "string" && EXPRESSIONS[p.builderExprId]) state.builder.exprId = p.builderExprId;
     if (typeof p.regionTrainerIdx === "number" && p.regionTrainerIdx >= 0 && p.regionTrainerIdx < REGION_TASKS_2.length) state.regionTrainer.taskIdx = p.regionTrainerIdx;
     if (typeof p.demorganVariant === "string" && ["or","and"].includes(p.demorganVariant)) state.demorgan.variant = p.demorganVariant;
@@ -2425,6 +2460,8 @@ function saveProgress() {
       studyLawIdx: state.studyLawIdx,
       showMnemonic: state.showMnemonic,
       practiceIdx: state.practice.idx,
+      practiceAnswer: {...state.practice, shadeSelected: Array.from(state.practice.shadeSelected)},
+      quiz: saveQuizSession(state.quiz),
       builderExprId: state.builder.exprId,
       regionTrainerIdx: state.regionTrainer.taskIdx,
       demorganVariant: state.demorgan.variant
@@ -2984,6 +3021,7 @@ function renderPractice() {
         ${counter}
         <span class="exTag">${escapeHtml(exerciseTypeLabel(ex.type))}</span>
       </div>
+      ${stepHint(ex)}
       ${body}
       ${nav}
     </div>`;
@@ -3020,7 +3058,7 @@ function renderMCQExercise(ex) {
   if (p.answered) {
     feedback = p.correct
       ? `<div class="exFeedback ok">Верно. ${escapeHtml(ex.explanation || "")}</div>`
-      : `<div class="exFeedback no">Не угадал. ${escapeHtml(ex.explanation || "")}</div>`;
+      : `<div class="exFeedback no">Проверьте ответ по таблице истинности. ${escapeHtml(ex.explanation || "")}</div>`;
   }
   return `
     <p class="exPrompt">${formatFormula(ex.prompt)}</p>
@@ -3069,7 +3107,7 @@ function renderPickVennExercise(ex) {
   if (p.answered) {
     feedback = p.correct
       ? `<div class="exFeedback ok">Верно. ${escapeHtml(ex.explanation || "")}</div>`
-      : `<div class="exFeedback no">Не угадал. ${escapeHtml(ex.explanation || "")}</div>`;
+      : `<div class="exFeedback no">Проверьте ответ по таблице истинности. ${escapeHtml(ex.explanation || "")}</div>`;
   }
   return `
     <p class="exPrompt">${formatFormula(ex.prompt)}</p>
@@ -3133,7 +3171,7 @@ function renderCompareDiagramsExercise(ex) {
   if (p.answered) {
     feedback = p.correct
       ? `<div class="exFeedback ok">Верно. ${escapeHtml(ex.explanation || "")}</div>`
-      : `<div class="exFeedback no">Не угадал. ${escapeHtml(ex.explanation || "")}</div>`;
+      : `<div class="exFeedback no">Проверьте ответ по таблице истинности. ${escapeHtml(ex.explanation || "")}</div>`;
   }
 
   return `
@@ -3171,7 +3209,7 @@ function renderBuildExpressionExercise(ex) {
   if (p.answered) {
     feedback = p.correct
       ? `<div class="exFeedback ok">Верно. ${escapeHtml(ex.explanation || "")}</div>`
-      : `<div class="exFeedback no">Не угадал. ${escapeHtml(ex.explanation || "")}</div>`;
+      : `<div class="exFeedback no">Проверьте ответ по таблице истинности. ${escapeHtml(ex.explanation || "")}</div>`;
   }
 
   return `
@@ -3275,7 +3313,7 @@ function renderQuiz() {
       <div class="quizBar"><div class="quizBarFill" style="width:${pct}%"></div></div>
       ${body}
       <div class="exActions">
-        <button class="btn btn-primary" data-action="quiz-next">
+        <button class="btn btn-primary" data-action="quiz-next" ${ans.answered ? "" : "disabled"}>
           ${isLast ? "Завершить квиз →" : "Следующий вопрос →"}
         </button>
         <button class="btn btn-quiet" data-action="quiz-reset">Начать заново</button>
@@ -3301,7 +3339,7 @@ function renderQuizResult() {
     return `
       <li class="quizReviewItem ${ok ? 'is-ok' : 'is-no'}">
         <div style="font-weight:600;font-size:13.5px;margin-bottom:4px">${i+1}. ${formatFormula(ex.prompt)}</div>
-        <div style="font-size:13px;color:var(--ink-soft)">${ok ? "Верно." : "Не угадал."} ${escapeHtml(ex.explanation || "")}</div>
+        <div style="font-size:13px;color:var(--ink-soft)">${ok ? "Верно." : "Проверьте ответ по таблице истинности."} ${escapeHtml(ex.explanation || "")}</div>
       </li>`;
   }).join("");
 
@@ -3627,7 +3665,8 @@ function wirePractice() {
   }
   function checkFill() {
     if (state.practice.answered) return;
-    const val = (fillInput.value || "").trim().toLowerCase();
+    const val = fillInput.value.normalize("NFKC").trim().toLowerCase();
+    if (!val) { fillInput.focus(); return; }
     state.practice.pickedText = val;
     state.practice.correct = (ex.accept || []).some(a => a.toLowerCase() === val);
     state.practice.answered = true;
@@ -3739,7 +3778,8 @@ function wireQuiz() {
   }
   function checkQuizFill() {
     if (ans.answered) return;
-    const val = (fillInput.value || "").trim().toLowerCase();
+    const val = fillInput.value.normalize("NFKC").trim().toLowerCase();
+    if (!val) { fillInput.focus(); return; }
     ans.pickedText = val;
     ans.correct = (ex.accept || []).some(a => a.toLowerCase() === val);
     ans.answered = true;
@@ -3870,7 +3910,9 @@ function validateLogicOperationsTrainer() {
   });
 
   // no external script/style URLs in this document
-  const scripts = document.querySelectorAll("script[src], link[rel=stylesheet]");
+  const optionalSiteChrome = new Set(["navigator-data", "navigator-widget"].map(name => "/assets/assistant/" + name + ".js"));
+  const scripts = Array.from(document.querySelectorAll("script[src], link[rel=stylesheet]")).filter(el =>
+    !optionalSiteChrome.has((el.getAttribute("src") || "").split("?")[0]));
   if (scripts.length > 0) errors.push("Обнаружены внешние ссылки в <script src> или <link rel=stylesheet>: " + scripts.length);
 
   return { ok: errors.length === 0, errors, warnings };
@@ -3923,5 +3965,6 @@ function validateLogicOperationsTrainer() {
   render();
 })();
 </script>
+<nav aria-label="Продолжение занятий" style="padding:1rem;display:flex;flex-wrap:wrap;gap:1rem;font-size:1rem"><a href="./logic-trainer/">Задачи ЕГЭ № 15 с параметром</a><a href="./informatics-versions/">Сравнить версии</a></nav>
 </body>
 </html>
