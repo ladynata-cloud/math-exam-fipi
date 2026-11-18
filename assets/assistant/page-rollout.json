@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+  "baseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -273,13 +273,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/index.html": {
-      "beforeSha256": "70b3eafd7344488001c0377675ed079303ef64db889e4d1be5347ee04e66dd1e",
-      "afterSha256": "3c3009ca914e25db1b1853367be415c82d110c428e006c82f6b28ed34522d183",
+      "beforeSha256": "dbf1bf5fb8bc1c2cbd224554831b584e47c4f98b6ceb51ad12a148d051392682",
+      "afterSha256": "2d9d039053e21f6fc575ca334e8fe7c45c4245927c58a6c610e8764c424a2df6",
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/lesson.html": {
-      "beforeSha256": "bfed363a64a67e5a85ee23ab8a799b71c19555d4cdbd724b25cae942a5c64bff",
-      "afterSha256": "6e3561a2d8cdf6cf96f1b928479fb235f1bdc27ec11002a217d7f1c03304ed5a",
+      "beforeSha256": "fe636797d2c4752fb65fdf5a7b1dd6c218b8f039c4ab37b8c1bf215a27a9d209",
+      "afterSha256": "2b64087a1659d4c953b21f0ca61298f84b3af0e34f3f525d07b57a2587d4a4cc",
       "placement": "before-head-close"
     },
     "ege-profil/circle/index.html": {
@@ -2193,8 +2193,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
-      "afterSha256": "18eb72f3db935d2a242eddd31b723c8ec7ce77eeef5ddb006595918bcacc02fe",
+      "beforeSha256": "58d62d03ed58c788dc06f37b1b3a0e88f947ae6aea797323000fca1378d1465e",
+      "afterSha256": "e30fc61f823d1e1e4cbbd9ea0a36838afdc822de844b2eff5c16aacd00ec6212",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
@@ -5605,6 +5605,17 @@
       "changedPaths": [
         "ege-baza/index.html",
         "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "6b9ffd6a624cd6731802cd6ef92bb48e50fc92e8",
+      "task": "docs/tasks/GEOMETRY_COURSES_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-profil/atanasyan-10-11/index.html",
+        "ege-profil/atanasyan-10-11/lesson.html",
+        "stereo-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
