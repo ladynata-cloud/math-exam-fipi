@@ -139,8 +139,21 @@ function expectedScene(lesson, config) {
     const vertices = face.vertices.map(name => points[name]);
     let outward = normal(vertices);
     if (dot(outward, sub(mean(vertices), center)) < 0) outward = outward.map(x => -x);
-    return { edgeKeys: face.vertices.map((name, i) => key(name, face.vertices[(i + 1) % face.vertices.length])), back: dot(outward, viewDirection) < -1e-8 };
+    // Finite convex polygon membership, independently of the renderer's
+    // whole-solid half-space cache. Coplanarity alone would include extensions.
+    const contains = point => {
+      if (Math.abs(dot(outward, sub(point, vertices[0]))) > radius * 1e-7) return false;
+      const turns = vertices.map((a, i) => dot(cross(sub(vertices[(i + 1) % vertices.length], a), sub(point, a)), outward));
+      const epsilon = radius * radius * 1e-7;
+      return turns.every(value => value >= -epsilon) || turns.every(value => value <= epsilon);
+    };
+    return { contains, edgeKeys: face.vertices.map((name, i) => key(name, face.vertices[(i + 1) % face.vertices.length])), back: dot(outward, viewDirection) < -1e-8 };
   });
+  for (const [id, segment] of segments) {
+    const [a, b] = id.split('|');
+    const supporting = faces.filter(face => face.contains(points[a]) && face.contains(points[b]));
+    segment.hidden = !config.flat && segment.kind !== 'helper' && supporting.length > 0 && supporting.every(face => face.back);
+  }
   const edges = Object.fromEntries((lesson.model.edges || []).filter(([a, b]) => inPlane(a) && inPlane(b)).map(([a, b]) => {
     const adjacent = faces.filter(face => face.edgeKeys.includes(key(a, b)));
     return [key(a, b), !config.flat && adjacent.length === 2 && adjacent.every(face => face.back)];
@@ -244,11 +257,61 @@ function problemsFor(actual, expected) {
     const wanted = expected.segments[lineKey(segment)];
     if (!wanted) continue;
     check(segment.kind === wanted.kind && segment.step === wanted.step, 'incorrect constructed role/focus ' + segment.id);
-    check(dashed(segment) === (wanted.kind === 'helper'), 'incorrect helper/section stroke ' + segment.id);
+    check(segment.hidden === String(wanted.hidden), 'incorrect constructed visibility ' + segment.id);
+    check(dashed(segment) === (wanted.kind === 'helper' || wanted.hidden), 'incorrect helper/section stroke ' + segment.id);
   }
   check(actual.activePlane === expected.planeId, 'wrong active plane');
   check(actual.polygon === expected.polygon, 'wrong final polygon');
   return problems;
+}
+
+
+function validateStrokeOracle() {
+  // Hand-specified convex cube: y=0 is behind it when looking from +y.
+  // These fixtures do not call the renderer or read its data-hidden attribute.
+  const lesson = {
+    model: { points: {
+      A:[0,0,0], B:[1,0,0], C:[1,1,0], D:[0,1,0],
+      A1:[0,0,1], B1:[1,0,1], C1:[1,1,1], D1:[0,1,1],
+      M:[.2,0,.3], N:[.8,0,.7], P:[.2,1,.3], Q:[.8,1,.7],
+      X:[2,0,.3], Y:[3,0,.7], I:[.2,.5,.3], J:[.8,.5,.7]
+    }, faces:[['A','B','C','D'],['A1','B1','C1','D1'],['A','B','B1','A1'],
+      ['B','C','C1','B1'],['C','D','D1','C1'],['D','A','A1','D1']], edges:[] },
+    steps:[{ segments:[{a:'M',b:'N',kind:'section'}, {a:'P',b:'Q',kind:'section'},
+      {a:'A',b:'A1',kind:'section'}, {a:'X',b:'Y',kind:'section'}, {a:'I',b:'J',kind:'section'}] }]
+  };
+  const config = { count:1, camera:{yaw:0,pitch:0}, flat:false };
+  const expected = expectedScene(lesson, config);
+  assert.equal(expected.segments['M|N'].hidden, true, 'rear finite face is hidden');
+  for (const id of ['P|Q','A|A1','X|Y','I|J']) assert.equal(expected.segments[id].hidden, false,
+    id + ': front, silhouette edge, plane extension, or unsupported interior is not a hidden face side');
+  assert.equal(expectedScene(lesson, {...config,camera:{yaw:Math.PI,pitch:0}}).segments['M|N'].hidden, false, 'camera reversal reveals the rear side');
+  assert.equal(expectedScene(lesson, {...config,flat:true}).segments['M|N'].hidden, false, 'flat projection has no hidden sides');
+  const helper = structuredClone(lesson); helper.steps[0].segments[0].kind = 'helper';
+  assert.equal(expectedScene(helper, config).segments['M|N'].hidden, false, 'a helper keeps its distinct role');
+
+  // Exercise the actual browser acceptance predicate with independent expected
+  // geometry. Every mutation changes only one semantic field of a valid line.
+  const checkMutation = (wanted, change, message) => {
+    const box = {x:10,y:10,right:30,bottom:30,width:20,height:20};
+    const actual = {viewport:320,scrollWidth:320,svg:{x:0,y:0,right:300,bottom:200,width:300,height:200},
+      clip:{x:0,y:0,right:300,bottom:200},labels:[],points:[],edges:[],activePlane:null,polygon:null,
+      segments:[{id:'M-N',kind:wanted.kind,step:1,hidden:String(wanted.hidden),values:[10,10,30,30],box,
+        style:{stroke:'#123',width:2,opacity:1,visibility:'visible',dash:wanted.kind==='helper'||wanted.hidden?'6, 5':'none'}}]};
+    const oracle = {labels:[],edges:{},segments:{'M|N':wanted},planeId:null,polygon:null};
+    assert.deepEqual(problemsFor(actual, oracle), [], 'unmutated stroke fixture');
+    change(actual.segments[0]);
+    assert(problemsFor(actual, oracle).some(problem => problem.startsWith(message)), message + ' must be rejected');
+  };
+  const hidden = expected.segments['M|N'], visible = expected.segments['P|Q'];
+  const auxiliary = expectedScene(helper, config).segments['M|N'];
+  checkMutation(hidden, line => {line.style.dash='none';}, 'incorrect helper/section stroke');
+  checkMutation(visible, line => {line.style.dash='6, 5';}, 'incorrect helper/section stroke');
+  checkMutation(auxiliary, line => {line.style.dash='none';}, 'incorrect helper/section stroke');
+  checkMutation(hidden, line => {line.hidden='false';}, 'incorrect constructed visibility');
+  checkMutation(visible, line => {line.hidden='true';}, 'incorrect constructed visibility');
+  checkMutation(auxiliary, line => {line.hidden='true';}, 'incorrect constructed visibility');
+  return { geometryAssertions:8, negativeControls:6 };
 }
 
 const segment = (plane, a, b, role = 'helper') => ({ plane, a, b, role });
@@ -283,6 +346,7 @@ async function finishManual(page, lesson) {
 }
 
 async function main() {
+  const strokeOracle = validateStrokeOracle();
   // This validates coverage/fixtures only. It is explicitly not browser evidence.
   const coverage = course.lessons.flatMap(lesson => STATES.map(state => {
     const work = fixture(lesson, state), expected = expectedScene(lesson, lessonConfig(lesson, work));
@@ -292,13 +356,13 @@ async function main() {
   assert.equal(course.lessons.length, 186);
   assert.equal(course.learningPath.length, 26);
   if (process.argv.includes('--validate-fixtures')) {
-    console.log(JSON.stringify({ fixtureValidation: 'PASS', browserRun: false, cards: course.lessons.length, widths: WIDTHS, scenes: coverage.length * WIDTHS.length, manualJourneys: Object.keys(MANUAL).length * WIDTHS.length, researchJourneys: course.learningPath.length * WIDTHS.length }));
+    console.log(JSON.stringify({ fixtureValidation: 'PASS', browserRun: false, strokeOracle, cards: course.lessons.length, widths: WIDTHS, scenes: coverage.length * WIDTHS.length, manualJourneys: Object.keys(MANUAL).length * WIDTHS.length, researchJourneys: course.learningPath.length * WIDTHS.length }));
     return;
   }
   const { chromium } = require('playwright');
   const output = process.env.SECTIONS_HARMONIZATION_SHOTS ? path.resolve(process.env.SECTIONS_HARMONIZATION_SHOTS) : fs.mkdtempSync(path.join(os.tmpdir(), 'sections-harmonization-'));
   fs.mkdirSync(output, { recursive: true });
-  const report = { status: 'RUNNING', startedAt: new Date().toISOString(), widths: WIDTHS, cards: course.lessons.length, scenes: [], failures: [], pageErrors: [], browserRun: true };
+  const report = { status: 'RUNNING', strokeOracle, startedAt: new Date().toISOString(), widths: WIDTHS, cards: course.lessons.length, scenes: [], failures: [], pageErrors: [], browserRun: true };
   const server = http.createServer((request, response) => {
     const pathname = decodeURIComponent(new URL(request.url, 'http://local.test').pathname);
     const file = path.resolve(ROOT, '.' + pathname, pathname.endsWith('/') ? 'index.html' : '');
@@ -492,4 +556,5 @@ async function main() {
   }
 }
 
-main().catch(error => { console.error(error.stack); process.exitCode = 1; });
+module.exports = { expectedScene, problemsFor, fixture, lessonConfig, validateStrokeOracle };
+if (require.main === module) main().catch(error => { console.error(error.stack); process.exitCode = 1; });
