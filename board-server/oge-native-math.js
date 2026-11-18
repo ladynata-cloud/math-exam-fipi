@@ -61,6 +61,7 @@ function makeStorage(map = new Map()) {
   opts.search — строка адреса (например, '?mode=review');
   opts.storage — makeStorage() для общих «вкладок»;
   opts.seed — сид Math.random.
+  opts.sharedMode — режим общей доски или кабинета.
   Возвращает { ctx, run(code), logs, storage }.
 */
 function loadTrainer(rel, opts = {}) {
@@ -96,6 +97,7 @@ function loadTrainer(rel, opts = {}) {
     Error, TypeError, RangeError, parseFloat, parseInt, isFinite, isNaN, Promise, Reflect, Proxy, BigInt,
     encodeURIComponent, decodeURIComponent, encodeURI, decodeURI, escape, unescape, btoa, atob,
     Math: M,
+    OgeCourseSharedMode: opts.sharedMode === true,
   };
   ctx.document = stubEl();
   ctx.window = ctx; ctx.self = ctx; ctx.globalThis = ctx; ctx.top = ctx; ctx.parent = ctx;

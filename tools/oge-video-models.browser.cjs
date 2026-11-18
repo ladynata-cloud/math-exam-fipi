@@ -1,5 +1,5 @@
 'use strict';
-// Real Chromium interactions against the nine public trainer entries. Every
+// Real Chromium interactions against eight active entries and retired task19. Every
 // browser context uses disposable synthetic work; no user account is involved.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -9,7 +9,7 @@ const crypto = require('node:crypto');
 const {execFileSync} = require('node:child_process');
 const {chromium} = require('playwright');
 const checkTriangleHelp = require('./oge-task15-model.browser.cjs');
-const {entries, assets, restoreVideoModels} = require('./oge-video-models-preservation.cjs');
+const {entries, activeEntries, assets, restoreVideoModels} = require('./oge-video-models-preservation.cjs');
 const lessons = [...require('../trainers/oge-video-graphs.js'), ...require('../trainers/oge-video-geometry.js')];
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'artifacts/oge-video-models');
@@ -161,12 +161,23 @@ fs.mkdirSync(OUT,{recursive:true});
    finally{await c.close();}
   }
   for(const width of [320,360,1280]){
-   // Every real entry boots with the investigation folded away. Merely opening
-   // the page must not create a model attempt or change native data.
+   // Active entries boot with the investigation folded away. Task19 has none.
+   // Merely opening a page must not create a model attempt or change native data.
    for(const [number,file] of Object.entries(entries)){
-    const c=await context(width),p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
+    const c=await context(width),p=await c.newPage(),errors=[],addonRequests=[];p.on('pageerror',e=>errors.push(e.message));
+    p.on('request',request=>{if(/\/oge-video-(?:models|graphs|geometry)\.(?:js|css)(?:\?|$)/.test(request.url()))addonRequests.push(request.url());});
     try{
      await p.goto(base+'/'+file,{waitUntil:'load'});
+     if(!Object.hasOwn(activeEntries,number)){
+      assert.equal(number,'19','only task19 is a retired live addon route');
+      await p.locator('#statement').waitFor();
+      assert.equal(await p.locator('#oge-video-models').count(),0);
+      assert.deepEqual(addonRequests,[],'task19 does not load any addon asset');
+      assert.equal(await p.evaluate(prefix=>Object.keys(localStorage).filter(key=>key.startsWith(prefix)).length,PREFIX),0);
+      await withinViewport(p);assert.deepEqual(errors,[]);
+      report.layouts.push({number:Number(number),width,status:'PASS',addon:'absent'});
+      continue;
+     }
      if(Number(number)===15)await checkTriangleHelp(p);
      await p.locator('#oge-video-models').waitFor();
      assert.equal(await p.locator('#oge-video-models').getAttribute('open'),null);

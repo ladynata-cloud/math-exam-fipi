@@ -326,7 +326,7 @@ nav.oge-wayfinding[hidden]{display:none!important}
     <div>
       <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
       <h1>Задание 25 · геометрия повышенной сложности</h1>
-      <div class="sub">ОГЭ по математике · 16 типов · разбор, тренировка, зачёт</div>
+      <div class="sub">ОГЭ по математике · 17 типов · разбор, тренировка, зачёт</div>
     </div>
     <div class="grow"></div>
     <div class="badge" id="modeBadge">Разбор</div>
@@ -368,7 +368,7 @@ const KEY='mathExamCourseProgress.v1';
    столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
    свои записи журнала, после свежего чтения ключа — две вкладки не
    затирают друг друга. В ?selftest=1 ничего не пишется. */
-const TYPE_IDS=["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"];
+const TYPE_IDS=["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"];
 const QUIZ_TOTAL=8;   // размер зачёта
 const PASS_AT=6;       // зачёт сдан при 6 из 8
 const CP=(function(){
@@ -581,7 +581,7 @@ function triFromSides(a,b,c){
 /* обёртка svg */
 function svgWrap(inner, vw, vh){ return `<svg viewBox="0 0 ${vw} ${vh}" width="${vw}" height="${vh}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`; }
 /* ======================================================================
-   ТИПЫ ЗАДАЧ 1–16.  У каждого:
+   ТИПЫ ЗАДАЧ 1–17.  У каждого:
      topic, pill, title, tag  — метаданные
      pool: [params...]         — пул реальных задач (для тренировки/зачёта)
      cond(p) -> html           — условие
@@ -724,8 +724,8 @@ TYPES.push({
 TYPES.push({
   id:3, topic:'Трапеция', pill:'trap', tag:'биссектриса через середину',
   title:'Трапеция: биссектриса угла D через середину боковой',
-  pool:[[8,10,2],[40,41,16],[16,34,2],[28,35,7],[10,26,1],[6,10,1],[20,29,4],[24,25,9],[4,5,1],[12,13,4]],
-  cond:p=>`Боковые стороны <b>AB</b> и <b>CD</b> трапеции <b>ABCD</b> равны соответственно <b>${p[0]}</b> и <b>${p[1]}</b>, а основание <b>BC = ${p[2]}</b>. Биссектриса угла <b>ADC</b> проходит через середину стороны <b>AB</b>. Найдите площадь трапеции.`,
+  pool:[[8,10,2],[40,41,16],[26,30,1],[28,35,7],[10,26,1],[6,10,1],[20,29,4],[24,25,9],[4,5,1],[12,13,4]],
+  cond:p=>`В трапеции <b>ABCD</b> с основаниями <b>AD</b> и <b>BC</b> точка <b>M</b> — середина боковой стороны <b>AB</b>. Отрезок <b>DM</b> делит угол <b>ADC</b> пополам. Известно, что <b>BC = ${p[2]}</b>, <b>AB = ${p[0]}</b>, <b>CD = ${p[1]}</b>. Найдите площадь трапеции.`,
   build(p){
     const [AB,CD,BC]=p; const AD=CD-BC;
     const den=AD-BC; const uv=den; // u+v
@@ -758,6 +758,13 @@ TYPES.push({
     s+=svArc(D_,C_,Mp,18,{stroke:'#d97706',w:2}); s+=svArc(D_,Mp,A_,23,{stroke:'#d97706',w:2});
     s+=svTicks(A_,Mp,2,{stroke:'#2d70b3'}); s+=svTicks(Mp,B_,2,{stroke:'#2d70b3'}); // M середина
     if(u<0.5){ s+=svRight(A_,D_,B_,{d:10,stroke:'#16a34a',w:1.8}); }
+    else {
+      const H1=M(u,0),H2=M(u+BC,0);
+      s+=svL(B_,H1,{stroke:'#8c9eaa',w:1.5,dash:'4 3'});
+      s+=svL(C_,H2,{stroke:'#8c9eaa',w:1.5,dash:'4 3'});
+      s+=svTxt(H1,'H₁',{dx:-10,dy:14,fs:14});
+      s+=svTxt(H2,'H₂',{dx:10,dy:14,fs:14});
+    }
     // подписи длин
     s+=svTxt(mid(A_,B_),`${AB}`,{dx:-13,dy:0,fs:12,col:'#1e5a97'});
     s+=svTxt(mid(C_,D_),`${CD}`,{dx:14,dy:0,fs:12,col:'#1e5a97'});
@@ -1413,6 +1420,55 @@ TYPES.push({
   notSheet:`Связь r·r_B=(s−a)(s−c) и вообще вневписанная окружность на листе справочных материалов не упоминаются.`
 });
 
+/* Радиусы вписанных окружностей в треугольнике и его части. */
+TYPES.push({
+  id:17, topic:'Треугольник', pill:'tri', tag:'подобие прямоугольных треугольников',
+  title:'Вписанные окружности и высота к гипотенузе',
+  pool:[[7,24,21],[3,4,9],[5,12,10],[8,15,16],[20,21,10],[12,5,18],[15,8,30],[24,7,36]],
+  cond(p){
+    const [a,b,rSmall]=p;
+    return `В треугольнике <b>ABC</b> угол <b>C</b> прямой. Высота <b>CH</b> опущена на гипотенузу <b>AB</b>. Радиус окружности, вписанной в треугольник <b>AHC</b>, равен <b>${rSmall}</b>. Известно, что <b>tg ∠ABC = ${a}/${b}</b>. Найдите радиус окружности, вписанной в <b>ABC</b>.`;
+  },
+  build(p){
+    const [a,b,rSmall]=p, c=Math.hypot(a,b), r=rSmall*c/a;
+    const steps=[
+      {h:'У треугольников <b>AHC</b> и <b>ACB</b> есть общий угол при A, а углы AHC и ACB — прямые. Поэтому <b>△AHC ∼ △ACB</b>.',why:'Это подобие по двум углам. Гипотенузе AC малого треугольника соответствует гипотенуза AB большого.'},
+      {h:`По определению тангенса <b>AC/BC = ${a}/${b}</b>. Пусть AC = ${a}k, BC = ${b}k. Тогда по теореме Пифагора <b>AB = √(${a}² + ${b}²)·k = ${c}k</b>.`,why:'k — общий множитель длин катетов. Он нужен только для отношения длин.'},
+      {h:`Радиусы вписанных окружностей двух подобных треугольников относятся так же, как соответствующие гипотенузы: <b>${rSmall}/r = AC/AB = ${a}/${c}</b>.`,why:'При подобии одна вписанная окружность переходит в другую, а все длины меняются с одним коэффициентом.'},
+      {h:`Отсюда <b>r = ${rSmall}·${c}/${a} = ${fmtNum(r)}</b>.`,why:'Радиус большого треугольника больше известного радиуса.',ask:{label:'r',v:r,q:`Найди радиус r из пропорции ${rSmall}/r = ${a}/${c}.`,tip:`Умножь ${rSmall} на ${c} и раздели на ${a}.`}}
+    ];
+    return {ans:[{label:'r',v:r,exact:fmtNum(r)}],steps,geo:{a,b,c,rSmall,r}};
+  },
+  draw(p){
+    const [a,b,rSmall]=p,c=Math.hypot(a,b), r=rSmall*c/a;
+    const scale=r/((a+b-c)/2);
+    const A=[a*scale,0],B=[0,b*scale],C=[0,0];
+    const H=[A[0]*b*b/(c*c),B[1]*a*a/(c*c)];
+    const AH=len2(sub(A,H)),CH=len2(H),AC=A[0];
+    const I=[r,r], J=mul(add(mul(A,CH),mul(H,AC)),1/(AH+CH+AC));
+    const F=fit([A,B,C,H],VW,VH,PAD).m;
+    const [P,Q,R,T,Ipx,Jpx]=[A,B,C,H,I,J].map(point=>F(...point));
+    const pr=len2(sub(F(I[0]+r,I[1]),Ipx));
+    const pj=len2(sub(F(J[0]+rSmall,J[1]),Jpx));
+    let d=svPolygon([P,Q,R],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    d+=svPolygon([P,T,R],{stroke:'#2d70b3',w:1.4,fill:'rgba(45,112,179,0.10)'});
+    d+=svL(R,T,{stroke:'#2d70b3',w:2.4});
+    d+=svRight(R,Q,P,{d:12,stroke:'#1a1a2e',w:1.7});
+    d+=svRight(T,R,P,{d:10,stroke:'#2d70b3',w:1.7});
+    d+=svCirc(Ipx,pr,{stroke:'#15803d',w:1.9,dash:'5 4'});
+    d+=svCirc(Jpx,pj,{stroke:'#b45309',w:2.0});
+    d+=svTxt(Ipx,'r',{dx:0,dy:-5,fs:16,col:'#15803d'});
+    d+=svTxt(Jpx,String(rSmall),{dx:0,dy:0,fs:16,col:'#b45309'});
+    for(const [point,label,dx,dy] of [[P,'A',14,10],[Q,'B',-7,-15],[R,'C',-13,11],[T,'H',12,-6]]){
+      d+=svDot(point,{r:3.6});d+=svTxt(point,label,{dx,dy,fs:15});
+    }
+    return svgWrap(d,VW,VH);
+  },
+  refKey:'△AHC ∼ △ACB. Поэтому r(AHC)/r(ABC) = AC/AB.',
+  refWhy:'В подобных треугольниках соответствующие длины меняются в одном отношении. Масштабирование треугольника переносит его вписанную окружность в соответствующую вписанную окружность.',
+  notSheet:'Подобие прямоугольных треугольников с общим углом и отношение радиусов нужно обосновать.'
+});
+
 /* ======================================================================
    ДВИЖОК: рендер панелей, взаимодействие, журнал событий
    ====================================================================== */
@@ -1457,7 +1513,7 @@ let learnType=null;
 function renderLearn(){ learnType==null ? renderLearnGrid() : renderLearnDetail(learnType); }
 function renderLearnGrid(){
   const err=getErrByType();
-  let h='<div class="muted" style="margin-bottom:12px">Выберите тип задачи, чтобы увидеть полный разбор с ключевой идеей, честным чертёжом и объяснением, <i>почему</i> работает каждый шаг. 16 типов — по одному сценарию на каждый.</div><div class="tgrid">';
+  let h='<div class="muted" style="margin-bottom:12px">Выберите тип задачи, чтобы увидеть полный разбор с ключевой идеей, честным чертёжом и объяснением, <i>почему</i> работает каждый шаг. 17 типов. Для каждого есть отдельный разбор.</div><div class="tgrid">';
   for(const T of TYPES){
     const e=err[T.id]||0;
     h+=`<div class="tcard" data-act="learn-open" data-id="${T.id}">
@@ -1743,6 +1799,10 @@ const TRAPS={
   16:(p)=>{const [AC,rB]=p;return [
     {v:[AC*AC/rB],m:'Похоже, вместо половины основания AC взято всё основание.'},
     {v:[(Math.sqrt(rB*rB+AC*AC)-rB)/2],m:'Похоже, перепутаны пропорциональные отрезки в прямоугольном треугольнике с прямым углом при вершине A и гипотенузой, соединяющей центры вписанной и вневписанной окружностей: половина основания в нём — высота, проведённая к гипотенузе, а не катет.'}];},
+  17:(p)=>{const [a,b,rSmall]=p,c=Math.hypot(a,b);return [
+    {v:[rSmall*a/c],m:'Масштаб взят в обратную сторону. Радиус большего треугольника увеличивается в AB/AC раз.'},
+    {v:[rSmall*c/b],m:'Треугольнику AHC соответствует гипотенуза AC. Для отношения берём AC/AB, а не BC/AB.'}
+  ];},
 };
 const TRAP_GAP=5;                                                          // запас в допусках проверки
 const trapBand=x=>Math.max(1e-6,2e-3*Math.max(1,Math.abs(x)));             // полоса диагностики ошибки; правильность проверяет finalAnswerEq
@@ -3502,6 +3562,86 @@ const data = {
           "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=132"
         }
       ]
+    },
+    "symmetry_axis": {
+      "title": "Осевая симметрия",
+      "explanation": "Ось симметрии отражает всю фигуру в неё саму. Для проверки нужно сопоставить каждой точке её отражение; совпадение только нескольких отдельных точек ещё не доказывает симметрию всей фигуры.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 47, определение оси симметрии и примеры фигур",
+          "printedPage": "111",
+          "pdfPage": 113,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=113"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 18, определение симметричной фигуры и примеры её осей",
+          "printedPage": "161–162",
+          "pdfPage": 162,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000051.pdf#page=162"
+        }
+      ]
+    },
+    "symmetry_center": {
+      "title": "Центральная симметрия",
+      "explanation": "При центральной симметрии точка O является серединой отрезка между точкой и её образом. Центр симметрии фигуры должен переводить всю фигуру в неё саму. Центр окружности и пересечение диагоналей параллелограмма обладают этим свойством; у треугольника его нет.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 47, определение центра симметрии и примеры",
+          "printedPage": "111–112",
+          "pdfPage": 113,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=113"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 19, определения центральной симметрии и центра фигуры, примеры",
+          "printedPage": "166–168",
+          "pdfPage": 167,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000051.pdf#page=167"
+        }
+      ]
+    },
+    "intersecting_chords": {
+      "title": "Произведения отрезков пересекающихся хорд",
+      "explanation": "Если хорды AB и CD одной окружности пересекаются внутри неё в P, то PA · PB = PC · PD. Равенство относится к произведениям двух частей каждой хорды. Его получают из подобия треугольников и равенства вписанных углов.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 71, теорема о произведениях отрезков пересекающихся хорд",
+          "printedPage": "173",
+          "pdfPage": 175,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=175"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 13, ключевая задача 2: свойство пересекающихся хорд",
+          "printedPage": "90–91",
+          "pdfPage": 91,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000030.pdf#page=91"
+        }
+      ]
+    },
+    "tangent_secant": {
+      "title": "Касательная и секущая из одной точки",
+      "explanation": "Из внешней точки P касательная касается окружности в T, а секущая встречает её сначала в A, затем в B. В равенстве PT² = PA · PB отрезок PA является внешней частью, а PB — всей секущей от P до дальней точки пересечения. Хорда AB не заменяет PB.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 71, задача 670 о касательной и секущей",
+          "printedPage": "175",
+          "pdfPage": 177,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=177"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 13, ключевая задача 3: свойство касательной и секущей",
+          "printedPage": "91",
+          "pdfPage": 92,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000030.pdf#page=92"
+        }
+      ]
     }
   },
   "cards": {
@@ -4272,6 +4412,560 @@ const data = {
     ],
     "reference-106": [
       "tangent"
+    ],
+    "isosceles_trapezoid_diagonal_equal_triangles": [
+      "trapezoid",
+      "isosceles_trapezoid",
+      "triangle_area"
+    ],
+    "triangle_exterior_gt_nonadjacent": [
+      "triangle_exterior"
+    ],
+    "triangle_exterior_sum_all_angles": [
+      "triangle_exterior",
+      "triangle_angles"
+    ],
+    "equilateral_triangle_is_isosceles": [
+      "isosceles"
+    ],
+    "rectangle_always_has_incircle": [
+      "incircle",
+      "rectangle"
+    ],
+    "right_triangles_always_similar": [
+      "triangle_similarity",
+      "triangle_types"
+    ],
+    "equilateral_triangle_is_acute": [
+      "isosceles",
+      "triangle_angles",
+      "triangle_types"
+    ],
+    "right_trapezoid_diagonals_equal": [
+      "trapezoid",
+      "parallel_angles"
+    ],
+    "parallelogram_equal_perpendicular_diagonals_square": [
+      "rectangle",
+      "rhombus",
+      "square"
+    ],
+    "parallelogram_equal_diagonals_square": [
+      "rectangle",
+      "square"
+    ],
+    "parallel_lines_alternate_interior_equal": [
+      "parallel_angles"
+    ],
+    "isosceles_has_central_symmetry": [
+      "symmetry_center",
+      "isosceles"
+    ],
+    "isosceles_has_axis_symmetry": [
+      "symmetry_axis",
+      "isosceles"
+    ],
+    "equilateral_has_central_symmetry": [
+      "symmetry_center",
+      "isosceles"
+    ],
+    "unique_point_equidistant_segment_endpoints": [
+      "perpendicular_bisector"
+    ],
+    "equilateral_has_three_symmetry_axes": [
+      "symmetry_axis",
+      "isosceles"
+    ],
+    "equidistant_endpoints_point_on_perp_bisector": [
+      "perpendicular_bisector"
+    ],
+    "any_two_lines_exactly_one_common_point": [
+      "points_lines",
+      "parallel_point"
+    ],
+    "alternate_interior_right_angles_imply_parallel": [
+      "parallel_alternate",
+      "perpendicular"
+    ],
+    "vertical_angle_of_108_is_108": [
+      "adjacent_vertical"
+    ],
+    "adjacent_angles_sum_90": [
+      "adjacent_vertical"
+    ],
+    "adjacent_53_123": [
+      "adjacent_vertical"
+    ],
+    "equal_corresponding_angles_parallel": [
+      "parallel_alternate",
+      "parallel_angles"
+    ],
+    "oblique_lt_perpendicular_3": [
+      "perpendicular_point",
+      "pythagoras"
+    ],
+    "adjacent_81_99": [
+      "adjacent_vertical"
+    ],
+    "same_side_sum90_parallel": [
+      "parallel_same_side",
+      "parallel_angles"
+    ],
+    "corresponding_angles90_parallel": [
+      "perpendicular",
+      "parallel_angles"
+    ],
+    "two_lines_at_most_one_common_point": [
+      "points_lines"
+    ],
+    "two_distinct_points_multiple_lines": [
+      "points_lines"
+    ],
+    "three_lines_at_least_one_common_point": [
+      "points_lines",
+      "parallel_point"
+    ],
+    "corresponding_angles67_parallel": [
+      "parallel_alternate",
+      "parallel_angles"
+    ],
+    "any_two_lines_more_than_one_common_point": [
+      "points_lines",
+      "adjacent_vertical"
+    ],
+    "two_distinct_points_at_most_one_line": [
+      "points_lines"
+    ],
+    "three_lines_one_common_point": [
+      "points_lines",
+      "parallel_point"
+    ],
+    "parallel_line_perpendicular_transfer": [
+      "perpendicular",
+      "parallel_angles"
+    ],
+    "vertical_40_140": [
+      "adjacent_vertical"
+    ],
+    "same_side50_110_parallel": [
+      "parallel_same_side",
+      "parallel_angles"
+    ],
+    "adjacent_50_120": [
+      "adjacent_vertical"
+    ],
+    "same_side30_120_parallel": [
+      "parallel_same_side",
+      "parallel_angles"
+    ],
+    "point_at_most_two_lines": [
+      "points_lines"
+    ],
+    "circle_exactly_two_symmetry_axes": [
+      "symmetry_axis",
+      "circle_definition"
+    ],
+    "line_no_symmetry_axes": [
+      "symmetry_axis",
+      "points_lines"
+    ],
+    "regular_hexagon_six_symmetry_axes": [
+      "symmetry_axis",
+      "regular_polygon"
+    ],
+    "rectangle_no_symmetry_center": [
+      "symmetry_center",
+      "rectangle"
+    ],
+    "circle_no_symmetry_center": [
+      "symmetry_center",
+      "circle_definition"
+    ],
+    "line_at_least_two_symmetry_axes": [
+      "symmetry_axis",
+      "points_lines"
+    ],
+    "square_four_symmetry_axes": [
+      "symmetry_axis",
+      "square"
+    ],
+    "rhombus_symmetry_center_diagonals": [
+      "symmetry_center",
+      "rhombus"
+    ],
+    "three_concurrent_lines_not_exist": [
+      "points_lines"
+    ],
+    "rectangle_diagonal_pythagoras": [
+      "rectangle",
+      "pythagoras"
+    ],
+    "nonrectangle_parallelogram_exists": [
+      "parallelogram",
+      "rectangle"
+    ],
+    "rectangle_diagonals_squares_sum_equals_sides": [
+      "rectangle",
+      "pythagoras"
+    ],
+    "trapezoid_area_midline_times_height": [
+      "trapezoid_area",
+      "trapezoid_midline"
+    ],
+    "orthodiagonal_quadrilateral_is_rhombus": [
+      "rhombus",
+      "polygon_angles"
+    ],
+    "no_rectangle_perpendicular_diagonals": [
+      "rectangle",
+      "square"
+    ],
+    "nonparallelogram_rectangle_exists": [
+      "rectangle",
+      "parallelogram"
+    ],
+    "nonsquare_rhombus_exists": [
+      "rhombus",
+      "square"
+    ],
+    "square_diagonals_bisect": [
+      "square",
+      "parallelogram"
+    ],
+    "nonrhombus_square_exists": [
+      "square",
+      "rhombus"
+    ],
+    "rectangle_all_angles_equal": [
+      "rectangle"
+    ],
+    "trapezoid_perpendicular_diagonals_exists": [
+      "trapezoid",
+      "perpendicular",
+      "coordinates"
+    ],
+    "parallelogram_opposite_angles_equal": [
+      "parallelogram"
+    ],
+    "rectangle_not_square_exists": [
+      "rectangle",
+      "square"
+    ],
+    "convex_quadrilateral_angle_sum_180": [
+      "polygon_angles",
+      "triangle_angles"
+    ],
+    "parallelogram_adjacent_angles_sum_180": [
+      "parallelogram",
+      "parallel_angles"
+    ],
+    "rhombus_all_sides_parallel": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "rhombus_opposite80_100": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "trapezoid_equal_diagonals_isosceles": [
+      "trapezoid",
+      "isosceles_trapezoid"
+    ],
+    "quadrilateral_opposite_pair_equal_parallel": [
+      "parallelogram_tests"
+    ],
+    "quadrilateral_two_equal_angles_parallelogram": [
+      "parallelogram_tests",
+      "isosceles_trapezoid"
+    ],
+    "convex_quad_three_sum220_fourth130": [
+      "polygon_angles",
+      "triangle_angles"
+    ],
+    "all_rhombi_cyclic": [
+      "rhombus",
+      "circumcircle"
+    ],
+    "any_trapezoid_two_equal_angles": [
+      "trapezoid",
+      "parallel_angles"
+    ],
+    "trapezoid_midline_equal_areas": [
+      "trapezoid_area",
+      "trapezoid_midline"
+    ],
+    "cyclic_quadrilateral_opposite_side_sums_equal": [
+      "circumcircle",
+      "incircle"
+    ],
+    "tangential_quadrilateral_opposite_side_sums_equal": [
+      "incircle",
+      "tangent"
+    ],
+    "parallelogram_diagonals_square_sum": [
+      "parallelogram",
+      "pythagoras",
+      "coordinates"
+    ],
+    "isosceles_all_altitudes_are_bisectors": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_incenter_circumcenter_coincide": [
+      "isosceles",
+      "incircle",
+      "circumcircle"
+    ],
+    "triangle_larger_side_smaller_opposite_angle": [
+      "triangle_sides_angles"
+    ],
+    "triangle_always_has_incircle": [
+      "incircle"
+    ],
+    "right_triangles_hypotenuse_acute_angle_congruent": [
+      "right_triangle",
+      "triangle_congruence"
+    ],
+    "triangle_sas_similarity": [
+      "triangle_similarity"
+    ],
+    "isosceles_all_medians_are_bisectors": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "obtuse_triangle_angles_sum_180": [
+      "triangle_angles",
+      "triangle_types"
+    ],
+    "triangle_area_not_exceed_product_two_sides": [
+      "triangle_sine_area",
+      "triangle_area"
+    ],
+    "isosceles_base_median_is_altitude": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_base_median_is_bisector": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "triangle_40_70_70_is_isosceles": [
+      "isosceles",
+      "triangle_sides_angles"
+    ],
+    "isosceles_apex_bisector_bisects_base": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_all_altitudes_medians": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_lateral_median_altitude": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "triangle_side_opposite_angle_congruence": [
+      "triangle_congruence"
+    ],
+    "triangle_angle_strictly_gt60_exists": [
+      "triangle_angles",
+      "isosceles"
+    ],
+    "triangle_bisector_equal_areas": [
+      "triangle_area",
+      "angle_bisector",
+      "triangle_parts"
+    ],
+    "circumcenter_is_bisectors_intersection": [
+      "circumcircle",
+      "incircle",
+      "perpendicular_bisector"
+    ],
+    "incenter_vertex_distance_radius": [
+      "incircle",
+      "angle_bisector_locus"
+    ],
+    "circumcenter_side_distance_radius": [
+      "circumcircle",
+      "circle_definition"
+    ],
+    "isosceles_all_medians_equal": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_base_altitude_gt_lateral": [
+      "isosceles",
+      "triangle_area"
+    ],
+    "triangle_congruence_sss": [
+      "triangle_congruence"
+    ],
+    "triangle_circumcircle_at_most_one": [
+      "circumcircle",
+      "perpendicular_bisector"
+    ],
+    "equidistant_two_vertices_on_third_altitude": [
+      "perpendicular_bisector",
+      "triangle_parts"
+    ],
+    "incenter_equidistant_vertices": [
+      "incircle",
+      "circumcircle"
+    ],
+    "three_distinct_points_at_most_one_circle": [
+      "circumcircle",
+      "perpendicular_bisector",
+      "circle_line"
+    ],
+    "isosceles_circumcenter_midpoint_altitude": [
+      "isosceles",
+      "circumcircle",
+      "perpendicular_bisector"
+    ],
+    "circumcenter_equidistant_sides": [
+      "circumcircle",
+      "incircle"
+    ],
+    "triangle_5_12_13_circumcenter_on_side": [
+      "pythagoras",
+      "median_hypotenuse",
+      "circumcircle"
+    ],
+    "equilateral_circumcenter_bisectors": [
+      "isosceles",
+      "circumcircle",
+      "incircle"
+    ],
+    "triangle_20_21_29_circumcenter_on_side": [
+      "pythagoras",
+      "median_hypotenuse",
+      "circumcircle"
+    ],
+    "obtuse_circumcenter_on_side": [
+      "circumcircle",
+      "inscribed_angles",
+      "triangle_types"
+    ],
+    "triangle_4_5_9_exists": [
+      "triangle_inequality"
+    ],
+    "right_triangle_area_hypotenuse_times_altitude": [
+      "triangle_area",
+      "right_triangle"
+    ],
+    "triangle_6_8_2_not_exist": [
+      "triangle_inequality"
+    ],
+    "sin_hypotenuse_over_opposite": [
+      "trigonometry"
+    ],
+    "circle_area_less_than_diameter_squared": [
+      "circle_length_area",
+      "rectangle_area"
+    ],
+    "point_inside_disk_distance_less_radius": [
+      "circle_definition"
+    ],
+    "equidistant_points_lie_on_circle": [
+      "circle_definition"
+    ],
+    "point_outside_disk_distance_greater_radius": [
+      "circle_definition"
+    ],
+    "tangent_circles_contact_equidistant_centers": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "square_always_cyclic": [
+      "square",
+      "circumcircle"
+    ],
+    "chord_always_gt_radius": [
+      "circle_definition",
+      "pythagoras"
+    ],
+    "circle_point_distance_less_radius": [
+      "circle_definition"
+    ],
+    "any_two_chords_intersect": [
+      "circle_definition",
+      "parallel_point"
+    ],
+    "any_two_diameters_perpendicular": [
+      "circle_definition",
+      "perpendicular"
+    ],
+    "point_distance5_radius4_inside": [
+      "circle_definition"
+    ],
+    "circles_r1_r6_d4_intersect": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "line_distance3_radius5_tangent": [
+      "circle_line",
+      "tangent"
+    ],
+    "inscribed40_arc80": [
+      "inscribed_angles"
+    ],
+    "inscribed_equals_central_same_chord": [
+      "inscribed_angles"
+    ],
+    "circles_r3_r2_d4_disjoint": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "line_distance10_radius7_disjoint": [
+      "circle_line"
+    ],
+    "inscribed40_arc40": [
+      "inscribed_angles"
+    ],
+    "two_points_multiple_circles": [
+      "perpendicular_bisector",
+      "circle_definition"
+    ],
+    "circles_distance_gt_sum_diameters_disjoint": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "circles_r2_r5_d1_intersect": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "arc100_inscribed50": [
+      "inscribed_angles"
+    ],
+    "circles_distance_lt_sum_diameters_disjoint": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "circles_r2_r5_d6_intersect": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "arc60_inscribed30": [
+      "inscribed_angles"
+    ],
+    "regular_heptagon_no_circumcircle": [
+      "regular_polygon",
+      "circumcircle"
+    ],
+    "regular_nonagon_no_incircle": [
+      "regular_polygon",
+      "incircle"
+    ],
+    "tangent_secant_power": [
+      "tangent_secant"
+    ],
+    "external_point_at_most_one_tangent": [
+      "tangent",
+      "circle_line"
+    ],
+    "intersecting_chords_products_equal": [
+      "intersecting_chords"
     ]
   }
 };
@@ -4488,9 +5182,9 @@ const taskNo=+(root.location.pathname.match(/oge-task(23|24|25)-/)||[])[1];if(!t
 const q=(s,r=d)=>r.querySelector(s),qa=(s,r=d)=>Array.from(r.querySelectorAll(s));
 const e=(tag,text,cls)=>{const n=d.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
 const text=html=>{const n=e('div');n.innerHTML=html||'';return n.textContent;};
-const topic23={rhombH:['rhombus','pythagoras'],pgramBis:['angle_bisector','parallel_angles','isosceles','parallelogram'],trapBis:['parallel_angles','angle_bisector','triangle_angles','pythagoras'],trapLeg:['trapezoid','trigonometry'],rhombAng:['rhombus','trigonometry'],trapEF:['trapezoid','triangle_similarity'],circR:['triangle_angles','inscribed_angles','sine_law'],hAB:['triangle_area','trigonometry'],hAC:['triangle_area','trigonometry'],projAB:['right_triangle','pythagoras'],paraBN:['parallel_angles','triangle_similarity'],paraMC:['parallel_angles','triangle_similarity'],chordDist:['equal_chords','pythagoras'],chordLen:['equal_chords','pythagoras'],secKP1:['triangle_similarity','inscribed_angles'],secKP2:['triangle_similarity','inscribed_angles'],rectPK:['rectangle','triangle_similarity'],rectBH:['rectangle','triangle_similarity'],tanSecAC:['tangent','triangle_similarity'],tanSecD:['tangent','triangle_similarity']};
+const topic23={arcRadius:['circle_definition','inscribed_angles','sine_law','trig_reduction'],rhombH:['rhombus','pythagoras'],pgramBis:['angle_bisector','parallel_angles','isosceles','parallelogram'],trapBis:['parallel_angles','angle_bisector','triangle_angles','pythagoras'],trapLeg:['trapezoid','trigonometry'],rhombAng:['rhombus','trigonometry'],trapEF:['trapezoid','triangle_similarity'],circR:['triangle_angles','inscribed_angles','sine_law'],hAB:['triangle_area','trigonometry'],hAC:['triangle_area','trigonometry'],projAB:['right_triangle','pythagoras'],paraBN:['parallel_angles','triangle_similarity'],paraMC:['parallel_angles','triangle_similarity'],chordDist:['equal_chords','pythagoras'],chordLen:['equal_chords','pythagoras'],secKP1:['triangle_similarity','inscribed_angles'],secKP2:['triangle_similarity','inscribed_angles'],rectPK:['rectangle','triangle_similarity'],rectBH:['rectangle','triangle_similarity'],tanSecAC:['tangent','triangle_similarity'],tanSecD:['tangent','triangle_similarity']};
 const topic24={t1:['trapezoid','parallel_angles','triangle_similarity'],t10:['circumcircle','adjacent_vertical','triangle_similarity'],t13:['triangle_angles','right_triangle','triangle_similarity'],t15:['tangent','adjacent_vertical','triangle_similarity'],t2:['parallelogram','adjacent_vertical','triangle_congruence'],t3:['isosceles','angle_bisector','parallel_angles'],t4:['isosceles','angle_bisector','parallel_angles'],t5:['angle_bisector_locus','triangle_angles'],t7:['parallelogram','triangle_area'],t6:['trapezoid_midline','triangle_area'],t8:['triangle_area','triangle_midline'],t9:['triangle_area','triangle_similarity','parallel_angles'],t12:['inscribed_angles','circumcircle'],t11:['inscribed_angles','circumcircle'],t14:['circle_definition','perpendicular_bisector'],t16:['regular_polygon','inscribed_angles','triangle_congruence'],t17:['regular_polygon','circle_definition','isosceles'],t18:['regular_polygon','inscribed_angles','rectangle'],t19:['regular_polygon','inscribed_angles','right_triangle'],t20:['regular_polygon','inscribed_angles','isosceles']};
-const topic25={1:['triangle_parts','angle_bisector','median_length','bisector_length'],2:['parallelogram','angle_bisector','parallel_angles','triangle_area'],3:['trapezoid','angle_bisector','triangle_similarity'],4:['trapezoid','triangle_midline','pythagoras'],5:['circle_definition','inscribed_angles','sine_law','trig_reduction'],6:['isosceles_trapezoid','incircle','tangent','triangle_similarity'],7:['tangent','inscribed_angles','triangle_similarity'],8:['circumcircle','tangent','inscribed_angles','triangle_similarity'],9:['triangle_parts','inscribed_angles','triangle_similarity'],10:['tangent','pythagoras','triangle_similarity'],11:['circumcircle','inscribed_angles','sine_law','trig_sum_identity'],12:['tangent','triangle_similarity','trigonometry','trig_sum_identity'],13:['angle_bisector_locus','trigonometry','trig_reduction','sine_law'],14:['trapezoid','tangent','triangle_similarity'],15:['incircle','angle_bisector_locus','triangle_area','parallelogram_area'],16:['incircle_area','isosceles','heron_formula']};
+const topic25={1:['triangle_parts','angle_bisector','median_length','bisector_length'],2:['parallelogram','angle_bisector','parallel_angles','triangle_area'],3:['trapezoid','angle_bisector','triangle_similarity'],4:['trapezoid','triangle_midline','pythagoras'],5:['circle_definition','inscribed_angles','sine_law','trig_reduction'],6:['isosceles_trapezoid','incircle','tangent','triangle_similarity'],7:['tangent','inscribed_angles','triangle_similarity'],8:['circumcircle','tangent','inscribed_angles','triangle_similarity'],9:['triangle_parts','inscribed_angles','triangle_similarity'],10:['tangent','pythagoras','triangle_similarity'],11:['circumcircle','inscribed_angles','sine_law','trig_sum_identity'],12:['tangent','triangle_similarity','trigonometry','trig_sum_identity'],13:['angle_bisector_locus','trigonometry','trig_reduction','sine_law'],14:['trapezoid','tangent','triangle_similarity'],15:['incircle','angle_bisector_locus','triangle_area','parallelogram_area'],16:['incircle_area','isosceles','heron_formula'],17:['perpendicular','triangle_similarity','trigonometry','pythagoras','incircle']};
 // Explicit mappings follow the actual mathematical dependency of each native proof step.
 // Given facts and arithmetic retain the definition/formula from which they follow.
 const proofStepTopics={
@@ -4531,7 +5225,8 @@ const calculationStepTopics={
  13:[['angle_bisector_locus','triangle_parts'],['angle_bisector_locus','trigonometry'],['trig_reduction'],['sine_law']],
  14:[['triangle_angles'],['triangle_similarity','parallel_angles'],['perpendicular_bisector','tangent'],['triangle_similarity'],['triangle_similarity']],
  15:[['incircle','angle_bisector','trigonometry'],['parallel_angles','trigonometry'],['triangle_angles'],['incircle_area','trigonometry','parallelogram']],
- 16:[['isosceles'],['incircle_area'],['heron_formula','incircle_area'],['incircle_area']]
+ 16:[['isosceles'],['incircle_area'],['heron_formula','incircle_area'],['incircle_area']],
+ 17:[['right_triangle','triangle_similarity'],['trigonometry','pythagoras'],['incircle','triangle_similarity'],['triangle_similarity']]
 };
 const extraReasons25={
  '1:1':'Опусти биссектрису-высоту BP на AD. Прямоугольные треугольники ABP и DBP имеют общую сторону BP и равные углы при B; по второму признаку они равны. Поэтому AB = BD. Затем используй определение медианы AD.',
@@ -4629,7 +5324,7 @@ let current23=null;
 function decorate23(){const main=q('.train-host');if(!main)return;const card=q('.card',main),condition=card&&q('.q-text',card);if(!condition)return;let task=current23;const name=q('.q-theme',card)?.textContent||'';if(!task){const sub=Object.keys(topic23).find(k=>typeof SUBS!=='undefined'&&name.includes(SUBS[k].name));if(sub)task={sub};}if(!task)return;const topics=topic23[task.sub]||[];referencePanel(q('#courseHintPanel',card)||condition,topics);draft(condition,'23|'+condition.textContent);
  const steps=task.p&&typeof GUIDE!=='undefined'?GUIDE[task.sub](task.p):[];qa('.ladder .step',card).forEach(node=>{const n=q('.step-num',node)?.textContent.match(/^Шаг (\d+)/);if(n&&steps[+n[1]-1])explain(node,steps[+n[1]-1],topics,!node.classList.contains('done'));});qa('.sol li,.solution li',card).forEach(node=>explain(node,{h:node.textContent},topics));
 }
-function decorate24(){const main=q('#view');if(!main||typeof ST==='undefined'||!ST.queue||ST.mode==='exam')return;const t=curTask(),given=q('.givens',main);if(!given||!t)return;const topics=topic24[t.id]||[];referencePanel(q('#courseHintPanel',main)||given,topics);draft(given,'24|'+t.id,true);let revealed=false;
+function decorate24(){const main=q('#view');if(!main||typeof ST==='undefined'||!ST.queue||ST.mode==='exam')return;const t=curTask(),given=q('.givens',main);if(!given||!t)return;const topics=topic24[t.id]||[];referencePanel(q('#courseHintPanel',main)||given,topics);draft(given,'24|'+(t.revision?`${t.id}-${t.revision}`:t.id),true);let revealed=false;
  qa('.chain .citem',main).forEach((node,i)=>{
   const step=t.steps[i];if(!step)return;
   revealed=revealed||!!step.lit?.showcirc;

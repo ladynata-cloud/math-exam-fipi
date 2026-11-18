@@ -228,13 +228,15 @@
 
   api.register('land-plots', function plotVariant() {
     const nativeRoot = query('body > .wrap');
-    const types = ['match', 'geom', 'tiles', 'percent', 'econ'];
+    const isExam = () => global.PracticalNativeVariant.isExam();
     let records = [];
     const activate = index => query('#task-tabs button:nth-child(' + (index + 1) + ')').click();
     function condition() {
       const node = make('div');
       node.append(make('p', 'На плане изображён дачный участок. Сторона клетки — 2 м. Используй один и тот же план для заданий 1–5.'));
-      const description = make('p', 'Жилой дом — Г-образное здание. Огород находится в левом верхнем углу, внутри него расположена узкая теплица. Баня — квадратное здание слева внизу. Яблони растут между баней и гаражом. Гараж — вытянутое здание справа внизу. Сарай находится в правом верхнем углу.');
+      const description = make('p', isExam()
+        ? 'От ворот дорожка ведёт к площадке. У нижней границы участка расположен гараж, слева от него — квадратная баня. В левом нижнем углу разбит огород с теплицей. Г-образная постройка — жилой дом. Сарай расположен выше площадки, а яблони растут между сараем и дорожкой от ворот.'
+        : 'Жилой дом — Г-образное здание. Огород находится в левом верхнем углу, внутри него расположена узкая теплица. Баня — квадратное здание слева внизу. Яблони растут между баней и гаражом. Гараж — вытянутое здание справа внизу. Сарай находится в правом верхнем углу.');
       description.className = 'pv-land-description';
       node.append(description);
       return node;
@@ -249,7 +251,7 @@
       list('rect', svg).filter(rect => rect.getAttribute('fill') === '#dbe2ea').forEach(rect => rect.remove());
       // The original grid was painted below nearly opaque buildings. Redraw
       // its measured 28 px cells above the fills, then restore object outlines.
-      const shapes = list('rect,polygon', svg).filter(shape => ['var(--build)', '#dcfce7', '#99f6e4'].includes(shape.getAttribute('fill')));
+      const shapes = list('rect,polygon', svg).filter(shape => shape.hasAttribute('data-plot-paving') || ['var(--build)', '#dcfce7', '#99f6e4'].includes(shape.getAttribute('fill')));
       shapes.forEach(shape => shape.setAttribute('fill-opacity', '0.45'));
       const grid = svgElement('g', { 'data-pv-countable-grid': '1', 'aria-hidden': 'true' });
       for (let x = 0; x <= 15; x++) grid.append(svgElement('line', { x1: 14 + x * 28, y1: 14, x2: 14 + x * 28, y2: 294, stroke: '#95aa9e', 'stroke-width': '1.1' }));
@@ -262,10 +264,14 @@
       svg.insertBefore(grid, query('circle[r="11"]', svg));
       // Open the gate AFTER the boundary stroke, otherwise the last boundary
       // rectangle closes the entrance again. Two short leaves show it open.
-      list('line', svg).filter(line => line.getAttribute('stroke') === '#eefaf1').forEach(line => line.remove());
+      const gap = list('line', svg).find(line => line.getAttribute('stroke') === '#eefaf1');
+      const right = Number(gap.getAttribute('x1'));
+      const top = Number(gap.getAttribute('y1'));
+      const bottom = Number(gap.getAttribute('y2'));
+      gap.remove();
       const gate = svgElement('g', { 'data-pv-plot-gate': 'open', 'aria-label': 'Открытые ворота на правой границе участка' });
-      gate.append(svgElement('line', { x1: 434, y1: 70, x2: 434, y2: 154, stroke: '#eefaf1', 'stroke-width': '6' }));
-      gate.append(svgElement('path', { d: 'M434 70L414 84M434 154L414 140', fill: 'none', stroke: '#2f4f38', 'stroke-width': '2.5' }));
+      gate.append(svgElement('line', { x1: right, y1: top, x2: right, y2: bottom, stroke: '#eefaf1', 'stroke-width': '6' }));
+      gate.append(svgElement('path', { d: `M${right} ${top}L${right-20} ${top+14}M${right} ${bottom}L${right-20} ${bottom-14}`, fill: 'none', stroke: '#2f4f38', 'stroke-width': '2.5' }));
       svg.append(gate);
       list('text', svg).forEach(text => {
         // A 1 px legacy SVG border slightly shrinks its drawing area. Keep a
@@ -274,7 +280,10 @@
         text.setAttribute('font-weight', '700');
       });
       list('circle', svg).filter(circle => circle.getAttribute('r') === '11').forEach(circle => circle.setAttribute('r', '14'));
-      return figure(svg, 'Сторона клетки — 2 м. Площадка и дорожки рассчитываются по отдельным данным в задании 3; их размеры не нужно считывать с этого плана.', 452);
+      const caption = isExam()
+        ? 'Сторона клетки — 2 м. Пунктиром обведены площадка и две дорожки.'
+        : 'Сторона клетки — 2 м. Площадка и дорожки рассчитываются по отдельным данным в задании 3; их размеры не нужно считывать с этого плана.';
+      return figure(svg, caption, 452);
     }
     function platformInset() {
       const svg = svgElement('svg', { viewBox: '0 0 220 270', role: 'img', 'aria-label': 'Отдельная схема площадки: две клетки в ширину и пять в длину' });
@@ -290,18 +299,18 @@
       return node;
     }
     function snapshotTasks() {
-      records = types.map((type, index) => {
+      records = list('#task-tabs button').map((tab, index) => {
         activate(index);
         const question = query('#task-q').cloneNode(true);
         list('.pd-land-description,.pm-context-hint', question).forEach(node => node.remove());
         const input = query('#in');
-        return { type, index, questionHTML: question.innerHTML, draft: input.value || '', unit: query('#answer-area .unit')?.textContent || '', closed: input.disabled, status: null };
+        return { type: tab.dataset.plotType, index, questionHTML: question.innerHTML, draft: input.value || '', unit: query('#answer-area .unit')?.textContent || '', closed: input.disabled, status: null };
       });
       activate(0);
     }
     function card(record) {
       const conditionNode = fromHTML(record.questionHTML);
-      if (record.type === 'tiles' && /площадка/.test(conditionNode.textContent)) {
+      if (!isExam() && record.type === 'tiles' && /площадка/.test(conditionNode.textContent)) {
         // The native bank's 2×5 platform cannot fit its three-cell gap between
         // garage and shed. Correct only that contradictory location claim;
         // preserve every given dimension, packaging value and native answer.
@@ -312,7 +321,7 @@
       const labels = { match: 'Запиши четыре цифры подряд в порядке столбцов таблицы.', geom: 'Запиши найденную величину', tiles: 'Сколько целых упаковок понадобилось?', percent: 'Запиши ответ в процентах.', econ: /часов/.test(conditionNode.textContent) ? 'Через сколько часов окупится разница расходов?' : 'Запиши наименьшую стоимость покупки с доставкой в рублях.' };
       const label = record.type === 'geom' ? labels.geom + ' (' + record.unit.replace('кв.м', 'м²') + ').' : labels[record.type];
       const node = api.question({
-        id: 'plot-' + (record.index + 1), number: record.index + 1,
+        id: (isExam() ? 'plot-paving-' : 'plot-') + (record.index + 1), number: record.index + 1,
         condition: conditionNode,
         fields: [{ key: 'answer', label, value: record.draft, type: 'text', inputMode: record.type === 'match' ? 'numeric' : 'decimal' }],
         page: 'land', helpType: record.type,
@@ -358,6 +367,12 @@
       next.type = 'button';
       next.addEventListener('click', () => { query('#newvar-btn').click(); mountPlot(); });
       controls.append(next);
+      if (!isExam()) {
+        const paving = make('button', 'Дорожки и площадка');
+        paving.type = 'button';
+        paving.addEventListener('click', () => { query('#plot-exam-btn').click(); mountPlot(); });
+        controls.append(paving);
+      }
       api.mount({ title: 'Дачный участок · задания 1–5', condition: condition(), visual: plotFigure(), controls, questions: records.map(card), nativeRoots: [nativeRoot] });
     }
     mountPlot();

@@ -199,11 +199,11 @@ async function examBankJourney(page,url,width){
  await page.goto(url);
  const card=page.locator('#mara-list > .task-card:not([hidden])');
  const equation=card.locator('.task-q'),answer=card.locator(':scope > .field input').first();
- const demoEquation=/3\(x\+8\)-2\(x-8\)=8/;
- assert.match(compact(await equation.innerText()),demoEquation);
+ const authoredEquation=/6\(x\+4\)-5\(x-2\)=21/;
+ assert.match(compact(await equation.innerText()),authoredEquation);
  await card.getByRole('button',{name:'Хочешь подсказку?',exact:true}).click();
  const step=card.locator('.minimal-hint-panel .step.active');
- for(const [coefficient,constant] of [['3','24'],['-2','16'],['1','40'],['1','-32']]){
+ for(const [coefficient,constant] of [['6','24'],['-5','10'],['1','34'],['1','-13']]){
   const fields=step.locator('input');
   assert.equal(await fields.count(),2);
   await page.waitForFunction(()=>document.querySelector('.step.active input')===document.activeElement);
@@ -215,21 +215,23 @@ async function examBankJourney(page,url,width){
  assert.match(finalStep,/Слева уже x\. Запиши корень\./);
  assert.doesNotMatch(finalStep,/Раздели/);
  await card.getByRole('button',{name:'Вернуться к задаче',exact:true}).click();
- await answer.fill('-32');
+ await answer.fill('-13');
  await card.getByRole('button',{name:'Проверить',exact:true}).click();
  assert.equal(await card.evaluate(el=>el.classList.contains('solved')),true);
  await page.locator('#pane-mara .minimal-next').click();
  assert.equal(await answer.inputValue(),'','the next exam task opens with an empty answer');
- assert.doesNotMatch(compact(await equation.innerText()),demoEquation);
+ assert.doesNotMatch(compact(await equation.innerText()),authoredEquation);
  await chooseBankFilter(page,'Квадратные');
  const question=await card.locator('.task-q').innerText();
  assert.match(question,/меньший|больший/);
  await answerLabel(answer,question);
  await fits(page,'exam bank '+width);
  await chooseBankFilter(page,'Демоверсии');
- assert.match(compact(await equation.innerText()),demoEquation);
+ assert.match(compact(await equation.innerText()),/2x(?:²|2)-3x\+1=0/);
+ await chooseBankFilter(page,'Формат ОГЭ');
+ assert.match(compact(await equation.innerText()),authoredEquation);
  assert.equal(await card.evaluate(el=>el.classList.contains('solved')),true,'changing filters preserves the result');
- return {demoAnswerAccepted:true,quadraticRootPrompt:true,retainedProgress:true};
+ return {authoredAnswerAccepted:true,quadraticRootPrompt:true,retainedProgress:true};
 }
 async function explanationJourney(page,width){
  // Longer explanations must remain readable in the optional reference and

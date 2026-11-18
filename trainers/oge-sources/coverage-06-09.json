@@ -1,0 +1,348 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-11-17",
+  "base": "83e1fc15a1b6b87f0133e0dec6753381e423bd92",
+  "scope": "16 позиций из утверждённой демоверсии и трёх просмотренных образцов, ещё четыре позиции из открытой вторичной публикации издания Ященко 2027.",
+  "completeCorpus": false,
+  "sources": [
+    {
+      "id": "fipi-2027",
+      "title": "ФИПИ. Утверждённая демоверсия ОГЭ по математике 2027",
+      "kind": "официальный первоисточник",
+      "url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+      "sha256": "315ac3e5dcdebbac9c8c85c87814d9e008dfc1b44f17cfb15ec392852d943303",
+      "page": 10,
+      "variant": "демоверсия",
+      "positions": [
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "id": "yashchenko-ast-2026",
+      "title": "И. В. Ященко, ОГЭ-2026, 30 тренировочных вариантов",
+      "kind": "открытая страница издательства АСТ",
+      "isbn": "978-5-17-178780-6",
+      "url": "https://cdn.ast.ru/v2/ASE000000000892791/PDF/ASE000000000892791-13.png",
+      "page": 13,
+      "variant": "1",
+      "positions": [
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "id": "lysenko-legion-2027",
+      "title": "Ф. Ф. Лысенко, С. О. Иванова. Математика. Подготовка к ОГЭ. 9 класс. 40 тренировочных вариантов. Легион, 2027",
+      "kind": "открытый фрагмент издания «Легион» на сайте продавца",
+      "isbn": "978-5-9966-2372-3",
+      "url": "https://static10.labirint.ru/books/1031146/demo.pdf",
+      "sha256": "51de1db2e64df32c83c5673c9e7af18b98c4545942604262f9fc2e56c4a016f0",
+      "page": 17,
+      "pdfPage": 8,
+      "variant": "1",
+      "positions": [
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "id": "statgrad-2026-09",
+      "title": "СтатГрад. Тренировочная работа от 23 сентября 2026 года",
+      "kind": "копия работы СтатГрада с кодом варианта на Math100",
+      "url": "https://pdf.math100.ru/pdf/653846df-cc68-4843-9820-a0c78188a042/wm.pdf",
+      "sha256": "3b6879b16c522ca8328d515a8cbb15b648014d0c2dd4130187fad9b85a9a9cc9",
+      "page": 4,
+      "pdfPage": 2,
+      "variant": "МА2690101",
+      "positions": [
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "id": "yashchenko-nobr-2027",
+      "title": "И. В. Ященко, ОГЭ-2027. Математика. Типовые экзаменационные варианты. 36 вариантов",
+      "kind": "вторичная публикация; издание подтверждено каталогом издателя",
+      "isbn": "978-5-4454-1990-7",
+      "url": "https://math-training.site/yashhenko-oge-2027-matematika-36-variantov/variant-1",
+      "publisherUrl": "https://www.nobr.ru/catalog/oge/oge/7908/",
+      "variant": "1",
+      "positions": [
+        6,
+        7,
+        8,
+        9
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "number": 6,
+      "trainer": "trainers/oge-task6-fractions.html",
+      "answerFormat": "целое число или конечная десятичная дробь",
+      "bank": {
+        "fixed": 175,
+        "historical": 174
+      },
+      "sampleMappings": [
+        {
+          "source": "fipi-2027",
+          "operations": "Перемножить два десятичных числа",
+          "match": "dec#7",
+          "status": "покрыто"
+        },
+        {
+          "source": "yashchenko-ast-2026",
+          "operations": "Вычесть две обыкновенные дроби в скобках, затем умножить на дробь",
+          "match": "frac#13",
+          "status": "покрыто"
+        },
+        {
+          "source": "lysenko-legion-2027",
+          "operations": "Сложить обыкновенные дроби с разными знаменателями",
+          "match": "frac#3",
+          "status": "покрыто"
+        },
+        {
+          "source": "statgrad-2026-09",
+          "operations": "Сложить целое число и дробь в знаменателе, затем разделить десятичный числитель на сумму",
+          "match": "adv#11",
+          "status": "добавлен авторский аналог"
+        },
+        {
+          "source": "yashchenko-nobr-2027",
+          "operations": "Вычислить разность дроби и смешанного числа в скобках, затем разделить смешанное число на результат",
+          "match": "adv: смешанные числа, скобки и деление",
+          "status": "сверены отдельные действия"
+        }
+      ],
+      "authored": {
+        "id": "adv#11",
+        "index": 174,
+        "answer": "0,96",
+        "solution": "Знаменатель равен 9/8. Числитель 27/25. Умножение 27/25 на 8/9 даёт 24/25."
+      }
+    },
+    {
+      "number": 7,
+      "trainer": "trainers/oge-task7-number-line.html",
+      "answerFormat": "цифра — номер варианта",
+      "bank": {
+        "fixed": 142,
+        "generators": 12
+      },
+      "sampleMappings": [
+        {
+          "source": "fipi-2027",
+          "operations": "Оценить квадратный корень и выбрать нужную точку на прямой по его величине",
+          "match": "pts/root",
+          "status": "покрыто"
+        },
+        {
+          "source": "yashchenko-ast-2026",
+          "operations": "Упорядочить четыре десятичных числа с разными знаками и определить обозначение заданного числа",
+          "match": "mathexam-decimal-order-01",
+          "status": "заменён числовой дубль"
+        },
+        {
+          "source": "lysenko-legion-2027",
+          "operations": "Выбрать десятичное число внутри интервала с дробными концами",
+          "match": "betweenFracs:r311420",
+          "status": "покрыто"
+        },
+        {
+          "source": "statgrad-2026-09",
+          "operations": "Считать положение точки; сравнить квадратные корни с делениями; выбрать один из четырёх вариантов",
+          "match": "rootValuePick",
+          "status": "покрыто"
+        },
+        {
+          "source": "yashchenko-nobr-2027",
+          "operations": "Оценить квадратный корень между соседними целыми числами",
+          "match": "rootBetween",
+          "status": "покрыто"
+        }
+      ],
+      "authored": {
+        "id": "mathexam-decimal-order-01",
+        "index": 26,
+        "sharedIndex": 142,
+        "legacyId": "r317102",
+        "legacySharedIndex": 26,
+        "answer": "3 (C)",
+        "solution": "В порядке возрастания: −0,12; 0,4; 0,456; 0,58. Искомое число стоит третьим."
+      }
+    },
+    {
+      "number": 8,
+      "trainer": "trainers/oge-task8-powers-roots.html",
+      "answerFormat": "целое число или конечная десятичная дробь",
+      "bank": {
+        "fixed": 163,
+        "generators": 26
+      },
+      "sampleMappings": [
+        {
+          "source": "fipi-2027",
+          "operations": "Разложить составное основание знаменателя, применять степень произведения и вычитать показатели одинаковых оснований",
+          "match": "pow_prodbase_div",
+          "status": "покрыто"
+        },
+        {
+          "source": "yashchenko-ast-2026",
+          "operations": "Перемножить коэффициенты и три положительных радикала, выделив точный квадрат",
+          "match": "9.4a",
+          "status": "заменён числовой дубль"
+        },
+        {
+          "source": "lysenko-legion-2027",
+          "operations": "Сократить степени одного основания в произведении и частном, затем вычислить при заданном основании",
+          "match": "pow_mul_div",
+          "status": "покрыто по основным действиям"
+        },
+        {
+          "source": "statgrad-2026-09",
+          "operations": "Свернуть произведения одинакового основания в числителе и в знаменателе, поднять обе скобки в степень и сократить",
+          "match": "pow_products_quotient",
+          "status": "добавлены три авторских аналога и генератор"
+        },
+        {
+          "source": "yashchenko-nobr-2027",
+          "operations": "Разложить степень произведения, сократить степени двух оснований, вычислить конечную десятичную дробь",
+          "match": "prodbase_over",
+          "status": "покрыто"
+        }
+      ],
+      "authored": {
+        "id": "9.4a",
+        "index": 43,
+        "sharedIndex": 160,
+        "legacyId": "9.4",
+        "legacySharedIndex": 43,
+        "answer": "360",
+        "solution": "Коэффициенты дают 12. Произведение подкоренных чисел 5·6·30 равно 900. Его корень 30; 12·30=360."
+      },
+      "statgradAnalogues": [
+        {
+          "id": "pow-products-quotient-01",
+          "index": 160,
+          "sharedIndex": 161,
+          "answer": "3",
+          "topExponent": 25,
+          "bottomExponent": 24,
+          "numerator": [
+            2,
+            3,
+            5
+          ],
+          "denominator": [
+            3,
+            5,
+            3
+          ]
+        },
+        {
+          "id": "pow-products-quotient-02",
+          "index": 161,
+          "sharedIndex": 162,
+          "answer": "0,2",
+          "topExponent": 15,
+          "bottomExponent": 16,
+          "numerator": [
+            2,
+            3,
+            3
+          ],
+          "denominator": [
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "pow-products-quotient-03",
+          "index": 162,
+          "sharedIndex": 163,
+          "answer": "1",
+          "topExponent": 24,
+          "bottomExponent": 24,
+          "numerator": [
+            1,
+            5,
+            4
+          ],
+          "denominator": [
+            2,
+            6,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "trainer": "trainers/oge-task9-equations.html",
+      "answerFormat": "целое число или конечная десятичная дробь",
+      "bank": {
+        "fixed": 275,
+        "exam": 140,
+        "examFamilies": 7,
+        "generators": 15
+      },
+      "sampleMappings": [
+        {
+          "source": "fipi-2027",
+          "operations": "Раскрыть две скобки с разными знаками, привести подобные, выделить единственный корень без деления",
+          "match": "exam-author-demo-type-2027",
+          "status": "заменён точный дубль"
+        },
+        {
+          "source": "yashchenko-ast-2026",
+          "operations": "Вынести x за скобки; учесть нулевой корень и выбрать меньший из двух",
+          "match": "quad-factor-x / min",
+          "status": "покрыто"
+        },
+        {
+          "source": "lysenko-legion-2027",
+          "operations": "Раскрыть одну скобку и получить конечный десятичный корень",
+          "match": "linear-one-bracket",
+          "status": "покрыто"
+        },
+        {
+          "source": "statgrad-2026-09",
+          "operations": "Раскрыть одну скобку и перенести слагаемое с неизвестным из правой части",
+          "match": "linear-one-bracket",
+          "status": "покрыто"
+        },
+        {
+          "source": "yashchenko-nobr-2027",
+          "operations": "Перенести линейные и постоянные слагаемые из обеих частей; получить отрицательный конечный десятичный корень",
+          "match": "linear-transfer",
+          "status": "покрыто"
+        }
+      ],
+      "authored": {
+        "id": "exam-author-demo-type-2027",
+        "index": 135,
+        "sharedIndex": 275,
+        "legacyId": "exam-demo-2027",
+        "legacySharedIndex": 135,
+        "answer": "−13",
+        "solution": "После раскрытия скобок левая часть 6x+24−5x+10=x+34. Тогда x=21−34=−13."
+      }
+    }
+  ],
+  "limits": [
+    "Отдельные образцы раскрывают конкретные формы работы, а полнота открытого банка ФИПИ и полных издательских сборников остаётся непроверенной.",
+    "Коды прежних банков и вторичных каталогов учитываются в сохранённой практике, но не подтверждают просмотр первоисточника."
+  ]
+}

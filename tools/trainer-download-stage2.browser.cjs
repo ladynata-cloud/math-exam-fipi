@@ -187,14 +187,15 @@ const scenarios = {
   },
   async 'oge-task9-equations'(page) {
     const card = page.locator('#mara-list > .task-card:not([hidden])').first();
+    assert.equal(await card.getAttribute('data-task-id'), 'exam-author-demo-type-2027');
     const check = card.getByRole('button', { name: 'Проверить', exact: true });
     await check.click();
     assert(!(await card.evaluate(node => node.classList.contains('solved'))));
     const input = card.locator(':scope > .field input').first();
-    await input.fill('32');
+    await input.fill('13');
     await check.click();
     assert(!(await card.evaluate(node => node.classList.contains('solved'))));
-    await input.fill('-32');
+    await input.fill('-13');
     await check.click();
     assert(await card.evaluate(node => node.classList.contains('solved')));
   },

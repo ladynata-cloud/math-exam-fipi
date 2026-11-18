@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "auditDate": "2026-10-21",
+  "auditDate": "2026-11-16",
   "officialBank": {
     "complete": false,
-    "status": "Rechecked 21 October 2026: the official mathematics bank returned HTTP503 or timed out in public HTTP/web/cloud-browser access. Its current question set could not be enumerated. The separately downloaded official 2027 draft demo provides 3 assertions, not an inventory of the live bank; authored and secondary-source coverage does not certify full FIPI coverage.",
+    "status": "Rechecked for the 16 November 2026 audit (retrievals 15 November UTC): four official public endpoints returned HTTP 503 and web fetch timed out. Zero current live-bank question bodies were read, and its complete contents remain unknown. Separately verified official PDFs contain 39 assertion occurrences. The 150-task secondary reproduction and 41-task cross-check are not verification of the current official live bank.",
     "url": "https://oge.fipi.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0",
     "indexUrl": "https://fipi.ru/oge/otkrytyy-bank-zadaniy-oge",
     "recommendedIds": [
@@ -134,7 +134,7 @@
       }
     ],
     "note": "These34 IDs are official preparation recommendations, not an inventory of the complete open bank; task texts cannot be inferred from IDs.",
-    "checkedAt": "2026-10-21",
+    "checkedAt": "2026-11-16",
     "currentIndexTarget": "https://oge.fipi.ru/bank/index.php?crproj=BD98FF424631BFE24D6010A4B1266CA8",
     "indexSnapshotSha256": "3e02fde781d0a77dae885c86e0b31ad35e19c3ba8eb2ca30ebd3e6d530f88406",
     "indexRetrievedAt": "2026-10-21T00:02:54.701703+00:00",
@@ -165,10 +165,39 @@
         "date": "2026-10-21",
         "result": "upstream connect error or disconnect/reset before headers. reset reason: connection timeout",
         "botDetectionObserved": false
+      },
+      {
+        "method": "public-http",
+        "url": "https://oge.fipi.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0",
+        "date": "2026-11-16",
+        "retrievedAt": "2026-11-15T20:56:08.890802+00:00",
+        "result": "HTTP503 Service Unavailable"
+      },
+      {
+        "method": "public-http",
+        "url": "https://oge.fipi.ru/bank/index.php?crproj=BD98FF424631BFE24D6010A4B1266CA8",
+        "date": "2026-11-16",
+        "retrievedAt": "2026-11-15T20:56:08.890281+00:00",
+        "result": "HTTP503 Service Unavailable"
+      },
+      {
+        "method": "public-http",
+        "url": "https://oge.fipi.ru/bank/",
+        "date": "2026-11-16",
+        "retrievedAt": "2026-11-15T20:56:08.890521+00:00",
+        "result": "HTTP503 Service Unavailable"
+      },
+      {
+        "method": "public-http",
+        "url": "https://oge.fipi.ru/bank/questions.php?proj=DE0E276E497AB3784C3FC4CC20248DC0&init_filter_themes=1",
+        "date": "2026-11-16",
+        "retrievedAt": "2026-11-15T20:57:18.845871+00:00",
+        "result": "HTTP503 Service Unavailable"
       }
     ],
     "recommendedIdsRecheckedAt": "2026-10-21",
-    "recommendedIdsChanged": false
+    "recommendedIdsChanged": false,
+    "examSourceAudit": "task19-exam-source-coverage.json"
   },
   "sources": [
     {
@@ -3663,11 +3692,1354 @@
         }
       ],
       "visibleWatermark": "math100.ru"
+    },
+    {
+      "id": "audited-mirror-additions-20261116",
+      "type": "third-party-bank-reproduction-not-official-live-bank",
+      "url": "https://sdamgia.online/oge/matematika/zadanie-19",
+      "reviewedAt": "2026-11-16",
+      "sourceHashSha256": "31c6118d6093316683d2498a0064f64586ce31e58fbb7af3732177060c4413fd",
+      "sourceNote": "Ten missing direct formulations in the finite 150-task secondary sample. Each was read on sdamgia.online and cross-checked on gia.guide. Mirror item IDs are not evidence that their current bodies were read from the official live bank. The complete 669-observation coverage map is task19-exam-source-coverage.json; commercial source texts and PDFs are not republished.",
+      "entries": [
+        {
+          "sourceId": "978344-19-2",
+          "text": "Диагональ равнобедренной трапеции делит её на два равных треугольника.",
+          "truth": false,
+          "cardId": "isosceles_trapezoid_diagonal_equal_triangles",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/okruzhnosti-chetryokhugoleniki-treugoleniki-fipi-978344",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/978344/info/",
+          "semanticTypeId": "mirror-semantic-020",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "269D1C-19-3",
+          "text": "Внешний угол треугольника больше не смежного с ним внутреннего угла.",
+          "truth": true,
+          "cardId": "triangle_exterior_gt_nonadjacent",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/pr-me-i-ugl-chetryokhugoleniki-treugoleniki-fipi-269d1c",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/269D1C/info/",
+          "semanticTypeId": "mirror-semantic-088",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "C7D0DF-19-3",
+          "text": "Внешний угол треугольника равен сумме его внутренних углов.",
+          "truth": false,
+          "cardId": "triangle_exterior_sum_all_angles",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/okruzhnosti-chetryokhugoleniki-treugoleniki-fipi-c7d0df",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/C7D0DF/info/",
+          "semanticTypeId": "mirror-semantic-100",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "A9D5C9-19-1",
+          "text": "Всякий равносторонний треугольник является равнобедренным.",
+          "truth": true,
+          "cardId": "equilateral_triangle_is_isosceles",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/treugoleniki-okruzhnosti-chetryokhugoleniki-fipi-a9d5c9",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/A9D5C9/info/",
+          "semanticTypeId": "mirror-semantic-105",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "E4BA92-19-2",
+          "text": "В любой прямоугольник можно вписать окружность.",
+          "truth": false,
+          "cardId": "rectangle_always_has_incircle",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/pr-me-i-ugl-chetryokhugoleniki-treugoleniki-fipi-e4ba92",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/E4BA92/info/",
+          "semanticTypeId": "mirror-semantic-108",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "FA4567-19-1",
+          "text": "Все прямоугольные треугольники подобны.",
+          "truth": false,
+          "cardId": "right_triangles_always_similar",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/treugoleniki-pr-me-i-ugl-chetryokhugoleniki-fipi-fa4567",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/FA4567/info/",
+          "semanticTypeId": "mirror-semantic-113",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "EB6B6A-19-2",
+          "text": "Всякий равносторонний треугольник является остроугольным.",
+          "truth": true,
+          "cardId": "equilateral_triangle_is_acute",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/pr-me-i-ugl-treugoleniki-chetryokhugoleniki-fipi-eb6b6a",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/EB6B6A/info/",
+          "semanticTypeId": "mirror-semantic-118",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "F34539-19-1",
+          "text": "Диагонали прямоугольной трапеции равны.",
+          "truth": false,
+          "cardId": "right_trapezoid_diagonals_equal",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/chetryokhugoleniki-i-treugoleniki-fipi-f34539",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/F34539/info/",
+          "semanticTypeId": "mirror-semantic-119",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "B51738-19-1",
+          "text": "Если в параллелограмме диагонали равны и перпендикулярны, то этот параллелограмм является квадратом.",
+          "truth": true,
+          "cardId": "parallelogram_equal_perpendicular_diagonals_square",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/chetryokhugoleniki-pr-me-i-ugl-treugoleniki-fipi-b51738",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/B51738/info/",
+          "semanticTypeId": "mirror-semantic-121",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "E3F78B-19-1",
+          "text": "Если диагонали параллелограмма равны, то этот параллелограмм является квадратом.",
+          "truth": false,
+          "cardId": "parallelogram_equal_diagonals_square",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/chetryokhugoleniki-i-treugoleniki-fipi-e3f78b",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/E3F78B/info/",
+          "semanticTypeId": "mirror-semantic-122",
+          "officialBankBodyVerified": false
+        }
+      ]
+    },
+    {
+      "id": "major-source-additions-20261116",
+      "type": "authored-formulations-mapped-to-reviewed-finite-third-party-sources",
+      "fileName": "task19-major-source-coverage.json",
+      "note": "Авторские карточки сохраняют проверенный математический смысл. Точные вхождения, URL и ограничения источников перечислены в отдельной карте; весь живой банк ФИПИ не заявлен прочитанным.",
+      "entries": [
+        {
+          "sourceId": "rectangle_diagonal_pythagoras",
+          "text": "Квадрат диагонали прямоугольника равен сумме квадратов двух его смежных сторон.",
+          "truth": true,
+          "cardId": "rectangle_diagonal_pythagoras",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "parallel_lines_alternate_interior_equal",
+          "text": "Внутренние накрест лежащие углы при двух параллельных прямых и секущей равны.",
+          "truth": true,
+          "cardId": "parallel_lines_alternate_interior_equal",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_all_altitudes_are_bisectors",
+          "text": "Любая высота равнобедренного треугольника является его биссектрисой.",
+          "truth": false,
+          "cardId": "isosceles_all_altitudes_are_bisectors",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_incenter_circumcenter_coincide",
+          "text": "Центры вписанной и описанной окружностей равнобедренного треугольника совпадают.",
+          "truth": false,
+          "cardId": "isosceles_incenter_circumcenter_coincide",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "nonrectangle_parallelogram_exists",
+          "text": "Существует параллелограмм, который не является прямоугольником.",
+          "truth": true,
+          "cardId": "nonrectangle_parallelogram_exists",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_has_central_symmetry",
+          "text": "У равнобедренного треугольника есть центр симметрии.",
+          "truth": false,
+          "cardId": "isosceles_has_central_symmetry",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "rectangle_diagonals_squares_sum_equals_sides",
+          "text": "Сумма квадратов диагоналей прямоугольника равна сумме квадратов всех его сторон.",
+          "truth": true,
+          "cardId": "rectangle_diagonals_squares_sum_equals_sides",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_larger_side_smaller_opposite_angle",
+          "text": "Против большей стороны треугольника лежит меньший угол.",
+          "truth": false,
+          "cardId": "triangle_larger_side_smaller_opposite_angle",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "trapezoid_area_midline_times_height",
+          "text": "Площадь трапеции равна произведению её средней линии на высоту.",
+          "truth": true,
+          "cardId": "trapezoid_area_midline_times_height",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_has_axis_symmetry",
+          "text": "У равнобедренного треугольника есть ось симметрии.",
+          "truth": true,
+          "cardId": "isosceles_has_axis_symmetry",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "equilateral_has_central_symmetry",
+          "text": "У равностороннего треугольника есть центр симметрии.",
+          "truth": false,
+          "cardId": "equilateral_has_central_symmetry",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "unique_point_equidistant_segment_endpoints",
+          "text": "На плоскости существует единственная точка, равноудалённая от концов отрезка.",
+          "truth": false,
+          "cardId": "unique_point_equidistant_segment_endpoints",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_always_has_incircle",
+          "text": "В любой треугольник можно вписать окружность.",
+          "truth": true,
+          "cardId": "triangle_always_has_incircle",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "right_triangles_hypotenuse_acute_angle_congruent",
+          "text": "Если гипотенуза и острый угол одного прямоугольного треугольника соответственно равны гипотенузе и углу другого прямоугольного треугольника, то такие треугольники равны.",
+          "truth": true,
+          "cardId": "right_triangles_hypotenuse_acute_angle_congruent",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "orthodiagonal_quadrilateral_is_rhombus",
+          "text": "Если в четырёхугольнике диагонали перпендикулярны, то этот четырёхугольник — ромб.",
+          "truth": false,
+          "cardId": "orthodiagonal_quadrilateral_is_rhombus",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circle_area_less_than_diameter_squared",
+          "text": "Площадь круга меньше квадрата длины его диаметра.",
+          "truth": true,
+          "cardId": "circle_area_less_than_diameter_squared",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "equilateral_has_three_symmetry_axes",
+          "text": "У равностороннего треугольника три оси симметрии.",
+          "truth": true,
+          "cardId": "equilateral_has_three_symmetry_axes",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_sas_similarity",
+          "text": "Если две стороны одного треугольника пропорциональны двум сторонам другого треугольника, а углы между этими сторонами равны, то треугольники подобны.",
+          "truth": true,
+          "cardId": "triangle_sas_similarity",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "point_inside_disk_distance_less_radius",
+          "text": "Для точки, лежащей внутри круга, расстояние до центра круга меньше его радиуса.",
+          "truth": true,
+          "cardId": "point_inside_disk_distance_less_radius",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "equidistant_points_lie_on_circle",
+          "text": "В плоскости все точки, равноудаленные от заданной точки, лежат на одной окружности.",
+          "truth": true,
+          "cardId": "equidistant_points_lie_on_circle",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "no_rectangle_perpendicular_diagonals",
+          "text": "Не существует прямоугольника, диагонали которого взаимно перпендикулярны.",
+          "truth": false,
+          "cardId": "no_rectangle_perpendicular_diagonals",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "point_outside_disk_distance_greater_radius",
+          "text": "В плоскости для точки, лежащей вне круга, расстояние до центра круга больше его радиуса.",
+          "truth": true,
+          "cardId": "point_outside_disk_distance_greater_radius",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_all_medians_are_bisectors",
+          "text": "Любая медиана равнобедренного треугольника является его биссектрисой.",
+          "truth": false,
+          "cardId": "isosceles_all_medians_are_bisectors",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "nonparallelogram_rectangle_exists",
+          "text": "Существует прямоугольник, который не является параллелограммом.",
+          "truth": false,
+          "cardId": "nonparallelogram_rectangle_exists",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "nonsquare_rhombus_exists",
+          "text": "Существует ромб, который не является квадратом.",
+          "truth": true,
+          "cardId": "nonsquare_rhombus_exists",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "square_diagonals_bisect",
+          "text": "Диагонали квадрата точкой пересечения делятся пополам.",
+          "truth": true,
+          "cardId": "square_diagonals_bisect",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "equidistant_endpoints_point_on_perp_bisector",
+          "text": "Точка, равноудалённая от концов отрезка, лежит на его серединном перпендикуляре.",
+          "truth": true,
+          "cardId": "equidistant_endpoints_point_on_perp_bisector",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "nonrhombus_square_exists",
+          "text": "Существует квадрат, который не является ромбом.",
+          "truth": false,
+          "cardId": "nonrhombus_square_exists",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "any_two_lines_exactly_one_common_point",
+          "text": "Любые две прямые имеют ровно одну общую точку.",
+          "truth": false,
+          "cardId": "any_two_lines_exactly_one_common_point",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "tangent_circles_contact_equidistant_centers",
+          "text": "Точка касания двух окружностей равноудалена от центров этих окружностей.",
+          "truth": false,
+          "cardId": "tangent_circles_contact_equidistant_centers",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "obtuse_triangle_angles_sum_180",
+          "text": "Сумма углов тупоугольного треугольника равна 180°.",
+          "truth": true,
+          "cardId": "obtuse_triangle_angles_sum_180",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_area_not_exceed_product_two_sides",
+          "text": "Площадь треугольника не превышает произведения двух его сторон.",
+          "truth": true,
+          "cardId": "triangle_area_not_exceed_product_two_sides",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "square_always_cyclic",
+          "text": "Любой квадрат можно вписать в окружность.",
+          "truth": true,
+          "cardId": "square_always_cyclic",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "alternate_interior_right_angles_imply_parallel",
+          "text": "Если внутренние накрест лежащие углы при секущей равны 90°, то две пересечённые прямые параллельны.",
+          "truth": true,
+          "cardId": "alternate_interior_right_angles_imply_parallel",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_base_median_is_altitude",
+          "text": "Медиана равнобедренного треугольника, проведенная к его основанию, является его высотой.",
+          "truth": true,
+          "cardId": "isosceles_base_median_is_altitude",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_base_median_is_bisector",
+          "text": "Медиана равнобедренного треугольника, проведенная из вершины угла, противолежащего основанию, делит этот угол пополам.",
+          "truth": true,
+          "cardId": "isosceles_base_median_is_bisector",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_40_70_70_is_isosceles",
+          "text": "Треугольник с углами 40°, 70°, 70° — равнобедренный.",
+          "truth": true,
+          "cardId": "triangle_40_70_70_is_isosceles",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_apex_bisector_bisects_base",
+          "text": "Биссектриса равнобедренного треугольника, проведенная из вершины, противолежащей основанию, делит основание на две равные части.",
+          "truth": true,
+          "cardId": "isosceles_apex_bisector_bisects_base",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "vertical_angle_of_108_is_108",
+          "text": "Если угол равен 108°, то вертикальный с ним угол также равен 108°.",
+          "truth": true,
+          "cardId": "vertical_angle_of_108_is_108",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "rectangle_all_angles_equal",
+          "text": "Все углы прямоугольника равны.",
+          "truth": true,
+          "cardId": "rectangle_all_angles_equal",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "adjacent_angles_sum_90",
+          "text": "Сумма смежных углов равна 90°.",
+          "truth": false,
+          "cardId": "adjacent_angles_sum_90",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_all_altitudes_medians",
+          "text": "Любая высота равнобедренного треугольника является его медианой.",
+          "truth": false,
+          "cardId": "isosceles_all_altitudes_medians",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_lateral_median_altitude",
+          "text": "Медиана, проведённая к боковой стороне равнобедренного треугольника, является высотой треугольника.",
+          "truth": false,
+          "cardId": "isosceles_lateral_median_altitude",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "trapezoid_perpendicular_diagonals_exists",
+          "text": "Существует трапеция, у которой диагонали перпендикулярны.",
+          "truth": true,
+          "cardId": "trapezoid_perpendicular_diagonals_exists",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_side_opposite_angle_congruence",
+          "text": "Если сторона и противолежащий угол одного треугольника соответственно равны стороне и противолежащему ей углу другого треугольника, то треугольники равны.",
+          "truth": false,
+          "cardId": "triangle_side_opposite_angle_congruence",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_angle_strictly_gt60_exists",
+          "text": "В любом треугольнике найдётся угол, который составляет более 60°.",
+          "truth": false,
+          "cardId": "triangle_angle_strictly_gt60_exists",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "chord_always_gt_radius",
+          "text": "Хорда окружности всегда больше радиуса.",
+          "truth": false,
+          "cardId": "chord_always_gt_radius",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_bisector_equal_areas",
+          "text": "Биссектриса треугольника делит его на две равновеликие части.",
+          "truth": false,
+          "cardId": "triangle_bisector_equal_areas",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circumcenter_is_bisectors_intersection",
+          "text": "Центром описанной около треугольника окружности является точка пересечения биссектрис треугольника.",
+          "truth": false,
+          "cardId": "circumcenter_is_bisectors_intersection",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "parallelogram_opposite_angles_equal",
+          "text": "Противоположные углы параллелограмма равны.",
+          "truth": true,
+          "cardId": "parallelogram_opposite_angles_equal",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circle_point_distance_less_radius",
+          "text": "Для точки, лежащей на окружности, расстояние до центра окружности меньше радиуса.",
+          "truth": false,
+          "cardId": "circle_point_distance_less_radius",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "rectangle_not_square_exists",
+          "text": "Существует прямоугольник, который не является квадратом.",
+          "truth": true,
+          "cardId": "rectangle_not_square_exists",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "convex_quadrilateral_angle_sum_180",
+          "text": "Сумма углов выпуклого четырёхугольника равна 180°.",
+          "truth": false,
+          "cardId": "convex_quadrilateral_angle_sum_180",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "incenter_vertex_distance_radius",
+          "text": "Расстояние от центра вписанной окружности до вершины треугольника равно радиусу этой окружности.",
+          "truth": false,
+          "cardId": "incenter_vertex_distance_radius",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circumcenter_side_distance_radius",
+          "text": "Расстояние от центра описанной окружности до сторон треугольника равно радиусу этой окружности.",
+          "truth": false,
+          "cardId": "circumcenter_side_distance_radius",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_all_medians_equal",
+          "text": "Все медианы равнобедренного треугольника равны.",
+          "truth": false,
+          "cardId": "isosceles_all_medians_equal",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "parallelogram_adjacent_angles_sum_180",
+          "text": "Сумма углов, прилежащих к одной стороне параллелограмма, равна 180°.",
+          "truth": true,
+          "cardId": "parallelogram_adjacent_angles_sum_180",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_base_altitude_gt_lateral",
+          "text": "Высота равнобедренного треугольника, проведённая к основанию, больше высоты, проведённой к боковой стороне.",
+          "truth": false,
+          "cardId": "isosceles_base_altitude_gt_lateral",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_congruence_sss",
+          "text": "Если три стороны одного треугольника равны трём сторонам другого треугольника, то треугольники равны.",
+          "truth": true,
+          "cardId": "triangle_congruence_sss",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "adjacent_53_123",
+          "text": "Если угол равен 53°, то смежный с ним угол равен 123°.",
+          "truth": false,
+          "cardId": "adjacent_53_123",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "any_two_chords_intersect",
+          "text": "Любые две хорды окружности имеют общую точку.",
+          "truth": false,
+          "cardId": "any_two_chords_intersect",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "equal_corresponding_angles_parallel",
+          "text": "Если соответственные углы при пересечении двух прямых секущей равны, то эти две прямые параллельны.",
+          "truth": true,
+          "cardId": "equal_corresponding_angles_parallel",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "oblique_lt_perpendicular_3",
+          "text": "Если расстояние от точки до прямой равно 3, то любая наклонная из этой точки к прямой имеет длину меньше 3.",
+          "truth": false,
+          "cardId": "oblique_lt_perpendicular_3",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "adjacent_81_99",
+          "text": "Если угол равен 81°, то смежный с ним угол равен 99°.",
+          "truth": true,
+          "cardId": "adjacent_81_99",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "any_two_diameters_perpendicular",
+          "text": "Любые два диаметра окружности взаимно перпендикулярны.",
+          "truth": false,
+          "cardId": "any_two_diameters_perpendicular",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "same_side_sum90_parallel",
+          "text": "Если сумма внутренних односторонних углов при секущей равна 90°, то пересечённые прямые параллельны.",
+          "truth": false,
+          "cardId": "same_side_sum90_parallel",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "point_distance5_radius4_inside",
+          "text": "Если расстояние от точки плоскости до центра окружности радиуса 4 равно 5, то точка лежит внутри окружности.",
+          "truth": false,
+          "cardId": "point_distance5_radius4_inside",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "corresponding_angles90_parallel",
+          "text": "Если соответственные углы при секущей равны 90°, то пересечённые прямые параллельны.",
+          "truth": true,
+          "cardId": "corresponding_angles90_parallel",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "two_lines_at_most_one_common_point",
+          "text": "Любые две прямые имеют не более одной общей точки.",
+          "truth": false,
+          "cardId": "two_lines_at_most_one_common_point",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "two_distinct_points_multiple_lines",
+          "text": "Через две различные точки проходит более одной прямой.",
+          "truth": false,
+          "cardId": "two_distinct_points_multiple_lines",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "three_lines_at_least_one_common_point",
+          "text": "Любые три прямые имеют не менее одной общей точки.",
+          "truth": false,
+          "cardId": "three_lines_at_least_one_common_point",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "corresponding_angles67_parallel",
+          "text": "Если соответственные углы при секущей равны 67°, то пересечённые прямые параллельны.",
+          "truth": true,
+          "cardId": "corresponding_angles67_parallel",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "any_two_lines_more_than_one_common_point",
+          "text": "Любые две прямые имеют более одной общей точки.",
+          "truth": false,
+          "cardId": "any_two_lines_more_than_one_common_point",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "two_distinct_points_at_most_one_line",
+          "text": "Через две различные точки проходит не более одной прямой.",
+          "truth": true,
+          "cardId": "two_distinct_points_at_most_one_line",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "three_lines_one_common_point",
+          "text": "Любые три прямые имеют одну общую точку.",
+          "truth": false,
+          "cardId": "three_lines_one_common_point",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "parallel_line_perpendicular_transfer",
+          "text": "Если одна из двух параллельных прямых перпендикулярна третьей, то и другая перпендикулярна этой третьей прямой.",
+          "truth": true,
+          "cardId": "parallel_line_perpendicular_transfer",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "vertical_40_140",
+          "text": "Если угол равен 40°, то вертикальный с ним угол равен 140°.",
+          "truth": false,
+          "cardId": "vertical_40_140",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "same_side50_110_parallel",
+          "text": "Если внутренние односторонние углы при секущей равны 50° и 110°, то пересечённые прямые параллельны.",
+          "truth": false,
+          "cardId": "same_side50_110_parallel",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "rhombus_all_sides_parallel",
+          "text": "Все стороны ромба параллельны между собой.",
+          "truth": false,
+          "cardId": "rhombus_all_sides_parallel",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "adjacent_50_120",
+          "text": "Если угол равен 50°, то смежный с ним угол равен 120°.",
+          "truth": false,
+          "cardId": "adjacent_50_120",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "same_side30_120_parallel",
+          "text": "Если внутренние односторонние углы при секущей равны 30° и 120°, то пересечённые прямые параллельны.",
+          "truth": false,
+          "cardId": "same_side30_120_parallel",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "point_at_most_two_lines",
+          "text": "Через любую точку проходит не более двух прямых.",
+          "truth": false,
+          "cardId": "point_at_most_two_lines",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circles_r1_r6_d4_intersect",
+          "text": "Если радиусы двух окружностей равны 1 и 6, а расстояние между их центрами равно 4, то эти окружности имеют общие точки.",
+          "truth": false,
+          "cardId": "circles_r1_r6_d4_intersect",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "line_distance3_radius5_tangent",
+          "text": "Если радиус окружности равен 5, а расстояние от центра окружности до прямой равно 3, то эта прямая является касательной к окружности.",
+          "truth": false,
+          "cardId": "line_distance3_radius5_tangent",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "inscribed40_arc80",
+          "text": "Если вписанный угол равен 40°, то дуга окружности, на которую опирается этот угол, равна 80°.",
+          "truth": true,
+          "cardId": "inscribed40_arc80",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "inscribed_equals_central_same_chord",
+          "text": "Вписанный угол равен центральному, опирающемуся на ту же хорду.",
+          "truth": false,
+          "cardId": "inscribed_equals_central_same_chord",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circles_r3_r2_d4_disjoint",
+          "text": "Если радиусы двух окружностей равны 3 и 2, а расстояние между их центрами равно 4, то эти окружности не имеют общих точек.",
+          "truth": false,
+          "cardId": "circles_r3_r2_d4_disjoint",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "line_distance10_radius7_disjoint",
+          "text": "Если радиус окружности равен 7, а расстояние от центра окружности до прямой равно 10, то эти прямая и окружность не имеют общих точек.",
+          "truth": true,
+          "cardId": "line_distance10_radius7_disjoint",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "inscribed40_arc40",
+          "text": "Если вписанный угол равен 40°, то дуга окружности, на которую опирается этот угол, тоже равна 40°.",
+          "truth": false,
+          "cardId": "inscribed40_arc40",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "two_points_multiple_circles",
+          "text": "Через любые две точки проходит более одной окружности.",
+          "truth": true,
+          "cardId": "two_points_multiple_circles",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circles_distance_gt_sum_diameters_disjoint",
+          "text": "Если расстояние между центрами двух окружностей больше суммы их диаметров, то эти окружности не имеют общих точек.",
+          "truth": true,
+          "cardId": "circles_distance_gt_sum_diameters_disjoint",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circles_r2_r5_d1_intersect",
+          "text": "Если радиусы двух окружностей равны 2 и 5, а расстояние между их центрами равно 1, то эти окружности пересекаются.",
+          "truth": false,
+          "cardId": "circles_r2_r5_d1_intersect",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "arc100_inscribed50",
+          "text": "Если дуга окружности составляет 100°, то вписанный угол, опирающийся на эту дугу окружности, равен 50°.",
+          "truth": true,
+          "cardId": "arc100_inscribed50",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circles_distance_lt_sum_diameters_disjoint",
+          "text": "Если расстояние между центрами двух окружностей меньше суммы их диаметров, то эти окружности не могут иметь общих точек.",
+          "truth": false,
+          "cardId": "circles_distance_lt_sum_diameters_disjoint",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circles_r2_r5_d6_intersect",
+          "text": "Если радиусы двух окружностей равны 2 и 5, а расстояние между их центрами равно 6, то эти окружности пересекаются.",
+          "truth": true,
+          "cardId": "circles_r2_r5_d6_intersect",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "arc60_inscribed30",
+          "text": "Если дуга окружности составляет 60°, то вписанный угол, опирающийся на эту дугу окружности, равен 30°.",
+          "truth": true,
+          "cardId": "arc60_inscribed30",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "rhombus_opposite80_100",
+          "text": "Если один из углов ромба равен 80°, то противоположный ему угол равен 100°.",
+          "truth": false,
+          "cardId": "rhombus_opposite80_100",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "trapezoid_equal_diagonals_isosceles",
+          "text": "Если в трапеции диагонали равны, то эта трапеция равнобедренная.",
+          "truth": true,
+          "cardId": "trapezoid_equal_diagonals_isosceles",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "quadrilateral_opposite_pair_equal_parallel",
+          "text": "Если в четырёхугольнике две противоположные стороны равны и параллельны, то этот четырёхугольник — параллелограмм.",
+          "truth": true,
+          "cardId": "quadrilateral_opposite_pair_equal_parallel",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "quadrilateral_two_equal_angles_parallelogram",
+          "text": "Если в четырёхугольнике два угла равны, то этот четырёхугольник — параллелограмм.",
+          "truth": false,
+          "cardId": "quadrilateral_two_equal_angles_parallelogram",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "convex_quad_three_sum220_fourth130",
+          "text": "Если сумма трёх углов выпуклого четырёхугольника равна 220°, то его четвёртый угол равен 130°.",
+          "truth": false,
+          "cardId": "convex_quad_three_sum220_fourth130",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_circumcircle_at_most_one",
+          "text": "Около всякого треугольника можно описать не более одной окружности.",
+          "truth": true,
+          "cardId": "triangle_circumcircle_at_most_one",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "equidistant_two_vertices_on_third_altitude",
+          "text": "Точка, равноудалённая от двух вершин треугольника, лежит на высоте, проведённой из третьей вершины.",
+          "truth": false,
+          "cardId": "equidistant_two_vertices_on_third_altitude",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "incenter_equidistant_vertices",
+          "text": "Расстояния от центра вписанной в треугольник окружности до вершин треугольника равны.",
+          "truth": false,
+          "cardId": "incenter_equidistant_vertices",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "three_distinct_points_at_most_one_circle",
+          "text": "Через три различные точки можно провести не более одной окружности.",
+          "truth": true,
+          "cardId": "three_distinct_points_at_most_one_circle",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "isosceles_circumcenter_midpoint_altitude",
+          "text": "Центром окружности, описанной около равнобедренного треугольника, является середина высоты, проведённой к основанию треугольника.",
+          "truth": false,
+          "cardId": "isosceles_circumcenter_midpoint_altitude",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circumcenter_equidistant_sides",
+          "text": "Расстояния от центра описанной около треугольника окружности до сторон треугольника равны.",
+          "truth": false,
+          "cardId": "circumcenter_equidistant_sides",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "regular_heptagon_no_circumcircle",
+          "text": "Около правильного семиугольника нельзя описать окружность.",
+          "truth": false,
+          "cardId": "regular_heptagon_no_circumcircle",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_5_12_13_circumcenter_on_side",
+          "text": "Центр окружности, описанной около треугольника со сторонами, равными 5, 12, 13, находится на стороне этого треугольника.",
+          "truth": true,
+          "cardId": "triangle_5_12_13_circumcenter_on_side",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "equilateral_circumcenter_bisectors",
+          "text": "Центром окружности, описанной около равностороннего треугольника, является точка пересечения его биссектрис.",
+          "truth": true,
+          "cardId": "equilateral_circumcenter_bisectors",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "regular_nonagon_no_incircle",
+          "text": "В правильный девятиугольник нельзя вписать окружность.",
+          "truth": false,
+          "cardId": "regular_nonagon_no_incircle",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_20_21_29_circumcenter_on_side",
+          "text": "Центр окружности, описанной около треугольника со сторонами, равными 20, 21, 29, находится на стороне этого треугольника.",
+          "truth": true,
+          "cardId": "triangle_20_21_29_circumcenter_on_side",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "obtuse_circumcenter_on_side",
+          "text": "Центр окружности, описанной около тупоугольного треугольника, лежит на стороне этого треугольника.",
+          "truth": false,
+          "cardId": "obtuse_circumcenter_on_side",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "all_rhombi_cyclic",
+          "text": "Около любого ромба можно описать окружность.",
+          "truth": false,
+          "cardId": "all_rhombi_cyclic",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circle_exactly_two_symmetry_axes",
+          "text": "Окружность имеет ровно две оси симметрии.",
+          "truth": false,
+          "cardId": "circle_exactly_two_symmetry_axes",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "line_no_symmetry_axes",
+          "text": "Прямая не имеет осей симметрии.",
+          "truth": false,
+          "cardId": "line_no_symmetry_axes",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "regular_hexagon_six_symmetry_axes",
+          "text": "Правильный шестиугольник имеет шесть осей симметрии.",
+          "truth": true,
+          "cardId": "regular_hexagon_six_symmetry_axes",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "rectangle_no_symmetry_center",
+          "text": "Прямоугольник не имеет центра симметрии.",
+          "truth": false,
+          "cardId": "rectangle_no_symmetry_center",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "circle_no_symmetry_center",
+          "text": "Окружность не имеет центра симметрии.",
+          "truth": false,
+          "cardId": "circle_no_symmetry_center",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "line_at_least_two_symmetry_axes",
+          "text": "Прямая имеет не менее двух осей симметрии.",
+          "truth": true,
+          "cardId": "line_at_least_two_symmetry_axes",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "square_four_symmetry_axes",
+          "text": "Квадрат имеет четыре оси симметрии.",
+          "truth": true,
+          "cardId": "square_four_symmetry_axes",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_4_5_9_exists",
+          "text": "Треугольник со сторонами 4, 5, 9 существует.",
+          "truth": false,
+          "cardId": "triangle_4_5_9_exists",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "rhombus_symmetry_center_diagonals",
+          "text": "Центр симметрии ромба находится в пересечении его диагоналей.",
+          "truth": true,
+          "cardId": "rhombus_symmetry_center_diagonals",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "any_trapezoid_two_equal_angles",
+          "text": "В любой трапеции есть два равных угла.",
+          "truth": false,
+          "cardId": "any_trapezoid_two_equal_angles",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "right_triangle_area_hypotenuse_times_altitude",
+          "text": "Площадь прямоугольного треугольника равна произведению гипотенузы и высоты, проведённой к гипотенузе.",
+          "truth": false,
+          "cardId": "right_triangle_area_hypotenuse_times_altitude",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "triangle_6_8_2_not_exist",
+          "text": "Треугольника со сторонами 6, 8, 2 не существует.",
+          "truth": true,
+          "cardId": "triangle_6_8_2_not_exist",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "trapezoid_midline_equal_areas",
+          "text": "Средняя линия трапеции делит её на две трапеции, площади которых равны.",
+          "truth": false,
+          "cardId": "trapezoid_midline_equal_areas",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "cyclic_quadrilateral_opposite_side_sums_equal",
+          "text": "Суммы противоположных сторон вписанного четырёхугольника равны.",
+          "truth": false,
+          "cardId": "cyclic_quadrilateral_opposite_side_sums_equal",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "tangent_secant_power",
+          "text": "Из одной точки вне окружности проведены касательная и секущая. Квадрат длины касательного отрезка равен произведению длины всей секущей на длину её внешней части.",
+          "truth": true,
+          "cardId": "tangent_secant_power",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "tangential_quadrilateral_opposite_side_sums_equal",
+          "text": "Суммы противоположных сторон описанного четырёхугольника равны.",
+          "truth": true,
+          "cardId": "tangential_quadrilateral_opposite_side_sums_equal",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "external_point_at_most_one_tangent",
+          "text": "Через любую точку, лежащую вне окружности, можно провести не более одной касательной к этой окружности.",
+          "truth": false,
+          "cardId": "external_point_at_most_one_tangent",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "three_concurrent_lines_not_exist",
+          "text": "Не существует трёх прямых, проходящих через одну точку.",
+          "truth": false,
+          "cardId": "three_concurrent_lines_not_exist",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "intersecting_chords_products_equal",
+          "text": "Если две хорды одной окружности пересекаются внутри неё, то произведения длин частей каждой хорды равны между собой.",
+          "truth": true,
+          "cardId": "intersecting_chords_products_equal",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "sin_hypotenuse_over_opposite",
+          "text": "Синус острого угла прямоугольного треугольника равен отношению гипотенузы треугольника к катету, противолежащему этому углу.",
+          "truth": false,
+          "cardId": "sin_hypotenuse_over_opposite",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        },
+        {
+          "sourceId": "parallelogram_diagonals_square_sum",
+          "text": "Сумма квадратов диагоналей параллелограмма равна сумме квадратов всех его сторон.",
+          "truth": true,
+          "cardId": "parallelogram_diagonals_square_sum",
+          "matchType": "exact",
+          "officialBankBodyVerified": false,
+          "sourceMap": "task19-major-source-coverage.json"
+        }
+      ]
     }
   ],
   "counts": {
-    "uniqueCards": 234,
-    "sourceEntries": 467,
+    "uniqueCards": 379,
+    "sourceEntries": 612,
     "summerAdded": 36,
     "referenceAdded": 30,
     "summerCovered": 178,
@@ -3675,6 +5047,8 @@
     "officialDemoCovered": 3,
     "userQuestionSetsCovered": 4,
     "userQuestionAssertionsCovered": 12,
-    "officialDemoAdded": 1
+    "officialDemoAdded": 1,
+    "auditedMirrorAdded": 10,
+    "majorSourceAdded": 135
   }
 }

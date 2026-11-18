@@ -101,6 +101,7 @@
 
   defs.squareMeasure={
     title:'Измерения квадрата',values:{side:4,focus:'sides',compare:false},controls:[['side','Измени сторону квадрата',2,6,0.5,'']],
+    controlsFor:p=>p.neutralSideControl===true?[['side','Измени длину стороны',2,6,0.5,'']]:defs.squareMeasure.controls,
     sample:p=>({points:{A:[0,0],B:[p.side,0],C:[p.side,p.side],D:[0,p.side],O:[p.side/2,p.side/2]},metrics:{side:p.side,area:p.side*p.side,perimeter:4*p.side,diagonal:p.side*Math.SQRT2,diagonalProduct:2*p.side*p.side,angle:90,otherArea:16}}),
     render:s=>{const p=s.values,P=s.points,M=s.metrics,u=p.compare?25:36,T=q=>[p.compare?315+q[0]*u:280+(q[0]-p.side/2)*u,270-q[1]*u],names=['A','B','C','D'],points=names.map(n=>T(P[n])),groups=equalityGroups([p.side,p.side,p.side,p.side,...(p.compare?[4,4,4,4]:[])]);let body=poly(points)+labelPoints(P,names,T)+polygonMarks(points,names,{sideGroups:groups.slice(0,4)});
       if(p.focus==='diagonals')body+=linked('AC',line(T(P.A),T(P.C),AMBER)+offsetTick(T(P.A),T(P.C),2,AMBER),'AC')+linked('BD',line(T(P.B),T(P.D),AMBER)+offsetTick(T(P.B),T(P.D),2,AMBER),'BD')+dot(T(P.O))+text(T(P.O)[0]+24,T(P.O)[1]+10,'O')+linked('diagonal-angle',rightMark(T(P.A),T(P.O),T(P.B),GREEN),'Прямой угол между диагоналями');
@@ -188,6 +189,248 @@
     title:'Один периметр — разные формы',values:{width:9},controls:[['width','Потяни сторону второго прямоугольника',2,10,0.5,'']],
     sample:p=>({points:{A:[0,0],B:[p.width,0],C:[p.width,12-p.width],D:[0,12-p.width]},metrics:{width:p.width,height:12-p.width,perimeter:24,area:p.width*(12-p.width),squareArea:36}}),
     render:s=>{const p=s.values,M=s.metrics,T=q=>[330+q[0]*17,270-q[1]*17],left=[[75,270],[177,270],[177,168],[75,168]],right=['A','B','C','D'].map(n=>T(s.points[n])),groups=equalityGroups([6,6,6,6,M.width,M.height,M.width,M.height]);const body=poly(left)+polygonMarks(left,['E','F','G','H'],{prefix:'square-',sideGroups:groups.slice(0,4)})+text(126,300,'Квадрат 6 × 6')+poly(right)+polygonMarks(right,['A','B','C','D'],{sideGroups:groups.slice(4)})+text(410,300,`${fmt(M.width)} × ${fmt(M.height)}`);return{body,readout:['Периметр квадрата: 24',`Периметр прямоугольника: ${fmt(M.perimeter)}`,'Площадь квадрата: 36',`Площадь прямоугольника: ${fmt(M.area)}`]};}
+  };
+  // Source-specific experiments are additive: the historical definitions above
+  // keep their controls, coordinate samples and rendered output unchanged.
+  const cross2=(a,b)=>a[0]*b[1]-a[1]*b[0];
+  const subtract2=(a,b)=>[a[0]-b[0],a[1]-b[1]];
+  const scalar2=(a,b)=>a[0]*b[0]+a[1]*b[1];
+  const rotatePoints=(points,degrees)=>Object.fromEntries(Object.entries(points).map(([key,p])=>[key,turn(p,[0,0],degrees*RAD)]));
+  const distanceToLine=(p,a,b)=>Math.abs(cross2(subtract2(p,a),subtract2(b,a)))/hypot(a,b);
+  const directionAngle=(a,b,c,d)=>{
+    const u=subtract2(b,a),v=subtract2(d,c);
+    return Math.atan2(Math.abs(cross2(u,v)),Math.abs(scalar2(u,v)))/RAD;
+  };
+  const bounded=(value,lo,hi,fallback)=>clamp(Number.isFinite(Number(value))?Number(value):fallback,lo,hi);
+  const ray=(p,degrees,length)=>[p[0]+length*Math.cos(degrees*RAD),p[1]+length*Math.sin(degrees*RAD)];
+  const thinLine=(a,b,color=INK,dash='')=>line(a,b,color,dash).replace('stroke-width="3"','stroke-width="2"');
+  function clippedInfiniteLine(a,b,color,dash=''){
+    const dx=b[0]-a[0],dy=b[1]-a[1],candidates=[];
+    const add=(x,y)=>{if(x>=60-1e-7&&x<=500+1e-7&&y>=64-1e-7&&y<=280+1e-7&&!candidates.some(p=>hypot(p,[x,y])<1e-7))candidates.push([x,y]);};
+    if(Math.abs(dx)>1e-9)for(const x of[60,500])add(x,a[1]+(x-a[0])*dy/dx);
+    if(Math.abs(dy)>1e-9)for(const y of[64,280])add(a[0]+(y-a[1])*dx/dy,y);
+    return candidates.length>=2?line(candidates[0],candidates[1],color,dash):'';
+  }
+
+  const angleCases={
+    adjacent:{kind:'adjacent'},adjacent53:{kind:'adjacent',angle:53},
+    adjacent81:{kind:'adjacent',angle:81},adjacent50:{kind:'adjacent',angle:50},
+    vertical108:{kind:'vertical',angle:108},vertical40:{kind:'vertical',angle:40}
+  };
+  defs.sourceAnglePair={
+    title:'Сравни два угла',values:{case:'adjacent',angle:55,orientation:0},
+    controls:[['angle','Раскрой первый угол',20,160,1,'°'],['orientation','Поверни весь рисунок',-60,60,1,'°']],
+    normalize:p=>{if(!angleCases[p.case])p.case='adjacent';const fixed=angleCases[p.case].angle;if(fixed!==undefined)p.angle=fixed;return p;},
+    controlsFor:p=>[...(angleCases[p.case].angle===undefined?[['angle','Раскрой первый угол',20,160,1,'°']]:[]),['orientation','Поверни весь рисунок',-60,60,1,'°']],
+    sample:p=>{
+      const points=rotatePoints({O:[0,0],A:[4,0],B:[-4,0],C:ray([0,0],p.angle,4),D:ray([0,0],p.angle+180,4)},p.orientation);
+      const first=angleAt(points.A,points.O,points.C),second=angleCases[p.case].kind==='vertical'?angleAt(points.B,points.O,points.D):angleAt(points.C,points.O,points.B);
+      return{points,metrics:{first,second,sum:first+second,kind:angleCases[p.case].kind}};
+    },
+    render:s=>{
+      const P=s.points,M=s.metrics,vertical=M.kind==='vertical',T=fit([P.A,P.B,P.C,...(vertical?[P.D]:[])],{x:70,y:45,w:420,h:230});
+      let body=line(T(P.A),T(P.B))+line(vertical?T(P.D):T(P.O),T(P.C),BLUE)+dot(T(P.O))+text(T(P.O)[0]+16,T(P.O)[1]+25,'O');
+      body+=linked('first-angle',angleMark(T(P.A),T(P.O),T(P.C),BLUE,1,30),'Первый угол');
+      body+=linked('second-angle',angleMark(vertical?T(P.B):T(P.C),T(P.O),vertical?T(P.D):T(P.B),GREEN,2,39),'Второй угол');
+      return{body,readout:[row(`Первый угол: ${fmt(M.first)}°`,BLUE,'first-angle'),row(`Второй угол: ${fmt(M.second)}°`,GREEN,'second-angle'),`Сумма двух углов: ${fmt(M.sum)}°`]};
+    }
+  };
+
+  const transversalCases={
+    alternateParallel:{kind:'alternate'},correspondingEqual:{kind:'corresponding'},
+    alternate90:{kind:'alternate',first:90,second:90},corresponding90:{kind:'corresponding',first:90,second:90},
+    corresponding67:{kind:'corresponding',first:67,second:67},
+    sameSide90:{kind:'sameSide',sum:90},sameSide50_110:{kind:'sameSide',first:50,second:110},
+    sameSide30_120:{kind:'sameSide',first:30,second:120},perpendicularTransfer:{kind:'corresponding',first:90,second:90}
+  };
+  defs.sourceTransversal={
+    title:'Две прямые и секущая',values:{case:'alternateParallel',angle:55,separation:2.8,orientation:0},
+    controls:[['angle','Первый отмеченный угол',25,155,1,'°'],['separation','Раздвинь точки на секущей',2,4,0.1,''],['orientation','Поверни весь рисунок',-45,45,1,'°']],
+    normalize:p=>{if(!transversalCases[p.case])p.case='alternateParallel';const c=transversalCases[p.case];if(c.first!==undefined)p.angle=c.first;else if(c.sum)p.angle=bounded(p.angle,25,65,35);return p;},
+    controlsFor:p=>{
+      const c=transversalCases[p.case];
+      return[...(c.first===undefined?[['angle','Первый отмеченный угол',25,c.sum?65:155,1,'°']]:[]),['separation','Раздвинь точки на секущей',2,4,0.1,''],['orientation','Поверни весь рисунок',-45,45,1,'°']];
+    },
+    sample:p=>{
+      const c=transversalCases[p.case],first=p.angle,second=c.second!==undefined?c.second:c.sum?c.sum-first:first;
+      // At P choose the right ray and the upward transversal. At Q the ray
+      // depends on the named angle pair. Directions follow the premises;
+      // parallelism is then measured, never imposed for false criteria.
+      const lowDirection=90-first,highDirection=c.kind==='sameSide'?second-90:90-second;
+      const P=[0,-p.separation/2],Q=[0,p.separation/2],u=[Math.cos(lowDirection*RAD),Math.sin(lowDirection*RAD)],v=[Math.cos(highDirection*RAD),Math.sin(highDirection*RAD)];
+      const determinant=cross2(u,v);let reach=4.2,intersection=null;
+      if(Math.abs(determinant)>1e-9){const t=cross2(subtract2(Q,P),v)/determinant;intersection=[P[0]+t*u[0],P[1]+t*u[1]];reach=Math.max(reach,Math.abs(t)+.7,hypot(intersection,Q)+.7);}
+      const points={P,Q,L1:ray(P,lowDirection+180,reach),R1:ray(P,lowDirection,reach),L2:ray(Q,highDirection+180,reach),R2:ray(Q,highDirection,reach),S:[0,-p.separation/2-1.5],T:[0,p.separation/2+1.5]};
+      if(intersection)points.I=intersection;
+      const transformed=rotatePoints(points,p.orientation),a=angleAt(transformed.R1,transformed.P,transformed.Q);
+      const b=c.kind==='alternate'?angleAt(transformed.L2,transformed.Q,transformed.P):c.kind==='sameSide'?angleAt(transformed.R2,transformed.Q,transformed.P):angleAt(transformed.R2,transformed.Q,transformed.T);
+      const between=directionAngle(transformed.L1,transformed.R1,transformed.L2,transformed.R2);
+      return{points:transformed,metrics:{first:a,second:b,sum:a+b,lineAngle:between,parallel:between<1e-7,kind:c.kind}};
+    },
+    render:s=>{
+      const P=s.points,M=s.metrics,T=fit(Object.values(P),{x:65,y:45,w:430,h:235});
+      let body=line(T(P.L1),T(P.R1))+line(T(P.L2),T(P.R2))+line(T(P.S),T(P.T),BLUE)+dot(T(P.P))+dot(T(P.Q));
+      body+=text(T(P.L1)[0]+8,T(P.L1)[1]-18,'a')+text(T(P.L2)[0]+8,T(P.L2)[1]-18,'b');
+      body+=linked('first-angle',angleMark(T(P.R1),T(P.P),T(P.Q),BLUE,1,27),'Первый угол');
+      const secondFirst=M.kind==='alternate'?P.L2:P.R2,secondLast=M.kind==='corresponding'?P.T:P.P;
+      body+=linked('second-angle',angleMark(T(secondFirst),T(P.Q),T(secondLast),GREEN,2,34),'Второй угол');
+      if(P.I)body+=dot(T(P.I),AMBER)+text(T(P.I)[0]+16,T(P.I)[1]+23,'K',AMBER);
+      return{body,readout:[row(`Первый угол: ${fmt(M.first)}°`,BLUE,'first-angle'),row(`Второй угол: ${fmt(M.second)}°`,GREEN,'second-angle'),`Сумма отмеченных углов: ${fmt(M.sum)}°`,`Меньший угол между прямыми a и b: ${fmt(M.lineAngle)}°`]};
+    }
+  };
+
+  const incidenceCases=['parallelPair','coincidentPair','intersectingPair','threeParallel','threeConcurrent','twoPoints'];
+  defs.sourceIncidence={
+    title:'Прямые и общие точки',values:{case:'parallelPair',orientation:0,separation:2,angle:55,thirdAngle:45,probe:0,distance:4},
+    controls:[['orientation','Поверни весь рисунок',-45,45,1,'°'],['separation','Раздвинь прямые',1.5,3,0.1,''],['angle','Угол пересечения',25,155,1,'°'],['thirdAngle','Поверни третью прямую',20,70,1,'°'],['probe','Поверни вторую линию около A',-60,60,1,'°'],['distance','Расстояние между A и B',2,6,0.2,'']],
+    normalize:p=>{if(!incidenceCases.includes(p.case))p.case='parallelPair';return p;},
+    controlsFor:p=>[
+      ...(p.case==='twoPoints'?[['probe','Поверни вторую линию около A',-60,60,1,'°'],['distance','Расстояние между A и B',2,6,0.2,'']]:p.case==='intersectingPair'?[['angle','Угол пересечения',25,155,1,'°']]:p.case==='threeConcurrent'?[['thirdAngle','Поверни третью прямую',20,70,1,'°']]:p.case==='coincidentPair'?[]:[['separation','Раздвинь прямые',1.5,3,0.1,'']]),
+      ['orientation','Поверни весь рисунок',-45,45,1,'°']
+    ],
+    sample:p=>{
+      let P={},count=2;
+      if(p.case==='twoPoints'){
+        const u=[Math.cos(p.probe*RAD),Math.sin(p.probe*RAD)];
+        P={A:[0,0],B:[p.distance,0],L1:[-1,0],R1:[p.distance+1,0],L2:[-1.2*u[0],-1.2*u[1]],R2:[(p.distance+1)*u[0],(p.distance+1)*u[1]],H:[p.distance*u[0]*u[0],p.distance*u[0]*u[1]]};
+      }else if(p.case==='threeConcurrent'){
+        P={O:[0,0],L1:[-4.5,0],R1:[4.5,0],L2:[0,-4.5],R2:[0,4.5],L3:ray([0,0],p.thirdAngle+180,4.5),R3:ray([0,0],p.thirdAngle,4.5)};count=3;
+      }else if(p.case==='intersectingPair'){
+        P={O:[0,0],L1:[-4.5,0],R1:[4.5,0],L2:ray([0,0],p.angle+180,4.5),R2:ray([0,0],p.angle,4.5)};
+      }else{
+        const ys=p.case==='coincidentPair'?[0,0]:p.case==='threeParallel'?[-p.separation,0,p.separation]:[-p.separation/2,p.separation/2];count=ys.length;
+        ys.forEach((y,i)=>{P['L'+(i+1)]=[-4.5,y];P['R'+(i+1)]=[4.5,y];});
+        if(p.case==='coincidentPair')Object.assign(P,{A:[-2,0],B:[0,0],C:[2,0]});
+      }
+      P=rotatePoints(P,p.orientation);
+      const pairAngle=directionAngle(P.L1,P.R1,P.L2,P.R2),pairDistance=distanceToLine(P.L2,P.L1,P.R1),coincident=pairAngle<1e-7&&pairDistance<1e-7;
+      const metrics={drawnLines:count,lineAngle:pairAngle,lineDistance:pairDistance,coincident,intersectionKind:coincident?'coincident':pairAngle<1e-7?'parallel':'one'};
+      if(p.case==='twoPoints')Object.assign(metrics,{AB:hypot(P.A,P.B),probeDistance:distanceToLine(P.B,P.L2,P.R2),probeThroughB:distanceToLine(P.B,P.L2,P.R2)<1e-7});
+      if(p.case==='threeConcurrent')metrics.distancesFromO=[1,2,3].map(i=>distanceToLine(P.O,P['L'+i],P['R'+i]));
+      if(p.case==='coincidentPair')metrics.markedCommonPoints=['A','B','C'].filter(n=>distanceToLine(P[n],P.L1,P.R1)<1e-7&&distanceToLine(P[n],P.L2,P.R2)<1e-7).length;
+      return{points:P,metrics};
+    },
+    render:s=>{
+      const P=s.points,p=s.values,M=s.metrics,T=fit(Object.values(P),{x:65,y:45,w:430,h:235});let body='';
+      for(let i=1;i<=M.drawnLines;i++){
+        const start=T(P['L'+i]),label=String.fromCharCode(96+i);
+        body+=linked('line-'+i,line(start,T(P['R'+i]),COLORS[i-1],i===2?'8 5':''),`Прямая ${label}`)+text(start[0]+18,start[1]+(i===2?24:-18),label,COLORS[i-1]);
+      }
+      const names=p.case==='twoPoints'?['A','B']:p.case==='coincidentPair'?['A','B','C']:P.O?['O']:[];
+      body+=labelPoints(P,names,T);
+      if(p.case==='twoPoints'&&M.probeDistance>1e-6)body+=dotted(T(P.B),T(P.H),AMBER)+rightMark(T(P.B),T(P.H),T(P.R2),AMBER,10);
+      const readout=p.case==='twoPoints'?[`AB = ${fmt(M.AB)}`,`Расстояние от B до второй линии: ${fmt(M.probeDistance)}`,`Угол между нарисованными линиями: ${fmt(M.lineAngle)}°`]:p.case==='threeConcurrent'?M.distancesFromO.map((v,i)=>`Расстояние от O до прямой ${String.fromCharCode(97+i)}: ${fmt(v)}`):[`Меньший угол между a и b: ${fmt(M.lineAngle)}°`,...(p.case==='coincidentPair'?[`Отмечено общих точек: ${M.markedCommonPoints}`,`Расстояние между совпадающими линиями: ${fmt(M.lineDistance)}`]:M.intersectionKind==='parallel'?[`Расстояние между a и b: ${fmt(M.lineDistance)}`]:['Точка O принадлежит обеим прямым'])];
+      return{body,readout};
+    }
+  };
+
+  defs.sourceOblique={
+    title:'Перпендикуляр и наклонная',values:{offset:2,orientation:0},
+    controls:[['offset','Передвинь конец наклонной по прямой',.8,4,0.1,''],['orientation','Поверни весь рисунок',-45,45,1,'°']],
+    sample:p=>{const P=rotatePoints({A:[0,3],H:[0,0],B:[p.offset,0],L:[-1.5,0],R:[5,0]},p.orientation);return{points:P,metrics:{perpendicular:hypot(P.A,P.H),oblique:hypot(P.A,P.B),projection:hypot(P.H,P.B),angle:angleAt(P.A,P.H,P.B)}};},
+    render:s=>{const P=s.points,M=s.metrics,T=fit(Object.values(P),{x:85,y:45,w:390,h:235});return{body:line(T(P.L),T(P.R))+linked('AH',line(T(P.A),T(P.H),GREEN)+rightMark(T(P.A),T(P.H),T(P.B),GREEN),'Перпендикуляр AH')+linked('AB',line(T(P.A),T(P.B),BLUE),'Наклонная AB')+labelPoints(P,['A','H','B'],T),readout:[row(`AH = ${fmt(M.perpendicular)}`,GREEN,'AH'),row(`AB = ${fmt(M.oblique)}`,BLUE,'AB'),`HB = ${fmt(M.projection)}`,`∠AHB = ${fmt(M.angle)}°`]};}
+  };
+
+  defs.endpointLocus={
+    title:'Точки на равном расстоянии от A и B',values:{position:2,halfLength:3},
+    controls:[['position','Передвинь точку P',1,4,0.1,''],['halfLength','Раздвинь концы отрезка',2,4,0.1,'']],
+    sample:p=>{
+      const P={A:[-p.halfLength,0],B:[p.halfLength,0],M:[0,0],P:[0,p.position],Q:[0,-1.5],U:[0,-2.2],V:[0,4.7]};
+      return{points:P,metrics:{PA:hypot(P.P,P.A),PB:hypot(P.P,P.B),QA:hypot(P.Q,P.A),QB:hypot(P.Q,P.B),PQ:hypot(P.P,P.Q),AM:hypot(P.A,P.M),MB:hypot(P.M,P.B),angle:angleAt(P.P,P.M,P.B)}};
+    },
+    render:s=>{
+      const P=s.points,M=s.metrics,T=fit(Object.values(P),{x:85,y:45,w:390,h:235});let body=line(T(P.A),T(P.B))+line(T(P.U),T(P.V),INK,'6 5');
+      for(const [point,color]of[['P',BLUE],['Q',GREEN]])for(const end of['A','B'])body+=linked(point+end,line(T(P[point]),T(P[end]),color)+tick(T(P[point]),T(P[end]),point==='P'?1:2,color),point+end);
+      body+=rightMark(T(P.P),T(P.M),T(P.B))+labelPoints(P,['A','B','P','Q'],T)+dot(T(P.M))+text(T(P.M)[0]+20,T(P.M)[1]+22,'M');
+      return{body,readout:[...['PA','PB','QA','QB'].map(k=>row(`${k} = ${fmt(M[k])}`,k[0]==='P'?BLUE:GREEN,k)),`PQ = ${fmt(M.PQ)}`,`AM = ${fmt(M.AM)}; MB = ${fmt(M.MB)}`,`∠PMB = ${fmt(M.angle)}°`]};
+    }
+  };
+
+  // A single pure transformation is used for every vertex and circle center.
+  // The whole image is rendered. A circle and an infinite line are compared
+  // analytically; sampling their boundary as a finite polygon would be wrong.
+  function symmetryTransform(points,transformation){
+    const c=transformation.center||[0,0];
+    if(transformation.kind==='halfTurn')return points.map(p=>[2*c[0]-p[0],2*c[1]-p[1]]);
+    const a=transformation.axisPoint||[0,0],u=[Math.cos(transformation.axisAngle*RAD),Math.sin(transformation.axisAngle*RAD)];
+    return points.map(p=>{const v=subtract2(p,a),projection=scalar2(v,u);return[a[0]+2*projection*u[0]-v[0],a[1]+2*projection*u[1]-v[1]];});
+  }
+  function symmetryDifference(shape,original,image,radius){
+    if(shape==='circle')return hypot(original[0],image[0]);
+    if(shape==='line')return Math.max(distanceToLine(image[0],original[0],original[1]),distanceToLine(image[1],original[0],original[1]));
+    const directed=(a,b)=>Math.max(...a.map(p=>Math.min(...b.map(q=>hypot(p,q)))));
+    return Math.max(directed(original,image),directed(image,original));
+  }
+  const symmetryShapes=['isosceles','equilateral','rectangle','square','rhombus','hexagon','circle','line'];
+  defs.symmetryTransform={
+    title:'Сравни фигуру с её образом',
+    values:{shape:'isosceles',transformation:'reflection',axisAngle:90,axisOffset:0,centerX:0,centerY:0,aspect:.75,pose:0,anchor:'free',referenceAxes:false},
+    controls:[['axisAngle','Поверни проверяемую прямую',0,180,1,'°'],['axisOffset','Сдвинь проверяемую прямую',-1.5,1.5,.1,''],['centerX','Положение точки O по горизонтали',-1.5,1.5,.1,''],['centerY','Положение точки O по вертикали',-1.5,1.5,.1,''],['aspect','Измени форму фигуры',.55,1.2,.05,''],['pose','Поверни фигуру целиком',-60,60,1,'°']],
+    normalize:p=>{
+      if(!symmetryShapes.includes(p.shape))p.shape='isosceles';
+      if(p.transformation!=='halfTurn')p.transformation='reflection';
+      if(p.anchor==='diagonals'){p.centerX=0;p.centerY=0;}
+      p.referenceAxes=p.referenceAxes===true&&p.shape==='circle'&&p.transformation==='reflection';
+      return p;
+    },
+    controlsFor:p=>[
+      ...(p.transformation==='reflection'?[['axisAngle','Поверни проверяемую прямую',0,180,1,'°'],['axisOffset','Сдвинь проверяемую прямую',-1.5,1.5,.1,'']]:p.anchor==='diagonals'?[['pose','Поверни фигуру целиком',-60,60,1,'°']]:[['centerX','Положение точки O по горизонтали',-1.5,1.5,.1,''],['centerY','Положение точки O по вертикали',-1.5,1.5,.1,'']]),
+      ...(['isosceles','rectangle','rhombus'].includes(p.shape)?[['aspect','Измени форму фигуры',.55,1.2,.05,'']]:[])
+    ],
+    sample:p=>{
+      let original;
+      if(p.shape==='isosceles'){const h=4*p.aspect;original=[[-2,-h/3],[2,-h/3],[0,2*h/3]];}
+      else if(p.shape==='equilateral'||p.shape==='hexagon'){const n=p.shape==='equilateral'?3:6,start=n===3?90:0;original=Array.from({length:n},(_,i)=>ray([0,0],start+360*i/n,2.8));}
+      else if(p.shape==='rectangle'||p.shape==='square'){const h=p.shape==='square'?2:2*p.aspect;original=[[-2,-h],[2,-h],[2,h],[-2,h]];}
+      else if(p.shape==='rhombus')original=[[-2.8,0],[0,-2.8*p.aspect],[2.8,0],[0,2.8*p.aspect]];
+      else if(p.shape==='circle')original=[[0,0],[2.6,0],[0,2.6],[-2.6,0],[0,-2.6]];
+      else original=[[-3.5,0],[3.5,0]];
+      original=original.map(q=>turn(q,[0,0],p.pose*RAD));
+      const axisPoint=[-Math.sin(p.axisAngle*RAD)*p.axisOffset,Math.cos(p.axisAngle*RAD)*p.axisOffset],center=[p.centerX,p.centerY],configuration={kind:p.transformation,axisPoint,axisAngle:p.axisAngle,center};
+      const image=symmetryTransform(original,configuration),names=original.map((_,i)=>p.shape==='circle'?(i===0?'Z':String.fromCharCode(64+i)):String.fromCharCode(65+i));
+      const points={};names.forEach((n,i)=>{points[n]=original[i];points[n+'1']=image[i];});
+      points.O=center;points.K=axisPoint;points.U=ray(axisPoint,p.axisAngle,4.3);points.V=ray(axisPoint,p.axisAngle+180,4.3);
+      const difference=symmetryDifference(p.shape,original,image,2.6),metrics={names,difference,coincides:difference<1e-7,axisAngle:p.axisAngle,axisOffset:p.axisOffset,centerX:p.centerX,centerY:p.centerY,radius:p.shape==='circle'?hypot(original[0],original[1]):0};
+      if(p.referenceAxes&&p.shape==='circle'&&p.transformation==='reflection'){
+        const directions=[0,90,p.axisAngle],offsets=[0,0,p.axisOffset],unique=[];
+        directions.forEach((angle,i)=>{const offset=offsets[i],angleKey=((angle%180)+180)%180;if(unique.some(v=>Math.abs(v.angle-angleKey)<1e-7&&Math.abs(v.offset-offset)<1e-7))return;
+          const a=[-Math.sin(angle*RAD)*offset,Math.cos(angle*RAD)*offset],transformed=symmetryTransform(original,{kind:'reflection',axisPoint:a,axisAngle:angle});
+          unique.push({angle:angleKey,offset,difference:symmetryDifference('circle',original,transformed,2.6)});
+          if(i<2){points['RefAxisA'+i]=ray(a,angle,4.3);points['RefAxisB'+i]=ray(a,angle+180,4.3);points['Cref'+i]=transformed[0];points['Aref'+i]=transformed[1];}
+        });
+        metrics.displayedAxes=unique.length;metrics.matchingDisplayedAxes=unique.filter(v=>v.difference<1e-7).length;metrics.axisComparisons=unique;
+      }
+      return{points,metrics};
+    },
+    render:s=>{
+      const p=s.values,P=s.points,M=s.metrics,names=M.names,original=names.map(n=>P[n]),image=names.map(n=>P[n+'1']);
+      // Keep the lower strip free for the legend, including the full 36-unit
+      // vertex labels and the offset label of the rotation center.
+      const relevant=[...original,...image,...(p.transformation==='reflection'?[P.U,P.V]:[P.O]),...(P.RefAxisA0?[P.RefAxisA0,P.RefAxisB0]:[]),...(P.RefAxisA1?[P.RefAxisA1,P.RefAxisB1]:[])];
+      // An infinite line has no movable bounds. Keep its world frame fixed so
+      // moving a perpendicular test axis cannot be cancelled by auto-centering.
+      const T=fit(p.shape==='line'?[[-6,-6],[6,6]]:relevant,{x:60,y:64,w:440,h:176});
+      const polygon=(points,color,fill,dashed)=>`<polygon points="${points.map(q=>T(q).join(',')).join(' ')}" fill="${fill}" fill-opacity="0.23" stroke="${color}" stroke-width="3"${dashed?' stroke-dasharray="8 5"':''}/>`;
+      let body='';
+      if(p.shape==='circle'){
+        body=ring(T(P.Z),hypot(T(P.Z),T(P.A)),INK)+ring(T(P.Z1),hypot(T(P.Z1),T(P.A1)),BLUE).replace('stroke-width="2"','stroke-width="3" stroke-dasharray="8 5"');
+        for(let i=0;i<2;i++)if(P['Cref'+i])body+=ring(T(P['Cref'+i]),hypot(T(P['Cref'+i]),T(P['Aref'+i])),GREEN).replace('stroke-width="2"','stroke-width="1" stroke-dasharray="3 7"');
+        body+=dot(T(P.Z),INK)+dot(T(P.Z1),BLUE);
+      }else if(p.shape==='line')body='<defs><clipPath id="task19-symmetry-line-window"><rect x="60" y="64" width="440" height="176"/></clipPath></defs><g clip-path="url(#task19-symmetry-line-window)">'+clippedInfiniteLine(T(P.A),T(P.B),INK)+clippedInfiniteLine(T(P.A1),T(P.B1),BLUE,'8 5')+'</g>';
+      else{
+        body=polygon(original,INK,LIGHT,false)+polygon(image,BLUE,'#b4d4f1',true);
+        names.forEach(n=>{body+=dot(T(P[n]),INK)+dot(T(P[n+'1']),BLUE);});
+        body+=labelPoints(P,names,T);
+        if(p.anchor==='diagonals')body+=thinLine(T(P.A),T(P.C),AMBER,'4 5')+thinLine(T(P.B),T(P.D),AMBER,'4 5');
+      }
+      if(p.transformation==='reflection'){
+        for(let i=0;i<2;i++)if(P['RefAxisA'+i])body+=thinLine(T(P['RefAxisA'+i]),T(P['RefAxisB'+i]),GREEN,'3 6');
+        body+=linked('transformation-axis',thinLine(T(P.U),T(P.V),GREEN,'7 5'),'Проверяемая прямая');
+      }else body+=linked('transformation-center',clearPoint(T(P.O),GREEN)+clearLabel(T(P.O)[0]+22,T(P.O)[1]+25,'O',GREEN),'Точка поворота O');
+      body=`<g data-symmetry-figure="true">${body}</g><text data-symmetry-legend="true" x="280" y="318" font-size="24" text-anchor="middle" dominant-baseline="middle" fill="${INK}">Сплошная — фигура · <tspan fill="${BLUE}">пунктир — образ</tspan></text>`;
+      const differenceLabel=p.shape==='circle'?'Расстояние между центрами окружностей':p.shape==='line'?'Наибольшее расстояние отмеченных точек образа до исходной прямой':'Наибольшее несовпадение вершин';
+      return{body,readout:[...(p.transformation==='reflection'?[`Направление проверяемой прямой: ${fmt(M.axisAngle)}°`,`Смещение проверяемой прямой: ${fmt(M.axisOffset)}`]:['Поворот всей фигуры: 180°',`Точка O: (${fmt(M.centerX)}; ${fmt(M.centerY)})`]),`${differenceLabel}: ${fmt(M.difference)}`,...(p.referenceAxes?[`Различных проверяемых прямых на рисунке: ${M.displayedAxes}`,`Проверок с совпадением окружностей: ${M.matchingDisplayedAxes}`]:[])]};
+    }
   };
   return defs;
 });

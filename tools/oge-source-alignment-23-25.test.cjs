@@ -1,0 +1,169 @@
+'use strict';
+
+const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
+const { readFileSync } = require('node:fs');
+const path = require('node:path');
+const test = require('node:test');
+
+const coverage = require('../trainers/oge-sources/coverage-23-25.json');
+const { loadTrainer, makeStorage, KEY, ROOT } = require('./oge-geometry-contract.lib.mjs');
+const slugs = {
+  23: 'oge-task23-geometry-calculations',
+  24: 'oge-task24-proofs',
+  25: 'oge-task25-geometry',
+};
+
+function trainer(number, settings) {
+  return loadTrainer('trainers/' + slugs[number] + '.html', settings);
+}
+
+function get(engine, expression) {
+  return JSON.parse(engine.run('JSON.stringify(' + expression + ')'));
+}
+
+test('source comparison names the read corpus and distinguishes exact gaps', () => {
+  assert.equal(coverage.checkedOn, '2026-11-17');
+  const authored=coverage.comparison.filter(row => row.result === 'authored');
+  assert.equal(authored.length,5);
+  assert.deepEqual([...new Set(authored.map(row => row.number))], [23,24,25]);
+  assert.ok(coverage.comparison.some(row => row.result === 'gap' && row.source === 'yashchenko2027v17'));
+  for (const row of coverage.comparison) {
+    const source = coverage.sources[row.source];
+    assert.match(source.url, /^https:\/\//);
+    assert.ok(source.access && row.skill && source.locator && row.format);
+  }
+});
+
+test('№23: new fixed card and original generator avoid the official numerical example', () => {
+  const engine = trainer(23, {seed: 20261117});
+  const bank = get(engine, 'ARCHIVE');
+  assert.equal(bank.length,154);
+  assert.deepEqual(bank.slice(149).map(row=>row.id),['q150','q151','q152','q153','q154']);
+  assert.equal(bank[20].id, 'q021');
+  assert.equal(bank[21].id, 'q022-v2');
+  assert.equal(bank[22].id, 'q023');
+  assert.deepEqual(bank[21].p, {AF: 36, BF: 27});
+  assert.equal(36 ** 2 + 27 ** 2, 45 ** 2);
+  assert.equal(bank[21].exp, 45);
+  const candidates = bank.filter(row => row.sub === 'trapBis').map(row => row.p)
+    .concat(get(engine, 'Array.from({length:800},()=>SUBS.trapBis.gen())'));
+  for (const {AF, BF} of candidates) {
+    assert.notDeepEqual([AF, BF].sort((a, b) => a - b), [5, 12]);
+    assert.equal(engine.run('SUBS.trapBis.fig({AF:' + AF + ',BF:' + BF + '}).chk.every(row=>row.ok)'), true);
+  }
+});
+
+test('№24: real secants, correct correspondence and independent completion for the new statement', () => {
+  const record = {'oge24-dokazatelstva':{updatedAt:1, solved:{t10:true}, solvedByType:{t10:7}}};
+  const storage = makeStorage(new Map([[KEY, JSON.stringify(record)]]));
+  const engine = trainer(24, {storage});
+  const task = get(engine, 'byId.t10');
+  const { pts, circ } = get(engine, 'FIGS.f10');
+  assert.equal(task.revision, 'v2');
+  assert.match(task.prove, /KA · KD = KB · KC/);
+  assert.match(task.steps.at(-1).t, /KA\/KC = KB\/KD/);
+
+  const dist = (a, b) => Math.hypot(a[0]-b[0], a[1]-b[1]);
+  const cross = (o, a, b) => (a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+  const close = (x, y) => assert.ok(Math.abs(x-y)<1e-6, x + ' ≠ ' + y);
+  const {A, B, C, D, K} = pts;
+  for (const p of [A, B, C, D]) close(dist(circ[0].c, p), circ[0].r);
+  close(cross(K, A, D), 0);
+  close(cross(K, B, C), 0);
+  assert.ok(dist(K,A)<dist(K,D) && dist(K,B)<dist(K,C));
+  close(dist(K,A)/dist(K,C), dist(K,B)/dist(K,D));
+  close(dist(K,A)*dist(K,D), dist(K,B)*dist(K,C));
+  assert.equal(engine.run('proofInstanceId(byId.t10)'), 't10-v2');
+  assert.equal(engine.run('STORE[TID].solved[proofInstanceId(byId.t10)]'), undefined);
+  engine.run('startStudy("t10"); for(let i=0;i<curTask().steps.length;i++)pickCard({type:"s",i});');
+  assert.deepEqual(get(engine, 'STORE[TID].solved'), {t10:true, 't10-v2':true});
+  assert.equal(get(engine, 'CP.readAll()[TID].solvedByType.t10'), 8);
+});
+
+test('№25: oblique trapezoid gives height 24 and area 360 with consistent labels', () => {
+  const engine = trainer(25);
+  const pool = get(engine, 'byId(3).pool');
+  assert.ok(!pool.some(row => String(row) === '16,34,2'));
+  assert.ok(pool.some(row => String(row) === '26,30,1'));
+  const {ans, geo} = get(engine, 'byId(3).build([26,30,1])');
+  assert.equal(26**2, 10**2+24**2);
+  assert.equal(30**2, 18**2+24**2);
+  assert.equal(geo.AD, 29);
+  assert.equal(geo.h, 24);
+  assert.equal(ans[0].v, (29+1)*24/2);
+  const drawing = engine.run('byId(3).draw([26,30,1])');
+  for (const label of ['M', 'N', 'H₁', 'H₂', '26', '30']) assert.ok(drawing.includes('>'+label+'</text>'), label);
+});
+
+test('№23: four authored examples cover a semicircle and three major-arc angles', () => {
+  const engine=trainer(23);
+  const archive=get(engine,'ARCHIVE.filter(row=>row.sub==="arcRadius")');
+  const expected=[
+    {id:'q151',sum:10,largest:5,degrees:90,side:'14',answer:7},
+    {id:'q152',sum:12,largest:8,degrees:120,side:'11√3',answer:11},
+    {id:'q153',sum:12,largest:9,degrees:135,side:'12√2',answer:12},
+    {id:'q154',sum:18,largest:15,degrees:150,side:'16',answer:16},
+  ];
+  for(const [i, row] of archive.entries()){
+    const {sum,largest,degrees,side,answer,id}=expected[i];
+    const result=get(engine,'arcRadiusData('+JSON.stringify(row.p)+')');
+    assert.equal(row.id,id);
+    assert.equal(180*largest/sum,degrees);
+    assert.equal(result.total,sum);
+    assert.equal(result.angle,degrees);
+    assert.equal(result.chord,side);
+    assert.equal(row.exp,answer);
+    const measured=get(engine,'SUBS.arcRadius.fig('+JSON.stringify(row.p)+').chk');
+    assert.ok(measured.every(check=>check.ok));
+  }
+});
+
+test('№25: eight inradius variants cover both orientations and decimal answers', () => {
+  const engine=trainer(25);
+  const pool=get(engine,'byId(17).pool');
+  assert.deepEqual(get(engine,'TYPE_IDS.slice(-2)'),['16','17']);
+  const expected=[75,15,26,34,14.5,19.5,34,37.5];
+  assert.equal(pool.length,expected.length);
+  for(const [index, p] of pool.entries()){
+    const geo=get(engine,'byId(17).build('+JSON.stringify(p)+')');
+    assert.equal(geo.ans[0].v,expected[index]);
+    assert.equal(geo.steps.at(-1).ask.v,expected[index]);
+    const drawing=engine.run('byId(17).draw('+JSON.stringify(p)+')');
+    assert.ok(drawing.includes('>'+p[2]+'</text>'));
+    assert.ok(drawing.includes('>H</text>'));
+    assert.ok(drawing.includes('>r</text>'));
+    const triangles=[...drawing.matchAll(/<polygon points="([^"]+)"/g)]
+      .map(match=>match[1].split(' ').map(point=>point.split(',').map(Number)));
+    const circles=[...drawing.matchAll(/<circle cx="([^"]+)" cy="([^"]+)" r="([^"]+)" fill="none"/g)]
+      .map(match=>match.slice(1).map(Number));
+    assert.equal(circles.length,2);
+    assert.equal(triangles.length,2);
+    const signedDistance=([x,y],[a,b],[c,d])=>((c-a)*(y-b)-(d-b)*(x-a))/Math.hypot(c-a,d-b);
+    for(const [i,[cx,cy,r]] of circles.entries()){
+      const [A,B,C]=triangles[i];
+      for(const [start,end] of [[A,B],[B,C],[C,A]]){
+        // SVG viewport coordinates are rounded by the renderer to hundredths.
+        assert.ok(Math.abs(Math.abs(signedDistance([cx,cy],start,end))-r)<0.03);
+      }
+    }
+    assert.ok(Math.abs(circles[1][2]-circles[0][2]*p[2]/expected[index])<0.03);
+  }
+});
+
+test('all three existing downloadable ZIPs contain the matching standalone HTML', () => {
+  const originalEvidence = {
+    23: 'rows:[[24,10,26],[36,27,45,\'v2\']',
+    24: 'KA · KD = KB · KC',
+    25: '[26,30,1]',
+  };
+  for (const [number, slug] of Object.entries(slugs)) {
+    const home = path.join(ROOT, 'downloads', 'trainers', slug);
+    const html = readFileSync(path.join(home, slug+'.html'));
+    const packed = execFileSync('unzip', ['-p', path.join(home, slug+'-package.zip'), slug+'.html'], {maxBuffer:html.length + 1024});
+    assert.deepEqual(packed, html);
+    assert.ok(html.includes(originalEvidence[number]));
+    if(number==='23') assert.ok(html.includes('SUBS.arcRadius'));
+    if(number==='25') assert.ok(html.includes('id:17, topic:'));
+  }
+});

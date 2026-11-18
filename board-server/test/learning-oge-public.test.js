@@ -67,6 +67,14 @@ async function fixture(t) {
 function state19(a,answer,help=false){return {answer:String(answer),helpUsed:help,native:{topic:'',review:false,current:{id:a.taskSpec.descriptor.id,answer,hintOpen:false,helpUsed:help,modelState:null},answers:[[a.taskSpec.descriptor.id,answer,help]],view:{settings:false,textbook:false,reference:[]}}};}
 const action=(a,state,extra={})=>({opId:op(),expectedVersion:a.version,type:'check',payload:{state,details:{scope:'final',answer:state.answer}},...extra});
 
+test('managed task 11 retains the shared version for an existing mixed-graph seed', () => {
+  const { taskSpec } = contracts.create('oge-public', '11', 890559);
+  assert.deepEqual(taskSpec.descriptor, { type: 't45', seed: 890559 });
+  assert.equal(taskSpec.task.answer, '213');
+  assert.deepEqual(taskSpec.task.parameters.order, [1, 0, 2]);
+  assert.match(taskSpec.task.q, /y = 3 x; y = √ x \+ 2; y = −3$/u);
+});
+
 test('six native contracts: deterministic mathematics, typed snapshots, distinct graph identity',()=>{
  for(const n of [11,15,16,17,18,19])for(let seed=1;seed<=60;seed++){
   const a=contracts.create('oge-public',String(n),seed),b=contracts.create('oge-public',String(n),seed);

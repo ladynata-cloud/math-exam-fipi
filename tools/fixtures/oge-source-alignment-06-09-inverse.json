@@ -1,0 +1,86 @@
+{
+  "trainers/oge-task6-fractions.html": [
+    {
+      "before": "",
+      "after": "const fractionAnalogueIndex = TASKS.length;\nTASKS.push({cat:'adv',code:null,num:11,n:24,d:25,mode:'value',term:true,ansDisp:'0,96',\n  html:'<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">1,08</span></span><span class=\"fd\"><span class=\"mn\">1</span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">8</span></span></span></span></span>'});\n"
+    },
+    {
+      "before": "    if(saved.order.length!==expected.length||new Set(saved.order).size!==expected.length||!saved.order.every(index=>expected.includes(index)))return false;\n",
+      "after": "    const savedIndices=new Set(saved.order);\n    if(savedIndices.size!==saved.order.length||!saved.order.every(index=>expected.includes(index)))return false;\n    const missing=expected.filter(index=>!savedIndices.has(index));\n    // Older queues keep their order, completed answers and current position.\n    if(missing.length&&(missing.length!==1||missing[0]!==fractionAnalogueIndex))return false;\n"
+    },
+    {
+      "before": "      if(!expected.includes(Number(key))||!value||!Number.isSafeInteger(value.wrongAttempts)||value.wrongAttempts<0)continue;\n",
+      "after": "      if(!savedIndices.has(Number(key))||!value||!Number.isSafeInteger(value.wrongAttempts)||value.wrongAttempts<0)continue;\n"
+    },
+    {
+      "before": "    cat=saved.cat;order=saved.order;pos=saved.pos;shuffle=saved.shuffle===true;records=kept;streak=Number.isSafeInteger(saved.streak)&&saved.streak>=0?saved.streak:0;\n",
+      "after": "    cat=saved.cat;order=saved.order.concat(missing);pos=saved.pos;shuffle=saved.shuffle===true;records=kept;streak=Number.isSafeInteger(saved.streak)&&saved.streak>=0?saved.streak:0;\n"
+    }
+  ],
+  "trainers/oge-task7-number-line.html": [
+    {
+      "before": "addC(317102,{sub:\"decOrder\", key:2,\n",
+      "after": "const decimalOrderAnalogue={id:\"mathexam-decimal-order-01\", srcId:\"mathexam\", src:\"Авторская задача MathExam\",\n  kind:\"C\", sub:\"decOrder2\", key:3, cntLess:2,\n  text:\"Четыре отмеченные точки в некотором порядке обозначают числа 0,456; −0,12; 0,58 и 0,4. Укажи точку, которая соответствует числу 0,456.\",\n  pic:{lo:-0.19,hi:0.66,ticks:\"none\",labels:[],pts:[{name:\"A\",x:-0.12},{name:\"B\",x:0.4},{name:\"C\",x:0.456},{name:\"D\",x:0.58}]},\n  opts:[\"A\",\"B\",\"C\",\"D\"].map(s=>({html:vi(s)})),\n  nums:[\"0,456\",\"−0,12\",\"0,58\",\"0,4\"], targetStr:\"0,456\", sortedStr:[\"−0,12\",\"0,4\",\"0,456\",\"0,58\"]};\nif(window.OgeCourseSharedMode){\n  // The original room index still restores previously shared actions.\n  addC(317102,{sub:\"decOrder\", key:2,\n"
+    },
+    {
+      "before": "",
+      "after": "}else BANK.push(decimalOrderAnalogue);\n"
+    },
+    {
+      "before": "",
+      "after": "if(window.OgeCourseSharedMode) pushTask(decimalOrderAnalogue);\n"
+    },
+    {
+      "before": "",
+      "after": "  {id:\"mathexam\",label:\"MathExam\"},\n"
+    }
+  ],
+  "trainers/oge-task8-powers-roots.html": [
+    {
+      "before": "",
+      "after": "const productPower=(b,left,right,outer)=>par(pw(b,left)+dot+pw(b,right))+sup(outer);\n"
+    },
+    {
+      "before": "",
+      "after": " pow_products_quotient:p=>fr(productPower(p.b,...p.numerator), productPower(p.b,...p.denominator)),\n"
+    },
+    {
+      "before": "",
+      "after": "  case \"pow_products_quotient\":{\n    const [topLeft,topRight,topOuter]=p.numerator, [bottomLeft,bottomRight,bottomOuter]=p.denominator;\n    const topSum=topLeft+topRight, bottomSum=bottomLeft+bottomRight;\n    const topExponent=topSum*topOuter, bottomExponent=bottomSum*bottomOuter;\n    const exponent=topExponent-bottomExponent, value=fpow(Fr(p.b),exponent);\n    st.push(S('Сначала упрости произведения в обеих скобках. Какой показатель получится в каждой?',\n      [I(topSum,'числитель'),I(bottomSum,'знаменатель')],\n      'При умножении степеней с одинаковым основанием показатели складываются.',\n      `${M(pw(p.b,topSum))} в верхней скобке, ${M(pw(p.b,bottomSum))} в нижней.`,\n      [TP(0,topLeft*topRight,TM.addNotMul),TP(1,bottomLeft*bottomRight,TM.addNotMul)]));\n    st.push(S(`Теперь возведи обе степени в степень: ${M(fr(par(pw(p.b,topSum))+sup(topOuter),par(pw(p.b,bottomSum))+sup(bottomOuter)))}. Найди два показателя.`,\n      [I(topExponent,'числитель'),I(bottomExponent,'знаменатель')],\n      'При возведении степени в степень показатели перемножаются.',\n      `${M(fr(pw(p.b,topExponent),pw(p.b,bottomExponent)))}.`,\n      [TP(0,topSum+topOuter,TM.mulNotAdd),TP(1,bottomSum+bottomOuter,TM.mulNotAdd)]));\n    st.push(S(`Раздели степени с одинаковым основанием: ${M(fr(pw(p.b,topExponent),pw(p.b,bottomExponent))+' = '+pw(p.b,'?'))}.`,\n      [I(exponent,'показатель')],`${topExponent} − ${bottomExponent} = ?`,`${M(pw(p.b,exponent))}.`,\n      [TP(0,topExponent+bottomExponent,TM.sub)]));\n    st.push(S(`Вычисли ${M(pw(p.b,exponent))}.`,[I(value,'ответ')],\n      exponent<0?'Степень с отрицательным показателем — обратное число.':'Вычисли степень с получившимся показателем.',`${V(value)}.`,\n      [exponent!==0&&TP(0,fpow(Fr(p.b),-exponent),TM.recip),TP(0,p.b*exponent,TM.baseTimesExp)]));\n    break;}\n"
+    },
+    {
+      "before": "",
+      "after": "\n// Shared actions address bank positions. Keep the original position in room mode.\nconst rootProductAnalogue={\"id\": \"9.4a\", \"type\": \"rootprod3\", \"p\": {\"k1\": 4, \"m1\": 5, \"k2\": 3, \"m2\": 6, \"m3\": 30}, \"ans\": [360, 1]};\nif(window.OgeCourseSharedMode) BANK.push(rootProductAnalogue);\nelse BANK[BANK.findIndex(task=>task.id===\"9.4\")]=rootProductAnalogue;\n// Appended on both surfaces so existing bank indices keep their conditions.\nBANK.push(\n  {id:\"pow-products-quotient-01\",type:\"pow_products_quotient\",p:{b:3,numerator:[2,3,5],denominator:[3,5,3]},ans:[3,1]},\n  {id:\"pow-products-quotient-02\",type:\"pow_products_quotient\",p:{b:5,numerator:[2,3,3],denominator:[1,3,4]},ans:[1,5]},\n  {id:\"pow-products-quotient-03\",type:\"pow_products_quotient\",p:{b:2,numerator:[1,5,4],denominator:[2,6,3]},ans:[1,1]}\n);\n"
+    },
+    {
+      "before": " {k:\"pow1\", name:\"Степени: одно основание\", types:[\"pow_mul_div\",\"pow_pow_div\",\"pow_mul_pow\",\"pow_over_num\",\"recip_pow\",\"pow_var_div\"], nums:\"№15–17, 22–24\", learn:\"p2\", fam:\"A\"},\n",
+      "after": " {k:\"pow1\", name:\"Степени: одно основание\", types:[\"pow_mul_div\",\"pow_pow_div\",\"pow_mul_pow\",\"pow_over_num\",\"recip_pow\",\"pow_var_div\",\"pow_products_quotient\"], nums:\"№15–17, 22–24\", learn:\"p2\", fam:\"A\"},\n"
+    },
+    {
+      "before": "",
+      "after": " pow_products_quotient(){\n   const [topSum,topOuter,bottomSum,bottomOuter]=pick([[5,5,8,3],[7,3,5,4],[5,4,7,3],[7,3,6,4],[6,3,5,4],[6,4,8,3],[5,5,6,4],[6,4,5,5]]);\n   const exponent=topSum*topOuter-bottomSum*bottomOuter;\n   const b=pick(exponent<0?[2,5]:[2,3,5,7]);\n   const topLeft=ri(1,topSum-1), bottomLeft=ri(1,bottomSum-1);\n   return{type:\"pow_products_quotient\",p:{b,numerator:[topLeft,topSum-topLeft,topOuter],denominator:[bottomLeft,bottomSum-bottomLeft,bottomOuter]}};\n },\n"
+    },
+    {
+      "before": " {k:\"A\",name:\"Степени: одно основание\",gens:[\"pow_mul_div\",\"pow_pow_div\",\"pow_mul_pow\",\"pow_over_num\",\"recip_pow\",\"pow_var_div\"],learn:\"p2\"},\n",
+      "after": " {k:\"A\",name:\"Степени: одно основание\",gens:[\"pow_mul_div\",\"pow_pow_div\",\"pow_mul_pow\",\"pow_over_num\",\"recip_pow\",\"pow_var_div\",\"pow_products_quotient\"],learn:\"p2\"},\n"
+    },
+    {
+      "before": "160 задач для подготовки к ОГЭ 2027</h2>\n    <p>Подборка Math4Skill по заданию 8, все 32 сюжета",
+      "after": "${BANK.length} задачи для подготовки к ОГЭ 2027</h2>\n    <p>Задания по материалам Math4Skill и авторские аналоги MathExam"
+    }
+  ],
+  "trainers/oge-task9-equations.html": [
+    {
+      "before": "  exam('demo-2027','linear-two-brackets','LB',[BR(3,[X(1),N(8)]),BR(-2,[X(1),N(-8)])],[N(8)],null,'-32','fipi-demo','Проект демоверсии ФИПИ 2027'),\n",
+      "after": "  exam('author-demo-type-2027','linear-two-brackets','LB',[BR(6,[X(1),N(4)]),BR(-5,[X(1),N(-2)])],[N(21)],null,'-13','analog','Авторский аналог · по демоверсии ФИПИ 2027'),\n"
+    },
+    {
+      "before": "BANK.push(...EXAM_BANK);\n",
+      "after": "if(window.OgeCourseSharedMode){\n  // Shared actions recorded at this fixed index belong to the original example.\n  const legacyDemo=exam('demo-2027','linear-two-brackets','LB',[BR(3,[X(1),N(8)]),BR(-2,[X(1),N(-8)])],[N(8)],null,'-32','fipi-demo','Демоверсия ФИПИ 2027 · прежняя общая задача');\n  BANK.push(legacyDemo,...EXAM_BANK.slice(1),EXAM_BANK[0]);\n}else BANK.push(...EXAM_BANK);\n"
+    },
+    {
+      "before": "    const year=t.id==='exam-demo-2027'?'2027':'2026';\n    return 'Условие и ответ № 9 сверены с <a href=\"https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/'+year+'/ma_9_'+year+'.zip\">официальным архивом ФИПИ '+year+'</a>'+(year==='2027'?' (проект демоверсии).':'.');\n",
+      "after": "    const year=t.id.slice(-4);\n    return 'Условие и ответ № 9 сверены с <a href=\"https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/'+year+'/ma_9_'+year+'.zip\">официальным архивом ФИПИ '+year+'</a>.';\n"
+    }
+  ]
+}

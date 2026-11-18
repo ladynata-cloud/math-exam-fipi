@@ -458,7 +458,7 @@ nav.oge-wayfinding[hidden]{display:none!important}
 <div class="score" id="score"></div><section class="rail" aria-label="Разделы"><div class="railrow" id="rail"></div></section>
 <div class="modes" id="modes" role="tablist"><div class="mode" data-mode="learn" role="tab">Учимся</div><div class="mode" data-mode="steps" role="tab">Пошагово</div><div class="mode" data-mode="drill" role="tab">Тренировка</div></div>
 <button class="btn ghost" id="printBtn" type="button">Вариант для печати</button>
-<footer>Источники прототипов: открытый банк заданий, РЕШУ ОГЭ, задачник Е. А. Ширяевой (ОГЭ-2026).</footer></details></div>
+<footer>Источники прототипов: открытый банк заданий, РЕШУ ОГЭ, задачник Е. А. Ширяевой (ОГЭ-2026). Тип «Разбавление раствора» сопоставлен с заданием 21 варианта 17 сборника под ред. И. В. Ященко (ОГЭ-2027, 36 вариантов). Условие и искомая величина разработаны для MathExam.</footer></details></div>
 
 <script>
 "use strict";
@@ -862,11 +862,11 @@ function fullSolution(m,p){
 /* ==================================================================
    MODULE REGISTRY
    Each module: {key,title,cat,blurb, learn():html, gen():p, statement(p):html, steps(p):[], finalParts(p):[{label,ans,unit}]}
-   cat in {move,work,perc}
+   cat in {move,work,perc,counts}
    ================================================================== */
 const MODULES=[];
-const CAT={ move:{name:'Движение',color:'var(--move)',deep:'#26379c'}, work:{name:'Работа',color:'var(--work)',deep:'#0a5f5f'}, perc:{name:'Проценты',color:'var(--perc)',deep:'#573a94'} };
-const CATHEX={ move:'#3453d6', work:'#0f8a8a', perc:'#7c53c8' };
+const CAT={ move:{name:'Движение',color:'var(--move)',deep:'#26379c'}, work:{name:'Работа',color:'var(--work)',deep:'#0a5f5f'}, perc:{name:'Проценты',color:'var(--perc)',deep:'#573a94'}, counts:{name:'Количество предметов',color:'var(--move)',deep:'#26379c'} };
+const CATHEX={ move:'#3453d6', work:'#0f8a8a', perc:'#7c53c8', counts:'#3453d6' };
 
 function gcdInt(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=a%b;a=b;b=t;}return a||1;}
 function lcm(a,b){return a/gcdInt(a,b)*b;}
@@ -1027,25 +1027,20 @@ MODULES.push({
    '<span class="xref">Решение квадратного уравнения — задание 9.</span></div>';
   },
   gen(){
-    let x,d,dt,D,guard=0;
-    while(true){ guard++;
-      x=rnd(40,110); d=pick([2,3,4,6,8,9,10,12,24,28,30]); dt=rnd(1,4);
-      if(x<=d){ if(guard>9000)break; continue; }
-      const num=dt*x*(x-d);
-      if(num%d){ if(guard>9000)break; continue; }
-      D=num/d;
-      if(D<60||D>1000){ if(guard>9000)break; continue; }
-      break;
-    }
-    const veh=pick([
-      {two:'велосипедиста',first:'первого велосипедиста',second:'велосипедиста, пришедшего к финишу вторым',word:'велосипедист'},
-      {two:'автомобиля',first:'первого автомобиля',second:'автомобиля, пришедшего к финишу вторым',word:'автомобиль'}]);
+    const vehicle=pick([
+      {two:'велосипедиста',first:'первого велосипедиста',second:'велосипедиста, пришедшего к финишу вторым',
+       cases:[[18,3,1],[20,4,2],[24,6,1],[27,6,2],[30,6,1],[30,5,1]]},
+      {two:'автомобиля',first:'первого автомобиля',second:'автомобиля, пришедшего к финишу вторым',
+       cases:[[66,11,1],[72,12,1],[84,14,2],[90,18,1],[96,16,1],[105,21,2]]}
+    ]);
+    const [x,d,dt]=pick(vehicle.cases);
+    const D=dt*x*(x-d)/d;
     const askFast=Math.random()<0.5;
     const rootR=Rn.from(x);
     const quad={a:dt,b:-dt*d,c:-D*d};
-    const stmt='Два '+veh.two+' одновременно отправляются в <b>'+D+'-километровый</b> пробег. '+
+    const stmt='Два '+vehicle.two+' одновременно отправляются в <b>'+D+'-километровый</b> пробег. '+
       'Первый едет со скоростью на <b>'+d+' км/ч</b> большей, чем второй, и прибывает к финишу на <b>'+hrs(dt)+'</b> раньше второго. '+
-      '<span class="q">Найдите скорость '+(askFast?veh.first:veh.second)+'.</span>';
+      '<span class="q">Найдите скорость '+(askFast?vehicle.first:vehicle.second)+'.</span>';
     const eqOptions=[
       {h:frac(D,'x')+' + '+dt+' = '+frac(D,'x−'+d),ok:true,eq:true},
       {h:frac(D,'x')+' − '+dt+' = '+frac(D,'x−'+d),eq:true,why:'Быстрый едет меньше времени, поэтому Δt прибавляют к его времени, а не вычитают.'},
@@ -1056,8 +1051,8 @@ MODULES.push({
     const table={head:['','Расстояние (км)','Скорость (км/ч)','Время (ч)'],
       rows:[tRow('Первый',D,'x'), tRow('Второй',D,'x−'+d)]};
     const finalParts = askFast
-      ? [{label:'Скорость '+veh.first+':',ans:rootR,unit:'км/ч'}]
-      : [{label:'Скорость '+veh.second+' (на '+d+' меньше):',ans:Rn.from(x-d),unit:'км/ч',
+      ? [{label:'Скорость '+vehicle.first+':',ans:rootR,unit:'км/ч'}]
+      : [{label:'Скорость '+vehicle.second+' (на '+d+' меньше):',ans:Rn.from(x-d),unit:'км/ч',
           q:'Второй едет на '+d+' км/ч медленнее. Чему равна его скорость?',
           revealHTML:'<div class="eqline">'+x+' − '+d+' = '+(x-d)+'</div>'}];
     return {D,d,dt,x,quad,rootR,rootUnit:'км/ч',rootWord:'скорость',viz:{D:D,d:d,dt:dt,x:x},clear:{n1:D,a1:0,n2:-D,b1:-d,R:-dt},varOptions,eqOptions,table,finalParts,stmt};
@@ -1736,6 +1731,85 @@ MODULES.push({
   }
 });
 
+/* ---------- t12: разбавление раствора чистой водой ---------- */
+MODULES.push({
+  key:'t12', title:'Разбавление раствора', cat:'perc',
+  blurb:'добавили чистую воду',
+  long:'Масса соли остаётся прежней, масса раствора увеличивается, доля соли уменьшается.',
+  learn(){
+    return '<div class="tcard"><span class="n">1</span><h3>Сколько соли было</h3>'+
+      '<p>Массу раствора умножь на долю соли. Добавленная чистая вода эту массу соли не меняет.</p></div>'+
+      '<div class="tcard"><span class="n">2</span><h3>Сколько раствора стало</h3>'+
+      '<p>Раздели массу соли на её новую долю. Разность новой и исходной масс — добавленная вода.</p></div>';
+  },
+  gen(){
+    const [small,large]=pick([[1,2],[2,3],[3,4],[3,5],[4,5]]);
+    const batch=pick([2,3,4,5,7]), scale=pick([2,3,4,5]);
+    const before=small*batch, after=large*batch, oldPercent=large*scale, newPercent=small*scale;
+    const salt=new Rn(before*oldPercent,100), water=after-before;
+    const stmt='К <b>'+before+' кг</b> раствора, содержащего <b>'+oldPercent+'%</b> соли по массе, добавили чистую воду. '+
+      'После разбавления раствор содержит <b>'+newPercent+'%</b> соли. '+
+      '<span class="q">Сколько килограммов воды добавили?</span>';
+    return {before,after,oldPercent,newPercent,salt,water,stmt,
+      finalParts:[{label:'Масса добавленной воды:',ans:Rn.from(water),unit:'кг'}]};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){
+    return [
+      {t:'num',q:'Сколько килограммов соли было в исходном растворе?',ans:p.salt,unit:'кг',allowFrac:true,
+       revealHTML:'<div class="eqline">'+p.before+' · '+frac(p.oldPercent,100)+' = '+fmt(p.salt)+' кг</div>'},
+      {t:'num',q:'Масса соли сохранилась. Сколько килограммов раствора стало, если доля соли теперь '+p.newPercent+'%?',ans:Rn.from(p.after),unit:'кг',
+       revealHTML:'<div class="eqline">'+fmt(p.salt)+' : '+frac(p.newPercent,100)+' = '+p.after+' кг</div>'},
+      {t:'num',q:'Вычти исходную массу раствора. Сколько килограммов воды добавили?',ans:Rn.from(p.water),unit:'кг',
+       revealHTML:'<div class="eqline">'+p.after+' − '+p.before+' = '+p.water+' кг</div>'}
+    ];
+  }
+});
+
+/* ---------- t13: три группы с общим количеством ---------- */
+MODULES.push({
+  key:'t13', title:'Три группы', cat:'counts',
+  blurb:'в несколько раз, на несколько штук',
+  long:'Выбираем одну группу за x, записываем количества двух остальных и складываем все три.',
+  learn(){
+    return '<div class="tcard"><span class="n">1</span><h3>Запиши три количества</h3>'+
+      '<p>Если средних x, больших в k раз больше, а маленьких на d больше, то больших kx, маленьких x + d.</p></div>'+
+      '<div class="tcard"><span class="n">2</span><h3>Сложи всё и ответь на вопрос</h3>'+
+      '<p>Приравняй сумму трёх количеств к общему числу. Найди x, затем вычисли разность нужных групп.</p></div>';
+  },
+  gen(){
+    const medium=rnd(12,26), factor=rnd(2,4), extra=rnd(3,10);
+    const large=factor*medium, small=medium+extra, total=medium+large+small;
+    const compareSmall=pick([true,false]);
+    const compare=compareSmall?'маленьких':'средних';
+    const difference=large-(compareSmall?small:medium);
+    const stmt='Для школьной выставки напечатали открытки трёх размеров, всего <b>'+total+'</b>. '+
+      'Больших открыток было в <b>'+factor+' раза</b> больше, чем средних, а маленьких — на <b>'+extra+'</b> больше, чем средних. '+
+      '<span class="q">На сколько больших открыток было больше, чем '+compare+'?</span>';
+    return {medium,factor,extra,large,small,total,compareSmall,difference,stmt,
+      finalParts:[{label:'На сколько открыток больше:',ans:Rn.from(difference)}]};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){
+    const f=p.factor,e=p.extra,t=p.total, m=p.medium;
+    const compare=p.compareSmall?'маленьких':'средних', comparedCount=p.compareSmall?p.small:p.medium;
+    return [
+      {t:'note',html:'Пусть <b>x</b> — количество средних открыток. Больших тогда '+f+'x, маленьких x + '+e+'.'},
+      {t:'pick',q:'Какое уравнение описывает общее количество открыток?',options:[
+        {h:'x + '+f+'x + (x + '+e+') = '+t,ok:true,eq:true},
+        {h:'x + '+f+'x + (x − '+e+') = '+t,why:'Маленьких больше на '+e+', поэтому '+e+' надо прибавить.'},
+        {h:'x + '+f+'x = '+t,why:'Нужно учесть и маленькие открытки.'}]},
+      {t:'num',q:'Сколько средних открыток получится из этого уравнения?',ans:Rn.from(m),
+       revealHTML:'<div class="eqline">'+(f+2)+'x = '+t+' − '+e+' = '+(t-e)+', x = '+m+'</div>'},
+      {t:'num',q:'На сколько больших открыток больше, чем '+compare+'?',ans:Rn.from(p.difference),
+       revealHTML:'<div class="eqline">Больших: '+f+' · '+m+' = '+p.large+'. Маленьких: '+m+' + '+e+' = '+p.small+'.</div>'+
+         '<div class="eqline">'+p.large+' − '+comparedCount+' = '+p.difference+'. Проверка: '+m+' + '+p.large+' + '+p.small+' = '+t+'.</div>'}
+    ];
+  }
+});
+
 /* ---------- inline theory mini-checks (one per module) ---------- */
 const MINIS={
   t1:function(){ const tau=pick([36,48,54,24,30,45,12,6]); return {q:'Остановка <b>'+tau+' мин</b> — сколько это часов? (десятичной дробью)', ans:new Rn(tau,60), allowFrac:true}; },
@@ -1992,6 +2066,36 @@ const VIZ={
     var b1=el('button','vbtn','Слить всё'); b1.onclick=function(){ result(V.m1+V.m2,V.cAll,V.cAll+'% ('+(V.m1+V.m2)+' кг)'); cap.className='vcap good'; cap.innerHTML='('+V.m1+'·'+V.a+'% + '+V.m2+'·'+V.b+'%) / '+(V.m1+V.m2)+' = <b>'+V.cAll+'%</b>.'; };
     var b2=el('button','vbtn','Слить поровну'); b2.onclick=function(){ result(20,V.cEq,V.cEq+'%'); cap.className='vcap good'; cap.innerHTML='(a + b)/2 = ('+V.a+' + '+V.b+')/2 = <b>'+V.cEq+'%</b>.'; };
     ctl.appendChild(b1); ctl.appendChild(b2); c.appendChild(ctl); c.appendChild(cap);
+  },
+  t12:function(host,p){
+    const card=vcard(host,'Масса соли сохраняется','Зелёная часть — соль. Синяя — вода. После разбавления зелёная часть такой же длины.');
+    const svg=svgRoot('0 0 440 150');
+    const unit=315/p.after, salt=p.salt.toNumber();
+    card.appendChild(svg);
+    for(const [i,label,mass,percent] of [[0,'До разбавления',p.before,p.oldPercent],[1,'После разбавления',p.after,p.newPercent]]){
+      const top=28+i*69;
+      svg.appendChild(svT(27,top-7,label+' · '+percent+'%',{'font-size':'17','font-weight':'700',fill:V_INK}));
+      svg.appendChild(sv('rect',{x:27,y:top,width:mass*unit,height:32,fill:'#8fc0ef'}));
+      svg.appendChild(sv('rect',{x:27,y:top,width:salt*unit,height:32,fill:V_GREEN}));
+    }
+  },
+  t13:function(host,p){
+    const card=vcard(host,'Три группы в одном уравнении','Каждый синий блок обозначает x средних открыток. Зелёный блок обозначает известную добавку. В сумме получается '+p.total+'.');
+    const svg=svgRoot('0 0 440 165');
+    card.appendChild(svg);
+    for (const [index,label,count,add] of [[0,'Средние',1,0],[1,'Большие',p.factor,0],[2,'Маленькие',1,p.extra]]){
+      const top=16+index*49;
+      svg.appendChild(svT(10,top+19,label,{'font-size':'16','font-weight':'700',fill:V_INK}));
+      for (let i=0;i<count;i++){
+        const left=113+i*47;
+        svg.appendChild(sv('rect',{x:left,y:top,width:43,height:30,rx:4,fill:'#8fc0ef'}));
+        svg.appendChild(svT(left+21.5,top+20,'x',{'text-anchor':'middle','font-size':'17',fill:V_INK}));
+      }
+      if(add){
+        svg.appendChild(sv('rect',{x:160,y:top,width:43,height:30,rx:4,fill:'#9ddbbd'}));
+        svg.appendChild(svT(181.5,top+20,'+'+add,{'text-anchor':'middle','font-size':'17',fill:V_INK}));
+      }
+    }
   }
 };
 MODULES.forEach(m=>{ if(VIZ[m.key]) m.viz=VIZ[m.key]; });
@@ -2059,9 +2163,9 @@ let CUR=0, MODE='drill';
 
 function buildRail(){
   const rail=$('#rail'); rail.innerHTML='';
-  const byCat={move:[],work:[],perc:[]};
+  const byCat={move:[],work:[],perc:[],counts:[]};
   MODULES.forEach((m,idx)=>byCat[m.cat].push({m,idx}));
-  ['move','work','perc'].forEach(cat=>{
+  Object.keys(byCat).forEach(cat=>{
     if(!byCat[cat].length)return;
     const g=el('div','catgroup');
     g.innerHTML='<div class="catlabel" style="color:'+CAT[cat].color+'"><span class="dot" style="background:'+CAT[cat].color+'"></span>'+CAT[cat].name+'</div>';

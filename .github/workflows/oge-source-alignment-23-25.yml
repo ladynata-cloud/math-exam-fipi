@@ -1,0 +1,39 @@
+name: OGE 23–25 source alignment
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task2[3-5]*'
+      - 'trainers/oge-course-proof.js'
+      - 'trainers/oge-sources/coverage-23-25.json'
+      - 'tools/oge-source-alignment-23-25*'
+      - 'downloads/trainers/oge-task2[3-5]*/**'
+      - '.github/workflows/oge-source-alignment-23-25.yml'
+permissions:
+  contents: read
+jobs:
+  authored-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned DOM and browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-source-geometry" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-source-geometry/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-source-geometry/node_modules" >> "$GITHUB_ENV"
+      - name: Mathematics, revision keys and exact offline package parity
+        run: |
+          node --test tools/oge-source-alignment-23-25.test.cjs
+          node tools/oge-geometry-contract.test.mjs
+          node oge/tests/registry-test.js
+          node oge/tests/adapters-test.js
+          node oge/tests/junk-test.js
+          node tools/oge-check-links.mjs
+          git diff --check
+      - name: Exact authored variants at three viewport sizes
+        run: node tools/oge-source-alignment-23-25.browser.cjs

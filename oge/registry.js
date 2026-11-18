@@ -58,7 +58,7 @@ var RV = (function(){
   };
 
   var NAMES = {
-    /* 16 · trainers/oge-task16-circle.html · 33 типов (ключи тренажёра) */
+    /* 16 · trainers/oge-task16-circle.html · 35 типов (ключи тренажёра) */
     "oge-task16-circle|insCen": { n:"Центральные и вписанные углы: Вписанный угол по центральному", line:16 },
     "oge-task16-circle|twoDiam": { n:"Центральные и вписанные углы: Два диаметра: ∠OAB и ∠OCD", line:16 },
     "oge-task16-circle|diamMON": { n:"Центральные и вписанные углы: Центральный угол в равнобедренном △MON", line:16 },
@@ -92,7 +92,9 @@ var RV = (function(){
     "oge-task16-circle|secTan": { n:"Касательные, хорды, секущие: Касательная и секущая", line:16 },
     "oge-task16-circle|chordsX": { n:"Касательные, хорды, секущие: Пересекающиеся хорды", line:16 },
     "oge-task16-circle|tanChord": { n:"Касательные, хорды, секущие: Угол между касательной и хордой", line:16 },
-    /* 17 · trainers/oge-task17-quadrilaterals.html · 38 типов (ключи тренажёра) */
+    "oge-task16-circle|sectorArea": { n:"Площадь сектора по центральному углу", line:16 },
+    "oge-task16-circle|arcLength": { n:"Длины меньшей и большей дуг", line:16 },
+    /* 17 · trainers/oge-task17-quadrilaterals.html · 39 типов (ключи тренажёра) */
     "oge17-chetyrehugolniki|sqDiag": { n:"Квадрат: Диагональ квадрата по стороне a√2", line:17 },
     "oge17-chetyrehugolniki|sqAreaSide": { n:"Квадрат: Площадь квадрата по стороне a√2", line:17 },
     "oge17-chetyrehugolniki|sqAreaPerim": { n:"Квадрат: Площадь квадрата по периметру", line:17 },
@@ -131,6 +133,7 @@ var RV = (function(){
     "oge17-chetyrehugolniki|trapBisector": { n:"Трапеция: Диагональ-биссектриса", line:17 },
     "oge17-chetyrehugolniki|trapDiagSmallBase": { n:"Трапеция: Угол диагонали с меньшим основанием", line:17 },
     "oge17-chetyrehugolniki|trapBDA": { n:"Трапеция: Диагональ BD и два угла при D", line:17 },
+    "oge17-chetyrehugolniki|trapBDAWide": { n:"Трапеция: Диагональ BD, угол BDA больше BDC", line:17 },
     /* 18 · trainers/oge-task18-grid.html · 15 типов (ключи тренажёра) */
     "oge18-kletki|dist": { n:"Длины: Расстояние между точками", line:18 },
     "oge18-kletki|midBC": { n:"Длины: Расстояние до середины отрезка", line:18 },
@@ -147,7 +150,7 @@ var RV = (function(){
     "oge18-kletki|segAB": { n:"Отношения: Отрезок по данным чертежа (подобие)", line:18 },
     "oge18-kletki|segCmp": { n:"Отношения: Во сколько раз длиннее", line:18 },
     "oge18-kletki|circRatio": { n:"Отношения: Отношение площадей кругов", line:18 },
-    /* 23 · trainers/oge-task23-geometry-calculations.html · 20 типов (ключи тренажёра) */
+    /* 23 · trainers/oge-task23-geometry-calculations.html · 21 тип (ключи тренажёра) */
     "oge23-vychisleniya|rhombH": { n:"Четырёхугольники: Высота ромба", line:23 },
     "oge23-vychisleniya|pgramBis": { n:"Четырёхугольники: Периметр параллелограмма", line:23 },
     "oge23-vychisleniya|trapBis": { n:"Четырёхугольники: Боковая сторона трапеции", line:23 },
@@ -168,7 +171,8 @@ var RV = (function(){
     "oge23-vychisleniya|rectBH": { n:"Окружность: Прямоугольник в высоте (найти BH)", line:23 },
     "oge23-vychisleniya|tanSecAC": { n:"Окружность: Касательная и секущая (найти AC)", line:23 },
     "oge23-vychisleniya|tanSecD": { n:"Окружность: Касательная и секущая (найти диаметр)", line:23 },
-    /* 25 · trainers/oge-task25-geometry.html · 16 типов (ключи тренажёра) */
+    "oge23-vychisleniya|arcRadius": { n:"Окружность: Радиус через отношения дуг", line:23 },
+    /* 25 · trainers/oge-task25-geometry.html · 17 типов (ключи тренажёра) */
     "oge25-geometriya|1": { n:"Треугольник: Биссектриса и медиана: ⟂ и равны", line:25 },
     "oge25-geometriya|2": { n:"Параллелограмм: биссектрисы углов A и B", line:25 },
     "oge25-geometriya|3": { n:"Трапеция: биссектриса угла D через середину боковой", line:25 },
@@ -185,6 +189,7 @@ var RV = (function(){
     "oge25-geometriya|14": { n:"Трапеция: Окружность через вершины трапеции, касающаяся боковой стороны", line:25 },
     "oge25-geometriya|15": { n:"Параллелограмм: Площадь параллелограмма через инцентр треугольника", line:25 },
     "oge25-geometriya|16": { n:"Треугольник: Вписанная и вневписанная окружности равнобедренного треугольника", line:25 },
+    "oge25-geometriya|17": { n:"Треугольник: Вписанные окружности и высота к гипотенузе", line:25 },
     /* 24 · trainers/oge-task24-proofs.html · 20 типов (ключи тренажёра) */
     "oge24-dokazatelstva|t1": { n:"Подобие: Подобие треугольников в трапеции", line:24 },
     "oge24-dokazatelstva|t10": { n:"Подобие: Продолжения сторон вписанного четырёхугольника", line:24 },
@@ -220,6 +225,7 @@ var RV = (function(){
     "oge-t20-algebra|DR": { n:"№20.11: Дробное неравенство", line:20 },
     "oge-t20-algebra|QIDS": { n:"№20.12: Квадратные неравенства", line:20 },
     "oge-t20-algebra|SYM": { n:"№20.13: Симметричные системы", line:20 },
+    "oge-t20-algebra|DR3": { n:"№20.14: Дробное неравенство, три точки", line:20 },
     /* 21 · trainers/oge-task21-word-problems.html · 11 типов (ключи тренажёра) */
     "oge-t21-tekst|t1": { n:"Движение: Навстречу", line:21 },
     "oge-t21-tekst|t2": { n:"Движение: Туда и обратно", line:21 },
@@ -232,6 +238,8 @@ var RV = (function(){
     "oge-t21-tekst|t9": { n:"Работа", line:21 },
     "oge-t21-tekst|t10": { n:"Проценты: Сушка фруктов", line:21 },
     "oge-t21-tekst|t11": { n:"Проценты: Сплавы и смеси", line:21 },
+    "oge-t21-tekst|t12": { n:"Проценты: Разбавление раствора", line:21 },
+    "oge-t21-tekst|t13": { n:"Количество предметов: Три группы", line:21 },
     /* 22 · trainers/oge-task22-functions-graphs.html · 9 типов (ключи тренажёра) */
     "oge-t22-grafiki|parline": { n:"Кусочные функции: Парабола и прямая", line:22 },
     "oge-t22-grafiki|parhyp": { n:"Кусочные функции: Парабола и гипербола", line:22 },
@@ -242,6 +250,8 @@ var RV = (function(){
     "oge-t22-grafiki|inv_kx": { n:"Выколотая точка: Гипербола с выколотой точкой", line:22 },
     "oge-t22-grafiki|shift_m": { n:"Выколотая точка: Сдвиг и выколотая точка", line:22 },
     "oge-t22-grafiki|parab_kx": { n:"Выколотая точка: Парабола с выколотой точкой", line:22 },
+    "oge-t22-grafiki|even_kx_none": { n:"Выколотые точки: прямая y=kx без пересечений", line:22 },
+    "oge-t22-grafiki|parab_m_twoholes": { n:"Парабола с двумя выколотыми точками", line:22 },
     /* 12 · trainers/oge-task12-formulas-trainer.html · 10 типов (ключи тренажёра) */
     "oge-t12-formuly|1": { n:"Расчёты по формулам: Прямая подстановка", line:12 },
     "oge-t12-formuly|2": { n:"Расчёты по формулам: Выразить неизвестную", line:12 },
@@ -370,6 +380,8 @@ var RV = (function(){
     "oge-t15-treugolniki|regArea": { n:"Правильный: площадь", line:15 },
     "oge-t15-treugolniki|regH": { n:"Правильный: высота", line:15 },
     "oge-t15-treugolniki|isoLeg": { n:"Равнобедренный: боковая сторона", line:15 },
+    "oge-t15-treugolniki|bisHalf": { n:"Угол после проведения биссектрисы", line:15 },
+    "oge-t15-treugolniki|medianCenter": { n:"Точка пересечения медиан", line:15 },
     /* 19 · planned: типы из спецификации задачи, уточняются при реализации */
     "oge-t19-utverzhdeniya|tri": { n:"Треугольники", line:19 },
     "oge-t19-utverzhdeniya|quad": { n:"Четырёхугольники", line:19 },
@@ -420,15 +432,15 @@ var RV = (function(){
   };
 
   var TYPES = {
-    "oge-task16-circle": ["insCen","twoDiam","diamMON","diamsPair","mnDiam","diamTri","diamPif","cyclQuad","cyclTrap","eqR2a","eqDist2a","sqR2a","sinR","sqMidO","rectDiag","rtHyp45","sqCircum","trapH","Spr","sqInD","sqInR","eqA2r","eqR2h","eqR2aIn","tanQuad","tanTrap","rhombR","tanExt","twoTan","chordDist","secTan","chordsX","tanChord"],
-    "oge17-chetyrehugolniki": ["sqDiag","sqAreaSide","sqAreaPerim","rectDiagAngle","rectDiagBO","rhombAngle","rhombACD","rhombHeight","rhombAreaDiag","rhombAreaPerim","rhombAreaDist","rhombPerpDiag","rhombHeightBigDiag","rhombSideSmallDiag","rhombHeightSegments","parTrapDAEC","parTriCBE","parDiagHalf","parHeights","parAngle","parDiagAngles","parBisector","trapMid","trapArea","trapIso","trapSum","trapRect","trapDiagAO","trapMidSeg","trapDiagFindC","trapDiagBS","trapCutBase","trapDiag45h","trap45Base","trap45Area","trapBisector","trapDiagSmallBase","trapBDA"],
+    "oge-task16-circle": ["insCen","twoDiam","diamMON","diamsPair","mnDiam","diamTri","diamPif","cyclQuad","cyclTrap","eqR2a","eqDist2a","sqR2a","sinR","sqMidO","rectDiag","rtHyp45","sqCircum","trapH","Spr","sqInD","sqInR","eqA2r","eqR2h","eqR2aIn","tanQuad","tanTrap","rhombR","tanExt","twoTan","chordDist","secTan","chordsX","tanChord","sectorArea","arcLength"],
+    "oge17-chetyrehugolniki": ["sqDiag","sqAreaSide","sqAreaPerim","rectDiagAngle","rectDiagBO","rhombAngle","rhombACD","rhombHeight","rhombAreaDiag","rhombAreaPerim","rhombAreaDist","rhombPerpDiag","rhombHeightBigDiag","rhombSideSmallDiag","rhombHeightSegments","parTrapDAEC","parTriCBE","parDiagHalf","parHeights","parAngle","parDiagAngles","parBisector","trapMid","trapArea","trapIso","trapSum","trapRect","trapDiagAO","trapMidSeg","trapDiagFindC","trapDiagBS","trapCutBase","trapDiag45h","trap45Base","trap45Area","trapBisector","trapDiagSmallBase","trapBDA","trapBDAWide"],
     "oge18-kletki": ["dist","midBC","leg","rhombDiag","midTri","midTrap","areaTri","areaPar","areaRhomb","areaTrap","areaFig","tanA","segAB","segCmp","circRatio"],
-    "oge23-vychisleniya": ["rhombH","pgramBis","trapBis","trapLeg","rhombAng","trapEF","circR","hAB","hAC","projAB","paraBN","paraMC","chordDist","chordLen","secKP1","secKP2","rectPK","rectBH","tanSecAC","tanSecD"],
-    "oge25-geometriya": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
+    "oge23-vychisleniya": ["rhombH","pgramBis","trapBis","trapLeg","rhombAng","trapEF","circR","hAB","hAC","projAB","paraBN","paraMC","chordDist","chordLen","secKP1","secKP2","rectPK","rectBH","tanSecAC","tanSecD","arcRadius"],
+    "oge25-geometriya": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],
     "oge24-dokazatelstva": ["t1","t10","t13","t15","t2","t3","t4","t5","t7","t6","t8","t9","t12","t11","t14","t16","t17","t18","t19","t20"],
-    "oge-t20-algebra": ["A","B1","B2","RAZL","B5","BIQ","SQ","POW","SYS","INEQ","DR","QIDS","SYM"],
-    "oge-t21-tekst": ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11"],
-    "oge-t22-grafiki": ["parline","parhyp","absquad","xabsx","sqminuslin","alinplusquad","inv_kx","shift_m","parab_kx"],
+    "oge-t20-algebra": ["A","B1","B2","RAZL","B5","BIQ","SQ","POW","SYS","INEQ","DR","QIDS","SYM","DR3"],
+    "oge-t21-tekst": ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13"],
+    "oge-t22-grafiki": ["parline","parhyp","absquad","xabsx","sqminuslin","alinplusquad","inv_kx","shift_m","parab_kx","even_kx_none","parab_m_twoholes"],
     "oge-t12-formuly": ["1","2","3","4","5","6","7","8","9","10"],
     "oge-t14-progressii": ["AP-VAL","AP-SUM","AP-2PT","AP-SUM2DAY","GP-VAL","GP-COMPL","THRESH","PIC","TAXI"],
     "oge-t10-veroyatnost": ["10_1","10_2","10_3","10_4","10_5","10_6","10_7"],
@@ -438,7 +450,7 @@ var RV = (function(){
     "oge-t11-grafiki": ["t41","t42","t43","t44","t45"],
     "oge-t6-vychisleniya": ["dec_add","dec_mul","dec_div","frac_add","frac_mul","frac_div","mixed","dec_frac","pow10","order","stack"],
     "oge-t13-neravenstva": ["lin","lin_br","lin_neg","lin_frac","quad2","quad_vieta","quad_inc","none_any","sys","sys_none","by_pic","prod"],
-    "oge-t15-treugolniki": ["angSum","extAng","isoBase","isoApex","bisIso","bisExt","twoExt","bisAlt","altAlt","rtAcute","rtLegSin","rtLegCos","rtLegTan","rtTrig","pythLeg","pythHyp","rtAltitude","areaBH","areaSin","midline","medianRt","regR","regr","regArea","regH","isoLeg"],
+    "oge-t15-treugolniki": ["angSum","extAng","isoBase","isoApex","bisIso","bisExt","twoExt","bisAlt","altAlt","rtAcute","rtLegSin","rtLegCos","rtLegTan","rtTrig","pythLeg","pythHyp","rtAltitude","areaBH","areaSin","midline","medianRt","regR","regr","regArea","regH","isoLeg","bisHalf","medianCenter"],
     "oge-t19-utverzhdeniya": ["tri","quad","circle","area","general"],
     "practiceRoadsGridTrainer": ["q1","q2","q3","q4","q5"],
     "practiceRoadsSchemaTrainer": ["q1","q2","q3","q4","q5"],

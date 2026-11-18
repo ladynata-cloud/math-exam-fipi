@@ -37,7 +37,7 @@ doc.addEventListener('toggle',()=>global.requestAnimationFrame(()=>figureFrames.
 function frame(host,title){const wrap=el('div',null,'ocg-figure-scroll');const figure=el('div',null,'ocg-figure');wrap.append(figure);host.append(wrap);figureNavigation(wrap,title);return svg=>{figure.innerHTML=`<svg viewBox="0 0 440 290" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title>${svg}</svg>`;};}
 function controls(host){const box=el('div',null,'ocg-controls');host.append(box);return box;}
 function watch(inputs,run){inputs.forEach(i=>i.addEventListener('input',run));run();}
-const captions={adjacent:'Меняй внутренний угол. Что происходит с соседним внешним углом?',tangentChord:'Меняй дугу AB. Сравни её с углом между касательной в A и хордой AB.',cyclic:'Двигай вершину D по окружности. Сравни противоположные углы A и C.',sine:'Меняй радиус и угол. Сравни длину хорды BC с синусом вписанного угла A.',isosceles:'Меняй угол при основании. Сравни два угла при основании и угол при вершине.',trapezoidAngles:'Меняй нижний угол равнобедренной трапеции. Сравни углы при каждом основании.',circleAngle:'Двигай точку C по большой дуге AB. Затем меняй центральный угол: сравни два угла над одной и той же малой дугой AB.',tangent:'Отодвигай точку P от окружности. Посмотри, какой угол между радиусом OT и касательной PT сохраняется.',chord:'Отодвигай хорду от центра. Сравни расстояние OM и длину хорды AB.',incircle:'Меняй радиус. Сравни его с расстоянием между двумя параллельными касательными.',squareIncircle:'Меняй радиус вписанной окружности. Сравни диаметр со стороной квадрата, затем найди площадь.',trapezoidMidSegments:'Меняй основания трапеции. Проведи диагональ и сравни два отрезка средней линии с основаниями.',regular:'Выбери число сторон. Сравни радиус описанной окружности с расстоянием от центра до стороны.',power:'Передвигай точку P внутри окружности. Сравни произведения отрезков двух хорд.',area:'Меняй наклон, сохраняя основание и высоту. Изменится ли площадь?',square:'Меняй сторону квадрата. Сравни сторону, периметр и площадь: как пройти от периметра к площади?',rhombArea:'Меняй диагонали ромба. Дострой прямоугольник и сравни площади: какую его часть занимает ромб?',rhombHeight:'Меняй сторону и угол ромба. Сравни сторону с высотой; затем найди площадь по основанию и высоте.',diagonal:'Меняй фигуру. Следи за длинами диагоналей и точкой их пересечения.',angles:'Меняй угол. Сравни соседние и противоположные углы.',gridLength:'Меняй горизонтальный и вертикальный шаги. Как найти прямое расстояние между концами?',gridArea:'Сначала выбери основание и высоту. Нажми «Достроить прямоугольник» и сравни площади.',midline:'Меняй размеры. Нажми «Показать среднюю линию»: какие стороны она соединяет?',ratio:'Меняй коэффициент подобия. Сравни, во сколько раз меняются длины и площади.'};
+const captions={arcLength:'Меняй угол и длину окружности. Сравни длины двух дуг.',sector:'Меняй угол и площадь круга. Следи, какую часть круга занимает сектор.',adjacent:'Меняй внутренний угол. Что происходит с соседним внешним углом?',tangentChord:'Меняй дугу AB. Сравни её с углом между касательной в A и хордой AB.',cyclic:'Двигай вершину D по окружности. Сравни противоположные углы A и C.',sine:'Меняй радиус и угол. Сравни длину хорды BC с синусом вписанного угла A.',isosceles:'Меняй угол при основании. Сравни два угла при основании и угол при вершине.',trapezoidAngles:'Меняй нижний угол равнобедренной трапеции. Сравни углы при каждом основании.',circleAngle:'Двигай точку C по большой дуге AB. Затем меняй центральный угол: сравни два угла над одной и той же малой дугой AB.',tangent:'Отодвигай точку P от окружности. Посмотри, какой угол между радиусом OT и касательной PT сохраняется.',chord:'Отодвигай хорду от центра. Сравни расстояние OM и длину хорды AB.',incircle:'Меняй радиус. Сравни его с расстоянием между двумя параллельными касательными.',squareIncircle:'Меняй радиус вписанной окружности. Сравни диаметр со стороной квадрата, затем найди площадь.',trapezoidMidSegments:'Меняй основания трапеции. Проведи диагональ и сравни два отрезка средней линии с основаниями.',regular:'Выбери число сторон. Сравни радиус описанной окружности с расстоянием от центра до стороны.',power:'Передвигай точку P внутри окружности. Сравни произведения отрезков двух хорд.',area:'Меняй наклон, сохраняя основание и высоту. Изменится ли площадь?',square:'Меняй сторону квадрата. Сравни сторону, периметр и площадь: как пройти от периметра к площади?',rhombArea:'Меняй диагонали ромба. Дострой прямоугольник и сравни площади: какую его часть занимает ромб?',rhombHeight:'Меняй сторону и угол ромба. Сравни сторону с высотой; затем найди площадь по основанию и высоте.',diagonal:'Меняй фигуру. Следи за длинами диагоналей и точкой их пересечения.',angles:'Меняй угол. Сравни соседние и противоположные углы.',gridLength:'Меняй горизонтальный и вертикальный шаги. Как найти прямое расстояние между концами?',gridArea:'Сначала выбери основание и высоту. Нажми «Достроить прямоугольник» и сравни площади.',midline:'Меняй размеры. Нажми «Показать среднюю линию»: какие стороны она соединяет?',ratio:'Меняй коэффициент подобия. Сравни, во сколько раз меняются длины и площади.'};
 function model(host,kind,shape){
  host.dataset.geometryModel=kind;host.append(el('p',captions[kind],'ocg-instruction'),el('p','Это отдельная учебная модель. Её числа не являются ответом к твоей задаче.','ocg-note'));
  const ctl=controls(host),draw=frame(host,captions[kind]),out=el('output',null,'ocg-reading');out.setAttribute('aria-live','polite');host.append(out);
@@ -47,6 +47,27 @@ function model(host,kind,shape){
  }else if(kind==='circleAngle'){
   const angle=range(ctl,'central','Центральный угол AOB, °',40,180,80,2),position=range(ctl,'vertex','Положение точки C на большой дуге, °',220,340,255,5);
   watch([angle,position],()=>{const a=+angle.value,A=circ(220,145,105,20),B=circ(220,145,105,20+a),C=circ(220,145,105,+position.value);draw(`<circle cx="220" cy="145" r="105" class="ocg-circle"/>`+line(...A,...B,'ocg-dashed')+line(220,145,...A)+line(220,145,...B)+line(...C,...A,'ocg-blue')+line(...C,...B,'ocg-blue')+point(...A,'A')+point(...B,'B')+point(...C,'C',8,22)+point(220,145,'O',-24,6));out.textContent=`Центральный угол: ${a}°. Вписанный угол ACB: ${a/2}°. При движении C по этой дуге вписанный угол не меняется.`;});
+ }else if(kind==='sector'){
+  const angle=range(ctl,'central','Центральный угол, °',30,150,90,15);
+  const area=range(ctl,'area','Площадь круга, см²',60,300,120,30);
+  watch([angle,area],()=>{
+   const a=+angle.value,s=+area.value,r=105;
+   const A=circ(220,145,r,90-a/2),B=circ(220,145,r,90+a/2);
+   const sector=`<path d="M 220 145 L ${A.join(' ')} A ${r} ${r} 0 0 0 ${B.join(' ')} Z" class="ocg-shape"/>`;
+   draw(`<circle cx="220" cy="145" r="${r}" class="ocg-circle"/>`+sector+point(220,145,'O',0,22)+point(...A,'A')+point(...B,'B',-22,-8)+label(220,124,a+'°'));
+   out.textContent=`Сектор занимает ${a} из 360 градусов. Его площадь равна ${s} · ${a} : 360 = ${fmt(s*a/360)} см².`;
+  });
+ }else if(kind==='arcLength'){
+  const angle=range(ctl,'central','Угол меньшей дуги, °',36,144,72,9);
+  const perimeter=range(ctl,'perimeter','Длина всей окружности, см',40,240,120,40);
+  watch([angle,perimeter],()=>{
+   const a=+angle.value,c=+perimeter.value,r=73+c/8;
+   const A=circ(220,145,r,90-a/2),B=circ(220,145,r,90+a/2);
+   const minor=`<path d="M ${A.join(' ')} A ${r} ${r} 0 0 0 ${B.join(' ')}" class="ocg-blue" fill="none"/>`;
+   draw(`<circle cx="220" cy="145" r="${r}" class="ocg-circle"/>`+minor+line(220,145,...A)+line(220,145,...B)
+    +point(220,145,'O',0,25)+point(...A,'A')+point(...B,'B',-22,-8)+label(220,124,a+'°'));
+   out.textContent=`Меньшей дуге соответствует ${a}°, её длина ${fmt(c*a/360)} см. Большая дуга соответствует ${360-a}°, её длина ${fmt(c*(360-a)/360)} см.`;
+  });
  }else if(kind==='tangentChord'){
   const angle=range(ctl,'arc','Дуга AB, °',40,160,100,5);
   watch([angle],()=>{const a=+angle.value,A=[325,145],B=circ(220,145,105,a);draw(`<circle cx="220" cy="145" r="105" class="ocg-circle"/>`+line(325,25,325,260,'ocg-dashed')+line(...A,...B,'ocg-blue')+line(220,145,...A)+point(...A,'A',10,20)+point(...B,'B',-20,-8)+point(220,145,'O',-20,20)+label(365,30,'касательная'));out.textContent=`Угол между хордой AB и верхним лучом касательной равен ${a/2}° — половине дуги AB (${a}°). Радиус OA перпендикулярен касательной.`;});
@@ -141,7 +162,7 @@ function model(host,kind,shape){
  }
  return host;
 }
-const refs16={insc:['circleAngle',['inscribed_angles'],[]],radiso:['circleAngle',['isosceles','circle_definition'],[]],cyclq:['cyclic',['inscribed_angles','circumcircle'],[]],reg:['regular',['regular_polygon'],['equilateral-triangle']],sinr:['sine',['circumcircle','trigonometry'],['sine-cosine']],chord:['chord',['equal_chords','pythagoras'],['pythagoras']],spr:['incircle',['incircle','triangle_area'],['triangle-area']],tangq:['tangent',['tangent','incircle'],[]],tang:['tangent',['tangent'],[]],power:['power',['triangle_similarity','inscribed_angles'],[]]};
+const refs16={arcLength:['arcLength',['circle_length_area'],['circle']],sector:['sector',['circle_length_area'],['circle']],insc:['circleAngle',['inscribed_angles'],[]],radiso:['circleAngle',['isosceles','circle_definition'],[]],cyclq:['cyclic',['inscribed_angles','circumcircle'],[]],reg:['regular',['regular_polygon'],['equilateral-triangle']],sinr:['sine',['circumcircle','trigonometry'],['sine-cosine']],chord:['chord',['equal_chords','pythagoras'],['pythagoras']],spr:['incircle',['incircle','triangle_area'],['triangle-area']],tangq:['tangent',['tangent','incircle'],[]],tang:['tangent',['tangent'],[]],power:['power',['triangle_similarity','inscribed_angles'],[]]};
 const refs17={sqf:['square',['square','pythagoras'],['pythagoras']],rectd:['diagonal',['rectangle','pythagoras'],['pythagoras']],rhombprop:['diagonal',['rhombus'],[]],parprop:['angles',['parallelogram'],[]],parallel:['angles',['parallel_angles'],[]],anglesum:['angles',['polygon_angles'],['polygon-angles']],isotri:['isosceles',['isosceles'],[]],isotrap:['trapezoidAngles',['isosceles_trapezoid'],[]],simtri:['ratio',['triangle_similarity'],[]],spar:['area',['parallelogram_area'],['parallelogram-area']],srhomb:['diagonal',['rhombus_area'],['rhombus-area']],strap:['area',['trapezoid_area'],['trapezoid-area']]};
 const refs18={pyth:['gridLength',['pythagoras'],['pythagoras']],midtri:['midline',['triangle_midline'],['midlines']],midtrap:['midline',['trapezoid_midline'],['midlines']],stri:['gridArea',['triangle_area'],['triangle-area']],spar:['area',['parallelogram_area'],['parallelogram-area']],srhomb:['diagonal',['rhombus_area'],['rhombus-area']],strap:['area',['trapezoid_area'],['trapezoid-area']],tan:['gridLength',['trigonometry'],['pythagoras','trig-values']],sim:['ratio',['triangle_similarity'],[]],circ:['ratio',['circle_length_area','similarity_area'],['circle']],cells:['gridArea',['equal_area','triangle_area'],['triangle-area']]};
 function current(){
@@ -154,9 +175,9 @@ function config(info){if(page===16&&info.key==='sqCircum')return ['squareIncircl
 function answerInstruction(info){
  const d=doc.createElement('div');d.innerHTML=info.text;const text=d.textContent;
  if(info.task.ansFmt==='concat')return 'Найди длины и запиши их подряд в порядке, который указан в условии.';
- const sentences=text.split(/(?<=[.!?])\s+/);let ask=sentences.filter(s=>/найд|определ|вычисл|чему рав/i.test(s)).pop()||'Найди величину, которую спрашивают в условии.';
+ const sentences=text.split(/(?<=[.!?])\s+/);let ask=sentences.filter(s=>/найд|определ|вычисл|чему рав/i.test(s)||(page===18&&/во сколько раз/i.test(s))).pop()||'Найди величину, которую спрашивают в условии.';
  ask=ask.replace(/^.*?(?=Найдите|Найди|Определите|Вычислите)/,'').trim();
- const unit=/градус/i.test(text)?' Запиши число градусов без значка °.':/площад/i.test(ask)?' Запиши числовое значение площади в единицах условия.':/отношени|тангенс|косинус|синус/i.test(ask)?' Запиши число.':' Запиши число в единицах условия.';
+ const unit=page===18&&/во сколько раз/i.test(ask)?' Введи число: во сколько раз.':/градус/i.test(text)?' Запиши число градусов без значка °.':/площад/i.test(ask)?' Запиши числовое значение площади в единицах условия.':/отношени|тангенс|косинус|синус/i.test(ask)?' Запиши число.':' Запиши число в единицах условия.';
  return ask+unit;
 }
 function preserveDraft(input,identity){
@@ -171,17 +192,35 @@ function enhance(){
  const panel=q('#courseHintPanel'),toggle=q('#courseHintToggle'),input=q(page===18?'#ansIn':'#ans'),info=current();
  if(!panel||!toggle||!input||!info||panel.dataset.geometryReady)return;
  panel.dataset.geometryReady='1';doc.body.classList.add('ocg-page');
- const identity=page+'|'+info.key+'|'+info.text;
+ const identity=page+'|'+info.key+'|'+info.text+(page===18?'|'+JSON.stringify(info.task.p):'');
  input.setAttribute('aria-label',answerInstruction(info));preserveDraft(input,identity);
  const prompt=el('label',answerInstruction(info),'ocg-answer-label');prompt.htmlFor=input.id;input.parentElement.before(prompt);
+ const taskBound=page===18&&typeof Oge18TaskDiagram!=='undefined'&&Oge18TaskDiagram.supports(info.task);
  const [kind,topics,crops]=config(info),explore=details('Дополнительно: попробовать на других числах');explore.dataset.geometryDiscovery='1';model(explore,kind,info.shape);panel.append(explore);
+ // Older room packets carry this model's controls. Keep that state round-trip
+ // compatible, while teaching only with the actual task's diagram and numbers.
+ // It is intentionally absent from both the visible UI and accessibility tree.
+ if(taskBound){explore.hidden=true;explore.setAttribute('aria-hidden','true');explore.dataset.oge18LegacyModel='1';}
  const applied=details('Как применить это к моему заданию?');applied.append(el('p','1. Найди на своём рисунке отрезки или углы, о которых говорит правило.'),el('p','2. Сверь все условия правила: прямой угол, параллельность, касание или положение точек.'),el('p','3. Подставь данные своей задачи. Запиши ответ в поле под условием.'));const law=el('div',null,'ocg-law');law.innerHTML=info.law;applied.append(law);panel.append(applied);
  const referenceBox=el('section',null,'ocg-reference-box');references(referenceBox,topics,crops);panel.append(referenceBox);
- const returnButton=button('Вернуться к моему ответу',()=>{if(!panel.hidden)toggle.click();input.focus();});panel.append(returnButton);
+ if(taskBound){
+  applied.replaceChildren(el('summary','Правило для этой задачи'),el('p',SUBS[info.key].law));
+  // The old segCmp metadata points to Pythagoras. This horizontal-segment
+  // exercise only needs division; retain packet slots without showing that link.
+  if(info.key==='segCmp'){
+   referenceBox.hidden=true;referenceBox.setAttribute('aria-hidden','true');
+   for(const link of all('#courseSettings [data-act="ref"]')){
+    link.textContent='Правило для этой задачи';
+    link.onclick=()=>{if(panel.hidden)toggle.click();applied.open=true;q('summary',applied)?.focus();};
+   }
+  }
+ }
+ const returnButton=button('Вернуться к моему ответу',()=>{if(!panel.hidden)toggle.click();if(page===18&&input.disabled)q('#nextBtn')?.focus();else input.focus();});panel.append(returnButton);
  const update=()=>toggle.textContent=panel.hidden?'Разобрать по шагам':'Скрыть объяснение';toggle.addEventListener('click',update);update();
  // Same-page references must not replace the task or discard its typed answer.
  const main=q('#main');if(main&&!main.dataset.geometryReferences){main.dataset.geometryReferences='1';main.addEventListener('click',event=>{const link=event.target.closest('.refcall,[data-act="ref"],#toRef2,#toSheet2');if(!link||!q('#courseHintPanel'))return;event.preventDefault();event.stopImmediatePropagation();const live=q('#courseHintPanel');if(live.hidden)q('#courseHintToggle').click();const box=q('.ocg-reference-box',live);if(box){all('details',box).forEach(d=>d.open=true);box.scrollIntoView?.({block:'nearest'});q('summary',box)?.focus();}},true);}
  for(const figure of all('#main .diagram,#main .fig,#main .figwrap')){if(figure.closest('#courseHintPanel'))continue;figure.classList.add('ocg-primary-figure');
+  if(page===18&&figure.hasAttribute('data-oge18-task-diagram')){figure.setAttribute('role','region');figure.setAttribute('aria-label','Чертёж к условию');continue;}
   const svg=q('svg',figure);if(svg){const vb=(svg.getAttribute('viewBox')||'0 0 440 290').split(/\s+/).map(Number),fonts=all('text',svg).map(t=>+t.getAttribute('font-size')).filter(n=>n>0),smallest=fonts.length?Math.min(...fonts):18;svg.style.width=Math.max(440,vb[2]*Math.max(1,18/smallest))+'px';svg.style.maxWidth='none';}
   figureNavigation(figure,'Чертёж к условию');
  }

@@ -14,7 +14,8 @@ const server = http.createServer((request, response) => {
   if (!file.startsWith(base + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404).end(); return; }
   response.setHeader('Content-Type', mime[path.extname(file)] || 'application/octet-stream'); response.end(fs.readFileSync(file));
 });
-const slugs = ['roads-grid', 'roads-schema', 'apartments', 'land-plots', 'stoves', 'tariffs', 'paper-sheets'];
+const plotOnly = process.env.PRACTICAL_VARIANT_PLOT_ONLY === '1';
+const slugs = plotOnly ? ['land-plots'] : ['roads-grid', 'roads-schema', 'apartments', 'land-plots', 'stoves', 'tariffs', 'paper-sheets'];
 const records = []; let browser;
 const cards = page => page.locator('.pv-task-stream>.pv-question');
 const card = (page, number) => page.locator('.pv-question[data-question="' + number + '"]');
@@ -236,11 +237,32 @@ async function allSubtypes(page, slug) {
     records.push({ slug, width: 1280, stage: 'native-final-attempt-and-new-variant', questions: 5 });
   }
 }
+async function authoredPlot(page, width, offlineMode) {
+  const choose = page.getByRole('button', { name: 'Дорожки и площадка', exact: true });
+  const standard = page.getByRole('button', { name: 'Новый вариант', exact: true });
+  await choose.click();
+  const plan = page.locator('[data-pv-plot-plan]');
+  assert.equal(await plan.locator(':scope > rect[data-plot-paving]').count(), 3);
+  assert.equal(await card(page, 2).locator('.pv-platform-inset').count(), 0);
+  await layout(page, 'authored plot at ' + width);
+  await help(page, card(page, 2), 'authored plot Q2');
+  await submit(page, 2, { answer: '5' }, 'incorrect');
+  await standard.click();
+  assert.equal(await plan.locator(':scope > rect[data-plot-paving]').count(), 0);
+  await choose.click();
+  for (const [index, answer] of ['6341', '6', '56', '10', '540'].entries()) {
+    await submit(page, index + 1, { answer }, 'correct');
+  }
+  await layout(page, 'solved authored plot at ' + width);
+  await page.screenshot({ path: path.join(out, 'authored-plot-' + width + (offlineMode ? '-offline' : '') + '.png'), fullPage: true });
+  records.push({ slug: 'land-plots', width, offlineMode, stage: 'authored-plan-native-grading', questions: 5 });
+}
 (async () => {
   fs.mkdirSync(out, { recursive: true }); await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const origin = 'http://127.0.0.1:' + server.address().port;
   browser = await chromium.launch({ headless: true });
-  for (const [width, offlineMode] of [[320, false], [360, false], [1280, false], [360, true]]) for (const slug of slugs) {
+  const layouts = plotOnly ? [[320, false], [390, false], [1280, false], [390, true]] : [[320, false], [360, false], [1280, false], [360, true]];
+  for (const [width, offlineMode] of layouts) for (const slug of slugs) {
     const context = await browser.newContext({ viewport: { width, height: 1000 }, reducedMotion: 'reduce' }), page = await context.newPage(), errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
@@ -248,11 +270,12 @@ async function allSubtypes(page, slug) {
       await page.goto(origin + (offlineMode ? '/offline/' : '/trainers/oge-1-5-trainers/') + 'practice-1-5-' + slug + '.html');
       await initial(page, slug, width, offlineMode);
       if (width === 1280 && !offlineMode) { if (slug.startsWith('roads-')) await roadVariants(page, slug); else await allSubtypes(page, slug); }
+      if (slug === 'land-plots') await authoredPlot(page, width, offlineMode);
       assert.deepEqual(errors, [], slug + ': runtime exceptions');
     } catch (error) { await page.screenshot({ path: path.join(out, 'FAIL-' + slug + '-' + width + '-' + offlineMode + '.png'), fullPage: true }).catch(() => {}); throw error; }
     finally { await context.close(); }
   }
   fs.writeFileSync(path.join(out, 'coverage.json'), JSON.stringify({ cases: records.length, storylines: slugs.length, records }, null, 2));
-  console.log('OGE_PRACTICAL_VARIANT_BROWSER_OK ' + records.length + ' cases across all seven storylines');
+  console.log('OGE_PRACTICAL_VARIANT_BROWSER_OK ' + records.length + ' cases across ' + slugs.length + ' storylines');
 })().catch(error => { console.error(error); process.exitCode = 1; fs.mkdirSync(out, { recursive: true }); fs.writeFileSync(path.join(out, 'partial-coverage.json'), JSON.stringify(records, null, 2)); })
   .finally(async () => { if (browser) await browser.close(); server.close(); fs.rmSync(offline, { recursive: true, force: true }); });

@@ -6,7 +6,7 @@
   данных условия (AP-SUM2DAY — из суммы, AP-2PT «давление» — из высот,
   ГП — из длительности и периода), пороговые задачи — перебором.
 */
-import { R, add, sub, mul, div, eq, cmp, pow } from './oge-algebra-contract.lib.mjs';
+import { R, add, sub, mul, div, eq, cmp, pow, parseNum } from './oge-algebra-contract.lib.mjs';
 
 const Q = (x) => (x && typeof x === 'object' && 'n' in x ? R(x.n, x.d) : R(BigInt(x)));
 const plainText = (h) => String(h).replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ');
@@ -40,9 +40,21 @@ export function value(task) {
     for (let i = 0; i < steps; i++) x = add(x, d);
     v = x;
   } else if (code === 'AP-SUM') {
-    const a1 = Q(f.a1), d = Q(f.d), n = f.n;
-    const dAbs = d.n < 0n ? R(-d.n, d.d) : d;
-    miss = need(a1, dAbs, n);
+    let a1, d, n;
+    if (f.sub === 'brake') {
+      const shown = /За первую секунду робот проехал ([\d,]+)\s+м\. Дальше его путь за секунду каждый раз становился короче на ([\d,]+)\s+м\. Сколько метров робот проехал за первые (\d+) секунд/.exec(plainText(t));
+      if (!shown) return { bad: 'AP-SUM/brake: не прочитано уменьшение расстояний по секундам' };
+      a1 = parseNum(shown[1]);
+      const decrease = parseNum(shown[2]);
+      n = Number(shown[3]);
+      if (!a1 || !decrease || decrease.n <= 0n || n < 2) return { bad: 'AP-SUM/brake: неверные числа в условии' };
+      d = sub(R(0), decrease);
+      if (cmp(add(a1, mul(d, R(n - 1))), R(0)) <= 0) return { bad: 'AP-SUM/brake: последний путь неположителен' };
+    } else {
+      a1 = Q(f.a1); d = Q(f.d); n = f.n;
+      const dAbs = d.n < 0n ? R(-d.n, d.d) : d;
+      miss = need(a1, dAbs, n);
+    }
     let x = a1, s = R(0);
     for (let i = 0; i < n; i++) { s = add(s, x); x = add(x, d); }
     v = s;

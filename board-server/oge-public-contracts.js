@@ -7,7 +7,16 @@ const files={11:'graphs-trainer',15:'triangles',16:'circle',17:'quadrilaterals',
 const contexts=new Map();
 const copy=x=>JSON.parse(JSON.stringify(x));
 const text=x=>String(x||'').replace(/<sup>(.*?)<\/sup>/g,'^$1').replace(/<[^>]*>/g,' ').replace(/&(gt|lt|nbsp|amp|minus|sup2|sup3|deg);/g,(_,k)=>({gt:'>',lt:'<',nbsp:' ',amp:'&',minus:'−',sup2:'²',sup3:'³',deg:'°'})[k]).replace(/\s+/g,' ').trim();
-function engine(n){if(!contexts.has(n))contexts.set(n,loadTrainer(`trainers/oge-task${n}-${files[n]}.html`,{search:'?board=1'}));return contexts.get(n);}
+function engine(n) {
+  if (!contexts.has(n)) {
+    // The loader runs inline code. The browser sets this flag in its shared-mode script.
+    contexts.set(n, loadTrainer(`trainers/oge-task${n}-${files[n]}.html`, {
+      search: '?board=1',
+      sharedMode: true,
+    }));
+  }
+  return contexts.get(n);
+}
 function create(contentId,seed){
  seed=seed||1;const n=Number(contentId);requireValue([11,15,16,17,18,19].includes(n),'LEARNING_TRAINER_UNKNOWN');
  let descriptor,task;

@@ -11,8 +11,20 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
 const errors=[];
 async function noOverflow(page,label){const size=await page.evaluate(()=>({width:innerWidth,html:document.documentElement.scrollWidth,body:document.body.scrollWidth}));assert(size.html<=size.width+1&&size.body<=size.width+1,label+': '+JSON.stringify(size));}
 async function ready(page){await page.waitForFunction(()=>document.documentElement.dataset.ogeAlgebraExperience==='ready');}
+async function captureEvidence(page,name){
+ const options={path:path.join(out,name),fullPage:true};
+ try{
+   await page.screenshot(options);
+ }catch(error){
+   if(!error.message.includes('Protocol error (Page.captureScreenshot): Unable to capture screenshot'))throw error;
+   console.warn(name+': Chromium could not capture the rendered page. Retrying once after two animation frames.');
+   await page.bringToFront();
+   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));
+   await page.screenshot(options);
+ }
+}
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;try{browser=await chromium.launch({headless:true});const origin='http://127.0.0.1:'+server.address().port;
-for(const width of [320,360,1280])for(const [raw,suffix] of Object.entries(files)){const n=+raw,page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});page.on('pageerror',e=>errors.push(n+' '+e.message));await page.goto(origin+'/trainers/oge-task'+n+'-'+suffix+'.html',{waitUntil:'load'});await ready(page);const card=page.locator(cards[n]),condition=card.locator(conditions[n]).first();await condition.waitFor();assert(await condition.isVisible());assert(await card.locator('.oca-instruction').isVisible());const original=await condition.innerHTML();if(n>=20){const hint=card.locator('.minimal-hint > button').first(),notes=card.locator('.oca-work');assert((await hint.boundingBox()).y<(await notes.boundingBox()).y,'Help before writing workspace');}if(n===7){const line=card.locator('.oca-native-line svg').first();assert(await line.evaluate(svg=>Math.min(...[...svg.querySelectorAll('text')].map(t=>parseFloat(t.getAttribute('font-size'))))*svg.getBoundingClientRect().width/svg.viewBox.baseVal.width>=18));assert(await card.locator('.oca-line-note').isVisible());}await noOverflow(page,n+' initial '+width);await page.screenshot({path:path.join(out,n+'-'+width+'-task.png'),fullPage:true});
+for(const width of [320,360,1280])for(const [raw,suffix] of Object.entries(files)){const n=+raw,page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});page.on('pageerror',e=>errors.push(n+' '+e.message));await page.goto(origin+'/trainers/oge-task'+n+'-'+suffix+'.html',{waitUntil:'load'});await ready(page);const card=page.locator(cards[n]),condition=card.locator(conditions[n]).first();await condition.waitFor();assert(await condition.isVisible());assert(await card.locator('.oca-instruction').isVisible());const original=await condition.innerHTML();if(n>=20){const hint=card.locator('.minimal-hint > button').first(),notes=card.locator('.oca-work');assert((await hint.boundingBox()).y<(await notes.boundingBox()).y,'Help before writing workspace');}if(n===7){const line=card.locator('.oca-native-line svg').first();assert(await line.evaluate(svg=>Math.min(...[...svg.querySelectorAll('text')].map(t=>parseFloat(t.getAttribute('font-size'))))*svg.getBoundingClientRect().width/svg.viewBox.baseVal.width>=18));assert(await card.locator('.oca-line-note').isVisible());}await noOverflow(page,n+' initial '+width);await captureEvidence(page,n+'-'+width+'-task.png');
 const inputSelectors={8:'input.ans',10:'.aw-dec',12:'#ansIn',14:'#m-dec',20:':scope > div:not(.minimal-hint) .numin',21:':scope > div:not(.minimal-hint) .af input',22:'.ans-host .v-dec'};
 if(n===22&&!await card.locator(inputSelectors[22]).count())await card.getByRole('button',{name:'+ отдельное значение',exact:true}).click();
 const finalInput=n===7?null:card.locator(inputSelectors[n]).first();let answer=null;
@@ -33,7 +45,7 @@ if(n===21){
   assert.doesNotMatch(await help.locator('.vcap').first().textContent(),/Двигай ползунок к \d/);
 }
 if(n===22){const slider=help.getByRole('slider',{name:'Положение прямой',exact:true});await slider.focus();await page.keyboard.press('End');assert(await help.locator('svg').first().isVisible());await page.waitForFunction(()=>[...document.querySelectorAll('.minimal-help:not([hidden]) .gview')].every(g=>g.querySelector('.oca-graph-count')?.textContent==='Общих точек сейчас: '+g.querySelector('.badge-t2')?.textContent+'.'));assert.equal(await help.locator('.oca-graph-count').first().textContent(),'Общих точек сейчас: '+await help.locator('.badge-t2').first().textContent()+'.');}
-await noOverflow(page,n+' help '+width);await page.screenshot({path:path.join(out,n+'-'+width+'-help.png'),fullPage:true});
+await noOverflow(page,n+' help '+width);await captureEvidence(page,n+'-'+width+'-help.png');
 const reference=help.locator('.oca-reference');if(await reference.count()){await reference.locator('details').first().locator(':scope > summary').click();const sheet=reference.locator('.ocr-full-sheet').first();await sheet.locator(':scope > summary').click();const image=sheet.locator('img');await image.waitFor();await image.evaluate(img=>img.complete&&img.naturalWidth>0?Promise.resolve():new Promise((r,j)=>{img.onload=r;img.onerror=()=>j(new Error('reference image failed'));}));assert.equal(await condition.innerHTML(),original);if(answer)assert.equal(await answer.inputValue(),'123');await noOverflow(page,n+' sheet '+width);await reference.getByRole('button',{name:'Убрать подсказку',exact:true}).click();}
 const returnButton=help.locator(':scope > button').filter({hasText:'Вернуться к заданию'});await returnButton.click();assert(!await help.isVisible());await card.getByRole('button',{name:'Хочешь подсказку?',exact:true}).click();assert(await help.isVisible());if(answer)assert.equal(await answer.inputValue(),'123');
 if(n>=20){const draft=card.locator('.oca-work textarea');assert.equal(await draft.inputValue(),'Обозначаю неизвестное x.\nПроверяю исходное условие.');// Native generators may legitimately draw the same condition twice. Its saved
@@ -45,6 +57,21 @@ for(let draw=0;draw<8;draw++){
 }
 assert.notEqual(await condition.innerHTML(),original,'Generator must provide a different condition within eight draws');
 await page.waitForFunction(selector=>document.querySelector(selector)?.value==='',cards[n]+' .oca-work textarea');const archive=card.locator('.oca-work details').filter({has:page.locator('summary', {hasText:'Мои записи к другим задачам'})}).first();await archive.locator(':scope > summary').click();await archive.locator('.oca-saved-entry').first().waitFor();assert((await archive.textContent()).includes('Обозначаю неизвестное'));}
+if(n===14){
+  await page.evaluate(()=>T14.boardMount('AP-SUM',4));
+  const visible=await condition.textContent();
+  const given=/робот проехал ([\d,]+)\s+м\..*короче на ([\d,]+)\s+м\..*за первые (\d+) секунд/.exec(visible);
+  assert(given,'The authored decreasing-distance problem is visible');
+  const [first,decrease]=given.slice(1,3).map(value=>Math.round(Number(value.replace(',','.'))*10));
+  const nSeconds=Number(given[3]), distances=Array.from({length:nSeconds},(_,i)=>first-decrease*i);
+  assert(distances.at(-1)>0);
+  const decimal=tenths=>String(tenths/10).replace('.',',');
+  await finalInput.fill(decimal(distances.at(-1)));await card.locator('#m-ck').click();
+  assert.match(await card.locator('#m-fb').textContent(),/последнюю секунду/);
+  await finalInput.fill(decimal(distances.reduce((sum,value)=>sum+value,0)));await card.locator('#m-ck').click();
+  assert.match(await card.locator('#m-fb').textContent(),/Верно/);assert(await finalInput.isDisabled());
+  await noOverflow(page,'14 decreasing distances '+width);
+}
 await page.close();}
 assert.deepEqual(errors,[]);console.log('OGE_COURSE_ALGEBRA_BROWSER_OK: 8 routes × 320/360/1280; models, preserved answers, reasoning, same-page official sources');
 }finally{if(browser)await browser.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

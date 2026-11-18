@@ -3,7 +3,8 @@ import hashlib
 import json
 from pathlib import Path
 
-from oge_video_models_book_context import without_download_controls
+from oge_video_models_book_context import GEOMETRY_ALIGNMENT, without_download_controls
+from oge18_clarity_preservation import restore_oge18_clarity
 
 ROOT = Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-book-ui.json').read_text())
@@ -20,13 +21,19 @@ def matches_worked_steps_ui(record, text, fixture_texts):
             return False
         if record['route'] != pin['route'] or record['finalPath'] != pin['route']:
             return False
-        for route, expected in {pin['route']: pin['sha256'], **PINS['assets']}.items():
+        aligned = GEOMETRY_ALIGNMENT['pages'].get(pin['route'][1:], {})
+        page_hash = aligned.get('withoutDownloadSha256', pin['sha256'])
+        assets = PINS['assets'] | GEOMETRY_ALIGNMENT['workedStepsAssets']
+        for route, expected in {pin['route']: page_hash, **assets}.items():
             loaded = record['resources'][route]
             file = route[1:]
             raw = (ROOT / file).read_bytes()
             if loaded['status'] != 200 or loaded['sha256'] != hashlib.sha256(raw).hexdigest():
                 return False
-            native = without_download_controls(file, raw) if route == pin['route'] else raw
+            # Original book/UI pins stay immutable. Only the full exact public
+            # clarity revision can be projected back to those old bytes.
+            reviewed = restore_oge18_clarity(file, raw)
+            native = without_download_controls(file, reviewed) if route == pin['route'] else reviewed
             if hashlib.sha256(native).hexdigest() != expected:
                 return False
         for original in fixture_texts:

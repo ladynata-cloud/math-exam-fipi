@@ -3,6 +3,7 @@ const retainedEngine=require('./oge-practical-retained-engine.cjs');
 const {restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),vm=require('node:vm');
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
+const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'trainers/oge-1-5-trainers');
 const fallback=process.env.OGE_SOURCE_ROOT||root;
 const files=fs.readdirSync(dir).filter(n=>n.endsWith('.html')&&n!=='index.html');
@@ -54,14 +55,25 @@ const ENGINE_HASHES={
   "practice-1-5-stoves.html": "1efc4f134ee3e9df6fc8e705dd7a54e3ce8d56d7c155c212293c6021a1cb22aa",
   "practice-1-5-routes-checkpoint-2026.html": "cebdcffd0dd1ff43f8547ae5bf4bff4386d9da596ec20a651cc13183b6014584"
 };
+// OGE_SOURCE_ALIGNMENT_01_05_20261116 keeps the historical receipts above
+// and adds exact fingerprints for the new plot runtime and the tire wording.
+const practicalSourceReview={
+  'practice-1-5-land-plots.html':'f5378e36496b7f72fce461e88231496973677a9e5278321c4b399e1891006a86',
+  'practice-1-5-tires.html':'ae2b39ff6dafb993fd81994c87519b646775865e035f7f546d8b0b277ac1c04d',
+};
+const practicalSourceBase='83e1fc15a1b6b87f0133e0dec6753381e423bd92';
+const engineHash=(name,html)=>crypto.createHash('sha256').update(normalize(name,inline(restoreHistoricalBytes('trainers/oge-1-5-trainers/'+name,html)).join('\n'))).digest('hex');
 test('all inline engines match their reviewed snapshots outside explicit UI normalizations',()=>{
  for(const name of files){
   const html=fs.readFileSync(path.join(dir,name),'utf8');
   inline(html).forEach((s,i)=>new vm.Script(s,{filename:name+':'+i}));
-  // Reverse only exact reviewed book corrections; historical hashes stay pinned.
-  const historical=restoreHistoricalBytes('trainers/oge-1-5-trainers/'+name,html);
-  const normalized=normalize(name,inline(historical).join('\n'));
-  assert.equal(crypto.createHash('sha256').update(normalized).digest('hex'),ENGINE_HASHES[name],name);
+  // Reverse only exact reviewed book corrections. For changed engines, prove
+  // both the historical baseline and the complete new inline engine.
+  if(practicalSourceReview[name]){
+   const base=execFileSync('git',['show',practicalSourceBase+':trainers/oge-1-5-trainers/'+name],{cwd:root,encoding:'utf8'});
+   assert.equal(engineHash(name,base),ENGINE_HASHES[name],name+' historical receipt');
+  }
+  assert.equal(engineHash(name,html),practicalSourceReview[name]||ENGINE_HASHES[name],name);
  }
  new vm.Script(fs.readFileSync(path.join(dir,'practical-minimal.js'),'utf8'));
 });

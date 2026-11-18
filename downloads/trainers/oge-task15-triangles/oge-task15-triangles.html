@@ -58,7 +58,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ОГЭ · Задание 15 — треугольники</title>
-<meta name="description" content="Задание 15 ОГЭ: треугольники, 26 типов задач, 66 учебных вариантов, точные чертежи и решение по шагам.">
+<meta name="description" content="Задание 15 ОГЭ: треугольники, 28 типов задач, 69 учебных вариантов, точные чертежи и решение по шагам.">
 <link rel="canonical" href="https://mathexam.space/trainers/oge-task15-triangles.html">
 <style>
 :root{
@@ -1477,7 +1477,61 @@ isoLeg:{topic:'pyth',name:'Равнобедренный: сторона по в�
       {v:(2*p.s+p.a)/3,m:'Так было бы у равностороннего треугольника. Здесь основание отличается от боковых сторон.'}]
     :[{v:Math.sqrt(4*p.m*p.m+p.h*p.h),m:'Здесь взято всё основание AC. В прямоугольный треугольник ABH входит только половина основания — отрезок AH.'},
       {v:p.m+p.h,m:'Длины катетов не складываются: сторону AB находят через квадраты (теорема Пифагора).'},
-      {v:p.m*p.m+p.h*p.h,m:'Это квадрат боковой стороны. Сама сторона — квадратный корень из этого числа.'}]}
+      {v:p.m*p.m+p.h*p.h,m:'Это квадрат боковой стороны. Сама сторона — квадратный корень из этого числа.'}]},
+
+bisHalf:{topic:'iso',name:'Угол после проведения биссектрисы',ref:'bis',
+  refWhy:'Искомый угол — одна из двух равных частей угла BAC.',
+  law:'Биссектриса делит угол пополам.',
+  gen:()=>({a:2*ri(21,49),side:pick(['B','C'])}),
+  proto:{a:78,side:'C'},
+  calc:p=>p.a/2,
+  text:p=>`Угол BAC треугольника ABC равен ${p.a}°. Биссектриса этого угла пересекает сторону BC в точке K. Найдите угол ${p.side}AK.${DEG}`,
+  fig:p=>{const P=triAC(p.a,42,10);
+    P.K=bisFoot(P.A,P.B,P.C);
+    return drawFig({pts:P,title:'Треугольник ABC, AK — биссектриса угла BAC',segs:[['A','K']],
+      arcs:[{v:'A',p:'B',q:'C',col:COL.amber,r:60,label:dg(p.a)},
+        {v:'A',p:'B',q:'K',col:p.side==='B'?COL.pink:COL.teal,r:24,tk:1,label:p.side==='B'?'?':null},
+        {v:'A',p:'K',q:'C',col:p.side==='C'?COL.pink:COL.teal,r:24,tk:1,label:p.side==='C'?'?':null}],
+      chk:[{t:'ang',v:'A',p:'B',q:'C',want:p.a},{t:'ang',v:'A',p:'B',q:'K',want:p.a/2},
+        {t:'ang',v:'A',p:'C',q:'K',want:p.a/2},{t:'onseg',p:'K',a:'B',b:'C'}]});},
+  steps:p=>[{q:`Чему равен угол ${p.side}AK?`,a:p.a/2,hint:'AK делит угол BAC на две равные части.',
+    chk:'деление угла BAC на два',show:`∠${p.side}AK = ∠BAC : 2 = ${dg(p.a)} : 2 = ${dg(p.a/2)}.`}],
+  diag:p=>[{v:p.a,m:'Это весь угол BAC. Найдите одну из двух равных частей.'},
+    {v:p.a/4,m:'Так получилось после двух делений пополам. Биссектриса делит угол BAC на две части за один шаг.'}]},
+
+medianCenter:{topic:'area',name:'Точка пересечения медиан',ref:'medcenter',
+  refWhy:'Пересечение медиан делит каждую медиану в отношении 2 : 1 от вершины.',
+  law:'Точка пересечения медиан лежит на каждой из них. Отрезок от вершины до точки пересечения вдвое длиннее отрезка от неё до середины стороны.',
+  gen:()=>({d:pick(['whole','part']),k:ri(4,17),tilt:ri(0,2)}),
+  proto:{d:'whole',k:9,tilt:1},
+  calc:p=>p.d==='whole'?p.k:2*p.k,
+  text:p=>p.d==='whole'
+    ?`В треугольнике ABC медианы BM и AN пересекаются в точке G. Длина медианы BM равна ${3*p.k}. Найдите длину отрезка GM.`
+    :`Точка M — середина стороны AC треугольника ABC. Через точку G проходят все медианы треугольника. Известно, что GM = ${p.k}. Найдите длину отрезка BG.`,
+  fig:p=>{const A=V2(0,0),B=V2(2+p.tilt,11),C=V2(14,0);
+    const G=mul(add(add(A,B),C),1/3),M=lerp(A,C,0.5),N=lerp(B,C,0.5);
+    const scale=3*p.k/dist(B,M),pts=Object.fromEntries(Object.entries({A,B,C,G,M,N}).map(([key,point])=>[key,mul(point,scale)]));
+    const whole=p.d==='whole';
+    return drawFig({pts,title:'Треугольник ABC. Медианы AN и BM пересекаются в точке G.',
+      segs:[['A','N',{col:COL.teal,dash:'5 4'}],['B','G',{w:2.6,col:whole?COL.blue:COL.pink}],['G','M',{w:2.6,col:whole?COL.pink:COL.blue}]],
+      ticks:[['A','M',1],['M','C',1],['B','N',2],['N','C',2]],
+      note:whole?`BM = ${3*p.k}, GM — ?`:`GM = ${p.k}, BG — ?`,
+      chk:[{t:'mid',p:'M',a:'A',b:'C'},{t:'mid',p:'N',a:'B',b:'C'},
+        {t:'onseg',p:'G',a:'B',b:'M'},{t:'onseg',p:'G',a:'A',b:'N'},
+        {t:'ratio',a:['B','G'],b:['G','M'],want:2}]});},
+  steps:p=>p.d==='whole'
+    ?[{q:'Сколько равных долей составляет медиана BM, если отрезок GM — одна доля?',a:3,
+       hint:'От вершины B до точки G — две доли.',chk:'сумму долей',
+       show:'BG : GM = 2 : 1. Вся медиана состоит из 2 + 1 = 3 равных долей.'},
+      {q:'Чему равна длина отрезка GM?',a:p.k,chk:'длину одной доли',show:`GM = BM : 3 = ${3*p.k} : 3 = ${p.k}.`}]
+    :[{q:'Во сколько раз отрезок BG длиннее GM?',a:2,chk:'порядок частей на медиане',
+       show:'От вершины B до точки G — 2 доли. От точки G до середины M — 1 доля.'},
+      {q:'Чему равна длина отрезка BG?',a:2*p.k,chk:'длину двух долей',show:`BG = 2 · GM = 2 · ${p.k} = ${2*p.k}.`}],
+  diag:p=>p.d==='whole'
+    ?[{v:2*p.k,m:'Это длина BG. В условии спрашивают более короткий отрезок GM.'},
+       {v:3*p.k,m:'Это вся медиана BM. Найдите меньшую из её двух частей.'}]
+    :[{v:p.k,m:'Это длина GM, одной доли. От вершины B до точки G — две такие доли.'},
+       {v:3*p.k,m:'Это вся медиана BM. В условии спрашивают её часть BG.'}]}
 };
 
 /* ---------- данные и построители для типов выше ---------- */
@@ -1541,7 +1595,7 @@ function eqFig(s,o){
     rights:(o.height||o.irad||o.rLab)?[['H','B','C']]:[],chk,cap:EQCAP,texts,
     note:o.height&&o.hLab?'BH = '+o.hLab:'',noteCol:o.hLab==='?'?COL.pink:COL.blue});
 }
-const TYPE_IDS=["angSum","extAng","isoBase","isoApex","bisIso","bisExt","twoExt","bisAlt","altAlt","rtAcute","rtLegSin","rtLegCos","rtLegTan","rtTrig","pythLeg","pythHyp","rtAltitude","areaBH","areaSin","midline","medianRt","regR","regr","regArea","regH","isoLeg"];
+const TYPE_IDS=["angSum","extAng","isoBase","isoApex","bisIso","bisExt","twoExt","bisAlt","altAlt","rtAcute","rtLegSin","rtLegCos","rtLegTan","rtTrig","pythLeg","pythHyp","rtAltitude","areaBH","areaSin","midline","medianRt","regR","regr","regArea","regH","isoLeg","bisHalf","medianCenter"];
 
 /* ================= Справочник ================= */
 const REFS=[
@@ -1578,6 +1632,9 @@ const REFS=[
 {id:'med',name:'Медиана к гипотенузе',
  fx:'CM = ½·AB = AM = MB',
  notes:['Середина гипотенузы — центр окружности, описанной около прямоугольного треугольника.']},
+{id:'medcenter',name:'Деление медианы точкой пересечения',
+ fx:'BG : GM = 2 : 1',
+ notes:['M — середина стороны AC, G — точка пересечения медиан. Большая часть медианы прилегает к вершине B.']},
 {id:'reg',name:'Правильный треугольник',sheet:'eqTri',
  fx:'R = '+frac('a√3','3')+', &nbsp;r = '+frac('a√3','6')+', &nbsp;h = '+frac('a√3','2')+', &nbsp;S = '+frac('a²√3','4'),
  notes:['Центр делит высоту в отношении 2 : 1, считая от вершины: R = 2r, h = R + r = 3r.']}
@@ -1699,7 +1756,7 @@ function mergeTraps(list){
   return out;
 }
 /* Содержательные варианты: название, метод и разбор относятся к конкретной
-   задаче, а 26 ключей типов остаются совместимыми с курсом и его журналом.
+   задаче, а ключи типов остаются совместимыми с курсом и его журналом.
    f меняет только формулировку; отдельного учебного варианта ему не нужно. */
 const TASK_VARIANTS=[];
 function addVariant(k,key,branch,display,example){
@@ -1776,6 +1833,9 @@ addVariant('isoLeg','h',{d:'h'},{name:'Боковая сторона по осн
 addVariant('isoLeg','P',{d:'P'},{topic:'iso',name:'Боковая сторона по периметру и основанию',pins:[],
   law:'Боковые стороны равнобедренного треугольника равны. Из периметра вычитают основание и делят остаток пополам: AB = (P − AC) : 2.',
   refWhy:'В периметре P = AB + BC + AC две боковые стороны равны: AB = BC.'},{a:10});
+addVariant('bisHalf','main',{});
+addVariant('medianCenter','whole',{d:'whole'},{name:'Меньшая часть по всей медиане'});
+addVariant('medianCenter','part',{d:'part'},{name:'Большая часть медианы по меньшей'},{k:7});
 function variantFor(k,p){
   const matches=TASK_VARIANTS.filter(v=>v.k===k&&v.match(p));
   if(matches.length!==1)throw new Error('Неоднозначный учебный вариант '+k);
@@ -1889,7 +1949,7 @@ const CP=(function(){
     solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes };
 })();
 /* Детализация журнала живёт только в своей ветке. Общий журнал курса по-прежнему
-   содержит 26 ключей TID|тип; он закрывается, когда закрыты все ошибочные методы.
+   содержит ключи TID|тип; он закрывается, когда закрыты все ошибочные методы.
    Старую открытую запись без детализации повторяем по всем вариантам типа:
    прежняя запись не позволяет достоверно восстановить, какой способ вызвал ошибку. */
 function variantMistakes(all){

@@ -6,6 +6,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
+const {pathToFileURL} = require('node:url');
 const {chromium} = require('playwright');
 const root = path.resolve(__dirname,'..');
 const {cards} = require('../trainers/task19-visual-data.js');
@@ -142,6 +143,70 @@ async function main() {
       }
     });
 
+    await check('canonical, alternative and offline entries keep the complete card flow without unrelated lessons',async()=>{
+      const card=cards.find(c=>c.id==='prev-056');
+      assert.equal(card.truth,false,'A nonsquare rhombus disproves equal diagonals');
+      const entries=[
+        {name:'canonical',url:base+'/trainers/task19-trainer.html'},
+        {name:'alternative',url:base+'/trainers/geometry_statements_trainer_improved.html'},
+        {name:'offline',url:pathToFileURL(path.join(root,'downloads/trainers/task19-trainer/task19-trainer.html')).href}
+      ];
+      for(const width of [360,1280])for(const entry of entries){
+        const c=await browser.newContext({viewport:{width,height:800}}),p=await c.newPage();
+        const pageErrors=[],addonRequests=[],networkRequests=[];
+        p.on('pageerror',error=>pageErrors.push(error.message));
+        p.on('request',request=>{
+          if(/\/oge-video-(?:models|graphs|geometry)\.(?:js|css)(?:\?|$)/.test(request.url()))addonRequests.push(request.url());
+          if(/^https?:/.test(request.url()))networkRequests.push(request.url());
+        });
+        if(entry.name==='offline')await c.route(/^https?:/,route=>route.abort());
+        const absent=async()=>{
+          assert.equal(await p.locator('#oge-video-models').count(),0,entry.name+': no independent lesson panel');
+          assert.deepEqual(addonRequests,[],entry.name+': no addon asset requested');
+          assert.deepEqual(await p.evaluate(()=>Object.keys(localStorage).filter(key=>key.startsWith('mathExam.oge.videoModels.v1.'))),[],entry.name+': no addon progress created');
+        };
+        try{
+          await p.goto(entry.url+'?card='+card.id,{waitUntil:'load'});
+          await p.waitForFunction(()=>window.Task19Data && document.querySelector('#statement').textContent!=='Загружаем утверждение…');
+          assert.equal(await p.locator('#statement').textContent(),card.text);
+          assert.equal(await p.locator('#hintPanel').isVisible(),false);
+          assert.equal(await p.locator('#answerPanel').isVisible(),false);
+          await absent();await noOverflow(p,entry.name+' '+width+' question');
+          const before=await savedState(p);
+          await p.locator('#hintToggle').press('Enter');
+          assert.equal(await p.locator('#visualHost svg').isVisible(),true);
+          assert.equal(await p.locator('#hintPrompt').textContent(),card.hint.prompt);
+          await moveSlider(p,p.locator('#visualHost input[type=range]').last());
+          await measureUsingKeyboard(p);await assertUnanswered(p,before,entry.name+' own hint');
+          await absent();await noOverflow(p,entry.name+' '+width+' hint');
+          await p.screenshot({path:path.join(artifacts,'card-flow-'+entry.name+'-'+width+'-hint.png'),fullPage:true});
+          await p.locator('#btnFalse').press('Enter');
+          assert.equal(await p.locator('#answerPanel').isVisible(),true);
+          assert.deepEqual(await p.locator('#answerExplanation .task19-reason-step').allTextContents(),[
+            'Шаг 1. Условия'+card.hint.preserve,
+            'Шаг 2. Обоснование'+card.explanation,
+            'Шаг 3. ВыводУтверждение неверное.'
+          ],'the explanation keeps all three exact steps for the displayed card');
+          const answered=await savedState(p);
+          assert.deepEqual(answered.records[card.id],{attempts:1,correct:1,needsReview:false});
+          assert.equal(answered.current.answer,false);
+          await p.reload({waitUntil:'load'});
+          assert.equal(await p.locator('#answerPanel').isVisible(),true);
+          assert.deepEqual((await savedState(p)).records,answered.records,'answer progress survives reload');
+          await absent();await noOverflow(p,entry.name+' '+width+' explanation');
+          await p.screenshot({path:path.join(artifacts,'card-flow-'+entry.name+'-'+width+'-explanation.png'),fullPage:true});
+          await p.locator('#nextCard').press('Enter');
+          assert.notEqual((await savedState(p)).current.id,card.id,'next chooses another card');
+          assert.equal(await p.locator('#hintPanel').isVisible(),false);
+          assert.equal(await p.locator('#answerPanel').isVisible(),false);
+          assert.equal(await p.locator('#answerExplanation').textContent(),'');
+          assert.deepEqual((await savedState(p)).records,answered.records,'next preserves the completed result');
+          await absent();assert.deepEqual(pageErrors,[]);
+          if(entry.name==='offline')assert.deepEqual(networkRequests,[],'offline card flow works without any HTTP request');
+        }finally{await c.close();}
+      }
+    });
+
     await check('interactive controls respond to arrows without answering the card',async()=>{
       await go();
       await page.evaluate(()=>localStorage.clear());
@@ -199,8 +264,8 @@ async function main() {
       assert.equal(await page.locator('#answerExplanation').textContent(),'');
     });
 
-    await check('all 234 statements have a genuine model action without grading or an early answer',async()=>{
-      assert.equal(cards.length,234,'The full canonical corpus including the current demo is exercised');
+    await check('all 379 statements have a genuine model action without grading or an early answer',async()=>{
+      assert.equal(cards.length,379,'The full canonical corpus including the audited source additions is exercised');
       await page.evaluate(()=>localStorage.clear());
       await page.setViewportSize({width:360,height:900});
       let adjustable=0,fixedMeasurements=0;
@@ -230,7 +295,7 @@ async function main() {
         assert.equal(await page.locator('#progressText').textContent(),progress,card.id+': progress unchanged');
         await noOverflow(page,card.id+' action');
       }
-      assert(adjustable>0,'Adjustable geometry is covered');assert.equal(adjustable+fixedMeasurements,234,'Every card has a meaningful action');
+      assert(adjustable>0,'Adjustable geometry is covered');assert.equal(adjustable+fixedMeasurements,379,'Every card has a meaningful action');
       console.log('ACTION_COVERAGE '+JSON.stringify({total:cards.length,adjustable,fixedMeasurements}));
     });
 

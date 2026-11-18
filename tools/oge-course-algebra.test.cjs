@@ -6,6 +6,9 @@ const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
 const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
 const {restoreGraphScale}=require('./oge-video-models-preservation.cjs');
+const {restoreAlignment}=require('./oge-source-alignment-06-09-preservation.cjs');
+const alignment10To14=require('./fixtures/oge-source-alignment-10-14.json');
+const {restoreSourceAlignment}=require('./oge-source-alignment-20-22.cjs');
 const root=path.resolve(__dirname,'..');
 const files={7:'number-line',8:'powers-roots',10:'probability',12:'formulas-trainer',14:'progressions',20:'equations',21:'word-problems',22:'functions-graphs'};
 const cards={7:'#marTask',8:'#marGrid>.mtask:not([hidden])',10:'#mar-root>.card',12:'#taskArea>.card',14:'#m-task>.card',20:'#body .qbox',21:'#content>.card',22:'.panel:not(.hidden) .mode-host[data-mode="marathon"]'};
@@ -28,7 +31,7 @@ test('sequence experiment distinguishes number of terms from transitions',async(
 for(const n of [20,21,22])test(n+': written reasoning persists per exact statement without adding solved credit',async()=>{let t=await boot(n);let saved;try{const before=snapshot(t.w),input=t.card().querySelector('.oca-work textarea');input.value='Пусть x — неизвестная величина.\nПроверяю исходное условие.';input.dispatchEvent(new t.w.Event('input'));const check=t.card().querySelector('.oca-work input[type=checkbox]');check.checked=true;check.dispatchEvent(new t.w.Event('change'));assert.equal(snapshot(t.w),before);saved={'mathexam.oge.algebra-notes.v1':t.w.localStorage.getItem('mathexam.oge.algebra-notes.v1')};const help=await openHelp(t);helpButton(t.card())?.click();assert.equal(input.value,'Пусть x — неизвестная величина.\nПроверяю исходное условие.');assert.match(t.card().querySelector('.oca-work .oca-note').textContent,/не оценивает/);assert.deepEqual(t.errors,[]);}finally{t.close();}t=await boot(n,{saved});try{assert.equal(t.card().querySelector('.oca-work textarea').value,'Пусть x — неизвестная величина.\nПроверяю исходное условие.');assert.equal(t.card().querySelector('.oca-work input[type=checkbox]').checked,true);byText(t.card(),'Другая задача →').click();await settle();assert.equal(t.card().querySelector('.oca-work textarea').value,'','A new statement must not inherit another problem’s reasoning');const archive=[...t.card().querySelectorAll('.oca-work details')].find(x=>x.firstElementChild.textContent==='Мои записи к другим задачам');archive.open=true;await settle();assert.match(archive.textContent,/Пусть x/);assert.deepEqual(t.errors,[]);}finally{t.close();}});
 test('reasoning has a usable fallback when storage is unavailable',async()=>{const t=await boot(20,{blocked:true});try{const input=t.card().querySelector('.oca-work textarea');input.value='Мой шаг';input.dispatchEvent(new t.w.Event('input'));assert.match(t.card().querySelector('.oca-save-status').textContent,/Хранилище браузера сейчас недоступно/);assert.deepEqual(t.errors,[]);}finally{t.close();}});
 test('all official references identify OGE and stay on the current page',async()=>{for(const n of [7,8,14,20,22]){const t=await boot(n);try{if(n===7){t.w.eval('marIdx=BANK.findIndex(t=>typeOf(t).includes("root"));renderMarTask()');await settle();}const help=await openHelp(t),refs=help.querySelector('.oca-reference');assert(refs);assert.match(refs.textContent,/ОГЭ 2027/);assert.doesNotMatch(refs.innerHTML,/learning\/reference-assets|ege-baza/);assert(refs.querySelectorAll('img[src*="task19-reference/fipi-oge-"]').length);assert(refs.querySelector('a[href*="fipi.ru/oge/"]'));}finally{t.close();}}});
-test('all algebra-part2 modules retain a task-specific work area and native helper',async()=>{for(const n of [20,21,22]){const t=await boot(n);try{const buttons=n===20?[...t.d.querySelectorAll('.mcard')]:n===21?[...t.d.querySelectorAll('.modbtn')]:[...t.d.querySelectorAll('.mod-btn')];if(n===20){for(const key of t.w.__T20.ORDER){t.w.__T20.STATE.module=key;t.w.__T20.STATE.mode='drill';t.w.__T20.render();await settle();assert.equal(t.card().querySelectorAll('.oca-work').length,1);assert(helpButton(t.card()));}assert.equal(t.w.__T20.ORDER.length,13);}else if(n===21){const count=t.w.__T.MODULES.length;assert.equal(count,11);for(let i=0;i<count;i++){t.w.eval('CUR='+i+';MODE="drill";render()');await settle();assert.equal(t.card().querySelectorAll('.oca-work').length,1);assert(helpButton(t.card()));}}else{assert.equal(buttons.length,3);for(const b of buttons){b.click();await settle();assert.equal(t.card().querySelectorAll('.oca-work').length,1);assert(helpButton(t.card()));}}assert.deepEqual(t.errors,[]);}finally{t.close();}}});
+test('all algebra-part2 modules retain a task-specific work area and native helper',async()=>{for(const n of [20,21,22]){const t=await boot(n);try{const buttons=n===20?[...t.d.querySelectorAll('.mcard')]:n===21?[...t.d.querySelectorAll('.modbtn')]:[...t.d.querySelectorAll('.mod-btn')];if(n===20){for(const key of t.w.__T20.ORDER){t.w.__T20.STATE.module=key;t.w.__T20.STATE.mode='drill';t.w.__T20.render();await settle();assert.equal(t.card().querySelectorAll('.oca-work').length,1);assert(helpButton(t.card()));}assert.equal(t.w.__T20.ORDER.length,14);}else if(n===21){const count=t.w.__T.MODULES.length;assert.equal(count,13);for(let i=0;i<count;i++){t.w.eval('CUR='+i+';MODE="drill";render()');await settle();assert.equal(t.card().querySelectorAll('.oca-work').length,1);assert(helpButton(t.card()));}}else{assert.equal(buttons.length,3);for(const b of buttons){b.click();await settle();assert.equal(t.card().querySelectorAll('.oca-work').length,1);assert(helpButton(t.card()));}}assert.deepEqual(t.errors,[]);}finally{t.close();}}});
 
 test('all first-part prototype families receive contextual help without replacing their bank',async()=>{
  for(const n of [7,8,10,12,14]){const t=await boot(n);try{
@@ -42,7 +45,7 @@ test('all first-part prototype families receive contextual help without replacin
  }finally{t.close();}}
 });
 
-test('task22 all nine prototype choices keep the exact graph problem and reasoning identity',async()=>{const t=await boot(22);try{let count=0;for(const nav of t.d.querySelectorAll('.mod-btn')){nav.click();await settle();const buttons=[...t.card().querySelectorAll('.sub-chips button')].slice(1);for(const b of buttons){b.click();await settle();const p=t.card().__problem,work=t.card().querySelector('.oca-work');assert(work);const area=work.querySelector('textarea');area.value='Построение для этого графика';area.dispatchEvent(new t.w.Event('input'));const panel=await openHelp(t);assert.equal(t.card().__problem,p);assert.equal(t.card().querySelector('.oca-work'),work);assert(panel.querySelector('input[type=range]'));count++;}}assert.equal(count,9);assert.deepEqual(t.errors,[]);}finally{t.close();}});
+test('task22 all eleven prototype choices keep the exact graph problem and reasoning identity',async()=>{const t=await boot(22);try{let count=0;for(const nav of t.d.querySelectorAll('.mod-btn')){nav.click();await settle();const buttons=[...t.card().querySelectorAll('.sub-chips button')].slice(1);for(const b of buttons){b.click();await settle();const p=t.card().__problem,work=t.card().querySelector('.oca-work');assert(work);const area=work.querySelector('textarea');area.value='Построение для этого графика';area.dispatchEvent(new t.w.Event('input'));const panel=await openHelp(t);assert.equal(t.card().__problem,p);assert.equal(t.card().querySelector('.oca-work'),work);assert(panel.querySelector('input[type=range]'));count++;}}assert.equal(count,11);assert.deepEqual(t.errors,[]);}finally{t.close();}});
 
 // Reviewed OGE_COURSE_MIRROR_AUDIT native sources: room storage guards/facades,
 // deterministic step construction and accepted/revealed-field locks. Mathematics
@@ -60,15 +63,22 @@ const inlineHashes={
   "21": "6b266bbaa9ffbd40adaccbd9a5f93c6b290b15566780dbcd770d71622c5982f8",
   "22": "5298f2da7b65280813d2a97b4353c7c0029182359614625076e5939d2a39c5af"
 };
-test('all eight inline engines match the mirror-audit snapshots after exact approved display changes',()=>{
+test('all eight inline engines match their exact reviewed snapshots',()=>{
  for(const [n,suffix]of Object.entries(files)){
   const file='trainers/oge-task'+n+'-'+suffix+'.html';
-  const html=restoreGraphScale(file,restoreHistoricalBytes(file,fs.readFileSync(path.join(root,file),'utf8')));
-  let scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');
+  const html=restoreGraphScale(file,restoreHistoricalBytes(file,restoreSourceAlignment(file,fs.readFileSync(path.join(root,file),'utf8'))));
+  const inline=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]);
+  if(n==='10'||n==='14'){
+   // These approved exercise additions have their own exact engine snapshots.
+   const hashes=inline.map(script=>crypto.createHash('sha256').update(script).digest('hex'));
+   assert.deepEqual(hashes,alignment10To14.inlineScripts[file],'task '+n+' reviewed native engine');
+   continue;
+  }
+  let scripts=inline.join('\n');
   // The 2027 copy update changes these two displayed sentences only.
   // Keep the reviewed full-engine digest, including all mathematics and grading.
-  if(n==='7')scripts=restoreOge7Input(scripts);
-  if(n==='8')scripts=restoreRootTeaching(restoreRootAcceptance(scripts))
+  if(n==='7')scripts=restoreOge7Input(restoreAlignment(file,scripts));
+  if(n==='8')scripts=restoreRootTeaching(restoreRootAcceptance(restoreAlignment(file,scripts)))
    .replace('160 задач для подготовки к ОГЭ 2027.</p>', 'все 160 задач из реальных подборок к ОГЭ 2026.</p>')
    .replace('Марафон · 160 задач для подготовки к ОГЭ 2027', 'Марафон · 160 задач формата ОГЭ 2026');
   assert.equal(crypto.createHash('sha256').update(scripts).digest('hex'),inlineHashes[n],'task '+n);

@@ -66,19 +66,18 @@ class GeneratorTests(unittest.TestCase):
     def test_reviewed_course_map_closure_retains_dependencies_and_storage_boundary(self):
         edition = builder.Edition("v2", builder.PUBLISHED_V1)
         output, manifest = builder.build(edition)
-        # Exact additions from the published OGE map (30e1af62), not a relaxed
-        # minimum count. Replacing only the entry HTML with pre-map 8bd4c47
-        # reproduces 228 outputs; these four paths are the complete 232-228 delta.
+        # These four paths are the complete closure addition from the OGE map.
+        # The live view script received its own cache version in #642.
         reviewed = {
-            "oge/learning-map-view.js": [],
-            "oge/learning-map.css": [],
-            "oge/learning-map.js": ["oge/registry.js"],
-            "oge/registry.js": [],
+            "oge/learning-map-view.js": ("20261117", []),
+            "oge/learning-map.css": ("20261109", []),
+            "oge/learning-map.js": ("20261109", ["oge/registry.js"]),
+            "oge/registry.js": ("20261109", []),
         }
         sources = {record["path"]: record for record in manifest["sourceFiles"]}
         entry = "trainers/oge-course/index.html"
         self.assertTrue(set(reviewed).issubset(sources[entry]["dependencies"]))
-        for asset, dependencies in reviewed.items():
+        for asset, (_, dependencies) in reviewed.items():
             with self.subTest(asset=asset):
                 self.assertIn(asset, sources)
                 self.assertEqual(sources[asset]["dependencies"], dependencies)
@@ -148,7 +147,6 @@ class GeneratorTests(unittest.TestCase):
             15: "trainers/oge-task15-triangles.html",
             16: "trainers/oge-task16-circle.html",
             17: "trainers/oge-task17-quadrilaterals.html",
-            19: "trainers/task19-trainer.html",
             22: "trainers/oge-task22-functions-graphs.html",
             23: "trainers/oge-task23-geometry-calculations.html",
             24: "trainers/oge-task24-proofs.html",
@@ -157,6 +155,11 @@ class GeneratorTests(unittest.TestCase):
         reviewed = {"trainers/oge-video-models.css", "trainers/oge-video-graphs.js",
                     "trainers/oge-video-geometry.js", "trainers/oge-video-models.js"}
         sources = {record["path"]: record for record in manifest["sourceFiles"]}
+        task19 = "trainers/task19-trainer.html"
+        self.assertNotIn(b"oge-video-", (ROOT / task19).read_bytes())
+        self.assertFalse(reviewed.intersection(sources[task19]["dependencies"]),
+                         "task19 generated source closure uses only its own hints")
+        self.assertNotIn(b"oge-video-", output[edition.prefix + task19])
         old_html = {}
         for number, entry in entries.items():
             block = ('<!-- OGE video-model investigations: standalone practice -->\n'

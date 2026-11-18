@@ -6,6 +6,11 @@ const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs')
 const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const {restoreGraphScale}=require('./oge-video-models-preservation.cjs');
+const {restoreAlignmentScripts}=require('./oge-source-alignment-06-09-preservation.cjs');
+const alignment10To14=require('./fixtures/oge-source-alignment-10-14.json');
+const {restoreSourceAlignment}=require('./oge-source-alignment-20-22.cjs');
+const alignmentPages=require('./fixtures/oge-source-alignment-20-22.json').pages;
+const {restoreOge18Clarity}=require('./oge18-clarity-preservation.cjs');
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
@@ -16,6 +21,27 @@ const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b
 // The fraction controls were reviewed on this immutable published source. Keep
 // the complete inline engine and static controls comparison, including fixes.
 taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348d5460fdd940dc8cac3';
+// Reviewed practical work adds one opening control on the plot and updates
+// tire wording. Keep the full engine and controls comparisons on both routes.
+const practicalSource=require('../assets/assistant/page-rollout.json').sourceBindingUpdates.findLast(update=>update.task==='docs/tasks/OGE_SOURCE_ALIGNMENT_01_05_20261116.md');
+if(practicalSource){
+ assert.deepEqual(practicalSource.changedPaths,[
+  'trainers/oge-1-5-trainers/practice-1-5-land-plots.html',
+  'trainers/oge-1-5-trainers/practice-1-5-tires.html'
+ ]);
+ for(const p of practicalSource.changedPaths)taskSources[p]=practicalSource.sourceBaseSha;
+}
+
+// Preserve the full engines and teaching controls against the exact reviewed
+// source commit that contains the three author-developed geometry exercises.
+const geometryBinding=require('../trainers/oge-sources/coverage-23-25.json').sourceBinding;
+const geometryPaths=['trainers/oge-task23-geometry-calculations.html','trainers/oge-task24-proofs.html','trainers/oge-task25-geometry.html'];
+assert.deepEqual(Object.keys(geometryBinding.pages).sort(),geometryPaths);
+assert.match(geometryBinding.sourceCommit,/^[a-f0-9]{40}$/);
+for(const p of geometryPaths){
+ assert(routes.wayfinding.includes(p),p+' remains in learner-entry coverage');
+ taskSources[p]=geometryBinding.sourceCommit;
+}
 // PR #539/#548 behavior plus the reviewed explanation-only accuracy correction.
 // Exact source: 679421ce3057ffbcdab89b80fcd591337f67f9e8.
 // Evidence: docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md and its report.
@@ -24,9 +50,10 @@ taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348
 // Controls retain the baseline; the complete inline engine remains pinned.
 const reviewedSingleScripts={
   'trainers/oge-task9-equations.html':'a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02',
-  // The labelled bisector, median and equal halves in d26f2e8. Original controls stay pinned.
-  'trainers/oge-task25-geometry.html':'fe246b1d188a53ff3e88245a483edc3cb7321bac034fa9068d8dd2d7cad8e133'
+  // The reviewed source-alignment tasks plus labelled bisector/median from main. Original controls stay pinned.
+  'trainers/oge-task25-geometry.html':'da54efa4f52baeddfcc129d183fd52e35dc132cbfdf2f93eef063d0999d9e92b'
 };
+const geometryAlignment=require('./fixtures/oge-source-alignment-geometry-bytes.json');
 // Reviewed results-to-practice UI. The model is still compared to its baseline.
 const analogue='trainers/oge-2027-analogue-1.html';
 const analogueReviewedApp='593d785fa27ad62d4b073066e414e029fbe283437f47b8e64f59cb1e08830b01';
@@ -68,7 +95,7 @@ for(const p of Object.keys(courseParents)){
 }
 let links=0,beforeDirect=0,beforeHome=0;
 for(const p of routes.pages){
- const dom=parse(read(p),p),d=dom.window.document,old=parse(execFileSync('git',['show',base+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p),od=old.window.document;
+ const page=read(p),dom=parse(page,p),d=dom.window.document,old=parse(execFileSync('git',['show',base+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p),od=old.window.document;
  const destinations=[...d.querySelectorAll('a[href]')].map(a=>new URL(a.href));
  const parent=courseParents[p],isCourse=u=>parent?u.pathname===parent.href:/\/trainers\/oge-course\/(?:index\.html)?$/.test(u.pathname),isHome=u=>/^\/(?:index\.html)?$/.test(u.pathname);
  const redirect=d.querySelector('meta[http-equiv="refresh"]');
@@ -94,7 +121,13 @@ for(const p of routes.pages){
   const scripts=doc=>[...doc.scripts].filter(s=>!s.src).map(s=>s.textContent.replace(/\r\n/g,'\n'));
   const taskSource=taskSources[p]?parse(execFileSync('git',['show',taskSources[p]+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
   const baseline=taskSource?taskSource.window.document:od;
-  const actualScripts=scripts(d).map(script=>restoreGraphScale(p,script));
+  // The scoped source-alignment fragments straddle markup and script boundaries.
+  // Reverse the complete reviewed delta before extracting the historical engines.
+  const restored=restoreOge18Clarity(p,restoreSourceAlignment(p,page));
+  if(Object.hasOwn(alignmentPages,p))assert.notEqual(restored,page,p+' complete exact source alignment delta');
+  const alignmentSource=restored===page?null:parse(restored,p);
+  const actualScripts=restoreAlignmentScripts(p,scripts(alignmentSource?alignmentSource.window.document:d).map(script=>restoreGraphScale(p,script)));
+  if(alignmentSource)alignmentSource.window.close();
   if(p==='trainers/oge-task6-fractions.html'||p==='trainers/drobi-oge-trainer.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
     actualScripts[0]=restoreFractionMultiplicationStep(actualScripts[0]);
@@ -115,6 +148,12 @@ for(const p of routes.pages){
   if(Object.hasOwn(reviewedSingleScripts,p)){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
     assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),reviewedSingleScripts[p],p+' exact reviewed inline engine');
+  }else if(alignment10To14.inlineScripts[p]){
+    const actual=actualScripts.map(script=>createHash('sha256').update(script).digest('hex'));
+    assert.deepEqual(actual,alignment10To14.inlineScripts[p],p+' exact reviewed alignment engines');
+  }else if(geometryAlignment.pages[p]){
+    assert.equal(createHash('sha256').update(JSON.stringify(actualScripts)).digest('hex'),
+      geometryAlignment.pages[p].inlineSha256,p+' exact reviewed source-alignment engines');
   }else if(p===analogue){
     assert.equal(actualScripts.length,2,p+' one model and one app');
     assert.equal(actualScripts[0],scripts(baseline)[0],p+' task data and grading preserved');
@@ -135,7 +174,10 @@ for(const p of routes.pages){
   }
   const controls=(doc,externalPanel)=>[...doc.querySelectorAll('input,select,textarea,button')]
     .filter(e=>!externalPanel?.contains(e)).map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
-  const oldControls=controls(baseline);
+  // The reviewed geometry commit already includes the exact download panel,
+  // whose three controls are checked above independently from teaching controls.
+  const baselinePanel=entry&&geometryPaths.includes(p)?baseline.querySelector('body > .download-panel[data-trainer-download="'+entry.slug+'"]'):null;
+  const oldControls=controls(baseline,baselinePanel);
   if(p===analogue){
     const oldCheck=oldControls.findIndex(([,id])=>id==='check-all');
     assert(oldCheck>=0,p+' original check button');

@@ -2417,7 +2417,7 @@ PF.forEach((d,i)=>BANK.push(bk('pf-'+(i+1),d[0],'proto','Дополнитель�
 /* Актуальный формат №9. Номера сверены по навигатору ФИПИ и публикациям
    заданий, ссылки и происхождение каждого типа — в спецификации задачи. */
 const EXAM_BANK=[
-  exam('demo-2027','linear-two-brackets','LB',[BR(3,[X(1),N(8)]),BR(-2,[X(1),N(-8)])],[N(8)],null,'-32','fipi-demo','Проект демоверсии ФИПИ 2027'),
+  exam('author-demo-type-2027','linear-two-brackets','LB',[BR(6,[X(1),N(4)]),BR(-5,[X(1),N(-2)])],[N(21)],null,'-13','analog','Авторский аналог · по демоверсии ФИПИ 2027'),
   exam('demo-2026','quad-nonmonic','QF',[X2(2),X(-3),N(1)],[N(0)],'min','0,5','fipi-demo','Демоверсия ФИПИ 2026'),
   exam('483ABF','linear-one-bracket','LB',[BR(4,[X(1),N(-6)])],[N(5)],null,'7,25'),
   exam('36E26B','quad-square','QNB',[X2(1),N(-144)],[N(0)],'max','12'),
@@ -2560,7 +2560,11 @@ const EXAM_BANK=[
   exam('var-quad-nonmonic-17','quad-nonmonic','QF',[X2(4),X(11),N(-20)],[N(0)],'max','1,25','analog'),
   /* END fixed extension */
 ];
-BANK.push(...EXAM_BANK);
+if(window.OgeCourseSharedMode){
+  // Shared actions recorded at this fixed index belong to the original example.
+  const legacyDemo=exam('demo-2027','linear-two-brackets','LB',[BR(3,[X(1),N(8)]),BR(-2,[X(1),N(-8)])],[N(8)],null,'-32','fipi-demo','Демоверсия ФИПИ 2027 · прежняя общая задача');
+  BANK.push(legacyDemo,...EXAM_BANK.slice(1),EXAM_BANK[0]);
+}else BANK.push(...EXAM_BANK);
 
 function exam(code, examKind, fam, Lt, Rt, ask, exp, source='fipi', label){
   const tag=label || (source==='fipi'?'Открытый банк ФИПИ · '+code:'Тренировочный аналог');
@@ -2572,8 +2576,8 @@ function taskSourceHTML(t){
   if(t.src==='analog')return 'Авторское задание MathExam по типу № 9 ОГЭ; не является заданием ФИПИ.';
   if(t.src==='catalog')return 'Условие и идентификатор сверены по <a href="'+t.catalogURL+'">каталогу прототипов</a>'+(t.catalogSecondary?' и <a href="'+t.catalogSecondary+'">второй публикации</a>':'')+'. Прямая карточка официального банка ФИПИ не проверена; это подтверждение по вторичным источникам.';
   if(t.src==='fipi-demo'){
-    const year=t.id==='exam-demo-2027'?'2027':'2026';
-    return 'Условие и ответ № 9 сверены с <a href="https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/'+year+'/ma_9_'+year+'.zip">официальным архивом ФИПИ '+year+'</a>'+(year==='2027'?' (проект демоверсии).':'.');
+    const year=t.id.slice(-4);
+    return 'Условие и ответ № 9 сверены с <a href="https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/'+year+'/ma_9_'+year+'.zip">официальным архивом ФИПИ '+year+'</a>.';
   }
   return 'Идентификатор указан в <a href="https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf">навигаторе ФИПИ, с. 4</a>. Условие и выбор корня сверены по <a href="https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf">PDF-подборке</a> и <a href="https://sdamgia.online/oge/matematika/zadanie-9">каталогу прототипов</a>. Прямая сверка карточки официального банка недоступна.';
 }
