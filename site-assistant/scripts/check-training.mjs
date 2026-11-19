@@ -1,0 +1,11 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { trainingRoot,buildManifest } from './training-data.mjs';
+const args=process.argv.slice(2);
+if(args.some(arg=>arg!=='--write-manifest')) throw new Error('Usage: check-training.mjs [--write-manifest]');
+const manifest=await buildManifest();
+const text=JSON.stringify(manifest,null,2)+'\n';
+const path=resolve(trainingRoot,'manifest.json');
+if(args.includes('--write-manifest')) await writeFile(path,text);
+else if(await readFile(path,'utf8')!==text) throw new Error('Manifest does not match sources. Review changes, then run training:manifest.');
+console.log(JSON.stringify({gate:'THREE_SITE_PRETRAINING_DATA_OK',counts:manifest.counts,evaluationCases:manifest.evaluationCases,modelTraining:manifest.modelTraining}));

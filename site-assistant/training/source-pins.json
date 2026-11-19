@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "prepared_on": "2026-11-19",
+  "scope": "Public synthetic training and offline evaluation only",
+  "sources": [
+    {
+      "site": "math",
+      "repository": "ladynata-cloud/math-exam-fipi",
+      "revision": "e97445d1ee23263570201a0a19dc5b78e5e231eb",
+      "status": "main observed at preparation",
+      "files": [
+        {
+          "path": "assets/assistant/navigator-data.js",
+          "sha256": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d"
+        },
+        {
+          "path": "assets/assistant/division-dialogue.js",
+          "sha256": "195418df88041a779fd5301eb84581b283f4b6024c274396f04b9cec64c9f927"
+        }
+      ]
+    },
+    {
+      "site": "reader",
+      "repository": "ladynata-cloud/uzel-toski-po-miru",
+      "revision": "a6e127c0d20f3dd7dabce1369cd12e5abb19cf06",
+      "status": "prepared branch; not merged or published",
+      "branch": "fix/reader-work-matching-pretraining",
+      "build": "SITE_URL=https://usel-toski-po-miru.art python3 build.py",
+      "before_count": 21,
+      "full_after_count": 256,
+      "paired_runtime_after_count": 21,
+      "files": [
+        {
+          "path": "dist/assets/reader-search.js",
+          "sha256": "8d9feeaa3c210f9c7e51f6ed07bc53b3893f8f63328432938a0efb81d4044bdd"
+        },
+        {
+          "path": "dist/assistant/v1/before-reading.json",
+          "generated": true,
+          "sha256": "5f64bac14a778b5f8e50e7bd1c5d59c493af3540994b7586d7070bdc57375e2b"
+        },
+        {
+          "path": "dist/assistant/v1/after-reading.json",
+          "generated": true,
+          "sha256": "2f5c74ddb99382ddadade0f5ba85db9a6c288c21b895614763ebad8d00d4559a"
+        }
+      ],
+      "pr": "https://github.com/ladynata-cloud/uzel-toski-po-miru/pull/14"
+    },
+    {
+      "site": "tarot",
+      "repository": "ladynata-cloud/kabbala-tarot",
+      "revision": "709795f5f1b8da0ec054b0a85a90a4915559859d",
+      "status": "existing Draft PR 27; not merged or published",
+      "pr": "https://github.com/ladynata-cloud/kabbala-tarot/pull/27",
+      "files": [
+        {
+          "path": "assistant/v1/symbols.json",
+          "sha256": "88b30f6fcbfe6c2cdfc17ae93790880c40e5d84f8d096b7f563202fb9466dc65"
+        },
+        {
+          "path": "assets/course/symbols-assistant.js",
+          "sha256": "05ed931cf278fa24fced84d3b1b1fd1fb43bb133dafd1beecdb8a77920049349"
+        }
+      ]
+    }
+  ],
+  "runtime_snapshots": {
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/division-dialogue.js": "195418df88041a779fd5301eb84581b283f4b6024c274396f04b9cec64c9f927",
+    "site-assistant/reader/pilot.json": "ae10c1e51c082cbca39dd263860f7a8727412b635d537f018346f66e15239cd9",
+    "site-assistant/reader/search.cjs": "8d9feeaa3c210f9c7e51f6ed07bc53b3893f8f63328432938a0efb81d4044bdd",
+    "site-assistant/tarot/symbols.json": "88b30f6fcbfe6c2cdfc17ae93790880c40e5d84f8d096b7f563202fb9466dc65",
+    "site-assistant/tarot/rules.cjs": "05ed931cf278fa24fced84d3b1b1fd1fb43bb133dafd1beecdb8a77920049349"
+  }
+}

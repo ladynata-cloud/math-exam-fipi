@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "verification": "Read each object from the stated Git revision during preparation; hashes attest those historical source bytes, not current runtime files.",
+  "sources": [
+    {
+      "repository": "ladynata-cloud/math-exam-fipi",
+      "revision": "eb9260ed73530ba8c111d00ffd6c537cfcfa42f0",
+      "path": "assets/assistant/navigator-data.js",
+      "git_blob": "8b616eecd84a0b869d47268fc72aca1b5bd1880f",
+      "sha256": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+      "bytes": 154755,
+      "evidence_url": "https://github.com/ladynata-cloud/math-exam-fipi/blob/eb9260ed73530ba8c111d00ffd6c537cfcfa42f0/assets/assistant/navigator-data.js"
+    },
+    {
+      "repository": "ladynata-cloud/math-exam-fipi",
+      "revision": "eb9260ed73530ba8c111d00ffd6c537cfcfa42f0",
+      "path": "assets/assistant/division-dialogue.js",
+      "git_blob": "4faf01826a21800ba310eed8287bda327bb8c21b",
+      "sha256": "195418df88041a779fd5301eb84581b283f4b6024c274396f04b9cec64c9f927",
+      "bytes": 18666,
+      "evidence_url": "https://github.com/ladynata-cloud/math-exam-fipi/blob/eb9260ed73530ba8c111d00ffd6c537cfcfa42f0/assets/assistant/division-dialogue.js"
+    },
+    {
+      "repository": "ladynata-cloud/math-exam-fipi",
+      "revision": "eb9260ed73530ba8c111d00ffd6c537cfcfa42f0",
+      "path": "site-assistant/dialogue.mjs",
+      "git_blob": "62674252f2a35a5651aa4eae47d2ffcb734a9388",
+      "sha256": "58f2ef74dd9dc009a422a15b4da5b3d35655e4236764c709f9bf62813459ba06",
+      "bytes": 7563,
+      "evidence_url": "https://github.com/ladynata-cloud/math-exam-fipi/blob/eb9260ed73530ba8c111d00ffd6c537cfcfa42f0/site-assistant/dialogue.mjs"
+    },
+    {
+      "repository": "ladynata-cloud/math-exam-fipi",
+      "revision": "eb9260ed73530ba8c111d00ffd6c537cfcfa42f0",
+      "path": "site-assistant/server.mjs",
+      "git_blob": "2c0dd20b9122b39ff0d5f2a714468240b9a9ba5b",
+      "sha256": "d94d5bc2752467fb59372e6531cbce85b62b2cf9da70ea90993e3fa7a8a02eae",
+      "bytes": 6306,
+      "evidence_url": "https://github.com/ladynata-cloud/math-exam-fipi/blob/eb9260ed73530ba8c111d00ffd6c537cfcfa42f0/site-assistant/server.mjs"
+    },
+    {
+      "repository": "ladynata-cloud/math-exam-fipi",
+      "revision": "eb9260ed73530ba8c111d00ffd6c537cfcfa42f0",
+      "path": "site-assistant/reader/pilot.json",
+      "git_blob": "fd14fc13ba1887aeab59a454dfce60e34f46473f",
+      "sha256": "2b1c4a0c59270cb3b654703a0cd77cd7e60facd82b29f27c0cd4dfbe6a52221c",
+      "bytes": 88242,
+      "evidence_url": "https://github.com/ladynata-cloud/math-exam-fipi/blob/eb9260ed73530ba8c111d00ffd6c537cfcfa42f0/site-assistant/reader/pilot.json"
+    },
+    {
+      "repository": "ladynata-cloud/math-exam-fipi",
+      "revision": "eb9260ed73530ba8c111d00ffd6c537cfcfa42f0",
+      "path": "site-assistant/tarot/symbols.json",
+      "git_blob": "da84da786e4f10d312b87b7d680b13384ee4cd1e",
+      "sha256": "88b30f6fcbfe6c2cdfc17ae93790880c40e5d84f8d096b7f563202fb9466dc65",
+      "bytes": 135153,
+      "evidence_url": "https://github.com/ladynata-cloud/math-exam-fipi/blob/eb9260ed73530ba8c111d00ffd6c537cfcfa42f0/site-assistant/tarot/symbols.json"
+    },
+    {
+      "repository": "ladynata-cloud/kabbala-tarot",
+      "revision": "d40132e03df92b51413446da409cb89d16013731",
+      "path": "course/kabbalah-and-tarot/index.html",
+      "git_blob": "330e306d18c8a4199b8db269390d049992468c12",
+      "sha256": "2e714b74bfc391204e6323dd121f90aa84ba3aa7bec5825b1e9acd34e9f57d0e",
+      "bytes": 68840,
+      "evidence_url": "https://github.com/ladynata-cloud/kabbala-tarot/blob/d40132e03df92b51413446da409cb89d16013731/course/kabbalah-and-tarot/index.html"
+    },
+    {
+      "repository": "ladynata-cloud/kabbala-tarot",
+      "revision": "d40132e03df92b51413446da409cb89d16013731",
+      "path": "course/gematria/index.html",
+      "git_blob": "f013468a642205a7512f70b7816508e9676d7442",
+      "sha256": "8fd1868b6771c0ab5a410ba14af1545b72079562097eb0333f32944c58ecf64e",
+      "bytes": 62822,
+      "evidence_url": "https://github.com/ladynata-cloud/kabbala-tarot/blob/d40132e03df92b51413446da409cb89d16013731/course/gematria/index.html"
+    },
+    {
+      "repository": "ladynata-cloud/kabbala-tarot",
+      "revision": "d40132e03df92b51413446da409cb89d16013731",
+      "path": "content/tarot-pairs.json",
+      "git_blob": "024a353ec86279e7cc47e6854d8940e1e35f2896",
+      "sha256": "ce2a1148b37b22bdabee880a7bccd478a915ceef5f278513831b5ab9963147c3",
+      "bytes": 39276,
+      "evidence_url": "https://github.com/ladynata-cloud/kabbala-tarot/blob/d40132e03df92b51413446da409cb89d16013731/content/tarot-pairs.json"
+    },
+    {
+      "repository": "ladynata-cloud/kabbala-tarot",
+      "revision": "d40132e03df92b51413446da409cb89d16013731",
+      "path": "course/tarot-pairs/index.html",
+      "git_blob": "412a7dda1fb3ca6dc6386615b703bafed40449df",
+      "sha256": "c4748378befe2b1068c27c6a3331294a1b4c6bd16a0f332be6db2bfbddf387fb",
+      "bytes": 153753,
+      "evidence_url": "https://github.com/ladynata-cloud/kabbala-tarot/blob/d40132e03df92b51413446da409cb89d16013731/course/tarot-pairs/index.html"
+    }
+  ]
+}

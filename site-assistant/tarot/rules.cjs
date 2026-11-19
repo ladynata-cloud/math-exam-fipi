@@ -59,9 +59,9 @@
         (waite && previous?.id === 'study-book-of-thoth' && aspect === 'tradition')) {
       const waiteBook = byId('study-pictorial-key'), thoth = byId('study-book-of-thoth');
       return reply(marseille
-        ? 'Сцены 78 карт в подборке описаны по Уэйту–Смит. Проверенных описаний изображений Марсельского Таро в этой подборке пока нет. Какую именно колоду Вы рассматриваете?'
+        ? 'Сцены 78 карт в подборке описаны по Уэйту–Смит. Проверенных описаний изображений Марсельского Таро в этой подборке пока нет. Назовите издание Вашей колоды или покажите её карту, чтобы не переносить на неё детали другого рисунка.'
         : 'Галерея показывает рисунки Памелы Колман Смит. Для системы Кроули в курсе есть отдельный разбор «Книги Тота». Какую из двух книг Вы хотите открыть?',
-      (marseille ? [waiteBook] : [waiteBook,thoth]).filter(Boolean).map(link), previous || null, 'tradition');
+      (marseille ? [topic?.kind === 'card' ? topic : waiteBook] : [waiteBook,thoth]).filter(Boolean).map(link), topic || previous || null, 'tradition');
     }
     if (/сбудется|предска[жз]|точно (?:будет|случится)|что (?:со мной )?(?:случится|произойдет)|что меня ждет|буду ли|любит ли|вернется ли|(?:умру|заболею) ли|когда (?:выйду замуж|умру|женюсь)|(?:на будущее|будет ли|выиграю ли)|что (?:он|она) чувствует/u.test(q)) {
       return reply('По карте нельзя установить будущие события или чувства другого человека. ' +
@@ -85,6 +85,10 @@
     } else if (chosen === 'observation') {
       text = topic.kind==='card' ? 'На рисунке Уэйта–Смит. '+topic.observation :
         'В этом материале. '+topic.observation;
+      if (/ссылк/u.test(q) && /изображен|рисунк|картин/u.test(q)) {
+        links.push(...topic.sources.flatMap((source,index) => source.role==='image'
+          ? [{id:topic.id+'-source-'+index,label:source.label,url:source.url}] : []));
+      }
     } else if (chosen === 'practice') {
       text = 'Вопрос для собственной записи. '+topic.question;
     } else if (chosen === 'tradition') {

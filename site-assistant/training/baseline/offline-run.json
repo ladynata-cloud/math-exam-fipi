@@ -1,0 +1,19 @@
+{
+  "kind": "runtime",
+  "label": "offline-rules",
+  "model": null,
+  "providerCalls": 0,
+  "evalSetHash": "83f1071968a305229ebd697a26572b793bf4cf5865d1994f1db305aed81f01b5",
+  "runtimeSetHash": "c4cd7fa084e075bb6d75805187ca777beb5db7f6d4dea6b811d1adb12ebdc9d8",
+  "answered": 27,
+  "unsupported": 15,
+  "code": {
+    "site-assistant/dialogue.mjs": "58f2ef74dd9dc009a422a15b4da5b3d35655e4236764c709f9bf62813459ba06",
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/division-dialogue.js": "195418df88041a779fd5301eb84581b283f4b6024c274396f04b9cec64c9f927",
+    "site-assistant/reader/search.cjs": "8d9feeaa3c210f9c7e51f6ed07bc53b3893f8f63328432938a0efb81d4044bdd",
+    "site-assistant/reader/pilot.json": "ae10c1e51c082cbca39dd263860f7a8727412b635d537f018346f66e15239cd9",
+    "site-assistant/tarot/rules.cjs": "05ed931cf278fa24fced84d3b1b1fd1fb43bb133dafd1beecdb8a77920049349",
+    "site-assistant/tarot/symbols.json": "88b30f6fcbfe6c2cdfc17ae93790880c40e5d84f8d096b7f563202fb9466dc65"
+  }
+}

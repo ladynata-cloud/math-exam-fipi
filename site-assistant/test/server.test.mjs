@@ -40,6 +40,24 @@ test('limited after-reading source and an explicit return to spoiler-free mode',
   assert.equal(back.state.mode, 'before_reading');
   assert.ok(back.links.every(link => link.url.includes('/poisk-po-pamyati/#')));
 });
+test('reader snapshot identifies the two repaired works and does not replace an unknown title by its author', async () => {
+  const context={surface:'reader',mode:'before_reading'};
+  for(const [question,id,forbidden,sourceUrl] of [
+    ['Тоска Чехова','work-toska',/лошад|кобыл|конюшн/iu,'https://feb-web.ru/feb/chekhov/texts/sp0/sp4/sp4-326-.htm?cmd=p'],
+    ['Куст сирени Куприна','work-kust-sireni',/сажают|садовник|ломбард|драгоценност/iu,'https://www.ilibrary.ru/text/1848/p.1/index.html'],
+  ]) {
+    const answer=await ok('uzel',question,context);
+    assert.deepEqual(answer.links.map(link=>link.id),[id]);
+    assert.doesNotMatch(answer.reply,forbidden);
+    const source=await ok('uzel','Где проверить точную цитату?',{surface:'reader',mode:'after_reading',workId:id});
+    assert.match(source.reply,/комментарий мастерской/iu);
+    assert.ok(source.links.some(link=>link.url===sourceUrl));
+  }
+  for(const question of ['Каштанка Чехова','«Неизвестный доктор» Куприна','Куст сирени Чехова']) {
+    const answer=await ok('uzel',question,context);
+    assert.deepEqual(answer.links,[],question);
+  }
+});
 test('navigator keeps the choice, division answers one contextual step', async () => {
   const nav = {surface:'navigator'};
   const first = await ok('mathexam','Деление',nav);
