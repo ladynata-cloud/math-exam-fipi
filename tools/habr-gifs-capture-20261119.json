@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "reviewedSourceTree": "87a6252a65311a2625b86a5ae6960790c4aa4d52",
+  "reviewedSourceTree": "1aa81c8420aaec3389bb30bb5115c99d5ddf68ef",
   "playwrightVersion": "1.62.1",
   "pillowVersion": "11.3.0",
   "viewport": {
@@ -16,7 +16,7 @@
     "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
     "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
     "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
-    "assets/habr-entry-gifs.js": "555f7bd27ea6bdf5b7525217fff9536d86bc0380afa74031266e07ace88a3880",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
     "assets/oge-wayfinding.css": "3e60bd7a5b9097d58097e877a90e7ed8c2311a65ff4441845896014f52fa1f37",
     "assets/oge-wayfinding.js": "1eb57ccd65596e7497ec6bac02bb86cba21a2f9e64b6f8a4917b935c1953138e",
     "ege-profil/circle/app.js": "c46096292a87b792e66f5ab7acc40d34ba53d56aa73a0b9f1b8e940644ab7a28",
@@ -42,7 +42,7 @@
     "ege-profil/start/course-links.css": "69ac7b23e83af7e2be01321a836879b9e420993e92e223cb278dbb8284ea9221",
     "ege-profil/start/course-links.js": "e8b368525d5e16b87672327eca31ca815a8e184d5b2ad32b5ace4f9eda26b250",
     "ege-profil/trainers/trigonometry.html": "b204df985acfe9a39b4e626a75f3eaa7746fe438ba5a781804964fa461604fe9",
-    "oge/skills/index.html": "6993ba4705704d05bd9c2b21d04027fa4ea907cd97e5897d9e67e5a7f7abbe87",
+    "oge/skills/index.html": "96deca6239a9f9f5eaea86a13b9ad999fae11e0a3f09a5b07a12695dece17a28",
     "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
     "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",
     "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
