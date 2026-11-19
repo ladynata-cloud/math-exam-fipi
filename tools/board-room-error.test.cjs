@@ -557,10 +557,12 @@ test('accepted uninitialized replacement room preserves the live teacher draft w
     const publications = socket.sent.filter(item => item.name === 'board:trainer-state-change');
     assert.ok(publications.length > 0, 'accepted writer sends the current retained trainer state');
     assert.ok(publications.every(item => item.payload.roomId === 'fixture-new-2' && item.payload.state.answer === '59'));
-    f.accept(socket);
+    socket.deliver('room:state', { state: { ...f.snapshot(), control: 'fixture-teacher', controlVersion: 1,
+      inkDelivery: { version: 1, durable: true } }, you: { participantId: 'fixture-teacher', role: 'teacher' } });
     await tick();
     assert.equal(f.child.instanceId, instanceId);
     assert.deepEqual(f.child.draft, { answer: '59' });
+    assert.equal(f.w.document.getElementById('inkSaveStatus').dataset.delivery, 'saved');
   } finally { f.close(); }
 });
 
