@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'trainers/trainer-board.html'
+      - 'trainers/board-delivery*.js'
+      - 'tools/board-delivery.test.cjs'
       - 'trainers/board-ink.js'
       - 'trainers/board-images.js'
       - 'trainers/board-writing.js'
@@ -28,6 +30,8 @@ on:
     branches: [main]
     paths:
       - 'trainers/trainer-board.html'
+      - 'trainers/board-delivery*.js'
+      - 'tools/board-delivery.test.cjs'
       - 'trainers/board-ink.js'
       - 'trainers/board-images.js'
       - 'trainers/board-writing.js'
@@ -77,6 +81,8 @@ jobs:
           echo "NODE_PATH=$RUNNER_TEMP/board-writing-browser/node_modules" >> "$GITHUB_ENV"
       - name: Coordinates, compatible shapes and bounded image imports
         run: node --test tools/board-ink.test.cjs tools/board-images.test.cjs
+      - name: Durable room and completed ink delivery
+        run: node --test tools/board-delivery.test.cjs
       - name: Terminal room rejection and local recovery
         run: node --test tools/board-room-error.test.cjs tools/article-demo-links.test.cjs
       - name: Individual writing and real local collaboration
