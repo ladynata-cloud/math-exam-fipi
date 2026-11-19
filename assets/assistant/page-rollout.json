@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "95ee4b197171fd84fd0fe7198e62f47ebc34a328",
+  "baseSha": "254b0dadfd35877bee650e1ec170fdcef8ee0ccc",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2653,10 +2653,10 @@
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-tires.html": {
-      "beforeSha256": "0d2f0b61a164aa304a4508537e0a3be8af5d9a333d847e570b3da38d01b8e3b5",
-      "afterSha256": "6878ab12900e864b830770d3c1020e1d89c4ccab6022a45426fc00092422cd5c",
+      "beforeSha256": "de3db88f7933471be651dcb39d3d01ceb1088aed4b081e193bbc3260d0542e20",
+      "afterSha256": "559d3b07021e4de3b7bc2a37b3d62d8e83aa00436080ca7ab40682a8ba0d3ba6",
       "placement": "before-head-close",
-      "sourceSha": "7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c"
+      "sourceSha": "254b0dadfd35877bee650e1ec170fdcef8ee0ccc"
     },
     "trainers/oge-2027-analogue-1.html": {
       "beforeSha256": "53ad6b5562b4cc40882a57c927d9b7f440c79cd507798a8e0c4a7b3a1d2e2a2d",
@@ -6307,6 +6307,15 @@
       "changedPaths": [
         "trainers/oge-task25-geometry.html",
         "trainers/oge-task7-number-line.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "95ee4b197171fd84fd0fe7198e62f47ebc34a328",
+      "sourceBaseSha": "254b0dadfd35877bee650e1ec170fdcef8ee0ccc",
+      "task": "docs/tasks/OGE_BOOK_V3_READINESS_20261116.md",
+      "changedPaths": [
+        "trainers/oge-1-5-trainers/practice-1-5-tires.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
