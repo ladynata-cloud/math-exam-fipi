@@ -42,6 +42,8 @@ function updateInkDeliveryStatus() {
   else if (shared.roomId && inkDeliveryCapability) { message = 'Штрихи сохранены на сервере'; kind = 'ok'; }
   else if (shared.roomId) { message = 'Временная комната: сохраните лист в PNG'; kind = 'wait'; }
   else message = 'Локальная доска';
+  const panel = document.getElementById('inkDeliveryPanel');
+  if (panel) panel.hidden = !shared.roomId && !(inkOutbox?.records.size || inkOutbox?.fault);
   const retention = document.getElementById('inkRetentionNote');
   retention.hidden = !inkDeliveryCapability || !Number.isFinite(inkRoomTtlMs);
   if (!retention.hidden) retention.textContent = `Комната хранится ${Math.round(inkRoomTtlMs / 3600000 * 10) / 10} ч без участников. Для архива скачайте PNG.`;

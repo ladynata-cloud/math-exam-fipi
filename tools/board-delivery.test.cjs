@@ -634,3 +634,27 @@ test('actual room-state handler never describes an unconfirmed initial seed as s
   assert.equal(f.run('roomStateReceived'), true);
   assert.equal(f.elements.get('inkSaveStatus').dataset.delivery, 'saved');
 });
+
+test('actual writing permission blocks offline room reload before capability negotiation but keeps standalone writing', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'trainers/trainer-board.html'), 'utf8');
+  const match = html.match(/function canWrite\(\)\{[^\n]+\}/);
+  assert.ok(match, 'exercise the real production writing permission');
+  const shared = { roomId: 'restored-room', connected: false, role: 'teacher', me: null, control: '' };
+  let blocked = false;
+  const context = vm.createContext({ shared, deliveryBlocksWriting: () => blocked });
+  vm.runInContext(match[0], context);
+  const allowed = () => vm.runInContext('canWrite()', context);
+  assert.equal(allowed(), false, 'restored room cannot create local-only ink before Socket.IO loads');
+  shared.connected = true;
+  assert.equal(allowed(), false, 'connection still requires a joined writer identity');
+  shared.me = { participantId: 'teacher' }; shared.control = 'teacher';
+  assert.equal(allowed(), true);
+  shared.control = 'student';
+  assert.equal(allowed(), false, 'joined teacher obeys current writing control');
+  shared.roomId = ''; shared.connected = false;
+  assert.equal(allowed(), true, 'standalone teacher board remains writable');
+  blocked = true;
+  assert.equal(allowed(), false, 'unsaved previous scope still blocks replacement ink');
+  blocked = false; shared.role = 'student';
+  assert.equal(allowed(), false, 'disconnected student has no standalone write permission');
+});

@@ -5,6 +5,7 @@ on:
       - 'trainers/trainer-board.html'
       - 'trainers/board-delivery*.js'
       - 'tools/board-delivery.test.cjs'
+      - 'tools/board-delivery.browser.cjs'
       - 'trainers/board-ink.js'
       - 'trainers/board-images.js'
       - 'trainers/board-writing.js'
@@ -32,6 +33,7 @@ on:
       - 'trainers/trainer-board.html'
       - 'trainers/board-delivery*.js'
       - 'tools/board-delivery.test.cjs'
+      - 'tools/board-delivery.browser.cjs'
       - 'trainers/board-ink.js'
       - 'trainers/board-images.js'
       - 'trainers/board-writing.js'
@@ -85,6 +87,10 @@ jobs:
         run: node --test tools/board-delivery.test.cjs
       - name: Terminal room rejection and local recovery
         run: node --test tools/board-room-error.test.cjs tools/article-demo-links.test.cjs
+      - name: Native durable delivery through reload and backend restart
+        env:
+          BOARD_WRITING_ARTIFACTS: ${{ runner.temp }}/board-writing-artifacts
+        run: node tools/board-delivery.browser.cjs
       - name: Individual writing and real local collaboration
         env:
           BOARD_WRITING_ARTIFACTS: ${{ runner.temp }}/board-writing-artifacts

@@ -52,7 +52,8 @@ automatic messages to the commenter, changing real learner records.
 
 Required: all board-server tests; board-ink/images/room-error/article-entry
 regressions; independent `tools/board-delivery.test.cjs`; existing native
-`board-writing` CI; focused independent HIGH review; `git diff --check`.
+`board-writing` CI plus `board-delivery.browser.cjs` with a synthetic persistent
+backend stopped during an active gesture; focused independent HIGH review; `git diff --check`.
 External provider review is not performed under the standing owner policy.
 No real learner data are used in tests. Test records are synthetic.
 
@@ -104,3 +105,22 @@ handoff. No production success is asserted by this specification.
   counts. Amvera console was inspected and requires sign-in in this cloud
   session; production backup, restore, environment change and deploy were not
   performed. The task remains a deployment candidate, not a published feature.
+
+### First cloud CI follow-up
+
+The first head exposed missing delivery-module loading in four isolated VM
+fixtures and a real canvas-position regression from the added status row.
+Fixtures now load the actual module without removing assertions (32/32 local
+PASS); the status is a compact footer visible for a room or retained local
+queue/archive. The original picker layout checks remain unchanged.
+
+Independent review also found that a page reloaded without a room connection
+could temporarily accept local-only ink before capability discovery. Any
+existing disconnected room now blocks new input; an active pre-disconnect
+gesture still finishes into its captured durable outbox.
+
+Native acceptance uses two real browser contexts and an isolated localhost
+backend. It checks completed ink/text, role transfer, reload, an interrupted
+gesture, local queue persistence across offline reload, server restart,
+exactly-once visible application, clear and a new page generation. No real
+room or learner data are used. Final CI outcomes are recorded on PR #686.
