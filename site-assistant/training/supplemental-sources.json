@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "url": "https://kabbala-tarot.online/course/kabbalah-and-tarot/",
+      "repository": "ladynata-cloud/kabbala-tarot",
+      "revision": "d40132e03df92b51413446da409cb89d16013731",
+      "path": "course/kabbalah-and-tarot/index.html",
+      "sha256": "2e714b74bfc391204e6323dd121f90aa84ba3aa7bec5825b1e9acd34e9f57d0e",
+      "bytes": 68840,
+      "purpose": "Public source for a training example; not an additional runtime catalogue entry"
+    },
+    {
+      "url": "https://kabbala-tarot.online/course/gematria/",
+      "repository": "ladynata-cloud/kabbala-tarot",
+      "revision": "d40132e03df92b51413446da409cb89d16013731",
+      "path": "course/gematria/index.html",
+      "sha256": "8fd1868b6771c0ab5a410ba14af1545b72079562097eb0333f32944c58ecf64e",
+      "bytes": 62822,
+      "purpose": "Public source for a training example; not an additional runtime catalogue entry"
+    },
+    {
+      "url": "https://kabbala-tarot.online/course/tarot-pairs/",
+      "repository": "ladynata-cloud/kabbala-tarot",
+      "revision": "d40132e03df92b51413446da409cb89d16013731",
+      "path": "content/tarot-pairs.json",
+      "sha256": "ce2a1148b37b22bdabee880a7bccd478a915ceef5f278513831b5ab9963147c3",
+      "bytes": 39276,
+      "purpose": "Public source for a training example; not an additional runtime catalogue entry"
+    },
+    {
+      "url": "https://kabbala-tarot.online/course/tarot-pairs/",
+      "repository": "ladynata-cloud/kabbala-tarot",
+      "revision": "d40132e03df92b51413446da409cb89d16013731",
+      "path": "course/tarot-pairs/index.html",
+      "sha256": "c4748378befe2b1068c27c6a3331294a1b4c6bd16a0f332be6db2bfbddf387fb",
+      "bytes": 153753,
+      "purpose": "Public source for a training example; not an additional runtime catalogue entry"
+    }
+  ]
+}

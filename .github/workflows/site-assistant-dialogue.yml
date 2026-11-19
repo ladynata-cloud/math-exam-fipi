@@ -22,3 +22,5 @@ jobs:
           node-version: '24'
       - name: Exercise the reader, navigator and current division step
         run: npm --prefix site-assistant test
+      - name: Verify the pinned pretraining handoff
+        run: npm --prefix site-assistant run training:check

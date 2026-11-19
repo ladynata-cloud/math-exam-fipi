@@ -6,7 +6,10 @@
     'кто это этот эта там тот его ее их он она они я мне у нас вы был была было были есть какой каком ' +
     'какую какого какойто какомто помню помните вспомнить найти ищу хочу помогите вроде кажется ' +
     'название названия книга книгу книге книги произведение произведении произведения рассказ рассказе ' +
-    'рассказа автор автора герой героя герои историю человек человека который которая которым чем только').split(' '));
+    'рассказа рассказы повесть повести повестей роман романа романы стихотворение стихотворения ' +
+    'автор автора герой героя герои историю человек человека который которая которым чем только ' +
+    'какие пожалуйста подскажи подскажите покажи покажите назови назовите знаешь знаете ' +
+    'расскажи расскажите вас подборке').split(' '));
 
   // Common endings in the short clue phrases. Strip at most one ending.
   const endings = [
@@ -47,7 +50,12 @@
     const author = /(?:ов|ев|ёв|ин|ын)$/iu.test(surname)
       ? card.author + ' ' + surname + 'а'
       : card.author;
-    for (const [text, weight] of [[card.teaser, 1], [Array.isArray(card.cues) ? card.cues.join(' ') : card.cues, 3], [author, 5], [card.title, 7]]) {
+    const cues = Array.isArray(card.cues) ? card.cues.join(' ') : card.cues;
+    // Keep identity separate: a matching surname cannot establish another title.
+    weights.authorTerms = terms(author);
+    weights.surnameTerms = terms(surname + ' ' + (/(?:ов|ев|ёв|ин|ын)$/iu.test(surname) ? surname + 'а' : surname));
+    weights.contentTerms = terms([card.title, card.teaser, cues].join(' '));
+    for (const [text, weight] of [[card.teaser, 1], [cues, 3], [author, 5], [card.title, 7]]) {
       for (const word of terms(text)) weights.set(word, Math.max(weight, weights.get(word) || 0));
     }
     return weights;
@@ -56,13 +64,22 @@
   function search(indexes, query) {
     const words = terms(query);
     if (!words.size) return [];
+    const authors = indexes.filter(index => [...words].some(word => index.surnameTerms.has(word)));
+    const authorWords = new Set(authors.flatMap(index => [...index.authorTerms]));
+    const details = [...words].filter(word => !authorWords.has(word));
+    // A quoted title or remembered phrase must match in full, not by one word.
+    const quoted = [...query.matchAll(/«([^»]+)»|“([^”]+)”|"([^"]+)"|‘([^’]+)’|'([^']+)'/gu)]
+      .map(match => [...terms(match.slice(1).find(Boolean))]).filter(parts => parts.length);
+    const eligible = indexes.map(index =>
+      (!authors.length || (authors.includes(index) && (!details.length || details.some(word => index.contentTerms.has(word))))) &&
+      quoted.every(parts => parts.every(word => index.contentTerms.has(word))));
     const hits = indexes.map(() => ({score: 0, count: 0}));
     for (const word of words) {
       const frequency = indexes.filter(index => index.has(word)).length;
       if (!frequency) continue;
       const rarity = 1 + Math.log((indexes.length + 1) / (frequency + 1));
       indexes.forEach((index, i) => {
-        if (index.has(word)) {
+        if (eligible[i] && index.has(word)) {
           hits[i].score += rarity * index.get(word);
           hits[i].count++;
         }

@@ -3,10 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "start": "node server.mjs",
     "test": "node --test test/*.test.mjs",
-    "sync:reader": "node scripts/sync-reader.mjs"
+    "sync:reader": "node scripts/sync-reader.mjs",
+    "sync:tarot": "node scripts/sync-tarot.mjs",
+    "training:check": "node scripts/check-training.mjs",
+    "training:manifest": "node scripts/check-training.mjs --write-manifest",
+    "training:prepare": "node scripts/prepare-training.mjs",
+    "evaluation:prepare": "node scripts/prepare-evaluation.mjs",
+    "evaluation:score": "node scripts/evaluate-predictions.mjs",
+    "evaluation:baseline": "node scripts/record-offline-baseline.mjs"
   }
 }

@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 1,
+  "status": "prepared_for_offline_review",
+  "modelTraining": "not_run",
+  "counts": {
+    "math": 30,
+    "reader": 30,
+    "tarot": 30
+  },
+  "totalTrainingDialogues": 90,
+  "evaluationCases": 48,
+  "coverage": {
+    "mathDestinations": 199,
+    "readerBefore": 21,
+    "readerAfter": 21,
+    "tarotEntities": 104
+  },
+  "files": {
+    "baseline/offline-predictions.jsonl": {
+      "bytes": 20696,
+      "sha256": "06803947135b1ad1b8988e807e4a140ba95d9db942fd9d277a4bf48dda27218c"
+    },
+    "baseline/offline-report.json": {
+      "bytes": 84448,
+      "sha256": "c4832034b0e05662901630d46893ec781d35cda0d2d18dd0e8827ef650a8d4bc"
+    },
+    "baseline/offline-run.json": {
+      "bytes": 1076,
+      "sha256": "33435add23a594a4554b5b5053ebc6f8c351a57e3fcc7c920f33f71f422c9721"
+    },
+    "DATASET_CARD.md": {
+      "bytes": 14056,
+      "sha256": "53b9dddb1525abf4f7c40867c657abd817403f878f938c82c7754c84a9eab970"
+    },
+    "evaluation/inputs.jsonl": {
+      "bytes": 158664,
+      "sha256": "b07045cd2ad0804d877982a1850ed3a40fc45f889b0650e19a2a9e7de7bfe716"
+    },
+    "evaluation/README.md": {
+      "bytes": 18796,
+      "sha256": "ecd9a446bcb424c671e4f722b6dc363beefc792b9aa47872c4ac4842076c8c88"
+    },
+    "evaluation/rubrics.jsonl": {
+      "bytes": 50542,
+      "sha256": "75145f8419c97f2bc30316c12d7eaffd07a9586685432e629170d2c6760f654b"
+    },
+    "evaluation/runtime-cases.jsonl": {
+      "bytes": 16095,
+      "sha256": "a0d93732d5c4da70f9f3e2d72b81f05f2f4b4a84fa6ac5bd4ea4edf56bc25f71"
+    },
+    "HANDOFF.md": {
+      "bytes": 10297,
+      "sha256": "a37d08e5aad4559d84dbc13beeeb8761b89024701239f00bc5b104d53cc6f5c7"
+    },
+    "provenance-sources.json": {
+      "bytes": 5136,
+      "sha256": "3cb9cc7a011f329238d7f1b2162f80a99c047c0664991a71b7bf555962e390da"
+    },
+    "provenance.jsonl": {
+      "bytes": 47953,
+      "sha256": "ebca184d26b159d04712648a2b98285bca0afd2f1b9dc2594b08506fbd313198"
+    },
+    "README.md": {
+      "bytes": 8072,
+      "sha256": "a707bc1a985541c8c9591c56c974160d4f4fd8128485d6c76f7122ce771ebc82"
+    },
+    "roles/math.md": {
+      "bytes": 1875,
+      "sha256": "363ad51e7c50070e4b40771835a7997e51072a422873f3ac4e1b5203abfc1d04"
+    },
+    "roles/reader.md": {
+      "bytes": 1969,
+      "sha256": "fb838c232af9134109bd006d4c01dfb6ee0a6baeb19033409eae66b1b77f947b"
+    },
+    "roles/tarot.md": {
+      "bytes": 1768,
+      "sha256": "8403e4f27df981bdbb48a0195aec59374fc04cd58319d4cc996aa2468262eb41"
+    },
+    "routing-holdout.jsonl": {
+      "bytes": 2454,
+      "sha256": "9342053de11e9f46453078998e4231b48819d37fa55519b464a76107c7bd8b7a"
+    },
+    "source-pins.json": {
+      "bytes": 3095,
+      "sha256": "07106ee5e8d3901ac454f5878312e650c19d6dae7c2f96496f969f49edfffff1"
+    },
+    "supplemental-sources.json": {
+      "bytes": 1818,
+      "sha256": "25e5d8210b7fdb109473647fa4882386ec2d7177951741c04f2774270aea8c3b"
+    },
+    "train-math.jsonl": {
+      "bytes": 64906,
+      "sha256": "bc9b308d58f315d55105d70ff88b85de7f59fc0090af934bc1b2aef82af322d7"
+    },
+    "train-reader.jsonl": {
+      "bytes": 130935,
+      "sha256": "a7c16d76639a6b6557907d4eae1949ed304e8ad04ae7132bc7667a686a107c55"
+    },
+    "train-tarot.jsonl": {
+      "bytes": 124226,
+      "sha256": "58e2b08af766086b997114587574b1ec85dca8757aa36bd2b621fd4cdec1071a"
+    }
+  },
+  "knowledge": {
+    "assets/assistant/navigator-data.js": {
+      "bytes": 154755,
+      "sha256": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d"
+    },
+    "assets/assistant/division-dialogue.js": {
+      "bytes": 18666,
+      "sha256": "195418df88041a779fd5301eb84581b283f4b6024c274396f04b9cec64c9f927"
+    },
+    "site-assistant/reader/pilot.json": {
+      "bytes": 107269,
+      "sha256": "ae10c1e51c082cbca39dd263860f7a8727412b635d537f018346f66e15239cd9"
+    },
+    "site-assistant/reader/search.cjs": {
+      "bytes": 20830,
+      "sha256": "8d9feeaa3c210f9c7e51f6ed07bc53b3893f8f63328432938a0efb81d4044bdd"
+    },
+    "site-assistant/tarot/symbols.json": {
+      "bytes": 135153,
+      "sha256": "88b30f6fcbfe6c2cdfc17ae93790880c40e5d84f8d096b7f563202fb9466dc65"
+    },
+    "site-assistant/tarot/rules.cjs": {
+      "bytes": 13057,
+      "sha256": "05ed931cf278fa24fced84d3b1b1fd1fb43bb133dafd1beecdb8a77920049349"
+    }
+  },
+  "tooling": {
+    "site-assistant/Dockerfile": {
+      "bytes": 281,
+      "sha256": "a8349c4f74c7d5e00ed689117ff8e9ab38940424ff1300ea3714fabcec78a82e"
+    },
+    "site-assistant/README.md": {
+      "bytes": 13653,
+      "sha256": "7235fd23f12d930b9b83fd26fbeed5687bd363957e40b4a9d9409938ce8e8361"
+    },
+    "site-assistant/client.js": {
+      "bytes": 1720,
+      "sha256": "ff2e4378de7c0e100f524ccc0f2ecce63b81fbdb893b36faa169c503b1caa382"
+    },
+    "site-assistant/demo.css": {
+      "bytes": 1546,
+      "sha256": "fab53339bc12f9fe3fe6dc583c007aca1831fd623bbd59d451909fdb7d7b3e8b"
+    },
+    "site-assistant/demo.html": {
+      "bytes": 1718,
+      "sha256": "6693591c547800aff53f12926600c1677f0ea4311e988c0fb04748f69e032359"
+    },
+    "site-assistant/demo.js": {
+      "bytes": 5630,
+      "sha256": "c4f671752bdfb2ccdaf08bdd1712d31cc4cc22dc886522f130d97bbd52d0e3bf"
+    },
+    "site-assistant/dialogue.mjs": {
+      "bytes": 7563,
+      "sha256": "58f2ef74dd9dc009a422a15b4da5b3d35655e4236764c709f9bf62813459ba06"
+    },
+    "site-assistant/package.json": {
+      "bytes": 738,
+      "sha256": "e29fbdad14b96fb5bd9064f193ce6d227ef8e78cd77b457d540f18982cfa2dc9"
+    },
+    "site-assistant/scripts/check-training.mjs": {
+      "bytes": 818,
+      "sha256": "f2ad25c0aa78a8a6d69f6faf0c3fcd0fac26febe0800923ad9365e1beb669778"
+    },
+    "site-assistant/scripts/evaluate-predictions.mjs": {
+      "bytes": 30465,
+      "sha256": "c66ae17b6d537d8c8a64a00de49a990c5755d37b169bfd79c70223e3e56945e5"
+    },
+    "site-assistant/scripts/prepare-evaluation.mjs": {
+      "bytes": 2408,
+      "sha256": "1baa0be8f8d2b2e3c0d7b208a002ea9849b70c4d6c950fd3359955d5e78e002f"
+    },
+    "site-assistant/scripts/prepare-training.mjs": {
+      "bytes": 5324,
+      "sha256": "40ced7f6d5f347d637cb3f409387ea1c801507a102022c54d3f91a3029874370"
+    },
+    "site-assistant/scripts/record-offline-baseline.mjs": {
+      "bytes": 2329,
+      "sha256": "d17ded58ca9e708a0ade273ae46efacbec5e7f132cdedf3179c957ae431b0a61"
+    },
+    "site-assistant/scripts/sync-reader.mjs": {
+      "bytes": 2007,
+      "sha256": "0bb06655833d2bf8f8f397d181c37783f9bb498918eacabf19f137f4f8555ffb"
+    },
+    "site-assistant/scripts/sync-tarot.mjs": {
+      "bytes": 1447,
+      "sha256": "d2bbac1b45a2baa466d17bcf6056dbd87dadf4c238738f991eb5428e86c3e1e3"
+    },
+    "site-assistant/scripts/training-data.mjs": {
+      "bytes": 12360,
+      "sha256": "4e9920eb3057f149aa69c045ba1e746bad5b8ea282234f546cdfa42822ffc69b"
+    },
+    "site-assistant/server.mjs": {
+      "bytes": 6306,
+      "sha256": "d94d5bc2752467fb59372e6531cbce85b62b2cf9da70ea90993e3fa7a8a02eae"
+    },
+    "site-assistant/test/evaluation.test.mjs": {
+      "bytes": 18030,
+      "sha256": "b46cc03487acbdd5de92d5cc9448d2d19a0a54e3e75131bd7838584efd8ade64"
+    },
+    "site-assistant/test/server.test.mjs": {
+      "bytes": 9088,
+      "sha256": "466c80e90b98b9d140770e1e6f98d0efb196633366f5e4c485007b627b7715d5"
+    },
+    "site-assistant/test/training-preparation.test.mjs": {
+      "bytes": 6789,
+      "sha256": "6e7d4bc54eb5c8b28f18c8455743a695bbb7382a90105e1048135ec3a10dea3f"
+    },
+    "site-assistant/test/training.test.mjs": {
+      "bytes": 2494,
+      "sha256": "e48813cfc6c928ccfe8900d7c98577b9d281db6e14730612daf0970bd2cb3f18"
+    }
+  }
+}

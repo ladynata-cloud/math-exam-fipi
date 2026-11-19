@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import navigator from '../assets/assistant/navigator-data.js';
 import division from '../assets/assistant/division-dialogue.js';
 import reader from './reader/search.cjs';
+import tarot from './tarot/rules.cjs';
 
 const mathOrigin = 'https://mathexam.space';
 const mathEntries = new Map(navigator.catalogue.map(entry => [entry.url, entry]));
@@ -10,6 +11,10 @@ const { before, after } = JSON.parse(readFileSync(new URL('./reader/pilot.json',
 const works = new Map(before.map((card, index) => [card.id, index]));
 const analyses = new Map(after.map(record => [record.card_id, record]));
 const indexes = before.map(card => reader.indexCard({ ...card, cues: card.cues.join(' ') }));
+const tarotRecords = JSON.parse(readFileSync(new URL('./tarot/symbols.json', import.meta.url), 'utf8')).records;
+const tarotEntities = new Set(tarotRecords.map(record => record.id));
+const tarotAspects = new Set(['observation','commentary','source','practice','tradition']);
+const tarotUrls = new Set(tarotRecords.flatMap(record => [record.url, ...record.sources.map(source => source.url)]));
 const divisionSteps = new Set(['start', 'count', 'digit', 'product', 'subtract', 'remainder-check',
   'bring', 'partial', 'comma', 'answer', 'final-remainder', 'verify',
   'shift-count', 'shift-factor', 'shift-divisor', 'shift-dividend']);
@@ -88,6 +93,18 @@ function readerTurn(message, context, state) {
     candidates: result.indices.map(index => before[index].id) } };
 }
 
+function symbolsTurn(message, context, state) {
+  fields(context, ['surface','entityId','aspect']);
+  requireInput(context.entityId == null || tarotEntities.has(context.entityId));
+  requireInput(context.aspect == null || tarotAspects.has(context.aspect));
+  const previous = {};
+  if (tarotEntities.has(state.entityId)) previous.entityId = state.entityId;
+  if (tarotAspects.has(state.aspect)) previous.aspect = state.aspect;
+  const result = tarot.respond(tarotRecords, message, context, previous);
+  if (!result.links.every(link => tarotUrls.has(link.url))) throw new Error('Unlisted symbolic-study link');
+  return { reply:result.reply, links:result.links, state:{...result.state, surface:'symbols'} };
+}
+
 export function respond(input) {
   fields(input, ['site', 'message', 'context', 'state']);
   const { site, message, context } = input;
@@ -98,6 +115,7 @@ export function respond(input) {
   if (site === 'uzel' && context.surface === 'reader') result = readerTurn(message.trim(), context, state);
   else if (site === 'mathexam' && context.surface === 'navigator') result = navigatorTurn(message.trim(), context, state);
   else if (site === 'mathexam' && context.surface === 'division') result = divisionTurn(message.trim(), context, state);
+  else if (site === 'tarot' && context.surface === 'symbols') result = symbolsTurn(message.trim(), context, state);
   else throw new InvalidTurn('Unsupported site or surface');
   return { version: 1, site, ...result };
 }

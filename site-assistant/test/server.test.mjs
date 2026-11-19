@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import http from 'node:http';
+import { readFileSync } from 'node:fs';
 import { after, before, test } from 'node:test';
 import { createHandler } from '../server.mjs';
 
@@ -10,13 +11,13 @@ before(async () => {
   endpoint = 'http://127.0.0.1:' + server.address().port;
 });
 after(() => new Promise(resolve => server.close(resolve)));
-const math = 'https://mathexam.space', literary = 'https://usel-toski-po-miru.art';
+const math = 'https://mathexam.space', literary = 'https://usel-toski-po-miru.art', tarot = 'https://kabbala-tarot.online';
 async function post(input, origin) {
   return fetch(endpoint + '/api/v1/dialogue', { method:'POST',
     headers:{'Content-Type':'application/json', ...(origin ? {Origin:origin} : {})}, body:JSON.stringify(input) });
 }
 async function ok(site, message, context, state) {
-  const res = await post({site, message, context, state}, site === 'uzel' ? literary : math);
+  const res = await post({site, message, context, state}, {mathexam:math, uzel:literary, tarot}[site]);
   assert.equal(res.status, 200);
   return res.json();
 }
@@ -38,6 +39,24 @@ test('limited after-reading source and an explicit return to spoiler-free mode',
   const back = await ok('uzel','Енисей у костра, без спойлеров',context,answer.state);
   assert.equal(back.state.mode, 'before_reading');
   assert.ok(back.links.every(link => link.url.includes('/poisk-po-pamyati/#')));
+});
+test('reader snapshot identifies the two repaired works and does not replace an unknown title by its author', async () => {
+  const context={surface:'reader',mode:'before_reading'};
+  for(const [question,id,forbidden,sourceUrl] of [
+    ['Тоска Чехова','work-toska',/лошад|кобыл|конюшн/iu,'https://feb-web.ru/feb/chekhov/texts/sp0/sp4/sp4-326-.htm?cmd=p'],
+    ['Куст сирени Куприна','work-kust-sireni',/сажают|садовник|ломбард|драгоценност/iu,'https://www.ilibrary.ru/text/1848/p.1/index.html'],
+  ]) {
+    const answer=await ok('uzel',question,context);
+    assert.deepEqual(answer.links.map(link=>link.id),[id]);
+    assert.doesNotMatch(answer.reply,forbidden);
+    const source=await ok('uzel','Где проверить точную цитату?',{surface:'reader',mode:'after_reading',workId:id});
+    assert.match(source.reply,/комментарий мастерской/iu);
+    assert.ok(source.links.some(link=>link.url===sourceUrl));
+  }
+  for(const question of ['Каштанка Чехова','«Неизвестный доктор» Куприна','Куст сирени Чехова']) {
+    const answer=await ok('uzel',question,context);
+    assert.deepEqual(answer.links,[],question);
+  }
 });
 test('navigator keeps the choice, division answers one contextual step', async () => {
   const nav = {surface:'navigator'};
@@ -70,4 +89,51 @@ test('health, browser client and local demonstration are available in the same s
   for (const path of ['/', '/demo.js','/client.js']) assert.equal((await fetch(endpoint+path)).status,200);
   const input = {site:'mathexam',message:'дроби',context:{surface:'navigator'}};
   assert.equal((await post(input,endpoint)).status,200);
+});
+
+test('public discovery enumerates each site and its independent surfaces', async () => {
+  const response = await fetch(endpoint+'/api/v1/capabilities');
+  const data = await response.json();
+  assert.equal(data.version,1);
+  assert.deepEqual(data.sites.map(s => [s.id,s.surfaces]),[
+    ['mathexam',['navigator','division']], ['uzel',['reader']], ['tarot',['symbols']]
+  ]);
+});
+
+test('symbolic study preserves the chosen card and offers a traceable source', async () => {
+  const initial = await ok('tarot','Что изображено на карте Отшельник?',{surface:'symbols'});
+  assert.equal(initial.state.entityId,'rws-9');
+  assert.ok(initial.links.some(link => new URL(link.url).origin===tarot));
+  const source = await ok('tarot','А это слова Уэйта?',{surface:'symbols'},initial.state);
+  assert.equal(source.state.entityId,initial.state.entityId);
+  assert.equal(source.state.aspect,'source');
+  assert.ok(source.links.length>0);
+  assert.notEqual(initial.reply,source.reply);
+  const tower = await ok('tarot','А источник у карты Башня?',{surface:'symbols'},source.state);
+  assert.equal(tower.state.entityId,'rws-16');
+  assert.ok(tower.links.some(link => link.url.endsWith('#card-16')));
+  const notebook = await ok('tarot','Прочитай мою личную тетрадь',{surface:'symbols'},tower.state);
+  assert.match(notebook.reply,/тетрад/u);
+  assert.ok(notebook.links.every(link => new URL(link.url).origin === tarot));
+});
+
+test('the tarot endpoint rejects other site origins and private context fields', async () => {
+  const turn = {site:'tarot',message:'Источник?',context:{surface:'symbols',entityId:'rws-9'}};
+  assert.equal((await post(turn,math)).status,403);
+  assert.equal((await post({...turn,context:{surface:'symbols',entityId:'unknown-id'}},tarot)).status,400);
+  assert.equal((await post({...turn,context:{surface:'symbols',aspect:'arbitrary'}},tarot)).status,400);
+  assert.equal((await post({...turn,context:{surface:'symbols',notebook:'Личная запись'}},tarot)).status,400);
+  assert.equal((await post({...turn,context:{surface:'reader',mode:'before_reading'}},tarot)).status,400);
+});
+
+test('all 78 cards, study topics and practices resolve to their own catalogued sources', async () => {
+  const snapshot = JSON.parse(readFileSync(new URL('../tarot/symbols.json',import.meta.url),'utf8'));
+  const cards = snapshot.records.filter(record => record.id.startsWith('rws-'));
+  assert.equal(new Set(cards.map(record => record.id)).size,78);
+  for (const record of snapshot.records) {
+    const answer = await ok('tarot','Где источник?',{surface:'symbols',entityId:record.id,aspect:'source'});
+    assert.equal(answer.state.entityId,record.id);
+    const urls = new Set([record.url,...record.sources.map(s => s.url)]);
+    assert.ok(answer.links.length && answer.links.every(link => urls.has(link.url)),record.id);
+  }
 });
