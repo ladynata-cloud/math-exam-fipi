@@ -69,7 +69,12 @@ async function createBoardFixture({ role = 'student', sourceOverride, trainer = 
     deliver(name, payload) { for (const fn of [...(this.listeners.get(name) || [])]) fn(payload === undefined ? undefined : inRealm(payload)); }
     disconnect() { this.disconnected = true; this.deliver('disconnect'); return this; }
   }
-  w.io = () => { const socket = new FakeSocket(); sockets.push(socket); return socket; };
+  w.io = (_server, options) => {
+    const socket = new FakeSocket();
+    socket.options = copy(options);
+    sockets.push(socket);
+    return socket;
+  };
   const response = (data, url) => ({ ok: true, status: 200, url, headers: { get: () => null }, json: async () => inRealm(data) });
   w.fetch = async (input, options = {}) => {
     const url = new URL(String(input), w.location.href); requests.push({ url: url.href, method: options.method || 'GET' });
@@ -181,6 +186,78 @@ const SECTIONS_REGISTRY = {
   ...REGISTRY,
   trainers: [{ ...REGISTRY.trainers[0], trainerId: 'sections-from-zero', file: SECTIONS_WRAPPER.slice(1) }]
 };
+
+test('the invited pupil can retry the same room without seeing an unrelated exercise', async () => {
+  const f = await createBoardFixture({role:'student'});
+  try {
+    const doc = f.w.document;
+    const first = f.socket();
+    const retry = doc.getElementById('guestRoomRetry');
+    assert.ok(doc.body.classList.contains('awaiting-room'));
+    assert.equal(retry.hidden, true);
+    assert.deepEqual(first.options.transports, ['polling', 'websocket']);
+    assert.equal(first.options.tryAllTransports, true);
+    first.deliver('connect_error');
+    assert.equal(retry.hidden, false);
+    retry.click();
+    await tick();
+    const next = f.socket();
+    assert.notEqual(next, first);
+    assert.equal(first.disconnected, true);
+    next.deliver('connect');
+    f.accept(next);
+    assert.equal(doc.body.classList.contains('awaiting-room'), false);
+    assert.equal(doc.getElementById('shareStatus').textContent, 'подключено');
+  } finally { f.close(); }
+});
+
+test('the public board loads its pinned Socket.IO client from its own site and can retry a failed download', async () => {
+  const f = await createBoardFixture({role:'teacher'});
+  try {
+    delete f.w.io;
+    const load = () => f.evaluate('loadSocketClient(DEFAULT_SERVER)');
+    let loading = load();
+    const filename = 'vendor/socket.io-4.8.4.min.js';
+    const localClient = () => f.w.document.querySelector('script[src="' + filename + '"]');
+    assert.equal(new URL(localClient().src).origin, ORIGIN);
+    localClient().onerror();
+    await assert.rejects(loading, /Socket.IO client unavailable/);
+    assert.equal(localClient(), null);
+    loading = load();
+    new vm.Script(fs.readFileSync(path.join(ROOT, 'trainers', filename), 'utf8')).runInContext(f.dom.getInternalVMContext());
+    localClient().onload();
+    await loading;
+    assert.equal(typeof f.w.io, 'function');
+  } finally { f.close(); }
+});
+
+test('an article demonstration starts on a fresh sheet and keeps the regular board intact', async () => {
+  const trainerUrl = SECTIONS_WRAPPER + '#starter-18';
+  const f = await createBoardFixture({
+    role: 'teacher', trainer: 'sections-from-zero', trainerUrl, registry: SECTIONS_REGISTRY,
+    querySuffix: new URLSearchParams({ trainer: trainerUrl, demo: '1' }).toString()
+  });
+  try {
+    const key = 'mathexam.trainerBoard.v1';
+    const regular = f.w.localStorage.getItem(key);
+    assert.equal(JSON.parse(regular).pages[0].id, 'fixture-page');
+    assert.notEqual(f.snapshot().pages[0].id, 'fixture-page');
+    assert.equal(f.snapshot().trainerUrl, trainerUrl);
+    f.frame.onload();
+    f.sendFrame('mathexam:trainer-ready');
+    f.timers.get(f.evaluate('bridgeHydrationTimer')).callback();
+    assert.equal(f.status(), 'bridge-timeout', 'the handshake diagnostic remains available');
+    const status = f.w.document.getElementById('mirrorStatus');
+    assert.equal(status.textContent, 'Для работы вдвоём откройте «Участники»');
+    assert.equal(status.classList.contains('bad'), false);
+    f.w.document.getElementById('addSheet').click();
+    f.w.dispatchEvent(new f.w.Event('beforeunload'));
+    assert.equal(JSON.parse(f.w.sessionStorage.getItem(key)).pages.length, 2);
+    assert.equal(f.w.localStorage.getItem(key), regular);
+    await f.connect();
+    assert.equal(f.w.localStorage.getItem(key), regular);
+  } finally { f.close(); }
+});
 
 test('restored sections room retains its selected card and hydrates when child ready precedes room state', async () => {
   const trainerUrl = SECTIONS_WRAPPER + '?seed=fixture-room#starter-18';

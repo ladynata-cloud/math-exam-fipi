@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Проверка двух помощников</title>
+  <link rel="stylesheet" href="/demo.css">
+  <script defer src="/client.js"></script>
+  <script defer src="/demo.js"></script>
+</head>
+<body>
+<main>
+  <h1>Проверка двух помощников</h1>
+  <p>Вопросы обрабатывает этот сервер по материалам сайтов. Модель не подключена. Реплики видны до закрытия страницы.</p>
+  <div class="controls">
+    <label>Где вы сейчас?
+      <select id="surface">
+        <option value="reader">Узел тоски по миру · чтение</option>
+        <option value="navigator">MathExam · поиск тренажёра</option>
+        <option value="division">MathExam · деление уголком</option>
+      </select>
+    </label>
+    <button id="clear" type="button">Начать заново</button>
+  </div>
+  <p id="situation"></p>
+  <div id="conversation" role="log" aria-label="Диалог" aria-live="polite" aria-relevant="additions"></div>
+  <p id="status" role="status"></p>
+  <form id="ask">
+    <label for="message">Ваш вопрос</label>
+    <textarea id="message" maxlength="500" rows="3" required></textarea>
+    <div class="controls">
+      <button type="submit" id="send">Спросить</button>
+      <button id="example" type="button">Подставить пример</button>
+    </div>
+  </form>
+</main>
+</body>
+</html>

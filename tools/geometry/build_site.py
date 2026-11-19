@@ -72,9 +72,12 @@ for u in units:
  cfg=dict(unit=u,proof=proofs[u['proof']],topicProof=proofs.get(u.get('topicProof')),catalog=catalog,investigation=investigation,experiment=experiments.get(u['id']))
  lesson_assets = ['geometry.js','lab.js','experiments.js','tasks.js','practice.js','investigations.js','proof-diagrams.js','task-diagrams.js','store.js']
  if u['id']=='midline': lesson_assets.append('midline-diagram.js')
+ if u['id']=='area-triangle': lesson_assets.append('area-triangle-proof.js')
  if u['id']=='angles': lesson_assets.append('angle-notation.js')
  scripts=data('COURSE_CONFIG',cfg)+''.join(js(f) for f in lesson_assets + ['lesson.js'])
  page=shell(u['title'],body,scripts,True)
+ if u['id']=='area-triangle':
+  page=page.replace('</style>','@media(max-width:420px){.lesson-head h1{font-size:clamp(25px,7vw,30px);overflow-wrap:anywhere}}</style>',1)
  if u['id']=='angles':
   page=page.replace('</style>',(A/'angle-notation.css').read_text()+'</style>',1)
   page=page.replace('Двигаем → строим → объясняем','Находим вершину и стороны')

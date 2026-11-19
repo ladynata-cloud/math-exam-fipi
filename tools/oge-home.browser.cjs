@@ -120,8 +120,18 @@ async function destination(p,href){assert.equal(await p.locator('#model-link').g
    report.cases.push({width,status:'PASS',orbits:25,subtypes:53,checks:['layout','every selection and destination','paused pixels','keyboard','course navigation','first graph exercise','intro and all-map modes','topic illustrations','catalog visual continuity','three starting paths']});await c.close();
   }
   const c=await context(browser,{reducedMotion:'no-preference'}),p=await c.newPage();await p.goto(base+'/oge/');await allTopics(p);await p.locator('.model-exhibit[data-renderer]').waitFor();
-  await p.locator('[data-orbit=all]').click();const start=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(700);assert.notDeepEqual(await p.locator('#oge-model-canvas').screenshot(),start,'whole universe moves');await picture(p,'orbit-moving');
-  await p.locator('#model-pause').click();const frozen=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(180);assert.deepEqual(await p.locator('#oge-model-canvas').screenshot(),frozen,'pause freezes all 25 orbits');
+  // Pointer selection is exercised at all four widths above. In this motion
+  // case, keyboard activation avoids selecting during a smooth focus scroll.
+  // Moving intro models must not pass as evidence for the 25-orbit view.
+  await p.locator('[data-orbit=all]').press('Enter');
+  await p.locator('.model-exhibit[data-detail="all"]').waitFor();
+  assert.equal(await p.locator('[data-orbit=all]').getAttribute('aria-pressed'),'true');
+  assert(await p.locator('.orbit-numbers').isVisible(),'all 25 orbit choices are visible before the motion check');
+  const start=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(700);assert.notDeepEqual(await p.locator('#oge-model-canvas').screenshot(),start,'whole universe moves');await picture(p,'orbit-moving');
+  await p.locator('#model-pause').press('Enter');
+  assert.equal(await p.locator('#model-pause').getAttribute('aria-pressed'),'true');
+  assert.equal(await p.locator('.model-exhibit').getAttribute('data-detail'),'all');
+  const frozen=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(180);assert.deepEqual(await p.locator('#oge-model-canvas').screenshot(),frozen,'pause freezes all 25 orbits');
   await p.locator('[data-orbit="2"]').click();await p.locator('[data-type="0"]').click();const still=await p.locator('#oge-model-canvas').screenshot();
   const box=await p.locator('#oge-model-canvas').boundingBox();await p.mouse.move(box.x+box.width*.4,box.y+box.height*.5);await p.mouse.down();await p.mouse.move(box.x+box.width*.65,box.y+box.height*.5,{steps:8});await p.mouse.up();assert.notDeepEqual(await p.locator('#oge-model-canvas').screenshot(),still,'drag rotates individual model');
   await p.locator('#model-pause').click();const moving=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(300);assert.notDeepEqual(await p.locator('#oge-model-canvas').screenshot(),moving,'individual spin resumes');

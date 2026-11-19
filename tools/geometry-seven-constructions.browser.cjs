@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const {chromium} = require('playwright');
+const checkPracticeAndArea = require('./geometry-practice-and-area.browser.cjs');
 const root = path.resolve(__dirname, '..');
 const origin = 'https://mathexam.space';
 const mime = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.json':'application/json', '.svg':'image/svg+xml'};
@@ -103,7 +104,31 @@ async function textbooks(page) {
     await page.locator('svg[data-view="step-1"] [data-segment="'+top+'-H"]').first().waitFor({state:'attached'});
     await page.locator('svg[data-view="step-1"] [data-label="H"]').waitFor();
     await page.getByRole('button',{name:'Следующий шаг',exact:true}).click();
-    await page.locator('svg[data-view="step-2"] [data-segment^="_r'+top+'"]').first().waitFor({state:'attached'});
+    const figure=page.locator('[data-main-model] svg[data-view="step-2"]');
+    await figure.waitFor();
+    assert.equal(await page.locator('svg[data-view="step-2"]').count(),1);
+    const marks=await figure.evaluate(svg=>{
+      const strokes=[...svg.querySelectorAll('[data-right-angle], [data-segment^="_r"]')];
+      return strokes.map(stroke=>{
+        const style=getComputedStyle(stroke);
+        let visible=style.visibility==='visible' && style.stroke!=='none' && style.strokeOpacity!=='0';
+        for(let el=stroke;visible && el;el=el.parentElement){
+          const css=getComputedStyle(el);
+          visible=css.display!=='none' && css.opacity!=='0' && css.contentVisibility!=='hidden';
+        }
+        return {
+          name:stroke.getAttribute('data-right-angle') || stroke.getAttribute('data-segment'),
+          visible:visible && stroke.getTotalLength()>0
+        };
+      });
+    });
+    // The viewer draws each right-angle sign with two strokes. No. 10.33
+    // retains its authored square corners from the staged construction.
+    const expected=num==='032'
+      ? ['A H C','A H C','M A H','M A H']
+      : ['_rB1-_rB2','_rB2-_rB3','_rH1-_rH2','_rH2-_rH3'];
+    assert.deepEqual(marks.map(mark=>mark.name).sort(),expected);
+    assert(marks.every(mark=>mark.visible),'Both right angles have visible strokes');
     await page.getByRole('button',{name:'Следующий шаг',exact:true}).click();
     await page.locator('svg[data-view="step-3"]').waitFor();
     await noOverflow(page);
@@ -168,6 +193,8 @@ async function oge(page) {
       for(const id of ['triangle','circle','practice-diameter-chord'])await base(page,id);
       await oge(page);await vpr(page,3);await vpr(page,4);await textbooks(page);
       for(let i=1;i<=6;i++)await profile(page,i);
+      await checkPracticeAndArea(page,origin);
+      await checkPracticeAndArea.checkManaged(page,origin);
       assert.deepEqual(errors,[]);
       console.log('All seven corrections and six dihedral variants at '+width+'px');
     }finally{await browser.close();}

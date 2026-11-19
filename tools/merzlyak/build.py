@@ -70,6 +70,9 @@ for u in units:
      code = (ROOT/'tools/geometry-inscribed-angle/proof.html').read_text(encoding='utf-8') + code
  if u['id'] == 'merzlyak-base-9-13':
      code = code.replace(scripts(['lab.js'],'../'), scripts(['vector-components.js','lab.js'],'../'))
+ if u['id'] == 'merzlyak-base-8-22':
+     code = code.replace('<script src="../assets/lesson.js"></script>',
+         '<script src="../../geometry-course/assets/area-triangle-proof.js?v=20261118"></script><script src="../assets/lesson.js?v=20261118-triangle-area"></script>')
  if u['id'] == 'merzlyak-base-8-7':
      code = code.replace('<script src="../assets/lesson.js"></script>',
          '<script src="/geometry-course/assets/midline-diagram.js?v=20261114"></script><script src="../assets/lesson.js?v=20261114-midline"></script>')
