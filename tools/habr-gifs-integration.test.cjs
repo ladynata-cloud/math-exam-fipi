@@ -33,6 +33,41 @@ test('OGE actual generated output still has no external scripts; only new standa
   assert(row.block.includes(fs.readFileSync(path.join(root,'assets/habr-entry-gifs.js'),'utf8')));
   assert(row.block.includes(fs.readFileSync(path.join(root,'assets/habr-entry-gifs.css'),'utf8')));
 });
-test('board wrappers, storage/model runtimes and every existing offline output are byte-identical',()=>{
-  execFileSync('git',['diff','--exit-code',manifest.sourceTree,'--','downloads','stereo-course/sections/download','stereo-course/sections/assets','stereo-course/sections/data','stereo-course/literacy/app.js','stereo-course/literacy/data','stereo-course/assets','trainers/trainer-board.html','trainers/board-picker.js','trainers/sections-from-zero.html','trainers/board-bridge.js','trainers/vendor','board-server','ege-profil/circle/app.js','ege-profil/circle/models.js','ege-profil/circle/state.js','ege-profil/circle/board-session.js','oge/skills/engine.js','oge/skills/series-runtime.js','oge/skills/course-data.json','oge/skills/series-catalog.json'],{cwd:root,maxBuffer:2e6});
+test('board wrappers, storage/model runtimes and every existing offline output are byte-identical', () => {
+  const protectedPaths = [
+    'downloads',
+    'stereo-course/sections/download',
+    'stereo-course/sections/assets',
+    'stereo-course/sections/data',
+    'stereo-course/literacy/app.js',
+    'stereo-course/literacy/data',
+    'stereo-course/assets',
+    'trainers/trainer-board.html',
+    'trainers/board-picker.js',
+    'trainers/sections-from-zero.html',
+    'trainers/board-bridge.js',
+    'trainers/vendor',
+    'board-server',
+    'ege-profil/circle/app.js',
+    'ege-profil/circle/models.js',
+    'ege-profil/circle/state.js',
+    'ege-profil/circle/board-session.js',
+    'oge/skills/engine.js',
+    'oge/skills/series-runtime.js',
+    'oge/skills/course-data.json',
+    'oge/skills/series-catalog.json',
+  ];
+  // The separate geometry release replaces exactly one download before the Habr guides ship.
+  const geometryIntegration = '868fb01a936f2f1abccd407cf879379815de2bd0';
+  const ancestors = execFileSync('git', ['rev-list', 'HEAD'], {cwd: root, encoding: 'ascii', maxBuffer: 16 * 1024 * 1024});
+  if (ancestors.split('\n').includes(geometryIntegration)) {
+    const archive = 'downloads/trainers/geometry-course/geometry-course-package.zip';
+    assert.equal(hash(fs.readFileSync(path.join(root, archive))), '51b16f99d3388ca06454ea41cac5bd4e244964fefeb2b11f0621d188c7df5b93',
+      'The independently verified geometry ZIP must be preserved byte-for-byte');
+    const indexedArchive = execFileSync('git', ['ls-files', '--stage', '--', archive], {cwd: root, encoding: 'utf8'}).trimEnd();
+    assert.equal(indexedArchive, `100644 4acc20eb3e34d1969d34ce15bdf0e246cf5887bf 0\t${archive}`);
+    execFileSync('git', ['diff', '--quiet', '--', archive], {cwd: root});
+    protectedPaths.push(`:(top,exclude,literal)${archive}`);
+  }
+  execFileSync('git', ['diff', '--quiet', manifest.sourceTree, '--', ...protectedPaths], {cwd: root});
 });
