@@ -40,7 +40,7 @@
       "agent": "/root"
     },
     {
-      "fileNameRegex": "research-.+\\.json",
+      "fileNameRegex": "research-(?!sections-00[1-6]\\.json$).+\\.json",
       "agent": "/root/textbook_inventory"
     },
     {
@@ -54,6 +54,14 @@
     {
       "fileNameRegex": "theory-1[0-9]-detail-\\d{2}\\.json",
       "agent": "/root/textbook_inventory"
+    },
+    {
+      "fileNameRegex": "research-sections-00[346]\\.json",
+      "agent": "/root/sections_pr_inventory"
+    },
+    {
+      "fileNameRegex": "research-sections-00[125]\\.json",
+      "agent": "/root/geometry_release_review"
     }
   ],
   "reports": [
@@ -645,8 +653,7 @@
         "selector": "reviewer",
         "equals": "independent agent /root/theory_course (not the supplementary author)"
       },
-      "fileNameRegex": "research-.+\\.json",
-      "expectedCards": 13,
+      "expectedCards": 7,
       "records": "lessons",
       "pathKey": "file",
       "idKey": "lessonId",
@@ -679,6 +686,53 @@
       },
       "unresolvedSelectors": [
         "unresolved"
+      ],
+      "fileNames": [
+        "research-skew-lines-001.json",
+        "research-skew-lines-002.json",
+        "research-skew-lines-003.json",
+        "research-skew-lines-004.json",
+        "research-skew-lines-005.json",
+        "research-skew-lines-006.json",
+        "research-skew-lines-007.json"
+      ],
+      "excludedRecords": [
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
+          "sha256": "2db94346c392eba953aa0c0a43403b77000ea00ec288eaf740ef4a96963357e9",
+          "reason": "Superseded by independent review of the composed PR 627 and PR 658 content; historical bytes are retained.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-composition-20261118.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
+          "sha256": "5110112ac53493fd702aafb827db2f181459f96e2e21cd645cee47f63fabed5c",
+          "reason": "Superseded by independent review of the composed PR 627 and PR 658 content; historical bytes are retained.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-composition-20261118.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-003.json",
+          "sha256": "20aaba4d4604625db4a2c07936c83dc7d32a310b309fbf7f824ca5555cc6f3ab",
+          "reason": "The six content revisions received a new independent exact-file review; this historical report remains unchanged.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-harmonization-20261116.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-004.json",
+          "sha256": "c13d5d3857e377685b73e2b13ea510cae05cd55d81e5e2ec96e31902629f0943",
+          "reason": "The six content revisions received a new independent exact-file review; this historical report remains unchanged.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-harmonization-20261116.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
+          "sha256": "9b34acb63e5fc6af9e77e39ba6c6577db09ebd9d2e3960f9afb04b536ee9d0f8",
+          "reason": "Superseded by independent review of the composed PR 627 and PR 658 content; historical bytes are retained.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-composition-20261118.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-006.json",
+          "sha256": "fec71285f0ddf4bfdf0a784ecf3b0938ad241e89d3245ead5485be5e2a1a369d",
+          "reason": "The six content revisions received a new independent exact-file review; this historical report remains unchanged.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-harmonization-20261116.json"
+        }
       ]
     },
     {
@@ -1076,6 +1130,124 @@
         "theory-19-detail-10.json"
       ],
       "acceptedScopeNote": "Final independent review after RART001–005; 13 exact-hash cards, 46 inventory units, all three explicit dimensions PASS. Historical source-article gap is now covered."
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-sections-harmonization-20261116.json",
+      "sha256": "fe0f9ee95dc5caff1adc678b4adaeec5bcc5066347b40464a3b47c5a0c630b69",
+      "reviewerAgent": "/root/sections_technical_audit",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "/root/sections_technical_audit"
+      },
+      "fileNames": [
+        "research-sections-003.json",
+        "research-sections-004.json",
+        "research-sections-006.json"
+      ],
+      "expectedCards": 3,
+      "records": "files",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdict",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolved"
+      ],
+      "acceptedScopeNote": "Independent review of six content revisions. Source fidelity was verified by exact preservation against base; original statements, proofs, models, answer mode and storage revision remain unchanged. This is not release approval.",
+      "excludedRecords": [
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
+          "sha256": "7e17275a641786604006057cdcea8454deaac22f3615e9cce48b85b7ca341c6b",
+          "reason": "The corrected views and wording from PR 658 are composed with the reviewed learning steps; new exact-file review replaces this historical record.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-composition-20261118.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
+          "sha256": "6ab5fce215380521f261fb5e88c9dd079db37c135b94f8480fd0a7c8b14adc26",
+          "reason": "The corrected views and wording from PR 658 are composed with the reviewed learning steps; new exact-file review replaces this historical record.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-composition-20261118.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
+          "sha256": "1d7e61db4038e0599b40bfe8c0a5bbc76064eb6b0dfab11230c6301af6ab0e16",
+          "reason": "The corrected views and wording from PR 658 are composed with the reviewed learning steps; new exact-file review replaces this historical record.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-composition-20261118.json"
+        }
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-sections-composition-20261118.json",
+      "sha256": "db307a91be3b442706fbeaee5cc095388659fabc487b6971909926c023d59324",
+      "reviewerAgent": "/root/math_release_review",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "/root/math_release_review"
+      },
+      "fileNames": [
+        "research-sections-001.json",
+        "research-sections-002.json",
+        "research-sections-005.json"
+      ],
+      "expectedCards": 3,
+      "records": "files",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdict",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolved"
+      ],
+      "acceptedScopeNote": "Independent exact-file composition review. Original scan not reopened; source means exact statement/source preservation against reviewed PR 658. This does not grant release approval."
     }
   ]
 }

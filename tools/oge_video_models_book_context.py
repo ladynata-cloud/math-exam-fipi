@@ -9,6 +9,7 @@ PINS = json.loads((ROOT / 'tools/fixtures/oge-video-models-native-bytes.json').r
 UPDATES = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-native-bytes.json').read_text())
 V3 = json.loads((ROOT / 'tools/fixtures/oge-book-v3-context.json').read_text())
 GRAPH_INTERSECTIONS = json.loads((ROOT / 'tools/fixtures/oge22-intersections-display.json').read_text())
+QUADRILATERAL_ANGLES = json.loads((ROOT / 'tools/fixtures/oge17-right-angles-display.json').read_text())
 LABEL = 'Разобраться на модели'
 SUMMARY_HTML = '<summary data-ovm-open="">' + LABEL + '</summary>'
 ASSETS = ['/trainers/oge-video-models.css', '/trainers/oge-video-graphs.js',
@@ -113,9 +114,17 @@ def verified_v3_wayfinding(record):
 
 def restore_graph_intersections(file, raw):
     """Invert all three exact display fragments; original engine pins stay sealed."""
-    if file != GRAPH_INTERSECTIONS['file']:
+    return restore_display_fragments(file, raw, GRAPH_INTERSECTIONS)
+
+
+def restore_quadrilateral_angles(file, raw):
+    return restore_display_fragments(file, raw, QUADRILATERAL_ANGLES)
+
+
+def restore_display_fragments(file, raw, rule):
+    if file != rule['file']:
         return raw
-    fragments = GRAPH_INTERSECTIONS['fragments']
+    fragments = rule['fragments']
     if not all(raw.count(fragment['after'].encode()) == 1 for fragment in fragments):
         return raw
     for fragment in fragments:
@@ -184,6 +193,7 @@ def verified_context(record):
             if file == graph_scale['file'] and native.count(graph_scale['after'].encode()) == 1:
                 native = native.replace(graph_scale['after'].encode(), graph_scale['before'].encode(), 1)
                 native = restore_graph_intersections(file, native)
+            native = restore_quadrilateral_angles(file, native)
             if sha(native) != pin['sha256']: return None
         if context['nativeSha256'] != pin['sha256']: return None
         if sha(raw) != context['sourceSha256']: return None

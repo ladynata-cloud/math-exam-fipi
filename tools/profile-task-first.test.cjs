@@ -28,6 +28,45 @@ test('HTML loads the presentation helper before the learner engine',()=>{
   assert.match(html,/ЕГЭ профиль 2027/);
 });
 
+for(const offline of [false,true])test(`Optional opposite-vector check ${offline?'in the standalone download':'online'} gives feedback after a choice and preserves an unfinished attempt`,()=>{
+  const {JSDOM}=require('jsdom'),path=require('node:path');
+  const start=path.resolve('ege-profil/start');
+  const source=offline?'downloads/trainers/ege-profil-start/ege-profil-start.html':path.join(start,'index.html');
+  const dom=new JSDOM(fs.readFileSync(source,'utf8'),{url:'https://mathexam.space/ege-profil/start/#lesson/vec-basics-equality',runScripts:'outside-only',pretendToBeVisual:true});
+  const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
+  const api=require('../ege-profil/start/state.js'),vectors=require('../ege-profil/start/vector-basics-data.js');
+  const values=new Map(),storage={getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value)};
+  const saved=api.create(vectors,storage);const attempt=saved.start('vec-basics-equality','guided');
+  attempt.draft='BA';saved.persist();
+  for(const [key,value] of values)w.localStorage.setItem(key,value);
+  try{
+    if(offline){
+      assert.equal(w.document.querySelectorAll('script[src]').length,0,'No remote scripts in the standalone download');
+      for(const name of ['app','calm-ui','vector-basics-data','geometry-data','stereo-data']){
+        const embedded=w.document.querySelector(`script[data-inline-source="/ege-profil/start/${name}.js"]`);
+        assert(embedded);assert.equal(embedded.textContent.trim(),fs.readFileSync(path.join(start,name+'.js'),'utf8').replace(/<\/script/gi,'<\\/script').trim(),'The actual combined source is embedded: '+name);
+      }
+    }
+    for(const script of w.document.scripts){
+      if(script.type&&script.type!=='text/javascript')continue;
+      w.eval(script.src?fs.readFileSync(resolvePublicScript(path.resolve(__dirname,'..'),start,script.getAttribute('src')),'utf8'):script.textContent);
+    }
+    const d=w.document,box=d.querySelector('#opposite-vector-check');assert(box);assert.equal(box.open,false);
+    const snapshot=()=>JSON.stringify(Object.entries(w.localStorage).sort());const before=snapshot();
+    const feedback=box.querySelector('[data-opposite-direction-feedback]'),length=box.querySelector('[data-opposite-length-step]');
+    assert.equal(feedback.textContent,'');assert(length.hidden);assert(box.querySelector('[data-opposite-hint-text]').hidden);
+    box.open=true;box.querySelector('[data-opposite-direction="AB"]').click();assert.match(feedback.textContent,/Попробуй ещё раз/);assert(length.hidden);
+    const hint=box.querySelector('[data-opposite-hint]');hint.click();assert.equal(hint.getAttribute('aria-expanded'),'true');assert(!box.querySelector('[data-opposite-hint-text]').hidden);hint.click();assert.equal(hint.getAttribute('aria-expanded'),'false');
+    box.querySelector('[data-opposite-direction="BA"]').click();assert.match(feedback.textContent,/Верно: BA/);assert(!length.hidden);
+    const lengthFeedback=box.querySelector('[data-opposite-length-feedback]');assert.equal(lengthFeedback.textContent,'');
+    box.querySelector('[data-opposite-length="longer"]').click();assert.match(lengthFeedback.textContent,/попробуй ещё раз/);
+    box.querySelector('[data-opposite-length="same"]').click();assert.match(lengthFeedback.textContent,/длина сохранилась/);
+    assert.equal(snapshot(),before,'Optional practice never writes task answers, progress or help flags');
+    assert.equal(JSON.parse(w.localStorage.getItem('mathexam.profileStart2027.v1')).sessions['vec-basics-equality:guided'].draft,'BA');
+    assert.equal(vectors.flatMap(l=>l.tasks).length,54);
+  }finally{w.close();}
+});
+
 test('All 68 lesson families keep the real task, answer, diagram and nested help mounted across collapse',()=>{
   const {JSDOM}=require('jsdom'),path=require('node:path');
   const start=path.resolve('ege-profil/start');

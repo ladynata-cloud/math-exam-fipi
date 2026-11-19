@@ -2,7 +2,7 @@
   'use strict';
 
   const cycle = names => names.map((name, i) => [name, names[(i + 1) % names.length]]);
-  const view = (label, segments, polygon = []) => ({ label, segments, polygon });
+  const view = (label, segments, polygon = [], rightAngles = []) => ({ label, segments, polygon, rightAngles });
   const neutral = label => view(label, []);
 
   function regularPyramid(sides, a, h) {
@@ -21,9 +21,9 @@
       faces: [vertices, ...bottom.map(edge => ['P', ...edge])],
       views: {
         neutral: neutral('P — вершина, O — центр основания, M — середина стороны AB.'),
-        apothem: view('В треугольнике POM угол при O прямой. PM — апофема.', [['P', 'O'], ['O', 'M'], ['P', 'M']], ['P', 'O', 'M']),
-        faceEdge: view('В боковой грани PAB треугольник PAM прямоугольный. PA — боковое ребро.', [['P', 'M'], ['A', 'M'], ['P', 'A']], ['P', 'A', 'M']),
-        face: view('PM — высота боковой грани PAB.', [['P', 'M']], ['P', 'A', 'B'])
+        apothem: view('В треугольнике POM угол при O прямой. PM — апофема.', [['P', 'O'], ['O', 'M'], ['P', 'M']], ['P', 'O', 'M'], [['P', 'O', 'M']]),
+        faceEdge: view('В боковой грани PAB треугольник PAM прямоугольный. PA — боковое ребро.', [['P', 'M'], ['A', 'M'], ['P', 'A']], ['P', 'A', 'M'], [['P', 'M', 'A']]),
+        face: view('PM — высота боковой грани PAB.', [['P', 'M']], ['P', 'A', 'B'], [['P', 'M', 'A']])
       }
     };
   }
@@ -50,8 +50,8 @@
       views: {
         neutral: neutral('ABCD и A₁B₁C₁D₁ — параллельные квадратные основания.'),
         similar: view('Верхнее основание подобно нижнему.', [], upper),
-        apothem: view('MN — высота боковой трапеции. O₁O — высота тела.', [['M', 'N'], ['O1', 'O']], ['A', 'B', 'B1', 'A1']),
-        triangle: view('В прямоугольном треугольнике NQM отрезок NQ равен высоте, MQ — половине разности сторон квадратов.', [['N', 'Q'], ['Q', 'M'], ['M', 'N']], ['N', 'Q', 'M'])
+        apothem: view('MN — высота боковой трапеции. O₁O — высота тела.', [['M', 'N'], ['O1', 'O']], ['A', 'B', 'B1', 'A1'], [['N', 'M', 'A']]),
+        triangle: view('В прямоугольном треугольнике NQM отрезок NQ равен высоте, MQ — половине разности сторон квадратов.', [['N', 'Q'], ['Q', 'M'], ['M', 'N']], ['N', 'Q', 'M'], [['N', 'Q', 'M']])
       }
     };
   }
@@ -68,9 +68,9 @@
       faces: [vertices, ...bottom.map(edge => ['P', ...edge])],
       views: {
         neutral: neutral('O — точка пересечения диагоналей ромба. PO — высота пирамиды.'),
-        base: view('Диагонали ромба пересекаются под прямым углом в точке O.', [['A', 'O'], ['B', 'O']], ['A', 'O', 'B']),
-        long: view('PO и AO — катеты треугольника POA.', [['P', 'O'], ['O', 'A'], ['P', 'A']], ['P', 'O', 'A']),
-        short: view('PO и BO — катеты треугольника POB.', [['P', 'O'], ['O', 'B'], ['P', 'B']], ['P', 'O', 'B'])
+        base: view('Диагонали ромба пересекаются под прямым углом в точке O.', [['A', 'O'], ['B', 'O']], ['A', 'O', 'B'], [['A', 'O', 'B']]),
+        long: view('PO и AO — катеты треугольника POA.', [['P', 'O'], ['O', 'A'], ['P', 'A']], ['P', 'O', 'A'], [['P', 'O', 'A']]),
+        short: view('PO и BO — катеты треугольника POB.', [['P', 'O'], ['O', 'B'], ['P', 'B']], ['P', 'O', 'B'], [['P', 'O', 'B']])
       }
     };
   }

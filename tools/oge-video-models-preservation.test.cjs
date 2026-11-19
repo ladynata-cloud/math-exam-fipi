@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
-const {entries, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections} = require('./oge-video-models-preservation.cjs');
+const {entries, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections, restoreReviewedDrawing} = require('./oge-video-models-preservation.cjs');
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const graphIntersections = require('./fixtures/oge22-intersections-display.json');
 const ROOT = path.resolve(__dirname, '..');
@@ -23,7 +23,7 @@ for (const [number, file] of Object.entries(entries)) {
       assert.equal(require('node:crypto').createHash('sha256').update(restoreVideoModels(file, historical)).digest('hex'), updates.pages[file].sha256, 'historical teaching pin remains unchanged');
     }
     assert.equal(current.split(snippet(number)).length, 2);
-    assert.equal(restoreGraphScale(file, restoreVideoModels(file, current)), baseline);
+    assert.equal(restoreReviewedDrawing(file, restoreVideoModels(file, current)), baseline);
     assert.equal(restoreVideoModels(file, baseline), baseline);
     for (const changed of [snippet(number) + snippet(number), snippet(number).replace('defer', 'async'), snippet(number).replace('data-oge-video-task="' + number + '"', 'data-oge-video-task="0"')]) {
       assert.throws(() => restoreVideoModels(file, current.replace(snippet(number), changed)));
@@ -93,4 +93,20 @@ test('task22 intersection display inverse requires the complete exact renderer a
   assert.notEqual(changedMath, source);
   assert(restoreGraphIntersections(file, changedMath).includes('const x=2/(C-m);'), 'inverse cannot erase an unrelated mathematical edit');
   assert.notEqual(nativeHash(changedMath), historicalPin);
+});
+
+test('task17 square and rectangle signs are the only approved change to the native figures', () => {
+  const {file, fragments} = require('./fixtures/oge17-right-angles-display.json');
+  const source = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  const original = execFileSync('git', ['show', updates.pages[file].sourceCommit + ':' + file], {cwd: ROOT, encoding: 'utf8'});
+  const native = raw => restoreReviewedDrawing(file, restoreVideoModels(file, raw));
+  assert.equal(native(source), restoreVideoModels(file, original));
+  for (const {after, before} of fragments) {
+    for (const replacement of [before, after.repeat(2), after.replace('markRectangle', 'wrongAngles')]) {
+      const changed = source.replace(after, replacement);
+      assert.notEqual(changed, source);
+      assert.equal(restoreReviewedDrawing(file, changed), changed);
+      assert.notEqual(native(changed), native(source));
+    }
+  }
 });

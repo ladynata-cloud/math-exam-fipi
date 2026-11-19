@@ -10,13 +10,20 @@ const core=require('../trainers/oge-basics/multiplication-division/division-cour
 const read=file=>fs.readFileSync(path.join(__dirname,'..',file),'utf8');
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 const estimate='multiplication-division/course-estimate';
-const destination='https://mathexam.space/trainers/rounding-stepwise.html?place=1&from=division';
-function assertLink(link){
- assert(link,'Rounding preparation is visible');
- assert.equal(link.href,destination);
- assert.equal(link.target,'_blank');
- assert(link.relList.contains('noopener'));
- assert.equal(link.onclick,null,'The link cannot create, assign, or submit an attempt');
+const modes=[['1','десятков'],['2','сотен']];
+function assertLinks(section){
+ assert(section,'Rounding preparation is visible');
+ const links=[...section.querySelectorAll('a')].filter(link=>new URL(link.href).pathname==='/trainers/rounding-stepwise.html');
+ assert.equal(links.length,modes.length);
+ links.forEach((link,index)=>{
+  const [place,unit]=modes[index];
+  assert.equal(link.href,'https://mathexam.space/trainers/rounding-stepwise.html?place='+place+'&from=division');
+  assert.equal(link.textContent.trim(),'Округление до '+unit+' ↗');
+  assert.equal(link.target,'_blank');
+  assert(link.relList.contains('noopener'));
+  assert.equal(link.onclick,null,'The link cannot create, assign, or submit an attempt');
+ });
+ return links;
 }
 function assertPrep(host){
  const preparation=host.querySelector('[data-division-preparation]');
@@ -31,7 +38,7 @@ function assertPrep(host){
  const next=preparation.nextElementSibling;
  assert(next.classList.contains('division-course-step'));
  assert.equal(next.querySelector('h3').textContent,core.stageFor(estimate).title);
- assertLink(preparation.querySelector('a'));
+ assertLinks(preparation);
  return preparation;
 }
 test('rounding preparation changes navigation only; canonical stage IDs, order and prerequisites remain intact',()=>{
@@ -43,6 +50,8 @@ test('rounding preparation changes navigation only; canonical stage IDs, order a
  const stage=division.stages.find(stage=>stage.id===estimate);
  assert.equal(stage.preparation,metadata.roundingPreparation);
  assert(Object.isFrozen(stage.preparation));
+ assert(Object.isFrozen(stage.preparation.modes));
+ assert.equal(stage.preparation.publicUrl,stage.preparation.modes[0].publicUrl);
  assert(!Object.hasOwn(metadata.stageFor(estimate),'preparation'),'Public practice metadata cannot enter canonical tasks');
  assert.equal(metadata.has('rounding-stepwise'),false);
  assert.equal(metadata.trackFor('rounding-stepwise'),null);
@@ -57,7 +66,7 @@ for(const role of ['student','teacher'])test(`cabinet ${role} sees rounding imme
  const dispose=w.LearningDivisionCourse.mount(host,{account:{id:'fixture',role},api:async(...args)=>{reads.push(args);return {progress:[saved]};},openContent:async(...args)=>writes.push(args)});
  await tick();const preparation=assertPrep(host);
  assert.match(preparation.textContent,/не входит в прогресс кабинета/);
- preparation.querySelector('a').dispatchEvent(new w.MouseEvent('click',{bubbles:true,cancelable:true}));
+ for(const link of assertLinks(preparation))link.dispatchEvent(new w.MouseEvent('click',{bubbles:true,cancelable:true}));
  await tick();assert.deepEqual(writes,[]);assert.equal(JSON.stringify(saved),before);
  assert.equal(host.querySelectorAll('[data-division-stage]').length,31);
  if(role==='student'){
@@ -80,22 +89,22 @@ test('public route preserves saved work and both progress counters when opening 
  assert.deepEqual([...host.querySelectorAll('progress')].map(p=>[p.value,p.max]),[[0,16],[0,15]]);
  assert.equal(host.querySelectorAll('[data-arithmetic-track] .division-course-step').length,31);
  assert.equal(host.querySelectorAll('[data-foundation-track] .division-course-step').length,12);
- preparation.querySelector('a').dispatchEvent(new w.MouseEvent('click',{bubbles:true,cancelable:true}));
+ for(const link of assertLinks(preparation))link.dispatchEvent(new w.MouseEvent('click',{bubbles:true,cancelable:true}));
  w.dispatchEvent(new w.Event('pageshow'));assertPrep(host);
  assert.deepEqual(writes,[]);assert.deepEqual([...records],[['unrelated','keep verbatim']]);w.close();
 });
-for(const contentId of [estimate,'multiplication-division/quotient-estimate'])test(`parent support for ${contentId} links to Claude rounding and retains the current draft`,()=>{
+for(const contentId of [estimate,'multiplication-division/quotient-estimate'])test(`support for ${contentId} offers both rounding modes and retains the current draft`,()=>{
  const dom=new JSDOM('<main id="host"></main>',{url:'https://cabinet.example.test/learning/#attempt=saved',runScripts:'outside-only'});
  const w=dom.window,host=w.document.getElementById('host'),writes=[];
  const attempt={id:'saved',learnerId:'fixture',trainerId:'oge-basics',contentId,outcome:'started',state:{answer:'80',step:2,note:'Моя запись'}};
  const before=JSON.stringify(attempt);
  w.eval(read('learning/division-course-map.js'));w.eval(read('learning/route.js'));
  w.LearningRoute.mountSupport(host,{catalog,attempt,attempts:[attempt],account:{id:'fixture',role:'student'},labels:{},submit:()=>writes.push('submit'),canLeave:()=>true,openContent:(...args)=>writes.push(args)});
- const section=host.querySelector('.rounding-preparation');assertLink(section.querySelector('a'));
+ const section=host.querySelector('.rounding-preparation');const links=assertLinks(section);
  assert.match(section.textContent,/Эта работа останется здесь/);
  assert.equal(section.querySelector('button,iframe'),null);
  assert(![...host.querySelectorAll('[data-support-basis]')].some(button=>button.dataset.supportBasis==='oge-basics:rounding'),'The retired rounding trainer is not offered as the estimate foundation');
- section.querySelector('a').dispatchEvent(new w.MouseEvent('click',{bubbles:true,cancelable:true}));
+ for(const link of links)link.dispatchEvent(new w.MouseEvent('click',{bubbles:true,cancelable:true}));
  assert.deepEqual(writes,[]);assert.equal(JSON.stringify(attempt),before);assert.equal(w.location.hash,'#attempt=saved');w.close();
 });
 test('unrelated tasks do not gain rounding support',()=>{
@@ -105,15 +114,20 @@ test('unrelated tasks do not gain rounding support',()=>{
  w.LearningRoute.mountSupport(host,{catalog,attempt:{id:'saved',trainerId:'oge-basics',contentId:'fraction-meaning'},attempts:[],account:{id:'fixture'},labels:{},submit(){},canLeave(){return true;},openContent(){}});
  assert.equal(host.querySelector('.rounding-preparation'),null);w.close();
 });
-test('both public estimate pages offer the same rounding practice outside their exercise content',()=>{
+test('both public estimate pages offer the two rounding modes outside their exercise content',()=>{
  for(const name of ['course-estimate','quotient-estimate']){
   const file='trainers/oge-basics/multiplication-division/'+name+'.html';
   const dom=new JSDOM(read(file),{url:'https://mathexam.space/'+file}),document=dom.window.document;
-  const section=document.querySelector('.rounding-preparation');assertLink(section.querySelector('a'));
+  const section=document.querySelector('.rounding-preparation');assertLinks(section);
   assert.equal(section.closest('#view-practice'),null);
   assert.equal(section.hidden,false);
   assert.match(section.textContent,/десятков, сотен, тысяч/);
   assert(document.querySelector('#practice'));assert(document.querySelector('#view-practice'));
+  if(name==='course-estimate'){
+   const applyHundreds=document.querySelector('a[href="quotient-estimate.html?round=hundreds"]');
+   assert.equal(applyHundreds.target,'_blank');
+   assert(applyHundreds.relList.contains('noopener'));
+  }
   assert(!section.querySelector('button,iframe'));dom.window.close();
  }
 });

@@ -66,6 +66,22 @@ class SupplementaryModels(unittest.TestCase):
   p=points(scene('sections',6));self.assertTrue(near(dist(p,'A','C'),12));self.assertTrue(near(p['K'],(p['B']+p['C'])/2));self.assertTrue(near(p['E'],(p['A']+p['K'])/2));self.assertTrue(near(p['F'],(p['D']+p['K'])/2));self.assertTrue(near(p['G'],(p['A']+p['B']+p['D'])/3))
   self.assertTrue(plane(p,['C','P','Q','E','F','G']));self.assertTrue(col(p,'C','P','E'));self.assertTrue(col(p,'C','Q','F'));self.assertTrue(near(dist(p,'A','P')/dist(p,'P','B'),.5))
 
+ def test_section_views_show_given_points_and_concurrent_traces(self):
+  model=scene('sections',1)
+  p=points(model)
+  for view_name, point, required_count in [('traces','M',1),('abd','Z',3)]:
+   with self.subTest(view=view_name,point=point):
+    segments=model['views'][view_name]['segments']
+    containing=sum(col(p,a,b,point) and near(dist(p,a,point)+dist(p,point,b),dist(p,a,b)) for a,b in segments)
+    self.assertEqual(containing,required_count)
+  neutral=scene('sections',2)['views']['neutral']
+  self.assertTrue(set('MNPQRS') <= set(neutral['points']))
+  self.assertNotIn('O',neutral['points'])
+  self.assertFalse(neutral.get('polygon') or neutral.get('segments'))
+  p=points(scene('sections',5))
+  self.assertTrue(col(p,'D1','C1','U'))
+  self.assertGreater(np.dot(p['U']-p['C1'],p['C1']-p['D1']),0)
+
  def test_complete_plane_cuts(self):
   cases=[(2,['M','N','P'],'section',None),(4,['X','Y','C1'],'section','neutral'),(4,['X','V','E1'],'second-section','trapezoid'),(5,['A','M','N'],'section',None),(6,['E','F','G'],'section',None)]
   for n,abc,view,edgesview in cases:

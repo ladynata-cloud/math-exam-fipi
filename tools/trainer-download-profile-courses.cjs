@@ -56,6 +56,15 @@ async function sections(page) {
   assert.deepEqual(await page.evaluate(() => [COURSE.lessons.length, COURSE.learningPath.length]), [186, 26]);
   assert.equal(await page.locator('[data-path-stage]').count(), 26);
   await page.getByRole('button', { name: 'Начать с первой грани', exact: true }).click();
+  assert.equal(await page.locator('[data-research-stage]').getAttribute('data-research-stage'), 'begin-01');
+  assert(await page.locator('[data-action="research-observe"]').first().isDisabled());
+  await page.locator('#research-prediction').selectOption('unknown');
+  for (const id of await page.locator('[data-action="research-observe"]').evaluateAll(nodes => nodes.map(n => n.dataset.experiment))) {
+    await page.locator('[data-action="research-observe"][data-experiment="' + id + '"]').click();
+  }
+  await page.locator('#research-note').fill('Точка принадлежит той же грани после поворота.');
+  await page.locator('[data-action="research-finish"]').click();
+  await page.locator('[data-action="research-to-lesson"]').click();
   assert.equal(await page.locator('#lesson-title').innerText(), 'Находим одну грань');
   await page.evaluate(() => { location.hash = '#starter-18'; });
   await page.getByRole('heading', { name: 'Наклонный срез: правило то же' }).waitFor();
@@ -89,6 +98,26 @@ async function sections(page) {
   await page.locator('#lesson-title').waitFor();
   assert.deepEqual(await readWork(), saved);
   assert.equal(await page.locator('#proof-draft').inputValue(), explanation);
+
+  await page.evaluate(() => window.SECTIONS_MASTER.openLesson('starter-06'));
+  await page.locator('[data-action="start-construction"]').click();
+  await page.locator('[data-construction-plane="DHEA"]').click();
+  await page.locator('[data-construction-input="a"]').selectOption('M');
+  await page.locator('[data-construction-input="b"]').selectOption('M');
+  await page.locator('[data-construction-input="role"]').selectOption('helper');
+  await page.locator('[data-action="construction-submit"]').click();
+  assert.equal(await page.evaluate(() => window.SECTIONS_APP.getState().tasks['starter-06'].construction.actions.length), 0);
+  await page.locator('[data-construction-input="a"]').selectOption('N');
+  await page.locator('[data-action="construction-submit"]').click();
+  const check = await page.evaluate(() => COURSE.lessons.find(lesson => lesson.id === 'starter-06').check.correct);
+  await page.locator('[data-construction-check="' + check + '"]').click();
+  const manual = () => page.evaluate(() => window.SECTIONS_APP.getState().tasks['starter-06'].construction);
+  assert.equal((await manual()).evidence, 'corrected');
+  await page.locator('[data-action="construction-undo"]').click();
+  const undone = await manual();assert.equal(undone.actions.length, 0);assert.equal(undone.completed, false);
+  await page.reload();await page.locator('.construction-heading').waitFor();
+  assert.deepEqual(await manual(), undone);
+  assert.deepEqual(await readWork(), saved, 'New manual work keeps the old saved attempt');
 }
 
 async function checkEditedDivisibility(browser, entry, target) {
