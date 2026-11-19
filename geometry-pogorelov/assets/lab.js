@@ -38,7 +38,6 @@ function mount(el,spec,onChange){
  // follow the current rays after a point is dragged or the view is fitted.
  function drawRightAngles() {
   const drawn = new Set();
-  if (!spec.scene?.markConstructedPerpendicular) return drawn;
   function square(vertex, a, b) {
    if (![vertex, a, b].every(p => p && p.valid !== false)) return;
    const va = G.sub(a, vertex), vb = G.sub(b, vertex);
@@ -56,6 +55,12 @@ function mount(el,spec,onChange){
    if (a.id && b.id) drawn.add([vertex.id, ...[a.id, b.id].sort()].join(' '));
   }
   const point = id => board.point(id);
+  const shape = spec.scene?.type || spec.figure;
+  if (shape === 'right') square(point('C'), point('A'), point('B'));
+  if (shape === 'square' || shape === 'rectangle') {
+   const corners = ['A', 'B', 'C', 'D'];
+   corners.forEach((v, i) => square(point(v), point(corners[(i + 3) % 4]), point(corners[(i + 1) % 4])));
+  }
   for (const construction of board.objects) {
    const end = point(construction.b);
    if (construction.construction !== 'perpendicular' || !end || !board.geometry(construction)) continue;
