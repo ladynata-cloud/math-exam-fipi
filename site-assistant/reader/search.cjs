@@ -100,13 +100,17 @@
   }
 
   function firstReadingReply(cards, indexes, previousIndices, query) {
-    const candidates = previousIndices.length ? previousIndices : indexes.map((_, i) => i);
-    const matches = search(candidates.map(i => indexes[i]), query).map(i => candidates[i]);
+    // A correction starts a new search. An ordinary follow-up still narrows the
+    // previous candidates (a shared detail may be ambiguous in the full catalogue).
+    const replacement = query.match(/(?:^|\s)не\s+[^,;]+,\s*а\s+(.+)$/iu);
+    const correction = replacement || /перепутал|ошиб(?:ся|лась)|друг(?:ая книга|ую книгу|ой рассказ|ое произведение)|имел[аи]? в виду|на самом деле ищу|теперь\s+(?:поищи|найди(?:те)?|ищу|хочу (?:найти|прочитать))/iu.test(query);
+    const candidates = previousIndices.length && !correction ? previousIndices : indexes.map((_, i) => i);
+    const matches = search(candidates.map(i => indexes[i]), replacement?.[1] || query).map(i => candidates[i]);
     if (!matches.length) {
-      const text = previousIndices.length
+      const text = previousIndices.length && !correction
         ? 'По этой детали уточнить пока не получается. Помните имя, место или вещь из эпизода? Для другой книги можно начать заново.'
         : 'Такой детали я пока не нашёл в подборке. Вспомните имя героя, место или предмет из эпизода.';
-      return {indices: previousIndices, matched: false, text, links: []};
+      return {indices: correction ? [] : previousIndices, matched: false, text, links: []};
     }
     const found = matches.map(i => cards[i]);
     const links = found.slice(0, 3).map(c => ({id: c.id, label: c.title, url: c.url}));
@@ -133,6 +137,27 @@
     const links = [analysis, ...sourceLinks];
     if (record.source_status === 'blocked') {
       return {text: 'У мастерской есть только справочные сведения. ' + record.scope, paragraph: -1, links: sourceLinks};
+    }
+    if (record.source_status === 'limited') {
+      const primary = sourceLinks.find(source => source.kind === 'primary_fragment');
+      const pageReferences = [...q.matchAll(/(?:страниц[а-я]*|стр\.?|с\.)\s*[№#]?\s*(\d+(?:(?:\s*[–—,\-]\s*|\s+и\s+)\d+)*)|(\d+)(?:-[а-я]+)?\s+страниц[а-я]*/gu)]
+        .flatMap(match => (match[1] || match[2]).match(/\d+/gu).map(Number));
+      // Common ordinal page requests, including «прочитала девятую страницу».
+      const ordinalStems = ['перв', 'втор', 'треть', 'четверт', 'пят', 'шест', 'седьм', 'восьм', 'девят', 'десят'];
+      for (const match of q.matchAll(/(?:^|\s)([а-я]+?)(?:ую|юю|ой|ей|ая|яя)\s+страниц[а-я]*/gu)) {
+        const ordinal = ordinalStems.indexOf(match[1]) + 1;
+        if (ordinal && !/двадцать|тридцать|сорок|десят\s|сот\s|сто\s|тысяч/u.test(q)) pageReferences.push(ordinal);
+      }
+      // With incomplete evidence, an unclear page number cannot license a retelling.
+      const unnamedPage = !pageReferences.length && /страниц|(?:^|\s)стр\.?(?:\s|$)/u.test(q) &&
+        !/на (?:этой|проверенной|указанной) странице/u.test(q);
+      if (unnamedPage || pageReferences.some(page => !primary?.pages?.includes(page))) {
+        return {text: 'Эта страница выходит за пределы проверенного фрагмента. ' + record.scope +
+          ' Для ответа нужен текст этой страницы или фотография разворота.', paragraph: previousParagraph, links: primary ? [primary] : sourceLinks};
+      }
+      if (primary && /источник|фотограф|где (?:сверить|посмотреть)|(?:увидеть|открыть) (?:тот )?(?:разворот|фрагмент)/u.test(q)) {
+        return {text: primary.label + '. ' + record.scope, paragraph: previousParagraph, links: [primary]};
+      }
     }
     if (/цитат|дослов|чьи (?:это )?слова|слова (?:автора|писателя|платонова)|слова ли|источник|где сверить/u.test(q)) {
       return {text: 'Здесь приведён комментарий мастерской. Точные слова автора можно сверить по указанному источнику. ' + record.scope,

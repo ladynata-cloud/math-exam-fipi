@@ -62,10 +62,12 @@
     const move = context && Object.hasOwn(moves, context.step) && moves[context.step];
     if (!move) return {text:'Открой текущий шаг в тренажёре деления.', intent:'clarify'};
     const query = String(message || '').trim().toLowerCase().replace(/ё/g, 'е');
-    const simpler = /проще|понятнее|не понял|не поняла|еще раз|все равно|другими словами/.test(query);
+    const simpler = /проще|понятнее|не понял|не поняла|еще раз|все равно|другими словами|запутал|маленький шаг|помедленнее/.test(query);
     const why = /почему|зачем|смысл|обосну/.test(query);
     const next = /дальше|следующ|с чего|что (?:делать|сделать)|подска|какую цифру|подобрать|помоги|не понимаю|застрял|как (?:считать|реш|делить|найти|выбрать|начать)/.test(query);
-    if (!simpler && !why && !next) {
+    const digitQuestion = context.step === 'digit' && /цифр|проб[ауеы]|(?:вв[её]л|стереть|стирать|входит|влез|помеща|сно[сш]|снес|разряд|групп)|умнож/u.test(query);
+    const checkQuestion = context.step === 'verify' && /проверк|провер[ьия]|остат[оа]к|остатком|обратн[а-я]* действ/u.test(query);
+    if (!simpler && !why && !next && !digitQuestion && !checkQuestion) {
       return {text:'Могу объяснить действие в этом шаге. Спросишь, с чего начать или почему оно работает?', intent:'clarify'};
     }
     if (context.step.startsWith('shift-') && (why || (simpler && previous === 'why'))) {
@@ -81,15 +83,24 @@
       if (Number.isInteger(attempt) && attempt >= 0 && attempt <= 9 && attempt * divisor > partial) {
         text = simpler
           ? 'Ты взял ' + attempt + ' групп по ' + divisor + '. Попробуй взять на одну группу меньше. Поместится в ' + partial + '?'
-          : 'Ты пробуешь ' + attempt + '. Произведение больше ' + partial + '. Какую меньшую цифру проверишь?';
+          : 'Ты пробуешь ' + attempt + '. Произведение ' + attempt + ' × ' + divisor + ' больше ' + partial + '. Какую меньшую цифру проверишь?';
       } else if (Number.isInteger(attempt) && attempt >= 0 && attempt < 9 && (attempt + 1) * divisor <= partial) {
         text = simpler
           ? 'Ты уже взял ' + attempt + ' раз по ' + divisor + '. Добавь ещё одну такую группу. Получилось больше ' + partial + ' или пока хватает?'
           : 'После пробы с цифрой ' + attempt + ' осталось место ещё для целой группы по ' + divisor + '. Какую цифру попробуешь теперь?';
+      } else if (partial < divisor) {
+        text = 'Каждому разряду нужно место в частном. Сколько полных групп по ' + divisor +
+          ' помещается в ' + partial + '? Запиши эту цифру в частном, затем переходи к следующему разряду.';
       } else if (simpler || previous === 'next') {
         text = 'Перед тобой ' + partial + '. Попробуй отсчитывать по ' + divisor + '. Сколько целых групп поместится?';
       } else {
         text = 'Подбери цифру для ' + partial + ' : ' + divisor + '. Умножь на неё ' + divisor + '. Получилось больше ' + partial + ' или ещё помещается?';
+      }
+    } else if (step === 'verify' && checkQuestion) {
+      const quantities = query.match(/(?:^|[^\d.,+−/–-])(\d{1,12})\s*(?:[,(;]\s*)?(?:и\s+|с\s+)?(?:остат(?:ок|ком)|ост\.)\s*(?:[=:]\s*)?(\d{1,12})(?!\d|[.,/]\d)/u);
+      if (quantities) {
+        text = 'Умножь своё частное ' + quantities[1] + ' на ' + divisor + '. Затем прибавь указанный остаток ' +
+          quantities[2] + ' и сравни с ' + (context.dividend || 'делимым') + '. Остаток должен быть меньше делителя.';
       }
     } else if (step === 'shift-count' && simpler && /^\d{1,8}[,.]\d{1,8}$/.test(context.originalDivisor || '')) {
       text = 'Найди делитель ' + context.originalDivisor + '. Отметь карандашом цифры справа от запятой. Сколько их?';

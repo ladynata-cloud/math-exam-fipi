@@ -71,3 +71,30 @@ test('health, browser client and local demonstration are available in the same s
   const input = {site:'mathexam',message:'дроби',context:{surface:'navigator'}};
   assert.equal((await post(input,endpoint)).status,200);
 });
+
+test('the trainer responds to digit and remainder attempts without completing the calculation', async () => {
+  const digit = {surface:'division',step:'digit',divisor:14,partial:78,attempt:8};
+  const high = await ok('mathexam','Ввёл восемь. Стирать?',digit);
+  assert.match(high.reply,/8 × 14 больше 78/u);
+  assert.match(high.reply,/меньшую/u);
+  assert.doesNotMatch(high.reply,/(?<!\d)5(?!\d)/u);
+  const simple = await ok('mathexam','Я запуталась, помедленнее',digit,high.state);
+  assert.match(simple.reply,/одну группу меньше/u);
+  const low = await ok('mathexam','А такая цифра влезает?',{...digit,attempt:2});
+  assert.match(low.reply,/ещё для целой группы по 14/u);
+  const place = await ok('mathexam','Можно сносить следующую?',{...digit,partial:3,attempt:undefined});
+  assert.match(place.reply,/разряду нужно место/u);
+  const verify = await ok('mathexam','Получилось 11 с остатком 2. Проверяю?',{surface:'division',step:'verify',divisor:7,dividend:'79'});
+  assert.match(verify.reply,/11 на 7/u);
+  assert.match(verify.reply,/остаток 2.*с 79/u);
+  const contrary = await ok('mathexam','Получилось 3 с остатком 12. Проверяю?',{surface:'division',step:'verify',divisor:7,dividend:'33'});
+  assert.match(contrary.reply,/меньше делителя/u);
+});
+
+test('requesting spoiler-free reading does not restore a rejected title', async () => {
+  const context = {surface:'reader',mode:'before_reading'};
+  const previous = await ok('uzel','«Тоска» Чехова',context);
+  const corrected = await ok('uzel','Без спойлеров, я перепутала, это «Каштанка» Чехова',context,previous.state);
+  assert.deepEqual(corrected.links,[]);
+  assert.deepEqual(corrected.state.candidates,[]);
+});

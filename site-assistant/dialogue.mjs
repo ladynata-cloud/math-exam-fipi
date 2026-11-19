@@ -80,7 +80,7 @@ function readerTurn(message, context, state) {
   }
   if (context.workId) candidates = [works.get(context.workId)];
   let result = reader.firstReadingReply(before, indexes, candidates, message);
-  if (!result.matched && safe && candidates.length === 1) {
+  if (!result.matched && safe && candidates.length === 1 && result.indices.includes(candidates[0]) && !/[«“„"]/u.test(message)) {
     // The reader may simply say «без спойлеров» after discussing a particular work.
     result = reader.firstReadingReply(before, indexes, candidates, before[candidates[0]].title);
   }
