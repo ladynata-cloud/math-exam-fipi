@@ -169,6 +169,13 @@ for (const item of catalogue) {
         console.error('ROUNDING_FOCUS_NATIVE_FAIL', error.message);
       } finally { await context.close(); }
     }
+    if (pages.includes('index.html')) {
+      const context = await browser.newContext();
+      try {
+        await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
+        await require('./public-navigator-dialogue.browser.cjs')(await context.newPage(), origin);
+      } finally { await context.close(); }
+    }
     // The existing navigator must stay absent when a public trainer is hosted
     // inside the board/cabinet or another course iframe.
     const frameContext=await browser.newContext();
