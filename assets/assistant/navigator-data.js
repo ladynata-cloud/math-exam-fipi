@@ -633,10 +633,13 @@
     var positive = text.replace(/(?:^|[^а-я])(?:(?:не\s+(?:(?:к|для)\s+)?|без\s+|не\s+(?:хочу|хотим|нужен|нужна|нужно|нужны|готовлюсь|готовимся)\s+(?:готовиться\s+)?(?:(?:к|для)\s+)?)впр|впр\s+(?:мне\s+)?(?:пока\s+)?не\s+(?:нуж[а-я]*|интересу[а-я]*|сдаю))/g, ' ');
     return /(?:^|[^а-я])впр(?:$|[^а-я])|всероссийск[а-я]*\s+проверочн[а-я]*\s+работ/.test(positive);
   }
-  function vprDestination(text, state) {
+  function vprGrade(text) {
     var grade = classNumber(text);
     var shorthand = /(?:^|[^а-я])впр\s*(?:по математике\s*)?[:,·-]?\s*(5|6|7|8|10)(?!\d)/.exec(text);
-    if (grade === null && shorthand) grade = Number(shorthand[1]);
+    return grade === null && shorthand ? Number(shorthand[1]) : grade;
+  }
+  function vprDestination(text, state) {
+    var grade = vprGrade(text);
     var single = {5:'vpr-g5',6:'vpr-g6',10:'vpr-g10'};
     if (Object.hasOwn(single, grade)) return result('vpr', 'Откройте курс подготовки к ВПР: короткая теория, примеры, проверка шагов и самостоятельная практика. Прогресс сохраняется в этом браузере.', [single[grade], 'vpr'], state);
     if (grade === 7 || grade === 8) {
@@ -946,6 +949,23 @@
     });
     return matches.length === 1 ? matches[0].text : text;
   }
+  function vprLevelAnswer(text) {
+    var answer = text.replace(/[.,!?…;]+/g, ' ').replace(/\s+/g, ' ').trim()
+      .replace(/(?:^| )(?:класс тот же|тот же класс|класс прежний|класс без изменений)(?= |$)/g, ' ').trim();
+    var uncertainty = /^(?:(?:я|мы) )?(?:пока )?не (?:знаю|знаем|уверен[аы]?)(?: |$)/;
+    var unsure = uncertainty.test(answer);
+    if (unsure) answer = answer.replace(uncertainty, '');
+    if ((!answer && unsure) || /^(?:оба(?: уровня)?|какая разница)$/.test(answer)) return '';
+    answer = answer.replace(/^(?:(?:мне|нам) (?:нужен|нужна|нужно|нужны)|(?:я |мы )?(?:хочу|хотим)) /, '');
+    var words = answer.split(/\s+/);
+    var level = /^(?:углубленн[а-я]*|базов[а-я]*|база|обычн[а-я]*|стандартн[а-я]*)$/;
+    // Treat only a reply about the offered levels as a continuation. A new
+    // subject, class or exam must still go through the usual navigator.
+    var filler = /^(?:у|нас|меня|в|школе|мы|я|учусь|учимся|занимаюсь|занимаемся|по|на|да|нет|не|без|а|или|и|тогда|лучше|выберу|выбираю|только|пожалуйста|программ[а-я]*|уров[а-я]*|курс[а-я]*)$/;
+    if (!words.some(word => level.test(word)) || !words.every(word => level.test(word) || filler.test(word))) return null;
+    if (unsure || words.includes('или')) return '';
+    return words.map(word => word === 'база' ? 'базовый' : word).join(' ').replace(/не по /g, 'не ');
+  }
   function turn(input) {
     if (!input || typeof input.text !== 'string' || !input.text.trim() || input.text.length > 1000 || looksPrivate(normalize(input.text))) return respond(input);
     var previous = input.dialog || {};
@@ -956,11 +976,17 @@
     var original = shortReply(input.text);
     var changedGoal = /(?:^|\s)(?:раньше|до этого|сначала)\s.+?[,;]\s*(?:но\s+|а\s+)?(?:сейчас|теперь)\s+(.+)$/.exec(original);
     if (changedGoal) original = changedGoal[1];
+    if (previous.vprLevelGrade === 7 || previous.vprLevelGrade === 8) {
+      var levelAnswer = vprLevelAnswer(original);
+      if (levelAnswer !== null) original = 'впр ' + previous.vprLevelGrade + ' класс ' + levelAnswer;
+    }
     // An explicit current VPR request selects a course after an OGE/EGE task.
     // Leave access and privacy decisions in the normal response path.
     if (vprRequested(normalize(original))) {
       var vprResponse = respond(Object.assign({}, input, {text:original,studyGoal:'school'}));
-      vprResponse.dialog = {goal:'school',grade:classNumber(normalize(original)),choices:vprResponse.kind === 'clarify' ? (vprResponse.actions || []).slice(0,3) : []};
+      var requestedGrade = vprGrade(original);
+      vprResponse.dialog = {goal:'school',grade:requestedGrade,choices:vprResponse.kind === 'clarify' ? (vprResponse.actions || []).slice(0,3) : []};
+      if (vprResponse.kind === 'clarify' && [7, 8].includes(requestedGrade)) vprResponse.dialog.vprLevelGrade = requestedGrade;
       return vprResponse;
     }
     // A bare number after an explicit exam goal is a task, not a new grade.
