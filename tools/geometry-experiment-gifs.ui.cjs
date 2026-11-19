@@ -300,13 +300,21 @@ async function allPages(browser) {
       assert.equal(await host.locator('.geometry-experiment-guide').getAttribute('data-clip'), mapping.manual[0]);
       const harmonized = mapping.course === 'geometry-course';
       assert.equal(await page.locator('#topic-investigation .topic-investigation').count(), harmonized ? 1 : 0, filename + ': exact current research surface');
-      assert.equal(await page.locator('[data-geometry-guide-surface="experiments"]').count(), !harmonized && mapping.experiments.length ? 1 : 0, filename + ': extra experiment mapping for current stage');
+      const experimentGuide = page.locator('[data-geometry-guide-surface="experiments"]');
+      assert.equal(await experimentGuide.count(), mapping.experiments.length ? 1 : 0, filename + ': extra experiment mapping for current stage');
       assert.equal(await page.locator('[data-geometry-guide-surface="investigations"]').count(), harmonized ? 1 : 0, filename + ': guide follows the actual topic surface');
       await imageReady(host);
       assert.equal(await page.locator('.geometry-experiment-guide[data-playing="true"]').count(), 0);
       assert.equal(await page.locator('.geometry-experiment-guide img[src^="data:image/gif"]').count(), 0, filename + ': no GIF decoded before request');
       assert.equal(gifRequests.length, 0, 'no GIF network prefetch');
-      for (const other of await page.locator('[data-geometry-guide-surface="experiments"]').all()) await imageReady(other);
+      for (const guide of await experimentGuide.all()) {
+        assert.equal(await guide.locator('.geometry-experiment-guide').getAttribute('data-clip'), mapping.experiments[0], filename + ': guide matches extra model');
+        assert(await guide.evaluate(node => node.nextElementSibling?.id === 'extra-model'), filename + ': guide beside extra model controls');
+        if (harmonized) {
+          assert(await guide.evaluate(node => Boolean(node.closest('details.manual-research'))), filename + ': additional research model stays inside retained work');
+        }
+        await imageReady(guide);
+      }
       if (harmonized) {
         await page.locator('[data-stage="0"]').click();
         assert.equal(await page.locator('[data-geometry-guide-surface="experiments"]').count(), mapping.experiments.length ? 1 : 0, filename + ': additional model is on the explanation stage');
