@@ -316,10 +316,20 @@
     var pupil = /(?:^|[^а-я])(пяти|шести|семи|восьми|девяти|десяти|одиннадцати)класс/.exec(text);
     return pupil ? ['пяти','шести','семи','восьми','девяти','десяти','одиннадцати'].indexOf(pupil[1]) + 5 : null;
   }
+  function assignedWork(text) {
+    var lookup = /(?:^|\s)(?:что|како[ей]|каки[ех]|какую|где|покаж[иь]|назови|найти|открыть|посмотреть)(?:\s|$)/.exec(text);
+    if (!lookup) return false;
+    // Only the retrieval request itself can indicate private assignments; the
+    // preceding context may merely say «нам задали» before asking for practice.
+    var request = text.slice(lookup.index);
+    return /(?:мне|нам)\s+(?:было\s+)?(?:на\s+\S+\s+)?(?:зада(?:но|ны|ли|л[аи]?)|назнач(?:ен[а-я]*|ил[аи]?))|(?:зада(?:ли|л[аи]?)|назначил[аи]?)\s+(?:лично\s+)?(?:мне|нам)(?:\s|$)/.test(request) ||
+      /(?:мои|мое|свои|личные|посмотреть|увидеть|открыть|найти)\s+назначени[а-я]*|назначенн[а-я]*\s+(?:упражнен|задани|работ)/.test(request) ||
+      /(?:моя|мою|мое|мои)\s+(?:домашн[а-я]*\s+(?:работ|задан)|упражнен[а-я]*\s+от\s+(?:учител|преподавател))/.test(request);
+  }
   function accessIntent(text) {
     // Match the noun's case forms, without confusing "входная диагностика"
     // with an account problem. These intents never count as learning failure.
-    return /кабинет|парол|логин|личн.{0,8}ссыл|авторизац|авторизова|войти|(?:^|[^a-zа-я])pin(?:$|[^a-zа-я])|(?:^|[^а-я])пин(?:[- ]?код)?(?:$|[^а-я])/.test(text)
+    return assignedWork(text) || /кабинет|парол|логин|личн.{0,8}ссыл|авторизац|авторизова|войти|(?:^|[^a-zа-я])pin(?:$|[^a-zа-я])|(?:^|[^а-я])пин(?:[- ]?код)?(?:$|[^а-я])/.test(text)
       || /(?:^|[^а-я])вход(?:а|е|у|ом)?(?:$|[^а-я])/.test(text);
   }
   function explicitDifficulty(text) {
@@ -687,6 +697,9 @@
       return result('pricing', 'На сайте есть бесплатные тренажёры для самостоятельной работы. Условия и стоимость занятий с преподавателем указаны отдельно на странице занятий.', ['trainers', 'lessons'], state);
     }
     if (accessIntent(text)) {
+      if (assignedWork(text) || (/кабинет/.test(text) && /задани|упражнен|назначен/.test(text))) {
+        return result('cabinet', 'Я не вижу личных заданий ученика. Откройте свой кабинет по ссылке преподавателя. Если пришлёте сюда условие упражнения, я помогу с первым шагом. Пароль и код входа оставьте в кабинете.', ['cabinet'], state);
+      }
       return result('cabinet', 'Кабинет открывается отдельно. Используйте личную ссылку или данные входа, выданные преподавателем. Если ссылка не работает или код потерян, попросите преподавателя помочь со входом. В навигатор код или пароль вводить не нужно.', ['cabinet'], state);
     }
     if (vprRequested(text)) return vprDestination(text, state);

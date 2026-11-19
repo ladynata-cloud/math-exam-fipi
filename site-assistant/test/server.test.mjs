@@ -98,3 +98,29 @@ test('requesting spoiler-free reading does not restore a rejected title', async 
   assert.deepEqual(corrected.links,[]);
   assert.deepEqual(corrected.state.candidates,[]);
 });
+
+test('decimal shift uses the original pair and leaves the transformed number to the learner', async () => {
+  const step = {surface:'division',step:'shift-dividend',divisor:25,originalDivisor:'0.0250',dividend:'4.7'};
+  const moved = await ok('mathexam','Что сделать дальше?',step);
+  assert.match(moved.reply,/4,7.*три разряда.*два нуля/u);
+  assert.doesNotMatch(moved.reply,/4700|188/u);
+  const whole = await ok('mathexam','Что сделать дальше?',{...step,divisor:12,originalDivisor:'1,2',dividend:'15'});
+  assert.match(whole.reply,/после последней цифры.*один разряд.*один ноль/u);
+  const enough = await ok('mathexam','Подскажи',{...step,dividend:'3,1415'});
+  assert.match(enough.reply,/три разряда/u);
+  assert.doesNotMatch(enough.reply,/допиши|3141/u);
+  const count = await ok('mathexam','С чего начать?',{...step,step:'shift-count'});
+  assert.doesNotMatch(count.reply,/три разряда/);
+});
+test('personal and neutral assignment queries reach the cabinet; general practice stays public', async () => {
+  const context = {surface:'navigator'};
+  for (const q of ['Какие упражнения преподаватель назначил лично мне?', 'Где посмотреть назначения?', 'Что мне задали на завтра?', 'Что мне было задано на понедельник?']) {
+    const result = await ok('mathexam',q,context);
+    assert.equal(result.links[0].id,'cabinet');
+    assert.match(result.reply,/не вижу личных заданий/u);
+  }
+  for (const q of ['Дай задания по дробям для 6 класса', 'Мне задали уравнение 2x+5=19, с чего начать?', 'Нам задали умножать дроби, найди похожий тренажёр']) {
+    const general = await ok('mathexam',q,context);
+    assert.notEqual(general.links[0]?.id,'cabinet');
+  }
+});

@@ -58,6 +58,23 @@
       'Если измерить обе длины в более мелких единицах, числа увеличатся одинаково. Количество раз, которое одна длина укладывается в другой, сохранится.']
   };
 
+  function shiftedDividendHint(context) {
+    const original = String(context.originalDivisor || '').replace('.', ',');
+    const dividend = String(context.dividend || '').replace('.', ',');
+    if (!/^\d+,\d{1,6}$/u.test(original) || !/^\d+(?:,\d+)?$/u.test(dividend)) return '';
+    const [whole, decimalPart] = original.split(',');
+    const fractionalDigits = decimalPart.replace(/0+$/u, '');
+    if (!fractionalDigits || Number(whole + fractionalDigits) !== context.divisor) return '';
+    const places = fractionalDigits.length;
+    const remaining = (dividend.split(',')[1] || '').length;
+    const zeros = places - remaining;
+    const shifts = ['', 'один разряд', 'два разряда', 'три разряда', 'четыре разряда', 'пять разрядов', 'шесть разрядов'];
+    const zeroCounts = ['', 'один ноль', 'два нуля', 'три нуля', 'четыре нуля', 'пять нулей', 'шесть нулей'];
+    const first = remaining ? '' : 'У целого числа запятая стоит после последней цифры. ';
+    return first + 'В числе ' + dividend + ' перенеси запятую вправо на ' + shifts[places] + ', как в делителе.' +
+      (zeros > 0 ? ' Справа допиши ' + zeroCounts[zeros] + '.' : '');
+  }
+
   function reply(message, context, previous) {
     const move = context && Object.hasOwn(moves, context.step) && moves[context.step];
     if (!move) return {text:'Открой текущий шаг в тренажёре деления.', intent:'clarify'};
@@ -102,6 +119,8 @@
         text = 'Умножь своё частное ' + quantities[1] + ' на ' + divisor + '. Затем прибавь указанный остаток ' +
           quantities[2] + ' и сравни с ' + (context.dividend || 'делимым') + '. Остаток должен быть меньше делителя.';
       }
+    } else if (step === 'shift-dividend') {
+      text = shiftedDividendHint(context) || text;
     } else if (step === 'shift-count' && simpler && /^\d{1,8}[,.]\d{1,8}$/.test(context.originalDivisor || '')) {
       text = 'Найди делитель ' + context.originalDivisor + '. Отметь карандашом цифры справа от запятой. Сколько их?';
     }
