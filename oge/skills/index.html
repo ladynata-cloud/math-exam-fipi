@@ -78,7 +78,13 @@ html{color-scheme:light dark}body{margin:0;padding:16px 10px;background:light-da
   function stop() {
     clearTimeout(timer); timer = null;
     if (!current) return;
-    current.playing = false;
+    const animation = current.animation;
+    if (animation) {
+      current.animation = null;
+      animation.onload = animation.onerror = null;
+      if (animation.isConnected) animation.replaceWith(current.image);
+      animation.removeAttribute('src');
+    }
     if (!current.failed) current.image.src = root + current.id + '/' + current.clip.frames[current.index].file;
     current.play.textContent = 'Воспроизвести GIF';
     current.play.setAttribute('aria-pressed', 'false');
@@ -107,13 +113,32 @@ html{color-scheme:light dark}body{margin:0;padding:16px 10px;background:light-da
     const previous = button('← Предыдущий кадр', () => show(current.index - 1));
     const play = button('Воспроизвести GIF', () => {
       if (current !== state || !panel.open || reduced.matches || state.failed) return;
-      const wasPlaying = current.playing; stop(); if (wasPlaying) return;
-      show(0); state.playing = true;
-      image.alt = 'Анимация всех шагов примера. Текст шагов находится ниже.';
-      caption.textContent = 'Анимация всех ' + clip.frames.length + ' шагов. Можно остановить и перейти к отдельным кадрам.';
-      image.src = root + route[0] + '/' + route[0] + '.gif';
+      if (state.animation) { stop(); return; }
+      show(0);
+      const animation = el('img');
+      state.animation = animation;
+      animation.alt = 'Анимация всех шагов примера. Текст шагов находится ниже.';
+      caption.textContent = 'Загружаем анимацию…';
       play.textContent = 'Остановить GIF'; play.setAttribute('aria-pressed', 'true');
-      timer = setTimeout(() => {if (current === state) stop();}, clip.frames.reduce((total, frame) => total + frame.durationMs, 0));
+      function active() {
+        return current === state && state.animation === animation && host.isConnected && panel.open;
+      }
+      function failed() {
+        if (!active()) return;
+        stop();
+        caption.textContent = 'Не удалось загрузить анимацию. Можно повторить или посмотреть отдельные кадры.';
+      }
+      animation.onerror = failed;
+      animation.onload = async () => {
+        try { if (animation.decode) await animation.decode(); }
+        catch { failed(); return; }
+        if (!active()) return;
+        image.replaceWith(animation);
+        caption.textContent = 'Анимация всех ' + clip.frames.length + ' шагов. Можно остановить и перейти к отдельным кадрам.';
+        const duration = clip.frames.reduce((total, frame) => total + frame.durationMs, 0);
+        timer = setTimeout(() => { if (active()) stop(); }, duration);
+      };
+      animation.src = root + route[0] + '/' + route[0] + '.gif';
     });
     play.setAttribute('aria-pressed', 'false');
     const next = button('Следующий кадр →', () => show(current.index + 1));
@@ -127,7 +152,7 @@ html{color-scheme:light dark}body{margin:0;padding:16px 10px;background:light-da
     transcript.append(el('summary', 'Текст всех шагов'));
     const list = el('ol'); for (const frame of clip.frames) list.append(el('li', frame.caption)); transcript.append(list);
     host.replaceChildren(image, caption, controls, motionNote, transcript);
-    const state = {id: route[0], clip, image, play, index: 0, playing: false, motion};
+    const state = {id: route[0], clip, image, play, index: 0, animation: null, motion};
     current = state;
     state.describe = () => {
       const frame = clip.frames[state.index]; image.alt = frame.caption;
@@ -143,7 +168,7 @@ html{color-scheme:light dark}body{margin:0;padding:16px 10px;background:light-da
       previous.disabled = current.index === 0; next.disabled = current.index === clip.frames.length - 1;
     }
     image.addEventListener('error', () => {
-      if (current !== state || !host.isConnected) return;
+      if (current !== state || !image.isConnected) return;
       current.failed = true; stop(); image.removeAttribute('src'); image.hidden = true;
       caption.textContent = 'Изображение не загрузилось. Текст всех шагов доступен ниже.';
       play.disabled = true;
