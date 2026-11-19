@@ -5,5 +5,12 @@ document.title=lesson.title+' · Атанасян 10–11 · MathExam';document.
 const source=document.getElementById('book-link');source.append('Учебник: п. '+lesson.bookPoints.join(', ')+'.');
 const names={'parallel':'Параллельные прямые','parallel-planes':'Параллельные плоскости','polyhedra':'Тетраэдр и параллелепипед','sections':'Сечения','perpendicular':'Перпендикуляр к плоскости','projection':'Проекция и три перпендикуляра','box':'Прямоугольный параллелепипед','dihedral':'Двугранный угол','pyramid':'Правильная пирамида','coordinates':'Координаты в пространстве','plane-equation':'Уравнение плоскости','dot':'Скалярное произведение','pyramid-volume':'Объём пирамиды','skew':'Скрещивающиеся прямые','triangle-bridge':'Свойства треугольника'};
 const details=document.createElement('details'),summary=document.createElement('summary'),list=document.createElement('ul');summary.textContent='Повторить нужные темы';for(const id of lesson.unitIds){const li=document.createElement('li'),a=document.createElement('a');a.href='../../stereo-course/index.html?route=ege15#'+encodeURIComponent(id);a.textContent=(names[id]||'Тема учебника')+' →';li.append(a);list.append(li);}details.append(summary,list);source.append(details);
+if (lesson.family === 'section') {
+  const practice = window.AtanasyanCourse.sectionPractice;
+  const link = document.createElement('a');
+  link.href = practice.href;
+  link.textContent = practice.label + ' →';
+  document.getElementById('section-practice').append(link);
+}
 const at=lessons.indexOf(lesson),next=lessons[at+1],link=document.getElementById('next-variant');if(next){link.href='lesson.html?lesson='+next.id;link.textContent=next.family===lesson.family?'Ещё один пример →':'Следующий разбор →';}else link.textContent='Вернуться к курсу →';
 })();

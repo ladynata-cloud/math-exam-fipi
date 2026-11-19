@@ -140,7 +140,7 @@ function createApp(root,options){
   dialog.append(close,title,el('p',lesson.statement.text),model,el('p',lesson.statement.goal),el('p',lesson.visualization.caption),sourceNode(lesson));
   const nestedHelp=el('div');mountHelp(lesson.help,nestedHelp,()=>({setView:selectTheoryView}));dialog.append(nestedHelp);
   const steps=el('div');for(const step of lesson.steps){const d=el('details');d.append(el('summary',step.title),el('p',step.prompt),el('p',step.explanation));justifications(step,d);d.addEventListener('toggle',()=>{if(d.isConnected&&d.open)selectTheoryView(step.view||'neutral');});steps.append(d);}dialog.append(steps);root.append(dialog);
-  dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:backState?.camera});
+  dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{lessonId:lesson.id,savedCamera:backState?.camera});
   if(backState){
    const details=[...dialog.querySelectorAll('details')],pendingToggles=new Set((backState.opened||[]).map(index=>details[index]).filter(Boolean));
    const restoreSelected=()=>{if(dialog!==shownDialog)return;restoring=false;selectTheoryView(backState.view||'neutral');};
@@ -188,7 +188,7 @@ function createApp(root,options){
   for(let i=0;i<state.revealed;i++)addStep(i);if(state.revealed>0){help.open=true;state.assisted=true;}
   function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';}nextLabel();
   next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
-  side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
+  side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{lessonId:lesson.id,savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
   return true;
  }
  function home(){if(destroyed||locked)return;destroyScene();doc.body.classList.remove('sy-lesson');current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1',catalog.book.title),el('p',catalog.book.edition),el('p','В задачнике учтено номеров: '+coverage.exercises+'; авторских объяснений тем: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));

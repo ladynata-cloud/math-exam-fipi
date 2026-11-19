@@ -210,13 +210,17 @@ function Fig(W,H,pad){
 /* ================= ПОСТРОИТЕЛИ ЧЕСТНЫХ ЧЕРТЕЖЕЙ ================= */
 /* Каждый строит фигуру ПО ЧИСЛАМ задачи; дуги/засечки/квадратики сами регистрируют chk */
 
+function markRectangle(F, corners){
+  corners.forEach((vertex,i)=>F.rsq(vertex,corners[(i+3)%4],corners[(i+1)%4],{c:'#68786c',s:8}));
+}
+
 function figSquare(p){ // p:{sideLab, showDiag, diagLab}
   const F=Fig(360,260), s=10;
   const A={x:0,y:0},B={x:s,y:0},C={x:s,y:s},D={x:0,y:s};
   F.fit([A,B,C,D]);
   F.poly([A,B,C,D],{close:1});
   if(p.showDiag){F.seg(A,C,{c:CLR.ask,w:2.4}); if(p.diagLab)F.lab(p.diagLab,{x:s*.5,y:s*.58},{c:CLR.ask,dx:14});}
-  F.rsq(A,B,D,{c:'#8a8375'});
+  markRectangle(F,[A,B,C,D]);
   F.lab(p.sideLab,{x:s/2,y:0},{dy:22});
   F.lab('A',A,{dx:-12,dy:14});F.lab('B',B,{dx:12,dy:14});F.lab('C',C,{dx:12,dy:-8});F.lab('D',D,{dx:-12,dy:-8});
   return F;
@@ -231,6 +235,7 @@ function figRect(p){ // p:{mode:'angle',alpha,askLab} | {mode:'bo',bo,ab,hn,sn,d
   const A={x:0,y:0},D={x:w,y:0},C={x:w,y:h},B={x:0,y:h},O={x:w/2,y:h/2};
   F.fit([A,B,C,D]);
   F.poly([A,B,C,D],{close:1});
+  markRectangle(F,[A,B,C,D]);
   F.seg(A,C,{w:2});F.seg(B,D,{w:2});F.dot(O,{r:3.2});
   if(p.mode==='angle'){
     if(p.alpha<=45) F.arc(A,D,C,{lab:p.alpha+'°',r:30});

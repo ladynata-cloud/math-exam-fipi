@@ -31,6 +31,15 @@
       goal: 'Найди прямоугольную проекцию и угол между a и α. Обоснуй, какой угол ты выбрал.'
     }
   };
+  const sectionPractice = {
+    'theory-014': ['starter-04', 'Практика: найти общую грань двух точек'],
+    'theory-014-example-1': ['auth-core-02', 'Практика: отличить прямую от стороны сечения'],
+    'theory-014-example-3a': ['starter-23', 'Практика: построить сечение у другой вершины']
+  };
+  const angleExamples = {
+    'theory-022-right': { title: 'Двугранный угол по двум лучам', given: 'Угол AOB равен 90°.' },
+    'theory-022-obtuse': { title: 'Двугранный угол по смежному углу', given: 'Угол, смежный с углом AOB, равен 70°.' }
+  };
 
   function isRecord(value) {
     if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
@@ -144,7 +153,18 @@
           !Array.isArray(lesson.steps) || lesson.steps.length > 20 || hintsFor(lesson).length > 24) {
         throw new TypeError('Неверная карточка курса.');
       }
-      lessons.set(lesson.id, { ...lesson, hints: hintsFor(lesson) });
+      const card = { ...lesson, hints: hintsFor(lesson) };
+      const example = lesson.revision === 1 && angleExamples[lesson.id];
+      if (example) {
+        card.title = example.title;
+        card.statement = {
+          text: 'Из точки O ребра CD в каждой грани проведено по лучу: OA и OB. Оба луча перпендикулярны CD. ' + example.given,
+          goal: 'Объясни, почему угол AOB линейный. Найди величину двугранного угла и назови его вид.'
+        };
+        card.startingView = 'linear';
+      }
+      if (lesson.id === 'ex-main-0167') card.title = '№167. Линейный угол в правильном тетраэдре';
+      lessons.set(card.id, card);
     }
     const lessonIds = stages.flatMap(stage => stage.lessonIds);
     if (lessonIds.length !== lessons.size || new Set(lessonIds).size !== lessonIds.length ||
@@ -309,13 +329,18 @@
       viewer?.destroy();
       modelNode = target;
       viewer = win.TaskSceneViewer.mount(target, current.visualization.model, {
+        lessonId: current.id,
         savedCamera: work.camera,
         onChange(camera) {
           work.camera = camera;
           changed();
         }
       });
-      viewer.setView(work.view);
+      showWorkView();
+    }
+
+    function showWorkView() {
+      viewer?.setView(work.view === 'neutral' ? current.startingView || 'neutral' : work.view);
     }
 
     function focusStart(element) {
@@ -327,6 +352,12 @@
     function nav() {
       const items = node('nav', undefined, 'literacy-nav');
       items.setAttribute('aria-label', 'Навигация по курсу');
+      const parent = !board && course.lessons.get(win.history.state?.literacyFrom);
+      if (current && parent) {
+        const back = button('Вернуться: ' + parent.title, () => win.history.back(), 'literacy-button');
+        back.dataset.literacyReturn = parent.id;
+        items.append(back);
+      }
       if (current) items.append(button('К маршруту', () => open(null), 'literacy-button'));
       if (!board) {
         items.append(boardLink(current));
@@ -366,7 +397,7 @@
     function viewOf(key) {
       if (key && Object.hasOwn(current.visualization.model.views || {}, key)) {
         work.view = key;
-        viewer?.setView(key);
+        showWorkView();
       }
     }
 
@@ -451,7 +482,13 @@
 
     function relatedCard(id) {
       const related = course.lessons.get(id);
-      return related && id !== current.id ? button(related.title, () => open(id), 'literacy-button') : null;
+      if (!related || id === current.id) return null;
+      const item = button(related.title, () => {
+        if (!board) win.history.pushState({ literacyFrom: current.id }, '', '#' + encodeURIComponent(id));
+        open(id);
+      }, 'literacy-button');
+      item.dataset.literacyRelated = id;
+      return item;
     }
 
     function renderHelp() {
@@ -603,6 +640,10 @@
       if (current.hints.length) card.append(renderHelp());
       card.append(renderSteps());
       const footer = node('footer', undefined, 'literacy-footer');
+      if (!board && sectionPractice[current.id]) {
+        const [exercise, label] = sectionPractice[current.id];
+        footer.append(link(label, '/stereo-course/sections/#' + exercise, 'literacy-button'));
+      }
       if (!board) footer.append(link('Карточка учебника', '/stereo-course/textbook/#' + encodeURIComponent(current.id), 'literacy-button'));
       else if (current.source?.printedPages?.length) footer.append(node('p', 'Атанасян, 10–11 классы · с. ' + current.source.printedPages.join(', ')));
       const position = course.lessonIds.indexOf(current.id);
@@ -648,7 +689,7 @@
         if (!sameLesson || !work || !before || structure(before) !== structure(work)) render(false);
         else {
           if (JSON.stringify(before.camera) !== JSON.stringify(work.camera)) mountModel(modelNode);
-          else if (before.view !== work.view) viewer.setView(work.view);
+          else if (before.view !== work.view) showWorkView();
           refreshFeedback();
         }
         return true;

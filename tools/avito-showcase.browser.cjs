@@ -158,10 +158,15 @@ async function metadataAndLinks(page) {
     host: form.getRootNode().host?.id || null,
     action: form.getAttribute('action'),
     method: form.getAttribute('method'),
-    fields: [...form.querySelectorAll('input,textarea,select')].map(field => field.name),
+    fields: [...form.querySelectorAll('input,textarea,select')].map(field => ({
+      tag: field.localName, type: field.type, name: field.name
+    })),
     submitters: [...form.querySelectorAll('button')].map(button => button.type)
   }))), [{host:'maxexam-public-assistant', action:null, method:null,
-    fields:['navigation-question'], submitters:['button']}],
+    fields:[
+      {tag:'textarea', type:'textarea', name:'navigation-question'},
+      {tag:'input', type:'checkbox', name:''}
+    ], submitters:['button']}],
   'no booking form: only the isolated, endpoint-free navigator search is present');
   assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'auto', 'reduced motion is respected');
 }
