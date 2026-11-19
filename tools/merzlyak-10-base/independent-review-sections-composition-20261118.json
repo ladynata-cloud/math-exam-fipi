@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/math_release_review",
+  "reviewedAt": "2026-11-18T09:35:53.014993+00:00",
+  "reviewKind": "independent-internal-composition-review",
+  "baseCommit": "dcf771600a49a5f34a9695c0d10522db78ce2478",
+  "reviewedSourceCommit": "4bd581f3ef48979806289aebdd20fdfdfa4ab310",
+  "verdict": "PASS",
+  "unresolved": [],
+  "releaseApproval": false,
+  "externalProviderReview": false,
+  "scope": [
+    "Composition of three Merzlyak sections lessons from PR 658 with the nested help, input checks and focused views from PR 627.",
+    "Sections runtime composition: preserve research sanitation/state and initialize/destroy the separate written-proof scene."
+  ],
+  "checks": [
+    "Source metadata, statement.text and manual answer descriptor are exactly retained from previously reviewed PR 658.",
+    "Independent coordinate/line/plane/ratio assertions passed for all three configurations.",
+    "node --test tools/merzlyak-10-base/sections-harmonization.test.cjs tools/sections-research.test.cjs tools/sections-course.test.cjs: 35/35 PASS.",
+    "Read runtime show/openLesson/researchState and Merzlyak addStep: explanations remain collapsed until requested; hints record assistance, old drafts/forecast survive, written control starts with a blank construction.",
+    "Verified metadata-only draft projection for all three files by restoring prior review/status and matching each inspectedSourceSha256; no instructional, geometric, input or help field changed."
+  ],
+  "resolvedFindings": [
+    {
+      "lessonId": "research-sections-001",
+      "finding": "Continuation of an infinite line was an imprecise phrase.",
+      "resolution": "Author changed the help text to state X and Y lie on MN and NK respectively and asks why they belong to the plane."
+    }
+  ],
+  "limits": [
+    "Source fidelity means exact preservation against the reviewed source commit; the original textbook scan was not reopened.",
+    "No pixel-level browser inspection or real-pupil trial was performed in this review. DOM regression checks were run.",
+    "Intermediate guided answers do not certify an independent proof. Release requires exact final composed CI and source-binding checks."
+  ],
+  "files": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
+      "lessonId": "research-sections-001",
+      "sha256": "b61113332fa144d5fae7f8e76b409a9232cf44bd4ece4a683de0487f673234b6",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "notes": [
+        "Checked MNK incidence, X and Y on supporting lines outside finite edges, common Z on BD/XK/MY, and the opposite-half-space existence argument. The question still asks for the common edge; neither BD nor a completed proof is inserted as its answer.",
+        "Nested help and the sides/traces/abd views remain available; last wording correction removes the ill-defined continuation of an infinite line.",
+        "For the existing review gate, only status and review metadata were projected to draft/pending; restoring the prior review metadata reproduces the independently inspected bytes exactly."
+      ],
+      "inspectedSourceSha256": "ad154b0606b29558e37efb7a541e44043562f5e8c7074e38b96c604ece09d200"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
+      "lessonId": "research-sections-002",
+      "sha256": "fb60c7f9191da544fb483a7665f699ec5bfe2b31198a905949725dd03ef87b8c",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "notes": [
+        "Checked the plane x-y+z=1/2 for M,N,P,Q,R,S,O; MN and OP are parallel equal midlines, and MQ,NR,PS contain O. Noncollinearity and three central parallelograms establish the proof without visual measurement.",
+        "The ratio 1/2 and six-side checks remain intermediate guided answers. Focused middle-lines and centre-mq views match the active questions.",
+        "For the existing review gate, only status and review metadata were projected to draft/pending; restoring the prior review metadata reproduces the independently inspected bytes exactly."
+      ],
+      "inspectedSourceSha256": "e6b2e98c371d0d048f8b470a9ae767f39fac7e9af7d0ccf8854869ef40c83ec4"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
+      "lessonId": "research-sections-005",
+      "sha256": "770f81852884a58a565908d5a33f1771e58974047330a4bc4070c40e040c17bd",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "notes": [
+        "Independently recomputed T=(2,2,1), Q=(2/3,1,1), R=(4/3,1,0), P=(1,3/4,0), U=(2,1,1). All section points lie on -3x+4y-2z=0; helper points stay outside the finite polygon.",
+        "Checked top and side similarity: QC1/a=1/3, DR/a=4/3 and BP:PC=3:1. Prompts request these ratios without providing the numeric answers; full explanations remain in requested details.",
+        "For the existing review gate, only status and review metadata were projected to draft/pending; restoring the prior review metadata reproduces the independently inspected bytes exactly."
+      ],
+      "inspectedSourceSha256": "f3ae194fab570db55d7c061643dced9998f41af09d389eaa784b25624dfd63b4"
+    }
+  ],
+  "runtimeFiles": [
+    {
+      "path": "stereo-course/sections/assets/app.js",
+      "sha256": "0e683deacc5ee989f3ae9fd5ac4dea6e6a7526de1161798a0e3342142452036c"
+    },
+    {
+      "path": "tools/merzlyak-10-base/sections-harmonization.test.cjs",
+      "sha256": "d51747cdf852bfeadc59053e3d4db2a0e0cccdc388af8243db7d744488d25eaa"
+    }
+  ]
+}

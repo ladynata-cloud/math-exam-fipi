@@ -2012,6 +2012,16 @@
     "href": "/trainers/oge-basics/rounding.html",
     "reason": "Чтобы понимать приближение и разряды."
   },
+  "roundingTens": {
+    "title": "Округление до десятков",
+    "href": "/trainers/rounding-stepwise.html?place=1&from=division",
+    "reason": "Посмотри на единицы, чтобы прикинуть цифру частного."
+  },
+  "roundingHundreds": {
+    "title": "Округление до сотен",
+    "href": "/trainers/rounding-stepwise.html?place=2&from=division",
+    "reason": "Посмотри на десятки. После прикидки проверь цифру по исходным числам."
+  },
   "signs": {
     "title": "Действия с отрицательными числами",
     "href": "/trainers/oge-basics/negative-add-subtract.html",
@@ -3170,7 +3180,9 @@
     ],
     "prerequisites": [
       "decimalDivision",
-      "arithmetic"
+      "arithmetic",
+      "roundingTens",
+      "roundingHundreds"
     ],
     "goal": "Превратить делитель в целое число, не изменив частное.",
     "pos": 14,
@@ -4170,7 +4182,9 @@
     ],
     "prerequisites": [
       "decimalDivision",
-      "arithmetic"
+      "arithmetic",
+      "roundingTens",
+      "roundingHundreds"
     ],
     "nextIds": [
       "practice-decimal-division",

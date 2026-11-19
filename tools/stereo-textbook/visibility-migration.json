@@ -6,7 +6,8 @@
     "stereo-course/assets/task-scene-viewer.js": {
       "beforeSHA256": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6",
       "afterSHA256": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64",
-      "beforeFixture": "tools/stereo-textbook/fixtures/visibility-before/task-scene-viewer.js"
+      "beforeFixture": "tools/stereo-textbook/fixtures/visibility-before/task-scene-viewer.js",
+      "rightAngleSHA256": "961453baafc1c04692e9c12561da53da6e026913dafad798aa7bfeae2661ebd0"
     },
     "stereo-course/assets/task-scenes.css": {
       "beforeSHA256": "5dbecdc2c98fbb030bcc4dba224f3b4ae89af292579a5136942810be75fd2cbf",

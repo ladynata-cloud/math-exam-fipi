@@ -1,4 +1,5 @@
 'use strict';
+require('../geometry/right-angles.test.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {JSDOM}=require('jsdom');
 const dir=path.resolve(__dirname,'../..'),dom=new JSDOM('<div id="mount"></div>',{runScripts:'dangerously'}),w=dom.window;

@@ -18,7 +18,7 @@
   "serialization": "json-utf8-ensure-ascii-false-indent-2-final-lf",
   "evidenceManifest": {
     "path": "tools/merzlyak-10-base/content-review-manifest.json",
-    "sha256": "a0ec0b61c8223f65e031d8334239fb6031e704dc79a7edfba802ab749544c3cc"
+    "sha256": "78a6535b3ed3ff7efb4450cf7539533c5020cd8e5f8ff64f00ef64d5aee42eeb"
   },
   "approvedBy": "root content integration review",
   "reviewDimensions": [
@@ -14273,9 +14273,9 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
       "lessonId": "research-sections-001",
-      "beforeSha256": "2db94346c392eba953aa0c0a43403b77000ea00ec288eaf740ef4a96963357e9",
-      "afterSha256": "3b84ce6b8372a1a4583e92f356422dbdad4b02e8fa8b969f03d72af890971c29",
-      "contentSha256": "86a4673fe8cef2b163690cb4c2814effa3b9427680bea289af77a0ab9a9fb796",
+      "beforeSha256": "b61113332fa144d5fae7f8e76b409a9232cf44bd4ece4a683de0487f673234b6",
+      "afterSha256": "ab61d64b1fd6c96a27c8e94efe7347792c5bbf60aabca1b3262ebd02c0187cb7",
+      "contentSha256": "74076260bb244767dfea402de9b4f7951e8ec325acadef663e7ef2fa340c28fd",
       "beforeValues": {
         "status": "draft",
         "review": {
@@ -14289,9 +14289,9 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
       "lessonId": "research-sections-002",
-      "beforeSha256": "5110112ac53493fd702aafb827db2f181459f96e2e21cd645cee47f63fabed5c",
-      "afterSha256": "e8394f3f8b849824b4e2e4841f1cc94a7f21c442b7f37c920d7e908217073077",
-      "contentSha256": "8dd7d277ec89560688d5e4d17ac5716de94c410b6e22f059c9bf6a263254f3cc",
+      "beforeSha256": "fb60c7f9191da544fb483a7665f699ec5bfe2b31198a905949725dd03ef87b8c",
+      "afterSha256": "6442ff1219ac70f118c10b430ee19527a0f5c5181f7e423f46d0eb74d1e4f297",
+      "contentSha256": "7bf5331c1e994b543130a779b4487b2e29c6431a48ef7f7152c463f1715f9e68",
       "beforeValues": {
         "status": "draft",
         "review": {
@@ -14305,9 +14305,9 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/research-sections-003.json",
       "lessonId": "research-sections-003",
-      "beforeSha256": "20aaba4d4604625db4a2c07936c83dc7d32a310b309fbf7f824ca5555cc6f3ab",
-      "afterSha256": "f21917b411ce9b165e054d1c43044355c3ef80c928860a95d32e4ca03ec6429a",
-      "contentSha256": "3d2d6d827fec37156f01a2c42b20de51c472cb49b39801b019f8a33c7406ed3b",
+      "beforeSha256": "159d1c1b64a54df4e4bb715c774e7ddba1741ceb2370deb4a6b2f3c7ed79a44f",
+      "afterSha256": "0a91e142845deae00b727ce4ff5ea7127e157eb474703689247414a334e98f6d",
+      "contentSha256": "d06b6981f64d33421d2f528b9fe62ac368d0bd37213d0fbb0d3cdb60b092d760",
       "beforeValues": {
         "status": "draft",
         "review": {
@@ -14321,9 +14321,9 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/research-sections-004.json",
       "lessonId": "research-sections-004",
-      "beforeSha256": "c13d5d3857e377685b73e2b13ea510cae05cd55d81e5e2ec96e31902629f0943",
-      "afterSha256": "204ceb385354240f755f5e6883ba1360ff8414bae427e6f769888fb42ee7a638",
-      "contentSha256": "0c2fc6a08363ad02894451b0af2258c5a5ca91dbc1f09b1e9adea602436ba2f8",
+      "beforeSha256": "cdd06fab32cb9c98db5641b865cbabb809d06a535a4719426ac1245594ec4944",
+      "afterSha256": "20c2a67a144992ccbdccf08da9342f7128538808236cc0934a22e4e1d4ce9eeb",
+      "contentSha256": "429d5fde0b03bf0a71ec3d3b06e5cd6a4a10879d8ec12519cff87a7b9495b090",
       "beforeValues": {
         "status": "draft",
         "review": {
@@ -14337,9 +14337,9 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
       "lessonId": "research-sections-005",
-      "beforeSha256": "9b34acb63e5fc6af9e77e39ba6c6577db09ebd9d2e3960f9afb04b536ee9d0f8",
-      "afterSha256": "2db0ece52f2dbc8f6e662db4d319907d53e1d6ce4429e1ea77f202abf3df49b0",
-      "contentSha256": "00c331bfe3013d543fcbc65abd7f1d98e14ba8e2623f9f3a6b634cb074969a60",
+      "beforeSha256": "770f81852884a58a565908d5a33f1771e58974047330a4bc4070c40e040c17bd",
+      "afterSha256": "d9e08a7311ca911ae6f708002c63d2333de57882577fc50d4906cfac7ffe7b2d",
+      "contentSha256": "962d5be35221c31e2a542f766500fa43eb5a80c165d219cc0c67f42b4989f80a",
       "beforeValues": {
         "status": "draft",
         "review": {
@@ -14353,9 +14353,9 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/research-sections-006.json",
       "lessonId": "research-sections-006",
-      "beforeSha256": "fec71285f0ddf4bfdf0a784ecf3b0938ad241e89d3245ead5485be5e2a1a369d",
-      "afterSha256": "ad21a4e38bc80a50053fc42e74acecb0484d91407bfcaa8e6ecfd1e66185f6f3",
-      "contentSha256": "8309b1d78148ec3c9e0ec613bddf55fc5150b4ebe7a914a63b3611a8f19639d8",
+      "beforeSha256": "72e900ef2966981eb7f5375509be23ab4e8df0636d7c4d1d8f9e604893a5298c",
+      "afterSha256": "bdbd7b17627336d1bb22d1797a0d0aaea8e27fbba218116571eda1a2eb39ba16",
+      "contentSha256": "69195e6986182fac6968b39d7cc84e2d8d8980fbfa720fa84400df70b674b3a1",
       "beforeValues": {
         "status": "draft",
         "review": {
@@ -15937,6 +15937,121 @@
         }
       ],
       "reason": "Four rigid rotations improve initial projected visibility; independently checked geometry and exact content preservation."
+    },
+    {
+      "at": "2026-11-15T21:18:16Z",
+      "approvedBy": "/root/sections_pr_inventory, status-only integration of independent content review",
+      "lessonIds": [
+        "research-sections-001",
+        "research-sections-002",
+        "research-sections-003",
+        "research-sections-004",
+        "research-sections-005",
+        "research-sections-006"
+      ],
+      "report": {
+        "path": "tools/merzlyak-10-base/independent-review-sections-harmonization-20261116.json",
+        "sha256": "ed07fb9898c19a1212fd45202fd5240c6b8544502913c323c3d5af2cf0f91f05"
+      },
+      "priorEntries": [
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
+          "lessonId": "research-sections-001",
+          "beforeSha256": "2db94346c392eba953aa0c0a43403b77000ea00ec288eaf740ef4a96963357e9",
+          "afterSha256": "3b84ce6b8372a1a4583e92f356422dbdad4b02e8fa8b969f03d72af890971c29",
+          "contentSha256": "86a4673fe8cef2b163690cb4c2814effa3b9427680bea289af77a0ab9a9fb796",
+          "beforeValues": {
+            "status": "draft",
+            "review": {
+              "source": "pending",
+              "mathematics": "pending",
+              "pedagogy": "pending"
+            }
+          },
+          "serialization": "json-utf8-ensure-ascii-false-indent-2-final-lf"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
+          "lessonId": "research-sections-002",
+          "beforeSha256": "5110112ac53493fd702aafb827db2f181459f96e2e21cd645cee47f63fabed5c",
+          "afterSha256": "e8394f3f8b849824b4e2e4841f1cc94a7f21c442b7f37c920d7e908217073077",
+          "contentSha256": "8dd7d277ec89560688d5e4d17ac5716de94c410b6e22f059c9bf6a263254f3cc",
+          "beforeValues": {
+            "status": "draft",
+            "review": {
+              "source": "pending",
+              "mathematics": "pending",
+              "pedagogy": "pending"
+            }
+          },
+          "serialization": "json-utf8-ensure-ascii-false-indent-2-final-lf"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-003.json",
+          "lessonId": "research-sections-003",
+          "beforeSha256": "20aaba4d4604625db4a2c07936c83dc7d32a310b309fbf7f824ca5555cc6f3ab",
+          "afterSha256": "f21917b411ce9b165e054d1c43044355c3ef80c928860a95d32e4ca03ec6429a",
+          "contentSha256": "3d2d6d827fec37156f01a2c42b20de51c472cb49b39801b019f8a33c7406ed3b",
+          "beforeValues": {
+            "status": "draft",
+            "review": {
+              "source": "pending",
+              "mathematics": "pending",
+              "pedagogy": "pending"
+            }
+          },
+          "serialization": "json-utf8-ensure-ascii-false-indent-2-final-lf"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-004.json",
+          "lessonId": "research-sections-004",
+          "beforeSha256": "c13d5d3857e377685b73e2b13ea510cae05cd55d81e5e2ec96e31902629f0943",
+          "afterSha256": "204ceb385354240f755f5e6883ba1360ff8414bae427e6f769888fb42ee7a638",
+          "contentSha256": "0c2fc6a08363ad02894451b0af2258c5a5ca91dbc1f09b1e9adea602436ba2f8",
+          "beforeValues": {
+            "status": "draft",
+            "review": {
+              "source": "pending",
+              "mathematics": "pending",
+              "pedagogy": "pending"
+            }
+          },
+          "serialization": "json-utf8-ensure-ascii-false-indent-2-final-lf"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
+          "lessonId": "research-sections-005",
+          "beforeSha256": "9b34acb63e5fc6af9e77e39ba6c6577db09ebd9d2e3960f9afb04b536ee9d0f8",
+          "afterSha256": "2db0ece52f2dbc8f6e662db4d319907d53e1d6ce4429e1ea77f202abf3df49b0",
+          "contentSha256": "00c331bfe3013d543fcbc65abd7f1d98e14ba8e2623f9f3a6b634cb074969a60",
+          "beforeValues": {
+            "status": "draft",
+            "review": {
+              "source": "pending",
+              "mathematics": "pending",
+              "pedagogy": "pending"
+            }
+          },
+          "serialization": "json-utf8-ensure-ascii-false-indent-2-final-lf"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-006.json",
+          "lessonId": "research-sections-006",
+          "beforeSha256": "fec71285f0ddf4bfdf0a784ecf3b0938ad241e89d3245ead5485be5e2a1a369d",
+          "afterSha256": "ad21a4e38bc80a50053fc42e74acecb0484d91407bfcaa8e6ecfd1e66185f6f3",
+          "contentSha256": "8309b1d78148ec3c9e0ec613bddf55fc5150b4ebe7a914a63b3611a8f19639d8",
+          "beforeValues": {
+            "status": "draft",
+            "review": {
+              "source": "pending",
+              "mathematics": "pending",
+              "pedagogy": "pending"
+            }
+          },
+          "serialization": "json-utf8-ensure-ascii-false-indent-2-final-lf"
+        }
+      ],
+      "reason": "Content-only harmonization of the six section lessons; exact independent source-preservation, mathematical and pedagogical review recorded before status-only transition. Revision1 retains prior learner storage keys. No release authorization."
     }
   ]
 }
