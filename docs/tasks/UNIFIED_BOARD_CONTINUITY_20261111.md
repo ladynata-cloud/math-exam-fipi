@@ -55,3 +55,33 @@ START: текущая просьба владельца «продолжи ее 
 
 ## Execution
 Результаты и продолжение: [report](../reports/unified-board-continuity-20261111.md). Один branch/PR для этой правки; не смешивать с параллельными изменениями курсов. Следующие запуски сначала читают checkpoint и актуальную ветку, затем продолжают незавершённые проверки.
+
+## Release-gate repair — 19 November 2026
+
+The owner's current instruction is to remove the release blockers found in #526
+and #679. This continuation preserves the existing HIGH scope and prepares the
+release branches; production data, Amvera configuration and main may not be
+changed before showing the concrete action and receiving separate owner consent.
+
+The reviewed main is `e97445d1ee23263570201a0a19dc5b78e5e231eb`, including #678,
+#680 and the already completed #681. Their 68 changed paths do not overlap the
+51 paths of this candidate. History-preserving synchronization retains those
+changes. No demo-board rerelease or additional trainer integration is included.
+
+SpaceMath's existing home link gets the site's explicit navigation marker,
+`target="_self"` and a minimum 44 px tap height. The original navigation checker
+and browser gate remain unchanged. The main-composition gate also runs for
+`release/unified-board-continuity-20261119-ci`; the previous feature branch stays
+covered. It pins the reviewed main and rechecks the remote after acceptance.
+The composition regression includes a head already synchronized with main.
+
+Required checks: exact merge tree/blob/delta preservation, four composition
+tests, full server and model suites, home coverage and browser navigation, and
+the existing eight-learner/materials/handwriting/restoration browser gates.
+Final heads and actual CI results are recorded in the PR, not inferred here.
+
+The Amvera backup list still does not load in the available session. No usable
+production snapshot or isolated restore is claimed. Backend-first rollout and
+new-reader retention on rollback remain required. After #526 eventually merges,
+#679 must be revalidated against that new main with a fresh pinned base before
+UI release; this preparation does not pre-authorize that later pair.

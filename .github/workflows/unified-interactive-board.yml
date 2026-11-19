@@ -62,10 +62,14 @@ jobs:
   main-composition:
     if: >-
       github.head_ref == 'feature/unified-board-continuity-20261111' ||
+      github.head_ref == 'release/unified-board-continuity-20261119-ci' ||
       (github.event_name == 'workflow_dispatch' &&
-       github.ref_name == 'feature/unified-board-continuity-20261111')
+       (github.ref_name == 'feature/unified-board-continuity-20261111' ||
+        github.ref_name == 'release/unified-board-continuity-20261119-ci'))
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      EXPECTED_MAIN: e97445d1ee23263570201a0a19dc5b78e5e231eb
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -74,8 +78,6 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Compose reviewed main without moving repository refs
         working-directory: ${{ github.workspace }}
-        env:
-          EXPECTED_MAIN: 19811cc15a33d63fc0fcc0b6a11c34863ec64d03
         run: |
           python tools/unified-main-composition.test.py
           git fetch origin main
@@ -114,6 +116,11 @@ jobs:
           UNIFIED_BOARD_ARTIFACTS: ${{ runner.temp }}/unified-composed-artifacts
         working-directory: ${{ runner.temp }}/unified-composed
         run: node tools/unified-board.browser.cjs
+      - name: Confirm reviewed main is still current after acceptance
+        working-directory: ${{ github.workspace }}
+        run: |
+          actual_main=$(git ls-remote --exit-code origin refs/heads/main)
+          test "${actual_main%%[[:space:]]*}" = "$EXPECTED_MAIN"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

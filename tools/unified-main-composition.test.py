@@ -1,6 +1,7 @@
 import contextlib
 import importlib.util
 import io
+import json
 import os
 import subprocess
 import tempfile
@@ -61,6 +62,18 @@ class CompositionTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'overlap'):
             self.compose()
         self.assertFalse(Path('proof.json').exists())
+
+    def test_current_main_already_merged_preserves_exact_head_tree(self):
+        self.git('merge', '--no-ff', '--no-edit', self.main)
+        self.commit('followup.txt', 'reviewed change after synchronization')
+        before = self.git('show-ref')
+        tree = self.compose()
+        self.assertEqual(tree, self.git('rev-parse', 'HEAD^{tree}'))
+        self.assertEqual(self.git('show', tree + ':course.txt'), 'main course')
+        proof = json.loads(Path('proof.json').read_text())
+        self.assertEqual(proof['ancestor'], self.main)
+        self.assertEqual(proof['taskFiles'], ['board.txt', 'followup.txt'])
+        self.assertEqual(self.git('show-ref'), before)
 
     def test_main_movement_fails_closed(self):
         self.git('checkout', 'main')
