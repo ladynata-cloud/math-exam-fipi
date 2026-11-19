@@ -120,6 +120,13 @@
   .def .name{font-weight:900;font-size:1.05rem;min-width:118px}
   .def .name small{display:block;color:var(--ink-faint);font-weight:700;font-size:.72rem;letter-spacing:.04em}
   .def .formula{font-weight:700;font-size:1.02rem}
+  #sine-wave{scroll-margin-top:16px}
+  @media(min-width:601px){#sine-wave{scroll-margin-top:9rem}}
+  @media(max-width:500px){
+    #func .def{grid-template-columns:minmax(0,1fr);gap:4px}
+    #sine-wave{padding:16px}
+    #wvSvg text{font-size:22px;fill:var(--ink-soft)}
+  }
 
   .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
   .pill{font-weight:800;font-size:.85rem;padding:6px 12px;border-radius:999px;cursor:pointer;border:1.5px solid;transition:.14s;background:#fff}
@@ -667,9 +674,9 @@
 
     <div class="card lg" id="sine-wave">
       <div class="sec-head"><div class="ico" style="background:var(--sin-soft)">🎢</div>
-        <div><h2>Окружность рождает синусоиду</h2><p>Разворачиваем круг в график</p></div></div>
-      <p class="lead">Передвиньте ползунок <span class="hl-t">t</span> или нажмите «Запустить». Слева радиус поворачивается на t радиан. Справа точка графика получает координаты <span class="hl-s">(t, sin t)</span>. Пунктир соединяет точки на одной высоте. Куда пойдёт график, когда радиус пройдёт нижнюю точку?</p>
-      <div class="figbox" style="margin-top:14px"><svg id="wvSvg" viewBox="0 0 660 300" aria-label="Окружность и график синуса"></svg></div>
+        <div><h2>Окружность и синусоида</h2></div></div>
+      <p class="lead">Двигайте ползунок <span class="hl-t">t</span>. Слева радиус поворачивается. Справа точка <span class="hl-s">(t, sin t)</span> остаётся на одной высоте с его концом.</p>
+      <div class="figbox" style="margin-top:14px"><svg id="wvSvg" viewBox="0 48 660 204" aria-label="Окружность и график синуса"></svg></div>
       <div class="controls" style="margin-top:14px">
         <div class="ctrl"><label for="wvT">Угол t, рад <span class="val mono" id="wvTval" style="color:var(--arc)">0.00</span></label>
           <input type="range" id="wvT" class="arc" min="0" max="12.57" value="0" step="0.01"></div>
@@ -683,7 +690,7 @@
           <span id="wvCosLeg" style="display:none"><i style="background:var(--cos)"></i>y = cos t</span>
         </div>
       </div>
-      <div class="note green" style="margin-top:14px"><span>∿</span><div>Через полный оборот точка на окружности вернётся на прежнюю высоту. Справа вы увидите такую же высоту уже при <span class="mono">t + 2π</span>. График повторяется через <b>2π</b>.</div></div>
+      <div class="note green" style="margin-top:14px"><span>∿</span><div>Куда пойдёт график, когда радиус пройдёт нижнюю точку? Проверьте ползунком. Через полный оборот точка на окружности вернётся на прежнюю высоту. Справа вы увидите такую же высоту уже при <span class="mono">t + 2π</span>. График повторяется через <b>2π</b>.</div></div>
     </div>
   </section>
 
