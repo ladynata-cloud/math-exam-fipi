@@ -1,0 +1,117 @@
+name: Habr standalone GIF capture
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "assets/habr-entry-gifs*"
+      - "assets/habr-entry-gifs/**"
+      - "tools/habr-gifs*"
+      - "tools/habr_gifs_preservation.py"
+      - "tools/build-habr-gifs.py"
+      - ".github/workflows/habr-entry-gifs-capture.yml"
+  push:
+    branches: ['task/habr-entry-gifs-*']
+    paths:
+      - 'assets/habr-entry-gifs*'
+      - 'assets/habr-entry-gifs/**'
+      - 'tools/habr-gifs*'
+      - 'tools/habr_gifs_preservation.py'
+      - 'oge/skills/build.py'
+      - 'oge/skills/index.html'
+      - 'trainers/negative-numbers-line.html'
+      - 'trainers/percent-part-whole-trainer.html'
+      - 'ege-profil/circle/index.html'
+      - 'ege-profil/trainers/trigonometry.html'
+      - 'stereo-course/literacy/index.html'
+      - 'stereo-course/sections/index.html'
+      - 'tools/habr-gifs-capture-20261119.json'
+      - 'tools/build-habr-gifs.py'
+      - 'tools/habr-gifs.test.cjs'
+      - 'tools/habr-gifs-encoder.test.py'
+      - '.github/workflows/habr-entry-gifs-capture.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: habr-gifs-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-strict-media:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - name: Install DOM tools outside checkout
+        run: npm install --prefix "$RUNNER_TEMP/habr-dom" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+      - name: Check exact integration, player and canonical outputs
+        env:
+          NODE_PATH: ${{ runner.temp }}/habr-dom/node_modules
+        run: |
+          node --check assets/habr-entry-gifs.js
+          node --test tools/habr-gifs.test.cjs tools/habr-gifs-integration.test.cjs tools/habr-gifs-player.test.cjs tools/public-navigator-preservation.test.cjs
+          node tools/habr-gifs.browser.cjs --check
+          python oge/skills/build.py
+          git diff --exit-code -- oge/skills/index.html oge/skills/course-data.json oge/skills/series-catalog.json
+          python tools/sections-course-build.py --check
+      - name: Require all eight genuine current-source recordings
+        run: node tools/habr-gifs-media-gate.cjs
+
+  capture-eight-standalone-trainers:
+    if: github.event_name != 'pull_request'
+    # Read-only checkout + artifact creation; no git writes, secrets, rooms, or publication.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install capture dependencies outside checkout
+        run: |
+          npm install --prefix "$RUNNER_TEMP/habr-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/habr-browser/node_modules/.bin/playwright" install --with-deps chromium
+          python -m pip install --disable-pip-version-check Pillow==11.3.0
+      - name: Validate exact plan and runtime source hashes
+        run: |
+          node --check tools/habr-gifs.browser.cjs
+          node --test tools/habr-gifs.test.cjs
+          node tools/habr-gifs.browser.cjs --check
+          python -m py_compile tools/build-habr-gifs.py
+          python tools/habr-gifs-encoder.test.py
+      - name: Record eight real standalone interfaces
+        env:
+          NODE_PATH: ${{ runner.temp }}/habr-browser/node_modules
+        run: node tools/habr-gifs.browser.cjs --output "$RUNNER_TEMP/habr-recordings"
+      - name: Encode and compare every decoded GIF frame
+        run: |
+          python tools/build-habr-gifs.py --repo "$GITHUB_WORKSPACE" --plan tools/habr-gifs-capture-20261119.json --recordings "$RUNNER_TEMP/habr-recordings" --output "$RUNNER_TEMP/habr-media"
+      - name: Assemble review artifact without modifying checkout
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/habr-artifact"
+          cp tools/habr-gifs-capture-20261119.json "$RUNNER_TEMP/habr-artifact/plan.json"
+          if [ -d "$RUNNER_TEMP/habr-recordings" ]; then cp -a "$RUNNER_TEMP/habr-recordings" "$RUNNER_TEMP/habr-artifact/raw"; fi
+          if [ -d "$RUNNER_TEMP/habr-media" ]; then cp -a "$RUNNER_TEMP/habr-media" "$RUNNER_TEMP/habr-artifact/media"; fi
+      - name: Preserve plan, native frames, receipts, GIFs and contact sheets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: habr-standalone-gifs-${{ github.sha }}
+          path: ${{ runner.temp }}/habr-artifact
+          if-no-files-found: error
+          retention-days: 30
