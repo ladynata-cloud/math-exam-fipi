@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
+const {createHash} = require('node:crypto');
 const {execFileSync} = require('node:child_process');
 const {restorePublicNavigator} = require('../public-navigator-preservation.cjs');
 const root = path.resolve(__dirname, '../..');
@@ -25,7 +26,24 @@ for (const unit of course.units) {
   const original = restorePublicNavigator('geometry-course/' + name, source('geometry-course/' + name)).toString('utf8');
   // The exporter only turns website links into absolute website URLs; the
   // mathematics, labels and inline lesson scripts stay exactly as built.
-  const scripts = html => [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)].map(match => match[1]);
+  const scripts = html => [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)].map(match => {
+    if (!match[1].startsWith('window.COURSE_CONFIG=')) return match[1];
+    const config = JSON.parse(match[1].slice('window.COURSE_CONFIG='.length).trim().replace(/;$/, ''));
+    const embeddedMedia = value => {
+      if (typeof value !== 'string' || !value.startsWith('../_shared/geometry-experiment-gifs/')) return value;
+      const target = path.resolve(folder, 'atlas', value);
+      assert(target.startsWith(path.join(folder, '_shared/geometry-experiment-gifs') + path.sep));
+      const bytes = fs.readFileSync(target), ext = path.extname(target).slice(1);
+      assert(['png', 'gif'].includes(ext));
+      assert.equal(path.basename(target), createHash('sha256').update(bytes).digest('hex') + '.' + ext);
+      return 'data:image/' + ext + ';base64,' + bytes.toString('base64');
+    };
+    for (const clip of config.experimentGuides?.clips || []) {
+      clip.gif = embeddedMedia(clip.gif); clip.poster = embeddedMedia(clip.poster);
+      clip.frames = clip.frames.map(embeddedMedia);
+    }
+    return 'window.COURSE_CONFIG=' + JSON.stringify(config) + ';';
+  });
   assert.deepEqual(scripts(read(name)), scripts(original), unit.id + ': exact standalone inline sources');
   assert(!/navigator-(?:data|widget)\.js/.test(read(name)), unit.id + ': public shell omitted');
 }

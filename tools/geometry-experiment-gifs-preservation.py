@@ -72,7 +72,23 @@ def check(base):
     if (ROOT/package).is_file():
         old_bytes = subprocess.check_output(['git', 'show', base + ':' + package], cwd=ROOT)
         with zipfile.ZipFile(io.BytesIO(old_bytes)) as old_zip, zipfile.ZipFile(ROOT/package) as new_zip:
-            assert sorted(new_zip.namelist()) == sorted(old_zip.namelist()), 'ZIP membership changed'
+            # Shared copies are exactly the original embedded bytes, named by
+            # their content hash. No additional code or unrelated files allowed.
+            media_members = {}
+            import base64
+            for relative in catalogue['pages']:
+                if not relative.startswith('geometry-course/'):
+                    continue
+                source = json.loads(CONFIG.search((ROOT/relative).read_text())[2])
+                for clip in source['experimentGuides']['clips']:
+                    for value in [clip['gif'], clip['poster'], *clip['frames']]:
+                        m = re.fullmatch(r'data:image/(png|gif);base64,([A-Za-z0-9+/=]+)', value)
+                        if m:
+                            payload = base64.b64decode(m[2], validate=True)
+                            media_members['_shared/geometry-experiment-gifs/' + hashlib.sha256(payload).hexdigest() + '.' + m[1]] = payload
+            assert set(new_zip.namelist()) == set(old_zip.namelist()) | set(media_members), 'ZIP membership changed'
+            for name, payload in media_members.items():
+                assert new_zip.read(name) == payload, 'ZIP media bytes changed: ' + name
             atlas = {'atlas/' + Path(name).name for name in catalogue['pages'] if name.startswith('geometry-course/')}
             assert len(atlas) == 63 and atlas <= set(old_zip.namelist()), 'Expected complete predecessor atlas'
             for name in old_zip.namelist():

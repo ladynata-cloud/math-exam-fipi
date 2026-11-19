@@ -22,6 +22,15 @@ const byRoleButton = (scope, name) => scope.getByRole('button', { name, exact: t
 const componentOnly = process.argv.slice(2).includes('--component-only');
 assert(process.argv.slice(2).every(arg => arg === '--component-only'), 'only --component-only is supported; CI runs the complete default suite');
 
+async function openRetainedBoard(page) {
+  const retained = page.locator('details.manual-research');
+  if (await retained.count() && !await retained.evaluate(node => node.open)) await retained.locator('summary').first().click();
+}
+async function legacyObservation(page) {
+  const field = page.locator('#legacy-observation');
+  return await field.count() ? field : page.locator('#observation');
+}
+
 function fullConfig(filename) {
   const mapping = catalogue.pages[filename];
   const conf = { unitId: mapping.unitId, manual: mapping.manual, experiments: mapping.experiments, investigations: mapping.investigations, clips: [] };
@@ -277,6 +286,7 @@ async function allPages(browser) {
     for (const [filename, mapping] of Object.entries(catalogue.pages)) {
       await page.goto(ORIGIN + '/' + filename);
       await page.locator('[data-stage="1"]').click();
+      await openRetainedBoard(page);
       const host = page.locator(manualHost);
       if (mapping.course === 'geometry-pogorelov' && await page.evaluate(() =>
         Boolean(window.COURSE_CONFIG.unit.topicQuestion || document.querySelector('#lesson [data-pogorelov-topic-guide]')))) {
@@ -288,13 +298,20 @@ async function allPages(browser) {
       await host.waitFor();
       assert.equal(await host.count(), 1, filename + ': one guide beside the manual board');
       assert.equal(await host.locator('.geometry-experiment-guide').getAttribute('data-clip'), mapping.manual[0]);
-      assert.equal(await page.locator('[data-geometry-guide-surface="experiments"]').count(), mapping.experiments.length ? 1 : 0, filename + ': extra experiment mapping');
-      assert.equal(await page.locator('[data-geometry-guide-surface="investigations"]').count(), 0, filename + ': no unmerged topic UI');
+      const harmonized = mapping.course === 'geometry-course';
+      assert.equal(await page.locator('#topic-investigation .topic-investigation').count(), harmonized ? 1 : 0, filename + ': exact current research surface');
+      assert.equal(await page.locator('[data-geometry-guide-surface="experiments"]').count(), !harmonized && mapping.experiments.length ? 1 : 0, filename + ': extra experiment mapping for current stage');
+      assert.equal(await page.locator('[data-geometry-guide-surface="investigations"]').count(), harmonized ? 1 : 0, filename + ': guide follows the actual topic surface');
       await imageReady(host);
       assert.equal(await page.locator('.geometry-experiment-guide[data-playing="true"]').count(), 0);
       assert.equal(await page.locator('.geometry-experiment-guide img[src^="data:image/gif"]').count(), 0, filename + ': no GIF decoded before request');
       assert.equal(gifRequests.length, 0, 'no GIF network prefetch');
       for (const other of await page.locator('[data-geometry-guide-surface="experiments"]').all()) await imageReady(other);
+      if (harmonized) {
+        await page.locator('[data-stage="0"]').click();
+        assert.equal(await page.locator('[data-geometry-guide-surface="experiments"]').count(), mapping.experiments.length ? 1 : 0, filename + ': additional model is on the explanation stage');
+        for (const other of await page.locator('[data-geometry-guide-surface="experiments"]').all()) await imageReady(other);
+      }
       results.push({ filename, guide: mapping.manual[0], staticPreview: true, noAutoplay: true });
     }
   } finally { await context.close(); }
@@ -310,6 +327,7 @@ async function midlineMatrix(browser) {
     const page = await context.newPage(), requests = await watch(page);
     try {
       await page.goto(ORIGIN + '/' + filename);
+      await openRetainedBoard(page);
       const host = page.locator(manualHost);
       await host.waitFor();
       assert.match(await page.locator('.lab-readout').innerText(), /PQ = 3.60/);
@@ -348,13 +366,14 @@ async function midlineMatrix(browser) {
         await page.locator('[data-stage="0"]').click();
         await page.waitForFunction(() => !document.querySelector('[data-geometry-guide-surface="manual"]'));
         await page.locator('[data-stage="1"]').click();
+        await openRetainedBoard(page);
         await host.waitFor();
         assert.equal(await host.count(), 1, 'returning to a stage does not duplicate the guide');
       }
-      assert.equal(await page.locator('#observation').inputValue(), 'Я сравниваю длины после движения.');
+      assert.equal(await (await legacyObservation(page)).inputValue(), 'Я сравниваю длины после движения.');
       assert.match(await page.locator('.lab-readout').innerText(), /PQ = 3.60/);
-      await page.reload(); await host.waitFor();
-      assert.equal(await page.locator('#observation').inputValue(), 'Я сравниваю длины после движения.');
+      await page.reload(); await openRetainedBoard(page); await host.waitFor();
+      assert.equal(await (await legacyObservation(page)).inputValue(), 'Я сравниваю длины после движения.');
       assert.match(await page.locator('.lab-readout').innerText(), /PQ = 3.60/);
       results.push({ filename, width, playback: true, modalZoom: true, exactWorkPreserved: true, remount: true, reload: true });
     } finally { await context.close(); }
@@ -368,10 +387,11 @@ async function standalone(browser) {
   try {
     await page.goto(pathToFileURL(path.join(ROOT, 'geometry-course/atlas/midline.html')).href);
     await page.locator('[data-stage="1"]').click();
+    await openRetainedBoard(page);
     const host = page.locator(manualHost); await host.waitFor(); await imageReady(host);
     await byRoleButton(host, 'Смотреть GIF').click(); await imageReady(host);
     await byRoleButton(host, 'Остановить GIF').click();
-    await page.reload(); await page.locator('[data-stage="1"]').click(); await imageReady(host);
+    await page.reload(); await page.locator('[data-stage="1"]').click(); await openRetainedBoard(page); await imageReady(host);
     results.push({ standalone: 'geometry-course/atlas/midline.html', offline: true, reload: true });
   } finally { await context.close(); }
 }
@@ -387,7 +407,7 @@ async function pendingCompatibility(browser) {
     await page.locator('[data-stage="1"]').click();
     const primary = page.locator('[data-geometry-guide-surface="investigations"]'), manual = page.locator(manualHost);
     await primary.waitFor(); await manual.waitFor({ state: 'attached' });
-    assert.equal(await primary.evaluate(node => !!node.closest('details')), false, 'topic instruction precedes the primary experience');
+    assert.equal(await primary.evaluate(node => !!node.closest('details')), false, 'topic instruction stays beside the primary experience outside retained work');
     assert.equal(await manual.evaluate(node => node.closest('details')?.className), 'manual-research', 'old construction instruction stays inside its own field');
     assert.equal(await primary.locator('.geometry-experiment-guide').getAttribute('data-clip'), 'atanasyan-topic-midline');
     const before = await stored(page);
