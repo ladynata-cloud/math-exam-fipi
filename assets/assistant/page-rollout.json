@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "1f05b3ff5effae756e58b67ecc075358c68a2349",
+  "baseSha": "02f55988d59c0929943241b57c018276ba3844a8",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -453,8 +453,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trigonometry.html": {
-      "beforeSha256": "fe48009c7a49df432e77c8751cd8c6692ff8cc9eb2788e7dc87395105a96c154",
-      "afterSha256": "144cb7a38afc80668dc30277775c728beb339f51f3104340a403263d2f2d328c",
+      "beforeSha256": "a312c1e12335a1bd1d9bcba82b73497cdc34927b70a755f4b5ce6bdc6255b210",
+      "afterSha256": "2373aa0c08ad35596ddb973b4b5b02c73f6acdf4a1a7b84319cd11a8778d652a",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
@@ -5648,6 +5648,15 @@
       "changedPaths": [
         "ege-profil/trainers/trigonometry.html",
         "trainers/percent-part-whole-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "1f05b3ff5effae756e58b67ecc075358c68a2349",
+      "sourceBaseSha": "02f55988d59c0929943241b57c018276ba3844a8",
+      "task": "docs/tasks/HABR_BOARD_ENTRY_20261119.md",
+      "changedPaths": [
+        "ege-profil/trainers/trigonometry.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
