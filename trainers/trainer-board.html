@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="sections-course-navigation.css?v=20261108-mobile">
   <style>
     .ink-delivery { flex:none; padding:5px 8px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; border-top:1px solid #e3e8e5; }
-    .ink-delivery[hidden] { display:none; }
+    .ink-delivery[hidden], .ink-delivery [hidden] { display:none!important; }
     .ink-delivery .status { font-size:14px; }
     .ink-delivery .panel-buttons { margin:0; max-width:100%; }
     .ink-delivery .btn { white-space:normal; }
@@ -567,7 +567,7 @@
       // Retain only the live iframe's handshake metadata, never room state or
       // queued writes. A later accepted room can request its current contents.
       const paused=bridgeSession?.hydrated?bridgeSession:pausedTrainerBridge;
-      shared.roomError=message;shared.restoredTeacherSession=false;shared.connected=false;roomStateReceived=false;
+      shared.roomError=message;shared.restoredTeacherSession=false;shared.connected=false;roomStateReceived=false;inkSnapshotConfirmed=false;
       imageImportEpoch++;cancelGesture(false);closeTextEditor();
       invalidateTrainerBridge();pausedTrainerBridge=paused;bridgeReloadNeeded=true;latestTrainerState=null;
       shared.roomId='';shared.token='';shared.studentToken='';shared.studentLink='';shared.me=null;shared.control='';shared.controlVersion=0;studentLink.value='';
@@ -613,13 +613,13 @@
         if(shared.socket){shared.socket.disconnect();shared.socket.removeAllListeners()}
         shared.socket=io(shared.server,{transports:['polling','websocket'],tryAllTransports:true,reconnection:true});
         let socketConnectedOnce=false;
-        shared.socket.on('connect',()=>{const reconnecting=socketConnectedOnce;socketConnectedOnce=true;shared.connected=true;roomStateReceived=false;if(reconnecting)loadTrainerRegistry({force:true});else loadTrainerRegistry();setStatus('подключено','ok');shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
+        shared.socket.on('connect',()=>{const reconnecting=socketConnectedOnce;socketConnectedOnce=true;shared.connected=true;roomStateReceived=false;inkSnapshotConfirmed=false;if(reconnecting)loadTrainerRegistry({force:true});else loadTrainerRegistry();setStatus('подключено','ok');shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
         shared.socket.on('connect_error',()=>{
           if(shared.roomError)return;
           setStatus('Повторяем подключение к комнате…','wait');
           guestConnectionHint('Ждём ответа сервера. Можно повторить подключение.',true);
         });
-        shared.socket.on('disconnect',()=>{imageImportEpoch++;cancelGesture(true);finishText();clearTimeout(inkDeliveryTimer);inkDeliveryTimer=null;inkStructurePending=false;clearPendingHistory();pruneSharedRedo();shared.connected=false;roomStateReceived=false;if(mirrorEntryFromUrl(state.trainerUrl))setMirrorStatus('pending');setStatus('нет связи','bad');updateControlUi()});
+        shared.socket.on('disconnect',()=>{imageImportEpoch++;cancelGesture(true);finishText();clearTimeout(inkDeliveryTimer);inkDeliveryTimer=null;inkStructurePending=false;clearPendingHistory();pruneSharedRedo();shared.connected=false;roomStateReceived=false;inkSnapshotConfirmed=false;if(mirrorEntryFromUrl(state.trainerUrl))setMirrorStatus('pending');setStatus('нет связи','bad');updateControlUi()});
         shared.socket.on('reconnect_attempt',()=>setStatus('переподключение','wait'));
         shared.socket.on('room:error',handleRoomError);
         shared.socket.on('room:state',payload=>{
@@ -628,7 +628,7 @@
           shared.roomError='';
           setControlState(payload?.state||payload||{});
           setSharedMe(payload?.you);
-          roomStateReceived=!!payload?.state;
+          roomStateReceived=true;
           activateInkDelivery(payload);
           const prepared=takePreparedProfileTrainer(payload?.state);
           latestTrainerState=payload?.state?.latestTrainerState||prepared||null;

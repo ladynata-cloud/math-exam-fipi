@@ -2,6 +2,7 @@
 'use strict';
 let inkOutbox = null, inkDeliveryCapability = false, inkDeliveryTimer = null;
 let inkDeliveryUnavailable = false, inkStructurePending = false, inkRoomTtlMs = null;
+let inkSnapshotConfirmed = false;
 let gestureInkContext = null, textInkContext = null;
 
 function deliveryScopeMatches() {
@@ -37,7 +38,7 @@ function updateInkDeliveryStatus() {
   else if (inkOutbox?.pending().length) { message = `Ждут сохранения: ${inkOutbox.pending().length}`; kind = 'wait'; }
   else if (drawing || (!editor.classList.contains('hidden') && editor.value.trim())) { message = 'Запись ещё не завершена'; kind = 'wait'; }
   else if (shared.roomId && !shared.connected) { message = 'Нет связи с комнатой'; kind = 'wait'; }
-  else if (shared.roomId && (!roomStateReceived || pendingHistory || inkStructurePending)) { message = 'Ждём подтверждения комнаты'; kind = 'wait'; }
+  else if (shared.roomId && (!roomStateReceived || !inkSnapshotConfirmed || pendingHistory || inkStructurePending)) { message = 'Ждём подтверждения комнаты'; kind = 'wait'; }
   else if (inkOutbox?.list().some(record => record.status === 'archived')) { message = 'Неотправленные записи оставлены в локальной копии'; kind = 'wait'; }
   else if (shared.roomId && inkDeliveryCapability) { message = 'Штрихи сохранены на сервере'; kind = 'ok'; }
   else if (shared.roomId) { message = 'Временная комната: сохраните лист в PNG'; kind = 'wait'; }
@@ -54,6 +55,7 @@ function updateInkDeliveryStatus() {
   document.getElementById('archiveRejectedInk').hidden = !inkOutbox?.rejected().length;
 }
 function activateInkDelivery(payload) {
+  inkSnapshotConfirmed = !!payload?.state;
   if (Number.isFinite(payload?.state?.roomTtlMs)) inkRoomTtlMs = payload.state.roomTtlMs;
   const capability = payload?.state?.inkDelivery || payload?.inkDelivery;
   const durable = capability?.version === 1 && capability.durable === true;
@@ -100,7 +102,7 @@ function strokesWithPendingInk(sheet) {
 }
 async function flushPendingInk() {
   clearTimeout(inkDeliveryTimer);
-  if (!inkDeliveryCapability || !deliveryScopeMatches() || !shared.connected || !roomStateReceived
+  if (!inkDeliveryCapability || !deliveryScopeMatches() || !shared.connected || !roomStateReceived || !inkSnapshotConfirmed
     || inkOutbox.busy || inkOutbox.closed || inkOutbox.fault || !inkOutbox.pending().length) return;
   const queue = inkOutbox, socket = shared.socket, roomId = shared.roomId;
   await queue.flush(record => new Promise((resolve, reject) => {

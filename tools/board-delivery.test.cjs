@@ -471,7 +471,7 @@ function deliveryUiFixture() {
     roomStateReceived: true, pendingHistory: null, providedQueue: queue,
     boardMessage() {}, scheduleRender() {}, clearTimeout() {}, setTimeout() { return 1; } });
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'trainers/board-delivery-ui.js'), 'utf8'), context);
-  vm.runInContext('inkOutbox = providedQueue; inkDeliveryCapability = true;', context);
+  vm.runInContext('inkOutbox = providedQueue; inkDeliveryCapability = true; inkSnapshotConfirmed = true;', context);
   return { queue, elements, context, run: code => vm.runInContext(code, context) };
 }
 
@@ -619,7 +619,7 @@ test('actual room-state handler never describes an unconfirmed initial seed as s
     pausedTrainerBridge: null, bridgeReloadNeeded: false, canWrite: () => true,
     takePreparedProfileTrainer: () => null,
     updateControlUi: () => f.run('updateInkDeliveryStatus()'),
-    emitSnapshot: () => seedStates.push({ received: f.run('roomStateReceived'),
+    emitSnapshot: () => seedStates.push({ received: f.run('roomStateReceived'), confirmed: f.run('inkSnapshotConfirmed'),
       status: f.elements.get('inkSaveStatus').dataset.delivery }) });
   f.context.document.body = { classList: { remove() {} } };
   f.context.shared.role = 'teacher';
@@ -627,12 +627,34 @@ test('actual room-state handler never describes an unconfirmed initial seed as s
   const receive = f.run('(payload) => {' + match[1] + '\n}');
   receive({ state: null, inkDelivery: { version: 1, durable: true } });
   assert.equal(seedStates.length, 1);
-  assert.equal(seedStates[0].received, false);
+  assert.equal(seedStates[0].received, true, 'accepted membership keeps the existing trainer bridge contract');
+  assert.equal(seedStates[0].confirmed, false, 'durable ink still awaits its first complete snapshot');
   assert.notEqual(seedStates[0].status, 'saved');
   assert.notEqual(f.elements.get('inkSaveStatus').dataset.delivery, 'saved');
   receive({ state: { inkDelivery: { version: 1, durable: true } } });
   assert.equal(f.run('roomStateReceived'), true);
+  assert.equal(f.run('inkSnapshotConfirmed'), true);
   assert.equal(f.elements.get('inkSaveStatus').dataset.delivery, 'saved');
+});
+
+test('accepted room membership cannot flush pending ink until its full board snapshot is confirmed', async () => {
+  const f = deliveryUiFixture(), record = f.queue.enqueue(entry());
+  let deliveries = 0;
+  f.context.roomPayload = extra => ({ roomId: f.queue.scope.roomId, ...extra });
+  f.context.shared.socket = { emit() {}, timeout() { return { emit(name, payload, callback) {
+    assert.equal(name, 'board:ink-commit');
+    assert.equal(payload.opId, record.opId);
+    deliveries++;
+    callback(null, acknowledgement(record));
+  } }; } };
+  f.run('roomStateReceived = true; inkSnapshotConfirmed = false;');
+  await f.run('flushPendingInk()');
+  assert.equal(deliveries, 0, 'accepted membership alone does not permit durable retry');
+  assert.equal(f.queue.pending().length, 1);
+  f.run('inkSnapshotConfirmed = true;');
+  await f.run('flushPendingInk()');
+  assert.equal(deliveries, 1);
+  assert.equal(f.queue.pending().length, 0);
 });
 
 test('actual writing permission blocks offline room reload before capability negotiation but keeps standalone writing', () => {

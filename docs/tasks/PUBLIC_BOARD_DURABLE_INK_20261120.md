@@ -124,3 +124,18 @@ backend. It checks completed ink/text, role transfer, reload, an interrupted
 gesture, local queue persistence across offline reload, server restart,
 exactly-once visible application, clear and a new page generation. No real
 room or learner data are used. Final CI outcomes are recorded on PR #686.
+
+### Second cloud CI follow-up
+
+The new native durable-delivery gate passed, including interrupted ink and
+offline reload. Existing real-browser coverage caught a separate regression:
+reusing the bridge's room-acceptance flag for ink confirmation could reload a
+retained trainer on an authenticated empty-room join and lose its typed answer.
+The bridge keeps its established acceptance contract; `inkSnapshotConfirmed`
+now separately gates saved status and outbox sending. A full-page null-state
+join regression reproduces the lost iframe before this fix.
+
+Downloaded CI screenshots also exposed inherited button styles overriding the
+HTML hidden attribute. Delivery controls now explicitly honor hidden, with
+native visibility assertions for healthy, pending and recovered states. The
+first geometry/image regression passed after the footer correction.

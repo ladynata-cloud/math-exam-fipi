@@ -82,6 +82,12 @@ async function saved(page, count) {
   await page.waitForFunction(expected => document.getElementById('inkSaveStatus').dataset.delivery === 'saved'
     && inkOutbox?.active().length === 0 && !inkOutbox.fault && !inkStructurePending
     && state.pages[state.current].strokes.length === expected, count);
+  await deliveryActions(page, false);
+}
+async function deliveryActions(page, pending) {
+  assert.equal(await page.locator('#downloadPendingInk').isVisible(), pending, 'download is visible only while this room has unsent work');
+  assert.equal(await page.locator('#retryPendingInk').isVisible(), pending, 'retry is visible only while this room has unsent work');
+  assert.equal(await page.locator('#archiveRejectedInk').isVisible(), false, 'archive is hidden when this room has no rejected work');
 }
 async function snapshot(page) { return page.evaluate(() => publicSnapshot().pages); }
 async function equalBoards(source, other) {
@@ -211,6 +217,7 @@ async function diagnostics() {
         assert.equal(pending.visible, 3);
         assert.deepEqual(pending.stored, pending.record);
         assert.equal((await snapshot(student))[0].strokes.length, 2);
+        await deliveryActions(teacher, true);
         await shot(teacher, 'delivery-pending-offline');
         phase = 'reload while disconnected retains pending operation, then reconnect sends it once';
         await teacher.reload({ waitUntil: 'domcontentloaded' });

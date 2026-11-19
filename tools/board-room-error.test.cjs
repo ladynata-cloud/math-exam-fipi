@@ -534,6 +534,36 @@ for (const order of ['registry-first', 'room-first']) test(`new teacher room pre
   } finally { f.close(); }
 });
 
+test('accepted uninitialized replacement room preserves the live teacher draft while awaiting the seed snapshot', async () => {
+  const f = await createBoardFixture({ role: 'teacher' });
+  try {
+    const oldSocket = await f.connect();
+    oldSocket.deliver('room:error', { message: TERMINAL_ERRORS[1] });
+    const instanceId = f.child.instanceId, navigationCount = f.child.navigations.length;
+    const hydrationCount = f.child.messages.filter(item => item.type === 'mathexam:hydrate').length;
+    f.child.draft = { answer: '59' };
+    const socket = await f.clickCreateRoom();
+    socket.deliver('connect');
+    // This is the actual server envelope before a fresh room has accepted its
+    // first board snapshot. Membership is accepted even though state is null.
+    socket.deliver('room:state', { state: null, control: 'fixture-teacher', controlVersion: 1,
+      you: { participantId: 'fixture-teacher', role: 'teacher' }, inkDelivery: { version: 1, durable: true } });
+    await tick();
+    assert.equal(f.child.instanceId, instanceId, 'uninitialized board storage never reloads the retained trainer document');
+    assert.equal(f.child.navigations.length, navigationCount);
+    assert.equal(f.child.messages.filter(item => item.type === 'mathexam:hydrate').length, hydrationCount);
+    assert.deepEqual(f.child.draft, { answer: '59' });
+    assert.notEqual(f.w.document.getElementById('inkSaveStatus').dataset.delivery, 'saved', 'seed remains unconfirmed');
+    const publications = socket.sent.filter(item => item.name === 'board:trainer-state-change');
+    assert.ok(publications.length > 0, 'accepted writer sends the current retained trainer state');
+    assert.ok(publications.every(item => item.payload.roomId === 'fixture-new-2' && item.payload.state.answer === '59'));
+    f.accept(socket);
+    await tick();
+    assert.equal(f.child.instanceId, instanceId);
+    assert.deepEqual(f.child.draft, { answer: '59' });
+  } finally { f.close(); }
+});
+
 for (const mismatch of ['url', 'generation', 'version']) test(`paused frame metadata cannot resume after ${mismatch} mismatch`, async () => {
   const f = await createBoardFixture({ role: 'teacher' });
   try {
