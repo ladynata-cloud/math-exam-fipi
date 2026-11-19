@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "complete": true,
+  "head": "1cba4fbd27e7acd9a956eab6549a48e7e1e751cc",
+  "tree": "c0307491166657a483cceb75cfe9b6dc7027d0cc",
+  "batch": "pogorelov",
+  "clips": [
+    "pogorelov-altitude-iso",
+    "pogorelov-altitude-quad",
+    "pogorelov-altitude-right",
+    "pogorelov-altitude-triangle",
+    "pogorelov-bisector-angle",
+    "pogorelov-bisector-iso",
+    "pogorelov-bisector-triangle",
+    "pogorelov-diagonal-quad",
+    "pogorelov-diagonal-rectangle",
+    "pogorelov-diagonal-rhombus",
+    "pogorelov-diagonal-square",
+    "pogorelov-diagonal-trapezoid",
+    "pogorelov-explore-circle",
+    "pogorelov-explore-segment",
+    "pogorelov-explore-triangle",
+    "pogorelov-median-right",
+    "pogorelov-median-triangle",
+    "pogorelov-midline-triangle-build",
+    "pogorelov-midline-triangle-move",
+    "pogorelov-midpoint-quad",
+    "pogorelov-midpoint-segment",
+    "pogorelov-midpoint-triangle",
+    "pogorelov-parallel-angle",
+    "pogorelov-parallel-triangle",
+    "pogorelov-perpbisector-segment",
+    "pogorelov-perpendicular-angle",
+    "pogorelov-reflection-triangle"
+  ],
+  "sourceHashes": {
+    "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+    "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+    "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347",
+    "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
+    "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+    "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+    "geometry-pogorelov/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
+    "geometry-pogorelov/assets/extra-models.js": "ad5230388f7b8690ca6c5967b21f55263de78f8369313d2bad10c567c12ef2b2",
+    "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+  },
+  "sourceHashesByClip": {
+    "pogorelov-altitude-iso": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-altitude-quad": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-altitude-right": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-altitude-triangle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-bisector-angle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-bisector-iso": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-bisector-triangle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-diagonal-quad": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-diagonal-rectangle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-diagonal-rhombus": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-diagonal-square": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-diagonal-trapezoid": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-explore-circle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-explore-segment": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-explore-triangle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-median-right": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-median-triangle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-midline-triangle-build": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-midline-triangle-move": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-midpoint-quad": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-midpoint-segment": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-midpoint-triangle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-parallel-angle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-parallel-triangle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-perpbisector-segment": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-perpendicular-angle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    },
+    "pogorelov-reflection-triangle": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+    }
+  },
+  "scenarioSha256": {
+    "pogorelov-altitude-iso": "c8808992036ff2d029f58ee7f66b416ea0ab5d21f5ce868338d6e1ceae5cb5b4",
+    "pogorelov-altitude-quad": "8af6ade34e5fd8ecf78c5f49b2871b18b9eb96a9ddfb766e95cd5ffcb5237d00",
+    "pogorelov-altitude-right": "205139a842551cba5641efd47831a0c9f11095e7f23f283d7d4c260cf7370a84",
+    "pogorelov-altitude-triangle": "04a797f6453121b30773b064ebf3aed19abfcc31a2995aff9e6aa0f0eddd759f",
+    "pogorelov-bisector-angle": "66968c3e5721db90bfdf8ec54ac7835533d3f8a7992c94de7868e99b5ec5c040",
+    "pogorelov-bisector-iso": "92158ed16cc142d7936948fd560902384e6ca4807f565e4625293b3cb0bdebd3",
+    "pogorelov-bisector-triangle": "5ade83c7b02329550938efbe0bf33fa7dc93a7efbeb4b7a5a967d4125961e6ef",
+    "pogorelov-diagonal-quad": "ec131e40bf2419a8698e031cd47f6ef8f420e6a34b4b4800154d7d89516df71b",
+    "pogorelov-diagonal-rectangle": "ecd280c80db38f37b22b3455ccd482cff638747606b5ad6f9f704292d425ff7c",
+    "pogorelov-diagonal-rhombus": "c23169457f238eee24f4af55540e972824100878972a088dea8d08ff3ddfb9b1",
+    "pogorelov-diagonal-square": "7466779d7d8a58de16191bfaf8587e5818728c2f1e3dd513219baa43cf7f7089",
+    "pogorelov-diagonal-trapezoid": "0964f02f6a334dc2133bd95c179b062d7eb6fd552814f896d0d1d1db4dd2c33c",
+    "pogorelov-explore-circle": "11dadf4fc66ad879eac8d57bedaadb72175be44338ecdb37f95b20f0925b88de",
+    "pogorelov-explore-segment": "8faf3bb7ea1d2d67d575bad4d7f6668c60100eef1f4286a5b218f43626a88cb1",
+    "pogorelov-explore-triangle": "18fd22c9431bf300b90f306cf6fad6c92c52083607fdd26780980bb6f2d19c8a",
+    "pogorelov-median-right": "9a7e199d25b37e703cce5c80777184b353371ea459d34ef29dd33ce11db5c3b1",
+    "pogorelov-median-triangle": "edd4768c75b90c04c93cfd68da35b4fa2db28550ed59ce161e8f70fc17936157",
+    "pogorelov-midline-triangle-build": "1d97e576858454b4e44e48abc76d9d3f1d85eadcdcde2f94fb23a01c307c6787",
+    "pogorelov-midline-triangle-move": "94ca7103af25762ddd9ef1a4d2c855327bdf85af8ad10b53ee8386b29b56c160",
+    "pogorelov-midpoint-quad": "3fcb1b6410eead1194c42f267b4886012229f8e55791e1691934be8febb819c5",
+    "pogorelov-midpoint-segment": "7f24d9b2791713e0fa6afd9699af2bf8d7c2f1a6df5086a630e852006f16a2d3",
+    "pogorelov-midpoint-triangle": "139c0e5d3ca80408a7eebf638bb0dc1d64ddd3f135ee1960536f5af1ce53d800",
+    "pogorelov-parallel-angle": "58b148283dd8baf1f61ec78fd621b2751e3541898f990eedb420cda4be03377e",
+    "pogorelov-parallel-triangle": "e2a98dd5d7afc5355b9f2bbbdf1171a8394c9a1c1447cf33f4de439582e07175",
+    "pogorelov-perpbisector-segment": "f2cd1f14adda1f874d044781bfa62502fdf10a40196c8442cab159190bb6727a",
+    "pogorelov-perpendicular-angle": "a6927f8a2cc108b43582315c9989583421e1a65d530994d7a00f2a492ec5f97d",
+    "pogorelov-reflection-triangle": "fe9ce6587eb4f37fb1543ae0b43de9e0f8715328dd3dfdbd699bf2ae6ecb14a9"
+  },
+  "toolHashes": {
+    "tools/geometry-experiment-gifs.browser.cjs": "fe19bd937673c009e1d207de358dfcc91e6d9aba7aa83802f84b3a7fb722f743",
+    "tools/build-geometry-experiment-gifs.py": "dbdfd08b2ee888a43b93cf6d4b3f256e9d52fdf4e3160ddd32067e680a81f82e"
+  },
+  "catalogSha256": "55e5bfc666d9c7362da9542432f584546d10af75eab37567e0402ebb6bca5727",
+  "planSha256": "a322a1a3f839ee5189b9c5159ec1434b5d41d40f5870092fc61948772f513b63",
+  "toolchain": {
+    "node": "v22.14.0",
+    "playwright": "1.62.1",
+    "pillow": "11.3.0",
+    "python": "Python 3.12.3"
+  },
+  "encodedMediaSha256": "3869ba396f4a9c94ee523f28674beda6e6acaa80ed2be4c8d585cbdfb909d7b4",
+  "browserVersions": [
+    "151.0.7922.34"
+  ]
+}

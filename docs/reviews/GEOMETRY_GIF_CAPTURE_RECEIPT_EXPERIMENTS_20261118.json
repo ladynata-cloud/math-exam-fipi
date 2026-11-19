@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "complete": true,
+  "head": "1cba4fbd27e7acd9a956eab6549a48e7e1e751cc",
+  "tree": "c0307491166657a483cceb75cfe9b6dc7027d0cc",
+  "batch": "experiments",
+  "clips": [
+    "experiment-angles",
+    "experiment-area",
+    "experiment-circle",
+    "experiment-coordinate",
+    "experiment-projection",
+    "experiment-pythagoras",
+    "experiment-rotation",
+    "experiment-scale",
+    "experiment-triangle-exists",
+    "experiment-trig"
+  ],
+  "sourceHashes": {
+    "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+    "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+    "geometry-course/assets/lab.js": "f30a76287d0b50c013dc73cfc5c4ba6d7785dc5651316fb66afabbc08553d347",
+    "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
+    "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+    "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+    "geometry-pogorelov/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
+    "geometry-pogorelov/assets/extra-models.js": "ad5230388f7b8690ca6c5967b21f55263de78f8369313d2bad10c567c12ef2b2",
+    "geometry-pogorelov/assets/lab.js": "6d87712f7923d076710ac708354de1abda85a49eea74f073cc8adc33ef45c979"
+  },
+  "sourceHashesByClip": {
+    "experiment-angles": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204"
+    },
+    "experiment-area": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204"
+    },
+    "experiment-circle": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204"
+    },
+    "experiment-coordinate": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
+      "geometry-pogorelov/assets/extra-models.js": "ad5230388f7b8690ca6c5967b21f55263de78f8369313d2bad10c567c12ef2b2"
+    },
+    "experiment-projection": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
+      "geometry-pogorelov/assets/extra-models.js": "ad5230388f7b8690ca6c5967b21f55263de78f8369313d2bad10c567c12ef2b2"
+    },
+    "experiment-pythagoras": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204"
+    },
+    "experiment-rotation": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204"
+    },
+    "experiment-scale": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204"
+    },
+    "experiment-triangle-exists": {
+      "geometry-pogorelov/assets/course.css": "db35ef733aad82506044e9534371dabeeb925b2e2aa315e788c24c5c67cb8460",
+      "geometry-pogorelov/assets/geometry.js": "6397e6f1fa605f4b7ebf81b786f068f42fd3826be19a9f66ed76a2130ce876be",
+      "geometry-pogorelov/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204",
+      "geometry-pogorelov/assets/extra-models.js": "ad5230388f7b8690ca6c5967b21f55263de78f8369313d2bad10c567c12ef2b2"
+    },
+    "experiment-trig": {
+      "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c",
+      "geometry-course/assets/geometry.js": "3ff61ce131026f229215401432f2fec687002203c8ede2650c288a737f705603",
+      "geometry-course/assets/experiments.js": "448787ebc6b683d04d1403a92bd11c20dc4fe4c0ad08d1d22f6c9ff49b22c204"
+    }
+  },
+  "scenarioSha256": {
+    "experiment-angles": "dcbc172fb7db33c0adaebdc65b5663606b0b4716ddf586843d3e6f397afc6a3a",
+    "experiment-area": "ecbf0246fd79fb23b1a5aa6563cafc5c2981611aa77eb1e4057ad6d2095e9ced",
+    "experiment-circle": "59983dbc26196d537f6787e196f5824aece51cc53eaf869c4bda5cb051b8fe68",
+    "experiment-coordinate": "c45b4611ec9547c41dd0504528e1f67a1e611132ad86bc150dfbba8157114ef0",
+    "experiment-projection": "8ab61a690988e63136ed1520581a1538ce1ad886fce2288946b98b37c54e420f",
+    "experiment-pythagoras": "f4c49b60f1a68d8779ef682018f0eaf2627fecdba7fdae9e2f1fa51efdc45f4c",
+    "experiment-rotation": "553eb5ca4900a57268e7d34df82fcc674919869f4ebbae5704ed05934aef060f",
+    "experiment-scale": "5ff7ae5518cbd37ba4a17ad974ef07351d1452a816f3a00d9698feba13d45755",
+    "experiment-triangle-exists": "4db492b1cd14ac66197f8ffb0bb2bdab0f083e1d6f8481f3bc5b3c8b5753310d",
+    "experiment-trig": "81ed56985dda9393605ae4da8c817247f1909e45acf7df522fae90a01a367bce"
+  },
+  "toolHashes": {
+    "tools/geometry-experiment-gifs.browser.cjs": "fe19bd937673c009e1d207de358dfcc91e6d9aba7aa83802f84b3a7fb722f743",
+    "tools/build-geometry-experiment-gifs.py": "dbdfd08b2ee888a43b93cf6d4b3f256e9d52fdf4e3160ddd32067e680a81f82e"
+  },
+  "catalogSha256": "55e5bfc666d9c7362da9542432f584546d10af75eab37567e0402ebb6bca5727",
+  "planSha256": "a322a1a3f839ee5189b9c5159ec1434b5d41d40f5870092fc61948772f513b63",
+  "toolchain": {
+    "node": "v22.14.0",
+    "playwright": "1.62.1",
+    "pillow": "11.3.0",
+    "python": "Python 3.12.3"
+  },
+  "encodedMediaSha256": "46a7c450a957acb93411ccf10259d193d3d19c5b1e7501551150bcf00f592d1f",
+  "browserVersions": [
+    "151.0.7922.34"
+  ]
+}

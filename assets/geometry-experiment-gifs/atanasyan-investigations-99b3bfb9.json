@@ -1,0 +1,1421 @@
+{
+  "version": 1,
+  "sourceRef": "99b3bfb9c231d5fd3b5cdda2c543231171a57618",
+  "renderer": "geometry-course/assets/investigations.js",
+  "style": "geometry-course/assets/course.css",
+  "sourceHashes": {
+    "geometry-course/assets/investigations.js": "2ad27874b55aa5cdb0b468bbbcddde891be9a1b302e71f398d8cb6dbf856e61b",
+    "geometry-course/assets/course.css": "b4301794a286d7c4f5d17f19093220af1deec28b97fc6f4188457515abfc810c"
+  },
+  "topics": {
+    "segments": {
+      "title": "Прямая: что задают две точки",
+      "controls": [
+        {
+          "key": "d",
+          "label": "Расстояние AB",
+          "min": 0,
+          "max": 8,
+          "step": 0.5,
+          "value": 6
+        },
+        {
+          "key": "angle",
+          "label": "Направление AB, °",
+          "min": -60,
+          "max": 60,
+          "step": 5,
+          "value": 15
+        },
+        {
+          "key": "offset",
+          "label": "Отклонение P от прямой",
+          "min": -3,
+          "max": 3,
+          "step": 0.25,
+          "value": 1
+        }
+      ]
+    },
+    "angles": {
+      "title": "Читаем угол и выбираем его вершину",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол AOB, °",
+          "min": 20,
+          "max": 160,
+          "step": 5,
+          "value": 65
+        },
+        {
+          "key": "length",
+          "label": "Расстояние OP",
+          "min": 1,
+          "max": 6,
+          "step": 0.25,
+          "value": 4
+        }
+      ]
+    },
+    "equality": {
+      "title": "Совместить, сравнить, объяснить",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Поворот образа, °",
+          "min": 0,
+          "max": 180,
+          "step": 5,
+          "value": 35
+        },
+        {
+          "key": "scale",
+          "label": "Масштаб образа",
+          "min": 0.5,
+          "max": 2,
+          "step": 0.1,
+          "value": 1
+        }
+      ]
+    },
+    "length": {
+      "title": "Части отрезка и единая мера",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение B: A=0, C=6",
+          "min": -2,
+          "max": 8,
+          "step": 0.5,
+          "value": 2
+        }
+      ]
+    },
+    "measure-angle": {
+      "title": "Измеряем и складываем углы",
+      "controls": [
+        {
+          "key": "ray",
+          "label": "Направление OP, °",
+          "min": 0,
+          "max": 180,
+          "step": 5,
+          "value": 40
+        }
+      ]
+    },
+    "perpendicular": {
+      "title": "Смежные, вертикальные, прямые",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол AOC, °",
+          "min": 10,
+          "max": 170,
+          "step": 5,
+          "value": 60
+        }
+      ]
+    },
+    "triangle-sas": {
+      "title": "Какие данные удерживают треугольник",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "Какие данные заданы",
+          "options": [
+            [
+              "sas",
+              "Две стороны и угол между ними"
+            ],
+            [
+              "ssa",
+              "Две стороны и неприлежащий угол"
+            ]
+          ],
+          "value": "sas"
+        },
+        {
+          "key": "angle",
+          "label": "Поворот второго треугольника, °",
+          "min": 0,
+          "max": 180,
+          "step": 5,
+          "value": 35
+        }
+      ]
+    },
+    "cevians": {
+      "title": "Три линии из вершины: не путать роли",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение вершины C по горизонтали",
+          "min": -1,
+          "max": 7,
+          "step": 0.25,
+          "value": 2
+        }
+      ]
+    },
+    "triangle-signs": {
+      "title": "Признаки равенства и соответствие вершин",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "Набор данных",
+          "options": [
+            [
+              "sas",
+              "Две стороны и угол между ними"
+            ],
+            [
+              "asa",
+              "Сторона и прилежащие углы"
+            ],
+            [
+              "sss",
+              "Три стороны"
+            ],
+            [
+              "aaa",
+              "Только три угла"
+            ],
+            [
+              "ssa",
+              "Две стороны и неприлежащий угол"
+            ]
+          ],
+          "value": "sss"
+        },
+        {
+          "key": "scale",
+          "label": "Масштаб при трёх равных углах",
+          "min": 0.5,
+          "max": 2,
+          "step": 0.1,
+          "value": 1.5
+        }
+      ]
+    },
+    "compass": {
+      "title": "Циркуль и линейка: создаём точные связи",
+      "controls": [
+        {
+          "key": "distance",
+          "label": "Расстояние AB",
+          "min": 2,
+          "max": 6,
+          "step": 0.5,
+          "value": 4
+        },
+        {
+          "key": "radius",
+          "label": "Радиус каждой окружности / AB",
+          "min": 0.3,
+          "max": 1.2,
+          "step": 0.1,
+          "value": 1
+        }
+      ]
+    },
+    "parallels": {
+      "title": "Параллельность: свойство и признак",
+      "controls": [
+        {
+          "key": "tilt",
+          "label": "Наклон второй прямой, °",
+          "min": -20,
+          "max": 20,
+          "step": 5,
+          "value": 0
+        },
+        {
+          "key": "angle",
+          "label": "Наклон секущей, °",
+          "min": 40,
+          "max": 140,
+          "step": 5,
+          "value": 60
+        }
+      ]
+    },
+    "parallel-angles": {
+      "title": "Углы при секущей и направление лучей",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Наклон секущей, °",
+          "min": 20,
+          "max": 160,
+          "step": 5,
+          "value": 60
+        }
+      ]
+    },
+    "triangle-angles": {
+      "title": "Сумма углов, большая сторона, существование",
+      "controls": [
+        {
+          "key": "a",
+          "label": "Сторона BC",
+          "min": 2,
+          "max": 10,
+          "step": 0.5,
+          "value": 5
+        },
+        {
+          "key": "b",
+          "label": "Сторона CA",
+          "min": 2,
+          "max": 10,
+          "step": 0.5,
+          "value": 6
+        },
+        {
+          "key": "c",
+          "label": "Сторона AB",
+          "min": 2,
+          "max": 15,
+          "step": 0.5,
+          "value": 7
+        }
+      ]
+    },
+    "right-triangle": {
+      "title": "Прямоугольный треугольник: особые связи",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Острый угол A, °",
+          "min": 10,
+          "max": 80,
+          "step": 5,
+          "value": 30
+        },
+        {
+          "key": "scale",
+          "label": "Масштаб",
+          "min": 0.5,
+          "max": 2,
+          "step": 0.25,
+          "value": 1
+        }
+      ]
+    },
+    "distance": {
+      "title": "Кратчайшее расстояние и три элемента",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение K на прямой",
+          "min": -5,
+          "max": 5,
+          "step": 0.25,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "Расстояние C до прямой",
+          "min": 1,
+          "max": 4,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "angle-locus": {
+      "title": "Почему биссектриса — место равноудалённых точек",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол AOB, °",
+          "min": 20,
+          "max": 140,
+          "step": 10,
+          "value": 80
+        },
+        {
+          "key": "position",
+          "label": "Положение OP внутри угла (доля угла)",
+          "min": 0.1,
+          "max": 0.9,
+          "step": 0.05,
+          "value": 0.5
+        }
+      ]
+    },
+    "perp-locus": {
+      "title": "Серединный перпендикуляр: две стороны утверждения",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Координата P по горизонтали",
+          "min": -3,
+          "max": 3,
+          "step": 0.25,
+          "value": 0
+        },
+        {
+          "key": "y",
+          "label": "Высота P над AB",
+          "min": 0,
+          "max": 4,
+          "step": 0.25,
+          "value": 3
+        }
+      ]
+    },
+    "chords-tangent": {
+      "title": "Радиус, хорда и касательная",
+      "controls": [
+        {
+          "key": "distance",
+          "label": "Расстояние от O до прямой; r=3",
+          "min": 0,
+          "max": 5,
+          "step": 0.25,
+          "value": 3
+        }
+      ]
+    },
+    "triangle-circles": {
+      "title": "Где искать центры двух окружностей",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение вершины C",
+          "min": -2,
+          "max": 8,
+          "step": 0.5,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "Высота C над AB",
+          "min": 1,
+          "max": 6,
+          "step": 0.5,
+          "value": 4
+        }
+      ]
+    },
+    "axis": {
+      "title": "Отразить фигуру и сохранить расстояния",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Расстояние P от оси",
+          "min": 0,
+          "max": 4,
+          "step": 0.25,
+          "value": 3
+        },
+        {
+          "key": "y",
+          "label": "Положение P вдоль оси",
+          "min": -2,
+          "max": 3,
+          "step": 0.5,
+          "value": 2
+        }
+      ]
+    },
+    "polygons": {
+      "title": "Многоугольник: внутренняя область и диагонали",
+      "controls": [
+        {
+          "key": "n",
+          "label": "Число вершин",
+          "min": 3,
+          "max": 9,
+          "step": 1,
+          "value": 5
+        }
+      ]
+    },
+    "parallelogram": {
+      "title": "Параллелограмм: что дано и что следует",
+      "controls": [
+        {
+          "key": "shift",
+          "label": "Сдвиг верхней стороны",
+          "min": -3,
+          "max": 3,
+          "step": 0.5,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "Высота",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "trapezoid": {
+      "title": "Трапеция: основания и средняя линия",
+      "controls": [
+        {
+          "key": "a",
+          "label": "Основание AD",
+          "min": 2,
+          "max": 8,
+          "step": 0.5,
+          "value": 6
+        },
+        {
+          "key": "b",
+          "label": "Основание BC",
+          "min": 2,
+          "max": 8,
+          "step": 0.5,
+          "value": 3
+        },
+        {
+          "key": "height",
+          "label": "Высота",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "rectangle": {
+      "title": "Прямоугольник и равные диагонали",
+      "controls": [
+        {
+          "key": "a",
+          "label": "Нижняя сторона",
+          "min": 2,
+          "max": 7,
+          "step": 0.5,
+          "value": 5
+        },
+        {
+          "key": "height",
+          "label": "Высота",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "value": 3
+        },
+        {
+          "key": "shift",
+          "label": "Сдвиг (0 — прямоугольник)",
+          "min": -2,
+          "max": 2,
+          "step": 0.5,
+          "value": 0
+        }
+      ]
+    },
+    "rhombus": {
+      "title": "Ромб, квадрат и иерархия фигур",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол ромба, °",
+          "min": 30,
+          "max": 150,
+          "step": 5,
+          "value": 60
+        }
+      ]
+    },
+    "central": {
+      "title": "Центральная симметрия и середина",
+      "controls": [
+        {
+          "key": "shift",
+          "label": "Сдвиг верхней стороны",
+          "min": -3,
+          "max": 3,
+          "step": 0.5,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "Высота",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "area-basics": {
+      "title": "Площадь: единичный квадрат и разрезание",
+      "controls": [
+        {
+          "key": "separate",
+          "label": "Раздвинуть два кусочка",
+          "min": 0,
+          "max": 3,
+          "step": 0.25,
+          "value": 0
+        }
+      ]
+    },
+    "area-parallelogram": {
+      "title": "Почему работает основание на высоту",
+      "controls": [
+        {
+          "key": "shift",
+          "label": "Сдвиг верхней стороны",
+          "min": -4,
+          "max": 4,
+          "step": 0.5,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "Высота",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "area-triangle": {
+      "title": "Половина параллелограмма",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение C вдоль параллельной прямой",
+          "min": -3,
+          "max": 9,
+          "step": 0.5,
+          "value": -2
+        }
+      ]
+    },
+    "area-trapezoid": {
+      "title": "Собираем площадь трапеции",
+      "controls": [
+        {
+          "key": "a",
+          "label": "Основание AD",
+          "min": 2,
+          "max": 8,
+          "step": 0.5,
+          "value": 6
+        },
+        {
+          "key": "b",
+          "label": "Основание BC",
+          "min": 2,
+          "max": 8,
+          "step": 0.5,
+          "value": 3
+        },
+        {
+          "key": "height",
+          "label": "Высота",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "pythagoras": {
+      "title": "Пифагор и обратная проверка",
+      "controls": [
+        {
+          "key": "a",
+          "label": "Сторона BC",
+          "min": 2,
+          "max": 6,
+          "step": 0.5,
+          "value": 3
+        },
+        {
+          "key": "b",
+          "label": "Сторона CA",
+          "min": 2,
+          "max": 6,
+          "step": 0.5,
+          "value": 4
+        },
+        {
+          "key": "delta",
+          "label": "Изменение третьей стороны от √(a²+b²)",
+          "min": -1,
+          "max": 1,
+          "step": 0.25,
+          "value": 0
+        }
+      ]
+    },
+    "heron": {
+      "title": "Три стороны дают площадь",
+      "controls": [
+        {
+          "key": "a",
+          "label": "Сторона BC",
+          "min": 2,
+          "max": 15,
+          "step": 0.5,
+          "value": 5
+        },
+        {
+          "key": "b",
+          "label": "Сторона CA",
+          "min": 2,
+          "max": 15,
+          "step": 0.5,
+          "value": 6
+        },
+        {
+          "key": "c",
+          "label": "Сторона AB",
+          "min": 2,
+          "max": 28,
+          "step": 0.5,
+          "value": 7
+        }
+      ]
+    },
+    "similarity": {
+      "title": "Подобие: длины и площади меняются по-разному",
+      "controls": [
+        {
+          "key": "scale",
+          "label": "Коэффициент подобия",
+          "min": 0.5,
+          "max": 2.5,
+          "step": 0.25,
+          "value": 1.5
+        }
+      ]
+    },
+    "similarity-signs": {
+      "title": "Как доказать подобие",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "Какие данные используем",
+          "options": [
+            [
+              "aa",
+              "Два угла"
+            ],
+            [
+              "sas",
+              "Две пропорциональные стороны и угол между"
+            ],
+            [
+              "sss",
+              "Три пропорциональные стороны"
+            ]
+          ],
+          "value": "aa"
+        },
+        {
+          "key": "scale",
+          "label": "Коэффициент подобия",
+          "min": 0.5,
+          "max": 2.5,
+          "step": 0.25,
+          "value": 1.5
+        }
+      ]
+    },
+    "midline": {
+      "title": "Средняя линия и метод параллельной",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение C",
+          "min": -1,
+          "max": 7,
+          "step": 0.5,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "Высота C",
+          "min": 1,
+          "max": 6,
+          "step": 0.5,
+          "value": 4
+        }
+      ]
+    },
+    "centers": {
+      "title": "Четыре центра: каждому своя роль",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение C",
+          "min": -2,
+          "max": 8,
+          "step": 0.5,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "Высота C",
+          "min": 1,
+          "max": 6,
+          "step": 0.5,
+          "value": 4
+        }
+      ]
+    },
+    "projections": {
+      "title": "Высота к гипотенузе и три подобных треугольника",
+      "controls": [
+        {
+          "key": "x",
+          "label": "AH при AB=6",
+          "min": 0.5,
+          "max": 5.5,
+          "step": 0.25,
+          "value": 2
+        }
+      ]
+    },
+    "similarity-measure": {
+      "title": "Дотянуться до недоступной высоты",
+      "controls": [
+        {
+          "key": "sun",
+          "label": "Наклон солнечных лучей, °",
+          "min": 25,
+          "max": 75,
+          "step": 5,
+          "value": 45
+        },
+        {
+          "key": "height",
+          "label": "Высота мерного шеста",
+          "min": 1,
+          "max": 3,
+          "step": 0.25,
+          "value": 2
+        }
+      ]
+    },
+    "trig-right": {
+      "title": "Синус и косинус: сначала выбери угол",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Выбранный угол A, °",
+          "min": 10,
+          "max": 80,
+          "step": 5,
+          "value": 30
+        },
+        {
+          "key": "scale",
+          "label": "Масштаб",
+          "min": 0.5,
+          "max": 2.5,
+          "step": 0.25,
+          "value": 1
+        }
+      ]
+    },
+    "circle-position": {
+      "title": "Две окружности: когда они встретятся",
+      "controls": [
+        {
+          "key": "R",
+          "label": "Первый радиус",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "value": 3
+        },
+        {
+          "key": "r",
+          "label": "Второй радиус",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "value": 2
+        },
+        {
+          "key": "d",
+          "label": "Расстояние между центрами",
+          "min": 0,
+          "max": 10,
+          "step": 0.5,
+          "value": 4
+        }
+      ]
+    },
+    "inscribed": {
+      "title": "Вписанный угол видит дугу",
+      "controls": [
+        {
+          "key": "arc",
+          "label": "Дуга AB без C, °",
+          "min": 40,
+          "max": 180,
+          "step": 10,
+          "value": 120
+        },
+        {
+          "key": "position",
+          "label": "Положение C на другой дуге",
+          "min": 0.1,
+          "max": 0.9,
+          "step": 0.1,
+          "value": 0.5
+        }
+      ]
+    },
+    "chord-angles": {
+      "title": "Углы и произведения отрезков",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение P (радиус 5)",
+          "min": -3,
+          "max": 8,
+          "step": 0.5,
+          "value": 1
+        },
+        {
+          "key": "angle",
+          "label": "Направление второй хорды/секущей, °",
+          "min": 10,
+          "max": 70,
+          "step": 5,
+          "value": 20
+        }
+      ]
+    },
+    "cyclic-quad": {
+      "title": "Когда у четырёхугольника есть окружность",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "Какая связь с окружностью",
+          "options": [
+            [
+              "inscribed",
+              "Вершины на окружности"
+            ],
+            [
+              "tangent",
+              "Стороны касаются окружности"
+            ]
+          ],
+          "value": "inscribed"
+        },
+        {
+          "key": "angle",
+          "label": "Положение вершины / наклон касательной, °",
+          "min": 20,
+          "max": 70,
+          "step": 5,
+          "value": 35
+        }
+      ]
+    },
+    "vectors": {
+      "title": "Вектор: переносим направление и длину",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Направление первого вектора, °",
+          "min": 0,
+          "max": 180,
+          "step": 15,
+          "value": 35
+        },
+        {
+          "key": "direction",
+          "label": "Направление второго",
+          "options": [
+            [
+              "same",
+              "То же"
+            ],
+            [
+              "opposite",
+              "Противоположное"
+            ]
+          ],
+          "value": "same"
+        },
+        {
+          "key": "scale",
+          "label": "Длина второго / длина первого",
+          "min": 0.5,
+          "max": 2,
+          "step": 0.25,
+          "value": 1
+        }
+      ]
+    },
+    "vector-add": {
+      "title": "Маршрут векторов и его итог",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол между векторами, °",
+          "min": 0,
+          "max": 180,
+          "step": 15,
+          "value": 60
+        },
+        {
+          "key": "operation",
+          "label": "Действие",
+          "options": [
+            [
+              "sum",
+              "Сложение"
+            ],
+            [
+              "difference",
+              "Вычитание"
+            ]
+          ],
+          "value": "sum"
+        }
+      ]
+    },
+    "vector-scale": {
+      "title": "Число меняет длину и направление вектора",
+      "controls": [
+        {
+          "key": "scale",
+          "label": "Коэффициент k",
+          "min": -2,
+          "max": 2,
+          "step": 0.25,
+          "value": 1
+        }
+      ]
+    },
+    "vector-basis": {
+      "title": "Два направления как система отсчёта",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол между a и b, °",
+          "min": 0,
+          "max": 180,
+          "step": 15,
+          "value": 60
+        },
+        {
+          "key": "x",
+          "label": "Координата цели P: x",
+          "min": -4,
+          "max": 8,
+          "step": 0.5,
+          "value": 5
+        },
+        {
+          "key": "y",
+          "label": "Координата цели P: y",
+          "min": -4,
+          "max": 6,
+          "step": 0.5,
+          "value": 2
+        }
+      ]
+    },
+    "coordinates": {
+      "title": "Координаты помогают доказать геометрию",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Координата B: x",
+          "min": -4,
+          "max": 6,
+          "step": 0.5,
+          "value": 5
+        },
+        {
+          "key": "y",
+          "label": "Координата B: y",
+          "min": -3,
+          "max": 6,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "line-circle-equations": {
+      "title": "Уравнение как условие принадлежности",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "Фигура",
+          "options": [
+            [
+              "circle",
+              "Окружность x²+y²=9"
+            ],
+            [
+              "line",
+              "Прямая y=x+1"
+            ]
+          ],
+          "value": "circle"
+        },
+        {
+          "key": "x",
+          "label": "Координата P: x",
+          "min": -4,
+          "max": 4,
+          "step": 0.5,
+          "value": 3
+        },
+        {
+          "key": "y",
+          "label": "Координата P: y",
+          "min": -4,
+          "max": 5,
+          "step": 0.5,
+          "value": 0
+        }
+      ]
+    },
+    "trig-circle": {
+      "title": "Тригонометрия выходит за пределы острого угла",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол α, °",
+          "min": 0,
+          "max": 360,
+          "step": 15,
+          "value": 120
+        }
+      ]
+    },
+    "area-sine": {
+      "title": "Площадь через две стороны и угол",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол между сторонами, °",
+          "min": 0,
+          "max": 180,
+          "step": 10,
+          "value": 60
+        },
+        {
+          "key": "b",
+          "label": "Сторона AC (AB=6)",
+          "min": 2,
+          "max": 6,
+          "step": 0.5,
+          "value": 4
+        }
+      ]
+    },
+    "sine-rule": {
+      "title": "Теорема синусов и описанная окружность",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Положение C на окружности, °",
+          "min": 110,
+          "max": 330,
+          "step": 10,
+          "value": 230
+        },
+        {
+          "key": "radius",
+          "label": "Радиус",
+          "min": 1,
+          "max": 4,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "cosine-rule": {
+      "title": "Пифагор с поправкой на угол",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол A между сторонами, °",
+          "min": 20,
+          "max": 160,
+          "step": 10,
+          "value": 60
+        },
+        {
+          "key": "b",
+          "label": "Сторона AC (AB=6)",
+          "min": 2,
+          "max": 6,
+          "step": 0.5,
+          "value": 4
+        }
+      ]
+    },
+    "solve-triangle": {
+      "title": "Выбираем метод для целого треугольника",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "Набор известных данных",
+          "options": [
+            [
+              "sss",
+              "Три стороны 3, 4 и c"
+            ],
+            [
+              "ssa",
+              "AC=5, BC=3 и угол A"
+            ]
+          ],
+          "value": "sss"
+        },
+        {
+          "key": "c",
+          "label": "Третья сторона c для первого случая",
+          "min": 1,
+          "max": 8,
+          "step": 0.5,
+          "value": 5
+        },
+        {
+          "key": "angle",
+          "label": "Угол A во втором случае, °",
+          "min": 10,
+          "max": 70,
+          "step": 5,
+          "value": 30
+        }
+      ]
+    },
+    "dot-product": {
+      "title": "Скалярное произведение видит угол",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Угол между векторами, °",
+          "min": 0,
+          "max": 180,
+          "step": 15,
+          "value": 60
+        },
+        {
+          "key": "length",
+          "label": "Длина b (длина a=3)",
+          "min": 2,
+          "max": 6,
+          "step": 0.5,
+          "value": 4
+        }
+      ]
+    },
+    "regular-polygons": {
+      "title": "Правильный многоугольник из равных секторов",
+      "controls": [
+        {
+          "key": "n",
+          "label": "Число сторон",
+          "min": 3,
+          "max": 12,
+          "step": 1,
+          "value": 5
+        },
+        {
+          "key": "radius",
+          "label": "Радиус описанной окружности",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "circle-metric": {
+      "title": "Дуга, радиан и сектор",
+      "controls": [
+        {
+          "key": "angle",
+          "label": "Центральный угол, °",
+          "min": 0,
+          "max": 360,
+          "step": 15,
+          "value": 90
+        },
+        {
+          "key": "radius",
+          "label": "Радиус",
+          "min": 1,
+          "max": 4,
+          "step": 0.5,
+          "value": 3
+        }
+      ]
+    },
+    "movement": {
+      "title": "Что мы раньше называли наложением",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "Преобразование",
+          "options": [
+            [
+              "translation",
+              "Перенос"
+            ],
+            [
+              "rotation",
+              "Поворот"
+            ],
+            [
+              "reflection",
+              "Отражение"
+            ],
+            [
+              "scale",
+              "Изменение масштаба"
+            ]
+          ],
+          "value": "rotation"
+        },
+        {
+          "key": "angle",
+          "label": "Поворот, °",
+          "min": 0,
+          "max": 180,
+          "step": 15,
+          "value": 30
+        },
+        {
+          "key": "scale",
+          "label": "Масштаб",
+          "min": 0.5,
+          "max": 2,
+          "step": 0.25,
+          "value": 1.5
+        }
+      ]
+    },
+    "translation-rotation": {
+      "title": "Перенос и поворот: один закон для всех точек",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "Движение",
+          "options": [
+            [
+              "translation",
+              "Перенос"
+            ],
+            [
+              "rotation",
+              "Поворот"
+            ]
+          ],
+          "value": "rotation"
+        },
+        {
+          "key": "angle",
+          "label": "Поворот, °",
+          "min": 0,
+          "max": 180,
+          "step": 15,
+          "value": 30
+        },
+        {
+          "key": "shift",
+          "label": "Сдвиг по горизонтали",
+          "min": -3,
+          "max": 3,
+          "step": 0.5,
+          "value": 2
+        }
+      ]
+    },
+    "symmetry-method": {
+      "title": "Симметрия как способ найти короткий путь",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение M на прямой",
+          "min": -5,
+          "max": 5,
+          "step": 0.1,
+          "value": 0
+        }
+      ]
+    },
+    "polygon-similarity": {
+      "title": "От треугольников к подобным фигурам",
+      "controls": [
+        {
+          "key": "scale",
+          "label": "Коэффициент подобия",
+          "min": 0.5,
+          "max": 2.5,
+          "step": 0.25,
+          "value": 1.5
+        }
+      ]
+    },
+    "homothety": {
+      "title": "Гомотетия: центр и коэффициент",
+      "controls": [
+        {
+          "key": "scale",
+          "label": "Коэффициент k (0 — особый случай)",
+          "min": -2,
+          "max": 2,
+          "step": 0.25,
+          "value": 1.5
+        },
+        {
+          "key": "ox",
+          "label": "Центр O: x",
+          "min": -3,
+          "max": 3,
+          "step": 0.5,
+          "value": -2
+        },
+        {
+          "key": "oy",
+          "label": "Центр O: y",
+          "min": -3,
+          "max": 3,
+          "step": 0.5,
+          "value": -1
+        }
+      ]
+    },
+    "similarity-method": {
+      "title": "Одна задача на нескольких языках",
+      "controls": [
+        {
+          "key": "x",
+          "label": "Положение C",
+          "min": -1,
+          "max": 7,
+          "step": 0.5,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "Высота C",
+          "min": 1,
+          "max": 6,
+          "step": 0.5,
+          "value": 4
+        }
+      ]
+    }
+  }
+}

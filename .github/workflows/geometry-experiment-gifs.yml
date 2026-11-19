@@ -1,0 +1,57 @@
+name: Geometry experiment GIF instructions
+on:
+  push:
+    branches: ['feat/geometry-experiment-gifs-20261116']
+  pull_request:
+    paths:
+      - 'assets/geometry-experiment-gifs/**'
+      - 'geometry-course/assets/**'
+      - 'geometry-course/atlas/**'
+      - 'geometry-pogorelov/assets/**'
+      - 'geometry-pogorelov/atlas/**'
+      - 'tools/geometry_experiment_guides.py'
+      - 'tools/geometry-experiment-gifs*'
+      - 'tools/build-geometry-experiment-gifs.py'
+      - 'tools/geometry/build_site.py'
+      - 'tools/pogorelov/build.py'
+      - '.github/workflows/geometry-experiment-gifs.yml'
+permissions:
+  contents: read
+jobs:
+  experiment-instructions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GEOMETRY_GIFS_EVIDENCE: ${{ github.workspace }}/artifacts/geometry-experiment-gifs
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Fetch the audited base and exact pending interface for testing only
+        run: git fetch --depth=1 origin 1469ad50a8659f66c8613164009e7387a3a68f2b 99b3bfb9c231d5fd3b5cdda2c543231171a57618 6fadd2d3ab8845b5d2e744559256d56d1719346b
+      - name: Validate the catalogue, recordings and existing geometry
+        run: |
+          node tools/geometry-experiment-gifs-catalog.cjs --check
+          node tools/geometry/check.js
+          node tools/pogorelov/check.cjs
+          python3 tools/geometry-experiment-gifs-preservation.py --base 6fadd2d3ab8845b5d2e744559256d56d1719346b
+          node --test tools/geometry/manual-construction.test.cjs tools/geometry/object-labels.test.cjs tools/geometry-experiment-gifs.test.cjs
+          python3 tools/geometry/build_site.py --guides-only
+          python3 tools/pogorelov/build.py --guides-only
+          git diff --exit-code -- geometry-course/atlas geometry-pogorelov/atlas
+          git diff --check
+      - name: Check real lesson controls, mobile layout and offline help
+        run: node tools/geometry-experiment-gifs.ui.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: geometry-experiment-gifs-evidence
+          path: |
+            artifacts/geometry-experiment-gifs/*.png
+            artifacts/geometry-experiment-gifs/results.json

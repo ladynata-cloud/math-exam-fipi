@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 
 // Only the exported geometry copy is adapted. Published sources, lesson banks,
 // storage namespaces and the classroom board contracts stay byte-identical.
@@ -58,6 +59,29 @@ export function prepareGeometryFolder(root, sourceDir, packageDir) {
     html = html.split(/(<script\b[\s\S]*?<\/script>)/gi).map(part => /^<script\b/i.test(part)
       ? part.replace(/^<script\b[^>]*>/i, tag => assets(tag))
       : anchors(assets(part))).join('');
+    // Store repeated instructional media once in the archive. Only the guide's
+    // resource addresses change; decoded bytes and all lesson programs stay exact.
+    html = html.replace(/(<script>\s*window\.COURSE_CONFIG=)([\s\S]*?)(;\s*<\/script>)/, (match, start, raw, end) => {
+      const config = JSON.parse(raw);
+      if (!config.experimentGuides) return match;
+      const localMedia = value => {
+        if (typeof value !== 'string' || !value.startsWith('data:image/')) return value;
+        const media = /^data:image\/(png|gif);base64,([A-Za-z0-9+/=]+)$/.exec(value);
+        if (!media) throw Error('Unexpected guide media encoding in ' + relative(file));
+        const bytes = Buffer.from(media[2], 'base64');
+        if (bytes.toString('base64') !== media[2]) throw Error('Noncanonical guide media');
+        const target = path.join(packageDir, '_shared/geometry-experiment-gifs', createHash('sha256').update(bytes).digest('hex') + '.' + media[1]);
+        fs.mkdirSync(path.dirname(target), {recursive: true});
+        if (fs.existsSync(target) && !fs.readFileSync(target).equals(bytes)) throw Error('Guide media hash collision');
+        fs.writeFileSync(target, bytes);
+        return path.relative(path.dirname(file), target).split(path.sep).join('/');
+      };
+      for (const clip of config.experimentGuides.clips) {
+        clip.gif = localMedia(clip.gif); clip.poster = localMedia(clip.poster);
+        clip.frames = clip.frames.map(localMedia);
+      }
+      return start + JSON.stringify(config).replace(/</g, '\\u003c') + end;
+    });
     fs.writeFileSync(file, html);
   }
   const embed = (file, id, source) => {

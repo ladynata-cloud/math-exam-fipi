@@ -95,6 +95,20 @@ function mount(el,spec,onChange){
  });
  el.querySelector('.point-select').addEventListener('change',e=>{selectedPoint=e.target.value;syncFields();draw();});
  function text(p,t){ctx.font='600 16px system-ui';ctx.lineWidth=5;ctx.strokeStyle='#fffdf7';ctx.strokeText(t,p.x,p.y);ctx.fillStyle='#17233c';ctx.fillText(t,p.x,p.y);}
+ function midlineMeasurements(){
+  const a=board.point('A'),b=board.point('B'),c=board.point('C');
+  if(!a||!b||!c||[a,b,c].some(p=>p.valid===false))return ['Для сравнения нужны исходные точки A, B и C.'];
+  if(G.dist(a,b)<1||Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))<1)return ['Восстанови треугольник: раздвинь вершины и убери их с одной прямой.'];
+  const result=['AB = '+(G.dist(a,b)/50).toFixed(2)];
+  const same=(p,x,y)=>p.a===x&&p.b===y||p.a===y&&p.b===x;
+  const ac=board.points.filter(p=>p.kind==='midpoint'&&p.valid!==false&&same(p,'A','C'));
+  const bc=board.points.filter(p=>p.kind==='midpoint'&&p.valid!==false&&same(p,'B','C'));
+  const pair=ac.flatMap(m=>bc.map(n=>[m,n])).find(([m,n])=>board.objects.some(o=>o.type==='line'&&same(o,m.id,n.id)&&board.geometry(o)));
+  if(pair){const [m,n]=pair;result.push(m.id+n.id+' = '+(G.dist(m,n)/50).toFixed(2),'Сравни две длины. Измени положение A или B и сравни снова.');}
+  else if(ac.length&&bc.length)result.push('Соедини середины '+ac[0].id+' и '+bc[0].id+' инструментом «Отрезок».');
+  else result.push('Построй середины AC и BC, затем соедини их — появится длина среднего отрезка.');
+  return result;
+ }
  // A square belongs to a named construction or given figure. Its sides
  // follow the current rays after a point is dragged or the view is fitted.
  function drawRightAngles() {
@@ -154,13 +168,14 @@ function mount(el,spec,onChange){
   const rightAngles = drawRightAngles();
   const a=board.point('A'),b=board.point('B'),c=board.point('C');let report=[];
   if(a&&b){report.push('AB = '+(G.dist(a,b)/50).toFixed(2));}
-  if(a&&b&&c&&spec.figure!=='segment'&&!['perpendicular','parallel','reflection'].includes(spec.goal)){const ang=G.angle(a,c,b);report.push('∠ACB = '+(ang===null?'не определён':ang.toFixed(1)+'°'));report.push('S△ABC = '+(Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))/5000).toFixed(2));if(ang!==null&&!rightAngles.has('C A B')){let s=Math.atan2(a.y-c.y,a.x-c.x),t=Math.atan2(b.y-c.y,b.x-c.x),delta=(t-s+Math.PI*3)%(Math.PI*2)-Math.PI;ctx.strokeStyle='#bd6b27';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,Math.min(29,G.dist(a,c)/3,G.dist(b,c)/3),s,s+delta,delta<0);ctx.stroke();}}
+  if(a&&b&&c&&spec.figure!=='segment'&&!['perpendicular','parallel','reflection','midline'].includes(spec.goal)){const ang=G.angle(a,c,b);report.push('∠ACB = '+(ang===null?'не определён':ang.toFixed(1)+'°'));report.push('S△ABC = '+(Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))/5000).toFixed(2));if(ang!==null&&!rightAngles.has('C A B')){let s=Math.atan2(a.y-c.y,a.x-c.x),t=Math.atan2(b.y-c.y,b.x-c.x),delta=(t-s+Math.PI*3)%(Math.PI*2)-Math.PI;ctx.strokeStyle='#bd6b27';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,Math.min(29,G.dist(a,c)/3,G.dist(b,c)/3),s,s+delta,delta<0);ctx.stroke();}}
   ctx.restore();
   if(a&&b){const m=midpoint('A','B');if(m)report.push('A'+m.id+' = '+(G.dist(a,m)/50).toFixed(2),' '+m.id+'B = '+(G.dist(m,b)/50).toFixed(2));}
   if(['perpendicular','altitude'].includes(spec.goal)&&a&&b&&c){const o=board.objects.find(o=>{const p=board.point(o.b);return o.construction==='perpendicular'&&o.a==='C'&&p&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'));}),g=o&&board.geometry(o);if(g){const v=G.sub(g.q,g.p),base=G.sub(b,a);const deg=Math.acos(Math.max(-1,Math.min(1,G.dot(v,base)/(G.norm(v)*G.norm(base)))))*180/Math.PI;report.push('Угол с AB = '+deg.toFixed(1)+'°');}}
   if(spec.goal==='bisector'&&a&&b&&c){const p=board.points.find(p=>p.kind==='bisector'&&p.b==='C'&&p.valid!==false);if(p){const left=G.angle(a,c,p),right=G.angle(p,c,b);if(left!==null&&right!==null)report.push('∠AC'+p.id+' = '+left.toFixed(1)+'°','∠'+p.id+'CB = '+right.toFixed(1)+'°');}}
   for(const p of board.points){if(p.valid===false)continue;if(selected.includes(p.id)){ctx.beginPath();ctx.arc(p.x,p.y,12,0,7);ctx.strokeStyle='#c06c2a';ctx.lineWidth=3;ctx.stroke();}ctx.beginPath();ctx.arc(p.x,p.y,selectedPoint===p.id?7:5,0,7);ctx.fillStyle=movable(p)?'#2d70b3':'#118469';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#fff';ctx.stroke();text({x:p.x+10,y:p.y-10},p.id);}
   ctx.restore();
+  if(spec.goal==='midline')report=midlineMeasurements();
   readout.textContent=report.join(' · ')+(board.points.some(p=>p.valid===false)?' · Некоторые построения сейчас не существуют.':'');
  }
  options();instruction();draw();return {board,highlight(ids){highlight=ids||[];draw();},redraw(){options();fit();instruction();draw();},destroy(){active=null;}};

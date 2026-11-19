@@ -1,0 +1,25 @@
+{
+  "verdict": "PASS",
+  "oldClips": 125,
+  "newClips": 126,
+  "pinnedFutureExact": 63,
+  "unchangedActive": 59,
+  "sourcePageOnlyChanges": [
+    "atanasyan-bisector-angle",
+    "pogorelov-altitude-right",
+    "pogorelov-bisector-triangle"
+  ],
+  "newAngle": {
+    "startDegrees": 50.71059313749966,
+    "afterAMove": 50.71059313749966,
+    "afterBMove": 38.65980825409009,
+    "actualManualGoal": "Измени положение точек и запиши наблюдение. Опыт сам по себе не является доказательством."
+  },
+  "activeClipsAllUsed": 63,
+  "hashes": {
+    "tools/geometry-experiment-gifs-catalog.cjs": "6a622d0d55718eb8b317d7ecf320acb408f217c6f95ebb5fd1b81c67ab2c0e20",
+    "assets/geometry-experiment-gifs/catalog.json": "19eca785927a3e5b6ef03696d53ab74dc5c0a89ee9eb7e1e905f62f241c9c165",
+    "tools/geometry-experiment-gifs-capture-20261118.json": "a322a1a3f839ee5189b9c5159ec1434b5d41d40f5870092fc61948772f513b63",
+    ".github/workflows/geometry-experiment-gifs.yml": "3dba1d1c1ce5952c68f37d644226b109297160b53ff09dec6d13b537f170742b"
+  }
+}

@@ -4,11 +4,17 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]; D=ROOT/'geometry-course'; A=D/'assets'
 sys.path.insert(0,str(ROOT/'tools'))
 from public_navigator_preservation import SNIPPET, ROLLOUT
+from geometry_experiment_guides import with_guides, refresh_course
+if '--guides-only' in sys.argv:
+ refresh_course('geometry-course')
+ raise SystemExit(0)
 def publish(name,content):
  if name.startswith('atlas/'):
   content=content.replace('</title>','</title><link rel="canonical" href="https://mathexam.space/geometry-course/'+name+'">',1)
  if 'geometry-course/'+name in ROLLOUT['addedPages']:
   content=content.replace('</head>',SNIPPET.decode()+'</head>',1)
+ if name.startswith('atlas/'):
+  content=with_guides('geometry-course/'+name,content)
  (D/name).write_text(content)
 c=json.loads((D/'data/course.json').read_text());proofs=json.loads((D/'data/proofs.json').read_text());units=c['units'];E=html.escape
 research=json.loads((A/'investigations.js').read_text().split('const descriptions=',1)[1].split(';\n',1)[0])

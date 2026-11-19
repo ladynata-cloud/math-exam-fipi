@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-11-18T22:05:40+07:00",
+  "recordingCheckpoint": {
+    "head": "1cba4fbd27e7acd9a956eab6549a48e7e1e751cc",
+    "tree": "c0307491166657a483cceb75cfe9b6dc7027d0cc"
+  },
+  "planSha256": "a322a1a3f839ee5189b9c5159ec1434b5d41d40f5870092fc61948772f513b63",
+  "catalogSha256": "55e5bfc666d9c7362da9542432f584546d10af75eab37567e0402ebb6bca5727",
+  "batches": {
+    "atanasyan": {
+      "artifactSha256": "aa3f9541b17d473fd712888af4742a9a167712a68f098f786ddb7f69c1b4e777",
+      "receiptSha256": "ceb45354744a11f106fd4cc334c13fed16eaeee39a1cd8a3e9cc89d027a448d9",
+      "encodedMediaSha256": "c0f1fff655e56c78c77ee2b484e196a83a661e118f5bb43b95982a55536bd9ba",
+      "clips": 26,
+      "catalogSha256": "55e5bfc666d9c7362da9542432f584546d10af75eab37567e0402ebb6bca5727",
+      "browserVersions": [
+        "151.0.7922.34"
+      ]
+    },
+    "pogorelov": {
+      "artifactSha256": "0e88572e27fe6e275fca5ef2c8c762bb0bd340ea327335f6f93567c797221db9",
+      "receiptSha256": "15f9c4f65101723b635d67142a88e639e88cbb71787e675b1acd950c6115457f",
+      "encodedMediaSha256": "3869ba396f4a9c94ee523f28674beda6e6acaa80ed2be4c8d585cbdfb909d7b4",
+      "clips": 27,
+      "catalogSha256": "55e5bfc666d9c7362da9542432f584546d10af75eab37567e0402ebb6bca5727",
+      "browserVersions": [
+        "151.0.7922.34"
+      ]
+    },
+    "experiments": {
+      "artifactSha256": "2477ee385272b8f690fdd3f60b6d12f1a92aa86385da5a35393d00aed9b40248",
+      "receiptSha256": "5bca26c7589f5196582e6520b8bd84904a22acd7000f4b7026ad924ee98958c9",
+      "encodedMediaSha256": "46a7c450a957acb93411ccf10259d193d3d19c5b1e7501551150bcf00f592d1f",
+      "clips": 10,
+      "catalogSha256": "55e5bfc666d9c7362da9542432f584546d10af75eab37567e0402ebb6bca5727",
+      "browserVersions": [
+        "151.0.7922.34"
+      ]
+    }
+  },
+  "imported": {
+    "clips": 63,
+    "ids": [
+      "atanasyan-altitude-iso",
+      "atanasyan-altitude-quad",
+      "atanasyan-altitude-right",
+      "atanasyan-altitude-triangle",
+      "atanasyan-bisector-angle",
+      "atanasyan-bisector-triangle",
+      "atanasyan-diagonal-quad",
+      "atanasyan-diagonal-rectangle",
+      "atanasyan-diagonal-rhombus",
+      "atanasyan-diagonal-trapezoid",
+      "atanasyan-explore-angle",
+      "atanasyan-explore-circle",
+      "atanasyan-explore-triangle",
+      "atanasyan-explore-two-circles",
+      "atanasyan-median-right",
+      "atanasyan-median-triangle",
+      "atanasyan-midline-triangle-build",
+      "atanasyan-midline-triangle-move",
+      "atanasyan-midpoint-quad",
+      "atanasyan-midpoint-segment",
+      "atanasyan-midpoint-triangle",
+      "atanasyan-parallel-angle",
+      "atanasyan-parallel-triangle",
+      "atanasyan-perpbisector-segment",
+      "atanasyan-perpendicular-angle",
+      "atanasyan-reflection-triangle",
+      "pogorelov-altitude-iso",
+      "pogorelov-altitude-quad",
+      "pogorelov-altitude-right",
+      "pogorelov-altitude-triangle",
+      "pogorelov-bisector-angle",
+      "pogorelov-bisector-iso",
+      "pogorelov-bisector-triangle",
+      "pogorelov-diagonal-quad",
+      "pogorelov-diagonal-rectangle",
+      "pogorelov-diagonal-rhombus",
+      "pogorelov-diagonal-square",
+      "pogorelov-diagonal-trapezoid",
+      "pogorelov-explore-circle",
+      "pogorelov-explore-segment",
+      "pogorelov-explore-triangle",
+      "pogorelov-median-right",
+      "pogorelov-median-triangle",
+      "pogorelov-midline-triangle-build",
+      "pogorelov-midline-triangle-move",
+      "pogorelov-midpoint-quad",
+      "pogorelov-midpoint-segment",
+      "pogorelov-midpoint-triangle",
+      "pogorelov-parallel-angle",
+      "pogorelov-parallel-triangle",
+      "pogorelov-perpbisector-segment",
+      "pogorelov-perpendicular-angle",
+      "pogorelov-reflection-triangle",
+      "experiment-angles",
+      "experiment-area",
+      "experiment-circle",
+      "experiment-coordinate",
+      "experiment-projection",
+      "experiment-pythagoras",
+      "experiment-rotation",
+      "experiment-scale",
+      "experiment-triangle-exists",
+      "experiment-trig"
+    ],
+    "files": 422,
+    "removedPriorActiveFiles": 416
+  },
+  "preservedPinned": {
+    "clips": 63,
+    "recordObjectsChanged": [],
+    "mediaFiles": 399,
+    "mediaFilesChanged": []
+  },
+  "verification": {
+    "completeReceipts": true,
+    "exactHeadTree": true,
+    "exactPlanSourceScenarioToolHashes": true,
+    "allImportedMediaHashes": true,
+    "visualContactSheetsReviewed": true
+  }
+}
