@@ -420,3 +420,14 @@ Original comparison SOURCE_BASE 1469ad50 сохраняется как provenanc
 неизменённая preservation.check получает его явно через --base.
 74 upstream configuration changes (#623 + #670) записываются отдельно;
 они не выдаются за изменения GIF-интеграции или новое математическое одобрение.
+
+
+## Post-integration CI repair, 19 November 2026
+
+Exact candidate 6255aa8db5f974f2b13133b30bc5553e2ff135d8 exposed six failed jobs (five causes): shallow CI did not fetch the catalogue's old integration ref; primary research was displaced by optional help; a queued guide observer ran after JSDOM teardown; the now complete 63-lesson offline archive was still the pre-GIF copy; a topic-guide network assertion also counted the separate generic static poster.
+
+The repair uses the already fetched reviewed predecessor 6fadd for integration comparison (historical SOURCE_BASE unchanged), places optional primary research help after the research, and refuses observer work on a disconnected/destroyed document. No lesson engine, model, recorded runtime, scenario, recorder or encoder changes. Catalogue metadata changes only integrationBase; media changes only aggregate catalogueSha256. All 126 record objects, 63 future clips and every media file remain exact. No sourceHash rebinding or recapture.
+
+Rebuild the existing geometry ZIP with the normal exporter. Preservation now verifies its exact member set, byte-identical unrelated members, checked lab source and inverse guide-only transformation for all 63 lessons. Existing offline exact-script tests remain unchanged. The topic-guide browser test still rejects all unsolicited GIFs and topic media; only the current non-topic lesson's explicit static generic poster is allowed. All first-screen assertions remain unchanged.
+
+Local 147-page preservation, deterministic full page generation, all six media tests and fourteen state/storage tests pass. Native Chromium, complete fresh CI, independent HIGH review and publication guards are still required. No mathematical baseline changes. No board or held-Draft publication.

@@ -188,10 +188,20 @@ async function main() {
     await page.unroute(clipPattern);
 
     const other = course.units.find(unit => !unit.topicQuestion && !unit.space);
+    const topicIds = new Set(Object.values(await page.evaluate(() => window.PogorelovTopicGuideIndex)).map(clip => clip.id));
     const beforeOther = requests.length;
     await openLesson(page, other);
     assert.equal(await page.locator(guideSelector).count(), 0, other.id);
-    assert.equal(requests.length, beforeOther);
+    const otherRequests = requests.slice(beforeOther);
+    // A non-topic lesson may show the static poster of its separate generic
+    // guide. It must not fetch a topic recording or autoplay any GIF.
+    const allowedPosters = await page.evaluate(() => (window.COURSE_CONFIG.experimentGuides?.clips || []).map(clip => new URL(clip.poster, location.href).href));
+    for (const url of otherRequests) {
+      assert.notEqual(mediaType(url), '.gif', 'generic help does not autoplay');
+      assert(allowedPosters.includes(url), 'only this lesson’s static generic posters may load');
+      const basename = path.basename(new URL(url).pathname);
+      assert(![...topicIds].some(id => basename.startsWith(id + '-') || basename === id + '.gif'), 'non-topic lesson fetched a topic recording');
+    }
     assert.deepEqual(errors, []);
     console.log('POGORELOV_TOPIC_GUIDES_OK: 11 guides, ' + replayedSteps +
       ' steps reproduced on the lesson board, opt-in animation, 320 px, progress and construction preserved');

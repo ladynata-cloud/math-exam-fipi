@@ -1,10 +1,12 @@
 """Verify that the guide build preserves every pre-existing lesson byte outside its exact integration."""
 import argparse
 import hashlib
+import io
 import json
 from pathlib import Path
 import re
 import subprocess
+import zipfile
 
 from geometry_experiment_guides import CONFIG, GUIDE_TAG, ROOT, _script, has_topic_guide, with_guides
 
@@ -63,11 +65,36 @@ def check(base):
             restored = restored.replace('../assets/lab.js?v=20261116-gifs', '../assets/lab.js')
         assert restored == old, relative + ': unrelated page bytes changed'
         count += 1
-    # Existing download does not contain these atlas pages and is not regenerated.
+    # The harmonized predecessor now exports all 63 atlas lessons. Preserve
+    # every other member; each changed lesson may contain only this exact guide
+    # integration and the separately checked manual-lab source.
     package = 'downloads/trainers/geometry-course/geometry-course-package.zip'
     if (ROOT/package).is_file():
         old_bytes = subprocess.check_output(['git', 'show', base + ':' + package], cwd=ROOT)
-        assert (ROOT/package).read_bytes() == old_bytes, 'Unrelated legacy ZIP changed'
+        with zipfile.ZipFile(io.BytesIO(old_bytes)) as old_zip, zipfile.ZipFile(ROOT/package) as new_zip:
+            assert sorted(new_zip.namelist()) == sorted(old_zip.namelist()), 'ZIP membership changed'
+            atlas = {'atlas/' + Path(name).name for name in catalogue['pages'] if name.startswith('geometry-course/')}
+            assert len(atlas) == 63 and atlas <= set(old_zip.namelist()), 'Expected complete predecessor atlas'
+            for name in old_zip.namelist():
+                before_bytes, after_bytes = old_zip.read(name), new_zip.read(name)
+                if name == 'assets/lab.js':
+                    assert after_bytes == (ROOT/'geometry-course/assets/lab.js').read_bytes(), 'ZIP lab must equal checked source'
+                elif name in atlas:
+                    before_html, after_html = before_bytes.decode(), after_bytes.decode()
+                    before_config, after_config = CONFIG.search(before_html), CONFIG.search(after_html)
+                    assert before_config and after_config, name + ': ZIP configuration missing'
+                    config = json.loads(after_config[2])
+                    guides = config.pop('experimentGuides', None)
+                    assert guides and guides['unitId'] == Path(name).stem, name + ': ZIP guides missing'
+                    assert config == json.loads(before_config[2]), name + ': ZIP teaching configuration changed'
+                    restored = GUIDE_TAG.sub('', after_html)
+                    match = CONFIG.search(restored)
+                    restored = restored[:match.start()] + before_config[0] + restored[match.end():]
+                    restored = re.sub(r'<script>(.*?)</script>', lambda m: '<script>' + old_lab + '</script>'
+                                      if re.search(r'root\.GeoLab\s*=\s*\{\s*mount\s*\}', m[1]) else m[0], restored, flags=re.S)
+                    assert restored == before_html, name + ': unrelated ZIP lesson bytes changed'
+                else:
+                    assert after_bytes == before_bytes, 'Unrelated ZIP member changed: ' + name
     print(json.dumps({'status':'PASS','preservedLessons':count,'base':base,
                       'teachingConfig':'unchanged','headNavigationProofs':'byte-identical'}))
 

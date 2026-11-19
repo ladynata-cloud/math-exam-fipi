@@ -404,7 +404,7 @@
     ];
     function reconcile() {
       scheduled = false;
-      if (stopped) return;
+      if (stopped || !root.document || !lesson.isConnected) return;
       for (const [anchor, entry] of active) {
         if (!lesson.contains(anchor) || !entry.host.isConnected) {
           entry.instance.destroy();
@@ -416,7 +416,11 @@
         const anchor = lesson.querySelector(selector);
         if (!anchor || !anchor.querySelector(content) || !config[surface]?.length || active.has(anchor)) continue;
         const host = element('div', '', { 'data-geometry-guide-surface': surface });
-        anchor.before(host);
+        // Keep the primary research figure and first action on the first screen.
+        // Its optional recording follows the research; retained construction
+        // and extra-model instructions stay immediately before their controls.
+        if (surface === 'investigations') anchor.after(host);
+        else anchor.before(host);
         active.set(anchor, { host, instance: mount(host, config, surface) });
       }
     }

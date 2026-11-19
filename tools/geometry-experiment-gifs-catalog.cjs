@@ -16,7 +16,7 @@ const OUTPUT = path.join(ROOT, 'assets/geometry-experiment-gifs/catalog.json');
 const SOURCE_BASE = '1469ad50a8659f66c8613164009e7387a3a68f2b';
 // The original comparison base remains provenance; integration is checked
 // against the independently reviewed upstream release, before these guides.
-const INTEGRATION_BASE = '64ce01049377b4289f46979c52f2c50daf84b92f';
+const INTEGRATION_BASE = '6fadd2d3ab8845b5d2e744559256d56d1719346b';
 const OWNED_POGORELOV_TOPICS = new Set(['pogorelov-base-7-16','pogorelov-base-7-20','pogorelov-base-7-39','pogorelov-base-8-61','pogorelov-base-8-62','pogorelov-base-8-67','pogorelov-base-8-80','pogorelov-base-8-98','pogorelov-base-9-112','pogorelov-base-9-127','pogorelov-base-9-131']);
 const INVESTIGATION_REF = '99b3bfb9c231d5fd3b5cdda2c543231171a57618';
 const INVESTIGATION_SNAPSHOT = 'assets/geometry-experiment-gifs/atanasyan-investigations-99b3bfb9.json';
