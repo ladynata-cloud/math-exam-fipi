@@ -319,7 +319,7 @@
       <button class="tab" data-mode="mixed">Вперемешку</button>
     </div>
 
-    <div class="qcard">
+    <div class="qcard" id="exercise">
       <div class="qhead">
         <span class="qnum" id="qnum">Задача №1</span>
         <span class="type-tag base" id="typeTag">Основы</span>
@@ -485,11 +485,13 @@ function genTwostep(){
   var P1=f1.n*(W/f1.d),ans=f2.n*(W/f2.d);
   return {type:'twostep',f1:f1,f2:f2,whole:W,part1:P1,answer:ans,unit:c.unit,text:c.txt(f1.p,f2.p,P1)};
 }
+function percentAsFraction(f){
+  return {type:'base',sub:'toD',p:f.p,ansN:f.n,ansD:f.d,unit:'',text:'Запиши '+f.p+'% в виде доли.'};
+}
 function genBase(){
   var sub=choice(['toD','toP','restP']);
   if(sub==='toD'){
-    var f=pickPct();
-    return {type:'base',sub:'toD',p:f.p,ansN:f.n,ansD:f.d,unit:'',text:'Запиши '+f.p+'% в виде доли.'};
+    return percentAsFraction(pickPct());
   }
   if(sub==='toP'){
     var f2=pickPct(MIDD);
@@ -777,8 +779,8 @@ function advance(){
 }
 
 /* ---------- flow ---------- */
-function loadProblem(){
-  current=generate(state.mode);
+function loadProblem(initial){
+  current=initial||generate(state.mode);
   state.solved=false;
   guided={active:false,steps:[],idx:0,fails:0};
 
@@ -812,7 +814,7 @@ function loadProblem(){
   el('toolsAfter').className='row-tools hidden';
 
   if(typeof window!=='undefined')window.__current=current;
-  setTimeout(function(){(isF?an:inp).focus();},60);
+  if(!initial)setTimeout(function(){(isF?an:inp).focus();},60);
 }
 
 function banner(kind,icon,text){
@@ -924,7 +926,9 @@ el('solBtn').addEventListener('click',giveUp);
 el('skipBtn').addEventListener('click',skip);
 el('nextBtn').addEventListener('click',nextProblem);
 
-loadProblem();
+var requestedPercent=new URLSearchParams(location.search).get('percent');
+var initialFraction=PCTS.find(function(f){return String(f.p)===requestedPercent;});
+loadProblem(initialFraction ? percentAsFraction(initialFraction) : null);
 updateStats();
 </script>
 </body>

@@ -467,9 +467,10 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trigonometry.html": {
-      "beforeSha256": "16d55a1a2047548d2761fefbc9c7bb10d27bc5bffd8fe03514a02c3ce8c21c94",
-      "afterSha256": "c950ed997b0e5d2f85f9239a8426c6cd8a1a4b216fc911681069d75a0503ce75",
-      "placement": "before-head-close"
+      "beforeSha256": "a312c1e12335a1bd1d9bcba82b73497cdc34927b70a755f4b5ce6bdc6255b210",
+      "afterSha256": "2373aa0c08ad35596ddb973b4b5b02c73f6acdf4a1a7b84319cd11a8778d652a",
+      "placement": "before-head-close",
+      "sourceSha": "e97445d1ee23263570201a0a19dc5b78e5e231eb"
     },
     "ege-profil/trainers/vectors-t2.html": {
       "beforeSha256": "8a97190be5c17eba044d3e640e0d2dbaf85ccea446cebfd746087e8f7f77b244",
@@ -3127,9 +3128,10 @@
       "placement": "before-head-close"
     },
     "trainers/percent-part-whole-trainer.html": {
-      "beforeSha256": "87a2d74c80ff4e3f6fee4706024989437b8416e9797e19361ff6af4b87ac6e94",
-      "afterSha256": "df6118a12615757514752529fb361f6fc83ba02f001b8b032b203128f3ea29b3",
-      "placement": "before-head-close"
+      "beforeSha256": "7b2698f0853d0d754321797ba6711496ef06db7b61cf5e631f5235ff1fe53a78",
+      "afterSha256": "9759ad52b45b17ba98e98275afe4d02f35f9b618a1024fbd9fbccb4cca4c63f0",
+      "placement": "before-head-close",
+      "sourceSha": "e97445d1ee23263570201a0a19dc5b78e5e231eb"
     },
     "trainers/pitosha-python-trainer.html": {
       "beforeSha256": "c3150abeab1eac826643cfe6cd45df4bd0c15ccf936e21be495ccb3d16c59b17",
@@ -6215,6 +6217,46 @@
         "geometry-pogorelov/atlas/pogorelov-base-9-126.html"
       ],
       "boundary": "Exact source identities for the normal two-parent #651/#674 composition; not a new mathematical or publication approval."
+    },
+    {
+      "previousBaseSha": "2ddfff5d95bd924ecfb591aa98fe9bdcb3653520",
+      "sourceBaseSha": "19185b9e8c5f05253837feefdb0523d9fd14bd79",
+      "task": "docs/tasks/PLANIMETRY_COMPARATIVE_READING_20261119.md",
+      "changedPaths": [
+        "articles/stroynost-kursa-geometrii/01-chto-takoe-stroynost/index.html",
+        "articles/stroynost-kursa-geometrii/02-vhod-v-geometriyu/index.html",
+        "articles/stroynost-kursa-geometrii/03-akciomy-i-pravila-igry/index.html",
+        "articles/stroynost-kursa-geometrii/04-ravenstvo-nalozhenie-dvizhenie/index.html",
+        "articles/stroynost-kursa-geometrii/05-pervyi-priznak-ravenstva/index.html",
+        "articles/stroynost-kursa-geometrii/06-kak-uchat-dokazyvat/index.html",
+        "articles/stroynost-kursa-geometrii/07-neobhodimo-i-dostatochno/index.html",
+        "articles/stroynost-kursa-geometrii/08-sistema-zadach/index.html",
+        "articles/stroynost-kursa-geometrii/09-chertezh-i-dokazatelstvo/index.html",
+        "articles/stroynost-kursa-geometrii/10-tri-arhitektury-kursa/index.html",
+        "articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/index.html",
+        "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html",
+        "articles/stroynost-kursa-geometrii/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "19185b9e8c5f05253837feefdb0523d9fd14bd79",
+      "sourceBaseSha": "1f05b3ff5effae756e58b67ecc075358c68a2349",
+      "task": "docs/tasks/HABR_BOARD_ENTRY_20261119.md",
+      "changedPaths": [
+        "ege-profil/trainers/trigonometry.html",
+        "trainers/percent-part-whole-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "1f05b3ff5effae756e58b67ecc075358c68a2349",
+      "sourceBaseSha": "02f55988d59c0929943241b57c018276ba3844a8",
+      "task": "docs/tasks/HABR_BOARD_ENTRY_20261119.md",
+      "changedPaths": [
+        "ege-profil/trainers/trigonometry.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [

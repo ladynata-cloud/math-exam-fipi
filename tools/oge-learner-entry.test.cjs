@@ -24,6 +24,9 @@ taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
 const reviewedSingleScripts={
+  // The requested first percentage uses the existing table, visual model and grading.
+  // The normal random route and the article example are exercised separately.
+  'trainers/percent-part-whole-trainer.html':'1b1e2bbd1bc8a3f3ff60a584b183131ea1311ed2285d913f315266183ea0c631',
   'trainers/oge-task9-equations.html':'a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02',
   // The labelled bisector, median and equal halves in d26f2e8. Original controls stay pinned.
   'trainers/oge-task25-geometry.html':'fe246b1d188a53ff3e88245a483edc3cb7321bac034fa9068d8dd2d7cad8e133'

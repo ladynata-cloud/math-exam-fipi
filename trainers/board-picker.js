@@ -108,7 +108,12 @@ function mount(options){
  const narrow=matchMedia('(max-width:720px)'),manual=$('manualTrainerEntry');manual.open=false;
  const checks=new Map();
  try{const data=JSON.parse(localStorage.getItem(RECENT_KEY)||'[]');if(Array.isArray(data))recent=data.filter(x=>typeof x==='string').map(canonical).slice(0,12);}catch(_){}
- const titleFor=url=>entries.find(x=>canonical(x.href)===canonical(url))?.title||'Тренажёр по ссылке';
+ function titleFor(url){
+  const key=canonical(url),base=key.split('#')[0];
+  const entry=entries.find(x=>canonical(x.href)===key) ||
+    (base!==key && entries.find(x=>canonical(x.href)===base));
+  return entry?.title||'Тренажёр по ссылке';
+ }
  function remember(url){try{const key=canonical(url);recent=[key,...recent.filter(x=>x!==key)].slice(0,12);localStorage.setItem(RECENT_KEY,JSON.stringify(recent));}catch(_){}renderRecent();}
  function choose(url){if(options.open(url)){remember(url);dialog.close();}}
  function button(entry){const b=document.createElement('button');b.type='button';b.className='picker-item';const title=document.createElement('strong');title.textContent=entry.title;const detail=document.createElement('span');detail.textContent=entry.group||'Недавно открытые';b.append(title,detail);if(typeof options.mirrorCapability==='function'){const mode=options.mirrorCapability(entry.href),badge=document.createElement('span');badge.className='picker-capability';badge.dataset.mirrorCapability=mode;badge.textContent=mode==='supported'?'Совместные действия':mode==='unsupported'?'Без синхронизации действий':'Синхронизация ещё не проверена';b.append(badge);}b.onclick=()=>choose(entry.href);return b;}
