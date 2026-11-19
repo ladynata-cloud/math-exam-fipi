@@ -10,7 +10,7 @@
     "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
     "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
     "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
-    "assets/habr-entry-gifs.js": "555f7bd27ea6bdf5b7525217fff9536d86bc0380afa74031266e07ace88a3880",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
     "ege-profil/exam-map.js": "53d09298ec9b17744f62b892f85e1a506dfbfd2275bda00713b18ead22237197",
     "ege-profil/skill-map-data.js": "e9b3af4a98679f76e9c0e2a81c5b832eb2b09cd9b6fd1885bcf69ad3f8a55a35",
     "ege-profil/skill-map.css": "d6f2e26f00d73f5c6f203890c0a6db81b4b8cbcd61d4030cfdc96327d14b714c",
@@ -88,7 +88,7 @@
       "actualPageUrl": "/ege-profil/trainers/trigonometry.html#sine-wave",
       "caption": "Около π точка снова рядом с горизонтальной осью.",
       "durationMs": 1500,
-      "sha256": "a5968e1d5a780bd210ad6e040ac51862627963f5ee4b79601a273788f883f1f2",
+      "sha256": "8ffce2feb6ef386cf900b296d9b84916e617fcbd0c1a7ad9355c13873cf21357",
       "actions": [
         {
           "type": "press",
@@ -120,7 +120,7 @@
       "actualPageUrl": "/ege-profil/trainers/trigonometry.html#sine-wave",
       "caption": "Около 3π/2 синус близок к −1.",
       "durationMs": 1500,
-      "sha256": "00da4318e2e18bb57eb5919e0084d3221e25dbcc5058ac31b992a9ed5f567e74",
+      "sha256": "9477e812324a7117b7e39860be21442a21503e70e1112df843b5d612d0359c3d",
       "actions": [
         {
           "type": "press",
@@ -152,7 +152,7 @@
       "actualPageUrl": "/ege-profil/trainers/trigonometry.html#sine-wave",
       "caption": "Кнопка «в начало» возвращает обе точки к нулю.",
       "durationMs": 1500,
-      "sha256": "f6c03ffcf8511a2195e18aa07db83eb9abf7e68190585e5a32a8c43a2610711f",
+      "sha256": "260ba9022e504dfd57c5369ed1f029c3b44fef76a24c12fc93b475c9d64d876d",
       "actions": [
         {
           "type": "click",
@@ -181,18 +181,18 @@
   "loadedSources": {
     "ege-profil/trainers/trigonometry.html": "b204df985acfe9a39b4e626a75f3eaa7746fe438ba5a781804964fa461604fe9",
     "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
     "ege-profil/start/course-links.css": "69ac7b23e83af7e2be01321a836879b9e420993e92e223cb278dbb8284ea9221",
-    "assets/habr-entry-gifs.js": "555f7bd27ea6bdf5b7525217fff9536d86bc0380afa74031266e07ace88a3880",
     "ege-profil/skill-map.css": "d6f2e26f00d73f5c6f203890c0a6db81b4b8cbcd61d4030cfdc96327d14b714c",
     "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
     "assets/download-adaptation.css": "3cfedc2913c3ceba17f5dae770de98df4b85d7d4a507bcfc415aea8f82fb7467",
     "ege-profil/exam-map.js": "53d09298ec9b17744f62b892f85e1a506dfbfd2275bda00713b18ead22237197",
     "ege-profil/start/course-links.js": "e8b368525d5e16b87672327eca31ca815a8e184d5b2ad32b5ace4f9eda26b250",
-    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
-    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
-    "ege-profil/skill-map.js": "74f6350931daa711a57551764f071c332fdac3bc89fef6f515dce7e126975d7f",
     "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "ege-profil/skill-map.js": "74f6350931daa711a57551764f071c332fdac3bc89fef6f515dce7e126975d7f",
+    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
     "ege-profil/skill-map-data.js": "e9b3af4a98679f76e9c0e2a81c5b832eb2b09cd9b6fd1885bcf69ad3f8a55a35",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
     "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599"
   },
   "blockedExternal": [

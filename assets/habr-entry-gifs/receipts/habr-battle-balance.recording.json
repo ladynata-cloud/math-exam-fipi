@@ -3,7 +3,7 @@
   "url": "/oge/skills/?topic=base&route=family%3Aarith-battle-balance",
   "scenarioSha256": "6089f780dcf0bafc0cdac274b74869397d2b28c77a22f96649217e5c0983f374",
   "sourceHashes": {
-    "oge/skills/index.html": "6993ba4705704d05bd9c2b21d04027fa4ea907cd97e5897d9e67e5a7f7abbe87"
+    "oge/skills/index.html": "96deca6239a9f9f5eaea86a13b9ad999fae11e0a3f09a5b07a12695dece17a28"
   },
   "frames": [
     {
@@ -128,7 +128,7 @@
     }
   ],
   "loadedSources": {
-    "oge/skills/index.html": "6993ba4705704d05bd9c2b21d04027fa4ea907cd97e5897d9e67e5a7f7abbe87"
+    "oge/skills/index.html": "96deca6239a9f9f5eaea86a13b9ad999fae11e0a3f09a5b07a12695dece17a28"
   },
   "blockedExternal": [],
   "complete": true

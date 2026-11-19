@@ -4,7 +4,7 @@
   "scenarioSha256": "cae23bb58105f6f68b4360752fa67ce01e7ab36113e35ffd1d1630262fedf831",
   "sourceHashes": {
     "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
-    "assets/habr-entry-gifs.js": "555f7bd27ea6bdf5b7525217fff9536d86bc0380afa74031266e07ace88a3880",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
     "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
     "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",
     "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
@@ -136,7 +136,7 @@
     "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
     "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
     "stereo-course/literacy/style.css": "e66802bae021f5d222810f0314e2e020bef8fe27d0946d882d6bbfc5e0fb0b8b",
-    "assets/habr-entry-gifs.js": "555f7bd27ea6bdf5b7525217fff9536d86bc0380afa74031266e07ace88a3880",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
     "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
     "stereo-course/literacy/app.js": "f04dcf3d356ab9d570de1d29950e1e37978b360745af1acfb51bb2c1b0587d61",
     "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",

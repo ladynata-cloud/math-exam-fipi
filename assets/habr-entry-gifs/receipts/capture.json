@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "complete": true,
-  "head": "174629d98b1a01ae114f9f68d1ade34ba38a4135",
-  "tree": "6dcb7f6183bcb76f8c57f8a5b9b7dc014d735dda",
-  "workflowRunId": "44447251706",
+  "head": "f420976a461e67d27bfb8708294c693944d8f232",
+  "tree": "146c6f9e6cf1bec82566855cb9d520ff45900456",
+  "workflowRunId": "44516754821",
   "workflowRunAttempt": "1",
-  "reviewedSourceTree": "87a6252a65311a2625b86a5ae6960790c4aa4d52",
+  "reviewedSourceTree": "1aa81c8420aaec3389bb30bb5115c99d5ddf68ef",
   "clipList": [
     "habr-negative-line",
     "habr-percent-80",
@@ -16,7 +16,7 @@
     "habr-sections-starter18",
     "habr-sections-authcore05"
   ],
-  "planSha256": "9793a2a7c6c4fb6494dce0322fc4398efadfaf0cac545f972d74c057e4bf732b",
+  "planSha256": "04d17730b9e27ec9b7186e5d99b1f1b828797f32640974509a2a41ab0a086401",
   "recorderSha256": "22b6ed4c79d071948b85aaac0416087b45bed91f88f015cc8441026f76e3e759",
   "encoderSha256": "f06f8257616d63bc9b4c82ac38da11530626107ea47c965c640087a3a2ff38e0",
   "sourceHashes": {
@@ -27,7 +27,7 @@
     "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
     "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
     "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
-    "assets/habr-entry-gifs.js": "555f7bd27ea6bdf5b7525217fff9536d86bc0380afa74031266e07ace88a3880",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
     "assets/oge-wayfinding.css": "3e60bd7a5b9097d58097e877a90e7ed8c2311a65ff4441845896014f52fa1f37",
     "assets/oge-wayfinding.js": "1eb57ccd65596e7497ec6bac02bb86cba21a2f9e64b6f8a4917b935c1953138e",
     "ege-profil/circle/app.js": "c46096292a87b792e66f5ab7acc40d34ba53d56aa73a0b9f1b8e940644ab7a28",
@@ -53,7 +53,7 @@
     "ege-profil/start/course-links.css": "69ac7b23e83af7e2be01321a836879b9e420993e92e223cb278dbb8284ea9221",
     "ege-profil/start/course-links.js": "e8b368525d5e16b87672327eca31ca815a8e184d5b2ad32b5ace4f9eda26b250",
     "ege-profil/trainers/trigonometry.html": "b204df985acfe9a39b4e626a75f3eaa7746fe438ba5a781804964fa461604fe9",
-    "oge/skills/index.html": "6993ba4705704d05bd9c2b21d04027fa4ea907cd97e5897d9e67e5a7f7abbe87",
+    "oge/skills/index.html": "96deca6239a9f9f5eaea86a13b9ad999fae11e0a3f09a5b07a12695dece17a28",
     "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
     "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",
     "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
@@ -73,47 +73,47 @@
     {
       "id": "habr-negative-line",
       "complete": true,
-      "recordingSha256": "17aa28552dda4906edc8aceed4faed8e7772918ad97831e434238fedf1e24ceb"
+      "recordingSha256": "86e1585374c86190f7be2bb2665e18ec89137c1608649556f164b40e8c9092a5"
     },
     {
       "id": "habr-percent-80",
       "complete": true,
-      "recordingSha256": "27c8fff5fa3e885bf27f790b9ebc21e5c9c460bf9a5c79fe1274ff1ef5ea0427"
+      "recordingSha256": "0261e384e456cccc57c164664a35d6fec753099921b723b81dd2b5c2b81fc7c8"
     },
     {
       "id": "habr-battle-balance",
       "complete": true,
-      "recordingSha256": "bdc0e8bb16626c878665e962e53d724a1a7ab910a3f8bb5875bfd7312e94158e"
+      "recordingSha256": "9b56d80a6f47584d1c1a851f4336cafff96c9d36d358217a35e50387b6a69c21"
     },
     {
       "id": "habr-circle-fractional-turns",
       "complete": true,
-      "recordingSha256": "86b2c74ce3bf46e9c1d370624c309fd10cca4f0701857e99c27008a850644330"
+      "recordingSha256": "aab061ecdcd1b574c03dd3e54d8260d0e338acd9eb1609489bb4d0c76da09da8"
     },
     {
       "id": "habr-sine-wave",
       "complete": true,
-      "recordingSha256": "daa0717b1566054d91c8d12cadcf99bd5e0732ad1e73a8518e158274abd1c59c"
+      "recordingSha256": "492468689b8ebfeaaaa1f04f7cbed130ee97e55021244690b0f41defa4088b40"
     },
     {
       "id": "habr-stereo-literacy",
       "complete": true,
-      "recordingSha256": "91d85b74bb9e04c783720d0611508ec21476d917ec56bc350ecc51de62deb698"
+      "recordingSha256": "ce7ce5426b28643b8fef92f4989f50fa16a7f1155d8d7907b12a87fa2b03ba07"
     },
     {
       "id": "habr-sections-starter18",
       "complete": true,
-      "recordingSha256": "b65a1d359a3b779af2c3cdc44e9f2b7a4fda9ae1d2a5670ca84141abbfeb7734"
+      "recordingSha256": "45e8955c790eb9ddd118177f20f80869982a79e1cb4a6996b850b063227b9c7e"
     },
     {
       "id": "habr-sections-authcore05",
       "complete": true,
-      "recordingSha256": "bbd6d055c3719d2ea9ac230fc9f6fd707b88229d227bbac22283356d13b7e7bc"
+      "recordingSha256": "7b80a2c15a60477509460096c392394654abdc838ce50540ebe7ce1a4a2e0736"
     }
   ],
-  "startedAt": "2026-11-19T02:51:45.344Z",
+  "startedAt": "2026-11-19T11:40:27.644Z",
   "playwrightVersion": "1.62.1",
   "chromiumExecutableSha256": "0b20b130e7edd9dd51873be867761295fe0cfad490c2b9a64f95bd3cfc08fa71",
   "browser": "151.0.7922.34",
-  "finishedAt": "2026-11-19T02:52:03.023Z"
+  "finishedAt": "2026-11-19T11:40:44.326Z"
 }

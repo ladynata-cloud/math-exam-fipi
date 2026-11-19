@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "complete": true,
-  "recordingHead": "174629d98b1a01ae114f9f68d1ade34ba38a4135",
-  "recordingTree": "6dcb7f6183bcb76f8c57f8a5b9b7dc014d735dda",
+  "recordingHead": "f420976a461e67d27bfb8708294c693944d8f232",
+  "recordingTree": "146c6f9e6cf1bec82566855cb9d520ff45900456",
   "clipList": [
     "habr-negative-line",
     "habr-percent-80",
@@ -13,9 +13,9 @@
     "habr-sections-starter18",
     "habr-sections-authcore05"
   ],
-  "workflowRunId": "44447251706",
+  "workflowRunId": "44516754821",
   "workflowRunAttempt": "1",
-  "planSha256": "9793a2a7c6c4fb6494dce0322fc4398efadfaf0cac545f972d74c057e4bf732b",
+  "planSha256": "04d17730b9e27ec9b7186e5d99b1f1b828797f32640974509a2a41ab0a086401",
   "recorderSha256": "22b6ed4c79d071948b85aaac0416087b45bed91f88f015cc8441026f76e3e759",
   "encoderSha256": "f06f8257616d63bc9b4c82ac38da11530626107ea47c965c640087a3a2ff38e0",
   "sourceHashes": {
@@ -26,7 +26,7 @@
     "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
     "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
     "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
-    "assets/habr-entry-gifs.js": "555f7bd27ea6bdf5b7525217fff9536d86bc0380afa74031266e07ace88a3880",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
     "assets/oge-wayfinding.css": "3e60bd7a5b9097d58097e877a90e7ed8c2311a65ff4441845896014f52fa1f37",
     "assets/oge-wayfinding.js": "1eb57ccd65596e7497ec6bac02bb86cba21a2f9e64b6f8a4917b935c1953138e",
     "ege-profil/circle/app.js": "c46096292a87b792e66f5ab7acc40d34ba53d56aa73a0b9f1b8e940644ab7a28",
@@ -52,7 +52,7 @@
     "ege-profil/start/course-links.css": "69ac7b23e83af7e2be01321a836879b9e420993e92e223cb278dbb8284ea9221",
     "ege-profil/start/course-links.js": "e8b368525d5e16b87672327eca31ca815a8e184d5b2ad32b5ace4f9eda26b250",
     "ege-profil/trainers/trigonometry.html": "b204df985acfe9a39b4e626a75f3eaa7746fe438ba5a781804964fa461604fe9",
-    "oge/skills/index.html": "6993ba4705704d05bd9c2b21d04027fa4ea907cd97e5897d9e67e5a7f7abbe87",
+    "oge/skills/index.html": "96deca6239a9f9f5eaea86a13b9ad999fae11e0a3f09a5b07a12695dece17a28",
     "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
     "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",
     "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
@@ -73,14 +73,14 @@
   "chromiumExecutableSha256": "0b20b130e7edd9dd51873be867761295fe0cfad490c2b9a64f95bd3cfc08fa71",
   "pillowVersion": "11.3.0",
   "captionFontSha256": "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280",
-  "captureReceiptSha256": "93452db69ae562d668b217961b833a9173a0329acb81815e7b8aca545cbfcb71",
+  "captureReceiptSha256": "9b61b89e1d1e7cf22b9dd17a53fe807df416ff445a41e5720781ab09e90bef3f",
   "clips": [
     {
       "id": "habr-negative-line",
       "sourcePage": "/trainers/negative-numbers-line.html?seed=habr-311",
       "complete": true,
       "scenarioSha256": "173f5fb7817b808914355aa49d4e9bba8ff8f9e048da0bb93c106b1c11d179b3",
-      "recordingSha256": "17aa28552dda4906edc8aceed4faed8e7772918ad97831e434238fedf1e24ceb",
+      "recordingSha256": "86e1585374c86190f7be2bb2665e18ec89137c1608649556f164b40e8c9092a5",
       "frameCount": 4,
       "width": 1120,
       "height": 804,
@@ -144,7 +144,7 @@
       "sourcePage": "/trainers/percent-part-whole-trainer.html?percent=80#exercise",
       "complete": true,
       "scenarioSha256": "823d10045b60f1b6bba3cc7367fabb4941407bd72f9955cd60a2fbb13400f42f",
-      "recordingSha256": "27c8fff5fa3e885bf27f790b9ebc21e5c9c460bf9a5c79fe1274ff1ef5ea0427",
+      "recordingSha256": "0261e384e456cccc57c164664a35d6fec753099921b723b81dd2b5c2b81fc7c8",
       "frameCount": 3,
       "width": 842,
       "height": 1120,
@@ -198,7 +198,7 @@
       "sourcePage": "/oge/skills/?topic=base&route=family%3Aarith-battle-balance",
       "complete": true,
       "scenarioSha256": "6089f780dcf0bafc0cdac274b74869397d2b28c77a22f96649217e5c0983f374",
-      "recordingSha256": "bdc0e8bb16626c878665e962e53d724a1a7ab910a3f8bb5875bfd7312e94158e",
+      "recordingSha256": "9b56d80a6f47584d1c1a851f4336cafff96c9d36d358217a35e50387b6a69c21",
       "frameCount": 4,
       "width": 850,
       "height": 1000,
@@ -262,7 +262,7 @@
       "sourcePage": "/ege-profil/circle/index.html?route=trigonometry&unit=m4-fractional-turns#lesson/m4-fractional-turns",
       "complete": true,
       "scenarioSha256": "d5ab454c26a171283cc1aff1670d6175bf174c436b23f5f42d1571b351278f1f",
-      "recordingSha256": "86b2c74ce3bf46e9c1d370624c309fd10cca4f0701857e99c27008a850644330",
+      "recordingSha256": "aab061ecdcd1b574c03dd3e54d8260d0e338acd9eb1609489bb4d0c76da09da8",
       "frameCount": 4,
       "width": 791,
       "height": 1636,
@@ -326,7 +326,7 @@
       "sourcePage": "/ege-profil/trainers/trigonometry.html#sine-wave",
       "complete": true,
       "scenarioSha256": "a655d53f54ab54c44e65089684fb2d0826778c327f0c5b2b46e86471380c0b5f",
-      "recordingSha256": "daa0717b1566054d91c8d12cadcf99bd5e0732ad1e73a8518e158274abd1c59c",
+      "recordingSha256": "492468689b8ebfeaaaa1f04f7cbed130ee97e55021244690b0f41defa4088b40",
       "frameCount": 5,
       "width": 1044,
       "height": 982,
@@ -366,8 +366,8 @@
       ],
       "files": {
         "contact-sheet.png": {
-          "bytes": 260976,
-          "sha256": "d5d2d2d2636e8bcb04d2a3d171440a931ce238e5ef161bcf511822bd8a8ce541"
+          "bytes": 261185,
+          "sha256": "b8c06200416528106b531a8c9ff0ae474574ec813b4cc308696d1fe3529d6bf1"
         },
         "frame-01.png": {
           "bytes": 100539,
@@ -378,20 +378,20 @@
           "sha256": "0078f9b482a554d5fa33b4361c9b7a7f545c8371c9a7aff4579a84db60b2e219"
         },
         "frame-03.png": {
-          "bytes": 103101,
-          "sha256": "89f4e7e52da87114f8686444b83fa88a78913b76ba4761015d7bf8dfd6451c38"
+          "bytes": 103089,
+          "sha256": "0a8ca97217588103a0d4c1aa93de4d9b1056ca9476df87325c5d77b0e7994ddb"
         },
         "frame-04.png": {
-          "bytes": 102288,
-          "sha256": "66d5654699aa466af08b1bbd803ba6711079e2e86ccf728af5c2a7293f13eadd"
+          "bytes": 102267,
+          "sha256": "830ccad7516cdd6f4a0046c15d06037d3d5a9b359501502d351ef5ae3002e7f5"
         },
         "frame-05.png": {
-          "bytes": 101611,
-          "sha256": "abf0e158770805b6974e9ddcfb2b843f11e9fea124f321ca8476307b1080eba0"
+          "bytes": 101591,
+          "sha256": "e7ee13c595de67ba25391484cc6bd9e28d6954c3b49bda731133871851e88709"
         },
         "habr-sine-wave.gif": {
-          "bytes": 238085,
-          "sha256": "041920fcc9074d454659269529be2b1fbdb50d200b115ddb0adb18877ac82e4f"
+          "bytes": 238082,
+          "sha256": "9fedf6c7684ba0521966162c8e219539d63158fb66813883a2bd2e194dc20880"
         }
       }
     },
@@ -400,7 +400,7 @@
       "sourcePage": "/stereo-course/literacy/#atanasyan2024-theory-001",
       "complete": true,
       "scenarioSha256": "cae23bb58105f6f68b4360752fa67ce01e7ab36113e35ffd1d1630262fedf831",
-      "recordingSha256": "91d85b74bb9e04c783720d0611508ec21476d917ec56bc350ecc51de62deb698",
+      "recordingSha256": "ce7ce5426b28643b8fef92f4989f50fa16a7f1155d8d7907b12a87fa2b03ba07",
       "frameCount": 5,
       "width": 640,
       "height": 902,
@@ -474,7 +474,7 @@
       "sourcePage": "/stereo-course/sections/#starter-18",
       "complete": true,
       "scenarioSha256": "f956ec7397ac39ca23d6d52b34fdd8baea7543bc77f45dc13f6e26e571e085f8",
-      "recordingSha256": "b65a1d359a3b779af2c3cdc44e9f2b7a4fda9ae1d2a5670ca84141abbfeb7734",
+      "recordingSha256": "45e8955c790eb9ddd118177f20f80869982a79e1cb4a6996b850b063227b9c7e",
       "frameCount": 12,
       "width": 1226,
       "height": 1728,
@@ -618,7 +618,7 @@
       "sourcePage": "/stereo-course/sections/#auth-core-05",
       "complete": true,
       "scenarioSha256": "bc6bc2775e546aa40a1f3d2e7c42a12dfc089f58df03d68eeb12c6b3a5557c6a",
-      "recordingSha256": "bbd6d055c3719d2ea9ac230fc9f6fd707b88229d227bbac22283356d13b7e7bc",
+      "recordingSha256": "7b80a2c15a60477509460096c392394654abdc838ce50540ebe7ce1a4a2e0736",
       "frameCount": 10,
       "width": 936,
       "height": 1362,
