@@ -51,6 +51,38 @@ for (const item of catalogue) {
     try{await page.goto(origin+route,{waitUntil:'load'});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));return errors.sort();}
     finally{await context.close();}
   }
+  async function assertLauncherLayout(page,filename,viewport){
+    const host=page.locator('#maxexam-public-assistant'),launcher=host.locator('.launcher');
+    const flow=filename==='school/peterson5/index.html'||(filename==='school/index.html'&&await page.locator('body.v5-quality-active').count()===1);
+    const box=await launcher.boundingBox();
+    assert.ok(box.x>=0&&box.y>=0&&box.x+box.width<=viewport.width&&box.y+box.height<=viewport.height);
+    if(!flow){
+      assert.ok(box.x>viewport.width/2&&box.y>viewport.height/2);
+      assert.equal(await launcher.evaluate(e=>getComputedStyle(e).position),'fixed');
+      if(viewport.width<=600)assert.ok(box.width<=56,'Mobile launcher must leave answer columns reachable');
+      return box;
+    }
+    assert.equal(await host.evaluate(element=>!!element.closest('header.topbar,header.top')),true,'Course navigator belongs to its header');
+    assert.equal(await launcher.evaluate(element=>getComputedStyle(element).position),'static','Scoped course launcher occupies layout space');
+    const label=await host.locator('.launcher-label').evaluate(element=>({
+      text:element.querySelector('strong').textContent,width:element.getBoundingClientRect().width,
+      clip:getComputedStyle(element).clipPath,font:parseFloat(getComputedStyle(element.querySelector('strong')).fontSize)
+    }));
+    assert.equal(label.text,'Навигатор');assert.equal(label.clip,'none');
+    assert.ok(label.width>60&&label.font>=15&&box.width>=100&&box.height>=44,'Scoped launcher keeps a readable label and accessible target');
+    const targets=page.locator('#workshop-question,[data-w-form] [data-w-value],[data-w-form] button[type="submit"],#task-panel .question,#answer,#answer-form button[type="submit"]');
+    for(const target of await targets.all()){
+      if(!await target.isVisible())continue;
+      await target.scrollIntoViewIfNeeded();
+      const overlaps=await target.evaluate(element=>{
+        const button=document.getElementById('maxexam-public-assistant').shadowRoot.querySelector('.launcher').getBoundingClientRect(),box=element.getBoundingClientRect();
+        return button.left<box.right&&button.right>box.left&&button.top<box.bottom&&button.bottom>box.top;
+      });
+      assert.equal(overlaps,false,'Scoped navigator does not overlap the current question or answer');
+    }
+    await page.evaluate(()=>window.scrollTo(0,0));
+    return box;
+  }
   try {
     for (const viewport of [{width:1280,height:900}, {width:320,height:640}, {width:844,height:390}]) {
       const context = await browser.newContext({ viewport });
@@ -76,12 +108,8 @@ for (const item of catalogue) {
         assert.equal(await host.count(), 1);
         assert.match(await launcher.innerText(), /Навигатор/);
         assert.equal(await panel.isVisible(), false);
-        const box = await launcher.boundingBox();
-        assert.ok(box.x > viewport.width / 2 && box.y > viewport.height / 2);
-        assert.ok(box.x + box.width <= viewport.width && box.y + box.height <= viewport.height);
-        assert.equal(await launcher.evaluate(e => getComputedStyle(e).position), 'fixed');
+        const box = await assertLauncherLayout(page,filename,viewport);
         assert.equal(await launcher.getAttribute('aria-label'), 'Открыть навигатор по MathExam');
-        if (viewport.width <= 600) assert.ok(box.width <= 56, 'Mobile launcher must leave answer columns reachable');
         if (filename === 'index.html') await page.screenshot({ path: path.join(out, `home-${viewport.width}.png`) });
         await launcher.click();
         await panel.waitFor({state:'visible'});
@@ -107,6 +135,28 @@ for (const item of catalogue) {
         await page.reload({waitUntil:'load'});
         await launcher.waitFor({state:'visible'});
         assert.equal(await panel.isVisible(), false);
+        // The shared school shell keeps its usual floating navigator outside
+        // Vilenkin 5. Exercise the actual course route when that course's
+        // quality runtime is present, including restoration on the way back.
+        let courseFlow=null;
+        if(filename==='school/index.html'&&await page.evaluate(()=>typeof window.Vilenkin5Quality==='object')){
+          const originalHost=await host.elementHandle();
+          const headerStyle=await page.locator('header.top').getAttribute('style');
+          await page.evaluate(()=>{location.hash='#lesson/v5f-division-column';});
+          await page.waitForFunction(()=>document.body.classList.contains('v5-quality-active')&&document.getElementById('maxexam-public-assistant')?.closest('header.top'));
+          const activeBox=await assertLauncherLayout(page,filename,viewport);
+          await launcher.click();await panel.waitFor({state:'visible'});
+          await input.press('Escape');assert.equal(await panel.isVisible(),false);
+          assert.equal(await originalHost.evaluate(element=>element===document.getElementById('maxexam-public-assistant')),true,'Course navigation retains the same widget instance');
+          await page.evaluate(()=>{location.hash='#home';});
+          await page.waitForFunction(()=>!document.body.classList.contains('v5-quality-active')&&document.getElementById('maxexam-public-assistant')?.parentNode===document.body);
+          await assertLauncherLayout(page,filename,viewport);
+          assert.equal(await page.locator('header.top').getAttribute('style'),headerStyle,'Leaving Vilenkin restores the header style');
+          assert.equal(await host.locator('[data-course-navigator-flow]').count(),0,'Leaving Vilenkin removes only its scoped shadow style');
+          assert.equal(await originalHost.evaluate(element=>element===document.getElementById('maxexam-public-assistant')),true,'Restoration retains the same widget instance');
+          await originalHost.dispose();
+          courseFlow={route:'#lesson/v5f-division-column',launcher:activeBox,restored:true};
+        }
         let preExistingErrors=[];
         if(errors.length){
           preExistingErrors=await originalPageErrors(filename,viewport);
@@ -114,7 +164,7 @@ for (const item of catalogue) {
           // multiplicities, not a broad allowlist of exception names/messages.
           assert.deepEqual(errors.slice().sort(),[...preExistingErrors,...preExistingErrors].sort(),filename+' must introduce no new page errors');
         }
-        results.push({route,viewport,launcher:box,passed:true,preExistingErrors});
+        results.push({route,viewport,launcher:box,passed:true,preExistingErrors,...(courseFlow?{courseFlow}:{})});
         if(results.length%50===0)console.log('NAVIGATOR_PROGRESS',JSON.stringify({shardIndex,passed:results.length,expected:pages.length*3,failures:failures.length}));
         } catch(error){failures.push({route,viewport,error:error.message,pageErrors:errors.slice()});console.error('NAVIGATOR_ROUTE_FAIL',route,viewport.width,error.message);}
       }

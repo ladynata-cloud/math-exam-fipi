@@ -506,6 +506,56 @@ async function animatedExamples() {
   passed('actual-gif-loading-play-stop-and-help', {widths:[1440,320],reducedMotion:true});
 }
 
+async function navigatorFlowLayout() {
+  phase = 'navigator-flow-layout';
+  for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
+    const context = await newContext(viewport), page = await open(context, 'navigator-' + viewport.width, '#topic/p28/discover');
+    const host = page.locator('#maxexam-public-assistant'), launcher = host.locator('.launcher'), panel = host.locator('.panel');
+    await launcher.waitFor({state:'visible'});
+    equal(await host.count(), 1, 'The existing navigator host is preserved');
+    const presentation = await host.evaluate(element => {
+      const button=element.shadowRoot.querySelector('.launcher'),label=element.shadowRoot.querySelector('.launcher-label'),strong=label.querySelector('strong'),box=button.getBoundingClientRect();
+      return {inMenu:document.querySelector('header.topbar nav').contains(element),position:getComputedStyle(button).position,
+        width:box.width,height:box.height,left:box.left,right:box.right,labelWidth:label.getBoundingClientRect().width,
+        labelClip:getComputedStyle(label).clipPath,labelFont:parseFloat(getComputedStyle(strong).fontSize),label:strong.textContent};
+    });
+    equal(presentation.inMenu, true, 'Navigator occupies space in the course menu');
+    equal(presentation.position, 'static', 'Navigator launcher scrolls with the header');
+    equal(presentation.label, 'Навигатор', 'The navigation button keeps its visible name');
+    equal(presentation.labelClip, 'none', 'The mobile navigation label is not visually hidden');
+    ok(presentation.labelWidth > 60 && presentation.labelFont >= 15, 'The navigation label is readable');
+    ok(presentation.height >= 44 && presentation.width >= 100 && presentation.left >= 0 && presentation.right <= viewport.width,
+      'The full navigation button fits the viewport with an accessible target');
+    for (const selector of ['#workshop-question','[data-w-form] [data-w-value]','[data-w-form] button[type="submit"]']) {
+      await page.locator(selector).scrollIntoViewIfNeeded();
+      await settled(page);
+      const overlap = await page.evaluate(selector => {
+        const button=document.getElementById('maxexam-public-assistant').shadowRoot.querySelector('.launcher').getBoundingClientRect();
+        const target=document.querySelector(selector).getBoundingClientRect();
+        return button.left<target.right&&button.right>target.left&&button.top<target.bottom&&button.bottom>target.top;
+      },selector);
+      equal(overlap, false, 'Navigator never covers the visible question or answer: ' + selector + ' at ' + viewport.width);
+    }
+    const before = await state(page);
+    await launcher.click();
+    await panel.waitFor({state:'visible'});
+    equal(await launcher.getAttribute('aria-expanded'), 'true', 'The same launcher opens its existing dialog');
+    equal(await panel.evaluate(element => getComputedStyle(element).position), 'fixed', 'The opened dialog retains its viewport positioning');
+    const box = await panel.boundingBox();
+    ok(box.x >= 0 && box.y >= 0 && box.x + box.width <= viewport.width && box.y + box.height <= viewport.height,
+      'The navigation dialog fits the viewport');
+    await screenshot(page, 'navigator-dialog-' + viewport.width, false);
+    await host.locator('textarea').press('Escape');
+    equal(await panel.isVisible(), false, 'Escape closes the existing navigation dialog');
+    equal(await launcher.getAttribute('aria-expanded'), 'false', 'Closing restores the launcher state');
+    equal(await host.evaluate(element => document.activeElement===element&&element.shadowRoot.activeElement===element.shadowRoot.querySelector('.launcher')),
+      true, 'Closing returns keyboard focus to the navigation button');
+    equal(await state(page), before, 'Opening and closing navigation preserves the learner\'s work');
+    await context.close(); contexts.delete(context);
+  }
+  passed('navigator-in-header-without-question-or-answer-overlap', {widths:[1440,320],dialog:true,keyboardReturn:true});
+}
+
 async function main() {
   await fs.mkdir(OUT, { recursive: true });
   await startServer();
@@ -519,6 +569,7 @@ async function main() {
   await notesAndSteps();
   await legacyAttribution();
   await concurrentTabs();
+  await navigatorFlowLayout();
   await animatedExamples();
   equal(summary.pageErrors, [], 'No uncaught JavaScript exceptions on any tested page or viewport');
   const failures = summary.visualChecks.filter(check => !check.passed);

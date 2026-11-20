@@ -261,3 +261,28 @@ window.PetersonApp={boardMode:BOARD,replaceBoardState(raw){if(!BOARD)throw Error
 }
 openCourse();
 })();
+
+// Give the existing site navigator a place in this course's menu. Its shadow
+// dialog and event handlers stay intact; only the closed launcher joins flow.
+(function () {
+ 'use strict';
+ const document=window.document;
+ let observer;
+ function placeNavigator(){
+  const host=document.getElementById('maxexam-public-assistant'),menu=document.querySelector('header.topbar nav');
+  if(!host?.shadowRoot||!menu)return;
+  if(!host.shadowRoot.querySelector('[data-course-navigator-flow="peterson5"]')){
+   const style=document.createElement('style');style.dataset.courseNavigatorFlow='peterson5';
+   style.textContent=':host{display:inline-flex!important;position:static!important;contain:none!important;min-height:0!important;min-width:0;max-width:100%;align-self:center}.launcher{position:static;inset:auto;z-index:auto;display:flex;width:auto;height:auto;min-height:44px;max-width:100%;padding:8px 12px;gap:8px;border-radius:12px;box-shadow:none}.launcher-mark{width:24px;height:24px;flex:0 0 24px;font-size:20px}.launcher-label{position:static;display:block;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal;line-height:1.3}.launcher-label strong{font-size:16px}.launcher-label>span{display:none}';
+   host.shadowRoot.append(style);
+  }
+  if(host.parentNode!==menu)menu.append(host);
+  observer?.disconnect();
+ }
+ function start(){
+  observer=new MutationObserver(placeNavigator);
+  observer.observe(document.body,{childList:true});
+  placeNavigator();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
