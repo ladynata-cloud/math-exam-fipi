@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "33dac124018d931c1ea8de4d24cf559ce55ecef3",
+  "baseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2188,8 +2188,8 @@
       "placement": "before-head-close"
     },
     "pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/index.html": {
-      "beforeSha256": "4bbd2ed1962dc7d32cf18fa1470df4dee8c36b7c3640929264d7669fcd4799a6",
-      "afterSha256": "282145015cccfd23022aa11f0d8fac8905fa03469e602bcf594bef4127fd8fee",
+      "beforeSha256": "a843c2d56e6c06914dd97d26556678e566c3820a587c792304cf2ba1467a375b",
+      "afterSha256": "6a07a52ce9fd23eb255b1f540c8fd2a706f2c0a8017cf315411b43c85bdad851",
       "placement": "before-head-close"
     },
     "rounding-fresh-v8.html": {
@@ -6270,6 +6270,15 @@
       "task": "docs/tasks/TWO_SITE_TEACHER_WORKSHOP_20261120.md",
       "changedPaths": [
         "laboratory/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "33dac124018d931c1ea8de4d24cf559ce55ecef3",
+      "sourceBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "task": "docs/tasks/TWO_SITE_TEACHER_WORKSHOP_20261120.md",
+      "changedPaths": [
+        "pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
