@@ -48,7 +48,7 @@
 ### Files or areas that must not change
 
 - Исходные карточки `source-part1.json`, `source-part2.json`, прежние ID и ключ `mathexam.peterson5.v1`.
-- Другие курсы, сервер, публикационные правила и branch protection.
+- Содержание других курсов, код серверного протокола, публикационные правила и branch protection. Реестр поддерживаемых тренажёров и точные проверки его состава входят в подключение доски.
 
 ## Acceptance criteria
 
@@ -65,8 +65,8 @@
 
 ## Checks and gates
 
-- Required tests: существующие math/runtime/course/inquiry; новый content/state suite; relevant grade56 regressions; Chromium journeys.
-- Required static checks: JS syntax, deterministic builds, git diff --check, scoped links.
+- Required tests: существующие math/runtime/course/inquiry; новый content/state suite; relevant grade56 regressions; Chromium journeys; board projection/runtime; real Socket.IO two-participant browser gate; exact registry tests.
+- Required static checks: JS syntax, deterministic content build and mathematical GIF asset validation, git diff --check, scoped links, explicit navigator source bindings.
 - Manual checks: визуальный просмотр реальных скриншотов desktop/mobile, исследование/практика/проверка/возврат.
 - Final gate marker: PETERSON5_LEARNING_WORKSHOP_20261120_OK
 - Checks intentionally not run: внешний Claude/provider review и пилот с реальным учеником не выполняются этим поручением.

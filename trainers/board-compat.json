@@ -1148,6 +1148,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместный урок: 7 разделов, 56 задач, координаты, вычисления и простейшие уравнения. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "peterson5",
+      "file": "trainers/peterson5.html",
+      "title": "Петерсон · 5 класс · обе части",
+      "group": "Учебники · 5–6 классы",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная текущая сцена: исследование, практика, проверка, модели, GIF и выбранные номера. Личные результаты не читаются и не изменяются."
     }
   ]
 }

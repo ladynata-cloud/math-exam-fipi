@@ -482,6 +482,30 @@ async function concurrentTabs() {
   contexts.delete(context);
 }
 
+async function animatedExamples() {
+  phase = 'animated-examples';
+  for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
+    const context = await newContext(viewport), page = await open(context, 'gif-' + viewport.width, '#topic/p28/discover');
+    equal(await page.locator('[data-p5-gif-toggle]').getAttribute('aria-pressed'), 'false', 'No GIF autoplay');
+    await click(page, '.p5-media > summary');
+    const poster = page.locator('.p5-media img');
+    await page.waitForFunction(() => document.querySelector('.p5-media img')?.naturalWidth === 640);
+    ok((await poster.getAttribute('src')).endsWith('p28.png'), 'Static conclusion loads');
+    await click(page, '[data-p5-gif-toggle]');
+    await page.waitForFunction(() => document.querySelector('.p5-media img')?.naturalWidth === 640 && document.querySelector('.p5-media img').src.endsWith('.gif'));
+    equal(await page.locator('[data-p5-gif-toggle]').getAttribute('aria-pressed'), 'true', 'Explicit play works with reduced-motion preference');
+    equal((await disk(page)).entries['p28-discover'].aided, true, 'Opened visual explanation is attributed as help');
+    await click(page, '[data-p5-gif-toggle]');
+    ok((await poster.getAttribute('src')).endsWith('p28.png'), 'Stop replaces moving GIF with its static conclusion');
+    await visual(page, 'gif-' + viewport.width);
+    await screenshot(page, 'gif-stopped-' + viewport.width);
+    await reload(page);
+    equal(await page.locator('[data-p5-gif-toggle]').getAttribute('aria-pressed'), 'false', 'Reload never starts animation automatically');
+    await context.close(); contexts.delete(context);
+  }
+  passed('actual-gif-loading-play-stop-and-help', {widths:[1440,320],reducedMotion:true});
+}
+
 async function main() {
   await fs.mkdir(OUT, { recursive: true });
   await startServer();
@@ -495,6 +519,7 @@ async function main() {
   await notesAndSteps();
   await legacyAttribution();
   await concurrentTabs();
+  await animatedExamples();
   equal(summary.pageErrors, [], 'No uncaught JavaScript exceptions on any tested page or viewport');
   const failures = summary.visualChecks.filter(check => !check.passed);
   equal(failures.map(check => ({
