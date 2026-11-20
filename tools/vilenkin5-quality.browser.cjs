@@ -13,7 +13,9 @@ const server=http.createServer((req,res)=>{
   const origin='http://127.0.0.1:'+server.address().port,base=origin+'/school/index.html?course=vilenkin5';
   const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox']});
   try{
-    const page=await browser.newPage({viewport:{width:1360,height:950}}),errors=[];page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));
+    const errors=[];
+    const newLearnerPage=async()=>{const next=await browser.newPage({viewport:{width:1360,height:950}});next.setDefaultTimeout(10000);next.on('pageerror',e=>errors.push(e.message));return next;};
+    let page=await newLearnerPage();
     const go=async route=>{await page.goto(base+route);await page.locator('#main[data-v5-quality]').waitFor();};
     await go('#course/vilenkin5');assert.equal(await page.locator('.v5-unit-card').count(),53);assert.equal(await page.locator('.v5q-quick-links a').count(),4);
     await page.screenshot({path:path.join(shots,'course-desktop.png'),fullPage:true});
@@ -48,7 +50,11 @@ const server=http.createServer((req,res)=>{
       // Isolate the following reload/model journeys from this completed synthetic cohort.
       if(i===ids.length-1)await page.evaluate(()=>{localStorage.removeItem(WorkshopState.KEY);localStorage.removeItem(Vilenkin5Quality.key);});
     }
+    // Fragment navigation retains live records even after storage is cleared.
+    // A separate browsing context gives the next learner a genuinely fresh document.
+    await page.close();page=await newLearnerPage();
     await go('#lesson/v5f-division-column');
+    await page.waitForFunction(()=>{const scene=window.Vilenkin5Quality?.getState().scene;return scene?.id==='v5f-division-column'&&scene.mode==='learn'&&scene.step===0&&!scene.correct&&document.querySelector('#answer')?.disabled===false;});
     await page.locator('[data-v5-prediction]').fill('3');await page.locator('#model form button').click();
     assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.model.step),1);
     assert.match(await page.locator('.arithmetic-division strong').innerText(),/3/);

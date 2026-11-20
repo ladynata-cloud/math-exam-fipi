@@ -81,7 +81,7 @@
   if(!C||!M||!Models)return;
   const core=createCore({curriculum:C,math:M,models:Models});
   const memoryOnly=root.self!==root.top||root.document.body.hasAttribute('data-vilenkin5-board');
-  let connection=null,readOnly=false,applying=false,storageOK=true,lastRaw=null,cleanupModel=null;
+  let connection=null,readOnly=false,applying=false,storageOK=true,storeLoaded=false,lastRaw=null,cleanupModel=null;
   let records={},last='',listeners=new Set(),active=null,pendingWarning='';
   const warn=message=>{pendingWarning=message;const host=root.document.getElementById('notice');if(host&&core.validRoute(root.location.hash))host.textContent=message;};
   const isLegacy=session=>!!(session&&core.lesson(session.id)&&session.mode==='learn'&&session.legacySteps>0&&(!session.answers||session.answers.length<session.step||Array.from({length:session.step},(_,i)=>!session.answers[i]).some(Boolean)));
@@ -92,7 +92,12 @@
     if(raw.last&&!next[raw.last])throw new TypeError('Invalid last lesson');
     return {version:1,records:next,last:raw.last};
   }
-  if(!memoryOnly)try{lastRaw=root.localStorage.getItem(KEY);if(lastRaw){if(lastRaw.length>2500000)throw Error('size');const s=normalizeStore(JSON.parse(lastRaw));records=s.records;last=s.last;}}catch(_){storageOK=false;warn('Дополнительные записи курса не удалось прочитать. Исходная копия сохранена. Новую работу можно продолжить и скачать.');}
+  function loadStore(){
+    if(memoryOnly||storeLoaded)return;
+    storeLoaded=true;
+    try{lastRaw=root.localStorage.getItem(KEY);if(lastRaw){if(lastRaw.length>2500000)throw Error('size');const s=normalizeStore(JSON.parse(lastRaw));records=s.records;last=s.last;}}catch(_){storageOK=false;warn('Дополнительные записи курса не удалось прочитать. Исходная копия сохранена. Новую работу можно продолжить и скачать.');}
+  }
+  const canUsePersonal=()=>!memoryOnly&&connection?.canUsePersonal?.()!==false;
   function persist(){
     if(memoryOnly||!storageOK||applying)return;
     try{
@@ -120,16 +125,18 @@
   function checkpoint(session){
     if(applying||!session||isLegacy(session)||!core.lesson(session.id)||!MODES.includes(session.mode))return;
     const scene=fromSession(session);active=session;
-    if(!memoryOnly){const key=scene.id+':'+scene.mode;delete records[key];records[key]=scene;last=key;persist();}
+    if(canUsePersonal()&&connection?.canPersistSession?.(session)!==false){loadStore();const key=scene.id+':'+scene.mode;delete records[key];records[key]=scene;last=key;persist();}
     emit();
   }
   function restore(id,mode){
-    if(memoryOnly)return null;
+    if(!canUsePersonal())return null;
+    loadStore();
     if(id==='vilenkin5'){const saved=records[last];return saved?restore(saved.id,saved.mode):null;}
     let s=mode?records[id+':'+mode]:Object.values(records).filter(r=>r.id===id).at(-1);
     if(!mode&&last.startsWith(id+':'))s=records[last];
     if(!s||['check','review'].includes(s.mode)&&s.checkIndex===2&&s.correct)return null;
-    return toSession(core.normalizeScene(s));
+    const draft=toSession(core.normalizeScene(s));
+    return connection?.reconcilePersonal?connection.reconcilePersonal(draft):draft;
   }
   function toSession(s){
     const task=M.generate(s.id,s.seed);
@@ -220,7 +227,7 @@
     const hero=host.querySelector('.v5-hero');
     hero?.insertAdjacentHTML('beforeend','<div class="v5q-course-path"><span>Исследуй закономерность</span><span>Собери решение по шагам</span><span>Реши новое условие</span></div>');
     if(hero){const quick=root.document.createElement('section');quick.className='panel v5q-start';quick.innerHTML='<h2>С чего начнём сегодня?</h2><div class="v5q-quick-links"><a href="#v5-unit/1"><strong>Начало пятого класса</strong><span>Таблицы, разряды, измерения</span></a><a href="#lesson/v5f-division-column"><strong>Деление уголком</strong><span>Подбор цифры, нули в частном, проверка</span></a><a href="#v5-unit/26"><strong>Вторая часть: дроби</strong><span>Доля, целое и действия с дробями</span></a><a href="#v5-unit/41"><strong>Десятичные дроби</strong><span>Разряды, вычисления и округление</span></a></div><p>Полный год: 51 пункт, 134 занятия. Выбирай тему по учебнику или продолжай сохранённую работу.</p>';hero.after(quick);}
-    host.querySelectorAll('.v5-unit-card').forEach(card=>{const point=Number(card.getAttribute('href').split('/')[1]),unit=path.units.find(u=>u.point===point);if(unit)card.insertAdjacentHTML('beforeend','<small>Часть '+unit.part+(unit.page?' · с. '+unit.page:'')+'</small>');});
+    host.querySelectorAll('.v5-unit-card').forEach(card=>{const point=Number(card.getAttribute('href').split('/')[1]),unit=path.units.find(u=>u.point===point);if(unit){const n=unit.ids.length,ending=n%100>=11&&n%100<=14?'занятий':n%10===1?'занятие':n%10>=2&&n%10<=4?'занятия':'занятий';card.querySelector('p').textContent=n+' '+ending;card.insertAdjacentHTML('beforeend','<small>Часть '+unit.part+(unit.page?' · с. '+unit.page:'')+'</small>');}});
     if(memoryOnly){host.querySelectorAll('.v5-achievements').forEach(x=>x.closest('section').remove());host.querySelectorAll('[data-cmd="course-diagnostic"],[data-cmd="resume-vilenkin"]').forEach(x=>x.remove());}
     enforceReadOnly();emit();
   }
@@ -237,11 +244,10 @@
     enforceReadOnly();emit();
   }
   function importState(raw){
-    const incoming=normalizeStore(raw);let added=0,kept=0;
-    for(const [key,value]of Object.entries(incoming.records)){if(records[key]){kept++;continue;}records[key]=value;added++;}
-    if(!last&&incoming.last)last=incoming.last;
+    const incoming=normalizeStore(raw);loadStore();
+    records=incoming.records;last=incoming.last;
     // Corrupt original storage remains untouched; importing is still useful in memory.
-    persist();return {added,kept};
+    persist();return {imported:Object.keys(records).length};
   }
   root.addEventListener('storage',event=>{if(!memoryOnly&&event.key===KEY){storageOK=false;warn('Работа курса изменилась в другой вкладке. Твой черновик остаётся здесь; сохрани копию перед обновлением.');}});
   const block=event=>{if(!readOnly||!event.target.closest?.('#main[data-v5-quality]'))return;if(event.type==='keydown'&&['Tab','Escape','PageUp','PageDown'].includes(event.key))return;event.preventDefault();event.stopImmediatePropagation();};
@@ -252,7 +258,7 @@
     subscribe(fn){if(typeof fn!=='function')throw new TypeError('Observer must be a function');listeners.add(fn);return()=>listeners.delete(fn);},
     setReadOnly(value){readOnly=!!value;enforceReadOnly();},
     setClaim(session,value){detail(session).claim=value;checkpoint(session);},
-    exportState(){return copy({version:1,records,last});},importState,
+    exportState(){loadStore();return copy({version:1,records,last});},importState,
     validateStore:normalizeStore,
     finish(session){checkpoint(session);},
     destroyModel(){cleanupModel?.();cleanupModel=null;},

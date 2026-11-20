@@ -62,7 +62,8 @@
   return session&&isVilenkin(session.id)||returns.some(function(parent){return isVilenkin(parent.id);});
  }
  function forgetVilenkinSession(){if(hasVilenkinSession()){session=null;returns=[];}}
- function personalVilenkin(){return window.self===window.top&&!state.assignment&&!returns.length&&session&&isVilenkin(session.id)&&!session.diagnostic;}
+ function canUsePersonalVilenkin(){return window.self===window.top&&!boardFrame&&!state.assignment&&!returns.length;}
+ function personalVilenkin(){return canUsePersonalVilenkin()&&session&&isVilenkin(session.id)&&!session.diagnostic;}
  function saveLesson(){
   clearTimeout(draftTimer);
   if(V5Q&&session&&C.byId[session.id]?.v5Course)V5Q.checkpoint(session);
@@ -77,7 +78,23 @@
   save();
  }
  function flushDraftInput(){if(session&&session.dirtyInput)saveLesson();}
- function savedVilenkin(key){if(boardFrame||state.assignment)return null;return V5Q&&(key==='vilenkin5'||C.byId[key]?.v5Course)&&V5Q.restore(key)||S.restoreVilenkin(state,key,M);}
+ function savedVilenkin(key){if(!canUsePersonalVilenkin())return null;return V5Q&&(key==='vilenkin5'||C.byId[key]?.v5Course)&&V5Q.restore(key)||S.restoreVilenkin(state,key,M);}
+ function reconcileVilenkinQuality(draft){
+  if(!canUsePersonalVilenkin())return null;
+  if(!state.vilenkinDrafts[draft.id])return draft;
+  // The canonical workshop draft owns generator compatibility and run evidence.
+  // A richer scene must not hide an incompatible imported task or start a new run.
+  var previous=S.restoreVilenkin(state,draft.id,M);
+  if(!previous)return null;
+  if(previous.mode!==draft.mode||previous.seed!==draft.seed)return draft;
+  var detail=draft.v5Detail;
+  if(detail){
+   if(draft.step!==previous.step||!previous.attempt)detail.firstAttempt=null;
+   if(detail.firstWrong&&detail.firstWrong.step>previous.step)detail.firstWrong=null;
+   detail.atStep=previous.step;
+  }
+  return Object.assign(draft,previous,{v5Detail:detail});
+ }
  function vilenkinCourseAction(course,next){
   var draft=savedVilenkin(course);
   var heading=draft?'Твоя сохранённая задача':'Твой следующий шаг';
@@ -159,7 +176,7 @@
   flushDraftInput();
   if(isVilenkin(id)||C.byId[id].m9Course||/^m9-\d{2}$/.test(id))enterBoardFrame();
   opts=opts||{};
-  if(opts.qualityResume&&V5Q&&C.byId[id].v5Course&&!state.assignment){var previous=V5Q.restore(id,mode);if(previous)return openVilenkin(previous);}
+  if(opts.qualityResume&&V5Q&&C.byId[id].v5Course&&canUsePersonalVilenkin()){var previous=V5Q.restore(id,mode);if(previous)return openVilenkin(previous);}
   if(opts.resume&&!returns.length&&isVilenkin(id)){
    var saved=savedVilenkin(id);
    if(saved)return openVilenkin(saved);
@@ -313,7 +330,7 @@
  document.getElementById('file-input').addEventListener('change',async function(e){
   var f=e.target.files[0];if(!f)return;if(f.size>3000000){notice.textContent='Файл слишком большой: предел 3 МБ.';return;}
   try{var data=JSON.parse(await f.text()),prepared;
-   if(filePurpose==='progress'){if(V5Q&&data.vilenkin5Quality)V5Q.validateStore(data.vilenkin5Quality);prepared=S.validate(data,ids);if(!confirm('Заменить прогресс только этой мастерской данными файла?'))return;state=prepared;if(V5Q&&data.vilenkin5Quality)V5Q.importState(data.vilenkin5Quality);forgetVilenkinSession();if(session?.task.m9Full)session=null;practiceSeeds=Object.create(null);if(state.last&&state.last.mode==='practice')practiceSeeds[state.last.skill]=state.last.seed;blocked=false;save();flash='Резервная копия загружена.';location.hash='#progress';progress();}
+   if(filePurpose==='progress'){var qualityCopy=V5Q?V5Q.validateStore(Object.hasOwn(data,'vilenkin5Quality')?data.vilenkin5Quality:{version:1,records:{},last:''}):null;prepared=S.validate(data,ids);if(!confirm('Заменить прогресс только этой мастерской данными файла?'))return;state=prepared;if(V5Q)V5Q.importState(qualityCopy);forgetVilenkinSession();if(session?.task.m9Full)session=null;practiceSeeds=Object.create(null);if(state.last&&state.last.mode==='practice')practiceSeeds[state.last.skill]=state.last.seed;blocked=false;save();flash='Резервная копия загружена.';location.hash='#progress';progress();}
    else if(filePurpose==='teacher'){prepared=S.validateTeacher(data,ids);if(!confirm('Заменить локальный кабинет преподавателя данными файла?'))return;teacher=prepared;teacherBlocked=false;activeGroup='';saveTeacher();teacherView();}
    else if(filePurpose==='report'){prepared=S.validateReport(data,ids);var g=getGroup();if(!g)throw Error('Сначала создайте группу.');var sameReport=function(r){return r.groupId===g.id&&r.data.alias===prepared.alias&&r.data.assignmentId===prepared.assignmentId;},existing=teacher.reports.find(sameReport);if(existing&&existing.data.createdAt>prepared.createdAt){notice.textContent='В кабинете уже есть более новый отчёт этого ученика по заданию. Сохранена более новая запись.';return;}var updatedReports=teacher.reports.filter(function(r){return !sameReport(r);});if(updatedReports.length>=300)throw Error('Достигнут предел 300 отчётов. Сохраните отдельную копию кабинета.');updatedReports.push({groupId:g.id,data:prepared});teacher.reports=updatedReports;saveTeacher();teacherView();}
    notice.textContent='';
@@ -381,7 +398,7 @@
  if(exerciseReturn&&/^\d{1,3}\.\d{1,3}$/.test(exerciseReturn)){
   var returnLink=document.createElement('a');returnLink.className='button quiet';returnLink.href='m9-exercises/index.html#'+exerciseReturn.replace('.','/');returnLink.textContent='← Вернуться к задаче и сохранённому шагу';main.parentNode.insertBefore(returnLink,main);
  }
- if(V5Q)V5Q.connect({getSession:function(){return session;},save:saveLesson,applyScene:function(route,draft){clearTimeout(draftTimer);session=draft;returns=[];if(draft?.mode==='practice')practiceSeeds[draft.id]=draft.seed;if(boardFrame)state=S.blank();activeCourse='vilenkin5';history.replaceState(null,'',location.pathname+location.search+route);render();}});
+ if(V5Q)V5Q.connect({getSession:function(){return session;},canUsePersonal:canUsePersonalVilenkin,canPersistSession:function(draft){return draft===session&&personalVilenkin();},reconcilePersonal:reconcileVilenkinQuality,save:saveLesson,applyScene:function(route,draft){clearTimeout(draftTimer);session=draft;returns=[];if(draft?.mode==='practice')practiceSeeds[draft.id]=draft.seed;if(boardFrame)state=S.blank();activeCourse='vilenkin5';history.replaceState(null,'',location.pathname+location.search+route);render();}});
  render();
  }
 })();

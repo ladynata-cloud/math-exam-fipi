@@ -13,6 +13,9 @@ function boot(route='#course/vilenkin5',saved={},board=false,framed=false){
   if(board)w.document.body.setAttribute('data-vilenkin5-board','');
   if(framed)Object.defineProperty(w,'self',{value:{},configurable:true});
   for(const [key,value]of Object.entries(saved))w.localStorage.setItem(key,value);
+  const qualityAccess={reads:0,writes:0},getItem=w.Storage.prototype.getItem,setItem=w.Storage.prototype.setItem;
+  w.Storage.prototype.getItem=function(key){if(key===KEY)qualityAccess.reads++;return getItem.call(this,key);};
+  w.Storage.prototype.setItem=function(key,value){if(key===KEY)qualityAccess.writes++;return setItem.call(this,key,value);};
   const errors=[];w.addEventListener('error',e=>errors.push(e.error||e.message));
   for(const tag of w.document.querySelectorAll('script[src]')){
     const file=new URL(tag.src).pathname;if(file.startsWith('/assets/'))continue;
@@ -20,7 +23,7 @@ function boot(route='#course/vilenkin5',saved={},board=false,framed=false){
     if(file.includes('vilenkin5-board'))continue;
     w.eval(fs.readFileSync(path.join(root,file),'utf8'));
   }
-  const f={w,dom,errors,Q:w.Vilenkin5Quality,C:w.WorkshopCurriculum,M:w.WorkshopMath,
+  const f={w,dom,errors,qualityAccess,Q:w.Vilenkin5Quality,C:w.WorkshopCurriculum,M:w.WorkshopMath,
     $:selector=>w.document.querySelector(selector),
     route(route){w.history.replaceState(null,'',w.location.pathname+w.location.search+route);w.dispatchEvent(new w.HashChangeEvent('hashchange'));},
     input(selector,value){const field=this.$(selector);assert(field,selector);field.value=value;field.dispatchEvent(new w.Event('input',{bubbles:true}));return field;},
@@ -33,6 +36,72 @@ function boot(route='#course/vilenkin5',saved={},board=false,framed=false){
 }
 function value(M,t){const fmt=x=>Array.isArray(x)?x.map(fmt).join(';'):x&&typeof x==='object'?M.fmt(x):String(x);return t.answerFormat==='prime-factors'?t.answer.join('*'):t.answerFormat==='decimal'&&Number.isInteger(Number(t.answer?.n)/Number(t.answer?.d)||t.answer)?String(t.answer?.n/t.answer?.d||t.answer)+',0':fmt(t.answer);}
 const tick=()=>new Promise(resolve=>setTimeout(resolve,0));
+async function importProgress(f,data,accept=true){
+  f.route('#progress');f.click('[data-cmd=import-progress]');
+  const raw=JSON.stringify(data),file=new f.w.File([raw],'workshop.json',{type:'application/json'});
+  // JSDOM's File lacks text(); exercise the real file-input handler with that browser API supplied.
+  file.text=async()=>raw;
+  Object.defineProperty(f.$('#file-input'),'files',{configurable:true,value:[file]});
+  let confirmations=0;f.w.confirm=()=>{confirmations++;return accept;};
+  f.$('#file-input').dispatchEvent(new f.w.Event('change',{bubbles:true}));
+  await tick();await tick();return confirmations;
+}
+async function personalContextRegression(){
+  const id='v5f-division-column',f=boot('#lesson/'+id),S=f.w.WorkshopState,read=()=>JSON.parse(f.w.localStorage.getItem(S.KEY));
+  f.submit(value(f.M,f.M.generate(id,0).steps[0]));f.click('[data-cmd=next]');
+  f.input('#answer','личный черновик');f.input('#v5-quality-note','Личный способ проверки');
+  f.click('[data-cmd=mode][data-value=practice]');f.input('#answer','личная тренировка');
+  f.click('[data-cmd=mode][data-value=learn]');
+  const personal=f.snapshot(),qualityRaw=f.w.localStorage.getItem(KEY),personalDraft=read().vilenkinDrafts[id],beforeEvents=read().events.length;
+  const assignment={schema:'mathexam-assignment',version:1,id:'a-isolation',title:'Работа в классе',skills:[id],seed:17};
+  f.route('#home');f.input('#assignment-code',Buffer.from(JSON.stringify(assignment)).toString('base64'));f.click('[data-cmd=load-code]');
+  f.click('[data-cmd=learn][data-value="'+id+'"]');await tick();
+  equal(f.$('#answer').value,'');equal(f.snapshot().scene.note,'');equal(f.snapshot().scene.step,0);
+  equal(f.Q.restore(id),null);equal(f.Q.restore(id,'practice'),null);equal(f.Q.restore('vilenkin5'),null);
+  f.input('#answer','ответ в задании');f.input('#v5-quality-note','Обсуждение в классе');f.click('[data-cmd=hint]');f.click('[data-cmd=claim]');
+  f.input('[data-v5-prediction]','прогноз в классе');
+  f.Q.updateMedia(f.w.JSON.parse(JSON.stringify({id:'u'+String(f.C.byId[id].point).padStart(2,'0'),frame:2,open:true,playing:false})),true);
+  equal(f.w.localStorage.getItem(KEY),qualityRaw,'all assignment writers preserve personal scenes byte for byte');
+  equal(read().vilenkinDrafts[id],personalDraft,'assignment preserves canonical personal draft');
+  f.click('[data-cmd=mode][data-value=practice]');equal(f.$('#answer').value,'','mode switch cannot restore personal practice');
+  f.click('[data-cmd=mode][data-value=check]');
+  for(let i=0;i<3;i++){const scene=f.snapshot().scene;f.submit(value(f.M,f.M.generate(id,scene.seed)));f.click('[data-cmd=next]');}
+  await tick();equal(f.w.localStorage.getItem(KEY),qualityRaw,'finish does not checkpoint assignment into personal records');
+  equal(read().vilenkinDrafts[id],personalDraft);equal(read().events.length,beforeEvents+3,'assignment still records its three results');
+  const assignedSaved=f.saved();
+  const initial=boot('#lesson/'+id,assignedSaved);equal(initial.qualityAccess.reads,0,'initial assignment never loads personal quality storage');equal(initial.qualityAccess.writes,0);equal(initial.$('#answer').value,'');equal(initial.Q.restore(id),null);equal(initial.qualityAccess.reads,0);equal(initial.errors,[]);initial.close();
+  f.route('#home');f.click('[data-cmd=leave-assignment]');f.route('#lesson/'+id);
+  equal(f.$('#answer').value,personal.scene.savedInput);equal(f.snapshot().scene.note,personal.scene.note);equal(f.snapshot().scene.step,personal.scene.step);
+  equal(read().vilenkinDrafts[id].vilenkinRun,personalDraft.vilenkinRun,'restoration retains the canonical personal run');
+  equal(f.errors,[]);f.close();
+
+  // A temporary prerequisite and its mode switch must not inherit another personal session.
+  const p=boot(),parent=p.C.lessons.find(l=>l.v6Course&&l.requires.some(key=>p.C.byId[key]?.v5Course)),prerequisite=parent.requires.find(key=>p.C.byId[key]?.v5Course);
+  p.route('#lesson/'+prerequisite);p.click('[data-cmd=mode][data-value=practice]');p.input('#answer','моя отдельная тренировка');
+  const privateRaw=p.w.localStorage.getItem(KEY);
+  p.route('#lesson/'+parent.id);p.click('[data-cmd=prerequisite][data-value="'+prerequisite+'"]');await tick();
+  p.click('[data-cmd=mode][data-value=practice]');equal(p.$('#answer').value,'');p.input('#answer','временное повторение');equal(p.w.localStorage.getItem(KEY),privateRaw);
+  ok(p.$('[data-cmd=return]'),'temporary learning retains its return path');p.click('[data-cmd=return]');await tick();equal(p.w.location.hash,'#lesson/'+parent.id);equal(p.errors,[]);p.close();
+}
+async function replacementImportRegression(){
+  const id='v5f-division-column',f=boot('#lesson/'+id),S=f.w.WorkshopState,read=()=>JSON.parse(f.w.localStorage.getItem(S.KEY));
+  f.submit(value(f.M,f.M.generate(id,0).steps[0]));f.click('[data-cmd=next]');f.input('#answer','черновик из копии');f.input('#v5-quality-note','Заметка из копии');
+  const original={...read(),vilenkin5Quality:plain(f.Q.exportState())},stale=plain(original);stale.vilenkinDrafts[id].signature='previous generator';
+  f.route('#lesson/v5f-angle-build');f.input('#v5-quality-note','Этой записи нет в импортируемом файле');
+  equal(await importProgress(f,stale),1);equal(plain(f.Q.exportState()),stale.vilenkin5Quality,'confirmed import replaces quality records and last');
+  f.route('#lesson/'+id);await tick();equal(f.$('#answer').value,'');equal(f.snapshot().scene.step,0);equal(f.$('#main').querySelectorAll('.v6-history').length,0);ok(f.$('#previous-vilenkin-draft a[href="#progress"]'));
+  equal(read().vilenkinDrafts[id],stale.vilenkinDrafts[id],'opening an incompatible copy preserves its complete draft');
+  f.route('#progress');f.route('#lesson/'+id);await tick();equal(f.$('#answer').value,'');equal(read().vilenkinDrafts[id],stale.vilenkinDrafts[id]);
+  const retained=boot('#lesson/'+id,f.saved());equal(retained.$('#answer').value,'');ok(retained.$('#previous-vilenkin-draft'));equal(JSON.parse(retained.w.localStorage.getItem(S.KEY)).vilenkinDrafts[id],stale.vilenkinDrafts[id]);equal(retained.errors,[]);retained.close();
+  f.input('#answer','решаю обновлённое задание');const replacement=boot('#lesson/'+id,f.saved());equal(replacement.$('#answer').value,'решаю обновлённое задание');ok(JSON.parse(replacement.w.localStorage.getItem(S.KEY)).vilenkinDrafts[id].signature!=='previous generator');equal(replacement.errors,[]);replacement.close();
+  const legacyOnly=plain(stale);delete legacyOnly.vilenkin5Quality;equal(await importProgress(f,legacyOnly),1);equal(plain(f.Q.exportState()),{version:1,records:{},last:''},'legacy-only import clears stale quality scenes');
+  f.route('#lesson/'+id);equal(f.$('#answer').value,'');ok(f.$('#previous-vilenkin-draft'));equal(read().vilenkinDrafts[id],stale.vilenkinDrafts[id]);
+  const invalidQuality=plain(original);invalidQuality.vilenkin5Quality.records[id+':learn'].note='<img src=x>';
+  const invalidWorkshop=plain(original);invalidWorkshop.route='broken';
+  for(const invalid of [invalidQuality,invalidWorkshop]){const before=f.saved();equal(await importProgress(f,invalid),0,'invalid copies are rejected before confirmation');equal(f.saved(),before,'invalid copy changes neither storage key');ok(f.$('#notice').textContent.startsWith('Файл не загружен:'));}
+  const beforeCancel=f.saved();equal(await importProgress(f,original,false),1);equal(f.saved(),beforeCancel,'cancelled replacement leaves both stores intact');equal(f.errors,[]);f.close();
+  const corrupt=boot('#lesson/'+id,{[KEY]:'{damaged'});equal(await importProgress(corrupt,original),1);equal(corrupt.w.localStorage.getItem(KEY),'{damaged','an explicit import does not silently replace a damaged original');equal(plain(corrupt.Q.exportState()),original.vilenkin5Quality,'validated imported records remain exportable in memory');equal(corrupt.errors,[]);corrupt.close();
+}
 async function run(){
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
@@ -150,9 +219,10 @@ async function run(){
   const independent=f.Q.freshScene('v5f-natural-add','check',42),independentTask=f.M.generate(independent.id,independent.seed);independent.savedInput=value(f.M,independentTask);independent.attempt=1;independent.correct=true;independent.media={id:'u08',frame:4,open:true,playing:false};
   equal(f.Q.validateState(f.w.JSON.parse(JSON.stringify({version:1,route:'#lesson/'+independent.id,scene:independent}))).scene.assisted,false,'post-answer media review does not rewrite independent result');
   const getter={version:1,route:'#course/vilenkin5'};Object.defineProperty(getter,'scene',{enumerable:true,get(){throw Error('getter executed');}});assert.throws(()=>f.Q.validateState(getter),/Invalid/);checks++;
-  // Import merges additional scenes, preserving the local answer on collisions.
+  // Confirmed replacement imports use the copy's answers and remove absent records.
   const backup=plain(f.Q.exportState()),local=f.snapshot();backup.records[local.scene.id+':'+local.scene.mode].savedInput='different copy';
-  const imported=f.Q.importState(f.w.JSON.parse(JSON.stringify(backup)));ok(imported.kept>0);equal(f.snapshot(),local);
+  const removed=Object.keys(backup.records).find(key=>key!==backup.last);delete backup.records[removed];
+  const imported=f.Q.importState(f.w.JSON.parse(JSON.stringify(backup)));equal(imported.imported,Object.keys(backup.records).length);equal(plain(f.Q.exportState()),backup);equal(f.snapshot(),local,'import does not mutate a live scene before the app changes routes');
   // An unobserved external write cannot be overwritten even before a storage event arrives.
   const external=f.w.localStorage.getItem(KEY)+' ';f.w.localStorage.setItem(KEY,external);f.input('#answer','77');equal(f.w.localStorage.getItem(KEY),external);equal(f.Q.exportState().records['v5f-angle-build:learn'].savedInput,'77');
   equal(f.errors,[]);
@@ -179,6 +249,7 @@ async function run(){
   let changes=0;const unsubscribe=board.Q.subscribe(()=>changes++);board.input('#answer','13');ok(changes>0);unsubscribe();
   board.Q.setReadOnly(true);ok(board.$('#answer').disabled);const shared=board.snapshot();board.submit('99');equal(board.snapshot(),shared);board.Q.setReadOnly(false);ok(!board.$('#answer').disabled);
   board.route('#teacher');equal(board.w.location.hash,'#course/vilenkin5');equal(board.snapshot().scene,null);equal(board.errors,[]);board.close();
+  await personalContextRegression();await replacementImportRegression();
   console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_PASS',checks,lessons:134,points:51,modelKinds:[...modelKinds].sort()}));
 }
 run().catch(error=>{console.error(error);process.exitCode=1;});

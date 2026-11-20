@@ -81,11 +81,6 @@ jobs:
           NODE_PATH: ${{ runner.temp }}/vilenkin5-browser/node_modules
           V5_QUALITY_SHOTS: artifacts/vilenkin5-quality
         run: node tools/vilenkin5-quality.browser.cjs
-      - name: Real participants, control handoff and handwriting
-        env:
-          NODE_PATH: ${{ runner.temp }}/vilenkin5-browser/node_modules
-          VILENKIN5_BOARD_SHOTS: artifacts/vilenkin5-board
-        run: node school/test-vilenkin5-board.browser.cjs
       - name: Unchanged shared-school course regression
         env:
           NODE_PATH: ${{ runner.temp }}/vilenkin5-browser/node_modules
@@ -94,8 +89,31 @@ jobs:
         if: always()
         with:
           name: vilenkin5-course-visuals
-          path: |
-            artifacts/vilenkin5-quality
-            artifacts/vilenkin5-board
+          path: artifacts/vilenkin5-quality
+          if-no-files-found: error
+          retention-days: 14
+  shared-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install Chromium and locked board server
+        run: |
+          npm --prefix board-server ci --include=optional
+          npm install --prefix "$RUNNER_TEMP/vilenkin5-browser" --no-audit --no-fund playwright@1.62.1
+          "$RUNNER_TEMP/vilenkin5-browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Real participants, control handoff and handwriting
+        env:
+          NODE_PATH: ${{ runner.temp }}/vilenkin5-browser/node_modules
+          VILENKIN5_BOARD_SHOTS: artifacts/vilenkin5-board
+        run: node school/test-vilenkin5-board.browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vilenkin5-board-visuals
+          path: artifacts/vilenkin5-board
           if-no-files-found: error
           retention-days: 14
