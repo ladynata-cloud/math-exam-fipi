@@ -28,7 +28,9 @@ jobs:
           node --check school/peterson5/app.js
           node --check school/peterson5/math.js
           node --check school/peterson5/models.js
+          node --check school/peterson5/workshop.js
           node school/peterson5/build.cjs --check
+          node school/peterson5/build-workshop.cjs --check
           node school/peterson5/test-math.cjs
       - name: Install in-memory DOM
         run: npm install --prefix "$RUNNER_TEMP/peterson5-qa" --no-audit --no-fund jsdom@26.1.0
@@ -37,7 +39,31 @@ jobs:
           export NODE_PATH="$RUNNER_TEMP/peterson5-qa/node_modules"
           node school/peterson5/test-runtime.cjs
           node school/peterson5/test-course.cjs
+          node school/peterson5/test-workshop.cjs
       - name: Sitemap and patch whitespace
         run: |
           python3 tools/build-sitemap.py --check
           git diff --check
+  workshop-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install isolated Chromium tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/peterson5-browser" --no-audit --no-fund playwright@1.62.1
+          "$RUNNER_TEMP/peterson5-browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Real learner journeys, multiple tabs and responsive layouts
+        env:
+          NODE_PATH: ${{ runner.temp }}/peterson5-browser/node_modules
+        run: node school/peterson5/test-workshop-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: peterson5-workshop-visuals
+          path: artifacts/peterson5-workshop
+          if-no-files-found: error
+          retention-days: 14
