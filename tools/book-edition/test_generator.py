@@ -20,6 +20,26 @@ spec.loader.exec_module(builder)
 
 
 class GeneratorTests(unittest.TestCase):
+    def test_date_rejects_escape_invalid_calendar_and_wrong_alias_year(self):
+        for value in ["2026-2-03", "2026-02-30", "2026-13-01", "2027-01-01", "2026-11-16/../v2", "20261116"]:
+            with self.subTest(date=value), self.assertRaises(ValueError):
+                builder.Edition("v3", builder.PUBLISHED_V1, value)
+
+    def test_new_date_has_consistent_identity_label_and_71_aliases(self):
+        edition = builder.Edition("v3", builder.PUBLISHED_V1, "2026-11-16")
+        output, manifest = builder.build(edition)
+        self.assertEqual(edition.prefix, "book/oge/2026-11-16/v3/")
+        self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-11-16-v3:")
+        self.assertEqual(len(manifest["entries"]), 71)
+        for row in manifest["entries"]:
+            self.assertEqual(row["bookUrl"], builder.PUBLIC + "/b/oge26-3/" + row["id"] + "/")
+            self.assertTrue(row["frozenUrl"].startswith(builder.PUBLIC + "/" + edition.prefix))
+            self.assertIn("Редакция 16.11.2026 · v3.".encode(), output[edition.alias + row["id"] + "/index.html"])
+        bootstrap = output[edition.prefix + "edition-assets/bootstrap.js"]
+        self.assertIn(b'"dateLabel":"16.11.2026"', bootstrap)
+        self.assertNotIn(b"31.10.2026", bootstrap)
+        self.assertTrue(all(name.startswith((edition.prefix, edition.alias)) for name in output))
+
     def test_version_cannot_escape_or_alias_an_existing_namespace(self):
         for version in ["v0", "v01", "V2", "2", "v2/", "v2/../v1", "v2 "]:
             with self.subTest(version=version), self.assertRaises(ValueError):
@@ -66,19 +86,18 @@ class GeneratorTests(unittest.TestCase):
     def test_reviewed_course_map_closure_retains_dependencies_and_storage_boundary(self):
         edition = builder.Edition("v2", builder.PUBLISHED_V1)
         output, manifest = builder.build(edition)
-        # Exact additions from the published OGE map (30e1af62), not a relaxed
-        # minimum count. Replacing only the entry HTML with pre-map 8bd4c47
-        # reproduces 228 outputs; these four paths are the complete 232-228 delta.
+        # These four paths are the complete closure addition from the OGE map.
+        # The live view script received its own cache version in #642.
         reviewed = {
-            "oge/learning-map-view.js": [],
-            "oge/learning-map.css": [],
-            "oge/learning-map.js": ["oge/registry.js"],
-            "oge/registry.js": [],
+            "oge/learning-map-view.js": ("20261117", []),
+            "oge/learning-map.css": ("20261109", []),
+            "oge/learning-map.js": ("20261109", ["oge/registry.js"]),
+            "oge/registry.js": ("20261109", []),
         }
         sources = {record["path"]: record for record in manifest["sourceFiles"]}
         entry = "trainers/oge-course/index.html"
         self.assertTrue(set(reviewed).issubset(sources[entry]["dependencies"]))
-        for asset, dependencies in reviewed.items():
+        for asset, (_, dependencies) in reviewed.items():
             with self.subTest(asset=asset):
                 self.assertIn(asset, sources)
                 self.assertEqual(sources[asset]["dependencies"], dependencies)
@@ -89,10 +108,8 @@ class GeneratorTests(unittest.TestCase):
         page = output[edition.prefix + entry].decode()
         bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
         self.assertEqual(page.count(bootstrap), 1)
-        # The selected-topic return in #642 versioned the view script alone.
         source_page = (ROOT / entry).read_text()
-        for asset in reviewed:
-            version = '20261117' if asset == 'oge/learning-map-view.js' else '20261109'
+        for asset, (version, _) in reviewed.items():
             ref = asset + '?v=' + version
             self.assertEqual(source_page.count('"/' + ref + '"'), 1, asset)
             frozen = '/' + edition.prefix + ref
@@ -405,6 +422,9 @@ class GeneratorTests(unittest.TestCase):
             with patch.object(builder, "PUBLISHED_V1", published):
                 with self.assertRaisesRegex(ValueError, "Edition exists on " + published):
                     builder.ensure_writable(builder.Edition("v1", published), published, root)
+                # Changing the date cannot evade the published short-link guard.
+                with self.assertRaisesRegex(ValueError, "Edition exists on " + published):
+                    builder.ensure_writable(builder.Edition("v1", published, "2026-11-16"), published, root)
                 with self.assertRaisesRegex(ValueError, "published-v1 anchor"):
                     builder.ensure_writable(builder.Edition("v2", stale), stale, root)
                 builder.ensure_writable(builder.Edition("v2", published), published, root)

@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
+const {restoreV3TeachingText} = require('./oge-book-exam-corrections.cjs');
 
 const source = fs.readFileSync(path.join(__dirname, '../trainers/oge-task7-number-line.html'), 'utf8');
 function between(start, end) {
@@ -311,16 +312,20 @@ test('the exact input receipt preserves the full pinned source and rejects every
   const {createHash} = require('node:crypto');
   const {restoreOge7Input, BEFORE, AFTER} = require('./oge7-number-input-preservation.cjs');
   const sha = value => createHash('sha256').update(value).digest('hex');
+  const file = 'trainers/oge-task7-number-line.html';
   const heading = '  <h1>Задание 7 ОГЭ. Координатная прямая</h1>\n';
   const supportLink = '  <p><a href="./oge-basics/negative-number-line.html" target="_blank" rel="noopener">Повторить сравнение чисел на прямой и противоположные числа ↗</a></p>\n';
   const restoreSource = html => {
-    const document = restoreOge7Input(restoreTrainerDownload('trainers/oge-task7-number-line.html', html));
+    const document = restoreOge7Input(restoreV3TeachingText(file, restoreTrainerDownload(file, html)));
     assert.equal(document.split(supportLink).length, 2, 'OGE7 support: exactly one reviewed link');
     assert(document.includes(heading + supportLink), 'OGE7 support: link follows the heading');
     return document.replace(heading + supportLink, heading);
   };
   const originalHash = '327b041bf929619f3ced888e576ce12c560def6fd918aa637fc967ee355504ca';
   assert.equal(sha(restoreSource(source)), originalHash, 'all original main198 HTML bytes recovered');
+  const alteredExplanation = source.replace('больше или равен знаменателю', 'строго больше знаменателя');
+  assert.notEqual(alteredExplanation, source);
+  assert.throws(() => restoreSource(alteredExplanation), /one exact reviewed v3 description/);
   const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
     .filter(x => !(/\bsrc\s*=/.test(x[1]))).map(x => x[2]).join('\n');
   assert.equal(sha(restoreOge7Input(scripts)),

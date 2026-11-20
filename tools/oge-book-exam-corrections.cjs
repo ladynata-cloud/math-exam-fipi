@@ -141,4 +141,25 @@ function restoreHistoricalBytes(file,source){
  }
  return restored;
 }
-module.exports={corrections,restoreHistoricalBytes};
+// Only these two v3 descriptions are reversed before the earlier whole-page checks.
+const v3TeachingText={
+ 'trainers/oge-task7-number-line.html': [
+  '<div class="case-card"><b class="cn">Случай 2. Дробь неправильная (числитель больше) — ищем целые.</b> Дели с остатком: 131&nbsp;=&nbsp;10·12&nbsp;+&nbsp;11, значит <span class="frac"><span class="fn">131</span><span class="fd">12</span></span> = 10 + <span class="frac"><span class="fn">11</span><span class="fd">12</span></span> — число между <b>10</b> и <b>11</b>. Хвостик <span class="frac"><span class="fn">11</span><span class="fd">12</span></span> меньше единицы, поэтому за 11 не перелезем.</div>',
+  '<div class="case-card"><b class="cn">Случай 2. Дробь неправильная (числитель больше или равен знаменателю) — ищем целые.</b> Дели с остатком: 131&nbsp;=&nbsp;10·12&nbsp;+&nbsp;11, значит <span class="frac"><span class="fn">131</span><span class="fd">12</span></span> = 10 + <span class="frac"><span class="fn">11</span><span class="fd">12</span></span> — число между <b>10</b> и <b>11</b>. Хвостик <span class="frac"><span class="fn">11</span><span class="fd">12</span></span> меньше единицы, поэтому за 11 не перелезем. Если остаток равен нулю, дробь равна целому числу: <span class="frac"><span class="fn">12</span><span class="fd">12</span></span> = 1, а <span class="frac"><span class="fn">24</span><span class="fd">12</span></span> = 2.</div>'
+ ],
+ 'trainers/oge-1-5-trainers/practice-1-5-tires.html': [
+  '<p>Каждый вопрос 2–5 — это чтение или вычитание готовых чисел из таблицы.</p>',
+  '<p>В вопросах 2–5 читай размеры из таблицы, находи разности и считай проценты. Для изменения в процентах за 100% бери исходный размер; затем округляй, как сказано в условии.</p>'
+ ]
+};
+
+function restoreV3TeachingText(file,source){
+ const rule=v3TeachingText[file];
+ if(!rule)return source;
+ const [before,after]=rule;
+ assert.equal(source.split(after).length,2,file+': one exact reviewed v3 description');
+ assert.equal(source.split(before).length,1,file+': superseded description absent');
+ return source.replace(after,before);
+}
+
+module.exports={corrections,restoreHistoricalBytes,restoreV3TeachingText};

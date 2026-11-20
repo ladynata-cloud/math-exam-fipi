@@ -18,18 +18,20 @@ const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b
 // the complete inline engine and static controls comparison, including fixes.
 taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348d5460fdd940dc8cac3';
 // PR #539/#548 behavior plus the reviewed explanation-only accuracy correction.
-// Exact source: 679421ce3057ffbcdab89b80fcd591337f67f9e8.
-// Evidence: docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md and its report.
+// Exact source: 11449d27f9e6e1ffa208195b0d534e72f6a7f40b (v3 Vieta wording).
+// Evidence: docs/tasks/OGE_BOOK_V3_READINESS_20261116.md and its report.
 // Prior bracket source: 88d8eb2cd8fdefa95b0aae7d6954a60c914e118d;
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
+// Reviewed v3 wording and exact area method composed with main's labelled median diagram.
+// Controls remain compared with the original reviewed source, not the composed hash.
+for(const page of ['trainers/oge-task16-circle.html','trainers/oge-task24-proofs.html','trainers/oge-task25-geometry.html']){
+ taskSources[page]='11449d27f9e6e1ffa208195b0d534e72f6a7f40b';
+}
 const reviewedSingleScripts={
-  // The requested first percentage uses the existing table, visual model and grading.
-  // The normal random route and the article example are exercised separately.
   'trainers/percent-part-whole-trainer.html':'1b1e2bbd1bc8a3f3ff60a584b183131ea1311ed2285d913f315266183ea0c631',
-  'trainers/oge-task9-equations.html':'a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02',
-  // The labelled bisector, median and equal halves in d26f2e8. Original controls stay pinned.
-  'trainers/oge-task25-geometry.html':'fe246b1d188a53ff3e88245a483edc3cb7321bac034fa9068d8dd2d7cad8e133'
+  'trainers/oge-task9-equations.html':'545a2cfec5f8de1cbb3528650d16f9df885fe3f160522184a17216ff18020432',
+  'trainers/oge-task25-geometry.html':'66c669d4a3becbebab28ffb86665875e1c1f2ef0662d244bb6d98974595a2ec3'
 };
 // Reviewed results-to-practice UI. The model is still compared to its baseline.
 const analogue='trainers/oge-2027-analogue-1.html';
@@ -133,7 +135,9 @@ for(const p of routes.pages){
     assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   }
   const entry=exportsByPage.get(p);
-  const panel=entry?d.querySelector('body > .download-panel[data-trainer-download="'+entry.slug+'"]'):null;
+  const downloadPanel=entry?'body > .download-panel[data-trainer-download="'+entry.slug+'"]':null;
+  const panel=downloadPanel?d.querySelector(downloadPanel):null;
+  const baselinePanel=downloadPanel?baseline.querySelector(downloadPanel):null;
   if(entry){
     assert(panel,p+' one external download panel');
     assert.deepEqual([...panel.querySelectorAll('a[download]')].map(a=>a.getAttribute('href')),
@@ -143,7 +147,7 @@ for(const p of routes.pages){
   }
   const controls=(doc,externalPanel)=>[...doc.querySelectorAll('input,select,textarea,button')]
     .filter(e=>!externalPanel?.contains(e)).map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
-  const oldControls=controls(baseline);
+  const oldControls=controls(baseline,baselinePanel);
   if(p===analogue){
     const oldCheck=oldControls.findIndex(([,id])=>id==='check-all');
     assert(oldCheck>=0,p+' original check button');

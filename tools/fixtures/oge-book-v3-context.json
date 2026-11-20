@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "task": "docs/tasks/OGE_BOOK_V3_READINESS_20261116.md",
+  "sourceCommit": "11449d27f9e6e1ffa208195b0d534e72f6a7f40b",
+  "sourceBase": "83e1fc15a1b6b87f0133e0dec6753381e423bd92",
+  "prefix": "/book/oge/2026-11-16/v3",
+  "edition": "oge-2026-11-16-v3",
+  "manifestSha256": "04e31a9be5f97702c09d103a538d217973aac2bd827be9b05f7541cf2cdf1c43",
+  "publicSourceOverrides": [
+    "trainers/oge-task11-graphs-trainer.html",
+    "trainers/oge-task16-circle.html",
+    "trainers/oge-task24-proofs.html",
+    "trainers/oge-task25-geometry.html"
+  ],
+  "publicWorkedOverrides": [
+    "58"
+  ],
+  "videoPages": {
+    "trainers/oge-task11-graphs-trainer.html": {
+      "task": 11,
+      "bookId": "54",
+      "sourceSha256": "ee1fa7b575c393c0e004f874442898df5702e5a44c1d26b4b38d929d66b1ba14",
+      "nativeSha256": "cfc627d8f5fdbc8a9844314db59d1b19ee776725fdbac5ab886082ff55bbbcee"
+    },
+    "trainers/oge-task16-circle.html": {
+      "task": 16,
+      "bookId": "58",
+      "sourceSha256": "c63ec4848d8af2ce9f97c88133e93c4a71cb66026a5d253a4dd654ab897fc90c",
+      "nativeSha256": "25a9452ea18c9ec719def092fa5aad78b0934949994431f77f26b42797ec1721"
+    },
+    "trainers/oge-task17-quadrilaterals.html": {
+      "task": 17,
+      "bookId": "59",
+      "sourceSha256": "aa59782168a0d3eb8cfb90361b60796e85ee924e9d82825670b8dc3f73eca112",
+      "nativeSha256": "6fbf708e116bd49579f3aa8b1b7feac8f93ca323b563f146da4e2a48ec8adb27"
+    },
+    "trainers/task19-trainer.html": {
+      "task": 19,
+      "bookId": "71",
+      "sourceSha256": "a4f52b96194d7ecb28635b15e0f1780181a0abd654d9f41cca86e0690c2cc5f4",
+      "nativeSha256": "6ad106a63c13ca7d05653f22f1a3d8ac14cef14d0ce7aad878a7ae623eae0f35"
+    },
+    "trainers/oge-task22-functions-graphs.html": {
+      "task": 22,
+      "bookId": "63",
+      "sourceSha256": "18807c7c2c30deb404848fc188dbb316a179dbe8f7d5a0f075a1ff469c179bd1",
+      "nativeSha256": "9771dd1793c417e79560f9cd9f87c86235fb7eaecc0a576217edfdc196dedfc5"
+    },
+    "trainers/oge-task23-geometry-calculations.html": {
+      "task": 23,
+      "bookId": "64",
+      "sourceSha256": "86ecf98b7f79cb036fd3c9d8c4aced12b338e3f618131bcf69129c89b7439b2c",
+      "nativeSha256": "fd8b989f973f6b1aaa11f3ce6f32e54ce83f4fdb570932979237a70652b1bdd0"
+    },
+    "trainers/oge-task24-proofs.html": {
+      "task": 24,
+      "bookId": "65",
+      "sourceSha256": "117a5f63161f0fd75c8a83d155b4c538f53cf64a69cc434502a6e73d46ce8e17",
+      "nativeSha256": "143110ba4fed3fdfa47278ec1828744f3ef6d8f09ef637be235c2914931cee19"
+    },
+    "trainers/oge-task25-geometry.html": {
+      "task": 25,
+      "bookId": "66",
+      "sourceSha256": "5071c711fe225c1a64da38f8e116a240da851c89cf6a1e430ba88958293cdfb5",
+      "nativeSha256": "ef4e3a1fe1ff8b8bb51b58d21b5704550ecbf995ac9619adadda04da898ee509"
+    }
+  },
+  "workedPages": {
+    "58": {
+      "route": "/trainers/oge-task16-circle.html",
+      "sourceSha256": "c63ec4848d8af2ce9f97c88133e93c4a71cb66026a5d253a4dd654ab897fc90c",
+      "nativeSha256": "185d0c5d79f813efb1c4272299178843458610aba7cfa16d94faa572dd54112b"
+    },
+    "59": {
+      "route": "/trainers/oge-task17-quadrilaterals.html",
+      "sourceSha256": "aa59782168a0d3eb8cfb90361b60796e85ee924e9d82825670b8dc3f73eca112",
+      "nativeSha256": "7b4b8f66caf247f0f061a90d8d041b55b8d28b9f378af4052043b00c78d20139"
+    },
+    "60": {
+      "route": "/trainers/oge-task18-grid.html",
+      "sourceSha256": "21917c2b3d7b44274d941e0d2c05188dbe897605660260c5512830cb4a7c6a2b",
+      "nativeSha256": "7e2fc813ed61b48803012e47b421cb27ca5f746deb1a1ca17c407ef8c71935e1"
+    }
+  },
+  "sourceFiles": {
+    "trainers/oge-task11-graphs-trainer.html": "ee1fa7b575c393c0e004f874442898df5702e5a44c1d26b4b38d929d66b1ba14",
+    "trainers/oge-task16-circle.html": "c63ec4848d8af2ce9f97c88133e93c4a71cb66026a5d253a4dd654ab897fc90c",
+    "trainers/oge-task17-quadrilaterals.html": "aa59782168a0d3eb8cfb90361b60796e85ee924e9d82825670b8dc3f73eca112",
+    "trainers/task19-trainer.html": "a4f52b96194d7ecb28635b15e0f1780181a0abd654d9f41cca86e0690c2cc5f4",
+    "trainers/oge-task22-functions-graphs.html": "18807c7c2c30deb404848fc188dbb316a179dbe8f7d5a0f075a1ff469c179bd1",
+    "trainers/oge-task23-geometry-calculations.html": "86ecf98b7f79cb036fd3c9d8c4aced12b338e3f618131bcf69129c89b7439b2c",
+    "trainers/oge-task24-proofs.html": "117a5f63161f0fd75c8a83d155b4c538f53cf64a69cc434502a6e73d46ce8e17",
+    "trainers/oge-task25-geometry.html": "5071c711fe225c1a64da38f8e116a240da851c89cf6a1e430ba88958293cdfb5",
+    "trainers/oge-task18-grid.html": "21917c2b3d7b44274d941e0d2c05188dbe897605660260c5512830cb4a7c6a2b",
+    "trainers/oge-video-models.css": "ba76eeab0654baadbd9647b9408388c9bcc6b9fac00c48330c6cae77a0aa1c16",
+    "trainers/oge-video-graphs.js": "f757bec53a279695cea8a31f949f24f8af2d9be003a31fe85976edaed5a5ed79",
+    "trainers/oge-video-geometry.js": "2c38db13a89d8884a090d1c360bdf6e6a59cebbb4cdd55a0fe6105c24fd9ad78",
+    "trainers/oge-video-models.js": "6ef4075c4825b5286f5b0262fba5af7c4bbe8db4412c6a0a11e81ccc38ea19a3",
+    "trainers/oge-course-geometry.css": "9668d1ace3275222c95403d1c292cbaa5856e7d555b77187ce04f0b00ea3754c",
+    "trainers/oge-course-geometry.js": "93fcfa0b454746cb9fc139475daacfbae80c58273240c8f55986dd5c426cdb02",
+    "trainers/oge-course-proof.css": "b98618bba320cdad70fb9f2e31cdf64bc4e7763e745abef33343717058708f66",
+    "trainers/oge-course-proof.js": "e93b0b1018f6c692be100cb883aa8931ada8524d2f4af7c6da1bf06649974c8f"
+  },
+  "publicSourceCompositions": {
+    "trainers/oge-task25-geometry.html": {
+      "sourceCommit": "7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c",
+      "sourceSha256": "7df73fc7c4311ca7470b7c6554130acf09361f4df1f32c07f846e11cb92a89e3",
+      "sha256": "b7e7dfad20ca3ba4f728fba97919e5424999d16a015ce66eb650cc40b67d56f2",
+      "taskDoc": "docs/tasks/OGE_BOOK_V3_READINESS_20261116.md",
+      "previousSourceCommits": [
+        "11449d27f9e6e1ffa208195b0d534e72f6a7f40b",
+        "d26f2e8936a7008ac792671533fcf66cbb21c4a4"
+      ]
+    }
+  }
+}

@@ -7,8 +7,13 @@ const http = require('node:http');
 const crypto = require('node:crypto');
 const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '../..');
+const editionPrefixes = [
+  '/book/oge/2026-10-31/v1/',
+  '/book/oge/2026-10-31/v2/',
+  '/book/oge/2026-11-16/v3/',
+];
 const prefix = (process.env.BOOK_PREFIX || '/book/oge/2026-10-31/v1').replace(/\/$/, '') + '/';
-assert.match(prefix, /^\/book\/oge\/2026-10-31\/v[1-9]\d*\/$/, 'Select an exact fixed edition');
+assert(editionPrefixes.includes(prefix), 'Select an exact fixed edition from the reviewed date/version pairs');
 const manifestPath=path.join(root,prefix,'manifest.json');
 const manifestBytes=fs.readFileSync(manifestPath);
 const manifest = JSON.parse(manifestBytes);
@@ -18,7 +23,7 @@ const version = prefix.split('/').at(-2);
 const manifestHash=crypto.createHash('sha256').update(manifestBytes).digest('hex');
 const out = path.resolve(process.env.BOOK_EDITION_ARTIFACTS || path.join(root, 'artifacts/book-edition', version==='v1'?'':version));
 const isolationOnly = process.env.BOOK_ISOLATION_ONLY === '1';
-const report = { edition: manifest.edition, manifestSha256:manifestHash, testScriptSha256:crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex'), mode: isolationOnly ? 'ISOLATION_ONLY' : 'FULL_RUNTIME', scope: 'fixed aliases, runtime dependency requests, browser-local public/v1/v2 storage isolation; full learner audit separate', complete: false, pages: [], failures: [], isolation: [], crossEdition: [] };
+const report = { edition: manifest.edition, manifestSha256:manifestHash, testScriptSha256:crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex'), mode: isolationOnly ? 'ISOLATION_ONLY' : 'FULL_RUNTIME', scope: 'fixed aliases, runtime dependency requests, browser-local public/v1/v2/v3 storage isolation; full learner audit separate', complete: false, pages: [], failures: [], isolation: [], crossEdition: [] };
 fs.mkdirSync(out, {recursive:true});
 function save() { fs.writeFileSync(path.join(out, 'runtime.json'), JSON.stringify(report, null, 2)); }
 const types = {'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.pdf':'application/pdf'};
@@ -220,8 +225,15 @@ async function references(browser, origin) {
   await context.close();
 }
 
-async function crossEdition(browser, origin) {
-  const editions = ['v1', 'v2'].map(version => JSON.parse(fs.readFileSync(path.join(root, 'book/oge/2026-10-31', version, 'manifest.json'))));
+async function crossEdition(browser, origin, pairPrefixes) {
+  assert.equal(pairPrefixes.length, 2);
+  const editions = pairPrefixes.map(selectedPrefix => {
+    assert(editionPrefixes.includes(selectedPrefix));
+    const edition = JSON.parse(fs.readFileSync(path.join(root, selectedPrefix, 'manifest.json')));
+    assert.equal('/' + edition.prefix, selectedPrefix);
+    return edition;
+  });
+  const pair = pairPrefixes.map(selectedPrefix => selectedPrefix.split('/').at(-2));
   assert.notEqual(editions[0].storageNamespace, editions[1].storageNamespace);
   const context = await browser.newContext({viewport:{width:1280,height:900},serviceWorkers:'block'});
   const failures=[];
@@ -274,20 +286,20 @@ async function crossEdition(browser, origin) {
     }
     const stored=await raw.evaluate(namespaces=>({publicValue:localStorage.getItem('mathExamBasics.guidedDivision.v1'),steps:namespaces.map(ns=>JSON.parse(localStorage.getItem(ns+'mathExamBasics.guidedDivision.v1')).sessions.start.step)}),editions.map(e=>e.storageNamespace));
     assert.deepEqual(stored,{publicValue:'unchanged-public',steps:[1,2]});
-    report.crossEdition.push({test:'v1 and v2 retain distinct real division steps through reload',pass:true,steps:stored.steps,publicResultUnchanged:true});
+    report.crossEdition.push({test:pair.join(' and ')+' retain distinct real division steps through reload',editions:pair,pass:true,steps:stored.steps,publicResultUnchanged:true});
 
     const sameEdition=await context.newPage();await ready(sameEdition,origin+'/'+editions[0].prefix);
     await pages[0].evaluate(()=>{window.editionEvents=[];addEventListener('storage',e=>window.editionEvents.push(e.key));});
-    await pages[1].evaluate(()=>localStorage.setItem('v2-event-probe','other-edition'));
-    await sameEdition.evaluate(()=>localStorage.setItem('v1-event-probe','same-edition'));
-    await pages[0].waitForFunction(()=>window.editionEvents.includes('v1-event-probe'));
-    assert.equal(await pages[0].evaluate(()=>localStorage.getItem('v2-event-probe')),null);
-    assert(!await pages[0].evaluate(()=>window.editionEvents.includes('v2-event-probe')));
+    await pages[1].evaluate(()=>localStorage.setItem('other-edition-event-probe','other-edition'));
+    await sameEdition.evaluate(()=>localStorage.setItem('same-edition-event-probe','same-edition'));
+    await pages[0].waitForFunction(()=>window.editionEvents.includes('same-edition-event-probe'));
+    assert.equal(await pages[0].evaluate(()=>localStorage.getItem('other-edition-event-probe')),null);
+    assert(!await pages[0].evaluate(()=>window.editionEvents.includes('other-edition-event-probe')));
     // Test the clear boundary separately from a live trainer's own state writes.
     await pages[0].close();
     await clearEdition(sameEdition,editions[0].storageNamespace);
-    const afterClear=await raw.evaluate(namespaces=>({publicValue:localStorage.getItem('mathExamBasics.guidedDivision.v1'),v1:localStorage.getItem(namespaces[0]+'mathExamBasics.guidedDivision.v1'),v2:JSON.parse(localStorage.getItem(namespaces[1]+'mathExamBasics.guidedDivision.v1')).sessions.start.step}),editions.map(e=>e.storageNamespace));
-    assert.deepEqual(afterClear,{publicValue:'unchanged-public',v1:null,v2:2});
+    const afterClear=await raw.evaluate(namespaces=>({publicValue:localStorage.getItem('mathExamBasics.guidedDivision.v1'),first:localStorage.getItem(namespaces[0]+'mathExamBasics.guidedDivision.v1'),second:JSON.parse(localStorage.getItem(namespaces[1]+'mathExamBasics.guidedDivision.v1')).sessions.start.step}),editions.map(e=>e.storageNamespace));
+    assert.deepEqual(afterClear,{publicValue:'unchanged-public',first:null,second:2});
     await pages[1].reload();await pages[1].waitForFunction(()=>!!window.__divisionGuidedDebug);
     assert.equal(await pages[1].evaluate(()=>window.__divisionGuidedDebug.state().sessions.start.step),2);
     pages[0]=await context.newPage();
@@ -298,11 +310,11 @@ async function crossEdition(browser, origin) {
     const otherEdition=await context.newPage();await ready(otherEdition,origin+'/'+editions[1].prefix);
     await pages[1].close();
     await clearEdition(otherEdition,editions[1].storageNamespace);
-    const reverseClear=await raw.evaluate(namespaces=>({publicValue:localStorage.getItem('mathExamBasics.guidedDivision.v1'),v1:JSON.parse(localStorage.getItem(namespaces[0]+'mathExamBasics.guidedDivision.v1')).sessions.start.step,v2:localStorage.getItem(namespaces[1]+'mathExamBasics.guidedDivision.v1')}),editions.map(e=>e.storageNamespace));
-    assert.deepEqual(reverseClear,{publicValue:'unchanged-public',v1:1,v2:null});
+    const reverseClear=await raw.evaluate(namespaces=>({publicValue:localStorage.getItem('mathExamBasics.guidedDivision.v1'),first:JSON.parse(localStorage.getItem(namespaces[0]+'mathExamBasics.guidedDivision.v1')).sessions.start.step,second:localStorage.getItem(namespaces[1]+'mathExamBasics.guidedDivision.v1')}),editions.map(e=>e.storageNamespace));
+    assert.deepEqual(reverseClear,{publicValue:'unchanged-public',first:1,second:null});
     await pages[0].reload();await pages[0].waitForFunction(()=>!!window.__divisionGuidedDebug);
     assert.equal(await pages[0].evaluate(()=>window.__divisionGuidedDebug.state().sessions.start.step),1);
-    report.crossEdition.push({test:'v1/v2 storage events filter other editions and scoped clear preserves their results',pass:true,sameEditionEventObserved:true,clearCheckedInBothDirections:true,learnerClosedBeforeOwnClear:true,immediateEmptyNamespace:true,nativeDeletionEventObserved:true});
+    report.crossEdition.push({test:pair.join('/')+' storage events filter other editions and scoped clear preserves their results',editions:pair,pass:true,sameEditionEventObserved:true,clearCheckedInBothDirections:true,learnerClosedBeforeOwnClear:true,immediateEmptyNamespace:true,nativeDeletionEventObserved:true});
 
     const session=await context.newPage();
     await session.goto(origin+'/__book-test-public');
@@ -319,7 +331,7 @@ async function crossEdition(browser, origin) {
     assert.equal(await session.evaluate(()=>sessionStorage.getItem('session-probe')),'edition-2');
     await session.goto(origin+'/__book-test-public');
     assert.equal(await session.evaluate(()=>sessionStorage.getItem('session-probe')),'public-session');
-    report.crossEdition.push({test:'same-tab sessionStorage separates public/v1/v2 and scopes clear',pass:true});
+    report.crossEdition.push({test:'same-tab sessionStorage separates public/'+pair.join('/')+' and scopes clear',editions:pair,pass:true});
     assert.deepEqual(failures,[]);
   } finally { await context.close(); }
 }
@@ -373,9 +385,15 @@ async function crossEdition(browser, origin) {
     }
     await isolation(browser,origin);
     await references(browser,origin);
-    await crossEdition(browser,origin);
+    // Preserve every v1/v2 scenario and run the same full boundary checks for
+    // each historical edition against v3. No missing edition is silently skipped.
+    for(let first=0;first<editionPrefixes.length;first++) {
+      for(let second=first+1;second<editionPrefixes.length;second++) {
+        await crossEdition(browser,origin,[editionPrefixes[first],editionPrefixes[second]]);
+      }
+    }
     assert.equal(report.isolation.length,10);
-    assert.equal(report.crossEdition.length,3);
+    assert.equal(report.crossEdition.length,9);
     report.isolationComplete=true;
     const bad=report.pages.filter(p=>p.errors.length||!p.complete);
     assert.equal(bad.length,0,JSON.stringify(bad.map(p=>({id:p.id,width:p.width,errors:p.errors})),null,2));

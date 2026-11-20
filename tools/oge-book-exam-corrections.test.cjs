@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
-const {corrections,restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
+const {corrections,restoreHistoricalBytes,restoreV3TeachingText}=require('./oge-book-exam-corrections.cjs');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
 const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
 const {tyrePage,restoreTyreHints}=require('./oge-tyre-hints-preservation.cjs');
@@ -32,7 +32,7 @@ function currentPage(file){
   assert.equal(html.split(replacement).length,2,'Exact removed legacy return position');
   html=html.replace(replacement,'<main class="wrap">\n<nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>\n<header>');
  }
- return restoreGraphScale(file,html);
+ return restoreV3TeachingText(file,restoreGraphScale(file,html));
 }
 test('6: the fraction return include has an exact, bounded inverse',()=>{
  const source=fs.readFileSync(path.join(root,'trainers/oge-task6-fractions.html'),'utf8');

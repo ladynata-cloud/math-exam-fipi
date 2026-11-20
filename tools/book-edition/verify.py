@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Independently verify frozen bytes and reject edits to published namespaces."""
 import argparse
+from datetime import date as calendar_date
 import hashlib
 from html.parser import HTMLParser
 import json
@@ -72,6 +73,10 @@ def inspect(root, manifest_path):
     require(re.fullmatch(r"book/[a-z0-9-]+/\d{4}-\d{2}-\d{2}/v[1-9]\d*/", prefix), "Invalid fixed prefix")
     require(re.fullmatch(r"b/[a-z0-9-]+/", alias), "Invalid fixed alias prefix")
     _, family, date, version, _ = prefix.split("/")
+    try:
+        label_date = calendar_date.fromisoformat(date).strftime("%d.%m.%Y")
+    except ValueError as error:
+        raise InvalidEdition("Invalid calendar edition date") from error
     require(manifest["edition"] == family + "-" + date + "-" + version,
             "Edition identity differs from its versioned prefix")
     require(alias.endswith("-" + version[1:] + "/"), "Alias version differs from its edition")
@@ -106,6 +111,8 @@ def inspect(root, manifest_path):
     # The historical v1 bootstrap predates an explicit visible-label field.
     # Every later version must supply its own label, never inherit v1.
     require(config.get("version", "v1") == version, "Startup visible version differs from its frozen edition")
+    if date != "2026-10-31" or "dateLabel" in config:
+        require(config.get("dateLabel") == label_date, "Startup visible date differs from its frozen edition")
     require(config.get("edition") == manifest["edition"] and config.get("path") == "/" + prefix
             and config.get("aliasPath") == "/" + alias and config.get("publicOrigin") == origin,
             "Startup configuration differs from its frozen edition")
@@ -134,7 +141,7 @@ def inspect(root, manifest_path):
     rows = manifest["entries"]
     require(len(rows) == len({r["sourceUrl"] for r in rows}) == len({r["bookUrl"] for r in rows}), "Duplicate entry URL")
     require([r["id"] for r in rows] == [f"{n:02}" for n in range(1, len(rows) + 1)], "Entry IDs must be complete and ordered")
-    if family == "oge" and date == "2026-10-31":
+    if family == "oge":
         require(len(rows) == 71, "Expected the complete 71-entry OGE inventory")
     require(json.loads((root / prefix / "url-map.json").read_text()) == rows, "URL mapping differs from manifest")
     for row in rows:

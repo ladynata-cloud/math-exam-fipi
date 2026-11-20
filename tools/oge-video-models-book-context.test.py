@@ -5,7 +5,7 @@ import json
 import subprocess
 import unittest
 from unittest.mock import patch
-from oge_video_models_book_context import ROOT, PINS, UPDATES, LABEL, SUMMARY_HTML, ASSETS, GRAPH_INTERSECTIONS, sha, restore_graph_intersections, without_closed_video_summary, without_closed_video_geometry
+from oge_video_models_book_context import ROOT, PINS, UPDATES, V3, LABEL, SUMMARY_HTML, ASSETS, GRAPH_INTERSECTIONS, WAYFINDING_LABEL, sha, source_pin, verified_v3_files, verified_v3_wayfinding, restore_graph_intersections, without_closed_video_summary, without_closed_video_geometry
 
 spec = importlib.util.spec_from_file_location('book_math', ROOT / 'tools/oge-book-exam-math.py')
 math = importlib.util.module_from_spec(spec)
@@ -13,6 +13,20 @@ spec.loader.exec_module(math)
 
 
 class ContextTests(unittest.TestCase):
+    def test_public_composition_is_one_committed_page_and_never_rewrites_frozen_pins(self):
+        file = 'trainers/oge-task25-geometry.html'
+        self.assertEqual(list(V3['publicSourceCompositions']), [file])
+        pin = V3['publicSourceCompositions'][file]
+        self.assertEqual(pin['sourceCommit'], '7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c')
+        raw = subprocess.check_output(['git', 'show', pin['sourceCommit'] + ':' + file], cwd=ROOT)
+        self.assertEqual(sha(raw), pin['sourceSha256'])
+        self.assertEqual(raw, (ROOT / file).read_bytes())
+        self.assertEqual(source_pin(file)['sha256'], pin['sha256'])
+        self.assertNotEqual(pin['sha256'], V3['videoPages'][file]['nativeSha256'])
+        for other in V3['publicSourceOverrides']:
+            if other != file:
+                self.assertEqual(source_pin(other)['sourceCommit'], V3['sourceCommit'])
+
     def setUp(self):
         self.fixtures = json.loads((ROOT / 'tools/fixtures/oge-book-exam-math.json').read_text())['fixtures']
         fixture = self.fixtures['63'].get('sourceVariant', self.fixtures['63'])
@@ -95,7 +109,7 @@ class ContextTests(unittest.TestCase):
         preview=PINS['closedPreview']
         svg=subprocess.check_output(['node','-e',"const {JSDOM}=require('jsdom');const l=require('./trainers/oge-video-geometry.js').find(x=>x.id==='midpoints-common-circle');const d=new JSDOM(l.preview({x:2}).svg);process.stdout.write(d.window.document.querySelector('svg').outerHTML);d.window.close();"],cwd=ROOT,text=True)
         self.assertEqual(sha(svg.encode()),preview['svgSha256'])
-        record=copy.deepcopy(self.record);c=record['videoModelContext'];route='/trainers/oge-task24-proofs.html';pin=PINS['pages'][route[1:]] | UPDATES['pages'][route[1:]];raw=(ROOT/route[1:]).read_bytes()
+        record=copy.deepcopy(self.record);c=record['videoModelContext'];route='/trainers/oge-task24-proofs.html';pin=source_pin(route[1:]);raw=(ROOT/route[1:]).read_bytes()
         record.update(id='65',route=route,finalPath=route);c.update(route=route,bookId='65',task=24,sourceBase=pin['sourceCommit'],sourceSha256=sha(raw),nativeSha256=pin['sha256'])
         record['resources'][route]=dict(sha256=sha(raw),status=200);record['publicWayfinding']['servedHtmlSha256']=sha(raw)
         native={'svg':'<svg><text>native sentinel</text></svg>'};record['visibleSvgLabels']=[native,{'svg':svg}]
@@ -147,6 +161,117 @@ class ContextTests(unittest.TestCase):
             record['publicWayfinding']['servedHtmlSha256'] = digest
             with patch.object(type(target), 'read_bytes', lambda p: changed if p == target else original_read(p)):
                 self.assertIsNone(without_closed_video_summary(record), 'a current served hash cannot excuse changed native mathematics')
+
+    def frozen_record(self):
+        record = copy.deepcopy(self.record)
+        prefix, route = V3['prefix'], record['route']
+        record['prefix'], record['finalPath'] = prefix, prefix + route
+        del record['publicWayfinding']
+        files = [route, *ASSETS, '/edition-assets/bootstrap.js', '/edition-assets/edition.css',
+                 '/assets/oge-wayfinding.css', '/assets/oge-wayfinding.js']
+        record['resources'] = {prefix + file: dict(status=200, sha256=sha((ROOT / (prefix + file)[1:]).read_bytes()))
+                               for file in files}
+        raw_hash = record['resources'][prefix + route]['sha256']
+        record['frozenWayfinding'] = dict(kind='oge-frozen-return-v3', visibleText=WAYFINDING_LABEL,
+                                         servedHtmlSha256=raw_hash, manifestSha256=V3['manifestSha256'])
+        c = record['videoModelContext']
+        c.update(kind='oge-video-models-closed-v3', sourceBase=V3['sourceCommit'], sourceSha256=raw_hash,
+                 manifestSha256=V3['manifestSha256'],
+                 assets={prefix + asset: record['resources'][prefix + asset]['sha256'] for asset in ASSETS})
+        c['afterText'] += ' ' + math.BOOK_BANNERS[prefix]
+        record['initialVisibleText'] = c['beforeText'] + LABEL + c['afterText']
+        record['unfilteredInitialVisibleText'] = WAYFINDING_LABEL + ' ' + record['initialVisibleText']
+        return record
+
+    def test_frozen_v3_keeps_the_exact_manifest_resources_navigation_and_math(self):
+        record = self.frozen_record()
+        self.assertTrue(verified_v3_files(record, ASSETS))
+        self.assertTrue(verified_v3_wayfinding(record))
+        self.assertEqual(without_closed_video_summary(record), self.original_text + ' ' + math.BOOK_BANNERS[V3['prefix']])
+        self.assertTrue(self.accepted(record))
+        for field, value in [('prompt', self.oracle['prompt'] + ' changed'), ('expected', ['999'])]:
+            self.assertFalse(self.accepted(record, dict(self.oracle, **{field: value})), field)
+        changed = copy.deepcopy(record)
+        changed['videoModelContext']['afterText'] += ' changed problem'
+        c = changed['videoModelContext']
+        changed['initialVisibleText'] = c['beforeText'] + LABEL + c['afterText']
+        changed['unfilteredInitialVisibleText'] = WAYFINDING_LABEL + ' ' + changed['initialVisibleText']
+        self.assertFalse(self.accepted(changed))
+        changed = copy.deepcopy(record); changed['visibleSvgLabels'] = [{'svg': '<svg><text>changed</text></svg>'}]
+        self.assertFalse(self.accepted(changed))
+
+    def test_frozen_v3_identity_and_receipts_cannot_be_forged(self):
+        record = self.frozen_record()
+        for field, value in [('id', '54'), ('route', '/other.html'), ('finalPath', record['route']),
+                             ('prefix', ''), ('prefix', '/book/oge/2026-10-31/v1'),
+                             ('prefix', '/book/oge/2026-10-31/v2'), ('prefix', '/book/oge/2026-11-17/v3')]:
+            changed = dict(record, **{field: value})
+            self.assertIsNone(without_closed_video_summary(changed), field)
+        for field, value in [('kind', 'oge-video-models-closed-v1'), ('manifestSha256', '0' * 64),
+                             ('sourceBase', PINS['baseCommit']), ('nativeSha256', '0' * 64),
+                             ('closed', False), ('extra', 'unreviewed')]:
+            changed = copy.deepcopy(record); changed['videoModelContext'][field] = value
+            self.assertIsNone(without_closed_video_summary(changed), field)
+        for field, value in [('kind', 'oge-return-v1'), ('visibleText', 'other'),
+                             ('servedHtmlSha256', '0' * 64), ('manifestSha256', '0' * 64), ('extra', True)]:
+            changed = copy.deepcopy(record); changed['frozenWayfinding'][field] = value
+            self.assertFalse(verified_v3_wayfinding(changed), field)
+        for field in ['frozenWayfinding', 'unfilteredInitialVisibleText']:
+            changed = copy.deepcopy(record); del changed[field]
+            self.assertFalse(verified_v3_wayfinding(changed), field)
+        for route in record['resources']:
+            changed = copy.deepcopy(record); del changed['resources'][route]
+            self.assertIsNone(without_closed_video_summary(changed), route)
+            for field, value in [('status', 404), ('sha256', '0' * 64)]:
+                changed = copy.deepcopy(record); changed['resources'][route][field] = value
+                self.assertIsNone(without_closed_video_summary(changed), route)
+
+    def test_only_task13_uses_the_existing_exact_frozen_redirect(self):
+        record = self.frozen_record()
+        route = '/trainers/oge-task13-inequalities.html'
+        target = '/trainers/oge13-inequalities-series.html'
+        record.update(id='56', route=route, finalPath=V3['prefix'] + target)
+        for file in (route, target):
+            served = V3['prefix'] + file
+            record['resources'][served] = dict(status=200, sha256=sha((ROOT / served[1:]).read_bytes()))
+        self.assertTrue(verified_v3_files(record))
+        for field, value in [('id', '55'), ('route', target), ('finalPath', V3['prefix'] + route),
+                             ('finalPath', V3['prefix'] + target + 'changed')]:
+            self.assertFalse(verified_v3_files(dict(record, **{field: value})), field)
+        for file in (route, target):
+            changed = copy.deepcopy(record); del changed['resources'][V3['prefix'] + file]
+            self.assertFalse(verified_v3_files(changed), file)
+
+    def test_modified_frozen_bytes_fail_even_with_forged_record_or_manifest_hashes(self):
+        original = self.frozen_record()
+        read = type(ROOT).read_bytes
+        manifest_file = ROOT / V3['prefix'][1:] / 'manifest.json'
+        for route in [original['finalPath'], V3['prefix'] + ASSETS[-1], V3['prefix'] + '/edition-assets/bootstrap.js']:
+            target = ROOT / route[1:]
+            edited = target.read_bytes() + b'\n// unreviewed payload\n'
+            changed = copy.deepcopy(original)
+            changed['resources'][route]['sha256'] = sha(edited)
+            if route == original['finalPath']:
+                changed['videoModelContext']['sourceSha256'] = sha(edited)
+                changed['frozenWayfinding']['servedHtmlSha256'] = sha(edited)
+            elif route in changed['videoModelContext']['assets']:
+                changed['videoModelContext']['assets'][route] = sha(edited)
+            forged = json.loads(manifest_file.read_bytes())
+            row = next(row for row in forged['files'] if row['path'] == route[1:])
+            row.update(sha256=sha(edited), bytes=len(edited))
+            forged = json.dumps(forged).encode()
+            for manifest in [None, forged]:
+                overrides = {target: edited}
+                if manifest is not None:
+                    overrides[manifest_file] = manifest
+                    changed['videoModelContext']['manifestSha256'] = sha(manifest)
+                    changed['frozenWayfinding']['manifestSha256'] = sha(manifest)
+                with patch.object(type(ROOT), 'read_bytes', lambda p: overrides[p] if p in overrides else read(p)):
+                    self.assertIsNone(without_closed_video_summary(changed), route)
+        # Frozen evidence is bound to its own snapshot, not the evolving public files.
+        source = ROOT / original['route'][1:]
+        with patch.object(type(ROOT), 'read_bytes', lambda p: b'changed later public source' if p == source else read(p)):
+            self.assertTrue(self.accepted(original))
 
 
 if __name__=='__main__':

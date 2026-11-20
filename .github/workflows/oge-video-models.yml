@@ -28,6 +28,8 @@ on:
       - 'tools/oge-video-models-book-context.test.py'
       - 'tools/oge_video_models_book_context.py'
       - 'tools/fixtures/oge-video-models-native-bytes.json'
+      - 'tools/fixtures/oge-worked-steps-native-bytes.json'
+      - 'tools/fixtures/oge-book-v3-context.json'
       - 'tools/fixtures/oge22-intersections-display.json'
       - 'tools/oge-book-exam.browser.cjs'
       - 'tools/oge-book-exam-math.py'
@@ -64,6 +66,8 @@ on:
       - 'tools/oge-video-models-book-context.test.py'
       - 'tools/oge_video_models_book_context.py'
       - 'tools/fixtures/oge-video-models-native-bytes.json'
+      - 'tools/fixtures/oge-worked-steps-native-bytes.json'
+      - 'tools/fixtures/oge-book-v3-context.json'
       - 'tools/fixtures/oge22-intersections-display.json'
       - 'tools/oge-book-exam.browser.cjs'
       - 'tools/oge-book-exam-math.py'
@@ -94,7 +98,9 @@ jobs:
           89ee66bfe5068f16364d61d091fcbf1a1cbd6287
           7a7169c35c54351ace4f7844b7730899b4a61831
           18b44244753ac806d449a2040ad4b8c8af9acaf3
+          11449d27f9e6e1ffa208195b0d534e72f6a7f40b
           d26f2e8936a7008ac792671533fcf66cbb21c4a4
+          7aec7b7fa32a7cfbb4b5367b06dd1de6699f430c
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'

@@ -18,6 +18,8 @@ on:
       - 'tools/oge_worked_steps_book_context.py'
       - 'tools/oge-worked-steps-book-context.test.py'
       - 'tools/fixtures/oge-worked-steps-book-ui.json'
+      - 'tools/fixtures/oge-worked-steps-native-bytes.json'
+      - 'tools/fixtures/oge-book-v3-context.json'
       - 'tools/fixtures/oge-video-models-native-bytes.json'
       - 'tools/fixtures/oge-book-*'
       - 'docs/reports/oge-book-20261031/**'
@@ -26,6 +28,8 @@ on:
       - 'docs/reports/oge-book-v2-20261031/**'
       - 'docs/tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md'
       - 'docs/tasks/OGE_BOOK_EDITION_V2_DALI_20261031.scope.json'
+      - 'docs/tasks/OGE_BOOK_V3_READINESS_20261116.md'
+      - 'docs/reports/OGE_BOOK_V3_READINESS_20261116.md'
       - 'trainers/oge-basics/**'
       - 'trainers/oge-task*.html'
       - 'trainers/oge-video-models.css'
@@ -115,6 +119,21 @@ jobs:
           console.log(JSON.stringify({ status:'PASS', task:scope.task, base:process.env.TASK_BASE, head:process.env.TASK_HEAD, changedPaths:changed.length, allowedPaths:scope.allowedPaths.length }));
           NODE
           python3 scripts/build-oge-book-edition.py --version v2 --base "$TASK_BASE" --check
+      - name: Reproduce the approved v3 candidate before freezing
+        if: github.event_name == 'pull_request' && github.head_ref == 'fix/oge-book-v3-readiness-20261116'
+        env:
+          V3_CANDIDATE: 2c14de966bbb09a2d57261948d376f66fdfd4268
+          V3_SOURCE_BASE: 83e1fc15a1b6b87f0133e0dec6753381e423bd92
+        run: |
+          # Replay the reviewed source tree while the append-only check above uses the live PR base.
+          # The live builder evolves with reviewed source dependencies; the 19
+          # generator checks above cover it. Replay below uses the pinned old
+          # builder, while all frozen bytes and edition templates remain exact.
+          git diff --exit-code "$V3_CANDIDATE" HEAD -- book/oge/2026-11-16/v3/ b/oge26-3/ scripts/oge-book-edition/
+          replay=$(mktemp -d "$RUNNER_TEMP/book-v3.XXXXXX")
+          git worktree add --quiet --detach "$replay" "$V3_CANDIDATE"
+          trap 'git worktree remove "$replay"' EXIT
+          (cd "$replay" && python3 scripts/build-oge-book-edition.py --version v3 --date 2026-11-16 --base "$V3_SOURCE_BASE" --check)
       - name: Install the browser test dependency
         run: |
           npm install --prefix "$RUNNER_TEMP/book-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
@@ -125,18 +144,26 @@ jobs:
           status=0
           BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/book-edition/runtime.browser.cjs || status=1
           BOOK_PREFIX=/book/oge/2026-10-31/v2 node tools/book-edition/runtime.browser.cjs || status=1
+          BOOK_PREFIX=/book/oge/2026-11-16/v3 node tools/book-edition/runtime.browser.cjs || status=1
           exit "$status"
       - name: Tire figures under chunked HTML and delayed scripts
         run: |
           node tools/oge-book-tire-images.browser.cjs
           BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-tire-images.browser.cjs
           BOOK_PREFIX=/book/oge/2026-10-31/v2 BOOK_TIRE_IMAGE_OUTPUT=artifacts/book-audit-exam/tire-images-frozen-v2 node tools/oge-book-tire-images.browser.cjs
+          BOOK_PREFIX=/book/oge/2026-11-16/v3 BOOK_TIRE_IMAGE_OUTPUT=artifacts/book-audit-exam/tire-images-frozen-v3 node tools/oge-book-tire-images.browser.cjs
       - name: Independent mathematical corrections and preserved historical engines
         run: node --test tools/oge-book-corrections.test.cjs tools/oge-book-exam-corrections.test.cjs tools/oge-video-models-book-context.test.cjs tools/oge-basics-inventory.test.cjs tools/oge-basics-standalone.test.cjs tools/oge-basics-help.test.cjs tools/oge-basics-percentages-contextual.test.cjs tools/division-lab.test.cjs tools/division-guided.test.cjs tools/arithmetic-url-contract.test.cjs
+      - name: Independently verify the reviewed geometry on source and frozen v3
+        run: |
+          status=0
+          node --test tools/oge-book-v3-geometry.test.mjs || status=1
+          BOOK_PREFIX=book/oge/2026-11-16/v3/ node --test tools/oge-book-v3-geometry.test.mjs || status=1
+          exit "$status"
       - name: Complete recorded learner scenarios on source and fixed copies
         run: |
           # Independent editions use distinct output directories and local ports.
-          # Run all six commands; wait for every group and preserve any failure.
+          # Run all eight commands; wait for every group and preserve any failure.
           (
             group_status=0
             node tools/oge-book-basics.browser.cjs || group_status=1
@@ -158,13 +185,21 @@ jobs:
             exit "$group_status"
           ) &
           v2_pid=$!
+          (
+            group_status=0
+            BOOK_PREFIX=/book/oge/2026-11-16/v3 BOOK_BASICS_OUTPUT=artifacts/book-audit-basics/frozen-v3 node tools/oge-book-basics.browser.cjs || group_status=1
+            BOOK_PREFIX=/book/oge/2026-11-16/v3 BOOK_EXAM_OUTPUT=artifacts/book-audit-exam/frozen-v3 node tools/oge-book-exam.browser.cjs || group_status=1
+            exit "$group_status"
+          ) &
+          v3_pid=$!
           status=0
           wait "$source_pid" || status=1
           wait "$v1_pid" || status=1
           wait "$v2_pid" || status=1
+          wait "$v3_pid" || status=1
           exit "$status"
       - name: Independently recompute the recorded mathematics
-        run: python3 tools/oge-book-exam-math.py --variants source frozen frozen-v2
+        run: python3 tools/oge-book-exam-math.py --variants source frozen frozen-v2 frozen-v3
       - name: Preserve the actual browser evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -194,11 +229,12 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/dali-browser" --no-save --no-package-lock --ignore-scripts playwright@1.55.0
           "$RUNNER_TEMP/dali-browser/node_modules/.bin/playwright" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/dali-browser/node_modules" >> "$GITHUB_ENV"
-      - name: Reject exact historical bytes and validate source plus v2 portrait
+      - name: Reject exact historical bytes and validate source plus v2 and v3 portraits
         run: |
           status=0
           node tools/oge-book-dali-images.browser.cjs || status=1
           BOOK_PREFIX=/book/oge/2026-10-31/v2 node tools/oge-book-dali-images.browser.cjs || status=1
+          BOOK_PREFIX=/book/oge/2026-11-16/v3 node tools/oge-book-dali-images.browser.cjs || status=1
           exit "$status"
       - name: Preserve exact negative and positive image evidence
         if: always()
@@ -208,6 +244,7 @@ jobs:
           path: |
             artifacts/book-audit-exam/dali-images-source/
             artifacts/book-audit-exam/dali-images-frozen-v2/
+            artifacts/book-audit-exam/dali-images-frozen-v3/
           retention-days: 14
           if-no-files-found: error
   external-review:
