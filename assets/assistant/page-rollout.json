@@ -2248,9 +2248,10 @@
       "placement": "before-head-close"
     },
     "school/peterson5/index.html": {
-      "beforeSha256": "6df54c6ffc5190c9118eaa947c12dffc9d1f08d7f5216bac2230dd82e14f8c4c",
-      "afterSha256": "3c3ac2beba7d3c1aa7ad369a5b892bf16c9c10a441af0d01f6727bc80f14bc4b",
-      "placement": "before-head-close"
+      "beforeSha256": "2726e924ba80a2da5a0e305f43bbc6739212de3e3ade9ec37f16da17d379f157",
+      "afterSha256": "297125052abfed67334d8850f343d3e7b93c2d1f65bf7ae5ae4bdb3dc3dfb1e9",
+      "placement": "before-head-close",
+      "sourceSha": "8b17580c9483d3603e14d91dd602089eacfc5d49"
     },
     "school/peterson6/topics/droby-i-desyatichnye/index.html": {
       "beforeSha256": "922041dbe60ea1a11cc16b1b25fd587356563378d2f3c3c122145fb98f2be143",
@@ -6280,6 +6281,16 @@
       "changedPaths": [
         "pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "8b17580c9483d3603e14d91dd602089eacfc5d49",
+      "task": "docs/tasks/PETERSON5_LEARNING_WORKSHOP_20261120.md",
+      "changedPaths": [
+        "school/peterson5/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

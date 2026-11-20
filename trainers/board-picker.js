@@ -91,6 +91,7 @@ function normalize(value){
  if(u.origin===location.origin&&rawPath===u.pathname&&['/stereo-course/literacy/','/stereo-course/literacy/index.html'].includes(u.pathname)){
   return '/trainers/stereo-literacy-atanasyan.html'+u.hash;
  }
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson5/','/school/peterson5/index.html'].includes(u.pathname)&&(!u.hash||/^#(?:home|topics|skills|progress|topic\/p(?:0[1-9]|[1-3]\d|4[0-3])\/(?:discover|check|practice(?:\/[01])?)|lesson\/p(?:0[1-9]|[1-3]\d|4[0-3])(?:\/\d{1,2})?|practice\/[a-z-]+\/[123])$/.test(u.hash)))return '/trainers/peterson5.html'+u.search+(u.hash||'#home');
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson6/','/school/peterson6/index.html'].includes(u.pathname)&&petersonRoute(u.hash)){
   return '/trainers/peterson6.html'+u.search+u.hash;
  }
