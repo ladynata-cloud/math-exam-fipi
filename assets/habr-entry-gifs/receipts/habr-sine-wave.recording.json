@@ -1,0 +1,205 @@
+{
+  "id": "habr-sine-wave",
+  "url": "/ege-profil/trainers/trigonometry.html#sine-wave",
+  "scenarioSha256": "a655d53f54ab54c44e65089684fb2d0826778c327f0c5b2b46e86471380c0b5f",
+  "sourceHashes": {
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599",
+    "assets/download-adaptation.css": "3cfedc2913c3ceba17f5dae770de98df4b85d7d4a507bcfc415aea8f82fb7467",
+    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "ege-profil/exam-map.js": "53d09298ec9b17744f62b892f85e1a506dfbfd2275bda00713b18ead22237197",
+    "ege-profil/skill-map-data.js": "e9b3af4a98679f76e9c0e2a81c5b832eb2b09cd9b6fd1885bcf69ad3f8a55a35",
+    "ege-profil/skill-map.css": "d6f2e26f00d73f5c6f203890c0a6db81b4b8cbcd61d4030cfdc96327d14b714c",
+    "ege-profil/skill-map.js": "74f6350931daa711a57551764f071c332fdac3bc89fef6f515dce7e126975d7f",
+    "ege-profil/start/course-links.css": "69ac7b23e83af7e2be01321a836879b9e420993e92e223cb278dbb8284ea9221",
+    "ege-profil/start/course-links.js": "e8b368525d5e16b87672327eca31ca815a8e184d5b2ad32b5ace4f9eda26b250",
+    "ege-profil/trainers/trigonometry.html": "b204df985acfe9a39b4e626a75f3eaa7746fe438ba5a781804964fa461604fe9"
+  },
+  "frames": [
+    {
+      "file": "frame-01.png",
+      "actualPageUrl": "/ege-profil/trainers/trigonometry.html#sine-wave",
+      "caption": "Точка синусоиды имеет ту же высоту, что конец радиуса.",
+      "durationMs": 1500,
+      "sha256": "39c8d4fdaceac986bc3a0718c7a0712fce69d71216070efb9015bf4f52a23755",
+      "actions": [],
+      "assertions": [
+        {
+          "kind": "attr",
+          "selector": "[data-p=\"func\"]",
+          "name": "aria-selected",
+          "value": "true"
+        },
+        {
+          "kind": "sine",
+          "selector": "#wvSvg"
+        }
+      ],
+      "bounds": {
+        "x": 118,
+        "y": 144.375,
+        "width": 1044,
+        "height": 833.203125
+      }
+    },
+    {
+      "file": "frame-02.png",
+      "actualPageUrl": "/ege-profil/trainers/trigonometry.html#sine-wave",
+      "caption": "Сдвинь угол примерно до π/2: синус близок к 1.",
+      "durationMs": 1500,
+      "sha256": "d58a12a46f2f87d1ec5587fce8222bb6eff060f92b2c566f1eae774ac0d156b6",
+      "actions": [
+        {
+          "type": "press",
+          "selector": "#wvT",
+          "key": "Home"
+        },
+        {
+          "type": "press",
+          "selector": "#wvT",
+          "key": "ArrowRight",
+          "repeat": 157
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "value",
+          "selector": "#wvT",
+          "value": "1.57"
+        },
+        {
+          "kind": "sine",
+          "selector": "#wvSvg"
+        }
+      ],
+      "bounds": {
+        "x": 118,
+        "y": 144.375,
+        "width": 1044,
+        "height": 833.203125
+      }
+    },
+    {
+      "file": "frame-03.png",
+      "actualPageUrl": "/ege-profil/trainers/trigonometry.html#sine-wave",
+      "caption": "Около π точка снова рядом с горизонтальной осью.",
+      "durationMs": 1500,
+      "sha256": "8ffce2feb6ef386cf900b296d9b84916e617fcbd0c1a7ad9355c13873cf21357",
+      "actions": [
+        {
+          "type": "press",
+          "selector": "#wvT",
+          "key": "ArrowRight",
+          "repeat": 157
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "value",
+          "selector": "#wvT",
+          "value": "3.14"
+        },
+        {
+          "kind": "sine",
+          "selector": "#wvSvg"
+        }
+      ],
+      "bounds": {
+        "x": 118,
+        "y": 144.375,
+        "width": 1044,
+        "height": 833.203125
+      }
+    },
+    {
+      "file": "frame-04.png",
+      "actualPageUrl": "/ege-profil/trainers/trigonometry.html#sine-wave",
+      "caption": "Около 3π/2 синус близок к −1.",
+      "durationMs": 1500,
+      "sha256": "9477e812324a7117b7e39860be21442a21503e70e1112df843b5d612d0359c3d",
+      "actions": [
+        {
+          "type": "press",
+          "selector": "#wvT",
+          "key": "ArrowRight",
+          "repeat": 157
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "value",
+          "selector": "#wvT",
+          "value": "4.71"
+        },
+        {
+          "kind": "sine",
+          "selector": "#wvSvg"
+        }
+      ],
+      "bounds": {
+        "x": 118,
+        "y": 144.375,
+        "width": 1044,
+        "height": 833.203125
+      }
+    },
+    {
+      "file": "frame-05.png",
+      "actualPageUrl": "/ege-profil/trainers/trigonometry.html#sine-wave",
+      "caption": "Кнопка «в начало» возвращает обе точки к нулю.",
+      "durationMs": 1500,
+      "sha256": "260ba9022e504dfd57c5369ed1f029c3b44fef76a24c12fc93b475c9d64d876d",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#wvReset"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "value",
+          "selector": "#wvT",
+          "value": "0"
+        },
+        {
+          "kind": "sine",
+          "selector": "#wvSvg"
+        }
+      ],
+      "bounds": {
+        "x": 118,
+        "y": 144.375,
+        "width": 1044,
+        "height": 833.203125
+      }
+    }
+  ],
+  "loadedSources": {
+    "ege-profil/trainers/trigonometry.html": "b204df985acfe9a39b4e626a75f3eaa7746fe438ba5a781804964fa461604fe9",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "ege-profil/start/course-links.css": "69ac7b23e83af7e2be01321a836879b9e420993e92e223cb278dbb8284ea9221",
+    "ege-profil/skill-map.css": "d6f2e26f00d73f5c6f203890c0a6db81b4b8cbcd61d4030cfdc96327d14b714c",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/download-adaptation.css": "3cfedc2913c3ceba17f5dae770de98df4b85d7d4a507bcfc415aea8f82fb7467",
+    "ege-profil/exam-map.js": "53d09298ec9b17744f62b892f85e1a506dfbfd2275bda00713b18ead22237197",
+    "ege-profil/start/course-links.js": "e8b368525d5e16b87672327eca31ca815a8e184d5b2ad32b5ace4f9eda26b250",
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "ege-profil/skill-map.js": "74f6350931daa711a57551764f071c332fdac3bc89fef6f515dce7e126975d7f",
+    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
+    "ege-profil/skill-map-data.js": "e9b3af4a98679f76e9c0e2a81c5b832eb2b09cd9b6fd1885bcf69ad3f8a55a35",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599"
+  },
+  "blockedExternal": [
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap",
+      "method": "GET"
+    }
+  ],
+  "complete": true
+}

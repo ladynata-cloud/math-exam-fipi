@@ -1,0 +1,144 @@
+{
+  "id": "habr-negative-line",
+  "url": "/trainers/negative-numbers-line.html?seed=habr-311",
+  "scenarioSha256": "173f5fb7817b808914355aa49d4e9bba8ff8f9e048da0bb93c106b1c11d179b3",
+  "sourceHashes": {
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "assets/oge-wayfinding.css": "3e60bd7a5b9097d58097e877a90e7ed8c2311a65ff4441845896014f52fa1f37",
+    "assets/oge-wayfinding.js": "1eb57ccd65596e7497ec6bac02bb86cba21a2f9e64b6f8a4917b935c1953138e",
+    "trainers/board-bridge.js": "64318538ca6801866bf5571745494359eef8f2af8621b39b1265fa3fdc262d60",
+    "trainers/negative-numbers-line.html": "964f127470315527d87059b34d45c382cba2af633b6debb21079c1b2d6e221fb"
+  },
+  "frames": [
+    {
+      "file": "frame-01.png",
+      "actualPageUrl": "/trainers/negative-numbers-line.html?seed=habr-311",
+      "caption": "Начни в числе −1: положительное слагаемое задаёт движение вправо.",
+      "durationMs": 1500,
+      "sha256": "893b7304cfbb8d592c1c4500b6ac0cfd6aa9c87eb62ae0e33b348f97984008e4",
+      "actions": [],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": "#instr",
+          "value": "-1"
+        },
+        {
+          "kind": "count",
+          "selector": "#svg g.pt",
+          "value": 21
+        }
+      ],
+      "bounds": {
+        "x": 80,
+        "y": 127,
+        "width": 1120,
+        "height": 655.71875
+      }
+    },
+    {
+      "file": "frame-02.png",
+      "actualPageUrl": "/trainers/negative-numbers-line.html?seed=habr-311",
+      "caption": "Нажми начальную точку −1.",
+      "durationMs": 1500,
+      "sha256": "322fb71683dfad56c72f11924b65057e7e46af1d71bb36c18115a20f13a4ac24",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#svg g.pt",
+          "nth": 9
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": "#instr",
+          "value": "Шаг 2"
+        }
+      ],
+      "bounds": {
+        "x": 80,
+        "y": 127,
+        "width": 1120,
+        "height": 655.71875
+      }
+    },
+    {
+      "file": "frame-03.png",
+      "actualPageUrl": "/trainers/negative-numbers-line.html?seed=habr-311",
+      "caption": "Семь единиц вправо: конечная точка 6.",
+      "durationMs": 1500,
+      "sha256": "dd27dce98d9722ad55a98b188f4e290bfa2e30a82fb355224355e054af15f035",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#svg g.pt",
+          "nth": 16
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "disabled",
+          "selector": "#ans",
+          "value": false
+        }
+      ],
+      "bounds": {
+        "x": 80,
+        "y": 127,
+        "width": 1120,
+        "height": 655.71875
+      }
+    },
+    {
+      "file": "frame-04.png",
+      "actualPageUrl": "/trainers/negative-numbers-line.html?seed=habr-311",
+      "caption": "Введи 6 и проверь результат.",
+      "durationMs": 1500,
+      "sha256": "c3ea6a32de6317b4447b546666dc26ef143047ccc20536cd3d43277839a47b94",
+      "actions": [
+        {
+          "type": "fill",
+          "selector": "#ans",
+          "value": "6"
+        },
+        {
+          "type": "click",
+          "selector": "#check"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": "#feedback",
+          "value": "Верно"
+        }
+      ],
+      "bounds": {
+        "x": 80,
+        "y": 127,
+        "width": 1120,
+        "height": 655.71875
+      }
+    }
+  ],
+  "loadedSources": {
+    "trainers/negative-numbers-line.html": "964f127470315527d87059b34d45c382cba2af633b6debb21079c1b2d6e221fb",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/oge-wayfinding.css": "3e60bd7a5b9097d58097e877a90e7ed8c2311a65ff4441845896014f52fa1f37",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "trainers/board-bridge.js": "64318538ca6801866bf5571745494359eef8f2af8621b39b1265fa3fdc262d60",
+    "assets/oge-wayfinding.js": "1eb57ccd65596e7497ec6bac02bb86cba21a2f9e64b6f8a4917b935c1953138e",
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599"
+  },
+  "blockedExternal": [],
+  "complete": true
+}

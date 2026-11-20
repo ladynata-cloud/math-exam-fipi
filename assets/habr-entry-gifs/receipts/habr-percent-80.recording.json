@@ -1,0 +1,123 @@
+{
+  "id": "habr-percent-80",
+  "url": "/trainers/percent-part-whole-trainer.html?percent=80#exercise",
+  "scenarioSha256": "823d10045b60f1b6bba3cc7367fabb4941407bd72f9955cd60a2fbb13400f42f",
+  "sourceHashes": {
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "assets/oge-wayfinding.css": "3e60bd7a5b9097d58097e877a90e7ed8c2311a65ff4441845896014f52fa1f37",
+    "assets/oge-wayfinding.js": "1eb57ccd65596e7497ec6bac02bb86cba21a2f9e64b6f8a4917b935c1953138e",
+    "trainers/percent-part-whole-trainer.html": "9f4e3ca4ceb6ab36461bad2539bbe244ae189e6c2f5b671a4c950e0f0207f9da"
+  },
+  "frames": [
+    {
+      "file": "frame-01.png",
+      "actualPageUrl": "/trainers/percent-part-whole-trainer.html?percent=80#exercise",
+      "caption": "80 закрашенных клеток из 100 — это 80%.",
+      "durationMs": 1500,
+      "sha256": "3efc355b0d98bdf3a3b2c7ee4188fa32f3496674a1e2d2265b3f732d854275e3",
+      "actions": [],
+      "assertions": [
+        {
+          "kind": "count",
+          "selector": "#bar .g-cell",
+          "value": 100
+        },
+        {
+          "kind": "count",
+          "selector": "#bar .g-cell.fill",
+          "value": 80
+        }
+      ],
+      "bounds": {
+        "x": 219,
+        "y": -0.265625,
+        "width": 842,
+        "height": 714.375
+      }
+    },
+    {
+      "file": "frame-02.png",
+      "actualPageUrl": "/trainers/percent-part-whole-trainer.html?percent=80#exercise",
+      "caption": "Сократи 80/100: числитель 4, знаменатель 5.",
+      "durationMs": 1500,
+      "sha256": "ca12ea79bdafd69b6da5ddcaf304c055b658b4cf17860bed56c7ec1489c1360a",
+      "actions": [
+        {
+          "type": "fill",
+          "selector": "#ansNumerator",
+          "value": "4"
+        },
+        {
+          "type": "fill",
+          "selector": "#ansDenominator",
+          "value": "5"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "value",
+          "selector": "#ansNumerator",
+          "value": "4"
+        },
+        {
+          "kind": "value",
+          "selector": "#ansDenominator",
+          "value": "5"
+        }
+      ],
+      "bounds": {
+        "x": 219,
+        "y": -0.265625,
+        "width": 842,
+        "height": 714.375
+      }
+    },
+    {
+      "file": "frame-03.png",
+      "actualPageUrl": "/trainers/percent-part-whole-trainer.html?percent=80#exercise",
+      "caption": "Нажми «Проверить»: 80% равны четырём пятым.",
+      "durationMs": 1500,
+      "sha256": "1cf4a9a801fa968308b5a26e186eca6d1605c2031d5919d0573c849f2c6defbc",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#checkBtn"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": "#feedback",
+          "value": "Верно"
+        }
+      ],
+      "bounds": {
+        "x": 219,
+        "y": -0.265625,
+        "width": 842,
+        "height": 971.03125
+      }
+    }
+  ],
+  "loadedSources": {
+    "trainers/percent-part-whole-trainer.html": "9f4e3ca4ceb6ab36461bad2539bbe244ae189e6c2f5b671a4c950e0f0207f9da",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/oge-wayfinding.css": "3e60bd7a5b9097d58097e877a90e7ed8c2311a65ff4441845896014f52fa1f37",
+    "assets/oge-wayfinding.js": "1eb57ccd65596e7497ec6bac02bb86cba21a2f9e64b6f8a4917b935c1953138e",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599"
+  },
+  "blockedExternal": [
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap",
+      "method": "GET"
+    }
+  ],
+  "complete": true
+}

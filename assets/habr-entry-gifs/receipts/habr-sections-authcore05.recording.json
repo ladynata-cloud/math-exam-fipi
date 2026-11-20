@@ -1,0 +1,282 @@
+{
+  "id": "habr-sections-authcore05",
+  "url": "/stereo-course/sections/#auth-core-05",
+  "scenarioSha256": "bc6bc2775e546aa40a1f3d2e7c42a12dfc089f58df03d68eeb12c6b3a5557c6a",
+  "sourceHashes": {
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599",
+    "assets/download-adaptation.css": "3cfedc2913c3ceba17f5dae770de98df4b85d7d4a507bcfc415aea8f82fb7467",
+    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "stereo-course/sections/assets/app.js": "0e683deacc5ee989f3ae9fd5ac4dea6e6a7526de1161798a0e3342142452036c",
+    "stereo-course/sections/assets/course-data.js": "09fbd6df146216d2b7458554e55721eee1e01660f532bc1bac3b421677e23a3d",
+    "stereo-course/sections/assets/style.css": "a6594e7f418d15ef83e105beb49384627196fa518581727c867cfc8c41b157a9",
+    "stereo-course/sections/index.html": "30843860995d2faa32b8b9d2d23d1240177da50b634c27dffccff66d0154afd7"
+  },
+  "frames": [
+    {
+      "file": "frame-01.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "У тетраэдра четыре грани: исследуй границу сечения.",
+      "durationMs": 1500,
+      "sha256": "1c81fd6f66539fcbdad03b2eee8f6572bd4e3bf5326eea2da7ef865e5848470a",
+      "actions": [],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": "#lesson-title",
+          "value": "Почему у тетраэдра не бывает пятиугольного сечения"
+        }
+      ],
+      "bounds": {
+        "x": 317.6875,
+        "y": 79.25,
+        "width": 935.3125,
+        "height": 920.609375
+      }
+    },
+    {
+      "file": "frame-02.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "Начни построение с самостоятельного выбора плоскости.",
+      "durationMs": 1500,
+      "sha256": "1b9177fd3b12de85bf1441e35e193d9493275074c7c7d82a29051f1649fc7d54",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"start-practice\"]"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 317.6875,
+        "y": 25.25,
+        "width": 935.3125,
+        "height": 974.8125
+      }
+    },
+    {
+      "file": "frame-03.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "MN — средняя линия в грани SAB.",
+      "durationMs": 1500,
+      "sha256": "d5ec02c796ffb0dbde3009798196774f76728e2aaaca6ce9b8b53d2e9bbe41d7",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-plane-choice=\"SAB\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-reason-choice=\"1\"]"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 317.6875,
+        "y": 0.25,
+        "width": 935.3125,
+        "height": 1159
+      }
+    },
+    {
+      "file": "frame-04.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "Выполни действие в выбранной плоскости.",
+      "durationMs": 1500,
+      "sha256": "ef23777f60d34fbff1e4c3cef9869b85a74ca112b9f75250bb2e580506954dd8",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construct\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "attr",
+          "selector": "[role=\"progressbar\"]",
+          "name": "aria-valuenow",
+          "value": "1"
+        }
+      ],
+      "bounds": {
+        "x": 317.6875,
+        "y": 0.25,
+        "width": 935.3125,
+        "height": 920.609375
+      }
+    },
+    {
+      "file": "frame-05.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "PQ ∥ AB и MN ∥ AB: так обосновывается принадлежность Q.",
+      "durationMs": 1500,
+      "sha256": "ca8f2a81a89dc4bdc5663a32db9610a3ee43596815ecba169a90e7438cd351e7",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"next-step\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-plane-choice=\"ABC\"]"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 317.6875,
+        "y": 0.25,
+        "width": 935.3125,
+        "height": 1212.9375
+      }
+    },
+    {
+      "file": "frame-06.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "Выполни действие в выбранной плоскости.",
+      "durationMs": 1500,
+      "sha256": "b24b021f50ae2dbeabee712bbe444c733647705292808cfe16416825e552bcd6",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construct\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "attr",
+          "selector": "[role=\"progressbar\"]",
+          "name": "aria-valuenow",
+          "value": "2"
+        }
+      ],
+      "bounds": {
+        "x": 317.6875,
+        "y": 0.25,
+        "width": 935.3125,
+        "height": 920.609375
+      }
+    },
+    {
+      "file": "frame-07.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "N и P лежат в секущей и в грани SBC.",
+      "durationMs": 1500,
+      "sha256": "925e5b8166187c9cf186878440d5a83f69559edd1054298f99acaf745405b72d",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"next-step\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-plane-choice=\"SBC\"]"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 317.6875,
+        "y": 0.25,
+        "width": 935.3125,
+        "height": 1184.140625
+      }
+    },
+    {
+      "file": "frame-08.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "Выполни действие в выбранной плоскости.",
+      "durationMs": 1500,
+      "sha256": "a27c23bcf01491f0340b4f9f7ce65b9f1c1b57b6674928e765564accb67bd0c4",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construct\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "attr",
+          "selector": "[role=\"progressbar\"]",
+          "name": "aria-valuenow",
+          "value": "3"
+        }
+      ],
+      "bounds": {
+        "x": 317.6875,
+        "y": 0.25,
+        "width": 935.3125,
+        "height": 920.609375
+      }
+    },
+    {
+      "file": "frame-09.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "Q и M замыкают сечение в грани SCA.",
+      "durationMs": 1500,
+      "sha256": "45ec3ddd194cd6082b19b8f644fbe769873ee4f17020ab410877a401715d54e9",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"next-step\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-plane-choice=\"SCA\"]"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 317.6875,
+        "y": 0.25,
+        "width": 935.3125,
+        "height": 1184.140625
+      }
+    },
+    {
+      "file": "frame-10.png",
+      "actualPageUrl": "/stereo-course/sections/#auth-core-05",
+      "caption": "Выполни действие в выбранной плоскости.",
+      "durationMs": 1500,
+      "sha256": "995fa76aa0a24bd628bfaffdaf5ea18dd1f98f14cd96c230b51e3eca133ad0b3",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construct\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "attr",
+          "selector": "[role=\"progressbar\"]",
+          "name": "aria-valuenow",
+          "value": "4"
+        }
+      ],
+      "bounds": {
+        "x": 317.6875,
+        "y": 0.25,
+        "width": 935.3125,
+        "height": 920.609375
+      }
+    }
+  ],
+  "loadedSources": {
+    "stereo-course/sections/index.html": "30843860995d2faa32b8b9d2d23d1240177da50b634c27dffccff66d0154afd7",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "stereo-course/sections/assets/style.css": "a6594e7f418d15ef83e105beb49384627196fa518581727c867cfc8c41b157a9",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/download-adaptation.css": "3cfedc2913c3ceba17f5dae770de98df4b85d7d4a507bcfc415aea8f82fb7467",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "stereo-course/sections/assets/app.js": "0e683deacc5ee989f3ae9fd5ac4dea6e6a7526de1161798a0e3342142452036c",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
+    "stereo-course/sections/assets/course-data.js": "09fbd6df146216d2b7458554e55721eee1e01660f532bc1bac3b421677e23a3d",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599"
+  },
+  "blockedExternal": [],
+  "complete": true
+}

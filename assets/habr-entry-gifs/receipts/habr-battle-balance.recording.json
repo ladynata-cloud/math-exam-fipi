@@ -1,0 +1,135 @@
+{
+  "id": "habr-battle-balance",
+  "url": "/oge/skills/?topic=base&route=family%3Aarith-battle-balance",
+  "scenarioSha256": "6089f780dcf0bafc0cdac274b74869397d2b28c77a22f96649217e5c0983f374",
+  "sourceHashes": {
+    "oge/skills/index.html": "96deca6239a9f9f5eaea86a13b9ad999fae11e0a3f09a5b07a12695dece17a28"
+  },
+  "frames": [
+    {
+      "file": "frame-01.png",
+      "actualPageUrl": "/oge/skills/?topic=base&route=family%3Aarith-battle-balance",
+      "caption": "Одна положительная и одна отрицательная единица.",
+      "durationMs": 1500,
+      "sha256": "32f2316ad88f3da40664116828556ea7ada322d8ef089c800d6f5143d067f1e4",
+      "actions": [],
+      "assertions": [
+        {
+          "kind": "count",
+          "selector": "#mathexam-skill-lab .task .token.neg",
+          "value": 1
+        },
+        {
+          "kind": "count",
+          "selector": "#mathexam-skill-lab .task .token.pos",
+          "value": 1
+        },
+        {
+          "kind": "text",
+          "selector": "#mathexam-skill-lab .task .task-prompt",
+          "value": "Найди сумму 1 + (−1)"
+        }
+      ],
+      "bounds": {
+        "x": 215,
+        "y": 357.5,
+        "width": 850,
+        "height": 642.28125
+      }
+    },
+    {
+      "file": "frame-02.png",
+      "actualPageUrl": "/oge/skills/?topic=base&route=family%3Aarith-battle-balance",
+      "caption": "Предположи: противоположные единицы дадут ноль.",
+      "durationMs": 1500,
+      "sha256": "65bb4ae8b1329963f5f6195d0cce384bba2464bb3ec418c04fea14f9656497d5",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#mathexam-skill-lab .task [data-action=\"sign\"][data-value=\"0\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "attr",
+          "selector": "#mathexam-skill-lab .task [data-action=\"sign\"][data-value=\"0\"]",
+          "name": "aria-pressed",
+          "value": "true"
+        }
+      ],
+      "bounds": {
+        "x": 215,
+        "y": 357.5,
+        "width": 850,
+        "height": 642.28125
+      }
+    },
+    {
+      "file": "frame-03.png",
+      "actualPageUrl": "/oge/skills/?topic=base&route=family%3Aarith-battle-balance",
+      "caption": "Убери одну противоположную пару.",
+      "durationMs": 1500,
+      "sha256": "3b3ebc1213c8a9c55cc9fc6b4f2420301a051075fcdd9a882f202afe0c553cf9",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#mathexam-skill-lab .task [data-action=\"cancel\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "count",
+          "selector": "#mathexam-skill-lab .task .token.cancelled",
+          "value": 2
+        },
+        {
+          "kind": "disabled",
+          "selector": "#mathexam-skill-lab .task [data-action=\"cancel\"]",
+          "value": true
+        }
+      ],
+      "bounds": {
+        "x": 215,
+        "y": 357.5,
+        "width": 850,
+        "height": 642.28125
+      }
+    },
+    {
+      "file": "frame-04.png",
+      "actualPageUrl": "/oge/skills/?topic=base&route=family%3Aarith-battle-balance",
+      "caption": "Ничего не осталось: запиши 0 и проверь.",
+      "durationMs": 1500,
+      "sha256": "cd9ad40822d5332f4437668547b391a0317432f8787e6612fed9c03ea5d6081d",
+      "actions": [
+        {
+          "type": "fill",
+          "selector": "#mathexam-skill-lab .task #skill-answer",
+          "value": "0"
+        },
+        {
+          "type": "click",
+          "selector": "#mathexam-skill-lab .task [data-action=\"check\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": "#mathexam-skill-lab .task .feedback.good",
+          "value": "Ничего не осталось: сумма равна 0"
+        }
+      ],
+      "bounds": {
+        "x": 215,
+        "y": 148.5,
+        "width": 850,
+        "height": 851.28125
+      }
+    }
+  ],
+  "loadedSources": {
+    "oge/skills/index.html": "96deca6239a9f9f5eaea86a13b9ad999fae11e0a3f09a5b07a12695dece17a28"
+  },
+  "blockedExternal": [],
+  "complete": true
+}
