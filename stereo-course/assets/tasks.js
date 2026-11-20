@@ -1,6 +1,6 @@
 (function(root){'use strict';
 const step=(q,a,why)=>({q,a,why}),task=(q,a,steps)=>({q,a,steps});
-function make(kind,seed=0){let x=2+Math.abs(seed)%6,y=3+Math.abs(seed*3)%5,h=2*x,r=x,k=2+seed%3;let a,b,c,p;
+function legacy(kind,seed=0){let x=2+Math.abs(seed)%6,y=3+Math.abs(seed*3)%5,h=2*x,r=x,k=2+seed%3;let a,b,c,p;
 switch(kind){
 case'incidence':return task('Сколько различных плоскостей проходит через три точки, не лежащие на одной прямой?',1,[step('Лежат ли точки на одной прямой? Ответ да или нет.','нет','Это прямо сказано в условии.'),step('Сколько плоскостей задаёт такая тройка?',1,'Аксиома существования и единственности плоскости.')]);
 case'parallel':return task('В кубе ABCDA₁B₁C₁D₁ прямая A₁B₁ параллельна плоскости ABC? Ответ да или нет.','да',[step('Есть ли общая точка прямой A₁B₁ с плоскостью ABC?','нет','Эта прямая лежит в параллельной верхней грани.'),step('Каков ответ?','да','Также A₁B₁ параллельна AB в нижней плоскости и не принадлежит ей.')]);
@@ -54,5 +54,6 @@ case'ceva':{const n=Math.abs(seed),variant=n%4,j=Math.floor(n/4),p=2+j%4,q=2+Mat
 case'conics-plane':return task('У эллипса сумма расстояний от точки до фокусов равна '+(2*x)+'. Одно расстояние равно '+(x-.5)+'. Найди второе.',x+.5,[step('Какова постоянная сумма расстояний?',2*x,'Это определение эллипса.'),step('Вычти известное расстояние.',x+.5,'Не разность, а сумма расстояний остаётся постоянной.')]);
 default:throw Error('Unknown task '+kind);
 }}
+function make(kind,seed=0,version=1,unitId=''){if(version===2){const p=root.StereoPractice||(typeof require==='function'?require('./practice.js'):null),task=p?.make(unitId==='polyhedra'?'polyhedra':kind,seed);if(task){if(task.legacyEquivalent){const old=legacy(kind,0);task.legacyKeys=[JSON.stringify([old.q,old.a])];}return task;}}return legacy(kind,seed);}
 const api={make};root.StereoTasks=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

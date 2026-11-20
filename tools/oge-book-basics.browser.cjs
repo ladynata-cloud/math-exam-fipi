@@ -304,7 +304,12 @@ async function guided(page,rec){
   check(rec,'start',original==='48 : 2',{prompt:original});
   await page.locator('#answer').fill('987654321');await page.locator('#primary').click();
   check(rec,'wrong-answer',(await observed(page.locator('#step-counter'))).startsWith('Шаг 1 '),{observed:await observed(page.locator('#feedback'))});
-  const toggle=page.locator('.bh-toggle');await toggle.click();check(rec,'hints',(await observed(page.locator('#hint-text'))).length>30,{visibleText:await observed(page.locator('#hint-text'))});await layout(page,rec,'help-open');await toggle.click();
+  const toggle=page.locator('.bh-toggle');await toggle.click();
+  const nativeHint=page.locator('#help-content details').first();
+  if(await nativeHint.count()&&(await nativeHint.getAttribute('open'))===null)await nativeHint.locator('summary').click();
+  const hintText=page.locator('#hint-text:visible');await hintText.waitFor();
+  check(rec,'hints',(await observed(hintText)).length>30,{visibleText:await observed(hintText)});
+  await layout(page,rec,'help-open');await toggle.click();
   let count=0;
   while(!await page.locator('#completion').isVisible()){
     const p=await observed(page.locator('#prompt')),n=nums(p);let answer;

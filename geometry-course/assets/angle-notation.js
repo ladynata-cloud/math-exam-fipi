@@ -101,7 +101,7 @@
       const [x, y] = polar(radius, angle).split(' ');
       return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central">${value}</text>`;
     }
-    return `<div class="angle-task-drawing"><svg viewBox="0 0 360 205" role="img" aria-label="Из вершины C выходят лучи CA, CD и CB. Луч CD проведён внутри угла между CA и CB. Угол ACD равен ${left} градусам, угол DCB — ${right}.">
+    return `<figure class="angle-task-drawing"><svg viewBox="0 0 360 205" role="img" aria-label="Из вершины C выходят лучи CA, CD и CB. Луч CD проведён внутри угла между CA и CB. Угол ACD равен ${left} градусам, угол DCB — ${right}.">
       <defs><marker id="angle-task-tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
         <path d="M0 0 L8 4 L0 8 Z" fill="context-stroke"/>
       </marker></defs>
@@ -124,21 +124,26 @@
         ${label(73, (first + middle) / 2, `${right}°`)}
         ${label(73, (middle + last) / 2, `${left}°`)}
       </g>
-    </svg></div>`;
+    </svg></figure>`;
   }
 
   const root = document.getElementById('lesson');
   const originalEqual = GeoTasks.equal;
+  const originalCheck = GeoTasks.check;
   const originalTask = GeoTasks.task;
 
   // The shared atlas still grades attempts and saves progress for this lesson.
-  GeoTasks.equal = (value, expected) => {
-    if (typeof expected === 'number') return originalEqual(value.replace(/°\s*$/, ''), expected);
-    if (expected !== 'ACB') return originalEqual(value, expected);
-    const name = value.toUpperCase().replace(/^\s*∠/, '').replace(/\s/g, '')
+  function angleAnswer(value, expected) {
+    if (typeof expected === 'number') return String(value).replace(/°\s*$/, '');
+    if (expected !== 'ACB') return value;
+    const name = String(value).toUpperCase().replace(/^\s*∠/, '').replace(/\s/g, '')
       .replace(/[АВСД]/g, letter => cyrillic[letter]);
-    return name === 'ACB' || name === 'BCA';
-  };
+    return name === 'BCA' ? 'ACB' : name;
+  }
+  GeoTasks.equal = (value, expected) => originalEqual(angleAnswer(value, expected), expected);
+  // The harmonized lesson uses classified input without consuming empty or
+  // malformed attempts. Keep the same reviewed angle aliases on that path.
+  if (originalCheck) GeoTasks.check = (value, expected) => originalCheck(angleAnswer(value, expected), expected);
 
   GeoTasks.task = (kind, seed) => {
     const task = originalTask(kind, seed);
@@ -169,7 +174,8 @@
       text.textContent = COURSE_CONFIG.unit.idea;
       rule.append(title, text);
       const restoreFocus = document.activeElement === heading;
-      root.replaceChildren(root.querySelector('.step-label'), rule, footer);
+      const retained = root.querySelector('.retained-work');
+      root.replaceChildren(root.querySelector('.step-label'), rule, footer, ...(retained ? [retained] : []));
       rule.insertAdjacentHTML('beforebegin', markup());
       mount(root);
       if (restoreFocus) root.querySelector('h2').focus({preventScroll: true});
@@ -180,13 +186,19 @@
     const problem = root.querySelector('.task-question');
     if ((stage === '3' || stage === '4') && problem && !root.querySelector('.angle-task-drawing')) {
       const angles = problem.textContent.match(/ACD = (\d+)° и DCB = (\d+)°/);
-      if (angles) problem.insertAdjacentHTML('afterend', taskFigure(Number(angles[1]), Number(angles[2])));
+      if (angles) {
+        const figure = taskFigure(Number(angles[1]), Number(angles[2]));
+        const generic = problem.nextElementSibling;
+        if (generic?.classList.contains('lesson-figure')) generic.outerHTML = figure;
+        else problem.insertAdjacentHTML('afterend', figure);
+      }
 
       const answer = root.querySelector('#answer');
       if (!answer) return;
       const label = root.querySelector('label[for="answer"]');
       const form = answer.form;
-      const hasAngleName = stage === '3' && root.querySelector('.callout strong')?.textContent === 'Шаг 1 из 2';
+      const stepLabel = root.querySelector('.guided-step strong, .callout strong')?.textContent || '';
+      const hasAngleName = stage === '3' && /^Шаг 1 из 2\.?$/.test(stepLabel);
       label.textContent = hasAngleName ? 'Название угла' : 'Градусная мера';
       answer.removeAttribute('placeholder');
       if (hasAngleName) answer.setAttribute('autocapitalize', 'characters');

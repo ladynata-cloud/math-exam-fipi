@@ -39,19 +39,27 @@ function navigatorTurn(message, context, state) {
 }
 
 function divisionTurn(message, context, state) {
-  fields(context, ['surface', 'step', 'divisor', 'partial', 'attempt', 'dividend', 'originalDivisor']);
+  fields(context, ['surface', 'step', 'divisor', 'partial', 'attempt', 'dividend', 'originalDivisor', 'quotientStarted', 'placeExponent']);
   const { step, divisor, partial, attempt, dividend, originalDivisor } = context;
   requireInput(divisionSteps.has(step) && Number.isSafeInteger(divisor) && divisor > 0 && divisor <= 1e9);
   requireInput(partial == null || (Number.isSafeInteger(partial) && partial >= 0 && partial <= 1e12));
+  requireInput(step !== 'digit' || partial == null || partial < 10 * divisor);
   requireInput(attempt == null || (Number.isInteger(attempt) && attempt >= 0 && attempt <= 9));
+  requireInput(context.quotientStarted == null || typeof context.quotientStarted === 'boolean');
+  requireInput(context.placeExponent == null || Number.isInteger(context.placeExponent) && context.placeExponent >= -20 && context.placeExponent <= 8);
   for (const quantity of [dividend, originalDivisor]) {
     requireInput(quantity == null || typeof quantity === 'string' && /^\d{1,12}(?:[.,]\d{1,6})?$/.test(quantity));
   }
   // Apply a previous intent only for the exact current operation and step.
-  const frame = [step, divisor, partial ?? '', dividend ?? '', originalDivisor ?? ''].join('/');
-  const previous = state.frame === frame && typeof state.intent === 'string' ? state.intent : '';
+  const frame = [step, divisor, partial ?? '', dividend ?? '', originalDivisor ?? '', context.quotientStarted ?? '', context.placeExponent ?? ''].join('/');
+  const previous = state.frame === frame ? {intent:typeof state.intent === 'string' ? state.intent : '',
+    attempt:Number.isInteger(state.attempt) && state.attempt >= 0 && state.attempt <= 9 ? state.attempt : undefined,
+    nativeAttempt:Number.isInteger(state.nativeAttempt) && state.nativeAttempt >= 0 && state.nativeAttempt <= 9 ? state.nativeAttempt : null} : {};
   const result = division.reply(message, context, previous);
-  return { reply: result.text, links: [], state: { surface: 'division', frame, intent: result.intent } };
+  const candidate = result.attempt ?? (previous.nativeAttempt !== (attempt ?? null) ? attempt : previous.attempt ?? attempt);
+  return { reply: result.text, links: [], state: { surface: 'division', frame, intent: result.intent,
+    nativeAttempt:attempt ?? null,
+    ...(Number.isInteger(candidate) && candidate >= 0 && candidate <= 9 ? {attempt:candidate} : {}) } };
 }
 
 function readerTurn(message, context, state) {

@@ -20,7 +20,8 @@ test('every inventoried public page has one exact existing navigator pair; all a
     const row=rollout.addedPages[name],original=restorePublicNavigator(name,raw);
     assert.equal(hash(raw),row.afterSha256,name+' current exact payload');
     assert.equal(hash(original),row.beforeSha256,name+' complete original payload');
-    const committed=execFileSync('git',['show',rollout.baseSha+':'+name],{cwd:root,maxBuffer:16e6});
+    const sourceSha=row.sourceSha||rollout.baseSha;
+    const committed=execFileSync('git',['show',sourceSha+':'+name],{cwd:root,maxBuffer:16e6});
     // A later explicitly reviewed source commit may already include this same
     // exact pair. Its complete payload must still match the current binding.
     const source=restorePublicNavigator(name,committed);

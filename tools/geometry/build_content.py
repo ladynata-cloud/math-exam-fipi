@@ -1,6 +1,7 @@
 """Author-written course units; source-point map is independently auditable."""
 import json
 from pathlib import Path
+from prerequisites import PREREQUISITES
 ROOT=Path(__file__).resolve().parents[2]
 RAW='''
 segments|1-2|Прямая: что задают две точки|segment|midpoint|segment|segment|Через две различные точки проходит ровно одна прямая. Нарисованная линия — лишь видимая часть бесконечной прямой. На местности направление отмечают вехами: новая веха должна оказаться на одной линии с двумя известными.|Различай прямую AB и отрезок AB: у отрезка есть концы и длина. Одной точки для выбора направления недостаточно.|По одному рисунку можно считать три точки лежащими на прямой.
@@ -78,9 +79,12 @@ for row in (ROOT/'geometry-course/data/textbook.tsv').read_text().splitlines():
 chapters=['Начальные геометрические сведения','Треугольники','Параллельные прямые','Соотношения между сторонами и углами треугольника','Геометрические места точек. Симметричные фигуры','Четырёхугольники','Площадь','Подобные треугольники','Окружность','Векторы','Метод координат','Соотношения в треугольнике. Скалярное произведение','Длина окружности и площадь круга','Преобразования плоскости. Движения','Преобразование подобия']
 for index,u in enumerate(units):
  u['chapter']=topics[u['points'][0]-1]['chapter'];u['grade']=7 if u['chapter']<=5 else 8 if u['chapter']<=9 else 9
- u['requires']=[] if index==0 else [units[index-1]['id']]
+ u['requires']=PREREQUISITES.get(u['id'],[])
  u['source']=[topics[p-1] for p in u['points']]
  u['tid']='atlas-'+u['id']
+topic_proofs={'segments': 'line-uniqueness', 'angles': 'angle-name', 'equality': 'rigid-equality', 'circle-position': 'circles-intersection', 'vector-basis': 'basis-unique', 'solve-triangle': 'triangle-solvability', 'polygon-similarity': 'polygon-scale'}
+for u in units:
+ if u['id'] in topic_proofs:u['topicProof']=topic_proofs[u['id']]
 result=dict(edition='Атанасян и др., 7–9 классы, базовый уровень, 14-е переработанное издание, 2023',chapters=chapters,topics=topics,units=units)
 (ROOT/'geometry-course/data/course.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
 print(len(units),'units;',len(topics),'source points')

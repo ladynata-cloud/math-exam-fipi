@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Internal independent agent /root/sections_learning_audit",
+  "reviewedAt": "2026-11-15T21:33:09.684305+00:00",
+  "reviewKind": "INTERNAL_SCOPED_SOURCE_AND_BEHAVIOR_REVIEW",
+  "independence": {
+    "independentFor": [
+      "26 authored learningPath research entries",
+      "Third-IIFE forecast, observation, note, completion and history flow",
+      "Root-authored third-IIFE construction progress and delayed-review integration"
+    ],
+    "notIndependentFor": [
+      "First-IIFE construction and scene implementation",
+      "Original construction test cases authored by this reviewer"
+    ],
+    "explanation": "The reviewer authored the first-IIFE construction feature, but did not author the research data or third-IIFE implementation reviewed here."
+  },
+  "baseCommit": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "headCommitAtReview": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "reviewBinding": "Uncommitted source snapshot bound by the SHA-256 values below. This is not an exact-head, external-provider, merge or release approval. Later content or runtime changes require review of their delta.",
+  "externalProviderReview": false,
+  "ownerMergeAuthorization": false,
+  "scope": {
+    "researchEntries": 26,
+    "lessonBacked": 19,
+    "labBacked": 7,
+    "originalCardsPreserved": 186,
+    "source": "stereo-course/sections/data/course.json learningPath[*].research plus referenced lesson geometry and existing laboratory models",
+    "runtime": "Third IIFE of stereo-course/sections/assets/app.js; focus on research flow, lessonProgress/openPathLesson/stageStats/reviewDueAt integration"
+  },
+  "verdict": {
+    "researchGeometryAndNotation": "PASS",
+    "ResearchToSourceBindings": "PASS",
+    "forecastAndCompletionSemantics": "PASS",
+    "legacyDataPreservation": "PASS",
+    "rootProgressIntegration": "PASS",
+    "blockingFindings": 0,
+    "minorOpenFindings": 0,
+    "visualReview": "NOT_PERFORMED",
+    "release": "NOT_REVIEWED"
+  },
+  "sourceSnapshot": {
+    "fileSha256": {
+      "stereo-course/sections/data/course.json": "0d918f2709a751dd5bf4f460098af7e383f8b4c0d8594c2e3010855d606777a4",
+      "tools/sections-research.test.cjs": "186fe2530ece66a72873fee2a1e0ed43f09f9c04b523c6beb84edb598a88051c",
+      "tools/sections-preservation.test.cjs": "d5557c9cb79cd1edf0c89541451df172faf5fd093a32ce7c536a4fc328d35076",
+      "tools/sections-harmonization-baseline.json": "3047b31519b9dcad4e82a7c4d86a1f1646a032efd94c63102fa3d8c2b8e7f504"
+    },
+    "thirdIife": {
+      "sha256": "22c56b225de18ac845017fa83174ea4132795588fd125e6eee1a5349b6c5e209",
+      "startMarker": "(function () {\n  'use strict';\n  if(window.SECTIONS_BOARD_SESSION)return;",
+      "endExclusiveMarker": "next \\n(function () {",
+      "startLine": 1629,
+      "endLineInclusive": 2146
+    },
+    "laboratoryIife": {
+      "sha256": "b56fdc1371850b0c2fc0c03beac3c99064c67cbfcb9b8f75128d7b42b99da7ee",
+      "purpose": "Existing lab geometry used by 7 authored research entries"
+    },
+    "researchObjectsSerialization": "UTF-8 JSON with sorted keys, compact separators and ensure_ascii=false",
+    "runtimeBinding": "Only thirdIife.sha256 binds the independently reviewed runtime. The first IIFE is excluded because this reviewer authored its construction implementation and subsequent fixes."
+  },
+  "method": [
+    "Read all 26 questions, prediction choices, authored actions, observations, explanations, boundary conditions and transfer prompts.",
+    "Compared all 19 lesson-backed scenarios with actual retained point coordinates, plane identifiers, authored step views and finite section boundaries.",
+    "Independently checked the mathematical claims for all 7 lab-backed parameter sequences; evaluated the actual existing laboratory model for the same levels/heights and compared its dimensions, vertex counts, areas and normal-section interval.",
+    "Read the third-IIFE research state normalization and rendering handlers: blank forecast cannot reveal observations, wrong/unknown forecasts are allowed and the original forecast locks on the first observation.",
+    "Verified a nonempty own note and all observations are required before explanation/completion; editing the note revokes current completion; restarting archives the prior forecast and note.",
+    "Verified exposure to a source lesson through research marks only that lesson as helped, while unrelated transfer cards remain independent; malformed legacy research cannot gain a fabricated forecast.",
+    "Re-ran root-authored research and preservation tests and the two focused construction-to-map/delayed-review/resume regressions.",
+    "Compared the entire original lesson array directly against the approved base using git show; all 186 objects are identical.",
+    "Reviewed the small final stageProgress delta: a saved research forecast, observation or history starts the map stage while independent construction mastery remains unchanged. The corresponding root-authored regression passes."
+  ],
+  "entryReviews": [
+    {
+      "stageId": "begin-01",
+      "source": "lesson",
+      "sourceId": "starter-01",
+      "researchSha256": "40812467fe70d45b8c2ef1df9568763d67fd1504898ca17d1c627f24c7c387be",
+      "status": "PASS",
+      "verification": "M remains inside face ABCD under both camera positions; rotating the representation changes neither the point nor its face membership."
+    },
+    {
+      "stageId": "begin-02",
+      "source": "lesson",
+      "sourceId": "starter-04",
+      "researchSha256": "62b15c1e5a70b9b1687a956e8dc75fbc87822143359611be8f21679d1fc28702",
+      "status": "PASS",
+      "verification": "M on AB and N on AD belong to the same convex face ABCD, so segment MN lies in that face."
+    },
+    {
+      "stageId": "begin-03",
+      "source": "lesson",
+      "sourceId": "starter-07",
+      "researchSha256": "422af1bbf9b245b5ce73865d16ae864d871fff2aa4b951fccc0ed82249375486",
+      "status": "PASS",
+      "verification": "The displayed diagonals AC and BD meet at the common in-plane center O=(3,3,0). This does not generalize to arbitrary intersecting projections."
+    },
+    {
+      "stageId": "begin-04",
+      "source": "lesson",
+      "sourceId": "starter-10",
+      "researchSha256": "0b8457d1aae8927d29c9fd7e5c0bf29e1a0744c5c6dafc1d059f899f2cacfc1f",
+      "status": "PASS",
+      "verification": "X=(4,6,0) belongs to common edge BC of ABCD and BFGC; subsequent XP uses BFGC."
+    },
+    {
+      "stageId": "begin-05",
+      "source": "lesson",
+      "sourceId": "starter-13",
+      "researchSha256": "14623a4b3308dca81d6d78a2a850ef09e97a1289c03acb515c77dbbb0d414065",
+      "status": "PASS",
+      "verification": "M, N, P lie on SA, SB, SC; MN, NP, PM use faces SAB, SBC, SCA and form the triangular boundary."
+    },
+    {
+      "stageId": "begin-06",
+      "source": "lesson",
+      "sourceId": "starter-16",
+      "researchSha256": "91fb99b73e60e397dcbda7e889af3b938d90cb3998c1da127c7c89022dc1542b",
+      "status": "PASS",
+      "verification": "MNPQ uses the four lateral faces; QM in DHEA supplies the final boundary edge."
+    },
+    {
+      "stageId": "main-01",
+      "source": "lesson",
+      "sourceId": "theory-1",
+      "researchSha256": "20d0a7c866f28e823f19352fcc39fecd354d295afb2a9aba4d6d8e6154d52c15",
+      "status": "PASS",
+      "verification": "M on AA1 and N on AD both belong to DD1A1A; a face must contain both endpoints."
+    },
+    {
+      "stageId": "bridge-stage-01",
+      "source": "lesson",
+      "sourceId": "bridge-01",
+      "researchSha256": "3d586c911ea4efe52b1fb2c0471c0734b8d27cd789bdd6de2bb64bad8f13f3b3",
+      "status": "PASS",
+      "verification": "AEFB and CGHD are opposite parallel faces; the transferred line through P meets CG at Q."
+    },
+    {
+      "stageId": "main-02",
+      "source": "lab",
+      "sourceId": "cube-horizontal",
+      "researchSha256": "76fa3dd9be06493b450bf0c2395f117f0a2d85ceb24095baa28b900c4ce0ff24",
+      "status": "PASS",
+      "verification": "z=0.5 gives an internal square, z=1 coincides with a supporting face, and z=1.1 is outside the unit cube."
+    },
+    {
+      "stageId": "bridge-stage-02",
+      "source": "lesson",
+      "sourceId": "bridge-04",
+      "researchSha256": "192ec805367d24361a0809d73f42babe72ff9da028f096451204e4bae70b677b",
+      "status": "PASS",
+      "verification": "X=(-3,0,0) is an external trace point; YP is the finite base edge of the section and X is not a section vertex."
+    },
+    {
+      "stageId": "main-03",
+      "source": "lesson",
+      "sourceId": "theory-2",
+      "researchSha256": "8e993692dae72f43557ffa19bfe230b41a7bd35d024a29185321864b660a7382",
+      "status": "PASS",
+      "verification": "T=(0,-4/3,0) lies on the line AB outside the finite edge, but still belongs to the base plane."
+    },
+    {
+      "stageId": "bridge-stage-03",
+      "source": "lesson",
+      "sourceId": "bridge-07",
+      "researchSha256": "0438ac449a1aa77c6a8cf3c292c993dc22ab320ada527285ced32f833f58d5a6",
+      "status": "PASS",
+      "verification": "Auxiliary diagonal plane ACE contains points M on AE and N on CG; its use is distinct from a body face."
+    },
+    {
+      "stageId": "main-04",
+      "source": "lesson",
+      "sourceId": "theory-6",
+      "researchSha256": "9ee73992da36497b295d5acdcb8cd5c66b666fb04973559a48557ad8fdd3c14c",
+      "status": "PASS",
+      "verification": "Plane KLC contains KM and LC; their trace point T is external to the solid and belongs to the base plane."
+    },
+    {
+      "stageId": "bridge-stage-04",
+      "source": "lesson",
+      "sourceId": "bridge-10",
+      "researchSha256": "647221a25f79ffc017a803a07cd56d0042dd669e76db7a3c288d306a26813349",
+      "status": "PASS",
+      "verification": "The displayed central point P belongs to diagonal AG; line MP and edge line CG are coplanar in ACE."
+    },
+    {
+      "stageId": "bridge-stage-05",
+      "source": "lesson",
+      "sourceId": "bridge-13",
+      "researchSha256": "cdba01e054ff6650272c078c587986e0459baa2ff57fc2b3f8ba85b0022dba6c",
+      "status": "PASS",
+      "verification": "Intersecting KL and KM determine plane MKL; LN through L parallel to KM lies in the same plane."
+    },
+    {
+      "stageId": "main-05",
+      "source": "lesson",
+      "sourceId": "auth-method-03",
+      "researchSha256": "fc4c2d0924880c1ca368bfc8ab51ba043d8db58aeabcd373160f2607411d9968",
+      "status": "PASS",
+      "verification": "O and T are base centers and M lies on OT with OM:MT=1:2; the axis supplies a valid auxiliary plane."
+    },
+    {
+      "stageId": "bridge-stage-06",
+      "source": "lesson",
+      "sourceId": "bridge-16",
+      "researchSha256": "a313af105028de19cef41431c9ec62609004493321f5fb83588faae525c3ffeb",
+      "status": "PASS",
+      "verification": "X=(0,9,0) is an auxiliary external trace point; the closed finite boundary is MNQP."
+    },
+    {
+      "stageId": "main-06",
+      "source": "lab",
+      "sourceId": "cube-weighted",
+      "researchSha256": "20e265bacc0875fa882e624f6d0b36e1ffd2bb68440016f0d438eebee5fdd942",
+      "status": "PASS",
+      "verification": "For 2x+3y+4z=level the specified levels 1, 2.5, 3.5, 4.5 yield respectively 3, 4, 5, 6 section vertices."
+    },
+    {
+      "stageId": "main-07",
+      "source": "lab",
+      "sourceId": "pyramid-parallel",
+      "researchSha256": "8f7b759d279160a5256d33932378640f53c39a01b4ad3dd87015587c89788cb6",
+      "status": "PASS",
+      "verification": "Parallel sections at z=0.5 and z=1.25 in a height-2 pyramid are at distances 1.5 and 0.75 from the apex; areas 2.25 and 0.5625 have ratio 1/4."
+    },
+    {
+      "stageId": "main-08",
+      "source": "lesson",
+      "sourceId": "auth-core-16",
+      "researchSha256": "923973bfb355560e241c26e1570d5e8c7cba1f5f7c8e76bce02f07fec84b7525",
+      "status": "PASS",
+      "verification": "In the regular hexagonal prism AD=6 and the perpendicular height is 5, giving the displayed rectangular-section area 30."
+    },
+    {
+      "stageId": "main-09",
+      "source": "lesson",
+      "sourceId": "auth-core-08",
+      "researchSha256": "f12eea78d999cfbdcee554e4299ea27735551cc20c9e09eb28da6ac1e8b4cc49",
+      "status": "PASS",
+      "verification": "AB perpendicular to AD alone does not prove perpendicularity to plane ABCD. AB perpendicular to both AD and AA1 proves perpendicularity to DD1A1A."
+    },
+    {
+      "stageId": "main-10",
+      "source": "lab",
+      "sourceId": "cube-weighted",
+      "researchSha256": "8babe055386ddea5c05383e44ac21fc1bd2defba69c0d9544c479b3a3084dfea",
+      "status": "PASS",
+      "verification": "The weighted-plane levels 1, 4.5, 9.3 give a triangle, hexagon, empty section; 9 is the maximum over the unit cube and finite-edge parameters must lie in [0,1]."
+    },
+    {
+      "stageId": "main-11",
+      "source": "lesson",
+      "sourceId": "auth-core-09",
+      "researchSha256": "8de049ac5a21bd6b3006bfeefed1c7a776473e7b79e2d0fdd0140e9efb038ea9",
+      "status": "PASS",
+      "verification": "The oblique-parallelepiped section has opposite sides parallel but adjacent vectors satisfy dot(MN,MP)=12, so a rectangle is not justified."
+    },
+    {
+      "stageId": "main-12",
+      "source": "lab",
+      "sourceId": "cube-sum",
+      "researchSha256": "15a5eb0cb515701d372485d4260364967b24cd94ecee05eaa988e4fa01030370",
+      "status": "PASS",
+      "verification": "Central symmetry sends x+y+z=0.5 to x+y+z=2.5. Both triangular sections have area 0.21650635094610965."
+    },
+    {
+      "stageId": "main-13",
+      "source": "lab",
+      "sourceId": "cube-sum",
+      "researchSha256": "bb41769ddaa17a458a508349194cf719365590543ee22cfd4e78fb92f6e15b38",
+      "status": "PASS",
+      "verification": "At x+y+z=0.99 and 1 there are 3 distinct vertices; at 1.01 there are 6. Coincident edge-intersection points at the critical level are counted once."
+    },
+    {
+      "stageId": "main-14",
+      "source": "lab",
+      "sourceId": "oblique-normal",
+      "researchSha256": "81a0965c1e4a9520f470d835ae4a5183d3b09ac993f0a9400934187cd0714bef",
+      "status": "PASS",
+      "verification": "At height 1 the common level interval is [0.5,1.25] and level 0.7 cuts all lateral edges. At height 0.3 the bounds [0.5,0.34] are incompatible, so level 0.42 cuts only part of those edges."
+    }
+  ],
+  "findings": [
+    {
+      "id": "inactive-manual-progress",
+      "severity": "medium",
+      "status": "RESOLVED",
+      "location": "stereo-course/sections/assets/app.js: lessonProgress and openPathLesson",
+      "problem": "Leaving a partial independent construction originally hid its saved progress from the map because active=false fell back to an unstarted legacy attempt.",
+      "resolutionVerified": "Any saved construction marks the card started; without competing legacy work, the map reads manual actions and the route resumes them. Started legacy work retains priority. The root-authored leave -> map -> reload -> resume regression passes."
+    },
+    {
+      "id": "main-10-wording",
+      "severity": "low",
+      "status": "RESOLVED",
+      "location": "learningPath[main-10].research.conclusion",
+      "resolutionVerified": "Previously reported case-agreement issue no longer occurs in the reviewed conclusion."
+    }
+  ],
+  "constructionIntegrationContract": {
+    "source": "SECTIONS_APP.getState().tasks[id].construction version=1",
+    "currentState": [
+      "active",
+      "actions",
+      "selection",
+      "boundarySelection",
+      "boundaryConfirmed",
+      "selectedCheck",
+      "completed",
+      "helpUsed",
+      "mistakes"
+    ],
+    "historicalEvidence": [
+      "evidence: first or corrected",
+      "evidenceAt: positive safe integer timestamp"
+    ],
+    "legacyEvidence": "Keep task.choiceEvidence, choiceEvidenceAt and attemptEvidenceVersion unchanged. Manual actions are not task.revealed and must not upgrade old guided history.",
+    "undo": "Undo removes the latest accepted action and current completion while preserving help and earned historical evidence. The map may therefore show earlier verified choices while recommending continuation of the current incomplete attempt.",
+    "resume": "An inactive saved manual draft without competing old mode/actions/checks continues as manual. A started old guided/practice attempt keeps its previous route.",
+    "laterReview": "reviewDueAt includes valid historical old and manual evidence timestamps and schedules from the earliest one."
+  },
+  "validation": [
+    {
+      "command": "NODE_PATH=<qa-dependencies> node --test tools/sections-research.test.cjs tools/sections-preservation.test.cjs",
+      "pass": 9,
+      "fail": 0,
+      "coverage": "8 research behavior tests (including research-only stage progress) plus exact preservation of all 186 cards"
+    },
+    {
+      "command": "NODE_PATH=<qa-dependencies> node --test tools/sections-construction.test.cjs",
+      "pass": 37,
+      "fail": 0,
+      "coverage": "Full construction suite passes after author fixes, including the two root-authored map/delayed-review/resume cases. This is execution evidence; no independent approval of the first-IIFE implementation is claimed."
+    },
+    {
+      "command": "git show approved-base:stereo-course/sections/data/course.json; compare parsed lessons arrays",
+      "result": "PASS: 186 complete original lesson objects identical"
+    },
+    {
+      "command": "Evaluate the existing second-IIFE lab API for every authored research parameter set",
+      "result": "PASS: 7 lab-backed entries agree with independent geometric checks recorded in entryReviews"
+    },
+    {
+      "command": "NODE_PATH=<qa-dependencies> node --test tools/sections-board.test.cjs tools/sections-course.test.cjs tools/sections-frame-selection.test.cjs tools/sections-navigation.test.cjs tools/sections-progress.test.cjs tools/sections-room-selection.test.cjs tools/sections-tour.test.cjs",
+      "pass": 75,
+      "fail": 0,
+      "coverage": "Existing legacy personal/shared-board/route/progress/tour contracts after the final manual-only renderer fixes; execution evidence, not independent approval of the reviewer-authored first IIFE."
+    }
+  ],
+  "limitations": [
+    "No independent review approval is claimed for this reviewer's own first-IIFE implementation or its original tests.",
+    "No rendered screenshot or viewport audit was performed in this review; diagram clipping, browser layout and label visibility belong to the separate browser QA.",
+    "Generated offline artifacts, publication, remote PR/head state, deployment, rollback execution and merge authorization are outside this review.",
+    "The source snapshot was reviewed locally before commit and may be followed by separate browser-rendering corrections. Such deltas are not covered until checked.",
+    "Manual heading, parallel validation and accepted-action rendering fixes after this review are authored by this reviewer and are explicitly excluded from its independence claim; a separate reviewer handles that implementation."
+  ]
+}

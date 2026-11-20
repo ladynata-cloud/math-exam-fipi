@@ -66,5 +66,10 @@ const retained=s=>({taskId:s.taskId,started:s.started,step:s.step,draft:s.draft,
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+': mobile fits');
     const shots=process.env.PROFILE_TASK_FIRST_SHOTS;if(shots){fs.mkdirSync(shots,{recursive:true});await page.screenshot({path:path.join(shots,id+'-320.png'),fullPage:true});}
   }
+  await page.goto(base+'#calm/2');
+  const oppositeTitle=page.locator('.plain-steps a[href="#lesson/vec-basics-equality"]');await oppositeTitle.waitFor();
+  assert.match(await oppositeTitle.textContent(),/противо\u00adположные/);
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'opposite-vector route fits at 320px');
+  const vectorShots=process.env.PROFILE_TASK_FIRST_SHOTS;if(vectorShots)await page.screenshot({path:path.join(vectorShots,'vector-opposites-320.png'),fullPage:true});
   assert.deepEqual(errors,[]);assert.deepEqual(bad,[]);console.log('PROFILE_TASK_FIRST_BROWSER_OK: '+count+' lesson families; same-page help, draft/model identity, nested state, guided history, independent credit, 320px');
 }finally{await browser?.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e.stack||e);process.exitCode=1;});
