@@ -38,6 +38,14 @@ module.exports = async function checkGrade5(browser, origin) {
         await page.goto(url);
         await page.locator(start).first().waitFor();
         assert.equal(await page.locator('.grade5-entry').count(), 0);
+        const launcher = page.locator('header nav #maxexam-public-assistant .launcher');
+        await launcher.waitFor();
+        assert.equal(await launcher.evaluate(el => getComputedStyle(el).position), 'static');
+        await launcher.click();
+        assert.equal(await launcher.getAttribute('aria-expanded'), 'true');
+        await page.keyboard.press('Escape');
+        assert.equal(await launcher.getAttribute('aria-expanded'), 'false');
+        await page.evaluate(() => scrollTo(0, 0));
         await fit(page, 'course');
         await page.locator(start).first().click();
         const seen = width === 390 ? topics : [topics[0], topics.at(-1)];
@@ -57,6 +65,16 @@ module.exports = async function checkGrade5(browser, origin) {
         finally { release(); }
         await page.getByRole('heading', {level: 1, name: last.title, exact: true}).waitFor();
         assert.equal(new URL(page.url()).hash, last.hash);
+        if (slug === 'vilenkin' && width === 390) {
+          await page.unroute('**/app.js*');
+          await page.route('**/data/lessons-1.json', route => route.abort());
+          await page.reload();
+          await page.getByRole('button', {name: 'Повторить загрузку'}).waitFor();
+          assert.equal(await page.locator('.grade5-entry li a').count(), count);
+          await page.unroute('**/data/lessons-1.json');
+          await page.getByRole('button', {name: 'Повторить загрузку'}).click();
+          await page.getByRole('heading', {level: 1, name: last.title, exact: true}).waitFor();
+        }
         assert.deepEqual(errors, []);
       } finally {
         await plain.close();

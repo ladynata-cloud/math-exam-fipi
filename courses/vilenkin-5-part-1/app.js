@@ -198,4 +198,25 @@ async function init(){try{const files=window.VILENKIN_DATA?.lessons||await Promi
  console.error(e);
 }}
 init();
+
+// Keep the existing site's navigation button in the course menu as on Peterson 5.
+// The dialogue stays positioned relative to the viewport inside the same shadow root.
+function placeVilenkinNavigator() {
+  const host = document.getElementById('maxexam-public-assistant');
+  const menu = document.querySelector('header.top nav');
+  if (!host?.shadowRoot || !menu) return;
+  const style = document.createElement('style');
+  style.textContent = `
+    :host { display: inline-flex !important; position: static !important; contain: none !important; min-height: 0 !important; }
+    .launcher { position: static; width: auto; height: auto; min-height: 44px; padding: 6px 10px; gap: 6px; border-radius: 10px; box-shadow: none; }
+    .launcher-mark { width: 22px; height: 22px; font-size: 18px; }
+    .launcher-label { display: block; position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; }
+    .launcher-label strong { font-size: 15px; }
+    .launcher-label > span { display: none; }
+  `;
+  host.shadowRoot.append(style);
+  menu.append(host);
+}
+if (document.readyState === 'complete') placeVilenkinNavigator();
+else window.addEventListener('DOMContentLoaded', placeVilenkinNavigator, {once: true});
 })();

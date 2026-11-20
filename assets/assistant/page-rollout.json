@@ -211,9 +211,10 @@
       "placement": "before-head-close"
     },
     "courses/vilenkin-5-part-1/index.html": {
-      "beforeSha256": "75cbb902b85c33a7c46e58641402dbb0f8f22750323e947645d6fc2ed516c245",
-      "afterSha256": "434288d7f32897b0699887ac6ece67176494f2c312ad1c5648935c9411e82ba1",
-      "placement": "before-head-close"
+      "beforeSha256": "c24a34c8deb89261c203c4a3a25ac5baf88f7fc23f086797cadf8fdcc1d6d758",
+      "afterSha256": "7c29c295f0ccfaf195228fa3849f5ebc06c969690097632c69807a14c878d823",
+      "placement": "before-head-close",
+      "sourceSha": "229f3617a44c093618626efc74fa01db4a4472af"
     },
     "courses/vilenkin-6-part-1/textbook.html": {
       "beforeSha256": "1e5749f8ed7c3a4f90b6d3aa37881ba8bc8620c4d6be4ca175addab0c81d1f28",
@@ -2248,10 +2249,10 @@
       "placement": "before-head-close"
     },
     "school/peterson5/index.html": {
-      "beforeSha256": "2726e924ba80a2da5a0e305f43bbc6739212de3e3ade9ec37f16da17d379f157",
-      "afterSha256": "297125052abfed67334d8850f343d3e7b93c2d1f65bf7ae5ae4bdb3dc3dfb1e9",
+      "beforeSha256": "fa5cd207c598edc132cf1679d33d5d16a5646d8041cf4fe4a23d16e7b059d650",
+      "afterSha256": "199307acce2ea3c81ddb5167c061f5430a7cf928b9a903fcb79a1eee3d07d78c",
       "placement": "before-head-close",
-      "sourceSha": "8b17580c9483d3603e14d91dd602089eacfc5d49"
+      "sourceSha": "229f3617a44c093618626efc74fa01db4a4472af"
     },
     "school/peterson6/topics/droby-i-desyatichnye/index.html": {
       "beforeSha256": "922041dbe60ea1a11cc16b1b25fd587356563378d2f3c3c122145fb98f2be143",
@@ -6288,6 +6289,17 @@
       "sourceBaseSha": "8b17580c9483d3603e14d91dd602089eacfc5d49",
       "task": "docs/tasks/PETERSON5_LEARNING_WORKSHOP_20261120.md",
       "changedPaths": [
+        "school/peterson5/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "229f3617a44c093618626efc74fa01db4a4472af",
+      "task": "docs/tasks/SEO_GRADE5_COURSE_ENTRIES_20261121.md",
+      "changedPaths": [
+        "courses/vilenkin-5-part-1/index.html",
         "school/peterson5/index.html"
       ],
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
