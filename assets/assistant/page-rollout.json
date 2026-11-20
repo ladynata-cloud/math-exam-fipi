@@ -2208,9 +2208,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "359864447bcaa6f710c66dd6194f3258146293ce1dbb8c572f4a02d3de45b9cc",
-      "afterSha256": "95b8e6e435b9b9e0ae56db46658b5a2ddced4762f1f9ed36644f71d2e9c76d52",
-      "placement": "before-head-close"
+      "beforeSha256": "fc49b6277cf575ad6efe1159dcef9d2f6baca5ce54847028ef0d9b6586e89d3a",
+      "afterSha256": "5ab223371e4e39dba5f86cc6ed85576619302e8390acc04a18f1986e255f1772",
+      "placement": "before-head-close",
+      "sourceSha": "903c8a4b37b671c88e0b19d6dbd4b4dc2f7f7147"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "50f6aef6993511475931499d227a2512265194d660396178ec2b732c59c04fb6",
@@ -6289,6 +6290,16 @@
       "task": "docs/tasks/PETERSON5_LEARNING_WORKSHOP_20261120.md",
       "changedPaths": [
         "school/peterson5/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "903c8a4b37b671c88e0b19d6dbd4b4dc2f7f7147",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
       ],
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
