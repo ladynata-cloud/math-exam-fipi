@@ -55,6 +55,12 @@ function fixture(lesson, state) {
 
 function lessonConfig(lesson, work) {
   const manual = work.construction?.active ? work.construction : null;
+  // The short exercise supplies MN as a given. It earns zero formal steps.
+  // The blank start of the full construction is tested immediately afterwards.
+  if (lesson.id === 'starter-18' && work.mode === 'choose' && !manual && !work.recall) {
+    return {count:1, planeId:null, flat:false, camera:work.camera, construction:false,
+      focusNames:bodyNames(lesson), boundary:[], showResult:false};
+  }
   const count = manual ? manual.actions.length : work.viewCount;
   let planeId = null;
   if (manual) planeId = manual.justBuilt ? lesson.steps[count - 1]?.plane : manual.selection.plane || (count === lesson.steps.length ? lesson.steps[count - 1]?.plane : null);
@@ -425,6 +431,12 @@ async function main() {
             assert.equal(restored.viewCount, tasks[lesson.id].viewCount, lesson.id + ': fixture restored');
             assert.equal(restored.showResult, state === 'final', lesson.id + ': final result state restored');
             await inspectLesson(page, lesson.id, state + '-' + lesson.id, ['starter-18', 'auth-method-04', 'ii-example-7'].includes(lesson.id));
+            if (lesson.id==='starter-18' && state==='initial') {
+              assert.equal(await page.locator('[data-section-recall]').count(),1);
+              await page.locator('[data-recall-close]').click();
+              assert.equal((await currentWork(page)).revealed,0);
+              await inspectLesson(page,lesson.id,'initial-full-starter-18',true);
+            }
           }
           console.log('SVG matrix ' + width + ' ' + state + ': ' + course.lessons.length + ' scenes');
         }
