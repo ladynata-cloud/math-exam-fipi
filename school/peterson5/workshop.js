@@ -201,7 +201,7 @@ function drawTask(){
   await mutate(d=>{const a=entry(d,q.id);if(a.step===index){a.stepValues[index]=value;a.step++;a.aided=true;}});if(currentQuery()?.id===q.id){drawTask();host.querySelector('[data-w-step-form] input,[data-w-form] input')?.focus({preventScroll:true});}
  };}
  stopModel();
- if(stage==='discover'&&s.modelOpen){const h=host.querySelector('[data-w-model-host]');disposeModel=root.PetersonModels?.mount(h,{model:t.model},q,{state:state.models[id]||{},inquiry:false,onChange(value){mutate(d=>{d.models[id]=cleanModel(value);});}});const note=h?.querySelector('.p5-small');if(note)note.textContent='Авторский пример для исследования. Сравни его со своей задачей и сформулируй правило.';}
+ if(stage==='discover'&&s.modelOpen){const h=host.querySelector('[data-w-model-host]');disposeModel=root.PetersonModels?.mount(h,{model:t.model},q,{state:state.models[id]||{},inquiry:false,caption:'Авторский пример для исследования. Сравни его со своей задачей и сформулируй правило.',onChange(value){mutate(d=>{d.models[id]=cleanModel(value);});}});}
  host.querySelector('.workshop-rule')?.addEventListener('toggle',ev=>{if(ev.target.open)mutate(d=>{entry(d,q.id).aided=true;});});
 }
 function checkHTML(t,c){
