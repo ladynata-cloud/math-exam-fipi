@@ -983,7 +983,6 @@
       const choices = el('div',{class:'plane-choice',role:'group','aria-label':'Общая грань'});
       for (const id of ['AEFB','BFGC','CGHD','DHEA']) {
         choices.append(button(planes.get(id).label,()=>{
-          if (id === correctFace) markHelp(lesson.id,'Разобрана сторона сечения в короткой разминке');
           change({face:id});
         },'',{'data-recall-face':id,'aria-pressed':r.face===id}));
       }
@@ -1134,7 +1133,7 @@
     }
     if (!recall && !manual && (!starter || s.revealed)) fragment.append(renderHistory(lesson, s, planes));
     if(!manual && s.revealed===lesson.steps.length && s.revealed>0 && lesson.calculationSteps?.length)fragment.append(renderCalculations(lesson,s));
-    const bottom = recall ? el('div') : manual ? renderConstructionDraft(s) : renderBottom(lesson, s); if (bottom.childNodes.length) fragment.append(bottom);
+    const bottom = manual && !recall ? renderConstructionDraft(s) : renderBottom(lesson, s); if (bottom.childNodes.length) fragment.append(bottom);
     if (starter && lesson.source) { const metadata=details('Сведения о карточке',[para(sourceLabel(lesson,false),'source-line')]);metadata.classList.add('starter-metadata');fragment.append(metadata); }
     const navigation = el('nav', { class: 'lesson-navigation', 'aria-label': 'Переход между заданиями' });
     const i = C.lessons.indexOf(lesson);
@@ -1443,7 +1442,7 @@
 
   function renderBottom(lesson, s) {
     const bottom = el('div', { class: 'task-bottom' });
-    const ready = s.revealed === lesson.steps.length && s.revealed > 0;
+    const ready = !recallVisible(lesson,s) && s.revealed === lesson.steps.length && s.revealed > 0;
     const calculationsReady=s.calculationRevealed===(lesson.calculationSteps || []).length;
     if (ready) {
       const result = el('section'); result.append(el('h3', {}, guidanceFor(lesson)?'Что получилось':'Проверка результата'));
@@ -1571,6 +1570,13 @@
   }
 
   try {
+    if (!board && current==='starter-18' && new URLSearchParams(location.search).get('warmup')==='1') {
+      const s=taskState(lessonMap.get(current));
+      s.recall=defaultRecall(1); s.camera.yaw=wrapYaw(s.camera.yaw+Math.PI/2);
+      const url=new URL(location.href); url.searchParams.delete('warmup');
+      history.replaceState(null,'',url.href);
+      save();
+    }
     renderShell();
     const publicLessons=frozenCopy(C.lessons),publicLessonMap=new Map(publicLessons.map(lesson=>[lesson.id,lesson]));
     window.SECTIONS_APP = Object.freeze({
