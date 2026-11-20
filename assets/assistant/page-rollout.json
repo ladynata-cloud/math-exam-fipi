@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "95ee4b197171fd84fd0fe7198e62f47ebc34a328",
+  "baseSha": "33dac124018d931c1ea8de4d24cf559ce55ecef3",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 582,
-    "covered": 581,
+    "total": 583,
+    "covered": 582,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -2138,8 +2138,8 @@
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
-      "beforeSha256": "d618a3473fab1e857625880e330fc8624e05be7c77fb2394391c189e8dee4825",
-      "afterSha256": "6fc6ae645fb991b0a07df846073377c3651f3d76d9eefd9774c42e8d3dda9e66",
+      "beforeSha256": "829ee197f165cafbe908000af632dc71bccbb47634c2e4ec25a1e34496ac5a17",
+      "afterSha256": "db6a8df9d6f2b0c20a9e1124c5e341da5a605cf509d21f8c0161e342a3c784a9",
       "placement": "before-head-close"
     },
     "oge/geometry/task-15-external-angle.html": {
@@ -2185,6 +2185,11 @@
     "pedagogam/materialy/ravenstvo-treugolnikov/index.html": {
       "beforeSha256": "8cbe6b1f95e6b881f0680f28c579d5f799950e6ca2f3520c796a95a740eedc85",
       "afterSha256": "52bd34049114053c84074ca61a0e5c47ab503cd6df56418bd7f535726ade4152",
+      "placement": "before-head-close"
+    },
+    "pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/index.html": {
+      "beforeSha256": "4bbd2ed1962dc7d32cf18fa1470df4dee8c36b7c3640929264d7669fcd4799a6",
+      "afterSha256": "282145015cccfd23022aa11f0d8fac8905fa03469e602bcf594bef4127fd8fee",
       "placement": "before-head-close"
     },
     "rounding-fresh-v8.html": {
@@ -3887,7 +3892,8 @@
     "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "trainers/long-division-claude.html": "sitemap",
     "trainers/oge-basics/multiplication-division/division-path.html": "sitemap",
-    "trainers/oge-basics/multiplication-division/division-checkpoint.html": "sitemap"
+    "trainers/oge-basics/multiplication-division/division-checkpoint.html": "sitemap",
+    "pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/index.html": "sitemap"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6257,6 +6263,15 @@
         "ege-profil/trainers/trigonometry.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "95ee4b197171fd84fd0fe7198e62f47ebc34a328",
+      "sourceBaseSha": "33dac124018d931c1ea8de4d24cf559ce55ecef3",
+      "task": "docs/tasks/TWO_SITE_TEACHER_WORKSHOP_20261120.md",
+      "changedPaths": [
+        "laboratory/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -6324,6 +6339,14 @@
         "trainers/ege-methods.html"
       ],
       "reason": "Existing course added to the public sitemap with the shared navigator and a static worked example."
+    },
+    {
+      "sourceBaseSha": "33dac124018d931c1ea8de4d24cf559ce55ecef3",
+      "task": "docs/tasks/TWO_SITE_TEACHER_WORKSHOP_20261120.md",
+      "addedPages": [
+        "pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/index.html"
+      ],
+      "reason": "Original teacher workshop in the approved task; linked from pedagogam and laboratory, with the existing navigator pair bound to the reviewed immutable source."
     }
   ]
 }
