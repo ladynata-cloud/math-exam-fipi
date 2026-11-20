@@ -59,7 +59,9 @@ const server=http.createServer((req,res)=>{
     assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.model.step),1);
     assert.match(await page.locator('.arithmetic-division strong').innerText(),/3/);
     await page.locator('#answer').fill('неоконченное решение');
-    await page.locator('.v5q-notes summary').click();await page.locator('#v5-quality-note').fill('Подбираю цифру частного. Проверяю умножением.');
+    await page.locator('.v5q-notes > details > summary').click();
+    await page.waitForFunction(()=>document.querySelector('.v5q-notes > details')?.open&&Vilenkin5Quality.getState().scene?.panels.notes===true);
+    await page.locator('#v5-quality-note').fill('Подбираю цифру частного. Проверяю умножением.');
     await page.reload();await page.locator('#main[data-v5-quality=lesson]').waitFor();
     assert.equal(await page.locator('#answer').inputValue(),'неоконченное решение');assert.equal(await page.locator('#v5-quality-note').inputValue(),'Подбираю цифру частного. Проверяю умножением.');
     assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.model.step),1);
@@ -75,6 +77,7 @@ const server=http.createServer((req,res)=>{
     // Fetch the actual GIF files in Chromium; default and reload stay still.
     await go('#lesson/v5f-division-column');
     await page.locator('.v5-media > summary').click();
+    await page.waitForFunction(()=>document.querySelector('.v5-media')?.open&&Vilenkin5Quality.getState().scene?.media.open===true);
     await page.waitForFunction(()=>{const im=document.querySelector('.v5-media img');return im?.complete&&im.naturalWidth===640&&im.src.endsWith('.png');});
     await page.locator('[data-v5-gif-toggle]').click();
     await page.waitForFunction(()=>{const im=document.querySelector('.v5-media img');return im?.complete&&im.naturalWidth===640&&im.src.endsWith('.gif');});

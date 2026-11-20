@@ -235,15 +235,19 @@ async function run(browser, origin, backend, failures) {
   assert.equal(accepted.scene.assisted, true); assert.equal(accepted.scene.firstAttempt.assisted, true);
   await teacherFrame.locator('[data-cmd="next"]').click(); await same(teacherFrame, studentFrame, 'next step retains prior answer');
   await teacherFrame.locator('.v5q-notes > details > summary').click();
+  await teacherFrame.waitForFunction(() => document.querySelector('.v5q-notes > details')?.open && window.__vilenkin5Board.getState().scene?.panels.notes === true);
   await teacherFrame.locator('#v5-quality-note').fill('Нуль в частном сохраняет разряд. Проверим умножением.');
   const beforeMedia = await same(teacherFrame, studentFrame, 'open notebook and reasoning');
   await teacherFrame.locator('.v5-media > summary').click();
+  await teacherFrame.waitForFunction(() => document.querySelector('.v5-media')?.open && window.__vilenkin5Board.getState().scene?.media.open === true);
   const gif = teacherFrame.locator('[data-v5-gif-toggle]'); await gif.click();
+  await teacherFrame.waitForFunction(() => window.__vilenkin5Board.getState().scene?.media.playing === true);
   const playing = await same(teacherFrame, studentFrame, 'shared GIF playing');
   assert.equal(playing.scene.media.id, 'u13'); assert.equal(playing.scene.media.open, true); assert.equal(playing.scene.media.playing, true);
   assert.deepEqual(playing.scene.model, beforeMedia.scene.model); assert.equal(playing.scene.savedInput, beforeMedia.scene.savedInput);
   assert.equal(playing.scene.note, beforeMedia.scene.note, 'opening the animation preserves written reasoning');
   await gif.click();
+  await teacherFrame.waitForFunction(() => window.__vilenkin5Board.getState().scene?.media.playing === false);
   assert.equal((await same(teacherFrame, studentFrame, 'shared GIF stopped')).scene.media.playing, false);
   const modelAnswer = await teacherFrame.evaluate(() => {
     const scene = __vilenkin5Board.getState().scene, d = Vilenkin5QualityModels.descriptor(WorkshopCurriculum.byId[scene.id]);
