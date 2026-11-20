@@ -475,6 +475,7 @@
     if(!supportsConstruction(id))return false;
     if(state.current!==id)switchLesson(id,false);
     const lesson=lessonMap.get(id),s=taskState(lesson),work=constructionState(lesson,s,true);
+    if (s.recall) s.recall.open=false;
     work.active=true;save();renderLesson();return true;
   }
   function undoConstruction(lesson,s) {
@@ -945,7 +946,72 @@
     catalogList.replaceChildren(frag);
   }
 
+  // A short decision on the same cube. Keep its progress separate from the four
+  // formal construction steps and keep an earlier lesson attempt available.
+  function recallVisible(lesson, s) {
+    return lesson.id === 'starter-18' && (s.recall?.open ||
+      (s.mode === 'choose' && !s.construction?.active && !s.recall));
+  }
+  function defaultRecall(variant = 0) {
+    return {open:true, variant, point:'', face:'', hint:false};
+  }
+  function recallGeometry(r) {
+    return r.variant === 0
+      ? {from:'N', faces:{P:'BFGC'}, points:['M','P','Q']}
+      : {from:'M', faces:{N:'AEFB', Q:'DHEA'}, points:['N','P','Q']};
+  }
+  function renderRecall(panel, lesson, s, planes) {
+    const r = s.recall || defaultRecall();
+    const {from, faces, points} = recallGeometry(r);
+    const correctFace = faces[r.point];
+    const solved = !!correctFace && r.face === correctFace;
+    const box = el('section',{class:'step-card', 'data-section-recall':''});
+    const change = (patch) => { s.recall = {...r, ...patch}; save(); renderLesson(); };
+    box.append(el('h3',{}, r.variant ? 'Разминка · первый отрезок' : 'Продолжи сечение от точки N'),
+      para(r.variant ? 'Проведи любую сторону сечения из M. Выбери вторую точку.'
+        : 'Отрезок MN уже проведён. В какую точку пойдёшь из N, чтобы продолжить границу?'));
+    const choices = el('div',{class:'plane-choice',role:'group','aria-label':'Вторая точка'});
+    points.forEach(point => choices.append(button(point,()=>change({point,face:''}),'',{
+      'data-recall-point':point,'aria-pressed':point===r.point})));
+    box.append(choices);
+    if (r.point && !correctFace) {
+      box.append(para(r.point === 'M' ? 'Так ты вернёшься по уже проведённому отрезку. Куда можно пойти дальше?'
+        : 'Поверни куб. Есть ли грань, в которой целиком лежит твой отрезок?', 'feedback retry'));
+    }
+    if (correctFace) {
+      box.append(para('Покажи, в какой грани лежит отрезок '+from+r.point+'.'));
+      const choices = el('div',{class:'plane-choice',role:'group','aria-label':'Общая грань'});
+      for (const id of ['AEFB','BFGC','CGHD','DHEA']) {
+        choices.append(button(planes.get(id).label,()=>{
+          if (id === correctFace) markHelp(lesson.id,'Разобрана сторона сечения в короткой разминке');
+          change({face:id});
+        },'',{'data-recall-face':id,'aria-pressed':r.face===id}));
+      }
+      box.append(choices);
+      if (r.face) box.append(para(solved ? 'Верно. Обе точки лежат в выбранной грани и в плоскости сечения.'
+        : 'Найди на кубе оба ребра с отмеченными точками. Выбранная грань содержит их оба?',
+        solved?'feedback good':'feedback retry'));
+    }
+    if (!solved) {
+      box.append(button('Покажи один шаг',()=>{
+        markHelp(lesson.id,'Подсказка к короткой разминке'); change({hint:true});
+      },'ghost',{'data-recall-hint':''}));
+      if (r.hint) box.append(para(r.variant
+        ? 'Точка M лежит на ребре AE. Проверь обе боковые грани с этим ребром.'
+        : 'Найди ребро BF с точкой N. По одной из двух его граней ты уже пришёл из M. Посмотри на другую.'));
+    } else {
+      box.append(button('Первый отрезок с другого ракурса',()=>{
+        s.camera.yaw=wrapYaw(s.camera.yaw+Math.PI/2);
+        s.recall=defaultRecall(1); save(); renderLesson();
+      },'ghost',{'data-recall-repeat':''}));
+    }
+    box.append(button(s.mode==='choose' && !s.construction?.active?'К полному построению':'Вернуться к моему построению',
+      ()=>change({open:false}),'ghost',{'data-recall-close':''}));
+    panel.append(box);
+  }
+
   function activePlane(lesson, s) {
+    if (recallVisible(lesson,s)) return s.recall?.face || null;
     const manual=constructionState(lesson,s);
     if(manual?.active) {
       const count=manual.actions.length;
@@ -960,6 +1026,15 @@
     return null;
   }
   function updateScene(lesson, s, caption) {
+    if (recallVisible(lesson,s)) {
+      const r=s.recall || defaultRecall(), {from}=recallGeometry(r);
+      caption.textContent=r.face?'Выбранная грань: '+r.face:'Поверни куб, чтобы рассмотреть грани';
+      renderer?.update({viewCount:r.variant?0:1,planeId:r.face || null,planeView:!!r.face && s.planeView,
+        camera:{...s.camera},showHelpers:true,cleanView:false,showResult:false,
+        focusNames:['A','B','C','D','E','F','G','H','M','N','P','Q'],
+        previewSegments:r.point?[[from,r.point]]:[]});
+      return;
+    }
     const construction=constructionState(lesson,s);
     if(construction?.active) {
       const count=construction.actions.length,selected=construction.selection,plan=constructionPlan(lesson)[count];
@@ -1004,7 +1079,7 @@
     if (lesson.source && !starter) metadata.push(para(sourceLabel(lesson,false), 'source-line'));
     if (board) header.append(...metadata);
     if (starter) {
-      header.prepend(para(({model:'Смотрим вместе',guided:'Пробуем с опорой',transfer:'Новый пример: пробую сам'})[starter.phase] || (lesson.scaffold?'Новый приём':'Первые шаги'),'starter-phase'));
+      header.prepend(para((lesson.id==='starter-18' && !manual && !recallVisible(lesson,s) && s.mode==='study' ? 'Разбор по шагам' : '') || ({model:'Смотрим вместе',guided:'Пробуем с опорой',transfer:'Новый пример: пробую сам'})[starter.phase] || (lesson.scaffold?'Новый приём':'Первые шаги'),'starter-phase'));
       if (starter.glossary?.length) {
         const words=el('div',{class:'starter-glossary'});
         starter.glossary.forEach(item=>{const row=para('');row.append(el('strong',{},item.term+' — '),math(item.text));words.append(row);});
@@ -1036,7 +1111,13 @@
       theory.addEventListener('toggle', () => { s.theoryOpen = theory.open; save(); }); theory.classList.add('theory-details'); modelPanel.append(theory);
     }
     const stepPanel = el('div', { class: 'step-panel' });
-    renderStepPanel(stepPanel, lesson, s, planes);
+    const recall = recallVisible(lesson,s);
+    if (recall) renderRecall(stepPanel,lesson,s,planes);
+    if (!recall || (s.mode==='choose' && !manual)) renderStepPanel(stepPanel, lesson, s, planes);
+    if (!recall && lesson.id==='starter-18') stepPanel.append(button('Разминка на две минуты',()=>{
+      s.recall=defaultRecall(1); s.camera.yaw=wrapYaw(s.camera.yaw+Math.PI/2);
+      save(); renderLesson();
+    },'ghost',{'data-recall-start':''}));
     if(lesson.practiceTopic && !starter && !board)stepPanel.append(button('Потренировать этот шаг',()=>{
       save(); window.dispatchEvent(new CustomEvent('sections:practice',{detail:{topic:lesson.practiceTopic,lessonId:lesson.id,step:s.revealed}}));
     },'practice-step ghost',{'data-action':'practice-step'}));
@@ -1051,9 +1132,9 @@
       notes.addEventListener('toggle', () => { s.notesOpen = notes.open; save(); });
       fragment.append(notes);
     }
-    if (!manual && (!starter || s.revealed)) fragment.append(renderHistory(lesson, s, planes));
+    if (!recall && !manual && (!starter || s.revealed)) fragment.append(renderHistory(lesson, s, planes));
     if(!manual && s.revealed===lesson.steps.length && s.revealed>0 && lesson.calculationSteps?.length)fragment.append(renderCalculations(lesson,s));
-    const bottom = manual ? renderConstructionDraft(s) : renderBottom(lesson, s); if (bottom.childNodes.length) fragment.append(bottom);
+    const bottom = recall ? el('div') : manual ? renderConstructionDraft(s) : renderBottom(lesson, s); if (bottom.childNodes.length) fragment.append(bottom);
     if (starter && lesson.source) { const metadata=details('Сведения о карточке',[para(sourceLabel(lesson,false),'source-line')]);metadata.classList.add('starter-metadata');fragment.append(metadata); }
     const navigation = el('nav', { class: 'lesson-navigation', 'aria-label': 'Переход между заданиями' });
     const i = C.lessons.indexOf(lesson);
@@ -1183,8 +1264,8 @@
     if(constructionState(lesson,s)?.active){renderConstructionPanel(panel,lesson,s,planes);return;}
     if (s.mode === 'choose') {
       const choice = el('div', { class: 'mode-choice' });
-      const startStudy=()=>{beginAttempt(s);s.mode='study';s.workedSeen=true;save();renderLesson();renderCatalog();};
-      const startPractice=()=>{beginAttempt(s);s.mode='practice';if(guidanceFor(lesson)?.phase==='guided')markHelp(lesson.id,'Учебная попытка с опорой');save();renderLesson();};
+      const startStudy=()=>{if(s.recall)s.recall.open=false;beginAttempt(s);s.mode='study';s.workedSeen=true;save();renderLesson();renderCatalog();};
+      const startPractice=()=>{if(s.recall)s.recall.open=false;beginAttempt(s);s.mode='practice';if(guidanceFor(lesson)?.phase==='guided')markHelp(lesson.id,'Учебная попытка с опорой');save();renderLesson();};
       if (guidanceFor(lesson)) {
         const phase=guidanceFor(lesson).phase,model=phase==='model';
         choice.append(el('h3',{},model?(lesson.scaffold?'Разберём новый приём':'Посмотрим одно действие'):phase==='guided'?'Теперь попробуем с опорой':'Теперь новый пример'),para(guidanceFor(lesson).intro || (lesson.scaffold?'Назовём рабочую плоскость. Затем обоснуем каждую новую линию.':'Сначала назовём плоскость. Потом выполним одно действие.')));
