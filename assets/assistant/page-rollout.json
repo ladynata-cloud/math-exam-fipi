@@ -2242,10 +2242,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "029c761ef31f0dd035275b7ab0db73b9ba3c895ad43e3c683ae59ba2830be2b8",
-      "afterSha256": "be31dde78b849510e6a79e75a8cb27477848ab917638d342883a04c28fde3e16",
+      "beforeSha256": "e6070e1e24d934b92981002ecf592f1f278a422f5fc5c1b1ccb8e21e9a04e090",
+      "afterSha256": "39e6db062a771f1902cfb264d2c2d0b74bba6d6e543ed75e20cd1b5dccf34f0a",
       "placement": "before-head-close",
-      "sourceSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0"
+      "sourceSha": "f24eff9a5e474470847498d23cf056833ddc200c"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6634,6 +6634,24 @@
         "stereo-course/index.html"
       ],
       "boundary": "Автономная сборка содержит проверенный движок видимости. Для №467 проверены собственная грань, перекрытие другой гранью и повёрнутые модели."
+    },
+    {
+      "previousBaseSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60",
+      "sourceBaseSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520",
+      "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
+      "previousBaseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+      "sourceBaseSha": "f24eff9a5e474470847498d23cf056833ddc200c",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
