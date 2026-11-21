@@ -35,5 +35,14 @@ assert(C.check('3; -2',{answer:'-2;3',kind:'set'}));assert(!C.check('3;3',{answe
 assert(C.check('x^2 − 4',{answer:'x²-4',kind:'text'}));assert(!C.check('x²+4',{answer:'x²-4',kind:'text'}));
 assert(C.check('5/(6*x)',{answer:'5/(6x)',kind:'text'}));assert(C.check('x^3/(8*y^3)',{answer:'x³/(8y³)',kind:'text'}));assert(!C.check('2*3',{answer:'23',kind:'text'}));
 assert(!C.check('2abc',{answer:'2',kind:'number'}));assert(!C.check('1e309',{answer:'1',kind:'number'}));
+const equivalent=(answer,value)=>C.check(value,{kind:'text',answer,reducedExpression:true});
+assert(equivalent('(2*b-a)/7','(-a+2b)/7'));
+assert(equivalent('(x-5)*(x-4)/6','(x^2-9x+20)/6'));
+assert(equivalent('b/(2*a)','b/(2a)'));
+assert(!equivalent('1/(a-b)','(a+c)/((a-b)*(a+c))'),'extra excluded values');
+assert(!equivalent('(2*b-a)/7','(-a+2b)/0'));
+assert(!equivalent('2*a*b','2a-b'));
+assert(!equivalent('a','a+(b-b)'));
+assert(!equivalent('a','a^9999999'));
 const allNumbers=D.sourceMap.sections.flatMap(s=>Array.from(s.exerciseNumbers||[]));assert.equal(allNumbers.length,1340);assert.equal(new Set(allNumbers).size,1340);
 console.log(JSON.stringify({status:'PASS',topics:51,tasks,steps,textbookTasks:source,exerciseMap:1340,checks:'schema, source refs, accepted answers, steps, input boundaries, root sets'}));
