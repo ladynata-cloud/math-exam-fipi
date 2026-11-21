@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 630,
-    "covered": 628,
+    "total": 631,
+    "covered": 629,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -39,7 +39,8 @@
     "trainers/oge-basics/multiplication-division/division-path.html",
     "trainers/school-workshop-check/index.html",
     "trainers/tyurin-statistics/index.html",
-    "trainers/makarychev9-2017/index.html"
+    "trainers/makarychev9-2017/index.html",
+    "trainers/makarychev7-2014/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -2225,10 +2226,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "f650225a6ec5416c928e2fe306f9b11912f3d1f00a22d83e7d5e0b456d2c7105",
-      "afterSha256": "a7c91ad012431c62dea90685021bcf835fb9cef361e65804ad5840288b64cfb7",
+      "beforeSha256": "c2714146d5ea9eb1e67b3f3404a9faf67ca79088a730fd798afeb9f8a179837e",
+      "afterSha256": "a9af54c3e88349a2553ff3f7ac3a38817819f5771aedd2195d1df82c24c20917",
       "placement": "before-head-close",
-      "sourceSha": "19b33486332fce8cfaaea77fad4b782eb9ecaad4"
+      "sourceSha": "f9162f738221882f7159357e9feb6371c8d5e146"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -4025,7 +4026,8 @@
     "school/peterson6/textbook/index.html": "sitemap",
     "trainers/peterson6-workshop/index.html": "sitemap",
     "trainers/merzlyak9-2014/index.html": "school/index.html",
-    "trainers/makarychev9-2017/index.html": "school/index.html"
+    "trainers/makarychev9-2017/index.html": "school/index.html",
+    "trainers/makarychev7-2014/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6606,6 +6608,15 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "19b33486332fce8cfaaea77fad4b782eb9ecaad4",
+      "sourceBaseSha": "f9162f738221882f7159357e9feb6371c8d5e146",
+      "task": "docs/tasks/WORKSHOP_MAKARYCHEV7_2014.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Обновлена проверенная ссылка на карту учебника 2014 года."
     }
   ],
   "coverageUpdates": [
@@ -6738,6 +6749,14 @@
         "books/index.html"
       ],
       "reason": "Каталог авторских книг опубликован с главной страницы и включён в sitemap."
+    },
+    {
+      "sourceBaseSha": "f9162f738221882f7159357e9feb6371c8d5e146",
+      "task": "docs/tasks/WORKSHOP_MAKARYCHEV7_2014.md",
+      "addedPages": [
+        "trainers/makarychev7-2014/index.html"
+      ],
+      "reason": "Практикумы по п. 9 и 10 издания 2014 года."
     }
   ]
 }

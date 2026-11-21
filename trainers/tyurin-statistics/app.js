@@ -83,18 +83,18 @@
   function render(focus) {
     const l=lessons.get(state.id),hash='#lesson/'+state.id;
     if(!embedded&&location.hash!==hash)history.replaceState(null,'',hash);
-    $('title').textContent=l.title;$('edition').textContent=course.authors+' · '+course.grade(l.book)+' · '+course.unit+' '+l.point+' · с. '+l.page;
+    $('title').textContent=l.title;$('edition').textContent=course.authors+' · '+course.grade(l.book)+' · '+(l.printedReference || course.unit+' '+l.point)+' · с. '+l.page;
     $('aim').textContent=l.aim;$('lesson').value=l.id;$('back').href='../../school/index.html#book/source-'+l.book;
     $('source').href=course.source(l.book,l.page);
     $('related').href=external[l.related]?'../../ege-profil/start/index.html#lesson/'+l.related:'../../school/index.html#lesson/'+l.related;
     $('board').hidden=embedded;$('board').href='../trainer-board.html?trainer='+encodeURIComponent(embeddedPath(l.id));
     for(const id of ['related','source','back'])$(id).target=embedded?'_blank':'_self';
     const w=$('work');
-    if(state.stage==='learn')w.innerHTML='<section class="panel"><h2 tabindex="-1">Как это устроено</h2>'+'<p>'+escape(l.rule)+'</p><label id="model-label" for="model">Пример модели № '+(state.model+1)+'</label><input type="range" min="0" max="6" value="'+state.model+'" id="model"><div id="worked-data">'+workedData(l)+'</div>'+button('practice','Попробовать на новых данных')+'</section>';
+    if(state.stage==='learn')w.innerHTML='<section class="panel"><h2 tabindex="-1">Как это устроено</h2>'+'<p>'+escape(l.rule)+'</p>'+(l.printedGuide?'<h3>Разбор упражнения из книги</h3><p>'+escape(l.printedGuide)+'</p><h3>Тренировка на других данных</h3>':'')+'<label id="model-label" for="model">Пример модели № '+(state.model+1)+'</label><input type="range" min="0" max="6" value="'+state.model+'" id="model"><div id="worked-data">'+workedData(l)+'</div>'+button('practice','Попробовать на новых данных')+'</section>';
     else if(state.stage==='done'){
       const first=state.results.filter(x=>x==='first').length;
       const next=course.nextId&&lessons.get(course.nextId(l));
-      w.innerHTML='<section class="panel"><h2 tabindex="-1">'+(first>=2?'Тема пройдена':'Стоит повторить')+'</h2><p>Самостоятельно с первой попытки: '+first+' из 3. Для прохождения нужны два таких ответа.</p><ol>'+state.results.map(r=>'<li>'+labels[r]+'</li>').join('')+'</ol>'+button('again','Повторить с новыми данными')+(first>=2&&next?' '+button('advance','Перейти к § '+next.point+' · '+escape(next.title)):'')+'</section>';
+      w.innerHTML='<section class="panel"><h2 tabindex="-1">'+(first>=2?'Тема пройдена':'Стоит повторить')+'</h2><p>Самостоятельно с первой попытки: '+first+' из 3. Для прохождения нужны два таких ответа.</p><ol>'+state.results.map(r=>'<li>'+labels[r]+'</li>').join('')+'</ol>'+button('again','Повторить с новыми данными')+(first>=2&&next?' '+button('advance',(next.printedReference?'Дальше: '+escape(next.printedReference):'Перейти к § '+next.point)+' · '+escape(next.title)):'')+'</section>';
     }else{
       const {data,question:q}=active(state),ready=state.feedback==='right',check=state.stage==='check';
       const diagnosis=q.mistakes?.find(([value])=>matches(state.draft,value))?.[1] || q.error;
@@ -110,7 +110,7 @@
     if(focus==='next')w.querySelector('[data-action=next]')?.focus();
   }
   for(const l of lessons.values()){
-    const option=document.createElement('option');option.value=l.id;option.textContent=course.grade(l.book)+' · '+l.point+'. '+l.title;$('lesson').append(option);
+    const option=document.createElement('option');option.value=l.id;option.textContent=course.grade(l.book)+' · '+(l.printedReference || l.point+'.')+' '+l.title;$('lesson').append(option);
   }
   $('lesson').addEventListener('change',e=>move(e.target.value));
   window.addEventListener('hashchange',()=>{if(!embedded)move(location.hash.split('/')[1]);});
