@@ -990,6 +990,13 @@ async function run(browser, origin, backend, failures) {
   for(const v of ['100','1000000','10000','1']){await teacherFrame.locator('#answer').fill(v);await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();}
   await teacherFrame.locator('#answer').fill('100');await teacherFrame.locator('#answer-form button').click();const ratio=await same(teacherFrame,studentFrame,'one hundred times longer');assert(ratio.scene.correct);assert.deepEqual(ratio.scene.hintLevels,{});await narrow(student,studentFrame,'cube-row-length');
 
+  phase = 'independent fractional mistakes and arbitrary nearby numbers on the coordinate ray';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-17"]').click();await studentFrame.locator('h1').filter({hasText:'№5.17'}).waitFor();
+  for(const value of ['48','8','60']){await teacherFrame.locator('#answer').fill(value);await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();}
+  await teacherFrame.locator('#answer').fill('777');await teacherFrame.locator('#answer-form button').click();const arbitrary=await same(teacherFrame,studentFrame,'arbitrary incorrect coordinate stays editable');assert(!arbitrary.scene.correct);assert.equal(arbitrary.scene.attempt,1);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('7,5');await studentFrame.locator('#answer-form button').click();const cells=await same(studentFrame,teacherFrame,'half-cell number is recognized by fraction value');assert.match(cells.scene.message,/расстояние в клетках/);
+  await studentFrame.locator('#answer').fill('30');await studentFrame.locator('#answer-form button').click();await ownership(teacher,student,false);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'correct coordinate received after reload');await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const exact=await same(teacherFrame,studentFrame,'pupil restores the correction');assert(exact.scene.correct);assert.deepEqual(exact.scene.hintLevels,{});
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
