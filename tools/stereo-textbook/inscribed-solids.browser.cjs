@@ -57,7 +57,10 @@ const groups = {
   spatialPointsAndCentroid: {manifests:[require('./spatial-points-and-centroid.json')],count:14},
   midpointsAndVectorLengths: {manifests:[require('./midpoints-and-vector-lengths.json')],count:20},
   spatialDistancesAndEqualLoci: {manifests:[require('./spatial-distances-and-equal-loci.json')],count:18},
-  coordinateSpheresSectionEnd: {manifests:[require('./coordinate-spheres-section-end.json')],count:13}
+  coordinateSpheresSectionEnd: {manifests:[require('./coordinate-spheres-section-end.json')],count:13},
+  scalarProductAnglesAndCube: {manifests:[require('./scalar-product-angles-and-cube.json')],count:20},
+  dotProductsCoordinateParameters: {manifests:[require('./dot-products-coordinate-parameters.json')],count:16},
+  spatialDirectionCosinesAndSquare: {manifests:[require('./spatial-direction-cosines-and-square.json')],count:12}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

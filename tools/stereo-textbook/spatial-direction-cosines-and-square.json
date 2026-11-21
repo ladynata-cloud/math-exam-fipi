@@ -1,0 +1,518 @@
+{
+  "parts": {
+    "691": [
+      null
+    ],
+    "692": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ],
+    "693": [
+      null
+    ],
+    "694": [
+      null
+    ],
+    "695": [
+      null
+    ],
+    "696": [
+      "а",
+      "б",
+      "в"
+    ]
+  },
+  "previousCatalog": {
+    "691": {
+      "id": "source-main-0691",
+      "kind": "exercise",
+      "title": "Задача № 691",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "691",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "692": {
+      "id": "source-main-0692",
+      "kind": "exercise",
+      "title": "Задача № 692",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "692",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "693": {
+      "id": "source-main-0693",
+      "kind": "exercise",
+      "title": "Задача № 693",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "693",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "694": {
+      "id": "source-main-0694",
+      "kind": "exercise",
+      "title": "Задача № 694",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "694",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "695": {
+      "id": "source-main-0695",
+      "kind": "exercise",
+      "title": "Задача № 695",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "695",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "696": {
+      "id": "source-main-0696",
+      "kind": "exercise",
+      "title": "Задача № 696",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "696",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0691": {
+      "raw": "1c0d3263116c6764fad55da5f93403d358e9cfb25a73354093ad0bd7e0bdf609",
+      "authored": "2b55cbf0a34145f7312013b00b41808675d5f0ff696cc32c58cb6724eb34a87a",
+      "integrated": "de22b48285efcccc91ca404c662396c84b96e5a240bf9ff81ccb5aebc6b0aac7"
+    },
+    "ex-main-0692-a": {
+      "raw": "5aae745ed51779cd985824592d0a174e4e2b7f063a067f3ddc0026a8ee3a7037",
+      "authored": "493d926b78d6d20a2aa28f04c3a81ef764a48076482d84a73ffe9a7edae30a08",
+      "integrated": "a3d871cefbf5274da73f2bea3e4af69b7a5210dba1cb2e88d564630bcc93be89"
+    },
+    "ex-main-0692-b": {
+      "raw": "b5065bf756fab1bd51d304386366af3455fbc8961fa4efc4764fc357d2fad5d3",
+      "authored": "7951dc2c050e807a07607dcb9d42dab164d9a1d387b1bba6968cd54936dd2096",
+      "integrated": "fe4c7839797530f89c5aa88dee467d7c8f7b325e9daaedb3acec48c401acf3c8"
+    },
+    "ex-main-0692-c": {
+      "raw": "adc14865e1a602942e64db070069c6248c5a341b9857715d008757e0d390c713",
+      "authored": "c838394e595cea0022e8f589ea5959f875788c26dd9b3c434d73d28b592fe7ba",
+      "integrated": "c10cb3693aa870ddc33802275f89ddaa8f193259c3182c7f42159a78f28ae111"
+    },
+    "ex-main-0692-d": {
+      "raw": "33807895e5b7f56fbb4c121ba65040e99cfc04963d4eb9a2b8ecf587a9cc859a",
+      "authored": "367a8b7333801dacf41afe4f4e925b9984448bb4ea6a0699c86499dd504a128d",
+      "integrated": "baeead4c07f4aa3b0119996b6f95bd690ed12346fd6571bc29031db04f6bfba4"
+    },
+    "ex-main-0692-e": {
+      "raw": "be431880a3ef1f7e58213d011b1b422f9f86df572717d7a62774041143c32a41",
+      "authored": "80754c33dc8d95c6ec1442502413172a22612840fa7384327e38634373a7be65",
+      "integrated": "ca7fa608b74d1c9672798234cde00565b8aa6ba179c0db47f47c4b848aa62ffd"
+    },
+    "ex-main-0693": {
+      "raw": "e56c2db0933c23dedd849a19c19752d6076afe75c8071f8c6130448abf0f89fa",
+      "authored": "f8557bf8386125537b35ec7b51955d9c7fed9655e696146d522178c71e11099b",
+      "integrated": "1ed98fefdcd0d63e311cc267e1057a0adec0b92975c4a292d0d261031551b9fb"
+    },
+    "ex-main-0694": {
+      "raw": "4f99bc9ae6f3fe7c01fd3cf8320b47376f292b97cdaaba8552f268b29d89b814",
+      "authored": "1b5cfcd8ace6cd9e5ef8889f713ad166322dd9e5eed593fa286fb365290b0691",
+      "integrated": "e58993cb9f3b97b4cc86189488efe3dcf03c3a28cc7a1f4161b7ef1575fdd4df"
+    },
+    "ex-main-0695": {
+      "raw": "ac08c912c60168c42ae68669aa0f7e285ab926c3e086c0df60e0c91392c6e69d",
+      "authored": "b7d560c159b7042130349a6868e945a215cf6160c73dce3d3eec42619b4d248e",
+      "integrated": "87da76a9175455659324fb33ca59a5c13b6013675791c726b4bdcdb9d45a029a"
+    },
+    "ex-main-0696-a": {
+      "raw": "ef4d49983d2f1fd6588e97cf2548667c0471809f6bcf5da6c23e9b9a889230e9",
+      "authored": "78e38b75c87cff92ebfb36369d39c6430188856bf7637a0bcd31f4cc5294f7fe",
+      "integrated": "4b80b8e529f6bc12fbe7873261b6af5263bd1ea02ad41779b7186b94625ec310"
+    },
+    "ex-main-0696-b": {
+      "raw": "a99521744ccc2cbcf359f4c93c48c8b994cae14c53c194a13258f59fca7c0131",
+      "authored": "c14805d6e6a761c6008e30118eb338f5100aa311a94dc8dc866a5df9fe7d5bd3",
+      "integrated": "e0b7fc6ed4dc4f91fabf6ef205337910058b8410d514c23ea67bc301a3bbb9b9"
+    },
+    "ex-main-0696-c": {
+      "raw": "17097e02d883e164a594d002293daf44310ed5c9a090127254fb0e0c6cdedaee",
+      "authored": "a6063db78bee3d716cc0408a1b2cc7cb3beb68a752bc914444c377f48e17b03e",
+      "integrated": "2c85af72d4a2f7a0f424f5d398fbbd17f81642c7c17907a8342bc51f3fa2803e"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0691|condition",
+      "spatial-direction-cosines-and-square-ex-main-0691-condition"
+    ],
+    [
+      "ex-main-0691|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0691-help-h1"
+    ],
+    [
+      "ex-main-0691|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0691-help-h2"
+    ],
+    [
+      "ex-main-0691|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0691-step-1"
+    ],
+    [
+      "ex-main-0691|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0691-step-2"
+    ],
+    [
+      "ex-main-0691|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0691-step-3"
+    ],
+    [
+      "ex-main-0692-a|condition",
+      "spatial-direction-cosines-and-square-ex-main-0692-a-condition"
+    ],
+    [
+      "ex-main-0692-a|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0692-a-help-h1"
+    ],
+    [
+      "ex-main-0692-a|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0692-a-help-h2"
+    ],
+    [
+      "ex-main-0692-a|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0692-a-step-1"
+    ],
+    [
+      "ex-main-0692-a|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0692-a-step-2"
+    ],
+    [
+      "ex-main-0692-a|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0692-a-step-3"
+    ],
+    [
+      "ex-main-0692-b|condition",
+      "spatial-direction-cosines-and-square-ex-main-0692-b-condition"
+    ],
+    [
+      "ex-main-0692-b|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0692-b-help-h1"
+    ],
+    [
+      "ex-main-0692-b|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0692-b-help-h2"
+    ],
+    [
+      "ex-main-0692-b|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0692-b-step-1"
+    ],
+    [
+      "ex-main-0692-b|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0692-b-step-2"
+    ],
+    [
+      "ex-main-0692-b|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0692-b-step-3"
+    ],
+    [
+      "ex-main-0692-c|condition",
+      "spatial-direction-cosines-and-square-ex-main-0692-c-condition"
+    ],
+    [
+      "ex-main-0692-c|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0692-c-help-h1"
+    ],
+    [
+      "ex-main-0692-c|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0692-c-help-h2"
+    ],
+    [
+      "ex-main-0692-c|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0692-c-step-1"
+    ],
+    [
+      "ex-main-0692-c|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0692-c-step-2"
+    ],
+    [
+      "ex-main-0692-c|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0692-c-step-3"
+    ],
+    [
+      "ex-main-0692-d|condition",
+      "spatial-direction-cosines-and-square-ex-main-0692-d-condition"
+    ],
+    [
+      "ex-main-0692-d|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0692-d-help-h1"
+    ],
+    [
+      "ex-main-0692-d|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0692-d-help-h2"
+    ],
+    [
+      "ex-main-0692-d|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0692-d-step-1"
+    ],
+    [
+      "ex-main-0692-d|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0692-d-step-2"
+    ],
+    [
+      "ex-main-0692-d|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0692-d-step-3"
+    ],
+    [
+      "ex-main-0692-e|condition",
+      "spatial-direction-cosines-and-square-ex-main-0692-e-condition"
+    ],
+    [
+      "ex-main-0692-e|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0692-e-help-h1"
+    ],
+    [
+      "ex-main-0692-e|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0692-e-help-h2"
+    ],
+    [
+      "ex-main-0692-e|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0692-e-step-1"
+    ],
+    [
+      "ex-main-0692-e|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0692-e-step-2"
+    ],
+    [
+      "ex-main-0692-e|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0692-e-step-3"
+    ],
+    [
+      "ex-main-0693|condition",
+      "spatial-direction-cosines-and-square-ex-main-0693-condition"
+    ],
+    [
+      "ex-main-0693|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0693-help-h1"
+    ],
+    [
+      "ex-main-0693|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0693-help-h2"
+    ],
+    [
+      "ex-main-0693|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0693-step-1"
+    ],
+    [
+      "ex-main-0693|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0693-step-2"
+    ],
+    [
+      "ex-main-0693|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0693-step-3"
+    ],
+    [
+      "ex-main-0694|condition",
+      "spatial-direction-cosines-and-square-ex-main-0694-condition"
+    ],
+    [
+      "ex-main-0694|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0694-help-h1"
+    ],
+    [
+      "ex-main-0694|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0694-help-h2"
+    ],
+    [
+      "ex-main-0694|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0694-step-1"
+    ],
+    [
+      "ex-main-0694|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0694-step-2"
+    ],
+    [
+      "ex-main-0694|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0694-step-3"
+    ],
+    [
+      "ex-main-0695|condition",
+      "spatial-direction-cosines-and-square-ex-main-0695-condition"
+    ],
+    [
+      "ex-main-0695|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0695-help-h1"
+    ],
+    [
+      "ex-main-0695|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0695-help-h2"
+    ],
+    [
+      "ex-main-0695|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0695-step-1"
+    ],
+    [
+      "ex-main-0695|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0695-step-2"
+    ],
+    [
+      "ex-main-0695|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0695-step-3"
+    ],
+    [
+      "ex-main-0696-a|condition",
+      "spatial-direction-cosines-and-square-ex-main-0696-a-condition"
+    ],
+    [
+      "ex-main-0696-a|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0696-a-help-h1"
+    ],
+    [
+      "ex-main-0696-a|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0696-a-help-h2"
+    ],
+    [
+      "ex-main-0696-a|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0696-a-step-1"
+    ],
+    [
+      "ex-main-0696-a|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0696-a-step-2"
+    ],
+    [
+      "ex-main-0696-a|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0696-a-step-3"
+    ],
+    [
+      "ex-main-0696-b|condition",
+      "spatial-direction-cosines-and-square-ex-main-0696-b-condition"
+    ],
+    [
+      "ex-main-0696-b|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0696-b-help-h1"
+    ],
+    [
+      "ex-main-0696-b|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0696-b-help-h2"
+    ],
+    [
+      "ex-main-0696-b|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0696-b-step-1"
+    ],
+    [
+      "ex-main-0696-b|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0696-b-step-2"
+    ],
+    [
+      "ex-main-0696-b|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0696-b-step-3"
+    ],
+    [
+      "ex-main-0696-c|condition",
+      "spatial-direction-cosines-and-square-ex-main-0696-c-condition"
+    ],
+    [
+      "ex-main-0696-c|help:h1",
+      "spatial-direction-cosines-and-square-ex-main-0696-c-help-h1"
+    ],
+    [
+      "ex-main-0696-c|help:h2",
+      "spatial-direction-cosines-and-square-ex-main-0696-c-help-h2"
+    ],
+    [
+      "ex-main-0696-c|step-1",
+      "spatial-direction-cosines-and-square-ex-main-0696-c-step-1"
+    ],
+    [
+      "ex-main-0696-c|step-2",
+      "spatial-direction-cosines-and-square-ex-main-0696-c-step-2"
+    ],
+    [
+      "ex-main-0696-c|step-3",
+      "spatial-direction-cosines-and-square-ex-main-0696-c-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "d5e050157af78ba32e9764124460fc72d9b4aa034699e05d26b262a4ddee2ca3",
+      "afterSHA256": "d969ce0eef958ab481e29312b734214b85adfa02a1531e41415feacdcc64aa80"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "33c1febd8da07aa106c6d3d826d42a87a271d809613b2b6190b79ff495f224cf",
+      "afterSHA256": "8dd1c1b7e8db6b128404c19a85af22bfdddc830429ffefb77064a768f5c7bbc1"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T23:01:09Z",
+    "scope": "Chapters I–VI and chapter VII points 71–79, complete paragraph 1 and exercises 682–690, with 1,257 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "6756f562464b8a76e46a19eb4351fcb708d605a4738a67a9f108d382b9860053",
+    "index": "f1d22871c6ca63e63e8dba4a4d52c1772bd8d37320ac2b1f6c6e7fad1874ddd4",
+    "registry": "d93cd5529b4f8d8c06d8fe31e7cb8fe21ddc2a2dabd0b582345671be7a7a4a15",
+    "cases": "e2cc0f499e1d1e07aa1e3a28530492539240b6a276f6b58be999820616f6fb2a"
+  }
+}

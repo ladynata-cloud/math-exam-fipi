@@ -90,6 +90,9 @@ jobs:
           node tools/stereo-textbook/midpoints-and-vector-lengths.test.cjs
           node tools/stereo-textbook/spatial-distances-and-equal-loci.test.cjs
           node tools/stereo-textbook/coordinate-spheres-section-end.test.cjs
+          node tools/stereo-textbook/scalar-product-angles-and-cube.test.cjs
+          node tools/stereo-textbook/dot-products-coordinate-parameters.test.cjs
+          node tools/stereo-textbook/spatial-direction-cosines-and-square.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -356,6 +359,21 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: coordinateSpheresSectionEnd
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-spheres-section-end
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check vector angles, dot products, signed reversals and all fifteen cube pairs
+        env:
+          TEXTBOOK_PRACTICE_GROUP: scalarProductAnglesAndCube
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/scalar-product-angles-and-cube
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check coordinate products, acute and obtuse angles, and the changing parameter
+        env:
+          TEXTBOOK_PRACTICE_GROUP: dotProductsCoordinateParameters
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/dot-products-coordinate-parameters
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check the printed direction-angle discrepancy, radical inputs, triangle area and exact cube cosines
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialDirectionCosinesAndSquare
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-direction-cosines-and-square
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -442,5 +460,8 @@ jobs:
             artifacts/midpoints-and-vector-lengths/
             artifacts/spatial-distances-and-equal-loci/
             artifacts/coordinate-spheres-section-end/
+            artifacts/scalar-product-angles-and-cube/
+            artifacts/dot-products-coordinate-parameters/
+            artifacts/spatial-direction-cosines-and-square/
           retention-days: 14
           if-no-files-found: error
