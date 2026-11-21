@@ -488,6 +488,19 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'choose and measure a new MNPKS pentagon, printed exercise 1.84';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-84"]').click();await studentFrame.locator('h1').filter({hasText:'№1.84'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=vertex]').selectOption({value:'1'});await teacherFrame.locator('[data-v5-param=p1]').selectOption({value:'2'});await same(teacherFrame,studentFrame,'N changes on both pentagons');await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-apply-drawing]').click();const personalPentagon=await same(studentFrame,teacherFrame,'pupil locks five personal sides');assert.equal(personalPentagon.scene.seed,100005);assert.equal(personalPentagon.scene.attempt,0);
+  await studentFrame.locator('#answer').fill('MN NP PK KS');await studentFrame.locator('#answer-form button').click();const missingSM=await same(studentFrame,teacherFrame,'four sides do not close MNPKS');assert.match(missingSM.scene.message,/замыкают/);
+  await studentFrame.locator('#answer').fill('MS SK KP PN NM');await studentFrame.locator('#answer-form button').click();await same(studentFrame,teacherFrame,'all five sides, named in reverse order');
+  for(const length of ['25','28','25','36','31']){await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill(length);await studentFrame.locator('#answer-form button').click();const accepted=await same(studentFrame,teacherFrame,'each chosen side measured');assert(accepted.scene.correct);}
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('114');await studentFrame.locator('#answer-form button').click();const partialPerimeter=await same(studentFrame,teacherFrame,'missing fifth side in the perimeter');assert.match(partialPerimeter.scene.message,/SM/);
+  await studentFrame.locator('#answer').fill('145');await studentFrame.locator('#answer-form button').click();const fixedPerimeter=await same(studentFrame,teacherFrame,'own perimeter after correction');assert(fixedPerimeter.scene.correct);assert.deepEqual(fixedPerimeter.scene.hintLevels,{});
+  await ownership(teacher,student,false);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restored chosen five sides');
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'pupil restored corrected perimeter');assert.equal(await studentFrame.locator('#answer').inputValue(),'145');
+
   phase = 'decompose source lengths into named units, printed exercise 1.83';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-83"]').click();await studentFrame.locator('h1').filter({hasText:'№1.83'}).waitFor();

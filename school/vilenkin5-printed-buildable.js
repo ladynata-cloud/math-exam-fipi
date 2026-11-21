@@ -32,6 +32,7 @@
     return {names,coords,closed,edges,total:edges.reduce((sum,e)=>sum+e.length,0)};
   }
   function shaped(l,codes,phase=1){
+    if(l==='1.84')return makeShape('MNPKS',[[12,28],[29,8],[55,9],[72,28],[39,43]],codes,true);
     if(l==='1.80')return makeShape('PRMKSTA',[[7,30],[19,14],[41,14],[56,34],[69,24],[82,24],[93,12]],codes,false);
     if(l==='1.56')return phase===0?makeShape('ABCDE',closedLayout,codes,true):makeShape('FSHRPMD',openLayout,codes,false);
     return makeShape('ABCDEFH',closedLayout,codes,true);
@@ -47,6 +48,24 @@
     const prompt=isOpen?'Найди длину открытой FSHRPMD по сумме измерений звеньев.':'Найди сумму измерений всех звеньев замкнутой ABCDEFH, включая HA.';
     return {prefix:sourcePreamble(seed),prompt:prompt+' У всех измерений точность 1 мм. Можно взять собственный чертёж из модели.',inputPrompt:'Длина ломаной по измерениям, мм',answer:fig.total,steps,errors:!isOpen?[{value:fig.total-fig.edges.at(-1).length,text:'Ты дошёл до H, но замкнутая ломаная продолжается от H до A. Прибавь это звено.'}]:[],data:{kind:'drawing',number,codes,fig},table:{caption:'Граница и порядок измерений',headers:['№','Звено'],rows:fig.edges.map((e,i)=>[i+1,e.name])},conditionKey:fig.edges.map(e=>e.name+e.length).join('/')+'/'+codes.join('')};
   }
+  const pentagonLesson={number:'1.84',key:'printed-1-84',title:'Начерти MNPKS и найди его периметр',part:1,point:3,page:21,
+    explanation:'Соедини точки M, N, P, K, S по порядку и замкни границу от S к M. Измерь каждую из пяти сторон своего чертежа в одних единицах. Периметр равен сумме всех пяти измерений.',
+    worked:['Если четыре стороны уже дали 61 мм, а замыкающая — 18 мм, периметр равен 79 мм.','Диагональ соединяет несоседние вершины; на обходе границы по ней не проходят.'],
+    misconception:'Пятая сторона пятиугольника исчезает из суммы, потому что она возвращает к началу.',reflect:'Если подвинуть вершину N, какие два слагаемых периметра нужно измерить заново?',requires:['v5f-broken-length'],related:['v5f-formula-perimeter']};
+  function measurePentagon(seed,r,step){
+    const codes=readSeed(seed,r).slice(0,5),fig=shaped('1.84',codes),edges=fig.edges.map(e=>e.name),steps=[];
+    steps.push({...step('Пройди границу и перечисли все стороны MNPKS.',edges.join(' '),'Соединяй соседние буквы и не забывай переход от последней к первой.'),answerFormat:'v5-segments',
+      nearSets:[{set:edges.slice(0,-1).join(' '),text:'Четыре участка не замыкают пятиугольник. Проведи сторону от S к M.'}]});
+    for(const edge of fig.edges)steps.push(stepN(step,'Измерь '+edge.name+' на линейке выбранного чертежа. Введи миллиметры до ближайшего целого.',edge.length,
+      'Выбери '+edge.name+' в модели. Нулевая засечка у одного конца, отметка у второго показывает число миллиметров.',
+      [{value:edge.length/10,text:'Получены сантиметры. Переведи их в миллиметры, как подписано у ответа.'}]));
+    const partial=fig.total-fig.edges.at(-1).length;
+    return {prefix:sourcePreamble(seed),prompt:'Построй пятиугольник MNPKS, измерь все пять сторон и найди периметр как сумму измерений. Положение каждой вершины можно изменить и начать решение по своему чертежу.',
+      inputPrompt:'Периметр по измерениям, мм',answer:fig.total,answerFormat:'v5-natural',steps,
+      errors:[{value:partial,text:'Это сумма MN, NP, PK и KS. На пути обратно к M нужно пройти ещё SM.'}],
+      data:{kind:'drawing',number:'1.84',codes,fig},table:{caption:'Стороны по обходу границы',headers:['№','Сторона'],rows:edges.map((e,i)=>[i+1,e])},conditionKey:'MNPKS/'+codes.join('')};
+  }
+
   function sixMeasurements(seed,r,step){
     const codes=readSeed(seed,r),fig=shaped('1.80',codes),answer=fig.edges.map(e=>e.length);
     const segmentList=fig.edges.map(e=>e.name).join(' ');
@@ -99,7 +118,7 @@
     return '<svg class="v5q-source-polyline" viewBox="0 0 300 64" role="img" aria-label="K между A и L"><line x1="'+start+'" y1="39" x2="'+middle+'" y2="39" stroke="#3b7b59" stroke-width="4"/><line x1="'+middle+'" y1="39" x2="'+end+'" y2="39" stroke="#b66535" stroke-width="4"/>'+dots.map(([x,name])=>'<circle cx="'+x+'" cy="39" r="3.2"/><text x="'+x+'" y="23" text-anchor="middle" font-size="16">'+name+'</text>').join('')+'</svg>';
   }
   const drawBounds={phase:[0,1,1],vertex:[0,6,0],edge:[0,6,0],...Object.fromEntries(Array.from({length:7},(_,i)=>['p'+i,[0,5,0]]))};
-  const bounds={'1.56':drawBounds,'1.57':{firstLength:[0,80,0],secondLength:[0,80,0],view:[0,3,0]},'1.58':{edge:[0,4,0]},'1.59':drawBounds,'1.80':{...drawBounds,edge:[0,5,0]}};
+  const bounds={'1.56':drawBounds,'1.57':{firstLength:[0,80,0],secondLength:[0,80,0],view:[0,3,0]},'1.58':{edge:[0,4,0]},'1.59':drawBounds,'1.80':{...drawBounds,edge:[0,5,0]},'1.84':{vertex:[0,4,0],edge:[0,4,0],...Object.fromEntries(Array.from({length:5},(_,i)=>['p'+i,[0,5,0]]))}};
   function chosenCodes(d,s){return d.codes.map((c,i)=>s['p'+i]?s['p'+i]-1:c);}
   function selection(t,s){
     const d=t.data;
@@ -128,7 +147,7 @@
     controls.push({key:'vertex',title:'Какую вершину двигать',values:[...f.names].map((p,i)=>[i,p])},{key:'p'+v,title:'Положение вершины '+f.names[v],values:[[0,'Как в условии'],...options.map((text,j)=>[j+1,text])]},{key:'edge',title:'Какое звено измерить',values:f.edges.map((e,j)=>[j,e.name])});
     return {title:'Построй и измерь свою ломаную',controls,visual:figureSvg(f,i,v,true)+apply,question:'Какую длину '+e.name+' показывает виртуальная линейка? Запиши миллиметры с точностью до 1 мм.',answer:e.length,why:'Считаем от нулевой засечки. Ближайшее целое деление у правого конца: '+e.length+' мм.'};
   }
-  const generators={'1.56':(s,r,t)=>drawingTask('1.56',s,r,t),'1.57':splitLine,'1.58':polygon,'1.59':(s,r,t)=>drawingTask('1.59',s,r,t),'1.80':sixMeasurements};
-  const api={lessons,measuredLesson,generators,bounds,explore,selection,taskDrawing};
+  const generators={'1.56':(s,r,t)=>drawingTask('1.56',s,r,t),'1.57':splitLine,'1.58':polygon,'1.59':(s,r,t)=>drawingTask('1.59',s,r,t),'1.80':sixMeasurements,'1.84':measurePentagon};
+  const api={lessons,measuredLesson,pentagonLesson,generators,bounds,explore,selection,taskDrawing};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.Vilenkin5PrintedBuildablePaths=api;
 })(typeof window!=='undefined'?window:globalThis);
