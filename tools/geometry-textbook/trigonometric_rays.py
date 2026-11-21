@@ -69,7 +69,8 @@ def simplify_polar_labels(card):
             parts=[part for part in label.split('=') if part not in ('E','B','C')]
             if not parts:continue
             model['labels'][key]='='.join(parts)
-            if 'M' in parts:model.setdefault('labelOffsets',{})[key]=[1.2,-3.3]
+            if 'M' in parts:model.setdefault('labelOffsets',{})[key]=[.4,5.8]
+            elif 'O' in parts:model.setdefault('labelOffsets',{})[key]=[-1.8,-5.5]
             visible.append(key)
         view['points']=visible
     return card

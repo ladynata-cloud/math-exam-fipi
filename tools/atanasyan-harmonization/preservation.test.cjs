@@ -75,7 +75,7 @@ function filesAt(relative) {
 const approvedAreaFiles = {
   "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
   "geometry-course/textbook/data/trigonometric-signs.json": "22d83be75d0a93f61fa9d230be762e7de0b27412608af570f0383cec57a9d944",
-  "geometry-course/textbook/data/trigonometric-rays.json": "cad67bc7b9b506e26f7f790343c1bf9e83c0bc4c0fee98559957d10cdc83045f",
+  "geometry-course/textbook/data/trigonometric-rays.json": "4f4f6f668aec42eef93fabd8b0cd7d0967a09c7a0f15780f5e1a31e977010940",
   "geometry-course/textbook/data/slope-and-reflection.json": "745546f67b66680bf4575f64daad403e1a921aeb8e29468b262ba2d9287e6d34",
   "geometry-course/textbook/data/upper-semicircle.json": "1e11581e38e95bdcc1c6e8fea01042fba0be077290bc83bbeab240d084c4d10c",
   "geometry-course/textbook/data/coordinate-additional-curves.json": "fee66bf53ff6b7d72bf4ea1291b3c0d301e88367f00f364df226e0bb3534d0b7",
