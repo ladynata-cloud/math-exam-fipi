@@ -152,6 +152,20 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function exactErroneousFractionsRegression(){
+  const f=boot(),p='v5f-printed-5-';
+  const ray=f.M.generate(p+'17',0);ok(f.M.equal('7,5',ray.steps[3].errors[0].value));ok(!f.M.equal('777',ray.steps[3].errors[0].value));
+  const seed=3,ex=f.M.generate(p+'16',seed),x=ex.data.groupDecrease;
+  ok(f.M.equal((x.total/x.divisor)+'/'+x.remove,ex.errors[0].value));ok(!f.M.equal('777',ex.errors[0].value));
+  for(let k=1;k<=20;k++)for(let n=0;n<90;n++){const t=f.M.generate(p+k,n);
+    for(const target of [...t.steps,t])for(const value of [target.answer,...(target.errors||[]).map(e=>e.value)])ok(typeof value!=='number'||Number.isInteger(value));
+  }
+  f.close();const g=boot('#lesson/'+p+'17');
+  for(const value of ['48','8','60']){g.submit(value);g.click('[data-cmd=next]');}
+  g.submit('777');equal(g.snapshot().scene.attempt,1);ok(!g.snapshot().scene.correct);equal(g.errors,[]);
+  g.submit('7,5');ok(g.snapshot().scene.message.includes('расстояние в клетках'));g.submit('30');ok(g.snapshot().scene.correct);ok(!g.snapshot().scene.assisted);g.close();
+}
+
 function cubeRowsRegression(){
   const f=boot(),id='v5f-printed-5-20',original=f.M.generate(id,0);
   equal(plain([...original.steps,original].map(x=>Number(x.answer))),[10,1000,100,1000000,10000,1,100]);
@@ -967,6 +981,28 @@ function buildablePathsRegression(){
 
 
 
+function exactPrintedMistakeRegression(){
+  const f=boot(),examples=[
+    ['v5f-printed-1-7',2,/делимое и делитель/],
+    ['v5f-printed-1-63',0,/Ширина уже известна/],
+    ['v5f-printed-1-80',4,/сантиметрах/],
+    ['v5f-printed-1-84',1,/сантиметры/]
+  ];
+  for(const [id,index,feedback] of examples){
+    const task=f.M.generate(id,0),step=task.steps[index];f.route('#lesson/'+id);
+    for(const previous of task.steps.slice(0,index)){f.submit(value(f.M,previous));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
+    const arbitrary=String(Number(step.answer)+1);
+    const answer=step.errors[0].value,ratio=f.M.parse(answer);ok(ratio);if(id.endsWith('-84'))equal(arbitrary,'27');
+    f.submit(arbitrary);ok(!f.snapshot().scene.correct);equal(f.snapshot().scene.step,index);equal(f.errors,[]);
+    const expectedFraction=ratio.d===1?String(ratio.n):ratio.n+'/'+ratio.d;f.submit(expectedFraction);ok(feedback.test(f.snapshot().scene.message),id+' explains the exact fractional mistake');ok(!f.snapshot().scene.correct);
+    f.submit(String(step.answer));ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});equal(f.errors,[]);
+    for(let seed=0;seed<120;seed++){
+      const q=f.M.generate(id,seed).steps[index];ok(typeof q.errors[0].value==='string');const ratio=f.M.parse(q.errors[0].value);ok(ratio&&Number.isSafeInteger(ratio.n)&&Number.isSafeInteger(ratio.d));ok(!f.M.equal(q.errors[0].value,q.answer));
+    }
+  }
+  f.close();
+}
+
 function perimeterAndMassRegression(){
   const f=boot(),N=f.w.Vilenkin5Numbered,B=f.w.Vilenkin5PrintedBuildablePaths,ids=[84,85,86,87].map(n=>'v5f-printed-1-'+n),src=ids.map(id=>f.M.generate(id,0));
   equal(src[0].data.fig.names,'MNPKS');equal(plain(src[0].data.fig.edges.map(e=>e.length)),[26,26,25,36,31]);equal(src[0].answer,144);
@@ -1156,12 +1192,12 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
     printedSegmentRegression,compassAndCompoundRegression,printedChecksRegression,printedLengthUnitsRegression,
-    buildablePathsRegression,pageNineteenBoundariesRegression,pageTwentyReviewRegression,originalChainsRegression,everydayReasoningRegression,numberingAndPathsRegression,pageTwentyOneFirstRegression,sixMeasurementsRegression,comparisonsAndMixedMeasuresRegression,perimeterAndMassRegression,
+    buildablePathsRegression,pageNineteenBoundariesRegression,pageTwentyReviewRegression,originalChainsRegression,everydayReasoningRegression,numberingAndPathsRegression,pageTwentyOneFirstRegression,sixMeasurementsRegression,comparisonsAndMixedMeasuresRegression,perimeterAndMassRegression,exactPrintedMistakeRegression,
   ]){
     check();
     await tick(); // Let closed lesson windows finish disposal before loading the next group.

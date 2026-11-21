@@ -167,6 +167,14 @@ const server=http.createServer((req,res)=>{
       assert(await survey.locator('caption').isVisible());
       assert(await page.locator('#task-panel .v5q-table-scroll').evaluateAll(boxes=>boxes.every(box=>box.scrollWidth<=box.clientWidth+1)),'all source-table columns fit at 320px');
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'numbered table at 320px');
+      if(id==='v5f-printed-1-84'){
+        await page.locator('#answer').fill('MN NP PK KS SM');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();
+        await page.locator('#answer').fill('27');await page.locator('#answer-form button').click();assert.equal(await page.locator('#answer').isEnabled(),true);
+        await page.locator('#answer').fill('2,6');await page.locator('#answer-form button').click();assert.match(await page.locator('.feedback').innerText(),/сантиметры/);
+        await page.locator('#answer').fill('2');await page.reload();await page.locator('#answer').waitFor();assert.equal(await page.locator('#answer').inputValue(),'2');
+        await page.locator('#answer').fill('26');await page.locator('#answer-form button').click();
+        const result=await page.evaluate(()=>Vilenkin5Quality.getState().scene);assert(result.correct);assert.deepEqual(result.hintLevels,{});
+      }
       if(id==='v5f-printed-1-72'){
         const own=page.locator('#v5-quality-note');
         assert(await own.isVisible());assert.equal(await page.locator('.v5q-notes textarea').evaluate(node=>node.closest('details')===null),true);

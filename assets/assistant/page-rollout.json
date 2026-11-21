@@ -2233,10 +2233,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "73e685db7ec877ae3ce2e93e06870655327f6488355dad963e9c6436fe835d5c",
-      "afterSha256": "5b298f496a781c9b5dd8abc9d93958c8f1eede59bcbd6d29ccbf3ecfa845811b",
+      "beforeSha256": "3e9f398febd1c16f411587403bd60177e4e39e934ae1bd17723d4e7510b80ae9",
+      "afterSha256": "a837a8a29246632261cd53802ec59426f28e1d0fff19deb8009e2d30f6e761d5",
       "placement": "before-head-close",
-      "sourceSha": "8affc150f8cf7f142d364f9470274ed6a00a49c8"
+      "sourceSha": "8d19a8344e54a3c208dfe95481cb50501481baff"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6860,6 +6860,16 @@
       ],
       "bindingScope": "Per-page sourceSha for the combined school entry with the numbered Vilenkin volumes, cube rows, recoverable fractional forecasts and the reviewed Workshop maps.",
       "boundary": "Explicit committed source identity only; printed pages and shared activities have separate subject checks."
+    },
+    {
+      "previousBaseSha": "8affc150f8cf7f142d364f9470274ed6a00a49c8",
+      "sourceBaseSha": "8d19a8344e54a3c208dfe95481cb50501481baff",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Updated the school entry for the two Vilenkin volumes with exact fractional error feedback in six printed exercises. Other pages retain their reviewed source identities.",
+      "boundary": "Per-page source binding; mathematical and shared-board behavior are covered by the Vilenkin tests."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
