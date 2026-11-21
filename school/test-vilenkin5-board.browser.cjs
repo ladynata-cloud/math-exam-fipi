@@ -698,6 +698,28 @@ async function run(browser, origin, backend, failures) {
   assert.equal(cake.scene.model.object,1);assert.equal(cake.scene.step,2);assert.equal(await studentFrame.locator('.v5q-model .v5q-cut-label').count(),8);
   await narrow(student,studentFrame,'two-horizontal-layers');
 
+  phase = 'four own examples and a separate shape classification';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-9"]').click();
+  await studentFrame.locator('#task-panel').getByRole('img',{name:'Тонкая линия с точками O, P и Q'}).waitFor();
+  await teacherFrame.getByText('Мои четыре примера',{exact:true}).click();
+  await teacherFrame.locator('#v5-quality-note').fill('Окружность — след края чашки.');
+  const thought=await same(teacherFrame,studentFrame,'own example saved without classifying the picture');
+  assert.equal(thought.scene.attempt,0);assert.equal(thought.scene.correct,false);assert.match(thought.scene.note,/чашки/);
+  await teacherFrame.locator('[data-v5-param=kind]').selectOption('1');
+  await ownership(teacher,student,true);
+  await studentFrame.locator('#v5-quality-note').fill('Окружность — след края чашки. Круг — отпечаток дна. Цилиндр — жестяная банка. Шар — цельная бусина.');
+  await studentFrame.locator('#answer').fill('круг');await studentFrame.locator('#answer-form button').click();
+  assert.match((await same(studentFrame,teacherFrame,'boundary confused with the whole cover')).scene.message,/заполненную область/);
+  await studentFrame.locator('#answer').fill('окружность');await studentFrame.locator('#answer-form button').click();
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-v5-param=kind]').selectOption('2');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const copy=await same(studentFrame,teacherFrame,'student examples and separate check survive teacher reload');
+  assert.match(copy.scene.note,/бусина/);assert.equal(copy.scene.step,1);assert.equal(copy.scene.model.kind,2);assert.deepEqual(copy.scene.hintLevels,{});
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  const ownAgain=await same(teacherFrame,studentFrame,'second participant recovered the same four own examples');
+  assert.equal(ownAgain.scene.note,copy.scene.note);await narrow(student,studentFrame,'round-objects');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');

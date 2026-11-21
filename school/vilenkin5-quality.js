@@ -169,6 +169,7 @@
       const parts=value.split(';');
       if(parts.length!==target.answer.length||parts.some(part=>root.Vilenkin5PrintedDigits.natural(part)===null&&M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
     }
+    if(target.answerFormat==='v5-object-shape'&&!root.Vilenkin5RoundObjects.read(value))return 'В ответе к рисунку нужно название формы: окружность, круг, цилиндр или шар. Свои предметы запиши в «Мои четыре примера». Написанное можно уточнить.';
     if(target.answerFormat==='v5-arc'&&!/^[ABCDKMPST]{3}$/.test(root.Vilenkin5Numbered.readArc(value)))return 'Нужны три буквы. Сначала запиши начало дуги, затем промежуточную метку и конец.';
     if(target.answerFormat==='v5-point-set'&&!root.Vilenkin5Numbered.readPointSet(value))return 'Введи буквы точек с рисунка. Запись можно поправить без потери попытки.';
     const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
@@ -276,6 +277,12 @@
     if(d.firstWrong)task.insertAdjacentHTML('beforeend','<details class="v5q-error-note"><summary>Моя первая ошибка</summary><p>В шаге '+(d.firstWrong.step+1)+' был ответ <strong>'+esc(d.firstWrong.value)+'</strong>. Объясни, что нужно изменить в рассуждении.</p></details>');
     if(session.correct){const status=memoryOnly?'Совместный разбор':session.assisted?'Решено с помощью':session.exposed?'Работа со знакомым условием':session.attempt>1?'Решено после исправления':session.mode==='learn'?'Шаг понятен':'Получилось самостоятельно';task.insertAdjacentHTML('beforeend','<p class="v5q-outcome">'+status+'</p>');}
     const extra=root.document.createElement('section');extra.className='v5q-notes';extra.innerHTML='<details><summary>Мои рассуждения и проверка</summary><label>Объясни способ своими словами. Как проверить результат?<textarea id="v5-quality-note" maxlength="2000" rows="3"></textarea></label><p class="tiny">Твои записи сохраняются. Свободное объяснение проверяется вместе с учителем.</p></details><div data-v5-media-host></div>';
+    if(lesson.number==='5.9'&&lesson.v5Course){
+      extra.querySelector('summary').textContent='Мои четыре примера';
+      extra.querySelector('label').firstChild.textContent='Запиши по одному своему примеру для окружности, круга, цилиндра и шара. Укажи, какую часть предмета ты рассматриваешь.';
+      extra.querySelector('.tiny').textContent='Сверь четыре примера с моделями. Твоя запись сохранится отдельно от проверяемых ответов о рисунках.';
+      const input=extra.querySelector('textarea');input.rows=5;input.placeholder='Окружность — …\nКруг — …\nЦилиндр — …\nШар — …';
+    }
     workspace.after(extra);const note=extra.querySelector('textarea');note.value=d.note;note.oninput=()=>{if(readOnly)return;d.note=safeDraft(note.value,2000);if(note.value!==d.note)note.value=d.note;connection.save?.();};
     const panels={notes:extra.querySelector('details'),theory:host.querySelector('.v5q-theory'),claim:claim?.closest('details'),error:host.querySelector('.v5q-error-note'),history:host.querySelector('.v6-history')};
     for(const [key,panel]of Object.entries(panels))if(panel){panel.open=!!d.panels?.[key];panel.addEventListener('toggle',()=>{if(readOnly||session!==connection?.getSession?.()||applying)return;d.panels=d.panels||{};if(d.panels[key]===panel.open)return;d.panels[key]=panel.open;connection.save?.();});}

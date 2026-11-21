@@ -141,6 +141,25 @@ function decimalStepInstructions(){
   ok(product.$('label[for=answer]').textContent.includes('до сокращения'));
   equal(product.errors,[]);product.close();
 }
+function objectExamplesRegression(){
+  const id='v5f-printed-5-9',f=boot('#lesson/'+id),bank=f.w.Vilenkin5RoundObjects;
+  const t=f.M.generate(id,0);equal(plain([...t.steps,t].map(x=>x.answer)),['окружность','круг','цилиндр','шар']);ok(t.prompt.startsWith('Авторская проверка к №5.9.'));
+  equal(f.$('.v5q-notes summary').textContent,'Мои четыре примера');
+  f.input('#v5-quality-note','Край пуговицы, бумажный кружок, сырная головка, стеклянный шарик');
+  equal(f.snapshot().scene.attempt,0);ok(!f.snapshot().scene.correct);
+  f.submit('ободок');equal(f.snapshot().scene.attempt,0);
+  f.submit('КРУГА');ok(f.snapshot().scene.message.includes('заполненную область'));f.submit('Окружности.');ok(f.snapshot().scene.correct);equal(f.snapshot().scene.assisted,false);
+  const again=boot('#lesson/'+id,f.saved());ok(again.snapshot().scene.correct);ok(again.$('#v5-quality-note').value.includes('сырная'));again.close();
+  ok(f.M.accepts('Диск.',t.steps[1]));ok(!f.M.accepts('сфера',t));ok(t.errors.find(e=>e.value==='сфера').text.includes('поверхность'));
+  const variants=new Set();for(let seed=0;seed<80;seed++){
+    const task=f.M.generate(id,seed);variants.add(task.conditionKey);
+    equal(new Set([...task.steps,task].map(x=>x.answer)).size,4);
+    for(const [i,row] of [...task.steps,task].entries()){
+      ok(f.M.accepts(row.answer.toUpperCase(),row));const model=bank.explore(task,{kind:task.data.roundObject.order[i]});ok([0,1,2].includes(model.answer));
+    }
+  }
+  ok(variants.size>50);equal(f.errors,[]);f.close();
+}
 function cutsRegression(){
   const f=boot(),id='v5f-printed-5-8',F=f.w.Vilenkin5ThreeCuts;
   const printed=f.M.generate(id,0);equal(plain(printed.steps.map(q=>q.answer)),[2,4,3,7,4]);equal(printed.answer,8);
@@ -266,7 +285,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:59},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8'));
+  equal(plain(path.numbered),Array.from({length:59},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -762,7 +781,7 @@ function buildablePathsRegression(){
 
 async function run(){
   for(const check of [
-    cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
