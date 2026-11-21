@@ -488,6 +488,18 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'decompose source lengths into named units, printed exercise 1.83';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-83"]').click();await studentFrame.locator('h1').filter({hasText:'№1.83'}).waitFor();
+  await teacherFrame.locator('#answer').fill('22000');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'kilometres became metres');
+  await teacherFrame.locator('#answer').fill('501');await teacherFrame.locator('#answer-form button').click();const addedUnits=await same(teacherFrame,studentFrame,'kilometres were added directly to metres');assert.match(addedUnits.scene.message,/разных единиц/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('1500');await studentFrame.locator('#answer-form button').click();const fixedMetres=await same(studentFrame,teacherFrame,'same mixed length now converted in metres');assert(fixedMetres.scene.correct);assert.deepEqual(fixedMetres.scene.hintLevels,{});
+  await studentFrame.locator('[data-v5-param=row]').selectOption({value:'12'});await studentFrame.locator('[data-v5-param=stage]').selectOption({value:'1'});await studentFrame.locator('[data-v5-prediction]').fill('8');await studentFrame.locator('[data-v5-predict] button').click();
+  const leftover=await same(studentFrame,teacherFrame,'508 millimetres leave 8 after full centimetres');assert.equal(leftover.scene.model.row,12);assert(leftover.scene.model.seen);assert.match(leftover.scene.model.notice,/подтвердился/);
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('40');await same(studentFrame,teacherFrame,'unfinished answer for four kilometres and ninety metres');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'pupil reloaded the same units and draft');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher reloaded same residual unit and draft');assert.equal(await teacherFrame.locator('#answer').inputValue(),'40');
+
   phase = 'measure the six edges of a pupil-built open polyline, printed 1.80';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-80"]').click();await studentFrame.locator('h1').filter({hasText:'№1.80'}).waitFor();
