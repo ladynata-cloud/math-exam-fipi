@@ -411,7 +411,14 @@ function feedbackFor(value,q){
    if(common>matched){matched=common;next=candidate[common];}
   }
   if(next===undefined)return 'Получилось полное доказательство. Проверь, нужно ли оставшееся утверждение.';
-  const explanation=q.proofFeedback[q.answer.split(';').indexOf(String(next))];
+  const position=q.answer.split(';').indexOf(String(next));
+  const selected=attempt[matched],orderHint=q.proofFeedback?.[position];
+  let explanation=orderHint;
+  if(!explanation){
+   const usable=(q.proofOrders||[q.answer]).some(order=>order.split(';').includes(String(selected)));
+   const correction=selected===undefined?'До вывода не хватает обоснования.':usable?'Утверждение №'+selected+' опирается на ещё не обоснованный переход.':'Утверждение №'+selected+' не следует из условий задачи.';
+   explanation=correction+' '+q.hint;
+  }
   return (matched?'Первые звенья верны. ':'')+'Проверь звено '+(matched+1)+'. '+explanation;
  }
  if(q.integerDivisor){
