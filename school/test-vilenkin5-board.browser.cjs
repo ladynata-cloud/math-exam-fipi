@@ -540,6 +540,18 @@ async function run(browser, origin, backend, failures) {
   const last=await same(studentFrame,teacherFrame,'closing edge measured to the nearest millimetre');assert.equal(last.scene.model.edge,6);assert(last.scene.model.seen);
   await narrow(student,studentFrame,'pupil-built-seven-edges');await ownership(teacher,student,false);
 
+  phase = 'complete a pentagon without crossing edges';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-60"]').click();await studentFrame.locator('h1').filter({hasText:'№1.60'}).waitFor();
+  await teacherFrame.locator('#answer').fill('SH QO');await teacherFrame.locator('#answer-form button').click();
+  const crossing=await same(teacherFrame,studentFrame,'crossed closing edges produce a specific mistake');assert.match(crossing.scene.message,/пересекутся/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('OS HQ');await studentFrame.locator('#answer-form button').click();
+  const closed=await same(studentFrame,teacherFrame,'order-independent correction to the two connections');assert(closed.scene.correct);assert.deepEqual(closed.scene.hintLevels,{});
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-v5-param=choice]').selectOption({value:'2'});
+  await studentFrame.locator('[data-v5-prediction]').fill('0');await studentFrame.locator('[data-v5-predict] button').click();
+  const crossed=await same(studentFrame,teacherFrame,'both ends of both new crossing edges visible');assert.equal(crossed.scene.model.choice,2);assert(crossed.scene.model.seen);
+  await narrow(student,studentFrame,'pentagon-new-bridges');await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();
