@@ -1,15 +1,20 @@
 (function () {
   'use strict';
-  const {lessons, f} = window.TyurinStats;
+  const {lessons, f} = window.MathExamTopicPractice;
   const $ = id => document.getElementById(id);
   const escape = v => String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const files={113:'uchebnoe_posobie_teoriya_veroyatnostey_i_statistika_tyurin_2011_0',114:'eksperimentalnoe_uchebnoe_posobie_dlya_10_i_11_klassov_2014_0'};
+  const course=window.MathExamTopicEdition || {
+    trainerId:'tyurin-statistics',storePrefix:'math:tyurin-stats:v1:',authors:'Тюрин и др.',
+    grade:book=>book===113?'7–9 классы':'10–11 классы',unit:'пункт',
+    source:(book,page)=>'https://ptlab.mccme.ru/sites/ptlab.mccme.ru/files/'+files[book]+'.pdf#page='+(page+(book===113?1:0))
+  };
   const external={'prob-count':'probability','prob-distribution':'random-variables','prob-continuous':'random-variables','prob-variance':'random-variables'};
   const embedded=window.top!==window, pack=s=>JSON.parse(JSON.stringify(s));
   const stages=['learn','practice','check','done'], labels={first:'самостоятельно с первой попытки',fixed:'после исправления',help:'с подсказкой'};
   const defaultId=lessons.keys().next().value;
   let state, bridge, prior=null, locked=false;
-  const key=id=>'math:tyurin-stats:v1:'+id;
+  const key=id=>course.storePrefix+id;
   const integer=(v,max)=>Number.isInteger(v)&&v>=0&&v<=max;
   const fresh=(id,variant=Math.floor(Math.random()*1000000))=>({id,variant,stage:'learn',model:0,results:[],draft:'',attempts:0,hint:0,feedback:''});
   function valid(s) {
@@ -53,6 +58,7 @@
   }
   function move(id) {if(!lessons.has(id))id=defaultId;state=load(id);save();render();}
   function figure(data) {
+    if(course.figure && data.chart)return course.figure(data);
     if(data.chart==='area'){
       const [,w,h]=data.rows[0],[,a,b]=data.rows[1],scale=160/Math.max(w,h);
       return '<svg viewBox="0 0 200 195" role="img" aria-label="Прямоугольная площадка с выделенным участком. Размеры даны в таблице"><rect x="16" y="12" width="'+(w*scale)+'" height="'+(h*scale)+'" fill="#e1f1ec" stroke="#174c57" stroke-width="2"/><rect x="16" y="12" width="'+(a*scale)+'" height="'+(b*scale)+'" fill="#25827c" stroke="#174c57" stroke-width="2"/></svg>';
@@ -73,13 +79,13 @@
     return table(data)+'<h3>Разберём вопрос</h3><p>'+escape(q.prompt)+'</p><p>'+escape(q.calculation)+' Ответ: <b>'+escape(f(q.answer))+'</b>.</p>';
   }
   const button=(id,title)=>'<button type="button" data-action="'+id+'">'+title+'</button>';
-  const embeddedPath=id=>'/trainers/tyurin-statistics/index.html#lesson/'+id;
+  const embeddedPath=id=>'/trainers/'+course.trainerId+'/index.html#lesson/'+id;
   function render(focus) {
     const l=lessons.get(state.id),hash='#lesson/'+state.id;
     if(!embedded&&location.hash!==hash)history.replaceState(null,'',hash);
-    $('title').textContent=l.title;$('edition').textContent='Тюрин и др. · '+(l.book===113?'7–9 классы':'10–11 классы')+' · пункт '+l.point+' · с. '+l.page;
+    $('title').textContent=l.title;$('edition').textContent=course.authors+' · '+course.grade(l.book)+' · '+course.unit+' '+l.point+' · с. '+l.page;
     $('aim').textContent=l.aim;$('lesson').value=l.id;$('back').href='../../school/index.html#book/source-'+l.book;
-    $('source').href='https://ptlab.mccme.ru/sites/ptlab.mccme.ru/files/'+files[l.book]+'.pdf#page='+(l.page+(l.book===113?1:0));
+    $('source').href=course.source(l.book,l.page);
     $('related').href=external[l.related]?'../../ege-profil/start/index.html#lesson/'+l.related:'../../school/index.html#lesson/'+l.related;
     $('board').hidden=embedded;$('board').href='../trainer-board.html?trainer='+encodeURIComponent(embeddedPath(l.id));
     for(const id of ['related','source','back'])$(id).target=embedded?'_blank':'_self';
@@ -87,7 +93,8 @@
     if(state.stage==='learn')w.innerHTML='<section class="panel"><h2 tabindex="-1">Как это устроено</h2>'+'<p>'+escape(l.rule)+'</p><label id="model-label" for="model">Пример модели № '+(state.model+1)+'</label><input type="range" min="0" max="6" value="'+state.model+'" id="model"><div id="worked-data">'+workedData(l)+'</div>'+button('practice','Попробовать на новых данных')+'</section>';
     else if(state.stage==='done'){
       const first=state.results.filter(x=>x==='first').length;
-      w.innerHTML='<section class="panel"><h2 tabindex="-1">'+(first>=2?'Тема пройдена':'Стоит повторить')+'</h2><p>Самостоятельно с первой попытки: '+first+' из 3. Для прохождения нужны два таких ответа.</p><ol>'+state.results.map(r=>'<li>'+labels[r]+'</li>').join('')+'</ol>'+button('again','Повторить с новыми данными')+'</section>';
+      const next=course.nextId&&lessons.get(course.nextId(l));
+      w.innerHTML='<section class="panel"><h2 tabindex="-1">'+(first>=2?'Тема пройдена':'Стоит повторить')+'</h2><p>Самостоятельно с первой попытки: '+first+' из 3. Для прохождения нужны два таких ответа.</p><ol>'+state.results.map(r=>'<li>'+labels[r]+'</li>').join('')+'</ol>'+button('again','Повторить с новыми данными')+(first>=2&&next?' '+button('advance','Перейти к § '+next.point+' · '+escape(next.title)):'')+'</section>';
     }else{
       const {data,question:q}=active(state),ready=state.feedback==='right',check=state.stage==='check';
       const feedback=ready?'Верно. '+(state.hint?'Ты воспользовался разбором.':state.attempts>1?'Получилось после исправления.':'Получилось с первой попытки.'):state.feedback==='wrong'?'Проверь ещё раз. '+q.error:'';
@@ -102,7 +109,7 @@
     if(focus==='next')w.querySelector('[data-action=next]')?.focus();
   }
   for(const l of lessons.values()){
-    const option=document.createElement('option');option.value=l.id;option.textContent=(l.book===113?'7–9':'10–11')+' · '+l.point+'. '+l.title;$('lesson').append(option);
+    const option=document.createElement('option');option.value=l.id;option.textContent=course.grade(l.book)+' · '+l.point+'. '+l.title;$('lesson').append(option);
   }
   $('lesson').addEventListener('change',e=>move(e.target.value));
   window.addEventListener('hashchange',()=>{if(!embedded)move(location.hash.split('/')[1]);});
@@ -129,12 +136,14 @@
       if(state.stage==='practice'){state.stage='check';}
       else {state.results.push(state.hint?'help':state.attempts===1?'first':'fixed');if(state.results.length===3)state.stage='done';}
       resetAnswer();
+    }else if(action==='advance'&&state.stage==='done'&&course.nextId&&state.results.filter(v=>v==='first').length>=2){
+      const id=course.nextId(lessons.get(state.id));if(lessons.has(id))move(id);return;
     }else if(action==='again'){state=fresh(state.id,(state.variant+7)%1000000);}
     else return;
     save();render(action==='hint'?'answer':'question');
   });
   move(location.hash.split('/')[1]);
-  if(embedded&&location.origin!=='null')bridge=window.MathExamBoard.register({id:'tyurin-statistics',version:'1.0.0',stateSchemaVersion:1,parentOrigin:location.origin,getState:()=>pack(state),applyState:next=>{
+  if(embedded&&location.origin!=='null')bridge=window.MathExamBoard.register({id:course.trainerId,version:'1.0.0',stateSchemaVersion:1,parentOrigin:location.origin,getState:()=>pack(state),applyState:next=>{
     if(!valid(next))throw Error('Некорректная учебная сессия');
     state=pack(next);render();
   }});
