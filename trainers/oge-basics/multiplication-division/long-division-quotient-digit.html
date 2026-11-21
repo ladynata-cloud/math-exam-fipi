@@ -76,7 +76,7 @@ function renderNotebook(t,s){
 function renderMultiples(t,s){
  const ruler=$('#multiples');
  ruler.replaceChildren();
- $('#rulerInstruction').textContent=`Нажми на самое большое число на линейке, которое не больше ${s.partial}.`;
+ $('#rulerInstruction').textContent=`Нажми на кнопку как можно ближе к ${s.partial}. За отметку заходить нельзя.`;
  for(let digit=0;digit<=10;digit++){
    const product=digit*t.d, selectable=digit<10;
    const tick=document.createElement(selectable?'button':'span');
