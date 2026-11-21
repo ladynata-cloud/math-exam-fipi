@@ -240,21 +240,31 @@ const extra={
   '200c':r=>{const [a,b]=r;return [0,-a,b/(1+a/a)];},
   '201':r=>{const [l,w,x]=r;const areas=Array.from({length:w+1},(_,i)=>i*l);return [areas[x],areas.length-1,Math.max(...areas)];},
   '202':r=>{const [base,side,x]=r;const H=Array.from({length:101},(_,i)=>i).find(y=>y*y+base*base/4===side*side);const at=d=>d*base/H;return [H,at(x),at(x+1)-at(x)];},
-  '203':r=>{const [a,b,t]=r;return [a/(0+b),Number(a===0),a/(t*t+b)];}
+  '203':r=>{const [a,b,t]=r;return [a/(0+b),Number(a===0),a/(t*t+b)];},
+  '204':r=>{const [l,v,c,pause,dt]=r,logs=[0];while(logs.at(-1)<l)logs.push(logs.at(-1)+v+c);const outward=logs.length-1;for(let k=0;k<pause;k++)logs.push(l);while(logs.at(-1)>0)logs.push(logs.at(-1)-v+c);return [outward,logs.length-1,logs[outward+pause+dt]];},
+  '205':(r,data)=>{const [x0,y0]=r,[x1,y1]=data.rows[1];return [Math.max(y0,y1)-Math.min(y0,y1),(y0+y1)/2,(y1-y0)/(x1-x0)];},
+  '206a':r=>{const [a,b,d]=r,fn=x=>(a*x+b)/d;return [-b/a,fn(0),a/d];},
+  '206b':r=>{const [n,d,x]=r;return [Number(n===0),d,n/(x-d)];},
+  '206c':r=>{const [a,b,d]=r;const roots=Array.from({length:41},(_,i)=>i-20).filter(x=>(a*x*x-b)/d===0);return [roots[0],roots[1],roots[1]-roots[0]];},
+  '207':(r,data)=>{const z=data.rows[1],df=z[1]-r[1],d=(z[1]+z[2])-(r[1]+r[2]);return [df,d,Math.sign(d)];},
+  '208':r=>{const [L,R,m,b,v]=r,ys=[m*L+b,m*R+b];return [Math.max(...ys),Number(v>=Math.min(...ys)&&v<=Math.max(...ys)),1];},
+  '209a':r=>{const [k,N]=r;let roots=[];for(let x=0;x<=N;x++)if(Math.sqrt(x)+k*x*x===N)roots.push(x);return [0,roots[0],roots.length];},
+  '209b':r=>{const [c,N]=r;let roots=[];for(let x=-40;x<=40;x++)if(x*x*x+c*x===N)roots.push(x);return [Math.sign(roots[0]),roots[0],roots.length-1];}
 };
 const pathKeys=Object.keys(extra).sort((a,b)=>parseInt(a)-parseInt(b)||a.localeCompare(b));
-assert.deepEqual(pathKeys,['200a','200b','200c','201','202','203']);
+assert.deepEqual(pathKeys,['200a','200b','200c','201','202','203','204','205','206a','206b','206c','207','208','209a','209b']);
 for(const name of pathKeys) {
   const id='50-'+name,key='math:makarychev9-2017:v1:'+id;
   let dom=open(id),w=dom.window;
   const lesson=w.MathExamTopicPractice.lessons.get(id);
-  assert.equal(lesson.page,68);assert.equal(w.document.querySelector('#lesson').value,id);
-  assert.match(w.document.querySelector('#edition').textContent,/Упражнение №20[0-3]/);
+  const printedPage=parseInt(name)>=205?69:68;
+  assert.equal(lesson.page,printedPage);assert.equal(w.document.querySelector('#lesson').value,id);
+  assert.match(w.document.querySelector('#edition').textContent,/Упражнение №20[0-9]/);
   assert(w.document.querySelector('#work').textContent.includes(lesson.printedGuide));
-  assert.equal(new URL(w.document.querySelector('#source').href).hash,'#page=69');
+  assert.equal(new URL(w.document.querySelector('#source').href).hash,'#page='+(printedPage+1));
   assert.equal(new URL(w.document.querySelector('#board').href).searchParams.get('trainer'),'/trainers/makarychev9-2017/index.html#lesson/'+id);
   for(let s=1;s<=11;s++) {
-    const data=lesson.make(s),expected=extra[name](data.rows[0]);
+    const data=lesson.make(s),expected=extra[name](data.rows[0],data);
     assert.notEqual(JSON.stringify(data.rows),JSON.stringify(lesson.make(1+(s-1+7)%11).rows),id+' repeats');
     data.questions.forEach((q,i)=>{
       assert.equal(q.answer,expected[i],id+' '+s+' '+i);
@@ -266,15 +276,15 @@ for(const name of pathKeys) {
   click(w,'practice');submit(w,999999);
   const saved=w.localStorage.getItem(key);dom.window.close();dom=open(id,saved);w=dom.window;
   assert.equal(w.document.querySelector('#answer').value,'999999');
-  submit(w,extra[name](lesson.make(2).rows[0])[2]);click(w,'next');
+  submit(w,extra[name](lesson.make(2).rows[0],lesson.make(2))[2]);click(w,'next');
   for(let i=0;i<3;i++){
     const data=lesson.make(4+i);
     if(i===0){submit(w,data.questions[i].mistakes[0][0]);assert(w.document.querySelector('#feedback').textContent.includes(data.questions[i].mistakes[0][1]));}
     if(i===2)click(w,'hint');
-    submit(w,extra[name](data.rows[0])[i]);click(w,'next');
+    submit(w,extra[name](data.rows[0],data)[i]);click(w,'next');
   }
   assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,['fixed','first','help']);
   click(w,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
   dom.window.close();
 }
-console.log('Source 50: 1188 topic checks and 198 printed-exercise checks; all 42 pupil journeys preserve saved, corrected and assisted work.');
+console.log('Source 50: 1188 topic checks and 495 printed-exercise checks; all 51 pupil journeys preserve saved, corrected and assisted work.');
