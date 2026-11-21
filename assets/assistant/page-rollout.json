@@ -901,9 +901,10 @@
       "placement": "before-head-close"
     },
     "geometry-course/textbook/index.html": {
-      "beforeSha256": "c26e8f026e5560c39bd0f9a841c0458b7ff4d260c038a42b4ccb2ed7a060ec2e",
-      "afterSha256": "706cd7def6810a4692834081378f1d994a804e073709f8f209ecf2ca4a9d119d",
-      "placement": "before-head-close"
+      "beforeSha256": "215296704e24b496cc6ab9b6c48c243d04ddb19becc0129c5d63565393b709cc",
+      "afterSha256": "f3ac86319ecb5c0a8bae00b67ef356cc5f9a52e7b49690edba167842fa0ac5e6",
+      "placement": "before-head-close",
+      "sourceSha": "4a7c2d1f1ef1c8fa7e97263269a74ce8df899772"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
       "beforeSha256": "b79e90862fdcfead5543fb6bf42bd031913635f28e3896f7d4951d6004c8bc61",
@@ -6459,6 +6460,16 @@
       ],
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "4a7c2d1f1ef1c8fa7e97263269a74ce8df899772",
+      "task": "docs/tasks/ATANASYAN_7_9_AREAS_842_847.md",
+      "changedPaths": [
+        "geometry-course/textbook/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     }
   ],
   "coverageUpdates": [
