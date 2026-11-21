@@ -162,14 +162,14 @@
   },
   "cards": {
     "ex-main-0597-a": {
-      "raw": "720d74bbe8590142ff3849a8d66a3512d6866a201c7ba7901cc625826afeb4a4",
-      "authored": "0d66420b8e47b3a3cae278346117f3d77dd31332081e8f57e1c6f64eaf539664",
-      "integrated": "d347ebf5a5a62de378ee54352c06a061acaa654af837403a931343a052eeb718"
+      "raw": "527184008ba79d0dbf6b62fb14351e9bf3fe73f56deeb503dca6d6dbaa824980",
+      "authored": "006128ad43890fc391138bda8805f091d0adace93d54a8876903b8471c6582f0",
+      "integrated": "4a42069f7509a69bf4c64eda69f159035109c3bd20c97f5e9452859157d57f50"
     },
     "ex-main-0597-b": {
-      "raw": "8eb69fa29928367bdbcecab75a19ba9f4056e454d74f4e3dc4f68d19c5d5b6c1",
-      "authored": "383ddeb20e6e71b8a3d2860e4bfe6b4a9f3c538bddae743aa070cea6efe69daf",
-      "integrated": "77484cbb6e07e0c0401f13a53771a96722d2632fac7189a6c4ead5fe2dd14a05"
+      "raw": "a732273910617138128c417b1ac24d3362d442bd666211364fd55f47c3f17539",
+      "authored": "fb29f0fe224f7f3df091badd6f69574f14c1f621302ffb75d12ccac542acf8c9",
+      "integrated": "362e51a33f3d33ecb04036b826bd8798bf4d5abc316b50a2e761e977580307b4"
     },
     "ex-main-0598": {
       "raw": "3756ced7beb5cd026209c754d9832332ad960c549dade439e4a602a7083b479b",
@@ -443,7 +443,7 @@
   "files": {
     "stereo-course/textbook/data/course.json": {
       "beforeSHA256": "06933277466476333b7778840348339f89ff3aadab13a4b72713c8847c0c23a8",
-      "afterSHA256": "c535b749d1892f6a259dbd5f3a5f6a43acf91388bfcdc5c05bae36d6314885e2"
+      "afterSHA256": "71ada6b9f9ce86a1159596a337fa6fe553693d1b998b01f6cefb06c509282df3"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "d83c24abbd62f69d582414b20ac3c19da1bc07f52425b3b7bdfae46d7231bee2",
