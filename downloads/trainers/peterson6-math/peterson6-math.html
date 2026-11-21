@@ -1548,6 +1548,35 @@ function coordinateAlgebra(type,i,fresh){
  const [given,kind,k]=laws[i],arguments_=fresh?[3,6]:[2,4],rows=arguments_.map(x=>{const y=kind==='square'?sq(x):kind==='sum'?add(k,x):kind==='direct'?mul(k,x):div(k,x);return [x,r(y),r(div(y,x)),r(mul(y,x))];});
  return {given,headers:['Аргумент','Результат','Отношение','Произведение'],rows,result:kind==='direct'?'Прямая пропорциональность: отношение равно '+rows[0][2]+'.':kind==='inverse'?'Обратная пропорциональность: произведение равно '+rows[0][3]+'.':'Ни прямая, ни обратная пропорциональность.'};
 }
+const pineObservations=[0,2.8,5.6,8.2,10.6,13,14.8,16,16.4,17.2,17.6];
+const printedOutline=[[0,-1],[-4,-1],[-4,0],[-5,1],[-4,2],[-5,3],[-4,4],[-5,5],[-4,6],[-5,7],[-4,8],[-5,9],[-4,10],[-5,11],[-4,12],[-3,11],[-1,13],[0,11],[2,12],[2,11],[4,11],[0,9],[0,-1],[2,-1],[2,-2],[4,-2],[4,-1],[3,-1],[2,0],[2,6],[4,7],[3,8],[3,9],[2,10]];
+const originalOutline=[[[0,0],[4,0],[4,3],[2,5],[0,3],[0,0]],[[1,0],[1,2],[2,2],[2,0]]];
+const outlineText=pair=>'('+pair.join('; ')+')';
+function coordinateOutline(own,fresh,stage){
+ const source=own?originalOutline:[printedOutline],paths=source.map(path=>path.map(([x,y])=>[fresh?-x:x,y]));
+ const {graph,X,Y}=paperPlane(own?[-6,6,-1,6]:[-6,6,-3,14],1,2,'Авторский чертёж последовательных вершин. Отдельные линии не соединяются друг с другом.');
+ for(const points of paths){const visible=points.slice(0,stage===2?points.length:stage===1?Math.min(points.length,6):1);
+  graph.append(svg('polyline',{points:visible.map(([x,y])=>X(x)+','+Y(y)).join(' '),stroke:'#355e53',fill:'none','stroke-width':2.2,'data-outline-points':visible.length}));
+  visible.forEach(([x,y])=>graph.append(svg('circle',{cx:X(x),cy:Y(y),r:1.8,fill:'#9a3a5a'})));
+ }return {graph,paths};
+}
+function pineEstimate(index,fresh,stage){
+ const scale=fresh?.75:1,heights=pineObservations.map(h=>h*scale),ages=[25,42,76,84],targets=[5,10,15,17],intervals=[[0,15],[55,70]];
+ const interpolate=t=>{const i=Math.min(9,Math.floor(t/10));return heights[i]+(heights[i+1]-heights[i])*(t-10*i)/10;};
+ const inverse=h=>{const i=heights.findIndex((v,k)=>k<10&&v<=h&&h<=heights[k+1]);return i*10+10*(h-heights[i])/(heights[i+1]-heights[i]);};
+ let samples,description,result;
+ if(index<4){const t=ages[index],h=interpolate(t);samples=[[t,h]];description=`Найди высоту при возрасте ${t} лет.`;result=`Около ${num(Math.round(h*10)/10)} м.`;}
+ else if(index<8){const h=targets[index-4]*scale,t=inverse(h);samples=[[t,h]];description=`Найди возраст по высоте ${num(h)} м.`;result=`Возраст в годах ≈ ${num(Math.round(t*10)/10)}.`;}
+ else{const [a,b]=intervals[index-8],first=interpolate(a),last=interpolate(b);samples=[[a,first],[b,last]];description=`Найди прирост с ${a} до ${b} лет.`;result=`Около ${num(Math.round((last-first)*10)/10)} м. Из конечной высоты ${num(Math.round(last*100)/100)} м вычли начальную ${num(Math.round(first*100)/100)} м.`;}
+ const graph=svg('svg',{viewBox:'0 0 300 205',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Рост дерева. По горизонтали возраст в годах, по вертикали высота в метрах.'}),X=t=>36+2.36*t,Y=h=>169-7.4*h;
+ for(let t=0;t<=100;t+=10){ln(graph,X(t),Y(0),X(t),Y(20),{stroke:t?'#c6d6ce':'#334f44','stroke-width':1});if(t%20===0)txt(graph,X(t),185,t,{'font-size':10});}
+ for(let h=0;h<=20;h+=2){ln(graph,X(0),Y(h),X(100),Y(h),{stroke:h?'#c6d6ce':'#334f44','stroke-width':1});if(h%4===0)txt(graph,29,Y(h)+3,h,{'font-size':10,'text-anchor':'end'});}
+ txt(graph,151,201,'Возраст, годы',{'font-size':11});txt(graph,58,13,'Высота, м',{'font-size':11});
+ graph.append(svg('polyline',{points:heights.map((h,i)=>X(i*10)+','+Y(h)).join(' '),fill:'none',stroke:'#235746','stroke-width':2}));
+ heights.forEach((h,i)=>graph.append(svg('circle',{cx:X(i*10),cy:Y(h),r:2.4,fill:'#235746','data-pine-age':i*10})));
+ if(stage>0)for(const [t,h] of samples){const horizontal=index>=4&&index<8;if(horizontal||stage===2)ln(graph,X(0),Y(h),X(t),Y(h),{stroke:'#923555','stroke-dasharray':'4 2'});if(!horizontal||stage===2)ln(graph,X(t),Y(0),X(t),Y(h),{stroke:'#923555','stroke-dasharray':'4 2'});graph.append(svg('circle',{cx:X(t),cy:Y(h),r:3,fill:'#923555','data-pine-reading':'1'}));}
+ return {graph,description,result,heights};
+}
 const cipherLetters = {Н:[-2,2],Ь:[2,0],Ю:[4,-3],Т:[2,-2],О:[0,0],П:[4,2],А:[-3,4],С:[-4,-3],К:[3,-4],Л:[5,1],Р:[2,4],И:[-5,1],Ч:[-3,-4],Е:[0,2]};
 function coordinateCipher(index,fresh,stage){
  const word=(fresh?['СОН','ЛЕС','ТОН']:['НЬЮТОН','ПАСКАЛЬ','ТОРРИЧЕЛЛИ'])[index];
@@ -3072,6 +3101,7 @@ function changeBars(before,after,labels=['Было','Стало']) {
  return pic;
 }
 function configFor(lesson,task){
+ if(lesson?.id==='p39'&&task?.paperInvestigation)return {title:task.paperInvestigation.kind==='pine'?'Читаем график роста':'Восстанавливаем рисунок',controls:[c('Данные',[[0,'Из упражнения'],[1,'Другой пример']]),c('Шаг',[[0,'Работаю сам'],[1,'Ориентиры'],[2,'Сверить построение']])],initial:[0,0]};
  if(lesson?.id==='p39'&&task?.rateCipher)return {title:task.rateCipher.kind==='rates'?'Время, норма и объём работы':'Шифр по координатам',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новая задача']]),c('Шаг',[[0,'Решаю сам'],[1,'Промежуточная проверка'],[2,'Сверить результат']])],initial:[0,0]};
  if(lesson?.id==='p39'&&task?.gridAlgebra)return {title:'Проверь запись и вычисление',controls:[c('Данные',[[0,'Из упражнения'],[1,'Другие числа']]),c('Шаг',[[0,'Работаю сам'],[1,'Промежуточные значения'],[2,'Ответ и проверка']])],initial:[0,0]};
  if(lesson?.id==='p39'&&task?.modulusReview)return {title:'Разбери условие и проверь вывод',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новые числа']]),c('Шаг',[[0,'Сначала решу сам'],[1,'Проверю основу'],[2,'Проверю весь вывод']])],initial:[0,0]};
@@ -3365,12 +3395,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p39-grid-application'){picture=f.spec==='lines'?intersectDrawings(f.index,false,0).graph:table(['t, мин','T, °C','t, мин','T, °C'],Array.from({length:6},(_,i)=>[i,waterReadings[i],i+6,waterReadings[i+6]]));}else if(f.type==='p39-read-measurement'){picture=measuredPaperFigure(f.curve,'x',0,0).graph;}else if(f.type==='p39-print-construction'){picture=sourcePaperConstruction(f);}else if(f.type==='p39-construction'){picture=sourceConstruction(f.design,false,0).graph;}else if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p39-cipher-sheet'){const v=coordinateCipher(f.index,false,0);picture=el('div');picture.append(v.graph,table(['Номер','Координаты'],v.rows.map(row=>row.slice(0,2))));}else if(f.type==='p39-outline-sheet'){picture=table(['№','(x; y)','№','(x; y)'],Array.from({length:17},(_,i)=>[i+1,outlineText(printedOutline[i]),i+18,outlineText(printedOutline[i+17])]));}else if(f.type==='p39-blank-paper'){picture=paperPlane([-6,6,-1,6],1,2,'Сетка для авторских ломаных.').graph;}else if(f.type==='p39-pine-observations'){picture=table(['Возраст, годы','Высота, м'],pineObservations.map((v,i)=>[i*10,num(v)]));}else if(f.type==='p39-grid-application'){picture=f.spec==='lines'?intersectDrawings(f.index,false,0).graph:table(['t, мин','T, °C','t, мин','T, °C'],Array.from({length:6},(_,i)=>[i,waterReadings[i],i+6,waterReadings[i+6]]));}else if(f.type==='p39-read-measurement'){picture=measuredPaperFigure(f.curve,'x',0,0).graph;}else if(f.type==='p39-print-construction'){picture=sourcePaperConstruction(f);}else if(f.type==='p39-construction'){picture=sourceConstruction(f.design,false,0).graph;}else if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.quantifiedEquation||task.mentalSeries||task.stationGraph||task.convertGroup||task.proportionOpening||Number.isInteger(task.walkingGap)) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -3381,7 +3411,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
   if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -4974,7 +5004,15 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
 
 
 
- else if(n===39&&task.rateCipher){
+
+ else if(n===39&&task.paperInvestigation){const {kind,index}=task.paperInvestigation;
+  if(kind==='pine'){const v=pineEstimate(index,a===1,b);formula(v.description);show(v.graph);if(b===2)say(v.result);
+   if(a===1)show(table(['Возраст, годы','Новая высота, м'],v.heights.map((h,i)=>[i*10,num(h)])));
+   stepList(['Проверь подписи осей и цену деления.','Найди соседние наблюдения.','Оцени положение между ними.']);
+  }else{const v=coordinateOutline(index===1,a===1,b);show(v.graph);if(index===1)v.paths.forEach((path,i)=>show(table(['Вершина линии '+(i+1),'Координаты'],path.map((point,j)=>[j+1,outlineText(point)]))));
+   if(b===2)say(index===0?'Построены 34 вершины и 33 звена. A23 совпала с A1.':'У примера два независимых контура. Между ними нет соединительного отрезка.');
+   stepList(['Начни с точки под номером один.','Соединяй соседние номера внутри каждой линии.','Сравни весь контур со своей работой.']);}
+ } else if(n===39&&task.rateCipher){
   const {kind,index}=task.rateCipher;
   if(kind==='rates'){
    const v=rateWorkModel(index,a===1,b);formula(v.given);show(table(v.headers,v.rows));if(b===2)say(v.result);
@@ -90101,7 +90139,7 @@ window.PetersonCourse = {
       "isbn": "978-5-9963-4599-1"
      },
      "kind": "choice",
-     "prompt": "На с. 43 расшифруй строку 1. В модели есть авторская координатная сетка и последовательность точек. Назови фамилию, а затем найди в энциклопедии открытие учёного.",
+     "prompt": "На с. 43 расшифруй строку 1. Сопоставь координаты под авторской сеткой с буквами на ней. Назови фамилию, а затем найди в энциклопедии открытие учёного.",
      "answer": "Ньютон",
      "steps": [
       {
@@ -90141,7 +90179,12 @@ window.PetersonCourse = {
       "Ньютон",
       "Паскаль",
       "Торричелли"
-     ]
+     ],
+     "figure": {
+      "type": "p39-cipher-sheet",
+      "index": 0,
+      "caption": "Читай пары слева направо. Шаг сетки — одна единица."
+     }
     },
     {
      "id": "p39-t127",
@@ -90156,7 +90199,7 @@ window.PetersonCourse = {
       "isbn": "978-5-9963-4599-1"
      },
      "kind": "choice",
-     "prompt": "На с. 43 расшифруй строку 2. В модели есть авторская координатная сетка и последовательность точек. Назови фамилию, а затем найди в энциклопедии открытие учёного.",
+     "prompt": "На с. 43 расшифруй строку 2. Сопоставь координаты под авторской сеткой с буквами на ней. Назови фамилию, а затем найди в энциклопедии открытие учёного.",
      "answer": "Паскаль",
      "steps": [
       {
@@ -90196,7 +90239,12 @@ window.PetersonCourse = {
       "Ньютон",
       "Паскаль",
       "Торричелли"
-     ]
+     ],
+     "figure": {
+      "type": "p39-cipher-sheet",
+      "index": 1,
+      "caption": "Читай пары слева направо. Шаг сетки — одна единица."
+     }
     },
     {
      "id": "p39-t128",
@@ -90211,7 +90259,7 @@ window.PetersonCourse = {
       "isbn": "978-5-9963-4599-1"
      },
      "kind": "choice",
-     "prompt": "На с. 43 расшифруй строку 3. В модели есть авторская координатная сетка и последовательность точек. Назови фамилию, а затем найди в энциклопедии открытие учёного.",
+     "prompt": "На с. 43 расшифруй строку 3. Сопоставь координаты под авторской сеткой с буквами на ней. Назови фамилию, а затем найди в энциклопедии открытие учёного.",
      "answer": "Торричелли",
      "steps": [
       {
@@ -90251,7 +90299,612 @@ window.PetersonCourse = {
       "Ньютон",
       "Паскаль",
       "Торричелли"
-     ]
+     ],
+     "figure": {
+      "type": "p39-cipher-sheet",
+      "index": 2,
+      "caption": "Читай пары слева направо. Шаг сетки — одна единица."
+     }
+    },
+    {
+     "id": "p39-t129",
+     "title": "К задаче №197 (а)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 43,
+      "exercise": 197,
+      "subpart": "а",
+      "reference": "№197 (а)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "Перенеси на клетчатый лист 34 вершины из таблицы. Соедини соседние номера по порядку и опиши получившийся силуэт. Вершины могут совпадать.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Какова ордината самой высокой вершины?",
+       "answer": "13",
+       "hint": "Ищи наибольшую вторую координату.",
+       "explanation": "A17 находится на высоте 13."
+      },
+      {
+       "prompt": "Сколько отрезков соединяет 34 последовательные вершины?",
+       "answer": "33",
+       "hint": "Сосчитай переходы от первой точки до последней.",
+       "explanation": "Между 34 последовательными вершинами 33 перехода."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проверь углы силуэта. Какая точка совпала с A1? Нужна ли отдельная линия A34A1?",
+       "hint": "Сравни координаты A1 и A23 и прочитай, какие вершины требует соединять условие.",
+       "explanation": "A23 совпала с A1. Звено от последней до первой вершины добавлять не нужно."
+      }
+     ],
+     "hint": "Наноси по несколько вершин и помечай номер последней. Одинаковые координаты означают повторное попадание в прежнюю точку.",
+     "explanation": "У ломаной 33 звена. A23 повторяет A1, затем линия продолжается вправо. Сравни собственный рисунок с полной моделью и опиши фигуру своими словами.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "outline",
+      "index": 0
+     },
+     "figure": {
+      "type": "p39-outline-sheet",
+      "caption": "Вершины для построения. Соединяй соседние номера."
+     }
+    },
+    {
+     "id": "p39-t130",
+     "title": "К задаче №197 (б)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 43,
+      "exercise": 197,
+      "subpart": "б",
+      "reference": "№197 (б)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "Придумай небольшой рисунок из ломаных. Нарисуй его на координатной сетке, закодируй вершины и попробуй восстановить рисунок по своему коду.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Отметь начало каждой ломаной в собственной записи.",
+       "hint": "Разным ломаным отведи разные строки.",
+       "explanation": "Лишний отрезок между строками может изменить рисунок."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Для каждой вершины запиши пару (x; y) по порядку.",
+       "hint": "Сначала читай положение по горизонтали, затем по вертикали.",
+       "explanation": "Каждая пара должна указывать одну точку."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Построй фигуру заново по коду и сравни обе работы.",
+       "hint": "При замыкании контура запиши первую точку ещё раз.",
+       "explanation": "Если два контура совпали, кода достаточно для восстановления рисунка."
+      }
+     ],
+     "hint": "Начни с простого контура и добавь отдельно одну внутреннюю линию.",
+     "explanation": "Ответ зависит от рисунка. Убедись, что порядок вершин, начала линий и повтор первой точки однозначно задают твой чертёж.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "outline",
+      "index": 1
+     },
+     "figure": {
+      "type": "p39-blank-paper",
+      "caption": "Пример координатной сетки для своего рисунка."
+     }
+    },
+    {
+     "id": "p39-t131",
+     "title": "К задаче №198 (а, 1)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "а, 1",
+      "reference": "№198 (а, 1)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "По точкам измерений построй график роста сосны и оцени её высоту, когда дереву 25 лет. Укажи единицу и точность отсчёта.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Возраст ближайшего измерения слева, лет?",
+       "answer": "20",
+       "hint": "Найди соседние десятилетия.",
+       "explanation": "25 лежит между 20 и 30."
+      },
+      {
+       "prompt": "Возраст соседнего измерения справа, лет?",
+       "answer": "30",
+       "hint": "Следующая отметка наблюдения через десять лет.",
+       "explanation": "Верхняя возрастная граница 30."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Проведи вертикаль от возраста до графика, затем горизонталь к шкале высоты.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 0
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
+    },
+    {
+     "id": "p39-t132",
+     "title": "К задаче №198 (а, 2)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "а, 2",
+      "reference": "№198 (а, 2)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "По точкам измерений построй график роста сосны и оцени её высоту, когда дереву 42 лет. Укажи единицу и точность отсчёта.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Возраст ближайшего измерения слева, лет?",
+       "answer": "40",
+       "hint": "Найди соседние десятилетия.",
+       "explanation": "42 лежит между 40 и 50."
+      },
+      {
+       "prompt": "Возраст соседнего измерения справа, лет?",
+       "answer": "50",
+       "hint": "Следующая отметка наблюдения через десять лет.",
+       "explanation": "Верхняя возрастная граница 50."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Проведи вертикаль от возраста до графика, затем горизонталь к шкале высоты.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 1
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
+    },
+    {
+     "id": "p39-t133",
+     "title": "К задаче №198 (а, 3)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "а, 3",
+      "reference": "№198 (а, 3)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "По точкам измерений построй график роста сосны и оцени её высоту, когда дереву 76 лет. Укажи единицу и точность отсчёта.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Возраст ближайшего измерения слева, лет?",
+       "answer": "70",
+       "hint": "Найди соседние десятилетия.",
+       "explanation": "76 лежит между 70 и 80."
+      },
+      {
+       "prompt": "Возраст соседнего измерения справа, лет?",
+       "answer": "80",
+       "hint": "Следующая отметка наблюдения через десять лет.",
+       "explanation": "Верхняя возрастная граница 80."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Проведи вертикаль от возраста до графика, затем горизонталь к шкале высоты.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 2
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
+    },
+    {
+     "id": "p39-t134",
+     "title": "К задаче №198 (а, 4)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "а, 4",
+      "reference": "№198 (а, 4)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "По точкам измерений построй график роста сосны и оцени её высоту, когда дереву 84 лет. Укажи единицу и точность отсчёта.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Возраст ближайшего измерения слева, лет?",
+       "answer": "80",
+       "hint": "Найди соседние десятилетия.",
+       "explanation": "84 лежит между 80 и 90."
+      },
+      {
+       "prompt": "Возраст соседнего измерения справа, лет?",
+       "answer": "90",
+       "hint": "Следующая отметка наблюдения через десять лет.",
+       "explanation": "Верхняя возрастная граница 90."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Проведи вертикаль от возраста до графика, затем горизонталь к шкале высоты.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 3
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
+    },
+    {
+     "id": "p39-t135",
+     "title": "К задаче №198 (б, 1)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "б, 1",
+      "reference": "№198 (б, 1)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "При каком возрасте сосна, по графику, достигла примерно 5 м? Построй и подпиши шкалы. Укажи примерный результат.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В начале какого десятилетнего интервала дерево было ещё ниже этой отметки? Запиши возраст в годах.",
+       "answer": "10",
+       "hint": "Найди в таблице два соседних значения, между которыми лежит нужная высота.",
+       "explanation": "Высота 5 м находится между наблюдениями в 10 и 20 лет."
+      },
+      {
+       "prompt": "В конце интервала выше заданной отметки. Каков возраст в конце?",
+       "answer": "20",
+       "hint": "Интервал измерений составляет десять лет.",
+       "explanation": "Правая граница возраста 20 лет."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Веди горизонталь от высоты к графику, затем опускайся на ось возраста.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 4
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
+    },
+    {
+     "id": "p39-t136",
+     "title": "К задаче №198 (б, 2)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "б, 2",
+      "reference": "№198 (б, 2)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "При каком возрасте сосна, по графику, достигла примерно 10 м? Построй и подпиши шкалы. Укажи примерный результат.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В начале какого десятилетнего интервала дерево было ещё ниже этой отметки? Запиши возраст в годах.",
+       "answer": "30",
+       "hint": "Найди в таблице два соседних значения, между которыми лежит нужная высота.",
+       "explanation": "Высота 10 м находится между наблюдениями в 30 и 40 лет."
+      },
+      {
+       "prompt": "В конце интервала выше заданной отметки. Каков возраст в конце?",
+       "answer": "40",
+       "hint": "Интервал измерений составляет десять лет.",
+       "explanation": "Правая граница возраста 40 лет."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Веди горизонталь от высоты к графику, затем опускайся на ось возраста.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 5
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
+    },
+    {
+     "id": "p39-t137",
+     "title": "К задаче №198 (б, 3)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "б, 3",
+      "reference": "№198 (б, 3)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "При каком возрасте сосна, по графику, достигла примерно 15 м? Построй и подпиши шкалы. Укажи примерный результат.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В начале какого десятилетнего интервала дерево было ещё ниже этой отметки? Запиши возраст в годах.",
+       "answer": "60",
+       "hint": "Найди в таблице два соседних значения, между которыми лежит нужная высота.",
+       "explanation": "Высота 15 м находится между наблюдениями в 60 и 70 лет."
+      },
+      {
+       "prompt": "В конце интервала выше заданной отметки. Каков возраст в конце?",
+       "answer": "70",
+       "hint": "Интервал измерений составляет десять лет.",
+       "explanation": "Правая граница возраста 70 лет."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Веди горизонталь от высоты к графику, затем опускайся на ось возраста.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 6
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
+    },
+    {
+     "id": "p39-t138",
+     "title": "К задаче №198 (б, 4)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "б, 4",
+      "reference": "№198 (б, 4)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "При каком возрасте сосна, по графику, достигла примерно 17 м? Построй и подпиши шкалы. Укажи примерный результат.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В начале какого десятилетнего интервала дерево было ещё ниже этой отметки? Запиши возраст в годах.",
+       "answer": "80",
+       "hint": "Найди в таблице два соседних значения, между которыми лежит нужная высота.",
+       "explanation": "Высота 17 м находится между наблюдениями в 80 и 90 лет."
+      },
+      {
+       "prompt": "В конце интервала выше заданной отметки. Каков возраст в конце?",
+       "answer": "90",
+       "hint": "Интервал измерений составляет десять лет.",
+       "explanation": "Правая граница возраста 90 лет."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Веди горизонталь от высоты к графику, затем опускайся на ось возраста.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 7
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
+    },
+    {
+     "id": "p39-t139",
+     "title": "К задаче №198 (в, 1)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "в, 1",
+      "reference": "№198 (в, 1)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "Оцени по построенному графику, на сколько метров увеличилась высота сосны с 0 до 15 лет. Запиши оба показания и их разность.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько лет продолжался этот период?",
+       "answer": "15",
+       "hint": "Вычти начальный возраст из конечного.",
+       "explanation": "15 − 0 = 15 лет."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Отметь высоту в начале и в конце, затем вычисли разность.",
+       "hint": "Прирост считают в метрах. Показания высоты читают по вертикальной шкале.",
+       "explanation": "Вычти начальную высоту из конечной."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Проведи две вертикали от возрастов, считай две высоты. Для прироста нужна их разность.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 8
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
+    },
+    {
+     "id": "p39-t140",
+     "title": "К задаче №198 (в, 2)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 44,
+      "exercise": 198,
+      "subpart": "в, 2",
+      "reference": "№198 (в, 2)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "manual",
+     "prompt": "Оцени по построенному графику, на сколько метров увеличилась высота сосны с 55 до 70 лет. Запиши оба показания и их разность.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько лет продолжался этот период?",
+       "answer": "15",
+       "hint": "Вычти начальный возраст из конечного.",
+       "explanation": "70 − 55 = 15 лет."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Отметь высоту в начале и в конце, затем вычисли разность.",
+       "hint": "Прирост считают в метрах. Показания высоты читают по вертикальной шкале.",
+       "explanation": "Вычти начальную высоту из конечной."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши полученную оценку и сравни с моделью.",
+       "hint": "Между измерениями график позволяет сделать приближённый отсчёт.",
+       "explanation": "При соединении соседних измерений отрезками получается один воспроизводимый ориентир."
+      }
+     ],
+     "hint": "Проведи две вертикали от возрастов, считай две высоты. Для прироста нужна их разность.",
+     "explanation": "Результат зависит от точности чертежа. Модель показывает оценку по прямым отрезкам между соседними измерениями и отдельно отображает исходные значения.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Запиши наблюдение и сравни со своей работой.",
+     "paperInvestigation": {
+      "kind": "pine",
+      "index": 9
+     },
+     "figure": {
+      "type": "p39-pine-observations",
+      "caption": "Наблюдения за ростом сосны. Между измерениями высота оценивается приближённо."
+     }
     }
    ]
   },

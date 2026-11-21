@@ -1764,3 +1764,16 @@ test('field rates, pedestrian speed and three coordinate ciphers independently c
   f.event('#final-answer','40');f.submit('#answer-form');assert.equal(f.state().tasks['p39-t124'].correct,true);
  }finally{f.close();}
 });
+
+test('source cards expose full cipher and outline before help and separate approximate pine readings from mastery',()=>{
+ const f=fixture(null,null,true);try{
+  f.nav('#lesson/p39/125');assert.equal(f.d.querySelectorAll('#task-figure [data-cipher-letter]').length,14);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,6);
+  f.nav('#lesson/p39/128');assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,17);f.click('[data-lesson-help="model"] > summary');let selects=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(selects[1],'2','change');assert.equal(f.q('#model [data-outline-points]').getAttribute('data-outline-points'),'34');
+  f.nav('#lesson/p39/129');f.click('[data-lesson-help="model"] > summary');selects=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(selects[1],'2','change');assert.equal(f.d.querySelectorAll('#model [data-outline-points]').length,2);
+  const expected=['6,9 м','11,1 м','16,2 м','16,7 м','17,9','37,5','61,7','87,5','4,2 м','2,1 м'];
+  expected.forEach((v,i)=>{f.nav('#lesson/p39/'+(130+i));assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,11);f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   assert.equal(f.d.querySelectorAll('#model [data-pine-age]').length,11);f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(v));assert.equal(f.d.querySelectorAll('#model [data-pine-reading]').length,i<8?1:2);
+   f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.equal(f.d.querySelectorAll('#model tbody tr').length,11);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1331);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1343);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1118,6 +1118,10 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  assert.equal(rows.length,5);assert(rows.every(t=>t.source.page===43&&t.source.isbn==='978-5-9963-4599-1'));
  assert.equal(5*8,4*(8+2));assert.equal(Number(rows[0].answer),5*8);
  assert.equal((3/.25)*.45,27/5);assert.equal(rows[1].answer,'27/5');assert.deepEqual(rows.slice(2).map(t=>t.answer),['Ньютон','Паскаль','Торричелли']);
+}
+{
+ const l=D.lessons.find(t=>t.id==='p39'),newRows=Array.from(l.tasks).filter(t=>[197,198].includes(t.source.exercise));
+ assert.equal(newRows.length,12);assert(newRows.every(t=>t.kind==='manual'&&t.answer===''));assert.equal(newRows.filter(t=>t.source.page===44).length,10);assert.equal(new Set(newRows.map(t=>t.source.reference)).size,12);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
