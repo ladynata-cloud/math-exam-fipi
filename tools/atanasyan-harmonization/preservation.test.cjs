@@ -98,16 +98,20 @@ const midlinesVectorCoefficients = require('../stereo-textbook/midlines-vector-c
 const collinearityVectorConditions = require('../stereo-textbook/collinearity-vector-conditions.json');
 const coplanarVectorDirections = require('../stereo-textbook/coplanar-vector-directions.json');
 const parallelepipedDirectedBases = require('../stereo-textbook/parallelepiped-directed-bases.json');
-const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards, ...round.cards, ...volumes.cards, ...prismVolumes.cards, ...sections.cards, ...oblique.cards, ...pyramids.cards, ...projections.cards, ...frusta.cards, ...cones.cards, ...sectors.cards, ...spheres.cards, ...sphereApplications.cards, ...volumeSelfcheck.cards, ...prismApplications.cards, ...normalPrismApplications.cards, ...pyramidAngleApplications.cards, ...pyramidComparisonApplications.cards, ...cylinderApplications.cards, ...inscribedVolumeApplications.cards, ...sphereVolumeAngles.cards, ...volumeChapterEnd.cards, ...vectorBasics.cards, ...vectorPairs.cards, ...vectorProperties.cards, ...spatialVectorSums.cards, ...oppositeDifference.cards, ...vectorOriginPaths.cards, ...diagonalPaths.cards, ...signedVectorCombinations.cards, ...prismVectorEquations.cards, ...pyramidVectorMidpoints.cards, ...midlinesVectorCoefficients.cards, ...collinearityVectorConditions.cards, ...coplanarVectorDirections.cards, ...parallelepipedDirectedBases.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
+const fieldsAndMidpointVectors = require('../stereo-textbook/fields-and-midpoint-vectors.json');
+const centroidsInTetrahedra = require('../stereo-textbook/centroids-in-tetrahedra.json');
+const heightAndMidpointProofs = require('../stereo-textbook/height-and-midpoint-proofs.json');
+const vectorChapterSelfcheck = require('../stereo-textbook/vector-chapter-selfcheck.json');
+const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards, ...round.cards, ...volumes.cards, ...prismVolumes.cards, ...sections.cards, ...oblique.cards, ...pyramids.cards, ...projections.cards, ...frusta.cards, ...cones.cards, ...sectors.cards, ...spheres.cards, ...sphereApplications.cards, ...volumeSelfcheck.cards, ...prismApplications.cards, ...normalPrismApplications.cards, ...pyramidAngleApplications.cards, ...pyramidComparisonApplications.cards, ...cylinderApplications.cards, ...inscribedVolumeApplications.cards, ...sphereVolumeAngles.cards, ...volumeChapterEnd.cards, ...vectorBasics.cards, ...vectorPairs.cards, ...vectorProperties.cards, ...spatialVectorSums.cards, ...oppositeDifference.cards, ...vectorOriginPaths.cards, ...diagonalPaths.cards, ...signedVectorCombinations.cards, ...prismVectorEquations.cards, ...pyramidVectorMidpoints.cards, ...midlinesVectorCoefficients.cards, ...collinearityVectorConditions.cards, ...coplanarVectorDirections.cards, ...parallelepipedDirectedBases.cards, ...fieldsAndMidpointVectors.cards, ...centroidsInTetrahedra.cards, ...heightAndMidpointProofs.cards, ...vectorChapterSelfcheck.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
 const closedSections = require('../stereo-textbook/closed-section-boundaries.json');
 for (const [id, receipt] of Object.entries(closedSections.cards)) {
   const file = 'stereo-course/textbook/lessons/' + id + '.json';
   assert.equal(extraCards[file], receipt.before.raw, 'original protected lesson: ' + id);
   extraCards[file] = receipt.after.raw;
 }
-const continuedClosedBank = require('../stereo-textbook/closed-section-bank-596.json');
+const continuedClosedBank = require('../stereo-textbook/closed-section-bank-vi.json');
 const amendmentChains = {};
-for (const supplement of [...supplements, sphere, mixed, circumspheres, round, volumes, prismVolumes, sections, oblique, pyramids, projections, frusta, cones, sectors, spheres, sphereApplications, volumeSelfcheck, prismApplications, normalPrismApplications, pyramidAngleApplications, pyramidComparisonApplications, cylinderApplications, inscribedVolumeApplications, sphereVolumeAngles, volumeChapterEnd, vectorBasics, vectorPairs, vectorProperties, spatialVectorSums, oppositeDifference, vectorOriginPaths, diagonalPaths, signedVectorCombinations, prismVectorEquations, pyramidVectorMidpoints, midlinesVectorCoefficients, collinearityVectorConditions, coplanarVectorDirections, parallelepipedDirectedBases, continuedClosedBank]) {
+for (const supplement of [...supplements, sphere, mixed, circumspheres, round, volumes, prismVolumes, sections, oblique, pyramids, projections, frusta, cones, sectors, spheres, sphereApplications, volumeSelfcheck, prismApplications, normalPrismApplications, pyramidAngleApplications, pyramidComparisonApplications, cylinderApplications, inscribedVolumeApplications, sphereVolumeAngles, volumeChapterEnd, vectorBasics, vectorPairs, vectorProperties, spatialVectorSums, oppositeDifference, vectorOriginPaths, diagonalPaths, signedVectorCombinations, prismVectorEquations, pyramidVectorMidpoints, midlinesVectorCoefficients, collinearityVectorConditions, coplanarVectorDirections, parallelepipedDirectedBases, fieldsAndMidpointVectors, centroidsInTetrahedra, heightAndMidpointProofs, vectorChapterSelfcheck, continuedClosedBank]) {
   for (const [file, amendment] of Object.entries(supplement.files)) {
     const chain = amendmentChains[file] ||= [];
     if (chain.length) assert.equal(amendment.beforeSHA256, chain.at(-1).afterSHA256, 'exact amendment chain: ' + file);
@@ -188,7 +192,7 @@ function verify(group, read = file => fs.readFileSync(path.join(root, file)), ex
 for (const group of baseline.groups) verify(group);
 const geometry = require(root + '/geometry-course/textbook/data/course.json');
 const currentStereo = require(root + '/stereo-course/textbook/data/course.json');
-assert.equal(currentStereo.lessons.length, 1001);
+assert.equal(currentStereo.lessons.length, 1055);
 const stereo = require('../stereo-textbook/additional414-baseline.cjs').previousCourse(currentStereo, require(root + '/stereo-course/textbook/source-index.json'));
 const first = require(root + '/learning/atanasyan-first-steps/course.json');
 const literacy = require(root + '/stereo-course/literacy/data/course.json');

@@ -2,7 +2,11 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const parallelepipedDirectedBases = makeReviewedIncrement(require('./parallelepiped-directed-bases.json'), closedSections);
+const vectorChapterSelfcheck = makeReviewedIncrement(require('./vector-chapter-selfcheck.json'), closedSections);
+const heightAndMidpointProofs = makeReviewedIncrement(require('./height-and-midpoint-proofs.json'), vectorChapterSelfcheck);
+const centroidsInTetrahedra = makeReviewedIncrement(require('./centroids-in-tetrahedra.json'), heightAndMidpointProofs);
+const fieldsAndMidpointVectors = makeReviewedIncrement(require('./fields-and-midpoint-vectors.json'), centroidsInTetrahedra);
+const parallelepipedDirectedBases = makeReviewedIncrement(require('./parallelepiped-directed-bases.json'), fieldsAndMidpointVectors);
 const coplanarVectorDirections = makeReviewedIncrement(require('./coplanar-vector-directions.json'), parallelepipedDirectedBases);
 const collinearityVectorConditions = makeReviewedIncrement(require('./collinearity-vector-conditions.json'), coplanarVectorDirections);
 const midlinesVectorCoefficients = makeReviewedIncrement(require('./midlines-vector-coefficients.json'), collinearityVectorConditions);

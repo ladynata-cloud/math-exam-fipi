@@ -1,0 +1,197 @@
+{
+  "parts": {
+    "610": [
+      null
+    ],
+    "611": [
+      null
+    ],
+    "612": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "610": {
+      "id": "source-main-0610",
+      "kind": "exercise",
+      "title": "Задача № 610",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "610",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          158
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "611": {
+      "id": "source-main-0611",
+      "kind": "exercise",
+      "title": "Задача № 611",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "611",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          158
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "612": {
+      "id": "source-main-0612",
+      "kind": "exercise",
+      "title": "Задача № 612",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "612",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156
+        ],
+        "pdfPages": [
+          158
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0610": {
+      "raw": "eb76adcba595744eb54f8df767dea4b4bf6eaa1249ec6e1e8a7feb85ca06ff0f",
+      "authored": "642d2a3bcef5c43c86052df8a954180736298ee0dd99b73f045c2f1b9fe39d8f",
+      "integrated": "602286b72393827a160e9491f6ca20fc6d72a08f921814f3f0783dd3ef832d93"
+    },
+    "ex-main-0611": {
+      "raw": "00625263c85773f70854a380c1f129a15cfa72bfe0f20f8742a07df96a44e5a8",
+      "authored": "3e4aafd81b4622331bb108e8760b1435469965fdcbeafa1e4cc162126565b531",
+      "integrated": "dade9072ccc8d6dcd41ece52546d3986f9b099c1f43877fd2feaa63f199668a9"
+    },
+    "ex-main-0612": {
+      "raw": "8c877bcd2d4a975d8dafefcc1796dd65833ab2fa0353a2bf4442bbf4a505c340",
+      "authored": "905c597acfeb98e794c5ac18c0f2ee918558b180effad5c54eeca83957e7d763",
+      "integrated": "709b602718348ba1e6cf8b407ff1f9ed63aea1423ff95e4a2947a23695963258"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0610|condition",
+      "height-and-midpoint-proofs-ex-main-0610-condition"
+    ],
+    [
+      "ex-main-0610|help:h1",
+      "height-and-midpoint-proofs-ex-main-0610-help-h1"
+    ],
+    [
+      "ex-main-0610|help:h2",
+      "height-and-midpoint-proofs-ex-main-0610-help-h2"
+    ],
+    [
+      "ex-main-0610|step-1",
+      "height-and-midpoint-proofs-ex-main-0610-step-1"
+    ],
+    [
+      "ex-main-0610|step-2",
+      "height-and-midpoint-proofs-ex-main-0610-step-2"
+    ],
+    [
+      "ex-main-0610|step-3",
+      "height-and-midpoint-proofs-ex-main-0610-step-3"
+    ],
+    [
+      "ex-main-0610|step-4",
+      "height-and-midpoint-proofs-ex-main-0610-step-4"
+    ],
+    [
+      "ex-main-0611|condition",
+      "height-and-midpoint-proofs-ex-main-0611-condition"
+    ],
+    [
+      "ex-main-0611|help:h1",
+      "height-and-midpoint-proofs-ex-main-0611-help-h1"
+    ],
+    [
+      "ex-main-0611|help:h2",
+      "height-and-midpoint-proofs-ex-main-0611-help-h2"
+    ],
+    [
+      "ex-main-0611|step-1",
+      "height-and-midpoint-proofs-ex-main-0611-step-1"
+    ],
+    [
+      "ex-main-0611|step-2",
+      "height-and-midpoint-proofs-ex-main-0611-step-2"
+    ],
+    [
+      "ex-main-0611|step-3",
+      "height-and-midpoint-proofs-ex-main-0611-step-3"
+    ],
+    [
+      "ex-main-0611|step-4",
+      "height-and-midpoint-proofs-ex-main-0611-step-4"
+    ],
+    [
+      "ex-main-0612|condition",
+      "height-and-midpoint-proofs-ex-main-0612-condition"
+    ],
+    [
+      "ex-main-0612|help:h1",
+      "height-and-midpoint-proofs-ex-main-0612-help-h1"
+    ],
+    [
+      "ex-main-0612|help:h2",
+      "height-and-midpoint-proofs-ex-main-0612-help-h2"
+    ],
+    [
+      "ex-main-0612|step-1",
+      "height-and-midpoint-proofs-ex-main-0612-step-1"
+    ],
+    [
+      "ex-main-0612|step-2",
+      "height-and-midpoint-proofs-ex-main-0612-step-2"
+    ],
+    [
+      "ex-main-0612|step-3",
+      "height-and-midpoint-proofs-ex-main-0612-step-3"
+    ],
+    [
+      "ex-main-0612|step-4",
+      "height-and-midpoint-proofs-ex-main-0612-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "40a033c5578444008345be2da7e6b94891e05abecfede54d36bf5ff8151ba626",
+      "afterSHA256": "ed1e6616ac32f74cac13b5dd5907a6c7c3c72a3e8ce05d2efa5d9a3558db4ec5"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "7f689be3168149e6606744d306212aa086b9d275d00b00baa9fa037a9a7c2d8b",
+      "afterSHA256": "d2bee8f8d5b06e4c878265db237e950c649bedd68f540083cc0f856c88e45767"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T21:14:01Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–609, with 1,024 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "0a765d083c9eae3a4fcdc661ae53438bef293f3b287acdff4e0c497d2ed807bb",
+    "index": "5806b8e127bc9268b2a4f8be9d82ec164b91ede7eaa4f6bad92f11ce339569fa",
+    "registry": "e7eb86a87558543e3ca5f526ac11a9648fbd1047607c9d5d4c0feeeabfec14af",
+    "cases": "74881a1aac78685bb99621cc12cc315db7ab0784ae2992bbd58cc33d7706e3ce"
+  }
+}

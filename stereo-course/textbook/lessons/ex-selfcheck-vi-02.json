@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-selfcheck-vi-02",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Одна точка оказывается серединой двух отрезков",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "selfcheck",
+    "exercise": "2",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      156
+    ],
+    "pdfPages": [
+      158
+    ]
+  },
+  "statement": {
+    "text": "A и C симметричны относительно O, а AD=BC как векторы. Симметричны ли B и D относительно O?",
+    "goal": "Гарантирована ли центральная симметрия B и D? Ответь «да» или «нет»."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "O — середина AC. Перемещения AD и BC равны.",
+    "model": {
+      "points": {
+        "O": [
+          0,
+          0,
+          0
+        ],
+        "A": [
+          2,
+          0,
+          0
+        ],
+        "C": [
+          -2,
+          0,
+          0
+        ],
+        "B": [
+          0.5,
+          1.6,
+          0.8
+        ],
+        "D": [
+          -0.5,
+          -1.6,
+          -0.8
+        ],
+        "P": [
+          1,
+          2,
+          -1
+        ],
+        "Q": [
+          -1,
+          -2,
+          1
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "C"
+        ],
+        [
+          "B",
+          "D"
+        ]
+      ],
+      "faces": [],
+      "arrows": [
+        [
+          "A",
+          "D"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "B",
+          "O"
+        ],
+        [
+          "O",
+          "D"
+        ],
+        [
+          "P",
+          "O"
+        ],
+        [
+          "O",
+          "Q"
+        ]
+      ],
+      "labelNames": [
+        "O",
+        "A",
+        "C",
+        "B",
+        "D",
+        "P",
+        "Q"
+      ],
+      "views": {
+        "neutral": {
+          "label": "O — середина AC. Перемещения AD и BC равны.",
+          "segments": [
+            [
+              "A",
+              "D"
+            ],
+            [
+              "B",
+              "C"
+            ],
+            [
+              "A",
+              "O"
+            ],
+            [
+              "O",
+              "C"
+            ]
+          ]
+        },
+        "reason": {
+          "label": "У отрезков AC и BD одна и та же середина O.",
+          "segments": [
+            [
+              "A",
+              "O"
+            ],
+            [
+              "O",
+              "C"
+            ],
+            [
+              "B",
+              "O"
+            ],
+            [
+              "O",
+              "D"
+            ]
+          ]
+        },
+        "transfer": {
+          "label": "Для другой точки P точка Q расположена по другую сторону от O на том же расстоянии.",
+          "segments": [
+            [
+              "P",
+              "O"
+            ],
+            [
+              "O",
+              "Q"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Что даёт равенство AD=BC?",
+      "text": "Запиши OD−OA=OC−OB. Тогда OB+OD=OA+OC.",
+      "view": "reason"
+    },
+    {
+      "id": "h2",
+      "question": "Как найти центрально-симметричную точку?",
+      "text": "При начале координат в O все три компоненты меняют знак.",
+      "view": "transfer"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Сумма противоположных",
+      "prompt": "Пусть OA=(2,0,0), OC=(−2,0,0). Чему равна длина OA+OC?",
+      "explanation": "OA+OC=0, потому что O — середина AC.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Центрально-симметричные радиус-векторы противоположны.",
+          "theoryId": "theory-065"
+        }
+      ],
+      "view": "neutral",
+      "input": {
+        "prompt": "Сумма противоположных",
+        "accepted": [
+          "0"
+        ],
+        "feedback": "Сложи векторы, а не их длины."
+      }
+    },
+    {
+      "id": "step-2",
+      "title": "Вторая пара",
+      "prompt": "Из OB+OD=0 найди коэффициент OD по OB при B≠O.",
+      "explanation": "OD=−OB; при B=O оба совпадают с O. Значит, O — середина BD в любом случае.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Точка является серединой отрезка, если сумма векторов к его концам равна нулю.",
+          "theoryId": "theory-065"
+        }
+      ],
+      "view": "reason",
+      "input": {
+        "prompt": "Вторая пара",
+        "accepted": [
+          "-1"
+        ],
+        "feedback": "Равные по длине радиус-векторы смотрят в противоположные стороны."
+      }
+    },
+    {
+      "id": "step-3",
+      "title": "Новая точка",
+      "prompt": "Для P=(1,2,−1) запиши координаты симметричной точки при O=(0,0,0).",
+      "explanation": "Q=(−1,−2,1).",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Центральная симметрия меняет знак всех компонент.",
+          "theoryId": "theory-065"
+        }
+      ],
+      "view": "transfer",
+      "input": {
+        "prompt": "Новая точка",
+        "accepted": [
+          "-1;-2;1"
+        ],
+        "feedback": "Не забудь изменить и третью компоненту."
+      }
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "да"
+    ],
+    "prompt": "Гарантирована ли центральная симметрия B и D? Ответь «да» или «нет».",
+    "feedback": "Середины AC и BD совпадают, поскольку OA+OC=OB+OD=0."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: issued 2024 volume, chapter VI questions, printed page 156. Source-part order and independent explicit spatial models checked.",
+    "at": "2026-11-21T21:28:45Z"
+  }
+}

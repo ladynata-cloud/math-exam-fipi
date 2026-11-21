@@ -13527,6 +13527,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -13545,7 +13549,10 @@
           156
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0599",
@@ -13563,7 +13570,10 @@
           156
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0600",
@@ -13581,7 +13591,10 @@
           156
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0601",
@@ -13599,7 +13612,10 @@
           156
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0602",
@@ -13617,7 +13633,10 @@
           156
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0603",
@@ -13637,7 +13656,10 @@
           157
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0604",
@@ -13655,7 +13677,10 @@
           157
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0605",
@@ -13681,6 +13706,15 @@
         "д",
         "е",
         "ж"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "ж"
       ]
     },
     {
@@ -13699,7 +13733,10 @@
           157
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0607",
@@ -13722,6 +13759,12 @@
         "б",
         "в",
         "г"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
       ]
     },
     {
@@ -13740,7 +13783,10 @@
           157
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0609",
@@ -13760,7 +13806,10 @@
           158
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0610",
@@ -13778,7 +13827,10 @@
           158
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0611",
@@ -13796,7 +13848,10 @@
           158
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0612",
@@ -13814,7 +13869,10 @@
           158
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0613",
@@ -25976,7 +26034,15 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е"
+      ]
     },
     {
       "id": "source-selfcheck-6-02",
@@ -25995,7 +26061,10 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-6-03",
@@ -26014,7 +26083,11 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-6-04",
@@ -26033,7 +26106,11 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-6-05",
@@ -26052,7 +26129,10 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-6-06",
@@ -26071,7 +26151,10 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-6-07",
@@ -26090,7 +26173,10 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-6-08",
@@ -26109,7 +26195,10 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-6-09",
@@ -26128,7 +26217,10 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-6-10",
@@ -26147,7 +26239,10 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-6-11",
@@ -26166,7 +26261,13 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ]
     },
     {
       "id": "source-selfcheck-6-12",
@@ -26185,7 +26286,11 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-6-13",
@@ -26204,7 +26309,11 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-6-14",
@@ -26223,7 +26332,11 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-6-15",
@@ -26242,7 +26355,10 @@
           158,
           159
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-7-01",

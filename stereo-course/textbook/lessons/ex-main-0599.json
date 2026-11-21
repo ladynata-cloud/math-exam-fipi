@@ -1,0 +1,326 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0599",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Середина ребра тетраэдра из другой вершины",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "599",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      154
+    ],
+    "pdfPages": [
+      156
+    ]
+  },
+  "statement": {
+    "text": "В тетраэдре K делит BC пополам. Векторы a=DA, b=AB и c=AC образуют заданные направления.",
+    "goal": "Найди коэффициенты DK и объясни, почему только два из них половинные."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "K посередине BC. Искомая DK начинается в D.",
+    "model": {
+      "points": {
+        "D": [
+          0.6,
+          -0.8,
+          3
+        ],
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          3,
+          0.2,
+          0
+        ],
+        "C": [
+          0.4,
+          3,
+          0
+        ],
+        "K": [
+          1.7,
+          1.6,
+          0.0
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "D",
+          "B"
+        ],
+        [
+          "D",
+          "C"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "C",
+          "B"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "arrows": [
+        [
+          "D",
+          "K"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "D",
+          "B"
+        ],
+        [
+          "D",
+          "C"
+        ]
+      ],
+      "labelNames": [
+        "D",
+        "A",
+        "B",
+        "C",
+        "K"
+      ],
+      "views": {
+        "neutral": {
+          "label": "K посередине BC. Искомая DK начинается в D.",
+          "segments": [
+            [
+              "D",
+              "K"
+            ],
+            [
+              "D",
+              "A"
+            ],
+            [
+              "A",
+              "B"
+            ],
+            [
+              "A",
+              "C"
+            ]
+          ]
+        },
+        "endpoints": {
+          "label": "К B и C из D ведут векторы a+b и a+c.",
+          "segments": [
+            [
+              "D",
+              "B"
+            ],
+            [
+              "D",
+              "C"
+            ],
+            [
+              "D",
+              "A"
+            ],
+            [
+              "A",
+              "B"
+            ],
+            [
+              "A",
+              "C"
+            ]
+          ]
+        },
+        "average": {
+          "label": "Поскольку K посередине, DK — полусумма DB и DC.",
+          "segments": [
+            [
+              "D",
+              "B"
+            ],
+            [
+              "D",
+              "C"
+            ],
+            [
+              "D",
+              "K"
+            ],
+            [
+              "B",
+              "K"
+            ],
+            [
+              "K",
+              "C"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Какие два вектора усреднять?",
+      "text": "Нужны векторы с одинаковым началом D и концами B, C. Середины берутся по их концам.",
+      "view": "average"
+    },
+    {
+      "id": "h2",
+      "question": "Где участвует DA?",
+      "text": "Чтобы из D попасть как в B, так и в C, сначала можно пройти через A.",
+      "view": "endpoints"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "К вершине B",
+      "prompt": "В порядке a,b,c разложи DB.",
+      "input": {
+        "prompt": "К вершине B",
+        "accepted": [
+          "1;1;0"
+        ],
+        "feedback": "DB=DA+AB. До C в этом пути идти не приходится."
+      },
+      "explanation": "DB=a+b.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Сложение векторов по правилу треугольника.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "endpoints"
+    },
+    {
+      "id": "step-2",
+      "title": "К вершине C",
+      "prompt": "Теперь разложи DC.",
+      "input": {
+        "prompt": "К вершине C",
+        "accepted": [
+          "1;0;1"
+        ],
+        "feedback": "Вместо AB на втором шаге нужен AC."
+      },
+      "explanation": "DC=a+c.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Путь D → A → C даёт DC.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "endpoints"
+    },
+    {
+      "id": "step-3",
+      "title": "Середина BC",
+      "prompt": "Введи коэффициенты DK.",
+      "input": {
+        "prompt": "Середина BC",
+        "accepted": [
+          "1;1/2;1/2"
+        ],
+        "feedback": "DA встретился в обоих путях. В полусумме он останется один целый раз."
+      },
+      "explanation": "DK=(DB+DC)/2=a+(b+c)/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Для середины отрезка вектор из общей точки есть полусумма векторов в его концы.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "average"
+    },
+    {
+      "id": "step-4",
+      "title": "Новая точка",
+      "prompt": "Пусть теперь BK составляет треть BC. Запиши новые коэффициенты DK.",
+      "input": {
+        "prompt": "Новая точка",
+        "accepted": [
+          "1;2/3;1/3"
+        ],
+        "feedback": "Точка ближе к B. Возьми две трети DB и одну треть DC."
+      },
+      "explanation": "DK=(2DB+DC)/3=a+2b/3+c/3.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Деление отрезка в отношении 1:2 задаёт взвешенное среднее его концов.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "endpoints"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "1;1/2;1/2"
+    ],
+    "prompt": "Запиши коэффициенты при a,b,c для K в середине BC.",
+    "feedback": "DA входит целиком. Между AB и AC веса делятся поровну."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 154, answer key 268 and printed derivations where given; independent field and vector computations.",
+    "at": "2026-11-21T21:05:43Z"
+  }
+}
