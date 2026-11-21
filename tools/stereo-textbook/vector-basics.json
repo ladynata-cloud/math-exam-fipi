@@ -107,9 +107,9 @@
       "integrated": "65a428c7eed63aba410a43788d73abf67dd478131531090afbb9ec7c1a21c7b2"
     },
     "ex-main-0558-a": {
-      "raw": "875f3e32865020c1dfa33d44b5ecee37ee78b97dffa51d6372cc0900b7f67d11",
-      "authored": "74060e57166cc7530366af054f14ecbae81525e810a316a0e28b2f5c24110581",
-      "integrated": "fdc34466b1e4b1d5356c271f609fe3eac3e889649ac2704fba7077e05123e3cc"
+      "raw": "eefd432c83ed65ab39b25625c4c2fea17d39ee96a06a2de9082dec38ff2b9694",
+      "authored": "e8c84141360e4d5cb6c119228b848d7a21c3a73219baa9dd7b451637165455b9",
+      "integrated": "4d25f628bddc3f6e054b80b6d6e41876b8351c1c9c408871cf2d0ba27a058bf8"
     },
     "ex-main-0558-b": {
       "raw": "4b7f0205183cb22ac73f8a0332523dc2f7417b1d93902489b5d25d7f0f63297e",
@@ -195,6 +195,10 @@
     [
       "ex-main-0558-a|help:h2",
       "vector-basics-ex-main-0558-a-help-h2"
+    ],
+    [
+      "ex-main-0558-a|help:h3",
+      "vector-basics-ex-main-0558-a-help-h3"
     ],
     [
       "ex-main-0558-a|step-1",
@@ -304,7 +308,7 @@
   "files": {
     "stereo-course/textbook/data/course.json": {
       "beforeSHA256": "5da5586aa6a320cb57d6d7e614655b26b88146a8064ef3f1a4d10c5234309721",
-      "afterSHA256": "ce0ed1df13f72bf510e2f05e80ed351c644879cfc5fcd4d99c4d8f88ff200164"
+      "afterSHA256": "184ed9c8368799566c06329f6e69171dd3e3782f0ecb5bbef3dc2c125bf8c2f6"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "20883f45c6516277ec50146bf986f4128cfc3c65f52604370c6f1fbd01856c47",

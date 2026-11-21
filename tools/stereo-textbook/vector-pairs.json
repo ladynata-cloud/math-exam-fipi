@@ -52,29 +52,29 @@
   },
   "cards": {
     "ex-main-0559-a": {
-      "raw": "71eead51b1370d548656ddf838d8c98717a92a846c7ce23fe0ae8b3d564dbe75",
-      "authored": "53e6a4db3ed1143936c620ed4c665c417ef7e4709663e85c7f613de17439664a",
-      "integrated": "4f5f420e287456668af5542358f793c680a58222b6f61d40e32a3d1a8e510e81"
+      "raw": "a927bedc1fc988c43ed65be78e1fccde44bd3a99129ad2f4383af3cf6637d4af",
+      "authored": "169e49899bd2bb1ae68b58af3a184bc06689a2421543df8d299d70b66de5a18d",
+      "integrated": "7cb9b0b76b750cf4c0056d56f90f55747ea17c3b2fae924cec887096286f7d2d"
     },
     "ex-main-0559-b": {
-      "raw": "d623929a19a121d1e0f6457935197d3de0303e484849be425090016113abb08a",
-      "authored": "e1d1755457a533d000160126f85adf012e9fba1e80a2af3e73aace02a5d2fc51",
-      "integrated": "f0d90478be1e76333d8cb4954d5bbb2650c4db2861ee9f711080fbfe25b55bf1"
+      "raw": "30ab7592634471dbf18ea2b2da91ca7982aacdbf1d32f39263980c6e1a5fae50",
+      "authored": "11fab105481d82bbcd16100e43a78fe1ba9c62a61536f13047ebdaaae0531edc",
+      "integrated": "f6ce28bca634c9f3a6fd146f6b4454e64ff7ec51e929a807a21650587cf5fe80"
     },
     "ex-main-0559-c": {
-      "raw": "b93f3c2a0a2d37f9f5c587e334ea0193098f95163ee0d1228c4547cfec98a833",
-      "authored": "59a1b5d4f25cb2b97796add99188b62d307dbd705c5f2bbe5ef853bdfd917ebb",
-      "integrated": "6417fa3b4c9d537f400aea94fb759381de6165bd2ffcaae9780b16d280f0262a"
+      "raw": "b94e066d659c78ca233d8a587f85eadd3e2665a4352b1e96e9987cc3550c00dc",
+      "authored": "b74110ee054a7de7b7873eb1251dbf5a7924e1160a340d33c9c9b4c9ee9c3a04",
+      "integrated": "e17c93b14d472038ef79c822ffe0d4dcecd8db19b78cb24ab59b171670b8d863"
     },
     "ex-main-0560-a": {
-      "raw": "c14dd13b30502af1727f286c1a3f9ada2bfe14c28d8217d6bb3f95f3f7950535",
-      "authored": "995d81cb50fd2a4e10a6c60b2a64c3fae60a303f25b0125132bdeec8188b6e3e",
-      "integrated": "657cc378a362a1e514da90a87e402ecbb38012aab96f1b6646171a3755b5f7a0"
+      "raw": "291a99b3f9d5d1dc347d49e55a9ee8866184e463341a6550502c1339d2c64ff2",
+      "authored": "4affadc65e28ac5ae57056b4b7bae2c42f3d484ebeb597963327c5c30b0c45eb",
+      "integrated": "1d65b672350eddb1b3d1b730645777c1370691a9b817a85eb6ac31bf73f7205c"
     },
     "ex-main-0560-b": {
-      "raw": "8ec20cecc3cd28a8ae4fedb1e3e174509c362776211c510613638471b0868c52",
-      "authored": "0d078d693884c9da205cbbdf09241c86796fa12b37e1c6a01c655162bc35caea",
-      "integrated": "2d70248a4f1d1bac61fea609a570d4aa604f492fa68b532f82f18a0f98e4a18f"
+      "raw": "3882faaa383315983c2d44986ada280993f57dbfe1d5704fdc8fe33bbe39f43c",
+      "authored": "99d9203c8225d2c97f5e42bed0860a909c26e5bca072bbc78f16386f44d76d54",
+      "integrated": "c9767943a83fb419e3ea4fc0fe180dcb08b9596dfe971fbf1b87e9155cf24fd5"
     }
   },
   "cases": [
@@ -89,6 +89,10 @@
     [
       "ex-main-0559-a|help:h2",
       "vector-pairs-ex-main-0559-a-help-h2"
+    ],
+    [
+      "ex-main-0559-a|help:h3",
+      "vector-pairs-ex-main-0559-a-help-h3"
     ],
     [
       "ex-main-0559-a|step-1",
@@ -119,6 +123,10 @@
       "vector-pairs-ex-main-0559-b-help-h2"
     ],
     [
+      "ex-main-0559-b|help:h3",
+      "vector-pairs-ex-main-0559-b-help-h3"
+    ],
+    [
       "ex-main-0559-b|step-1",
       "vector-pairs-ex-main-0559-b-step-1"
     ],
@@ -145,6 +153,10 @@
     [
       "ex-main-0559-c|help:h2",
       "vector-pairs-ex-main-0559-c-help-h2"
+    ],
+    [
+      "ex-main-0559-c|help:h3",
+      "vector-pairs-ex-main-0559-c-help-h3"
     ],
     [
       "ex-main-0559-c|step-1",
@@ -175,6 +187,10 @@
       "vector-pairs-ex-main-0560-a-help-h2"
     ],
     [
+      "ex-main-0560-a|help:h3",
+      "vector-pairs-ex-main-0560-a-help-h3"
+    ],
+    [
       "ex-main-0560-a|step-1",
       "vector-pairs-ex-main-0560-a-step-1"
     ],
@@ -203,6 +219,10 @@
       "vector-pairs-ex-main-0560-b-help-h2"
     ],
     [
+      "ex-main-0560-b|help:h3",
+      "vector-pairs-ex-main-0560-b-help-h3"
+    ],
+    [
       "ex-main-0560-b|step-1",
       "vector-pairs-ex-main-0560-b-step-1"
     ],
@@ -221,8 +241,8 @@
   ],
   "files": {
     "stereo-course/textbook/data/course.json": {
-      "beforeSHA256": "ce0ed1df13f72bf510e2f05e80ed351c644879cfc5fcd4d99c4d8f88ff200164",
-      "afterSHA256": "cf085af112ac4fb1c7a6123b84b08967132be34c0b646ceb969d2753d1762d8c"
+      "beforeSHA256": "184ed9c8368799566c06329f6e69171dd3e3782f0ecb5bbef3dc2c125bf8c2f6",
+      "afterSHA256": "62deca5ae3d09a96755c68201a05d5fbff4089b0e4148601c78c8e903a6fc955"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "bd742b5dddb968bb66fe522e3e17b7aecf5fabcdd96d4f68ff57c01446d9da94",
@@ -236,9 +256,9 @@
     "scope": "Introduction and chapters I–V, followed by chapter VI points 63–64 and source exercises 557–558, with 903 reviewed cards. Later exercise positions remain drafts."
   },
   "before": {
-    "course": "18581caec1ef747b73af0594e61fd64653fb424e5464ab505fba2c481bd069e1",
+    "course": "b92470714b61b6d886125eeca4e9b673241d43f3736e4db0471559c7ab2e0a33",
     "index": "7488a9e8d819b7d48b2b3f405c7d74ce224c30b8e5135994a6971af82f388288",
-    "registry": "f59c3e7a07f191ee8cb61025bb39f8273ea0518e4a27f349bf5af6c5cca24e3f",
-    "cases": "396b0bba2b3c276156c1a984dd19097b3b74e638a13feb6ba5d8f3c1c975da6d"
+    "registry": "1519a92e77bef4700ca03d588351934aee2c338ab15b4dc7cbd6ba4a6334ee10",
+    "cases": "a1f718599569a08d94d642c3142ef3c3f36759da7cc8434a4e151aa682026665"
   }
 }
