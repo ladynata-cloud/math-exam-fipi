@@ -29,7 +29,7 @@ function open(entry,saved){
  w.TextEncoder=TextEncoder;w.Math.random=()=>0;
  const id=entry.path.split('/').pop(),storage='math:mordkovich-2013:v1:'+id;
  if(saved)w.localStorage.setItem(storage,saved);
- for(const name of ['../tyurin-statistics/content.js','identities.js','quotients.js','quadrants.js','ranges.js','arguments.js','../tyurin-statistics/app.js'])w.eval(read(path.join(dir,name)));
+ for(const name of ['../tyurin-statistics/content.js','identities.js','quotients.js','quadrants.js','ranges.js','arguments.js','functions-theory.js','function-properties.js','../tyurin-statistics/app.js'])w.eval(read(path.join(dir,name)));
  return {dom,w,storage,doc:w.document,lesson:w.MathExamTopicPractice.lessons.get(id)};
 }
 function click(doc,act){const target=doc.querySelector('[data-action="'+act+'"]');assert(target,doc.querySelector('#lesson').value+' · '+act+' · '+(doc.querySelector('#feedback')?.textContent||''));target.click();}
@@ -144,10 +144,11 @@ const close=(a,b)=>assert(Math.abs(a-b)<1e-9,String(a)+' ≠ '+b);
 for(const [i,entry] of book.exercises.slice(75).entries()){
  let {dom,w,doc,lesson,storage}=open(entry);
  const editionKeys=Array.from(book.exercises.slice(75),r=>r.path.split('/').pop());
- assert.deepEqual(Array.from(doc.querySelectorAll('#lesson option'),n=>n.value),editionKeys);
+ const theoryKeys=Array.from(ctx.window.WorkshopCurriculum.books.find(b=>b.id==='source-20').exercises,r=>r.path.split('/').pop());
+ assert.deepEqual(Array.from(doc.querySelectorAll('#lesson option'),n=>n.value),editionKeys.concat(theoryKeys));
  assert.equal(w.MathExamTopicEdition.nextId(lesson),editionKeys[i+1]);
  assert.equal(entry.boardPath,entry.path);assert.equal(doc.querySelector('#lesson').value,lesson.id);
- assert.equal(doc.querySelectorAll('#lesson option').length,65);assert.equal(doc.querySelector('#source').href.split('#').pop(),i<8?'page=23':i<32?'page=24':i<56?'page=25':'page=26');
+ assert.equal(doc.querySelectorAll('#lesson option').length,94);assert.equal(doc.querySelector('#source').href.split('#').pop(),i<8?'page=23':i<32?'page=24':i<56?'page=25':'page=26');
  assert.equal(JSON.parse(w.localStorage.getItem(storage)).results.length,0);
  assert(!doc.querySelector('#work').textContent.includes(lesson.printedGuide));click(doc,'printed-guide');assert(doc.querySelector('#work').textContent.includes(lesson.printedGuide));
  if(i>=20&&i<36)verifyPrintedSigns(i-20,lesson.printedGuide);
