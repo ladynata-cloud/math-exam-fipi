@@ -56,9 +56,9 @@ const squarePractice=window.MakarychevModels?.squarePractice;
 const appliedPractice=window.MakarychevModels?.appliedPractice;
 const invariantPractice=window.MakarychevModels?.invariantPractice;
 const fractionDomainPractice=window.MakarychevModels?.fractionDomainPractice;
-const {mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice}=window.MakarychevModels||{};
+const {mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice}=window.MakarychevModels||{};
 const auditPractice=window.MakarychevModels?.auditPractice;
-const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice,invariantPractice,fractionDomainPractice,auditPractice,mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice].filter(Boolean)];
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice,invariantPractice,fractionDomainPractice,auditPractice,mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
@@ -67,6 +67,7 @@ function generatePractice(id,seed,level){
  if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
  if(id===mixturePractice?.id)return window.MakarychevModels.practiceMixture(seed,level);
  if(id===proofPractice?.id)return window.MakarychevModels.practiceProofEstimate(seed,level);
+ if(id===shapePractice?.id)return window.MakarychevModels.practiceShapes(seed,level);
  if(id===graphReadingPractice?.id)return window.MakarychevModels.practiceReadings(seed,level);
  if(id===domainPractice?.id)return window.MakarychevModels.practiceDomain(seed,level);
  if(id===functionPractice?.id)return window.MakarychevModels.practiceFunction(seed,level);
@@ -147,6 +148,8 @@ function formatProblem(value,q){
   const entries=text.split(';'),count=q.kind==='interval-examples'?q.exampleCount:String(q.answer).split(';').length;
   if(entries.length!==count||entries.some(v=>!M.parse(v)))return message;
  }
+ if(q.kind==='feature-points'&&!window.MakarychevTaskGraphs.domainCoefficients(text,q.graph.constructionXs.length))return message;
+ if(q.kind==='feature-coefficients'&&!window.MakarychevTaskGraphs.domainCoefficients(text,2))return message;
  if(q.kind==='positive-probe'&&!M.parse(text))return message;
  if(['domain-family','reciprocal-hole'].includes(q.kind)&&!window.MakarychevTaskGraphs.domainCoefficients(text,q.kind==='domain-family'?4:3))return message;
  if(q.kind==='root-line-count'&&!window.MakarychevTaskGraphs?.parseLine(text))return message;
@@ -246,6 +249,16 @@ function naturalCase(term,rule){
  return [36n-n*n,n*n];
 }
 function feedbackFor(value,q){
+ if(q.graph?.type==='source-function-features'){
+  const g=q.graph,C=window.MakarychevCheck,r=C.axisRanges(C.systemInput(value,g.variable));
+  const includes=x=>r?.some(row=>(x>row.min||x===row.min&&!row.leftOpen)&&(x<row.max||x===row.max&&!row.rightOpen));
+  if(g.constructionXs){const ys=window.MakarychevTaskGraphs.domainCoefficients(value,g.constructionXs.length);if(ys){const expected=q.answer.split(';'),i=ys.findIndex((v,i)=>!M.equal(M.answer(v),expected[i]));if(i>=0)return 'Проверь точку с x='+g.constructionXs[i]+': предложенная тобой ордината '+M.answer(ys[i])+' не совпадает со значением по формуле. '+q.hint;}}
+  if(g.shape==='triangle'&&r){if(g.mode==='domain'&&includes(10))return 'При x=10 сумма боковых сторон равна основанию. Треугольник вырождается: 10 нужно исключить.';if(g.mode==='range'&&includes(40))return 'Периметр 40 получился бы только у вырожденного треугольника, поэтому 40 исключается.';if(g.mode==='range'&&!includes(100))return 'Периметр ровно 100 допускается условием «не более». Добавь граничную точку.';}
+  if(g.shape==='bounded-rational'&&g.mode==='range'&&r){if(includes(1))return 'Высота 1 не достигается: равенство x²=x²+1 невозможно.';if(!includes(0))return 'При x=0 исходная дробь равна нулю. Нижнюю границу нужно включить.';}
+  if(g.shape==='reciprocal'&&r&&includes(0))return g.mode==='domain'?'При x=0 знаменатель исчезает.':'Ненулевой числитель не может дать высоту y=0.';
+  if(g.mode==='identify'&&value==='y=x−1')return 'Пересечение с осью y ты нашёл верно. Но на шаг вправо эта прямая поднимается на 1, а на рисунке — на 2.';
+  return q.hint;
+ }
  if(q.graph?.type==='source-reading-graph'){
   const g=q.graph,r=M.parse(value),v=r?r.n/r.d:null;
   if(g.mode==='square-area'&&v===144)return '144 см² — площадь всего внешнего квадрата. Плитка занимает только половину.';
@@ -707,6 +720,7 @@ if(t.graph){
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(graph.type))graph=rationalEvidence(graph,s.value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(graph.type))graph={...graph,trial:s.values[graph.trialStep||0],prediction:s.values[graph.predictionStep],completed:s.correct};
  if(graph.fixedInput)graph={...graph,partial:s.values,showValue:Boolean(s.correct)};
+ if(graph.type==='source-function-features')graph={...graph,partial:s.values,proposal:['domain','range'].includes(graph.mode)?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(s.value,graph.variable)):null};
  if(graph.type==='source-reading-graph')graph={...graph,partial:s.values,proposal:window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(s.value,graph.variable||'y')),xs:graph.mode==='preimage'?window.MakarychevCheck.rationalList(s.value):null};
  if(graph.type==='source-function-domain')graph={...graph,partial:s.values,proposal:['radical','quotient','zero'].includes(graph.case)?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(s.value,'x')):null};
  if(graph.type==='source-function-values')graph={...graph,partial:s.values,roots:graph.mode==='zeros'?window.MakarychevCheck.setEntries(s.value):null};
@@ -743,7 +757,7 @@ if(t.graph){
  if(modelInput&&graph.type==='natural-values')graph={...graph,rows:(window.MakarychevCheck.setEntries(modelInput)||[]).map(term=>({term,pair:naturalCase(term,t.naturalRule)}))};
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
-document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
+document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
 function rationalEvidence(graph,value){
  const C=window.MakarychevCheck;
  if(graph.type==='rational-root-audit')return {...graph,checks:C.rationalRootTrial(value,graph)};
@@ -755,13 +769,14 @@ function factorEvidence(graph,value){
  const [a,...roots]=String(value||'').split(';');
  return {...graph,rightLeading:M.equal(a,graph.leading),audit:window.MakarychevCheck.vietaAudit(roots.join(';'),graph)};
 }
-function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
+function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
  const state=ts(active.task.id),base=active.task.graph;
  let graph=['vertex-form','coefficient-example'].includes(base.type)?{...base,evaluated:Boolean(state.attempts||state.correct)}:base;
  if(['own-lines','own-points'].includes(base.type))graph={...base,groups:window.MakarychevCheck.pointGroups(value)};
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(base.type))graph=rationalEvidence(base,value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(base.type))graph={...base,trial:state.values[base.trialStep||0],prediction:state.values[base.predictionStep],completed:state.correct};
  if(base.fixedInput)graph={...graph,partial:state.values,showValue:Boolean(state.correct)};
+ if(base.type==='source-function-features')graph={...base,partial:state.values,proposal:['domain','range'].includes(base.mode)?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(value,base.variable)):null};
  if(base.type==='source-reading-graph')graph={...base,partial:state.values,proposal:window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(value,base.variable||'y')),xs:base.mode==='preimage'?window.MakarychevCheck.rationalList(value):null};
  if(base.type==='source-function-domain')graph={...base,partial:state.values,proposal:['radical','quotient','zero'].includes(base.case)?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(value,'x')):null};
  if(base.type==='source-function-values')graph={...base,partial:state.values,roots:base.mode==='zeros'?window.MakarychevCheck.setEntries(value):null};

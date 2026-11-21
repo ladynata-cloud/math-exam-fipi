@@ -40,6 +40,7 @@ function curveValue(curve,x){
  if(curve.kind==='absolute-reciprocal')return x===0?NaN:curve.k/Math.abs(x);
  if(curve.kind==='sign-linear')return x===curve.h?NaN:Math.sign(x-curve.h)*(curve.k*x+curve.b);
  if(curve.kind==='abs-linear')return curve.k*Math.abs(x)+curve.b;
+ if(curve.kind==='feature-curve'){if(curve.segment&&(x<curve.segment[0]||x>curve.segment[1]))return NaN;return featureY(curve.shape,curve.k,curve.b,x);}
  if(curve.kind==='reading-profile')return readingHeight(curve.nodes,x);
  if(curve.kind==='source-absolute-domain'){
   if(curve.mode==='abs-positive')return 5/(Math.abs(x+1)+4);
@@ -903,6 +904,56 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function featureY(shape,k,b,x){
+ switch(shape){
+  case 'affine':case 'triangle':return k*x+b;
+  case 'reciprocal':return x===0?NaN:k/x;
+  case 'square':return k*x*x;
+  case 'cube':return k*x*x*x;
+  case 'sqrt':return k*Math.sqrt(x);
+  case 'absolute':return k*Math.abs(x);
+  case 'bounded-rational':return x*x/(x*x+1);
+  default:return NaN;
+ }
+}
+function featureAllowed(g,x){return Number.isFinite(x)&&(!g.segment||((g.leftOpen?x>g.segment[0]:x>=g.segment[0])&&x<=g.segment[1]))&&(g.shape!=='sqrt'||x>=0)&&(g.shape!=='reciprocal'||x!==0);}
+function featureView(host,g,value){
+ host.className='task-graphs quantity-model';const k=M.parse(g.k),b=M.parse(g.b),free=M.parse(g.partial?.[0]);
+ const numeric=q=>q.n/q.d,canonical=[numeric(k),numeric(b)],building=g.mode==='build',two=['affine','triangle'].includes(g.shape);
+ let proposed=building?(two?domainCoefficients(value,2)?.map(numeric):M.parse(value)?[numeric(M.parse(value)),0]:null):canonical;
+ const curves=[],points=[],triangle=g.shape==='triangle',bounded=g.shape==='bounded-rational';
+ if(g.constructionXs){
+  proposed=null;const supplied=domainCoefficients(value,g.constructionXs.length);
+  if(supplied){const y=supplied.map(numeric),twice=(a,b)=>BigInt(a.n)*BigInt(b.d)===2n*BigInt(b.n)*BigInt(a.d);g.constructionXs.forEach((x,i)=>points.push([x,y[i],'']));
+   if(g.shape==='affine')proposed=[y[1]-y[0],y[0]];
+   if(g.shape==='reciprocal'&&twice(supplied[0],supplied[1]))proposed=[y[0],0];
+   if(g.shape==='square'&&y[1]===0&&M.equal(M.answer(supplied[0]),M.answer(supplied[2])))proposed=[y[0]/4,0];
+   if(g.shape==='sqrt'&&y[0]===0&&twice(supplied[2],supplied[1]))proposed=[y[1],0];
+   if(!proposed)boundNote(host,'Твои точки отмечены. Пока они не лежат на одной кривой заданного вида.').dataset.featureInconsistent='points';
+  }
+ }
+ if(proposed){const [m,c]=proposed;const curve={kind:'feature-curve',shape:g.shape,k:m,b:c,segment:g.segment,poles:g.shape==='reciprocal'?[0]:[]};
+  if(g.segment){const [l,r]=g.segment;curve.xs=[l,r];if(g.leftOpen)curve.holes=[[l,featureY(g.shape,m,c,l)]];else points.push([l,featureY(g.shape,m,c,l),'']);points.push([r,featureY(g.shape,m,c,r),'']);}
+  curves.push(curve);
+ }
+ if(bounded)curves.push({kind:'line',k:0,b:1,dashed:true});
+ let marker=null;
+ if(free){const x=numeric(free),allowed=featureAllowed(g,x);
+  if(allowed&&proposed){const y=featureY(g.shape,proposed[0],proposed[1],x);if(Number.isFinite(y)){marker=[x,y];const label=Number.isInteger(y)?String(y):String(Number(y.toFixed(3))).replace('.',',');boundNote(host,'При x='+M.answer(free)+' ордината '+(Number.isInteger(y)?'равна ':'приблизительно равна ')+label+'.').dataset.featureTrial=[x,y].join(';');}}
+  else if(!allowed)boundNote(host,'При x='+M.answer(free)+' исходная функция не определена на указанной области.').dataset.featureTrial='excluded';
+ }
+ let windowX=triangle?[6,44]:g.mode==='identify'?[-2,3]:g.segment?[g.segment[0]-1,g.segment[1]+1]:[-6,6];
+ let windowY=triangle?[30,110]:bounded?[-.2,1.3]:g.segment?[-10,16]:[-9,9];
+ if(g.mode==='direction'&&g.shape==='square')windowX=[-5,1];if(g.mode==='direction'&&g.shape==='sqrt')windowX=[-1,8];
+ if(g.mode==='identify'&&value){const options={'y=x−1':[1,-1],'y=1+x':[1,1],'y=2x−1':[2,-1],'y=1−2x':[-2,1]},trial=options[value];if(trial)curves.push({kind:'line',k:trial[0],b:trial[1],dashed:true});}
+ const svg=rootGraph({curves,points,studentPoint:marker,xRange:windowX,yRange:windowY,axisLabels:['x',triangle?'P':'y'],label:triangle?'График периметра возможного треугольника':'График зависимости и выбранная абсцисса'},'');
+ if(building&&proposed)svg.dataset.featureBuild=proposed.join(';');host.append(svg);
+ if(building&&!proposed&&!points.length)boundNote(host,g.constructionXs?'Введи ординаты точек. На плоскости появится твоё построение.':'Введи коэффициент'+(two?'ы':'')+' в ответе. Здесь появится построенный тобой график.');
+ if(triangle&&free){const x=numeric(free);if(featureAllowed(g,x)){const height=Math.sqrt(x*x-100),scale=Math.min(8,125/height),base=20*scale,top=142-height*scale;
+  const tri=node('svg',{viewBox:'0 0 320 165',role:'img','aria-label':'Равнобедренный треугольник с основанием 20 см','data-feature-side':M.answer(free)});tri.append(node('polygon',{points:[[160-base/2,142],[160,top],[160+base/2,142]].map(v=>v.join(',')).join(' '),stroke:'#286456',fill:'#deeee5','stroke-width':3}),node('text',{x:160,y:163,'text-anchor':'middle','font-size':16},'20 см'),node('text',{x:164+base/4,y:(142+top)/2,'font-size':15},M.answer(free)+' см'));host.append(tri);}}
+ if(g.proposal){boundNote(host,g.mode==='range'?'Твоя проекция на ось y':'Твоя проекция на ось x');intervalNumberLine(host,{givenRows:[],proposal:g.proposal,points:[]},'');}
+}
+
 function readingHeight(nodes,x){
  if(!Number.isFinite(x)||!Array.isArray(nodes)||nodes.length<2||x<nodes[0][0]||x>nodes.at(-1)[0])return NaN;
  const at=nodes.findIndex(p=>p[0]>=x);if(at===0||nodes[at][0]===x)return nodes[at][1];
@@ -2036,6 +2087,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-function-features'){featureView(host,config,value);return;}
  if(config.type==='source-reading-graph'){graphReadingView(host,config,value);return;}
  if(config.type==='source-function-domain'){functionDomainView(host,config,value);return;}
  if(config.type==='source-function-values'){functionSourceView(host,config,value);return;}
@@ -2130,5 +2182,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
