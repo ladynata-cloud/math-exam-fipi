@@ -4,15 +4,47 @@ const {JSDOM}=require('jsdom');
 const {expectedTitle}=require('./caption_expectations.cjs');
 const root=path.resolve(__dirname,'../..'),dir=path.join(root,'geometry-course/textbook');
 const bundle=JSON.parse(fs.readFileSync(path.join(dir,'data/course.json'),'utf8'));
-function setup(){
+function setup(course=bundle){
  const dom=new JSDOM('<div id="app"></div>',{url:'https://example.test/geometry-course/textbook/',runScripts:'outside-only'});
  for(const file of [path.join(dir,'assets/math-text.js'),path.join(dir,'assets/planar-viewer.js'),path.join(dir,'assets/engine.js')])dom.window.eval(fs.readFileSync(file,'utf8'));
- const {window:w}=dom,d=w.document,app=w.GeometryTextbook.createApp(d.getElementById('app'),{...bundle,allowInReview:true});
+ const {window:w}=dom,d=w.document,app=w.GeometryTextbook.createApp(d.getElementById('app'),{...course,allowInReview:true});
  return {dom,w,d,app};
 }
 const sample=bundle.lessons.find(l=>l.kind==='exercise'&&l.steps.length>2);
 const key='mathExamTextbook.v1:'+sample.source.bookId+':'+sample.id+':r'+sample.revision;
 let checks=0;
+// Use an exact-response fixture because the published proofs save free-form reasoning.
+// Only an explicit request for teaching help changes the assistance bit.
+for(const useHelp of [false,true]){
+ const answer={mode:'exact',prompt:'Сколько будет 3+4?',accepted:['7'],feedback:'Проверь сумму.'};
+ const exact={...bundle,lessons:bundle.lessons.map(lesson=>lesson.id===sample.id?{...lesson,answer}:lesson)};
+ const {dom,w,d,app}=setup(exact);
+ try{
+  app.open(sample.id);
+  const submit=value=>{
+   const input=d.getElementById('final-answer');input.value=value;input.dispatchEvent(new w.Event('input',{bubbles:true}));
+   d.querySelector('[data-final-form]').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+  };
+  submit('6');
+  assert.equal(JSON.parse(w.localStorage.getItem(key)).assisted,false,'a wrong answer is not a request for help');
+  assert.equal(JSON.parse(w.localStorage.getItem(key)).checked,false);
+  assert.equal(d.querySelector('[data-final-feedback]').textContent,'Проверь сумму.');
+  if(useHelp)d.querySelector('[data-main-help] > summary').click();
+  app.home(); app.open(sample.id);
+  assert.equal(d.getElementById('final-answer').value,'6');
+  assert.equal(JSON.parse(w.localStorage.getItem(key)).assisted,useHelp);
+  submit('7');
+  assert.match(d.querySelector('[data-final-feedback]').textContent,useHelp?/после обращения к помощи/:/самостоятельно/);
+  const saved=JSON.parse(w.localStorage.getItem(key));
+  assert.equal(saved.checked,true);assert.equal(saved.assisted,useHelp);
+  app.home();app.open(sample.id);assert.equal(d.getElementById('final-answer').value,'7');
+  d.querySelector('[data-main-help] > summary').click();
+  app.home();app.open(sample.id);
+  assert.equal(JSON.parse(w.localStorage.getItem(key)).assisted,useHelp,'reviewing solutions after success preserves how the answer was reached');
+  checks+=9;
+ }finally{app.destroy();dom.window.close();}
+}
+
 {
  const {dom,w,d,app}=setup();
  function open(number,part=1){app.open('atanasyan-7-9-main-'+number+'-part-'+part);}

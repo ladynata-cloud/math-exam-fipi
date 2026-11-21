@@ -1,4 +1,4 @@
-// Reviewed source SHA-256: 50d8ef944320f6c5f135597caf39899e1c75906e25e01453871ef75714ad6959
+// Reviewed source SHA-256: c420fdc28c604050aa90caca5a029e6e454e079c0d08d22793d8a686363de897
 /* Board-only projection. Shared feedback is serialized by the room v1 contract.
  * The personal numerical self-check has transient feedback and is omitted here.
  * Board changes are marked ATANASYAN_GRADE7_BOARD. */
@@ -156,7 +156,7 @@ function createApp(root,options){
   try{if(storage){storage.setItem(key,raw);expected=raw;cache.delete(key);lastSavePersisted=true;}else cache.set(key,{raw,base:expected});}catch{cache.set(key,{raw,base:expected});status('Не удалось сохранить на устройстве. Текст остаётся в открытой странице.');}
   return true;
  }
- function assisted(){state.assisted=true;return save();}
+ function assisted(){if(!state.checked)state.assisted=true;return save();}
  function sourceText(source){return [sourceIdentity(source,source.collection==='theory'?'theory':'exercise'),sourceLocation(source,sourceInventory),'К учебнику: '+catalog.book.edition,'стр. '+source.printedPages.join(', ')+' · PDF '+source.pdfPages.join(', '),source.examTask?'Номер ЕГЭ в книге: '+source.examTask:''].filter(Boolean).join(' · ');}
  function sourceNode(lesson){const details=el('details');details.append(el('summary','Где это в учебнике?'),el('p',sourceText(lesson.source)));return details;}
  function closeTheory(){if(!dialog)return;theoryTrail.length=0;dialogViewer?.destroy();dialogViewer=null;const old=dialog;dialog=null;if(old.close)old.close();old.remove();old._returnFocus?.focus();}
@@ -224,11 +224,11 @@ function createApp(root,options){
    input.addEventListener('input',()=>{state.draft=input.value;save();});
    form.addEventListener('submit',event=>{event.preventDefault();if(locked)return;state.draft=input.value;
     // Open native disclosures count as help even before their queued toggle fires.
-    if(side.querySelector('details[open]'))state.assisted=true;
+    if(!state.checked&&side.querySelector('details[open]'))state.assisted=true;
     if(!save())return;
     if(lesson.answer.mode==='manual'){setDisplayText(feedback,lastSavePersisted?'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.':'Рассуждение остаётся только в открытой странице: скопируй его перед закрытием. Его обоснованность нужно обсудить с учителем.');return;}
     const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
-    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;save();
+    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;save();
    });if(options.boardSession){check.type='button';check.addEventListener('click',()=>form.dispatchEvent(new win.Event('submit',{bubbles:true,cancelable:true})));}form.append(label,input,check,feedback);main.append(form);
   }
   const help=el('details',undefined,{'data-main-help':''}),summary=el('summary','Хочешь подсказку?'),helpBody=el('div');summary.addEventListener('click',event=>{if(!help.open&&!assisted())event.preventDefault();});help.addEventListener('toggle',()=>{if(help.isConnected&&help.open)assisted();});help.append(summary,helpBody);mountHelp(lesson.help,helpBody);
@@ -237,7 +237,7 @@ function createApp(root,options){
    if(step.input){const form=el('form'),fieldId='step-'+step.id,input=el('input',undefined,{id:fieldId,autocomplete:'off'}),feedback=el('p',undefined,{role:'status'});input.value=state.stepDrafts[step.id]||'';input.addEventListener('input',()=>{state.stepDrafts[step.id]=input.value;save();});form.append(el('label',step.input.prompt,{for:fieldId}),input,el('button','Проверить этот шаг',{type:'submit'}),feedback);form.addEventListener('submit',event=>{event.preventDefault();if(!assisted())return;setDisplayText(feedback,step.input.accepted.some(value=>normalized(value)===normalized(input.value))?'Ответ на этот шаг совпал.':step.input.feedback);});if(options.boardSession){const button=form.querySelector('button');button.type='button';button.addEventListener('click',()=>form.dispatchEvent(new win.Event('submit',{bubbles:true,cancelable:true})));}section.append(form);}
    const onModel=el('button','Показать на рисунке',{type:'button'});onModel.addEventListener('click',()=>{if(assisted())viewer?.setView(step.view||'neutral');});section.append(onModel);steps.append(section);
   }
-  for(let i=0;i<state.revealed;i++)addStep(i);if(state.revealed>0){help.open=true;state.assisted=true;}
+  for(let i=0;i<state.revealed;i++)addStep(i);if(state.revealed>0){help.open=true;if(!state.checked)state.assisted=true;}
   function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';}nextLabel();
   next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
   side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,maxStep:state.revealed,onChange:camera=>{state.camera=camera;save();}});if(!state.camera?.viewId&&state.revealed)viewer?.setView(lesson.steps[state.revealed-1].view||'neutral');if(cached&&cached.base!==expected)freeze();

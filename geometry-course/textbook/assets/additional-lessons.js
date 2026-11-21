@@ -43,7 +43,8 @@
       ['/geometry-course/textbook/data/vector-scaling.json', 'пункты 91–92 и №963–966'],
       ['/geometry-course/textbook/data/scalar-problems.json', '№967–971'],
       ['/geometry-course/textbook/data/vector-midpoint-proofs.json', '№972–975'],
-      ['/geometry-course/textbook/data/vector-applications.json', '№976–980']
+      ['/geometry-course/textbook/data/vector-applications.json', '№976–980'],
+      ['/geometry-course/textbook/data/vector-length-problems.json', '№981–987']
   ];
 
   async function forCourse(base) {
