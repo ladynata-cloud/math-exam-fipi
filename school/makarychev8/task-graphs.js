@@ -763,6 +763,44 @@ function equationExamples(host,value){
  }
  host.append(note);
 }
+function quantityTrial(graph,raw){
+ const [x]=fractionSample(raw,1)||[];
+ if(!x)return null;
+ const evaluate=(left,right)=>sourceFractionTrial({symbols:['x'],original:left,reduced:right},raw);
+ const validNumber=(value,domain)=>{
+  if(value===null||value==='0'||value.startsWith('-'))return false;
+  const [n,d='1']=value.split('/');
+  if(domain==='integer')return d==='1';
+  return domain!=='fraction'||BigInt(n)<=BigInt(d);
+ };
+ const rows=graph.rows.map(row=>{
+  const value=evaluate(row.formula,'0').original;
+  return {...row,value,valid:validNumber(value,row.domain)};
+ });
+ const valid=x.n>0&&rows.every(row=>row.valid);
+ const comparison=valid?evaluate(graph.comparison,graph.target):null;
+ return {rows,valid,value:comparison?.original,agrees:valid&&comparison.original===comparison.reduced};
+}
+
+function quantityAudit(host,graph,value){
+ host.className='task-graphs quantity-model';
+ const add=(content,tag,state)=>{const p=document.createElement('p');p.className='small';p.textContent=content;if(tag)p.dataset[tag]=state;host.append(p);return p;};
+ add('x обозначает '+graph.variable+'.');
+ const parts=String(value||'').split(';'),selected=graph.trial?[graph.trial]:graph.focus===null||graph.focus===undefined?[]:graph.allowMultiple?parts:parts.slice(graph.focus,graph.focus+1);
+ const trials=selected.slice(0,3).map(raw=>[raw,quantityTrial(graph,raw)]).filter(([,trial])=>trial);
+ if(!trials.length){for(const row of graph.rows)add(row.name+': '+row.formulaText+' ('+row.unit+').');add('В первом шаге можно подставить число и проверить все величины.');}
+ for(const [raw,trial] of trials){
+  add('Пробное значение x = '+raw+'.');
+  for(const row of trial.rows){
+   const warning=row.valid?'':row.domain==='fraction'?' Массовая доля или выполненная часть должна быть больше нуля и не выше единицы.':row.domain==='integer'?' Здесь нужно положительное целое число.':' Нужна положительная величина.';
+   const line=add(row.name+': '+(row.value===null?'деление на ноль':row.value+' '+row.unit)+'.'+warning,'quantityMeasure',row.valid?'valid':'invalid');
+   if(row.bar&&row.valid){const [n,d='1']=row.value.split('/'),share=Number(n)/Number(d);const bar=document.createElement('progress');bar.max=1;bar.value=share;bar.setAttribute('aria-label',row.name);line.append(' ',bar,' '+(share*100).toLocaleString('ru',{maximumFractionDigits:2})+'%');}
+  }
+  if(trial.valid)add(graph.summary+' = '+trial.value+' '+graph.unit+'. По условию требуется '+graph.target+' '+graph.unit+'.','quantityComparison',trial.agrees?'agrees':'differs');
+  else if(M.parse(raw)?.n<=0)add('Исходная величина x должна быть положительной.','quantityDomain','invalid');
+ }
+}
+
 function journeyTrial(graph, raw){
  const fields=fractionSample(raw,1);
  if(!fields)return null;
@@ -1064,6 +1102,7 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='quantity-audit'){quantityAudit(host,config,value);return;}
  if(config.type==='travel-times'){travelTimes(host,config,value);return;}
  if(config.type==='rate-table'){rateTable(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}
@@ -1126,5 +1165,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

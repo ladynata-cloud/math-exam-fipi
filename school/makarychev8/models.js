@@ -801,5 +801,28 @@
       skills:[auditPractice.id],source:{type:'authored',reference:'Тренировка по проверке дробного уравнения'}};
   }
 
-  return { mount, experiment, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const mixturePractice={id:'mixture-points',title:'Доля вещества до и после добавки',description:'Следи за массой вещества и сравнивай его доли.'};
+  const jointPractice={id:'work-fraction',title:'Часть работы за заданное время',description:'Переводи одиночные сроки в доли работы за один час.'};
+  function practiceMixture(seed,level){
+    const mass=50*(1+seed%8),prior=6*(1+Math.floor(seed/3)%14),copper=mass*prior/100;
+    const multiple=2+Math.floor(seed/11)%2,added=mass*(multiple-1),after=prior/multiple;
+    const hint='Прибавь массу добавленного цинка к общей массе. Масса меди сохраняется.';
+    const labels=['Какова доля меди в процентах до добавки?','Какова доля меди в процентах после добавки?','На сколько процентных пунктов снизилась доля меди?'];
+    return {title:mixturePractice.title,prompt:'Имеется '+mass+' кг сплава с '+copper+' кг меди. Добавили '+added+' кг чистого цинка. '+labels[level-1],
+      kind:'number',answer:String(level===1?prior:level===2?after:prior-after),steps:[{prompt:'Сколько килограммов меди останется?',kind:'number',answer:String(copper),hint,explanation:hint},{prompt:'Чему равна новая общая масса в кг?',kind:'number',answer:String(mass+added),hint,explanation:hint}],
+      hint,correction:level===3?'Вычти новый процент из старого.':hint,explanation:'Было '+prior+'%, стало '+after+'%. Потеря '+(prior-after)+' процентных пунктов.',
+      skills:[mixturePractice.id],source:{type:'authored',reference:'Тренировка по массовым долям'}};
+  }
+  function practiceJoint(seed,level){
+    const factor=2+seed%8,duration=1+Math.floor(seed/3)%factor;
+    const answer=(a,b)=>{const gcd=(m,n)=>n?gcd(n,m%n):m,g=gcd(a,b);return b/g===1?String(a/g):a/g+'/'+b/g;};
+    const hint='Если всё дело занимает t часов, за один час выполняется 1/t работы.';
+    const prompts=['Какую часть заказа первая выполнит за '+duration+' ч?','Какую часть заказа обе выполнят за '+duration+' ч?','За сколько часов они выполнят заказ вместе?'];
+    return {title:jointPractice.title,prompt:'Первой бригаде на заказ нужно '+2*factor+' ч, второй — '+3*factor+' ч. '+prompts[level-1],kind:'number',
+      answer:level===1?answer(duration,2*factor):level===2?answer(5*duration,6*factor):answer(6*factor,5),hint,correction:hint,explanation:'Часовые выработки складываются: вместе это '+answer(5,6*factor)+' заказа за час.',
+      steps:[{prompt:'Какова часовая доля первой бригады?',kind:'number',answer:answer(1,2*factor),hint,explanation:hint},{prompt:'Какова часовая доля второй?',kind:'number',answer:answer(1,3*factor),hint,explanation:hint}],
+      skills:[jointPractice.id],source:{type:'authored',reference:'Тренировка по совместной работе'}};
+  }
+
+  return { mount, experiment, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });
