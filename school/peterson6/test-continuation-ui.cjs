@@ -1660,3 +1660,14 @@ test('follow the two printed unit grids with distinct origins, source positions 
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('distinguish all quadrant rules, zero coordinates and growing axis increments',()=>{
+ const f=fixture(null,null,true);try{
+  const cases=[['M(-3; 2).','M(4; -1).'],['M(3; 2).','M(4; 1).'],['M(-3; 2).','M(-4; 1).'],['M(3; -2).','M(4; -1).'],['(0; 10)','(0; 12)'],['(-4; 0)','(-5; 0)'],['совпадает с началом','в трёх клетках'],['y = 3.','y = -2.']];
+  cases.forEach(([printed,fresh],i)=>{
+   f.nav('#lesson/p39/'+(i+12));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(printed),i);
+   f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(fresh),i);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
