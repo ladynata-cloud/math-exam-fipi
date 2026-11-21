@@ -376,8 +376,11 @@ function setEntries(value){
   const term=token.trim().replace(/[−–—]/g,'-').replace(/^([+-])\s+/,'$1');
   if(!term)continue;
   const pair=/^(?:±|\+\/-)\s*(.*)$/.exec(term);
-  if(!pair){entries.push(term);continue;}
-  const magnitude=M.parse(pair[1]);
+  const rawMagnitude=pair?pair[1]:term;
+  const rational=M.parse(rawMagnitude);
+  if(!rational&&/\d\s+\d/.test(rawMagnitude))return null;
+  if(!pair){entries.push(rational?M.answer(rational):term);continue;}
+  const magnitude=rational;
   if(!magnitude){
    const radical=signedSquare(pair[1]);if(!radical)return null;
    const unsigned=pair[1].trim().replace(/^[+−–—-]/,'');
