@@ -146,9 +146,17 @@ test('assigned multi-course programs expose the registered shared board with an 
 test('a different assigned program receives no Merzlyak board entry from a stale focus note',async()=>{
   const f=await fixture({programCourses:['makarychev8']});
   try{
-    assert.equal(f.main.querySelector('[data-program-board]'),null);
-    assert.equal(f.main.querySelector('[data-attached-course-board]'),null);
-    const other=f.main.querySelector('[data-program-course="makarychev8"] [data-program-open]');assert(other);
+    const card=f.main.querySelector('[data-program-course="makarychev8"]');assert(card);
+    const board=card.querySelector('[data-program-board]');assert(board);
+    const entries=[...f.main.querySelectorAll('[data-program-board], [data-attached-course-board]')];
+    assert.deepEqual(entries,[board],'the assigned algebra board is the only board entry');
+    assert.equal(f.main.querySelector('[data-program-course="merzlyak-10-base"]'),null);
+    const params=new f.window.URLSearchParams(board.hash.slice(1));
+    const destination=new URL(params.get('public-practice'),'https://mathexam.space');
+    assert.equal(destination.pathname,'/trainers/trainer-board.html');
+    assert.deepEqual([...destination.searchParams],[['trainer','/trainers/makarychev8.html#home']]);
+    assert.equal(params.get('return'),'home');assert.equal(board.target,'');
+    const other=card.querySelector('[data-program-open]');assert(other);
     assert.equal(other.hasAttribute('data-program-board'),false);
     assert(f.calls.every(call=>call.method==='GET'));
   }finally{f.dom.window.close();}
