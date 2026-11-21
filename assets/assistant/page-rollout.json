@@ -2216,10 +2216,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "e62c215edef7095d55e52aaa0cf843d5f502384e8cf901ae55268d70ab131e26",
-      "afterSha256": "01691e00e18e65fe9ac3f272f017e7a1b0cd06ec0f53b94cf9694d05ee3cb3db",
+      "beforeSha256": "d53d7b74038748c747f772a8fc836f5fbc4e6c5cd6f9be00d70eb05b93350b62",
+      "afterSha256": "9f8694db8b81c84ee0c29c77c625c991bd992ae0d47d314c2dbeabaeda6749f6",
       "placement": "before-head-close",
-      "sourceSha": "a772c84c92a64553f3a4da099718ef527c0a9aa8"
+      "sourceSha": "e4cd17295e277772602cf4620c067c1d54f4fbd5"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6472,6 +6472,15 @@
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "previousBaseSha": "a772c84c92a64553f3a4da099718ef527c0a9aa8",
+      "sourceBaseSha": "e4cd17295e277772602cf4620c067c1d54f4fbd5",
+      "task": "docs/tasks/SCHOOL_FINAL_WORK_20261121.md",
+      "changedPages": [
+        "school/index.html"
+      ],
+      "reason": "Preserve the verified edition, Vilenkin and final assessment entries together."
     }
   ],
   "coverageUpdates": [
@@ -6564,6 +6573,14 @@
         "trainers/vilenkin6-percent/index.html"
       ],
       "reason": "New canonical public entries in the search catalogue, each with the common navigator bound to the exact reviewed source."
+    },
+    {
+      "sourceBaseSha": "e4cd17295e277772602cf4620c067c1d54f4fbd5",
+      "task": "docs/tasks/SCHOOL_FINAL_WORK_20261121.md",
+      "addedPages": [
+        "trainers/school-workshop-check/index.html"
+      ],
+      "reason": "New canonical, authored final-assessment entry carries the full public navigator."
     }
   ]
 }
