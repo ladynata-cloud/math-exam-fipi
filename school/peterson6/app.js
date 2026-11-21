@@ -469,6 +469,96 @@ ${[1, 2, 3]
       }[f] || 'Можно ввести 3/4, 0,75 или 2 1/3. Единицы измерения не вводи.'
     );
   }
+  const ratioExamples = {
+    'p15-t01': [15, 30], 'p15-t02': [48, 112],
+    'p15-t03': [4, 5], 'p15-t04': [12, 15],
+    'p15-t05': [8, 32, ' дм'], 'p15-t06': [140, 40, ' мин'],
+  };
+  const bracketProducts = {
+    'p33-t01': [['−1', 'a', '−b']],
+    'p33-t02': [['−1', '12,45', '−3,64']],
+    'p33-t03': [['−2', '−c', '+4']],
+    'p33-t04': [['−2', 'y', '−1'], ['+3', '−y', '−4']],
+  };
+  function ratioPair(t) {
+    if (ratioExamples[t.id]) return ratioExamples[t.id];
+    if (active.skill === 'ratio' && t.calculation?.op === 'divide')
+      return [Number(t.calculation.left), Number(t.calculation.right)];
+    return null;
+  }
+  function bracketTerms(t) {
+    if (bracketProducts[t.id]) return bracketProducts[t.id];
+    if (active.skill === 'bracket-evaluate' && t.calculation?.op === 'bracket') {
+      const {right,third} = t.calculation;
+      return [['−1', '(' + right + ')', '−(' + third + ')']];
+    }
+    return null;
+  }
+  function repairSkill(t) {
+    if (t.id === 'p33-t01' || t.id === 'p33-t02') return 'bracket-evaluate';
+    if (ratioExamples[t.id]) return ['p15-t01','p15-t02'].includes(t.id) ? 'ratio' : 'percent-ratio';
+    return null;
+  }
+  function methodModel(t) {
+    const pair = ratioPair(t);
+    if (pair) {
+      const [first, second, unit = ''] = pair;
+      const max = Math.max(first, second);
+      const row = (name,value) => '<li>' + name + ' — ' + e(value + unit) + ' <meter aria-label="' +
+        name + '" min="0" max="' + max + '" value="' + value + '"></meter></li>';
+      return '<figure><figcaption>Две величины в одном масштабе</figcaption><ul>' +
+        row('Первая',first) + row('Вторая',second) +
+        '</ul><p>Сравни длины. Если первую величину разделить на вторую, получится больше единицы, меньше или ровно единица?</p></figure>';
+    }
+    const products = bracketTerms(t);
+    if (!products) return '';
+    return '<figure><figcaption>Куда идёт множитель перед скобками?</figcaption><ul>' +
+      products.map(([factor,one,two]) => '<li>' + e(factor + ' × (' + one + ')') + ' и ' +
+        e(factor + ' × (' + two + ')') + '</li>').join('') +
+      '</ul><p>Проверь знак числа или коэффициента в каждом произведении. Слагаемые за скобками перепиши со своими знаками.</p></figure>';
+  }
+  function wrongAnswerCue(t,value) {
+    if (check(value,t)) return '';
+    const pair = ratioPair(t);
+    if (pair) {
+      const [first,second] = pair;
+      if (t.id === 'p15-t04') {
+        if (value === '125%; 80%') return 'Проверь порядок двух результатов. Какое из отношений сравнивает меньшее число с большим?';
+        if (value === '80%; 80%') return 'Во втором отношении числа поменялись местами. Могут ли оба отношения быть меньше 100 %?';
+        return '';
+      }
+      const percent = t.answerFormat !== 'reduced-fraction';
+      if (!percent && M.equal(value,t.answer))
+        return /\//.test(value) ? 'Значение верно. Проверь, есть ли у числителя и знаменателя общий делитель больше единицы.' :
+          'Значение верно. Запиши его несократимой обыкновенной дробью или целым числом.';
+      if (percent && M.equal(value,M.operation('divide',first,second)))
+        return 'Ты нашёл долю. Сколько процентов соответствует целой единице?';
+      const reverse = M.operation('divide',second,first);
+      if (first !== second && M.equal(value,percent ? M.operation('multiply',reverse,100) : reverse))
+        return 'Так получается при обратном порядке деления. Какую величину в задании назвали первой?';
+      if (t.id === 'p15-t05' && M.equal(value,250)) return 'Какие единицы у двух длин? Сравни числа после перевода в одну единицу.';
+      if (t.id === 'p15-t06' && M.equal(value,300)) return 'Проверь длительность первого промежутка. Учтены ли и часы, и минуты?';
+      return '';
+    }
+    if (t.id === 'p33-t01') {
+      if (value === 'a−b') return 'Ты сохранил оба прежних знака. Как на каждое слагаемое действует минус перед скобками?';
+      if (value === '−a−b') return 'Проверь знак второго слагаемого. Какой знак будет у произведения двух отрицательных множителей?';
+    }
+    if (t.id === 'p33-t03') {
+      if (value === '2c+17') return 'Проверь постоянную часть. Какой знак у произведения −2 и +4?';
+      if (value === '−2c+1') return 'Проверь коэффициент при c. Какие знаки у числовых множителей −2 и −1?';
+    }
+    if (t.id === 'p33-t04' && M.equal(value,-14)) return 'Проверь постоянную часть из первых скобок. Какой знак у произведения −2 и −1?';
+    const expression = t.id === 'p33-t02' ? {left:'-3.64',right:'12.45',third:'3.64'} :
+      active.skill === 'bracket-evaluate' && t.calculation?.op === 'bracket' ? t.calculation : null;
+    if (!expression) return '';
+    const {left,right,third} = expression;
+    const lostMinus = M.operation('add',left,M.operation('subtract',right,third));
+    const lastSign = M.operation('subtract',M.operation('subtract',left,right),third);
+    if (M.equal(value,lostMinus)) return 'Проверь знак перед всеми скобками. Ты прибавил бы их значение или вычел?';
+    if (M.equal(value,lastSign)) return 'Проверь последнее слагаемое. Что произойдёт с его знаком после вычитания скобок?';
+    return '';
+  }
   function renderProblem() {
     if (!active) return;
     const t=active.task,s=ts(t.id),manual=t.kind==='manual',checking=active.checking,host=document.getElementById('problem');
@@ -482,12 +572,14 @@ ${[1, 2, 3]
             : '';
       });
     boardStepFeedback = '';
-    const help=checking?'':('<div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+(t.steps?.length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило темы.')+'</p></div>':'')+(s.guided?renderSteps(t,s):''));
+    const help=checking?'':('<div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+(t.steps?.length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило темы.')+'</p>'+methodModel(t)+'</div>':'')+(s.guided?renderSteps(t,s):''));
+    const focusedSkill = repairSkill(t);
+    const taskSkills = focusedSkill ? [focusedSkill,...(t.skills || []).filter(id => id !== focusedSkill)] : t.skills;
     const label=t.finalLabel||(manual?'Запиши рассуждение или выполни построение.':t.kind==='choice'?'Выбери верный ответ на вопрос задачи.':'Чему равен результат? Введи число.');
     const feedback = '<div class="feedback ' +
       (s.feedback && !s.correct && !manual ? 'error' : '') +
       '" role="status">' +
-      e(s.feedback) +
+      e(!checking && s.feedback.startsWith('Пока не совпало.') ? (wrongAnswerCue(t,s.value) || s.feedback) : s.feedback) +
       '</div>';
     const answer=manual?'<section class="manual-work"><h3>Рассуждение или построение</h3><p>'+fmt(label)+'</p><p>Выполни задание в тетради или запиши рассуждение ниже. Покажи работу учителю.</p>'+button(s.value==='recorded'?'Записано для проверки':'Отметить: записано для проверки','record-manual','',true)+'<p class="small">Эта отметка сохраняет ход работы и не означает автоматическую проверку.</p></section>':'<form class="answer-form" id="answer-form"><label '+(t.kind==='choice'?'':'for="final-answer"')+'>'+fmt(label)+'</label>'+(t.kind==='choice'?'<div class="choices" role="group" aria-label="Варианты ответа">'+t.choices.map((v,i)=>'<button type="button" data-action="choice" data-choice="'+i+'" class="'+(s.value===v?'selected':'')+'" aria-pressed="'+(s.value===v)+'">'+fmt(v)+'</button>').join('')+'</div><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button>':'<p class="small">'+inputNote(t)+'</p><div class="answer-controls"><input id="final-answer" name="final-answer" type="text" autocomplete="off" spellcheck="false" value="'+e(s.value)+'" '+(s.correct?'readonly':'')+'><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button></div><div id="answer-preview" class="answer-preview small" aria-live="polite"></div>') + feedback + '</form>';
     host.innerHTML =
@@ -503,7 +595,9 @@ ${[1, 2, 3]
             ? 'Решено на уроке'
             : s.independent
               ? 'Самостоятельно'
-              : 'С помощью / после попыток'
+              : !s.assisted && !s.repeated && s.attempts > 1
+                ? 'Исправлено без подсказки'
+                : 'С помощью / после попыток'
           : checking
             ? 'Проверка без помощи'
             : 'Твоя задача') +
@@ -547,9 +641,9 @@ ${[1, 2, 3]
         ? '<div class="independent-check">'+button('Проверить себя на новом примере','independent-check')+
           '<p class="small">Разбор сохранён. Новая попытка проверяет навык без открытых подсказок.</p></div>'
         : '') +
-      (!checking && t.skills?.length
+      (!checking && taskSkills?.length
         ? '<section class="detour"><h3>С вычислением нужна помощь?</h3><p class="small">Потренируй отдельное действие. Затем вернись к этому же условию и записям.</p><div class="row">' +
-          skillLinks(t.skills) +
+          skillLinks(taskSkills) +
           '</div></section>'
         : '') +
       '<details ' +
@@ -564,7 +658,20 @@ ${[1, 2, 3]
     if(t.figure)window.PetersonContinuationModels?.renderFigure(document.getElementById('task-figure'),t.figure);
     if (document.getElementById('answer-form')) bindLocalForm(document.getElementById('answer-form'),checkFinal);
     const inp=document.getElementById('final-answer');
-    if(inp){if(boardSession)inp.maxLength=200;inp.oninput=()=>{if(s.correct)return;s.value=boardText(inp,200);save();preview(inp.value);};preview(inp.value);}
+    if (inp) {
+      if (boardSession) inp.maxLength=200;
+      inp.oninput=()=>{
+        if (s.correct) return;
+        if (!checking && s.feedback.startsWith('Пока не совпало.') && (ratioPair(t) || bracketTerms(t))) {
+          s.feedback='';
+          host.querySelector('.answer-form .feedback').textContent='';
+        }
+        s.value=boardText(inp,200);
+        save();
+        preview(inp.value);
+      };
+      preview(inp.value);
+    }
     const notebook=document.getElementById('notebook');
     if(boardSession)notebook.maxLength=2000;
     notebook.oninput=ev=>{s.note=boardText(ev.target,2000);if(manual&&!s.note.trim()){s.value='';s.feedback='';host.querySelector('[data-action="record-manual"]').textContent='Отметить: записано для проверки';host.querySelector('.task-heading .tag').textContent='Твоя задача';host.querySelector('.feedback').textContent='';main.querySelector('.side-list .current .status').textContent='';}save();};
@@ -664,7 +771,7 @@ ${[1, 2, 3]
     if(action==='start-check'){startCheck(b.dataset.skill,Number(b.dataset.level)||1);return;}
     if(action==='independent-check'){
       if(!active||boardSession)return;
-      const skill=active.practice?active.skill:(active.task.skills||[]).find(id=>skills[id]);
+      const skill=active.practice?active.skill:repairSkill(active.task)||(active.task.skills||[]).find(id=>skills[id]);
       if(skill)startCheck(skill,active.practice?active.level:1);
       return;
     }

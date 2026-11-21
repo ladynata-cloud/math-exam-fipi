@@ -97,13 +97,13 @@
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
     const form=box.querySelector('form'),input=form.querySelector('input,select'),status=box.querySelector('[role=status]');
-    status.textContent=document.body.dataset.petersonBoard&&row.status?row.status:work.correct?(work.independent?'Решено самостоятельно.':'Решено после помощи или исправления.'):'';
+    status.textContent=document.body.dataset.petersonBoard&&row.status?row.status:work.correct?U.status(work)+'.':'';
     input.addEventListener('input',()=>{work.draft=input.value;work.correct=false;work.independent=false;save();});
     form.addEventListener('submit',event=>{
       event.preventDefault();event.stopPropagation();
       if(!input.value.trim()||(model.kind!=='choice'&&!E.M.parse(input.value))){status.textContent='Введи число или выбери ответ.';return;}
       const result=E.submit(model,work,input.value);
-      status.textContent=result.ok?(work.independent?'Решено самостоятельно.':'Решено после помощи или исправления.'):'Попробуй ещё раз. Можно открыть подсказку к примеру.';
+      status.textContent=result.ok?U.status(work)+'.':'Попробуй ещё раз. Можно открыть подсказку к примеру.';
       save();
     });
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
