@@ -14,7 +14,8 @@ const supplements = [
   require('./preservation-supplement-651.json'),
   require('./preservation-supplement-651-ci.json'),
   require('./preservation-supplement-651-legacy-segments.json'),
-  require('./preservation-supplement-693-board.json')
+  require('./preservation-supplement-693-board.json'),
+  require('./preservation-supplement-incident-edges.json')
 ];
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 assert.equal(baseline.schemaVersion, 1);
@@ -49,6 +50,7 @@ assert.equal(legacySegmentsSupplement.sourceCommit, '78853df87a48dddd5a96bf5f2ad
 assert.equal(legacySegmentsSupplement.task, 'FINAL651_LEGACY_VIEW_SEGMENTS_20261119');
 assert.deepEqual(Object.keys(legacySegmentsSupplement.files), ['ege-profil/atanasyan-10-11/model.js']);
 assert.deepEqual(Object.keys(supplements[4].files), ['geometry-course/textbook/assets/grade7-board-session.js']);
+assert.deepEqual(Object.keys(supplements[5].files), ['ege-profil/atanasyan-10-11/model.js'], 'synchronize only the generated legacy viewer');
 const sphere = require('./preservation-sphere-414.json');
 const { ids: sphereIds } = require('../stereo-textbook/additional414-baseline.cjs');
 assert.deepEqual(Object.keys(sphere.additions).sort(), [...sphereIds].map(id => 'stereo-course/textbook/lessons/' + id + '.json').sort());
