@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "b9001adddafb820781f6bdbc1ff594e469a77c66b022d754c53df7dbfc4d884f",
-      "afterSha256": "1ffb54c499abf61cc6f372423288f1af522b35df364d3274a065917db2f6ce5d",
+      "beforeSha256": "c9bcdf4c8aff97727b48855fb125cc8023777462cf30f758aeb7e9e2891890ca",
+      "afterSha256": "f62c1e7e80afdce198b077b160587d512da151686bffd2462101088193068336",
       "placement": "before-head-close",
-      "sourceSha": "bd9b44f3fad05993e8bdbb28d2124b926e13342a"
+      "sourceSha": "8d57d37a9363dcd6e5689e4754cb918fdab2ed27"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6840,6 +6840,15 @@
         "school/index.html"
       ],
       "boundary": "Часть 2, §26, с. 14, №5.45: все шесть печатных дробей, допустимые словесные формы, отдельная обратная связь и собственный черновик. В №5.43 при повторе используются новые пары единиц."
+    },
+    {
+      "previousBaseSha": "bd9b44f3fad05993e8bdbb28d2124b926e13342a",
+      "sourceBaseSha": "8d57d37a9363dcd6e5689e4754cb918fdab2ed27",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Часть 2, §26, с. 14, №5.46: тринадцать исходных рисунков в авторской реализации, новые данные для повторения, смена участников и мобильные проверки. Полный сценарий доски проверяется отдельно."
     }
   ],
   "coverageUpdates": [
