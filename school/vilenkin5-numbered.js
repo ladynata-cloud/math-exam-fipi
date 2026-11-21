@@ -10,6 +10,14 @@
   const circles=typeof module!=='undefined'&&module.exports?require('./vilenkin5-circle-points.js'):root.Vilenkin5CirclePoints;
   const finalPoint=typeof module!=='undefined'&&module.exports?require('./vilenkin5-first-point-end.js'):root.Vilenkin5FirstPointEnd;
   const digits=typeof module!=='undefined'&&module.exports?require('./vilenkin5-printed-digits.js'):root.Vilenkin5PrintedDigits;
+  const textNumbers=typeof module!=='undefined'&&module.exports?require('./vilenkin5-printed-text-numbers.js'):root.Vilenkin5PrintedTextNumbers;
+  const digitTree=typeof module!=='undefined'&&module.exports?require('./vilenkin5-printed-digit-tree.js'):root.Vilenkin5PrintedDigitTree;
+  const calculations=typeof module!=='undefined'&&module.exports?require('./vilenkin5-printed-calculations.js'):root.Vilenkin5PrintedCalculations;
+  const p15=typeof module!=='undefined'&&module.exports?require('./vilenkin5-printed-p15.js'):root.Vilenkin5PrintedPageFifteen;
+  const segments=typeof module!=='undefined'&&module.exports?require('./vilenkin5-printed-segments.js'):root.Vilenkin5PrintedSegments;
+  const units=typeof module!=='undefined'&&module.exports?require('./vilenkin5-printed-length-units.js'):root.Vilenkin5PrintedLengthUnits;
+  const buildable=typeof module!=='undefined'&&module.exports?require('./vilenkin5-printed-buildable.js'):root.Vilenkin5PrintedBuildablePaths;
+  const checks=typeof module!=='undefined'&&module.exports?require('./vilenkin5-printed-checks.js'):root.Vilenkin5PrintedChecks;
   const lessons = [
     {number:'1.1', key:'printed-1-1', title:'Читаем таблицу о домашних животных',
       explanation:'Подпись строки показывает, что именно считали. При подсчёте группы складывай численности подходящих животных. Строка о семьях без питомца не прибавляет ни одного животного.',
@@ -19,7 +27,7 @@
       explanation:'Каждая запись в списке принадлежит одному читателю. Посчитай одинаковые записи. Чтобы получить число книг в группе, умножь число читателей на результат одного из них.',
       worked:['Трое прочитали по 2 книги, двое — по 5.','Читателей 3 + 2 = 5. В первой группе прочитано 3 × 2 = 6 книг, во второй 2 × 5 = 10.','Всего 16 книг. Пять читателей и шестнадцать книг отвечают на разные вопросы.'],
       misconception:'Сумма частот всегда равна числу прочитанных книг.', reflect:'Какая сумма позволяет проверить, что ни одна запись не пропущена?'}
-  ].concat(tables.lessons,diary.lesson,finalPoint.lessons,digits.lessons,circles.lesson,compass.lessons,chords.lessons,crossings.lessons,food.lesson);
+  ].concat(tables.lessons,diary.lesson,finalPoint.lessons,digits.lessons,textNumbers.lessons,digitTree.lessons,calculations.lessons,p15.lessons,checks.lessons,segments.lessons,units.lessons,buildable.lessons,circles.lesson,compass.lessons,chords.lessons,crossings.lessons,food.lesson);
   const pets = ['Кошка','Собака','Хомяк','Черепаха','Морская свинка','Кролик','Птицы','Рыбки','Змеи','Нет животных'];
   const mammal = [0,1,2,4,5], fourLegs = [...mammal,3];
   const sourceCounts = [19,11,3,8,5,1,5,9,0,5];
@@ -69,7 +77,7 @@
   }
   function generate(lesson,seed,M){
     const random=M.rng(seed+9153);
-    const generators={'1.1':animalSurvey,'1.2':readingSurvey,...tables.generators,'1.8':diary.generate,...finalPoint.generators,...digits.generators,'5.1':circles.generate,...compass.generators,...chords.generators,...crossings.generators,'5.8':food.generate};
+    const generators={'1.1':animalSurvey,'1.2':readingSurvey,...tables.generators,'1.8':diary.generate,...finalPoint.generators,...digits.generators,...textNumbers.generators,...digitTree.generators,...calculations.generators,...p15.generators,...segments.generators,...units.generators,...buildable.generators,...checks.generators,'5.1':circles.generate,...compass.generators,...chords.generators,...crossings.generators,'5.8':food.generate};
     const t=generators[lesson.number](seed,random,step);
     return {...t,conditionKey:t.conditionKey||(t.data.counts||t.data.books).join(','),prompt:(t.prefix||(seed===0&&t.constructionIntro?t.constructionIntro:seed===0?'Данные печатного номера. ':t.data.counts||t.data.books?'Новый авторский опрос. ':'Новое авторское задание. '))+t.prompt,v5Full:true,v6Full:true,model:{kind:'v5-numbered'},data:{...t.data,number:lesson.number}};
   }
@@ -77,12 +85,13 @@
     const path=C.pathById.vilenkin5;
     const ids=lessons.map(l=>'v5f-'+l.key);
     lessons.forEach((l,i)=>{
-      const lesson={id:ids[i],title:'№'+l.number+' · '+l.title,number:l.number,grade:5,v5Course:true,fullKey:l.key,point:l.point||1,minutes:15,area:'Номера учебника',requires:l.requires||['v5f-table-read'],related:l.related||['v5f-table-total'],next:lessons[i+1]&&(lessons[i+1].part||1)===(l.part||1)?ids[i+1]:(l.related||['v5f-table-total'])[0],explanation:l.explanation,worked:l.worked,misconception:l.misconception,reflect:[l.reflect],claim:l.misconception,claimTrue:false,source:{book:'Виленкин и соавторы · 5 класс · 2023',part:l.part||1,point:l.point||1,page:l.page||9}};
+      const lesson={id:ids[i],title:l.sourceCheck?l.title:'№'+l.number+' · '+l.title,number:l.number,grade:5,v5Course:true,fullKey:l.key,point:l.point||1,minutes:15,area:l.sourceCheck?'Проверочные работы учебника':'Номера учебника',requires:l.requires||['v5f-table-read'],related:l.related||['v5f-table-total'],next:lessons[i+1]&&(lessons[i+1].part||1)===(l.part||1)?ids[i+1]:(l.related||['v5f-table-total'])[0],explanation:l.explanation,worked:l.worked,misconception:l.misconception,reflect:[l.reflect],claim:l.misconception,claimTrue:false,source:{book:'Виленкин и соавторы · 5 класс · 2023',part:l.part||1,point:l.point||1,page:l.page||9,...(l.pageEnd?{pageEnd:l.pageEnd}:{})}};
       C.byId[lesson.id]=lesson;C.lessons.push(lesson);
     });
-    path.numbered=ids;
+    path.numbered=ids.filter((id,i)=>!lessons[i].sourceCheck);
+    path.printedChecks=ids.filter((id,i)=>lessons[i].sourceCheck);
     const accepts=M.accepts;
-    M.accepts=(input,target)=>target.answerFormat==='v5-classes'?digits.splitClasses(input)===digits.splitClasses(target.answer):target.answerFormat==='v5-natural'?digits.natural(input)===target.answer:target.answerFormat==='v5-reading'?digits.cleanReading(input)===digits.cleanReading(target.answer):target.answerFormat==='v5-arc'?target.arcNames.includes(compass.readArc(input)):target.answerFormat==='v5-point-set'?circles.readSet(input)===target.answer:target.columnRules?Boolean(tables.columnFits(tables.fields(input,M),target.columnRules)):accepts(input,target);
+    M.accepts=(input,target)=>target.answerFormat==='v5-length-pairs'?units.readLengths(input)===units.readLengths(target.answer):['v5-segments','v5-line-points','v5-equal-segments'].includes(target.answerFormat)?segments.accepts(input,target):target.answerFormat==='v5-list'?accepts(String(input).split(';').map(x=>digits.natural(x)??x).join(';'),target):target.answerFormat==='v5-classes'?digits.splitClasses(input)===digits.splitClasses(target.answer):target.answerFormat==='v5-natural'?digits.natural(input)===target.answer:target.answerFormat==='v5-reading'?digits.cleanReading(input)===digits.cleanReading(target.answer):target.answerFormat==='v5-arc'?target.arcNames.includes(compass.readArc(input)):target.answerFormat==='v5-point-set'?circles.readSet(input)===target.answer:target.columnRules?Boolean(tables.columnFits(tables.fields(input,M),target.columnRules)):accepts(input,target);
     const previous=M.generate;
     M.generate=(id,seed)=>ids.includes(id)?generate(C.byId[id],seed,M):previous(id,seed);
   }
@@ -116,7 +125,7 @@
       const checked=rows.map((row,i)=>[...row,scene.answers?.[i]||'—']);
       return table(caption,[...headers,'Ответ'],checked,[16,53,31]);
     }
-    let output=table(caption,headers,rows,columnWidths);
+    let output=(segments.generators[task.data.number]?segments.drawing(task.data):task.data.kind==='two'?units.distanceDiagram(task.data,0):buildable.generators[task.data.number]?buildable.taskDrawing(task.data):'')+table(caption,headers,rows,columnWidths);
     if(scene.mode==='learn'&&task.data.books){
       const values=task.data.books.includes(8)?[3,4,5,6,7,8]:[3,4,5,6,7];
       const solved=values.map((n,i)=>{
@@ -133,6 +142,14 @@
     if(task.data.diskDistances||task.data.secantRadii)return chords.explore(task,state);
     if(task.data.measurement||task.data.arcs)return compass.explore(task,state);
     if(task.data.circle)return circles.explore(task,state);
+    if(checks.generators[lesson.number])return checks.explore(lesson,state,task,table);
+    if(buildable.generators[lesson.number])return buildable.explore(lesson,state,task);
+    if(units.generators[lesson.number])return units.explore(lesson,state,task,table);
+    if(segments.generators[lesson.number])return segments.explore(lesson,state,task);
+    if(p15.generators[lesson.number])return p15.explore(lesson,state,task,table);
+    if(calculations.generators[lesson.number])return calculations.explore(lesson,state,task,table);
+    if(digitTree.generators[lesson.number])return digitTree.explore(lesson,state,task,table);
+    if(textNumbers.generators[lesson.number])return textNumbers.explore(lesson,state,task,table);
     if(digits.generators[lesson.number])return digits.explore(lesson,state,task,table);
     if(finalPoint.generators[lesson.number])return finalPoint.explore(lesson,state,task,table);
     if(tables.generators[lesson.number])return tables.explore(lesson,state,task,table);
@@ -146,7 +163,7 @@
     const result=state.weight?matches*n:matches;
     return {title:'Отметь одинаковые анкеты',controls:[{key:'group',title:'Книг у одного читателя',values:[3,4,5,6,7,8].map((v,i)=>[i,v])},{key:'weight',title:'Что считаем',values:[[0,'Читателей'],[1,'Книги всей группы']]}],visual:'<p>'+rows.map(v=>v===n?'<mark>'+v+'</mark>':String(v)).join(', ')+'</p>',question:state.weight?'Сколько книг прочитали все отмеченные ученики?':'Сколько читателей дали выбранный ответ?',answer:result,why:state.weight?'В группе '+matches+' чел. По '+n+' книг у каждого. Получается '+matches+' × '+n+' = '+result+'.':'Число '+n+' встретилось '+matches+' раз. Каждая отметка — один ученик.'};
   }
-  const bounds={'1.1':{group:[0,3,0]},'1.2':{group:[0,5,0],weight:[0,1,0]},...tables.bounds,...finalPoint.bounds,...digits.bounds,'5.1':{region:[0,5,0]},...compass.bounds,...chords.bounds,...crossings.bounds,...food.bounds};
+  const bounds={'1.1':{group:[0,3,0]},'1.2':{group:[0,5,0],weight:[0,1,0]},...tables.bounds,...finalPoint.bounds,...digits.bounds,...textNumbers.bounds,...digitTree.bounds,...calculations.bounds,...p15.bounds,...segments.bounds,...units.bounds,...buildable.bounds,...checks.bounds,'5.1':{region:[0,5,0]},...compass.bounds,...chords.bounds,...crossings.bounds,...food.bounds};
   const api={install,generate,taskTable,explore,bounds,readPointSet:circles.readSet,readArc:compass.readArc,mistake:(input,target,M)=>target.weekRules?finalPoint.mistake(input,target,M):tables.mistake(input,target,M)};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
   else {root.Vilenkin5Numbered=api;install(root.WorkshopCurriculum,root.WorkshopMath);}

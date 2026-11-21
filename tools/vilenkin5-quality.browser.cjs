@@ -154,7 +154,7 @@ const server=http.createServer((req,res)=>{
     await page.locator('#answer').focus();await page.keyboard.type('65');assert.equal(await page.locator('#answer').inputValue(),'65');
     await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>document.body.style.zoom='2');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'200% zoom overflow');
     await page.close();page=await newLearnerPage();await page.setViewportSize({width:320,height:840});
-    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4],['v5f-printed-1-3',3],['v5f-printed-1-4',8],['v5f-printed-1-5',6],['v5f-printed-1-6',12],['v5f-printed-1-7',3],['v5f-printed-1-8',15],['v5f-printed-1-9',4],['v5f-printed-1-10',6],['v5f-printed-1-11',2],['v5f-printed-1-12',2],['v5f-printed-1-13',8],['v5f-printed-1-14',9],['v5f-printed-1-15',6],['v5f-printed-1-16',5],['v5f-printed-1-17',8],['v5f-printed-1-18',12],['v5f-printed-1-19',9]]){
+    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4],['v5f-printed-1-3',3],['v5f-printed-1-4',8],['v5f-printed-1-5',6],['v5f-printed-1-6',12],['v5f-printed-1-7',3],['v5f-printed-1-8',15],['v5f-printed-1-9',4],['v5f-printed-1-10',6],['v5f-printed-1-11',2],['v5f-printed-1-12',2],['v5f-printed-1-13',8],['v5f-printed-1-14',9],['v5f-printed-1-15',6],['v5f-printed-1-16',5],['v5f-printed-1-17',8],['v5f-printed-1-18',12],['v5f-printed-1-19',9],['v5f-printed-1-20',6],['v5f-printed-1-21',4],['v5f-printed-1-22',2],['v5f-printed-1-23',2],['v5f-printed-1-24',3],['v5f-printed-1-25',3],['v5f-printed-1-26',3],['v5f-printed-1-27',5],['v5f-printed-1-28',6],['v5f-printed-1-29',4],['v5f-printed-1-30',4],['v5f-printed-1-31',4],['v5f-printed-1-32',2],['v5f-printed-1-33',4],['v5f-printed-1-34',6],['v5f-printed-1-35',8],['v5f-printed-1-36',3],['v5f-printed-1-37',1],['v5f-printed-1-38',2],['v5f-printed-1-39',2],['v5f-printed-1-40',2],['v5f-printed-1-41',4],['v5f-printed-1-42',2],['v5f-printed-1-43',4],['v5f-printed-1-44',2],['v5f-printed-1-45',4],['v5f-printed-1-46',5],['v5f-printed-1-47',3],['v5f-printed-1-48',3],['v5f-printed-1-49',2],['v5f-printed-1-50',3],['v5f-printed-1-51',3],['v5f-printed-1-52',3],['v5f-printed-1-53',3],['v5f-printed-1-54',4],['v5f-printed-1-55',2],['v5f-printed-1-56',6],['v5f-printed-1-57',3],['v5f-printed-1-58',1],['v5f-printed-1-59',7]]){
       await go('#lesson/'+id);
       const survey=page.locator('#task-panel table').first();
       assert.equal(await survey.locator('tbody tr').count(),rows);
@@ -162,6 +162,10 @@ const server=http.createServer((req,res)=>{
       assert(await page.locator('#task-panel .v5q-table-scroll').evaluateAll(boxes=>boxes.every(box=>box.scrollWidth<=box.clientWidth+1)),'all source-table columns fit at 320px');
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'numbered table at 320px');
       if(id==='v5f-printed-1-7')assert(await survey.locator('tbody td').evaluateAll(cells=>cells.every(cell=>{const r=document.createRange();r.selectNodeContents(cell);return r.getClientRects().length<=1;})),'each printed number stays on one line');
+      if(id==='v5f-printed-1-26'){
+        await page.locator('#model svg').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,'leading-zero-tree-320.png')});
+        assert.equal(await page.locator('#model svg rect').count(),2,'only the nonzero first digit becomes a child node');
+      }
       if(id==='v5f-printed-1-8'){
         await page.locator('[data-v5-weather-sky]').selectOption('2');await page.locator('[data-v5-weather-rain]').check();
         await page.locator('[data-v5-weather-temp]').fill('9,5');await page.locator('[data-v5-weather-form] button').click();
@@ -171,9 +175,25 @@ const server=http.createServer((req,res)=>{
       }
       await survey.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,id+'-mobile.png')});
       await page.locator('[data-cmd=mode][data-value=practice]').click();
-      assert.match(await page.locator('#task-panel .question').innerText(),/Новый авторский опрос|Новое авторское задание|Новые вымышленные наблюдения/);
+      assert.match(await page.locator('#task-panel .question').innerText(),/Новый авторский опрос|Новый авторский чертёж|Новое авторское задание|Новые вымышленные наблюдения|Вымышленные данные исследовательской игры/);
       assert(await page.locator('#task-panel table').isVisible());
     }
-    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:19,screenshots:43,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
+
+    for(const width of [320,375]){
+      await page.setViewportSize({width,height:840});await go('#lesson/v5f-printed-check-2-1');
+      const modes=await page.locator('.lesson-head .v5q-mode').evaluateAll(items=>items.map(b=>({width:b.offsetWidth,height:b.offsetHeight})));
+      assert.equal(modes.length,3);assert(modes.every(b=>b.width>=130&&b.height<=60),'all three mode labels remain whole at '+width+' px');
+      const receipt=page.locator('#task-panel table');assert.equal(await receipt.locator('tbody tr').count(),4);
+      assert.equal(await receipt.locator('tbody td').filter({hasText:/^\?$/}).count(),3);await receipt.scrollIntoViewIfNeeded();
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(shots,'printed-receipt-'+width+'.png')});
+      await go('#lesson/v5f-printed-check-2-2');const own=page.locator('[data-v5-print-number]');
+      await own.locator('input').fill(width===320?'909':'404');await own.locator('button').click();
+      const number=width===320?'909':'404';await page.waitForFunction(n=>Vilenkin5Quality.getState().scene.seed===Number(n),number);
+      await page.locator('#answer').fill('6');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();
+      await page.reload();await own.locator('input').waitFor();assert.equal(await own.locator('input').inputValue(),number);
+      assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.step),1);await own.scrollIntoViewIfNeeded();
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(shots,'printed-chosen-number-'+width+'.png')});
+    }
+    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:59,printedChecks:2,screenshots:88,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

@@ -439,7 +439,7 @@ async function run(browser, origin, backend, failures) {
   const readFormat=await same(teacherFrame,studentFrame,'spoken form requested without an error');assert.equal(readFormat.scene.attempt,0);
   await teacherFrame.locator('#answer').fill('двадцать семь');await teacherFrame.locator('#answer-form button').click();
   await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'spoken form accepted then digit places');
-  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption('8');await studentFrame.locator('[data-v5-param=place]').selectOption('5');
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption({value:'8'});await studentFrame.locator('[data-v5-param=place]').selectOption({value:'5'});
   await studentFrame.locator('[data-v5-prediction]').fill('300000');await studentFrame.locator('[data-v5-predict] button').click();
   const digits=await same(studentFrame,teacherFrame,'three hundred thousands in printed 300007');assert.equal(digits.scene.model.row,8);assert.equal(digits.scene.model.place,5);assert(digits.scene.model.seen);
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(studentFrame,teacherFrame,'printed numeral and place value restored');
@@ -454,6 +454,116 @@ async function run(browser, origin, backend, failures) {
   const corrected=await same(studentFrame,teacherFrame,'student corrects the class after the teacher');assert(corrected.scene.correct);assert.equal(corrected.scene.answers[0],'3 | 042');
   assert.deepEqual(corrected.scene.hintLevels,{});
   await ownership(teacher,student,false);
+
+  phase = 'strictly between two numbers on an open interval';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-22"]').click();await studentFrame.locator('h1').filter({hasText:'№1.22'}).waitFor();
+  await teacherFrame.locator('#answer').fill('6');await teacherFrame.locator('#answer-form button').click();
+  const offByOne=await same(teacherFrame,studentFrame,'difference counts steps rather than interior points');assert.match(offByOne.scene.message,/шаги/);
+  await teacherFrame.locator('#answer').fill('5');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await same(teacherFrame,studentFrame,'first open interval solved');await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=row]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=position]').fill('9');await studentFrame.locator('[data-v5-param=position]').press('Tab');
+  await studentFrame.locator('[data-v5-prediction]').fill('8');await studentFrame.locator('[data-v5-predict] button').click();
+  const marked=await same(studentFrame,teacherFrame,'right endpoint does not add an interior point');assert.equal(marked.scene.model.position,9);assert(marked.scene.model.seen);
+  await narrow(student,studentFrame,'open-interval');await ownership(teacher,student,false);
+
+  phase = 'leading digit and binary choice tree';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-26"]').click();await studentFrame.locator('h1').filter({hasText:'№1.26'}).waitFor();
+  await teacherFrame.locator('#answer').fill('2');await teacherFrame.locator('#answer-form button').click();const leading=await same(teacherFrame,studentFrame,'zero cannot begin a three-digit numeral');assert.match(leading.scene.message,/первом разряде/);
+  await teacherFrame.locator('#answer').fill('1');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await same(teacherFrame,studentFrame,'first digit fixed');await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=prefix]').selectOption({value:'1'});await studentFrame.locator('[data-v5-prediction]').fill('4');await studentFrame.locator('[data-v5-predict] button').click();
+  const tree=await same(studentFrame,teacherFrame,'four endings under prefix six');assert(tree.scene.model.seen);assert.equal(tree.scene.model.prefix,1);
+  await studentFrame.locator('#answer').fill('666;606;660;600');await studentFrame.locator('#answer-form button').click();const perm=await same(studentFrame,teacherFrame,'list in a different valid order');assert(perm.scene.correct);
+  await narrow(student,studentFrame,'leading-choice-tree');await ownership(teacher,student,false);
+
+  phase = 'two legal beginnings in separate brackets';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-30"]').click();await studentFrame.locator('h1').filter({hasText:'№1.30'}).waitFor();
+  for(let i=0;i<2;i++){await solve(teacherFrame);await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'completed first expression '+i);}
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('3');await studentFrame.locator('#answer-form button').click();
+  const alternative=await same(studentFrame,teacherFrame,'right bracket is also a legal beginning');assert(alternative.scene.correct);assert.equal(alternative.scene.answers[2],'3');
+  await studentFrame.locator('[data-v5-param=row]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=op]').selectOption({value:'2'});
+  await studentFrame.locator('[data-v5-prediction]').fill('0');await studentFrame.locator('[data-v5-predict] button').click();
+  const zero=await same(studentFrame,teacherFrame,'right difference makes the whole product zero');assert(zero.scene.model.seen);
+  await ownership(teacher,student,false);
+
+  phase = 'two herds: difference, total and selected lengths';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-39"]').click();await studentFrame.locator('h1').filter({hasText:'№1.39'}).waitFor();
+  await teacherFrame.locator('#answer').fill('308');await teacherFrame.locator('#answer-form button').click();
+  const horseDifference=await same(teacherFrame,studentFrame,'difference is not the second herd');assert.match(horseDifference.scene.message,/разница/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('1 144');await studentFrame.locator('#answer-form button').click();
+  const horseCorrection=await same(studentFrame,teacherFrame,'second herd corrected without a requested hint');assert(horseCorrection.scene.correct);assert.deepEqual(horseCorrection.scene.hintLevels,{});
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-v5-param=view]').selectOption({value:'3'});
+  await studentFrame.locator('[data-v5-prediction]').fill('1980');await studentFrame.locator('[data-v5-predict] button').click();
+  const horses=await same(studentFrame,teacherFrame,'two proportional bars counted together');assert.equal(horses.scene.model.view,3);assert(horses.scene.model.seen);
+  await narrow(student,studentFrame,'two-herds');await ownership(teacher,student,false);
+
+  phase = 'points beyond a segment and off the line';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-44"]').click();await studentFrame.locator('h1').filter({hasText:'№1.44'}).waitFor();
+  await teacherFrame.locator('#answer').fill('MC');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('D N');await teacherFrame.locator('#answer-form button').click();
+  const absentEnds=await same(teacherFrame,studentFrame,'strictly between omits the two ends');assert.match(absentEnds.scene.message,/Оба конца/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('MCND');await studentFrame.locator('#answer-form button').click();
+  const restored=await same(studentFrame,teacherFrame,'pupil includes the endpoints');assert(restored.scene.correct);assert.deepEqual(restored.scene.hintLevels,{});
+  await studentFrame.locator('[data-v5-param=mark]').selectOption({value:'4'});await studentFrame.locator('[data-v5-prediction]').fill('0');await studentFrame.locator('[data-v5-predict] button').click();
+  const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
+  await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
+
+  phase = 'compass opening and an equal transferred segment';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-46"]').click();await studentFrame.locator('h1').filter({hasText:'№1.46'}).waitFor();
+  await teacherFrame.locator('#answer').fill('EF=MK; CD=PT');await teacherFrame.locator('#answer-form button').click();
+  const equalPairs=await same(teacherFrame,studentFrame,'two geometrically equal pairs');assert(equalPairs.scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'construction follows the comparison');
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=sample]').selectOption({value:'0'});
+  await studentFrame.locator('[data-v5-param=delta]').selectOption({value:'3'});
+  await studentFrame.locator('[data-v5-prediction]').fill('3');await studentFrame.locator('[data-v5-predict] button').click();
+  const longer=await same(studentFrame,teacherFrame,'opening the compass too far produces a longer copy');assert.equal(longer.scene.model.delta,3);assert(longer.scene.model.seen);
+  await studentFrame.locator('[data-v5-param=delta]').selectOption({value:'2'});await studentFrame.locator('[data-v5-prediction]').fill('2');await studentFrame.locator('[data-v5-predict] button').click();
+  const replica=await same(studentFrame,teacherFrame,'unchanged compass opening reproduces the length');assert.equal(replica.scene.model.delta,2);assert(replica.scene.model.seen);
+  await narrow(student,studentFrame,'equal-segment-with-compass');await ownership(teacher,student,false);
+
+  phase = 'choose a three-digit number in the second printed self-check';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-check-2-2"]').click();await studentFrame.locator('[data-v5-print-number]').waitFor();
+  await teacherFrame.locator('[data-v5-print-number] input').fill('707');await teacherFrame.locator('[data-v5-print-number] button').click();
+  const ownNumber=await same(teacherFrame,studentFrame,'new pupil-selected number is part of the task state');assert.equal(ownNumber.scene.seed,707);
+  assert.equal(await studentFrame.locator('[data-v5-print-number] input').inputValue(),'707');
+  await teacherFrame.locator('#answer').fill('6');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('7');await teacherFrame.locator('#answer-form button').click();
+  const oneDigit=await same(teacherFrame,studentFrame,'the units class and units digit are distinguished');assert.match(oneDigit.scene.message,/тройку/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('707');await studentFrame.locator('#answer-form button').click();
+  const ownCorrection=await same(studentFrame,teacherFrame,'pupil corrects their own generated class');assert(ownCorrection.scene.correct);assert.deepEqual(ownCorrection.scene.hintLevels,{});
+  await studentFrame.locator('[data-v5-param=place]').selectOption({value:'3'});await studentFrame.locator('[data-v5-prediction]').fill('7');await studentFrame.locator('[data-v5-predict] button').click();
+  const ownPlace=await same(studentFrame,teacherFrame,'the fourth digit from the right belongs to the same private choice');assert.equal(ownPlace.scene.model.place,3);assert(ownPlace.scene.model.seen);
+  await narrow(student,studentFrame,'self-check-with-selected-number');await ownership(teacher,student,false);
+
+  phase = 'two positions at a fixed distance on a line';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-55"]').click();await studentFrame.locator('h1').filter({hasText:'№1.55'}).waitFor();
+  await solve(teacherFrame);await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'first centimetre to millimetre conversion');
+  await ownership(teacher,student,true);await solve(studentFrame);await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('[data-v5-param=side]').selectOption({value:'1'});await studentFrame.locator('[data-v5-prediction]').fill('110');await studentFrame.locator('[data-v5-predict] button').click();
+  const longSide=await same(studentFrame,teacherFrame,'K on the far side of N creates the sum');assert.equal(longSide.scene.model.side,1);assert(longSide.scene.model.seen);
+  await studentFrame.locator('[data-v5-param=side]').selectOption({value:'0'});await studentFrame.locator('[data-v5-prediction]').fill('42');await studentFrame.locator('[data-v5-predict] button').click();await same(studentFrame,teacherFrame,'near-side distance is a difference');
+  await narrow(student,studentFrame,'two-possible-distances');await ownership(teacher,student,false);
+
+  phase = 'freeze a pupil-built seven-link closed polyline';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-59"]').click();await studentFrame.locator('h1').filter({hasText:'№1.59'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=vertex]').selectOption({value:'5'});await teacherFrame.locator('[data-v5-param=p5]').selectOption({value:'3'});
+  const moved=await same(teacherFrame,studentFrame,'one saved vertex of the pupil drawing moves');assert.equal(moved.scene.model.p5,3);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-apply-drawing]').click();
+  const frozen=await same(studentFrame,teacherFrame,'both roles solve exactly the selected geometry');assert.equal(frozen.scene.seed,106250);assert.equal(frozen.scene.step,0);
+  await studentFrame.locator('#answer').fill('AH FH EF DE CD BC AB');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('[data-v5-param=edge]').selectOption({value:'6'});const sourceEdge=await studentFrame.evaluate(()=>{const s=Vilenkin5Quality.getState().scene;return WorkshopMath.generate(s.id,s.seed).data.fig.edges[6].length;});
+  await studentFrame.locator('[data-v5-prediction]').fill(String(sourceEdge));await studentFrame.locator('[data-v5-predict] button').click();
+  const last=await same(studentFrame,teacherFrame,'closing edge measured to the nearest millimetre');assert.equal(last.scene.model.edge,6);assert(last.scene.model.seen);
+  await narrow(student,studentFrame,'pupil-built-seven-edges');await ownership(teacher,student,false);
 
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
