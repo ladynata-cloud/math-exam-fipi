@@ -371,6 +371,23 @@ async function run(browser, origin, backend, failures) {
   await same(studentFrame,teacherFrame,'model meets the source target');assert.match(await teacherFrame.locator('.v5q-model-why').innerText(),/совпала/);
   await narrow(student,studentFrame,'numbered-travel');await ownership(teacher,student,false);
 
+  phase = 'own weather observations, saved draft and two roles';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-8"]').click();await studentFrame.locator('h1').filter({hasText:'№1.8'}).waitFor();
+  await same(teacherFrame,studentFrame,'new empty personal weather diary');
+  await teacherFrame.locator('[data-v5-weather-sky]').selectOption('2');await teacherFrame.locator('[data-v5-weather-rain]').check();
+  await teacherFrame.locator('[data-v5-weather-temp]').fill('9,5');await teacherFrame.locator('[data-v5-weather-form] button').click();
+  const firstDay=await same(teacherFrame,studentFrame,'rain and cold observed together');assert(firstDay.scene.model.daya>0);assert.equal(firstDay.scene.correct,false);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-weather-day]').selectOption('2');
+  await studentFrame.locator('[data-v5-weather-sky]').selectOption('1');await studentFrame.locator('[data-v5-weather-temp]').fill('10');
+  const newDay=await same(studentFrame,teacherFrame,'second day unsaved temperature');assert.equal(newDay.scene.model.temp,'10');assert.equal(newDay.scene.model.dayb,0);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(studentFrame,teacherFrame,'pupil reload retains both draft and earlier observation');
+  await studentFrame.locator('[data-v5-weather-form] button').click();const written=await same(studentFrame,teacherFrame,'pupil saves threshold day');assert.equal(written.scene.model.dayb,6603);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  await same(studentFrame,teacherFrame,'teacher reloads filled diary');assert.match(await teacherFrame.locator('#model').innerText(),/2 из 15/);
+  await narrow(student,studentFrame,'weather-diary');await ownership(teacher,student,false);
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');

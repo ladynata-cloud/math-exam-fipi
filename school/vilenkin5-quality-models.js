@@ -13,6 +13,7 @@
   function descriptor(lesson) {
     if (!lesson?.v5Course) throw new TypeError('Unknown Vilenkin lesson');
     const key = lesson.fullKey, point = lesson.point;
+    if (lesson.number==='1.8') return {kind:'weather'};
     if (lesson.number) return {kind:'numbered'};
     if (['natural-add','natural-subtract','multiply-column','division-column','remainder-find'].includes(key)) return {kind:'arithmetic', skill:{'natural-add':'add','natural-subtract':'subtract','multiply-column':'multiply','division-column':'divide','remainder-find':'remainder'}[key]};
     if (key === 'formula-perimeter') return {kind:'lab', key:'area', show:'perimeter'};
@@ -36,6 +37,7 @@
       return {...Object.fromEntries(config.controls.map(c => [c.k,c.def])),...(d.show?{show:d.show}:{})};
     }
     const common = {prediction:'',first:'',seen:false,notice:''};
+    if (d.kind==='weather') return root.Vilenkin5WeatherDiary.defaults();
     if (d.kind==='numbered') return {...common,...Object.fromEntries(Object.entries(root.Vilenkin5Numbered.bounds[lesson.number]).map(([key,rule])=>[key,rule[2]]))};
     if (d.kind === 'arithmetic') return {seed:17,level:d.skill === 'multiply'?3:2,step:0,draft:'',helped:false,notice:''};
     if (d.kind === 'fraction') return {...common,an:d.op === 'subtract'?5:d.op === 'divide'?3:2,ad:d.op === 'subtract'?4:d.op === 'divide'?2:3,bn:1,bd:4,factor:2};
@@ -54,6 +56,7 @@
       if (!allowed.has(k) || !['number','string','boolean'].includes(typeof v) || typeof v === 'number' && !Number.isFinite(v) || typeof v === 'string' && !text(v,800)) throw new TypeError('Invalid model field');
     }
     const s = {...base,...raw};
+    if(d.kind==='weather')return root.Vilenkin5WeatherDiary.validate(s);
     if (d.kind === 'lab') {
       for (const c of root.VILENKIN_LABS[d.key].controls) {
         const v=s[c.k];
@@ -197,6 +200,7 @@
     const d=descriptor(lesson),M=root.WorkshopMath;
     let s=normalize(lesson,options.state||{}),alive=true;
     const publish=()=>{if(alive)options.onChange?.({...s});};
+    if(d.kind==='weather')return root.Vilenkin5WeatherDiary.mount(host,{state:s,onChange:options.onChange});
     if(d.kind==='lab'){
       const markRightAngle=()=>{
         const target=host.querySelector('svg');if(!target||target.querySelector('[data-v5-right-angle]'))return;

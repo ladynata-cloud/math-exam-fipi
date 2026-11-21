@@ -154,18 +154,26 @@ const server=http.createServer((req,res)=>{
     await page.locator('#answer').focus();await page.keyboard.type('65');assert.equal(await page.locator('#answer').inputValue(),'65');
     await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>document.body.style.zoom='2');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'200% zoom overflow');
     await page.close();page=await newLearnerPage();await page.setViewportSize({width:320,height:840});
-    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4],['v5f-printed-1-3',3],['v5f-printed-1-4',8],['v5f-printed-1-5',6],['v5f-printed-1-6',12],['v5f-printed-1-7',3]]){
+    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4],['v5f-printed-1-3',3],['v5f-printed-1-4',8],['v5f-printed-1-5',6],['v5f-printed-1-6',12],['v5f-printed-1-7',3],['v5f-printed-1-8',15]]){
       await go('#lesson/'+id);
       const survey=page.locator('#task-panel table').first();
       assert.equal(await survey.locator('tbody tr').count(),rows);
       assert(await survey.locator('caption').isVisible());
       assert(await page.locator('#task-panel .v5q-table-scroll').evaluateAll(boxes=>boxes.every(box=>box.scrollWidth<=box.clientWidth+1)),'all source-table columns fit at 320px');
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'numbered table at 320px');
+      if(id==='v5f-printed-1-7')assert(await survey.locator('tbody td').evaluateAll(cells=>cells.every(cell=>{const r=document.createRange();r.selectNodeContents(cell);return r.getClientRects().length<=1;})),'each printed number stays on one line');
+      if(id==='v5f-printed-1-8'){
+        await page.locator('[data-v5-weather-sky]').selectOption('2');await page.locator('[data-v5-weather-rain]').check();
+        await page.locator('[data-v5-weather-temp]').fill('9,5');await page.locator('[data-v5-weather-form] button').click();
+        assert.match(await page.locator('#model').innerText(),/1 из 15/);await page.reload();await page.locator('[data-v5-weather-temp]').waitFor();
+        assert.equal(await page.locator('[data-v5-weather-temp]').inputValue(),'9,5');
+        await page.locator('[data-v5-weather-form]').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,'weather-diary-entry-320.png')});
+      }
       await survey.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,id+'-mobile.png')});
       await page.locator('[data-cmd=mode][data-value=practice]').click();
-      assert.match(await page.locator('#task-panel .question').innerText(),/Новый авторский опрос|Новое авторское задание/);
+      assert.match(await page.locator('#task-panel .question').innerText(),/Новый авторский опрос|Новое авторское задание|Новые вымышленные наблюдения/);
       assert(await page.locator('#task-panel table').isVisible());
     }
-    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numbered:7,screenshots:30,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
+    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numbered:8,screenshots:32,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

@@ -2,6 +2,7 @@
 (function (root) {
   'use strict';
   const tables=typeof module!=='undefined'&&module.exports?require('./vilenkin5-numbered-tables.js'):root.Vilenkin5NumberedTables;
+  const diary=typeof module!=='undefined'&&module.exports?require('./vilenkin5-weather-diary.js'):root.Vilenkin5WeatherDiary;
   const lessons = [
     {number:'1.1', key:'printed-1-1', title:'Читаем таблицу о домашних животных',
       explanation:'Подпись строки показывает, что именно считали. При подсчёте группы складывай численности подходящих животных. Строка о семьях без питомца не прибавляет ни одного животного.',
@@ -11,7 +12,7 @@
       explanation:'Каждая запись в списке принадлежит одному читателю. Посчитай одинаковые записи. Чтобы получить число книг в группе, умножь число читателей на результат одного из них.',
       worked:['Трое прочитали по 2 книги, двое — по 5.','Читателей 3 + 2 = 5. В первой группе прочитано 3 × 2 = 6 книг, во второй 2 × 5 = 10.','Всего 16 книг. Пять читателей и шестнадцать книг отвечают на разные вопросы.'],
       misconception:'Сумма частот всегда равна числу прочитанных книг.', reflect:'Какая сумма позволяет проверить, что ни одна запись не пропущена?'}
-  ].concat(tables.lessons);
+  ].concat(tables.lessons,diary.lesson);
   const pets = ['Кошка','Собака','Хомяк','Черепаха','Морская свинка','Кролик','Птицы','Рыбки','Змеи','Нет животных'];
   const mammal = [0,1,2,4,5], fourLegs = [...mammal,3];
   const sourceCounts = [19,11,3,8,5,1,5,9,0,5];
@@ -61,9 +62,9 @@
   }
   function generate(lesson,seed,M){
     const random=M.rng(seed+9153);
-    const generators={'1.1':animalSurvey,'1.2':readingSurvey,...tables.generators};
+    const generators={'1.1':animalSurvey,'1.2':readingSurvey,...tables.generators,'1.8':diary.generate};
     const t=generators[lesson.number](seed,random,step);
-    return {...t,conditionKey:t.conditionKey||(t.data.counts||t.data.books).join(','),prompt:(seed===0?'Данные печатного номера. ':t.data.counts||t.data.books?'Новый авторский опрос. ':'Новое авторское задание. ')+t.prompt,v5Full:true,v6Full:true,model:{kind:'v5-numbered'},data:{...t.data,number:lesson.number}};
+    return {...t,conditionKey:t.conditionKey||(t.data.counts||t.data.books).join(','),prompt:(t.prefix||(seed===0?'Данные печатного номера. ':t.data.counts||t.data.books?'Новый авторский опрос. ':'Новое авторское задание. '))+t.prompt,v5Full:true,v6Full:true,model:{kind:'v5-numbered'},data:{...t.data,number:lesson.number}};
   }
   function install(C,M){
     const path=C.pathById.vilenkin5;
