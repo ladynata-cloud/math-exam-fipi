@@ -97,7 +97,8 @@
       ['/geometry-course/textbook/data/regular-polygon-constructions.json', '№1188–1189'],
       ['/geometry-course/textbook/data/circumference-lengths.json', 'п. 118 и №1190–1192'],
       ['/geometry-course/textbook/data/inscribed-circle-lengths.json', '№1193–1194'],
-      ['/geometry-course/textbook/data/circle-length-applications.json', '№1195–1199']
+      ['/geometry-course/textbook/data/circle-length-applications.json', '№1195–1199'],
+      ['/geometry-course/textbook/data/measured-arc-devices.json', '№1200–1202']
   ];
 
   async function forCourse(base) {
