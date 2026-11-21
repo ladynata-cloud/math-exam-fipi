@@ -28,7 +28,7 @@
     const line = curves.map((curve,index)=>'<polyline fill="none" stroke="'+(index && data.compare?'#935118':'#176a66')+'" '+(index && data.compare?'stroke-dasharray="6 3"':'')+' stroke-width="2.5" points="'+curve.map(([x,y])=>X(x)+','+Y(y)).join(' ')+'"/>').join('');
     const guides = data.asymptotes ? '<path d="M'+X(data.asymptotes[0])+' 15V158 M24 '+Y(data.asymptotes[1])+'H264" stroke="#935118" stroke-dasharray="4 3"/>' : '';
     const dots = (data.marked || pts).map(([x,y]) => '<circle cx="'+X(x)+'" cy="'+Y(y)+'" r="3.5" fill="#12635d"/>').join('');
-    const labels=(data.marked||[]).map(([x,y])=>'<text x="'+X(x)+'" y="'+(Y(y)+(y===0?14:-7))+'" text-anchor="middle">'+(y===0?x:y)+'</text>').join('');
+    const labels=(data.marked||[]).map(([x,y])=>'<text x="'+X(x)+'" y="'+(Y(y)+(y===0?14:-7))+'" text-anchor="middle"'+(data.labelCoordinates?' style="paint-order:stroke;stroke:#f4faf7;stroke-width:3px;stroke-linejoin:round"':'')+'>'+(data.labelCoordinates?'('+x+'; '+y+')':(y===0?x:y))+'</text>').join('');
     return '<svg viewBox="0 0 283 176" role="img" aria-label="'+data.alt+'"><g font-size="11" fill="#20323c">'+axis+guides+line+dots+labels+'</g></svg>';
   }
   function chart(data, coordinates, joined, alt, marked) {
