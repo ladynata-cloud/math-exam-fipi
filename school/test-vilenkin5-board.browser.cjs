@@ -525,7 +525,17 @@ async function run(browser, origin, backend, failures) {
   await studentFrame.locator('[data-v5-apply-drawing]').click();const personalPentagon=await same(studentFrame,teacherFrame,'pupil locks five personal sides');assert.equal(personalPentagon.scene.seed,100005);assert.equal(personalPentagon.scene.attempt,0);
   await studentFrame.locator('#answer').fill('MN NP PK KS');await studentFrame.locator('#answer-form button').click();const missingSM=await same(studentFrame,teacherFrame,'four sides do not close MNPKS');assert.match(missingSM.scene.message,/замыкают/);
   await studentFrame.locator('#answer').fill('MS SK KP PN NM');await studentFrame.locator('#answer-form button').click();await same(studentFrame,teacherFrame,'all five sides, named in reverse order');
-  for(const length of ['25','28','25','36','31']){await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill(length);await studentFrame.locator('#answer-form button').click();const accepted=await same(studentFrame,teacherFrame,'each chosen side measured');assert(accepted.scene.correct);}
+  for(const [side,length] of ['25','28','25','36','31'].entries()){
+    await studentFrame.locator('[data-cmd=next]').click();
+    if(side===0){
+      await studentFrame.locator('#answer').fill('27');await studentFrame.locator('#answer-form button').click();
+      const offRuler=await same(studentFrame,teacherFrame,'arbitrary length keeps the same measured edge');assert(!offRuler.scene.correct);
+      await studentFrame.locator('#answer').fill('2,5');await studentFrame.locator('#answer-form button').click();
+      const wrongUnit=await same(studentFrame,teacherFrame,'correct physical length entered in centimetres');assert.match(wrongUnit.scene.message,/сантиметры/);
+    }
+    await studentFrame.locator('#answer').fill(length);await studentFrame.locator('#answer-form button').click();
+    const accepted=await same(studentFrame,teacherFrame,'each chosen side measured');assert(accepted.scene.correct);assert.deepEqual(accepted.scene.hintLevels,{});
+  }
   await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('114');await studentFrame.locator('#answer-form button').click();const partialPerimeter=await same(studentFrame,teacherFrame,'missing fifth side in the perimeter');assert.match(partialPerimeter.scene.message,/SM/);
   await studentFrame.locator('#answer').fill('145');await studentFrame.locator('#answer-form button').click();const fixedPerimeter=await same(studentFrame,teacherFrame,'own perimeter after correction');assert(fixedPerimeter.scene.correct);assert.deepEqual(fixedPerimeter.scene.hintLevels,{});
   await ownership(teacher,student,false);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restored chosen five sides');

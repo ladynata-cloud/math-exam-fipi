@@ -967,6 +967,28 @@ function buildablePathsRegression(){
 
 
 
+function exactPrintedMistakeRegression(){
+  const f=boot(),examples=[
+    ['v5f-printed-1-7',2,/делимое и делитель/],
+    ['v5f-printed-1-63',0,/Ширина уже известна/],
+    ['v5f-printed-1-80',4,/сантиметрах/],
+    ['v5f-printed-1-84',1,/сантиметры/]
+  ];
+  for(const [id,index,feedback] of examples){
+    const task=f.M.generate(id,0),step=task.steps[index];f.route('#lesson/'+id);
+    for(const previous of task.steps.slice(0,index)){f.submit(value(f.M,previous));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
+    const arbitrary=String(Number(step.answer)+1);
+    const answer=step.errors[0].value,ratio=f.M.parse(answer);ok(ratio);if(id.endsWith('-84'))equal(arbitrary,'27');
+    f.submit(arbitrary);ok(!f.snapshot().scene.correct);equal(f.snapshot().scene.step,index);equal(f.errors,[]);
+    const expectedFraction=ratio.d===1?String(ratio.n):ratio.n+'/'+ratio.d;f.submit(expectedFraction);ok(feedback.test(f.snapshot().scene.message),id+' explains the exact fractional mistake');ok(!f.snapshot().scene.correct);
+    f.submit(String(step.answer));ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});equal(f.errors,[]);
+    for(let seed=0;seed<120;seed++){
+      const q=f.M.generate(id,seed).steps[index];ok(typeof q.errors[0].value==='string');const ratio=f.M.parse(q.errors[0].value);ok(ratio&&Number.isSafeInteger(ratio.n)&&Number.isSafeInteger(ratio.d));ok(!f.M.equal(q.errors[0].value,q.answer));
+    }
+  }
+  f.close();
+}
+
 function perimeterAndMassRegression(){
   const f=boot(),N=f.w.Vilenkin5Numbered,B=f.w.Vilenkin5PrintedBuildablePaths,ids=[84,85,86,87].map(n=>'v5f-printed-1-'+n),src=ids.map(id=>f.M.generate(id,0));
   equal(src[0].data.fig.names,'MNPKS');equal(plain(src[0].data.fig.edges.map(e=>e.length)),[26,26,25,36,31]);equal(src[0].answer,144);
@@ -1161,7 +1183,7 @@ async function run(){
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
     printedSegmentRegression,compassAndCompoundRegression,printedChecksRegression,printedLengthUnitsRegression,
-    buildablePathsRegression,pageNineteenBoundariesRegression,pageTwentyReviewRegression,originalChainsRegression,everydayReasoningRegression,numberingAndPathsRegression,pageTwentyOneFirstRegression,sixMeasurementsRegression,comparisonsAndMixedMeasuresRegression,perimeterAndMassRegression,
+    buildablePathsRegression,pageNineteenBoundariesRegression,pageTwentyReviewRegression,originalChainsRegression,everydayReasoningRegression,numberingAndPathsRegression,pageTwentyOneFirstRegression,sixMeasurementsRegression,comparisonsAndMixedMeasuresRegression,perimeterAndMassRegression,exactPrintedMistakeRegression,
   ]){
     check();
     await tick(); // Let closed lesson windows finish disposal before loading the next group.
