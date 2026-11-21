@@ -68,6 +68,7 @@ jobs:
           node tools/nikolsky-algebra-7-9-inequalities.test.cjs
           node tools/dorofeev-algebra-7-9.test.cjs
           node tools/dorofeev-algebra-7-9-source72.test.cjs
+          node tools/dorofeev-algebra-7-9-source53.test.cjs
           node tools/nikolsky-algebra-7-9.test.cjs
           node tools/alimov-algebra-7-9.test.cjs
           node tools/alimov-algebra-7-9-signs.test.cjs
@@ -98,6 +99,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --nikolsky8-inequalities --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev7 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev8 --printed-identity
+          node tools/tyurin-statistics.board.browser.cjs --dorofeev9 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --nikolsky7-natural --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --alimov-school-2011 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --alimov8-signs --printed-identity

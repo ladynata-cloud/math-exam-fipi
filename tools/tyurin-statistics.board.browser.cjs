@@ -51,7 +51,9 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--dorofeev8')?{
+const catalogue=process.argv.includes('--dorofeev9')?{
+  directory:'dorofeev-algebra-7-9',entries:[[53,51,18]],uniqueLessons:17,search:'dorofeev-algebra-7-9',match:'действительные числа',lesson:'53-2e',chart:'svg[aria-label*="Карта вложенных числовых множеств"]',storage:'math:dorofeev-algebra-7-9:v1:'
+}:process.argv.includes('--dorofeev8')?{
   directory:'dorofeev-algebra-7-9',entries:[[72,60,28]],uniqueLessons:27,search:'dorofeev-algebra-7-9',match:'алгебраические дроби',lesson:'72-6c',chart:'svg[aria-label*="Числитель и знаменатель"]',storage:'math:dorofeev-algebra-7-9:v1:'
 }:process.argv.includes('--dorofeev7')?{
   directory:'dorofeev-algebra-7-9',entries:[[96,73,58]],uniqueLessons:57,search:'dorofeev-algebra-7-9',match:'сравнение дробей',lesson:'96-12',chart:'svg[aria-label*="Сравнение долей годной продукции"]',storage:'math:dorofeev-algebra-7-9:v1:'

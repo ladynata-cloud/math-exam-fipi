@@ -5,6 +5,24 @@
   function point(x,y,fill='#39745b'){return '<circle cx="'+x+'" cy="'+y+'" r="4" fill="'+fill+'"/>';}
   window.MathExamTopicEdition.figure=d=>{
     const m=d.m;let out='',title='';
+    if (d.chart === 'number-sets' || d.chart === 'sets-claim' || d.chart === 'sets-symbols') {
+      title='Карта вложенных числовых множеств и отдельная область иррациональных чисел';
+      out='<rect x="3" y="6" width="274" height="106" rx="7" fill="#eef4fa" stroke="#6f8aa3"/>'+
+          '<rect x="10" y="25" width="161" height="78" rx="6" fill="#e4f2eb" stroke="#68937b"/>'+
+          '<rect x="16" y="44" width="104" height="50" rx="5" fill="#d6e5d4" stroke="#658668"/>'+
+          '<rect x="22" y="61" width="48" height="25" rx="4" fill="#c7dcb8" stroke="#648263"/>'+
+          label(12,19,'R · действительные')+label(16,39,'Q · рациональные')+
+          label(23,57,'Z · целые')+label(46,78,'N','middle',12)+
+          label(221,48,'R ∖ Q','middle',14)+label(221,63,'иррациональные','middle');
+      if(d.chart==='number-sets') out+=label(221,88,d.m.values.find(x=>x.kind===3).text,'middle',12);
+      if(d.chart==='sets-symbols') out+=label(221,88,d.m.rows[0][1],'middle',11);
+      if(d.chart==='sets-claim') {
+        const x=[47,93,145,221][d.m.chosen.kind], y=[79,83,81,88][d.m.chosen.kind];
+        if(d.m.chosen.kind===0) out+=label(x,104,d.m.chosen.text,'middle',10)+point(x+15,y-4);
+        else out+=label(x,y,d.m.chosen.text,'middle',12);
+      }
+      return '<svg viewBox="0 0 280 120" role="img" aria-label="'+title+'"><g fill="#214939" font-family="sans-serif">'+out+'</g></svg>';
+    }
     if (d.chart.startsWith('alg-')) {
       const f = window.MathExamTopicPractice.f;
       const card = (x, y, t) => '<rect x="'+x+'" y="'+y+'" width="82" height="24" rx="4" fill="#e1eee7"/>'+label(x+41,y+16,t,'middle',12);
