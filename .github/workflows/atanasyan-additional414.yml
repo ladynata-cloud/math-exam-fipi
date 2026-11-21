@@ -45,6 +45,13 @@ jobs:
           node tools/stereo-textbook/prism-volumes.test.cjs
           node tools/stereo-textbook/cross-sections.test.cjs
           node tools/stereo-textbook/oblique-prisms.test.cjs
+          node tools/stereo-textbook/pyramid-volumes.test.cjs
+          node tools/stereo-textbook/pyramid-projections.test.cjs
+          node tools/stereo-textbook/pyramid-frusta.test.cjs
+          node tools/stereo-textbook/cone-volumes.test.cjs
+          node tools/stereo-textbook/cone-nets-and-frusta.test.cjs
+          node tools/stereo-textbook/sphere-measures.test.cjs
+          node tools/stereo-textbook/sphere-applications.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -85,6 +92,41 @@ jobs:
         env:
           TEXTBOOK_PRACTICE_GROUP: oblique
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/oblique-prisms
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify area, height, units and angles in pyramids
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramids
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-volumes
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify pyramid projections and tangencies on phone and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: projections
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-projections
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify cut pyramids and diagonal sections on phone and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: frusta
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-frusta
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify right cones and both admissible axial triangles
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cones
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cone-volumes
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify cone nets, axial trapezoids and disk volumes
+        env:
+          TEXTBOOK_PRACTICE_GROUP: sectors
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cone-nets-and-frusta
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify ball measurement, spherical caps, layers, sectors and water displacement
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spheres
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/sphere-measures
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify intersections, volume alternatives, sectors, surface area and the cone proof
+        env:
+          TEXTBOOK_PRACTICE_GROUP: sphereApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/sphere-applications
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
@@ -127,5 +169,12 @@ jobs:
             artifacts/prism-volumes/
             artifacts/cross-sections/
             artifacts/oblique-prisms/
+            artifacts/pyramid-volumes/
+            artifacts/pyramid-projections/
+            artifacts/pyramid-frusta/
+            artifacts/cone-volumes/
+            artifacts/cone-nets-and-frusta/
+            artifacts/sphere-measures/
+            artifacts/sphere-applications/
           retention-days: 14
           if-no-files-found: error

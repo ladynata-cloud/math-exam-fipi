@@ -38,6 +38,7 @@ function curveValue(curve,x){
  if(curve.kind==='sqrt')return x>=0?Math.sqrt(x):NaN;
  if(curve.kind==='line')return curve.k*x+curve.b;
  if(curve.kind==='hyperbola')return x===0?NaN:curve.k/x;
+ if(curve.kind==='quadratic')return curve.a*x*x+curve.b*x+curve.c;
  if(curve.kind==='square')return x*x;
  if(curve.kind==='cube')return x*x*x;
  if(curve.kind==='sqrt-shift')return x>=curve.h?Math.sqrt(x-curve.h)+(curve.k||0):NaN;
@@ -70,13 +71,13 @@ function graph(k,b,holes,range,label,otherLines=[]){
 const alternatives=[{k:-1,b:1,holes:[0]},{k:1,b:-1,holes:[]},{k:-1,b:1,holes:[1]},{k:1,b:-1,holes:[1]}];
 function rootGraph(config,value){
  const xr=config.xRange||[-1,10],yr=config.yRange||[-1,6],width=360,height=260;
- const pad=Math.max(30,Math.max(...yr.map(v=>String(Math.round(v)).length))*10+6);
+ const pad=config.compactTicks?56:Math.max(30,Math.max(...yr.map(v=>String(Math.round(v)).length))*10+6);
  if(xr.length!==2||yr.length!==2||![...xr,...yr].every(Number.isFinite)||xr[0]>=xr[1]||yr[0]>=yr[1])throw Error('Invalid root graph bounds');
  const x=v=>pad+(v-xr[0])/(xr[1]-xr[0])*(width-2*pad),y=v=>height-pad-(v-yr[0])/(yr[1]-yr[0])*(height-2*pad);
  const svg=node('svg',{viewBox:'0 0 '+width+' '+height,role:'img','aria-label':config.label||(['root-build','curve-build'].includes(config.type)?'Координатная плоскость для твоего построения':'Графики функций на координатной плоскости')});
  const line=(x1,y1,x2,y2,color,attrs={})=>svg.append(node('line',{x1,y1,x2,y2,stroke:color,'stroke-width':1,...attrs}));
  const step=(a,b)=>{const size=(b-a)/(Math.max(Math.abs(a),Math.abs(b))>=10000?3:6),p=Math.pow(10,Math.floor(Math.log10(size)));return [1,2,5,10].find(n=>n*p>=size)*p;};
- const label=v=>Math.abs(v)>=10000?Number(v.toPrecision(3)).toString():Number(v.toFixed(4)).toString();
+ const label=v=>config.compactTicks&&Math.abs(v)>=10000?v.toExponential(0):Math.abs(v)>=10000?Number(v.toPrecision(3)).toString():Number(v.toFixed(4)).toString();
  const sx=config.xTickStep||step(...xr),sy=config.yTickStep||step(...yr),gx=config.gridStep||(xr[1]-xr[0]<=24?Math.min(1,sx):sx),gy=config.gridStep||(yr[1]-yr[0]<=24?Math.min(1,sy):sy),hasXAxis=yr[0]<=0&&yr[1]>=0,hasYAxis=xr[0]<=0&&xr[1]>=0;
  if(![sx,sy,gx,gy].every(v=>Number.isFinite(v)&&v>0)||(xr[1]-xr[0])/gx>200||(yr[1]-yr[0])/gy>200)throw Error('Invalid root grid');
  for(let v=Math.ceil(xr[0]/gx)*gx;v<=xr[1]+gx/100;v+=gx)line(x(v),pad,x(v),height-pad,'#e1e7e2');
@@ -112,7 +113,7 @@ function rootGraph(config,value){
    if(inside){path+=(open&&continuous?'L':'M')+x(a).toFixed(3)+' '+y(b).toFixed(3)+' ';open=true;}else open=false;
    previous=[a,b];
   }
-  svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
+  svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,...(c.dashed?{'stroke-dasharray':'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
   for(const [h,v] of c.holes||[])if(h>=xr[0]&&h<=xr[1]&&v>=yr[0]&&v<=yr[1])svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));
   if(c.kind==='abs-ratio'&&xr[0]<=0&&xr[1]>=0)for(const b of [-(c.scale??1),c.scale??1])if(b>=yr[0]&&b<=yr[1])svg.append(node('circle',{cx:x(0),cy:y(b),r:4,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':0,'data-hole-y':b}));
   if(c.label){
@@ -285,8 +286,248 @@ function workEstimate(host,config,value){
   line('Твоя скорость за 7 ч дала бы '+decimal(7*proposed)+' км. Общий путь в модели — 480 км.');
  }
 }
+function quadraticExample(host,value){
+ host.className='task-graphs root-graph';
+ const parameters=String(value).split(';').map(v=>number(v));
+ const valid=parameters.length===3&&parameters.every(v=>v!==null);
+ const [a,b,c]=parameters;
+ const curve=valid?{kind:'quadratic',a,b,c}:null;
+ const height=valid?Math.max(2,Math.abs(c),Math.abs(4*a+2*b+c),Math.abs(4*a-2*b+c)):4;
+ host.append(rootGraph({curves:curve?[curve]:[],xRange:[-2,2],yRange:[-height,height]},''));
+ const p=document.createElement('p');p.className='small';
+ p.textContent=valid?'Для твоих коэффициентов при x = 0 значение равно '+c+', а при x = 1 — '+(a+b+c)+'.':'После проверки на осях появится график для твоих коэффициентов.';
+ host.append(p);
+}
+function quadraticStory(host,config,value){
+ const scene=config.scene;
+ host.className='task-graphs quantity-model';
+ const caption=document.createElement('p');caption.className='small';
+ if(scene.startsWith('529')){
+  const slope={'529а':1-Math.sqrt(2),'529б':4-Math.sqrt(15),'529в':Math.sqrt(35)-5.7}[scene];
+  const plane={curves:value?[{kind:'line',k:slope,b:0}]:[],xRange:[-4,4],yRange:[-2,2],xTickStep:2,yTickStep:1};
+  host.append(rootGraph(plane,''));caption.textContent=value?'Проверь положение лучей по обе стороны от начала координат.':'После выбора четвертей появится прямая с коэффициентом из условия.';host.append(caption);return;
+ }
+ const svg=node('svg',{viewBox:'0 0 300 190',role:'img','aria-label':{
+  court:'Корт со сторонами w и 2w',fence:'Участок со сторонами a и 0,75a',screen:'Стороны 4u и 3u, диагональ 25 дюймов',
+  'cut-square':'Квадрат, разделённый на треугольник и оставшуюся фигуру',walk:'Прямой угол между северным и западным маршрутами',fall:'Вертикальная шахта глубиной 80 метров'
+ }[scene]});
+ const line=(x1,y1,x2,y2,extra={})=>svg.append(node('line',{x1,y1,x2,y2,stroke:'#165d65','stroke-width':2,...extra}));
+ const label=(x,y,text)=>svg.append(node('text',{x,y,'text-anchor':'middle','font-size':17,fill:'#143c3b'},text));
+ const rectangle=(x,y,width,height)=>svg.append(node('rect',{x,y,width,height,fill:'#e7f4ee',stroke:'#165d65','stroke-width':2}));
+ const decimal=n=>n.toLocaleString('ru',{maximumFractionDigits:3});
+ const proposed=config.proposedTime??number(value);
+ if(scene==='walk'){
+  const x=198,y=143;line(x,y,x,43);line(x,y,73,y);line(73,y,x,43,{'stroke-dasharray':'5 3'});line(183,y,183,128);line(183,128,x,128);
+  label(234,97,'4t км');label(130,170,'5t км');label(102,79,proposed>0?decimal(proposed*Math.sqrt(41))+' км':'16 км');label(199,31,'север');label(42,150,'запад');
+  caption.textContent=proposed>0?'При t = '+decimal(proposed)+' ч группы пройдут '+decimal(4*proposed)+' и '+decimal(5*proposed)+' км. Расстояние между ними ≈ '+decimal(proposed*Math.sqrt(41))+' км. По условию требуется 16 км.':'Пункт выхода — вершина прямого угла. Два пройденных пути образуют катеты.';
+ }else if(scene==='fall'){
+  line(80,35,220,35);line(80,150,220,150);line(146,42,146,142,{'stroke-dasharray':'5 3'});line(140,132,146,142);line(152,132,146,142);
+  label(90,24,'начало');label(202,105,'80 м');label(206,177,'дно');
+  caption.textContent=proposed>=0&&proposed!==null?'За '+decimal(proposed)+' с модель даёт путь '+decimal(5*proposed*proposed)+' м.':'Глубина — путь камня от старта до дна.';
+ }else if(scene==='cut-square'){
+  rectangle(88,20,140,140);svg.append(node('polygon',{points:'88,20 228,20 228,134.72',fill:'#c1dcef',stroke:'#165d65','stroke-width':1.5}));
+  label(184,55,'59 см²');label(141,123,'85 см²');label(157,183,'сторона a');
+  caption.textContent=proposed>0?'Квадрат со стороной '+decimal(proposed)+' см имеет площадь '+decimal(proposed*proposed)+' см².':'Сложи площади двух частей, чтобы восстановить площадь целого квадрата.';
+ }else{
+  const width=scene==='court'?200:160,height=scene==='court'?100:120,x=48,y=23;
+  rectangle(x,y,width,height);
+  label(x+width/2,y+height+26,scene==='court'?'2w':scene==='fence'?'a':'4u');
+  label(x+width+24,y+height/2+5,scene==='court'?'w':scene==='fence'?'0,75a':'3u');
+  if(scene==='screen'){
+   line(x,y+height,x+width,y,{'stroke-dasharray':'5 3'});label(x+width/2-13,y+height/2-10,'25″');
+   caption.textContent='Диагональ делит экран на два равных прямоугольных треугольника.';
+  }else if(scene==='court'){
+   const pair=parseLine(value);if(pair)caption.textContent='Твои стороны дают площадь '+decimal(pair.k*pair.b)+' м². Длина по условию должна вдвое превышать ширину.';
+   else caption.textContent='Прямоугольник можно разделить на два квадрата со стороной w.';
+   line(x+100,y,x+100,y+height,{'stroke-dasharray':'5 3'});
+  }else caption.textContent=proposed>0?'Для периметра '+decimal(proposed)+' м и отношения 4 : 3 площадь участка была бы '+decimal(12*(proposed/14)**2)+' м².':'Отношение длины к ширине равно 4 : 3. Забор проходит по всем четырём сторонам.';
+ }
+ host.append(svg,caption);
+}
+
+function quadraticEvidence(host,config,value){
+ host.className='task-graphs root-graph';
+ const caption=document.createElement('p');caption.className='small';
+ if(config.type==='check-common-point'){
+  const answer=parseLine(value);
+  if(answer){
+   for(const [k,b] of config.lines){
+    const row=document.createElement('p');row.className='small';
+    const ordinate=k*answer.k+b;
+    row.textContent='При x = '+answer.k+' получаем y = '+ordinate+'. '+(Math.abs(ordinate-answer.b)<1e-9?'Ордината совпала.':'Твоя ордината '+answer.b+' отличается.');
+    host.append(row);
+   }
+  }else{caption.textContent='После проверки здесь появятся две подстановки твоей точки.';host.append(caption);}
+  return;
+ }
+ if(config.type==='quadratic-reciprocals'){
+  const roots=String(value).trim().split(';').map(v=>number(v));
+  if(!roots.length||roots.some(v=>v===null)){
+   caption.textContent='После проверки рациональных корней сравни подстановку r в первое уравнение и 1/r во второе.';host.append(caption);return;
+  }
+  for(const r of roots){
+   const row=document.createElement('p');row.className='small';
+   const {a,b,c}=config,dec=v=>v.toLocaleString('ru',{maximumFractionDigits:5});
+   row.textContent=r===0?'При r = 0 обратное число не определено. Свободный член данного уравнения не равен нулю.':
+    'r = '+dec(r)+', 1/r = '+dec(1/r)+'. Левая часть первого уравнения: '+dec(a*r*r+b*r+c)+'. После перестановки a и c при 1/r: '+dec(c/(r*r)+b/r+a)+'.';
+   host.append(row);
+  }
+  return;
+ }
+ let {a,b,c}=config;
+ if(config.type==='quadratic-parameter'){
+  const entry=M.parse(value),proposed=entry?entry.n/entry.d:null;
+  if(proposed===null){
+   caption.textContent='После ввода своего a и проверки появится его парабола.';host.append(caption);return;
+  }
+  a=1;b=-proposed;c=proposed-4;
+ }
+ if(!value){caption.textContent='После проверки можно сопоставить число корней с пересечениями оси x.';host.append(caption);return;}
+ const discriminant=b*b-4*a*c,h=-b/(2*a),vertex=-discriminant/(4*a);
+ const spread=discriminant>=0?Math.sqrt(discriminant)/(2*Math.abs(a)):0;
+ const radius=Math.max(1.5,spread*1.45);
+ const left=h-radius,right=h+radius;
+ const ymax=Math.max(1,vertex,a*radius*radius+vertex),ymin=Math.min(-1,vertex,a*radius*radius+vertex),margin=(ymax-ymin)*.13;
+ const plane={curves:[{kind:'quadratic',a,b,c}],compactTicks:Math.max(Math.abs(ymin),Math.abs(ymax))>=10000,xRange:[left,right],yRange:[ymin-margin,ymax+margin],
+              label:'Парабола и горизонтальная ось y = 0 для указанного уравнения'};
+ const points=discriminant>0?[[h-spread,0],[h+spread,0]]:discriminant===0?[[h,0]]:[];
+ plane.points=points;
+ host.append(rootGraph(plane,''));
+ caption.textContent=(config.type==='quadratic-parameter'?'Для a = '+(-b).toLocaleString('ru')+' ':'')+
+    'D = '+discriminant.toLocaleString('ru',{maximumFractionDigits:4})+'. Различных пересечений оси x: '+points.length+'.';
+ host.append(caption);
+}
+
+function vertexForm(host,config,value){
+ host.className='task-graphs root-graph';
+ const parts=String(value).split(';').map(v=>number(v)),pointOnly=config.mode==='point';
+ const caption=document.createElement('p');caption.className='small';
+ if(parts.length!==(pointOnly?2:3)||parts.some(v=>v===null)){
+  caption.textContent=pointOnly?'Введи обе координаты предложенной вершины: на чертеже появится твоя точка.':'Запись A; h; k построит твою параболу с вершиной (h; k).';host.append(caption);return;
+ }
+ const [a,h,k]=pointOnly?[config.a,...parts]:parts;
+ if(!a){caption.textContent='При A = 0 получается постоянная функция. У исходного квадратного трёхчлена A отличается от нуля.';host.append(caption);return;}
+ const fmt=n=>Number(n.toFixed(6)).toLocaleString('ru',{maximumFractionDigits:6});
+ const curve=(a,h,k,dashed=false)=>({kind:'quadratic',a,b:-2*a*h,c:a*h*h+k,dashed});
+ const curves=pointOnly?[]:[curve(a,h,k)];
+ if(config.evaluated)curves.push(curve(config.a,config.h,config.k,true));
+ const xs=config.evaluated?[h,config.h]:[h],left=Math.min(...xs)-2,right=Math.max(...xs)+2;
+ const limits=[k];for(const q of curves){
+  const center=-q.b/(2*q.a);limits.push(curveValue(q,left),curveValue(q,right),curveValue(q,center));
+ }
+ let bottom=Math.min(...limits),top=Math.max(...limits);const margin=Math.max(1,(top-bottom)*.13);bottom-=margin;top+=margin;
+ const formula=fmt(a)+'(x '+(h<0?'+':'−')+' '+fmt(Math.abs(h))+')² '+(k<0?'−':'+')+' '+fmt(Math.abs(k));
+ const note=pointOnly?'Предложенная точка ('+fmt(h)+'; '+fmt(k)+').':'Твоя запись: '+formula+'. Вершина ('+fmt(h)+'; '+fmt(k)+').';
+ const svg=rootGraph({curves,points:[[h,k]],xRange:[left,right],yRange:[bottom,top],compactTicks:Math.max(Math.abs(bottom),Math.abs(top))>1000,label:note},'');
+ caption.textContent=note+(config.evaluated?' Штриховая линия показывает исходный трёхчлен.':'');
+ host.append(svg,caption);
+}
+function legTrial(host,value){
+ host.className='task-graphs quantity-model';
+ const caption=document.createElement('p');caption.className='small';
+ const x=number(value);
+ if(x===null||x<=0||x>=6){
+  caption.textContent=String(value).trim()?'Оба катета должны иметь положительную длину: 0 < x < 6.':'Укажи возможный катет от 0 до 6 см, исключая концы. Изменяя длину, сравнивай площади.';
+  host.append(caption);return;
+ }
+ const other=6-x,area=x*other/2,scale=138/Math.max(x,other),w=x*scale,h=other*scale;
+ const svg=node('svg',{viewBox:'0 0 260 190',role:'img','aria-label':'Прямоугольный треугольник для введённого катета'});
+ const fmt=n=>n.toLocaleString('ru',{maximumFractionDigits:6});
+ svg.append(node('polygon',{points:[[58,154],[58+w,154],[58,154-h]].map(p=>p.join(',')).join(' '),fill:'#d3eee7',stroke:'#166753','stroke-width':2,'data-first-leg':x,'data-second-leg':other,'data-trial-area':area}));
+ svg.append(node('text',{x:58+w/2,y:175,'font-size':15,'text-anchor':'middle'},fmt(x)+' см'));
+ svg.append(node('text',{x:29,y:154-h/2,'font-size':15,'text-anchor':'middle'},fmt(other)+' см'));
+ caption.textContent='Катеты '+fmt(x)+' и '+fmt(other)+' см. Текущая площадь '+fmt(area)+' см².';host.append(svg,caption);
+}
+
+function vietaRelations(host,config,value){
+ host.className='task-graphs quantity-model';
+ const parts=String(value).split(';');
+ const hasPair=parts.length===2&&parts.every(part=>M?.parse(part));
+ const description=document.createElement('p');description.className='small';
+ if(!hasPair){
+  description.textContent='Две независимые проверки: сумма корней S = −b/a и произведение P = c/a. После ответа модель сопоставит их с твоей парой.';
+  host.append(description);return;
+ }
+ for(const [i,key,title] of [[0,'sum','Сумма'],[1,'product','Произведение']]){
+  const same=M.equal(parts[i],config[key]);
+  const row=document.createElement('p');row.className='small';row.dataset.vietaRelation=key;row.dataset.match=String(same);
+  row.textContent=title+': '+parts[i].trim()+' — '+(same?'совпадает':key==='sum'?'проверь обратный знак и деление на a':'проверь свободный член и деление на a')+'.';
+  host.append(row);
+ }
+ const values=parts.map(p=>number(p)),[s,p]=values;
+ if(values.every(n=>n!==null)){
+  const discriminant=s*s-4*p;
+  description.textContent='Из введённых S и P получится t² − St + P = 0. У полученного уравнения '+(discriminant<0?'нет действительных корней.':discriminant===0?'один двукратный корень.':'два различных действительных корня.');
+  host.append(description);
+ }
+}
+
+function appliedShape(host,config,value){
+ host.className='task-graphs quantity-model';
+ const svg=node('svg',{viewBox:'0 0 300 175',role:'img'}),caption=document.createElement('p');
+ caption.className='small';
+ const rect=(x,y,w,h,attrs={})=>svg.append(node('rect',{x,y,width:w,height:h,fill:'#d8eeeb',stroke:'#184e56','stroke-width':1.7,...attrs}));
+ const line=(x1,y1,x2,y2,attrs={})=>svg.append(node('line',{x1,y1,x2,y2,stroke:'#184e56','stroke-width':1.8,...attrs}));
+ const label=(x,y,t)=>svg.append(node('text',{x,y,'text-anchor':'middle','font-size':15,fill:'#17393f'},t));
+ const fmt=n=>Number(n.toFixed(4)).toLocaleString('ru');
+ const scene=config.scene;
+ if(scene==='scaled-cuts'){
+  const entries=String(value).trim().split(';').map(part=>number(part,100));
+  const [total,a,b,h]=entries;
+  const valid=entries.length===4&&entries.every(x=>x!==null&&x>0)&&a<b&&b<total;
+  if(valid){
+   const scale=Math.min(235/total,104/h),x=32,y=32,w=total*scale,height=h*scale;
+   rect(x,y,w,height,{fill:'#f3f7f6','data-source-cut':'sheet'});rect(x+a*scale,y,(b-a)*scale,height,{'data-source-cut':'middle'});
+   line(x+a*scale,y,x+a*scale,y+height,{'stroke-dasharray':'3 3'});line(x+b*scale,y,x+b*scale,y+height,{'stroke-dasharray':'3 3'});
+   label(x+w/2,20,'Лист '+fmt(total)+' × '+fmt(h)+' см');label(x+w/2,159,'Разрезы: '+fmt(a)+' и '+fmt(b)+' см');
+   caption.textContent='Чертёж по твоим размерам. Ширина левой, средней и правой частей: '+[a,b-a,total-b].map(fmt).join('; ')+' см на бумаге.';
+  }else{
+   line(28,114,272,114);line(28,107,28,121);label(29,142,'0');label(150,62,'Масштаб 1 : 2');
+   caption.textContent=String(value).trim()?'Для построения нужны четыре положительные длины. Отметки идут от левого края и лежат внутри листа.':'Размеры чертежа вводятся ниже. После ввода увидишь расположение обоих разрезов.';
+  }
+ }else if(scene==='round-robin'){
+  const pts=[[150,20],[241,77],[207,141],[93,141],[59,77]];
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++)line(...pts[i],...pts[j],{stroke:i===0?'#226776':'#a3b4b4','stroke-dasharray':i===0?'none':'4 3'});
+  pts.forEach(([x,y],i)=>{svg.append(node('circle',{cx:x,cy:y,r:8,fill:i===0?'#a34725':'#225963'}));});
+  caption.textContent='Пример с пятью участниками. Точка — участник, линия — общая игра. Сплошные линии показывают все встречи одного участника. Каждая линия имеет два конца.';
+ }else if(scene==='box-net'){
+  const x=47,y=14,w=195,h=130,d=30;
+  rect(x,y,w,h,{fill:'#f5f7f4','stroke-dasharray':'4 3'});rect(x+d,y,w-2*d,h);rect(x,y+d,w,h-2*d);
+  rect(x+d,y+d,w-2*d,h-2*d,{fill:'#b9ddd6','stroke-dasharray':'5 3'});
+  label(x+w/2,y+h/2+4,'дно');label(x+w/2,167,'60 см');label(25,85,'40');label(x+d/2,y+19,'x');
+  caption.textContent='Четыре угловых квадрата убирают. По штриховым линиям отгибают четыре борта. Дно — внутренний прямоугольник.';
+ }else if(scene==='end-squares'){
+  rect(26,42,248,64,{fill:'#f8f3e5'});rect(90,42,120,64);line(90,42,90,106);line(210,42,210,106);
+  label(150,28,'26 см');label(59,80,'x');label(240,80,'x');label(150,82,'26 − 2x');label(150,143,'Ширина листа — x');
+  caption.textContent='Два крайних квадрата вырезают. Средний участок сохраняет ширину листа.';
+ }else if(scene==='triangle'){
+  const x=60,y=128,w=166,h=w*config.h/config.w;
+  svg.append(node('polygon',{points:[[x,y],[x+w,y],[x,y-h]].map(p=>p.join(',')).join(' '),fill:'#d8eeeb',stroke:'#184e56','stroke-width':2}));
+  line(x+10,y,x+10,y-10);line(x+10,y-10,x,y-10);label(x+w/2,y+22,config.label1);label(x-23,y-h/2,config.label2);
+  caption.textContent='Подписи относятся к перпендикулярным сторонам. Наклонная сторона — гипотенуза. Схема помогает составить уравнение.';
+ }else{
+  const x=58,y=22,w=182,h=Math.min(107,w*config.h/config.w);
+  rect(x,y,w,h);
+  if(config.diagonal){line(x,y+h,x+w,y,{'stroke-dasharray':'5 3'});label(x+w*.7,y+h*.67,config.diagonal);}
+  if(scene==='square-cut'){line(x+h,y,x+h,y+h,{'stroke-dasharray':'5 3'});label(x+(w+h)/2,y+h/2+5,'120 см');}
+  if(scene==='seats'){
+   for(let row=0;row<4;row++)for(let col=0;col<7;col++)svg.append(node('circle',{cx:x+18+col*24,cy:y+18+row*23,r:4,fill:'#286477'}));
+  }
+  label(x+w/2,y+h+22,config.label1);label(29,y+h/2,config.label2);
+  caption.textContent=scene==='seats'?'Схема показывает, как строки и столбцы образуют произведение. Точки на примере не задают число мест в условии.':scene==='square-cut'?'Штриховая линия — распил. Квадрат и прямоугольная часть имеют одинаковую ширину.':'Соседние подписи обозначают разные стороны. Противоположные стороны равны.';
+ }
+ svg.setAttribute('aria-label',caption.textContent);host.append(svg,caption);
+}
+
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(['quadratic-discriminant','quadratic-parameter','quadratic-reciprocals','check-common-point'].includes(config.type)){quadraticEvidence(host,config,value);return;}
+ if(config.type==='vertex-form'){vertexForm(host,config,value);return;}
+ if(config.type==='leg-trial'){legTrial(host,value);return;}
+ if(config.type==='vieta-relations'){vietaRelations(host,config,value);return;}
+ if(config.type==='applied-shape'){appliedShape(host,config,value);return;}
+ if(config.type==='quadratic-story'){quadraticStory(host,config,value);return;}
+ if(config.type==='quadratic-example'){quadraticExample(host,value);return;}
  if(['work-hours','equal-distances'].includes(config.type)){workEstimate(host,config,value);return;}
  if(['intersection-example','shared-hyperbola-line'].includes(config.type)){
   host.className='task-graphs root-graph';
@@ -319,7 +560,7 @@ function render(host,config,value){
  }else if(['root-plane','root-build','curve-build'].includes(config.type)){
   host.className='task-graphs root-graph';host.append(rootGraph(config,value));
   const caption=document.createElement('p');caption.className='small';
-  caption.textContent=['root-build','curve-build'].includes(config.type)?(config.caption||'Введи ординаты точек ниже — они появятся на твоём чертеже.'):(config.caption||'На рисунке показана часть графика. Проверяй выводы по формуле.');host.append(caption);
+  caption.textContent=['root-build','curve-build'].includes(config.type)?((config.showSolution&&config.completeCaption)||config.caption||'Введи ординаты точек ниже — они появятся на твоём чертеже.'):(config.caption||'На рисунке показана часть графика. Проверяй выводы по формуле.');host.append(caption);
  }else if(config.type==='choices'||config.type==='hyperbola-choices'){
   host.className='task-graphs alternatives';
   const inverse=config.type==='hyperbola-choices';

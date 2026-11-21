@@ -34,7 +34,16 @@
       ['/geometry-course/textbook/data/area-lessons.json', '№842–853'],
       ['/geometry-course/textbook/data/area-similarity-lessons.json', '№854–871'],
       ['/geometry-course/textbook/data/midpoint-lessons.json', '№872–899'],
-      ['/geometry-course/textbook/data/circle-lessons.json', '№900–925']
+      ['/geometry-course/textbook/data/circle-lessons.json', '№900–925'],
+      ['/geometry-course/textbook/data/grade9-vectors.json', '№926–936, теория 84–86'],
+      ['/geometry-course/textbook/data/vector-conclusions.json', '№937–940'],
+      ['/geometry-course/textbook/data/vector-sums.json', '№941–946, теория 87–90'],
+      ['/geometry-course/textbook/data/vector-sum-problems.json', '№947–952'],
+      ['/geometry-course/textbook/data/vector-identities.json', '№953–962'],
+      ['/geometry-course/textbook/data/vector-scaling.json', 'пункты 91–92 и №963–966'],
+      ['/geometry-course/textbook/data/scalar-problems.json', '№967–971'],
+      ['/geometry-course/textbook/data/vector-midpoint-proofs.json', '№972–975'],
+      ['/geometry-course/textbook/data/vector-applications.json', '№976–980']
   ];
 
   async function forCourse(base) {

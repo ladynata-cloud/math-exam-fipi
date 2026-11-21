@@ -415,5 +415,125 @@
     body.hidden=!record.started;after.hidden=!record.started;if(record.started){prediction.disabled=true;start.hidden=true;status.textContent='Твой прогноз сохранён. '+spec.challenge;}if(record.explained)feedback.textContent='Объяснение проверено. Для самостоятельного результата реши новое условие.';
     return () => host.remove();
   }
-  return { mount, experiment, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const quadraticPractice={
+    id:'incomplete-quadratic',title:'Неполные квадратные уравнения',
+    description:'Выбери, вынести ли общий множитель или выразить квадрат, и проверь все действительные корни.'
+  };
+  function practiceQuadratic(seed,level){
+    const branch=level===1?'factor':level===2?'square':['factor','square','none','zero'][seed%4];
+    const a=2+seed%7,root=2+seed%11;
+    const coefficient=a*root,constant=a*root*root,sign=seed%2?1:-1;
+    const factor=branch==='factor',negative=branch==='none',onlyZero=branch==='zero';
+    const signed=(sign,term)=>(sign>0?' + ':' − ')+term;
+    const expression=a+'x²'+(factor?signed(sign,coefficient+'x'):onlyZero?'':signed(negative?1:-1,constant))+' = 0';
+    const answer=factor?'0;'+(-sign*root):negative?'нет':onlyZero?'0':(-root)+';'+root;
+    const method=factor?'Вынести общий множитель x':'Выразить x²';
+    const hint=factor?'Прежде чем делить на x, проверь x = 0. Другой корень даёт линейный множитель.':'Раздели равенство на коэффициент при x² и сравни правую часть с нулём.';
+    const reduced=onlyZero?0:(negative?-1:1)*root*root;
+    return {title:'Найди все действительные корни',prompt:'Реши '+expression,kind:'set',answer,
+      finalLabel:'Все корни',inputNote:'Запиши корни через точку с запятой или «нет».',skills:[],
+      source:{type:'authored',reference:'Авторская тренировка по неполным квадратным уравнениям'},
+      hint,correction:hint,explanation:factor?'После вынесения x один корень нулевой, а второй равен '+(-sign*root)+'.':
+        'После деления x² = '+reduced+'. '+(negative?'Такого действительного числа нет.':onlyZero?'Единственный корень равен 0.':'Два корня противоположны.'),
+      steps:[
+        {prompt:'Какое первое действие здесь удобнее?',kind:'choice',answer:method,
+         choices:['Выразить x²','Вынести общий множитель x'],hint,explanation:method+'.'},
+        {prompt:factor?'Какой корень даёт линейный множитель?':'Чему равно x²?',kind:'number',
+         answer:String(factor?-sign*root:reduced),hint,explanation:factor?'Раздели свободный коэффициент линейного множителя с обратным знаком на '+a+'.':'Квадрат неизвестного равен '+reduced+'.'}
+      ]};
+  }
+
+  const formulaPractice={
+    id:'quadratic-formula',title:'Дискриминант и формула корней',
+    description:'Составь дискриминант, выбери число корней и проверь точные решения на новых коэффициентах.'
+  };
+  function practiceFormula(seed,level){
+    const h=3+seed%9,offset=(seed%13)+2,a=level===1?1:2+seed%4;
+    // At level 3, all three discriminant signs occur and a positive one can be irrational.
+    const delta=level===1?(1+seed%7)**2:level===2?(seed%3?offset**2:0):[0,-offset,2+seed%6][seed%3];
+    const b=-2*a*h,c=a*(h*h-delta),disc=b*b-4*a*c;
+    const root=Math.sqrt(delta);
+    const answer=delta<0?'нет':delta===0?String(h):Number.isInteger(root)?(h-root)+';'+(h+root):
+      h+'-√'+delta+';'+h+'+√'+delta;
+    const equation=(a===1?'':a)+'x² − '+(-b)+'x'+(c?' '+(c<0?'−':'+')+' '+Math.abs(c):'')+' = 0';
+    const hint='Возведи b в квадрат вместе со знаком. При D > 0 выпиши обе записи с разными знаками.';
+    return {title:'Реши по формуле корней',prompt:'Найди все действительные корни: '+equation,kind:'quadratic-roots',
+      answer,quadraticCoefficients:[a,b,c],finalLabel:'Все действительные корни',inputNote:'Введи корни через точку с запятой, одно число или «нет».',
+      hint,correction:hint,explanation:'D = '+disc+'. '+(disc<0?'Действительных решений нет.':disc===0?'Один корень: '+h+'.':'Квадрат разности (x − '+h+')² равен '+delta+'. Отсюда '+answer.replace(';',' и ')+'.'),
+      source:{type:'authored',reference:'Авторская тренировка по дискриминанту'},skills:[quadraticPractice.id],
+      steps:[
+        {prompt:'Какие a, b, c получаются в стандартной записи?',kind:'graph-values',answer:[a,b,c].join(';'),
+         hint:'Не потеряй минус перед членом первой степени.',explanation:'Коэффициенты: '+[a,b,c].join('; ')+'.'},
+        {prompt:'Вычисли b² − 4ac.',kind:'number',answer:String(disc),hint,explanation:'Из '+b*b+' вычитаем '+4*a*c+', получается '+disc+'.'}
+      ]};
+  }
+
+  const storyPractice={id:'quadratic-story-problems',title:'Составить квадратное уравнение по условию',
+    description:'Переведи размеры или подсчёт пар в уравнение, отбери решение и проверь единицы.'};
+  function practiceStory(seed,level){
+    const x=3+seed%15,delta=2+seed%7;
+    const rectangle=level===1,meeting=level===2;
+    const length=x+delta,total=rectangle?x*length:meeting?x*(x-1)/2:4*x+2*delta;
+    const prompt=rectangle?'У прямоугольного плаката площадь '+total+' см². Длина на '+delta+' см больше ширины. Найди периметр в сантиметрах.':
+      meeting?'На кружке каждая пара обменялась одной карточкой. Всего состоялось '+total+' обменов. Сколько ребят было в кружке?':
+      'Периметр участка '+total+' м, длинная сторона на '+delta+' м больше короткой. Найди площадь участка в м².';
+    const answer=rectangle?2*(x+length):meeting?x:x*length;
+    const hint=rectangle?'Произведение сторон даёт площадь; в периметре каждую длину считают два раза.':
+      meeting?'У каждого n − 1 партнёров. Два участника описывают один и тот же обмен.':
+      'Половина периметра — сумма соседних сторон; разность равна '+delta+' м.';
+    const choices=rectangle?['u(u + '+delta+') = '+total,'2u + '+delta+' = '+total]:
+      meeting?['u(u − 1) = '+total,'u(u − 1)/2 = '+total]:
+      ['2(u + u + '+delta+') = '+total,'u(u + '+delta+') = '+total];
+    return {title:'Выбери величину, составь модель и ответь на вопрос',prompt,kind:'number',answer:String(answer),
+      finalLabel:rectangle?'Периметр, см':meeting?'Число ребят':'Площадь, м²',hint,correction:hint,
+      explanation:meeting?x+' ребят дают '+x+' · '+(x-1)+'/2 = '+total+' обменов.':
+        'Стороны '+x+' и '+length+'. Периметр '+2*(x+length)+', площадь '+x*length+'.',
+      source:{type:'authored',reference:'Новые условия для составления математической модели'},skills:[formulaPractice.id],
+      steps:[{prompt:meeting?'Обозначь число ребят буквой u и выбери равенство.':'Обозначь короткую сторону буквой u и выбери равенство.',
+        kind:'choice',choices,answer:choices[meeting?1:0],hint,explanation:hint},
+        {prompt:meeting?'Найди число партнёров одного участника.':'Найди ширину.',kind:'number',answer:String(meeting?x-1:x),hint,
+          explanation:meeting?x+' участникам доступны по '+(x-1)+' партнёров.':'Короткая сторона равна '+x+'.'}]};
+  }
+
+  const vietaPractice={id:'vieta-roots',title:'Сумма и произведение корней',
+    description:'Подбери корни по двум соотношениям или восстанови коэффициент у нового уравнения.'};
+  function practiceVieta(seed,level){
+    const r=2+seed%7,s=(seed%2?1:-1)*(r+1+seed%5),a=level===1?1:2+seed%5,b=-a*(r+s),c=a*r*s;
+    const term=(n,symbol)=>n===0?'':(n<0?' − ':' + ')+(symbol&&Math.abs(n)===1?'':Math.abs(n))+symbol;
+    const expression=(a===1?'':a)+'x²'+term(b,'x')+term(c,'')+' = 0';
+    const prompt=level===1?'Найди сумму и произведение корней уравнения '+expression:
+      level===2?'Подбери корни и проверь оба соотношения Виета: '+expression:
+      'Один корень уравнения '+a+'x² + bx'+term(c,'')+' = 0 равен '+r+'. Найди второй корень и b.';
+    const answer=level===1?[r+s,r*s]:level===2?[r,s]:[s,b];
+    const hint='У ax² + bx + c = 0 сумма корней равна −b/a, а произведение c/a. Проверить нужно оба отношения.';
+    return {title:'Восстанови связь между коэффициентами и корнями',prompt,kind:level===2?'set':'graph-values',answer:answer.join(';'),
+      finalLabel:level===1?'Сумма; произведение':level===2?'Оба корня':'Второй корень; коэффициент b',hint,correction:hint,
+      explanation:'Корни '+r+' и '+s+' дают сумму '+(r+s)+' и произведение '+r*s+'. Коэффициент b = '+b+'.',
+      graph:level===1?{type:'vieta-relations',sum:String(r+s),product:String(r*s)}:undefined,
+      source:{type:'authored',reference:'Новая пара корней и коэффициентов'},skills:[formulaPractice.id],
+      steps:[
+        {prompt:'Укажи старший и свободный коэффициенты.',kind:'graph-values',answer:[a,c].join(';'),hint:'Посмотри на член с x² и слагаемое без x.',explanation:'a = '+a+', c = '+c+'.'},
+        {prompt:'Чему равно произведение корней?',kind:'number',answer:String(r*s),hint:'Раздели свободный член на старший коэффициент.',explanation:c+' : '+a+' = '+r*s+'.'}
+      ]};
+  }
+
+  const trinomialPractice={id:'trinomial-square',title:'Выделить квадрат и найти вершину',
+    description:'Построй квадрат двучлена и исследуй экстремум на новых коэффициентах.'};
+  function practiceTrinomial(seed,level){
+    const a=level===1?1:(seed%2?-1:1)*(2+seed%4),h=(seed%3?-1:1)*(1+seed%8),k=seed%13-5,b=-2*a*h,c=a*h*h+k;
+    const term=(n,s)=>!n?'':(n<0?' − ':' + ')+(s&&Math.abs(n)===1?'':Math.abs(n))+s;
+    const source=(a===1?'':a===-1?'−':a)+'x²'+term(b,'x')+term(c,'');
+    const vertexQuestion=level===3;
+    const prompt='Дан трёхчлен '+source+'. '+(vertexQuestion?'Найди x и '+(a>0?'минимум':'максимум')+' трёхчлена.':'Приведи к виду A(x − h)² + k. Найди A, h и k.');
+    const hint='Сравни b с −2Ah. После нахождения h подставь его в исходный трёхчлен, чтобы найти k.';
+    return {title:'Квадрат двучлена и вершина',prompt,kind:'graph-values',answer:(vertexQuestion?[h,k]:[a,h,k]).join(';'),
+      finalLabel:vertexQuestion?'Аргумент; значение':'A; h; k',hint,correction:hint,
+      explanation:'A = '+a+', h = '+h+', k = '+k+'. При x = '+h+' квадрат исчезает.',
+      graph:{type:'vertex-form',a,h,k,mode:vertexQuestion?'point':'formula'},
+      source:{type:'authored',reference:'Авторская тренировка по выделению квадрата'},skills:[formulaPractice.id],
+      steps:[{prompt:'Чему равен старший коэффициент?',kind:'number',answer:String(a),hint:'Прочитай множитель при x².',explanation:'A = '+a+'.'},
+        {prompt:'Какой линейный коэффициент должен дать раскрытый квадрат?',kind:'number',answer:String(b),hint:'Он равен исходному коэффициенту при x.',explanation:'−2Ah = '+b+'.'}]};
+  }
+
+  return { mount, experiment, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

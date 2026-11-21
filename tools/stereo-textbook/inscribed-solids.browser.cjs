@@ -12,7 +12,14 @@ const groups = {
   volume: {manifests:[require('./box-volumes.json')],count:21},
   prism: {manifests:[require('./prism-volumes.json')],count:26},
   cross: {manifests:[require('./cross-sections.json')],count:3},
-  oblique: {manifests:[require('./oblique-prisms.json')],count:12}
+  oblique: {manifests:[require('./oblique-prisms.json')],count:12},
+  pyramids: {manifests:[require('./pyramid-volumes.json')],count:9},
+  projections: {manifests:[require('./pyramid-projections.json')],count:10},
+  frusta: {manifests:[require('./pyramid-frusta.json')],count:4},
+  cones: {manifests:[require('./cone-volumes.json')],count:7},
+  sectors: {manifests:[require('./cone-nets-and-frusta.json')],count:4},
+  spheres: {manifests:[require('./sphere-measures.json')],count:13},
+  sphereApplications: {manifests:[require('./sphere-applications.json')],count:9}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
@@ -45,9 +52,14 @@ async function exercise(page, card, base, width) {
   const views = new Set([await model.getAttribute('data-view')]);
   const errors = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   assert(errors <= 1, card.id + ': no horizontal scrolling at ' + width);
-  const before = await model.getAttribute('data-yaw');
-  await page.getByRole('button', {name:'Повернуть вправо', exact:true}).click();
-  assert.notEqual(await model.getAttribute('data-yaw'), before);
+  const rotate = page.getByRole('button', {name:'Повернуть вправо', exact:true});
+  if (card.visualization.model.planar) {
+    assert.equal(await rotate.count(), 0, 'the exact plane angle is shown face-on');
+  } else {
+    const before = await model.getAttribute('data-yaw');
+    await rotate.click();
+    assert.notEqual(await model.getAttribute('data-yaw'), before);
+  }
   const out = process.env.INSCRIBED_SOLIDS_ARTIFACTS;
   if (out) {
     await fs.mkdir(out, {recursive:true});
@@ -109,16 +121,35 @@ async function exercise(page, card, base, width) {
       await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
       base = 'http://127.0.0.1:' + server.address().port + '/stereo-course/textbook/';
     }
-    browser = await chromium.launch({headless:true, executablePath:process.env.GEOMETRY_CHROMIUM});
     const errors = [];
     let checks = 0;
+    // The complete bank is loaded twice per journey to check recovery after reload.
+    // Recycle the renderer processes between small sets, while keeping the same
+    // learner context throughout every individual attempt and reload.
+    const batchSize = 4;
     for (const width of [320,390,1280]) {
-      const context = await browser.newContext({viewport:{width,height:900}});
-      const page = await context.newPage();
-      page.setDefaultTimeout(90000);
-      page.on('pageerror', error => errors.push(error.message));
-      for (const card of cards) checks += await exercise(page, card, base, width);
-      await context.close();
+      for (let start = 0; start < cards.length; start += batchSize) {
+        browser = await chromium.launch({
+          headless:true, executablePath:process.env.GEOMETRY_CHROMIUM,
+          args:['--disable-dev-shm-usage','--js-flags=--max-old-space-size=240']
+        });
+        try {
+          for (const card of cards.slice(start,start+batchSize)) {
+            const context = await browser.newContext({viewport:{width,height:900}});
+            try {
+              const page = await context.newPage();
+              page.setDefaultTimeout(90000);
+              page.on('pageerror', error => errors.push(error.message));
+              checks += await exercise(page, card, base, width);
+            } finally {
+              await context.close();
+            }
+          }
+        } finally {
+          await browser.close();
+          browser = undefined;
+        }
+      }
     }
     assert.equal(cards.length,group.count);
     assert.deepEqual(errors, []);

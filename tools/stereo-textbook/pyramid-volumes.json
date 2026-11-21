@@ -1,0 +1,443 @@
+{
+  "parts": {
+    "477": [
+      "а",
+      "б"
+    ],
+    "478": [
+      null
+    ],
+    "479": [
+      "а",
+      "б",
+      "в"
+    ],
+    "480": [
+      null
+    ],
+    "481": [
+      "а",
+      "б"
+    ]
+  },
+  "previousCatalog": {
+    "477": {
+      "id": "source-main-0477",
+      "kind": "exercise",
+      "title": "Задача № 477",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "477",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "478": {
+      "id": "source-main-0478",
+      "kind": "exercise",
+      "title": "Задача № 478",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "478",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "479": {
+      "id": "source-main-0479",
+      "kind": "exercise",
+      "title": "Задача № 479",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "479",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "480": {
+      "id": "source-main-0480",
+      "kind": "exercise",
+      "title": "Задача № 480",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "480",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "481": {
+      "id": "source-main-0481",
+      "kind": "exercise",
+      "title": "Задача № 481",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "481",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0477-a": {
+      "raw": "c11dd0bed5bcf724827313738cf0c7111232d46dc577dc28669bb654bc27c067",
+      "authored": "e7e438d528823eb571bd049fd20b07b390d48f50ec70bc9f6c42da0e3878b64c",
+      "integrated": "d66de49eb513898daaaab7da4e38c3c33adf3772bd149fd8106a91e1f3eb34fb"
+    },
+    "ex-main-0477-b": {
+      "raw": "636c3e0a1f51bd5ecca687443d9ab8866fa91605116de8d7c2087e01b7b2a447",
+      "authored": "80d5f0845c271533132a51f5309a1cba9a430098651b4d309bf48dfcc66a68da",
+      "integrated": "db7fcfab429399b80cead186fbd469fdd3e769d8467672c67389dd0bbd0c224e"
+    },
+    "ex-main-0478": {
+      "raw": "f0bc794416ccbd218e475e0a7bb255bad8ba64ce87e2b31baec8e202a01b99ac",
+      "authored": "8173aab015488c9348976e83c7949bd83f7948e5001576b3abf5fdee35709ad3",
+      "integrated": "c6586a354895179b9a94df10bc1a3cec176863e53ba8cb77f7dba9fb585da962"
+    },
+    "ex-main-0479-a": {
+      "raw": "10c92bd7e6a940ceebc63f52f2fe7a45f64533c900c5db0eb2b4ccfd7a7199fe",
+      "authored": "407f3ddef2bd110aeb891e51d5fa80ad5f2de93ef7b8dc73f9c964b0ef7500d2",
+      "integrated": "ea6cd9bbab39dffe33047eee3df2d9c85c4111768bec1bc6064b68c89a74941d"
+    },
+    "ex-main-0479-b": {
+      "raw": "12fd5276d2a2e364b21d0c29769e6ea4037f03416591643cf5a9a6b9b4af48a0",
+      "authored": "0d48ccd4680b91b1e8573ae3450ffdca103bcb20387682e79ba816e1c1356872",
+      "integrated": "4807602606505fb9eec9910e64e200082ae158e219b6e576dbd918385ce183f7"
+    },
+    "ex-main-0479-c": {
+      "raw": "57146d82859f903e08feb19de57087c85532efa1b8870f957ba2a2ca4a27200b",
+      "authored": "711fda425aac92450b7fa433a99b26182d6bf4d2495c7114f82ec05c0e87f6f3",
+      "integrated": "13a9899526e8da7875e74306267b5fcb7d5492b14bd6fbe94400df269249321f"
+    },
+    "ex-main-0480": {
+      "raw": "4076a15d3a399c67ae122579a1c23bb24bcff27d2d63b80b499d9f51d7c06c63",
+      "authored": "07768a1e07b02ada35c5e8f0785d376134194a0ff70d26bdd468097c68f48d13",
+      "integrated": "1c8207881bbeb94328068b756cec391278eeeb98fbe3a50b5e2e819c8263e16f"
+    },
+    "ex-main-0481-a": {
+      "raw": "abf54b7f4ccc530beb5d1105bde986ce9956ee8d52fd85adaa5a9665f370a9d1",
+      "authored": "ccde50c3fc0b9db26bdd2a80fa7b3a3ab3fc96a26658cb089e0f548307da0caa",
+      "integrated": "1a5a88e6d9b8852df3804e808ad926dcc012d0beab9724e77beb0169ceeb3a2b"
+    },
+    "ex-main-0481-b": {
+      "raw": "065ed9980dad722fe438d5fe9c7bc1d2bc941183fe2cf969cc0d4c68578d2979",
+      "authored": "8edbddf9058c6eb872b904a20a61861a0b586c45cbe816a0fec4f8243f7e1dce",
+      "integrated": "40c62622c9c4e0b0229bfcb2f7a65f374c093c30239cd1593af8ae18dfbbaa12"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0477-a|condition",
+      "pyramid-ex-main-0477-a-condition"
+    ],
+    [
+      "ex-main-0477-a|help:h1",
+      "pyramid-ex-main-0477-a-help-h1"
+    ],
+    [
+      "ex-main-0477-a|help:h2",
+      "pyramid-ex-main-0477-a-help-h2"
+    ],
+    [
+      "ex-main-0477-a|step-1",
+      "pyramid-ex-main-0477-a-step-1"
+    ],
+    [
+      "ex-main-0477-a|step-2",
+      "pyramid-ex-main-0477-a-step-2"
+    ],
+    [
+      "ex-main-0477-a|step-3",
+      "pyramid-ex-main-0477-a-step-3"
+    ],
+    [
+      "ex-main-0477-a|step-4",
+      "pyramid-ex-main-0477-a-step-4"
+    ],
+    [
+      "ex-main-0477-b|condition",
+      "pyramid-ex-main-0477-b-condition"
+    ],
+    [
+      "ex-main-0477-b|help:h1",
+      "pyramid-ex-main-0477-b-help-h1"
+    ],
+    [
+      "ex-main-0477-b|help:h2",
+      "pyramid-ex-main-0477-b-help-h2"
+    ],
+    [
+      "ex-main-0477-b|step-1",
+      "pyramid-ex-main-0477-b-step-1"
+    ],
+    [
+      "ex-main-0477-b|step-2",
+      "pyramid-ex-main-0477-b-step-2"
+    ],
+    [
+      "ex-main-0477-b|step-3",
+      "pyramid-ex-main-0477-b-step-3"
+    ],
+    [
+      "ex-main-0477-b|step-4",
+      "pyramid-ex-main-0477-b-step-4"
+    ],
+    [
+      "ex-main-0478|condition",
+      "pyramid-ex-main-0478-condition"
+    ],
+    [
+      "ex-main-0478|help:h1",
+      "pyramid-ex-main-0478-help-h1"
+    ],
+    [
+      "ex-main-0478|help:h2",
+      "pyramid-ex-main-0478-help-h2"
+    ],
+    [
+      "ex-main-0478|step-1",
+      "pyramid-ex-main-0478-step-1"
+    ],
+    [
+      "ex-main-0478|step-2",
+      "pyramid-ex-main-0478-step-2"
+    ],
+    [
+      "ex-main-0478|step-3",
+      "pyramid-ex-main-0478-step-3"
+    ],
+    [
+      "ex-main-0478|step-4",
+      "pyramid-ex-main-0478-step-4"
+    ],
+    [
+      "ex-main-0479-a|condition",
+      "pyramid-ex-main-0479-a-condition"
+    ],
+    [
+      "ex-main-0479-a|help:h1",
+      "pyramid-ex-main-0479-a-help-h1"
+    ],
+    [
+      "ex-main-0479-a|help:h2",
+      "pyramid-ex-main-0479-a-help-h2"
+    ],
+    [
+      "ex-main-0479-a|step-1",
+      "pyramid-ex-main-0479-a-step-1"
+    ],
+    [
+      "ex-main-0479-a|step-2",
+      "pyramid-ex-main-0479-a-step-2"
+    ],
+    [
+      "ex-main-0479-a|step-3",
+      "pyramid-ex-main-0479-a-step-3"
+    ],
+    [
+      "ex-main-0479-a|step-4",
+      "pyramid-ex-main-0479-a-step-4"
+    ],
+    [
+      "ex-main-0479-b|condition",
+      "pyramid-ex-main-0479-b-condition"
+    ],
+    [
+      "ex-main-0479-b|help:h1",
+      "pyramid-ex-main-0479-b-help-h1"
+    ],
+    [
+      "ex-main-0479-b|help:h2",
+      "pyramid-ex-main-0479-b-help-h2"
+    ],
+    [
+      "ex-main-0479-b|step-1",
+      "pyramid-ex-main-0479-b-step-1"
+    ],
+    [
+      "ex-main-0479-b|step-2",
+      "pyramid-ex-main-0479-b-step-2"
+    ],
+    [
+      "ex-main-0479-b|step-3",
+      "pyramid-ex-main-0479-b-step-3"
+    ],
+    [
+      "ex-main-0479-b|step-4",
+      "pyramid-ex-main-0479-b-step-4"
+    ],
+    [
+      "ex-main-0479-c|condition",
+      "pyramid-ex-main-0479-c-condition"
+    ],
+    [
+      "ex-main-0479-c|help:h1",
+      "pyramid-ex-main-0479-c-help-h1"
+    ],
+    [
+      "ex-main-0479-c|help:h2",
+      "pyramid-ex-main-0479-c-help-h2"
+    ],
+    [
+      "ex-main-0479-c|step-1",
+      "pyramid-ex-main-0479-c-step-1"
+    ],
+    [
+      "ex-main-0479-c|step-2",
+      "pyramid-ex-main-0479-c-step-2"
+    ],
+    [
+      "ex-main-0479-c|step-3",
+      "pyramid-ex-main-0479-c-step-3"
+    ],
+    [
+      "ex-main-0479-c|step-4",
+      "pyramid-ex-main-0479-c-step-4"
+    ],
+    [
+      "ex-main-0480|condition",
+      "pyramid-ex-main-0480-condition"
+    ],
+    [
+      "ex-main-0480|help:h1",
+      "pyramid-ex-main-0480-help-h1"
+    ],
+    [
+      "ex-main-0480|help:h2",
+      "pyramid-ex-main-0480-help-h2"
+    ],
+    [
+      "ex-main-0480|step-1",
+      "pyramid-ex-main-0480-step-1"
+    ],
+    [
+      "ex-main-0480|step-2",
+      "pyramid-ex-main-0480-step-2"
+    ],
+    [
+      "ex-main-0480|step-3",
+      "pyramid-ex-main-0480-step-3"
+    ],
+    [
+      "ex-main-0480|step-4",
+      "pyramid-ex-main-0480-step-4"
+    ],
+    [
+      "ex-main-0481-a|condition",
+      "pyramid-ex-main-0481-a-condition"
+    ],
+    [
+      "ex-main-0481-a|help:h1",
+      "pyramid-ex-main-0481-a-help-h1"
+    ],
+    [
+      "ex-main-0481-a|help:h2",
+      "pyramid-ex-main-0481-a-help-h2"
+    ],
+    [
+      "ex-main-0481-a|step-1",
+      "pyramid-ex-main-0481-a-step-1"
+    ],
+    [
+      "ex-main-0481-a|step-2",
+      "pyramid-ex-main-0481-a-step-2"
+    ],
+    [
+      "ex-main-0481-a|step-3",
+      "pyramid-ex-main-0481-a-step-3"
+    ],
+    [
+      "ex-main-0481-a|step-4",
+      "pyramid-ex-main-0481-a-step-4"
+    ],
+    [
+      "ex-main-0481-b|condition",
+      "pyramid-ex-main-0481-b-condition"
+    ],
+    [
+      "ex-main-0481-b|help:h1",
+      "pyramid-ex-main-0481-b-help-h1"
+    ],
+    [
+      "ex-main-0481-b|help:h2",
+      "pyramid-ex-main-0481-b-help-h2"
+    ],
+    [
+      "ex-main-0481-b|step-1",
+      "pyramid-ex-main-0481-b-step-1"
+    ],
+    [
+      "ex-main-0481-b|step-2",
+      "pyramid-ex-main-0481-b-step-2"
+    ],
+    [
+      "ex-main-0481-b|step-3",
+      "pyramid-ex-main-0481-b-step-3"
+    ],
+    [
+      "ex-main-0481-b|step-4",
+      "pyramid-ex-main-0481-b-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "63c1ba8ea4b6fa6b6ac011055dcbac49110f731f4819e63e8ec14946cc75ab6e",
+      "afterSHA256": "2cbd206bca5b0bcff934457dce34d56fd4e2741d3f71ba9ae66c98d7c2a9848d"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "5d9c65dfd7780f19112832421aabfd13c2a877a04419a48db667767ceb9e90b8",
+      "afterSHA256": "389a991e1cea46dc361b097faea14d3ecf03fdd26e5c0846533a1233e9f63d5a"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T14:45:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 476 and points 52–59, with 781 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "4c6dbb7b4c68e4ba724d03355a4fd5a64738dea8723341775d2c593f6f15ba1d",
+    "index": "6242a4deee70b1d77130b17a395fc275bab152238bd63397af98a1fdb4e01bc8",
+    "registry": "ce050d0f53ca8ebe02324a88f4ce13d6f178d1e3b0634051289f5882932c9221",
+    "cases": "5e9eef5e13143f984786bf9ecbd190beab252f9afe33d54e7c5c01e485467953"
+  }
+}

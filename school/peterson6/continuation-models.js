@@ -120,7 +120,57 @@ function constructionFigure(kind, value) {
  }
  return diagram;
 }
+const triangleMeasurements = [[3,4,5], [5,12,13], [8,15,17]];
+function trigConfig(study) {
+ const controls = [c('Острый угол', [[0,'Угол A'], [1,'Угол B']])];
+ const initial = [0];
+ if (study !== 'named') {
+  controls.push(c('Прямоугольный треугольник', [[0,'3 и 4 · рисунок'],[1,'5 и 12 · пример'],[2,'8 и 15 · пример']]));
+  initial.push(study === 'general' ? 1 : 0);
+ }
+ controls.push(c('Числитель синуса выбранного угла', [[0,'Сначала выберу сторону'],[1,'AC'],[2,'BC'],[3,'AB']]));
+ initial.push(0);
+ return {title:'Стороны относительно угла',controls,initial};
+}
+function trigFigure(measurable, selectedAngle, sample=0, showRoles=false) {
+ const [vertical,horizontal] = measurable ? triangleMeasurements[sample] : [4,5];
+ const unit = 242 / horizontal;
+ const xA=44, xC=286, yC=210, yB=yC-unit*vertical;
+ const picture=svg('svg',{
+  viewBox:'0 0 352 282', role:'img',class:'pm-chart pcm-ratio-triangle',
+  'aria-label': 'Треугольник ABC: A слева внизу, C справа внизу, B прямо над C. Прямой угол C.'+
+   (selectedAngle==null?'':' Выбран угол '+(selectedAngle===0?'A.':'B.'))+
+   (measurable?' Под треугольником показана одна единица длины.':''),
+ });
+ const side = (name,x1,y1,x2,y2,role) => {
+  const colors={opposite:'#a54f1a',adjacent:'#0a6950',hypotenuse:'#354b71'};
+  const attributes={'data-side':name,stroke:showRoles?colors[role]:'#214b3d','stroke-width':3.5};
+  if (showRoles) attributes['data-role']=role;
+  ln(picture,x1,y1,x2,y2,attributes);
+ };
+ side('AC',xA,yC,xC,yC,selectedAngle===1?'opposite':'adjacent');
+ side('BC',xC,yB,xC,yC,selectedAngle===1?'adjacent':'opposite');
+ side('AB',xA,yC,xC,yB,'hypotenuse');
+ picture.append(svg('polyline',{points:[[xC-13,yC],[xC-13,yC-13],[xC,yC-13]].map(p=>p.join(',')).join(' '),fill:'none',stroke:'#234436','stroke-width':2}));
+ for (const [x,y,name] of [[xA-12,yC+4,'A'],[xC+16,yB+7,'B'],[xC+16,yC+8,'C']]) txt(picture,x,y,name,{'font-size':23});
+ if (selectedAngle!=null) {
+  const angle=Math.atan2(unit*vertical,xC-xA);
+  const radius=31, atA=selectedAngle===0, centerX=atA?xA:xC,centerY=atA?yC:yB;
+  const start=atA?-angle:Math.PI/2;
+  const end=atA?0:Math.PI-angle;
+  const at=r=>[centerX+radius*Math.cos(r),centerY+radius*Math.sin(r)].join(' ');
+  picture.append(svg('path',{d:'M '+at(start)+' A '+radius+' '+radius+' 0 0 1 '+at(end),fill:'none',stroke:'#51345d','stroke-width':3,'data-angle':atA?'A':'B'}));
+ }
+ if (measurable) {
+  const y=239;
+  ln(picture,xA,y,xA+unit,y,{stroke:'#152d26','stroke-width':2.5,'data-ruler':'1'});
+  ln(picture,xA,y-5,xA,y+5);ln(picture,xA+unit,y-5,xA+unit,y+5);
+  txt(picture,xA,y+26,'1 деление',{'font-size':19,'text-anchor':'start'});
+ }
+ return picture;
+}
 function configFor(lesson,task){
+ if (lesson?.id==='p15' && ['named','measured','general'].includes(task?.trigStudy)) return trigConfig(task.trigStudy);
  if (lesson?.id === 'p15' && Object.hasOwn(ratioConstructions,task?.ratioConstruction)) return constructionConfig(task.ratioConstruction);
  const spec=lesson?.id==='p15'&&Object.hasOwn(segmentRatios,task?.segmentRatio)&&segmentRatios[task.segmentRatio];
  if(!spec)return configs[lesson?.id];
@@ -161,18 +211,45 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if (n===15 && Object.hasOwn(ratioConstructions,task.ratioConstruction)) {
+ if (n===15 && task.trigStudy) {
+  const alpha=a===0?'A':'B', opposite=a===0?'BC':'AC', adjacent=a===0?'AC':'BC';
+  const measurable=task.trigStudy!=='named', sample=measurable?b:0;
+  const chosen=['','AC','BC','AB'][state.values[measurable?2:1]];
+  const correct=chosen===opposite;
+  const [vertical,horizontal,hypotenuse]=triangleMeasurements[sample];
+  const across=a===0?vertical:horizontal, along=a===0?horizontal:vertical;
+  show(trigFigure(measurable,a,sample,correct));
+  if (measurable) say('В делениях шкалы BC = '+vertical+', AC = '+horizontal+', AB = '+hypotenuse+'.');
+  if (!chosen) say('Какой отрезок будет в числителе синуса угла '+alpha+'? Сначала выбери его по чертежу.');
+  else if (chosen==='AB') say('AB лежит напротив прямого угла. Это гипотенуза, которая у синуса стоит в знаменателе. Попробуй выбрать катет.');
+  else if (!correct) say(chosen+' касается угла '+alpha+'. Его длина стоит в числителе косинуса. Для синуса поищи катет напротив этого угла.');
+  else {
+   say('Верно. Для угла '+alpha+' противолежащий катет '+opposite+', прилежащий '+adjacent+'. Гипотенуза AB остаётся напротив C.');
+   const entries=[['sin',opposite,'AB',across,hypotenuse],['cos',adjacent,'AB',along,hypotenuse],['tg',opposite,adjacent,across,along]];
+   for(const [name,numerator,denominator,m,k] of entries) {
+    const notation=name+' '+alpha+' = ';
+    if(measurable) formula(notation,frac(numerator,denominator),' = ',exactRatio(m,k));
+    else formula(notation,frac(numerator,denominator));
+   }
+  }
+  if (measurable) {
+   stepList(['Проверь, что '+across+'² + '+along+'² = '+hypotenuse+'².','Сложи дроби с общим знаменателем '+hypotenuse+'², чтобы вычислить сумму квадратов синуса и косинуса.','Выбери другой треугольник и угол. Сначала вычисли отношения в тетради, потом сверь числитель и результаты.']);
+  } else {
+   stepList(['Найди AB напротив прямого угла C.','Выбери острый угол и назови катет, не содержащий его вершину.','Переключи угол. Объясни, какие две стороны поменялись ролями.']);
+  }
+ }
+ else if (n===15 && Object.hasOwn(ratioConstructions,task.ratioConstruction)) {
   const kind=task.ratioConstruction;
   show(constructionFigure(kind,a));
   if (kind==='angle') {

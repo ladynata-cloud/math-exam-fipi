@@ -2243,10 +2243,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "029c761ef31f0dd035275b7ab0db73b9ba3c895ad43e3c683ae59ba2830be2b8",
-      "afterSha256": "be31dde78b849510e6a79e75a8cb27477848ab917638d342883a04c28fde3e16",
+      "beforeSha256": "1005795160b70519452fe60a040a2ad7484f89d2802bf77ebff9beb6d89482be",
+      "afterSha256": "acac9e34a3f04fbfa91a2539ef8a3e328c2b2c33a8c29a8ab8a5765a8bcb54e8",
       "placement": "before-head-close",
-      "sourceSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0"
+      "sourceSha": "cf3c533745f2c69c4a164d8821484cc437c40287"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6617,6 +6617,15 @@
         "school/index.html"
       ],
       "boundary": "Обновлена проверенная ссылка на карту учебника 2014 года."
+    },
+    {
+      "previousBaseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+      "sourceBaseSha": "cf3c533745f2c69c4a164d8821484cc437c40287",
+      "task": "docs/tasks/MAKARYCHEV8_531_556.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Сверена страница Макарычева после добавления решения задач с квадратными уравнениями."
     }
   ],
   "coverageUpdates": [

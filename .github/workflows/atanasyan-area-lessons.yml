@@ -15,6 +15,25 @@ on:
       - 'geometry-course/textbook/data/midpoint-lessons.json'
       - 'geometry-course/textbook/data/circle-lessons.json'
       - 'tools/geometry-textbook/*circle*'
+      - 'tools/geometry-textbook/*grade9_vectors*'
+      - 'geometry-course/textbook/data/grade9-vectors.json'
+      - 'tools/geometry-textbook/*vector_conclusions*'
+      - 'geometry-course/textbook/data/vector-conclusions.json'
+      - 'tools/geometry-textbook/*vector_sums*'
+      - 'geometry-course/textbook/data/vector-sums.json'
+      - 'tools/geometry-textbook/*vector_sum_problems*'
+      - 'geometry-course/textbook/data/vector-sum-problems.json'
+      - 'geometry-course/textbook/data/vector-identities.json'
+      - 'tools/geometry-textbook/*vector_identities*'
+      - 'geometry-course/textbook/data/vector-scaling.json'
+      - 'tools/geometry-textbook/*vector_scaling*'
+      - 'tools/geometry-textbook/vector_model_measurements.py'
+      - 'geometry-course/textbook/data/scalar-problems.json'
+      - 'tools/geometry-textbook/*scalar_problems*'
+      - 'geometry-course/textbook/data/vector-midpoint-proofs.json'
+      - 'tools/geometry-textbook/*vector_midpoint_proofs*'
+      - 'geometry-course/textbook/data/vector-applications.json'
+      - 'tools/geometry-textbook/*vector_applications*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
@@ -34,6 +53,15 @@ jobs:
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 && npx playwright install --with-deps chromium
       - run: python3 content-drafts/atanasyan-grade8-area-842-844/verify_areas.py && python3 tools/geometry-textbook/build_area_lessons.py --check && python3 tools/geometry-textbook/build_area_similarity.py --check && python3 tools/geometry-textbook/check_area_supplement.py && python3 tools/geometry-textbook/check_area_similarity.py && python3 tools/geometry-textbook/build_midpoint_lessons.py --check && python3 tools/geometry-textbook/check_midpoint_lessons.py
       - run: python3 tools/geometry-textbook/build_circle_lessons.py --check && python3 tools/geometry-textbook/check_circle_lessons.py
+      - run: python3 tools/geometry-textbook/build_grade9_vectors.py --check && python3 tools/geometry-textbook/check_grade9_vectors.py
+      - run: python3 tools/geometry-textbook/build_vector_conclusions.py --check && python3 tools/geometry-textbook/check_vector_conclusions.py
+      - run: python3 tools/geometry-textbook/build_vector_sums.py --check && python3 tools/geometry-textbook/check_vector_sums.py
+      - run: python3 tools/geometry-textbook/vector_sum_problems.py --check && python3 tools/geometry-textbook/check_vector_sum_problems.py
+      - run: python3 tools/geometry-textbook/vector_identities.py --check && python3 tools/geometry-textbook/check_vector_identities.py
+      - run: python3 tools/geometry-textbook/vector_scaling.py --check && python3 tools/geometry-textbook/check_vector_scaling.py
+      - run: python3 tools/geometry-textbook/scalar_problems.py --check && python3 tools/geometry-textbook/check_scalar_problems.py
+      - run: python3 tools/geometry-textbook/vector_midpoint_proofs.py --check && python3 tools/geometry-textbook/check_vector_midpoint_proofs.py
+      - run: python3 tools/geometry-textbook/vector_applications.py --check && python3 tools/geometry-textbook/check_vector_applications.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons

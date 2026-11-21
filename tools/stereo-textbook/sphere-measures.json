@@ -1,0 +1,669 @@
+{
+  "parts": {
+    "503": [
+      "а",
+      "б",
+      "в"
+    ],
+    "504": [
+      null
+    ],
+    "505": [
+      null
+    ],
+    "506": [
+      null
+    ],
+    "507": [
+      null
+    ],
+    "508": [
+      null
+    ],
+    "theory-60": [
+      null
+    ],
+    "theory-61": [
+      "а",
+      "б",
+      "в"
+    ],
+    "theory-62": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "503": {
+      "id": "source-main-0503",
+      "kind": "exercise",
+      "title": "Задача № 503",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "503",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "504": {
+      "id": "source-main-0504",
+      "kind": "exercise",
+      "title": "Задача № 504",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "504",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "505": {
+      "id": "source-main-0505",
+      "kind": "exercise",
+      "title": "Задача № 505",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "505",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "506": {
+      "id": "source-main-0506",
+      "kind": "exercise",
+      "title": "Задача № 506",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "506",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "507": {
+      "id": "source-main-0507",
+      "kind": "exercise",
+      "title": "Задача № 507",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "507",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "508": {
+      "id": "source-main-0508",
+      "kind": "exercise",
+      "title": "Задача № 508",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "508",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-60": {
+      "id": "source-theory-060",
+      "kind": "theory",
+      "title": "60. Объём шара",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "60",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          133,
+          134
+        ],
+        "pdfPages": [
+          135,
+          136
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-61": {
+      "id": "source-theory-061",
+      "kind": "theory",
+      "title": "61. Объёмы шарового сегмента, шарового слоя и шарового сектора",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "61",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          134,
+          135
+        ],
+        "pdfPages": [
+          136,
+          137
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-62": {
+      "id": "source-theory-062",
+      "kind": "theory",
+      "title": "62. Площадь сферы",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "62",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          135,
+          136
+        ],
+        "pdfPages": [
+          137,
+          138
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0503-a": {
+      "raw": "0430d90b02adfff204264cb326751529bab19c0e2d07f499e2dde2dcefda54d7",
+      "authored": "01fe4d1fb14d9ff3edf9f4d697a320ab188baa42025b8d95bbb0d01b398d187b",
+      "integrated": "75aa046426326e82180e2a7dabc33c725c456f3ac63ac67ddab4bb400b8280cd"
+    },
+    "ex-main-0503-b": {
+      "raw": "64aeafdf24397b16eafbb64db814c37d421e9547832b9fdbb3e347962d98259b",
+      "authored": "c8c0fd8f8ab5b0fb3f5ef8a1bbd6e6225b13715f016093c5ea309e0df25d8847",
+      "integrated": "dfaaaaad40bf1e412e40e7ba0d2c0d04bd60a2bd23775b1c7979b9e58372d7f3"
+    },
+    "ex-main-0503-c": {
+      "raw": "aa560d50026aa12179b0ec33947ce045e9b9064846cd2647f0f50713cd7442e7",
+      "authored": "37ee9b63c781b19c78ef810cfe64a0d818f4e8e8abf673e348d989e92a450b1a",
+      "integrated": "db4098ee2113f0552e921aba1ddfdaf8097f88559c94a80a160756aeebf6102a"
+    },
+    "ex-main-0504": {
+      "raw": "53f9b9d9b091a87611eea7417513f89fa19bf8bbca900c038ee6985890e452e9",
+      "authored": "7d4b9a0a3153f3755c636fcf51d826d5ac641025da550d71acd917fcbca3c43d",
+      "integrated": "64959e1e42bc1bd5d3e13986d257d4b9a74c92ad8c083955a4557b3b83902e90"
+    },
+    "ex-main-0505": {
+      "raw": "36d1e5ab7e1174f02c6336550973322da750b27440df9f60cb699e2835647708",
+      "authored": "7005b44cf535a51d8a0abbdf996bc5b7fce3e8ed1b932709f4c905082c4b3ae7",
+      "integrated": "7ac4717361a76c996df50ee065087027c941ddd791d4a7648c9e8e58c03ca1bc"
+    },
+    "ex-main-0506": {
+      "raw": "8b39b40c7f36a936431658bbf109080b4de2f4faf3f32213c9189b5e4d4c66a3",
+      "authored": "82c510c7398820894c03bc8b5ec99816287966201eabb30f8172b387c95a6bd5",
+      "integrated": "9d1a41e548e39bb9bd3e576bd818cf4f729565a4e231242b10403dfbd95b0489"
+    },
+    "ex-main-0507": {
+      "raw": "95e2787771899dd2d7e5da134f54ca2d60849c380e960a287495d9299cb5d79b",
+      "authored": "0870f8fd771bf180c0d98279568d5f465e3a3bd06733d2061d3747e751996ac7",
+      "integrated": "206961fa149f346ad16bdf20ec75f461e59a94697ca918fa38c101d76e70cb2b"
+    },
+    "ex-main-0508": {
+      "raw": "10b64064f5cb5ea890985e801ccf86747b57421a41e9f70cffc5afc9547b1cdc",
+      "authored": "8d7e6280e7b5981c8d1ab3109419e481ec3e15bd5d099c6f86e4aa60c2eb42f6",
+      "integrated": "d0fff79030a2bb605960010db6d2339e57ab12d2784c899ea77d624b6338f72c"
+    },
+    "theory-060": {
+      "raw": "03f1bd50b603a5ff3e907ba3dcbfd24a40263e17f18fd79cbc1dde288cfb47a4",
+      "authored": "687e2ef29b809ab035c2cbd671f9bf10795dac65ed171df5a208e7464ea4e6a2",
+      "integrated": "4a3656287b353282fb879871bb573606b2e21c2f67d64c684489601d1eef14fe"
+    },
+    "theory-061-a": {
+      "raw": "e96720613011b3c65f8ecf47be8994e3118de40be26d588a0bc9173656defdef",
+      "authored": "81e4cceff70ecf496b506e0bd0fdbe6bf6d5dd3ce807caf98dfce9d59e0b6728",
+      "integrated": "d4af411f60575fa43f65162bee6e12e6f3f565e983ce4a860de61efad7926a68"
+    },
+    "theory-061-b": {
+      "raw": "999033282ef9e25762bb943c81cded2d4d894df727751f32d99342f103c0ae76",
+      "authored": "b86bf5194bea10e875e6c7fa798ad2dd19e7c881f939d388a48b11b37e249632",
+      "integrated": "9b10f35490a3f054b5030c8bf5779c3f9b7b2c9982d3fd5fd5a82009d681de8b"
+    },
+    "theory-061-c": {
+      "raw": "96e314a8045f42804a666989d0421c260270f523c9f5ff968acabdd5818373eb",
+      "authored": "1714d2f42a4a9d3f7ebfdcae2b3776f579968dcf72355e8a2595f12ad2aded6d",
+      "integrated": "87e75ee86b8f7d142ad4905398501abfbe2b6646104b4f1e0fef07c104f4909d"
+    },
+    "theory-062": {
+      "raw": "0ec4d98d885ea924c3bd47b448d71494e2da5951fa103e0206e58180aeedd51a",
+      "authored": "cacb67f1cb518207ea04638490005cbfcead72e0a9e4ab83f65f25610fec1eb7",
+      "integrated": "72264e1116c1bcdf6c50a6d3dec98850bd7b747e7eb7efacb76d88025fd204c9"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0503-a|condition",
+      "sphere-measure-ex-main-0503-a-condition"
+    ],
+    [
+      "ex-main-0503-a|help:h1",
+      "sphere-measure-ex-main-0503-a-help-h1"
+    ],
+    [
+      "ex-main-0503-a|help:h2",
+      "sphere-measure-ex-main-0503-a-help-h2"
+    ],
+    [
+      "ex-main-0503-a|step-1",
+      "sphere-measure-ex-main-0503-a-step-1"
+    ],
+    [
+      "ex-main-0503-a|step-2",
+      "sphere-measure-ex-main-0503-a-step-2"
+    ],
+    [
+      "ex-main-0503-a|step-3",
+      "sphere-measure-ex-main-0503-a-step-3"
+    ],
+    [
+      "ex-main-0503-a|step-4",
+      "sphere-measure-ex-main-0503-a-step-4"
+    ],
+    [
+      "ex-main-0503-b|condition",
+      "sphere-measure-ex-main-0503-b-condition"
+    ],
+    [
+      "ex-main-0503-b|help:h1",
+      "sphere-measure-ex-main-0503-b-help-h1"
+    ],
+    [
+      "ex-main-0503-b|help:h2",
+      "sphere-measure-ex-main-0503-b-help-h2"
+    ],
+    [
+      "ex-main-0503-b|step-1",
+      "sphere-measure-ex-main-0503-b-step-1"
+    ],
+    [
+      "ex-main-0503-b|step-2",
+      "sphere-measure-ex-main-0503-b-step-2"
+    ],
+    [
+      "ex-main-0503-b|step-3",
+      "sphere-measure-ex-main-0503-b-step-3"
+    ],
+    [
+      "ex-main-0503-b|step-4",
+      "sphere-measure-ex-main-0503-b-step-4"
+    ],
+    [
+      "ex-main-0503-c|condition",
+      "sphere-measure-ex-main-0503-c-condition"
+    ],
+    [
+      "ex-main-0503-c|help:h1",
+      "sphere-measure-ex-main-0503-c-help-h1"
+    ],
+    [
+      "ex-main-0503-c|help:h2",
+      "sphere-measure-ex-main-0503-c-help-h2"
+    ],
+    [
+      "ex-main-0503-c|step-1",
+      "sphere-measure-ex-main-0503-c-step-1"
+    ],
+    [
+      "ex-main-0503-c|step-2",
+      "sphere-measure-ex-main-0503-c-step-2"
+    ],
+    [
+      "ex-main-0503-c|step-3",
+      "sphere-measure-ex-main-0503-c-step-3"
+    ],
+    [
+      "ex-main-0503-c|step-4",
+      "sphere-measure-ex-main-0503-c-step-4"
+    ],
+    [
+      "ex-main-0504|condition",
+      "sphere-measure-ex-main-0504-condition"
+    ],
+    [
+      "ex-main-0504|help:h1",
+      "sphere-measure-ex-main-0504-help-h1"
+    ],
+    [
+      "ex-main-0504|help:h2",
+      "sphere-measure-ex-main-0504-help-h2"
+    ],
+    [
+      "ex-main-0504|step-1",
+      "sphere-measure-ex-main-0504-step-1"
+    ],
+    [
+      "ex-main-0504|step-2",
+      "sphere-measure-ex-main-0504-step-2"
+    ],
+    [
+      "ex-main-0504|step-3",
+      "sphere-measure-ex-main-0504-step-3"
+    ],
+    [
+      "ex-main-0504|step-4",
+      "sphere-measure-ex-main-0504-step-4"
+    ],
+    [
+      "ex-main-0505|condition",
+      "sphere-measure-ex-main-0505-condition"
+    ],
+    [
+      "ex-main-0505|help:h1",
+      "sphere-measure-ex-main-0505-help-h1"
+    ],
+    [
+      "ex-main-0505|help:h2",
+      "sphere-measure-ex-main-0505-help-h2"
+    ],
+    [
+      "ex-main-0505|step-1",
+      "sphere-measure-ex-main-0505-step-1"
+    ],
+    [
+      "ex-main-0505|step-2",
+      "sphere-measure-ex-main-0505-step-2"
+    ],
+    [
+      "ex-main-0505|step-3",
+      "sphere-measure-ex-main-0505-step-3"
+    ],
+    [
+      "ex-main-0505|step-4",
+      "sphere-measure-ex-main-0505-step-4"
+    ],
+    [
+      "ex-main-0506|condition",
+      "sphere-measure-ex-main-0506-condition"
+    ],
+    [
+      "ex-main-0506|help:h1",
+      "sphere-measure-ex-main-0506-help-h1"
+    ],
+    [
+      "ex-main-0506|help:h2",
+      "sphere-measure-ex-main-0506-help-h2"
+    ],
+    [
+      "ex-main-0506|step-1",
+      "sphere-measure-ex-main-0506-step-1"
+    ],
+    [
+      "ex-main-0506|step-2",
+      "sphere-measure-ex-main-0506-step-2"
+    ],
+    [
+      "ex-main-0506|step-3",
+      "sphere-measure-ex-main-0506-step-3"
+    ],
+    [
+      "ex-main-0506|step-4",
+      "sphere-measure-ex-main-0506-step-4"
+    ],
+    [
+      "ex-main-0507|condition",
+      "sphere-measure-ex-main-0507-condition"
+    ],
+    [
+      "ex-main-0507|help:h1",
+      "sphere-measure-ex-main-0507-help-h1"
+    ],
+    [
+      "ex-main-0507|help:h2",
+      "sphere-measure-ex-main-0507-help-h2"
+    ],
+    [
+      "ex-main-0507|step-1",
+      "sphere-measure-ex-main-0507-step-1"
+    ],
+    [
+      "ex-main-0507|step-2",
+      "sphere-measure-ex-main-0507-step-2"
+    ],
+    [
+      "ex-main-0507|step-3",
+      "sphere-measure-ex-main-0507-step-3"
+    ],
+    [
+      "ex-main-0507|step-4",
+      "sphere-measure-ex-main-0507-step-4"
+    ],
+    [
+      "ex-main-0508|condition",
+      "sphere-measure-ex-main-0508-condition"
+    ],
+    [
+      "ex-main-0508|help:h1",
+      "sphere-measure-ex-main-0508-help-h1"
+    ],
+    [
+      "ex-main-0508|help:h2",
+      "sphere-measure-ex-main-0508-help-h2"
+    ],
+    [
+      "ex-main-0508|step-1",
+      "sphere-measure-ex-main-0508-step-1"
+    ],
+    [
+      "ex-main-0508|step-2",
+      "sphere-measure-ex-main-0508-step-2"
+    ],
+    [
+      "ex-main-0508|step-3",
+      "sphere-measure-ex-main-0508-step-3"
+    ],
+    [
+      "ex-main-0508|step-4",
+      "sphere-measure-ex-main-0508-step-4"
+    ],
+    [
+      "theory-060|condition",
+      "sphere-measure-theory-060-condition"
+    ],
+    [
+      "theory-060|help:h1",
+      "sphere-measure-theory-060-help-h1"
+    ],
+    [
+      "theory-060|help:h2",
+      "sphere-measure-theory-060-help-h2"
+    ],
+    [
+      "theory-060|step-1",
+      "sphere-measure-theory-060-step-1"
+    ],
+    [
+      "theory-060|step-2",
+      "sphere-measure-theory-060-step-2"
+    ],
+    [
+      "theory-060|step-3",
+      "sphere-measure-theory-060-step-3"
+    ],
+    [
+      "theory-060|step-4",
+      "sphere-measure-theory-060-step-4"
+    ],
+    [
+      "theory-061-a|condition",
+      "sphere-measure-theory-061-a-condition"
+    ],
+    [
+      "theory-061-a|help:h1",
+      "sphere-measure-theory-061-a-help-h1"
+    ],
+    [
+      "theory-061-a|help:h2",
+      "sphere-measure-theory-061-a-help-h2"
+    ],
+    [
+      "theory-061-a|step-1",
+      "sphere-measure-theory-061-a-step-1"
+    ],
+    [
+      "theory-061-a|step-2",
+      "sphere-measure-theory-061-a-step-2"
+    ],
+    [
+      "theory-061-a|step-3",
+      "sphere-measure-theory-061-a-step-3"
+    ],
+    [
+      "theory-061-a|step-4",
+      "sphere-measure-theory-061-a-step-4"
+    ],
+    [
+      "theory-061-b|condition",
+      "sphere-measure-theory-061-b-condition"
+    ],
+    [
+      "theory-061-b|help:h1",
+      "sphere-measure-theory-061-b-help-h1"
+    ],
+    [
+      "theory-061-b|help:h2",
+      "sphere-measure-theory-061-b-help-h2"
+    ],
+    [
+      "theory-061-b|step-1",
+      "sphere-measure-theory-061-b-step-1"
+    ],
+    [
+      "theory-061-b|step-2",
+      "sphere-measure-theory-061-b-step-2"
+    ],
+    [
+      "theory-061-b|step-3",
+      "sphere-measure-theory-061-b-step-3"
+    ],
+    [
+      "theory-061-b|step-4",
+      "sphere-measure-theory-061-b-step-4"
+    ],
+    [
+      "theory-061-c|condition",
+      "sphere-measure-theory-061-c-condition"
+    ],
+    [
+      "theory-061-c|help:h1",
+      "sphere-measure-theory-061-c-help-h1"
+    ],
+    [
+      "theory-061-c|help:h2",
+      "sphere-measure-theory-061-c-help-h2"
+    ],
+    [
+      "theory-061-c|step-1",
+      "sphere-measure-theory-061-c-step-1"
+    ],
+    [
+      "theory-061-c|step-2",
+      "sphere-measure-theory-061-c-step-2"
+    ],
+    [
+      "theory-061-c|step-3",
+      "sphere-measure-theory-061-c-step-3"
+    ],
+    [
+      "theory-061-c|step-4",
+      "sphere-measure-theory-061-c-step-4"
+    ],
+    [
+      "theory-062|condition",
+      "sphere-measure-theory-062-condition"
+    ],
+    [
+      "theory-062|help:h1",
+      "sphere-measure-theory-062-help-h1"
+    ],
+    [
+      "theory-062|help:h2",
+      "sphere-measure-theory-062-help-h2"
+    ],
+    [
+      "theory-062|step-1",
+      "sphere-measure-theory-062-step-1"
+    ],
+    [
+      "theory-062|step-2",
+      "sphere-measure-theory-062-step-2"
+    ],
+    [
+      "theory-062|step-3",
+      "sphere-measure-theory-062-step-3"
+    ],
+    [
+      "theory-062|step-4",
+      "sphere-measure-theory-062-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "22c1f265a8c524eb9a04b5c01a74c65f127e6dcdf2571e84d808e83b23201cbc",
+      "afterSHA256": "a9006722063cd94659003ce7aa417efd418528f08b366f10e1248d55ee729683"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "6a916fb78d7b97fd4cba553d3ed162d10b16ed146bad828577d39f0d6bca2717",
+      "afterSHA256": "f85ac44f6bf0c96a1b9c620fc8fe1648950beaf1c52e7fce24703d19632fee48"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T15:47:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 502 and points 52–59, with 815 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "09597e7d545b073f072f20ae5033efa307981cdf5d5764954f607608d7543302",
+    "index": "e27ed82ff10876e11887f99e3ef47edc6c689c57b8b0a1b29272e8352fd4cc6f",
+    "registry": "3a0bfc3e10388a8e1aa20ec65ee2ac62a63b9c4807a42508f3d2f83d96e5a2b1",
+    "cases": "b8c8a72c1a8f4e3e11aa87d596a8292fa9daa42861e2dcf1ae154b3ede76d36f"
+  }
+}
