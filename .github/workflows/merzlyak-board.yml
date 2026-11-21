@@ -1,7 +1,7 @@
 name: Merzlyak cabinet and shared board
 on:
   pull_request:
-    paths: ['learning/**', 'stereo-course/merzlyak-10-base/**', 'trainers/merzlyak-10-base.html', 'trainers/merzlyak9-2014/**', 'trainers/makarychev9-2017/**', 'trainers/makarychev7-2014/**', 'school/makarychev7-2014-book.js', 'tools/makarychev7-2014.test.cjs', 'school/makarychev9-2017-book.js', 'tools/makarychev9-2017.test.cjs', 'trainers/tyurin-statistics/**', 'trainers/peterson7-2011/**', 'trainers/peterson8-2017/**', 'trainers/vilenkin-analysis-2014/**', 'tools/vilenkin-analysis-2014*.test.cjs', 'trainers/peterson9-2017/**', 'tools/peterson9-2017*.test.cjs', 'trainers/vilenkin8-2010/**', 'tools/vilenkin8-2010.test.cjs', 'tools/peterson8-2017*.test.cjs', 'trainers/makarychev8-2018/**', 'tools/makarychev8-2018.test.cjs', 'tools/peterson7-*.test.cjs', 'school/verified-book-routes.js', 'school/alimov10-11/**', 'trainers/alimov10-11.html', 'trainers/alimov-2012/**', 'trainers/mordkovich-2013/**', 'trainers/mordkovich-2013-circle.html', 'ege-profil/circle/**', 'tools/mordkovich-2013-circle.board.cjs', 'tools/profile-circle-board.test.cjs', 'tools/mordkovich-2013*.test.cjs', 'tools/alimov-2012.test.cjs', 'tools/alimov-2012-display.cjs', 'tools/alimov-workshop.board.cjs', 'tools/merzlyak9-2014.test.cjs', 'tools/tyurin-statistics.board.browser.cjs', 'trainers/board-*.js', 'trainers/board-*.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/merzlyak-*', '.github/workflows/merzlyak-board.yml']
+    paths: ['learning/**', 'stereo-course/merzlyak-10-base/**', 'trainers/merzlyak-10-base.html', 'trainers/merzlyak9-2014/**', 'trainers/makarychev9-2017/**', 'trainers/makarychev7-2014/**', 'school/makarychev7-2014-book.js', 'tools/makarychev7-2014.test.cjs', 'school/makarychev9-2017-book.js', 'tools/makarychev9-2017.test.cjs', 'trainers/tyurin-statistics/**', 'trainers/peterson7-2011/**', 'trainers/peterson8-2017/**', 'trainers/alimov-algebra-7-9/**', 'tools/alimov-algebra-7-9*.test.cjs', 'trainers/vilenkin-analysis-2014/**', 'tools/vilenkin-analysis-2014*.test.cjs', 'trainers/peterson9-2017/**', 'tools/peterson9-2017*.test.cjs', 'trainers/vilenkin8-2010/**', 'tools/vilenkin8-2010.test.cjs', 'tools/peterson8-2017*.test.cjs', 'trainers/makarychev8-2018/**', 'tools/makarychev8-2018.test.cjs', 'tools/peterson7-*.test.cjs', 'school/verified-book-routes.js', 'school/alimov10-11/**', 'trainers/alimov10-11.html', 'trainers/alimov-2012/**', 'trainers/mordkovich-2013/**', 'trainers/mordkovich-2013-circle.html', 'ege-profil/circle/**', 'tools/mordkovich-2013-circle.board.cjs', 'tools/profile-circle-board.test.cjs', 'tools/mordkovich-2013*.test.cjs', 'tools/alimov-2012.test.cjs', 'tools/alimov-2012-display.cjs', 'tools/alimov-workshop.board.cjs', 'tools/merzlyak9-2014.test.cjs', 'tools/tyurin-statistics.board.browser.cjs', 'trainers/board-*.js', 'trainers/board-*.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/merzlyak-*', '.github/workflows/merzlyak-board.yml']
 permissions:
   contents: read
 concurrency:
@@ -59,6 +59,7 @@ jobs:
           node tools/peterson8-2017.test.cjs
           node tools/peterson8-2017-powers.test.cjs
           node tools/peterson8-2017-fractions.test.cjs
+          node tools/alimov-algebra-7-9.test.cjs
           node tools/vilenkin-analysis-2014.test.cjs
           node tools/vilenkin-analysis-2014-antiderivatives.test.cjs
           node tools/peterson9-2017.test.cjs
@@ -79,6 +80,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --peterson8-2017 --printed-identity --logic
           node tools/tyurin-statistics.board.browser.cjs --peterson8-part2 --printed-identity --interval
           node tools/tyurin-statistics.board.browser.cjs --peterson8-part3 --printed-identity --domains
+          node tools/tyurin-statistics.board.browser.cjs --alimov-school-2011 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --vilenkin-analysis-2014 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --vilenkin11-antiderivatives --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --peterson9-2017 --printed-identity
