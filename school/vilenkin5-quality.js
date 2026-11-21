@@ -160,6 +160,10 @@
       const parts=value.split(';'),pair=target.answerFormat==='v5-pair';
       if(parts.length!==(pair?2:3)||parts.some(part=>{const n=M.parse(part);return !n||(!pair&&n.d!==1);}))return pair?'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.':'Запиши три целых числа через точку с запятой, например 2; 5; 7.';
     }
+    if(target.answerFormat==='v5-list'){
+      const parts=value.split(';');
+      if(parts.length!==target.answer.length||parts.some(part=>M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
+    }
     if(target.answerFormat==='v5-point-set'&&!root.Vilenkin5Numbered.readPointSet(value))return 'Введи буквы точек с рисунка. Запись можно поправить без потери попытки.';
     const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
     if(clarification)return clarification.text;

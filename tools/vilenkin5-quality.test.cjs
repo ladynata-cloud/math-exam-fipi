@@ -170,7 +170,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),[1,2,3,4,5,6,7,8].map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:13},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -302,8 +302,51 @@ function weatherDiaryRegression(){
   f.click('[data-cmd=mode][data-value=learn]');equal(f.snapshot().scene.model.dayo,api.code(0,false,10));
   equal(f.errors,[]);f.close();
 }
+function pointEndRegression(){
+  const ids=Array.from({length:5},(_,i)=>'v5f-printed-1-'+(i+9)),[weekId,lettersId,grainId,produceId,calcsId]=ids;
+  const f=boot('#lesson/'+weekId),get=(id,s=0)=>f.M.generate(id,s),week=get(weekId),letter=get(lettersId),grain=get(grainId),produce=get(produceId),calcs=get(calcsId);
+  ids.forEach(id=>{equal(f.C.byId[id].source.page,11);equal(f.C.byId[id].source.part,1);});
+  equal(plain([week.answer,...week.alternatives]),[[1,3,2,4],[3,4,1,2]]);
+  equal(plain(letter.answer),[34,22,9,4,28,29]);equal(plain(letter.clarifications[0].value),[31,22,9,3,27,25]);
+  equal(grain.answer,208);equal(produce.answer,1060);equal(plain(calcs.steps.map(s=>s.answer)),[1221,74,406,8550,1089,85,1224,33]);
+  const distinct=new Set();
+  for(let seed=1;seed<=80;seed++){
+    const week=get(weekId,seed),letters=get(lettersId,seed),grain=get(grainId,seed),produce=get(produceId,seed),calcs=get(calcsId,seed);
+    const variants=[];
+    for(const a of week.data.available[0])for(const b of week.data.available[1])for(const c of week.data.available[2])for(const d of week.data.available[3])if(new Set([a,b,c,d]).size===4)variants.push([a,b,c,d].join(';'));
+    equal(variants.length,2);equal([week.answer,...week.alternatives].map(row=>row.join(';')).sort(),variants.sort());variants.forEach(plan=>ok(f.M.accepts(plan,week)));
+    const totals=Array.from('анышли',letter=>Array.from(letters.data.texts.join(' ').toLowerCase()).filter(x=>x===letter).length);
+    equal(plain(letters.answer),totals);distinct.add(letters.conditionKey);
+    equal(grain.answer,grain.data.one*2-grain.data.less);equal(produce.answer,4*produce.data.one-produce.data.less);
+    for(const entry of calcs.data.cases){
+      const m=entry[0].match(/\d+|[·():+−]/g),op=(x,o,y)=>o==='·'?x*y:o===':'?x/y:o==='+'?x+y:x-y;let expected;
+      if(m.length===3)expected=op(+m[0],m[1],+m[2]);
+      else if(m[0]==='(')expected=op(op(+m[1],m[2],+m[3]),m[5],+m[6]);
+      else if(m[2]==='(')expected=op(+m[0],m[1],op(+m[3],m[4],+m[5]));
+      else expected=op(op(+m[0],m[1],+m[2]),m[3],+m[4]);
+      equal(expected,entry[1]);ok(Number.isSafeInteger(entry[1]));
+    }
+  }
+  ok(distinct.size>60);f.submit('1;3');equal(f.snapshot().scene.attempt,0);
+  f.submit('3;4;1;2');equal(f.snapshot().scene.attempt,0);ok(f.snapshot().scene.message.includes('другой ветки'));
+  f.submit('1;3;1;2');ok(f.snapshot().scene.message.includes('повторяется'));
+  for(const row of week.steps){f.submit(value(f.M,row));f.click('[data-cmd=next]');}
+  f.submit('3;4;1;2');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+lettersId);f.submit('31');equal(f.snapshot().scene.attempt,0);ok(f.snapshot().scene.message.includes('цитаты'));
+  for(const row of letter.steps){f.submit(value(f.M,row));f.click('[data-cmd=next]');}
+  f.submit('31;22;9;3;27;25');equal(f.snapshot().scene.attempt,0);
+  f.submit('34;22;9;4;28;29');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+grainId);f.submit('8');ok(f.snapshot().scene.message.includes('на сколько меньше'));
+  f.route('#lesson/'+produceId);f.submit('250');f.click('[data-cmd=next]');f.submit('273');ok(f.snapshot().scene.message.includes('количество овощей'));
+  for(const id of ids){
+    f.route('#lesson/'+id);
+    ok(f.$('#model svg,#model table'));ok(f.$('#task-panel table'));
+    const task=get(id);const model=f.w.Vilenkin5Numbered.explore(f.C.byId[id],f.snapshot().scene.model,task);ok(Number.isInteger(model.answer));
+  }
+  equal(f.errors,[]);f.close();
+}
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
