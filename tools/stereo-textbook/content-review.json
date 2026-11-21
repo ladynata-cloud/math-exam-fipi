@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T17:43:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 540, points 52–62 and all chapter V self-checks, with 880 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T18:00:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 546, points 52–62 and all chapter V self-checks, with 886 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1442,6 +1442,21 @@
       ],
       "evidence": "tools/stereo-textbook/cylinder-applications.json",
       "mathematicalReport": "tools/stereo-textbook/cylinder-applications.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:00:00Z",
+      "scope": "Inscribed pyramids, cones and spheres, six independent constructions and contact-circle lengths in exercises 541–546",
+      "cardIds": [
+        "ex-main-0541",
+        "ex-main-0542",
+        "ex-main-0543",
+        "ex-main-0544",
+        "ex-main-0545",
+        "ex-main-0546"
+      ],
+      "evidence": "tools/stereo-textbook/inscribed-volume-applications.json",
+      "mathematicalReport": "tools/stereo-textbook/inscribed-volume-applications.test.cjs"
     }
   ],
   "cards": [
@@ -4964,6 +4979,30 @@
     {
       "id": "ex-main-0540",
       "sha256": "581a44be3ca17ad690974f5a167c3662c8c728ac8f39675b74b0399ac11f45bd"
+    },
+    {
+      "id": "ex-main-0541",
+      "sha256": "e41b479206c7ffa6ba07db651ba03573bb1cf35bc573a7d70235be02fc7afd6f"
+    },
+    {
+      "id": "ex-main-0542",
+      "sha256": "931de1ebc3a71b50c2207510552e930ce1d60f02ed9d1d637c69027a4aa7ed54"
+    },
+    {
+      "id": "ex-main-0543",
+      "sha256": "62e4cf2636004037ee17467f2f58c20c4b10149f121835879bd67abce05e3e6d"
+    },
+    {
+      "id": "ex-main-0544",
+      "sha256": "7971c6c1beb2a2d10585d5436776a9895a59ab55b664cbfc01bfd8bccd4b6818"
+    },
+    {
+      "id": "ex-main-0545",
+      "sha256": "dbf85c38bd3c7527adc8be9dd522958f788e9d1ee4790b295446312e19e3f496"
+    },
+    {
+      "id": "ex-main-0546",
+      "sha256": "620972dc089f509fe8c68b53a97b39c2afda3c4327b3bd2e5ebabc6edf42ca02"
     }
   ]
 }
