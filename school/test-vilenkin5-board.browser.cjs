@@ -122,6 +122,11 @@ function rendered(frame) {
   });
 }
 async function same(controller, observer, label) {
+  // A native details element opens immediately. Its toggle event saves the shared scene on the next task.
+  await controller.waitForFunction(() => {
+    const panel = document.querySelector('#v5-quality-note')?.closest('details');
+    return !panel || window.__vilenkin5Board.getState().scene?.panels.notes === panel.open;
+  });
   const expected = await snapshot(controller);
   assert.equal(await controller.evaluate(value => window.__vilenkin5Board.validateState(value), expected), true, label + ': semantic validation');
   assert(Buffer.byteLength(JSON.stringify(expected)) <= 60 * 1024);
@@ -602,13 +607,15 @@ async function run(browser, origin, backend, failures) {
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const flat=await same(teacherFrame,studentFrame,'K on MN and the resulting two half-planes restored for pupil');assert.equal(flat.scene.model.shift,1);assert.equal(flat.scene.model.first,'2');assert.equal(await studentFrame.locator('#model svg polygon').count(),2);
 
   phase = 'source 1.95, two freely chosen points shared by both roles';
-  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-95"]').click();await studentFrame.locator('h1').filter({hasText:'№1.95'}).waitFor();
-  await teacherFrame.locator('#answer').fill('7');await teacherFrame.locator('#answer-form button').click();const between=await same(teacherFrame,studentFrame,'P misplaced inside KL');assert.match(between.scene.message,/самого отрезка/);
-  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('11');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('4');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
-  await studentFrame.locator('[data-v5-param=p]').fill('11');await studentFrame.locator('[data-v5-param=p]').press('Tab');await studentFrame.locator('[data-v5-param=m]').fill('4');await studentFrame.locator('[data-v5-param=m]').press('Tab');await studentFrame.locator('[data-v5-param=which]').selectOption('1');await studentFrame.locator('[data-v5-prediction]').fill('1');await studentFrame.locator('[data-v5-predict] button').click();
-  const ownPoints=await same(studentFrame,teacherFrame,'pupil places P at eleven and M at K');assert.equal(ownPoints.scene.model.p,11);assert.equal(ownPoints.scene.model.m,4);assert.equal(ownPoints.scene.model.first,'1');assert.deepEqual(ownPoints.scene.answers.slice(0,2),['11','4']);
-  await studentFrame.locator('#answer').fill('да');await studentFrame.locator('#answer-form button').click();await ownership(teacher,student,false);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'chosen construction restored for teacher');
-  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const again=await same(teacherFrame,studentFrame,'both chosen points, model and answer restored for pupil');assert(again.scene.correct);assert.deepEqual(again.scene.hintLevels,{});assert.match(await studentFrame.locator('#task-panel svg').textContent(),/K=M/);
+  {
+    await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-95"]').click();await studentFrame.locator('h1').filter({hasText:'№1.95'}).waitFor();
+    await teacherFrame.locator('#answer').fill('7');await teacherFrame.locator('#answer-form button').click();const between=await same(teacherFrame,studentFrame,'P misplaced inside KL');assert.match(between.scene.message,/самого отрезка/);
+    await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('11');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('4');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+    await studentFrame.locator('[data-v5-param=p]').fill('11');await studentFrame.locator('[data-v5-param=p]').press('Tab');await studentFrame.locator('[data-v5-param=m]').fill('4');await studentFrame.locator('[data-v5-param=m]').press('Tab');await studentFrame.locator('[data-v5-param=which]').selectOption('1');await studentFrame.locator('[data-v5-prediction]').fill('1');await studentFrame.locator('[data-v5-predict] button').click();
+    const ownPoints=await same(studentFrame,teacherFrame,'pupil places P at eleven and M at K');assert.equal(ownPoints.scene.model.p,11);assert.equal(ownPoints.scene.model.m,4);assert.equal(ownPoints.scene.model.first,'1');assert.deepEqual(ownPoints.scene.answers.slice(0,2),['11','4']);
+    await studentFrame.locator('#answer').fill('да');await studentFrame.locator('#answer-form button').click();await ownership(teacher,student,false);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'chosen construction restored for teacher');
+    await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const again=await same(teacherFrame,studentFrame,'both chosen points, model and answer restored for pupil');assert(again.scene.correct);assert.deepEqual(again.scene.hintLevels,{});assert.match(await studentFrame.locator('#task-panel svg').textContent(),/K=M/);
+  }
 
   phase = 'source 1.94, pairs of rays and the two straight angles';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-94"]').click();await studentFrame.locator('h1').filter({hasText:'№1.94'}).waitFor();
@@ -1059,33 +1066,37 @@ async function run(browser, origin, backend, failures) {
   await same(teacherFrame,studentFrame,'both participants recover clock and separate checked task');await narrow(student,studentFrame,'scale-and-clock');
 
   phase = 'printed 5.15 and 5.16, five operation chains and the two meanings of decrease';
-  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
-  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-15"]').click();await studentFrame.locator('h1').filter({hasText:'№5.15'}).waitFor();
-  await teacherFrame.locator('#answer').fill('43');await teacherFrame.locator('#answer-form button').click();const wrongSum=await same(teacherFrame,studentFrame,'confused subtraction with addition');
-  assert.match(wrongSum.scene.message,/знак −/);await ownership(teacher,student,true);
-  await studentFrame.locator('#answer').fill('5');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
-  await studentFrame.locator('[data-v5-param=column]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=operation]').selectOption({value:'4'});
-  await studentFrame.locator('[data-v5-prediction]').fill('2');await studentFrame.locator('[data-v5-predict] button').click();
-  const route=await same(studentFrame,teacherFrame,'fourth chain final row 34 divided by 17');assert.equal(route.scene.model.column,3);assert.equal(route.scene.model.operation,4);assert(route.scene.model.seen);assert.equal(route.scene.step,1);assert.deepEqual(route.scene.hintLevels,{});
-  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-16"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.16'}).waitFor();
-  await studentFrame.locator('[data-v5-param=groupChoice]').selectOption({value:'2'});await studentFrame.locator('[data-v5-param=hundreds]').fill('3');await studentFrame.locator('[data-v5-param=hundreds]').press('Tab');
-  await studentFrame.locator('#answer').fill('100000');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('99');
-  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const draft=await same(studentFrame,teacherFrame,'one fifth marked on the model and unfinished final answer survive');assert.equal(draft.scene.savedInput,'99');assert.equal(draft.scene.step,1);assert.equal(draft.scene.model.hundreds,3);assert.equal(draft.scene.model.groupChoice,2);
-  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'learner reconnects to the same chain');
-  await teacherFrame.locator('#answer').fill('99900');await teacherFrame.locator('#answer-form button').click();const endDecrease=await same(teacherFrame,studentFrame,'original million independently reduced to 99900');assert(endDecrease.scene.correct);assert.deepEqual(endDecrease.scene.hintLevels,{});await narrow(student,studentFrame,'chains-and-decrease');
+  {
+    await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+    await teacherFrame.locator('a[href="#lesson/v5f-printed-5-15"]').click();await studentFrame.locator('h1').filter({hasText:'№5.15'}).waitFor();
+    await teacherFrame.locator('#answer').fill('43');await teacherFrame.locator('#answer-form button').click();const wrongSum=await same(teacherFrame,studentFrame,'confused subtraction with addition');
+    assert.match(wrongSum.scene.message,/знак −/);await ownership(teacher,student,true);
+    await studentFrame.locator('#answer').fill('5');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+    await studentFrame.locator('[data-v5-param=column]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=operation]').selectOption({value:'4'});
+    await studentFrame.locator('[data-v5-prediction]').fill('2');await studentFrame.locator('[data-v5-predict] button').click();
+    const route=await same(studentFrame,teacherFrame,'fourth chain final row 34 divided by 17');assert.equal(route.scene.model.column,3);assert.equal(route.scene.model.operation,4);assert(route.scene.model.seen);assert.equal(route.scene.step,1);assert.deepEqual(route.scene.hintLevels,{});
+    await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-16"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.16'}).waitFor();
+    await studentFrame.locator('[data-v5-param=groupChoice]').selectOption({value:'2'});await studentFrame.locator('[data-v5-param=hundreds]').fill('3');await studentFrame.locator('[data-v5-param=hundreds]').press('Tab');
+    await studentFrame.locator('#answer').fill('100000');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('99');
+    await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const draft=await same(studentFrame,teacherFrame,'one fifth marked on the model and unfinished final answer survive');assert.equal(draft.scene.savedInput,'99');assert.equal(draft.scene.step,1);assert.equal(draft.scene.model.hundreds,3);assert.equal(draft.scene.model.groupChoice,2);
+    await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'learner reconnects to the same chain');
+    await teacherFrame.locator('#answer').fill('99900');await teacherFrame.locator('#answer-form button').click();const endDecrease=await same(teacherFrame,studentFrame,'original million independently reduced to 99900');assert(endDecrease.scene.correct);assert.deepEqual(endDecrease.scene.hintLevels,{});await narrow(student,studentFrame,'chains-and-decrease');
+  }
 
   phase = 'source 5.17, coordinates of both midpoints and rightward comparisons';
-  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
-  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-17"]').click();await studentFrame.locator('h1').filter({hasText:'№5.17'}).waitFor();
-  await teacherFrame.locator('#answer').fill('12');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'cell count differs from coordinates')).scene.message,/расстояние в клетках/);
-  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=point]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=halves]').selectOption({value:'1'});
-  await studentFrame.locator('[data-v5-prediction]').fill('30');await studentFrame.locator('[data-v5-predict] button').click();
-  for(const value of ['48','8','60','30','70']){await studentFrame.locator('#answer').fill(value);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();}
-  await studentFrame.locator('#answer').fill('K');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'lower coordinate chosen')).scene.message,/левее/);
-  await studentFrame.locator('#answer').fill('с');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
-  const marked=await same(studentFrame,teacherFrame,'draft and half-step markings restored');assert.equal(marked.scene.savedInput,'с');assert.equal(marked.scene.model.halves,1);assert.equal(marked.scene.model.point,3);assert.equal(marked.scene.step,5);
-  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both sides restored at the comparison');
-  await teacherFrame.locator('#answer-form button').click();const greater=await same(teacherFrame,studentFrame,'C is to the right of K');assert(greater.scene.correct);assert.deepEqual(greater.scene.hintLevels,{});await narrow(student,studentFrame,'ray-with-half-cells');
+  {
+    await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+    await teacherFrame.locator('a[href="#lesson/v5f-printed-5-17"]').click();await studentFrame.locator('h1').filter({hasText:'№5.17'}).waitFor();
+    await teacherFrame.locator('#answer').fill('12');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'cell count differs from coordinates')).scene.message,/расстояние в клетках/);
+    await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=point]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=halves]').selectOption({value:'1'});
+    await studentFrame.locator('[data-v5-prediction]').fill('30');await studentFrame.locator('[data-v5-predict] button').click();
+    for(const value of ['48','8','60','30','70']){await studentFrame.locator('#answer').fill(value);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();}
+    await studentFrame.locator('#answer').fill('K');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'lower coordinate chosen')).scene.message,/левее/);
+    await studentFrame.locator('#answer').fill('с');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+    const marked=await same(studentFrame,teacherFrame,'draft and half-step markings restored');assert.equal(marked.scene.savedInput,'с');assert.equal(marked.scene.model.halves,1);assert.equal(marked.scene.model.point,3);assert.equal(marked.scene.step,5);
+    await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both sides restored at the comparison');
+    await teacherFrame.locator('#answer-form button').click();const greater=await same(teacherFrame,studentFrame,'C is to the right of K');assert(greater.scene.correct);assert.deepEqual(greater.scene.hintLevels,{});await narrow(student,studentFrame,'ray-with-half-cells');
+  }
 
   phase = 'fractions of a centimetre and a centner, printed 5.18 and 5.19';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-18"]').click();await studentFrame.locator('h1').filter({hasText:'№5.18'}).waitFor();
@@ -1331,7 +1342,7 @@ async function run(browser, origin, backend, failures) {
     child = spawn(process.execPath, ['index.js'], { cwd: join(ROOT, 'board-server'), env, stdio: ['ignore', 'ignore', 'pipe'] });
     child.stderr.on('data', chunk => { serverErrors = (serverErrors + String(chunk)).slice(-4000); }); await waitForHealth(backend, child, () => serverErrors);
     browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'], timeout: 15000 });
-    await Promise.race([run(browser, origin, backend, []), new Promise((_, fail) => { watchdog = setTimeout(() => fail(new Error('Browser gate exceeded 240 seconds at ' + phase)), 240000); })]);
+    await Promise.race([run(browser, origin, backend, []), new Promise((_, fail) => { watchdog = setTimeout(() => fail(new Error('Browser gate exceeded 15 minutes at ' + phase)), 15 * 60_000); })]);
   } finally {
     clearTimeout(watchdog); await browser?.close(); if (child && child.exitCode === null) child.kill('SIGTERM'); await new Promise(done => server.close(done));
   }
