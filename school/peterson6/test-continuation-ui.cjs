@@ -1078,3 +1078,32 @@ test('draw actual moving boats, a quadratic fall curve and two source constructi
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('complete the proportion chapter, including reciprocal areas, a right angle and every sporting outcome',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(93);set(c[1],2);assert(out().includes('площадь 567 см²'));c=go(94);set(c[1],2);assert(out().includes('встречи 1 ч'));set(c[0],2);set(c[1],2);assert(out().includes('встречи 4/3 ч'));
+  c=go(95);for(const area of [12,24]){set(c[0],area);set(c[1],5);set(c[2],1);
+   const p=[...f.d.querySelectorAll('#model [data-side-a]')];assert.equal(p.length,7);
+   p.forEach(n=>assert.equal(Number(n.dataset.sideA)*Number(n.dataset.sideB),area));assert.equal(Number(f.q('#model [data-selected-b]').dataset.selectedB),area/8);
+  }
+  c=go(96);
+  for(const r of [3,4,5])for(const v of [30,60,90,120,150,210,270,315]){
+   set(c[0],r);set(c[1],v);set(c[2],1);assert(f.q('#model [data-right-angle="C"]'));
+   const pos=name=>{const p=f.q('#model [data-point="'+name+'"]');return [Number(p.getAttribute('cx')),Number(p.getAttribute('cy'))];};
+   const [a,b,c0,o]=['A','B','C','O'].map(pos),dx=a[0]-c0[0],dy=a[1]-c0[1];assert(Math.abs(dx*(b[0]-c0[0])+dy*(b[1]-c0[1]))<1e-7);assert(Math.abs(Math.hypot(c0[0]-o[0],c0[1]-o[1])-11.5*r)<1e-7);
+  }
+  c=go(98);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,4);
+  for(const [i,val]of [5,1,15,3].entries()){set(c[0],i);set(c[1],2);assert(out().includes('= '+val+'.'));}
+  c=go(100);set(c[1],96);set(c[2],2);assert(out().includes('1023457896'));set(c[0],18);set(c[2],2);assert(out().includes('1023456798'));
+  f.nav('#lesson/p17/100');f.event('#final-answer','1023456789');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/89/);
+  c=go(101);set(c[0],9);set(c[2],1);assert(out().includes('в точности совпали'));set(c[1],3);set(c[2],1);assert(out().includes('не совпадают'));
+  c=go(102);for(const next of [0,1]){
+   let good=[];set(c[1],next);for(let i=0;i<24;i++){set(c[0],i);set(c[2],1);if(out().includes('Порядок удовлетворяет'))good.push(f.q(c[0]).selectedOptions[0].textContent);}
+   assert.deepEqual(good,[next?'Б · В · Г · А':'А · В · Г · Б']);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
