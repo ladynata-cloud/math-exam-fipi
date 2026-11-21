@@ -1302,6 +1302,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
+    },
+    {
+      "trainerId": "alimov10-11",
+      "file": "trainers/alimov10-11.html",
+      "title": "Алимов · алгебра и начала анализа · 10–11 классы",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Тема, черновик, шаги, подсказки и параметры математической модели доступны участникам общей комнаты."
     }
   ]
 }

@@ -137,5 +137,5 @@ async function run(browser, origin, serverOrigin) {
   for(const key of Object.keys(env))if(/^(LEARNING_|PROGRESS_|GROUP_LESSON_)/.test(key))delete env[key];
   child=spawn(process.execPath,['index.js'],{cwd:join(ROOT,'board-server'),env,stdio:['ignore','ignore','pipe']});child.stderr.on('data',data=>{logs=(logs+String(data)).slice(-4000);});await healthy(serverOrigin+'/health',child,()=>logs);
   browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,headless:true,args:['--no-sandbox'],timeout:20000});
-  await Promise.race([run(browser,origin,serverOrigin),new Promise((_,reject)=>{watchdog=setTimeout(()=>reject(Error('Gate timeout '+phase)),240000);})]);
+  await Promise.race([(process.argv.includes('--alimov10-11')?require('./alimov-workshop.board.cjs'):run)(browser,origin,serverOrigin),new Promise((_,reject)=>{watchdog=setTimeout(()=>reject(Error('Gate timeout '+phase)),240000);})]);
 }finally{clearTimeout(watchdog);await browser?.close();if(child&&child.exitCode===null)child.kill('SIGTERM');await new Promise(done=>server.close(done));}})().catch(error=>{console.error('TYURIN_BOARD_FAILED at '+phase+'\n'+(error.stack||error));process.exitCode=1;});
