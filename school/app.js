@@ -222,8 +222,24 @@
   }
   if(opts.resume&&C.byId[id].m9Course&&window.WorkshopM9Learning){var draft=window.WorkshopM9Learning.restore(state,id,M);if(draft){session=draft;state.last={skill:id,mode:draft.mode,seed:draft.seed};save();if(location.hash!=='#lesson/'+id)location.hash='#lesson/'+id;else lesson();return;}}
   var count=state.events.filter(function(e){return e.skill===id;}).length,seed=opts.seed===undefined?(mode==='learn'?0:mode==='practice'?(practiceSeeds[id]===undefined?17+count:(practiceSeeds[id]+1)%1000001):1001+count*37):opts.seed;
+  var chosen=['check','review','diagnostic'].includes(mode)?S.selectTask(state,id,seed,M.generate):{seed:seed,task:M.generate(id,seed)};
+  if(mode==='practice'&&opts.seed===undefined&&id.startsWith('v5f-printed-')){
+   var sourceKey=M.generate(id,0).conditionKey;
+   var previousKey=practiceSeeds[id]===undefined?sourceKey:M.generate(id,practiceSeeds[id]).conditionKey;
+   // Some drawings have only two arrangements. Prefer one different from both, then from the last one.
+   var different=null;
+   for(var retry=0;retry<32;retry++){
+    if(chosen.seed!==0&&chosen.task.conditionKey!==previousKey){
+     different=chosen;
+     if(chosen.task.conditionKey!==sourceKey)break;
+    }
+    var nextSeed=(chosen.seed+7918)%1000000+1;
+    chosen={seed:nextSeed,task:M.generate(id,nextSeed)};
+   }
+   if(different)chosen=different;
+  }
+  seed=chosen.seed;
   if(mode==='practice')practiceSeeds[id]=seed;
-  var chosen=['check','review','diagnostic'].includes(mode)?S.selectTask(state,id,seed,M.generate):{seed:seed,task:M.generate(id,seed)};seed=chosen.seed;
   var t=chosen.task,f=S.fingerprint(id,t),seen=S.expose(state,f);
   session={id:id,mode:mode,seed:seed,task:t,step:0,attempt:0,assisted:false,exposed:seen,correct:false,message:'',claimAnswered:false,diagnostic:opts.diagnostic||null,checkIndex:opts.checkIndex||0};
   state.last={skill:id,mode:mode,seed:seed};

@@ -232,8 +232,22 @@ const server=http.createServer((req,res)=>{
       }
       await survey.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,id+'-mobile.png')});
       await page.locator('[data-cmd=mode][data-value=practice]').click();
-      assert.match(await page.locator('#task-panel .question').innerText(),/Новый авторский опрос|Новый авторский чертёж|Новое авторское задание|Новые вымышленные наблюдения|Вымышленные данные исследовательской игры/);
-      assert(await page.locator('#task-panel table').isVisible());
+      const practice=await page.evaluate(()=>{
+        const scene=Vilenkin5Quality.getState().scene,source=WorkshopMath.generate(scene.id,0),task=WorkshopMath.generate(scene.id,scene.seed);
+        return {id:scene.id,mode:scene.mode,seed:scene.seed,sourceKey:source.conditionKey,key:task.conditionKey,prompt:task.prompt};
+      });
+      assert.equal(practice.id,id);assert.equal(practice.mode,'practice');assert(practice.seed>0);
+      assert(practice.key);assert.notEqual(practice.key,practice.sourceKey,id+' uses new practice data');
+      assert.equal(await page.locator('#task-panel .question').textContent(),practice.prompt);
+      assert(await page.locator('#task-panel table').first().isVisible());
+      if(id==='v5f-printed-1-119'){
+        await page.reload();await page.locator('#answer').waitFor();
+        assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.seed),practice.seed);
+        await page.locator('#answer').fill('нет');await page.locator('#answer-form button').click();
+        await page.locator('[data-cmd=next]').click();
+        const nextKey=await page.evaluate(()=>{const s=Vilenkin5Quality.getState().scene;return WorkshopMath.generate(s.id,s.seed).conditionKey;});
+        assert.notEqual(nextKey,practice.key,'next ray differs after reload');assert.notEqual(nextKey,practice.sourceKey);
+      }
     }
 
     for(const width of [320,375]){
