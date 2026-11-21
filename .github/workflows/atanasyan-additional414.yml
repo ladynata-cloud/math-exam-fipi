@@ -88,6 +88,7 @@ jobs:
           node tools/stereo-textbook/coordinate-span-ratios.test.cjs
           node tools/stereo-textbook/spatial-points-and-centroid.test.cjs
           node tools/stereo-textbook/midpoints-and-vector-lengths.test.cjs
+          node tools/stereo-textbook/spatial-distances-and-equal-loci.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -344,6 +345,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: midpointsAndVectorLengths
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/midpoints-and-vector-lengths
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check spatial projections, triangle classification, every isosceles root and all equal-distance loci and circumcentres
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialDistancesAndEqualLoci
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-distances-and-equal-loci
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -428,5 +434,6 @@ jobs:
             artifacts/coordinate-span-ratios/
             artifacts/spatial-points-and-centroid/
             artifacts/midpoints-and-vector-lengths/
+            artifacts/spatial-distances-and-equal-loci/
           retention-days: 14
           if-no-files-found: error

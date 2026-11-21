@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T22:36:21Z",
-  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–667, with 1,190 reviewed cards. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T22:42:51Z",
+  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–676, with 1,208 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2022,6 +2022,33 @@
       ],
       "evidence": "tools/stereo-textbook/midpoints-and-vector-lengths.json",
       "mathematicalReport": "tools/stereo-textbook/midpoints-and-vector-lengths.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 170, supplied source 170 including radicals in 668, 670 and 671, all equal-distance and isosceles cases checked against the complete printed answer on 270.",
+      "reviewedAt": "2026-11-21T22:42:51Z",
+      "scope": "Every case of 668–676 on printed page 170, including the negative radical height, exact orthogonal projections and least distances, all five isosceles parameters, nondegenerate trapezoid, six equal-distance intersections, and both circumcentres.",
+      "cardIds": [
+        "ex-main-0668-a",
+        "ex-main-0668-b",
+        "ex-main-0668-c",
+        "ex-main-0668-d",
+        "ex-main-0669-a",
+        "ex-main-0669-b",
+        "ex-main-0670",
+        "ex-main-0671",
+        "ex-main-0672",
+        "ex-main-0673",
+        "ex-main-0674-a",
+        "ex-main-0674-b",
+        "ex-main-0674-c",
+        "ex-main-0675-a",
+        "ex-main-0675-b",
+        "ex-main-0675-c",
+        "ex-main-0676-a",
+        "ex-main-0676-b"
+      ],
+      "evidence": "tools/stereo-textbook/spatial-distances-and-equal-loci.json",
+      "mathematicalReport": "tools/stereo-textbook/spatial-distances-and-equal-loci.test.cjs"
     }
   ],
   "cards": [
@@ -6784,6 +6811,78 @@
     {
       "id": "ex-main-0667-b",
       "sha256": "1c700c0583fe21ec109125a90f1b29cfc4ea9de53c0b2c55d0903638e43d586a"
+    },
+    {
+      "id": "ex-main-0668-a",
+      "sha256": "989ecff6fcdc02abf172c8ff3e86952581fad2e46c686d2c70560742e45098cb"
+    },
+    {
+      "id": "ex-main-0668-b",
+      "sha256": "b813224623c594894db439ffde7fe85adbd9dd2b562699ad8ddd3ecb5cb88556"
+    },
+    {
+      "id": "ex-main-0668-c",
+      "sha256": "7601008e48d7aa8f8427aa57a35a29595213a87285606a8267764c8286823dcc"
+    },
+    {
+      "id": "ex-main-0668-d",
+      "sha256": "941ebddd61599ad788c61bdc7929dbd7822be1c2b50c8c954ec78a6e931c2e36"
+    },
+    {
+      "id": "ex-main-0669-a",
+      "sha256": "ba84fc720053850d904c6507bf4b065872081307061932c96b62a96f5ff581be"
+    },
+    {
+      "id": "ex-main-0669-b",
+      "sha256": "b285b1c3740184d329911902b788b3e94d7c6f19380e09dc2056ca97dd2da6ec"
+    },
+    {
+      "id": "ex-main-0670",
+      "sha256": "d257c998c72374b6dbb26463e14f30c869257593bfc1c1fffc70c258272182e9"
+    },
+    {
+      "id": "ex-main-0671",
+      "sha256": "9451a7df89aefd7cbf5f5059b2fad531d53bf45a5c4c903d67a61ecadad91d57"
+    },
+    {
+      "id": "ex-main-0672",
+      "sha256": "deb943d8bb3a670c8d5aa2c9fe1729a31feb1bc9a36ca3489640287b269b53aa"
+    },
+    {
+      "id": "ex-main-0673",
+      "sha256": "545b7799bc6d1da826e4dc3299bbd3af87cdcfa095bffc7356afec63fe800b8e"
+    },
+    {
+      "id": "ex-main-0674-a",
+      "sha256": "47a33fd73864dc01cc298d763f5f2cdfc5b22fc6d5396157e165030ce23ad1ff"
+    },
+    {
+      "id": "ex-main-0674-b",
+      "sha256": "6de854f26870b4a2807e4e9db06b0480282eeda41448a1c622b5d8e156ae31c9"
+    },
+    {
+      "id": "ex-main-0674-c",
+      "sha256": "fd3de4073d4600d51d073eb9de09fd65d1ca19d4347bb82f705079ec5b38f7d6"
+    },
+    {
+      "id": "ex-main-0675-a",
+      "sha256": "8e4bad1216b77c94b57c570308b90eb8dd1d30985fe67252396a2aec0b1b449d"
+    },
+    {
+      "id": "ex-main-0675-b",
+      "sha256": "6495370abbd567ab2ad06815d56f32b20d7e33545960654dc5a428b12fa196f1"
+    },
+    {
+      "id": "ex-main-0675-c",
+      "sha256": "0bda1dc9e389d4e286282a01de82804d4fd7a2bd16d8bb06edee3f103ad5d7ae"
+    },
+    {
+      "id": "ex-main-0676-a",
+      "sha256": "e0bbd5a9041dc3eba5cfe44a95f89fdeb056930ca05b3abf4d7f0dba2f0db7cc"
+    },
+    {
+      "id": "ex-main-0676-b",
+      "sha256": "32bf1a78ee943d55c7ce273474ade4065ae0c03ff93e67fddd2a043ce59082cf"
     }
   ]
 }
