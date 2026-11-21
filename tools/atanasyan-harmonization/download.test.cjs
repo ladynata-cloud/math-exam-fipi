@@ -78,11 +78,11 @@ const manifest = require(root + '/downloads/trainers-manifest.json');
 const entry = manifest.trainers.find(item => item.slug === 'geometry-course');
 assert.match(entry.title, /7–9/);
 assert.match(entry.level, /7–9/);
-assert.match(read('README.txt'), /1425/);
+assert(read('README.txt').includes('Доступно карточек в задачнике: ' + completeTextbook.lessons.length + '.'), 'readme matches the fully embedded bank');
 for (const entrypoint of ['index.html', 'geometry-course.html']) {
   assert.match(read(entrypoint), /href="https:\/\/mathexam\.space\/geometry-course\/ichenskaya-7-works\//, 'adjacent course remains an explicit website link');
   assert(!/href="(?:\.\/)?ichenskaya-7-works\//.test(read(entrypoint)), 'an uncopied adjacent bank must not be offered as an offline course');
 }
-console.log('ATANASYAN_HARMONIZATION_DOWNLOAD_OK ' + JSON.stringify({topics: 63, textbookCards: 1425, firstSteps: 255, legacy: 70, localResources: resources, zipFiles: files.length}));
+console.log('ATANASYAN_HARMONIZATION_DOWNLOAD_OK ' + JSON.stringify({topics: 63, textbookCards: completeTextbook.lessons.length, firstSteps: 255, legacy: 70, localResources: resources, zipFiles: files.length}));
 module.exports = {folder, root, course, textbook, first, completeTextbook};
 if (require.main === module) fs.rmSync(folder, {recursive: true, force: true});
