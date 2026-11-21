@@ -316,7 +316,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:59},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10'));
+  equal(plain(path.numbered),Array.from({length:70},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -810,6 +810,60 @@ function buildablePathsRegression(){
   const saved=personal.saved();personal.close();const restored=boot('#lesson/'+ids[1],saved);equal(restored.snapshot().scene.seed,313232);equal(restored.snapshot().scene.step,1);equal(restored.errors,[]);restored.close();equal(f.errors,[]);f.close();
 }
 
+
+
+function pageTwentyReviewRegression(){
+  const f=boot(),ids=Array.from({length:4},(_,i)=>'v5f-printed-1-'+(67+i)),N=f.w.Vilenkin5Numbered;
+  const src=ids.map(id=>f.M.generate(id,0));
+  equal(plain(src[0].data.values),[241,802,50024,490220,700243,9999999]);
+  equal(plain(src[1].steps.map(s=>s.answer)),[22003008,28015302,507080000,1010009000,423340600980,52000008012,777000608000]);
+  equal(plain(src[2].steps.map(s=>s.answer)),[16,22,35,21,43,8,8,6,8,32,42,36,64,45,54,8,8,8,9,5]);
+  equal(plain(src[3].steps.map(s=>s.answer)),[147,942,384]);
+  ok(f.M.accepts('пятьдесят тысяч двадцать четыре',src[0].steps[2]));
+  ok(f.M.accepts('семьсот тысяч двести сорок три',src[0].steps[4]));
+  ok(!f.M.accepts('двести сорок три',src[0].steps[4]));
+  ok(f.M.accepts('22 003 008',src[1].steps[0]));ok(!f.M.accepts('2238',src[1].steps[0]));
+  for(let seed=0;seed<35;seed++){
+    for(const [i,id]of ids.entries()){
+      const l=f.C.byId[id],t=f.M.generate(id,seed),d=t.data;
+      equal(l.point,3);equal(l.source.page,20);ok(l.requires.every(k=>f.C.byId[k]));
+      equal(t.steps.length,[6,7,20,3][i]);if(seed)ok(t.conditionKey!==src[i].conditionKey);
+      if(i<2){for(const [j,n]of d.values.entries()){const place=j%9;equal(N.explore(l,{row:j,place},t).answer,Math.floor(n/(10**place))%10*(10**place));}continue;}
+      if(i===2){for(const [j,r]of d.operations.entries()){
+        const res=[r.a+r.b,r.a-r.b,r.a*r.b,r.a/r.b][r.g],m=N.explore(l,{row:j},t);
+        equal(t.steps[j].answer,res);equal(m.answer,res);equal((m.visual.match(/<circle /g)||[]).length,[r.a+r.b,r.a,r.a*r.b,r.a][r.g]);}continue;}
+      for(const [j,[a,b]]of d.pairs.entries()){
+        const x=Math.ceil(a/10)*10,y=Math.ceil(b/10)*10;
+        equal(t.steps[j].answer,a+b);equal(N.explore(l,{row:j,method:0},t).answer,(x-a)+(y-b));
+        equal(N.explore(l,{row:j,method:1},t).answer,b-(x-a));equal(x+(b-(x-a)),a+b);
+      }
+    }
+  }
+  f.route('#lesson/'+ids[3]);f.submit('150');ok(!f.snapshot().scene.correct);
+  ok(f.snapshot().scene.message.includes('округлённых'));f.submit('147');ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});
+  f.click('[data-cmd=next]');f.submit('942');f.click('[data-cmd=next]');const again=boot('#lesson/'+ids[3],f.saved());equal(again.snapshot().scene.step,2);
+  again.close();f.close();
+}
+
+function pageNineteenBoundariesRegression(){
+  const f=boot(),ids=Array.from({length:7},(_,i)=>'v5f-printed-1-'+(60+i)),src=ids.map(id=>f.M.generate(id,0)),[build,diags]=src;
+  equal(plain(src.slice(2).map(t=>t.answer)),[150,280,63,16,[82,5]]);
+  ok(f.M.accepts('SO HQ',build.steps[0]));ok(!f.M.accepts('SH QO',build.steps[0]));
+  ok(f.M.accepts('OS QH BQ SB HO',build));ok(f.M.accepts('AB BM MN NA AM BN AO OM BO ON',diags));ok(!f.M.accepts('AB BM MN NA AM BN',diags));
+  for(let seed=0;seed<80;seed++)for(const [i,id]of ids.entries()){
+    const t=f.M.generate(id,seed),d=t.data,l=f.C.byId[id];equal(l.point,3);equal(l.source.page,19);
+    if(i<2){if(i===0){const [s,b,q,h,o]=d.names,point=Object.fromEntries([...d.names].map((p,j)=>[p,d.coords[j]])),side=(x,y,z)=>(y[0]-x[0])*(z[1]-x[1])-(y[1]-x[1])*(z[0]-x[0]);const crosses=(a,b,c,e)=>side(point[a],point[b],point[c])*side(point[a],point[b],point[e])<0&&side(point[c],point[e],point[a])*side(point[c],point[e],point[b])<0;
+        ok(crosses(s,h,q,o));ok(!crosses(s,o,q,h));for(const j of [0,1,2,3])equal(f.w.Vilenkin5Numbered.explore(l,{choice:j},t).answer,j===1?1:0);
+      }else{const [a,b,m,n,o]=d.coords;equal((a[0]+m[0])/2,o[0]);equal((b[1]+n[1])/2,o[1]);equal(f.w.Vilenkin5Numbered.explore(l,{view:1},t).answer,3);}continue;}
+    const coordinates=f.w.Vilenkin5PrintedBoundaries.perimeterCoordinates(d),mm=d.values.reduce((a,b)=>a+b);
+    coordinates.forEach(([x,y],j)=>{const [nx,ny]=coordinates[(j+1)%coordinates.length];ok(Math.abs(Math.hypot(x-nx,y-ny)-d.values[j])<1e-7);});
+    for(let j=1;j<=coordinates.length;j++){const total=Array.from({length:j},(_,k)=>d.values[(k+1)%d.values.length]).reduce((a,b)=>a+b);equal(f.w.Vilenkin5Numbered.explore(l,{start:1,count:j},t).answer,total);}
+    if(i===6)equal(t.answer[0]*10+t.answer[1],mm);else equal(t.answer,mm);
+  }
+  for(const [i,id]of ids.entries()){const t=src[i];f.route('#lesson/'+id);if(i===0){f.submit('SH QO');ok(f.snapshot().scene.message.includes('пересекутся'));}for(const [j,q]of t.steps.entries()){f.submit(value(f.M,q));ok(f.snapshot().scene.correct,id+' '+j);f.click('[data-cmd=next]');}f.submit(value(f.M,t));ok(f.snapshot().scene.correct);}
+  equal(f.errors,[]);f.close();
+}
+
 async function run(){
   for(const check of [
     threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
@@ -817,7 +871,7 @@ async function run(){
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
     printedSegmentRegression,compassAndCompoundRegression,printedChecksRegression,printedLengthUnitsRegression,
-    buildablePathsRegression,
+    buildablePathsRegression,pageNineteenBoundariesRegression,pageTwentyReviewRegression,
   ]){
     check();
     await tick(); // Let closed lesson windows finish disposal before loading the next group.

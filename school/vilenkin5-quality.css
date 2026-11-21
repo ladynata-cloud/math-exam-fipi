@@ -111,3 +111,5 @@ html[data-vilenkin5-readonly=true] #main[data-v5-quality] input,html[data-vilenk
 
 .v5q-model svg.v5q-source-polyline text{font-size:15px}
 .v5q-model svg.v5q-source-polyline text[data-ruler-label]{font-size:12px}
+
+.v5q-model svg.v5q-source-boundary text{font-size:17px}
