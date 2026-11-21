@@ -38,6 +38,7 @@ function curveValue(curve,x){
  if(curve.kind==='sqrt')return x>=0?Math.sqrt(x):NaN;
  if(curve.kind==='line')return curve.k*x+curve.b;
  if(curve.kind==='hyperbola')return x===0?NaN:curve.k/x;
+ if(curve.kind==='quadratic')return curve.a*x*x+curve.b*x+curve.c;
  if(curve.kind==='square')return x*x;
  if(curve.kind==='cube')return x*x*x;
  if(curve.kind==='sqrt-shift')return x>=curve.h?Math.sqrt(x-curve.h)+(curve.k||0):NaN;
@@ -285,8 +286,69 @@ function workEstimate(host,config,value){
   line('Твоя скорость за 7 ч дала бы '+decimal(7*proposed)+' км. Общий путь в модели — 480 км.');
  }
 }
+function quadraticExample(host,value){
+ host.className='task-graphs root-graph';
+ const parameters=String(value).split(';').map(v=>number(v));
+ const valid=parameters.length===3&&parameters.every(v=>v!==null);
+ const [a,b,c]=parameters;
+ const curve=valid?{kind:'quadratic',a,b,c}:null;
+ const height=valid?Math.max(2,Math.abs(c),Math.abs(4*a+2*b+c),Math.abs(4*a-2*b+c)):4;
+ host.append(rootGraph({curves:curve?[curve]:[],xRange:[-2,2],yRange:[-height,height]},''));
+ const p=document.createElement('p');p.className='small';
+ p.textContent=valid?'Для твоих коэффициентов при x = 0 значение равно '+c+', а при x = 1 — '+(a+b+c)+'.':'После проверки на осях появится график для твоих коэффициентов.';
+ host.append(p);
+}
+function quadraticStory(host,config,value){
+ const scene=config.scene;
+ host.className='task-graphs quantity-model';
+ const caption=document.createElement('p');caption.className='small';
+ if(scene.startsWith('529')){
+  const slope={'529а':1-Math.sqrt(2),'529б':4-Math.sqrt(15),'529в':Math.sqrt(35)-5.7}[scene];
+  const plane={curves:value?[{kind:'line',k:slope,b:0}]:[],xRange:[-4,4],yRange:[-2,2],xTickStep:2,yTickStep:1};
+  host.append(rootGraph(plane,''));caption.textContent=value?'Проверь положение лучей по обе стороны от начала координат.':'После выбора четвертей появится прямая с коэффициентом из условия.';host.append(caption);return;
+ }
+ const svg=node('svg',{viewBox:'0 0 300 190',role:'img','aria-label':{
+  court:'Корт со сторонами w и 2w',fence:'Участок со сторонами a и 0,75a',screen:'Стороны 4u и 3u, диагональ 25 дюймов',
+  'cut-square':'Квадрат, разделённый на треугольник и оставшуюся фигуру',walk:'Прямой угол между северным и западным маршрутами',fall:'Вертикальная шахта глубиной 80 метров'
+ }[scene]});
+ const line=(x1,y1,x2,y2,extra={})=>svg.append(node('line',{x1,y1,x2,y2,stroke:'#165d65','stroke-width':2,...extra}));
+ const label=(x,y,text)=>svg.append(node('text',{x,y,'text-anchor':'middle','font-size':17,fill:'#143c3b'},text));
+ const rectangle=(x,y,width,height)=>svg.append(node('rect',{x,y,width,height,fill:'#e7f4ee',stroke:'#165d65','stroke-width':2}));
+ const decimal=n=>n.toLocaleString('ru',{maximumFractionDigits:3});
+ const proposed=config.proposedTime??number(value);
+ if(scene==='walk'){
+  const x=198,y=143;line(x,y,x,43);line(x,y,73,y);line(73,y,x,43,{'stroke-dasharray':'5 3'});line(183,y,183,128);line(183,128,x,128);
+  label(234,97,'4t км');label(130,170,'5t км');label(102,79,proposed>0?decimal(proposed*Math.sqrt(41))+' км':'16 км');label(199,31,'север');label(42,150,'запад');
+  caption.textContent=proposed>0?'При t = '+decimal(proposed)+' ч группы пройдут '+decimal(4*proposed)+' и '+decimal(5*proposed)+' км. Расстояние между ними ≈ '+decimal(proposed*Math.sqrt(41))+' км. По условию требуется 16 км.':'Пункт выхода — вершина прямого угла. Два пройденных пути образуют катеты.';
+ }else if(scene==='fall'){
+  line(80,35,220,35);line(80,150,220,150);line(146,42,146,142,{'stroke-dasharray':'5 3'});line(140,132,146,142);line(152,132,146,142);
+  label(90,24,'начало');label(202,105,'80 м');label(206,177,'дно');
+  caption.textContent=proposed>=0&&proposed!==null?'За '+decimal(proposed)+' с модель даёт путь '+decimal(5*proposed*proposed)+' м.':'Глубина — путь камня от старта до дна.';
+ }else if(scene==='cut-square'){
+  rectangle(88,20,140,140);svg.append(node('polygon',{points:'88,20 228,20 228,134.72',fill:'#c1dcef',stroke:'#165d65','stroke-width':1.5}));
+  label(184,55,'59 см²');label(141,123,'85 см²');label(157,183,'сторона a');
+  caption.textContent=proposed>0?'Квадрат со стороной '+decimal(proposed)+' см имеет площадь '+decimal(proposed*proposed)+' см².':'Сложи площади двух частей, чтобы восстановить площадь целого квадрата.';
+ }else{
+  const width=scene==='court'?200:160,height=scene==='court'?100:120,x=48,y=23;
+  rectangle(x,y,width,height);
+  label(x+width/2,y+height+26,scene==='court'?'2w':scene==='fence'?'a':'4u');
+  label(x+width+24,y+height/2+5,scene==='court'?'w':scene==='fence'?'0,75a':'3u');
+  if(scene==='screen'){
+   line(x,y+height,x+width,y,{'stroke-dasharray':'5 3'});label(x+width/2-13,y+height/2-10,'25″');
+   caption.textContent='Диагональ делит экран на два равных прямоугольных треугольника.';
+  }else if(scene==='court'){
+   const pair=parseLine(value);if(pair)caption.textContent='Твои стороны дают площадь '+decimal(pair.k*pair.b)+' м². Длина по условию должна вдвое превышать ширину.';
+   else caption.textContent='Прямоугольник можно разделить на два квадрата со стороной w.';
+   line(x+100,y,x+100,y+height,{'stroke-dasharray':'5 3'});
+  }else caption.textContent=proposed>0?'Для периметра '+decimal(proposed)+' м и отношения 4 : 3 площадь участка была бы '+decimal(12*(proposed/14)**2)+' м².':'Отношение длины к ширине равно 4 : 3. Забор проходит по всем четырём сторонам.';
+ }
+ host.append(svg,caption);
+}
+
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(config.type==='quadratic-story'){quadraticStory(host,config,value);return;}
+ if(config.type==='quadratic-example'){quadraticExample(host,value);return;}
  if(['work-hours','equal-distances'].includes(config.type)){workEstimate(host,config,value);return;}
  if(['intersection-example','shared-hyperbola-line'].includes(config.type)){
   host.className='task-graphs root-graph';

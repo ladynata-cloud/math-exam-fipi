@@ -42,6 +42,7 @@ jobs:
           python school/makarychev8/test-exercises-215-220.py
           python school/makarychev8/test-exercises-221-230.py
           python school/makarychev8/test-exercises-231-267.py
+          python school/makarychev8/test-exercises-510-530.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -72,6 +73,8 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-fractions.cjs
       - name: Square roots, accepted work and narrow screens
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-roots.cjs
+      - name: Chromium incomplete quadratic equations and new conditions
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-quadratics.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction

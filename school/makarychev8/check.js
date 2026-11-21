@@ -207,6 +207,31 @@ function separatedRational(input, expected){
  }
  return false;
 }
+// A real rational multiple of one square root is determined by its sign and square.
+// Use exact integers so a rounded decimal cannot stand in for an irrational root.
+function signedSquare(raw){
+ const input=normalize(raw);
+ function result(coef,rad,divisor,inverse){
+  if(!coef||!rad||!divisor||rad.n<0||!divisor.n||inverse&&!rad.n)return null;
+  const n=BigInt(coef.n)*BigInt(divisor.d),d=BigInt(coef.d)*BigInt(divisor.n);
+  const rn=BigInt(inverse?rad.d:rad.n),rd=BigInt(inverse?rad.n:rad.d);
+  return {sign:n===0n||rn===0n?0:(n<0n)!==(d<0n)?-1:1,n:n*n*rn,d:d*d*rd};
+ }
+ const unit=M.parse('1'),ordinary=M.parse(raw);
+ if(ordinary)return result(ordinary,unit,unit,false);
+ if(!input.includes('√')||input.length>80)return null;
+ // Outside parentheses the slash after a radical divides the entire product.
+ const decimal='(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)';
+ const atom='(?:\\('+decimal+'(?:/'+decimal+')?\\)|'+decimal+')';
+ const match=new RegExp('^([+-]?)(?:('+decimal+'(?:/'+decimal+')?)(\\*|/)?)?√('+atom+')(?:/('+decimal+'))?$').exec(input);
+ if(!match)return null;
+ const [,sign,coefficient,operation,radius,divisor]=match;
+ return result(M.parse((sign==='-'?'-':'')+(coefficient||'1')),M.parse(radius.replace(/[()]/g,'')),M.parse(divisor||'1'),operation==='/');
+}
+function sameReal(a,b){
+ const x=signedSquare(a),y=signedSquare(b);
+ return Boolean(x&&y&&x.sign===y.sign&&x.n*y.d===y.n*x.d);
+}
 function setEntries(value){
  let body=String(value).trim();
  if(body.startsWith('{')&&body.endsWith('}'))body=body.slice(1,-1);
@@ -218,7 +243,12 @@ function setEntries(value){
   const pair=/^(?:±|\+\/-)\s*(.*)$/.exec(term);
   if(!pair){entries.push(term);continue;}
   const magnitude=M.parse(pair[1]);
-  if(!magnitude)return null;
+  if(!magnitude){
+   const radical=signedSquare(pair[1]);if(!radical)return null;
+   const unsigned=pair[1].trim().replace(/^[+−–—-]/,'');
+   entries.push(unsigned);if(radical.sign)entries.push('-'+unsigned);
+   continue;
+  }
   entries.push(M.answer(magnitude));
   if(magnitude.n!==0)entries.push(M.answer({n:-magnitude.n,d:magnitude.d}));
  }
@@ -228,7 +258,7 @@ function setEqual(user,expected){
  const empty=s=>/^(нет|неткорней|корнейнет|пусто|∅|\{\})$/.test(normalize(s));
  if(empty(user)||empty(expected))return empty(user)&&empty(expected);
  const a=setEntries(user),b=setEntries(expected);if(!a||!b||a.length!==b.length)return false;
- const used=new Set();return a.every(x=>{const i=b.findIndex((y,j)=>!used.has(j)&&(M.parse(y)?M.equal(x,y):normalize(x)===normalize(y)));if(i<0)return false;used.add(i);return true;});
+ const used=new Set();return a.every(x=>{const i=b.findIndex((y,j)=>!used.has(j)&&(normalize(x)===normalize(y)||sameReal(x,y)));if(i<0)return false;used.add(i);return true;});
 }
 function squareInteger(n){
  n=BigInt(n);if(n<0n)return false;if(n<2n)return true;
@@ -261,6 +291,11 @@ function check(user,target){
  if(target.kind==='proof-chain')return (target.proofOrders||[target.answer]).includes(proofOrder(user,target.proofClaims.length)?.join(';'));
  if(target.kind==='common-factor')return equivalentCommonFactor(user,target.answer);
  if(target.kind==='domain-fraction')return inspectDomainFraction(user,target.exclusions).status==='correct';
+ if(target.kind==='incomplete-coefficients'){
+  const entries=user.split(';').map(M.parse);
+  if(entries.length!==3||entries.some(v=>!v)||entries[0].n===0)return false;
+  return (entries[1].n!==0)===target.hasLinear&&(entries[2].n!==0)===target.hasConstant;
+ }
  if(target.kind==='integer-pairs'){
   const pairs=G.parseIntegerPairs(user),expected=G.parseIntegerPairs(target.answer);
   if(!pairs||!expected||pairs.length!==expected.length)return false;
@@ -307,5 +342,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

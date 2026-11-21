@@ -162,9 +162,38 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–509 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–530 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–509 разобраны полностью/);
+ assert.match(overview.textContent,/№1–530 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
+});
+
+test('incomplete quadratic practice covers each real-root case on new numbers and all equivalent signed radicals',()=>{
+ const checker=require('./check.js'), model=require('./models.js');
+ for(const [user,expected] of [['±sqrt(1/3)','-√3/3;√3/3'],['±1/√3','-√3/3;√3/3'],
+   ['±√(3/2)','-√6/2;√6/2'],['-sqrt(2.4);sqrt(2.4)','-2√15/5;2√15/5'],['±√12,6','-3√35/5;3√35/5']]){
+  assert(checker.check(user,{kind:'set',answer:expected}));
+ }
+ for(const wrong of ['±√3/2','±√(-1/3)','0.57735;-0.57735','±sqrt(1/0)','±√','±√3/0','√3/3']){
+  assert(!checker.check(wrong,{kind:'set',answer:'-√3/3;√3/3'}));
+ }
+ for(const signs of [[false,false],[true,false],[false,true]]){
+  const q={kind:'incomplete-coefficients',hasLinear:signs[0],hasConstant:signs[1]};
+  for(const a of [-3,0,2])for(const b of [-1,0,3])for(const c of [-4,0,2]){
+   assert.equal(checker.check([a,b,c].join(';'),q),a!==0&&(b!==0)===signs[0]&&(c!==0)===signs[1]);
+  }
+ }
+ for(const level of [1,2,3]){
+  let previous='';
+  for(let seed=1;seed<=45;seed++){
+   const q=model.practiceQuadratic(seed,level),match=/Реши (\d+)x²(?: ([−+]) (\d+)(x?))? = 0/.exec(q.prompt);
+   assert(match);assert.notEqual(q.prompt,previous);previous=q.prompt;
+   const a=Number(match[1]),b=match[4]?Number(match[3])*(match[2]==='−'?-1:1):0,c=match[4]||!match[3]?0:Number(match[3])*(match[2]==='−'?-1:1);
+   const disc=b*b-4*a*c;
+   const roots=disc<0?'нет':[...new Set([(-b-Math.sqrt(disc))/(2*a),(-b+Math.sqrt(disc))/(2*a)])].join(';');
+   assert(checker.check(roots,q));
+   assert.deepEqual(model.practiceQuadratic(seed,level),q);
+  }
+ }
 });

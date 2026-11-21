@@ -53,6 +53,8 @@ for file in ['exercises-221-230.json','exercises-231-267.json']:
     for topic,tasks in read(file)['topics'].items():
         by_lesson[topic]['tasks'].extend(tasks)
 
+by_lesson['p20']['tasks'].extend(read('exercises-510-530.json'))
+
 ranges = []
 for first, last in RANGES:
     name = f'roots-{first}-{last}.json'

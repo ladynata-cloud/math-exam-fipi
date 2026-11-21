@@ -415,5 +415,33 @@
     body.hidden=!record.started;after.hidden=!record.started;if(record.started){prediction.disabled=true;start.hidden=true;status.textContent='Твой прогноз сохранён. '+spec.challenge;}if(record.explained)feedback.textContent='Объяснение проверено. Для самостоятельного результата реши новое условие.';
     return () => host.remove();
   }
-  return { mount, experiment, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const quadraticPractice={
+    id:'incomplete-quadratic',title:'Неполные квадратные уравнения',
+    description:'Выбери, вынести ли общий множитель или выразить квадрат, и проверь все действительные корни.'
+  };
+  function practiceQuadratic(seed,level){
+    const branch=level===1?'factor':level===2?'square':['factor','square','none','zero'][seed%4];
+    const a=2+seed%7,root=2+seed%11;
+    const coefficient=a*root,constant=a*root*root,sign=seed%2?1:-1;
+    const factor=branch==='factor',negative=branch==='none',onlyZero=branch==='zero';
+    const signed=(sign,term)=>(sign>0?' + ':' − ')+term;
+    const expression=a+'x²'+(factor?signed(sign,coefficient+'x'):onlyZero?'':signed(negative?1:-1,constant))+' = 0';
+    const answer=factor?'0;'+(-sign*root):negative?'нет':onlyZero?'0':(-root)+';'+root;
+    const method=factor?'Вынести общий множитель x':'Выразить x²';
+    const hint=factor?'Прежде чем делить на x, проверь x = 0. Другой корень даёт линейный множитель.':'Раздели равенство на коэффициент при x² и сравни правую часть с нулём.';
+    const reduced=onlyZero?0:(negative?-1:1)*root*root;
+    return {title:'Найди все действительные корни',prompt:'Реши '+expression,kind:'set',answer,
+      finalLabel:'Все корни',inputNote:'Запиши корни через точку с запятой или «нет».',skills:[],
+      source:{type:'authored',reference:'Авторская тренировка по неполным квадратным уравнениям'},
+      hint,correction:hint,explanation:factor?'После вынесения x один корень нулевой, а второй равен '+(-sign*root)+'.':
+        'После деления x² = '+reduced+'. '+(negative?'Такого действительного числа нет.':onlyZero?'Единственный корень равен 0.':'Два корня противоположны.'),
+      steps:[
+        {prompt:'Какое первое действие здесь удобнее?',kind:'choice',answer:method,
+         choices:['Выразить x²','Вынести общий множитель x'],hint,explanation:method+'.'},
+        {prompt:factor?'Какой корень даёт линейный множитель?':'Чему равно x²?',kind:'number',
+         answer:String(factor?-sign*root:reduced),hint,explanation:factor?'Раздели свободный коэффициент линейного множителя с обратным знаком на '+a+'.':'Квадрат неизвестного равен '+reduced+'.'}
+      ]};
+  }
+
+  return { mount, experiment, quadraticPractice, practiceQuadratic, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });
