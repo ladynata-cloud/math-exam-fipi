@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-06T01:18:17.769Z",
-  "scope": "Introduction and chapters I–IV through additional sphere exercises 414–421: 688 reviewed cards; main exercises 1–421 complete; theory points 1–51; 50 self-check questions. Exercise 422 onward and later chapters remain pending. Not the complete book.",
+  "registeredAt": "2026-11-21T06:20:00Z",
+  "scope": "Introduction and chapters I–IV through exercise 427, with 698 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1070,6 +1070,25 @@
       "evidence": "docs/reviews/ATANASYAN_ADDITIONAL_414_421_INDEPENDENT.json",
       "mathematicalReport": "tools/stereo-textbook/additional414-math.test.cjs",
       "authoredSHA256": "1712465d90a82a8bf14b22dacedacb54a305b3834f2f39a8a64b5007aa376048"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T06:20:00Z",
+      "scope": "Inscribed and circumscribed solids, exercises 422–427, all 10 parts",
+      "cardIds": [
+        "ex-main-0422",
+        "ex-main-0423",
+        "ex-main-0424-a",
+        "ex-main-0424-b",
+        "ex-main-0424-c",
+        "ex-main-0425",
+        "ex-main-0426",
+        "ex-main-0427-a",
+        "ex-main-0427-b",
+        "ex-main-0427-c"
+      ],
+      "evidence": "tools/stereo-textbook/inscribed-solids.json",
+      "mathematicalReport": "tools/stereo-textbook/inscribed-solids.test.cjs"
     }
   ],
   "cards": [
@@ -3824,6 +3843,46 @@
     {
       "id": "ex-main-0421",
       "sha256": "309d48f225de1db7a70a6c10948d2c7233b6650d31ca6a0e6f7ad717db865e4c"
+    },
+    {
+      "id": "ex-main-0422",
+      "sha256": "f33dbd1f62ff8925a02296e37a98ce9717e071337ce65c4b75cbaa47823fabde"
+    },
+    {
+      "id": "ex-main-0423",
+      "sha256": "b0573482d8d5c9f872130542cd166c1d2183cd5be8295e8657f0f832886bc960"
+    },
+    {
+      "id": "ex-main-0424-a",
+      "sha256": "6ba430a639c1d665cda52804ce0e2c985820da9aa3de5d7446de662801a54f91"
+    },
+    {
+      "id": "ex-main-0424-b",
+      "sha256": "159c5a13182892a35a1f9e99f8c843c519a6bdc19896303f5e3697e96d0ac311"
+    },
+    {
+      "id": "ex-main-0424-c",
+      "sha256": "2b06e8c17cf38ec05fba43d8103ebdaab2d8415ca28d82513cadb42786f53020"
+    },
+    {
+      "id": "ex-main-0425",
+      "sha256": "db164aebf51ee8ae2f2525778ab8711bd31c4fdeeef85cca53365e39c1e15a80"
+    },
+    {
+      "id": "ex-main-0426",
+      "sha256": "a7dd88312c61fee70d9fd348f46bf1bdfe8776dfcaf4ec138c6ee4f30e03c1a6"
+    },
+    {
+      "id": "ex-main-0427-a",
+      "sha256": "6235d90d7bd0aa32880aad1f7dc4d8423c29cacca9678e24a79578dea2334efe"
+    },
+    {
+      "id": "ex-main-0427-b",
+      "sha256": "661079ced3715c03b070d8a98371d7d420484509033b056df669750a831db2b9"
+    },
+    {
+      "id": "ex-main-0427-c",
+      "sha256": "9cf2e97695ea3dee00c1f2ea0e075bd3648ab7ac6980d8d56c993c71316e7d56"
     }
   ]
 }
