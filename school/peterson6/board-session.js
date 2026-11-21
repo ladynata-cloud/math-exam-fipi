@@ -223,7 +223,7 @@
     }
     return Object.freeze({ validRoute, pack, unpack, validateState, validateWork: work => { try { return workValid(work); } catch (_) { return false; } }, resolveTask, readDetails, applyDetails });
   }
-  const api = Object.freeze({ id: 'peterson6', path: '/trainers/peterson6.html', marker: 'part1', defaultRoute: '#home', limits: LIMITS, create });
+  const api = Object.freeze({ id: 'peterson6-complete', path: '/trainers/peterson6-complete.html', marker: 'part1', defaultRoute: '#home', limits: LIMITS, create });
   root.PetersonBoard = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : globalThis);

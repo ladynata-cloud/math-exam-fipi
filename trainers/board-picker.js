@@ -93,12 +93,33 @@ function normalize(value){
  }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson5/','/school/peterson5/index.html'].includes(u.pathname)&&(!u.hash||/^#(?:home|topics|skills|progress|topic\/p(?:0[1-9]|[1-3]\d|4[0-3])\/(?:discover|check|practice(?:\/[01])?)|lesson\/p(?:0[1-9]|[1-3]\d|4[0-3])(?:\/\d{1,2})?|practice\/[a-z-]+\/[123])$/.test(u.hash)))return '/trainers/peterson5.html'+u.search+(u.hash||'#home');
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson6/','/school/peterson6/index.html'].includes(u.pathname)&&petersonRoute(u.hash)){
-  return '/trainers/peterson6.html'+u.search+u.hash;
+  return '/trainers/peterson6-complete.html'+u.search+u.hash;
  }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/geometry-course/textbook/','/geometry-course/textbook/index.html'].includes(u.pathname)&&u.hash==='#atanasyan-7-9-main-92-part-1')return '/trainers/atanasyan-7-9.html'+u.search+u.hash;
  if(u.origin===location.origin&&rawPath===u.pathname&&['/geometry-course/textbook/','/geometry-course/textbook/index.html','/geometry-course/first-steps/','/geometry-course/first-steps/index.html'].includes(u.pathname))return '/trainers/atanasyan-grade7.html'+u.search+u.hash;
  if(u.origin===location.origin&&rawPath===u.pathname&&/^\/geometry-course\/trainers\/ch[1-4]-[a-z0-9-]+\.html$/.test(u.pathname))return '/trainers/geometry7-practice.html?activity='+u.pathname.split('/').pop().replace(/\.html$/,'');
  return raw;
+}
+const PETERSON_FIRST_TASK_COUNTS=Object.freeze({p01:14,p02:14,p03:14,p04:14,p05:14,p06:14,p07:14,p08:18,p09:18,p10:18,p11:18,p12:18,p13:18,p14:18});
+const PETERSON_FIRST_SKILLS=new Set(['fraction-reduce','fraction-mixed','fraction-add','fraction-subtract','fraction-multiply','fraction-divide','decimal-add','decimal-subtract','decimal-multiply','decimal-divide','decimal-to-fraction','fraction-to-decimal','mixed-multiply','mixed-divide','unlike-multiply','unlike-divide','order-operations','percent-part','percent-whole','percent-ratio']);
+function petersonFirstPartRoute(hash){
+ if(['','#home','#skills','#progress'].includes(hash))return true;
+ const lesson=/^#lesson\/(p\d{2})(?:\/(0|[1-9]\d*))?$/.exec(hash);
+ if(lesson)return Object.hasOwn(PETERSON_FIRST_TASK_COUNTS,lesson[1])&&(lesson[2]===undefined||Number(lesson[2])<PETERSON_FIRST_TASK_COUNTS[lesson[1]]);
+ const practice=/^#practice\/([a-z-]+)\/([123])$/.exec(hash);
+ return !!practice&&PETERSON_FIRST_SKILLS.has(practice[1]);
+}
+
+// Resolve a deliberate course selection against the connected server.
+// Restoring or receiving an existing room always retains its exact trainer URL.
+function petersonSelection(url, registered, origin) {
+ const target = new URL(url, origin + '/trainers/');
+ if (target.origin !== origin || target.pathname !== '/trainers/peterson6-complete.html') return url;
+ if (registered('peterson6-complete')) return url;
+ if (registered('peterson6') && petersonFirstPartRoute(target.hash)) {
+  return '/trainers/peterson6.html' + target.search + target.hash;
+ }
+ throw Error('Для этой темы полная версия курса ещё не подключена к серверу доски. Текущее занятие сохранено. Можно открыть тему в самостоятельном курсе.');
 }
 function canonical(value){const u=new URL(normalize(value),location.href);u.searchParams.delete('seed');return u.origin===location.origin?u.pathname+u.search+u.hash:u.href;}
 function error(message){const el=document.getElementById('pickerError');if(el){el.textContent=message;el.hidden=false;}}
@@ -140,5 +161,5 @@ function mount(options){
  fetch('board-picker-data.json?v=20261121-peterson-parts23').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
  const query=new URLSearchParams(location.search).get('trainer');if(query&&options.role()==='teacher')choose(query);
 }
-root.BoardPicker={normalize,canonical,mount,error,clearError};
+root.BoardPicker={normalize,canonical,petersonSelection,mount,error,clearError};
 })(window);

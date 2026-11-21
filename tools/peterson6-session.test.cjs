@@ -37,8 +37,8 @@ function lessonSnapshot(state = blank()) {
 }
 
 test('fixed identity and all authored/practice routes are bounded by real course data', () => {
-  assert.equal(adapter.id, 'peterson6');
-  assert.equal(adapter.path, '/trainers/peterson6.html');
+  assert.equal(adapter.id, 'peterson6-complete');
+  assert.equal(adapter.path, '/trainers/peterson6-complete.html');
   assert.equal(adapter.marker, 'part1');
   for (const route of ['#home', '#skills', '#progress']) assert(session.validRoute(route));
   for (const lesson of lessons) {

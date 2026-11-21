@@ -8,14 +8,15 @@ const { resolve } = require('node:path');
 const { test } = require('node:test');
 const { JSDOM, VirtualConsole } = require('jsdom');
 const ROOT = resolve(__dirname, '..');
-const PATH = '/trainers/peterson6.html';
+const PATH = '/trainers/peterson6-complete.html';
 const clone = value => JSON.parse(JSON.stringify(value));
 
 function fixture(options = {}) {
   const errors = [], console = new VirtualConsole();
   console.on('jsdomError', error => errors.push(error.message));
-  const dom = new JSDOM(readFileSync(resolve(ROOT, '.' + PATH), 'utf8'), {
-    url: 'https://local.example' + (options.path || PATH) + (options.route || '#home'),
+  const wrapper=options.wrapper || PATH;
+  const dom = new JSDOM(readFileSync(resolve(ROOT, '.' + wrapper), 'utf8'), {
+    url: 'https://local.example' + (options.path || wrapper) + (options.route || '#home'),
     runScripts: 'outside-only', pretendToBeVisual: true, virtualConsole: console
   });
   const w = dom.window, d = w.document, accesses = { local: 0, session: 0 };
@@ -118,8 +119,8 @@ function fixture(options = {}) {
 test('only exact wrapper path and marker enable the isolated shared runtime', () => {
   const f = fixture();
   try {
-    assert(f.api); assert.equal(f.registration.id, 'peterson6'); assert.equal(f.registration.version, '2.0.0');
-    assert.equal(f.registration.stateSchemaVersion, 2); assert.equal(f.registration.parentOrigin, 'https://local.example');
+    assert(f.api); assert.equal(f.registration.id, 'peterson6-complete'); assert.equal(f.registration.version, '1.0.0');
+    assert.equal(f.registration.stateSchemaVersion, 1); assert.equal(f.registration.parentOrigin, 'https://local.example');
     assert.match(f.d.querySelector('footer').textContent, /без зачёта в личный прогресс/);
     assert.equal(Object.keys(f.state().work.tasks).length, 0, 'home does not transmit all 224 untouched records');
     f.roundtrip('home');
@@ -442,4 +443,25 @@ test('fresh checks and diagnostic transfer through the actual SDK without help o
 test('part-aware lookup transfers selected part, source notice and typed draft separately',()=>{
  const f=fixture({continuation:true});
  try{const part=f.query('#book-part');part.value='2';part.dispatchEvent(new f.w.Event('change',{bubbles:true}));f.input('#exercise-number','144');f.submit('#number-form');assert.match(f.query('#number-result').textContent,/№ 144 не напечатан/);assert(!f.d.querySelector('#number-result a[href^="#lesson/"]'));f.input('#exercise-number','589');const value=f.roundtrip('part 2 source notice with new draft');assert.deepEqual(value.view.number,{part:2,draft:'589',submitted:144});const restoredPart=f.query('#book-part');restoredPart.value='3';restoredPart.dispatchEvent(new f.w.Event('change',{bubbles:true}));f.input('#exercise-number','778');f.submit('#number-form');assert.equal(f.roundtrip('part 3 last exercise').view.number.part,3);assert.equal(f.query('#exercise-number').max,'778');}finally{f.close();}
+});
+
+test('old room keeps its frame, calculations and notes when either release is serving other rooms', async () => {
+  const oldPath='/trainers/peterson6.html';
+  const teacher=fixture({wrapper:oldPath}),student=fixture({wrapper:oldPath}),next=fixture();
+  try {
+    const ids=[teacher.registration.id,student.registration.id,next.registration.id];
+    assert.deepEqual(ids,['peterson6','peterson6','peterson6-complete']);
+    assert.equal(teacher.registration.version,'1.1.0');
+    assert.equal(next.registration.version,'1.0.0');
+    assert.equal(teacher.registration.stateSchemaVersion,1);
+    assert.equal(next.registration.stateSchemaVersion,1);
+    await teacher.navigate('#lesson/p08/0');
+    teacher.input('#notebook','Общий знаменатель 12.');teacher.input('#final-answer','5/12');
+    const frozen=teacher.state();assert(teacher.valid(frozen));assert(!next.valid(frozen));
+    student.apply(frozen);assert.deepEqual(student.state(),frozen);
+    assert.equal(student.query('#notebook').value,'Общий знаменатель 12.');
+    assert.equal(student.query('#final-answer').value,'5/12');
+    await next.navigate('#lesson/p58/0');assert(!teacher.valid(next.state()));
+    assert.deepEqual(teacher.state(),frozen);
+  } finally { teacher.close();student.close();next.close(); }
 });

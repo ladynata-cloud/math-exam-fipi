@@ -27,7 +27,7 @@ function openTask(window, lesson, index) {
 }
 
 function fixture({ board = false, query = '', url } = {}) {
-  const page = board ? 'trainers/peterson6.html' : 'school/peterson6/index.html';
+  const page = board ? 'trainers/peterson6-complete.html' : 'school/peterson6/index.html';
   const dom = new JSDOM(read(page), {
     url: url || 'https://mathexam.space/' + page + query + '#home',
     runScripts: 'outside-only'

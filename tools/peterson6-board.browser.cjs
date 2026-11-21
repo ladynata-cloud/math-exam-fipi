@@ -11,7 +11,7 @@ const { extname, join, resolve, sep } = require('node:path');
 const { chromium } = require('playwright');
 
 const ROOT = resolve(__dirname, '..');
-const WRAPPER = 'peterson6.html';
+const WRAPPER = 'peterson6-complete.html';
 const PERSONAL_KEY = 'mathexam.peterson6.part1.v1';
 const CONTROL_KEY = 'peterson-board-gate.unrelated';
 const wait = ms => new Promise(resolveWait => setTimeout(resolveWait, ms));
@@ -293,6 +293,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   const migratedPersonal = await entry.page.evaluate(key => localStorage.getItem(key), PERSONAL_KEY);
   const expectedPersonal = JSON.parse(entry.values[PERSONAL_KEY]);
   expectedPersonal.tasks['p08-t01'].methodVersion = 1;
+  expectedPersonal.tasks['p08-t01'].firstErrors = {steps:{}};
   assert.deepEqual(JSON.parse(migratedPersonal), { ...expectedPersonal, history: {}, models: {} },
     'all legacy fields and the published equation-method migration survive the new model cache');
   entry.values[PERSONAL_KEY] = migratedPersonal;

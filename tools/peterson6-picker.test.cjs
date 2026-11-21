@@ -7,7 +7,7 @@ const test = require('node:test');
 const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const sourcePath = '/school/peterson6/index.html';
-const wrapperPath = '/trainers/peterson6.html';
+const wrapperPath = '/trainers/peterson6-complete.html';
 
 function picker(origin = 'https://mathexam.space') {
   const sandbox = { window: {}, location: new URL(origin + '/trainers/trainer-board.html'), URL };
@@ -143,15 +143,31 @@ test('one searchable course entry has an exact mirror declaration without a pers
   assert.equal(canonicalTrainerFile(sourcePath.slice(1)), null);
   const registry = loadTrainerRegistry({ env: {} });
   assert.deepEqual(registry.getByTrainerUrl(wrapperPath + '#skills'), {
-    trainerId: 'peterson6', file: wrapperPath.slice(1), version: '2.0.0',
-    stateSchemaVersion: 2, bridgeProtocolVersion: 1, allowLegacyHtml: false
+    trainerId: 'peterson6-complete', file: wrapperPath.slice(1), version: '1.0.0',
+    stateSchemaVersion: 1, bridgeProtocolVersion: 1, allowLegacyHtml: false
   });
   assert.equal(registry.getByTrainerUrl(sourcePath + '#skills'), null);
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'trainers/board-compat.json'), 'utf8'));
-  const declaration = manifest.trainers.find(entry => entry.trainerId === 'peterson6');
+  const declaration = manifest.trainers.find(entry => entry.trainerId === 'peterson6-complete');
   assert.equal(declaration.supportsBoardMirror, true);
   assert.equal(declaration.supportsSeed, false);
   assert.notEqual(declaration.supportsProgressTracking, true);
   assert.equal(registry.getByTrainerUrl('/trainers/ege-profile-expressions.html#exam/8').trainerId, 'ege-profile-expressions');
   assert.equal(registry.getByTrainerUrl('/trainers/ege-profile-stereometry.html#exam/3').trainerId, 'ege-profile-stereometry');
+});
+
+test('explicit opening follows server capabilities and never redirects existing legacy rooms', () => {
+  const {normalize,petersonSelection}=picker();
+  const origin='https://mathexam.space',old=id=>id==='peterson6',both=id=>old(id)||id==='peterson6-complete';
+  const select=(raw,available)=>petersonSelection(normalize(raw),available,origin);
+  const p1='/school/peterson6/#lesson/p08/0',p2='/school/peterson6/#lesson/p15/0';
+  assert.equal(select(p1,old),'/trainers/peterson6.html#lesson/p08/0');
+  assert.equal(select(p1,both),'/trainers/peterson6-complete.html#lesson/p08/0');
+  assert.equal(select(p2,both),'/trainers/peterson6-complete.html#lesson/p15/0');
+  for(const url of [p2,'/school/peterson6/#check/ratio/1','/school/peterson6/#diagnostic']){
+    assert.throws(()=>select(url,old),/Текущее занятие сохранено/);
+  }
+  for(const available of [old,both,()=>false]){
+    assert.equal(select('/trainers/peterson6.html#lesson/p08/0',available),'/trainers/peterson6.html#lesson/p08/0');
+  }
 });

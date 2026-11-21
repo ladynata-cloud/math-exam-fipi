@@ -41054,6 +41054,16 @@ window.PetersonCourse = {
 <script data-inline-source="/school/peterson6/app.js">
 (function () {
   'use strict';
+  // A cached v1 wrapper can still request the old asset URLs after a Pages release.
+  // Reload only the frame, before personal storage or the board bridge is touched.
+  if (location.pathname === '/trainers/peterson6.html' && document.body?.dataset.petersonBoard === 'part1') {
+    const frameUrl = new URL(location.href);
+    if (!frameUrl.searchParams.has('p6LegacyAssets')) {
+      frameUrl.searchParams.set('p6LegacyAssets', '1');
+      location.replace(frameUrl.href);
+    }
+    return;
+  }
   const D=window.PetersonCourse, sharedMath=window.PetersonMath, main=document.getElementById('main');
   if(!D||!sharedMath){main.innerHTML='<div class="error-page"><h1>Не все файлы курса загрузились</h1><p>Обновите страницу. Для работы без интернета распакуйте весь архив курса в одну папку.</p></div>';return;}
   // Opt this course into revised steps; other courses keep the shared legacy API.
@@ -41776,7 +41786,7 @@ ${[1, 2, 3]
  window.__peterson6Board=Object.freeze(api);
  checkedBoardState();
  const schedule=()=>{if(applyingBoardState)return;clearTimeout(boardNotifyTimer);boardNotifyTimer=setTimeout(()=>{if(!applyingBoardState){checkedBoardState();boardNotify();}},0);};
- window.MathExamBoard.register({id:boardAdapter.id,version:'2.0.0',stateSchemaVersion:2,parentOrigin:location.origin,getState:checkedBoardState,applyState:applyBoardState,subscribe(notify){
+ window.MathExamBoard.register({id:boardAdapter.id,version:'1.0.0',stateSchemaVersion:1,parentOrigin:location.origin,getState:checkedBoardState,applyState:applyBoardState,subscribe(notify){
   boardNotify=notify;const events=['click','input','change','submit','toggle','keydown'];events.forEach(name=>document.addEventListener(name,schedule,true));window.addEventListener('hashchange',schedule);
   return ()=>{clearTimeout(boardNotifyTimer);events.forEach(name=>document.removeEventListener(name,schedule,true));window.removeEventListener('hashchange',schedule);boardNotify=()=>{};};
  }});

@@ -69,6 +69,7 @@ const expectedCatalogFiles = [
   'trainers/ege-profile/log-inequalities/nested.html',
   'trainers/atanasyan-7-9.html',
   'trainers/peterson6.html',
+  'trainers/peterson6-complete.html',
   'trainers/merzlyak-10-base.html',
   'trainers/sections-from-zero.html',
   'trainers/stereo-literacy-atanasyan.html',
@@ -245,15 +246,15 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with 88 catalog entries and 64 mirrors', () => {
+test('current manifest validates with 89 catalog entries and 65 mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 88);
-  assert.equal(result.trainers.length, 64);
+  assert.equal(manifest.trainers.length, 89);
+  assert.equal(result.trainers.length, 65);
   assert.deepEqual(result.progressTrainers, [{
     trainerId: 'yashchenko-t12',
     file: 'trainers/ege-profile/yashchenko-lines-1-2.html',
@@ -269,7 +270,7 @@ test('current manifest validates with 88 catalog entries and 64 mirrors', () => 
   }]);
 });
 
-test('runtime registry has exact parity with all 64 mirror authorizations', () => {
+test('runtime registry has exact parity with all 65 mirror authorizations', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.deepEqual(registry.entries, [
     ...['atanasyan-grade7','geometry7-practice','geometry7-rebuild','ege-profile-log-trig','ege-profile-circle','peterson5'].map(trainerId=>({trainerId,file:'trainers/'+trainerId+'.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false})),
@@ -451,8 +452,16 @@ test('runtime registry has exact parity with all 64 mirror authorizations', () =
     {
       trainerId: 'peterson6',
       file: 'trainers/peterson6.html',
-      version: '2.0.0',
-      stateSchemaVersion: 2,
+      version: '1.1.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'peterson6-complete',
+      file: 'trainers/peterson6-complete.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
       bridgeProtocolVersion: 1,
       allowLegacyHtml: false
     },
@@ -495,7 +504,7 @@ test('bundled default loads relative to the server module', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.equal(registry.loaded, true);
   assert.equal(registry.source, 'bundled-default');
-  assert.equal(registry.entries.length, 64);
+  assert.equal(registry.entries.length, 65);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
 });
 
@@ -571,7 +580,7 @@ test('required catalog and mirror fields are enforced', () => {
 
 test('trainer version and protocol versions are validated', () => {
   expectError(manifest => { mirrorEntry(manifest).version = 'latest'; }, 'REGISTRY_ENTRY_VERSION_INVALID');
-  expectError(manifest => { mirrorEntry(manifest).stateSchemaVersion = 3; }, 'REGISTRY_ENTRY_STATE_SCHEMA_UNSUPPORTED');
+  expectError(manifest => { mirrorEntry(manifest).stateSchemaVersion = 2; }, 'REGISTRY_ENTRY_STATE_SCHEMA_UNSUPPORTED');
   expectError(manifest => { mirrorEntry(manifest).bridgeProtocolVersion = 2; }, 'REGISTRY_ENTRY_PROTOCOL_UNSUPPORTED');
 });
 
@@ -687,7 +696,7 @@ test('an additional synthetic mirror entry needs no registry core change', () =>
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 65);
+    assert.equal(registry.entries.length, 66);
     assert.equal(registry.getById(synthetic.trainerId).file, synthetic.file);
   });
 });
@@ -698,7 +707,7 @@ test('removing a mirror entry removes its runtime authorization', () => {
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 63);
+    assert.equal(registry.entries.length, 64);
     assert.equal(registry.getById('linear-inequalities-stepwise'), null);
   });
 });
@@ -729,17 +738,4 @@ test('trainer URLs map to canonical manifest files', () => {
   }
   assert.equal(trainerFileFromUrl('../negative-numbers-line.html'), null);
   assert.equal(registry.getByTrainerUrl('other-trainer.html'), null);
-});
-
-test('supported state schemas retain exact trainer metadata', () => {
-  const manifest = currentManifest();
-  const peterson = manifest.trainers.find(entry => entry.trainerId === 'peterson6');
-  assert.equal(peterson.stateSchemaVersion, 2);
-  assert.equal(validateTrainerManifest(manifest).ok, true);
-  peterson.stateSchemaVersion = 1;
-  assert.equal(validateTrainerManifest(manifest).ok, true);
-  for (const version of [0, 3, '2', null]) {
-    peterson.stateSchemaVersion = version;
-    assert.equal(validateTrainerManifest(manifest).error, 'REGISTRY_ENTRY_STATE_SCHEMA_UNSUPPORTED');
-  }
 });
