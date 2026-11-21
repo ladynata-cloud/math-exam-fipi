@@ -290,8 +290,14 @@ function firstErrorsHTML(t,s){
     const first = D.lessons.find(lesson => partOf(lesson) === part);
     if (!first?.orderBySource) return '';
     const index = readingOrder(first)[0];
+    const section = first.completeSourceSection;
+    const coverage = section ? '<p class="small">В теме «' + e(first.title) + '» разобраны №' +
+      section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
+      section.lastPage + '). Число карточек с разбором — ' + first.tasks.filter(task =>
+        task.source?.type === 'textbook' && task.source.exercise >= section.first && task.source.exercise <= section.last).length +
+      '.</p>' : '';
     return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
-      'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>';
+      'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>' + coverage;
   }
   function partOf(lesson){return Number(lesson?.part)||1;}
   function sourceLimit(part){return ({1:497,2:589,3:778})[part]||497;}

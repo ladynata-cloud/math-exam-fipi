@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,334);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,352);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -205,7 +205,31 @@ for(const [i,letters] of ratioColumns.entries()) {
  assert.deepEqual(Array.from(rows,t=>t.source.subpart||'').sort(),expected.sort(),'every printed prompt at part 2 number '+(i+1));
  assert(rows.every(t=>t.source.page===(i<8?6:i<14?7:8)));
 }
-assert.equal(p15.tasks.length,75);
+assert.equal(p15.tasks.length,93);
+{
+const completeTopic=D.lessons.find(l=>l.id==='p15');
+assert.deepEqual(Array.from(Object.values(completeTopic.completeSourceSection)),[1,27,6,10]);
+const reviewedEnd=completeTopic.tasks.filter(t=>t.source.exercise>=20);
+assert.equal(reviewedEnd.length,18);
+const rates=reviewedEnd.filter(t=>t.source.exercise===21);
+assert.deepEqual(Array.from(rates,t=>t.answer),['80','10','140','100/3','7','25/2','125','6']);
+for(const [i,[x,y]] of [[.56,.7],[3/22,1+4/11],[3.6,2+4/7],[8+1/3,25],[2.8,4*10],[3,24],[5*100,400],[180,3*1000]].entries()){
+ const r=M.parse(rates[i].answer);assert(Math.abs(r.n/r.d-100*x/y)<1e-9);
+}
+assert.equal(1.5*16-5,16+3);
+assert(Math.abs((2*2.4-3)-4.5*(2.4-2))<1e-9);
+assert.equal((180*.1+360*.15+460*.3)/(180+360+460)*100,21);
+assert.equal(12*11-39,8*11+5);
+assert(Math.abs(6*(4-1.4)-(3.5*4+1.6))<1e-9);
+assert.equal(2*12,.8*(12+18));assert.equal(10+5*4,3*10);
+const add=(a,b)=>M.operation('add',a,b),sub=(a,b)=>M.operation('subtract',a,b),mul=(a,b)=>M.operation('multiply',a,b),div=(a,b)=>M.operation('divide',a,b);
+const numA=sub(mul(sub('7 3/8','2.125'),'2 2/7'),div('39.48','5.6'));
+const denA=sub(mul(div(sub(mul('3.4','.9'),'2.7'),'.06'),'2 2/3'),mul('30.9','.5'));
+const numB=mul(sub(mul('6.1','3.05'),mul('2.05',add('4 3/5','4.46'))),'22.5');
+const denB=mul(div(add(add('1 1/4','.5'),'2 1/3'),'2 1/24'),'.01');
+assert.deepEqual([numA,denA,numB,denB].map(M.answer),['99/20','11/20','18/25','1/50']);
+assert.deepEqual([div(numA,denA),div(numB,denB)].map(M.answer),['9','36']);
+}
 const oralTravel=D.lessons.find(l=>l.id==='p33').tasks.filter(t=>[14,15,16].includes(t.source.exercise));
 assert.deepEqual(Array.from(oralTravel,t=>[t.source.exercise,t.source.subpart||'',t.source.page]),[
  [14,'а',6],[14,'б',6],[14,'в',6],[14,'г',6],[15,'',6],[16,'а',6],[16,'б',6],[16,'в',6],[16,'г',6],

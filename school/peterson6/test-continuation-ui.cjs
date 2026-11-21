@@ -307,7 +307,7 @@ test('read both opening sections in print order while old links retain their tas
  const f=fixture(null,null,true);
  try {
   const parts=[
-   {part:2,id:'p15',first:32,subparts:['аб','','абвгдежз','','абвг','абвгдежз','абвг','абвгде','12','123','абвгде','1234','1234','12','12345','1234','123456','','абвг']},
+   {part:2,id:'p15',first:32,subparts:['аб','','абвгдежз','','абвг','абвгдежз','абвг','абвгде','12','123','абвгде','1234','1234','12','12345','1234','123456','','абвг','12','абвгдежз','','','аб','','12','']},
    {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб','абв','аб','аб','абвг','','абвг']},
   ];
   for(const {part,id,first,subparts} of parts) {
@@ -330,6 +330,34 @@ test('read both opening sections in print order while old links retain their tas
    assert.equal(f.q('[aria-current="step"]').dataset.index,'0');
    assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
   }
+ }finally{f.close();}
+});
+
+test('a complete source topic checks changed quantities, a weighted solution and similar triangles',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#home');assert.match(f.q('#main').textContent,/№1–27 со всеми подпунктами.*93/);
+  const model=(index)=>{f.nav('#lesson/p15/'+index);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  for(const [index,pairs]of [[75,[[0,1],[1,0]]],[76,[[0,0],[1,1]]],[89,[[0,0],[1,1]]],[92,[[0,1],[1,2]]]]){
+   const ids=model(index);for(const [example,guess] of pairs){f.event(ids[0],String(example),'change');f.event(ids[1],String(guess),'change');assert(f.q('#model .pm-result').textContent.includes('согласуется'));}
+   f.event(ids[1],String((pairs[1][1]+1)%3),'change');assert(f.q('#model .pm-result').textContent.includes('не выполнено'));
+  }
+  for(let i=77;i<=84;i++){
+   const ids=model(i);f.event(ids[1],'1','change');assert.equal(f.d.querySelectorAll('#model .pm-equation').length,2);
+   f.event(ids[0],'1','change');assert.equal(f.d.querySelectorAll('#model .pm-equation').length,0);
+  }
+  const mix=model(85);f.event(mix[1],'2','change');
+  assert.match(f.q('#model .pm-equation').textContent,/210 \/ 1000/);
+  f.event(mix[0],'1','change');assert.match(f.q('#model .pm-equation').textContent,/130 \/ 600/);
+  const triangles=model(86);assert.equal(f.d.querySelectorAll('#task-figure [data-base]').length,4);
+  for(const sample of [0,1])for(const size of [0,1,2,3]){
+   f.event(triangles[0],String(size),'change');f.event(triangles[1],String(sample),'change');
+   for(const line of f.d.querySelectorAll('#model [data-base]')){
+    const height=+line.getAttribute('y1')-+line.getAttribute('y2'),width=(+line.getAttribute('x1')-15);
+    assert(Math.abs(height/width-(sample?2/3:1/2))<1e-9);
+   }
+  }
+  for(const index of [90,91]){const ids=model(index);assert.equal(f.q(ids[1]).value,index===90?'0':'1');}
  }finally{f.close();}
 });
 

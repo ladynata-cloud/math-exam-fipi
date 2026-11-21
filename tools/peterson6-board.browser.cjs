@@ -477,9 +477,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   const afterLate = await synchronized(teacherFrame, lateFrame, 'late participant follows teacher');
   await synchronized(teacherFrame, studentFrame, 'original participant follows teacher');
   assert.deepEqual(afterLate.view.model.piles, [5, 5, 5]);
-  await assertPersonalStorage(lateSession,lateFrame);
-  // This observer leaves and later rejoins the same room with the same browser storage.
-  await lateSession.page.goto('about:blank',{waitUntil:'commit'});
+
 
 
   phase = 'feedback for ratio order and distributed signs';
@@ -509,6 +507,10 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await synchronized(teacherFrame, studentFrame, 'each product shown to pupil');
   assert.match(await studentFrame.locator('.help figure').innerText(), /−1 × \(a\) и −1 × \(−b\)/);
   await narrowShot(teacher, teacherFrame, 'peterson-board-320-bracket-feedback', '.help figure');
+
+  await assertPersonalStorage(lateSession,lateFrame);
+  // This observer leaves and later rejoins the same room with the same browser storage.
+  await lateSession.page.goto('about:blank',{waitUntil:'commit'});
 
   phase = 'exact salt concentration and feedback on the shared board';
   await lesson(teacherFrame, 'p15', 9);
@@ -678,6 +680,37 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
     const secondInPrint = await synchronized(teacherFrame, studentFrame, 'printed second subpart in part ' + part);
     assert.equal(secondInPrint.route, '#lesson/' + id + '/' + (index + 1));
   }
+
+  phase = 'complete first ratio topic, similar triangles and both percentage baselines';
+  await teacherFrame.locator('header nav a[href="#home"]').click();
+  assert.match(await teacherFrame.locator('#main').innerText(),/№1–27 со всеми подпунктами.*93/s);
+  await lesson(teacherFrame,'p15',86);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Треугольник',{exact:true}).selectOption('3');
+  await teacherFrame.getByLabel('Луч из A',{exact:true}).selectOption('1');
+  const similar=await synchronized(teacherFrame,studentFrame,'four similar triangles change together on a new ray');
+  assert.deepEqual(similar.view.model.values,[3,1]);
+  assert.equal(await studentFrame.locator('#model [data-base]').count(),4);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-similar-tangents','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Треугольник',{exact:true}).selectOption('1');
+  await studentFrame.locator('#notebook').fill('У треугольников общий угол A и по прямому углу, значит соответствующие катеты пропорциональны.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const proof=await synchronized(studentFrame,teacherFrame,'student writes a proof and selects another scale');
+  await manualWithoutCredit(teacherFrame,'p15-t87',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,proof,'similarity model and proof restore');
+  await lesson(teacherFrame,'p15',91);
+  await teacherFrame.locator('#final-answer').fill('75');
+  await teacherFrame.locator('#answer-form button[type=submit]').click();
+  await synchronized(teacherFrame,studentFrame,'diagnose division by B in the opposite change');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/разница относительно B/);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Числа A и B',{exact:true}).selectOption('1');
+  await synchronized(teacherFrame,studentFrame,'new data mean a 150 percent increase from twelve');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/150/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-baseline-change','#model svg');
 
   phase = 'chained calculations and unequal trip durations on the shared board';
   await lesson(teacherFrame,'p33',60);

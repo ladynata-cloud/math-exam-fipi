@@ -23,3 +23,4 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .pm-visual .pm-chart.pcm-segment, .pm-visual .pm-chart.pcm-group-rule { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-ratio-triangle, .pm-visual .pm-chart.pcm-ratio-triangle { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-dissection, .pm-visual .pm-chart.pcm-dissection { min-width: 0; }
+.pm-task-figure .pm-chart.pcm-tangent-nest { min-width: 0; }
