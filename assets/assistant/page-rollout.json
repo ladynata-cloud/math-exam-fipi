@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "559fbff9cfe4bfe30ed4a156d998eaad6e4959061aeed96529af9fc8cc71a912",
-      "afterSha256": "0ee2c156e028315b4bd9e987422025dcb75c749e119fb6abc5e9c7e0e8b0b041",
+      "beforeSha256": "8b4d25b67769f48bd58511d05fae64344d70844db208d84aa3995d4e9ecdb6dc",
+      "afterSha256": "fa7989f7521733cf4ce151f5a92e74a0316bb9706f4911a6338c7ed17fd721fe",
       "placement": "before-head-close",
-      "sourceSha": "6d9f6bfa0d79d2ac8719f4a82a1096467dab5841"
+      "sourceSha": "4b27ad9f958c74e9978811d35919b3f3f72998f8"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6675,6 +6675,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в оба тома Виленкина и точные маршруты десяти изданий Школьной мастерской."
+    },
+    {
+      "previousBaseSha": "6d9f6bfa0d79d2ac8719f4a82a1096467dab5841",
+      "sourceBaseSha": "4b27ad9f958c74e9978811d35919b3f3f72998f8",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в печатные задания первого тома и в построение циркулем второго тома Виленкина."
     }
   ],
   "coverageUpdates": [
