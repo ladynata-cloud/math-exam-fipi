@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0628",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Дважды взять середину в тетраэдре",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "628",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      158
+    ],
+    "pdfPages": [
+      160
+    ]
+  },
+  "statement": {
+    "text": "В грани BCD проведена медиана BB₁. K находится посередине BB₁. Базис: AB, AC, AD.",
+    "goal": "Разложи AK в указанном порядке."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "B₁ делит CD пополам; K — середина медианы BB₁.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          3,
+          0,
+          0
+        ],
+        "C": [
+          0.7,
+          2.7,
+          0.1
+        ],
+        "D": [
+          0.3,
+          0.8,
+          2.6
+        ],
+        "B1": [
+          0.5,
+          1.75,
+          1.35
+        ],
+        "K": [
+          1.75,
+          0.875,
+          0.675
+        ],
+        "L": [
+          2.166666666666667,
+          0.5833333333333333,
+          0.45
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "A",
+          "D"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "B",
+          "D"
+        ],
+        [
+          "C",
+          "D"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "C",
+          "B"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "arrows": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "A",
+          "D"
+        ],
+        [
+          "A",
+          "B1"
+        ],
+        [
+          "A",
+          "K"
+        ],
+        [
+          "A",
+          "L"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "B1",
+        "K",
+        "L"
+      ],
+      "views": {
+        "neutral": {
+          "label": "B₁ делит CD пополам; K — середина медианы BB₁.",
+          "segments": [
+            [
+              "C",
+              "B1"
+            ],
+            [
+              "B1",
+              "D"
+            ],
+            [
+              "B",
+              "B1"
+            ],
+            [
+              "A",
+              "K"
+            ]
+          ]
+        },
+        "weights": {
+          "label": "Вклад BC и BD берётся через середину B₁, затем ещё раз пополам.",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "A",
+              "C"
+            ],
+            [
+              "A",
+              "D"
+            ],
+            [
+              "A",
+              "B1"
+            ],
+            [
+              "B",
+              "K"
+            ],
+            [
+              "K",
+              "B1"
+            ]
+          ]
+        },
+        "new": {
+          "label": "Точка L лежит на той же медиане на одной трети пути от B.",
+          "segments": [
+            [
+              "B",
+              "L"
+            ],
+            [
+              "L",
+              "B1"
+            ],
+            [
+              "A",
+              "L"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Две середины чего?",
+      "text": "B₁=(C+D)/2, затем K=(B+B₁)/2. Отсчитывай все три вершины от A.",
+      "view": "weights"
+    },
+    {
+      "id": "h2",
+      "question": "Как проверить сумму весов?",
+      "text": "Относительные веса B, C, D складываются в 1. Сначала учти половинный вклад вершины B.",
+      "view": "neutral"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Коэффициенты у B₁",
+      "prompt": "Запиши коэффициенты AB₁ в базисе AB, AC, AD.",
+      "input": {
+        "prompt": "Коэффициенты у B₁",
+        "accepted": [
+          "0;1/2;1/2"
+        ],
+        "feedback": "B₁ находится на CD, не на ребре от B."
+      },
+      "explanation": "AB₁=(AC+AD)/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Правило сложения векторов и разложения по независимым направлениям.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "weights"
+    },
+    {
+      "id": "step-2",
+      "title": "Вес C",
+      "prompt": "Какой коэффициент AC имеет AK?",
+      "input": {
+        "prompt": "Вес C",
+        "accepted": [
+          "1/4"
+        ],
+        "feedback": "Перед половиной AC появляется вторая половина."
+      },
+      "explanation": "AK=(AB+AB₁)/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Правило сложения векторов и разложения по независимым направлениям.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "weights"
+    },
+    {
+      "id": "step-3",
+      "title": "Новая точка",
+      "prompt": "Каковы коэффициенты AL при BL=BB₁/3?",
+      "input": {
+        "prompt": "Новая точка",
+        "accepted": [
+          "2/3;1/6;1/6"
+        ],
+        "feedback": "Остаётся 2/3 веса при B, по половине от 1/3 при C и D."
+      },
+      "explanation": "AL=(2/3)AB+(1/6)AC+(1/6)AD.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Правило сложения векторов и разложения по независимым направлениям.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "1/2;1/4;1/4"
+    ],
+    "prompt": "Введи три коэффициента AK в порядке AB, AC, AD.",
+    "feedback": "Полусумма AB и AB₁ даёт веса 1/2, 1/4, 1/4."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 158, source problems and answers on 269, vector superposition, independent affine identities and original models.",
+    "at": "2026-11-21T21:59:56Z"
+  }
+}

@@ -2,7 +2,10 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const vectorChapterSelfcheck = makeReviewedIncrement(require('./vector-chapter-selfcheck.json'), closedSections);
+const vectorChapterSixEnd = makeReviewedIncrement(require('./vector-chapter-six-end.json'), closedSections);
+const vectorSpanAndBarycentres = makeReviewedIncrement(require('./vector-span-and-barycentres.json'), vectorChapterSixEnd);
+const additionalDirectedEdgeSums = makeReviewedIncrement(require('./additional-directed-edge-sums.json'), vectorSpanAndBarycentres);
+const vectorChapterSelfcheck = makeReviewedIncrement(require('./vector-chapter-selfcheck.json'), additionalDirectedEdgeSums);
 const heightAndMidpointProofs = makeReviewedIncrement(require('./height-and-midpoint-proofs.json'), vectorChapterSelfcheck);
 const centroidsInTetrahedra = makeReviewedIncrement(require('./centroids-in-tetrahedra.json'), heightAndMidpointProofs);
 const fieldsAndMidpointVectors = makeReviewedIncrement(require('./fields-and-midpoint-vectors.json'), centroidsInTetrahedra);

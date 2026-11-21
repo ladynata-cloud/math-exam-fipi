@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T21:28:45Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–612 and the 15 printed chapter VI self-check questions, with 1,055 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T21:59:56Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–636 and the full chapter VI self-check, with 1,098 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1806,6 +1806,76 @@
       ],
       "evidence": "tools/stereo-textbook/vector-chapter-selfcheck.json",
       "mathematicalReport": "tools/stereo-textbook/vector-chapter-selfcheck.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 157, printed page 157, figure 173 for exercise 614, key 269 where supplied; independent directed edge sums and original polyhedral models.",
+      "reviewedAt": "2026-11-21T21:42:14Z",
+      "scope": "All six initial additional tasks of chapter VI with 14 complete source-level questions on original spatial models, including all edges and opposite vertices of printed figure 173, every equivalent box-vector name, a zero closed path and preservation of sides under translation",
+      "cardIds": [
+        "ex-main-0613-a",
+        "ex-main-0613-b",
+        "ex-main-0613-c",
+        "ex-main-0614-a",
+        "ex-main-0614-b",
+        "ex-main-0614-c",
+        "ex-main-0615",
+        "ex-main-0616-a",
+        "ex-main-0616-b",
+        "ex-main-0616-c",
+        "ex-main-0617-a",
+        "ex-main-0617-b",
+        "ex-main-0617-c",
+        "ex-main-0618"
+      ],
+      "evidence": "tools/stereo-textbook/additional-directed-edge-sums.json",
+      "mathematicalReport": "tools/stereo-textbook/additional-directed-edge-sums.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 158, printed page 158, the zero-vector convention on 142, and keys 269 where supplied; independent directed edge sums and original polyhedral models.",
+      "reviewedAt": "2026-11-21T21:48:53Z",
+      "scope": "Every printed part of exercises 619–626, including the exact Atanasyan nonnegative co-direction convention, arbitrary origin, strict inequality, extrapolated affine points and an actually disjoint plane for three skew-line connectors",
+      "cardIds": [
+        "ex-main-0619-a",
+        "ex-main-0619-b",
+        "ex-main-0619-c",
+        "ex-main-0619-d",
+        "ex-main-0620-a",
+        "ex-main-0620-b",
+        "ex-main-0621",
+        "ex-main-0622",
+        "ex-main-0623",
+        "ex-main-0624-a",
+        "ex-main-0624-b",
+        "ex-main-0624-c",
+        "ex-main-0625-a",
+        "ex-main-0625-b",
+        "ex-main-0626"
+      ],
+      "evidence": "tools/stereo-textbook/vector-span-and-barycentres.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-span-and-barycentres.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 158, source problems and answers on 269, vector superposition, independent affine identities and original models.",
+      "reviewedAt": "2026-11-21T21:59:56Z",
+      "scope": "All ten remaining chapter VI problems, every lettered item, four unequal-charge fields and their superposed vector arrows, eight oriented diagonals, affine basis changes, disjoint parallel planes, all centroid identities and the final tetrahedron homothety",
+      "cardIds": [
+        "ex-main-0627-a",
+        "ex-main-0627-b",
+        "ex-main-0627-c",
+        "ex-main-0627-d",
+        "ex-main-0628",
+        "ex-main-0629",
+        "ex-main-0630-a",
+        "ex-main-0630-b",
+        "ex-main-0631",
+        "ex-main-0632",
+        "ex-main-0633",
+        "ex-main-0634",
+        "ex-main-0635",
+        "ex-main-0636"
+      ],
+      "evidence": "tools/stereo-textbook/vector-chapter-six-end.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-chapter-six-end.test.cjs"
     }
   ],
   "cards": [
@@ -6028,6 +6098,178 @@
     {
       "id": "ex-selfcheck-vi-15",
       "sha256": "b278a9fcef2fc790303b2f78903971d1f1f836a61991e4f650f76cb9c9ab5103"
+    },
+    {
+      "id": "ex-main-0613-a",
+      "sha256": "6407ac6e323a054331118d07e2b358dbb693ff5105ecb5e0edb33d866c99b4bf"
+    },
+    {
+      "id": "ex-main-0613-b",
+      "sha256": "01ac14cf776ac7490b04a359b97384f3bc5da2763f60eed6eae3236eddbcd069"
+    },
+    {
+      "id": "ex-main-0613-c",
+      "sha256": "e0bf2320ec8b06165d7301392e3f3b4583fff7916617d46d64d18608cae09034"
+    },
+    {
+      "id": "ex-main-0614-a",
+      "sha256": "bf73d6cc9a720265eea97e64add376bcfcc15765a3768ac4eb6ce43e8f83bfec"
+    },
+    {
+      "id": "ex-main-0614-b",
+      "sha256": "24ac9850996b8c7df2a79d96501404876209f6a1c2ceae312aec52a48608dd4c"
+    },
+    {
+      "id": "ex-main-0614-c",
+      "sha256": "5fd83ec6667e895a57bc5ccb3ef2a9cfcad78e0acf5faee73e57f450bf9677ec"
+    },
+    {
+      "id": "ex-main-0615",
+      "sha256": "e9ab1ef1da91e7de98273d5b011de75ba2beeb7ef0518ecee11d004f10c844b3"
+    },
+    {
+      "id": "ex-main-0616-a",
+      "sha256": "5e0c6bc1553b589d21dbf9824163211f65df13ceb5c2124d82bccc724f5e0d7e"
+    },
+    {
+      "id": "ex-main-0616-b",
+      "sha256": "241ca6ab5121e9d82643b249f44338c4b3099c2c7994657f7b72a7b094ca086c"
+    },
+    {
+      "id": "ex-main-0616-c",
+      "sha256": "c1d18b0d24663e1b60e61ccd05411f260713c7e3b4b9052adbf4b353caea75d4"
+    },
+    {
+      "id": "ex-main-0617-a",
+      "sha256": "e7d136de7a0895b8dc398ea6c460a826baa5c309ccd59af95280f3cc4fc667f0"
+    },
+    {
+      "id": "ex-main-0617-b",
+      "sha256": "b4aca17a23bebeb6c04db6997bc857d17f4dd7f4fb800eb6671fda54bd43561e"
+    },
+    {
+      "id": "ex-main-0617-c",
+      "sha256": "a1ee06ccffea467bfadc924f4b0d013f77dad48c767dc5d8ed4ebebfdbfb7f57"
+    },
+    {
+      "id": "ex-main-0618",
+      "sha256": "cabf487d5ef0641b3b72d69fc0118ea94d807fdd6678343db1ad0fa544e886b1"
+    },
+    {
+      "id": "ex-main-0619-a",
+      "sha256": "87dea07ebac3c785a84ed2a300f51255ec2292faf2eccddbc4db83af0386322f"
+    },
+    {
+      "id": "ex-main-0619-b",
+      "sha256": "ae9bfacd63874d3f783b76d8cb41ac302fb1dc74f3237684f9e9d64897ad7ee6"
+    },
+    {
+      "id": "ex-main-0619-c",
+      "sha256": "165fed0813a285e1dc6d372f3ff2ee2db5666ab1cc1d63ae62f4ac64f9342cc7"
+    },
+    {
+      "id": "ex-main-0619-d",
+      "sha256": "220585d1d8c966bc9c10c5f5cc90fe3d93f804e9a6fa98a22e80ba8aaa32bcb7"
+    },
+    {
+      "id": "ex-main-0620-a",
+      "sha256": "4117b9a426c383c3b0b411ed1d91b846acd7e1c7ec75044a4bf6c8260d218342"
+    },
+    {
+      "id": "ex-main-0620-b",
+      "sha256": "731098e375793a703e3323d6a4ce74b17a294bba0753129444a3f9a6ea8ef5fd"
+    },
+    {
+      "id": "ex-main-0621",
+      "sha256": "8c0018d85647fca20af33af52b5dbc6fd74bb205f52b45024eb70d4204a3eb6f"
+    },
+    {
+      "id": "ex-main-0622",
+      "sha256": "7dc40ba283a90ede859613022ae906af0792953704d4c65c91dc14476f3c8f91"
+    },
+    {
+      "id": "ex-main-0623",
+      "sha256": "55988000e74a6f02da6502492881e3009def792fb9523cd6dccdee977b98aebc"
+    },
+    {
+      "id": "ex-main-0624-a",
+      "sha256": "17962add5df74c42eaeac5f6f7a7a4efb51a52260371e2333d047a01eb2b5d2a"
+    },
+    {
+      "id": "ex-main-0624-b",
+      "sha256": "61ab7027e7652dd2479a12d1856709713acd01684db25775b9d8b1a4dfcdb1c3"
+    },
+    {
+      "id": "ex-main-0624-c",
+      "sha256": "83f3411d094ccd2110100866eba5733d499b0a798da0848e7688914eee470e9a"
+    },
+    {
+      "id": "ex-main-0625-a",
+      "sha256": "1d4e1149e5bb94f2a10c8e2ade3d78654ea928db927ab803505596ab80a45ce0"
+    },
+    {
+      "id": "ex-main-0625-b",
+      "sha256": "c09b7d1a439667a8290e6b797d71b7c004c6000387b8ffb95df8cf7b0d0b18ca"
+    },
+    {
+      "id": "ex-main-0626",
+      "sha256": "f4cac46168cba0cd571b65e19fa8e830da640c1d57480c13338d5ce901748b9f"
+    },
+    {
+      "id": "ex-main-0627-a",
+      "sha256": "db5b48f2a037a0d9866ec2ff72ff8a08ac589c6ef54b6e378a02ef966a9dfd17"
+    },
+    {
+      "id": "ex-main-0627-b",
+      "sha256": "b4ebc4205f9342bcf4b469a4dcf9a6c376d03dae6a2bd501fd44f8c14314d71e"
+    },
+    {
+      "id": "ex-main-0627-c",
+      "sha256": "f18a351ad3ded412c982da13998b6fc7ab1a5f73012c90656b199eaf425906c1"
+    },
+    {
+      "id": "ex-main-0627-d",
+      "sha256": "4a3396fbd2144f29aea935d1326d2322181d80158a73165121e290f7437b840e"
+    },
+    {
+      "id": "ex-main-0628",
+      "sha256": "d6b92f40149f546938453076dc771db1835ac3d6925618c186de8a20a3d6ca0d"
+    },
+    {
+      "id": "ex-main-0629",
+      "sha256": "0b78061006b2c060f8fe8e2cbd4c06416030c6bd9e5b043fe7823317460786e9"
+    },
+    {
+      "id": "ex-main-0630-a",
+      "sha256": "af19d99f903a6b5d5edf745e87de7092a9be1d1cb9f4df93604b0848064d7ec8"
+    },
+    {
+      "id": "ex-main-0630-b",
+      "sha256": "58766d127806994eaf5fb5406f536741351dde5dad8779a6818b687bb5bd9e13"
+    },
+    {
+      "id": "ex-main-0631",
+      "sha256": "7321990fa1327d55504968f03756992d4a68e491fc78369f32ca431b097aaf40"
+    },
+    {
+      "id": "ex-main-0632",
+      "sha256": "11c8bac0153862b65ccd64513319977c532f52cba5f8e788a0c745aaa1f835dd"
+    },
+    {
+      "id": "ex-main-0633",
+      "sha256": "78a93682188deaf68dc2648164f9b54f78bd35ecdf70db739e9fb97a1f95fdf9"
+    },
+    {
+      "id": "ex-main-0634",
+      "sha256": "641e722757a29696ecf83a72fa3f46cffd5e16eff1c15d8ab5977a19f8a234c8"
+    },
+    {
+      "id": "ex-main-0635",
+      "sha256": "636289c3f4f88ed9000530a2c212310206a1f599b055bd94fc6a105a4b6c669c"
+    },
+    {
+      "id": "ex-main-0636",
+      "sha256": "bb8406088042c0ad046702dc9e0e6fdf1ddd3a4182989a40cd6e27fb4801485c"
     }
   ]
 }
