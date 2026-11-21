@@ -13,7 +13,7 @@ for(const [i,r] of book.mapping.entries()){
  if(i){assert(r.bookOnly);assert(!r.boardPath&&!r.externalPath);}
  else{assert.equal(r.coverage,'partial');assert.equal(r.boardPath,book.exercises[0].path);}
 }
-const programs=[read('trainers/tyurin-statistics/content.js'),read(dir+'questions.js'),read(dir+'logic.js'),read(dir+'powers.js'),read(dir+'power-order.js'),read('trainers/tyurin-statistics/app.js')];
+const programs=[read('trainers/tyurin-statistics/content.js'),read(dir+'questions.js'),read(dir+'logic.js'),read(dir+'powers.js'),read(dir+'power-order.js'),read(dir+'fractions.js'),read('trainers/tyurin-statistics/app.js')];
 const other='math:peterson8-2017:v1:70-1-1';
 function open(entry,stash){
  const dom=new JSDOM(read(dir+'index.html'),{url:'https://math.example'+entry.path,runScripts:'outside-only'}),w=dom.window;
@@ -63,7 +63,7 @@ for(const [i,r] of book.exercises.entries()){
  assert.equal(r.path,dir.replace(/^/,'/')+'index.html#lesson/'+id);assert.equal(r.boardPath,r.path);
  assert.equal(r.page,i>=17?9:8);
  let {dom,doc,w,key,lesson}=open(r);assert.equal(doc.querySelector('#lesson').value,id);
- assert.equal(doc.querySelectorAll('#lesson option').length,71);assert.equal(doc.querySelector('#source').href,'https://pdf.my-uchebnik.ru/pdf/algebra/00000058.pdf#page='+(r.page+2));assert.equal(doc.querySelector('#back').hash,'#book/source-71');
+ assert.equal(doc.querySelectorAll('#lesson option').length,84);assert.equal(doc.querySelector('#source').href,'https://pdf.my-uchebnik.ru/pdf/algebra/00000058.pdf#page='+(r.page+2));assert.equal(doc.querySelector('#back').hash,'#book/source-71');
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),r.path);
  assert.equal(w.MathExamTopicEdition.nextId(lesson),ids[i+1]&&'71-'+ids[i+1]);assert(lesson.printedReference.endsWith(r.printed));
  assert.equal(doc.querySelector('#title').textContent,r.title);

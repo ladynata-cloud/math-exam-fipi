@@ -121,7 +121,7 @@
     else {title='Одинаковые доли в двух группах';body=tx(8,18,'Размер одной части в обеих группах один')+Array.from({length:11},(_,i)=>rect(12+(i<5?i:i-5)*37,i<5?33:74,31,19,i<5?'#a5d6c3':'#e5c792')).join('');}
     return '<svg viewBox="0 0 270 120" role="img" aria-label="'+title+'"><g font-family="sans-serif" font-size="12" fill="#24484a">'+body+'</g></svg>';
   }
-  window.MathExamTopicEdition={trainerId:'peterson8-2017',authors:'Петерсон и др. · 2017',grade:book=>'8 класс · часть '+(book===71?'2':'1'),unit:'упражнение',register,q,make,storePrefix:'math:peterson8-2017:v1:',figure,
-    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+(book===71?'00000058':'00000057')+'.pdf#page='+(page+2),
+  window.MathExamTopicEdition={trainerId:'peterson8-2017',authors:'Петерсон и др. · 2017',grade:book=>'8 класс · часть '+({70:1,71:2,73:3}[book]),unit:'упражнение',register,q,make,storePrefix:'math:peterson8-2017:v1:',figure,
+    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+({70:'00000057',71:'00000058',73:'00000059'}[book])+'.pdf#page='+(page+2),
     nextId:l=>{const next=lessons.get(ids[ids.indexOf(l.id)+1]);return next?.book===l.book?next.id:undefined;}};
 })();

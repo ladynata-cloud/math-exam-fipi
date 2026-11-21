@@ -51,7 +51,9 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--peterson8-part2')?{
+const catalogue=process.argv.includes('--peterson8-part3')?{
+  directory:'peterson8-2017',entries:[[73,21,14]],uniqueLessons:13,search:'peterson8-2017',match:'степенные функции и дроби',lesson:'73-4f',chart:'svg[aria-label*="Запрещённые значения исходной дроби"]',storage:'math:peterson8-2017:v1:'
+}:process.argv.includes('--peterson8-part2')?{
   directory:'peterson8-2017',entries:[[71,24,42]],uniqueLessons:41,search:'peterson8-2017',match:'степенные функции',lesson:process.argv.includes('--interval')?'71-8c':'71-4-7',chart:process.argv.includes('--interval')?'svg[aria-label*="графика степени на замкнутом"]':'svg[aria-label*="График куба с парой"]',storage:'math:peterson8-2017:v1:'
 }:process.argv.includes('--peterson8-2017')?{
   directory:'peterson8-2017',entries:[[70,21,31]],uniqueLessons:30,search:'peterson8-2017',match:'искусство задавать вопросы',lesson:process.argv.includes('--logic')?'70-9-3':'70-6',chart:process.argv.includes('--logic')?'svg[aria-label*="Строки истинности"]':'svg[aria-label*="Начальный капитал"]',storage:'math:peterson8-2017:v1:'

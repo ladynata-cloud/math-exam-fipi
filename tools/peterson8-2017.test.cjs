@@ -11,7 +11,7 @@ const ids=['1-1','1-2','1-3','2-1','2-2','3','4','5a','5b','5c','5d','6','7a','7
 assert.deepEqual(Array.from(book.exercises,r=>r.path.split('/').pop()),ids.map(x=>'70-'+x));
 assert.deepEqual(Array.from(book.exercises,r=>r.printed),['1(1)','1(2)','1(3)','2(1)','2(2)','3','4','5а','5б','5в','5г','6','7а','7б',...Array.from({length:12},(_,j)=>'8('+(j+1)+')'),...Array.from({length:4},(_,j)=>'9('+(j+1)+')')]);
 assert.deepEqual(Array.from(book.exercises,r=>r.page),[6,6,7,7,7,7,7,7,7,7,7,7,7,8,...Array(16).fill(8)]);
-const html=read(dir+'index.html'),scripts=['trainers/tyurin-statistics/content.js',dir+'questions.js',dir+'logic.js',dir+'powers.js',dir+'power-order.js','trainers/tyurin-statistics/app.js'].map(read);
+const html=read(dir+'index.html'),scripts=['trainers/tyurin-statistics/content.js',dir+'questions.js',dir+'logic.js',dir+'powers.js',dir+'power-order.js',dir+'fractions.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,saved){
  const dom=new JSDOM(html,{url:'https://math.example'+entry.path,runScripts:'outside-only'}),w=dom.window;
  w.Math.random=()=>0;w.TextEncoder=TextEncoder;const id=entry.path.split('/').pop(),key='math:peterson8-2017:v1:'+id;
@@ -73,7 +73,7 @@ const click=(doc,a)=>doc.querySelector('[data-action="'+a+'"]').click();
 function reply(doc,n){const a=doc.querySelector('#answer'),E=doc.defaultView.Event;a.value=n;a.dispatchEvent(new E('input',{bubbles:true}));doc.querySelector('#work form').dispatchEvent(new E('submit',{bubbles:true,cancelable:true}));}
 for(const [i,entry] of book.exercises.entries()){
  assert.equal(entry.path,entry.boardPath);let {dom,w,doc,key,lesson}=open(entry);
- assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,71);
+ assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,84);
  assert.equal(doc.querySelector('#source').hash,'#page='+(entry.page+2));assert.equal(doc.querySelector('#back').hash,'#book/source-70');
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),entry.path);
  assert.equal(w.MathExamTopicEdition.nextId(lesson),ids[i+1]&&'70-'+ids[i+1]);assert(lesson.printedReference.endsWith(entry.printed));

@@ -58,6 +58,7 @@ jobs:
           node tools/makarychev8-2018.test.cjs
           node tools/peterson8-2017.test.cjs
           node tools/peterson8-2017-powers.test.cjs
+          node tools/peterson8-2017-fractions.test.cjs
           node tools/mordkovich-2020.test.cjs
           node tools/mordkovich-2020-theory.test.cjs
           node tools/mordkovich-2013.test.cjs
@@ -69,6 +70,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --makarychev8-2018 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --peterson8-2017 --printed-identity --logic
           node tools/tyurin-statistics.board.browser.cjs --peterson8-part2 --printed-identity --interval
+          node tools/tyurin-statistics.board.browser.cjs --peterson8-part3 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich-2020 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich-2020-theory --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich-circle-suite
