@@ -22,7 +22,7 @@ async function exercise(browser, width) {
     await page.goto(training + '#' + id);
     await page.waitForFunction(target => document.querySelector('#skills [aria-current]').hash === '#' + target, id);
   }
-  await page.goto(training);
+  await open('count');
   await submit(8); await submit(10);
   await button('Следующий навык').click();
   await button('Раздать по одной').click(); await button('Раздать по одной').click();

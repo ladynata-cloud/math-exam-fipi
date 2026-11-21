@@ -4,11 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>От счёта группами до деления уголком — карта навыков по Арженикову | MathExam</title>
-  <meta name="description" content="Игровая оранжерея по Арженикову: 8 участков, счёт группами, деление поровну и с остатком, цифра частного и деление уголком. Задачи с моделями и самостоятельные проверки.">
+  <meta name="description" content="Карта житейских задач для детей по мотивам задачника Арженикова. Разложи предметы, сравни группы, запиши своё решение и перейди к делению уголком.">
   <link rel="canonical" href="https://mathexam.space/trainers/oge-basics/multiplication-division/arzhenikov-map.html">
   <link rel="stylesheet" href="arzhenikov-map.css">
+  <link rel="stylesheet" href="arzhenikov-workshop.css">
   <script src="arzhenikov-map.js" defer></script>
   <script src="arzhenikov-garden-bank.js" defer></script>
+  <script src="arzhenikov-life-bank.js" defer></script>
+  <script src="arzhenikov-workshop.js" defer></script>
+  <script src="arzhenikov-life-map.js" defer></script>
   <script src="arzhenikov-garden.js" defer></script>
 
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
@@ -17,7 +21,12 @@
 <body>
   <header><nav aria-label="Навигация"><a class="brand" href="/" data-mathexam-home-link target="_self" aria-label="На главную MathExam">MathExam</a><span>/</span><a href="index.html">Умножение и деление</a><a class="cabinet" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/">В кабинет</a></nav></header>
   <main>
-    <div class="intro"><div><h1>От групп к делению уголком</h1><p>Карта навыков по Арженикову. Выберите, что хотите научиться делать.</p></div><div class="meter"><strong id="total">Пройдено 0 из 8</strong><progress id="bar" value="0" max="8" aria-label="Пройденные навыки"></progress></div></div>
+    <div class="intro"><div><h1>От групп к делению уголком</h1><p>Задачи с предметами по мотивам задачника К. П. Арженикова.</p></div><div class="meter"><strong id="total">Пройдено 0 из 8</strong><progress id="bar" value="0" max="8" aria-label="Пройденные навыки"></progress></div></div>
+    <section id="workshop" class="workshop" aria-labelledby="workshop-title">
+      <div class="ws-intro"><h2 id="workshop-title">Карта маленьких дел</h2><p>Выбери место или начни с первой истории. После трёх дел ты сможешь записать свои решения числами.</p></div>
+      <nav id="life-map" aria-label="Карта житейских задач"></nav>
+      <div id="workshop-play"><noscript>Чтобы раскладывать предметы и сохранять решения, включите JavaScript. Можно заниматься и устно. На пикнике у трёх друзей шесть яблок. Как разделить их поровну? А если положить по два яблока в пакет, сколько пакетов удастся наполнить?</noscript></div>
+    </section>
     <section class="garden" id="garden" aria-labelledby="garden-title">
       <div class="garden-cover">
         <div class="canopy" aria-hidden="true"><span>🌱</span><span>🌷</span><span>🌻</span></div>
@@ -49,14 +58,18 @@
         <noscript>Для ввода ответов включите JavaScript. Ниже есть ссылки на дополнительные упражнения и источники.</noscript>
       </section>
     </div>
+    <nav class="life-modes" aria-label="Разделы тренажёра">
+      <a href="#workshop">Карта маленьких дел</a><a href="#garden-count">Оранжерея равных групп</a><a href="#count">От групп к делению уголком</a>
+    </nav>
     <details class="teachers"><summary>Для преподавателя · как провести сравнение</summary>
+      <p>В «Карте маленьких дел» ребёнок раскладывает предметы в трёх разных ситуациях. Затем он подбирает числовую запись к тому, что сделал. Попросите показать на рисунке, что означает каждое число. При раздаче поровну известны получатели, а при упаковке — сколько предметов помещается в одну группу.</p>
       <p>На пятой ступени у ученика есть два входа в один пример. В первом он наполняет коробки, во втором пробует цифру и проверяет произведение. Выберите один вход до начала занятия и дайте одинаковое время на работу. Записав первый ответ на новой задаче, обсудите ошибку.</p>
       <p>В восьмой ступени проверяются первая цифра, её обоснование, частное и остаток. Для следующей попытки предлагается другой пример. Чтобы сравнить два объяснения, чередуйте назначенный вход между учениками с похожей подготовкой и используйте один контрольный пример. Повторный ответ того же ученика уже зависит от тренировки.</p>
       <p id="record">Результат самостоятельной проверки появится здесь после решения.</p>
     </details>
     <details class="teachers"><summary>Откуда взяты задания</summary>
       <p>В задачнике К. П. Арженикова 1923 года в № 233 восемь килограммов распределяют на четыре дня, а в № 257 восемь картин располагают рядами по четыре. Эти два смысла деления лежат в основе второй и третьей ступеней. Порядок действий в пределах десятка, двадцати и круглых десятков виден и в издании 1924 года.</p>
-      <p>В третьей части задачника (1924, с. 24) записано деление 32 935 на 7 с нулём в частном. Разряды мы показываем на меньших числах. Коробки, экранная последовательность и контрольные примеры разработаны для MathExam. Успех на карте показывает выполнение этих заданий. Эффект методики на учениках требует отдельной проверки.</p>
+      <p>В третьей части задачника (1924, с. 24) записано деление 32 935 на 7 с нулём в частном. Разряды мы показываем на меньших числах. Житейские истории, игровая карта и переход к записи после трёх решений разработаны для MathExam. Успех на карте показывает выполнение этих заданий. Эффект методики на учениках требует отдельной проверки.</p>
       <p><a href="https://djvu.online/file/1DTOtoJ55rIWv">Задачник, часть I (1923)</a> · <a href="https://ussrvopros.ru/sbornik-zadach-po-matematike-dlya-shkol-1-j-stupeni-chast-p1-1924">Часть I (1924)</a> · <a href="https://djvu.online/file/Zmmk0C6Gqh83D">Часть III (1924)</a> · <a href="https://repo.nspu.ru/handle/nspu/5833">«Методика начальной арифметики» (1936, переработка А. С. Пчёлко)</a></p>
     </details>
     <footer><span>Продолжить в MathExam</span><a href="long-division-quotient-digit.html">Линейка кратных</a><a href="long-division-zero-in-quotient.html">Нули в частном</a><a href="division-with-remainder.html">Деление с остатком</a></footer>
