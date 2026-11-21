@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "bbef3181b158eaa1d9700b25c49f910b210dfbd58a86432ebcc079cb9e2b5762",
-      "afterSha256": "a9885b1397351ac49150ed27b91f5b867152c5eb1064290985ba6efb0774a59e",
+      "beforeSha256": "0bf8ed6eb851dff521b0823f1ce1a4f565939232a005cc8b0c6557278bebcfae",
+      "afterSha256": "d665ba0c2176bb840658737f9afc0ad9d2391130a383f3189bc20711735f1331",
       "placement": "before-head-close",
-      "sourceSha": "99b9e5fd106cb65a5e3d6ee714b0eaadd427cb1f"
+      "sourceSha": "ae832cd8cabdce859aca250fe5f85d5c2fd26be2"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6858,6 +6858,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, часть 2, §26, с. 14, №5.47–5.50. Ткань, два куска, доля остатка прогулки, четверти квадрата. Проверены 320 и 375 пикселей, обе роли, смена управления и возврат."
+    },
+    {
+      "previousBaseSha": "99b9e5fd106cb65a5e3d6ee714b0eaadd427cb1f",
+      "sourceBaseSha": "ae832cd8cabdce859aca250fe5f85d5c2fd26be2",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, §26, с. 15. По №5.51 и №5.52 проверены каждое чтение, исходная пара чисел и различие верной величины с продиктованной записью. Мобильные занятия на двух размерах и математическая проверка прошли."
     }
   ],
   "coverageUpdates": [
