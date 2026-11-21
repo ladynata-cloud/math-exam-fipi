@@ -464,6 +464,18 @@ async function run(browser, origin, backend, failures) {
   const zero=await same(studentFrame,teacherFrame,'right difference makes the whole product zero');assert(zero.scene.model.seen);
   await ownership(teacher,student,false);
 
+  phase = 'two herds: difference, total and selected lengths';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-39"]').click();await studentFrame.locator('h1').filter({hasText:'№1.39'}).waitFor();
+  await teacherFrame.locator('#answer').fill('308');await teacherFrame.locator('#answer-form button').click();
+  const horseDifference=await same(teacherFrame,studentFrame,'difference is not the second herd');assert.match(horseDifference.scene.message,/разница/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('1 144');await studentFrame.locator('#answer-form button').click();
+  const horseCorrection=await same(studentFrame,teacherFrame,'second herd corrected without a requested hint');assert(horseCorrection.scene.correct);assert.deepEqual(horseCorrection.scene.hintLevels,{});
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-v5-param=view]').selectOption({value:'3'});
+  await studentFrame.locator('[data-v5-prediction]').fill('1980');await studentFrame.locator('[data-v5-predict] button').click();
+  const horses=await same(studentFrame,teacherFrame,'two proportional bars counted together');assert.equal(horses.scene.model.view,3);assert(horses.scene.model.seen);
+  await narrow(student,studentFrame,'two-herds');await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();

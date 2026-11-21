@@ -170,7 +170,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:35},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:41},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -514,8 +514,47 @@ function printedCalculationsRegression(){
   for(const step of dictation.steps){f.submit(String(step.answer));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
   f.submit('9 000 007 006');ok(f.snapshot().scene.correct);equal(f.errors,[]);f.close();
 }
+
+function printedPageFifteenRegression(){
+  const f=boot(),ids=[36,37,38,39,40,41].map(n=>'v5f-printed-1-'+n);
+  const source=ids.map(id=>f.M.generate(id,0)),[magn,repeat,pairs,herds,exercises,calc]=source;
+  equal(plain(magn.data.values),[79000,17000000,348000000000]);equal(plain(magn.answer),[5,8,12]);
+  equal(repeat.data.values[0],7777777777);equal(repeat.answer,'семь миллиардов семьсот семьдесят семь миллионов семьсот семьдесят семь тысяч семьсот семьдесят семь');
+  equal(plain(pairs.steps[0].answer),[11,17,71,77]);equal(pairs.answer,176);
+  equal(herds.data.second,1144);equal(herds.answer,1980);equal(exercises.answer,17);
+  equal(plain(calc.answer),[3948,2466,646,31]);
+  const signs=ids.map(()=>new Set());
+  for(let seed=1;seed<=70;seed++){
+    const tasks=ids.map((id,i)=>{const t=f.M.generate(id,seed);signs[i].add(t.conditionKey);return t;}),[m,r,p,h,e,c]=tasks;
+    equal(plain(m.answer),Array.from(m.data.values,n=>String(n).length));
+    equal(String(r.data.values[0]),String(r.data.digit).repeat(r.data.n));
+    const every=Array.from({length:90},(_,k)=>k+10).filter(n=>[...String(n)].every(d=>p.data.digits.includes(+d)));
+    equal(plain(p.data.numbers),every);equal(p.answer,every.reduce((sum,n)=>sum+n,0));
+    for(const [pos,prefix] of p.data.levels.flat().entries()){
+      const view=f.w.Vilenkin5Numbered.explore(f.C.byId[ids[2]],{prefix:pos},p);
+      equal(view.answer,every.filter(n=>String(n).startsWith(prefix)).length);
+    }
+    equal(h.answer,h.data.first*2+h.data.gap);equal(e.answer,e.data.second-e.data.first);
+    for(const [row,[exp,first,mid,end]]of c.data.rows.entries()){
+      const nums=exp.match(/\d+/g).map(Number),[a,b,k]=nums;
+      equal(mid,[a*b,b+k,b/k,a+b][row]);equal(end,[a*b+k,a*(b+k),a+b/k,(a+b)/k][row]);equal(end,c.steps[row].answer);
+    }
+  }
+  signs.forEach((set,i)=>ok(set.size>=(i===1||i===2?12:40)));
+  f.route('#lesson/'+ids[2]);f.submit('77;17;11;71');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[3]);f.submit('308');ok(f.snapshot().scene.message.includes('разница'));
+  for(const [i,id]of ids.entries()){
+    equal(f.C.byId[id].source.page,15);f.route('#lesson/'+id);
+    for(const step of source[i].steps){f.submit(value(f.M,step));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
+    f.submit(value(f.M,source[i]));ok(f.snapshot().scene.correct);
+    f.click('[data-cmd=mode][data-value=practice]');const sc=f.snapshot().scene,practice=f.M.generate(id,sc.seed);
+    ok(practice.conditionKey!==source[i].conditionKey);
+  }
+  equal(f.errors,[]);f.close();
+}
+
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
