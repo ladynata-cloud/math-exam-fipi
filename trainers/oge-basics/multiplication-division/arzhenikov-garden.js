@@ -42,8 +42,17 @@
     dueLink.hidden = !(state.due && Date.now()>=state.due);
     document.querySelector('.garden-cover').hidden = status;
     panel.hidden = !status;
-    layout.hidden = status;
-    document.querySelector('.intro .meter').hidden = status;
+    const legacy = ids.includes(location.hash.slice(1));
+    const workshop = !status && !legacy;
+    document.getElementById('workshop').hidden = !workshop;
+    document.getElementById('garden').hidden = workshop;
+    layout.hidden = !legacy;
+    document.querySelector('.intro .meter').hidden = !legacy;
+    const current = workshop ? '#workshop' : status ? '#garden-count' : '#count';
+    for (const item of document.querySelectorAll('.life-modes a')) {
+      if (item.hash === current) item.setAttribute('aria-current','page');
+      else item.removeAttribute('aria-current');
+    }
   }
   function model(parent, m, t) {
     const box = node('div',null,'garden-model'), view = node('div',null,'garden-trays');

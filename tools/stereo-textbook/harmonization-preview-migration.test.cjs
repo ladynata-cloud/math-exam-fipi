@@ -31,6 +31,7 @@ for (const name of ['additional396', 'additional404'])
   assert.equal(gitBlob(historicalRead(FILE)), require('./' + name + '-baseline.json').unchangedFiles[FILE], name + ': original renderer Git blob retained');
 for (const input of [
   Buffer.concat([bytes, Buffer.from('\nUNREVIEWED')]),
+  Buffer.from(bytes.toString().replace('!incident.includes(index)', 'incident.includes(index)')),
   Buffer.from(bytes.toString('utf8').replace('compactPreview ? 300 : 360', 'compactPreview ? 300 : 200')),
   Buffer.from(bytes.toString('utf8').replace('compactPreview ? 300 : 360', 'compactPreview ? 299 : 360')),
   Buffer.from(bytes.toString('utf8').replace('Math.min(680, viewportWidth * .76)', 'Math.min(681, viewportWidth * .76)')),
@@ -44,4 +45,4 @@ assert.equal(beforeCompactPreview('stereo-course/assets/task-scenes.css', untouc
 assert.equal(historicalRead('stereo-course/assets/task-scenes.css', () => untouched), untouched);
 assert.equal(historicalRead('stereo-course/assets/task-scene-viewer-copy.js', () => bytes), bytes, 'projection applies only to the exact renderer path');
 require('./visibility-migration.test.cjs');
-console.log('ATANASYAN_HARMONIZATION_PREVIEW_MIGRATION_OK: exact optional preview delta; three later frozen consumers; 10 projection negative controls; old default and historical visibility guards retained');
+console.log('ATANASYAN_HARMONIZATION_PREVIEW_MIGRATION_OK: exact optional preview delta; three later frozen consumers; 12 projection negative controls; old default and historical visibility guards retained');
