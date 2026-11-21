@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 627,
-    "covered": 625,
+    "total": 628,
+    "covered": 626,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -212,6 +212,12 @@
       "beforeSha256": "249426811967de8efc589e2ecfba7fb0f81d3fc4d22f370fd25704c7ddc2296c",
       "afterSha256": "d8a19f926a3a29f8b237f5e19d349b8f52947aadcd771ea24127682c5691d1f9",
       "placement": "before-head-close"
+    },
+    "books/index.html": {
+      "beforeSha256": "4297c13a48c469ef4f1ce5b2012621c805d4ba2281472da23a0bb3e9ec62bdba",
+      "afterSha256": "5498327dcf803617cfe5443af0c65fae162f3067a461c27a376d2f991df09577",
+      "placement": "before-head-close",
+      "sourceSha": "ac152cc3e5458a29ccf480c0a9cc6e2b5b107c8a"
     },
     "courses/vilenkin-5-part-1/index.html": {
       "beforeSha256": "c24a34c8deb89261c203c4a3a25ac5baf88f7fc23f086797cadf8fdcc1d6d758",
@@ -3383,6 +3389,7 @@
     "azbuka-postroeniy-reviewed/trainers/perpendicular-external-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
     "azbuka-postroeniy-reviewed/trainers/perpendicular-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
     "azbuka-postroeniy-reviewed/trainers/segment-trainer-v6.html": "azbuka-postroeniy-reviewed/index.html",
+    "books/index.html": "sitemap",
     "courses/index.html": "sitemap",
     "courses/vilenkin-5-part-1/index.html": "sitemap",
     "courses/vilenkin-5/index.html": "sitemap",
@@ -6645,6 +6652,14 @@
         "trainers/tyurin-statistics/index.html"
       ],
       "reason": "New canonical practice entry discovered from the verified edition cards and included in the navigator."
+    },
+    {
+      "sourceBaseSha": "ac152cc3e5458a29ccf480c0a9cc6e2b5b107c8a",
+      "task": "docs/tasks/MATHEXAM_BOOKS_20261121.md",
+      "addedPages": [
+        "books/index.html"
+      ],
+      "reason": "The canonical book catalog is linked from the homepage and sitemap and carries the shared public navigator."
     }
   ]
 }
