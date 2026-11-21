@@ -307,5 +307,12 @@ html.arz-world-ready .arz-adventure .adv-postcard-icon.adv-scene { font-size: 0;
   .arz-adventure #workshop-play[data-kind="share"] .ws-targets:has(> :nth-child(3):last-child) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+  .arz-adventure #workshop-play[data-kind="share"] .ws-place {
+    display: flex; flex-direction: column; align-items: center; gap: .25rem;
+  }
+  .arz-adventure #workshop-play[data-kind="share"] .ws-place::after { position: static; }
+  .arz-adventure #workshop-play[data-kind="share"] .ws-place .ws-tokens {
+    order: 1; align-self: stretch; justify-content: center;
+  }
   .arz-adventure:has(#workshop:not([hidden])) .adv-heading > .adv-mascot { position: static; }
 }

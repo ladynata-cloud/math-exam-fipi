@@ -59,6 +59,15 @@ async function journey(browser,width) {
   try {
     await page.goto(trainer);
     await stage(page,'layout');
+    if (width <= 375) {
+      await page.setViewportSize({width,height:568});
+      for (let child = 0; child < 3; child++) {
+        const target = await put(page,child).boundingBox();
+        assert(target && target.y >= 0 && target.y + target.height <= 568,
+          'Every picnic recipient can be reached without scrolling on a short phone');
+      }
+      await page.setViewportSize({width,height:850});
+    }
     const drawer = page.locator('#life-map .wm-drawer');
     assert.equal(await drawer.evaluate(el => el.open),false,'The city map opens only on request');
     assert(await page.locator('#workshop-play').evaluate(el =>
