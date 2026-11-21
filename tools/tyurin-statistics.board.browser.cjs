@@ -48,7 +48,9 @@ async function healthy(url, child, logs) {
   throw new Error('Local server not ready: ' + logs());
 }
 
-const catalogue=process.argv.includes('--makarychev7-2014') ? {
+const catalogue=process.argv.includes('--alimov-2012') ? {
+  directory:'alimov-2012',entries:[[19,78,19]],search:'alimov-2012',match:'периодические дроби',lesson:'19-3f',chart:'svg[aria-label*="одинаковым периодическим хвостом"]',storage:'math:alimov-2012:v1:'
+}:process.argv.includes('--makarychev7-2014') ? {
   directory:'makarychev7-2014',entries:[[95,46,5]],search:'makarychev7-2014',match:'выражения и статистика',lesson:'95-10',chart:'svg[aria-label*="Средние места"]',storage:'math:makarychev7-2014:v1:'
 }: process.argv.includes('--makarychev9-2017-supplement')?{
   directory:'makarychev9-2017',entries:[[50,36,68]],search:'makarychev9-2017',match:'36 пунктов',lesson:process.argv.includes('--radical-sum')?'50-219':process.argv.includes('--parameter')?'50-216':process.argv.includes('--graph')?'50-213':'50-202',onlySelected:true,chart:process.argv.includes('--radical-sum')?'svg[aria-label*="Корни вспомогательного"]':process.argv.includes('--parameter')?'svg[aria-label*="Парабола при найденном"]':process.argv.includes('--graph')?'svg[aria-label*="Обе ветви"]':'svg[aria-label*="Сечение"]',storage:'math:makarychev9-2017:v1:'
