@@ -47,8 +47,12 @@ assert.deepEqual(Object.keys(ciSupplement.files), [
 assert.equal(legacySegmentsSupplement.sourceCommit, '78853df87a48dddd5a96bf5f2ad4947a9016225b');
 assert.equal(legacySegmentsSupplement.task, 'FINAL651_LEGACY_VIEW_SEGMENTS_20261119');
 assert.deepEqual(Object.keys(legacySegmentsSupplement.files), ['ege-profil/atanasyan-10-11/model.js']);
+const sphere = require('./preservation-sphere-414.json');
+const { ids: sphereIds } = require('../stereo-textbook/additional414-baseline.cjs');
+assert.deepEqual(Object.keys(sphere.additions).sort(), [...sphereIds].map(id => 'stereo-course/textbook/lessons/' + id + '.json').sort());
+assert.deepEqual(Object.keys(sphere.files).sort(), ['stereo-course/textbook/data/course.json', 'stereo-course/textbook/source-index.json']);
 const amendmentChains = {};
-for (const supplement of supplements) {
+for (const supplement of [...supplements, sphere]) {
   for (const [file, amendment] of Object.entries(supplement.files)) {
     const chain = amendmentChains[file] ||= [];
     if (chain.length) assert.equal(amendment.beforeSHA256, chain.at(-1).afterSHA256, 'exact amendment chain: ' + file);
@@ -66,10 +70,16 @@ function filesAt(relative) {
 }
 function verify(group, read = file => fs.readFileSync(path.join(root, file)), extra = []) {
   const files = [...new Set(group.paths.flatMap(filesAt).concat(extra))].filter(file => !group.excluded.includes(file)).sort();
-  assert.equal(files.length, group.fileCount, group.group + ': exact protected file set size');
+  const additions = group.group === 'stereo_textbook' ? sphere.additions : {};
+  assert.equal(files.length, group.fileCount + Object.keys(additions).length, group.group + ': exact protected file set size');
+  for (const file of Object.keys(additions)) assert(files.includes(file), 'missing reviewed card: ' + file);
   const digest = crypto.createHash('sha256');
   for (const file of files) {
     const current = hash(read(file)), chain = amendmentChains[file];
+    if (Object.hasOwn(additions, file)) {
+      assert.equal(current, additions[file], 'exact reviewed new card: ' + file);
+      continue;
+    }
     if (chain) {
       assert.equal(current, chain.at(-1).afterSHA256, 'exact reviewed amendment: ' + file);
       assert.match(chain[0].beforeSHA256, /^[a-f0-9]{64}$/);
@@ -80,7 +90,9 @@ function verify(group, read = file => fs.readFileSync(path.join(root, file)), ex
 }
 for (const group of baseline.groups) verify(group);
 const geometry = require(root + '/geometry-course/textbook/data/course.json');
-const stereo = require(root + '/stereo-course/textbook/data/course.json');
+const currentStereo = require(root + '/stereo-course/textbook/data/course.json');
+assert.equal(currentStereo.lessons.length, 688);
+const stereo = require('../stereo-textbook/additional414-baseline.cjs').previousCourse(currentStereo, require(root + '/stereo-course/textbook/source-index.json'));
 const first = require(root + '/learning/atanasyan-first-steps/course.json');
 const literacy = require(root + '/stereo-course/literacy/data/course.json');
 const legacy = require(root + '/geometry-course/data/legacy.json');
@@ -100,4 +112,4 @@ for (const file of Object.keys(amendmentChains)) {
   assert(group, 'every exact amendment remains inside the original protected inventory');
   assert.throws(() => verify(group, name => name === file ? Buffer.concat([fs.readFileSync(path.join(root, name)), Buffer.from('\nUNREVIEWED')]) : fs.readFileSync(path.join(root, name))), /exact reviewed amendment/);
 }
-console.log('ATANASYAN_HARMONIZATION_PRESERVATION_OK ' + JSON.stringify({geometryCards: 1425, stereoCards: 674, firstSteps: 255, literacy: 36, legacy: 70, protectedFiles: baseline.groups.reduce((n, group) => n + group.fileCount, 0), exactReviewedAmendments: Object.values(amendmentChains).reduce((n, chain) => n + chain.length, 0), amendedFiles: Object.keys(amendmentChains).length, negativeControls: 2 + Object.keys(amendmentChains).length}));
+console.log('ATANASYAN_HARMONIZATION_PRESERVATION_OK ' + JSON.stringify({geometryCards: 1425, stereoCards: currentStereo.lessons.length, preservedStereoCards: stereo.lessons.length, firstSteps: 255, literacy: 36, legacy: 70, protectedFiles: baseline.groups.reduce((n, group) => n + group.fileCount, 0), exactReviewedAmendments: Object.values(amendmentChains).reduce((n, chain) => n + chain.length, 0), amendedFiles: Object.keys(amendmentChains).length, negativeControls: 2 + Object.keys(amendmentChains).length}));
