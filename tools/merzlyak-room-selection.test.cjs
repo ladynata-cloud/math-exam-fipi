@@ -63,6 +63,7 @@ function parent(child, boardOrigin = origin) {
     productionPart('const TRAINER_PATH_LIMITS=', 'const trainerRegistry='),
     productionPart('function unsafePathText(', 'function trainerIdFromPayload('),
     productionPart('function addBoardSeedToTrainerUrl(', 'function compatLabel('),
+    productionPart('function protectedPetersonId(', 'function trainerSelectionForRegistry('),
     productionPart('async function createRoom(){', 'async function connectRoom(){')
   ].join('\n'), context);
   return context;
