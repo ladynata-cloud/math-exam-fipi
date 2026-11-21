@@ -15,9 +15,11 @@ for(const [i,r] of book.mapping.entries()){
  if(i){assert(r.bookOnly);assert(!r.boardPath);assert(!r.externalPath);}
 }
 const ids=['1a','1b','1c','1d','2','3a','3b','3c','3d','4a','4b','4c','4d','5a','5b','6a','6b','6c','6d','7a','7b','7c','7d'];
+for(const [n,count] of [[8,4],[9,4],[10,4],[11,4],[12,4],[13,4],[14,2],[15,2],[16,4],[17,4]])
+ for(let j=0;j<count;j++)ids.push(n+'abcd'[j]);
 assert.deepEqual(Array.from(book.exercises,r=>r.path.split('/').pop()),ids.map(x=>'25-review-'+x));
 assert.deepEqual(Array.from(book.exercises,r=>r.printed),ids.map(id=>id.replace(/[abcd]/g,x=>'абвг'['abcd'.indexOf(x)])));
-const scripts=['trainers/tyurin-statistics/content.js',cwd+'review.js','trainers/tyurin-statistics/app.js'].map(read);
+const scripts=['trainers/tyurin-statistics/content.js',cwd+'review.js',cwd+'division.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,saved){
  const dom=new JSDOM(html,{url:'https://math.example'+entry.path,runScripts:'outside-only'}),w=dom.window;
  w.TextEncoder=TextEncoder;w.Math.random=()=>0;
@@ -32,6 +34,32 @@ const numericType=value=>{
  return value.includes('/')?2:Number(value.replace('−','-'))>0?0:1;
 };
 function oracle(i,d){
+ if(i>=23){
+  const n=Number(ids[i].slice(0,-1));
+  if(n===8){
+   const members=Array.from({length:d.hi-d.lo-1},(_,j)=>d.lo+1+j).filter(v=>v%d.unit===0);
+   assert.equal(members.length,1);
+   const extra=Array.from({length:members[0]+d.unit-d.lo},(_,j)=>d.lo+1+j).filter(v=>v%d.unit===0);
+   return [members[0]/d.unit,members[0],extra.length];
+  }
+  if(n===9){
+   const ns=Array.from({length:d.rem+1},(_,j)=>j+1).filter(t=>Number.isInteger(d.quot+d.rem/(d.a*t+d.b))),last=Math.max(...ns);
+   return [ns.length,last,d.quot+d.rem/(d.a*last+d.b)];
+  }
+  if(n===10){let val=d.n,same=0,count=0;for(let k=2;k<=val;k++){while(val%k===0){if(k===d.a)same++;count++;val/=k;}}
+   return [same,d.n/(d.a**same),count];
+  }
+  if(n===11){return [Math.floor(d.n/d.d),d.n%d.d,(d.n+d.d)%d.d];}
+  if(n===12){const residues=new Set(Array.from({length:2*d.d},(_,j)=>j%d.d));return [Math.max(...residues),residues.size,d.n%d.d+1];}
+  if(n===13){const terms=Array.from({length:d.q+2},(_,k)=>k*d.d+d.r);return [terms[d.q],terms.at(-1),terms.filter(x=>x<=d.n).length];}
+  if(n<=16){const solutions=Array.from({length:10},(_,v)=>v).filter(v=>d.mods.every(([m,r])=>{
+   const all=Number(d.prefix+v+d.tail);return all-Math.floor(all/m)*m===r;
+  }));return [solutions.length,Math.min(...solutions),Number(d.prefix+Math.max(...solutions)+d.tail)];}
+  const factors=Array.from({length:Math.min(...d.nums)},(_,k)=>k+1).filter(k=>d.nums.every(num=>num%k===0)),g=factors.at(-1);
+  const power=d.nums.map(z=>{let e=0;for(let x=z;x%d.prime===0;x/=d.prime)e++;return e;});
+  const scaled=d.nums.map(z=>z*d.scale);for(let x=g*d.scale+1;x<=Math.min(...scaled);x++)assert(!scaled.every(v=>v%x===0));
+  return [Math.min(...power),g,g*d.scale];
+ }
  if(i<4){
   const hits=v=>[[0],[0,1,2],[0,1],[3]][i].includes(numericType(v));
   const cnt=d.list.filter(hits).length,inExtra=+hits(d.extra[0]);
@@ -50,11 +78,11 @@ function oracle(i,d){
 function click(doc,id){const el=doc.querySelector('[data-action="'+id+'"]');assert(el,id);el.click();}
 function reply(doc,v){const a=doc.querySelector('#answer');a.value=v;const E=doc.defaultView.Event;a.dispatchEvent(new E('input',{bubbles:true}));doc.querySelector('#work form').dispatchEvent(new E('submit',{bubbles:true,cancelable:true}));}
 for(const [i,entry] of book.exercises.entries()){
- assert.equal(entry.path,entry.boardPath);assert.equal(entry.page,4);
+ assert.equal(entry.path,entry.boardPath);assert.equal(entry.page,i<23?4:5);
  let {dom,w,doc,key,lesson}=open(entry);
- assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,23);
+ assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,59);
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),entry.path);
- assert.equal(doc.querySelector('#source').hash,'#page=3');assert(doc.querySelector('#worked-data svg[aria-label]'));
+ assert.equal(doc.querySelector('#source').hash,i<23?'#page=3':'#page=4');assert(doc.querySelector('#worked-data svg[aria-label]'));
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,[]);
  assert(!doc.querySelector('#work').textContent.includes(lesson.printedGuide));click(doc,'printed-guide');assert(doc.querySelector('#work').textContent.includes(lesson.printedGuide));
  assert.equal(w.MathExamTopicEdition.nextId(lesson),ids[i+1]&&'25-review-'+ids[i+1]);
@@ -76,4 +104,4 @@ for(const [i,entry] of book.exercises.entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,['fixed','first','help']);
  click(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);dom.window.close();
 }
-console.log('Mordkovich/Semenov 2020: 50 printed entries, 23 individual learning flows, 759 independently checked answers, 23 corrections, unaided answers, help, reloads and fresh retries.');
+console.log('Mordkovich/Semenov 2020: 50 printed entries, 59 individual learning flows, 1947 independently checked answers, 59 corrections, unaided answers, help, reloads and fresh retries.');

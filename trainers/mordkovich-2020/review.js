@@ -3,8 +3,8 @@
   const {add, lessons, example} = window.MathExamTopicPractice;
   const ids = [];
   const ref = n => '25-review-' + n;
-  const register = (key, printed, title, prompt, guide, rule, related, make) => {
-    add(25,'review-'+key,4,title,prompt,rule,related,make);
+  const register = (key, printed, title, prompt, guide, rule, related, make, page=4) => {
+    add(25,'review-'+key,page,title,prompt,rule,related,make);
     const lesson=lessons.get(ref(key));
     Object.assign(lesson,{printedReference:'Повторение, №'+printed,printedPrompt:prompt,printedGuide:guide});
     ids.push(lesson.id);
@@ -167,5 +167,6 @@
   }
   window.MathExamTopicEdition={trainerId:'mordkovich-2020',authors:'Мордкович, Семёнов · часть 2 · 2020',
     grade:()=>'10 класс',unit:'упражнение',storePrefix:'math:mordkovich-2020:v1:',figure,
-    source:()=> 'https://pdf.my-uchebnik.ru/pdf/algebra/00000025.pdf#page=3',nextId:lesson=>ids[ids.indexOf(lesson.id)+1]};
+    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000025.pdf#page='+(page-1),nextId:lesson=>ids[ids.indexOf(lesson.id)+1],
+    registerReview:register,question,model};
 })();
