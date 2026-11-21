@@ -63,8 +63,8 @@ def add_markers(number, model):
         906: [(range(4), 'H', 'M', 'O'), (range(1, 4), 'P', 'U', 'O')],
         908: [(range(1, 4), 'A', 'I', 'V'), (range(1, 4), 'B', 'I', 'W'),
               (range(1, 4), 'C', 'I', 'U')],
-        909: [(range(4), 'U', 'A', 'B'), (range(4), 'V', 'B', 'A'),
-              (range(4), 'W', 'C', 'A'), ([2], 'B', 'A', 'Y'), ([2], 'C', 'A', 'Y')],
+        909: [([0, 1], 'U', 'A', 'B'), ([0], 'V', 'B', 'A'),
+              ([0], 'W', 'C', 'A'), ([2], 'B', 'A', 'Y'), ([2], 'C', 'A', 'Y')],
     }
     for args in marks.get(number, []):
         mark_perpendicular(model, *args)

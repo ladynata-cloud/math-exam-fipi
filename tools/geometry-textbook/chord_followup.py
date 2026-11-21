@@ -108,7 +108,7 @@ def follow():
           'Невырожденность исходного треугольника исключает параллельность соседних внешних биссектрис.')],
         views(p,base,((),()),([('A','I'),('B','I'),('C','I')],()),([('A','U')],('ABC',)),([('A','U'),('B','V'),('C','W')],())),
         (1,'Если внутренний угол равен 78°, сколько градусов составляет половина смежного внешнего угла?', ['51'],'Вычти 78° из 180° и раздели пополам.'))
-    a,b,c=(1,5),(0,0),(7,0);u=foot(a,b,c);v=foot(b,c,a);w=foot(c,a,b);h=intersect(a,u,b,v);o=circum(a,b,c)
+    a,b,c=(2.5,5.5),(-1,0),(8,0);u=foot(a,b,c);v=foot(b,c,a);w=foot(c,a,b);h=intersect(a,u,b,v);o=circum(a,b,c)
     p=dict(A=a,B=b,C=c,H=h,O=o,U=u,V=v,W=w,M=mid(b,c),X=reflect(h,u),Y=reflect(h,mid(b,c)));base=edges('ABC')+[('A','U'),('B','V'),('C','W')]
     e909=new(909,'Ортоцентр H треугольника ABC отразили относительно каждой прямой стороны и относительно середины каждой стороны. Докажи, что все шесть образов принадлежат описанной окружности ABC.',
         'Для отражения относительно стороны подходит признак вписанности по углам. Образ относительно середины BC оказывается противоположным A концом диаметра описанной окружности.',
@@ -122,4 +122,16 @@ def follow():
         views(p,base,((),()),([('H','X'),('B','X'),('C','X')],('BXC',)),([('H','Y'),('A','Y'),('B','Y'),('C','Y')],('ABY',)),([('H','X'),('H','Y')],())),
         (2,'Если радиус описанной окружности равен 5, чему равен диаметр AY?', ['10'],'Диаметр вдвое больше радиуса.'))
     circle_each(e909,[('O','A')])
+    # Keep each construction readable at phone width. The condition defines H
+    # using the three altitudes. Later views need only the side used for reflection.
+    scenes = [
+        ('ABCHOUVW', edges('ABC') + [('A','U'),('B','V'),('C','W')]),
+        ('ABCHOUX', edges('ABC') + [('A','X'),('B','X'),('C','X')]),
+        ('ABCHOMY', edges('ABC') + [('H','Y'),('A','Y'),('B','Y'),('C','Y')]),
+        ('ABCHOUXMY', edges('ABC') + [('H','X'),('H','Y')]),
+    ]
+    for index, (labels, segments) in enumerate(scenes):
+        view=e909['model']['views']['neutral' if index == 0 else f'step-{index}']
+        view['points']=[f'{name}__v{index}' for name in labels]
+        view['segments']=[[f'{a}__v{index}',f'{b}__v{index}'] for a,b in segments]
     return [e903,e904,e905,e906,e907,e908,e909]
