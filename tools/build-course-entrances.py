@@ -3,6 +3,7 @@
 Does not generate native app code or modify persisted learner data.
 """
 from pathlib import Path
+from grade5_course_entries import grade5_entries
 from html import escape as e
 import json,re,subprocess,argparse
 ROOT=Path(__file__).resolve().parents[1]
@@ -60,6 +61,7 @@ for key,c in COURSES.items():
  else:s=s.replace('</body>',footer+'\n</body>',1)
  if key=='peterson6':s=s.replace('src="/assets/course-examples','src="../../assets/course-examples').replace('href="/assets/course-examples','href="../../assets/course-examples')
  outputs[path]=s
+outputs.update(grade5_entries(ROOT))
 args=argparse.ArgumentParser();args.add_argument('--check',action='store_true');check=args.parse_args().check
 changed=[]
 for name,content in outputs.items():

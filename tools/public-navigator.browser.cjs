@@ -53,7 +53,8 @@ for (const item of catalogue) {
   }
   async function assertLauncherLayout(page,filename,viewport){
     const host=page.locator('#maxexam-public-assistant'),launcher=host.locator('.launcher');
-    const flow=filename==='school/peterson5/index.html'||(filename==='school/index.html'&&await page.locator('body.v5-quality-active').count()===1);
+    const inPartOne=filename==='courses/vilenkin-5-part-1/index.html';
+    const flow=inPartOne||filename==='school/peterson5/index.html'||(filename==='school/index.html'&&await page.locator('body.v5-quality-active').count()===1);
     const box=await launcher.boundingBox();
     assert.ok(box.x>=0&&box.y>=0&&box.x+box.width<=viewport.width&&box.y+box.height<=viewport.height);
     if(!flow){
@@ -70,7 +71,7 @@ for (const item of catalogue) {
     }));
     assert.equal(label.text,'Навигатор');assert.equal(label.clip,'none');
     assert.ok(label.width>60&&label.font>=15&&box.width>=100&&box.height>=44,'Scoped launcher keeps a readable label and accessible target');
-    const targets=page.locator('#workshop-question,[data-w-form] [data-w-value],[data-w-form] button[type="submit"],#task-panel .question,#answer,#answer-form button[type="submit"]');
+    const targets=page.locator('#workshop-question,[data-w-form] [data-w-value],[data-w-form] button[type="submit"],#task-panel .question,#answer,#answer-form button[type="submit"],#answerForm button[type="submit"]');
     for(const target of await targets.all()){
       if(!await target.isVisible())continue;
       await target.scrollIntoViewIfNeeded();
@@ -156,6 +157,11 @@ for (const item of catalogue) {
           assert.equal(await originalHost.evaluate(element=>element===document.getElementById('maxexam-public-assistant')),true,'Restoration retains the same widget instance');
           await originalHost.dispose();
           courseFlow={route:'#lesson/v5f-division-column',launcher:activeBox,restored:true};
+        }
+        if(filename==='courses/vilenkin-5-part-1/index.html'){
+          await page.goto(origin+route+'#lesson/8/steps/0');
+          await page.locator('#answer').waitFor();
+          await assertLauncherLayout(page,filename,viewport);
         }
         let preExistingErrors=[];
         if(errors.length){
