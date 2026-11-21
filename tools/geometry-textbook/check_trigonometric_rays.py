@@ -42,7 +42,7 @@ for card,(n,part) in zip(cards,ordered,strict=True):
         count+=1
         suffix='__v'+v['points'][0].split('__v')[1];pts=model['points'];o=pts['O'+suffix]
         unit=pts['_unitX'+suffix][0]-o[0];assert unit>0 and close(pts['_unitY'+suffix][1]-o[1],unit)
-        def read(idx):return tuple((pts[idx][j]-o[j])/unit/(4 if n<1107 else 1) for j in (0,1))
+        def read(idx):return tuple((pts[idx][j]-o[j])/unit/(4 if n<1105 else 1) for j in (0,1))
         labels={lab:read(idx) for idx in v['points'] for lab in model['labels'][idx].split('=')}
         lines=[(read(a),read(b)) for a,b in v['highlightSegments']]
         new=key in ('step-3','case-3');second=key in ('step-2','case-2')
@@ -96,6 +96,14 @@ for card,(n,part) in zip(cards,ordered,strict=True):
                 assert near(labels['P'],(screen,hit-screen)) and near(labels['B'],(screen,0))
                 a,b=lines[1];assert near(a,labels['K']) and near(b,labels['P']) and b[0]<a[0] and b[1]>a[1]
                 assert all(close(pt[0],screen) for pt in lines[2]);optical+=1
+            light=lines[:2] if new or second else lines[:1]
+            heads=lines[3:] if new or second else lines[1:]
+            assert len(heads)==2*len(light)
+            for i,((x1,y1),(x2,y2)) in enumerate(light):
+                dx,dy=x2-x1,y2-y1
+                for tail,tip in heads[i*2:i*2+2]:
+                    assert near(tip,(x1+.55*dx,y1+.55*dy))
+                    assert (tip[0]-tail[0])*dx+(tip[1]-tail[1])*dy>0
 for quarter in range(721):
     alpha=quarter*pi/720;x=cos(alpha);y=sin(alpha)
     assert close(x*x+y*y,1) and near((-x,y),(cos(pi-alpha),sin(pi-alpha)))

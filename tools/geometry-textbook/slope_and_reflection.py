@@ -1,7 +1,7 @@
 """Exercise 1107 distinguishes slope from intercept; exercise 1108 follows the actual reflected half-line."""
 import argparse
 import json
-from math import sqrt
+from math import hypot, sqrt
 from upper_semicircle import ROOT, BOOK, author, straight
 from coordinate_curves import graph
 from trigonometric_signs import grade
@@ -46,6 +46,15 @@ def light_view(label,mx,my,screen,show):
         # Only the path of light up to the screen is colored. There is no continuation on the other side of K.
         paths.append((pts['K'],pts['P']))
         paths.append(((screen,-.5),(screen,height+1)))
+    light=paths[:2] if show else paths[:1]
+    for (x1,y1),(x2,y2) in light:
+        dx,dy=x2-x1,y2-y1
+        length=hypot(dx,dy)
+        ux,uy=dx/length,dy/length
+        head=(x1+.55*dx,y1+.55*dy)
+        for side in (-1,1):
+            tail=(head[0]-.55*ux-side*.28*uy,head[1]-.55*uy+side*.28*ux)
+            paths.append((tail,head))
     return graph(label,pts,lines=paths)
 
 
@@ -57,7 +66,7 @@ def reflection():
     c=author(1108,None,[276],task,reason,hint,[('Найди точку падения','Коэффициент прямой падения tg 45°=1. Подставь M: 3=8+d, значит d=−5. Встреча с осью требует 0=x−5, откуда K=(5;0).','От источника до K уменьшаются обе координаты.'),
         ('Отрази направление','При отражении от горизонтального зеркала компонента вдоль него сохраняется. Вместо (−1;−1) получаем (−1;1). Через K проходит y=−x+5. При x=−10 получаем y=15. Точка лежит по нужную сторону от K.','Наклон прямой сам по себе не определяет, в какую сторону движется свет.'),
         ('Перенеси источник и экран','Возьми M=(4;2), экран x=−3, угол падения тот же. Тогда y=x−2, K=(2;0). Луч отражения идёт по y=−x+2 при x≤2, встречает экран в (−3;5).','Проверь уравнение в точке падения и в полученной точке экрана.')],figures,
-        [('Чему равна абсцисса исходной точки падения K?','5','Положи y=0 в уравнении падающей прямой.'),('Чему равна высота встречи с новым экраном x=−3?','5','Подставь −3 в y=−x+2.')],[102,103],caption=GRID+' Луч идёт от M к K и далее вверх и влево к экрану BP.')
+        [('Чему равна абсцисса исходной точки падения K?','5','Положи y=0 в уравнении падающей прямой.'),('Чему равна высота встречи с новым экраном x=−3?','5','Подставь −3 в y=−x+2.')],[102,103],caption=GRID+' Стрелки указывают путь света от M к K и далее вверх и влево к экрану BP.')
     formats=['1;-5;-1;5;-10;15','1; -5; -1; 5; -10; 15','y=x-5; y=-x+5; (-10;15)','y=x−5; y=−x+5; (−10;15)']
     return grade(c,formats,hint,'Запиши шесть чисел через точку с запятой: k и d для прямой падения y=kx+d, затем k и d для отражения, затем x и y точки на экране.')
 
