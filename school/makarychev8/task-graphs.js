@@ -640,6 +640,44 @@ function measureScene(host,config,value){
  }
 }
 
+function fractionSample(value,count){
+ const parts=String(value??'').split(';').map(v=>M.parse(v.trim()));
+ return parts.length===count&&parts.every(v=>v&&Math.abs(v.n/v.d)<=100)?parts:null;
+}
+function sourceFractionTrial(config,value){
+ const fields=fractionSample(value,config.symbols.length);
+ if(!fields)return null;
+ const values=new Map(config.symbols.map((symbol,i)=>[symbol,fields[i]]));
+ function evaluate(tree){
+  if(!Array.isArray(tree)){const r=values.get(tree)||M.parse(tree);return r?[BigInt(r.n),BigInt(r.d)]:null;}
+  const [op,left,right]=tree,a=evaluate(left);if(!a)return null;
+  if(op==='neg')return [-a[0],a[1]];
+  const b=evaluate(right);if(!b)return null;
+  if(op==='+')return [a[0]*b[1]+b[0]*a[1],a[1]*b[1]];
+  if(op==='-')return [a[0]*b[1]-b[0]*a[1],a[1]*b[1]];
+  if(op==='*')return [a[0]*b[0],a[1]*b[1]];
+  if(op==='/')return b[0]?[a[0]*b[1],a[1]*b[0]]:null;
+  if(op==='^'&&b[1]===1n&&b[0]>=0n&&b[0]<=4n)return [a[0]**b[0],a[1]**b[0]];
+  return null;
+ }
+ function format(v){
+  if(!v)return null;
+  let [n,d]=v;if(d<0n){d=-d;n=-n;}
+  let u=n<0n?-n:n,w=d;while(w){const rem=u%w;u=w;w=rem;}
+  return d/u===1n?String(n/u):(n/u)+'/'+(d/u);
+ }
+ return {original:format(evaluate(config.original)),reduced:format(evaluate(config.reduced))};
+}
+function sourceFractionScene(host,config){
+ host.className='task-graphs quantity-model';const input=config.trial||config.symbols.map(()=>0).join(';'),check=sourceFractionTrial(config,input);
+ const add=(message,k,status)=>{const row=document.createElement('p');row.className='small';row.textContent=message;if(k){row.dataset.fractionSide=k;row.dataset.fractionStatus=status;}host.append(row);};
+ if(!check){add('Введи '+(config.symbols.length===2?'пару рациональных чисел через точку с запятой':'рациональное число')+' от −100 до 100.');return;}
+ add((config.trial?'Твоя подстановка: ':'Пример подстановки: ')+config.symbols.map((s,i)=>s+' = '+input.split(';')[i]).join(', ')+'.');
+ const row=(title,k)=>add(title+(check[k]===null?'не определена.':'равна '+check[k]+'.'),k,check[k]===null?'undefined':'defined');
+ row('Исходная запись ', 'original');row('Упрощённая формула ', 'reduced');
+ if(check.original===null&&check.reduced!==null)add('После сокращения получено число, но исходное выражение здесь не определено. Запрет сохраняется.');
+}
+
 function parameterSample(value) {
  const r=M.parse(String(value??''));
  return r&&Math.abs(r.n/r.d)<=24&&8%r.d===0?r.n/r.d:null;
@@ -917,6 +955,19 @@ function render(host,config,value){
  if(config.type==='abs-line-choice'){absLineChoice(host,config);return;}
  if(config.type==='system-pair-audit'){systemPairModel(host,config);return;}
  if(config.type==='inequality-intervals'){inequalityIntervals(host,config);return;}
+ if(config.type==='source-fraction'){sourceFractionScene(host,config);return;}
+ if(config.type==='factor-witness'){
+  host.className='task-graphs quantity-model';
+  const parts=String(value||'').split(';');
+  if(parts.length===3&&config.audit){
+   const caption=document.createElement('p');caption.className='small';caption.dataset.factorProduct='';
+   caption.textContent='Твоё произведение: ('+parts[0]+')·(x − ('+parts[1]+'))·(x − ('+parts[2]+')).';host.append(caption);
+   for(const [name,good] of [['Старший коэффициент',config.rightLeading],['Сумма корней',config.audit.sum],['Произведение корней',config.audit.product]]){
+    const row=document.createElement('p');row.className='small';row.dataset.factorWitness=good?'yes':'no';row.textContent=name+(good?' совпадает.':' отличается.');host.append(row);
+   }
+  }else {const row=document.createElement('p');row.className='small';row.textContent='Введи A и оба корня: модель составит твоё произведение линейных множителей.';host.append(row);}
+  return;
+ }
  if(config.type==='vieta-audit'){
   host.className='task-graphs quantity-model';
   for(const [name,label] of [['sum','Сумма'],['product','Произведение']]){
@@ -996,5 +1047,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

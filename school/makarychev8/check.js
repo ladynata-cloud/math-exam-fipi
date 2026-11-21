@@ -676,6 +676,7 @@ function progressionFactors(input){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='fraction-sample')return G.fractionSample(user,target.probeCount)!==null;
  if(target.kind==='symbolic-coefficients'){
   const fields=user.split(';'),expected=String(target.answer).split(';');
   return fields.length===expected.length&&fields.every((v,i)=>sameReducedExpression(v,expected[i]));

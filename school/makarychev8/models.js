@@ -775,5 +775,18 @@
      graph:{type:'vieta-audit',sum:String(total),product:String(product)},skills:[invariantPractice.id],source:{type:'authored',reference:'Тренировка по Виету'}};
   }
 
-  return { mount, experiment, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const fractionDomainPractice={id:'fraction-domain-review',title:'Сохранить область исходной дроби',description:'Найди исключённые точки до сокращения и проверь их подстановкой.'};
+  function practiceFractionDomain(seed,level){
+    const h=1+seed%8,k=h+1+Math.floor(seed/3)%5,offset=level+1;
+    const linear=n=>['-','x',String(n)],cancel=linear(h),den=linear(k),num=['+','x',String(offset)];
+    const answer=h+';'+k,hint='Найди нули обоих исходных множителей знаменателя. Сокращение не возвращает первый из них.';
+    return {title:fractionDomainPractice.title,prompt:'Назови все запреты для дроби ((x − '+h+')(x + '+offset+')) / ((x − '+h+')(x − '+k+')).',
+      kind:'set',answer,hint,correction:hint,explanation:'Точки '+h+' и '+k+' запрещены. В первой сокращённая формула имеет значение, а исходная дробь нет.',
+      graph:{type:'source-fraction',symbols:['x'],original:['/',['*',cancel,num],['*',cancel,den]],reduced:['/',num,den]},
+      steps:[{kind:'fraction-sample',probeCount:1,answer:String(h),prompt:'Испытай любое рациональное x от −100 до 100.',hint:'Попробуй один из нулей знаменателя.',explanation:'Обе формы проверены при твоём значении.'},
+       {kind:'number',answer:String(h),prompt:'Какое запрещённое значение перестало быть видимым в сокращённом знаменателе?',hint:'Посмотри на общий множитель.',explanation:'У сокращённого множителя нуль '+h+'.'}],
+      skills:[fractionDomainPractice.id],source:{type:'authored',reference:'Тренировка по сохранению области дроби'}};
+  }
+
+  return { mount, experiment, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

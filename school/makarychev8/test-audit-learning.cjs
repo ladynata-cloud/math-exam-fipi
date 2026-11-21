@@ -1,7 +1,20 @@
 'use strict';
 const assert=require('node:assert/strict'),test=require('node:test'),fs=require('node:fs'),{JSDOM}=require('jsdom');
 const models=require('./models.js'),math=models.math;
-function boot(hash='#home',saved){const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://m8.test/'+hash,runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};if(saved)w.localStorage.setItem('mathexam.makarychev8.2024.v1',JSON.stringify(saved));for(const f of ['../peterson6/math.js','task-graphs.js','check.js','models.js','data.js','app.js'])w.eval(fs.readFileSync(__dirname+'/'+f,'utf8'));const d=w.document;return {w,d,api:w.MakarychevApp,close:()=>w.close(),input(el,value){assert(el);el.value=String(value);el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));},button(text){const b=Array.from(d.querySelectorAll('button')).find(b=>b.textContent===text);assert(b,text);b.click();},answer(value){this.input(d.querySelector('#final-answer'),value);d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}};}
+// A learner's answers, lesson state and DOM stay private to each window. The
+// generated textbook bank is immutable and shared, as a browser cache would be.
+const {Script,runInNewContext}=require('node:vm');
+const bankWindow={};
+runInNewContext(fs.readFileSync(__dirname+'/data.js','utf8'),{window:bankWindow});
+function freezeBook(value){
+ if(!value||typeof value!=='object'||Object.isFrozen(value))return;
+ Object.freeze(value);for(const child of Object.values(value))freezeBook(child);
+}
+freezeBook(bankWindow.MakarychevCourse);
+const runtimeFiles=['../peterson6/math.js','task-graphs.js','check.js','models.js','app.js'];
+const scripts=runtimeFiles.map(file=>new Script(fs.readFileSync(__dirname+'/'+file,'utf8'),{filename:file}));
+
+function boot(hash='#home',saved){const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://m8.test/'+hash,runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};if(saved)w.localStorage.setItem('mathexam.makarychev8.2024.v1',JSON.stringify(saved));w.MakarychevCourse=bankWindow.MakarychevCourse;for(const script of scripts)script.runInContext(dom.getInternalVMContext());const d=w.document;return {w,d,api:w.MakarychevApp,close:()=>w.close(),input(el,value){assert(el);el.value=String(value);el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));},button(text){const b=Array.from(d.querySelectorAll('button')).find(b=>b.textContent===text);assert(b,text);b.click();},answer(value){this.input(d.querySelector('#final-answer'),value);d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}};}
 function begin(rt,value=0){rt.input(rt.d.querySelector('.m8-prediction select'),value);rt.button('Сохранить прогноз и исследовать');}
 function numeric(rt,label,value){rt.input(Array.from(rt.d.querySelectorAll('#model input[type=number]')).find(el=>el.getAttribute('aria-label')===label+': точное значение'),value);}
 
@@ -162,9 +175,9 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–782 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–797 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–782 разобраны полностью/);
+ assert.match(overview.textContent,/№1–797 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
 });
