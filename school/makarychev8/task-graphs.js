@@ -773,6 +773,52 @@ function equationExamples(host,value){
 function boundNote(host,text) {
  const p=document.createElement('p'); p.className='small'; p.textContent=text;host.append(p);return p;
 }
+function intervalNumberLine(host,g,value){
+ host.className='task-graphs quantity-model';
+ const rows=g.givenRows||[],proposed=g.proposal,pointValues=g.points||[];
+ const all=[...rows,...(proposed?[proposed]:[])],limitWords=v=>v==='-∞'?'−∞':v==='+∞'?'+∞':M.answer(v);
+ const candidateNs=pointValues.map(p=>p.n/p.d);if(Number.isFinite(g.surd))candidateNs.push(Math.sqrt(g.surd));
+ const numeric=all.flat().flatMap(r=>[r.min,r.max]).filter(Number.isFinite).concat(candidateNs);
+ let lo=numeric.length?Math.min(...numeric):-2,hi=numeric.length?Math.max(...numeric):2;
+ const margin=Math.max((hi-lo)*.18,.65);lo-=margin;hi+=margin;
+ const x=n=>18+(n-lo)/(hi-lo)*284,canvas=node('svg',{viewBox:'0 0 320 '+(58+52*Math.max(all.length,1)),role:'img','aria-label':'Координатная прямая с исходными и построенными промежутками'});
+ function line(a,b,y,color,weight){canvas.append(node('line',{x1:a,x2:b,y1:y,y2:y,stroke:color,'stroke-width':weight}));}
+ const draw=(set,y,color,i)=>{
+  line(10,307,y,'#536a62',1.5);
+  canvas.append(node('path',{d:'M301 '+(y-4)+' L307 '+y+' L301 '+(y+4),fill:'none',stroke:'#536a62'}));
+  for(const r of set){
+   const a=Number.isFinite(r.min)?x(r.min):11,b=Number.isFinite(r.max)?x(r.max):301;
+   line(a,b,y,color,4);
+   for(const [at,v,open,j]of [[a,r.left,r.leftOpen,0],[b,r.right,r.rightOpen,1]]){
+    if(typeof v==='string'){const dx=j?-6:6;canvas.append(node('path',{d:'M'+(at+dx)+' '+(y-5)+' L'+at+' '+y+' L'+(at+dx)+' '+(y+5),fill:'none',stroke:color,'stroke-width':2,'data-axis-arrow':j?'right':'left'}));continue;}
+    canvas.append(node('circle',{cx:at,cy:y,r:4,'stroke-width':2,stroke:color,fill:open?'white':color,'data-axis-end':open?'open':'closed'}));
+    // Give adjacent labels different baselines; caption retains every exact value.
+    if(b-a>44||j===0)canvas.append(node('text',{x:at,y:y+(j?17:-8),'text-anchor':'middle','font-size':12},limitWords(v)));
+   }
+  }
+  canvas.append(node('g',{'data-axis-row':i}));
+ };
+ all.forEach((row,i)=>draw(row,24+52*i,i===rows.length?'#744481':i===0?'#087169':'#a65b24',i));
+ if(!all.length)draw([],24,'#087169',0);
+ const py=24+52*Math.max(0,all.length-1);for(const p of candidateNs)canvas.append(node('path',{d:'M'+x(p)+' '+(py-2)+' l-4 -7 h8 z',fill:'#9a432b','data-axis-probe':String(p)}));
+ host.append(canvas);
+ const describe=r=>(r.leftOpen?'(':'[')+limitWords(r.left)+'; '+limitWords(r.right)+(r.rightOpen?')':']');
+ if(g.mode==='read'){const first=rows[0]?.[0];if(first){const end=(v,open)=>typeof v==='string'?'стрелка к '+limitWords(v):(open?'пустая':'закрашенная')+' метка '+limitWords(v);canvas.setAttribute('aria-label','Слева '+end(first.left,first.leftOpen)+', справа '+end(first.right,first.rightOpen)+'. Выделен промежуток между ними.');}boundNote(host,'Читай рисунок: пустая метка исключена, закрашенная включена.');}
+ else rows.forEach((r,i)=>boundNote(host,'Дано '+(rows.length>1?(i+1)+': ':'')+r.map(describe).join(' ∪ ')+'.'));
+ if(proposed)boundNote(host,'Твоё построение: '+(proposed.length?proposed.map(describe).join(' ∪ '):'∅')+'.').dataset.axisProposal='yes';
+ if(pointValues.length)boundNote(host,'Отмечены числа: '+pointValues.map(M.answer).join('; ')+'.');
+ if(Number.isFinite(g.surd))boundNote(host,'Отмечена точка √'+g.surd+'. Сравнивай точно с квадратами концов.');
+}
+function intervalReview(host,g,value){
+ host.className='task-graphs quantity-model';const q=M.parse(value);
+ if(g.mode==='simplify'){boundNote(host,'Ненулевые исходные переменные: '+g.letters.join(', ')+'.');if(g.partial?.[1])boundNote(host,'Твой упрощённый числитель: '+g.partial[1]+'.');return;}
+ if(g.mode==='positive'){boundNote(host,'a² − 2a + 5 = (a − 1)² + 4. Найди нижнюю границу по квадрату.');return;}
+ if(g.mode==='evaluate'){if(!q){boundNote(host,'Введи свой x и проверь значение функции.');return;}const x=q.n/q.d;boundNote(host,x===2?'Для x = 2 знаменатель равен нулю.':'По твоей подстановке значение '+((3*x-1)/(x-2)).toLocaleString('ru-RU',{maximumSignificantDigits:8})+'.');return;}
+ const pair=cornerValues(value);if(!pair||pair.some(p=>p.n<=0)){boundNote(host,'Скорость положительна, время каждого пути равно 120/v.');return;}
+ const times=pair.map(p=>120*p.d/p.n);boundNote(host,'По твоим скоростям длительность поездок: '+times.map(t=>t.toLocaleString('ru-RU',{maximumFractionDigits:5})).join(' и ')+' ч. Разница '+((times[0]-times[1])*60).toLocaleString('ru-RU',{maximumFractionDigits:5})+' минут.').dataset.trainTimes='yes';
+}
+
+
 function setTokens(raw,letters){
  const s=String(raw??'').trim().toLowerCase().replace(/^\{(.*)\}$/,'$1').trim();
  if(!s)return null;if(['∅','нет','пусто'].includes(s))return [];
@@ -1423,6 +1469,8 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='source-interval-axis'){intervalNumberLine(host,config,value);return;}
+ if(config.type==='interval-review'){intervalReview(host,config,value);return;}
  if(config.type==='euler-operation'){eulerDiagram(host,config,value);return;}
  if(config.type==='overlap-segments'){segmentDiagram(host,config,value);return;}
  if(['proportion-coefficient','harvest-check'].includes(config.type)){setReview(host,config,value);return;}

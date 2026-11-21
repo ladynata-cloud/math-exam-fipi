@@ -692,6 +692,47 @@ function openIntervals(input){
  }
  return list;
 }
+function endpointCompare(a,b){
+ if(a===b)return 0;
+ if(a==='-∞'||b==='+∞')return -1;if(a==='+∞'||b==='-∞')return 1;
+ const delta=BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);return delta<0n?-1:delta>0n?1:0;
+}
+function axisRanges(raw){
+ const text=String(raw??'').trim();if(['∅','нет'].includes(text.toLowerCase()))return [];
+ const ranges=openIntervals(text);if(!ranges||ranges.length>10)return null;
+ for(const r of ranges){
+  const cmp=endpointCompare(r.left,r.right);
+  if(r.left==='+∞'||r.right==='-∞'||r.left==='-∞'&&!r.leftOpen||r.right==='+∞'&&!r.rightOpen||cmp>0||cmp===0&&(r.leftOpen||r.rightOpen))return null;
+ }
+ ranges.sort((a,b)=>endpointCompare(a.left,b.left)||Number(a.leftOpen)-Number(b.leftOpen));
+ const result=[];
+ for(const r of ranges){
+  const prev=result.at(-1),cmp=prev?endpointCompare(prev.right,r.left):-1;
+  if(!prev||cmp<0||cmp===0&&prev.rightOpen&&r.leftOpen){result.push({...r});continue;}
+  const end=endpointCompare(prev.right,r.right);
+  if(end<0){prev.right=r.right;prev.max=r.max;prev.rightOpen=r.rightOpen;}
+  if(end===0)prev.rightOpen=prev.rightOpen&&r.rightOpen;
+ }
+ return result;
+}
+function equalAxisSets(raw,expected){
+ const a=axisRanges(raw),b=axisRanges(expected);return Boolean(a&&b&&a.length===b.length&&a.every((x,i)=>endpointCompare(x.left,b[i].left)===0&&endpointCompare(x.right,b[i].right)===0&&x.leftOpen===b[i].leftOpen&&x.rightOpen===b[i].rightOpen));
+}
+function axisName(raw){
+ const name=String(raw??'').trim().toLowerCase().replace(/ё/g,'е');
+ return {'числовой отрезок':'отрезок','луч':'числовой луч','открытый луч':'открытый числовой луч','координатная прямая':'числовая прямая','вся прямая':'числовая прямая'}[name]||name;
+}
+function rationalList(raw){
+ const s=String(raw??'').trim().replace(/^[{](.*)[}]$/,'$1');if(!s)return null;
+ const fields=s.split(';').map(x=>M.parse(x.trim()));return fields.length<=50&&fields.every(Boolean)?fields:null;
+}
+function axisListEqual(raw,target){
+ const a=rationalList(raw),b=rationalList(target.answer);if(!a||!b)return false;
+ if(target.kind==='fixed-denominator-list'&&!String(raw).split(';').every(v=>new RegExp('^\\s*\\d+\\s*/\\s*'+target.expectedDenominator+'\\s*$').test(v)))return false;
+ return b.every(x=>a.some(y=>M.equal(x,y)))&&a.every(x=>b.some(y=>M.equal(x,y)));
+}
+
+
 function estimateInput(raw,expression){
  const src=String(raw??'').trim().replace(/<=/g,'≤').replace(/>=/g,'≥');
  let ranges=openIntervals(src);
@@ -781,11 +822,15 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='axis-set')return equalAxisSets(user,target.answer);
+ if(target.kind==='named-interval'){const a=String(user).split('|'),b=target.answer.split('|');return a.length===2&&equalAxisSets(a[0],b[0])&&axisName(a[1])===axisName(b[1]);}
+ if(['rational-axis-list','fixed-denominator-list'].includes(target.kind))return axisListEqual(user,target);
+ if(target.kind==='near-two-examples'){const p=rationalList(user);return Boolean(p?.length===2&&!M.equal(p[0],p[1])&&p.every(v=>endpointCompare(v,M.parse('1.98'))>0&&endpointCompare(v,M.parse('2'))<0));}
  if(target.kind==='explicit-set'){const a=G.setTokens(user,target.letters),b=G.setTokens(target.answer,target.letters);return Boolean(a&&b&&a.length===b.length&&a.every(x=>b.includes(x)));}
  if(target.kind==='integer-probe')return G.integerProbe(user)!==null;
  if(target.kind==='multiple-witness'){const n=G.integerProbe(user);return n!==null&&n%3===0&&n%5!==0;}
  if(target.kind==='segment-name'){const p=String(user??'').toUpperCase().replace(/\s/g,'');return p===target.answer||p===target.answer.split('').reverse().join('');}
- if(target.kind==='bound-corner'||target.kind==='yield-pair'){
+ if(['bound-corner','yield-pair','speed-pair'].includes(target.kind)){
   const p=G.cornerValues(user),q=G.cornerValues(target.answer);return Boolean(p&&q&&p.every((x,i)=>M.equal(x,q[i])));
  }
  if(target.kind==='triangle-vertex'){const p=G.cornerValues(user);return Boolean(p&&p[1].n>0);}
@@ -863,5 +908,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

@@ -883,5 +883,17 @@
   function setRelation(a,b){if(a.length===b.length&&a.every(x=>b.includes(x)))return 'equal';if(a.every(x=>b.includes(x)))return 'left-in-right';if(b.every(x=>a.includes(x)))return 'right-in-left';return a.some(x=>b.includes(x))?'overlap':'disjoint';}
 
 
-  return { mount, experiment, setPractice, practiceSets, combinedPractice, practiceCombined, boundsPractice, practiceBounds, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const axisPractice={id:'interval-axis',title:'Точки, границы и объединения',description:'Восстанавливай промежутки по неравенствам и условиям принадлежности.'};
+  function practiceAxis(seed,level){
+    const a=seed%21-10,b=a+2+Math.floor(seed/3)%6,c=b+2+(seed%4),close=seed%2===0;
+    const first=(close?'[':'(')+a+';'+b+')',second='['+b+';'+c+']',gap='('+(b+1)+';'+c+']';
+    const arr=level===1?[]:[first,level===2?second:gap];
+    const ans=level===1?first:level===2?(close?'[':'(')+a+';'+c+']':first+'∪'+gap;
+    const hint='Проверь каждый конец отдельно. Выброшенная точка оставляет разрыв, если она не входит ни в один из промежутков.';
+    return {title:axisPractice.title,prompt:level===1?'Построй решение '+a+(close?' ≤ ':' < ')+'x < '+b+'.':'Изобрази объединение '+arr.join(' и ')+'.',kind:'axis-set',answer:ans,hint,correction:hint,explanation:'Получаем '+ans+'.',inputNote:'Запиши промежуток; две части соединяй знаком ∪.',
+      graph:{type:'source-interval-axis',mode:level===1?'draw':'operation',given:arr,builder:level===1},steps:[{prompt:'Какова крайняя левая граница?',kind:'number',answer:String(a),hint,explanation:hint},{prompt:'Сколько отдельных промежутков в результате?',kind:'number',answer:level===3?'2':'1',hint,explanation:hint}],skills:[axisPractice.id],source:{type:'authored',reference:'Практика границ и объединений на прямой'}};
+  }
+
+
+  return { mount, experiment, axisPractice, practiceAxis, setPractice, practiceSets, combinedPractice, practiceCombined, boundsPractice, practiceBounds, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });
