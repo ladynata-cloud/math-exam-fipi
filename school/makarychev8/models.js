@@ -788,5 +788,18 @@
       skills:[fractionDomainPractice.id],source:{type:'authored',reference:'Тренировка по сохранению области дроби'}};
   }
 
-  return { mount, experiment, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const auditPractice={id:'rational-root-audit',title:'Отобрать корни дробного уравнения',description:'Сравни нули числителя с запретами исходного знаменателя.'};
+  function practiceRationalAudit(seed,level){
+    const h=1+seed%8,k=h+1+Math.floor(seed/2)%6,r=level===3?-k:k;
+    const numerator=level===1?'(x − '+r+')':'(x − '+h+')(x '+(r<0?'+ '+(-r):'− '+r)+')';
+    return {title:auditPractice.title,prompt:'Реши '+numerator+' / (x − '+h+') = 0. При проверке сохрани исходный запрет.',
+      kind:'quadratic-roots',answer:String(r),hint:'Сначала исключи нуль знаменателя. Затем найди нули числителя.',
+      correction:'Проверь, разрешено ли найденное x в исходном знаменателе.',explanation:'Допустим только '+r+'.',
+      graph:{type:'rational-root-audit',coefficients:level===1?[0,1,-r]:[1,-h-r,h*r],excluded:[String(h)],symbol:'x'},
+      steps:[{kind:'number',answer:String(h),prompt:'При каком x знаменатель нулевой?',hint:'Реши x − '+h+' = 0.',explanation:'Исключается '+h+'.'},
+       {kind:'number',answer:String(r),prompt:'Какой нуль числителя остаётся допустимым?',hint:'Отбери значение, отличное от '+h+'.',explanation:'Остаётся '+r+'.'}],
+      skills:[auditPractice.id],source:{type:'authored',reference:'Тренировка по проверке дробного уравнения'}};
+  }
+
+  return { mount, experiment, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

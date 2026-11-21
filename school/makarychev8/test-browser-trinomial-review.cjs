@@ -48,7 +48,7 @@ async function verify(width,url){
     if(index&&index%8===0){await page.close();page=await fresh();}
     await page.evaluate(({l,i})=>{history.replaceState(null,'','#lesson/'+l+'/'+i);MakarychevApp.route();},card);
     assert.equal(await page.locator('.task-heading h2').innerText(),card.title);
-    assert.match(await page.locator('p.eyebrow').filter({hasText:'Дополнительно к §7'}).first().textContent(),/Дополнительно к §7/);
+    assert.match(await page.locator('p.eyebrow').filter({hasText:'Дополнительно к §8'}).first().textContent(),/Дополнительно к §8/);
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),card.title);
   }
   await page.close();page=await fresh();

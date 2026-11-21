@@ -596,6 +596,38 @@ function coefficientAndRoots(value,answer){
  return Boolean(M.parse(user)&&M.equal(user,parameter)&&roots.length===2&&sameQuadraticRoots(roots.join(';'),expected.join(';')));
 }
 
+function radicalApprox(raw){
+ const terms=radicalSum(raw);
+ return terms?terms.reduce((sum,t)=>sum+t.sign*Math.sqrt(Number(t.n)/Number(t.d)),0):null;
+}
+function graphRootEntries(raw){
+ let text=String(raw??'').trim().replace(/[−–]/g,'-');
+ if(!text||text.length>180)return null;
+ text=text.replace(/\+\/-/g,'±');
+ if(text.includes('±')&&!text.includes(';'))text=text.replace('±','-')+';'+text.replace('±','+');
+ const entries=text.split(';').map(v=>v.trim());
+ if(entries.length>2)return null;
+ const parts=entries.map(item=>{
+  const z=item.replace(/\s/g,'').toLowerCase(),cube=/^([+-]?)(?:∛5|∛\(5\)|cbrt\(5\)|5\^\(1\/3\))$/.exec(z);
+  if(cube)return {value:item,x:(cube[1]==='-'?-1:1)*Math.cbrt(5),syntax:'cube'};
+  const r=M.parse(item);if(r)return {value:item,x:r.n/r.d,syntax:'number'};
+  const x=radicalApprox(item);return x===null?null:{value:item,x,syntax:'radical'};
+ });
+ return parts.every(p=>p&&Number.isFinite(p.x))?parts:null;
+}
+function graphReadingCorrect(raw,question){
+ const user=graphRootEntries(raw),wanted=graphRootEntries(question.answer);
+ if(!user||!wanted||user.length!==wanted.length)return false;
+ const remaining=[...wanted];
+ return user.every(u=>{
+  const i=remaining.findIndex(w=>u.syntax==='number'?Math.abs(u.x-w.x)<=0.05:u.syntax==='cube'?w.syntax==='cube'&&u.x===w.x:w.syntax!=='cube'&&sameRadicalSum(u.value,w.value));
+  if(i<0)return false;remaining.splice(i,1);return true;
+ });
+}
+function rationalRootTrial(value,config){
+ return quadraticTrial(value,config.coefficients).map(row=>({...row,forbidden:(config.excluded||[]).some(x=>sameRadicalSum(row.value,x))}));
+}
+
 function quadraticTrial(value,coefficients){
  const entries=quadraticEntries(value);if(!entries||!entries.length)return [];
  const terms=[coefficients.map((v,i)=>[String(v),2-i,0])];
@@ -676,6 +708,7 @@ function progressionFactors(input){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='graph-root-reading')return graphReadingCorrect(user,target);
  if(target.kind==='fraction-sample')return G.fractionSample(user,target.probeCount)!==null;
  if(target.kind==='symbolic-coefficients'){
   const fields=user.split(';'),expected=String(target.answer).split(';');
@@ -756,5 +789,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

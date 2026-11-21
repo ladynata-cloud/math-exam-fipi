@@ -32,6 +32,10 @@ function parseRootPoints(value,xs){
 function curveValue(curve,x){
  if(curve.domain&&(x<curve.domain[0]||x>curve.domain[1]))return NaN;
  if((curve.holes||[]).some(([h])=>x===h))return NaN;
+ if(curve.kind==='quotient'){
+  const polynomial=coeff=>coeff.reduceRight((sum,c)=>sum*x+c,0);
+  const bottom=polynomial(curve.denominator);return bottom===0?NaN:polynomial(curve.numerator)/bottom;
+ }
  if(curve.kind==='reciprocal-offset')return x===0?NaN:curve.b+curve.k/x;
  if(curve.kind==='absolute-reciprocal')return x===0?NaN:curve.k/Math.abs(x);
  if(curve.kind==='sign-linear')return x===curve.h?NaN:Math.sign(x-curve.h)*(curve.k*x+curve.b);
@@ -98,7 +102,7 @@ function rootGraph(config,value){
  const curves=learner?(complete?buildCurves:[]):(config.curves||[{kind:'sqrt'}]);
  curves.forEach((c,j)=>{
   let path='',open=false,previous=null;
-  const breaks=(c.holes||[]).map(([h])=>h);
+  const breaks=[...(c.holes||[]).map(([h])=>h),...(c.poles||[])];
   if(['hyperbola','reciprocal-offset','absolute-reciprocal'].includes(c.kind))breaks.push(0);
   if(c.kind==='sign-linear')breaks.push(c.h);
   const samples=Array.from({length:601},(_,i)=>xr[0]+(xr[1]-xr[0])*i/600);
@@ -678,6 +682,44 @@ function sourceFractionScene(host,config){
  if(check.original===null&&check.reduced!==null)add('После сокращения получено число, но исходное выражение здесь не определено. Запрет сохраняется.');
 }
 
+function rationalScene(host,config){
+ host.className='task-graphs root-graph';
+ const add=(message,tag,valid)=>{const row=document.createElement('p');row.className='small';row.textContent=message;if(tag)row.dataset[tag]=valid;host.append(row);};
+ const marks=[];
+ if(config.type==='rational-root-audit'){
+  for(const row of config.checks||[]){
+   const outcome=row.forbidden?'excluded':row.exact?'root':'nonzero';
+   add(row.value+': '+(row.forbidden?'исходный знаменатель нулевой; точка исключена.':row.exact?'числитель равен нулю, все исходные знаменатели допустимы.':'числитель не равен нулю.'),'rationalRoot',outcome);
+   if(config.curves&&!row.forbidden&&Number.isFinite(row.x))marks.push([row.x,curveValue(config.curves[0],row.x)]);
+  }
+  if(!config.checks?.length)add('Подстановка каждого предложенного корня проверяет исходные запреты и числитель отдельно.');
+ }else if(config.type==='graph-root-reading'){
+  for(const entry of config.readings||[]){
+   const ordinates=config.curves.map(curve=>curveValue(curve,entry.x));
+   if(ordinates.every(Number.isFinite)){for(const y of ordinates)marks.push([entry.x,y]);add('При x ≈ '+entry.x.toLocaleString('ru',{maximumFractionDigits:3})+' значения графиков ≈ '+ordinates.map(z=>z.toLocaleString('ru',{maximumFractionDigits:3})).join(' и ')+'.');}
+   else add('При x = 0 дробь не определена.');
+  }
+  if(!config.readings?.length)add('Найди общие точки двух графиков и считай их абсциссы. Обрати внимание на ветви по разные стороны нуля.');
+ }else{
+  for(const p of config.pairs||[]){
+   const y=config.curves.map(curve=>curveValue(curve,p[0])),matches=y.map(v=>Number.isFinite(v)&&Math.abs(v-p[1])<1e-8);
+   marks.push(p);add('Точка ('+p.map(v=>v.toLocaleString('ru',{maximumFractionDigits:3})).join('; ')+'): '+(matches.every(Boolean)?'лежит на обоих графиках.':y.some(v=>!Number.isFinite(v))?'не входит в область одного из графиков.':'проверь абсциссу и ординату по обеим формулам.'),'intersectionTrial',matches.every(Boolean)?'yes':'no');
+  }
+ }
+ if(config.curves){
+  const curves=config.curves.map((curve,i)=>i?{...curve,dashed:true}:curve);
+  let first='левая часть равенства',second='правая часть равенства';
+  if(config.level!==undefined){first='функция из задания';second='горизонталь y = '+String(config.level).replace('.',',');}
+  else if(curves[1].kind==='line'&&curves[1].k===0&&curves[1].b===0){first='функция из задания';second='ось y = 0';}
+  else if(config.type==='graph-root-reading'){
+   first='y = '+curves[0].k+'/|x|';
+   second=curves[1].kind==='quadratic'?'y = x²':curves[1].k===1?'y = x + 1':'y = 1,5x − 2';
+  }
+  const legend=document.createElement('p');legend.className='small';legend.textContent='Сплошная линия — '+first+'. Пунктир — '+second+'.';
+  host.prepend(rootGraph({curves,xRange:config.xRange,yRange:config.yRange,points:marks,label:legend.textContent},''),legend);
+ }
+}
+
 function parameterSample(value) {
  const r=M.parse(String(value??''));
  return r&&Math.abs(r.n/r.d)<=24&&8%r.d===0?r.n/r.d:null;
@@ -955,6 +997,7 @@ function render(host,config,value){
  if(config.type==='abs-line-choice'){absLineChoice(host,config);return;}
  if(config.type==='system-pair-audit'){systemPairModel(host,config);return;}
  if(config.type==='inequality-intervals'){inequalityIntervals(host,config);return;}
+ if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(config.type)){rationalScene(host,config);return;}
  if(config.type==='source-fraction'){sourceFractionScene(host,config);return;}
  if(config.type==='factor-witness'){
   host.className='task-graphs quantity-model';

@@ -67,7 +67,7 @@ by_lesson['p30']['tasks'].extend(read('exercises-696-701.json'))
 by_lesson['p31']['tasks'].extend(read('exercises-702-718.json'))
 by_lesson['p32']['tasks'].extend(read('exercises-719-732.json'))
 by_lesson['p33']['tasks'].extend(read('exercises-733-742.json'))
-for t in read('exercises-743-752.json')+read('exercises-753-763.json')+read('exercises-764-782.json')+read('exercises-783-797.json'):
+for t in read('exercises-743-752.json')+read('exercises-753-763.json')+read('exercises-764-782.json')+read('exercises-783-797.json')+read('exercises-798-805.json'):
     by_lesson[t['id'][:3]]['tasks'].append(t)
 
 ranges = []
