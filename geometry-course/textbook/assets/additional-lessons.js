@@ -50,7 +50,24 @@
       ['/geometry-course/textbook/data/coordinate-coefficients.json', 'пункты 93–94, №998–999'],
       ['/geometry-course/textbook/data/coordinate-relations.json', '№1000–1003'],
       ['/geometry-course/textbook/data/coordinate-grid.json', '№1004–1008'],
-      ['/geometry-course/textbook/data/coordinate-actions.json', '№1009–1015']
+      ['/geometry-course/textbook/data/coordinate-actions.json', '№1009–1015'],
+      ['/geometry-course/textbook/data/coordinate-positions.json', 'пункты 95–96 и №1016–1020'],
+      ['/geometry-course/textbook/data/coordinate-tables.json', '№1021–1023'],
+      ['/geometry-course/textbook/data/coordinate-distances.json', '№1024–1029'],
+      ['/geometry-course/textbook/data/coordinate-figures.json', '№1030–1035'],
+      ['/geometry-course/textbook/data/coordinate-couriers.json', '№1036–1037'],
+      ['/geometry-course/textbook/data/coordinate-proof-method.json', '№1038–1044'],
+      ['/geometry-course/textbook/data/coordinate-curves.json', 'пункты 97–99, №1045–1046'],
+      ['/geometry-course/textbook/data/circle-intersections.json', '№1047–1050'],
+      ['/geometry-course/textbook/data/circle-equations.json', '№1051–1057'],
+      ['/geometry-course/textbook/data/coordinate-lines.json', '№1058–1064'],
+      ['/geometry-course/textbook/data/circle-line-positions.json', '№1065–1068'],
+      ['/geometry-course/textbook/data/coordinate-loci.json', '№1069–1075'],
+      ['/geometry-course/textbook/data/coordinate-chapter-review.json', 'вопросы 1–24 к главе «Метод координат»'],
+      ['/geometry-course/textbook/data/coordinate-additional-vectors.json', '№1076–1078'],
+      ['/geometry-course/textbook/data/coordinate-additional-figures.json', '№1079–1086'],
+      ['/geometry-course/textbook/data/coordinate-additional-curves.json', '№1087–1092'],
+      ['/geometry-course/textbook/data/coordinate-additional-applications.json', '№1093–1097']
   ];
 
   async function forCourse(base) {

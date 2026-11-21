@@ -48,6 +48,35 @@ on:
       - 'tools/geometry-textbook/*coordinate_grid*'
       - 'geometry-course/textbook/data/coordinate-actions.json'
       - 'tools/geometry-textbook/*coordinate_actions*'
+      - 'geometry-course/textbook/data/coordinate-positions.json'
+      - 'tools/geometry-textbook/*coordinate_positions*'
+      - 'geometry-course/textbook/data/coordinate-tables.json'
+      - 'tools/geometry-textbook/*coordinate_tables*'
+      - 'geometry-course/textbook/data/coordinate-distances.json'
+      - 'tools/geometry-textbook/*coordinate_distances*'
+      - 'geometry-course/textbook/data/coordinate-figures.json'
+      - 'tools/geometry-textbook/*coordinate_figures*'
+      - 'geometry-course/textbook/data/coordinate-couriers.json'
+      - 'tools/geometry-textbook/*coordinate_couriers*'
+      - 'geometry-course/textbook/data/coordinate-proof-method.json'
+      - 'tools/geometry-textbook/*coordinate_proof_method*'
+      - 'geometry-course/textbook/data/coordinate-curves.json'
+      - 'geometry-course/textbook/data/circle-intersections.json'
+      - 'geometry-course/textbook/data/circle-equations.json'
+      - 'geometry-course/textbook/data/coordinate-lines.json'
+      - 'geometry-course/textbook/data/circle-line-positions.json'
+      - 'geometry-course/textbook/data/coordinate-loci.json'
+      - 'geometry-course/textbook/data/coordinate-chapter-review.json'
+      - 'tools/geometry-textbook/*coordinate_chapter_review*'
+      - 'tools/geometry-textbook/*coordinate_additional_vectors*'
+      - 'tools/geometry-textbook/*coordinate_additional_figures*'
+      - 'tools/geometry-textbook/*coordinate_additional_curves*'
+      - 'geometry-course/textbook/data/coordinate-additional-curves.json'
+      - 'tools/geometry-textbook/*coordinate_additional_applications*'
+      - 'geometry-course/textbook/data/coordinate-additional-applications.json'
+      - 'geometry-course/textbook/data/coordinate-additional-figures.json'
+      - 'geometry-course/textbook/data/coordinate-additional-vectors.json'
+      - 'tools/geometry-textbook/*coordinate_curves*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
@@ -83,6 +112,22 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_relations.py --check && python3 tools/geometry-textbook/check_coordinate_relations.py
       - run: python3 tools/geometry-textbook/coordinate_grid.py --check && python3 tools/geometry-textbook/check_coordinate_grid.py
       - run: python3 tools/geometry-textbook/coordinate_actions.py --check && python3 tools/geometry-textbook/check_coordinate_actions.py
+      - run: python3 tools/geometry-textbook/coordinate_positions.py --check && python3 tools/geometry-textbook/check_coordinate_positions.py
+      - run: python3 tools/geometry-textbook/coordinate_tables.py --check && python3 tools/geometry-textbook/check_coordinate_tables.py
+      - run: python3 tools/geometry-textbook/coordinate_distances.py --check && python3 tools/geometry-textbook/check_coordinate_distances.py
+      - run: python3 tools/geometry-textbook/coordinate_figures.py --check && python3 tools/geometry-textbook/check_coordinate_figures.py
+      - run: python3 tools/geometry-textbook/coordinate_couriers.py --check && python3 tools/geometry-textbook/check_coordinate_couriers.py
+      - run: python3 tools/geometry-textbook/coordinate_proof_method.py --check && python3 tools/geometry-textbook/check_coordinate_proof_method.py
+      - run: python3 tools/geometry-textbook/coordinate_curves.py --check && python3 tools/geometry-textbook/check_coordinate_curves.py
+      - run: python3 tools/geometry-textbook/circle_intersections.py --check && python3 tools/geometry-textbook/check_circle_intersections.py
+      - run: python3 tools/geometry-textbook/circle_equations.py --check && python3 tools/geometry-textbook/check_circle_equations.py
+      - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
+      - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
+      - run: python3 tools/geometry-textbook/coordinate_additional_curves.py --check && python3 tools/geometry-textbook/coordinate_additional_applications.py --check && python3 tools/geometry-textbook/check_coordinate_additional_curves.py
+      - run: python3 tools/geometry-textbook/coordinate_additional_figures.py --check && python3 tools/geometry-textbook/check_coordinate_additional_figures.py
+      - run: python3 tools/geometry-textbook/coordinate_additional_vectors.py --check && python3 tools/geometry-textbook/check_coordinate_additional_vectors.py
+      - run: python3 tools/geometry-textbook/coordinate_chapter_review.py --check && python3 tools/geometry-textbook/check_coordinate_chapter_review.py
+      - run: python3 tools/geometry-textbook/coordinate_loci.py --check && python3 tools/geometry-textbook/check_coordinate_loci.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons
