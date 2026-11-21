@@ -773,6 +773,31 @@ function equationExamples(host,value){
 function boundNote(host,text) {
  const p=document.createElement('p'); p.className='small'; p.textContent=text;host.append(p);return p;
 }
+function linearTrial(config,raw){
+ const x=M.parse(raw);if(!x)return null;
+ function narrow(n,d){let a=n<0n?-n:n,b=d;while(b){const next=a%b;a=b;b=next;}return [n/a,d/a];}
+ function evaluate(coefficients){
+  let n=0n,d=1n;for(const raw of coefficients.slice().reverse()){
+   const c=M.parse(raw),xn=BigInt(x.n),xd=BigInt(x.d),cn=BigInt(c.n),cd=BigInt(c.d);
+   [n,d]=narrow(n*xn*cd+cn*d*xd,d*xd*cd);
+  }
+  return {n,d,label:String(n)+(d===1n?'':'/'+d)};
+ }
+ const left=evaluate(config.left),right=evaluate(config.right);
+ const delta=left.n*right.d-right.n*left.d,sign=delta<0n?'<':delta>0n?'>':'=';
+ const holds={'<':delta<0n,'>':delta>0n,'≤':delta<=0n,'≥':delta>=0n}[config.operator];
+ return {left:left.label,right:right.label,sign,holds};
+}
+function linearTrialGraph(host,g,value){
+ host.className='task-graphs quantity-model';
+ const raw=g.fixed??g.partial?.[0],trial=linearTrial(g,raw);
+ if(trial){boundNote(host,'При '+g.variable+' = '+raw+': слева '+trial.left+', справа '+trial.right+'. Сравнение '+g.operator+(trial.holds?' выполняется.':' не выполняется.')).dataset.linearProbe=trial.holds?'yes':'no';}
+ else boundNote(host,'Предложи рациональную подстановку на первом шаге. Обе стороны вычисляются раздельно.');
+ if(g.proposal){intervalNumberLine(host,{mode:'operation',givenRows:[],proposal:g.proposal,points:g.samplePoints||[]},value);}
+ if(g.exampleTrials?.length){for(const [v,t]of g.exampleTrials)boundNote(host,'Твой пример '+v+': '+t.left+' '+t.sign+' '+t.right+'.').dataset.exampleHolds=t.holds?'yes':'no';}
+}
+
+
 function intervalNumberLine(host,g,value){
  host.className='task-graphs quantity-model';
  const rows=g.givenRows||[],proposed=g.proposal,pointValues=g.points||[];
@@ -1469,6 +1494,7 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='linear-ray-trial'){linearTrialGraph(host,config,value);return;}
  if(config.type==='source-interval-axis'){intervalNumberLine(host,config,value);return;}
  if(config.type==='interval-review'){intervalReview(host,config,value);return;}
  if(config.type==='euler-operation'){eulerDiagram(host,config,value);return;}
@@ -1552,5 +1578,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

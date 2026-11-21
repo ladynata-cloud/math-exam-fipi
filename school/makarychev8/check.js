@@ -692,6 +692,24 @@ function openIntervals(input){
  }
  return list;
 }
+function asThreshold(sign,bound){
+ const b=M.parse(bound);if(!b)return null;const value=M.answer(b);
+ if(sign==='>')return '('+value+';+∞)';if(sign==='>=')return '['+value+';+∞)';if(sign==='<')return '(-∞;'+value+')';if(sign==='<=')return '(-∞;'+value+']';return null;
+}
+function linearRay(raw,variable){
+ const text=String(raw??'').trim().replace(/≤/g,'<=').replace(/≥/g,'>=');
+ if(axisRanges(text))return text;
+ const sides=/^([^<>=]+?)\s*(<=|>=|<|>)\s*([^<>=]+)$/.exec(text);if(!sides)return null;
+ const left=sides[1].trim(),right=sides[3].trim();
+ if(left===variable)return asThreshold(sides[2],right);
+ if(right!==variable)return null;return asThreshold({'<':'>','>':'<','<=':'>=','>=':'<='}[sides[2]],left);
+}
+function linearExamples(raw,t){
+ const samples=rationalList(raw);if(!samples||samples.length!==t.exampleCount||new Set(samples.map(M.answer)).size!==samples.length)return false;
+ const bound=M.parse(t.graph.threshold);return samples.every(v=>{const d=endpointCompare(v,bound);return {'>':d>0,'>=':d>=0,'<':d<0,'<=':d<=0}[t.graph.relation];});
+}
+
+
 function endpointCompare(a,b){
  if(a===b)return 0;
  if(a==='-∞'||b==='+∞')return -1;if(a==='+∞'||b==='-∞')return 1;
@@ -822,6 +840,9 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='rational-probe')return Boolean(M.parse(user));
+ if(target.kind==='linear-ray'){const u=linearRay(user,target.graph.variable);return Boolean(u&&equalAxisSets(u,asThreshold(target.graph.relation,target.graph.threshold)));}
+ if(target.kind==='linear-examples')return linearExamples(user,target);
  if(target.kind==='axis-set')return equalAxisSets(user,target.answer);
  if(target.kind==='named-interval'){const a=String(user).split('|'),b=target.answer.split('|');return a.length===2&&equalAxisSets(a[0],b[0])&&axisName(a[1])===axisName(b[1]);}
  if(['rational-axis-list','fixed-denominator-list'].includes(target.kind))return axisListEqual(user,target);
@@ -908,5 +929,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {linearRay,asThreshold,axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });
