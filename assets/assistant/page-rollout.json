@@ -2226,10 +2226,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "c2714146d5ea9eb1e67b3f3404a9faf67ca79088a730fd798afeb9f8a179837e",
-      "afterSha256": "a9af54c3e88349a2553ff3f7ac3a38817819f5771aedd2195d1df82c24c20917",
+      "beforeSha256": "05c2c4c6d11834216f7c766a8d5e593bfdd1888407f0bd330b3fd9af7b2e4da3",
+      "afterSha256": "e24bd38b29d82e12ebf8fe8540c6a6640ba11f82f2b89e4563d53d3b03b9a922",
       "placement": "before-head-close",
-      "sourceSha": "f9162f738221882f7159357e9feb6371c8d5e146"
+      "sourceSha": "8ccf2845f330c1c25677f5aec8eef1aba728a144"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6626,6 +6626,15 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Сверена страница Макарычева после добавления решения задач с квадратными уравнениями."
+    },
+    {
+      "previousBaseSha": "f9162f738221882f7159357e9feb6371c8d5e146",
+      "sourceBaseSha": "8ccf2845f330c1c25677f5aec8eef1aba728a144",
+      "task": "docs/tasks/WORKSHOP_MAKARYCHEV7_2014.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверены восемь карт изданий и дополнительные задания Виленкина по печатным номерам."
     }
   ],
   "coverageUpdates": [
