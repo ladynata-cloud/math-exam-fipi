@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1343);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1357);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1122,6 +1122,11 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
 {
  const l=D.lessons.find(t=>t.id==='p39'),newRows=Array.from(l.tasks).filter(t=>[197,198].includes(t.source.exercise));
  assert.equal(newRows.length,12);assert(newRows.every(t=>t.kind==='manual'&&t.answer===''));assert.equal(newRows.filter(t=>t.source.page===44).length,10);assert.equal(new Set(newRows.map(t=>t.source.reference)).size,12);
+}
+{
+ const l=D.lessons.find(l=>l.id==='p39'),newRows=Array.from(l.tasks).slice(140);
+ assert.deepEqual(newRows.map(t=>t.answer),['-6','3','8','0','1/3','18','14','11','-3/2','6','','665','9','73']);assert.equal(newRows[10].kind,'manual');assert.equal(newRows[13].source.page,45);
+ const examples=[];for(let a=1;a<=9;a++){for(let d=1;d<=9;d++){const n=110*a+5;if(n%d===8)examples.push([n,d,Math.floor(n/d)]);}}assert.deepEqual(examples,[[665,9,73]]);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

@@ -1777,3 +1777,15 @@ test('source cards expose full cipher and outline before help and separate appro
   });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('finish all source numbers in the coordinate section with new values, divisibility evidence and remainder bounds',()=>{
+ const f=fixture(null,null,true);try{
+  const source=['Произведение -6.','Частное 3, остаток 8','Частное 3, остаток 8','Значение 0','Значение 1/3','18 км/ч','14 руб.','11%','−3/2','6 мин.','11 · (91n)','665 = 9 · 73 + 8','665 = 9 · 73 + 8','665 = 9 · 73 + 8'];
+  const fresh=['Произведение 60.','128 = 40 · 3 + 8','128 = 40 · 3 + 8','Значение 18','Значение −8/3','21 км/ч','21 руб.','20%','−1','10 мин.','11 · (91n)','557 = 9 · 61 + 8','557 = 9 · 61 + 8','557 = 9 · 61 + 8'];
+  for(let i=0;i<source.length;i++){
+   f.nav('#lesson/p39/'+(140+i));f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(source[i]),[i,source[i],f.q('#model').textContent]);const previous=f.q('#model').textContent;
+   f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(fresh[i]),[i,fresh[i],f.q('#model').textContent]);assert.notEqual(f.q('#model').textContent,previous);if(i===9)assert.deepEqual([...f.d.querySelectorAll('#model [data-sibling-position]')].map(el=>el.getAttribute('data-sibling-position')),['15','15']);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
