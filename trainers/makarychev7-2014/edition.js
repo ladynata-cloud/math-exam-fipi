@@ -49,12 +49,43 @@
     };
     return '<svg viewBox="0 0 284 119" role="img" aria-label="У каждой мастерской свой запас нити и количество одинаково заполненных катушек"><g fill="#203840" font-size="14">'+row('А',first,21)+row('Б',second,78)+'</g></svg>';
   }
+  function signedPairs(values) {
+    const format = window.MathExamTopicPractice.f;
+    const cards = values.map((n, i) => {
+      const x = 14 + 65 * i, positive = n > 0;
+      return '<g><rect x="' + x + '" y="30" width="54" height="32" rx="4" stroke="' +
+        (positive ? '#247563' : '#865134') + '" fill="' + (positive ? '#e3f4ec' : '#fff0df') +
+        '"/><text x="' + (x + 27) + '" y="51" text-anchor="middle" font-size="17">' +
+        (positive ? '+' : '') + format(n) + '</text></g>';
+    }).join('');
+    return '<svg viewBox="0 0 276 91" role="img" aria-label="Карточки одного знака соединены. Верхняя дуга для положительных, нижняя для отрицательных"><g fill="#173139">' +
+      '<path d="M41 29 Q106 0 171 29" fill="none" stroke="#247563" stroke-width="2"/>' + cards +
+      '<path d="M106 64 Q171 90 236 64" fill="none" stroke="#865134" stroke-width="2" stroke-dasharray="4 2"/></g></svg>';
+  }
+  function oppositeSteps(x, y) {
+    const low = Math.min(x, y), high = Math.max(x, y);
+    const position = n => 22 + (n - low + 1) * 215 / (high - low + 2);
+    const a = position(x), b = position(y);
+    const tick = n => '<path d="M' + position(n) + ' 64v6" stroke="#365661"/><text x="' + position(n) +
+      '" y="85" font-size="13" text-anchor="middle">' + n + '</text>';
+    const arrow = (start, end, h, color) => {
+      const inset = end > start ? -6 : 6;
+      return '<path d="M' + start + ' ' + h + 'H' + end + 'm' + inset + ' -4l' +
+        (-inset) + ' 4l' + inset + ' 4" fill="none" stroke="' + color + '" stroke-width="2"/>';
+    };
+    return '<svg viewBox="0 0 270 94" role="img" aria-label="Отметки x и y на прямой. Верхняя стрелка идёт от y к x, нижняя от x к y">' +
+      '<g fill="#213f46"><text x="' + a + '" y="16" text-anchor="middle">x</text><text x="' + b + '" y="16" text-anchor="middle">y</text>' +
+      arrow(b, a, 31, '#176b62') + arrow(a, b, 46, '#88492f') + '<path d="M10 65H260" stroke="#365661"/>' +
+      Array.from({length:high - low + 3}, (_, i) => tick(low + i - 1)).join('') + '</g></svg>';
+  }
   window.MathExamTopicEdition = {
     trainerId:'makarychev7-2014', storePrefix:'math:makarychev7-2014:v1:', authors:'Макарычев и др. · издание 2014 года',
     grade:()=>'7 класс', unit:'пункт', nextId:lesson=>lesson.book+'-'+(lesson.point+1),
     source:(_book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000074.pdf#page='+page,
     figure(data) {
       switch(data.chart) {
+        case 'signed-pairs': return signedPairs(data.values);
+        case 'opposite-steps': return oppositeSteps(...data.values);
         case 'boxes': return grouped(...data.parameters);
         case 'stations': return stations(...data.parameters);
         case 'spools': return batches(...data.parameters);

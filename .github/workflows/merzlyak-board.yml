@@ -44,6 +44,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --merzlyak9-2014
           node tools/makarychev7-2014.test.cjs
           node tools/tyurin-statistics.board.browser.cjs --makarychev7-2014
+          node tools/tyurin-statistics.board.browser.cjs --makarychev7-2014 --printed-identity
           node tools/makarychev9-2017.test.cjs
           node tools/tyurin-statistics.board.browser.cjs --makarychev9-2017
           node tools/tyurin-statistics.board.browser.cjs --makarychev9-2017-supplement

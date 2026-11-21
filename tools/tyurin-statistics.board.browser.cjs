@@ -48,8 +48,9 @@ async function healthy(url, child, logs) {
   throw new Error('Local server not ready: ' + logs());
 }
 
+const printedProperties=process.argv.includes('--printed-identity');
 const catalogue=process.argv.includes('--makarychev7-2014') ? {
-  directory:'makarychev7-2014',entries:[[95,46,5]],search:'makarychev7-2014',match:'выражения и статистика',lesson:'95-10',chart:'svg[aria-label*="Средние места"]',storage:'math:makarychev7-2014:v1:'
+  directory:'makarychev7-2014',entries:[[95,46,7]],search:'makarychev7-2014',match:'выражения и статистика',lesson:printedProperties?'95-5':'95-10',chart:printedProperties?'svg[aria-label*="Верхняя стрелка"]':'svg[aria-label*="Средние места"]',storage:'math:makarychev7-2014:v1:'
 }: process.argv.includes('--makarychev9-2017-supplement')?{
   directory:'makarychev9-2017',entries:[[50,36,68]],search:'makarychev9-2017',match:'36 пунктов',lesson:process.argv.includes('--radical-sum')?'50-219':process.argv.includes('--parameter')?'50-216':process.argv.includes('--graph')?'50-213':'50-202',onlySelected:true,chart:process.argv.includes('--radical-sum')?'svg[aria-label*="Корни вспомогательного"]':process.argv.includes('--parameter')?'svg[aria-label*="Парабола при найденном"]':process.argv.includes('--graph')?'svg[aria-label*="Обе ветви"]':'svg[aria-label*="Сечение"]',storage:'math:makarychev9-2017:v1:'
 }:process.argv.includes('--makarychev9-2017')?{
@@ -98,6 +99,18 @@ async function run(browser, origin, serverOrigin) {
     await t.locator('#lesson').selectOption(catalogue.lesson);await value(student,'lesson',catalogue.lesson);
     await t.locator('#model').focus();await t.locator('#model').press('ArrowRight');await value(student,'model','1');
     assert.equal(await s.locator(catalogue.chart).count(),1);
+    if(printedProperties){
+      const shown='[data-action="printed-guide"][aria-expanded="true"]';
+      const folded='[data-action="printed-guide"][aria-expanded="false"]';
+      await s.locator(folded).waitFor();
+      await t.locator(folded).click();
+      await s.locator(shown).waitFor();
+      await student.reload({waitUntil:'domcontentloaded'});
+      await connected(student);
+      await s.locator(shown).waitFor();
+      await t.locator(shown).click();
+      await s.locator(folded).waitFor();
+    }
     await t.locator('[data-action=practice]').click();await t.locator('#answer').fill('1234');await value(student,'answer','1234');
     await t.locator('#work form button').click();await s.locator('#feedback').filter({hasText:'Проверь ещё раз'}).waitFor();
     await t.locator('[data-action=hint]').click();await s.locator('#work ol li').first().waitFor();

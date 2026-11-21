@@ -23,7 +23,10 @@
        ||!Array.isArray(s.results)||s.results.length>3||!s.results.every(v=>Object.hasOwn(labels,v))
        ||typeof s.draft!=='string'||s.draft.length>70||/[<>]/.test(s.draft)||!integer(s.attempts,9999)
        ||!integer(s.hint,2)||!['','wrong','right'].includes(s.feedback)) return false;
-    if(s.stage==='learn'||s.stage==='done') return s.results.length===(s.stage==='learn'?0:3)&&!s.draft&&!s.attempts&&!s.hint&&!s.feedback;
+    if(s.stage==='learn'||s.stage==='done') {
+      const readingPrintedGuide=s.stage==='learn' && lessons.get(s.id).printedPrompt && s.hint===1;
+      return s.results.length===(s.stage==='learn'?0:3) && !s.draft && !s.attempts && !s.feedback && (!s.hint || !!readingPrintedGuide);
+    }
     if((s.stage==='practice' && s.results.length)||s.results.length===3) return false;
     return !s.feedback || (s.attempts>0 && (s.feedback==='right')===matches(s.draft,active(s).question.answer));
   }
@@ -79,6 +82,16 @@
     return table(data)+'<h3>Разберём вопрос</h3><p>'+escape(q.prompt)+'</p><p>'+escape(q.calculation)+' Ответ: <b>'+escape(f(q.answer))+'</b>.</p>';
   }
   const button=(id,title)=>'<button type="button" data-action="'+id+'">'+title+'</button>';
+  function printedExplanation(lesson) {
+    if(!lesson.printedGuide)return '';
+    const heading='<h3>Разбор упражнения из книги</h3>';
+    const explanation='<p>'+escape(lesson.printedGuide)+'</p>';
+    const next='<h3>Тренировка на других данных</h3>';
+    if(!lesson.printedPrompt)return heading+explanation+next;
+    const label=state.hint?'Скрыть разбор':'Сверить свой разбор';
+    return heading+'<p>'+escape(lesson.printedPrompt)+'</p><button type="button" data-action="printed-guide" aria-expanded="'+
+      Boolean(state.hint)+'">'+label+'</button>'+(state.hint?explanation:'')+next;
+  }
   const embeddedPath=id=>'/trainers/'+course.trainerId+'/index.html#lesson/'+id;
   function render(focus) {
     const l=lessons.get(state.id),hash='#lesson/'+state.id;
@@ -90,7 +103,7 @@
     $('board').hidden=embedded;$('board').href='../trainer-board.html?trainer='+encodeURIComponent(embeddedPath(l.id));
     for(const id of ['related','source','back'])$(id).target=embedded?'_blank':'_self';
     const w=$('work');
-    if(state.stage==='learn')w.innerHTML='<section class="panel"><h2 tabindex="-1">Как это устроено</h2>'+'<p>'+escape(l.rule)+'</p>'+(l.printedGuide?'<h3>Разбор упражнения из книги</h3><p>'+escape(l.printedGuide)+'</p><h3>Тренировка на других данных</h3>':'')+'<label id="model-label" for="model">Пример модели № '+(state.model+1)+'</label><input type="range" min="0" max="6" value="'+state.model+'" id="model"><div id="worked-data">'+workedData(l)+'</div>'+button('practice','Попробовать на новых данных')+'</section>';
+    if(state.stage==='learn')w.innerHTML='<section class="panel"><h2 tabindex="-1">Как это устроено</h2>'+'<p>'+escape(l.rule)+'</p>'+printedExplanation(l)+'<label id="model-label" for="model">Пример модели № '+(state.model+1)+'</label><input type="range" min="0" max="6" value="'+state.model+'" id="model"><div id="worked-data">'+workedData(l)+'</div>'+button('practice','Попробовать на новых данных')+'</section>';
     else if(state.stage==='done'){
       const first=state.results.filter(x=>x==='first').length;
       const next=course.nextId&&lessons.get(course.nextId(l));
@@ -131,7 +144,8 @@
   });
   $('work').addEventListener('click',e=>{
     const action=e.target.closest('[data-action]')?.dataset.action;
-    if(action==='practice'){state.stage='practice';}
+    if(action==='printed-guide'&&state.stage==='learn'&&lessons.get(state.id).printedPrompt){state.hint=state.hint?0:1;}
+    else if(action==='practice'){state.stage='practice';state.hint=0;}
     else if(action==='hint'){state.hint=Math.min(state.hint+1,2);}
     else if(action==='next'&&state.feedback==='right'){
       if(state.stage==='practice'){state.stage='check';}

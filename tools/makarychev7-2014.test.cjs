@@ -13,7 +13,7 @@ function open(point, saved) {
   const {window:w}=dom;
   w.Math.random=()=>0;
   if(saved) w.localStorage.setItem(key,saved);
-  for(const asset of ['../tyurin-statistics/content.js','edition.js','expressions.js','statistics.js','../tyurin-statistics/app.js']) w.eval(read(path.join(folder,asset)));
+  for(const asset of ['../tyurin-statistics/content.js','edition.js','expressions.js','properties.js','statistics.js','../tyurin-statistics/app.js']) w.eval(read(path.join(folder,asset)));
   return {dom,w,doc:w.document,id,key};
 }
 const book={id:'source-95',source:{source_url:'https://my-uchebnik.ru/book/algebra/1/algebra-00000074.htm'}};
@@ -26,16 +26,29 @@ const pages=[5,8,12,17,20,25,28,32,36,42,46,55,59,62,69,75,84,93,99,103,108,110,
 assert.deepEqual(Array.from(book.mapping,row=>row.page),pages);
 for(const [i,row] of book.mapping.entries()){
   assert.equal(row.section,i+1);
-  if(row.boardPath){assert.ok([1,2,3,9,10].includes(row.section));assert.equal(row.boardPath,row.externalPath);continue;}
+  if(row.boardPath){assert.ok([1,2,3,4,5,9,10].includes(row.section));assert.equal(row.boardPath,row.externalPath);continue;}
   const m=/^\/school\/makarychev7\/index.html#lesson\/(p\d\d)\/(\d+)$/.exec(row.externalPath);
   assert.ok(m&&byId.get(m[1])?.tasks[Number(m[2])]?.steps.length);
 }
-assert.equal(book.mapping.filter(r=>r.boardPath).length,5);
+assert.equal(book.mapping.filter(r=>r.boardPath).length,7);
 mapDom.window.close();
-for(const point of [1,2,3,9,10]){
+for(const point of [1,2,3,4,5,9,10]){
   const view=open(point),{w,doc,id,key}=view, lesson=w.MathExamTopicPractice.lessons.get(id);
-  assert.equal(doc.querySelector('#source').href.split('#')[1],'page='+pages[point-1]);
+  assert.equal(doc.querySelector('#source').href.split('#')[1],'page='+({4:18,5:23}[point] ?? pages[point-1]));
   assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),'/trainers/makarychev7-2014/index.html#lesson/'+id);
+  if(point===4||point===5){
+    assert.ok(doc.querySelector('#work').textContent.includes('Разбор упражнения из книги'));
+    assert.ok(lesson.printedGuide.includes('г)'));
+    assert.ok(!doc.querySelector('#work').textContent.includes(lesson.printedGuide));
+    doc.querySelector('[data-action=printed-guide]').click();
+    assert.ok(doc.querySelector('#work').textContent.includes(lesson.printedGuide));
+    assert.equal(JSON.parse(w.localStorage.getItem(key)).hint,1);
+    const reading=open(point,w.localStorage.getItem(key));
+    assert.equal(reading.doc.querySelector('[data-action=printed-guide]').getAttribute('aria-expanded'),'true');
+    assert.deepEqual(JSON.parse(reading.w.localStorage.getItem(key)).results,[]);
+    reading.dom.window.close();
+    assert.equal(lesson.printedReference,point===4?'Пункт 4 · №71 (а–г)':'Пункт 5 · №86 (а–г)');
+  }
   const initial=JSON.parse(w.localStorage.getItem(key));assert.deepEqual(initial.results,[]);
   const variants=new Set();
   for(let n=1;n<=11;n++){
@@ -59,6 +72,16 @@ for(const point of [1,2,3,9,10]){
         assert.ok(rows[0][2]>rows[1][2] && a<b,'Comparing totals reverses the per-spool comparison');
         return [a,b,a-b];
       }
+      if(point===4){
+        const cents=values.map(n=>Math.round(n*100));
+        const sum=list=>list.reduce((a,b)=>a+b,0)/100;
+        return [sum(cents.filter(n=>n>0)),sum(cents.filter(n=>n<0)),sum(cents)];
+      }
+      if(point===5){
+        const [x,y]=values;
+        const distance=Math.max(x,y)-Math.min(x,y);
+        return [x-y,distance*distance,(x-y)-(y-x)];
+      }
       const sorted=[...values].sort((a,b)=>a-b);
       if(point===9){
         const sum=values.reduce((total,v)=>total+v,0);
@@ -81,7 +104,7 @@ for(const point of [1,2,3,9,10]){
     const data=lesson.make(1+(s.variant+(s.stage==='check'?3+k:1))%11);
     return data.questions[(s.variant+(s.stage==='check'?k:2))%3];
   }
-  button('practice');answer(current().answer);button('next');
+  button('practice');assert.equal(get().hint,0);answer(current().answer);button('next');
   answer(current().mistakes[0][0]);assert.ok(doc.querySelector('#feedback').textContent.includes(current().mistakes[0][1]));
   answer(current().answer);button('next');assert.deepEqual(get().results,['fixed']);
   button('hint');answer(current().answer);button('next');assert.deepEqual(get().results,['fixed','help']);
@@ -91,4 +114,4 @@ for(const point of [1,2,3,9,10]){
   resumed.doc.querySelector('[data-action="again"]').click();assert.notEqual(JSON.parse(resumed.w.localStorage.getItem(key)).variant,get().variant);
   resumed.dom.window.close();view.dom.window.close();
 }
-console.log('46 printed points, 41 specific course tasks, five interactive routes, 55 independently verified samples, explicit help, correction, fresh attempts, restoration.');
+console.log('46 printed points, 39 specific course tasks, seven interactive routes, 77 independently verified samples, explicit help, correction, fresh attempts, restoration.');
