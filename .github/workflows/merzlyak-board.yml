@@ -60,6 +60,7 @@ jobs:
           node tools/peterson8-2017-powers.test.cjs
           node tools/peterson8-2017-fractions.test.cjs
           node tools/vilenkin-analysis-2014.test.cjs
+          node tools/vilenkin-analysis-2014-antiderivatives.test.cjs
           node tools/peterson9-2017.test.cjs
           node tools/peterson9-2017-roots.test.cjs
           node tools/vilenkin8-2010.test.cjs
@@ -79,6 +80,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --peterson8-part2 --printed-identity --interval
           node tools/tyurin-statistics.board.browser.cjs --peterson8-part3 --printed-identity --domains
           node tools/tyurin-statistics.board.browser.cjs --vilenkin-analysis-2014 --printed-identity
+          node tools/tyurin-statistics.board.browser.cjs --vilenkin11-antiderivatives --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --peterson9-2017 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --peterson9-2017 --printed-identity --hotel
           node tools/tyurin-statistics.board.browser.cjs --peterson9-roots --printed-identity

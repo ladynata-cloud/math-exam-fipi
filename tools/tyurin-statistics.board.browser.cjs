@@ -51,8 +51,10 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--vilenkin-analysis-2014')?{
-  directory:'vilenkin-analysis-2014',entries:[[30,123,31]],uniqueLessons:30,search:'vilenkin-analysis-2014',match:'действительные числа и рациональные корни',lesson:process.argv.includes('--digits')?'30-14':'30-7-6',chart:process.argv.includes('--digits')?'svg[aria-label*="Префикс и повторяющаяся"]':'svg[aria-label*="Две десятичные границы"]',storage:'math:vilenkin-analysis-2014:v1:'
+const catalogue=process.argv.includes('--vilenkin11-antiderivatives')?{
+  directory:'vilenkin-analysis-2014',entries:[[6,95,12]],uniqueLessons:12,search:'vilenkin-analysis-2014',match:'действительные числа и первообразная',lesson:'6-2-4',chart:'svg[aria-label*="Шаги дифференцирования"]',storage:'math:vilenkin-analysis-2014:v1:'
+}:process.argv.includes('--vilenkin-analysis-2014')?{
+  directory:'vilenkin-analysis-2014',entries:[[30,123,31]],uniqueLessons:30,search:'vilenkin-analysis-2014',match:'действительные числа и первообразная',lesson:process.argv.includes('--digits')?'30-14':'30-7-6',chart:process.argv.includes('--digits')?'svg[aria-label*="Префикс и повторяющаяся"]':'svg[aria-label*="Две десятичные границы"]',storage:'math:vilenkin-analysis-2014:v1:'
 }:process.argv.includes('--peterson9-roots')?{
   directory:'peterson9-2017',entries:[[52,40,14]],uniqueLessons:13,search:'peterson9-2017',match:'корни высших степеней',lesson:'52-5-2',chart:'svg[aria-label*="Пересечение возрастающей нечётной степени"]',storage:'math:peterson9-2017:v1:'
 }:process.argv.includes('--peterson9-2017')?{
