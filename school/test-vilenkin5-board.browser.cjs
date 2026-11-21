@@ -1188,6 +1188,17 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'pupil reloads the leap year');
   await teacherFrame.locator('#answer-form button').click();const correctedFebruary=await same(teacherFrame,studentFrame,'the learner used 29 days');assert(correctedFebruary.scene.correct);assert.equal(correctedFebruary.scene.attempt,2);assert.deepEqual(correctedFebruary.scene.hintLevels,{});await narrow(student,studentFrame,'fraction-of-leap-year');
 
+  phase = 'source 5.59: a team and the dogs left at the base';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-59"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.59'}).waitFor();
+  for(const val of ['2','12']){await teacherFrame.locator('#answer').fill(val);await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();}
+  await teacherFrame.locator('#answer').fill('12');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'team count versus dogs at the base')).scene.message,/которые остались/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=groups]').selectOption({value:'8'});await studentFrame.locator('[data-v5-param=ask]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('12');await studentFrame.locator('[data-v5-predict] button').click();await studentFrame.locator('#answer').fill('16');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const sledReturn=await same(studentFrame,teacherFrame,'restored dog groups and pupil draft');assert.equal(sledReturn.scene.savedInput,'16');assert(sledReturn.scene.model.seen);assert.equal(sledReturn.scene.model.groups,8);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'recovered counting model');
+  await teacherFrame.locator('#answer-form button').click();const sledFixed=await same(teacherFrame,studentFrame,'sixteen remained on base');assert(sledFixed.scene.correct);assert.equal(sledFixed.scene.attempt,2);assert.deepEqual(sledFixed.scene.hintLevels,{});await narrow(student,studentFrame,'polar-dog-groups');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
