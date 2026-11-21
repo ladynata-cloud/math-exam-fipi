@@ -234,7 +234,7 @@ function compareBars(left,right,first,second) {
 const pythagorasCases=[[3,4,5],[5,12,13],[8,15,17]];
 function dissectionFigure(a,b,central) {
  const size=a+b,side=150,x0=15,y0=12,unit=side/size;
- const picture=svg('svg',{viewBox:'0 0 180 181',role:'img',class:'pm-chart',
+ const picture=svg('svg',{viewBox:'0 0 180 181',role:'img',class:'pm-chart pcm-dissection',
   'aria-label':central?'Четыре прямоугольных треугольника вокруг квадрата со стороной c.':'Четыре прямоугольных треугольника рядом с квадратами со сторонами a и b.'});
  picture.append(svg('rect',{x:x0,y:y0,width:side,height:side,fill:'white',stroke:'#244a39','stroke-width':1.5}));
  const triangles=central
@@ -245,6 +245,12 @@ function dissectionFigure(a,b,central) {
   picture.append(svg('polygon',{points,fill:'#b4d7c4',stroke:'#245942','stroke-width':1.4,'data-triangle':'1'}));
  }
  const caption=(x,y,label)=>txt(picture,x0+x*unit,y0+y*unit+4,label,{'font-size':15});
+ const edgeLabel={'font-size':11};
+ txt(picture,x0+a*unit/2,y0-2,'a',edgeLabel);
+ txt(picture,x0+(a+b/2)*unit,y0-2,'b',edgeLabel);
+ const firstLeg=central?b:a,secondLeg=central?a:b;
+ txt(picture,x0-7,y0+firstLeg*unit/2+3,central?'b':'a',edgeLabel);
+ txt(picture,x0-7,y0+(firstLeg+secondLeg/2)*unit+3,central?'a':'b',edgeLabel);
  if(central)caption(size/2,size/2,'c²');
  else {caption(a/2,a/2,'a²');caption(a+b/2,a+b/2,'b²');}
  txt(picture,90,177,'Сторона a + b',{'font-size':12});
