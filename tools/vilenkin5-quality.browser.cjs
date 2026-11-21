@@ -25,7 +25,7 @@ const server=http.createServer((req,res)=>{
       return [1,2].map(part=>list.filter(lesson=>lesson.source.part===part).map(lesson=>lesson.number));
     });
     assert.deepEqual(printedCounts[0],Array.from({length:125},(_,i)=>'1.'+(i+1)));
-    assert.deepEqual(printedCounts[1],Array.from({length:39},(_,i)=>'5.'+(i+1)));
+    assert.deepEqual(printedCounts[1],Array.from({length:42},(_,i)=>'5.'+(i+1)));
     const assessmentCards=await page.evaluate(()=>WorkshopCurriculum.pathById.vilenkin5.printedChecks);
     assert.deepEqual(assessmentCards,['check-2-1','check-2-2','check-3-1','check-3-2','check-4','check-25-1','check-25-2','check-25-3'].map(key=>'v5f-printed-'+key));
     // Every canonical lesson mounts its actual visual, including all of part two.

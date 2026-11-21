@@ -7040,6 +7040,15 @@
       "boundary": "Only the combined school entry receives this page binding."
     },
     {
+      "previousBaseSha": "972d64936768deedcfa0bb3a04f08b27ba9338ef",
+      "sourceBaseSha": "f9a9b337e7cb944e9156c8aa36ada37054b28e61",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Часть 2, §26, печатная с. 13. Проверены упражнения №5.40–5.42, равносильные дроби, цветные интервалы и разбиение квадрата на шесть равных площадей."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
