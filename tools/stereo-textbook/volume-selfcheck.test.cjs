@@ -13,6 +13,11 @@ const old=previous.courseBefore(bank,sourceIndex);
 assert.equal(old.lessons.length,837);
 const chapter=c=>c.source.collection==='selfcheck'&&c.source.chapter==='V. Объёмы тел';
 assert.equal(old.lessons.filter(chapter).length,0);
+const historicalChapters=new Set(old.lessons.filter(card=>card.source.collection==='selfcheck').map(card=>card.source.chapter));
+function earlierQuestions(lessons,number){
+  return lessons.filter(card=>card.source.collection==='selfcheck'&&historicalChapters.has(card.source.chapter)&&Number(card.source.exercise)===number)
+    .map(card=>[card.id,card.source]).sort(([first],[second])=>first.localeCompare(second));
+}
 const vals={'01-a':[1,12,0],'01-b':[3,0,7],'02':[.5,.25,.25,9],'03':[4,.25,1,3],'04':[.25,.5,.2],'05':[4,2,.5],
   '06':[4,4,9],'07':[2,2,2,3],'08':[16,12,4/3],'09-a':[3,6,.5],'09-b':[.5,.125,1/27],'10':[3,27,8],
   '11':[1,3,3*Math.sqrt(3)],'12-a':[3,.25,20],'12-b':[9,108,16],'13':[2,4,9],'14':[1.5,27/8,8/125]};
@@ -31,8 +36,9 @@ for(const [suffix,answers] of Object.entries(vals)){
   if(unlettered)assert(Object.keys(m.points).every(name=>name.startsWith('_')),'no unexplained corner labels');
   assert(chapter(c));assert.equal(Number(c.source.exercise),n);assert.deepEqual(c.source.printedPages,[138]);assert.deepEqual(c.source.pdfPages,[140]);
   assert(Object.hasOwn(manifest.cards,id));assert.equal(c.steps.length,answers.length);viewer.prepare(m);
-  const earlier=bank.lessons.filter(other=>other.source.collection==='selfcheck'&&other.source.chapter!==c.source.chapter&&Number(other.source.exercise)===n);
-  assert(earlier.length>0);for(const item of earlier)assert(old.lessons.some(row=>row.id===item.id));
+  const historical=earlierQuestions(old.lessons,n);
+  assert(historical.length>0);
+  assert.deepEqual(earlierQuestions(bank.lessons,n),historical,'preserved earlier-chapter siblings for volume question '+n);
   for(const [i,step] of c.steps.entries()){
     assert.equal(engine.classifyAnswer(String(answers[i]),step.input.accepted).status,'correct',id+'/'+step.id);
     for(const wrong of wrongStepAnswers(id,step))assert.equal(engine.classifyAnswer(wrong,step.input.accepted).status,'wrong');
