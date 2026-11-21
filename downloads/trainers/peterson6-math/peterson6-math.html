@@ -49570,15 +49570,22 @@ function firstErrorsHTML(t,s){
     helpOpen[taskId] = value;
     try { localStorage.setItem(HELP_KEY, JSON.stringify(helpOpen)); } catch (_) {}
   }
-  // A saved link or a board snapshot always uses the original array index.
+  // Course data is immutable. Saved links and board snapshots use the original array index.
+  const readingOrders = new WeakMap();
+  const subpartOrder = new Intl.Collator('ru', { numeric: true });
   function readingOrder(lesson) {
-    const indices = lesson.tasks.map((_, index) => index);
-    if (!lesson.orderBySource) return indices;
-    return indices.sort((a, b) => {
-      const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
-      return left.exercise - right.exercise ||
-        String(left.subpart || '').localeCompare(String(right.subpart || ''), 'ru', { numeric: true });
-    });
+    let indices = readingOrders.get(lesson);
+    if (indices) return indices;
+    indices = lesson.tasks.map((_, index) => index);
+    if (lesson.orderBySource) {
+      indices.sort((a, b) => {
+        const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
+        return left.exercise - right.exercise ||
+          subpartOrder.compare(String(left.subpart || ''), String(right.subpart || ''));
+      });
+    }
+    readingOrders.set(lesson, indices);
+    return indices;
   }
   function partStart(part) {
     const first = D.lessons.find(lesson => partOf(lesson) === part);
