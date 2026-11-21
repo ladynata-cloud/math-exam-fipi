@@ -1,4 +1,4 @@
-"""Points 109–112 and the directed vector angle cases, preserving the missing arrows in printed 1129д–е."""
+"""Points 109–112. The heading on p. 288 governs 1129д–е; the printed answer discrepancy is retained."""
 import argparse
 import json
 from math import cos, hypot, radians, sin, sqrt
@@ -128,6 +128,14 @@ def angle_task(n,part,points,first,second,plain,answer,why,fresh,newanswer):
     shape='квадрата' if n==1128 else 'ромба, у которого BD равна стороне'
     given='ABCD — квадрат.' if n==1128 else 'ABCD — ромб, диагональ BD равна стороне.'
     question=f'{given} O — точка пересечения диагоналей. Какой угол образуют {use_text(first,plain[0])} и {use_text(second,plain[1])}?'
+    source_issue = n==1129 and part in ('д','е')
+    if source_issue:
+        printed = ('В бумажном подпункте д стрелка стоит над AB, над DA она пропущена.'
+                   if part=='д' else 'В бумажном подпункте е стрелок над AB и CD нет.')
+        question += ' '+printed+' В заголовке на с. 288 сказано «между векторами», поэтому используй порядок букв.'
+        first_step = printed+' Читай запись вместе с заголовком: оба обозначения задают векторы. '+first_step
+        hint = ('Сверь с. 288 и с. 400. Для записанных A→B и D→A угол 120°: вторая стрелка противоположна A→D. Напечатанный в ключе 0° не согласуется с этой парой.'
+                if part=='д' else 'Сверь порядок C и D. Векторы A→B и C→D противоположно направлены. Нулевой угол образуют A→B и D→C.')
     reason=why+f' Поэтому угол равен {answer}°.'
     checks=[('Каков исходный угол по модели с общим началом? Введи градусы.',str(answer),why),
             ('Каков угол между объектами в изменённой паре? Введи градусы.',str(newanswer),'Сначала найди направление каждой новой стрелки или новой прямой.')]
@@ -143,6 +151,9 @@ def angle_task(n,part,points,first,second,plain,answer,why,fresh,newanswer):
         shafts = [[a+suffix,b+suffix] for a,b in dict.fromkeys(tuple(pair) for pair in focus)]
         tips = [segment for segment in view['segments'] if segment[1].startswith('head_')]
         view['highlightSegments'] = shafts + tips
+    if source_issue:
+        c['revision']=2
+        c['review']['reviewer']='Печатные с. 288 и 400, Атанасян 7–9, издание 2023. Уточнены пропущенные надбуквенные стрелки с учётом заголовка «между векторами». Оба направления и формулировка книжного ответа проверены отдельно.'
     return grade(c,[str(answer),f'{answer}°',f'{answer} градусов'],hint,'Введи величину указанного угла в градусах.')
 
 
@@ -162,8 +173,8 @@ def polygons():
         ('б','AB','DA',vectors,120,'Луч AB составляет 60° с AD, но вторая стрелка DA противоположна AD. Получается смежный угол.',('AB','AD',vectors),60),
         ('в','BA','AD',vectors,120,'Первый вектор BA противоположен AB. У равностороннего ABD угол между AB и AD равен 60°, после разворота получаем 120°.',('BA','DA',vectors),60),
         ('г','OC','OD',vectors,90,'Векторы лежат на разных диагоналях ромба; эти диагонали взаимно перпендикулярны.',('OC','DC',vectors),30),
-        ('д','AB','DA',(False,True),60,'В источнике у AB стоит стрелка, у DA её нет. Меньший угол направления AB с прямой DA равен 60°. Если бы вторая запись означала именно вектор D→A, вышло бы 120°, как в подпункте б.',('AB','AC',(False,True)),30),
-        ('е','AB','CD',(True,True),0,'Обе записи на с. 288 идут без стрелок. AB и CD — параллельные прямые: меньший угол равен 0°. При чтении как двух конкретных векторов пришлось бы дополнительно учитывать их противоположную ориентацию.',('AB','BD',(True,True)),60)]
+        ('д','AB','DA',vectors,120,'У ромба AB=AD=BD, поэтому угол BAD равен 60°. Вектор D→A противоположен A→D; значит, при сравнении A→B и D→A получаем 180°−60°=120°. В этом виде подпункт повторяет б. Ключ на с. 400 указывает 0°, что не следует из записанной пары. Если сравнивать прямые без учёта направления, получился бы третий угол 60°.',('AB','AC',vectors),30),
+        ('е','AB','CD',vectors,180,'Параллельные стороны ромба дают равные векторы A→B и D→C. В условии указаны буквы C, D в обратном порядке: C→D противоположен A→B, поэтому угол 180°. Именно 180° стоит в ответах на с. 400. Угол между самими параллельными прямыми равен 0°, но заголовок спрашивает о векторах.',('AB','DC',vectors),0)]
     rows=[angle_task(1128,p,SQUARE,u,v,vectors,ans,why,new,na) for p,u,v,ans,why,new,na in square]
     rows.extend(angle_task(1129,p,RHOMBUS,u,v,l,ans,why,new,na) for p,u,v,l,ans,why,new,na in rhombus)
     return rows
