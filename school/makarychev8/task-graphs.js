@@ -909,6 +909,38 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+const observedSeries={
+ speed:{nodes:[[0,0],[6,5],[14,5],[16,0]],units:['с','м/с'],axes:['t','v'],xRange:[0,16],yRange:[0,8],xt:2,yt:2,xg:1,yg:1,label:'Скорость велосипедиста'},
+ water:{nodes:[[0,20],[4,66],[8,90],[12,99.5],[13,100],[16,97],[20,89],[24,80],[28,70]],units:['мин','°С'],axes:['t','T'],xRange:[0,28],yRange:[0,110],xt:4,yt:20,xg:2,yg:10,label:'Температура воды',smooth:true},
+ ice:{nodes:[[0,-5],[4,0],[10,0],[16,3]],units:['мин','°С'],axes:['t','T'],xRange:[0,16],yRange:[-6,6],xt:2,yt:2,xg:1,yg:1,label:'Температура при нагревании льда'}
+};
+function phaseConfig(g){
+ if(g.scenario!=='generated')return observedSeries[g.scenario];
+ return {...observedSeries.speed,nodes:g.nodes,xRange:[0,g.nodes.at(-1)[0]],yRange:[0,Math.max(8,g.nodes[1][1]+2)]};
+}
+function phaseReading(g,t){
+ const c=phaseConfig(g),nodes=c.nodes,end=nodes.at(-1)[0];
+ if(!Number.isFinite(t)||t<0||t>end)return null;
+ const y=c.smooth?readingHeight(nodes,t):curveValue({kind:'behavior-linear-points',nodes},t);
+ const i=nodes.findIndex(p=>p[0]>=t);
+ const direction=nodes[i][0]===t&&i>0&&i<nodes.length-1?'узел':Math.sign(nodes[Math.max(1,i)][1]-nodes[Math.max(1,i)-1][1]);
+ return {y,direction};
+}
+function observedPhases(host,g,value){
+ const c=phaseConfig(g),curve={kind:c.smooth?'reading-profile':'behavior-linear-points',nodes:c.nodes,xs:c.nodes.map(p=>p[0])};
+ host.className='task-graphs quantity-model';const points=[],trial=M.parse(g.partial?.[0]);
+ if(trial){
+  const moment=trial.n/trial.d,r=phaseReading(g,moment);
+  if(r){points.push([moment,r.y,'']);const y=Number(r.y.toFixed(1));const direction=r.direction==='узел'?'Сравни высоту слева и справа.':r.direction===0?'На этом участке высота постоянна.':r.direction>0?'На этом участке график идёт вверх.':'На этом участке график идёт вниз.';
+   boundNote(host,'При t='+M.answer(trial)+' '+c.units[0]+' график показывает '+(c.smooth?'около ':'')+String(y).replace('.',',')+' '+c.units[1]+'. '+direction).dataset.phaseProbe=String(y);
+  }else boundNote(host,'Этого времени на показанном графике нет. Проверь левый и правый концы наблюдения.').dataset.phaseProbe='outside';
+ }
+ const svg=rootGraph({curves:[curve],points,xRange:c.xRange,yRange:c.yRange,xTickStep:c.xt,yTickStep:c.yt,xGridStep:c.xg,yGridStep:c.yg,axisLabels:c.axes,label:c.label+' в зависимости от времени'},'');
+ svg.dataset.phaseFigure=g.scenario;host.append(svg);
+ boundNote(host,'Горизонталь — время, '+c.units[0]+'. Вертикаль — '+(c.axes[1]==='v'?'скорость':'температура')+', '+c.units[1]+'. Малая клетка: '+c.xg+' '+c.units[0]+' по времени и '+c.yg+' '+c.units[1]+' по вертикали.');
+ if(g.variable){const parse=window.MakarychevCheck,proposal=parse.axisRanges(parse.systemInput(value,g.variable));if(proposal){boundNote(host,'Твой промежуток на оси времени');intervalNumberLine(host,{givenRows:[],proposal,points:[]},'');}}
+}
+
 function tripValue(raw){
  const q=M.parse(raw);if(!q)return null;
  const n=BigInt(q.n),d=BigInt(q.d);if(n<0n||2n*n>5n*d)return null;
@@ -2160,6 +2192,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-phase-reading'){observedPhases(host,config,value);return;}
  if(config.type==='source-trip-review'){tripEquationView(host,config,value);return;}
  if(config.type==='source-behavior-review'){behaviorView(host,config,value);return;}
  if(config.type==='source-function-features'){featureView(host,config,value);return;}
@@ -2257,5 +2290,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

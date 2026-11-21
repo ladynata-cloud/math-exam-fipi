@@ -87,6 +87,7 @@ jobs:
           python school/makarychev8/test-exercises-1080-1087.py
           python school/makarychev8/test-exercises-1088-1092.py
           python school/makarychev8/test-exercises-1093-1096.py
+          python school/makarychev8/test-exercises-1097-1099.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -134,6 +135,7 @@ jobs:
           node school/makarychev8/test-function-features.cjs
           node school/makarychev8/test-behavior-review.cjs
           node school/makarychev8/test-trip-equation-review.cjs
+          node school/makarychev8/test-observed-phases.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -244,6 +246,8 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-behavior-review.cjs
       - name: Chromium source trip, stops and algebraic review
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-trip-equation-review.cjs
+      - name: Chromium original velocity and thermal readings, figures 61–63
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-observed-phases.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction
