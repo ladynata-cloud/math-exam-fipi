@@ -54,7 +54,7 @@ jobs:
           node tools/alimov-2012.test.cjs
           node tools/tyurin-statistics.board.browser.cjs --alimov-2012
           node tools/mordkovich-2013.test.cjs
-          node tools/tyurin-statistics.board.browser.cjs --mordkovich-2013 --printed-identity
+          node tools/tyurin-statistics.board.browser.cjs --mordkovich-2013 --printed-identity --circle-domain
       - name: Assigned cabinet program opens a shared teacher and pupil room
         run: node tools/merzlyak-program-room.browser.cjs
       - name: Preserve existing registry arrival and role boundaries

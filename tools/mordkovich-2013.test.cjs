@@ -29,7 +29,7 @@ function open(entry,saved){
  w.TextEncoder=TextEncoder;w.Math.random=()=>0;
  const id=entry.path.split('/').pop(),storage='math:mordkovich-2013:v1:'+id;
  if(saved)w.localStorage.setItem(storage,saved);
- for(const name of ['../tyurin-statistics/content.js','identities.js','../tyurin-statistics/app.js'])w.eval(read(path.join(dir,name)));
+ for(const name of ['../tyurin-statistics/content.js','identities.js','quotients.js','../tyurin-statistics/app.js'])w.eval(read(path.join(dir,name)));
  return {dom,w,storage,doc:w.document,lesson:w.MathExamTopicPractice.lessons.get(id)};
 }
 const click=(doc,act)=>doc.querySelector('[data-action="'+act+'"]').click();
@@ -37,7 +37,22 @@ function submit(doc,v){
  const field=doc.querySelector('#answer');field.value=String(v);field.dispatchEvent(new doc.defaultView.Event('input',{bubbles:true}));
  doc.querySelector('#work form').dispatchEvent(new doc.defaultView.Event('submit',{bubbles:true,cancelable:true}));
 }
+// Evaluate the printed (unsimplified) ratios and denominators independently.
+const quotients=[
+ (s,c)=>1/(c*c)-1,(s,c)=>(1-s*s)/(c*c),(s,c)=>1-1/(s*s),(s,c)=>(1-c*c)/(1-s*s),
+ (s,c)=>(s+c)**2/(1+2*s*c),(s,c)=>(1-2*s*c)/(c-s)**2,(s,c)=>c*c/(1-s)-s,(s,c)=>s*s/(1+c)+c,
+ (s,c)=>s**4-c**4+2*c*c,(s,c)=>(2-s*s-c*c)/(3*s*s+3*c*c),(s,c)=>s**4+c**4+2*s*s*c*c,(s,c)=>(s**4-c**4)/(s*s-c*c)
+];
+const denominators=[
+ (s,c)=>c*c,(s,c)=>c*c,s=>s*s,s=>1-s*s,(s,c)=>1+2*s*c,(s,c)=>(c-s)**2,
+ s=>1-s,(s,c)=>1+c,()=>1,(s,c)=>3*s*s+3*c*c,()=>1,(s,c)=>s*s-c*c
+];
 function expectAnswers(i,d){
+ if(i>=8){
+   const n=i-8, y=d.s/d.r, x=d.c/d.r, original=quotients[n](y,x);
+   const allowed=d.angles.filter(k=>Math.abs(denominators[n](Math.sin(k*Math.PI/4),Math.cos(k*Math.PI/4)))>1e-8);
+   return [allowed.length,d.scale*original,d.offset-original];
+ }
  const [,s,r]=d.rows[0],[,c]=d.rows[1],cos=[0,3,4,5,7].includes(i);
  const match=d.questions[2].prompt.match(/²t = (\d+)\/(\d+)/);assert(match);
  const other=Number(match[1])/Number(match[2]),rest=1-other;
@@ -47,7 +62,7 @@ const close=(a,b)=>assert(Math.abs(a-b)<1e-9,String(a)+' ≠ '+b);
 for(const [i,entry] of book.exercises.slice(75).entries()){
  let {dom,w,doc,lesson,storage}=open(entry);
  assert.equal(entry.boardPath,entry.path);assert.equal(doc.querySelector('#lesson').value,lesson.id);
- assert.equal(doc.querySelectorAll('#lesson option').length,8);assert.equal(doc.querySelector('#source').href.split('#').pop(),'page=23');
+ assert.equal(doc.querySelectorAll('#lesson option').length,20);assert.equal(doc.querySelector('#source').href.split('#').pop(),i<8?'page=23':'page=24');
  assert.equal(JSON.parse(w.localStorage.getItem(storage)).results.length,0);
  assert(!doc.querySelector('#work').textContent.includes(lesson.printedGuide));click(doc,'printed-guide');assert(doc.querySelector('#work').textContent.includes(lesson.printedGuide));
  const seen=new Set();
@@ -68,4 +83,4 @@ for(const [i,entry] of book.exercises.slice(75).entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(storage)).results,['fixed','first','help']);
  click(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(storage)).variant,7);dom.window.close();
 }
-console.log('60 printed sections; 75 independently addressable circle exercises with 289 parts; 13 exact shared circle entries; 8 new printed identities, 264 direct mathematical checks and individual corrected/first/assisted/retry journeys.');
+console.log('60 printed sections; 75 independently addressable circle exercises with 289 parts; 13 exact shared circle entries; 20 new printed identities, 660 direct mathematical checks and individual corrected/first/assisted/retry journeys.');

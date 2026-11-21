@@ -373,7 +373,7 @@
   mord2013.workshopRoute='10';
   mord2013.status='60 параграфов по страницам · практика по §§4–7';
   mord2013.note='Часть 2, базовый уровень, 14-е издание. В разделах об окружности открой свой номер и выбери подпункт. Затем перейди к тождествам и проверь себя на других значениях.';
-  mord2013.remaining='Все 75 номеров §§4–6 разобраны. В §7 готовы №7.1–7.2, следующий №7.3. Свои разборы §§1–3, остальной части §7, §§8–60 и дополнительных задач с с. 205 ещё предстоят.';
+  mord2013.remaining='Все 75 номеров §§4–6 разобраны. В §7 готовы №7.1–7.6, следующий №7.7. Свои разборы §§1–3, остальной части §7, §§8–60 и дополнительных задач с с. 205 ещё предстоят.';
   mord2013.totalPoints=60;
   mord2013.exerciseHeading='Упражнения по печатным номерам';
   mord2013.mapping=mordTopics.map((title,i)=>{
@@ -384,7 +384,7 @@
       const span=section===4?20:section===5?14:41;
       Object.assign(row,{coverage:'module',bookOnly:false,externalPath:circle+section+'.1',focus:'Разборы каждого номера от '+section+'.1 до '+section+'.'+span+'.'});
       if(section!==4)row.boardPath=jointCircle+section+'.1';
-    }else if(section===7)Object.assign(row,{coverage:'partial',bookOnly:false,externalPath:identity+'7-1a',boardPath:identity+'7-1a',focus:'Все восемь подпунктов №7.1 и №7.2 с моделью, разбором и новой тренировкой.'});
+    }else if(section===7)Object.assign(row,{coverage:'partial',bookOnly:false,externalPath:identity+'7-1a',boardPath:identity+'7-1a',focus:'Двадцать подпунктов №7.1–7.6: квадраты координат, дроби, доказательства и допустимые углы.'});
     return row;
   });
   const sectionLabels={
@@ -407,4 +407,14 @@
     const path=identity+'7-'+n+'abcd'[i];
     mord2013.exercises.push({printed:'7.'+n+'абвг'[i],page:18,title:identityTitles[4*(n-1)+i],path,boardPath:path});
   }
+  const fractionTitles=[
+    ['7.3',['Единица под общим знаменателем','Сокращение квадрата косинуса','Знак после приведения дробей','Два остатка от единицы']],
+    ['7.4',['Квадрат суммы и область определения','Квадрат разности и область определения']],
+    ['7.5',['Разложение квадрата косинуса','Разложение квадрата синуса']],
+    ['7.6',['Разность четвёртых степеней','Постоянная дробь','Квадрат суммы двух квадратов','Допустимость сокращения разности']]
+  ];
+  for(const [number,titles] of fractionTitles)titles.forEach((title,i)=>{
+    const path=identity+number.replace('.','-')+'abcd'[i];
+    mord2013.exercises.push({printed:number+'абвг'[i],page:19,title,path,boardPath:path});
+  });
 })();
