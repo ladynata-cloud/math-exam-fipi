@@ -1124,3 +1124,29 @@ test('order all printed equation types and exclude undefined substitutions befor
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('distinguish a proof from an example, filter the entire root set and read inverse chains in order',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p36/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const i of [23,24,25,26,27,28,29]){
+   const c=go(i);for(const x of [-4,0,3]){set(c[0],x);set(c[1],2);assert(out().includes(i<=26?'части равны':'части различаются'));assert(f.q('#model table'));}
+   assert(f.q('[data-action="record-manual"]'));
+  }
+  for(const [j,good] of [[30,[]],[31,['-5','5']],[32,[]],[33,['-4/5']],[34,['1','3']]]){
+   const c=go(j),hits=[];for(const option of [...f.q(c[0]).options]){set(c[0],option.value);set(c[1],1);if(out().includes('число подходит.'))hits.push(option.textContent);}
+   assert.deepEqual(hits,good);
+  }
+  let c=go(35);
+  for(const vi of [0,1])for(const [i,s]of (vi?['-3, 0, 5/2','-3, 0','корней нет','5/2','0, 5/2']:['-2, 0, 5/3','-2, 0','корней нет','5/3','0, 5/3']).entries()){
+   set(c[0],vi);set(c[1],i);set(c[2],2);assert(out().includes(s+'.'),[vi,i,out()]);assert.equal(f.d.querySelectorAll('#model tbody tr').length,3);
+  }
+  c=go(40);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,6);
+  for(const start of [36,48,72]){let x=start;for(const [i,div]of [3,.01,10,2,5,4].entries()){x/=div;set(c[0],start);set(c[1],i+1);set(c[2],1);assert(out().replace(/[\s\u00a0\u202f]/g,'').includes('шага:'+String(x).replace('.',',')+'.'),[start,i,x,out()]);}}
+  for(const [i,samples]of [['-1/2','1/3',null],['2','-3','0'],['1/2','-1/3',null],['1/2','-1/3',null],['2','3','0'],['-2','-3','0'],['4','9','0'],['-4','-9','0']].entries()){
+   c=go(41+i);for(const [j,x] of [-2,3,0].entries()){set(c[0],x);set(c[1],1);assert(out().includes(samples[j]===null?'делить на ноль':'выражения: '+samples[j]+'.'),[i,x,out()]);}
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
