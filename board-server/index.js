@@ -6,6 +6,7 @@ const { Server } = require('socket.io');
 const { loadTrainerRegistry, TRAINER_PATH_LIMITS } = require('./trainer-registry');
 const { ProgressStoreError, loadProgressStore } = require('./progress-store');
 const { createGroupLessonsRouter } = require('./group-lessons');
+const { RoomStore } = require('./room-store');
 const { createLearningApi } = require('./learning-api');
 const learningContracts = require('./learning-contracts');
 const { createTeachingRouter } = require('./learning-teaching');
@@ -119,7 +120,12 @@ const groupLessons = createGroupLessonsRouter();
 app.use('/api/group-lessons', groupLessons.router);
 process.once('exit', () => groupLessons.store.close());
 
-const rooms = new Map();
+const roomStore = new RoomStore();
+const rooms = roomStore.rooms;
+// A crash cannot tell us when an online participant became inactive. Give
+// recovered rooms one full retention window to reconnect before expiring them.
+const roomRecoveryUntil = new Map([...rooms.keys()].map(id => [id, Date.now() + ROOM_TTL_MS]));
+process.once('exit', () => roomStore.close());
 const progressCreateAttempts = new Map();
 
 function nowIso() {
@@ -138,8 +144,11 @@ function cleanupRooms(now = Date.now()) {
   let removed = 0;
   for (const [roomId, room] of rooms) {
     const lastActivity = Date.parse(room.lastActivityAt || room.createdAt || '') || 0;
-    if (now - lastActivity > ROOM_TTL_MS && !hasOnlineParticipants(room)) {
+    if (now - lastActivity > ROOM_TTL_MS && !hasOnlineParticipants(room)
+      && now >= (roomRecoveryUntil.get(roomId) || 0)) {
+      try { roomStore.remove(roomId); } catch (_) { continue; }
       rooms.delete(roomId);
+      roomRecoveryUntil.delete(roomId);
       removed += 1;
     }
   }
@@ -202,7 +211,7 @@ function normalizeBoardBg(value) {
 }
 
 function blankPage() {
-  return { id: makeId(6), bg: 'grid', strokes: [] };
+  return { id: makeId(6), bg: 'grid', pageEpoch: 0, strokes: [] };
 }
 
 function safePageFromPayload(page = {}) {
@@ -210,6 +219,7 @@ function safePageFromPayload(page = {}) {
   return {
     id: normalizePageId(page.id),
     bg: normalizeBoardBg(page.bg),
+    pageEpoch: 0,
     strokes: []
   };
 }
@@ -254,12 +264,14 @@ function createRoom() {
     control: teacher.id,
     controlVersion: 0,
     redoStacks: {},
+    inkReceipts: {},
     currentPage: 0,
     pages: [blankPage()],
     trainerUrl: 'negative-numbers-line.html',
     latestTrainerState: null,
     participants
   };
+  roomStore.save(room);
   rooms.set(roomId, room);
   return room;
 }
@@ -283,6 +295,8 @@ function publicState(room) {
     roomId: room.roomId,
     createdAt: room.createdAt,
     stateVersion: Number(room.stateVersion || 0),
+    inkDelivery: roomStore.capability(),
+    roomTtlMs: ROOM_TTL_MS,
     control: room.control,
     controlVersion: Number(room.controlVersion || 0),
     currentPage: room.currentPage,
@@ -352,10 +366,11 @@ function canWrite(room, participant) {
 
 function setRoomControl(room, participant) {
   if (!room || !participant || room.control === participant.id) return false;
-  room.control = participant.id;
-  room.controlVersion = Number(room.controlVersion || 0) + 1;
-  touchRoom(room);
-  return true;
+  return commitRoomMutation(room, draft => {
+    draft.control = participant.id;
+    draft.controlVersion = Number(draft.controlVersion || 0) + 1;
+    touchRoom(draft);
+  });
 }
 
 function controlState(room) {
@@ -394,19 +409,17 @@ function normalizeObjectMeta(room, object, author, options = {}) {
 
 function markParticipantConnected(room, role, socket) {
   const participant = findParticipant(room, role);
-  if (!participant) return;
+  if (!participant) return false;
   const now = nowIso();
-  if (socket.data.participantId === participant.id) {
-    participant.connected = participant.onlineCount > 0;
-    participant.lastSeen = now;
-    touchRoom(room, now);
-    return;
-  }
-  participant.connected = true;
-  participant.onlineCount += 1;
-  participant.lastSeen = now;
+  if (!commitRoomMutation(room, draft => {
+    const next = findParticipant(draft, role);
+    if (socket.data.participantId !== next.id) next.onlineCount += 1;
+    next.connected = next.onlineCount > 0; next.lastSeen = now;
+    touchRoom(draft, now);
+  }, socket)) return false;
   socket.data.participantId = participant.id;
-  touchRoom(room, now);
+  roomRecoveryUntil.delete(room.roomId);
+  return true;
 }
 
 function markParticipantDisconnected(socket) {
@@ -415,10 +428,11 @@ function markParticipantDisconnected(socket) {
   const participant = (room.participants || []).find(item => item.id === socket.data.participantId);
   if (!participant) return null;
   const now = nowIso();
-  participant.onlineCount = Math.max(0, participant.onlineCount - 1);
-  participant.connected = participant.onlineCount > 0;
-  participant.lastSeen = now;
-  touchRoom(room, now);
+  commitRoomMutation(room, draft => {
+    const next = findParticipantById(draft, participant.id);
+    next.onlineCount = Math.max(0, next.onlineCount - 1);
+    next.connected = next.onlineCount > 0; next.lastSeen = now; touchRoom(draft, now);
+  });
   return room;
 }
 
@@ -536,6 +550,7 @@ function normalizeSnapshot(room, snapshot) {
     pages: snapshot.pages.map((page, index) => ({
       id: normalizePageId(page.id || `page-${index + 1}`),
       bg: normalizeBoardBg(page.bg),
+      pageEpoch: Number.isSafeInteger(page.pageEpoch) && page.pageEpoch >= 0 ? page.pageEpoch : 0,
       strokes: Array.isArray(page.strokes)
         ? page.strokes.map(stroke => normalizeObjectMeta(room, { ...stroke }, owner, {
           preserveCreatedAt: true,
@@ -550,6 +565,11 @@ function normalizeSnapshot(room, snapshot) {
 function applySnapshot(room, snapshot) {
   const next = normalizeSnapshot(room, snapshot);
   if (!next) return false;
+  if (new Set(next.pages.map(page => page.id)).size !== next.pages.length) return false;
+  for (const page of next.pages) {
+    const previous = room.pages.find(item => item.id === page.id);
+    page.pageEpoch = room.initialized && previous ? Number(previous.pageEpoch || 0) + 1 : 0;
+  }
   room.currentPage = next.currentPage;
   room.pages = next.pages;
   room.trainerUrl = next.trainerUrl;
@@ -571,6 +591,23 @@ function insertionIndex(room, pageIndex) {
 
 function emitBoardError(socket, message = 'Некорректное состояние доски') {
   socket.emit('room:error', { message });
+}
+
+// Mutations are synchronous and invisible until a full private snapshot has
+// reached disk. A failed save leaves the prior room object unchanged.
+function commitRoomMutation(room, mutate, socket) {
+  const draft = JSON.parse(JSON.stringify(room));
+  try {
+    if (mutate(draft) === false) return false;
+    roomStore.save(draft);
+    Object.assign(room, draft);
+    return true;
+  } catch (_) {
+    const payload = { message: 'Сервер не сохранил изменение. Сохраните локальную копию и повторите позже.', code: roomStore.reason || 'ROOM_STORAGE_LIMIT' };
+    if (socket) socket.emit('room:error', payload);
+    else io.to(room.roomId).emit('room:error', payload);
+    return false;
+  }
 }
 
 function markBoardStateChanged(room) {
@@ -619,6 +656,93 @@ function persistBoardObject(room, payload, participant) {
   return { ...payload, pageIndex: target.pageIndex };
 }
 
+function inkFingerprint(payload) {
+  function canonical(value) {
+    if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+    if (value && typeof value === 'object') return '{' + Object.keys(value).sort()
+      .map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}';
+    return JSON.stringify(value);
+  }
+  return crypto.createHash('sha256').update(canonical({ opId: payload.opId, pageId: payload.pageId,
+    pageEpoch: payload.pageEpoch, controlVersion: payload.controlVersion,
+    eventName: payload.eventName, stroke: payload.stroke })).digest('hex');
+}
+
+function validCompletedInk(payload) {
+  const stroke = payload?.stroke;
+  const finite = value => typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= 1e7;
+  const point = value => value && typeof value === 'object' && finite(value.x) && finite(value.y);
+  if (!stroke || typeof stroke !== 'object' || Array.isArray(stroke) || !isValidObjectId(stroke.objectId)
+    || !['board:stroke-end', 'board:text-add'].includes(payload.eventName)
+    || !Number.isSafeInteger(payload.controlVersion) || payload.controlVersion < 0
+    || !Number.isSafeInteger(payload.pageEpoch) || payload.pageEpoch < 0
+    || typeof payload.pageId !== 'string' || payload.pageId.length > 80) return false;
+  let bytes;
+  try { bytes = Buffer.byteLength(JSON.stringify(stroke)); } catch (_) { return false; }
+  if (bytes > 512 * 1024) return false;
+  function safe(value, depth = 0) {
+    if (depth > 6) return false;
+    if (value === null || typeof value === 'boolean') return true;
+    if (typeof value === 'string') return value.length <= 360 * 1024;
+    if (typeof value === 'number') return finite(value);
+    if (Array.isArray(value)) return value.length <= 20000 && value.every(item => safe(item, depth + 1));
+    return !!value && typeof value === 'object' && Object.keys(value).length <= 40
+      && Object.entries(value).every(([key, item]) => !['__proto__', 'constructor', 'prototype'].includes(key) && safe(item, depth + 1));
+  }
+  if (!safe(stroke) || (payload.eventName === 'board:text-add') !== (stroke.kind === 'text')) return false;
+  if (stroke.kind === 'image') return /^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/]+=*$/.test(stroke.src || '')
+    && point(stroke) && finite(stroke.width) && stroke.width > 0 && finite(stroke.height) && stroke.height > 0;
+  if (!finite(stroke.size) || stroke.size <= 0 || stroke.size > 100 || !/^#[a-f0-9]{6}$/i.test(stroke.color || '')) return false;
+  if (stroke.kind === 'path') return Array.isArray(stroke.points) && stroke.points.length > 0 && stroke.points.every(point);
+  if (['line', 'rect'].includes(stroke.kind)) return point(stroke.start) && point(stroke.end);
+  return stroke.kind === 'text' && point(stroke) && typeof stroke.text === 'string' && stroke.text.length > 0 && stroke.text.length <= 10000;
+}
+
+function commitCompletedInk(socket, payload, callback) {
+  const opId = typeof payload?.opId === 'string' ? payload.opId : '';
+  const respond = data => { if (typeof callback === 'function') callback(data); };
+  const reject = (error, retryable = false) => respond({ ok: false, opId, error, retryable });
+  if (!/^[A-Za-z0-9_-]{8,80}$/.test(opId) || !validCompletedInk(payload)) return reject('ROOM_INK_INVALID');
+  if (!roomStore.configured) return reject('ROOM_DURABILITY_UNAVAILABLE');
+  if (!roomStore.available) return reject(roomStore.reason || 'ROOM_STORAGE_UNAVAILABLE', true);
+  if (payload.roomId !== socket.data.roomId || payload.role !== socket.data.role) return reject('ROOM_UNAUTHORIZED');
+  const auth = authenticate(payload.roomId, payload.role, payload.token);
+  if (auth.error) return reject('ROOM_UNAUTHORIZED');
+  const room = auth.room, participant = findParticipantById(room, socket.data.participantId);
+  if (!participant || participant.role !== payload.role) return reject('ROOM_UNAUTHORIZED');
+  const key = participant.id + ':' + opId, fingerprint = inkFingerprint(payload);
+  const duplicate = room.inkReceipts[key];
+  if (duplicate) {
+    if (duplicate.fingerprint !== fingerprint) return reject('ROOM_OP_ID_CONFLICT');
+    // A receipt is not a command to redraw: the stroke can since have been
+    // undone or its page deleted. ACK the original operation without mutation.
+    return respond({ ok: true, opId, roomId: room.roomId, pageId: duplicate.pageId,
+      pageEpoch: duplicate.pageEpoch, durable: true, stroke: duplicate.stroke, duplicate: true });
+  }
+  if (!canWrite(room, participant) || room.controlVersion !== payload.controlVersion) return reject('ROOM_CONTROL_CHANGED');
+  const pageIndex = room.pages.findIndex(page => page.id === payload.pageId);
+  if (pageIndex < 0) return reject('ROOM_PAGE_CHANGED');
+  const page = room.pages[pageIndex];
+  if (Number(page.pageEpoch || 0) !== payload.pageEpoch) return reject('ROOM_PAGE_CHANGED');
+  if (Object.keys(room.inkReceipts).length >= 10000) return reject('ROOM_INK_LIMIT');
+  // An object ID is permanent within the room, even after undo/clear. A second
+  // operation must not impersonate a previously accepted object.
+  if (room.pages.some(page => page.strokes.some(stroke => stroke?.objectId === payload.stroke.objectId))
+    || Object.values(room.inkReceipts).some(receipt => receipt?.stroke?.objectId === payload.stroke.objectId)) return reject('ROOM_OBJECT_ID_CONFLICT');
+  const draft = JSON.parse(JSON.stringify(room));
+  const stroke = normalizeObjectMeta(draft, JSON.parse(JSON.stringify(payload.stroke)), participant);
+  draft.pages[pageIndex].strokes.push(stroke);
+  clearRedoForAuthorPage(draft, participant.id, page.id); markBoardStateChanged(draft);
+  draft.inkReceipts[key] = { fingerprint, pageId: payload.pageId, pageEpoch: payload.pageEpoch, stroke };
+  try { roomStore.save(draft); }
+  catch (error) { return reject(error.code || 'ROOM_STORAGE_WRITE_FAILED', error.code !== 'ROOM_STORAGE_LIMIT'); }
+  Object.assign(room, draft);
+  socket.to(room.roomId).emit(payload.eventName, { pageIndex, pageId: payload.pageId,
+    pageEpoch: payload.pageEpoch, stateVersion: room.stateVersion, stroke });
+  respond({ ok: true, opId, roomId: room.roomId, pageId: payload.pageId, pageEpoch: payload.pageEpoch,
+    durable: true, stroke, duplicate: false });
+}
+
 function emitLegacySnapshot(socket, room) {
   socket.to(room.roomId).emit('board:snapshot', { state: publicState(room) });
 }
@@ -632,6 +756,9 @@ function findLastAuthoredStrokeIndex(page, authorId) {
 
 function authenticate(roomId, role, token) {
   const room = rooms.get(roomId);
+  if (!room && roomStore.configured && !roomStore.available) {
+    return { error: 'Хранилище комнаты временно недоступно. Сохраните ссылку и повторите позже.', code: 'ROOM_STORAGE_UNAVAILABLE' };
+  }
   if (!room) return { error: 'Комната не найдена' };
   if (role === 'teacher' && token === room.teacherToken) return { room, role };
   if (role === 'student' && token === room.studentToken) return { room, role };
@@ -695,6 +822,8 @@ app.get('/health', (_req, res) => {
     roomTtlMs: ROOM_TTL_MS,
     roomCleanupIntervalMs: ROOM_CLEANUP_INTERVAL_MS,
     features: { roomTtlCleanup: true, progressWorkspaces: true },
+    inkDelivery: roomStore.capability(),
+    roomStoreError: roomStore.reason,
     registryLoaded: trainerRegistry.loaded,
     registrySchemaVersion: trainerRegistry.schemaVersion,
     registryDigest: trainerRegistry.digest,
@@ -783,7 +912,9 @@ app.put(
 );
 
 app.post('/api/rooms', (_req, res) => {
-  const room = createRoom();
+  let room;
+  try { room = createRoom(); }
+  catch (error) { res.status(503).json({ ok: false, error: error.code || 'ROOM_STORAGE_UNAVAILABLE' }); return; }
   res.status(201).json({
     roomId: room.roomId,
     teacherToken: room.teacherToken,
@@ -805,8 +936,11 @@ const io = new Server(httpServer, {
 });
 
 io.on('connection', socket => {
+  socket.on('board:ink-commit', (payload, callback) => commitCompletedInk(socket, payload, callback));
   socket.on('room:create', callback => {
-    const room = createRoom();
+    let room;
+    try { room = createRoom(); }
+    catch (error) { callback?.({ ok: false, error: error.code || 'ROOM_STORAGE_UNAVAILABLE' }); return; }
     callback?.({
       ok: true,
       roomId: room.roomId,
@@ -828,10 +962,11 @@ io.on('connection', socket => {
     socket.data.token = payload.token;
     const proto = Number(payload?.proto);
     socket.data.proto = Number.isFinite(proto) && proto > 0 ? proto : 1;
-    markParticipantConnected(auth.room, role, socket);
+    if (!markParticipantConnected(auth.room, role, socket)) return;
     const participant = findParticipant(auth.room, role);
     socket.join(auth.room.roomId);
     socket.emit('room:state', {
+      inkDelivery: roomStore.capability(),
       role,
       state: role === 'student' || auth.room.initialized ? publicState(auth.room) : null,
       you: publicYou(participant, role),
@@ -862,6 +997,7 @@ io.on('connection', socket => {
     if (room) {
       const role = socket.data.role;
       socket.emit('room:state', {
+        inkDelivery: roomStore.capability(),
         role,
         state: publicState(room),
         you: publicYou(socketParticipant(room, socket), role),
@@ -929,22 +1065,22 @@ io.on('connection', socket => {
   socket.on('board:stroke-end', payload => {
     const room = requireWriter(socket, payload);
     if (!room) return;
-    const nextPayload = persistBoardObject(room, payload, socketParticipant(room, socket));
-    if (!nextPayload) {
-      emitBoardError(socket);
-      return;
-    }
+    let nextPayload;
+    if (!commitRoomMutation(room, draft => {
+      nextPayload = persistBoardObject(draft, payload, socketParticipant(draft, socket));
+      return !!nextPayload;
+    }, socket)) return;
     socket.to(room.roomId).emit('board:stroke-end', nextPayload);
   });
 
   socket.on('board:text-add', payload => {
     const room = requireWriter(socket, payload);
     if (!room) return;
-    const nextPayload = persistBoardObject(room, payload, socketParticipant(room, socket));
-    if (!nextPayload) {
-      emitBoardError(socket);
-      return;
-    }
+    let nextPayload;
+    if (!commitRoomMutation(room, draft => {
+      nextPayload = persistBoardObject(draft, payload, socketParticipant(draft, socket));
+      return !!nextPayload;
+    }, socket)) return;
     socket.to(room.roomId).emit('board:text-add', nextPayload);
   });
 
@@ -956,26 +1092,34 @@ io.on('connection', socket => {
       emitBoardError(socket);
       return;
     }
-    target.page.strokes = [];
-    clearRedoForPage(room, target.page.id);
-    markBoardStateChanged(room);
-    socket.to(room.roomId).emit('board:clear-page', { pageIndex: target.pageIndex, stateVersion: room.stateVersion });
+    if (!commitRoomMutation(room, draft => {
+      const page = draft.pages[target.pageIndex];
+      page.strokes = []; page.pageEpoch = Number(page.pageEpoch || 0) + 1;
+      clearRedoForPage(draft, page.id); markBoardStateChanged(draft);
+    }, socket)) return;
+    io.to(room.roomId).emit('board:clear-page', { pageIndex: target.pageIndex,
+      pageEpoch: room.pages[target.pageIndex].pageEpoch, stateVersion: room.stateVersion });
   });
 
   socket.on('board:page-add', payload => {
     const room = requireStructure(socket, payload);
     if (!room) return;
     const page = safePageFromPayload(payload?.page);
+    if (room.pages.some(existing => existing.id === page.id)) { emitBoardError(socket); return; }
     const pageIndex = insertionIndex(room, payload?.pageIndex);
-    room.pages.splice(pageIndex, 0, page);
-    room.currentPage = pageIndex;
-    markBoardStateChanged(room);
+    if (!commitRoomMutation(room, draft => {
+      draft.pages.splice(pageIndex, 0, page);
+      draft.currentPage = pageIndex; markBoardStateChanged(draft);
+    }, socket)) return;
     socket.to(room.roomId).emit('board:page-add', {
       pageIndex,
       currentPage: room.currentPage,
       page,
       stateVersion: room.stateVersion
     });
+    socket.emit('room:state', { role: socket.data.role, state: publicState(room),
+      you: publicYou(socketParticipant(room, socket), socket.data.role),
+      inkDelivery: roomStore.capability(), ...controlState(room) });
     emitLegacySnapshot(socket, room);
   });
 
@@ -988,28 +1132,26 @@ io.on('connection', socket => {
       return;
     }
     const deletedPageId = target.page.id;
-    const oldCurrentPage = room.currentPage;
-    if (room.pages.length === 1) {
-      room.pages[0] = blankPage();
-      room.currentPage = 0;
-    } else {
-      room.pages.splice(target.pageIndex, 1);
-      if (target.pageIndex < oldCurrentPage) {
-        room.currentPage = oldCurrentPage - 1;
-      } else if (target.pageIndex === oldCurrentPage) {
-        room.currentPage = Math.min(oldCurrentPage, room.pages.length - 1);
+    if (!commitRoomMutation(room, draft => {
+      const oldCurrentPage = draft.currentPage;
+      if (draft.pages.length === 1) {
+        draft.pages[0] = blankPage(); draft.currentPage = 0;
       } else {
-        room.currentPage = Math.min(oldCurrentPage, room.pages.length - 1);
+        draft.pages.splice(target.pageIndex, 1);
+        draft.currentPage = target.pageIndex < oldCurrentPage ? oldCurrentPage - 1
+          : Math.min(oldCurrentPage, draft.pages.length - 1);
       }
-    }
-    clearRedoForPage(room, deletedPageId);
-    markBoardStateChanged(room);
+      clearRedoForPage(draft, deletedPageId); markBoardStateChanged(draft);
+    }, socket)) return;
     socket.to(room.roomId).emit('board:page-delete', {
       pageIndex: target.pageIndex,
       currentPage: room.currentPage,
       page: room.pages[room.currentPage],
       stateVersion: room.stateVersion
     });
+    socket.emit('room:state', { role: socket.data.role, state: publicState(room),
+      you: publicYou(socketParticipant(room, socket), socket.data.role),
+      inkDelivery: roomStore.capability(), ...controlState(room) });
     emitLegacySnapshot(socket, room);
   });
 
@@ -1021,8 +1163,9 @@ io.on('connection', socket => {
       emitBoardError(socket);
       return;
     }
-    room.currentPage = target.pageIndex;
-    markBoardStateChanged(room);
+    if (!commitRoomMutation(room, draft => {
+      draft.currentPage = target.pageIndex; markBoardStateChanged(draft);
+    }, socket)) return;
     socket.to(room.roomId).emit('board:page-switch', { pageIndex: target.pageIndex, stateVersion: room.stateVersion });
   });
 
@@ -1034,11 +1177,12 @@ io.on('connection', socket => {
       emitBoardError(socket);
       return;
     }
-    target.page.bg = normalizeBoardBg(payload?.bg);
-    markBoardStateChanged(room);
+    if (!commitRoomMutation(room, draft => {
+      draft.pages[target.pageIndex].bg = normalizeBoardBg(payload?.bg); markBoardStateChanged(draft);
+    }, socket)) return;
     socket.to(room.roomId).emit('board:bg-change', {
       pageIndex: target.pageIndex,
-      bg: target.page.bg,
+      bg: room.pages[target.pageIndex].bg,
       stateVersion: room.stateVersion
     });
   });
@@ -1054,12 +1198,14 @@ io.on('connection', socket => {
     }
     const strokeIndex = findLastAuthoredStrokeIndex(target.page, participant.id);
     if (strokeIndex < 0) return;
-    const [stroke] = target.page.strokes.splice(strokeIndex, 1);
-    redoStack(room, participant.id).push({ pageId: target.page.id, stroke });
-    markBoardStateChanged(room);
+    if (!commitRoomMutation(room, draft => {
+      const page = draft.pages[target.pageIndex], [stroke] = page.strokes.splice(strokeIndex, 1);
+      page.pageEpoch = Number(page.pageEpoch || 0) + 1;
+      redoStack(draft, participant.id).push({ pageId: page.id, stroke }); markBoardStateChanged(draft);
+    }, socket)) return;
     io.to(room.roomId).emit('board:page-state', {
       pageIndex: target.pageIndex,
-      page: target.page,
+      page: room.pages[target.pageIndex],
       stateVersion: room.stateVersion
     });
     emitLegacySnapshot(socket, room);
@@ -1069,25 +1215,25 @@ io.on('connection', socket => {
     const room = requireWriter(socket, payload);
     if (!room) return;
     const participant = socketParticipant(room, socket);
-    const stack = redoStack(room, participant.id);
     let entry = null;
     let pageIndex = -1;
-    while (stack.length > 0) {
-      const candidate = stack.pop();
-      const candidatePageIndex = room.pages.findIndex(page => page.id === candidate.pageId);
-      if (candidatePageIndex >= 0) {
-        entry = candidate;
-        pageIndex = candidatePageIndex;
-        break;
+    if (!commitRoomMutation(room, draft => {
+      const stack = redoStack(draft, participant.id);
+      while (stack.length > 0) {
+        const candidate = stack.pop();
+        const candidatePageIndex = draft.pages.findIndex(page => page.id === candidate.pageId);
+        if (candidatePageIndex >= 0) {
+          entry = candidate; pageIndex = candidatePageIndex; break;
+        }
       }
-    }
-    if (!entry) return;
-    const page = room.pages[pageIndex];
-    page.strokes.push(entry.stroke);
-    markBoardStateChanged(room);
+      if (!entry) return false;
+      const page = draft.pages[pageIndex];
+      page.strokes.push(entry.stroke); page.pageEpoch = Number(page.pageEpoch || 0) + 1;
+      markBoardStateChanged(draft);
+    }, socket)) return;
     io.to(room.roomId).emit('board:page-state', {
       pageIndex,
-      page,
+      page: room.pages[pageIndex],
       stateVersion: room.stateVersion
     });
     emitLegacySnapshot(socket, room);
@@ -1098,9 +1244,9 @@ io.on('connection', socket => {
     if (!room) return;
     const trainerUrl = normalizeTrainerUrl(payload?.trainerUrl);
     if (!trainerUrl) return;
-    room.trainerUrl = trainerUrl;
-    room.latestTrainerState = null;
-    touchRoom(room);
+    if (!commitRoomMutation(room, draft => {
+      draft.trainerUrl = trainerUrl; draft.latestTrainerState = null; touchRoom(draft);
+    }, socket)) return;
     socket.to(room.roomId).emit('board:trainer-url-change', { trainerUrl });
   });
 
@@ -1109,8 +1255,9 @@ io.on('connection', socket => {
     if (!room) return;
     const latestTrainerState = normalizeTrainerState(room, payload);
     if (!latestTrainerState) return;
-    room.latestTrainerState = latestTrainerState;
-    touchRoom(room);
+    if (!commitRoomMutation(room, draft => {
+      draft.latestTrainerState = latestTrainerState; touchRoom(draft);
+    }, socket)) return;
     socket.to(room.roomId).emit('board:trainer-state-change', latestTrainerState);
   });
 
@@ -1118,8 +1265,10 @@ io.on('connection', socket => {
     const room = requireStructure(socket, payload);
     if (!room) return;
     if (room.initialized && Number(socket.data.proto || 1) >= 2) return;
-    if (applySnapshot(room, payload?.state)) {
-      markBoardStateChanged(room);
+    if (commitRoomMutation(room, draft => {
+      if (!applySnapshot(draft, payload?.state)) return false;
+      markBoardStateChanged(draft);
+    }, socket)) {
       socket.to(room.roomId).emit('board:snapshot', { state: publicState(room) });
     }
   });

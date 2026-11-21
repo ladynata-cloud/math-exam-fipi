@@ -51,6 +51,8 @@ function fixture(role = 'teacher') {
     controlBadge: {}, controlToggle: {}, releaseControl: {},
     $: id => elements[id], buttons() {}, setMirrorStatus() {}, handleTrainerReady() {},
     boardMessage: value => notices.push(value),
+    // This trainer-state harness has no active handwriting/text editor.
+    finishText() {}, cancelGesture() {},
     addEventListener: (name, fn) => { assert.equal(name, 'message'); listeners.add(fn); },
     removeEventListener: (name, fn) => { assert.equal(name, 'message'); listeners.delete(fn); },
     setTimeout: (fn, ms) => { const id = ++timerId; timers.set(id, { fn, ms }); return id; },
@@ -61,6 +63,7 @@ function fixture(role = 'teacher') {
   vm.runInContext('window=globalThis', context);
   vm.runInContext(read('trainers/board-picker.js'), context);
   vm.runInContext(read('trainers/board-bridge.js'), context);
+  vm.runInContext(read('trainers/board-delivery-ui.js'), context);
   context.normalizeTrainer = context.BoardPicker.normalize;
   vm.runInContext([
     part('const TRAINER_PATH_LIMITS=', 'const trainerRegistry='),

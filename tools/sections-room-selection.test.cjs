@@ -54,6 +54,8 @@ function course() {
 function parent(child, boardOrigin = origin) {
   const context = vm.createContext({window: {}, location: new URL(boardOrigin + '/trainers/trainer-board.html'), URL, frame: {contentWindow: child}});
   vm.runInContext(read('trainers/board-picker.js'), context);
+  // Include the production delivery dependency of createRoom; keep its guards real.
+  vm.runInContext(read('trainers/board-delivery-ui.js'), context);
   context.normalizeTrainer = context.window.BoardPicker.normalize;
   vm.runInContext([
     productionPart('const TRAINER_PATH_LIMITS=', 'const trainerRegistry='),

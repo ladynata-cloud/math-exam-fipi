@@ -25,6 +25,7 @@ function fixture(id) {
   });
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'trainers/board-picker.js'), 'utf8'),p);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'trainers/board-bridge.js'), 'utf8'),p);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'trainers/board-delivery-ui.js'), 'utf8'),p);
   p.MathExamBoard=p.window.MathExamBoard;p.normalizeTrainer=p.window.BoardPicker.normalize;
   vm.runInContext([
     part('const TRAINER_PATH_LIMITS=', 'const trainerRegistry='),
