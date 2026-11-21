@@ -49,7 +49,7 @@ def make(number, *, kind, pages, title, statement, result, hint, stages, picture
     source=dict(bookId=BOOK,collection='theory' if kind=='theory' else 'main',chapter='X',
                 printedPages=pages,pdfPages=[n+1 for n in pages])
     source['point' if kind=='theory' else 'exercise']=str(number)
-    part_n='абвгд'.index(part)+1 if part else 1
+    part_n='абвгде'.index(part)+1 if part else 1
     if part:source['subpart']=part
     prefix='theory' if kind=='theory' else 'main'
     steps=[]

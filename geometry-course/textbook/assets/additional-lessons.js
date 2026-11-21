@@ -39,7 +39,8 @@
       ['/geometry-course/textbook/data/vector-conclusions.json', '№937–940'],
       ['/geometry-course/textbook/data/vector-sums.json', '№941–946, теория 87–90'],
       ['/geometry-course/textbook/data/vector-sum-problems.json', '№947–952'],
-      ['/geometry-course/textbook/data/vector-identities.json', '№953–962']
+      ['/geometry-course/textbook/data/vector-identities.json', '№953–962'],
+      ['/geometry-course/textbook/data/vector-scaling.json', 'пункты 91–92 и №963–966']
   ];
 
   async function forCourse(base) {
