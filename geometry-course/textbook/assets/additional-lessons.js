@@ -106,7 +106,8 @@
       ['/geometry-course/textbook/data/disks-and-annuli.json', '№1209–1213'],
       ['/geometry-course/textbook/data/cut-disks-and-semicircles.json', '№1214–1216'],
       ['/geometry-course/textbook/data/sector-areas.json', 'п. 121, №1217–1220'],
-      ['/geometry-course/textbook/data/additional-regular-perimeters.json', '№1221–1224']
+      ['/geometry-course/textbook/data/additional-regular-perimeters.json', '№1221–1224'],
+      ['/geometry-course/textbook/data/regular-polygon-diagonals.json', '№1225–1228']
   ];
 
   async function forCourse(base) {
