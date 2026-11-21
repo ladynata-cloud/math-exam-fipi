@@ -406,6 +406,20 @@ async function run(browser, origin, backend, failures) {
   await same(studentFrame,teacherFrame,'letter study keeps source answer and model after reload');
   await narrow(student,studentFrame,'frequencies-six-text-parts');await ownership(teacher,student,false);
 
+  phase = 'reading zero and seven in place value';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('.v5-unit-card[href="#v5-unit/2"]').click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-14"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№1.14'}).waitFor();
+  await teacherFrame.locator('#answer').fill('27');await teacherFrame.locator('#answer-form button').click();
+  const readFormat=await same(teacherFrame,studentFrame,'spoken form requested without an error');assert.equal(readFormat.scene.attempt,0);
+  await teacherFrame.locator('#answer').fill('двадцать семь');await teacherFrame.locator('#answer-form button').click();
+  await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'spoken form accepted then digit places');
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption('8');await studentFrame.locator('[data-v5-param=place]').selectOption('5');
+  await studentFrame.locator('[data-v5-prediction]').fill('300000');await studentFrame.locator('[data-v5-predict] button').click();
+  const digits=await same(studentFrame,teacherFrame,'three hundred thousands in printed 300007');assert.equal(digits.scene.model.row,8);assert.equal(digits.scene.model.place,5);assert(digits.scene.model.seen);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(studentFrame,teacherFrame,'printed numeral and place value restored');
+  await narrow(student,studentFrame,'reading-and-place-value');await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();

@@ -170,7 +170,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:13},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:16},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -345,8 +345,44 @@ function pointEndRegression(){
   }
   equal(f.errors,[]);f.close();
 }
+function printedDigitsRegression(){
+  const f=boot(),D=f.w.Vilenkin5PrintedDigits,ids=[14,15,16].map(n=>'v5f-printed-1-'+n);
+  const [reading,compose,dictate]=ids.map(id=>f.M.generate(id,0));
+  equal(plain(reading.data.values),[27,80,279,701,718,3781,7023,70907,300007]);equal(reading.steps.length,27);
+  equal(plain(compose.data.values),[507,960,2341,5632,2870,8007]);equal(compose.steps.length,12);
+  equal(plain(dictate.data.values),[78,5412,10005023,10002064000,117000002030]);
+  equal(plain(dictate.table.rows.map(row=>row[1])),['семьдесят восемь','пять тысяч четыреста двенадцать','десять миллионов пять тысяч двадцать три','десять миллиардов два миллиона шестьдесят четыре тысячи','сто семнадцать миллиардов две тысячи тридцать']);
+  const norm=s=>s.replace(/ё/g,'е');
+  const groups=new Map([['тысяча',1000],['тысячи',1000],['тысяч',1000],['миллион',1e6],['миллиона',1e6],['миллионов',1e6],['миллиард',1e9],['миллиарда',1e9],['миллиардов',1e9]]);
+  const small=new Map([['ноль',0],['один',1],['одна',1],['два',2],['две',2],['три',3],['четыре',4],['пять',5],['шесть',6],['семь',7],['восемь',8],['девять',9],['десять',10],['одиннадцать',11],['двенадцать',12],['тринадцать',13],['четырнадцать',14],['пятнадцать',15],['шестнадцать',16],['семнадцать',17],['восемнадцать',18],['девятнадцать',19],['двадцать',20],['тридцать',30],['сорок',40],['пятьдесят',50],['шестьдесят',60],['семьдесят',70],['восемьдесят',80],['девяносто',90],['сто',100],['двести',200],['триста',300],['четыреста',400],['пятьсот',500],['шестьсот',600],['семьсот',700],['восемьсот',800],['девятьсот',900]]);
+  function fromWords(s){let base=0,total=0;for(const word of norm(s).split(' ')){if(small.has(word))base+=small.get(word);else {ok(groups.has(word));total+=(base||1)*groups.get(word);base=0;}}return total+base;}
+  [0,1,11,111,1000,2000,11000,12000,21000,22000,111000,112000,1e6,1e9,117000002030,999999999999].forEach(n=>equal(fromWords(D.words(n)),n));
+  for(const n of ['0','117 000 002 030','70 907','70 907','8007'])ok(D.natural(n)!==null);
+  for(const n of ['00','1e9','9,2','12 34',' 1 22','30 0000','+42'])equal(D.natural(n),null);
+  ok(f.M.accepts('Тысяча один.',{v6Full:true,answerFormat:'v5-reading',answer:'одна тысяча один'}));ok(!f.M.accepts('два тысячи',{v6Full:true,answerFormat:'v5-reading',answer:'две тысячи'}));
+  for(let seed=0;seed<100;seed++){
+    const three=ids.map(id=>f.M.generate(id,seed));
+    for(const task of three)for(const n of task.data.values)equal(fromWords(D.words(n)),n);
+    three[0].data.values.forEach((n,i)=>{for(const [offset,digit] of [[1,7],[2,0]]){
+      const ranks=[];for(let pos=0;pos<String(n).length;pos++)if(Math.floor(n/(10**pos))%10===digit)ranks.push(pos+1);
+      equal(plain(three[0].steps[3*i+offset].answer),ranks.length?ranks:[0]);
+    }});
+  }
+  f.route('#v5-unit/2');ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));
+  f.route('#lesson/'+ids[0]);f.submit('27');equal(f.snapshot().scene.attempt,0);f.submit('двадцать ноль семь');ok(f.snapshot().scene.message.includes('нулевая')||f.snapshot().scene.message.includes('Нулевая'));
+  for(const row of reading.steps){f.submit(value(f.M,row));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
+  f.submit(reading.answer);ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[1]);for(const row of compose.steps){
+    const ans=row.answerFormat==='v5-natural'?String(row.answer).replace(/\B(?=(\d{3})+(?!\d))/g,' '):row.answer;
+    f.submit(ans);ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');
+  }
+  f.submit('8 007');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[2]);f.submit('7 8');equal(f.snapshot().scene.attempt,0);
+  for(const row of dictate.steps){f.submit(String(row.answer).replace(/\B(?=(\d{3})+(?!\d))/g,' '));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
+  f.submit('117 000 002 030');ok(f.snapshot().scene.correct);equal(f.errors,[]);f.close();
+}
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
