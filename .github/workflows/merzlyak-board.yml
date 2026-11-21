@@ -42,6 +42,7 @@ jobs:
         run: |
           node tools/merzlyak7-2015.test.cjs
           node tools/merzlyak9-2014.test.cjs
+          node tools/tyurin-statistics.board.browser.cjs --merzlyak7-2015 --printed-identity --boundary
           node tools/tyurin-statistics.board.browser.cjs --merzlyak7-2015 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --merzlyak9-2014
           node tools/makarychev7-2014.test.cjs

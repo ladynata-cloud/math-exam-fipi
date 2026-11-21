@@ -116,5 +116,5 @@
   const prevNext=course.nextId,prevGrade=course.grade,prevSource=course.source;
   course.nextId=l=>l.book===93?ids[ids.indexOf(l.id)+1]:prevNext(l);course.grade=b=>b===93?'7 класс':prevGrade(b);
   course.source=(b,p)=>b===93?'https://pdf.my-uchebnik.ru/pdf/algebra/00000071.pdf#page='+(p+1):prevSource(b,p);
-  window.MerzlyakExpressions2015={text,value,evaluate,literal};
+  window.MerzlyakExpressions2015={text,value,evaluate,literal,register,q};
 })();
