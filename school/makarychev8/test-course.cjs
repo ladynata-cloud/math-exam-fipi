@@ -2,6 +2,17 @@
 const fs=require('node:fs'),assert=require('node:assert/strict'),vm=require('node:vm');
 const C=require('./check.js'),M=require('../peterson6/math.js');
 const w={};vm.runInNewContext(fs.readFileSync(__dirname+'/data.js','utf8'),{window:w});const D=w.MakarychevCourse;
+// A returning browser must not combine new answer kinds with the cached old checker.
+const html=fs.readFileSync(__dirname+'/index.html','utf8');
+const assets=[...html.matchAll(/(?:src|href)="([^"]+)"/g)].map(m=>m[1]);
+const runtimeFiles=['style.css','../peterson6/math.js','task-graphs.js','check.js','models.js','data.js','app.js'];
+const versions=runtimeFiles.map(file=>{
+ const refs=assets.filter(value=>value.split('?')[0]===file);assert.equal(refs.length,1,file+' has one runtime reference');
+ const version=new URL(refs[0],'https://mathexam.test/school/makarychev8/').searchParams.get('v');
+ assert(version&&/^[a-zA-Z0-9-]+$/.test(version),file+' requires a release cache version');
+ assert(fs.existsSync(__dirname+'/'+file),file+' exists');return version;
+});
+assert.equal(new Set(versions).size,1,'The coupled course assets must use one release cache version');
 assert.equal(D.lessons.length,51);assert.equal(new Set(D.lessons.map(l=>l.id)).size,51);
 assert.deepEqual(Array.from(D.lessons,l=>l.order),Array.from({length:51},(_,i)=>i+1));
 const ids=new Set(),skills=new Set(M.skills.map(s=>s.id));let tasks=0,steps=0,source=0;

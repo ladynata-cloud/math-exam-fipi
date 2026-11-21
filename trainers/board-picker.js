@@ -91,6 +91,10 @@ function normalize(value){
  if(u.origin===location.origin&&rawPath===u.pathname&&['/stereo-course/literacy/','/stereo-course/literacy/index.html'].includes(u.pathname)){
   return '/trainers/stereo-literacy-atanasyan.html'+u.hash;
  }
+ if(u.origin===location.origin && rawPath===u.pathname && ['/school/makarychev8/','/school/makarychev8/index.html'].includes(u.pathname) &&
+   (!u.hash || /^#(?:home|progress|skills|chapter\/[1-6]|lesson\/p(?:0[1-9]|[1-4][0-9]|5[01])(?:\/\d{1,3})?|practice\/[a-z-]{1,40}\/[123])$/.test(u.hash))){
+  return '/trainers/makarychev8.html'+u.search+u.hash;
+ }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson5/','/school/peterson5/index.html'].includes(u.pathname)&&(!u.hash||/^#(?:home|topics|skills|progress|topic\/p(?:0[1-9]|[1-3]\d|4[0-3])\/(?:discover|check|practice(?:\/[01])?)|lesson\/p(?:0[1-9]|[1-3]\d|4[0-3])(?:\/\d{1,2})?|practice\/[a-z-]+\/[123])$/.test(u.hash)))return '/trainers/peterson5.html'+u.search+(u.hash||'#home');
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson6/','/school/peterson6/index.html'].includes(u.pathname)&&petersonRoute(u.hash)){
   return '/trainers/peterson6.html'+u.search+u.hash;
