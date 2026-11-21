@@ -36,6 +36,7 @@ async function solveScene(page,scene,keyboard) {
     }
   }
   assert.equal(await page.locator('.ws-instruction').innerText(),'Теперь нажми «Проверить раскладку».');
+  assert(await action(page,'check-layout').evaluate(el=>el.classList.contains('primary')));
   await action(page,'check-layout').press('Enter');
   await stage(page,'answer');
   await page.locator('#workshop-play input[name="quantity"]').fill(String(expected(scene)));
@@ -76,6 +77,7 @@ async function journey(browser,width) {
     ),'The task precedes the map');
     const instruction = page.locator('.ws-instruction');
     assert((await instruction.innerText()).includes('«Для Ани»'));
+    assert.equal(await action(page,'check-layout').evaluate(el=>el.classList.contains('primary')),false);
     assert(await put(page,0).evaluate(el => el.classList.contains('ws-first-move')));
     await put(page,1).press('Enter');
     assert.equal(await put(page,1).locator('.ws-token').count(),1,'The suggested first move is optional');

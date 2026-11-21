@@ -299,7 +299,8 @@ html.arz-world-ready .arz-adventure .adv-postcard-icon.adv-scene { font-size: 0;
 .arz-adventure:has(#workshop:not([hidden])) .intro .adv-subtitle { display: none; }
 .arz-adventure:has(#workshop:not([hidden])) .ws-intro { align-items: center; }
 .arz-adventure #workshop-play .ws-instruction { font-size: 1rem; font-weight: 650; color: #245c52; }
-.arz-adventure .ws-target:has(.ws-first-move) { border-color: #388677; }
+.arz-adventure .ws-target:has(.ws-first-move) { border-color: #388677; background: #dfefe8; }
+.arz-adventure #workshop-play .ws-first-move { background: #edf8f2; border: 2px solid #368272; }
 .arz-adventure #workshop-play .ws-first-move::after { background: #176d68; color: white; }
 .arz-adventure #workshop-play .ws-place { margin-top: 0; }
 .arz-adventure #workshop-play .ws-return:disabled { display: none; }

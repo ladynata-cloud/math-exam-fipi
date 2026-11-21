@@ -469,6 +469,7 @@
       else if (scene.kind === 'share') instruction.textContent = 'Продолжай раздавать поровну.';
       else instruction.textContent = 'Нажимай «+», чтобы класть по одному.';
       placesUI[0].add.classList.toggle('ws-first-move', firstMove);
+      check.classList.toggle('primary', left === 0);
       const caption = scene.kind === 'count' ? (left ? 'Предметы на столе' : 'Все предметы разложены') : 'На столе осталось ' + left;
       stock.replaceChildren(element('span', 'ws-caption', caption), icons(scene.item, left));
       placesUI.forEach(({add, take}, i) => {
