@@ -96,6 +96,8 @@ on:
       - 'tools/geometry-textbook/*regular_polygon_angles*'
       - 'tools/geometry-textbook/*regular_polygon_centers*'
       - 'tools/geometry-textbook/*regular_polygon_tables*'
+      - 'tools/geometry-textbook/*polygon_circle_applications*'
+      - 'geometry-course/textbook/data/polygon-circle-applications.json'
       - 'geometry-course/textbook/data/regular-polygon-tables.json'
       - 'geometry-course/textbook/data/regular-polygon-centers.json'
       - 'geometry-course/textbook/data/regular-polygon-angles.json'
@@ -172,6 +174,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/polygon_circle_applications.py --check && python3 tools/geometry-textbook/check_polygon_circle_applications.py
       - run: python3 tools/geometry-textbook/regular_polygon_tables.py --check && python3 tools/geometry-textbook/check_regular_polygon_tables.py
       - run: python3 tools/geometry-textbook/regular_polygon_centers.py --check && python3 tools/geometry-textbook/check_regular_polygon_centers.py
       - run: python3 tools/geometry-textbook/regular_polygon_angles.py --check && python3 tools/geometry-textbook/check_regular_polygon_angles.py

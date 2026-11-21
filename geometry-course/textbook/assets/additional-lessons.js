@@ -91,7 +91,8 @@
       ['/geometry-course/textbook/data/regular-polygon-definition.json', 'п. 113 и №1167–1169'],
       ['/geometry-course/textbook/data/regular-polygon-angles.json', 'п. 114 и №1170–1173'],
       ['/geometry-course/textbook/data/regular-polygon-centers.json', 'п. 115 и №1174–1175'],
-      ['/geometry-course/textbook/data/regular-polygon-tables.json', 'п. 116 и №1176–1177']
+      ['/geometry-course/textbook/data/regular-polygon-tables.json', 'п. 116 и №1176–1177'],
+      ['/geometry-course/textbook/data/polygon-circle-applications.json', 'п. 117 и №1178–1182']
   ];
 
   async function forCourse(base) {
