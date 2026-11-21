@@ -291,3 +291,34 @@ html.arz-world-ready .arz-adventure .adv-postcard-icon.adv-scene { font-size: 0;
   .arz-adventure .ws-route-dot[data-state="done"], .arz-adventure .ws-route-dot[data-state="current"] { background: Highlight; }
   .arz-adventure .adv-scene, .arz-adventure .adv-postcard-icon, .arz-adventure .adv-postcard-art, .arz-adventure .ws-postcard-icon { forced-color-adjust: none; }
 }
+
+/* Keep the activity first in both reading and tab order. The map opens on request. */
+.arz-adventure:has(#workshop:not([hidden])) main { max-width: 56rem; }
+.arz-adventure:has(#workshop:not([hidden])) .workshop { grid-template-columns: minmax(0, 1fr); }
+.arz-adventure:has(#workshop:not([hidden])) .intro .adv-eyebrow,
+.arz-adventure:has(#workshop:not([hidden])) .intro .adv-subtitle { display: none; }
+.arz-adventure:has(#workshop:not([hidden])) .ws-intro { align-items: center; }
+.arz-adventure #workshop-play .ws-instruction { font-size: 1rem; font-weight: 650; color: #245c52; }
+.arz-adventure .ws-target:has(.ws-first-move) { border-color: #388677; background: #dfefe8; }
+.arz-adventure #workshop-play .ws-first-move { background: #edf8f2; border: 2px solid #368272; }
+.arz-adventure #workshop-play .ws-first-move::after { background: #176d68; color: white; }
+.arz-adventure #workshop-play .ws-place { margin-top: 0; }
+.arz-adventure #workshop-play .ws-return:disabled { display: none; }
+@media (max-width: 480px) {
+  .arz-adventure:has(#workshop:not([hidden])) .adv-heading { display: flex; align-items: center; }
+  .arz-adventure #workshop-play[data-kind="share"] .ws-targets:has(> :nth-child(3):last-child) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .arz-adventure #workshop-play[data-kind="share"] .ws-place {
+    display: flex; flex-direction: column; align-items: center; gap: .25rem;
+  }
+  .arz-adventure #workshop-play[data-kind="share"] .ws-place .ws-name {
+    padding: 0; text-align: center; line-height: 1.25;
+  }
+  .arz-adventure #workshop-play[data-kind="share"] .ws-place .ws-tokens:empty { display: none; }
+  .arz-adventure #workshop-play[data-kind="share"] .ws-place::after { position: static; }
+  .arz-adventure #workshop-play[data-kind="share"] .ws-place .ws-tokens {
+    order: 1; align-self: stretch; justify-content: center;
+  }
+  .arz-adventure:has(#workshop:not([hidden])) .adv-heading > .adv-mascot { position: static; }
+}
