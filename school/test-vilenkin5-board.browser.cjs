@@ -308,6 +308,32 @@ async function run(browser, origin, backend, failures) {
   assert.match(await teacherFrame.locator(forecast + ' [role=status]').innerText(), /Прогноз подтвердился/);
   await ownership(teacher, student, false);
 
+  phase = 'numbered reading survey: table, source rows, handoff and reload';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('.v5-hero').waitFor();
+  await same(teacherFrame,studentFrame,'return to course before selecting the printed number');
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-2"]').click();
+  await teacherFrame.waitForFunction(()=>window.__vilenkin5Board.getState().scene?.id==='v5f-printed-1-2');
+  await studentFrame.locator('h1').filter({hasText:'№1.2'}).waitFor();
+  await same(teacherFrame,studentFrame,'source exercise 1.2 opens for both participants');
+  await teacherFrame.locator('#answer').fill('4;4');
+  await teacherFrame.locator('#answer-form button').click();
+  const frequencyError=await same(teacherFrame,studentFrame,'frequency versus books');
+  assert.equal(frequencyError.scene.firstWrong.value,'4;4');
+  assert.match(await studentFrame.locator('.feedback').innerText(),/умножь частоту/);
+  await solve(teacherFrame);await teacherFrame.locator('[data-cmd=next]').click();
+  assert.equal((await same(teacherFrame,studentFrame,'first verified table row')).scene.step,1);
+  assert.match(await studentFrame.locator('#task-panel table').nth(1).locator('tbody tr').first().innerText(),/3\s+4\s+12/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=group]').selectOption({value:'5'});
+  await studentFrame.locator('#answer').fill('7;');
+  assert.equal((await same(studentFrame,teacherFrame,'student marks all eights')).scene.model.group,5);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const printedReload=await same(studentFrame,teacherFrame,'source exercise survives teacher reload');
+  assert.equal(printedReload.scene.savedInput,'7;');assert.equal(printedReload.scene.answers[0],'4;12');
+  await narrow(teacher,teacherFrame,'printed-survey');
+  await ownership(teacher,student,false);
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');

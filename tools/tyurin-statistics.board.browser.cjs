@@ -48,8 +48,13 @@ async function healthy(url, child, logs) {
   throw new Error('Local server not ready: ' + logs());
 }
 
-const catalogue=process.argv.includes('--makarychev9-2017')?{
-  directory:'makarychev9-2017',entries:[[50,36,36]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
+const printedProperties=process.argv.includes('--printed-identity');
+const catalogue=process.argv.includes('--makarychev7-2014') ? {
+  directory:'makarychev7-2014',entries:[[95,46,7]],search:'makarychev7-2014',match:'выражения и статистика',lesson:printedProperties?'95-5':'95-10',chart:printedProperties?'svg[aria-label*="Верхняя стрелка"]':'svg[aria-label*="Средние места"]',storage:'math:makarychev7-2014:v1:'
+}: process.argv.includes('--makarychev9-2017-supplement')?{
+  directory:'makarychev9-2017',entries:[[50,36,68]],search:'makarychev9-2017',match:'36 пунктов',lesson:process.argv.includes('--radical-sum')?'50-219':process.argv.includes('--parameter')?'50-216':process.argv.includes('--graph')?'50-213':'50-202',onlySelected:true,chart:process.argv.includes('--radical-sum')?'svg[aria-label*="Корни вспомогательного"]':process.argv.includes('--parameter')?'svg[aria-label*="Парабола при найденном"]':process.argv.includes('--graph')?'svg[aria-label*="Обе ветви"]':'svg[aria-label*="Сечение"]',storage:'math:makarychev9-2017:v1:'
+}:process.argv.includes('--makarychev9-2017')?{
+  directory:'makarychev9-2017',entries:[[50,36,68]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
 }:process.argv.includes('--merzlyak9-2014')?{
   directory:'merzlyak9-2014',entries:[[55,26,26]],search:'merzlyak9-2014',match:'все параграфы',lesson:'55-13',chart:'svg[aria-label*="штриховая"]',storage:'math:merzlyak9-2014:v1:'
 }:{
@@ -64,7 +69,9 @@ async function run(browser, origin, serverOrigin) {
       assert.equal(await student.locator('#main .skill-row').count(),count);
       const links=await student.locator('#main a[href*="'+catalogue.directory+'/index.html"]').evaluateAll(links=>links.map(el=>el.href));
       assert.equal(links.length,direct);
-      for(const url of links){
+      const individual=catalogue.onlySelected?links.filter(url=>new URL(url).hash==='#lesson/'+catalogue.lesson):links;
+      if(catalogue.onlySelected)assert.equal(individual.length,1);
+      for(const url of individual){
         await student.goto(url);await student.locator('#model').waitFor();
         assert(await student.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),url);
         const id=new URL(url).hash.slice(8);
@@ -74,7 +81,7 @@ async function run(browser, origin, serverOrigin) {
       }
     }
     phase='joint room';
-    await teacher.goto(origin+'/trainers/trainer-board.html?server='+encodeURIComponent(serverOrigin));
+    await teacher.goto(origin+'/trainers/trainer-board.html?server='+encodeURIComponent(serverOrigin),{waitUntil:'domcontentloaded'});
     await teacher.locator('#openShare').click();await teacher.locator('#createRoom').click();
     try {
       await teacher.waitForFunction(()=>document.querySelector('#studentLink')?.value.includes('role=student'));
@@ -82,7 +89,7 @@ async function run(browser, origin, serverOrigin) {
       const status=await teacher.locator('#shareStatus').innerText();
       throw new Error('Unable to open the test room: '+status,{cause:error});
     }
-    const invite=await teacher.locator('#studentLink').inputValue();await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(invite);
+    const invite=await teacher.locator('#studentLink').inputValue();await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(invite,{waitUntil:'domcontentloaded'});
     await teacher.locator('#chooseTrainer').click();await teacher.locator('#pickerSearch').fill(catalogue.search);
     await teacher.locator('#pickerResults .picker-item').filter({hasText:catalogue.match}).first().click();
     const connected=p=>p.waitForFunction(()=>document.querySelector('#mirrorStatus')?.dataset.mirrorStatus==='connected');
@@ -92,18 +99,30 @@ async function run(browser, origin, serverOrigin) {
     await t.locator('#lesson').selectOption(catalogue.lesson);await value(student,'lesson',catalogue.lesson);
     await t.locator('#model').focus();await t.locator('#model').press('ArrowRight');await value(student,'model','1');
     assert.equal(await s.locator(catalogue.chart).count(),1);
+    if(printedProperties){
+      const shown='[data-action="printed-guide"][aria-expanded="true"]';
+      const folded='[data-action="printed-guide"][aria-expanded="false"]';
+      await s.locator(folded).waitFor();
+      await t.locator(folded).click();
+      await s.locator(shown).waitFor();
+      await student.reload({waitUntil:'domcontentloaded'});
+      await connected(student);
+      await s.locator(shown).waitFor();
+      await t.locator(shown).click();
+      await s.locator(folded).waitFor();
+    }
     await t.locator('[data-action=practice]').click();await t.locator('#answer').fill('1234');await value(student,'answer','1234');
     await t.locator('#work form button').click();await s.locator('#feedback').filter({hasText:'Проверь ещё раз'}).waitFor();
     await t.locator('[data-action=hint]').click();await s.locator('#work ol li').first().waitFor();
     await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();
     await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
     await s.locator('[data-action=hint]').click();await t.locator('#work ol li').nth(1).waitFor();
-    await teacher.reload();
+    await teacher.reload({waitUntil:'domcontentloaded'});
     await connected(teacher);
     await value(teacher,'answer','1234');
     await t.locator('#work ol li').nth(1).waitFor();
     await s.locator('#answer').fill('4321');await value(teacher,'answer','4321');
-    await student.reload();
+    await student.reload({waitUntil:'domcontentloaded'});
     await connected(student);
     await value(student,'answer','4321');
     await s.locator('#work ol li').nth(1).waitFor();
@@ -137,5 +156,5 @@ async function run(browser, origin, serverOrigin) {
   for(const key of Object.keys(env))if(/^(LEARNING_|PROGRESS_|GROUP_LESSON_)/.test(key))delete env[key];
   child=spawn(process.execPath,['index.js'],{cwd:join(ROOT,'board-server'),env,stdio:['ignore','ignore','pipe']});child.stderr.on('data',data=>{logs=(logs+String(data)).slice(-4000);});await healthy(serverOrigin+'/health',child,()=>logs);
   browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,headless:true,args:['--no-sandbox'],timeout:20000});
-  await Promise.race([run(browser,origin,serverOrigin),new Promise((_,reject)=>{watchdog=setTimeout(()=>reject(Error('Gate timeout '+phase)),240000);})]);
+  await Promise.race([(process.argv.includes('--alimov10-11')?require('./alimov-workshop.board.cjs'):run)(browser,origin,serverOrigin),new Promise((_,reject)=>{watchdog=setTimeout(()=>reject(Error('Gate timeout '+phase)),240000);})]);
 }finally{clearTimeout(watchdog);await browser?.close();if(child&&child.exitCode===null)child.kill('SIGTERM');await new Promise(done=>server.close(done));}})().catch(error=>{console.error('TYURIN_BOARD_FAILED at '+phase+'\n'+(error.stack||error));process.exitCode=1;});

@@ -85,6 +85,7 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .help figure li + li { margin-top: .4rem; }
 .help figure meter { display: block; width: min(100%, 14rem); }
 .pm-visual .pm-chart.pcm-segment { min-width: 0; }
+.pm-task-figure .pm-chart.pcm-ratio-triangle, .pm-visual .pm-chart.pcm-ratio-triangle { min-width: 0; }
 
 </style>
   <style data-inline-source="/trainers/peterson-assistant.css">
@@ -807,7 +808,57 @@ function constructionFigure(kind, value) {
  }
  return diagram;
 }
+const triangleMeasurements = [[3,4,5], [5,12,13], [8,15,17]];
+function trigConfig(study) {
+ const controls = [c('Острый угол', [[0,'Угол A'], [1,'Угол B']])];
+ const initial = [0];
+ if (study !== 'named') {
+  controls.push(c('Прямоугольный треугольник', [[0,'3 и 4 · рисунок'],[1,'5 и 12 · пример'],[2,'8 и 15 · пример']]));
+  initial.push(study === 'general' ? 1 : 0);
+ }
+ controls.push(c('Числитель синуса выбранного угла', [[0,'Сначала выберу сторону'],[1,'AC'],[2,'BC'],[3,'AB']]));
+ initial.push(0);
+ return {title:'Стороны относительно угла',controls,initial};
+}
+function trigFigure(measurable, selectedAngle, sample=0, showRoles=false) {
+ const [vertical,horizontal] = measurable ? triangleMeasurements[sample] : [4,5];
+ const unit = 242 / horizontal;
+ const xA=44, xC=286, yC=210, yB=yC-unit*vertical;
+ const picture=svg('svg',{
+  viewBox:'0 0 352 282', role:'img',class:'pm-chart pcm-ratio-triangle',
+  'aria-label': 'Треугольник ABC: A слева внизу, C справа внизу, B прямо над C. Прямой угол C.'+
+   (selectedAngle==null?'':' Выбран угол '+(selectedAngle===0?'A.':'B.'))+
+   (measurable?' Под треугольником показана одна единица длины.':''),
+ });
+ const side = (name,x1,y1,x2,y2,role) => {
+  const colors={opposite:'#a54f1a',adjacent:'#0a6950',hypotenuse:'#354b71'};
+  const attributes={'data-side':name,stroke:showRoles?colors[role]:'#214b3d','stroke-width':3.5};
+  if (showRoles) attributes['data-role']=role;
+  ln(picture,x1,y1,x2,y2,attributes);
+ };
+ side('AC',xA,yC,xC,yC,selectedAngle===1?'opposite':'adjacent');
+ side('BC',xC,yB,xC,yC,selectedAngle===1?'adjacent':'opposite');
+ side('AB',xA,yC,xC,yB,'hypotenuse');
+ picture.append(svg('polyline',{points:[[xC-13,yC],[xC-13,yC-13],[xC,yC-13]].map(p=>p.join(',')).join(' '),fill:'none',stroke:'#234436','stroke-width':2}));
+ for (const [x,y,name] of [[xA-12,yC+4,'A'],[xC+16,yB+7,'B'],[xC+16,yC+8,'C']]) txt(picture,x,y,name,{'font-size':23});
+ if (selectedAngle!=null) {
+  const angle=Math.atan2(unit*vertical,xC-xA);
+  const radius=31, atA=selectedAngle===0, centerX=atA?xA:xC,centerY=atA?yC:yB;
+  const start=atA?-angle:Math.PI/2;
+  const end=atA?0:Math.PI-angle;
+  const at=r=>[centerX+radius*Math.cos(r),centerY+radius*Math.sin(r)].join(' ');
+  picture.append(svg('path',{d:'M '+at(start)+' A '+radius+' '+radius+' 0 0 1 '+at(end),fill:'none',stroke:'#51345d','stroke-width':3,'data-angle':atA?'A':'B'}));
+ }
+ if (measurable) {
+  const y=239;
+  ln(picture,xA,y,xA+unit,y,{stroke:'#152d26','stroke-width':2.5,'data-ruler':'1'});
+  ln(picture,xA,y-5,xA,y+5);ln(picture,xA+unit,y-5,xA+unit,y+5);
+  txt(picture,xA,y+26,'1 деление',{'font-size':19,'text-anchor':'start'});
+ }
+ return picture;
+}
 function configFor(lesson,task){
+ if (lesson?.id==='p15' && ['named','measured','general'].includes(task?.trigStudy)) return trigConfig(task.trigStudy);
  if (lesson?.id === 'p15' && Object.hasOwn(ratioConstructions,task?.ratioConstruction)) return constructionConfig(task.ratioConstruction);
  const spec=lesson?.id==='p15'&&Object.hasOwn(segmentRatios,task?.segmentRatio)&&segmentRatios[task.segmentRatio];
  if(!spec)return configs[lesson?.id];
@@ -848,18 +899,45 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if (n===15 && Object.hasOwn(ratioConstructions,task.ratioConstruction)) {
+ if (n===15 && task.trigStudy) {
+  const alpha=a===0?'A':'B', opposite=a===0?'BC':'AC', adjacent=a===0?'AC':'BC';
+  const measurable=task.trigStudy!=='named', sample=measurable?b:0;
+  const chosen=['','AC','BC','AB'][state.values[measurable?2:1]];
+  const correct=chosen===opposite;
+  const [vertical,horizontal,hypotenuse]=triangleMeasurements[sample];
+  const across=a===0?vertical:horizontal, along=a===0?horizontal:vertical;
+  show(trigFigure(measurable,a,sample,correct));
+  if (measurable) say('В делениях шкалы BC = '+vertical+', AC = '+horizontal+', AB = '+hypotenuse+'.');
+  if (!chosen) say('Какой отрезок будет в числителе синуса угла '+alpha+'? Сначала выбери его по чертежу.');
+  else if (chosen==='AB') say('AB лежит напротив прямого угла. Это гипотенуза, которая у синуса стоит в знаменателе. Попробуй выбрать катет.');
+  else if (!correct) say(chosen+' касается угла '+alpha+'. Его длина стоит в числителе косинуса. Для синуса поищи катет напротив этого угла.');
+  else {
+   say('Верно. Для угла '+alpha+' противолежащий катет '+opposite+', прилежащий '+adjacent+'. Гипотенуза AB остаётся напротив C.');
+   const entries=[['sin',opposite,'AB',across,hypotenuse],['cos',adjacent,'AB',along,hypotenuse],['tg',opposite,adjacent,across,along]];
+   for(const [name,numerator,denominator,m,k] of entries) {
+    const notation=name+' '+alpha+' = ';
+    if(measurable) formula(notation,frac(numerator,denominator),' = ',exactRatio(m,k));
+    else formula(notation,frac(numerator,denominator));
+   }
+  }
+  if (measurable) {
+   stepList(['Проверь, что '+across+'² + '+along+'² = '+hypotenuse+'².','Сложи дроби с общим знаменателем '+hypotenuse+'², чтобы вычислить сумму квадратов синуса и косинуса.','Выбери другой треугольник и угол. Сначала вычисли отношения в тетради, потом сверь числитель и результаты.']);
+  } else {
+   stepList(['Найди AB напротив прямого угла C.','Выбери острый угол и назови катет, не содержащий его вершину.','Переключи угол. Объясни, какие две стороны поменялись ролями.']);
+  }
+ }
+ else if (n===15 && Object.hasOwn(ratioConstructions,task.ratioConstruction)) {
   const kind=task.ratioConstruction;
   show(constructionFigure(kind,a));
   if (kind==='angle') {
@@ -13613,6 +13691,490 @@ window.PetersonCourse = {
       "subpart": "4",
       "reference": "№13(4)"
      }
+    },
+    {
+     "id": "p15-t26",
+     "title": "К задаче №14(1)",
+     "prompt": "Для одного острого угла получены три отношения: ① противолежащий катет к гипотенузе, ② прилежащий катет к гипотенузе, ③ противолежащий катет к прилежащему. Подбери имена в порядке ①, ②, ③.",
+     "kind": "choice",
+     "answer": "синус, косинус, тангенс",
+     "finalLabel": "Выбери последовательность названий.",
+     "trigStudy": "named",
+     "figure": {
+      "type": "ratio-triangle",
+      "measurable": false,
+      "caption": "Собственная схема: C — вершина прямого угла. Найди гипотенузу и оба катета относительно выбранного острого угла."
+     },
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "У какой пары отношений в знаменателе гипотенуза?",
+       "choices": [
+        "① и ②",
+        "① и ③",
+        "② и ③"
+       ],
+       "answer": "① и ②",
+       "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+       "explanation": "И в ①, и в ② длину катета делят на длину гипотенузы."
+      },
+      {
+       "kind": "choice",
+       "prompt": "В каком отношении гипотенуза вообще не участвует?",
+       "choices": [
+        "①",
+        "③",
+        "②"
+       ],
+       "answer": "③",
+       "hint": "Посмотри на числитель и знаменатель каждой пары.",
+       "explanation": "В ③ сравниваются два катета."
+      }
+     ],
+     "hint": "Сначала найди пару отношений, у которых знаменатель — гипотенуза. Затем сравни их числители.",
+     "explanation": "В первом отношении берётся катет напротив выбранного угла — это синус. Во втором берётся катет у угла — это косинус. При делении одного катета на другой получаем тангенс.",
+     "skills": [
+      "ratio",
+      "proportional-parts"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 7,
+      "exercise": 14,
+      "subpart": "1",
+      "reference": "№14(1)"
+     },
+     "choices": [
+      "синус, косинус, тангенс",
+      "косинус, синус, тангенс",
+      "синус, тангенс, косинус"
+     ],
+     "errorCues": [
+      [
+       "косинус, синус, тангенс",
+       "Сравни ① и ②: в каком числителе стоит катет напротив выбранного угла?"
+      ],
+      [
+       "синус, тангенс, косинус",
+       "Проверь знаменатели ② и ③. Косинус делит на гипотенузу, тангенс — на катет."
+      ]
+     ]
+    },
+    {
+     "id": "p15-t27",
+     "title": "К задаче №14(2)",
+     "prompt": "На рисунке ABC угол C прямой. Запиши через названия сторон синус, косинус и тангенс угла A, затем угла B. Должно получиться шесть отношений.",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши шесть отношений или укажи, где находится твоя таблица.",
+     "trigStudy": "named",
+     "figure": {
+      "type": "ratio-triangle",
+      "measurable": false,
+      "caption": "Собственная схема: C — вершина прямого угла. Найди гипотенузу и оба катета относительно выбранного острого угла."
+     },
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Как записать sin A через стороны рисунка?",
+       "choices": [
+        "AC/BC",
+        "AB/BC",
+        "BC/AB"
+       ],
+       "answer": "BC/AB",
+       "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+       "explanation": "Для угла A противолежащий катет — BC, прилежащий — AC. Поэтому sin A = BC/AB."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как записать cos A через стороны рисунка?",
+       "choices": [
+        "BC/AC",
+        "AB/AC",
+        "AC/AB"
+       ],
+       "answer": "AC/AB",
+       "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+       "explanation": "Для угла A противолежащий катет — BC, прилежащий — AC. Поэтому cos A = AC/AB."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как записать tg A через стороны рисунка?",
+       "choices": [
+        "AB/AC",
+        "BC/AC",
+        "AC/BC"
+       ],
+       "answer": "BC/AC",
+       "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+       "explanation": "Для угла A противолежащий катет — BC, прилежащий — AC. Поэтому tg A = BC/AC."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как записать sin B через стороны рисунка?",
+       "choices": [
+        "AC/BC",
+        "AB/AC",
+        "AC/AB"
+       ],
+       "answer": "AC/AB",
+       "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+       "explanation": "Для угла B противолежащий катет — AC, прилежащий — BC. Поэтому sin B = AC/AB."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как записать cos B через стороны рисунка?",
+       "choices": [
+        "BC/AC",
+        "AB/BC",
+        "BC/AB"
+       ],
+       "answer": "BC/AB",
+       "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+       "explanation": "Для угла B противолежащий катет — AC, прилежащий — BC. Поэтому cos B = BC/AB."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как записать tg B через стороны рисунка?",
+       "choices": [
+        "AB/AC",
+        "AC/BC",
+        "BC/AC"
+       ],
+       "answer": "AC/BC",
+       "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+       "explanation": "Для угла B противолежащий катет — AC, прилежащий — BC. Поэтому tg B = AC/BC."
+      }
+     ],
+     "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+     "explanation": "Для A: sin A = BC/AB, cos A = AC/AB, tg A = BC/AC. Для B: sin B = AC/AB, cos B = BC/AB, tg B = AC/BC. При смене A на B катеты меняются ролями.",
+     "skills": [
+      "ratio",
+      "proportional-parts"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 7,
+      "exercise": 14,
+      "subpart": "2",
+      "reference": "№14(2)"
+     }
+    },
+    {
+     "id": "p15-t28",
+     "title": "К задаче №15(1)",
+     "prompt": "Измерь три стороны треугольника ABC на рисунке с. 8 в своём учебнике или сравни стороны нашей схемы с приложенной меркой. Вычисли три отношения для угла A. Запиши измерения, единицы и вычисления.",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши AC, BC, AB и значения sin A, cos A, tg A.",
+     "trigStudy": "measured",
+     "figure": {
+      "type": "ratio-triangle",
+      "measurable": true,
+      "caption": "Авторский чертёж в пропорциях рисунка на с. 8. Нижняя мерка — одна условная единица. Сравнивай длины с меркой на том же изображении."
+     },
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Измерь AC, BC, AB одной линейкой или одной экранной меркой и запиши три числа.",
+       "hint": "Начинай от нулевого деления. Измерь и наклонный отрезок.",
+       "explanation": "AB должна быть самой длинной стороной."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какой катет противоположен углу A?",
+       "choices": [
+        "AC",
+        "BC",
+        "AB"
+       ],
+       "answer": "BC",
+       "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+       "explanation": "Вершина A не лежит на BC."
+      },
+      {
+       "prompt": "У модели BC = 3, AC = 4, AB = 5. Каков синус A?",
+       "answer": "3/5",
+       "hint": "Раздели BC на AB.",
+       "explanation": "3 : 5 = 3/5."
+      },
+      {
+       "prompt": "Чему равен косинус A у той же модели?",
+       "answer": "4/5",
+       "hint": "Нужны прилежащий катет и гипотенуза.",
+       "explanation": "4 : 5 = 4/5."
+      },
+      {
+       "prompt": "Чему равен тангенс A у той же модели?",
+       "answer": "3/4",
+       "hint": "Сравни противолежащий катет с прилежащим.",
+       "explanation": "3 : 4 = 3/4. Сравни с собственными измерениями."
+      }
+     ],
+     "hint": "Отмечай один и тот же угол A во всех трёх вычислениях. Гипотенуза — AB. Измеряй все стороны в одинаковых единицах.",
+     "explanation": "На схеме длины BC, AC, AB относятся как 3 : 4 : 5. Поэтому sin A ≈ 3/5, cos A ≈ 4/5, tg A ≈ 3/4. Размер твоей страницы может быть другим, а небольшая разница измерений объясняется точностью линейки.",
+     "skills": [
+      "ratio",
+      "proportional-parts"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 15,
+      "subpart": "1",
+      "reference": "№15(1)"
+     }
+    },
+    {
+     "id": "p15-t29",
+     "title": "К задаче №15(2)",
+     "prompt": "Для угла A возведи в квадрат измеренные синус и косинус, затем сложи. Каким будет точное значение суммы в модели с отношением сторон 3 : 4 : 5?",
+     "kind": "number",
+     "answer": "1",
+     "finalLabel": "Введи сумму квадратов.",
+     "trigStudy": "measured",
+     "figure": {
+      "type": "ratio-triangle",
+      "measurable": true,
+      "caption": "Авторский чертёж в пропорциях рисунка на с. 8. Нижняя мерка — одна условная единица. Сравнивай длины с меркой на том же изображении."
+     },
+     "steps": [
+      {
+       "prompt": "Чему равен квадрат 3/5?",
+       "answer": "9/25",
+       "hint": "Перемножь 3/5 и 3/5.",
+       "explanation": "3²/5² = 9/25."
+      },
+      {
+       "prompt": "Чему равен квадрат 4/5?",
+       "answer": "16/25",
+       "hint": "Квадрат знаменателя остаётся 25.",
+       "explanation": "4²/5² = 16/25."
+      }
+     ],
+     "hint": "При возведении дроби в квадрат возводятся в квадрат и числитель, и знаменатель.",
+     "explanation": "(3/5)² + (4/5)² = 9/25 + 16/25 = 1. Измеренные значения на бумаге могут дать число, близкое к единице.",
+     "skills": [
+      "ratio",
+      "proportional-parts"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 15,
+      "subpart": "2",
+      "reference": "№15(2)"
+     },
+     "errorCues": [
+      [
+       "7/5",
+       "Так получается при сложении самих дробей. Сначала возведи каждую дробь в квадрат."
+      ],
+      [
+       "5",
+       "Проверь знаменатели: (3/5)² имеет знаменатель 25."
+      ]
+     ]
+    },
+    {
+     "id": "p15-t30",
+     "title": "К задаче №15(3)",
+     "prompt": "Раздели синус угла A на его косинус. Сравни результат с тангенсом того же угла. Для проверки воспользуйся моделью со сторонами 3, 4 и 5.",
+     "kind": "choice",
+     "answer": "Частное совпадает с тангенсом A.",
+     "finalLabel": "Выбери вывод.",
+     "trigStudy": "measured",
+     "figure": {
+      "type": "ratio-triangle",
+      "measurable": true,
+      "caption": "Авторский чертёж в пропорциях рисунка на с. 8. Нижняя мерка — одна условная единица. Сравнивай длины с меркой на том же изображении."
+     },
+     "steps": [
+      {
+       "prompt": "Чему равно (3/5) : (4/5)?",
+       "answer": "3/4",
+       "hint": "Умножь 3/5 на 5/4.",
+       "explanation": "Сократи общий множитель 5."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Через какие стороны записывается полученное отношение?",
+       "choices": [
+        "BC/AC",
+        "AC/BC",
+        "BC/AB"
+       ],
+       "answer": "BC/AC",
+       "hint": "Гипотенуза лежит напротив C. Из двух катетов один касается выбранного острого угла, другой лежит напротив него.",
+       "explanation": "После сокращения AB остаются катеты BC и AC."
+      }
+     ],
+     "hint": "Деление на дробь замени умножением на обратную. Две длины гипотенузы сократятся.",
+     "explanation": "(3/5) : (4/5) = (3/5) · (5/4) = 3/4. Это отношение BC к AC и одновременно тангенс A.",
+     "skills": [
+      "ratio",
+      "proportional-parts"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 15,
+      "subpart": "3",
+      "reference": "№15(3)"
+     },
+     "choices": [
+      "Частное равно обратному тангенсу A.",
+      "Частное совпадает с тангенсом A.",
+      "Частное совпадает с синусом A."
+     ],
+     "errorCues": [
+      [
+       "Частное равно обратному тангенсу A.",
+       "Проверь порядок: делим синус на косинус, а не косинус на синус."
+      ],
+      [
+       "Частное совпадает с синусом A.",
+       "При делении сокращается гипотенуза. Какие две стороны остаются?"
+      ]
+     ]
+    },
+    {
+     "id": "p15-t31",
+     "title": "К задаче №15(4)",
+     "prompt": "Теперь выбери угол B и повтори три исследования. Запиши sin B, cos B, tg B, сумму квадратов и частное. Сопоставь результаты с углом A.",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши пять результатов и свои наблюдения.",
+     "trigStudy": "measured",
+     "figure": {
+      "type": "ratio-triangle",
+      "measurable": true,
+      "caption": "Авторский чертёж в пропорциях рисунка на с. 8. Нижняя мерка — одна условная единица. Сравнивай длины с меркой на том же изображении."
+     },
+     "steps": [
+      {
+       "prompt": "Чему равен sin B в модели 3, 4, 5?",
+       "answer": "4/5",
+       "hint": "Напротив B лежит AC.",
+       "explanation": "AC/AB = 4/5."
+      },
+      {
+       "prompt": "А чему равен cos B?",
+       "answer": "3/5",
+       "hint": "Катет у B — BC.",
+       "explanation": "BC/AB = 3/5."
+      },
+      {
+       "prompt": "Каково значение tg B?",
+       "answer": "4/3",
+       "hint": "Дели AC на BC. Тангенс острого угла может быть больше 1.",
+       "explanation": "4 : 3 = 4/3."
+      },
+      {
+       "prompt": "Чему равна сумма квадратов первых двух дробей?",
+       "answer": "1",
+       "hint": "Знаменатель обеих квадратных дробей равен 25.",
+       "explanation": "16/25 + 9/25 = 1."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Сравни sin B / cos B с tg B и сопоставь значения для обоих углов.",
+       "hint": "Вычисли (4/5) : (3/5).",
+       "explanation": "Получается 4/3. Для A частное было 3/4: изменилась роль катетов."
+      }
+     ],
+     "hint": "При смене угла A на B гипотенуза остаётся той же. Противолежащий и прилежащий катеты меняются местами.",
+     "explanation": "Для угла B в модели получаем sin B = 4/5, cos B = 3/5, tg B = 4/3. Сумма квадратов снова равна 1, а sin B / cos B = 4/3. Синус одного угла равен косинусу другого, тангенсы взаимно обратны.",
+     "skills": [
+      "ratio",
+      "proportional-parts"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 15,
+      "subpart": "4",
+      "reference": "№15(4)"
+     }
+    },
+    {
+     "id": "p15-t32",
+     "title": "К задаче №15(5)",
+     "prompt": "Проверь наблюдения на другом прямоугольном треугольнике. Затем объясни для любого острого угла, почему сумма квадратов синуса и косинуса равна единице, а их частное равно тангенсу. Используй теорему Пифагора.",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши числовую проверку и доказательство для произвольных положительных a, b и c.",
+     "trigStudy": "general",
+     "figure": {
+      "type": "ratio-triangle",
+      "measurable": true,
+      "caption": "Авторский чертёж в пропорциях рисунка на с. 8. Нижняя мерка — одна условная единица. Сравнивай длины с меркой на том же изображении."
+     },
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Возьми свой прямоугольный треугольник или выбери новый набор в модели. Вычисли три отношения для одного острого угла.",
+       "hint": "Для проверки подойдут BC = 5, AC = 12, AB = 13.",
+       "explanation": "Для угла A тогда получаются 5/13, 12/13 и 5/12."
+      },
+      {
+       "prompt": "Для набора 5, 12, 13 чему равно (5² + 12²)/13²?",
+       "answer": "1",
+       "hint": "25 + 144 = 169.",
+       "explanation": "Числитель и знаменатель равны 169."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Чем по теореме Пифагора заменить a² + b²?",
+       "choices": [
+        "c",
+        "(a+b)²",
+        "c²"
+       ],
+       "answer": "c²",
+       "hint": "Прямой угол расположен между сторонами a и b.",
+       "explanation": "Квадрат гипотенузы равен сумме квадратов катетов."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что останется после деления (a/c) : (b/c)?",
+       "choices": [
+        "a/b",
+        "b/a",
+        "ab/c²"
+       ],
+       "answer": "a/b",
+       "hint": "Вторую дробь при делении переверни.",
+       "explanation": "(a/c) · (c/b) = a/b."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни словами, почему доказательство работает для любого острого угла прямоугольного треугольника.",
+       "hint": "Уточни, где строилось прямоугольное условие и почему в знаменателях нет нуля.",
+       "explanation": "Длины сторон положительны, а равенство Пифагора справедливо для каждого прямоугольного треугольника."
+      }
+     ],
+     "hint": "Пусть a — противолежащий катет, b — прилежащий, c — гипотенуза. Запиши каждый синус и косинус через эти буквы.",
+     "explanation": "sin² α + cos² α = (a²+b²)/c² = 1 по теореме Пифагора. Далее sin α / cos α = (a/c) : (b/c) = a/b = tg α. Положительные b и c позволяют выполнять оба деления. Числовая проверка иллюстрирует, а формулы доказывают утверждения для каждого такого угла.",
+     "skills": [
+      "ratio",
+      "proportional-parts"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 15,
+      "subpart": "5",
+      "reference": "№15(5)"
+     }
     }
    ]
   },
@@ -20325,6 +20887,923 @@ window.PetersonCourse = {
       "subpart": "б",
       "reference": "№6б"
      }
+    },
+    {
+     "id": "p33-t19",
+     "title": "К задаче №7а",
+     "kind": "choice",
+     "answer": "5a − 2",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Раскрой скобки в выражении 5(a + 2) − 12 и приведи подобные слагаемые.",
+     "steps": [
+      {
+       "prompt": "Каков итоговый коэффициент при a?",
+       "answer": "5",
+       "hint": "Число перед переменной после умножения.",
+       "explanation": "5 · a = 5a."
+      },
+      {
+       "prompt": "Чему равна постоянная часть?",
+       "answer": "-2",
+       "hint": "Собери все слагаемые именно этой группы, сохраняя знаки.",
+       "explanation": "5 · 2 − 12 = 10 − 12 = −2."
+      }
+     ],
+     "hint": "Умножь на пять и a, и 2, затем учти −12.",
+     "explanation": "5 · a = 5a. 5 · 2 − 12 = 10 − 12 = −2. Получаем 5a − 2.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 7,
+      "subpart": "а",
+      "reference": "№7а"
+     },
+     "choices": [
+      "5a − 2",
+      "5a + 2",
+      "5a − 10"
+     ],
+     "errorCues": [
+      [
+       "5a + 2",
+       "Проверь порядок вычитания: начинается с +10."
+      ],
+      [
+       "5a − 10",
+       "Вычисли отдельно 5 · 2, затем добавь −12."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "5",
+       "a",
+       "+2"
+      ]
+     ],
+     "relatedTask": "p33-t20"
+    },
+    {
+     "id": "p33-t20",
+     "title": "К задаче №7в",
+     "kind": "choice",
+     "answer": "4m + 2",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Раскрой скобки в выражении m − 3(2 − m) + 8 и приведи подобные слагаемые.",
+     "steps": [
+      {
+       "prompt": "Каков итоговый коэффициент при m?",
+       "answer": "4",
+       "hint": "Учитывай m перед скобками.",
+       "explanation": "−3 · (−m) = +3m, поэтому m + 3m = 4m."
+      },
+      {
+       "prompt": "Чему равна числовая часть?",
+       "answer": "2",
+       "hint": "Собери все слагаемые именно этой группы, сохраняя знаки.",
+       "explanation": "−3 · 2 + 8 = −6 + 8 = 2."
+      }
+     ],
+     "hint": "Запиши множитель перед скобками как −3.",
+     "explanation": "−3 · (−m) = +3m, поэтому m + 3m = 4m. −3 · 2 + 8 = −6 + 8 = 2. Получаем 4m + 2.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 7,
+      "subpart": "в",
+      "reference": "№7в"
+     },
+     "choices": [
+      "−2m + 2",
+      "4m + 2",
+      "4m + 14"
+     ],
+     "errorCues": [
+      [
+       "−2m + 2",
+       "Какой знак имеет произведение −3 и −m?"
+      ],
+      [
+       "4m + 14",
+       "Проверь знак произведения −3 и положительного числа 2."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−3",
+       "2",
+       "−m"
+      ]
+     ],
+     "relatedTask": "p33-t21"
+    },
+    {
+     "id": "p33-t21",
+     "title": "К задаче №7г",
+     "kind": "choice",
+     "answer": "m − 3n",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Раскрой скобки в выражении 2(m − n) − (m + n) и приведи подобные слагаемые.",
+     "steps": [
+      {
+       "prompt": "Каков итоговый коэффициент при m?",
+       "answer": "1",
+       "hint": "Сравни два слагаемых, содержащие m.",
+       "explanation": "2m − m = m."
+      },
+      {
+       "prompt": "Каков коэффициент при n?",
+       "answer": "-3",
+       "hint": "Собери все слагаемые именно этой группы, сохраняя знаки.",
+       "explanation": "−2n − n = −3n."
+      }
+     ],
+     "hint": "Перед вторыми скобками стоит множитель −1: он действует и на m, и на n.",
+     "explanation": "2m − m = m. −2n − n = −3n. Получаем m − 3n.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 7,
+      "subpart": "г",
+      "reference": "№7г"
+     },
+     "choices": [
+      "m − n",
+      "3m − 3n",
+      "m − 3n"
+     ],
+     "errorCues": [
+      [
+       "m − n",
+       "Учти вклад n из вторых скобок вместе с −2n из первых."
+      ],
+      [
+       "3m − 3n",
+       "Из 2m вычитается m. Проверь знак первого слагаемого во вторых скобках."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "2",
+       "m",
+       "−n"
+      ],
+      [
+       "−1",
+       "m",
+       "+n"
+      ]
+     ],
+     "relatedTask": "p33-t22"
+    },
+    {
+     "id": "p33-t22",
+     "title": "К задаче №7д",
+     "kind": "choice",
+     "answer": "−x − 3y",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Раскрой скобки в выражении (x − y) − 2(x + y) и приведи подобные слагаемые.",
+     "steps": [
+      {
+       "prompt": "Каков итоговый коэффициент при x?",
+       "answer": "-1",
+       "hint": "Собери слагаемые с x.",
+       "explanation": "x − 2x = −x."
+      },
+      {
+       "prompt": "Каков коэффициент при y?",
+       "answer": "-3",
+       "hint": "Собери все слагаемые именно этой группы, сохраняя знаки.",
+       "explanation": "−y − 2y = −3y."
+      }
+     ],
+     "hint": "Перепиши x − y; затем прибавь два произведения с множителем −2.",
+     "explanation": "x − 2x = −x. −y − 2y = −3y. Получаем −x − 3y.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 7,
+      "subpart": "д",
+      "reference": "№7д"
+     },
+     "choices": [
+      "−x − 3y",
+      "−x + y",
+      "3x + y"
+     ],
+     "errorCues": [
+      [
+       "−x + y",
+       "Проверь знак произведения −2 и +y."
+      ],
+      [
+       "3x + y",
+       "Перед второй парой скобок вычитается удвоенная сумма."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−2",
+       "x",
+       "+y"
+      ]
+     ],
+     "relatedTask": "p33-t23"
+    },
+    {
+     "id": "p33-t23",
+     "title": "К задаче №7е",
+     "kind": "choice",
+     "answer": "−4b",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Раскрой скобки в выражении −2(a + b) + 2(a − b) и приведи подобные слагаемые.",
+     "steps": [
+      {
+       "prompt": "Каков итоговый коэффициент при a?",
+       "answer": "0",
+       "hint": "Сравни коэффициенты a в двух произведениях.",
+       "explanation": "−2a + 2a = 0."
+      },
+      {
+       "prompt": "Каков коэффициент при b?",
+       "answer": "-4",
+       "hint": "Собери все слагаемые именно этой группы, сохраняя знаки.",
+       "explanation": "−2b + 2 · (−b) = −4b."
+      }
+     ],
+     "hint": "Проверь a и b отдельно: их знаки в двух скобках различаются.",
+     "explanation": "−2a + 2a = 0. −2b + 2 · (−b) = −4b. Получаем −4b.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 7,
+      "subpart": "е",
+      "reference": "№7е"
+     },
+     "choices": [
+      "0",
+      "−4b",
+      "−4a"
+     ],
+     "errorCues": [
+      [
+       "0",
+       "Слагаемые с a исчезают. Сравни знаки двух слагаемых с b."
+      ],
+      [
+       "−4a",
+       "Посмотри, какая переменная имеет противоположные коэффициенты."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−2",
+       "a",
+       "+b"
+      ],
+      [
+       "2",
+       "a",
+       "−b"
+      ]
+     ],
+     "relatedTask": "p33-t24"
+    },
+    {
+     "id": "p33-t24",
+     "title": "К задаче №7ж",
+     "kind": "choice",
+     "answer": "b + 1",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Раскрой скобки в выражении 3(b − 1) − 2(b − 2) и приведи подобные слагаемые.",
+     "steps": [
+      {
+       "prompt": "Каков итоговый коэффициент при b?",
+       "answer": "1",
+       "hint": "Собери 3b и −2b.",
+       "explanation": "3 − 2 = 1."
+      },
+      {
+       "prompt": "Чему равна числовая часть?",
+       "answer": "1",
+       "hint": "Собери все слагаемые именно этой группы, сохраняя знаки.",
+       "explanation": "3 · (−1) − 2 · (−2) = −3 + 4 = 1."
+      }
+     ],
+     "hint": "Во второй скобке число −2 тоже умножается на −2.",
+     "explanation": "3 − 2 = 1. 3 · (−1) − 2 · (−2) = −3 + 4 = 1. Получаем b + 1.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 7,
+      "subpart": "ж",
+      "reference": "№7ж"
+     },
+     "choices": [
+      "b − 7",
+      "5b − 7",
+      "b + 1"
+     ],
+     "errorCues": [
+      [
+       "b − 7",
+       "Минус перед вторыми скобками изменяет знак произведения с −2."
+      ],
+      [
+       "5b − 7",
+       "Проверь знак, с которым входит 2b."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "3",
+       "b",
+       "−1"
+      ],
+      [
+       "−2",
+       "b",
+       "−2"
+      ]
+     ],
+     "relatedTask": "p33-t25"
+    },
+    {
+     "id": "p33-t25",
+     "title": "К задаче №7з",
+     "kind": "choice",
+     "answer": "−5d",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Раскрой скобки в выражении −2(d + 3) + 3(2 − d) и приведи подобные слагаемые.",
+     "steps": [
+      {
+       "prompt": "Каков итоговый коэффициент при d?",
+       "answer": "-5",
+       "hint": "Оба коэффициента при d отрицательны.",
+       "explanation": "−2d − 3d = −5d."
+      },
+      {
+       "prompt": "Какова числовая часть?",
+       "answer": "0",
+       "hint": "Собери все слагаемые именно этой группы, сохраняя знаки.",
+       "explanation": "−2 · 3 + 3 · 2 = −6 + 6 = 0."
+      }
+     ],
+     "hint": "Собери отдельно произведения с d и два произведения только с числами.",
+     "explanation": "−2d − 3d = −5d. −2 · 3 + 3 · 2 = −6 + 6 = 0. Получаем −5d.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 7,
+      "subpart": "з",
+      "reference": "№7з"
+     },
+     "choices": [
+      "−5d",
+      "d",
+      "−5d − 12"
+     ],
+     "errorCues": [
+      [
+       "d",
+       "У слагаемого 3 · (−d) отрицательный коэффициент."
+      ],
+      [
+       "−5d − 12",
+       "Проверь знаки двух произведений, содержащих только числа."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−2",
+       "d",
+       "+3"
+      ],
+      [
+       "3",
+       "2",
+       "−d"
+      ]
+     ],
+     "relatedTask": "p33-t19"
+    },
+    {
+     "id": "p33-t26",
+     "title": "К задаче №8а",
+     "kind": "number",
+     "answer": "-1.8",
+     "finalLabel": "Запиши числовой ответ.",
+     "prompt": "Упрости 3(x − 4) + 2(−x + 6), затем вычисли при x = −1,8. Укажи в разборе, требуется ли значение x.",
+     "steps": [
+      {
+       "prompt": "Каков коэффициент при x после раскрытия обеих скобок?",
+       "answer": "1",
+       "hint": "Один вклад равен 3x, другой имеет множитель −x.",
+       "explanation": "3x + 2 · (−x) = x."
+      },
+      {
+       "prompt": "Чему равна постоянная часть?",
+       "answer": "0",
+       "hint": "Вычисли 3 · (−4) и 2 · 6.",
+       "explanation": "−12 + 12 = 0."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Нужно ли подставлять значение x?",
+       "answer": "Да: после упрощения остаётся x.",
+       "choices": [
+        "Нет: переменная исчезла.",
+        "Нужно знать значение ещё одной переменной.",
+        "Да: после упрощения остаётся x."
+       ],
+       "hint": "Проверь коэффициент при x.",
+       "explanation": "Упрощённое выражение равно x, поэтому нужны данные о x."
+      }
+     ],
+     "hint": "Умножь каждый множитель на оба члена своей скобки. Сначала полностью упрости выражение.",
+     "explanation": "3x − 12 − 2x + 12 = x. Для значения нужен x; ответ −1,8.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 8,
+      "subpart": "а",
+      "reference": "№8а"
+     },
+     "errorCues": [
+      [
+       "1.8",
+       "После сокращения чисел остаётся x. Перенеси знак значения x."
+      ],
+      [
+       "-9",
+       "Проверь знак −x во вторых скобках: его коэффициент отрицательный."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "3",
+       "x",
+       "−4"
+      ],
+      [
+       "2",
+       "−x",
+       "+6"
+      ]
+     ],
+     "relatedTask": "p33-t27"
+    },
+    {
+     "id": "p33-t27",
+     "title": "К задаче №8б",
+     "kind": "number",
+     "answer": "3",
+     "finalLabel": "Запиши числовой ответ.",
+     "prompt": "Упрости 3b − 2(a − b) + a − 5(a + b). Найди значение при a = −0,5, b = 1/7. Объясни, какие данные можно было не использовать.",
+     "steps": [
+      {
+       "prompt": "Чему равен суммарный коэффициент при b?",
+       "answer": "0",
+       "hint": "Сложи 3, +2 и −5.",
+       "explanation": "3b + 2b − 5b = 0."
+      },
+      {
+       "prompt": "Чему равен суммарный коэффициент при a?",
+       "answer": "-6",
+       "hint": "Учти отдельное слагаемое +a.",
+       "explanation": "−2a + a − 5a = −6a."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какие данные оказались лишними?",
+       "answer": "Значение b.",
+       "choices": [
+        "Значение a.",
+        "Значение b.",
+        "Нужны оба значения."
+       ],
+       "hint": "Посмотри, какая переменная исчезла.",
+       "explanation": "После упрощения остаётся только −6a."
+      }
+     ],
+     "hint": "Отдельно выпиши коэффициенты a и b. Подставляй числа уже в короткое выражение.",
+     "explanation": "Получается −6a. При a = −0,5 это 3; значение b = 1/7 не понадобилось.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 8,
+      "subpart": "б",
+      "reference": "№8б"
+     },
+     "errorCues": [
+      [
+       "-3",
+       "Проверь знак: отрицательный коэффициент умножается на отрицательное значение a."
+      ],
+      [
+       "0",
+       "Сократились слагаемые с b. Члены с a нужно сложить отдельно."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−2",
+       "a",
+       "−b"
+      ],
+      [
+       "−5",
+       "a",
+       "+b"
+      ]
+     ],
+     "relatedTask": "p33-t26"
+    },
+    {
+     "id": "p33-t28",
+     "title": "К задаче №9а",
+     "kind": "choice",
+     "answer": "5m − n",
+     "finalLabel": "Выбери результат.",
+     "prompt": "К тройной разности m и n прибавляют удвоенную сумму этих чисел. Составь выражение и приведи подобные слагаемые.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая запись передаёт условие до упрощения?",
+       "answer": "3(m − n) + 2(m + n)",
+       "choices": [
+        "3m − n + 2m + n",
+        "3(m − n) + 2(m + n)",
+        "3(m − n) − 2(m + n)"
+       ],
+       "hint": "Множитель перед разностью или суммой относится ко всей скобке.",
+       "explanation": "Сначала берём 3(m − n), потом прибавляем 2(m + n)."
+      },
+      {
+       "prompt": "Каков коэффициент при m?",
+       "answer": "5",
+       "hint": "Собери m из обеих скобок.",
+       "explanation": "3m + 2m = 5m."
+      },
+      {
+       "prompt": "Каков коэффициент при n?",
+       "answer": "-1",
+       "hint": "Сложи −3 и +2.",
+       "explanation": "−3n + 2n = −n."
+      }
+     ],
+     "hint": "Возьми каждую пару чисел в отдельные скобки, затем умножь обе части этой пары.",
+     "explanation": "3(m − n) + 2(m + n) = 3m − 3n + 2m + 2n = 5m − n.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 9,
+      "subpart": "а",
+      "reference": "№9а"
+     },
+     "choices": [
+      "5m + n",
+      "5m − n",
+      "m − 5n"
+     ],
+     "errorCues": [
+      [
+       "5m + n",
+       "Проверь сложение отрицательного и положительного коэффициентов при n."
+      ],
+      [
+       "m − 5n",
+       "По условию группы складывают. Проверь знак перед второй скобкой."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "3",
+       "m",
+       "−n"
+      ],
+      [
+       "2",
+       "m",
+       "+n"
+      ]
+     ],
+     "relatedTask": "p33-t29"
+    },
+    {
+     "id": "p33-t29",
+     "title": "К задаче №9б",
+     "kind": "choice",
+     "answer": "−x + 3y",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Из удвоенной суммы x и y вычитают разность утроенного x и числа y. Составь выражение и упрости его.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая запись сохраняет порядок действий?",
+       "answer": "2(x + y) − (3x − y)",
+       "choices": [
+        "2(x + y) − 3x − y",
+        "2(x + y) − (3x − y)",
+        "2x + y − (3x − y)"
+       ],
+       "hint": "Из первой величины вычитается вся разность.",
+       "explanation": "Вторая скобка нужна, потому что вычитаются оба её члена."
+      },
+      {
+       "prompt": "Каков коэффициент при x?",
+       "answer": "-1",
+       "hint": "Учти −3x.",
+       "explanation": "2x − 3x = −x."
+      },
+      {
+       "prompt": "Каков коэффициент при y?",
+       "answer": "3",
+       "hint": "Вычитание −y даёт +y.",
+       "explanation": "2y + y = 3y."
+      }
+     ],
+     "hint": "Минус перед разностью удобно записать как множитель −1.",
+     "explanation": "2(x + y) − (3x − y) = 2x + 2y − 3x + y = −x + 3y.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 9,
+      "subpart": "б",
+      "reference": "№9б"
+     },
+     "choices": [
+      "−x + y",
+      "5x + y",
+      "−x + 3y"
+     ],
+     "errorCues": [
+      [
+       "−x + y",
+       "Проверь двойной минус: что произойдёт со знаком −y во второй скобке?"
+      ],
+      [
+       "5x + y",
+       "У всего выражения 3x − y стоит знак вычитания."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "2",
+       "x",
+       "+y"
+      ],
+      [
+       "−1",
+       "3x",
+       "−y"
+      ]
+     ],
+     "relatedTask": "p33-t28"
+    },
+    {
+     "id": "p33-t30",
+     "title": "К задаче №10а",
+     "kind": "choice",
+     "answer": "600 − 6v; 180, 120, 60 км",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Из пути 625 км поезд два часа ехал со скоростью v км/ч, три часа — на 10 км/ч быстрее первоначальной, ещё час — на 5 км/ч медленнее первоначальной. Составь формулу оставшегося пути и вычисли его для v = 70, 80 и 90 км/ч. Сохрани этот порядок.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Как записать уже пройденное расстояние?",
+       "answer": "2v + 3(v + 10) + (v − 5)",
+       "choices": [
+        "2v + 3(v + 10) + (v − 5)",
+        "2v + 3v + 10 + v − 5",
+        "2v + 3(v + 10) + (v + 5)"
+       ],
+       "hint": "Каждый отрезок пути равен скорости на нём, умноженной на длительность.",
+       "explanation": "На последнем отрезке скорость на 5 ниже исходной, поэтому это v − 5."
+      },
+      {
+       "prompt": "Сколько километров осталось при v = 70?",
+       "answer": "180",
+       "hint": "Пройдено 6v + 25. Вычти это из 625.",
+       "explanation": "625 − (420 + 25) = 180 км."
+      },
+      {
+       "prompt": "Сколько километров осталось при v = 80?",
+       "answer": "120",
+       "hint": "В формуле 600 − 6v замени только v.",
+       "explanation": "600 − 480 = 120 км."
+      },
+      {
+       "prompt": "Сколько километров осталось при v = 90?",
+       "answer": "60",
+       "hint": "Повышение v на 10 увеличивает пройденный путь на 60 км.",
+       "explanation": "600 − 540 = 60 км."
+      }
+     ],
+     "hint": "Сначала сложи пути трёх участков. Оставшееся расстояние получится вычитанием этой суммы из 625 км.",
+     "explanation": "Пройдено 2v + 3(v + 10) + (v − 5) = 6v + 25. Осталось 600 − 6v км. Для 70, 80 и 90 км/ч получаются соответственно 180, 120 и 60 км.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 10,
+      "subpart": "а",
+      "reference": "№10а"
+     },
+     "choices": [
+      "600 − 6v; 180, 120, 60 км",
+      "6v + 25; 445, 505, 565 км",
+      "620 − 6v; 200, 140, 80 км"
+     ],
+     "errorCues": [
+      [
+       "6v + 25; 445, 505, 565 км",
+       "Эти значения показывают пройденный путь. Что именно осталось найти?"
+      ],
+      [
+       "620 − 6v; 200, 140, 80 км",
+       "Прибавка 10 км/ч действует все три часа второго участка."
+      ]
+     ],
+     "quantityModel": {
+      "caption": "Три участка пути",
+      "rows": [
+       [
+        "Первый",
+        "2 ч, скорость v"
+       ],
+       [
+        "Второй",
+        "3 ч, скорость v + 10"
+       ],
+       [
+        "Третий",
+        "1 ч, скорость v − 5"
+       ],
+       [
+        "Путь целиком",
+        "625 км"
+       ]
+      ],
+      "question": "Сколько пройдено на каждом участке и что нужно вычесть из общего пути?"
+     },
+     "relatedTask": "p33-t31"
+    },
+    {
+     "id": "p33-t31",
+     "title": "К задаче №10б",
+     "kind": "choice",
+     "answer": "3 − 0,1n; 2, 1,5 и 1 т",
+     "finalLabel": "Выбери результат.",
+     "prompt": "Урожай — 3,2 т картофеля. В первый магазин отвезли n мешков, во второй — на четыре больше. Масса каждого мешка 50 кг. Запиши формулу оставшейся массы в тоннах и вычисли её для n = 10, 15 и 20.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Сколько мешков отвезли всего?",
+       "answer": "2n + 4",
+       "choices": [
+        "n + 4",
+        "2(n + 4)",
+        "2n + 4"
+       ],
+       "hint": "Первый и второй магазины получили разное число мешков.",
+       "explanation": "n + (n + 4) = 2n + 4."
+      },
+      {
+       "prompt": "Какова масса одного мешка в тоннах?",
+       "answer": "0.05",
+       "hint": "В тонне 1000 кг.",
+       "explanation": "50/1000 = 0,05 т."
+      },
+      {
+       "prompt": "Найди остаток в тоннах при n = 10.",
+       "answer": "2",
+       "hint": "В магазины отправили 24 мешка по 0,05 т.",
+       "explanation": "3,2 − 1,2 = 2 т."
+      },
+      {
+       "prompt": "Найди остаток в тоннах при n = 15.",
+       "answer": "1.5",
+       "hint": "Масса 34 мешков равна 1,7 т.",
+       "explanation": "3,2 − 1,7 = 1,5 т."
+      },
+      {
+       "prompt": "Найди остаток в тоннах при n = 20.",
+       "answer": "1",
+       "hint": "Отвезли 44 мешка.",
+       "explanation": "3,2 − 44 · 0,05 = 1 т."
+      }
+     ],
+     "hint": "Запиши число мешков для каждого магазина. Переведи массу мешка в тонны до вычитания.",
+     "explanation": "Отвезли (2n + 4) · 0,05 т. Осталось 3,2 − 0,05(2n + 4) = 3 − 0,1n т. Три результата — 2 т, 1,5 т, 1 т.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 5,
+      "exercise": 10,
+      "subpart": "б",
+      "reference": "№10б"
+     },
+     "choices": [
+      "3 − 0,05n; 2,5, 2,25 и 2 т",
+      "3 − 0,1n; 2, 1,5 и 1 т",
+      "0,1n + 0,2; 1,2, 1,7 и 2,2 т"
+     ],
+     "errorCues": [
+      [
+       "3 − 0,05n; 2,5, 2,25 и 2 т",
+       "Количество n входит и в первую, и во вторую поставку."
+      ],
+      [
+       "0,1n + 0,2; 1,2, 1,7 и 2,2 т",
+       "Это масса проданного картофеля. Сравни её со всем урожаем."
+      ]
+     ],
+     "quantityModel": {
+      "caption": "Куда ушёл урожай",
+      "rows": [
+       [
+        "Начальная масса",
+        "3,2 т"
+       ],
+       [
+        "Первый магазин",
+        "n мешков"
+       ],
+       [
+        "Второй магазин",
+        "n + 4 мешка"
+       ],
+       [
+        "Один мешок",
+        "50 кг = 0,05 т"
+       ]
+      ],
+      "question": "Как сложить число мешков, перевести в тонны и найти именно остаток?"
+     },
+     "relatedTask": "p33-t30"
     }
    ]
   },
@@ -43849,6 +45328,7 @@ ${[1, 2, 3]
     return null;
   }
   function bracketTerms(t) {
+    if (t.distributedTerms) return t.distributedTerms;
     if (bracketProducts[t.id]) return bracketProducts[t.id];
     if (active.skill === 'bracket-evaluate' && t.calculation?.op === 'bracket') {
       const {right,third} = t.calculation;
@@ -43857,7 +45337,7 @@ ${[1, 2, 3]
     return null;
   }
   function repairSkill(t) {
-    if (t.id === 'p33-t01' || t.id === 'p33-t02') return 'bracket-evaluate';
+    if (t.distributedTerms || t.id === 'p33-t01' || t.id === 'p33-t02') return 'bracket-evaluate';
     if (ratioExamples[t.id]) return ['p15-t01','p15-t02'].includes(t.id) ? 'ratio' : 'percent-ratio';
     return null;
   }

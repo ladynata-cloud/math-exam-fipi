@@ -26,6 +26,25 @@ function mount(host,l,t,initial,onChange){if(!host)return()=>{};const st={};cons
  select('function','Функция',[['power','y = xⁿ (n целое)'],['root','y = √x'],['exp','y = aˣ'],['log','y = logₐ x'],['sin','y = sin(kx)'],['cos','y = cos(kx)'],['tan','y = tg(kx)'],['inverse','y = 1/x'],['rational','y = 2 + 1/(x + 1)'],['linear','y = ax + 1']],def);
  select('base','Основание a',[['0.5','0,5'],['2','2'],['3','3']], '2');range('n','Показатель n / частота k',1,5,1,2);range('point','Аргумент x',-5,5,0.25,1);
  draw=()=>{const f=st.function,a=['power','sin','cos','tan'].includes(f)?st.n:Number(st.base),v=curve(f,a,st.point),domain=['root','log','inverse','rational','tan'].includes(f)?({root:'x ≥ 0',log:'x > 0; a > 0, a ≠ 1',inverse:'x ≠ 0',rational:'x ≠ −1',tan:'x ≠ (π/2 + πn)/k, n ∈ Z'})[f]:'x ∈ R';controls[0].parentElement.hidden=false;controls[1].parentElement.hidden=!['exp','log','linear'].includes(f);controls[2].parentElement.hidden=!['power','sin','cos','tan'].includes(f);let body=axes()+plot(x=>curve(f,a,x));if(Number.isFinite(v)&&Math.abs(v)<=6)body+=dot(X(st.point),Y(v));chart.innerHTML=svg(body);output.textContent=`Область определения: ${domain}. При x = ${num(st.point)}: ${Number.isFinite(v)?'y ≈ '+num(v):'значение не определено'}. ${['power','sin','cos','tan'].includes(f)?'Активный параметр n или k = '+a:['exp','log','linear'].includes(f)?'Активное основание / коэффициент a = '+num(a):'Параметры a и n эту функцию не меняют.'} Видимое окно: −6,4 ≤ x ≤ 6,4; −6 ≤ y ≤ 6. Ветви через разрывы не соединяются.`;};
+ }else if(type==='circle' && t.initialTriangle){
+  const {opposite,adjacent,hypotenuse}=t.initialTriangle;
+  const base=Math.atan2(opposite,adjacent)*180/Math.PI;
+  intro.textContent='При нулевом повороте зелёная точка отвечает углу из задачи. Оранжевый радиус делает вдвое больший поворот. Сравни высоты точек и проверь своё вычисление.';
+  range('offset','Добавить к исходному углу, градусы',-90,90,1,0);
+  select('projection','Высота оранжевой точки',[['hide','Найду сам'],['show','Сверить по модели']],'hide');
+  draw=()=>{
+   const angle=base+st.offset, single=circle(angle), doubled=circle(2*angle), cx=290, cy=165, r=130;
+   const x1=cx+r*single.cos, y1=cy-r*single.sin, x2=cx+r*doubled.cos, y2=cy-r*doubled.sin;
+   const circleLine='<circle cx="290" cy="165" r="130" fill="none" stroke="#8aa99b" stroke-width="2"/>';
+   const radius=(x,y,c)=>ln(cx,cy,x,y,c,4)+dot(x,y,6,c);
+   const projection=st.projection==='show'?ln(x2,y2,x2,cy,'#ad591e',2,'5 4'):'';
+   chart.innerHTML=svg(ln(130,cy,450,cy)+ln(cx,15,cx,316)+circleLine+projection+
+    radius(x1,y1,'#166753')+radius(x2,y2,'#ad591e')+text(455,cy+5,'x')+text(cx+8,20,'y')+
+    text(20,309,'зелёный — α')+text(398,309,'оранжевый — 2α'));
+   const given=st.offset===0?'Из задачи: sin α = '+opposite+'/'+hypotenuse+', cos α = '+adjacent+'/'+hypotenuse+'.':
+    'Новый угол α ≈ '+num(angle)+'°. Его синус ≈ '+num(single.sin)+', косинус ≈ '+num(single.cos)+'.';
+   output.textContent=given+(st.projection==='show'?' Высота второй точки: sin 2α ≈ '+num(doubled.sin)+'. Сравни с удвоенным произведением sin α · cos α.':' Сначала найди произведение координат зелёной точки, затем удвой его.');
+  };
  }else if(type==='circle'){
  range('angle','Угол α в градусах',-360,720,15,30);draw=()=>{const v=circle(st.angle),cx=300,cy=170,r=125,x=cx+r*v.cos,y=cy-r*v.sin;chart.innerHTML=svg(ln(140,cy,460,cy)+ln(cx,15,cx,325)+`<circle cx="300" cy="170" r="125" fill="none" stroke="#8aa99b" stroke-width="2"/>`+ln(cx,cy,x,y,'#166753',3)+ln(x,y,x,cy,'#c07336',2,'5 4')+ln(cx,cy,x,cy,'#246ba2',3)+dot(x,y)+text(460,165,'cos α')+text(308,20,'sin α'));output.textContent=`α = ${st.angle}° = (${num(st.angle/180)})π рад (коэффициент может быть округлён). cos α ≈ ${num(v.cos)}; sin α ≈ ${num(v.sin)}; tg α ${v.tan===null?'не определён': '≈ '+num(v.tan)}. Синяя проекция — косинус, высота точки — синус. Сравни углы α и α + 360°.`;};
  }else if(type==='derivative'){

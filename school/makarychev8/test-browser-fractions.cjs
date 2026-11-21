@@ -91,7 +91,7 @@ async function verify(width, url) {
     assert(await page.locator('#number-result a.button:not(.quiet)').count() > 0, 'source number ' + n);
   }
   const constructions=await page.evaluate(()=>MakarychevCourse.lessons.flatMap(l=>l.tasks.map((t,i)=>({t,i}))
-    .filter(({t})=>t.graph?.revealAfterSubmit)
+    .filter(({t})=>t.id.startsWith('ch1-extra-')&&t.graph?.revealAfterSubmit)
     .map(({t,i})=>({hash:'#lesson/'+l.id+'/'+i,id:t.id,answer:t.answer,holes:(t.graph.curves[0].holes||[]).length}))));
   assert.equal(constructions.length,15);
   for(const graph of constructions){

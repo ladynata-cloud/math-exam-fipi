@@ -60,9 +60,16 @@ const volumes = require('../stereo-textbook/box-volumes.json');
 const prismVolumes = require('../stereo-textbook/prism-volumes.json');
 const sections = require('../stereo-textbook/cross-sections.json');
 const oblique = require('../stereo-textbook/oblique-prisms.json');
-const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards, ...round.cards, ...volumes.cards, ...prismVolumes.cards, ...sections.cards, ...oblique.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
+const pyramids = require('../stereo-textbook/pyramid-volumes.json');
+const projections = require('../stereo-textbook/pyramid-projections.json');
+const frusta = require('../stereo-textbook/pyramid-frusta.json');
+const cones = require('../stereo-textbook/cone-volumes.json');
+const sectors = require('../stereo-textbook/cone-nets-and-frusta.json');
+const spheres = require('../stereo-textbook/sphere-measures.json');
+const sphereApplications = require('../stereo-textbook/sphere-applications.json');
+const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards, ...round.cards, ...volumes.cards, ...prismVolumes.cards, ...sections.cards, ...oblique.cards, ...pyramids.cards, ...projections.cards, ...frusta.cards, ...cones.cards, ...sectors.cards, ...spheres.cards, ...sphereApplications.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
 const amendmentChains = {};
-for (const supplement of [...supplements, sphere, mixed, circumspheres, round, volumes, prismVolumes, sections, oblique]) {
+for (const supplement of [...supplements, sphere, mixed, circumspheres, round, volumes, prismVolumes, sections, oblique, pyramids, projections, frusta, cones, sectors, spheres, sphereApplications]) {
   for (const [file, amendment] of Object.entries(supplement.files)) {
     const chain = amendmentChains[file] ||= [];
     if (chain.length) assert.equal(amendment.beforeSHA256, chain.at(-1).afterSHA256, 'exact amendment chain: ' + file);
@@ -80,7 +87,16 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
-  "geometry-course/textbook/assets/additional-lessons.js": "1114f6deb3feb16910065a5a38cf3f40a9c96c2917c3e61f79126452b82da985",
+  "geometry-course/textbook/data/vector-applications.json": "1227351c9822dc500b156ab9ec8e0fa0108fb80d9daf60e3315f0798037fce5d",
+  "geometry-course/textbook/data/vector-midpoint-proofs.json": "61a8005acb5f11baac33ae01b98ff4c7f2473d071c28afd285c66365e872fa7b",
+  "geometry-course/textbook/data/scalar-problems.json": "5c031761c712f9ae51e4bdeb7f1e13d7fa7e5be6fb507d8b98dc83c3d7875686",
+  "geometry-course/textbook/data/vector-scaling.json": "0d409c98b6f1c53fbeea30103df9fce7d826cf04d19de26c205f958eba51cdba",
+  "geometry-course/textbook/data/vector-identities.json": "6c73d491b2378ffb5a2cb4808c286e54ac078cf0c5b55a575778924d91bbb7b8",
+  "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
+  "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
+  "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
+  "geometry-course/textbook/assets/additional-lessons.js": "04b0bd84bd55461ce648e70ceaa4ca6150469057e51941c760d9c01af1662278",
+  "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
   "geometry-course/textbook/data/area-similarity-lessons.json": "a03d352a79dda749b3ed61d60c1ac40460a4a4e5f5eabdccaadd4bbe9401aa43",
@@ -110,7 +126,7 @@ function verify(group, read = file => fs.readFileSync(path.join(root, file)), ex
 for (const group of baseline.groups) verify(group);
 const geometry = require(root + '/geometry-course/textbook/data/course.json');
 const currentStereo = require(root + '/stereo-course/textbook/data/course.json');
-assert.equal(currentStereo.lessons.length, 781);
+assert.equal(currentStereo.lessons.length, 837);
 const stereo = require('../stereo-textbook/additional414-baseline.cjs').previousCourse(currentStereo, require(root + '/stereo-course/textbook/source-index.json'));
 const first = require(root + '/learning/atanasyan-first-steps/course.json');
 const literacy = require(root + '/stereo-course/literacy/data/course.json');

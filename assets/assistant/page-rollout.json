@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 630,
-    "covered": 628,
+    "total": 631,
+    "covered": 629,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -39,7 +39,8 @@
     "trainers/oge-basics/multiplication-division/division-path.html",
     "trainers/school-workshop-check/index.html",
     "trainers/tyurin-statistics/index.html",
-    "trainers/makarychev9-2017/index.html"
+    "trainers/makarychev9-2017/index.html",
+    "trainers/makarychev7-2014/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -2225,10 +2226,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "f650225a6ec5416c928e2fe306f9b11912f3d1f00a22d83e7d5e0b456d2c7105",
-      "afterSha256": "a7c91ad012431c62dea90685021bcf835fb9cef361e65804ad5840288b64cfb7",
+      "beforeSha256": "05c2c4c6d11834216f7c766a8d5e593bfdd1888407f0bd330b3fd9af7b2e4da3",
+      "afterSha256": "e24bd38b29d82e12ebf8fe8540c6a6640ba11f82f2b89e4563d53d3b03b9a922",
       "placement": "before-head-close",
-      "sourceSha": "19b33486332fce8cfaaea77fad4b782eb9ecaad4"
+      "sourceSha": "8ccf2845f330c1c25677f5aec8eef1aba728a144"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -2242,10 +2243,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "029c761ef31f0dd035275b7ab0db73b9ba3c895ad43e3c683ae59ba2830be2b8",
-      "afterSha256": "be31dde78b849510e6a79e75a8cb27477848ab917638d342883a04c28fde3e16",
+      "beforeSha256": "1005795160b70519452fe60a040a2ad7484f89d2802bf77ebff9beb6d89482be",
+      "afterSha256": "acac9e34a3f04fbfa91a2539ef8a3e328c2b2c33a8c29a8ab8a5765a8bcb54e8",
       "placement": "before-head-close",
-      "sourceSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0"
+      "sourceSha": "cf3c533745f2c69c4a164d8821484cc437c40287"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -4025,7 +4026,8 @@
     "school/peterson6/textbook/index.html": "sitemap",
     "trainers/peterson6-workshop/index.html": "sitemap",
     "trainers/merzlyak9-2014/index.html": "school/index.html",
-    "trainers/makarychev9-2017/index.html": "school/index.html"
+    "trainers/makarychev9-2017/index.html": "school/index.html",
+    "trainers/makarychev7-2014/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6606,6 +6608,33 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "19b33486332fce8cfaaea77fad4b782eb9ecaad4",
+      "sourceBaseSha": "f9162f738221882f7159357e9feb6371c8d5e146",
+      "task": "docs/tasks/WORKSHOP_MAKARYCHEV7_2014.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Обновлена проверенная ссылка на карту учебника 2014 года."
+    },
+    {
+      "previousBaseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+      "sourceBaseSha": "cf3c533745f2c69c4a164d8821484cc437c40287",
+      "task": "docs/tasks/MAKARYCHEV8_531_556.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Сверена страница Макарычева после добавления решения задач с квадратными уравнениями."
+    },
+    {
+      "previousBaseSha": "f9162f738221882f7159357e9feb6371c8d5e146",
+      "sourceBaseSha": "8ccf2845f330c1c25677f5aec8eef1aba728a144",
+      "task": "docs/tasks/WORKSHOP_MAKARYCHEV7_2014.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверены восемь карт изданий и дополнительные задания Виленкина по печатным номерам."
     }
   ],
   "coverageUpdates": [
@@ -6738,6 +6767,14 @@
         "books/index.html"
       ],
       "reason": "The canonical book catalog is linked from the homepage and sitemap and carries the shared public navigator."
+    },
+    {
+      "sourceBaseSha": "f9162f738221882f7159357e9feb6371c8d5e146",
+      "task": "docs/tasks/WORKSHOP_MAKARYCHEV7_2014.md",
+      "addedPages": [
+        "trainers/makarychev7-2014/index.html"
+      ],
+      "reason": "Практикумы по п. 9 и 10 издания 2014 года."
     }
   ]
 }
