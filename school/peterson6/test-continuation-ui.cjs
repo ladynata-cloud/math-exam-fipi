@@ -1725,3 +1725,15 @@ test('measure both decimal-line crossings, all three water stages and eight prin
   });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('check quantifiers and boundary inclusions, both progressions, eight Euclidean remainders and reversed tasks',()=>{
+ const f=fixture(null,null,true);try{
+  const texts=['неотрицателен','Подходящий пример','Контрпример','подходящая пара','-4 < x < 4','x ≤ -3 или 3 ≤ x','-3 ≤ x ≤ -1','x < -1 или 3 < x','-4, -3, -2','-1, 0, 1, 2, 3','Остаток 1','Остаток 2','Остаток 6','Остаток 3','Остаток 2','Остаток 3','Остаток 6','Остаток 7','разность 66','сумма 99'];
+  texts.forEach((expected,i)=>{
+   f.nav('#lesson/p39/'+(76+i));f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(expected),[i,f.q('#model .pm-result').textContent]);
+   if(i>=4&&i<=7){const state=i===5||i===6?'included':'excluded';assert.equal(f.d.querySelectorAll('#model [data-boundary="'+state+'"]').length,2);assert.equal(f.d.querySelectorAll('#model [data-solution-piece]').length,i===5||i===7?2:1);}
+   const original=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.notEqual(f.q('#model').textContent,original);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
