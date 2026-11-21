@@ -1645,3 +1645,18 @@ test('resolve each part of the second-volume proportion chapter including true c
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('follow the two printed unit grids with distinct origins, source positions and a new route',()=>{
+ const f=fixture(null,null,true);try{
+  const source=[[-4,3],[5,4],[4,-1],[-3,-2],[4,1],[-5,3],[-3,-2],[5,-3]];
+  for(let i=0;i<source.length;i++){
+   const [x,y]=source[i],label='ABCD'[i%4];f.nav('#lesson/p39/'+(4+i));const circles=[...f.d.querySelectorAll('#task-figure [data-grid-point]')];
+   assert.equal(circles.length,4);assert.equal(circles[i%4].getAttribute('cx'),String(151+19*x));assert.equal(circles[i%4].getAttribute('cy'),String(124-19*y));
+   f.click('[data-lesson-help="model"] > summary');const [field,stage]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);
+   f.event(stage,'1','change');assert.equal(f.d.querySelectorAll('#model [data-grid-leg]').length,1);
+   f.event(stage,'2','change');assert.equal(f.d.querySelectorAll('#model [data-grid-leg]').length,2);assert(f.q('#model').textContent.includes(label+'('+x+'; '+y+')'));
+   f.event(field,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model').textContent.includes(label+'('+(-y)+'; '+x+')'));
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
