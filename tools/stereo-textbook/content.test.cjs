@@ -108,4 +108,5 @@ require('./coordinate-span-ratios.test.cjs');
 require('./spatial-points-and-centroid.test.cjs');
 require('./midpoints-and-vector-lengths.test.cjs');
 require('./spatial-distances-and-equal-loci.test.cjs');
+require('./coordinate-spheres-section-end.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

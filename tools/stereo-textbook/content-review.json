@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T22:42:51Z",
-  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–676, with 1,208 reviewed cards. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T22:49:04Z",
+  "scope": "Chapters I–VI and complete chapter VII paragraph 1: points 71–75 and all 45 exercises 637–681, with 1,221 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2049,6 +2049,28 @@
       ],
       "evidence": "tools/stereo-textbook/spatial-distances-and-equal-loci.json",
       "mathematicalReport": "tools/stereo-textbook/spatial-distances-and-equal-loci.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 170, original printed pages 170–171 and answer key 270 compared visually, including R=√2 and the three half-coefficients in 681г.",
+      "reviewedAt": "2026-11-21T22:49:04Z",
+      "scope": "Every printed part of 677–681, the hypotenuse midpoint with independent height and both half-coefficients, six complete sphere equations, six centre/radius readings and positive RHS proofs, all source pages 170–171 and printed answer 270.",
+      "cardIds": [
+        "ex-main-0677",
+        "ex-main-0678-a",
+        "ex-main-0678-b",
+        "ex-main-0678-c",
+        "ex-main-0679-a",
+        "ex-main-0679-b",
+        "ex-main-0679-c",
+        "ex-main-0680-a",
+        "ex-main-0680-b",
+        "ex-main-0681-a",
+        "ex-main-0681-b",
+        "ex-main-0681-c",
+        "ex-main-0681-d"
+      ],
+      "evidence": "tools/stereo-textbook/coordinate-spheres-section-end.json",
+      "mathematicalReport": "tools/stereo-textbook/coordinate-spheres-section-end.test.cjs"
     }
   ],
   "cards": [
@@ -6883,6 +6905,58 @@
     {
       "id": "ex-main-0676-b",
       "sha256": "32bf1a78ee943d55c7ce273474ade4065ae0c03ff93e67fddd2a043ce59082cf"
+    },
+    {
+      "id": "ex-main-0677",
+      "sha256": "c1e29951f3ada8101f2f7549414c3e205b046ecb5b75c06e13daf42d2033a45e"
+    },
+    {
+      "id": "ex-main-0678-a",
+      "sha256": "668c8585f04992b6b6cc2621fa0d4ec8c48de2ecff0fb0be38c71c779c05e446"
+    },
+    {
+      "id": "ex-main-0678-b",
+      "sha256": "886b8511f30f2bce9e3d6937e9ac8c4af6b8330e9249627d1efb3957792fa231"
+    },
+    {
+      "id": "ex-main-0678-c",
+      "sha256": "cde92b129fd717d56782180bca9d627960b1c92e8cd6bfea05981e7ba507fce4"
+    },
+    {
+      "id": "ex-main-0679-a",
+      "sha256": "caa7dedb4256c1086a60d8967d18d242e572f32e119dd37a172a9b9c7628420a"
+    },
+    {
+      "id": "ex-main-0679-b",
+      "sha256": "a5d206d0a2fd459c1c659e94445e62b344458f7a8eb4643add28df8db2f2935d"
+    },
+    {
+      "id": "ex-main-0679-c",
+      "sha256": "fd8e94042a99595a53741a2a79cfda6692e27f69b865ef54ac0830c4202dc547"
+    },
+    {
+      "id": "ex-main-0680-a",
+      "sha256": "b00f5edab8416b5d99a359393199a7fca7822f5e26988db85029196ce6ae3bf9"
+    },
+    {
+      "id": "ex-main-0680-b",
+      "sha256": "7e5941b83937547539e47122d77dfc84e1d178f4b35cc321f50a606639f57ca7"
+    },
+    {
+      "id": "ex-main-0681-a",
+      "sha256": "c11103c06358c428bd1e5988a98486720a7d1616c742e87b75c45c2880df39de"
+    },
+    {
+      "id": "ex-main-0681-b",
+      "sha256": "47c944078e2e0cd22effc1bd08c78b9e1f68a75594be2cc04a2553534978e548"
+    },
+    {
+      "id": "ex-main-0681-c",
+      "sha256": "4bde28831d98f5229ddd86015a1f4a928f0b427ada69cd2aa2b5240ec1f73005"
+    },
+    {
+      "id": "ex-main-0681-d",
+      "sha256": "1d1dd614da08156317b38a2a7dc89094da5f6e0402236ebcb17d7e2cac43d971"
     }
   ]
 }
