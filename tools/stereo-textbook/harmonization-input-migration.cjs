@@ -17,6 +17,16 @@ function replaceOnce(source, from, to) {
 }
 function beforeHarmonization(file, bytes, record = manifest) {
   if (file !== FILE) return bytes;
+  if (hash(bytes) === '0645e81d2dcc53222f766fcb68e6cf28049f31d5568f93c0f5711ef3f6010d8c') {
+    const scoped = `   // Volume lessons have a reviewed phone layout that keeps their full diagram above the fold.
+   get compactPreview(){
+    return lesson.source.chapter === 'V. Объёмы тел' && model.clientWidth > 0 && model.clientWidth < 400;
+   },`;
+    const original = `   // The renderer re-reads this when its container changes size. Keep a full-width figure on narrow reading pages.
+   get compactPreview(){return model.clientWidth > 0 && model.clientWidth < 400;},`;
+    bytes = Buffer.from(replaceOnce(bytes.toString('utf8'), scoped, original));
+    assert.equal(hash(bytes), '7d9b56f655d2e1e6fe27ddd3cc32e7dbe70c67eca753ff39e04126f844ce37ac', 'only scope the compact reading height to the reviewed volume chapter');
+  }
   if (hash(bytes) === '7d9b56f655d2e1e6fe27ddd3cc32e7dbe70c67eca753ff39e04126f844ce37ac') {
     const source = bytes.toString('utf8');
     const compact = `viewer=sceneViewer.mount(model,lesson.visualization.model,{

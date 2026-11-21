@@ -269,22 +269,35 @@ function firstErrorsHTML(t,s){
     helpOpen[taskId] = value;
     try { localStorage.setItem(HELP_KEY, JSON.stringify(helpOpen)); } catch (_) {}
   }
-  // A saved link or a board snapshot always uses the original array index.
+  // Course data is immutable. Saved links and board snapshots use the original array index.
+  const readingOrders = new WeakMap();
+  const subpartOrder = new Intl.Collator('ru', { numeric: true });
   function readingOrder(lesson) {
-    const indices = lesson.tasks.map((_, index) => index);
-    if (!lesson.orderBySource) return indices;
-    return indices.sort((a, b) => {
-      const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
-      return left.exercise - right.exercise ||
-        String(left.subpart || '').localeCompare(String(right.subpart || ''), 'ru', { numeric: true });
-    });
+    let indices = readingOrders.get(lesson);
+    if (indices) return indices;
+    indices = lesson.tasks.map((_, index) => index);
+    if (lesson.orderBySource) {
+      indices.sort((a, b) => {
+        const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
+        return left.exercise - right.exercise ||
+          subpartOrder.compare(String(left.subpart || ''), String(right.subpart || ''));
+      });
+    }
+    readingOrders.set(lesson, indices);
+    return indices;
   }
   function partStart(part) {
     const first = D.lessons.find(lesson => partOf(lesson) === part);
     if (!first?.orderBySource) return '';
     const index = readingOrder(first)[0];
+    const section = first.completeSourceSection;
+    const coverage = section ? '<p class="small">В теме «' + e(first.title) + '» разобраны №' +
+      section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
+      section.lastPage + '). Число карточек с разбором — ' + first.tasks.filter(task =>
+        task.source?.type === 'textbook' && task.source.exercise >= section.first && task.source.exercise <= section.last).length +
+      '.</p>' : '';
     return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
-      'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>';
+      'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>' + coverage;
   }
   function partOf(lesson){return Number(lesson?.part)||1;}
   function sourceLimit(part){return ({1:497,2:589,3:778})[part]||497;}

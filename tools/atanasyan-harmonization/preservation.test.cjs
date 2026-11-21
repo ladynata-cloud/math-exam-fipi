@@ -74,9 +74,12 @@ const normalPrismApplications = require('../stereo-textbook/normal-prism-applica
 const pyramidAngleApplications = require('../stereo-textbook/pyramid-angle-applications.json');
 const pyramidComparisonApplications = require('../stereo-textbook/pyramid-comparison-applications.json');
 const cylinderApplications = require('../stereo-textbook/cylinder-applications.json');
-const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards, ...round.cards, ...volumes.cards, ...prismVolumes.cards, ...sections.cards, ...oblique.cards, ...pyramids.cards, ...projections.cards, ...frusta.cards, ...cones.cards, ...sectors.cards, ...spheres.cards, ...sphereApplications.cards, ...volumeSelfcheck.cards, ...prismApplications.cards, ...normalPrismApplications.cards, ...pyramidAngleApplications.cards, ...pyramidComparisonApplications.cards, ...cylinderApplications.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
+const inscribedVolumeApplications = require('../stereo-textbook/inscribed-volume-applications.json');
+const sphereVolumeAngles = require('../stereo-textbook/sphere-volume-angles.json');
+const volumeChapterEnd = require('../stereo-textbook/volume-chapter-end.json');
+const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards, ...round.cards, ...volumes.cards, ...prismVolumes.cards, ...sections.cards, ...oblique.cards, ...pyramids.cards, ...projections.cards, ...frusta.cards, ...cones.cards, ...sectors.cards, ...spheres.cards, ...sphereApplications.cards, ...volumeSelfcheck.cards, ...prismApplications.cards, ...normalPrismApplications.cards, ...pyramidAngleApplications.cards, ...pyramidComparisonApplications.cards, ...cylinderApplications.cards, ...inscribedVolumeApplications.cards, ...sphereVolumeAngles.cards, ...volumeChapterEnd.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
 const amendmentChains = {};
-for (const supplement of [...supplements, sphere, mixed, circumspheres, round, volumes, prismVolumes, sections, oblique, pyramids, projections, frusta, cones, sectors, spheres, sphereApplications, volumeSelfcheck, prismApplications, normalPrismApplications, pyramidAngleApplications, pyramidComparisonApplications, cylinderApplications]) {
+for (const supplement of [...supplements, sphere, mixed, circumspheres, round, volumes, prismVolumes, sections, oblique, pyramids, projections, frusta, cones, sectors, spheres, sphereApplications, volumeSelfcheck, prismApplications, normalPrismApplications, pyramidAngleApplications, pyramidComparisonApplications, cylinderApplications, inscribedVolumeApplications, sphereVolumeAngles, volumeChapterEnd]) {
   for (const [file, amendment] of Object.entries(supplement.files)) {
     const chain = amendmentChains[file] ||= [];
     if (chain.length) assert.equal(amendment.beforeSHA256, chain.at(-1).afterSHA256, 'exact amendment chain: ' + file);
@@ -100,6 +103,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/coordinate-coefficients.json": "d5faaa4ec6da050268895496c94f31053786567701de7b4c364b65aba16bf3a9",
   "geometry-course/textbook/data/coordinate-relations.json": "f4d52e1e905701c2ea90517ac69003dc0eaa4aae9e15e5b1596c4124311b274b",
   "geometry-course/textbook/data/coordinate-grid.json": "fb6c040e8619e360592ed00fe918c694945bfffedab935cff77a98c7e2a41c99",
+  "geometry-course/textbook/data/coordinate-actions.json": "5e225d5b4f78991aa476bda1bf874ae70b856165d2df58802fadf990e532214b",
   "geometry-course/textbook/data/vector-applications.json": "1227351c9822dc500b156ab9ec8e0fa0108fb80d9daf60e3315f0798037fce5d",
   "geometry-course/textbook/data/vector-midpoint-proofs.json": "61a8005acb5f11baac33ae01b98ff4c7f2473d071c28afd285c66365e872fa7b",
   "geometry-course/textbook/data/scalar-problems.json": "5c031761c712f9ae51e4bdeb7f1e13d7fa7e5be6fb507d8b98dc83c3d7875686",
@@ -108,7 +112,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "0779ce220045aca31a4ddb25bf291bbf1f86eb8a6a86dba0c63c80568c5b5c10",
+  "geometry-course/textbook/assets/additional-lessons.js": "b22691c6adced5264cc8989606034c37e7e97e90434c13f45b9443628811e867",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
@@ -139,7 +143,7 @@ function verify(group, read = file => fs.readFileSync(path.join(root, file)), ex
 for (const group of baseline.groups) verify(group);
 const geometry = require(root + '/geometry-course/textbook/data/course.json');
 const currentStereo = require(root + '/stereo-course/textbook/data/course.json');
-assert.equal(currentStereo.lessons.length, 880);
+assert.equal(currentStereo.lessons.length, 897);
 const stereo = require('../stereo-textbook/additional414-baseline.cjs').previousCourse(currentStereo, require(root + '/stereo-course/textbook/source-index.json'));
 const first = require(root + '/learning/atanasyan-first-steps/course.json');
 const literacy = require(root + '/stereo-course/literacy/data/course.json');

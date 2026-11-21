@@ -141,6 +141,31 @@ function decimalStepInstructions(){
   ok(product.$('label[for=answer]').textContent.includes('до сокращения'));
   equal(product.errors,[]);product.close();
 }
+function compassRegression(){
+  const f=boot(),measure='v5f-printed-5-2',arcs='v5f-printed-5-3';
+  f.route('#v5-unit/25');ok(f.$('a[href="#lesson/'+measure+'"]'));ok(f.$('a[href="#lesson/'+arcs+'"]'));
+  for(let seed=0;seed<90;seed++){
+    const t=f.M.generate(measure,seed),m=t.data.measurement;
+    equal(t.steps[1].answer-t.steps[0].answer,m.r);equal(t.answer,2*m.r);
+    const p=f.M.generate(arcs,seed),letters=p.data.arcs.letters,qs=[...p.steps,p];
+    for(let k=0;k<6;k++){
+      const q=qs[k],a=letters[2*Math.floor(k/2)],b=letters[(2*Math.floor(k/2)+2)%6];
+      equal(q.arcNames.length,k%2?6:2);
+      for(const n of q.arcNames){ok(f.M.accepts(n,q));ok([a+b,b+a].includes(n[0]+n[2]));ok(n[1]!==n[0]&&n[1]!==n[2]);}
+      for(const n of q.otherArc)ok(!f.M.accepts(n,q));
+    }
+  }
+  f.route('#lesson/'+arcs);f.submit('KB');equal(f.snapshot().scene.attempt,0);
+  f.submit('KDB');ok(f.snapshot().scene.message.includes('другую дугу'));
+  f.submit('ВРК');ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');
+  const reread=boot('#lesson/'+arcs,f.saved());equal(reread.snapshot().scene.step,1);reread.close();
+  const data=f.M.generate(arcs,0);
+  for(const t of [...data.steps.slice(1),data]){
+    f.submit(t.arcNames.at(-1));ok(f.snapshot().scene.correct);
+    if(t!==data)f.click('[data-cmd=next]');
+  }
+  equal(f.errors,[]);f.close();
+}
 function circlePointsRegression(){
   const f=boot(), id='v5f-printed-5-1', course=f.C.byId[id];
   equal([course.source.part,course.source.point,course.source.page],[2,25,7]);
@@ -151,7 +176,7 @@ function circlePointsRegression(){
   targets.forEach((t,i)=>ok(f.M.accepts(answers[i],t)));
   f.route('#lesson/'+id);f.submit('X');equal(f.snapshot().scene.attempt,0);
   f.submit('MLDEBAO');ok(f.snapshot().scene.message.includes('изнутри'));
-  f.submit('л, В, д');ok(f.snapshot().scene.correct);
+  f.submit('л, В, д');ok(f.snapshot().scene.correct);ok(!f.snapshot().scene.assisted);equal(f.snapshot().scene.hintLevels,{});
   f.click('[data-cmd=next]');const reloaded=boot('#lesson/'+id,f.saved());equal(reloaded.snapshot().scene.step,1);reloaded.close();
   const variants=new Set();
   for(let seed=0;seed<90;seed++){
@@ -170,7 +195,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),[1,2,3,4,5,6,7,8].map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:19},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -302,8 +327,119 @@ function weatherDiaryRegression(){
   f.click('[data-cmd=mode][data-value=learn]');equal(f.snapshot().scene.model.dayo,api.code(0,false,10));
   equal(f.errors,[]);f.close();
 }
+function pointEndRegression(){
+  const ids=Array.from({length:5},(_,i)=>'v5f-printed-1-'+(i+9)),[weekId,lettersId,grainId,produceId,calcsId]=ids;
+  const f=boot('#lesson/'+weekId),get=(id,s=0)=>f.M.generate(id,s),week=get(weekId),letter=get(lettersId),grain=get(grainId),produce=get(produceId),calcs=get(calcsId);
+  ids.forEach(id=>{equal(f.C.byId[id].source.page,11);equal(f.C.byId[id].source.part,1);});
+  equal(plain([week.answer,...week.alternatives]),[[1,3,2,4],[3,4,1,2]]);
+  equal(plain(letter.answer),[34,22,9,4,28,29]);equal(plain(letter.clarifications[0].value),[31,22,9,3,27,25]);
+  equal(grain.answer,208);equal(produce.answer,1060);equal(plain(calcs.steps.map(s=>s.answer)),[1221,74,406,8550,1089,85,1224,33]);
+  const distinct=new Set();
+  for(let seed=1;seed<=80;seed++){
+    const week=get(weekId,seed),letters=get(lettersId,seed),grain=get(grainId,seed),produce=get(produceId,seed),calcs=get(calcsId,seed);
+    const variants=[];
+    for(const a of week.data.available[0])for(const b of week.data.available[1])for(const c of week.data.available[2])for(const d of week.data.available[3])if(new Set([a,b,c,d]).size===4)variants.push([a,b,c,d].join(';'));
+    equal(variants.length,2);equal([week.answer,...week.alternatives].map(row=>row.join(';')).sort(),variants.sort());variants.forEach(plan=>ok(f.M.accepts(plan,week)));
+    const totals=Array.from('анышли',letter=>Array.from(letters.data.texts.join(' ').toLowerCase()).filter(x=>x===letter).length);
+    equal(plain(letters.answer),totals);distinct.add(letters.conditionKey);
+    equal(grain.answer,grain.data.one*2-grain.data.less);equal(produce.answer,4*produce.data.one-produce.data.less);
+    for(const entry of calcs.data.cases){
+      const m=entry[0].match(/\d+|[·():+−]/g),op=(x,o,y)=>o==='·'?x*y:o===':'?x/y:o==='+'?x+y:x-y;let expected;
+      if(m.length===3)expected=op(+m[0],m[1],+m[2]);
+      else if(m[0]==='(')expected=op(op(+m[1],m[2],+m[3]),m[5],+m[6]);
+      else if(m[2]==='(')expected=op(+m[0],m[1],op(+m[3],m[4],+m[5]));
+      else expected=op(op(+m[0],m[1],+m[2]),m[3],+m[4]);
+      equal(expected,entry[1]);ok(Number.isSafeInteger(entry[1]));
+    }
+  }
+  ok(distinct.size>60);f.submit('1;3');equal(f.snapshot().scene.attempt,0);
+  f.submit('3;4;1;2');equal(f.snapshot().scene.attempt,0);ok(f.snapshot().scene.message.includes('другой ветки'));
+  f.submit('1;3;1;2');ok(f.snapshot().scene.message.includes('повторяется'));
+  for(const row of week.steps){f.submit(value(f.M,row));f.click('[data-cmd=next]');}
+  f.submit('3;4;1;2');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+lettersId);f.submit('31');equal(f.snapshot().scene.attempt,0);ok(f.snapshot().scene.message.includes('цитаты'));
+  for(const row of letter.steps){f.submit(value(f.M,row));f.click('[data-cmd=next]');}
+  f.submit('31;22;9;3;27;25');equal(f.snapshot().scene.attempt,0);
+  f.submit('34;22;9;4;28;29');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+grainId);f.submit('8');ok(f.snapshot().scene.message.includes('на сколько меньше'));
+  f.route('#lesson/'+produceId);f.submit('250');f.click('[data-cmd=next]');f.submit('273');ok(f.snapshot().scene.message.includes('количество овощей'));
+  for(const id of ids){
+    f.route('#lesson/'+id);
+    ok(f.$('#model svg,#model table'));ok(f.$('#task-panel table'));
+    const task=get(id);const model=f.w.Vilenkin5Numbered.explore(f.C.byId[id],f.snapshot().scene.model,task);ok(Number.isInteger(model.answer));
+  }
+  equal(f.errors,[]);f.close();
+}
+function printedDigitsRegression(){
+  const f=boot(),D=f.w.Vilenkin5PrintedDigits,ids=[14,15,16].map(n=>'v5f-printed-1-'+n);
+  const [reading,compose,dictate]=ids.map(id=>f.M.generate(id,0));
+  equal(plain(reading.data.values),[27,80,279,701,718,3781,7023,70907,300007]);equal(reading.steps.length,27);
+  equal(plain(compose.data.values),[507,960,2341,5632,2870,8007]);equal(compose.steps.length,12);
+  equal(plain(dictate.data.values),[78,5412,10005023,10002064000,117000002030]);
+  equal(plain(dictate.table.rows.map(row=>row[1])),['семьдесят восемь','пять тысяч четыреста двенадцать','десять миллионов пять тысяч двадцать три','десять миллиардов два миллиона шестьдесят четыре тысячи','сто семнадцать миллиардов две тысячи тридцать']);
+  const norm=s=>s.replace(/ё/g,'е');
+  const groups=new Map([['тысяча',1000],['тысячи',1000],['тысяч',1000],['миллион',1e6],['миллиона',1e6],['миллионов',1e6],['миллиард',1e9],['миллиарда',1e9],['миллиардов',1e9]]);
+  const small=new Map([['ноль',0],['один',1],['одна',1],['два',2],['две',2],['три',3],['четыре',4],['пять',5],['шесть',6],['семь',7],['восемь',8],['девять',9],['десять',10],['одиннадцать',11],['двенадцать',12],['тринадцать',13],['четырнадцать',14],['пятнадцать',15],['шестнадцать',16],['семнадцать',17],['восемнадцать',18],['девятнадцать',19],['двадцать',20],['тридцать',30],['сорок',40],['пятьдесят',50],['шестьдесят',60],['семьдесят',70],['восемьдесят',80],['девяносто',90],['сто',100],['двести',200],['триста',300],['четыреста',400],['пятьсот',500],['шестьсот',600],['семьсот',700],['восемьсот',800],['девятьсот',900]]);
+  function fromWords(s){let base=0,total=0;for(const word of norm(s).split(' ')){if(small.has(word))base+=small.get(word);else {ok(groups.has(word));total+=(base||1)*groups.get(word);base=0;}}return total+base;}
+  [0,1,11,111,1000,2000,11000,12000,21000,22000,111000,112000,1e6,1e9,117000002030,999999999999].forEach(n=>equal(fromWords(D.words(n)),n));
+  for(const n of ['0','117 000 002 030','70 907','70 907','8007'])ok(D.natural(n)!==null);
+  for(const n of ['00','1e9','9,2','12 34',' 1 22','30 0000','+42'])equal(D.natural(n),null);
+  ok(f.M.accepts('Тысяча один.',{v6Full:true,answerFormat:'v5-reading',answer:'одна тысяча один'}));ok(!f.M.accepts('два тысячи',{v6Full:true,answerFormat:'v5-reading',answer:'две тысячи'}));
+  for(let seed=0;seed<100;seed++){
+    const three=ids.map(id=>f.M.generate(id,seed));
+    for(const task of three)for(const n of task.data.values)equal(fromWords(D.words(n)),n);
+    three[0].data.values.forEach((n,i)=>{for(const [offset,digit] of [[1,7],[2,0]]){
+      const ranks=[];for(let pos=0;pos<String(n).length;pos++)if(Math.floor(n/(10**pos))%10===digit)ranks.push(pos+1);
+      equal(plain(three[0].steps[3*i+offset].answer),ranks.length?ranks:[0]);
+    }});
+  }
+  f.route('#v5-unit/2');ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));
+  f.route('#lesson/'+ids[0]);f.submit('27');equal(f.snapshot().scene.attempt,0);f.submit('двадцать ноль семь');ok(f.snapshot().scene.message.includes('нулевая')||f.snapshot().scene.message.includes('Нулевая'));
+  for(const row of reading.steps){f.submit(value(f.M,row));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
+  f.submit(reading.answer);ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[1]);for(const row of compose.steps){
+    const ans=row.answerFormat==='v5-natural'?String(row.answer).replace(/\B(?=(\d{3})+(?!\d))/g,' '):row.answer;
+    f.submit(ans);ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');
+  }
+  f.submit('8 007');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[2]);f.submit('7 8');equal(f.snapshot().scene.attempt,0);
+  for(const row of dictate.steps){f.submit(String(row.answer).replace(/\B(?=(\d{3})+(?!\d))/g,' '));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
+  f.submit('117 000 002 030');ok(f.snapshot().scene.correct);equal(f.errors,[]);f.close();
+}
+function printedClassesRegression(){
+  const f=boot(),D=f.w.Vilenkin5PrintedDigits,ids=[17,18,19].map(n=>'v5f-printed-1-'+n),[parts,spoken,units]=ids.map(id=>f.M.generate(id,0));
+  equal(plain(parts.data.values),[3042,14670,200418,4290000,1029503731,48000790001,400300987654,505050505050]);
+  equal(plain(parts.steps.map(s=>s.answer)),['3 042','14 670','200 418','4 290 000','1 029 503 731','48 000 790 001','400 300 987 654','505 050 505 050']);
+  equal(plain(spoken.data.values),[407,7003,80403,6000730249,41000604000,32072000000,120003040900,79740000600,1000000044,71004000010,1000100321,494274303101]);
+  equal(spoken.steps[3].answer,'шесть миллиардов семьсот тридцать тысяч двести сорок девять');
+  equal(spoken.steps[8].answer,'один миллиард сорок четыре');
+  equal(D.cleanReading('один миллиард одна тысяча'),D.cleanReading('миллиард тысяча'));
+  ok(D.cleanReading('двадцать один миллиард')!==D.cleanReading('двадцать миллиард'));
+  ok(D.cleanReading('двадцать одна тысяча')!==D.cleanReading('двадцать тысяча'));
+  equal(plain(units.data.values),[4000,207000,2031000,74505000,21000000,209000000,993000000000,105307000,27000000823]);
+  const seedSets=ids.map(()=>new Set());
+  for(let seed=1;seed<=80;seed++){
+    const [p,s,u]=ids.map((id,i)=>{const t=f.M.generate(id,seed);seedSets[i].add(t.conditionKey);return t;});
+    p.steps.forEach((step,i)=>{equal(D.splitClasses(step.answer),String(p.data.values[i]));ok(f.M.accepts(step.answer.replaceAll(' ',' | '),step));});
+    s.steps.forEach((step,i)=>equal(step.answer,D.words(s.data.values[i])));
+    u.table.rows.forEach(([_,text],i)=>{
+      const groups=String(text).replace(/(?<=\d) (?=\d{3}(?: |$))/g,'').matchAll(/(\d+)(?: (тыс\.|млн|млрд))?/g);
+      const expected=Array.from(groups,match=>Number(match[1])*({'тыс.':1000,'млн':1e6,'млрд':1e9}[match[2]]||1)).reduce((a,b)=>a+b,0);
+      equal(expected,u.steps[i].answer);
+    });
+  }
+  seedSets.forEach(s=>equal(s.size,80));
+  for(const raw of ['3042','03 042','30 42','3||042','3  42','3 0a2'])equal(D.splitClasses(raw),null);
+  f.route('#lesson/'+ids[0]);f.submit('30 42');ok(f.snapshot().scene.message.includes('Цифры сохранены'));
+  f.submit('3 402');ok(f.snapshot().scene.message.includes('исходные цифры'));
+  parts.steps.forEach(s=>{f.submit(s.answer.replaceAll(' ',' | '));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');});f.submit(parts.answer);ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[1]);spoken.steps.forEach(s=>{f.submit(s.answer);ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');});f.submit('миллиард сорок четыре');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[2]);f.submit('4');ok(f.snapshot().scene.message.includes('количество тысяч'));
+  units.steps.forEach(s=>{f.submit(String(s.answer));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');});f.submit('27 000 000 823');ok(f.snapshot().scene.correct);
+  equal(f.errors,[]);f.close();
+}
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();
+  compassRegression();circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);

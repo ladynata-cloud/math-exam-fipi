@@ -96,3 +96,5 @@ html[data-vilenkin5-readonly=true] #main[data-v5-quality] input,html[data-vilenk
 [data-v5-weather-form] input[type=checkbox]{width:22px;height:22px;min-height:22px;flex:none}
 
 .v5q-place-table .v5q-unit{white-space:nowrap}
+
+.v5q-model svg.v5q-mass-view text{font-size:15px}

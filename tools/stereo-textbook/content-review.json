@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T17:43:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 540, points 52–62 and all chapter V self-checks, with 880 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T18:18:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 556, points 52–62 and all chapter V self-checks, with 897 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1442,6 +1442,50 @@
       ],
       "evidence": "tools/stereo-textbook/cylinder-applications.json",
       "mathematicalReport": "tools/stereo-textbook/cylinder-applications.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:00:00Z",
+      "scope": "Inscribed pyramids, cones and spheres, six independent constructions and contact-circle lengths in exercises 541–546",
+      "cardIds": [
+        "ex-main-0541",
+        "ex-main-0542",
+        "ex-main-0543",
+        "ex-main-0544",
+        "ex-main-0545",
+        "ex-main-0546"
+      ],
+      "evidence": "tools/stereo-textbook/inscribed-volume-applications.json",
+      "mathematicalReport": "tools/stereo-textbook/inscribed-volume-applications.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:11:00Z",
+      "scope": "Inscribed sphere volumes and both axial rectangles for a fixed angle between diagonals in exercises 547–550",
+      "cardIds": [
+        "ex-main-0547",
+        "ex-main-0548",
+        "ex-main-0549",
+        "ex-main-0550"
+      ],
+      "evidence": "tools/stereo-textbook/sphere-volume-angles.json",
+      "mathematicalReport": "tools/stereo-textbook/sphere-volume-angles.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:18:00Z",
+      "scope": "Complete chapter V through exercise 556, circumspheres, a tank, an equal-area comparison and two hollow copper shells",
+      "cardIds": [
+        "ex-main-0551",
+        "ex-main-0552",
+        "ex-main-0553",
+        "ex-main-0554",
+        "ex-main-0555",
+        "ex-main-0556-a",
+        "ex-main-0556-b"
+      ],
+      "evidence": "tools/stereo-textbook/volume-chapter-end.json",
+      "mathematicalReport": "tools/stereo-textbook/volume-chapter-end.test.cjs"
     }
   ],
   "cards": [
@@ -4964,6 +5008,74 @@
     {
       "id": "ex-main-0540",
       "sha256": "581a44be3ca17ad690974f5a167c3662c8c728ac8f39675b74b0399ac11f45bd"
+    },
+    {
+      "id": "ex-main-0541",
+      "sha256": "e41b479206c7ffa6ba07db651ba03573bb1cf35bc573a7d70235be02fc7afd6f"
+    },
+    {
+      "id": "ex-main-0542",
+      "sha256": "931de1ebc3a71b50c2207510552e930ce1d60f02ed9d1d637c69027a4aa7ed54"
+    },
+    {
+      "id": "ex-main-0543",
+      "sha256": "62e4cf2636004037ee17467f2f58c20c4b10149f121835879bd67abce05e3e6d"
+    },
+    {
+      "id": "ex-main-0544",
+      "sha256": "7971c6c1beb2a2d10585d5436776a9895a59ab55b664cbfc01bfd8bccd4b6818"
+    },
+    {
+      "id": "ex-main-0545",
+      "sha256": "dbf85c38bd3c7527adc8be9dd522958f788e9d1ee4790b295446312e19e3f496"
+    },
+    {
+      "id": "ex-main-0546",
+      "sha256": "620972dc089f509fe8c68b53a97b39c2afda3c4327b3bd2e5ebabc6edf42ca02"
+    },
+    {
+      "id": "ex-main-0547",
+      "sha256": "90b15edfd97cd625c157f3e8be26ad507acfb7b08f00146785fa1c372cfc4615"
+    },
+    {
+      "id": "ex-main-0548",
+      "sha256": "d4466599a19f6baa38d2142f4ef07a82ce707a93d518b6362bb328fc3f911b77"
+    },
+    {
+      "id": "ex-main-0549",
+      "sha256": "f450dbeab3a0d4efc6223170650cdcc2ba694c671571206f766e1a2fa42ec72d"
+    },
+    {
+      "id": "ex-main-0550",
+      "sha256": "032a9e3db0f6972588a36d807fb8c5721e1b54ff7ecdf6601e483112bc26b30f"
+    },
+    {
+      "id": "ex-main-0551",
+      "sha256": "089c1306bf3daf912c49c15f0ba4996e73f97938d3771aa7d2ec8aa89ae5b5bc"
+    },
+    {
+      "id": "ex-main-0552",
+      "sha256": "e4f03a8868e6aac8f3f56284530f4b9f64be10a0d20727165ec81cfb5cebd605"
+    },
+    {
+      "id": "ex-main-0553",
+      "sha256": "e4a6efe69adff22328c087cfc7c84a50e2336243eb9694ddd5f886ed0bfcd8b6"
+    },
+    {
+      "id": "ex-main-0554",
+      "sha256": "7a47d127964039b014aa750b56012c4b1aacc37a936bde785cf9fef0ee16c182"
+    },
+    {
+      "id": "ex-main-0555",
+      "sha256": "f036e8476b499799384f64d750cee65945e28f7bd1db7dd6427a161d1592cd23"
+    },
+    {
+      "id": "ex-main-0556-a",
+      "sha256": "aa290e816aa150fbcb47ad0750d79362bfcad722283d8a980535583150212b1c"
+    },
+    {
+      "id": "ex-main-0556-b",
+      "sha256": "2021187572ebb735297928adf0524cc1630fda942970ae6d3b6b2df107d337c6"
     }
   ]
 }

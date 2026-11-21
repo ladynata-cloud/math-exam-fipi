@@ -77,4 +77,7 @@ require('./normal-prism-applications.test.cjs');
 require('./pyramid-angle-applications.test.cjs');
 require('./pyramid-comparison-applications.test.cjs');
 require('./cylinder-applications.test.cjs');
+require('./inscribed-volume-applications.test.cjs');
+require('./sphere-volume-angles.test.cjs');
+require('./volume-chapter-end.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

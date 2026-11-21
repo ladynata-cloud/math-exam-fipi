@@ -87,6 +87,7 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .pm-visual .pm-chart.pcm-segment, .pm-visual .pm-chart.pcm-group-rule { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-ratio-triangle, .pm-visual .pm-chart.pcm-ratio-triangle { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-dissection, .pm-visual .pm-chart.pcm-dissection { min-width: 0; }
+.pm-task-figure .pm-chart.pcm-tangent-nest { min-width: 0; }
 
 </style>
   <style data-inline-source="/trainers/peterson-assistant.css">
@@ -920,6 +921,72 @@ function compareBars(left,right,first,second) {
  }
  return picture;
 }
+const comparisonStories={
+ tram:{unknown:'Во втором вагоне до остановки',values:[12,16,20],cases:['Из первого вышли 5, во второй вошли 3.','Из первого вышли 3, во второй вошли 3.']},
+ milk:{unknown:'Литры в банке сначала',values:[2.4,4,6],cases:['Отлили 2 л и 3 л; остаток в бидоне больше в 4,5 раза.','Из каждой ёмкости отлили 2 л; остаток в бидоне больше втрое.']},
+ books:{unknown:'Книги на первой полке сначала',values:[12,15,18],cases:['Разность 18 книг, удвоенное первое число — 80 % второго.','Разность 15 книг, удвоенное первое число равно второму.']},
+ ages:{unknown:'Возраст самого младшего',values:[8,10,12],cases:['Шесть сыновей, соседние возрасты различаются на 4 года.','Семь сыновей, соседние возрасты различаются на 4 года.']},
+};
+function storyComparison(kind,v,fresh) {
+ let rows,left,right,test;
+ if(kind==='tram'){
+  const first=1.5*v,leaving=fresh?3:5;
+  rows=[['Первый вагон',first,first-leaving],['Второй вагон',v,v+3]];
+  left=first-leaving;right=v+3;test='Сравни число людей после остановки.';
+ }else if(kind==='milk'){
+  const first=2*v,removed=fresh?2:3,multiple=fresh?3:4.5;
+  rows=[['Бидон, л',first,first-removed],['Банка, л',v,v-2]];
+  left=first-removed;right=(v-2)*multiple;test='Остаток в бидоне и '+num(multiple)+' остатка в банке.';
+ }else if(kind==='books'){
+  const second=v+(fresh?15:18),fraction=fresh?1:0.8;
+  rows=[['Первая полка',v,2*v],['Вторая полка',second,second]];
+  left=2*v;right=second*fraction;test='Удвоенная первая полка и '+num(fraction*100)+' % второй.';
+ }else{
+  const count=fresh?7:6,difference=(count-1)*4;
+  rows=[['Младший',v,v],['Старший',v+difference,3*v]];
+  left=v+difference;right=3*v;test='Старший по промежуткам и по условию «втрое».';
+ }
+ return {rows:rows.map(([name,start,end])=>[name,num(start),num(end)]),left,right,test};
+}
+function tangentNest(choice,sample) {
+ const figure=svg('svg',{viewBox:'0 0 242 174',role:'img',class:'pm-chart pcm-group-rule pcm-tangent-nest',
+  'aria-label':'Четыре прямоугольных треугольника с общим углом A. Цветом выделен выбранный вертикальный катет.'});
+ const x=15,y=145,unit=27,slope=sample===1?2/3:1/2;
+ ln(figure,x,y,231,y);ln(figure,x,y,x+unit*7.5,y-unit*7.5*slope);
+ txt(figure,11,164,'A',{'font-size':12});
+ const names=['','₁','₂','₃'];
+ for(let i=0;i<4;i++){
+  const base=4+i,abscissa=x+base*unit,top=y-base*slope*unit,selected=i===choice;
+  ln(figure,abscissa,y,abscissa,top,{stroke:selected?'#ae512a':'#4a7562','stroke-width':selected?3:1.3,'data-base':base,'data-height':base*slope});
+  figure.append(svg('polyline',{points:(abscissa-5)+','+y+' '+(abscissa-5)+','+(y-5)+' '+abscissa+','+(y-5),fill:'none',stroke:'#576450','stroke-width':1}));
+  txt(figure,abscissa,164,'C'+names[i],{'font-size':11});txt(figure,abscissa-3,top-5,'B'+names[i],{'font-size':11});
+ }
+ return figure;
+}
+const travelCases={
+ bus:[
+  {input:'За три часа: 20, 30 и 40 км',rows:[['Первый час','20 км'],['Второй час','30 км'],['Третий час','40 км']],summary:'90 км : 3 ч = 30 км/ч'},
+  {input:'За три часа: 32, 41 и 50 км',rows:[['Первый час','32 км'],['Второй час','41 км'],['Третий час','50 км']],summary:'123 км : 3 ч = 41 км/ч'},
+ ],
+ walker:[
+  {input:'5 мин по 60 м/мин и 15 мин по 80 м/мин',rows:[['Первые 5 мин','5 × 60 = 300 м'],['Дальше 15 мин','15 × 80 = 1200 м']],summary:'1500 м : 20 мин = 75 м/мин'},
+  {input:'5 мин по 84 м/мин и 15 мин по 52 м/мин',rows:[['Первые 5 мин','5 × 84 = 420 м'],['Дальше 15 мин','15 × 52 = 780 м']],summary:'1200 м : 20 мин = 60 м/мин'},
+ ],
+ boat:[
+  {input:'12 км в каждом направлении',rows:[['Вниз за 2 ч','6 км/ч'],['Вверх за 3 ч','4 км/ч']],summary:'Собственная: (6 + 4) / 2 = 5 км/ч. Течение: (6 − 4) / 2 = 1 км/ч.'},
+  {input:'36 км в каждом направлении',rows:[['Вниз за 2 ч','18 км/ч'],['Вверх за 3 ч','12 км/ч']],summary:'Собственная: (18 + 12) / 2 = 15 км/ч. Течение: (18 − 12) / 2 = 3 км/ч.'},
+ ],
+ upstream:[
+  {input:'Катер вниз: 16 км/ч, плот: 3 км/ч',rows:[['Собственная скорость','16 − 3 = 13 км/ч'],['Против течения','13 − 3 = 10 км/ч']],summary:'4 ч × 10 км/ч = 40 км'},
+  {input:'Катер вниз: 21 км/ч, плот: 4 км/ч',rows:[['Собственная скорость','21 − 4 = 17 км/ч'],['Против течения','17 − 4 = 13 км/ч']],summary:'4 ч × 13 км/ч = 52 км'},
+ ],
+};
+function rhombusPicture(){
+ const pic=svg('svg',{viewBox:'0 0 240 147',role:'img',class:'pm-chart pcm-group-rule','aria-label':'Ромб с четырьмя одинаковыми сторонами, острыми углами слева и справа.'});
+ pic.append(svg('polygon',{points:'13,74 120,13 227,74 120,135',fill:'#d7e8dd',stroke:'#38614b','stroke-width':2}));
+ for(const [x,y,dx,dy]of [[66.5,43.5,3,5.3],[173.5,43.5,-3,5.3],[173.5,104.5,3,5.3],[66.5,104.5,-3,5.3]])ln(pic,x-dx,y-dy,x+dx,y+dy,{'stroke-width':2});
+ return pic;
+}
 const nestedRules={
  'simplify-x':{variable:'x',expression:'4x − (3x + (2x − 1))',simplified:'1 − x',
   stages:x=>[['2x − 1',2*x-1],['3x + (2x − 1)',3*x+(2*x-1)],['4x − (5x − 1)',4*x-(5*x-1)]],value:x=>1-x},
@@ -964,12 +1031,12 @@ function dissectionFigure(a,b,central) {
  txt(picture,90,177,'Сторона a + b',{'font-size':12});
  return picture;
 }
-function changeBars(before,after) {
+function changeBars(before,after,labels=['Было','Стало']) {
  const pic=svg('svg',{viewBox:'0 0 330 125',role:'img',class:'pm-chart pcm-group-rule',
-  'aria-label':'Исходное и новое числа на одной шкале: '+before+' и '+after+'.'});
+  'aria-label':labels[0]+' — '+before+', '+labels[1]+' — '+after+'. Обе полосы в одном масштабе.'});
  const value=raw=>{const parsed=root.PetersonMath.parse(raw);return parsed.n/parsed.d;};
  const max=Math.max(value(before),value(after));
- for(const [label,amount,y,color] of [['Было',before,31,'#34745d'],['Стало',after,93,'#925719']]) {
+ for(const [label,amount,y,color] of [[labels[0],before,31,'#34745d'],[labels[1],after,93,'#925719']]) {
   txt(pic,12,y-8,label+' · '+amount,{'font-size':19,'text-anchor':'start'});
   pic.append(svg('rect',{x:12,y,width:300,height:13,fill:'#e3eae7'}));
   pic.append(svg('rect',{x:12,y,width:300*value(amount)/max,height:13,fill:color,'data-change-bar':label}));
@@ -977,6 +1044,19 @@ function changeBars(before,after) {
  return pic;
 }
 function configFor(lesson,task){
+ if(lesson?.id==='p15' && Object.hasOwn(comparisonStories,task?.comparisonStory)){
+  const story=comparisonStories[task.comparisonStory];return {title:'Проверь свою модель по условию',
+   controls:[c('Условие',[[0,'Из упражнения'],[1,'Новый случай']]),c(story.unknown,story.values.map((v,i)=>[i,num(v)]))],initial:[0,0]};
+ }
+ if(lesson?.id==='p15' && task?.rateStudy)return {title:'Первая величина относительно второй',controls:[c('Пара величин',[[0,'Из задачи'],[1,'Новые числа']]),c('Показ процентов',[[0,'Сначала вычислю'],[1,'Сверю результат']])],initial:[0,0]};
+ if(lesson?.id==='p15' && task?.mixStudy)return {title:'Раствор и содержащаяся в нём соль',controls:[c('Массы растворов',[[0,'180, 360, 460 г'],[1,'100, 200, 300 г']]),c('Что считаем?',[[0,'Массу раствора'],[1,'Массу соли'],[2,'Общую концентрацию']])],initial:[0,0]};
+ if(lesson?.id==='p15' && task?.similarTangents)return {title:'Один угол, разные размеры треугольника',controls:[c('Треугольник',[[0,'ABC'],[1,'AB₁C₁'],[2,'AB₂C₂'],[3,'AB₃C₃']]),c('Луч из A',[[0,'Как на авторском чертеже'],[1,'Другой острый угол']])],initial:[0,0]};
+ if(lesson?.id==='p15' && task?.differenceStudy)return {title:'Что принято за 100 процентов?',controls:[c('Числа A и B',[[0,'Из упражнения'],[1,'Другие числа']]),c('Основание разницы',[[0,'Число B'],[1,'Число A']])],initial:[0,task.source.subpart==='1'?0:1]};
+
+ if(lesson?.id==='p33' && task?.oralStudy)return {title:'Проверяй знак и величину',controls:[c('Пример в группе',[[0,'Первый'],[1,'Второй'],[2,'Третий'],[3,'Четвёртый']]),c('Условия',[[0,'Из задачи'],[1,'Новый пример']]),c('Показ результата',[[0,'Сначала решу сам'],[1,'Сверю с ответом']])],initial:[0,0,0]};
+ if(lesson?.id==='p33' && task?.chainStudy)return {title:'Арифметическая дорожка',controls:[c('Буква',task.chainStudy.map((chain,i)=>[i,chain.letter])),c('Сколько действий выполнить',[0,1,2,3,4]),c('Показать фигуру',[[0,'Сначала найду слово'],[1,'Сверю рисунок']])],initial:[0,0,0]};
+ if(lesson?.id==='p33' && Object.hasOwn(travelCases,task?.travelStudy))return {title:'Путь, время и скорость',controls:[c('Авторские данные',[[0,'Первый пример'],[1,'Другие числа']]),c('Показ расчёта',[[0,'Сначала составлю модель'],[1,'Сверю расчёт']])],initial:[0,0]};
+
  if(lesson?.id==='p33' && Object.hasOwn(nestedRules,task?.nestStudy)){
   const rule=nestedRules[task.nestStudy];
   return {title:'От внутренней группы к внешней',controls:[c('Значение '+rule.variable,[-2,0,1,3,5])],initial:[1]};
@@ -1042,18 +1122,84 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
- const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
+  let hiddenControl=null;
+  if(task.oralStudy && index<2)hiddenControl=2;
+  if((task.travelStudy || task.chainStudy || task.rateStudy) && index===0)hiddenControl=1;
+  if(hiddenControl!==null){state.values[hiddenControl]=0;selects[hiddenControl].value='0';}
+  draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if(n===33 && Object.hasOwn(nestedRules,task.nestStudy)) {
+ if(n===15 && Object.hasOwn(comparisonStories,task.comparisonStory)){
+  const spec=comparisonStories[task.comparisonStory],comparison=storyComparison(task.comparisonStory,spec.values[b],a===1);
+  say(spec.cases[a]);show(table(task.comparisonStory==='ages'?['Возраст','По шагам','По множителю']:['Что сравниваем','Сначала','После'],comparison.rows));
+  say(comparison.test);const equal=Math.abs(comparison.left-comparison.right)<1e-8;
+  formula(num(comparison.left)+(equal?' = ':' ≠ ')+num(comparison.right));
+  say(equal?'Предположение согласуется с условием. Обоснуй его уравнением.':'Условие ещё не выполнено. Подумай, как изменить начальное число.');
+  stepList(['Назови неизвестную величину.','Вырази через неё сравниваемые величины.','Составь равенство и проверь решение.']);
+ }
+ else if(n===15 && task.rateStudy){
+  const spec=task.rateStudy,math=root.PetersonMath,first=a===0?spec.first:spec.fresh[0],base=a===0?spec.base:spec.fresh[1];
+  show(changeBars(String(first).replace(',','.'),String(base).replace(',','.'),['Первая','Основание']));
+  say('Здесь вторая величина — 100 %. Общая единица: '+spec.unit+'.');
+  if(b===1){const ratio=math.operation('divide',first,base),percent=math.operation('multiply',ratio,100);formula('Первая / вторая = ',exactRatio(ratio.n,ratio.d));formula('Процентов: ',exactRatio(percent.n,percent.d),' %.');}
+  else say('Сравни длины и вычисли процентное отношение. Затем открой проверку.');
+  stepList(['Приведи величины к одним единицам.','Первую раздели на вторую.','Умножь частное на 100.']);
+ }
+ else if(n===15 && task.mixStudy){
+  const masses=a===0?[180,360,460]:[100,200,300],amounts=masses.map((v,i)=>v*[10,15,30][i]/100);
+  const total=masses.reduce((v,n)=>v+n),salt=amounts.reduce((v,n)=>v+n);
+  show(table(['Сосуд','Концентрация',b===0?'Раствор, г':'Соль, г'],masses.map((v,i)=>[String(i+1),[10,15,30][i]+' %',String(b===0?v:amounts[i])])));
+  if(b===2)formula('Соль / раствор = '+salt+' / '+total+';   ',exactRatio(100*salt,total),' %.');
+  else say(b===0?'Общая масса раствора: '+total+' г.':'Общая масса соли: '+salt+' г.');
+  stepList(['Доля соли относится к массе своего сосуда.','Сложи массы соли отдельно от масс растворов.','Для процентов используй общую массу смеси как основание.']);
+ }
+ else if(n===15 && task.similarTangents){
+  const base=4+a,slope=b===0?1/2:2/3;show(tangentNest(a,b));
+  say('Прилежащий катет: '+base+' мерок. Противолежащий: '+num(base*slope)+' мерок'+(b===1&&base%3!==0?' (приблизительно).':'.'));
+  formula('Точное отношение = ',exactRatio(b===0?1:2,b===0?2:3));
+  stepList(['Выбери другой треугольник на том же луче.','Отметь общий угол и прямые углы.','Измени сам луч. Изменился угол, поэтому изменилось и отношение.']);
+ }
+ else if(n===15 && task.differenceStudy){
+  const first=a===0?9:12,second=a===0?36:30,base=b===0?second:first,delta=second-first;
+  show(changeBars(String(delta),String(base),['Разность','Основание']));say('A = '+first+', B = '+second+'. Разность '+delta+', за 100 % взято '+(b===0?'B.':'A.'));
+  formula('Разность / основание = ',exactRatio(delta,base),';   ',exactRatio(100*delta,base),' %.');
+  stepList(['Отдели саму величину A от разности B − A.','Для уменьшения относительно B выбери B.','Для увеличения относительно A выбери A.']);
+ }
+ else if(n===33 && task.oralStudy) {
+  const spec=task.oralStudy,expression=(b===0?spec.expressions:spec.freshExpressions)[a],answer=(b===0?spec.answers:spec.freshAnswers)[a];
+  formula(expression+' = '+(state.values[2]===1?answer:'?'));
+  say('Предскажи знак результата, затем реши пример устно.');
+  if(state.values[2]===1){const parsed=root.PetersonMath.parse(answer);say(parsed.n===0?'Ответ равен нулю.':parsed.n<0?'Ответ отрицательный.':'Ответ положительный.');}
+  stepList(['Определи порядок операций.','Проверь, какие минусы принадлежат числам, а какие обозначают вычитание.','Выбери новый пример и снова скрой ответ.']);
+ }
+ else if(n===33 && task.chainStudy) {
+  const math=root.PetersonMath,chain=task.chainStudy[a],ops={'+':'add','−':'subtract','×':'multiply',':':'divide'};
+  const written=v=>math.decimal(v).replace('-','−');
+  let current=chain.start;const rows=[['Начало',written(current)]];
+  for(let i=0;i<b;i++){const [sign,operand]=chain.steps[i];const next=math.answer(math.operation(ops[sign],current,operand));rows.push([written(current)+' '+sign+' '+written(operand),written(next)]);current=next;}
+  show(table(['Действие','Результат'],rows));
+  if(b<4)say('Следующее действие: '+chain.steps[b][0]+' '+written(chain.steps[b][1])+'. Сначала выполни его сам.');
+  else say('Запиши число '+written(current)+' рядом с буквой '+chain.letter+'.');
+  if(state.values[2]===1){show(rhombusPicture());say('Ромб: все четыре стороны равны. Проверь свой чертёж.');}
+  stepList(['Запиши промежуточное значение.','В следующей строке используй именно этот результат.','После всех шести дорожек расположи итоги по возрастанию.']);
+ }
+ else if(n===33 && Object.hasOwn(travelCases,task.travelStudy)) {
+  const sample=travelCases[task.travelStudy][a];
+  say(sample.input);
+  if(b===1){show(table(['Участок или величина','Расчёт'],sample.rows));say(sample.summary);}
+  else say('Составь таблицу или схему на бумаге. Затем включи проверку расчёта.');
+  stepList(['Назови единицу каждой величины.','Отметь, к какому промежутку или направлению она относится.','Измени числа и испытай прежнюю формулу.']);
+ }
+ else if(n===33 && Object.hasOwn(nestedRules,task.nestStudy)) {
   const rule=nestedRules[task.nestStudy],stages=rule.stages(a);
   show(table(['Что вычисляем','Значение'],stages));
   formula(rule.variable+' = '+a+'.   '+rule.simplified+' = '+rule.value(a));
@@ -17062,8 +17208,1292 @@ window.PetersonCourse = {
       "subpart": "г",
       "reference": "№19г"
      }
+    },
+    {
+     "id": "p15-t76",
+     "title": "К задаче №20(1)",
+     "kind": "choice",
+     "answer": "24 и 16",
+     "prompt": "В начале поездки в первом вагоне было в 1,5 раза больше пассажиров, чем во втором. На остановке из первого вышли 5, а во второй вошли 3. После остановки пассажиров в вагонах поровну. Составь уравнение и найди обе исходные численности.",
+     "finalLabel": "Выбери верный результат.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Пусть во втором вагоне до остановки было x человек. Как выразить равенство после остановки?",
+       "answer": "1,5x − 5 = x + 3",
+       "choices": [
+        "1,5x − 5 = x + 3",
+        "1,5x + 5 = x − 3",
+        "1,5x − 5 = x − 3"
+       ],
+       "hint": "Выход уменьшает число людей, вход увеличивает.",
+       "explanation": "После остановки в первом 1,5x − 5, во втором x + 3."
+      },
+      {
+       "prompt": "На сколько пассажиров изначально различались вагоны?",
+       "answer": "8",
+       "hint": "Пять вышли из большего, трое вошли в меньший.",
+       "explanation": "Отрыв сократился на 5 + 3 = 8."
+      },
+      {
+       "prompt": "Сколько пассажиров ехали во втором вагоне?",
+       "answer": "16",
+       "hint": "Разность 1,5x − x равна восьми.",
+       "explanation": "0,5x = 8, значит x = 16."
+      },
+      {
+       "prompt": "Сколько пассажиров ехали в первом вагоне?",
+       "answer": "24",
+       "hint": "Умножь найденное x на 1,5.",
+       "explanation": "24 − 5 = 16 + 3 = 19."
+      }
+     ],
+     "hint": "Нарисуй таблицу «до остановки / после остановки» с отдельной строкой для каждого вагона.",
+     "explanation": "Пусть x — число во втором вагоне сначала. Тогда 1,5x − 5 = x + 3, откуда x = 16. В первом было 24. После остановки в каждом по 19.",
+     "skills": [
+      "linear-equation",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 20,
+      "reference": "№20(1)",
+      "subpart": "1"
+     },
+     "choices": [
+      "24 и 16",
+      "19 и 19",
+      "16 и 24"
+     ],
+     "errorCues": [
+      [
+       "19 и 19",
+       "Это числа после остановки. В условии спрашивают числа до неё."
+      ],
+      [
+       "16 и 24",
+       "Проверь порядок вагонов: сначала назови первый, в нём людей больше."
+      ]
+     ],
+     "comparisonStory": "tram"
+    },
+    {
+     "id": "p15-t77",
+     "title": "К задаче №20(2)",
+     "kind": "number",
+     "answer": "36/5",
+     "prompt": "В бидоне сначала вдвое больше молока, чем в банке. Из банки отлили 2 л, а из бидона 3 л. Теперь в бидоне в 4,5 раза больше, чем в банке. Составь уравнение и найди общее исходное количество в литрах.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Как записать новое соотношение, если x — начальный объём в банке?",
+       "answer": "2x − 3 = 4,5(x − 2)",
+       "choices": [
+        "2x − 3 = 4,5x − 2",
+        "2x − 3 = 4,5(x − 2)",
+        "x − 2 = 4,5(2x − 3)"
+       ],
+       "hint": "Множитель 4,5 относится ко всему оставшемуся объёму в банке.",
+       "explanation": "В банке x − 2, в бидоне 2x − 3."
+      },
+      {
+       "prompt": "Найди x, исходный объём в банке.",
+       "answer": "12/5",
+       "hint": "Раскрой скобки и перенеси члены: 2,5x = 6.",
+       "explanation": "x = 2,4 л."
+      },
+      {
+       "prompt": "Сколько литров находилось в бидоне до переливания?",
+       "answer": "24/5",
+       "hint": "Удвой 2,4.",
+       "explanation": "В бидоне 4,8 л."
+      },
+      {
+       "prompt": "Сложи оба исходных объёма.",
+       "answer": "36/5",
+       "hint": "Складывай объёмы до отливания.",
+       "explanation": "2,4 + 4,8 = 7,2 л."
+      }
+     ],
+     "hint": "Сравни остатки, но для ответа сложи начальные объёмы.",
+     "explanation": "2x − 3 = 4,5(x − 2). Отсюда x = 2,4, 2x = 4,8. После отливания осталось 0,4 и 1,8 л, действительно 1,8 : 0,4 = 4,5. Сначала молока было 7,2 л.",
+     "skills": [
+      "linear-equation",
+      "decimal-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 20,
+      "reference": "№20(2)",
+      "subpart": "2"
+     },
+     "errorCues": [
+      [
+       "12/5",
+       "Это только банка. Прибавь начальный объём бидона."
+      ],
+      [
+       "11/5",
+       "Это сумма двух остатков. Нужны первоначальные объёмы."
+      ]
+     ],
+     "comparisonStory": "milk"
+    },
+    {
+     "id": "p15-t78",
+     "title": "К задаче №21а",
+     "kind": "number",
+     "answer": "80",
+     "prompt": "Чему равно в процентах отношение первой величины ко второй: 0,56 и 0,7? Введи число процентов без знака %. При необходимости оставь точную дробь.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно числовое значение второй величины в выбранных единицах (без единиц)?",
+       "answer": "0,7",
+       "hint": "Здесь числа без единиц.",
+       "explanation": "В одной записи первая величина 0,56, вторая 0,7."
+      },
+      {
+       "prompt": "Каково отношение до перевода в проценты?",
+       "answer": "0,8",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "В одной записи первая величина 0,56, вторая 0,7. Их частное равно 0,8."
+      },
+      {
+       "prompt": "Вырази это отношение в процентах.",
+       "answer": "80",
+       "hint": "Каждая единица содержит 100 %.",
+       "explanation": "Умножь 0,8 на 100."
+      }
+     ],
+     "hint": "Здесь числа без единиц. За 100 % принята вторая величина. Раздели на неё первую и умножь частное на 100.",
+     "explanation": "В одной записи первая величина 0,56, вторая 0,7. Их отношение 0,8, значит процентное отношение 80 %.",
+     "skills": [
+      "percent-ratio",
+      "fraction-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 21,
+      "reference": "№21а",
+      "subpart": "а"
+     },
+     "errorCues": [
+      [
+       "0,8",
+       "Это частное до перевода в проценты. Умножь его на 100."
+      ],
+      [
+       "125",
+       "Это обратное процентное отношение. В знаменатель поставь вторую величину из условия."
+      ]
+     ],
+     "rateStudy": {
+      "ratio": "0,8",
+      "percent": "80",
+      "base": "0,7",
+      "first": "0,56",
+      "unit": "без единиц",
+      "fresh": [
+       0.6,
+       0.8
+      ]
+     },
+     "quantityModel": {
+      "caption": "Одни единицы и одно основание",
+      "rows": [
+       [
+        "Первая величина",
+        "0,56"
+       ],
+       [
+        "Вторая величина (100 %)",
+        "0,7"
+       ],
+       [
+        "Общая единица",
+        "без единиц"
+       ]
+      ],
+      "question": "Что получится, если первую величину разделить на вторую? Как перейти от доли к процентам?"
+     }
+    },
+    {
+     "id": "p15-t79",
+     "title": "К задаче №21б",
+     "kind": "number",
+     "answer": "10",
+     "prompt": "Чему равно в процентах отношение первой величины ко второй: 3/22 и 1 4/11? Введи число процентов без знака %. При необходимости оставь точную дробь.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно числовое значение второй величины в выбранных единицах (без единиц)?",
+       "answer": "15/11",
+       "hint": "Здесь числа без единиц.",
+       "explanation": "В одной записи первая величина 3/22, вторая 15/11."
+      },
+      {
+       "prompt": "Каково отношение до перевода в проценты?",
+       "answer": "1/10",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "В одной записи первая величина 3/22, вторая 15/11. Их частное равно 1/10."
+      },
+      {
+       "prompt": "Вырази это отношение в процентах.",
+       "answer": "10",
+       "hint": "Каждая единица содержит 100 %.",
+       "explanation": "Умножь 1/10 на 100."
+      }
+     ],
+     "hint": "Здесь числа без единиц. За 100 % принята вторая величина. Раздели на неё первую и умножь частное на 100.",
+     "explanation": "В одной записи первая величина 3/22, вторая 15/11. Их отношение 1/10, значит процентное отношение 10 %.",
+     "skills": [
+      "percent-ratio",
+      "fraction-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 21,
+      "reference": "№21б",
+      "subpart": "б"
+     },
+     "errorCues": [
+      [
+       "1/10",
+       "Это частное до перевода в проценты. Умножь его на 100."
+      ],
+      [
+       "1000",
+       "Это обратное процентное отношение. В знаменатель поставь вторую величину из условия."
+      ]
+     ],
+     "rateStudy": {
+      "ratio": "1/10",
+      "percent": "10",
+      "base": "15/11",
+      "first": "3/22",
+      "unit": "без единиц",
+      "fresh": [
+       3,
+       20
+      ]
+     },
+     "quantityModel": {
+      "caption": "Одни единицы и одно основание",
+      "rows": [
+       [
+        "Первая величина",
+        "3/22"
+       ],
+       [
+        "Вторая величина (100 %)",
+        "15/11"
+       ],
+       [
+        "Общая единица",
+        "без единиц"
+       ]
+      ],
+      "question": "Что получится, если первую величину разделить на вторую? Как перейти от доли к процентам?"
+     }
+    },
+    {
+     "id": "p15-t80",
+     "title": "К задаче №21в",
+     "kind": "number",
+     "answer": "140",
+     "prompt": "Чему равно в процентах отношение первой величины ко второй: 3,6 и 2 4/7? Введи число процентов без знака %. При необходимости оставь точную дробь.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно числовое значение второй величины в выбранных единицах (без единиц)?",
+       "answer": "18/7",
+       "hint": "Здесь числа без единиц.",
+       "explanation": "В одной записи первая величина 3,6, вторая 18/7."
+      },
+      {
+       "prompt": "Каково отношение до перевода в проценты?",
+       "answer": "7/5",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "В одной записи первая величина 3,6, вторая 18/7. Их частное равно 7/5."
+      },
+      {
+       "prompt": "Вырази это отношение в процентах.",
+       "answer": "140",
+       "hint": "Каждая единица содержит 100 %.",
+       "explanation": "Умножь 7/5 на 100."
+      }
+     ],
+     "hint": "Здесь числа без единиц. За 100 % принята вторая величина. Раздели на неё первую и умножь частное на 100.",
+     "explanation": "В одной записи первая величина 3,6, вторая 18/7. Их отношение 7/5, значит процентное отношение 140 %.",
+     "skills": [
+      "percent-ratio",
+      "fraction-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 21,
+      "reference": "№21в",
+      "subpart": "в"
+     },
+     "errorCues": [
+      [
+       "7/5",
+       "Это частное до перевода в проценты. Умножь его на 100."
+      ],
+      [
+       "500/7",
+       "Это обратное процентное отношение. В знаменатель поставь вторую величину из условия."
+      ]
+     ],
+     "rateStudy": {
+      "ratio": "7/5",
+      "percent": "140",
+      "base": "18/7",
+      "first": "3,6",
+      "unit": "без единиц",
+      "fresh": [
+       9,
+       6
+      ]
+     },
+     "quantityModel": {
+      "caption": "Одни единицы и одно основание",
+      "rows": [
+       [
+        "Первая величина",
+        "3,6"
+       ],
+       [
+        "Вторая величина (100 %)",
+        "18/7"
+       ],
+       [
+        "Общая единица",
+        "без единиц"
+       ]
+      ],
+      "question": "Что получится, если первую величину разделить на вторую? Как перейти от доли к процентам?"
+     }
+    },
+    {
+     "id": "p15-t81",
+     "title": "К задаче №21г",
+     "kind": "number",
+     "answer": "100/3",
+     "prompt": "Чему равно в процентах отношение первой величины ко второй: 8 1/3 и 25? Введи число процентов без знака %. При необходимости оставь точную дробь.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно числовое значение второй величины в выбранных единицах (без единиц)?",
+       "answer": "25",
+       "hint": "Здесь числа без единиц.",
+       "explanation": "В одной записи первая величина 25/3, вторая 25."
+      },
+      {
+       "prompt": "Каково отношение до перевода в проценты?",
+       "answer": "1/3",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "В одной записи первая величина 25/3, вторая 25. Их частное равно 1/3."
+      },
+      {
+       "prompt": "Вырази это отношение в процентах.",
+       "answer": "100/3",
+       "hint": "Каждая единица содержит 100 %.",
+       "explanation": "Умножь 1/3 на 100."
+      }
+     ],
+     "hint": "Здесь числа без единиц. За 100 % принята вторая величина. Раздели на неё первую и умножь частное на 100.",
+     "explanation": "В одной записи первая величина 25/3, вторая 25. Их отношение 1/3, значит процентное отношение 100/3 %. Это ровно 33 1/3 %, а не округлённое число.",
+     "skills": [
+      "percent-ratio",
+      "fraction-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 21,
+      "reference": "№21г",
+      "subpart": "г"
+     },
+     "errorCues": [
+      [
+       "1/3",
+       "Это частное до перевода в проценты. Умножь его на 100."
+      ],
+      [
+       "300",
+       "Это обратное процентное отношение. В знаменатель поставь вторую величину из условия."
+      ]
+     ],
+     "rateStudy": {
+      "ratio": "1/3",
+      "percent": "100/3",
+      "base": "25",
+      "first": "25/3",
+      "unit": "без единиц",
+      "fresh": [
+       1,
+       6
+      ]
+     },
+     "quantityModel": {
+      "caption": "Одни единицы и одно основание",
+      "rows": [
+       [
+        "Первая величина",
+        "25/3"
+       ],
+       [
+        "Вторая величина (100 %)",
+        "25"
+       ],
+       [
+        "Общая единица",
+        "без единиц"
+       ]
+      ],
+      "question": "Что получится, если первую величину разделить на вторую? Как перейти от доли к процентам?"
+     }
+    },
+    {
+     "id": "p15-t82",
+     "title": "К задаче №21д",
+     "kind": "number",
+     "answer": "7",
+     "prompt": "Чему равно в процентах отношение первой величины ко второй: 2,8 см и 4 дм? Введи число процентов без знака %. При необходимости оставь точную дробь.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно числовое значение второй величины в выбранных единицах (сантиметры)?",
+       "answer": "40",
+       "hint": "Сначала приведи обе величины к общей единице: сантиметры.",
+       "explanation": "В одной записи первая величина 2,8, вторая 40."
+      },
+      {
+       "prompt": "Каково отношение до перевода в проценты?",
+       "answer": "7/100",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "В одной записи первая величина 2,8, вторая 40. Их частное равно 7/100."
+      },
+      {
+       "prompt": "Вырази это отношение в процентах.",
+       "answer": "7",
+       "hint": "Каждая единица содержит 100 %.",
+       "explanation": "Умножь 7/100 на 100."
+      }
+     ],
+     "hint": "Сначала приведи обе величины к общей единице: сантиметры. За 100 % принята вторая величина. Раздели на неё первую и умножь частное на 100.",
+     "explanation": "В одной записи первая величина 2,8, вторая 40. Их отношение 7/100, значит процентное отношение 7 %.",
+     "skills": [
+      "percent-ratio",
+      "unit-conversion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 21,
+      "reference": "№21д",
+      "subpart": "д"
+     },
+     "errorCues": [
+      [
+       "7/100",
+       "Это частное до перевода в проценты. Умножь его на 100."
+      ],
+      [
+       "10000/7",
+       "Это обратное процентное отношение. В знаменатель поставь вторую величину из условия."
+      ]
+     ],
+     "rateStudy": {
+      "ratio": "7/100",
+      "percent": "7",
+      "base": "40",
+      "first": "2,8",
+      "unit": "сантиметры",
+      "fresh": [
+       3.6,
+       60
+      ]
+     },
+     "quantityModel": {
+      "caption": "Одни единицы и одно основание",
+      "rows": [
+       [
+        "Первая величина",
+        "2,8"
+       ],
+       [
+        "Вторая величина (100 %)",
+        "40"
+       ],
+       [
+        "Общая единица",
+        "сантиметры"
+       ]
+      ],
+      "question": "Что получится, если первую величину разделить на вторую? Как перейти от доли к процентам?"
+     }
+    },
+    {
+     "id": "p15-t83",
+     "title": "К задаче №21е",
+     "kind": "number",
+     "answer": "25/2",
+     "prompt": "Чему равно в процентах отношение первой величины ко второй: 3 ч и 1 сутки? Введи число процентов без знака %. При необходимости оставь точную дробь.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно числовое значение второй величины в выбранных единицах (часы)?",
+       "answer": "24",
+       "hint": "Сначала приведи обе величины к общей единице: часы.",
+       "explanation": "В одной записи первая величина 3, вторая 24."
+      },
+      {
+       "prompt": "Каково отношение до перевода в проценты?",
+       "answer": "1/8",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "В одной записи первая величина 3, вторая 24. Их частное равно 1/8."
+      },
+      {
+       "prompt": "Вырази это отношение в процентах.",
+       "answer": "25/2",
+       "hint": "Каждая единица содержит 100 %.",
+       "explanation": "Умножь 1/8 на 100."
+      }
+     ],
+     "hint": "Сначала приведи обе величины к общей единице: часы. За 100 % принята вторая величина. Раздели на неё первую и умножь частное на 100.",
+     "explanation": "В одной записи первая величина 3, вторая 24. Их отношение 1/8, значит процентное отношение 25/2 %. Это 12,5 %.",
+     "skills": [
+      "percent-ratio",
+      "unit-conversion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 21,
+      "reference": "№21е",
+      "subpart": "е"
+     },
+     "errorCues": [
+      [
+       "1/8",
+       "Это частное до перевода в проценты. Умножь его на 100."
+      ],
+      [
+       "800",
+       "Это обратное процентное отношение. В знаменатель поставь вторую величину из условия."
+      ]
+     ],
+     "rateStudy": {
+      "ratio": "1/8",
+      "percent": "25/2",
+      "base": "24",
+      "first": "3",
+      "unit": "часы",
+      "fresh": [
+       9,
+       24
+      ]
+     },
+     "quantityModel": {
+      "caption": "Одни единицы и одно основание",
+      "rows": [
+       [
+        "Первая величина",
+        "3"
+       ],
+       [
+        "Вторая величина (100 %)",
+        "24"
+       ],
+       [
+        "Общая единица",
+        "часы"
+       ]
+      ],
+      "question": "Что получится, если первую величину разделить на вторую? Как перейти от доли к процентам?"
+     }
+    },
+    {
+     "id": "p15-t84",
+     "title": "К задаче №21ж",
+     "kind": "number",
+     "answer": "125",
+     "prompt": "Чему равно в процентах отношение первой величины ко второй: 5 ц и 400 кг? Введи число процентов без знака %. При необходимости оставь точную дробь.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно числовое значение второй величины в выбранных единицах (килограммы)?",
+       "answer": "400",
+       "hint": "Сначала приведи обе величины к общей единице: килограммы.",
+       "explanation": "В одной записи первая величина 500, вторая 400."
+      },
+      {
+       "prompt": "Каково отношение до перевода в проценты?",
+       "answer": "5/4",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "В одной записи первая величина 500, вторая 400. Их частное равно 5/4."
+      },
+      {
+       "prompt": "Вырази это отношение в процентах.",
+       "answer": "125",
+       "hint": "Каждая единица содержит 100 %.",
+       "explanation": "Умножь 5/4 на 100."
+      }
+     ],
+     "hint": "Сначала приведи обе величины к общей единице: килограммы. За 100 % принята вторая величина. Раздели на неё первую и умножь частное на 100.",
+     "explanation": "В одной записи первая величина 500, вторая 400. Их отношение 5/4, значит процентное отношение 125 %.",
+     "skills": [
+      "percent-ratio",
+      "unit-conversion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 21,
+      "reference": "№21ж",
+      "subpart": "ж"
+     },
+     "errorCues": [
+      [
+       "5/4",
+       "Это частное до перевода в проценты. Умножь его на 100."
+      ],
+      [
+       "80",
+       "Это обратное процентное отношение. В знаменатель поставь вторую величину из условия."
+      ]
+     ],
+     "rateStudy": {
+      "ratio": "5/4",
+      "percent": "125",
+      "base": "400",
+      "first": "500",
+      "unit": "килограммы",
+      "fresh": [
+       750,
+       500
+      ]
+     },
+     "quantityModel": {
+      "caption": "Одни единицы и одно основание",
+      "rows": [
+       [
+        "Первая величина",
+        "500"
+       ],
+       [
+        "Вторая величина (100 %)",
+        "400"
+       ],
+       [
+        "Общая единица",
+        "килограммы"
+       ]
+      ],
+      "question": "Что получится, если первую величину разделить на вторую? Как перейти от доли к процентам?"
+     }
+    },
+    {
+     "id": "p15-t85",
+     "title": "К задаче №21з",
+     "kind": "number",
+     "answer": "6",
+     "prompt": "Чему равно в процентах отношение первой величины ко второй: 180 м и 3 км? Введи число процентов без знака %. При необходимости оставь точную дробь.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно числовое значение второй величины в выбранных единицах (метры)?",
+       "answer": "3000",
+       "hint": "Сначала приведи обе величины к общей единице: метры.",
+       "explanation": "В одной записи первая величина 180, вторая 3000."
+      },
+      {
+       "prompt": "Каково отношение до перевода в проценты?",
+       "answer": "3/50",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "В одной записи первая величина 180, вторая 3000. Их частное равно 3/50."
+      },
+      {
+       "prompt": "Вырази это отношение в процентах.",
+       "answer": "6",
+       "hint": "Каждая единица содержит 100 %.",
+       "explanation": "Умножь 3/50 на 100."
+      }
+     ],
+     "hint": "Сначала приведи обе величины к общей единице: метры. За 100 % принята вторая величина. Раздели на неё первую и умножь частное на 100.",
+     "explanation": "В одной записи первая величина 180, вторая 3000. Их отношение 3/50, значит процентное отношение 6 %.",
+     "skills": [
+      "percent-ratio",
+      "unit-conversion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 21,
+      "reference": "№21з",
+      "subpart": "з"
+     },
+     "errorCues": [
+      [
+       "3/50",
+       "Это частное до перевода в проценты. Умножь его на 100."
+      ],
+      [
+       "5000/3",
+       "Это обратное процентное отношение. В знаменатель поставь вторую величину из условия."
+      ]
+     ],
+     "rateStudy": {
+      "ratio": "3/50",
+      "percent": "6",
+      "base": "3000",
+      "first": "180",
+      "unit": "метры",
+      "fresh": [
+       300,
+       4000
+      ]
+     },
+     "quantityModel": {
+      "caption": "Одни единицы и одно основание",
+      "rows": [
+       [
+        "Первая величина",
+        "180"
+       ],
+       [
+        "Вторая величина (100 %)",
+        "3000"
+       ],
+       [
+        "Общая единица",
+        "метры"
+       ]
+      ],
+      "question": "Что получится, если первую величину разделить на вторую? Как перейти от доли к процентам?"
+     }
+    },
+    {
+     "id": "p15-t86",
+     "title": "К задаче №22",
+     "kind": "number",
+     "answer": "21",
+     "prompt": "Смешали растворы соли с концентрациями 10 %, 15 % и 30 %. Первого взяли 180 г; второго вдвое больше; третьего на 100 г больше, чем второго. Сколько процентов соли в смеси?",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Сколько граммов третьего раствора?",
+       "answer": "460",
+       "hint": "Сначала найди массу второго раствора.",
+       "explanation": "Второго 360 г, третьего 360 + 100 = 460 г."
+      },
+      {
+       "prompt": "Сколько граммов соли в первом и втором растворах вместе?",
+       "answer": "72",
+       "hint": "Умножь массу каждого раствора на его долю соли.",
+       "explanation": "18 + 54 = 72 г соли."
+      },
+      {
+       "prompt": "Сколько граммов соли в третьем?",
+       "answer": "138",
+       "hint": "Возьми 30 % от 460.",
+       "explanation": "0,3 · 460 = 138 г."
+      },
+      {
+       "prompt": "Сколько граммов всей смеси?",
+       "answer": "1000",
+       "hint": "Сложи массы растворов, а не соли.",
+       "explanation": "180 + 360 + 460 = 1000 г."
+      },
+      {
+       "prompt": "Чему равна концентрация смеси в процентах?",
+       "answer": "21",
+       "hint": "Найди отношение массы соли к массе всей смеси.",
+       "explanation": "(72 + 138) : 1000 · 100 = 21 %."
+      }
+     ],
+     "hint": "Составь две отдельные строки: массы растворов и массы соли в них. Складывай одноимённые величины.",
+     "explanation": "Массы растворов 180, 360 и 460 г, а массы соли 18, 54 и 138 г. Получено 210 г соли в 1000 г смеси, поэтому концентрация равна 21 %.",
+     "skills": [
+      "percent-ratio",
+      "percent-part"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 22,
+      "reference": "№22"
+     },
+     "errorCues": [
+      [
+       "55/3",
+       "Среднее трёх процентов подошло бы при равных массах растворов. Здесь массы различаются."
+      ],
+      [
+       "210",
+       "Это масса соли в граммах. Сравни её с 1000 г всей смеси."
+      ]
+     ],
+     "mixStudy": true
+    },
+    {
+     "id": "p15-t87",
+     "title": "К задаче №23",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "У четырёх прямоугольных треугольников общий острый угол A. Используй собственный чертёж ниже: измерь вертикальный и горизонтальный катеты каждого треугольника, вычисли их отношение и сформулируй вывод о тангенсе. Объясни, почему вывод верен без измерений.",
+     "finalLabel": "Запиши обоснование и результаты измерений или отметь, где они сделаны.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какой отрезок служит числителем у первого треугольника?",
+       "answer": "BC",
+       "choices": [
+        "AC",
+        "AB",
+        "BC"
+       ],
+       "hint": "Найди катет напротив угла A.",
+       "explanation": "В числителе BC, а в знаменателе AC."
+      },
+      {
+       "prompt": "На авторском чертеже для малой фигуры AC = 4 мерки и BC = 2 мерки. Найди их отношение в порядке для tg A.",
+       "answer": "1/2",
+       "hint": "Нужно BC : AC.",
+       "explanation": "2 : 4 = 1/2."
+      },
+      {
+       "prompt": "У другой фигуры вертикальный катет 3 мерки, горизонтальный 6. Чему равно новое отношение?",
+       "answer": "1/2",
+       "hint": "Сравни соответствующие катеты.",
+       "explanation": "3/6 = 1/2."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Обоснуй вывод для всех четырёх фигур и для других размеров.",
+       "hint": "У каждой пары треугольников есть общий угол A и по прямому углу.",
+       "explanation": "По двум углам треугольники подобны. Соответствующие катеты увеличиваются в одно и то же число раз; их отношение сохраняется."
+      }
+     ],
+     "hint": "Различай наблюдение по линейке и обоснование для любого увеличения.",
+     "explanation": "В напечатанном рисунке измерения дают примерно 0,5, с обычной погрешностью линейки. Наша схема выдерживает точное отношение 1/2. Общий вывод: для одного острого угла тангенс одинаков во всех прямоугольных треугольниках, поскольку они подобны по двум углам.",
+     "skills": [
+      "ratio",
+      "triangle-angle"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 23,
+      "reference": "№23"
+     },
+     "similarTangents": true,
+     "figure": {
+      "type": "nested-tangents",
+      "caption": "Авторский чертёж. Отрезки опущены на общую горизонтальную сторону под прямыми углами. Длина AC последовательно равна 4, 5, 6, 7 меркам. Вертикальный размер изменён в том же масштабе."
+     }
+    },
+    {
+     "id": "p15-t88",
+     "title": "К задаче №24а",
+     "kind": "number",
+     "answer": "11",
+     "prompt": "Реши уравнение 12x − 39 = 8x + 5 по правилу весов. Подставь найденное число в исходную запись.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Каков положительный коэффициент после переноса буквенных членов влево?",
+       "answer": "4",
+       "hint": "Вычти коэффициент правой части из коэффициента левой.",
+       "explanation": "После одинаковых действий с обеими частями получаем 4x = 44. Корень x = 11."
+      },
+      {
+       "prompt": "Какое число останется справа?",
+       "answer": "44",
+       "hint": "Прибавь 39 к обеим сторонам; справа получится 5 + 39.",
+       "explanation": "После одинаковых действий с обеими частями получаем 4x = 44. Корень x = 11."
+      },
+      {
+       "prompt": "Раздели правую часть на коэффициент.",
+       "answer": "11",
+       "hint": "Раздели обе стороны на одно ненулевое число.",
+       "explanation": "После одинаковых действий с обеими частями получаем 4x = 44. Корень x = 11."
+      }
+     ],
+     "hint": "Прибавь 39 к обеим сторонам; справа получится 5 + 39.",
+     "explanation": "После одинаковых действий с обеими частями получаем 4x = 44. Корень x = 11.",
+     "skills": [
+      "linear-equation",
+      "decimal-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 24,
+      "reference": "№24а",
+      "subpart": "а"
+     },
+     "errorCues": [
+      [
+       "44",
+       "Это правая часть последнего равенства. Осталось разделить на коэффициент."
+      ]
+     ],
+     "balanceStudy": {
+      "variable": "x",
+      "coefficients": [
+       "12",
+       "-39",
+       "8",
+       "5"
+      ],
+      "root": "11"
+     }
+    },
+    {
+     "id": "p15-t89",
+     "title": "К задаче №24б",
+     "kind": "number",
+     "answer": "4",
+     "prompt": "Реши уравнение 6(y − 1,4) = 3,5y + 1,6 по правилу весов. Подставь найденное число в исходную запись.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Каков положительный коэффициент после переноса буквенных членов влево?",
+       "answer": "2,5",
+       "hint": "Вычти коэффициент правой части из коэффициента левой.",
+       "explanation": "После одинаковых действий с обеими частями получаем 2,5y = 10. Корень y = 4."
+      },
+      {
+       "prompt": "Какое число останется справа?",
+       "answer": "10",
+       "hint": "Шестёрка умножается и на y, и на −1,4. Свободный член слева равен −8,4.",
+       "explanation": "После одинаковых действий с обеими частями получаем 2,5y = 10. Корень y = 4."
+      },
+      {
+       "prompt": "Раздели правую часть на коэффициент.",
+       "answer": "4",
+       "hint": "Раздели обе стороны на одно ненулевое число.",
+       "explanation": "После одинаковых действий с обеими частями получаем 2,5y = 10. Корень y = 4."
+      }
+     ],
+     "hint": "Шестёрка умножается и на y, и на −1,4. Свободный член слева равен −8,4.",
+     "explanation": "После одинаковых действий с обеими частями получаем 2,5y = 10. Корень y = 4.",
+     "skills": [
+      "linear-equation",
+      "decimal-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 24,
+      "reference": "№24б",
+      "subpart": "б"
+     },
+     "errorCues": [
+      [
+       "10",
+       "Это правая часть последнего равенства. Осталось разделить на коэффициент."
+      ]
+     ],
+     "balanceStudy": {
+      "variable": "y",
+      "coefficients": [
+       "6",
+       "-42/5",
+       "7/2",
+       "8/5"
+      ],
+      "root": "4"
+     }
+    },
+    {
+     "id": "p15-t90",
+     "title": "К задаче №25",
+     "kind": "choice",
+     "answer": "12 и 30",
+     "prompt": "Изначально на первой полке книг на 18 меньше, чем на второй. Когда число книг на первой удвоили, оно стало равно 80 % числа книг на второй. Сколько книг было сначала на первой и на второй полках?",
+     "finalLabel": "Выбери верный результат.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Если сначала на первой x книг, как записать условие после изменения?",
+       "answer": "2x = 0,8(x + 18)",
+       "choices": [
+        "2x = 0,8x + 18",
+        "2(x + 18) = 0,8x",
+        "2x = 0,8(x + 18)"
+       ],
+       "hint": "На второй полке x + 18. Найди 80 % от всего этого количества.",
+       "explanation": "Сравнивают удвоенное первое количество с 80 % второго."
+      },
+      {
+       "prompt": "Сколько книг было на первой полке?",
+       "answer": "12",
+       "hint": "Упрости: 1,2x = 14,4.",
+       "explanation": "x = 12."
+      },
+      {
+       "prompt": "Сколько тогда было на второй?",
+       "answer": "30",
+       "hint": "Прибавь разность 18 к первому количеству.",
+       "explanation": "12 + 18 = 30; после удвоения 24 = 80 % от 30."
+      }
+     ],
+     "hint": "Подчеркни, какая полка изменилась, а какая осталась основанием для 80 %.",
+     "explanation": "2x = 0,8(x + 18); откуда x = 12. На второй полке сначала 30 книг, на первой 12. Проверка после изменения: 24/30 = 0,8.",
+     "skills": [
+      "linear-equation",
+      "percent-part"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 9,
+      "exercise": 25,
+      "reference": "№25"
+     },
+     "choices": [
+      "12 и 18",
+      "12 и 30",
+      "24 и 30"
+     ],
+     "errorCues": [
+      [
+       "24 и 30",
+       "Это численности после удвоения. Вернись к первоначальному числу на первой полке."
+      ],
+      [
+       "12 и 18",
+       "18 — разница между полками. Прибавь её к 12."
+      ]
+     ],
+     "comparisonStory": "books"
+    },
+    {
+     "id": "p15-t91",
+     "title": "К задаче №26(1)",
+     "kind": "number",
+     "answer": "75",
+     "prompt": "Сначала вычисли A и B. A — дробь с числителем (7 3/8 − 2,125) · 2 2/7 − 39,48 : 5,6 и знаменателем (3,4 · 0,9 − 2,7) : 0,06 · 2 2/3 − 30,9 · 0,5. У B числитель [6,1 · 3,05 − 2,05 · (4 3/5 + 4,46)] · 22,5, знаменатель (1 1/4 + 0,5 + 2 1/3) : (2 1/24) · 0,01. На сколько процентов A меньше B?",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно A после деления числителя на знаменатель?",
+       "answer": "9",
+       "hint": "Для A числитель равен 4,95, знаменатель 0,55.",
+       "explanation": "4,95 : 0,55 = 9."
+      },
+      {
+       "prompt": "Чему равно B после деления числителя на знаменатель?",
+       "answer": "36",
+       "hint": "Для B числитель равен 0,72, знаменатель 0,02.",
+       "explanation": "0,72 : 0,02 = 36."
+      },
+      {
+       "prompt": "На сколько единиц отличаются A и B?",
+       "answer": "27",
+       "hint": "Вычти меньшее из большего.",
+       "explanation": "36 − 9 = 27."
+      },
+      {
+       "prompt": "Какое число принято за 100 % в этом вопросе?",
+       "answer": "36",
+       "hint": "Какую величину берут для сравнения?",
+       "explanation": "За 100 % в этом вопросе взято B = 36."
+      },
+      {
+       "prompt": "Сколько процентов составляет изменение?",
+       "answer": "75",
+       "hint": "Разность 27 раздели на основание и умножь на 100.",
+       "explanation": "27 / 36 · 100 = 75 %."
+      }
+     ],
+     "hint": "Храни отдельно числитель и знаменатель каждого числа. После деления выясни, к какой величине относится слово «процентов».",
+     "explanation": "A = 4,95/0,55 = 9, B = 0,72/0,02 = 36. A/B = 25 %. Разница равна 27; в этом подпункте делим на 36. Ответ 75 %.",
+     "skills": [
+      "percent-ratio",
+      "fraction-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 10,
+      "exercise": 26,
+      "reference": "№26(1)",
+      "subpart": "1"
+     },
+     "errorCues": [
+      [
+       "300",
+       "Ты разделил разницу на A. Здесь нужно сравнить с B — большим исходным числом."
+      ],
+      [
+       "25",
+       "25 % — отношение самого A к B. Для изменения понадобится их разница."
+      ]
+     ],
+     "differenceStudy": true
+    },
+    {
+     "id": "p15-t92",
+     "title": "К задаче №26(2)",
+     "kind": "number",
+     "answer": "300",
+     "prompt": "Сначала вычисли A и B. A — дробь с числителем (7 3/8 − 2,125) · 2 2/7 − 39,48 : 5,6 и знаменателем (3,4 · 0,9 − 2,7) : 0,06 · 2 2/3 − 30,9 · 0,5. У B числитель [6,1 · 3,05 − 2,05 · (4 3/5 + 4,46)] · 22,5, знаменатель (1 1/4 + 0,5 + 2 1/3) : (2 1/24) · 0,01. На сколько процентов B больше A?",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Чему равно A после деления числителя на знаменатель?",
+       "answer": "9",
+       "hint": "Для A числитель равен 4,95, знаменатель 0,55.",
+       "explanation": "4,95 : 0,55 = 9."
+      },
+      {
+       "prompt": "Чему равно B после деления числителя на знаменатель?",
+       "answer": "36",
+       "hint": "Для B числитель равен 0,72, знаменатель 0,02.",
+       "explanation": "0,72 : 0,02 = 36."
+      },
+      {
+       "prompt": "На сколько единиц отличаются A и B?",
+       "answer": "27",
+       "hint": "Вычти меньшее из большего.",
+       "explanation": "36 − 9 = 27."
+      },
+      {
+       "prompt": "Какое число принято за 100 % в этом вопросе?",
+       "answer": "9",
+       "hint": "Какую величину берут для сравнения?",
+       "explanation": "За 100 % в этом вопросе взято A = 9."
+      },
+      {
+       "prompt": "Сколько процентов составляет изменение?",
+       "answer": "300",
+       "hint": "Разность 27 раздели на основание и умножь на 100.",
+       "explanation": "27 / 9 · 100 = 300 %."
+      }
+     ],
+     "hint": "Храни отдельно числитель и знаменатель каждого числа. После деления выясни, к какой величине относится слово «процентов».",
+     "explanation": "A = 4,95/0,55 = 9, B = 0,72/0,02 = 36. A/B = 25 %. Разница равна 27; в этом подпункте делим на 9. Ответ 300 %.",
+     "skills": [
+      "percent-ratio",
+      "fraction-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 10,
+      "exercise": 26,
+      "reference": "№26(2)",
+      "subpart": "2"
+     },
+     "errorCues": [
+      [
+       "75",
+       "Это разница относительно B. Для увеличения от A до B дели разницу на A."
+      ],
+      [
+       "25",
+       "25 % — отношение самого A к B. Для изменения понадобится их разница."
+      ]
+     ],
+     "differenceStudy": true
+    },
+    {
+     "id": "p15-t93",
+     "title": "К задаче №27",
+     "kind": "number",
+     "answer": "10",
+     "prompt": "Возраст каждого следующего из шести сыновей больше предыдущего на 4 года. Самый старший втрое старше самого младшего. Найди возраст младшего.",
+     "finalLabel": "Введи числовой ответ.",
+     "steps": [
+      {
+       "prompt": "Сколько промежутков между шестью сыновьями, если расположить их по возрасту?",
+       "answer": "5",
+       "hint": "Между первым и вторым — один промежуток.",
+       "explanation": "Между шестью возрастами пять промежутков."
+      },
+      {
+       "prompt": "На сколько лет старший старше младшего?",
+       "answer": "20",
+       "hint": "На каждый промежуток приходится 4 года.",
+       "explanation": "5 · 4 = 20 лет."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как сравнить два выражения возраста старшего, если младшему x лет?",
+       "answer": "x + 20 = 3x",
+       "choices": [
+        "x + 24 = 3x",
+        "20 = 3x",
+        "x + 20 = 3x"
+       ],
+       "hint": "Старший старше на 20 лет и имеет возраст 3x.",
+       "explanation": "3x − x = 20."
+      },
+      {
+       "prompt": "Найди возраст младшего.",
+       "answer": "10",
+       "hint": "Удвой младший возраст, чтобы получить разницу 20.",
+       "explanation": "20 : 2 = 10 лет."
+      }
+     ],
+     "hint": "Сначала нарисуй шесть отметок возраста и сосчитай промежутки между ними.",
+     "explanation": "Возрастные отметки 10, 14, 18, 22, 26, 30 лет. Разность между крайними 20 лет, а 30 = 3 · 10.",
+     "skills": [
+      "linear-equation",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 10,
+      "exercise": 27,
+      "reference": "№27"
+     },
+     "errorCues": [
+      [
+       "12",
+       "Для шести сыновей промежутков пять, а не шесть."
+      ],
+      [
+       "20",
+       "Это разница возрастов. Она равна двум младшим возрастам."
+      ]
+     ],
+     "comparisonStory": "ages"
     }
-   ]
+   ],
+   "completeSourceSection": {
+    "first": 1,
+    "last": 27,
+    "firstPage": 6,
+    "lastPage": 10
+   }
   },
   {
    "id": "p16",
@@ -26264,6 +27694,858 @@ window.PetersonCourse = {
       "reference": "№13б"
      },
      "nestStudy": "place-one"
+    },
+    {
+     "id": "p33-t57",
+     "title": "К задаче №14а",
+     "kind": "choice",
+     "answer": "−4, −0,5, 3,8, −1,5",
+     "prompt": "Вычисли устно четыре выражения по порядку: −7 − (−3); 0,4 − 0,9; −1,2 + 5; −0,7 − 0,8. При необходимости разбери каждое действие отдельно.",
+     "finalLabel": "Выбери верную запись.",
+     "steps": [
+      {
+       "prompt": "Чему равно −7 − (−3)?",
+       "answer": "-4",
+       "hint": "Вычитание отрицательного числа сдвигает вправо на 3.",
+       "explanation": "−7 + 3 = −4."
+      },
+      {
+       "prompt": "Чему равно 0,4 − 0,9?",
+       "answer": "-1/2",
+       "hint": "Вычитается большее число: ответ отрицательный.",
+       "explanation": "4/10 − 9/10 = −5/10."
+      },
+      {
+       "prompt": "Чему равно −1,2 + 5?",
+       "answer": "19/5",
+       "hint": "Начни на 1,2 левее нуля и прибавь пять.",
+       "explanation": "5 − 1,2 = 3,8."
+      },
+      {
+       "prompt": "Чему равно −0,7 − 0,8?",
+       "answer": "-3/2",
+       "hint": "Из отрицательного числа вычитается положительное.",
+       "explanation": "−(0,7 + 0,8) = −1,5."
+      }
+     ],
+     "hint": "Сначала определи знак каждого ответа. Считай модули отдельно и сохраняй порядок четырёх примеров.",
+     "explanation": "−7 + 3 = −4. 4/10 − 9/10 = −5/10. 5 − 1,2 = 3,8. −(0,7 + 0,8) = −1,5.",
+     "skills": [
+      "signed-add",
+      "signed-multiply",
+      "signed-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 6,
+      "exercise": 14,
+      "reference": "№14а",
+      "subpart": "а"
+     },
+     "choices": [
+      "−4, 0,5, 3,8, 0,1",
+      "−4, −0,5, 3,8, −1,5",
+      "−10, −0,5, 3,8, −1,5"
+     ],
+     "errorCues": [
+      [
+       "−10, −0,5, 3,8, −1,5",
+       "В первом выражении вычитается отрицательное число."
+      ],
+      [
+       "−4, 0,5, 3,8, 0,1",
+       "Во втором и четвёртом выражении определи направление изменения."
+      ]
+     ],
+     "oralStudy": {
+      "expressions": [
+       "−7 − (−3)",
+       "0,4 − 0,9",
+       "−1,2 + 5",
+       "−0,7 − 0,8"
+      ],
+      "answers": [
+       "-4",
+       "-1/2",
+       "19/5",
+       "-3/2"
+      ],
+      "hints": [
+       "Вычитание отрицательного числа сдвигает вправо на 3.",
+       "Вычитается большее число: ответ отрицательный.",
+       "Начни на 1,2 левее нуля и прибавь пять.",
+       "Из отрицательного числа вычитается положительное."
+      ],
+      "freshExpressions": [
+       "5 − (−2)",
+       "0,6 − 1,1",
+       "−2,4 + 6",
+       "−1,1 − 0,4"
+      ],
+      "freshAnswers": [
+       "7",
+       "-1/2",
+       "18/5",
+       "-3/2"
+      ]
+     }
+    },
+    {
+     "id": "p33-t58",
+     "title": "К задаче №14б",
+     "kind": "choice",
+     "answer": "20, −1,2, −6, −1",
+     "prompt": "Вычисли устно четыре выражения по порядку: −2,5 · (−8); −3/4 · 1,6; 4,2 : (−0,7); −0,125 : (1/8). При необходимости разбери каждое действие отдельно.",
+     "finalLabel": "Выбери верную запись.",
+     "steps": [
+      {
+       "prompt": "Чему равно −2,5 · (−8)?",
+       "answer": "20",
+       "hint": "Отрицательное на отрицательное даёт положительное.",
+       "explanation": "2,5 · 8 = 20."
+      },
+      {
+       "prompt": "Чему равно −3/4 · 1,6?",
+       "answer": "-6/5",
+       "hint": "Три четверти от 1,6 положительны по модулю, но знак произведения отрицательный.",
+       "explanation": "1,6 : 4 · 3 = 1,2; произведение равно −1,2."
+      },
+      {
+       "prompt": "Чему равно 4,2 : (−0,7)?",
+       "answer": "-6",
+       "hint": "Разные знаки дают отрицательное частное.",
+       "explanation": "42 : 7 = 6, поэтому частное равно −6."
+      },
+      {
+       "prompt": "Чему равно −0,125 : (1/8)?",
+       "answer": "-1",
+       "hint": "0,125 и 1/8 равны.",
+       "explanation": "Равные модули дают модуль частного 1; знаки различны."
+      }
+     ],
+     "hint": "Сначала определи знак каждого ответа. Считай модули отдельно и сохраняй порядок четырёх примеров.",
+     "explanation": "2,5 · 8 = 20. 1,6 : 4 · 3 = 1,2; произведение равно −1,2. 42 : 7 = 6, поэтому частное равно −6. Равные модули дают модуль частного 1; знаки различны.",
+     "skills": [
+      "signed-add",
+      "signed-multiply",
+      "signed-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 6,
+      "exercise": 14,
+      "reference": "№14б",
+      "subpart": "б"
+     },
+     "choices": [
+      "20, −1,2, −6, −1",
+      "−20, −1,2, −6, −1",
+      "20, 1,2, 6, 1"
+     ],
+     "errorCues": [
+      [
+       "−20, −1,2, −6, −1",
+       "В первом произведении оба множителя отрицательны."
+      ],
+      [
+       "20, 1,2, 6, 1",
+       "Во втором, третьем и четвёртом примерах знаки чисел различны."
+      ]
+     ],
+     "oralStudy": {
+      "expressions": [
+       "−2,5 · (−8)",
+       "−3/4 · 1,6",
+       "4,2 : (−0,7)",
+       "−0,125 : (1/8)"
+      ],
+      "answers": [
+       "20",
+       "-6/5",
+       "-6",
+       "-1"
+      ],
+      "hints": [
+       "Отрицательное на отрицательное даёт положительное.",
+       "Три четверти от 1,6 положительны по модулю, но знак произведения отрицательный.",
+       "Разные знаки дают отрицательное частное.",
+       "0,125 и 1/8 равны."
+      ],
+      "freshExpressions": [
+       "−1,5 · (−6)",
+       "−2/3 · 1,8",
+       "6,3 : (−0,9)",
+       "0,25 : (−1/4)"
+      ],
+      "freshAnswers": [
+       "9",
+       "-6/5",
+       "-7",
+       "-1"
+      ]
+     }
+    },
+    {
+     "id": "p33-t59",
+     "title": "К задаче №14в",
+     "kind": "choice",
+     "answer": "300, 0,8, −3,4, 5,8",
+     "prompt": "Вычисли устно четыре выражения по порядку: |90| : |−0,3|; |−2,4| · |1/3|; |−0,6| − |−4|; |−5,6| + |−0,2|. При необходимости разбери каждое действие отдельно.",
+     "finalLabel": "Выбери верную запись.",
+     "steps": [
+      {
+       "prompt": "Чему равно |90| : |−0,3|?",
+       "answer": "300",
+       "hint": "Каждый модуль неотрицателен. Делить на 0,3 — не то же, что умножать.",
+       "explanation": "90 : 0,3 = 900 : 3 = 300."
+      },
+      {
+       "prompt": "Чему равно |−2,4| · |1/3|?",
+       "answer": "4/5",
+       "hint": "Сначала найди оба модуля, затем третью часть 2,4.",
+       "explanation": "2,4 : 3 = 0,8."
+      },
+      {
+       "prompt": "Чему равно |−0,6| − |−4|?",
+       "answer": "-17/5",
+       "hint": "Модули неотрицательны, но их разность может оказаться отрицательной.",
+       "explanation": "0,6 − 4 = −3,4."
+      },
+      {
+       "prompt": "Чему равно |−5,6| + |−0,2|?",
+       "answer": "29/5",
+       "hint": "В каждом модуле знак минус исчезнет.",
+       "explanation": "5,6 + 0,2 = 5,8."
+      }
+     ],
+     "hint": "Сначала определи знак каждого ответа. Считай модули отдельно и сохраняй порядок четырёх примеров.",
+     "explanation": "90 : 0,3 = 900 : 3 = 300. 2,4 : 3 = 0,8. 0,6 − 4 = −3,4. 5,6 + 0,2 = 5,8.",
+     "skills": [
+      "signed-add",
+      "signed-multiply",
+      "signed-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 6,
+      "exercise": 14,
+      "reference": "№14в",
+      "subpart": "в"
+     },
+     "choices": [
+      "−300, 0,8, −3,4, 5,8",
+      "300, 0,8, 3,4, 5,8",
+      "300, 0,8, −3,4, 5,8"
+     ],
+     "errorCues": [
+      [
+       "−300, 0,8, −3,4, 5,8",
+       "В первом выражении делят два модуля. Оба здесь положительны."
+      ],
+      [
+       "300, 0,8, 3,4, 5,8",
+       "В третьем выражении модулей два, а знак вычитания находится между ними."
+      ]
+     ],
+     "oralStudy": {
+      "expressions": [
+       "|90| : |−0,3|",
+       "|−2,4| · |1/3|",
+       "|−0,6| − |−4|",
+       "|−5,6| + |−0,2|"
+      ],
+      "answers": [
+       "300",
+       "4/5",
+       "-17/5",
+       "29/5"
+      ],
+      "hints": [
+       "Каждый модуль неотрицателен. Делить на 0,3 — не то же, что умножать.",
+       "Сначала найди оба модуля, затем третью часть 2,4.",
+       "Модули неотрицательны, но их разность может оказаться отрицательной.",
+       "В каждом модуле знак минус исчезнет."
+      ],
+      "freshExpressions": [
+       "|−12| : |−0,4|",
+       "|−3,6| · |1/3|",
+       "|−1,2| − |−3|",
+       "|−4,2| + |−0,7|"
+      ],
+      "freshAnswers": [
+       "30",
+       "6/5",
+       "-9/5",
+       "49/10"
+      ]
+     }
+    },
+    {
+     "id": "p33-t60",
+     "title": "К задаче №14г",
+     "kind": "choice",
+     "answer": "0, 1 2/9, −4,5, 0",
+     "prompt": "Вычисли устно четыре выражения по порядку: 0 : (−7,6); −1 · (−1 2/9); 4,5 : (−1); (3,4 − 3 2/5) · 6,4. При необходимости разбери каждое действие отдельно.",
+     "finalLabel": "Выбери верную запись.",
+     "steps": [
+      {
+       "prompt": "Чему равно 0 : (−7,6)?",
+       "answer": "0",
+       "hint": "Ноль делят на ненулевое число.",
+       "explanation": "Нулевое частное при умножении на −7,6 даст ноль."
+      },
+      {
+       "prompt": "Чему равно −1 · (−1 2/9)?",
+       "answer": "11/9",
+       "hint": "Умножение на −1 меняет знак числа.",
+       "explanation": "Получится 1 2/9, или 11/9."
+      },
+      {
+       "prompt": "Чему равно 4,5 : (−1)?",
+       "answer": "-9/2",
+       "hint": "При делении на −1 меняется знак, модуль сохраняется.",
+       "explanation": "Получится −4,5."
+      },
+      {
+       "prompt": "Чему равно (3,4 − 3 2/5) · 6,4?",
+       "answer": "0",
+       "hint": "Сравни 2/5 и 0,4.",
+       "explanation": "В скобках нет разности: 3 2/5 = 3,4, значит весь результат ноль."
+      }
+     ],
+     "hint": "Сначала определи знак каждого ответа. Считай модули отдельно и сохраняй порядок четырёх примеров.",
+     "explanation": "Нулевое частное при умножении на −7,6 даст ноль. Получится 1 2/9, или 11/9. Получится −4,5. В скобках нет разности: 3 2/5 = 3,4, значит весь результат ноль.",
+     "skills": [
+      "signed-add",
+      "signed-multiply",
+      "signed-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 6,
+      "exercise": 14,
+      "reference": "№14г",
+      "subpart": "г"
+     },
+     "choices": [
+      "0, −1 2/9, 4,5, 0",
+      "0, 1 2/9, −4,5, 0",
+      "не определено, 1 2/9, −4,5, 0"
+     ],
+     "errorCues": [
+      [
+       "не определено, 1 2/9, −4,5, 0",
+       "Здесь ноль в числителе. Делитель равен −7,6."
+      ],
+      [
+       "0, −1 2/9, 4,5, 0",
+       "Проверь знаки двух средних действий: −1 меняет знак."
+      ]
+     ],
+     "oralStudy": {
+      "expressions": [
+       "0 : (−7,6)",
+       "−1 · (−1 2/9)",
+       "4,5 : (−1)",
+       "(3,4 − 3 2/5) · 6,4"
+      ],
+      "answers": [
+       "0",
+       "11/9",
+       "-9/2",
+       "0"
+      ],
+      "hints": [
+       "Ноль делят на ненулевое число.",
+       "Умножение на −1 меняет знак числа.",
+       "При делении на −1 меняется знак, модуль сохраняется.",
+       "Сравни 2/5 и 0,4."
+      ],
+      "freshExpressions": [
+       "0 : (−2,5)",
+       "−1 · (−2 1/3)",
+       "6,3 : (−1)",
+       "(1,8 − 1 4/5) · 9"
+      ],
+      "freshAnswers": [
+       "0",
+       "7/3",
+       "-63/10",
+       "0"
+      ]
+     }
+    },
+    {
+     "id": "p33-t61",
+     "title": "К задаче №15",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "Читай каждую дорожку слева направо, выполняя указанное действие над текущим результатом. Б) 28 → × 0,25 → − 0,6 → : 1,6 → : 0,1. У) 0,2 → × 0,3 → + 1,2 → : 0,6 → − 0,9. О) 1 → : 0,25 → − 6 → × 3,5 → + 5,6. Р) 1,8 → − 5 → + 1,7 → : 0,3 → × 0,9. К) −6 → × 0,5 → + 2 → − 0,2 → : 0,6. М) 4 → : 0,8 → − 2,6 → : 0,03 → × 0,2. Расположи итоговые числа по возрастанию. Из полученного буквенного ряда убери две буквы, чтобы осталось название фигуры. Дай её определение и сделай свой рисунок.",
+     "finalLabel": "Запиши проверку и свой чертёж или отметь, где они сделаны.",
+     "steps": [
+      {
+       "prompt": "Найди итог дорожки Б.",
+       "answer": "40",
+       "hint": "Начни с первого числа и используй результат каждого действия на следующем шаге.",
+       "explanation": "Число у буквы Б равно 40."
+      },
+      {
+       "prompt": "Найди итог дорожки У.",
+       "answer": "6/5",
+       "hint": "Начни с первого числа и используй результат каждого действия на следующем шаге.",
+       "explanation": "Число у буквы У равно 1,2."
+      },
+      {
+       "prompt": "Найди итог дорожки О.",
+       "answer": "-7/5",
+       "hint": "Начни с первого числа и используй результат каждого действия на следующем шаге.",
+       "explanation": "Число у буквы О равно −1,4."
+      },
+      {
+       "prompt": "Найди итог дорожки Р.",
+       "answer": "-9/2",
+       "hint": "Начни с первого числа и используй результат каждого действия на следующем шаге.",
+       "explanation": "Число у буквы Р равно −4,5."
+      },
+      {
+       "prompt": "Найди итог дорожки К.",
+       "answer": "-2",
+       "hint": "Начни с первого числа и используй результат каждого действия на следующем шаге.",
+       "explanation": "Число у буквы К равно −2."
+      },
+      {
+       "prompt": "Найди итог дорожки М.",
+       "answer": "16",
+       "hint": "Начни с первого числа и используй результат каждого действия на следующем шаге.",
+       "explanation": "Число у буквы М равно 16."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какое название фигуры получается после удаления двух букв из упорядоченного ряда?",
+       "answer": "РОМБ",
+       "choices": [
+        "РОМБ",
+        "КУБ",
+        "КРУГ"
+       ],
+       "hint": "Расположи значения от −4,5 до 40. Сохраняй порядок оставшихся букв.",
+       "explanation": "Р, К, О, У, М, Б → Р, О, М, Б после удаления К и У."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Нарисуй эту фигуру и дай определение.",
+       "hint": "Назови класс четырёхугольников и свойство всех его сторон.",
+       "explanation": "Ромб — параллелограмм, у которого все стороны равны. Квадрат тоже удовлетворяет этому определению."
+      }
+     ],
+     "hint": "В этой записи стрелки задают последовательность. Умножение следующего шага относится ко всему уже найденному результату.",
+     "explanation": "Р = −4,5, К = −2, О = −1,4, У = 1,2, М = 16, Б = 40. В порядке возрастания выходит РКОУМБ. Удали К и У, получится РОМБ. Начерти параллелограмм с равными сторонами.",
+     "skills": [
+      "signed-add",
+      "signed-multiply",
+      "signed-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 6,
+      "exercise": 15,
+      "reference": "№15"
+     },
+     "chainStudy": [
+      {
+       "letter": "Б",
+       "start": "28",
+       "steps": [
+        [
+         "×",
+         "1/4"
+        ],
+        [
+         "−",
+         "3/5"
+        ],
+        [
+         ":",
+         "8/5"
+        ],
+        [
+         ":",
+         "1/10"
+        ]
+       ]
+      },
+      {
+       "letter": "У",
+       "start": "1/5",
+       "steps": [
+        [
+         "×",
+         "3/10"
+        ],
+        [
+         "+",
+         "6/5"
+        ],
+        [
+         ":",
+         "3/5"
+        ],
+        [
+         "−",
+         "9/10"
+        ]
+       ]
+      },
+      {
+       "letter": "О",
+       "start": "1",
+       "steps": [
+        [
+         ":",
+         "1/4"
+        ],
+        [
+         "−",
+         "6"
+        ],
+        [
+         "×",
+         "7/2"
+        ],
+        [
+         "+",
+         "28/5"
+        ]
+       ]
+      },
+      {
+       "letter": "Р",
+       "start": "9/5",
+       "steps": [
+        [
+         "−",
+         "5"
+        ],
+        [
+         "+",
+         "17/10"
+        ],
+        [
+         ":",
+         "3/10"
+        ],
+        [
+         "×",
+         "9/10"
+        ]
+       ]
+      },
+      {
+       "letter": "К",
+       "start": "-6",
+       "steps": [
+        [
+         "×",
+         "1/2"
+        ],
+        [
+         "+",
+         "2"
+        ],
+        [
+         "−",
+         "1/5"
+        ],
+        [
+         ":",
+         "3/5"
+        ]
+       ]
+      },
+      {
+       "letter": "М",
+       "start": "4",
+       "steps": [
+        [
+         ":",
+         "4/5"
+        ],
+        [
+         "−",
+         "13/5"
+        ],
+        [
+         ":",
+         "3/100"
+        ],
+        [
+         "×",
+         "1/5"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "p33-t62",
+     "title": "К задаче №16а",
+     "kind": "choice",
+     "answer": "(a + b + c) / 3",
+     "prompt": "Автобус проехал за три последовательных часа a, b и c километров. Запиши его среднюю скорость за все три часа.",
+     "finalLabel": "Выбери верную запись.",
+     "steps": [
+      {
+       "prompt": "Сколько часов двигался автобус?",
+       "answer": "3",
+       "hint": "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь.",
+       "explanation": "Общий путь a + b + c километров за 3 часа. Средняя скорость равна (a + b + c)/3 км/ч."
+      },
+      {
+       "prompt": "В авторском примере за три часа пройдено 20, 30 и 40 км. Найди среднюю скорость (км/ч).",
+       "answer": "30",
+       "hint": "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь.",
+       "explanation": "Общий путь a + b + c километров за 3 часа. Средняя скорость равна (a + b + c)/3 км/ч."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какая символическая запись соответствует всем условиям?",
+       "answer": "(a + b + c) / 3",
+       "choices": [
+        "a + b + c",
+        "(a + b + c) / 3",
+        "(a + b + c) / (a + b + c)"
+       ],
+       "hint": "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь.",
+       "explanation": "Общий путь a + b + c километров за 3 часа. Средняя скорость равна (a + b + c)/3 км/ч."
+      }
+     ],
+     "hint": "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь.",
+     "explanation": "Общий путь a + b + c километров за 3 часа. Средняя скорость равна (a + b + c)/3 км/ч.",
+     "skills": [
+      "direct-proportion",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 6,
+      "exercise": 16,
+      "reference": "№16а",
+      "subpart": "а"
+     },
+     "choices": [
+      "a + b + c",
+      "(a + b + c) / (a + b + c)",
+      "(a + b + c) / 3"
+     ],
+     "errorCues": [
+      [
+       "a + b + c",
+       "В выражении a + b + c посчитан путь. Для скорости требуется ещё поделить его на общее время."
+      ],
+      [
+       "(a + b + c) / (a + b + c)",
+       "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь."
+      ]
+     ],
+     "travelStudy": "bus"
+    },
+    {
+     "id": "p33-t63",
+     "title": "К задаче №16б",
+     "kind": "choice",
+     "answer": "(5n + 15k) / 20",
+     "prompt": "Первые 5 минут пешеход шёл со скоростью n м/мин, затем 15 минут — k м/мин. Запиши среднюю скорость за весь маршрут.",
+     "finalLabel": "Выбери верную запись.",
+     "steps": [
+      {
+       "prompt": "Сколько минут занял путь?",
+       "answer": "20",
+       "hint": "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь.",
+       "explanation": "Пути равны 5n и 15k метров, общее время 20 минут. Средняя скорость (5n + 15k)/20 м/мин."
+      },
+      {
+       "prompt": "В авторском примере n = 60, k = 80. Найди среднюю скорость в м/мин.",
+       "answer": "75",
+       "hint": "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь.",
+       "explanation": "Пути равны 5n и 15k метров, общее время 20 минут. Средняя скорость (5n + 15k)/20 м/мин."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какая символическая запись соответствует всем условиям?",
+       "answer": "(5n + 15k) / 20",
+       "choices": [
+        "(n + k) / 2",
+        "(5n + 15k) / 2",
+        "(5n + 15k) / 20"
+       ],
+       "hint": "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь.",
+       "explanation": "Пути равны 5n и 15k метров, общее время 20 минут. Средняя скорость (5n + 15k)/20 м/мин."
+      }
+     ],
+     "hint": "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь.",
+     "explanation": "Пути равны 5n и 15k метров, общее время 20 минут. Средняя скорость (5n + 15k)/20 м/мин.",
+     "skills": [
+      "direct-proportion",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 6,
+      "exercise": 16,
+      "reference": "№16б",
+      "subpart": "б"
+     },
+     "choices": [
+      "(5n + 15k) / 2",
+      "(5n + 15k) / 20",
+      "(n + k) / 2"
+     ],
+     "errorCues": [
+      [
+       "(n + k) / 2",
+       "Первый и второй участки длились разное время. У каждой скорости свой вес: 5 или 15 минут."
+      ],
+      [
+       "(5n + 15k) / 2",
+       "Укажи, что измерено: путь, скорость или время. Для каждого участка запиши свой путь."
+      ]
+     ],
+     "travelStudy": "walker"
+    },
+    {
+     "id": "p33-t64",
+     "title": "К задаче №16в",
+     "kind": "choice",
+     "answer": "5d/12 и d/12",
+     "prompt": "Лодка прошла d км за 2 часа по течению, а такой же путь обратно за 3 часа. Запиши сначала собственную скорость лодки, затем скорость течения.",
+     "finalLabel": "Выбери верную запись.",
+     "steps": [
+      {
+       "prompt": "При d = 12 км по течению получаем 6 км/ч, против — 4 км/ч. Найди их полусумму.",
+       "answer": "5",
+       "hint": "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает.",
+       "explanation": "По течению скорость d/2, против течения d/3. Полусумма (d/2 + d/3)/2 = 5d/12; полуразность (d/2 − d/3)/2 = d/12."
+      },
+      {
+       "prompt": "При d = 12 км найди скорость течения в км/ч.",
+       "answer": "1",
+       "hint": "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает.",
+       "explanation": "По течению скорость d/2, против течения d/3. Полусумма (d/2 + d/3)/2 = 5d/12; полуразность (d/2 − d/3)/2 = d/12."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какая символическая запись соответствует всем условиям?",
+       "answer": "5d/12 и d/12",
+       "choices": [
+        "5d/12 и d/12",
+        "d/2 и d/3",
+        "5d/6 и d/6"
+       ],
+       "hint": "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает.",
+       "explanation": "По течению скорость d/2, против течения d/3. Полусумма (d/2 + d/3)/2 = 5d/12; полуразность (d/2 − d/3)/2 = d/12."
+      }
+     ],
+     "hint": "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает.",
+     "explanation": "По течению скорость d/2, против течения d/3. Полусумма (d/2 + d/3)/2 = 5d/12; полуразность (d/2 − d/3)/2 = d/12.",
+     "skills": [
+      "direct-proportion",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 6,
+      "exercise": 16,
+      "reference": "№16в",
+      "subpart": "в"
+     },
+     "choices": [
+      "5d/12 и d/12",
+      "d/2 и d/3",
+      "5d/6 и d/6"
+     ],
+     "errorCues": [
+      [
+       "d/2 и d/3",
+       "d/2 и d/3 — скорости относительно берега. Чтобы выделить собственную скорость и течение, нужны полусумма и полуразность."
+      ],
+      [
+       "5d/6 и d/6",
+       "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает."
+      ]
+     ],
+     "travelStudy": "boat"
+    },
+    {
+     "id": "p33-t65",
+     "title": "К задаче №16г",
+     "kind": "choice",
+     "answer": "4(x − 2y)",
+     "prompt": "Катер движется по течению со скоростью x км/ч, а плот — y км/ч. Какой путь пройдёт катер за 4 часа против течения, если его собственная скорость не меняется и катер может идти вверх по реке?",
+     "finalLabel": "Выбери верную запись.",
+     "steps": [
+      {
+       "prompt": "Сколько часов длится обратный ход катера?",
+       "answer": "4",
+       "hint": "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает.",
+       "explanation": "Плот показывает скорость течения y. Собственная скорость катера x − y; против течения x − 2y. За 4 ч путь равен 4(x − 2y)."
+      },
+      {
+       "prompt": "В авторском примере x = 16, y = 3. Сколько километров пройдёт катер вверх за 4 ч?",
+       "answer": "40",
+       "hint": "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает.",
+       "explanation": "Плот показывает скорость течения y. Собственная скорость катера x − y; против течения x − 2y. За 4 ч путь равен 4(x − 2y)."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какая символическая запись соответствует всем условиям?",
+       "answer": "4(x − 2y)",
+       "choices": [
+        "4(x − y)",
+        "4(x − 2y)",
+        "4(x + y)"
+       ],
+       "hint": "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает.",
+       "explanation": "Плот показывает скорость течения y. Собственная скорость катера x − y; против течения x − 2y. За 4 ч путь равен 4(x − 2y)."
+      }
+     ],
+     "hint": "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает.",
+     "explanation": "Плот показывает скорость течения y. Собственная скорость катера x − y; против течения x − 2y. За 4 ч путь равен 4(x − 2y).",
+     "skills": [
+      "direct-proportion",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 6,
+      "exercise": 16,
+      "reference": "№16г",
+      "subpart": "г"
+     },
+     "choices": [
+      "4(x − y)",
+      "4(x + y)",
+      "4(x − 2y)"
+     ],
+     "errorCues": [
+      [
+       "4(x − y)",
+       "x − y даёт собственную скорость. При движении против течения вычти y ещё раз."
+      ],
+      [
+       "4(x + y)",
+       "Различай скорости относительно воды и берега. На одном направлении течение помогает, на другом мешает."
+      ]
+     ],
+     "travelStudy": "upstream"
     }
    ]
   },
@@ -49570,22 +51852,35 @@ function firstErrorsHTML(t,s){
     helpOpen[taskId] = value;
     try { localStorage.setItem(HELP_KEY, JSON.stringify(helpOpen)); } catch (_) {}
   }
-  // A saved link or a board snapshot always uses the original array index.
+  // Course data is immutable. Saved links and board snapshots use the original array index.
+  const readingOrders = new WeakMap();
+  const subpartOrder = new Intl.Collator('ru', { numeric: true });
   function readingOrder(lesson) {
-    const indices = lesson.tasks.map((_, index) => index);
-    if (!lesson.orderBySource) return indices;
-    return indices.sort((a, b) => {
-      const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
-      return left.exercise - right.exercise ||
-        String(left.subpart || '').localeCompare(String(right.subpart || ''), 'ru', { numeric: true });
-    });
+    let indices = readingOrders.get(lesson);
+    if (indices) return indices;
+    indices = lesson.tasks.map((_, index) => index);
+    if (lesson.orderBySource) {
+      indices.sort((a, b) => {
+        const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
+        return left.exercise - right.exercise ||
+          subpartOrder.compare(String(left.subpart || ''), String(right.subpart || ''));
+      });
+    }
+    readingOrders.set(lesson, indices);
+    return indices;
   }
   function partStart(part) {
     const first = D.lessons.find(lesson => partOf(lesson) === part);
     if (!first?.orderBySource) return '';
     const index = readingOrder(first)[0];
+    const section = first.completeSourceSection;
+    const coverage = section ? '<p class="small">В теме «' + e(first.title) + '» разобраны №' +
+      section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
+      section.lastPage + '). Число карточек с разбором — ' + first.tasks.filter(task =>
+        task.source?.type === 'textbook' && task.source.exercise >= section.first && task.source.exercise <= section.last).length +
+      '.</p>' : '';
     return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
-      'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>';
+      'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>' + coverage;
   }
   function partOf(lesson){return Number(lesson?.part)||1;}
   function sourceLimit(part){return ({1:497,2:589,3:778})[part]||497;}

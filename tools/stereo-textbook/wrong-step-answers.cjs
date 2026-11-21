@@ -170,6 +170,46 @@ const misconceptions = new Map([
   ['ex-main-0540/step-2', '6.75'], // Computed the cylinder volume.
   ['ex-main-0540/step-3', '7069'], // Used full precision after the prompt set pi to 3.14.
   ['ex-main-0540/step-4', '7065'], // Kept the original radius.
+  ['ex-main-0541/step-1', '4'], // Used the entire long side.
+  ['ex-main-0541/step-3', '10'], // Replaced the cone by a cylinder.
+  ['ex-main-0542/step-2', '2'], // Submitted the complete incircle diameter.
+  ['ex-main-0542/step-3', '4/3'], // Used the diameter as the radius.
+  ['ex-main-0543/step-1', '3'], // Used the sphere radius as the cylinder height.
+  ['ex-main-0543/step-3', '2/3'], // Reversed the source ratio.
+  ['ex-main-0543/step-4', '3/2'], // Retained the previous numerator.
+  ['ex-main-0544/step-2', '10'], // Submitted the slant height.
+  ['ex-main-0544/step-3', '24'], // Used the small sphere radius in the cone.
+  ['ex-main-0545/step-2', '3'], // Used the base radius as the contact radius.
+  ['ex-main-0545/step-3', '6/5'], // Omitted the factor two in the circumference.
+  ['ex-main-0546/step-1', '3'], // Submitted the slant projection.
+  ['ex-main-0546/step-3', '8/21'], // Reversed the volume ratio.
+  ['ex-main-0547/step-1', '1/2'], // Multiplied by the tangent instead of dividing.
+  ['ex-main-0547/step-3', '32*sqrt(3)'], // Used a prism instead of a pyramid.
+  ['ex-main-0547/step-4', '32*sqrt(3)/3'], // Kept the original volume.
+  ['ex-main-0548/step-1', '2'], // Submitted the rhombus altitude.
+  ['ex-main-0548/step-2', '4/3'], // Used the entire base dihedral angle.
+  ['ex-main-0549/step-1', '8'], // Used the diameter.
+  ['ex-main-0549/step-3', '24'], // Used the radius in the first power.
+  ['ex-main-0550/step-1', '36'], // Selected the horizontal bisector for the key diagram.
+  ['ex-main-0550/step-2', '288'], // Used the second admissible case instead of the key.
+  ['ex-main-0550/step-3', '2*sqrt(3)'], // Kept the tall case after rotating the bisector.
+  ['ex-main-0550/step-4', '32*sqrt(3)'], // Reused the tall-cylinder volume.
+  ['ex-main-0551/step-1', '1'], // Removed the sign of a coordinate below the base.
+  ['ex-main-0551/step-4', '100'], // Gave a surface area coefficient instead of a volume.
+  ['ex-main-0552/step-2', '1'], // Used the base circumradius for the sphere.
+  ['ex-main-0553/step-2', '5'], // Submitted half the rectangle diagonal.
+  ['ex-main-0554/step-1', '1.5'], // Confused the rim radius with the cap sphere radius.
+  ['ex-main-0554/step-3', '7.56'], // Included both end caps in the requested generator length.
+  ['ex-main-0555/step-3', 'sqrt(5)'], // Counted the lateral surface only.
+  ['ex-main-0555/step-4', 'pi'], // Submitted the cube face area.
+  ['ex-main-0556-a/step-1', '4.6'], // Removed the wall thickness twice from the radius.
+  ['ex-main-0556-a/step-2', '0.884736'], // Submitted the cavity fraction.
+  ['ex-main-0556-a/step-3', '8.9'], // Used the density of solid copper.
+  ['ex-main-0556-a/step-4', '1.026'], // Kept the older wall thickness.
+  ['ex-main-0556-b/step-1', '3.5'], // Read millimetres as centimetres.
+  ['ex-main-0556-b/step-2', '0.912673'], // Used the air fraction.
+  ['ex-main-0556-b/step-3', '8.9'], // Used the material density for the shell.
+  ['ex-main-0556-b/step-4', '0.777'], // Reused the preceding diameter ratio.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 
