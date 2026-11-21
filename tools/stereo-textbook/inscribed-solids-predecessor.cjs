@@ -1,7 +1,13 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const sphereApplications = makeReviewedIncrement(require('./sphere-applications.json'));
+const cylinderApplications = makeReviewedIncrement(require('./cylinder-applications.json'));
+const pyramidComparisonApplications = makeReviewedIncrement(require('./pyramid-comparison-applications.json'), cylinderApplications);
+const pyramidAngleApplications = makeReviewedIncrement(require('./pyramid-angle-applications.json'), pyramidComparisonApplications);
+const normalPrismApplications = makeReviewedIncrement(require('./normal-prism-applications.json'), pyramidAngleApplications);
+const prismApplications = makeReviewedIncrement(require('./prism-applications.json'), normalPrismApplications);
+const volumeSelfcheck = makeReviewedIncrement(require('./volume-selfcheck.json'), prismApplications);
+const sphereApplications = makeReviewedIncrement(require('./sphere-applications.json'), volumeSelfcheck);
 const spheres = makeReviewedIncrement(require('./sphere-measures.json'), sphereApplications);
 const sectors = makeReviewedIncrement(require('./cone-nets-and-frusta.json'), spheres);
 const cones = makeReviewedIncrement(require('./cone-volumes.json'), sectors);

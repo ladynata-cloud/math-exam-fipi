@@ -136,11 +136,20 @@
   main.querySelector('.v5-hero').insertAdjacentHTML('afterend',v5NumberedLinks(p));
   document.getElementById('v5-search').oninput=function(e){var q=e.target.value.trim().toLowerCase();document.getElementById('v5-search-results').innerHTML=q.length<2?'':p.ids.concat(p.numbered||[]).filter(function(id){var l=C.byId[id];return (l.title+' '+l.explanation+' пункт '+l.point).toLowerCase().includes(q);}).map(function(id){return '<p><a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a></p>';}).join('');};
  }
- function v5NumberedLinks(path){
+ function v5NumberedLinks(path,point){
   if(!path.numbered?.length)return '';
-  return '<section class="panel"><h2>Решаем по номерам учебника</h2><p>Виленкин, 5 класс, издание 2023 года. Часть 1, пункт 1, страница 9.</p><ul>'+path.numbered.map(function(id){return '<li><a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a></li>';}).join('')+'</ul></section>';
+  const groups=new Map();
+  for(const id of path.numbered){
+   const lesson=C.byId[id],source=lesson.source;
+   if(point&&source.point!==point)continue;
+   const label='Часть '+source.part+', пункт '+source.point;
+   if(!groups.has(label))groups.set(label,[]);
+   groups.get(label).push('<li><a href="#lesson/'+id+'">'+esc(lesson.title)+'</a> · с. '+source.page+'</li>');
+  }
+  if(!groups.size)return '';
+  return '<section class="panel"><h2>Решаем по номерам учебника</h2><p>Виленкин, 5 класс, издание 2023 года.</p>'+Array.from(groups,([label,items])=>'<h3>'+label+'</h3><ul>'+items.join('')+'</ul>').join('')+'</section>';
  }
- function v5Unit(point){enterBoardFrame();var p=C.pathById.vilenkin5,u=p&&p.units[Number(point)-1];if(!u)return course('vilenkin5');selectCourse('vilenkin5');main.innerHTML='<a href="#course/vilenkin5">← Весь курс Виленкина 5</a><p class="eyebrow section">'+(u.point<=51?'Пункт '+u.point+' · часть '+u.part+' · с. '+u.page:'Практикум')+'</p><h1>'+esc(u.title)+'</h1><p class="lead">Смысл → модель → шаги решения → новая самостоятельная задача.</p><div class="skill-list">'+u.ids.map(skillRow).join('')+'</div>'+(u.point===1?v5NumberedLinks(p):'')+boardLink('#v5-unit/'+u.point)+(u.point<p.units.length?'<p><a href="#v5-unit/'+(u.point+1)+'">Следующий пункт →</a></p>':'');}
+ function v5Unit(point){enterBoardFrame();var p=C.pathById.vilenkin5,u=p&&p.units[Number(point)-1];if(!u)return course('vilenkin5');selectCourse('vilenkin5');main.innerHTML='<a href="#course/vilenkin5">← Весь курс Виленкина 5</a><p class="eyebrow section">'+(u.point<=51?'Пункт '+u.point+' · часть '+u.part+' · с. '+u.page:'Практикум')+'</p><h1>'+esc(u.title)+'</h1><p class="lead">Смысл → модель → шаги решения → новая самостоятельная задача.</p><div class="skill-list">'+u.ids.map(skillRow).join('')+'</div>'+v5NumberedLinks(p,u.point)+boardLink('#v5-unit/'+u.point)+(u.point<p.units.length?'<p><a href="#v5-unit/'+(u.point+1)+'">Следующий пункт →</a></p>':'');}
  function v6Course(p){
   enterBoardFrame();selectCourse(p.id);var next=nextSkill(),done=p.ids.filter(function(id){return state.skills[id]&&state.skills[id].checks.length>=2;}).length;
   var chapters=[['Считаем и исследуем данные',1,5],['Делимость и дроби',6,17],['Отношения и геометрия',18,23],['Положительные и отрицательные числа',24,36],['Выражения, уравнения и графики',37,44],['Собираем знания вместе',45,46]];
@@ -177,16 +186,17 @@
  function verifiedBook(b){
   var rows=b.mapping.map(function(m){
    var label=m.sectionLabel?esc(m.sectionLabel)+' · с. '+esc(m.page):(m.paragraph?'§ '+m.paragraph+' · ':m.supplementaryChapter?'Глава '+m.supplementaryChapter+' · Для тех, кто хочет знать больше · ':'')+'Пункт '+m.section+' · с. '+m.page;
-   var entry=m.externalPath?'<a class="button" href="'+esc(m.externalPath)+'">Разобрать и решить</a>':button('Разобрать и решить','book-skill',b.id+'/'+m.section);
+   var entry=m.bookOnly?'<a class="button quiet" href="'+esc(m.sourcePath)+'">Сверить страницу в книге</a>':m.externalPath?'<a class="button" href="'+esc(m.externalPath)+'">Разобрать и решить</a>':button('Разобрать и решить','book-skill',b.id+'/'+m.section);
    var boardUrl=m.boardPath;
    var mirror=boardUrl?'<a class="button quiet" href="../trainers/trainer-board.html?trainer='+encodeURIComponent(boardUrl)+'">Решать на общей доске</a>':'';
    return '<article class="skill-row"><div><p class="eyebrow">'+label+'</p><h3>'+esc(m.title||m.focus)+'</h3>'+(m.title&&m.focus?'<p>'+esc(m.focus)+'</p>':'')+'</div><div class="row">'+entry+mirror+'</div></article>';
   }).join('');
   var extras=(b.exercises||[]).map(function(ex){
-   var board='../trainers/trainer-board.html?trainer='+encodeURIComponent(ex.path);
-   return '<li><p><b>№'+esc(ex.printed)+'</b> · с. '+esc(ex.page)+' · '+esc(ex.title)+'</p><div class="row"><a class="button quiet" href="'+esc(ex.path)+'">Разбор и тренировка</a><a class="button quiet" href="'+esc(board)+'">Решать на общей доске</a></div></li>';
+   var target=Object.prototype.hasOwnProperty.call(ex,'boardPath')?ex.boardPath:ex.path;
+   var board=target?'<a class="button quiet" href="../trainers/trainer-board.html?trainer='+esc(encodeURIComponent(target))+'">Решать на общей доске</a>':'';
+   return '<li><p><b>№'+esc(ex.printed)+'</b> · с. '+esc(ex.page)+' · '+esc(ex.title)+'</p><div class="row"><a class="button quiet" href="'+esc(ex.path)+'">Разбор и тренировка</a>'+board+'</div></li>';
   }).join('');
-  main.innerHTML='<a href="#books">← Все учебники</a><h1>'+esc(b.title)+'</h1><p class="lead">'+esc(b.note)+'</p><p>'+esc(b.status)+'. '+esc(b.remaining)+'</p><p><a href="'+esc(b.verifiedSource)+'">'+esc(b.sourceLabel)+'</a></p><div class="skill-list">'+rows+'</div>'+(extras?'<section class="section"><h2>Дополнительные упражнения по номерам</h2><ul>'+extras+'</ul></section>':'');
+  main.innerHTML='<a href="#books">← Все учебники</a><h1>'+esc(b.title)+'</h1><p class="lead">'+esc(b.note)+'</p><p>'+esc(b.status)+'. '+esc(b.remaining)+'</p><p><a href="'+esc(b.verifiedSource)+'">'+esc(b.sourceLabel)+'</a></p><div class="skill-list">'+rows+'</div>'+(extras?'<section class="section"><h2>'+esc(b.exerciseHeading||'Дополнительные упражнения по номерам')+'</h2><ul>'+extras+'</ul></section>':'');
  }
  function book(id){
   var b=C.books.find(function(b){return b.id===id;});if(!b)return books();if(b.verifiedSource)return verifiedBook(b);if(b.course)return course(b.course);
@@ -230,8 +240,8 @@
   if(!V5Q||!V5Q.isLegacy(draft))saveLesson();
   if(location.hash!=='#lesson/'+draft.id)location.hash='#lesson/'+draft.id;else lesson();
  }
- function steps(){return session.task.steps.concat([{prompt:'Теперь запиши окончательный ответ к задаче.',answer:session.task.answer,answerFormat:session.task.answerFormat,why:'Сопоставь результат с условием и единицами.',v6Full:session.task.v6Full,errors:session.task.errors,hints:[session.task.m9Full?'Сверь результат с вопросом. Все корни и допустимые границы учтены?':'Сопоставь ответ с вопросом: часть, целое, значение или изменение?','Используй результаты предыдущих шагов. Проверь знак и единицы.']}]);}
- function formatNote(target){return {'v5-pair':'Запиши два числа через точку с запятой в порядке вопроса.','m9-pairs':'Все пары: (1;2);(3;4). Порядок пар не важен, порядок координат в паре важен.','m9-set':'Интервалы: (1;3), [1;3], (-∞;1)∪[3;+∞). Вместо ∪ можно U или «или»; вместо ∞ — inf. Отдельная точка: {2}.','decimal':'Запиши десятичную дробь с запятой или точкой, например 0,25.','improper-fraction':'Запиши неправильную дробь, например 7/3.','reduced-fraction':'Запиши несократимую дробь или целое число.','unordered':'Запиши все ответы через точку с запятой; порядок не важен.','prime-factors':'Запиши произведение простых чисел, например 2 · 2 · 3. Вместо · можно использовать * или ×.'}[target.answerFormat]||'Можно ввести целое число, десятичную дробь (с запятой), обычную дробь 3/4 или смешанное число 2 1/3. Для координат: 2; −3. Для вопроса словами — указанный в нём ответ.';}
+ function steps(){var task=session.task;return task.steps.concat([{alternatives:task.alternatives,columnRules:task.columnRules,scheduleRules:task.scheduleRules,nearSets:task.nearSets,prompt:'Теперь запиши окончательный ответ к задаче.',answer:session.task.answer,answerFormat:session.task.answerFormat,why:'Сопоставь результат с условием и единицами.',v6Full:session.task.v6Full,errors:session.task.errors,hints:[session.task.m9Full?'Сверь результат с вопросом. Все корни и допустимые границы учтены?':'Сопоставь ответ с вопросом: часть, целое, значение или изменение?','Используй результаты предыдущих шагов. Проверь знак и единицы.']}]);}
+ function formatNote(target){return {'v5-point-set':'Перечисли буквы в любом порядке. Можно писать подряд, через пробел или запятую.','v5-triple':'Запиши три целых числа через точку с запятой в порядке вопроса.','v5-pair':'Запиши два числа через точку с запятой в порядке вопроса.','m9-pairs':'Все пары: (1;2);(3;4). Порядок пар не важен, порядок координат в паре важен.','m9-set':'Интервалы: (1;3), [1;3], (-∞;1)∪[3;+∞). Вместо ∪ можно U или «или»; вместо ∞ — inf. Отдельная точка: {2}.','decimal':'Запиши десятичную дробь с запятой или точкой, например 0,25.','improper-fraction':'Запиши неправильную дробь, например 7/3.','reduced-fraction':'Запиши несократимую дробь или целое число.','unordered':'Запиши все ответы через точку с запятой; порядок не важен.','prime-factors':'Запиши произведение простых чисел, например 2 · 2 · 3. Вместо · можно использовать * или ×.'}[target.answerFormat]||'Можно ввести целое число, десятичную дробь (с запятой), обычную дробь 3/4 или смешанное число 2 1/3. Для координат: 2; −3. Для вопроса словами — указанный в нём ответ.';}
  function lesson(){
   if(!session){var id=location.hash.split('/')[1];return begin(id,'learn');}
   var l=C.byId[session.id],t=session.task,isLearn=session.mode==='learn',parts=steps(),current=isLearn?parts[Math.min(session.step,parts.length-1)]:t;
@@ -296,7 +306,7 @@
   session.correct=correct;if(session.task.m9Full){session.answers=session.answers||[];if(correct&&isLearn)session.answers[session.step]=value;session.attemptLog=session.attemptLog||[];if(!session.firstAttempt)session.firstAttempt={value:value.slice(0,400),correct:correct,assisted:session.assisted};session.attemptLog.push({value:value.slice(0,400),step:session.step,correct:correct,assisted:session.assisted,time:Date.now()});if(session.attemptLog.length>20)session.attemptLog.shift();}
   session.message=correct?(isLearn?steps()[session.step].why:'Ответ верный. '+(session.assisted?'Использована помощь.':session.exposed?'Условие уже было знакомо.':session.attempt>1?'Решено после исправления.':'Получилось с первой попытки без помощи.')):(target.answerFormat&&M.equal(value,target.answer)?'Значение верное, теперь выполни требуемое преобразование. '+formatNote(target):'Пока не совпало. Проверь смысл действия, знак и единицы. Подсказка поможет разобрать именно этот шаг.');
   if(V5Q&&boardFrame&&C.byId[session.id]?.v5Course&&correct&&!isLearn)session.message='Верно. Совместный разбор.';
-  session.remedy='';if(!correct&&session.task.v6Full){var err=(target.errors||[]).find(function(e){return M.equal(value,e.value);});if(err){session.message=err.text;session.remedy=err.remedy&&C.byId[err.remedy]?err.remedy:'';}}
+  session.remedy='';if(!correct&&session.task.v6Full){var err=(target.errors||[]).find(function(e){return M.equal(value,e.value);});if(target.answerFormat==='v5-point-set'){const set=window.Vilenkin5Numbered.readPointSet(value),mistake=(target.nearSets||[]).find(item=>item.set===set);if(mistake)session.message=mistake.text;}if(err){session.message=err.text;session.remedy=err.remedy&&C.byId[err.remedy]?err.remedy:'';}else if(target.columnRules||target.scheduleRules||target.orderRules){session.message=window.Vilenkin5Numbered.mistake(value,target,M)||session.message;}}
   if(!isLearn||session.step===steps().length-1){
    S.result(state,{skill:session.id,mode:session.mode,vilenkinRun:personalVilenkin()?session.vilenkinRun:undefined,correct:correct,assisted:session.assisted,exposed:session.exposed,attempt:session.attempt,time:Date.now(),fingerprint:S.fingerprint(session.id,session.task)});saveLesson();
   }else if(session.task.v6Full)saveLesson();

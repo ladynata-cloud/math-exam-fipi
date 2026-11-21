@@ -122,9 +122,17 @@
     "p15-t57": "60",
     "p15-t58": "30",
     "p15-t59": "17",
-    "p15-t60": "10"
+    "p15-t60": "10",
+    "p15-t61": "3",
+    "p15-t62": "4/3",
+    "p15-t63": "1001/200",
+    "p15-t64": "28/5",
+    "p15-t72": "68/25",
+    "p15-t73": "78/5",
+    "p15-t74": "33/5",
+    "p15-t75": "2/3"
   },
   "additions": {
-    "2026-11-21": "Part 2 exercises 1–8 on p. 6, 9–11 on p. 7 and 15(2) on p. 8, part 3 exercises 1–3 on p. 4 and 4–10 on p. 5."
+    "2026-11-21": "Part 2 exercises 1–8 on p. 6, 9–11 on p. 7 and 15(2) on p. 8, part 3 exercises 1–3 on p. 4 and 4–10 on p. 5. Part 2, printed page 8: the four numerical changes in exercise 16, independently checked as 3, 4/3, 1001/200 and 28/5. Four roots of exercise 19 on p. 8: 68/25, 78/5, 33/5, 2/3; verified by substitution in both printed sides."
   }
 }

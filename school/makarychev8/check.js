@@ -379,7 +379,7 @@ function rootLineCount(user){
  if(product===0n)return kn>0n?2:1;
  return kn>0n?2:0;
 }
-function factoredPair(value,expected,required=2){
+function factoredPair(value,expected,required=2,maxDegree=1){
  if(!sameReducedExpression(value,expected))return 'different';
  const symbols=new Set(String(expected).match(/[a-z]/g)||[]);
  let s=normalize(value);
@@ -400,14 +400,30 @@ function factoredPair(value,expected,required=2){
    if(s[0]!=='(')return 'expanded';
    const end=endGroup(0);if(end<0)return 'expanded';
    const [n,d]=polynomialFraction(s.slice(1,end),symbols);
-   if(!d.has('')||d.size!==1||[...n.keys()].some(k=>k.length>1))return 'expanded';
-   const linear=[...n.keys()].some(k=>k.length===1);s=s.slice(end+1);
+   if(!d.has('')||d.size!==1||[...n.keys()].some(k=>k.length>maxDegree))return 'expanded';
+   const nonconstant=[...n.keys()].some(k=>k.length>0);s=s.slice(end+1);
    const power=s.match(/^\^(\d+)/);if(power)s=s.slice(power[0].length);
-   if(linear)count+=power?Number(power[1]):1;
+   if(nonconstant)count+=power?Number(power[1]):1;
    s=s.replace(/^\*/,'');
   }
  }catch(_){return 'expanded';}
  return count===required?'factored':'expanded';
+}
+function absLineIntersections(raw){
+ const fields=String(raw).split(';').map(x=>M.parse(x));
+ if(fields.length!==2||fields.some(v=>!v))return null;
+ const [k,b]=fields,kn=BigInt(k.n),kd=BigInt(k.d),bn=BigInt(b.n),bd=BigInt(b.d);
+ const intercept=kn!==0n&&bn*kd===3n*kn*bd;
+ const points=[],slope=k.n/k.d,offset=b.n/b.d;
+ let coincident=false;
+ for(const sign of [1n,-1n]){
+  const denominator=bd*(sign*kd-kn),numerator=bn*kd;
+  if(!denominator){if(!numerator)coincident=true;continue;}
+  if(sign*numerator*denominator<0n)continue;
+  const x=Number(numerator)/Number(denominator);
+  if(!points.some(p=>p[0]===x))points.push([x,Math.abs(x)]);
+ }
+ return {k:slope,b:offset,intercept,count:coincident?Infinity:points.length,points};
 }
 function reciprocalIntersections(raw){
  const fields=String(raw).split(';');if(fields.length!==2)return null;
@@ -517,9 +533,10 @@ function check(user,target){
  if(target.kind==='line-pair-equation')return equationPlaneStatus(user,target.answer)==='correct';
  if(target.kind==='equation-from-roots')return equationRatioStatus(user,target.ratios)==='correct';
  if(target.kind==='examples-of-equations')return exampleEquationsStatus(user)==='correct';
+ if(target.kind==='abs-line-example'){const v=absLineIntersections(user);return Boolean(v?.intercept&&v.count===target.reqCount);}
  if(target.kind==='rational-line-example')return reciprocalIntersections(user)?.count===target.intersectionCount;
  if(target.kind==='progression-factor-example')return progressionFactors(user)==='factored';
- if(target.factorizedAnswer)return factoredPair(user,target.answer,target.requiredFactors||2)==='factored';
+ if(target.factorizedAnswer)return factoredPair(user,target.answer,target.requiredFactors||2,target.productDegree||1)==='factored';
  if(target.kind==='separated-rational')return separatedRational(user,target.answer);
  if(target.kind==='quadratic-roots')return sameQuadraticRoots(user,target.answer);
  if(target.kind==='radical-value')return sameRadicalSum(user,target.answer)&&(!target.requireSimplified||reducedRadicals(user,target.answer));
@@ -577,5 +594,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

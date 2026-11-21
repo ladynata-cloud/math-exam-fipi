@@ -52,6 +52,12 @@ jobs:
           node tools/stereo-textbook/cone-nets-and-frusta.test.cjs
           node tools/stereo-textbook/sphere-measures.test.cjs
           node tools/stereo-textbook/sphere-applications.test.cjs
+          node tools/stereo-textbook/volume-selfcheck.test.cjs
+          node tools/stereo-textbook/prism-applications.test.cjs
+          node tools/stereo-textbook/normal-prism-applications.test.cjs
+          node tools/stereo-textbook/pyramid-angle-applications.test.cjs
+          node tools/stereo-textbook/pyramid-comparison-applications.test.cjs
+          node tools/stereo-textbook/cylinder-applications.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -128,6 +134,36 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: sphereApplications
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/sphere-applications
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify all printed chapter V volume review questions including subparts on phone, tablet and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: volumeSelfcheck
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/volume-selfcheck
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify prism areas, perpendicular diagonals and reconstructed side lengths
+        env:
+          TEXTBOOK_PRACTICE_GROUP: prismApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/prism-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify angle to a face, parallel-line shifts and normal sections of triangular prisms
+        env:
+          TEXTBOOK_PRACTICE_GROUP: normalPrismApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/normal-prism-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify distances to a face, lateral dihedral angles and radius formulas for pyramids
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramidAngleApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-angle-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check pyramid diagonals, both pairs of equal tetrahedron edges and a midheight slice
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramidComparisonApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-comparison-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check cylinder areas, a constant lateral surface and litres in a conical tank
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cylinderApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cylinder-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -176,5 +212,11 @@ jobs:
             artifacts/cone-nets-and-frusta/
             artifacts/sphere-measures/
             artifacts/sphere-applications/
+            artifacts/volume-selfcheck/
+            artifacts/prism-applications/
+            artifacts/normal-prism-applications/
+            artifacts/pyramid-angle-applications/
+            artifacts/pyramid-comparison-applications/
+            artifacts/cylinder-applications/
           retention-days: 14
           if-no-files-found: error

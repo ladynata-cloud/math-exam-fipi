@@ -106,6 +106,70 @@ const misconceptions = new Map([
   ['ex-main-0515/step-1', '3/4'], // Returned the water fraction.
   ['ex-main-0516/step-3', '32'], // Counted only the seam allowance.
   ['ex-main-0517/step-3', '2'], // Computed lateral surface alone.
+  ['ex-selfcheck-v-01-a/step-3', '12'], // Counted the full body instead of its difference.
+  ['ex-selfcheck-v-02/step-3', '1/8'], // Scaled the equal height as well.
+  ['ex-selfcheck-v-03/step-3', '1/2'], // Treated circular area as linear in diameter.
+  ['ex-selfcheck-v-04/step-2', '1/4'], // Omitted the doubled height.
+  ['ex-selfcheck-v-05/step-2', '4'], // Used the side as a perpendicular height.
+  ['ex-selfcheck-v-06/step-2', '8'], // Scaled all three dimensions when heights are equal.
+  ['ex-selfcheck-v-07/step-3', '4'], // Used the entire excess for a single cone.
+  ['ex-selfcheck-v-08/step-3', '1'], // Assumed swapping a radius with a height preserves volume.
+  ['ex-selfcheck-v-09-b/step-2', '1/4'], // Computed areas, not volumes.
+  ['ex-selfcheck-v-10/step-2', '3'], // Divided radii only.
+  ['ex-selfcheck-v-11/step-3', 'sqrt(3)'], // Returned the radius ratio.
+  ['ex-selfcheck-v-12-a/step-2', '1/8'], // Cubed the radius ratio.
+  ['ex-selfcheck-v-12-b/step-2', '324'], // Scaled the area by the volume ratio.
+  ['ex-selfcheck-v-13/step-2', '8'], // Left the given volume ratio unchanged.
+  ['ex-selfcheck-v-14/step-2', '9/4'], // Left the given surface ratio unchanged.
+  ['ex-main-0518/step-3', '1296'], // Product of the three face areas is the squared volume.
+  ['ex-main-0519/step-1', '194'], // Counted every squared edge twice.
+  ['ex-main-0519/step-3', '16*sqrt(11)'], // Failed to simplify the radical product.
+  ['ex-main-0520/step-2', '2'], // Subtracted lengths instead of squared lengths.
+  ['ex-main-0521/step-2', '109'], // Selected the longer diagonal.
+  ['ex-main-0522/step-3', '28'], // Returned the difference of squared diagonals.
+  ['ex-main-0522/step-4', '176'], // Used the squared base area.
+  ['ex-main-0523/step-2', '16'], // Treated the common leg as the hypotenuse.
+  ['ex-main-0524/step-2', '3'], // Confused shortest base leg with the side face area.
+  ['ex-main-0525/step-3', '2*sqrt(2)'], // Gave the height alone.
+  ['ex-main-0525/step-4', '4*sqrt(6)'], // Scaled volume linearly.
+  ['ex-main-0526/step-3', '24'], // Kept the completed parallelepiped.
+  ['ex-main-0527/step-2', '24'], // Missed the half in the triangle base.
+  ['ex-main-0528/step-2', '5.1'], // Confused a face area with a section length.
+  ['ex-main-0528/step-3', '10.8'], // Returned semiperimeter instead of area.
+  ['ex-main-0528/step-4', '12.24'], // Forgot the edge length.
+  ['ex-main-0528/step-5', '6.12'], // Used the old edge length.
+  ['ex-main-0529/step-2', '27'], // Used the complete altitude of the triangular base.
+  ['ex-main-0530/step-1', '1'], // Confused the midpoint distance with the vertex height.
+  ['ex-main-0531/step-3', '2*sqrt(2)'], // Substituted a lateral edge for the base radius.
+  ['ex-main-0532/step-3', '2'], // Used a triangle instead of the entire square.
+  ['ex-main-0532/step-4', '4*sqrt(2)'], // Omitted division by three.
+  ['ex-main-0532/step-5', '4*sqrt(2)/3'], // Kept a square after changing the base.
+  ['ex-main-0533/step-3', '2*sqrt(3)'], // Forgot one half in the area formula.
+  ['ex-main-0533/step-4', '2*sqrt(3)'], // Calculated the corresponding prism volume.
+  ['ex-main-0533/step-5', '2*sqrt(3)/3'], // Reused the preceding obtuse base.
+  ['ex-main-0534/step-1', '2'], // Submitted the half-diagonal.
+  ['ex-main-0534/step-3', '12*sqrt(3)'], // Forgot one half in the area.
+  ['ex-main-0534/step-4', '12*sqrt(3)'], // Omitted division by three.
+  ['ex-main-0536-a/step-4', 'sqrt(23)/2'], // Used the prism product.
+  ['ex-main-0536-a/step-5', 'sqrt(23)/6'], // Reused the preceding data.
+  ['ex-main-0536-b/step-3', '2*sqrt(3)'], // Used the area of the bounding rectangle.
+  ['ex-main-0535/step-1', '4'], // Replaced a rhombus altitude with its side.
+  ['ex-main-0536-a/step-2', '1/3'], // Lost the factor two in the cross term.
+  ['ex-main-0536-a/step-3', '2'], // Submitted the oblique segment squared.
+  ['ex-main-0536-b/step-1', '8'], // Used full edges for both horizontal offsets.
+  ['ex-main-0536-b/step-4', 'sqrt(3)/3'], // Counted only half of the tetrahedron.
+  ['ex-main-0537/step-2', '27'], // Cubed a height difference.
+  ['ex-main-0537/step-4', '31/73'], // Reused the initial sides after transfer.
+  ['ex-main-0538-a/step-1', '9'], // Submitted the square of the radius.
+  ['ex-main-0538-a/step-4', '36'], // Used the preceding base.
+  ['ex-main-0538-b/step-1', '4'], // Treated the side of the axial square as a radius.
+  ['ex-main-0538-c/step-1', '6'], // Omitted the two base disks.
+  ['ex-main-0539/step-1', '9'], // Scaled the height with the radius.
+  ['ex-main-0539/step-2', '4/9'], // Compared base areas without compensating heights.
+  ['ex-main-0540/step-1', '0.5625'], // Halved a given radius.
+  ['ex-main-0540/step-2', '6.75'], // Computed the cylinder volume.
+  ['ex-main-0540/step-3', '7069'], // Used full precision after the prompt set pi to 3.14.
+  ['ex-main-0540/step-4', '7065'], // Kept the original radius.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

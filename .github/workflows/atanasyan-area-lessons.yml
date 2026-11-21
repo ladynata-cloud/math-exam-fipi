@@ -34,6 +34,18 @@ on:
       - 'tools/geometry-textbook/*vector_midpoint_proofs*'
       - 'geometry-course/textbook/data/vector-applications.json'
       - 'tools/geometry-textbook/*vector_applications*'
+      - 'geometry-course/textbook/data/vector-length-problems.json'
+      - 'tools/geometry-textbook/*vector_length_problems*'
+      - 'geometry-course/textbook/data/vector-extra-problems.json'
+      - 'tools/geometry-textbook/*vector_extra_problems*'
+      - 'geometry-course/textbook/data/vector-chapter-review.json'
+      - 'tools/geometry-textbook/*vector_chapter_review*'
+      - 'geometry-course/textbook/data/coordinate-coefficients.json'
+      - 'tools/geometry-textbook/*coordinate_coefficients*'
+      - 'geometry-course/textbook/data/coordinate-relations.json'
+      - 'tools/geometry-textbook/*coordinate_relations*'
+      - 'geometry-course/textbook/data/coordinate-grid.json'
+      - 'tools/geometry-textbook/*coordinate_grid*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
@@ -62,6 +74,12 @@ jobs:
       - run: python3 tools/geometry-textbook/scalar_problems.py --check && python3 tools/geometry-textbook/check_scalar_problems.py
       - run: python3 tools/geometry-textbook/vector_midpoint_proofs.py --check && python3 tools/geometry-textbook/check_vector_midpoint_proofs.py
       - run: python3 tools/geometry-textbook/vector_applications.py --check && python3 tools/geometry-textbook/check_vector_applications.py
+      - run: python3 tools/geometry-textbook/vector_length_problems.py --check && python3 tools/geometry-textbook/check_vector_length_problems.py
+      - run: python3 tools/geometry-textbook/vector_extra_problems.py --check && python3 tools/geometry-textbook/check_vector_extra_problems.py
+      - run: python3 tools/geometry-textbook/vector_chapter_review.py --check && python3 tools/geometry-textbook/check_vector_chapter_review.py
+      - run: python3 tools/geometry-textbook/coordinate_coefficients.py --check && python3 tools/geometry-textbook/check_coordinate_coefficients.py
+      - run: python3 tools/geometry-textbook/coordinate_relations.py --check && python3 tools/geometry-textbook/check_coordinate_relations.py
+      - run: python3 tools/geometry-textbook/coordinate_grid.py --check && python3 tools/geometry-textbook/check_coordinate_grid.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons

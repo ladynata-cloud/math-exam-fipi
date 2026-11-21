@@ -7,7 +7,8 @@ function makeReviewedIncrement(data, later) {
   function numberOf(entry) {
     const source = entry.source;
     const key = source.collection === 'main' ? source.exercise
-      : source.collection === 'theory' ? 'theory-' + source.point : null;
+      : source.collection === 'theory' ? 'theory-' + source.point
+      : source.collection === 'selfcheck' ? 'selfcheck-' + source.chapter.split('.')[0] + '-' + source.exercise : null;
     return key && Object.hasOwn(data.parts, key) ? key : null;
   }
   const canon=value=>Array.isArray(value)?value.map(canon):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canon(value[k])])):value;

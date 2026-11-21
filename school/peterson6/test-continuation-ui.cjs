@@ -307,8 +307,8 @@ test('read both opening sections in print order while old links retain their tas
  const f=fixture(null,null,true);
  try {
   const parts=[
-   {part:2,id:'p15',first:32,subparts:['аб','','абвгдежз','','абвг','абвгдежз','абвг','абвгде','12','123','абвгде','1234','1234','12','12345']},
-   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб']},
+   {part:2,id:'p15',first:32,subparts:['аб','','абвгдежз','','абвг','абвгдежз','абвг','абвгде','12','123','абвгде','1234','1234','12','12345','1234','123456','','абвг']},
+   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб','абв','аб','аб']},
   ];
   for(const {part,id,first,subparts} of parts) {
    const lesson=f.w.PetersonCourse.lessons.find(item=>item.id===id);
@@ -329,6 +329,97 @@ test('read both opening sections in print order while old links retain their tas
    f.nav('#lesson/'+id);
    assert.equal(f.q('[aria-current="step"]').dataset.index,'0');
    assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+  }
+ }finally{f.close();}
+});
+
+test('inner groups, incomplete rows and bracket placement remain meaningful when numbers change',()=>{
+ const f=fixture(null,null,true);
+ try{
+  for(const [offset,evaluate] of [(x)=>1-x,(x)=>2*x-4,()=>5].entries()){
+   f.nav('#lesson/p33/'+(49+offset));f.click('[data-lesson-help="model"] > summary');
+   const id='#'+f.q('#model select').id;
+   for(const value of [-2,0,1,3,5]){
+    f.event(id,String(value),'change');
+    const rows=[...f.d.querySelectorAll('#model table tbody tr td:last-child')];
+    assert.equal(Number(rows.at(-1).textContent),evaluate(value));
+   }
+  }
+  for(const [index,divisor,remainder] of [[52,5,1],[53,12,6]]){
+   f.nav('#lesson/p33/'+index);f.click('[data-lesson-help="model"] > summary');
+   const id='#'+f.q('#model select').id;
+   for(let v=1;v<=5;v++){
+    f.event(id,String(v),'change');
+    const total=divisor===5?5*v+1:12*v+18;
+    const rows=[...f.d.querySelectorAll('#model [data-remainder-row]')].map(n=>Number(n.dataset.remainderRow));
+    assert.deepEqual(rows,[...Array(Math.floor(total/divisor)).fill(divisor),remainder]);
+    assert.equal(f.d.querySelectorAll('#model circle').length,total);
+   }
+   assert.equal(f.d.querySelector('#answer-form'),null);
+  }
+  f.nav('#lesson/p33/55');f.click('[data-lesson-help="model"] > summary');
+  const ids=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);
+  for(const m of [-2,0,2,4])for(const n of [-1,0,1,3])for(const option of [0,1,2]){
+   [m,n,option].forEach((v,i)=>f.event(ids[i],String(v),'change'));
+   const values=[...f.d.querySelectorAll('#model table tbody tr td:last-child')].map(c=>Number(c.textContent));
+   assert.deepEqual(values,[[m-n-m+n,m-(n-m)+n,m-(n-m+n)][option],2*m]);
+  }
+ }finally{f.close();}
+});
+
+test('dissection keeps four congruent triangles and both equation sides use the same input', () => {
+ const f=fixture(null,null,true);
+ try {
+  f.nav('#lesson/p15/70');
+  assert.equal(f.d.querySelectorAll('#task-figure [data-triangle]').length,8);
+  f.click('[data-lesson-help="model"] > summary');
+  const ids=[...f.d.querySelectorAll('#model select')].map(node=>'#'+node.id);
+  for(const [sample,[a,b,h]] of [[3,4,5],[5,12,13],[8,15,17]].entries())for(const arrangement of [0,1]){
+   f.event(ids[0],String(sample),'change');f.event(ids[1],String(arrangement),'change');
+   const triangles=[...f.d.querySelectorAll('#model [data-triangle]')];assert.equal(triangles.length,4);
+   for(const polygon of triangles){
+    const points=polygon.getAttribute('points').split(' ').map(pair=>pair.split(',').map(Number));
+    const [p,q,r]=points,area=Math.abs((q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0]))/2;
+    assert(Math.abs(area/(150*150)-a*b/(2*(a+b)**2))<1e-9);
+   }
+   assert.match(f.q('#model .pm-result').textContent,new RegExp('= '+h*h+'$'));
+  }
+  for(let index=71;index<=74;index++){
+   f.nav('#lesson/p15/'+index);f.click('[data-lesson-help="model"] > summary');
+   const id='#'+f.q('#model select').id;
+   for(const option of [0,1,2,3]){
+    f.event(id,String(option),'change');
+    const values=[...f.d.querySelectorAll('#model tbody tr td:last-child')].map(x=>x.textContent);
+    assert.equal(values.length,2);
+    assert.equal(f.w.PetersonMath.equal(values[0],values[1]),option===2);
+    assert(f.q('#model .pm-result').textContent.includes(option===2?'подтверждает корень':'не является корнем'));
+   }
+  }
+ }finally{f.close();}
+});
+
+test('additive and multiplicative changes show both scaled lengths and diagnose the selected misconception', () => {
+ const f=fixture(null,null,true);
+ try {
+  const lesson=f.w.PetersonCourse.lessons.find(x=>x.id==='p15');
+  for(const [index,task] of lesson.tasks.entries()) {
+   if(!task.changeStudy)continue;
+   f.nav('#lesson/p15/'+index);
+   const [wrong,feedback]=task.errorCues[0];
+   if(task.kind==='number')f.event('#final-answer',wrong);
+   else f.click('[data-choice="'+task.choices.indexOf(wrong)+'"]');
+   f.submit('#answer-form');
+   assert(f.q('.answer-form .feedback').textContent.includes(feedback));
+   assert.equal(f.state().tasks[task.id].assisted,false);
+   f.click('[data-lesson-help="model"] > summary');
+   const id='#'+f.q('#model select').id;
+   for(const [choice,before,after] of [[0,task.changeStudy.base,task.changeStudy.result],[1,task.changeStudy.alternate,task.changeStudy.nextResult]]) {
+    f.event(id,String(choice),'change');
+    const [a,b]=[...f.d.querySelectorAll('[data-change-bar]')].map(r=>Number(r.getAttribute('width')));
+    const x=f.w.PetersonMath.parse(before),y=f.w.PetersonMath.parse(after);
+    assert(Math.abs(b/a-y.n*x.d/(y.d*x.n))<1e-9);
+   }
+   assert.equal(f.state().tasks[task.id].correct,false);
   }
  }finally{f.close();}
 });

@@ -1,0 +1,848 @@
+{
+  "parts": {
+    "selfcheck-V-1": [
+      "а",
+      "б"
+    ],
+    "selfcheck-V-2": [
+      null
+    ],
+    "selfcheck-V-3": [
+      null
+    ],
+    "selfcheck-V-4": [
+      null
+    ],
+    "selfcheck-V-5": [
+      null
+    ],
+    "selfcheck-V-6": [
+      null
+    ],
+    "selfcheck-V-7": [
+      null
+    ],
+    "selfcheck-V-8": [
+      null
+    ],
+    "selfcheck-V-9": [
+      "а",
+      "б"
+    ],
+    "selfcheck-V-10": [
+      null
+    ],
+    "selfcheck-V-11": [
+      null
+    ],
+    "selfcheck-V-12": [
+      "а",
+      "б"
+    ],
+    "selfcheck-V-13": [
+      null
+    ],
+    "selfcheck-V-14": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "selfcheck-V-1": {
+      "id": "source-selfcheck-5-01",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 1",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "1",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-2": {
+      "id": "source-selfcheck-5-02",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 2",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "2",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-3": {
+      "id": "source-selfcheck-5-03",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 3",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "3",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-4": {
+      "id": "source-selfcheck-5-04",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 4",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "4",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-5": {
+      "id": "source-selfcheck-5-05",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 5",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "5",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-6": {
+      "id": "source-selfcheck-5-06",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 6",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "6",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-7": {
+      "id": "source-selfcheck-5-07",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 7",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "7",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-8": {
+      "id": "source-selfcheck-5-08",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 8",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "8",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-9": {
+      "id": "source-selfcheck-5-09",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 9",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "9",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-10": {
+      "id": "source-selfcheck-5-10",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 10",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "10",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-11": {
+      "id": "source-selfcheck-5-11",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 11",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "11",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-12": {
+      "id": "source-selfcheck-5-12",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 12",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "12",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-13": {
+      "id": "source-selfcheck-5-13",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 13",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "13",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-V-14": {
+      "id": "source-selfcheck-5-14",
+      "kind": "exercise",
+      "title": "Вопросы к главе V · вопрос 14",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "14",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-selfcheck-v-01-a": {
+      "raw": "7c6231aa37b858159473424737ef47ce9f47f7d5b95ac0168d441d5b73d204e7",
+      "authored": "efcacbfc8c7896cb12e8ee81526f41455ec9d820d7a3f8e7cab638f9ecdd3630",
+      "integrated": "e66608052c6a3acd7e9a58189a17501dd7b11ca9639b9ce4941d8b57cc74ffce"
+    },
+    "ex-selfcheck-v-01-b": {
+      "raw": "7c10a938932bfc78f12811d0b952c7fc6022f399d076facbeb7583140b183e6f",
+      "authored": "4308da2066f18b49ae938899723d075eff87e3cfcf4b2dabf97762245271c2e5",
+      "integrated": "c8c262023d3d408c528a095eb2c9e91310edba1833123d0b4d4077687ab02905"
+    },
+    "ex-selfcheck-v-02": {
+      "raw": "b92e37ea59018579eaf7392e4a196c6c7c75b5b60bc4de680af26e86579ff224",
+      "authored": "02e23c7e911407405290c2e8e53cd0da8d099256cc45deff01bbe5a967bca6a1",
+      "integrated": "6399250d14c50af54a3f8b9986876d3d64c1c437b8e38093b6554c4e044c99b3"
+    },
+    "ex-selfcheck-v-03": {
+      "raw": "068e3b1f2cb71588c8c340ea9bd3db469026499fd730293ca163ca9c56d26e6a",
+      "authored": "d41f5f6832b8138f9b8cb66d896a26daf3f427b730238dc6b26a36d6fec1918e",
+      "integrated": "c51f1673fb6bfb187e166be9abbc52e27246b85bdd7f2307e0725a214a395a0f"
+    },
+    "ex-selfcheck-v-04": {
+      "raw": "1f05c4eb7970e7612ebe3b46df2cd79f8d436abb7b43c0a7a0c0f1d6dcb74dfc",
+      "authored": "69dec5fe6814aa00cf50d07bc67a54c68f911cf7d39498993cdafa404f160268",
+      "integrated": "0b91aba6f56b54e2ab55016e374f5bd8333b4e6276c9b5ee8f762cd07dff7169"
+    },
+    "ex-selfcheck-v-05": {
+      "raw": "871d3c641d8e40ec1fcab145adeb043f95a2c0865515b77937edb15be8ce465d",
+      "authored": "2ec7218d4305ef2a4451d33ae1e062f6ed6d6c096bae9c447d2ee625cc80b8eb",
+      "integrated": "071a81705924cdb7641c44a585feeeaa723943dd9652f2becbe024318c2f86ac"
+    },
+    "ex-selfcheck-v-06": {
+      "raw": "67b781ea04bbf432bf3c1d3c74acb3402c29b9b3adf440abbb9746df1f8c023a",
+      "authored": "b561157e4cf28e341c87069d0767c78a5f93c4c7bdf5ab5c66e2c4ff5d467a63",
+      "integrated": "78b44aca984f655d1da5975c9ba559a7089009bd5822ae0c8fbd12dcffad66c7"
+    },
+    "ex-selfcheck-v-07": {
+      "raw": "6a2cc91b4f78e454aec4610859af2c90a42ca3c32ad10fa8e2306eed2c2b17ca",
+      "authored": "8051b0ccfc570287041795ea4dca1bd0c9e5ec64b8480039a5d403458b3eedde",
+      "integrated": "97262937aca08c5dff105706f95fe9d77313f21e47a41ea66f07bd2220ade8b4"
+    },
+    "ex-selfcheck-v-08": {
+      "raw": "f5fce9b57810fa917bbcf7f9340f1f9ec492065a2d2c3f42bd08b351270c2a88",
+      "authored": "75c6e5d465c48e5fc3cb4359e9bad330b3ce3a840d7a051fa75ce88ca40b7b4b",
+      "integrated": "5d8d4856f6310bc8fd8f4c6023b46979351403d3f1faf64765e6a0a8a0cc6ac4"
+    },
+    "ex-selfcheck-v-09-a": {
+      "raw": "7625e3cf0bf434f1d1fec70208f19f06aa1778eb6afc68a5c63e2e3b4d3de3d2",
+      "authored": "e64c0a3f82c12d24dd81ffb78792742c624420f8352e234f17ad3acd10c942cc",
+      "integrated": "1434825c419c42db7e108962de0135382d29942ec2273c539337f8ee529281b0"
+    },
+    "ex-selfcheck-v-09-b": {
+      "raw": "614c9b3eabb4ee0e1674d80f04e9d7af5f7c086cbf92fb7ebb51f264cc942b91",
+      "authored": "254797f9404c1d39268bc02e8cbbee4227b77a3adbd5c4f5cb78dae2a40fe5c2",
+      "integrated": "e1836d8c4204e557f7eec6bd1f468d92667ab9817162848ae151859f70a61e2f"
+    },
+    "ex-selfcheck-v-10": {
+      "raw": "a231a33c8073e0a40a1d595671f6ebe1d69b2f015b6ceb3847547988c5a31d27",
+      "authored": "0d36b04fa4049a6e22a9195469fd0241370110b9d5bf47e48f7b8f7cc874741e",
+      "integrated": "6dc1db46b4d79f2168e7db2840f438bb36c33e19d3cc4859b5430c375b9a0830"
+    },
+    "ex-selfcheck-v-11": {
+      "raw": "c8e1731c9e4a64a01feabebff55a54f8f3b7258e2401e04a867138c23fe9755f",
+      "authored": "8ea307559b562a8a5d14d03c34f274ee57da37a9f23b61ee8dc48bd94ec39a36",
+      "integrated": "0f44871cf4b482544c67938b52c8242271ada7ef5e7b117070efaff1ccc4d1b4"
+    },
+    "ex-selfcheck-v-12-a": {
+      "raw": "39bd1e9955d2eb99b1607f53e924fe798145c56aeb6ce5355f9da557c8458fb0",
+      "authored": "eee30efc3393c306c73b17372b1633a7d83f0abc84ccbf2233ce7c21f934fc66",
+      "integrated": "f8312f18e47d991c5d6618e63c597cdc6a1f6f8da1e753e33ee88d58189f51a7"
+    },
+    "ex-selfcheck-v-12-b": {
+      "raw": "bddc67cebad730e6d30e3d831c5b7bcec0a19cfc22b077aa66a8a34231f0b727",
+      "authored": "38a37f8a81cf8d4d10e8bc3ca4a59b3798d2a38ac571c4c843540893ae37301c",
+      "integrated": "d1a8ed9b8e10c6db80bf2df85bb5750c1c10ea7a9f523b658d21e58f9109a174"
+    },
+    "ex-selfcheck-v-13": {
+      "raw": "7e6f97626223a5555b39cf87c183bdd3dc7d267ab2bead729bc95eb861d26c2f",
+      "authored": "ac95de078e8a59343f3e4d198ac446169a7d3f11b64ff3d7e761540cf64efd33",
+      "integrated": "70d3d2542873e244c111a646a5976cb127b43253d6171029d5b73665883012cc"
+    },
+    "ex-selfcheck-v-14": {
+      "raw": "2f6a63609b6bcb85c630c8bdaa56ecf91363c21a53ea756fc886cc618268dfc1",
+      "authored": "c45cacae81e8d5c14f2f6967a627c93fd7d06e5dd047f334b35a468865ccf2e6",
+      "integrated": "fccfc03220cc0554928e317b2025c9216e73cc2d2e1aca232f1f9bec038be3b6"
+    }
+  },
+  "cases": [
+    [
+      "ex-selfcheck-v-01-a|condition",
+      "volume-selfcheck-ex-selfcheck-v-01-a-condition"
+    ],
+    [
+      "ex-selfcheck-v-01-a|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-01-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-01-a|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-01-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-01-a|step-1",
+      "volume-selfcheck-ex-selfcheck-v-01-a-step-1"
+    ],
+    [
+      "ex-selfcheck-v-01-a|step-2",
+      "volume-selfcheck-ex-selfcheck-v-01-a-step-2"
+    ],
+    [
+      "ex-selfcheck-v-01-a|step-3",
+      "volume-selfcheck-ex-selfcheck-v-01-a-step-3"
+    ],
+    [
+      "ex-selfcheck-v-01-b|condition",
+      "volume-selfcheck-ex-selfcheck-v-01-b-condition"
+    ],
+    [
+      "ex-selfcheck-v-01-b|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-01-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-01-b|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-01-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-01-b|step-1",
+      "volume-selfcheck-ex-selfcheck-v-01-b-step-1"
+    ],
+    [
+      "ex-selfcheck-v-01-b|step-2",
+      "volume-selfcheck-ex-selfcheck-v-01-b-step-2"
+    ],
+    [
+      "ex-selfcheck-v-01-b|step-3",
+      "volume-selfcheck-ex-selfcheck-v-01-b-step-3"
+    ],
+    [
+      "ex-selfcheck-v-02|condition",
+      "volume-selfcheck-ex-selfcheck-v-02-condition"
+    ],
+    [
+      "ex-selfcheck-v-02|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-02-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-02|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-02-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-02|step-1",
+      "volume-selfcheck-ex-selfcheck-v-02-step-1"
+    ],
+    [
+      "ex-selfcheck-v-02|step-2",
+      "volume-selfcheck-ex-selfcheck-v-02-step-2"
+    ],
+    [
+      "ex-selfcheck-v-02|step-3",
+      "volume-selfcheck-ex-selfcheck-v-02-step-3"
+    ],
+    [
+      "ex-selfcheck-v-02|step-4",
+      "volume-selfcheck-ex-selfcheck-v-02-step-4"
+    ],
+    [
+      "ex-selfcheck-v-03|condition",
+      "volume-selfcheck-ex-selfcheck-v-03-condition"
+    ],
+    [
+      "ex-selfcheck-v-03|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-03-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-03|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-03-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-03|step-1",
+      "volume-selfcheck-ex-selfcheck-v-03-step-1"
+    ],
+    [
+      "ex-selfcheck-v-03|step-2",
+      "volume-selfcheck-ex-selfcheck-v-03-step-2"
+    ],
+    [
+      "ex-selfcheck-v-03|step-3",
+      "volume-selfcheck-ex-selfcheck-v-03-step-3"
+    ],
+    [
+      "ex-selfcheck-v-03|step-4",
+      "volume-selfcheck-ex-selfcheck-v-03-step-4"
+    ],
+    [
+      "ex-selfcheck-v-04|condition",
+      "volume-selfcheck-ex-selfcheck-v-04-condition"
+    ],
+    [
+      "ex-selfcheck-v-04|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-04-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-04|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-04-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-04|step-1",
+      "volume-selfcheck-ex-selfcheck-v-04-step-1"
+    ],
+    [
+      "ex-selfcheck-v-04|step-2",
+      "volume-selfcheck-ex-selfcheck-v-04-step-2"
+    ],
+    [
+      "ex-selfcheck-v-04|step-3",
+      "volume-selfcheck-ex-selfcheck-v-04-step-3"
+    ],
+    [
+      "ex-selfcheck-v-05|condition",
+      "volume-selfcheck-ex-selfcheck-v-05-condition"
+    ],
+    [
+      "ex-selfcheck-v-05|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-05-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-05|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-05-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-05|step-1",
+      "volume-selfcheck-ex-selfcheck-v-05-step-1"
+    ],
+    [
+      "ex-selfcheck-v-05|step-2",
+      "volume-selfcheck-ex-selfcheck-v-05-step-2"
+    ],
+    [
+      "ex-selfcheck-v-05|step-3",
+      "volume-selfcheck-ex-selfcheck-v-05-step-3"
+    ],
+    [
+      "ex-selfcheck-v-06|condition",
+      "volume-selfcheck-ex-selfcheck-v-06-condition"
+    ],
+    [
+      "ex-selfcheck-v-06|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-06-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-06|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-06-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-06|step-1",
+      "volume-selfcheck-ex-selfcheck-v-06-step-1"
+    ],
+    [
+      "ex-selfcheck-v-06|step-2",
+      "volume-selfcheck-ex-selfcheck-v-06-step-2"
+    ],
+    [
+      "ex-selfcheck-v-06|step-3",
+      "volume-selfcheck-ex-selfcheck-v-06-step-3"
+    ],
+    [
+      "ex-selfcheck-v-07|condition",
+      "volume-selfcheck-ex-selfcheck-v-07-condition"
+    ],
+    [
+      "ex-selfcheck-v-07|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-07-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-07|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-07-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-07|step-1",
+      "volume-selfcheck-ex-selfcheck-v-07-step-1"
+    ],
+    [
+      "ex-selfcheck-v-07|step-2",
+      "volume-selfcheck-ex-selfcheck-v-07-step-2"
+    ],
+    [
+      "ex-selfcheck-v-07|step-3",
+      "volume-selfcheck-ex-selfcheck-v-07-step-3"
+    ],
+    [
+      "ex-selfcheck-v-07|step-4",
+      "volume-selfcheck-ex-selfcheck-v-07-step-4"
+    ],
+    [
+      "ex-selfcheck-v-08|condition",
+      "volume-selfcheck-ex-selfcheck-v-08-condition"
+    ],
+    [
+      "ex-selfcheck-v-08|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-08-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-08|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-08-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-08|step-1",
+      "volume-selfcheck-ex-selfcheck-v-08-step-1"
+    ],
+    [
+      "ex-selfcheck-v-08|step-2",
+      "volume-selfcheck-ex-selfcheck-v-08-step-2"
+    ],
+    [
+      "ex-selfcheck-v-08|step-3",
+      "volume-selfcheck-ex-selfcheck-v-08-step-3"
+    ],
+    [
+      "ex-selfcheck-v-09-a|condition",
+      "volume-selfcheck-ex-selfcheck-v-09-a-condition"
+    ],
+    [
+      "ex-selfcheck-v-09-a|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-09-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-09-a|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-09-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-09-a|step-1",
+      "volume-selfcheck-ex-selfcheck-v-09-a-step-1"
+    ],
+    [
+      "ex-selfcheck-v-09-a|step-2",
+      "volume-selfcheck-ex-selfcheck-v-09-a-step-2"
+    ],
+    [
+      "ex-selfcheck-v-09-a|step-3",
+      "volume-selfcheck-ex-selfcheck-v-09-a-step-3"
+    ],
+    [
+      "ex-selfcheck-v-09-b|condition",
+      "volume-selfcheck-ex-selfcheck-v-09-b-condition"
+    ],
+    [
+      "ex-selfcheck-v-09-b|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-09-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-09-b|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-09-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-09-b|step-1",
+      "volume-selfcheck-ex-selfcheck-v-09-b-step-1"
+    ],
+    [
+      "ex-selfcheck-v-09-b|step-2",
+      "volume-selfcheck-ex-selfcheck-v-09-b-step-2"
+    ],
+    [
+      "ex-selfcheck-v-09-b|step-3",
+      "volume-selfcheck-ex-selfcheck-v-09-b-step-3"
+    ],
+    [
+      "ex-selfcheck-v-10|condition",
+      "volume-selfcheck-ex-selfcheck-v-10-condition"
+    ],
+    [
+      "ex-selfcheck-v-10|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-10-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-10|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-10-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-10|step-1",
+      "volume-selfcheck-ex-selfcheck-v-10-step-1"
+    ],
+    [
+      "ex-selfcheck-v-10|step-2",
+      "volume-selfcheck-ex-selfcheck-v-10-step-2"
+    ],
+    [
+      "ex-selfcheck-v-10|step-3",
+      "volume-selfcheck-ex-selfcheck-v-10-step-3"
+    ],
+    [
+      "ex-selfcheck-v-11|condition",
+      "volume-selfcheck-ex-selfcheck-v-11-condition"
+    ],
+    [
+      "ex-selfcheck-v-11|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-11-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-11|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-11-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-11|step-1",
+      "volume-selfcheck-ex-selfcheck-v-11-step-1"
+    ],
+    [
+      "ex-selfcheck-v-11|step-2",
+      "volume-selfcheck-ex-selfcheck-v-11-step-2"
+    ],
+    [
+      "ex-selfcheck-v-11|step-3",
+      "volume-selfcheck-ex-selfcheck-v-11-step-3"
+    ],
+    [
+      "ex-selfcheck-v-12-a|condition",
+      "volume-selfcheck-ex-selfcheck-v-12-a-condition"
+    ],
+    [
+      "ex-selfcheck-v-12-a|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-12-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-12-a|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-12-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-12-a|step-1",
+      "volume-selfcheck-ex-selfcheck-v-12-a-step-1"
+    ],
+    [
+      "ex-selfcheck-v-12-a|step-2",
+      "volume-selfcheck-ex-selfcheck-v-12-a-step-2"
+    ],
+    [
+      "ex-selfcheck-v-12-a|step-3",
+      "volume-selfcheck-ex-selfcheck-v-12-a-step-3"
+    ],
+    [
+      "ex-selfcheck-v-12-b|condition",
+      "volume-selfcheck-ex-selfcheck-v-12-b-condition"
+    ],
+    [
+      "ex-selfcheck-v-12-b|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-12-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-12-b|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-12-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-12-b|step-1",
+      "volume-selfcheck-ex-selfcheck-v-12-b-step-1"
+    ],
+    [
+      "ex-selfcheck-v-12-b|step-2",
+      "volume-selfcheck-ex-selfcheck-v-12-b-step-2"
+    ],
+    [
+      "ex-selfcheck-v-12-b|step-3",
+      "volume-selfcheck-ex-selfcheck-v-12-b-step-3"
+    ],
+    [
+      "ex-selfcheck-v-13|condition",
+      "volume-selfcheck-ex-selfcheck-v-13-condition"
+    ],
+    [
+      "ex-selfcheck-v-13|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-13-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-13|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-13-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-13|step-1",
+      "volume-selfcheck-ex-selfcheck-v-13-step-1"
+    ],
+    [
+      "ex-selfcheck-v-13|step-2",
+      "volume-selfcheck-ex-selfcheck-v-13-step-2"
+    ],
+    [
+      "ex-selfcheck-v-13|step-3",
+      "volume-selfcheck-ex-selfcheck-v-13-step-3"
+    ],
+    [
+      "ex-selfcheck-v-14|condition",
+      "volume-selfcheck-ex-selfcheck-v-14-condition"
+    ],
+    [
+      "ex-selfcheck-v-14|help:h1",
+      "volume-selfcheck-ex-selfcheck-v-14-help-h1"
+    ],
+    [
+      "ex-selfcheck-v-14|help:h2",
+      "volume-selfcheck-ex-selfcheck-v-14-help-h2"
+    ],
+    [
+      "ex-selfcheck-v-14|step-1",
+      "volume-selfcheck-ex-selfcheck-v-14-step-1"
+    ],
+    [
+      "ex-selfcheck-v-14|step-2",
+      "volume-selfcheck-ex-selfcheck-v-14-step-2"
+    ],
+    [
+      "ex-selfcheck-v-14|step-3",
+      "volume-selfcheck-ex-selfcheck-v-14-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "8159c0597cf1ff466e8ab88265b78146314a5d44b5dd7a6d147050ec657e0a2a",
+      "afterSHA256": "4610ab7e9fd838a4aee55a3ba8b5ab4a85960df2b08ba8c28499ac5d2e13208b"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "87e49d1c05b8278849297f67c95ef414d53b6b05a817d2b1f98e82693ce46643",
+      "afterSHA256": "69a236b20dc84b297dfa588157796e7abedde2c803626b1dfed42654d2350ee4"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T16:26:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 517 and points 52–62, with 837 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "6a3d060b2d75f83ad40d9343a2f2056ee16ce318017b658c75331441d886dc9a",
+    "index": "b8ff077a154f2c1a6c1739e145827f5b01a902584b52ad8476a4bfd8206db265",
+    "registry": "62f16cdbbb440e158b4d1866e73d3753314402bf162cdc212b156a482bee4cde",
+    "cases": "573bb2a1f6a1e4cdc5b0f99faad63ec31d4543eab2373bae138510ab2a980454"
+  }
+}
