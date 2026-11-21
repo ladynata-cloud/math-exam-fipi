@@ -156,6 +156,13 @@
   }
   function inputIssue(value,target){
     if(!text(value)||!value.trim())return 'Сначала запиши ответ. Пустое поле не считается ошибкой.';
+    if(target.scaleChoice){
+      const multiplier=M.parse(value), {divisor,powers}=target.scaleChoice;
+      const listed=multiplier?.d===1&&powers.includes(multiplier.n);
+      // Both fractions are reduced. Cross-divisibility tests their product without rounding.
+      if(multiplier?.n>0&&!listed&&multiplier.n%divisor.d===0&&divisor.n%multiplier.d===0)
+        return 'С таким множителем делитель тоже целый. Для переноса запятой выбери подходящее число из списка.';
+    }
     if(typeof target.answer==='number'||plain(target.answer)&&'n'in target.answer){if(!M.parse(value))return 'Запись пока не распознана. Введи число или точную дробь. Это не считается математической ошибкой.';}
     if(target.answerFormat&&M.equal(value,target.answer)&&!M.accepts(value,target))return 'Значение верное. Проверь требуемую запись ответа — это ещё не математическая ошибка.';
     return '';
@@ -224,7 +231,7 @@
       });
     }
     const target=session.mode==='learn'?[...session.task.steps,session.task][session.step]:session.task;
-    task.querySelector('label[for=answer]').textContent=target.prompt;
+    task.querySelector('label[for=answer]').textContent=target.inputPrompt||target.prompt;
     task.querySelector('[data-cmd=hint]')?.replaceChildren('Хочешь подсказку?');
     if(['check','review'].includes(session.mode))task.insertAdjacentHTML('afterbegin','<div class="v5q-check-trail" aria-label="Проверка: вопрос '+(session.checkIndex+1)+' из 3">'+[0,1,2].map(i=>'<span class="'+(i===session.checkIndex?'is-current':i<session.checkIndex?'is-complete':'')+'">'+(i+1)+'</span>').join('')+'<b>Вопрос '+(session.checkIndex+1)+' из 3</b></div>');
     if(d.firstWrong)task.insertAdjacentHTML('beforeend','<details class="v5q-error-note"><summary>Моя первая ошибка</summary><p>В шаге '+(d.firstWrong.step+1)+' был ответ <strong>'+esc(d.firstWrong.value)+'</strong>. Объясни, что нужно изменить в рассуждении.</p></details>');

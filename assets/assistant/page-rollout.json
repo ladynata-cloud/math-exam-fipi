@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 625,
-    "covered": 623,
+    "total": 627,
+    "covered": 625,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -2217,10 +2217,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "d53d7b74038748c747f772a8fc836f5fbc4e6c5cd6f9be00d70eb05b93350b62",
-      "afterSha256": "9f8694db8b81c84ee0c29c77c625c991bd992ae0d47d314c2dbeabaeda6749f6",
+      "beforeSha256": "152c1ba6b7cf2f1fd044acbabb59adf00b60614d325c737b583fb6b25c8a096e",
+      "afterSha256": "b2f23ab4b647f277530c78736ae8647b47ce84b5861fb4215bddd0a10639f44f",
       "placement": "before-head-close",
-      "sourceSha": "e4cd17295e277772602cf4620c067c1d54f4fbd5"
+      "sourceSha": "aee65d44605b23694c3d7bcb6212233d150448a0"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -3336,6 +3336,18 @@
       "afterSha256": "6ee5a47b7e97309cdb033c24fd13e49a85d11c41dbb44f8f62a5d3df4422413f",
       "placement": "before-head-close",
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
+    },
+    "school/peterson6/textbook/index.html": {
+      "beforeSha256": "e873770fc21511f91d19ef3b3b743abf7e13afbb4031c742b134985824c31a8e",
+      "afterSha256": "648fa8e61b24d4224c930a2356e47b21ca79b02bcdde77bcc7b469657775f4f5",
+      "placement": "before-head-close",
+      "sourceSha": "d04a8dd8ae7b8d4a85a147e74233790173079612"
+    },
+    "trainers/peterson6-workshop/index.html": {
+      "beforeSha256": "aff5a4686e3a522eb30af65b8e89b325a77ea2798f61c203c7ca06a2755d2aea",
+      "afterSha256": "a30b427437cbdde7f3ea4f161886122b127f6f3c5e43662712e1d0a90607d534",
+      "placement": "before-head-close",
+      "sourceSha": "d04a8dd8ae7b8d4a85a147e74233790173079612"
     }
   },
   "provenance": {
@@ -3999,7 +4011,9 @@
     "trainers/practice-topics/index.html": "sitemap",
     "trainers/vilenkin6-percent/index.html": "sitemap",
     "trainers/school-workshop-check/index.html": "school/index.html",
-    "trainers/tyurin-statistics/index.html": "school/index.html"
+    "trainers/tyurin-statistics/index.html": "school/index.html",
+    "school/peterson6/textbook/index.html": "sitemap",
+    "trainers/peterson6-workshop/index.html": "sitemap"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",

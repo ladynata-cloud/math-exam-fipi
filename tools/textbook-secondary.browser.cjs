@@ -11,7 +11,16 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
  const go=async hash=>{await page.goto(base+'#'+hash);await page.locator('h1').waitFor();};
  await go('books');assert.equal(await page.evaluate(()=>WorkshopCurriculum.sources.length),77);
  await page.locator('#book-search').fill('Рубин');assert(await page.locator('.card').count()>=5);
- await go('book/source-64');await page.locator('[data-cmd=learn]').first().waitFor();
+ await go('book/source-64');
+ const firstSection=page.locator('#main .skill-row').filter({has:page.locator('a[href="makarychev8/index.html#lesson/p01/0"]')});
+ await firstSection.waitFor();
+ assert.equal(await page.locator('#main .skill-row').count(),24);
+ assert.match(await firstSection.locator('.eyebrow').textContent(),/1 · с\. 5/);
+ await firstSection.getByRole('link',{name:'Разобрать и решить',exact:true}).click();
+ await page.waitForURL('**/school/makarychev8/index.html#lesson/p01/0');
+ await page.locator('.lesson-layout #problem').waitFor();
+ assert.equal(await page.locator('button[data-action="task"][aria-current="step"]').getAttribute('data-index'),'0');
+ await go('book/source-64');
  const ids=await page.evaluate(()=>WorkshopCurriculum.lessons.filter(l=>/^(sec-|alg-)/.test(l.id)).map(l=>l.id));assert.equal(ids.length,30);
  await page.evaluate(()=>localStorage.setItem('older-trainer-sentinel','preserve'));
  for(const id of ids){
