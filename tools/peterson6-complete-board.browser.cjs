@@ -115,8 +115,8 @@ async function verifyEarlierRegistry(browser, origin, backend, failures) {
   assert.equal(roomCreates,1,'unregistered wrappers never create an empty or replacement room');
   await old.context.close();
 }
-async function run(browser, origin, backend, failures) {
-  await verifyEarlierRegistry(browser,origin,backend,failures);
+async function run(browser, origin, backend, failures, published) {
+  if (!published) await verifyEarlierRegistry(browser,origin,backend,failures);
   const byId = id => require('../trainers/board-compat.json').trainers.find(entry => entry.trainerId === id);
   for (const [id, route] of [['peterson6-textbook','#n/175'],['peterson6-workshop','#train/fraction-reduce/2']]) {
     phase=id;
@@ -180,6 +180,13 @@ async function run(browser, origin, backend, failures) {
       await b.locator('[data-action=micro]').click();await b.locator('#micro-answer').fill('9');
       const nested=await same(b,a,'partial microstep and step-specific help');
       assert.equal(nested.work.micro[0].drafts[0],'9');assert.equal(nested.work.stepHelp[0],true);
+      await b.locator('#number-input').fill('181');await b.locator('#number-form button').click();
+      await b.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №181');
+      await b.locator('#answer').fill('17');await b.locator('#answer-form button').click();
+      await b.locator('#answer').fill('7,6');await b.locator('#answer-form button').click();
+      const corrected = await same(b,a,'pupil corrects a shared answer');
+      assert.equal(corrected.work.firstErrors.final,'17');
+      assert.equal(await a.locator('article .badge').innerText(),'Решено на общей доске');
     }
     const late=await session(browser,origin,backend,id+'-late',failures);await late.page.goto(link);
     await waitConnected(late.page);const c=await frameFor(late.page,wrapper);await same(b,c,'late participant receives open work');
@@ -197,15 +204,30 @@ async function run(browser, origin, backend, failures) {
 (async () => {
   const server = staticServer(); let browser, child, watchdog, serverErrors = '';
   try {
-    await new Promise((done, fail) => { server.once('error', fail); server.listen(0, '127.0.0.1', done); });
-    const origin = 'http://127.0.0.1:' + server.address().port, port = await freePort(), backend = 'http://127.0.0.1:' + port;
-    const env = { ...process.env, HOST: '127.0.0.1', PORT: String(port), NODE_ENV: 'test', CORS_ALLOWED_ORIGINS: origin };
-    for (const key of Object.keys(env)) if (/^(LEARNING_|PROGRESS_|GROUP_LESSON_)/.test(key)) delete env[key]; delete env.TRAINER_REGISTRY_PATH;
-    child = spawn(process.execPath, ['index.js'], { cwd: join(ROOT, 'board-server'), env, stdio: ['ignore', 'ignore', 'pipe'] });
-    child.stderr.on('data', chunk => { serverErrors = (serverErrors + String(chunk)).slice(-4000); }); await waitForHealth(backend, child, () => serverErrors);
-    browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'], timeout: 15000 });
-    await Promise.race([run(browser, origin, backend, []), new Promise((_, fail) => { watchdog = setTimeout(() => fail(new Error('Browser gate exceeded 240 seconds at ' + phase)), 240000); })]);
+    let origin = process.env.PETERSON6_SITE, backend = process.env.PETERSON6_BOARD_SERVER;
+    const published = Boolean(origin || backend);
+    const args = ['--no-sandbox', '--disable-dev-shm-usage'];
+    if (published) {
+      assert.equal(process.env.MATHEXAM_PUBLISHED_SMOKE, '1', 'published synthetic rooms require explicit opt-in');
+      assert.equal(origin, 'https://mathexam.space');
+      assert.equal(backend, 'https://mathexam-board-ladynata.msk1.amvera.tech');
+      const proxy = process.env.HTTPS_PROXY || process.env.https_proxy;
+      if (proxy) args.push('--proxy-server=' + proxy);
+    } else {
+      await new Promise((done, fail) => { server.once('error', fail); server.listen(0, '127.0.0.1', done); });
+      origin = 'http://127.0.0.1:' + server.address().port;
+      const port = await freePort();
+      backend = 'http://127.0.0.1:' + port;
+      const env = { ...process.env, HOST: '127.0.0.1', PORT: String(port), NODE_ENV: 'test', CORS_ALLOWED_ORIGINS: origin };
+      for (const key of Object.keys(env)) if (/^(LEARNING_|PROGRESS_|GROUP_LESSON_)/.test(key)) delete env[key]; delete env.TRAINER_REGISTRY_PATH;
+      child = spawn(process.execPath, ['index.js'], { cwd: join(ROOT, 'board-server'), env, stdio: ['ignore', 'ignore', 'pipe'] });
+      child.stderr.on('data', chunk => { serverErrors = (serverErrors + String(chunk)).slice(-4000); });
+      await waitForHealth(backend, child, () => serverErrors);
+    }
+    browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args, timeout: 15000 });
+    const limit = published ? 420000 : 240000;
+    await Promise.race([run(browser, origin, backend, [], published), new Promise((_, fail) => { watchdog = setTimeout(() => fail(new Error('Browser gate timed out at ' + phase)), limit); })]);
   } finally {
-    clearTimeout(watchdog); await browser?.close(); if (child && child.exitCode === null) child.kill('SIGTERM'); await new Promise(done => server.close(done));
+    clearTimeout(watchdog); await browser?.close(); if (child && child.exitCode === null) child.kill('SIGTERM'); if (server.listening) await new Promise(done => server.close(done));
   }
 })().catch(error => { console.error('PETERSON_VOLUME_ROOM_FAILED at ' + phase + '\n' + (error.stack || error)); process.exitCode = 1; });

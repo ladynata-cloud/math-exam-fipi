@@ -53,8 +53,7 @@ async function waitForHttp(url, child, diagnostics) {
 
 async function contextFor(browser, siteOrigin, tag, failures) {
   const context = await browser.newContext({
-    viewport: { width: 1440, height: 1000 },
-    ignoreHTTPSErrors: siteOrigin.startsWith('https://')
+    viewport: { width: 1440, height: 1000 }
   });
   const personal = JSON.stringify({
     version: 1,
@@ -674,7 +673,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
     }
     const launchArgs = ['--no-sandbox', '--disable-dev-shm-usage'];
     const networkProxy = process.env.HTTPS_PROXY || process.env.https_proxy;
-    if (networkProxy) launchArgs.push('--proxy-server=' + networkProxy, '--ignore-certificate-errors');
+    if (networkProxy && siteOrigin.startsWith('https://')) launchArgs.push('--proxy-server=' + networkProxy);
     browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: launchArgs, timeout: 15000 });
     await Promise.race([
       run(browser, siteOrigin, boardOrigin, []),
