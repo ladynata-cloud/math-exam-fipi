@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "270ec6769abd93bf5218ef7fe1cb16e9a2803712363c4130768b37f6ccbeb18f",
-      "afterSha256": "9992967651424cec7796c6df75551883d41ae3d7de8d122fa2aeac4f737b735c",
+      "beforeSha256": "b9001adddafb820781f6bdbc1ff594e469a77c66b022d754c53df7dbfc4d884f",
+      "afterSha256": "1ffb54c499abf61cc6f372423288f1af522b35df364d3274a065917db2f6ce5d",
       "placement": "before-head-close",
-      "sourceSha": "5f783e742ce47a57504cad831835ffba9f166dc1"
+      "sourceSha": "bd9b44f3fad05993e8bdbb28d2124b926e13342a"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6831,6 +6831,15 @@
         "school/index.html"
       ],
       "boundary": "Проверены №5.43 и 5.44 второй части на печатных с. 13–14: все восемь единиц, в том числе 1/100 тонны, и три доли квадрата со стороной 8 см. У поворачиваемой модели проверена площадь каждого многоугольника."
+    },
+    {
+      "previousBaseSha": "5f783e742ce47a57504cad831835ffba9f166dc1",
+      "sourceBaseSha": "bd9b44f3fad05993e8bdbb28d2124b926e13342a",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Часть 2, §26, с. 14, №5.45: все шесть печатных дробей, допустимые словесные формы, отдельная обратная связь и собственный черновик. В №5.43 при повторе используются новые пары единиц."
     }
   ],
   "coverageUpdates": [
