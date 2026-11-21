@@ -163,13 +163,56 @@ def verify(item):
         near(length('O','A'),length('O','X'))
 
 
+    elif number == 920:
+        for j,sign in [(1,1),(2,-1)]:
+            v={key.split('__')[0]:val[:2] for key,val in points.items() if key.endswith(f'__v{j}')}
+            near(dist(v['O'],v['X']),dist(v['O'],v['U']))
+            near(dist(v['Q'],v['Y']),dist(v['Q'],v['V']))
+            near(dist(v['O'],v['T']),dist(v['O'],v['U'])-sign*dist(v['Q'],v['V']))
+            near(cross(vector(v['O'],v['X']),vector(v['Q'],v['Y'])),0)
+            assert sign*dot(vector(v['O'],v['X']),vector(v['Q'],v['Y']))>0
+    elif number == 921:
+        near(length('O','A'),length('O','B'))
+        near(length('A','H'),length('H','B'))
+        near(length('O','A')**2,length('A','H')**2+length('O','H')**2)
+    elif number == 922:
+        v={key.split('__')[0]:val[:2] for key,val in points.items() if key.endswith('__v2')}
+        near(dist(v['X'],v['Y']),2*(dist(v['O'],v['X'])**2-dist(v['O'],v['P'])**2)**.5)
+        assert dist(v['X'],v['Y'])<dist(v['A'],v['B'])
+    elif number == 923:
+        if source['subpart']=='а':
+            v={key.split('__')[0]:val[:2] for key,val in points.items() if key.endswith('__v3')}
+            near(dist(v['A'],v['O']),dist(v['K'],v['O']))
+            near(v['A'][1],v['K'][1])
+            near(dist(v['A'],v['B']),dist(v['K'],v['C']))
+        else:
+            from math import radians,tan
+            per=sum(length(a,b) for a,b in [('A','B'),('B','C'),('C','A')])
+            h=length('A','H');q=h/tan(radians(angle('B','A','C')/2))
+            near(length('B','C'),per**2/(2*(per+q)))
+    elif number == 924:
+        v={key.split('__')[0]:val[:2] for key,val in points.items() if key.endswith('__v3')}
+        for name in 'BMXYZ':
+            near(dist(v['O'],v[name]),dist(v['O'],v['A']))
+        near(cross(vector(v['X'],v['M']),vector(v['X'],v['T'])),0)
+        near(cross(vector(v['X'],v['A']),vector(v['O'],v['B'])),0)
+        near(dist(v['T'],v['Y']),dist(v['T'],v['Z']))
+        near(dist(v['B'],v['Y']),dist(v['B'],v['Z']))
+    elif number == 925:
+        v={key.split('__')[0]:val[:2] for key,val in points.items() if key.endswith('__v3')}
+        for f,a,b,c,d in [('P','I','U','V','W'),('Q','I','V','U','W'),('R','I','W','U','V')]:
+            near(cross(vector(v[a],v[b]),vector(v[a],v[f])),0)
+            near(cross(vector(v[c],v[d]),vector(v[c],v[f])),0)
+            near(dot(vector(v[a],v[b]),vector(v[c],v[d])),0)
+
+
 if __name__ == '__main__':
     lessons = json.loads(DATA.read_text())['lessons']
     parts = [(int(l['source']['exercise']), l['source'].get('subpart')) for l in lessons]
-    assert parts == [(900,None),(901,'а'),(901,'б'),(901,'в')] + [(n,None) for n in range(902,920)]
+    assert parts == [(900,None),(901,'а'),(901,'б'),(901,'в')] + [(n,None) for n in range(902,923)] + [(923,'а'),(923,'б'),(924,None),(925,None)]
     for item in lessons:
         try:
             verify(item)
         except AssertionError as exc:
             raise AssertionError(item['id']) from exc
-    print('ATANASYAN_CIRCLE_MODELS_OK 20 номеров, 22 авторских решения, 44 числовые проверки')
+    print('ATANASYAN_CIRCLE_MODELS_OK 26 номеров, 29 авторских решений, 58 числовых проверок')

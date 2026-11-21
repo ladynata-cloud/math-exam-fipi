@@ -7,6 +7,7 @@ from circle_lessons import beginning
 from chord_followup import follow
 from circle_bisectors import final_four
 from circle_theorems import centers, theorems
+from circle_constructions import tangents_and_chords, triangle_constructions
 
 OUT = ROOT / 'geometry-course/textbook/data/circle-lessons.json'
 # A child can test the same geometric relation with different data in a later step.
@@ -33,6 +34,13 @@ REPEATS = {
     (917, ''): ('В прямоугольном треугольнике со сторонами 8, 15, 17 известно R=8,5 и r=3. Найди квадрат расстояния OI.', '21,25', 'Вычти 2·8,5·3 из 8,5². Нужен квадрат расстояния, извлекать корень не требуется.'),
     (918, ''): ('Длина OH равна 9. Каково расстояние от O до центра окружности девяти точек?', '4,5', 'Центр Q — образ O при гомотетии с центром H и коэффициентом ½.'),
     (919, ''): ('В другой конфигурации радиус окружности с диаметром CX равен 7. Найди CX.', '14', 'Отрезок CX — весь диаметр, состоящий из двух радиусов.'),
+    (920, ''): ('Теперь радиусы 5 и 2, расстояние между центрами 4. Сколько общих касательных останется?', '2', 'Сравни 4 с разностью 3 и суммой 7: окружности пересекаются, поэтому обе внутренние касательные исчезли.'),
+    (921, ''): ('В другой окружности R=13, а расстояние от центра до найденной прямой 5. Вычисли полную длину хорды.', '24', 'Катет равен √(13²−5²), это лишь половина хорды.'),
+    (922, ''): ('Теперь R=10, а OP=8. Чему равна длина кратчайшей хорды?', '12', 'P должна стать серединой хорды. Половина имеет длину √(10²−8²).'),
+    (923, 'а'): ('В полукруге над BC=10 ищут вершину прямого угла на высоте 3. Сколько разных точек подходят сверху?', '2', 'Горизонталь находится ниже верхней точки полуокружности и пересекает её дважды.'),
+    (923, 'б'): ('При p=24 и q=4,8 вычисли сторону a таким же построением.', '10', 'Умножь полупериметр 12 на отношение 24/(24+4,8).'),
+    (924, ''): ('Хорда YZ другой окружности длиной 10, радиус 13. Каково расстояние от центра до середины хорды?', '12', 'Половина хорды 5. Перпендикуляр от центра имеет длину √(13²−5²).'),
+    (925, ''): ('Для другого набора точек P,Q,R выберем I и U вершинами искомого треугольника. Сколько есть вариантов третьей вершины?', '2', 'К паре I,U можно добавить либо V, либо W; четвёртый центр автоматически станет ортоцентром.'),
 }
 
 
@@ -76,6 +84,13 @@ def add_markers(number, model):
         908: [(range(1, 4), 'A', 'I', 'V'), (range(1, 4), 'B', 'I', 'W'),
               (range(1, 4), 'C', 'I', 'U')],
         911: [([0, 2, 3], 'H', 'B', 'A')],
+        920: [([1, 2, 3], 'X', 'O', 'Y'), ([1, 2, 3], 'Y', 'Q', 'X'), ([1,2], 'T', 'O', 'Q')],
+        921: [(range(4), 'H', 'O', 'A'), ([2, 3], 'K', 'M', 'B')],
+        922: [([1, 2], 'H', 'O', 'A'), ([2, 3], 'P', 'O', 'X')],
+        923: [([0, 3], 'H', 'A', 'B')],
+        924: [([2, 3], 'T', 'O', 'Z'), ([3], 'H', 'X', 'Z')],
+        925: [([1], 'P', 'A', 'B'), ([1], 'Q', 'C', 'H'), ([1], 'R', 'B', 'H'),
+              ([2, 3], 'P', 'U', 'V'), ([2, 3], 'Q', 'V', 'W'), ([2, 3], 'R', 'W', 'U')],
         915: [([0], 'A', 'B', 'D'), ([1], 'U', 'O', 'B'), ([1], 'T', 'O', 'B'), ([2, 3], 'H', 'C', 'B')],
         917: [([2], 'T', 'I', 'B'), ([2], 'B', 'N', 'M')],
         918: [([0, 2], 'U', 'A', 'B'), ([0], 'V', 'B', 'A'), ([0], 'W', 'C', 'A')],
@@ -91,7 +106,8 @@ def add_markers(number, model):
 
 def build():
     items = []
-    for card in beginning() + follow() + final_four() + theorems() + centers():
+    cards = beginning() + follow() + final_four() + theorems() + centers()
+    for card in cards + tangents_and_chords() + triangle_constructions():
         item = lesson(card)
         question, answer, hint = REPEATS[card['number'], card.get('sourcePart', '')]
         target = item['steps'][-1]
@@ -107,6 +123,8 @@ def build():
         model = item['visualization']['model']
         fit_circles(model)
         add_markers(card['number'], model)
+        if card['number'] == 923 and card['sourcePart'] == 'б':
+            mark_perpendicular(model, [1, 2], 'T', 'A', 'I')
         if len(item['steps']) == 4:
             # The board restores its maximum visible view from the revealed step.
             # Give the repeat its own view ID, keeping the last construction.
