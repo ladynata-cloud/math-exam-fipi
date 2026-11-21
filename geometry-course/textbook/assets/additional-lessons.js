@@ -44,7 +44,8 @@
       ['/geometry-course/textbook/data/scalar-problems.json', '№967–971'],
       ['/geometry-course/textbook/data/vector-midpoint-proofs.json', '№972–975'],
       ['/geometry-course/textbook/data/vector-applications.json', '№976–980'],
-      ['/geometry-course/textbook/data/vector-length-problems.json', '№981–987']
+      ['/geometry-course/textbook/data/vector-length-problems.json', '№981–987'],
+      ['/geometry-course/textbook/data/vector-extra-problems.json', '№988–997']
   ];
 
   async function forCourse(base) {

@@ -36,6 +36,8 @@ on:
       - 'tools/geometry-textbook/*vector_applications*'
       - 'geometry-course/textbook/data/vector-length-problems.json'
       - 'tools/geometry-textbook/*vector_length_problems*'
+      - 'geometry-course/textbook/data/vector-extra-problems.json'
+      - 'tools/geometry-textbook/*vector_extra_problems*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
@@ -65,6 +67,7 @@ jobs:
       - run: python3 tools/geometry-textbook/vector_midpoint_proofs.py --check && python3 tools/geometry-textbook/check_vector_midpoint_proofs.py
       - run: python3 tools/geometry-textbook/vector_applications.py --check && python3 tools/geometry-textbook/check_vector_applications.py
       - run: python3 tools/geometry-textbook/vector_length_problems.py --check && python3 tools/geometry-textbook/check_vector_length_problems.py
+      - run: python3 tools/geometry-textbook/vector_extra_problems.py --check && python3 tools/geometry-textbook/check_vector_extra_problems.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons
