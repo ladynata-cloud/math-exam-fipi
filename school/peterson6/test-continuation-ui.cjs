@@ -633,6 +633,20 @@ test('read the entire opening brackets topic and retry its source-specific model
   f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
   f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/между 4 и 8 равна 6/);
   ids=go(72);assert.equal(f.d.querySelectorAll('#task-figure [data-line]').length,5);
+  for(const sample of [0,1]){
+   f.event(ids[0],String(sample),'change');
+   const lines=[...f.d.querySelectorAll('#model [data-line]')].map(el=>['x1','y1','x2','y2'].map(k=>Number(el.getAttribute(k))));
+   const intersections=[];
+   for(const [i,[x,y,u,v]]of lines.entries())for(const [a,b,c,d]of lines.slice(i+1)){
+    const determinant=(u-x)*(d-b)-(v-y)*(c-a);
+    if(determinant===0)continue;
+    const t=((a-x)*(d-b)-(b-y)*(c-a))/determinant;
+    intersections.push([x+t*(u-x),y+t*(v-y)]);
+   }
+   assert.equal(intersections.length,8);
+   for(const [i,[x,y]]of intersections.entries())for(const [a,b]of intersections.slice(i+1))assert(Math.hypot(x-a,y-b)>8);
+  }
+
   for(const [id,expression]of [[0,/отличным от прямого/],[1,/под прямым углом/],[2,/общих точек нет/]]){
    f.event(ids[1],String(id),'change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');
    assert.match(f.q('#model .pm-result').textContent,expression);
@@ -649,6 +663,7 @@ test('read the entire opening brackets topic and retry its source-specific model
   ids=go(78);f.event(ids[0],'5','change');f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/К = 12/);
   ids=go(79);f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/28,5 км\/ч/);
   f.event(ids[1],'1','change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/27,5 км\/ч/);
+  assert.equal(f.d.querySelectorAll('#model .pcm-route-table thead th').length,2);assert(f.q('#model .pcm-route-table').textContent.includes('5 ч × 26 км/ч = 130 км'));
   ids=go(80);f.event(ids[1],'1','change');assert.match(f.q('#model table').textContent,/24,5/);f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
   ids=go(81);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/2\/3 и 1\/3/);
   f.event(ids[0],'1','change');assert.match(f.q('#model .pm-result').textContent,/отличается от 7/);f.event(ids[1],'2','change');assert.match(f.q('#model .pm-result').textContent,/1\/3 и 2\/3/);

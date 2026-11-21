@@ -240,7 +240,7 @@ function fiveLinePicture(pair='',alternate=false) {
  const defs=[
   ['a',[14,first,221,first],[233,first+4]],['d',[14,second,221,second],[233,second+4]],
   ['c',[left,17,left,142],[left,13]],['l',[right,17,right,142],[right,13]],
-  ['b',alternate?[25,22,196,137]:[27,140,199,22],alternate?[20,19]:[207,21]],
+  ['b',alternate?[25,22,196,137]:[15,125,176,15],alternate?[20,19]:[184,17]],
  ];
  for(const [name,points,labelAt]of defs){
   const active=pair.includes(name);
@@ -475,7 +475,8 @@ function splitSegmentFigure(left){
 function frac(a,b){const n=el('span','pm-fraction');n.setAttribute('aria-label',a+' делить на '+b);n.append(el('span','',a),el('span','',b));return n;}
 function eq(...items){const n=el('p','pm-equation');for(const v of items)n.append(typeof v==='object'?v:document.createTextNode(String(v)));return n;}
 function exactRatio(n,d){let a=Math.abs(n),b=Math.abs(d);while(b){const r=a%b;a=b;b=r;}return d/a===1?String(n/a):frac(n/a,d/a);}
-function num(n){return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:3}).format(n);}
+const continuationNumberFormat = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 3 });
+function num(n) { return continuationNumberFormat.format(n); }
 function table(headers,rows){const t=el('table','pm-table'),head=el('thead'),r=el('tr');headers.forEach(x=>{const n=el('th','',x);n.scope='col';r.append(n);});head.append(r);t.append(head);const b=el('tbody');rows.forEach(row=>{const tr=el('tr');row.forEach(x=>{const td=el('td');if(x&&typeof x==='object')td.append(x);else td.textContent=String(x);tr.append(td);});b.append(tr);});t.append(b);return t;}
 function axisFigure(points,min=-10,max=10,arrows=[]){const s=chart('Координатная прямая'),y=180,X=x=>50+(x-min)/(max-min)*500;ln(s,40,y,565,y);ln(s,565,y,552,y-7);ln(s,565,y,552,y+7);for(let x=Math.ceil(min);x<=max;x++){ln(s,X(x),y-5,X(x),y+5);if((max-min<=20)||x%2===0)txt(s,X(x),y+27,x,{'font-size':17});}for(const p of points){dot(s,X(p.x),y,p.name);if(p.x!==0)ln(s,X(p.x),y-48,X(p.x),y-10,{stroke:'#b5812b','stroke-dasharray':'5 5'});}arrows.forEach((a,i)=>{const yy=120-i*35;ln(s,X(a[0]),yy,X(a[1]),yy,{stroke:'#c08020','stroke-width':4});const dir=a[1]>a[0]?1:-1;ln(s,X(a[1]),yy,X(a[1])-dir*10,yy-6,{stroke:'#c08020'});ln(s,X(a[1]),yy,X(a[1])-dir*10,yy+6,{stroke:'#c08020'});});return s;}
 function planeFigure(f){const s=chart(f.caption||'Координатная плоскость');s.setAttribute('class','pm-chart pcm-dense');const xmin=f.xMin??-6,xmax=f.xMax??6,ymin=f.yMin??-5,ymax=f.yMax??5;const unit=Math.min(490/(xmax-xmin),280/(ymax-ymin)),left=(600-(xmax-xmin)*unit)/2,top=(370-(ymax-ymin)*unit)/2,X=x=>left+(x-xmin)*unit,Y=y=>top+(ymax-y)*unit;for(let x=Math.ceil(xmin);x<=xmax;x++){ln(s,X(x),Y(ymin),X(x),Y(ymax),{stroke:'#d8e4dc','stroke-width':1});if(x&&x%Math.max(1,Math.ceil((xmax-xmin)/16))===0)txt(s,X(x),Y(Math.max(ymin,Math.min(ymax,0)))+20,x,{'font-size':14});}for(let y=Math.ceil(ymin);y<=ymax;y++){ln(s,X(xmin),Y(y),X(xmax),Y(y),{stroke:'#d8e4dc','stroke-width':1});if(y&&y%Math.max(1,Math.ceil((ymax-ymin)/12))===0)txt(s,X(Math.max(xmin,Math.min(xmax,0)))-15,Y(y)+5,y,{'font-size':14});}if(ymin<=0&&ymax>=0){ln(s,X(xmin),Y(0),X(xmax),Y(0));txt(s,X(xmax)+18,Y(0)+6,'x');}if(xmin<=0&&xmax>=0){ln(s,X(0),Y(ymin),X(0),Y(ymax));txt(s,X(0)+10,Y(ymax)-10,'y');}const pts=f.points||[],by=Object.fromEntries(pts.map(p=>[p.name,p]));for(const seg of f.segments||[]){const a=by[seg[0]],b=by[seg[1]];if(a&&b)ln(s,X(a.x),Y(a.y),X(b.x),Y(b.y));}for(const poly of f.polylines||[])s.append(svg('polyline',{points:poly.map(p=>X(p[0])+','+Y(p[1])).join(' '),fill:'none',stroke:'#22805b','stroke-width':3}));pts.forEach(p=>dot(s,X(p.x),Y(p.y),p.name));return s;}
@@ -543,7 +544,9 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   const speed=[28,29.7,35.5,24][a],down=b===0?5:3,up=b===0?3:5;
   say('Течение 2 км/ч; вниз '+down+' ч, вверх '+up+' ч.');formula('Собственная скорость '+num(speed)+' км/ч.');
   if(state.values[2]===1){
-   show(table(['Участок','Скорость','Время','Путь'],[['Вниз',num(speed+2),down,num(down*(speed+2))],['Вверх',num(speed-2),up,num(up*(speed-2))]]));
+   const leg=(hours,v)=>hours+' ч × '+num(v)+' км/ч = '+num(hours*v)+' км';
+   const paths=table(['Участок','Как найти путь'],[['Вниз',leg(down,speed+2)],['Вверх',leg(up,speed-2)]]);
+   paths.classList.add('pcm-route-table');show(paths);
    say('Общий путь '+num(down*(speed+2)+up*(speed-2))+' км за 8 ч. Средняя скорость '+num((down*(speed+2)+up*(speed-2))/8)+' км/ч.');
   }
   stepList(['Для каждого направления учти течение.','У каждого участка своё время.','Раздели общий путь на общую продолжительность.']);
