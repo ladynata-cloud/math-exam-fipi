@@ -36,11 +36,13 @@ async function play(browser, width) {
   await panel.getByRole('button',{name:'Ещё три задачи здесь'}).click();
   assert.match(await panel.locator('.garden-question').innerText(),/8 семян/);
   await page.goto(file+'#garden-count');
+  await panel.getByRole('heading',{name:'Грядки',exact:true}).waitFor();
   await answer([4]);await click('Следующая задача');await answer(['columns',9]);await click('Следующая задача');
   await click('Нужна подсказка');await answer([14,16]);await click('Вырастить растение');
   assert.equal((await state()).book.count.independent,0);
   await page.clock.install();await page.clock.fastForward(86400001);
   await page.goto(file+'#garden-review');
+  await panel.getByText('Повтор после паузы',{exact:true}).waitFor();
   assert.match(await panel.locator('.garden-strip').innerText(),/после паузы/);
   const mixed=(await state()).review;assert.equal(new Set(mixed.queue.map(c=>c.id)).size,3);
   for(let i=0;i<3;i++){
@@ -52,9 +54,14 @@ async function play(browser, width) {
   assert(saved.review.queue.every(c=>saved.reviewCount[c.id]===1));
   await page.reload();assert.match(await panel.innerText(),/Смешанная грядка готова/);
   await click('Новая смешанная грядка');assert.equal((await state()).review.step,0);
-  await page.goto(file+'#garden-zero');await panel.locator('.garden-collection summary').click();
+  await page.goto(file+'#garden-zero');
+  await panel.getByRole('heading',{name:'Зимний сад',exact:true}).waitFor();
+  await panel.locator('.garden-collection summary').click();
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
-  await panel.getByRole('link',{name:'К пошаговой карте'}).click();
+  const returnLink=panel.getByRole('link',{name:'К пошаговой карте'});
+  assert.equal(await returnLink.getAttribute('href'),'#zero');
+  await returnLink.click();
+  await page.getByRole('heading',{name:'Сохраняю ноль в частном',exact:true}).waitFor();
   assert.equal(await page.locator('#heading').innerText(),'Сохраняю ноль в частном');
   assert.deepEqual(errors,[]);await page.close();
 }
