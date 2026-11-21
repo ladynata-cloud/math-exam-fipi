@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 624,
-    "covered": 622,
+    "total": 625,
+    "covered": 623,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -36,7 +36,8 @@
     "trainers/long-division-claude.html",
     "trainers/oge-basics/multiplication-division/division-checkpoint.html",
     "trainers/oge-basics/multiplication-division/division-path.html",
-    "trainers/school-workshop-check/index.html"
+    "trainers/school-workshop-check/index.html",
+    "trainers/tyurin-statistics/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -3996,7 +3997,8 @@
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": "sitemap",
     "trainers/practice-topics/index.html": "sitemap",
     "trainers/vilenkin6-percent/index.html": "sitemap",
-    "trainers/school-workshop-check/index.html": "school/index.html"
+    "trainers/school-workshop-check/index.html": "school/index.html",
+    "trainers/tyurin-statistics/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6582,6 +6584,14 @@
         "trainers/school-workshop-check/index.html"
       ],
       "reason": "New canonical, authored final-assessment entry carries the full public navigator."
+    },
+    {
+      "sourceBaseSha": "119a07b0122566746da71b076d5eacf020bb8853",
+      "task": "docs/tasks/TYURIN_INDEPENDENT_33_20261121.md",
+      "addedPages": [
+        "trainers/tyurin-statistics/index.html"
+      ],
+      "reason": "New canonical practice entry discovered from the verified edition cards and included in the navigator."
     }
   ]
 }
