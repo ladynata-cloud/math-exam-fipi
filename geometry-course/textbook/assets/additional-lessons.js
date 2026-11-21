@@ -62,7 +62,8 @@
       ['/geometry-course/textbook/data/circle-equations.json', '№1051–1057'],
       ['/geometry-course/textbook/data/coordinate-lines.json', '№1058–1064'],
       ['/geometry-course/textbook/data/circle-line-positions.json', '№1065–1068'],
-      ['/geometry-course/textbook/data/coordinate-loci.json', '№1069–1075']
+      ['/geometry-course/textbook/data/coordinate-loci.json', '№1069–1075'],
+      ['/geometry-course/textbook/data/coordinate-chapter-review.json', 'вопросы 1–24 к главе «Метод координат»']
   ];
 
   async function forCourse(base) {
