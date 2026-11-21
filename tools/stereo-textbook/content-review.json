@@ -4803,7 +4803,7 @@
     },
     {
       "id": "ex-main-0509",
-      "sha256": "bd5e3fe8aaf01a5850bf58727daea4abf0b0339cb26c7e817c0ed1d75277eb1d"
+      "sha256": "a1ece7ed2da05c1438e0511bc4db476c9021134748e0deb59c08bf72ecad3590"
     },
     {
       "id": "ex-main-0510",
@@ -4875,15 +4875,15 @@
     },
     {
       "id": "ex-selfcheck-v-09-a",
-      "sha256": "e64c0a3f82c12d24dd81ffb78792742c624420f8352e234f17ad3acd10c942cc"
+      "sha256": "30d2719c68d4313d24d059607f01c4e891a6f7953245b21a0c8b71d49fdf4c8d"
     },
     {
       "id": "ex-selfcheck-v-09-b",
-      "sha256": "254797f9404c1d39268bc02e8cbbee4227b77a3adbd5c4f5cb78dae2a40fe5c2"
+      "sha256": "085a1473fd83b9af4deb8805e6ee6f384dc207cf15a23293c986d95ee0d80025"
     },
     {
       "id": "ex-selfcheck-v-10",
-      "sha256": "0d36b04fa4049a6e22a9195469fd0241370110b9d5bf47e48f7b8f7cc874741e"
+      "sha256": "acac4f1d35f52dee8307b82b1f9e8bcb82d12229c48d5c4d49e7bb31814ad158"
     },
     {
       "id": "ex-selfcheck-v-11",
@@ -4891,19 +4891,19 @@
     },
     {
       "id": "ex-selfcheck-v-12-a",
-      "sha256": "eee30efc3393c306c73b17372b1633a7d83f0abc84ccbf2233ce7c21f934fc66"
+      "sha256": "1193eeb3866c03e7090b6cee2ccd935e6f5897b00755922cba40a74f0df6e8a7"
     },
     {
       "id": "ex-selfcheck-v-12-b",
-      "sha256": "38a37f8a81cf8d4d10e8bc3ca4a59b3798d2a38ac571c4c843540893ae37301c"
+      "sha256": "98508492af680faad554b8d86179c74b595bb3386082481b15772035a0e1b2dc"
     },
     {
       "id": "ex-selfcheck-v-13",
-      "sha256": "ac95de078e8a59343f3e4d198ac446169a7d3f11b64ff3d7e761540cf64efd33"
+      "sha256": "83be648d1504eb1f5779e68d61807bb65d8c5318cfbcea6a1093d76dd467644f"
     },
     {
       "id": "ex-selfcheck-v-14",
-      "sha256": "c45cacae81e8d5c14f2f6967a627c93fd7d06e5dd047f334b35a468865ccf2e6"
+      "sha256": "e5886f116e958576c4fa38344d2988a821f33ae9a773574cf384d04f62f42081"
     },
     {
       "id": "ex-main-0518",

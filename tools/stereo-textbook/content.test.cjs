@@ -72,6 +72,7 @@ require('./cone-nets-and-frusta.test.cjs');
 require('./sphere-measures.test.cjs');
 require('./sphere-applications.test.cjs');
 require('./volume-selfcheck.test.cjs');
+require('./closed-section-boundaries.test.cjs');
 require('./prism-applications.test.cjs');
 require('./normal-prism-applications.test.cjs');
 require('./pyramid-angle-applications.test.cjs');

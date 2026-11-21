@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const volumeChapterEnd = makeReviewedIncrement(require('./volume-chapter-end.json'));
+const closedSections = require('./closed-section-boundaries.cjs');
+const volumeChapterEnd = makeReviewedIncrement(require('./volume-chapter-end.json'), closedSections);
 const sphereVolumeAngles = makeReviewedIncrement(require('./sphere-volume-angles.json'), volumeChapterEnd);
 const inscribedVolumeApplications = makeReviewedIncrement(require('./inscribed-volume-applications.json'), sphereVolumeAngles);
 const cylinderApplications = makeReviewedIncrement(require('./cylinder-applications.json'), inscribedVolumeApplications);
@@ -24,3 +25,4 @@ const volumes = makeReviewedIncrement(require('./box-volumes.json'), prismVolume
 const latest = makeReviewedIncrement(require('./round-bodies.json'), volumes);
 const later = makeReviewedIncrement(require('./circumspheres.json'), latest);
 module.exports = makeReviewedIncrement(require('./inscribed-solids.json'), later);
+module.exports.volumeSelfcheck = volumeSelfcheck;

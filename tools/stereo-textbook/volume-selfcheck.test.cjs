@@ -5,7 +5,7 @@ const viewer=require('../../stereo-course/assets/task-scene-viewer.js');
 const bank=require('../../stereo-course/textbook/data/course.json');
 const manifest=require('./volume-selfcheck.json');
 const {wrongStepAnswers}=require('./wrong-step-answers.cjs');
-const previous=require('./reviewed-increment.cjs').makeReviewedIncrement(manifest);
+const previous=require('./inscribed-solids-predecessor.cjs').volumeSelfcheck;
 const {available,issues}=engine.inspectBundle(bank.catalog,bank.lessons);
 assert.deepEqual(issues,[]);
 const sourceIndex=require('../../stereo-course/textbook/source-index.json');
