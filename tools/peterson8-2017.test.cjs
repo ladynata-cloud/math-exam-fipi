@@ -50,6 +50,7 @@ for(const [i,entry] of book.exercises.entries()){
  assert.equal(doc.querySelector('#source').hash,'#page='+(entry.page+2));assert.equal(doc.querySelector('#back').hash,'#book/source-70');
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),entry.path);
  assert.equal(w.MathExamTopicEdition.nextId(lesson),ids[i+1]&&'70-'+ids[i+1]);assert(lesson.printedReference.endsWith(entry.printed));
+ if(lesson.id==='70-6'){assert(lesson.printedPrompt.includes('к концу третьего года'));assert(lesson.printedGuide.includes('после третьего года, 2960'));}
  const seen=new Set();for(let s=1;s<=11;s++){
   const d=lesson.make(s),answers=oracle(i,d);seen.add(JSON.stringify([d.caption,d.rows]));assert(w.MathExamTopicEdition.figure(d).includes('role="img"'));
   d.questions.forEach((q,j)=>{assert.equal(q.answer,answers[j],lesson.id+'/'+s+'/'+j);for(const [bad,msg] of q.mistakes){assert.notEqual(q.answer,bad,lesson.id);assert(msg.length>14);}});
