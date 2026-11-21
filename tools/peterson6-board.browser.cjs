@@ -280,6 +280,11 @@ async function narrowShot(page, frame, name, selector) {
   if (layout.width > 320 || layout.scroll > layout.width + 1) console.error('PETERSON6_NARROW_LAYOUT', JSON.stringify({ name, ...layout }));
   assert(layout.width <= 320, name + ': iframe is narrow');
   assert(layout.scroll <= layout.width + 1, name + ': no horizontal document overflow');
+  if (selector === '#model svg') {
+    const diagram = frame.locator('#model .pm-visual');
+    assert(await diagram.evaluate(element => element.scrollWidth <= element.clientWidth + 1),
+      name + ': both endpoints fit inside the mobile diagram without scrolling');
+  }
   await page.setViewportSize({ width: 1440, height: 1000 });
 }
 
@@ -500,6 +505,86 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await synchronized(teacherFrame, studentFrame, 'each product shown to pupil');
   assert.match(await studentFrame.locator('.help figure').innerText(), /−1 × \(a\) и −1 × \(−b\)/);
   await narrowShot(teacher, teacherFrame, 'peterson-board-320-bracket-feedback', '.help figure');
+
+  phase = 'exact salt concentration and feedback on the shared board';
+  await lesson(teacherFrame, 'p15', 9);
+  await teacherFrame.locator('#final-answer').fill('2,5');
+  await teacherFrame.locator('#answer-form button[type="submit"]').click();
+  await synchronized(teacherFrame,studentFrame,'compare salt with solution');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/массу воды/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-action="hint"]').click();
+  await synchronized(studentFrame,teacherFrame,'mixture model shared');
+  assert.match(await teacherFrame.locator('.help figure').innerText(),/масса воды \+ масса соли/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-salt-solution','.help figure');
+  await studentFrame.locator('#final-answer').fill('100/41');
+  await studentFrame.locator('#answer-form button[type="submit"]').click();
+  await synchronized(studentFrame,teacherFrame,'exact fractional percent accepted');
+  assert.match(await teacherFrame.locator('.task-heading').innerText(),/Решено на уроке/);
+  await ownership(teacher,student,false);
+
+  phase = 'source equation for the three sides of a triangle';
+  await lesson(teacherFrame,'p33',17);
+  await teacherFrame.locator('#final-answer').fill('17,3');
+  await teacherFrame.locator('#answer-form button[type="submit"]').click();
+  await synchronized(teacherFrame,studentFrame,'longer side distinguished from the required side');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/большая/);
+  await teacherFrame.locator('[data-action="hint"]').click();
+  await synchronized(teacherFrame,studentFrame,'triangle side model displayed');
+  assert.match(await studentFrame.locator('.help figure').innerText(),/y см и ещё 1,9 см/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-triangle-sides','.help figure');
+
+  phase = 'construct a segment in the ratio two to one';
+  await lesson(teacherFrame,'p15',20);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Положение C в клетках от A').selectOption('8');
+  const split=await synchronized(teacherFrame,studentFrame,'C moved to eight of twelve equal intervals');
+  assert.deepEqual(split.view.model.values,[8]);
+  assert.equal(await studentFrame.locator('#model svg circle').getAttribute('cx'),'232');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/положение подходит/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-segment-ratio','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Положение C в клетках от A').selectOption('12');
+  await synchronized(studentFrame,teacherFrame,'denominator zero shown to teacher');
+  assert.match(await teacherFrame.locator('#model .pm-result').innerText(),/не определено/);
+  await studentFrame.getByLabel('Положение C в клетках от A').selectOption('8');
+  await studentFrame.locator('#notebook').fill('Начертил отрезок 12 см: AC = 8 см, CB = 4 см.');
+  await studentFrame.locator('[data-action="record-manual"]').click();
+  const drawing=await synchronized(studentFrame,teacherFrame,'construction recorded for review');
+  await manualWithoutCredit(teacherFrame,'p15-t21',0);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await courseFrame(teacher);
+  await waitSnapshot(teacherFrame,drawing,'constructed segment survives observer reload');
+  assert.equal(await teacherFrame.getByLabel('Положение C в клетках от A').inputValue(),'8');
+  await ownership(teacher,student,false);
+
+  phase = 'construct and measure figures on a common scale';
+  for (const [offset, expected] of ['6 : 9', '15 : 9', '9 : 12'].entries()) {
+    await lesson(teacherFrame, 'p15', 21 + offset);
+    await openModel(teacherFrame);
+    await teacherFrame.getByLabel('Длина одной доли, в сантиметрах').selectOption('3');
+    const shared = await synchronized(teacherFrame, studentFrame, 'both figures reflect the same unit ' + offset);
+    assert.deepEqual(shared.view.model.values, [3]);
+    assert.match(await studentFrame.locator('#model .pm-result').innerText(), new RegExp(expected));
+    await narrowShot(teacher, teacherFrame, 'peterson-board-320-construction-' + offset, '#model svg');
+  }
+  await lesson(teacherFrame, 'p15', 24);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Угол от нижней стороны, в градусах').selectOption('20');
+  await synchronized(teacherFrame, studentFrame, 'a 60-degree angle splits into 20 and 40');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(), /Нижняя часть занимает одну долю/);
+  await narrowShot(teacher, teacherFrame, 'peterson-board-320-divided-angle', '#model svg');
+  await ownership(teacher, student, true);
+  await studentFrame.getByLabel('Угол от нижней стороны, в градусах').selectOption('40');
+  await studentFrame.locator('#notebook').fill('Отложил 40° от нижней стороны, сверху осталось 20°. Сумма 60°.');
+  await studentFrame.locator('[data-action="record-manual"]').click();
+  const changedAngle = await synchronized(studentFrame, teacherFrame, 'other participant constructs the reflected solution');
+  assert.match(await teacherFrame.locator('#model .pm-result').innerText(), /Верхняя часть занимает одну долю/);
+  await teacher.reload({waitUntil:'domcontentloaded'});
+  await waitConnected(teacher);
+  teacherFrame = await courseFrame(teacher);
+  await waitSnapshot(teacherFrame, changedAngle, 'constructed angle restored on returning to the room');
+  await manualWithoutCredit(teacherFrame, 'p15-t25', 0);
+  await ownership(teacher, student, false);
 
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();

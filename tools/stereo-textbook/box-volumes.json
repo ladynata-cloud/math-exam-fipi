@@ -1,0 +1,1036 @@
+{
+  "parts": {
+    "440": [
+      "а",
+      "б"
+    ],
+    "441": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "442": [
+      "а",
+      "б",
+      "в"
+    ],
+    "443": [
+      null
+    ],
+    "444": [
+      null
+    ],
+    "445": [
+      null
+    ],
+    "446": [
+      null
+    ],
+    "447": [
+      null
+    ],
+    "448": [
+      null
+    ],
+    "449": [
+      null
+    ],
+    "450": [
+      "а",
+      "б"
+    ],
+    "451": [
+      null
+    ],
+    "theory-52": [
+      null
+    ],
+    "theory-53": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "440": {
+      "id": "source-main-0440",
+      "kind": "exercise",
+      "title": "Задача № 440",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "440",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          120
+        ],
+        "pdfPages": [
+          122
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "441": {
+      "id": "source-main-0441",
+      "kind": "exercise",
+      "title": "Задача № 441",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "441",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          120
+        ],
+        "pdfPages": [
+          122
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "442": {
+      "id": "source-main-0442",
+      "kind": "exercise",
+      "title": "Задача № 442",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "442",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "443": {
+      "id": "source-main-0443",
+      "kind": "exercise",
+      "title": "Задача № 443",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "443",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "444": {
+      "id": "source-main-0444",
+      "kind": "exercise",
+      "title": "Задача № 444",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "444",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "445": {
+      "id": "source-main-0445",
+      "kind": "exercise",
+      "title": "Задача № 445",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "445",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "446": {
+      "id": "source-main-0446",
+      "kind": "exercise",
+      "title": "Задача № 446",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "446",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "447": {
+      "id": "source-main-0447",
+      "kind": "exercise",
+      "title": "Задача № 447",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "447",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "448": {
+      "id": "source-main-0448",
+      "kind": "exercise",
+      "title": "Задача № 448",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "448",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "449": {
+      "id": "source-main-0449",
+      "kind": "exercise",
+      "title": "Задача № 449",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "449",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "450": {
+      "id": "source-main-0450",
+      "kind": "exercise",
+      "title": "Задача № 450",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "450",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "451": {
+      "id": "source-main-0451",
+      "kind": "exercise",
+      "title": "Задача № 451",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "451",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          121
+        ],
+        "pdfPages": [
+          123
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-52": {
+      "id": "source-theory-052",
+      "kind": "theory",
+      "title": "52. Понятие объёма",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "52",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          116,
+          117,
+          118
+        ],
+        "pdfPages": [
+          118,
+          119,
+          120
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-53": {
+      "id": "source-theory-053",
+      "kind": "theory",
+      "title": "53. Объём прямоугольного параллелепипеда",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "53",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          118,
+          119,
+          120
+        ],
+        "pdfPages": [
+          120,
+          121,
+          122
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0440-a": {
+      "raw": "5c5bd2aa2fec69c0b3a03938bfea2a3c7cff91ab5b753abc801de5f305ca423d",
+      "authored": "c2605d0f6db6bb30d2a8c43af6b34a39f1efe4cbcf9d72c4d5c14a6df629d15f",
+      "integrated": "6c228f7199ff7266c442fcae561bd1561ac50e1124adf89180b6c85c081ad1f7"
+    },
+    "ex-main-0440-b": {
+      "raw": "34122219fb08b2236edd969bb4fef396c77868619ce1fe05a68d82df57f6bb87",
+      "authored": "d332790226b90fd6b100705d5a985b17b569d528990fd307ba908c66dc0431d8",
+      "integrated": "30560a984f5507541ee00013a0ee6087b1947ce98e6873f7a9793be9714f1d6e"
+    },
+    "ex-main-0441-a": {
+      "raw": "42a1fd3c3e5a8d725f6fb05c3788a4506271ba9cadb2d2db5360c1955778add9",
+      "authored": "aa00726ebc5c3568062d3422c974c40fb73d525c5c544b2bf38b743476e3d247",
+      "integrated": "30916b4da8946e761f32acc2bd4724c2a5ea32396fd05ef0135d89422d75d87a"
+    },
+    "ex-main-0441-b": {
+      "raw": "98c0aee3ef36ca97477454cb3e1d562dc59dea6b26ceff20a4b56f12c483a17b",
+      "authored": "0770f4f49b6864401099acbfd7c08844d87b21a98c61ec1e177ffa1fca278f10",
+      "integrated": "b349cd9b10c7844ac8531c2bc0c23b19903252b25af72fd8e327c4587ed8bcfb"
+    },
+    "ex-main-0441-c": {
+      "raw": "aa8599ade05c732ec9a78e862f23d2868b8dc85476a58e8971f7e9af038cc629",
+      "authored": "0b0e1a31023e9fe8ebf64eef3530d20df7e905c1ae5168e68b405bbf61f1408b",
+      "integrated": "42eda1e3c75a0fde3650f9c69151462ba63e6804e4a3542d3a666f1705d14682"
+    },
+    "ex-main-0441-d": {
+      "raw": "375c9de0176c743c3c3dc5c4fbf5677a074f823501e2f45bc46f2f975ca332b1",
+      "authored": "c5d07cca5f02edee2ee9ea98439635634ff7a939b63aa4a5ef9775ee80db58ce",
+      "integrated": "bb0a43ec1dc330502c8f14e96aada89e38ae735445dfd0e617588eb183ea5305"
+    },
+    "ex-main-0442-a": {
+      "raw": "202684456d94317f9968603bc3e7f5b3a977b4b62ec2c505b46cb30c9b9c2caa",
+      "authored": "e18de34e6df9f84fc0f773a0eef62c69886dc4f063da2c3d54e6c3244f9bcccc",
+      "integrated": "ace6f1ae17d00862ee61b50c473c7e9ef2ccaef5557e7e8bb0418c2a253c51e4"
+    },
+    "ex-main-0442-b": {
+      "raw": "97b86694509039952ca2ba5b20b64ac8a8da24624308d8d0c51b61247ef358e3",
+      "authored": "50043417354f682848e59e92be378c3a7e39d386bc9d76686804257c78eba666",
+      "integrated": "fc7fb059f6e00aa698cbfcb4bb5dafaa318966baecf489968bea551358158080"
+    },
+    "ex-main-0442-c": {
+      "raw": "994a5314ec27c9613d8182d0f984f4bbebc68031077f90e56dc374b17602d793",
+      "authored": "e2300d52baed4dcbe766fb9b73233aa3c558afe58036d256f9d3c13db8285d96",
+      "integrated": "4e8780c1d77df3140c87c39dc00ca2eaef93c4631cc0b06a611001451db10dfe"
+    },
+    "ex-main-0443": {
+      "raw": "e8ce4a41579f444ec1b22ede6b755e8b38a22c11a4fcbff96e88a66cd1ab86f8",
+      "authored": "c35971f2ff8d3b2a3bc71be42346e7bd77c4244d930f7520cf1012c0f1bc0b3d",
+      "integrated": "37661a6f2710fefc520071bcb6ad730b7f0f138695b27108707d02cd1f540c89"
+    },
+    "ex-main-0444": {
+      "raw": "65a3632614d8c76c474dbd75fe700a50e61d360ac37263dff7e1972b74b8cad3",
+      "authored": "e81d58c294b874fc53e57e70f31b0003a329be0a16f8322ddc92c597317812d3",
+      "integrated": "88147e9cb214e71ceb5500d6fb91cbbf219c9f922592efb4e35590e40aee5669"
+    },
+    "ex-main-0445": {
+      "raw": "0bbc7a53620ba3eee15e699673c7e3e765b18b9b6910ef086655f7c0e6620563",
+      "authored": "1d05ea23da676b02314d0088ef7f8ce02323f3e838e0c5c2b241eb66cc5cc1a1",
+      "integrated": "3bdebd7a5d4ecfcdd3b41640f5282b6d4a534163e97ac6024c7ab22a551c8dfd"
+    },
+    "ex-main-0446": {
+      "raw": "9bb61f90e98c5fc0bab9ef09291afcfa1bc390d397f44a422efc7555e9a23922",
+      "authored": "0abb1298124020d7ad1e8d1c0e4dd05c0d3ffb9f3d3e288844225fde9f003e1c",
+      "integrated": "2ea74046bec3dc9dd1e398f8998a4fb446ab186873a5faff45361e60362ba003"
+    },
+    "ex-main-0447": {
+      "raw": "66c328e68dd39deb2551c91bf8473abcccf1fab87e981e8f857356f933b95353",
+      "authored": "9c01d992f84e04459c6405072252ee160e1ae0e3326ee76b436c5f0cbfcaab39",
+      "integrated": "93435c751036d5fed3cb9e0c8741ea5365b2aebd0c7cf931e1fabf8c4f32c4ac"
+    },
+    "ex-main-0448": {
+      "raw": "28402f2cc245272e22385f64692f77020947cefc07ff0835f81594c05492df4b",
+      "authored": "d917740c157a19804a2cdcb7247cc322267c41fbeb544fedfb375ba7ad35d9c8",
+      "integrated": "b1b42072d71c53f5d33d701907a10aaab2d322e28ff4b694cab0c50ea0aa3052"
+    },
+    "ex-main-0449": {
+      "raw": "9a7178282981c0074fd60c38546e08062c124e1b7a06e0be89869f0b1d2654d3",
+      "authored": "31ad084c5d35dc0a17a5835999ea6669bdaefe230f48ed2ca74da2ffa64afc8a",
+      "integrated": "2b8c4fa384206f32ad3bd9d15d6fecf6f80afb6225900ef8af3d0381216babcc"
+    },
+    "ex-main-0450-a": {
+      "raw": "e73a2d86020cef3d4b2e067b9df0484aa0b4b13922f8b28296730ae34cc07e13",
+      "authored": "0e1c51bf3a9c3066b60bdc5d39f102bf2f731248c63df6b74cbdb963313e8da9",
+      "integrated": "848abb4d923b2966d639ac1ce323f4c5c01a4841e30c1bae581c044290bc7d41"
+    },
+    "ex-main-0450-b": {
+      "raw": "a8f1ed189e06db4005c3c8e639c9dc392f99835de4be3a3934b1b1e81a02903a",
+      "authored": "06695fc73be6bc28b1dc2b5cd6601d52c264760e6bf7a3d12608c096a94b46b7",
+      "integrated": "5be9d996e3fd06154818fc1e338dcaec9780ceba5e8b89ab549f0198696d2bbd"
+    },
+    "ex-main-0451": {
+      "raw": "20f2a87c0eb2450fa638231f1c6ed57d72eb9acd6fce1def30db84c0a858ee31",
+      "authored": "8ea5ea20b7615cfc98ba65e8165ffd589e486abe0a468fd499aa7d184c670348",
+      "integrated": "483fdb9283637eb2fe881ce8f35a2096651077089478892f70c4080db28d3e56"
+    },
+    "theory-052": {
+      "raw": "b6b25ab2a48460752508190e9cdf7a235654ea33f85a403297e9c3f386d07386",
+      "authored": "fad8a649929bf0c50eb71cc53339713cd82d8448e877399da3e5df21af36e1c9",
+      "integrated": "5653a9d280f282593d85f5ec087642ddca3f650a4228b305c579f5c416c0e97e"
+    },
+    "theory-053": {
+      "raw": "d65faba82066a2d70f433e32f3cea04a01ac264d57f857d0c7112be493be5ead",
+      "authored": "5c10de13eddfabd84431e78372b92149a05386d58159a229c1276d39bc6dd0f8",
+      "integrated": "c5da94edb2b2319e33339662c111ab1c981544067287051bf4956b7c1505b9ff"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0440-a|condition",
+      "volume-box-ex-main-0440-a-condition"
+    ],
+    [
+      "ex-main-0440-a|help:h1",
+      "volume-box-ex-main-0440-a-help-h1"
+    ],
+    [
+      "ex-main-0440-a|step-1",
+      "volume-box-ex-main-0440-a-step-1"
+    ],
+    [
+      "ex-main-0440-a|step-2",
+      "volume-box-ex-main-0440-a-step-2"
+    ],
+    [
+      "ex-main-0440-a|step-3",
+      "volume-box-ex-main-0440-a-step-3"
+    ],
+    [
+      "ex-main-0440-b|condition",
+      "volume-box-ex-main-0440-b-condition"
+    ],
+    [
+      "ex-main-0440-b|help:h1",
+      "volume-box-ex-main-0440-b-help-h1"
+    ],
+    [
+      "ex-main-0440-b|step-1",
+      "volume-box-ex-main-0440-b-step-1"
+    ],
+    [
+      "ex-main-0440-b|step-2",
+      "volume-box-ex-main-0440-b-step-2"
+    ],
+    [
+      "ex-main-0440-b|step-3",
+      "volume-box-ex-main-0440-b-step-3"
+    ],
+    [
+      "ex-main-0441-a|condition",
+      "volume-box-ex-main-0441-a-condition"
+    ],
+    [
+      "ex-main-0441-a|help:h1",
+      "volume-box-ex-main-0441-a-help-h1"
+    ],
+    [
+      "ex-main-0441-a|help:h2",
+      "volume-box-ex-main-0441-a-help-h2"
+    ],
+    [
+      "ex-main-0441-a|step-1",
+      "volume-box-ex-main-0441-a-step-1"
+    ],
+    [
+      "ex-main-0441-a|step-2",
+      "volume-box-ex-main-0441-a-step-2"
+    ],
+    [
+      "ex-main-0441-a|step-3",
+      "volume-box-ex-main-0441-a-step-3"
+    ],
+    [
+      "ex-main-0441-b|condition",
+      "volume-box-ex-main-0441-b-condition"
+    ],
+    [
+      "ex-main-0441-b|help:h1",
+      "volume-box-ex-main-0441-b-help-h1"
+    ],
+    [
+      "ex-main-0441-b|help:h2",
+      "volume-box-ex-main-0441-b-help-h2"
+    ],
+    [
+      "ex-main-0441-b|step-1",
+      "volume-box-ex-main-0441-b-step-1"
+    ],
+    [
+      "ex-main-0441-b|step-2",
+      "volume-box-ex-main-0441-b-step-2"
+    ],
+    [
+      "ex-main-0441-b|step-3",
+      "volume-box-ex-main-0441-b-step-3"
+    ],
+    [
+      "ex-main-0441-c|condition",
+      "volume-box-ex-main-0441-c-condition"
+    ],
+    [
+      "ex-main-0441-c|help:h1",
+      "volume-box-ex-main-0441-c-help-h1"
+    ],
+    [
+      "ex-main-0441-c|help:h2",
+      "volume-box-ex-main-0441-c-help-h2"
+    ],
+    [
+      "ex-main-0441-c|step-1",
+      "volume-box-ex-main-0441-c-step-1"
+    ],
+    [
+      "ex-main-0441-c|step-2",
+      "volume-box-ex-main-0441-c-step-2"
+    ],
+    [
+      "ex-main-0441-c|step-3",
+      "volume-box-ex-main-0441-c-step-3"
+    ],
+    [
+      "ex-main-0441-d|condition",
+      "volume-box-ex-main-0441-d-condition"
+    ],
+    [
+      "ex-main-0441-d|help:h1",
+      "volume-box-ex-main-0441-d-help-h1"
+    ],
+    [
+      "ex-main-0441-d|help:h2",
+      "volume-box-ex-main-0441-d-help-h2"
+    ],
+    [
+      "ex-main-0441-d|step-1",
+      "volume-box-ex-main-0441-d-step-1"
+    ],
+    [
+      "ex-main-0441-d|step-2",
+      "volume-box-ex-main-0441-d-step-2"
+    ],
+    [
+      "ex-main-0441-d|step-3",
+      "volume-box-ex-main-0441-d-step-3"
+    ],
+    [
+      "ex-main-0442-a|condition",
+      "volume-box-ex-main-0442-a-condition"
+    ],
+    [
+      "ex-main-0442-a|help:h1",
+      "volume-box-ex-main-0442-a-help-h1"
+    ],
+    [
+      "ex-main-0442-a|help:h2",
+      "volume-box-ex-main-0442-a-help-h2"
+    ],
+    [
+      "ex-main-0442-a|step-1",
+      "volume-box-ex-main-0442-a-step-1"
+    ],
+    [
+      "ex-main-0442-a|step-2",
+      "volume-box-ex-main-0442-a-step-2"
+    ],
+    [
+      "ex-main-0442-a|step-3",
+      "volume-box-ex-main-0442-a-step-3"
+    ],
+    [
+      "ex-main-0442-b|condition",
+      "volume-box-ex-main-0442-b-condition"
+    ],
+    [
+      "ex-main-0442-b|help:h1",
+      "volume-box-ex-main-0442-b-help-h1"
+    ],
+    [
+      "ex-main-0442-b|help:h2",
+      "volume-box-ex-main-0442-b-help-h2"
+    ],
+    [
+      "ex-main-0442-b|step-1",
+      "volume-box-ex-main-0442-b-step-1"
+    ],
+    [
+      "ex-main-0442-b|step-2",
+      "volume-box-ex-main-0442-b-step-2"
+    ],
+    [
+      "ex-main-0442-b|step-3",
+      "volume-box-ex-main-0442-b-step-3"
+    ],
+    [
+      "ex-main-0442-c|condition",
+      "volume-box-ex-main-0442-c-condition"
+    ],
+    [
+      "ex-main-0442-c|help:h1",
+      "volume-box-ex-main-0442-c-help-h1"
+    ],
+    [
+      "ex-main-0442-c|help:h2",
+      "volume-box-ex-main-0442-c-help-h2"
+    ],
+    [
+      "ex-main-0442-c|step-1",
+      "volume-box-ex-main-0442-c-step-1"
+    ],
+    [
+      "ex-main-0442-c|step-2",
+      "volume-box-ex-main-0442-c-step-2"
+    ],
+    [
+      "ex-main-0442-c|step-3",
+      "volume-box-ex-main-0442-c-step-3"
+    ],
+    [
+      "ex-main-0443|condition",
+      "volume-box-ex-main-0443-condition"
+    ],
+    [
+      "ex-main-0443|help:h1",
+      "volume-box-ex-main-0443-help-h1"
+    ],
+    [
+      "ex-main-0443|help:h2",
+      "volume-box-ex-main-0443-help-h2"
+    ],
+    [
+      "ex-main-0443|step-1",
+      "volume-box-ex-main-0443-step-1"
+    ],
+    [
+      "ex-main-0443|step-2",
+      "volume-box-ex-main-0443-step-2"
+    ],
+    [
+      "ex-main-0443|step-3",
+      "volume-box-ex-main-0443-step-3"
+    ],
+    [
+      "ex-main-0444|condition",
+      "volume-box-ex-main-0444-condition"
+    ],
+    [
+      "ex-main-0444|help:h1",
+      "volume-box-ex-main-0444-help-h1"
+    ],
+    [
+      "ex-main-0444|help:h2",
+      "volume-box-ex-main-0444-help-h2"
+    ],
+    [
+      "ex-main-0444|step-1",
+      "volume-box-ex-main-0444-step-1"
+    ],
+    [
+      "ex-main-0444|step-2",
+      "volume-box-ex-main-0444-step-2"
+    ],
+    [
+      "ex-main-0444|step-3",
+      "volume-box-ex-main-0444-step-3"
+    ],
+    [
+      "ex-main-0444|step-4",
+      "volume-box-ex-main-0444-step-4"
+    ],
+    [
+      "ex-main-0445|condition",
+      "volume-box-ex-main-0445-condition"
+    ],
+    [
+      "ex-main-0445|help:h1",
+      "volume-box-ex-main-0445-help-h1"
+    ],
+    [
+      "ex-main-0445|help:h2",
+      "volume-box-ex-main-0445-help-h2"
+    ],
+    [
+      "ex-main-0445|step-1",
+      "volume-box-ex-main-0445-step-1"
+    ],
+    [
+      "ex-main-0445|step-2",
+      "volume-box-ex-main-0445-step-2"
+    ],
+    [
+      "ex-main-0445|step-3",
+      "volume-box-ex-main-0445-step-3"
+    ],
+    [
+      "ex-main-0445|step-4",
+      "volume-box-ex-main-0445-step-4"
+    ],
+    [
+      "ex-main-0445|step-5",
+      "volume-box-ex-main-0445-step-5"
+    ],
+    [
+      "ex-main-0446|condition",
+      "volume-box-ex-main-0446-condition"
+    ],
+    [
+      "ex-main-0446|help:h1",
+      "volume-box-ex-main-0446-help-h1"
+    ],
+    [
+      "ex-main-0446|help:h2",
+      "volume-box-ex-main-0446-help-h2"
+    ],
+    [
+      "ex-main-0446|step-1",
+      "volume-box-ex-main-0446-step-1"
+    ],
+    [
+      "ex-main-0446|step-2",
+      "volume-box-ex-main-0446-step-2"
+    ],
+    [
+      "ex-main-0446|step-3",
+      "volume-box-ex-main-0446-step-3"
+    ],
+    [
+      "ex-main-0446|step-4",
+      "volume-box-ex-main-0446-step-4"
+    ],
+    [
+      "ex-main-0446|step-5",
+      "volume-box-ex-main-0446-step-5"
+    ],
+    [
+      "ex-main-0447|condition",
+      "volume-box-ex-main-0447-condition"
+    ],
+    [
+      "ex-main-0447|help:h1",
+      "volume-box-ex-main-0447-help-h1"
+    ],
+    [
+      "ex-main-0447|help:h2",
+      "volume-box-ex-main-0447-help-h2"
+    ],
+    [
+      "ex-main-0447|step-1",
+      "volume-box-ex-main-0447-step-1"
+    ],
+    [
+      "ex-main-0447|step-2",
+      "volume-box-ex-main-0447-step-2"
+    ],
+    [
+      "ex-main-0447|step-3",
+      "volume-box-ex-main-0447-step-3"
+    ],
+    [
+      "ex-main-0447|step-4",
+      "volume-box-ex-main-0447-step-4"
+    ],
+    [
+      "ex-main-0447|step-5",
+      "volume-box-ex-main-0447-step-5"
+    ],
+    [
+      "ex-main-0448|condition",
+      "volume-box-ex-main-0448-condition"
+    ],
+    [
+      "ex-main-0448|help:h1",
+      "volume-box-ex-main-0448-help-h1"
+    ],
+    [
+      "ex-main-0448|help:h2",
+      "volume-box-ex-main-0448-help-h2"
+    ],
+    [
+      "ex-main-0448|step-1",
+      "volume-box-ex-main-0448-step-1"
+    ],
+    [
+      "ex-main-0448|step-2",
+      "volume-box-ex-main-0448-step-2"
+    ],
+    [
+      "ex-main-0448|step-3",
+      "volume-box-ex-main-0448-step-3"
+    ],
+    [
+      "ex-main-0448|step-4",
+      "volume-box-ex-main-0448-step-4"
+    ],
+    [
+      "ex-main-0449|condition",
+      "volume-box-ex-main-0449-condition"
+    ],
+    [
+      "ex-main-0449|help:h1",
+      "volume-box-ex-main-0449-help-h1"
+    ],
+    [
+      "ex-main-0449|help:h2",
+      "volume-box-ex-main-0449-help-h2"
+    ],
+    [
+      "ex-main-0449|step-1",
+      "volume-box-ex-main-0449-step-1"
+    ],
+    [
+      "ex-main-0449|step-2",
+      "volume-box-ex-main-0449-step-2"
+    ],
+    [
+      "ex-main-0449|step-3",
+      "volume-box-ex-main-0449-step-3"
+    ],
+    [
+      "ex-main-0449|step-4",
+      "volume-box-ex-main-0449-step-4"
+    ],
+    [
+      "ex-main-0449|step-5",
+      "volume-box-ex-main-0449-step-5"
+    ],
+    [
+      "ex-main-0450-a|condition",
+      "volume-box-ex-main-0450-a-condition"
+    ],
+    [
+      "ex-main-0450-a|help:h1",
+      "volume-box-ex-main-0450-a-help-h1"
+    ],
+    [
+      "ex-main-0450-a|help:h2",
+      "volume-box-ex-main-0450-a-help-h2"
+    ],
+    [
+      "ex-main-0450-a|step-1",
+      "volume-box-ex-main-0450-a-step-1"
+    ],
+    [
+      "ex-main-0450-a|step-2",
+      "volume-box-ex-main-0450-a-step-2"
+    ],
+    [
+      "ex-main-0450-a|step-3",
+      "volume-box-ex-main-0450-a-step-3"
+    ],
+    [
+      "ex-main-0450-a|step-4",
+      "volume-box-ex-main-0450-a-step-4"
+    ],
+    [
+      "ex-main-0450-a|step-5",
+      "volume-box-ex-main-0450-a-step-5"
+    ],
+    [
+      "ex-main-0450-b|condition",
+      "volume-box-ex-main-0450-b-condition"
+    ],
+    [
+      "ex-main-0450-b|help:h1",
+      "volume-box-ex-main-0450-b-help-h1"
+    ],
+    [
+      "ex-main-0450-b|help:h2",
+      "volume-box-ex-main-0450-b-help-h2"
+    ],
+    [
+      "ex-main-0450-b|step-1",
+      "volume-box-ex-main-0450-b-step-1"
+    ],
+    [
+      "ex-main-0450-b|step-2",
+      "volume-box-ex-main-0450-b-step-2"
+    ],
+    [
+      "ex-main-0450-b|step-3",
+      "volume-box-ex-main-0450-b-step-3"
+    ],
+    [
+      "ex-main-0450-b|step-4",
+      "volume-box-ex-main-0450-b-step-4"
+    ],
+    [
+      "ex-main-0450-b|step-5",
+      "volume-box-ex-main-0450-b-step-5"
+    ],
+    [
+      "ex-main-0451|condition",
+      "volume-box-ex-main-0451-condition"
+    ],
+    [
+      "ex-main-0451|help:h1",
+      "volume-box-ex-main-0451-help-h1"
+    ],
+    [
+      "ex-main-0451|help:h2",
+      "volume-box-ex-main-0451-help-h2"
+    ],
+    [
+      "ex-main-0451|step-1",
+      "volume-box-ex-main-0451-step-1"
+    ],
+    [
+      "ex-main-0451|step-2",
+      "volume-box-ex-main-0451-step-2"
+    ],
+    [
+      "ex-main-0451|step-3",
+      "volume-box-ex-main-0451-step-3"
+    ],
+    [
+      "ex-main-0451|step-4",
+      "volume-box-ex-main-0451-step-4"
+    ],
+    [
+      "ex-main-0451|step-5",
+      "volume-box-ex-main-0451-step-5"
+    ],
+    [
+      "theory-052|condition",
+      "volume-box-theory-052-condition"
+    ],
+    [
+      "theory-052|help:h1",
+      "volume-box-theory-052-help-h1"
+    ],
+    [
+      "theory-052|help:h2",
+      "volume-box-theory-052-help-h2"
+    ],
+    [
+      "theory-052|step-1",
+      "volume-box-theory-052-step-1"
+    ],
+    [
+      "theory-052|step-2",
+      "volume-box-theory-052-step-2"
+    ],
+    [
+      "theory-052|step-3",
+      "volume-box-theory-052-step-3"
+    ],
+    [
+      "theory-052|step-4",
+      "volume-box-theory-052-step-4"
+    ],
+    [
+      "theory-053|condition",
+      "volume-box-theory-053-condition"
+    ],
+    [
+      "theory-053|help:h1",
+      "volume-box-theory-053-help-h1"
+    ],
+    [
+      "theory-053|help:h2",
+      "volume-box-theory-053-help-h2"
+    ],
+    [
+      "theory-053|step-1",
+      "volume-box-theory-053-step-1"
+    ],
+    [
+      "theory-053|step-2",
+      "volume-box-theory-053-step-2"
+    ],
+    [
+      "theory-053|step-3",
+      "volume-box-theory-053-step-3"
+    ],
+    [
+      "theory-053|step-4",
+      "volume-box-theory-053-step-4"
+    ],
+    [
+      "theory-053|step-5",
+      "volume-box-theory-053-step-5"
+    ],
+    [
+      "theory-053|step-6",
+      "volume-box-theory-053-step-6"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "76f713ef94e4f1b2040cf7aeeacb129f42a18a32a08a387dd921233077ddf666",
+      "afterSHA256": "9aa198e5128107f007e0e0b85a3082854818fa767a8f913ba0ad9c55ce47aabc"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "b6f251a5b24b961f198a292a0b5a71a54de2f965d79e406d7d8619e1a316db8f",
+      "afterSHA256": "33d377bd1f7b610dce18c694f6f2b33b7182fe7c192dd91c82ebf74a3dede99a"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T06:20:00Z",
+    "scope": "Introduction and chapters I–IV through exercise 439, with 719 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "877877b56863cc80adc7fb22fc52c52af61012cd7ef5154f1c3b50253a7ecb4c",
+    "index": "757b3ab5227811ca8da9e078149650577b1809946ec611107457237c05b52ca0",
+    "registry": "1bcf89a2416f51f280964c13e19d039d7da06dee20ae389456f6c916f878694a",
+    "cases": "0204dd5100ad1f6e645005e88a95801a3925530325438bfefdeb8b0b95acdadf"
+  }
+}

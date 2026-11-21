@@ -89,7 +89,7 @@
       storage: 'browser', publicPath: '/school/makarychev7/' },
     { id: 'makarychev8', title: 'Макарычев · алгебра 8 класса', grades: [8], directions: ['school','oge'],
       description: 'Учебные темы, разборы, упражнения и модели для проверки понимания.',
-      storage: 'browser', publicPath: '/school/makarychev8/' },
+      storage: 'browser', publicPath: '/school/makarychev8/', boardPath: '/trainers/makarychev8.html#home' },
     { id: 'alimov10-11', title: 'Алимов · алгебра 10–11', grades: [10,11], directions: ['school','ege','ege-profile'],
       description: 'Опубликованные темы алгебры и начал анализа с заданиями и разборами.',
       storage: 'browser', publicPath: '/school/alimov10-11/' },

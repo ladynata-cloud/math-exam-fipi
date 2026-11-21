@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import supplements from '../geometry-course/textbook/assets/additional-lessons.js';
 
 // Only the exported geometry copy is adapted. Published sources, lesson banks,
 // storage namespaces and the classroom board contracts stay byte-identical.
@@ -75,9 +76,14 @@ export function prepareGeometryFolder(root, sourceDir, packageDir) {
     fs.writeFileSync(target, text.replace(from, to));
   };
   embed('textbook/index.html', 'geometry-offline-textbook', 'geometry-course/textbook/data/course.json');
+  const ids = supplements.unitFiles.map(url => {
+    const id = 'geometry-offline-' + path.basename(url, '.json');
+    embed('textbook/index.html', id, url.slice(1));
+    return id;
+  });
   replaceOnce('textbook/index.html',
-    "fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();})",
-    "Promise.resolve(JSON.parse(document.getElementById('geometry-offline-textbook').textContent))");
+    "fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(GeometryAdditionalLessons.forCourse)",
+    "Promise.resolve(" + JSON.stringify(ids) + ".reduce((course,id)=>GeometryAdditionalLessons.append(course,JSON.parse(document.getElementById(id).textContent)),JSON.parse(document.getElementById('geometry-offline-textbook').textContent)))");
   embed('first-steps/index.html', 'geometry-offline-first-steps', 'learning/atanasyan-first-steps/course.json');
   replaceOnce('first-steps/entry.js',
     "bundleUrl: '../../learning/atanasyan-first-steps/course.json',",
