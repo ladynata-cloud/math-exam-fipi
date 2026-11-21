@@ -1332,13 +1332,34 @@ test('solve every printed transfer and bracket item, with an identity and its co
   const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
   const topic=f.w.PetersonCourse.lessons.find(l=>l.id==='p37');
   for(const [i,task] of topic.tasks.entries()){
-   if(!task.linearEquationStudy)continue;const c=go(i);
+   if(!task.linearEquationStudy||task.source.page!==22)continue;const c=go(i);
    if(task.kind==='choice'){set(c[2],4);assert(out().includes('Все рациональные числа'));set(c[0],1);set(c[2],4);assert(out().includes('Корней нет.'));continue;}
    const M=f.w.PetersonMath,orig=M.parse(task.answer);
    for(const fresh of [0,1]){const answer=M.answer(M.operation('add',orig,fresh)),id=[...f.q(c[1]).options].find(o=>o.textContent===answer).value;
     set(c[0],fresh);set(c[1],id);set(c[2],3);assert(out().includes('Подстановка даёт равенство.'),[task.id,fresh,out()]);}
    if(task.linearEquationStudy.clear){set(c[2],2);assert(out().includes('Умножаем обе части на '+task.linearEquationStudy.clear));}
   }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('bound each natural-root search, compare all six word models and reject each excluded denominator',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(28);for(const raw of ['4','-7/5']){const option=[...f.q(c[1]).options].find(o=>o.textContent===raw);set(c[1],option.value);set(c[2],2);assert(out().includes('не допускается'));}
+  for(const [j,target,newTarget]of [[29,2,3],[30,3,2],[31,3,4],[32,null,5]]){
+   c=go(j);for(const [i,val]of [target,newTarget].entries()){set(c[0],i);set(c[1],val||5);set(c[2],2);assert.equal(out().includes('Число подходит.'),val!==null);
+    if(j===29||j===30||j===32){const rows=[...f.d.querySelectorAll('#model tbody tr')].map(r=>Number(r.cells[0].textContent));assert.deepEqual(rows,j===29?[1,2,3,4]:j===30?[1,2,3]:i?[1,5]:[1,3,5,15]);}
+   }
+  }
+  c=go(33);set(c[1],1);set(c[2],2);assert(out().includes('1,5 и 1,5 л'));c=go(34);set(c[0],1);set(c[1],1);set(c[2],2);assert(out().includes('90 и 60 л'));
+  c=go(35);set(c[1],2);assert(out().includes('Всего 210'));c=go(36);set(c[0],6);set(c[1],2);assert(out().includes('Весь путь 162 км'));
+  c=go(37);set(c[1],15);set(c[2],1);assert(out().includes('Запасы равны'));set(c[0],1);set(c[1],20);set(c[2],1);assert(out().includes('Запасы равны'));
+  c=go(38);set(c[1],2);assert(out().includes('300 деталей'));set(c[0],1);set(c[1],2);assert(out().includes('180 деталей'));
+  c=go(42);set(c[2],4);assert(out().includes('Корней нет.'));set(c[0],1);set(c[2],4);assert(out().includes('Все рациональные числа'));
+  c=go(46);const bad=[...f.q(c[1]).options].find(o=>o.textContent==='1/4');set(c[1],bad.value);set(c[2],2);assert(out().includes('не допускается'));
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });

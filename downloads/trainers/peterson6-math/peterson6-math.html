@@ -1195,12 +1195,25 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+function situationConfig(tag){
+ if(tag==='milk'||tag==='honey')return {title:'Перелить из одной ёмкости в другую',controls:[c('Условие',[[0,'Исходное'],[1,'Другое переливание']]),c('Состояние',[[0,'До переливания'],[1,'После переливания']]),c('Что показать?',[[0,'Сначала составлю уравнение'],[1,'Оба объёма'],[2,'Проверка отношения']])],initial:[0,0,0]};
+ if(tag==='grains')return {title:'Два запаса по дням',controls:[c('Начальные запасы',[[0,'150 и 120 кг'],[1,'160 и 120 кг']]),c('Дней прошло',range(0,21)),c('Сравнение',[[0,'Сначала предположу'],[1,'Остатки']])],initial:[0,0,0]};
+ if(tag==='workers')return {title:'Изготовлено и осталось',controls:[c('Условие',[[0,'10 дней'],[1,'6 дней']]),c('Показать',[[0,'Известная производительность'],[1,'Сделано'],[2,'Остатки и заказ']])],initial:[0,0]};
+ if(tag==='languages')return {title:'Три непересекающиеся группы',controls:[c('Учат немецкий',[30,45,60]),c('Схема',[[0,'Сначала решу'],[1,'Из четырнадцати долей'],[2,'Число учеников']])],initial:[45,0]};
+ return {title:'Три часа пути',controls:[c('Прибавка во второй час, км',[6,12,18]),c('Этап',[[0,'Сначала составлю уравнение'],[1,'Сколько в первый час'],[2,'Три участка и весь путь']])],initial:[12,0]};
+}
+const finiteSourceCases={
+ sevenTimes:{candidates:[1,2,3,4],why:'При x ≥ 5 множитель 9 − 2x отрицателен. Требуется положительное произведение.'},
+ fourMinus:{candidates:[1,2,3],why:'Начиная с x = 4 множитель 4 − x неположителен. Положительное значение невозможно.'},
+ plusEight:{why:'Для положительных x множители x и x + 8 растут. Найденное натуральное решение единственно.'},
+ threeSquare:{why:'Перенеси 15 вправо и вынеси x за скобки. В уравнении x(3x − 14) = N натуральное x должно делить N.'},
+};
 function linearBalanceValues(item,fresh){
  const M=root.PetersonMath,add=(x,y)=>M.operation('add',x,y),sub=(x,y)=>M.operation('subtract',x,y);
  const [a,b,c,d]=item.coefficients.map(M.parse),k=sub(a,c),identity=!k.n&&M.equal(b,d);
  // Move the unknown in both original expressions, or change one constant of an identity.
- const left=fresh&&!identity?sub(b,a):b,right=fresh?(identity?add(d,1):sub(d,c)):d,target=sub(right,left);
- return {a,c,left,right,k,target,identity,root:k.n?M.operation('divide',target,k):null};
+ const left=fresh&&k.n?sub(b,a):b,right=fresh?(identity?add(d,1):!k.n?b:sub(d,c)):d,target=sub(right,left);
+ return {a,c,left,right,k,target,identity,constantComparison:!k.n,root:k.n?M.operation('divide',target,k):null};
 }
 function linearBalanceCandidates(item){
  const M=root.PetersonMath,values=new Set(['-2','0','1','2']);
@@ -1385,10 +1398,11 @@ function balanceInputs(task){
  return extra?balanceCandidates.concat(extra):balanceCandidates;
 }
 const trialRules={
+ sevenTimes:x=>7*x*(9-2*x),fourMinus:x=>x*(2*x-1)*(4-x)*(x+1),plusEight:x=>x*(x+8),threeSquare:x=>3*x*x-14*x-15,
  rectGrow:x=>x*(x+12),boundedThree:x=>x*(x-9)*(15-x),
  rectSubtract:x=>x*(x-4),rectPlus3:x=>x*x+3*x,
 };
-const extraTrials={rectGrow:85,boundedThree:88,rectSubtract:117,rectPlus3:54};
+const extraTrials={sevenTimes:63,fourMinus:36,plusEight:48,threeSquare:-10,rectGrow:85,boundedThree:88,rectSubtract:117,rectPlus3:54};
 const endFamilyCandidates=['-9','-5','-3','-1','0','19/16','9/2','9'];
 function finalFamilyPair(rule,x){
  switch(rule){
@@ -2080,6 +2094,7 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p37' && task?.equationSituation)return situationConfig(task.equationSituation);
  if(lesson?.id==='p37' && task?.linearEquationStudy){
   const item=task.linearEquationStudy,inputs=linearBalanceCandidates(item);
   return {title:'Сохрани равенство обеих частей',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Новое условие']]),c('Пробное значение',inputs.map((v,i)=>[i,v])),c('Как проверить?',[[0,'Сначала решу'],[1,'После раскрытия'],[2,item.clear?'Целые коэффициенты':'Собрать слагаемые'],[3,'Проверить подстановку'],[4,'Полное решение']])],initial:[0,inputs.indexOf('0'),0]};
@@ -2107,7 +2122,7 @@ function configFor(lesson,task){
  if(lesson?.id==='p18' && task?.constantRateStory)return {title:'Две величины при одном коэффициенте',controls:[c('Данные',[[0,'Первый пример'],[1,'Другой коэффициент и числа']]),c('Что сравнить?',[[0,'Посчитаю сам'],[1,'Обе величины'],[2,'Отношения']])],initial:[0,0]};
  if(lesson?.id==='p36' && task?.quantifiedEquation){const pair=task.quantifiedEquation==='nonzeroProduct';return {title:'Свидетель и контрпример',controls:[c('Число a',range(-3,3)),...(pair?[c('Число b',range(-2,2))]:[]),c('Проверка',[[0,'Сначала сформулирую'],[1,'Подстановка'],[2,'Общая формулировка']])],initial:pair?[1,1,0]:[1,0]};}
  if(['p18','p36'].includes(lesson?.id) && task?.storyBalance)return {title:'Одна операция на обеих чашах',controls:[c('Задача',[[0,'Из книги'],[1,'Новые данные']]),c('Мой кандидат',balanceInputs(task).map((v,i)=>[i,v])),c('Состояние равенства',[[0,'Исходное'],[1,'Первое преобразование'],[2,'Перенос слагаемых'],[3,'Результат и проверка']])],initial:[0,1,0]};
- if(lesson?.id==='p36' && task?.naturalTrials)return {title:'Испытай натуральное число',controls:[c('Правая часть',[[0,String(task.naturalTrials.rhs)],[1,String(extraTrials[task.naturalTrials.rule])]]),c('Кандидат x',range(1,17)),c('Подстановка',[[0,'Предскажу'],[1,'Вычислить'],[2,'Границы перебора']])],initial:[0,1,0]};
+ if(['p36','p37'].includes(lesson?.id) && task?.naturalTrials)return {title:'Испытай натуральное число',controls:[c('Правая часть',[[0,String(task.naturalTrials.rhs)],[1,String(extraTrials[task.naturalTrials.rule])]]),c('Кандидат x',range(1,17)),c('Подстановка',[[0,'Предскажу'],[1,'Вычислить'],[2,'Границы перебора']])],initial:[0,1,0]};
  if(lesson?.id==='p36' && task?.finalRootFamily)return {title:'Проверка и полнота множества решений',controls:[c('Подставить',endFamilyCandidates.map((v,i)=>[i,v])),c('Разбор',[[0,'Сначала решу'],[1,'Проверить число'],[2,'Общее решение']])],initial:[4,0]};
  if(lesson?.id==='p36' && task?.newtonCapital)return {title:'Три года счёта купца',controls:[c('Годовой расход',[50,100]),c('Начальная сумма',[740,1000,1200,1480]),c('Сколько лет проверить?',range(0,3))],initial:[100,1200,0]};
  if(lesson?.id==='p36' && task?.identityProof)return {title:'Что показывает подстановка, а что доказывает общий закон?',controls:[c('Подставить x',range(-4,4)),c('Разбор',[[0,'Сначала исследую'],[1,'Пара значений'],[2,'Общий закон']])],initial:[0,0]};
@@ -2140,7 +2155,7 @@ function configFor(lesson,task){
  if(lesson?.id==='p17' && task?.circleRatio)return {title:'Диаметр и приближённая длина окружности',controls:[c('Данные',[[0,'Как в задаче'],[1,'Новая длина']]),c('Результат',[[0,'Сначала вычислю'],[1,'Без округления в модели'],[2,'С округлением до десятых']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.crossedChords)return {title:'Три опыта с пересечением хорд',controls:[c('Построение',[[0,'Первое'],[1,'Второе'],[2,'Третье']]),c('Сравнение',[[0,'Чертёж'],[1,'Части хорд'],[2,'Произведения и пропорция']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.oddExpressions)return {title:'Проверь правило на разных числах',controls:[c('Подстановка',[-2,0,1,2,3]),c('Что сравнить?',[[0,'Прогноз'],[1,'Значения'],[2,'Общий вид']])],initial:[0,0]};
- if(['p17','p18'].includes(lesson?.id) && task?.affineRatios)return {title:'Проверь обе стороны при выбранном числе',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Со сдвигом неизвестного']]),c('Пробное число',affineRatioCandidates(task).map((v,i)=>[i,v])),c('Способ проверки',[[0,'Сначала вычислю'],[1,'Два отношения'],[2,'Два произведения']])],initial:[0,0,0]};
+ if(['p17','p18','p37'].includes(lesson?.id) && task?.affineRatios)return {title:'Проверь обе стороны при выбранном числе',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Со сдвигом неизвестного']]),c('Пробное число',affineRatioCandidates(task).map((v,i)=>[i,v])),c('Способ проверки',[[0,'Сначала вычислю'],[1,'Два отношения'],[2,'Два произведения']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.linkedRatios)return {title:'От второй пропорции к первой',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новая вторая пропорция']]),c('Вычисления',[[0,'Сначала решу'],[1,'Промежуточное y'],[2,'Пара x и y']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.reorderSymbols)return {title:'Обе диагонали после перестановки',controls:[c('Расположение букв',range(1,8)),c('Проверка',[[0,'Ненулевые буквы'],[1,'Нулевые числители']])],initial:[1,0]};
  if(lesson?.id==='p17' && task?.copierRatio)return {title:'Оригинал и копия в одном масштабе',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новая длина']]),c('Сравнение',[[0,'Сначала решу'],[1,'Вычисления и чертёж']])],initial:[0,0]};
@@ -2260,7 +2275,7 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2271,8 +2286,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2509,10 +2524,38 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
  }
  else
+ if(n===37 && task.equationSituation){
+  const key=task.equationSituation;
+  if(key==='milk'||key==='honey'){
+   const milk=key==='milk',transfer=milk?(a?1:.5):(a?30:60),small=milk?2*transfer:transfer,big=small*(milk?2:4),first=b?big-transfer:big,second=b?small+transfer:small,mode=state.values[2];
+   say('Переливаем '+num(transfer)+' л из первой ёмкости во вторую. '+(milk?'После переливания объёмы равны.':'После переливания первый объём в 1,5 раза больше второго.'));
+   if(mode>=1){show(changeBars(first,second,['Первая','Вторая']));say('Объёмы '+num(first)+' и '+num(second)+' л.');}
+   if(mode===2)say('Отношение первой ко второй: '+num(first/second)+'. Сумма объёмов '+num(first+second)+' л.');
+  }else if(key==='grains'){
+   const first=a?160:150,restA=first-5*b,restB=120-3*b;
+   say('Прошло дней: '+b+'. Каждый день расходуется 5 кг гречки и 3 кг риса.');
+   if(state.values[2]){show(changeBars(restA,restB,['Гречка','Рис']));say('Осталось '+restA+' и '+restB+' кг. '+(restA===restB?'Запасы равны.':'Разница '+Math.abs(restA-restB)+' кг.'));}
+  }else if(key==='workers'){
+   const days=a?6:10,done1=25*days,done2=20*days,difference=done1-done2;
+   say('Заказ каждому одинаков. Скорости 25 и 20 деталей в день. Работали '+days+' дней.');
+   if(b>=1)say('Сделано '+done1+' и '+done2+' деталей, разность '+difference+'.');
+   if(b===2){show(table(['Рабочий','Сделано','Осталось'],[['Первый',done1,difference],['Второй',done2,2*difference]]));say('Заказ каждому '+(done1+difference)+' деталей.');}
+  }else if(key==='languages'){
+   const unit=a/3;say('Немецкий учат '+a+' человек.');
+   if(b>=1)show(table(['Язык','Часть класса'],[['Французский','7/14'],['Английский','4/14'],['Немецкий','3/14']]));
+   if(b===2)say('Ученики: '+num(7*unit)+', '+num(4*unit)+', '+a+'. Всего '+num(14*unit)+'.');
+  }else{
+   const first=9*a,second=10*a,third=8*a;say('Во второй час на '+a+' км больше, чем в первый. В третий — 80% второго.');
+   if(b>=1)say('Первый час '+first+' км.');
+   if(b===2){show(table(['Час','Километры'],[['Первый',first],['Второй',second],['Третий',third]]));say('Весь путь '+(first+second+third)+' км.');}
+  }
+  stepList(['Отдели начальные данные от конечного условия.','Запиши связь величин в уравнении.','Подставь ответ и проверь все части условия.']);
+ }
+ else
  if(n===37 && task.linearEquationStudy){
   const item=task.linearEquationStudy,M=root.PetersonMath,vals=linearBalanceValues(item,a===1),cand=linearBalanceCandidates(item)[b],mode=state.values[2],x=item.variable;
   say('Исходная запись: '+item.printed+'.');
-  if(a===1)say(vals.identity?'В новом примере к правой части прибавь 1. Как изменилось множество корней?':'В новом примере в обеих частях вместо '+x+' поставь ('+x+' − 1).');
+  if(a===1)say(vals.identity?'В новом примере к правой части прибавь 1. Как изменилось множество корней?':vals.constantComparison?'В новом примере свободный член справа равен свободному члену слева. Как изменилось множество корней?':'В новом примере в обеих частях вместо '+x+' поставь ('+x+' − 1).');
   if(mode===1){show(table(['Часть','Коэффициент','Свободный член'],[['Левая',M.answer(vals.a),M.answer(vals.left)],['Правая',M.answer(vals.c),M.answer(vals.right)]]));}
   if(mode===2){
    if(item.clear){const scaled=[vals.a,vals.left,vals.c,vals.right].map(q=>M.operation('multiply',q,item.clear));say('Умножаем обе части на '+item.clear+'.');formula(writeLinearTerm(scaled[0],scaled[1],x)+' = '+writeLinearTerm(scaled[2],scaled[3],x));}
@@ -2709,11 +2752,15 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   }}
   stepList(['Обозначь неизвестное буквой.','Применяй одинаковое действие к обеим частям.','Проверь результат в исходной задаче.']);
  }
- else if(n===36 && task.naturalTrials){
+ else if((n===36||n===37) && task.naturalTrials){
   const t=task.naturalTrials,mode=state.values[2],rhs=a===0?t.rhs:extraTrials[t.rule],value=trialRules[t.rule](b);
   formula(t.equation.split(' = ')[0]+' = '+rhs);say('Кандидат: x = '+b+'.');
   if(mode>=1)say('Левая часть '+num(value)+', правая '+num(rhs)+'. Число '+(value===rhs?'подходит.':'не подходит.'));
-  if(mode===2){if(t.rule==='boundedThree'){const candidates=[10,11,12,13,14];show(table(['x','Произведение'],candidates.map(x=>[x,trialRules[t.rule](x)])));say('При x ≤ 9 и x ≥ 15 произведение неположительно. Для положительного ответа достаточно этой таблицы.');}else say(t.rule==='rectSubtract'?'При x ≤ 4 произведение неположительно, а для x ≥ 5 оба множителя положительны и растут.':'Оба положительных множителя растут с натуральным x. Найденное верное значение единственно.');}
+  if(mode===2&&finiteSourceCases[t.rule]){
+   const item=finiteSourceCases[t.rule];say(item.why);
+   const candidates=t.rule==='threeSquare'?(a?[1,5]:[1,3,5,15]):item.candidates;
+   if(candidates)show(table(['x','Левая часть исходной записи'],candidates.map(x=>[x,trialRules[t.rule](x)])));
+  }else if(mode===2){if(t.rule==='boundedThree'){const candidates=[10,11,12,13,14];show(table(['x','Произведение'],candidates.map(x=>[x,trialRules[t.rule](x)])));say('При x ≤ 9 и x ≥ 15 произведение неположительно. Для положительного ответа достаточно этой таблицы.');}else say(t.rule==='rectSubtract'?'При x ≤ 4 произведение неположительно, а для x ≥ 5 оба множителя положительны и растут.':'Оба положительных множителя растут с натуральным x. Найденное верное значение единственно.');}
   stepList(['Выбери пробное число.','Сравни с требуемым результатом.','Объясни, какие оставшиеся кандидаты можно исключить.']);
  }
  else if(n===36 && task.finalRootFamily){
@@ -2935,7 +2982,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   stepList(['Чётко сформулируй выбранный признак.','Проверь каждое оставшееся выражение по формуле.','Отдельный числовой пример помогает проверить догадку, но общего вывода не доказывает.']);
  }
  else
- if((n===17||n===18) && task.affineRatios){
+ if((n===17||n===18||n===37) && task.affineRatios){
   const t=task.affineRatios,M=root.PetersonMath,z=M.parse(affineRatioCandidates(task)[b]),effective=M.operation('subtract',z,a),mode=state.values[2];
   say('Исходное равенство: '+t.printed+'.');
   if(a===1)say('Новый пример: в каждом месте вместо '+t.letter+' поставь ('+t.letter+' − 1).');
@@ -61476,7 +61523,21 @@ window.PetersonCourse = {
      },
      "finalLabel": "Введи корень b.",
      "answerFormat": "decimal",
-     "id": "p37-t04"
+     "id": "p37-t04",
+     "affineRatios": {
+      "letter": "b",
+      "terms": [
+       [
+        "-2",
+        "1"
+       ],
+       "4",
+       "0.8",
+       "0.5"
+      ],
+      "root": "-27/10",
+      "printed": "(1 − 2b)/4 = 0,8/0,5"
+     }
     },
     {
      "id": "p37-t05",
@@ -62782,6 +62843,1092 @@ window.PetersonCourse = {
       [
        "25/12",
        "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t27",
+     "title": "К задаче №90а",
+     "kind": "number",
+     "prompt": "Найди все корни −3/(9 − 4a) = 40/200.",
+     "answer": "6",
+     "steps": [
+      {
+       "prompt": "Упрости правую дробь.",
+       "answer": "1/5",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "Знаменатель не равен нулю, значит a ≠ 9/4. Справа 1/5, поэтому −3 умножаем на 5 и получаем 9 − 4a = −15. Это даёт a = 6."
+      },
+      {
+       "prompt": "Чему должен равняться знаменатель 9 − 4a?",
+       "answer": "-15",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "Знаменатель не равен нулю, значит a ≠ 9/4. Справа 1/5, поэтому −3 умножаем на 5 и получаем 9 − 4a = −15. Это даёт a = 6."
+      }
+     ],
+     "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+     "explanation": "Знаменатель не равен нулю, значит a ≠ 9/4. Справа 1/5, поэтому −3 умножаем на 5 и получаем 9 − 4a = −15. Это даёт a = 6.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 90,
+      "subpart": "а",
+      "reference": "№90а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "a",
+      "terms": [
+       "-3",
+       [
+        "-4",
+        "9"
+       ],
+       "40",
+       "200"
+      ],
+      "root": "6",
+      "printed": "−3/(9 − 4a) = 40/200"
+     },
+     "errorCues": [
+      [
+       "-6",
+       "Подставь результат со знаком в исходное равенство и сравни обе части."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t28",
+     "title": "К задаче №90в",
+     "kind": "number",
+     "prompt": "Найди все корни (5 + 3x)/12 = (4x − 3)/18.",
+     "answer": "-21",
+     "steps": [
+      {
+       "prompt": "На какой коэффициент делятся 12 и 18 без остатка, чтобы записать 3(5 + 3x) = 2(4x − 3)?",
+       "answer": "6",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "Сократи перекрёстные множители на 6: 3(5 + 3x) = 2(4x − 3). Получаем 15 + 9x = 8x − 6, откуда x = −21."
+      },
+      {
+       "prompt": "После раскрытия сколько x остаётся в 9x − 8x?",
+       "answer": "1",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "Сократи перекрёстные множители на 6: 3(5 + 3x) = 2(4x − 3). Получаем 15 + 9x = 8x − 6, откуда x = −21."
+      }
+     ],
+     "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+     "explanation": "Сократи перекрёстные множители на 6: 3(5 + 3x) = 2(4x − 3). Получаем 15 + 9x = 8x − 6, откуда x = −21.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 90,
+      "subpart": "в",
+      "reference": "№90в"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       [
+        "3",
+        "5"
+       ],
+       "12",
+       [
+        "4",
+        "-3"
+       ],
+       "18"
+      ],
+      "root": "-21",
+      "printed": "(5 + 3x)/12 = (4x − 3)/18"
+     },
+     "errorCues": [
+      [
+       "21",
+       "Подставь результат со знаком в исходное равенство и сравни обе части."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t29",
+     "title": "К задаче №90г",
+     "kind": "number",
+     "prompt": "Найди все корни 0,9/(7 + 5y) = 0,2/(y − 4).",
+     "answer": "-50",
+     "steps": [
+      {
+       "prompt": "Какое число обнуляет y − 4?",
+       "answer": "4",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "Исключи 4 и −7/5. Умножение крест-накрест даёт 9(y − 4) = 2(7 + 5y), то есть −y = 50."
+      },
+      {
+       "prompt": "Какое число обнуляет 7 + 5y?",
+       "answer": "-7/5",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "Исключи 4 и −7/5. Умножение крест-накрест даёт 9(y − 4) = 2(7 + 5y), то есть −y = 50."
+      },
+      {
+       "prompt": "В равенстве 9y − 36 = 14 + 10y чему равно 9 − 10?",
+       "answer": "-1",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "Исключи 4 и −7/5. Умножение крест-накрест даёт 9(y − 4) = 2(7 + 5y), то есть −y = 50."
+      }
+     ],
+     "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+     "explanation": "Исключи 4 и −7/5. Умножение крест-накрест даёт 9(y − 4) = 2(7 + 5y), то есть −y = 50.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 90,
+      "subpart": "г",
+      "reference": "№90г"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "y",
+      "terms": [
+       "0.9",
+       [
+        "5",
+        "7"
+       ],
+       "0.2",
+       [
+        "1",
+        "-4"
+       ]
+      ],
+      "root": "-50",
+      "printed": "0,9/(7 + 5y) = 0,2/(y − 4)"
+     },
+     "errorCues": [
+      [
+       "50",
+       "Подставь результат со знаком в исходное равенство и сравни обе части."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t30",
+     "title": "К задаче №91а",
+     "kind": "number",
+     "prompt": "Найди все натуральные корни 7x(9 − 2x) = 70.",
+     "answer": "2",
+     "steps": [
+      {
+       "prompt": "Какова левая часть при x = 1?",
+       "answer": "49",
+       "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+       "explanation": "При x ≥ 5 произведение отрицательно. Для 1, 2, 3, 4 значения левой части равны 49, 70, 63, 28. Получается только x = 2."
+      },
+      {
+       "prompt": "Какова левая часть при x = 4?",
+       "answer": "28",
+       "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+       "explanation": "При x ≥ 5 произведение отрицательно. Для 1, 2, 3, 4 значения левой части равны 49, 70, 63, 28. Получается только x = 2."
+      }
+     ],
+     "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+     "explanation": "При x ≥ 5 произведение отрицательно. Для 1, 2, 3, 4 значения левой части равны 49, 70, 63, 28. Получается только x = 2.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 91,
+      "subpart": "а",
+      "reference": "№91а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "naturalTrials": {
+      "rule": "sevenTimes",
+      "equation": "7x(9 − 2x) = 70",
+      "rhs": 70
+     },
+     "errorCues": [
+      [
+       "1",
+       "Для этой пробы левая часть равна 49, а требуется 70."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t31",
+     "title": "К задаче №91б",
+     "kind": "number",
+     "prompt": "Найди все натуральные корни x(2x − 1)(4 − x)(x + 1) = 60.",
+     "answer": "3",
+     "steps": [
+      {
+       "prompt": "Какова левая часть при x = 1?",
+       "answer": "6",
+       "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+       "explanation": "Начиная с x = 4 множитель 4 − x неположителен. Проверяем 1, 2, 3 и получаем 6, 36, 60. Подходит только 3."
+      },
+      {
+       "prompt": "Какова левая часть при x = 2?",
+       "answer": "36",
+       "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+       "explanation": "Начиная с x = 4 множитель 4 − x неположителен. Проверяем 1, 2, 3 и получаем 6, 36, 60. Подходит только 3."
+      }
+     ],
+     "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+     "explanation": "Начиная с x = 4 множитель 4 − x неположителен. Проверяем 1, 2, 3 и получаем 6, 36, 60. Подходит только 3.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 91,
+      "subpart": "б",
+      "reference": "№91б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "naturalTrials": {
+      "rule": "fourMinus",
+      "equation": "x(2x − 1)(4 − x)(x + 1) = 60",
+      "rhs": 60
+     },
+     "errorCues": [
+      [
+       "1",
+       "Для этой пробы левая часть равна 6, а требуется 60."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t32",
+     "title": "К задаче №92а",
+     "kind": "number",
+     "prompt": "Найди все натуральные корни x(x + 8) = 33.",
+     "answer": "3",
+     "steps": [
+      {
+       "prompt": "Какова левая часть при x = 2?",
+       "answer": "20",
+       "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+       "explanation": "Для положительных натуральных чисел оба множителя возрастают. Подстановка 3 даёт 3 × 11 = 33. Другого натурального корня нет."
+      },
+      {
+       "prompt": "Какова левая часть при x = 4?",
+       "answer": "48",
+       "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+       "explanation": "Для положительных натуральных чисел оба множителя возрастают. Подстановка 3 даёт 3 × 11 = 33. Другого натурального корня нет."
+      }
+     ],
+     "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+     "explanation": "Для положительных натуральных чисел оба множителя возрастают. Подстановка 3 даёт 3 × 11 = 33. Другого натурального корня нет.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 92,
+      "subpart": "а",
+      "reference": "№92а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "naturalTrials": {
+      "rule": "plusEight",
+      "equation": "x(x + 8) = 33",
+      "rhs": 33
+     },
+     "errorCues": [
+      [
+       "2",
+       "Для этой пробы левая часть равна 20, а требуется 33."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t33",
+     "title": "К задаче №92б",
+     "kind": "choice",
+     "prompt": "Найди все натуральные корни 3x² − 14x − 15 = 0.",
+     "answer": "Корней нет",
+     "steps": [
+      {
+       "prompt": "Какова левая часть при x = 3?",
+       "answer": "-30",
+       "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+       "explanation": "Запись x(3x − 14) = 15 означает, что натуральное x делит 15. Проверяем 1, 3, 5, 15. Значения произведения −11, −15, 5, 465. Ни одно не равно 15."
+      },
+      {
+       "prompt": "Какова левая часть при x = 5?",
+       "answer": "-10",
+       "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+       "explanation": "Запись x(3x − 14) = 15 означает, что натуральное x делит 15. Проверяем 1, 3, 5, 15. Значения произведения −11, −15, 5, 465. Ни одно не равно 15."
+      }
+     ],
+     "hint": "Ищи натуральные значения начиная с 1. Используй знак множителей или делимость, чтобы объяснить, почему перебор полный.",
+     "explanation": "Запись x(3x − 14) = 15 означает, что натуральное x делит 15. Проверяем 1, 3, 5, 15. Значения произведения −11, −15, 5, 465. Ни одно не равно 15.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 92,
+      "subpart": "б",
+      "reference": "№92б"
+     },
+     "finalLabel": "Выбери полное множество корней.",
+     "naturalTrials": {
+      "rule": "threeSquare",
+      "equation": "3x² − 14x − 15 = 0",
+      "rhs": 0
+     },
+     "errorCues": [
+      [
+       "Только 5",
+       "При x = 5 левая часть −10, а должна равняться нулю."
+      ],
+      [
+       "Только 15",
+       "Делимость оставляет 15 кандидатом. Подстановка не даёт нуля."
+      ]
+     ],
+     "choices": [
+      "Только 5",
+      "Корней нет",
+      "Только 15"
+     ]
+    },
+    {
+     "id": "p37-t34",
+     "title": "К задаче №93а",
+     "kind": "number",
+     "prompt": "В первой банке вдвое больше молока, чем во второй. Перелив 0,5 л из первой во вторую, получим равные объёмы. Сколько молока в каждой банке сначала? В ответе укажи объём первой.",
+     "answer": "2",
+     "steps": [
+      {
+       "prompt": "На сколько литров уменьшается разница после переливания 0,5 л?",
+       "answer": "1",
+       "hint": "У меньшей банки объём растёт на столько же, на сколько уменьшается у первой.",
+       "explanation": "Обозначь меньший объём x. Баланс после переливания: 2x − 0,5 = x + 0,5. Значит, x = 1. В первой 2 л, во второй 1 л, после переливания по 1,5 л."
+      },
+      {
+       "prompt": "Сколько в меньшей банке сначала, в литрах?",
+       "answer": "1",
+       "hint": "У меньшей банки объём растёт на столько же, на сколько уменьшается у первой.",
+       "explanation": "Обозначь меньший объём x. Баланс после переливания: 2x − 0,5 = x + 0,5. Значит, x = 1. В первой 2 л, во второй 1 л, после переливания по 1,5 л."
+      }
+     ],
+     "hint": "У меньшей банки объём растёт на столько же, на сколько уменьшается у первой.",
+     "explanation": "Обозначь меньший объём x. Баланс после переливания: 2x − 0,5 = x + 0,5. Значит, x = 1. В первой 2 л, во второй 1 л, после переливания по 1,5 л.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 93,
+      "subpart": "а",
+      "reference": "№93а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "equationSituation": "milk",
+     "errorCues": [
+      [
+       "1",
+       "Это промежуточная величина. Сверь с тем, какое число требуется в ответе."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t35",
+     "title": "К задаче №93б",
+     "kind": "number",
+     "prompt": "В первой бочке мёда в четыре раза больше. Из неё переливают 60 л во вторую. После этого в первой мёда в полтора раза больше, чем во второй. Найди оба начальных объёма, а в ответе запиши объём первой в литрах.",
+     "answer": "240",
+     "steps": [
+      {
+       "prompt": "После переливания в меньшей бочке было бы x плюс сколько литров?",
+       "answer": "60",
+       "hint": "Отношение 1,5 относится к объёмам после переливания.",
+       "explanation": "При втором начальном объёме x уравнение 4x − 60 = 1,5(x + 60). Отсюда 2,5x = 150, x = 60. Исходно 240 и 60 л. Затем 180 и 120 л."
+      },
+      {
+       "prompt": "Сколько литров во второй бочке было сначала?",
+       "answer": "60",
+       "hint": "Отношение 1,5 относится к объёмам после переливания.",
+       "explanation": "При втором начальном объёме x уравнение 4x − 60 = 1,5(x + 60). Отсюда 2,5x = 150, x = 60. Исходно 240 и 60 л. Затем 180 и 120 л."
+      }
+     ],
+     "hint": "Отношение 1,5 относится к объёмам после переливания.",
+     "explanation": "При втором начальном объёме x уравнение 4x − 60 = 1,5(x + 60). Отсюда 2,5x = 150, x = 60. Исходно 240 и 60 л. Затем 180 и 120 л.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 93,
+      "subpart": "б",
+      "reference": "№93б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "equationSituation": "honey",
+     "errorCues": [
+      [
+       "60",
+       "Это промежуточная величина. Сверь с тем, какое число требуется в ответе."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t36",
+     "title": "К задаче №94а",
+     "kind": "number",
+     "prompt": "В начальных классах половина учеников учит французский, 2/7 всех учеников — английский, остальные 45 — немецкий. Каждый учит один язык. Сколько учеников всего?",
+     "answer": "210",
+     "steps": [
+      {
+       "prompt": "Какая доля учит первые два языка?",
+       "answer": "11/14",
+       "hint": "Отнеси обе доли к одному общему числу учеников.",
+       "explanation": "Остаток 1 − 1/2 − 2/7 = 3/14 относится к 45 ученикам. Одна четырнадцатая соответствует 15 ученикам. Всего 210. Проверка: 105 + 60 + 45 = 210."
+      },
+      {
+       "prompt": "Какая доля учит немецкий?",
+       "answer": "3/14",
+       "hint": "Отнеси обе доли к одному общему числу учеников.",
+       "explanation": "Остаток 1 − 1/2 − 2/7 = 3/14 относится к 45 ученикам. Одна четырнадцатая соответствует 15 ученикам. Всего 210. Проверка: 105 + 60 + 45 = 210."
+      }
+     ],
+     "hint": "Отнеси обе доли к одному общему числу учеников.",
+     "explanation": "Остаток 1 − 1/2 − 2/7 = 3/14 относится к 45 ученикам. Одна четырнадцатая соответствует 15 ученикам. Всего 210. Проверка: 105 + 60 + 45 = 210.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 94,
+      "subpart": "а",
+      "reference": "№94а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "equationSituation": "languages",
+     "errorCues": [
+      [
+       "3/14",
+       "Это промежуточная величина. Сверь с тем, какое число требуется в ответе."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t37",
+     "title": "К задаче №94б",
+     "kind": "number",
+     "prompt": "За первый час автомобиль прошёл треть пути, за второй на 12 км больше, за третий 80% пути второго часа. Найди общую длину пути в километрах.",
+     "answer": "324",
+     "steps": [
+      {
+       "prompt": "Если в первом часу прошли x км, общий путь во сколько раз больше x?",
+       "answer": "3",
+       "hint": "Треть пути — это первый час. 80% берётся от расстояния второго часа.",
+       "explanation": "Пусть в первом часу x. Тогда 3x = x + (x + 12) + 0,8(x + 12). После раскрытия 0,2x = 21,6, значит x = 108. Весь путь 324 км."
+      },
+      {
+       "prompt": "Когда в первом часу 108 км, сколько во втором?",
+       "answer": "120",
+       "hint": "Треть пути — это первый час. 80% берётся от расстояния второго часа.",
+       "explanation": "Пусть в первом часу x. Тогда 3x = x + (x + 12) + 0,8(x + 12). После раскрытия 0,2x = 21,6, значит x = 108. Весь путь 324 км."
+      },
+      {
+       "prompt": "Сколько проехали за третий час при таком втором часу?",
+       "answer": "96",
+       "hint": "Треть пути — это первый час. 80% берётся от расстояния второго часа.",
+       "explanation": "Пусть в первом часу x. Тогда 3x = x + (x + 12) + 0,8(x + 12). После раскрытия 0,2x = 21,6, значит x = 108. Весь путь 324 км."
+      }
+     ],
+     "hint": "Треть пути — это первый час. 80% берётся от расстояния второго часа.",
+     "explanation": "Пусть в первом часу x. Тогда 3x = x + (x + 12) + 0,8(x + 12). После раскрытия 0,2x = 21,6, значит x = 108. Весь путь 324 км.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 94,
+      "subpart": "б",
+      "reference": "№94б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "equationSituation": "journey",
+     "errorCues": [
+      [
+       "96",
+       "Это промежуточная величина. Сверь с тем, какое число требуется в ответе."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t38",
+     "title": "К задаче №95а",
+     "kind": "number",
+     "prompt": "В столовой 150 кг гречки и 120 кг риса. За день используют 5 кг гречки и 3 кг риса. Через сколько дней запасы сравняются?",
+     "answer": "15",
+     "steps": [
+      {
+       "prompt": "Насколько отличается начальный запас в килограммах?",
+       "answer": "30",
+       "hint": "Рис и гречка расходуются с разными суточными нормами.",
+       "explanation": "Уравнение 150 − 5t = 120 − 3t даёт 30 = 2t. Через 15 дней останется по 75 кг каждого продукта."
+      },
+      {
+       "prompt": "На сколько килограммов за день сокращается разница?",
+       "answer": "2",
+       "hint": "Рис и гречка расходуются с разными суточными нормами.",
+       "explanation": "Уравнение 150 − 5t = 120 − 3t даёт 30 = 2t. Через 15 дней останется по 75 кг каждого продукта."
+      }
+     ],
+     "hint": "Рис и гречка расходуются с разными суточными нормами.",
+     "explanation": "Уравнение 150 − 5t = 120 − 3t даёт 30 = 2t. Через 15 дней останется по 75 кг каждого продукта.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 95,
+      "subpart": "а",
+      "reference": "№95а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "equationSituation": "grains",
+     "errorCues": [
+      [
+       "2",
+       "Это промежуточная величина. Сверь с тем, какое число требуется в ответе."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t39",
+     "title": "К задаче №95б",
+     "kind": "number",
+     "prompt": "Два рабочих получили равные задания. Первый делает по 25 деталей в день, второй по 20. После десяти дней первому осталось сделать вдвое меньше, чем второму. Найди оба остатка. В ответе укажи остаток второго.",
+     "answer": "100",
+     "steps": [
+      {
+       "prompt": "Насколько различались результаты после десяти дней?",
+       "answer": "50",
+       "hint": "У каждого был одинаковый заказ. Разница сделанного равна разнице оставшегося.",
+       "explanation": "За десять дней сделали 250 и 200 деталей. Разница остатков 50, второй остаток вдвое больше первого. Поэтому осталось 50 и 100 деталей. Всего по 300 каждому."
+      },
+      {
+       "prompt": "Сколько деталей осталось у первого рабочего?",
+       "answer": "50",
+       "hint": "У каждого был одинаковый заказ. Разница сделанного равна разнице оставшегося.",
+       "explanation": "За десять дней сделали 250 и 200 деталей. Разница остатков 50, второй остаток вдвое больше первого. Поэтому осталось 50 и 100 деталей. Всего по 300 каждому."
+      }
+     ],
+     "hint": "У каждого был одинаковый заказ. Разница сделанного равна разнице оставшегося.",
+     "explanation": "За десять дней сделали 250 и 200 деталей. Разница остатков 50, второй остаток вдвое больше первого. Поэтому осталось 50 и 100 деталей. Всего по 300 каждому.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 95,
+      "subpart": "б",
+      "reference": "№95б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "equationSituation": "workers",
+     "errorCues": [
+      [
+       "50",
+       "Это промежуточная величина. Сверь с тем, какое число требуется в ответе."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t40",
+     "title": "К задаче №96а",
+     "kind": "number",
+     "prompt": "Найди полное множество рациональных корней x = −(1/6)x.",
+     "answer": "0",
+     "steps": [
+      {
+       "prompt": "После вычитания буквенной части справа какой коэффициент останется слева?",
+       "answer": "7/6",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Прибавь x/6 к обеим частям. Получится (7/6)x = 0."
+      },
+      {
+       "prompt": "Чему равно свободное число справа после переноса числовых членов?",
+       "answer": "0",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Прибавь x/6 к обеим частям. Получится (7/6)x = 0."
+      }
+     ],
+     "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+     "explanation": "Прибавь x/6 к обеим частям. Получится (7/6)x = 0.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 96,
+      "subpart": "а",
+      "reference": "№96а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "linearEquationStudy": {
+      "printed": "x = −(1/6)x",
+      "variable": "x",
+      "coefficients": [
+       "1",
+       "0",
+       "-1/6",
+       "0"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "1",
+       "Проверь значение единицы в обеих исходных частях."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t41",
+     "title": "К задаче №96б",
+     "kind": "number",
+     "prompt": "Найди полное множество рациональных корней 3,2 − 5a = −1,8a + 4.",
+     "answer": "-1/4",
+     "steps": [
+      {
+       "prompt": "После вычитания буквенной части справа какой коэффициент останется слева?",
+       "answer": "-16/5",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Вычти −1,8a и свободное число 3,2 по обе стороны: −3,2a = 0,8."
+      },
+      {
+       "prompt": "Чему равно свободное число справа после переноса числовых членов?",
+       "answer": "4/5",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Вычти −1,8a и свободное число 3,2 по обе стороны: −3,2a = 0,8."
+      }
+     ],
+     "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+     "explanation": "Вычти −1,8a и свободное число 3,2 по обе стороны: −3,2a = 0,8.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 96,
+      "subpart": "б",
+      "reference": "№96б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "linearEquationStudy": {
+      "printed": "3,2 − 5a = −1,8a + 4",
+      "variable": "a",
+      "coefficients": [
+       "-5",
+       "16/5",
+       "-9/5",
+       "4"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "1",
+       "Проверь значение единицы в обеих исходных частях."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t42",
+     "title": "К задаче №96в",
+     "kind": "number",
+     "prompt": "Найди полное множество рациональных корней 4⅙ − 1⅓x = 4x + 3 5/18.",
+     "answer": "1/6",
+     "steps": [
+      {
+       "prompt": "После вычитания буквенной части справа какой коэффициент останется слева?",
+       "answer": "-16/3",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Домножение на 18 даёт 75 − 24x = 72x + 59. Значит 96x = 16."
+      },
+      {
+       "prompt": "Чему равно свободное число справа после переноса числовых членов?",
+       "answer": "-8/9",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Домножение на 18 даёт 75 − 24x = 72x + 59. Значит 96x = 16."
+      }
+     ],
+     "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+     "explanation": "Домножение на 18 даёт 75 − 24x = 72x + 59. Значит 96x = 16.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 96,
+      "subpart": "в",
+      "reference": "№96в"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "linearEquationStudy": {
+      "printed": "4⅙ − 1⅓x = 4x + 3 5/18",
+      "variable": "x",
+      "coefficients": [
+       "-4/3",
+       "25/6",
+       "4",
+       "59/18"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "1",
+       "Проверь значение единицы в обеих исходных частях."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t43",
+     "title": "К задаче №96г",
+     "kind": "choice",
+     "prompt": "Найди полное множество рациональных корней 0,3n − (2,6 − 0,9n) = 1,2n + 3.",
+     "answer": "Корней нет",
+     "steps": [
+      {
+       "prompt": "После вычитания буквенной части справа какой коэффициент останется слева?",
+       "answer": "0",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Слева 1,2n − 2,6, справа 1,2n + 3. После вычитания 1,2n осталось ложное −2,6 = 3."
+      },
+      {
+       "prompt": "Чему равно свободное число справа после переноса числовых членов?",
+       "answer": "28/5",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Слева 1,2n − 2,6, справа 1,2n + 3. После вычитания 1,2n осталось ложное −2,6 = 3."
+      }
+     ],
+     "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+     "explanation": "Слева 1,2n − 2,6, справа 1,2n + 3. После вычитания 1,2n осталось ложное −2,6 = 3.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 96,
+      "subpart": "г",
+      "reference": "№96г"
+     },
+     "finalLabel": "Выбери полное множество корней.",
+     "linearEquationStudy": {
+      "printed": "0,3n − (2,6 − 0,9n) = 1,2n + 3",
+      "variable": "n",
+      "coefficients": [
+       "6/5",
+       "-13/5",
+       "6/5",
+       "3"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "Любое рациональное число",
+       "Свободные члены разные — не получается тождество."
+      ],
+      [
+       "Только 0",
+       "При нуле остаётся неверное −2,6 = 3."
+      ]
+     ],
+     "choices": [
+      "Только 0",
+      "Любое рациональное число",
+      "Корней нет"
+     ]
+    },
+    {
+     "id": "p37-t44",
+     "title": "К задаче №96д",
+     "kind": "number",
+     "prompt": "Найди полное множество рациональных корней 1 5/7(d + 3) = −2(1 − d).",
+     "answer": "25",
+     "steps": [
+      {
+       "prompt": "После вычитания буквенной части справа какой коэффициент останется слева?",
+       "answer": "-2/7",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Умножение на 7 и раскрытие скобок даёт 12d + 36 = −14 + 14d. Тогда 2d = 50."
+      },
+      {
+       "prompt": "Чему равно свободное число справа после переноса числовых членов?",
+       "answer": "-50/7",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Умножение на 7 и раскрытие скобок даёт 12d + 36 = −14 + 14d. Тогда 2d = 50."
+      }
+     ],
+     "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+     "explanation": "Умножение на 7 и раскрытие скобок даёт 12d + 36 = −14 + 14d. Тогда 2d = 50.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 96,
+      "subpart": "д",
+      "reference": "№96д"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "linearEquationStudy": {
+      "printed": "1 5/7(d + 3) = −2(1 − d)",
+      "variable": "d",
+      "coefficients": [
+       "12/7",
+       "36/7",
+       "2",
+       "-2"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "1",
+       "Проверь значение единицы в обеих исходных частях."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t45",
+     "title": "К задаче №96е",
+     "kind": "number",
+     "prompt": "Найди полное множество рациональных корней 0,6(−2k + 3) − 0,4(9 − k) = −0,3(k − 9).",
+     "answer": "-9",
+     "steps": [
+      {
+       "prompt": "После вычитания буквенной части справа какой коэффициент останется слева?",
+       "answer": "-1/2",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Слева −0,8k − 1,8, справа −0,3k + 2,7. Получается −0,5k = 4,5."
+      },
+      {
+       "prompt": "Чему равно свободное число справа после переноса числовых членов?",
+       "answer": "9/2",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Слева −0,8k − 1,8, справа −0,3k + 2,7. Получается −0,5k = 4,5."
+      }
+     ],
+     "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+     "explanation": "Слева −0,8k − 1,8, справа −0,3k + 2,7. Получается −0,5k = 4,5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 96,
+      "subpart": "е",
+      "reference": "№96е"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "linearEquationStudy": {
+      "printed": "0,6(−2k + 3) − 0,4(9 − k) = −0,3(k − 9)",
+      "variable": "k",
+      "coefficients": [
+       "-4/5",
+       "-9/5",
+       "-3/10",
+       "27/10"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "1",
+       "Проверь значение единицы в обеих исходных частях."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t46",
+     "title": "К задаче №96ж",
+     "kind": "number",
+     "prompt": "Найди полное множество рациональных корней (5/8)(m − 2) − (2/3)(m + 2) = m − 3.",
+     "answer": "2/5",
+     "steps": [
+      {
+       "prompt": "После вычитания буквенной части справа какой коэффициент останется слева?",
+       "answer": "-25/24",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Умножь на 24: 15(m − 2) − 16(m + 2) = 24m − 72. После раскрытия −m − 62 = 24m − 72, откуда 25m = 10."
+      },
+      {
+       "prompt": "Чему равно свободное число справа после переноса числовых членов?",
+       "answer": "-5/12",
+       "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+       "explanation": "Умножь на 24: 15(m − 2) − 16(m + 2) = 24m − 72. После раскрытия −m − 62 = 24m − 72, откуда 25m = 10."
+      }
+     ],
+     "hint": "Собери буквы и числа по отдельности. Если коэффициент неизвестного исчез, проверь оставшееся числовое равенство.",
+     "explanation": "Умножь на 24: 15(m − 2) − 16(m + 2) = 24m − 72. После раскрытия −m − 62 = 24m − 72, откуда 25m = 10.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 96,
+      "subpart": "ж",
+      "reference": "№96ж"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "linearEquationStudy": {
+      "printed": "(5/8)(m − 2) − (2/3)(m + 2) = m − 3",
+      "variable": "m",
+      "coefficients": [
+       "-1/24",
+       "-31/12",
+       "1",
+       "-3"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "1",
+       "Проверь значение единицы в обеих исходных частях."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t47",
+     "title": "К задаче №96з",
+     "kind": "number",
+     "prompt": "Найди все корни (4x − 3)/(3 − 12x) = 0,14/0,35.",
+     "answer": "21/44",
+     "steps": [
+      {
+       "prompt": "Какое значение обнуляет знаменатель 3 − 12x?",
+       "answer": "1/4",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "При x ≠ 1/4 верно 5(4x − 3) = 2(3 − 12x). Отсюда 44x = 21 и x = 21/44."
+      },
+      {
+       "prompt": "Чему равна правая дробь?",
+       "answer": "2/5",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "При x ≠ 1/4 верно 5(4x − 3) = 2(3 − 12x). Отсюда 44x = 21 и x = 21/44."
+      },
+      {
+       "prompt": "После раскрытия и переноса какой коэффициент x получится в 20x + 24x?",
+       "answer": "44",
+       "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+       "explanation": "При x ≠ 1/4 верно 5(4x − 3) = 2(3 − 12x). Отсюда 44x = 21 и x = 21/44."
+      }
+     ],
+     "hint": "Сначала проверь знаменатели. После перекрёстного умножения распредели числовой множитель на всю скобку.",
+     "explanation": "При x ≠ 1/4 верно 5(4x − 3) = 2(3 − 12x). Отсюда 44x = 21 и x = 21/44.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 23,
+      "exercise": 96,
+      "subpart": "з",
+      "reference": "№96з"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       [
+        "4",
+        "-3"
+       ],
+       [
+        "-12",
+        "3"
+       ],
+       "0.14",
+       "0.35"
+      ],
+      "root": "21/44",
+      "printed": "(4x − 3)/(3 − 12x) = 0,14/0,35"
+     },
+     "errorCues": [
+      [
+       "1/4",
+       "Это значение выключает знаменатель исходной дроби."
       ]
      ]
     }
