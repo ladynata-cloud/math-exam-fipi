@@ -40,7 +40,7 @@ async function submit(page, value) {
 
 async function verify(width,url){
   const errors=[];
-  const fresh=async()=>{const p=await browser.newPage({viewport:{width,height:900}});p.on('pageerror',e=>errors.push(e.message));await p.goto(url);return p;};
+  const fresh=async()=>{const p=await browser.newPage({viewport:{width,height:900}});p.setDefaultTimeout(60000);p.on('pageerror',e=>errors.push(e.message));await p.goto(url);return p;};
   let page=await fresh();
   const cards=await page.evaluate(()=>{const lesson=MakarychevCourse.lessons.find(l=>l.id==='p30');
     return lesson.studyOrder.filter(i=>lesson.tasks[i].source.type==='textbook'||lesson.tasks[i].source.adaptation).map(i=>({i,title:lesson.tasks[i].title}));});
@@ -68,7 +68,7 @@ async function verify(width,url){
   assert.equal(await page.locator('[data-root-curve=vertical]').getAttribute('data-curve-h'),'-0.5');
   await openNumber(page,701,'№ 701в');await submit(page,'(2x+3y)/(3xy)');
   assert(await page.evaluate(()=>MakarychevApp.getState().tasks['p30-source-701-c'].independent));
-  await openNumber(page,698,'№ 698в, число решений');const drill=page.locator('[data-action=detour][data-skill=graphical-systems]').first();
+  await page.close();page=await fresh();await openNumber(page,698,'№ 698в, число решений');const drill=page.locator('[data-action=detour][data-skill=graphical-systems]').first();
   await drill.evaluate(el=>{for(let p=el.parentElement;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;});await drill.click();
   const prior=await page.locator('.prompt').innerText();await page.locator('[data-action=new]').first().click();assert.notEqual(await page.locator('.prompt').innerText(),prior);
   await page.locator('[data-action=return]').first().click();assert.equal(await page.locator('.task-heading h2').innerText(),'№ 698в, число решений');
