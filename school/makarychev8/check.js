@@ -707,6 +707,13 @@ function linearRay(raw,variable){
  if(left===variable)return asThreshold(sides[2],right);
  if(right!==variable)return null;return asThreshold({'<':'>','>':'<','<=':'>=','>=':'<='}[sides[2]],left);
 }
+function landmarkInput(raw,landmarks){
+ let text=String(raw??'');
+ const left=/(?:альфа|alpha|α|a)/gi,right=/(?:бета|beta|β|b)/gi;
+ if(!left.test(text)||!right.test(text))return null;
+ text=text.replace(left,String(landmarks[0])).replace(right,String(landmarks[1]));
+ return systemInput(text,'x');
+}
 function systemInput(raw,variable){
  const text=String(raw??'').trim().replace(/−/g,'-').replace(/≤/g,'<=').replace(/≥/g,'>=');
  if(/^(нет решений|пустое множество)$/i.test(text))return '∅';
@@ -894,6 +901,9 @@ function check(user,target){
   const a=G.domainCoefficients(user,3),b=G.domainCoefficients(target.answer,3);
   return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
  }
+ if(target.kind==='monotone-construction'||target.kind==='zero-construction')return G.witnessMarks(target.graph,user).valid;
+ if(target.kind==='grid-estimate'){const a=M.parse(user),b=M.parse(target.answer);return Boolean(a&&b&&Math.abs(a.n/a.d-b.n/b.d)<=target.tolerance);}
+ if(target.kind==='landmark-interval'){const marks=G.propertyCurve(target.graph).landmarks;return equalAxisSets(landmarkInput(user,marks),landmarkInput(target.answer,marks));}
  if(target.kind==='system-single'||target.kind==='system-intersection')return equalAxisSets(systemInput(user,target.variable||target.graph?.variable),target.answer);
  if(target.kind==='system-examples')return systemExamples(user,target);
  if(target.kind==='linear-examples')return linearExamples(user,target);
@@ -994,5 +1004,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {systemInput,linearRay,asThreshold,axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {landmarkInput,systemInput,linearRay,asThreshold,axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });
