@@ -52,7 +52,7 @@ const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
 const catalogue=process.argv.includes('--alimov-school-2011')?{
-  directory:'alimov-algebra-7-9',entries:[[104,53,20]],uniqueLessons:19,search:'alimov-algebra-7-9',match:'числовые выражения и порядок действий',lesson:'104-5-2',chart:'svg[aria-label*="Уровни порядка"]',storage:'math:alimov-algebra-7-9:v1:'
+  directory:'alimov-algebra-7-9',entries:[[104,53,44]],uniqueLessons:43,search:'alimov-algebra-7-9',match:'числовые выражения и порядок действий',lesson:process.argv.includes('--hike')?'104-10':'104-5-2',chart:process.argv.includes('--hike')?'svg[aria-label*="Временная шкала ходьбы"]':'svg[aria-label*="Уровни порядка"]',storage:'math:alimov-algebra-7-9:v1:'
 }:process.argv.includes('--vilenkin11-antiderivatives')?{
   directory:'vilenkin-analysis-2014',entries:[[6,95,25]],uniqueLessons:24,search:'vilenkin-analysis-2014',match:'действительные числа и первообразная',lesson:process.argv.includes('--hole')?'6-4-4':'6-2-4',chart:process.argv.includes('--hole')?'svg[aria-label*="Два промежутка с независимыми"]':'svg[aria-label*="Шаги дифференцирования"]',storage:'math:vilenkin-analysis-2014:v1:'
 }:process.argv.includes('--vilenkin-analysis-2014')?{

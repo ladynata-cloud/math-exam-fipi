@@ -4,9 +4,9 @@
   const decimal=n=>Number(n.toFixed(6)).toLocaleString('ru-RU',{maximumFractionDigits:6,useGrouping:false});
   const q=(prompt,answer,calc,wrong,why)=>({prompt,answer,calculation:calc,error:why,mistakes:[[wrong,why]]});
   const sample=(caption,rows,qs,chart,model)=>Object.assign(example(caption,['Часть выражения','Значение'],rows,qs,chart),model);
-  function lesson(key,title,prompt,guide,rule,make){
-    const [n,p]=key.split('-'),ref=n+(p?' ('+p+')':'');add(104,key,6,title,prompt,rule,'fraction',make);
-    const record=lessons.get('104-'+key);Object.assign(record,{printedReference:'Упражнение №'+ref,printedPrompt:prompt,printedGuide:guide});ids.push(record.id);
+  function lesson(key,title,prompt,guide,rule,make,page=6,reference){
+    const [n,p]=key.split('-'),ref=n+(p?' ('+p+')':'');add(104,key,page,title,prompt,rule,'fraction',make);
+    const record=lessons.get('104-'+key);Object.assign(record,{printedReference:reference||'Упражнение №'+ref,printedPrompt:prompt,printedGuide:guide});ids.push(record.id);
   }
   const arith=[
     ['1-1','Вычитание сотых из целого','Вычти 3,75 из 75.','Размени целое на сотые. Запись 75,00 − 3,75 даёт 71,25. Прибавь 3,75 обратно и получи 75.',
@@ -82,9 +82,18 @@
   function figure(d){
     let title,body;
     if(d.chart==='arithmetic'){
-      title='Переход между разрядами или долями';body=txt(7,18,d.expr)+txt(7,45,'Способ: '+d.unit)+seg(12,69,224,69);
-      for(let i=0;i<=10;i++)body+=seg(13+21*i,65,13+21*i,73);
-      body+=txt(9,99,'Первая запись → преобразование → ответ');
+      title='Промежуточные записи и значение выражения';body=txt(7,17,d.expr)+txt(7,39,'Способ: '+d.unit);
+      if(d.unit==='100 : 4'){
+        for(let i=0;i<4;i++)body+='<rect x="'+(12+52*i)+'" y="51" width="50" height="15" fill="'+(i?'#d1dfd4':'#598c71')+'"/>';
+        body+=txt(8,91,'Одна из четырёх долей: '+decimal(d.x));
+      }else{
+        const bound=Math.max(Math.abs(d.first),Math.abs(d.second),Math.abs(d.x),1);
+        body+=seg(130,47,130,100);
+        [d.first,d.second,d.x].forEach((value,i)=>{
+          const length=96*Math.abs(value)/bound,y=49+19*i,x=value<0?130-length:130;
+          body+=txt(5,y+9,['шаг 1','шаг 2','ответ'][i])+'<rect x="'+x+'" y="'+y+'" width="'+Math.max(length,1)+'" height="8" fill="'+(value<0?'#aa7585':'#648e74')+'"/>'+ '<text x="276" y="'+(y+9)+'" text-anchor="end">'+decimal(value)+'</text>';
+        });
+      }
     }else if(d.chart==='branches'){
       title='Два промежуточных результата';body=txt(7,18,d.a)+txt(148,18,d.b)+txt(11,48,decimal(d.one))+txt(150,48,decimal(d.two))+seg(22,60,124,85)+seg(171,60,124,85)+txt(118,101,d.op);
     }else if(d.chart==='scales'){
