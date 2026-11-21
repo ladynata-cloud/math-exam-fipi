@@ -2234,10 +2234,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "404974aeafcb6e574721a03e00c8a8f0f1bb8014ffa4305a5b7bb46633d87cad",
-      "afterSha256": "6c534d6028d64468607e0c43fae6fcdfc19762e051176b112e2a271c7a2bc3ca",
+      "beforeSha256": "6fc2579d5d48cb62d1d1ab914c7219e4eff389eb7bccb4769ffa061ebe62d7b7",
+      "afterSha256": "776cd752bfffb7a972ddfc0144d590e6cec3f2b24d7aca7a8c6f38ea1b774ae2",
       "placement": "before-head-close",
-      "sourceSha": "d0575a63a6351578f6d7faa236fe57d2739c4fe3"
+      "sourceSha": "ea563c469d1a2d7b2a2eb8afb959d951625e39f0"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6520,6 +6520,16 @@
       "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
       "sourceBaseSha": "d0575a63a6351578f6d7faa236fe57d2739c4fe3",
       "task": "docs/tasks/MAKARYCHEV8_150_180.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "ea563c469d1a2d7b2a2eb8afb959d951625e39f0",
+      "task": "docs/tasks/MAKARYCHEV8_181_200.md",
       "changedPaths": [
         "school/makarychev8/index.html"
       ],
