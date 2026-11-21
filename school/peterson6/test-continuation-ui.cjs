@@ -1684,3 +1684,17 @@ test('construct four axis crossings, secant, tangent, segment ratios and all fou
   });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('trace 27 actual consecutive corners, check two circle estimates and zoom all millimetre points',()=>{
+ const f=fixture(null,null,true);try{
+  const expect=[['лыжник','лыжник'],['(-2,3; 2,7) и (1,8; 1,1)','(-1,3; 1,7) и (2,8; 0,1)'],['A(-1,3; 2)','A(-1,1; 1,7)'],['B(1,8; 0,8)','B(2; 0,5)'],['C(-2,6; 0,4)','C(-2,4; 0,1)'],['D(1,8; -1,5)','D(2; -1,8)'],['E(0; -1,6)','E(0,2; -1,9)'],['F(-1,2; -0,7)','F(-1; -1)']];
+  expect.forEach(([first,second],i)=>{
+   f.nav('#lesson/p39/'+(29+i));const normalize=s=>s.replaceAll('−','-');
+   if(i===0)assert.equal(f.d.querySelectorAll('#task-figure tbody td').length,27);if(i>1)assert.equal(f.d.querySelectorAll('#task-figure [data-decimal-point]').length,6);
+   f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'1','change');if(i===0)assert.equal(f.q('[data-skier-path]').getAttribute('data-skier-path'),'11');
+   f.event(step,'2','change');assert(normalize(f.q('#model .pm-result').textContent).includes(first),[i,first,f.q('#model .pm-result').textContent]);if(i===0)assert.equal(f.q('[data-skier-path]').getAttribute('data-skier-path'),'28');if(i===1)assert.equal(f.d.querySelectorAll('#model [data-paper-crossing]').length,2);
+   f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert(normalize(f.q('#model .pm-result').textContent).includes(second),[i,second,f.q('#model .pm-result').textContent]);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
