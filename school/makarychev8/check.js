@@ -423,6 +423,63 @@ function classifyRationalCandidates(value,excluded,answers){
  return entries.map(term=>({term,status:banned.some(x=>sameRadicalSum(x,term))?'excluded':solutions.some(x=>sameRadicalSum(x,term))?'correct':'different'}));
 }
 
+function pointGroups(input){
+ const text=String(input||'').trim();
+ if(!text||text.length>600)return null;
+ const groups=[];
+ for(const raw of text.split('|')){
+  const list=[],pattern=/\(\s*([^;()]+?)\s*;\s*([^;()]+?)\s*\)/gy;
+  let pos=0;const part=raw.trim();
+  while(pos<part.length){
+   pattern.lastIndex=pos;const m=pattern.exec(part);
+   if(!m)return null;const point=m.slice(1).map(v=>M.parse(v));if(point.some(v=>!v))return null;
+   list.push(point);if(list.length>6)return null;pos=pattern.lastIndex;
+   if(pos<part.length){const sep=/^\s*[,;]\s*/.exec(part.slice(pos));if(!sep)return null;pos+=sep[0].length;if(pos===part.length)return null;}
+  }
+  if(!list.length||groups.length===2)return null;groups.push(list);
+ }
+ return groups;
+}
+function planeResponse(value,q){
+ const groups=pointGroups(value);if(!groups)return 'format';
+ const key=p=>p.map(v=>v.n+'/'+v.d).join(';');
+ if(q.kind==='three-solutions'){
+  if(groups.length!==1||groups[0].length!==3)return 'count';
+  if(new Set(groups[0].map(key)).size!==3)return 'duplicate';
+  for(const [i,[x,y]] of groups[0].entries()){
+   const nx=BigInt(x.n),dx=BigInt(x.d),ny=BigInt(y.n),dy=BigInt(y.d);
+   const sum=q.terms.reduce((s,[k,a,b])=>s+BigInt(k)*nx**BigInt(a)*ny**BigInt(b)*dx**BigInt(2-a)*dy**BigInt(2-b),0n);
+   if(sum)return 'point-'+(i+1);
+  }
+  return 'correct';
+ }
+ if(groups.length!==q.lines.length||groups.some(g=>g.length!==2))return 'count';
+ if(groups.some(g=>key(g[0])===key(g[1])))return 'duplicate';
+ const onLine=([a,b,c],[x,y])=>{
+  const A=M.parse(String(a)),B=M.parse(String(b)),C=M.parse(String(c));
+  const dx=BigInt(x.d),dy=BigInt(y.d),da=BigInt(A.d),db=BigInt(B.d),dc=BigInt(C.d);
+  return BigInt(A.n)*BigInt(x.n)*dy*db*dc+BigInt(B.n)*BigInt(y.n)*dx*da*dc===BigInt(C.n)*dx*dy*da*db;
+ };
+ const found=groups.map(g=>q.lines.findIndex(l=>g.every(p=>onLine(l,p))));
+ const wrong=found.indexOf(-1);
+ if(wrong!==-1)return 'branch-'+(wrong+1);
+ return new Set(found).size===found.length?'correct':'same-branch';
+}
+function equationPlaneStatus(input,expected){
+ function normalized(raw){
+  const values=normalize(raw).split('=');if(values.length!==2||values.some(x=>!x))return null;
+  try{
+   const [n,d]=polynomialFraction('('+values[0]+')-('+values[1]+')',new Set(['x','y']));
+   if(d.size!==1||!d.has(''))return null;
+   return n;
+  }catch(_){return null;}
+ }
+ const actual=normalized(input),wanted=normalized(expected);if(!actual||!wanted)return 'format';
+ if(actual.size!==wanted.size||[...actual.keys()].some(k=>!wanted.has(k)))return 'different';
+ const [pivot,b]=wanted.entries().next().value,a=actual.get(pivot);
+ return [...wanted].every(([k,v])=>actual.get(k)*b===v*a)?'correct':'different';
+}
+
 function equationRatioStatus(input,ratios){
  const parts=String(input).split(';').map(radicalSum);
  if(parts.length!==3||parts.some(x=>!x))return 'format';
@@ -456,6 +513,8 @@ function progressionFactors(input){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(['three-solutions','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='line-pair-equation')return equationPlaneStatus(user,target.answer)==='correct';
  if(target.kind==='equation-from-roots')return equationRatioStatus(user,target.ratios)==='correct';
  if(target.kind==='examples-of-equations')return exampleEquationsStatus(user)==='correct';
  if(target.kind==='rational-line-example')return reciprocalIntersections(user)?.count===target.intersectionCount;
@@ -518,5 +577,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

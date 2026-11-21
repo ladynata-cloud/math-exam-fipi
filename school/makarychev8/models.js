@@ -607,5 +607,25 @@
       source:{type:'authored',reference:'Тренировка по составлению дробных уравнений'},skills:[rationalEquationPractice.id]};
   }
 
-  return { mount, experiment, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const planePractice={id:'plane-lines',title:'Построить прямую по своим точкам',
+    description:'Выбери точки и построй график, включая вертикальную прямую и объединение двух прямых.'};
+  function practicePlane(seed,level){
+    const h=seed%11-5,k=(seed%2?-1:1)*(1+seed%4),b=(Math.floor(seed/3)%9)-4;
+    const pair=(x,y)=>'('+x+';'+y+')',row=(p,q)=>p+', '+q;
+    const vertical=row(pair(h,-1),pair(h,2)),sloped=row(pair(0,b),pair(1,k+b));
+    const label='y = '+k+'x '+(b<0?'− ':'+ ')+Math.abs(b);
+    const lines=level===1?[[1,0,h]]:level===2?[[k,-1,-b]]:[[1,0,h],[k,-1,-b]];
+    const steps=[{prompt:'Сколько различных прямых нужно построить?',kind:'number',answer:String(lines.length),
+      hint:'Посчитай отдельные линейные условия.',explanation:'Нужно построить '+lines.length+' прямых.'},
+      {prompt:level===1?'Какую абсциссу надо оставить постоянной?':'Какова ордината наклонной прямой при x = 0?',kind:'number',answer:String(level===1?h:b),
+       hint:level===1?'На вертикали меняется только y.':'Подставь x = 0 в линейную зависимость.',explanation:level===1?'У всех её точек x = '+h+'.':'Пересечение оси y происходит на уровне '+b+'.'}];
+    const hint='Для каждой прямой найди две разные точки. Если прямая вертикальна, у них одинаковый x; если наклонна, проверь обе ординаты.';
+    return {title:planePractice.title,kind:'construct-lines',prompt:'Построй график: '+(level===1?'x = '+h:level===2?label:'x = '+h+' или '+label)+'.',
+      answer:level===1?vertical:level===2?sloped:vertical+' | '+sloped,lines,graph:{type:'own-lines'},steps,hint,correction:hint,
+      explanation:'Верно, если твои точки задают каждую требуемую прямую целиком.',finalLabel:'Точки для построения',
+      inputNote:'Введи (x;y), (x;y) для каждой прямой. Две группы разделяй чертой |.',
+      source:{type:'authored',reference:'Тренировка на новых прямых'},skills:[]};
+  }
+
+  return { mount, experiment, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

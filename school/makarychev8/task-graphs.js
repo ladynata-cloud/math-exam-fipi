@@ -40,7 +40,7 @@ function curveValue(curve,x){
  if(curve.kind==='hyperbola')return x===0?NaN:curve.k/x;
  if(curve.kind==='quadratic')return curve.a*x*x+curve.b*x+curve.c;
  if(curve.kind==='square')return x*x;
- if(curve.kind==='cube')return x*x*x;
+ if(curve.kind==='cube')return (curve.scale??1)*x*x*x;
  if(curve.kind==='sqrt-shift')return x>=curve.h?Math.sqrt(x-curve.h)+(curve.k||0):NaN;
  if(curve.kind==='sqrt-abs')return Math.sqrt(Math.abs(x));
  if(curve.kind==='abs-ratio')return x===0?NaN:(curve.scale??1)*Math.abs(x)/x;
@@ -113,6 +113,7 @@ function rootGraph(config,value){
    if(inside){path+=(open&&continuous?'L':'M')+x(a).toFixed(3)+' '+y(b).toFixed(3)+' ';open=true;}else open=false;
    previous=[a,b];
   }
+  if(c.kind==='vertical'&&c.h>=xr[0]&&c.h<=xr[1])path='M'+x(c.h)+' '+pad+' L'+x(c.h)+' '+(height-pad);
   svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,...(c.dashed?{'stroke-dasharray':'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
   for(const [h,v] of c.holes||[])if(h>=xr[0]&&h<=xr[1]&&v>=yr[0]&&v<=yr[1])svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));
   if(c.kind==='abs-ratio'&&xr[0]<=0&&xr[1]>=0)for(const b of [-(c.scale??1),c.scale??1])if(b>=yr[0]&&b<=yr[1])svg.append(node('circle',{cx:x(0),cy:y(b),r:4,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':0,'data-hole-y':b}));
@@ -398,6 +399,29 @@ function quadraticEvidence(host,config,value){
  host.append(caption);
 }
 
+function planeConstruction(host,config,value){
+ host.className='task-graphs root-graph';const note=document.createElement('p');note.className='small';
+ const num=z=>{const r=M.parse(String(z));return r.n/r.d;};
+ const toCurve=([a,b,c])=>b?{kind:'line',k:-a/b,b:c/b}:{kind:'vertical',h:c/a};
+ const groups=(config.groups||[]).map(g=>g.map(p=>p.map(r=>r.n/r.d))),points=groups.flat(),curves=[];
+ if(config.type==='line-figure'){
+  config.lines.forEach((l,i)=>{
+   const c=toCurve(l.map(num));if(config.labels){c.label=config.labels[i];c.labelAt=config.labelPoints[i];}curves.push(c);
+  });
+ }else if(config.type==='own-lines'){
+  for(const row of groups){
+   if(row.length!==2)continue;
+   const [[x,y],[u,v]]=row;
+   if(x===u&&y===v)continue;
+   curves.push(x===u?{kind:'vertical',h:x}:{kind:'line',k:(v-y)/(u-x),b:(y*u-v*x)/(u-x)});
+  }
+ }
+ const max=config.bounds||Math.min(1000000,Math.max(5,...points.flat().map(v=>Math.ceil(Math.abs(v)*1.15))));
+ host.append(rootGraph({curves,points,xRange:[-max,max],yRange:[-max,max],compactTicks:max>=10000,label:config.type==='line-figure'?'Координатный рисунок к заданию':'Координатная плоскость с твоими точками и прямыми'},''));
+ note.textContent=config.type==='line-figure'?'На обеих осях отмечен ноль. Отсчитывай координаты по подписанным делениям.':config.type==='own-points'?'Введённые пары отмечаются точками. Проверь каждую подстановкой в исходное уравнение.':'Через две разные точки каждой группы проводится прямая. Верная прямая содержит только решения исходного уравнения.';
+ host.append(note);
+}
+
 function equationExamples(host,value){
  host.className='task-graphs quantity-model';
  const parts=String(value||'').split(';').map(x=>x.trim());
@@ -636,6 +660,7 @@ function render(host,config,value){
  if(config.type==='rational-equation-check'){rationalEquationModel(host,config,value);return;}
  if(config.type==='coefficient-example'){coefficientExample(host,config,value);return;}
  if(config.type==='vertex-form'){vertexForm(host,config,value);return;}
+ if(['line-figure','own-lines','own-points'].includes(config.type)){planeConstruction(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='rate-table'){rateTable(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}
