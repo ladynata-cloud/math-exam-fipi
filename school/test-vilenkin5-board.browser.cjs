@@ -323,7 +323,12 @@ async function run(browser, origin, backend, failures) {
   const tooFew = await same(teacherFrame, studentFrame, 'insufficient coverage explained');
   assert.equal(tooFew.scene.model.inquiryFirst, '27'); assert.equal(tooFew.scene.attempt, 0);
   assert.match(await studentFrame.locator(forecast + ' [role=status]').innerText(), /не хватит/);
+  assert(!/28 уп\./.test(await studentFrame.locator(forecast+' [role=status]').innerText()));assert.equal(tooFew.scene.model.inquirySeen,0);
   await ownership(teacher, student, true);
+  assert.equal(await studentFrame.locator(forecast+' input').isEnabled(),true);
+  await studentFrame.locator(forecast+' input').fill('28');await studentFrame.locator(forecast+' button[type=submit]').click();
+  const sameFloor=await same(studentFrame,teacherFrame,'independent correction of the same floor');assert.equal(sameFloor.scene.model.inquiryFirst,'27');assert.equal(sameFloor.scene.model.inquiryDraft,'28');assert.equal(sameFloor.scene.attempt,0);
+  assert.match(await teacherFrame.locator(forecast+' [role=status]').innerText(),/сам исправил/);
   await studentFrame.locator('#g5-lab-garden-2').press('ArrowRight');
   const adjusted = await same(studentFrame, teacherFrame, 'larger stove and new forecast');
   assert.equal(adjusted.scene.model.p, 3); assert.equal(adjusted.scene.model.inquiryFirst, '');
@@ -505,6 +510,10 @@ async function run(browser, origin, backend, failures) {
   await teacherFrame.locator('#g5-lab-volume-2').press('ArrowLeft');
   const lower = await same(teacherFrame, studentFrame, 'three five-centimetre layers');
   assert.equal(lower.scene.model.h, 3);
+  await teacherFrame.locator(forecast+' input').fill('22500');await teacherFrame.locator(forecast+' button[type=submit]').click();
+  const cubicOnly=await same(teacherFrame,studentFrame,'cubic centimetres remain editable');
+  assert.equal(cubicOnly.scene.model.inquirySeen,0);assert.match(await studentFrame.locator(forecast+' [role=status]').innerText(),/кубических сантиметрах/);
+  assert(!/22,5 л/.test(await studentFrame.locator(forecast+' [role=status]').innerText()));
   await teacherFrame.locator(forecast + ' input').fill('22,5');
   await teacherFrame.locator(forecast + ' button[type="submit"]').click();
   await same(teacherFrame, studentFrame, 'fractional capacity checked in litres');

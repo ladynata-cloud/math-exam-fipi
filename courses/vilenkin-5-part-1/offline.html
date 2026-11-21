@@ -212,7 +212,7 @@ function floorInquiry(s){
  const why='Пол занимает '+outer+' − '+cut+' = '+area+' м². '+(packs-1)+' уп. покрывают '+num((packs-1)*2.5)+' м². '+packs+' уп. покрывают '+num(packs*2.5)+' м².';
  return {
   question:'Сколько целых упаковок по 2,5 м² понадобится для открытой части пола? Укажи наименьшее количество.',
-  answer:packs,why,showPlan:true,
+  answer:packs,why,showPlan:true,retry:true,
   wrong(value){
    const equals=n=>window.CourseMath.equivalent(value,String(n));
    if(equals(Math.ceil(2*outer/5)))return 'Ты посчитал покрытие под печью. Вычти площадь квадрата из площади всей комнаты.';
@@ -245,7 +245,7 @@ function capacityInquiry(s){
  const why='Объём бака '+s.a*10+' · '+s.b*10+' · '+s.h*5+' = '+num(cubic)+' см³. В литре 1000 см³, поэтому вместимость равна '+num(litres)+' л.';
  return {
   question:'Сколько литров воды войдёт в полный бак? Запиши число литров.',
-  answer:litres,why,showPlan:true,
+  answer:litres,why,showPlan:true,retry:true,
   wrong(value){
    const equals=n=>window.CourseMath.equivalent(value,String(n));
    if(equals(cubic))return 'Объём в кубических сантиметрах у тебя уже есть. Сколько полных тысяч таких кубиков получилось? Учти и часть литра.';
@@ -280,28 +280,62 @@ function attachInquiry(wrap,visual,state,given,makeQuestion,persist,isAlive,pref
  box.append(label,row,feedback);visual.before(box);
  const controls=()=>JSON.stringify(Object.fromEntries(Object.entries(state).filter(([key])=>!key.startsWith('inquiry'))));
  const bounded=v=>typeof v==='string'?v.slice(0,90):'';
- state.inquiryDraft=bounded(given.inquiryDraft);state.inquiryFirst=bounded(given.inquiryFirst);
+ state.inquiryDraft=bounded(given.inquiryDraft);
+ // Existing rooms accept these four fields. A leading ! marks an explicit reveal after a numeric attempt.
+ const helpMark='!';
+ state.inquiryFirst=typeof given.inquiryFirst==='string'&&given.inquiryFirst.startsWith(helpMark)?helpMark+bounded(given.inquiryFirst.slice(1)):bounded(given.inquiryFirst);
+ let lastRejected='';
  state.inquirySeen=given.inquirySeen===1?1:0;state.inquiryContext=typeof given.inquiryContext==='string'?given.inquiryContext:'';
  function redraw(){
   const item=makeQuestion(state),context=controls();
-  if(state.inquiryContext!==context){state.inquiryDraft='';state.inquiryFirst='';state.inquirySeen=0;state.inquiryContext=context;}
+  if(state.inquiryContext!==context){state.inquiryDraft='';state.inquiryFirst='';state.inquirySeen=0;state.inquiryContext=context;lastRejected='';}
   box.hidden=!item;
   if(!item){visual.hidden=false;return;}
   question.textContent='Сначала предположи: '+item.question;
   input.value=state.inquiryDraft;input.disabled=state.inquirySeen===1;submit.hidden=reveal.hidden=state.inquirySeen===1;
   visual.hidden=state.inquirySeen!==1&&!item.showPlan;
+  const sameAnswer=value=>value!==''&&window.CourseMath.equivalent(value,String(item.answer));
+  if(item.retry&&state.inquiryFirst){
+   const first=state.inquiryFirst;
+   if(!state.inquirySeen){
+    const draft=state.inquiryDraft;
+    const mistaken=lastRejected||(window.CourseMath.parse(draft)&&!sameAnswer(draft)?draft:first);
+    feedback.textContent=item.wrong(mistaken)+' Исправь прогноз для этих же размеров.';
+    return;
+   }
+   if(first.startsWith(helpMark)){
+    feedback.textContent='Объяснение открыто по твоему запросу. '+item.why;
+    return;
+   }
+   if(!sameAnswer(first)){
+    // An older client closed the model after any answer. Keep its already-open explanation.
+    feedback.textContent=(sameAnswer(state.inquiryDraft)?'Ты сам исправил прогноз. ':'В этой сохранённой попытке объяснение уже открыто. ')+item.why;
+    return;
+   }
+  }
   if(!state.inquirySeen){feedback.textContent='Введи число или точную дробь. Это учебный прогноз: он не меняет результаты упражнений.';return;}
   const correct=state.inquiryFirst!==''&&window.CourseMath.equivalent(state.inquiryFirst,String(item.answer));
   const response=correct?'Прогноз подтвердился. ':item.wrong?item.wrong(state.inquiryFirst)+' ':'Прогноз '+state.inquiryFirst+' не совпал с результатом. ';
   feedback.textContent=state.inquiryFirst?response+item.why:'Объяснение открыто без прогноза. '+item.why;
  }
  const onInput=()=>{if(!isAlive()||state.inquirySeen)return;state.inquiryDraft=input.value.slice(0,90);persist();};
- const onSubmit=event=>{event.preventDefault();if(!isAlive()||state.inquirySeen||!makeQuestion(state))return;const value=input.value.slice(0,90);state.inquiryDraft=value;
-  if(!value.trim()){feedback.textContent='Сначала запиши прогноз. Пустое поле не считается попыткой.';input.focus();return;}
-  if(!window.CourseMath.parse(value)){feedback.textContent='Запиши число или точную дробь с ненулевым знаменателем. Прогноз ещё не проверен.';input.focus();return;}
-  state.inquiryFirst=value;state.inquirySeen=1;redraw();persist();
+ const onSubmit=event=>{event.preventDefault();if(!isAlive()||state.inquirySeen||!makeQuestion(state))return;const value=input.value.slice(0,90),draftChanged=value!==state.inquiryDraft;state.inquiryDraft=value;
+  if(!value.trim()){feedback.textContent='Сначала запиши прогноз. Пустое поле не считается попыткой.';input.focus();if(draftChanged)persist();return;}
+  if(!window.CourseMath.parse(value)){feedback.textContent='Запиши число или точную дробь с ненулевым знаменателем. Прогноз ещё не проверен.';input.focus();if(draftChanged)persist();return;}
+  const item=makeQuestion(state);
+  if(item.retry){
+   if(!state.inquiryFirst)state.inquiryFirst=value;
+   const correct=window.CourseMath.equivalent(value,String(item.answer));
+   lastRejected=correct?'':value;state.inquirySeen=correct?1:0;
+  }else{state.inquiryFirst=value;state.inquirySeen=1;}
+  redraw();persist();
  };
- const onReveal=()=>{if(!isAlive()||state.inquirySeen||!makeQuestion(state))return;state.inquirySeen=1;redraw();persist();};
+ const onReveal=()=>{
+  if(!isAlive()||state.inquirySeen)return;
+  const item=makeQuestion(state);if(!item)return;
+  if(item.retry&&state.inquiryFirst)state.inquiryFirst=helpMark+state.inquiryFirst;
+  state.inquirySeen=1;redraw();persist();
+ };
  input.addEventListener('input',onInput);box.addEventListener('submit',onSubmit);reveal.addEventListener('click',onReveal);
  redraw();return{redraw,destroy(){input.removeEventListener('input',onInput);box.removeEventListener('submit',onSubmit);reveal.removeEventListener('click',onReveal);}};
 }
