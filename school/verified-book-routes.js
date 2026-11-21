@@ -498,20 +498,20 @@
   ];
   p72011.verifiedSource=p72011.source.source_url;p72011.sourceLabel='Карточка издания 2011 года';
   p72011.totalPoints=structure7.length;p72011.workshopRoute='7';
-  p72011.status='19 пунктов и 3 самоконтроля · №1–3 по математическому моделированию';
+  p72011.status='19 пунктов и 3 самоконтроля · №1–5 по математическому моделированию';
   p72011.note='Первая часть учебника «Алгебра. Функции. Анализ данных» за 7 класс. В №1 сначала выбери одну из трёх историй, затем один из четырёх наборов данных.';
-  p72011.remaining='Все варианты №1–3 первого пункта готовы. Следуют №4–16 этого пункта и дальнейшие темы части 1. Другие части издания имеют собственную нумерацию.';
+  p72011.remaining='Все варианты №1–5 первого пункта готовы. Следуют №6–16 этого пункта и дальнейшие темы части 1. Другие части издания имеют собственную нумерацию.';
   p72011.exerciseHeading='Математическое моделирование по номерам';
   p72011.exercises=[];
   for(let t=1;t<=3;t++)for(let j=0;j<4;j++){
     const path=practice7+'1-'+t+'abcd'[j];
     p72011.exercises.push({printed:'1('+t+')'+'абвг'[j],title:['Стоимость книги','Расстояние автомобиля','Результат первого рабочего'][t-1]+' · набор '+'абвг'[j],page:6,path,boardPath:path});
   }
-  const additional7=[['Возраст на двух отметках времени','Расход яиц на три пирога','Высота Останкинской башни'],['Выручка за март','Путь за второй день','Выпуск миндальных конфет']];
-  additional7.forEach((group,k)=>group.forEach((title,j)=>{const key=String(k+2)+'abc'[j],path=practice7+key;p72011.exercises.push({printed:String(k+2)+'абв'[j],title,page:7,path,boardPath:path});}));
+  const additional7=[['Возраст на двух отметках времени','Расход яиц на три пирога','Высота Останкинской башни'],['Выручка за март','Путь за второй день','Выпуск миндальных конфет'],['Минимальный объём выпуска дисков','Нулевой результат магазина','Максимальная закупочная цена фонаря'],['Остатки 3 и 4 по модулю 5','Остатки 5 и 7 по модулю 8','Остатки 9 и 2 по модулю 11','Остатки 11 и 6 по модулю 15']];
+  additional7.forEach((group,k)=>group.forEach((title,j)=>{const key=String(k+2)+'abcd'[j],path=practice7+key;p72011.exercises.push({printed:String(k+2)+'абвг'[j],title,page:k===3?8:7,path,boardPath:path});}));
   p72011.mapping=structure7.map(([sectionLabel,page,title],i)=>{
     const section=i+1,sourcePath='https://pdf.my-uchebnik.ru/pdf/mathematics/00000005.pdf#page='+(page+2);
     return i?{section,sectionLabel,title,page,sourcePath,coverage:'source',bookOnly:true,focus:'Упражнения пока решаются по своей книге.'}:
-      {section,sectionLabel,title,page,sourcePath,coverage:'partial',focus:'Все 18 вариантов №1–3 на с. 6–7. Уточни искомое и проверь модель на новых данных.',externalPath:practice7+'1-1a',boardPath:practice7+'1-1a'};
+      {section,sectionLabel,title,page,sourcePath,coverage:'partial',focus:'Все 25 вариантов №1–5 на с. 6–8. Уточни искомое и проверь модель на новых данных.',externalPath:practice7+'1-1a',boardPath:practice7+'1-1a'};
   });
 })();

@@ -58,7 +58,7 @@ jobs:
           node tools/mordkovich-2013.test.cjs
           node tools/tyurin-statistics.board.browser.cjs --mordkovich-2013 --printed-identity --circle-flat
           node --test tools/profile-circle-board.test.cjs
-          node tools/tyurin-statistics.board.browser.cjs --peterson7-2011 --printed-identity --literal-n
+          node tools/tyurin-statistics.board.browser.cjs --peterson7-2011 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich-2020 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich-circle-suite
       - name: Assigned cabinet program opens a shared teacher and pupil room

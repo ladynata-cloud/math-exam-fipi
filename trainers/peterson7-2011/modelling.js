@@ -117,7 +117,7 @@
     return '<svg viewBox="0 0 280 120" role="img" aria-label="'+title+'"><g font-size="13" font-family="sans-serif" fill="#213f48">'+body+'</g></svg>';
   }
   window.MathExamTopicEdition={trainerId:'peterson7-2011',authors:'Петерсон, Абраров, Чуткова · часть 1 · 2011',
-    grade:()=>'7 класс',unit:'упражнение',storePrefix:'math:peterson7-2011:v1:',figure:svg,
+    grade:()=>'7 класс',unit:'упражнение',register,q,storePrefix:'math:peterson7-2011:v1:',figure:svg,
     source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/mathematics/00000005.pdf#page='+(page+2),
     nextId:lesson=>ids[ids.indexOf(lesson.id)+1]};
 })();

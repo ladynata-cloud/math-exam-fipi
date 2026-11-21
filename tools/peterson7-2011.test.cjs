@@ -13,10 +13,10 @@ assert.deepEqual(Array.from(book.mapping,r=>r.page),pages);for(const [i,r] of bo
 }
 const keys='abcd',letters='абвг',ids=[],printed=[];
 for(let t=1;t<=3;t++)for(let j=0;j<4;j++){ids.push('1-'+t+keys[j]);printed.push('1('+t+')'+letters[j]);}
-for(const t of [2,3])for(let j=0;j<3;j++){ids.push(t+keys[j]);printed.push(t+letters[j]);}
+for(const [t,n] of [[2,3],[3,3],[4,3],[5,4]])for(let j=0;j<n;j++){ids.push(t+keys[j]);printed.push(t+letters[j]);}
 assert.deepEqual(Array.from(book.exercises,r=>r.path.split('/').pop()),ids.map(x=>'101-'+x));
 assert.deepEqual(Array.from(book.exercises,r=>r.printed),printed);
-const scripts=['trainers/tyurin-statistics/content.js',cwd+'modelling.js','trainers/tyurin-statistics/app.js'].map(read);
+const scripts=['trainers/tyurin-statistics/content.js',cwd+'modelling.js',cwd+'budget-remainders.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,saved){
  const dom=new JSDOM(html,{url:'https://math.example'+entry.path,runScripts:'outside-only'}),w=dom.window;
  w.TextEncoder=TextEncoder;w.Math.random=()=>0;
@@ -25,6 +25,13 @@ function open(entry,saved){
  return {dom,w,doc:w.document,key,lesson:w.MathExamTopicPractice.lessons.get(id)};
 }
 function oracle(i,d){
+ if(i>=21){
+  const pairs=[];for(let n=1;n<d.sum;n++)if(n%d.mod===d.first&&(d.sum-n)%d.mod===d.last)pairs.push(n);
+  return [(d.sum-d.first-d.last)/d.mod,pairs.length,Math.max(...pairs)];
+ }
+ if(i===18){let k=0;while(k*d.price<d.fixed+k*d.unit)k++;return [d.price-d.unit,k,k*d.price-k*d.unit-d.fixed];}
+ if(i===19)return [d.qty*d.price,d.qty*d.unit,d.qty*d.price-d.qty*d.unit];
+ if(i===20){const limit=Math.floor((d.qty*d.price-d.fixed)/d.qty);return [d.fixed/d.qty,limit,(limit+1)*d.qty+d.fixed-d.qty*d.price];}
  if(i<12){const small=(d.overall-d.diff)/2,big=d.overall-small;if(i>=8)assert.equal(small,0);return [d.overall+d.diff,big,small];}
  if(i===12){const sol=Array.from({length:10*d.t},(_,x)=>x).filter(x=>x>=d.t&&2*x-3*(x-d.t)===x);assert.equal(sol.length,1);return [3*d.t,sol[0],sol[0]-d.t];}
  if(i===13){const sol=Array.from({length:10*(d.cut+d.c)},(_,x)=>x).filter(x=>x>=d.cut&&5*(x-d.cut)-2*x===x+d.c);assert.equal(sol.length,1);return [3,sol[0],sol[0]*d.cakes];}
@@ -41,16 +48,20 @@ function printedSolutions(i,l){
    if(i>=8){assert(l.printedGuide.includes('y = 0'));assert(l.printedGuide.includes('в этой формулировке не участвует'));}
    return;
  }
- const expected=['12 лет','30 яиц','540 м','97 680 руб.','32,68 км','115,89 т'][i-12];assert(l.printedGuide.includes(expected),l.id);
+ if(i<21){const expected=['12 лет','30 яиц','540 м','97 680 руб.','32,68 км','115,89 т','1900 дисков','640 000 руб.','400 руб.'][i-12];assert(l.printedGuide.includes(expected),l.id);return;}
+ const groups=[[12,5,3,4],[28,8,5,7],[44,11,9,2],[47,15,11,6]];const [sum,d,a,b]=groups[i-21],expected=[];
+ for(let x=1;x<sum;x++)if(x%d===a&&(sum-x)%d===b)expected.push([x,sum-x]);
+ const actual=[...l.printedGuide.matchAll(/\((\d+); (\d+)\)/g)].map(m=>[Number(m[1]),Number(m[2])]);
+ assert.deepEqual(actual,expected,l.id);
 }
 function click(doc,id){const el=doc.querySelector('[data-action="'+id+'"]');assert(el,id);el.click();}
 function reply(doc,v){const a=doc.querySelector('#answer');a.value=v;const E=doc.defaultView.Event;a.dispatchEvent(new E('input',{bubbles:true}));doc.querySelector('#work form').dispatchEvent(new E('submit',{bubbles:true,cancelable:true}));}
 for(const [i,entry] of book.exercises.entries()){
- assert.equal(entry.path,entry.boardPath);assert.equal(entry.page,i<12?6:7);
+ assert.equal(entry.path,entry.boardPath);assert.equal(entry.page,i<12?6:i<21?7:8);
  let {dom,w,doc,key,lesson}=open(entry);
- assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,18);
+ assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,25);
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),entry.path);
- assert.equal(doc.querySelector('#source').hash,i<12?'#page=8':'#page=9');assert(doc.querySelector('#worked-data svg[aria-label]'));
+ assert.equal(doc.querySelector('#source').hash,i<12?'#page=8':i<21?'#page=9':'#page=10');assert(doc.querySelector('#worked-data svg[aria-label]'));
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,[]);
  assert(!doc.querySelector('#work').textContent.includes(lesson.printedGuide));click(doc,'printed-guide');assert(doc.querySelector('#work').textContent.includes(lesson.printedGuide));
  assert.equal(w.MathExamTopicEdition.nextId(lesson),ids[i+1]&&'101-'+ids[i+1]);
@@ -72,4 +83,4 @@ for(const [i,entry] of book.exercises.entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,['fixed','first','help']);
  click(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);dom.window.close();
 }
-console.log('Peterson 7, part 1 (2011): 19 numbered sections and 3 reviews, 18 exact original entries, 594 model answers, all 18 independent corrections, help, return and retry. The literal repeated n in 1(3) is preserved for all four numeric sets.');
+console.log('Peterson 7, part 1 (2011): 19 numbered sections and 3 reviews, 25 exact original entries, 825 model answers, all 25 independent corrections, help, return and retry. The literal repeated n in 1(3) is preserved for all four numeric sets.');
