@@ -20,7 +20,8 @@ test('every inventoried public page has one exact existing navigator pair; all a
     const row=rollout.addedPages[name],original=restorePublicNavigator(name,raw);
     assert.equal(hash(raw),row.afterSha256,name+' current exact payload');
     assert.equal(hash(original),row.beforeSha256,name+' complete original payload');
-    const committed=execFileSync('git',['show',rollout.baseSha+':'+name],{cwd:root,maxBuffer:16e6});
+    const sourceSha=row.sourceSha||rollout.baseSha;
+    const committed=execFileSync('git',['show',sourceSha+':'+name],{cwd:root,maxBuffer:16e6});
     // A later explicitly reviewed source commit may already include this same
     // exact pair. Its complete payload must still match the current binding.
     const source=restorePublicNavigator(name,committed);
@@ -43,9 +44,14 @@ test('normalization cannot hide altered tags, missing or duplicate scripts, extr
     assert.deepEqual(restorePublicNavigator('unrelated.html',raw),raw,'wrong route cannot normalize');
   }
 });
-test('sitemap coverage is complete except the existing dedicated Peterson helper',()=>{
+test('sitemap coverage is complete with two dedicated learning interfaces',()=>{
   const xml=fs.readFileSync(path.join(root,'sitemap.xml'),'utf8'),urls=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(x=>new URL(x[1]).pathname);
   assert.equal(urls.length,rollout.sitemap.total);
+  assert.deepEqual(Object.keys(rollout.sitemap.excluded).sort(),['/oge/skills/','/school/peterson6/']);
+  const offline=fs.readFileSync(path.join(root,'oge/skills/index.html'),'utf8');
+  assert.doesNotMatch(offline,/<script\b[^>]*\bsrc\s*=/i,'The standalone skills course must run offline');
+  for(const action of ['course','trainer','cabinet'])assert.ok(offline.includes('data-skill-link="'+action+'"'),'Built-in skills navigation: '+action);
+  assert.ok(offline.includes('data-mathexam-home-link'),'The offline course keeps its home link');
   let covered=0;
   for(const url of urls){const file=url.slice(1)+(url.endsWith('/')?'index.html':'');if(pages.includes(file)){covered++;continue;}assert.equal(rollout.sitemap.excluded[url],'Existing dedicated task-aware helper; no competing launcher.',url);}
   assert.equal(covered,rollout.sitemap.covered);

@@ -110,7 +110,13 @@ async function solveBasic(prompt,answers) {
   const choose = predicate => {const index=options.findIndex(x=>predicate(clean(x)));if(index<0)throw new OracleUnsupported('No matching visible choice: '+p);return {choice:index,prompt:p,options,expected:clean(options[index])};};
   let answer;
   if(options.length){
-    if(/всех равных частей/.test(p))return choose(x=>number(x)===values[1]);
+    // The source and the frozen editions phrase the same denominator question differently.
+    if (/^В дроби \d+\/\d+ (?:какое число показывает количество всех равных частей|на сколько равных частей разделили целое)\?$/.test(p)) {
+      return choose(x => number(x) === values[1]);
+    }
+    if (/^В дроби \d+\/\d+ сколько таких частей взяли\?$/.test(p)) {
+      return choose(x => number(x) === values[0]);
+    }
     if(/Какая дробь больше/.test(p)) {const ratios=options.map(x=>arithmetic(x));const max=Math.max(...ratios);return choose(x=>arithmetic(x)===max);}
     if(/Какое число больше/.test(p)){
       if(values[0]===values[1])throw Error('The displayed comparison asks for a larger number but both numbers are equal: '+p);
@@ -126,7 +132,11 @@ async function solveBasic(prompt,answers) {
   else if(/^Приведите/.test(p)) answer=values[0]*values[2]/values[1];
   else if(/^Сократите/.test(p)) answer=fraction(values[0],values[1]);
   else if(/^Заполните пропуск/.test(p)) answer=values[0]*values[2]/values[1];
-  else if(/Вычислите и сократите/.test(p)) answer=fraction(values[0]*values[3]+values[2]*values[1],values[1]*values[3]);
+  else if(/^Вычислите(?: и сократите:)? \d+\/\d+ [+-] \d+\/\d+\./.test(p)) {
+    const [leftNumerator,leftDenominator,rightNumerator,rightDenominator]=values;
+    const sign=p.includes(' - ')?-1:1;
+    answer=fraction(leftNumerator*rightDenominator+sign*rightNumerator*leftDenominator,leftDenominator*rightDenominator);
+  }
   else if(/неполное частное|цифру частного/i.test(p)) answer=Math.floor(values[0]/values[1]);
   else if(/^Найдите остаток/.test(p)) answer=values[0]%values[1];
   else if(/противоположное/.test(p)) answer=-values[0];
@@ -294,7 +304,12 @@ async function guided(page,rec){
   check(rec,'start',original==='48 : 2',{prompt:original});
   await page.locator('#answer').fill('987654321');await page.locator('#primary').click();
   check(rec,'wrong-answer',(await observed(page.locator('#step-counter'))).startsWith('Шаг 1 '),{observed:await observed(page.locator('#feedback'))});
-  const toggle=page.locator('.bh-toggle');await toggle.click();check(rec,'hints',(await observed(page.locator('#hint-text'))).length>30,{visibleText:await observed(page.locator('#hint-text'))});await layout(page,rec,'help-open');await toggle.click();
+  const toggle=page.locator('.bh-toggle');await toggle.click();
+  const nativeHint=page.locator('#help-content details').first();
+  if(await nativeHint.count()&&(await nativeHint.getAttribute('open'))===null)await nativeHint.locator('summary').click();
+  const hintText=page.locator('#hint-text:visible');await hintText.waitFor();
+  check(rec,'hints',(await observed(hintText)).length>30,{visibleText:await observed(hintText)});
+  await layout(page,rec,'help-open');await toggle.click();
   let count=0;
   while(!await page.locator('#completion').isVisible()){
     const p=await observed(page.locator('#prompt')),n=nums(p);let answer;

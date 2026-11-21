@@ -7,6 +7,10 @@ function normalize(value){return String(value??'').trim().toLowerCase()
  .replace(/≤/g,'<=').replace(/≥/g,'>=').replace(/≠/g,'!=')
  .replace(/([0-9a-zа-я)])\*(?=[a-zа-я(])/g,'$1').replace(/∈/g,'in').replace(/\bpi\b/g,'π')
  .replace(/([0-9]),(?=[0-9])/g,'$1.').replace(/[х]/g,'x');}
+function numericInput(value){
+ // A space after a written sign is harmless. A space between digits can denote a mixed number.
+ return String(value).trim().replace(/^[−–—-]\s*/, '-');
+}
 function setEqual(user,expected){
  const empty=s=>/^(нет|неткорней|корнейнет|пусто|∅|\{\})$/.test(normalize(s));
  if(empty(user)||empty(expected))return empty(user)&&empty(expected);
@@ -20,7 +24,7 @@ function check(user,target){
  if(target.kind==='choice')return user===String(target.answer);
  if(target.kind==='set')return answers.some(a=>setEqual(user,a));
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
- return answers.some(a=>M.check(user,a,target.answerFormat));
+ return answers.some(a=>M.check(numericInput(user),a,target.answerFormat));
 }
-return {check,normalize,setEqual};
+return {check,normalize,numericInput,setEqual};
 });

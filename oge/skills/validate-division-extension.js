@@ -56,7 +56,10 @@ additions.skills.forEach(skill => visit(skill.id));
 for (const id of ["base-round-tens", "base-round-hundreds", "base-round-thousands"])
   equal(skillById.get(id).requires, ["base-place"], id + " can be practised separately");
 equal(skillById.get("base-quotient-estimate").requires,
-  ["base-round-tens", "base-quotient-check"], "estimation requires exact checking, not all rounding levels");
+  ["base-round-tens", "base-round-hundreds", "base-quotient-check"], "estimation connects both rounding places to exact checking");
+const hundredsEstimate = new URL(skillById.get("base-quotient-estimate").supportLinks[1].href, "https://mathexam.space");
+equal(hundredsEstimate.pathname, "/trainers/oge-basics/multiplication-division/quotient-estimate.html", "hundreds estimate opens the full exercise");
+equal(hundredsEstimate.searchParams.get("round"), "hundreds", "hundreds estimate is selected at entry");
 equal(data.skillUpdates.map(skill => skill.id), ["base-division"], "existing division gets navigation only");
 equal(Object.keys(data.skillUpdates[0]).sort(), ["id", "supportLinks"], "no progress or prerequisites are overwritten");
 

@@ -1,17 +1,19 @@
 'use strict';
 // Independent entry-page checks. All network operations are replaced by local responses.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{JSDOM}=require('jsdom');
+const {resolvePublicScript}=require('../public-page-script.cjs');
 const root=path.resolve(__dirname,'../..'),course=path.join(root,'stereo-course/merzlyak-10-base');
 const html=fs.readFileSync(path.join(course,'index.html'),'utf8');
 const bundle=JSON.parse(fs.readFileSync(path.join(course,'data/course.json'),'utf8'));
 const scripts=[...html.matchAll(/<script(?: src="([^"]+)")?>([\s\S]*?)<\/script>/g)];
-assert.equal(scripts.length,4);
-for(const [,src] of scripts)if(src){assert(!/^(?:https?:)?\/\//.test(src));assert(fs.existsSync(path.resolve(course,src)),src);}
+assert.deepEqual(scripts.map(match=>match[1]??null),[
+ '../assets/math-text.js','../assets/task-scene-viewer.js?v=20261118-2571e795','assets/engine.js','/assets/geometry-step-views.js',null,
+]);
 async function boot(fetchResult){
  const dom=new JSDOM(html,{url:'https://example.test/stereo-course/merzlyak-10-base/',runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window,errors=[],requests=[];w.addEventListener('error',e=>errors.push(e.error));
  w.fetch=async(url,options)=>{requests.push({url,options});return fetchResult();};
- for(const [,src,inline] of scripts)w.eval(src?fs.readFileSync(path.resolve(course,src),'utf8'):inline);
+ for(const [,src,inline] of scripts)w.eval(src?fs.readFileSync(resolvePublicScript(root,course,src),'utf8'):inline);
  await new Promise(resolve=>setTimeout(resolve,10));
  assert.equal(requests.length,1);assert.equal(requests[0].url,'data/course.json');assert.equal(requests[0].options.cache,'no-cache');
  assert.equal(errors.length,0);

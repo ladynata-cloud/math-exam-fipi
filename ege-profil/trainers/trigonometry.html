@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Тригонометрия: от треугольника к окружности</title>
@@ -119,6 +120,13 @@
   .def .name{font-weight:900;font-size:1.05rem;min-width:118px}
   .def .name small{display:block;color:var(--ink-faint);font-weight:700;font-size:.72rem;letter-spacing:.04em}
   .def .formula{font-weight:700;font-size:1.02rem}
+  #sine-wave{scroll-margin-top:16px}
+  @media(min-width:601px){#sine-wave{scroll-margin-top:9rem}}
+  @media(max-width:500px){
+    #func .def{grid-template-columns:minmax(0,1fr);gap:4px}
+    #sine-wave{padding:16px}
+    #wvSvg text{font-size:22px;fill:var(--ink-soft)}
+  }
 
   .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
   .pill{font-weight:800;font-size:.85rem;padding:6px 12px;border-radius:999px;cursor:pointer;border:1.5px solid;transition:.14s;background:#fff}
@@ -346,13 +354,16 @@
 /* ===== EP:CSS END ===== */
 
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261115-fipi-map"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="trigonometry-course trigonometry-values trigonometry-equations" data-profile-skill-topics="values=trigonometry-values equations=trigonometry-equations"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="trigonometry-course trigonometry-values trigonometry-equations" data-profile-skill-topics="values=trigonometry-values equations=trigonometry-equations"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -390,18 +401,18 @@
     <div class="card lg">
       <div class="sec-head"><div class="ico" style="background:var(--rad-soft)">🧭</div>
         <div><h2>С чего начнём</h2><p>Карта пути от 8 к 10 классу</p></div></div>
-      <p class="lead">В 8 классе синус, косинус и тангенс жили только внутри прямоугольного треугольника, а угол измерялся в градусах от 0° до 90°. В 10 классе мы их освобождаем: переносим на <b>координатную окружность</b>, где угол становится числом и может быть любым. Этот тренажёр проводит через переход шаг за шагом — и заглядывает в историю, откуда всё это взялось.</p>
+      <p class="lead">В прямоугольном треугольнике мы нашли синус и косинус острого угла по сторонам. А чему равен синус поворота на 180° или на −90°? На единичной окружности ответ можно прочитать по положению точки.</p>
       <div class="feat">
         <div class="fcard"><div class="e">⌛</div><h3>Откуда слова</h3><p>«Синус» — это испорченная «тетива лука», а когда-то он был не отношением, а длиной. Разберём этимологию и число π.</p></div>
         <div class="fcard"><div class="e">📐</div><h3>База 8 класса</h3><p>sin, cos, tg острого угла как отношения сторон. И как доставали их значения по таблицам Брадиса до калькуляторов.</p></div>
-        <div class="fcard"><div class="e">⭕</div><h3>Окружность</h3><p>Три оси и три переменные. Угол = длина дуги. Ведём точку, режем круги, добавляем оси тангенса и котангенса.</p></div>
-        <div class="fcard"><div class="e">∿</div><h3>Зачем это всё</h3><p>Чтобы синус стал обычной функцией — как √x или парабола — у которой есть график, производная и интеграл.</p></div>
+        <div class="fcard"><div class="e">⭕</div><h3>Окружность</h3><p>Поверните радиус и прочитайте координаты его конца. Добавьте оси тангенса и котангенса.</p></div>
+        <div class="fcard"><div class="e">∿</div><h3>График синуса</h3><p>Как по движению точки на окружности предсказать, куда дальше пойдёт график?</p></div>
       </div>
     </div>
 
     <div class="bigidea">
       <h3>💡 Главная мысль всего курса</h3>
-      <p>Мы причёсываем алгебру перед матанализом. Цель — чтобы <span class="fn">sin</span> и <span class="fn">cos</span> перестали быть «свойством угла в треугольнике» и стали полноценными функциями <span class="fn">y = sin x</span>, <span class="fn">y = cos x</span> — такими же, как <span class="fn">y = √x</span> или <span class="fn">y = 1/x</span>. У такой функции есть график, от неё можно взять производную и интеграл. А для этого вход должен быть обычным числом — и им становится длина дуги.</p>
+      <p>На единичной окружности поворот на 30° поднимает конец радиуса на ½ над горизонтальной осью. Знакомое значение <span class="fn">sin 30° = ½</span> теперь видно по высоте точки. После поворота на −30° точка окажется ниже оси. Как изменится её координата?</p>
     </div>
 
     <div class="card">
@@ -411,7 +422,7 @@
         <div class="axline y"><div class="big mono">y</div><div>прямая ось — вертикальная</div><small>на ней читаем <b>sin t</b></small></div>
         <div class="axline t"><div class="big mono">t</div><div>круглая ось — сама окружность</div><small>на ней откладываем <b>дугу = угол</b></small></div>
       </div>
-      <div class="note" style="margin-top:18px"><span>👆</span><div>Идите по вкладкам слева направо. Almost везде можно <span class="b">двигать ползунки и тащить точки</span> — формулы оживают.</div></div>
+      <div class="note" style="margin-top:18px"><span>👆</span><div>Идите по вкладкам слева направо. Двигайте ползунки и следите за точками и значениями на рисунках.</div></div>
     </div>
   </section>
 
@@ -652,23 +663,23 @@
   <section class="panel" id="func" role="tabpanel">
     <div class="card lg">
       <div class="sec-head"><div class="ico" style="background:var(--cot-soft)">∿</div>
-        <div><h2>Зачем причёсывать синус</h2><p>Чтобы он стал обычной функцией</p></div></div>
-      <p class="lead">Вот ради чего всё затевалось. В треугольнике синус — это «свойство угла»: вход — геометрический угол, да ещё только от 0° до 90°. От такого объекта нельзя взять производную: «производная треугольника» — бессмыслица. А нам нужно, чтобы <b>sin и cos стали функциями</b> ровно как <span class="mono">y = x²</span>, <span class="mono">y = √x</span> или <span class="mono">y = 1/x</span>: вход — обычное число, выход — обычное число.</p>
+        <div><h2>Синус острого угла и синус любого поворота</h2><p>От отношения сторон к координате точки</p></div></div>
+      <p class="lead">Нарисуйте прямоугольный треугольник с углом 30°. Удвойте длины всех сторон. Катет напротив 30° и гипотенуза выросли вдвое, а их отношение осталось равным ½. Так каждому острому углу соответствует одно значение синуса.</p>
       <div class="deflist">
-        <div class="def c"><div class="name" style="min-width:150px">было (8 класс)</div><div class="formula">вход — <b>угол</b> 0°…90° → выход — отношение. Не функция в смысле алгебры.</div></div>
-        <div class="def s"><div class="name" style="min-width:150px">стало (10 класс)</div><div class="formula"><span class="mono">sin: ℝ → [−1; 1]</span> — вход любое число <b>t</b>, выход число. Полноценная функция.</div></div>
+        <div class="def c"><div class="name" style="min-width:150px">В треугольнике</div><div class="formula">Синус <b>острого угла</b> равен отношению противолежащего катета к гипотенузе.</div></div>
+        <div class="def s"><div class="name" style="min-width:150px">На окружности</div><div class="formula">Начните в точке (1, 0). Поверните радиус на <b>t</b> радиан и прочитайте вертикальную координату его конца. Это <span class="mono">sin t</span>. При остром угле гипотенуза равна 1, поэтому получается то же отношение.</div></div>
       </div>
-      <div class="note purple" style="margin-top:16px"><span>🎓</span><div>Числовая окружность дала входу быть <b>любым действительным числом</b> (дуга — мы это уже намотали). Теперь можно нарисовать график <span class="mono">y = sin x</span>, и тогда работают формулы матанализа: <span class="mono">(sin x)′ = cos x</span>, <span class="mono">∫ sin x dx = −cos x + C</span>. Важная деталь: эти красивые формулы верны <b>только в радианах</b> — потому что предел <span class="mono">sin x / x → 1</span> при <span class="mono">x → 0</span> выполняется именно для радианной меры. В градусах вылез бы множитель π/180.</div></div>
+      <div class="note purple" style="margin-top:16px"><span>🎓</span><div>Область определения расширилась до <b>всех действительных чисел</b>. Можно повернуться по часовой стрелке или сделать несколько оборотов. При радианной мере угла формулы имеют вид <span class="mono">(sin t)′ = cos t</span> и <span class="mono">∫ sin t dt = −cos t + C</span>.</div></div>
     </div>
 
-    <div class="card lg">
+    <div class="card lg" id="sine-wave">
       <div class="sec-head"><div class="ico" style="background:var(--sin-soft)">🎢</div>
-        <div><h2>Окружность рождает синусоиду</h2><p>Разворачиваем круг в график</p></div></div>
-      <p class="lead">Покрутите точку слева — её высота <span class="hl-s">y = sin t</span> переносится вправо и вычерчивает волну. Так из вращения по окружности рождается график функции. Это и есть «синус как функция»: каждому числу <span class="hl-t">t</span> соответствует ровно одно значение.</p>
-      <div class="figbox" style="margin-top:14px"><svg id="wvSvg" viewBox="0 0 660 300" aria-label="Окружность и график синуса"></svg></div>
+        <div><h2>Окружность и синусоида</h2></div></div>
+      <p class="lead">Двигайте ползунок <span class="hl-t">t</span>. Слева радиус поворачивается. Справа точка <span class="hl-s">(t, sin t)</span> остаётся на одной высоте с его концом.</p>
+      <div class="figbox" style="margin-top:14px"><svg id="wvSvg" viewBox="0 48 660 204" aria-label="Окружность и график синуса"></svg></div>
       <div class="controls" style="margin-top:14px">
-        <div class="ctrl"><label>t <span class="val mono" id="wvTval" style="color:var(--arc)">0.00</span></label>
-          <input type="range" id="wvT" class="arc" min="0" max="12.566" value="0" step="0.01"></div>
+        <div class="ctrl"><label for="wvT">Угол t, рад <span class="val mono" id="wvTval" style="color:var(--arc)">0.00</span></label>
+          <input type="range" id="wvT" class="arc" min="0" max="12.57" value="0" step="0.01"></div>
         <div class="btnrow">
           <button class="btn primary" id="wvPlay">▶ Запустить</button>
           <button class="btn ghost" id="wvCos">Показать и cos</button>
@@ -679,7 +690,7 @@
           <span id="wvCosLeg" style="display:none"><i style="background:var(--cos)"></i>y = cos t</span>
         </div>
       </div>
-      <div class="note green" style="margin-top:14px"><span>∿</span><div>Заметьте: волна повторяется каждые <span class="mono">2π</span> — это <b>период</b>. Синус «помнит» оборот окружности. Теперь это полноправная функция: с графиком, периодом, производной и интегралом — готова к матанализу.</div></div>
+      <div class="note green" style="margin-top:14px"><span>∿</span><div>Куда пойдёт график, когда радиус пройдёт нижнюю точку? Проверьте ползунком. Через полный оборот точка на окружности вернётся на прежнюю высоту. Справа вы увидите такую же высоту уже при <span class="mono">t + 2π</span>. График повторяется через <b>2π</b>.</div></div>
     </div>
   </section>
 
@@ -775,7 +786,7 @@
             <tr><th>град.</th><td>30°</td><td>45°</td><td>60°</td><td>90°</td><td>180°</td><td>270°</td><td>360°</td></tr>
             <tr><th>рад.</th><td>π/6</td><td>π/4</td><td>π/3</td><td>π/2</td><td>π</td><td>3π/2</td><td>2π</td></tr>
           </table>
-          <p>Зачем это нужно: с радианами угол становится обычным числом — и только тогда работают графики, производные и вся «взрослая» математика.</p>
+          <p>На единичной окружности поворот на один радиан отсекает дугу длиной 1. Полный оборот отсекает дугу длиной 2π.</p>
           <button class="ep-goto" data-goto="g10" type="button">Подробнее: вкладка «Окружность» →</button>
         </div>
       </details>
@@ -932,6 +943,15 @@ function showPanel(id){
   for(const t of tabs)t.setAttribute('aria-selected', t.dataset.p===id?'true':'false');
   for(const k in panels)panels[k].classList.toggle('on',k===id);
 }
+function openLinkedPanel(){
+  const target=document.getElementById(location.hash.slice(1));
+  const panel=target?.closest('.panel');
+  if(!panelIds.includes(panel?.id))return;
+  showPanel(panel.id);
+  target.scrollIntoView({block:'start'});
+}
+if(location.hash)openLinkedPanel();
+window.addEventListener('hashchange',openLinkedPanel);
 tabs.forEach((t,i)=>{
   t.addEventListener('click',()=>showPanel(t.dataset.p));
   t.addEventListener('keydown',e=>{
@@ -1084,15 +1104,26 @@ function enableDrag(svg,scaf,getT,setT){
     $('brAngVal').textContent=deg+'°';$('brAng').value=deg;
     $('brCos').textContent=fmt(Math.cos(bt));$('brSin').textContent=fmt(Math.sin(bt));
     const m=$('brMsg');let cls='note purple',ic='✅',tx='';
-    if(deg<90){cls='note purple';ic='✅';tx='<span class="b">Пока α &lt; 90°</span> это всё ещё знакомый прямоугольный треугольник, просто вписанный в окружность.';}
-    else if(deg<180){cls='note';ic='🚀';tx='<span class="b">II четверть.</span> Треугольника уже нет, но точка есть: x = cos t стал отрицательным, y = sin t ещё положителен.';}
-    else if(deg<270){cls='note pink';ic='🌍';tx='<span class="b">III четверть.</span> И x, и y отрицательны — cos t &lt; 0 и sin t &lt; 0.';}
-    else{cls='note blue';ic='🧭';tx='<span class="b">IV четверть.</span> x = cos t снова положителен, y = sin t отрицателен.';}
+    if (deg % 90 === 0) {
+      const x = Math.round(Math.cos(bt)), y = Math.round(Math.sin(bt));
+      tx = `<span class="b">Точка на оси ${y === 0 ? 'Ox' : 'Oy'}.</span> cos α = ${x}, sin α = ${y}. Ось служит границей четвертей.`;
+    } else if (deg < 90) {
+      tx = '<span class="b">I четверть.</span> Опустите перпендикуляр из P на ось Ox. В полученном прямоугольном треугольнике гипотенуза — радиус длины 1.';
+    } else if (deg < 180) {
+      cls = 'note'; ic = '🚀';
+      tx = '<span class="b">II четверть.</span> Точка левее оси Oy и выше оси Ox. Поэтому cos α &lt; 0, sin α &gt; 0.';
+    } else if (deg < 270) {
+      cls = 'note pink'; ic = '🌍';
+      tx = '<span class="b">III четверть.</span> Точка слева и снизу. Обе координаты отрицательны.';
+    } else {
+      cls = 'note blue'; ic = '🧭';
+      tx = '<span class="b">IV четверть.</span> Точка справа и снизу. Значит, cos α &gt; 0, sin α &lt; 0.';
+    }
     m.className=cls;m.innerHTML='<span>'+ic+'</span><div>'+tx+'</div>';
   }
   $('brAng').addEventListener('input',()=>{bt=(+$('brAng').value)*PI/180;render();});
   $('brBeyond').addEventListener('click',()=>{bt=130*PI/180;render();});
-  enableDrag(svg,scaf,()=>bt,v=>{let a=v%(2*PI);if(a<0)a+=2*PI;bt=a;render();});
+  enableDrag(svg,scaf,()=>bt,v=>{let a=v%(2*PI);if(a<0)a+=2*PI;bt=Math.round(a*180/PI)*PI/180;render();});
   render();
 })();
 
@@ -1462,24 +1493,35 @@ specials.forEach(s=>s.t=s.deg*PI/180);
     traceSin.setAttribute('d',path(0,Math.max(0.0001,t),'sin'));
     if(showCos)traceCos.setAttribute('d',path(0,Math.max(0.0001,t),'cos'));
     $('wvTval').textContent=fmt(t);
+    $('wvT').value=fmt(t);
+  }
+  function pause(){
+    playing=false;
+    cancelAnimationFrame(raf);
+    $('wvPlay').textContent='▶ Запустить';
   }
   function loop(){
-    if(!playing)return;
-    wvt+=0.045;if(wvt>=4*PI){wvt=4*PI;playing=false;$('wvPlay').textContent='▶ Запустить';render();return;}
-    render();raf=requestAnimationFrame(loop);
+    wvt=Math.min(4*PI,wvt+0.045);
+    render();
+    if(wvt>=4*PI)pause();
+    else raf=requestAnimationFrame(loop);
   }
-  $('wvT').addEventListener('input',()=>{playing=false;$('wvPlay').textContent='▶ Запустить';wvt=+$('wvT').value;render();});
-  $('wvPlay').addEventListener('click',()=>{
-    if(reduceMotion){wvt=4*PI;$('wvT').value=wvt;render();return;}
-    playing=!playing;
-    if(playing){if(wvt>=4*PI)wvt=0;$('wvPlay').textContent='⏸ Пауза';loop();}
-    else $('wvPlay').textContent='▶ Запустить';
+  $('wvT').addEventListener('input',()=>{
+    pause();
+    wvt=Math.min(4*PI,+$('wvT').value);
+    render();
   });
-  $('wvReset').addEventListener('click',()=>{playing=false;$('wvPlay').textContent='▶ Запустить';wvt=0;$('wvT').value=0;render();});
+  $('wvPlay').addEventListener('click',()=>{
+    if(playing){pause();return;}
+    if(reduceMotion){wvt=4*PI;render();return;}
+    if(wvt>=4*PI)wvt=0;
+    playing=true;
+    $('wvPlay').textContent='⏸ Пауза';
+    loop();
+  });
+  $('wvReset').addEventListener('click',()=>{pause();wvt=0;render();});
   $('wvCos').addEventListener('click',()=>{showCos=!showCos;$('wvCos').classList.toggle('on',showCos);$('wvCosLeg').style.display=showCos?'':'none';
     fullCos.setAttribute('opacity',showCos?.4:0);traceCos.setAttribute('opacity',showCos?1:0);render();});
-  // sync slider while playing
-  setInterval(()=>{if(playing)$('wvT').value=wvt;},120);
   render();
 })();
 
@@ -1501,7 +1543,7 @@ specials.forEach(s=>s.t=s.deg*PI/180);
   const tanMap={0:'0',30:'√3/3',45:'1',60:'√3',120:'−√3',135:'−1',150:'−√3/3',180:'0'};
   function gTan(){const deg=pick(Object.keys(tanMap).map(Number));const sp=specials.find(s=>s.deg===deg);return {kind:'g10',text:`Чему равен tg ${sp.rad} (${deg}°)?`,answers:opts(tanMap[deg],['0','√3/3','1','√3','−1','−√3','−√3/3']),explain:`tg t = sin t / cos t = ${sp.sin} / ${sp.cos} = ${tanMap[deg]}.`};}
   function gEtymS(){return {kind:'hist',text:'Индийское слово «джья» (jyā), от которого произошёл «синус», означало…',answers:opts('тетиву лука',['пазуху','тень от шеста','окружность']),explain:'jyā = «тетива лука»: дуга — это лук, хорда — тетива. Через арабский и латынь слово стало sinus («залив»).'};}
-  function gEtymC(){return {kind:'hist',text:'Косинус угла α — это…',answers:opts('sin(90° − α)',['sin(90° + α)','−sin α','sin 2α']),explain:'«Ко-синус» = sinus complementi = синус дополнительного угла: cos α = sin(90° − α).'};}
+  function gEtymC(){return {kind:'hist',text:'Какая формула верна при любом угле α?',answers:opts('cos α = sin(90° − α)',['cos α = −sin(90° − α)','cos α = −sin α','cos α = sin 2α']),explain:'«Ко-синус» = sinus complementi = синус дополнительного угла: cos α = sin(90° − α).'};}
   function gPiIrr(){return {kind:'hist',text:'Число π является…',answers:opts('иррациональным',['целым','обыкновенной дробью','натуральным']),explain:'π нельзя записать дробью p/q, а его десятичная запись бесконечна и непериодична (Ламберт, 1761).'};}
   function gPiDef(){return {kind:'hist',text:'Что такое число π?',answers:opts('длина окружности ÷ диаметр',['площадь ÷ радиус','диаметр ÷ радиус','радиус ÷ 2']),explain:'π — отношение длины любой окружности к её диаметру, ≈ 3,14159.'};}
   function gArch(){return {kind:'hist',text:'Какое приближение π традиционно связывают с Архимедом?',answers:opts('22/7',['355/113','3/2','1,41']),explain:'Архимед зажал π между 223/71 и 22/7. А 355/113 — это уже Цзу Чунчжи.'};}
@@ -2840,5 +2882,28 @@ if (typeof module !== "undefined") module.exports = EP_ARCHIVE;
 </script>
 <!-- курс: возврат в навигатор -->
 <a href="../index.html" class="course-back" style="position:fixed;left:14px;bottom:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;padding:9px 14px;min-height:44px;border-radius:999px;background:#FFFFFF;border:1px solid rgba(30,58,159,.28);color:#1E3A9F;font:600 13px/1 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.14)">← Курс</a>
+<!-- download-panel:start:ege-profil-trigonometry -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-trigonometry">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь вариант задачи про длину наклонной опоры 14 м при угле 30° к земле и найди высоту её верхнего конца."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-trigonometry -->
 </body>
 </html>

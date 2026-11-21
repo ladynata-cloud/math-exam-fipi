@@ -26,8 +26,14 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'t
    assert.equal(await page.locator('h1').count(),1);
    assert(await page.locator('link[rel=canonical]').getAttribute('href'));
    if(file==='trainers/index.html') {
-    assert.equal(await page.locator('#catalog [data-card]').count(),60);
+    const catalogCards=page.locator('#catalog [data-card]');
+    const grade5Hrefs=['/school/peterson5/','/courses/vilenkin-5-part-1/'];
+    const grade5Links=grade5Hrefs.map(href=>'a[href="'+href+'"]');
+    assert.equal(await catalogCards.filter({hasNot:page.locator(grade5Links.join(','))}).count(),61);
+    for(const selector of grade5Links) assert.equal(await catalogCards.locator(selector).count(),1);
+    assert.equal(await catalogCards.count(),63);
     assert.equal(await page.locator('#catalog [data-card] a[href="./college-logarithms/"]').count(),1);
+    assert.equal(await page.locator('#catalog [data-card] a[href="./college-stereometry/"]').count(),1);
     const vprCard=page.locator('#catalog [data-card]').filter({has:page.locator('a[href="/vpr/"]')});
     assert.equal(await vprCard.count(),1,'one VPR course catalogue card');
     assert.equal(await vprCard.locator('h3').innerText(),'ВПР по математике: 5–8 и 10 классы');

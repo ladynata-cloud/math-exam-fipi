@@ -1,7 +1,7 @@
 name: Atanasyan textbook — source, proof and interactive course
 on:
   pull_request:
-    paths: ['stereo-course/textbook/**', 'stereo-course/assets/**', 'geometry-merzlyak/assets/viewer.js', 'geometry-pogorelov/assets/viewer.js', 'tools/stereo-textbook/**', '.github/workflows/atanasyan-textbook.yml']
+    paths: ['stereo-course/textbook/**', 'stereo-course/merzlyak-10-base/**', 'stereo-course/shestakov-yaschenko-10-11/**', 'stereo-course/assets/**', 'geometry-merzlyak/assets/viewer.js', 'geometry-pogorelov/assets/viewer.js', 'tools/stereo-textbook/**', '.github/workflows/atanasyan-textbook.yml']
 permissions:
   contents: read
 jobs:
@@ -20,6 +20,7 @@ jobs:
       - name: Exact reviewed surface profiles and shared offline visibility core
         run: |
           node tools/stereo-textbook/build_visibility_profiles.cjs --check
+          node tools/stereo-textbook/visibility-profile-composition.test.cjs
           node tools/stereo/sync_canvas_visibility.cjs --check
           node tools/stereo/canvas-visibility.test.cjs
           VISIBILITY_CHECK_ONLY=1 node tools/stereo-textbook/visibility.browser.cjs

@@ -7,6 +7,11 @@
       "group": "ЕГЭ база"
     },
     {
+      "title": "Оценка плюс пример",
+      "href": "/trainers/ege-methods.html",
+      "group": "ЕГЭ база"
+    },
+    {
       "title": "ЕГЭ база №11 · Все типы на общей доске",
       "group": "ЕГЭ база",
       "href": "/trainers/ege-baza-11.html#map"
@@ -2277,7 +2282,7 @@
       "href": "/ege-profil/trigonometry/index.html"
     },
     {
-      "title": "ЕГЭ профиль: прежний курс",
+      "title": "ЕГЭ профиль: карта ФИПИ 2027",
       "href": "/ege-profil/",
       "group": "Курсы · Профильный уровень"
     },
@@ -6197,6 +6202,16 @@
       "group": "ЕГЭ база · тренажёры"
     },
     {
+      "title": "ЕГЭ база 21 · Грибы — что значит «среди любых»",
+      "href": "/ege-baza/path/index.html#lesson=practice-mushroom-count",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 21 · Вазы — порядок и общая часть",
+      "href": "/ege-baza/path/index.html#lesson=practice-vase-order",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
       "title": "ЕГЭ база 21 · Два множества и пересечение",
       "href": "/ege-baza/path/index.html#lesson=practice-sets",
       "group": "ЕГЭ база · тренажёры"
@@ -6962,12 +6977,12 @@
       "href": "/trainers/ege-profile-probability.html#exam/4"
     },
     {
-      "title": "ЕГЭ профиль №6 · случайные величины: распределение, дисперсия и непрерывные величины",
+      "title": "ЕГЭ профиль · дополнительная тема: случайные величины, распределение, дисперсия и непрерывные величины",
       "group": "ЕГЭ профиль · понятный старт 2027",
       "href": "/trainers/ege-profile-random-variables.html#exam/6"
     },
     {
-      "title": "ЕГЭ профиль №7 · уравнения: линейные, рациональные, квадратные, иррациональные, показательные и логарифмические уравнения",
+      "title": "ЕГЭ профиль №6 · уравнения: линейные, рациональные, квадратные, иррациональные, показательные и логарифмические уравнения",
       "group": "ЕГЭ профиль · понятный старт 2027",
       "href": "/trainers/ege-profile-equations.html#exam/7"
     },
@@ -6977,7 +6992,7 @@
       "href": "/trainers/ege-profile-stereometry.html#exam/3"
     },
     {
-      "title": "ЕГЭ профиль №8 · выражения: степени, корни, дроби, логарифмы и тригонометрия",
+      "title": "ЕГЭ профиль №7 · выражения: степени, корни, дроби, логарифмы и тригонометрия",
       "group": "ЕГЭ профиль · понятный старт 2027",
       "href": "/trainers/ege-profile-expressions.html#exam/8"
     },
@@ -7300,6 +7315,11 @@
       "title": "Атанасян · 7 класс · главы I–IV и задачи повышенной трудности",
       "group": "Геометрия / 7 класс",
       "href": "/trainers/atanasyan-grade7.html"
+    },
+    {
+      "title": "Углы и треугольники · контрольная по геометрии 7 класса",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry-7/control-work.html"
     },
     {
       "title": "Перегибание и отпечаток · лаборатория приёма",
@@ -7790,6 +7810,31 @@
       "title": "ВПР · 10 класс",
       "href": "/trainers/vpr-math/index.html?route=g10",
       "group": "ВПР / математика"
+    },
+    {
+      "title": "Сечения с нуля · 186 карточек · построение сечений многогранников",
+      "group": "Стереометрия / сечения",
+      "href": "/trainers/sections-from-zero.html"
+    },
+    {
+      "title": "Стереометрическая грамота · Атанасян · до линейного угла",
+      "group": "Стереометрия / сечения",
+      "href": "/trainers/stereo-literacy-atanasyan.html"
+    },
+    {
+      "title": "Сечения по Атанасяну · треугольное сечение",
+      "group": "Стереометрия / сечения",
+      "href": "/trainers/stereo-literacy-atanasyan.html#theory-014-example-3a"
+    },
+    {
+      "title": "Линейный угол двугранного угла · Атанасян",
+      "group": "Стереометрия / сечения",
+      "href": "/trainers/stereo-literacy-atanasyan.html#theory-022"
+    },
+    {
+      "title": "Петерсон · 5 класс · две части — исследование, практика, проверка, модели и GIF",
+      "group": "Школа · математика · 5 класс",
+      "href": "/trainers/peterson5.html#home"
     }
   ]
 }

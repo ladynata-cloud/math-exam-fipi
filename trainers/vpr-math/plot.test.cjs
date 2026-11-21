@@ -35,11 +35,17 @@ test('out-of-bounds, fractional, nonfinite and oversized point sets are rejected
 });
 
 test('pointer coordinates respect the plotted rectangle and translated bounds', () => {
-  const svg = {getBoundingClientRect: () => ({left: 10, top: 20, width: 360, height: 280})};
-  assert.deepEqual(Plot.point({clientX: 50, clientY: 45}, svg, parabola), [-5, 10]);
-  assert.deepEqual(Plot.point({clientX: 340, clientY: 265}, svg, parabola), [3, -1]);
-  assert.equal(Plot.point({clientX: 49, clientY: 100}, svg, parabola), null);
-  assert.equal(Plot.point({clientX: 341, clientY: 100}, svg, parabola), null);
+  const task = {id: 'plot-parabola', plot: parabola};
+  const html = Plot.render(task, {plotPoints: [[-5, 10], [-4, 9]]});
+  const dots = Array.from(html.matchAll(/<circle cx="([^"]+)" cy="([^"]+)"/g), match => match.slice(1).map(Number));
+  assert.equal(dots.length, 2);
+  assert.equal(dots[1][0] - dots[0][0], dots[1][1] - dots[0][1]);
+
+  const svg = {getBoundingClientRect: () => ({left: 10, top: 20, width: 500, height: 280})};
+  const click = (x, y) => Plot.point({clientX: 10 + 70 + x, clientY: 20 + y}, svg, parabola);
+  assert.deepEqual(click(...dots[0]), [-5, 10]);
+  assert.deepEqual(click(...dots[1]), [-4, 9]);
+  assert.equal(click(dots[0][0] - 1, dots[0][1]), null);
 });
 
 test('a repeated abscissa is explained and does not render a singular curve', () => {

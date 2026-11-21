@@ -116,6 +116,9 @@ body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-ap
 <script defer src="oge-video-graphs.js"></script>
 <script defer src="oge-video-geometry.js"></script>
 <script defer src="oge-video-models.js" data-oge-video-task="17"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head><body data-oge-geometry="17">
 <nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
 
@@ -207,13 +210,17 @@ function Fig(W,H,pad){
 /* ================= ПОСТРОИТЕЛИ ЧЕСТНЫХ ЧЕРТЕЖЕЙ ================= */
 /* Каждый строит фигуру ПО ЧИСЛАМ задачи; дуги/засечки/квадратики сами регистрируют chk */
 
+function markRectangle(F, corners){
+  corners.forEach((vertex,i)=>F.rsq(vertex,corners[(i+3)%4],corners[(i+1)%4],{c:'#68786c',s:8}));
+}
+
 function figSquare(p){ // p:{sideLab, showDiag, diagLab}
   const F=Fig(360,260), s=10;
   const A={x:0,y:0},B={x:s,y:0},C={x:s,y:s},D={x:0,y:s};
   F.fit([A,B,C,D]);
   F.poly([A,B,C,D],{close:1});
   if(p.showDiag){F.seg(A,C,{c:CLR.ask,w:2.4}); if(p.diagLab)F.lab(p.diagLab,{x:s*.5,y:s*.58},{c:CLR.ask,dx:14});}
-  F.rsq(A,B,D,{c:'#8a8375'});
+  markRectangle(F,[A,B,C,D]);
   F.lab(p.sideLab,{x:s/2,y:0},{dy:22});
   F.lab('A',A,{dx:-12,dy:14});F.lab('B',B,{dx:12,dy:14});F.lab('C',C,{dx:12,dy:-8});F.lab('D',D,{dx:-12,dy:-8});
   return F;
@@ -228,6 +235,7 @@ function figRect(p){ // p:{mode:'angle',alpha,askLab} | {mode:'bo',bo,ab,hn,sn,d
   const A={x:0,y:0},D={x:w,y:0},C={x:w,y:h},B={x:0,y:h},O={x:w/2,y:h/2};
   F.fit([A,B,C,D]);
   F.poly([A,B,C,D],{close:1});
+  markRectangle(F,[A,B,C,D]);
   F.seg(A,C,{w:2});F.seg(B,D,{w:2});F.dot(O,{r:3.2});
   if(p.mode==='angle'){
     if(p.alpha<=45) F.arc(A,D,C,{lab:p.alpha+'°',r:30});
@@ -1774,5 +1782,28 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
 <script src="oge-course-geometry.js?v=worked-steps-20261110"></script>
 <script src="board-bridge.js?v=oge-homework-20261106"></script>
 <script src="oge-geometry-board.js?v=worked-steps-20261110"></script>
+<!-- download-panel:start:oge-task17-quadrilaterals -->
+<section class="download-panel" id="download" data-trainer-download="oge-task17-quadrilaterals">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/oge-task17-quadrilaterals/oge-task17-quadrilaterals.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/oge-task17-quadrilaterals/oge-task17-quadrilaterals-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/oge-task17-quadrilaterals/oge-task17-quadrilaterals-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь авторский пример на площадь ромба с диагоналями 12 и 8. Обнови чертёж и разбор."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adapt-geometry">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:oge-task17-quadrilaterals -->
 </body>
 </html>

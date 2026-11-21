@@ -5,6 +5,7 @@ const {restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
 const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
+const {restoreGraphScale}=require('./oge-video-models-preservation.cjs');
 const root=path.resolve(__dirname,'..');
 const files={7:'number-line',8:'powers-roots',10:'probability',12:'formulas-trainer',14:'progressions',20:'equations',21:'word-problems',22:'functions-graphs'};
 const cards={7:'#marTask',8:'#marGrid>.mtask:not([hidden])',10:'#mar-root>.card',12:'#taskArea>.card',14:'#m-task>.card',20:'#body .qbox',21:'#content>.card',22:'.panel:not(.hidden) .mode-host[data-mode="marathon"]'};
@@ -59,10 +60,10 @@ const inlineHashes={
   "21": "6b266bbaa9ffbd40adaccbd9a5f93c6b290b15566780dbcd770d71622c5982f8",
   "22": "5298f2da7b65280813d2a97b4353c7c0029182359614625076e5939d2a39c5af"
 };
-test('all eight inline engines retain their reviewed mirror-audit snapshots outside approved season labels',()=>{
+test('all eight inline engines match the mirror-audit snapshots after exact approved display changes',()=>{
  for(const [n,suffix]of Object.entries(files)){
   const file='trainers/oge-task'+n+'-'+suffix+'.html';
-  const html=restoreHistoricalBytes(file,fs.readFileSync(path.join(root,file),'utf8'));
+  const html=restoreGraphScale(file,restoreHistoricalBytes(file,fs.readFileSync(path.join(root,file),'utf8')));
   let scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');
   // The 2027 copy update changes these two displayed sentences only.
   // Keep the reviewed full-engine digest, including all mathematics and grading.

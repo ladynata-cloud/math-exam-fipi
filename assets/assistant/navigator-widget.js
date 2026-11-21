@@ -85,10 +85,39 @@
     } catch (_) { /* Ignore malformed destinations; keep the existing page usable. */ }
     return null;
   }
+  // An operator can set an HTTPS service origin here or in the site's own page metadata.
+  const DIALOGUE_ORIGIN = '';
+  function loadDialogueClient() {
+    if (root.SiteDialogueClient?.enabled || document.getElementById('mathexam-site-dialogue-client')) return;
+    const configured = document.querySelector('meta[name="site-assistant-origin"]')?.content || DIALOGUE_ORIGIN;
+    if (!configured) return;
+    let origin;
+    try { origin = new URL(configured); } catch (_) { return; }
+    const loopback = ['localhost', '127.0.0.1', '[::1]'].includes(origin.hostname);
+    if (origin.protocol !== 'https:' && !(origin.protocol === 'http:' && loopback)) return;
+    if (origin.username || origin.password || origin.pathname !== '/' || origin.search || origin.hash) return;
+    const script = element('script', undefined, {
+      id: 'mathexam-site-dialogue-client', src: origin.origin + '/client.js', referrerpolicy: 'no-referrer'
+    });
+    document.head.append(script);
+  }
+  function loadDivisionDialogue() {
+    const entries = ['/trainers/long-division-stepwise.html', '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html'];
+    if (!entries.includes(root.location.pathname) || !document.getElementById('guided-division') ||
+        document.getElementById('mathexam-division-dialogue-script')) return;
+    document.head.append(element('script', undefined, {
+      id: 'mathexam-division-dialogue-script', src: '/assets/assistant/division-dialogue.js'
+    }));
+  }
   function mount() {
     if (root.self !== root.top || !permittedPath(root.location.pathname) || document.getElementById(HOST_ID)) return;
     const data = root.MathExamPublicAssistantData;
     if (!data || typeof data.welcome !== 'function' || typeof data.respond !== 'function' || !document.body) return;
+    if (/^https?:$/.test(root.location.protocol)) {
+      loadDialogueClient();
+      loadDivisionDialogue();
+    }
+    let pending = null, serverState = null;
     let open = false, greeted = false, difficultyCount = 0, referralShown = false;
     let dialog = null, welcomeCard = null;
     const host = element('div', undefined, { id: HOST_ID, class: privateClasses });
@@ -127,7 +156,16 @@
     const controls = element('div', undefined, { class: 'form-controls' });
     controls.append(element('small', 'Достаточно темы и класса.'), submit);
     const status = element('p', '', { role: 'status', class: 'status', 'aria-live': 'polite' });
-    form.append(label, input, controls, status);
+    const useService = element('input', undefined, {type:'checkbox'});
+    const serviceChoice = element('label', undefined, {hidden:''});
+    serviceChoice.append(useService, ' Отправлять вопросы серверу MathExam');
+    function serviceAvailable() {
+      return root.SiteDialogueClient?.enabled === true && typeof root.SiteDialogueClient.ask === 'function';
+    }
+    function updateServiceChoice() { serviceChoice.hidden = !serviceAvailable(); }
+    updateServiceChoice();
+    root.addEventListener('site-dialogue-ready', updateServiceChoice);
+    form.append(label, input, controls, serviceChoice, status);
     const footer = element('footer', undefined, { class: 'footer' });
     const clear = element('button', 'Очистить чат', { type: 'button', class: 'clear' });
     footer.append(element('small', 'История только на этой странице.'), clear);
@@ -186,16 +224,45 @@
       if (value && !permittedPath(root.location.pathname)) return;
       open = value; panel.hidden = !value; launcher.setAttribute('aria-expanded', String(value));
       launcher.setAttribute('aria-label', value ? 'Закрыть навигатор' : 'Открыть навигатор по MathExam');
-      if (value) { greet(); input.focus(); }
-      else if (returnFocus) launcher.focus();
+      if (value) { updateServiceChoice(); greet(); input.focus(); }
+      else {
+        cancelPending(true);
+        if (returnFocus) launcher.focus();
+      }
     }
-    function send() {
+    function cancelPending(showLocal) {
+      if (!pending) return;
+      const request = pending;
+      pending = null;
+      request.controller.abort();
+      serverState = null;
+      status.textContent = '';
+      if (showLocal) showResponse(request.local);
+    }
+    useService.addEventListener('change', () => {
+      cancelPending(true);
+      serverState = null;
+    });
+    function publicContext(previous) {
+      if (!previous) return undefined;
+      // A visitor may enable the server halfway through a conversation. Pass only
+      // reviewed topic keys, never messages or choice labels from the earlier turns.
+      const selected = {};
+      if (['general', 'twoDigit', 'remainder', 'quotientDigit'].includes(previous.divisionTopic)) selected.divisionTopic = previous.divisionTopic;
+      if (['school', 'oge', 'ege', 'ege-base', 'ege-profile'].includes(previous.goal)) selected.goal = previous.goal;
+      if (Number.isInteger(previous.grade) && previous.grade >= 5 && previous.grade <= 11) selected.grade = previous.grade;
+      if (previous.vprLevelGrade === 7 || previous.vprLevelGrade === 8) selected.vprLevelGrade = previous.vprLevelGrade;
+      return Object.keys(selected).length ? {surface:'navigator', dialog:selected} : undefined;
+    }
+    async function send() {
+      if (pending) return;
       if (!open || !permittedPath(root.location.pathname)) return;
       let text = input.value.trim();
       if (!text) { status.textContent = 'Напишите тему или выберите подсказку.'; input.focus(); return; }
       if (text.length > 400) { status.textContent = 'Сократите вопрос до 400 символов.'; return; }
       input.value = ''; status.textContent = '';
       try {
+        const preceding = dialog;
         const response = data.respond({ text, pathname: root.location.pathname, difficultyCount, referralShown, dialog });
         dialog = response.dialog || null;
         if (welcomeCard) {
@@ -203,13 +270,47 @@
           welcomeCard = null;
         }
         addMessage(response?.kind === 'privacy' ? 'Сообщение с личными данными скрыто.' : text, true);
-        text = ''; showResponse(response);
+        // The local boundary runs first, including the filter for credentials and private links.
+        if (!useService.checked || !serviceAvailable() || response.kind === 'privacy' || response.kind === 'cabinet' || /(?:https?:\/\/|пароль|password|логин|пин[- ]?код|bearer |токен|api[-_ ]?key)/i.test(text)) {
+          serverState = null;
+          showResponse(response);
+        } else {
+          const controller = new AbortController();
+          const request = {controller, local:response};
+          pending = request;
+          status.textContent = 'Ждём ответ сервера MathExam…';
+          let remote;
+          try {
+            remote = await root.SiteDialogueClient.ask({
+              site:'mathexam', message:text, state:serverState || publicContext(preceding),
+              context:{surface:'navigator', pathname:root.location.pathname}
+            }, {signal:controller.signal});
+          } catch (_) { /* The prepared local response remains available. */ }
+          if (pending !== request) return;
+          pending = null;
+          if (remote?.site === 'mathexam' && typeof remote.reply === 'string' && remote.reply.trim()) {
+            serverState = remote.state || null;
+            const remoteLinks = (Array.isArray(remote.links) ? remote.links : []).map(link => ({
+              title:link?.label, url:safeLink(link?.url)
+            })).filter(link => link.url && data.catalogue.some(row => row.url === link.url));
+            showResponse({...response, text:remote.reply, links:remoteLinks, actions:remote.actions || []});
+            status.textContent = '';
+          } else {
+            serverState = null;
+            showResponse(response);
+            status.textContent = 'Серверный ответ недоступен. Показан результат поиска в браузере.';
+          }
+        }
+        text = '';
       } catch (_) {
         text = ''; status.textContent = 'Не удалось подобрать материал. Попробуйте написать тему и класс.';
       }
       input.focus();
     }
     function reset(showWelcome) {
+      cancelPending(false);
+      serverState = null;
+      useService.checked = false;
       input.value = ''; log.replaceChildren(); status.textContent = '';
       greeted = false; difficultyCount = 0; referralShown = false; dialog = null; welcomeCard = null;
       if (showWelcome) greet();

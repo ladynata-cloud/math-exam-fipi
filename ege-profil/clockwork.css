@@ -1,0 +1,357 @@
+.profile-clock[hidden] {
+  display: none;
+}
+
+.profile-clock {
+  --clock-ink: #f6e4c6;
+  margin: clamp(24px, 4vw, 38px) 0 0;
+  border: 1px solid #7d5835;
+  border-radius: 20px;
+  background: #13242a;
+  box-shadow: 0 16px 38px #1b302722;
+  color: var(--clock-ink);
+}
+
+.profile-clock-header,
+.profile-clock-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 15px clamp(12px, 3vw, 26px);
+}
+
+.profile-clock-header {
+  border-radius: 19px 19px 0 0;
+  background: radial-gradient(ellipse at top left, #293834, #13242a 72%);
+}
+
+.profile-clock-header h2 {
+  margin: 0;
+  color: #ffe8c1;
+  font: 600 clamp(21px, 3.8vw, 34px)/1.16 Spectral, Georgia, serif;
+  letter-spacing: -.02em;
+}
+
+.profile-clock-header p {
+  margin: 4px 0 0;
+  color: #d9c7aa;
+  font-size: clamp(13px, 2vw, 16px);
+  line-height: 1.4;
+}
+
+.profile-clock-toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #92704f;
+  border-radius: 9px;
+  background: #152326;
+  color: var(--clock-ink);
+  cursor: pointer;
+  font: 600 14px/1 system-ui, sans-serif;
+}
+
+.profile-clock-toggle:hover {
+  background: #394138;
+}
+
+.profile-clock-toggle::before {
+  content: "";
+  width: 10px;
+  height: 12px;
+  border-inline: 3px solid currentColor;
+}
+
+.profile-clock-toggle[data-paused]::before {
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-right: 0;
+  border-left: 9px solid currentColor;
+}
+
+.profile-clock-case {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 1000 / 900;
+  border-block: 1px solid #9a6a42;
+  background: #14262e url("clockwork-treasure-cave.webp") center / 100% 100% no-repeat;
+}
+
+.profile-clock-case canvas,
+.profile-clock-dials,
+.profile-clock-courses {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.profile-clock-dials,
+.profile-clock-courses {
+  pointer-events: none;
+}
+
+.profile-clock-dial,
+.profile-clock-number,
+.profile-clock-part,
+.profile-clock-course {
+  position: absolute;
+  left: var(--clock-x);
+  top: var(--clock-y);
+  translate: -50% -50%;
+}
+
+.profile-clock-dial,
+.profile-clock-course {
+  width: var(--clock-diameter);
+  aspect-ratio: 1;
+}
+
+.profile-clock-number {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  z-index: 1;
+  pointer-events: auto;
+  border: 1px solid #58321f;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 36% 22%, #ffe1a2, #c68c51 82%);
+  box-shadow: inset 0 0 0 2px #f7cd8c9c, inset 0 0 0 3px #72492b70, 0 3px 5px #0009;
+  color: #281b15;
+  font: 700 clamp(15px, 2.2vw, 19px)/1 Spectral, Georgia, serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+.profile-clock-number--written {
+  border-color: #bd9a66;
+  background: radial-gradient(ellipse at 38% 20%, #37676a, #102e36 85%);
+  box-shadow: inset 0 0 0 2px #c6a27282, inset 0 0 0 3px #07202bb0, 0 3px 5px #000a;
+  color: #fff0cd;
+}
+
+.profile-clock-number:hover,
+.profile-clock-number:focus-visible {
+  z-index: 2;
+  background: #fff0bf;
+  color: #281b15;
+  box-shadow: inset 0 0 0 2px #c49254, 0 0 16px #ffca7a96;
+}
+
+.profile-clock-course {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  min-width: 44px;
+  min-height: 44px;
+  pointer-events: auto;
+  color: #ffe7b8;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+.profile-clock-course span {
+  display: grid;
+  justify-items: center;
+  max-width: 100%;
+  padding: 5px 6px;
+  border: 1px solid #ac8556;
+  border-radius: 6px;
+  background: #152a2c;
+  box-shadow: 0 2px 6px #0009;
+  font: 700 clamp(10px, 1.2vw, 13px)/1.14 system-ui, sans-serif;
+}
+
+.profile-clock-course small {
+  margin-top: 2px;
+  color: #ebd4ac;
+  font-size: .91em;
+}
+
+.profile-clock-course:hover span,
+.profile-clock-course:focus-visible span {
+  border-color: #ffe1a2;
+  background: #fff0bf;
+  color: #281b15;
+}
+
+.profile-clock-course:is(:hover, :focus-visible) small {
+  color: #4b3523;
+}
+
+.profile-clock :is(a, button):focus-visible {
+  outline: 2px solid #fff1b9;
+  outline-offset: 2px;
+}
+
+.profile-clock-number:focus-visible {
+  border-radius: 50%;
+}
+
+.profile-clock-part {
+  padding: 4px 10px;
+  border: 1px solid #a27c526e;
+  border-radius: 4px;
+  background: #102329e8;
+  color: #f4d6a5;
+  white-space: nowrap;
+  font: 700 clamp(9px, 1.4vw, 12px)/1.15 system-ui, sans-serif;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.profile-clock-footer {
+  flex-wrap: wrap;
+  min-height: 60px;
+  padding-block: 4px;
+  font-size: 15px;
+}
+
+.profile-clock-topic {
+  flex: 1 1 180px;
+  color: #f6d9a7;
+}
+
+.profile-clock-topic:empty {
+  display: none;
+}
+
+.profile-clock-footer a {
+  display: inline-flex;
+  min-height: 44px;
+  margin-inline-start: auto;
+  align-items: center;
+  color: var(--clock-ink);
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 880px) {
+  .profile-clock {
+    max-width: 450px;
+    margin-inline: auto;
+  }
+
+  .profile-clock-case {
+    aspect-ratio: 360 / 1540;
+    background-size: auto 100%;
+    box-shadow: inset 4px 0 9px #080f15, inset -4px 0 9px #080f15;
+  }
+
+  .profile-clock-header {
+    gap: 8px;
+  }
+
+  .profile-clock-toggle {
+    gap: 5px;
+    padding-inline: 8px;
+    font-size: 13px;
+  }
+
+  .profile-clock-course span {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .profile-clock-footer {
+    gap: 0;
+    min-height: 48px;
+  }
+}
+
+.profile-clock-alphabet-panel {
+  padding: 15px clamp(12px, 3vw, 26px) 20px;
+  border-top: 1px solid #6f543c;
+  border-radius: 0 0 19px 19px;
+  background: radial-gradient(ellipse at 20% 10%, #293b37, #15262b 72%);
+}
+
+.profile-clock-alphabet-title {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #ffe6bd;
+  font: 650 1.23rem/1.25 Spectral, Georgia, serif;
+  text-underline-offset: 4px;
+}
+
+.profile-clock-alphabets {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.profile-clock-alphabet {
+  display: flex;
+  align-items: center;
+  min-height: 54px;
+  min-width: 0;
+  padding: 6px 8px;
+  gap: 8px;
+  border: 1px solid #97754e;
+  border-radius: 8px;
+  background: #1c3033;
+  color: #ffe5b8;
+  font: 650 .83rem/1.22 system-ui, sans-serif;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.profile-clock-alphabet:hover,
+.profile-clock-alphabet:focus-visible {
+  border-color: #ffe2a8;
+  background: #31453f;
+  color: #fff1d7;
+}
+
+.profile-clock-alphabet small {
+  display: block;
+  margin-top: 3px;
+  color: #ddcbaa;
+  font-size: .69rem;
+  font-weight: 500;
+}
+
+.profile-clock-alphabet-wheel {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 26px;
+  aspect-ratio: 1;
+  clip-path: polygon(40% 0, 60% 0, 64% 13%, 75% 18%, 88% 12%, 96% 26%, 87% 35%, 91% 47%, 100% 51%, 98% 68%, 84% 69%, 76% 80%, 79% 91%, 62% 100%, 53% 90%, 41% 89%, 30% 98%, 14% 89%, 17% 77%, 9% 68%, 0 66%, 0 48%, 13% 43%, 17% 32%, 7% 22%, 19% 10%, 33% 15%);
+  background: conic-gradient(#f4d49b, #ad7446, #eac48a, #9c643a, #f4d49b);
+  animation: profile-alphabet-spin 18s linear infinite;
+}
+
+.profile-clock-alphabet:nth-child(even) .profile-clock-alphabet-wheel { animation-direction: reverse; }
+.profile-clock-alphabet-wheel::after {
+  content: "";
+  width: 10px;
+  aspect-ratio: 1;
+  border: 2px solid #563e29;
+  border-radius: 50%;
+  background: #243939;
+}
+.profile-clock.is-paused .profile-clock-alphabet-wheel { animation-play-state: paused; }
+@keyframes profile-alphabet-spin { to { transform: rotate(1turn); } }
+
+@media (max-width: 760px) {
+  .profile-clock-alphabets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 360px) {
+  .profile-clock-alphabet { padding-inline: 5px; gap: 5px; font-size: .77rem; }
+  .profile-clock-alphabet-wheel { width: 22px; }
+}
+
+.profile-clock-footer { flex-wrap: wrap; }
+.profile-clock-footer .profile-clock-topic-alphabets { margin-inline-start: auto; }
+.profile-clock-footer .profile-clock-topic-alphabets[hidden] { display: none; }

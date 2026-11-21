@@ -91,7 +91,8 @@ const contextualRoutes = Object.freeze([
 ]);
 const supplementalRoutes = Object.freeze({
   divisionRoute: 'multiplication-division/division-path.html',
-  independentCheckpoint: 'multiplication-division/division-checkpoint.html'
+  independentCheckpoint: 'multiplication-division/division-checkpoint.html',
+  arzhenikovMap: 'multiplication-division/arzhenikov-map.html'
 });
 
 function htmlFiles(folder) {
@@ -154,6 +155,87 @@ async function shot(page, name) {
 }
 function activeFrame(page) { return page.locator('.bh-frame:visible'); }
 function helper(page) { return page.locator('.bh-toggle:visible').first(); }
+
+async function fractionControls(page, pointerAction = 'click') {
+  const activate = button => pointerAction === 'tap' ? button.tap() : button.click();
+  const width = page.viewportSize().width;
+  const screenshotSuffix = pointerAction === 'tap' ? width + '-touch' : width;
+  await open(page, 'fraction-meaning.html');
+  await helper(page).waitFor({state:'visible'});
+  await activate(page.locator('.bs-navigation > summary'));
+  await activate(page.locator('.bs-navigation [data-route="learn"]'));
+  assert.match(await page.locator('#lessonQuestion').innerText(), /на сколько равных частей разделили целое/);
+  assert.doesNotMatch(await page.locator('#view-learn').innerText(), /количество всех равных частей/);
+  const choices = page.locator('#lessonQuestion .choice');
+  const colors = button => button.evaluate(node => {
+    const css = getComputedStyle(node);
+    return {background:css.backgroundColor,border:css.borderTopColor,color:css.color};
+  });
+  const plain = await colors(choices.first());
+  await hitTarget(choices.first(), 'Fraction wrong choice');
+  await activate(choices.first());
+  assert.match(await page.locator('#lessonFeedback').getAttribute('class'), /bad/);
+  const wrong = await colors(choices.first());
+  assert.notDeepEqual(wrong, plain, 'A wrong fraction answer has visible feedback on its button');
+  await hitTarget(choices.nth(1), 'Fraction correct choice');
+  await activate(choices.nth(1));
+  assert.match(await page.locator('#lessonFeedback').getAttribute('class'), /good/);
+  assert.equal(await choices.nth(1).getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.locator('#lessonNext').isDisabled(), false);
+  const correct = await colors(choices.nth(1));
+  assert.notDeepEqual(correct, plain, 'A correct fraction answer has visible feedback on its button');
+  assert.notDeepEqual(correct, wrong, 'Correct and wrong button colors are distinct');
+  await noOverflow(page, 'Fraction lesson');
+  await shot(page, 'fraction-denominator-' + screenshotSuffix);
+  const lessonAnswers = ['4', '4', '2/5', '5/7'];
+  for (const answer of lessonAnswers) {
+    await activate(page.locator('#lessonNext'));
+    const input = page.locator('#lessonQuestion input');
+    if (await input.count()) {
+      await input.press('Enter');
+      assert.match(await page.locator('#lessonQuestion .feedback').innerText(), /Пустое поле/);
+      await input.fill(answer); await input.press('Enter');
+    } else {
+      const option = page.locator('#lessonQuestion .choice').filter({hasText:new RegExp('^' + answer.replace('/', '\\/') + '$')});
+      await hitTarget(option, 'Fraction lesson option ' + answer);
+      await activate(option);
+    }
+    assert.match(await page.locator('#lessonFeedback').getAttribute('class'), /good/);
+    assert.equal(await page.locator('#lessonNext').isDisabled(), false);
+  }
+  await activate(page.locator('#lessonNext'));
+  await page.locator('#view-practice').waitFor({state:'visible'});
+  // Reach a native choice using normal solves and the visible Next button.
+  for (let guard = 0; !await page.locator('#practiceAnswer .choice').count(); guard++) {
+    assert(guard < 20, 'A choice exercise must be reachable');
+    const value = await page.evaluate(() => window.__trainerDebug.fmtAnswer(window.__trainerDebug.state().current.answer));
+    await page.locator('#practiceAnswer input').fill(value);
+    await page.locator('#practiceAnswer input').press('Enter');
+    await activate(page.locator('#nextTask'));
+  }
+  const option = page.locator('#practiceAnswer .choice').first();
+  const initial = await colors(option);
+  const attempts = await page.evaluate(() => window.__trainerDebug.state().attempts);
+  await activate(page.locator('#checkTask'));
+  assert.match(await page.locator('#practiceFeedback').innerText(), /Сначала выберите/);
+  assert.equal(await page.evaluate(() => window.__trainerDebug.state().attempts), attempts);
+  await hitTarget(option, 'Fraction practice choice');
+  await activate(option);
+  assert.equal(await option.getAttribute('aria-pressed'), 'true');
+  assert.notDeepEqual(await colors(option), initial, 'Pointer selection must visibly change the practice button');
+  const otherOption = page.locator('#practiceAnswer .choice').nth(1);
+  const otherInitial = await colors(otherOption);
+  await otherOption.press('Space');
+  assert.equal(await option.getAttribute('aria-pressed'), 'false');
+  assert.equal(await otherOption.getAttribute('aria-pressed'), 'true');
+  assert.notDeepEqual(await colors(otherOption), otherInitial, 'Keyboard selection must visibly change the practice button');
+  await shot(page, 'fraction-choice-selected-' + screenshotSuffix);
+  await page.reload({waitUntil:'load'});
+  await helper(page).waitFor({state:'visible'});
+  assert.deepEqual(await page.evaluate(() => window.__trainerDebug.state().learnDone), [true,true,true,true,true]);
+  reports.push({scenario:'fraction-controls',width,pointerAction,
+    fiveLessons:true,visibleSelection:true,wrongCorrectColors:true,pointerAndKeyboard:true,emptyAnswerNoAttempt:true,retainedLessonProgress:true});
+}
 
 async function retainDraftInHelp(page, {name, route, answer, prompt, practice, prepare}) {
   await open(page, route);
@@ -291,6 +373,13 @@ async function miniCheckWithoutHelp(page) {
 async function supplementalDivisionContracts(page) {
   // These are a route map and an independent answer check, not contextual
   // lesson pages. Dedicated division suites cover their complete journeys.
+  await open(page, supplementalRoutes.arzhenikovMap + '#transfer');
+  assert.equal(await page.locator('#skills a').count(), 8);
+  assert.equal(await page.locator('#skills a[aria-current]').getAttribute('href'), '#transfer');
+  assert.equal(await page.getByRole('button', {name:'Подсказка', exact:true}).count(), 0);
+  await hitTarget(page.getByRole('button', {name:'Проверить', exact:true}), 'Independent skill check');
+  await noOverflow(page, 'Arzhenikov transfer');
+
   await open(page, supplementalRoutes.divisionRoute);
   await page.locator('#continue-division').waitFor({state:'visible'});
   const topics = ['start','oneDigit','zero','remainder','twoDigit','decimalNatural','appendZeros','decimalDivisor'];
@@ -345,7 +434,7 @@ async function supplementalDivisionContracts(page) {
 (async () => {
   const inventory = checkInventory();
   if (process.argv.includes('--inventory-only')) {
-    console.log('OGE_BASICS_CONTEXTUAL_INVENTORY_OK: 70 unchanged routes + explicit division route and independent checkpoint; no missing or unclassified HTML.');
+    console.log('OGE_BASICS_CONTEXTUAL_INVENTORY_OK: 70 unchanged routes + division route, independent checkpoint and Arzhenikov map; no missing or unclassified HTML.');
     return;
   }
   const {chromium} = require('playwright');
@@ -373,6 +462,7 @@ async function supplementalDivisionContracts(page) {
       const page = await context.newPage();
       page.on('pageerror', error => errors.push({width,route:page.url(),message:error.message}));
       try {
+        await fractionControls(page);
         await retainDraftInHelp(page, {name:'order', route:'order-of-operations.html',
           answer:'#practiceAnswer input', prompt:'#practicePrompt', practice:'#view-practice'});
         await deepHelp(page);
@@ -393,11 +483,19 @@ async function supplementalDivisionContracts(page) {
         await supplementalDivisionContracts(page);
       } finally { await context.close(); }
     }
+    for (const width of [320, 390]) {
+      const context = await browser.newContext({viewport:{width,height:900},isMobile:true,hasTouch:true});
+      const page = await context.newPage();
+      page.on('pageerror', error => errors.push({width,route:page.url(),message:error.message}));
+      try {
+        await fractionControls(page, 'tap');
+      } finally { await context.close(); }
+    }
     assert.deepEqual(errors, [], 'No browser runtime errors');
     fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify({routes:inventory.total,
       contextualRoutes:inventory.contextualRoutes, supplementalRoutes:inventory.supplementalRoutes,
       widths, reports, errors}, null, 2));
-    console.log('OGE_BASICS_CONTEXTUAL_BROWSER_OK: all original 70 routes + division route and independent checkpoint; 320/360/1280; deep help, draft retention, diagnostic boundaries and hit targets.');
+    console.log('OGE_BASICS_CONTEXTUAL_BROWSER_OK: all original 70 routes + division route, independent checkpoint and Arzhenikov map; 320/360/1280; fraction touch at 320/390; deep help, draft retention, diagnostic boundaries and hit targets.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));

@@ -1,0 +1,39 @@
+name: Geometry constructions across courses
+on:
+  pull_request:
+    paths:
+      - 'assets/geometry-step-views.js'
+      - 'geometry-course/textbook/**'
+      - 'stereo-course/merzlyak-10-base/**'
+      - 'stereo-course/assets/task-scene-viewer.js'
+      - 'ege-baza/path/**'
+      - 'ege-profil/part-two/**'
+      - 'trainers/oge-task25-geometry.html'
+      - 'trainers/merzlyak-10-base.html'
+      - 'trainers/vpr-math/**'
+      - 'geometry-course/assets/area-triangle-proof.js'
+      - 'geometry-course/assets/lesson.js'
+      - 'geometry-course/atlas/area-triangle.html'
+      - 'geometry-merzlyak/assets/lesson.js'
+      - 'geometry-pogorelov/assets/lesson.js'
+      - 'geometry-merzlyak/atlas/merzlyak-base-8-22.html'
+      - 'geometry-pogorelov/atlas/pogorelov-base-9-126.html'
+      - 'tools/geometry-practice-and-area.browser.cjs'
+      - 'tools/geometry-seven-constructions.browser.cjs'
+      - '.github/workflows/geometry-seven-constructions.yml'
+permissions:
+  contents: read
+jobs:
+  geometry-steps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - run: node tools/geometry-seven-constructions.browser.cjs

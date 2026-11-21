@@ -219,14 +219,25 @@
    function draw(){let body='',desc='',question='';
     if(graphs.includes(id)){
      const f=id==='line'?z=>p.k*z+1:id==='system'?z=>z+1:id==='parabola'?z=>(z-(p.h||0))**2-2:id==='exponential'?z=>2**z:id==='logarithm'?z=>Math.log2(z):z=>z*z;
-     const X=z=>280+z*48,Y=z=>160-z*19,points=[];
+     const scale=19,X=z=>280+z*scale,Y=z=>160-z*scale,points=[];
      for(let z=-5;z<=5;z+=0.04){const y=f(z);if(Number.isFinite(y)&&y>=-5&&y<=7)points.push([X(z),Y(y)].join(','));else if(points.length)points.push(null);}
-     body=line(24,160,536,160)+line(280,20,280,270);for(let z=-5;z<=5;z++){body+=line(X(z),157,X(z),163)+text(X(z),182,z);}body+=text(532,147,'x')+text(300,20,'y');
+     for(let z=-5;z<=5;z++)body+=line(X(z),Y(-5),X(z),Y(7),'#e3ece8',1);
+     for(let z=-5;z<=7;z++)body+=line(X(-5),Y(z),X(5),Y(z),'#e3ece8',1);
+     body+=line(X(-5)-8,Y(0),X(5)+8,Y(0))+line(X(0),Y(-5)+8,X(0),Y(7)-8);
+     for(let z=-4;z<=4;z+=2)body+=text(X(z),Y(-5)+22,z);
+     for(let z=-4;z<=6;z+=2)body+=text(X(-5)-16,Y(z)+4,z);
+     body+=text(X(5)+15,Y(0)+4,'x')+text(X(0)+12,Y(7)-9,'y');
      let segments=[];for(const item of points){if(item===null){if(segments.length)body+='<polyline fill="none" stroke="#087b72" stroke-width="3" points="'+segments.join(' ')+'"/>';segments=[];}else segments.push(item);}if(segments.length)body+='<polyline fill="none" stroke="#087b72" stroke-width="3" points="'+segments.join(' ')+'"/>';
      if(id==='system')body+=line(X(-4),Y(6),X(5),Y(-3),'#a44329');
      const py=f(p.probe);if(py>=-5&&py<=7)body+=point(X(p.probe),Y(py));
      desc=(id==='line'?`y = ${p.k}x + 1`:id==='system'?'y = x + 1 и y = −x + 2':id==='parabola'?`y = (x − (${p.h||0}))² − 2`:id==='exponential'?'y = 2ˣ':id==='logarithm'?'y = log₂x':'y = x²')+'. Ось x: 1 на деление; видимая область y от −5 до 7. Точка за пределами окна описана числом: x = '+p.probe+', y = '+Number(py.toFixed(3))+'.';
-     if(id==='derivative'){const slope=2*p.probe+p.h,yy=z=>py+slope*(z-p.probe);body+=line(X(-5),Y(yy(-5)),X(5),Y(yy(5)),'#a44329');question='Какова производная x² в выбранной точке x?';target=2*p.probe;desc+=' Наклон секущей = '+Number(slope.toFixed(3))+'. Уменьшай шаг и сравни с наклоном касательной.';}
+     if(id==='derivative'){
+      const slope=2*p.probe+p.h,yy=z=>py+slope*(z-p.probe);
+      const edges=slope===0?[-5,5]:[p.probe+(-5-py)/slope,p.probe+(7-py)/slope];
+      const lo=Math.max(-5,Math.min(...edges)),hi=Math.min(5,Math.max(...edges));
+      if(lo<=hi)body+=line(X(lo),Y(yy(lo)),X(hi),Y(yy(hi)),'#a44329');
+      question='Какова производная x² в выбранной точке x?';target=2*p.probe;desc+=' Наклон секущей = '+Number(slope.toFixed(3))+'. Уменьшай шаг и сравни с наклоном касательной.';
+     }
      else if(id==='system'){question='Чему равен x общей точки двух прямых?';target=M.q(1,2);}
      else if(id==='logarithm'){question='При каком x этот график пересекает горизонтальную ось?';target=1;}
      else{question='Каково значение функции при x = '+(p.probe+1)+'?';target=id==='exponential'?M.q(2**Math.max(p.probe+1,0),2**Math.max(-p.probe-1,0)):f(p.probe+1);}

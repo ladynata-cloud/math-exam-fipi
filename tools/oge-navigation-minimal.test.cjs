@@ -11,9 +11,11 @@ const base=process.env.OGE_BASE_ROOT||root;
 const files=['trainers/oge-course/index.html','oge/index.html'];
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const load=(f,hash='')=>new JSDOM(read(f),{url:'https://mathexam.space/'+f+hash,runScripts:'dangerously'});
+const packages=JSON.parse(read('downloads/trainers-manifest.json')).trainers.filter(t=>t.public&&
+ (t.ogeTask||['oge-1-5-trainers','task19-trainer'].includes(t.slug)));
 const legacyInequalities='https://mathexam.space/trainers/oge-task13-inequalities.html';
 const currentInequalities='https://mathexam.space/trainers/oge13-inequalities-series.html';
-test('OGE-13 direct route retains the legacy redirect and both task/download destinations',()=>{
+test('OGE-13 retains the legacy redirect and canonical practice route until it has an archive',()=>{
  const legacy=new JSDOM(read('trainers/oge-task13-inequalities.html'),{url:legacyInequalities});
  const d=legacy.window.document;
  assert.equal(d.querySelector('link[rel="canonical"]').href,currentInequalities);
@@ -28,7 +30,8 @@ test('OGE-13 direct route retains the legacy redirect and both task/download des
  assert(d.querySelector('main a[href="/trainers/oge13-inequalities-series.html"]'));
  const course=load(files[0]);
  assert(course.window.document.querySelector('h3 a[href="/trainers/oge13-inequalities-series.html"]'));
- assert(course.window.document.querySelector('#downloads a[download][href="/trainers/oge13-inequalities-series.html"]'));
+ assert(course.window.document.querySelector('#all-topics [data-oge-topic="13"][href="/trainers/oge13-inequalities-series.html"]'));
+ assert.equal(course.window.document.querySelector('#downloads a[href="/trainers/oge13-inequalities-series.html"]'),null);
  assert(![...course.window.document.querySelectorAll('a[href]')].some(a=>a.href===legacyInequalities));
  legacy.window.close();course.window.close();
 });
@@ -51,7 +54,11 @@ test('extra practice and downloads are accessible disclosures; no inactive butto
  const d=load(files[0]).window.document;
  for(const id of ['gaps','full-variants','downloads','practical-extra']){const el=d.getElementById(id);assert.equal(el.tagName,'DETAILS');assert.equal(el.open,false);assert(el.querySelector('summary'));}
  assert.equal(d.querySelectorAll('button[disabled]').length,0);
- assert(d.querySelectorAll('#downloads a[download]').length>=24);
+ const links=[...d.querySelectorAll('#downloads a[download]')].map(a=>a.getAttribute('href'));
+ assert(packages.length>=7,'the two previous and five new OGE archives are registered');
+ assert.deepEqual(links.sort(),packages.map(t=>t.package).sort());
+ for(const href of links){assert(href.endsWith('.zip'));assert(fs.existsSync(path.join(root,href)));}
+ assert(d.querySelector('#downloads a[href="#all-topics"]'));
  assert(!/localStorage|sessionStorage|fetch\(/.test(read(files[0])));
 });
 test('hash links open their optional destination for direct links and keyboard navigation',()=>{
@@ -73,8 +80,13 @@ test('both hubs retain all previous navigation destinations and resolve local li
   for(const a of d.querySelectorAll('a[href]')){const u=new URL(a.href);if(u.origin!=='https://mathexam.space')continue;let target=decodeURIComponent(u.pathname).slice(1);if(!target||target.endsWith('/'))target+='index.html';assert(fs.existsSync(path.join(root,target))||fs.existsSync(path.join(base,target)),f+' broken '+a.href);if(u.pathname==='/'+f&&u.hash)assert(d.getElementById(u.hash.slice(1)));}
  }
 });
-test('secondary OGE hub keeps informatics reachable and leads to mathematics course',()=>{
- const d=load(files[1]).window.document;assert.equal(new URL(d.querySelector('.hero .btn').href).pathname,'/trainers/oge-course/');
+test('OGE hub opens a first graph exercise and keeps course, topic and informatics routes reachable',()=>{
+ const d=load(files[1]).window.document;
+ const first=new URL(d.querySelector('.hero .btn').href);
+ assert.equal(first.pathname,'/oge/skills/');
+ assert.equal(first.searchParams.get('topic'),'n11');
+ assert(d.querySelector('.hero a[href="#all-topics"]'));
+ assert(d.querySelector('main a[href="/trainers/oge-course/"]'));
  const informatics=d.querySelector('a[href="../trainers/oge-informatics-1-10-tutor.html"]');assert(informatics);assert(informatics.closest('details'));
  assert.doesNotMatch(d.querySelector('main').textContent,/зубрёжка/);
  for(const a of d.querySelectorAll('.topic-links a'))assert(!/^(Открыть|Открыть модуль|Пройти)$/.test(a.textContent.trim()),'Topic link has a meaningful label');

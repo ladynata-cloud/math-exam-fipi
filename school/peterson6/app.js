@@ -107,6 +107,27 @@
     if(!Number.isSafeInteger(seed)||seed<1||seed>=1000000)return null;
     try{const t=M.generate(m[1],seed,Number(m[2]),methodVersion);t.id=id;return t;}catch(_){return null;}
   }
+const FORMAT_FEEDBACK='Запись пока не распознана. Введи число, например 0,5, дробь 1/2 или смешанное число 2 1/3. Это ещё не математическая попытка.';
+function invalidNumber(value,q){return q&&typeof q!=='string'&&!['choice','comparison','manual','instruction'].includes(q.kind)&&!M.parse(value);}
+function firstErrorsState(raw,t){
+ const out={steps:{}};if(!record(raw))return out;
+ function entry(v,q){if(!record(v)||typeof v.value!=='string'||v.value.length>200||!v.value.trim()||!q||typeof q==='string'||q.answer===undefined||q.kind==='manual'||invalidNumber(v.value,q)||check(v.value,q))return null;if(['choice','comparison'].includes(q.kind)&&q.choices&&!q.choices.includes(v.value))return null;return {value:v.value,assisted:v.assisted===true};}
+ const final=entry(raw.final,t);if(final)out.final=final;
+ if(record(raw.steps))for(const [i,v]of Object.entries(raw.steps)){if(!/^\d{1,2}$/.test(i)||String(Number(i))!==i||Number(i)>=(t.steps||[]).length)continue;const saved=entry(v,t.steps[Number(i)]);if(saved)out.steps[i]=saved;}
+ return out;
+}
+function rememberFirstError(s,q,value,index=null){
+ if(boardSession)return;
+ const errors=s.firstErrors||(s.firstErrors={steps:{}}),target=index===null?errors:errors.steps,key=index===null?'final':index;
+ if(!target[key])target[key]={value:String(value).slice(0,200),assisted:s.assisted===true};
+}
+function firstErrorsHTML(t,s){
+ if(boardSession)return '';
+ const errors=s.firstErrors;if(!errors)return '';const rows=[];
+ function row(label,saved,current,correct){if(saved)rows.push('<li><strong>'+e(label)+'</strong><p>Первая неверная запись: '+fmt(saved.value)+' · '+(saved.assisted?'с помощью':'без подсказки')+'.</p>'+(correct?'<p>Исправлено: '+fmt(current)+' ✓</p>':'')+'</li>');}
+ row('Ответ к задаче',errors.final,s.value,s.correct);for(const [i,saved]of Object.entries(errors.steps||{}))row('Шаг '+(Number(i)+1),saved,s.values[Number(i)],s.step>Number(i));
+ return rows.length?'<details class="first-errors"><summary>Первая ошибка и исправление</summary><p class="small">Первая проверенная неверная запись сохраняется отдельно от текущего ответа. Это история работы, а не новая оценка.</p><ul>'+rows.join('')+'</ul></details>':'';
+}
   function validRoute(hash){if(typeof hash!=='string')return null;let m=/^#lesson\/(p\d{2})(?:\/(\d+))?$/.exec(hash);if(m&&byId[m[1]]){const i=Number(m[2]||0);return i<byId[m[1]].tasks.length?'#lesson/'+m[1]+'/'+i:null;}m=/^#(?:practice|check)\/([a-z-]+)\/([123])$/.exec(hash);return m&&skills[m[1]]?hash:null;}
   function inquiryState(raw){const out={open:false};if(record(raw)){for(const k of ['draft','first','last','transferDraft','transferFirst','transferLast'])if(typeof raw[k]==='string')out[k]=raw[k].slice(0,200);out.open=raw.open===true;}return out;}
   function sanitizeTask(raw, t) {
@@ -117,7 +138,7 @@
     safe.attempts=Number.isSafeInteger(raw.attempts)?Math.max(0,Math.min(1000000,raw.attempts)):0;
     safe.values=Array.isArray(raw.values)?raw.values.slice(0,t.steps.length).map(v=>typeof v==='string'?v.slice(0,200):''):[];
     for(const k of ['stepHints','reveals'])if(record(raw[k]))for(const [i,v] of Object.entries(raw[k]))if(/^\d{1,2}$/.test(i)&&Number(i)<t.steps.length&&v===true)safe[k][i]=true;
-    if(!boardSession&&record(raw.inquiry))safe.inquiry=inquiryState(raw.inquiry);
+    if(!boardSession){if(record(raw.inquiry))safe.inquiry=inquiryState(raw.inquiry);safe.firstErrors=firstErrorsState(raw.firstErrors,t);}
     const target=Number.isInteger(raw.step)?Math.max(0,Math.min(t.steps.length,raw.step)):0;
     while(safe.step<target&&check(safe.values[safe.step]||'',t.steps[safe.step]))safe.step++;
     if(t.kind==='manual'){safe.attempts=0;if(safe.value!=='recorded'||!safe.note.trim())safe.value='';}
@@ -129,7 +150,7 @@
     if(/^(?:practice|check):/.test(t.id))safe.signature=taskSignature(t);
     return safe;
   }
-  function hasPreviousWork(r){return !!(Object.values(r.inquiry||{}).some(Boolean)||r.value||r.note||r.feedback||r.correct||r.guided||r.assisted||r.hint||r.attempts||r.step||(r.values||[]).some(Boolean)||Object.values(r.stepHints||{}).some(Boolean)||Object.values(r.reveals||{}).some(Boolean));}
+  function hasPreviousWork(r){return !!(Object.values(r.inquiry||{}).some(Boolean)||r.firstErrors?.final||Object.keys(r.firstErrors?.steps||{}).length||r.value||r.note||r.feedback||r.correct||r.guided||r.assisted||r.hint||r.attempts||r.step||(r.values||[]).some(Boolean)||Object.values(r.stepHints||{}).some(Boolean)||Object.values(r.reveals||{}).some(Boolean));}
   function hadHelpOrAnswer(r){return !!(r.inquiry?.open||r.inquiry?.last||r.assisted||r.guided||r.hint||r.correct||r.attempts||r.step||Object.values(r.stepHints||{}).some(Boolean)||Object.values(r.reveals||{}).some(Boolean));}
   function sanitizeState(raw) {
     if(!record(raw)||raw.version!==1||!record(raw.tasks)||!record(raw.practice))throw Error('Неподдерживаемый формат сохранения.');
@@ -197,7 +218,7 @@
  const entries=state.history[id]||[];if(!entries.length)return '';
  return '<details class="earlier-work"><summary>Ранее сохранённая работа ('+entries.length+')</summary>'+entries.map((r,n)=>{
   const t=resolveTask(id,r.methodVersion||1);
-  return '<section><h3>Работа '+(n+1)+'</h3><p>'+fmt(t.prompt)+'</p><p>'+e(r.correct?(r.independent?'Завершена самостоятельно.':'Завершена с помощью / после попыток.'):'Начатое решение.')+'</p><ol>'+t.steps.slice(0,Math.min(t.steps.length,r.step+1)).map((q,i)=>'<li><strong>'+fmt(q.prompt)+'</strong>'+(r.values[i]?'<p>Твоя запись: '+fmt(r.values[i])+(i<r.step?' ✓':'')+'</p>':'')+(i<r.step||r.reveals[i]?'<p>'+fmt(q.explanation)+'</p>':'')+(r.stepHints[i]?'<p>Была открыта подсказка: '+fmt(q.hint)+'</p>':'')+'</li>').join('')+'</ol>'+(r.value?'<p>Записанный ответ: '+fmt(r.value)+'</p>':'')+(r.note?'<p>Твои заметки: '+fmt(r.note)+'</p>':'')+'</section>';
+  return '<section><h3>Работа '+(n+1)+'</h3><p>'+fmt(t.prompt)+'</p><p>'+e(r.correct?(r.independent?'Завершена самостоятельно.':'Завершена с помощью / после попыток.'):'Начатое решение.')+'</p><ol>'+t.steps.slice(0,Math.min(t.steps.length,r.step+1)).map((q,i)=>'<li><strong>'+fmt(q.prompt)+'</strong>'+(r.values[i]?'<p>Твоя запись: '+fmt(r.values[i])+(i<r.step?' ✓':'')+'</p>':'')+(i<r.step||r.reveals[i]?'<p>'+fmt(q.explanation)+'</p>':'')+(r.stepHints[i]?'<p>Была открыта подсказка: '+fmt(q.hint)+'</p>':'')+'</li>').join('')+'</ol>'+(r.value?'<p>Записанный ответ: '+fmt(r.value)+'</p>':'')+(r.note?'<p>Твои заметки: '+fmt(r.note)+'</p>':'')+firstErrorsHTML(t,r)+'</section>';
  }).join('')+'</details>';
 }
   function methodNotice(t,s){
@@ -248,7 +269,7 @@
   if(!boardSession)try{const raw=localStorage.getItem(KEY);if(raw)state=sanitizeState(JSON.parse(raw));}catch(err){writable=false;warn('Не удалось прочитать сохранение. Оно не перезаписано. Текущую работу можно скачать в разделе результатов.');}
   if(!boardSession)try{const stored=JSON.parse(localStorage.getItem(HELP_KEY)||'{}');if(record(stored))for(const [id,value]of Object.entries(stored))if(taskById[id]&&record(value)&&typeof value.model==='boolean'&&typeof value.theory==='boolean')helpOpen[id]={model:value.model,theory:value.theory};}catch(_){}
   function save(){if(boardSession||!writable)return;try{localStorage.setItem(KEY,JSON.stringify(state));}catch(err){writable=false;warn('Браузер не смог сохранить работу. Продолжайте занятие и скачайте результаты перед закрытием.');}}
-  function fresh(methodVersion=1){return {...(!boardSession?{methodVersion}:{}),value:'',values:[],step:0,guided:false,assisted:false,hint:false,stepHints:{},reveals:{},attempts:0,correct:false,independent:false,note:'',feedback:'',signature:'',repeated:false,completion:null};}
+  function fresh(methodVersion=1){return {...(!boardSession?{methodVersion,firstErrors:{steps:{}}}:{}),value:'',values:[],step:0,guided:false,assisted:false,hint:false,stepHints:{},reveals:{},attempts:0,correct:false,independent:false,note:'',feedback:'',signature:'',repeated:false,completion:null};}
   function ts(id){if(!state.tasks[id]||typeof state.tasks[id]!=='object')state.tasks[id]=fresh(resolveTask(id)?.methodVersion||1);const s=state.tasks[id];for(const [k,v] of Object.entries(fresh(resolveTask(id)?.methodVersion||1)))if(s[k]===undefined)s[k]=v;return s;}
   function button(text,action,extra='',quiet=false){return '<button type="button" data-action="'+action+'" '+extra+(quiet?' class="quiet"':'')+'>'+text+'</button>';}
   function bindLocalForm(form,onSubmit){
@@ -499,6 +520,7 @@ ${[1, 2, 3]
         : '') +
       help +
       answer +
+      firstErrorsHTML(t,s) +
       (manual ? feedback : '') +
       (s.correct
         ? '<div class="feedback"><strong>' +
@@ -532,7 +554,7 @@ ${[1, 2, 3]
     if(t.figure)window.PetersonContinuationModels?.renderFigure(document.getElementById('task-figure'),t.figure);
     if (document.getElementById('answer-form')) bindLocalForm(document.getElementById('answer-form'),checkFinal);
     const inp=document.getElementById('final-answer');
-    if(inp){if(boardSession)inp.maxLength=200;inp.oninput=()=>{s.value=boardText(inp,200);save();preview(inp.value);};preview(inp.value);}
+    if(inp){if(boardSession)inp.maxLength=200;inp.oninput=()=>{if(s.correct)return;s.value=boardText(inp,200);save();preview(inp.value);};preview(inp.value);}
     const notebook=document.getElementById('notebook');
     if(boardSession)notebook.maxLength=2000;
     notebook.oninput=ev=>{s.note=boardText(ev.target,2000);if(manual&&!s.note.trim()){s.value='';s.feedback='';host.querySelector('[data-action="record-manual"]').textContent='Отметить: записано для проверки';host.querySelector('.task-heading .tag').textContent='Твоя задача';host.querySelector('.feedback').textContent='';main.querySelector('.side-list .current .status').textContent='';}save();};
@@ -553,8 +575,8 @@ ${[1, 2, 3]
     return html + '</section>';
   }
   function check(user,q){if(typeof q==='string'||q?.kind==='instruction')return user==='done';if(!q||q.kind==='manual')return false;return q.kind==='choice'?user===q.answer:M.check?M.check(user,q.answer,q.answerFormat):M.equal(user,q.answer);}
-  function checkFinal(){captureLessonHelp();const t=active.task,s=ts(t.id);if(s.correct||t.kind==='manual')return;if(!s.value.trim()){s.feedback=t.kind==='choice'?'Сначала выбери ответ.':'Сначала введи результат.';renderProblem();return;}s.attempts++;if(check(s.value,t)){s.correct=true;s.independent=!boardSession&&!s.assisted&&!s.repeated&&s.attempts===1;s.completion={attempts:s.attempts,assisted:s.assisted,independent:s.independent};s.feedback='';}else{s.feedback='Пока не совпало. '+(t.kind==='choice'?'Проверь смысл каждого варианта.':t.answerFormat?'Проверь вычисление и требуемую запись ответа.':active.checking?'Проверь действие и вычисление. Для помощи вернись к тренировке.':'Проверь действие и вычисление. Можно открыть подсказку или отдельную тренировку.');}save();renderProblem();}
-  function checkStep(i){const t=active.task,s=ts(t.id),q=t.steps[i];if(i!==s.step)return;const v=s.values[i]||'';if(!v.trim()){boardStepFeedback='empty';document.getElementById('step-feedback-'+i).textContent='Сначала введи результат этого шага.';return;}if(check(v,q)){s.step++;save();renderProblem();}else{boardStepFeedback='wrong';document.getElementById('step-feedback-'+i).textContent='Проверь вычисление в этом шаге. Подсказка поможет выбрать действие.';}}
+  function checkFinal(){captureLessonHelp();const t=active.task,s=ts(t.id);if(s.correct||t.kind==='manual')return;if(!s.value.trim()){s.feedback=t.kind==='choice'?'Сначала выбери ответ.':'Сначала введи результат.';renderProblem();return;}if(!boardSession&&invalidNumber(s.value,t)){s.feedback=FORMAT_FEEDBACK;save();renderProblem();return;}s.attempts++;if(check(s.value,t)){s.correct=true;s.independent=!boardSession&&!s.assisted&&!s.repeated&&s.attempts===1;s.completion={attempts:s.attempts,assisted:s.assisted,independent:s.independent};s.feedback='';}else{rememberFirstError(s,t,s.value);s.feedback='Пока не совпало. '+(t.kind==='choice'?'Проверь смысл каждого варианта.':t.answerFormat?'Проверь вычисление и требуемую запись ответа.':active.checking?'Проверь действие и вычисление. Для помощи вернись к тренировке.':'Проверь действие и вычисление. Можно открыть подсказку или отдельную тренировку.');}save();renderProblem();}
+  function checkStep(i){const t=active.task,s=ts(t.id),q=t.steps[i];if(i!==s.step)return;const v=s.values[i]||'';if(!v.trim()){boardStepFeedback='empty';document.getElementById('step-feedback-'+i).textContent='Сначала введи результат этого шага.';return;}if(!boardSession&&invalidNumber(v,q)){document.getElementById('step-feedback-'+i).textContent=FORMAT_FEEDBACK;return;}if(check(v,q)){s.step++;save();renderProblem();}else{rememberFirstError(s,q,v,i);save();boardStepFeedback='wrong';document.getElementById('step-feedback-'+i).textContent='Проверь вычисление в этом шаге. Подсказка поможет выбрать действие.';}}
   function progress() {
     if(boardSession)return boardProgress();
     const lessonRows = D.lessons

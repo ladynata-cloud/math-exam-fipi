@@ -85,6 +85,7 @@ function createApp(root,options){
  const {catalog,lessons}=options,{available,coverage,issues}=inspectBundle(catalog,lessons,options),doc=root.ownerDocument,win=doc.defaultView,math=options.math||win.StereoMath,sceneViewer=options.sceneViewer||win.TaskSceneViewer;
  let storage;try{storage=options.storage??win.localStorage;}catch{storage=null;}
  let current=null,state=null,key='',expected=null,viewer=null,dialogViewer=null,dialog=null,dialogView='neutral',locked=false,destroyed=false,refreshPersonal=()=>{};
+ let catalogReturn=null;
  const theoryTrail=[];
  const cache=new Map();
  /* MERZLYAK_BOARD_BEGIN: optional isolated room state; standalone code is retained verbatim. */
@@ -110,6 +111,35 @@ function createApp(root,options){
  let resumeId=!options.boardSession?safeRead(resumeKey):null;
  function remember(id){if(options.boardSession)return;resumeId=id;try{storage?.setItem(resumeKey,id);}catch{status('Продолжение доступно в этой вкладке; сохранить его на устройстве не удалось.');}}
  function savedState(lesson){const k=storageKey(lesson);return readState(cache.get(k)?.raw||safeRead(k),lesson);}
+ // These cards ask for a number without units or a ratio of areas. Compare
+ // rational values exactly; other authored answers keep their textual contract.
+ function decimalParts(text){
+  const match=/^([+-]?)(\d+)(?:[.,](\d+))?$/.exec(text);
+  if(!match)return null;
+  const decimal=match[3]||'';
+  return [BigInt(match[1]+match[2]+decimal),10n**BigInt(decimal.length)];
+ }
+ function rationalAnswer(text,ratio){
+  if(text.length>256)return null;
+  const parts=text.split(ratio?/\s*[:/]\s*/:/\s*\/\s*/);
+  if(parts.length===1)return ratio?null:decimalParts(text);
+  if(parts.length!==2)return null;
+  const left=decimalParts(parts[0]),right=decimalParts(parts[1]);
+  if(!left||!right||right[0]===0n)return null;
+  if(ratio&&(left[0]<0n||right[0]<0n))return null;
+  return [left[0]*right[1],left[1]*right[0]];
+ }
+ function matchesAnswer(accepted,input){
+  const text=normalized(input),keys=accepted.map(normalized);
+  if(keys.includes(text))return true;
+  const ratio=keys.some(key=>key.includes(':'));
+  const actual=rationalAnswer(text,ratio);
+  if(!actual)return false;
+  return keys.some(key=>{
+   const target=rationalAnswer(key,ratio);
+   return target&&target[0]*actual[1]===actual[0]*target[1];
+  });
+ }
  function workStatus(value){
   if(value.checked)return {first:'С первого раза',corrected:'Исправил самостоятельно',assisted:'Ответ с помощью',legacy:'Прежний ответ: самостоятельность не определена'}[value.outcome]||'Ответ совпал';
   if(value.manualSaved)return 'Рассуждение сохранено — нужна проверка';
@@ -210,7 +240,7 @@ function createApp(root,options){
   dialog.append(close,title,el('p',lesson.statement.text),model,el('p',lesson.statement.goal),el('p',lesson.visualization.caption),sourceNode(lesson));
   const nestedHelp=el('div');mountHelp(lesson.help,nestedHelp,()=>({setView:selectTheoryView}));dialog.append(nestedHelp);
   const steps=el('div');for(const step of lesson.steps){const d=el('details');d.append(el('summary',step.title),el('p',step.prompt),el('p',step.explanation));justifications(step,d);d.addEventListener('toggle',()=>{if(d.isConnected&&d.open)selectTheoryView(step.view||'neutral');});steps.append(d);}dialog.append(steps);root.append(dialog);
-  dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:backState?.camera});
+  dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{lessonId:lesson.id,savedCamera:backState?.camera});
   if(backState){
    const details=[...dialog.querySelectorAll('details')],pendingToggles=new Set((backState.opened||[]).map(index=>details[index]).filter(Boolean));
    const restoreSelected=()=>{if(dialog!==shownDialog)return;restoring=false;selectTheoryView(backState.view||'neutral');};
@@ -262,7 +292,7 @@ function createApp(root,options){
      if(!options.boardSession){state.manualSaved=!!state.draft.trim();save();setDisplayText(header.querySelector('[data-work-status]'),workStatus(state));}
      setDisplayText(feedback,options.boardSession||state.draft.trim()?'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.':'Сначала запиши своё рассуждение.');return;
     }
-    const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
+    const correct=matchesAnswer(lesson.answer.accepted,input.value);
     if(!options.boardSession){
      if(!state.checked){state.attempts++;if(state.firstAnswer===null)state.firstAnswer=input.value;if(correct){state.checked=true;state.outcome=!state.historyKnown?'legacy':state.assisted?'assisted':state.attempts===1?'first':'corrected';}}
      setDisplayText(feedback,correct?'Ответ совпал. '+workStatus(state)+'.':state.attempts<2?'Ответ пока не совпал. Попробуй исправить его сам: сверь ответ с условием.':'Ответ пока не совпал. Можно проверить рассуждение ещё раз или открыть следующий шаг ниже.');
@@ -281,7 +311,7 @@ function createApp(root,options){
   const steps=el('section',undefined,{'data-steps':''}),next=el('button','Разобрать по шагам',{type:'button'});helpBody.append(steps,next);
   function addStep(index){const step=lesson.steps[index],section=el('section',undefined,{class:'textbook-step','data-step':step.id});section.append(el('h3',step.title),el('p',step.prompt));const explain=el('details'),explainSummary=el('summary','Показать объяснение');explain.append(explainSummary,el('p',step.explanation));justifications(step,explain);section.append(explain);
    if(!options.boardSession){explain.dataset.stepExplanation=step.id;explain.open=state.explanations.includes(step.id);explainSummary.addEventListener('click',event=>{if(!assisted()){event.preventDefault();return;}state.explanations=state.explanations.filter(id=>id!==step.id);if(!explain.open)state.explanations.push(step.id);if(!save())event.preventDefault();});}
-   if(step.input){const form=el('form'),fieldId='step-'+step.id,input=el('input',undefined,{id:fieldId,autocomplete:'off'}),feedback=el('p',undefined,{role:'status'});input.value=state.stepDrafts[step.id]||'';input.addEventListener('input',()=>{state.stepDrafts[step.id]=input.value;save();});form.append(el('label',step.input.prompt,{for:fieldId}),input,el('button','Проверить этот шаг',{type:'submit'}),feedback);form.addEventListener('submit',event=>{event.preventDefault();if(!assisted())return;setDisplayText(feedback,step.input.accepted.some(value=>normalized(value)===normalized(input.value))?'Ответ на этот шаг совпал.':step.input.feedback);});section.append(form);}
+   if(step.input){const form=el('form'),fieldId='step-'+step.id,input=el('input',undefined,{id:fieldId,autocomplete:'off'}),feedback=el('p',undefined,{role:'status'});input.value=state.stepDrafts[step.id]||'';input.addEventListener('input',()=>{state.stepDrafts[step.id]=input.value;save();});form.append(el('label',step.input.prompt,{for:fieldId}),input,el('button','Проверить этот шаг',{type:'submit'}),feedback);form.addEventListener('submit',event=>{event.preventDefault();if(!assisted())return;setDisplayText(feedback,matchesAnswer(step.input.accepted,input.value)?'Ответ на этот шаг совпал.':step.input.feedback);});section.append(form);}
    const onModel=el('button','Показать на рисунке',{type:'button'});onModel.addEventListener('click',()=>{if(assisted())viewer?.setView(step.view||'neutral');});section.append(onModel);steps.append(section);
   }
   for(let i=0;i<state.revealed;i++)addStep(i);if(state.revealed>0){help.open=true;state.assisted=true;}
@@ -290,7 +320,7 @@ function createApp(root,options){
   next.addEventListener('click',revealStep);
   function personalHint(){if(locked)return;if(state.revealed<lesson.steps.length)revealStep();if(locked)return;help.open=true;steps.lastElementChild?.scrollIntoView?.({block:'start'});}
   hintButton?.addEventListener('click',personalHint);hintOffer?.addEventListener('click',personalHint);
-  side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
+  side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{lessonId:lesson.id,savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
   if(!options.boardSession){
    // Move only the neutral drawing's reading notes behind the model action. Controls
    // and the selected authored view stay next to the drawing; no help is implied.
@@ -328,14 +358,27 @@ function createApp(root,options){
    results.append(el('p','Найдено карточек: '+filtered.length+'. Доступно: '+ready.length+'. Ещё готовятся: '+pending.length+'.'));
    function pager(parent,count,page,move){const total=Math.ceil(count/24);if(total<2)return;const nav=el('nav',undefined,{'aria-label':'Страницы списка'}),prev=el('button','← Назад',{type:'button'}),next=el('button','Далее →',{type:'button'});prev.disabled=page===0;next.disabled=page>=total-1;prev.addEventListener('click',()=>move(page-1));next.addEventListener('click',()=>move(page+1));nav.append(prev,el('span',(page+1)+' / '+total),next);parent.append(nav);}
    const readySection=el('section',undefined,{'data-catalog-ready':''});readySection.append(el('h2','Можно изучать сейчас'));if(!ready.length)readySection.append(el('p','По этому запросу проверенных материалов пока нет.'));readyPage=Math.min(readyPage,Math.max(0,Math.ceil(ready.length/24)-1));
-   for(const entry of ready.slice(readyPage*24,(readyPage+1)*24)){const article=el('article'),button=el('button',entry.title,{type:'button','data-lesson':entry.id});button.addEventListener('click',()=>open(entry.id));article.append(button);if(!options.boardSession)article.append(el('p',workStatus(savedState(available.get(entry.id))),{class:'catalog-work-status'}));article.append(el('p',sourceText(entry.source)));readySection.append(article);}pager(readySection,ready.length,readyPage,page=>{readyPage=page;renderResults();});results.append(readySection);
+   for(const entry of ready.slice(readyPage*24,(readyPage+1)*24)){const article=el('article'),button=el('button',entry.title,{type:'button','data-lesson':entry.id});button.addEventListener('click',()=>{
+     if(!options.boardSession)catalogReturn={id:entry.id,search:search.value,kind:kind.value,collection:collection.value,chapter:chapter.value,readyPage,pendingPage};
+     open(entry.id);
+    });article.append(button);if(!options.boardSession)article.append(el('p',workStatus(savedState(available.get(entry.id))),{class:'catalog-work-status'}));article.append(el('p',sourceText(entry.source)));readySection.append(article);}pager(readySection,ready.length,readyPage,page=>{readyPage=page;renderResults();});results.append(readySection);
    if(pending.length){const pendingSection=el('details',undefined,{'data-catalog-pending':''});pendingSection.append(el('summary','Учтены, но ещё не готовы: '+groups.size+' номеров / пунктов'));const groupList=[...groups.values()];pendingPage=Math.min(pendingPage,Math.max(0,Math.ceil(groupList.length/24)-1));
     for(const group of groupList.slice(pendingPage*24,(pendingPage+1)*24)){const entry=group[0],s=entry.source,article=el('article'),identity=entry.kind==='theory'?(String(s.point).startsWith('appendix-')?'Приложение '+s.point.slice(9):'Пункт '+s.point):'№ '+s.exercise;article.append(el('h3',identity+' · '+collectionNames[s.collection]+(s.examTask?' · исторический номер ЕГЭ '+s.examTask:'')),el('p',group.map(item=>item.title).join('; ')),el('p','Разбор ещё готовится.'));pendingSection.append(article);}
     pager(pendingSection,groupList.length,pendingPage,page=>{pendingPage=page;renderResults();results.querySelector('[data-catalog-pending]').open=true;});results.append(pendingSection);
    }
   }
-  function filterChanged(){readyPage=0;pendingPage=0;renderResults();}search.addEventListener('input',filterChanged);for(const node of [kind,collection,chapter])node.addEventListener('change',filterChanged);renderResults();
-  if(!options.boardSession)win.scrollTo?.(0,0);
+  function filterChanged(){readyPage=0;pendingPage=0;renderResults();}
+  search.addEventListener('input',filterChanged);
+  for(const node of [kind,collection,chapter])node.addEventListener('change',filterChanged);
+  const previous=catalogReturn;
+  catalogReturn=null;
+  if(previous){
+   search.value=previous.search;kind.value=previous.kind;collection.value=previous.collection;
+   chapter.value=previous.chapter;readyPage=previous.readyPage;pendingPage=previous.pendingPage;
+  }
+  renderResults();
+  if(previous)results.querySelector('[data-lesson="'+previous.id+'"]')?.focus();
+  else if(!options.boardSession)win.scrollTo?.(0,0);
  /* MERZLYAK_BOARD_BEGIN: semantic catalog state, activated only by the registered wrapper. */
   if(options.boardSession)boardCatalog={
    read:()=>({search:search.value,kind:kind.value,collection:collection.value,chapter:chapter.value,readyPage,pendingPage}),
@@ -433,10 +476,10 @@ function createApp(root,options){
    if(applying||!current)return;const form=event.target;
    if(form.matches('[data-final-form]')){
     const output=form.querySelector('[data-final-feedback]'),answer=current.answer,input=form.querySelector('input,textarea');
-    output.dataset.boardFeedback=answer.mode==='manual'?'manual':answer.accepted.some(value=>normalized(value)===normalized(input.value))?(state.checked?'already':state.assisted||view.querySelector('[data-main-help] details[open], [data-main-help][open]')?'assisted':'independent'):'wrong';
+    output.dataset.boardFeedback=answer.mode==='manual'?'manual':matchesAnswer(answer.accepted,input.value)?(state.checked?'already':state.assisted||view.querySelector('[data-main-help] details[open], [data-main-help][open]')?'assisted':'independent'):'wrong';
    }else{
     const section=form.closest('[data-step]'),step=current.steps.find(item=>item.id===section?.dataset.step),output=form.querySelector('[role=status]');
-    if(step?.input&&output)output.dataset.boardFeedback=step.input.accepted.some(value=>normalized(value)===normalized(form.querySelector('input').value))?'correct':'wrong';
+    if(step?.input&&output)output.dataset.boardFeedback=matchesAnswer(step.input.accepted,form.querySelector('input').value)?'correct':'wrong';
    }
   },true);
   session.attach({getState,applyState,isApplying:()=>{

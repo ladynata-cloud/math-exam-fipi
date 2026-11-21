@@ -85,7 +85,45 @@
   }
 
   function mapTitle(key, map) {
-    return /^\d+$/.test(key) ? `№${key}${map.title ? ' · ' + map.title : ''}` : map.title;
+    if (!/^\d+$/.test(key)) return map.title;
+    const registry = root.ProfileExamMap;
+    const number = Number(key);
+    const entry = number <= 13 ? registry?.fromLegacyStart(number) : registry?.fromLegacyPartTwo(number);
+    if (!entry) return map.title;
+    if (number === 9) return 'Производная и первообразная · №8; экстремумы · №12';
+    return registry.label(entry) + (map.title ? ' · ' + map.title : '');
+  }
+
+  function alphabetLinks(key, beforeLeave) {
+    const catalog = root.ProfileAlphabetCatalog;
+    const alphabets = catalog?.forNumber(key);
+    if (!alphabets?.length) return null;
+    const block = element('section', 'profile-skill-alphabets');
+    block.append(element('h3', '', 'Вспомнить основы'));
+    const back = root.location.pathname + root.location.search + root.location.hash;
+    for (const alphabet of alphabets) {
+      const group = element('div', 'profile-skill-alphabet-group');
+      group.append(element('strong', '', alphabet.short));
+      const list = element('ul');
+      for (const [id, skill] of Object.entries(alphabet.skills)) {
+        if (!skill.numbers.includes(Number(key))) continue;
+        const link = element('a', '', skill.title);
+        link.href = catalog.href(alphabet.id, id, key, back);
+        link.setAttribute('data-profile-alphabet-link', '');
+        if (beforeLeave) link.addEventListener('click', async event => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          await beforeLeave();
+          root.location.assign(link.href);
+        });
+        const row = element('li');
+        row.append(link);
+        list.append(row);
+      }
+      group.append(list);
+      block.append(group);
+    }
+    return block;
   }
 
   function challengeForm(key, challenge, index, group, refresh) {
@@ -194,7 +232,7 @@
     return card;
   }
 
-  function render(container, key, map, id, lesson) {
+  function render(container, key, map, id, { lesson, beforeLeave }) {
     const layout = element('div', 'profile-skill-layout');
     const route = element('section', 'profile-skill-route');
     if (lesson?.skill) {
@@ -204,6 +242,8 @@
     const list = element('ol', 'profile-skill-steps');
     map.skills.forEach(skill => list.append(element('li', '', skill)));
     route.append(list);
+    const alphabets = alphabetLinks(key, beforeLeave);
+    if (alphabets) route.append(alphabets);
 
     const practice = element('section', 'profile-skill-practice');
     practice.append(element('h3', '', 'Творческие задания'));
@@ -220,7 +260,7 @@
     container.replaceChildren(layout);
   }
 
-  function mount(container, keys, options = {}) {
+  function mountReady(container, keys, options = {}) {
     const data = root.ProfileSkillMapData;
     if (!data || !container || root.self !== root.top || document.body.dataset.profileBoard) return null;
     const maps = [...new Set(keys.map(String))].map(key => [key, data.maps[key] || data.trainers[key]]).filter(([, map]) => map);
@@ -260,7 +300,7 @@
       dialog.append(label);
       select.addEventListener('change', () => {
         selected = maps.find(([key]) => key === select.value) || selected;
-        render(body, ...selected, id, options.lesson);
+        render(body, ...selected, id, options);
       });
     } else {
       dialog.append(element('p', 'profile-skill-subtitle', mapTitle(...selected)));
@@ -274,7 +314,7 @@
       if (current && current !== lastPreferred) selected = maps.find(([key]) => key === String(current)) || selected;
       lastPreferred = current;
       select.value = selected[0];
-      render(body, ...selected, id, options.lesson);
+      render(body, ...selected, id, options);
       if (typeof dialog.showModal === 'function') {
         if (!dialog.open) dialog.showModal();
       } else {
@@ -294,6 +334,43 @@
       root.setTimeout(() => { if (entry.isConnected) show(); }, 0);
     }
     return entry;
+  }
+
+  function ensureExamMap() {
+    if (root.ProfileExamMap) return Promise.resolve(root.ProfileExamMap);
+    if (!root.ProfileExamMapReady) root.ProfileExamMapReady = new Promise(resolve => {
+      // Course navigation and legacy HTML may already have requested this map.
+      // Adopt that pending script instead of loading a second copy.
+      let script = [...document.querySelectorAll('script[src]')].find(script =>
+        new URL(script.src, location.href).pathname === '/ege-profil/exam-map.js');
+      const existing = Boolean(script);
+      if (!script) {
+        script = document.createElement('script');
+        script.src = '/ege-profil/exam-map.js?v=20261115-fipi-map';
+        script.async = true;
+      }
+      const settled = () => resolve(root.ProfileExamMap || null);
+      script.addEventListener('load', settled, {once: true});
+      script.addEventListener('error', () => resolve(null), {once: true});
+      if (!existing) document.head.append(script);
+      // A supplied script's error can precede this consumer. Window load is the
+      // terminal fallback, while a pending async script still has time to load.
+      else if (document.readyState === 'complete') settled();
+      else root.addEventListener('load', settled, {once: true});
+    });
+    return root.ProfileExamMapReady;
+  }
+
+  function mount(container, keys, options = {}) {
+    if (!root.ProfileSkillMapData || !container || root.self !== root.top || document.body.dataset.profileBoard) return null;
+    if (root.ProfileExamMap) return mountReady(container, keys, options);
+    const slot = element('div', 'profile-skill-slot');
+    container.append(slot);
+    ensureExamMap().then(() => {
+      // A route change can remove the waiting slot. Never mount in a stale screen.
+      if (slot.isConnected) mountReady(slot, keys, options);
+    });
+    return slot;
   }
 
   function optionByValue(spec, value) {

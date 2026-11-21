@@ -40,20 +40,26 @@
             vertices.push({x:(p.x+1)*width/2,y:(1-p.y)*height/2,z,n});
           }
           const color=object.material.color.clone().convertLinearToSRGB();
+          // Keep nearly coplanar inlays and their base in depth order as they turn.
+          const offset=object.userData.softwareDepthOffset;
+          const m=matrix.elements;
+          let depthBias=0;
+          if(Array.isArray(offset))depthBias=offset[0]*m[2]+offset[1]*m[6]+offset[2]*m[10];
+          else if(offset)depthBias=offset*object.matrixWorld.getMaxScaleOnAxis();
           for(let i=0;i<count;i+=3){
             const a=vertices[indices?indices.getX(i):i],b=vertices[indices?indices.getX(i+1):i+1],c=vertices[indices?indices.getX(i+2):i+2];
             if((b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x)>=0)continue;
             const normal=a.n.clone().add(b.n).add(c.n).normalize();
             const shade=.5+.5*Math.max(0,normal.dot(light));
             const rgb=[color.r,color.g,color.b].map(v=>Math.min(255,Math.round(v*255*shade+12)));
-            faces.push({a,b,c,z:(a.z+b.z+c.z)/3,color:'rgb('+rgb.join(',')+')'});
+            faces.push({a,b,c,z:(a.z+b.z+c.z)/3+depthBias,color:'rgb('+rgb.join(',')+')'});
           }
         });
         faces.sort((a,b)=>a.z-b.z);
         ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,width,height);
         ctx.lineWidth=.8;
         for(const line of lines){ctx.beginPath();line.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));if(line.closed)ctx.closePath();ctx.strokeStyle=line.color;ctx.globalAlpha=line.opacity;ctx.stroke();}ctx.globalAlpha=1;
-        ctx.lineWidth=.45;
+        ctx.lineWidth=.85;ctx.lineJoin='round';
         for(const f of faces){ctx.beginPath();ctx.moveTo(f.a.x,f.a.y);ctx.lineTo(f.b.x,f.b.y);ctx.lineTo(f.c.x,f.c.y);ctx.closePath();ctx.fillStyle=f.color;ctx.strokeStyle=f.color;ctx.fill();ctx.stroke();}
       }
     };
@@ -70,9 +76,10 @@
   const camera = new T.PerspectiveCamera(35, 1, .1, 70);
   camera.position.set(0, 0, 11.8);
   camera.lookAt(0, 0, 0);
-  scene.add(new T.HemisphereLight(0xffffff, 0x536b60, 1));
-  const key = new T.DirectionalLight(0xfff8e8, 1.5); key.position.set(-4, 6, 7); scene.add(key);
-  const rim = new T.DirectionalLight(0xdcf5ff, .8); rim.position.set(5, 1, -3); scene.add(rim);
+  scene.add(new T.HemisphereLight(0xe1f5eb, 0x506b66, .85));
+  const key = new T.DirectionalLight(0xffefda, 1.65); key.position.set(-4, 6, 7); scene.add(key);
+  const fill = new T.DirectionalLight(0xd4e8ff, .4); fill.position.set(4, -2, 5); scene.add(fill);
+  const rim = new T.DirectionalLight(0xc0ffea, 1.15); rim.position.set(5, 3, -4); scene.add(rim);
   const material = (color, options={}) => {
     const mat=new T.MeshStandardMaterial({color, roughness:.42, metalness:.08, ...options});
     mat.color.convertSRGBToLinear();
@@ -86,46 +93,120 @@
   function rod(g,a,b,r,mat) {const d=b.clone().sub(a);const m=mesh(g,new T.CylinderGeometry(r,r,d.length(),10),mat);m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(v(0,1,0),d.normalize());return m;}
   function tube(g,points,r,mat,closed=false) { return mesh(g,new T.TubeGeometry(new T.CatmullRomCurve3(points,closed),Math.max(32,points.length*2),r,8,closed),mat); }
   const models = {};
-  // A true toroidal tire, rim, spokes, sidewall rings and tread blocks.
+  // The tread, molded sidewalls and two faces of the wheel use separate finishes.
   const tire=models.tires=new T.Group();
-  mesh(tire,new T.TorusGeometry(.94,.32,22,64),rubber);
-  for(const z of [-.21,.21]) {
-    mesh(tire,new T.TorusGeometry(.94,.065,10,64),tread,0,0,z);
-    mesh(tire,new T.TorusGeometry(.64,.055,10,48),silver,0,0,z);
-    for(let i=0;i<6;i++){const a=i*Math.PI/3;rod(tire,v(.12*Math.cos(a),.12*Math.sin(a),z),v(.61*Math.cos(a+.15),.61*Math.sin(a+.15),z),.055,silver);}
+  const sidewall=material(0x273831,{roughness:.75,metalness:0});
+  const treadBlock=material(0x40564e,{roughness:.8,metalness:0});
+  const alloy=material(0xdde8df,{roughness:.24,metalness:.4});
+  const brake=material(0x41534d,{roughness:.58,metalness:.22});
+  const profile=[
+    [.6,-.25],[.72,-.32],[.91,-.365],[1.07,-.345],[1.17,-.28],
+    [1.23,-.18],[1.255,-.07],[1.255,.07],[1.23,.18],[1.17,.28],
+    [1.07,.345],[.91,.365],[.72,.32],[.6,.25],[.6,-.25]
+  ];
+  mesh(tire,new T.LatheGeometry(profile.map(([r,z])=>new T.Vector2(r,z)),64).rotateX(Math.PI/2),sidewall);
+  const wheelFace=new T.Group();
+  mesh(wheelFace,new T.TorusGeometry(.618,.043,10,64),alloy);
+  mesh(wheelFace,new T.TorusGeometry(.553,.018,8,48),silver,0,0,.013);
+  mesh(wheelFace,new T.CylinderGeometry(.54,.54,.034,40).rotateX(Math.PI/2),brake,0,0,-.068);
+  const spokeOutline=new T.Shape([
+    new T.Vector2(.12,-.049),new T.Vector2(.34,-.048),new T.Vector2(.615,.027),
+    new T.Vector2(.615,.101),new T.Vector2(.34,.036),new T.Vector2(.12,.047)
+  ]);
+  const spoke=new T.ExtrudeGeometry(spokeOutline,{depth:.054,bevelEnabled:false}).translate(0,0,-.027);
+  const lug=new T.CylinderGeometry(.026,.03,.024,8).rotateX(Math.PI/2);
+  for(let i=0;i<5;i++){
+    const angle=i*Math.PI*2/5;
+    mesh(wheelFace,spoke,alloy).rotation.z=angle;
+    mesh(wheelFace,lug,silver,.13*Math.cos(angle),.13*Math.sin(angle),.063);
   }
-  const hub=mesh(tire,new T.CylinderGeometry(.19,.19,.5,24),silver);hub.rotation.x=Math.PI/2;
-  for(let i=0;i<44;i++) {const a=i*Math.PI*2/44;for(const z of [-.14,.14]) {const m=box(tire,.15,.07,.17,tread,1.245*Math.cos(a),1.245*Math.sin(a),z);m.rotation.z=a-Math.PI/2;m.rotation.y=z>0?.3:-.3;}}
+  mesh(wheelFace,new T.CylinderGeometry(.179,.205,.065,32).rotateX(Math.PI/2),alloy,0,0,.021);
+  mesh(wheelFace,new T.CylinderGeometry(.083,.083,.029,24).rotateX(Math.PI/2),brake,0,0,.062);
+  for(const side of [-1,1]){
+    const face=wheelFace.clone(true);
+    face.position.z=side*.286;
+    face.rotation.y=side<0?Math.PI:0;
+    tire.add(face);
+    mesh(tire,new T.TorusGeometry(.775,.012,6,56),treadBlock,0,0,side*.341);
+    mesh(tire,new T.TorusGeometry(.988,.011,6,56),treadBlock,0,0,side*.357);
+  }
+  const lugBlock=new T.BoxGeometry(.14,.05,.20);
+  for(let i=0;i<38;i++){
+    for(const side of [-1,1]){
+      const angle=(i+side*.17)*Math.PI*2/38;
+      const block=mesh(tire,lugBlock,treadBlock,1.233*Math.cos(angle),1.233*Math.sin(angle),side*.147);
+      block.rotation.set(0,side*.43,angle-Math.PI/2,'ZXY');
+    }
+  }
   // Cutaway apartment on a rectangular plan: walls, openings and furniture.
   const apartment=models.apartment=new T.Group();
-  box(apartment,2.8,.13,2.25,cream,0,-.37,0);
-  box(apartment,1.3,.025,1.05,material(0xd2dfba),-.7,-.29,-.54);
-  box(apartment,1.3,.025,1.05,material(0xe3d7b4),.7,-.29,-.54);
-  box(apartment,1.3,.025,1.03,material(0xc7dbd0),-.7,-.29,.55);
-  box(apartment,1.3,.025,1.03,material(0xece0ca),.7,-.29,.55);
-  box(apartment,2.85,.75,.09,cream,0,.04,-1.12);
-  box(apartment,.09,.75,2.25,cream,-1.4,.04,0);
-  box(apartment,.09,.75,2.25,cream,1.4,.04,0);
-  // Lower front edge keeps the floor plan legible as the model turns.
-  box(apartment,2.8,.15,.09,cream,0,-.22,1.12);
-  box(apartment,.08,.62,.8,cream,0,0,-.72);box(apartment,.08,.62,.8,cream,0,0,.72);
-  box(apartment,.9,.62,.08,cream,-.93,0,0);box(apartment,.9,.62,.08,cream,.93,0,0);
-  box(apartment,.64,.22,.95,material(0x91b4a0),-.83,-.14,-.55);
-  box(apartment,.55,.09,.25,cream,-.83,.015,-.86);
-  box(apartment,.67,.22,.36,green,.77,-.15,.65);box(apartment,.67,.22,.11,green,.77,.02,.79);
-  box(apartment,.65,.18,.24,silver,.86,-.16,-.89);
-  mesh(apartment,new T.CylinderGeometry(.26,.26,.07,24),cream,.7,-.05,-.35);
-  rod(apartment,v(.7,-.26,-.35),v(.7,-.05,-.35),.045,silver);
+  const oak=material(0xb77d4f), plaster=material(0xd9dfca), windowGlass=material(0x77b9c7);
+  const linen=material(0xf2e6d0), terracotta=material(0xca805c), upholstery=material(0x438d79);
+  // Smaller floor faces keep foreground furniture visible in the 2D projection.
+  const floor=(w,h,d,mat,x,y,z,bias)=>{
+    mesh(apartment,new T.BoxGeometry(w,h,d,4,1,4),mat,x,y,z).userData.softwareDepthOffset=[0,bias,0];
+  };
+  floor(2.96,.16,2.4,ink,0,-.42,0,-.54);
+  for(const [x,z,color] of [[-.70,-.55,0xd6b68a],[.70,-.55,0xd6c8ad],[-.70,.55,0x92b8b0],[.70,.55,0xe0be92]]){
+    floor(1.30,.075,1.02,material(color),x,-.305,z,-.16);
+  }
+  for(const z of [-1.135,1.135])box(apartment,2.86,.065,.045,oak,0,-.32,z);
+  for(const x of [-1.405,1.405])box(apartment,.045,.065,2.23,oak,x,-.32,0);
+  // Low cutaway walls leave doors, windows and furniture in view.
+  box(apartment,2.85,.38,.085,plaster,0,-.08,-1.12);
+  for(const x of [-1.4,1.4])box(apartment,.085,.30,2.25,plaster,x,-.12,0);
+  box(apartment,2.8,.12,.085,plaster,0,-.21,1.12);
+  for(const z of [-.72,.72])box(apartment,.075,.32,.78,plaster,0,-.11,z);
+  for(const x of [-.99,.99])box(apartment,.82,.32,.075,plaster,x,-.11,0);
+  for(const x of [-.78,.78]){
+    box(apartment,.52,.16,.09,windowGlass,x,.018,-1.068);
+    box(apartment,.54,.028,.12,linen,x,-.073,-1.067);
+    box(apartment,.026,.16,.095,linen,x,.018,-1.06);
+  }
+  // Bedroom, kitchen, bath and living room remain distinct at overview scale.
+  box(apartment,.61,.15,.75,oak,-.84,-.19,-.58);
+  box(apartment,.58,.09,.71,linen,-.84,-.083,-.58);
+  box(apartment,.58,.06,.45,terracotta,-.84,-.012,-.47);
+  for(const x of [-.98,-.70])box(apartment,.21,.065,.16,cream,x,-.015,-.83);
+  box(apartment,.58,.13,.25,oak,.87,-.2,-.89);
+  box(apartment,.60,.045,.27,linen,.87,-.11,-.89);
+  box(apartment,.18,.012,.13,brake,.93,-.081,-.89);
+  box(apartment,.22,.36,.28,plaster,.36,-.085,-.89);
+  box(apartment,.51,.15,.65,linen,-1.02,-.19,.54);
+  box(apartment,.40,.013,.54,windowGlass,-1.02,-.107,.54);
+  box(apartment,.23,.11,.24,linen,-.47,-.20,.40);
+  box(apartment,.73,.16,.34,upholstery,.83,-.18,.86);
+  box(apartment,.73,.17,.095,upholstery,.83,-.052,.99);
+  for(const x of [.66,1])box(apartment,.29,.053,.22,green,x,-.071,.82);
+  box(apartment,.68,.015,.41,terracotta,.79,-.26,.44);
+  box(apartment,.36,.12,.22,oak,.79,-.195,.45);
+  box(apartment,.41,.043,.26,linen,.79,-.12,.45);
   // Two exact quadratic curves, with the coefficient sign visible in the caption.
   const graphs=models.graphs=new T.Group();
-  for(const [offset,sign,mat] of [[-.85,1,green],[.85,-1,terra]]) {
+  const graphFrame=material(0x42685d), graphPaper=material(0x1e4039), gridLine=material(0x517e70);
+  const axisMat=material(0xb4d6c5), graphMint=material(0x66dbb5), graphAmber=material(0xffb468);
+  for(const [offset,sign,mat] of [[-.89,1,graphMint],[.89,-1,graphAmber]]) {
     const g=new T.Group();g.position.x=offset;graphs.add(g);
-    const axisMat=material(0xb6c6a8);
-    rod(g,v(-.72,0,-.07),v(.72,0,-.07),.014,axisMat);
-    rod(g,v(0,-.7,-.07),v(0,.8,-.07),.014,axisMat);
-    const points=[];for(let i=0;i<=48;i++){const x=-.62+i*1.24/48;points.push(v(x,sign*(2.8*x*x-.48),0));}
+    mesh(g,new T.BoxGeometry(1.65,1.94,.082,4,4,1),graphFrame,0,0,-.10).userData.softwareDepthOffset=[0,0,-.28];
+    mesh(g,new T.BoxGeometry(1.57,1.86,.032,4,4,1),graphPaper,0,0,-.058).userData.softwareDepthOffset=[0,0,-.13];
+    for(const coordinate of [-.78,-.52,-.26,.26,.52,.78]){
+      box(g,1.44,.008,.008,gridLine,0,coordinate,-.032);
+    }
+    for(const coordinate of [-.52,-.26,.26,.52]){
+      box(g,.008,1.68,.008,gridLine,coordinate,0,-.032);
+    }
+    rod(g,v(-.72,0,-.017),v(.7,0,-.017),.014,axisMat);
+    rod(g,v(0,-.84,-.017),v(0,.82,-.017),.014,axisMat);
+    const arrow=new T.ConeGeometry(.037,.092,10);
+    mesh(g,arrow,axisMat,.72,0,-.017).rotation.z=-Math.PI/2;
+    mesh(g,arrow,axisMat,0,.84,-.017);
+    const points=[];
+    for(let i=0;i<=40;i++){
+      const x=-.68+i*1.36/40;
+      points.push(v(x,sign*(2.8*x*x-.48),.038));
+    }
     tube(g,points,.046,mat);
-    for(const x of [-.19,.19]) mesh(g,new T.SphereGeometry(.045,12,8),ink,x,sign===1?.22:.18,.025);
+    mesh(g,new T.SphereGeometry(.058,12,8),linen,0,-sign*.48,.043);
   }
   // An equilateral triangle inscribed in a circle: exact circumradius 1.
   const geometry=models.geometry=new T.Group();
@@ -167,14 +248,37 @@
     sheet.position.set([-1.15,.12,1.05][i],0,0);paper.add(sheet);
     box(sheet,1.2*scale,.055,1.2*Math.SQRT2*scale,sheetMats[i]);
   }
-  // A conventional die: opposing face counts sum to seven.
-  const dice=models.dice=new T.Group();box(dice,1.35,1.35,1.35,cream);
-  const pipGeometry=new T.SphereGeometry(.095,10,8);
+  // Rounded ivory die with flush, dark pips. Opposite counts sum to seven.
+  const dice=models.dice=new T.Group();
+  const dieHalf=.675, bevel=.105, core=dieHalf-bevel;
+  const dieBody=new T.BoxGeometry(2,2,2,12,12,12);
+  const diePositions=dieBody.attributes.position,dieNormals=dieBody.attributes.normal;
+  const point=v(0,0),inner=v(0,0),normal=v(0,0);
+  // Reserve three samples on each side for the rounded part of each edge.
+  const dieCoordinate=coordinate=>Math.abs(coordinate)<=.5
+    ?coordinate*2*core
+    :Math.sign(coordinate)*(core+(Math.abs(coordinate)-.5)*2*bevel);
+  for(let i=0;i<diePositions.count;i++){
+    point.fromBufferAttribute(diePositions,i).set(dieCoordinate(point.x),dieCoordinate(point.y),dieCoordinate(point.z));
+    inner.copy(point).clampScalar(-core,core);
+    normal.subVectors(point,inner).normalize();
+    point.copy(inner).addScaledVector(normal,bevel);
+    diePositions.setXYZ(i,point.x,point.y,point.z);
+    dieNormals.setXYZ(i,normal.x,normal.y,normal.z);
+  }
+  mesh(dice,dieBody,material(0xf3e4c9,{roughness:.29}));
+  const pipGeometry=new T.CircleGeometry(.087,20);
+  const pipMat=material(0x24544a,{roughness:.52,metalness:0});
   const patterns={1:[[0,0]],2:[[-1,1],[1,-1]],3:[[-1,1],[0,0],[1,-1]],4:[[-1,1],[1,1],[-1,-1],[1,-1]],5:[[-1,1],[1,1],[0,0],[-1,-1],[1,-1]],6:[[-1,1],[1,1],[-1,0],[1,0],[-1,-1],[1,-1]]};
+  const pipDepth=dieHalf+.003;
   for(const [count,axis,sign] of [[1,'z',1],[6,'z',-1],[2,'y',1],[5,'y',-1],[3,'x',1],[4,'x',-1]]){
+    const normal=axis==='z'?v(0,0,sign):axis==='y'?v(0,sign,0):v(sign,0,0);
     for(const [a,b] of patterns[count]){
-      const pos=axis==='z'?[a*.32,b*.32,sign*.66]:axis==='y'?[a*.32,sign*.66,b*.32]:[sign*.66,a*.32,b*.32];
-      mesh(dice,pipGeometry,ink,...pos);
+      const u=a*.31,w=b*.31,d=sign*pipDepth;
+      const pos=axis==='z'?[u,w,d]:axis==='y'?[u,d,w]:[d,u,w];
+      const pip=mesh(dice,pipGeometry,pipMat,...pos);
+      pip.quaternion.setFromUnitVectors(v(0,0,1),normal);
+      pip.userData.softwareDepthOffset=.26;
     }
   }
   // Small, reusable course models. These are illustrations, not problem conditions.
@@ -210,9 +314,15 @@
   const righttriangle=group('righttriangle');polygon(righttriangle,[v(-.8,-.65),v(.8,-.65),v(-.8,.95)]);rod(righttriangle,v(-.8,-.42),v(-.57,-.42),.02,terra);rod(righttriangle,v(-.57,-.42),v(-.57,-.65),.02,terra);
   const isosceles=group('isosceles');polygon(isosceles,[v(-.9,-.6),v(.9,-.6),v(0,.95)]);rod(isosceles,v(0,.95),v(0,-.6),.02,terra);
   for(const id of ['chord','tangent','cyclic','construction']){
-    const g=group(id);mesh(g,new T.TorusGeometry(1,.035,6,40),green);
+    const g=group(id);mesh(g,new T.TorusGeometry(1,.036,8,64),graphMint);
     if(id==='tangent'){rod(g,v(1,-1.25),v(1,1.25),.035,terra);rod(g,v(0,0),v(1,0),.025,blue);dot(g,1,0);}
-    else if(id==='chord'){const a=v(-.8,-.6),b=v(.8,-.6),c=v(0,1);polygon(g,[a,b,c],cream);rod(g,a,b,.045,terra);}
+    else if(id==='chord'){
+      const a=v(-.8,-.6),b=v(.8,-.6),c=v(0,1);
+      const face=new T.Shape([a,b,c].map(p=>new T.Vector2(p.x,p.y)));
+      mesh(g,new T.ShapeGeometry(face),graphFrame,0,0,-.018);
+      rod(g,a,c,.035,cream);rod(g,b,c,.035,cream);rod(g,a,b,.044,graphAmber);
+      for(const p of [a,b,c])dot(g,p.x,p.y,.02,graphAmber,.063);
+    }
     else if(id==='cyclic')polygon(g,[v(-.8,.6),v(.6,.8),v(.8,-.6),v(-.6,-.8)],terra);
     else{polygon(g,[v(0,1),v(-.8,-.6),v(.8,-.6)],cream);rod(g,v(0,1),v(0,-.6),.025,terra);rod(g,v(-1,0),v(1,0),.02,blue);}
   }
@@ -236,14 +346,16 @@
     radii[id]=radius;
   }
   const system=new T.Group(),sun=new T.Group();scene.add(system);system.add(sun);sun.name='oge-center';
-  mesh(sun,new T.SphereGeometry(.55,20,12),material(0xc5a168,{roughness:.5}));
-  const halo=mesh(sun,new T.TorusGeometry(.7,.014,6,36),cream);halo.rotation.x=.65;
-  const orbitColors=[0x74b694,0xd9ae79,0x70b7ce,0xa9bc73,0xdc9c86];
+  const brass=material(0xd9a357,{roughness:.32,metalness:.23});
+  mesh(sun,new T.SphereGeometry(.55,36,24),brass);
+  const halo=mesh(sun,new T.TorusGeometry(.70,.017,8,64),cream);halo.rotation.set(.78,.18,-.26);
+  const outerHalo=mesh(sun,new T.TorusGeometry(.78,.010,6,64),graphMint);outerHalo.rotation.set(.92,-.28,.37);
+  const orbitColors=[0x9be0bd,0xe3b684,0x80bfcf,0xb8c780,0xe1a590];
   const orbits=topics.map((topic,index)=>{
     const g=new T.Group();g.name='orbit-'+topic.number;system.add(g);
     const tilt=new T.Euler(.35+(index*7%17)/17*.95,Math.sin(index*1.7)*.6,index*.68);
     const pts=[];for(let i=0;i<96;i++){const a=i*Math.PI*2/96;pts.push(v(Math.cos(a),Math.sin(a)));}
-    const pathMat=new T.LineBasicMaterial({color:orbitColors[Math.floor(index/5)],transparent:true,opacity:.28});pathMat.color.convertSRGBToLinear();
+    const pathMat=new T.LineBasicMaterial({color:orbitColors[Math.floor(index/5)],transparent:true,opacity:.28,depthWrite:false,toneMapped:false});pathMat.color.convertSRGBToLinear();
     const path=new T.LineLoop(new T.BufferGeometry().setFromPoints(pts),pathMat);path.name='orbit-path';g.add(path);
     const satellites=topic.types.map((type,j)=>{
       const node=new T.Group();node.name='satellite-'+topic.number+'-'+j;node.userData={orbit:topic.number,type:j};g.add(node);
@@ -267,7 +379,8 @@
       const featureIndex=featured.findIndex(f=>f.number===orbit.topic.number),feature=featured[featureIndex];
       orbit.g.visible=showcase?!!feature:overview||orbit.topic.number===selected;if(!orbit.g.visible)continue;
       orbit.g.rotation.copy(solo?new T.Euler():showcase?new T.Euler(.22+featureIndex*.035,-.12+featureIndex*.05,0):orbit.tilt);
-      orbit.path.visible=!solo;orbit.path.scale.setScalar(showcase?2.7:overview?orbit.radius:2.8);orbit.path.material.opacity=showcase?.12:overview?.13:.48;
+      orbit.path.visible=!solo;orbit.path.scale.setScalar(showcase?2.7:overview?orbit.radius:2.8);
+      orbit.path.material.opacity=showcase?(featureIndex===0?.46:.15):overview?.17:.56;
       orbit.satellites.forEach((sat,j)=>{
         sat.node.visible=showcase?j===feature.type:!solo||j===selectedType;if(!sat.node.visible)return;
         const angle=showcase?-.35+featureIndex*Math.PI*2/featured.length+time*.055:orbit.phase+time*orbit.speed+j*Math.PI*2/orbit.satellites.length;
@@ -275,7 +388,7 @@
         sat.node.position.set(radius*Math.cos(angle),radius*Math.sin(angle),0);
         // Keep model orientation independent of its orbit plane.
         sat.node.quaternion.copy(orbit.g.quaternion).invert();
-        const size=solo?1.8:showcase?.91:overview?.44:.92;
+        const size=solo?1.8:showcase?.99:overview?.44:.92;
         sat.body.scale.setScalar(size/sat.radius);
         const baseTilt=['apartment','plot','paper','roads','fraction','work','mixture'].includes(sat.type.model)?.55:.12;
         // Educational outlines stay readable: a gentle turn never makes a graph edge-on.

@@ -9,7 +9,18 @@ test('all 51 topics have prediction, experiment and reason; none claims completi
 
 test('shifted rational formula, table, domain and asymptotes share exact parameters',()=>{
  for(const k of [-3,0,3])for(const a of [-2,0,2])for(const b of [-3,0,3]){assert.equal(math.functionValue('hyperbola',-a,k,b,a),null);assert.equal(math.functionValue('hyperbola',1-a,k,b,a),k+b);assert.equal(math.functionValue('hyperbola',-2-a,k,b,a),-k/2+b);}
- const rt=boot('#lesson/p08/0');assert(rt.d.querySelector('.m8-reflection').hidden);begin(rt,1);numeric(rt,'Коэффициент k',3);numeric(rt,'Свободный член b',2);numeric(rt,'Сдвиг в знаменателе a',2);assert.equal(rt.d.querySelectorAll('[data-asymptote]').length,2);assert.match(rt.d.querySelector('.m8-equation').textContent,/x \+ 2/);assert.match(rt.d.querySelector('.m8-result').textContent,/x ≠ −?[-]?2/);const rows=Array.from(rt.d.querySelectorAll('.m8-value-table tr')).map(r=>r.textContent);assert.deepEqual(rows,['xy','-40,5','-3-1','-2не определено','-15','03,5']);numeric(rt,'Коэффициент k',0);assert.equal(rt.d.querySelectorAll('[data-asymptote]').length,0);assert.match(rt.d.querySelector('.m8-result').textContent,/вертикальной асимптоты нет/);assert.equal(rt.d.querySelector('.m8-chart circle[fill="#f7faf5"]').getAttribute('cx'),'210');assert.equal(rt.d.querySelector('.m8-chart circle[fill="#f7faf5"]').getAttribute('cy'),'158');
+ const rt=boot('#lesson/p08/0');assert(rt.d.querySelector('.m8-reflection').hidden);begin(rt,1);numeric(rt,'Коэффициент k',3);numeric(rt,'Свободный член b',2);numeric(rt,'Сдвиг в знаменателе a',2);assert.equal(rt.d.querySelectorAll('[data-asymptote]').length,2);assert.match(rt.d.querySelector('.m8-equation').textContent,/x \+ 2/);assert.match(rt.d.querySelector('.m8-result').textContent,/x ≠ −?[-]?2/);const rows=Array.from(rt.d.querySelectorAll('.m8-value-table tr')).map(r=>r.textContent);assert.deepEqual(rows,['xy','-40,5','-3-1','-2не определено','-15','03,5']);numeric(rt,'Коэффициент k',0);assert.equal(rt.d.querySelectorAll('[data-asymptote]').length,0);assert.match(rt.d.querySelector('.m8-result').textContent,/вертикальной асимптоты нет/);
+ const graph=rt.d.querySelector('.m8-chart'),hole=graph.querySelector('circle[fill="#f7faf5"]');
+ const grid=Array.from(graph.querySelectorAll('line[stroke="#e1e8df"]'));
+ const coordinate=(line,attribute)=>Number(line.getAttribute(attribute));
+ const vertical=grid.filter(line=>coordinate(line,'x1')===coordinate(line,'x2'));
+ const horizontal=grid.filter(line=>coordinate(line,'y1')===coordinate(line,'y2'));
+ const unitX=(coordinate(vertical[1],'x1')-coordinate(vertical[0],'x1'))/2;
+ const unitY=(coordinate(horizontal[0],'y1')-coordinate(horizontal[1],'y1'))/2;
+ assert(unitX>0);assert.equal(unitX,unitY,'a unit is the same length on both axes');
+ const [xAxis,yAxis]=graph.querySelectorAll('line[stroke="#7f9486"]');
+ assert.equal(Number(hole.getAttribute('cx')),coordinate(yAxis,'x1')-2*unitX);
+ assert.equal(Number(hole.getAttribute('cy')),coordinate(xAxis,'y1')-2*unitY);
  rt.input(rt.d.querySelector('.m8-reflection select'),0);rt.button('Проверить объяснение');assert.match(rt.d.querySelector('.m8-reflection').textContent,/Объяснение верно/);const s=rt.api.getState(),record=s.tasks[rt.w.MakarychevCourse.lessons[7].tasks[0].id];assert(record.assisted);assert(!record.correct);assert(record.investigation.explained);const re=boot('#lesson/p08/0',s);assert.match(re.d.querySelector('.m8-result').textContent,/вертикальной асимптоты нет/);assert.equal(re.d.querySelectorAll('[data-asymptote]').length,0);assert(re.api.getState().tasks[rt.w.MakarychevCourse.lessons[7].tasks[0].id].investigation.explained);rt.close();re.close();
 });
 
@@ -40,3 +51,71 @@ test('valid graph no-hole token is a mathematical attempt, not a format error',(
 test('graph parser readable rational coefficients retain mathematical attempt history',()=>{const rt=boot(),lesson=rt.w.MakarychevCourse.lessons.find(l=>l.id==='p04'),index=lesson.tasks.findIndex(t=>t.id==='p04-ex108-графики'),task=lesson.tasks[index];assert(index>=0);rt.w.history.replaceState(null,'','#lesson/p04/'+index);rt.api.route();const value='4/-1;1;2;3';assert(rt.w.MakarychevTaskGraphs.parsePair(value));rt.answer(value);let rec=rt.api.getState().tasks[task.id];assert(!rec.correct);assert.equal(rec.attempts,1);assert.equal(rec.firstAttempt.value,value);rt.answer(task.answer);rec=rt.api.getState().tasks[task.id];assert(rec.correct);assert.equal(rec.attempts,2);assert(!rec.independent);rt.close();});
 
 test('an unfinished graph tuple remains a format correction before the first answer',()=>{const rt=boot(),lesson=rt.w.MakarychevCourse.lessons.find(l=>l.id==='p02'),index=lesson.tasks.findIndex(t=>t.id==='p02-ex038-а'),task=lesson.tasks[index];rt.w.history.replaceState(null,'','#lesson/p02/'+index);rt.api.route();rt.answer('0,5;-2,5');assert.equal(rt.api.getState().tasks[task.id].attempts,0);rt.answer(task.answer);assert(rt.api.getState().tasks[task.id].independent);rt.close();});
+
+test('square equation shows two, one or no points and distinguishes exact and approximate roots', () => {
+ const rt=boot('#lesson/p12/0');
+ begin(rt,0);
+ const points=()=>rt.d.querySelectorAll('#model svg circle').length;
+ const result=()=>rt.d.querySelector('#model .m8-result').textContent;
+ numeric(rt,'Правая часть a',9);
+ assert.equal(points(),2);assert.match(result(),/x₁ = [-−]3, x₂ = 3/);
+ numeric(rt,'Правая часть a',5);
+ assert.equal(points(),2);assert.match(result(),/x₁ = −√5 ≈ [-−]2,236, x₂ = √5 ≈ 2,236/);
+ numeric(rt,'Правая часть a',0);
+ assert.equal(points(),1);assert.match(result(),/Один корень: x = 0/);
+ numeric(rt,'Правая часть a',-4);
+ assert.equal(points(),0);assert.match(result(),/Действительных корней нет/);
+ const restored=boot('#lesson/p12/0',rt.api.getState());
+ assert.match(restored.d.querySelector('#model .m8-result').textContent,/Действительных корней нет/);
+ restored.close();rt.close();
+});
+
+test('square of a signed base gives its absolute value on both sides of zero', () => {
+ const rt=boot('#lesson/p16/0');begin(rt,1);
+ for(const a of [-3,0,3]){
+  numeric(rt,'Число a',a);
+  assert(rt.d.querySelector('#model .m8-equation').textContent.endsWith('= '+Math.abs(a)));
+ }
+ rt.close();
+});
+
+test('a pupil can keep a correct root, then complete the set using plus-minus notation', () => {
+ const rt=boot('#lesson/p12/0');
+ rt.answer('6');
+ let task=rt.api.getState().tasks['p12-t01'];
+ assert.equal(task.attempts,1);assert.match(task.feedback,/Это число подходит/);
+ rt.answer('±5');
+ task=rt.api.getState().tasks['p12-t01'];assert.equal(task.attempts,2);assert(!task.correct);
+ rt.answer('±6');
+ task=rt.api.getState().tasks['p12-t01'];assert(task.correct);assert(!task.independent);assert.equal(task.firstAttempt.value,'6');
+ const restored=boot('#lesson/p12/0',rt.api.getState());
+ assert(restored.api.getState().tasks['p12-t01'].correct);
+ restored.close();rt.close();
+});
+
+test('a plus-minus pair for an arithmetic root is a mathematical misconception', () => {
+ const rt=boot('#lesson/p11/0');
+ rt.answer('±9');
+ const task=rt.api.getState().tasks['p11-t01'];
+ assert(!task.correct);assert.equal(task.attempts,1);assert.match(task.feedback,/Знак √ обозначает одно неотрицательное значение/);
+ rt.answer('9');assert(rt.api.getState().tasks['p11-t01'].correct);
+ rt.close();
+});
+
+test('saved roots with a trailing delimiter keep their original completion', () => {
+ const rt=boot('#lesson/p12/0'),state=rt.api.getState();
+ state.tasks['p12-t01']={value:'{−6;6;}',correct:true,attempts:1,assisted:false,independent:true,
+  completion:{at:Date.now()-1000,attempts:1,assisted:false,independent:true}};
+ const restored=boot('#lesson/p12/0',state),record=restored.api.getState().tasks['p12-t01'];
+ assert(record.correct);assert(record.independent);assert.equal(record.value,'{−6;6;}');assert.equal(record.attempts,1);
+ restored.close();rt.close();
+});
+
+test('the unknown in a square-root equation has no assumed sign', () => {
+ const rt=boot('#lesson/p11/4');
+ rt.answer('±8');
+ const task=rt.api.getState().tasks['p11-t05'];
+ assert.equal(task.attempts,1);assert.match(task.feedback,/Проверь каждое из них по условию/);
+ assert.doesNotMatch(task.feedback,/неотрицательн/);
+ rt.close();
+});

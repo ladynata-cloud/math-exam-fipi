@@ -451,21 +451,29 @@ function buildT2a(){
   <div class="note">По шагам: клетки гостиной → сколько досок (одна доска = 0,16 м² = одна клетка) → упаковки, округляя <b>вверх</b>.</div>
   <div class="ansrow"><label>Ответ</label><input class="ans mono" id="a2a" inputmode="numeric" placeholder="упаковок"><span class="unit">уп.</span></div>`;
 }
-function checkT2a(){
-  const inp=byId('a2a'),v=parseNum(inp.value),b=roleCells('gost'),ans=Math.ceil(b/14);
-  if(near(v,ans,1e-9)){setIn(inp,true);return good(`Верно: <b>${ans}</b> уп. ${b} досок ÷ 14 = ${fmt((b/14).toFixed(2))} → вверх.`);}
-  setIn(inp,false);
-  if(near(v,ans-1,0.5))return bad(`${ans-1} мало: ${(ans-1)*14} досок < ${b}. Нужна ещё упаковка — <b>${ans}</b>.`);
-  if(near(v,b,0.5))return bad(`${b} — это число <b>досок</b>. Разделите на 14 и округлите вверх.`);
-  if(near(v,roleM2('gost'),0.05))return bad(`${fmt(roleM2('gost'))} — площадь в м². Дальше: досок ${b}, упаковок ${ans}.`);
-  return bad(`Не сходится. Клеток в гостиной ${b} → досок ${b} → упаковок ⌈${b}/14⌉ = ${ans}.`);
+function packBoundary(needed,size,count){
+  return `${count-1} уп. вмещают ${size*(count-1)} шт. — мало. ${count} уп. вмещают ${size*count} шт. — на ${needed} шт. хватает.`;
 }
-const hintT2a=()=>`Доска 0,2·0,8 = <b>0,16 м²</b> — ровно одна клетка. Число досок = числу клеток гостиной (${roleCells('gost')}). Делим на 14, округляем вверх.`;
+function checkPacks(input,needed,size,material){
+  const count=parseNum(input.value),answer=Math.ceil(needed/size);
+  setIn(input,count===answer);
+  if(count===answer)return good('Верно. '+packBoundary(needed,size,count));
+  if(!Number.isSafeInteger(count)||count<0||count>Number.MAX_SAFE_INTEGER/size)return bad('Запишите целое число упаковок от нуля.');
+  if(count===needed)return bad(`Это совпадает с количеством ${material}. В ответе нужно число упаковок по ${size} шт.`);
+  const available=count*size;
+  return available<needed
+    ?bad(`В ${count} уп. всего ${available} шт. Остался незакрытый пол. Проверь, хватит ли ещё одной упаковки.`)
+    :bad(`В ${count} уп. ${available} шт. — хватает, но требуется минимум. Проверь, хватит ли одной упаковкой меньше.`);
+}
+function checkT2a(){
+  return checkPacks(byId('a2a'),roleCells('gost'),14,'досок');
+}
+const hintT2a=()=>`Сравни площадь доски с площадью одной клетки. Затем посчитай клетки гостиной и проверь, сколько досок содержат две соседние покупки.`;
 function solveT2a(){const b=roleCells('gost'),p=Math.ceil(b/14);
   return `<h4>По шагам</h4>
     <div class="step"><span class="b">1</span>Доска: <span class="eq">0,2 · 0,8 = 0,16 м²</span> = одна клетка.</div>
     <div class="step"><span class="b">2</span>Гостиная: <b>${b}</b> клеток → <b>${b}</b> досок.</div>
-    <div class="step"><span class="b">3</span>Упаковок: <span class="eq">${b} / 14 = ${fmt((b/14).toFixed(2))}</span> → вверх → <b>${p}</b>.</div>
+    <div class="step"><span class="b">3</span>${packBoundary(b,14,p)}</div>
     <div class="ans-final">Ответ: <b>${p}</b></div>`;}
 
 /* ---------- Задание 2.2 — плитка · лоджии ---------- */
@@ -475,20 +483,14 @@ function buildT2b(){
   <div class="ansrow"><label>Ответ</label><input class="ans mono" id="a2b" inputmode="numeric" placeholder="упаковок"><span class="unit">уп.</span></div>`;
 }
 function checkT2b(){
-  const inp=byId('a2b'),v=parseNum(inp.value),lk=roleCells('logK'),lb=roleCells('logB'),t=lk+lb,ans=Math.ceil(t/12);
-  if(near(v,ans,1e-9)){setIn(inp,true);return good(`Верно: <b>${ans}</b>. ${lk} + ${lb} = ${t} плиток ÷ 12 = ${fmt((t/12).toFixed(2))} → вверх.`);}
-  setIn(inp,false);
-  if(near(v,ans-1,0.5))return bad(`${ans-1} мало: ${(ans-1)*12} плиток < ${t}. Нужна ещё упаковка — <b>${ans}</b>.`);
-  if(near(v,t,0.5))return bad(`${t} — число <b>плиток</b>. Разделите на 12 и округлите вверх.`);
-  if(near(v,Math.ceil(lk/12),0.5)||near(v,Math.ceil(lb/12),0.5))return bad(`Похоже, посчитана одна лоджия. Нужны <b>обе</b>: ${lk} + ${lb} = ${t} плиток.`);
-  return bad(`Не сходится. Плиток ${t} → упаковок ⌈${t}/12⌉ = ${ans}.`);
+  return checkPacks(byId('a2b'),roleCells('logK')+roleCells('logB'),12,'плиток для обеих лоджий');
 }
-const hintT2b=()=>`Плитка 40×40 см = 1 клетка. Лоджии: ${roleCells('logK')} и ${roleCells('logB')} клеток. Сложите, поделите на 12, округлите вверх.`;
+const hintT2b=()=>`Сравни плитку с клеткой плана. Учти обе лоджии. Когда найдёшь число упаковок, проверь ещё и покупку на одну упаковку меньше.`;
 function solveT2b(){const lk=roleCells('logK'),lb=roleCells('logB'),t=lk+lb,p=Math.ceil(t/12);
   return `<h4>По шагам</h4>
     <div class="step"><span class="b">1</span>Плитка 40×40 см = 1 клетка.</div>
     <div class="step"><span class="b">2</span>Лоджии: <span class="eq">${lk} + ${lb} = ${t}</span> клеток → ${t} плиток.</div>
-    <div class="step"><span class="b">3</span>Упаковок: <span class="eq">${t} / 12 = ${fmt((t/12).toFixed(2))}</span> → вверх → <b>${p}</b>.</div>
+    <div class="step"><span class="b">3</span>${packBoundary(t,12,p)}</div>
     <div class="ans-final">Ответ: <b>${p}</b></div>`;}
 
 /* ---------- Площадь (общее) ---------- */

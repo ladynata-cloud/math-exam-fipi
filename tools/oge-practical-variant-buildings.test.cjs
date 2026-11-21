@@ -94,6 +94,21 @@ test('apartments: all 10 canonical and both generated types retain native gradin
   } finally { ctx.dom.window.close(); }
 });
 
+test('apartments: incorrect pack counts prompt a retry before the two minimality checks', async () => {
+  const ctx = await open('apartments');
+  try {
+    for (const key of ['2.1','2.2']) {
+      choose(ctx, 'Вариант задания 2', key);
+      const answer = nativeAnswer(ctx, key);
+      const feedback = async value => (await submit(ctx, 2, value)).querySelector('.pv-feedback').textContent;
+      assert.match(await feedback(answer-1), /ещё одной упаковки/);
+      assert.match(await feedback(answer+1), /упаковкой меньше/);
+      assert.match(await feedback(answer-0.5), /целое число/);
+      assert.match(await feedback(answer), /мало.*хватает/);
+    }
+  } finally { ctx.dom.window.close(); }
+});
+
 test('apartments: persistent drafts, tables and help survive unrelated checks and subtype choices', async () => {
   const ctx = await open('apartments');
   try {

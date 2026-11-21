@@ -46,9 +46,9 @@ test('catalog contains every actual EGE family once, including focused practice,
   ctx.PathData.meta.push({ id: 'grade7-fake', pos: 17, title: 'Other course', grade7: true }, { id: 'pre7-fake', pos: 1, title: 'Other course', pre7: true });
   const result = ctx.EgeBazaJourney.snapshot(storage());
   assert.equal(result.status, 'empty');
-  assert.deepEqual(plain(result.lines.map(line => line.total)), [29, 13, 25, 14, 12, 18, 2]);
+  assert.deepEqual(plain(result.lines.map(line => line.total)), [29, 13, 25, 14, 12, 20, 2]);
   const ids = result.lines.slice(0, 6).flatMap(line => line.groups[0].items.map(item => item.id));
-  assert.equal(ids.length, 111); assert.equal(new Set(ids).size, 111);
+  assert.equal(ids.length, 113); assert.equal(new Set(ids).size, 113);
   assert(ids.includes('equations-brackets')); assert(!ids.includes('grade7-fake')); assert(!ids.includes('pre7-fake'));
   assert.equal(result.lines[0].groups[1].total, 6); assert.equal(result.lines[1].groups[1].total, 4);
   assert.equal(result.lines[6].items.length, 2);
@@ -178,7 +178,8 @@ test('a corrupt sibling rejected by the real all-or-nothing loader disables ever
   assert.equal(result.sources.path.resumeStatus, 'rejected'); assert.equal(find(result, 'box').independentCount, 1);
   assert.equal(find(result, 'box').resume, false); assert.equal(result.checks.active, null);
   assert(result.lines.flatMap(line => line.items).filter(item => item.source === 'path').every(item => !item.resume));
-  assert.equal(result.recommendation.kind, 'recovery'); assert(result.recommendation.href.startsWith('/ege-baza/index.html#'));
+  assert.equal(result.recommendation.kind, 'recovery'); assert.equal(result.recommendation.href, '/ege-baza/path/index.html?practice=recovery#practice=box&previous=123');
+  assert.equal(result.recommendation.resultsHref, '/ege-baza/index.html#line?line=m05');
   assert(!result.recommendation.reason.includes('сохранит текущее условие'));
   assert.equal(JSON.stringify(store.text), before); assert.equal(store.writes, 0);
 });
@@ -197,6 +198,7 @@ test('unavailable localStorage does not throw or attempt to establish another pe
   const result = ctx.EgeBazaJourney.snapshot();
   assert.equal(result.status, 'blocked'); assert.equal(result.recommendation.kind, 'recovery');
   assert.equal(result.lines[0].independent, null);
+  assert.equal(result.recommendation.href, '/ege-baza/path/index.html?practice=recovery#practice=round');
 });
 
 
@@ -214,4 +216,12 @@ test('optional personal learning-cycle fields resume safely and malformed siblin
     assert.equal(result.recommendation.kind, 'recovery');
     assert.equal(JSON.stringify(store.text), before);
   }
+});
+
+test('only the packaging lesson can resume a saved second-generation condition', () => {
+  const ctx = runtime(), key = ctx.EgeBazaJourney.keys.path;
+  const project = lessons => ctx.EgeBazaJourney.snapshot(storage({ [key]: pathSave(lessons) }));
+  assert.equal(project({ round: lesson({ roundVersion: 2, draft: '3' }) }).recommendation.kind, 'resume');
+  assert.equal(project({ round: lesson({ roundVersion: 9, draft: '3' }) }).sources.path.resumeCompatible, false);
+  assert.equal(project({ box: lesson({ roundVersion: 2, draft: '3' }) }).sources.path.resumeCompatible, false);
 });

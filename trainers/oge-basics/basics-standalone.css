@@ -18,6 +18,9 @@ body.basics-task-first{background:#f7f9f7;color:#20362b;--accent:#28764d;--accen
 .basics-task-first .answer-zone{margin-top:20px}
 .basics-task-first .answer-input{min-width:130px;font-size:23px;border-color:#b6cbbd;background:#fff}
 .basics-task-first .choice{background:#fff;border-color:#dce6df;line-height:1.6}
+.basics-task-first .choice.selected{background:#e8f1ff;border-color:#356b9c;box-shadow:0 0 0 1px #356b9c;color:#193f64}
+.basics-task-first .choice.correct{background:#e8f6ef;border-color:#28764d;box-shadow:none;color:#185738}
+.basics-task-first .choice.wrong{background:#fcedeb;border-color:#b7483f;box-shadow:none;color:#813a35}
 .basics-task-first .bs-options{border:1px solid #dce6df;border-radius:12px;background:#fff;padding:10px 14px;margin:22px 0 0}
 .basics-task-first .bs-options>summary{font-size:15px;font-weight:650;color:#365745;cursor:pointer;min-height:32px;padding:4px 0;list-style-position:outside;margin-left:18px}
 .basics-task-first .bs-navigation{margin:0 0 0 auto;padding:5px 10px}

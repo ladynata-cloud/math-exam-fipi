@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Финансовая математика: нестандартные схемы — Mathexam.space</title>
@@ -722,7 +723,7 @@ sub{font-size:.7em; vertical-align:sub}
   .mode-switch{margin-left:0}
 }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261115-fipi-map"></script>
 <style id="finance-readable-layout">
   /* Keep this local override after shared trainer styles. Financial ledgers
      need readable columns rather than the generic fixed-layout small table. */
@@ -753,8 +754,11 @@ sub{font-size:.7em; vertical-align:sub}
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="13"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="13"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 
@@ -2864,5 +2868,28 @@ function init(){
 document.addEventListener('DOMContentLoaded', init);
 
 </script>
+<!-- download-panel:start:ege-profil-finance -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-finance">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-finance/ege-profil-finance.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-finance/ege-profil-finance-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-finance/ege-profil-finance-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="В задаче «Пени за задержку» укажи, что февральский платёж внесли 14-го числа, и пересчитай переплату."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adapt-finance">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-finance -->
 </body>
 </html>

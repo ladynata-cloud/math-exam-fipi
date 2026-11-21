@@ -316,6 +316,9 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body data-oge-foundation="9">
 <nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
@@ -347,14 +350,15 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 
   <div class="card">
     <h2>Линейные уравнения</h2>
-    <p><b>Главное правило.</b> Слагаемое, которое «перепрыгивает» через знак <span class="math">=</span>, меняет знак: было <span class="math">+</span> — станет <span class="math">−</span>.</p>
+    <p><b>Главное правило.</b> Чтобы сохранить равенство, прибавляй или вычитай одно и то же выражение в <b>обеих частях</b>. Например: <span class="math"><i>x</i> + 5 = 12</span> → <span class="math"><i>x</i> + 5 − 5 = 12 − 5</span> → <span class="math"><i>x</i> = 7</span>.</p>
+    <p><b>Перенос</b> — короткая запись этого действия: убираем слагаемое из обеих частей, поэтому в другой части оно появляется с противоположным знаком.</p>
     <h3>План на 4 шага</h3>
     <div class="case-row"><span class="k">1.</span><span>Раскрой скобки (множитель — на каждое слагаемое; минус перед скобкой меняет все знаки внутри).</span></div>
-    <div class="case-row"><span class="k">2.</span><span>Перенеси: всё с <span class="math"><i>x</i></span> — влево, числа — вправо (со сменой знака).</span></div>
+    <div class="case-row"><span class="k">2.</span><span>Собери слагаемые с <span class="math"><i>x</i></span> в одной части, числа — в другой. В этом разборе для удобства собираем <span class="math"><i>x</i></span> слева. При переносе меняется знак всего слагаемого.</span></div>
     <div class="case-row"><span class="k">3.</span><span>Приведи подобные: отдельно иксы, отдельно числа.</span></div>
-    <div class="case-row"><span class="k">4.</span><span>Раздели обе части на коэффициент при <span class="math"><i>x</i></span>.</span></div>
+    <div class="case-row"><span class="k">4.</span><span>Раздели обе части на коэффициент при <span class="math"><i>x</i></span>, <b>если он не равен нулю</b>.</span></div>
     <p class="link-note">Если коэффициенты дробные — сначала умножь <b>всё уравнение</b> на НОК знаменателей, дроби исчезнут.</p>
-    <div class="warn"><b>Отчаянный метод</b> (если запутался): всё, что с <span class="math"><i>x</i></span>, — влево; всё без <span class="math"><i>x</i></span> — вправо. Всегда. Потом привёл подобные и разделил. Цена — иногда возишься с лишними знаками, зато не собьёшься.</div>
+    <div class="warn"><b>На ноль не делим.</b> Если получилось <span class="math">0·<i>x</i> = 0</span>, подходит любое число. Если <span class="math">0·<i>x</i> = <i>d</i></span>, где <span class="math"><i>d</i> ≠ 0</span>, корней нет. Найденный корень проверь подстановкой в исходное уравнение.</div>
     <div class="ref-jumps">
       <span class="rj-label">Порешать в марафоне:</span>
       <button class="ref-jump" data-cases="lin1,lin2" data-label="Линейные — основные">Основные <span class="rj-n"></span></button>
@@ -366,9 +370,10 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 
   <div class="card">
     <h2>Квадратные уравнения</h2>
-    <p class="math"><i>a</i><i>x</i>² + <i>b</i><i>x</i> + <i>c</i> = 0.&nbsp; Сначала смотрим на <b>вид</b> — половина задач решается без дискриминанта.</p>
+    <p class="math"><i>a</i><i>x</i>² + <i>b</i><i>x</i> + <i>c</i> = 0, где <i>a</i> ≠ 0.&nbsp; Сначала смотрим на <b>вид</b> — неполное уравнение часто решается без дискриминанта.</p>
     <div class="case-row"><span class="k">c = 0</span><span>&nbsp;<span class="math"><i>a</i><i>x</i>² + <i>b</i><i>x</i> = 0</span> → вынеси <span class="math"><i>x</i></span>: <span class="math"><i>x</i>(<i>a</i><i>x</i> + <i>b</i>) = 0</span>. Корни: <span class="math"><i>x</i> = 0</span> и скобка = 0. <b>Не теряй ноль!</b></span></div>
-    <div class="case-row"><span class="k">b = 0</span><span>&nbsp;<span class="math"><i>a</i><i>x</i>² + <i>c</i> = 0</span> → вырази <span class="math"><i>x</i>²</span>, возьми <span class="math">±√</span>. Корня два: <span class="math">+</span> и <span class="math">−</span>.</span></div>
+    <div class="case-row"><span class="k">b = 0</span><span>&nbsp;<span class="math"><i>a</i><i>x</i>² + <i>c</i> = 0</span> → <span class="math"><i>x</i>² = <i>k</i></span>, где <span class="math"><i>k</i> = −<i>c</i>/<i>a</i></span>. Проверь знак числа справа:<br><span class="math"><i>k</i> &gt; 0</span> — два корня: <span class="math"><i>x</i> = √<i>k</i></span> и <span class="math"><i>x</i> = −√<i>k</i></span>;<br><span class="math"><i>k</i> = 0</span> — один корень: <span class="math"><i>x</i> = 0</span>;<br><span class="math"><i>k</i> &lt; 0</span> — действительных корней нет: квадрат числа не бывает отрицательным.</span></div>
+    <p class="pen-note">Проверь на примерах: <span class="math"><i>x</i>² = 9</span> → <span class="math">−3</span> и <span class="math">3</span>; <span class="math"><i>x</i>² = 0</span> → только <span class="math">0</span>; <span class="math"><i>x</i>² = −9</span> → действительных корней нет.</p>
     <div class="case-row"><span class="k">полное</span><span>&nbsp;через дискриминант.</span></div>
     <div class="big-eq"><i>D</i> = <i>b</i>² − 4<i>a</i><i>c</i>,&nbsp;&nbsp; <i>x</i> = <span class="frac"><span class="tt">−<i>b</i> ± <span class="rad"><svg viewBox="0 0 13 24" preserveAspectRatio="none"><path d="M1 13 L4.6 22.6 L12 0" fill="none" stroke="currentColor" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/></svg><span class="rad-body"><i>D</i></span></span></span><span class="bb">2<i>a</i></span></span></div>
     <p class="pen-note">Если <span class="math"><i>D</i> &gt; 0</span> — два корня; <span class="math"><i>D</i> = 0</span> — один; <span class="math"><i>D</i> &lt; 0</span> — корней нет (в задании 9 такого не будет).</p>
@@ -991,7 +996,7 @@ function stCanon(root, kc, mc, source){
     q:'Собери слагаемые с <i>x</i> слева, числа — справа. Затем сложи подобные и впиши два результата в запись ниже:',
     ui:{type:'canon'},
     transfer:source?source(state):null,
-    hint:'Слагаемое, «перепрыгнувшее» через знак «=», меняет знак: было <b>+</b> — станет <b>−</b>, было <b>−</b> — станет <b>+</b>. Потом сложи отдельно иксы, отдельно числа.',
+    hint:'Перенос — короткая запись одинакового действия с <b>обеими частями</b>. Вычти переносимое слагаемое из обеих частей: в другой части останется слагаемое с противоположным знаком. Затем сложи отдельно иксы, отдельно числа.',
     check(vals,st){
       const f=parseAll(vals); if(!f)return needMsg();
       const [k,m]=f;
@@ -1199,7 +1204,7 @@ function stMoveLeft(base,source){ // для формы x²=kx: приведи к
     q:'Перенеси всё в левую часть (справа останется 0):',
     ui:{type:'eqn',ph:'☐x² + ☐x = 0  (справа ноль)'},
     transfer:source?source(state):null,
-    hint:'kx «перепрыгивает» через «=» и меняет знак.',
+    hint:'Вычти слагаемое kx из <b>обеих частей</b>. Справа получится ноль, а слева появится −kx.',
     check(vals){
       const e=parseEqn(vals[0]);
       if(!e)return {ok:false,need:true,msg:'Не разобрала запись. Пример: x² − 5x = 0 (x² можно набрать как x^2).'};
@@ -3245,14 +3250,14 @@ function buildLearnTab(root){
     'Решить уравнение — значит найти все <b>корни</b>: числа, при которых левая часть равна правой.',
     substitution()
   ]));
-  c1.appendChild(tie('Чтобы найти корень, слагаемые «сортируют»: иксы — в одну сторону, числа — в другую. Как именно — пункт 2.'));
-  c1.appendChild(point(2,'Правило переноса',[
-    'Слагаемое, перенесённое через знак <span class="math">=</span>, <b>меняет знак</b>. Это главный приём линейных уравнений.',
+  c1.appendChild(tie('Слагаемые с x можно собрать в любой части, а числа — в другой. В этом разборе для удобства собираем x слева. Как сохранить равенство — пункт 2.'));
+  c1.appendChild(point(2,'Одинаковое действие и перенос',[
+    'Прибавляй или вычитай одно и то же выражение в <b>обеих частях</b>. Например: <span class="math"><i>x</i> + 5 = 12</span> → <span class="math"><i>x</i> + 5 − 5 = 12 − 5</span> → <span class="math"><i>x</i> = 7</span>. Перенос — короткая запись этого действия: слагаемое в другой части появляется с противоположным знаком.',
     termFlyer()
   ]));
-  c1.appendChild(tie('Когда всё расставлено и подобные приведены, остаётся одно деление — пункт 3.'));
+  c1.appendChild(tie('После переноса приведём подобные и проверим коэффициент при x — пункт 3.'));
   c1.appendChild(point(3,'Привести подобные и разделить',[
-    'После переноса складываем отдельно иксы, отдельно числа. Получается <span class="math">☐·<i>x</i> = ☐</span> — делим правую часть на коэффициент при <span class="math"><i>x</i></span>. Ответ бывает дробным — записываем десятичной дробью.',
+    'После переноса складываем отдельно иксы, отдельно числа. Получается <span class="math">☐·<i>x</i> = ☐</span> — делим <b>обе части</b> на коэффициент при <span class="math"><i>x</i></span>, <b>если он не равен нулю</b>. Ответ бывает дробным — записываем десятичной дробью.',
     worked(illus('L',{Lt:[T(7,1),T(-4)],Rt:[T(13),T(3,1)]}))
   ]));
   c1.appendChild(tie('Если в уравнении есть скобки — их раскрывают <b>первыми</b>. Тут прячется частая ошибка со знаком — пункт 4.'));
@@ -3260,10 +3265,10 @@ function buildLearnTab(root){
     'Множитель перед скобкой умножается на <b>каждое</b> слагаемое внутри. Минус перед скобкой меняет знак у всего, что внутри: <span class="math">−2(<i>x</i> − 3) = −2<i>x</i> + 6</span>.',
     worked(illus('LB',{Lt:[BR(3,[T(1,1),T(5)]),BR(-2,[T(1,1),T(-1)])],Rt:[T(4)]}))
   ]));
-  c1.appendChild(tie('Соберём всё вместе в один план — и запасной «отчаянный» способ.'));
-  c1.appendChild(point(5,'План решения (и запасной путь)',[
-    '<b>1)</b> раскрой скобки → <b>2)</b> перенеси (иксы влево, числа вправо) → <b>3)</b> приведи подобные → <b>4)</b> раздели.',
-    elt('div','warn','<b>Отчаянный метод.</b> Запутался в знаках? Правило одно: всё с <span class="math"><i>x</i></span> — влево, всё без — вправо, <b>всегда</b>. Привёл подобные, разделил. Цена — иногда лишние действия, зато не собьёшься.')
+  c1.appendChild(tie('Соберём всё вместе в один план и проверим, можно ли делить.'));
+  c1.appendChild(point(5,'План решения и проверка',[
+    '<b>1)</b> раскрой скобки → <b>2)</b> собери иксы в одной части, числа в другой → <b>3)</b> приведи подобные → <b>4)</b> раздели обе части на ненулевой коэффициент при x. Найденный корень проверь подстановкой в исходное уравнение.',
+    elt('div','warn','<b>На ноль не делим.</b> Если получилось <span class="math">0·<i>x</i> = 0</span>, подходит любое число. Если <span class="math">0·<i>x</i> = <i>d</i></span>, где <span class="math"><i>d</i> ≠ 0</span>, корней нет.')
   ]));
   c1.appendChild(tie('А если коэффициенты — дроби? Избавимся от них одним умножением — пункт 6.'));
   c1.appendChild(point(6,'Дробные коэффициенты → умножаем на НОК',[
@@ -3283,19 +3288,20 @@ function buildLearnTab(root){
   const c2=elt('div','card');
   c2.appendChild(elt('h2',null,'Глава 2. Квадратные уравнения'));
   c2.appendChild(point(8,'Коэффициенты a, b, c',[
-    'В <span class="math"><i>a</i><i>x</i>² + <i>b</i><i>x</i> + <i>c</i> = 0</span>: <span class="math"><i>a</i></span> — при <span class="math"><i>x</i>²</span>, <span class="math"><i>b</i></span> — при <span class="math"><i>x</i></span>, <span class="math"><i>c</i></span> — свободное число. Знак берём прямо из записи.',
+    'В квадратном уравнении <span class="math"><i>a</i><i>x</i>² + <i>b</i><i>x</i> + <i>c</i> = 0</span> коэффициент <span class="math"><i>a</i> ≠ 0</span>. Здесь <span class="math"><i>a</i></span> — при <span class="math"><i>x</i>²</span>, <span class="math"><i>b</i></span> — при <span class="math"><i>x</i></span>, <span class="math"><i>c</i></span> — свободное число. Знак берём прямо из записи.',
     practice((state)=>stABC({a:F(1),b:F(-10),c:F(24)},'read')(state))
   ]));
   c2.appendChild(tie('Прежде чем считать дискриминант — глянь на вид уравнения. Пункт 9.'));
   c2.appendChild(point(9,'Сначала — какой случай',[
-    'Три случая, смотрим по порядку: <span class="math"><i>c</i> = 0</span> (нет числа) → вынести <span class="math"><i>x</i></span>; <span class="math"><i>b</i> = 0</span> (нет <span class="math"><i>x</i></span>) → взять <span class="math">±√</span>; иначе — дискриминант. Первые два быстрее, поэтому проверяем их сразу.'
+    'Три случая, смотрим по порядку: <span class="math"><i>c</i> = 0</span> (нет числа) → вынести <span class="math"><i>x</i></span>; <span class="math"><i>b</i> = 0</span> (нет слагаемого с <span class="math"><i>x</i></span>) → выразить <span class="math"><i>x</i>²</span> и проверить знак числа справа; иначе — дискриминант. Первые два случая часто короче, поэтому проверяем их сразу.'
   ]));
   c2.appendChild(point(10,'Случай c = 0: вынести x',[
     'Общий множитель <span class="math"><i>x</i></span> за скобку: <span class="math"><i>x</i>(<i>a</i><i>x</i> + <i>b</i>) = 0</span>. Произведение равно нулю, если множитель равен нулю — отсюда <span class="math"><i>x</i> = 0</span> и корень скобки. <b>Ноль не теряем!</b>',
     worked(illus('QNC',{Lt:[T(3,2),T(6,1)],Rt:[T(0)]}))
   ]));
-  c2.appendChild(point(11,'Случай b = 0: корень ±√',[
-    'Выражаем <span class="math"><i>x</i>²</span> и берём квадратный корень — корней <b>два</b>, со знаками <span class="math">+</span> и <span class="math">−</span>.',
+  c2.appendChild(point(11,'Случай b = 0: вырази квадрат и проверь знак',[
+    'Из <span class="math"><i>a</i><i>x</i>² + <i>c</i> = 0</span>, где <span class="math"><i>a</i> ≠ 0</span>, получаем <span class="math"><i>x</i>² = <i>k</i></span>, где <span class="math"><i>k</i> = −<i>c</i>/<i>a</i></span>. Посмотри на знак числа справа:<br><span class="math"><i>k</i> &gt; 0</span> — два корня: <span class="math"><i>x</i> = √<i>k</i></span> и <span class="math"><i>x</i> = −√<i>k</i></span>;<br><span class="math"><i>k</i> = 0</span> — один корень: <span class="math"><i>x</i> = 0</span>;<br><span class="math"><i>k</i> &lt; 0</span> — действительных корней нет: квадрат числа не бывает отрицательным.',
+    'Примеры: <span class="math"><i>x</i>² = 9</span> → <span class="math">−3</span> и <span class="math">3</span>; <span class="math"><i>x</i>² = 0</span> → только <span class="math">0</span>; <span class="math"><i>x</i>² = −9</span> → действительных корней нет.',
     worked(illus('QNB',{Lt:[T(1,2),T(-49)],Rt:[T(0)]},'max'))
   ]));
   c2.appendChild(tie('Остальные квадратные — через дискриминант. Универсальный способ, работает всегда.'));
@@ -4037,5 +4043,28 @@ function selftest(){
 <script src="oge-course-reference-entry.js"></script>
 <script src="board-bridge.js"></script>
 <script src="oge-foundation-board.js?v=20261025"></script>
+<!-- download-panel:start:oge-task9-equations -->
+<section class="download-panel" id="download" data-trainer-download="oge-task9-equations">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/oge-task9-equations/oge-task9-equations.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/oge-task9-equations/oge-task9-equations-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/oge-task9-equations/oge-task9-equations-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Сделай текст задачи крупнее."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:oge-task9-equations -->
 </body>
 </html>

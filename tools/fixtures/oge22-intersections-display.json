@@ -1,0 +1,23 @@
+{
+  "task": "docs/tasks/TRAINER_DOWNLOADS_STAGE4_20261114.md",
+  "sourceBase": "1dea53a92200942bd40712cfed2ce06085d0c892",
+  "file": "trainers/oge-task22-functions-graphs.html",
+  "reason": "The shifted hyperbola must display the actual intersection positions and their count. Generators, domains and answer graders remain unchanged.",
+  "fragments": [
+    {
+      "name": "horizontal measure renderer",
+      "before": "  addMeasureH(m,pieces,extraCount){\n    // draw y=m line + intersection markers; return count\n    const py=this.Y(m);\n    const ln=svgEl('line',{x1:this.X(this.xmin),y1:py,x2:this.X(this.xmax),y2:py,class:'measure'});\n    this.svg.appendChild(ln);this._mline=ln;\n    // markers\n    const g=svgEl('g');this.svg.appendChild(g);this._mmarks=g;\n    const xs=this.intersectH(pieces,m);\n    for(const x of xs){g.appendChild(svgEl('circle',{cx:this.X(x),cy:py,r:5,class:'xmark'}));}\n    // count badge\n    const cnt=(extraCount!=null)?extraCount:countH(pieces,Frac.fromNum(m.toFixed(4)));\n    const badge=svgEl('g');this.svg.appendChild(badge);this._mbadge=badge;\n    const bx=this.W-96,by=14;\n    badge.appendChild(svgEl('rect',{x:bx,y:by,width:86,height:38,rx:6,class:'badge-bg'}));\n    const t1=svgEl('text',{x:bx+43,y:by+16,class:'badge-t1'});t1.textContent='общих точек';badge.appendChild(t1);\n    const t2=svgEl('text',{x:bx+43,y:by+33,class:'badge-t2'});t2.textContent=xs.length;badge.appendChild(t2);\n    const lab=svgEl('text',{x:this.X(this.xmax)-4,y:py-5,class:'measure-lab'});lab.textContent='y='+(Math.round(m*100)/100);badge.appendChild(lab);\n    return xs.length;\n  }\n",
+      "after": "  addMeasureH(m,pieces,extraXs){\n    // draw y=m line + intersection markers; return count\n    const py=this.Y(m);\n    const ln=svgEl('line',{x1:this.X(this.xmin),y1:py,x2:this.X(this.xmax),y2:py,class:'measure'});\n    this.svg.appendChild(ln);this._mline=ln;\n    // markers\n    const g=svgEl('g');this.svg.appendChild(g);this._mmarks=g;\n    const xs=extraXs??this.intersectH(pieces,m);\n    for(const x of xs){g.appendChild(svgEl('circle',{cx:this.X(x),cy:py,r:5,class:'xmark'}));}\n    // count badge\n    const badge=svgEl('g');this.svg.appendChild(badge);this._mbadge=badge;\n    const bx=this.W-96,by=14;\n    badge.appendChild(svgEl('rect',{x:bx,y:by,width:86,height:38,rx:6,class:'badge-bg'}));\n    const t1=svgEl('text',{x:bx+43,y:by+16,class:'badge-t1'});t1.textContent='общих точек';badge.appendChild(t1);\n    const t2=svgEl('text',{x:bx+43,y:by+33,class:'badge-t2'});t2.textContent=xs.length;badge.appendChild(t2);\n    const lab=svgEl('text',{x:this.X(this.xmax)-4,y:py-5,class:'measure-lab'});lab.textContent='y='+(Math.round(m*100)/100);badge.appendChild(lab);\n    return xs.length;\n  }\n"
+    },
+    {
+      "name": "initial graph view",
+      "before": "  else g.addMeasureH(val,[],spec.intersectHm(val).length),g.svg.appendChild(svgEl('g')); // count already set\n",
+      "after": "  else g.addMeasureH(val,[],spec.intersectHm(val));\n"
+    },
+    {
+      "name": "slider update",
+      "before": "    else{drawStatic(g,problem);g.addMeasureH(v,[],spec.intersectHm(v).length);label.innerHTML='y = '+fmtNum(v);}\n",
+      "after": "    else{drawStatic(g,problem);g.addMeasureH(v,[],spec.intersectHm(v));label.innerHTML='y = '+fmtNum(v);}\n"
+    }
+  ]
+}

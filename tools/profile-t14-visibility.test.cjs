@@ -16,17 +16,32 @@ const hash = text => crypto.createHash('sha256').update(text).digest('hex');
 const geometry = html.match(/<script>\n(\/\* ================= ГЕОМЕТРИЯ.*?<\/script>)/s)[1];
 assert.equal(hash(geometry), '736c2060342fc55ff9039d4168cf560bd16afeeb68e4ba1b01c2cd5d6e7b4720', 'tasks, formulae and original geometry remain unchanged');
 // Keep the historical receipt. Restore the hash-bound navigator payload and
-// require the exact skill-map includes, so any other page change stays visible.
+// require the exact H02 registry/skill-map includes, so any other page change
+// stays visible. The original geometry and outside-scene receipts stay intact.
+const examMapInclude = '<script defer src="../exam-map.js?v=20261115-fipi-map"></script>\n';
 const skillMapIncludes = [
   '<link rel="stylesheet" href="../skill-map.css?v=20261111-skills">',
-  '<script defer src="../skill-map-data.js?v=20261111-skills"></script>',
-  '<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="stereo-proof"></script>',
+  '<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>',
+  '<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="stereo-proof"></script>',
   '',
 ].join('\n');
 const restored = restorePublicNavigator('ege-profil/trainers/stereo-t14.html', html).toString('utf8');
-const originalParts = restored.split(skillMapIncludes);
-assert.equal(originalParts.length, 2, 'only one exact profile skill-map integration is allowed');
-const original = originalParts.join('');
+function restoreCourseBindings(source) {
+  const registry = source.split(examMapInclude);
+  assert.equal(registry.length, 2, 'only one exact H02 registry include is allowed');
+  assert(source.indexOf(examMapInclude) < source.indexOf(skillMapIncludes), 'registry precedes skill-map consumers');
+  const originalParts = registry.join('').split(skillMapIncludes);
+  assert.equal(originalParts.length, 2, 'only one exact profile skill-map integration is allowed');
+  return originalParts.join('');
+}
+const original = restoreCourseBindings(restored);
+for (const changed of [
+  restored.replace(examMapInclude, ''),
+  restored.replace(examMapInclude, examMapInclude + examMapInclude),
+  restored.replace('exam-map.js?v=20261115-fipi-map', 'exam-map.js?v=unknown'),
+  restored.replace('skill-map.js?v=20261115-fipi-map', 'skill-map.js?v=unknown'),
+  restored.replace(examMapInclude, '').replace(skillMapIncludes, skillMapIncludes + examMapInclude),
+]) assert.throws(() => restoreCourseBindings(changed), 'unreviewed bindings cannot erase a page change');
 const outsideScene = original.slice(0, original.indexOf('/* ================= ИНТЕРФЕЙС')) + original.slice(original.indexOf('  /* ---------- хранение ---------- */'));
 assert.equal(hash(outsideScene), '926d0da0482466d42385b07e9cc93d2f39bd5b71c8fae66b10dcd445a1f2056a', 'all other UI, lesson data and storage remain unchanged');
 const core = (source, begin, end) => source.split(begin + '\n')[1].split(end)[0];
@@ -159,4 +174,4 @@ const savedDash=hiddenNode.getAttribute('stroke-dasharray');
 hiddenNode.setAttribute('stroke-dasharray','none');
 assert.throws(()=>assert.equal(hiddenNode.getAttribute('stroke-dasharray'),'5 5'),'negative control rejects an exposed hidden stroke');
 hiddenNode.setAttribute('stroke-dasharray',savedDash);
-console.log(JSON.stringify({status:'PASS',sceneCount,checkedSegments,checkedSamples,partialIntervals:forward.length,reversedDashSamples:499,negativeControls:1,geometryHash:hash(geometry),htmlHash:hash(html)},null,2));
+console.log(JSON.stringify({status:'PASS',sceneCount,checkedSegments,checkedSamples,partialIntervals:forward.length,reversedDashSamples:499,negativeControls:1,bindingNegativeControls:5,geometryHash:hash(geometry),htmlHash:hash(html)},null,2));

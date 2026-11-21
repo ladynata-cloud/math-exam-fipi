@@ -1,0 +1,373 @@
+/* A decorative, accessible atlas. No astronomical or mastery claims are implied. */
+.star-sky {
+  --sky-ink: #f5f4ed;
+  --sky-muted: #c2cde5;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-width: 0;
+  margin: 24px 0 28px;
+  border: 1px solid #314469;
+  border-radius: 22px;
+  color: var(--sky-ink);
+  background:
+    radial-gradient(ellipse at 24% 39%, #31406766, transparent 46%),
+    radial-gradient(ellipse at 72% 70%, #51447242, transparent 43%),
+    linear-gradient(125deg, #101c37, #111c3b 48%, #172446);
+  box-shadow: 0 13px 38px #152d4d14;
+}
+.sky-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 24px 26px 0;
+}
+.star-sky .sky-eyebrow {
+  margin: 0 0 7px;
+  color: #dbc79e;
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 1.5;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.star-sky h2 {
+  color: var(--sky-ink);
+  font: 600 clamp(23px, 2.8vw, 31px)/1.17 Georgia, "Times New Roman", serif;
+  letter-spacing: -.015em;
+}
+.star-sky .sky-intro {
+  margin: 9px 0 0;
+  max-width: 530px;
+  color: var(--sky-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.star-sky .sky-pause {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid #64779d;
+  border-radius: 9px;
+  color: #e2e9f8;
+  background: #0b183447;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+.star-sky .sky-pause:hover { background: #273653; }
+.star-sky .sky-pause[aria-pressed="true"] { border-color: #e2c78e; color: #f2dcae; }
+.sky-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 236px;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 4px 20px 18px;
+}
+.sky-chart {
+  position: relative;
+  min-width: 0;
+  height: 370px;
+  background-image:
+    radial-gradient(circle at 16% 22%, #eef5ffbb 0 .7px, transparent 1.2px),
+    radial-gradient(circle at 72% 34%, #c7d8edbb 0 1px, transparent 1.4px),
+    radial-gradient(circle at 45% 61%, #b7cfedaa 0 .8px, transparent 1.3px),
+    radial-gradient(circle at 85% 14%, #e8eefaaa 0 .6px, transparent 1.2px),
+    radial-gradient(circle at 35% 85%, #f3efdfbb 0 .7px, transparent 1.2px),
+    radial-gradient(circle at 58% 8%, #c7d8f7aa 0 .9px, transparent 1.3px);
+  background-size: 139px 151px, 187px 167px, 223px 131px, 173px 197px, 193px 211px, 257px 179px;
+}
+.sky-canvas, .sky-lines {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.sky-canvas { z-index: 0; }
+.sky-lines { z-index: 1; overflow: visible; }
+.sky-lines polyline {
+  fill: none;
+  stroke-width: 1;
+  stroke-opacity: .32;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sky-lines-narrow { display: none; }
+.star-sky .sky-point {
+  position: absolute;
+  z-index: 2;
+  left: var(--star-x);
+  top: var(--star-y);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #ecf1ff;
+  transform: translate(-50%, -50%);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.sky-point::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: #8aa8e0;
+  clip-path: polygon(50% 0, 61% 34%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 34%);
+  opacity: .6;
+}
+.sky-point-number {
+  position: relative;
+  min-width: 27px;
+  height: 27px;
+  padding: 0 4px;
+  border: 1px solid #7f98c9;
+  border-radius: 5px;
+  color: #edf2ff;
+  background: #152449;
+  box-shadow: 0 0 15px #849dd622;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 25px;
+  text-align: center;
+}
+.sky-point-started::before { background: #f2d08a; opacity: .8; }
+.sky-point-started .sky-point-number { border-color: #dab57e; }
+.sky-point-independent::before { background: #b3f1d7; opacity: .9; }
+.sky-point-independent .sky-point-number { border-color: #a1dcc8; background: #1c3d42; }
+.sky-point-unknown .sky-point-number { border-style: dashed; }
+.star-sky .sky-point:hover .sky-point-number { border-color: #ffebbc; color: #ffedc7; }
+.star-sky .sky-point[aria-pressed="true"] { z-index: 3; }
+.sky-point[aria-pressed="true"]::before {
+  inset: -4px;
+  background: #ffedb6;
+  opacity: .95;
+}
+.sky-point[aria-pressed="true"] .sky-point-number {
+  color: #17233e;
+  background: #f6dda6;
+  border-color: #ffefc7;
+  box-shadow: 0 0 24px #f3d49544;
+}
+.sky-point-evidence {
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #a1dcc8;
+  border-radius: 50%;
+  color: #c6f5e1;
+  background: #163a3b;
+  font: 750 10px/1 system-ui, sans-serif;
+}
+.sky-detail {
+  min-width: 0;
+  padding: 21px 17px;
+  border: 1px solid #63739666;
+  border-radius: 15px;
+  background: #0c183780;
+  box-shadow: inset 0 1px 0 #d4def50b;
+}
+.star-sky .sky-detail-number {
+  margin: 0 0 10px;
+  color: #efd49b;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.5;
+  letter-spacing: .02em;
+}
+.star-sky .sky-detail h3 {
+  margin: 0;
+  color: var(--sky-ink);
+  font-size: 21px;
+  line-height: 1.3;
+  letter-spacing: -.015em;
+  overflow-wrap: anywhere;
+}
+.star-sky .sky-detail-description {
+  margin: 12px 0 0;
+  color: var(--sky-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.star-sky .sky-detail-count {
+  margin: 15px 0 0;
+  color: #e6eaf3;
+  font-size: 13px;
+}
+.star-sky .sky-detail-progress {
+  margin: 5px 0 0;
+  color: #bfdccd;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.sky-detail-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 17px;
+}
+.star-sky .sky-action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #f5dda7;
+  border-radius: 8px;
+  color: #172742;
+  background: #f0d8a2;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+}
+.star-sky .sky-action:hover { background: #fff0ca; }
+.star-sky .sky-action-secondary {
+  color: #e5eafa;
+  background: transparent;
+  border-color: #778bad;
+}
+.star-sky .sky-action-secondary:hover { background: #25344f; }
+.sky-footer {
+  padding: 14px 25px 18px;
+  border-top: 1px solid #7284a22e;
+  background: #0a162426;
+}
+.sky-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 17px;
+  color: #dce4f4;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.sky-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.sky-key {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  background: #8da7d4;
+  clip-path: polygon(50% 0, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0 50%, 35% 35%);
+}
+.sky-key-started { background: #efcc8b; }
+.sky-key-independent { background: #abe6cd; }
+.star-sky .sky-caption {
+  margin: 8px 0 0;
+  color: #b2bfd9;
+  font-size: 11px;
+  line-height: 1.55;
+}
+.star-sky a:focus-visible, .star-sky button:focus-visible {
+  outline: 3px solid #f7e5ac;
+  outline-offset: 3px;
+}
+@media (max-width: 1150px) {
+  .sky-layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .sky-detail { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 0 22px; }
+  .sky-detail > :not(.sky-detail-actions) { grid-column: 1; }
+  .sky-detail-actions { grid-column: 2; grid-row: 1 / span 5; align-self: center; margin: 0; }
+  .star-sky .sky-detail-description { margin-top: 8px; }
+  .star-sky .sky-detail-count { margin-top: 10px; }
+}
+@media (max-width: 600px) {
+  .star-sky { border-radius: 17px; margin-top: 20px; }
+  .sky-header { padding: 20px 15px 0; gap: 10px; }
+  .star-sky .sky-eyebrow { font-size: 9px; letter-spacing: .09em; }
+  .star-sky h2 { font-size: 25px; }
+  .star-sky .sky-intro { font-size: 12px; margin-top: 8px; }
+  .star-sky .sky-pause { padding: 8px; font-size: 11px; gap: 5px; }
+  .sky-layout { padding: 8px 10px 14px; }
+  .sky-chart { height: 360px; }
+  .sky-lines-wide { display: none; }
+  .sky-lines-narrow { display: block; }
+  .star-sky .sky-point { left: var(--star-mobile-x); top: var(--star-mobile-y); }
+  .sky-detail { display: block; padding: 16px 14px; }
+  .star-sky .sky-detail h3 { font-size: 20px; }
+  .star-sky .sky-detail-number { margin-bottom: 6px; }
+  .star-sky .sky-detail-description { font-size: 13px; }
+  .sky-detail-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-top: 14px; }
+  .star-sky .sky-action { padding: 9px 7px; font-size: 12px; gap: 5px; }
+  .sky-footer { padding: 12px 15px 15px; }
+  .sky-legend { gap: 5px 12px; font-size: 12px; }
+  .star-sky .sky-caption { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .star-sky *, .star-sky *::before, .star-sky *::after { transition: none !important; animation: none !important; }
+}
+@media (forced-colors: active) {
+  .star-sky { color: CanvasText; background: Canvas; border-color: CanvasText; }
+  .sky-canvas, .sky-lines, .sky-point::before { display: none; }
+  .sky-point-number { color: ButtonText; background: ButtonFace; border: 1px solid ButtonText; }
+  .sky-point[aria-pressed="true"] .sky-point-number { outline: 2px solid Highlight; color: HighlightText; background: Highlight; }
+}
+
+/* Both course maps share these native controls. Only the selected scene is mounted. */
+.exam-visualization {
+  min-width: 0;
+  margin: 24px 0 28px;
+}
+.exam-visualization__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+.exam-visualization__choices button {
+  box-sizing: border-box;
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 100%;
+  border: 1px solid #667a95;
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: #f5f7fc;
+  color: #263d5b;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  white-space: normal;
+  cursor: pointer;
+}
+.exam-visualization__choices button[aria-pressed="true"] {
+  border-color: #273d65;
+  background: #24395f;
+  color: #fff;
+}
+.exam-visualization__choices button:hover {
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+.exam-visualization__choices button:focus-visible {
+  outline: 3px solid #937027;
+  outline-offset: 3px;
+}
+.exam-visualization [data-exam-visual-host] {
+  min-width: 0;
+}
+.exam-visualization .star-sky,
+.exam-visualization .ocean-expedition {
+  margin: 0;
+}
+@media (max-width: 480px) {
+  .exam-visualization__choices button {
+    flex: 1 1 180px;
+    width: 100%;
+  }
+}

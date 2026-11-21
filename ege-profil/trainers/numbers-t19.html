@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Задание 19 · Числа и их свойства</title>
@@ -97,8 +98,11 @@
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="20"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="20"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -236,7 +240,10 @@ var N19 = (function(){
 
   var PRED = {
     p1a: function(v){ return isNat(v) && v - digitSum(v) === 2025; },
-    p6a: function(v){ return isNat(v) && v*v > 2025 && isSquare(v*v - 2025); }
+    p6a: function(v){
+      // For natural y < v, v² − y² ≥ v² − (v−1)² = 2v−1.
+      return isNat(v) && 2*v - 1 <= 2025 && v*v > 2025 && isSquare(v*v - 2025);
+    }
   };
 
   /* ---------- генераторы дриллов ---------- */
@@ -260,6 +267,25 @@ var N19 = (function(){
       text:"Среднее арифметическое " + n + " различных натуральных чисел равно " + m + ". Какое наибольшее значение может принимать наибольшее из них?",
       sol:"Сумма всех чисел равна " + n + " · " + m + " = " + (n*m) + ". Остальные " + (n-1) + " чисел различны, поэтому их сумма не меньше 1 + 2 + … + " + (n-1) + " = " + tri(n-1) + ". Значит наибольшее не превосходит " + (n*m) + " − " + tri(n-1) + " = " + ans + "; пример: 1, 2, …, " + (n-1) + " и " + ans + "." };
   }
+  function partitionExample(n, k){
+    var target = tri(n)/k;
+    var groups = Array.from({length:k}, function(){ return []; });
+    var sums = Array(k).fill(0);
+    function place(value){
+      if (value === 0) return true;
+      var tried = new Set();
+      for (var i = 0; i < k; i++){
+        if (sums[i] + value > target || tried.has(sums[i])) continue;
+        tried.add(sums[i]);
+        groups[i].push(value); sums[i] += value;
+        if (place(value - 1)) return true;
+        groups[i].pop(); sums[i] -= value;
+      }
+      return false;
+    }
+    if (!place(n)) throw new Error("Не удалось построить разбиение");
+    return groups;
+  }
   function dGroups(){
     var n = rnd(6,14), T = tri(n), good = [], bad = [];
     for (var k = 2; k <= n; k++) (groupsOK(n,k) ? good : bad).push(k);
@@ -267,7 +293,10 @@ var N19 = (function(){
     if (want && !good.length) want = false;
     var kk = want ? pick(good) : pick(bad);
     var why;
-    if (groupsOK(n, kk)) why = "Сумма 1 + 2 + … + " + n + " = " + T + " делится на " + kk + ", в группе получается " + (T/kk) + " — это не меньше наибольшего числа " + n + ", и такое разбиение существует.";
+    if (groupsOK(n, kk)) {
+      var sums = partitionExample(n, kk).map(function(group){ return group.join(" + ") + " = " + T/kk; });
+      why = "Сумма всех чисел равна " + T + ". На каждую группу должно приходиться " + T + " : " + kk + " = " + T/kk + ". Пример: " + sums.join("; ") + ". Каждое число от 1 до " + n + " использовано ровно один раз.";
+    }
     else if (T % kk) why = "Сумма 1 + 2 + … + " + n + " = " + T + " не делится на " + kk + " — равных групп быть не может.";
     else why = "Сумма 1 + 2 + … + " + n + " = " + T + " делится на " + kk + ", но в группе вышло бы " + (T/kk) + " — меньше числа " + n + ", а группа с ним имеет сумму не меньше " + n + ".";
     return { type:"groups", kind:"yn", p:{n:n,k:kk}, answer:groupsOK(n,kk),
@@ -338,7 +367,8 @@ var N19 = (function(){
           ans:"Ответ: нет." },
         { id:"c", kind:"num", prompt:"в) Найдите наибольшее N, для которого N − S(N) = 2025.", answer:2039,
           steps:[
-            "Из равенства N = 2025 + S(N) видно, что N > 2025, а сумма цифр четырёхзначного числа не превосходит 36. Значит 2026 ≤ N ≤ 2061.",
+            "Пусть N = 10q + y, где y — последняя цифра. Тогда N − S(N) = 10q − S(q) ≥ 9q: в числе q каждая цифра учитывается с весом не меньше 1, поэтому S(q) ≤ q.",
+            "Получаем q ≤ 225 и N ≤ 2259. Так как N = 2025 + S(N) > 2025, число четырёхзначное и S(N) ≤ 36. Значит 2026 ≤ N ≤ 2061.",
             "Все такие числа имеют вид N = 2000 + 10x + y, где x — цифра десятков, y — цифра единиц.",
             "Тогда N − S(N) = (2000 + 10x + y) − (2 + 0 + x + y) = 1998 + 9x. Условие даёт 1998 + 9x = 2025, откуда x = 3.",
             "Подходят ровно числа 2030, 2031, …, 2039 — цифра единиц любая. Наибольшее из них 2039; проверка: 2039 − 14 = 2025."
@@ -524,8 +554,15 @@ if (typeof module !== "undefined") module.exports = N19;
   "use strict";
   function parseNum(s){
     if (s == null) return NaN;
-    s = String(s).trim().replace(",", ".").replace("−", "-").replace(/\s+/g, "");
-    return s ? Number(s) : NaN;
+    s = String(s).trim().replace(",", ".").replace("−", "-");
+    if (!/^[+-]?(?:(?:\d+|\d{1,3}(?:[ \u00a0\u202f]\d{3})+)(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(s)) return NaN;
+    var value = Number(s.replace(/[ \u00a0\u202f]/g, ""));
+    return Number.isFinite(value) ? value : NaN;
+  }
+
+  function showNumberFormat(feedback){
+    feedback.className = "feedback on hint";
+    feedback.textContent = "Введите одно число. Например, десять записывается как 10.";
   }
 
   /* ---------- хранение ---------- */
@@ -683,6 +720,7 @@ if (typeof module !== "undefined") module.exports = N19;
         btn.textContent = "Проверить";
         function check(){
           var v = parseNum(inp.value);
+          if (isNaN(v)) { showNumberFormat(fb); return; }
           var ok = pt.kind === "pred" ? N19.PRED[pt.pred](v) : (!isNaN(v) && v === pt.answer);
           fb.className = "feedback on " + (ok ? "ok" : "bad");
           fb.textContent = ok
@@ -886,7 +924,7 @@ if (typeof module !== "undefined") module.exports = N19;
   document.getElementById("dCheck").addEventListener("click", function(){
     if (drillLocked) return;
     var v = parseNum(document.getElementById("dAnswer").value);
-    if (isNaN(v)) return;
+    if (isNaN(v)) { showNumberFormat(document.getElementById("dFb")); return; }
     answer(v === D.answer);
     if (v !== D.answer && typeof D.answer === "number" && Math.abs(v - D.answer) === 1){
       var fbN = document.getElementById("dFb");
@@ -912,5 +950,28 @@ if (typeof module !== "undefined") module.exports = N19;
   newDrill();
 })();
 </script>
+<!-- download-panel:start:ege-profil-divisibility -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-divisibility">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-divisibility/ege-profil-divisibility.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-divisibility/ege-profil-divisibility-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-divisibility/ege-profil-divisibility-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="В задаче «Число минус сумма его цифр» замени правую часть в а) и в) на 2043, а в б) на 2044."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adapt-divisibility">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-divisibility -->
 </body>
 </html>

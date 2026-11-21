@@ -371,6 +371,9 @@ nav.tabs button .n{display:none}
 <script defer src="oge-video-graphs.js"></script>
 <script defer src="oge-video-geometry.js"></script>
 <script defer src="oge-video-models.js" data-oge-video-task="11"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
@@ -2771,5 +2774,28 @@ if (CP.RO) selftest11();   // ?selftest=1 — маркер OGE11_SELFTEST_OK в 
 <script src="oge-course-reference-entry.js"></script>
 <script src="board-bridge.js?v=oge-homework-20261106"></script>
 <script src="oge-native-10-14-board.js?v=oge-homework-20261106" data-oge-native="11"></script>
+<!-- download-panel:start:oge-task11-graphs-trainer -->
+<section class="download-panel" id="download" data-trainer-download="oge-task11-graphs-trainer">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/oge-task11-graphs-trainer/oge-task11-graphs-trainer.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/oge-task11-graphs-trainer/oge-task11-graphs-trainer-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/oge-task11-graphs-trainer/oge-task11-graphs-trainer-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь примеры на чтение свободного члена линейной функции."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:oge-task11-graphs-trainer -->
 </body>
 </html>
