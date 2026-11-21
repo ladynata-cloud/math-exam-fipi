@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T19:17:00Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–577, with 963 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T19:39:22Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–581, with 969 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1633,6 +1633,21 @@
       ],
       "evidence": "tools/stereo-textbook/prism-vector-equations.json",
       "mathematicalReport": "tools/stereo-textbook/prism-vector-equations.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:39:22Z",
+      "scope": "Exercises 578–581: paired pyramid vectors, central symmetry and all three signed cube ratios",
+      "cardIds": [
+        "ex-main-0578",
+        "ex-main-0579",
+        "ex-main-0580",
+        "ex-main-0581-a",
+        "ex-main-0581-b",
+        "ex-main-0581-c"
+      ],
+      "evidence": "tools/stereo-textbook/pyramid-vector-midpoints.json",
+      "mathematicalReport": "tools/stereo-textbook/pyramid-vector-midpoints.test.cjs"
     }
   ],
   "cards": [
@@ -5487,6 +5502,30 @@
     {
       "id": "ex-main-0577-c",
       "sha256": "8b2118d42bd6e077c056dcfdf633d26c5ad48415915119f7219e93f97c1168b1"
+    },
+    {
+      "id": "ex-main-0578",
+      "sha256": "2e1065563d556f7b02519ae5bc7be63acd482d3ace0c7d73079939f619d0fd29"
+    },
+    {
+      "id": "ex-main-0579",
+      "sha256": "33ea746ccec17dcf1013fcd19af4bdf50bbabc1d06bfb50c50ca206671c1d7db"
+    },
+    {
+      "id": "ex-main-0580",
+      "sha256": "cf9a282d65934768cfa3007f1112d08fdd110553cf51a802ec9ddfafbe37a4b8"
+    },
+    {
+      "id": "ex-main-0581-a",
+      "sha256": "d00a28ed736c1b5ea7cbbb5fdccc664872f42789ae486f7073ba9b977fabc99d"
+    },
+    {
+      "id": "ex-main-0581-b",
+      "sha256": "c2dd322c4ba9979b757d7df203270094c40f31595f7d40be7d338f960c88d08c"
+    },
+    {
+      "id": "ex-main-0581-c",
+      "sha256": "16273fa21320e76b8e22fe7568dcd84b3b5ca75b481ac4c961eedf88ccd1aacb"
     }
   ]
 }

@@ -70,6 +70,7 @@ jobs:
           node tools/stereo-textbook/prism-diagonals-and-vector-paths.test.cjs
           node tools/stereo-textbook/signed-vector-combinations.test.cjs
           node tools/stereo-textbook/prism-vector-equations.test.cjs
+          node tools/stereo-textbook/pyramid-vector-midpoints.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -236,6 +237,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: prismVectorEquations
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/prism-vector-equations
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check pairs of vectors in two pyramids, central symmetry and signed ratios in a cube
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramidVectorMidpoints
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-vector-midpoints
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -302,5 +308,6 @@ jobs:
             artifacts/prism-diagonals-and-vector-paths/
             artifacts/signed-vector-combinations/
             artifacts/prism-vector-equations/
+            artifacts/pyramid-vector-midpoints/
           retention-days: 14
           if-no-files-found: error
