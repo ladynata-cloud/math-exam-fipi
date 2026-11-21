@@ -1413,3 +1413,33 @@ test('finish the printed equation section including forbidden denominators, fini
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('read every source unit table and reconstruct speed, time and distance for meeting and pursuit',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p19/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(6);set(c[0],6);set(c[1],2);assert(out().includes('108 р.'));c=go(7);set(c[0],40);set(c[1],2);assert(out().includes('6 ч.'));
+  for(const [k,x,newx]of [[8,'км/мин','дм/ч'],[9,'шт.','дет.'],[10,'р./м','р./км']]){c=go(k);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,4);set(c[1],3);set(c[2],1);assert(out().includes(x));set(c[0],1);set(c[2],1);assert(out().includes(newx));}
+  for(const [k,x,fresh]of [[2,25,50],[3,11,22],[11,1,2],[12,5,10],[13,60,100],[14,100,140]]){
+   c=go(k);set(c[1],2);set(c[2],2);assert(out().includes('Ответ: '+x+' '),out());const dots=f.d.querySelectorAll('#model svg circle');assert.equal(dots[0].getAttribute('cx'),dots[1].getAttribute('cx'));
+   set(c[0],1);set(c[2],2);assert(out().includes('Ответ: '+fresh+' '),out());
+  }
+  c=go(4);set(c[0],10);set(c[1],2);assert(out().includes('29 р.'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('read four signed gaps, compound versus simple increases and all six geometry dependencies',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p19/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,n]of [40,160,80,120].entries()){let c=go(15+j);set(c[1],2);set(c[2],2);assert(out().includes('Расстояние сейчас '+n+' км'));assert(out().includes('v₁ ='));set(c[0],120);set(c[2],2);assert(out().includes('Расстояние сейчас '+(n+20)+' км'));}
+  let c=go(19);set(c[0],3);set(c[1],2);assert(out().includes('Течение (13 − 7)/2 = 3 км/ч'));c=go(20);set(c[0],24);set(c[1],2);assert(out().includes('30%'));
+  for(const [i,v,other]of [[21,1200,1600],[22,1210,1728]]){c=go(i);set(c[2],2);assert(out().includes('Итог: '+v+'.'));set(c[0],20);set(c[1],3);set(c[2],2);assert(out().includes('Итог: '+other+'.'));}
+  const orig=['27 см³','6 см²','6 см','21 см²','54 см²','94 см²'],fresh=['64 см³','8 см²','8 см','24 см²','96 см²','112 см²'];
+  for(const [i,res]of orig.entries()){c=go(23+i);set(c[1],2);assert(f.q('#model svg'));assert(out().includes('Результат: '+res+'.'),out());set(c[0],4);set(c[1],2);assert(out().includes('Результат: '+fresh[i]+'.'),out());}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

@@ -1196,6 +1196,56 @@ function ratioCandidates(task){
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
 const cycleKeys={'+':'add','−':'subtract','×':'multiply','÷':'divide'};
+const freshUnitRows={
+ 's = vt':[['км','км/с','с'],['м','м/мин','мин'],['дм','дм/ч','ч'],['мм','мм/с','с']],
+ 'A = wt':[['л','л/ч','ч'],['м²','м²/день','день'],['дет.','дет./мин','мин'],['м³','м³/с','с']],
+ 'C = an':[['р.','р./л','л'],['р.','р./т','т'],['р.','р./км','км'],['р.','р./книгу','книг']]
+};
+function missingUnitsTable(item,row=-1,shown=false,fresh=false){
+ const source=fresh?freshUnitRows[item.formula]:item.rows;
+ const body=source.map((values,i)=>values.map((v,j)=>j===item.missing[i]&&!(i===row&&shown)?'?' : v));
+ return table(item.headers,body);
+}
+function approachCase(t,fresh){
+ const m=root.PetersonMath,op=m.operation,near=t.approach,first=+t.a,second=m.parse(t.b),orig=m.parse(t.given),g=op('multiply',orig,fresh?(t.unknown==='first'?'3/2':2):1);
+ if(t.unknown==='first'){
+  const relative=op('divide',g,second),v1=op(near?'subtract':'add',relative,first);
+  return {v1:m.answer(v1),v2:String(first),time:m.answer(second),space:m.answer(g),relative:m.answer(relative),answer:m.answer(v1)};
+ }
+ const relative=op(near?'add':'subtract',first,second),time=t.unknown==='time'?op('divide',g,relative):g;
+ const space=t.unknown==='time'?g:op('multiply',relative,time);
+ return {v1:String(first),v2:m.answer(second),time:m.answer(time),space:m.answer(space),relative:m.answer(relative),answer:m.answer(t.unknown==='time'?time:space)};
+}
+function changingGap(type,initial,t){
+ const direct1=type===1||type===3?-1:1,direct2=type===0||type===3?-1:1,v1=20,v2=10;
+ const left=direct1*v1*t,right=initial+direct2*v2*t;
+ const min=Math.min(0,initial,direct1*v1*3,initial+direct2*v2*3),max=Math.max(0,initial,direct1*v1*3,initial+direct2*v2*3);
+ return {left,right,distance:right-left,firstDirection:direct1,secondDirection:direct2,pos:x=>26+216*(x-min)/(max-min)};
+}
+function twoCarLanes(firstX,secondX,firstArrow,secondArrow,label){
+ const s=svg('svg',{viewBox:'0 0 270 104',class:'pm-chart pcm-route-fractions',role:'img','aria-label':label});
+ const car=(x,y,dir,colour,caption)=>{
+  ln(s,20,y,250,y,{stroke:'#9aafa3'});s.append(svg('circle',{cx:x,cy:y,r:7,fill:colour}));
+  const end=x+dir*14;ln(s,x,y,end,y,{stroke:'#314d42','stroke-width':2});ln(s,end,y,end-dir*4,y-4,{stroke:'#314d42'});ln(s,end,y,end-dir*4,y+4,{stroke:'#314d42'});
+  txt(s,135,y-17,caption,{'font-size':13});
+ };
+ car(firstX,36,firstArrow,'#235b46','Первая машина');car(secondX,77,secondArrow,'#9f4e08','Вторая машина');return s;
+}
+function formulaGeometry(tag,a){
+ const b=tag===3?10-a:4,c=5,perimeter=20;
+ if(tag===0||tag===4)return {diagram:solidFigure('cube'),labels:[['Ребро',a+' см'],['Площадь одной грани',a*a+' см²']],formula:tag===0?'V = a³':'S = 6a²',result:tag===0?a**3+' см³':6*a*a+' см²'};
+ if(tag===2)return {diagram:circleDiameterFigure(),labels:[['Радиус',a+' см'],['Число радиусов в диаметре','2']],formula:'D = 2R',result:2*a+' см'};
+ if(tag===5)return {diagram:solidFigure('cuboid'),labels:[['a × b',a*b+' см²'],['a × c',a*c+' см²'],['b × c',b*c+' см²']],formula:'S = 2(ab + ac + bc)',result:2*(a*b+a*c+b*c)+' см²'};
+ const tri=tag===1,points=[{name:'A',x:0,y:0},{name:'B',x:a,y:0},{name:'C',x:tri?0:a,y:b}];if(!tri)points.push({name:'D',x:0,y:b});
+ const pairs=tri?[['A','B'],['B','C'],['C','A']]:[['A','B'],['B','C'],['C','D'],['D','A']];
+ return {diagram:geometryFigure({points,segments:pairs,caption:tri?'Два катета под прямым углом':'Прямоугольник данного периметра'}),labels:tri?[['Первый катет',a+' см'],['Второй катет',b+' см']]:[['Периметр',perimeter+' см'],['Первая сторона',a+' см'],['Вторая сторона',b+' см']],formula:tri?'S = ab/2':'S = a(P/2 − a)',result:(tri?a*b/2:a*b)+' см²'};
+}
+function approachDiagram(t,d,stage){
+ const m=root.PetersonMath,toNum=v=>{const q=m.parse(v);return q.n/q.d;};
+ const space=toNum(d.space),v1=toNum(d.v1),v2=toNum(d.v2),time=toNum(d.time),vSecond=t.approach?-v2:v2,last=Math.max(space,time*v1,space+time*vSecond),phase=stage/2;
+ const x=n=>26+216*n/last,one=x(time*v1*phase),two=x(space+time*vSecond*phase);
+ return twoCarLanes(one,two,1,t.approach?-1:1,t.approach?'Встречное движение: стрелки направлены навстречу':'Вдогонку: обе стрелки идут вправо');
+}
 function lastSectionStory(tag,a,b){
  if(tag==='fuel'){
   const draw=a?5:6,small=2*draw,large=4*draw,withdrawn=b?draw:0;
@@ -2184,6 +2234,18 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p19'&&Number.isInteger(task?.gapDirection))return {title:'Промежуток между двумя машинами',controls:[c('Начальное расстояние, км',[100,120]),c('Время, ч',range(0,3)),c('Проверка',[[0,'Покажи положение машин'],[1,'Найти расстояние'],[2,'Обратные формулы']])],initial:[100,0,0]};
+ if(lesson?.id==='p19'&&Number.isInteger(task?.quantityFamily)){
+  return task.quantityFamily<2?{title:task.quantityFamily?'Часть и основание процентного отношения':'Собственная скорость и течение',controls:[task.quantityFamily?c('Часть A',[12,18,24]):c('Скорость течения, км/ч',[2,3,4]),c('Проверка',[[0,'Условие'],[1,'Прямая зависимость'],[2,'Обратная зависимость']])],initial:task.quantityFamily?[12,0]:[2,0]}:
+   {title:task.quantityFamily===2?'Равные прибавки по периодам':'Начисление на текущее значение',controls:[c('Ставка, %',[10,20]),c('Число периодов',[1,2,3]),c('Показать',[[0,'Сначала рассчитаю'],[1,'По периодам'],[2,'Итог и восстановление начального']])],initial:[10,2,0]};
+ }
+ if(lesson?.id==='p19'&&Number.isInteger(task?.geometryQuantity))return {title:'Свяжи размеры фигуры',controls:[c(task.geometryQuantity===2?'Радиус, см':'Размер a, см',[3,4,5]),c('Проверка',[[0,'Схема'],[1,'Известные размеры'],[2,'Формула и результат']])],initial:[3,0]};
+ if(lesson?.id==='p19'&&task?.productUnits){
+  const t=task.productUnits,items={own:['Количество предметов',[5,6,8]],books:['Цена одной тетради, р.',[20,25,30]],typing:['Страниц за час',[20,30,40]],salt:['Масса раствора, г',[100,150,200]],telegram:['Число слов',[5,10,20]]}[t];
+  return {title:'Свяжи формулу с единицами измерения',controls:[c(items[0],items[1]),c('Проверка',[[0,'Сначала запишу'],[1,'Состав величин'],[2,'Значение и проверка']])],initial:[items[1][0],0]};
+ }
+ if(lesson?.id==='p19'&&task?.unitBlanks)return {title:'Какая единица пропущена?',controls:[c('Набор',[[0,'Из таблицы'],[1,'Новые величины']]),c('Строка',[1,2,3,4]),c('Подсказка',[[0,'Сначала подберу'],[1,'Открыть ячейку']])],initial:[0,1,0]};
+ if(lesson?.id==='p19'&&task?.approachFormula)return {title:'Как исчезает начальный промежуток?',controls:[c('Данные',[[0,'Из условия'],[1,'Новое расстояние или время']]),c('Момент',[[0,'Старт'],[1,'Половина времени'],[2,'Встреча']]),c('Сверка',[[0,'Сначала решу'],[1,'Скорость сближения'],[2,'Ответ и единицы']])],initial:[0,0,0]};
  if(lesson?.id==='p37'&&task?.remainingStory){
   const tag=task.remainingStory,first=tag==='fuel'?['По 6 л','По 5 л']:tag==='park'?['94 липы','88 лип']:['140 т картофеля','128 т картофеля'];
   return {title:tag==='fuel'?'Две канистры':tag==='park'?'Состав деревьев в парке':'Остатки на овощной базе',controls:[c('Данные',first.map((x,i)=>[i,x])),...(tag==='park'?[]:[tag==='fuel'?c('Когда?',[[0,'До отбора'],[1,'После отбора']]):c('День',range(0,8))]),c('Показать',[[0,'Сначала составлю уравнение'],[1,'Таблицу'],[2,'Проверку']])],initial:tag==='park'?[0,0]:[0,0,0]};
@@ -2376,12 +2438,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2392,8 +2454,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -3672,7 +3734,59 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
  else if(n===16){show(geometryFigure({points:[{name:'A',x:0,y:0},{name:'B',x:a,y:0}],segments:[['A','B']],labels:[{x:a/2,y:-0.6,text:a+' см на карте'}],caption:'Схема отрезка на карте'}));formula('Масштаб 1 : '+b);say('На местности: '+a+' · '+b+' = '+a*b+' см = '+num(a*b/100)+' м.');stepList(['Масштаб сравнивает длины в одинаковых единицах.','Один сантиметр карты соответствует '+b+' сантиметрам на местности.','Размер схемы на экране не предназначен для измерения линейкой.']);}
  else if(n===17){show(eq(frac(3,5),' = ',frac(3*a,5*a)));const s=chart('Произведения крест-накрест');txt(s,190,90,'3');txt(s,190,270,'5');txt(s,410,90,3*a);txt(s,410,270,5*a);ln(s,155,177,225,177);ln(s,375,177,445,177);txt(s,300,185,'=');ln(s,215,105,385,245,{stroke:'#b4812a'});ln(s,215,245,385,105,{stroke:'#b4812a'});show(s);formula('3 · '+5*a+' = 5 · '+3*a+' = '+15*a);stepList(['Сначала сравни отношения: числитель и знаменатель увеличены в '+a+' раз.','Соедини числитель первой дроби со знаменателем второй — и наоборот.','Произведения равны. Все знаменатели ненулевые, поэтому пропорция верна.']);}
  else if(n===18){const pairs=[[[2,3],[8,12]],[[3,2],[12,8]],[[2,8],[3,12]],[[12,3],[8,2]]],p=pairs[a];show(eq(frac(...p[0]),' = ',frac(...p[1])));formula(p[0][0]+' · '+p[1][1]+' = '+p[0][1]+' · '+p[1][0]);say('Проверяем обе новые дроби, а не переставляем числа наугад.');stepList(['Исходная пропорция: 2 : 3 = 8 : 12.','После выбранного преобразования перекрёстные произведения равны '+p[0][0]*p[1][1]+'.']);}
- else if(n===19){const y=2*a+(b?3:0);show(table(['x','y','y : x'],range(1,5).map(x=>[x,2*x+(b?3:0),num((2*x+(b?3:0))/x)])));formula('x = '+a+' → y = '+y);say(b?'Прибавка 3 делает отношение y : x непостоянным. Это зависимость, но не прямая пропорциональность.':'Отношение y : x всегда равно 2. Это прямая пропорциональность.');}
+ else
+ if(n===19&&Number.isInteger(task.gapDirection)){
+  const type=task.gapDirection,d=changingGap(type,a,b),sign=type===0||type===2?'−':'+',oper=type<2?'+':'−',delta=type===0||type===2?'s₀ − d':'d − s₀';
+  say('Сначала между машинами '+a+' км. Скорости 20 и 10 км/ч. Прошло '+b+' ч.');
+  show(twoCarLanes(d.pos(d.left),d.pos(d.right),d.firstDirection,d.secondDirection,task.hint));
+  if(state.values[2]>=1){formula('d = s₀ '+sign+' (v₁ '+oper+' v₂)t');say('Расстояние сейчас '+d.distance+' км.');}
+  if(state.values[2]===2){formula('t = ('+delta+')/(v₁ '+oper+' v₂)');formula('v₁ = ('+delta+')/t '+(type<2?'−':'+')+' v₂');say('Для восстановления скорости по этим формулам необходимо t > 0.');}
+  stepList(['Определи направление обеих скоростей.','Проверь знак изменения промежутка.','Вырази время и первую скорость из одной связи.']);
+ }
+ else if(n===19&&Number.isInteger(task.quantityFamily)){
+  const tag=task.quantityFamily;
+  if(tag===0){const down=10+a,up=10-a;say('Лодка идёт '+down+' км/ч по течению и '+up+' км/ч против.');
+   if(b>=1)formula('vпо = u + c; vпр = u − c');if(b===2)say('Собственная скорость ('+down+' + '+up+')/2 = 10 км/ч. Течение ('+down+' − '+up+')/2 = '+a+' км/ч.');
+  }else if(tag===1){say('Часть A = '+a+', основание B = 80.');if(b>=1)say('p = 100A/B = '+num(100*a/80)+'%.');if(b===2)say('B = 100A/p = 80. А = pB/100 = '+a+'.');}
+  else{
+   const m=root.PetersonMath,compound=tag===3,rate=m.operation('divide',a,100),rows=[];let value=m.parse(1000);
+   say('Начальное значение 1000, ставка '+a+'%, периодов '+b+'.');
+   for(let k=1;k<=b;k++){const increase=m.operation('multiply',compound?value:1000,rate);value=m.operation('add',value,increase);rows.push([k,m.answer(increase),m.answer(value)]);}
+   if(state.values[2]>=1)show(table(['Период','Прибавка','Итог'],rows));if(state.values[2]===2){say('Итог: '+m.answer(value)+'.');formula(compound?'S₀ = S/(1 + p/100)ⁿ':'S₀ = S/(1 + np/100)');}
+  }
+  stepList(['Определи основание или исходную величину.','Запиши прямую связь.','Проверь обратную формулу на тех же данных.']);
+ }
+ else if(n===19&&Number.isInteger(task.geometryQuantity)){
+  const geo=formulaGeometry(task.geometryQuantity,a);show(geo.diagram);if(b>=1)show(table(['Величина','Значение'],geo.labels));
+  if(b===2){formula(geo.formula);say('Результат: '+geo.result+'.');}
+  stepList(['Назови размеры на схеме.','Различи длину, площадь и объём.','Проверь размерность численного результата.']);
+ }
+ else
+ if(n===19&&task.productUnits){
+  const key=task.productUnits;
+  const data={
+   own:{formula:'C = a × n',units:'(р./шт.) × шт. = р.',condition:'Цена 18 р., предметов '+a+'.',answer:18*a+' р. Обратно: '+(18*a)+' / '+a+' = 18 р./шт.'},
+   books:{formula:'n = 600/a',units:'р. / (р./тетрадь) = тетради',condition:'На тетради есть 600 р., цена одной '+a+' р.',answer:600/a+' тетрадей. Проверь: '+(600/a)+' × '+a+' = 600 р.'},
+   typing:{formula:'t = 240/w',units:'стр. / (стр./ч) = ч',condition:'Рукопись 240 страниц, набор '+a+' стр./ч.',answer:240/a+' ч. Проверь: '+(240/a)+' × '+a+' = 240 стр.'},
+   salt:{formula:'m = (30/100)M',units:'доля × г = г',condition:'В растворе '+a+' г, массовая доля соли 30%.',answer:num(a*.3)+' г соли. На остальное приходится '+num(a*.7)+' г.'},
+   telegram:{formula:'C = 18 + 1,1n',units:'р. + (р./слово) × слов = р.',condition:'Слов '+a+'. Подача стоит 18 р., каждое слово — ещё 1,1 р.',answer:num(18+1.1*a)+' р. Одна подача и '+a+' оплаченных слов.'}
+  }[key];say(data.condition);if(b>=1){formula(data.formula);say(data.units);}if(b===2)say('Ответ: '+data.answer);
+  stepList(['Назови величины и их единицы.','Запиши зависимость, опираясь на смысл предметов, времени или массы.','Проверь результат обратным действием либо по частям суммы.']);
+ }
+ else if(n===19&&task.unitBlanks){
+  const d=task.unitBlanks,idx=b-1,mode=state.values[2],rows=a?freshUnitRows[d.formula]:d.rows;
+  formula(d.formula);show(missingUnitsTable(d,idx,mode===1,a===1));say('Строка '+b+', пропущено: '+d.headers[d.missing[idx]]+'.');
+  if(mode)say('Подходит единица '+rows[idx][d.missing[idx]]+'.');stepList(['Определи, что измеряет столбец.','Сократи единицу времени или количества в произведении.','Проверь оставшуюся размерность.']);
+ }
+ else if(n===19&&task.approachFormula){
+  const t=task.approachFormula,data=approachCase(t,a===1),mode=state.values[2];show(approachDiagram(t,data,b));
+  say(t.unknown==='distance'?'Скорости '+data.v1+' и '+data.v2+' км/ч, время '+data.time+' ч.':t.unknown==='time'?'Промежуток '+data.space+' км, скорости '+data.v1+' и '+data.v2+' км/ч.':'Промежуток '+data.space+' км, время '+data.time+' ч, вторая скорость '+data.v2+' км/ч.');
+  if(mode>=1)say('Скорость сближения: '+(t.approach?'v₁ + v₂':'v₁ − v₂')+' = '+data.relative+' км/ч.');
+  if(mode===2)say('Ответ: '+data.answer+' '+(t.unknown==='distance'?'км':t.unknown==='time'?'ч':'км/ч')+'. Проверка: '+data.relative+' × '+data.time+' = '+data.space+' км.');
+  stepList(['Определи направление обеих стрелок.','Найди, насколько уменьшается промежуток за час.','Используй s = vсбл × t, проверяя единицы.']);
+ }
+ else
+ if(n===19){const y=2*a+(b?3:0);show(table(['x','y','y : x'],range(1,5).map(x=>[x,2*x+(b?3:0),num((2*x+(b?3:0))/x)])));formula('x = '+a+' → y = '+y);say(b?'Прибавка 3 делает отношение y : x непостоянным. Это зависимость, но не прямая пропорциональность.':'Отношение y : x всегда равно 2. Это прямая пропорциональность.');}
  else if(n===20){const y=b?12/a:12*a;show(table(['x','y',b?'x · y':'y : x'],range(1,6).map(x=>[x,num(b?12/x:12*x),12])));formula('x = '+a+'; y = '+num(y));say(b?'Увеличиваем x — y уменьшается во столько же раз. Произведение равно 12.':'Увеличиваем x — y увеличивается во столько же раз. Отношение равно 12.');}
  else if(n===21){const poly=[];for(let x=b?0.5:0;x<=6;x+=0.1){const y=b?a/x:a*x;if(y<=12)poly.push([x,y]);}show(planeFigure({xMin:0,xMax:6,yMin:0,yMax:12,polylines:[poly],points:[{name:'A',x:2,y:b?a/2:2*a}],caption:b?'График обратной пропорциональности при x > 0':'График y = kx при x ≥ 0'}));show(table(['x',1,2,3,6],[[b?'k : x':'kx',... [1,2,3,6].map(x=>b?exactRatio(a,x):a*x)]]));say(b?'Точки обратной пропорциональности не лежат на одной прямой. x = 0 запрещён.':'График прямой пропорциональности лежит на прямой через начало координат.');}
  else if(n===22){show(table(['Масса, кг','Стоимость, р.'],[[2,6],[a,3*a]]));formula(frac(2,a),' = ',frac(6,3*a));stepList(['Цена неизменна: 6 : 2 = 3 р. за килограмм.','Масса и стоимость прямо пропорциональны. Сохраняй одинаковый порядок строк.','Стоимость '+a+' кг: 3 · '+a+' = '+3*a+' р.']);}
@@ -37139,7 +37253,8 @@ window.PetersonCourse = {
       "n = 600 : a",
       "n = 600a",
       "n = a : 600"
-     ]
+     ],
+     "productUnits": "books"
     },
     {
      "id": "p19-t02",
@@ -37182,7 +37297,8 @@ window.PetersonCourse = {
       "m = 0,3M",
       "m = 30M",
       "m = M : 0,3"
-     ]
+     ],
+     "productUnits": "salt"
     },
     {
      "id": "p19-t03",
@@ -37217,10 +37333,18 @@ window.PetersonCourse = {
       "page": 35,
       "exercise": 135,
       "subpart": "1, встречное движение",
-      "reference": "№135(1, встречное движение)"
+      "reference": "№135(1, встречное движение)",
+      "readingKey": "1а"
      },
      "finalLabel": "Расстояние в километрах.",
-     "answerFormat": "integer"
+     "answerFormat": "integer",
+     "approachFormula": {
+      "approach": true,
+      "unknown": "distance",
+      "a": "36",
+      "b": "14",
+      "given": "1/2"
+     }
     },
     {
      "id": "p19-t04",
@@ -37255,10 +37379,18 @@ window.PetersonCourse = {
       "page": 35,
       "exercise": 135,
       "subpart": "1, движение вдогонку",
-      "reference": "№135(1, движение вдогонку)"
+      "reference": "№135(1, движение вдогонку)",
+      "readingKey": "1б"
      },
      "finalLabel": "Расстояние в километрах.",
-     "answerFormat": "integer"
+     "answerFormat": "integer",
+     "approachFormula": {
+      "approach": false,
+      "unknown": "distance",
+      "a": "36",
+      "b": "14",
+      "given": "1/2"
+     }
     },
     {
      "id": "p19-t05",
@@ -37300,7 +37432,8 @@ window.PetersonCourse = {
       "C = 18 + 1,1n",
       "C = (18 + 1,1)n",
       "C = 18n + 1,1"
-     ]
+     ],
+     "productUnits": "telegram"
     },
     {
      "id": "p19-t06",
@@ -37373,8 +37506,1465 @@ window.PetersonCourse = {
       ],
       "caption": "Горизонтальная ось s — путь, км; вертикальная B — бензин, л. График соответствует №140."
      }
+    },
+    {
+     "id": "p19-t07",
+     "title": "К задаче №132",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 34,
+      "exercise": 132,
+      "reference": "№132"
+     },
+     "kind": "manual",
+     "prompt": "Приведи свои примеры зависимости вида «результат равен произведению». Для каждой запиши три формулы. Для первой пробы возьми 5 предметов по 18 рублей.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Стоимость пяти предметов в рублях?",
+       "answer": "90",
+       "hint": "У произведения два множителя. Чтобы получить один из них, раздели произведение на другой ненулевой множитель.",
+       "explanation": "Для покупки C = a × n, a = C/n и n = C/a. Для пути s = v × t, v = s/t и t = s/v. В каждой обратной формуле проверь единицы и ненулевой делитель."
+      },
+      {
+       "prompt": "Если стоимость 90 р. и количество 5, какова цена?",
+       "answer": "18",
+       "hint": "У произведения два множителя. Чтобы получить один из них, раздели произведение на другой ненулевой множитель.",
+       "explanation": "Для покупки C = a × n, a = C/n и n = C/a. Для пути s = v × t, v = s/t и t = s/v. В каждой обратной формуле проверь единицы и ненулевой делитель."
+      },
+      {
+       "prompt": "Если цена 18 р., сколько предметов в покупке на 90 р.?",
+       "answer": "5",
+       "hint": "У произведения два множителя. Чтобы получить один из них, раздели произведение на другой ненулевой множитель.",
+       "explanation": "Для покупки C = a × n, a = C/n и n = C/a. Для пути s = v × t, v = s/t и t = s/v. В каждой обратной формуле проверь единицы и ненулевой делитель."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Выбери другую ситуацию и вырази каждую величину.",
+       "hint": "У произведения два множителя. Чтобы получить один из них, раздели произведение на другой ненулевой множитель.",
+       "explanation": "Для покупки C = a × n, a = C/n и n = C/a. Для пути s = v × t, v = s/t и t = s/v. В каждой обратной формуле проверь единицы и ненулевой делитель."
+      }
+     ],
+     "hint": "У произведения два множителя. Чтобы получить один из них, раздели произведение на другой ненулевой множитель.",
+     "explanation": "Для покупки C = a × n, a = C/n и n = C/a. Для пути s = v × t, v = s/t и t = s/v. В каждой обратной формуле проверь единицы и ненулевой делитель.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Запиши своё объяснение.",
+     "productUnits": "own"
+    },
+    {
+     "id": "p19-t08",
+     "title": "К задаче №133(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 133,
+      "reference": "№133(2)",
+      "subpart": "2"
+     },
+     "kind": "choice",
+     "prompt": "Как выразить время набора t рукописи в 240 страниц через производительность w страниц в час?",
+     "answer": "t = 240/w",
+     "steps": [
+      {
+       "prompt": "При 30 страницах в час сколько часов нужно?",
+       "answer": "8",
+       "hint": "Производительность — страницы за час. Время получается делением 240 страниц на число страниц за час.",
+       "explanation": "Поскольку w × t = 240, t = 240/w при w > 0. Например, при 30 страницах в час нужно 8 часов, при 40 — 6."
+      },
+      {
+       "prompt": "При 40 страницах в час сколько часов нужно?",
+       "answer": "6",
+       "hint": "Производительность — страницы за час. Время получается делением 240 страниц на число страниц за час.",
+       "explanation": "Поскольку w × t = 240, t = 240/w при w > 0. Например, при 30 страницах в час нужно 8 часов, при 40 — 6."
+      }
+     ],
+     "hint": "Производительность — страницы за час. Время получается делением 240 страниц на число страниц за час.",
+     "explanation": "Поскольку w × t = 240, t = 240/w при w > 0. Например, при 30 страницах в час нужно 8 часов, при 40 — 6.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "choices": [
+      "t = 240/w",
+      "t = 240w",
+      "t = w/240"
+     ],
+     "productUnits": "typing",
+     "errorCues": [
+      [
+       "t = 240w",
+       "При повышении скорости набор заканчивается раньше. Произведение 240w растёт."
+      ],
+      [
+       "t = w/240",
+       "Страницы дели на страницы в час, а не в обратном порядке."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t09",
+     "title": "К задаче №134(1)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 134,
+      "reference": "№134(1)",
+      "subpart": "1"
+     },
+     "kind": "manual",
+     "prompt": "Заполни четыре пропуска в таблице единиц для s = vt. После заполнения объясни, как проверить единицы произведением.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Строка 1. Выбери единицу для столбца «Время».",
+       "choices": [
+        "с",
+        "м/с",
+        "м"
+       ],
+       "answer": "с",
+       "hint": "Путь измеряется длиной. У скорости длина в числителе и время в знаменателе.",
+       "explanation": "Для s = vt заполнение по строкам: с, км, км/мин, см. Путь измеряется длиной. У скорости длина в числителе и время в знаменателе."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Строка 2. Выбери единицу для столбца «Путь».",
+       "choices": [
+        "км",
+        "ч",
+        "км/ч"
+       ],
+       "answer": "км",
+       "hint": "Путь измеряется длиной. У скорости длина в числителе и время в знаменателе.",
+       "explanation": "Для s = vt заполнение по строкам: с, км, км/мин, см. Путь измеряется длиной. У скорости длина в числителе и время в знаменателе."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Строка 3. Выбери единицу для столбца «Скорость».",
+       "choices": [
+        "км/мин",
+        "мин/км",
+        "км/ч"
+       ],
+       "answer": "км/мин",
+       "hint": "Путь измеряется длиной. У скорости длина в числителе и время в знаменателе.",
+       "explanation": "Для s = vt заполнение по строкам: с, км, км/мин, см. Путь измеряется длиной. У скорости длина в числителе и время в знаменателе."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Строка 4. Выбери единицу для столбца «Путь».",
+       "choices": [
+        "см",
+        "с",
+        "м/с"
+       ],
+       "answer": "см",
+       "hint": "Путь измеряется длиной. У скорости длина в числителе и время в знаменателе.",
+       "explanation": "Для s = vt заполнение по строкам: с, км, км/мин, см. Путь измеряется длиной. У скорости длина в числителе и время в знаменателе."
+      }
+     ],
+     "hint": "Путь измеряется длиной. У скорости длина в числителе и время в знаменателе.",
+     "explanation": "Для s = vt заполнение по строкам: с, км, км/мин, см. Путь измеряется длиной. У скорости длина в числителе и время в знаменателе.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Запиши своё объяснение.",
+     "unitBlanks": {
+      "formula": "s = vt",
+      "headers": [
+       "Путь",
+       "Скорость",
+       "Время"
+      ],
+      "rows": [
+       [
+        "м",
+        "м/с",
+        "с"
+       ],
+       [
+        "км",
+        "км/ч",
+        "ч"
+       ],
+       [
+        "км",
+        "км/мин",
+        "мин"
+       ],
+       [
+        "см",
+        "см/с",
+        "с"
+       ]
+      ],
+      "missing": [
+       2,
+       0,
+       1,
+       0
+      ]
+     },
+     "figure": {
+      "type": "unit-blanks",
+      "headers": [
+       "Путь",
+       "Скорость",
+       "Время"
+      ],
+      "rows": [
+       [
+        "м",
+        "м/с",
+        "с"
+       ],
+       [
+        "км",
+        "км/ч",
+        "ч"
+       ],
+       [
+        "км",
+        "км/мин",
+        "мин"
+       ],
+       [
+        "см",
+        "см/с",
+        "с"
+       ]
+      ],
+      "missing": [
+       2,
+       0,
+       1,
+       0
+      ],
+      "caption": "Знак вопроса заменяет одну единицу измерения в каждой строке."
+     }
+    },
+    {
+     "id": "p19-t10",
+     "title": "К задаче №134(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 134,
+      "reference": "№134(2)",
+      "subpart": "2"
+     },
+     "kind": "manual",
+     "prompt": "Заполни четыре пропуска в таблице единиц для A = wt. После заполнения объясни, как проверить единицы произведением.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Строка 1. Выбери единицу для столбца «Производительность».",
+       "choices": [
+        "шт./ч",
+        "ч/шт.",
+        "шт."
+       ],
+       "answer": "шт./ч",
+       "hint": "Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются.",
+       "explanation": "Для A = wt заполнение по строкам: шт./ч, день, шт., дм³/с. Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Строка 2. Выбери единицу для столбца «Время».",
+       "choices": [
+        "день",
+        "м",
+        "м/день"
+       ],
+       "answer": "день",
+       "hint": "Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются.",
+       "explanation": "Для A = wt заполнение по строкам: шт./ч, день, шт., дм³/с. Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Строка 3. Выбери единицу для столбца «Работа».",
+       "choices": [
+        "шт.",
+        "мин",
+        "шт./мин"
+       ],
+       "answer": "шт.",
+       "hint": "Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются.",
+       "explanation": "Для A = wt заполнение по строкам: шт./ч, день, шт., дм³/с. Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Строка 4. Выбери единицу для столбца «Производительность».",
+       "choices": [
+        "дм³/с",
+        "с/дм³",
+        "дм/с"
+       ],
+       "answer": "дм³/с",
+       "hint": "Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются.",
+       "explanation": "Для A = wt заполнение по строкам: шт./ч, день, шт., дм³/с. Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются."
+      }
+     ],
+     "hint": "Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются.",
+     "explanation": "Для A = wt заполнение по строкам: шт./ч, день, шт., дм³/с. Производительность сообщает, сколько сделано в единицу времени. Единицы времени при умножении сокращаются.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Запиши своё объяснение.",
+     "unitBlanks": {
+      "formula": "A = wt",
+      "headers": [
+       "Работа",
+       "Производительность",
+       "Время"
+      ],
+      "rows": [
+       [
+        "шт.",
+        "шт./ч",
+        "ч"
+       ],
+       [
+        "м",
+        "м/день",
+        "день"
+       ],
+       [
+        "шт.",
+        "шт./мин",
+        "мин"
+       ],
+       [
+        "дм³",
+        "дм³/с",
+        "с"
+       ]
+      ],
+      "missing": [
+       1,
+       2,
+       0,
+       1
+      ]
+     },
+     "figure": {
+      "type": "unit-blanks",
+      "headers": [
+       "Работа",
+       "Производительность",
+       "Время"
+      ],
+      "rows": [
+       [
+        "шт.",
+        "шт./ч",
+        "ч"
+       ],
+       [
+        "м",
+        "м/день",
+        "день"
+       ],
+       [
+        "шт.",
+        "шт./мин",
+        "мин"
+       ],
+       [
+        "дм³",
+        "дм³/с",
+        "с"
+       ]
+      ],
+      "missing": [
+       1,
+       2,
+       0,
+       1
+      ],
+      "caption": "Знак вопроса заменяет одну единицу измерения в каждой строке."
+     }
+    },
+    {
+     "id": "p19-t11",
+     "title": "К задаче №134(3)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 134,
+      "reference": "№134(3)",
+      "subpart": "3"
+     },
+     "kind": "manual",
+     "prompt": "Заполни четыре пропуска в таблице единиц для C = an. После заполнения объясни, как проверить единицы произведением.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Строка 1. Выбери единицу для столбца «Стоимость».",
+       "choices": [
+        "р.",
+        "шт.",
+        "р./шт."
+       ],
+       "answer": "р.",
+       "hint": "Цена показывает рубли за единицу количества. При умножении на количество остаются рубли.",
+       "explanation": "Для C = an заполнение по строкам: р., кг, р./м, тетр.. Цена показывает рубли за единицу количества. При умножении на количество остаются рубли."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Строка 2. Выбери единицу для столбца «Количество».",
+       "choices": [
+        "кг",
+        "р.",
+        "кг/р."
+       ],
+       "answer": "кг",
+       "hint": "Цена показывает рубли за единицу количества. При умножении на количество остаются рубли.",
+       "explanation": "Для C = an заполнение по строкам: р., кг, р./м, тетр.. Цена показывает рубли за единицу количества. При умножении на количество остаются рубли."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Строка 3. Выбери единицу для столбца «Цена».",
+       "choices": [
+        "р./м",
+        "м/р.",
+        "р."
+       ],
+       "answer": "р./м",
+       "hint": "Цена показывает рубли за единицу количества. При умножении на количество остаются рубли.",
+       "explanation": "Для C = an заполнение по строкам: р., кг, р./м, тетр.. Цена показывает рубли за единицу количества. При умножении на количество остаются рубли."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Строка 4. Выбери единицу для столбца «Количество».",
+       "choices": [
+        "тетр.",
+        "р.",
+        "р./тетр."
+       ],
+       "answer": "тетр.",
+       "hint": "Цена показывает рубли за единицу количества. При умножении на количество остаются рубли.",
+       "explanation": "Для C = an заполнение по строкам: р., кг, р./м, тетр.. Цена показывает рубли за единицу количества. При умножении на количество остаются рубли."
+      }
+     ],
+     "hint": "Цена показывает рубли за единицу количества. При умножении на количество остаются рубли.",
+     "explanation": "Для C = an заполнение по строкам: р., кг, р./м, тетр.. Цена показывает рубли за единицу количества. При умножении на количество остаются рубли.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Запиши своё объяснение.",
+     "unitBlanks": {
+      "formula": "C = an",
+      "headers": [
+       "Стоимость",
+       "Цена",
+       "Количество"
+      ],
+      "rows": [
+       [
+        "р.",
+        "р./шт.",
+        "шт."
+       ],
+       [
+        "р.",
+        "р./кг",
+        "кг"
+       ],
+       [
+        "р.",
+        "р./м",
+        "м"
+       ],
+       [
+        "р.",
+        "р./тетр.",
+        "тетр."
+       ]
+      ],
+      "missing": [
+       0,
+       2,
+       1,
+       2
+      ]
+     },
+     "figure": {
+      "type": "unit-blanks",
+      "headers": [
+       "Стоимость",
+       "Цена",
+       "Количество"
+      ],
+      "rows": [
+       [
+        "р.",
+        "р./шт.",
+        "шт."
+       ],
+       [
+        "р.",
+        "р./кг",
+        "кг"
+       ],
+       [
+        "р.",
+        "р./м",
+        "м"
+       ],
+       [
+        "р.",
+        "р./тетр.",
+        "тетр."
+       ]
+      ],
+      "missing": [
+       0,
+       2,
+       1,
+       2
+      ],
+      "caption": "Знак вопроса заменяет одну единицу измерения в каждой строке."
+     }
+    },
+    {
+     "id": "p19-t12",
+     "title": "К задаче №135(2, встречное движение)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 135,
+      "reference": "№135(2, встречное движение)",
+      "subpart": "2, встречное движение",
+      "readingKey": "2а"
+     },
+     "kind": "number",
+     "prompt": "Машины движутся навстречу друг другу со скоростями 18 и 12 км/ч. Через сколько часов исчезнет начальный промежуток 30 км?",
+     "answer": "1",
+     "steps": [
+      {
+       "prompt": "Найди скорость сближения в км/ч.",
+       "answer": "30",
+       "hint": "При встречном движении скорости складываются. Раздели расстояние на скорость сближения.",
+       "explanation": "Скорость сближения 30 км/ч. Поэтому t = 30/30 = 1 ч."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как найти время?",
+       "choices": [
+        "Расстояние / скорость сближения",
+        "Расстояние × скорость сближения"
+       ],
+       "answer": "Расстояние / скорость сближения",
+       "hint": "При встречном движении скорости складываются. Раздели расстояние на скорость сближения.",
+       "explanation": "Скорость сближения 30 км/ч. Поэтому t = 30/30 = 1 ч."
+      }
+     ],
+     "hint": "При встречном движении скорости складываются. Раздели расстояние на скорость сближения.",
+     "explanation": "Скорость сближения 30 км/ч. Поэтому t = 30/30 = 1 ч.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "approachFormula": {
+      "approach": true,
+      "unknown": "time",
+      "a": "18",
+      "b": "12",
+      "given": "30"
+     },
+     "errorCues": [
+      [
+       "5",
+       "Это результат для другого направления движения. При встречном движении скорости складываются."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t13",
+     "title": "К задаче №135(2, движение вдогонку)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 135,
+      "reference": "№135(2, движение вдогонку)",
+      "subpart": "2, движение вдогонку",
+      "readingKey": "2б"
+     },
+     "kind": "number",
+     "prompt": "Машины движутся вдогонку со скоростями 18 и 12 км/ч. Через сколько часов исчезнет начальный промежуток 30 км?",
+     "answer": "5",
+     "steps": [
+      {
+       "prompt": "Найди скорость сближения в км/ч.",
+       "answer": "6",
+       "hint": "При движении вдогонку скорость сближения равна разности скоростей. Раздели расстояние на скорость сближения.",
+       "explanation": "Скорость сближения 6 км/ч. Поэтому t = 30/6 = 5 ч."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как найти время?",
+       "choices": [
+        "Расстояние / скорость сближения",
+        "Расстояние × скорость сближения"
+       ],
+       "answer": "Расстояние / скорость сближения",
+       "hint": "При движении вдогонку скорость сближения равна разности скоростей. Раздели расстояние на скорость сближения.",
+       "explanation": "Скорость сближения 6 км/ч. Поэтому t = 30/6 = 5 ч."
+      }
+     ],
+     "hint": "При движении вдогонку скорость сближения равна разности скоростей. Раздели расстояние на скорость сближения.",
+     "explanation": "Скорость сближения 6 км/ч. Поэтому t = 30/6 = 5 ч.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "approachFormula": {
+      "approach": false,
+      "unknown": "time",
+      "a": "18",
+      "b": "12",
+      "given": "30"
+     },
+     "errorCues": [
+      [
+       "1",
+       "Это результат для другого направления движения. При движении вдогонку скорость сближения равна разности скоростей."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t14",
+     "title": "К задаче №135(3, встречное движение)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 135,
+      "reference": "№135(3, встречное движение)",
+      "subpart": "3, встречное движение",
+      "readingKey": "3а"
+     },
+     "kind": "number",
+     "prompt": "При движении навстречу друг другу промежуток в 120 км исчез за 1,5 ч. Вторая скорость 20 км/ч. Найди первую скорость в км/ч.",
+     "answer": "60",
+     "steps": [
+      {
+       "prompt": "С какой скоростью исчезал промежуток?",
+       "answer": "80",
+       "hint": "При встречном движении скорости складываются. Сначала вычисли 120 : 1,5. Затем восстанови первое слагаемое либо уменьшаемое.",
+       "explanation": "Скорость сближения 80 км/ч. Первую скорость находим вычитанием 20, получаем 60 км/ч."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что сделать с 20 км/ч, чтобы восстановить первую скорость?",
+       "choices": [
+        "Прибавить",
+        "Вычесть"
+       ],
+       "answer": "Вычесть",
+       "hint": "При встречном движении скорости складываются. Сначала вычисли 120 : 1,5. Затем восстанови первое слагаемое либо уменьшаемое.",
+       "explanation": "Скорость сближения 80 км/ч. Первую скорость находим вычитанием 20, получаем 60 км/ч."
+      }
+     ],
+     "hint": "При встречном движении скорости складываются. Сначала вычисли 120 : 1,5. Затем восстанови первое слагаемое либо уменьшаемое.",
+     "explanation": "Скорость сближения 80 км/ч. Первую скорость находим вычитанием 20, получаем 60 км/ч.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "approachFormula": {
+      "approach": true,
+      "unknown": "first",
+      "a": "20",
+      "b": "3/2",
+      "given": "120"
+     },
+     "errorCues": [
+      [
+       "100",
+       "Это результат для другого направления движения. При встречном движении скорости складываются."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t15",
+     "title": "К задаче №135(3, движение вдогонку)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 135,
+      "reference": "№135(3, движение вдогонку)",
+      "subpart": "3, движение вдогонку",
+      "readingKey": "3б"
+     },
+     "kind": "number",
+     "prompt": "При движении вдогонку промежуток в 120 км исчез за 1,5 ч. Вторая скорость 20 км/ч. Найди первую скорость в км/ч.",
+     "answer": "100",
+     "steps": [
+      {
+       "prompt": "С какой скоростью исчезал промежуток?",
+       "answer": "80",
+       "hint": "При движении вдогонку скорость сближения равна разности скоростей. Сначала вычисли 120 : 1,5. Затем восстанови первое слагаемое либо уменьшаемое.",
+       "explanation": "Скорость сближения 80 км/ч. Первую скорость находим прибавлением 20, получаем 100 км/ч."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что сделать с 20 км/ч, чтобы восстановить первую скорость?",
+       "choices": [
+        "Прибавить",
+        "Вычесть"
+       ],
+       "answer": "Прибавить",
+       "hint": "При движении вдогонку скорость сближения равна разности скоростей. Сначала вычисли 120 : 1,5. Затем восстанови первое слагаемое либо уменьшаемое.",
+       "explanation": "Скорость сближения 80 км/ч. Первую скорость находим прибавлением 20, получаем 100 км/ч."
+      }
+     ],
+     "hint": "При движении вдогонку скорость сближения равна разности скоростей. Сначала вычисли 120 : 1,5. Затем восстанови первое слагаемое либо уменьшаемое.",
+     "explanation": "Скорость сближения 80 км/ч. Первую скорость находим прибавлением 20, получаем 100 км/ч.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "approachFormula": {
+      "approach": false,
+      "unknown": "first",
+      "a": "20",
+      "b": "3/2",
+      "given": "120"
+     },
+     "errorCues": [
+      [
+       "60",
+       "Это результат для другого направления движения. При движении вдогонку скорость сближения равна разности скоростей."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t16",
+     "title": "К задаче №136(1)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 136,
+      "reference": "№136(1)",
+      "subpart": "1"
+     },
+     "kind": "manual",
+     "prompt": "Построй формулу расстояния d для движения навстречу. Начальный промежуток s₀, скорости v₁ > v₂, время t. Из формулы вырази t и v₁.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Как меняется расстояние каждый час?",
+       "choices": [
+        "Уменьшается",
+        "Увеличивается"
+       ],
+       "answer": "Уменьшается",
+       "hint": "Промежуток сокращается на сумму двух скоростей.",
+       "explanation": "d = s₀ − (v₁ + v₂)t. Отсюда t = (s₀ − d)/(v₁ + v₂) и v₁ = (s₀ − d)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "prompt": "Проверка на примере: s₀ = 100 км, v₁ = 20 км/ч, v₂ = 10 км/ч. Расстояние через 2 часа?",
+       "answer": "40",
+       "hint": "Промежуток сокращается на сумму двух скоростей.",
+       "explanation": "d = s₀ − (v₁ + v₂)t. Отсюда t = (s₀ − d)/(v₁ + v₂) и v₁ = (s₀ − d)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как выразить первую скорость?",
+       "choices": [
+        "v₁ = (d + s₀)/t",
+        "v₁ = (s₀ − d)/t − v₂",
+        "v₁ = (s₀ + d)t"
+       ],
+       "answer": "v₁ = (s₀ − d)/t − v₂",
+       "hint": "Промежуток сокращается на сумму двух скоростей.",
+       "explanation": "d = s₀ − (v₁ + v₂)t. Отсюда t = (s₀ − d)/(v₁ + v₂) и v₁ = (s₀ − d)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши формулу для времени и проверь её по численному примеру.",
+       "hint": "Промежуток сокращается на сумму двух скоростей.",
+       "explanation": "d = s₀ − (v₁ + v₂)t. Отсюда t = (s₀ − d)/(v₁ + v₂) и v₁ = (s₀ − d)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      }
+     ],
+     "hint": "Промежуток сокращается на сумму двух скоростей.",
+     "explanation": "d = s₀ − (v₁ + v₂)t. Отсюда t = (s₀ − d)/(v₁ + v₂) и v₁ = (s₀ − d)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани своё объяснение.",
+     "gapDirection": 0
+    },
+    {
+     "id": "p19-t17",
+     "title": "К задаче №136(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 136,
+      "reference": "№136(2)",
+      "subpart": "2"
+     },
+     "kind": "manual",
+     "prompt": "Построй формулу расстояния d для движения в противоположных направлениях, удаляясь. Начальный промежуток s₀, скорости v₁ > v₂, время t. Из формулы вырази t и v₁.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Как меняется расстояние каждый час?",
+       "choices": [
+        "Уменьшается",
+        "Увеличивается"
+       ],
+       "answer": "Увеличивается",
+       "hint": "Промежуток увеличивается на сумму скоростей.",
+       "explanation": "d = s₀ + (v₁ + v₂)t. Отсюда t = (d − s₀)/(v₁ + v₂) и v₁ = (d − s₀)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "prompt": "Проверка на примере: s₀ = 100 км, v₁ = 20 км/ч, v₂ = 10 км/ч. Расстояние через 2 часа?",
+       "answer": "160",
+       "hint": "Промежуток увеличивается на сумму скоростей.",
+       "explanation": "d = s₀ + (v₁ + v₂)t. Отсюда t = (d − s₀)/(v₁ + v₂) и v₁ = (d − s₀)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как выразить первую скорость?",
+       "choices": [
+        "v₁ = (d + s₀)/t",
+        "v₁ = (d − s₀)/t − v₂",
+        "v₁ = (s₀ + d)t"
+       ],
+       "answer": "v₁ = (d − s₀)/t − v₂",
+       "hint": "Промежуток увеличивается на сумму скоростей.",
+       "explanation": "d = s₀ + (v₁ + v₂)t. Отсюда t = (d − s₀)/(v₁ + v₂) и v₁ = (d − s₀)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши формулу для времени и проверь её по численному примеру.",
+       "hint": "Промежуток увеличивается на сумму скоростей.",
+       "explanation": "d = s₀ + (v₁ + v₂)t. Отсюда t = (d − s₀)/(v₁ + v₂) и v₁ = (d − s₀)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      }
+     ],
+     "hint": "Промежуток увеличивается на сумму скоростей.",
+     "explanation": "d = s₀ + (v₁ + v₂)t. Отсюда t = (d − s₀)/(v₁ + v₂) и v₁ = (d − s₀)/t − v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани своё объяснение.",
+     "gapDirection": 1
+    },
+    {
+     "id": "p19-t18",
+     "title": "К задаче №136(3)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 136,
+      "reference": "№136(3)",
+      "subpart": "3"
+     },
+     "kind": "manual",
+     "prompt": "Построй формулу расстояния d для движения вдогонку. Начальный промежуток s₀, скорости v₁ > v₂, время t. Из формулы вырази t и v₁.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Как меняется расстояние каждый час?",
+       "choices": [
+        "Уменьшается",
+        "Увеличивается"
+       ],
+       "answer": "Уменьшается",
+       "hint": "Быстрая машина позади. Промежуток сокращается на разность скоростей.",
+       "explanation": "d = s₀ − (v₁ − v₂)t. Отсюда t = (s₀ − d)/(v₁ − v₂) и v₁ = (s₀ − d)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "prompt": "Проверка на примере: s₀ = 100 км, v₁ = 20 км/ч, v₂ = 10 км/ч. Расстояние через 2 часа?",
+       "answer": "80",
+       "hint": "Быстрая машина позади. Промежуток сокращается на разность скоростей.",
+       "explanation": "d = s₀ − (v₁ − v₂)t. Отсюда t = (s₀ − d)/(v₁ − v₂) и v₁ = (s₀ − d)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как выразить первую скорость?",
+       "choices": [
+        "v₁ = (d + s₀)/t",
+        "v₁ = (s₀ − d)/t + v₂",
+        "v₁ = (s₀ + d)t"
+       ],
+       "answer": "v₁ = (s₀ − d)/t + v₂",
+       "hint": "Быстрая машина позади. Промежуток сокращается на разность скоростей.",
+       "explanation": "d = s₀ − (v₁ − v₂)t. Отсюда t = (s₀ − d)/(v₁ − v₂) и v₁ = (s₀ − d)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши формулу для времени и проверь её по численному примеру.",
+       "hint": "Быстрая машина позади. Промежуток сокращается на разность скоростей.",
+       "explanation": "d = s₀ − (v₁ − v₂)t. Отсюда t = (s₀ − d)/(v₁ − v₂) и v₁ = (s₀ − d)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      }
+     ],
+     "hint": "Быстрая машина позади. Промежуток сокращается на разность скоростей.",
+     "explanation": "d = s₀ − (v₁ − v₂)t. Отсюда t = (s₀ − d)/(v₁ − v₂) и v₁ = (s₀ − d)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани своё объяснение.",
+     "gapDirection": 2
+    },
+    {
+     "id": "p19-t19",
+     "title": "К задаче №136(4)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 136,
+      "reference": "№136(4)",
+      "subpart": "4"
+     },
+     "kind": "manual",
+     "prompt": "Построй формулу расстояния d для движения с отставанием. Начальный промежуток s₀, скорости v₁ > v₂, время t. Из формулы вырази t и v₁.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Как меняется расстояние каждый час?",
+       "choices": [
+        "Уменьшается",
+        "Увеличивается"
+       ],
+       "answer": "Увеличивается",
+       "hint": "Быстрая машина впереди. Промежуток увеличивается на разность скоростей.",
+       "explanation": "d = s₀ + (v₁ − v₂)t. Отсюда t = (d − s₀)/(v₁ − v₂) и v₁ = (d − s₀)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "prompt": "Проверка на примере: s₀ = 100 км, v₁ = 20 км/ч, v₂ = 10 км/ч. Расстояние через 2 часа?",
+       "answer": "120",
+       "hint": "Быстрая машина впереди. Промежуток увеличивается на разность скоростей.",
+       "explanation": "d = s₀ + (v₁ − v₂)t. Отсюда t = (d − s₀)/(v₁ − v₂) и v₁ = (d − s₀)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Как выразить первую скорость?",
+       "choices": [
+        "v₁ = (d + s₀)/t",
+        "v₁ = (d − s₀)/t + v₂",
+        "v₁ = (s₀ + d)t"
+       ],
+       "answer": "v₁ = (d − s₀)/t + v₂",
+       "hint": "Быстрая машина впереди. Промежуток увеличивается на разность скоростей.",
+       "explanation": "d = s₀ + (v₁ − v₂)t. Отсюда t = (d − s₀)/(v₁ − v₂) и v₁ = (d − s₀)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши формулу для времени и проверь её по численному примеру.",
+       "hint": "Быстрая машина впереди. Промежуток увеличивается на разность скоростей.",
+       "explanation": "d = s₀ + (v₁ − v₂)t. Отсюда t = (d − s₀)/(v₁ − v₂) и v₁ = (d − s₀)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи."
+      }
+     ],
+     "hint": "Быстрая машина впереди. Промежуток увеличивается на разность скоростей.",
+     "explanation": "d = s₀ + (v₁ − v₂)t. Отсюда t = (d − s₀)/(v₁ − v₂) и v₁ = (d − s₀)/t + v₂ при t > 0. По условию v₁ > v₂; в случаях сближения формула действует до встречи.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани своё объяснение.",
+     "gapDirection": 3
+    },
+    {
+     "id": "p19-t20",
+     "title": "К задаче №137(1)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 137,
+      "reference": "№137(1)",
+      "subpart": "1"
+     },
+     "kind": "manual",
+     "prompt": "Запиши зависимости по теме «Движение по реке». Вырази величины, оговори условия обратной операции. На реке известны скорости 12 км/ч по течению и 8 км/ч против.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Собственная скорость лодки?",
+       "answer": "10",
+       "hint": "Сложи две скорости, чтобы течение исчезло; в разности исчезнет собственная скорость.",
+       "explanation": "vпо = u + c, vпр = u − c. u = (vпо + vпр)/2; c = (vпо − vпр)/2. Здесь u — скорость лодки в стоячей воде, c — скорость течения. Для хода против течения u > c."
+      },
+      {
+       "prompt": "Скорость течения?",
+       "answer": "2",
+       "hint": "Сложи две скорости, чтобы течение исчезло; в разности исчезнет собственная скорость.",
+       "explanation": "vпо = u + c, vпр = u − c. u = (vпо + vпр)/2; c = (vпо − vпр)/2. Здесь u — скорость лодки в стоячей воде, c — скорость течения. Для хода против течения u > c."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши исходные и обратные формулы с обозначениями и единицами.",
+       "hint": "Сложи две скорости, чтобы течение исчезло; в разности исчезнет собственная скорость.",
+       "explanation": "vпо = u + c, vпр = u − c. u = (vпо + vпр)/2; c = (vпо − vпр)/2. Здесь u — скорость лодки в стоячей воде, c — скорость течения. Для хода против течения u > c."
+      }
+     ],
+     "hint": "Сложи две скорости, чтобы течение исчезло; в разности исчезнет собственная скорость.",
+     "explanation": "vпо = u + c, vпр = u − c. u = (vпо + vпр)/2; c = (vпо − vпр)/2. Здесь u — скорость лодки в стоячей воде, c — скорость течения. Для хода против течения u > c.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани своё объяснение.",
+     "quantityFamily": 0
+    },
+    {
+     "id": "p19-t21",
+     "title": "К задаче №137(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 137,
+      "reference": "№137(2)",
+      "subpart": "2"
+     },
+     "kind": "manual",
+     "prompt": "Запиши зависимости по теме «Процентное отношение». Вырази величины, оговори условия обратной операции. В примере часть A = 12 составляет долю от B = 80.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько процентов составляет 12 от 80?",
+       "answer": "15",
+       "hint": "Делитель — величина, с которой сравнивают.",
+       "explanation": "p = 100A/B. A = pB/100. При p ≠ 0 основание B = 100A/p; B ≠ 0 в исходном отношении."
+      },
+      {
+       "prompt": "Какое основание соответствует 12 при 15%?",
+       "answer": "80",
+       "hint": "Делитель — величина, с которой сравнивают.",
+       "explanation": "p = 100A/B. A = pB/100. При p ≠ 0 основание B = 100A/p; B ≠ 0 в исходном отношении."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши исходные и обратные формулы с обозначениями и единицами.",
+       "hint": "Делитель — величина, с которой сравнивают.",
+       "explanation": "p = 100A/B. A = pB/100. При p ≠ 0 основание B = 100A/p; B ≠ 0 в исходном отношении."
+      }
+     ],
+     "hint": "Делитель — величина, с которой сравнивают.",
+     "explanation": "p = 100A/B. A = pB/100. При p ≠ 0 основание B = 100A/p; B ≠ 0 в исходном отношении.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани своё объяснение.",
+     "quantityFamily": 1
+    },
+    {
+     "id": "p19-t22",
+     "title": "К задаче №137(3)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 137,
+      "reference": "№137(3)",
+      "subpart": "3"
+     },
+     "kind": "manual",
+     "prompt": "Запиши зависимости по теме «Простой процентный рост». Вырази величины, оговори условия обратной операции. При начальном значении 1000 и ставке 10% в течение двух периодов прибавки начисляются на исходное значение.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Прибавка за один период?",
+       "answer": "100",
+       "hint": "Прибавка каждого периода берётся от одной начальной величины.",
+       "explanation": "S = S₀(1 + np/100). S₀ = S/(1 + np/100). При ненулевых делителях n = 100(S/S₀ − 1)/p, p = 100(S/S₀ − 1)/n."
+      },
+      {
+       "prompt": "Значение после двух периодов?",
+       "answer": "1200",
+       "hint": "Прибавка каждого периода берётся от одной начальной величины.",
+       "explanation": "S = S₀(1 + np/100). S₀ = S/(1 + np/100). При ненулевых делителях n = 100(S/S₀ − 1)/p, p = 100(S/S₀ − 1)/n."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши исходные и обратные формулы с обозначениями и единицами.",
+       "hint": "Прибавка каждого периода берётся от одной начальной величины.",
+       "explanation": "S = S₀(1 + np/100). S₀ = S/(1 + np/100). При ненулевых делителях n = 100(S/S₀ − 1)/p, p = 100(S/S₀ − 1)/n."
+      }
+     ],
+     "hint": "Прибавка каждого периода берётся от одной начальной величины.",
+     "explanation": "S = S₀(1 + np/100). S₀ = S/(1 + np/100). При ненулевых делителях n = 100(S/S₀ − 1)/p, p = 100(S/S₀ − 1)/n.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани своё объяснение.",
+     "quantityFamily": 2
+    },
+    {
+     "id": "p19-t23",
+     "title": "К задаче №137(4)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 137,
+      "reference": "№137(4)",
+      "subpart": "4"
+     },
+     "kind": "manual",
+     "prompt": "Запиши зависимости по теме «Сложный процентный рост». Вырази величины, оговори условия обратной операции. Начальное значение 1000 повышается на 10% от текущего значения дважды.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Значение после первого периода?",
+       "answer": "1100",
+       "hint": "Во втором периоде 10% берутся уже от 1100.",
+       "explanation": "S = S₀(1 + p/100)ⁿ. S₀ = S/(1 + p/100)ⁿ. При известном n > 0 показатель роста q находится как положительный корень n-й степени из S/S₀, затем p = 100(q − 1). При известном q > 1 число периодов можно найти, сравнивая q, q², q³, … с S/S₀: для целого n требуется точное совпадение."
+      },
+      {
+       "prompt": "Значение после второго периода?",
+       "answer": "1210",
+       "hint": "Во втором периоде 10% берутся уже от 1100.",
+       "explanation": "S = S₀(1 + p/100)ⁿ. S₀ = S/(1 + p/100)ⁿ. При известном n > 0 показатель роста q находится как положительный корень n-й степени из S/S₀, затем p = 100(q − 1). При известном q > 1 число периодов можно найти, сравнивая q, q², q³, … с S/S₀: для целого n требуется точное совпадение."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши исходные и обратные формулы с обозначениями и единицами.",
+       "hint": "Во втором периоде 10% берутся уже от 1100.",
+       "explanation": "S = S₀(1 + p/100)ⁿ. S₀ = S/(1 + p/100)ⁿ. При известном n > 0 показатель роста q находится как положительный корень n-й степени из S/S₀, затем p = 100(q − 1). При известном q > 1 число периодов можно найти, сравнивая q, q², q³, … с S/S₀: для целого n требуется точное совпадение."
+      }
+     ],
+     "hint": "Во втором периоде 10% берутся уже от 1100.",
+     "explanation": "S = S₀(1 + p/100)ⁿ. S₀ = S/(1 + p/100)ⁿ. При известном n > 0 показатель роста q находится как положительный корень n-й степени из S/S₀, затем p = 100(q − 1). При известном q > 1 число периодов можно найти, сравнивая q, q², q³, … с S/S₀: для целого n требуется точное совпадение.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани своё объяснение.",
+     "quantityFamily": 3
+    },
+    {
+     "id": "p19-t24",
+     "title": "К задаче №139(1)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 139,
+      "reference": "№139(1)",
+      "subpart": "1"
+     },
+     "kind": "choice",
+     "prompt": "Построй зависимость: Объём куба через ребро a.",
+     "answer": "V = a³",
+     "steps": [
+      {
+       "prompt": "Ребро 3 см. Сколько единичных кубиков в слое?",
+       "answer": "9",
+       "hint": "Длина, ширина и высота одинаковы. Объём равен произведению трёх размеров.",
+       "explanation": "Длина, ширина и высота одинаковы. Объём равен произведению трёх размеров. Получаем V = a³."
+      },
+      {
+       "prompt": "Сколько кубических сантиметров во всём кубе?",
+       "answer": "27",
+       "hint": "Длина, ширина и высота одинаковы. Объём равен произведению трёх размеров.",
+       "explanation": "Длина, ширина и высота одинаковы. Объём равен произведению трёх размеров. Получаем V = a³."
+      }
+     ],
+     "hint": "Длина, ширина и высота одинаковы. Объём равен произведению трёх размеров.",
+     "explanation": "Длина, ширина и высота одинаковы. Объём равен произведению трёх размеров. Получаем V = a³.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "choices": [
+      "V = 3a",
+      "V = a³",
+      "V = 6a²"
+     ],
+     "geometryQuantity": 0,
+     "errorCues": [
+      [
+       "V = 3a",
+       "Длина, ширина и высота одинаковы. Объём равен произведению трёх размеров."
+      ],
+      [
+       "V = 6a²",
+       "Длина, ширина и высота одинаковы. Объём равен произведению трёх размеров."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t25",
+     "title": "К задаче №139(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 139,
+      "reference": "№139(2)",
+      "subpart": "2"
+     },
+     "kind": "choice",
+     "prompt": "Построй зависимость: Площадь прямоугольного треугольника с катетами a и b.",
+     "answer": "S = ab/2",
+     "steps": [
+      {
+       "prompt": "Для катетов 3 и 4 какова площадь целого прямоугольника?",
+       "answer": "12",
+       "hint": "Второй такой же треугольник достраивает прямоугольник.",
+       "explanation": "Второй такой же треугольник достраивает прямоугольник. Получаем S = ab/2."
+      },
+      {
+       "prompt": "А площадь одной из двух равных половин?",
+       "answer": "6",
+       "hint": "Второй такой же треугольник достраивает прямоугольник.",
+       "explanation": "Второй такой же треугольник достраивает прямоугольник. Получаем S = ab/2."
+      }
+     ],
+     "hint": "Второй такой же треугольник достраивает прямоугольник.",
+     "explanation": "Второй такой же треугольник достраивает прямоугольник. Получаем S = ab/2.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "choices": [
+      "S = ab",
+      "S = ab/2",
+      "S = 2(a + b)"
+     ],
+     "geometryQuantity": 1,
+     "errorCues": [
+      [
+       "S = ab",
+       "Второй такой же треугольник достраивает прямоугольник."
+      ],
+      [
+       "S = 2(a + b)",
+       "Второй такой же треугольник достраивает прямоугольник."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t26",
+     "title": "К задаче №139(3)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 139,
+      "reference": "№139(3)",
+      "subpart": "3"
+     },
+     "kind": "choice",
+     "prompt": "Построй зависимость: Диаметр D через радиус R.",
+     "answer": "D = 2R",
+     "steps": [
+      {
+       "prompt": "Сколько радиусов укладывается вдоль диаметра?",
+       "answer": "2",
+       "hint": "Диаметр идёт через центр и состоит из двух радиусов.",
+       "explanation": "Диаметр идёт через центр и состоит из двух радиусов. Получаем D = 2R."
+      },
+      {
+       "prompt": "Радиус 3 см. Найди диаметр.",
+       "answer": "6",
+       "hint": "Диаметр идёт через центр и состоит из двух радиусов.",
+       "explanation": "Диаметр идёт через центр и состоит из двух радиусов. Получаем D = 2R."
+      }
+     ],
+     "hint": "Диаметр идёт через центр и состоит из двух радиусов.",
+     "explanation": "Диаметр идёт через центр и состоит из двух радиусов. Получаем D = 2R.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "choices": [
+      "D = R/2",
+      "D = 2R",
+      "D = 2πR"
+     ],
+     "geometryQuantity": 2,
+     "errorCues": [
+      [
+       "D = R/2",
+       "Диаметр идёт через центр и состоит из двух радиусов."
+      ],
+      [
+       "D = 2πR",
+       "Диаметр идёт через центр и состоит из двух радиусов."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t27",
+     "title": "К задаче №139(4)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 139,
+      "reference": "№139(4)",
+      "subpart": "4"
+     },
+     "kind": "choice",
+     "prompt": "Построй зависимость: Площадь S прямоугольника через сторону a и периметр P.",
+     "answer": "S = a(P/2 − a)",
+     "steps": [
+      {
+       "prompt": "При P = 20 и a = 3 найди вторую сторону.",
+       "answer": "7",
+       "hint": "Полупериметр равен сумме двух соседних сторон. b = P/2 − a и 0 \u003c a \u003c P/2.",
+       "explanation": "Полупериметр равен сумме двух соседних сторон. b = P/2 − a и 0 \u003c a \u003c P/2. Получаем S = a(P/2 − a)."
+      },
+      {
+       "prompt": "Чему равна площадь?",
+       "answer": "21",
+       "hint": "Полупериметр равен сумме двух соседних сторон. b = P/2 − a и 0 \u003c a \u003c P/2.",
+       "explanation": "Полупериметр равен сумме двух соседних сторон. b = P/2 − a и 0 \u003c a \u003c P/2. Получаем S = a(P/2 − a)."
+      }
+     ],
+     "hint": "Полупериметр равен сумме двух соседних сторон. b = P/2 − a и 0 \u003c a \u003c P/2.",
+     "explanation": "Полупериметр равен сумме двух соседних сторон. b = P/2 − a и 0 \u003c a \u003c P/2. Получаем S = a(P/2 − a).",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "choices": [
+      "S = a(P − a)",
+      "S = a(P/2 − a)",
+      "S = a(P/2 + a)"
+     ],
+     "geometryQuantity": 3,
+     "errorCues": [
+      [
+       "S = a(P − a)",
+       "Полупериметр равен сумме двух соседних сторон. b = P/2 − a и 0 \u003c a \u003c P/2."
+      ],
+      [
+       "S = a(P/2 + a)",
+       "Полупериметр равен сумме двух соседних сторон. b = P/2 − a и 0 \u003c a \u003c P/2."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t28",
+     "title": "К задаче №139(5)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 139,
+      "reference": "№139(5)",
+      "subpart": "5"
+     },
+     "kind": "choice",
+     "prompt": "Построй зависимость: Полная поверхность куба через ребро a.",
+     "answer": "S = 6a²",
+     "steps": [
+      {
+       "prompt": "При ребре 3 см найди площадь одной грани.",
+       "answer": "9",
+       "hint": "У куба шесть квадратных граней, все равны.",
+       "explanation": "У куба шесть квадратных граней, все равны. Получаем S = 6a²."
+      },
+      {
+       "prompt": "Полная площадь поверхности в см²?",
+       "answer": "54",
+       "hint": "У куба шесть квадратных граней, все равны.",
+       "explanation": "У куба шесть квадратных граней, все равны. Получаем S = 6a²."
+      }
+     ],
+     "hint": "У куба шесть квадратных граней, все равны.",
+     "explanation": "У куба шесть квадратных граней, все равны. Получаем S = 6a².",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "choices": [
+      "S = a³",
+      "S = 6a²",
+      "S = 4a²"
+     ],
+     "geometryQuantity": 4,
+     "errorCues": [
+      [
+       "S = a³",
+       "У куба шесть квадратных граней, все равны."
+      ],
+      [
+       "S = 4a²",
+       "У куба шесть квадратных граней, все равны."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t29",
+     "title": "К задаче №139(6)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 35,
+      "exercise": 139,
+      "reference": "№139(6)",
+      "subpart": "6"
+     },
+     "kind": "choice",
+     "prompt": "Построй зависимость: Полная поверхность прямоугольного параллелепипеда.",
+     "answer": "S = 2(ab + ac + bc)",
+     "steps": [
+      {
+       "prompt": "При размерах 3, 4 и 5 см найди сумму площадей трёх разных типов граней.",
+       "answer": "47",
+       "hint": "Грани образуют три равные пары. Размеры у трёх видов граней разные.",
+       "explanation": "Грани образуют три равные пары. Размеры у трёх видов граней разные. Получаем S = 2(ab + ac + bc)."
+      },
+      {
+       "prompt": "Найди полную площадь всех шести граней.",
+       "answer": "94",
+       "hint": "Грани образуют три равные пары. Размеры у трёх видов граней разные.",
+       "explanation": "Грани образуют три равные пары. Размеры у трёх видов граней разные. Получаем S = 2(ab + ac + bc)."
+      }
+     ],
+     "hint": "Грани образуют три равные пары. Размеры у трёх видов граней разные.",
+     "explanation": "Грани образуют три равные пары. Размеры у трёх видов граней разные. Получаем S = 2(ab + ac + bc).",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "choices": [
+      "S = 2abc",
+      "S = 2(ab + ac + bc)",
+      "S = ab + ac + bc"
+     ],
+     "geometryQuantity": 5,
+     "errorCues": [
+      [
+       "S = 2abc",
+       "Грани образуют три равные пары. Размеры у трёх видов граней разные."
+      ],
+      [
+       "S = ab + ac + bc",
+       "Грани образуют три равные пары. Размеры у трёх видов граней разные."
+      ]
+     ]
     }
-   ]
+   ],
+   "orderBySource": true
   },
   {
    "id": "p20",
