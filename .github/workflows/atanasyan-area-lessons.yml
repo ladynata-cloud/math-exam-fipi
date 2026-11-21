@@ -77,6 +77,10 @@ on:
       - 'tools/geometry-textbook/*trigonometric_signs*'
       - 'geometry-course/textbook/data/trigonometric-signs.json'
       - 'tools/geometry-textbook/*trigonometric_rays*'
+      - 'tools/geometry-textbook/*triangle_sine_area*'
+      - 'geometry-course/textbook/data/triangle-sine-area.json'
+      - 'tools/geometry-textbook/*triangle_relations*'
+      - 'geometry-course/textbook/data/triangle-relations.json'
       - 'geometry-course/textbook/data/trigonometric-rays.json'
       - 'tools/geometry-textbook/*slope_and_reflection*'
       - 'geometry-course/textbook/data/slope-and-reflection.json'
@@ -132,6 +136,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/triangle_sine_area.py --check && python3 tools/geometry-textbook/triangle_relations.py --check && python3 tools/geometry-textbook/check_triangle_sine_area.py
       - run: python3 tools/geometry-textbook/upper_semicircle.py --check && python3 tools/geometry-textbook/check_upper_semicircle.py
       - run: python3 tools/geometry-textbook/coordinate_additional_curves.py --check && python3 tools/geometry-textbook/coordinate_additional_applications.py --check && python3 tools/geometry-textbook/check_coordinate_additional_curves.py
       - run: python3 tools/geometry-textbook/coordinate_additional_figures.py --check && python3 tools/geometry-textbook/check_coordinate_additional_figures.py
