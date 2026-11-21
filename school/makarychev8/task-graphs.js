@@ -40,6 +40,10 @@ function curveValue(curve,x){
  if(curve.kind==='absolute-reciprocal')return x===0?NaN:curve.k/Math.abs(x);
  if(curve.kind==='sign-linear')return x===curve.h?NaN:Math.sign(x-curve.h)*(curve.k*x+curve.b);
  if(curve.kind==='abs-linear')return curve.k*Math.abs(x)+curve.b;
+ if(curve.kind==='behavior-function')return behaviorHeight(curve.mode,x);
+ if(curve.kind==='behavior-linear-points'){
+  const n=curve.nodes,i=n.findIndex(p=>p[0]>=x);if(i<0||x<n[0][0])return NaN;if(i===0)return n[0][1];const [a,lo]=n[i-1],[b,hi]=n[i];return lo+(hi-lo)*(x-a)/(b-a);
+ }
  if(curve.kind==='feature-curve'){if(curve.segment&&(x<curve.segment[0]||x>curve.segment[1]))return NaN;return featureY(curve.shape,curve.k,curve.b,x);}
  if(curve.kind==='reading-profile')return readingHeight(curve.nodes,x);
  if(curve.kind==='source-absolute-domain'){
@@ -904,6 +908,48 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+const riverReadings=[[0,0],[1,.5],[2,1.5],[3,4],[4,5.5],[6,6.2],[8,5.8],[10,5],[12,4]];
+function tankTrial(t){
+ if(!Number.isFinite(t)||t<0||t>150)return null;
+ if(t<40)return {value:2*t+20,stage:'raise'};
+ if(t<=60)return {value:100,stage:'hold'};
+ return {value:140-2*t/3,stage:'cool'};
+}
+function behaviorHeight(mode,x){
+ if(mode==='abs')return Math.abs(x);
+ if(mode==='river')return readingHeight(riverReadings,x);
+ if(mode.startsWith('tank'))return tankTrial(x)?.value??NaN;
+ if(mode.startsWith('cubic'))return x>=-3&&x<=3?x*x*x-8*x:NaN;
+ if(mode.startsWith('reciprocal'))return x>=-1.5&&x<=6?4/(x+2):NaN;
+ return NaN;
+}
+function galleryModel(host,g,value){
+ const active=Number(value),chosen=Number.isInteger(active)&&active>=1&&active<=4?active:1;
+ const curves=[{kind:'hyperbola',k:2,poles:[0]},{kind:'hyperbola',k:-2,poles:[0]},{kind:'line',k:.5,b:0},{kind:'line',k:-.5,b:2}],group=document.createElement('div');group.className='row';group.setAttribute('aria-label','Графики рисунка 56');
+ for(let i=1;i<=curves.length;i++){
+  const button=document.createElement('button');button.type='button';button.className='quiet';button.textContent=String(i);button.setAttribute('aria-label','Рассмотреть график '+i);button.setAttribute('aria-pressed',String(i===chosen));button.dataset.behaviorCandidate=String(i);
+  button.onclick=()=>{const field=host.ownerDocument.getElementById('final-answer');if(!field||field.readOnly||field.disabled)return;field.value=String(i);field.dispatchEvent(new host.ownerDocument.defaultView.Event('input',{bubbles:true}));};group.append(button);
+ }
+ host.append(group);const q=M.parse(g.partial?.[0]),curve=curves[chosen-1],points=[];
+ if(q){const x=q.n/q.d,y=curveValue(curve,x);if(Number.isFinite(y)){points.push([x,y,'']);boundNote(host,'На графике '+chosen+' при x='+M.answer(q)+' ордината '+Number(y.toFixed(3))+'.').dataset.behaviorTrial=String(y);}else boundNote(host,'При x=0 эта ветвь не определена.').dataset.behaviorTrial='excluded';}
+ const svg=rootGraph({curves:[curve],points,xRange:[-4,4],yRange:[-4,4],label:'График '+chosen+' из четырёх схем'},'');svg.dataset.behaviorGallery=String(chosen);host.append(svg);boundNote(host,'График '+chosen+'. Кнопки 1–4 меняют черновой выбор. Ответ проверяется отдельно.');
+}
+function behaviorView(host,g,value){
+ host.className='task-graphs quantity-model';const mode=g.mode;if(mode==='gallery')return galleryModel(host,g,value);
+ const q=M.parse(g.partial?.[0]),curves=[],points=[],table=mode.endsWith('-table'),weather=mode==='river',tank=mode.startsWith('tank'),cubic=mode.startsWith('cubic'),abs=mode==='abs';
+ const xRange=g.customNodes?[-2,g.customNodes.at(-1)[0]+2]:tank?[-4,155]:weather?[-.5,12.5]:cubic?[-3.5,3.5]:abs?[-6,6]:[-2,7],yRange=tank?[0,110]:weather?[-.5,7]:cubic?[-10,10]:abs?[-1,7]:[0,9];
+ const nodes=g.customNodes|| (tank?[[0,20],[40,100],[60,100],[150,40]]:weather?riverReadings:null);
+ if(table){const parts=String(value??'').split(';'),marks=[];g.xs.forEach((x,i)=>{const v=M.parse(parts[i]);if(v){marks.push([x,v.n/v.d]);points.push([x,v.n/v.d,'']);}});
+  const complete=marks.length===g.xs.length&&parts.length===g.xs.length,exact=complete&&parts.every((raw,i)=>M.equal(raw,g.tableValues[i]));
+  if(complete&&tank)curves.push({kind:'behavior-linear-points',nodes:marks,xs:g.xs});else if(exact)curves.push({kind:'behavior-function',mode,xs:g.xs});else if(marks.length>=2)curves.push({kind:'behavior-linear-points',nodes:marks,xs:marks.map(p=>p[0]),dashed:true});
+  boundNote(host,exact?'Твои точки дают график указанной зависимости.':marks.length?'Твои точки отмечены. Пунктир помогает проверить порядок, а форму между точками задаёт формула.':'Введи ординаты по порядку. Каждая введённая точка появится на плоскости.').dataset.behaviorTable=exact?'exact':String(marks.length);
+ }else{curves.push({kind:'behavior-function',mode,xs:nodes?.map(p=>p[0])||(cubic?[-3,-Math.sqrt(8/3),0,Math.sqrt(8/3),3]:[])});if(nodes)points.push(...nodes.map(([x,y])=>[x,y,'']));}
+ if(abs&&Number.isFinite(g.level))curves.push({kind:'line',k:0,b:g.level,dashed:true});
+ if(q){const x=q.n/q.d,y=g.customNodes?curveValue({kind:'behavior-linear-points',nodes:g.customNodes},x):behaviorHeight(mode,x);if(Number.isFinite(y)){if(!table)points.push([x,y,'']);const step=g.customNodes?(x<nodes[1][0]?'raise':x<=nodes[2][0]?'hold':'cool'):tank?tankTrial(x).stage:'';boundNote(host,'При '+(tank||weather?'t':'x')+'='+M.answer(q)+' '+(tank?'температура ':weather?'уровень ':'значение ')+Number(y.toFixed(3))+(tank?' °С':weather?' дм':'')+'.').dataset.behaviorTrial=step||String(Number(y.toFixed(6)));}else boundNote(host,'Выбранный аргумент вне указанного промежутка.').dataset.behaviorTrial='outside';}
+ const svg=rootGraph({curves,points,xRange,yRange,axisLabels:tank?['t','p']:weather?['t','h']:['x','y'],xTickStep:tank?40:weather?2:undefined,yTickStep:tank?20:weather?1:undefined,gridStep:tank?20:undefined,label:tank?'Температура в градусах в зависимости от времени в минутах':weather?'Уровень реки в дециметрах по дням':'График функции с точками ученика'},'');host.append(svg);
+ if(g.proposal)intervalNumberLine(host,{givenRows:[],proposal:g.proposal,points:[]},'');
+}
+
 function featureY(shape,k,b,x){
  switch(shape){
   case 'affine':case 'triangle':return k*x+b;
@@ -2087,6 +2133,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-behavior-review'){behaviorView(host,config,value);return;}
  if(config.type==='source-function-features'){featureView(host,config,value);return;}
  if(config.type==='source-reading-graph'){graphReadingView(host,config,value);return;}
  if(config.type==='source-function-domain'){functionDomainView(host,config,value);return;}
@@ -2182,5 +2229,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
