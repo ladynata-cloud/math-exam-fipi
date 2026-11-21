@@ -857,3 +857,24 @@ test('keep unlike powers apart, cancel entire groups and substitute a fresh pair
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('compare exact quotients and the two products with fresh terms and every rearrangement',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'), result=()=>f.q('#model .pm-result').textContent;
+  for(const i of [0,1]){const legacy=go(i);assert.equal(legacy.length,1);assert.equal(f.q(legacy[0]).value,'2');}
+  let ids=go(6);set(ids[1],2);assert(result().includes('120 и 120'));assert.equal(f.q('#model [data-relation]').dataset.relation,'=');
+  set(ids[0],1);assert.equal(f.q(ids[1]).value,'0');set(ids[1],2);assert(result().includes('120 и 123'));assert.equal(f.q('#model [data-relation]').dataset.relation,'≠');
+  ids=go(16);set(ids[0],3);set(ids[1],8);set(ids[2],1);assert(result().includes('1/15 и 1/15'));
+  set(ids[1],3);set(ids[2],2);assert(result().includes('два разных номера'));
+  ids=go(17);set(ids[1],1);assert(result().includes('m × p = n × k'));set(ids[0],1);set(ids[1],1);assert(result().includes('4 × 15 = 6 × 10 = 60'));
+  for(const index of [19,20,21,22]){
+   ids=go(index);assert.equal(f.q(ids[0]).options.length,24);let accepted=0;
+   for(let j=0;j<24;j++){set(ids[0],j);set(ids[2],2);if(result().includes('Равенство верно'))accepted++;}
+   assert.equal(accepted,8);
+  }
+  ids=go(24);set(ids[0],7);set(ids[1],4);assert(result().includes('Обе равны 1/3'));set(ids[2],1);assert(result().includes('Обе равны 3'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

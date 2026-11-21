@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,526);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,545);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -416,6 +416,41 @@ const p33=D.lessons.find(l=>l.id==='p33');
    if(n===46){const original=study.substitutions[0];assert(Math.abs(grouped(study.groups,Object.fromEntries(Object.entries(original).map(([letter,v])=>[letter,value(v)])))-value(card.answer))<1e-9);}
    if(n===43)assert.equal(card.kind,'manual');
   }
+ }
+}
+
+{
+ const p=D.lessons.find(l=>l.id==='p17');
+ const first=p.tasks.filter(t=>t.source.exercise<=63);assert.equal(first.length,21);
+ const at=(number,s='')=>first.find(t=>t.source.exercise===number&&(t.source.subpart||'')===s);
+ for(const [n,labels]of [[57,'абвг'],[58,''],[59,'12'],[60,'абвг'],[61,'абвг'],[62,'абвг'],[63,'аб']]){
+  assert.deepEqual(Array.from(first.filter(t=>t.source.exercise===n),t=>t.source.subpart||'').sort(),labels?[...labels].sort():['']);
+  assert(first.filter(t=>t.source.exercise===n).every(t=>t.source.page===18));
+ }
+ const value=v=>{const r=M.parse(v);return r.n/r.d;};
+ for(const [n,items]of [[57,[[7,14,3,6],[8,3,40,15],[36,20,9,5],[2,10,3,15]]],[60,[[9,1,18,2],[1,4,3,12],[.5,1/30,6,.4],[8,2.4,5,1.5]]],[61,[[4,6/5,5,1.5],[9,10,.9,.01],[7,14,7/3,14/3],[3,2.5,4,10/3]]]]){
+  for(const [i,[a,b,c,d]]of items.entries()){
+   const t=at(n,'абвг'[i]);const same=Math.abs(a*d-b*c)<1e-9;
+   if(!t.proportionReading){assert(['p17-t01','p17-t02'].includes(t.id));continue;}
+   const real=Array.from(t.proportionReading,value);assert.deepEqual(real,[a,b,c,d]);
+   if(n===61)assert.equal(t.answer,same?'Да, это пропорция':'Нет, равенство неверно');
+   for(const [step,expected]of t.steps.filter(s=>s.answer).map((s,i)=>[s,n===61?[a/b,c/d,a*d,b*c][i]:[a*d,b*c][i]]))
+    assert(Math.abs(value(step.answer)-expected)<1e-9,t.source.reference);
+  }
+ }
+ const list=at(58);assert.deepEqual(Array.from(list.source.entries),Array.from({length:10},(_,i)=>String(i+1)));
+ assert.deepEqual(Array.from(list.steps,step=>M.answer(M.parse(step.answer))),['1/3','3','5/2','1/15','1/9','1/5','3/10','1/4','1/15','30']);
+ const entries=list.ratioCollection.map(([a,b])=>M.operation('divide',a,b));const ties=[];
+ for(let i=0;i<10;i++)for(let j=i+1;j<10;j++)if(M.equal(entries[i],entries[j]))ties.push([i+1,j+1]);
+ assert.deepEqual(ties,[[4,9]]);
+ assert.equal(at(59,'1').answer,'mp = nk');assert.equal(at(59,'2').answer,'xt = yz');
+ for(const [i,expected]of [40,72,54,1/7].entries()){
+  const task=at(62,'абвг'[i]);assert.equal(task.kind,'manual');
+  const numbers=task.fourPlaces.map(value);const solutions=[];
+  for(let a=0;a<4;a++)for(let b=0;b<4;b++)for(let c=0;c<4;c++){
+   if(new Set([a,b,c]).size!==3)continue;const d=6-a-b-c;if(Math.abs(numbers[a]/numbers[b]-numbers[c]/numbers[d])<1e-9)solutions.push(numbers[a]*numbers[d]);
+  }
+  assert.equal(solutions.length,8);assert(solutions.every(x=>Math.abs(x-expected)<1e-9));assert(Math.abs(value(task.steps[1].answer)-expected)<1e-9);
  }
 }
 
