@@ -30,10 +30,16 @@ function parseRootPoints(value,xs){
  return xs.map((x,i)=>[x,ys[i]]);
 }
 function curveValue(curve,x){
+ if((curve.holes||[]).some(([h])=>x===h))return NaN;
+ if(curve.kind==='reciprocal-offset')return x===0?NaN:curve.b+curve.k/x;
+ if(curve.kind==='absolute-reciprocal')return x===0?NaN:curve.k/Math.abs(x);
+ if(curve.kind==='sign-linear')return x===curve.h?NaN:Math.sign(x-curve.h)*(curve.k*x+curve.b);
+ if(curve.kind==='abs-linear')return curve.k*Math.abs(x)+curve.b;
  if(curve.kind==='sqrt')return x>=0?Math.sqrt(x):NaN;
  if(curve.kind==='line')return curve.k*x+curve.b;
  if(curve.kind==='hyperbola')return x===0?NaN:curve.k/x;
  if(curve.kind==='square')return x*x;
+ if(curve.kind==='cube')return x*x*x;
  if(curve.kind==='sqrt-shift')return x>=curve.h?Math.sqrt(x-curve.h)+(curve.k||0):NaN;
  if(curve.kind==='sqrt-abs')return Math.sqrt(Math.abs(x));
  if(curve.kind==='abs-ratio')return x===0?NaN:(curve.scale??1)*Math.abs(x)/x;
@@ -86,11 +92,15 @@ function rootGraph(config,value){
  const definitions=buildCurves.flatMap(curve=>(curve.xs||[]).map(a=>({a,curve}))),xs=definitions.map(d=>d.a),points=learner?parseRootPoints(value,xs):null;
  // Construction begins with an empty coordinate plane. An exact curve is
  // shown only after the learner has supplied all correct defining points.
- const complete=points&&points.every(([a,b],i)=>Number.isFinite(curveValue(definitions[i].curve,a))&&b===curveValue(definitions[i].curve,a));
+ const complete=config.showSolution!==false&&points&&points.every(([a,b],i)=>Number.isFinite(curveValue(definitions[i].curve,a))&&b===curveValue(definitions[i].curve,a));
  const curves=learner?(complete?buildCurves:[]):(config.curves||[{kind:'sqrt'}]);
  curves.forEach((c,j)=>{
   let path='',open=false,previous=null;
+  const breaks=(c.holes||[]).map(([h])=>h);
+  if(['hyperbola','reciprocal-offset','absolute-reciprocal'].includes(c.kind))breaks.push(0);
+  if(c.kind==='sign-linear')breaks.push(c.h);
   const samples=Array.from({length:601},(_,i)=>xr[0]+(xr[1]-xr[0])*i/600);
+  for(const cut of breaks)if(cut>=xr[0]&&cut<=xr[1])samples.push(cut);
   if(xr[0]<=0&&xr[1]>=0)samples.push(0);
   if(c.kind==='sqrt-shift'&&c.h>=xr[0]&&c.h<=xr[1])samples.push(c.h);
   for(const a of c.xs||[])if(a>=xr[0]&&a<=xr[1])samples.push(a);
@@ -98,11 +108,12 @@ function rootGraph(config,value){
   for(const a of samples){
    const b=curveValue(c,a);
    const inside=Number.isFinite(b)&&b>=yr[0]&&b<=yr[1];
-   const continuous=previous&&!(c.kind==='hyperbola'&&previous[0]*a<=0)&&Math.abs(y(b)-y(previous[1]))<height/2;
+   const continuous=previous&&!breaks.some(h=>previous[0]<=h&&h<=a)&&Math.abs(y(b)-y(previous[1]))<height/2;
    if(inside){path+=(open&&continuous?'L':'M')+x(a).toFixed(3)+' '+y(b).toFixed(3)+' ';open=true;}else open=false;
    previous=[a,b];
   }
   svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
+  for(const [h,v] of c.holes||[])if(h>=xr[0]&&h<=xr[1]&&v>=yr[0]&&v<=yr[1])svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));
   if(c.kind==='abs-ratio'&&xr[0]<=0&&xr[1]>=0)for(const b of [-(c.scale??1),c.scale??1])if(b>=yr[0]&&b<=yr[1])svg.append(node('circle',{cx:x(0),cy:y(b),r:4,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':0,'data-hole-y':b}));
   if(c.label){
    const at=c.labelAt||[xr[1]-(xr[1]-xr[0])/8,curveValue(c,xr[1]-(xr[1]-xr[0])/8)];
@@ -134,23 +145,191 @@ function numberLine(config){
  for(const point of config.points||[])if(point.x>=min&&point.x<=max)svg.append(node('line',{x1:x(point.x),x2:x(point.x),y1:axis-5,y2:axis+5,stroke:'#087c92','stroke-width':2,'data-number-point':point.label,'data-number-x':point.x}),node('text',{x:x(point.x),y:axis-12,'text-anchor':'middle','font-size':20},point.label));
  return svg;
 }
+function parseIntegerPairs(value){
+ const text=String(value).trim().replace(/−/g,'-');
+ if(!text || text.length>1000)return null;
+ const pattern=/\(\s*([+-]?\d{1,8})\s*;\s*([+-]?\d{1,8})\s*\)/y;
+ const pairs=[];
+ let position=0;
+ while(position<text.length){
+  pattern.lastIndex=position;
+  const match=pattern.exec(text);
+  if(!match)return null;
+  pairs.push([Number(match[1]),Number(match[2])]);
+  position=pattern.lastIndex;
+  if(position===text.length)break;
+  const separator=/^\s*[,;]\s*/.exec(text.slice(position));
+  if(!separator)return null;
+  position+=separator[0].length;
+  if(position===text.length)return null;
+ }
+ return pairs;
+}
+
+function pairEquation(rule, pair){
+ const [x,y]=pair.map(BigInt);
+ switch(rule){
+  case '206-a':return {left:5n*x+y-x*y,right:2n};
+  case '206-b':return {left:x*y-x+y,right:8n};
+  case '207-all':return {left:(x-3n)*y,right:x*x-6n*x+1n,allowed:x!==3n};
+  case '209-all':return {left:7n*(x+y),right:x*y,allowed:x>0n&&y>0n};
+ }
+ throw Error('Unknown pair equation');
+}
+
+function renderIntegerPairs(host,config,value){
+ host.className='task-graphs pair-check';
+ const title=document.createElement('p');
+ title.textContent='Подстановка твоих пар в равенство';
+ host.append(title);
+ const pairs=parseIntegerPairs(value);
+ if(!pairs){
+  const guide=document.createElement('p');
+  guide.className='small';
+  guide.textContent='Введи пару в скобках, например (2;3), и нажми «Проверить». Здесь появятся значения левой и правой частей.';
+  host.append(guide);
+  return;
+ }
+ const formulas={'206-a':'5x + y − xy = 2','206-b':'xy − x + y = 8',
+                 '207-all':'(x − 3)y = x² − 6x + 1','209-all':'7(a + b) = ab'};
+ title.textContent+=' '+formulas[config.rule];
+ const list=document.createElement('ul');
+ for(const pair of pairs){
+  const result=pairEquation(config.rule,pair),row=document.createElement('li');
+  const status=result.allowed===false?'проверь область допустимых значений':result.left===result.right?'равенство верно':'значения различаются';
+  row.textContent='('+pair.join('; ')+'). '+'Слева '+result.left+', справа '+result.right+' — '+status+'.';
+  list.append(row);
+ }
+ host.append(list);
+}
+
+function renderTrainMeeting(host,value){
+ host.className='task-graphs train-model';
+ const speeds=String(value||'').split(';');
+ for(const [index,time] of [7,6].entries()){
+  const figure=document.createElement('figure'),caption=document.createElement('figcaption');
+  const speed=number(speeds[index]||''),first=60*time;
+  const second=speed!==null&&speed>=0?speed*(time-3):null;
+  caption.textContent='До встречи '+time+' ч. Первый поезд в пути '+time+' ч, второй — '+(time-3)+' ч.';
+  const svg=node('svg',{viewBox:'0 0 300 62',role:'img','aria-label':'Путь от А до Б, 600 км'});
+  svg.append(node('line',{x1:16,y1:26,x2:284,y2:26,stroke:'#57656e','stroke-width':2}));
+  svg.append(node('text',{x:16,y:12,'text-anchor':'middle'},'А'),node('text',{x:284,y:12,'text-anchor':'middle'},'Б'));
+  if(second!==null){
+   const scale=268/600,bound=16+scale*first,end=284-Math.min(600,second)*scale;
+   svg.append(node('line',{x1:16,y1:23,x2:bound,y2:23,stroke:'#206946','stroke-width':6}),
+              node('circle',{cx:bound,cy:23,r:4,fill:'#206946'}),
+              node('line',{x1:284,y1:30,x2:end,y2:30,stroke:'#9a422d','stroke-width':6}),
+              node('path',{d:'M '+end+' 25 l -5 5 l 5 5 z',fill:'#9a422d'}));
+   const total=first+second;
+   const distance=n=>n.toLocaleString('ru',{maximumFractionDigits:2});
+   caption.textContent+=' Из А '+first+' км, из Б '+distance(second)+' км. Вместе '+distance(total)+' км.';
+   svg.setAttribute('aria-label',caption.textContent);
+  }
+  svg.append(node('text',{x:150,y:54,'text-anchor':'middle','font-size':13},'600 км'));
+  figure.append(caption,svg);host.append(figure);
+ }
+}
+function renderDomainFraction(host,config){
+ host.className='task-graphs exclusion-model';
+ const title=document.createElement('p');
+ title.textContent='Что происходит в точках из условия?';
+ host.append(title);
+ const analysis=config.analysis;
+ if(!analysis?.zeros){
+  const guide=document.createElement('p');
+  guide.className='small';
+  guide.textContent=analysis?.status==='zero'?'Знаменатель всегда равен нулю. Попробуй изменить его.':'После проверки дроби здесь появится результат подстановки каждой исключённой точки.';
+  host.append(guide);return;
+ }
+ const list=document.createElement('ul');
+ config.points.forEach((point,i)=>{
+  const item=document.createElement('li');
+  item.textContent='x = '+point+': '+(analysis.zeros[i]?'знаменатель равен нулю, точка исключена.':'знаменатель отличен от нуля, точка осталась в области.');
+  list.append(item);
+ });
+ const count=document.createElement('p');
+ count.className='small';count.textContent='Всего различных действительных нулей у твоего знаменателя: '+analysis.count+'.';
+ host.append(list,count);
+}
+function renderNaturalValues(host,config){
+ host.className='task-graphs natural-model';
+ const heading=document.createElement('p');heading.textContent='Подстановка выбранных n';host.append(heading);
+ if(!config.rows?.length){
+  const guide=document.createElement('p');guide.className='small';guide.textContent='После проверки появится значение выражения для каждого числа из твоего ответа.';host.append(guide);return;
+ }
+ const list=document.createElement('ul');
+ for(const {term,pair} of config.rows){
+  const row=document.createElement('li');
+  if(!pair)row.textContent='n = '+term+': это не положительное целое число.';
+  else{
+   const [top,bottom]=pair;
+   const value=top%bottom===0n?String(top/bottom):top+'/'+bottom;
+   const property=top<=0n?'не положительное число':top%bottom===0n?'натуральное число':'нецелое число';
+   row.textContent='n = '+term+': '+top+' : '+bottom+' = '+value+' ('+property+').';
+  }
+  list.append(row);
+ }
+ host.append(list);
+}
+function workEstimate(host,config,value){
+ host.className='task-graphs quantity-model';
+ const proposed=number(value),line=text=>{const p=document.createElement('p');p.className='small';p.textContent=text;host.append(p);};
+ if(proposed===null||proposed<=0){line('После проверки положительного ответа здесь можно сравнить модель с условием.');return;}
+ const decimal=x=>x.toLocaleString('ru',{maximumFractionDigits:4});
+ if(config.type==='work-hours'){
+  const total=[8,9,12].reduce((n,h)=>n+proposed/h,0);
+  for(const h of [8,9,12])line('Мастерица, которая тратит '+h+' ч на заказ, за '+decimal(proposed)+' ч выполнит такую долю заказа: '+decimal(proposed/h)+'.');
+  line('Выполнено заказов: '+decimal(total)+'. По условию требуется 3.');
+ }else{
+  line('Сравниваем две равные половины по 240 км: при 60 км/ч первая занимает 4 ч, при 80 км/ч вторая — 3 ч.');
+  line('Твоя скорость за 7 ч дала бы '+decimal(7*proposed)+' км. Общий путь в модели — 480 км.');
+ }
+}
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(['work-hours','equal-distances'].includes(config.type)){workEstimate(host,config,value);return;}
+ if(['intersection-example','shared-hyperbola-line'].includes(config.type)){
+  host.className='task-graphs root-graph';
+  const own=config.type==='shared-hyperbola-line',params=own?parseLine(value):config.reveal?{k:config.k,b:config.line[1]}:null;
+  const curves=params?[{kind:'hyperbola',k:params.k},{kind:'line',k:own?params.k:config.line[0],b:params.b}]:[];
+  const points=own?[config.point]:config.reveal?config.points:[];
+  const bound=own?Math.max(6,Math.abs(config.point[0])+2,Math.abs(config.point[1])+2):5;
+  host.append(rootGraph({type:'root-plane',curves,points,xRange:[-bound,bound],yRange:[-bound,bound]},''));
+  const note=document.createElement('p');note.className='small';note.textContent=own?'Данная точка отмечена. После проверки на осях появятся обе кривые по введённым k и b.':config.reveal?'Показаны кривые и точки именно из примера доказательства.':'После попытки можно сопоставить рассуждение с примером на этих осях.';host.append(note);return;
+ }
+ if(config.type==='natural-values'){renderNaturalValues(host,config);return;}
+ if(config.type==='domain-fraction'){renderDomainFraction(host,config);return;}
+ if(config.type==='train-meeting'){renderTrainMeeting(host,value);return;}
+ if(config.type==='integer-pairs'){renderIntegerPairs(host,config,value);return;}
  if(config.type==='number-line'){host.className='task-graphs number-line';host.append(numberLine(config));if(config.caption){const caption=document.createElement('p');caption.className='small';caption.textContent=config.caption;host.append(caption);}
+ }else if(config.type==='line-example'){
+  host.className='task-graphs root-graph';
+  const line=parseLine(value);
+  const caption=document.createElement('p');caption.className='small';
+  caption.textContent=line?'Сравни наклон и пересечение с осью y с условием.':'Введи коэффициенты k и b, чтобы построить свою прямую.';
+  const plane={...config,type:'root-plane',curves:line?[{kind:'line',...line}]:[]};
+  if(line){
+   const bound=Math.max(6,Math.abs(line.b),Math.abs(line.b+line.k),Math.abs(line.b-line.k));
+   plane.xRange=[-3,3];plane.yRange=[-bound,bound];
+  }
+  host.append(rootGraph(plane,''),caption);
  }else if(config.type==='root-line'){
   host.className='task-graphs root-graph';const line=parseLine(value),plane={...config,type:'root-plane',curves:[{kind:'sqrt'},...(line?[{kind:'line',...line}]:[])]};host.append(rootGraph(plane,''));
   const caption=document.createElement('p');caption.className='small';caption.textContent='Показана часть графиков. Введи k; b, чтобы добавить свою прямую y=kx+b. Число пересечений проверяется по уравнению.';host.append(caption);
  }else if(['root-plane','root-build','curve-build'].includes(config.type)){
   host.className='task-graphs root-graph';host.append(rootGraph(config,value));
   const caption=document.createElement('p');caption.className='small';
-  caption.textContent=['root-build','curve-build'].includes(config.type)?'Введи ординаты точек ниже — они появятся на твоём чертеже.':(config.caption||'На рисунке показана часть графика. Проверяй выводы по формуле.');host.append(caption);
- }else if(config.type==='choices'){
+  caption.textContent=['root-build','curve-build'].includes(config.type)?(config.caption||'Введи ординаты точек ниже — они появятся на твоём чертеже.'):(config.caption||'На рисунке показана часть графика. Проверяй выводы по формуле.');host.append(caption);
+ }else if(config.type==='choices'||config.type==='hyperbola-choices'){
   host.className='task-graphs alternatives';
-  alternatives.forEach((g,i)=>{
+  const inverse=config.type==='hyperbola-choices';
+  const graphs=inverse?config.coefficients.map(k=>({k})):alternatives;
+  graphs.forEach((g,i)=>{
    const fig=document.createElement('figure'),caption=document.createElement('figcaption'),zoom=document.createElement('button');zoom.type='button';zoom.className='graph-zoom';zoom.textContent='График '+(i+1)+' ↗';zoom.setAttribute('aria-label','Увеличить график '+(i+1));caption.append(zoom);
-   const label='График '+(i+1)+': y='+g.k+'x'+(g.b<0?'':'+')+g.b+(g.holes.length?', выколотая точка при x='+g.holes[0]:', без выколотых точек');
-   fig.append(caption,graph(g.k,g.b,g.holes,3,label));host.append(fig);
-   zoom.onclick=()=>{const dialog=document.createElement('dialog'),title=document.createElement('p'),close=document.createElement('button');dialog.className='graph-dialog';dialog.setAttribute('aria-label','Увеличенный график '+(i+1));title.textContent='График '+(i+1);close.type='button';close.textContent='Вернуться к выбору';dialog.append(title,graph(g.k,g.b,g.holes,3,label),close);host.append(dialog);close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>{dialog.remove();zoom.focus();},{once:true});dialog.showModal();};
+   const label=inverse?'График '+(i+1)+': при x = 2 значение y примерно '+(g.k/2).toLocaleString('ru',{maximumSignificantDigits:3})+'.':'График '+(i+1)+': y='+g.k+'x'+(g.b<0?'':'+')+g.b+(g.holes.length?', выколотая точка при x='+g.holes[0]:', без выколотых точек');
+   const draw=()=>inverse?rootGraph({label,curves:[{kind:'hyperbola',k:g.k}],xRange:[-6,6],yRange:[-6,6],xTickStep:2,yTickStep:2},''):graph(g.k,g.b,g.holes,3,label);
+   fig.append(caption,draw());host.append(fig);
+   zoom.onclick=()=>{const dialog=document.createElement('dialog'),title=document.createElement('p'),close=document.createElement('button');dialog.className='graph-dialog';dialog.setAttribute('aria-label','Увеличенный график '+(i+1));title.textContent='График '+(i+1);close.type='button';close.textContent='Вернуться к выбору';dialog.append(title,draw(),close);host.append(dialog);close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>{dialog.remove();zoom.focus();},{once:true});dialog.showModal();};
   });
  }else if(config.type==='pair'||config.type==='pair-reference'){
   host.className='task-graphs construction';
@@ -163,5 +342,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {parse,parsePair,parseLine,parseRootPoints,curveValue,alternatives,render,rootGraph,numberLine};
+return {parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
