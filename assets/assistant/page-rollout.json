@@ -7239,6 +7239,15 @@
       "bindingScope": "Per-page sourceSha for the shared school entry after integrating both printed Vilenkin routes through 1.125 and 5.50 and their separate assessments."
     },
     {
+      "previousBaseSha": "f9d064a6860b3f2750b6830aadbf7bfd5bff212f",
+      "sourceBaseSha": "b77287e4358a829617e93e7dafd345f1cfbc6655",
+      "task": "docs/tasks/MAKARYCHEV8_696_701.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Формула в условиях снова видна в браузере, автономном HTML и на доске. В №250 отображаются обе части тождества Эйлера. Графические задания сохранили предметный рисунок и указание номера печатной страницы."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
