@@ -39,10 +39,9 @@ async function submit(page, value) {
 
 
 async function verify(width,url){
-  const context=await browser.newContext({viewport:{width,height:900}});
   const errors=[];
   async function fresh(){
-    const p=await context.newPage();p.on('pageerror',e=>errors.push(e.message));await p.goto(url);return p;
+    const p=await browser.newPage({viewport:{width,height:900}});p.on('pageerror',e=>errors.push(e.message));await p.goto(url);return p;
   }
   let page=await fresh();
   const inventory=await page.evaluate(()=>{
@@ -52,14 +51,16 @@ async function verify(width,url){
   });
   assert.equal(inventory.length,134);assert.equal(new Set(inventory.map(x=>x.index)).size,134);
   for(const [offset,q] of inventory.entries()){
-    if(offset&&offset%32===0){await page.close();page=await fresh();}
+    if(offset&&offset%16===0){await page.close();page=await fresh();}
     await page.evaluate(i=>{history.replaceState(null,'','#lesson/p21/'+i);MakarychevApp.route();},q.index);
     assert.equal(await page.locator('.task-heading h2').innerText(),q.title);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,q.ref);
   }
+  await page.close();page=await fresh();
   for(let n=531;n<=556;n++){
     await openNumber(page,n);assert(await page.locator('#number-result a.button:not(.quiet)').count()>0);
   }
+  await page.close();page=await fresh();
   await openNumber(page,531,'№ 531б');
   assert.equal(await page.locator('#task-graph svg').count(),0);
   await submit(page,'15;2');
@@ -81,6 +82,7 @@ async function verify(width,url){
   await page.reload();assert.equal(await page.locator('#task-graph [data-root-curve]').count(),2);
   await openNumber(page,546,'№ 546б, оценка по графику');await submit(page,'0,6;3,4');
   assert.equal(await page.evaluate(()=>MakarychevApp.getState().tasks['p21-source-546-b-estimate'].correct),true);
+  await page.close();page=await fresh();
   await openNumber(page,552,'№ 552, доказательство');await submit(page,'3;2;4');
   assert.match(await page.locator('#answer-form .feedback').innerText(),/звено 2/);
   await submit(page,'3;1;2;4');
@@ -91,6 +93,7 @@ async function verify(width,url){
   assert.equal(await page.evaluate(()=>MakarychevApp.getState().tasks['p21-source-555-b'].attempts),0);
   await submit(page,'3sqrt(5)+2');
   assert.equal(await page.evaluate(()=>MakarychevApp.getState().tasks['p21-source-555-b'].independent),true);
+  await page.close();page=await fresh();
   await openNumber(page,556,'№ 556в');await submit(page,'-3;-6');
   assert.match(await page.locator('#task-graph').innerText(),/Ордината|отличается/);
   await submit(page,'-3;-7');
@@ -100,12 +103,12 @@ async function verify(width,url){
   const prior=await page.locator('.prompt').innerText();await page.locator('[data-action=new]').first().click();
   assert.notEqual(await page.locator('.prompt').innerText(),prior);
   await page.locator('[data-action=return]').first().click();assert.equal(await page.locator('.task-heading h2').innerText(),'№ 537ж');
-  assert.deepEqual(errors,[]);await context.close();return {width,cards:inventory.length,numbers:26};
+  assert.deepEqual(errors,[]);await page.close();return {width,cards:inventory.length,numbers:26};
 }
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const url = 'http://127.0.0.1:' + server.address().port + '/school/makarychev8/';
-  browser = await chromium.launch({ headless: true, ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) });
+  browser = await chromium.launch({ headless: true, args: ['--disable-dev-shm-usage'], ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) });
   const views = [];
   for (const width of [320, 390, 1024]) views.push(await verify(width, url));
   console.log(JSON.stringify({ status: 'PASS', views }));
