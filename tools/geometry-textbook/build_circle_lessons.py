@@ -81,13 +81,19 @@ def build():
             # an independent closing question using the demonstrated final view.
             target = dict(id='step-repeat', title='Проверь себя на новых данных',
                           prompt='Примени доказанное свойство ещё раз.',
-                          explanation=hint, view=target['view'],
+                          explanation=hint, view='step-4',
                           justifications=target['justifications'])
             item['steps'].append(target)
         target['input'] = dict(prompt=question, accepted=[answer], feedback=hint)
         model = item['visualization']['model']
         fit_circles(model)
         add_markers(card['number'], model)
+        if len(item['steps']) == 4:
+            # The board restores its maximum visible view from the revealed step.
+            # Give the repeat its own view ID, keeping the last construction.
+            model['views']['step-4'] = {
+                **model['views']['step-3'], 'label': 'Шаг 4. Проверь себя на новых данных'
+            }
         items.append(item)
     return {'bookId': BOOK, 'lessons': items}
 

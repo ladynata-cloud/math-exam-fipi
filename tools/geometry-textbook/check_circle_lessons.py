@@ -33,6 +33,8 @@ def verify(item):
     assert len(inputs) == 2 and inputs[0]['prompt'] != inputs[1]['prompt']
     model = item['visualization']['model']
     points = model['points']
+    for index, step in enumerate(item['steps'], 1):
+        assert step['view'] == f'step-{index}' and step['view'] in model['views']
     for view in model['views'].values():
         for circle in view.get('circles', []):
             c, t = points[circle['center']][:2], points[circle['through']][:2]
