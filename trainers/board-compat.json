@@ -1330,6 +1330,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
+    },
+    {
+      "trainerId": "alimov-2012",
+      "file": "trainers/alimov-2012/index.html",
+      "title": "Алимов · 10–11 классы · 2012 · периодические дроби, корни и модуль",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
     }
   ]
 }

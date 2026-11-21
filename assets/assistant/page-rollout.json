@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 631,
-    "covered": 629,
+    "total": 632,
+    "covered": 630,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -40,7 +40,8 @@
     "trainers/school-workshop-check/index.html",
     "trainers/tyurin-statistics/index.html",
     "trainers/makarychev9-2017/index.html",
-    "trainers/makarychev7-2014/index.html"
+    "trainers/makarychev7-2014/index.html",
+    "trainers/alimov-2012/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -2243,10 +2244,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "1005795160b70519452fe60a040a2ad7484f89d2802bf77ebff9beb6d89482be",
-      "afterSha256": "acac9e34a3f04fbfa91a2539ef8a3e328c2b2c33a8c29a8ab8a5765a8bcb54e8",
+      "beforeSha256": "36f858089017a1683f86f76bb9599759a484b18394eed38acc6a96ea72da05c8",
+      "afterSha256": "cd6385b3175c917397552b5086bcb1dd4635cdaabd07a2bfb5d87db6e7cdcc67",
       "placement": "before-head-close",
-      "sourceSha": "cf3c533745f2c69c4a164d8821484cc437c40287"
+      "sourceSha": "7a89536d356372dd0b12ffe90214d4bdcfc660f0"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -4027,7 +4028,8 @@
     "trainers/peterson6-workshop/index.html": "sitemap",
     "trainers/merzlyak9-2014/index.html": "school/index.html",
     "trainers/makarychev9-2017/index.html": "school/index.html",
-    "trainers/makarychev7-2014/index.html": "school/index.html"
+    "trainers/makarychev7-2014/index.html": "school/index.html",
+    "trainers/alimov-2012/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6635,6 +6637,15 @@
         "school/index.html"
       ],
       "boundary": "Проверены восемь карт изданий и дополнительные задания Виленкина по печатным номерам."
+    },
+    {
+      "previousBaseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+      "sourceBaseSha": "7a89536d356372dd0b12ffe90214d4bdcfc660f0",
+      "task": "docs/tasks/MAKARYCHEV8_671_686.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Сверена страница Макарычева после добавления графиков уравнений с двумя переменными."
     }
   ],
   "coverageUpdates": [
@@ -6775,6 +6786,14 @@
         "trainers/makarychev7-2014/index.html"
       ],
       "reason": "Практикумы по п. 9 и 10 издания 2014 года."
+    },
+    {
+      "sourceBaseSha": "2fb6615ec5504151a525d5fef617304da8eaf512",
+      "task": "docs/tasks/WORKSHOP_ALIMOV_2012.md",
+      "addedPages": [
+        "trainers/alimov-2012/index.html"
+      ],
+      "reason": "Самостоятельные разборы всех подпунктов №1–3 на с. 6 издания 2012 года."
     }
   ]
 }

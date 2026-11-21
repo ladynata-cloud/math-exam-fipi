@@ -49,7 +49,9 @@ async function healthy(url, child, logs) {
 }
 
 const printedProperties=process.argv.includes('--printed-identity');
-const catalogue=process.argv.includes('--makarychev7-2014') ? {
+const catalogue=process.argv.includes('--alimov-2012') ? {
+  directory:'alimov-2012',entries:[[19,78,47]],uniqueLessons:45,search:'alimov-2012',match:'периодические дроби',lesson:process.argv.includes('--nested')?'19-12c':process.argv.includes('--root-bounds')?'19-7':process.argv.includes('--absolute')?'19-8b':process.argv.includes('--chain')?'19-5b':'19-3f',onlySelected:['--chain','--root-bounds','--absolute','--nested'].some(flag=>process.argv.includes(flag)),chart:process.argv.includes('--nested')?'svg[aria-label*="Раскрытие двух квадратов"]':process.argv.includes('--root-bounds')?'svg[aria-label*="двумя соседними десятыми"]':process.argv.includes('--absolute')?'svg[aria-label*="его модуль"]':process.argv.includes('--chain')?'svg[aria-label*="Дерево вычислений"]':'svg[aria-label*="одинаковым периодическим хвостом"]',storage:'math:alimov-2012:v1:'
+}:process.argv.includes('--makarychev7-2014') ? {
   directory:'makarychev7-2014',entries:[[95,46,7]],search:'makarychev7-2014',match:'выражения и статистика',lesson:printedProperties?'95-5':'95-10',chart:printedProperties?'svg[aria-label*="Верхняя стрелка"]':'svg[aria-label*="Средние места"]',storage:'math:makarychev7-2014:v1:'
 }: process.argv.includes('--makarychev9-2017-supplement')?{
   directory:'makarychev9-2017',entries:[[50,36,68]],search:'makarychev9-2017',match:'36 пунктов',lesson:process.argv.includes('--radical-sum')?'50-219':process.argv.includes('--parameter')?'50-216':process.argv.includes('--graph')?'50-213':'50-202',onlySelected:true,chart:process.argv.includes('--radical-sum')?'svg[aria-label*="Корни вспомогательного"]':process.argv.includes('--parameter')?'svg[aria-label*="Парабола при найденном"]':process.argv.includes('--graph')?'svg[aria-label*="Обе ветви"]':'svg[aria-label*="Сечение"]',storage:'math:makarychev9-2017:v1:'
@@ -69,11 +71,16 @@ async function run(browser, origin, serverOrigin) {
       assert.equal(await student.locator('#main .skill-row').count(),count);
       const links=await student.locator('#main a[href*="'+catalogue.directory+'/index.html"]').evaluateAll(links=>links.map(el=>el.href));
       assert.equal(links.length,direct);
-      const individual=catalogue.onlySelected?links.filter(url=>new URL(url).hash==='#lesson/'+catalogue.lesson):links;
+      // A topic and its first printed exercise can deliberately have the same target.
+      const targets=[...new Set(links)];
+      if(catalogue.uniqueLessons)assert.equal(targets.length,catalogue.uniqueLessons);
+      const individual=catalogue.onlySelected?targets.filter(url=>new URL(url).hash==='#lesson/'+catalogue.lesson):targets;
       if(catalogue.onlySelected)assert.equal(individual.length,1);
       for(const url of individual){
-        await student.goto(url);await student.locator('#model').waitFor();
+        await student.goto(url,{waitUntil:'domcontentloaded'});await student.locator('#model').waitFor();
         assert(await student.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),url);
+        if(catalogue.directory==='alimov-2012' && !catalogue.onlySelected && url===individual[0])
+          await require('./alimov-2012-display.cjs')(student);
         const id=new URL(url).hash.slice(8);
         assert.equal(await student.locator('#lesson').inputValue(),id);
         await student.locator('[data-action=practice]').click();await student.locator('#answer').fill('9999999');

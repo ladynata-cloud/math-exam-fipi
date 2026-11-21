@@ -535,5 +535,97 @@
         {prompt:'Какой линейный коэффициент должен дать раскрытый квадрат?',kind:'number',answer:String(b),hint:'Он равен исходному коэффициенту при x.',explanation:'−2Ah = '+b+'.'}]};
   }
 
-  return { mount, experiment, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const factorsPractice={id:'trinomial-factors',title:'Разложить трёхчлен на линейные множители',
+    description:'Выдели старший коэффициент, используй оба корня и проверь разложение раскрытием.'};
+  function practiceFactors(seed,level){
+    const a=level===1?1:(seed%2?-1:1)*(2+seed%4),r=2+seed%9,s=level===3?r:-(1+seed%6);
+    const b=-a*(r+s),c=a*r*s;
+    const signed=(n,symbol)=>(n<0?' − ':' + ')+(symbol&&Math.abs(n)===1?'':Math.abs(n))+symbol;
+    const prompt='Разложи '+(a===1?'':a)+'x²'+(b?signed(b,'x'):'')+signed(c,'')+' на линейные множители.';
+    const factor=z=>'(x'+(z>0?'-':'+')+Math.abs(z)+')',answer=(a===1?'':a+'*')+factor(r)+(r===s?'^2':'*'+factor(s));
+    const hint='Найди корни r, s. В произведении a(x − r)(x − s) старший коэффициент сохраняется.';
+    return {title:'Корни и старший коэффициент',prompt,kind:'text',factorizedAnswer:true,answer,finalLabel:'Твоё разложение',
+      hint,correction:hint,explanation:'После раскрытия восстанавливаются коэффициенты '+a+', '+b+', '+c+'.',
+      source:{type:'authored',reference:'Тренировка с новыми корнями'},skills:[vietaPractice.id],
+      steps:[{prompt:'Каков старший коэффициент?',kind:'number',answer:String(a),hint:'Посмотри на множитель при x².',explanation:'a = '+a+'.'},
+        {prompt:'Найди сумму и произведение корней.',kind:'graph-values',answer:[r+s,r*s].join(';'),hint:'Используй −b/a и c/a.',
+          explanation:'Сумма равна '+(r+s)+', произведение '+r*s+'.'}]};
+  }
+
+  const rationalEquationPractice={id:'rational-equation',title:'Дробное уравнение и посторонние корни',
+    description:'Найди запреты и проверь кандидатов в исходных знаменателях.'};
+  function practiceRationalEquation(seed,level){
+    const hole=1+seed%9,r=hole+1+seed%5,s=-(1+seed%7);
+    const factor=z=>'(x '+(z>0?'−':'+')+' '+Math.abs(z)+')';
+    const top=level===1?factor(r):level===2?factor(hole)+factor(r):factor(r)+factor(s);
+    const answer=level<3?String(r):s+';'+r,banned=level<3?String(hole):hole+';'+(-r-8);
+    const den=level<3?factor(hole):factor(hole)+factor(-r-8);
+    return {title:'Отдели корни от запрещённых значений',prompt:'Реши ('+top+') / ('+den+') = 0.',kind:'quadratic-roots',
+      answer,excludedRoots:banned,graph:{type:'rational-equation-check',excluded:banned,solutions:answer},
+      finalLabel:'Все допустимые корни',hint:'Дробь равна нулю, если числитель равен нулю и знаменатель отличен от нуля.',
+      explanation:'Нули знаменателя: '+banned+'. После проверки остаются '+answer+'.',
+      source:{type:'authored',reference:'Авторская тренировка по области допустимых значений'},skills:[vietaPractice.id],
+      steps:[{prompt:'Запиши все нули исходного знаменателя.',kind:'quadratic-roots',answer:banned,hint:'Обнуляй каждый множитель знаменателя отдельно.',explanation:'Исходные запреты: '+banned+'.'},
+        {prompt:'Каков положительный корень, который не запрещён?',kind:'number',answer:String(r),hint:'Проверь положительные нули числителя в знаменателе.',explanation:'x = '+r+' сохраняет знаменатель ненулевым.'}]};
+  }
+
+  const ratePractice={id:'rational-stories',title:'Две величины и дробное уравнение',
+    description:'Переведи условие о двух поездках или общей сумме на язык дробей. Проверь смысл каждого корня.'};
+  function practiceRates(seed,level){
+    let prompt,answer,explanation,kind='number',min=0,integer=false,varName,unit,rows,steps;
+    const row=(label,total,offset)=>({label,total,slope:1,offset,denominator:offset===0?'x':'x '+(offset>0?'+ ':'− ')+Math.abs(offset)});
+    const step=(prompt,answer,hint,explanation)=>({prompt,kind:'number',answer:String(answer),hint,explanation});
+    if(level===1){
+      const slow=3+seed%9,extra=1+Math.floor(seed/3)%4,m=1+seed%3,distance=slow*(slow+extra)*m;
+      const saving=extra*m;
+      prompt='На маршруте длиной '+distance+' км второй велосипедист движется на '+extra+' км/ч быстрее первого и тратит на '+saving+' ч меньше. Какова скорость первого?';
+      answer=String(slow);varName='скорость первого';unit='ч';
+      rows=[row('Первый велосипедист',distance,0),row('Второй велосипедист',distance,extra)];
+      steps=[step('Каков числитель обеих дробей времени?',distance,'Путь у них одинаковый.','Оба проходят '+distance+' км.'),
+        step('Чему равно время первого минус время второго?',saving,'Более медленный едет дольше.','Разность равна '+saving+' ч.')];
+      explanation='При x = '+slow+' получаем '+distance/slow+' и '+distance/(slow+extra)+' ч. Их разность '+saving+' ч. Второй корень −'+(slow+extra)+' нарушает x > 0.';
+    }else if(level===2){
+      const group=6+seed%12,out=1+seed%4,m=2+Math.floor(seed/4)%4,total=group*(group-out)*m,extra=out*m;
+      integer=true;min=out;varName='первоначальное число участников';unit='р.';
+      prompt='Группа делила поровну '+total+' р. Затем '+out+' человек отказались, и каждый из оставшихся внёс на '+extra+' р. больше. Сколько человек было первоначально?';
+      answer=String(group);rows=[row('Первоначальный взнос',total,0),row('Новый взнос',total,-out)];
+      steps=[step('На сколько уменьшился делитель при новом взносе?',out,'Делитель — это число участников.','Новый делитель x − '+out+'.'),
+        step('Чему равен новый взнос минус первоначальный?',extra,'Общая сумма сохранилась, плательщиков стало меньше.','Разность положительна и равна '+extra+' р.')];
+      explanation='При '+group+' участниках первоначальный взнос '+total/group+' р., новый '+total/(group-out)+' р. Другой корень '+(out-group)+' не даёт положительного количества участников.';
+    }else{
+      const r=4+2*(seed%6),s=r+2+2*(Math.floor(seed/4)%3),lake=r*s/2,up=lake+2-r-s;
+      kind='set';min=2;varName='скорость на озере';unit='ч';
+      prompt='Гребец проходит '+up+' км против течения (2 км/ч) на один час быстрее, чем '+lake+' км по озеру. Найди все возможные скорости на озере.';
+      answer=r+';'+s;rows=[row('Против течения',up,-2),row('По озеру',lake,0)];
+      steps=[step('При какой скорости на озере движение против течения прекращается?',2,'Речная скорость равна x − 2.','Нужно x > 2.'),
+        step('Каково произведение корней после устранения знаменателей?',2*lake,'Умножь '+lake+'/x − '+up+'/(x − 2) = 1 на x(x − 2) и собери квадратное уравнение.','Свободный член после приведения равен 2 · '+lake+'.')];
+      explanation='Уравнение сводится к x² − '+(r+s)+'x + '+r*s+' = 0. Оба значения '+r+' и '+s+' больше скорости течения и дают разность времён в один час.';
+    }
+    const hint='Составь дробь для каждой строки таблицы. Порядок вычитания выбери по условию, а каждый корень проверь по смыслу.';
+    return {title:ratePractice.title,prompt,kind,answer,hint,correction:hint,steps,explanation,
+      graph:{type:'rate-table',rows,min,integer,all:level===3,varName,unit},finalLabel:level===3?'Все возможные скорости, км/ч':level===2?'Число участников':'Скорость первого, км/ч',
+      source:{type:'authored',reference:'Тренировка по составлению дробных уравнений'},skills:[rationalEquationPractice.id]};
+  }
+
+  const planePractice={id:'plane-lines',title:'Построить прямую по своим точкам',
+    description:'Выбери точки и построй график, включая вертикальную прямую и объединение двух прямых.'};
+  function practicePlane(seed,level){
+    const h=seed%11-5,k=(seed%2?-1:1)*(1+seed%4),b=(Math.floor(seed/3)%9)-4;
+    const pair=(x,y)=>'('+x+';'+y+')',row=(p,q)=>p+', '+q;
+    const vertical=row(pair(h,-1),pair(h,2)),sloped=row(pair(0,b),pair(1,k+b));
+    const label='y = '+k+'x '+(b<0?'− ':'+ ')+Math.abs(b);
+    const lines=level===1?[[1,0,h]]:level===2?[[k,-1,-b]]:[[1,0,h],[k,-1,-b]];
+    const steps=[{prompt:'Сколько различных прямых нужно построить?',kind:'number',answer:String(lines.length),
+      hint:'Посчитай отдельные линейные условия.',explanation:'Нужно построить '+lines.length+' прямых.'},
+      {prompt:level===1?'Какую абсциссу надо оставить постоянной?':'Какова ордината наклонной прямой при x = 0?',kind:'number',answer:String(level===1?h:b),
+       hint:level===1?'На вертикали меняется только y.':'Подставь x = 0 в линейную зависимость.',explanation:level===1?'У всех её точек x = '+h+'.':'Пересечение оси y происходит на уровне '+b+'.'}];
+    const hint='Для каждой прямой найди две разные точки. Если прямая вертикальна, у них одинаковый x; если наклонна, проверь обе ординаты.';
+    return {title:planePractice.title,kind:'construct-lines',prompt:'Построй график: '+(level===1?'x = '+h:level===2?label:'x = '+h+' или '+label)+'.',
+      answer:level===1?vertical:level===2?sloped:vertical+' | '+sloped,lines,graph:{type:'own-lines'},steps,hint,correction:hint,
+      explanation:'Верно, если твои точки задают каждую требуемую прямую целиком.',finalLabel:'Точки для построения',
+      inputNote:'Введи (x;y), (x;y) для каждой прямой. Две группы разделяй чертой |.',
+      source:{type:'authored',reference:'Тренировка на новых прямых'},skills:[]};
+  }
+
+  return { mount, experiment, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

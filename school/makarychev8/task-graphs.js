@@ -40,7 +40,7 @@ function curveValue(curve,x){
  if(curve.kind==='hyperbola')return x===0?NaN:curve.k/x;
  if(curve.kind==='quadratic')return curve.a*x*x+curve.b*x+curve.c;
  if(curve.kind==='square')return x*x;
- if(curve.kind==='cube')return x*x*x;
+ if(curve.kind==='cube')return (curve.scale??1)*x*x*x;
  if(curve.kind==='sqrt-shift')return x>=curve.h?Math.sqrt(x-curve.h)+(curve.k||0):NaN;
  if(curve.kind==='sqrt-abs')return Math.sqrt(Math.abs(x));
  if(curve.kind==='abs-ratio')return x===0?NaN:(curve.scale??1)*Math.abs(x)/x;
@@ -113,6 +113,7 @@ function rootGraph(config,value){
    if(inside){path+=(open&&continuous?'L':'M')+x(a).toFixed(3)+' '+y(b).toFixed(3)+' ';open=true;}else open=false;
    previous=[a,b];
   }
+  if(c.kind==='vertical'&&c.h>=xr[0]&&c.h<=xr[1])path='M'+x(c.h)+' '+pad+' L'+x(c.h)+' '+(height-pad);
   svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,...(c.dashed?{'stroke-dasharray':'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
   for(const [h,v] of c.holes||[])if(h>=xr[0]&&h<=xr[1]&&v>=yr[0]&&v<=yr[1])svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));
   if(c.kind==='abs-ratio'&&xr[0]<=0&&xr[1]>=0)for(const b of [-(c.scale??1),c.scale??1])if(b>=yr[0]&&b<=yr[1])svg.append(node('circle',{cx:x(0),cy:y(b),r:4,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':0,'data-hole-y':b}));
@@ -398,6 +399,139 @@ function quadraticEvidence(host,config,value){
  host.append(caption);
 }
 
+function planeConstruction(host,config,value){
+ host.className='task-graphs root-graph';const note=document.createElement('p');note.className='small';
+ const num=z=>{const r=M.parse(String(z));return r.n/r.d;};
+ const toCurve=([a,b,c])=>b?{kind:'line',k:-a/b,b:c/b}:{kind:'vertical',h:c/a};
+ const groups=(config.groups||[]).map(g=>g.map(p=>p.map(r=>r.n/r.d))),points=groups.flat(),curves=[];
+ if(config.type==='line-figure'){
+  config.lines.forEach((l,i)=>{
+   const c=toCurve(l.map(num));if(config.labels){c.label=config.labels[i];c.labelAt=config.labelPoints[i];}curves.push(c);
+  });
+ }else if(config.type==='own-lines'){
+  for(const row of groups){
+   if(row.length!==2)continue;
+   const [[x,y],[u,v]]=row;
+   if(x===u&&y===v)continue;
+   curves.push(x===u?{kind:'vertical',h:x}:{kind:'line',k:(v-y)/(u-x),b:(y*u-v*x)/(u-x)});
+  }
+ }
+ const max=config.bounds||Math.min(1000000,Math.max(5,...points.flat().map(v=>Math.ceil(Math.abs(v)*1.15))));
+ host.append(rootGraph({curves,points,xRange:[-max,max],yRange:[-max,max],compactTicks:max>=10000,label:config.type==='line-figure'?'Координатный рисунок к заданию':'Координатная плоскость с твоими точками и прямыми'},''));
+ note.textContent=config.type==='line-figure'?'На обеих осях отмечен ноль. Отсчитывай координаты по подписанным делениям.':config.type==='own-points'?'Введённые пары отмечаются точками. Проверь каждую подстановкой в исходное уравнение.':'Через две разные точки каждой группы проводится прямая. Верная прямая содержит только решения исходного уравнения.';
+ host.append(note);
+}
+
+function equationExamples(host,value){
+ host.className='task-graphs quantity-model';
+ const parts=String(value||'').split(';').map(x=>x.trim());
+ const note=document.createElement('p');note.className='small';
+ if(parts.length!==4||parts.some(x=>!M.parse(x))){note.textContent='После ввода четырёх коэффициентов здесь появятся оба твоих уравнения.';}
+ else{
+  const [a,b,c,d]=parts;
+  note.textContent='Целое: ('+a+')x + ('+b+') = 0. Дробное: 1 / (x − ('+c+')) = '+d+'. Знаменатель исключает x = '+c+'.';
+  note.dataset.equationPair='';
+ }
+ host.append(note);
+}
+function rateTable(host,config,value){
+ host.className='task-graphs quantity-model';
+ const entries=String(value||'').split(';').map(x=>x.trim());
+ const selected=config.all?entries:[entries[config.answerIndex||0]];
+ const caption=document.createElement('p');
+ caption.className='small';
+ caption.textContent='Подставь своё значение x ('+config.varName+'). Для каждой строки сравни целое и делитель.';
+ host.append(caption);
+ const fraction=(n,d)=>{
+  const gcd=(a,b)=>b?gcd(b,a%b):a;
+  const g=gcd(n<0n?-n:n,d);
+  return d/g===1n?String(n/g):n/g+'/'+d/g;
+ };
+ const renderRows=x=>{
+  for(const row of config.rows){
+   const line=document.createElement('p');line.className='small';line.dataset.rateRow='';
+   line.textContent=row.label+' · '+row.total+' / ('+row.denominator+')';
+   if(x){
+    const denom=BigInt(row.slope)*BigInt(x.n)+BigInt(row.offset)*BigInt(x.d),result=document.createElement('strong');
+    result.dataset.rateResult='';result.textContent=fraction(BigInt(row.total)*BigInt(x.d),denom)+' '+config.unit;
+    line.append(' = ',result);
+   }
+   host.append(line);
+  }
+ };
+ if(!selected.some(Boolean)){renderRows(null);return;}
+ for(const raw of selected.slice(0,6)){
+  if(!raw)continue;
+  const x=M.parse(raw);
+  if(!x){renderRows(null);continue;}
+  const note=document.createElement('p');note.className='small';note.textContent='Подстановка x = '+raw;
+  host.append(note);
+  if((config.inclusiveMin?x.n<config.min*x.d:x.n<=config.min*x.d)||(config.max!==undefined&&x.n>=config.max*x.d)||(config.integer&&x.d!==1)){
+   note.dataset.rateDomain='';note.textContent+=' не подходит по смыслу. Нужно x '+(config.inclusiveMin?'≥ ':'> ')+config.min+
+      (config.max!==undefined?' и x < '+config.max:'')+(config.integer?', целое число':'')+'.';
+  }else renderRows(x);
+ }
+}
+function rationalEquationModel(host,config,value){
+ host.className='task-graphs quantity-model';const note=document.createElement('p');note.className='small';
+ if(!config.checked||!config.terms){
+  note.textContent='После проверки можно проследить для каждого предложенного корня: разрешают ли его знаменатели и верно ли исходное равенство.';host.append(note);return;
+ }
+ if(!config.terms.length){
+  note.textContent='Ты указал, что решений нет. Проверь отдельно кандидатов уравнения без дробей и исходные ограничения.';host.append(note);return;
+ }
+ for(const {term,status} of config.terms){
+  const row=document.createElement('p');row.className='small';row.dataset.candidateStatus=status;
+  row.textContent=term+' — '+({excluded:'значение обнуляет исходный знаменатель; его нужно исключить.',correct:'все знаменатели определены и равенство выполняется.',different:'знаменатели допустимы, но исходное равенство не выполняется.'})[status];host.append(row);
+ }
+}
+function reciprocalExample(host,config,value){
+ host.className='task-graphs root-graph';
+ const caption=document.createElement('p');caption.className='small';
+ if(!config.analysis){
+  caption.textContent='Введи коэффициенты a и b, чтобы построить свою прямую и гиперболу.';host.append(caption);return;
+ }
+ const {a,b,count,discriminant}=config.analysis,points=[];
+ if(a===0&&b!==0)points.push([1/b,b]);
+ if(a!==0&&count===1){const x=-b/(2*a);points.push([x,1/x]);}
+ if(a!==0&&count===2){
+  const q=-(b+(b>=0?1:-1)*Math.sqrt(discriminant))/2;
+  for(const x of [q/a,-1/q])points.push([x,1/x]);
+ }
+ const xs=points.map(p=>p[0]);const ys=points.map(p=>p[1]);
+ // Fit each axis independently so intersections remain visible for steep lines.
+ const xEnd=Math.max(3,...xs.map(Math.abs))*1.18,yEnd=Math.max(3,Math.abs(b),...ys.map(Math.abs))*1.18;
+ const visible=points.filter(p=>p.every(Number.isFinite));
+ const plane={curves:[{kind:'hyperbola',k:1,xs:[-2,-1,1,2,...xs]},{kind:'line',k:a,b,dashed:true,xs}],points:config.checked?visible:[],xRange:[-xEnd,xEnd],yRange:[-yEnd,yEnd],
+  compactTicks:Math.max(xEnd,yEnd)>1000,label:'Сплошная гипербола y = 1/x и твоя штриховая прямая'};
+ const svg=rootGraph(plane,'');svg.dataset.reciprocalSlope=String(a);svg.dataset.reciprocalIntercept=String(b);host.append(svg);
+ caption.textContent='Сплошная кривая — y = 1/x, штриховая прямая определяется твоими a и b.'+(config.checked?' Число действительных точек встречи: '+count+'.':'');
+ host.append(caption);
+}
+
+function coefficientExample(host,config,value){
+ host.className='task-graphs root-graph';
+ const caption=document.createElement('p');caption.className='small';
+ const fields=String(value).split(';').slice(0,3),coeffs=fields.map(v=>M?.parse(v));
+ if(fields.length!==3||coeffs.some(x=>!x||x.d!==1||x.n<=0)){
+  caption.textContent='Для модели введи три положительных целых коэффициента и разложение после следующей точки с запятой.';host.append(caption);return;
+ }
+ const [a,b,c]=coeffs.map(v=>BigInt(v.n));
+ const discriminant=b*b-4n*a*c;
+ caption.textContent='Твой трёхчлен: '+a+'x² + '+b+'x + '+c+'.';
+ if(config.evaluated){
+  caption.textContent+=' D = '+discriminant+'. '+(discriminant<0n?'У этого примера нет действительных пересечений с осью x.':'Можно проверить линейные множители по действительным корням.');
+  const B=Number(b)/Number(a),C=Number(c)/Number(a);
+  if(B<=10&&C<=10){
+   const h=-B/2,k=C-B*B/4,radius=Math.max(1.75,Math.sqrt(Math.max(0,-k))*1.4),points=[];
+   if(discriminant>=0n){const delta=Math.sqrt(Number(discriminant))/Number(2n*a);points.push([h-delta,0]);if(delta)points.push([h+delta,0]);}
+   const plane={curves:[{kind:'quadratic',a:1,b:B,c:C}],points,xRange:[h-radius,h+radius],yRange:[Math.min(k,-.5)-.5,Math.max(k+radius*radius,.5)+.5],label:'Корни твоего трёхчлена на графике P(x)/A'};
+   const svg=rootGraph(plane,'');svg.dataset.exampleDiscriminant=String(discriminant);host.append(svg);caption.textContent+=' Показан график P(x)/A с теми же нулями.';
+  }
+ }
+ host.append(caption);
+}
+
 function vertexForm(host,config,value){
  host.className='task-graphs root-graph';
  const parts=String(value).split(';').map(v=>number(v)),pointOnly=config.mode==='point';
@@ -522,7 +656,13 @@ function appliedShape(host,config,value){
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
  if(['quadratic-discriminant','quadratic-parameter','quadratic-reciprocals','check-common-point'].includes(config.type)){quadraticEvidence(host,config,value);return;}
+ if(config.type==='rational-line-example'){reciprocalExample(host,config,value);return;}
+ if(config.type==='rational-equation-check'){rationalEquationModel(host,config,value);return;}
+ if(config.type==='coefficient-example'){coefficientExample(host,config,value);return;}
  if(config.type==='vertex-form'){vertexForm(host,config,value);return;}
+ if(['line-figure','own-lines','own-points'].includes(config.type)){planeConstruction(host,config,value);return;}
+ if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='rate-table'){rateTable(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}
  if(config.type==='vieta-relations'){vietaRelations(host,config,value);return;}
  if(config.type==='applied-shape'){appliedShape(host,config,value);return;}
