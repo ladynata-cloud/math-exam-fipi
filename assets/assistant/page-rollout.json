@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8caa67018e76c59a2f6d7c6b95c060928f18497fcf7453e1bd3ea1fa3893cf73",
-      "afterSha256": "38f07cba3af56c55f8bf569d0f3f0874a5f0701246afb467c537e44e6b40a4c1",
+      "beforeSha256": "5caee36c2452b5fd5332baf5c9dbd2ea6ab08fb25b68c57635c18570ed982ec7",
+      "afterSha256": "687566699ae86d3ccf3bb806a3bbe52aebe74e9a88c7e309c5bd2033b47b5f35",
       "placement": "before-head-close",
-      "sourceSha": "6a59d3de39c42767bb5c830d0b845767ec86d580"
+      "sourceSha": "d246cf6828a91cb5ff093b094facb5f5898a5a23"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6759,6 +6759,15 @@
         "school/index.html"
       ],
       "boundary": "Построение окружности, сравнение внутренней области с границей и сохранение своей перестановки точки."
+    },
+    {
+      "previousBaseSha": "6a59d3de39c42767bb5c830d0b845767ec86d580",
+      "sourceBaseSha": "d246cf6828a91cb5ff093b094facb5f5898a5a23",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Три точки на одном расстоянии от центра: собственный раствор, направления и восстановление построения у обоих участников."
     }
   ],
   "coverageUpdates": [
