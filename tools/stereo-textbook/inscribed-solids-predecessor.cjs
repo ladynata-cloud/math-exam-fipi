@@ -2,7 +2,10 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const coordinateSpheresSectionEnd = makeReviewedIncrement(require('./coordinate-spheres-section-end.json'), closedSections);
+const spatialDirectionCosinesAndSquare = makeReviewedIncrement(require('./spatial-direction-cosines-and-square.json'), closedSections);
+const dotProductsCoordinateParameters = makeReviewedIncrement(require('./dot-products-coordinate-parameters.json'), spatialDirectionCosinesAndSquare);
+const scalarProductAnglesAndCube = makeReviewedIncrement(require('./scalar-product-angles-and-cube.json'), dotProductsCoordinateParameters);
+const coordinateSpheresSectionEnd = makeReviewedIncrement(require('./coordinate-spheres-section-end.json'), scalarProductAnglesAndCube);
 const spatialDistancesAndEqualLoci = makeReviewedIncrement(require('./spatial-distances-and-equal-loci.json'), coordinateSpheresSectionEnd);
 const midpointsAndVectorLengths = makeReviewedIncrement(require('./midpoints-and-vector-lengths.json'), spatialDistancesAndEqualLoci);
 const spatialPointsAndCentroid = makeReviewedIncrement(require('./spatial-points-and-centroid.json'), midpointsAndVectorLengths);

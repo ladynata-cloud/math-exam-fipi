@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0694",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Угол между двумя направленными сторонами",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "694",
+    "chapter": "VII. Метод координат в пространстве. Движения",
+    "printedPages": [
+      176
+    ],
+    "pdfPages": [
+      178
+    ]
+  },
+  "statement": {
+    "text": "A=(1,3,0), B=(2,3,−1), C=(1,2,−1). Найди угол CA с CB.",
+    "goal": "Используй общее начало у вершины C."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Для угла в C обе стрелки должны начинаться в C.",
+    "model": {
+      "points": {
+        "A": [
+          1,
+          3,
+          0
+        ],
+        "B": [
+          2,
+          3,
+          -1
+        ],
+        "C": [
+          1,
+          2,
+          -1
+        ],
+        "T": [
+          0,
+          1,
+          -1
+        ]
+      },
+      "edges": [
+        [
+          "C",
+          "A"
+        ],
+        [
+          "C",
+          "B"
+        ],
+        [
+          "A",
+          "B"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ]
+      ],
+      "arrows": [
+        [
+          "C",
+          "A"
+        ],
+        [
+          "C",
+          "B"
+        ],
+        [
+          "C",
+          "T"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C"
+      ],
+      "views": {
+        "neutral": {
+          "label": "Для угла в C обе стрелки должны начинаться в C.",
+          "segments": [
+            [
+              "C",
+              "A"
+            ],
+            [
+              "C",
+              "B"
+            ],
+            [
+              "A",
+              "B"
+            ]
+          ]
+        },
+        "vectors": {
+          "label": "CA=(0,1,1), CB=(1,1,0).",
+          "segments": [
+            [
+              "C",
+              "A"
+            ],
+            [
+              "C",
+              "B"
+            ]
+          ]
+        },
+        "new": {
+          "label": "CT противоположна CB. С ней угол в C внешний.",
+          "segments": [
+            [
+              "C",
+              "A"
+            ],
+            [
+              "C",
+              "T"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Почему берём A−C и B−C?",
+      "text": "Начало обеих стрелок одно и то же. Вычитая C из координат концов, сохраняем именно требуемые направления.",
+      "view": "vectors"
+    },
+    {
+      "id": "h2",
+      "question": "Какие здесь длины?",
+      "text": "Обе стрелки имеют длину √2 и произведение 1.",
+      "view": "vectors"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Числитель",
+      "prompt": "Найди CA·CB.",
+      "input": {
+        "prompt": "Числитель",
+        "accepted": [
+          "1"
+        ],
+        "feedback": "Ненулевая пара с ненулевым произведением — две ординаты, каждая 1."
+      },
+      "explanation": "Остаётся 0+1+0.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-076"
+        }
+      ],
+      "view": "vectors"
+    },
+    {
+      "id": "step-2",
+      "title": "Косинус",
+      "prompt": "Чему равен косинус?",
+      "input": {
+        "prompt": "Косинус",
+        "accepted": [
+          "1/2"
+        ],
+        "feedback": "Произведение двух длин √2 равно 2."
+      },
+      "explanation": "Косинус положителен и равен 1/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-076"
+        }
+      ],
+      "view": "vectors"
+    },
+    {
+      "id": "step-3",
+      "title": "Внешний угол",
+      "prompt": "Каким станет угол, если CB обратить?",
+      "input": {
+        "prompt": "Внешний угол",
+        "accepted": [
+          "120"
+        ],
+        "feedback": "Вычти найденный угол из 180°."
+      },
+      "explanation": "У противоположного направления косинус −1/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-076"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "60",
+      "60°"
+    ],
+    "prompt": "Укажи исходный угол в градусах.",
+    "feedback": "Угол при C равен 60°."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 176, printed page 176 and printed key 271; every radical and all arrow directions checked visually. For 693 compare the printed approximations with the independently computed arccosines for the actual vector (2,1,2).",
+    "at": "2026-11-21T23:06:26Z"
+  }
+}

@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "id": "theory-077",
+  "revision": 1,
+  "kind": "theory",
+  "title": "Скалярное произведение и его знак",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "theory",
+    "point": "77",
+    "chapter": "VII. Метод координат в пространстве. Движения",
+    "printedPages": [
+      171,
+      172
+    ],
+    "pdfPages": [
+      173,
+      174
+    ]
+  },
+  "statement": {
+    "text": "Для u=(2,1,0), v=(1,−2,2) сравни произведение длин с их скалярным произведением.",
+    "goal": "Вычисли по координатам и объясни связь с прямым углом."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Даны OA=(2,1,0), OB=(1,−2,2).",
+    "model": {
+      "points": {
+        "O": [
+          0,
+          0,
+          0
+        ],
+        "A": [
+          2,
+          1,
+          0
+        ],
+        "B": [
+          1,
+          -2,
+          2
+        ],
+        "S": [
+          3,
+          -1,
+          2
+        ],
+        "T": [
+          -1,
+          2,
+          -2
+        ]
+      },
+      "edges": [],
+      "faces": [],
+      "arrows": [
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "B"
+        ],
+        [
+          "O",
+          "S"
+        ],
+        [
+          "O",
+          "T"
+        ]
+      ],
+      "labelNames": [
+        "O",
+        "A",
+        "B"
+      ],
+      "views": {
+        "neutral": {
+          "label": "Даны OA=(2,1,0), OB=(1,−2,2).",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "O",
+              "B"
+            ]
+          ]
+        },
+        "sum": {
+          "label": "OS — сумма OA и OB. Видна диагональ параллелограмма.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "A",
+              "S"
+            ],
+            [
+              "S",
+              "B"
+            ],
+            [
+              "B",
+              "O"
+            ],
+            [
+              "O",
+              "S"
+            ]
+          ]
+        },
+        "new": {
+          "label": "OT противоположна OB. Знак каждого произведения с третьим вектором меняется.",
+          "segments": [
+            [
+              "O",
+              "B"
+            ],
+            [
+              "O",
+              "T"
+            ],
+            [
+              "O",
+              "S"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Какие числа перемножать?",
+      "text": "Умножай первые компоненты друг на друга, затем вторые и третьи. Три результата складывай.",
+      "view": "neutral"
+    },
+    {
+      "id": "h2",
+      "question": "Как работает распределительность?",
+      "text": "(u+v)·v=u·v+v·v. Второе слагаемое равно квадрату длины v.",
+      "view": "sum"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "По координатам",
+      "prompt": "Чему равно u·v?",
+      "input": {
+        "prompt": "По координатам",
+        "accepted": [
+          "0"
+        ],
+        "feedback": "Сложи 2·1, 1·(−2) и 0·2."
+      },
+      "explanation": "Оба вектора ненулевые. Нулевое произведение означает прямой угол.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-077"
+        }
+      ],
+      "view": "neutral"
+    },
+    {
+      "id": "step-2",
+      "title": "Скалярный квадрат",
+      "prompt": "Найди v·v.",
+      "input": {
+        "prompt": "Скалярный квадрат",
+        "accepted": [
+          "9"
+        ],
+        "feedback": "Квадрат координаты −2 положителен."
+      },
+      "explanation": "1+4+4=9.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-077"
+        }
+      ],
+      "view": "sum"
+    },
+    {
+      "id": "step-3",
+      "title": "Сумма и разворот",
+      "prompt": "Найди (u+v)·(−v).",
+      "input": {
+        "prompt": "Сумма и разворот",
+        "accepted": [
+          "-9"
+        ],
+        "feedback": "Вынеси минус и распредели произведение по сумме."
+      },
+      "explanation": "Симметрия u·v=v·u и распределительность дают −(0+9).",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-077"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "0"
+    ],
+    "prompt": "Чему равен cos угла между этими ненулевыми u и v?",
+    "feedback": "cos α=(u·v)/(|u||v|). Знаменатель ненулевой, а числитель равен нулю."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 171, 172, supplied original printed pages 171–176 and solution key 270; all eight pairs of arrows in 682, three reversals in 683 and seven scalar products with the actual face centre in 684 were compared visually.",
+    "at": "2026-11-21T22:57:09Z"
+  }
+}

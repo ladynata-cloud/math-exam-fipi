@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T22:49:04Z",
-  "scope": "Chapters I–VI and complete chapter VII paragraph 1: points 71–75 and all 45 exercises 637–681, with 1,221 reviewed cards. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T23:06:26Z",
+  "scope": "Chapters I–VI and chapter VII points 71–79, complete paragraph 1 and exercises 682–696, with 1,269 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2071,6 +2071,81 @@
       ],
       "evidence": "tools/stereo-textbook/coordinate-spheres-section-end.json",
       "mathematicalReport": "tools/stereo-textbook/coordinate-spheres-section-end.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 171, supplied original printed pages 171–176 and solution key 270; all eight pairs of arrows in 682, three reversals in 683 and seven scalar products with the actual face centre in 684 were compared visually.",
+      "reviewedAt": "2026-11-21T22:57:09Z",
+      "scope": "The four distinct subjects of printed points 76–79, both direction changes in 683, all eight exact cube angle pairs 682 and seven scale-dependent products 684, including the centre of the top face, verified against the printed book and key.",
+      "cardIds": [
+        "theory-076",
+        "theory-077",
+        "theory-078",
+        "theory-079",
+        "ex-main-0682-a",
+        "ex-main-0682-b",
+        "ex-main-0682-c",
+        "ex-main-0682-d",
+        "ex-main-0682-e",
+        "ex-main-0682-f",
+        "ex-main-0682-g",
+        "ex-main-0682-h",
+        "ex-main-0683",
+        "ex-main-0684-a",
+        "ex-main-0684-b",
+        "ex-main-0684-c",
+        "ex-main-0684-d",
+        "ex-main-0684-e",
+        "ex-main-0684-f",
+        "ex-main-0684-g"
+      ],
+      "evidence": "tools/stereo-textbook/scalar-product-angles-and-cube.json",
+      "mathematicalReport": "tools/stereo-textbook/scalar-product-angles-and-cube.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 176, original printed page 176 and answer key 270; individual components, inner products, orthogonality and parameter values independently recomputed.",
+      "reviewedAt": "2026-11-21T23:01:09Z",
+      "scope": "Every printed coordinate dot product in 685–690, all five scalar values in 685, every operation on basis vectors, six classifications of angles and four parameter equations with independently verified solutions.",
+      "cardIds": [
+        "ex-main-0685",
+        "ex-main-0686-a",
+        "ex-main-0686-b",
+        "ex-main-0686-c",
+        "ex-main-0686-d",
+        "ex-main-0686-e",
+        "ex-main-0687-a",
+        "ex-main-0687-b",
+        "ex-main-0687-c",
+        "ex-main-0688-a",
+        "ex-main-0688-b",
+        "ex-main-0688-c",
+        "ex-main-0689-a",
+        "ex-main-0689-b",
+        "ex-main-0689-c",
+        "ex-main-0690"
+      ],
+      "evidence": "tools/stereo-textbook/dot-products-coordinate-parameters.json",
+      "mathematicalReport": "tools/stereo-textbook/dot-products-coordinate-parameters.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 176, printed page 176 and printed key 271; every radical and all arrow directions checked visually. For 693 compare the printed approximations with the independently computed arccosines for the actual vector (2,1,2).",
+      "reviewedAt": "2026-11-21T23:06:26Z",
+      "scope": "All six exercise identities 691–696, exact radical and coordinate inputs, isosceles-triangle area, directed cube diagonals and the independently checked correction to the printed approximations for direction angles in 693 (statement page 176 and key page 271).",
+      "cardIds": [
+        "ex-main-0691",
+        "ex-main-0692-a",
+        "ex-main-0692-b",
+        "ex-main-0692-c",
+        "ex-main-0692-d",
+        "ex-main-0692-e",
+        "ex-main-0693",
+        "ex-main-0694",
+        "ex-main-0695",
+        "ex-main-0696-a",
+        "ex-main-0696-b",
+        "ex-main-0696-c"
+      ],
+      "evidence": "tools/stereo-textbook/spatial-direction-cosines-and-square.json",
+      "mathematicalReport": "tools/stereo-textbook/spatial-direction-cosines-and-square.test.cjs"
     }
   ],
   "cards": [
@@ -6957,6 +7032,198 @@
     {
       "id": "ex-main-0681-d",
       "sha256": "1d1dd614da08156317b38a2a7dc89094da5f6e0402236ebcb17d7e2cac43d971"
+    },
+    {
+      "id": "theory-076",
+      "sha256": "ec6ffe52abc6d007fc4d70e4f49280d78736a74ab42d0d436179daa4d7aa6a42"
+    },
+    {
+      "id": "theory-077",
+      "sha256": "5950c21fd4ccf835934dbc108e8d542c6efcf3565009430f16c573e856a4e18a"
+    },
+    {
+      "id": "theory-078",
+      "sha256": "fbb2974edcc30b113326ce967411d9296ee58b6c84f3de8157624763e4f032d6"
+    },
+    {
+      "id": "theory-079",
+      "sha256": "121a43fdc108e0cd457bfa98af96fcda7039064aa100856edbaf7787d2eb01db"
+    },
+    {
+      "id": "ex-main-0682-a",
+      "sha256": "8a36251db1b6ad9e74de48692a2e8d38ac27e52128523a4677acfc09068aa956"
+    },
+    {
+      "id": "ex-main-0682-b",
+      "sha256": "37e370a2f1cfac76e9f1b34b55a228a5208405ed043d8d44cd202146164b7880"
+    },
+    {
+      "id": "ex-main-0682-c",
+      "sha256": "58f0595fcf0fdf6db55833301a7abbc6a56000aac987273ef5d99df46361b4de"
+    },
+    {
+      "id": "ex-main-0682-d",
+      "sha256": "042f3965953a161d4e1782d89d1e2b2b7d9d625c2dafcae5ce1a39a24620c4cb"
+    },
+    {
+      "id": "ex-main-0682-e",
+      "sha256": "22ad051bb4c07fed2ed032d1e9ea056a43a2d4b502ce1b19701572caf1f5960e"
+    },
+    {
+      "id": "ex-main-0682-f",
+      "sha256": "891e4ede080a214ee3273ca9f07153770721cde2348a7a98e46aba4ce64b1f94"
+    },
+    {
+      "id": "ex-main-0682-g",
+      "sha256": "cd30cd689a624efb8503a25f011676febe412e6e2035f39db38c575af88a024b"
+    },
+    {
+      "id": "ex-main-0682-h",
+      "sha256": "1b3334354f9d71269edd9ba59edccde86a354a6c1224b784aea91293041c73c3"
+    },
+    {
+      "id": "ex-main-0683",
+      "sha256": "c314302437d752ef87d1061bdc98fc04289c2beda9a76883b53bea85b0ebbe46"
+    },
+    {
+      "id": "ex-main-0684-a",
+      "sha256": "314b721684555df206a1b136ee5c56072cce52c67d1f781e5d4a000629317fe3"
+    },
+    {
+      "id": "ex-main-0684-b",
+      "sha256": "8ec068f27caa3faa07f7f1cafe4075407b9cf2a4ec2474e1cce76bf247b35e2b"
+    },
+    {
+      "id": "ex-main-0684-c",
+      "sha256": "d2d520e08e45fbda146877dd34a4112b4e5b358b03f3c86d0513e1449a2228b6"
+    },
+    {
+      "id": "ex-main-0684-d",
+      "sha256": "e13e2c9670db54905093b04561253372ddff164370c46004608a91e5e7b2b1ed"
+    },
+    {
+      "id": "ex-main-0684-e",
+      "sha256": "918db371110279437196ab7cb698738a33335cc61eb40b9f547b2d067e63396c"
+    },
+    {
+      "id": "ex-main-0684-f",
+      "sha256": "74de378ae2ee7a2a4f5a8140be7619ce5efdfb61ea3b3d3d5041630616081a44"
+    },
+    {
+      "id": "ex-main-0684-g",
+      "sha256": "7e5e775b928b7ba97818423d6645fe06d2c836c882fedff429a34fb5dab9ba49"
+    },
+    {
+      "id": "ex-main-0685",
+      "sha256": "cc228a4ef213ff22724c3b5f4924b1cf9f70595b6c9e351e4a79fe08662ae833"
+    },
+    {
+      "id": "ex-main-0686-a",
+      "sha256": "f4293313f2f33312ebc82cc6e1cb5afde4556f4ac805d39c63ffe3b9abdb8ec8"
+    },
+    {
+      "id": "ex-main-0686-b",
+      "sha256": "6836129b070cc9451ec68b82dfb9b9100962c9be51f778323d5fb6f5d8439d81"
+    },
+    {
+      "id": "ex-main-0686-c",
+      "sha256": "d9aa890b61efafbd4c019aab345221900934c8bc10e9aa8fc7f28fdef25c2988"
+    },
+    {
+      "id": "ex-main-0686-d",
+      "sha256": "f893d47447edf201cd11d80a5a49b8feebedd8488e832a51be0d01b1e71f9f3e"
+    },
+    {
+      "id": "ex-main-0686-e",
+      "sha256": "903e487b4ac04937d481225b1cf7004c64fd1784e74ac6db1fa89190128b0649"
+    },
+    {
+      "id": "ex-main-0687-a",
+      "sha256": "ec727cefb8afcec056eaacd8ae8c175791683a6b13f694f3c849f2df16c8df0e"
+    },
+    {
+      "id": "ex-main-0687-b",
+      "sha256": "1be3ec0668748cd252549857627aa3ea1198279a90328fa995f3dede4603d7fb"
+    },
+    {
+      "id": "ex-main-0687-c",
+      "sha256": "f20ca87eed759f31427d21ee30293542d8145646fbc868ecd5f68b1e835d8b94"
+    },
+    {
+      "id": "ex-main-0688-a",
+      "sha256": "ebe0f6cbe8c18faf25cc450ab325503303d724e6dc4b245f622817dd78054dd0"
+    },
+    {
+      "id": "ex-main-0688-b",
+      "sha256": "ce458ad58b8fb18e6d0bac594e247293ae464ac27077f48a433cd72bb3c2c808"
+    },
+    {
+      "id": "ex-main-0688-c",
+      "sha256": "64a6c79a7a1e474efd932a423b51e9150e705275732c559a40c4524db732a3d8"
+    },
+    {
+      "id": "ex-main-0689-a",
+      "sha256": "3ab93c8a975a99debe42b637c97f9c308188b107c0ef3f2ba3c26183184eb091"
+    },
+    {
+      "id": "ex-main-0689-b",
+      "sha256": "3d2f5a7b72afe527a51b58ef994adab3e83489e25d3c02dbeb07932d1f9e4687"
+    },
+    {
+      "id": "ex-main-0689-c",
+      "sha256": "56f0c483c3cf2c91b49cc9df9a28689b461cebae7ecdf1828ed69833e9eb76c6"
+    },
+    {
+      "id": "ex-main-0690",
+      "sha256": "e41e9089afbbf5386385485756ad02bc731991d232671fda96e76c65d534b427"
+    },
+    {
+      "id": "ex-main-0691",
+      "sha256": "2b55cbf0a34145f7312013b00b41808675d5f0ff696cc32c58cb6724eb34a87a"
+    },
+    {
+      "id": "ex-main-0692-a",
+      "sha256": "493d926b78d6d20a2aa28f04c3a81ef764a48076482d84a73ffe9a7edae30a08"
+    },
+    {
+      "id": "ex-main-0692-b",
+      "sha256": "7951dc2c050e807a07607dcb9d42dab164d9a1d387b1bba6968cd54936dd2096"
+    },
+    {
+      "id": "ex-main-0692-c",
+      "sha256": "c838394e595cea0022e8f589ea5959f875788c26dd9b3c434d73d28b592fe7ba"
+    },
+    {
+      "id": "ex-main-0692-d",
+      "sha256": "367a8b7333801dacf41afe4f4e925b9984448bb4ea6a0699c86499dd504a128d"
+    },
+    {
+      "id": "ex-main-0692-e",
+      "sha256": "80754c33dc8d95c6ec1442502413172a22612840fa7384327e38634373a7be65"
+    },
+    {
+      "id": "ex-main-0693",
+      "sha256": "f8557bf8386125537b35ec7b51955d9c7fed9655e696146d522178c71e11099b"
+    },
+    {
+      "id": "ex-main-0694",
+      "sha256": "1b5cfcd8ace6cd9e5ef8889f713ad166322dd9e5eed593fa286fb365290b0691"
+    },
+    {
+      "id": "ex-main-0695",
+      "sha256": "b7d560c159b7042130349a6868e945a215cf6160c73dce3d3eec42619b4d248e"
+    },
+    {
+      "id": "ex-main-0696-a",
+      "sha256": "78e38b75c87cff92ebfb36369d39c6430188856bf7637a0bcd31f4cc5294f7fe"
+    },
+    {
+      "id": "ex-main-0696-b",
+      "sha256": "c14805d6e6a761c6008e30118eb338f5100aa311a94dc8dc866a5df9fe7d5bd3"
+    },
+    {
+      "id": "ex-main-0696-c",
+      "sha256": "a6063db78bee3d716cc0408a1b2cc7cb3beb68a752bc914444c377f48e17b03e"
     }
   ]
 }
