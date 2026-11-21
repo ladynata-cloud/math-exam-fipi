@@ -40,7 +40,7 @@ async function submit(page, value) {
 
 async function verify(width,url){
   const errors=[];
-  const fresh=async()=>{const p=await browser.newPage({viewport:{width,height:900}});p.setDefaultTimeout(60000);p.on('pageerror',e=>errors.push(e.message));await p.goto(url);return p;};
+  const fresh=async()=>{const p=await browser.newPage({viewport:{width,height:900}});p.setDefaultTimeout(60000);p.on('pageerror',e=>errors.push(e.stack));await p.goto(url);return p;};
   let page=await fresh();
   const cards=await page.evaluate(()=>MakarychevCourse.lessons.flatMap(l=>l.tasks.map((t,i)=>({l:l.id,i,title:t.title,section:t.source.section}))).filter(t=>t.section==='additional-3'&&/^№ (79[8-9]|80[0-5])(?:$|[^0-9])/.test(t.title)));
   assert.equal(cards.length,38);
@@ -55,6 +55,7 @@ async function verify(width,url){
   await openNumber(page,799,'№ 799в');
   assert.equal(await page.locator('[data-hole-x="2"]').count(),1);
   await submit(page,'(2;0)');assert.equal(await page.locator('[data-intersection-trial=no]').count(),1);
+  assert.match(await page.locator('#answer-form [role=status]').innerText(),/не определена/);
   await submit(page,'(3;0)');assert.equal(await page.locator('[data-intersection-trial=yes]').count(),1);
   await page.reload({waitUntil:'domcontentloaded'});assert.equal(await page.locator('[data-intersection-trial=yes]').count(),1);
   assert.equal(await page.evaluate(()=>MakarychevApp.getState().tasks['p26-extra-799-c'].independent),false);

@@ -3515,7 +3515,16 @@ function naturalCase(term,rule){
  return [36n-n*n,n*n];
 }
 function feedbackFor(value,q){
- if(q.kind==='algebra-pairs'){
+ if(q.kind==='algebra-pairs'&&q.graph?.type==='rational-intersections'){
+  const {pairs}=rationalEvidence(q.graph,value);
+  for(const [x,y] of pairs){
+   const ordinates=q.graph.curves.map(curve=>window.MakarychevTaskGraphs.curveValue(curve,x));
+   if(ordinates.some(v=>!Number.isFinite(v)))return 'При этой абсциссе одна из исходных функций не определена. Выколотая точка не может быть общей.';
+   if(ordinates.some(v=>Math.abs(v-y)>1e-8))return 'Подставь абсциссу в обе формулы. Ордината должна совпасть с обоими полученными значениями.';
+  }
+  return 'Проверь все ветви графика и запиши каждую общую точку один раз.';
+ }
+ if(q.kind==='algebra-pairs'&&q.graph?.type==='system-pair-audit'){
   const rows=window.MakarychevCheck.systemEvidence(value,q.graph)||[];
   for(const row of rows){
    if(row.excluded)return 'В паре ('+row.a+'; '+row.b+') один из исходных знаменателей равен нулю.';
