@@ -843,6 +843,11 @@ function check(user,target){
  if(target.kind==='rational-probe')return Boolean(M.parse(user));
  if(target.kind==='linear-ray'){const u=linearRay(user,target.graph.variable);return Boolean(u&&equalAxisSets(u,asThreshold(target.graph.relation,target.graph.threshold)));}
  if(target.kind==='linear-examples')return linearExamples(user,target);
+ if(target.kind==='universal-set'){
+  const s=String(user??'').trim().toLowerCase(),summary=['все','все действительные','r','ℝ','все числа'].includes(s)?'(-∞;+∞)':s;
+  return equalAxisSets(summary,target.answer);
+ }
+ if(target.kind==='cube-graph-root')return Boolean(G.cubeRead(user)?.valid);
  if(target.kind==='axis-set')return equalAxisSets(user,target.answer);
  if(target.kind==='named-interval'){const a=String(user).split('|'),b=target.answer.split('|');return a.length===2&&equalAxisSets(a[0],b[0])&&axisName(a[1])===axisName(b[1]);}
  if(['rational-axis-list','fixed-denominator-list'].includes(target.kind))return axisListEqual(user,target);

@@ -773,6 +773,54 @@ function equationExamples(host,value){
 function boundNote(host,text) {
  const p=document.createElement('p'); p.className='small'; p.textContent=text;host.append(p);return p;
 }
+function cubeRead(raw){
+ const text=String(raw??'').trim().toLowerCase().replace(/\s/g,'');
+ if(['∛12','∛(12)','cbrt(12)','12^(1/3)'].includes(text))return {x:Math.cbrt(12),exact:true,valid:true};
+ const q=M.parse(raw);if(!q)return null;const x=q.n/q.d;
+ const digits=/^[+-]?\d+[.,](\d+)$/.exec(text)?.[1].length;
+ const precision=Math.min(8,Math.max(1,digits??1));return {x,exact:false,valid:Math.abs(x-Math.cbrt(12))<=0.5*10**(-precision)+Number.EPSILON};
+}
+function sourceInequalityCase(host,g,value){
+ host.className='task-graphs quantity-model';const raw=g.partial?.[0],trial=M.parse(raw),candidate=M.parse(value);
+ if(g.showAxis&&g.proposal)intervalNumberLine(host,{mode:'operation',givenRows:[],proposal:g.proposal,points:[]},value);
+ const say=(s,attr,v)=>{const p=boundNote(host,s);if(attr)p.dataset[attr]=String(v);return p;};
+ if(g.mode==='cube-crossing'){
+  const point=cubeRead(value),x=point?.x;const graphCfg={xRange:[-4,5],yRange:[-8,12],xTickStep:1,yTickStep:4,curves:[{kind:'hyperbola',k:12},{kind:'square',dashed:true}],points:x!==undefined&&x!==0?[[x,12/x],[x,x*x]]:[],label:'Гипербола y=12/x и парабола y=x²'};
+  host.append(rootGraph(graphCfg));say('Сплошная линия — гипербола y = 12/x, штриховая — парабола y = x².');
+  if(point)say(x===0?'В нуле гипербола не определена.':'При твоём x ≈ '+x.toLocaleString('ru-RU',{maximumFractionDigits:5})+' получаются '+(12/x).toLocaleString('ru-RU',{maximumFractionDigits:5})+' и '+(x*x).toLocaleString('ru-RU',{maximumFractionDigits:5})+'.','cubeProbe',point.valid?'matching':'different');return;
+ }
+ if(g.mode==='constant'||g.mode==='radical'){
+  const test=linearTrial(g,raw);if(test)say('Твоя подстановка: '+test.left+' '+test.sign+' '+test.right+'. Нужный знак '+g.operator+(test.holds?' выполняется.':' не выполняется.'),'caseProbe',test.holds?'yes':'no');
+  else say(g.mode==='radical'?'Введи переменную на первом шаге и проверь знак подкоренного выражения.':'Проверь исходное сравнение на своём примере.');return;
+ }
+ if(['numerator-root','denominator-root','parameter-roots'].includes(g.mode)){
+  if(!trial){say('На первом шаге предложи значение для подстановки. Оно проверяется в исходных условиях.');return;}
+  if(g.mode==='parameter-roots'){const first=g.which===962,lin=first?-5:4,d=linearTrial({left:[first?'416':'-128',first?'80':'96','0'],right:['0','0','0'],operator:'>'},raw);
+   const exceptional=M.equal(trial,lin),count=exceptional?1:d.sign==='>'?2:d.sign==='='?1:0;
+   say(exceptional?'Старший коэффициент равен нулю. Линейное уравнение имеет один корень.':'Уравнение квадратное; D = '+d.left+'. Число различных действительных корней: '+count+'.','parameterRoots',count);return;}
+  const first=g.mode==='numerator-root',r=linearTrial({left:first?['7','-14','0']:['4','-1','0'],right:['0','0','0'],operator:'≥'},raw),excluded=M.equal(trial,first?-8:3);
+  say('Подкоренное выражение равно '+r.left+'. '+(!r.holds?'Корень не определён.':excluded?'Весь знаменатель обращается в нуль.':'Корень определён, знаменатель ненулевой.'),'domainReason',!r.holds?'radical':excluded?'denominator':'valid');return;
+ }
+ if(g.mode==='integer-bound'){say('Граница равна '+g.bound+'. Из целых подходят лежащие '+(g.relation==='<'?'левее':'правее')+' неё.');if(candidate)say('Твоё целое: '+M.answer(candidate)+'.');return;}
+ if(g.mode==='rectangle'||g.mode==='box'){
+  const box=g.mode==='box',svg=node('svg',{viewBox:'0 0 280 146',role:'img','aria-label':box?'Параллелепипед с основанием 12 на 5 и выбранной высотой':'Прямоугольник со стороной 6 и выбранной второй стороной'});
+  const size=trial?.n>0?trial.n/trial.d:null,base=box?12:6,scale=Math.min(152/base,75/(size||base)),w=base*scale,h=(size||base)*scale,dy=box?16:0,dx=box?25:0;
+  const x=32,y=107;svg.append(node('rect',{x,y:y-h,width:w,height:h,fill:'#e5f2eb',stroke:'#197464','stroke-width':2}));
+  if(box)svg.append(node('path',{d:'M'+x+' '+(y-h)+' l'+dx+' -'+dy+' h'+w+' v'+h+' l-'+dx+' '+dy+' M'+(x+w)+' '+(y-h)+' l'+dx+' -'+dy,stroke:'#65518c',fill:'none','stroke-width':2}));
+  svg.append(node('text',{x:x+w/2,y:131,'font-size':13},String(base)),node('text',{x:x+w+dx+5,y:y-h/2,'font-size':13},size?M.answer(trial):box?'h':'x'));
+  host.append(svg);say(box?'Площадь основания 60 дм², предельный объём 729 дм³.':'Периметр прямоугольника 2(6+x), предельный периметр 16 см.');
+  if(size)say((box?'Объём при выбранной высоте: ':'Периметр при выбранной стороне: ')+(box?60*size:2*(6+size)).toLocaleString('ru-RU',{maximumSignificantDigits:8})+(box?' дм³.':' см.'),'sizeProbe',size);return;
+ }
+ if(g.mode==='surd'){say('При x = 1 − √3 разложи числитель и знаменатель на рациональную часть и коэффициент при √3.');if(g.partial?.[0])say('Введённый коэффициент числителя: '+g.partial[0]+'.');return;}
+ const v=candidate||(g.mode==='bindery'?trial:null);if(!v){say({bindery:'Сравни полные стоимости двух заказов.',transfer:'Общий расход складывается из суммы перевода, 7 р. и 5%.','boat-range':'Путь туда и обратно одинаков, скорости 20 и 16 км/ч.','boat-speed':'При течении 3 км/ч собственная скорость должна быть больше 3.'}[g.mode]||'Проверь своё число в задаче.');return;}
+ const x=v.n/v.d,fmt=n=>n.toLocaleString('ru-RU',{maximumFractionDigits:5});
+ if(g.mode==='bindery'){if(v.d!==1||v.n<=0){say('Число книг должно быть натуральным.');return;}say('Для '+M.answer(v)+' книг первая стоимость '+fmt(480*x+630)+' р., вторая '+fmt(485*x+580)+' р.','caseProbe',480*x+630<485*x+580?'yes':'no');}
+ if(g.mode==='transfer')say('При сумме '+fmt(x)+' р. общий расход составит '+fmt(1.05*x+7)+' р.','caseProbe',1.05*x+7<=800?'yes':'no');
+ if(g.mode==='boat-range')say('Общее время на '+fmt(x)+' км в каждую сторону составляет '+fmt(x/20+x/16)+' ч.','caseProbe',x>=0&&x/20+x/16<=3?'yes':'no');
+ if(g.mode==='boat-speed'){if(x<=3){say('Против течения лодка должна двигаться вперёд: v > 3.');return;}say('Вниз по течению '+fmt(30/(x+3))+' ч, вверх '+fmt(30/(x-3))+' ч. Сумма '+fmt(30/(x+3)+30/(x-3))+' ч.');}
+}
+
+
 function linearTrial(config,raw){
  const x=M.parse(raw);if(!x)return null;
  function narrow(n,d){let a=n<0n?-n:n,b=d;while(b){const next=a%b;a=b;b=next;}return [n/a,d/a];}
@@ -1494,6 +1542,7 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
  if(config.type==='linear-ray-trial'){linearTrialGraph(host,config,value);return;}
  if(config.type==='source-interval-axis'){intervalNumberLine(host,config,value);return;}
  if(config.type==='interval-review'){intervalReview(host,config,value);return;}
@@ -1578,5 +1627,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
