@@ -58,5 +58,18 @@ teacher.d.querySelector('#answer-form').dispatchEvent(new teacher.w.Event('submi
 send(teacher,reconnect);
 assert.equal(reconnect.d.querySelectorAll('#task-graph li').length,4);
 assert.equal(reconnect.w.MakarychevApp.getState().tasks['p09-source-206-a'].correct,true);
+const appendix=teacher.w.MakarychevCourse.lessons.find(l=>l.id==='p01');
+const trainIndex=appendix.tasks.findIndex(t=>t.id==='ch1-extra-213-speeds');
+teacher.w.history.replaceState(null,'','#lesson/p01/'+trainIndex);
+teacher.w.MakarychevApp.route();
+input(teacher,'#final-answer','45;40');
+teacher.d.querySelector('#answer-form').dispatchEvent(new teacher.w.Event('submit',{bubbles:true,cancelable:true}));
+send(teacher,student);
+assert.match(student.d.querySelectorAll('.train-model figcaption')[1].textContent,/Вместе 480 км/);
+input(student,'#final-answer','45;80');
+student.d.querySelector('#answer-form').dispatchEvent(new student.w.Event('submit',{bubbles:true,cancelable:true}));
+send(student,reconnect);
+assert.match(reconnect.d.querySelectorAll('.train-model figcaption')[1].textContent,/Вместе 600 км/);
+assert.equal(reconnect.w.MakarychevApp.getState().tasks['ch1-extra-213-speeds'].correct,true);
 [teacher,student,reconnect].forEach(p=>p.dom.window.close());
 console.log('PASS two participants, accepted step, notes, assist status, model, reconnect and isolation');

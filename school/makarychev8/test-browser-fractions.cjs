@@ -79,7 +79,7 @@ async function verify(width, url) {
   }
   assert.deepEqual(stats.errors, []);
   assert.equal(stats.cards, 286);
-  for (let n = 110; n <= 211; n++) {
+  for (let n = 110; n <= 214; n++) {
     if ((n - 110) % 24 === 0) {
       await page.close();
       page = await freshPage();
@@ -87,6 +87,25 @@ async function verify(width, url) {
     await openNumber(page, n);
     assert(await page.locator('#number-result a.button:not(.quiet)').count() > 0, 'source number ' + n);
   }
+  await openNumber(page, 213, '№ 213, скорости');
+  assert.equal(await page.locator('.train-model svg').count(), 2);
+  assert.equal(await page.locator('.train-model circle').count(), 0);
+  await submit(page, '45;40');
+  assert.match(await page.locator('.train-model figcaption').last().innerText(), /Вместе 480 км/);
+  assert.match(await page.locator('#problem').innerText(), /Проверь случай t = 6/);
+  await page.reload();
+  assert.equal(await page.locator('#final-answer').inputValue(), '45;40');
+  await submit(page, '45;80');
+  assert.match(await page.locator('.train-model figcaption').last().innerText(), /Вместе 600 км/);
+  const solvedTrain = await page.evaluate(() => MakarychevApp.getState().tasks['ch1-extra-213-speeds']);
+  assert.equal(solvedTrain.correct, true);
+  assert.equal(solvedTrain.assisted, false);
+  assert.equal(solvedTrain.independent, false);
+  await openNumber(page, 214, '№ 214д');
+  await submit(page, '3');
+  assert.match(await page.locator('#problem').innerText(), /Это значение действительно нужно исключить/);
+  await submit(page, '±3');
+  assert.equal(await page.evaluate(() => MakarychevApp.getState().tasks['ch1-extra-214-e'].correct), true);
   await openNumber(page, 206, '№ 206а');
   const pairRows = page.locator('#task-graph li');
   const pairState = () => page.evaluate(() => MakarychevApp.getState().tasks['p09-source-206-a']);
@@ -137,7 +156,7 @@ async function verify(width, url) {
   assert.equal(await page.locator('#notebook').inputValue(), 'Проверка своих точек');
   assert.deepEqual(errors, []);
   await page.close();
-  return { width, cards: stats.cards, figures: stats.figures, searches: 102 };
+  return { width, cards: stats.cards, figures: stats.figures, searches: 105 };
 }
 
 (async () => {
