@@ -87,3 +87,31 @@ match `c8a4f1fc` byte-for-byte. The complete stage changes eleven files relative
 to that main: the previous ten-file backend stage plus the graph-solution test.
 No frontend activation, provider operation, production snapshot or deployment
 is claimed by these local results.
+
+## Private restore check for the November 21 release
+
+Use a consistent provider snapshot of the full production volume. Extract it
+into a new private directory on the owner's machine or approved isolated
+environment. Preserve the archive and its checksum there. The release operator
+runs the following from this checkout after installing the locked board-server
+dependencies (Node 24). The argument points to the extracted directory
+containing learning.sqlite, group-lessons and progress.json.
+
+```sh
+node tools/verify-unified-board-restore.cjs "/private/extracted/data"
+```
+
+The command copies the relevant files to a fresh local scratch directory and
+opens only those copies. It consolidates SQLite with the sidecars present,
+checks integrity and relationships, replays the existing group journals and
+reads the teacher's history and each lesson's first pupil's worksheet. Output
+contains only verification flags or a generic failure code. To interpret a
+missing WAL, check the snapshot's origin and consistency. A checkpointed
+database can legitimately have no WAL. The command cannot prove whether an
+operator omitted an uncheckpointed sidecar from an otherwise readable copy.
+
+The release operator retains the full source backup, considers the latest
+lesson since its timestamp, confirms continuity against the known prior lesson
+or private inventory, and verifies the deployed reader and persistent mount.
+A passing synthetic fixture or local execution on an unidentified source does
+not authorize a production rollout.
