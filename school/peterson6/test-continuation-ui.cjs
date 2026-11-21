@@ -1517,3 +1517,17 @@ test('resolve all printed mixture, geometry and directed vehicle cases with thei
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('separate each departure clock, thirty source operations, and the eight forward and inverse fraction cases',()=>{
+ const f=fixture(null,null,true);try{
+  const start=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const source=[['6 и 18','12 и 24'],['64 и 96','48 и 72'],['9/2 и 18/5','27/4 и 27/5'],['60 и 50','72 и 60']];
+  for(let i=0;i<4;i++){const c=start(36+i);set(c,1,2);assert(out().includes(source[i][0]),out());set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(source[i][1]),out());}
+  const printed=[['4/5','-59/10','-3/2','-5','39/20','-23/10','12/5','9/5','-18/5','39/50'],['-9/20','39/500','-260','3/5','9/100','-8','-1/4','19/100','-56','-1/125'],['-3/20','-3/5','1','-1/7','-9/10','27/10','-5/3','-2/25','7','-1/30']];
+  for(let series=0;series<3;series++){
+   const c=start(40+series);for(let i=0;i<10;i++){set(c,0,0);set(c,1,i);set(c,2,2);assert(out().includes('Точный ответ: '+printed[series][i]+'.'),[series,i,out()]);set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(!out().includes('Точный ответ: '+printed[series][i]+'.'));} 
+  }
+  const portions=['3','54/5','10','14','27/5','175','12','6'],fresh=['6','108/5','20','28','54/5','350','24','12'];
+  for(let i=0;i<8;i++){const c=start(43+i);set(c,1,2);assert(out().includes('Ответ: '+portions[i]+'.'),out());set(c,0,1);set(c,1,2);assert(out().includes('Ответ: '+fresh[i]+'.'));}assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
