@@ -507,6 +507,41 @@ function balanceScene(host,config,value){
  }
 }
 
+function residualScene(host,config){
+ host.className='task-graphs root-graph';
+ const [a,b,c]=config.coefficients,checks=config.checks||[];
+ const vertex=-b/(2*a),height=c-b*b/(4*a);
+ const width=Math.max(2,Math.abs(vertex)*1.2+1,Math.sqrt(Math.abs(height/a))+Math.abs(vertex)+1);
+ const limit=Math.max(2,Math.abs(height)*1.25,Math.abs(c)*1.25);
+ const plot=rootGraph({curves:[{kind:'quadratic',a,b,c}],points:checks.filter(q=>Number.isFinite(q.x)).map(q=>[q.x,q.exact?0:a*q.x*q.x+b*q.x+c]),
+ xRange:[-width,width],yRange:[-limit,limit],axisLabels:[config.unknown||'x','F'],label:'График разности левой и правой частей исходного уравнения'},'');
+ host.append(plot);
+ for(const item of checks){
+  const row=document.createElement('p');row.className='small';row.dataset.rootResidual=item.exact?'zero':'nonzero';
+  row.textContent='Подстановка '+item.value+': '+(item.exact?'остаток равен нулю.':config.mode==='rounded'?'остаток не нулевой. При округлении само значение обычно отличается от точного корня.':'остаток не равен нулю. Проверь знаки и знаменатель.');
+  host.append(row);
+ }
+ if(!checks.length){const row=document.createElement('p');row.className='small';row.textContent='Введи предложенные корни. Для каждого модель отдельно проверит подстановку.';host.append(row);}
+}
+function squareCertificateScene(host,config,value){
+ host.className='task-graphs construction';
+ const entries=String(value||'').split(';').map(v=>M.parse(v)),complete=entries.length===config.targets.length*3&&entries.every(Boolean);
+ config.targets.forEach(([a,b,c],i)=>{
+  const h=-b/(2*a),r=c-b*b/(4*a),width=Math.max(3,Math.abs(h)+2),limit=Math.max(4,Math.abs(c)*1.3,Math.abs(r)*1.3);
+  const curves=[{kind:'quadratic',a,b,c}],caption=document.createElement('p');caption.className='small';
+  caption.textContent='Исследуем '+config.labels[i]+'. ';
+  if(complete){
+   const [kr,hr,rr]=entries.slice(3*i,3*i+3),[k,shift,rest]=[kr,hr,rr].map(v=>v.n/v.d);
+   const eq=(x,y)=>x===y,toB=v=>BigInt(v),kn=toB(kr.n),kd=toB(kr.d),hn=toB(hr.n),hd=toB(hr.d),rn=toB(rr.n),rd=toB(rr.d);
+   const match=eq(kn,toB(a)*kd)&&eq(-2n*kn*hn,toB(b)*kd*hd)&&eq(kn*hn*hn*rd+rn*kd*hd*hd,toB(c)*kd*hd*hd*rd);
+   caption.dataset.squareCertificate=match?'yes':'no';
+   caption.textContent+=(match?'Коэффициенты после раскрытия совпали. ':'Коэффициенты после раскрытия отличаются. ')+(k>0&&rest>0?'K и R положительны.':'Проверь, доказывают ли знаки K и R строгую положительность.');
+   if([k,shift,rest].every(v=>Number.isFinite(v)&&Math.abs(v)<=1000000))curves.push({kind:'quadratic',a:k,b:-2*k*shift,c:k*shift*shift+rest,dashed:true});
+  }else caption.textContent+='Сплошная кривая — исходный трёхчлен. После ввода коэффициентов пунктир покажет твою запись.';
+  host.append(rootGraph({curves,xRange:[-width,width],yRange:[-limit/6,limit],axisLabels:[config.symbol,'F'],label:'Сравнение квадратичных выражений: '+config.labels[i]},''),caption);
+ });
+}
+
 function parameterSample(value) {
  const r=M.parse(String(value??''));
  return r&&Math.abs(r.n/r.d)<=24&&8%r.d===0?r.n/r.d:null;
@@ -784,6 +819,8 @@ function render(host,config,value){
  if(config.type==='abs-line-choice'){absLineChoice(host,config);return;}
  if(config.type==='system-pair-audit'){systemPairModel(host,config);return;}
  if(config.type==='inequality-intervals'){inequalityIntervals(host,config);return;}
+ if(config.type==='square-certificate'){squareCertificateScene(host,config,value);return;}
+ if(config.type==='root-residual'){residualScene(host,config);return;}
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}

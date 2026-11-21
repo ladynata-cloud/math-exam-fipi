@@ -737,5 +737,17 @@
       graph:{type:'parameter-polynomial',symbol:'t',coefficients:graph},skills:[parameterPractice.id],source:{type:'authored',reference:'Авторская тренировка по уравнениям с параметром'}};
   }
 
-  return { mount, experiment, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const squarePractice={id:'square-certificates',title:'Доказать положительность квадратичного выражения',description:'Представь трёхчлен полным квадратом с положительным остатком.'};
+  function practiceCertificate(seed,level){
+    const k=level===1?1:2+seed%4,h=seed%13-6,r=2+Math.floor(seed/3)%11;
+    const a=k,b=-2*k*h,c=k*h*h+r,sign=n=>n<0?' − '+Math.abs(n):' + '+n,answer=[k,h,r].join(';');
+    return {title:squarePractice.title,prompt:'Докажи, что '+a+'x²'+sign(b)+'x'+sign(c)+' всегда положительно. Подбери K; H; R для записи K(x − H)² + R.',
+      kind:'graph-values',answer,hint:'Сравни коэффициент при x с −2KH.',correction:'Проверь знак H и остаток R после раскрытия скобок.',
+      explanation:'Коэффициенты '+answer+' возвращают исходный трёхчлен и R > 0.',graph:{type:'square-certificate',targets:[[a,b,c]],labels:['трёхчлен'],symbol:'x'},
+      steps:[{kind:'number',answer:String(k),prompt:'Чему равно K?',hint:'Посмотри на старший коэффициент.',explanation:'K = '+k+'.'},
+       {kind:'number',answer:String(h),prompt:'В какой точке квадрат обращается в нуль?',hint:'Используй −B/(2A).',explanation:'H = '+h+'.'}],
+      skills:[squarePractice.id],source:{type:'authored',reference:'Тренировка по доказательству положительности'}};
+  }
+
+  return { mount, experiment, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

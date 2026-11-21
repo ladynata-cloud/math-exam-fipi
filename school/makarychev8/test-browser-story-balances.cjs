@@ -58,7 +58,7 @@ async function verify(width,url){
   await page.reload({waitUntil:'domcontentloaded'});assert.equal(await page.locator('[data-balance-check=yes]').count(),2);
   assert.equal(await page.evaluate(()=>MakarychevApp.getState().tasks['p32-source-730'].independent),false);
   await openNumber(page,722,'№ 722');await page.locator('[data-action=guided]').first().click();
-  await page.locator('[data-step-input="0"]').fill('x + y = 18; y − x = 3');await page.locator('[data-step-form="0"] button').click();
+  await page.locator('[data-step-input="0"]').fill('x + y = 18; y − x = 3');await page.locator('[data-step-form="0"]').getByRole('button',{name:'Проверить шаг',exact:true}).click();
   await page.locator('[data-step-input="1"]').fill('15/2;21/2');
   assert.equal(await page.locator('[data-balance-domain=no]').count(),1);assert.equal(await page.locator('[data-balance-check=yes]').count(),2);
   await page.close();page=await fresh();await openNumber(page,731,'№ 731а');

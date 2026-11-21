@@ -97,14 +97,15 @@ function parameterFormulas(value, target) {
    const [rn,rd]=polynomialFraction(normalize(reference),symbols).map(coefficients);
    // A cancelled factor may still remove a legitimate parameter value.
    const allowed=excluded.filter(point=>evaluateAt(d,point)===0n).length;
-   if(Number.isInteger(target.below)){
-    // z = bound − u² covers precisely the half-line when u is nonzero.
+   if(Number.isInteger(target.below)||Number.isInteger(target.above)){
+    const bound=target.below??target.above,sign=target.below===undefined?1n:-1n;
+    // z = bound ± u² covers precisely the open half-line when u is nonzero.
     let transformed=[];
     for(const coefficient of [...d].reverse()){
-     transformed=product(transformed.length?transformed:[0n],[BigInt(target.below),0n,-1n]);
+     transformed=product(transformed.length?transformed:[0n],[BigInt(bound),0n,sign]);
      transformed[0]+=coefficient;
     }
-    if(realRootCount(transformed)>(evaluateAt(d,String(target.below))===0n?1:0))return false;
+    if(realRootCount(transformed)>(evaluateAt(d,String(bound))===0n?1:0))return false;
    }else if(realRootCount([...d])>allowed)return false;
    const left=product(n,rd),right=product(rn,d);
    return Array.from({length:Math.max(left.length,right.length)},(_,i)=>(left[i]||0n)===(right[i]||0n)).every(Boolean);
@@ -583,6 +584,15 @@ function systemEvidence(input,graph){
    return {a,b,excluded:false,valid};
  });
 }
+function quadraticTrial(value,coefficients){
+ const entries=quadraticEntries(value);if(!entries||!entries.length)return [];
+ const terms=[coefficients.map((v,i)=>[String(v),2-i,0])];
+ return entries.map(raw=>{
+  const pair=systemEvidence('('+raw+';0)',{terms});
+  const x=radicalSum(raw).reduce((sum,t)=>sum+t.sign*Math.sqrt(Number(t.n)/Number(t.d)),0);
+  return {value:raw,x,exact:pair[0].valid[0]};
+ });
+}
 function openIntervals(input){
  const text=String(input||'').trim().replace(/−|–/g,'-').replace(/\s+/g,'').replace(/или|union|∪/gi,'|');
  if(!text||text.length>180)return null;
@@ -724,5 +734,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });
