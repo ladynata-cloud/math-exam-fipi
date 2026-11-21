@@ -36,7 +36,7 @@ const server=http.createServer((req,res)=>{
  const trigonometryReviewAnswers={"k1":["2","1"],"k2":["-1","-1"],"k3":["90","-1"],"k4":["2","0"],"k5":["16","12"],"k6":["1","0"],"k7":["-2","3"]};
  const scalarGeometryAnswers={"1139":["20","49"],"1140":["2","1"],"1141":["29","-7"],"1142":["-8","11"],"1143":["13","5"],"1144":["3","3"],"1145":["0","4"]};
  const scalarCoordinateAnswers={"1133-1":["-3","-7/2"],"1133-2":["30","-60"],"1133-3":["-1","-7"],"1134":["0","4"],"1135":["0","-3"],"1136-1":["-30","5"],"1136-2":["-2","1"],"1136-3":["-3","0"],"1137":["18","-3"],"1138":["7","30"]};
- const scalarProductAnswers={"t109":["180","0"],"t110":["3","-3"],"t111":["5","-3"],"t112":["5","-10"],"1128-1":["45","135"],"1128-2":["90","0"],"1128-3":["90","180"],"1128-4":["90","0"],"1128-5":["180","90"],"1128-6":["90","45"],"1128-7":["135","45"],"1128-8":["0","180"],"1129-1":["60","120"],"1129-2":["120","60"],"1129-3":["120","60"],"1129-4":["90","30"],"1129-5":["60","30"],"1129-6":["0","60"],"1130-1":["1","-1"],"1130-2":["0","1"],"1130-3":["-1","1"],"1131-1":["8","18"],"1131-2":["-8","-18"],"1131-3":["0","-27"],"1131-4":["16","36"],"1132":["-60","17"]};
+ const scalarProductAnswers={"t109":["180","0"],"t110":["3","-3"],"t111":["5","-3"],"t112":["5","-10"],"1128-1":["45","135"],"1128-2":["90","0"],"1128-3":["90","180"],"1128-4":["90","0"],"1128-5":["180","90"],"1128-6":["90","45"],"1128-7":["135","45"],"1128-8":["0","180"],"1129-1":["60","120"],"1129-2":["120","60"],"1129-3":["120","60"],"1129-4":["90","30"],"1129-5":["120","30"],"1129-6":["180","0"],"1130-1":["1","-1"],"1130-2":["0","1"],"1130-3":["-1","1"],"1131-1":["8","18"],"1131-2":["-8","-18"],"1131-3":["0","-27"],"1131-4":["16","36"],"1132":["-60","17"]};
  const fieldTrigAnswers={"1123":["2","25"],"1124":["2","1"],"1125":["50","25"],"1126":["60","10"],"1127":["3","20"]};
  const solvedTriangleAnswers={"1114-1":["8","90"],"1114-2":["75","60"],"1114-3":["1","53"],"1114-4":["65","60"],"1114-5":["1","110"],"1114-6":["63","60"],"1114-7":["87","53"],"1114-8":["3","90"],"1114-9":["2","74"],"1115":["45","4"],"1116":["105","12"],"1117":["2","1"],"1118":["3","27"],"1119":["7","90"],"1120-1":["7","-4"],"1120-2":["0","33"],"1120-3":["-20","12"],"1121":["36","120"],"1122":["10","20"]};
  const triangleAreaAnswers={"t104":["2","15"],"1109-1":["12","24"],"1109-2":["27","54"],"1109-3":["49","98"],"1110":["12","12"],"1111":["120","8"],"1112":["5","32"],"1113-1":["12","6"],"1113-2":["6","8"],"t105":["5","10"],"t106":["37","5"],"t107":["5","22"],"t108":["4","90"]};
@@ -62,9 +62,15 @@ const server=http.createServer((req,res)=>{
    const review=n.startsWith('r')||chapter11||chapter12;
    const [number,part='1']=(theory||review?n.slice(1):n).split('-');
    const id='atanasyan-7-9-'+(chapter12?'selfcheck-chapter-12-':chapter11?'selfcheck-chapter-11-':review?'selfcheck-chapter-10-':theory?'theory-':'main-')+number+'-part-'+part;
+   // The printed heading on p. 288 asks about vectors in both corrected entries.
+   const revised=n==='1129-5'||n==='1129-6';
+   const revisionKey='mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r';
+   const storageKey=revisionKey+(revised?2:1);
+   if(revised)await page.addInitScript(({key,answer})=>{localStorage.setItem(key,JSON.stringify({checked:true,assisted:false,answer}));},{key:revisionKey+'1',answer:n==='1129-5'?'60':'0'});
    await page.goto(base+'#'+id);
    await page.locator('[data-main-model] svg').waitFor();
-   assert.equal(await page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1'))?.checked===true,id),false);
+   assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key))?.checked===true,storageKey),false);
+   if(revised)assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).checked,revisionKey+'1'),true);
    const coefficient={
     "1139":["7;√129","√129;7","смешанный член","√(129);7"],
     "1140":["6","3","угол между a и b","3.0"],
@@ -91,8 +97,8 @@ const server=http.createServer((req,res)=>{
     "1129-2":["60","120","остриё","120 градусов"],
     "1129-3":["60","120","остриё","120 градусов"],
     "1129-4":["0","90","остриё","90 градусов"],
-    "1129-5":["120","60","без направления","60 градусов"],
-    "1129-6":["180","0","без направления","0 градусов"],
+    "1129-5":["0","120","в ключе 0°","120 градусов"],
+    "1129-6":["0","180","противоположно направлены","180 градусов"],
     "1130-1":["6","3√2","косинус","3sqrt(2)"],
     "1130-2":["6","0","косинус","0.0"],
     "1130-3":["3√2","−3√2","косинус","-3sqrt(2)"],
@@ -204,7 +210,7 @@ const server=http.createServer((req,res)=>{
    }[n];
    const exactFinal=coefficient||{981:['20','10','сумма оснований'],983:['15','30','найден радиус'],984:['2,5','16','разность'],987:['3,5','7','полусумме оснований']}[n];
    const enteredFinal=coefficient?(width===320?coefficient[1]:coefficient[3]):exactFinal?exactFinal[1]+(width===320?',0':' см'):null;
-   const readWork=()=>page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1')),id);
+   const readWork=()=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
    async function submitFinal(value){
     await page.locator('#final-answer').fill(value);
     await page.locator('[data-final-form] button').click();
@@ -224,7 +230,7 @@ const server=http.createServer((req,res)=>{
     await page.locator('#final-answer').fill('Синтетический черновик решения');
     await page.locator('[data-final-form] button').click();
     if(review||Number(number)>=937){
-     const state=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),'mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1');
+     const state=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
      assert.equal(state.checked,false);
      assert.equal(state.assisted,false);
      assert.match(await page.locator('[data-final-feedback]').innerText(),/Рассуждение сохранено/);
@@ -275,7 +281,7 @@ const server=http.createServer((req,res)=>{
    if(switchCase) assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),switchCase);
    if(!theory) assert.equal(await page.locator('#final-answer').inputValue(),exactFinal?enteredFinal:'Синтетический черновик решения');
    if(!theory&&(review||Number(number)>=937)){
-    const state=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),'mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1');
+    const state=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
     assert.equal(state.assisted,!exactFinal||width!==320);assert.equal(state.checked,Boolean(exactFinal));
    }
    for (const [index,answer] of expected.entries()) {

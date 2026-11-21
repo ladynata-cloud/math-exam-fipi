@@ -7,7 +7,7 @@ cards=json.loads(OUT.read_bytes())['lessons']
 parts={109:'',110:'',111:'',112:'',1128:'абвгдежз',1129:'абвгде',1130:'абв',1131:'абвг',1132:''}
 theory_pages={109:[283,284],110:[284,285],111:[285,286,287],112:[287,288]}
 sq=[('AB','AC',45,'AB','CA',135),('AB','DA',90,'AB','AB',0),('OA','OB',90,'OA','OC',180),('AO','OB',90,'AO','OC',0),('OA','OC',180,'OA','OB',90),('AC','BD',90,'AC','AB',45),('AD','DB',135,'AD','BD',45),('AO','OC',0,'AO','CO',180)]
-rh=[('AB','AD',60,'AB','DA',120),('AB','DA',120,'AB','AD',60),('BA','AD',120,'BA','DA',60),('OC','OD',90,'OC','DC',30),('AB','DA',60,'AB','AC',30),('AB','CD',0,'AB','BD',60)]
+rh=[('AB','AD',60,'AB','DA',120),('AB','DA',120,'AB','AD',60),('BA','AD',120,'BA','DA',60),('OC','OD',90,'OC','DC',30),('AB','DA',120,'AB','AC',30),('AB','CD',180,'AB','DC',0)]
 near=lambda a,b:isclose(a,b,abs_tol=.001)
 def sub(a,b):return tuple(y-x for x,y in zip(a,b))
 def dot(a,b):return a[0]*b[0]+a[1]*b[1]
@@ -34,17 +34,11 @@ for c,(n,part) in zip(cards,[(n,q or None) for n,ps in parts.items() for q in ps
             arrows+=1
         if n in (1128,1129):
             u,w,original,x,y,practice=(sq if n==1128 else rh)[idx]
-            undirected=n==1129 and idx>=4
             if 'A' in pos:
                 a,b=(x,y) if alt else (u,w)
                 vu=sub(pos[a[0]],pos[a[1]]);vw=sub(pos[b[0]],pos[b[1]])
-                if undirected:
-                    # In the printed row д only the first expression carries an arrow; in е neither does.
-                    assert len(heads)==(2 if idx==4 else 0)
-                else:
-                    assert len(heads)==(2 if a==b else 4)
-                expectedends=([a[1]] if idx==4 else []) if undirected else list(dict.fromkeys(pair[1]+'-'+pair[0] for pair in (a,b)))
-                if not undirected:expectedends=[t.split('-')[0] for t in expectedends]
+                assert len(heads)==(2 if a==b else 4)
+                expectedends=[pair[1] for pair in dict.fromkeys((a,b))]
                 assert [m['labels'][tip] for tip,_ in heads[::2]]==expectedends
             else:
                 vu=sub(pos['P'],pos['X']);vw=sub(pos['P'],pos.get('Y',pos['X']))
@@ -53,9 +47,13 @@ for c,(n,part) in zip(cards,[(n,q or None) for n,ps in parts.items() for q in ps
             for marked in ([a,b] if 'A' in pos else ['PX']+(['PY'] if 'Y' in pos else [])):
                 assert [marked[0]+suf,marked[1]+suf] in highlights
             measure=angle(vu,vw)
-            if undirected:measure=min(measure,180-measure)
             assert near(measure,practice if alt else original),(n,idx,key,measure)
             assert c['answer']['accepted'][0]==str(original)
+            if n==1129 and idx in (4,5):
+                assert c['revision']==2 and 'между векторами' in str(c['statement'])
+                assert 'с. 400' in str(c['steps']) and '0' not in c['answer']['accepted']
+                if idx==4:assert '60' not in c['answer']['accepted'] and 'не следует' in str(c['steps'])
+                assert near(angle(vu,vw),practice if alt else (120 if idx==4 else 180))
         elif n==1130:
             u=sub(pos['P'],pos['X']);w=sub(pos['P'],pos['Y'])
             result=[-3*sqrt(2),6,3*sqrt(2)][idx] if alt else [3*sqrt(2),0,-3*sqrt(2)][idx]*(4 if mid else 1)

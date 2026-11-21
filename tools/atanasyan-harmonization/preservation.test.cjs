@@ -80,7 +80,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/trigonometry-review.json": "2c9e62594ab7c2cd1dbb50e7233fc94772655f47fdf79d99e2efb55f91cb40e7",
   "geometry-course/textbook/data/scalar-geometry.json": "5f685dada18f45c3a61571324904669b24e6e2ce7359978b7de956e1626be621",
   "geometry-course/textbook/data/scalar-coordinates.json": "72da8b006bb404b4b67b6acfbad20fa2e5f2179fd14af6c3c1e529e942b97390",
-  "geometry-course/textbook/data/scalar-product.json": "e0e908ffe6dc66b0fb19f2affe990b8d7213bccab588ca59454b3ccc7d3154a6",
+  "geometry-course/textbook/data/scalar-product.json": "183a1bab4b8115daf7cf3d323179751752b7e2af962436139e4689c7a7b66cb2",
   "geometry-course/textbook/data/field-trigonometry.json": "62b7344a8caee414869f36ea48a1053bbf724c69291d7f1c6bc6870dae9adfc6",
   "geometry-course/textbook/data/solve-triangle.json": "d51ca83c1711b26949d4eba0e89e0ea2f7358f18da474aba767bc3896d233b5c",
   "geometry-course/textbook/data/oblique-triangle-cases.json": "565304b423ae86a9faf10c0df28a4587460fa868cd476808a697b053ad61e828",
