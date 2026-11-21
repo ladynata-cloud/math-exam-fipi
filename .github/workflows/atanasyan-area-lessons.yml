@@ -58,6 +58,8 @@ on:
       - 'tools/geometry-textbook/*coordinate_figures*'
       - 'geometry-course/textbook/data/coordinate-couriers.json'
       - 'tools/geometry-textbook/*coordinate_couriers*'
+      - 'geometry-course/textbook/data/coordinate-proof-method.json'
+      - 'tools/geometry-textbook/*coordinate_proof_method*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
@@ -98,6 +100,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_distances.py --check && python3 tools/geometry-textbook/check_coordinate_distances.py
       - run: python3 tools/geometry-textbook/coordinate_figures.py --check && python3 tools/geometry-textbook/check_coordinate_figures.py
       - run: python3 tools/geometry-textbook/coordinate_couriers.py --check && python3 tools/geometry-textbook/check_coordinate_couriers.py
+      - run: python3 tools/geometry-textbook/coordinate_proof_method.py --check && python3 tools/geometry-textbook/check_coordinate_proof_method.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons

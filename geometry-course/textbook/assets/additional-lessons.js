@@ -55,7 +55,8 @@
       ['/geometry-course/textbook/data/coordinate-tables.json', '№1021–1023'],
       ['/geometry-course/textbook/data/coordinate-distances.json', '№1024–1029'],
       ['/geometry-course/textbook/data/coordinate-figures.json', '№1030–1035'],
-      ['/geometry-course/textbook/data/coordinate-couriers.json', '№1036–1037']
+      ['/geometry-course/textbook/data/coordinate-couriers.json', '№1036–1037'],
+      ['/geometry-course/textbook/data/coordinate-proof-method.json', '№1038–1044']
   ];
 
   async function forCourse(base) {
