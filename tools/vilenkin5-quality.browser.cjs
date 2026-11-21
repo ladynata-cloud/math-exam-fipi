@@ -24,8 +24,8 @@ const server=http.createServer((req,res)=>{
       const list=WorkshopCurriculum.pathById.vilenkin5.numbered.map(id=>WorkshopCurriculum.byId[id]);
       return [1,2].map(part=>list.filter(lesson=>lesson.source.part===part).map(lesson=>lesson.number));
     });
-    assert.deepEqual(printedCounts[0],Array.from({length:91},(_,i)=>'1.'+(i+1)));
-    assert.deepEqual(printedCounts[1],Array.from({length:27},(_,i)=>'5.'+(i+1)));
+    assert.deepEqual(printedCounts[0],Array.from({length:118},(_,i)=>'1.'+(i+1)));
+    assert.deepEqual(printedCounts[1],Array.from({length:36},(_,i)=>'5.'+(i+1)));
     // Every canonical lesson mounts its actual visual, including all of part two.
     for(const [i,id]of ids.entries()){
       await page.evaluate(id=>{location.hash='#lesson/'+id;},id);await page.waitForFunction(id=>Vilenkin5Quality.getState().scene?.id===id,id);
@@ -160,7 +160,7 @@ const server=http.createServer((req,res)=>{
     await page.locator('#answer').focus();await page.keyboard.type('65');assert.equal(await page.locator('#answer').inputValue(),'65');
     await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>document.body.style.zoom='2');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'200% zoom overflow');
     await page.close();page=await newLearnerPage();await page.setViewportSize({width:320,height:840});
-    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4],['v5f-printed-1-3',3],['v5f-printed-1-4',8],['v5f-printed-1-5',6],['v5f-printed-1-6',12],['v5f-printed-1-7',3],['v5f-printed-1-8',15],['v5f-printed-1-9',4],['v5f-printed-1-10',6],['v5f-printed-1-11',2],['v5f-printed-1-12',2],['v5f-printed-1-13',8],['v5f-printed-1-14',9],['v5f-printed-1-15',6],['v5f-printed-1-16',5],['v5f-printed-1-17',8],['v5f-printed-1-18',12],['v5f-printed-1-19',9],['v5f-printed-1-20',6],['v5f-printed-1-21',4],['v5f-printed-1-22',2],['v5f-printed-1-23',2],['v5f-printed-1-24',3],['v5f-printed-1-25',3],['v5f-printed-1-26',3],['v5f-printed-1-27',5],['v5f-printed-1-28',6],['v5f-printed-1-29',4],['v5f-printed-1-30',4],['v5f-printed-1-31',4],['v5f-printed-1-32',2],['v5f-printed-1-33',4],['v5f-printed-1-34',6],['v5f-printed-1-35',8],['v5f-printed-1-36',3],['v5f-printed-1-37',1],['v5f-printed-1-38',2],['v5f-printed-1-39',2],['v5f-printed-1-40',2],['v5f-printed-1-41',4],['v5f-printed-1-42',2],['v5f-printed-1-43',4],['v5f-printed-1-44',2],['v5f-printed-1-45',4],['v5f-printed-1-46',5],['v5f-printed-1-47',3],['v5f-printed-1-48',3],['v5f-printed-1-49',2],['v5f-printed-1-50',3],['v5f-printed-1-51',3],['v5f-printed-1-52',3],['v5f-printed-1-53',3],['v5f-printed-1-54',4],['v5f-printed-1-55',2],['v5f-printed-1-56',6],['v5f-printed-1-57',3],['v5f-printed-1-58',1],['v5f-printed-1-59',7],['v5f-printed-1-60',3],['v5f-printed-1-61',2],['v5f-printed-1-62',2],['v5f-printed-1-63',2],['v5f-printed-1-64',3],['v5f-printed-1-65',2],['v5f-printed-1-66',3],['v5f-printed-1-67',6],['v5f-printed-1-68',7],['v5f-printed-1-69',20],['v5f-printed-1-70',3],['v5f-printed-1-71',4],['v5f-printed-1-72',2],['v5f-printed-1-73',3],['v5f-printed-1-74',3],['v5f-printed-1-75',3],['v5f-printed-1-76',2],['v5f-printed-1-77',2],['v5f-printed-1-78',2],['v5f-printed-1-79',4],['v5f-printed-1-80',6],['v5f-printed-1-81',3],['v5f-printed-1-82',3],['v5f-printed-1-83',13],['v5f-printed-1-84',5],['v5f-printed-1-85',3],['v5f-printed-1-86',2],['v5f-printed-1-87',3],['v5f-printed-1-88',4],['v5f-printed-1-89',2],['v5f-printed-1-90',2],['v5f-printed-1-91',4],['v5f-printed-check-3-1',5],['v5f-printed-check-3-2',4]]){
+    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4],['v5f-printed-1-3',3],['v5f-printed-1-4',8],['v5f-printed-1-5',6],['v5f-printed-1-6',12],['v5f-printed-1-7',3],['v5f-printed-1-8',15],['v5f-printed-1-9',4],['v5f-printed-1-10',6],['v5f-printed-1-11',2],['v5f-printed-1-12',2],['v5f-printed-1-13',8],['v5f-printed-1-14',9],['v5f-printed-1-15',6],['v5f-printed-1-16',5],['v5f-printed-1-17',8],['v5f-printed-1-18',12],['v5f-printed-1-19',9],['v5f-printed-1-20',6],['v5f-printed-1-21',4],['v5f-printed-1-22',2],['v5f-printed-1-23',2],['v5f-printed-1-24',3],['v5f-printed-1-25',3],['v5f-printed-1-26',3],['v5f-printed-1-27',5],['v5f-printed-1-28',6],['v5f-printed-1-29',4],['v5f-printed-1-30',4],['v5f-printed-1-31',4],['v5f-printed-1-32',2],['v5f-printed-1-33',4],['v5f-printed-1-34',6],['v5f-printed-1-35',8],['v5f-printed-1-36',3],['v5f-printed-1-37',1],['v5f-printed-1-38',2],['v5f-printed-1-39',2],['v5f-printed-1-40',2],['v5f-printed-1-41',4],['v5f-printed-1-42',2],['v5f-printed-1-43',4],['v5f-printed-1-44',2],['v5f-printed-1-45',4],['v5f-printed-1-46',5],['v5f-printed-1-47',3],['v5f-printed-1-48',3],['v5f-printed-1-49',2],['v5f-printed-1-50',3],['v5f-printed-1-51',3],['v5f-printed-1-52',3],['v5f-printed-1-53',3],['v5f-printed-1-54',4],['v5f-printed-1-55',2],['v5f-printed-1-56',6],['v5f-printed-1-57',3],['v5f-printed-1-58',1],['v5f-printed-1-59',7],['v5f-printed-1-60',3],['v5f-printed-1-61',2],['v5f-printed-1-62',2],['v5f-printed-1-63',2],['v5f-printed-1-64',3],['v5f-printed-1-65',2],['v5f-printed-1-66',3],['v5f-printed-1-67',6],['v5f-printed-1-68',7],['v5f-printed-1-69',20],['v5f-printed-1-70',3],['v5f-printed-1-71',4],['v5f-printed-1-72',2],['v5f-printed-1-73',3],['v5f-printed-1-74',3],['v5f-printed-1-75',3],['v5f-printed-1-76',2],['v5f-printed-1-77',2],['v5f-printed-1-78',2],['v5f-printed-1-79',4],['v5f-printed-1-80',6],['v5f-printed-1-81',3],['v5f-printed-1-82',3],['v5f-printed-1-83',13],['v5f-printed-1-84',5],['v5f-printed-1-85',3],['v5f-printed-1-86',2],['v5f-printed-1-87',3],['v5f-printed-1-88',4],['v5f-printed-1-89',2],['v5f-printed-1-90',2],['v5f-printed-1-91',4],['v5f-printed-check-3-1',5],['v5f-printed-check-3-2',4],['v5f-printed-1-92',2],['v5f-printed-1-93',6],['v5f-printed-1-94',3],['v5f-printed-1-95',2],['v5f-printed-1-96',3],['v5f-printed-1-97',3],['v5f-printed-1-98',3],['v5f-printed-1-99',3],['v5f-printed-1-100',4],['v5f-printed-1-101',3],['v5f-printed-1-102',5],['v5f-printed-1-103',6],['v5f-printed-1-104',4],['v5f-printed-1-105',2],['v5f-printed-1-106',4],['v5f-printed-1-107',4],['v5f-printed-1-108',3],['v5f-printed-1-109',9],['v5f-printed-1-110',3],['v5f-printed-1-111',4],['v5f-printed-1-112',4],['v5f-printed-1-113',3],['v5f-printed-1-114',2],['v5f-printed-1-115',4],['v5f-printed-1-116',2],['v5f-printed-1-117',3],['v5f-printed-1-118',2]]){
       await go('#lesson/'+id);
       const survey=page.locator('#task-panel table').first();
       assert.equal(await survey.locator('tbody tr').count(),rows);
@@ -174,6 +174,38 @@ const server=http.createServer((req,res)=>{
         await page.locator('#answer').fill('2');await page.reload();await page.locator('#answer').waitFor();assert.equal(await page.locator('#answer').inputValue(),'2');
         await page.locator('#answer').fill('26');await page.locator('#answer-form button').click();
         const result=await page.evaluate(()=>Vilenkin5Quality.getState().scene);assert(result.correct);assert.deepEqual(result.hintLevels,{});
+      }
+      if(['v5f-printed-check-3-2','v5f-printed-1-92','v5f-printed-1-93','v5f-printed-1-94'].includes(id)){
+        const sizes=await page.locator('#model svg text').evaluateAll(nodes=>nodes.map(x=>parseFloat(getComputedStyle(x).fontSize)));assert(sizes.length>0);assert(sizes.every(n=>n>=9&&n<=16),'diagram and ruler labels retain their authored scale on small screens');
+      }
+      if(id==='v5f-printed-1-110'){
+        await page.locator('#answer').fill('4');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();await page.locator('#answer').fill('AKLF');await page.locator('#answer-form button').click();assert.match(await page.locator('#task-panel .feedback').textContent(),/соседей/);
+        await page.locator('[data-v5-param=k]').fill('3');await page.locator('[data-v5-param=k]').press('Tab');await page.locator('[data-v5-param=l]').fill('7');await page.locator('[data-v5-param=l]').press('Tab');await page.reload();
+        assert.equal(await page.locator('[data-v5-param=k]').inputValue(),'3');assert.equal(await page.locator('[data-v5-param=l]').inputValue(),'7');await page.locator('#answer').fill('FKLAF');await page.locator('#answer-form button').click();assert(await page.evaluate(()=>Vilenkin5Quality.getState().scene.correct));
+      }
+      if(id==='v5f-printed-1-103'){
+        for(const val of ['46;26;20','37;10;27','55;30;25']){await page.locator('#answer').fill(val);await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();}
+        await page.locator('#answer').fill('62;18;44');await page.locator('#answer-form button').click();assert.match(await page.locator('#task-panel .feedback').textContent(),/уже дано/);
+        await page.locator('#answer').fill('63;18;');await page.reload();assert.equal(await page.locator('#answer').inputValue(),'63;18;');await page.locator('#answer').fill('63;18;45');await page.locator('#answer-form button').click();assert(await page.evaluate(()=>Vilenkin5Quality.getState().scene.correct));
+      }
+      if(id==='v5f-printed-1-101'){
+        await page.locator('[data-v5-param=zone]').selectOption('1');await page.locator('[data-v5-param=at]').selectOption('3');await page.locator('[data-v5-prediction]').fill('3003');await page.locator('[data-v5-predict] button').click();await page.reload();
+        assert.match(await page.locator('#model svg').textContent(),/3003/);assert.equal(await page.locator('[data-v5-param=zone]').inputValue(),'1');
+      }
+      if(id==='v5f-printed-1-99'){
+        await page.locator('[data-v5-param=stage]').selectOption({value:'2'});await page.locator('[data-v5-param=tint]').selectOption('1');assert.equal(await page.locator('#model svg polygon').count(),7);
+        await page.locator('[data-v5-param=shift]').selectOption('1');await page.reload();assert.equal(await page.locator('#model svg polygon').count(),2);assert.equal(await page.locator('[data-v5-param=stage]').inputValue(),'2');
+      }
+      if(id==='v5f-printed-1-95'){
+        await page.locator('#answer').fill('7');await page.locator('#answer-form button').click();assert.match(await page.locator('#task-panel .feedback').innerText(),/самого отрезка/);
+        await page.locator('#answer').fill('2');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();await page.locator('#answer').fill('8');await page.reload();assert.equal(await page.locator('#answer').inputValue(),'8');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();
+        assert.match(await page.locator('#task-panel svg').textContent(),/L=M/);
+      }
+      if(id==='v5f-printed-1-92'){
+        await page.locator('#answer').fill('B A K');await page.locator('#answer-form button').click();assert.match(await page.locator('#task-panel .feedback').innerText(),/штриха/);
+        await page.locator('[data-v5-param=extend]').selectOption('1');await page.locator('[data-v5-param=which]').selectOption('3');
+        await page.locator('#answer').fill('D');await page.reload();assert.equal(await page.locator('#answer').inputValue(),'D');assert.equal(await page.locator('[data-v5-param=extend]').inputValue(),'1');
+        await page.locator('#answer').fill('Д В К А');await page.locator('#answer-form button').click();assert(await page.evaluate(()=>Vilenkin5Quality.getState().scene.correct));
       }
       if(id==='v5f-printed-1-72'){
         const own=page.locator('#v5-quality-note');
@@ -217,6 +249,6 @@ const server=http.createServer((req,res)=>{
       assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.step),1);await own.scrollIntoViewIfNeeded();
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(shots,'printed-chosen-number-'+width+'.png')});
     }
-    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:printedCounts[0].length,numberedPart2:printedCounts[1].length,printedChecks:4,screenshots:122,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
+    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:printedCounts[0].length,numberedPart2:printedCounts[1].length,printedChecks:4,screenshots:149,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

@@ -6908,6 +6908,60 @@
       "boundary": "The numbered banks, worked steps, model behavior and two-role rooms have independent subject checks."
     },
     {
+      "previousBaseSha": "904cd14a07b85907156954dcd21e338daba6ded6",
+      "sourceBaseSha": "c9f2e71aa306c8ddfa136d627b35c3d8a06db711",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, №5.28. Открытый вопрос о сравнении часов с собственным наблюдением."
+    },
+    {
+      "previousBaseSha": "c9f2e71aa306c8ddfa136d627b35c3d8a06db711",
+      "sourceBaseSha": "6a59d3de39c42767bb5c830d0b845767ec86d580",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Построение окружности, сравнение внутренней области с границей и сохранение своей перестановки точки."
+    },
+    {
+      "previousBaseSha": "6a59d3de39c42767bb5c830d0b845767ec86d580",
+      "sourceBaseSha": "d246cf6828a91cb5ff093b094facb5f5898a5a23",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Три точки на одном расстоянии от центра: собственный раствор, направления и восстановление построения у обоих участников."
+    },
+    {
+      "previousBaseSha": "d246cf6828a91cb5ff093b094facb5f5898a5a23",
+      "sourceBaseSha": "7c9128938244ce242102a911763022e3e31dad95",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Две окружности в исходных номерах №5.31–5.32, внешнее и внутреннее касания, отдельные метки центров и точек пересечения."
+    },
+    {
+      "previousBaseSha": "7c9128938244ce242102a911763022e3e31dad95",
+      "sourceBaseSha": "7401675c26a1e92ebbd5c117bd2c5adfcd37a10d",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены №5.33–5.34 Виленкина: сравнение грубой и более точной оценки, все четыре исходных уравнения и проверка подстановкой."
+    },
+    {
+      "previousBaseSha": "7401675c26a1e92ebbd5c117bd2c5adfcd37a10d",
+      "sourceBaseSha": "e3d9570491cc051d2bb7697ab9487969605ef681",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Добавлены печатные №5.35–5.36, часть 2, §25, с. 11: все возможные делители и независимый подсчёт объёмов четырёх фигур. Прочие страницы исходного издания не заявляются."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
