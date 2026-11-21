@@ -83,6 +83,7 @@ jobs:
           python school/makarychev8/test-exercises-1049-1062.py
           python school/makarychev8/test-exercises-1063-1068.py
           python school/makarychev8/test-exercises-1069-1075.py
+          python school/makarychev8/test-exercises-1076-1079.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -126,6 +127,7 @@ jobs:
           node school/makarychev8/test-chapter-four-end.cjs
           node school/makarychev8/test-function-input-output.cjs
           node school/makarychev8/test-function-domains.cjs
+          node school/makarychev8/test-graph-reading.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -227,6 +229,7 @@ jobs:
       - name: Chromium function input, ordinate, inverse and excluded arguments
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-function-input-output.cjs
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-function-domains.cjs
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-graph-reading.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction
