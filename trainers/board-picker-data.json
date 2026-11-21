@@ -2,11 +2,6 @@
   "version": 1,
   "entries": [
     {
-      "title": "Атанасян 10–11 · задачи по номерам",
-      "href": "/stereo-course/textbook/",
-      "group": "Стереометрия"
-    },
-    {
       "title": "ЕГЭ база",
       "href": "/ege-baza/",
       "group": "ЕГЭ база"
@@ -2245,6 +2240,11 @@
       "title": "Атанасян 10–11",
       "href": "/stereo-course/",
       "group": "Курсы · Стереометрия"
+    },
+    {
+      "title": "Атанасян 10–11 · задачи по номерам",
+      "href": "/stereo-course/textbook/",
+      "group": "Стереометрия"
     },
     {
       "title": "Мерзляк 7–9",

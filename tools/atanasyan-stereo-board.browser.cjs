@@ -97,12 +97,24 @@ async function ready(host, id) {
     await teacher.locator('#sharePanel [data-close-panel]').click();
     await right.locator('#work').fill('Сравниваю площади кольца и круга');
     await left.waitForFunction(() => document.querySelector('#work').value === 'Сравниваю площади кольца и круга');
+    await right.locator('#find-number').fill('17');
+    await right.locator('#find-number').press('Enter');
+    await left.waitForFunction(() => document.querySelector('#card').value === 'ex-main-0017');
+    await right.getByRole('button', {name:'Следующий шаг', exact:true}).click();
+    await right.locator('#work-step-1').fill('8');
+    await right.getByRole('button', {name:'Проверить этот шаг', exact:true}).click();
+    await left.waitForFunction(() => document.querySelector('[data-step-feedback="step-1"]')?.dataset.answerStatus === 'wrong');
+    assert.match(await left.locator('[data-step-feedback="step-1"]').innerText(), /половина/iu);
+    await right.locator('#work-step-1').fill('7');
+    await right.getByRole('button', {name:'Проверить этот шаг', exact:true}).click();
+    await left.waitForFunction(() => document.querySelector('[data-step-feedback="step-1"]')?.dataset.answerStatus === 'correct');
     await pupil.reload();
-    right = await ready(pupil, 'ex-main-0413');
-    assert.equal(await right.locator('#work').inputValue(), 'Сравниваю площади кольца и круга');
+    right = await ready(pupil, 'ex-main-0017');
+    assert.equal(await right.locator('#work-step-1').inputValue(), '7');
+    assert.equal(await right.locator('[data-step-feedback="step-1"]').getAttribute('data-answer-status'), 'correct');
     for (const frame of [left,right]) assert.equal(await frame.evaluate(key => localStorage.getItem(key), localKey), 'isolated-personal-record');
     assert.deepEqual(errors, []);
-    console.log('ATANASYAN_STEREO_BOARD_OK: two room participants, rotated 3D, hints, steps, draft, transfer of control, reload, personal records isolated');
+    console.log('ATANASYAN_STEREO_BOARD_OK: two room participants, rotated 3D, hints, checked step answers, final draft, transfer of control, reload, personal records isolated');
   } finally {
     await browser?.close();
     room?.kill();

@@ -55,21 +55,41 @@
     search.addEventListener('input', updateOptions);
     search.addEventListener('keydown', event => {
       if (event.key === 'Enter' && select.options.length) {
-        select.selectedIndex = 0; select.dispatchEvent(new Event('change'));
+        const number = search.value.trim().replace(/^№\s*/, '');
+        const byExercise = [...select.options].find(option => cards.get(option.value).card.source.exercise === number);
+        select.value = byExercise?.value || select.options[0].value;
+        select.dispatchEvent(new Event('change'));
       }
     });
     function fresh(id) {
-      return { id, hint: 0, step: 0, work: '', checked: false, camera: null, view: 'neutral' };
+      return { id, hint: 0, step: 0, stepAnswers: {}, work: '', checked: false, camera: null, view: 'neutral' };
+    }
+    function validText(value, limit) {
+      if (typeof value !== 'string') return false;
+      try {
+        const plain = plainText(value);
+        return typeof plain === 'string' && plain.length <= limit && wireText(plain) === value;
+      } catch { return false; }
     }
     function validate(value) {
-      if (!value || Object.keys(value).sort().join(',') !== 'camera,checked,hint,id,step,view,work') return false;
+      if (!value) return false;
+      const keys = Object.keys(value).sort().join(',');
+      if (keys !== 'camera,checked,hint,id,step,stepAnswers,view,work' &&
+          keys !== 'camera,checked,hint,id,step,view,work') return false;
       const row = cards.get(value.id);
-      if (!row || typeof value.checked !== 'boolean' || typeof value.work !== 'string' ||
+      if (!row || typeof value.checked !== 'boolean' || !validText(value.work, 3000) ||
           !bounded(value.hint, 0, row.hints.length) || !bounded(value.step, 0, row.card.steps.length) ||
           !Object.hasOwn(row.card.visualization.model.views, value.view)) return false;
-      let draft;
-      try { draft = plainText(value.work); } catch { return false; }
-      if (typeof draft !== 'string' || draft.length > 3000 || wireText(draft) !== value.work) return false;
+      if (Object.hasOwn(value, 'stepAnswers')) {
+        const answers = value.stepAnswers;
+        if (!answers || typeof answers !== 'object' || Array.isArray(answers)) return false;
+        const opened = row.card.steps.slice(0, value.step).filter(step => step.input);
+        for (const [id, entry] of Object.entries(answers)) {
+          if (!opened.some(step => step.id === id) || !entry ||
+              Object.keys(entry).sort().join(',') !== 'checked,work' ||
+              typeof entry.checked !== 'boolean' || !validText(entry.work, 300)) return false;
+        }
+      }
       const camera = value.camera;
       return camera === null || !!camera && Object.keys(camera).sort().join(',') === 'pitch,yaw' &&
         Number.isFinite(camera.yaw) && Math.abs(camera.yaw) <= 2 * Math.PI &&
@@ -125,6 +145,36 @@
       const hintButton = el('button', 'Подсказка', actions), stepButton = el('button', 'Следующий шаг', actions);
       const help = el('section'), steps = el('section');
       help.id = 'hint'; steps.id = 'step';
+      function stepPractice(step) {
+        const label = el('label', step.input.prompt, steps);
+        const field = el('input', '', steps);
+        field.id = 'work-' + step.id; field.maxLength = 300; label.htmlFor = field.id;
+        const answer = state.stepAnswers[step.id] || {work:'', checked:false};
+        field.value = plainText(answer.work);
+        const button = el('button', 'Проверить этот шаг', steps);
+        const feedback = el('p', '', steps);
+        feedback.setAttribute('role', 'status');
+        feedback.dataset.stepFeedback = step.id;
+        function showResult() {
+          feedback.replaceChildren();
+          delete feedback.dataset.answerStatus;
+          if (!answer.checked) return;
+          const result = StereoTextbook.classifyAnswer(field.value, step.input.accepted);
+          feedback.dataset.answerStatus = result.status;
+          const message = result.status === 'correct' ? 'Ответ на этот шаг совпал.'
+            : result.status === 'wrong' ? step.input.feedback : result.message;
+          StereoMath.appendText(feedback, message);
+        }
+        field.addEventListener('input', () => {
+          answer.work = wireText(field.value); answer.checked = false;
+          state.stepAnswers[step.id] = answer; showResult(); publish();
+        });
+        button.addEventListener('click', () => {
+          answer.checked = true;
+          state.stepAnswers[step.id] = answer; showResult(); publish();
+        });
+        showResult();
+      }
       function displayHelp() {
         help.replaceChildren(); steps.replaceChildren();
         for (const hint of hints.slice(0, state.hint)) {
@@ -134,6 +184,7 @@
           el('h3', step.title, steps); el('p', step.prompt, steps);
           el('p', step.explanation, steps);
           for (const reason of step.justifications || []) el('p', reason.text, steps);
+          if (step.input) stepPractice(step);
         }
         hintButton.disabled = state.hint >= hints.length;
         stepButton.disabled = state.step >= card.steps.length;
@@ -159,7 +210,7 @@
       getState() { return structuredClone(state); },
       applyState(next) {
         if (!validate(next)) throw TypeError('Некорректное состояние задачи');
-        state = structuredClone(next);
+        state = {...fresh(next.id), ...structuredClone(next)};
         render();
       }
     });
