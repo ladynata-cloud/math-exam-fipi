@@ -488,6 +488,20 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'ratio and difference of two flying speeds, printed exercise 1.78';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-78"]').click();await studentFrame.locator('h1').filter({hasText:'№1.78'}).waitFor();
+  await teacherFrame.locator('#answer').fill('1400');await teacherFrame.locator('#answer-form button').click();const fastHelicopter=await same(teacherFrame,studentFrame,'helicopter was made faster than the plane');assert.match(fastHelicopter.scene.message,/медленнее/i);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('280');await studentFrame.locator('#answer-form button').click();await same(studentFrame,teacherFrame,'child subtracted the speed difference');await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('#answer').fill('560');await studentFrame.locator('#answer-form button').click();const asDifference=await same(studentFrame,teacherFrame,'speed difference was submitted as a ratio');assert.match(asDifference.scene.message,/разност/i);
+  await studentFrame.locator('[data-v5-param=pair]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=pieces]').fill('3');await studentFrame.locator('[data-v5-param=pieces]').press('Tab');
+  await studentFrame.locator('[data-v5-prediction]').fill('0');await studentFrame.locator('[data-v5-predict] button').click();
+  const exactFlight=await same(studentFrame,teacherFrame,'three smaller speeds equal the swift speed');assert.equal(exactFlight.scene.model.pair,1);assert.equal(exactFlight.scene.model.pieces,3);assert(exactFlight.scene.model.seen);
+  await studentFrame.locator('#answer').fill('3');await studentFrame.locator('#answer-form button').click();const factor=await same(studentFrame,teacherFrame,'pupil changed a difference to a ratio');assert(factor.scene.correct);assert.deepEqual(factor.scene.hintLevels,{});
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('16');await same(studentFrame,teacherFrame,'partial draft of the speed of a swift');
+  await ownership(teacher,student,false);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores bird model and partial answer');
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'pupil restores bird comparison and partial answer');assert.equal(await studentFrame.locator('#answer').inputValue(),'16');
+
   phase = 'relative solar distances and final units, printed exercise 1.75';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-75"]').click();await studentFrame.locator('h1').filter({hasText:'№1.75'}).waitFor();
