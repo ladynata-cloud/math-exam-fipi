@@ -162,9 +162,9 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–616 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–630 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–616 разобраны полностью/);
+ assert.match(overview.textContent,/№1–630 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
 });
@@ -286,4 +286,25 @@ test('trinomial practice, factored form, common scalar and expanded correction',
  for(const candidate of ['(a+3)(b-5)','(b-5)(3+a)','-(5-b)(a+3)','(2a+6)(b/2-5/2)','((3+a)(b-5))'])assert.equal(c.factoredPair(candidate,expected),'factored');
  for(const candidate of ['ab+3b-5a-15','1*(ab+3b-5a-15)','(ab+3b-5a-15)(1)'])assert.equal(c.factoredPair(candidate,expected),'expanded');
  assert.equal(c.factoredPair('(a-3)(b-5)',expected),'different');
+});
+
+test('factor forms allow multiplicity, scalar positions and both families of free examples',()=>{
+ const {practiceFactors}=require('./models.js'),c=require('./check.js');
+ for(const level of [1,2,3]){
+  const prompts=new Set();
+  for(let seed=0;seed<40;seed++){
+   const task=practiceFactors(seed,level);prompts.add(task.prompt);assert(c.check(task.answer,task));
+   assert(task.steps.every(step=>c.check(step.answer,step)));
+  }
+  assert(prompts.size>=12);
+ }
+ for(const n of [1,2,7,99,100001]){
+  assert.equal(c.progressionFactors([n,3*n,2*n,n+'(x+1)(x+2)'].join(';')),'factored');
+  assert.equal(c.progressionFactors([2*n,3*n,n,n+'(2x+1)(x+1)'].join(';')),'factored');
+ }
+ assert.equal(c.progressionFactors('3;6;9;(3x+3)(x+3)'),'roots');
+ assert.equal(c.progressionFactors('6;9;3;6x^2+9x+3'),'expanded');
+ assert.equal(c.progressionFactors('6;10;3;6(x+1)^2'),'ratio');
+ assert.equal(c.factoredPair('(1/6)(1+x)(x+2)','(x+1)(x+2)/6'),'factored');
+ assert.equal(c.factoredPair('2(2a-b)(a^2-b^2)','2(2a-b)(a-b)(a+b)',3),'expanded');
 });

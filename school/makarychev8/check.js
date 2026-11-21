@@ -376,35 +376,53 @@ function rootLineCount(user){
  if(product===0n)return kn>0n?2:1;
  return kn>0n?2:0;
 }
-function factoredPair(value,expected){
+function factoredPair(value,expected,required=2){
  if(!sameReducedExpression(value,expected))return 'different';
  const symbols=new Set(String(expected).match(/[a-z]/g)||[]);
  let s=normalize(value);
- // A single pair of parentheses around the entire product is harmless.
  function endGroup(start){
   let depth=0;
-  for(let i=start;i<s.length;i++){if(s[i]==='(')depth++;if(s[i]===')'&&!--depth)return i;}
+  for(let i=start;i<s.length;i++){
+   if(s[i]==='(')depth++;
+   if(s[i]===')'&&!--depth)return i;
+  }
   return -1;
  }
  while(s[0]==='('&&endGroup(0)===s.length-1)s=s.slice(1,-1);
- const prefix=s.match(/^[+-]?(?:\d+(?:\.\d+)?(?:\/\d+)?)?\*?/)[0];
- s=s.slice(prefix.length);let count=0;
+ s=s.replace(/^[+-]/,'');let count=0;
  try{
   while(s.length){
+   const scalar=s.match(/^\/?\d+(?:\.\d+)?/);
+   if(scalar){s=s.slice(scalar[0].length).replace(/^\*/,'');continue;}
    if(s[0]!=='(')return 'expanded';
    const end=endGroup(0);if(end<0)return 'expanded';
    const [n,d]=polynomialFraction(s.slice(1,end),symbols);
-   if(!d.has('')||d.size!==1||![...n.keys()].some(k=>k.length===1)||[...n.keys()].some(k=>k.length>1))return 'expanded';
-   count++;s=s.slice(end+1).replace(/^\*/,'');
+   if(!d.has('')||d.size!==1||[...n.keys()].some(k=>k.length>1))return 'expanded';
+   const linear=[...n.keys()].some(k=>k.length===1);s=s.slice(end+1);
+   const power=s.match(/^\^(\d+)/);if(power)s=s.slice(power[0].length);
+   if(linear)count+=power?Number(power[1]):1;
+   s=s.replace(/^\*/,'');
   }
  }catch(_){return 'expanded';}
- return count===2?'factored':'expanded';
+ return count===required?'factored':'expanded';
+}
+function progressionFactors(input){
+ const pieces=String(input).split(';');
+ if(pieces.length!==4||pieces.some(p=>!p.trim()))return 'format';
+ const coeffs=pieces.slice(0,3).map(p=>M.parse(p));
+ if(coeffs.some(v=>!v))return 'format';
+ if(coeffs.some(v=>v.d!==1||v.n<=0))return 'natural';
+ const [a,b,c]=coeffs.map(v=>BigInt(v.n)),sorted=[a,b,c].sort((u,v)=>u<v?-1:u>v?1:0);
+ if(sorted[1]!==2n*sorted[0]||sorted[2]!==3n*sorted[0])return 'ratio';
+ if(b*b-4n*a*c<0n)return 'roots';
+ return factoredPair(pieces[3],a+'x^2+'+b+'x+'+c);
 }
 
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
- if(target.factorizedAnswer)return factoredPair(user,target.answer)==='factored';
+ if(target.kind==='progression-factor-example')return progressionFactors(user)==='factored';
+ if(target.factorizedAnswer)return factoredPair(user,target.answer,target.requiredFactors||2)==='factored';
  if(target.kind==='separated-rational')return separatedRational(user,target.answer);
  if(target.kind==='quadratic-roots')return sameQuadraticRoots(user,target.answer);
  if(target.kind==='radical-value')return sameRadicalSum(user,target.answer)&&(!target.requireSimplified||reducedRadicals(user,target.answer));
@@ -462,5 +480,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {factoredPair,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

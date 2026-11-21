@@ -535,5 +535,22 @@
         {prompt:'Какой линейный коэффициент должен дать раскрытый квадрат?',kind:'number',answer:String(b),hint:'Он равен исходному коэффициенту при x.',explanation:'−2Ah = '+b+'.'}]};
   }
 
-  return { mount, experiment, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const factorsPractice={id:'trinomial-factors',title:'Разложить трёхчлен на линейные множители',
+    description:'Выдели старший коэффициент, используй оба корня и проверь разложение раскрытием.'};
+  function practiceFactors(seed,level){
+    const a=level===1?1:(seed%2?-1:1)*(2+seed%4),r=2+seed%9,s=level===3?r:-(1+seed%6);
+    const b=-a*(r+s),c=a*r*s;
+    const signed=(n,symbol)=>(n<0?' − ':' + ')+(symbol&&Math.abs(n)===1?'':Math.abs(n))+symbol;
+    const prompt='Разложи '+(a===1?'':a)+'x²'+(b?signed(b,'x'):'')+signed(c,'')+' на линейные множители.';
+    const factor=z=>'(x'+(z>0?'-':'+')+Math.abs(z)+')',answer=(a===1?'':a+'*')+factor(r)+(r===s?'^2':'*'+factor(s));
+    const hint='Найди корни r, s. В произведении a(x − r)(x − s) старший коэффициент сохраняется.';
+    return {title:'Корни и старший коэффициент',prompt,kind:'text',factorizedAnswer:true,answer,finalLabel:'Твоё разложение',
+      hint,correction:hint,explanation:'После раскрытия восстанавливаются коэффициенты '+a+', '+b+', '+c+'.',
+      source:{type:'authored',reference:'Тренировка с новыми корнями'},skills:[vietaPractice.id],
+      steps:[{prompt:'Каков старший коэффициент?',kind:'number',answer:String(a),hint:'Посмотри на множитель при x².',explanation:'a = '+a+'.'},
+        {prompt:'Найди сумму и произведение корней.',kind:'graph-values',answer:[r+s,r*s].join(';'),hint:'Используй −b/a и c/a.',
+          explanation:'Сумма равна '+(r+s)+', произведение '+r*s+'.'}]};
+  }
+
+  return { mount, experiment, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

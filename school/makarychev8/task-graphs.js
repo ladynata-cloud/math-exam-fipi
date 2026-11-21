@@ -398,6 +398,29 @@ function quadraticEvidence(host,config,value){
  host.append(caption);
 }
 
+function coefficientExample(host,config,value){
+ host.className='task-graphs root-graph';
+ const caption=document.createElement('p');caption.className='small';
+ const fields=String(value).split(';').slice(0,3),coeffs=fields.map(v=>M?.parse(v));
+ if(fields.length!==3||coeffs.some(x=>!x||x.d!==1||x.n<=0)){
+  caption.textContent='Для модели введи три положительных целых коэффициента и разложение после следующей точки с запятой.';host.append(caption);return;
+ }
+ const [a,b,c]=coeffs.map(v=>BigInt(v.n));
+ const discriminant=b*b-4n*a*c;
+ caption.textContent='Твой трёхчлен: '+a+'x² + '+b+'x + '+c+'.';
+ if(config.evaluated){
+  caption.textContent+=' D = '+discriminant+'. '+(discriminant<0n?'У этого примера нет действительных пересечений с осью x.':'Можно проверить линейные множители по действительным корням.');
+  const B=Number(b)/Number(a),C=Number(c)/Number(a);
+  if(B<=10&&C<=10){
+   const h=-B/2,k=C-B*B/4,radius=Math.max(1.75,Math.sqrt(Math.max(0,-k))*1.4),points=[];
+   if(discriminant>=0n){const delta=Math.sqrt(Number(discriminant))/Number(2n*a);points.push([h-delta,0]);if(delta)points.push([h+delta,0]);}
+   const plane={curves:[{kind:'quadratic',a:1,b:B,c:C}],points,xRange:[h-radius,h+radius],yRange:[Math.min(k,-.5)-.5,Math.max(k+radius*radius,.5)+.5],label:'Корни твоего трёхчлена на графике P(x)/A'};
+   const svg=rootGraph(plane,'');svg.dataset.exampleDiscriminant=String(discriminant);host.append(svg);caption.textContent+=' Показан график P(x)/A с теми же нулями.';
+  }
+ }
+ host.append(caption);
+}
+
 function vertexForm(host,config,value){
  host.className='task-graphs root-graph';
  const parts=String(value).split(';').map(v=>number(v)),pointOnly=config.mode==='point';
@@ -522,6 +545,7 @@ function appliedShape(host,config,value){
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
  if(['quadratic-discriminant','quadratic-parameter','quadratic-reciprocals','check-common-point'].includes(config.type)){quadraticEvidence(host,config,value);return;}
+ if(config.type==='coefficient-example'){coefficientExample(host,config,value);return;}
  if(config.type==='vertex-form'){vertexForm(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}
  if(config.type==='vieta-relations'){vietaRelations(host,config,value);return;}
