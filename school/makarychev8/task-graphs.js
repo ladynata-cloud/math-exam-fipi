@@ -138,6 +138,10 @@ function rootGraph(config,value){
   svg.append(node('circle',{cx:x(a),cy:y(b),r:4,fill:'#166753','data-point-x':a,'data-point-y':b}));
   if(labelText)svg.append(node('text',{x:x(a)+6,y:y(b)-7,'font-size':18},labelText));
  }
+ if(config.studentPoint){
+  const [a,b]=config.studentPoint;
+  if(a>=xr[0]&&a<=xr[1]&&b>=yr[0]&&b<=yr[1])svg.append(node('rect',{x:x(a)-4,y:y(b)-4,width:8,height:8,fill:'#8e451d','data-function-estimate':a+';'+b}));
+ }
  return svg;
 }
 function numberLine(config){
@@ -892,6 +896,44 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function functionValueAt(g,raw){
+ if(!M.parse(raw))return null;
+ const expr=coeff=>coeff.slice().reverse().reduce((sum,c)=>['+',['*',sum,'x'],c],'0');
+ const t=sourceFractionTrial({symbols:['x'],original:['/',expr(g.numerator),expr(g.denominator)],reduced:'0'},raw,true);
+ return t.original;
+}
+function functionSourceView(host,g,value){
+ host.className='task-graphs quantity-model';
+ const chosen=g.partial?.[0],trial=M.parse(chosen),points=[];
+ const cfg=cs=>cs.map(k=>{const q=M.parse(k);return q.n/q.d;});
+ const curve={kind:'quotient',numerator:cfg(g.numerator),denominator:cfg(g.denominator),poles:g.poles||[]},curves=[curve];
+ if(g.mode==='inverse')curves.push({kind:'line',k:0,b:g.target,dashed:true});
+ const show=(raw,role)=>{
+  const x=M.parse(raw);if(!x)return;
+  const output=functionValueAt(g,raw);
+  if(output===null){boundNote(host,'При x = '+M.answer(x)+' знаменатель равен нулю, поэтому точка графика отсутствует.').dataset.functionValue='undefined';return;}
+  const xNum=x.n/x.d,yNum=curveValue(curve,xNum);
+  if(role==='trial')points.push([xNum,yNum]);
+  const p=boundNote(host,'При x = '+M.answer(x)+' значение функции равно '+output+'.');
+  p.dataset.functionValue=output;
+  if(role==='inverse'||role==='zero')p.dataset.inverseMatch=output===String(g.target)?'yes':'no';
+ };
+ if(trial)show(chosen,'trial');
+ if(g.mode==='inverse'&&M.parse(value))show(value,'inverse');
+ if(g.mode==='zeros'&&g.roots)for(const r of g.roots)show(r,'zero');
+ const proposed=g.mode==='value'&&M.parse(value),arg=M.parse(g.at),proposal=proposed&&arg?[arg.n/arg.d,proposed.n/proposed.d]:null;
+ if(g.mode==='inverse'&&M.parse(value)){const x=M.parse(value),xx=x.n/x.d,yy=curveValue(curve,xx);points.push([xx,yy]);}
+ if(g.mode==='zeros'&&g.roots)for(const raw of g.roots){const x=M.parse(raw);if(x){const xx=x.n/x.d,yy=curveValue(curve,xx);if(Number.isFinite(yy))points.push([xx,yy]);}}
+ const graph=rootGraph({curves,points,studentPoint:proposal,xRange:g.xRange,yRange:g.yRange,label:'График функции, испытанные аргументы и предложенный ответ.'},'');
+ host.append(graph);
+ if(proposal)boundNote(host,'Квадрат — твоя точка ('+M.answer(arg)+'; '+M.answer(proposed)+'). Посмотри, лежит ли она на графике.');
+ if(g.mode==='sum'){
+  const table=document.createElement('table');table.className='values-table';
+  const tableRows=[['x',...g.inputs],['Твоё φ(x)',...g.inputs.map((_,i)=>g.partial?.[i+1]||'—')]];
+  for(const cells of tableRows){const row=table.insertRow();for(const v of cells)row.insertCell().textContent=String(v);}host.append(table);
+ }else if(!trial&&!proposal)boundNote(host,g.mode==='inverse'?'Пунктир — заданный уровень y. Найди абсциссу пересечения с прямой.':'Подставь собственный x на первом шаге и проверь, определено ли значение.');
+}
+
 function appliedBoundsView(host,g,value){
  host.className='task-graphs quantity-model';const raw=g.partial?.[0],q=M.parse(raw);
  const say=(text,state)=>{const p=boundNote(host,text);if(state)p.dataset.appliedBounds=state;};
@@ -1864,6 +1906,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-function-values'){functionSourceView(host,config,value);return;}
  if(config.type==='source-applied-bounds'){appliedBoundsView(host,config,value);return;}
  if(config.type==='source-solution-audit'){solutionAudit(host,config,value);return;}
  if(config.type==='interval-set-review'){intervalSetReview(host,config,value);return;}
@@ -1955,5 +1998,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
