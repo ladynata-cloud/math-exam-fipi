@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const fieldsAndMidpointVectors = makeReviewedIncrement(require('./fields-and-midpoint-vectors.json'));
+const centroidsInTetrahedra = makeReviewedIncrement(require('./centroids-in-tetrahedra.json'));
+const fieldsAndMidpointVectors = makeReviewedIncrement(require('./fields-and-midpoint-vectors.json'), centroidsInTetrahedra);
 const parallelepipedDirectedBases = makeReviewedIncrement(require('./parallelepiped-directed-bases.json'), fieldsAndMidpointVectors);
 const coplanarVectorDirections = makeReviewedIncrement(require('./coplanar-vector-directions.json'), parallelepipedDirectedBases);
 const collinearityVectorConditions = makeReviewedIncrement(require('./collinearity-vector-conditions.json'), coplanarVectorDirections);

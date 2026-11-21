@@ -43,7 +43,8 @@ const groups = {
   collinearityVectorConditions: {manifests:[require('./collinearity-vector-conditions.json')],count:10},
   coplanarVectorDirections: {manifests:[require('./coplanar-vector-directions.json')],count:9},
   parallelepipedDirectedBases: {manifests:[require('./parallelepiped-directed-bases.json')],count:7},
-  fieldsAndMidpointVectors: {manifests:[require('./fields-and-midpoint-vectors.json')],count:8}
+  fieldsAndMidpointVectors: {manifests:[require('./fields-and-midpoint-vectors.json')],count:8},
+  centroidsInTetrahedra: {manifests:[require('./centroids-in-tetrahedra.json')],count:15}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T21:05:43Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–603, with 1,009 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T21:14:01Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–609, with 1,024 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1733,6 +1733,30 @@
       ],
       "evidence": "tools/stereo-textbook/fields-and-midpoint-vectors.json",
       "mathematicalReport": "tools/stereo-textbook/fields-and-midpoint-vectors.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 155, answer key 268–269 where supplied; independent affine, Euclidean and geometric verification.",
+      "reviewedAt": "2026-11-21T21:14:01Z",
+      "scope": "Weighted median 604; all seven plane-basis questions 605; inverse centroid 606; four regular-tetrahedron heights in 607; strict tetrahedral inequality 608 and the oblique diagonal trisection proof in 609",
+      "cardIds": [
+        "ex-main-0604",
+        "ex-main-0605-a",
+        "ex-main-0605-b",
+        "ex-main-0605-c",
+        "ex-main-0605-d",
+        "ex-main-0605-e",
+        "ex-main-0605-f",
+        "ex-main-0605-g",
+        "ex-main-0606",
+        "ex-main-0607-a",
+        "ex-main-0607-b",
+        "ex-main-0607-c",
+        "ex-main-0607-d",
+        "ex-main-0608",
+        "ex-main-0609"
+      ],
+      "evidence": "tools/stereo-textbook/centroids-in-tetrahedra.json",
+      "mathematicalReport": "tools/stereo-textbook/centroids-in-tetrahedra.test.cjs"
     }
   ],
   "cards": [
@@ -5771,6 +5795,66 @@
     {
       "id": "ex-main-0603",
       "sha256": "9a42d2b93099937ec0c46be0f527219a426454e698fa390de6831eeb3c84180c"
+    },
+    {
+      "id": "ex-main-0604",
+      "sha256": "1b70eec3f4987928aed2f392ecdcc2e22ac6ad47ecec2b73f414b32988d18f45"
+    },
+    {
+      "id": "ex-main-0605-a",
+      "sha256": "4c811cf5e0ec451028fe1ac45b9539226f15a4502d72cb978a9407c867203893"
+    },
+    {
+      "id": "ex-main-0605-b",
+      "sha256": "915e667662f525e559937de4bd3675a0c9fc10b7c3444cdca11fc35d6a3a5cf3"
+    },
+    {
+      "id": "ex-main-0605-c",
+      "sha256": "673bb18a324bb0edad524de1ff2c6f0c14eed5208cd2b58af8d1597b30971d6d"
+    },
+    {
+      "id": "ex-main-0605-d",
+      "sha256": "d9e47bdd00588c9cd128c58cd75f818ddedf876750230e10b057ac52a2eb3e70"
+    },
+    {
+      "id": "ex-main-0605-e",
+      "sha256": "cca435f8675ac42007951edd4d00180a88a62a51a03f01f6aa832f9228351d58"
+    },
+    {
+      "id": "ex-main-0605-f",
+      "sha256": "024ce9753b48277e87ee9083a8331cc1051df957f62d5f5d48c750a4047155ef"
+    },
+    {
+      "id": "ex-main-0605-g",
+      "sha256": "ea9b3a04e1ded76e64d4409b9d3be543785f3f6f26ed36fbd00cd7686408d067"
+    },
+    {
+      "id": "ex-main-0606",
+      "sha256": "b430a19d840a94ab50a0e75742c30d2fdcaedf58746f9cde4efa0eca823234f1"
+    },
+    {
+      "id": "ex-main-0607-a",
+      "sha256": "4b54d80ef64f641e11188aa8c2de44158b2c887d241d565cfc0253085cc31644"
+    },
+    {
+      "id": "ex-main-0607-b",
+      "sha256": "6af216861def054b4cbdd10acaab0456376c320a956629d86fc368e068d3b847"
+    },
+    {
+      "id": "ex-main-0607-c",
+      "sha256": "f32b2e79a723002aaa0799f0c0fb18c3f6febd4a96175606ff5754d68cb2c079"
+    },
+    {
+      "id": "ex-main-0607-d",
+      "sha256": "b2f072f00026a936f5b59bff9142d480134ec5af779ff302ea3d562d0f27da60"
+    },
+    {
+      "id": "ex-main-0608",
+      "sha256": "b552a78e840bc371eea2952710510fea50cd5f922b87bd8329090ce943ac5ac1"
+    },
+    {
+      "id": "ex-main-0609",
+      "sha256": "49ca60f3eca1749e817397e7cd617a41402ac56ef5eb3ea8bc504490361ad470"
     }
   ]
 }
