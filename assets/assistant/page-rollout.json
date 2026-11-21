@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "cf4e1a9305820d894ee901183427dbd1257311a2",
+  "baseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2214,9 +2214,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "359864447bcaa6f710c66dd6194f3258146293ce1dbb8c572f4a02d3de45b9cc",
-      "afterSha256": "95b8e6e435b9b9e0ae56db46658b5a2ddced4762f1f9ed36644f71d2e9c76d52",
-      "placement": "before-head-close"
+      "beforeSha256": "fc49b6277cf575ad6efe1159dcef9d2f6baca5ce54847028ef0d9b6586e89d3a",
+      "afterSha256": "5ab223371e4e39dba5f86cc6ed85576619302e8390acc04a18f1986e255f1772",
+      "placement": "before-head-close",
+      "sourceSha": "903c8a4b37b671c88e0b19d6dbd4b4dc2f7f7147"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -2232,7 +2233,8 @@
     "school/makarychev8/index.html": {
       "beforeSha256": "e02c47a1a1c81df04422b538252f34941abdce3c8b1cec8889e970e6bc992747",
       "afterSha256": "5b85eb01b64be617e7cde2c98a49b084927274cd83a6f0b18d90ed03b64a8eb4",
-      "placement": "before-head-close"
+      "placement": "before-head-close",
+      "sourceSha": "cf4e1a9305820d894ee901183427dbd1257311a2"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6451,12 +6453,23 @@
     },
     {
       "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "903c8a4b37b671c88e0b19d6dbd4b4dc2f7f7147",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
       "sourceBaseSha": "cf4e1a9305820d894ee901183427dbd1257311a2",
       "task": "docs/tasks/MAKARYCHEV8_ROOTS_BOARD_RELEASE.md",
       "changedPaths": [
         "school/makarychev8/index.html"
       ],
-      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     }
   ],
   "coverageUpdates": [

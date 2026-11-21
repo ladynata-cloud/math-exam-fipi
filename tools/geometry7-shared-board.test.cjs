@@ -5,8 +5,8 @@ const {resolve}=require('node:path');
 const {JSDOM}=require('jsdom');
 const {test}=require('node:test');
 const ROOT=resolve(__dirname,'..');
-function fixture(){
- const dom=new JSDOM(readFileSync(resolve(ROOT,'trainers/atanasyan-grade7.html'),'utf8'),{url:'https://local.example/trainers/atanasyan-grade7.html',runScripts:'outside-only',pretendToBeVisual:true});
+function fixture(scope = ''){
+ const dom=new JSDOM(readFileSync(resolve(ROOT,'trainers/atanasyan-grade7.html'),'utf8'),{url:'https://local.example/trainers/atanasyan-grade7.html'+scope,runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window;w.TextEncoder=TextEncoder;w.HTMLElement.prototype.scrollIntoView=()=>{};
  let config;w.MathExamBoard={register:c=>{config=c;return {destroy(){}};}};
  Object.defineProperty(w,'localStorage',{get(){throw Error('Private storage access');}});
@@ -26,6 +26,58 @@ test('grade 7 textbook: all 619 cards, private isolation, catalog and reasoning 
  }
  }finally{f.close();}
 });
+test('personal textbook opens the current exercise on the board', async () => {
+ const dom = new JSDOM(readFileSync(resolve(ROOT,'geometry-course/textbook/index.html'),'utf8'), {
+  url:'https://local.example/geometry-course/textbook/', runScripts:'outside-only'
+ });
+ try {
+  const w = dom.window;
+  w.eval(readFileSync(resolve(ROOT,'assets/geometry-step-views.js'),'utf8'));
+  const link = w.document.getElementById('textbook-board-link');
+  const destination = () => new URL(link.href).searchParams.get('trainer');
+  assert.equal(destination(), '/geometry-course/textbook/');
+  w.history.replaceState(null, '', '#atanasyan-7-9-main-841-part-1');
+  w.document.getElementById('textbook-app').replaceChildren(w.document.createElement('article'));
+  await new Promise(resolve => w.setTimeout(resolve,0));
+  assert.equal(destination(), '/geometry-course/textbook/#atanasyan-7-9-main-841-part-1');
+ } finally { dom.window.close(); }
+});
+
+test('whole textbook mirrors grade 8 drafts and filtered catalog pages into another window', () => {
+ const teacher = fixture('?scope=book');
+ const pupil = fixture('?scope=book');
+ try {
+  const book = JSON.parse(readFileSync(resolve(ROOT,'geometry-course/textbook/data/course.json'),'utf8'));
+  assert.equal(teacher.app.app.coverage.available, book.lessons.length);
+  assert.equal(teacher.app.app.issues.length, 0);
+  const mirror = () => {
+   const snapshot = JSON.stringify(teacher.config.getState());
+   pupil.config.applyState(pupil.w.JSON.parse(snapshot));
+   assert.deepEqual(JSON.parse(JSON.stringify(pupil.config.getState())), JSON.parse(snapshot));
+  };
+  const doc = teacher.w.document;
+  const search = doc.getElementById('catalog-search');
+  search.value = 'окружность';
+  search.dispatchEvent(new teacher.w.Event('input',{bubbles:true}));
+  doc.querySelector('[data-catalog-ready] nav button:last-child').click();
+  assert.equal(teacher.config.getState().catalog.readyPage, 1);
+  mirror();
+  for (const n of [462, 823, 841]) {
+   const id = 'atanasyan-7-9-main-'+n+'-part-1';
+   assert(teacher.app.app.open(id), id);
+   const draft = doc.getElementById('final-answer');
+   draft.value = 'Моя запись к задаче №'+n;
+   draft.dispatchEvent(new teacher.w.Event('input',{bubbles:true}));
+   mirror();
+   assert.equal(pupil.w.document.getElementById('final-answer').value, draft.value);
+   assert.equal(pupil.config.getState().lessonId,id);
+  }
+  const invalid = pupil.w.JSON.parse(JSON.stringify(teacher.config.getState()));
+  invalid.lessonId = 'unpublished-card';
+  assert.equal(pupil.w.__atanasyanGrade7Board.validateState(invalid), false);
+ } finally { teacher.close(); pupil.close(); }
+});
+
 test('all native entries and board metadata are complete',()=>{
  const catalog=JSON.parse(readFileSync(resolve(ROOT,'geometry-course/board/catalog.json')));assert.equal(catalog.length,70);assert.equal(new Set(catalog.map(x=>x.id)).size,70);
  for(const x of catalog){const text=readFileSync(resolve(ROOT,'geometry-course/trainers/'+x.id+'.html'),'utf8');assert(text.includes('/geometry-course/board/native-session.js'));assert(text.includes('/geometry-course/board/learning-support.js'));assert(!/addEventListener\(['"](?:mousedown|touchstart)/.test(text),'All '+x.id+' canvas input uses captured pointer events');}
