@@ -542,6 +542,104 @@ function squareCertificateScene(host,config,value){
  });
 }
 
+function sequenceRows(raw,config){
+ const text=String(raw??'').trim();
+ if(!text||text.length>220)return null;
+ const pattern=/\(([^()]*)\)/g,matches=[...text.matchAll(pattern)];
+ const groups=matches.length?matches.map(x=>x[1]):[text];
+ if(matches.length&&!/^\([^()]*\)(?:\s*,\s*\([^()]*\))*$/.test(text)||groups.length>4)return null;
+ const rows=groups.map(group=>group.split(';').map(v=>M.parse(v.trim())));
+ if(rows.some(row=>row.length!==config.size||row.some(v=>!v||v.d!==1||Math.abs(v.n)>10000)))return null;
+ return rows.map(row=>row.map(r=>r.n));
+}
+function sequenceEvidence(raw,config){
+ return sequenceRows(raw,config)?.map(row=>{
+  const ordered=row.every((v,i)=>!i||v===row[i-1]+config.stride);
+  const domain=row.every(v=>(!config.natural||v>0)&&(!config.odd||Math.abs(v%2)===1)&&(!config.even||v%2===0));
+  const result=config.mode==='sum-square'?row.reduce((s,v)=>s+v,0)**2-row.reduce((s,v)=>s+v*v,0):row.reduce((s,v,i)=>s+config.weights[i]*v**config.power,0);
+  return {row,ordered,domain,result,correct:ordered&&domain&&result===config.target};
+ })||[];
+}
+function sequenceScene(host,config,value){
+ host.className='task-graphs quantity-model';
+ const evidence=sequenceEvidence(value,config),note=document.createElement('p');note.className='small';
+ note.textContent='Соседние числа отличаются на '+config.stride+'. '+(config.natural?'Все члены положительны.':'Нулевые и отрицательные целые допустимы.');host.append(note);
+ for(const item of evidence){
+  const p=document.createElement('p');p.className='small';p.dataset.sequenceTest=item.correct?'yes':'no';
+  p.textContent=item.row.join(' → ')+'. '+(!item.ordered?'Нарушен шаг между числами. ':!item.domain?'Значения нарушают условие на числа. ':'Порядок и вид чисел подходят. ')+'Разность из условия равна '+item.result+'; требуется '+config.target+'.';host.append(p);
+ }
+}
+function measureScene(host,config,value){
+ host.className='task-graphs quantity-model';
+ const fmt=v=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:4}).format(v||0),text=(s,valid)=>{
+  const p=document.createElement('p');p.className='small';p.textContent=s;if(typeof valid==='boolean')p.dataset.measureCheck=valid?'yes':'no';host.append(p);
+ };
+ const input=String(value??'').trim(),parts=input.split(';').map(v=>M.parse(v)),finite=parts.every(r=>r&&Math.abs(r.n/r.d)<=10000);
+ if(config.scene==='price-loss'||config.scene==='box-volume'){
+  const price=config.scene==='price-loss';
+  text(price?'Покупка минус убыток равна цене продажи.':'Высота 0,5 м; ширина x; длина 2x. Площадь дна 2x², боковых стенок 3x, объём x².');
+  if(!input||!finite||parts.length>2)return;
+  for(const r of parts){
+   const v=r.n/r.d,n=BigInt(r.n),d=BigInt(r.d);
+   if(v<=0||(price&&v>=100)){text(price?'Цена должна быть положительной, а убыток — меньше 100%.':'Объём ящика должен быть положителен.',false);continue;}
+   if(price)text('Покупка '+fmt(v)+'; убыток '+fmt(v*v/100)+'; продажа '+fmt(v-v*v/100)+' пистолей.',100n*n*d-n*n===2400n*d*d);
+   else{
+    const w=Math.sqrt(v);
+    text('При объёме '+fmt(v)+' м³ ширина ≈ '+fmt(w)+' м, площадь стенок ≈ '+fmt(3*w)+' м² и дна '+fmt(2*v)+' м². Разность ≈ '+fmt(3*w-2*v)+' м².',
+      9n*n*d*625n===(50n*n+27n*d)**2n);
+   }
+  }
+  return;
+ }
+ const svg=node('svg',{viewBox:'0 0 300 170',role:'img'});
+ const rect=(x,y,w,h,fill,attrs={})=>svg.append(node('rect',{x,y,width:w,height:h,fill,stroke:'#205764','stroke-width':1.5,...attrs}));
+ const lab=(x,y,s)=>svg.append(node('text',{x,y,'text-anchor':'middle','font-size':15,fill:'#17434c'},s));
+ function planar(width,height,margin,kind,symbolic){
+  const scale=Math.min(205/width,97/height),W=width*scale,H=height*scale,x=150-W/2,y=30+(97-H)/2;
+  rect(x,y,W,H,'#e4efe9',{'data-measure-part':'outer'});
+  if(margin>0&&2*margin<Math.min(width,height)){
+   const q=margin*scale;
+   if(kind==='sheet'){
+    for(const xx of [x,x+W-q])for(const yy of [y,y+H-q])rect(xx,yy,q,q,'#fae6ba',{'data-measure-part':'cut'});
+    rect(x+q,y+q,W-2*q,H-2*q,'#c4e6e2',{'stroke-dasharray':'4 3','data-measure-part':'base'});
+   }else rect(x+q,y+q,W-2*q,H-2*q,'#c4e6e2',{'data-measure-part':'inside'});
+  }
+  lab(150,18,kind==='sheet'?'Лист с угловыми вырезами':'Наружный прямоугольник');lab(150,151,symbolic||fmt(width)+' × '+fmt(height));
+  svg.setAttribute('aria-label',symbolic||'Наружные размеры '+fmt(width)+' и '+fmt(height)+(margin?'; ширина края '+fmt(margin):''));
+ }
+ function adjacent(short,long,symbolic){
+  const k=128/(short+long),W=long*k,H=short*k,x=(300-W-H)/2,y=15;
+  rect(x,y,W,H,'#edf1e9',{'data-measure-part':'rectangle'});
+  rect(x,y+H,W,W,'#c2e4e1',{'data-measure-part':'long-square'});
+  rect(x+W,y,H,H,'#fae6ba',{'data-measure-part':'short-square'});
+  lab(150,162,symbolic?'Квадраты на соседних сторонах':fmt(short)+'² + '+fmt(long)+'²');
+  svg.setAttribute('aria-label','Прямоугольник и два квадрата на его соседних сторонах');
+ }
+ const outer=config.scene==='outward-frame',inner=config.scene==='inward-frame',sheet=config.scene==='folded-sheet';
+ if(!input||!finite||parts.length!==(outer||inner?1:2)){
+  if(outer)planar(22,16,2,'frame','18 + 2x и 12 + 2x');
+  else if(inner)planar(4.5,2.5,.4,'frame','Внутри: 4,5 − 2x и 2,5 − 2x');
+  else if(sheet)planar(45,30,8,'sheet','Дно: 1,5x − 16 и x − 16');
+  else adjacent(3,6,true);
+  host.append(svg);
+  text(outer?'Внутри фото 12 × 18 см. Снаружи к каждой стороне прибавляются две ширины рамки.':inner?'Снаружи 4,5 × 2,5 м. Внутренняя сторона уменьшается на две ширины бордюра.':sheet?'По каждому краю листа отгибается полоса 8 см. Введи длину и ширину листа, чтобы увидеть четыре угловых выреза.':'Две соседние стороны задают периметр и стороны двух квадратов.');return;
+ }
+ const values=parts.map(r=>r.n/r.d),[v,w]=values,n=BigInt(parts[0].n),d=BigInt(parts[0].d);
+ if(outer||inner){
+  if(v<=0||inner&&v>=1.25){text('Такая ширина не оставляет положительными все размеры исходной фигуры.',false);return;}
+  const W=outer?18+2*v:4.5,H=outer?12+2*v:2.5;
+  planar(W,H,v,'frame');host.append(svg);
+  if(outer)text('Наружная площадь '+fmt(W*H)+' см²; по условию 280 см².',(18n*d+2n*n)*(12n*d+2n*n)===280n*d*d);
+  else text('Внутренняя площадь '+fmt((W-2*v)*(H-2*v))+' м²; площадь бордюра '+fmt(W*H-(W-2*v)*(H-2*v))+' м².',(9n*d-4n*n)*(5n*d-4n*n)===32n*d*d);
+ }else{
+  const m=BigInt(parts[1].n),e=BigInt(parts[1].d);
+  if(v<=0||w<=0||sheet&&(v<=16||w<=16)){text('Размеры должны быть положительными'+(sheet?' и оставлять дно после вырезания 16 см по каждой стороне.':'.'),false);return;}
+  if(sheet)planar(v,w,8,'sheet');else adjacent(v,w,false);host.append(svg);
+  if(sheet)text('Размеры дна '+fmt(v-16)+' × '+fmt(w-16)+' см; объём '+fmt((v-16)*(w-16)*8)+' см³. Отношение длины к ширине '+fmt(v/w)+'.',2n*n*e===3n*m*d&&8n*(n-16n*d)*(m-16n*e)===6080n*d*e);
+  else text('Стороны '+fmt(v)+' и '+fmt(w)+' см. Периметр '+fmt(2*(v+w))+' см, сумма площадей квадратов '+fmt(v*v+w*w)+' см².',v<=w&&2n*(n*e+m*d)===28n*d*e&&n*n*e*e+m*m*d*d===116n*d*d*e*e);
+ }
+}
+
 function parameterSample(value) {
  const r=M.parse(String(value??''));
  return r&&Math.abs(r.n/r.d)<=24&&8%r.d===0?r.n/r.d:null;
@@ -819,6 +917,8 @@ function render(host,config,value){
  if(config.type==='abs-line-choice'){absLineChoice(host,config);return;}
  if(config.type==='system-pair-audit'){systemPairModel(host,config);return;}
  if(config.type==='inequality-intervals'){inequalityIntervals(host,config);return;}
+ if(config.type==='number-sequence'){sequenceScene(host,config,value);return;}
+ if(config.type==='applied-measure'){measureScene(host,config,value);return;}
  if(config.type==='square-certificate'){squareCertificateScene(host,config,value);return;}
  if(config.type==='root-residual'){residualScene(host,config);return;}
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
@@ -885,5 +985,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

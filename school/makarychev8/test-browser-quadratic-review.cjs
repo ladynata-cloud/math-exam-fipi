@@ -42,7 +42,7 @@ async function verify(width,url){
   const errors=[];
   const fresh=async()=>{const p=await browser.newPage({viewport:{width,height:900}});p.setDefaultTimeout(60000);p.on('pageerror',e=>errors.push(e.message));await p.goto(url);return p;};
   let page=await fresh();
-  const cards=await page.evaluate(()=>MakarychevCourse.lessons.flatMap(l=>l.tasks.map((t,i)=>({l:l.id,i,title:t.title,section:t.source.section}))).filter(t=>t.section==='additional-3'));
+  const cards=await page.evaluate(()=>MakarychevCourse.lessons.flatMap(l=>l.tasks.map((t,i)=>({l:l.id,i,title:t.title,section:t.source.section}))).filter(t=>t.section==='additional-3'&&Number(t.title.match(/№ (\d+)/)[1])<=752));
   assert.equal(cards.length,50);
   for(const [index,card] of cards.entries()){
     if(index&&index%8===0){await page.close();page=await fresh();}

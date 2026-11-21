@@ -749,5 +749,17 @@
       skills:[squarePractice.id],source:{type:'authored',reference:'Тренировка по доказательству положительности'}};
   }
 
-  return { mount, experiment, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const appliedPractice={id:'applied-quadratic-review',title:'Отобрать решения по смыслу задачи',description:'Проверь целые числа, шаг последовательности и исходную разность степеней.'};
+  function practiceAppliedReview(seed,level){
+    const first=2+seed%16,stride=level===1?1:2,power=level===3?3:2;
+    const second=first+stride,target=second**power-first**power,answer=first+';'+second;
+    return {title:appliedPractice.title,prompt:'Два натуральных числа отличаются на '+stride+'. Разность '+(power===2?'их квадратов':'их кубов')+' равна '+target+'. Найди числа по возрастанию.',
+      kind:'graph-values',answer,hint:'Обозначь меньшее число x и запиши большее как x + '+stride+'.',
+      correction:'Проверь шаг, положительность и разность степеней.',explanation:'Для пары '+answer+' разность степеней равна '+target+'.',
+      steps:[{kind:'text',answer:'x+'+stride,reducedExpression:true,prompt:'Как выразить второе число через первое x?',hint:'Прибавь шаг.',explanation:'Второе число больше на '+stride+'.'},
+       {kind:'number',answer:String(first),prompt:'Какое натуральное значение имеет меньшее число?',hint:'Раскрой степени и реши полученное уравнение.',explanation:'Меньшее равно '+first+'.'}],
+      graph:{type:'number-sequence',size:2,stride,power,weights:[-1,1],target,natural:true},skills:[appliedPractice.id],source:{type:'authored',reference:'Тренировка по отбору решений'}};
+  }
+
+  return { mount, experiment, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

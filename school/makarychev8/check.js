@@ -664,6 +664,10 @@ function progressionFactors(input){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='integer-runs'){
+  const rows=G.sequenceEvidence(user,target.graph),expected=G.sequenceRows(target.answer,target.graph);
+  return rows.length===expected.length&&new Set(rows.map(item=>item.row[0])).size===rows.length&&rows.every(item=>item.correct);
+ }
  if(target.kind==='parameter-formulas')return parameterFormulas(user,target);
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';

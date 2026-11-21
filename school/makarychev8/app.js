@@ -53,13 +53,15 @@ const substitutionPractice=window.MakarychevModels?.substitutionPractice;
 const balancePractice=window.MakarychevModels?.balancePractice;
 const parameterPractice=window.MakarychevModels?.parameterPractice;
 const squarePractice=window.MakarychevModels?.squarePractice;
-const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice].filter(Boolean)];
+const appliedPractice=window.MakarychevModels?.appliedPractice;
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
 function taskSignature(t){return t.prompt+(t.mathExpression?'\u241f'+JSON.stringify(t.mathExpression):'')+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
 function generatePractice(id,seed,level){
  if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
+ if(id===appliedPractice?.id)return window.MakarychevModels.practiceAppliedReview(seed,level);
  if(id===squarePractice?.id)return window.MakarychevModels.practiceCertificate(seed,level);
  if(id===parameterPractice?.id)return window.MakarychevModels.practiceParameter(seed,level);
  if(id===balancePractice?.id)return window.MakarychevModels.practiceBalance(seed,level);
@@ -148,6 +150,7 @@ function formatProblem(value,q){
  if(['three-solutions','equation-point-example','construct-lines'].includes(q.kind)&&!window.MakarychevCheck.pointGroups(text))return message;
  if(q.kind==='line-pair-equation'&&window.MakarychevCheck.equationPlaneStatus(text,q.answer)==='format')return message;
  if(q.kind==='algebra-pairs'&&!window.MakarychevCheck.algebraPairs(text))return q.inputNote||message;
+ if(q.kind==='integer-runs'&&!window.MakarychevTaskGraphs.sequenceRows(text,q.graph))return inputNote(q)+' Проверь число членов и скобки.';
  if(q.kind==='parameter-formulas'&&text.split(';').length!==String(q.answer).split(';').length)return inputNote(q)+' Количество частей не совпало с форматом записи.';
  if(q.kind==='parameter-sample'&&window.MakarychevTaskGraphs.parameterSample(text)===null)return 'Для опыта укажи число от −24 до 24 с шагом 1/8. Можно использовать дробь, например −1/8.';
  if(q.kind==='open-intervals'&&!window.MakarychevCheck.openIntervals(text))return q.inputNote||message;
@@ -489,7 +492,7 @@ if(t.graph){
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
 document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
-function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
+function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
  const state=ts(active.task.id),base=active.task.graph;
  let graph=['vertex-form','coefficient-example'].includes(base.type)?{...base,evaluated:Boolean(state.attempts||state.correct)}:base;
  if(['own-lines','own-points'].includes(base.type))graph={...base,groups:window.MakarychevCheck.pointGroups(value)};
