@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "d76b507f7aeb865e064c45ad21ff752e8a21319dc84231404678b4c5182ff4ae",
-      "afterSha256": "a6189b739b469c5a7f66ed9a5034dcd9bf53bcb246ea9ff699bed4586939db7f",
+      "beforeSha256": "73e685db7ec877ae3ce2e93e06870655327f6488355dad963e9c6436fe835d5c",
+      "afterSha256": "5b298f496a781c9b5dd8abc9d93958c8f1eede59bcbd6d29ccbf3ecfa845811b",
       "placement": "before-head-close",
-      "sourceSha": "256c3c47e03a5e9732f5f3eff1f8cf0e0b610952"
+      "sourceSha": "8affc150f8cf7f142d364f9470274ed6a00a49c8"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6840,6 +6840,16 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также двадцать номеров второй части, включая объём слоя и сравнение длины двух рядов кубиков, возможность самостоятельно исправить прогноз и записать точную дробь, с обеими ролями."
+    },
+    {
+      "previousBaseSha": "256c3c47e03a5e9732f5f3eff1f8cf0e0b610952",
+      "sourceBaseSha": "8affc150f8cf7f142d364f9470274ed6a00a49c8",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the combined school entry with the numbered Vilenkin volumes, cube rows, recoverable fractional forecasts and the reviewed Workshop maps.",
+      "boundary": "Explicit committed source identity only; printed pages and shared activities have separate subject checks."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
