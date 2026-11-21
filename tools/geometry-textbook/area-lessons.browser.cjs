@@ -31,6 +31,7 @@ const server=http.createServer((req,res)=>{
  const equationAnswers={1051:['2','13'],'1052-1':['5','4'],'1052-2':['2','9'],'1052-3':['-7','9/4'],'1052-4':['-3','25'],1053:['10','13'],1054:['25','25'],'1055-1':['2','13'],'1055-2':['3','10'],1056:['16','1'],1057:['4','3']};
  const lineAnswers={'1058-1':['3','-1'],'1058-2':['-3','-3'],'1058-3':['-6','-1'],1059:['3','2'],'1060-1':['1','-6'],'1060-2':['5','3'],1061:['5','-3'],'1062-1':['3','-2'],'1062-2':['-2','3'],'1062-3':['-4','1'],'1062-4':['7','-1'],1063:['5','4'],1064:['5','6']};
  const locusAnswers={1065:['8','1'],1066:['-3','0'],'1067-1':['0','4'],'1067-2':['1','0'],'1068-1':['2','1'],'1068-2':['3','0'],1069:['4','4'],'1070-1':['4','1'],'1070-2':['1/3','2/3'],1071:['1','2'],1072:['3','0'],1073:['-2','-3'],1074:['32','2'],1075:['-3','-2']};
+ const scalarProductAnswers={"t109":["180","0"],"t110":["3","-3"],"t111":["5","-3"],"t112":["5","-10"],"1128-1":["45","135"],"1128-2":["90","0"],"1128-3":["90","180"],"1128-4":["90","0"],"1128-5":["180","90"],"1128-6":["90","45"],"1128-7":["135","45"],"1128-8":["0","180"],"1129-1":["60","120"],"1129-2":["120","60"],"1129-3":["120","60"],"1129-4":["90","30"],"1129-5":["60","30"],"1129-6":["0","60"],"1130-1":["1","-1"],"1130-2":["0","1"],"1130-3":["-1","1"],"1131-1":["8","18"],"1131-2":["-8","-18"],"1131-3":["0","-27"],"1131-4":["16","36"],"1132":["-60","17"]};
  const fieldTrigAnswers={"1123":["2","25"],"1124":["2","1"],"1125":["50","25"],"1126":["60","10"],"1127":["3","20"]};
  const solvedTriangleAnswers={"1114-1":["8","90"],"1114-2":["75","60"],"1114-3":["1","53"],"1114-4":["65","60"],"1114-5":["1","110"],"1114-6":["63","60"],"1114-7":["87","53"],"1114-8":["3","90"],"1114-9":["2","74"],"1115":["45","4"],"1116":["105","12"],"1117":["2","1"],"1118":["3","27"],"1119":["7","90"],"1120-1":["7","-4"],"1120-2":["0","33"],"1120-3":["-20","12"],"1121":["36","120"],"1122":["10","20"]};
  const triangleAreaAnswers={"t104":["2","15"],"1109-1":["12","24"],"1109-2":["27","54"],"1109-3":["49","98"],"1110":["12","12"],"1111":["120","8"],"1112":["5","32"],"1113-1":["12","6"],"1113-2":["6","8"],"t105":["5","10"],"t106":["37","5"],"t107":["5","22"],"t108":["4","90"]};
@@ -45,9 +46,9 @@ const server=http.createServer((req,res)=>{
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1127/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1132/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -59,6 +60,28 @@ const server=http.createServer((req,res)=>{
    await page.locator('[data-main-model] svg').waitFor();
    assert.equal(await page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1'))?.checked===true,id),false);
    const coefficient={
+    "1128-1":["135","45","остриё","45 градусов"],
+    "1128-2":["0","90","остриё","90 градусов"],
+    "1128-3":["0","90","остриё","90 градусов"],
+    "1128-4":["0","90","остриё","90 градусов"],
+    "1128-5":["0","180","остриё","180 градусов"],
+    "1128-6":["0","90","остриё","90 градусов"],
+    "1128-7":["45","135","остриё","135 градусов"],
+    "1128-8":["180","0","остриё","0 градусов"],
+    "1129-1":["120","60","остриё","60 градусов"],
+    "1129-2":["60","120","остриё","120 градусов"],
+    "1129-3":["60","120","остриё","120 градусов"],
+    "1129-4":["0","90","остриё","90 градусов"],
+    "1129-5":["120","60","без направления","60 градусов"],
+    "1129-6":["180","0","без направления","0 градусов"],
+    "1130-1":["6","3√2","косинус","3sqrt(2)"],
+    "1130-2":["6","0","косинус","0.0"],
+    "1130-3":["3√2","−3√2","косинус","-3sqrt(2)"],
+    "1131-1":["a²","a²/2","Порядок букв","0,5a²"],
+    "1131-2":["a²/2","-a²/2","Порядок букв","-0,5a²"],
+    "1131-3":["a²","0","Порядок букв","0.0"],
+    "1131-4":["2a²","a²","Порядок букв","a*a"],
+    "1132":["23","13","отрицательное","13.0"],
     "1123":["20","27,81","дважды","10+30/(1+2*cos(70°))"],
     "1124":["60","60;47,11","какой из двух","47,11°;60°"],
     "1125":["48,25","51,75","ниже","50(1+tg2°)"],
@@ -210,7 +233,7 @@ const server=http.createServer((req,res)=>{
    const midpointCases={'972-1':5,'972-2':4,973:3,974:3,975:3};
    const appliedCases={976:2,977:4,978:2,979:3,980:3};
    const lengthCases={981:3,982:3,983:2,984:2,985:3,986:3,987:3};
-   const extraCase=Object.hasOwn(fieldTrigAnswers,n)?'case-3':['1117','1118','1122'].includes(n)?'case-4':Object.hasOwn(solvedTriangleAnswers,n)?'case-3':n==='t107'?'case-4':Object.hasOwn(triangleAreaAnswers,n)?'case-3':n==='1103'?'case-4':Object.hasOwn(trigRayAnswers,n)?'case-3':(n==='1098-1'||n==='1098-2')?'case-6':n==='1099'?'case-5':n==='t100'?'case-4':Object.hasOwn(semicircleAnswers,n)?'case-3':(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
+   const extraCase=(n==='t109'||n==='t110')?'case-4':Object.hasOwn(scalarProductAnswers,n)?'case-3':Object.hasOwn(fieldTrigAnswers,n)?'case-3':['1117','1118','1122'].includes(n)?'case-4':Object.hasOwn(solvedTriangleAnswers,n)?'case-3':n==='t107'?'case-4':Object.hasOwn(triangleAreaAnswers,n)?'case-3':n==='1103'?'case-4':Object.hasOwn(trigRayAnswers,n)?'case-3':(n==='1098-1'||n==='1098-2')?'case-6':n==='1099'?'case-5':n==='t100'?'case-4':Object.hasOwn(semicircleAnswers,n)?'case-3':(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
    const gridCase=Object.hasOwn(gridAnswers,n)?'case-'+(Number(number)<=1006?6:3):null;
    const actionCase=Object.hasOwn(actionAnswers,n)?'case-'+(n==='1011'?4:n==='1012'?6:3):null;
    const positionCase=Object.hasOwn(positionAnswers,n)?'case-3':null;

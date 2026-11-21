@@ -77,7 +77,8 @@
       ['/geometry-course/textbook/data/solve-triangle.json', '№1114, а–и'],
       ['/geometry-course/textbook/data/oblique-triangle-cases.json', '№1115–1117'],
       ['/geometry-course/textbook/data/triangle-section-applications.json', '№1118–1122'],
-      ['/geometry-course/textbook/data/field-trigonometry.json', '№1123–1127']
+      ['/geometry-course/textbook/data/field-trigonometry.json', '№1123–1127'],
+      ['/geometry-course/textbook/data/scalar-product.json', 'пп. 109–112 и №1128–1132']
   ];
 
   async function forCourse(base) {
