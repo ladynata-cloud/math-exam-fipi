@@ -30,13 +30,8 @@ function decimalToParts(s){s=String(s).replace('.',',');let [a,b='']=s.split(','
 function gcd(a,b){while(b){[a,b]=[b,a%b]}return Math.abs(a)}
 function terminatingInfo(n,d){const g=gcd(n,d);d/=g;let a=0,b=0;while(d%2===0){a++;d/=2}while(d%5===0){b++;d/=5}return d===1?Math.max(a,b):null}
 function computeSteps(display,d){const p=decimalToParts(display),digits=p.digits;let cur=0,started=false,steps=[];for(let i=0;i<digits.length;i++){cur=cur*10+Number(digits[i]);if(!started){if(cur<d&&i<p.intLen-1)continue;started=true}const qd=Math.floor(cur/d),prod=qd*d,rem=cur-prod;steps.push({sourceIndex:i,partial:cur,qd,prod,rem});cur=rem}let commaBefore=steps.findIndex(s=>s.sourceIndex>=p.intLen);if(p.dec===0)commaBefore=-1;let q='';steps.forEach((s,i)=>{if(i===commaBefore)q+=',';q+=s.qd});return {steps,expected:cleanDec(q),commaBefore,digits,intLen:p.intLen}}
-function quotientTask(d,partial){
- const digit=Math.floor(partial/d), product=digit*d;
- return {mode:'quotientDigit', d, partial, expected:String(digit), display:String(partial),
-   original:`${partial} : ${d}`, steps:[{sourceIndex:String(partial).length-1, partial, qd:digit, prod:product, rem:partial-product}]};
-}
 function gen(mode){
- if(mode==='quotientDigit'){const d=rnd(2,39),q=rnd(1,9);return quotientTask(d,d*q+rnd(0,d-1))}
+ if(mode==='quotientDigit'){const d=rnd(2,39),q=rnd(1,9),low=d*q,partial=low+rnd(0,d-1);return {mode,d,partial,expected:String(q),steps:[{sourceIndex:0,partial,qd:q,prod:low,rem:partial-low}],display:String(partial),original:`${partial} : ${d}`}}
  if(mode==='oneDigit'){const d=rnd(2,9),q=rnd(12,999),n=d*q,display=String(n),c=computeSteps(display,d);return {mode,d,display,original:`${display} : ${d}`,...c}}
  if(mode==='remainder'){const d=rnd(2,9),q=rnd(12,199),r=rnd(1,d-1),n=d*q+r,display=String(n),c=computeSteps(display,d);return {mode,d,display,original:`${display} : ${d}`,...c,remainder:r,expected:`${q} (ост. ${r})`}}
  if(mode==='zero'){const d=rnd(2,9),left=rnd(1,8),right=rnd(1,9),zeros=Math.random()<.7?1:2,q=Number(String(left)+'0'.repeat(zeros)+String(right)),n=d*q,display=String(n),c=computeSteps(display,d);return {mode,d,display,original:`${display} : ${d}`,...c}}
@@ -60,7 +55,17 @@ function renderHome(){const m=CONFIG.meta[state.level];$('#pageTitle').textConte
 function renderMiniQuestion(box,q,onDone){box.innerHTML=`<p>${q.prompt}</p><div class="mini-answer"></div><div class="feedback" aria-live="polite"></div>`;const ans=box.querySelector('.mini-answer'),fb=box.querySelector('.feedback');if(q.kind==='choice'){const grid=document.createElement('div');grid.className='choice-grid';q.options.forEach((o,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML=o;b.onclick=()=>{grid.querySelectorAll('button').forEach(x=>x.classList.remove('correct','wrong'));const ok=String(i)===q.answer;b.classList.add(ok?'correct':'wrong');fb.className='feedback show '+(ok?'good':'bad');fb.textContent=ok?q.good:q.bad;if(ok)onDone()};grid.appendChild(b)});ans.appendChild(grid)}else{ans.innerHTML='<div class="input-row"><input class="answer-input" inputmode="decimal"><button class="btn primary small">Проверить</button></div>';const inp=ans.querySelector('input'),go=()=>{const ok=answerNorm(inp.value)===answerNorm(q.answer);fb.className='feedback show '+(ok?'good':'bad');fb.textContent=ok?q.good:q.bad;if(ok)onDone()};ans.querySelector('button').onclick=go;inp.onkeydown=e=>{if(e.key==='Enter')go()}}}
 function renderLearn(){renderLevels();const L=lessonData(state.level),i=Math.max(0,Math.min(state.learn,L.length-1)),x=L[i];$('#lessonCount').textContent=`Шаг ${i+1} из ${L.length}`;$('#lessonBar').style.width=((i+1)/L.length*100)+'%';$('#lessonTitle').textContent=x[0];$('#lessonLead').textContent=x[2];$('#lessonContent').innerHTML=x[3];const k=state.level+'-'+i;renderMiniQuestion($('#lessonQuestion'),x[4],()=>{state.learnDone[k]=true;save();renderRail()});$('#lessonPrev').disabled=i===0;$('#lessonNext').textContent=i===L.length-1?'Перейти к практике →':'Следующий шаг →';renderRail();$('#sideRule').textContent=CONFIG.rules[state.level]}
 function renderRail(){const L=lessonData(state.level),box=$('#learnRail');box.innerHTML='';L.forEach((x,i)=>{const k=state.level+'-'+i,b=document.createElement('button');b.className=(i===state.learn?'active ':'')+(state.learnDone[k]?'done':'');b.textContent=x[1];b.onclick=()=>{state.learn=i;renderLearn()};box.appendChild(b)})}
-function makeNewTask(){$('#solution').disabled=false;state.task=!state.task && !state.independent && !state.supported && !state.reviewed ? quotientTask(15,88) : gen(state.level);state.phase=state.level==='decimalDivisor'?'shiftCount':(state.level==='quotientDigit'?'digit':'digit');state.stepIndex=0;state.attempts=0;state.help=0;state.quotient='';state.commaPlaced=false;state.work=[];state.normal={};state.clean=true;renderPractice()}
+function makeNewTask(){
+ $('#solution').disabled=false;
+ const firstVisit=!state.task && !state.independent && !state.supported && !state.reviewed;
+ state.task=firstVisit
+   ? {mode:'quotientDigit',d:15,partial:88,display:'88',original:'88 : 15',...computeSteps('88',15)}
+   : gen(state.level);
+ state.phase='digit';
+ state.stepIndex=0; state.attempts=0; state.help=0; state.quotient='';
+ state.commaPlaced=false; state.work=[]; state.normal={}; state.clean=true;
+ renderPractice();
+}
 function startPractice(){renderLevels();makeNewTask()}
 function currentStep(){return state.task.steps[state.stepIndex]}
 function renderNotebook(t,s){
