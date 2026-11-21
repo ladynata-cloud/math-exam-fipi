@@ -61,10 +61,11 @@ async function journey(browser,width) {
     await stage(page,'layout');
     if (width <= 375) {
       await page.setViewportSize({width,height:568});
+      await page.screenshot({path:path.join(artifacts,'short-phone-' + width + '.png')});
       for (let child = 0; child < 3; child++) {
         const target = await put(page,child).boundingBox();
         assert(target && target.y >= 0 && target.y + target.height <= 568,
-          'Every picnic recipient can be reached without scrolling on a short phone');
+          'Picnic recipient ' + child + ' at ' + width + 'x568: ' + JSON.stringify(target));
       }
       await page.setViewportSize({width,height:850});
     }
