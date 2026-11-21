@@ -15,6 +15,9 @@
 ,
     ['1.71','Пройди по пяти стрелкам','Цепочку читают слева направо. Результат каждого действия становится началом следующего. После каждой стрелки впиши новое число.',
       ['От числа 20 стрелки «: 4», «+ 7», «× 3» ведут к 5, затем к 12 и 36.','Чтобы проверить последнюю стрелку, раздели 36 на 3. Ты возвращаешься в клетку 12.'], 'Каждая стрелка применяется к одному и тому же первоначальному числу.', 'Как проверить действие стрелки по двум соседним клеткам?']
+,
+    ['1.72','Какие знания пригодятся в магазине и на площадке?','Придумай для каждого места вопрос, на который помогает ответить математика. Запиши, что именно можно посчитать или измерить и как проверить результат.',
+      ['В магазине можно сравнить общую цену двух небольших пачек с ценой одной большой. Для другого примера подойдут скидка, масса или сдача.','На спортивной площадке можно сравнивать длины прыжков, время кругов или суммарное расстояние. Объясни свой выбор.'], 'У открытого вопроса о применении математики существует единственный правильный пример.', 'Какие величины и действия понадобились именно в твоих примерах?']
   ];
   const lessons = info.map(([number,title,explanation,worked,misconception,reflect])=>({
     number,key:'printed-'+number.replace('.','-'),part:1,point:3,page:20,title,explanation,worked,misconception,reflect,
@@ -124,6 +127,43 @@
       why:current.before+' '+current.op+' '+current.n+' = '+current.after+'. Это начало следующего шага, если в цепочке есть ещё одна стрелка.'};
   }
 
+  function everyday(seed,random,step) {
+    const price=seed?random(22,66):45,small=seed?random(14,43):35,items=seed?random(2,5):3;
+    const cash=seed?Math.ceil((5*price+small)/50)*50+50:400;
+    const lap=seed?10*random(7,20):120,laps=seed?random(2,5):4,goal=(seed?random(6,9):6)*lap;
+    const cost=price*items+small,distance=lap*laps,change=cash-cost,left=goal-distance;
+    const nat=(p,n,h,errs=[])=>formatStep(step,'v5-natural',p,n,h,errs);
+    const steps=[
+      nat('Для одной из возможных ситуаций в магазине найди стоимость одинаковых товаров. Их '+items+' шт. по '+price+' руб.',price*items,
+        'Цена относится к одной штуке. Умножь её на количество.',[error(price+items,'Количество и цену нельзя просто сложить. Покажи столько одинаковых цен, сколько товаров.'),error(price,'Это цена одной штуки. Их в корзине несколько.')]),
+      nat('К покупке добавили товар за '+small+' руб. Сколько рублей теперь в чеке?',cost,
+        'К стоимости одинаковых товаров прибавь ещё одну указанную цену.',[error(items*price,'Ты учёл одинаковые товары. Добавь цену отдельной покупки.')]),
+      nat('За покупку передали '+cash+' руб. Какую сумму должны вернуть?',change,
+        'Проверь, какое число вместе со стоимостью даёт деньги, переданные на кассе.',[error(cost,'Это стоимость. Сдача — деньги, которые остаются после оплаты.')]),
+      nat('Теперь проверь один пример для площадки. Длина круга '+lap+' м, пройдено кругов — '+laps+'. Сколько метров пройдено?',distance,
+        'Каждый полный круг добавляет одинаковую длину. Умножь длину круга на число кругов.',[error(lap+laps,'Одинаковые круги складывают по длине. Счётчик кругов показывает число повторов.')]),
+      nat('Запланировано '+goal+' м. Сколько метров осталось до этой цели?',left,'Из цели вычти пройденное расстояние.',[error(distance,'Это уже пройденная часть. Узнай, что осталось до конца.')])
+    ];
+    return {prefix:seed?'Новые данные для проверки твоих способов. ':'Открытый вопрос учебника с двумя местами для примеров. Числа в приложении авторские. ',
+      prompt:'Сколько рублей сдачи будет в этой покупке и сколько метров останется спортсмену? Введи два ответа через точку с запятой.',
+      inputPrompt:'Сдача в рублях; остаток в метрах',answer:[change,left],answerFormat:'v5-pair',steps,errors:[
+        error([cost,distance],'Ты записал общую стоимость и пройденное расстояние. В обоих вопросах нужен остаток.')],
+      data:{everyday:{price,small,items,cash,lap,laps,goal}},table:{caption:'Данные для проверки примеров',headers:['Где','Что известно'],columnWidths:[30,70],
+        rows:[['Магазин',items+' шт. по '+price+' руб. и товар за '+small+' руб. Передано '+cash+' руб.'],['Площадка',laps+' полных кругов по '+lap+' м. Цель '+goal+' м.']]},conditionKey:[items,price,small,cash,laps,lap,goal].join('/')};
+  }
+  function exploreEveryday(state,task,table) {
+    const d=task.data.everyday,shop=state.context===0,count=state.count,unit=shop?d.price:d.lap;
+    const whole=shop?d.cash:d.goal,fixed=shop?d.small:0,total=unit*count+fixed,amount=state.question===0?total:whole-total;
+    const noun=shop?'руб.':'м', labelsHere=shop?['Весь чек','Сдача']:['Пройдено','Осталось'];
+    const controls=[{key:'context',title:'Где проверяем',values:[[0,'Магазин'],[1,'Спортивная площадка']]},{key:'count',title:shop?'Штук по одной цене':'Полных кругов',min:0,max:5,step:1},{key:'question',title:'Что ищем',values:labelsHere.map((v,i)=>[i,v])}];
+    const list=Array.from({length:count},(_,i)=>[shop?'Покупка '+(i+1):'Круг '+(i+1),unit+' '+noun]);
+    if(shop)list.push(['Ещё один товар',fixed+' руб.']);
+    const picture=list.length?table(shop?'Разложи чек':'Подсчитай круги',['Часть','Величина'],list):'<p>Старт. Ещё ни одного полного круга.</p>';
+    const visual=picture+'<p>'+(shop?'Дано на кассе: ':'Цель по дистанции: ')+whole+' '+noun+'.</p>';
+    return {title:'Измени покупку или тренировку',controls,visual,question:shop?(state.question?'Сколько рублей сдачи получится?':'Сколько рублей стоит весь набор?'):(state.question?'Сколько метров останется?':'Сколько метров пройдено?'),answer:amount,
+      why:state.question?whole+' − '+total+' = '+amount+' '+noun+'.':count+' × '+unit+(shop?' + '+fixed:'')+' = '+amount+' '+noun+'.'};
+  }
+
   function dots(n,perRow,markFrom,markEnd){
     const rows=Math.ceil(n/perRow);
     const points=Array.from({length:n},(_,i)=>'<circle cx="'+(12+(i%perRow)*15)+'" cy="'+(12+Math.floor(i/perRow)*15)+'" r="4.8" fill="'+(i>=markFrom&&i<markEnd?'#ad440e':'#21685c')+'"/>').join('');
@@ -131,6 +171,7 @@
   }
   function explore(lesson,state,task,table) {
     const d=task.data;
+    if(d.everyday)return exploreEveryday(state,task,table);
     if(d.chains)return exploreChain(state,task,table);
     if(d.values)return digits.explore(lesson,state,task,table);
     if(d.operations){
@@ -148,8 +189,8 @@
       question:transfer?'Сколько осталось во втором слагаемом после переноса?':'Сколько лишних единиц оказалось в общей сумме?',
       answer:transfer?b-addA:addA+addB,why:transfer?'Первое стало '+upA+', а второе стало '+(b-addA)+'. Их сумма равна прежней.':'Прибавили '+addA+' и '+addB+'. Из суммы округлённых чисел надо убрать '+(addA+addB)+'.'};
   }
-  const generators={'1.67':(s,r,t)=>readOrWrite(false,s,r,t),'1.68':(s,r,t)=>readOrWrite(true,s,r,t),'1.69':setOperations,'1.70':sums,'1.71':chains};
-  const bounds={'1.67':{row:[0,5,0],place:[0,11,0]},'1.68':{row:[0,6,0],place:[0,11,0]},'1.69':{row:[0,19,0]},'1.70':{row:[0,2,0],method:[0,1,0]},'1.71':{row:[0,3,0],arrow:[0,4,0]}};
+  const generators={'1.67':(s,r,t)=>readOrWrite(false,s,r,t),'1.68':(s,r,t)=>readOrWrite(true,s,r,t),'1.69':setOperations,'1.70':sums,'1.71':chains,'1.72':everyday};
+  const bounds={'1.67':{row:[0,5,0],place:[0,11,0]},'1.68':{row:[0,6,0],place:[0,11,0]},'1.69':{row:[0,19,0]},'1.70':{row:[0,2,0],method:[0,1,0]},'1.71':{row:[0,3,0],arrow:[0,4,0]},'1.72':{context:[0,1,0],count:[0,5,2],question:[0,1,0]}};
   const api={lessons,generators,bounds,explore};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.Vilenkin5PrintedReview=api;
 })(typeof window!=='undefined'?window:globalThis);

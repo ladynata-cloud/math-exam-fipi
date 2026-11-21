@@ -488,6 +488,20 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'open applications in a shop and a sports ground, printed 1.72';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-72"]').click();await studentFrame.locator('h1').filter({hasText:'№1.72'}).waitFor();
+  const independentIdeas='В магазине сравню массу двух упаковок. На площадке измерю угол броска.';
+  await teacherFrame.locator('#v5-quality-note').fill(independentIdeas);
+  const ideas=await same(teacherFrame,studentFrame,'own applications are saved without assessment');assert.equal(ideas.scene.note,independentIdeas);assert.equal(ideas.scene.attempt,0);assert.equal(ideas.scene.firstAttempt,null);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=context]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=count]').fill('3');await studentFrame.locator('[data-v5-param=count]').press('Tab');await studentFrame.locator('[data-v5-param=question]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('360');await studentFrame.locator('[data-v5-predict] button').click();const lapsLeft=await same(studentFrame,teacherFrame,'distance still to go');assert.equal(lapsLeft.scene.model.count,3);assert(lapsLeft.scene.model.seen);assert.equal(lapsLeft.scene.attempt,0);
+  await studentFrame.locator('#answer').fill('48');await studentFrame.locator('#answer-form button').click();const mixedUnits=await same(studentFrame,teacherFrame,'price was added to quantity');assert.match(mixedUnits.scene.message,/количеств/i);
+  await studentFrame.locator('#answer').fill('135');await studentFrame.locator('#answer-form button').click();const computed=await same(studentFrame,teacherFrame,'calculation corrected with both personal examples retained');assert(computed.scene.correct);assert.equal(computed.scene.note,independentIdeas);assert.deepEqual(computed.scene.hintLevels,{});
+  await ownership(teacher,student,false);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'written applications and correction restored to teacher');
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'written applications restored to pupil');assert.equal(await studentFrame.locator('#v5-quality-note').inputValue(),independentIdeas);
+
   phase = 'five arrows, fourth chain of printed exercise 1.71';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-71"]').click();await studentFrame.locator('h1').filter({hasText:'№1.71'}).waitFor();
