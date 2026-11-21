@@ -3,11 +3,15 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {JSDOM}=require('jsdom');
 const repo=path.resolve(__dirname,'../..');
-function boot(grade,key,saved={}){
+function boot(grade,key,saved={},variant,offline=false){
  const dom=new JSDOM('<!doctype html><html><head></head><body><div id="host"></div></body></html>',{runScripts:'outside-only'}),w=dom.window;
- for(const file of ['math.js','labs.js'])w.eval(fs.readFileSync(path.join(repo,`courses/vilenkin-${grade}-part-1/${file}`),'utf8'));
+ if(offline){
+  const html=fs.readFileSync(path.join(repo,'courses/vilenkin-5-part-1/offline.html'),'utf8');
+  const blocks=[...JSDOM.fragment(html).querySelectorAll('script')].map(tag=>tag.textContent).filter(code=>code.includes('global.CourseMath=')||code.includes('window.mountLab=function('));
+  assert.equal(blocks.length,2,'actual bundled math and laboratory');blocks.forEach(code=>w.eval(code));
+ }else for(const file of ['math.js','labs.js'])w.eval(fs.readFileSync(path.join(repo,`courses/vilenkin-${grade}-part-1/${file}`),'utf8'));
  let snapshot=null,calls=0;
- const host=w.document.getElementById('host'),destroy=w.mountLab(host,key,{state:saved,onChange:s=>{snapshot=JSON.parse(JSON.stringify(s));calls++;}});
+ const host=w.document.getElementById('host'),destroy=w.mountLab(host,key,{state:saved,variant,onChange:s=>{snapshot=JSON.parse(JSON.stringify(s));calls++;}});
  return {w,host,destroy,get snapshot(){return snapshot},get calls(){return calls},close(){destroy();w.close()}};
 }
 const form=x=>x.host.querySelector('[class$="-inquiry"]');
@@ -45,5 +49,21 @@ for(const [grade,key,answer] of [[5,'place','307'],[5,'scale','30'],[5,'multiply
 {
  const x=boot(6,'common');type(x,'12');assert(Object.keys(x.snapshot).length<=30);for(const [k,v] of Object.entries(x.snapshot)){assert(/^[a-zA-Z][a-zA-Z0-9_]*$/.test(k));assert(typeof v==='number'||typeof v==='string'&&v.length<=100);}
  const forged={...x.snapshot,inquirySeen:1,inquiryFirst:'12',a:7};const y=boot(6,'common',forged);assert(visual(y).hidden,'parameter/context mismatch cannot restore stale disclosure');x.close();y.close();
+}
+for(const [key,variant,first,correct,visible,why]of [['garden','floor','27','28','не хватит','28 уп.'],['volume','capacity','30000','30','кубических сантиметрах','30 л']]){
+ for(const offline of [false,true]){
+ const start=(saved={})=>boot(5,key,saved,variant,offline);const x=start();
+ submit(x,first);assert.equal(x.snapshot.inquirySeen,0);assert.equal(x.snapshot.inquiryFirst,first);assert(!field(x).disabled);
+ assert(form(x).textContent.includes(visible));assert(!form(x).querySelector('[role=status]').textContent.includes(why));
+ type(x,correct);const pending=Object.freeze({...x.snapshot});const y=start(pending);
+ assert.equal(field(y).value,correct);assert(!field(y).disabled);submit(y);assert.equal(y.snapshot.inquirySeen,1);
+ assert(form(y).textContent.includes('сам исправил'));assert.equal(y.snapshot.inquiryFirst,first);
+ const h=start(pending);form(h).querySelector('[type=button]').click();
+ assert.equal(field(h).value,correct);assert(form(h).textContent.includes('по твоему запросу'));assert(!form(h).textContent.includes('сам исправил'));
+ const h2=start(h.snapshot);assert(form(h2).textContent.includes('по твоему запросу'));assert.equal(field(h2).value,correct);
+ const old=start({...pending,inquiryFirst:first,inquiryDraft:first,inquirySeen:1});assert(field(old).disabled);assert(form(old).textContent.includes('уже открыто'));
+ const cleared=start(pending);control(cleared,0,key==='garden'?13:4);assert.equal(cleared.snapshot.inquiryFirst,'');assert.equal(field(cleared).value,'');assert(!field(cleared).disabled);
+ for(const instance of [x,y,h,h2,old,cleared])instance.close();modelFlows++;
+ }
 }
 console.log(`VILENKIN_INQUIRY_PASS: ${modelFlows} model flows, exact answers, first prediction, restore, keyboard, stale-context and cleanup.`);

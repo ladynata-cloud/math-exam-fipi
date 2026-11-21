@@ -2223,10 +2223,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "152c1ba6b7cf2f1fd044acbabb59adf00b60614d325c737b583fb6b25c8a096e",
-      "afterSha256": "b2f23ab4b647f277530c78736ae8647b47ce84b5861fb4215bddd0a10639f44f",
+      "beforeSha256": "2e6f71f2721ee996b509db6d903ae3468436f860f072e56ab908dd800b82907c",
+      "afterSha256": "fb5054ce3397d6d2b6bd6d0f27022b08aa40445a2576dec57d665c7ef2ddadcc",
       "placement": "before-head-close",
-      "sourceSha": "aee65d44605b23694c3d7bcb6212233d150448a0"
+      "sourceSha": "b0d4b70bdc9cf5f17dac3ce32f58f68940c761cb"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6536,6 +6536,16 @@
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "previousBaseSha": "aee65d44605b23694c3d7bcb6212233d150448a0",
+      "sourceBaseSha": "b0d4b70bdc9cf5f17dac3ce32f58f68940c761cb",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the reviewed Vilenkin 5 laboratory cache version.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
