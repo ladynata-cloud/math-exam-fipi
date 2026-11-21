@@ -49,7 +49,10 @@ async function healthy(url, child, logs) {
 }
 
 const printedProperties=process.argv.includes('--printed-identity');
-const catalogue=process.argv.includes('--peterson7-2011') ? {
+const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
+const catalogue=volume2||volume3 ? {
+  directory:'peterson7-2011',entries:volume2?[[102,17,17]]:[[103,21,18]],uniqueLessons:volume2?16:17,search:'peterson7-2011',match:'математические модели',lesson:volume2?'102-3e':'103-2-1b',chart:volume2?'svg[aria-label*="Группы одинаковых"]':'svg[aria-label*="Стрелки между"]',storage:'math:peterson7-2011:v1:'
+} : process.argv.includes('--peterson7-2011') ? {
   directory:'peterson7-2011',entries:[[101,22,70]],uniqueLessons:69,search:'peterson7-2011',match:'математические модели',lesson:process.argv.includes('--literal-n')?'101-1-3d':'101-16',chart:process.argv.includes('--literal-n')?'svg[aria-label*="Две полоски"]':'svg[aria-label*="встречном и попутном"]',storage:'math:peterson7-2011:v1:'
 } : process.argv.includes('--mordkovich-2020') ? {
   directory:'mordkovich-2020',entries:[[25,50,60]],uniqueLessons:59,search:'mordkovich-2020',match:'множества и делимость',lesson:'25-review-17d',chart:'svg[aria-label*="Разложения для сравнения"]',storage:'math:mordkovich-2020:v1:'

@@ -3,9 +3,9 @@
   const {add,lessons,example}=window.MathExamTopicPractice;
   const keys='abcd',letters='абвг',ids=[];
   const q=(prompt,answer,calculation,error,wrong,why)=>({prompt,answer,calculation,error,mistakes:[[wrong,why]]});
-  function register(key,printed,page,title,prompt,guide,rule,related,make){
-    add(101,key,page,title,prompt,rule,related,make);
-    const lesson=lessons.get('101-'+key);
+  function register(key,printed,page,title,prompt,guide,rule,related,make,book=101){
+    add(book,key,page,title,prompt,rule,related,make);
+    const lesson=lessons.get(book+'-'+key);
     Object.assign(lesson,{printedReference:'Упражнение №'+printed,printedPrompt:prompt,printedGuide:guide});ids.push(lesson.id);
   }
   const pairs=[[208,50],[180,46],[242,110],[210,62]];
@@ -116,8 +116,8 @@
     }
     return '<svg viewBox="0 0 280 120" role="img" aria-label="'+title+'"><g font-size="13" font-family="sans-serif" fill="#213f48">'+body+'</g></svg>';
   }
-  window.MathExamTopicEdition={trainerId:'peterson7-2011',authors:'Петерсон, Абраров, Чуткова · часть 1 · 2011',
-    grade:()=>'7 класс',unit:'упражнение',register,q,storePrefix:'math:peterson7-2011:v1:',figure:svg,
-    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/mathematics/00000005.pdf#page='+(page+2),
-    nextId:lesson=>ids[ids.indexOf(lesson.id)+1]};
+  window.MathExamTopicEdition={trainerId:'peterson7-2011',authors:'Петерсон, Абраров, Чуткова · 2011',
+    grade:book=>'7 класс · часть '+(book-100),unit:'упражнение',register,q,storePrefix:'math:peterson7-2011:v1:',figure:svg,
+    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/mathematics/'+{101:'00000005',102:'00000006',103:'00000007'}[book]+'.pdf#page='+(page+2),
+    nextId:lesson=>{const next=lessons.get(ids[ids.indexOf(lesson.id)+1]);return next?.book===lesson.book?next.id:undefined;}};
 })();
