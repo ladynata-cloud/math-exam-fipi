@@ -734,3 +734,26 @@ test('coefficient scope, fresh powers and free explanations follow the printed s
   assert.equal(!!f.state().tasks['p34-t08'].correct,false);
  }finally{f.close();}
 });
+
+test('complete the coefficient chapter with quantifiers, signed squares and reversible tricks',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#home');assert.match(f.q('#main').textContent,/№27–41 со всеми подпунктами.*67/);
+  const go=i=>{f.nav('#lesson/p34/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  let ids=go(41);f.event(ids[1],'1','change');let result=()=>f.q('#model .pm-result').textContent;
+  assert(result().includes('при d: 0'));assert(result().includes('при k: −4'));
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
+  ids=go(45);f.event(ids[1],'2','change');assert(result().includes('−9'));f.event(ids[0],'1','change');f.event(ids[1],'2','change');assert(result().includes('−18'));
+  ids=go(47);f.event(ids[1],'1','change');assert(result().includes('значения равны'));
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');f.event(ids[1],'1','change');assert(result().includes('значения различны'));
+  ids=go(50);f.event(ids[1],'2','change');assert.equal(f.d.querySelectorAll('#model [data-piece="uv"]').length,2);
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');f.event(ids[1],'2','change');
+  assert.equal(f.d.querySelectorAll('#model [data-piece="cut"]').length,2);assert.equal(f.d.querySelectorAll('#model [data-piece="overlap"]').length,1);
+  ids=go(52);f.event(ids[1],'1','change');assert.match(f.q('#model table').textContent,/\(a \+ b\)²1a² \+ b²13/);
+  ids=go(53);f.event(ids[0],'3','change');f.event(ids[1],'4','change');assert.match(f.q('#model table').textContent,/Вычли 3x25/);
+  ids=go(54);f.event(ids[1],'4','change');assert.match(f.q('#model table').textContent,/Вычли из 157/);
+  ids=go(64);f.event(ids[1],'3','change');assert.match(f.q('#model table').textContent,/Вычли из 4012/);
+  ids=go(66);f.event(ids[0],'2','change');f.event(ids[1],'4','change');assert.match(f.q('#model table').textContent,/Прибавили 16,25Корень и минус 11,5/);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

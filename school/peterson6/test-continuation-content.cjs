@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,421);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,450);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -240,8 +240,8 @@ const p33=D.lessons.find(l=>l.id==='p33');
  assert(Math.abs(areas.reduce((a,b)=>a+b)-11.5*8.1)<1e-9);
 }
 {
- const coeff=D.lessons.find(l=>l.id==='p34'),reviewed=Array.from(coeff.tasks).slice(4);
- assert.equal(coeff.tasks.length,38);assert(coeff.orderBySource);assert(reviewed.every(t=>t.source.page===9));
+ const coeff=D.lessons.find(l=>l.id==='p34'),reviewed=Array.from(coeff.tasks).slice(4,38);
+ assert.equal(coeff.tasks.length,67);assert(coeff.orderBySource);assert(reviewed.every(t=>t.source.page===9));
  const mapped=Array.from(coeff.tasks);
  assert.deepEqual(mapped.filter(t=>t.source.exercise===27).map(t=>t.source.subpart).sort(),['а','б','в','г','д','обоснование']);
  assert.deepEqual(mapped.filter(t=>t.source.exercise===28).map(t=>t.source.readingKey).sort(),['а1','а2','а3','б1','б2','б3']);
@@ -270,6 +270,42 @@ const p33=D.lessons.find(l=>l.id==='p33');
   assert(Math.abs(numeric(task.steps[1].answer)-op(plusOne(values)))<1e-10,task.id);
  }
  assert.equal(Object.keys(originals).length,33);
+}
+{
+ const section=D.lessons.find(l=>l.id==='p34'),end=Array.from(section.tasks).slice(38);
+ assert.equal(end.length,29);assert.deepEqual(Object.values(section.completeSourceSection),[27,41,9,11]);
+ const cols=['абвгде','аб','абвг','абв','','','абвгде','абв','аб',''];
+ for(const [i,letters]of cols.entries()){
+  const rows=end.filter(t=>t.source.exercise===32+i);
+  assert.deepEqual(rows.map(t=>t.source.subpart||''),letters?[...letters]:['']);
+  assert(rows.every(t=>t.source.page===(i===9?11:10)));
+ }
+ const linears=[o=>-3*(-2*o.a+5),o=>2*(5*o.b-4*o.c+3),o=>4*(-o.x+3*o.y)-2*(o.x+5*o.y),o=>-2*(6*o.d-o.k)+3*(4*o.d-2*o.k),o=>5*(3*o.c-2)+2*(4-7*o.c),o=>3*(-8+2*o.y)-4*(2*o.y-6),
+  o=>-2*(o.c+7),o=>5*(2*o.a-3)-4*(3*o.a-4),o=>-2*(2*o.x+3*o.y)+3*(-o.x+2*o.y)];
+ for(const [i,t]of end.filter(t=>t.linearStudy).entries()){
+  for(const seed of [-3,0,5]){
+   const vals=Object.fromEntries([...'abckdxy'].map((v,j)=>[v,seed+3*j-2]));
+   const fromGroups=Array.from(t.linearStudy.groups).reduce((sum,g)=>sum+g.scale*(g.constant+Object.entries(g.terms).reduce((p,[v,k])=>p+k*vals[v],0)),0);
+   assert.equal(fromGroups,linears[i](vals));assert.equal(fromGroups,valueOfLinear(t.answer,vals));
+  }
+ }
+ assert.deepEqual(end.filter(t=>t.source.exercise===33).map(t=>Number(t.answer)),[(-5)*(-.78)*2*(-2.5)*(-4),Math.round((-.4)*(9/17)*(-.25)*1.25*(-8)*17)]);
+ const props=end.filter(t=>t.source.exercise===34);assert(props.every(t=>t.kind==='manual'));
+ for(const a of [-7,-.5,0,1,4]){assert.equal((-a)**2,a*a);assert.equal((-a)**3===-(a**3),true);}
+ assert.notEqual((-1)**2,-(1**2));assert.equal((-0)**2===-(0**2),true);
+ for(const t of end.filter(t=>t.squareSum)){
+  const [a,b]=t.squareSum,answers=t.steps.slice(0,3).map(step=>Number(step.answer));
+  assert.deepEqual(Array.from(answers),[(a+b)**2,a*a+b*b,a*a+2*a*b+b*b]);
+ }
+ for(const x of [-5,0,.5,12])assert.equal(3*(x+7)+4-3*x,25);
+ assert.equal(15-2*(100-8*Number(end.find(t=>t.source.exercise===37).answer)),7);
+ const coeffs=end.filter(t=>t.source.exercise===38),evals=[x=>5*(-1.2*x),x=>-(2/9)*x*(-3*x),x=>-2*x*.4*x,x=>x*x*(-6*x)*(-.5),x=>(-4*x)**2,x=>(-.1*x)**3];
+ for(const [i,t]of coeffs.entries())for(const x of [-2,1,3]){
+  let v=1;for(const factor of t.coefficientStudy.factors){const k=M.parse(factor.coefficient);v*=((k.n/k.d)*x**Object.values(factor.variables).reduce((a,b)=>a+b,0))**factor.power;}
+  assert(Math.abs(v-evals[i](x))<1e-9);
+ }
+ assert.equal(40-7*(Number(end.find(t=>t.source.exercise===40&&t.source.subpart==='а').answer)-16),12);
+ for(const x of [.2,1,1.5,6])assert(Math.abs(Math.sqrt(x*x+2*x+1)-1-x)<1e-12);
 }
 const printedColumns=['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб'];
 for(const [i,letters] of printedColumns.entries()) {

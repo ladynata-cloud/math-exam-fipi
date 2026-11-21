@@ -290,12 +290,17 @@ function firstErrorsHTML(t,s){
     const first = D.lessons.find(lesson => partOf(lesson) === part);
     if (!first?.orderBySource) return '';
     const index = readingOrder(first)[0];
-    const section = first.completeSourceSection;
-    const coverage = section ? '<p class="small">В теме «' + e(first.title) + '» разобраны №' +
-      section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
-      section.lastPage + '). Число карточек с разбором — ' + first.tasks.filter(task =>
-        task.source?.type === 'textbook' && task.source.exercise >= section.first && task.source.exercise <= section.last).length +
-      '.</p>' : '';
+    let lastPrinted = 0, coverage = '';
+    for (const topic of D.lessons.filter(candidate => partOf(candidate) === part)) {
+      const section = topic.completeSourceSection;
+      if (!section || section.first !== lastPrinted + 1) break;
+      const count = topic.tasks.filter(task => task.source?.type === 'textbook' &&
+        task.source.exercise >= section.first && task.source.exercise <= section.last).length;
+      coverage += '<p class="small">В теме «' + e(topic.title) + '» разобраны №' +
+        section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
+        section.lastPage + '). Число карточек с разбором — ' + count + '.</p>';
+      lastPrinted = section.last;
+    }
     return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
       'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>' + coverage;
   }
