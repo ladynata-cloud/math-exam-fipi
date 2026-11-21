@@ -40,6 +40,7 @@ function curveValue(curve,x){
  if(curve.kind==='absolute-reciprocal')return x===0?NaN:curve.k/Math.abs(x);
  if(curve.kind==='sign-linear')return x===curve.h?NaN:Math.sign(x-curve.h)*(curve.k*x+curve.b);
  if(curve.kind==='abs-linear')return curve.k*Math.abs(x)+curve.b;
+ if(curve.kind==='sqrt-affine'){const radicand=curve.k*x+curve.b;return radicand>=0?Math.sqrt(radicand):NaN;}
  if(curve.kind==='sqrt')return x>=0?Math.sqrt(x):NaN;
  if(curve.kind==='line')return curve.k*x+curve.b;
  if(curve.kind==='hyperbola')return x===0?NaN:curve.k/x;
@@ -896,6 +897,68 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function domainCoefficients(raw,count){
+ const parts=String(raw??'').split(';');if(parts.length!==count)return null;
+ const values=parts.map(v=>M.parse(v));return values.every(Boolean)?values:null;
+}
+function familyDomain(raw){
+ const fields=domainCoefficients(raw,4);if(!fields)return null;
+ const [a,b,c,d]=fields.map(q=>M.answer(q));
+ if(M.equal(c,'0'))return {fields:[a,b,c,d],domain:M.equal(d,'0')?'empty':'all',cut:null};
+ const cut=functionValueAt({numerator:['0',d],denominator:[c]},'-1');
+ return {fields:[a,b,c,d],domain:'except',cut};
+}
+function domainAt(g,raw){
+ const x=M.parse(raw);if(!x)return null;
+ if(g.case==='radical'){
+  const radicand=functionValueAt({numerator:[String(g.b),String(g.k)],denominator:['1']},raw),r=M.parse(radicand);
+  if(!r)return null;
+  const y=Math.sqrt(r.n/r.d);return {allowed:r.n>=0,reason:'radical',quantity:radicand,y:Number.isFinite(y)?y:null};
+ }
+ const den=functionValueAt({numerator:g.denominator,denominator:['1']},raw),output=functionValueAt(g,raw),v=M.parse(output);
+ return {allowed:den!==null&&!M.equal(den,'0'),reason:'denominator',quantity:den,output,y:v?v.n/v.d:null};
+}
+function functionDomainView(host,g,value){
+ host.className='task-graphs quantity-model';
+ const free=g.partial?.[0],x=M.parse(free),mode=g.case;
+ if(mode==='escalator'){
+  const positive=x&&x.n>0,local=positive?Number(x.n/x.d):0,baseT=g.mode==='depth'?135:g.mode==='time'?160:1;
+  const val=M.parse(value),actual=g.mode==='time'?60:g.mode==='depth'?135*3/8:3/8;
+  const svg=node('svg',{viewBox:'0 0 320 170',role:'img','aria-label':'Наклонный ход и вертикальная глубина при угле 30 градусов'});
+  const top=[36,25],bottom=[256,152];svg.append(node('path',{d:'M36 25 V152 H256 Z',fill:'#edf5ef',stroke:'#397769','stroke-width':3}),node('path',{d:'M36 140 H48 V152',fill:'none',stroke:'#485a56'}),node('text',{x:192,y:146,'font-size':16},'30°'),node('text',{x:40,y:100,'font-size':15},'h'),node('text',{x:122,y:59,'font-size':15},'0,75t'));
+  if(positive){const proj=local/Math.max(local,baseT),px=top[0]+(bottom[0]-top[0])*proj,py=top[1]+(bottom[1]-top[1])*proj;svg.append(node('circle',{cx:px,cy:py,r:5,fill:'#17695a','data-domain-time':M.answer(x)}),node('line',{x1:top[0],x2:px,y1:py,y2:py,stroke:'#6f5a38','stroke-dasharray':'4 3'}));}
+  host.append(svg);
+  if(positive){const h=functionValueAt({numerator:['0','3/8'],denominator:['1']},free),s=functionValueAt({numerator:['0','3/4'],denominator:['1']},free);boundNote(host,'За '+M.answer(x)+' с лента пройдёт '+s+' м. Вертикальный спуск равен '+h+' м.').dataset.domainTrial='time';}
+  if(val){
+   const exact=g.mode==='time'?functionValueAt({numerator:['0','3/8'],denominator:['1']},value):M.answer(val),r=M.parse(exact);
+   if(r){const shown=r.n/r.d,range=Math.max(actual,Math.abs(shown),1),base=133,scale=94/range;
+    svg.append(node('line',{x1:275,x2:275,y1:base,y2:base-actual*scale,stroke:'#17695a','stroke-width':5}),node('line',{x1:290,x2:290,y1:base,y2:Math.min(162,base-shown*scale),stroke:'#9b4d14','stroke-width':5,'data-domain-proposal':exact}),node('line',{x1:265,x2:305,y1:base,y2:base,stroke:'#5f655e'}));
+    boundNote(host,'Справа зелёный отрезок — требуемая глубина, охристый — твоя. '+(g.mode==='time'?'При предложенном времени глубина составила бы '+exact+' м.':'По твоей записи получается '+exact+' м'+(g.mode==='rate'?' за секунду.':'.')));
+   }
+  }
+  return;
+ }
+ let graph=g,curves=[],points=[],poles=g.poles||[];
+ const number=v=>{const q=M.parse(v);return q?q.n/q.d:null;};
+ if(mode==='family'){
+  const family=familyDomain(value);
+  if(!family){boundNote(host,'Введи четыре коэффициента. Твоя дробь и её область появятся здесь.');return;}
+  const [a,b,c,d]=family.fields;graph={case:'quotient',numerator:[b,a],denominator:[d,c]};poles=family.cut===null?[]:[number(family.cut)];
+  const description=family.domain==='empty'?'Знаменатель твоей формулы равен нулю при каждом x.':family.domain==='all'?'Твой знаменатель — ненулевая константа. Разрешены все x.':'Твой знаменатель равен нулю при x='+family.cut+'. В этой точке исходная дробь не существует.';
+  boundNote(host,description).dataset.domainFamily=family.domain;
+  if(family.domain==='empty')return;
+ }
+ const plotting=mode==='line-hole'||mode==='reciprocal-hole',construction=plotting?domainCoefficients(value,3):null;
+ if(plotting){
+  if(construction){const [k,b,h]=construction.map(q=>q.n/q.d);if(mode==='line-hole')curves.push({kind:'line',k,b,holes:[[h,k*h+b]]});else curves.push({kind:'quotient',numerator:[k,b],denominator:[0,1],poles:[0],holes:h===0?[]:[[h,k/h+b]]});}
+ }else if(mode==='radical'){curves.push({kind:'sqrt-affine',k:g.k,b:g.b});}
+ else{const num=graph.numerator.map(number),den=graph.denominator.map(number);const holes=[];if(mode==='family'&&poles.length===1){const f=familyDomain(value),[a,b,c]=f.fields,top=functionValueAt({numerator:[b,a],denominator:['1']},f.cut);if(M.equal(top,'0'))holes.push([poles[0],number(a)/number(c)]);}curves.push({kind:'quotient',numerator:num,denominator:den,poles,holes});}
+ if(x){const trial=domainAt(graph,free);if(trial){const info=trial.reason==='radical'?'Подкоренное выражение равно '+trial.quantity+'. ': 'Знаменатель равен '+trial.quantity+'. ';boundNote(host,'При x='+M.answer(x)+'. '+info+(trial.allowed?'Подстановка разрешена.':'Такое значение x запрещено.')).dataset.domainTrial=trial.allowed?'allowed':'excluded';if(trial.allowed&&trial.y!==null)points.push([x.n/x.d,trial.y,'']);}}
+ if(plotting&&!construction)boundNote(host,'Испытай свой x. Затем введи коэффициенты и абсциссу отверстия — появится твой график.');
+ host.append(rootGraph({xRange:[-10,10],yRange:[-8,8],stepX:4,stepY:4,gridX:2,gridY:2,curves,points},''));
+ if(g.proposal)intervalNumberLine(host,{mode:'operation',givenRows:[],proposal:g.proposal,points:x?[x]:[]},'');
+}
+
 function functionValueAt(g,raw){
  if(!M.parse(raw))return null;
  const expr=coeff=>coeff.slice().reverse().reduce((sum,c)=>['+',['*',sum,'x'],c],'0');
@@ -1906,6 +1969,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-function-domain'){functionDomainView(host,config,value);return;}
  if(config.type==='source-function-values'){functionSourceView(host,config,value);return;}
  if(config.type==='source-applied-bounds'){appliedBoundsView(host,config,value);return;}
  if(config.type==='source-solution-audit'){solutionAudit(host,config,value);return;}
@@ -1971,7 +2035,7 @@ function render(host,config,value){
   host.append(rootGraph(plane,''),caption);
  }else if(config.type==='root-line'){
   host.className='task-graphs root-graph';const line=parseLine(value),plane={...config,type:'root-plane',curves:[{kind:'sqrt'},...(line?[{kind:'line',...line}]:[])]};host.append(rootGraph(plane,''));
-  const caption=document.createElement('p');caption.className='small';caption.textContent='Показана часть графиков. Введи k; b, чтобы добавить свою прямую y=kx+b. Число пересечений проверяется по уравнению.';host.append(caption);
+  const caption=document.createElement('p');caption.className='small';caption.textContent='Видна часть графиков. Число пересечений проверь по уравнению.';host.append(caption);
  }else if(['root-plane','root-build','curve-build'].includes(config.type)){
   host.className='task-graphs root-graph';host.append(rootGraph(config,value));
   const caption=document.createElement('p');caption.className='small';
@@ -1998,5 +2062,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

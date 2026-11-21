@@ -865,6 +865,15 @@ function check(user,target){
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
  if(target.kind==='rational-probe')return Boolean(M.parse(user));
  if(target.kind==='linear-ray'){const u=linearRay(user,target.graph.variable);return Boolean(u&&equalAxisSets(u,asThreshold(target.graph.relation,target.graph.threshold)));}
+ if(target.kind==='positive-probe'){const r=M.parse(user);return Boolean(r&&r.n>0);}
+ if(target.kind==='domain-family'){
+  const f=G.familyDomain(user);if(!f)return false;
+  return target.graph.excluded===null?f.domain==='all':f.domain==='except'&&M.equal(f.cut,String(target.graph.excluded));
+ }
+ if(target.kind==='reciprocal-hole'){
+  const a=G.domainCoefficients(user,3),b=G.domainCoefficients(target.answer,3);
+  return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
+ }
  if(target.kind==='system-single'||target.kind==='system-intersection')return equalAxisSets(systemInput(user,target.variable||target.graph?.variable),target.answer);
  if(target.kind==='system-examples')return systemExamples(user,target);
  if(target.kind==='linear-examples')return linearExamples(user,target);
