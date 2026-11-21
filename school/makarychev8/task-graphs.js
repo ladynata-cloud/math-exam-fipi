@@ -763,6 +763,41 @@ function equationExamples(host,value){
  }
  host.append(note);
 }
+function journeyTrial(graph, raw){
+ const fields=fractionSample(raw,1);
+ if(!fields)return null;
+ const evaluate=(left,right)=>sourceFractionTrial({symbols:['x'],original:left,reduced:right},raw);
+ const rows=graph.legs.map(leg=>{
+  const {original:distance,reduced:speed}=evaluate(leg.distance,leg.speed);
+  const positive=v=>v!==null&&v!=='0'&&!v.startsWith('-');
+  const valid=positive(distance)&&positive(speed);
+  const time=valid?evaluate(['/',leg.distance,leg.speed],'0').original:null;
+  return {name:leg.name,distance,speed,time,valid};
+ });
+ const valid=rows.every(row=>row.valid);
+ const comparison=valid?evaluate(graph.timeComparison,graph.target):null;
+ return {rows,valid,comparison:comparison?.original??null,agrees:valid&&comparison.original===comparison.reduced};
+}
+
+function travelTimes(host, graph, value){
+ host.className='task-graphs quantity-model';
+ const add=(content,tag,state)=>{const p=document.createElement('p');p.className='small';p.textContent=content;if(tag)p.dataset[tag]=state;host.append(p);};
+ add('x — '+graph.variable+'. Время каждого участка равно его длине, делённой на скорость.');
+ const entries=graph.trial?[graph.trial]:graph.speedAnswer?String(value||'').split(';'):[];
+ const trials=entries.slice(0,3).map(raw=>[raw,journeyTrial(graph,raw)]).filter(([,trial])=>trial);
+ if(!trials.length){
+  for(const leg of graph.legs)add(leg.name+': '+leg.distanceText+' км, '+leg.speedText+' км/ч.');
+  add('В первом шаге можно подставить пробную скорость и сравнить времена по условию.');
+ }
+ for(const [raw,trial] of trials){
+  add('Подстановка x = '+raw+' км/ч.');
+  for(const row of trial.rows){
+   add(row.name+': '+row.distance+' км, '+row.speed+' км/ч. '+(row.valid?'Время '+row.time+' ч.':'Такой участок невозможен: нужны положительные длина и скорость.'),'travelLeg',row.valid?'valid':'invalid');
+  }
+  if(trial.valid)add(graph.relation[0].toUpperCase()+graph.relation.slice(1)+': '+trial.comparison+' ч. По условию требуется '+graph.target+' ч.','travelComparison',trial.agrees?'agrees':'differs');
+ }
+}
+
 function rateTable(host,config,value){
  host.className='task-graphs quantity-model';
  const entries=String(value||'').split(';').map(x=>x.trim());
@@ -1029,6 +1064,7 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='travel-times'){travelTimes(host,config,value);return;}
  if(config.type==='rate-table'){rateTable(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}
  if(config.type==='vieta-relations'){vietaRelations(host,config,value);return;}
@@ -1090,5 +1126,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
