@@ -207,7 +207,23 @@ test('textbook 181 keeps source, drafts, history and microsteps through help and
   assert.equal(bookWork(restored).correct, true);
   assert.equal(bookWork(restored).independent, false);
   await route(restored, '#progress');
-  assert.deepEqual(metrics(restored).slice(0, 3), ['0', '1', '0']);
+  assert.deepEqual(metrics(restored), ['0', '0', '1', '0', '0']);
+});
+
+test('workbook separates a self-correction from using a hint across reload', async t => {
+  const book = await surface(t, BOOK + '#n/181/181-1');
+  input(book, '#answer', '17');
+  submit(book, '#answer-form');
+  input(book, '#answer', '7,6');
+  submit(book, '#answer-form');
+  assert.match(element(book, '#feedback').textContent, /Исправлено без подсказки/);
+  assert.equal(bookWork(book).firstErrors.final, '17');
+  const restored = await surface(t, BOOK + '#n/181/181-1', storage(book));
+  assert.match(element(restored, 'article .badge').textContent, /Исправлено без подсказки/);
+  await route(restored, '#progress');
+  assert.deepEqual(metrics(restored), ['0', '1', '0', '0', '0']);
+  await route(restored, '#map');
+  assert.match(restored.document.body.textContent, /Подпунктов решено: 1 \//);
 });
 
 test('practice detour carries the exact source origin and returns to retained source inputs', async t => {
@@ -251,7 +267,7 @@ test('written source task 1 remains for human review even when its sample answer
   assert.match(element(s, '#feedback').textContent, /ждёт проверки учителем/);
   sourcePresent(s);
   await route(s, '#progress');
-  assert.deepEqual(metrics(s).slice(0, 3), ['0', '0', '1']);
+  assert.deepEqual(metrics(s), ['0', '0', '0', '1', '0']);
 });
 
 test('unreadable stored JSON is preserved while both apps allow temporary work', async t => {
@@ -298,7 +314,7 @@ test('all 37 practice skills render and a new variant retains the previous draft
     assert.equal(element(s, '#answer').value, '', 'A new condition must not inherit the old answer');
   }
   await route(s, '#progress');
-  assert.deepEqual(metrics(s), ['0 / 37', '0', '0', '0']);
+  assert.deepEqual(metrics(s), ['0 / 37', '0', '0', '0', '0']);
   assert.equal(s.requests.length, 0);
 });
 
@@ -322,6 +338,8 @@ test('practice credits five distinct solutions, three independent, and never cre
     assert.match(element(s, '.practice-count').textContent,
       new RegExp('Разных решений: ' + (i + 1) + ' · самостоятельно: ' + Math.min(i + 1, 3)));
     const beforeRepeat = state(s, PRACTICE_KEY);
+    if (i === 3) assert.match(element(s, 'article .badge').textContent, /Исправлено без подсказки/);
+    if (i === 4) assert.match(element(s, 'article .badge').textContent, /Решено с помощью/);
     submit(s, '#answer-form');
     assert.deepEqual(state(s, PRACTICE_KEY).records[current.key].completion,
       beforeRepeat.records[current.key].completion, 'A repeat must retain its first completion');
@@ -335,7 +353,7 @@ test('practice credits five distinct solutions, three independent, and never cre
   }
   assert.match(element(s, '.practice-count').textContent, /тема готова/);
   const restored = await surface(t, PRACTICE + '#progress', storage(s));
-  assert.deepEqual(metrics(restored), ['1 / 37', '5', '3', '2']);
+  assert.deepEqual(metrics(restored), ['1 / 37', '5', '3', '1', '1']);
 });
 
 test('corrupt practice imports leave the current progress and unsolved draft untouched', async t => {
@@ -356,7 +374,7 @@ test('corrupt practice imports leave the current progress and unsolved draft unt
     await importFile(s, incoming);
     assert.match(element(s, '#import-message').textContent, /Не удалось загрузить/);
     assert.equal(s.w.localStorage.getItem(PRACTICE_KEY), raw, 'Rejected import must not write anything');
-    assert.deepEqual(metrics(s), ['0 / 37', '1', '1', '0']);
+    assert.deepEqual(metrics(s), ['0 / 37', '1', '1', '0', '0']);
   }
   await route(s, '#train/meeting/1');
   assert.equal(element(s, '#answer').value, '19/7');
