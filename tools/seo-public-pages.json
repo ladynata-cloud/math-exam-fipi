@@ -2,6 +2,7 @@
   "description": "Reviewed public HTML entry pages. Seeds retain the prior public sitemap and add current courses/topic guides. No repository-wide HTML discovery. Linked pages are admitted only inside the explicit public sections below; noindex, redirects, canonical alternatives, private and technical paths are excluded by the generator.",
   "seed_paths": [
     "/",
+    "/books/",
     "/articles/",
     "/articles/pedagogicheskiy-webcoding/",
     "/articles/stroynost-kursa-geometrii/",
