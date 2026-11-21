@@ -31,6 +31,7 @@ const server=http.createServer((req,res)=>{
  const equationAnswers={1051:['2','13'],'1052-1':['5','4'],'1052-2':['2','9'],'1052-3':['-7','9/4'],'1052-4':['-3','25'],1053:['10','13'],1054:['25','25'],'1055-1':['2','13'],'1055-2':['3','10'],1056:['16','1'],1057:['4','3']};
  const lineAnswers={'1058-1':['3','-1'],'1058-2':['-3','-3'],'1058-3':['-6','-1'],1059:['3','2'],'1060-1':['1','-6'],'1060-2':['5','3'],1061:['5','-3'],'1062-1':['3','-2'],'1062-2':['-2','3'],'1062-3':['-4','1'],'1062-4':['7','-1'],1063:['5','4'],1064:['5','6']};
  const locusAnswers={1065:['8','1'],1066:['-3','0'],'1067-1':['0','4'],'1067-2':['1','0'],'1068-1':['2','1'],'1068-2':['3','0'],1069:['4','4'],'1070-1':['4','1'],'1070-2':['1/3','2/3'],1071:['1','2'],1072:['3','0'],1073:['-2','-3'],1074:['32','2'],1075:['-3','-2']};
+ const endCoordinateAnswers={"1087-1":["25","3"],"1087-2":["1","2"],"1087-3":["-20","2"],"1087-4":["25","1"],"1087-5":["4","3"],"1088":["5","8"],"1089-1":["5/2","5"],"1089-2":["-2","4"],"1090-1":["16","2"],"1090-2":["-4","1"],"1090-3":["-17","2"],"1091":["2","3"],"1092-1":["2","3"],"1092-2":["3","-2"],"1092-3":["3","15"],"1093":["709","97"],"1094":["3","1"],"1095":["10","-10"],"1096":["20","97"],"1097-1":["-2","6"],"1097-2":["1","20"]};
  const additionalFigureAnswers={"1079":["73","13"],"1080":["289","13"],"1081-1":["25","3"],"1081-2":["100","5"],"1082":["65","2"],"1083-1":["6","1"],"1083-2":["50","32"],"1083-3":["4","3"],"1084":["36","25"],"1085":["58","24"],"1086":["3","6"]};
  const additionalVectorAnswers={"1076-1":["-1","-2/3"],"1076-2":["-1","2"],"1076-3":["1","3"],"1076-4":["2","-4"],"1077-1":["-1","125"],"1077-2":["4","100"],"1077-3":["5","205"],"1077-4":["-18","180"],"1078":["6","4"]};
  const coordinateReviewAnswers={"j1":["-2","3"],"j2":["2","-1"],"j3":["3","-2"],"j4":["-3","-4"],"j5":["1","-2"],"j6":["-2","-1"],"j7":["2","-2"],"j8":["-1","-7"],"j9":["-4","3"],"j10":["-3","-5"],"j11":["4","-1"],"j12":["25","13"],"j13":["5","100"],"j14":["15","43"],"j15":["5","-2"],"j16":["9","5"],"j17":["5","25"],"j18":["1","3"],"j19":["-2","3"],"j20":["0","-1"],"j21":["3","4"],"j22":["0","1"],"j23":["2","1"],"j24":["8","-1"]};
@@ -39,9 +40,9 @@ const server=http.createServer((req,res)=>{
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1086/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1097/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -53,6 +54,19 @@ const server=http.createServer((req,res)=>{
    await page.locator('[data-main-model] svg').waitFor();
    assert.equal(await page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1'))?.checked===true,id),false);
    const coefficient={
+    "1087-1":["1;-2;25","1;-2;5","знак правой части","(1;−2);5"],
+    "1087-2":["0;7;1","0;-7;1","знак правой части","(0;−7);1"],
+    "1087-3":["-4;2;20","нет","знак правой части","не является окружностью"],
+    "1087-4":["1;-2;25","1;-2;5","знак правой части","(1;−2);5"],
+    "1087-5":["2;1;4","2;1;2","знак правой части","(2;1);2"],
+    "1088":["3;5;5","(x−3)²+(y−5)²=25","радиуса","3; 5; 25"],
+    "1089-1":["7/2;5/2;125/2","(x+7/2)²+(y−5/2)²=125/2","радиуса","−7/2; 5/2; 125/2"],
+    "1089-2":["3;-2;5","(x−3)²+(y+2)²=25","радиуса","3; −2; 25"],
+    "1090-1":["5;-3;16","5;-3;16|1;2;-6|6;-1;10","все три","5;-3;16 | 1;2;-6 | 6;-1;10"],
+    "1090-2":["3;5;-4","3;5;-4|2;-1;-7|1;6;-23","все три","3;5;-4 | 2;-1;-7 | 1;6;-23"],
+    "1090-3":["3;5;-17","3;5;-17|2;-1;6|1;6;-10","все три","3;5;-17 | 2;-1;6 | 1;6;-10"],
+    "1097-1":["1;2","-1;2","Центр расположен","(-1;2)"],
+    "1097-2":["2/3;16/9","1/2;5/4","оба квадрата","½;5/4"],
     '1082':['5;1','5;0','нулевую ординату','(5; 0)'],'1083-1':['-1;9','-1;9;0;2;-4;6','усредни','(−1; 9); (0; 2); (−4; 6)'],'1083-2':['50','5√2','вершин','sqrt(50)'],'1083-3':['4;5;3','4;3;5','третьей стороной','4√2; 3√2; 5√2'],
     '1086':['(-2;2);(0;8)','(-2;2);(0;8);(-8;0)','все три','(0; 8); (−8; 0); (−2; 2)'],
     '1076-1':['1/2','-1/2','обеих компонент','−½'],'1076-2':['1','нет','Не дели','нет решений'],'1076-3':['2','-2','обеих компонент','−2,0'],'1076-4':['-2','2','обеих компонент','+2'],
@@ -138,7 +152,7 @@ const server=http.createServer((req,res)=>{
    const midpointCases={'972-1':5,'972-2':4,973:3,974:3,975:3};
    const appliedCases={976:2,977:4,978:2,979:3,980:3};
    const lengthCases={981:3,982:3,983:2,984:2,985:3,986:3,987:3};
-   const extraCase=n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
+   const extraCase=(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
    const gridCase=Object.hasOwn(gridAnswers,n)?'case-'+(Number(number)<=1006?6:3):null;
    const actionCase=Object.hasOwn(actionAnswers,n)?'case-'+(n==='1011'?4:n==='1012'?6:3):null;
    const positionCase=Object.hasOwn(positionAnswers,n)?'case-3':null;

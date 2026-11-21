@@ -70,6 +70,10 @@ on:
       - 'tools/geometry-textbook/*coordinate_chapter_review*'
       - 'tools/geometry-textbook/*coordinate_additional_vectors*'
       - 'tools/geometry-textbook/*coordinate_additional_figures*'
+      - 'tools/geometry-textbook/*coordinate_additional_curves*'
+      - 'geometry-course/textbook/data/coordinate-additional-curves.json'
+      - 'tools/geometry-textbook/*coordinate_additional_applications*'
+      - 'geometry-course/textbook/data/coordinate-additional-applications.json'
       - 'geometry-course/textbook/data/coordinate-additional-figures.json'
       - 'geometry-course/textbook/data/coordinate-additional-vectors.json'
       - 'tools/geometry-textbook/*coordinate_curves*'
@@ -119,6 +123,7 @@ jobs:
       - run: python3 tools/geometry-textbook/circle_equations.py --check && python3 tools/geometry-textbook/check_circle_equations.py
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
+      - run: python3 tools/geometry-textbook/coordinate_additional_curves.py --check && python3 tools/geometry-textbook/coordinate_additional_applications.py --check && python3 tools/geometry-textbook/check_coordinate_additional_curves.py
       - run: python3 tools/geometry-textbook/coordinate_additional_figures.py --check && python3 tools/geometry-textbook/check_coordinate_additional_figures.py
       - run: python3 tools/geometry-textbook/coordinate_additional_vectors.py --check && python3 tools/geometry-textbook/check_coordinate_additional_vectors.py
       - run: python3 tools/geometry-textbook/coordinate_chapter_review.py --check && python3 tools/geometry-textbook/check_coordinate_chapter_review.py
