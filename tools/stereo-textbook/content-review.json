@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T21:14:01Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–609, with 1,024 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T21:19:38Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–612, with 1,027 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1757,6 +1757,18 @@
       ],
       "evidence": "tools/stereo-textbook/centroids-in-tetrahedra.json",
       "mathematicalReport": "tools/stereo-textbook/centroids-in-tetrahedra.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 156, printed note for 610 on pages 268–269; independent signed-height and midpoint checks for 610–612.",
+      "reviewedAt": "2026-11-21T21:19:38Z",
+      "scope": "The final three source exercises of chapter VI paragraph 3: signed and ordinary projection heights, strict inequality for two skew opposite sides, and the common midpoint of the two diagonals in the four-midpoint parallelogram",
+      "cardIds": [
+        "ex-main-0610",
+        "ex-main-0611",
+        "ex-main-0612"
+      ],
+      "evidence": "tools/stereo-textbook/height-and-midpoint-proofs.json",
+      "mathematicalReport": "tools/stereo-textbook/height-and-midpoint-proofs.test.cjs"
     }
   ],
   "cards": [
@@ -5855,6 +5867,18 @@
     {
       "id": "ex-main-0609",
       "sha256": "49ca60f3eca1749e817397e7cd617a41402ac56ef5eb3ea8bc504490361ad470"
+    },
+    {
+      "id": "ex-main-0610",
+      "sha256": "642d2a3bcef5c43c86052df8a954180736298ee0dd99b73f045c2f1b9fe39d8f"
+    },
+    {
+      "id": "ex-main-0611",
+      "sha256": "3e4aafd81b4622331bb108e8760b1435469965fdcbeafa1e4cc162126565b531"
+    },
+    {
+      "id": "ex-main-0612",
+      "sha256": "905c597acfeb98e794c5ac18c0f2ee918558b180effad5c54eeca83957e7d763"
     }
   ]
 }
