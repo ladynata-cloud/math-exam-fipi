@@ -247,7 +247,7 @@ html.arz-world-ready .arz-adventure .adv-postcard-icon.adv-scene { font-size: 0;
 @media (max-width: 480px) {
   .arz-adventure:has(#workshop:not([hidden])) main { padding-left: 12px; padding-right: 12px; }
   .arz-adventure:has(#workshop:not([hidden])) > header nav { min-height: 46px; padding-top: .1rem; padding-bottom: .1rem; }
-  .arz-adventure:has(#workshop:not([hidden])) > header nav a { min-height: 42px; font-size: .78rem; }
+  .arz-adventure:has(#workshop:not([hidden])) > header nav a { min-height: 44px; font-size: .78rem; }
   .arz-adventure:has(#workshop:not([hidden])) > header nav .brand { font-size: .98rem; }
   .arz-adventure:has(#workshop:not([hidden])) .intro { padding-top: .65rem; gap: .5rem; }
   .arz-adventure .adv-eyebrow, .arz-adventure:has(#workshop:not([hidden])) .intro .adv-eyebrow { font-size: .65rem; line-height: 1.2; letter-spacing: .025em; margin: 0 0 .18rem; }

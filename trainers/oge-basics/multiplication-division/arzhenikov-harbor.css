@@ -213,7 +213,7 @@ html.arz-world-ready .arz-adventure .adv-harbor-stop .adv-scene { color: transpa
     min-height: 46px; padding-top: .1rem; padding-bottom: .1rem;
   }
   .arz-adventure[data-adventure-mode="harbor"] > header nav > span { display: none; }
-  .arz-adventure[data-adventure-mode="harbor"] > header nav a { min-height: 42px; font-size: .78rem; line-height: 1.22; }
+  .arz-adventure[data-adventure-mode="harbor"] > header nav a { min-height: 44px; font-size: .78rem; line-height: 1.22; }
   .arz-adventure[data-adventure-mode="harbor"] > header nav .brand { font-size: .98rem; }
   .arz-adventure[data-adventure-mode="harbor"] .intro { padding: .65rem 0 .55rem; }
   .arz-adventure[data-adventure-mode="harbor"] .intro h1 { font-size: 1.62rem; line-height: 1.07; }
