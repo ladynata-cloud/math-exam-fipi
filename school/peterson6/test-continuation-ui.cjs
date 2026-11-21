@@ -1671,3 +1671,16 @@ test('distinguish all quadrant rules, zero coordinates and growing axis incremen
   });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('construct four axis crossings, secant, tangent, segment ratios and all four source quadrilaterals',()=>{
+ const f=fixture(null,null,true);try{
+  const checks=[['(-4; 0), (5; 0)','(-8; 0), (10; 0)',4],['(0; -3), (0; 4)','(0; -6), (0; 8)',4],['AD/DB = 3','AD/DB = 3',2],['(-3; 5) и (1; 1)','(-6; 10) и (2; 2)',2],['(1; -1)','(2; -2)',1],['Прямоугольник.','AB² = 208',0],['Квадрат.','AB² = 100',0],['Параллелограмм.','AB² = 160',0],['Трапеция.','AB² = 52',0]];
+  checks.forEach(([first,second,count],i)=>{
+   f.nav('#lesson/p39/'+(20+i));assert(f.q('#task-figure svg'));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   assert.equal(f.d.querySelectorAll('#model [data-constructed-point]').length,0);
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(first),i);
+   assert.equal(f.d.querySelectorAll('#model [data-constructed-point]').length,count);f.event(data,'1','change');assert.equal(f.q(stage).value,'0');
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(second),i);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

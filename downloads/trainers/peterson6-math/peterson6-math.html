@@ -1514,6 +1514,52 @@ function stationSchedule(changed){
  const dt=changed?30:0,k=changed?.5:1;
  return stationPaths.map(points=>points.map(([time,km])=>[time+dt,km*k]));
 }
+const constructionSource={
+ triangle0:[[8,-6],[3,4],[-6,1]],triangle1:[[-3,-2],[1,6],[9,-6]],
+ division:[[-6,-3],[6,1],[0,-1],[3,0]],
+ secant:[[-3,1],[-5,7],[4,-2]],tangent:[[-2,-1],[6,-1]],
+ quad0:[[-4,0],[0,6],[3,4],[-1,-2]],quad1:[[1,4],[4,0],[0,-3],[-3,1]],
+ quad2:[[-6,1],[0,3],[2,0],[-4,-2]],quad3:[[3,0],[0,-2],[-4,0],[2,4]]
+};
+function sourceConstruction(design,fresh,stage){
+ const scale=fresh?2:1,points=constructionSource[design].map(p=>p.map(v=>v*scale));let circles=[],meets=[],info=[],result='';
+ const [A,B,C,D]=points,labeled=points.map(([x,y],i)=>({x,y,label:'ABCD'[i]}));
+ const delta=(a,b)=>b.map((v,i)=>v-a[i]),mag=v=>v[0]**2+v[1]**2,det=(v,w)=>v[0]*w[1]-v[1]*w[0],dot=(v,w)=>v[0]*w[0]+v[1]*w[1];
+ const tri=design.startsWith('triangle'),quad=design.startsWith('quad'),sec=design==='secant',tangent=design==='tangent';
+ const edges=tri?[[A,B],[B,C],[C,A]]:quad?[[A,B],[B,C],[C,D],[D,A]]:sec?[[B,C]]:tangent?[]:[[A,B]];
+ const coord=p=>'('+p.join('; ')+')';
+ if(tri){
+  for(const [p,q] of edges){for(let axis=0;axis<2;axis++)if(p[axis]*q[axis]<0){const t=-p[axis]/(q[axis]-p[axis]);const x=p.map((v,j)=>Math.round(1e7*(v+t*(q[j]-v)))/1e7);meets.push(x);}}
+  const xs=meets.filter(v=>v[1]===0).sort((p,q)=>p[0]-q[0]),ys=meets.filter(v=>v[0]===0).sort((p,q)=>p[1]-q[1]);
+  info=[['Ось x','У пересечения y = 0'],['Ось y','У пересечения x = 0']];result='На оси x: '+xs.map(coord).join(', ')+'. На оси y: '+ys.map(coord).join(', ')+'.';
+ }else if(design==='division'){
+  const dx=(a,b)=>Math.abs(b[0]-a[0]);info=[['AC и CB по горизонтали',dx(A,C)+' и '+dx(C,B)],['AD и DB по горизонтали',dx(A,D)+' и '+dx(D,B)]];
+  result='AC/CB = '+dx(A,C)/dx(C,B)+', AD/DB = '+dx(A,D)/dx(D,B)+'. Все четыре точки на одной прямой.';meets=[C,D];
+ }else if(sec){
+  const r=4*scale;circles=[[A,r]];meets=[[A[0],A[1]+r],[A[0]+r,A[1]]];info=[['BC','x + y = '+(B[0]+B[1])],['Радиус',r]];
+  result='Общие точки '+meets.map(coord).join(' и ')+'. При другом положении прямой пересечений бывает 0, 1 или 2.';
+ }else if(tangent){
+  const r=3*scale,s=5*scale;circles=[[A,r],[B,s]];meets=[[A[0]+r,A[1]]];info=[['Расстояние центров',B[0]-A[0]],['Сумма радиусов',r+s]];
+  result='Одна общая точка '+coord(meets[0])+'. Совпадающие окружности имеют бесконечно много общих точек.';
+ }else{
+  const ab=delta(A,B),bc=delta(B,C),cd=delta(C,D),da=delta(D,A),pairs=Number(det(ab,cd)===0)+Number(det(bc,da)===0);
+  const right=dot(ab,bc)===0,same=mag(ab)===mag(bc),kind=pairs===1?'Трапеция':right?(same?'Квадрат':'Прямоугольник'):'Параллелограмм';
+  info=[['Изменение вдоль AB',coord(ab)],['Изменение вдоль CD',coord(cd)],['Изменение вдоль BC',coord(bc)],['Изменение вдоль DA',coord(da)]];
+  result=kind+'. Параллельных пар: '+pairs+'. '+(right?'Угол между AB и BC прямой.':'Угол между AB и BC косой.')+' AB² = '+mag(ab)+', BC² = '+mag(bc)+'.';
+ }
+ const limits=[...points,...meets,[0,0],...circles.flatMap(([[x,y],r])=>[[x-r,y-r],[x+r,y+r]])];
+ const xs=limits.map(p=>p[0]),ys=limits.map(p=>p[1]),x0=Math.min(...xs)-scale,x1=Math.max(...xs)+scale,y0=Math.min(...ys)-scale,y1=Math.max(...ys)+scale;
+ const unit=Math.min(234/(x1-x0),170/(y1-y0)),X=x=>143+(x-(x0+x1)/2)*unit,Y=y=>105-(y-(y0+y1)/2)*unit;
+ const graph=svg('svg',{viewBox:'0 0 288 222',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Чертёж по координатам с равным масштабом осей.'});
+ for(let x=x0;x<=x1;x+=scale)ln(graph,X(x),Y(y0),X(x),Y(y1),{stroke:'#d4dfda','stroke-width':1});
+ for(let y=y0;y<=y1;y+=scale)ln(graph,X(x0),Y(y),X(x1),Y(y),{stroke:'#d4dfda','stroke-width':1});
+ ln(graph,X(x0),Y(0),X(x1),Y(0));ln(graph,X(0),Y(y0),X(0),Y(y1));txt(graph,X(x1)+8,Y(0)+4,'x',{'font-size':14});txt(graph,X(0)+6,Y(y1)-5,'y',{'font-size':14});
+ for(const [[x,y],r]of circles)graph.append(svg('circle',{cx:X(x),cy:Y(y),r:r*unit,fill:'none',stroke:'#267460','stroke-width':2,'data-construction-circle':r}));
+ for(const [p,q]of edges)ln(graph,X(p[0]),Y(p[1]),X(q[0]),Y(q[1]),{stroke:'#275359','stroke-width':2.2,'data-construction-side':'1'});
+ for(const {x,y,label}of labeled){graph.append(svg('circle',{cx:X(x),cy:Y(y),r:3.4,fill:'#6f3652'}));txt(graph,X(x)+7,Y(y)-5,label,{'font-size':14});}
+ if(stage===2)for(const [x,y]of meets)graph.append(svg('circle',{cx:X(x),cy:Y(y),r:4.5,fill:'#efbd52',stroke:'#754c12','data-constructed-point':x+','+y}));
+ return {graph,info,result,scale};
+}
 function axisExercise(rule,fresh,stage){
  const rules={
   order:()=>[[fresh?4:-3,fresh?-1:2]],
@@ -2846,6 +2892,7 @@ function changeBars(before,after,labels=['Было','Стало']) {
  return pic;
 }
 function configFor(lesson,task){
+ if(lesson?.id==='p39'&&task?.gridGeometry)return {title:'Проверь построение и свойства фигуры',controls:[c('Чертёж',[[0,'Из упражнения'],[1,'В два раза крупнее по координатам']]),c('Проверка',[[0,'Построю сам'],[1,'Сравнить данные'],[2,'Увидеть результат']])],initial:[0,0]};
  if(lesson?.id==='p39'&&task?.coordinateRule)return {title:'Проверь координаты на чертеже',controls:[c('Точки',[[0,'Из упражнения'],[1,'Новый пример']]),c('Проверка',[[0,'Построю сам'],[1,'Один признак'],[2,'Вся проверка']])],initial:[0,0]};
  if(lesson?.id==='p39'&&task?.gridRead)return {title:'Пройди к точке по клеткам',controls:[c('Поле',[[0,'Из упражнения'],[1,'Другие точки']]),c('Маршрут',[[0,'Построю сам'],[1,'Горизонтальное перемещение'],[2,'Оба перемещения']])],initial:[0,0]};
  if(lesson?.id==='p15' && Object.hasOwn(comparisonStories,task?.comparisonStory)){
@@ -3132,12 +3179,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p39-construction'){picture=sourceConstruction(f.design,false,0).graph;}else if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.quantifiedEquation||task.mentalSeries||task.stationGraph||task.convertGroup||task.proportionOpening||Number.isInteger(task.walkingGap)) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -3148,7 +3195,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
   if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -4734,7 +4781,13 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
  else if(n===38){const total=2*b+a;show(geometryFigure({points:[{name:'A',x:0,y:0},{name:'B',x:b,y:0},{name:'C',x:0,y:-2},{name:'D',x:b,y:-2},{name:'E',x:b+a,y:-2}],segments:[['A','B'],['C','D'],['D','E']],labels:[{x:b/2,y:.7,text:'x'},{x:b/2,y:-2.7,text:'x'},{x:b+a/2,y:-2.7,text:'ещё '+a}],caption:'Схема двух количеств'}));say('Сумма двух количеств равна '+total+'.');formula('x + (x + '+a+') = '+total);stepList(['Пусть x — меньшее количество. Тогда большее равно x + '+a+'.','Сложим количества: 2x + '+a+' = '+total+'.','2x = '+(total-a)+'; x = '+b+'. Большее: '+(b+a)+'.']);}
 
 
- else if(n===39&&task.coordinateRule){
+
+ else if(n===39&&task.gridGeometry){
+  const drawing=sourceConstruction(task.gridGeometry,a===1,b);show(drawing.graph);
+  say('Одна клетка — '+drawing.scale+(drawing.scale===1?' координатная единица.':' координатные единицы.'));
+  if(b>=1)show(table(['Что сравнить','Данные'],drawing.info));if(b===2)say(drawing.result);
+  stepList(['Отметь вершины по их координатам и построй нужную фигуру.','Выбери пары точек или сторон, которые помогут проверить твоё предположение.','Объясни вывод по координатам.']);
+ } else if(n===39&&task.coordinateRule){
   const example=axisExercise(task.coordinateRule,a===1,b);show(example.figure);
   if(b>=1)say(example.first);if(b===2)say(example.message);
   stepList(['Отметь указанную точку или несколько точек.','Проверь каждое положение сначала по горизонтали, затем по вертикали.','Объясни правило и испытай его на другом примере.']);
@@ -83742,6 +83795,589 @@ window.PetersonCourse = {
      ],
      "finalLabel": "Выбери ответ.",
      "coordinateRule": "height"
+    },
+    {
+     "id": "p39-t21",
+     "title": "К задаче №174 (а)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 40,
+      "exercise": 174,
+      "subpart": "а",
+      "reference": "№174 (а)"
+     },
+     "kind": "number",
+     "prompt": "Построй треугольник с вершинами A(8; −6), B(3; 4), C(−6; 1). Укажи все пересечения его сторон с координатными осями. У точек на оси x нужна абсцисса, у точек на оси y — ордината. Сколько всего различных точек пересечения?",
+     "answer": "4",
+     "steps": [
+      {
+       "prompt": "Абсцисса левого пересечения с осью x?",
+       "answer": "-4",
+       "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+       "explanation": "На горизонтальной оси получаются (-4; 0) и (5; 0); на вертикальной — (0; -2) и (0; 3)."
+      },
+      {
+       "prompt": "Абсцисса правого пересечения с осью x?",
+       "answer": "5",
+       "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+       "explanation": "На горизонтальной оси получаются (-4; 0) и (5; 0); на вертикальной — (0; -2) и (0; 3)."
+      },
+      {
+       "prompt": "Ордината нижнего пересечения с осью y?",
+       "answer": "-2",
+       "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+       "explanation": "На горизонтальной оси получаются (-4; 0) и (5; 0); на вертикальной — (0; -2) и (0; 3)."
+      },
+      {
+       "prompt": "Ордината верхнего пересечения с осью y?",
+       "answer": "3",
+       "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+       "explanation": "На горизонтальной оси получаются (-4; 0) и (5; 0); на вертикальной — (0; -2) и (0; 3)."
+      }
+     ],
+     "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+     "explanation": "На горизонтальной оси получаются (-4; 0) и (5; 0); на вертикальной — (0; -2) и (0; 3).",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Введи число.",
+     "gridGeometry": "triangle0",
+     "figure": {
+      "type": "p39-construction",
+      "design": "triangle0",
+      "caption": "Авторский чертёж. Единицы по горизонтали и вертикали имеют одинаковую длину."
+     },
+     "errorCues": [
+      [
+       "2",
+       "Это число пересечений с одной осью. Учти вторую."
+      ]
+     ]
+    },
+    {
+     "id": "p39-t22",
+     "title": "К задаче №174 (б)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 40,
+      "exercise": 174,
+      "subpart": "б",
+      "reference": "№174 (б)"
+     },
+     "kind": "number",
+     "prompt": "Построй треугольник с вершинами A(−3; −2), B(1; 6), C(9; −6). Укажи все пересечения его сторон с координатными осями. У точек на оси x нужна абсцисса, у точек на оси y — ордината. Сколько всего различных точек пересечения?",
+     "answer": "4",
+     "steps": [
+      {
+       "prompt": "Абсцисса левого пересечения с осью x?",
+       "answer": "-2",
+       "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+       "explanation": "На горизонтальной оси получаются (-2; 0) и (5; 0); на вертикальной — (0; -3) и (0; 4)."
+      },
+      {
+       "prompt": "Абсцисса правого пересечения с осью x?",
+       "answer": "5",
+       "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+       "explanation": "На горизонтальной оси получаются (-2; 0) и (5; 0); на вертикальной — (0; -3) и (0; 4)."
+      },
+      {
+       "prompt": "Ордината нижнего пересечения с осью y?",
+       "answer": "-3",
+       "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+       "explanation": "На горизонтальной оси получаются (-2; 0) и (5; 0); на вертикальной — (0; -3) и (0; 4)."
+      },
+      {
+       "prompt": "Ордината верхнего пересечения с осью y?",
+       "answer": "4",
+       "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+       "explanation": "На горизонтальной оси получаются (-2; 0) и (5; 0); на вертикальной — (0; -3) и (0; 4)."
+      }
+     ],
+     "hint": "На оси x ордината равна нулю, на оси y абсцисса равна нулю. Проверяй отрезок между двумя вершинами.",
+     "explanation": "На горизонтальной оси получаются (-2; 0) и (5; 0); на вертикальной — (0; -3) и (0; 4).",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Введи число.",
+     "gridGeometry": "triangle1",
+     "figure": {
+      "type": "p39-construction",
+      "design": "triangle1",
+      "caption": "Авторский чертёж. Единицы по горизонтали и вертикали имеют одинаковую длину."
+     },
+     "errorCues": [
+      [
+       "2",
+       "Это число пересечений с одной осью. Учти вторую."
+      ]
+     ]
+    },
+    {
+     "id": "p39-t23",
+     "title": "К задаче №175",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 40,
+      "exercise": 175,
+      "subpart": "",
+      "reference": "№175"
+     },
+     "kind": "number",
+     "prompt": "Отметь A(−6; −3), B(6; 1), C(0; −1) и D(3; 0). Покажи, что C и D лежат на AB. Найди отношения AC:CB и AD:DB, затем введи число AD/DB.",
+     "answer": "3",
+     "steps": [
+      {
+       "prompt": "Число единиц по горизонтали от A до C?",
+       "answer": "6",
+       "hint": "Сравни расстояния вдоль одной прямой. Их отношения совпадут с отношениями горизонтальных проекций.",
+       "explanation": "По горизонтали AC:CB = 6:6, а AD:DB = 9:3. C — середина, D отсекает три четверти пути от A к B. Отрезок делится в отношениях 1:1 и 3:1."
+      },
+      {
+       "prompt": "От C до B по горизонтали?",
+       "answer": "6",
+       "hint": "Сравни расстояния вдоль одной прямой. Их отношения совпадут с отношениями горизонтальных проекций.",
+       "explanation": "По горизонтали AC:CB = 6:6, а AD:DB = 9:3. C — середина, D отсекает три четверти пути от A к B. Отрезок делится в отношениях 1:1 и 3:1."
+      },
+      {
+       "prompt": "Чему равно AC/CB?",
+       "answer": "1",
+       "hint": "Сравни расстояния вдоль одной прямой. Их отношения совпадут с отношениями горизонтальных проекций.",
+       "explanation": "По горизонтали AC:CB = 6:6, а AD:DB = 9:3. C — середина, D отсекает три четверти пути от A к B. Отрезок делится в отношениях 1:1 и 3:1."
+      },
+      {
+       "prompt": "От D до B по горизонтали?",
+       "answer": "3",
+       "hint": "Сравни расстояния вдоль одной прямой. Их отношения совпадут с отношениями горизонтальных проекций.",
+       "explanation": "По горизонтали AC:CB = 6:6, а AD:DB = 9:3. C — середина, D отсекает три четверти пути от A к B. Отрезок делится в отношениях 1:1 и 3:1."
+      }
+     ],
+     "hint": "Сравни расстояния вдоль одной прямой. Их отношения совпадут с отношениями горизонтальных проекций.",
+     "explanation": "По горизонтали AC:CB = 6:6, а AD:DB = 9:3. C — середина, D отсекает три четверти пути от A к B. Отрезок делится в отношениях 1:1 и 3:1.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Введи число.",
+     "gridGeometry": "division",
+     "figure": {
+      "type": "p39-construction",
+      "design": "division",
+      "caption": "Авторский чертёж. Единицы по горизонтали и вертикали имеют одинаковую длину."
+     },
+     "errorCues": [
+      [
+       "1/3",
+       "Это DB/AD. В условии участок от A до D идёт первым."
+      ],
+      [
+       "3/4",
+       "Это AD/AB. В знаменателе нужен оставшийся участок DB."
+      ]
+     ]
+    },
+    {
+     "id": "p39-t24",
+     "title": "К задаче №176 (б)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 40,
+      "exercise": 176,
+      "subpart": "б",
+      "reference": "№176 (б)"
+     },
+     "kind": "choice",
+     "prompt": "Построй окружность с центром A(−3; 1) радиуса 4 и прямую через B(−5; 7), C(4; −2). Найди координаты обеих общих точек. В конце укажи, сколько общих точек вообще может быть у прямой и окружности.",
+     "answer": "0, 1 или 2",
+     "steps": [
+      {
+       "prompt": "Ордината верхней точки окружности при x = −3?",
+       "answer": "5",
+       "hint": "Прямая через B(−5; 7) и C(4; −2) понижает ординату на единицу при каждом шаге вправо. Проверь на ней точки круга по длине радиуса.",
+       "explanation": "Прямая имеет уравнение x + y = 2. От центра A(−3; 1) верхняя точка (−3; 5) и правая (1; 1) отстоят на 4. Обе удовлетворяют уравнению прямой. У прямой и окружности бывает 0, 1 или 2 общие точки."
+      },
+      {
+       "prompt": "Абсцисса правой точки окружности при y = 1?",
+       "answer": "1",
+       "hint": "Прямая через B(−5; 7) и C(4; −2) понижает ординату на единицу при каждом шаге вправо. Проверь на ней точки круга по длине радиуса.",
+       "explanation": "Прямая имеет уравнение x + y = 2. От центра A(−3; 1) верхняя точка (−3; 5) и правая (1; 1) отстоят на 4. Обе удовлетворяют уравнению прямой. У прямой и окружности бывает 0, 1 или 2 общие точки."
+      },
+      {
+       "prompt": "Чему равна сумма x+y у точек прямой BC?",
+       "answer": "2",
+       "hint": "Прямая через B(−5; 7) и C(4; −2) понижает ординату на единицу при каждом шаге вправо. Проверь на ней точки круга по длине радиуса.",
+       "explanation": "Прямая имеет уравнение x + y = 2. От центра A(−3; 1) верхняя точка (−3; 5) и правая (1; 1) отстоят на 4. Обе удовлетворяют уравнению прямой. У прямой и окружности бывает 0, 1 или 2 общие точки."
+      }
+     ],
+     "hint": "Прямая через B(−5; 7) и C(4; −2) понижает ординату на единицу при каждом шаге вправо. Проверь на ней точки круга по длине радиуса.",
+     "explanation": "Прямая имеет уравнение x + y = 2. От центра A(−3; 1) верхняя точка (−3; 5) и правая (1; 1) отстоят на 4. Обе удовлетворяют уравнению прямой. У прямой и окружности бывает 0, 1 или 2 общие точки.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "gridGeometry": "secant",
+     "figure": {
+      "type": "p39-construction",
+      "design": "secant",
+      "caption": "Авторский чертёж. Единицы по горизонтали и вертикали имеют одинаковую длину."
+     },
+     "choices": [
+      "Только 2",
+      "0 или 2",
+      "0, 1 или 2",
+      "Возможно 3"
+     ],
+     "errorCues": [
+      [
+       "Только 2",
+       "Сдвинь прямую, сохраняя окружность. Она может пройти мимо."
+      ],
+      [
+       "0 или 2",
+       "Возможна и касательная с одним местом соприкосновения."
+      ],
+      [
+       "Возможно 3",
+       "У прямой и окружности не более двух общих точек."
+      ]
+     ]
+    },
+    {
+     "id": "p39-t25",
+     "title": "К задаче №176 (в)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 40,
+      "exercise": 176,
+      "subpart": "в",
+      "reference": "№176 (в)"
+     },
+     "kind": "choice",
+     "prompt": "Построй окружности с центрами A(−2; −1), B(6; −1) и радиусами 3 и 5. Определи их общую точку. В каком случае у двух окружностей бесконечно много общих точек?",
+     "answer": "Совпадают центры и радиусы",
+     "steps": [
+      {
+       "prompt": "Расстояние между центрами?",
+       "answer": "8",
+       "hint": "Оба центра находятся на горизонтали y = −1. Сравни расстояние между ними с суммой радиусов.",
+       "explanation": "Между центрами 8 единиц, столько же дают 3 + 5. Внешнее касание происходит в (1; −1). Различные окружности могут дать 0, 1 или 2 общие точки; у совпавших окружностей общих точек бесконечно много."
+      },
+      {
+       "prompt": "Абсцисса точки касания?",
+       "answer": "1",
+       "hint": "Оба центра находятся на горизонтали y = −1. Сравни расстояние между ними с суммой радиусов.",
+       "explanation": "Между центрами 8 единиц, столько же дают 3 + 5. Внешнее касание происходит в (1; −1). Различные окружности могут дать 0, 1 или 2 общие точки; у совпавших окружностей общих точек бесконечно много."
+      },
+      {
+       "prompt": "Ордината точки касания?",
+       "answer": "-1",
+       "hint": "Оба центра находятся на горизонтали y = −1. Сравни расстояние между ними с суммой радиусов.",
+       "explanation": "Между центрами 8 единиц, столько же дают 3 + 5. Внешнее касание происходит в (1; −1). Различные окружности могут дать 0, 1 или 2 общие точки; у совпавших окружностей общих точек бесконечно много."
+      }
+     ],
+     "hint": "Оба центра находятся на горизонтали y = −1. Сравни расстояние между ними с суммой радиусов.",
+     "explanation": "Между центрами 8 единиц, столько же дают 3 + 5. Внешнее касание происходит в (1; −1). Различные окружности могут дать 0, 1 или 2 общие точки; у совпавших окружностей общих точек бесконечно много.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "gridGeometry": "tangent",
+     "figure": {
+      "type": "p39-construction",
+      "design": "tangent",
+      "caption": "Авторский чертёж. Единицы по горизонтали и вертикали имеют одинаковую длину."
+     },
+     "choices": [
+      "Радиусы одинаковы",
+      "Совпадают центры и радиусы",
+      "Есть одно касание",
+      "Центры просто совпадают"
+     ],
+     "errorCues": [
+      [
+       "Радиусы одинаковы",
+       "Две равные окружности можно разместить далеко друг от друга."
+      ],
+      [
+       "Есть одно касание",
+       "При касании общая точка ровно одна."
+      ],
+      [
+       "Центры просто совпадают",
+       "У концентрических окружностей с разными радиусами общих точек нет."
+      ]
+     ]
+    },
+    {
+     "id": "p39-t26",
+     "title": "К задаче №177 (а)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 40,
+      "exercise": 177,
+      "subpart": "а",
+      "reference": "№177 (а)"
+     },
+     "kind": "choice",
+     "prompt": "Отметь A(−4; 0), B(0; 6), C(3; 4), D(−1; −2). Соедини вершины по порядку, измерь и сравни стороны и углы. Выбери самое точное название и объясни, какие свойства его подтверждают.",
+     "answer": "Прямоугольник",
+     "steps": [
+      {
+       "prompt": "Горизонтальное изменение от A к B со знаком?",
+       "answer": "4",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "Соседние стороны перпендикулярны. Их длины различны, а противоположные стороны попарно параллельны и равны."
+      },
+      {
+       "prompt": "Вертикальное изменение от A к B со знаком?",
+       "answer": "6",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "Соседние стороны перпендикулярны. Их длины различны, а противоположные стороны попарно параллельны и равны."
+      },
+      {
+       "prompt": "Сколько пар противоположных сторон параллельны?",
+       "answer": "2",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "Соседние стороны перпендикулярны. Их длины различны, а противоположные стороны попарно параллельны и равны."
+      }
+     ],
+     "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+     "explanation": "Соседние стороны перпендикулярны. Их длины различны, а противоположные стороны попарно параллельны и равны.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "gridGeometry": "quad0",
+     "figure": {
+      "type": "p39-construction",
+      "design": "quad0",
+      "caption": "Авторский чертёж. Единицы по горизонтали и вертикали имеют одинаковую длину."
+     },
+     "choices": [
+      "Квадрат",
+      "Прямоугольник",
+      "Параллелограмм",
+      "Трапеция"
+     ],
+     "errorCues": [
+      [
+       "Квадрат",
+       "Нужны одновременно четыре равные стороны и четыре прямых угла."
+      ],
+      [
+       "Параллелограмм",
+       "Сравни обе пары противоположных сторон и подбери самое точное название."
+      ],
+      [
+       "Трапеция",
+       "У трапеции ровно одна пара параллельных противоположных сторон."
+      ]
+     ]
+    },
+    {
+     "id": "p39-t27",
+     "title": "К задаче №177 (б)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 40,
+      "exercise": 177,
+      "subpart": "б",
+      "reference": "№177 (б)"
+     },
+     "kind": "choice",
+     "prompt": "Отметь A(1; 4), B(4; 0), C(0; −3), D(−3; 1). Соедини вершины по порядку, измерь и сравни стороны и углы. Выбери самое точное название и объясни, какие свойства его подтверждают.",
+     "answer": "Квадрат",
+     "steps": [
+      {
+       "prompt": "Горизонтальное изменение от A к B со знаком?",
+       "answer": "3",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "Соседние стороны равны и перпендикулярны. Все углы прямые, все стороны равны."
+      },
+      {
+       "prompt": "Вертикальное изменение от A к B со знаком?",
+       "answer": "-4",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "Соседние стороны равны и перпендикулярны. Все углы прямые, все стороны равны."
+      },
+      {
+       "prompt": "Сколько пар противоположных сторон параллельны?",
+       "answer": "2",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "Соседние стороны равны и перпендикулярны. Все углы прямые, все стороны равны."
+      }
+     ],
+     "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+     "explanation": "Соседние стороны равны и перпендикулярны. Все углы прямые, все стороны равны.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "gridGeometry": "quad1",
+     "figure": {
+      "type": "p39-construction",
+      "design": "quad1",
+      "caption": "Авторский чертёж. Единицы по горизонтали и вертикали имеют одинаковую длину."
+     },
+     "choices": [
+      "Квадрат",
+      "Прямоугольник",
+      "Параллелограмм",
+      "Трапеция"
+     ],
+     "errorCues": [
+      [
+       "Прямоугольник",
+       "Проверь все углы и возможность назвать фигуру точнее."
+      ],
+      [
+       "Параллелограмм",
+       "Сравни обе пары противоположных сторон и подбери самое точное название."
+      ],
+      [
+       "Трапеция",
+       "У трапеции ровно одна пара параллельных противоположных сторон."
+      ]
+     ]
+    },
+    {
+     "id": "p39-t28",
+     "title": "К задаче №177 (в)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 40,
+      "exercise": 177,
+      "subpart": "в",
+      "reference": "№177 (в)"
+     },
+     "kind": "choice",
+     "prompt": "Отметь A(−6; 1), B(0; 3), C(2; 0), D(−4; −2). Соедини вершины по порядку, измерь и сравни стороны и углы. Выбери самое точное название и объясни, какие свойства его подтверждают.",
+     "answer": "Параллелограмм",
+     "steps": [
+      {
+       "prompt": "Горизонтальное изменение от A к B со знаком?",
+       "answer": "6",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "Противоположные стороны попарно параллельны и равны, соседние различаются по длине и не перпендикулярны."
+      },
+      {
+       "prompt": "Вертикальное изменение от A к B со знаком?",
+       "answer": "2",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "Противоположные стороны попарно параллельны и равны, соседние различаются по длине и не перпендикулярны."
+      },
+      {
+       "prompt": "Сколько пар противоположных сторон параллельны?",
+       "answer": "2",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "Противоположные стороны попарно параллельны и равны, соседние различаются по длине и не перпендикулярны."
+      }
+     ],
+     "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+     "explanation": "Противоположные стороны попарно параллельны и равны, соседние различаются по длине и не перпендикулярны.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "gridGeometry": "quad2",
+     "figure": {
+      "type": "p39-construction",
+      "design": "quad2",
+      "caption": "Авторский чертёж. Единицы по горизонтали и вертикали имеют одинаковую длину."
+     },
+     "choices": [
+      "Квадрат",
+      "Прямоугольник",
+      "Параллелограмм",
+      "Трапеция"
+     ],
+     "errorCues": [
+      [
+       "Квадрат",
+       "Нужны одновременно четыре равные стороны и четыре прямых угла."
+      ],
+      [
+       "Прямоугольник",
+       "Проверь все углы и возможность назвать фигуру точнее."
+      ],
+      [
+       "Трапеция",
+       "У трапеции ровно одна пара параллельных противоположных сторон."
+      ]
+     ]
+    },
+    {
+     "id": "p39-t29",
+     "title": "К задаче №177 (г)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 40,
+      "exercise": 177,
+      "subpart": "г",
+      "reference": "№177 (г)"
+     },
+     "kind": "choice",
+     "prompt": "Отметь A(3; 0), B(0; −2), C(−4; 0), D(2; 4). Соедини вершины по порядку, измерь и сравни стороны и углы. Выбери самое точное название и объясни, какие свойства его подтверждают.",
+     "answer": "Трапеция",
+     "steps": [
+      {
+       "prompt": "Горизонтальное изменение от A к B со знаком?",
+       "answer": "-3",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "AB и CD параллельны: при движении по CD изменение обеих координат в −2 раза больше, чем по AB. Вторая пара сторон не параллельна."
+      },
+      {
+       "prompt": "Вертикальное изменение от A к B со знаком?",
+       "answer": "-2",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "AB и CD параллельны: при движении по CD изменение обеих координат в −2 раза больше, чем по AB. Вторая пара сторон не параллельна."
+      },
+      {
+       "prompt": "Сколько пар противоположных сторон параллельны?",
+       "answer": "1",
+       "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+       "explanation": "AB и CD параллельны: при движении по CD изменение обеих координат в −2 раза больше, чем по AB. Вторая пара сторон не параллельна."
+      }
+     ],
+     "hint": "Соедини A–B–C–D–A. Сравни изменения горизонтальной и вертикальной координат вдоль противоположных сторон, а затем проверь прямые углы и равенство длин.",
+     "explanation": "AB и CD параллельны: при движении по CD изменение обеих координат в −2 раза больше, чем по AB. Вторая пара сторон не параллельна.",
+     "skills": [
+      "integer-compare"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "gridGeometry": "quad3",
+     "figure": {
+      "type": "p39-construction",
+      "design": "quad3",
+      "caption": "Авторский чертёж. Единицы по горизонтали и вертикали имеют одинаковую длину."
+     },
+     "choices": [
+      "Квадрат",
+      "Прямоугольник",
+      "Параллелограмм",
+      "Трапеция"
+     ],
+     "errorCues": [
+      [
+       "Квадрат",
+       "Нужны одновременно четыре равные стороны и четыре прямых угла."
+      ],
+      [
+       "Прямоугольник",
+       "Проверь все углы и возможность назвать фигуру точнее."
+      ],
+      [
+       "Параллелограмм",
+       "Сравни обе пары противоположных сторон и подбери самое точное название."
+      ]
+     ]
     }
    ]
   },
