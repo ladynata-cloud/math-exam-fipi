@@ -15,7 +15,7 @@
   const positions=[12,15,18,21,24,27,30,33,36];
   const err=(value,text)=>({value,text});
   function svg(body,label,desc){
-    return '<svg role="img" aria-label="'+label+'" viewBox="0 0 270 188" style="display:block;width:100%;max-width:26rem;height:auto;margin:auto"><desc>'+desc+'</desc><g font-family="sans-serif" font-size="13" fill="#16394c">'+body+'</g></svg>';
+    return '<svg class="v5q-printed-geometry" role="img" aria-label="'+label+'" viewBox="0 0 270 188" style="display:block;width:100%;max-width:26rem;height:auto;margin:auto"><desc>'+desc+'</desc><g font-family="sans-serif" font-size="13" fill="#16394c">'+body+'</g></svg>';
   }
   function rulerDetail(origin,radius){
     const max=Math.ceil((origin+radius+2)/10)*10,start=16,unit=234/max;
@@ -27,9 +27,9 @@
     }
     const pointer=(v,label)=>{
       const x=start+unit*v;
-      return '<text x="'+x+'" y="14" text-anchor="middle" font-size="15" font-weight="bold">'+label+'</text><path d="M '+x+' 16 v 12 m -3 -5 l 3 5 3 -5" fill="none" stroke="#8c340d" stroke-width="2"/>';
+      return '<text x="'+x+'" y="19" text-anchor="middle" font-size="15" font-weight="bold">'+label+'</text><path d="M '+x+' 20 v 8 m -3 -5 l 3 5 3 -5" fill="none" stroke="#8c340d" stroke-width="2"/>';
     };
-    return '<figure style="margin:.35rem auto .8rem;max-width:26rem"><figcaption>Линейка крупнее · миллиметры</figcaption><svg viewBox="0 0 270 64" style="display:block;width:100%;height:auto" role="img" aria-label="Крупная шкала под центром и правым краем"><desc>Центр над отметкой '+origin+' мм, край над отметкой '+(origin+radius)+' мм.</desc><g font-family="sans-serif" fill="#16394c"><rect x="7" y="28" width="252" height="35" rx="2" fill="#fff2ca"/>'+marks+pointer(origin,'O')+pointer(origin+radius,'край')+'</g></svg></figure>';
+    return '<figure style="margin:.35rem auto .8rem;max-width:26rem"><figcaption>Линейка крупнее · миллиметры</figcaption><svg class="v5q-printed-geometry" viewBox="0 0 270 64" style="display:block;width:100%;height:auto" role="img" aria-label="Крупная шкала под центром и правым краем"><desc>Центр над отметкой '+origin+' мм, край над отметкой '+(origin+radius)+' мм.</desc><g font-family="sans-serif" fill="#16394c"><rect x="7" y="28" width="252" height="35" rx="2" fill="#fff2ca"/>'+marks+pointer(origin,'O')+pointer(origin+radius,'край')+'</g></svg></figure>';
   }
   function compass(radius,origin,stage){
     const scale=2.4,cx=126,cy=88,r=radius*scale;
@@ -43,7 +43,7 @@
         const x=zero+n*scale;body+='<path d="M '+x+' '+(cy+6)+' v '+(n%5?4:9)+'" stroke="#5c532c"/>';
         if(n%10===0)body+='<text x="'+x+'" y="'+(cy+29)+'" font-size="10" text-anchor="middle">'+n+'</text>';
       }
-      body+='<text x="'+zero+'" y="'+(cy+43)+'" font-size="11">мм</text>'+ray;
+      body+='<text x="'+zero+'" y="'+(cy+54)+'" font-size="11">мм</text>'+ray;
       if(stage===3)body+='<path d="M '+(cx-r)+' '+cy+' H '+cx+'" stroke="#ac470a" stroke-width="3"/>';
     }else{
       body+='<path d="M '+cx+' '+cy+' L '+(cx+r/2)+' 25 L '+(cx+r)+' '+cy+'" stroke="#5d7080" stroke-width="4" stroke-linecap="round" fill="none"/>';
@@ -78,7 +78,7 @@
       body+='<path d="M '+a.join(' ')+' A 66 66 0 '+Number(Boolean(longWay))+' '+Number(!longWay)+' '+b.join(' ')+'" stroke="'+colors[longWay]+'" stroke-width="5" fill="none"/>';
     }
     for(let i=0;i<6;i++){
-      const [x,y]=at(i),lx=135+(x-135)*1.22,ly=92+(y-92)*1.22+4;
+      const [x,y]=at(i),lx=135+(x-135)*1.22,ly=92+(y-92)*1.16+4;
       body+='<circle cx="'+x+'" cy="'+y+'" r="'+(i%2?2.5:4)+'" fill="#16394c"/><text x="'+lx+'" y="'+ly+'" font-size="15" font-weight="'+(i%2?'normal':'bold')+'" text-anchor="middle">'+f.letters[i]+'</text>';
     }
     return svg(body,'Три отмеченные точки и три малые метки между ними','По часовой стрелке расположены '+f.letters.join(', ')+'. Крупные точки — '+[0,2,4].map(i=>f.letters[i]).join(', ')+'.');
