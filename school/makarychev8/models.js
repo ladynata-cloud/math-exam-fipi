@@ -845,5 +845,18 @@
       skills:[orderPractice.id],source:{type:'authored',reference:'Тренировка преобразований неравенств'}};
   }
 
-  return { mount, experiment, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const boundsPractice={id:'bound-estimates',title:'Как меняются границы промежутка',description:'Преобразуй концы и проверь, входят ли они в оценку.'};
+  function practiceBounds(seed,level){
+    const left=1+seed%13,right=left+2+Math.floor(seed/2)%9,magnitude=2+Math.floor(seed/3)%5,k=level===2?-magnitude:magnitude,shift=seed%5,closed=seed%2===0;
+    const reciprocal=level>=3,expression=reciprocal?'1/x':k+'x + '+shift;
+    const a=reciprocal?'1/'+left:String(k*left+shift),b=reciprocal?'1/'+right:String(k*right+shift);
+    const flip=reciprocal||k<0,answer=(closed?'[':'(')+(flip?b:a)+';'+(flip?a:b)+(closed?']':')'),relation=closed?' ≤ ':' < ';
+    const hint='Преобразуй оба конца. Проверь направление и строгость.';
+    return {title:boundsPractice.title,prompt:'Из '+left+relation+'x'+relation+right+' найди точные границы для '+expression+'.',kind:'estimate-interval',answer,hint,correction:hint,explanation:'Получаем '+answer+'.',inputNote:'Введи интервал через точку с запятой.',
+      graph:{type:'interval-image',source:[String(left),String(right)],closed,variable:'x',expression,operation:reciprocal?'reciprocal':'affine',slope:String(k),offset:String(shift)},
+      steps:[{prompt:'Куда переходит исходный левый конец?',kind:'number',answer:a,hint,explanation:hint},{prompt:'Куда переходит исходный правый конец?',kind:'number',answer:b,hint,explanation:hint}],skills:[boundsPractice.id],source:{type:'authored',reference:'Тренировка преобразования промежутков'}};
+  }
+
+
+  return { mount, experiment, boundsPractice, practiceBounds, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

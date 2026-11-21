@@ -770,6 +770,54 @@ function equationExamples(host,value){
  }
  host.append(note);
 }
+function boundNote(host,text) {
+ const p=document.createElement('p'); p.className='small'; p.textContent=text;host.append(p);return p;
+}
+function intervalDiagram(host,label,ends,opened){
+ const bounds=ends.map(M.answer),svg=node('svg',{viewBox:'0 0 340 74',role:'img','aria-label':label+' '+bounds.join(' … ')});
+ const [a,b]=ends;
+ if(BigInt(a.n)*BigInt(b.d)>=BigInt(b.n)*BigInt(a.d)){boundNote(host,'Левая граница должна быть меньше правой.');return;}
+ svg.append(node('line',{x1:12,x2:328,y1:25,y2:25,stroke:'#52665d','stroke-width':2}),node('path',{d:'M322 21 L328 25 L322 29',stroke:'#52665d',fill:'none'}),node('line',{x1:75,x2:265,y1:25,y2:25,stroke:'#06716a','stroke-width':5}));
+ [75,265].forEach((x,i)=>svg.append(node('circle',{cx:x,cy:25,r:6,stroke:'#066258','stroke-width':2,fill:opened[i]?'white':'#066258','data-boundary':opened[i]?'open':'closed'}),node('text',{x,y:55,'text-anchor':'middle','font-size':16},bounds[i])));host.append(svg);
+}
+function estimateDiagram(host,g){
+ host.className='task-graphs quantity-model';
+ boundNote(host,'Данный промежуток для '+g.variable);
+ intervalDiagram(host,'Дано',g.source.map(M.parse),[!g.closed,!g.closed]);
+ if(!g.proposal){const steps=g.partial||[];boundNote(host,'После преобразования концов: '+(steps[0]||'…')+' и '+(steps[1]||'…')+'. Введи свой интервал.');return;}
+ const q=g.proposal;boundNote(host,'Твой промежуток для '+g.expression+(g.unit?' ('+g.unit+')':''));
+ intervalDiagram(host,'Твой промежуток',[q.left,q.right],[q.leftOpen,q.rightOpen]);
+}
+function rankExpressions(host,g){
+ host.className='task-graphs quantity-model';
+ let values;
+ if(g.mode==='reciprocals'){
+  const trial=coordinateEvidence(g.trial,['a','b','c','d'],['d','b','a','c'],[['d','>','0']]);
+  if(trial?.valid)values=trial.fields.map(v=>M.answer({n:v.d,d:v.n}));
+ }else{
+  const trial=M.parse(g.trial);if(trial?.n>0){
+   const a=trial.n/trial.d,r=Math.sqrt;
+   values=(g.mode==='positive'?[2*a,a*r(3),-a,a/(r(3)+r(2)),3*a]:[6*a,-a*r(5),a/(r(7)+r(6)),-a,-5*a-1]).map(v=>v.toLocaleString('ru-RU',{maximumSignificantDigits:5}));
+  }
+ }
+ if(values){boundNote(host,(g.mode==='reciprocals'?'Точные значения':'Приближения при данном a')+': '+g.labels.map((l,i)=>l+(g.mode==='reciprocals'?' = ':' ≈ ')+values[i]).join(', ')+'.').dataset.rankTrial='yes';}
+ else boundNote(host,'Введи допустимый пример на первом шаге. Для общего вывода обоснуй порядок выражений.');
+ if(g.selected?.length)boundNote(host,'Твой порядок: '+g.selected.map(i=>g.labels[i-1]).join(g.ascending?' < ':' > ')).dataset.rankOrder='yes';
+}
+function surdComparison(host,g,value){
+ host.className='task-graphs quantity-model';const r=Math.sqrt;
+ const pairs=[[r(11)+13,15],[r(84),7+r(6)],[r(8)-r(3),2],[r(47)-r(7),5],[r(2)+5,2+r(5)],[r(3)-4,1-r(5)],[(2*r(3)+23)/3,9],[(1-r(15))/12,-7/8]];
+ boundNote(host,'Сравни '+g.labels[0]+' и '+g.labels[1]+'. Точные преобразования выполни в шагах.');
+ if(['<','=','>'].includes(value))boundNote(host,'Проверка приближениями с твоим знаком: '+pairs[g.row].map(v=>v.toLocaleString('ru-RU',{maximumFractionDigits:4})).join(' '+value+' ')+'.').dataset.surdTrial=value;
+}
+function squareSubstitution(host,g){
+ host.className='task-graphs quantity-model';boundNote(host,'При x = '+g.given+' преобразуй выражение к (x − 2)² − 3.');
+ const a=M.parse(g.partial?.[1]);if(!a)return;
+ const difference=String(BigInt(a.n)-3n*BigInt(a.d))+(a.d===1?'':'/'+a.d);
+ boundNote(host,'По твоему шагу квадрат равен '+M.answer(a)+'. После вычитания 3 получается '+difference+'.').dataset.squareTrial='yes';
+}
+
+
 function coordinateEvidence(raw,symbols,expected,bounds=[]){
  const fields=String(raw??'').split(';').map(s=>M.parse(s.trim()));
  if(fields.length!==symbols.length||fields.some(v=>!v))return null;
@@ -1263,6 +1311,10 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='interval-image'){estimateDiagram(host,config);return;}
+ if(config.type==='rank-expressions'){rankExpressions(host,config);return;}
+ if(config.type==='compare-surd-values'){surdComparison(host,config,value);return;}
+ if(config.type==='square-substitution'){squareSubstitution(host,config);return;}
  if(config.type==='labelled-order'){labelledOrder(host,config,value);return;}
  if(config.type==='transformed-numbers'){transformedNumbers(host,config,value);return;}
  if(config.type==='radical-comparison'){radicalComparison(host,config,value);return;}

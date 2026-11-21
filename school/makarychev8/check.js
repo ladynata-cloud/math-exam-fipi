@@ -692,6 +692,23 @@ function openIntervals(input){
  }
  return list;
 }
+function estimateInput(raw,expression){
+ const src=String(raw??'').trim().replace(/<=/g,'≤').replace(/>=/g,'≥');
+ let ranges=openIntervals(src);
+ if(!ranges){
+  const m=/^([^<>≤≥]+)([<≤>≥])([^<>≤≥]+)([<≤>≥])([^<>≤≥]+)$/.exec(src);
+  if(!m||normalize(m[3])!==normalize(expression))return null;
+  const asc='<≤'.includes(m[2]);if(asc!=='<≤'.includes(m[4]))return null;
+  ranges=openIntervals(asc?(m[2]==='≤'?'[':'(')+m[1]+';'+m[5]+(m[4]==='≤'?']':')'):(m[4]==='≥'?'[':'(')+m[5]+';'+m[1]+(m[2]==='≥'?']':')'));
+ }
+ return ranges?.length===1&&typeof ranges[0].left!=='string'&&typeof ranges[0].right!=='string'?ranges[0]:null;
+}
+function estimateStatus(raw,t){
+ const u=estimateInput(raw,t.graph.expression),g=openIntervals(t.answer)[0];if(!u)return 'format';
+ if(BigInt(u.left.n)*BigInt(u.right.d)>=BigInt(u.right.n)*BigInt(u.left.d))return 'order';
+ if(!M.equal(u.left,g.left)||!M.equal(u.right,g.right))return 'ends';
+ return u.leftOpen===g.leftOpen&&u.rightOpen===g.rightOpen?'correct':'inclusion';
+}
 function intervalMatch(user,right){
  const a=openIntervals(user),b=openIntervals(right);
  if(!a||!b||a.length!==b.length)return false;
@@ -764,6 +781,7 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='estimate-interval')return estimateStatus(user,target)==='correct';
  if(target.kind==='ordered-coordinates')return Boolean(G.coordinateEvidence(user,target.coordinateSymbols,target.coordinateOrder,target.coordinateBounds)?.valid);
  if(target.kind==='ordered-comparison-sample')return G.admissibleSample(user,target.graph.sourceDomain,2)&&G.inequalityTrial(target.graph,user,true)?.sign===target.requiredSign;
  if(target.kind==='transformed-order')return transformedOrder(user,target);
@@ -837,5 +855,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });
