@@ -1,0 +1,1830 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:">
+<script data-offline-runtime>
+(/* Inlined only in the downloaded HTML. */
+(function standaloneTrainer(config) {
+  'use strict';
+  const source = new URL(config.source);
+  const current = new URL(location.href);
+  const indexPath = source.pathname.endsWith('/index.html') ? source.pathname.slice(0, -'index.html'.length) : null;
+
+  function link(href) {
+    if (!href || href.startsWith('#') || /^(?:mailto:|tel:|data:|blob:)/i.test(href)) return href;
+    const url = new URL(href, source);
+    // Some course helpers have already resolved site paths using the file URL.
+    if (url.protocol === 'file:') {
+      if (url.pathname === current.pathname) return href;
+      url.href = new URL(url.pathname + url.search + url.hash, source.origin).href;
+    }
+    if (url.origin !== source.origin) return href;
+    if (url.pathname === source.pathname || url.pathname === indexPath) {
+      const local = new URL(current.href);
+      local.search = url.search;
+      local.hash = url.hash;
+      return local.href;
+    }
+    return url.href;
+  }
+
+  function update(anchor) {
+    if (anchor.namespaceURI !== 'http://www.w3.org/1999/xhtml') return;
+    const href = anchor.getAttribute('href');
+    const fixed = link(href);
+    if (fixed !== href) anchor.setAttribute('href', fixed);
+  }
+
+  window.MathExamTrainerOffline = Object.freeze({
+    origin: source.origin,
+    media: pathname => config.media[pathname] || pathname
+  });
+
+  // Practice views create and replace links as the learner switches tasks.
+  const anchors = 'a[href]';
+  new MutationObserver(records => {
+    for (const record of records) {
+      if (record.type === 'attributes' && record.target.matches(anchors)) update(record.target);
+      for (const node of record.addedNodes) {
+        if (node.nodeType !== Node.ELEMENT_NODE) continue;
+        if (node.matches(anchors)) update(node);
+        node.querySelectorAll(anchors).forEach(update);
+      }
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+})
+)({"source":"https://mathexam.space/trainers/ege-profile/log-inequalities/lesson.html","media":{}});
+</script>
+
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#176f58">
+<title>Один логарифм — решаем вместе по шагам · MathExam</title>
+<link rel="canonical" href="https://mathexam.space/trainers/ege-profile/log-inequalities/lesson.html">
+<meta name="description" content="Пошаговый интерактив: собираем ОДЗ в систему, решаем неравенства и пересекаем решения на числовой прямой. С подсказками и тетрадью решения.">
+<style data-inline-source="/trainers/ege-profile/log-inequalities/lesson.css">
+:root{color-scheme:light;--ink:#203b34;--muted:#63766d;--green:#176f58;--pale:#edf6f1;--line:#cedfd5;--blue:#2455ba;--orange:#a84b13;--paper:#fff;--bg:#f5f7f4}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--bg);font:17px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:var(--green);text-underline-offset:4px}button,input,textarea{font:inherit}button{min-height:46px;border:1px solid #b7ccbf;border-radius:10px;padding:10px 16px;background:white;color:var(--ink);cursor:pointer;line-height:1.3}button:hover:not(:disabled){background:var(--pale)}button:disabled{cursor:default;opacity:.65}.primary{color:white;background:var(--green);border-color:var(--green);font-weight:650}.primary:hover:not(:disabled){background:#125640}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible,[role=button]:focus-visible{outline:3px solid #d29823;outline-offset:4px}[hidden]{display:none!important}.skip{position:fixed;top:-100px;left:12px;z-index:3;background:white;padding:10px}.skip:focus{top:10px}.top,main,footer{max-width:1420px;margin:auto}.top{padding:24px 36px;display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid var(--line)}.brand{font-size:25px;font-weight:800;text-decoration:none;letter-spacing:-.5px}.top>a:last-child{font-size:14px}main{padding:34px 36px 50px}.intro{max-width:990px;margin-bottom:28px}.eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:750;color:var(--green);margin:0 0 8px}h1{font-size:clamp(28px,3.8vw,43px);line-height:1.16;letter-spacing:-1.1px;margin:10px 0 14px}h2{font-size:26px;line-height:1.25;letter-spacing:-.4px;margin:18px 0}p{margin:12px 0}.problem{padding:20px 26px;border-left:4px solid var(--green);background:white;border-radius:0 14px 14px 0;font-size:29px;overflow-x:auto}.legend{display:flex;gap:22px;flex-wrap:wrap;font-size:13px}.base-key{color:var(--blue)}.arg-key{color:var(--orange)}.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;align-items:start}.lesson,.notebook-panel{min-width:0;background:white;border:1px solid var(--line);border-radius:18px;padding:28px}.progress-head{display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:650;color:var(--muted)}progress{display:block;width:100%;height:7px;margin:13px 0 26px;border:0;border-radius:10px;overflow:hidden;accent-color:var(--green)}progress::-webkit-progress-bar{background:var(--pale)}progress::-webkit-progress-value{background:var(--green)}.formula{margin:16px 0;padding:15px;background:var(--pale);border-radius:10px;overflow-x:auto;font-size:22px;text-align:center}.formula math{max-width:none}math{font-family:"Cambria Math","STIX Two Math",serif}fieldset{border:0;padding:0;margin:24px 0;min-width:0}legend{font-weight:650;margin-bottom:12px}.options{display:grid;gap:10px}.option{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:13px 14px;cursor:pointer;min-width:0}.option:has(input:checked){border-color:var(--green);background:var(--pale);box-shadow:0 0 0 1px var(--green)}.option input{width:20px;height:20px;accent-color:var(--green);flex:none}.option .option-content{min-width:0;overflow-x:auto;padding:3px}.option math{font-size:21px}.number-fields{display:flex;gap:15px;flex-wrap:wrap}.number-field{display:flex;flex-direction:column;gap:8px;flex:1 1 130px;max-width:100%}.number-field input{border:1px solid #9db9ab;border-radius:8px;padding:11px 13px;width:100%;min-width:0;max-width:220px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:21px}.bottom-actions{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:22px;margin-top:26px}.bottom-actions button{font-size:13px;background:transparent}.notice,.hint{background:#fff5df;border:1px solid #e9d4a3;border-radius:12px;padding:15px 18px;margin:14px 0}.feedback{padding:13px 16px;margin-top:16px;border-radius:10px}.feedback.good{background:#e6f4e8;color:#135a38}.feedback.wrong{background:#fff0e8;color:#8b371a}.feedback:empty{display:none}.small{font-size:13px}.muted{color:var(--muted)}.notebook-panel{background:#fbfcfa;padding:24px}.notebook-head h2{margin:6px 0;font-size:23px}.notebook-head p{font-size:14px;color:var(--muted)}#notebook{list-style:none;padding:0;margin:0}#notebook li{padding:18px 0;border-top:1px solid var(--line)}#notebook h3{font-size:15px;margin:0 0 8px}#notebook p{font-size:14px;margin:8px 0}#notebook .formula{font-size:18px;padding:12px;margin:9px 0;background:white;border:1px solid var(--line)}#saved-domain .formula{font-size:19px}.axis-block{margin:18px 0;border:1px solid var(--line);border-radius:12px;padding:12px 8px;background:#fff}.axis-block h3{font-size:14px;margin:3px 6px 8px}.axis-scroll{overflow-x:auto;padding:4px 0}.axis-scroll svg{width:100%;min-width:480px;display:block}.axis-scroll svg.small-axis{min-width:280px}.axis-help{font-size:13px;color:var(--muted);margin:8px}.axis-selection{font-size:15px;background:var(--pale);padding:10px 12px;border-radius:8px;margin-top:10px}.axis-segment,.axis-point{cursor:pointer}.axis-segment:focus-visible .hit,.axis-point:focus-visible .hit{stroke:#d29823;stroke-width:3;fill:#fff5dd}.system{display:flex;align-items:center;justify-content:center;gap:8px}.system-brace{font:normal 94px/1 serif;transform:scaleX(.65);transform-origin:right}.system-rows{display:flex;flex-direction:column;gap:13px;align-items:flex-start;text-align:left;padding:7px 0}.system-rows math{display:block}.hint .formula{background:#fffaf0}.practice{display:inline-block;margin-top:18px;font-weight:650}textarea{width:100%;max-width:100%;border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:12px}summary{cursor:pointer}footer{padding:25px 36px;display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.notebook-panel li:last-child{animation:arrive .35s ease-out}@keyframes arrive{from{opacity:.3;transform:translateY(8px)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}@media(max-width:920px){.layout{grid-template-columns:1fr}.notebook-panel{max-height:none}.intro{max-width:none}}@media(max-width:520px){body{font-size:16px}.top{padding:18px 16px;align-items:flex-start}.top>a:last-child{max-width:150px;text-align:right}.brand{font-size:23px}main{padding:24px 14px}.lesson,.notebook-panel{padding:20px 16px;border-radius:14px}.problem{font-size:25px;padding:18px 12px}h2{font-size:23px}.legend{gap:8px 20px}.formula{font-size:20px;padding:12px 8px}.option{padding:10px;gap:8px}.option math{font-size:20px}.bottom-actions{flex-wrap:wrap}footer{padding:20px 16px;flex-wrap:wrap}.system{justify-content:flex-start}.system-brace{font-size:84px}.axis-help{margin:8px 4px}}
+
+.scroll-note{font-size:13px;border-left:3px solid #bc8d36;background:#fff7e6;padding:10px 12px}.scrollable-formula{scrollbar-width:thin;scrollbar-color:#729d87 #e9f1ed}.scrollable-formula:focus-visible{outline:2px solid #d29823;outline-offset:2px}
+
+/* Reference rows and the editable axis share one horizontal scroll position. */
+.axis-stack{width:100%}.axis-stack svg,.axis-stack svg.small-axis{min-width:0;width:100%}
+.axis-stack>.axis-help{position:sticky;left:0;width:260px;max-width:100%;background:#fff;z-index:1}
+
+</style>
+
+
+<style data-inline-source="/ege-profil/skill-map.css">
+.profile-skill-entry {
+  display: inline-flex;
+  max-width: 100%;
+  margin: 3px 0;
+  vertical-align: middle;
+}
+
+.profile-skill-slot {
+  margin: 5px 0 10px;
+}
+
+.profile-skill-entry .profile-skill-button,
+.profile-skill-dialog .profile-skill-button {
+  appearance: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 7px 13px;
+  border: 1px solid #7d9b91;
+  border-radius: 9px;
+  background: #f1f7f3;
+  box-shadow: none;
+  color: #173f35;
+  font: 650 16px/1.35 system-ui, sans-serif;
+  letter-spacing: normal;
+  text-align: center;
+  text-transform: none;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.profile-skill-entry .profile-skill-button:hover,
+.profile-skill-dialog .profile-skill-button:hover {
+  background: #dcefe4;
+}
+
+.profile-skill-entry .profile-skill-button[hidden],
+.profile-skill-dialog [hidden],
+.profile-skill-dialog:not([open]) {
+  display: none;
+}
+
+.profile-skill-entry .profile-skill-button:focus-visible,
+.profile-skill-dialog :focus-visible {
+  outline: 3px solid #126c54;
+  outline-offset: 3px;
+}
+
+.profile-skill-dialog {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  width: min(54rem, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 24px);
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #91a99c;
+  border-radius: 16px;
+  background: #fbfaf5;
+  color: #1d302a;
+  color-scheme: light;
+  font: 16px/1.55 system-ui, sans-serif;
+  letter-spacing: normal;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.profile-skill-dialog::backdrop {
+  background: rgb(15 38 34 / 68%);
+}
+
+.profile-skill-dialog .profile-skill-header {
+  position: sticky;
+  inset: 0 0 auto;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  padding: 12px clamp(12px, 4vw, 24px);
+  border: 0;
+  border-bottom: 1px solid #cadbd1;
+  background: #fbfaf5;
+}
+
+.profile-skill-dialog h2,
+.profile-skill-dialog h3,
+.profile-skill-dialog h4 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #173f35;
+  font: 700 1.25rem/1.3 system-ui, sans-serif;
+  text-transform: none;
+}
+
+.profile-skill-dialog h2 { font-size: clamp(1.2rem, 4.5vw, 1.65rem); }
+.profile-skill-dialog h4 { font-size: 1.08rem; }
+.profile-skill-dialog p { margin: 0; }
+
+.profile-skill-dialog .profile-skill-subtitle,
+.profile-skill-dialog .profile-skill-picker {
+  display: block;
+  margin: 16px clamp(12px, 4vw, 24px) 0;
+  color: #305e50;
+  font: 650 1rem/1.45 system-ui, sans-serif;
+}
+
+.profile-skill-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: clamp(12px, 3vw, 20px);
+  padding: 16px clamp(12px, 4vw, 24px) 24px;
+}
+
+.profile-skill-route,
+.profile-skill-challenge {
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid #d1e0d5;
+  border-radius: 12px;
+  background: #fffefa;
+}
+
+.profile-skill-route { align-self: start; }
+.profile-skill-dialog .profile-skill-lesson-goal { margin: 6px 0 14px; }
+.profile-skill-steps { margin: 12px 0 0; padding-left: 1.7em; }
+.profile-skill-steps li { padding-left: 0.2em; }
+.profile-skill-steps li + li { margin-top: 8px; }
+.profile-skill-steps li::marker { color: #32674f; font-weight: 700; }
+
+.profile-skill-practice { min-width: 0; }
+.profile-skill-dialog .profile-skill-progress { margin: 4px 0 9px; color: #3f5d51; }
+.profile-skill-challenge + .profile-skill-challenge { margin-top: 12px; }
+.profile-skill-dialog .profile-skill-prompt { margin: 8px 0; white-space: pre-line; }
+
+.profile-skill-form {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  margin: 10px 0 0;
+}
+
+.profile-skill-form .profile-skill-field,
+.profile-skill-choices { width: 100%; min-width: 0; }
+.profile-skill-field { display: block; }
+
+.profile-skill-dialog .profile-skill-field input,
+.profile-skill-dialog select {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 4px 0 0;
+  padding: 8px 10px;
+  border: 1px solid #839b90;
+  border-radius: 8px;
+  background: #fff;
+  color: #173f35;
+  font: 16px/1.35 system-ui, sans-serif;
+  letter-spacing: normal;
+}
+
+.profile-skill-dialog .profile-skill-choices { margin: 0; padding: 0; border: 0; }
+.profile-skill-dialog .profile-skill-choice {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.profile-skill-dialog .profile-skill-choice input {
+  appearance: auto;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #22634e;
+}
+
+.profile-skill-dialog .profile-skill-button-primary { border-color: #185641; background: #185641; color: #fff; }
+.profile-skill-dialog .profile-skill-button-primary:hover { background: #134835; }
+.profile-skill-dialog .profile-skill-hint summary {
+  min-height: 44px;
+  padding: 10px 0;
+  box-sizing: border-box;
+  color: #185641;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.profile-skill-dialog .profile-skill-feedback[data-result] {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #e4f2e8;
+  color: #174c35;
+}
+.profile-skill-dialog .profile-skill-feedback[data-result='retry'] { background: #f9eddc; color: #703d1b; }
+.profile-skill-dialog input[aria-invalid='true'] { outline: 2px solid #9b552f; outline-offset: 0; }
+
+@media (max-width: 620px) {
+  .profile-skill-layout { grid-template-columns: minmax(0, 1fr); }
+  .profile-skill-dialog .profile-skill-button { padding-inline: 9px; }
+  .profile-skill-route, .profile-skill-challenge { padding: 12px; }
+}
+
+.profile-skill-alphabets {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #dce4f3;
+}
+
+.profile-skill-alphabet-group + .profile-skill-alphabet-group { margin-top: 9px; }
+.profile-skill-alphabet-group ul { margin: 3px 0 0; padding-left: 18px; }
+.profile-skill-alphabet-group li { margin-top: 5px; }
+.profile-skill-alphabet-group a { color: #294e9c; text-underline-offset: 3px; }
+
+</style>
+
+
+</head>
+<body>
+<a class="skip" href="#current">К текущему шагу</a>
+<header class="top"><a class="brand" href="../../../ege-profil/">MathExam</a><a href="index.html">Все тренажёры по логарифмам</a></header>
+<main>
+<section class="intro"><p class="eyebrow">Логарифмические неравенства · подробный разбор</p><h1>Один пример. Шаг за шагом.</h1><p>Соберём ограничения в систему. Решим каждую строку. На числовой прямой оставим общую часть.</p><div id="problem" class="problem"></div><p class="legend"><span class="base-key">Синий — основание</span><span class="arg-key">Оранжевый — аргумент</span></p></section>
+<div id="storage-note" class="notice" role="status" hidden></div><button id="load-newer" type="button" hidden>Открыть новую сохранённую работу</button>
+<div class="layout">
+<section class="lesson" id="current" aria-labelledby="step-title">
+<div class="progress-head"><span id="step-count"></span><span id="phase"></span></div><progress id="progress" value="0" aria-label="Пройденные шаги"></progress>
+<div id="exercise"><h2 id="step-title" tabindex="-1"></h2><div id="explanation"></div><p id="formula-scroll-note" class="scroll-note" hidden>Длинные формулы можно прокрутить влево и вправо — проведите по самой формуле.</p>
+<form id="form" novalidate><div id="fields"></div><div id="feedback" role="status" aria-live="polite"></div><div id="hint-text" class="hint" hidden></div><div class="actions"><button id="check" class="primary" type="submit">Проверить</button><button id="next" class="primary" type="button" hidden>Следующий шаг →</button><button id="hint" type="button">Нужна подсказка</button></div></form></div>
+<section id="completion" hidden aria-labelledby="complete-title"><p class="eyebrow">Пройдено шагов: <span id="complete-step-count" data-step-total></span></p><h2 id="complete-title" tabindex="-1">Решение собрано</h2><div id="final-answer" class="formula"></div><p id="result-status"></p><p>Теперь попробуйте решить этот пример на бумаге. Полная запись остаётся в тетради рядом.</p><div class="actions"><button id="copy-report" type="button" class="primary">Скопировать результат для учителя</button><button id="download-report" type="button">Скачать результат</button></div><p id="report-note" role="status"></p><details><summary>Текст для отправки</summary><textarea id="report" rows="8" readonly aria-label="Результат для учителя"></textarea></details><p class="small">Вставьте результат в сообщение учителю, например в MAX. Автоматически он не отправляется.</p><a class="practice" href="index.html">Перейти к другим задачам →</a></section>
+<div class="bottom-actions"><button id="previous" type="button">← Предыдущий шаг</button><button id="restart" type="button">Начать заново</button></div>
+<div id="restart-box" class="notice" hidden><p>Очистить только решение этого примера и начать с первого шага?</p><button id="restart-confirm" type="button">Да, начать заново</button> <button id="restart-cancel" type="button">Отмена</button></div>
+<p id="save-status" class="small muted"></p>
+</section>
+<aside class="notebook-panel" aria-labelledby="notebook-title"><div class="notebook-head"><span class="eyebrow">Тетрадь решения</span><h2 id="notebook-title">Уже получилось</h2><p>Предыдущие шаги остаются здесь.</p></div><div id="saved-domain"></div><p id="notebook-empty" class="muted">Проверьте первый шаг — здесь появится запись.</p><ol id="notebook"></ol></aside>
+</div>
+</main><footer><a href="index.html">Логарифмы: другие примеры</a><span>MathExam · Наталья Михайловна</span></footer>
+<noscript>Для интерактивного решения включите JavaScript.</noscript>
+<script data-inline-source="/ege-profil/exam-map.js">
+(function (root, factory) {
+  'use strict';
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.ProfileExamMap = api;
+})(typeof globalThis === 'object' ? globalThis : this, function () {
+  'use strict';
+
+  // Official display numbers are not routing, lesson or saved-progress keys.
+  // Source: FIPI 2027 mathematics specification; approved H02 task table.
+  const YEAR = 2027;
+  const teachingEntry = {1: 'geo-right', 6: 'eq-linear', 7: 'expr-powers'};
+  const define = (number, id, title, source, legacy, lessonIds, preparationIds = []) => Object.freeze({
+    year: YEAR, number, id, title, source,
+    part: number == null ? null : number <= 12 ? 1 : 2,
+    points: number == null ? null : number <= 12 ? 1 : [2, 3, 2, 2, 3, 4, 4][number - 13],
+    legacyStart: source === 'start' ? legacy : number === 15 ? 16 : null,
+    legacyPartTwo: source === 'part-two' ? legacy : null,
+    lessonIds: Object.freeze(lessonIds), preparationIds: Object.freeze(preparationIds),
+    entry: teachingEntry[number] || lessonIds[0]
+  });
+  const entries = Object.freeze([
+    define(1, 'planimetry', 'Планиметрия', 'start', 1,
+      ['geo-angles', 'geo-right', 'geo-similarity', 'geo-area', 'geo-quadrilaterals', 'geo-circle']),
+    define(2, 'vectors', 'Векторы', 'start', 2,
+      ['vec-coordinates', 'vec-length', 'vec-operations', 'vec-dot'],
+      ['vec-basics-reading', 'vec-basics-equality', 'vec-basics-triangle', 'vec-basics-parallelogram',
+        'vec-basics-difference', 'vec-basics-scale', 'vec-basics-coordinates', 'vec-basics-length', 'vec-basics-dot']),
+    define(3, 'stereometry', 'Стереометрия', 'start', 3,
+      ['stereo-box', 'stereo-cube', 'stereo-prism', 'stereo-pyramid', 'stereo-cylinder', 'stereo-cone', 'stereo-sphere', 'stereo-compound']),
+    define(4, 'probability', 'Простая вероятность', 'start', 4,
+      ['prob-count', 'prob-complement', 'prob-range']),
+    define(5, 'compound-probability', 'Вероятности сложных событий', 'start', 5,
+      ['prob-independent', 'prob-conditional', 'prob-exact']),
+    define(6, 'equations', 'Уравнения первой части', 'start', 7,
+      ['algebra-exponential', 'algebra-logarithmic', 'eq-linear', 'eq-rational', 'eq-quadratic', 'eq-root']),
+    define(7, 'expressions', 'Вычисления и преобразования', 'start', 8,
+      ['algebra-cosine', 'algebra-double-angle', 'expr-powers', 'expr-roots', 'expr-fractions', 'expr-logarithms'],
+      ['trig-angle', 'trig-coordinates', 'trig-special', 'trig-tangent']),
+    define(8, 'derivative', 'Производная и первообразная', 'start', 9,
+      ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-integral'], ['calc-value', 'calc-special']),
+    define(9, 'formulas', 'Прикладные формулы', 'start', 10,
+      ['applied-formula', 'applied-formula-limit']),
+    define(10, 'word-problems', 'Текстовые задачи', 'start', 11,
+      ['applied-motion', 'applied-work', 'applied-mixture']),
+    define(11, 'functions', 'Функции и графики', 'start', 12,
+      ['fn-line', 'fn-parabola', 'fn-hyperbola', 'fn-explog']),
+    define(12, 'extrema', 'Наибольшее и наименьшее значение', 'start', 9,
+      ['calc-extreme'], ['calc-value', 'calc-special']),
+    define(13, 'part-two-equations', 'Уравнения второй части', 'part-two', 14,
+      ['p14-circle-selection', 'p14-trig-factors', 'p14-exponential-substitution', 'p14-log-domain', 'p14-radical-check', 'p14-rational-hole']),
+    define(14, 'part-two-stereometry', 'Стереометрия с доказательством', 'part-two', 15,
+      ['p2-15-projection', 'p2-15-line-plane', 'p2-15-dihedral', 'p2-15-distance', 'p2-15-section-volume', 'p2-15-coordinate-angle']),
+    define(15, 'inequalities', 'Неравенства', 'part-two', 16,
+      ['p16-repeated-root', 'p16-exponential-interval', 'p16-fixed-log', 'p16-variable-base', 'p16-radical-inequality', 'p16-cancelled-hole']),
+    define(16, 'finance', 'Экономическая задача', 'start', 13,
+      ['applied-percent', 'applied-loan-linear', 'applied-loan-equal',
+        'finance-lesson-01-ledger', 'finance-lesson-02-deposits', 'finance-lesson-03-interest-progression',
+        'finance-lesson-04-first-last-payment', 'finance-lesson-05-balance-tables', 'finance-lesson-06-payment-bounds',
+        'finance-lesson-07-equal-payments', 'finance-lesson-08-unknown-in-ledger', 'finance-lesson-09-rates',
+        'finance-lesson-10-inverse-equal-payments', 'finance-lesson-11-changing-conditions', 'finance-lesson-12-calendar',
+        'finance-lesson-13-two-stages']),
+    define(17, 'part-two-planimetry', 'Планиметрия с доказательством', 'part-two', 18,
+      ['p2-18-similarity', 'p2-18-tangents', 'p2-18-cyclic', 'p2-18-bisector', 'p2-18-cevians', 'p2-18-altitude']),
+    define(18, 'parameters', 'Задачи с параметром', 'part-two', 19,
+      ['param-linear', 'param-positive-roots', 'param-modules', 'param-hole', 'param-tangent', 'param-system']),
+    define(19, 'numbers', 'Числа и их свойства', 'part-two', 20,
+      ['numbers-remainders', 'numbers-digits', 'numbers-extremum', 'numbers-counterexample', 'numbers-invariant', 'numbers-diophantine'])
+  ]);
+  const extras = Object.freeze([
+    define(null, 'random-variables', 'Случайные величины', 'start', 6,
+      ['prob-distribution', 'prob-variance', 'prob-continuous']),
+    define(null, 'optimization', 'Моделирование и оптимизация', 'part-two', 17,
+      ['model-fence', 'model-revenue', 'model-boundary', 'model-discrete', 'model-box', 'model-motion'])
+  ]);
+  // Keep the earlier topic URL as an exact entrance to the same lesson.
+  const integral = define(8, 'integral', 'Первообразная и площадь', 'start', 9, ['calc-integral']);
+  const calculus = define(null, 'calculus-legacy', 'Производная, экстремумы и первообразная', 'start', 9,
+    ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-value', 'calc-special', 'calc-extreme', 'calc-integral']);
+  const all = [...entries, ...extras];
+  const numberValue = value => typeof value === 'number' && Number.isInteger(value) ? value :
+    typeof value === 'string' && /^(?:[1-9]|1[0-9]|20)$/.test(value) ? Number(value) : null;
+  const get = number => entries.find(item => item.number === numberValue(number)) || null;
+  const topics = [...all, calculus, integral];
+  const topic = id => typeof id === 'string' ? topics.find(item => item.id === id) || null : null;
+  const resolve = value => value && typeof value === 'object' ? topic(value.id) : get(value) || topic(value);
+  const fromLegacyStart = value => {
+    const number = numberValue(value);
+    if (number === 9) return calculus;
+    return number == null ? null : all.find(item => item.legacyStart === number) || null;
+  };
+  const fromLegacyPartTwo = value => {
+    const number = numberValue(value);
+    return number == null ? null : all.find(item => item.legacyPartTwo === number) || null;
+  };
+  const forLesson = id => typeof id === 'string' ? all.find(item => item.lessonIds.includes(id)) ||
+    all.find(item => item.preparationIds.includes(id)) || null : null;
+  const label = value => { const item = resolve(value); return item ? item.number == null ? 'Дополнительная тема' : '№ ' + item.number : ''; };
+  const hash = value => {
+    const item = resolve(value);
+    return item ? item.number == null ? '#topic/' + item.id : '#fipi/' + YEAR + '/' + item.number : '';
+  };
+  const href = value => {
+    const item = resolve(value);
+    return item ? '/ege-profil/' + item.source + '/' + hash(item) : '';
+  };
+  return Object.freeze({YEAR, entries, extras, get, topic, fromLegacyStart, fromLegacyPartTwo, forLesson, label, hash, href});
+});
+
+</script>
+<script data-inline-source="/trainers/ege-profile/log-inequalities/lesson.js">
+/* One fixed, author-written example. Native MathML; local-only standalone
+ * progress; the existing board bridge owns persistence in embedded mode. */
+(function () {
+'use strict';
+const $ = id => document.getElementById(id);
+const m = body => '<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow>'+body+'</mrow></math>';
+const x = '<mi>x</mi>', x2 = '<msup>'+x+'<mn>2</mn></msup>';
+const n = value => '<mn>'+value+'</mn>', op = value => '<mo>'+value+'</mo>';
+const row = value => '<mrow>'+value+'</mrow>';
+const frac = (a,b) => '<mfrac>'+row(a)+row(b)+'</mfrac>';
+const par = value => row(op('(')+value+op(')'));
+const sqrt = value => '<msqrt>'+value+'</msqrt>';
+const base = frac(n(25)+op('−')+x2,n(16));
+const arg = frac(n(24)+op('+')+n(2)+x+op('−')+x2,n(14));
+const log = (b,a) => '<msub><mi mathvariant="normal">log</mi>'+row(b)+'</msub>'+par(a);
+const f = value => '<div class="formula">'+m(value)+'</div>';
+const sys = rows => '<div class="formula system"><span class="system-brace" aria-hidden="true">{</span><div class="system-rows" aria-label="Система: все условия одновременно">'+rows.map(m).join('')+'</div></div>';
+const domainRows = [base+op('>')+n(0),base+op('≠')+n(1),arg+op('>')+n(0)];
+const solvedDomain = [n('−4')+op('<')+x+op('<')+n(5),x+op('≠')+n('−3')+op(',')+x+op('≠')+n(3)];
+const product = par(x2+op('−')+n(9))+par(x2+op('−')+n(16)+x+op('−')+n(17))+op('>')+n(0);
+const interval = (a,b) => op('(')+n(a)+op(';')+n(b)+op(')');
+const answer = x+op('∈')+interval('−4','−3')+op('∪')+interval('−1','3');
+const polySolution = interval('−∞','−3')+op('∪')+interval('−1','3')+op('∪')+interval('17','+∞');
+const choice = (id,label,options,correct) => ({id,label,kind:'choice',options,correct});
+const number = (id,label,correct) => ({id,label,kind:'number',correct:String(correct)});
+const axis = (id,label,points,correct,refs=[]) => ({id,label,kind:'axis',points,correct,refs});
+const option = (id,html) => ({id,html});
+const steps = [
+ {title:'Найдём основание и аргумент',phase:'Знакомимся с примером',body:'<p>У логарифма есть основание и аргумент. Выберите выражение для каждой подписи.</p>',fields:[choice('base','Основание логарифма',[option('base',m(base)),option('arg',m(arg))],'base'),choice('arg','Аргумент логарифма',[option('base',m(base)),option('arg',m(arg))],'arg')],hint:'Основание записано нижним индексом у знака log. Аргумент — выражение, от которого берётся логарифм.',record:'<p><span class="base-key">Основание:</span> '+m(base)+'</p><p><span class="arg-key">Аргумент:</span> '+m(arg)+'</p>'},
+ {title:'Соберём систему ОДЗ',phase:'Находим ОДЗ',body:'<p>Отметьте <strong>три обязательных условия</strong>. Они должны выполняться одновременно.</p>',fields:[{id:'requirements',label:'Какие условия нужны?',kind:'checks',options:[option('base-positive',m(domainRows[0])),option('argument-one',m(arg+op('≠')+n(1))),option('base-nonunit',m(domainRows[1])),option('argument-positive',m(domainRows[2])),option('base-over-one',m(base+op('>')+n(1)))],correct:['base-positive','base-nonunit','argument-positive']}],hint:'Основание положительное и не равно 1. Аргумент положительный. Основание может быть меньше 1; аргументу равняться 1 можно.',record:sys(domainRows)+'<p>Это ОДЗ: значения, при которых логарифм определён.</p>'},
+ {title:'Решим первую строку системы',phase:'Находим ОДЗ',body:'<p>Знаменатель 16 положительный. Умножаем на него, сохраняя знак:</p>'+f(base+op('>')+n(0)+op('⇔')+n(25)+op('−')+x2+op('>')+n(0))+'<p>Прибавляем '+m(x2)+' к обеим частям: получаем '+m(x2+op('<')+n(25))+'. Граничные значения — −5 и 5.</p>',fields:[axis('base-axis','Где квадрат числа меньше 25?',[-5,5],['s1'])],hint:'Например, 0 подходит: 0² < 25. Берём промежуток между −5 и 5. Сами концы не подходят: там квадрат равен 25.',record:f(n('−5')+op('<')+x+op('<')+n(5))},
+ {title:'Исключим основание, равное единице',phase:'Находим ОДЗ',body:'<p>Во второй строке стоит знак ≠. Чтобы найти запрещённые значения, временно решим равенство:</p>'+f(base+op('=')+n(1)+op('⇔')+n(25)+op('−')+x2+op('=')+n(16))+f(x2+op('=')+n(9))+'<p>Какие два числа в квадрате дают 9?</p>',fields:[number('low','Меньшее запрещённое число',-3),number('high','Большее запрещённое число',3)],hint:'Это −3 и 3: (−3)² = 9 и 3² = 9. Оба значения исключаем.',record:f(x+op('≠')+n('−3')+op(',')+x+op('≠')+n(3))},
+ {title:'Подготовим третью строку',phase:'Находим ОДЗ',body:'<p>Аргумент должен быть положительным. Умножаем на положительное число 14:</p>'+f(arg+op('>')+n(0)+op('⇔')+n(24)+op('+')+n(2)+x+op('−')+x2+op('>')+n(0))+'<p>Теперь умножаем обе части на −1. Меняем знаки <strong>всех слагаемых</strong> и знак неравенства.</p>',fields:[choice('quadratic','Что получится?',[option('wrong-sign',m(x2+op('−')+n(2)+x+op('−')+n(24)+op('>')+n(0))),option('correct',m(x2+op('−')+n(2)+x+op('−')+n(24)+op('<')+n(0))),option('wrong-term',m(x2+op('+')+n(2)+x+op('−')+n(24)+op('<')+n(0)))],'correct')],hint:'После умножения на −1 получаем −24 − 2x + x² < 0. Запишем слагаемые начиная с x².',record:f(x2+op('−')+n(2)+x+op('−')+n(24)+op('<')+n(0))},
+ {title:'Найдём корни',phase:'Находим ОДЗ',body:'<p>Для метода интервалов решаем уравнение:</p>'+f(x2+op('−')+n(2)+x+op('−')+n(24)+op('=')+n(0))+'<p>Подставляем числа 1, −2 и −24 в формулу корней:</p>'+f(x+op('=')+frac(n(2)+op('±')+sqrt(n(4)+op('+')+n(96)),n(2)))+'<p>Сначала вычислите число под корнем. Затем найдите оба корня.</p>',fields:[number('discriminant','Число под корнем',100),number('low','Меньший корень',-4),number('high','Больший корень',6)],hint:'4 + 96 = 100; √100 = 10. (2 − 10) : 2 = −4; (2 + 10) : 2 = 6.',record:f(x+op('=')+frac(n(2)+op('±')+n(10),n(2)))+f(x+op('=')+n('−4')+op(';')+x+op('=')+n(6))},
+ {title:'Решим третье неравенство',phase:'Находим ОДЗ',body:f(x2+op('−')+n(2)+x+op('−')+n(24)+op('<')+n(0))+'<p>Корни −4 и 6. Перед '+m(x2)+' стоит плюс. Трёхчлен отрицателен между корнями.</p>',fields:[axis('argument-axis','Отметьте решение. Нужен строгий знак <.',[-4,6],['s1'])],hint:'Берём только участок между −4 и 6. Концы оставляем пустыми, потому что в корнях трёхчлен равен нулю.',record:f(n('−4')+op('<')+x+op('<')+n(6))},
+ {title:'Пересечём три условия ОДЗ',phase:'Находим ОДЗ',body:'<p>Все строки должны выполняться одновременно:</p>'+sys([n('−5')+op('<')+x+op('<')+n(5),x+op('≠')+n('−3')+op(',')+x+op('≠')+n(3),n('−4')+op('<')+x+op('<')+n(6)])+'<p>Сверху показаны три решения. На нижней оси соберите <strong>их общую часть</strong>.</p>',fields:[axis('domain-axis','Общая часть — ОДЗ',[-5,-4,-3,3,5,6],['s2','s3','s4'],[{label:'−5 < x < 5',tokens:['s1','s2','s3','s4','p1','p2','p3']},{label:'x ≠ −3, x ≠ 3',tokens:['s0','s1','s2','s3','s4','s5','s6','p0','p1','p4','p5']},{label:'−4 < x < 6',tokens:['s2','s3','s4','s5','p2','p3','p4']}])],hint:'Оба промежутка пересекаются от −4 до 5. Внутри исключаем −3 и 3. Выберите три участка: (−4; −3), (−3; 3), (3; 5). Все отмеченные концы пустые.',record:sys(solvedDomain)+'<p>ОДЗ найдено. Это ещё не ответ: теперь решаем само неравенство.</p>'},
+ {title:'Заменим единицу логарифмом',phase:'Преобразуем неравенство',body:'<p>Вернёмся к исходному неравенству:</p>'+f(log(base,arg)+op('>')+n(1))+'<p>Логарифм от своего основания равен 1. Чем заполним место аргумента справа?</p>'+f(n(1)+op('=')+log(base,'<mtext>?</mtext>')),fields:[choice('unit','Выберите аргумент',[option('one',m(n(1))),option('same-base',m(base)),option('same-arg',m(arg))],'same-base')],hint:'Основание и аргумент этого нового логарифма должны совпасть. Тогда его значение равно 1.',record:f(log(base,arg)+op('>')+log(base,base))},
+ {title:'Перейдём к произведению',phase:'Преобразуем неравенство',body:'<p>На ОДЗ можно сравнить два аргумента, учитывая основание. Если основание больше 1, знак сохраняется; если между 0 и 1 — меняется.</p><p>Это объединяет одно правило: <strong>«основание минус 1» × «первый аргумент минус второй» &gt; 0</strong>.</p><p>Выберите верную запись. Это равносильное неравенство на ОДЗ, а не равенство значений выражений.</p>',fields:[choice('rational','Какое произведение нужно?',[
+ option('reverse',m(par(base+op('−')+n(1))+par(base+op('−')+arg)+op('>')+n(0))),
+ option('correct',m(par(base+op('−')+n(1))+par(arg+op('−')+base)+op('>')+n(0))),
+ option('argument-factor',m(par(arg+op('−')+n(1))+par(arg+op('−')+base)+op('>')+n(0)))],'correct')],hint:'В первой скобке вычитаем 1 из основания. Во второй вычитаем второй аргумент из первого: дробь со знаменателем 14 минус дробь со знаменателем 16.',record:f(par(base+op('−')+n(1))+par(arg+op('−')+base)+op('>')+n(0))},
+ {title:'Упростим первую скобку',phase:'Преобразуем неравенство',body:'<p>Записываем единицу как дробь со знаменателем 16:</p>'+f(base+op('−')+n(1)+op('=')+base+op('−')+frac(n(16),n(16))+op('=')+frac(n(25)+op('−')+x2+op('−')+n(16),n(16)))+'<p>Вычислите 25 − 16.</p>',fields:[number('constant','Какое число останется перед −x²?',9)],hint:'25 − 16 = 9. Числитель станет 9 − x².',record:f(base+op('−')+n(1)+op('=')+frac(n(9)+op('−')+x2,n(16)))},
+ {title:'Приведём вторую скобку к одному знаменателю',phase:'Преобразуем неравенство',body:f(arg+op('−')+base)+'<p>Знаменатели — 14 и 16. Найдите наименьший общий знаменатель и дополнительные множители.</p>',fields:[number('denominator','Общий знаменатель',112),number('first','На что умножаем 14?',8),number('second','На что умножаем 16?',7)],hint:'14 × 8 = 112 и 16 × 7 = 112. На те же числа умножаем соответствующие числители.',record:f(frac(n(8)+par(n(24)+op('+')+n(2)+x+op('−')+x2)+op('−')+n(7)+par(n(25)+op('−')+x2),n(112)))},
+ {title:'Раскроем скобки и приведём подобные',phase:'Преобразуем неравенство',body:'<p>Работаем с числителем:</p>'+f(n(8)+par(n(24)+op('+')+n(2)+x+op('−')+x2)+op('−')+n(7)+par(n(25)+op('−')+x2))+f(n(192)+op('+')+n(16)+x+op('−')+n(8)+x2+op('−')+n(175)+op('+')+n(7)+x2)+'<p>У '+m(x2)+' получаем −8 + 7 = −1; у '+m(x)+' остаётся 16. Вычислите свободное число.</p>',fields:[number('coefficient','Коэффициент при x²: −8 + 7 =',-1),number('constant','192 − 175 =',17)],hint:'192 − 175 = 17. Значит, числитель равен −x² + 16x + 17. Обратите внимание: −7 × (−x²) даёт +7x².',record:f(arg+op('−')+base+op('=')+frac(op('−')+x2+op('+')+n(16)+x+op('+')+n(17),n(112)))},
+ {title:'Уберём знаменатели и два минуса',phase:'Преобразуем неравенство',body:'<p>Подставим обе упрощённые скобки:</p>'+f(frac(n(9)+op('−')+x2,n(16))+op('·')+frac(op('−')+x2+op('+')+n(16)+x+op('+')+n(17),n(112))+op('>')+n(0))+'<p>Умножаем на положительное число 16 × 112. Затем выносим минус из <strong>каждой</strong> скобки:</p>'+f(n(9)+op('−')+x2+op('=')+op('−')+par(x2+op('−')+n(9)))+f(op('−')+x2+op('+')+n(16)+x+op('+')+n(17)+op('=')+op('−')+par(x2+op('−')+n(16)+x+op('−')+n(17)))+'<p>Два вынесенных минуса дают плюс. Какой знак останется?</p>',fields:[choice('sign','Знак между произведением и нулём',[option('lt','<strong>&lt; 0</strong>'),option('gt','<strong>&gt; 0</strong>'),option('ge','<strong>≥ 0</strong>')],'gt')],hint:'Знаменатели положительные, а два минуса дали плюс. Поэтому знак > сохраняется.',record:sys(solvedDomain.concat([product]))},
+ {title:'Найдём все граничные точки',phase:'Метод интервалов и ответ',body:'<p>Первый множитель '+m(x2+op('−')+n(9))+' равен нулю при −3 и 3. Для второго решим:</p>'+f(x2+op('−')+n(16)+x+op('−')+n(17)+op('=')+n(0))+f(x+op('=')+frac(n(16)+op('±')+sqrt(n(256)+op('+')+n(68)),n(2)))+'<p>256 + 68 = 324; √324 = 18. Вычислите два корня второго множителя.</p>',fields:[number('low','Меньший корень',-1),number('high','Больший корень',17)],hint:'(16 − 18) : 2 = −1. (16 + 18) : 2 = 17. Всего четыре точки: −3, −1, 3, 17.',record:f(par(x+op('+')+n(3))+par(x+op('+')+n(1))+par(x+op('−')+n(3))+par(x+op('−')+n(17))+op('>')+n(0))},
+ {title:'Определим знаки на пяти промежутках',phase:'Метод интервалов и ответ',body:'<p>Точки расставлены по порядку: −3, −1, 3, 17.</p>'+f(par(x+op('+')+n(3))+par(x+op('+')+n(1))+par(x+op('−')+n(3))+par(x+op('−')+n(17)))+'<p>Справа от 17 все множители положительные. При переходе через каждый корень один множитель меняет знак. Заполните знаки <strong>слева направо</strong>.</p>',fields:[['s0','Левее −3','plus'],['s1','Между −3 и −1','minus'],['s2','Между −1 и 3','plus'],['s3','Между 3 и 17','minus'],['s4','Правее 17','plus']].map(([id,label,correct])=>choice(id,label,[option('plus','+'),option('minus','−')],correct)),hint:'Начните справа: плюс. Двигайтесь влево и меняйте знак после каждой точки. Получится +, −, +, −, +.',record:'<p>Знаки слева направо: <strong>+ &nbsp; − &nbsp; + &nbsp; − &nbsp; +</strong>.</p>'},
+ {title:'Выберем положительные промежутки',phase:'Метод интервалов и ответ',body:f(product)+'<p>Нужны все участки со знаком плюс. ОДЗ пока не пересекаем — это следующий шаг.</p>',fields:[axis('polynomial-axis','Где произведение больше нуля?',[-3,-1,3,17],['s0','s2','s4'])],hint:'Берём левее −3, между −1 и 3 и правее 17. Корни не включаем: в них произведение равно 0, а требуется > 0.',record:f(x+op('∈')+polySolution)},
+ {title:'Пересечём решение с ОДЗ',phase:'Метод интервалов и ответ',body:'<p>Соберём всё в последнюю систему:</p>'+sys(solvedDomain.concat([x+op('∈')+polySolution]))+'<p>На нижней оси оставьте только числа, которые подходят <strong>и неравенству, и ОДЗ</strong>.</p>',fields:[axis('final-axis','Общая часть — окончательный ответ',[-4,-3,-1,3,5,17],['s1','s3'],[{label:'Решение неравенства',tokens:['s0','s1','s3','s6','p0']},{label:'ОДЗ',tokens:['s1','s2','s3','s4','p2']}])],hint:'Левый луч ограничивается точкой −4. Промежуток (−1; 3) остаётся целиком. Правее 17 нет значений из ОДЗ. Выберите (−4; −3) и (−1; 3), все концы оставьте пустыми.',record:f(answer)+'<p>−4, −3 и 3 запрещены ОДЗ. При −1 произведение равно нулю, поэтому это число тоже не входит в ответ.</p>'}
+];
+window.MathExamGuidedLesson={
+ steps,
+ problemHtml:m(log('<mstyle mathcolor="#2455ba">'+base+'</mstyle>','<mstyle mathcolor="#a84b13">'+arg+'</mstyle>')+op('>')+n(1)),
+ answerHtml:m(answer),
+ solvedDomainHtml:sys(solvedDomain),
+ domainStepIndex:7,
+ initialDomainHtml:sys(domainRows),
+ initialDomainStepIndex:1,
+ storageKey:'mathExam.logOneExample.v1',
+ trainerId:'profile-log-one-example',
+ apiName:'__logExample',
+ title:'Логарифмическое неравенство · MathExam',
+ reportName:'logarithm-result.txt',
+ reportProblem:'log_((25−x²)/16)((24+2x−x²)/14) > 1',
+ reportAnswer:'(−4; −3) ∪ (−1; 3)'
+};
+})();
+
+</script>
+<script data-inline-source="/trainers/ege-profile/log-inequalities/guided-lesson.js">
+/* Shared guided-lesson runtime. Lesson content and identity are supplied before this script.
+ * Standalone persistence and the board bridge retain the existing schema-1 contract. */
+(function () {
+'use strict';
+const config=window.MathExamGuidedLesson;
+if(!config||!Array.isArray(config.steps)||!config.steps.length)throw new TypeError('Guided lesson configuration is required');
+const steps=config.steps;
+const $=id=>document.getElementById(id);
+const reportAnswer=typeof config.reportAnswer==='string'?config.reportAnswer:'';
+const STORAGE_KEY=config.storageKey;
+const embedded=window.parent!==window || new URLSearchParams(location.search).get('groupLesson')==='1';
+const listeners=new Set();
+const blank=()=>({schema:1,step:0,answers:{},solved:[],helps:[],errors:0,feedback:{kind:'',message:''}});
+let state=blank(), observed=null, stale=false, storageUnavailable=false, newer=null;
+const clone=v=>JSON.parse(JSON.stringify(v));
+const plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v)&&(Object.getPrototypeOf(v)===Object.prototype||Object.getPrototypeOf(v)===null);
+const integer=v=>Number.isInteger(v)&&v>=0&&v<=100000;
+const tokens=field=>Array.from({length:field.points.length+1},(_,i)=>'s'+i).concat(field.points.map((_,i)=>'p'+i));
+function numeric(v){return typeof v==='string'&&/^[−-]?\d+(?:[.,]\d+)?$/.test(v.trim())?Number(v.trim().replace('−','-').replace(',','.')):NaN;}
+function correct(field,value){if(Array.isArray(field.correct))return Array.isArray(value)&&value.length===field.correct.length&&field.correct.every(x=>value.includes(x));return field.kind==='number'?numeric(value)===Number(field.correct):value===field.correct;}
+function validate(v){
+ if(!plain(v)||v.schema!==1||!Number.isInteger(v.step)||v.step<0||v.step>steps.length||!plain(v.answers)||!Array.isArray(v.solved)||!Array.isArray(v.helps)||!integer(v.errors)||!plain(v.feedback)||!['','good','wrong'].includes(v.feedback.kind)||typeof v.feedback.message!=='string'||v.feedback.message.length>1000)return false;
+ if(v.solved.length>steps.length||v.solved.some((q,i)=>q!==i)||v.step>v.solved.length)return false;
+ if(new Set(v.helps).size!==v.helps.length||v.helps.some(q=>!Number.isInteger(q)||q<0||q>=steps.length))return false;
+ if(Object.keys(v.answers).some(k=>!/^\d+$/.test(k)||Number(k)>=steps.length))return false;
+ for(const [key,values]of Object.entries(v.answers)){
+  if(!plain(values))return false;const fields=steps[Number(key)].fields;
+  for(const [id,value]of Object.entries(values)){
+   const field=fields.find(f=>f.id===id);if(!field)return false;
+   if(field.kind==='checks'||field.kind==='axis'){const allowed=field.kind==='axis'?tokens(field):field.options.map(o=>o.id);if(!Array.isArray(value)||new Set(value).size!==value.length||value.some(t=>!allowed.includes(t)))return false;}
+   else if(typeof value!=='string'||value.length>80||(field.kind==='choice'&&!field.options.some(o=>o.id===value)&&value!==''))return false;
+  }
+ }
+ if(v.solved.some(i=>!steps[i].fields.every(f=>correct(f,v.answers[i]?.[f.id]))))return false;
+ return true;
+}
+function decode(raw){try{const v=JSON.parse(raw);return validate(v)?v:null;}catch(_){return null;}}
+function note(s){$('storage-note').textContent=s;$('storage-note').hidden=!s;}
+function storageChanged(raw){stale=true;newer=decode(raw);note('В другой вкладке сохранена новая работа. Эта вкладка приостановлена, чтобы её не затереть.');$('load-newer').hidden=!newer;lock();}
+function canAct(){if(stale)return false;if(!embedded&&!storageUnavailable){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw!==observed){storageChanged(raw);return false;}}catch(_){storageUnavailable=true;}}return true;}
+function changed(){if(!embedded&&!storageUnavailable&&!stale){try{observed=JSON.stringify(state);localStorage.setItem(STORAGE_KEY,observed);}catch(_){storageUnavailable=true;note('Не удалось сохранить работу в браузере. Не закрывайте страницу до завершения; результат можно скачать.');}}listeners.forEach(fn=>fn());saveStatus();}
+function saveStatus(){$('save-status').textContent=embedded?'Работа открыта на доске. Сохранением управляет доска.':stale?'Старая вкладка приостановлена.':storageUnavailable?'Автосохранение недоступно в этом браузере.':'Прогресс сохраняется в этом браузере. Можно закрыть страницу и продолжить позже.';}
+function applyState(value){if(!validate(value))return false;state=clone(value);render(false);return true;}
+function lock(){document.querySelectorAll('#check,#next,#hint,#restart,#restart-confirm').forEach(e=>{e.disabled=stale;});document.querySelectorAll('#exercise input,#exercise button,#previous,#restart,#restart-confirm').forEach(e=>{if(stale)e.disabled=true;});if(stale)document.querySelectorAll('[data-axis]').forEach(e=>e.setAttribute('aria-disabled','true'));saveStatus();}
+function el(tag,txt,cls){const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;if(cls)e.className=cls;return e;}
+function pointLabel(field,i){return String(field.labels?.[i]??field.points[i]).replace(/-/g,'−');}
+function segmentLabel(field,i){return(i===0?'(−∞': '('+pointLabel(field,i-1))+'; '+(i===field.points.length?'+∞)':pointLabel(field,i)+')');}
+function axisWidth(field){const count=field.points.length;if(!field.labels)return count<=2?420:Math.max(650,100+(count+1)*70);const labelWidth=Math.max(86,...field.labels.map(label=>String(label).length*10+30));return Math.max(count<=2?420:650,count>=7?1050:0,100+(count+1)*labelWidth);}
+function selectionLabel(field,selected){const parts=[];for(let i=0;i<=field.points.length;i++){if(selected.includes('s'+i))parts.push(segmentLabel(field,i));if(i<field.points.length&&selected.includes('p'+i))parts.push('{'+pointLabel(field,i)+'}');}return parts.length?parts.join(' ∪ '):'Пока ничего не отмечено';}
+function axisSvg(field,selected,interactive,label){
+ const NS='http://www.w3.org/2000/svg', svg=document.createElementNS(NS,'svg');const pts=field.points;const width=axisWidth(field), gap=(width-100)/(pts.length+1);const positions=pts.map((_,i)=>50+(i+1)*gap);const stops=[25,...positions,width-25];
+ svg.setAttribute('viewBox','0 0 '+width+' 112');svg.setAttribute('class',pts.length<=2?'small-axis':'');svg.setAttribute('role','group');svg.setAttribute('aria-label',label);
+ const add=(tag,attrs,parent=svg)=>{const q=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))q.setAttribute(k,v);parent.append(q);return q;};
+ add('line',{x1:20,y1:51,x2:width-18,y2:51,stroke:'#a8bbb2','stroke-width':2});add('path',{d:'M '+(width-27)+' 46 L '+(width-17)+' 51 L '+(width-27)+' 56',fill:'none',stroke:'#71867b','stroke-width':2});
+ for(let i=0;i<=pts.length;i++){
+  const chosen=selected.includes('s'+i), g=add('g',interactive?{class:'axis-segment',role:'button',tabindex:0,'data-axis':field.id,'data-token':'s'+i,'aria-pressed':chosen,'aria-label':'Промежуток '+segmentLabel(field,i)}:{});
+  if(interactive)add('rect',{class:'hit',x:stops[i]+7,y:29,width:Math.max(8,stops[i+1]-stops[i]-14),height:44,fill:'transparent',rx:6},g);
+  add('line',{x1:stops[i]+(i===0?0:7),y1:51,x2:stops[i+1]-(i===pts.length?0:7),y2:51,stroke:chosen?'#176f58':'#cbd9d2','stroke-width':chosen?7:4},g);
+ }
+ for(let i=0;i<pts.length;i++){
+  const chosen=selected.includes('p'+i),g=add('g',interactive?{class:'axis-point',role:'button',tabindex:0,'data-axis':field.id,'data-token':'p'+i,'aria-pressed':chosen,'aria-label':'Точка '+pointLabel(field,i)}:{});
+  if(interactive)add('rect',{class:'hit',x:positions[i]-22,y:67,width:44,height:44,rx:6,fill:'transparent'},g);
+  add('circle',{cx:positions[i],cy:51,r:5,stroke:'#176f58','stroke-width':2,fill:chosen?'#176f58':'white'},g);
+  const t=add('text',{x:positions[i],y:93,'text-anchor':'middle',fill:'#203b34','font-size':17,'font-family':'system-ui'},g);t.textContent=pointLabel(field,i);
+ }
+ return svg;
+}
+function renderAxis(field,values,disabled){const wrap=el('div',undefined,'axis-block');wrap.append(el('h3',field.label));
+ const refs=field.refs||[],scroll=el('div',undefined,'axis-scroll'),stack=el('div',undefined,'axis-stack');
+ stack.style.minWidth=(field.labels?axisWidth(field):field.points.length<=2?280:480)+'px';
+ for(const ref of refs){stack.append(el('p',ref.label,'axis-help'));stack.append(axisSvg(field,ref.tokens,false,ref.label));}
+ if(refs.length)stack.append(el('p','Ваша общая часть','axis-help'));
+ stack.append(axisSvg(field,values,!disabled,field.label));scroll.append(stack);wrap.append(scroll);
+ const help=el('p','Нажмите на нужные участки линии. Чтобы включить граничную точку, нажмите на число под ней. Пустые точки не входят в решение.','axis-help');wrap.append(help);
+ if(field.points.length>2||field.labels)wrap.append(el('p','Расстояния условные. На всех строках одинаковые числа стоят друг под другом. Если ось не помещается, её можно прокрутить вправо.','axis-help'));
+ const selected=el('p','Выбрано: '+selectionLabel(field,values),'axis-selection');selected.dataset.selection=field.id;wrap.append(selected);return wrap;}
+function renderFields(){const host=$('fields');host.replaceChildren();if(state.step>=steps.length)return;const step=steps[state.step],values=state.answers[state.step]||{},disabled=state.solved.includes(state.step)||stale;let numberGroup=null;
+ for(const field of step.fields){if(field.kind==='number'){if(!numberGroup){numberGroup=el('div',undefined,'number-fields');host.append(numberGroup);}const label=el('label',undefined,'number-field');label.append(el('span',field.label));const input=el('input');input.type='text';input.inputMode='text';input.autocomplete='off';input.spellcheck=false;input.dataset.field=field.id;input.value=values[field.id]||'';input.disabled=disabled;input.maxLength=80;label.append(input);numberGroup.append(label);continue;}
+ numberGroup=null;if(field.kind==='axis'){host.append(renderAxis(field,values[field.id]||[],disabled));continue;}
+ const fs=el('fieldset');fs.disabled=disabled;fs.append(el('legend',field.label));const options=el('div',undefined,'options');
+ for(const o of field.options){const label=el('label',undefined,'option'),input=el('input');input.type=field.kind==='checks'?'checkbox':'radio';input.dataset.field=field.id;input.dataset.choice=o.id;input.name=field.id;input.value=o.id;input.checked=field.kind==='checks'?(values[field.id]||[]).includes(o.id):values[field.id]===o.id;const body=el('span',undefined,'option-content');body.innerHTML=o.html;label.append(input,body);options.append(label);}fs.append(options);host.append(fs);
+ }
+}
+function renderNotebook(){const host=$('notebook');host.replaceChildren();$('notebook-empty').hidden=state.solved.length>0;
+ for(const i of state.solved){const li=el('li');li.dataset.notebookStep=String(i);li.append(el('h3',(i+1)+'. '+steps[i].title));const body=el('div');body.innerHTML=steps[i].record;li.append(body);host.append(li);}
+ $('saved-domain').innerHTML=state.solved.includes(config.domainStepIndex)?'<p class="eyebrow">Сохраняем ОДЗ</p>'+config.solvedDomainHtml:config.initialDomainHtml&&state.solved.includes(config.initialDomainStepIndex)?'<p class="eyebrow">Наша система ОДЗ</p>'+config.initialDomainHtml:'';
+}
+function reportPage(){
+ const fallback=location.href.split('?')[0].split('#')[0];
+ // Only authored lesson configuration may provide a report target. Never copy
+ // ambient room, invitation or authentication query parameters into a report.
+ if(typeof config.reportPath!=='string')return fallback;
+ try{const url=new URL(config.reportPath,location.href);return url.origin===location.origin&&!url.username&&!url.password?url.origin+url.pathname+url.search:fallback;}catch(_){return fallback;}
+}
+function report(){return config.title+'\n'+config.reportProblem+'\nПройдено шагов: '+state.solved.length+' из '+steps.length+'\nПодсказки на шагах: '+(state.helps.length?state.helps.map(i=>i+1).join(', '):'не использованы')+'\nПроверок с ошибкой: '+state.errors+'\n'+(state.solved.length===steps.length&&reportAnswer?'Ответ: '+reportAnswer+'\n':'')+'Страница: '+reportPage();}
+function markOverflow(){let wide=false;document.querySelectorAll('#exercise .formula,#exercise .option-content').forEach(e=>{const overflow=e.scrollWidth>e.clientWidth+2;e.classList.toggle('scrollable-formula',overflow);if(overflow){wide=true;e.tabIndex=0;e.setAttribute('aria-describedby','formula-scroll-note');}else{e.removeAttribute('tabindex');e.removeAttribute('aria-describedby');}});$('formula-scroll-note').hidden=!wide;}
+window.addEventListener('resize',markOverflow);
+function render(focus){const done=state.step===steps.length;$('exercise').hidden=done;$('completion').hidden=!done;$('progress').value=state.solved.length;$('step-count').textContent=done?'Готово':('Шаг '+(state.step+1)+' из '+steps.length);$('phase').textContent=done?'Решение завершено':steps[state.step].phase;$('previous').disabled=state.step===0||stale;
+ if(!done){const s=steps[state.step],passed=state.solved.includes(state.step);$('step-title').textContent=s.title;$('explanation').innerHTML=s.body;renderFields();$('check').hidden=passed;$('next').hidden=!passed;$('next').textContent=state.step===steps.length-1?'Завершить разбор →':'Следующий шаг →';$('hint').hidden=passed;$('hint-text').hidden=!state.helps.includes(state.step);$('hint-text').textContent=s.hint;$('feedback').className='feedback '+(passed?'good':state.feedback.kind);$('feedback').textContent=passed?'Верно. Запись добавлена в тетрадь. Можно перейти дальше.':state.feedback.message;}
+ else{$('final-answer').innerHTML=config.answerHtml;$('result-status').textContent=state.helps.length?'Разобрано с подсказками. Чтобы проверить себя, решите ещё раз без них.':'Все шаги выполнены без подсказок.';$('report').value=report();}
+ renderNotebook();lock();saveStatus();requestAnimationFrame(markOverflow);if(focus){const target=done?$('complete-title'):$('step-title');target.focus({preventScroll:true});$('current').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});}
+}
+function changeValue(fieldId,value){if(!canAct()||state.solved.includes(state.step)||state.step>=steps.length)return;state.answers[state.step] ||= {};state.answers[state.step][fieldId]=value;state.feedback={kind:'',message:''};$('feedback').textContent='';changed();}
+$('fields').addEventListener('input',event=>{const e=event.target;if(!e.dataset.field||e.type==='radio'||e.type==='checkbox')return;changeValue(e.dataset.field,e.value);});
+$('fields').addEventListener('change',event=>{const e=event.target;if(!e.dataset.field)return;if(e.type==='radio')changeValue(e.dataset.field,e.value);else if(e.type==='checkbox'){const prev=state.answers[state.step]?.[e.dataset.field]||[];changeValue(e.dataset.field,e.checked?[...prev,e.value]:prev.filter(x=>x!==e.value));}});
+function toggleAxis(event){const target=event.target.closest('[data-axis]');if(!target||!canAct()||state.solved.includes(state.step)||target.getAttribute('aria-disabled')==='true')return;const field=steps[state.step].fields.find(f=>f.id===target.dataset.axis);const value=state.answers[state.step]?.[field.id]||[],token=target.dataset.token;changeValue(field.id,value.includes(token)?value.filter(q=>q!==token):value.concat(token));const active=state.answers[state.step][field.id];target.setAttribute('aria-pressed',String(active.includes(token)));const line=target.querySelector('line'),circle=target.querySelector('circle');if(line){line.setAttribute('stroke',active.includes(token)?'#176f58':'#cbd9d2');line.setAttribute('stroke-width',active.includes(token)?7:4);}if(circle)circle.setAttribute('fill',active.includes(token)?'#176f58':'white');document.querySelector('[data-selection="'+field.id+'"]').textContent='Выбрано: '+selectionLabel(field,active);}
+$('fields').addEventListener('click',toggleAxis);$('fields').addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('[data-axis]')){event.preventDefault();toggleAxis(event);}});
+$('form').addEventListener('submit',event=>{event.preventDefault();if(!canAct()||state.step>=steps.length||state.solved.includes(state.step))return;const s=steps[state.step],failed=s.fields.filter(f=>!correct(f,state.answers[state.step]?.[f.id]));if(failed.length){state.errors++;state.feedback={kind:'wrong',message:'Пока не совпало. Проверьте: '+failed.map(f=>f.label).join('; ')+'. Можно открыть подсказку.'};}else{state.solved.push(state.step);state.feedback={kind:'good',message:'Верно.'};}changed();render(false);});
+$('next').addEventListener('click',()=>{if(!canAct()||!state.solved.includes(state.step))return;state.step++;state.feedback={kind:'',message:''};changed();render(true);});
+$('previous').addEventListener('click',()=>{if(!canAct()||state.step===0)return;state.step--;state.feedback={kind:'',message:''};changed();render(true);});
+$('hint').addEventListener('click',()=>{if(!canAct()||state.step>=steps.length)return;if(!state.helps.includes(state.step))state.helps.push(state.step);changed();$('hint-text').hidden=false;$('hint-text').textContent=steps[state.step].hint;});
+$('restart').addEventListener('click',()=>{if(canAct())$('restart-box').hidden=false;});$('restart-cancel').addEventListener('click',()=>{$('restart-box').hidden=true;});$('restart-confirm').addEventListener('click',()=>{if(!canAct())return;state=blank();$('restart-box').hidden=true;changed();render(true);});
+$('copy-report').addEventListener('click',async()=>{$('report').value=report();try{await navigator.clipboard.writeText(report());$('report-note').textContent='Скопировано. Вставьте текст в сообщение учителю.';}catch(_){$('report').parentElement.open=true;$('report').focus();$('report').select();$('report-note').textContent='Автоматическое копирование недоступно. Текст выделен — скопируйте его вручную.';}});
+$('download-report').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([report()],{type:'text/plain;charset=utf-8'}));const link=el('a');link.href=url;link.download=config.reportName;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('report-note').textContent='Результат подготовлен для скачивания.';});
+$('load-newer').addEventListener('click',()=>{try{const raw=localStorage.getItem(STORAGE_KEY),value=decode(raw);if(!value)return;observed=raw;state=value;stale=false;newer=null;note('');$('load-newer').hidden=true;render(false);}catch(_){note('Не удалось прочитать сохранение. Попробуйте обновить страницу.');}});
+window.addEventListener('storage',event=>{if(!embedded&&(event.key===STORAGE_KEY||event.key===null)&&event.newValue!==observed)storageChanged(event.key===null?null:event.newValue);});
+if(!embedded){try{observed=localStorage.getItem(STORAGE_KEY);if(observed){const v=decode(observed);if(v)state=v;else{storageUnavailable=true;note('Сохранение этого примера повреждено. Начата новая работа без перезаписи старого сохранения.');}}}catch(_){storageUnavailable=true;note('Браузер не разрешил автосохранение. Решать пример можно; в конце скачайте результат.');}}
+$('problem').innerHTML=config.problemHtml;
+$('progress').max=steps.length;
+document.querySelectorAll('[data-step-total]').forEach(element=>{element.textContent=String(steps.length);});
+render(false);
+window[config.apiName]=Object.freeze({getState:()=>clone(state),applyState,steps:clone(steps),storageKey:STORAGE_KEY});
+if(window.MathExamBoard)window.MathExamBoard.register({id:config.trainerId,version:'1.0.0',stateSchemaVersion:1,parentOrigin:location.origin,getState:()=>clone(state),applyState(value){if(!applyState(value))throw new TypeError('Invalid logarithm lesson state');},subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn);}});
+})();
+
+</script>
+<script data-inline-source="/ege-profil/skill-map-data.js">
+(function (root) {
+  'use strict';
+
+  const maps = {
+    1: {
+      title: 'Планиметрия',
+      skills: [
+        'Найти на чертеже известные стороны, углы и высоты.',
+        'Выбрать свойство фигуры, подобие или теорему Пифагора.',
+        'Получить нужную величину и проверить её по чертежу.'
+      ],
+      challenges: [{
+        id: 'triangle-sign',
+        title: 'Спроектируй треугольный знак',
+        prompt: 'У знака форма равнобедренного треугольника. Основание должно быть 12 см, а площадь — 48 см². Найди высоту к основанию и длину боковой стороны.',
+        hint: 'Сначала вырази высоту из формулы площади. В равнобедренном треугольнике эта высота делит основание пополам.',
+        fields: [{ label: 'Высота, см', answers: ['8'] }, { label: 'Боковая сторона, см', answers: ['10'] }],
+        explanation: 'Из 12 · h / 2 = 48 получаем h = 8. Высота и половина основания — катеты 8 и 6, поэтому боковая сторона равна √(64 + 36) = 10 см.'
+      }]
+    },
+    2: {
+      title: 'Векторы',
+      skills: [
+        'Прочитать начало и конец стрелки. Узнать нулевой вектор.',
+        'Сравнить направления и длины. Отложить равный вектор от новой точки.',
+        'Сложить векторы по правилу треугольника и правилу параллелограмма.',
+        'Построить противоположный вектор, разность и произведение вектора на число.',
+        'Прочитать координаты по сетке. Найти длину и скалярное произведение.'
+      ],
+      challenges: [{
+        id: 'two-arrows-on-grid',
+        title: 'Две стрелки на клетчатой бумаге',
+        prompt: 'Из точки A пройди три клетки вправо до B. Из B пройди две клетки вверх до C. Сколько клеток вправо и сколько вверх нужно пройти из A, чтобы попасть в C?',
+        hint: 'Нарисуй стрелку от A к B и вторую от B к C. Теперь соедини A и C.',
+        fields: [{ label: 'Клеток вправо', answers: ['3'] }, { label: 'Клеток вверх', answers: ['2'] }],
+        explanation: 'Весь путь начался в A и закончился в C. Стрелка AC — сумма двух стрелок по правилу треугольника. От A до C три клетки вправо и две вверх.'
+      }]
+    },
+    3: {
+      title: 'Стереометрия',
+      skills: [
+        'Распознать тело, его основание, высоту и рёбра.',
+        'Выделить плоскую фигуру внутри пространственного чертежа.',
+        'Рассчитать площадь, объём или расстояние в теле.'
+      ],
+      challenges: [{
+        id: 'display-case',
+        title: 'Спроектируй витрину',
+        prompt: 'У витрины в форме прямоугольного параллелепипеда квадратное основание 8 × 8 дм и объём 384 дм³. Декоратор хочет протянуть нить между двумя противоположными вершинами витрины, которые не лежат на одной грани. Найди высоту витрины и квадрат длины нити.',
+        hint: 'Высоту можно восстановить по объёму. Диагональ основания и высота образуют прямой угол.',
+        fields: [{ label: 'Высота, дм', answers: ['6'] }, { label: 'Квадрат длины нити, дм²', answers: ['164'] }],
+        explanation: 'Высота равна 384 / 64 = 6 дм. Квадрат диагонали основания равен 8² + 8² = 128. Квадрат пространственной диагонали равен 128 + 6² = 164 дм².'
+      }]
+    },
+    4: {
+      title: 'Простая вероятность',
+      skills: [
+        'Выделить все равновозможные исходы.',
+        'Посчитать исходы, подходящие событию.',
+        'Проверить результат по противоположному событию.'
+      ],
+      challenges: [{
+        id: 'fair-wheel',
+        title: 'Раскрась колесо игры',
+        prompt: 'У честного игрового колеса 12 равных секторов. Вероятность красного цвета должна быть 1/3, зелёного — 1/4. Остальные сектора синие. Сколько секторов покрасить в красный и сколько в синий?',
+        hint: 'Вероятность цвета — отношение числа его секторов к общему числу секторов.',
+        fields: [{ label: 'Красные сектора', answers: ['4'] }, { label: 'Синие сектора', answers: ['5'] }],
+        explanation: 'Красных секторов нужно 12 / 3 = 4, зелёных 12 / 4 = 3. Для синих остаётся 12 − 4 − 3 = 5.'
+      }]
+    },
+    5: {
+      title: 'Сложная вероятность',
+      skills: [
+        'Разложить событие на отдельные случаи.',
+        'Распознать независимые события и перемножить их вероятности.',
+        'Сложить вероятности несовместных случаев или применить противоположное событие.'
+      ],
+      challenges: [{
+        id: 'reserve-channel',
+        title: 'Настрой резервный канал связи',
+        prompt: 'Два канала передают один сигнал и работают независимо. Первый передаёт сигнал с вероятностью 0,7. Подбери вероятность успешной передачи по второму каналу так, чтобы сигнал дошёл хотя бы по одному каналу с вероятностью 0,94.',
+        hint: 'Посмотри на противоположное событие. Сигнал не придёт, только если одновременно откажут оба канала.',
+        answers: ['0,8'],
+        explanation: 'Вероятность отказа двух каналов равна 1 − 0,94 = 0,06. Первый отказывает с вероятностью 0,3, поэтому второй отказывает с вероятностью 0,06 / 0,3 = 0,2. Вероятность передачи по второму равна 0,8.'
+      }]
+    },
+    6: {
+      title: 'Случайные величины',
+      skills: [
+        'Составить ряд распределения случайной величины.',
+        'Найти математическое ожидание как взвешенное среднее.',
+        'Вычислить дисперсию как средний квадрат отклонения.'
+      ],
+      challenges: [{
+        id: 'game-score',
+        title: 'Настрой очки в игре',
+        prompt: 'В игре случайно выбирают одну из трёх равновероятных карточек. Две меняют счёт на −2 и +1, третья — на x. Подбери x так, чтобы математическое ожидание изменения счёта было 2. Найди дисперсию изменения счёта.',
+        hint: 'Сначала составь уравнение для среднего трёх значений. Затем усредни квадраты отклонений от найденного среднего.',
+        fields: [{ label: 'Изменение счёта x', answers: ['7'] }, { label: 'Дисперсия', answers: ['14'] }],
+        explanation: 'Уравнение (−2 + 1 + x) / 3 = 2 даёт x = 7. Квадраты отклонений от 2 равны 16, 1 и 25, поэтому дисперсия равна (16 + 1 + 25) / 3 = 14.'
+      }]
+    },
+    7: {
+      title: 'Простейшие уравнения',
+      skills: [
+        'Определить тип уравнения и ограничения на переменную.',
+        'Выбрать подходящее преобразование и найти возможные корни.',
+        'Проверить кандидатов в исходном уравнении.'
+      ],
+      challenges: [{
+        id: 'equation-trap',
+        title: 'Собери уравнение с ловушкой',
+        prompt: 'Подбери a так, чтобы уравнение √(x + 1) = x − a имело корень 3. Найди число, которое появится после возведения обеих частей в квадрат и окажется посторонним корнем.',
+        hint: 'Подставь 3, чтобы найти a. При проверке корней вспомни, какой знак может иметь значение квадратного корня.',
+        fields: [{ label: 'Коэффициент a', answers: ['1'] }, { label: 'Посторонний корень', answers: ['0'] }],
+        explanation: 'Подстановка 3 даёт 2 = 3 − a, откуда a = 1. После возведения в квадрат получается x(x − 3) = 0. При x = 0 правая часть равна −1, поэтому 0 не подходит.'
+      }]
+    },
+    8: {
+      title: 'Выражения',
+      skills: [
+        'Замечать одинаковые основания, общие множители и тождества.',
+        'Преобразовывать дроби, степени, корни и тригонометрические выражения.',
+        'Контролировать знаки и область определения выражения.'
+      ],
+      challenges: [{
+        id: 'radical-target',
+        title: 'Подбери показатель степени',
+        prompt: 'Заполни пропуск целым числом k: (√50 − √8)² / 3ᵏ = 2. Попробуй обойтись без округления корней.',
+        hint: 'Вынеси полный квадрат из каждого корня и приведи подобные слагаемые.',
+        answers: ['2'],
+        explanation: '√50 − √8 = 5√2 − 2√2 = 3√2. Квадрат разности равен 18. Чтобы получилось 2, нужно разделить на 9 = 3², поэтому k = 2.'
+      }]
+    },
+    9: {
+      title: 'Производная и интеграл',
+      skills: [
+        'Связать производную с наклоном касательной и изменением функции.',
+        'Найти промежутки монотонности и точки экстремума.',
+        'Связать определённый интеграл с площадью под графиком при неотрицательных значениях.'
+      ],
+      challenges: [{
+        id: 'braking-profile',
+        title: 'Спроектируй график движения',
+        prompt: 'График скорости робота состоит из отрезков, соединяющих точки (0; 0), (2; 6) и (T; 0). Время дано в секундах, скорость — в м/с. Робот должен проехать ровно 18 м. Найди T и модуль ускорения при торможении.',
+        hint: 'Путь равен площади треугольника под графиком скорости. Ускорение при торможении — угловой коэффициент последнего отрезка.',
+        fields: [{ label: 'Время остановки T, с', answers: ['6'] }, { label: 'Модуль ускорения, м/с²', answers: ['1,5'] }],
+        explanation: 'Площадь треугольника равна T · 6 / 2 = 3T. Поэтому T = 6. При торможении скорость падает на 6 м/с за 4 с, модуль ускорения равен 6 / 4 = 1,5 м/с².'
+      }]
+    },
+    10: {
+      title: 'Задачи с формулами',
+      skills: [
+        'Найти в условии значения величин и привести их к нужным единицам.',
+        'Подставить данные в формулу или выразить неизвестное.',
+        'Учесть ограничения и проверить смысл результата.'
+      ],
+      challenges: [{
+        id: 'antenna-height',
+        title: 'Подбери высоту антенны',
+        prompt: 'В учебной модели дальность сигнала d = 3√h, где d измеряется в километрах, а высота h — в метрах. Найди минимальную высоту для дальности не меньше 15 км. Затем найди высоту, при которой дальность будет вдвое больше.',
+        hint: 'Сначала раздели требуемую дальность на 3. При увеличении h корень √h тоже увеличивается.',
+        fields: [{ label: 'Высота для 15 км, м', answers: ['25'] }, { label: 'Высота для 30 км, м', answers: ['100'] }],
+        explanation: 'Для 15 км требуется √h ≥ 5, минимальное h равно 25 м. Для 30 км нужно √h = 10, откуда h = 100 м. Дальность удваивается при увеличении высоты в четыре раза.'
+      }]
+    },
+    11: {
+      title: 'Текстовые задачи',
+      skills: [
+        'Назвать неизвестное и указать единицы измерения.',
+        'Составить уравнение движения, работы, смеси или изменения величины.',
+        'Отбросить решения, которые противоречат условию.'
+      ],
+      challenges: [{
+        id: 'two-pipes',
+        title: 'Спланируй наполнение бассейна',
+        prompt: 'Одна труба заполняет пустой бассейн за 6 часов. Нужно подобрать вторую так, чтобы вместе трубы наполняли бассейн за 2,4 часа. За сколько часов должна заполнять бассейн вторая труба, работая одна? Считай расходы воды постоянными.',
+        hint: 'Перейди от часов к доле бассейна, заполняемой за час. Доли, полученные за один и тот же час, можно сложить.',
+        answers: ['4'],
+        explanation: 'Вместе трубы заполняют за час 1 / 2,4 = 5/12 бассейна. Первая даёт 1/6 = 2/12, значит вторая даёт 3/12 = 1/4. Одна она справится за 4 часа.'
+      }]
+    },
+    12: {
+      title: 'Функции и графики',
+      skills: [
+        'Определить вид функции по характерным точкам и форме графика.',
+        'Найти параметры формулы по координатам точек.',
+        'Проверить формулу подстановкой и предсказать свойство графика.'
+      ],
+      challenges: [{
+        id: 'parabola-arch',
+        title: 'Настрой график параболы',
+        prompt: 'В графическом редакторе нужна парабола с вершиной (2; 1), проходящая через точку (0; 9). Подбери коэффициент a в формуле y = a(x − 2)² + 1 и найди ординату точки графика при x = 5.',
+        hint: 'Подставь координаты известной точки в формулу. Координаты вершины уже учтены.',
+        fields: [{ label: 'Коэффициент a', answers: ['2'] }, { label: 'Ордината при x = 5', answers: ['19'] }],
+        explanation: 'Из 9 = 4a + 1 получаем a = 2. При x = 5 имеем y = 2 · 3² + 1 = 19.'
+      }]
+    },
+    13: {
+      title: 'Финансы и текстовые модели',
+      skills: [
+        'Составить схему платежей или изменения суммы по периодам.',
+        'Определить, к какой сумме применяется процент.',
+        'Восстановить неизвестную сумму и проверить её по всем платежам.'
+      ],
+      challenges: [{
+        id: 'installment-plan',
+        title: 'Восстанови цену по рассрочке',
+        prompt: 'Покупатель внёс четверть цены сразу. К оставшейся сумме один раз прибавили 10%, затем получившуюся сумму разделили на 6 платежей по 11 000 ₽. Восстанови первоначальную цену и размер переплаты.',
+        hint: 'Начни с общей суммы шести платежей. Умножение на 1,1 применяется только к оставшейся части цены.',
+        fields: [{ label: 'Первоначальная цена, ₽', answers: ['80000'] }, { label: 'Переплата, ₽', answers: ['6000'] }],
+        explanation: 'Шесть платежей составляют 66 000 ₽. До надбавки остаток был 66 000 / 1,1 = 60 000 ₽. Это три четверти цены, значит цена равна 80 000 ₽, а переплата — 6 000 ₽.'
+      }]
+    },
+    14: {
+      title: 'Уравнения с отбором',
+      skills: [
+        'Записать ОДЗ и выбрать равносильные преобразования.',
+        'Получить все серии решений, учитывая исключения.',
+        'Отобрать корни на заданном промежутке и проверить границы.'
+      ],
+      challenges: [{
+        id: 'single-root',
+        title: 'Настрой уравнение для отбора корней',
+        prompt: 'Подбери a в уравнении cos(2x) = a так, чтобы x = −π/4 был корнем. На бумаге запиши все серии корней. Введи a и число корней на отрезке [−π/3; π/6].',
+        hint: 'Подставь известный корень. Отбор можно сделать на числовой прямой: соседние нули cos(2x) находятся на расстоянии π/2.',
+        fields: [{ label: 'Значение a', answers: ['0'] }, { label: 'Число корней на отрезке', answers: ['1'] }],
+        explanation: 'cos(−π/2) = 0, поэтому a = 0. Все корни имеют вид x = π/4 + πk/2, k ∈ ℤ. На отрезке есть только −π/4: следующий корень π/4 правее его границы.'
+      }]
+    },
+    15: {
+      title: 'Стереометрия с доказательством',
+      skills: [
+        'Построить сечение, отмечая принадлежность точек граням.',
+        'Обосновать параллельность или перпендикулярность в пространстве.',
+        'Свести вычисление угла, расстояния или объёма к плоской фигуре.'
+      ],
+      challenges: [{
+        id: 'sloping-section',
+        title: 'Дострой сечение коробки',
+        prompt: 'В прямоугольном параллелепипеде ABCDA₁B₁C₁D₁ рёбра AB = 6, BC = 4 и AA₁ = 8. Плоскость проходит через две точки на рёбрах AA₁ и BB₁ на высоте 2 и через C₁. Набросай сечение на бумаге и найди его четвёртую вершину. Введи её высоту над основанием и объём части под сечением.',
+        hint: 'Отрезок между двумя точками на высоте 2 параллелен AB. Через C₁ проведи в плоскости сечения прямую того же направления. Рассмотри боковую грань BCC₁B₁.',
+        fields: [{ label: 'Высота четвёртой вершины', answers: ['8'] }, { label: 'Объём под сечением', answers: ['120'] }],
+        explanation: 'Через C₁ в плоскости сечения проходит прямая, параллельная AB, поэтому четвёртая вершина — D₁. Тело под сечением является призмой с трапецией в основании. Её площадь равна (2 + 8) · 4 / 2 = 20, а объём равен 20 · 6 = 120.'
+      }]
+    },
+    16: {
+      title: 'Неравенства',
+      skills: [
+        'Выписать ОДЗ, нули числителя и границы промежутков.',
+        'Составить таблицу знаков или обосновать равносильное преобразование.',
+        'Записать ответ, проверив включение каждой граничной точки.'
+      ],
+      challenges: [{
+        id: 'build-sign-rule',
+        title: 'Собери неравенство по его ответу',
+        prompt: 'Подбери a так, чтобы решением неравенства (x − a)/(x − 3) ≤ 0 был промежуток [−2; 3). Посчитай также целые решения.',
+        hint: 'Подумай, какая граница принадлежит области определения и в какой точке дробь может равняться нулю.',
+        fields: [{ label: 'Коэффициент a', answers: ['-2'] }, { label: 'Число целых решений', answers: ['5'] }],
+        explanation: 'Левая граница −2 включена, значит там числитель равен нулю и a = −2. Между −2 и 3 знаки числителя и знаменателя разные, а 3 исключено из ОДЗ. Целые решения — −2, −1, 0, 1, 2.'
+      }]
+    },
+    17: {
+      title: 'Моделирование и оптимизация',
+      skills: [
+        'Перевести ограничения задачи в уравнение, неравенство или таблицу.',
+        'Выразить целевую величину через один параметр.',
+        'Сравнить кандидатов и проверить, достижим ли лучший результат.'
+      ],
+      challenges: [{
+        id: 'garden-layout',
+        title: 'Спроектируй самый просторный участок',
+        prompt: 'Возле прямой стены нужно огородить прямоугольный участок. Две стороны перпендикулярны стене, а третья сторона параллельна ей. На эти три стороны есть 24 м ограды. Подбери ширину участка, при которой его площадь наибольшая, и найди эту площадь.',
+        hint: 'Если ширина x, то вдоль стены участок имеет длину 24 − 2x. Вырази площадь и найди вершину параболы.',
+        fields: [{ label: 'Ширина, м', answers: ['6'] }, { label: 'Наибольшая площадь, м²', answers: ['72'] }],
+        explanation: 'Площадь S(x) = x(24 − 2x) = 72 − 2(x − 6)². При 0 < x < 12 её максимум достигается при x = 6. Длина равна 12 м, площадь — 72 м².'
+      }]
+    },
+    18: {
+      title: 'Планиметрия с доказательством',
+      skills: [
+        'Прочитать условие и сделать чертёж без лишних предположений.',
+        'Подобрать дополнительную линию или пару подобных треугольников.',
+        'Обосновать отношения отрезков и площадей.'
+      ],
+      challenges: [{
+        id: 'rebuild-trapezoid',
+        title: 'Восстанови трапецию по площадям',
+        prompt: 'В трапеции ABCD основания AB и CD параллельны, AB = 12. Диагонали пересекаются в O. Площади треугольников AOB и COD равны 27 и 12 соответственно. Восстанови длину CD.',
+        hint: 'Найди пару равных углов при параллельных основаниях и вертикальные углы при O. Как связаны площади подобных треугольников?',
+        answers: ['8'],
+        explanation: 'Треугольники AOB и COD подобны по двум углам. Отношение их площадей 12/27 = 4/9, поэтому отношение соответствующих оснований равно √(4/9) = 2/3. Тогда CD = 12 · 2/3 = 8.'
+      }]
+    },
+    19: {
+      title: 'Параметры',
+      skills: [
+        'Определить, что меняет параметр и где меняется число решений.',
+        'Выделить особые значения, включая точки касания и границы ОДЗ.',
+        'Доказать полноту разбора и проверить граничные значения.'
+      ],
+      challenges: [{
+        id: 'moving-line',
+        title: 'Раздвинь точки пересечения',
+        prompt: 'Прямую y = a поднимают над графиком y = |x − 2| + 1. Найди наименьшее целое значение a, при котором точки пересечения находятся на расстоянии не меньше 8 друг от друга. Укажи также абсциссу левой точки при этом a.',
+        hint: 'При a > 1 обе точки находятся на высоте a. Расстояние между ними равно разности абсцисс, которые симметричны относительно x = 2.',
+        fields: [{ label: 'Наименьшее целое a', answers: ['5'] }, { label: 'Абсцисса левой точки', answers: ['-2'] }],
+        explanation: 'Решения уравнения |x − 2| = a − 1 равны 2 ± (a − 1). Расстояние между ними равно 2(a − 1), значит a ≥ 5. При a = 5 левая точка имеет абсциссу 2 − 4 = −2.'
+      }]
+    },
+    20: {
+      title: 'Числа и их свойства',
+      skills: [
+        'Искать остатки, чётность и величины, которые сохраняются.',
+        'Строить пример с нужным свойством.',
+        'Доказывать невозможность или достижимость оценки.'
+      ],
+      challenges: [{
+        id: 'invariant-board',
+        title: 'Настрой игру на нужный итог',
+        prompt: 'На доске записаны 2, 4, 8, 16 и число n. За ход два числа a и b стирают и записывают a + b − 3. Подбери n так, чтобы последним всегда оставалось число 30, независимо от порядка ходов.',
+        hint: 'Посмотри, как за один ход меняются сумма чисел на доске и количество записанных чисел.',
+        answers: ['12'],
+        explanation: 'Сумма уменьшается ровно на 3 за ход. Чисел изначально пять, поэтому ходов будет четыре и итог равен 2 + 4 + 8 + 16 + n − 12 = n + 18. Для итога 30 нужно n = 12.'
+      }]
+    }
+  };
+
+  const trainers = {
+    'trigonometry-values': {
+      title: 'Тригонометрические значения',
+      skills: [
+        'Найти четверть и опорный угол.',
+        'Определить знаки синуса и косинуса.',
+        'Получить точные значения по единичной окружности.'
+      ],
+      challenges: [{
+        id: 'opposite-sine',
+        title: 'Настрой угол по двум условиям',
+        prompt: 'На единичной окружности выбери угол α от 0° включительно до 360° не включительно, чтобы sin α = −1/2, а cos α был отрицательным. Введи угол в градусах.',
+        hint: 'Оба условия вместе определяют четверть. Угол отсчитывается от положительного направления оси x.',
+        answers: ['210'],
+        explanation: 'Синус и косинус отрицательны в третьей четверти. Опорный угол при |sin α| = 1/2 равен 30°, поэтому α = 180° + 30° = 210°.'
+      }]
+    },
+    'trigonometry-equations': {
+      title: 'Тригонометрические уравнения',
+      skills: [
+        'Преобразовать уравнение к одной тригонометрической функции.',
+        'По единичной окружности получить все серии корней.',
+        'Проверить период и заданный промежуток.'
+      ],
+      challenges: [{
+        id: 'tangent-threshold',
+        title: 'Настрой корень на интервале',
+        prompt: 'Уравнение tg x = a должно иметь корень 45°. Подбери a и запиши на бумаге общую формулу корней. Введи a и число корней в интервале (−90°; 90°).',
+        hint: 'При 45° катеты соответствующего прямоугольного треугольника равны. Вспомни период тангенса.',
+        fields: [{ label: 'Коэффициент a', answers: ['1'] }, { label: 'Число корней', answers: ['1'] }],
+        explanation: 'tg 45° = 1. Все решения имеют вид x = 45° + 180°k, k ∈ ℤ. В интервал (−90°; 90°) попадает только 45°.'
+      }]
+    },
+    'trig-sum-to-product': {
+      title: 'Сумма и разность тригонометрических функций',
+      skills: [
+        'Узнать структуру суммы или разности двух синусов и косинусов.',
+        'Найти полусумму и полуразность аргументов.',
+        'Использовать ноль множителя, чтобы построить пример.'
+      ],
+      challenges: [{
+        id: 'cosine-cancellation',
+        title: 'Подбери второй угол',
+        prompt: 'Выбери угол β из интервала (90°; 180°), при котором cos 20° + cos β = 0. Используй формулу преобразования суммы в произведение. Введи β в градусах.',
+        hint: 'Разложи сумму на произведение. Полуразность этих углов лежит между −80° и −35°, поэтому её косинус ненулевой.',
+        answers: ['160'],
+        explanation: 'Сумма равна 2 cos((20° + β)/2) cos((20° − β)/2). Второй косинус ненулевой, значит полусумма углов равна 90° и β = 160°.'
+      }]
+    },
+    'trigonometry-course': {
+      title: 'Тригонометрия и единичная окружность',
+      skills: [
+        'Отметить положительный или отрицательный поворот на единичной окружности.',
+        'Связать координаты точки с синусом и косинусом.',
+        'Сравнить разные углы, ведущие в одну точку.'
+      ],
+      challenges: [{
+        id: 'circle-rewind',
+        title: 'Верни стрелку в ту же точку',
+        prompt: 'Стрелку повернули на 765°. Подбери отрицательный угол β из интервала (−360°; 0°), после которого стрелка из исходного положения попадёт в ту же точку. Введи β в градусах.',
+        hint: 'Каждый полный оборот сохраняет конечную точку. Углы отличаются на целое число полных оборотов.',
+        answers: ['-315'],
+        explanation: '765° = 2 · 360° + 45°. От 45° отнимем ещё 360° и получим единственный подходящий угол −315°.'
+      }]
+    },
+    'derivative-graph': {
+      title: 'Производная по графику',
+      skills: [
+        'Различить графики функции и производной.',
+        'Связать знак производной с возрастанием или убыванием.',
+        'Найти экстремумы по смене знака и прочитать наклон касательной.'
+      ],
+      challenges: [{
+        id: 'extremum-design',
+        title: 'Настрой место максимума',
+        prompt: 'График производной функции — прямая f′(x) = a − 2x. Подбери a, чтобы у функции был максимум в точке x = 3. Проверь знаки производной по обе стороны.',
+        hint: 'При максимуме производная меняет знак с плюса на минус. Найди значение, при котором она равна нулю в нужной точке.',
+        answers: ['6'],
+        explanation: 'Условие f′(3) = 0 даёт a = 6. Для x < 3 производная положительна, для x > 3 отрицательна. Функция сначала возрастает, затем убывает.'
+      }]
+    },
+    'functions-extrema': {
+      title: 'Наибольшее и наименьшее значения функции',
+      skills: [
+        'Найти область определения и точки с нулевой или несуществующей производной.',
+        'Проверить критические точки внутри отрезка.',
+        'Сравнить значения функции в найденных точках и на концах отрезка.'
+      ],
+      challenges: [{
+        id: 'tie-extremum',
+        title: 'Уравняй два максимума на концах',
+        prompt: 'Подбери a, чтобы на отрезке [1; 4] функция f(x) = x + a/x достигала наибольшего значения сразу на обоих концах. Найди также точку наименьшего значения.',
+        hint: 'Сначала приравняй значения f(1) и f(4). Затем проверь производную внутри отрезка.',
+        fields: [{ label: 'Коэффициент a', answers: ['4'] }, { label: 'Точка минимума x', answers: ['2'] }],
+        explanation: 'Из 1 + a = 4 + a/4 получаем a = 4. Производная 1 − 4/x² отрицательна до 2 и положительна после 2. Значит, x = 2 — точка минимума, а оба конца дают максимальное значение 5.'
+      }]
+    },
+    'expert': {
+      title: 'Проверка решения',
+      skills: [
+        'Проверить исходное условие, ОДЗ и равносильность переходов.',
+        'Найти первый необоснованный шаг в решении.',
+        'Восстановить недостающее обоснование и проверить ответ.'
+      ],
+      challenges: [{
+        id: 'review-steps',
+        title: 'Проверь решение другого ученика',
+        prompt: 'Ученик решает √(x + 2) = x: (1) «при x ≥ −2 возведение в квадрат не добавит новых корней»; (2) «после возведения в квадрат x² − x − 2 = 0»; (3) «корни −1 и 2, оба подходят». Введи номер первого ошибочного утверждения.',
+        hint: 'Перед возведением в квадрат сравни знаки обеих частей. Когда это действие может добавить корни?',
+        answers: ['1'],
+        explanation: 'Для существования корня нужно x ≥ −2, но для выполнения равенства также нужно x ≥ 0. Первое ошибочное утверждение — в строке 1. После проверки остаётся только x = 2.'
+      }]
+    },
+    'legacy-exam': {
+      title: 'Пробный экзамен',
+      skills: [
+        'Определить тип задачи и выбрать способ проверки.',
+        'Отличить краткий ответ от развёрнутого решения с обоснованием.',
+        'Проверить ответ в условии и единицы перед завершением.'
+      ],
+      challenges: [{
+        id: 'self-check-answer',
+        title: 'Отредактируй ответ к пробнику',
+        prompt: 'В задаче о встрече двух пешеходов получено уравнение (3 + 5)t = 20, где t — время в часах. Один ответ записан как 2,5, второй — как 2 ч 30 мин. Для поля «время в минутах» введи подходящий ответ.',
+        hint: 'Оба значения описывают одно и то же время. Приведи его к единице измерения, которую просит поле.',
+        answers: ['150'],
+        explanation: 'Время равно 20 / 8 = 2,5 часа. Это 2,5 · 60 = 150 минут, поэтому в поле нужно записать 150.'
+      }]
+    },
+    'planimetry': {
+      title: 'Планиметрия без промахов',
+      skills: [
+        'Отметить известные стороны, углы и параллельные прямые.',
+        'Выбрать дополнительную линию и записать нужное равенство.',
+        'Найти длину или площадь и проверить её по чертежу.'
+      ],
+      challenges: [{
+        id: 'planimetry-design',
+        title: 'Спроектируй две клумбы',
+        prompt: 'Сад имеет форму трапеции. Его средняя линия разделяет две клумбы, площади которых относятся как 2 к 3. Меньшее основание трапеции равно 9 м. Какой длины должно быть большее основание в метрах?',
+        hint: 'У обеих частей одинаковая высота. Вырази отношение площадей через суммы оснований двух трапеций.',
+        answers: ['21'],
+        explanation: 'Пусть b — большее основание, а m = (9 + b)/2 — средняя линия. Из (9 + m)/(m + b) = 2/3 получаем (27 + b)/(9 + 3b) = 2/3. Отсюда b = 21 м.',
+      }],
+    },
+    'right-triangle': {
+      title: 'Прямоугольный треугольник',
+      skills: [
+        'Различать гипотенузу и катеты относительно выбранного угла.',
+        'Выбирать между sin, cos, tg и теоремой Пифагора.',
+        'Связывать высоту к гипотенузе с её отрезками через подобие.'
+      ],
+      challenges: [{
+        id: 'right-triangle-design',
+        title: 'Восстанови чертёж опоры',
+        prompt: 'Рама имеет форму прямоугольного треугольника. Высота из вершины прямого угла равна 12 см. Она делит гипотенузу на два отрезка. Один равен 9 см. Какую длину второго отрезка в сантиметрах нужно указать?',
+        hint: 'Сравни два прямоугольных треугольника по разные стороны высоты. Какие стороны соответствуют друг другу?',
+        answers: ['16'],
+        explanation: 'Два треугольника подобны. Отношение 9 к 12 равно отношению 12 к искомому отрезку, поэтому его длина равна 12²/9 = 16 см.'
+      }]
+    },
+    'planimetry-yashchenko': {
+      title: 'Планиметрия по Ященко',
+      skills: [
+        'Связывать биссектрису и параллельные стороны с равными углами.',
+        'Находить длины по средней линии, подобию и площадям.',
+        'Определять дуги по вписанным углам и хордам.'
+      ],
+      challenges: [{
+        id: 'planimetry-yashchenko-design',
+        title: 'Раздели сторону в заданном отношении',
+        prompt: 'В параллелограмме ABCD сторона AD равна 8 см. Биссектриса угла DAB пересекает сторону DC в точке E. Какой длины в сантиметрах нужно сделать сторону AB, чтобы DE : EC = 2 : 3?',
+        hint: 'Используй параллельность AB и DC, чтобы сравнить углы DAE и AED.',
+        answers: ['20'],
+        explanation: 'Углы DAE и EAB равны по свойству биссектрисы, а углы EAB и AED равны из-за параллельности сторон. Поэтому в треугольнике ADE стороны DE и AD равны. Значит, две доли дают 8 см, а пять долей дают 20 см.'
+      }]
+    },
+    'vectors': {
+      title: 'Векторы и действия над ними',
+      skills: [
+        'Находить координаты вектора по его началу и концу.',
+        'Складывать векторы и вычислять длину результата.',
+        'Определять угол между векторами по скалярному произведению.'
+      ],
+      challenges: [{
+        id: 'vectors-design',
+        title: 'Настрой маршрут робота',
+        prompt: 'Робот сначала перемещается на вектор (4; −2), затем на вектор (t; 8). Подбери t так, чтобы он оказался на расстоянии 10 от старта и правее точки старта.',
+        hint: 'Сложи векторы по координатам. У вектора от старта до финиша первая координата должна быть положительной.',
+        answers: ['4'],
+        explanation: 'Итоговое перемещение равно (4 + t; 6). Из (4 + t)² + 36 = 100 получаем 4 + t = ±8. Финиш правее старта, поэтому 4 + t = 8 и t = 4.'
+      }]
+    },
+    'vectors-yashchenko': {
+      title: 'Векторы по Ященко',
+      skills: [
+        'Считывать координаты стрелки с сетки с учётом направления.',
+        'Считать длину и скалярное произведение по координатам.',
+        'Проверять знак косинуса по виду угла.'
+      ],
+      challenges: [{
+        id: 'vectors-yashchenko-design',
+        title: 'Исправь стрелку на чертеже',
+        prompt: 'Одна стрелка идёт из A(1; 3) в B(4; 7), другая — из C(−2; 1) в D(2; 4). Редактор развернул вторую стрелку, теперь она идёт из D в C. Запиши косинус угла между первой и новой стрелками.',
+        hint: 'При развороте стрелки измени знаки обеих её координат. Что происходит с её длиной?',
+        answers: ['-24/25', '-0.96'],
+        explanation: 'Координаты первой стрелки (3; 4), второй после разворота (−4; −3). Их скалярное произведение равно −24, обе длины равны 5. Косинус равен −24/25.'
+      }]
+    },
+    'stereo-3d': {
+      title: 'Стереометрия с объёмными моделями',
+      skills: [
+        'Находить основание, радиус и высоту на объёмной модели.',
+        'Выбирать сечение, на котором видны нужные отрезки.',
+        'Сравнивать объёмы тел при изменении размеров.'
+      ],
+      challenges: [{
+        id: 'stereo-3d-design',
+        title: 'Спроектируй новый резервуар',
+        prompt: 'Цилиндрический резервуар радиуса 3 м и высоты 16 м заменяют коническим той же вместимости. Радиус основания нового резервуара 6 м. Какой должна быть его высота в метрах?',
+        hint: 'Сравни площади оснований. В формуле объёма конуса есть множитель, которого нет в формуле для цилиндра.',
+        answers: ['12'],
+        explanation: 'Объём цилиндра равен 144π м³. Объём конуса высоты h равен π · 6² · h/3 = 12πh м³. Приравняв объёмы, получаем h = 12 м.'
+      }]
+    },
+    'stereo-proof': {
+      title: 'Стереометрия с доказательством',
+      skills: [
+        'Находить ортогональную проекцию и обосновывать перпендикулярность.',
+        'Строить линейный угол двугранного угла.',
+        'Вычислять высоту, объём или расстояние до плоскости.'
+      ],
+      challenges: [{
+        id: 'stereo-proof-design',
+        title: 'Задай наклон крыши',
+        prompt: 'Крыша имеет форму правильной четырёхугольной пирамиды со стороной основания 12 м. По проекту косинус угла наклона боковой грани к основанию равен 3/5. На какой высоте в метрах должна быть вершина? Набросай чертёж на бумаге и объясни, почему выбранный угол подходит.',
+        hint: 'Соедини середину ребра основания с его центром и с вершиной пирамиды. Как расположены эти отрезки относительно ребра?',
+        answers: ['8'],
+        explanation: 'Пусть M — середина ребра, O — центр основания, S — вершина. OM и SM перпендикулярны ребру, поэтому ∠SMO — линейный угол. OM = 6, значит SM = 6/(3/5) = 10. Из прямоугольного треугольника SOM получаем SO = 8 м.',
+      }],
+    },
+    'planimetry-proof': {
+      title: 'Планиметрия с доказательством',
+      skills: [
+        'Выбирать дугу, хорду или касательную для связи углов.',
+        'Доказывать подобие и правильно сопоставлять стороны.',
+        'Обосновывать вычисление и записывать оба пункта решения.'
+      ],
+      challenges: [{
+        id: 'planimetry-proof-design',
+        title: 'Восстанови расстояние на схеме',
+        prompt: 'Из точки P вне окружности проведены касательная PT длиной 12 см и секущая через A и B. Точка A ближе к P, чем B, и PA = 9 см. Обоснуй на бумаге связь между отрезками PT, PA и PB. Введи длину AB в сантиметрах.',
+        hint: 'Найди общий угол у треугольников PTA и PBT. Вторую пару равных углов даёт касательная и хорда.',
+        answers: ['7'],
+        explanation: 'Из подобия треугольников PTA и PBT получаем PT² = PA · PB. Значит, PB = 144/9 = 16 см, а AB = 16 − 9 = 7 см.'
+      }]
+    },
+    'yashchenko-lines-1-2': {
+      title: 'Планиметрия и векторы по Ященко',
+      skills: [
+        'Определять вид геометрической задачи по условию и чертежу.',
+        'Выбирать между свойством фигуры и координатным способом.',
+        'Проверять итог по длине, углу или положению точки.'
+      ],
+      challenges: [{
+        id: 'yashchenko-lines-1-2-design',
+        title: 'Подними маяк как можно выше',
+        prompt: 'На координатной плоскости маяки стоят в точках A(−2; 1) и B(8; 1). Третий маяк C нужно поставить выше AB так, чтобы угол ACB был прямым. Какую наибольшую ординату может иметь C?',
+        hint: 'Найди все возможные положения точки C. Поможет свойство вписанного угла или равенство скалярного произведения векторов CA и CB нулю.',
+        answers: ['6'],
+        explanation: 'Точка C лежит на верхней полуокружности с диаметром AB. Центр (3; 1), радиус 5. Самая высокая точка находится на 5 выше центра, поэтому её ордината равна 6.'
+      }]
+    },
+    'parameters-linear': {
+      title: 'Линейные уравнения с параметром',
+      skills: [
+        'Выделить коэффициент при x и свободный член.',
+        'Проверить случай нулевого коэффициента при x.',
+        'Отличить одно решение, отсутствие решений и бесконечно много решений.'
+      ],
+      challenges: [{
+        id: 'parameters-linear-design',
+        title: 'Совмести две прямые',
+        prompt: 'Уравнение (a − 3)x = 2a − b должно выполняться при любом x, когда a = 3. Подбери b.',
+        hint: 'Подставь a = 3 и подумай, какое равенство должно получиться для всех x.',
+        answers: ['6'],
+        explanation: 'При a = 3 остаётся 0 = 6 − b. Равенство верно при любом x ровно при b = 6.'
+      }]
+    },
+    'parameters-quadratic': {
+      title: 'Квадратные уравнения с параметром',
+      skills: [
+        'Проверить, при каких параметрах уравнение остаётся квадратным.',
+        'Связать знак дискриминанта с числом различных корней.',
+        'Проверить абсциссу точки касания оси.'
+      ],
+      challenges: [{
+        id: 'parameters-quadratic-design',
+        title: 'Касание справа от нуля',
+        prompt: 'Подбери a, чтобы парабола y = x² − 2ax + a + 2 касалась оси Ox справа от начала координат.',
+        hint: 'Свяжи касание оси с числом корней уравнения. Затем найди абсциссу точки касания.',
+        answers: ['2'],
+        explanation: 'Условие D = 0 даёт a² − a − 2 = 0, откуда a = −1 или a = 2. Абсцисса вершины равна a, поэтому подходит 2.'
+      }]
+    },
+    'parameters-fractional': {
+      title: 'Дробно-рациональные уравнения с параметром',
+      skills: [
+        'Выписать значения, при которых знаменатель равен нулю.',
+        'Найти кандидатов из равенства числителя нулю.',
+        'Выяснить, какие кандидаты исключаются при особом значении параметра.'
+      ],
+      challenges: [{
+        id: 'parameters-fractional-design',
+        title: 'Оставь только отрицательный корень',
+        prompt: 'Подбери a, чтобы уравнение (x² − 9)/(x − a) = 0 имело ровно один корень и он был отрицательным.',
+        hint: 'Сначала найди кандидатов из числителя. Как условие x ≠ a позволяет убрать одного из них?',
+        answers: ['3'],
+        explanation: 'Числитель обращается в нуль при x = −3 и x = 3. При a = 3 знаменатель исключает положительного кандидата, а x = −3 остаётся корнем.'
+      }]
+    },
+    'parameters-irrational': {
+      title: 'Уравнения с корнем и параметром',
+      skills: [
+        'Записать условие существования квадратного корня.',
+        'Проверить знак правой части перед возведением в квадрат.',
+        'Отсеять посторонние корни по исходному уравнению.'
+      ],
+      challenges: [{
+        id: 'parameters-irrational-design',
+        title: 'Создай посторонний корень',
+        prompt: 'Уравнение √(x + 5) = x − a возвели в квадрат. Подбери a так, чтобы x = −1 подошёл после возведения в квадрат и оказался посторонним корнем исходного уравнения.',
+        hint: 'Посчитай обе части при x = −1. Подумай, как квадраты могут совпасть при разных знаках.',
+        answers: ['1'],
+        explanation: 'При x = −1 левая часть равна 2. Чтобы квадраты совпали, а исходное равенство оказалось неверным, правая часть должна равняться −2. Условие −1 − a = −2 даёт a = 1.'
+      }]
+    },
+    'parameters-graphic': {
+      title: 'Графический метод для задач с параметром',
+      skills: [
+        'Построить график по участкам, раскрывая модули.',
+        'Перевести уравнение f(x) = a в задачу о пересечениях с горизонталью.',
+        'Проверить уровни, на которых горизонталь совпадает с участком графика.'
+      ],
+      challenges: [{
+        id: 'parameters-graphic-design',
+        title: 'Горизонталь с целым отрезком решений',
+        prompt: 'Подбери уровень a, при котором уравнение |x − 2| + |x + 2| = a имеет бесконечно много решений.',
+        hint: 'На числовой прямой выражение складывает расстояния от x до двух отмеченных точек. Проследи, что происходит между этими точками.',
+        answers: ['4'],
+        explanation: 'На отрезке [−2; 2] сумма расстояний равна 4. Слева и справа от отрезка она строго больше 4 и меняется линейно, поэтому только горизонталь y = 4 даёт бесконечно много решений.'
+      }]
+    },
+    'log-variable-base': {
+      title: 'Логарифм с переменным основанием',
+      skills: [
+        'Записать ограничения на аргумент и основание логарифма.',
+        'Различить возрастающий и убывающий логарифм.',
+        'Перевести условие на значение логарифма в условие на аргумент.'
+      ],
+      challenges: [{
+        id: 'log-variable-base-design',
+        title: 'Настрой два показания',
+        prompt: 'Устройство показывает logₓ(ax + 1). При x = 1/2 показание должно быть меньше нуля, а при x = 2 — не меньше 2. Найди наименьшее целое a.',
+        hint: 'Для каждого x сравни основание с 1. Представь порог показания как логарифм с тем же основанием.',
+        answers: ['2'],
+        explanation: 'При x = 1/2 отрицательное показание требует a/2 + 1 > 1, то есть a > 0. При x = 2 условие даёт 2a + 1 ≥ 4. Оба аргумента положительны при a ≥ 3/2, поэтому наименьшее целое a равно 2.'
+      }]
+    },
+    'log-nested': {
+      title: 'Вложенные логарифмы',
+      skills: [
+        'Найти основания и аргументы внутреннего и внешнего логарифмов.',
+        'Проверить, где значение внутреннего логарифма положительно.',
+        'Преобразовать неравенство поэтапно с учётом монотонности каждого логарифма.'
+      ],
+      challenges: [{
+        id: 'log-nested-design',
+        title: 'Задай правую границу',
+        prompt: 'Подбери a > 0 так, чтобы наибольшим решением неравенства log₂(log₍₁⁄₂₎(ax)) ≥ 1 было x = 1/12.',
+        hint: 'Сначала вырази условие на весь внутренний логарифм. Для следующего перехода сравни его основание с 1.',
+        answers: ['3'],
+        explanation: 'Внешнее неравенство требует log₍₁⁄₂₎(ax) ≥ 2. Внутренний логарифм убывает, поэтому 0 < ax ≤ 1/4. Правая граница равна 1/(4a), и приравнивание к 1/12 даёт a = 3.'
+      }]
+    },
+    'log-inequalities': {
+      title: 'Логарифмические неравенства',
+      skills: [
+        'Найти область допустимых значений логарифмов.',
+        'Учесть монотонность логарифма при сравнении.',
+        'Пересечь промежутки решения с областью допустимых значений.'
+      ],
+      challenges: [{
+        id: 'log-inequalities-design',
+        title: 'Выбери сдвиг для трёх отметок',
+        prompt: 'В неравенстве log₃(x + b) ≤ 1 отметки x = 1 и x = 2 должны входить в решение, а x = 3 должна лежать в ОДЗ и не входить в решение. Найди целое b.',
+        hint: 'Запиши двойное условие на x + b. Сравни с верхней границей аргументы для всех трёх отметок.',
+        answers: ['1'],
+        explanation: 'Решения удовлетворяют 0 < x + b ≤ 3. При x = 2 получаем b ≤ 1. При x = 3 аргумент должен быть больше 3, то есть b > 0. При b = 1 отметка x = 1 тоже подходит.'
+      }]
+    },
+    'rationalization': {
+      title: 'Рационализация неравенств',
+      skills: [
+        'Выписать ОДЗ для логарифма с переменным основанием.',
+        'Заменить логарифм в произведении выражением того же знака.',
+        'Учитывать нули множителей и точки вне ОДЗ на числовой прямой.'
+      ],
+      challenges: [{
+        id: 'rationalization-design',
+        title: 'Подбери границу двух промежутков',
+        prompt: 'Подбери a > 1, чтобы неравенство (x − a) · logₓ(x + 1) > 0 выполнялось ровно на (0; 1) и (4; +∞).',
+        hint: 'На ОДЗ аргумент логарифма больше 1. Сравни знак логарифма со знаком x − 1.',
+        answers: ['4'],
+        explanation: 'При 0 < x < 1 логарифм и x − a отрицательны. При x > 1 логарифм положителен, и произведение положительно только при x > a. Правая часть решения должна начинаться за 4, поэтому a = 4.'
+      }]
+    },
+    'interval-method': {
+      title: 'Метод интервалов',
+      skills: [
+        'Нанести нули числителя и знаменателя на ось.',
+        'Проверить, меняется ли знак у точки чётной кратности.',
+        'Отметить включённые, исключённые и отдельные точки решения.'
+      ],
+      challenges: [{
+        id: 'interval-method-design',
+        title: 'Оставь одну точку между границами',
+        prompt: 'Подбери a так, чтобы число 4 было единственным решением неравенства (x − a)²(x − 1)/(x − 5) ≥ 0 на промежутке (1; 5).',
+        hint: 'Сначала найди знак дроби (x − 1)/(x − 5) между 1 и 5. Посмотри, когда квадрат позволяет получить равенство нулю.',
+        answers: ['4'],
+        explanation: 'На (1; 5) дробь отрицательна. Всё выражение удовлетворяет неравенству только при (x − a)² = 0, поэтому требуемая точка получается при a = 4.'
+      }]
+    },
+    'inequalities-course': {
+      title: 'Неравенства разных типов',
+      skills: [
+        'Выбрать способ решения по виду неравенства.',
+        'Записать ограничения перед равносильным преобразованием.',
+        'Проверить каждую границу итогового множества решений.'
+      ],
+      challenges: [{
+        id: 'inequalities-course-design',
+        title: 'Настрой порог включения',
+        prompt: 'Подбери a так, чтобы наименьшим решением неравенства √(x + 1) ≤ x + a было x = 3.',
+        hint: 'Почему на границе при x = 3 должно быть равенство? После подстановки a проверь знаки перед возведением в квадрат.',
+        answers: ['-1'],
+        explanation: 'Если бы при x = 3 неравенство было строгим, оно выполнялось бы и при немного меньших x, поэтому 2 = 3 + a и a = −1. Тогда x ≥ 1, а после возведения в квадрат x(x − 3) ≥ 0. Общая часть этих условий начинается с 3.'
+      }]
+    }
+  };
+
+  const data = { maps, trainers };
+  root.ProfileSkillMapData = data;
+  if (typeof module !== 'undefined') module.exports = data;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+</script>
+<script data-inline-source="/ege-profil/skill-map.js" data-profile-skill-map="log-variable-base">
+(function (root) {
+  'use strict';
+
+  const storagePrefix = 'mathexam.profile-skill-map.v1.';
+  const session = new Map();
+  let nextDialogId = 0;
+  let directOpenUsed = false;
+  let canSave = true;
+
+  function normalized(value) {
+    return String(value).normalize('NFKC').toLowerCase().trim()
+      .replace(/[−–—]/g, '-').replace(/\s+/g, ' ')
+      .replace(/\s*([;:,=(){}\[\]/])\s*/g, '$1');
+  }
+
+  function fraction(value) {
+    const ratio = value.match(/^([+-]?\d+)\/([+-]?\d+)$/);
+    if (ratio) {
+      const denominator = BigInt(ratio[2]);
+      return denominator ? [BigInt(ratio[1]), denominator] : null;
+    }
+    const decimal = value.match(/^([+-]?)(\d*)(?:[,.](\d*))?$/);
+    if (!decimal || !(decimal[2] || decimal[3])) return null;
+    const digits = decimal[3] || '';
+    return [BigInt(decimal[1] + decimal[2] + digits), 10n ** BigInt(digits.length)];
+  }
+
+  function matches(input, expected) {
+    const value = normalized(input);
+    if (!value || value.length > 120) return false;
+    const a = fraction(value);
+    return expected.some(answer => {
+      const target = normalized(answer);
+      const b = fraction(target);
+      return a && b ? a[0] * b[1] === b[0] * a[1] : value === target;
+    });
+  }
+
+  function read(key) {
+    const fallback = session.get(key) || { values: [], hinted: false, solved: false, mistakes: 0 };
+    if (!canSave) return fallback;
+    try {
+      const raw = root.localStorage.getItem(storagePrefix + key);
+      if (!raw) return fallback;
+      const saved = JSON.parse(raw);
+      if (saved && Array.isArray(saved.values) && saved.values.every(value => typeof value === 'string') &&
+          typeof saved.hinted === 'boolean' && typeof saved.solved === 'boolean' &&
+          Number.isSafeInteger(saved.mistakes) && saved.mistakes >= 0) return saved;
+    } catch (_) {
+      // A damaged entry can be replaced by the next attempt.
+    }
+    return fallback;
+  }
+
+  function update(key, change) {
+    const state = read(key);
+    if (state.solved) return state;
+    Object.assign(state, change);
+    session.set(key, state);
+    if (canSave) {
+      try {
+        root.localStorage.setItem(storagePrefix + key, JSON.stringify(state));
+      } catch (_) {
+        canSave = false;
+      }
+    }
+    return state;
+  }
+
+  function element(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function action(text, primary = false) {
+    const button = element('button', 'profile-skill-button' + (primary ? ' profile-skill-button-primary' : ''), text);
+    button.type = 'button';
+    return button;
+  }
+
+  function keyFor(mapKey, challenge, index) {
+    return `${mapKey}:${challenge.id || index}`;
+  }
+
+  function mapTitle(key, map) {
+    if (!/^\d+$/.test(key)) return map.title;
+    const registry = root.ProfileExamMap;
+    const number = Number(key);
+    const entry = number <= 13 ? registry?.fromLegacyStart(number) : registry?.fromLegacyPartTwo(number);
+    if (!entry) return map.title;
+    if (number === 9) return 'Производная и первообразная · №8; экстремумы · №12';
+    return registry.label(entry) + (map.title ? ' · ' + map.title : '');
+  }
+
+  function alphabetLinks(key, beforeLeave) {
+    const catalog = root.ProfileAlphabetCatalog;
+    const alphabets = catalog?.forNumber(key);
+    if (!alphabets?.length) return null;
+    const block = element('section', 'profile-skill-alphabets');
+    block.append(element('h3', '', 'Вспомнить основы'));
+    const back = root.location.pathname + root.location.search + root.location.hash;
+    for (const alphabet of alphabets) {
+      const group = element('div', 'profile-skill-alphabet-group');
+      group.append(element('strong', '', alphabet.short));
+      const list = element('ul');
+      for (const [id, skill] of Object.entries(alphabet.skills)) {
+        if (!skill.numbers.includes(Number(key))) continue;
+        const link = element('a', '', skill.title);
+        link.href = catalog.href(alphabet.id, id, key, back);
+        link.setAttribute('data-profile-alphabet-link', '');
+        if (beforeLeave) link.addEventListener('click', async event => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          await beforeLeave();
+          root.location.assign(link.href);
+        });
+        const row = element('li');
+        row.append(link);
+        list.append(row);
+      }
+      group.append(list);
+      block.append(group);
+    }
+    return block;
+  }
+
+  function challengeForm(key, challenge, index, group, refresh) {
+    const stateKey = keyFor(key, challenge, index);
+    const state = read(stateKey);
+    const card = element('article', 'profile-skill-challenge');
+    card.setAttribute('data-profile-skill-challenge', '');
+    card.append(element('h4', '', challenge.title), element('p', 'profile-skill-prompt', challenge.prompt));
+
+    const form = element('form', 'profile-skill-form');
+    const fields = challenge.fields || [{ label: 'Ответ', answers: challenge.answers }];
+    const inputs = [];
+    if (challenge.choices?.length) {
+      const choices = element('fieldset', 'profile-skill-choices');
+      choices.append(element('legend', '', 'Выберите ответ'));
+      challenge.choices.forEach(choice => {
+        const label = element('label', 'profile-skill-choice');
+        const input = element('input');
+        input.type = 'radio';
+        input.name = `${group}-${index}`;
+        input.value = choice;
+        input.checked = state.values[0] === choice;
+        input.setAttribute('data-profile-skill-answer', '');
+        inputs.push(input);
+        label.append(input, element('span', '', choice));
+        choices.append(label);
+      });
+      form.append(choices);
+    } else {
+      fields.forEach((field, fieldIndex) => {
+        const label = element('label', 'profile-skill-field', field.label || 'Ответ');
+        const input = element('input');
+        input.type = 'text';
+        input.maxLength = 120;
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        input.value = state.values[fieldIndex] || '';
+        input.setAttribute('data-profile-skill-answer', '');
+        inputs.push(input);
+        label.append(input);
+        form.append(label);
+      });
+    }
+
+    function values() {
+      return challenge.choices?.length ? [inputs.find(input => input.checked)?.value || ''] : inputs.map(input => input.value);
+    }
+
+    const submit = action('Проверить', true);
+    submit.type = 'submit';
+    form.append(submit);
+    card.append(form);
+    const hint = element('details', 'profile-skill-hint');
+    hint.setAttribute('data-profile-skill-hint', '');
+    hint.append(element('summary', '', 'Подсказка'), element('p', '', challenge.hint));
+    const feedback = element('p', 'profile-skill-feedback');
+    feedback.setAttribute('role', 'status');
+    feedback.setAttribute('data-profile-skill-feedback', '');
+    card.append(hint, feedback);
+
+    function complete(record) {
+      feedback.dataset.result = 'correct';
+      feedback.textContent = (record.hinted ? 'Верно, с подсказкой. ' : 'Верно. ') + challenge.explanation;
+      hint.hidden = true;
+      submit.hidden = true;
+      inputs.forEach(input => { input.disabled = true; input.removeAttribute('aria-invalid'); });
+    }
+
+    if (state.solved) complete(state);
+    form.addEventListener('input', () => {
+      inputs.forEach(input => input.removeAttribute('aria-invalid'));
+      update(stateKey, { values: values() });
+      refresh();
+    });
+    function recordHint() {
+      update(stateKey, { hinted: true });
+      refresh();
+    }
+    hint.querySelector('summary').addEventListener('click', () => { if (!hint.open) recordHint(); });
+    hint.addEventListener('toggle', () => { if (hint.open) recordHint(); });
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const answers = values();
+      if (answers.some(answer => !answer.trim())) {
+        feedback.dataset.result = 'retry';
+        feedback.textContent = challenge.choices?.length ? 'Выберите ответ.' : 'Заполните каждое поле.';
+        const firstEmpty = answers.findIndex(answer => !answer.trim());
+        inputs[firstEmpty]?.focus();
+        return;
+      }
+      const results = fields.map((field, fieldIndex) => matches(answers[fieldIndex], field.answers));
+      if (results.every(Boolean)) {
+        complete(update(stateKey, { values: answers, solved: true, hinted: hint.open || read(stateKey).hinted }));
+      } else {
+        const mistakes = read(stateKey).mistakes + 1;
+        const record = update(stateKey, { values: answers, mistakes });
+        if (record.solved) complete(record);
+        else {
+          feedback.dataset.result = 'retry';
+          feedback.textContent = `Пока не сходится. ${mistakes >= 2 ? 'Попробуйте подсказку.' : 'Сверьте ответ с условием.'}`;
+          inputs.forEach((input, i) => input.setAttribute('aria-invalid', String(challenge.choices?.length || !results[i])));
+        }
+      }
+      refresh();
+    });
+    return card;
+  }
+
+  function render(container, key, map, id, { lesson, beforeLeave }) {
+    const layout = element('div', 'profile-skill-layout');
+    const route = element('section', 'profile-skill-route');
+    if (lesson?.skill) {
+      route.append(element('h3', '', lesson.title), element('p', 'profile-skill-lesson-goal', lesson.skill));
+    }
+    route.append(element('h3', '', 'Что освоить'));
+    const list = element('ol', 'profile-skill-steps');
+    map.skills.forEach(skill => list.append(element('li', '', skill)));
+    route.append(list);
+    const alphabets = alphabetLinks(key, beforeLeave);
+    if (alphabets) route.append(alphabets);
+
+    const practice = element('section', 'profile-skill-practice');
+    practice.append(element('h3', '', 'Творческие задания'));
+    const summary = element('p', 'profile-skill-progress');
+    summary.setAttribute('data-profile-skill-progress', '');
+    practice.append(summary);
+    function refresh() {
+      const done = map.challenges.filter((challenge, index) => read(keyFor(key, challenge, index)).solved).length;
+      summary.textContent = `Решено ${done} из ${map.challenges.length}${canSave ? '' : ' · до закрытия страницы'}`;
+    }
+    map.challenges.forEach((challenge, index) => practice.append(challengeForm(key, challenge, index, id, refresh)));
+    refresh();
+    layout.append(route, practice);
+    container.replaceChildren(layout);
+  }
+
+  function mountReady(container, keys, options = {}) {
+    const data = root.ProfileSkillMapData;
+    if (!data || !container || root.self !== root.top || document.body.dataset.profileBoard) return null;
+    const maps = [...new Set(keys.map(String))].map(key => [key, data.maps[key] || data.trainers[key]]).filter(([, map]) => map);
+    if (!maps.length) return null;
+
+    const id = 'profile-skill-dialog-' + (++nextDialogId);
+    const entry = element('div', 'profile-skill-entry');
+    const open = action('Карта навыков');
+    open.setAttribute('data-profile-skill-trigger', '');
+    open.setAttribute('aria-haspopup', 'dialog');
+    open.setAttribute('aria-controls', id);
+    const dialog = element('dialog', 'profile-skill-dialog');
+    dialog.id = id;
+    dialog.setAttribute('data-profile-skill-dialog', '');
+    dialog.setAttribute('aria-labelledby', id + '-title');
+    const heading = element('header', 'profile-skill-header');
+    const title = element('h2', '', 'Карта навыков');
+    title.id = id + '-title';
+    const close = action('Вернуться');
+    close.autofocus = true;
+    heading.append(title, close);
+    dialog.append(heading);
+
+    const body = element('div', 'profile-skill-body');
+    const select = element('select');
+    let selected = maps[0];
+    let lastPreferred;
+    if (maps.length > 1) {
+      select.setAttribute('data-profile-skill-select', '');
+      for (const [key, map] of maps) {
+        const option = element('option', '', mapTitle(key, map));
+        option.value = key;
+        select.append(option);
+      }
+      const label = element('label', 'profile-skill-picker', 'Выберите тему');
+      label.append(select);
+      dialog.append(label);
+      select.addEventListener('change', () => {
+        selected = maps.find(([key]) => key === select.value) || selected;
+        render(body, ...selected, id, options);
+      });
+    } else {
+      dialog.append(element('p', 'profile-skill-subtitle', mapTitle(...selected)));
+    }
+    dialog.append(body);
+    entry.append(open, dialog);
+    container.append(entry);
+
+    function show() {
+      const current = options.preferred?.();
+      if (current && current !== lastPreferred) selected = maps.find(([key]) => key === String(current)) || selected;
+      lastPreferred = current;
+      select.value = selected[0];
+      render(body, ...selected, id, options);
+      if (typeof dialog.showModal === 'function') {
+        if (!dialog.open) dialog.showModal();
+      } else {
+        dialog.setAttribute('open', '');
+        close.focus();
+      }
+    }
+    open.addEventListener('click', show);
+    close.addEventListener('click', () => {
+      if (typeof dialog.close === 'function') dialog.close();
+      else { dialog.removeAttribute('open'); open.focus(); }
+    });
+    dialog.addEventListener('close', () => open.focus());
+    if (!directOpenUsed && new URLSearchParams(root.location.search).get('skills') === '1') {
+      directOpenUsed = true;
+      // The course router focuses its heading immediately after rendering.
+      root.setTimeout(() => { if (entry.isConnected) show(); }, 0);
+    }
+    return entry;
+  }
+
+  function ensureExamMap() {
+    if (root.ProfileExamMap) return Promise.resolve(root.ProfileExamMap);
+    if (!root.ProfileExamMapReady) root.ProfileExamMapReady = new Promise(resolve => {
+      // Course navigation and legacy HTML may already have requested this map.
+      // Adopt that pending script instead of loading a second copy.
+      let script = [...document.querySelectorAll('script[src]')].find(script =>
+        new URL(script.src, location.href).pathname === '/ege-profil/exam-map.js');
+      const existing = Boolean(script);
+      if (!script) {
+        script = document.createElement('script');
+        script.src = '/ege-profil/exam-map.js?v=20261115-fipi-map';
+        script.async = true;
+      }
+      const settled = () => resolve(root.ProfileExamMap || null);
+      script.addEventListener('load', settled, {once: true});
+      script.addEventListener('error', () => resolve(null), {once: true});
+      if (!existing) document.head.append(script);
+      // A supplied script's error can precede this consumer. Window load is the
+      // terminal fallback, while a pending async script still has time to load.
+      else if (document.readyState === 'complete') settled();
+      else root.addEventListener('load', settled, {once: true});
+    });
+    return root.ProfileExamMapReady;
+  }
+
+  function mount(container, keys, options = {}) {
+    if (!root.ProfileSkillMapData || !container || root.self !== root.top || document.body.dataset.profileBoard) return null;
+    if (root.ProfileExamMap) return mountReady(container, keys, options);
+    const slot = element('div', 'profile-skill-slot');
+    container.append(slot);
+    ensureExamMap().then(() => {
+      // A route change can remove the waiting slot. Never mount in a stale screen.
+      if (slot.isConnected) mountReady(slot, keys, options);
+    });
+    return slot;
+  }
+
+  function optionByValue(spec, value) {
+    return spec?.split(' ').find(pair => pair.split('=')[0] === value)?.split('=')[1];
+  }
+
+  function boot(script) {
+    if (!script?.dataset.profileSkillMap || root.self !== root.top) return;
+    const config = script.dataset;
+    const keys = config.profileSkillMap.trim().split(/\s+/);
+    let target = config.profileSkillTarget && document.querySelector(config.profileSkillTarget);
+    if (!target) target = document.getElementById('profile-course-nav');
+    if (!target) {
+      const landmark = document.querySelector('h1, #pageTitle');
+      if (!landmark) return;
+      target = element('div', 'profile-skill-slot');
+      landmark.after(target);
+    }
+    mount(target, keys, {
+      preferred: () => optionByValue(config.profileSkillTopics, new URLSearchParams(root.location.search).get('topic')) ||
+        optionByValue(config.profileSkillHashes, root.location.hash.slice(1))
+    });
+  }
+
+  root.ProfileSkillMap = { mount, matches };
+  if (typeof module !== 'undefined') module.exports = root.ProfileSkillMap;
+  if (typeof document !== 'undefined') {
+    const script = document.currentScript;
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => boot(script), { once: true });
+    else boot(script);
+  }
+})(globalThis);
+
+</script>
+</body></html>

@@ -1,4 +1,5 @@
 'use strict';
+const {resolvePublicScript} = require('./public-page-script.cjs');
 
 // Display-only regression: the written fraction must keep the authored scope,
 // while answer values, controls, task banks and learner state stay untouched.
@@ -121,7 +122,7 @@ function app(lesson, mode = 'independent', initialState = null) {
   w.scrollTo = () => {}; w.HTMLElement.prototype.scrollIntoView = () => {};
   let bankBefore;
   for (const script of w.document.querySelectorAll('script[src]')) {
-    const file = path.resolve(directory, script.getAttribute('src').split(/[?#]/)[0]);
+    const file = resolvePublicScript(path.resolve(__dirname, '..'), directory, script.getAttribute('src'));
     if (path.basename(file) === 'app.js') bankBefore = JSON.stringify(w.ProfileLessons);
     w.eval(fs.readFileSync(file, 'utf8'));
   }

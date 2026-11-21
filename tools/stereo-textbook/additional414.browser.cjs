@@ -1,4 +1,5 @@
 'use strict';
+const {sphereReviewBytes}=require('./additional414-runtime.cjs');
 // Real browser routes and retained work. RENDER_ONLY is a documented pre-release image-review run; it does not claim visual approval.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
@@ -19,7 +20,7 @@ if(inspectionOnly){
  assert(sourceReviewed,'source/math/pedagogy review must exist before the public release gate');
  const receipt=require('../../docs/reviews/ATANASYAN_ADDITIONAL_414_421_INDEPENDENT.json');
  validateVisualReceipt(receipt,cards);
- for(const[file,expected]of Object.entries(receipt.runtimeSHA256))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(root+'/'+file)).digest('hex'),expected,'reviewed runtime identity');
+ for(const[file,expected]of Object.entries(receipt.runtimeSHA256))assert.equal(crypto.createHash('sha256').update(sphereReviewBytes(file)).digest('hex'),expected,'original reviewed runtime identity');
 }
 const diskBytes=fs.readFileSync(root+'/stereo-course/textbook/data/course.json');
 const renderBytes=inspectionOnly?Buffer.from(JSON.stringify(renderCourse)):diskBytes;

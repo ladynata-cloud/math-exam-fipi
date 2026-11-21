@@ -50,6 +50,19 @@ function closeArithmetic(w){const d=w.document.querySelector('dialog.arithmetic-
   }
  }
  assert.equal(renders,116);assert.equal(models,29);assert(controls>=29);
+ // Prediction and the selected parameters survive the existing course backup parser.
+ {
+  const predict=await boot(),topic=data.find(l=>l.lab==='area');assert(topic);
+  predict.nav(`#lesson/${topic.id}/theory`);
+  const entry=predict.w.document.querySelector('[class$="-inquiry"] input');entry.value='17';entry.dispatchEvent(new predict.w.Event('input'));
+  const key='mathexam-vilenkin5-part1-v1',saved=predict.mem.get(key);
+  const restored=await boot(predict.mem);restored.nav(`#lesson/${topic.id}/theory`);
+  assert.equal(restored.w.document.querySelector('[class$="-inquiry"] input').value,'17');
+  restored.w.document.querySelector('[class$="-inquiry"]').dispatchEvent(new restored.w.Event('submit',{cancelable:true}));
+  const record=JSON.parse(restored.mem.get(key)).lessons[topic.id];assert.equal(record.lab.inquiryFirst,'17');assert.equal(record.lab.inquirySeen,1);assert.deepEqual(record.tasks,{},'model prediction never awards exercise credit');
+  const again=await boot(restored.mem);again.nav(`#lesson/${topic.id}/theory`);
+  assert(!again.w.document.querySelector('[class$="-visual"]').hidden);assert(again.w.document.querySelector('[class$="-inquiry"]').textContent.includes('не совпал'));assert.deepEqual(again.errors,[]);
+ }
  // Select actual authored numeric tasks, avoiding dependence on another textbook's IDs.
  const l=data.find(l=>l.id===8&&numeric(l.tasks[0])&&l.examples[0].steps.every(numeric)&&l.tasks.slice(-5).slice(0,2).every(numeric));assert(l,'addition lesson fixtures');
  const id=l.id,t=l.tasks[0],e=l.examples[0];

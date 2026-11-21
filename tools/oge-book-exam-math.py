@@ -7,6 +7,8 @@ Only explicitly reviewed prompt+geometry fixtures may receive a PASS.
 import argparse, datetime, hashlib, json, math, pathlib, re, sys
 import xml.etree.ElementTree as ET
 from fractions import Fraction
+from oge_video_models_book_context import verified_context
+from oge_worked_steps_book_context import matches_worked_steps_ui
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 IDS = {'03','04','06','08','09','10','12','54','55','57','58','59','60','63','65','66','67','68','71'}
@@ -20,6 +22,35 @@ BOOK_BANNERS = {
     VARIANT_PREFIXES['frozen']: BOOK_BANNER,
     VARIANT_PREFIXES['frozen-v2']: BOOK_BANNER.replace(' · v1.', ' · v2.'),
 }
+
+# The six source routes gained a reviewed row of links and closed GIF examples
+# in #560. This is the exact leading text recorded at 320, 390 and 1280 px.
+TRAINER_ENTRY_PREFIXES = {
+    ('54', '/trainers/oge-task11-graphs-trainer.html'):
+        'К примеру на странице занятий Все задания ОГЭ Коэффициенты линейной функции Точки линейной функции',
+    ('58', '/trainers/oge-task16-circle.html'):
+        'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Вписанный угол Радиус и касательная',
+    ('59', '/trainers/oge-task17-quadrilaterals.html'):
+        'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Площадь трапеции Средняя линия трапеции',
+    ('60', '/trainers/oge-task18-grid.html'):
+        'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Площадь треугольника на клетках Длина отрезка по клеткам',
+    ('67', '/trainers/oge-task6-fractions.html'):
+        'Разбор дробей Общий знаменатель Общий знаменатель Умножение дробей',
+    ('71', '/trainers/task19-trainer.html'):
+        'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Третий угол треугольника Контрпример к утверждению',
+}
+
+
+def without_trainer_entry(record, text):
+    route = record.get('route')
+    if record.get('prefix') or record.get('finalPath') != route:
+        return text
+    labels = TRAINER_ENTRY_PREFIXES.get((record.get('id'), route))
+    source = record.get('resources', {}).get('/assets/assistant/navigator-widget.js', {})
+    if not labels or not isinstance(source, dict) or not re.fullmatch(r'[a-f0-9]{64}', str(source.get('sha256', ''))):
+        return text
+    return text.removeprefix(labels + ' ')
+
 
 def digest(data):
     return hashlib.sha256(data if isinstance(data, bytes) else data.encode()).hexdigest()
@@ -85,17 +116,76 @@ def graph_mapping(record):
 def graph_atoms(expected):
     return sorted([('point',number(x['v'])) if x['type']=='point' else ('interval',number(x['lo']),number(x['hi']),x['loCl'],x['hiCl']) for x in expected])
 
+
+def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
+    """Replay only the changed drawing controls on the verified source route."""
+    route = '/trainers/oge-task24-proofs.html'
+    if (record['id'] != '65' or record['prefix'] or record.get('route') != route or
+            record.get('finalPath') != route or (record.get('videoModelContext') or {}).get('sourceBase') !=
+            '18b44244753ac806d449a2040ad4b8c8af9acaf3'):
+        return False
+    old = 'Показать целиком Крупный чертёж: двигай его в стороны и вверх-вниз. С клавиатуры — стрелками после выбора рисунка.'
+    captions = {
+        320: 'Увеличить подписи Чертёж целиком.',
+        390: 'Увеличить подписи Чертёж целиком.',
+        1280: 'Показать целиком Крупный чертёж: прокручивай его стрелками после выбора рисунка.',
+    }
+    caption = captions.get(record.get('width'))
+    if not caption:
+        return False
+    assets = {
+        '/trainers/oge-course-proof.css': 'b98618bba320cdad70fb9f2e31cdf64bc4e7763e745abef33343717058708f66',
+        '/trainers/oge-course-proof.js': '6f11e5d93a0124005729387e1ca8f93c3d5a0100224017c9ded2d22be4ba3b2d',
+    }
+    for path, expected in assets.items():
+        loaded = record.get('resources', {}).get(path, {})
+        if loaded.get('status') != 200 or loaded.get('sha256') != expected:
+            return False
+        if digest((ROOT / path[1:]).read_bytes()) != expected:
+            return False
+    return (any(original.count(old) == 1 and text == original.replace(old, caption, 1)
+                for original in fixture_texts) and
+            any(item == dict(oracle, prompt=oracle['prompt'].replace(old, caption, 1))
+                for oracle in fixture_oracles))
+
+
 def exact_reviewed_context(record, oracle, fixtures):
     """Replay is limited to the manually reviewed condition and visible geometry.
 
-    Only the fixed edition banner may differ. The guard rejects arbitrary new
-    prompts even if a keyed arithmetic fixture happens to produce the same answer.
+    Known presentation changes use exact source-route text and leave all
+    remaining context, oracle prompts and geometry under the original checks.
     """
     fixture = fixtures.get(record['id'])
     if fixture is None:return False
     if not record['prefix']:
         fixture = fixture.get('sourceVariant', fixture)
-    text = record['initialVisibleText']
+    navigation = record.get('publicWayfinding')
+    fixture_texts = [fixture['visibleText'], *fixture.get('alternativeVisibleTexts', [])]
+    if navigation:
+        # The recorder retains raw visible text and exact payload hashes; only
+        # the separately checked two-link return bar is outside the exercise.
+        if record['prefix'] or navigation.get('kind') != 'oge-return-v1':return False
+        if navigation.get('visibleText') != '← Все темы ОГЭ Главная':return False
+        if record.get('unfilteredInitialVisibleText') != navigation['visibleText']+' '+record['initialVisibleText']:return False
+        loaded = record.get('resources',{}).get(record.get('finalPath',''),{})
+        if navigation.get('servedHtmlSha256') != loaded.get('sha256'):return False
+        if not re.fullmatch(r'[a-f0-9]{64}',navigation.get('originalHtmlSha256','')):return False
+        if 'removedLegacyReturn' in navigation:
+            # This one source page replaced its redundant old course link.
+            # The recorder reconstructs its exact historical HTML; every case
+            # is bound to the unchanged, previously reviewed payload receipt.
+            route = '/trainers/oge-task6-fractions.html'
+            if record['id']!='67' or record.get('finalPath')!=route or record.get('route')!=route:return False
+            if navigation['removedLegacyReturn']!='← К курсу ОГЭ':return False
+            approved = fixture.get('firstVisualReviewPayloads',{}).get(route,{})
+            if not approved.get('sha256') or navigation['originalHtmlSha256']!=approved['sha256']:return False
+            old = 'Перейти к заданию ← К курсу ОГЭ '
+            if not all(value.startswith(old) and value.count(old)==1 for value in fixture_texts):return False
+            fixture_texts = ['Перейти к заданию '+value[len(old):] for value in fixture_texts]
+    context = verified_context(record)
+    if context is None:return False
+    text, native_geometry = context
+    text = without_trainer_entry(record, text)
     if record['prefix']:
         banner = BOOK_BANNERS.get(record['prefix'])
         if banner is None:return False
@@ -111,10 +201,55 @@ def exact_reviewed_context(record, oracle, fixtures):
             route=record['prefix']+record['route']
             approved=fixture.get('firstVisualReviewPayloads',{}).get(route,{})
             actual=record.get('resources',{}).get(route,{})
-            if not approved.get('sha256') or actual.get('sha256')!=approved['sha256']:return False
-    return (text in [fixture['visibleText'], *fixture.get('alternativeVisibleTexts', [])] and
-            geom(record.get('visibleSvgLabels', [])) == fixture['geometrySha256'] and
-            item in fixture['oracles'])
+            actual_hash = navigation['originalHtmlSha256'] if navigation else actual.get('sha256')
+            if not approved.get('sha256') or actual_hash!=approved['sha256']:return False
+    return (geom(native_geometry) == fixture['geometrySha256'] and
+            ((item in fixture['oracles'] and
+              (text in fixture_texts or matches_worked_steps_ui(record, text, fixture_texts))) or
+             matches_proof_figure_ui(record, text, fixture_texts, item, fixture['oracles'])))
+
+def wayfinding_context_selftest(fixtures):
+    """The one removed link cannot excuse changes to questions or payloads."""
+    import copy
+    fixture = fixtures['67'].get('sourceVariant',fixtures['67'])
+    route = '/trainers/oge-task6-fractions.html'
+    original_hash = fixture['firstVisualReviewPayloads'][route]['sha256']
+    text = fixture['visibleText'].replace('Перейти к заданию ← К курсу ОГЭ ','Перейти к заданию ',1)
+    label = '← Все темы ОГЭ Главная'
+    record = {'id':'67','prefix':'','route':route,'finalPath':route,
+              'initialVisibleText':text,'unfilteredInitialVisibleText':label+' '+text,
+              'visibleSvgLabels':[], 'resources':{route:{'sha256':'a'*64}},
+              'publicWayfinding':{'kind':'oge-return-v1','visibleText':label,
+                'servedHtmlSha256':'a'*64,'originalHtmlSha256':original_hash,
+                'removedLegacyReturn':'← К курсу ОГЭ'}}
+    oracle = fixture['oracles'][0]
+    assert exact_reviewed_context(record,oracle,fixtures)
+    probes = [
+        ('id','66'),('route','/other.html'),('finalPath','/other.html'),
+        ('prefix',VARIANT_PREFIXES['frozen']),('initialVisibleText',text+' changed condition'),
+        ('unfilteredInitialVisibleText',label+' '+text+' changed raw text')]
+    for key,value in probes:
+        changed=copy.deepcopy(record);changed[key]=value
+        assert not exact_reviewed_context(changed,oracle,fixtures),key
+    for key,value in [('removedLegacyReturn','different link'),('originalHtmlSha256','b'*64),
+                      ('servedHtmlSha256','b'*64),('kind','other'),('visibleText','different bar')]:
+        changed=copy.deepcopy(record);changed['publicWayfinding'][key]=value
+        assert not exact_reviewed_context(changed,oracle,fixtures),key
+    changed=copy.deepcopy(record);del changed['publicWayfinding']['removedLegacyReturn']
+    assert not exact_reviewed_context(changed,oracle,fixtures)
+    changed_oracle=copy.deepcopy(oracle);changed_oracle['expected']=['0']
+    assert not exact_reviewed_context(record,changed_oracle,fixtures)
+    with_examples = copy.deepcopy(record)
+    with_examples['resources']['/assets/assistant/navigator-widget.js'] = {'sha256':'c'*64}
+    prefix = TRAINER_ENTRY_PREFIXES[('67', route)] + ' '
+    with_examples['initialVisibleText'] = prefix + text
+    with_examples['unfilteredInitialVisibleText'] = label + ' ' + prefix + text
+    assert exact_reviewed_context(with_examples, oracle, fixtures)
+    for addition in ('Другая ссылка ', '9 вместо 1 '):
+        changed = copy.deepcopy(with_examples)
+        changed['initialVisibleText'] = prefix + addition + text
+        changed['unfilteredInitialVisibleText'] = label + ' ' + changed['initialVisibleText']
+        assert not exact_reviewed_context(changed, oracle, fixtures)
 
 def rendered_fraction(html):
     """Evaluate only the recorded, rendered expression HTML with exact rationals.
@@ -372,6 +507,7 @@ def main():
     fixture_path=path(args.fixture);fixture_bytes=fixture_path.read_bytes()
     fixtures=json.loads(fixture_bytes)['fixtures']
     fraction_evaluator_selftest()
+    wayfinding_context_selftest(fixtures)
     records=[];inputs=[];coverage=[];unreviewed=[]
     for variant in args.variants:
         aggregate=path(args.reports_root)/variant/'results.json'
@@ -439,6 +575,11 @@ def main():
     thin_output.write_text(json.dumps(thin,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'totals':totals,'missingReports':sum(len(c['missingReports'])for c in coverage),
                       'unreviewedSourceDerivedOracles':len(unreviewed),'detailedReview':str(output.relative_to(root))}))
+    # Keep failed/pending cases visible in CI logs as well as the full artifact.
+    # The fail-closed verdict and required report coverage remain unchanged.
+    for record in records:
+        if record['verdict'] != 'PASS':
+            print(json.dumps({'independentMathCase':record},ensure_ascii=False))
     if not args.allow_pending and (totals['PENDING'] or totals['FAIL'] or unreviewed or any(c['missingReports']for c in coverage)):
         return 1
     return 0

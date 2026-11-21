@@ -35,6 +35,7 @@ function calculate(kind,v){switch(kind){
 }}
 const labels={square:'a²',inverse:'1/a',shift:'a−2',height:'Значение многочлена h(t), м',landing:'Конец полёта, с',volume:'Объём, м³',mass:'Масса при π≈3,14, кг',energy:'Энергия при выбранном U, Дж',years:'Лет до погашения',last:'Последний платёж, руб.',price:'Цена тетради, руб.',count:'Целых тетрадей',total:'Всего, руб.',left:'Осталось до цели / в бюджете, руб.',next:'Сумма с лишней тетрадью, руб.',fridge:'Холодильник, руб.',washer:'Машина, руб.',places:'Всего мест',missing:'Не хватает мест',free:'Свободных мест',monthly:'В месяц остаётся, руб.',after:'Цена после снижения',final:'Цена после повышения',required:'Повышение для восстановления, %',area:'Площадь под покраску, м²',litres:'Краски, л',cans:'Литровых банок',cm:'Длина шва, см',error:'Отклонение от 76 см',old:'Исходный радиус',new:'Новый радиус',difference:'Прирост площади / π',value:'Значение числа'};
 const fmt=n=>Number(n.toPrecision(10)).toLocaleString('ru-RU',{maximumSignificantDigits:10});
+const displayed=n=>(Number(n.toPrecision(10))===n?'':'≈ ')+fmt(n);
 function visual(kind,v,r){
  if(kind==='compareA'){const low=-2,high=Math.max(4,r.inverse),x=a=>40+(a-low)/(high-low)*500;return '<svg viewBox="0 0 580 190" role="img" aria-label="Три значения на общей числовой прямой"><line x1="30" x2="560" y1="110" y2="110" stroke="#596e5e"/>'+[[r.shift,'a−2',65],[r.square,'a²',90],[r.inverse,'1/a',65],[0,'0',145],[1,'1',170]].map(([a,t,y])=>'<line x1="'+x(a)+'" x2="'+x(a)+'" y1="103" y2="117" stroke="#136d54"/><text x="'+x(a)+'" y="'+y+'" text-anchor="middle">'+t+'</text>').join('')+'</svg><p>a−2 всегда слева от нуля; a² между 0 и 1; 1/a справа от 1.</p>';}
  if(kind==='projectile'){
@@ -49,7 +50,35 @@ function visual(kind,v,r){
  if(kind==='scale')return '<p class="scale-number">'+fmt(v.coefficient)+' × 10<sup>'+v.exponent+'</sup></p><p>Шаг показателя вправо умножает число на 10, шаг влево делит на 10.</p>';
  const max=Math.max(...r.bars.map(a=>a[1]),1);return '<svg viewBox="0 0 580 '+(r.bars.length*66)+'" role="img" aria-label="Сравнение величин, точные числа в таблице ниже">'+r.bars.map(([label,n],i)=>'<text x="8" y="'+(i*66+20)+'">'+label+'</text><rect x="8" y="'+(i*66+29)+'" width="'+Math.max(0,n/max*560)+'" height="23" rx="5" fill="'+['#136d54','#79a99a','#c59035'][i%3]+'"/>').join('')+'</svg>';
 }
-function mount(target,kind,number){const d=defs[kind];if(!d)return;target.innerHTML='<h3>'+d.title+'</h3><p class="tiny">Меняйте параметры и объясняйте, почему меняется результат. Модель — помощь; она не засчитывается как самостоятельный ответ.</p>'+d.fields.map(([id,label,value,min,max,step])=>'<label>'+label+'<input data-model="'+id+'" type="number" min="'+min+'" max="'+max+'" step="'+step+'" value="'+(kind==='purchase'&&id==='discount'&&number===63?0:value)+'"></label>').join('')+'<div class="model-output" aria-live="polite"></div>';function draw(){const v={};for(const [id,,value,min,max,step] of d.fields){const input=target.querySelector('[data-model="'+id+'"]'),n=Number(input.value);if(input.value===''||!Number.isFinite(n)||n<min||n>max||(step>=1&&Math.abs((n-min)/step-Math.round((n-min)/step))>1e-9)){target.querySelector('.model-output').textContent='Введите параметры в указанных пределах.';return;}v[id]=n;}const r=calculate(kind,v);target.querySelector('.model-output').innerHTML=visual(kind,v,r)+'<dl>'+Object.entries(r).filter(([k,n])=>typeof n==='number').map(([k,n])=>'<div><dt>'+labels[k]+'</dt><dd>'+fmt(n)+'</dd></div>').join('')+'</dl>';}
- target.oninput=draw;draw();}
-const api={defs,calculate,mount};root.M9Models=api;if(typeof module!=='undefined')module.exports=api;
+const inquiries={
+ compareA:['Если увеличить a внутри (0;1), какое из трёх выражений уменьшится?','Сравни a=0,2 и a=0,8. Объясни, почему порядок a−2 < a² < 1/a сохраняется.'],
+ projectile:['При t=10 значение многочлена отрицательно. Можно ли считать его высотой тела в полёте?','Измени t от 5 до 10. Сопоставь точку с моментом приземления и объясни границу применимости.'],
+ cylinder:['Что сильнее изменит массу: удвоение радиуса или удвоение длины?','При длине 80 сравни радиусы 2,5 и 5; затем при радиусе 2,5 сравни длины 80 и 160. Объясни через V=πr²l.'],
+ capacitor:['Во сколько раз изменится энергия при удвоении напряжения с 40 до 80 В?','Меняй только напряжение. Сопоставь значения при 40 и 80 и объясни роль квадрата.'],
+ loan:['При уменьшении ежегодного платежа с 500000 до 400000 рублей срок станет больше на один год или изменится иначе?','Сравни два плана и строки процентов. Почему последний платёж меньше обычного?'],
+ purchase:['После скидки 20% количество тетрадей обязательно увеличится ровно на 20%?','Зафиксируй бюджет 500 и цену 26,5; сравни скидки 0 и 20. Объясни округление числа покупок.'],
+ discount:['Будет ли один и тот же месяц самым выгодным для обеих покупок?','Изменяй месяц отдельно для холодильника и машины. Сравни их цены и общую сумму.'],
+ rooms:['Хватит ли 16 кабинетов по 24 места для 385 учеников?','Сравни 16 и 17 кабинетов. Почему число кабинетов округляют вверх?'],
+ budget:['Если резерв на расходы увеличить, сколько полных месяцев потребуется до цели?','Сначала меняй только резерв, затем число месяцев. Объясни, что остаётся в формуле месячных накоплений.'],
+ restore:['Снижение на 10% и повышение на 10% вернут прежнюю цену?','При снижении 10 сравни повышения 10 и 11,2. Укажи базу каждого процента.'],
+ walls:['Если увеличить число слоёв вдвое, количество купленных банок тоже всегда удвоится?','Зафиксируй остекление 25%; сравни 1 и 2 слоя. Отдели точный расход от округлённой покупки.'],
+ inches:['Какой чётный размер ближе к длине 76 см: 28 или 30?','Сравни размеры 28, 30 и 32. Объясни разницу между длиной в сантиметрах и маркировкой.'],
+ circle:['Если заменить r на 2r−1, разность площадей / π всегда положительна?','Сравни r=0,75; 1; 2. Назови критическое значение и объясни знак разности.'],
+ scale:['Что произойдёт с числом, если увеличить показатель степени на 1, не меняя коэффициент?','Сравни соседние показатели и поясни, почему изменение показателя на 2 даёт множитель 100.']
+};
+const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function mount(target,kind,number,options){
+ const d=defs[kind];if(!d)return;
+ const draft={prediction:'',reflection:'',open:false,params:{},...(options?.draft||{})};
+ function save(){options?.onChange?.(JSON.parse(JSON.stringify(draft)));}
+ function render(){
+  const inquiry=inquiries[kind];
+  target.innerHTML='<h3>'+d.title+'</h3>'+(options?'<label class="experiment-predict"><b>1. Предположи</b><p>'+inquiry[0]+'</p><textarea data-prediction maxlength="2000" rows="2" '+(draft.open?'readonly':'')+'>'+escape(draft.prediction)+'</textarea></label>'+(!draft.open?'<button type="button" data-experiment-open>Сохранить прогноз и исследовать</button><p data-experiment-message role="status"></p>':''):'')+(!options||draft.open?'<p class="tiny">'+(options?'2. Проверь: '+inquiry[1]:'Меняйте параметры и объясняйте, почему меняется результат.')+' Модель — помощь; она не засчитывается как самостоятельный ответ.</p>'+d.fields.map(([id,label,value,min,max,step])=>'<label>'+label+'<input data-model="'+id+'" type="number" min="'+min+'" max="'+max+'" step="'+step+'" value="'+escape(draft.params?.[id]??(kind==='purchase'&&id==='discount'&&number===63?0:value))+'"></label>').join('')+'<div class="model-output" aria-live="polite"></div>'+(options?'<label><b>3. Объясни</b><p>Что подтвердилось? Укажи два значения и правило, которое их связывает.</p><textarea data-reflection maxlength="2000" rows="3">'+escape(draft.reflection)+'</textarea></label><p class="tiny">Прогноз и объяснение сохранены для обсуждения. Программа не оценивает свободное объяснение и не добавляет за него освоение.</p>':''):'');
+  if(options){target.querySelector('[data-prediction]').oninput=ev=>{draft.prediction=ev.target.value.slice(0,2000);save();};target.querySelector('[data-experiment-open]')?.addEventListener('click',()=>{if(!draft.prediction.trim()){target.querySelector('[data-experiment-message]').textContent='Запиши предположение; можно написать, в чём пока сомневаешься.';return;}draft.open=true;save();render();});target.querySelector('[data-reflection]')?.addEventListener('input',ev=>{draft.reflection=ev.target.value.slice(0,2000);save();});}
+  function draw(){const v={};for(const [id,,value,min,max,step] of d.fields){const input=target.querySelector('[data-model="'+id+'"]'),n=Number(input.value);draft.params[id]=input.value;if(input.value===''||!Number.isFinite(n)||n<min||n>max||(step>=1&&Math.abs((n-min)/step-Math.round((n-min)/step))>1e-9)){target.querySelector('.model-output').textContent='Введите параметры в указанных пределах.';return;}v[id]=n;}const r=calculate(kind,v);target.querySelector('.model-output').innerHTML=visual(kind,v,r)+'<dl>'+Object.entries(r).filter(([k,n])=>typeof n==='number').map(([k,n])=>'<div><dt>'+labels[k]+'</dt><dd>'+displayed(n)+'</dd></div>').join('')+'</dl>';}
+  if(!options||draft.open){target.querySelectorAll('[data-model]').forEach(input=>input.oninput=()=>{draw();save();});draw();}
+ }
+ render();
+}
+const api={defs,inquiries,calculate,mount};root.M9Models=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);

@@ -108,10 +108,21 @@ def require(condition, message):
 
 
 def is_lesson_funnel(script):
-    # This optional observer never renders lesson text. Keep other executable
-    # scripts prohibited on static topic explanations.
+    # This optional observer never renders lesson text.
     attrs, text = script
     return attrs == {"defer": None, "src": "/assets/lesson-funnel.js?v=20261026"} and not text.strip()
+
+
+def static_topic_scripts(scripts):
+    # The article still renders entirely without JavaScript. Only the existing
+    # observer and the exact, deferred navigator data/widget pair may execute.
+    if scripts and is_lesson_funnel(scripts[0]):
+        scripts = scripts[1:]
+    urls = ("/assets/assistant/navigator-data.js?v=20261105-site1",
+            "/assets/assistant/navigator-widget.js?v=20261105-site1")
+    return len(scripts) == 2 and all(
+        attrs == {"defer": None, "src": url} and not body.strip()
+        for (attrs, body), url in zip(scripts, urls))
 
 
 def public_url(path):
@@ -207,8 +218,8 @@ def run(base=None):
         if relative in TOPICS:
             require(page.h1 == 1, label + "one H1")
             require(len(page.ids) == len(set(page.ids)), label + "duplicate DOM IDs")
-            require(len(page.scripts) <= 1 and all(is_lesson_funnel(s) for s in page.scripts),
-                    label + "explanation must remain static; only the optional deferred funnel observer is allowed")
+            require(static_topic_scripts(page.scripts),
+                    label + "expected only the optional funnel observer and the exact deferred navigator pair")
             require(page.schemas, label + "missing breadcrumbs")
             graph = page.schemas[0]["@graph"]
             crumb = next(node for node in graph if node.get("@type") == "BreadcrumbList")

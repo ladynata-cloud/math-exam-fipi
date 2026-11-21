@@ -103,3 +103,4 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
 .t19-textbook-close{color:var(--green);border-color:#d3ded5;margin:2px 0 8px}
 @media(max-width:540px){.t19-textbook-close{width:100%}.t19-textbook-sources{padding-left:19px}}
 @media(prefers-reduced-motion:reduce){svg .t19-linked-active,.t19-angle-pulse{animation:none!important}svg .t19-linked-active{filter:drop-shadow(0 0 3px currentColor)}}
+.task19-reason-step{display:block;margin:18px 0;padding:12px 14px;border-left:3px solid #216342;background:#f3f7f2;line-height:1.8}

@@ -234,7 +234,14 @@
       }
     }
     mountSupport(unit,epoch,hash,task,p);
-    main.querySelector('.source a')?.addEventListener('click',()=>{if(!viewIsCurrent(epoch,hash))return;if(!p.status){p.helped=true;save();}});
+    const consultSource=event=>{
+      if(event.type==='auxclick'&&event.button!==1)return;
+      if(!viewIsCurrent(epoch,hash)||state.tasks[task.id]!==p){event.preventDefault();return;}
+      if(!p.status){p.helped=true;save();}
+    };
+    const sourceLink=main.querySelector('.source a');
+    sourceLink?.addEventListener('click',consultSource);
+    sourceLink?.addEventListener('auxclick',consultSource);
     const rule=main.querySelector('[data-disclosure="rule"]');
     rule.addEventListener('toggle',()=>{if(!viewIsCurrent(epoch,hash)||isComplete)return;p.ruleOpen=rule.open;if(rule.open){p.helped=true;}save();});
     main.querySelector('[data-action="repeat"]')?.addEventListener('click',()=>{if(!viewIsCurrent(epoch,hash)||state.tasks[task.id]!==p||!p.status)return;if(managed){save('new-task');return;}const old=p;delete state.tasks[task.id];const fresh=getProgress(task);fresh.repeated=true;fresh.attempts=old.attempts;save();renderTask(unit,task,true);});
@@ -254,7 +261,7 @@
         const criteria=item.selfCheck || [],checks=p.manualChecks[String(key)] || [];ok=criteria.length>0&&criteria.every((_,i)=>checks[i]);
         if(!ok)p.feedback[String(key)]={kind:'manual'};
       }else{
-        const value=input.value.slice(0,180);input.value=value;p.attempts=Math.min(10000,p.attempts+1);if(key==='final')p.draft=value;else p.stepDrafts[key]=value;
+        const value=input.value.slice(0,180);input.value=value;if(!value.trim()){let note=main.querySelector('.work .feedback');if(!note){note=document.createElement('div');note.className='feedback';note.setAttribute('role','status');answerForm.after(note);}note.textContent='Сначала запиши ответ. Пустое поле не считается попыткой.';input.focus();return;}p.attempts=Math.min(10000,p.attempts+1);if(key==='final')p.draft=value;else p.stepDrafts[key]=value;
         const result=M.check(value,item.answer,item.answerType || 'number');ok=result.ok;
         if(!ok){p.feedback[String(key)]={kind:result.format?'wrong':'format'};if(result.format)p.wrongCounts[String(key)]=Math.min(10000,(p.wrongCounts[String(key)]||0)+1);}
       }
@@ -359,7 +366,7 @@
     if(!unit){renderHome();return;}
     state.last=location.hash;save();
     const task=parsed.task&&unit.tasks.find(t=>t.id===parsed.task);
-    if(task){if(task.role==='check'&&!getProgress(task).status){state.activeCheck=task.id;save();}else if(task.role==='learn'&&state.activeCheck){const checked=taskMap.get(state.activeCheck);if(checked&&!getProgress(checked).status)getProgress(checked).helped=true;delete state.activeCheck;save();}renderTask(unit,task);}else renderUnit(unit);
+    if(task){if(task.role==='check'&&!getProgress(task).status){state.activeCheck=task.id;save();}else if(task.role!=='check'&&state.activeCheck){const checked=taskMap.get(state.activeCheck);if(checked&&!getProgress(checked).status)getProgress(checked).helped=true;delete state.activeCheck;save();}renderTask(unit,task);}else renderUnit(unit);
     main.focus({preventScroll:true});window.scrollTo?.(0,0);
   }
   async function start() {

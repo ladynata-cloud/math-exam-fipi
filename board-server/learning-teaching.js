@@ -267,9 +267,15 @@ function createTeachingRouter(learning) {
           resetId, row.version + 1, 'archive', JSON.stringify({ reason, after: { archivedAt: at, outcome: row.outcome, assistance: parse(row.assistance_json), controller: row.controller } }), at);
       }
       for (const lesson of store.rows('SELECT * FROM lessons WHERE teacher_id=?', auth.id)) {
-        const seats = parse(lesson.seats_json); let changed = false;
-        for (const seat of seats) if (ids.has(seat.attemptId)) { seat.attemptId = null; changed = true; }
-        if (changed) store.run('UPDATE lessons SET seats_json=?,presentation_target=?,version=version+1 WHERE id=?', JSON.stringify(seats), lesson.presentation_target === req.params.id ? null : lesson.presentation_target, lesson.id);
+        const seats = parse(lesson.seats_json); let changed = false, clearPresentation = false;
+        for (const seat of seats) {
+          if (ids.has(seat.attemptId)) { seat.attemptId = null; changed = true; clearPresentation ||= lesson.presentation_target === seat.learnerId; }
+          if (Array.isArray(seat.materialIds)) {
+            const remaining = seat.materialIds.filter(id => !ids.has(id));
+            if (remaining.length !== seat.materialIds.length) { seat.materialIds = remaining; changed = true; }
+          }
+        }
+        if (changed) store.run('UPDATE lessons SET seats_json=?,presentation_target=?,version=version+1 WHERE id=?', JSON.stringify(seats), clearPresentation ? null : lesson.presentation_target, lesson.id);
       }
       if (typeof store.runGuard === 'function') {
         for (const run of store.rows('SELECT id,questions_json FROM learning_runs WHERE learner_id=? AND finished_at IS NULL', req.params.id)) {

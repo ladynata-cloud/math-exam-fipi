@@ -105,6 +105,8 @@ class ChapterIXCompleteCandidate(unittest.TestCase):
   cls.released=any(c['chapter']==9 for c in cls.public['build']['chapters'])
   if cls.released:
    target=cls.out/'geometry-course/textbook';(target/'release-review-chapter-09.json').unlink(missing_ok=True);cls.bundle=compose(target)
+  from advanced8_release import historical_ix_projection
+  cls.bundle,_=historical_ix_projection(cls.bundle,read(ROOT/'tools/geometry-textbook/release-scope.json'))
  def test_complete160_source_cards_and_unapproved_isolated1407(self):
   self.assertEqual(len(source_coverage(self.bundle)),160)
   self.assertEqual(len(self.bundle['lessons']),1407);self.assertEqual(len(self.bundle['catalog']['entries']),1407)

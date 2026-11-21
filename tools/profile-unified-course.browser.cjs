@@ -3,6 +3,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright');
 const course=require('../ege-profil/start/course-links.js');
+const vectorBasics=require('../ege-profil/start/vector-basics-data.js');
 const lessons=['geometry','algebra','stereo','probability','equations','functions','applied', 'finance','readiness'].flatMap(n=>require('../ege-profil/start/'+n+'-data.js'));
 const root=path.resolve(__dirname,'..');
 const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname));if(!p.startsWith(root+path.sep))return res.writeHead(403).end();if(fs.statSync(p).isDirectory())p=path.join(p,'index.html');res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css'})[path.extname(p)]||'application/octet-stream');res.end(fs.readFileSync(p));}catch(_){res.writeHead(404).end();}});
@@ -20,12 +21,24 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
       const errors=[];page.on('pageerror',error=>errors.push({url:page.url(),message:error.message}));
       await page.goto(origin+course.entry+'#calm');
       await page.locator('[data-course-extra="16"]').waitFor();
-      assert.deepEqual(await page.locator('.exam-grid .exam-number').allTextContents(),[...Array.from({length:13},(_,i)=>String(i+1)),'16']);
-      assert.equal(await page.locator('.exam-grid .exam-card').count(),14);
+      assert.deepEqual(await page.locator('.exam-grid .exam-number').allTextContents(),Array.from({length:19},(_,i)=>String(i+1)));
+      assert.equal(await page.locator('.exam-grid .exam-card').count(),21);
+      assert.equal(await page.locator('[data-extra-topic]').count(),2);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'catalog fits mobile');
       for(let number=1;number<=13;number++){
         await page.goto(origin+course.entry+'#calm/'+number);
         await page.locator('main h1').waitFor();
+        if(number===2){
+          await page.locator('[data-vector-basics-entry]').waitFor();
+          assert.equal(await page.locator('[data-course-resource]').count(),0,'vector exam banks unlock after the introductory route');
+          const records=Object.fromEntries(vectorBasics.map(lesson=>[lesson.id,{
+            guided:lesson.tasks.slice(0,3).map(task=>task.id),independent:[],attempts:3
+          }]));
+          await page.evaluate(records=>localStorage.setItem('mathexam.profileStart2027.v1',
+            JSON.stringify({version:1,records,seen:{},sessions:{}})),records);
+          await page.reload();
+          await page.locator('[data-vector-exam-practice]').waitFor();
+        }
         assert.equal(await page.locator('.course-resources[open]').count(),0,'additional practice stays closed until requested');
         assert.deepEqual(await page.locator('[data-course-resource]').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href'))),course.banks.filter(b=>b.numbers.includes(number)).map(b=>course.resourceHref(b,number)));
       }
@@ -81,6 +94,6 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
       assert.deepEqual(errors,[],'no page errors');
       await context.close();
     }
-    console.log('PROFILE_UNIFIED_COURSE_OK',JSON.stringify({menu:[1,2,3,4,5,6,7,8,9,10,11,12,13,16],banks:course.banks.length,helpPanels:panels,widths:[360,1280],draftReturn:true}));
+    console.log('PROFILE_UNIFIED_COURSE_OK',JSON.stringify({menu:Array.from({length:19},(_,i)=>i+1),banks:course.banks.length,helpPanels:panels,widths:[360,1280],draftReturn:true}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

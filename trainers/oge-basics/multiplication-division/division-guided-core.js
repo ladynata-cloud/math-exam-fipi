@@ -57,6 +57,71 @@
     return { ...D.make(level, sequence), topicId };
   }
 
+  // The original generator remains stable for stored classroom tasks. New public
+  // practice opts into these bands; the exact operands are saved in each session.
+  function progress(records, topicId) {
+    topicFor(topicId);
+    const seen = new Set();
+    let completed = 0, independent = 0;
+    for (const record of records) {
+      const key = record.task.dividend + ':' + record.task.divisor;
+      const first = !seen.has(key);
+      seen.add(key);
+      if (record.topic !== topicId) continue;
+      completed++;
+      if (first && !record.repeated && !record.errors && !record.hints && !record.reveals) independent++;
+    }
+    return {completed, independent, supported:completed - independent,
+      tier:Math.min(2, Math.floor(independent / 3)), target:3, ready:independent >= 3};
+  }
+
+  function makeProgressive(topicId, sequence = 0, tier = 0) {
+    topicFor(topicId);
+    if (!Number.isSafeInteger(sequence) || sequence < 0 || sequence > 1000000 || !Number.isInteger(tier) || tier < 0 || tier > 2) throw Error('Неверная ступень практики.');
+    if (topicId === 'start' || topicId === 'quotientDigit' || sequence === 0) return make(topicId, sequence);
+    // An odd multiplier walks through divisor choices instead of concentrating
+    // adjacent seeds on the same one-digit divisor.
+    const index = sequence - 1;
+    const d1 = 2 + index % 8;
+    const pick = values => values[index % values.length];
+    let d, q, dividend, divisor;
+    if (topicId === 'oneDigit') {
+      d = d1;
+      const low = [12, 100, 1000][tier], span = [88, 900, 9000][tier];
+      q = low + (index * 37 + Math.floor(index / 8) * 13) % span;
+      // Zero in the quotient has its own stage.
+      q = Number(String(q).replace(/0/g, '1'));
+      dividend = String(d * q); divisor = String(d);
+    } else if (topicId === 'twoDigit') {
+      d = 12 + (index * 17) % (tier ? 88 : 38);
+      q = [12, 100, 300][tier] + (index * 23) % [88, 200, 700][tier];
+      dividend = String(d * q); divisor = String(d);
+    } else if (topicId === 'zero') {
+      d = d1;
+      const front = 1 + Math.floor(index / 8) % 8, tail = 1 + index % 9;
+      q = tier === 0 ? front * 100 + tail : tier === 1 ? front * 1000 + tail : front * 10000 + tail * 100 + 1 + Math.floor(index / 9) % 9;
+      dividend = String(d * q); divisor = String(d);
+    } else if (topicId === 'remainder') {
+      d = d1; // Remainders precede the lesson on two-digit divisors.
+      q = [3, 30, 100][tier] + (index * 13) % [27, 70, 200][tier];
+      dividend = String(d * q + 1 + Math.floor(index / 8) % (d - 1)); divisor = String(d);
+    } else if (topicId === 'decimalNatural') {
+      d = d1; q = 11 + (index * 37) % [89, 989, 9989][tier];
+      dividend = D.decimal(d * q, tier + 1); divisor = String(d);
+    } else if (topicId === 'appendZeros') {
+      d = pick(tier === 0 ? [2, 4, 5, 8] : tier === 1 ? [16, 20, 25, 40] : [80, 125, 625]);
+      let n = 1 + (index * 7) % [9, 39, 199][tier];
+      if (n % d === 0) n++;
+      dividend = String(n); divisor = String(d);
+    } else if (topicId === 'decimalDivisor') {
+      d = pick(tier === 0 ? [12, 15, 16, 25] : [12, 16, 25, 32, 45, 75]);
+      q = 11 + (index * 37) % [89, 189, 989][tier];
+      const places = tier === 2 ? 2 : 1, quotientPlaces = tier === 0 ? 1 : 2;
+      dividend = D.decimal(d * q, places + quotientPlaces); divisor = D.decimal(d, places);
+    }
+    return {topicId, level:topicId, dividend, divisor};
+  }
+
   function wording(action, p) {
     const cycle = Number.isInteger(action.cycle) ? p.cycles[action.cycle] : null;
     const divisor = p.normalizedDivisor;
@@ -193,7 +258,7 @@
     return D.check(text, action);
   }
 
-  const api = { topics, make, plan, check, number: D.number, decimal: D.decimal, equal: D.equal };
+  const api = { topics, make, makeProgressive, progress, plan, check, number: D.number, decimal: D.decimal, equal: D.equal };
   root.DivisionGuided = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window === 'undefined' ? globalThis : window);

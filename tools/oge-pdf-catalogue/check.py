@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
 
 import fitz
@@ -60,6 +61,36 @@ def sha(path):
 def sitemap_urls(text):
     return {x.text for x in ET.fromstring(text).iter()
             if x.tag.endswith('}loc')}
+
+
+class FragmentTargets(HTMLParser):
+    def __init__(self, text):
+        super().__init__()
+        self.targets = set()
+        self.feed(text)
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if attrs.get('id'):
+            self.targets.add(attrs['id'])
+        if tag == 'a' and attrs.get('name'):
+            self.targets.add(attrs['name'])
+
+
+def check_local_link(href, root=ROOT):
+    """Resolve the URL path and separately verify any static-page fragment."""
+    url = urlsplit(href)
+    assert not url.scheme and not url.netloc and url.path.startswith('/'), href
+    path = unquote(url.path)
+    local = (root / path.lstrip('/')).resolve()
+    assert local.is_relative_to(root.resolve()), href
+    if path.endswith('/'):
+        local /= 'index.html'
+    assert local.is_file(), href
+    if url.fragment:
+        assert local.suffix == '.html', href
+        assert unquote(url.fragment) in FragmentTargets(local.read_text()).targets, href
+    return local
 
 
 def main():
@@ -177,10 +208,7 @@ def main():
     assert '/trainers/oge-2027-analogue-1.html' in catalogue.links
     for href in catalogue.links:
         if href.startswith('/') and not href.startswith('//'):
-            local = ROOT / href.lstrip('/')
-            if href.endswith('/'):
-                local /= 'index.html'
-            assert local.is_file(), href
+            check_local_link(href)
 
     report = {'status': 'PASS', 'gate': 'OGE_104_PDF_PAIRING_OK', 'variants': 104,
               'family_counts': manifest['family_counts'], 'pdfs': 315,

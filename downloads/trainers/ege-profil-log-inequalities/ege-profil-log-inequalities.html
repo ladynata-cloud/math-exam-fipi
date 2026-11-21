@@ -1,0 +1,2529 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:">
+<script data-offline-runtime>
+(/* Inlined only in the downloaded HTML. */
+(function standaloneTrainer(config) {
+  'use strict';
+  const source = new URL(config.source);
+  const current = new URL(location.href);
+  const indexPath = source.pathname.endsWith('/index.html') ? source.pathname.slice(0, -'index.html'.length) : null;
+
+  function link(href) {
+    if (!href || href.startsWith('#') || /^(?:mailto:|tel:|data:|blob:)/i.test(href)) return href;
+    const url = new URL(href, source);
+    // Some course helpers have already resolved site paths using the file URL.
+    if (url.protocol === 'file:') {
+      if (url.pathname === current.pathname) return href;
+      url.href = new URL(url.pathname + url.search + url.hash, source.origin).href;
+    }
+    if (url.origin !== source.origin) return href;
+    if (url.pathname === source.pathname || url.pathname === indexPath) {
+      const local = new URL(current.href);
+      local.search = url.search;
+      local.hash = url.hash;
+      return local.href;
+    }
+    return url.href;
+  }
+
+  function update(anchor) {
+    if (anchor.namespaceURI !== 'http://www.w3.org/1999/xhtml') return;
+    const href = anchor.getAttribute('href');
+    const fixed = link(href);
+    if (fixed !== href) anchor.setAttribute('href', fixed);
+  }
+
+  window.MathExamTrainerOffline = Object.freeze({
+    origin: source.origin,
+    media: pathname => config.media[pathname] || pathname
+  });
+
+  // Practice views create and replace links as the learner switches tasks.
+  const anchors = 'a[href]';
+  new MutationObserver(records => {
+    for (const record of records) {
+      if (record.type === 'attributes' && record.target.matches(anchors)) update(record.target);
+      for (const node of record.addedNodes) {
+        if (node.nodeType !== Node.ELEMENT_NODE) continue;
+        if (node.matches(anchors)) update(node);
+        node.querySelectorAll(anchors).forEach(update);
+      }
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+})
+)({"source":"https://mathexam.space/trainers/ege-profile/log-inequalities/index.html","media":{}});
+</script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#176f58">
+  <title>Логарифмические неравенства — решаем по шагам · MathExam</title>
+<link rel="canonical" href="https://mathexam.space/trainers/ege-profile/log-inequalities/">
+  <meta name="description" content="Профильный ЕГЭ: логарифмические неравенства с переменным основанием. Разбор примера, пошаговая практика и самостоятельное решение. Новые авторские условия.">
+  <style data-inline-source="/trainers/ege-profile/log-inequalities/style.css">
+:root{color-scheme:light;--ink:#213c35;--green:#176f58;--deep:#115640;--line:#d7e3dc;--paper:#fff;--muted:#5e7068;--wash:#f2f6f2;--gold:#bc8d36;--error:#a33e32;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.55;background:var(--wash);color:var(--ink)}
+*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button,a,input,select,textarea,summary{touch-action:manipulation}button{min-height:44px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);padding:9px 15px;font-weight:600;cursor:pointer}button:hover{background:#edf5ef;border-color:#7ca591}button:disabled{cursor:default;opacity:.66}button.primary{background:var(--green);color:white;border-color:var(--green)}button.primary:hover{background:var(--deep)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #bc8d36;outline-offset:3px}a{color:var(--green);text-underline-offset:3px}p{margin:0 0 14px}h1,h2,h3{line-height:1.25;text-wrap:balance}h1{font-size:clamp(1.8rem,3.4vw,2.75rem);letter-spacing:-.035em;margin:8px 0 18px}h2{font-size:1.4rem;margin:0 0 12px}h3{font-size:1.02rem;margin:0 0 10px}main{max-width:940px;margin:auto;padding:24px 24px 0}.site-header{max-width:1040px;margin:auto;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font-size:1.25rem;font-weight:800;text-decoration:none;letter-spacing:-.03em}.brand span{display:block;font-size:.72rem;letter-spacing:.035em;font-weight:500}.intro{padding:8px 0 28px;max-width:780px}.intro>p:last-child{max-width:660px;color:var(--muted)}.eyebrow{font-size:.73rem;letter-spacing:.085em;text-transform:uppercase;font-weight:750;color:var(--green);margin-bottom:6px}.muted{color:var(--muted)}.small{font-size:.84rem}.workspace{border:1px solid var(--line);border-radius:20px;background:var(--paper);padding:30px;box-shadow:0 10px 32px #173c2410}.task-top{display:flex;align-items:flex-start;gap:18px;justify-content:space-between}.chip{white-space:nowrap;border-radius:20px;background:var(--wash);padding:5px 10px;font-size:.75rem;color:var(--muted)}.formula{font-size:clamp(1.3rem,4vw,1.85rem);padding:20px 16px;background:#f5f8f4;border-left:3px solid var(--gold);border-radius:3px 12px 12px 3px;margin:20px 0 24px;overflow-x:auto;min-height:90px;display:flex;align-items:center;justify-content:center}.formula math{flex-shrink:0}math{font-family:"Cambria Math","STIX Two Math",math;max-width:100%}math[display=block]{margin:8px 0;overflow-x:auto;max-width:100%}.mode-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 10px}.mode-bar button{font-size:.82rem;font-weight:600;padding:10px 8px}.mode-bar button[aria-pressed=true]{background:#e3f1e8;color:var(--deep);border-color:var(--green);box-shadow:inset 0 -2px var(--green)}details{border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-top:18px}summary{font-weight:650;cursor:pointer;min-height:26px}details[open]>summary{margin-bottom:12px}#preparation-content>div+div{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.step-track{display:flex;list-style:none;padding:0;margin:28px 0;gap:8px;flex-wrap:wrap}.step-track li{flex:1;min-width:82px;border-top:3px solid var(--line);padding-top:8px;font-size:.73rem;color:var(--muted)}.step-track li.current{border-color:var(--gold);color:var(--ink);font-weight:700}.step-track li.done{border-color:var(--green);color:var(--green)}.notebook-section{margin:0 0 26px}.notebook{list-style:none;padding:0;margin:0;border-left:2px solid #bbd3c4}.notebook li{padding:8px 12px;margin-left:8px;font-size:.88rem}.notebook li+li{border-top:1px dashed var(--line)}.notebook h4{margin:0 0 4px;font-size:.82rem;color:var(--green)}.notebook p:last-child{margin-bottom:0}.notebook math{font-size:1.04rem}.current-step{border-top:1px solid var(--line);padding-top:25px}.current-step h2{margin-bottom:14px}#stage-description{color:var(--muted);font-size:.95rem}#stage-fields{margin:18px 0}fieldset{margin:0;padding:0;border:0;min-width:0}legend{font-weight:650;margin-bottom:12px}.choices{display:grid;gap:9px}.choice{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--line);border-radius:10px;cursor:pointer;min-height:55px;overflow:hidden}.choice:has(input:checked){border-color:var(--green);background:#f0f7f2}.choice input{flex:0 0 auto;width:20px;height:20px;accent-color:var(--green);margin:0}.choice-content{min-width:0;overflow-x:auto;padding:2px 0}.choice-content math{font-size:1.1rem}.text-label{font-weight:650;display:block;margin:0 0 8px}.text-input{width:100%;min-height:50px;padding:10px 13px;border:1px solid #9aafa2;border-radius:8px;background:#fff;font-size:1.15rem}.input-help{font-size:.82rem;color:var(--muted);margin:8px 0}.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:20px}.actions>.primary{min-width:175px}#feedback:not(:empty){padding:12px 14px;border-radius:8px;margin:16px 0 0;background:#edf5ee;border:1px solid #c4d8ca}#feedback[data-kind=error]{background:#fff4f0;border-color:#ebc7bd;color:#85372b}.hint{margin-top:12px;padding:14px;border-radius:8px;background:#fff9e9;border-left:3px solid var(--gold);font-size:.93rem}.sign-table{display:grid;gap:8px}.sign-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);padding:10px 14px;border-radius:9px;min-height:57px}.sign-row .interval-label{font-variant-numeric:tabular-nums;font-size:1.03rem}.sign-row select{min-width:90px;min-height:42px;padding:5px;border:1px solid #9aafa2;border-radius:7px;background:white;color:var(--ink)}.sign-row.forbidden{background:#f1f3f1;color:#6c766e;border-style:dashed}.cell-note{font-size:.8rem;color:var(--muted)}.point-notes{background:var(--wash);padding:12px 14px;margin-top:14px;border-radius:8px;font-size:.83rem}.answer-cells{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.answer-cells button{padding:10px 12px;text-align:left;min-height:57px;font-weight:500;overflow-wrap:anywhere}.answer-cells button[data-cell-type=point]{font-size:.9rem;background:#f7f8f5}.answer-cells button[aria-pressed=true]{background:#dceee2;border:2px solid var(--green);padding:9px 11px;color:#144c38;font-weight:650}.answer-cells button:disabled{background:#f1f3f1;border-style:dashed;opacity:1;color:#798179}.answer-preview{background:#f0f6ee;border-left:3px solid var(--green);border-radius:4px;padding:14px;margin-top:16px;font-size:1.08rem;overflow-wrap:anywhere}.empty-answer{color:var(--muted);font-size:.88rem}.completion{border-top:1px solid var(--line);padding-top:25px}.final-answer{font-size:1.4rem;padding:16px 0;color:var(--deep);overflow-wrap:anywhere}.completion .small{color:var(--muted);max-width:600px}.report-section{margin:30px 0;padding:0 5px}.report-section h2{font-size:1.2rem}.report-section details{background:#fff}.report-section label{font-size:.84rem;display:block;margin-bottom:8px}textarea{resize:vertical;width:100%;min-height:180px;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:.82rem;color:var(--ink);background:#fafcf9}.notice{padding:12px 16px;background:#fff7e4;border:1px solid #e5d3a4;border-radius:9px;margin-bottom:16px}.notice button{font-size:.84rem}.notice p{margin-bottom:8px}footer{max-width:940px;margin:0 auto;padding:0 28px 30px;font-size:.76rem;color:var(--muted)}footer p{max-width:760px}dialog{border:1px solid var(--line);border-radius:16px;padding:25px;max-width:690px;width:calc(100% - 30px);max-height:85dvh;color:var(--ink);box-shadow:0 20px 100px #12352833}dialog::backdrop{background:#16352a77}.dialog-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:14px}.dialog-head h2{margin:0}.dialog-head button{font-size:.85rem}.topic-card{border-top:1px solid var(--line);padding:16px 0}.topic-card h3{margin-bottom:6px}.topic-card p{font-size:.82rem;color:var(--muted);margin-bottom:10px}.topic-actions{display:flex;flex-wrap:wrap;gap:7px}.topic-actions button{font-size:.8rem}.topic-actions button[aria-current=true]{border-color:var(--green);background:#e3f1e8}.skip-link{position:absolute;left:12px;top:-100px;padding:10px;background:white;z-index:10}.skip-link:focus{top:10px}[hidden]{display:none!important}.loading-error{padding:20px;color:var(--error)}
+@media(min-width:680px){.sign-table{grid-template-columns:repeat(2,minmax(0,1fr))}.answer-cells{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){:root{font-size:16px}main{padding:15px 12px 0}.site-header{padding:15px 14px}.site-header button{font-size:.8rem;padding:8px 10px}.intro{padding:6px 4px 18px}h1{font-size:1.9rem}.workspace{padding:20px 15px;border-radius:15px}.task-top{display:block}.chip{display:inline-block;margin:0 0 12px}.task-top h2{font-size:1.3rem}.formula{padding:18px 8px;margin-top:16px;justify-content:flex-start}.mode-bar{gap:4px}.mode-bar button{font-size:.73rem;padding:8px 5px;line-height:1.35}.step-track{gap:6px;margin:24px 0}.step-track li{min-width:45px;font-size:.66rem}.step-track li span{display:block}.choice{padding:11px 9px;gap:9px}.choice-content math{font-size:1rem}.actions{gap:8px}.actions>.primary{flex:1;min-width:150px}.answer-cells{grid-template-columns:1fr 1fr}.answer-cells button{font-size:.88rem;padding:9px}.answer-cells button[aria-pressed=true]{padding:8px}details{padding:11px 12px}.sign-row{padding:9px 10px}.sign-row .interval-label{font-size:.93rem}.current-step{padding-top:21px}.current-step h2{font-size:1.25rem}.notebook li{padding:8px}.dialog-head h2{font-size:1.2rem}dialog{padding:18px}footer{padding:0 17px 24px}.report-section{padding:0 4px}}
+@media(prefers-reduced-motion:no-preference){button{transition:background .14s,border-color .14s}}
+
+#no-solutions{margin-top:12px}#no-solutions[aria-pressed=true]{border:2px solid var(--green);background:#dceee2}
+
+/* A long formula scrolls inside its own row, including completed notebook
+   steps. Native MathML must not enlarge the page's horizontal layout. */
+.workspace,.task-top>div,.current-step,.notebook-section,.notebook li,
+#preparation-content,#preparation-content>div,#stage-fields{min-width:0}
+.notebook li>div,#preparation-content>div>div{
+  max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;
+}
+.notebook p,#preparation-content p,#stage-description,.hint,#feedback,
+.point-notes,.interval-label{overflow-wrap:anywhere}
+.formula,.choice-content{max-width:100%;overscroll-behavior-x:contain}
+.formula{justify-content:flex-start}
+.mode-bar{grid-template-columns:repeat(3,minmax(0,1fr))}
+.mode-bar button,button{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.site-header,.dialog-head,.sign-row{flex-wrap:wrap}
+.site-header>*{min-width:0}
+h1,h2,h3,.brand{overflow-wrap:anywhere;hyphens:auto}
+.chip{white-space:normal;max-width:100%}
+.actions>.primary{min-width:min(175px,100%)}
+.sign-row select{min-width:min(90px,100%);max-width:100%}
+.answer-cells{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(min-width:680px){.answer-cells{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.actions>.primary{min-width:min(150px,100%)}}
+@media(max-width:360px){
+  .mode-bar{grid-template-columns:1fr}
+  .mode-bar button{font-size:.84rem}
+  .answer-cells{grid-template-columns:1fr}
+}
+
+</style>
+
+
+
+
+<style data-inline-source="/ege-profil/skill-map.css">
+.profile-skill-entry {
+  display: inline-flex;
+  max-width: 100%;
+  margin: 3px 0;
+  vertical-align: middle;
+}
+
+.profile-skill-slot {
+  margin: 5px 0 10px;
+}
+
+.profile-skill-entry .profile-skill-button,
+.profile-skill-dialog .profile-skill-button {
+  appearance: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 7px 13px;
+  border: 1px solid #7d9b91;
+  border-radius: 9px;
+  background: #f1f7f3;
+  box-shadow: none;
+  color: #173f35;
+  font: 650 16px/1.35 system-ui, sans-serif;
+  letter-spacing: normal;
+  text-align: center;
+  text-transform: none;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.profile-skill-entry .profile-skill-button:hover,
+.profile-skill-dialog .profile-skill-button:hover {
+  background: #dcefe4;
+}
+
+.profile-skill-entry .profile-skill-button[hidden],
+.profile-skill-dialog [hidden],
+.profile-skill-dialog:not([open]) {
+  display: none;
+}
+
+.profile-skill-entry .profile-skill-button:focus-visible,
+.profile-skill-dialog :focus-visible {
+  outline: 3px solid #126c54;
+  outline-offset: 3px;
+}
+
+.profile-skill-dialog {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  width: min(54rem, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 24px);
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #91a99c;
+  border-radius: 16px;
+  background: #fbfaf5;
+  color: #1d302a;
+  color-scheme: light;
+  font: 16px/1.55 system-ui, sans-serif;
+  letter-spacing: normal;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.profile-skill-dialog::backdrop {
+  background: rgb(15 38 34 / 68%);
+}
+
+.profile-skill-dialog .profile-skill-header {
+  position: sticky;
+  inset: 0 0 auto;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  padding: 12px clamp(12px, 4vw, 24px);
+  border: 0;
+  border-bottom: 1px solid #cadbd1;
+  background: #fbfaf5;
+}
+
+.profile-skill-dialog h2,
+.profile-skill-dialog h3,
+.profile-skill-dialog h4 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #173f35;
+  font: 700 1.25rem/1.3 system-ui, sans-serif;
+  text-transform: none;
+}
+
+.profile-skill-dialog h2 { font-size: clamp(1.2rem, 4.5vw, 1.65rem); }
+.profile-skill-dialog h4 { font-size: 1.08rem; }
+.profile-skill-dialog p { margin: 0; }
+
+.profile-skill-dialog .profile-skill-subtitle,
+.profile-skill-dialog .profile-skill-picker {
+  display: block;
+  margin: 16px clamp(12px, 4vw, 24px) 0;
+  color: #305e50;
+  font: 650 1rem/1.45 system-ui, sans-serif;
+}
+
+.profile-skill-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: clamp(12px, 3vw, 20px);
+  padding: 16px clamp(12px, 4vw, 24px) 24px;
+}
+
+.profile-skill-route,
+.profile-skill-challenge {
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid #d1e0d5;
+  border-radius: 12px;
+  background: #fffefa;
+}
+
+.profile-skill-route { align-self: start; }
+.profile-skill-dialog .profile-skill-lesson-goal { margin: 6px 0 14px; }
+.profile-skill-steps { margin: 12px 0 0; padding-left: 1.7em; }
+.profile-skill-steps li { padding-left: 0.2em; }
+.profile-skill-steps li + li { margin-top: 8px; }
+.profile-skill-steps li::marker { color: #32674f; font-weight: 700; }
+
+.profile-skill-practice { min-width: 0; }
+.profile-skill-dialog .profile-skill-progress { margin: 4px 0 9px; color: #3f5d51; }
+.profile-skill-challenge + .profile-skill-challenge { margin-top: 12px; }
+.profile-skill-dialog .profile-skill-prompt { margin: 8px 0; white-space: pre-line; }
+
+.profile-skill-form {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  margin: 10px 0 0;
+}
+
+.profile-skill-form .profile-skill-field,
+.profile-skill-choices { width: 100%; min-width: 0; }
+.profile-skill-field { display: block; }
+
+.profile-skill-dialog .profile-skill-field input,
+.profile-skill-dialog select {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 4px 0 0;
+  padding: 8px 10px;
+  border: 1px solid #839b90;
+  border-radius: 8px;
+  background: #fff;
+  color: #173f35;
+  font: 16px/1.35 system-ui, sans-serif;
+  letter-spacing: normal;
+}
+
+.profile-skill-dialog .profile-skill-choices { margin: 0; padding: 0; border: 0; }
+.profile-skill-dialog .profile-skill-choice {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.profile-skill-dialog .profile-skill-choice input {
+  appearance: auto;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #22634e;
+}
+
+.profile-skill-dialog .profile-skill-button-primary { border-color: #185641; background: #185641; color: #fff; }
+.profile-skill-dialog .profile-skill-button-primary:hover { background: #134835; }
+.profile-skill-dialog .profile-skill-hint summary {
+  min-height: 44px;
+  padding: 10px 0;
+  box-sizing: border-box;
+  color: #185641;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.profile-skill-dialog .profile-skill-feedback[data-result] {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #e4f2e8;
+  color: #174c35;
+}
+.profile-skill-dialog .profile-skill-feedback[data-result='retry'] { background: #f9eddc; color: #703d1b; }
+.profile-skill-dialog input[aria-invalid='true'] { outline: 2px solid #9b552f; outline-offset: 0; }
+
+@media (max-width: 620px) {
+  .profile-skill-layout { grid-template-columns: minmax(0, 1fr); }
+  .profile-skill-dialog .profile-skill-button { padding-inline: 9px; }
+  .profile-skill-route, .profile-skill-challenge { padding: 12px; }
+}
+
+.profile-skill-alphabets {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #dce4f3;
+}
+
+.profile-skill-alphabet-group + .profile-skill-alphabet-group { margin-top: 9px; }
+.profile-skill-alphabet-group ul { margin: 3px 0 0; padding-left: 18px; }
+.profile-skill-alphabet-group li { margin-top: 5px; }
+.profile-skill-alphabet-group a { color: #294e9c; text-underline-offset: 3px; }
+
+</style>
+
+
+</head>
+<body>
+  <a class="skip-link" href="#exercise">Перейти к задаче</a>
+  <header class="site-header"><a href="../../../ege-profil/" class="brand">MathExam<span>профильный ЕГЭ</span></a><button id="topics-toggle" type="button" aria-haspopup="dialog">Выбрать тему</button></header>
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">Неравенства · логарифмы</p>
+      <h1 id="page-title">Сначала область определения.<br>Потом — знаки и ответ.</h1>
+      <p>Один пример, пять понятных шагов. Можно сначала посмотреть разбор, а затем решить похожую задачу.</p>
+    </section>
+    <section class="notice" aria-labelledby="one-example-title">
+      <h2 id="one-example-title">Один пример — очень подробно</h2>
+      <p>Собираем условия в систему, отмечаем решения на числовых прямых и находим их пересечение. Каждый шаг остаётся на странице.</p>
+      <p><a href="lesson.html"><strong>Начать пошаговый разбор одного неравенства →</strong></a></p>
+    </section>
+    <section class="notice" aria-labelledby="nested-example-title">
+      <h2 id="nested-example-title">Логарифм внутри логарифма — тоже по шагам</h2>
+      <p>Разбираем оба логарифма, собираем шесть условий в систему и пересекаем их решения на числовых прямых. Затем решаем само неравенство.</p>
+      <p><a href="nested.html"><strong>Начать разбор вложенного логарифма →</strong></a></p>
+    </section>
+    <div id="storage-notice" class="notice" role="status" hidden></div>
+    <button id="load-newer" type="button" hidden>Открыть более новую работу</button>
+    <section class="workspace" id="exercise" aria-labelledby="task-title">
+      <div class="task-top"><div><p id="task-position" class="eyebrow"></p><h2 id="task-title" tabindex="-1"></h2></div><span id="progress-chip" class="chip"></span></div>
+      <p id="task-goal" class="muted"></p>
+      <div id="current-formula" class="formula" aria-label="Условие задачи"></div>
+      <div class="mode-bar" role="group" aria-label="Как работать с задачей">
+        <button type="button" data-mode="example">Разбор примера</button>
+        <button type="button" data-mode="guided">Решаю по шагам</button>
+        <button type="button" data-mode="independent">Самостоятельно</button>
+      </div>
+      <p id="mode-description" class="small muted"></p>
+      <div id="mode-confirm" class="notice" hidden><p>Начать эту задачу в другом режиме? Ввод этой попытки заменится. Завершённые результаты останутся в отчёте.</p><button id="confirm-mode" type="button">Начать в другом режиме</button> <button id="cancel-mode" type="button">Остаться здесь</button></div>
+      <details id="preparation"><summary>Что нужно вспомнить</summary><div id="preparation-content"></div></details>
+      <ol id="step-track" class="step-track" aria-label="План решения"></ol>
+      <section id="notebook-section" class="notebook-section" hidden aria-labelledby="notebook-title"><h3 id="notebook-title">Уже записано</h3><ol id="notebook" class="notebook"></ol></section>
+      <section class="current-step" aria-labelledby="stage-title">
+        <p id="stage-counter" class="eyebrow"></p><h2 id="stage-title" tabindex="-1"></h2>
+        <div id="stage-description"></div>
+        <form id="stage-form" novalidate><div id="stage-fields"></div><div id="feedback" role="status" aria-live="polite"></div><div id="hint" class="hint" hidden></div><div class="actions"><button id="check-step" type="submit" class="primary">Проверить шаг</button><button id="continue-step" type="button" class="primary" hidden>Продолжить</button><button id="hint-button" type="button">Подсказка</button></div></form>
+      </section>
+      <section id="completion" class="completion" hidden aria-labelledby="completion-title"><p class="eyebrow">Задача завершена</p><h2 id="completion-title" tabindex="-1">Решение собрано</h2><div id="completion-answer" class="final-answer"></div><p id="completion-status"></p><p class="small">Одного решения недостаточно, чтобы считать тему освоенной. Попробуйте другую задачу с новыми числами.</p><div class="actions"><button id="next-task" type="button" class="primary">Похожая задача</button><button id="retry-task" type="button">Решить эту ещё раз</button><button id="completion-topics" type="button">Другая тема</button></div></section>
+    </section>
+    <section class="report-section"><div><h2>Моя работа</h2><p id="progress-summary"></p><p id="save-status" class="small muted">Прогресс хранится только в этом браузере.</p></div><details id="report-details"><summary>Результаты для учителя</summary><p>Скопируйте или скачайте отчёт и отправьте его учителю, например в MAX. Сам тренажёр ничего не отправляет.</p><div class="actions"><button id="copy-report" type="button">Скопировать отчёт</button><button id="download-report" type="button">Скачать отчёт</button></div><p id="report-notice" role="status"></p><label for="report-text">Текст отчёта — можно выделить и скопировать вручную</label><textarea id="report-text" readonly rows="9"></textarea></details></section>
+  </main>
+  <footer><p><a href="../../../ege-profil/">К профильной математике</a> · <a href="../../arifmetika.html">Повторить вычисления</a></p><p>Задачи с новыми числовыми данными. Тематика — <a href="https://math-ege.sdamgia.ru/test?theme=313&amp;print=true" target="_blank" rel="noopener noreferrer">подборка логарифмических неравенств «Решу ЕГЭ»</a>. Условия и разборы этого тренажёра подготовлены отдельно.</p></footer>
+  <dialog id="topics" aria-labelledby="topics-title"><div class="dialog-head"><h2 id="topics-title">Выберите тему</h2><button id="topics-close" type="button" aria-label="Закрыть выбор темы">Закрыть</button></div><p>В каждой теме четыре задачи с разными числами. Можно вернуться к начатому решению.</p><div id="topic-list"></div></dialog>
+  <noscript><p>Для интерактивного решения включите JavaScript в браузере.</p></noscript>
+<script data-inline-source="/ege-profil/exam-map.js">
+(function (root, factory) {
+  'use strict';
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.ProfileExamMap = api;
+})(typeof globalThis === 'object' ? globalThis : this, function () {
+  'use strict';
+
+  // Official display numbers are not routing, lesson or saved-progress keys.
+  // Source: FIPI 2027 mathematics specification; approved H02 task table.
+  const YEAR = 2027;
+  const teachingEntry = {1: 'geo-right', 6: 'eq-linear', 7: 'expr-powers'};
+  const define = (number, id, title, source, legacy, lessonIds, preparationIds = []) => Object.freeze({
+    year: YEAR, number, id, title, source,
+    part: number == null ? null : number <= 12 ? 1 : 2,
+    points: number == null ? null : number <= 12 ? 1 : [2, 3, 2, 2, 3, 4, 4][number - 13],
+    legacyStart: source === 'start' ? legacy : number === 15 ? 16 : null,
+    legacyPartTwo: source === 'part-two' ? legacy : null,
+    lessonIds: Object.freeze(lessonIds), preparationIds: Object.freeze(preparationIds),
+    entry: teachingEntry[number] || lessonIds[0]
+  });
+  const entries = Object.freeze([
+    define(1, 'planimetry', 'Планиметрия', 'start', 1,
+      ['geo-angles', 'geo-right', 'geo-similarity', 'geo-area', 'geo-quadrilaterals', 'geo-circle']),
+    define(2, 'vectors', 'Векторы', 'start', 2,
+      ['vec-coordinates', 'vec-length', 'vec-operations', 'vec-dot'],
+      ['vec-basics-reading', 'vec-basics-equality', 'vec-basics-triangle', 'vec-basics-parallelogram',
+        'vec-basics-difference', 'vec-basics-scale', 'vec-basics-coordinates', 'vec-basics-length', 'vec-basics-dot']),
+    define(3, 'stereometry', 'Стереометрия', 'start', 3,
+      ['stereo-box', 'stereo-cube', 'stereo-prism', 'stereo-pyramid', 'stereo-cylinder', 'stereo-cone', 'stereo-sphere', 'stereo-compound']),
+    define(4, 'probability', 'Простая вероятность', 'start', 4,
+      ['prob-count', 'prob-complement', 'prob-range']),
+    define(5, 'compound-probability', 'Вероятности сложных событий', 'start', 5,
+      ['prob-independent', 'prob-conditional', 'prob-exact']),
+    define(6, 'equations', 'Уравнения первой части', 'start', 7,
+      ['algebra-exponential', 'algebra-logarithmic', 'eq-linear', 'eq-rational', 'eq-quadratic', 'eq-root']),
+    define(7, 'expressions', 'Вычисления и преобразования', 'start', 8,
+      ['algebra-cosine', 'algebra-double-angle', 'expr-powers', 'expr-roots', 'expr-fractions', 'expr-logarithms'],
+      ['trig-angle', 'trig-coordinates', 'trig-special', 'trig-tangent']),
+    define(8, 'derivative', 'Производная и первообразная', 'start', 9,
+      ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-integral'], ['calc-value', 'calc-special']),
+    define(9, 'formulas', 'Прикладные формулы', 'start', 10,
+      ['applied-formula', 'applied-formula-limit']),
+    define(10, 'word-problems', 'Текстовые задачи', 'start', 11,
+      ['applied-motion', 'applied-work', 'applied-mixture']),
+    define(11, 'functions', 'Функции и графики', 'start', 12,
+      ['fn-line', 'fn-parabola', 'fn-hyperbola', 'fn-explog']),
+    define(12, 'extrema', 'Наибольшее и наименьшее значение', 'start', 9,
+      ['calc-extreme'], ['calc-value', 'calc-special']),
+    define(13, 'part-two-equations', 'Уравнения второй части', 'part-two', 14,
+      ['p14-circle-selection', 'p14-trig-factors', 'p14-exponential-substitution', 'p14-log-domain', 'p14-radical-check', 'p14-rational-hole']),
+    define(14, 'part-two-stereometry', 'Стереометрия с доказательством', 'part-two', 15,
+      ['p2-15-projection', 'p2-15-line-plane', 'p2-15-dihedral', 'p2-15-distance', 'p2-15-section-volume', 'p2-15-coordinate-angle']),
+    define(15, 'inequalities', 'Неравенства', 'part-two', 16,
+      ['p16-repeated-root', 'p16-exponential-interval', 'p16-fixed-log', 'p16-variable-base', 'p16-radical-inequality', 'p16-cancelled-hole']),
+    define(16, 'finance', 'Экономическая задача', 'start', 13,
+      ['applied-percent', 'applied-loan-linear', 'applied-loan-equal',
+        'finance-lesson-01-ledger', 'finance-lesson-02-deposits', 'finance-lesson-03-interest-progression',
+        'finance-lesson-04-first-last-payment', 'finance-lesson-05-balance-tables', 'finance-lesson-06-payment-bounds',
+        'finance-lesson-07-equal-payments', 'finance-lesson-08-unknown-in-ledger', 'finance-lesson-09-rates',
+        'finance-lesson-10-inverse-equal-payments', 'finance-lesson-11-changing-conditions', 'finance-lesson-12-calendar',
+        'finance-lesson-13-two-stages']),
+    define(17, 'part-two-planimetry', 'Планиметрия с доказательством', 'part-two', 18,
+      ['p2-18-similarity', 'p2-18-tangents', 'p2-18-cyclic', 'p2-18-bisector', 'p2-18-cevians', 'p2-18-altitude']),
+    define(18, 'parameters', 'Задачи с параметром', 'part-two', 19,
+      ['param-linear', 'param-positive-roots', 'param-modules', 'param-hole', 'param-tangent', 'param-system']),
+    define(19, 'numbers', 'Числа и их свойства', 'part-two', 20,
+      ['numbers-remainders', 'numbers-digits', 'numbers-extremum', 'numbers-counterexample', 'numbers-invariant', 'numbers-diophantine'])
+  ]);
+  const extras = Object.freeze([
+    define(null, 'random-variables', 'Случайные величины', 'start', 6,
+      ['prob-distribution', 'prob-variance', 'prob-continuous']),
+    define(null, 'optimization', 'Моделирование и оптимизация', 'part-two', 17,
+      ['model-fence', 'model-revenue', 'model-boundary', 'model-discrete', 'model-box', 'model-motion'])
+  ]);
+  // Keep the earlier topic URL as an exact entrance to the same lesson.
+  const integral = define(8, 'integral', 'Первообразная и площадь', 'start', 9, ['calc-integral']);
+  const calculus = define(null, 'calculus-legacy', 'Производная, экстремумы и первообразная', 'start', 9,
+    ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-value', 'calc-special', 'calc-extreme', 'calc-integral']);
+  const all = [...entries, ...extras];
+  const numberValue = value => typeof value === 'number' && Number.isInteger(value) ? value :
+    typeof value === 'string' && /^(?:[1-9]|1[0-9]|20)$/.test(value) ? Number(value) : null;
+  const get = number => entries.find(item => item.number === numberValue(number)) || null;
+  const topics = [...all, calculus, integral];
+  const topic = id => typeof id === 'string' ? topics.find(item => item.id === id) || null : null;
+  const resolve = value => value && typeof value === 'object' ? topic(value.id) : get(value) || topic(value);
+  const fromLegacyStart = value => {
+    const number = numberValue(value);
+    if (number === 9) return calculus;
+    return number == null ? null : all.find(item => item.legacyStart === number) || null;
+  };
+  const fromLegacyPartTwo = value => {
+    const number = numberValue(value);
+    return number == null ? null : all.find(item => item.legacyPartTwo === number) || null;
+  };
+  const forLesson = id => typeof id === 'string' ? all.find(item => item.lessonIds.includes(id)) ||
+    all.find(item => item.preparationIds.includes(id)) || null : null;
+  const label = value => { const item = resolve(value); return item ? item.number == null ? 'Дополнительная тема' : '№ ' + item.number : ''; };
+  const hash = value => {
+    const item = resolve(value);
+    return item ? item.number == null ? '#topic/' + item.id : '#fipi/' + YEAR + '/' + item.number : '';
+  };
+  const href = value => {
+    const item = resolve(value);
+    return item ? '/ege-profil/' + item.source + '/' + hash(item) : '';
+  };
+  return Object.freeze({YEAR, entries, extras, get, topic, fromLegacyStart, fromLegacyPartTwo, forLesson, label, hash, href});
+});
+
+</script>
+<script data-inline-source="/trainers/ege-profile/log-inequalities/engine.js">
+/* Author-created logarithmic inequalities. Native MathML; no external dependencies. */
+(function (root, factory) {
+  'use strict';
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.LogInequalities = factory();
+}(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const N = value => ({ op: 'num', value });
+  const X = { op: 'var' };
+  const node = (op, ...args) => ({ op, args: args.map(a => typeof a === 'number' ? N(a) : a) });
+  const add = (a,b) => typeof b==='number'&&b<0?node('sub',a,-b):node('add',a,b);
+  const sub = (a,b) => typeof b==='number'&&b<0?node('add',a,-b):node('sub',a,b);
+  const mul = (a,b) => node('mul',a,b), div = (a,b) => node('div',a,b);
+  const pow = (a,b) => node('pow',a,b), log = (a,b) => node('log',a,b);
+  const abs = a => node('abs',a), sqrt = a => node('sqrt',a);
+  const product = (...a) => a.reduce(mul);
+  const sq = a => pow(a,2), neg = a => mul(-1,a);
+  const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+  const relationSymbol = { gt:'>', ge:'≥', lt:'<', le:'≤', ne:'≠' };
+  const relations = ['ge','lt','le','gt'];
+  function formatNumber(n) {
+    if (n === Infinity) return '+∞';
+    if (n === -Infinity) return '−∞';
+    if (Object.is(n,-0) || Math.abs(n) < 1e-13) return '0';
+    if (!Number.isFinite(n)) return '—';
+    const sign = n < 0 ? '−' : '', v = Math.abs(n);
+    for (let d=1;d<=10000;d++) {
+      const p=Math.round(v*d);
+      if (Math.abs(v-p/d)<1e-10) return sign+p+(d===1?'':'/'+d);
+    }
+    return sign+String(Number(v.toPrecision(8))).replace('.',',');
+  }
+  function textExpr(a) {
+    if(a.op==='num') return formatNumber(a.value);
+    if(a.op==='var') return 'x';
+    const [u,v]=a.args, t=textExpr;
+    if(a.op==='add') return '('+t(u)+' + '+t(v)+')';
+    if(a.op==='sub') return '('+t(u)+' − '+t(v)+')';
+    if(a.op==='mul') return t(u)+'·'+t(v);
+    if(a.op==='div') return '('+t(u)+')/('+t(v)+')';
+    if(a.op==='pow') return '('+t(u)+')^'+t(v);
+    if(a.op==='log') return 'log_('+t(u)+')('+t(v)+')';
+    if(a.op==='abs') return '|'+t(u)+'|';
+    if(a.op==='sqrt') return '√('+t(u)+')';
+    throw Error('Unknown expression');
+  }
+  function mml(a,parent=0) {
+    if(a.op==='num') {
+      const s=formatNumber(a.value);
+      if(s.includes('/')) {const p=s.split('/');return '<mfrac><mn>'+esc(p[0])+'</mn><mn>'+p[1]+'</mn></mfrac>';}
+      return '<mn>'+esc(s)+'</mn>';
+    }
+    if(a.op==='var') return '<mi>x</mi>';
+    const [u,v]=a.args, par=s=>'<mrow><mo>(</mo>'+s+'<mo>)</mo></mrow>';
+    if(a.op==='div') return '<mfrac>'+mml(u)+mml(v)+'</mfrac>';
+    // The square of a logarithm must not look like a square of its argument.
+    if(a.op==='pow') return '<msup>'+(u.op==='log'?par(mml(u)):mml(u,4))+mml(v)+'</msup>';
+    if(a.op==='sqrt') return '<msqrt>'+mml(u)+'</msqrt>';
+    if(a.op==='abs') return '<mrow><mo>|</mo>'+mml(u)+'<mo>|</mo></mrow>';
+    if(a.op==='log') return '<mrow><msub><mi mathvariant="normal">log</mi>'+mml(u)+'</msub>'+par(mml(v))+'</mrow>';
+    const level=a.op==='mul'?2:1;
+    const symbol=a.op==='mul'?'·':a.op==='add'?'+':'−';
+    const body='<mrow>'+mml(u,level)+'<mo>'+symbol+'</mo>'+mml(v,a.op==='sub'?level+1:level)+'</mrow>';
+    return level<parent?par(body):body;
+  }
+  function math(a,op,b) {
+    const label=textExpr(a)+(op?' '+relationSymbol[op]+' '+textExpr(typeof b==='number'?N(b):b):'');
+    return '<math xmlns="http://www.w3.org/1998/Math/MathML" aria-label="'+esc(label)+'"><mrow>'+mml(a)+(op?'<mo>'+esc(relationSymbol[op])+'</mo>'+mml(typeof b==='number'?N(b):b):'')+'</mrow></math>';
+  }
+  function rawEval(a,x) {
+    if(a.op==='num') return a.value;
+    if(a.op==='var') return x;
+    const u=rawEval(a.args[0],x), v=a.args.length>1?rawEval(a.args[1],x):0;
+    if(!Number.isFinite(u)||!Number.isFinite(v)) return NaN;
+    switch(a.op) {
+      case 'add':return u+v; case 'sub':return u-v; case 'mul':return u*v;
+      case 'div':return v===0?NaN:u/v;
+      case 'pow':return Math.pow(u,v);
+      case 'abs':return Math.abs(u);
+      case 'sqrt':return u<0?NaN:Math.sqrt(u);
+      case 'log':return u>0&&u!==1&&v>0?Math.log(v)/Math.log(u):NaN;
+      default:return NaN;
+    }
+  }
+  const condition = (left,op,right,why) => ({left:typeof left==='number'?N(left):left,op,right:typeof right==='number'?N(right):right,why});
+  const positive = (a,why) => condition(a,'gt',0,why||'Аргумент логарифма должен быть положительным.');
+  const nonunit = (a,why) => condition(a,'ne',1,why||'Основание логарифма не может равняться 1.');
+  const nonzero = (a,why) => condition(a,'ne',0,why||'Исходный знаменатель не может равняться нулю.');
+  function logDomain(a,b) {return [positive(a,'Основание логарифма должно быть положительным.'),nonunit(a),positive(b)];}
+  function holds(value,op) {return op==='gt'?value>1e-9:op==='ge'?value>=-1e-9:op==='lt'?value<-1e-9:value<=1e-9;}
+  function domainOK(conditions,x) {
+    return conditions.every(c=>{
+      const a=rawEval(c.left,x),b=rawEval(c.right,x);
+      if(!Number.isFinite(a)||!Number.isFinite(b)) return false;
+      return c.op==='ne'?Math.abs(a-b)>1e-11:c.op==='gt'?a>b+1e-11:a<b-1e-11;
+    });
+  }
+  function sampleCell(points,i) {
+    if(i%2) return points[(i-1)/2].value;
+    const j=i/2;
+    if(!j)return points[0].value-Math.max(1,Math.abs(points[0].value)*0.3);
+    if(j===points.length)return points[j-1].value+Math.max(1,Math.abs(points[j-1].value)*0.3);
+    return (points[j-1].value+points[j].value)/2;
+  }
+  function formatSet(task,cells) {
+    const p=task.criticalPoints, expected=2*p.length+1;
+    if(!Array.isArray(cells)||cells.length!==expected) throw Error('Wrong number of cells');
+    const parts=[];
+    for(let i=0;i<cells.length;i++) {
+      if(!cells[i])continue;
+      const start=i;while(i+1<cells.length&&cells[i+1])i++;
+      const end=i;
+      if(start===end&&start%2){parts.push('{'+p[(start-1)/2].label+'}');continue;}
+      const left=start===0?'−∞':p[start%2?(start-1)/2:start/2-1].label;
+      const right=end===expected-1?'+∞':p[end%2?(end-1)/2:end/2].label;
+      parts.push((start%2?'[':'(')+left+'; '+right+(end%2?']':')'));
+    }
+    return parts.length?parts.join(' ∪ '):'∅';
+  }
+  const families = [
+    {id:'sign',title:'Знак логарифма',goal:'Связать знак логарифма с основанием и аргументом.',rule:'На ОДЗ знак log_A B совпадает со знаком (A−1)(B−1).',prerequisite:'Определение логарифма и метод интервалов.'},
+    {id:'compare',title:'Сравнение с единицей',goal:'Заменить 1 логарифмом того же основания.',rule:'Сначала log_A B−1=log_A(B/A), затем сравниваем B и A с учётом основания.',prerequisite:'log_A A=1; знак логарифма.'},
+    {id:'multiplier',title:'Множитель перед логарифмом',goal:'Сохранить знак множителя и кратность корня.',rule:'Множитель сохраняется: P·log_A B имеет знак P(A−1)(B−1) на ОДЗ.',prerequisite:'Знаки произведения; квадрат неотрицателен.'},
+    {id:'reciprocal',title:'Взаимно обратные логарифмы',goal:'Использовать замену и не потерять отдельное решение.',rule:'При z=log_A B второй логарифм равен 1/z. После приведения к общему знаменателю возможен квадрат.',prerequisite:'Переход к новому основанию; дробно-рациональные неравенства.'},
+    {id:'log-denominator',title:'Логарифм в знаменателе',goal:'Сохранить исходный запрет нулевого знаменателя.',rule:'Знак числителя и знаменателя исследуем отдельно; запрещённая точка остаётся запрещённой.',prerequisite:'Знак частного; степени и логарифмы.'},
+    {id:'chain',title:'Цепочки произведений',goal:'Сократить логарифмы, сохранив всю исходную ОДЗ.',rule:'log_A B·log_B C=log_A C только там, где оба исходных логарифма определены.',prerequisite:'Формула перехода к новому основанию.'},
+    {id:'collect',title:'Сначала собрать выражение',goal:'Упростить сумму до применения рационализации.',rule:'Сначала используем тождества, раскрываем скобки и собираем сумму. Рационализация отдельных слагаемых неверна.',prerequisite:'Свойства логарифмов; раскрытие скобок.'},
+    {id:'modulus',title:'Модуль и логарифм',goal:'Решить задачу через y=|x−h| и вернуться к x.',rule:'Сначала y≥0, затем ОДЗ и интервалы по y; в конце возвращаем обе ветви модуля.',prerequisite:'Модуль; дробно-рациональные выражения.'},
+    {id:'powers',title:'Степени и корень в основании',goal:'Привести логарифмы к одному основанию.',rule:'Учитываем положительность аргументов и равенство ln(u²)=2ln|u| при u≠0.',prerequisite:'Степенные свойства логарифмов; модуль.'},
+    {id:'quadratic-log',title:'Квадратный трёхчлен от логарифма',goal:'Разложить выражение на множители после замены.',rule:'Обозначаем логарифм буквой, раскладываем трёхчлен, затем рационализируем произведение.',prerequisite:'Разложение квадратного трёхчлена; логарифмические тождества.'},
+    {id:'nested',title:'Вложенный логарифм',goal:'Отдельно проверить внутренний и внешний логарифмы.',rule:'Значение внутреннего логарифма — основание внешнего: оно должно быть положительным и не равно 1.',prerequisite:'ОДЗ логарифма; знак логарифмической дроби.'},
+    {id:'exponential-denominator',title:'Произведение и показательный знаменатель',goal:'Разложить числитель и исследовать знак знаменателя.',rule:'Сначала объединяем логарифм произведения и раскладываем числитель. При q>1 знак q^u−q^v совпадает со знаком u−v.',prerequisite:'Свойства логарифмов; монотонность показательной функции.'}
+  ];
+  const tasks=[], internal=new Map();
+  function lessonText(text,params) {
+    // Explanations use this task's numbers, rather than unexplained generator parameters.
+    let out=String(text);
+    for(const [key,value] of Object.entries(params)) {
+      if(!/^[a-zDESR]$/.test(key)||key==='h')continue;
+      const number=formatNumber(value);
+      out=out.replace(new RegExp('(?<![A-Za-z0-9])'+key+'([A-Zxty])(?![A-Za-z0-9])','g'),number+'·$1');
+      out=out.replace(new RegExp('(?<![A-Za-z0-9])'+key+'(?![A-Za-z0-9])','g'),number);
+    }
+    const h=params.h||0, t=h?'(x'+(h<0?'+':'−')+formatNumber(Math.abs(h))+')':'x';
+    out=out.replace(/(?<![A-Za-z0-9])t(?![A-Za-z0-9])/g,t).replace(/\bh\b/g,formatNumber(h));
+    return out.replace(/−−/g,'+').replace(/\+−/g,'−');
+  }
+  function aliasPreparation(familyId,spec) {
+    const a=spec.primaryBase,b=spec.primaryArgument,p=spec.params;
+    let aliases=[];
+    if(['compare','multiplier','log-denominator'].includes(familyId))aliases=[['A',a],['B',b]];
+    if(familyId==='reciprocal')aliases=[['U',a],['V',b]];
+    if(familyId==='chain')aliases=[['A',a],['B',b],['C',add(X,p.c)]];
+    if(familyId==='collect')aliases=[['A',a],['Q',b]];
+    if(familyId==='modulus')aliases=[['y',a],['D',b.args[1]]];
+    if(['powers','quadratic-log'].includes(familyId))aliases=[['A',b]];
+    if(familyId==='exponential-denominator')aliases=[['A',b],['B',sub(p.c,X)]];
+    if(!aliases.length)return null;
+    const text=aliases.map(([name,expr])=>name+' = '+textExpr(expr)).join('; ')+'. Это обозначения выражений, а не новые неизвестные.';
+    const html=aliases.map(([name,expr])=>'<math xmlns="http://www.w3.org/1998/Math/MathML" aria-label="'+esc(name+' = '+textExpr(expr))+'"><mrow><mi>'+name+'</mi><mo>=</mo>'+mml(expr)+'</mrow></math>').join('<span>; </span>');
+    return {title:'Обозначения в разборе',text,html};
+  }
+  function finish(familyId,variant,spec) {
+    const f=families.find(a=>a.id===familyId);
+    const seen=new Set(), conditions=spec.conditions.filter(c=>{const key=JSON.stringify([c.left,c.op,c.right]);if(seen.has(key))return false;seen.add(key);return true;});
+    const values=spec.critical.sort((a,b)=>a-b).filter((v,i,a)=>!i||Math.abs(v-a[i-1])>1e-9);
+    const criticalPoints=values.map(value=>({value,label:formatNumber(value)}));
+    const probes=[];
+    for(let i=0;i<2*values.length+1;i++)probes.push(sampleCell(criticalPoints,i));
+    for(let k=-100;k<=200;k++)probes.push((k/7)+(spec.params.h||0));
+    const validProbes=probes.filter(x=>domainOK(conditions,x)&&Number.isFinite(rawEval(spec.original,x)));
+    if(!validProbes.length)throw Error('Empty test domain '+familyId);
+    const domainChoices=conditions.map((c,i)=>({id:'d'+i,html:math(c.left,c.op,c.right),text:textExpr(c.left)+' '+relationSymbol[c.op]+' '+textExpr(c.right),correct:true,why:c.why,condition:{left:c.left,op:c.op,right:c.right}}));
+    // These distractors impose an actual extra restriction, checked against the original domain.
+    for(const [i,a] of [spec.primaryBase,spec.primaryArgument].entries()) {
+      const high=validProbes.some(x=>rawEval(a,x)<=1+1e-9), op=high?'gt':'lt';
+      const c=condition(a,op,1,'');
+      domainChoices.push({id:'wrong-domain-'+i,html:math(a,op,1),text:textExpr(a)+' '+relationSymbol[op]+' 1',correct:false,why:i===0?'Основание должно быть положительным и не равняться 1. Требование находиться только по одну сторону от 1 здесь исключает допустимые значения x.':'Аргумент должен быть положительным. Сравнивать его с 1 для определения ОДЗ не требуется: это потеряет допустимые значения x.',condition:c});
+    }
+    const candidates=[...spec.wrong, {ast:neg(spec.rational),why:'При умножении всего выражения на −1 нужно изменить знак неравенства на противоположный.'}];
+    const truth=ast=>validProbes.map(x=>holds(rawEval(ast,x),spec.relation)).join(',');
+    const truthSeen=new Set([truth(spec.rational)]), wrong=[];
+    for(const w of candidates){const signature=truth(w.ast);if(!truthSeen.has(signature)){truthSeen.add(signature);wrong.push(w);}if(wrong.length===2)break;}
+    if(wrong.length!==2)throw Error('Need inequivalent distractors '+familyId+' '+variant);
+    const choice=(ast,correct,why,id)=>({id,html:math(ast,spec.relation,0),text:textExpr(ast)+' '+relationSymbol[spec.relation]+' 0',correct,why,ast});
+    const transformChoices=[choice(spec.rational,true,spec.transform,'right'),...wrong.map((w,i)=>choice(w.ast,false,w.why,'wrong-'+i))];
+    // Rotate the correct choice so its position is not a hint.
+    for(let j=0;j<variant%3;j++)transformChoices.push(transformChoices.shift());
+    const words=text=>lessonText(text,spec.params);
+    const preparation=spec.preparation.map(p=>({title:p.title,html:p.ast?math(p.ast):'<p>'+esc(words(p.text))+'</p>',text:words(p.text)}));
+    const aliases=aliasPreparation(familyId,spec);if(aliases)preparation.unshift(aliases);
+    for(const choice of transformChoices)choice.why=words(choice.why);
+    const t={id:familyId+'-'+(variant+1),familyId,variant,formulaHtml:math(spec.left,spec.relation,spec.right),formulaText:textExpr(spec.left)+' '+relationSymbol[spec.relation]+' '+textExpr(typeof spec.right==='number'?N(spec.right):spec.right),relation:spec.relation,domainChoices,transformChoices,preparation,criticalPoints,domainCells:[],rationalSigns:[],solutionCells:[],answerText:'',params:spec.params,metadata:{originalAst:spec.original,rationalAst:spec.rational,domainConditions:conditions.map(c=>({left:c.left,op:c.op,right:c.right}))}};
+    internal.set(t.id,{original:spec.original,rational:spec.rational,conditions,task:t});
+    for(let i=0;i<2*values.length+1;i++) {
+      const x=sampleCell(criticalPoints,i),defined=domainOK(conditions,x)&&Number.isFinite(rawEval(spec.original,x));
+      const v=defined?rawEval(spec.rational,x):NaN;
+      const sign=defined?(Math.abs(v)<1e-8?0:v<0?-1:1):null;
+      t.domainCells.push(defined);t.rationalSigns.push(sign);t.solutionCells.push(defined&&holds(sign,spec.relation));
+    }
+    t.answerText=formatSet(t,t.solutionCells);
+    t.explanation={domain:words(spec.domain),transform:words(spec.transform),critical:'Отметьте '+criticalPoints.map(p=>p.label).join('; ')+'. Вне ОДЗ выражение не определено. Нули и запрещённые точки отмечаем отдельно.',signs:words(spec.signs||'Определите знак каждого множителя на промежутках. В нуле чётной кратности знак не меняется. Запрещённые точки остаются выколотыми.'),answer:'Выбираем знаки, соответствующие '+relationSymbol[spec.relation]+' 0. Получаем: '+t.answerText+'.'};
+    t.hints={domain:spec.domainHint||'Проверьте каждый исходный логарифм: основание > 0, основание ≠ 1, аргумент > 0. Затем отдельно проверьте исходные знаменатели.',transform:spec.transformHint||f.rule,critical:'Найдите нули множителей, границы ОДЗ и точки, в которых исходное выражение не существует. После сокращения запреты не исчезают.',signs:'Возьмите пробную точку внутри промежутка. Учитывайте каждый множитель; квадрат не меняет знак при прохождении через свой ноль.',answer:'При строгом неравенстве нули не входят. При нестрогом — входят, если принадлежат ОДЗ. Запрещённые точки не входят никогда.'};
+    tasks.push(t);
+  }
+
+  for(let v=0;v<4;v++) {
+    // 1. Basic sign. The boundary at argument=1 is distinct from both base boundaries.
+    {const h=[0,1,-2,2][v],a=[2,3,4,5][v],b=[6,8,10,12][v],t=h?sub(X,h):X,A=t,B=div(add(t,a),b),R=mul(sub(A,1),sub(B,1)),rel=['le','gt','lt','ge'][v];
+      finish('sign',v,{params:{h,a,b},left:log(A,B),right:0,original:log(A,B),rational:R,relation:rel,conditions:logDomain(A,B),primaryBase:A,primaryArgument:B,critical:[h-a,h,h+1,h+b-a],preparation:[{title:'Два изменения знака',text:'Основание и аргумент сравниваем с 1. Оба сравнения нужны одновременно.'}],domain:'Основание положительно и не равно 1; дробь в аргументе положительна. Знаменатель аргумента — положительная константа.',transform:'На исходной ОДЗ знак логарифма совпадает со знаком произведения (основание − 1)·(аргумент − 1).',wrong:[{ast:sub(B,1),why:'Здесь потерян знак основания минус 1. Для основания между 0 и 1 направление сравнения меняется.'},{ast:mul(sub(A,1),B),why:'Нуль логарифма соответствует аргументу 1, поэтому нужен множитель «аргумент − 1».'}]});}
+    // 2. The quadratic argument is positive for all real t, by a negative discriminant.
+    {const h=0,c=[4,7,11,16][v],r=v+1,s=v+2,t=X,A=add(t,c),B=add(A,mul(sub(t,r),sub(t,s))),R=product(sub(A,1),sub(t,r),sub(t,s)),L=log(A,B),rel=relations[v];
+      finish('compare',v,{params:{h,c,r,s},left:L,right:1,original:sub(L,1),rational:R,relation:rel,conditions:logDomain(A,B),primaryBase:A,primaryArgument:B,critical:[-c,1-c,r,s],preparation:[{title:'Единица — тоже логарифм',text:'Запишите 1 = log_A A. Разность логарифмов равна логарифму отношения B/A.'},{title:'Сравнить аргумент и основание',text:'После вычитания основания из аргумента остаётся произведение двух линейных множителей.',ast:mul(sub(t,r),sub(t,s))}],domain:'Квадратичный аргумент положителен при любом x: его дискриминант отрицателен, старший коэффициент положителен. Ограничения основания остаются обязательными.',transform:'После переноса 1 знак разности логарифмов определяется произведением (A−1)(B−A). Положительный знаменатель A на ОДЗ не меняет знак.',wrong:[{ast:sub(B,1),why:'Справа стоит 1, а не 0: сравнивать нужно аргумент B с основанием A, а не с 1.'},{ast:mul(sub(t,r),sub(t,s)),why:'Потерян множитель A−1. Основание может быть между 0 и 1.'}]});}
+    // 3. The squared factor contributes a zero but no sign change.
+    {const h=0,a=v+2,r=v+2,b=v+4,t=X,A=add(t,a),B=add(sq(sub(t,b)),1),P=sub(t,r),L=mul(P,log(A,B)),R=product(P,sub(A,1),sq(sub(t,b))),rel=relations[v];
+      finish('multiplier',v,{params:{h,a,r,b},left:L,right:0,original:L,rational:R,relation:rel,conditions:logDomain(A,B),primaryBase:A,primaryArgument:B,critical:[-a,1-a,r,b],preparation:[{title:'Сохранить внешний множитель',text:'Не делите неравенство на x−r без разбора его знака.'},{title:'Аргумент минус 1',text:'Разность аргумента и 1 — квадрат. В его нуле знак произведения не меняется.',ast:sq(sub(t,b))}],domain:'Аргумент — квадрат плюс 1, поэтому всегда положителен. Основание должно быть положительным и не равно 1.',transform:'Заменяем логарифм выражением того же знака и сохраняем внешний множитель. Квадрат сохраняем: его нуль может входить в ответ.',wrong:[{ast:mul(sub(A,1),sq(sub(t,b))),why:'Внешний множитель нельзя сократить без учёта его знака и нуля.'},{ast:mul(P,sq(sub(t,b))),why:'Потерян знак основания минус 1.'}]});}
+    // 4. Reciprocal logarithms: an isolated root is deliberately retained.
+    {const h=0,a=v+2,r=v+2,B=r+(r+a)**2,t=X,U=add(t,a),V=sub(B,t),z=log(U,V),L=add(z,mul(4,log(V,U))),F=sub(V,sq(U)),R=product(sq(F),sub(U,1),sub(V,1)),rel='le';
+      finish('reciprocal',v,{params:{h,a,r,B},left:L,right:4,original:sub(L,4),rational:R,relation:rel,conditions:[...logDomain(U,V),...logDomain(V,U)],primaryBase:U,primaryArgument:V,critical:[-a,1-a,B-1,B,r,-2*a-1-r],preparation:[{title:'Одна замена',text:'Пусть z = log_U V. Тогда log_V U = 1/z; z ≠ 0 по исходной ОДЗ.'},{title:'Общий знаменатель',text:'z + 4/z − 4 = (z−2)²/z. Равенство возможно при z=2 даже там, где дробь вокруг положительна.'}],domain:'Оба выражения U и V служат основаниями и аргументами: каждое положительно и не равно 1. Все четыре ограничения сохраняются.',transform:'Знак (z−2)²/z совпадает со знаком (V−U²)²(U−1)(V−1). Квадрат даёт отдельный нуль; знак z задаётся произведением (U−1)(V−1).',signs:'Квадрат (V−U²)² не меняет знак. В его допустимом нуле значение равно 0: это может дать отдельную точку ответа.',wrong:[{ast:product(F,sub(U,1),sub(V,1)),why:'После общего знаменателя получается квадрат (z−2)². Убирать квадрат нельзя: он сохраняет знак по обе стороны корня.'},{ast:sq(F),why:'Знаменатель z может быть отрицательным. Его знак потерян.'}]});}
+    // 5. An original logarithmic denominator has its own excluded point.
+    {const h=0,d=v+2,q=v+2,m=2,k=q**m,c=d+k+4,t=X,A=sub(c,t),u=sub(t,d),B=sq(u),den=sub(log(q,u),m),L=div(log(A,B),den),R=div(mul(sub(A,1),sub(B,1)),sub(u,k)),rel=relations[v];
+      finish('log-denominator',v,{params:{h,d,q,m,c},left:L,right:0,original:L,rational:R,relation:rel,conditions:[...logDomain(A,B),positive(u),nonzero(den)],primaryBase:A,primaryArgument:B,critical:[d-1,d,d+1,d+k,c-1,c],preparation:[{title:'Знаменатель сравниваем с нулём',text:'log_q(x−d)−m = log_q((x−d)/q^m). Так как q>1, его знак совпадает со знаком x−d−q^m.'}],domain:'Кроме условий логарифма в числителе, нужны x−d>0 и ненулевой исходный знаменатель. Точка x=d+q^m исключена.',transform:'Знак числителя совпадает со знаком (A−1)(B−1), а знак знаменателя — со знаком x−d−q^m. Положительные постоянные множители опускаем.',wrong:[{ast:mul(sub(A,1),sub(B,1)),why:'Знаменатель может быть отрицательным: нельзя исследовать только числитель.'},{ast:div(sub(B,1),sub(u,k)),why:'В числителе потерян множитель A−1.'}]});}
+    // 6. Cancelled bases remain excluded in the original domain.
+    {const h=0,a=v+9,b=v+4,c=v+6,r=-(v+2),s=v+7,D=r+s,E=-r*s,t=X,A=sub(a,t),B=add(t,b),C=add(t,c),T=sq(t),V=add(mul(D,t),E),L=mul(log(A,B),log(B,T)),right=mul(log(A,C),log(C,V)),R=product(sub(A,1),sub(t,r),sub(t,s)),rel=['le','ge','lt','gt'][v];
+      finish('chain',v,{params:{h,a,b,c,r,s,D,E},left:L,right,original:sub(L,right),rational:R,relation:rel,conditions:[...logDomain(A,B),...logDomain(B,T),...logDomain(A,C),...logDomain(C,V)],primaryBase:A,primaryArgument:B,critical:[a,a-1,-b,1-b,-c,1-c,0,-E/D,r,s],preparation:[{title:'Сократить цепочки',text:'Каждое произведение превращается в один логарифм основания A. Но ограничения исчезнувших оснований B и C сохраняются.'},{title:'Собрать разность',text:'Получаем log_A(t²/(Dt+E)). На ОДЗ знаменатель отношения положителен.'}],domain:'Проверьте все четыре исходных логарифма. Даже после сокращения нельзя вернуть t=0 или значения, при которых B либо C равно 1.',transform:'После перехода к одному основанию знак разности задаётся (A−1)(t²−Dt−E). Квадратный трёхчлен имеет корни r и s.',wrong:[{ast:mul(sub(t,r),sub(t,s)),why:'Общее основание может быть меньше 1. Его влияние на знак потеряно.'},{ast:product(sub(A,1),sub(t,r)),why:'При сравнении t² и Dt+E появляется квадратный трёхчлен с двумя корнями, а не один линейный множитель.'}]});}
+    // 7. Only the fully collected sum is rationalized.
+    {const h=0,r=2,vv=v+4,s=vv+1,q=v+3,a=vv+5,t=X,A=sub(a,t),Q=mul(t,sub(t,vv)),inside=add(add(add(add(div(1,log(A,q)),log(s,Q)),1),log(1/q,mul(q,A))),t),L=add(mul(sub(t,r),inside),t),right=sub(sq(t),r*(r-1)),F=sub(Q,s),R=mul(sub(t,r),F),rel=relations[v];
+      finish('collect',v,{params:{h,r,u:0,v:vv,s,q,a},left:L,right,original:sub(L,right),rational:R,relation:rel,conditions:[...logDomain(A,N(q)),nonzero(log(A,q)),positive(Q),positive(mul(q,A))],primaryBase:A,primaryArgument:Q,critical:[0,vv,a,a-1,r,-1,vv+1],preparation:[{title:'Обратный логарифм',text:'1/log_A q = log_q A. Это тождество используем только на исходной ОДЗ.'},{title:'Отмена пары',text:'log_(1/q)(qA) = −1−log_q A. Вместе с единицей эти слагаемые сокращаются.'},{title:'Собрать всё неравенство',text:'После раскрытия скобок и переноса правой части остаётся (t−2)(log_s Q−1). Только теперь применяем рационализацию.'}],domain:'Сохраняются A>0, A≠1 и Q>0. Исходный обратный логарифм не равен нулю: его аргумент q>1. Сокращение не возвращает A=1.',transform:'Сначала всё выражение преобразуется в (t−2)(log_s Q−1). Поскольку s>1, знак второй скобки совпадает со знаком Q−s=(t+1)(t−v−1).',wrong:[{ast:F,why:'После раскрытия скобок остаётся множитель t−2. Его нельзя отбросить.'},{ast:mul(sub(t,r),sub(Q,1)),why:'Сравнение log_s Q с 1 означает сравнение Q с s, а не с 1.'}]});}
+    // 8. Even symmetry in t, including all original rational-argument poles.
+    {const h=[0,1,-2,2][v],k=v+2,p=v+1,u=3*k,w=4*k,r=2*k,s=6*k,b=p*k,t=h?sub(X,h):X,y=abs(t),D=product(p,sub(y,u),sub(y,w)),B=div(b,D),L=log(y,B),R=mul(sub(y,1),sub(mul(b,y),D)),rel=['lt','le','gt','ge'][v];
+      const ys=[0,1,u,w,r,s],crit=[...ys.map(a=>h-a),...ys.map(a=>h+a)];
+      finish('modulus',v,{params:{h,k,p,u,v:w,r,s,b},left:L,right:-1,original:add(L,1),rational:R,relation:rel,conditions:[...logDomain(y,B),nonzero(D)],primaryBase:y,primaryArgument:B,critical:crit,preparation:[{title:'Замена модуля',text:'Пусть y=|x−h|. Тогда y≥0. Исследуйте неравенство по y, а затем верните обе ветви x=h±y.'},{title:'Перенести −1',text:'log_y(b/D)+1 = log_y(by/D). На ОДЗ D>0, поэтому знак by/D−1 совпадает со знаком by−D.'}],domain:'Нужно y>0, y≠1 и b/D>0. Так как b>0, знаменатель D должен быть положительным; его нули исключены.',transform:'На ОДЗ знак левой части после переноса совпадает со знаком (y−1)(by−D). Неравенство по y переносим на обе стороны от x=h.',wrong:[{ast:sub(mul(b,y),D),why:'Влияние основания y потеряно: при 0<y<1 логарифм меняет направление сравнения.'},{ast:mul(sub(y,1),sub(b,D)),why:'После переноса −1 аргумент умножается на основание y. В числителе нужно by−D, а не b−D.'}]});}
+    // 9. A square in the argument is not a square of the logarithm.
+    {const h=0,a=v+3,b=v+9,t=X,A=add(t,a),B=mul(sq(A),sq(sub(t,b))),L=log(sqrt(t),A),right=log(sq(t),B),F=sub(sq(A),sq(sub(t,b))),R=mul(sub(t,1),F),rel=relations[v];
+      finish('powers',v,{params:{h,a,b},left:L,right,original:sub(L,right),rational:R,relation:rel,conditions:[positive(t,'Для корня в основании и логарифмов нужно x>0.'),nonunit(t),positive(A),positive(B)],primaryBase:sqrt(t),primaryArgument:A,critical:[-a,0,1,(b-a)/2,b],preparation:[{title:'Общее основание x',text:'log_(√x) A = 2log_x A; log_(x²)(A²(x−b)²) = log_x A + log_x|x−b|.'},{title:'Сравнить положительные величины',text:'Остаётся log_x(A/|x−b|). На ОДЗ A>0 и |x−b|>0, поэтому можно сравнить их квадраты.'}],domain:'x>0, x≠1 и x+a>0. Аргумент второго логарифма должен быть положителен, поэтому x=b запрещён, хотя он может исчезнуть при преобразовании.',transform:'Знак разности логарифмов совпадает со знаком (x−1)((x+a)²−(x−b)²). Исходная точка x=b остаётся исключённой.',wrong:[{ast:F,why:'Основание x может находиться между 0 и 1. Его знак относительно 1 нельзя отбросить.'},{ast:mul(sub(t,1),sub(A,sub(t,b))),why:'Из ln((x−b)²) получается 2ln|x−b|, а не 2ln(x−b). Отбрасывание модуля меняет решение.'}]});}
+    // 10. Quadratic substitution; the squared denominator of log quotients is positive.
+    {const h=0,r=v+3,a=r*(r-1),t=X,A=add(t,a),z=log(t,A),L=add(sub(sq(z),mul(3,z)),2),R=mul(a,sub(A,sq(t))),rel=relations[v];
+      finish('quadratic-log',v,{params:{h,r,a},left:L,right:0,original:L,rational:R,relation:rel,conditions:logDomain(t,A),primaryBase:t,primaryArgument:A,critical:[-a,1-r,0,1,r],preparation:[{title:'Замена',text:'Обозначьте z=log_x(x+a). Трёхчлен z²−3z+2 равен (z−1)(z−2).'}, {title:'Два множителя',text:'Каждый множитель записываем через ln. В произведении знаменатель (ln x)² положителен, поэтому остаются знаки A−x и A−x².'}],domain:'Основание x положительно и не равно 1. Аргумент x+a положителен. Отдельно сохраняем запрет x=1 после сокращений.',transform:'Знак произведения (z−1)(z−2) совпадает со знаком (A−x)(A−x²). Первый множитель равен положительному числу a.',wrong:[{ast:mul(sub(t,1),R),why:'В произведении двух логарифмических разностей знаменатель (ln x)² положителен. Дополнительный знак x−1 здесь не нужен.'},{ast:mul(a,sub(A,t)),why:'Для z−2 нужно сравнить аргумент с x², а не ещё раз с x.'}]});}
+    // 11. The outer base is itself a logarithm, so its positivity is a separate condition.
+    {const h=0,k=v+3,m=v+5,t=X,B=mul(k,t),inner=log(t,B),A=mul(m,t),L=log(inner,A),R=mul(sub(t,1),sub(A,1)),rel=relations[v];
+      finish('nested',v,{params:{h,k,m},left:L,right:0,original:L,rational:R,relation:rel,conditions:[...logDomain(t,B),...logDomain(inner,A)],primaryBase:inner,primaryArgument:A,critical:[0,1/m,1/k,1],preparation:[{title:'Внутренний логарифм',text:'log_x(kx)=1+ln k/ln x. Это значение должно быть положительным и не равно 1.'},{title:'Знак основания минус 1',text:'Поскольку k>1, знак log_x(kx)−1 совпадает со знаком x−1.'}],domain:'Нужно определить внутренний логарифм, а затем проверить, что его значение положительно и не равно 1. Положительность внутреннего логарифма даёт 0<x<1/k либо x>1.',transform:'На исходной ОДЗ знак внешнего логарифма совпадает со знаком (x−1)(mx−1). Ограничение положительности внутреннего логарифма обязательно сохраняем.',wrong:[{ast:sub(A,1),why:'Основание внешнего логарифма может быть меньше 1. Его влияние на знак потеряно.'},{ast:mul(sub(B,1),sub(A,1)),why:'Внешнее основание — значение внутреннего логарифма, а не его аргумент kx.'}]});}
+    // 12. Factor the whole numerator before sign replacement; retain exponential poles.
+    {const h=0,a=[3,4,5,3][v],b=[5,7,9,4][v],c=[9,11,13,10][v],q=v+2,p=[5,6,7,6][v],n=[-3,-2,-4,-3][v],S=p+n,R0=-p*n,t=X,A=sub(mul(a,t),b),B=sub(c,t),u=log(t,A),w=log(t,B),num=sub(add(mul(u,w),1),log(t,mul(A,B))),den=sub(pow(q,sub(sq(t),mul(S,t))),pow(q,R0)),L=div(num,den),F=mul(sub(A,t),sub(B,t)),poly=sub(sub(sq(t),mul(S,t)),R0),R=div(F,poly),rel=['le','lt','ge','gt'][v];
+      finish('exponential-denominator',v,{params:{h,a,b,c,q,p,n,S,R:R0},left:L,right:0,original:L,rational:R,relation:rel,conditions:[...logDomain(t,A),positive(B),positive(mul(A,B)),nonzero(den)],primaryBase:t,primaryArgument:A,critical:[0,1,b/a,c,b/(a-1),c/2,p,n],preparation:[{title:'Разложить весь числитель',text:'Пусть u=log_x A, v=log_x B. На исходной ОДЗ log_x(AB)=u+v, поэтому числитель uv+1−u−v=(u−1)(v−1).'}, {title:'Знак показательной разности',text:'Основание q>1. Знак q^(x²−Sx)−q^R совпадает со знаком x²−Sx−R.'},{title:'Два логарифмических множителя',text:'Общий знаменатель (ln x)² положителен. Знак числителя задаётся (A−x)(B−x).'}],domain:'x>0, x≠1, оба аргумента A и B положительны. Их произведение тоже положительно. Исходный показательный знаменатель не должен равняться нулю.',transform:'После разложения всего числителя получаем дробь (A−x)(B−x)/(x²−Sx−R) того же знака. Знаменатель имеет два исходно запрещённых корня.',wrong:[{ast:F,why:'Показательный знаменатель может быть отрицательным. Его нельзя просто отбросить.'},{ast:div(mul(sub(A,1),sub(B,1)),poly),why:'После разложения стоят (u−1)(v−1). Нужно сравнивать аргументы с основанием x, а не с 1.'}]});}
+  }
+  function getTask(id){return tasks.find(t=>t.id===id)||null;}
+  function domainAt(s,x) {
+    // Every original boundary is in criticalPoints. Exact atom lookup avoids
+    // inventing a small forbidden neighbourhood around a single excluded point.
+    const p=s.task.criticalPoints;
+    let i=0;while(i<p.length&&x>p[i].value)i++;
+    return s.task.domainCells[i<p.length&&x===p[i].value?2*i+1:2*i];
+  }
+  function evaluateOriginal(task,x){const s=internal.get(typeof task==='string'?task:task.id);if(!s||!Number.isFinite(x)||!domainAt(s,x))return {defined:false,value:null};const value=rawEval(s.original,x);return Number.isFinite(value)?{defined:true,value}:{defined:false,value:null};}
+  function evaluateRational(task,x){const s=internal.get(typeof task==='string'?task:task.id);if(!s||!Number.isFinite(x)||!domainAt(s,x))return {defined:false,value:null};const value=rawEval(s.rational,x);return Number.isFinite(value)?{defined:true,value}:{defined:false,value:null};}
+  return {families,tasks,getTask,evaluateOriginal,evaluateRational,formatNumber,formatSet};
+}));
+
+</script>
+<script data-inline-source="/trainers/ege-profile/log-inequalities/app.js">
+/* Public UI contract: __logTrainer.getState() returns {schema:1, taskId, work,
+ * history}. work[taskId] has mode, stage (0..5), accepted, domain, transform,
+ * critical, signs (atom-indexed ''/'-1'/'1'), answer (atom indices), errors,
+ * helps, complete. Independent stages: 2 then 4. Guided stages: 0..4.
+ * applyState validates remote data and never writes storage or emits changes.
+ * Controls: #check-step, #continue-step, select[data-sign], button[data-cell].
+ */
+(function () {
+  'use strict';
+  const E = window.LogInequalities;
+  const $ = id => document.getElementById(id);
+  if (!E || !Array.isArray(E.tasks) || !E.tasks.length) {
+    $('exercise').innerHTML = '<p class="loading-error">Не удалось загрузить задачи. Обновите страницу, когда появится связь.</p>';
+    return;
+  }
+  const STORAGE_KEY = 'mathExam.profileLogInequalities.v1';
+  const MODES = ['example', 'guided', 'independent'];
+  const KEYS = ['domain', 'transform', 'critical', 'signs', 'answer'];
+  const TITLES = ['Область определения', 'Преобразование', 'Критические точки', 'Знаки на интервалах', 'Запись ответа'];
+  const SHORT = ['ОДЗ', 'Переход', 'Точки', 'Знаки', 'Ответ'];
+  const taskMap = new Map(E.tasks.map(task => [task.id, task]));
+  const familyMap = new Map(E.families.map(family => [family.id, family]));
+  const embedded = window.parent !== window || new URLSearchParams(location.search).get('groupLesson') === '1';
+  const listeners = new Set();
+  let observedStorage = null;
+  let storageLocked = false;
+  let storageUnavailable = false;
+  let stale = false;
+  let newerState = null;
+  let pendingMode = null;
+  let state = { schema: 1, taskId: E.tasks[0].id, work: {}, history: [] };
+
+  function blank(task, mode) {
+    return { mode: mode || 'guided', stage: mode === 'independent' ? 2 : 0,
+      accepted: false, domain: [], transform: '', critical: '',
+      signs: Array(task.domainCells.length).fill(''), answer: [], errors: 0,
+      helps: 0, complete: false, hintOpen: false, preparationOpen: false, emptyDeclared: false, familiar: false, feedback: { kind: '', message: '' } };
+  }
+  function task() { return taskMap.get(state.taskId); }
+  function attempt() {
+    if (!state.work[state.taskId]) state.work[state.taskId] = blank(task());
+    return state.work[state.taskId];
+  }
+  function clone(value) { return JSON.parse(JSON.stringify(value)); }
+  function plain(value) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+    const proto = Object.getPrototypeOf(value);
+    return proto === Object.prototype || proto === null;
+  }
+  function exactKeys(value, expected) {
+    return plain(value) && Object.keys(value).length === expected.length && expected.every(key => Object.hasOwn(value, key));
+  }
+  function uniqueArray(value, max, valid) {
+    return Array.isArray(value) && value.length <= max && new Set(value).size === value.length && value.every(valid);
+  }
+  function boundedCounter(value) { return Number.isInteger(value) && value >= 0 && value <= 9999; }
+  function validate(value) {
+    try {
+      if (new Blob([JSON.stringify(value)]).size > 59000 || !exactKeys(value, ['schema', 'taskId', 'work', 'history']) || value.schema !== 1 || !taskMap.has(value.taskId) || !plain(value.work)) return false;
+      if (Object.keys(value.work).length > E.tasks.length || !Object.hasOwn(value.work, value.taskId)) return false;
+      for (const [id, a] of Object.entries(value.work)) {
+        const t = taskMap.get(id);
+        if (!t || !exactKeys(a, ['mode', 'stage', 'accepted', 'domain', 'transform', 'critical', 'signs', 'answer', 'errors', 'helps', 'complete', 'hintOpen', 'preparationOpen', 'emptyDeclared', 'familiar', 'feedback'])) return false;
+        if (!MODES.includes(a.mode) || !Number.isInteger(a.stage) || a.stage < 0 || a.stage > 5 || typeof a.accepted !== 'boolean' || typeof a.complete !== 'boolean') return false;
+        if (a.complete !== (a.stage === 5) || (a.complete && a.accepted) || (a.mode === 'independent' && ![2, 4, 5].includes(a.stage))) return false;
+        if (!uniqueArray(a.domain, t.domainChoices.length, id2 => typeof id2 === 'string' && t.domainChoices.some(c => c.id === id2))) return false;
+        if (typeof a.transform !== 'string' || (a.transform && !t.transformChoices.some(c => c.id === a.transform))) return false;
+        if (typeof a.critical !== 'string' || a.critical.length > 160 || /[<>\u0000-\u0008]/.test(a.critical)) return false;
+        if (!Array.isArray(a.signs) || a.signs.length !== t.domainCells.length || !a.signs.every(sign => ['', '-1', '1'].includes(sign))) return false;
+        if (!uniqueArray(a.answer, t.domainCells.length, index => Number.isInteger(index) && index >= 0 && index < t.domainCells.length && t.domainCells[index])) return false;
+        if (!boundedCounter(a.errors) || !boundedCounter(a.helps) || typeof a.hintOpen !== 'boolean' || typeof a.preparationOpen !== 'boolean' || typeof a.emptyDeclared !== 'boolean' || typeof a.familiar !== 'boolean') return false;
+        if (!exactKeys(a.feedback, ['kind', 'message']) || !['', 'success', 'error'].includes(a.feedback.kind) || typeof a.feedback.message !== 'string' || a.feedback.message.length > 500 || /<\/?[a-z][^>]*>/i.test(a.feedback.message) || /[\u0000-\u0008]/.test(a.feedback.message)) return false;
+      }
+      if (!uniqueArray(value.history.map(record => record.taskId), E.tasks.length, id => taskMap.has(id))) return false;
+      for (const r of value.history) {
+        if (!exactKeys(r, ['taskId', 'mode', 'assisted', 'errors', 'helps', 'familiar']) || !MODES.includes(r.mode) || typeof r.assisted !== 'boolean' || typeof r.familiar !== 'boolean' || !boundedCounter(r.errors) || !boundedCounter(r.helps)) return false;
+      }
+      return true;
+    } catch (_) { return false; }
+  }
+  function notice(text) {
+    $('storage-notice').textContent = text;
+    $('storage-notice').hidden = !text;
+  }
+  function decode(raw) {
+    try {
+      const parsed = JSON.parse(raw);
+      return validate(parsed) ? parsed : null;
+    } catch (_) { return null; }
+  }
+  function load() {
+    if (embedded) return;
+    try {
+      observedStorage = localStorage.getItem(STORAGE_KEY);
+      if (observedStorage === null) return;
+      const saved = decode(observedStorage);
+      if (saved) state = saved;
+      else {
+        storageLocked = true;
+        notice('Сохранённая работа имеет другой или повреждённый формат. Она оставлена без изменений. Сейчас можно решать и скачать отчёт; эта новая работа не сохраняется в браузере.');
+      }
+    } catch (_) {
+      storageUnavailable = true;
+      notice('Браузер не разрешил сохранять работу. Решать можно; перед закрытием страницы скачайте отчёт.');
+    }
+  }
+  function persist() {
+    if (embedded || storageLocked || storageUnavailable || stale) return;
+    try {
+      const current = localStorage.getItem(STORAGE_KEY);
+      if (current !== observedStorage) {
+        observeOther(current);
+        return;
+      }
+      const serialized = JSON.stringify(state);
+      localStorage.setItem(STORAGE_KEY, serialized);
+      observedStorage = serialized;
+    } catch (_) {
+      storageUnavailable = true;
+      notice('Не получилось сохранить последние изменения. Не закрывайте страницу до скачивания отчёта.');
+      updateSaveStatus();
+    }
+  }
+  function changed() {
+    persist();
+    for (const listener of listeners) listener();
+    updateReport();
+  }
+  function observeOther(raw) {
+    if (raw === observedStorage || embedded) return;
+    stale = true;
+    newerState = decode(raw);
+    $('load-newer').hidden = !newerState;
+    notice(newerState ? 'В другой вкладке есть более новая работа. Эта вкладка приостановлена, чтобы её не затереть. Откройте новую работу кнопкой ниже.' : 'Сохранение изменилось в другой вкладке. Эта вкладка приостановлена, чтобы не затереть данные. Можно скачать текущий отчёт.');
+    lockControls();
+    updateSaveStatus();
+  }
+  function lockControls() {
+    document.querySelectorAll('#exercise button, #exercise input, #exercise select, #topics button[data-task], .mode-bar button').forEach(control => { if (stale) control.disabled = true; });
+  }
+  function updateSaveStatus() {
+    $('save-status').textContent = embedded ? 'Работа открыта на доске. Локальное сохранение в браузере отключено.' : stale ? 'Эта вкладка приостановлена: сохранение изменилось.' : storageLocked || storageUnavailable ? 'Эта работа сейчас не сохраняется в браузере. Скачайте отчёт.' : 'Прогресс хранится только в этом браузере. В другой браузер он автоматически не переносится.';
+  }
+  function node(tag, text, className) {
+    const result = document.createElement(tag);
+    if (text !== undefined && text !== null) result.textContent = text;
+    if (className) result.className = className;
+    return result;
+  }
+  function htmlNode(tag, html, className) {
+    const result = node(tag, null, className);
+    result.innerHTML = html;
+    return result;
+  }
+  function shuffled(choices, salt) {
+    let seed = 2166136261;
+    for (const char of `${state.taskId}:${salt}`) { seed ^= char.charCodeAt(0); seed = Math.imul(seed, 16777619) >>> 0; }
+    const result = choices.slice();
+    for (let i = result.length - 1; i > 0; i--) { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; const j = seed % (i + 1); [result[i], result[j]] = [result[j], result[i]]; }
+    return result;
+  }
+  function pointLabel(index) { return task().criticalPoints[index].label; }
+  function atomLabel(index) {
+    const n = task().criticalPoints.length;
+    if (index % 2) return `x = ${pointLabel((index - 1) / 2)}`;
+    const gap = index / 2;
+    return `(${gap === 0 ? '−∞' : pointLabel(gap - 1)}; ${gap === n ? '+∞' : pointLabel(gap)})`;
+  }
+  function currentSet() {
+    const selected = new Set(attempt().answer);
+    return E.formatSet(task(), task().domainCells.map((_, index) => selected.has(index)));
+  }
+  function readNumber(text) {
+    const cleaned = text.trim().replace(/−/g, '-').replace(/,/g, '.').replace(/\s/g, '');
+    const parts = cleaned.split('/');
+    if (!parts.length || parts.length > 2 || !parts.every(part => /^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(part))) return null;
+    const result = parts.length === 2 ? Number(parts[0]) / Number(parts[1]) : Number(parts[0]);
+    return Number.isFinite(result) ? result : null;
+  }
+  function criticalValues(raw) {
+    const parts = raw.trim().split(';');
+    if (!raw.trim() || parts.some(part => !part.trim())) return null;
+    const values = parts.map(readNumber);
+    if (values.some(value => value === null)) return null;
+    values.sort((a, b) => a - b);
+    return values;
+  }
+  function checkStage(t, a) {
+    if (a.stage === 0) {
+      const wrong = t.domainChoices.find(choice => a.domain.includes(choice.id) && !choice.correct);
+      if (wrong) return { ok: false, message: wrong.why || 'Это условие не требуется для исходного неравенства. Проверьте определение логарифма.' };
+      const missing = t.domainChoices.find(choice => choice.correct && !a.domain.includes(choice.id));
+      if (missing) return { ok: false, message: 'Не все ограничения отмечены. Проверьте каждый аргумент и каждое основание логарифма, а также знаменатели.' };
+      return { ok: true };
+    }
+    if (a.stage === 1) {
+      const choice = t.transformChoices.find(item => item.id === a.transform);
+      if (!choice) return { ok: false, message: 'Выберите одно преобразование.' };
+      return { ok: !!choice.correct, message: choice.why || 'Проверьте, что при преобразовании сохранены знак неравенства и все ограничения ОДЗ.' };
+    }
+    if (a.stage === 2) {
+      const values = criticalValues(a.critical);
+      if (!values) return { ok: false, message: 'Запишите числа через точку с запятой. Дробь можно написать как 3/2 или 1,5. Например: −2; 0; 1,5.' };
+      const expected = t.criticalPoints.map(point => point.value);
+      const matches = values.map(value => expected.findIndex(point => Math.abs(value - point) < 1e-9 * Math.max(1, Math.abs(point))));
+      if (matches.includes(-1)) return { ok: false, message: 'Есть точка, которая не является нулём выражения или границей ОДЗ. Проверьте уравнения, из которых получились эти значения.' };
+      if (new Set(matches).size !== matches.length) return { ok: false, message: 'Одинаковую точку нужно записать один раз, даже если она получилась из нескольких условий.' };
+      const required = expected.map((_, index) => index).filter(index => t.domainCells[2 * index] || t.domainCells[2 * index + 1] || t.domainCells[2 * index + 2]);
+      if (!required.every(index => matches.includes(index))) return { ok: false, message: `Здесь нужно учесть ${required.length} различных точек, важных внутри ОДЗ или на её границе. Проверьте нули и запрещённые граничные значения. Точки целиком вне ОДЗ можно не записывать.` };
+      return { ok: true };
+    }
+    if (a.stage === 3) {
+      const permitted = t.domainCells.map((allowed, index) => allowed && index % 2 === 0 ? index : -1).filter(index => index >= 0);
+      if (permitted.some(index => !a.signs[index])) return { ok: false, message: 'Поставьте знак на каждом разрешённом интервале. Серые интервалы уже исключены по ОДЗ.' };
+      const wrong = permitted.find(index => Number(a.signs[index]) !== t.rationalSigns[index]);
+      if (wrong !== undefined) return { ok: false, message: `На интервале ${atomLabel(wrong)} знак другой. Возьмите любое внутреннее значение x и определите знаки множителей. Чётная степень не меняет знак при переходе через нуль.` };
+      return { ok: true };
+    }
+    if (a.stage === 4) {
+      if (!a.answer.length && !a.emptyDeclared) return { ok: false, message: 'Выберите интервалы и точки ответа. Если решений нет, нажмите «Нет решений».' };
+      const selected = new Set(a.answer);
+      const wrong = t.solutionCells.findIndex((solves, index) => solves !== selected.has(index));
+      if (wrong >= 0) return { ok: false, message: wrong % 2 ? 'Проверьте отдельные граничные точки. При строгом неравенстве нуль не включают; при нестрогом его можно включить только внутри ОДЗ.' : 'Проверьте выбранные интервалы: нужны одновременно подходящий знак и выполнение ОДЗ. Отдельные границы выбираются своей кнопкой.' };
+      return { ok: true };
+    }
+    return { ok: false, message: 'Этот шаг уже завершён.' };
+  }
+  function fillChoices(kind) {
+    const a = attempt();
+    const choices = kind === 'domain' ? task().domainChoices : task().transformChoices;
+    const list = node('fieldset', null, 'choices');
+    const legend = node('legend', kind === 'domain' ? 'Отметьте все необходимые условия' : 'Выберите равносильный переход на ОДЗ');
+    list.append(legend);
+    for (const choice of shuffled(choices, kind)) {
+      const label = node('label', null, 'choice');
+      const input = document.createElement('input');
+      input.type = kind === 'domain' ? 'checkbox' : 'radio';
+      input.name = kind;
+      input.value = choice.id;
+      input.checked = kind === 'domain' ? a.domain.includes(choice.id) : a.transform === choice.id;
+      input.disabled = a.accepted || stale;
+      input.addEventListener('change', () => {
+        if (stale || a.accepted) return;
+        if (kind === 'domain') a.domain = [...list.querySelectorAll('input:checked')].map(item => item.value);
+        else a.transform = input.value;
+        clearFeedback(); changed();
+      });
+      const content = htmlNode('span', choice.html, 'choice-content');
+      label.append(input, content); list.append(label);
+    }
+    $('stage-fields').append(list);
+  }
+  function fillCritical() {
+    const label = node('label', 'Критические точки, от меньшей к большей', 'text-label');
+    label.htmlFor = 'critical-input';
+    const input = document.createElement('input');
+    input.id = 'critical-input'; input.className = 'text-input'; input.type = 'text';
+    input.autocomplete = 'off'; input.spellcheck = false; input.maxLength = 160;
+    input.value = attempt().critical; input.disabled = attempt().accepted || stale;
+    input.setAttribute('aria-describedby', 'critical-help');
+    input.addEventListener('input', () => { if (stale || attempt().accepted) return; attempt().critical = input.value.replace(/[<>\u0000-\u0008]/g, ''); clearFeedback(); changed(); });
+    const help = node('p', 'Разделяйте числа точкой с запятой. Дроби: 3/2 или 1,5. Найдите нули и границы ОДЗ. Точки целиком вне ОДЗ можно пропустить.', 'input-help'); help.id = 'critical-help';
+    $('stage-fields').append(label, input, help);
+  }
+  function signsTable(showAnswers) {
+    const t = task(); const a = attempt();
+    const wrapper = node('div'); const table = node('div', null, 'sign-table');
+    for (let index = 0; index < t.domainCells.length; index += 2) {
+      const row = node('div', null, `sign-row${t.domainCells[index] ? '' : ' forbidden'}`);
+      row.append(node('span', atomLabel(index), 'interval-label'));
+      if (!t.domainCells[index]) row.append(node('span', 'Вне ОДЗ', 'cell-note'));
+      else if (showAnswers) row.append(node('strong', t.rationalSigns[index] > 0 ? '+' : '−'));
+      else {
+        const select = document.createElement('select'); select.dataset.sign = String(index);
+        select.setAttribute('aria-label', `Знак на интервале ${atomLabel(index)}`);
+        for (const [value, label] of [['', 'Знак?'], ['1', '+'], ['-1', '−']]) { const option = node('option', label); option.value = value; select.append(option); }
+        select.value = a.signs[index]; select.disabled = a.accepted || stale;
+        select.addEventListener('change', () => { if (stale || a.accepted) return; a.signs[index] = select.value; clearFeedback(); changed(); });
+        row.append(select);
+      }
+      table.append(row);
+    }
+    wrapper.append(table);
+    const notes = node('div', null, 'point-notes');
+    notes.append(node('strong', 'Отдельные точки'));
+    for (let index = 1; index < t.domainCells.length; index += 2) {
+      notes.append(node('div', `${atomLabel(index)}: ${!t.domainCells[index] ? 'не входит в ОДЗ' : t.rationalSigns[index] === 0 ? 'значение выражения равно нулю' : `выражение имеет знак «${t.rationalSigns[index] > 0 ? '+' : '−'}»`}.`));
+    }
+    wrapper.append(notes); return wrapper;
+  }
+  function fillAnswer() {
+    const a = attempt(); const t = task();
+    const list = node('div', null, 'answer-cells'); list.setAttribute('role', 'group'); list.setAttribute('aria-label', 'Интервалы и отдельные точки ответа');
+    for (let index = 0; index < t.domainCells.length; index++) {
+      const button = node('button', atomLabel(index)); button.type = 'button';
+      button.dataset.cell = String(index); button.dataset.cellType = index % 2 ? 'point' : 'interval';
+      button.setAttribute('aria-pressed', String(a.answer.includes(index)));
+      button.disabled = !t.domainCells[index] || a.accepted || stale;
+      if (!t.domainCells[index]) { button.append(node('span', ' · вне ОДЗ', 'cell-note')); }
+      button.addEventListener('click', () => {
+        if (stale || a.accepted) return;
+        if (a.answer.includes(index)) a.answer = a.answer.filter(value => value !== index);
+        else a.answer.push(index);
+        a.answer.sort((x, y) => x - y); a.emptyDeclared = false;
+        $('no-solutions').setAttribute('aria-pressed', 'false');
+        button.setAttribute('aria-pressed', String(a.answer.includes(index)));
+        $('answer-preview').textContent = `Ответ: ${currentSet()}`;
+        clearFeedback(); changed();
+      });
+      list.append(button);
+    }
+    const noSolutions = node('button', 'Нет решений'); noSolutions.id = 'no-solutions'; noSolutions.type = 'button'; noSolutions.disabled = a.accepted || stale; noSolutions.setAttribute('aria-pressed', String(a.emptyDeclared));
+    noSolutions.addEventListener('click', () => { if (stale || a.accepted) return; a.answer = []; a.emptyDeclared = !a.emptyDeclared; clearFeedback(); changed(); render(); });
+    const preview = node('div', a.answer.length || a.emptyDeclared ? `Ответ: ${currentSet()}` : 'Ответ пока не выбран', 'answer-preview'); preview.id = 'answer-preview'; preview.setAttribute('aria-live', 'polite');
+    const note = node('p', 'Нажмите нужные интервалы и отдельно нужные точки. Повторное нажатие снимает выбор. Если решений нет, нажмите «Нет решений».', 'input-help');
+    $('stage-fields').append(list, noSolutions, preview, note);
+  }
+  function solutionPart(stage) {
+    const t = task(); const fragment = document.createDocumentFragment();
+    if (stage === 0) {
+      for (const choice of t.domainChoices.filter(item => item.correct)) fragment.append(htmlNode('div', choice.html));
+    } else if (stage === 1) fragment.append(htmlNode('div', t.transformChoices.find(item => item.correct).html));
+    else if (stage === 2) {
+      fragment.append(node('p', t.criticalPoints.map(point => point.label).join('; ')));
+      if (t.criticalPoints.some((_, index) => !t.domainCells[2 * index] && !t.domainCells[2 * index + 1] && !t.domainCells[2 * index + 2])) fragment.append(node('p', 'Точки целиком вне ОДЗ здесь приведены для полноты. В своём решении их можно не выписывать.', 'small muted'));
+    }
+    else if (stage === 3) fragment.append(signsTable(true));
+    else fragment.append(node('p', t.answerText, 'final-answer'));
+    fragment.append(node('p', t.explanation[KEYS[stage]]));
+    return fragment;
+  }
+  function renderNotebook() {
+    const a = attempt(); const list = $('notebook'); list.replaceChildren();
+    const stages = a.mode === 'independent' ? [2, 4] : [0, 1, 2, 3, 4];
+    for (const stage of stages) {
+      if (!(stage < a.stage || (stage === a.stage && a.accepted))) continue;
+      const item = node('li'); item.append(node('h4', `${stage + 1}. ${TITLES[stage]}`));
+      if (a.mode === 'independent' && stage === 2) item.append(node('p', a.critical));
+      else item.append(solutionPart(stage));
+      list.append(item);
+    }
+    $('notebook-section').hidden = list.children.length === 0;
+  }
+  function renderTrack() {
+    const a = attempt(); $('step-track').replaceChildren();
+    for (let stage = 0; stage < 5; stage++) {
+      const item = node('li', `${stage + 1}. ${SHORT[stage]}`);
+      if (stage < a.stage || stage === a.stage && a.accepted) item.className = 'done';
+      if (stage === a.stage && !a.accepted) { item.className = 'current'; item.setAttribute('aria-current', 'step'); }
+      if (a.mode === 'independent' && [0, 1, 3].includes(stage)) { item.className = ''; item.title = 'Этот этап выполните самостоятельно на бумаге'; }
+      $('step-track').append(item);
+    }
+  }
+  function renderStage() {
+    const a = attempt(); const t = task();
+    document.querySelector('.current-step').hidden = a.complete;
+    $('completion').hidden = !a.complete;
+    if (a.complete) {
+      $('completion-answer').textContent = `Ответ: ${t.answerText}`;
+      $('completion-status').textContent = outcomeText(a);
+      return;
+    }
+    $('stage-counter').textContent = a.mode === 'example' ? `Разбор · шаг ${a.stage + 1} из 5` : a.mode === 'independent' ? 'Самостоятельное решение' : `Шаг ${a.stage + 1} из 5`;
+    $('stage-title').textContent = TITLES[a.stage];
+    const descriptions = [
+      'Логарифм существует, если его аргумент положителен, основание положительно и не равно 1. Проверьте также знаменатели.',
+      'При сравнении аргументов учтите основание: при основании больше 1 знак сохраняется, при основании между 0 и 1 — меняется. Рационализация учитывает оба случая. Обозначения и нужные правила — в «Что нужно вспомнить».',
+      'Найдите нули внутри ОДЗ и границы области определения. Точки целиком вне ОДЗ можно не записывать: для решения они не нужны.',
+      'Определите знак полученного выражения внутри каждого допустимого интервала. Запрещённые по ОДЗ интервалы уже отмечены.',
+      'Выберите части числовой прямой, которые одновременно подходят по знаку неравенства и принадлежат ОДЗ.'
+    ];
+    $('stage-description').textContent = a.mode === 'example' ? 'Нажмите кнопку, чтобы открыть этот шаг. Каждый открытый шаг останется выше, в записи решения.' : a.mode === 'independent' && a.stage === 2 ? 'Решите неравенство на бумаге. Здесь сначала запишите необходимые критические точки, затем соберите ответ. Промежуточные преобразования выполните самостоятельно.' : descriptions[a.stage];
+    $('stage-fields').replaceChildren();
+    if (a.mode !== 'example') {
+      if (a.stage === 0) fillChoices('domain');
+      else if (a.stage === 1) fillChoices('transform');
+      else if (a.stage === 2) fillCritical();
+      else if (a.stage === 3) $('stage-fields').append(signsTable(false));
+      else fillAnswer();
+    }
+    $('check-step').hidden = a.mode === 'example' || a.accepted;
+    $('check-step').textContent = a.stage === 4 ? 'Проверить ответ' : 'Проверить шаг';
+    $('continue-step').hidden = a.mode !== 'example' && !a.accepted;
+    $('continue-step').textContent = a.mode === 'example' ? `Открыть шаг ${a.stage + 1}` : a.stage === 4 ? 'Завершить решение' : 'Продолжить';
+    $('hint-button').hidden = a.mode === 'example' || a.accepted;
+    $('hint').textContent = t.hints[KEYS[a.stage]];
+    $('hint').hidden = !a.hintOpen;
+    $('feedback').textContent = a.feedback.message || (a.accepted ? 'Верно. Запись сохранена выше. Продолжайте, когда будете готовы.' : '');
+    $('feedback').dataset.kind = a.feedback.kind || (a.accepted ? 'success' : '');
+  }
+  function renderTopics() {
+    $('topic-list').replaceChildren();
+    E.families.forEach((family, index) => {
+      const section = node('section', null, 'topic-card'); section.dataset.family = family.id;
+      section.append(node('h3', `${index + 1}. ${family.title}`), node('p', family.goal));
+      const actions = node('div', null, 'topic-actions');
+      for (const t of E.tasks.filter(item => item.familyId === family.id)) {
+        const saved = state.work[t.id];
+        const button = node('button', `Задача ${t.variant + 1}${saved?.complete ? ' ✓' : saved ? ' · начата' : ''}`);
+        button.type = 'button'; button.dataset.task = t.id; button.setAttribute('aria-current', String(t.id === state.taskId));
+        button.disabled = stale;
+        button.addEventListener('click', () => { $('topics').close(); chooseTask(t.id); });
+        actions.append(button);
+      }
+      section.append(actions); $('topic-list').append(section);
+    });
+  }
+  function render() {
+    const t = task(); const a = attempt(); const family = familyMap.get(t.familyId);
+    $('task-position').textContent = `Тема ${E.families.findIndex(item => item.id === t.familyId) + 1} из ${E.families.length} · задача ${t.variant + 1} из 4`;
+    $('task-title').textContent = family.title;
+    $('task-goal').textContent = family.goal;
+    $('current-formula').innerHTML = t.formulaHtml;
+    $('progress-chip').textContent = a.complete ? 'Завершено' : a.mode === 'example' ? 'Разбираем пример' : 'Можно идти в своём темпе';
+    document.querySelectorAll('[data-mode]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mode === a.mode)));
+    $('mode-description').textContent = a.mode === 'example' ? 'Смотрю решение по одному шагу. Этот результат отметится как разобранный пример.' : a.mode === 'guided' ? 'Решаю сам с вопросами по каждому шагу. Можно попросить подсказку.' : 'Выполняю решение на бумаге и проверяю границы и ответ. Подсказка будет отмечена в результате.';
+    $('preparation-content').replaceChildren();
+    for (const part of t.preparation) {
+      const section = node('div'); section.append(node('h3', part.title));
+      if (part.html) section.append(htmlNode('div', part.html));
+      else if (part.text) section.append(node('p', part.text));
+      $('preparation-content').append(section);
+    }
+    $('preparation').open = a.preparationOpen;
+    renderTrack(); renderNotebook(); renderStage(); renderTopics(); updateReport(); updateSaveStatus(); lockControls();
+  }
+  function clearFeedback() {
+    attempt().feedback = { kind: '', message: '' };
+    $('feedback').textContent = ''; $('feedback').dataset.kind = '';
+  }
+  function refreshStep() { render(); (attempt().complete ? $('completion-title') : $('stage-title')).focus({ preventScroll: true }); }
+  function outcomeText(a) {
+    if (a.familiar) return 'Повтор знакомой задачи. Результат не считается новой самостоятельной проверкой.';
+    if (a.mode === 'example') return 'Разобран пример. Теперь можно проверить себя на похожей задаче.';
+    if (a.mode === 'guided') return a.helps ? 'Решено по шагам с подсказкой.' : 'Решено по шагам без дополнительных подсказок.';
+    return a.helps ? 'Решено с подсказкой.' : a.errors ? 'Решено самостоятельно после исправления ошибок.' : 'Решено самостоятельно.';
+  }
+  function finish() {
+    const a = attempt(); a.stage = 5; a.complete = true; a.accepted = false;
+    const record = { taskId: state.taskId, mode: a.mode, assisted: a.mode !== 'independent' || a.helps > 0, errors: a.errors, helps: a.helps, familiar: a.familiar };
+    const previous = state.history.findIndex(item => item.taskId === state.taskId);
+    if (previous < 0) state.history.push(record);
+    else {
+      const score = r => r.familiar ? 0 : r.mode === 'independent' && !r.assisted ? 5 : r.mode === 'guided' && !r.helps ? 3 : r.mode !== 'example' ? 2 : 1;
+      if (score(record) >= score(state.history[previous])) state.history[previous] = record;
+    }
+  }
+  function nextStage() {
+    if (stale) return;
+    const a = attempt();
+    if (a.complete || (a.mode !== 'example' && !a.accepted)) return;
+    clearFeedback(); a.hintOpen = false;
+    if (a.stage === 4) finish();
+    else { a.stage = a.mode === 'independent' ? 4 : a.stage + 1; a.accepted = false; }
+    changed(); refreshStep();
+  }
+  function chooseTask(id, replaceHash) {
+    if (stale || !taskMap.has(id)) return;
+    state.taskId = id; attempt(); pendingMode = null;
+    $('mode-confirm').hidden = true;
+    if (replaceHash !== false) { try { history.replaceState(null, '', `#task/${encodeURIComponent(id)}`); } catch (_) {} }
+    changed(); render(); $('task-title').focus();
+  }
+  function hasDraft(a) {
+    return a.stage !== (a.mode === 'independent' ? 2 : 0) || a.accepted || a.domain.length || a.transform || a.critical || a.signs.some(Boolean) || a.answer.length || a.errors || a.helps;
+  }
+  function changeMode(mode) {
+    if (stale || !MODES.includes(mode)) return;
+    const previous = attempt();
+    const familiar = previous.familiar || previous.complete || state.history.some(r => r.taskId === state.taskId) || previous.helps > 0 || previous.errors > 0 || previous.accepted || previous.stage > (previous.mode === 'independent' ? 2 : 0);
+    state.work[state.taskId] = blank(task(), mode); state.work[state.taskId].familiar = familiar; pendingMode = null; clearFeedback();
+    $('mode-confirm').hidden = true; changed(); refreshStep();
+  }
+  function updateReport() {
+    const completed = state.history.length;
+    const independent = state.history.filter(item => item.mode === 'independent' && !item.assisted && !item.familiar).length;
+    $('progress-summary').textContent = `Завершено разных задач: ${completed} из ${E.tasks.length}. Из них самостоятельно: ${independent}.`;
+    const lines = ['Логарифмические неравенства · MathExam', `Разных завершённых задач: ${completed} из ${E.tasks.length}`, `Самостоятельно: ${independent}`, ''];
+    for (const r of state.history) {
+      const t = taskMap.get(r.taskId); const family = familyMap.get(t.familyId);
+      lines.push(`${family.title}, задача ${t.variant + 1} (${t.id})`, t.formulaText,
+        `${outcomeText(r)} Проверок с ошибкой: ${r.errors}. Обращений за помощью: ${r.helps}.`, '');
+    }
+    const a = attempt();
+    if (!a.complete) {
+      lines.push(`Сейчас начато: ${familyMap.get(task().familyId).title}, задача ${task().variant + 1}.`, task().formulaText,
+        `Режим: ${a.mode === 'example' ? 'разбор примера' : a.mode === 'guided' ? 'по шагам' : 'самостоятельно'}. Шаг ${a.stage + 1}: ${TITLES[a.stage]}.`,
+        `Проверок с ошибкой: ${a.errors}. Обращений за помощью: ${a.helps}.`);
+    }
+    lines.push('', 'Повтор одной задачи не увеличивает число разных завершённых задач. В списке сохранён лучший результат каждой задачи.', `${location.origin}${location.pathname}`);
+    $('report-text').value = lines.join('\n');
+  }
+  function applyState(next) {
+    if (!validate(next)) throw new Error('Invalid trainer state');
+    state = clone(next); pendingMode = null;
+    $('mode-confirm').hidden = true; render(); return true;
+  }
+  function openTopics() { renderTopics(); if (!$('topics').open) $('topics').showModal(); }
+
+  load(); attempt();
+  const initialHash = location.hash.match(/^#task\/(.+)$/);
+  if (initialHash) { try { const id = decodeURIComponent(initialHash[1]); if (taskMap.has(id)) { state.taskId = id; attempt(); } } catch (_) {} }
+  render();
+  $('topics-toggle').addEventListener('click', openTopics);
+  $('completion-topics').addEventListener('click', openTopics);
+  $('topics-close').addEventListener('click', () => $('topics').close());
+  $('topics').addEventListener('click', event => { if (event.target === $('topics')) { const box = $('topics').getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) $('topics').close(); } });
+  $('stage-form').addEventListener('submit', event => {
+    event.preventDefault(); const a = attempt();
+    if (stale || a.accepted || a.complete || a.mode === 'example') return;
+    const result = checkStage(task(), a);
+    if (result.ok) { a.accepted = true; a.feedback = { message: 'Верно. Запись сохранена выше. Продолжайте, когда будете готовы.', kind: 'success' }; a.hintOpen = false; }
+    else { a.errors = Math.min(9999, a.errors + 1); a.feedback = { message: result.message, kind: 'error' }; }
+    changed(); render();
+    if (result.ok) $('continue-step').focus({ preventScroll: true });
+  });
+  $('continue-step').addEventListener('click', nextStage);
+  $('hint-button').addEventListener('click', () => {
+    if (stale || attempt().accepted || attempt().complete) return;
+    if (!attempt().hintOpen) { attempt().helps = Math.min(9999, attempt().helps + 1); attempt().hintOpen = true; changed(); }
+    $('hint').hidden = false;
+  });
+  $('preparation').addEventListener('toggle', () => {
+    const a = attempt(); const open = $('preparation').open;
+    if (stale || a.preparationOpen === open) return;
+    a.preparationOpen = open;
+    if (open && !a.complete) a.helps = Math.min(9999, a.helps + 1);
+    changed();
+  });
+  document.querySelectorAll('[data-mode]').forEach(button => button.addEventListener('click', () => {
+    if (stale || button.dataset.mode === attempt().mode) return;
+    if (hasDraft(attempt()) && !attempt().complete) { pendingMode = button.dataset.mode; $('mode-confirm').hidden = false; }
+    else changeMode(button.dataset.mode);
+  }));
+  $('confirm-mode').addEventListener('click', () => changeMode(pendingMode));
+  $('cancel-mode').addEventListener('click', () => { pendingMode = null; $('mode-confirm').hidden = true; });
+  $('next-task').addEventListener('click', () => {
+    const family = E.tasks.filter(item => item.familyId === task().familyId);
+    const next = family[(family.findIndex(item => item.id === state.taskId) + 1) % family.length];
+    const previousMode = attempt().mode;
+    const unseen = !state.work[next.id];
+    chooseTask(next.id);
+    if (unseen) { state.work[next.id].mode = previousMode === 'example' ? 'guided' : previousMode; state.work[next.id].stage = previousMode === 'independent' ? 2 : 0; changed(); render(); }
+  });
+  $('retry-task').addEventListener('click', () => changeMode(attempt().mode === 'example' ? 'guided' : attempt().mode));
+  $('copy-report').addEventListener('click', async () => {
+    updateReport();
+    try { await navigator.clipboard.writeText($('report-text').value); $('report-notice').textContent = 'Отчёт скопирован. Вставьте его в сообщение учителю.'; }
+    catch (_) { $('report-notice').textContent = 'Браузер не разрешил автоматическое копирование. Текст выделен ниже — скопируйте его вручную.'; $('report-text').focus(); $('report-text').select(); }
+  });
+  $('download-report').addEventListener('click', () => {
+    updateReport(); const url = URL.createObjectURL(new Blob([$('report-text').value], { type: 'text/plain;charset=utf-8' }));
+    const link = document.createElement('a'); link.href = url; link.download = 'logarithms-results.txt'; link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000); $('report-notice').textContent = 'Отчёт подготовлен для скачивания. Его можно приложить к сообщению учителю.';
+  });
+  $('load-newer').addEventListener('click', () => {
+    if (!newerState || embedded) return;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY); const current = decode(raw);
+      if (!current) return;
+      observedStorage = raw; stale = false; newerState = null; $('load-newer').hidden = true; notice('');
+      document.querySelectorAll('#exercise button, #exercise input, #exercise select').forEach(control => { control.disabled = false; });
+      applyState(current);
+    } catch (_) { notice('Не удалось открыть сохранённую работу. Скачайте отчёт из этой вкладки.'); }
+  });
+  window.addEventListener('storage', event => { if (event.key === STORAGE_KEY && !embedded) observeOther(event.newValue); });
+  window.addEventListener('hashchange', () => { const match = location.hash.match(/^#task\/(.+)$/); if (match) { try { chooseTask(decodeURIComponent(match[1]), false); } catch (_) {} } });
+  window.__logTrainer = Object.freeze({ getState: () => clone(state), applyState, getTask: task, storageKey: STORAGE_KEY });
+  if (window.MathExamBoard) window.MathExamBoard.register({
+    id: 'profile-log-inequalities', version: '1.0.0', stateSchemaVersion: 1,
+    parentOrigin: location.origin, getState: () => clone(state), applyState,
+    subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); }
+  });
+})();
+
+</script>
+<script data-inline-source="/ege-profil/skill-map-data.js">
+(function (root) {
+  'use strict';
+
+  const maps = {
+    1: {
+      title: 'Планиметрия',
+      skills: [
+        'Найти на чертеже известные стороны, углы и высоты.',
+        'Выбрать свойство фигуры, подобие или теорему Пифагора.',
+        'Получить нужную величину и проверить её по чертежу.'
+      ],
+      challenges: [{
+        id: 'triangle-sign',
+        title: 'Спроектируй треугольный знак',
+        prompt: 'У знака форма равнобедренного треугольника. Основание должно быть 12 см, а площадь — 48 см². Найди высоту к основанию и длину боковой стороны.',
+        hint: 'Сначала вырази высоту из формулы площади. В равнобедренном треугольнике эта высота делит основание пополам.',
+        fields: [{ label: 'Высота, см', answers: ['8'] }, { label: 'Боковая сторона, см', answers: ['10'] }],
+        explanation: 'Из 12 · h / 2 = 48 получаем h = 8. Высота и половина основания — катеты 8 и 6, поэтому боковая сторона равна √(64 + 36) = 10 см.'
+      }]
+    },
+    2: {
+      title: 'Векторы',
+      skills: [
+        'Прочитать начало и конец стрелки. Узнать нулевой вектор.',
+        'Сравнить направления и длины. Отложить равный вектор от новой точки.',
+        'Сложить векторы по правилу треугольника и правилу параллелограмма.',
+        'Построить противоположный вектор, разность и произведение вектора на число.',
+        'Прочитать координаты по сетке. Найти длину и скалярное произведение.'
+      ],
+      challenges: [{
+        id: 'two-arrows-on-grid',
+        title: 'Две стрелки на клетчатой бумаге',
+        prompt: 'Из точки A пройди три клетки вправо до B. Из B пройди две клетки вверх до C. Сколько клеток вправо и сколько вверх нужно пройти из A, чтобы попасть в C?',
+        hint: 'Нарисуй стрелку от A к B и вторую от B к C. Теперь соедини A и C.',
+        fields: [{ label: 'Клеток вправо', answers: ['3'] }, { label: 'Клеток вверх', answers: ['2'] }],
+        explanation: 'Весь путь начался в A и закончился в C. Стрелка AC — сумма двух стрелок по правилу треугольника. От A до C три клетки вправо и две вверх.'
+      }]
+    },
+    3: {
+      title: 'Стереометрия',
+      skills: [
+        'Распознать тело, его основание, высоту и рёбра.',
+        'Выделить плоскую фигуру внутри пространственного чертежа.',
+        'Рассчитать площадь, объём или расстояние в теле.'
+      ],
+      challenges: [{
+        id: 'display-case',
+        title: 'Спроектируй витрину',
+        prompt: 'У витрины в форме прямоугольного параллелепипеда квадратное основание 8 × 8 дм и объём 384 дм³. Декоратор хочет протянуть нить между двумя противоположными вершинами витрины, которые не лежат на одной грани. Найди высоту витрины и квадрат длины нити.',
+        hint: 'Высоту можно восстановить по объёму. Диагональ основания и высота образуют прямой угол.',
+        fields: [{ label: 'Высота, дм', answers: ['6'] }, { label: 'Квадрат длины нити, дм²', answers: ['164'] }],
+        explanation: 'Высота равна 384 / 64 = 6 дм. Квадрат диагонали основания равен 8² + 8² = 128. Квадрат пространственной диагонали равен 128 + 6² = 164 дм².'
+      }]
+    },
+    4: {
+      title: 'Простая вероятность',
+      skills: [
+        'Выделить все равновозможные исходы.',
+        'Посчитать исходы, подходящие событию.',
+        'Проверить результат по противоположному событию.'
+      ],
+      challenges: [{
+        id: 'fair-wheel',
+        title: 'Раскрась колесо игры',
+        prompt: 'У честного игрового колеса 12 равных секторов. Вероятность красного цвета должна быть 1/3, зелёного — 1/4. Остальные сектора синие. Сколько секторов покрасить в красный и сколько в синий?',
+        hint: 'Вероятность цвета — отношение числа его секторов к общему числу секторов.',
+        fields: [{ label: 'Красные сектора', answers: ['4'] }, { label: 'Синие сектора', answers: ['5'] }],
+        explanation: 'Красных секторов нужно 12 / 3 = 4, зелёных 12 / 4 = 3. Для синих остаётся 12 − 4 − 3 = 5.'
+      }]
+    },
+    5: {
+      title: 'Сложная вероятность',
+      skills: [
+        'Разложить событие на отдельные случаи.',
+        'Распознать независимые события и перемножить их вероятности.',
+        'Сложить вероятности несовместных случаев или применить противоположное событие.'
+      ],
+      challenges: [{
+        id: 'reserve-channel',
+        title: 'Настрой резервный канал связи',
+        prompt: 'Два канала передают один сигнал и работают независимо. Первый передаёт сигнал с вероятностью 0,7. Подбери вероятность успешной передачи по второму каналу так, чтобы сигнал дошёл хотя бы по одному каналу с вероятностью 0,94.',
+        hint: 'Посмотри на противоположное событие. Сигнал не придёт, только если одновременно откажут оба канала.',
+        answers: ['0,8'],
+        explanation: 'Вероятность отказа двух каналов равна 1 − 0,94 = 0,06. Первый отказывает с вероятностью 0,3, поэтому второй отказывает с вероятностью 0,06 / 0,3 = 0,2. Вероятность передачи по второму равна 0,8.'
+      }]
+    },
+    6: {
+      title: 'Случайные величины',
+      skills: [
+        'Составить ряд распределения случайной величины.',
+        'Найти математическое ожидание как взвешенное среднее.',
+        'Вычислить дисперсию как средний квадрат отклонения.'
+      ],
+      challenges: [{
+        id: 'game-score',
+        title: 'Настрой очки в игре',
+        prompt: 'В игре случайно выбирают одну из трёх равновероятных карточек. Две меняют счёт на −2 и +1, третья — на x. Подбери x так, чтобы математическое ожидание изменения счёта было 2. Найди дисперсию изменения счёта.',
+        hint: 'Сначала составь уравнение для среднего трёх значений. Затем усредни квадраты отклонений от найденного среднего.',
+        fields: [{ label: 'Изменение счёта x', answers: ['7'] }, { label: 'Дисперсия', answers: ['14'] }],
+        explanation: 'Уравнение (−2 + 1 + x) / 3 = 2 даёт x = 7. Квадраты отклонений от 2 равны 16, 1 и 25, поэтому дисперсия равна (16 + 1 + 25) / 3 = 14.'
+      }]
+    },
+    7: {
+      title: 'Простейшие уравнения',
+      skills: [
+        'Определить тип уравнения и ограничения на переменную.',
+        'Выбрать подходящее преобразование и найти возможные корни.',
+        'Проверить кандидатов в исходном уравнении.'
+      ],
+      challenges: [{
+        id: 'equation-trap',
+        title: 'Собери уравнение с ловушкой',
+        prompt: 'Подбери a так, чтобы уравнение √(x + 1) = x − a имело корень 3. Найди число, которое появится после возведения обеих частей в квадрат и окажется посторонним корнем.',
+        hint: 'Подставь 3, чтобы найти a. При проверке корней вспомни, какой знак может иметь значение квадратного корня.',
+        fields: [{ label: 'Коэффициент a', answers: ['1'] }, { label: 'Посторонний корень', answers: ['0'] }],
+        explanation: 'Подстановка 3 даёт 2 = 3 − a, откуда a = 1. После возведения в квадрат получается x(x − 3) = 0. При x = 0 правая часть равна −1, поэтому 0 не подходит.'
+      }]
+    },
+    8: {
+      title: 'Выражения',
+      skills: [
+        'Замечать одинаковые основания, общие множители и тождества.',
+        'Преобразовывать дроби, степени, корни и тригонометрические выражения.',
+        'Контролировать знаки и область определения выражения.'
+      ],
+      challenges: [{
+        id: 'radical-target',
+        title: 'Подбери показатель степени',
+        prompt: 'Заполни пропуск целым числом k: (√50 − √8)² / 3ᵏ = 2. Попробуй обойтись без округления корней.',
+        hint: 'Вынеси полный квадрат из каждого корня и приведи подобные слагаемые.',
+        answers: ['2'],
+        explanation: '√50 − √8 = 5√2 − 2√2 = 3√2. Квадрат разности равен 18. Чтобы получилось 2, нужно разделить на 9 = 3², поэтому k = 2.'
+      }]
+    },
+    9: {
+      title: 'Производная и интеграл',
+      skills: [
+        'Связать производную с наклоном касательной и изменением функции.',
+        'Найти промежутки монотонности и точки экстремума.',
+        'Связать определённый интеграл с площадью под графиком при неотрицательных значениях.'
+      ],
+      challenges: [{
+        id: 'braking-profile',
+        title: 'Спроектируй график движения',
+        prompt: 'График скорости робота состоит из отрезков, соединяющих точки (0; 0), (2; 6) и (T; 0). Время дано в секундах, скорость — в м/с. Робот должен проехать ровно 18 м. Найди T и модуль ускорения при торможении.',
+        hint: 'Путь равен площади треугольника под графиком скорости. Ускорение при торможении — угловой коэффициент последнего отрезка.',
+        fields: [{ label: 'Время остановки T, с', answers: ['6'] }, { label: 'Модуль ускорения, м/с²', answers: ['1,5'] }],
+        explanation: 'Площадь треугольника равна T · 6 / 2 = 3T. Поэтому T = 6. При торможении скорость падает на 6 м/с за 4 с, модуль ускорения равен 6 / 4 = 1,5 м/с².'
+      }]
+    },
+    10: {
+      title: 'Задачи с формулами',
+      skills: [
+        'Найти в условии значения величин и привести их к нужным единицам.',
+        'Подставить данные в формулу или выразить неизвестное.',
+        'Учесть ограничения и проверить смысл результата.'
+      ],
+      challenges: [{
+        id: 'antenna-height',
+        title: 'Подбери высоту антенны',
+        prompt: 'В учебной модели дальность сигнала d = 3√h, где d измеряется в километрах, а высота h — в метрах. Найди минимальную высоту для дальности не меньше 15 км. Затем найди высоту, при которой дальность будет вдвое больше.',
+        hint: 'Сначала раздели требуемую дальность на 3. При увеличении h корень √h тоже увеличивается.',
+        fields: [{ label: 'Высота для 15 км, м', answers: ['25'] }, { label: 'Высота для 30 км, м', answers: ['100'] }],
+        explanation: 'Для 15 км требуется √h ≥ 5, минимальное h равно 25 м. Для 30 км нужно √h = 10, откуда h = 100 м. Дальность удваивается при увеличении высоты в четыре раза.'
+      }]
+    },
+    11: {
+      title: 'Текстовые задачи',
+      skills: [
+        'Назвать неизвестное и указать единицы измерения.',
+        'Составить уравнение движения, работы, смеси или изменения величины.',
+        'Отбросить решения, которые противоречат условию.'
+      ],
+      challenges: [{
+        id: 'two-pipes',
+        title: 'Спланируй наполнение бассейна',
+        prompt: 'Одна труба заполняет пустой бассейн за 6 часов. Нужно подобрать вторую так, чтобы вместе трубы наполняли бассейн за 2,4 часа. За сколько часов должна заполнять бассейн вторая труба, работая одна? Считай расходы воды постоянными.',
+        hint: 'Перейди от часов к доле бассейна, заполняемой за час. Доли, полученные за один и тот же час, можно сложить.',
+        answers: ['4'],
+        explanation: 'Вместе трубы заполняют за час 1 / 2,4 = 5/12 бассейна. Первая даёт 1/6 = 2/12, значит вторая даёт 3/12 = 1/4. Одна она справится за 4 часа.'
+      }]
+    },
+    12: {
+      title: 'Функции и графики',
+      skills: [
+        'Определить вид функции по характерным точкам и форме графика.',
+        'Найти параметры формулы по координатам точек.',
+        'Проверить формулу подстановкой и предсказать свойство графика.'
+      ],
+      challenges: [{
+        id: 'parabola-arch',
+        title: 'Настрой график параболы',
+        prompt: 'В графическом редакторе нужна парабола с вершиной (2; 1), проходящая через точку (0; 9). Подбери коэффициент a в формуле y = a(x − 2)² + 1 и найди ординату точки графика при x = 5.',
+        hint: 'Подставь координаты известной точки в формулу. Координаты вершины уже учтены.',
+        fields: [{ label: 'Коэффициент a', answers: ['2'] }, { label: 'Ордината при x = 5', answers: ['19'] }],
+        explanation: 'Из 9 = 4a + 1 получаем a = 2. При x = 5 имеем y = 2 · 3² + 1 = 19.'
+      }]
+    },
+    13: {
+      title: 'Финансы и текстовые модели',
+      skills: [
+        'Составить схему платежей или изменения суммы по периодам.',
+        'Определить, к какой сумме применяется процент.',
+        'Восстановить неизвестную сумму и проверить её по всем платежам.'
+      ],
+      challenges: [{
+        id: 'installment-plan',
+        title: 'Восстанови цену по рассрочке',
+        prompt: 'Покупатель внёс четверть цены сразу. К оставшейся сумме один раз прибавили 10%, затем получившуюся сумму разделили на 6 платежей по 11 000 ₽. Восстанови первоначальную цену и размер переплаты.',
+        hint: 'Начни с общей суммы шести платежей. Умножение на 1,1 применяется только к оставшейся части цены.',
+        fields: [{ label: 'Первоначальная цена, ₽', answers: ['80000'] }, { label: 'Переплата, ₽', answers: ['6000'] }],
+        explanation: 'Шесть платежей составляют 66 000 ₽. До надбавки остаток был 66 000 / 1,1 = 60 000 ₽. Это три четверти цены, значит цена равна 80 000 ₽, а переплата — 6 000 ₽.'
+      }]
+    },
+    14: {
+      title: 'Уравнения с отбором',
+      skills: [
+        'Записать ОДЗ и выбрать равносильные преобразования.',
+        'Получить все серии решений, учитывая исключения.',
+        'Отобрать корни на заданном промежутке и проверить границы.'
+      ],
+      challenges: [{
+        id: 'single-root',
+        title: 'Настрой уравнение для отбора корней',
+        prompt: 'Подбери a в уравнении cos(2x) = a так, чтобы x = −π/4 был корнем. На бумаге запиши все серии корней. Введи a и число корней на отрезке [−π/3; π/6].',
+        hint: 'Подставь известный корень. Отбор можно сделать на числовой прямой: соседние нули cos(2x) находятся на расстоянии π/2.',
+        fields: [{ label: 'Значение a', answers: ['0'] }, { label: 'Число корней на отрезке', answers: ['1'] }],
+        explanation: 'cos(−π/2) = 0, поэтому a = 0. Все корни имеют вид x = π/4 + πk/2, k ∈ ℤ. На отрезке есть только −π/4: следующий корень π/4 правее его границы.'
+      }]
+    },
+    15: {
+      title: 'Стереометрия с доказательством',
+      skills: [
+        'Построить сечение, отмечая принадлежность точек граням.',
+        'Обосновать параллельность или перпендикулярность в пространстве.',
+        'Свести вычисление угла, расстояния или объёма к плоской фигуре.'
+      ],
+      challenges: [{
+        id: 'sloping-section',
+        title: 'Дострой сечение коробки',
+        prompt: 'В прямоугольном параллелепипеде ABCDA₁B₁C₁D₁ рёбра AB = 6, BC = 4 и AA₁ = 8. Плоскость проходит через две точки на рёбрах AA₁ и BB₁ на высоте 2 и через C₁. Набросай сечение на бумаге и найди его четвёртую вершину. Введи её высоту над основанием и объём части под сечением.',
+        hint: 'Отрезок между двумя точками на высоте 2 параллелен AB. Через C₁ проведи в плоскости сечения прямую того же направления. Рассмотри боковую грань BCC₁B₁.',
+        fields: [{ label: 'Высота четвёртой вершины', answers: ['8'] }, { label: 'Объём под сечением', answers: ['120'] }],
+        explanation: 'Через C₁ в плоскости сечения проходит прямая, параллельная AB, поэтому четвёртая вершина — D₁. Тело под сечением является призмой с трапецией в основании. Её площадь равна (2 + 8) · 4 / 2 = 20, а объём равен 20 · 6 = 120.'
+      }]
+    },
+    16: {
+      title: 'Неравенства',
+      skills: [
+        'Выписать ОДЗ, нули числителя и границы промежутков.',
+        'Составить таблицу знаков или обосновать равносильное преобразование.',
+        'Записать ответ, проверив включение каждой граничной точки.'
+      ],
+      challenges: [{
+        id: 'build-sign-rule',
+        title: 'Собери неравенство по его ответу',
+        prompt: 'Подбери a так, чтобы решением неравенства (x − a)/(x − 3) ≤ 0 был промежуток [−2; 3). Посчитай также целые решения.',
+        hint: 'Подумай, какая граница принадлежит области определения и в какой точке дробь может равняться нулю.',
+        fields: [{ label: 'Коэффициент a', answers: ['-2'] }, { label: 'Число целых решений', answers: ['5'] }],
+        explanation: 'Левая граница −2 включена, значит там числитель равен нулю и a = −2. Между −2 и 3 знаки числителя и знаменателя разные, а 3 исключено из ОДЗ. Целые решения — −2, −1, 0, 1, 2.'
+      }]
+    },
+    17: {
+      title: 'Моделирование и оптимизация',
+      skills: [
+        'Перевести ограничения задачи в уравнение, неравенство или таблицу.',
+        'Выразить целевую величину через один параметр.',
+        'Сравнить кандидатов и проверить, достижим ли лучший результат.'
+      ],
+      challenges: [{
+        id: 'garden-layout',
+        title: 'Спроектируй самый просторный участок',
+        prompt: 'Возле прямой стены нужно огородить прямоугольный участок. Две стороны перпендикулярны стене, а третья сторона параллельна ей. На эти три стороны есть 24 м ограды. Подбери ширину участка, при которой его площадь наибольшая, и найди эту площадь.',
+        hint: 'Если ширина x, то вдоль стены участок имеет длину 24 − 2x. Вырази площадь и найди вершину параболы.',
+        fields: [{ label: 'Ширина, м', answers: ['6'] }, { label: 'Наибольшая площадь, м²', answers: ['72'] }],
+        explanation: 'Площадь S(x) = x(24 − 2x) = 72 − 2(x − 6)². При 0 < x < 12 её максимум достигается при x = 6. Длина равна 12 м, площадь — 72 м².'
+      }]
+    },
+    18: {
+      title: 'Планиметрия с доказательством',
+      skills: [
+        'Прочитать условие и сделать чертёж без лишних предположений.',
+        'Подобрать дополнительную линию или пару подобных треугольников.',
+        'Обосновать отношения отрезков и площадей.'
+      ],
+      challenges: [{
+        id: 'rebuild-trapezoid',
+        title: 'Восстанови трапецию по площадям',
+        prompt: 'В трапеции ABCD основания AB и CD параллельны, AB = 12. Диагонали пересекаются в O. Площади треугольников AOB и COD равны 27 и 12 соответственно. Восстанови длину CD.',
+        hint: 'Найди пару равных углов при параллельных основаниях и вертикальные углы при O. Как связаны площади подобных треугольников?',
+        answers: ['8'],
+        explanation: 'Треугольники AOB и COD подобны по двум углам. Отношение их площадей 12/27 = 4/9, поэтому отношение соответствующих оснований равно √(4/9) = 2/3. Тогда CD = 12 · 2/3 = 8.'
+      }]
+    },
+    19: {
+      title: 'Параметры',
+      skills: [
+        'Определить, что меняет параметр и где меняется число решений.',
+        'Выделить особые значения, включая точки касания и границы ОДЗ.',
+        'Доказать полноту разбора и проверить граничные значения.'
+      ],
+      challenges: [{
+        id: 'moving-line',
+        title: 'Раздвинь точки пересечения',
+        prompt: 'Прямую y = a поднимают над графиком y = |x − 2| + 1. Найди наименьшее целое значение a, при котором точки пересечения находятся на расстоянии не меньше 8 друг от друга. Укажи также абсциссу левой точки при этом a.',
+        hint: 'При a > 1 обе точки находятся на высоте a. Расстояние между ними равно разности абсцисс, которые симметричны относительно x = 2.',
+        fields: [{ label: 'Наименьшее целое a', answers: ['5'] }, { label: 'Абсцисса левой точки', answers: ['-2'] }],
+        explanation: 'Решения уравнения |x − 2| = a − 1 равны 2 ± (a − 1). Расстояние между ними равно 2(a − 1), значит a ≥ 5. При a = 5 левая точка имеет абсциссу 2 − 4 = −2.'
+      }]
+    },
+    20: {
+      title: 'Числа и их свойства',
+      skills: [
+        'Искать остатки, чётность и величины, которые сохраняются.',
+        'Строить пример с нужным свойством.',
+        'Доказывать невозможность или достижимость оценки.'
+      ],
+      challenges: [{
+        id: 'invariant-board',
+        title: 'Настрой игру на нужный итог',
+        prompt: 'На доске записаны 2, 4, 8, 16 и число n. За ход два числа a и b стирают и записывают a + b − 3. Подбери n так, чтобы последним всегда оставалось число 30, независимо от порядка ходов.',
+        hint: 'Посмотри, как за один ход меняются сумма чисел на доске и количество записанных чисел.',
+        answers: ['12'],
+        explanation: 'Сумма уменьшается ровно на 3 за ход. Чисел изначально пять, поэтому ходов будет четыре и итог равен 2 + 4 + 8 + 16 + n − 12 = n + 18. Для итога 30 нужно n = 12.'
+      }]
+    }
+  };
+
+  const trainers = {
+    'trigonometry-values': {
+      title: 'Тригонометрические значения',
+      skills: [
+        'Найти четверть и опорный угол.',
+        'Определить знаки синуса и косинуса.',
+        'Получить точные значения по единичной окружности.'
+      ],
+      challenges: [{
+        id: 'opposite-sine',
+        title: 'Настрой угол по двум условиям',
+        prompt: 'На единичной окружности выбери угол α от 0° включительно до 360° не включительно, чтобы sin α = −1/2, а cos α был отрицательным. Введи угол в градусах.',
+        hint: 'Оба условия вместе определяют четверть. Угол отсчитывается от положительного направления оси x.',
+        answers: ['210'],
+        explanation: 'Синус и косинус отрицательны в третьей четверти. Опорный угол при |sin α| = 1/2 равен 30°, поэтому α = 180° + 30° = 210°.'
+      }]
+    },
+    'trigonometry-equations': {
+      title: 'Тригонометрические уравнения',
+      skills: [
+        'Преобразовать уравнение к одной тригонометрической функции.',
+        'По единичной окружности получить все серии корней.',
+        'Проверить период и заданный промежуток.'
+      ],
+      challenges: [{
+        id: 'tangent-threshold',
+        title: 'Настрой корень на интервале',
+        prompt: 'Уравнение tg x = a должно иметь корень 45°. Подбери a и запиши на бумаге общую формулу корней. Введи a и число корней в интервале (−90°; 90°).',
+        hint: 'При 45° катеты соответствующего прямоугольного треугольника равны. Вспомни период тангенса.',
+        fields: [{ label: 'Коэффициент a', answers: ['1'] }, { label: 'Число корней', answers: ['1'] }],
+        explanation: 'tg 45° = 1. Все решения имеют вид x = 45° + 180°k, k ∈ ℤ. В интервал (−90°; 90°) попадает только 45°.'
+      }]
+    },
+    'trig-sum-to-product': {
+      title: 'Сумма и разность тригонометрических функций',
+      skills: [
+        'Узнать структуру суммы или разности двух синусов и косинусов.',
+        'Найти полусумму и полуразность аргументов.',
+        'Использовать ноль множителя, чтобы построить пример.'
+      ],
+      challenges: [{
+        id: 'cosine-cancellation',
+        title: 'Подбери второй угол',
+        prompt: 'Выбери угол β из интервала (90°; 180°), при котором cos 20° + cos β = 0. Используй формулу преобразования суммы в произведение. Введи β в градусах.',
+        hint: 'Разложи сумму на произведение. Полуразность этих углов лежит между −80° и −35°, поэтому её косинус ненулевой.',
+        answers: ['160'],
+        explanation: 'Сумма равна 2 cos((20° + β)/2) cos((20° − β)/2). Второй косинус ненулевой, значит полусумма углов равна 90° и β = 160°.'
+      }]
+    },
+    'trigonometry-course': {
+      title: 'Тригонометрия и единичная окружность',
+      skills: [
+        'Отметить положительный или отрицательный поворот на единичной окружности.',
+        'Связать координаты точки с синусом и косинусом.',
+        'Сравнить разные углы, ведущие в одну точку.'
+      ],
+      challenges: [{
+        id: 'circle-rewind',
+        title: 'Верни стрелку в ту же точку',
+        prompt: 'Стрелку повернули на 765°. Подбери отрицательный угол β из интервала (−360°; 0°), после которого стрелка из исходного положения попадёт в ту же точку. Введи β в градусах.',
+        hint: 'Каждый полный оборот сохраняет конечную точку. Углы отличаются на целое число полных оборотов.',
+        answers: ['-315'],
+        explanation: '765° = 2 · 360° + 45°. От 45° отнимем ещё 360° и получим единственный подходящий угол −315°.'
+      }]
+    },
+    'derivative-graph': {
+      title: 'Производная по графику',
+      skills: [
+        'Различить графики функции и производной.',
+        'Связать знак производной с возрастанием или убыванием.',
+        'Найти экстремумы по смене знака и прочитать наклон касательной.'
+      ],
+      challenges: [{
+        id: 'extremum-design',
+        title: 'Настрой место максимума',
+        prompt: 'График производной функции — прямая f′(x) = a − 2x. Подбери a, чтобы у функции был максимум в точке x = 3. Проверь знаки производной по обе стороны.',
+        hint: 'При максимуме производная меняет знак с плюса на минус. Найди значение, при котором она равна нулю в нужной точке.',
+        answers: ['6'],
+        explanation: 'Условие f′(3) = 0 даёт a = 6. Для x < 3 производная положительна, для x > 3 отрицательна. Функция сначала возрастает, затем убывает.'
+      }]
+    },
+    'functions-extrema': {
+      title: 'Наибольшее и наименьшее значения функции',
+      skills: [
+        'Найти область определения и точки с нулевой или несуществующей производной.',
+        'Проверить критические точки внутри отрезка.',
+        'Сравнить значения функции в найденных точках и на концах отрезка.'
+      ],
+      challenges: [{
+        id: 'tie-extremum',
+        title: 'Уравняй два максимума на концах',
+        prompt: 'Подбери a, чтобы на отрезке [1; 4] функция f(x) = x + a/x достигала наибольшего значения сразу на обоих концах. Найди также точку наименьшего значения.',
+        hint: 'Сначала приравняй значения f(1) и f(4). Затем проверь производную внутри отрезка.',
+        fields: [{ label: 'Коэффициент a', answers: ['4'] }, { label: 'Точка минимума x', answers: ['2'] }],
+        explanation: 'Из 1 + a = 4 + a/4 получаем a = 4. Производная 1 − 4/x² отрицательна до 2 и положительна после 2. Значит, x = 2 — точка минимума, а оба конца дают максимальное значение 5.'
+      }]
+    },
+    'expert': {
+      title: 'Проверка решения',
+      skills: [
+        'Проверить исходное условие, ОДЗ и равносильность переходов.',
+        'Найти первый необоснованный шаг в решении.',
+        'Восстановить недостающее обоснование и проверить ответ.'
+      ],
+      challenges: [{
+        id: 'review-steps',
+        title: 'Проверь решение другого ученика',
+        prompt: 'Ученик решает √(x + 2) = x: (1) «при x ≥ −2 возведение в квадрат не добавит новых корней»; (2) «после возведения в квадрат x² − x − 2 = 0»; (3) «корни −1 и 2, оба подходят». Введи номер первого ошибочного утверждения.',
+        hint: 'Перед возведением в квадрат сравни знаки обеих частей. Когда это действие может добавить корни?',
+        answers: ['1'],
+        explanation: 'Для существования корня нужно x ≥ −2, но для выполнения равенства также нужно x ≥ 0. Первое ошибочное утверждение — в строке 1. После проверки остаётся только x = 2.'
+      }]
+    },
+    'legacy-exam': {
+      title: 'Пробный экзамен',
+      skills: [
+        'Определить тип задачи и выбрать способ проверки.',
+        'Отличить краткий ответ от развёрнутого решения с обоснованием.',
+        'Проверить ответ в условии и единицы перед завершением.'
+      ],
+      challenges: [{
+        id: 'self-check-answer',
+        title: 'Отредактируй ответ к пробнику',
+        prompt: 'В задаче о встрече двух пешеходов получено уравнение (3 + 5)t = 20, где t — время в часах. Один ответ записан как 2,5, второй — как 2 ч 30 мин. Для поля «время в минутах» введи подходящий ответ.',
+        hint: 'Оба значения описывают одно и то же время. Приведи его к единице измерения, которую просит поле.',
+        answers: ['150'],
+        explanation: 'Время равно 20 / 8 = 2,5 часа. Это 2,5 · 60 = 150 минут, поэтому в поле нужно записать 150.'
+      }]
+    },
+    'planimetry': {
+      title: 'Планиметрия без промахов',
+      skills: [
+        'Отметить известные стороны, углы и параллельные прямые.',
+        'Выбрать дополнительную линию и записать нужное равенство.',
+        'Найти длину или площадь и проверить её по чертежу.'
+      ],
+      challenges: [{
+        id: 'planimetry-design',
+        title: 'Спроектируй две клумбы',
+        prompt: 'Сад имеет форму трапеции. Его средняя линия разделяет две клумбы, площади которых относятся как 2 к 3. Меньшее основание трапеции равно 9 м. Какой длины должно быть большее основание в метрах?',
+        hint: 'У обеих частей одинаковая высота. Вырази отношение площадей через суммы оснований двух трапеций.',
+        answers: ['21'],
+        explanation: 'Пусть b — большее основание, а m = (9 + b)/2 — средняя линия. Из (9 + m)/(m + b) = 2/3 получаем (27 + b)/(9 + 3b) = 2/3. Отсюда b = 21 м.',
+      }],
+    },
+    'right-triangle': {
+      title: 'Прямоугольный треугольник',
+      skills: [
+        'Различать гипотенузу и катеты относительно выбранного угла.',
+        'Выбирать между sin, cos, tg и теоремой Пифагора.',
+        'Связывать высоту к гипотенузе с её отрезками через подобие.'
+      ],
+      challenges: [{
+        id: 'right-triangle-design',
+        title: 'Восстанови чертёж опоры',
+        prompt: 'Рама имеет форму прямоугольного треугольника. Высота из вершины прямого угла равна 12 см. Она делит гипотенузу на два отрезка. Один равен 9 см. Какую длину второго отрезка в сантиметрах нужно указать?',
+        hint: 'Сравни два прямоугольных треугольника по разные стороны высоты. Какие стороны соответствуют друг другу?',
+        answers: ['16'],
+        explanation: 'Два треугольника подобны. Отношение 9 к 12 равно отношению 12 к искомому отрезку, поэтому его длина равна 12²/9 = 16 см.'
+      }]
+    },
+    'planimetry-yashchenko': {
+      title: 'Планиметрия по Ященко',
+      skills: [
+        'Связывать биссектрису и параллельные стороны с равными углами.',
+        'Находить длины по средней линии, подобию и площадям.',
+        'Определять дуги по вписанным углам и хордам.'
+      ],
+      challenges: [{
+        id: 'planimetry-yashchenko-design',
+        title: 'Раздели сторону в заданном отношении',
+        prompt: 'В параллелограмме ABCD сторона AD равна 8 см. Биссектриса угла DAB пересекает сторону DC в точке E. Какой длины в сантиметрах нужно сделать сторону AB, чтобы DE : EC = 2 : 3?',
+        hint: 'Используй параллельность AB и DC, чтобы сравнить углы DAE и AED.',
+        answers: ['20'],
+        explanation: 'Углы DAE и EAB равны по свойству биссектрисы, а углы EAB и AED равны из-за параллельности сторон. Поэтому в треугольнике ADE стороны DE и AD равны. Значит, две доли дают 8 см, а пять долей дают 20 см.'
+      }]
+    },
+    'vectors': {
+      title: 'Векторы и действия над ними',
+      skills: [
+        'Находить координаты вектора по его началу и концу.',
+        'Складывать векторы и вычислять длину результата.',
+        'Определять угол между векторами по скалярному произведению.'
+      ],
+      challenges: [{
+        id: 'vectors-design',
+        title: 'Настрой маршрут робота',
+        prompt: 'Робот сначала перемещается на вектор (4; −2), затем на вектор (t; 8). Подбери t так, чтобы он оказался на расстоянии 10 от старта и правее точки старта.',
+        hint: 'Сложи векторы по координатам. У вектора от старта до финиша первая координата должна быть положительной.',
+        answers: ['4'],
+        explanation: 'Итоговое перемещение равно (4 + t; 6). Из (4 + t)² + 36 = 100 получаем 4 + t = ±8. Финиш правее старта, поэтому 4 + t = 8 и t = 4.'
+      }]
+    },
+    'vectors-yashchenko': {
+      title: 'Векторы по Ященко',
+      skills: [
+        'Считывать координаты стрелки с сетки с учётом направления.',
+        'Считать длину и скалярное произведение по координатам.',
+        'Проверять знак косинуса по виду угла.'
+      ],
+      challenges: [{
+        id: 'vectors-yashchenko-design',
+        title: 'Исправь стрелку на чертеже',
+        prompt: 'Одна стрелка идёт из A(1; 3) в B(4; 7), другая — из C(−2; 1) в D(2; 4). Редактор развернул вторую стрелку, теперь она идёт из D в C. Запиши косинус угла между первой и новой стрелками.',
+        hint: 'При развороте стрелки измени знаки обеих её координат. Что происходит с её длиной?',
+        answers: ['-24/25', '-0.96'],
+        explanation: 'Координаты первой стрелки (3; 4), второй после разворота (−4; −3). Их скалярное произведение равно −24, обе длины равны 5. Косинус равен −24/25.'
+      }]
+    },
+    'stereo-3d': {
+      title: 'Стереометрия с объёмными моделями',
+      skills: [
+        'Находить основание, радиус и высоту на объёмной модели.',
+        'Выбирать сечение, на котором видны нужные отрезки.',
+        'Сравнивать объёмы тел при изменении размеров.'
+      ],
+      challenges: [{
+        id: 'stereo-3d-design',
+        title: 'Спроектируй новый резервуар',
+        prompt: 'Цилиндрический резервуар радиуса 3 м и высоты 16 м заменяют коническим той же вместимости. Радиус основания нового резервуара 6 м. Какой должна быть его высота в метрах?',
+        hint: 'Сравни площади оснований. В формуле объёма конуса есть множитель, которого нет в формуле для цилиндра.',
+        answers: ['12'],
+        explanation: 'Объём цилиндра равен 144π м³. Объём конуса высоты h равен π · 6² · h/3 = 12πh м³. Приравняв объёмы, получаем h = 12 м.'
+      }]
+    },
+    'stereo-proof': {
+      title: 'Стереометрия с доказательством',
+      skills: [
+        'Находить ортогональную проекцию и обосновывать перпендикулярность.',
+        'Строить линейный угол двугранного угла.',
+        'Вычислять высоту, объём или расстояние до плоскости.'
+      ],
+      challenges: [{
+        id: 'stereo-proof-design',
+        title: 'Задай наклон крыши',
+        prompt: 'Крыша имеет форму правильной четырёхугольной пирамиды со стороной основания 12 м. По проекту косинус угла наклона боковой грани к основанию равен 3/5. На какой высоте в метрах должна быть вершина? Набросай чертёж на бумаге и объясни, почему выбранный угол подходит.',
+        hint: 'Соедини середину ребра основания с его центром и с вершиной пирамиды. Как расположены эти отрезки относительно ребра?',
+        answers: ['8'],
+        explanation: 'Пусть M — середина ребра, O — центр основания, S — вершина. OM и SM перпендикулярны ребру, поэтому ∠SMO — линейный угол. OM = 6, значит SM = 6/(3/5) = 10. Из прямоугольного треугольника SOM получаем SO = 8 м.',
+      }],
+    },
+    'planimetry-proof': {
+      title: 'Планиметрия с доказательством',
+      skills: [
+        'Выбирать дугу, хорду или касательную для связи углов.',
+        'Доказывать подобие и правильно сопоставлять стороны.',
+        'Обосновывать вычисление и записывать оба пункта решения.'
+      ],
+      challenges: [{
+        id: 'planimetry-proof-design',
+        title: 'Восстанови расстояние на схеме',
+        prompt: 'Из точки P вне окружности проведены касательная PT длиной 12 см и секущая через A и B. Точка A ближе к P, чем B, и PA = 9 см. Обоснуй на бумаге связь между отрезками PT, PA и PB. Введи длину AB в сантиметрах.',
+        hint: 'Найди общий угол у треугольников PTA и PBT. Вторую пару равных углов даёт касательная и хорда.',
+        answers: ['7'],
+        explanation: 'Из подобия треугольников PTA и PBT получаем PT² = PA · PB. Значит, PB = 144/9 = 16 см, а AB = 16 − 9 = 7 см.'
+      }]
+    },
+    'yashchenko-lines-1-2': {
+      title: 'Планиметрия и векторы по Ященко',
+      skills: [
+        'Определять вид геометрической задачи по условию и чертежу.',
+        'Выбирать между свойством фигуры и координатным способом.',
+        'Проверять итог по длине, углу или положению точки.'
+      ],
+      challenges: [{
+        id: 'yashchenko-lines-1-2-design',
+        title: 'Подними маяк как можно выше',
+        prompt: 'На координатной плоскости маяки стоят в точках A(−2; 1) и B(8; 1). Третий маяк C нужно поставить выше AB так, чтобы угол ACB был прямым. Какую наибольшую ординату может иметь C?',
+        hint: 'Найди все возможные положения точки C. Поможет свойство вписанного угла или равенство скалярного произведения векторов CA и CB нулю.',
+        answers: ['6'],
+        explanation: 'Точка C лежит на верхней полуокружности с диаметром AB. Центр (3; 1), радиус 5. Самая высокая точка находится на 5 выше центра, поэтому её ордината равна 6.'
+      }]
+    },
+    'parameters-linear': {
+      title: 'Линейные уравнения с параметром',
+      skills: [
+        'Выделить коэффициент при x и свободный член.',
+        'Проверить случай нулевого коэффициента при x.',
+        'Отличить одно решение, отсутствие решений и бесконечно много решений.'
+      ],
+      challenges: [{
+        id: 'parameters-linear-design',
+        title: 'Совмести две прямые',
+        prompt: 'Уравнение (a − 3)x = 2a − b должно выполняться при любом x, когда a = 3. Подбери b.',
+        hint: 'Подставь a = 3 и подумай, какое равенство должно получиться для всех x.',
+        answers: ['6'],
+        explanation: 'При a = 3 остаётся 0 = 6 − b. Равенство верно при любом x ровно при b = 6.'
+      }]
+    },
+    'parameters-quadratic': {
+      title: 'Квадратные уравнения с параметром',
+      skills: [
+        'Проверить, при каких параметрах уравнение остаётся квадратным.',
+        'Связать знак дискриминанта с числом различных корней.',
+        'Проверить абсциссу точки касания оси.'
+      ],
+      challenges: [{
+        id: 'parameters-quadratic-design',
+        title: 'Касание справа от нуля',
+        prompt: 'Подбери a, чтобы парабола y = x² − 2ax + a + 2 касалась оси Ox справа от начала координат.',
+        hint: 'Свяжи касание оси с числом корней уравнения. Затем найди абсциссу точки касания.',
+        answers: ['2'],
+        explanation: 'Условие D = 0 даёт a² − a − 2 = 0, откуда a = −1 или a = 2. Абсцисса вершины равна a, поэтому подходит 2.'
+      }]
+    },
+    'parameters-fractional': {
+      title: 'Дробно-рациональные уравнения с параметром',
+      skills: [
+        'Выписать значения, при которых знаменатель равен нулю.',
+        'Найти кандидатов из равенства числителя нулю.',
+        'Выяснить, какие кандидаты исключаются при особом значении параметра.'
+      ],
+      challenges: [{
+        id: 'parameters-fractional-design',
+        title: 'Оставь только отрицательный корень',
+        prompt: 'Подбери a, чтобы уравнение (x² − 9)/(x − a) = 0 имело ровно один корень и он был отрицательным.',
+        hint: 'Сначала найди кандидатов из числителя. Как условие x ≠ a позволяет убрать одного из них?',
+        answers: ['3'],
+        explanation: 'Числитель обращается в нуль при x = −3 и x = 3. При a = 3 знаменатель исключает положительного кандидата, а x = −3 остаётся корнем.'
+      }]
+    },
+    'parameters-irrational': {
+      title: 'Уравнения с корнем и параметром',
+      skills: [
+        'Записать условие существования квадратного корня.',
+        'Проверить знак правой части перед возведением в квадрат.',
+        'Отсеять посторонние корни по исходному уравнению.'
+      ],
+      challenges: [{
+        id: 'parameters-irrational-design',
+        title: 'Создай посторонний корень',
+        prompt: 'Уравнение √(x + 5) = x − a возвели в квадрат. Подбери a так, чтобы x = −1 подошёл после возведения в квадрат и оказался посторонним корнем исходного уравнения.',
+        hint: 'Посчитай обе части при x = −1. Подумай, как квадраты могут совпасть при разных знаках.',
+        answers: ['1'],
+        explanation: 'При x = −1 левая часть равна 2. Чтобы квадраты совпали, а исходное равенство оказалось неверным, правая часть должна равняться −2. Условие −1 − a = −2 даёт a = 1.'
+      }]
+    },
+    'parameters-graphic': {
+      title: 'Графический метод для задач с параметром',
+      skills: [
+        'Построить график по участкам, раскрывая модули.',
+        'Перевести уравнение f(x) = a в задачу о пересечениях с горизонталью.',
+        'Проверить уровни, на которых горизонталь совпадает с участком графика.'
+      ],
+      challenges: [{
+        id: 'parameters-graphic-design',
+        title: 'Горизонталь с целым отрезком решений',
+        prompt: 'Подбери уровень a, при котором уравнение |x − 2| + |x + 2| = a имеет бесконечно много решений.',
+        hint: 'На числовой прямой выражение складывает расстояния от x до двух отмеченных точек. Проследи, что происходит между этими точками.',
+        answers: ['4'],
+        explanation: 'На отрезке [−2; 2] сумма расстояний равна 4. Слева и справа от отрезка она строго больше 4 и меняется линейно, поэтому только горизонталь y = 4 даёт бесконечно много решений.'
+      }]
+    },
+    'log-variable-base': {
+      title: 'Логарифм с переменным основанием',
+      skills: [
+        'Записать ограничения на аргумент и основание логарифма.',
+        'Различить возрастающий и убывающий логарифм.',
+        'Перевести условие на значение логарифма в условие на аргумент.'
+      ],
+      challenges: [{
+        id: 'log-variable-base-design',
+        title: 'Настрой два показания',
+        prompt: 'Устройство показывает logₓ(ax + 1). При x = 1/2 показание должно быть меньше нуля, а при x = 2 — не меньше 2. Найди наименьшее целое a.',
+        hint: 'Для каждого x сравни основание с 1. Представь порог показания как логарифм с тем же основанием.',
+        answers: ['2'],
+        explanation: 'При x = 1/2 отрицательное показание требует a/2 + 1 > 1, то есть a > 0. При x = 2 условие даёт 2a + 1 ≥ 4. Оба аргумента положительны при a ≥ 3/2, поэтому наименьшее целое a равно 2.'
+      }]
+    },
+    'log-nested': {
+      title: 'Вложенные логарифмы',
+      skills: [
+        'Найти основания и аргументы внутреннего и внешнего логарифмов.',
+        'Проверить, где значение внутреннего логарифма положительно.',
+        'Преобразовать неравенство поэтапно с учётом монотонности каждого логарифма.'
+      ],
+      challenges: [{
+        id: 'log-nested-design',
+        title: 'Задай правую границу',
+        prompt: 'Подбери a > 0 так, чтобы наибольшим решением неравенства log₂(log₍₁⁄₂₎(ax)) ≥ 1 было x = 1/12.',
+        hint: 'Сначала вырази условие на весь внутренний логарифм. Для следующего перехода сравни его основание с 1.',
+        answers: ['3'],
+        explanation: 'Внешнее неравенство требует log₍₁⁄₂₎(ax) ≥ 2. Внутренний логарифм убывает, поэтому 0 < ax ≤ 1/4. Правая граница равна 1/(4a), и приравнивание к 1/12 даёт a = 3.'
+      }]
+    },
+    'log-inequalities': {
+      title: 'Логарифмические неравенства',
+      skills: [
+        'Найти область допустимых значений логарифмов.',
+        'Учесть монотонность логарифма при сравнении.',
+        'Пересечь промежутки решения с областью допустимых значений.'
+      ],
+      challenges: [{
+        id: 'log-inequalities-design',
+        title: 'Выбери сдвиг для трёх отметок',
+        prompt: 'В неравенстве log₃(x + b) ≤ 1 отметки x = 1 и x = 2 должны входить в решение, а x = 3 должна лежать в ОДЗ и не входить в решение. Найди целое b.',
+        hint: 'Запиши двойное условие на x + b. Сравни с верхней границей аргументы для всех трёх отметок.',
+        answers: ['1'],
+        explanation: 'Решения удовлетворяют 0 < x + b ≤ 3. При x = 2 получаем b ≤ 1. При x = 3 аргумент должен быть больше 3, то есть b > 0. При b = 1 отметка x = 1 тоже подходит.'
+      }]
+    },
+    'rationalization': {
+      title: 'Рационализация неравенств',
+      skills: [
+        'Выписать ОДЗ для логарифма с переменным основанием.',
+        'Заменить логарифм в произведении выражением того же знака.',
+        'Учитывать нули множителей и точки вне ОДЗ на числовой прямой.'
+      ],
+      challenges: [{
+        id: 'rationalization-design',
+        title: 'Подбери границу двух промежутков',
+        prompt: 'Подбери a > 1, чтобы неравенство (x − a) · logₓ(x + 1) > 0 выполнялось ровно на (0; 1) и (4; +∞).',
+        hint: 'На ОДЗ аргумент логарифма больше 1. Сравни знак логарифма со знаком x − 1.',
+        answers: ['4'],
+        explanation: 'При 0 < x < 1 логарифм и x − a отрицательны. При x > 1 логарифм положителен, и произведение положительно только при x > a. Правая часть решения должна начинаться за 4, поэтому a = 4.'
+      }]
+    },
+    'interval-method': {
+      title: 'Метод интервалов',
+      skills: [
+        'Нанести нули числителя и знаменателя на ось.',
+        'Проверить, меняется ли знак у точки чётной кратности.',
+        'Отметить включённые, исключённые и отдельные точки решения.'
+      ],
+      challenges: [{
+        id: 'interval-method-design',
+        title: 'Оставь одну точку между границами',
+        prompt: 'Подбери a так, чтобы число 4 было единственным решением неравенства (x − a)²(x − 1)/(x − 5) ≥ 0 на промежутке (1; 5).',
+        hint: 'Сначала найди знак дроби (x − 1)/(x − 5) между 1 и 5. Посмотри, когда квадрат позволяет получить равенство нулю.',
+        answers: ['4'],
+        explanation: 'На (1; 5) дробь отрицательна. Всё выражение удовлетворяет неравенству только при (x − a)² = 0, поэтому требуемая точка получается при a = 4.'
+      }]
+    },
+    'inequalities-course': {
+      title: 'Неравенства разных типов',
+      skills: [
+        'Выбрать способ решения по виду неравенства.',
+        'Записать ограничения перед равносильным преобразованием.',
+        'Проверить каждую границу итогового множества решений.'
+      ],
+      challenges: [{
+        id: 'inequalities-course-design',
+        title: 'Настрой порог включения',
+        prompt: 'Подбери a так, чтобы наименьшим решением неравенства √(x + 1) ≤ x + a было x = 3.',
+        hint: 'Почему на границе при x = 3 должно быть равенство? После подстановки a проверь знаки перед возведением в квадрат.',
+        answers: ['-1'],
+        explanation: 'Если бы при x = 3 неравенство было строгим, оно выполнялось бы и при немного меньших x, поэтому 2 = 3 + a и a = −1. Тогда x ≥ 1, а после возведения в квадрат x(x − 3) ≥ 0. Общая часть этих условий начинается с 3.'
+      }]
+    }
+  };
+
+  const data = { maps, trainers };
+  root.ProfileSkillMapData = data;
+  if (typeof module !== 'undefined') module.exports = data;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+</script>
+<script data-inline-source="/ege-profil/skill-map.js" data-profile-skill-map="log-inequalities">
+(function (root) {
+  'use strict';
+
+  const storagePrefix = 'mathexam.profile-skill-map.v1.';
+  const session = new Map();
+  let nextDialogId = 0;
+  let directOpenUsed = false;
+  let canSave = true;
+
+  function normalized(value) {
+    return String(value).normalize('NFKC').toLowerCase().trim()
+      .replace(/[−–—]/g, '-').replace(/\s+/g, ' ')
+      .replace(/\s*([;:,=(){}\[\]/])\s*/g, '$1');
+  }
+
+  function fraction(value) {
+    const ratio = value.match(/^([+-]?\d+)\/([+-]?\d+)$/);
+    if (ratio) {
+      const denominator = BigInt(ratio[2]);
+      return denominator ? [BigInt(ratio[1]), denominator] : null;
+    }
+    const decimal = value.match(/^([+-]?)(\d*)(?:[,.](\d*))?$/);
+    if (!decimal || !(decimal[2] || decimal[3])) return null;
+    const digits = decimal[3] || '';
+    return [BigInt(decimal[1] + decimal[2] + digits), 10n ** BigInt(digits.length)];
+  }
+
+  function matches(input, expected) {
+    const value = normalized(input);
+    if (!value || value.length > 120) return false;
+    const a = fraction(value);
+    return expected.some(answer => {
+      const target = normalized(answer);
+      const b = fraction(target);
+      return a && b ? a[0] * b[1] === b[0] * a[1] : value === target;
+    });
+  }
+
+  function read(key) {
+    const fallback = session.get(key) || { values: [], hinted: false, solved: false, mistakes: 0 };
+    if (!canSave) return fallback;
+    try {
+      const raw = root.localStorage.getItem(storagePrefix + key);
+      if (!raw) return fallback;
+      const saved = JSON.parse(raw);
+      if (saved && Array.isArray(saved.values) && saved.values.every(value => typeof value === 'string') &&
+          typeof saved.hinted === 'boolean' && typeof saved.solved === 'boolean' &&
+          Number.isSafeInteger(saved.mistakes) && saved.mistakes >= 0) return saved;
+    } catch (_) {
+      // A damaged entry can be replaced by the next attempt.
+    }
+    return fallback;
+  }
+
+  function update(key, change) {
+    const state = read(key);
+    if (state.solved) return state;
+    Object.assign(state, change);
+    session.set(key, state);
+    if (canSave) {
+      try {
+        root.localStorage.setItem(storagePrefix + key, JSON.stringify(state));
+      } catch (_) {
+        canSave = false;
+      }
+    }
+    return state;
+  }
+
+  function element(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function action(text, primary = false) {
+    const button = element('button', 'profile-skill-button' + (primary ? ' profile-skill-button-primary' : ''), text);
+    button.type = 'button';
+    return button;
+  }
+
+  function keyFor(mapKey, challenge, index) {
+    return `${mapKey}:${challenge.id || index}`;
+  }
+
+  function mapTitle(key, map) {
+    if (!/^\d+$/.test(key)) return map.title;
+    const registry = root.ProfileExamMap;
+    const number = Number(key);
+    const entry = number <= 13 ? registry?.fromLegacyStart(number) : registry?.fromLegacyPartTwo(number);
+    if (!entry) return map.title;
+    if (number === 9) return 'Производная и первообразная · №8; экстремумы · №12';
+    return registry.label(entry) + (map.title ? ' · ' + map.title : '');
+  }
+
+  function alphabetLinks(key, beforeLeave) {
+    const catalog = root.ProfileAlphabetCatalog;
+    const alphabets = catalog?.forNumber(key);
+    if (!alphabets?.length) return null;
+    const block = element('section', 'profile-skill-alphabets');
+    block.append(element('h3', '', 'Вспомнить основы'));
+    const back = root.location.pathname + root.location.search + root.location.hash;
+    for (const alphabet of alphabets) {
+      const group = element('div', 'profile-skill-alphabet-group');
+      group.append(element('strong', '', alphabet.short));
+      const list = element('ul');
+      for (const [id, skill] of Object.entries(alphabet.skills)) {
+        if (!skill.numbers.includes(Number(key))) continue;
+        const link = element('a', '', skill.title);
+        link.href = catalog.href(alphabet.id, id, key, back);
+        link.setAttribute('data-profile-alphabet-link', '');
+        if (beforeLeave) link.addEventListener('click', async event => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          await beforeLeave();
+          root.location.assign(link.href);
+        });
+        const row = element('li');
+        row.append(link);
+        list.append(row);
+      }
+      group.append(list);
+      block.append(group);
+    }
+    return block;
+  }
+
+  function challengeForm(key, challenge, index, group, refresh) {
+    const stateKey = keyFor(key, challenge, index);
+    const state = read(stateKey);
+    const card = element('article', 'profile-skill-challenge');
+    card.setAttribute('data-profile-skill-challenge', '');
+    card.append(element('h4', '', challenge.title), element('p', 'profile-skill-prompt', challenge.prompt));
+
+    const form = element('form', 'profile-skill-form');
+    const fields = challenge.fields || [{ label: 'Ответ', answers: challenge.answers }];
+    const inputs = [];
+    if (challenge.choices?.length) {
+      const choices = element('fieldset', 'profile-skill-choices');
+      choices.append(element('legend', '', 'Выберите ответ'));
+      challenge.choices.forEach(choice => {
+        const label = element('label', 'profile-skill-choice');
+        const input = element('input');
+        input.type = 'radio';
+        input.name = `${group}-${index}`;
+        input.value = choice;
+        input.checked = state.values[0] === choice;
+        input.setAttribute('data-profile-skill-answer', '');
+        inputs.push(input);
+        label.append(input, element('span', '', choice));
+        choices.append(label);
+      });
+      form.append(choices);
+    } else {
+      fields.forEach((field, fieldIndex) => {
+        const label = element('label', 'profile-skill-field', field.label || 'Ответ');
+        const input = element('input');
+        input.type = 'text';
+        input.maxLength = 120;
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        input.value = state.values[fieldIndex] || '';
+        input.setAttribute('data-profile-skill-answer', '');
+        inputs.push(input);
+        label.append(input);
+        form.append(label);
+      });
+    }
+
+    function values() {
+      return challenge.choices?.length ? [inputs.find(input => input.checked)?.value || ''] : inputs.map(input => input.value);
+    }
+
+    const submit = action('Проверить', true);
+    submit.type = 'submit';
+    form.append(submit);
+    card.append(form);
+    const hint = element('details', 'profile-skill-hint');
+    hint.setAttribute('data-profile-skill-hint', '');
+    hint.append(element('summary', '', 'Подсказка'), element('p', '', challenge.hint));
+    const feedback = element('p', 'profile-skill-feedback');
+    feedback.setAttribute('role', 'status');
+    feedback.setAttribute('data-profile-skill-feedback', '');
+    card.append(hint, feedback);
+
+    function complete(record) {
+      feedback.dataset.result = 'correct';
+      feedback.textContent = (record.hinted ? 'Верно, с подсказкой. ' : 'Верно. ') + challenge.explanation;
+      hint.hidden = true;
+      submit.hidden = true;
+      inputs.forEach(input => { input.disabled = true; input.removeAttribute('aria-invalid'); });
+    }
+
+    if (state.solved) complete(state);
+    form.addEventListener('input', () => {
+      inputs.forEach(input => input.removeAttribute('aria-invalid'));
+      update(stateKey, { values: values() });
+      refresh();
+    });
+    function recordHint() {
+      update(stateKey, { hinted: true });
+      refresh();
+    }
+    hint.querySelector('summary').addEventListener('click', () => { if (!hint.open) recordHint(); });
+    hint.addEventListener('toggle', () => { if (hint.open) recordHint(); });
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const answers = values();
+      if (answers.some(answer => !answer.trim())) {
+        feedback.dataset.result = 'retry';
+        feedback.textContent = challenge.choices?.length ? 'Выберите ответ.' : 'Заполните каждое поле.';
+        const firstEmpty = answers.findIndex(answer => !answer.trim());
+        inputs[firstEmpty]?.focus();
+        return;
+      }
+      const results = fields.map((field, fieldIndex) => matches(answers[fieldIndex], field.answers));
+      if (results.every(Boolean)) {
+        complete(update(stateKey, { values: answers, solved: true, hinted: hint.open || read(stateKey).hinted }));
+      } else {
+        const mistakes = read(stateKey).mistakes + 1;
+        const record = update(stateKey, { values: answers, mistakes });
+        if (record.solved) complete(record);
+        else {
+          feedback.dataset.result = 'retry';
+          feedback.textContent = `Пока не сходится. ${mistakes >= 2 ? 'Попробуйте подсказку.' : 'Сверьте ответ с условием.'}`;
+          inputs.forEach((input, i) => input.setAttribute('aria-invalid', String(challenge.choices?.length || !results[i])));
+        }
+      }
+      refresh();
+    });
+    return card;
+  }
+
+  function render(container, key, map, id, { lesson, beforeLeave }) {
+    const layout = element('div', 'profile-skill-layout');
+    const route = element('section', 'profile-skill-route');
+    if (lesson?.skill) {
+      route.append(element('h3', '', lesson.title), element('p', 'profile-skill-lesson-goal', lesson.skill));
+    }
+    route.append(element('h3', '', 'Что освоить'));
+    const list = element('ol', 'profile-skill-steps');
+    map.skills.forEach(skill => list.append(element('li', '', skill)));
+    route.append(list);
+    const alphabets = alphabetLinks(key, beforeLeave);
+    if (alphabets) route.append(alphabets);
+
+    const practice = element('section', 'profile-skill-practice');
+    practice.append(element('h3', '', 'Творческие задания'));
+    const summary = element('p', 'profile-skill-progress');
+    summary.setAttribute('data-profile-skill-progress', '');
+    practice.append(summary);
+    function refresh() {
+      const done = map.challenges.filter((challenge, index) => read(keyFor(key, challenge, index)).solved).length;
+      summary.textContent = `Решено ${done} из ${map.challenges.length}${canSave ? '' : ' · до закрытия страницы'}`;
+    }
+    map.challenges.forEach((challenge, index) => practice.append(challengeForm(key, challenge, index, id, refresh)));
+    refresh();
+    layout.append(route, practice);
+    container.replaceChildren(layout);
+  }
+
+  function mountReady(container, keys, options = {}) {
+    const data = root.ProfileSkillMapData;
+    if (!data || !container || root.self !== root.top || document.body.dataset.profileBoard) return null;
+    const maps = [...new Set(keys.map(String))].map(key => [key, data.maps[key] || data.trainers[key]]).filter(([, map]) => map);
+    if (!maps.length) return null;
+
+    const id = 'profile-skill-dialog-' + (++nextDialogId);
+    const entry = element('div', 'profile-skill-entry');
+    const open = action('Карта навыков');
+    open.setAttribute('data-profile-skill-trigger', '');
+    open.setAttribute('aria-haspopup', 'dialog');
+    open.setAttribute('aria-controls', id);
+    const dialog = element('dialog', 'profile-skill-dialog');
+    dialog.id = id;
+    dialog.setAttribute('data-profile-skill-dialog', '');
+    dialog.setAttribute('aria-labelledby', id + '-title');
+    const heading = element('header', 'profile-skill-header');
+    const title = element('h2', '', 'Карта навыков');
+    title.id = id + '-title';
+    const close = action('Вернуться');
+    close.autofocus = true;
+    heading.append(title, close);
+    dialog.append(heading);
+
+    const body = element('div', 'profile-skill-body');
+    const select = element('select');
+    let selected = maps[0];
+    let lastPreferred;
+    if (maps.length > 1) {
+      select.setAttribute('data-profile-skill-select', '');
+      for (const [key, map] of maps) {
+        const option = element('option', '', mapTitle(key, map));
+        option.value = key;
+        select.append(option);
+      }
+      const label = element('label', 'profile-skill-picker', 'Выберите тему');
+      label.append(select);
+      dialog.append(label);
+      select.addEventListener('change', () => {
+        selected = maps.find(([key]) => key === select.value) || selected;
+        render(body, ...selected, id, options);
+      });
+    } else {
+      dialog.append(element('p', 'profile-skill-subtitle', mapTitle(...selected)));
+    }
+    dialog.append(body);
+    entry.append(open, dialog);
+    container.append(entry);
+
+    function show() {
+      const current = options.preferred?.();
+      if (current && current !== lastPreferred) selected = maps.find(([key]) => key === String(current)) || selected;
+      lastPreferred = current;
+      select.value = selected[0];
+      render(body, ...selected, id, options);
+      if (typeof dialog.showModal === 'function') {
+        if (!dialog.open) dialog.showModal();
+      } else {
+        dialog.setAttribute('open', '');
+        close.focus();
+      }
+    }
+    open.addEventListener('click', show);
+    close.addEventListener('click', () => {
+      if (typeof dialog.close === 'function') dialog.close();
+      else { dialog.removeAttribute('open'); open.focus(); }
+    });
+    dialog.addEventListener('close', () => open.focus());
+    if (!directOpenUsed && new URLSearchParams(root.location.search).get('skills') === '1') {
+      directOpenUsed = true;
+      // The course router focuses its heading immediately after rendering.
+      root.setTimeout(() => { if (entry.isConnected) show(); }, 0);
+    }
+    return entry;
+  }
+
+  function ensureExamMap() {
+    if (root.ProfileExamMap) return Promise.resolve(root.ProfileExamMap);
+    if (!root.ProfileExamMapReady) root.ProfileExamMapReady = new Promise(resolve => {
+      // Course navigation and legacy HTML may already have requested this map.
+      // Adopt that pending script instead of loading a second copy.
+      let script = [...document.querySelectorAll('script[src]')].find(script =>
+        new URL(script.src, location.href).pathname === '/ege-profil/exam-map.js');
+      const existing = Boolean(script);
+      if (!script) {
+        script = document.createElement('script');
+        script.src = '/ege-profil/exam-map.js?v=20261115-fipi-map';
+        script.async = true;
+      }
+      const settled = () => resolve(root.ProfileExamMap || null);
+      script.addEventListener('load', settled, {once: true});
+      script.addEventListener('error', () => resolve(null), {once: true});
+      if (!existing) document.head.append(script);
+      // A supplied script's error can precede this consumer. Window load is the
+      // terminal fallback, while a pending async script still has time to load.
+      else if (document.readyState === 'complete') settled();
+      else root.addEventListener('load', settled, {once: true});
+    });
+    return root.ProfileExamMapReady;
+  }
+
+  function mount(container, keys, options = {}) {
+    if (!root.ProfileSkillMapData || !container || root.self !== root.top || document.body.dataset.profileBoard) return null;
+    if (root.ProfileExamMap) return mountReady(container, keys, options);
+    const slot = element('div', 'profile-skill-slot');
+    container.append(slot);
+    ensureExamMap().then(() => {
+      // A route change can remove the waiting slot. Never mount in a stale screen.
+      if (slot.isConnected) mountReady(slot, keys, options);
+    });
+    return slot;
+  }
+
+  function optionByValue(spec, value) {
+    return spec?.split(' ').find(pair => pair.split('=')[0] === value)?.split('=')[1];
+  }
+
+  function boot(script) {
+    if (!script?.dataset.profileSkillMap || root.self !== root.top) return;
+    const config = script.dataset;
+    const keys = config.profileSkillMap.trim().split(/\s+/);
+    let target = config.profileSkillTarget && document.querySelector(config.profileSkillTarget);
+    if (!target) target = document.getElementById('profile-course-nav');
+    if (!target) {
+      const landmark = document.querySelector('h1, #pageTitle');
+      if (!landmark) return;
+      target = element('div', 'profile-skill-slot');
+      landmark.after(target);
+    }
+    mount(target, keys, {
+      preferred: () => optionByValue(config.profileSkillTopics, new URLSearchParams(root.location.search).get('topic')) ||
+        optionByValue(config.profileSkillHashes, root.location.hash.slice(1))
+    });
+  }
+
+  root.ProfileSkillMap = { mount, matches };
+  if (typeof module !== 'undefined') module.exports = root.ProfileSkillMap;
+  if (typeof document !== 'undefined') {
+    const script = document.currentScript;
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => boot(script), { once: true });
+    else boot(script);
+  }
+})(globalThis);
+
+</script>
+</body>
+</html>

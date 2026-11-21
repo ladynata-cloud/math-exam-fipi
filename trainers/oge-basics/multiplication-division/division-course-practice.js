@@ -49,6 +49,12 @@
   if(!blocked){try{storage.setItem(key,JSON.stringify({version:1,seed,state:created.state,assisted,errors,...(generatorVersion===undefined?{}:{generatorVersion})}));}catch(_){warning||='Не удалось сохранить работу в этом браузере. Оставь страницу открытой или продолжи через кабинет.';}}
   updateNotice();
  }
+ document.addEventListener('mathexam:skill-support',event=>{
+  if(!created.state.completed)assisted=true;
+  save();
+  // If the browser cannot persist the attempt, preserve this tab instead.
+  if(blocked||warning)event.preventDefault();
+ });
  function questionIdentity(spec){return JSON.stringify({contentId:spec.contentId,prompt:spec.task?.prompt,divisionTask:spec.divisionTask});}
  function nextExample(){
   // Save history before replacing the last solved example with unfinished work.

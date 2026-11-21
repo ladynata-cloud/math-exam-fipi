@@ -1,0 +1,76 @@
+name: Atanasyan 8 advanced — 824–841 candidate
+on:
+  pull_request:
+    paths:
+      - 'content-drafts/atanasyan-grade8-advanced/**'
+      - 'geometry-course/textbook/preparation/grade-08-advanced-824-841.json'
+      - 'geometry-course/textbook/release-review-advanced-08-824-841.json'
+      - 'geometry-course/textbook/data/course.json'
+      - 'tools/geometry-textbook/release-scope.json'
+      - 'docs/reviews/ATANASYAN_8_824_841*'
+      - 'tools/geometry-textbook/*advanced8*'
+      - 'docs/tasks/ATANASYAN_7_9_ADVANCED8*'
+      - '.github/workflows/atanasyan-advanced8.yml'
+permissions:
+  contents: read
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Author checkpoint, geometric oracles and unchanged production
+        run: |
+          python3 tools/geometry-textbook/models_advanced8_824_841.py --check
+          python3 tools/geometry-textbook/advanced8-824-841.test.py
+          python3 tools/geometry-textbook/advanced8-release.test.py
+          node tools/geometry-textbook/advanced8-independent-model-audit.cjs
+          python3 tools/geometry-textbook/build_course.py --check
+          git diff --exit-code -- geometry-course/textbook
+          git diff --check
+      - name: Build isolated preview, no approval receipt
+        run: python3 tools/geometry-textbook/build_advanced8_candidate.py --output "$RUNNER_TEMP/advanced8"
+      - name: All 94 drawings at two widths, strict existing geometry and label gate
+        env:
+          GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/advanced8
+          GEOMETRY_TEXTBOOK_FOCUS_SECTION: 8-advanced-824-841
+          GEOMETRY_TEXTBOOK_VIEWS_ONLY: '1'
+          GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: 8 класс · повышенная трудность
+          GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/advanced8/views
+          GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: node tools/geometry-textbook/browser_check.js
+      - name: All new cold links, step journeys, reload, theory return and old saved work
+        if: ${{ !cancelled() }}
+        env:
+          GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/advanced8
+          ADVANCED8_ARTIFACTS: artifacts/advanced8/journeys
+        run: node tools/geometry-textbook/advanced8-824-841.browser.cjs
+      - name: All reviewed public cold links and retained work after promotion
+        if: ${{ !cancelled() }}
+        env:
+          GEOMETRY_TEXTBOOK_ROOT: ${{ github.workspace }}
+          ADVANCED8_PUBLIC_RELEASE: '1'
+          ADVANCED8_ARTIFACTS: artifacts/advanced8/public-journeys
+          GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if python3 -c 'import json,sys; s=json.load(open("tools/geometry-textbook/release-scope.json")); sys.exit(not any(x.get("key")=="8-advanced-824-841" for x in s.get("supplements",[])))'; then
+            node tools/geometry-textbook/advanced8-824-841.browser.cjs
+          else
+            echo 'Public advanced8 scope is not promoted; candidate exclusion remains required.'
+          fi
+      - name: Preserve actual evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-advanced8-824-841
+          path: artifacts/advanced8/
+          retention-days: 14
+          if-no-files-found: error

@@ -15,6 +15,14 @@
     {id:'order', title:'Порядок действий', path:'/trainers/oge-basics/order-of-operations.html'},
     {id:'fractions', title:'Что означает дробь', path:'/trainers/oge-basics/fraction-meaning.html'}
   ].map(Object.freeze));
+  // Existing model lessons use separate progress; these links never replace a textbook task.
+  const modelLessons = Object.freeze({
+    2: {key:'percent', title:'Проценты: целое и часть'},
+    9: {key:'common', title:'Дроби: одинаковый размер долей'},
+    13: {key:'part', title:'Часть от целого'},
+    18: {key:'ratio', title:'Отношение частей и доля целого'},
+    21: {key:'scale', title:'Масштаб и единицы длины'}
+  });
   function isPrime(n) {
     if (!Number.isSafeInteger(n) || n < 2) return false;
     if (n === 2) return true;
@@ -47,8 +55,10 @@
     const current = () => alive && host.isConnected && (typeof options.isCurrent !== 'function' || options.isCurrent());
     const report = reason => { if (current() && typeof options.onUse === 'function') options.onUse(reason); };
     const primeContext = Number(options.unitId) >= 6 && Number(options.unitId) <= 9;
+    const modelUnit = Number(options.unitId), model = modelLessons[modelUnit];
     host.classList.add('v6-study-support');
     host.innerHTML = `<p class="v6-support-intro">${esc(recommendation(options.unitId))}</p>
+      ${model?`<aside class="v6-context-practice" aria-label="Исследование модели темы"><a class="button-link secondary" data-v6-model="${model.key}" href="https://mathexam.space/courses/vilenkin-6-part-1/?legacy=1#lesson/${modelUnit}/theory" target="_blank" rel="noopener noreferrer">Исследовать на модели: ${esc(model.title)} ↗</a><p>Сделай прогноз на отдельном примере MathExam. Модель откроется в новой вкладке; затем вернись к этой задаче.</p></aside>`:''}
       <details data-v6-support="prime-table"${primeContext?' class="v6-support-recommended"':''}>
         <summary>${primeContext?'Таблица простых чисел и признаки делимости':'Открыть таблицу простых чисел'}</summary>
         <div class="v6-support-body">
@@ -126,11 +136,15 @@
       host.querySelector('[data-v6-prime-count]').textContent = `До ${limit} включительно — ${primesUpTo(limit).length} простых чисел.`;
       report('prime-table');
     });
-    host.querySelectorAll('[data-v6-practice]').forEach(link => {
-      on(link, 'click', event => {
+    host.querySelectorAll('[data-v6-practice],[data-v6-model]').forEach(link => {
+      const follow = event => {
+        if (event.type === 'auxclick' && event.button !== 1) return;
         if (!current()) { event.preventDefault(); return; }
         report('practice-link');
-      });
+      };
+      on(link, 'click', follow);
+      // Native middle-click can open a new tab without emitting a click.
+      if (link.hasAttribute('data-v6-model')) on(link, 'auxclick', follow);
     });
     return () => { alive = false; listeners.forEach(remove => remove()); contextualPractice?.remove(); };
   }

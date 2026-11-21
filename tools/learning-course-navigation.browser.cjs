@@ -133,6 +133,7 @@ async function navigate(page, route) {
     assert.equal(await teacherPage.locator('.catalog-group').count(), 21);
     await teacherPage.locator('#course-search').fill('Уравнения: сохранить');
     await teacherPage.locator('[data-content="path:equations"]').click();
+    await teacherPage.locator('[data-content-assign]').click();
     await teacherPage.locator('#assignment-form').waitFor();
     assert.equal(await teacherPage.locator('#assignment-form [name=content]').inputValue(), 'path:equations');
     await teacherPage.locator('#dialog-close').click();

@@ -1,6 +1,6 @@
 (function(root){
   'use strict';
-  // Existing public trainers, grouped by the numbering used by this course.
+  // Stable legacy trainer groups. Public labels and new links use the shared exam map.
   const bank=(numbers,path,title,help)=>({numbers,path,title,help});
   const banks=[
     bank([1],'/ege-profil/trainers/planimetry-t1.html','Планиметрия без промахов',['geo-angles','bridge-triangle','bridge-roots']),
@@ -47,13 +47,29 @@
     '/ege-profil/trainers/trigonometry.html':{7:'equations',8:'values'}
   };
   function resourceHref(b,number){const topic=topics[b.path]?.[Number(number)];return b.path+(topic?'?topic='+topic:'');}
-  function resources(number){
-    const items=banks.filter(b=>b.numbers.includes(Number(number)));
+  function renderResources(items,href){
     if(!items.length)return '';
-    return '<details class="panel course-resources"><summary>Ещё тренажёры этой темы</summary><p>Дополнительная практика. Справка открывается внутри тренажёра по запросу.</p><ul class="resource-list">'+items.map(b=>'<li><a data-course-resource href="'+resourceHref(b,number)+'">'+esc(b.title)+'</a></li>').join('')+'</ul></details>';
+    return '<details class="panel course-resources"><summary>Ещё тренажёры этой темы</summary><p>Дополнительная практика. Справка открывается внутри тренажёра по запросу.</p><ul class="resource-list">'+items.map(b=>'<li><a data-course-resource href="'+href(b)+'">'+esc(b.title)+'</a></li>').join('')+'</ul></details>';
   }
-  function card16(){return '<article class="exam-card" data-course-extra="16"><span class="exam-number">16</span><h2>Неравенства</h2><p>Обычные и логарифмические неравенства. Разбираем ограничения, метод интервалов и каждый шаг решения.</p><div class="exam-card-actions"><a class="button" href="#exam/16">Выбрать задачу</a></div></article>';}
-  root.ProfileCourse={banks,extraPages,helpTitles,resources,resourceHref,card16,entry};
+  function resources(number){return renderResources(banks.filter(b=>b.numbers.includes(Number(number))),b=>resourceHref(b,number));}
+  function resourcesFor(value){
+    if(!value)return '';
+    const legacy=value.legacyStart??value.legacyNumber??(value.legacyPartTwo===16?16:null);
+    let items=banks.filter(b=>b.numbers.includes(Number(legacy)));
+    if(value.number===8)items=items.filter(b=>b.path.endsWith('derivative-t8.html'));
+    if(value.number===12)items=items.filter(b=>b.path.endsWith('functions-t1112.html'));
+    if(value.id==='integral')items=[];
+    const writtenUrl=(root.MathExamTrainerOffline?.origin||'')+'/ege-profil/part-two/#fipi/2027/16';
+    const writtenLink=value.number===16?'<p><a class="button quiet" href="'+writtenUrl+'">Решить №16 письменно</a></p>':'';
+    return writtenLink+renderResources(items,b=>resourceHref(b,legacy));
+  }
+  function bankEntries(b){
+    const map=root.ProfileExamMap||(typeof module!=='undefined'&&module.exports?require('../exam-map.js'):null);
+    if(!map)return [];
+    return b.numbers.map(number=>number===16?map.get(15):number===9?map.get(b.path.endsWith('derivative-t8.html')?8:12):map.fromLegacyStart(number)).filter(Boolean);
+  }
+  function card16(){return '<article class="exam-card" data-course-extra="15"><span class="exam-number">15</span><h2>Неравенства</h2><p>Обычные и логарифмические неравенства. Разбираем ограничения, метод интервалов и каждый шаг решения.</p><div class="exam-card-actions"><a class="button" href="#fipi/2027/15">Выбрать задачу</a></div></article>';}
+  root.ProfileCourse={banks,extraPages,helpTitles,resources,resourcesFor,resourceHref,bankEntries,card16,entry};
   if(typeof module!=='undefined')module.exports=root.ProfileCourse;
   if(typeof document==='undefined')return;
   if(window.self!==window.top&&new URLSearchParams(location.search).get('course-help')==='1')document.documentElement.classList.add('course-help');
@@ -65,7 +81,7 @@
     if(!b||document.getElementById('profile-course-nav'))return;
     document.body.classList.add('profile-course-page');
     const nav=document.createElement('nav');nav.id='profile-course-nav';nav.setAttribute('aria-label','Навигация единого курса');
-    nav.innerHTML='<a href="'+entry+'#calm" aria-label="Все задания курса: №1–13 и №16">← Курс</a><span>'+b.numbers.map(n=>'<a href="'+entry+(n===16?'#exam/':'#calm/')+n+'">Темы №'+n+'</a>').join(' · ')+'</span><button type="button" id="profile-course-help">Вспомнить основу</button>';
+    nav.innerHTML='<a href="'+entry+'#calm" aria-label="Все задания курса: №1–19 и дополнительные темы">← Курс</a><span>'+bankEntries(b).map(value=>'<a href="'+entry+root.ProfileExamMap.hash(value)+'">'+esc(value.number?'Темы №'+value.number:value.title)+'</a>').join(' · ')+'</span><button type="button" id="profile-course-help">Вспомнить основу</button>';
     document.body.prepend(nav);
     // This trainer's formerly fixed teacher switch would cover the new help
     // button on desktop. Retain the same node and handlers in the navigation.
@@ -93,5 +109,27 @@
       try{frame.contentDocument.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();dialog.close();}});}catch(_){}
     });
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
+  function ready(){
+    if(root.ProfileExamMap)return mount();
+    // Older trainer pages keep their stable script bindings. Fetch the same
+    // shared map before rendering topic links, including the nested stereo pages.
+    // Skill-map can start during the same DOMContentLoaded event: both consumers
+    // share the pending request and adopt a script already supplied by the page.
+    if(!root.ProfileExamMapReady)root.ProfileExamMapReady=new Promise(resolve=>{
+      let script=[...document.querySelectorAll('script[src]')].find(script=>new URL(script.src,location.href).pathname==='/ege-profil/exam-map.js');
+      const existing=!!script;
+      if(!script){script=document.createElement('script');script.src='/ege-profil/exam-map.js?v=20261115-fipi-map';script.async=true;}
+      const settled=()=>resolve(root.ProfileExamMap||null);
+      script.addEventListener('load',settled,{once:true});
+      script.addEventListener('error',()=>resolve(null),{once:true});
+      if(!existing)document.head.append(script);
+      else if(document.readyState==='complete')settled();
+      // A supplied deferred script may have failed before these listeners.
+      // Window load also waits for a still-pending async script; DOMContentLoaded
+      // alone would incorrectly settle that successful request as unavailable.
+      else root.addEventListener('load',settled,{once:true});
+    });
+    root.ProfileExamMapReady.then(mount);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 })(typeof globalThis!=='undefined'?globalThis:this);

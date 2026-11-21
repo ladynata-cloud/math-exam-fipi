@@ -24,22 +24,38 @@ function question(options){
  const card=el('article',null,'pv-question');card.id='pv-question-'+String(options.id||++serial).replace(/[^\w-]/g,'-');card.dataset.question=String(options.number);card.dataset.taskId=String(options.id||'');
  const heading=el('h2',String(options.number)+'. '+(options.title||'Задание'));card.append(heading);
  const condition=el('div',null,'pv-question-condition');append(condition,options.condition);card.append(condition);prepareFigures(condition);
- const form=el('form',null,'pv-answer-form'),fields=new Map();
+ const form=el('form',null,'pv-answer-form'),fields=new Map(),requiredFields=new Set();
  for(const spec of options.fields||[]){const label=el('label',null,'pv-field');label.append(el('span',spec.label||'Запиши ответ.'));let input;
   if(spec.options){input=el('select');for(const entry of spec.options){const option=el('option',Array.isArray(entry)?entry[1]:typeof entry==='object'?entry.label:entry);option.value=String(Array.isArray(entry)?entry[0]:typeof entry==='object'?entry.value:entry);input.append(option);}}
   else{input=el(spec.type==='textarea'?'textarea':'input');if(input.tagName==='INPUT'){input.type=spec.type==='number'?'text':(spec.type||'text');input.inputMode=spec.inputMode||'decimal';}input.autocomplete='off';if(global.OgeCourseSharedMode)input.maxLength=100;}
   input.dataset.pvField=spec.key;input.name=spec.key;input.value=spec.value??'';input.setAttribute('aria-label',spec.label||'Ответ');if(spec.placeholder)input.placeholder=spec.placeholder;
+  if(spec.required!==false){requiredFields.add(input);input.setAttribute('aria-required','true');}
   fields.set(spec.key,input);label.append(input);form.append(label);
  }
  const values=()=>Object.fromEntries([...fields].map(([key,input])=>[key,input.value]));
  const cleanDraft=input=>{if(global.OgeCourseSharedMode)input.value=input.value.replace(/[<>\u0000-\u001f]/g,'').slice(0,100);};
- for(const input of fields.values()){input.addEventListener('input',()=>{if(!locked){cleanDraft(input);lastCheck=false;feedback.replaceChildren();card.dataset.result='';options.onDraft?.(values());}});input.addEventListener('change',()=>{if(!locked){cleanDraft(input);lastCheck=false;feedback.replaceChildren();card.dataset.result='';options.onDraft?.(values());}});}
+ for(const input of fields.values()){input.addEventListener('input',()=>{if(!locked){cleanDraft(input);input.removeAttribute('aria-invalid');lastCheck=false;feedback.replaceChildren();card.dataset.result='';options.onDraft?.(values());}});input.addEventListener('change',()=>{if(!locked){cleanDraft(input);input.removeAttribute('aria-invalid');lastCheck=false;feedback.replaceChildren();card.dataset.result='';options.onDraft?.(values());}});}
  const check=el('button','Проверить ответ','pv-check');check.type='submit';
  const feedback=el('div',null,'pv-feedback');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
  let locked=false,lastCheck=!!options.status,helpUsed=false;
  function show(result){if(!result)return;feedback.replaceChildren();result.html?append(feedback,result.html):feedback.append(doc.createTextNode(result.message||''));feedback.classList.toggle('pv-correct',result.ok===true);feedback.classList.toggle('pv-incorrect',result.ok===false);card.dataset.result=result.ok===true?'correct':result.ok===false?'incorrect':'';if(result.locked||result.ok===true){locked=true;for(const input of fields.values())input.disabled=true;check.disabled=true;}}
  show(typeof options.status==='object'?options.status:options.status?{ok:true,message:'Ответ уже проверен.'}:null);
- form.addEventListener('submit',async event=>{event.preventDefault();if(locked)return;check.disabled=true;try{lastCheck=true;const result=await options.check(values());show(result);}catch(error){feedback.textContent='Не удалось проверить ответ. Попробуй ещё раз.';global.console.error(error);}finally{check.disabled=locked;if(!locked)check.focus();else{feedback.tabIndex=-1;feedback.focus();}}});
+ form.addEventListener('submit',async event=>{
+  event.preventDefault();if(locked)return;
+  for(const input of fields.values())input.removeAttribute('aria-invalid');
+  const missing=Array.from(requiredFields).find(input=>!input.value.trim());
+  if(missing){
+   lastCheck=false;
+   missing.setAttribute('aria-invalid','true');
+   const label=missing.getAttribute('aria-label')||'Ответ';
+   show({message:(missing.tagName==='SELECT'?'Выбери значение в поле «':'Заполни поле «')+label+'».'});
+   missing.focus();return;
+  }
+  check.disabled=true;
+  try{lastCheck=true;const result=await options.check(values());show(result);}
+  catch(error){feedback.textContent='Не удалось проверить ответ. Попробуй ещё раз.';global.console.error(error);}
+  finally{check.disabled=locked;if(!locked)check.focus();else{feedback.tabIndex=-1;feedback.focus();}}
+ });
  form.append(check,feedback);card.append(form);
  const assistance=help({page:options.page||doc.body.dataset.practicalPage,type:options.helpType,text:condition.textContent,steps:options.helpSteps,native:options.helpNative});card.append(assistance);
  assistance.addEventListener('click',()=>{helpUsed=true;},true);assistance.addEventListener('input',()=>{helpUsed=true;},true);assistance.addEventListener('toggle',()=>{if(assistance.querySelector('details[open]'))helpUsed=true;},true);

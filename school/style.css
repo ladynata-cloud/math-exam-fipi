@@ -53,3 +53,8 @@ main:focus-visible{outline:none}
 .m9-mission .row>label{min-width:0;max-width:100%;flex:1 1 160px}.m9-mission input{display:block;width:100%;box-sizing:border-box}
 
 .m9-target{fill:#5773c6;stroke:white;stroke-width:2}
+
+/* The navigator has its own space while a prediction model is mounted.
+   Layout containment anchors its fixed shadow controls to this footer host,
+   so the launcher cannot cover instructions or answers at any scroll position. */
+body:has(#model [data-model-inquiry]) #maxexam-public-assistant{display:block;position:relative;contain:layout;min-height:96px}

@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "courseId": "atanasyan-first-steps",
   "topic": "atanasyan-course-step",
-  "courseSha256": "9c269243f2940f0f86d5ba5ee918759cd52c19152f006f093bb2412447ba2776",
-  "sourceSha256": "84563ef900b15174be7f4dcb03bd450254bcce7789a90a364ae4b9ddf2de4911",
+  "courseSha256": "5015852dfc64da82c72b0489b88ec9d086cb416e30dc18cbaf0dfe260b44bd5a",
+  "sourceSha256": "39cbb16a09ac77541fba4fe175f6f344a762c47606b7324b60fd23b1b9dc6c7d",
   "lessons": [
     {
       "id": "atanasyan-7-9-theory-1-part-1",

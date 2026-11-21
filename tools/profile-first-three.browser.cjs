@@ -115,11 +115,20 @@ const server = http.createServer((req, res) => {
     for (const number of [1, 2, 3]) {
       await go('#first-three');
       await page.locator('.exam-card[href="#exam/' + number + '"]').click();
-      await page.locator('.exam-topic').first().waitFor();
-      assert.equal(await page.locator('.exam-topic').count(), firstThree.filter(l => l.position === number).length);
-      assert.equal(new URL(page.url()).hash, '#exam/' + number);
-      await page.locator('#exam-start').click();
+      if (number === 2) {
+        const entry = page.locator('[data-vector-basics-entry]');
+        await entry.waitFor();
+        assert.equal(new URL(page.url()).hash, '#exam/2');
+        assert.equal(await page.locator('[data-vector-exam-practice]').count(), 0);
+        await entry.locator('[data-exam-start="2"]').click();
+      } else {
+        await page.locator('.exam-topic').first().waitFor();
+        assert.equal(await page.locator('.exam-topic').count(), firstThree.filter(l => l.position === number).length);
+        assert.equal(new URL(page.url()).hash, '#exam/' + number);
+        await page.locator('#exam-start').click();
+      }
       await page.locator('#answer-form').waitFor();
+      if (number === 2) assert.equal(new URL(page.url()).hash, '#practice/vec-basics-reading/guided');
       await page.locator('#task-model svg').first().waitFor();
     }
     await page.evaluate(() => localStorage.setItem('mathExamCourseProgress.v1', 'legacy-preserved'));

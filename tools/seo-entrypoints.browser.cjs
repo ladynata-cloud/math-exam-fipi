@@ -15,6 +15,12 @@ const targets = [
   '/trainers/grade6-nod.html',
 ];
 const legacy = ['index.html', 'pythagoras.html', 'times-9.html'];
+const vilenkinUnits = {
+  5: [[14, 'Деление с остатком'], [35, 'Общий знаменатель'],
+    [44, 'Округление и прикидка'], [51, 'Транспортир и построения']],
+  6: [[8, 'Наименьшее общее кратное'], [19, 'Пропорция'],
+    [24, 'Положительные и отрицательные числа'], [43, 'Координатная плоскость']],
+};
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json' };
 const server = http.createServer((req, res) => {
   const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -25,6 +31,70 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream' });
   fs.createReadStream(file).pipe(res);
 });
+
+async function checkVilenkinEntrances(page, origin, javaScriptEnabled) {
+  for (const grade of [5, 6]) {
+    const id = `vilenkin${grade}`;
+    const entry = `/courses/vilenkin-${grade}/`;
+    const course = `/school/index.html?course=${id}#course/${id}`;
+    await page.setViewportSize({ width: 320, height: 900 });
+    await page.goto(`${origin}/courses/`);
+    const card = page.locator('article').filter({ has: page.locator(`h2 a[href="${entry}"]`) });
+    assert.equal(await card.locator(`a[href="${course}"]`).isVisible(), true,
+      `${id}: preserve the direct route from the catalog`);
+    const board = await card.getByRole('link', { name: 'Открыть на доске' }).getAttribute('href');
+    assert.equal(new URL(board, origin).searchParams.get('trainer'), course,
+      `${id}: the board must still open the existing workshop route`);
+    await Promise.all([page.waitForURL(origin + entry), card.locator('h2 a').click()]);
+
+    const heading = page.locator('main h1');
+    assert.equal(await heading.count(), 1);
+    assert.match(await heading.innerText(), /Виленкин/);
+    assert.match(await heading.innerText(), new RegExp(`${grade}\\s*класс`));
+    assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'),
+      `https://mathexam.space${entry}`);
+    for (const [unit, title] of vilenkinUnits[grade]) {
+      const target = `/school/index.html?course=${id}#v${grade}-unit/${unit}`;
+      const topic = page.locator(`#topics a[href="${target}"]`);
+      assert.equal(await topic.isVisible(), true, `${id}: visible link to unit ${unit}`);
+      if (javaScriptEnabled) {
+        await Promise.all([page.waitForURL(origin + target), topic.click()]);
+        assert.equal(await page.locator('#main h1').innerText(), title);
+        await page.goto(origin + entry);
+      }
+    }
+    const start = page.getByRole('link', { name: 'Открыть курс', exact: true });
+    assert.equal(await start.isVisible(), true);
+    assert.equal(await start.getAttribute('href'), course);
+    if (!javaScriptEnabled) continue;
+
+    await Promise.all([page.waitForURL(origin + course), start.click()]);
+    assert.equal(await page.locator('meta[name="robots"]').getAttribute('content'), 'noindex,nofollow');
+    const next = page.getByRole('button', { name: 'Продолжить обучение', exact: true });
+    const lesson = await next.getAttribute('data-value');
+    assert(lesson.startsWith(`v${grade}f-`), `${id}: expected a lesson from this course`);
+    const savedUrl = `${origin}/school/index.html?course=${id}#lesson/${lesson}`;
+    await Promise.all([page.waitForURL(savedUrl), next.click()]);
+    await page.getByRole('button', { name: 'Тренировка', exact: true }).click();
+    await page.locator('#answer').fill('ошибочный ответ');
+    await page.getByRole('button', { name: 'Проверить', exact: true }).click();
+    const savedAttempt = () => page.evaluate(() =>
+      JSON.parse(localStorage.getItem(window.WorkshopState.KEY)).events.at(-1));
+    const attempt = await savedAttempt();
+    assert.equal(attempt.skill, lesson);
+    assert.equal(attempt.mode, 'practice');
+    assert.equal(attempt.correct, false);
+
+    // A saved lesson URL still opens the same lesson with its history in the browser.
+    const lessonHeading = await page.locator('#main h1').innerText();
+    await page.goto(origin + entry);
+    await page.goto(savedUrl);
+    assert.equal(await page.locator('#main h1').innerText(), lessonHeading);
+    assert.equal(await page.locator('#answer').isVisible(), true);
+    assert.deepEqual(await savedAttempt(), attempt);
+  }
+  console.log(`SEO_VILENKIN_ENTRANCES_OK: two catalog entrances, eight topic links and original workshop routes, JavaScript ${javaScriptEnabled}`);
+}
 
 (async () => {
   let browser;
@@ -38,6 +108,7 @@ const server = http.createServer((req, res) => {
       const page = await context.newPage();
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
+      await checkVilenkinEntrances(page, origin, javaScriptEnabled);
       for (let i = 0; i < legacy.length; i++) {
         await page.goto(`${origin}/trainers/multiplication-table/${legacy[i]}?source=compat-check#saved-route`, { waitUntil: 'commit' });
         await page.waitForURL(url => url.pathname === targets[i]);

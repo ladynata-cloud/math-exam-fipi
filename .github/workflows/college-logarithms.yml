@@ -30,7 +30,9 @@ permissions:
 jobs:
   mathematics-and-journeys:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Include occasional slow Ubuntu font downloads in Playwright setup.
+    # All mathematical and browser assertions remain unchanged.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -50,6 +52,7 @@ jobs:
           node --check trainers/college-logarithms/board-mode.js
           node --check trainers/college-logarithms/board.js
           node --test trainers/college-logarithms/*.test.cjs
+          node --test trainers/college-logarithms/intro/*.test.cjs
           node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
           git diff --check
       - name: Install pinned real browser
@@ -57,4 +60,13 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/log-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
           "$RUNNER_TEMP/log-browser/node_modules/.bin/playwright" install --with-deps chromium
       - name: Real teacher and pupil browsers, board ink, reload and mobile layout
-        run: NODE_PATH="$RUNNER_TEMP/log-browser/node_modules" node trainers/college-logarithms/browser.cjs
+        run: |
+          NODE_PATH="$RUNNER_TEMP/log-browser/node_modules" node trainers/college-logarithms/browser.cjs
+          SCREENSHOT_DIR="$RUNNER_TEMP/log-intro-shots" NODE_PATH="$RUNNER_TEMP/log-browser/node_modules" node trainers/college-logarithms/intro/browser.cjs
+      - name: Preserve introduction screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: logarithm-intro-screenshots
+          path: ${{ runner.temp }}/log-intro-shots
+          if-no-files-found: ignore

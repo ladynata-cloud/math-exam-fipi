@@ -148,8 +148,18 @@
       ],
       "mainParts": 50,
       "cards": 50
+    },
+    {
+      "key": "8-advanced-824-841",
+      "label": "8 класс · повышенная трудность",
+      "exerciseNumbers": [
+        824,
+        841
+      ],
+      "mainParts": 18,
+      "cards": 18
     }
   ],
-  "totalCards": 1407,
+  "totalCards": 1425,
   "fullTextbookComplete": false
 }

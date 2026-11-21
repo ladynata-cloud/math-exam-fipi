@@ -5,15 +5,59 @@
  function txt(x,y,s,anchor){return '<text x="'+x+'" y="'+y+'" text-anchor="'+(anchor||'middle')+'">'+esc(s)+'</text>';}
  function line(x,y,X,Y,cl){return '<line x1="'+x+'" y1="'+y+'" x2="'+X+'" y2="'+Y+'" class="'+(cl||'stroke')+'"/>';}
  function controls(params){return '<div class="model-controls">'+params.map(function(p){return '<label>'+esc(p[1])+' <input type="range" data-param="'+p[0]+'" min="'+p[2]+'" max="'+p[3]+'" step="'+(p[5]||1)+'" value="'+p[4]+'"><output>'+p[4]+'</output></label>';}).join('')+'</div>';}
+ // Each question concerns a change not yet shown by the model. These are
+ // ungraded investigations: neither answering nor revealing writes progress.
+ function experiment(p){
+  var M=root.WorkshopMath,k=p.kind,a=Number(p.a),b=Number(p.b),n=Number(p.n),d=Number(p.d),after=Object.assign({},p),question,answer,why;
+  if(k==='fraction'){
+   if(d<=12){after.n=2*n;after.d=2*d;question='Сейчас закрашено '+n+'/'+d+' целого. Разрежем каждую долю пополам, сохранив закраску. Какую часть прежнего целого займёт закраска?';answer=M.q(n,d);why='Размер целого и закрашенная площадь сохранились. Долей стало вдвое больше, и каждая вдвое меньше: '+n+'/'+d+' = '+after.n+'/'+after.d+'.';}
+   else{after.n=n>=4*d?n-1:n+1;question='Сейчас закрашено '+n+'/'+d+' целого. '+(after.n>n?'Добавим':'Уберём')+' одну такую же долю. Какая часть целого будет закрашена?';answer=M.q(after.n,d);why='Размер доли остался 1/'+d+'. Изменилось количество долей, а знаменатель сохранился.';}
+  }else if(k==='percent'){
+   after.total=Number(p.total)+(Number(p.total)>980?-20:20);question='Целое было '+p.total+', станет '+after.total+'. Процент остаётся '+p.percent+'%. Чему будет равна часть нового целого?';answer=M.mul(M.parse(String(after.total)),M.div(M.parse(String(p.percent)),100));why='Сначала назови новое целое: '+after.total+'. Одна сотая равна '+M.fmt(M.div(M.parse(String(after.total)),100))+'. Берём '+p.percent+' таких долей. Процент прежний; величина части может измениться.';
+  }else if(k==='area'){
+   var direction=b>1&&a<12?1:-1;after.a=a===1&&b===1?2:a+direction;after.b=a===1&&b===1?1:b-direction;question='Стороны прямоугольника '+a+' и '+b+'. Сделаем их '+after.a+' и '+after.b+'. Какой станет площадь?';answer=after.a*after.b;why='Площадь считаем единичными квадратами: '+after.a+' · '+after.b+' = '+answer+'. '+(a+b===after.a+after.b?'Сумма сторон и периметр сохранились. Одинаковый периметр не гарантирует одинаковую площадь.':'Добавилась полоса шириной 1; её площадь равна '+b+'.');
+  }else if(k==='array'){
+   after.b=b>=12?b-1:b+1;question='В каждом ряду '+a+' клеток, рядов '+b+'. '+(after.b>b?'Добавим':'Уберём')+' один такой же ряд. Сколько всего клеток получится?';answer=a*after.b;why='В одном ряду '+a+' клеток. Стало '+after.b+' рядов: '+a+' · '+after.b+' = '+answer+'.';
+  }else if(k==='line'){
+   after.b=-b;question='Начинаем в точке '+a+'. Заменим изменение '+b+' противоположным: '+(-b)+'. В какой точке закончим?';answer=a-b;why='Начальная точка остаётся '+a+'. Меняется только направление изменения; '+a+' + ('+(-b)+') = '+answer+'. Нулевое изменение оставляет точку на месте.';
+  }else if(k==='ratio'||k==='bars'){
+   after.a=a>=1000?a-1:a*2;question='Первая часть '+a+', вторая '+b+'. '+(after.a===2*a?'Удвоим только первую часть.':'Изменим только первую часть на '+after.a+'.')+' Какую долю нового целого составит первая часть?';answer=M.q(after.a,after.a+b);why='Новое целое — сумма новых частей: '+after.a+' + '+b+' = '+(after.a+b)+'. Доля первой части равна '+after.a+'/'+(after.a+b)+'. Изменение только одной части меняет отношение.';
+  }else if(k==='multiples'){
+   after.b=b===2*a?a+1:2*a;question='Первое число '+a+' сохраняем, второе меняем с '+b+' на '+after.b+'. Какое наименьшее положительное число разделится на оба без остатка?';answer=a*after.b/M.gcd(a,after.b);why=after.b===2*a?'Второе число уже делится на первое. Оно и есть наименьшее общее кратное; произведение чисел здесь не обязательно.':'Соседние натуральные числа взаимно просты. Их наименьшее общее кратное равно произведению.';
+  }else if(k==='decimal'){
+   after.n=n>=1000000?n-d:n+d;question='Число содержит '+n+' долей размера 1/'+d+'. '+(after.n>n?'Добавим':'Уберём')+' одно целое, то есть '+d+' таких долей. Какое число получится?';answer=M.q(after.n,d);why='Одно целое содержит '+d+' долей. Получаем '+after.n+'/'+d+'. Изменение на целое не меняет дробную часть.';
+  }else if(k==='place'){
+   after.n=n>=1000000?n-10:n+10;question='Число '+n+'. '+(after.n>n?'Добавим':'Уберём')+' один десяток. Какое число получится?';answer=after.n;why='Один десяток — это 10 единиц. Десять десятков можно обменять на сотню и обратно.';
+  }else return null;
+  return {before:Object.assign({},p),after:after,question:question,answer:answer,why:why};
+ }
  function mount(el,original){
-  var p=Object.assign({},original),angle=35,selected={x:0,y:0},drag=false;
+  var p=Object.assign({},original),angle=35,selected={x:0,y:0},drag=false,inquiry=experiment(p),prediction=null,previous=null;
+  function renderInquiry(){
+   var box=el.querySelector('[data-model-inquiry]');if(!box||!inquiry)return;
+   box.innerHTML='<p><b>Предскажи изменение</b></p><p>'+esc(inquiry.question)+'</p><label class="label">Твой прогноз <input data-model-prediction autocomplete="off" style="display:block;width:100%;max-width:100%;box-sizing:border-box"'+(prediction?' disabled':'')+' value="'+esc(prediction&&prediction.value||'')+'"></label><div class="row"><button type="button" class="quiet" data-model-check'+(prediction?' disabled':'')+'>Проверить на модели</button><button type="button" class="quiet" data-model-reveal'+(prediction?' disabled':'')+'>Показать изменение</button>'+(prediction?'<button type="button" class="quiet" data-model-again>Новый опыт с этими числами</button>':'')+'</div><p data-model-feedback role="status">'+(prediction?esc((prediction.revealed?'Изменение показано без прогноза.':prediction.correct?'Первый прогноз верен.':'Первый прогноз: '+prediction.value+'. Сравни его с моделью.')+' '+inquiry.why+' Результат: '+root.WorkshopMath.fmt(inquiry.answer)+'.'):'')+'</p>'+(previous?'<details data-model-previous><summary>Предыдущий прогноз</summary><p>'+esc(previous.question)+'</p><p>'+esc(previous.text)+'</p></details>':'')+'<p class="tiny">Опыт помогает разобраться и не засчитывается как самостоятельное решение. После него выбери «Проверить себя», чтобы получить новое задание.</p>';
+  }
+  function refreshInquiry(){
+   if(!inquiry)return;
+   var input=el.querySelector('[data-model-prediction]'),value=input&&input.value.trim();
+   if(prediction||value)previous={question:inquiry.question,text:prediction?(prediction.revealed?'Показано без прогноза.':'Первый прогноз: '+prediction.value+'.')+' Результат: '+root.WorkshopMath.fmt(inquiry.answer)+'. '+inquiry.why:'Черновик прогноза: '+value+'. Проверка не выполнялась.'};
+   inquiry=experiment(p);prediction=null;renderInquiry();
+  }
+  function checkPrediction(reveal){
+   if(!inquiry||prediction)return;
+   var input=el.querySelector('[data-model-prediction]'),value=input.value.trim();
+   if(!reveal&&!value){el.querySelector('[data-model-feedback]').textContent='Сначала запиши прогноз или выбери «Показать изменение».';input.focus();return;}
+   prediction={value:value,revealed:reveal,correct:!reveal&&root.WorkshopMath.equal(value,inquiry.answer)};
+   p=Object.assign({},inquiry.after);draw(true);renderInquiry();
+   el.querySelector('[data-model-again]').focus();
+  }
   function draw(keep){
    var body='',form='',caption='',k=p.kind||'flow',i,j,a=Number(p.a)||1,b=Number(p.b)||1,svgHeight;
    if(k==='fraction'){
     var d=p.d,n=p.n,rows=Math.max(1,Math.ceil(n/d)),cell=440/d,h=34;svgHeight=Math.max(290,45+rows*h+50);
-    for(i=0;i<Math.max(d,rows*d);i++)body+='<rect data-cell="'+i+'" x="'+(60+i%d*cell)+'" y="'+(45+Math.floor(i/d)*h)+'" width="'+(cell-3)+'" height="'+(h-3)+'" rx="3" class="'+(i<n?'fill':'empty')+'"/>';
+    for(i=0;i<Math.max(d,rows*d);i++)body+='<rect data-cell="'+i+'" x="'+(60+i%d*cell)+'" y="'+(45+Math.floor(i/d)*h)+'" width="'+cell+'" height="'+(h-3)+'" class="'+(i<n?'fill':'empty')+'"/>';
     body+=txt(280,svgHeight-25,n+'/'+d+' = '+root.WorkshopMath.fmt(root.WorkshopMath.q(n,d)));
-    form=controls([['n','Число взятых долей',0,Math.max(n,d*4),n],['d','Число равных частей',2,12,d]]);
+    form=controls([['n','Число взятых долей',0,Math.max(n,d*4),n],['d','Число равных частей',1,Math.max(12,d),d]]);
     caption='Нажимай на части или двигай ползунки. Знаменатель задаёт размер доли, числитель — количество взятых долей. Целые полоски имеют один размер.';
    }else if(k==='area'||k==='array'){
     var cell=Math.min(420/Math.max(1,a),170/Math.max(1,b),38);
@@ -61,9 +105,9 @@
    }else if(k==='percent'){
     var count=p.percent;
     for(i=0;i<100;i++)body+='<rect x="'+(135+i%10*22)+'" y="'+(10+Math.floor(i/10)*22)+'" width="19" height="19" rx="3" class="'+(i<count?'fill':'empty')+'"/>';
-    body+=txt(280,267,count+'% от '+p.total+' = '+Number((p.total*count/100).toFixed(4)));
-    form=controls([['percent','Проценты',0,100,count]]);
-    caption='Каждая клетка — одна сотая целого. Попробуй 1%, 25%, 50%, затем верни исходное значение.';
+    body+=txt(280,267,count+'% от '+p.total+' = '+root.WorkshopMath.fmt(root.WorkshopMath.mul(root.WorkshopMath.parse(String(p.total)),root.WorkshopMath.div(root.WorkshopMath.parse(String(count)),100))));
+    form=controls([['percent','Проценты',0,Math.max(100,count),count],['total','Целое (100%)',1,Math.max(1000,p.total),p.total]]);
+    caption='Сетка — одно целое, 100%. Каждая клетка — его сотая часть. Меняй целое, сохраняя процент: доля закраски та же, величина части другая. Для процентов больше 100 сетка показывает первое целое; результат вычисления учитывает все доли.';
    }else if(k==='ratio'||k==='bars'){
     var width=420,total=a+b,x0=65;
     body+='<rect x="'+x0+'" y="65" width="'+width*a/total+'" height="58" class="fill"/><rect x="'+(x0+width*a/total)+'" y="65" width="'+width*b/total+'" height="58" class="warm-fill"/>';
@@ -116,16 +160,18 @@
    }else{
     var vals=p.values||[2,3,4];body=txt(280,90,'Сначала скобки, затем умножение, затем сложение')+txt(280,160,vals[0]+' + '+vals[1]+' × '+vals[2]+' = '+(vals[0]+vals[1]*vals[2]));form=controls([['v','Значение в скобках',1,10,vals[2]]]);caption='Проверь, как значение внутри скобок влияет на весь результат.';
    }
-   var html='<div class="model-visual">'+svg(body,caption,svgHeight)+'</div>'+form+'<p class="model-caption">'+esc(caption)+'</p><button type="button" class="quiet" data-reset>Вернуть числа из задачи</button><p class="tiny">Это исследование модели. Изменение ползунков не меняет условие задания ниже.</p>';
+   var html='<div class="model-visual">'+svg(body,caption,svgHeight)+'</div>'+form+'<p class="model-caption">'+esc(caption)+'</p><button type="button" class="quiet" data-reset>Вернуть числа из задачи</button><p class="tiny">Это исследование модели. Изменение ползунков не меняет условие задания ниже.</p>'+(inquiry?'<section data-model-inquiry></section>':'');
    if(keep){var temp=document.createElement('div');temp.innerHTML=html;el.querySelector('.model-visual').innerHTML=temp.querySelector('.model-visual').innerHTML;el.querySelector('.model-caption').textContent=temp.querySelector('.model-caption').textContent;el.querySelectorAll('[data-param]').forEach(function(input){var fresh=temp.querySelector('[data-param="'+input.dataset.param+'"]');if(fresh){input.min=fresh.min;input.max=fresh.max;input.value=fresh.value;input.nextElementSibling.value=fresh.value;}});}else el.innerHTML=html;
    if(k==='coordinate'){
     var canvas=el.querySelector('svg'),move=function(e){var rect=canvas.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*560,y=(e.clientY-rect.top)/rect.height*290;selected={x:Math.max(-5,Math.min(5,Math.round((x-280)/34))),y:Math.max(-4,Math.min(4,Math.round((145-y)/26)))};draw(true);};
     canvas.addEventListener('click',move);
    }
+   if(!keep)renderInquiry();
   }
-  el.addEventListener('input',function(e){var input=e.target;if(!input.dataset.param)return;var key=input.dataset.param,v=Number(input.value);if(p.kind==='coordinate')selected[key]=v;else if(key==='rotation')angle=v;else if(key.indexOf('bar')===0){p.values=p.values.slice();p.values[Number(key.slice(3))]=v;}else if(key==='v')p.values=[p.values[0],p.values[1],v];else p[key]=v;draw(true);});
-  el.addEventListener('click',function(e){if(e.target.closest('[data-reset]')){p=Object.assign({},original);selected={x:0,y:0};angle=35;draw();}var cell=e.target.closest('[data-cell]');if(cell){p.n=Number(cell.dataset.cell)+1;draw(true);}});
+  el.addEventListener('input',function(e){var input=e.target;if(!input.dataset.param)return;var key=input.dataset.param,v=Number(input.value);if(p.kind==='coordinate')selected[key]=v;else if(key==='rotation')angle=v;else if(key.indexOf('bar')===0){p.values=p.values.slice();p.values[Number(key.slice(3))]=v;}else if(key==='v')p.values=[p.values[0],p.values[1],v];else p[key]=v;draw(true);refreshInquiry();});
+  el.addEventListener('click',function(e){if(e.target.closest('[data-reset]')){p=Object.assign({},original);selected={x:0,y:0};angle=35;inquiry=experiment(p);prediction=null;previous=null;draw();el.querySelector('[data-reset]').focus();}if(e.target.closest('[data-model-check]'))checkPrediction(false);if(e.target.closest('[data-model-reveal]'))checkPrediction(true);if(e.target.closest('[data-model-again]')){refreshInquiry();el.querySelector('[data-model-prediction]').focus();}var cell=e.target.closest('[data-cell]');if(cell){p.n=Number(cell.dataset.cell)+1;draw(true);refreshInquiry();}});
+  el.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.matches('[data-model-prediction]')){e.preventDefault();checkPrediction(false);}});
   draw();
  }
- root.WorkshopModels={mount:mount};
+ root.WorkshopModels={mount:mount,experiment:experiment};
 })(window);

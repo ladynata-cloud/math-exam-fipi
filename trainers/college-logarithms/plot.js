@@ -1,17 +1,52 @@
-(function(root){'use strict';const C=root.LogCourseCore,E=C.E,esc=E.escapeHTML;
-// Fixed coordinate window makes horizontal and vertical translations visible.
-function bounds(){return {xmin:-5,xmax:10,ymin:-6,ymax:6};}
-function render(svg,p,points=[],curve=true){const b=bounds(p),X=x=>48+(x-b.xmin)/(b.xmax-b.xmin)*528,Y=y=>340-(y-b.ymin)/(b.ymax-b.ymin)*310;let s='<defs><clipPath id="'+svg.id+'-clip"><rect x="48" y="30" width="528" height="310"/></clipPath></defs>';
-for(let x=Math.ceil(b.xmin);x<=b.xmax;x++){s+=`<path d="M${X(x)} 30V340" stroke="#dce7df"/><text x="${X(x)}" y="360" font-size="16" text-anchor="middle" fill="#466158">${x}</text>`;}
-for(let y=Math.ceil(b.ymin);y<=b.ymax;y++){s+=`<path d="M48 ${Y(y)}H576" stroke="#dce7df"/><text x="35" y="${Y(y)+5}" font-size="16" text-anchor="end" fill="#466158">${y}</text>`;}
-if(0>=b.xmin&&0<=b.xmax)s+=`<path d="M${X(0)} 30V340" stroke="#627d70" stroke-width="2"/>`;
-if(0>=b.ymin&&0<=b.ymax)s+=`<path d="M48 ${Y(0)}H576" stroke="#627d70" stroke-width="2"/>`;
-s+='<text x="580" y="365" font-size="16">x</text><text x="18" y="22" font-size="16">y</text>';
-if(curve){s+=`<path data-asymptote d="M${X(p.h)} 30V340" stroke="#bc712b" stroke-width="2" stroke-dasharray="6 5"/><text x="${X(p.h)+7}" y="22" font-size="15" fill="#97551c">x = ${p.h}</text>`;let d='';
-// Sample by y, so the curve approaches the asymptote without artificial segments across it.
-for(let i=0;i<=400;i++){const y=b.ymin+(b.ymax-b.ymin)*i/400,x=p.h+p.a**(y-p.k);d+=(i?'L':'M')+X(x).toFixed(2)+' '+Y(y).toFixed(2);}
-s+=`<path data-curve d="${d}" clip-path="url(#${svg.id}-clip)" stroke="#14664d" stroke-width="3" fill="none"/>`;}
-for(const [x,y] of points)s+=`<g data-point><circle cx="${X(x)}" cy="${Y(y)}" r="6" fill="#14664d" stroke="white" stroke-width="2"/><text x="${X(x)+9}" y="${Y(y)-10}" fill="#183c36" font-size="16">${esc('('+E.formatNumber(x)+'; '+E.formatNumber(y)+')')}</text></g>`;
-svg.innerHTML=s;svg.setAttribute('aria-label',`Логарифмический график, основание ${E.formatNumber(p.a)}, сдвиги ${p.h} и ${p.k}. Отмечено точек: ${points.length}.`);}
-function coordinates(svg,event,p){const r=svg.getBoundingClientRect(),b=bounds(p),sx=(event.clientX-r.left)*600/r.width,sy=(event.clientY-r.top)*380/r.height;if(sx<48||sx>576||sy<30||sy>340)return null;return [Math.round((b.xmin+(sx-48)/528*(b.xmax-b.xmin))*4)/4,Math.round((b.ymin+(340-sy)/310*(b.ymax-b.ymin))*4)/4];}
-root.LogCoursePlot={render,coordinates};})(window);
+(function (root) {
+  'use strict';
+  const E = root.LogCourseCore.E;
+  const width = 600, height = 380;
+  // A fixed window lets learners compare translations on the same grid.
+  const xmin = -5, xmax = 10, ymin = -6, ymax = 6;
+  const top = 30, bottom = 340, scale = (bottom - top) / (ymax - ymin);
+  const left = (width - (xmax - xmin) * scale) / 2;
+  const right = left + (xmax - xmin) * scale;
+  const X = x => left + (x - xmin) * scale;
+  const Y = y => top + (ymax - y) * scale;
+
+  function render(svg, p, points = [], curve = true) {
+    const clip = svg.id + '-clip';
+    let s = `<defs><clipPath id="${clip}"><rect x="${left}" y="${top}" width="${right - left}" height="${bottom - top}"/></clipPath></defs>`;
+    for (let x = xmin; x <= xmax; x++) {
+      s += `<path d="M${X(x)} ${top}V${bottom}" stroke="#dce7df"/><text x="${X(x)}" y="${bottom + 20}" font-size="16" text-anchor="middle" fill="#466158">${x}</text>`;
+    }
+    for (let y = ymin; y <= ymax; y++) {
+      s += `<path d="M${left} ${Y(y)}H${right}" stroke="#dce7df"/><text x="${left - 13}" y="${Y(y) + 5}" font-size="16" text-anchor="end" fill="#466158">${y}</text>`;
+    }
+    s += `<path d="M${X(0)} ${top}V${bottom}M${left} ${Y(0)}H${right}" fill="none" stroke="#627d70" stroke-width="2"/>`;
+    s += `<text x="${right + 10}" y="${Y(0) + 5}" font-size="16">x</text><text x="${left - 20}" y="22" font-size="16">y</text>`;
+    if (curve) {
+      s += `<path data-asymptote d="M${X(p.h)} ${top}V${bottom}" stroke="#bc712b" stroke-width="2" stroke-dasharray="6 5"/><text x="${X(p.h) + 7}" y="22" font-size="15" fill="#97551c">x = ${p.h}</text>`;
+      // Sample by y so the curve approaches the asymptote from its defined side.
+      let d = '';
+      for (let i = 0; i <= 400; i++) {
+        const y = ymin + (ymax - ymin) * i / 400, x = p.h + p.a ** (y - p.k);
+        d += (i ? 'L' : 'M') + X(x).toFixed(2) + ' ' + Y(y).toFixed(2);
+      }
+      s += `<path data-curve d="${d}" clip-path="url(#${clip})" stroke="#14664d" stroke-width="3" fill="none"/>`;
+    }
+    for (const [x, y] of points) {
+      const label = E.escapeHTML('(' + E.formatNumber(x) + '; ' + E.formatNumber(y) + ')');
+      s += `<g data-point><circle cx="${X(x)}" cy="${Y(y)}" r="6" fill="#14664d" stroke="white" stroke-width="2"/><text x="${X(x) + 9}" y="${Y(y) - 10}" fill="#183c36" font-size="16">${label}</text></g>`;
+    }
+    svg.innerHTML = s;
+    svg.setAttribute('aria-label', `Логарифмический график, основание ${E.formatNumber(p.a)}, сдвиги ${p.h} и ${p.k}. Отмечено точек: ${points.length}.`);
+  }
+
+  function coordinates(svg, event) {
+    const rect = svg.getBoundingClientRect(), displayScale = Math.min(rect.width / width, rect.height / height);
+    if (!displayScale) return null;
+    const x = (event.clientX - rect.left - (rect.width - width * displayScale) / 2) / displayScale;
+    const y = (event.clientY - rect.top - (rect.height - height * displayScale) / 2) / displayScale;
+    if (x < left || x > right || y < top || y > bottom) return null;
+    return [Math.round((xmin + (x - left) / scale) * 4) / 4, Math.round((ymax - (y - top) / scale) * 4) / 4];
+  }
+
+  root.LogCoursePlot = { render, coordinates };
+})(window);

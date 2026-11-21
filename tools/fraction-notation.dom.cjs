@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{JSDOM}=require('jsdom');
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'ege-baza/path');
 const html=fs.readFileSync(dir+'/index.html','utf8');
-function mount(){const dom=new JSDOM(html,{url:'https://mathexam.space/ege-baza/path/index.html#lesson=grade7-b-fraction-product-cancel',runScripts:'outside-only'});const w=dom.window;w.scrollTo=()=>{};for(const src of [...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split('?')[0])){if(src.includes('learning-bridge')||src.includes('practice-entry')||src==='managed.js')continue;w.eval(fs.readFileSync(path.resolve(dir,src),'utf8'));}return {dom,w,$:s=>w.document.querySelector(s)};}
+function mount(){const dom=new JSDOM(html,{url:'https://mathexam.space/ege-baza/path/index.html#lesson=grade7-b-fraction-product-cancel',runScripts:'outside-only'});const w=dom.window;w.scrollTo=()=>{};for(const src of [...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split('?')[0])){if(src.includes('learning-bridge')||src.includes('practice-entry')||src==='managed.js')continue;const scriptURL=new URL(src,w.location.href);assert.equal(scriptURL.origin,w.location.origin);w.eval(fs.readFileSync(path.join(root,scriptURL.pathname),'utf8'));}return {dom,w,$:s=>w.document.querySelector(s)};}
 const f=mount(),M=f.w.PathPracticeView.math;
 for(const text of ['1 1/7 · 7/6','−2/3 + 5/8','Ответ: 0/5','12/17']){const el=f.w.document.createElement('p');el.innerHTML=M(text);assert.equal(el.textContent,text);assert(el.querySelector('.math-fraction .numerator'));assert(el.querySelector('.math-fraction .denominator'));}
 for(const text of ['https://example.com/2/3','19/10/2026','x2/3'])assert(!M(text).includes('math-fraction'));

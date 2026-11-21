@@ -1,0 +1,89 @@
+# Percent mode menu remains visible
+
+## Identity
+- Task: PERCENT_HEADER_WRAP_20261109
+- Owner: MathExam owner; overnight approved implementation
+- Date: 2026-11-09 Asia/Novosibirsk
+- Base branch/SHA: main, 35b11556
+- Planned branch: fix/percent-header-wrap-20261109
+- Review level: MEDIUM
+- ADR: no architecture change
+
+## Goal and evidence
+Actual Chromium screenshots from percent mini-check CI at 320 and 768 pixels show
+clipped navigation after selecting a mode. `practical-minimal.js` wraps `.main-nav`
+in native details inside `.nav-scroll`. The original max-content single-row nav
+makes that outer scroll container scroll the summary too. Keeping the menu and
+all five choices visible makes returning to the current exercise practical.
+
+## Approved scope
+Only percent-page scoped CSS (including the demonstrated review-table overflow), a dedicated Chromium regression/workflow, and this
+specification. Wrap mode buttons and constrain the header menu. Preserve native
+details and keyboard navigation. No engine, mathematics, assistance accounting,
+storage, shared navigation script or floating navigator changes. Compose the
+already reviewed mini-check resume PR before release; do not duplicate its edits.
+
+## Acceptance criteria
+- At 320/390/768/1280 widths, summary and all five open menu buttons remain fully
+  within horizontal viewport bounds after every mode click.
+- Outer header container has no horizontal overflow or scroll offset.
+- Enter opens/closes the native summary; Tab reaches the first mode and Enter
+  activates it. No force clicks or DOM state mutations in the browser fixture.
+- Open/closed screenshots captured with completed CSS animations.
+- Previously reviewed percent resume behavior remains passing after composition.
+- Inline script bytes unchanged by this package.
+
+## Checks and gates
+- `node --test tools/percent-action-clarity.test.cjs tools/oge-practical-minimal.test.cjs`
+- `node tools/percent-header.browser.cjs`, then `--production` after deployment
+- Existing percent-check-resume workflow on the composed candidate
+- Syntax, diff check, unchanged inline script comparison
+- Gate: PERCENT_HEADER_BROWSER_PASS; PERCENT_HEADER_PRODUCTION_PASS only on live
+- Local browser is unavailable due cloud sandbox socket restrictions; actual CI
+  Chromium and screenshot review required. No real-learner effectiveness claim.
+
+## Review plan
+MEDIUM: bounded responsive interaction. Independent code/UX review requested from
+another execution agent. No new teaching pattern or mathematical change; external
+provider review not performed under standing owner policy. Parent release agent
+records exact head, authoritative main, CI and production evidence.
+
+## Risk and rollback
+Risk: wrapping raises header height; inspect all four widths. Native details can
+still collapse it. Roll back the CSS-only change with a normal reviewed revert
+if necessary; no data migration or deletion. Existing mini-check runtime retained.
+
+## Permissions
+Owner's overnight START and standing [publication authorization](../OWNER_RELEASE_AUTHORIZATION.md)
+cover this bounded existing-course UX correction. Branch/commit allowed. Parent
+agent owns source bindings, PR, composition, merge and deployment after checks.
+No separate owner decision or external audit is pending.
+
+## Execution record
+Branch and base as above. Local/CI outcomes and exact candidate hashes supplied
+in handoff; do not treat a queued browser test as passed. No scope deviation.
+
+### Composition verification
+Ordinary merge of published percent-resume main
+`2bf8214d1c391b8f53f19321122712a8a7a90cf1` produced local candidate
+`44ef8c5a039ab921807e8de811b5125b4bdffad2`. Independent comparison confirmed:
+all inline and external script tags match that main byte-for-byte; no external
+script file changed; the HTML delta is exactly the three reviewed scoped CSS
+rules and comment. The composed HTML SHA256 is
+`4df0dbea939309753f07d1abf0d10202fad0e2387c49d9e59cada17b22cf3d67`.
+All 56 tests passed: nine resume regressions plus 47 existing percent-action and
+practical-minimal tests. Browser syntax and diff checks passed. Actual Chromium
+layout, screenshot review and production verification remain pending CI/release;
+local Chromium launch failed with the environment's socket permission restriction.
+Independent focused reviewer found no source/test blocker before composition.
+
+### Browser-discovered review table overflow
+CI run 42525293383 on diagnostic head 4ca1af086ceeb570be5e2aba503598db4db15038
+passed the menu bounds and first four modes at 320 pixels, then found review
+mode document width605. Actual artifact13634853360 shows hint cards width572
+from x33 to605: the 540px table forces an implicit grid track's minimum width.
+One additional percent-only CSS rule uses `minmax(0,1fr)` for hint-stack columns,
+allowing the existing table scroller to contain its table. No content or engine
+changes. The browser retains all menu assertions and aggregates document
+overflows across every mode/width, failing on any nonempty result after capturing
+evidence. Final Chromium outcome remains pending; the failure is not a pass.

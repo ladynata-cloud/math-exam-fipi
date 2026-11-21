@@ -7,6 +7,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const http = require('node:http');
 const os = require('node:os');
+const {spawnSync} = require('node:child_process');
 const {chromium} = require('playwright');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = process.env.ARTIFACT_DIR || path.join(os.tmpdir(), 'pedagogam-topic-pages-qa');
@@ -58,7 +59,7 @@ async function main() {
       await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
       base = 'http://127.0.0.1:' + server.address().port;
     }
-    browser = await chromium.launch({headless:true, args:['--no-sandbox']});
+    browser = await chromium.launch({headless:true, executablePath:process.env.CHROMIUM_PATH || undefined, args:['--no-sandbox']});
     const context = await browser.newContext({acceptDownloads:true});
     if (base !== 'https://mathexam.space') {
       await context.route('https://mathexam.space/**', route => route.continue({url:route.request().url().replace('https://mathexam.space', base)}));
@@ -107,12 +108,14 @@ async function main() {
         await page.screenshot({path:path.join(OUT, topic + '-' + width + '.png'), fullPage:true});
         results.pages++;
         if (width !== WIDTHS[0]) continue;
-        const pdfLinks = page.locator('.download-card a[download][href$=".pdf"]');
+        const pdfLinks = page.locator('.download-card button[data-numbered-source$=".pdf"]');
         assert.equal(await pdfLinks.count(), 4, topic + ' four PDF controls');
         const seenNames = [];
         for (let index = 0; index < await pdfLinks.count(); index++) {
           const link = pdfLinks.nth(index);
-          const href = await link.getAttribute('href');
+          const href = await link.getAttribute('data-numbered-source');
+          assert.equal(await link.getAttribute('href'), null, topic + ' no unnumbered navigation fallback');
+          assert.equal(await link.isEnabled(), true, topic + ' numbered export ready');
           const target = new URL(href, base + route);
           const filename = path.posix.basename(target.pathname);
           seenNames.push(filename);
@@ -121,7 +124,30 @@ async function main() {
           assert.equal(await download.failure(), null, topic + ' PDF download');
           const data = fs.readFileSync(await download.path());
           assert.equal(data.subarray(0,5).toString(), '%PDF-', topic + ' PDF signature');
-          assert.ok(data.equals(fs.readFileSync(path.join(ROOT, route.slice(1), filename))), topic + ' PDF bytes');
+          // Source identity still holds; the actual download now adds permanent
+          // collection labels. Independently verify every page's task area.
+          const sourcePath = path.join(ROOT, route.slice(1), filename);
+          const sourceResponse = await context.request.get(target.href);
+          assert.equal(sourceResponse.status(), 200);
+          assert.ok((await sourceResponse.body()).equals(fs.readFileSync(sourcePath)), topic + ' source PDF bytes');
+          const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'pedagogam/raboty/numbering.json'), 'utf8'));
+          const classNumber = Number(await page.locator('[data-numbering-grade]').getAttribute('data-numbering-grade'));
+          const kind = filename.startsWith('samostoyatelnaya') ? 'sr' : 'kr';
+          const collection = registry.collections.find(item => !item.bookId && item.grade === classNumber);
+          const number = collection[kind].indexOf(topic + ':' + kind) + 1;
+          assert(number > 0, topic + ' registered number');
+          const verified = spawnSync(process.env.PYTHON || 'python3', ['-c', `
+import fitz,sys
+source,dest,number=sys.argv[1:]
+a,b=fitz.open(source),fitz.open(dest)
+assert len(a)==len(b)==4, 'variant page count changed'
+for i,(old,new) in enumerate(zip(a,b),1):
+ rect=fitz.Rect(0,110,old.rect.width,old.rect.height-50)
+ assert old.get_text(clip=rect)==new.get_text(clip=rect), 'task or answer body changed'
+ assert ('№ '+number) in new.get_text(), 'printed work number missing'
+ assert ('Вариант '+str(i)) in new.get_text(), 'variant missing'
+`, sourcePath, await download.path(), String(number)], {encoding:'utf8'});
+          assert.equal(verified.status, 0, verified.stderr || verified.stdout);
           results.downloads++;
         }
         assert.deepEqual(seenNames.sort(), [...PDF_NAMES].sort());

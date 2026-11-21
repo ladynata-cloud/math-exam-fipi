@@ -24,7 +24,7 @@
     if (!firstHint || !start) return false;
 
     // The original action chooses the first practice task exactly once.
-    start.click();
+    if (practice.hidden) start.click();
     if (practice.hidden) return false;
     d.body.dataset.basicsStandalone = percent ? 'percent' : division ? 'division' : 'basic';
     d.body.classList.add('basics-task-first');
@@ -101,6 +101,12 @@
       firstHint.click(); // Native accounting, including existing streak rules.
       capturePercentHint();
     }
+    d.addEventListener('mathexam:skill-support', () => {
+      // Native hint accounting prevents a detour from becoming an independent
+      // success. This live legacy exercise stays open in its original tab.
+      const completed = division ? root.__trainerDebug?.state?.().phase === 'done' : percent ? $('p-check')?.hidden : $('checkTask')?.hidden;
+      if (!practice.hidden && !completed) markUsed();
+    });
     function refresh() {
       scheduled = false;
       capturePercentHint();

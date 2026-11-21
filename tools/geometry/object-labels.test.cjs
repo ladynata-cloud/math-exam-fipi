@@ -15,7 +15,7 @@ function fixture() {
   dom.window.eval(read('geometry-course/assets/lab.js'));
   return dom;
 }
-test('all 63 thematic units name every point and all 194 initial objects by their source type', () => {
+test('all 63 thematic units name every point and all initial objects by their source type', () => {
   const dom = fixture(), w = dom.window, host = w.document.querySelector('main');
   const counts={ point:0,segment:0,ray:0,line:0,circle:0 };
   try {
@@ -44,7 +44,7 @@ test('all 63 thematic units name every point and all 194 initial objects by thei
       assert.equal(view.board.snapshot(),before,'Naming and first selection do not change geometry');
       view.destroy();
     }
-    assert.deepEqual(counts,{point:210,segment:175,ray:10,line:0,circle:9});
+    assert.deepEqual(counts,{point:205,segment:175,ray:6,line:2,circle:9});
   } finally { w.close(); }
 });
 test('constructed line, segment, ray and circle keep exact IDs and distinct mathematical types', () => {

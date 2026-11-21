@@ -23,6 +23,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
@@ -35,7 +36,7 @@ jobs:
         run: |
           node --test tools/oge-practical-*.test.cjs
           node tools/oge-check-links.mjs
-          git diff --check
+          git diff --check "${{ github.event.pull_request.base.sha || github.sha }}" HEAD
       - name: Tire 3D geometry, touch, keyboard and offline package
         env:
           TIRES_3D_ARTIFACTS: artifacts/oge-practical-discovery/tires-3d
@@ -52,6 +53,10 @@ jobs:
         env:
           PRACTICAL_DISCOVERY_ARTIFACTS: artifacts/oge-practical-discovery/new-method
         run: node tools/oge-practical-discovery.browser.cjs
+      - name: Missing input keeps attempts, drafts and focus
+        env:
+          PRACTICAL_EMPTY_INPUT_ARTIFACTS: artifacts/oge-practical-discovery/empty-input
+        run: node tools/oge-practical-empty-input.browser.cjs
       - name: Save coverage and screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

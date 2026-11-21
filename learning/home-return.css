@@ -1,0 +1,24 @@
+.cabinet-home-return {
+  padding: 8px clamp(14px, 3vw, 34px);
+  border-top: 1px solid var(--line, #dfe5dd);
+}
+
+.cabinet-home-return a {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--line, #dfe5dd);
+  border-radius: 10px;
+  background: var(--paper, #fff);
+  color: var(--green, #176c52);
+  font-weight: 600;
+}
+
+/* The full-height practice view provides its own home link in the toolbar. */
+.public-practice-open .cabinet-home-return { display: none; }
+
+@media print {
+  .cabinet-home-return { display: none; }
+}

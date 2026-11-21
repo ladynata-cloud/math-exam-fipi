@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const { resolvePublicScript } = require('./public-page-script.cjs');
 const root = path.resolve(__dirname, '..');
 const directory = path.join(root, 'ege-profil/atanasyan-10-11');
 const textbook = require('../stereo-course/data/textbook.json');
@@ -12,12 +13,16 @@ const context = { window: {} };
 for (const file of ['lessons-a.js', 'lessons-b.js', 'lessons.js']) {
   vm.runInNewContext(fs.readFileSync(path.join(directory, file), 'utf8'), context, { filename: file });
 }
-const { lessons, families } = JSON.parse(JSON.stringify(context.window.AtanasyanCourse));
+const { lessons, families, sectionPractice } = JSON.parse(JSON.stringify(context.window.AtanasyanCourse));
 const authored = [...require('../ege-profil/atanasyan-10-11/lessons-a.js'), ...require('../ege-profil/atanasyan-10-11/lessons-b.js')];
 const unique = (values, label) => assert.equal(new Set(values).size, values.length, label);
 assert.equal(lessons.length, 12);
 assert.equal(families.length, 6);
 for (const key of ['id', 'storageKey', 'trainerId', 'reportName']) unique(lessons.map(lesson => lesson[key]), key);
+const target = new URL(sectionPractice.href, 'https://mathexam.space/ege-profil/atanasyan-10-11/');
+assert.equal(target.pathname, '/stereo-course/sections/');
+const section = require('../stereo-course/sections/data/course.json').lessons.find(l => l.id === target.hash.slice(1));
+assert.ok(section?.starter.reserve && section.result.polygon.length === 3, 'transfer opens an independent triangular construction');
 const points = new Map(textbook.topics.map(topic => [topic.point, topic]));
 const units = new Map(workshop.units.map(unit => [unit.id, unit]));
 let stepCount = 0, fieldCount = 0, modelViews = 0;
@@ -61,6 +66,7 @@ for (const lesson of lessons) {
     if (step.phase === 'б) Вычисление') computation = true;
     if (computation) assert.equal(step.phase, 'б) Вычисление', lesson.id + ': proof must precede computation');
     assert.ok(lesson.model.views[step.modelView], lesson.id + ': unknown model view ' + step.modelView);
+    if (step.promptView) assert.ok(lesson.model.views[step.promptView], lesson.id + ': missing initial drawing');
     assert.equal(step.fields.length, 1, lesson.id + ': exactly one current question');
     assert.doesNotMatch(step.hint, /<[^>]+>/, 'hints render as plain text');
     for (const field of step.fields) {
@@ -114,7 +120,10 @@ for (const name of ['index.html', 'lesson.html']) {
   assert.match(html, /<html lang="ru"/);
   for (const [, url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     if (/^(?:https?:|#)/.test(url)) continue;
-    assert.ok(fs.existsSync(path.resolve(directory, url.split(/[?#]/)[0])), name + ': broken asset ' + url);
+    const pathname = url.split(/[?#]/)[0];
+    const file = pathname.startsWith('/') ? path.resolve(root, '.' + pathname) : path.resolve(directory, pathname);
+    assert.ok(file.startsWith(root + path.sep) && fs.existsSync(file), name + ': broken asset ' + url);
+    if (pathname.endsWith('.js')) assert.equal(resolvePublicScript(root, directory, url), fs.realpathSync(file));
     links++;
   }
   if (name === 'lesson.html') assert.equal((html.match(/guided-lesson\.js/g) || []).length, 1);

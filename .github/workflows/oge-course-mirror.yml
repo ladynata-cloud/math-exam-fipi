@@ -46,7 +46,7 @@ jobs:
         run: |
           node tools/oge-algebra-contract.test.mjs
           node tools/oge-geometry-contract.test.mjs
-          node --test tools/oge-course-algebra.test.cjs tools/oge-course-proof.test.cjs
+          node --test tools/oge-course-algebra.test.cjs tools/oge-course-proof.test.cjs tools/oge8-root-domains.test.cjs tools/oge8-root-interactions.test.cjs
       - name: Native two-window restoration and visible capability
         run: |
           node --test tools/oge-foundation-board.test.cjs tools/oge-native-10-14-board.test.cjs tools/oge-20-22-board.test.cjs tools/oge-part2-geometry-board.test.cjs tools/oge-practical-diagnostic-board.test.cjs tools/oge-percent-table-board.test.cjs tools/oge-practical-variant-board.test.cjs tools/oge-course-board-ui.test.cjs

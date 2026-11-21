@@ -1,0 +1,3 @@
+# Validation reports belong to CI artifacts, not the learner page or source history.
+QA_*.json
+__pycache__/

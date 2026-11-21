@@ -1,10 +1,11 @@
 'use strict';
+const {resolvePublicScript} = require('./public-page-script.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {JSDOM}=require('jsdom');
 const {unit}=require('../ege-profil/start/task-first.js');
 const start=path.resolve(__dirname,'../ege-profil/start');
 const html=fs.readFileSync(path.join(start,'index.html'),'utf8');
-const scripts=[...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map(m=>fs.readFileSync(path.resolve(start,m[1].split(/[?#]/)[0]),'utf8'));
+const scripts=[...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map(m=>fs.readFileSync(resolvePublicScript(path.resolve(__dirname,'..'),start,m[1]),'utf8'));
 const geometry=[...require('../ege-profil/start/geometry-data.js'),...require('../ege-profil/start/stereo-data.js')];
 const KEY='mathexam.profileStart2027.v1';
 function page(hash,initial){
@@ -41,7 +42,7 @@ test('All geometry lessons keep the drawing before requested help, with draft an
   }
 });
 
-test('Catalogue guidance and lesson references start closed, construction stays interactive when requested',()=>{
+test('Lesson research precedes practice and references, construction stays interactive when requested',()=>{
   for(const number of [1,2,3]){
     const dom=page('#calm/'+number),d=dom.window.document;
     try{
@@ -52,8 +53,13 @@ test('Catalogue guidance and lesson references start closed, construction stays 
   }
   const dom=page('#lesson/geo-quadrilaterals'),w=dom.window,d=w.document;
   try{
-    assert.equal(d.querySelector('details.theory').open,false);
-    const lab=d.querySelector('#explore-lab');assert.equal(lab.open,false);lab.querySelector('summary').click();
+    const lab=d.querySelector('#explore-lab'),theory=d.querySelector('details.theory');
+    assert.equal(theory.open,false);
+    assert(lab.compareDocumentPosition(d.querySelector('#guided'))&w.Node.DOCUMENT_POSITION_FOLLOWING);
+    assert(lab.compareDocumentPosition(theory)&w.Node.DOCUMENT_POSITION_FOLLOWING);
+    assert.match(d.querySelector('.research-prediction').textContent,/площади .* диагонали AC/);
+    assert.equal(lab.open,false);lab.querySelector('summary').click();
+    assert.match(lab.querySelector('.research-instructions').textContent,/Провести диагональ.*общую высоту/);
     const input=d.querySelector('[name="prof-construction-height"]'),select=d.querySelector('#lab select');
     input.value='5.75';input.dispatchEvent(new w.Event('input',{bubbles:true}));
     select.value='diagonal';select.dispatchEvent(new w.Event('change',{bubbles:true}));
@@ -87,6 +93,7 @@ test('A recovered theme is labelled separately and never counted as two new inde
     const card=d.querySelector('[data-calm-exam="1"]');
     assert.match(card.textContent,/0 из 6 тем: два новых самостоятельных условия/);
     assert.match(card.textContent,/Закреплено на знакомых задачах: 1/);
-    assert.equal(card.querySelector('[data-exam-start]').textContent,'Повторить без подсказок');
+    assert.equal(card.querySelector('[data-exam-start]').getAttribute('href'),'#practice/geo-angles/independent','clean recovery advances to the next unmastered topic');
+    assert.equal(card.querySelector('[data-exam-start]').textContent,'Начать тему');
   }finally{dom.window.close();}
 });

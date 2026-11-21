@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "created": "2026-11-06",
   "bankPath": "pedagogam/raboty/bank.json",
-  "bankSha256": "c3b748c67b3a18f05e887d2a666a52ed0f35bdd8deabefec5ba682587e04aa7f",
+  "bankSha256": "2233548780c02a7a42a5d484a5e7cc84a9b2cdc217ef36e71b579efe746625a1",
   "authorship": "Original MathExam worksheets. Reused or parameter-adapted reviewed bank patterns are identified per question. These are not official FIPI examination items.",
   "errorReviewFile": "rabota-nad-oshibkami.docx",
   "archive": "mathexam-raboty-word.zip",

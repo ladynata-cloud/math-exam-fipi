@@ -37,7 +37,13 @@
     const x = clean(Math.cos(t)), y = clean(Math.sin(t));
     return {x, y, tan: x === 0 ? null : clean(y / x), cot: y === 0 ? null : clean(x / y), angle: t, normalized: norm(t)};
   }
+  const sliceRelations = ['=', '>', '<', '>=', '<='];
+  function initialRelation(config) {
+    if (sliceRelations.includes(config.relation)) return config.relation;
+    return config.mode === 'slice' ? '=' : '>=';
+  }
   function belongs(value, threshold, relation) {
+    if (relation === '=') return Math.abs(threshold) <= 1 && Math.abs(value - threshold) <= EPS;
     if (relation === '>') return value > threshold + EPS;
     if (relation === '<') return value < threshold - EPS;
     if (relation === '<=') return value <= threshold + EPS;
@@ -50,7 +56,9 @@
     return angles.filter((a, i) => angles.findIndex(b => Math.abs(a - b) < EPS) === i).sort((a,b) => a-b);
   }
   function sliceIntervals(axis, threshold, relation) {
-    const roots = intersections(axis, threshold), cuts = [0, ...roots.filter(a => a > EPS), TAU];
+    const roots = intersections(axis, threshold);
+    if (relation === '=') return {roots, intervals: [], closed: true};
+    const cuts = [0, ...roots.filter(a => a > EPS), TAU];
     const intervals = [];
     for (let i = 1; i < cuts.length; i++) {
       const a = cuts[i-1], b = cuts[i], m = (a+b)/2;
@@ -61,6 +69,29 @@
   const labels = {arc:'Число превращается в путь', angle:'Поворот и положение точки', coordinates:'Координаты точки на окружности', slice:'От координаты к дуге', functions:'Синус, косинус, тангенс и котангенс', compare:'Сравниваем точки, а не рисунки чисел'};
   const snapAngle = (t, denominator) => denominator ? Math.round(t / Math.PI * denominator) * Math.PI / denominator : t;
   const helpers = {norm, radians, radiansInput, snapAngle, exact, values, belongs, intersections, sliceIntervals};
+  const boardKeys = ['angle', 'axis', 'threshold', 'relation', 'revealed', 'snapDenominator', 'angleDraft', 'thresholdDraft', 'axisDraft', 'relationDraft', 'error'];
+  const errors = Object.freeze({
+    '': '',
+    'angle-empty': 'Введите число: например, π/3, −5π/2 или 1,5.',
+    'angle-range': 'Введите конечное число от −1000π до 1000π радиан.',
+    'slice-range': 'Введите границу от −2 до 2. Координаты окружности лежат от −1 до 1.'
+  });
+  function validateBoardState(value, options = {}) {
+    if (!value || typeof value !== 'object' || Array.isArray(value) ||
+      ![Object.prototype, null].includes(Object.getPrototypeOf(value)) || Reflect.ownKeys(value).length !== boardKeys.length ||
+      !boardKeys.every(key => { const d = Object.getOwnPropertyDescriptor(value, key); return d && d.enumerable && Object.hasOwn(d, 'value'); })) return false;
+    if (!Number.isFinite(value.angle) || Math.abs(value.angle) > LIMIT || !['x', 'y'].includes(value.axis) ||
+      !Number.isFinite(value.threshold) || Math.abs(value.threshold) > 2 || !sliceRelations.includes(value.relation) ||
+      typeof value.revealed !== 'boolean' || (!options.practice && !value.revealed) || ![0, 4, 6, 12, 180].includes(value.snapDenominator) ||
+      !['angleDraft', 'thresholdDraft'].every(key => typeof value[key] === 'string' && value[key].length <= 200 && !/<\/?[a-z][^>]*>/i.test(value[key])) ||
+      !['x', 'y'].includes(value.axisDraft) || !sliceRelations.includes(value.relationDraft) || !Object.hasOwn(errors, value.error)) return false;
+    const config = options.config || {};
+    if (config.mode !== 'slice' && (value.axis !== (config.axis === 'x' ? 'x' : 'y') || value.axisDraft !== value.axis ||
+      value.threshold !== (Number.isFinite(config.threshold) ? clamp(config.threshold, -2, 2) : .5) ||
+      value.relation !== initialRelation(config) ||
+      value.relationDraft !== value.relation || value.error === 'slice-range')) return false;
+    return true;
+  }
   function mount(container, supplied, hooks) {
     const config = Object.assign({mode:'arc',angle:0}, supplied || {}), options = hooks || {};
     const mode = Object.hasOwn(labels, config.mode) ? config.mode : 'arc';
@@ -68,7 +99,7 @@
     let t = Number.isFinite(config.angle) ? clamp(config.angle, -LIMIT, LIMIT) : 0;
     let axis = config.axis === 'x' ? 'x' : 'y';
     let threshold = Number.isFinite(config.threshold) ? clamp(config.threshold, -2, 2) : .5;
-    let relation = ['>','<','>=','<='].includes(config.relation) ? config.relation : '>=';
+    let relation = initialRelation(config);
     let revealed = !options.practice, dragging = false, pointer = null, dead = false;
     let snapDenominator = 12;
     const point = (angle, r = 130) => ({x:230+r*Math.cos(angle),y:190-r*Math.sin(angle)});
@@ -130,7 +161,7 @@
       <label class="ml-caption" for="${id}-range">Положение Q на одном обороте (0 … 2π)</label><input id="${id}-range" data-angle-range type="range" min="0" max="${TAU}" step="${Math.PI/180}" value="0" aria-label="Положение точки Q на одном обороте">
       <div class="ml-actions" style="margin-top:.7rem"><button type="button" data-delta="${-TAU}">−2π: оборот</button><button type="button" data-delta="${-Math.PI/12}">−π/12</button><button type="button" data-delta="${Math.PI/12}">+π/12</button><button type="button" data-delta="${TAU}">+2π: оборот</button><button type="button" data-zero>В начало A</button></div>
       <p class="ml-error" data-lab-error role="status" aria-live="polite"></p>
-      <div data-slice-controls ${mode === 'slice' ? '' : 'hidden'}><div class="ml-controls"><label for="${id}-axis">Координата<select id="${id}-axis" data-axis><option value="x">Координата x</option><option value="y">Координата y</option></select></label><label for="${id}-relation">Условие<select id="${id}-relation" data-relation><option value=">">&gt;</option><option value=">=">≥</option><option value="<">&lt;</option><option value="<=">≤</option></select></label><label for="${id}-threshold">Граница<input id="${id}-threshold" data-threshold type="text" value="${threshold}" placeholder="1/2 или sqrt(2)/2"></label></div><button type="button" data-apply-slice>Применить условие</button></div>
+      <div data-slice-controls ${mode === 'slice' ? '' : 'hidden'}><div class="ml-controls"><label for="${id}-axis">Координата<select id="${id}-axis" data-axis><option value="x">Координата x</option><option value="y">Координата y</option></select></label><label for="${id}-relation">Условие<select id="${id}-relation" data-relation><option value="=">=</option><option value=">">&gt;</option><option value=">=">≥</option><option value="<">&lt;</option><option value="<=">≤</option></select></label><label for="${id}-threshold">Граница<input id="${id}-threshold" data-threshold type="text" value="${threshold}" placeholder="1/2 или sqrt(2)/2"></label></div><button type="button" data-apply-slice>Применить условие</button></div>
       <div data-unwrapping ${mode === 'arc' || mode === 'angle' ? '' : 'hidden'}></div>
       <div class="ml-readings" data-lab-readings aria-live="off"></div>
       <button type="button" data-reveal-readings ${revealed ? 'hidden' : ''}>Показать значения и объяснение</button>
@@ -138,6 +169,9 @@
     </section>`;
     const get = selector => container.querySelector(selector), svg = get('[data-circle-svg]');
     const input = get('[data-angle-input]'), range = get('[data-angle-range]');
+    let error = '';
+    const setError = code => { error = code; get('[data-lab-error]').textContent = errors[code]; };
+    if (options.shared) { input.maxLength = 200; get('[data-threshold]').maxLength = 200; }
     get('[data-axis]').value = axis; get('[data-relation]').value = relation;
     // Tick marks show equal geometric subdivisions without supplying answers.
     get('[data-special-ticks]').innerHTML = Array.from({length:24},(_,i) => { const p=point(i*Math.PI/12,127),q=point(i*Math.PI/12,133); return `<path d="M${XY(p)}L${XY(q)}" stroke="#9db2c1" stroke-width="${i%6===0?2:1}"/>`;}).join('');
@@ -161,12 +195,26 @@
       if(mode!=='slice')return '';
       const pos=axis==='x'?230+130*threshold:190-130*threshold;
       group.innerHTML = axis==='x'?`<path d="M${pos} 25V354" stroke="#8e52b8" stroke-dasharray="6 4" stroke-width="2"/>`:`<path d="M25 ${pos}H450" stroke="#8e52b8" stroke-dasharray="6 4" stroke-width="2"/>`;
-      if(!revealed)return '<p>Поставьте Q на нужную сторону границы. Подумайте, входят ли точки равенства в ответ.</p>';
+      if (!revealed) return relation === '='
+        ? '<p>Сколько точек окажется на прямой? Поставьте Q в одну из них и проверьте, есть ли ещё.</p>'
+        : '<p>Поставьте Q на нужную сторону границы. Подумайте, входят ли точки равенства в ответ.</p>';
       const solution=sliceIntervals(axis,threshold,relation), greater=relation[0]==='>';
-      if(axis==='x') shade.innerHTML=`<rect x="${greater?pos:22}" y="28" width="${Math.max(0,greater?454-pos:pos-22)}" height="320" fill="#b9e7d8" opacity=".45"/>`;
-      else shade.innerHTML=`<rect x="22" y="${greater?28:pos}" width="432" height="${Math.max(0,greater?pos-28:348-pos)}" fill="#b9e7d8" opacity=".45"/>`;
+      if (relation !== '=') {
+        if(axis==='x') shade.innerHTML=`<rect x="${greater?pos:22}" y="28" width="${Math.max(0,greater?454-pos:pos-22)}" height="320" fill="#b9e7d8" opacity=".45"/>`;
+        else shade.innerHTML=`<rect x="22" y="${greater?28:pos}" width="432" height="${Math.max(0,greater?pos-28:348-pos)}" fill="#b9e7d8" opacity=".45"/>`;
+      }
       arcs.innerHTML = solution.intervals.map(([a,b])=>`<path d="${arc(a,b-a,130)}" stroke="#00836b" stroke-width="7" fill="none"/>`).join('') + solution.roots.map(a=>{const p=point(a);return `<circle cx="${p.x}" cy="${p.y}" r="6" fill="${solution.closed?'#00836b':'white'}" stroke="#00836b" stroke-width="2.5"/>`;}).join('');
       const v=values(t)[axis], yes=belongs(v,threshold,relation);
+      if (relation === '=') {
+        const angles = solution.roots.map(angle => {
+          const value = radians(angle);
+          return value === '0' || value.includes('π') ? 't = ' + value : 't ≈ ' + value;
+        });
+        const positions = angles.length
+          ? 'За один оборот: ' + angles.join(' и ') + '. Каждая точка повторяется через полный оборот.'
+          : 'Прямая проходит вне окружности. Решений нет.';
+        return `<p>Точка Q ${yes ? 'лежит' : 'не лежит'} на прямой.</p><p>${positions}</p>`;
+      }
       return `<p><b>${axis} ${esc(relation.replace('>=','≥').replace('<=','≤'))} ${exact(threshold)}</b>: точка Q ${yes?'подходит':'не подходит'}. ${solution.closed?'Закрашенные границы включены: равенство допускается.':'Пустые границы исключены: неравенство строгое.'}</p>${solution.roots.length?`<p>Граница пересекает окружность при t = ${solution.roots.map(radians).join(' и ')} (в пределах одного оборота).</p>`:'<p>Граница не пересекает окружность. Проверьте, вся окружность подходит или ни одна точка.</p>'}`;
     }
     function drawFunctions(v) {
@@ -203,22 +251,23 @@
       get('desc').textContent = revealed?`Точка Q: t ${radians(t)} радиан${showProjections?`, x ${exact(v.x)}, y ${exact(v.y)}`:''}. Стрелки меняют угол, Home возвращает в A.`:'Точка Q на единичной окружности. Значения скрыты. Стрелки меняют угол, Home возвращает в A. Можно ввести угол под рисунком.';
     }
     function update(value, syncInput=true) {
-      if(!Number.isFinite(value)||Math.abs(value)>LIMIT){get('[data-lab-error]').textContent='Введите конечное число от −1000π до 1000π радиан.';return false;}
-      t=clean(value);get('[data-lab-error]').textContent='';render(syncInput);
+      if(!Number.isFinite(value)||Math.abs(value)>LIMIT){setError('angle-range');return false;}
+      t=clean(value);setError('');render(syncInput);
       if(typeof options.onChange==='function')options.onChange(t);
       return true;
     }
     function parse(text) { return root.ProfileCheck&&typeof root.ProfileCheck.number==='function'?root.ProfileCheck.number(text):Number(String(text).replace(',','.')); }
-    function applyAngle(){const value=input.value.trim();if(!value){get('[data-lab-error]').textContent='Введите число: например, π/3, −5π/2 или 1,5.';return;}if(value===radiansInput(t)){get('[data-lab-error]').textContent='';return;}update(parse(value.replace(/(\d|\))\s*(?=π|pi\b)/g,'$1*')));}
+    function applyAngle(){const value=input.value.trim();if(!value){setError('angle-empty');return;}if(value===radiansInput(t)){setError('');return;}update(parse(value.replace(/(\d|\))\s*(?=π|pi\b)/g,'$1*')));}
     on(get('[data-apply-angle]'),'click',applyAngle);on(input,'change',applyAngle);on(input,'keydown',event=>{if(event.key==='Enter'){event.preventDefault();applyAngle();}});
     function motion(value){return update(clamp(snapAngle(value,snapDenominator),-LIMIT,LIMIT));}
     range.step=String(Math.PI/12);
-    on(get('[data-angle-snap]'),'change',()=>{snapDenominator=Number(get('[data-angle-snap]').value);range.step=String(snapDenominator?Math.PI/snapDenominator:Math.PI/180);container.querySelectorAll('[data-delta]').forEach(b=>{if(Math.abs(Number(b.dataset.delta))<TAU){const delta=Math.sign(Number(b.dataset.delta))*Math.PI/(snapDenominator||12);b.dataset.delta=String(delta);b.textContent=(delta>0?'+':'')+radiansInput(delta);}});if(snapDenominator)motion(t);});
+    function renderSnap(){range.step=String(snapDenominator?Math.PI/snapDenominator:Math.PI/180);container.querySelectorAll('[data-delta]').forEach(b=>{if(Math.abs(Number(b.dataset.delta))<TAU){const delta=Math.sign(Number(b.dataset.delta))*Math.PI/(snapDenominator||12);b.dataset.delta=String(delta);b.textContent=(delta>0?'+':'')+radiansInput(delta);}});}
+    on(get('[data-angle-snap]'),'change',()=>{snapDenominator=Number(get('[data-angle-snap]').value);renderSnap();if(snapDenominator)motion(t);});
     on(range,'input',()=>{const u=norm(t),turns=Math.round((t-u)/TAU);motion(turns*TAU+Number(range.value));});
     container.querySelectorAll('[data-delta]').forEach(b=>on(b,'click',()=>{const delta=Number(b.dataset.delta);if(Math.abs(delta)===TAU)update(clamp(t+delta,-LIMIT,LIMIT));else motion(t+delta);}));
     on(get('[data-zero]'),'click',()=>update(0));
     on(get('[data-reveal-readings]'),'click',()=>{if(revealed)return;revealed=true;if(typeof options.onHelp==='function')options.onHelp();if(dead)return;get('[data-reveal-readings]').hidden=true;get('[data-help-note]').textContent='Значения открыты: эта попытка выполняется с помощью.';render(false);});
-    function applySlice(){const n=parse(get('[data-threshold]').value);if(!Number.isFinite(n)||Math.abs(n)>2){get('[data-lab-error]').textContent='Введите границу от −2 до 2. Координаты окружности лежат от −1 до 1.';return;}threshold=n;axis=get('[data-axis]').value;relation=get('[data-relation]').value;get('[data-lab-error]').textContent='';render(false);}
+    function applySlice(){const n=parse(get('[data-threshold]').value);if(!Number.isFinite(n)||Math.abs(n)>2){setError('slice-range');return;}threshold=n;axis=get('[data-axis]').value;relation=get('[data-relation]').value;setError('');render(false);}
     on(get('[data-apply-slice]'),'click',applySlice);on(get('[data-axis]'),'change',applySlice);on(get('[data-relation]'),'change',applySlice);on(get('[data-threshold]'),'keydown',event=>{if(event.key==='Enter'){event.preventDefault();applySlice();}});
     on(svg,'keydown',event=>{const key={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1}[event.key];if(key){event.preventDefault();motion(t+key*Math.PI/(snapDenominator||(event.shiftKey?12:180)));}else if(event.key==='Home'){event.preventDefault();update(0);}});
     function pointerAngle(event){const matrix=svg.getScreenCTM();if(!matrix)return;const p=svg.createSVGPoint();p.x=event.clientX;p.y=event.clientY;const q=p.matrixTransform(matrix.inverse());if(Math.hypot(q.x-230,q.y-190)<20)return;const a=Math.atan2(190-q.y,q.x-230);let delta=a-norm(t);while(delta>Math.PI)delta-=TAU;while(delta< -Math.PI)delta+=TAU;motion(t+delta);}
@@ -227,8 +276,16 @@
     function release(event){if(event&&event.pointerId!==pointer)return;dragging=false;if(pointer!==null&&svg.hasPointerCapture(pointer))svg.releasePointerCapture(pointer);pointer=null;}
     on(svg,'pointerup',release);on(svg,'pointercancel',release);on(svg,'lostpointercapture',()=>{dragging=false;pointer=null;});
     render();
-    return {getAngle:()=>t,destroy(){dead=true;release();subscriptions.forEach(fn=>fn());}};
+    function getBoardState(){return {angle:t,axis,threshold,relation,revealed,snapDenominator,angleDraft:input.value,thresholdDraft:get('[data-threshold]').value,axisDraft:get('[data-axis]').value,relationDraft:get('[data-relation]').value,error};}
+    function applyBoardState(value){
+      if(!validateBoardState(value,{practice:!!options.practice,config}))throw new TypeError('Invalid Circle model state');
+      release();t=value.angle;axis=value.axis;threshold=value.threshold;relation=value.relation;revealed=value.revealed;snapDenominator=value.snapDenominator;
+      input.value=value.angleDraft;get('[data-threshold]').value=value.thresholdDraft;get('[data-axis]').value=value.axisDraft;get('[data-relation]').value=value.relationDraft;get('[data-angle-snap]').value=String(snapDenominator);
+      renderSnap();render(false);setError(value.error);get('[data-reveal-readings]').hidden=revealed;
+      get('[data-help-note]').textContent=revealed&&options.practice?'Значения открыты: эта попытка выполняется с помощью.':'В самостоятельной проверке числовые показания скрыты. Их открытие будет отмечено как помощь.';
+    }
+    return {getAngle:()=>t,getBoardState,applyBoardState,destroy(){dead=true;release();subscriptions.forEach(fn=>fn());}};
   }
-  root.MordLab={mount,math:helpers};
+  root.MordLab={mount,math:helpers,validateBoardState};
   if(typeof module!=='undefined'&&module.exports)module.exports=root.MordLab;
 })(typeof globalThis!=='undefined'?globalThis:window);

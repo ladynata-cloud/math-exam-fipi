@@ -1,0 +1,24 @@
+name: Public site dialogue
+on:
+  pull_request:
+    paths:
+      - 'site-assistant/**'
+      - 'assets/assistant/*dialogue*.js'
+      - 'assets/assistant/navigator-data.js'
+      - 'assets/assistant/navigator-widget.js'
+      - '.github/workflows/site-assistant-dialogue.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dialogues:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Exercise the reader, navigator and current division step
+        run: npm --prefix site-assistant test

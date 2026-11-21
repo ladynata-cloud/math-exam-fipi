@@ -116,6 +116,8 @@
     ["practice-average-three",20,"Три разных участка: путь и время","proportion",false],
     ["practice-ring-route",21,"Восстановить кольцо по кратчайшим расстояниям","logic",false],
     ["practice-ring-meeting",20,"Движение по кольцу: встреча и обгон","proportion",false],
+    ["practice-mushroom-count",21,"Грибы — что значит «среди любых»","logic",true],
+    ["practice-vase-order",21,"Вазы — порядок и общая часть","logic",true],
     ["equations-linear",17,"Линейные: как в первом разборе","equations",true],
     ["equations-signs",17,"Линейные: минусы и отрицательные корни","equations",true],
     ["equations-fractions",17,"Линейные: дробный ответ","equations",true],

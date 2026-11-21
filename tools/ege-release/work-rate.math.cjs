@@ -15,4 +15,8 @@ for(const k of D.kinds)for(let seed=0;seed<500;seed++){
  }count++;
 }
 assert.equal(D.make('joint',0).answer,4);assert.equal(D.make('reverse',0).answer,12);assert.equal(D.make('ratio',0).answer,2);assert.equal(D.parse('2,5'),2.5);assert.equal(D.parse(' 24 / 7 '),24/7);
+for(const [kind,seed] of [['minimum',0],['gardens',1]]){
+ const t=D.make(kind,seed);assert(D.correctTask(t,String(t.answer)));
+ assert(!D.correctTask(t,String(t.answer+0.000001)));
+}
 console.log('WORK_RATE_MATH_PASS:',count,'generated tasks; independent work/time conservation; whole-worker minimality; valid numeric input.');

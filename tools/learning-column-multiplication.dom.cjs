@@ -38,7 +38,7 @@ function mount(t, contentId, { saved, seed = 1, readOnly = false, publicPage = f
       const register = window.MathExamLearning.register;
       window.MathExamLearning.register = adapter => { bridge = adapter; register(adapter); };
     }
-    const filename = path.resolve(repo, path.dirname(relative), src);
+    const filename = (src.startsWith('/') ? path.join(repo, src) : path.resolve(repo, path.dirname(relative), src));
     assert(fs.existsSync(filename), 'Every declared wrapper dependency exists: ' + src);
     window.eval(fs.readFileSync(filename, 'utf8'));
   }

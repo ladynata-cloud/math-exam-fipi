@@ -29,7 +29,8 @@ for(const reverse of [false,true]){
  b.undo();assert.equal(b.goal('perpendicular').ok,false);
 }
 const onLine=new G.Board(G.scene('segment'));onLine.move('C',300,235);onLine.make('perpendicular',['C','A','B']);assert.equal(onLine.goal('perpendicular').ok,true);
-const collapsed=new G.Board(G.scene('segment'));collapsed.make('perpendicular',['C','A','B']);collapsed.move('C',300,235);assert.equal(collapsed.goal('perpendicular').ok,false);
+const collapsed=new G.Board(G.scene('segment'));collapsed.make('perpendicular',['C','A','B']);collapsed.move('C',300,235);assert.equal(collapsed.goal('perpendicular').ok,true); // A perpendicular remains defined when its source reaches AB.
+const cg=collapsed.geometry(collapsed.objects.at(-1));near(G.dot(G.sub(cg.q,cg.p),G.sub(collapsed.point('B'),collapsed.point('A'))),0);
 // Write denial must retain work for export, including later edits and imports.
 const originalStorage=globalThis.localStorage;
 try{
@@ -47,7 +48,9 @@ try{
   store.import({version:1,units:{segments:{written:'Older import',updated:1},angles:{written:'Imported work',updated:3}}});
   assert.equal(store.export().units.segments.written,'Further work');assert.equal(store.export().units.angles.written,'Imported work');
   assert.equal(JSON.parse(disk.get(S.KEY)).units.segments.written,'Old work');
-  assert.equal(reads,readsAtFailure);assert.equal(writes,1);assert.ok(warnings.length);
+  // Reread after quota denial to protect newer work from another tab.
+  // Only the three explicit put/import operations retry writing; get/all/export are read-only.
+  assert.ok(reads>readsAtFailure);assert.equal(writes,3);assert.ok(warnings.length);
  }
  // A read failure also falls back to the most recently read snapshot.
  let raw=JSON.stringify({version:1,units:{segments:{written:'Initial work',updated:1}}}),deny=false;

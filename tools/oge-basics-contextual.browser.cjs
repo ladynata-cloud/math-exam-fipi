@@ -5,7 +5,6 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
-const {chromium} = require('playwright');
 
 const root = path.resolve(__dirname, '..');
 const course = path.join(root, 'trainers', 'oge-basics');
@@ -16,11 +15,99 @@ const widths = [320, 360, 1280];
 const contentTypes = {'.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8',
   '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.svg':'image/svg+xml'};
 
+// Preserve the complete contextual-course inventory from d3d6365. New public
+// page types have their own contracts below; they do not replace an old route.
+const contextualRoutes = Object.freeze([
+  'arithmetic-route.html',
+  'decimal-add-subtract.html',
+  'fraction-common-denominator.html',
+  'fraction-meaning.html',
+  'index.html',
+  'multiplication-division.html',
+  'multiplication-division/arithmetic-foundations.html',
+  'multiplication-division/column-multiplication-one-digit.html',
+  'multiplication-division/column-multiplication-two-digit.html',
+  'multiplication-division/course-append-zeros.html',
+  'multiplication-division/course-bring-digit.html',
+  'multiplication-division/course-column-four-by-one.html',
+  'multiplication-division/course-column-mixed.html',
+  'multiplication-division/course-column-one-digit.html',
+  'multiplication-division/course-column-three-by-one.html',
+  'multiplication-division/course-column-three-by-three.html',
+  'multiplication-division/course-column-three-by-two.html',
+  'multiplication-division/course-column-two-by-three.html',
+  'multiplication-division/course-column-two-digit.html',
+  'multiplication-division/course-column-zeros.html',
+  'multiplication-division/course-decimal-divisor.html',
+  'multiplication-division/course-decimal-natural.html',
+  'multiplication-division/course-digit-choice.html',
+  'multiplication-division/course-estimate.html',
+  'multiplication-division/course-first-part.html',
+  'multiplication-division/course-independent-check.html',
+  'multiplication-division/course-mixed-guided.html',
+  'multiplication-division/course-multiply-bridge.html',
+  'multiplication-division/course-multiply-two-digit.html',
+  'multiplication-division/course-remainder.html',
+  'multiplication-division/course-simple-check.html',
+  'multiplication-division/course-subtract.html',
+  'multiplication-division/course-whole-simple.html',
+  'multiplication-division/course-whole-two-digit.html',
+  'multiplication-division/course-zeros.html',
+  'multiplication-division/decimal-division-natural.html',
+  'multiplication-division/decimal-divisor-shift.html',
+  'multiplication-division/division-append-zeros.html',
+  'multiplication-division/division-course.html',
+  'multiplication-division/division-diagnostic.html',
+  'multiplication-division/division-lab.html',
+  'multiplication-division/division-with-remainder.html',
+  'multiplication-division/index.html',
+  'multiplication-division/long-division-from-simple-to-decimals.html',
+  'multiplication-division/long-division-mixed-checkpoint.html',
+  'multiplication-division/long-division-one-digit.html',
+  'multiplication-division/long-division-quotient-digit.html',
+  'multiplication-division/long-division-two-digit.html',
+  'multiplication-division/long-division-with-remainder.html',
+  'multiplication-division/long-division-zero-in-quotient.html',
+  'multiplication-division/multiplication-ladder.html',
+  'multiplication-division/multiplication-meaning.html',
+  'multiplication-division/multiplication-mixed.html',
+  'multiplication-division/multiplication-pythagoras-table.html',
+  'multiplication-division/multiplication-tricks.html',
+  'multiplication-division/quotient-estimate.html',
+  'multiplication-division/tabular-division.html',
+  'negative-add-subtract.html',
+  'negative-number-line.html',
+  'order-of-operations.html',
+  'percentages/index.html',
+  'percentages/percent-change.html',
+  'percentages/percent-choose-question.html',
+  'percentages/percent-final-checkpoint.html',
+  'percentages/percent-meaning.html',
+  'percentages/percent-of-number-and-whole.html',
+  'percentages/proportion.html',
+  'rounding.html',
+  'units-area.html',
+  'units-length-time.html'
+]);
+const supplementalRoutes = Object.freeze({
+  divisionRoute: 'multiplication-division/division-path.html',
+  independentCheckpoint: 'multiplication-division/division-checkpoint.html',
+  arzhenikovMap: 'multiplication-division/arzhenikov-map.html'
+});
+
 function htmlFiles(folder) {
   return fs.readdirSync(folder, {withFileTypes:true}).flatMap(entry => {
     const file = path.join(folder, entry.name);
     return entry.isDirectory() ? htmlFiles(file) : entry.name.endsWith('.html') ? [file] : [];
   }).sort();
+}
+function checkInventory() {
+  assert.equal(contextualRoutes.length, 70, 'All original contextual course routes remain named');
+  const expected = [...contextualRoutes, ...Object.values(supplementalRoutes)].sort();
+  assert.equal(new Set(expected).size, expected.length, 'Each route has exactly one contract');
+  const actual = htmlFiles(course).map(file => path.relative(course, file).split(path.sep).join('/'));
+  assert.deepEqual(actual, expected, 'Every course HTML has an explicit contract; no old route may disappear');
+  return {contextualRoutes, supplementalRoutes, total:expected.length};
 }
 const server = http.createServer((req, res) => {
   try {
@@ -47,16 +134,108 @@ async function hitTarget(locator, label) {
     const r = element.getBoundingClientRect();
     const x = r.left + r.width / 2, y = r.top + r.height / 2;
     const top = document.elementFromPoint(x, y);
-    return r.width >= 24 && r.height >= 24 && r.left >= -1 && r.right <= innerWidth + 1 &&
-      y >= 0 && y <= innerHeight && (top === element || element.contains(top));
+    return {
+      ok: r.width >= 24 && r.height >= 24 && r.left >= -1 && r.right <= innerWidth + 1 &&
+        y >= 0 && y <= innerHeight && (top === element || element.contains(top)),
+      rect: {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height},
+      viewport: {width:innerWidth,height:innerHeight}, scrollY,
+      target: element.outerHTML.slice(0,500),
+      interceptor: top ? top.outerHTML.slice(0,500) : null
+    };
   });
-  assert(hit, label + ': visible, usable hit target');
+  if (!hit.ok) {
+    const page=locator.page(), name='hit-target-failure-'+page.viewportSize().width;
+    fs.writeFileSync(path.join(output,name+'.json'),JSON.stringify({label,url:page.url(),...hit},null,2));
+    await page.screenshot({path:path.join(output,name+'.png'),fullPage:false});
+  }
+  assert(hit.ok, label + ': visible, usable hit target ' + JSON.stringify(hit));
 }
 async function shot(page, name) {
   await page.screenshot({path:path.join(output, name + '.png'), fullPage:true, animations:'disabled'});
 }
 function activeFrame(page) { return page.locator('.bh-frame:visible'); }
 function helper(page) { return page.locator('.bh-toggle:visible').first(); }
+
+async function fractionControls(page, pointerAction = 'click') {
+  const activate = button => pointerAction === 'tap' ? button.tap() : button.click();
+  const width = page.viewportSize().width;
+  const screenshotSuffix = pointerAction === 'tap' ? width + '-touch' : width;
+  await open(page, 'fraction-meaning.html');
+  await helper(page).waitFor({state:'visible'});
+  await activate(page.locator('.bs-navigation > summary'));
+  await activate(page.locator('.bs-navigation [data-route="learn"]'));
+  assert.match(await page.locator('#lessonQuestion').innerText(), /на сколько равных частей разделили целое/);
+  assert.doesNotMatch(await page.locator('#view-learn').innerText(), /количество всех равных частей/);
+  const choices = page.locator('#lessonQuestion .choice');
+  const colors = button => button.evaluate(node => {
+    const css = getComputedStyle(node);
+    return {background:css.backgroundColor,border:css.borderTopColor,color:css.color};
+  });
+  const plain = await colors(choices.first());
+  await hitTarget(choices.first(), 'Fraction wrong choice');
+  await activate(choices.first());
+  assert.match(await page.locator('#lessonFeedback').getAttribute('class'), /bad/);
+  const wrong = await colors(choices.first());
+  assert.notDeepEqual(wrong, plain, 'A wrong fraction answer has visible feedback on its button');
+  await hitTarget(choices.nth(1), 'Fraction correct choice');
+  await activate(choices.nth(1));
+  assert.match(await page.locator('#lessonFeedback').getAttribute('class'), /good/);
+  assert.equal(await choices.nth(1).getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.locator('#lessonNext').isDisabled(), false);
+  const correct = await colors(choices.nth(1));
+  assert.notDeepEqual(correct, plain, 'A correct fraction answer has visible feedback on its button');
+  assert.notDeepEqual(correct, wrong, 'Correct and wrong button colors are distinct');
+  await noOverflow(page, 'Fraction lesson');
+  await shot(page, 'fraction-denominator-' + screenshotSuffix);
+  const lessonAnswers = ['4', '4', '2/5', '5/7'];
+  for (const answer of lessonAnswers) {
+    await activate(page.locator('#lessonNext'));
+    const input = page.locator('#lessonQuestion input');
+    if (await input.count()) {
+      await input.press('Enter');
+      assert.match(await page.locator('#lessonQuestion .feedback').innerText(), /Пустое поле/);
+      await input.fill(answer); await input.press('Enter');
+    } else {
+      const option = page.locator('#lessonQuestion .choice').filter({hasText:new RegExp('^' + answer.replace('/', '\\/') + '$')});
+      await hitTarget(option, 'Fraction lesson option ' + answer);
+      await activate(option);
+    }
+    assert.match(await page.locator('#lessonFeedback').getAttribute('class'), /good/);
+    assert.equal(await page.locator('#lessonNext').isDisabled(), false);
+  }
+  await activate(page.locator('#lessonNext'));
+  await page.locator('#view-practice').waitFor({state:'visible'});
+  // Reach a native choice using normal solves and the visible Next button.
+  for (let guard = 0; !await page.locator('#practiceAnswer .choice').count(); guard++) {
+    assert(guard < 20, 'A choice exercise must be reachable');
+    const value = await page.evaluate(() => window.__trainerDebug.fmtAnswer(window.__trainerDebug.state().current.answer));
+    await page.locator('#practiceAnswer input').fill(value);
+    await page.locator('#practiceAnswer input').press('Enter');
+    await activate(page.locator('#nextTask'));
+  }
+  const option = page.locator('#practiceAnswer .choice').first();
+  const initial = await colors(option);
+  const attempts = await page.evaluate(() => window.__trainerDebug.state().attempts);
+  await activate(page.locator('#checkTask'));
+  assert.match(await page.locator('#practiceFeedback').innerText(), /Сначала выберите/);
+  assert.equal(await page.evaluate(() => window.__trainerDebug.state().attempts), attempts);
+  await hitTarget(option, 'Fraction practice choice');
+  await activate(option);
+  assert.equal(await option.getAttribute('aria-pressed'), 'true');
+  assert.notDeepEqual(await colors(option), initial, 'Pointer selection must visibly change the practice button');
+  const otherOption = page.locator('#practiceAnswer .choice').nth(1);
+  const otherInitial = await colors(otherOption);
+  await otherOption.press('Space');
+  assert.equal(await option.getAttribute('aria-pressed'), 'false');
+  assert.equal(await otherOption.getAttribute('aria-pressed'), 'true');
+  assert.notDeepEqual(await colors(otherOption), otherInitial, 'Keyboard selection must visibly change the practice button');
+  await shot(page, 'fraction-choice-selected-' + screenshotSuffix);
+  await page.reload({waitUntil:'load'});
+  await helper(page).waitFor({state:'visible'});
+  assert.deepEqual(await page.evaluate(() => window.__trainerDebug.state().learnDone), [true,true,true,true,true]);
+  reports.push({scenario:'fraction-controls',width,pointerAction,
+    fiveLessons:true,visibleSelection:true,wrongCorrectColors:true,pointerAndKeyboard:true,emptyAnswerNoAttempt:true,retainedLessonProgress:true});
+}
 
 async function retainDraftInHelp(page, {name, route, answer, prompt, practice, prepare}) {
   await open(page, route);
@@ -96,6 +275,11 @@ async function chooseLegacyQuotientDigit(page) {
   assert(Number.isSafeInteger(partial) && Number.isSafeInteger(divisor) && divisor > 0);
   const digit = Math.floor(partial / divisor);
   assert(digit >= 0 && digit <= 9, 'The displayed partial dividend has a one-digit quotient');
+  // Every displayed digit must remain reachable beside the mobile navigator,
+  // independent of which random exercise happens to supply the correct digit.
+  const choices=page.locator('#multiples button:visible');
+  assert.equal(await choices.count(),10);
+  for (let i=0;i<10;i++) await hitTarget(choices.nth(i),'Visible quotient choice '+i);
   const choice = page.locator('#multiples button:visible').nth(digit);
   assert.match(await choice.innerText(), new RegExp('^' + digit + ' [·×] ' + divisor));
   await hitTarget(choice, 'Select the quotient digit from the visible multiples');
@@ -186,7 +370,74 @@ async function miniCheckWithoutHelp(page) {
   reports.push({scenario:'mini-check-no-help', width:page.viewportSize().width});
 }
 
+async function supplementalDivisionContracts(page) {
+  // These are a route map and an independent answer check, not contextual
+  // lesson pages. Dedicated division suites cover their complete journeys.
+  await open(page, supplementalRoutes.arzhenikovMap + '#transfer');
+  assert.equal(await page.locator('#skills a').count(), 8);
+  assert.equal(await page.locator('#skills a[aria-current]').getAttribute('href'), '#transfer');
+  assert.equal(await page.getByRole('button', {name:'Подсказка', exact:true}).count(), 0);
+  await hitTarget(page.getByRole('button', {name:'Проверить', exact:true}), 'Independent skill check');
+  await noOverflow(page, 'Arzhenikov transfer');
+
+  await open(page, supplementalRoutes.divisionRoute);
+  await page.locator('#continue-division').waitFor({state:'visible'});
+  const topics = ['start','oneDigit','zero','remainder','twoDigit','decimalNatural','appendZeros','decimalDivisor'];
+  assert.deepEqual(await page.locator('.path-step').evaluateAll(items => items.map(item => item.dataset.topic)), topics,
+    'Division route exposes all eight ordered skills');
+  assert.deepEqual(await page.locator('a[data-guided]').evaluateAll(links => links.map(link => {
+    const url = new URL(link.href);
+    return {topic:link.dataset.guided, path:url.pathname, hash:url.hash};
+  })), topics.map(topic => ({topic, path:'/trainers/long-division-stepwise.html', hash:'#' + topic})),
+  'Each route stage enters its exact guided skill');
+  assert.equal(await page.locator('a[href="/trainers/long-division-claude.html"]').count(), 1,
+    'The alternate Claude trainer remains reachable');
+  const checkpointLink = page.locator('.checkpoint a.button');
+  assert.equal(await checkpointLink.getAttribute('href'), 'division-checkpoint.html');
+  await hitTarget(page.locator('#continue-division'), 'Continue from the division route');
+  await hitTarget(checkpointLink, 'Open the independent division check');
+  await noOverflow(page, 'Division route');
+  reports.push({route:supplementalRoutes.divisionRoute, contract:'ordered-division-route',
+    status:200, width:page.viewportSize().width, stages:topics.length});
+
+  await open(page, supplementalRoutes.independentCheckpoint);
+  await page.locator('#checkpoint-form').waitFor({state:'visible'});
+  assert.equal((await page.locator('#checkpoint-count').innerText()).trim(), 'Пример 1 из 8');
+  assert.equal(await page.locator('#checkpoint-progress').getAttribute('max'), '8');
+  assert.equal(await page.locator('.bh-toggle,.bh-panel').count(), 0,
+    'The independent checkpoint does not mount contextual answer help');
+  assert(await page.locator('#checkpoint-review').isHidden(), 'Solution is hidden before submission');
+  assert.equal(await page.locator('#checkpoint-correct-answer').textContent(), '', 'No answer is revealed in advance');
+  const problem = await page.locator('#checkpoint-problem').textContent();
+  await hitTarget(page.locator('#checkpoint-submit'), 'Check the independent answer');
+  await page.locator('#checkpoint-submit').click();
+  assert.match(await page.locator('#checkpoint-feedback').innerText(), /Сначала введи ответ/);
+  assert.equal((await page.locator('#checkpoint-count').innerText()).trim(), 'Пример 1 из 8',
+    'Blank input does not consume the single attempt');
+  assert(await page.locator('#checkpoint-review').isHidden());
+  await page.locator('#checkpoint-answer').fill('17');
+  await page.reload({waitUntil:'load'});
+  assert.equal(await page.locator('#checkpoint-answer').inputValue(), '17', 'Checkpoint draft survives reload');
+  assert.equal(await page.locator('#checkpoint-problem').textContent(), problem, 'Checkpoint problem survives reload');
+  assert(await page.locator('#checkpoint-review').isHidden(), 'Saving a draft does not submit an answer');
+  const detour = new URL(await page.locator('#checkpoint-help').getAttribute('href'), page.url());
+  assert.equal(detour.pathname, '/trainers/long-division-stepwise.html');
+  assert.equal(detour.hash, '#start');
+  assert.equal(detour.searchParams.get('skillReturn'), '/trainers/oge-basics/' + supplementalRoutes.independentCheckpoint,
+    'Practice links carry a return to this independent check');
+  await hitTarget(page.locator('#checkpoint-help'), 'Practice before returning to the checkpoint');
+  await noOverflow(page, 'Independent division checkpoint');
+  reports.push({route:supplementalRoutes.independentCheckpoint, contract:'independent-answer-check',
+    status:200, width:page.viewportSize().width, retainedDraft:true, unrevealedAnswer:true});
+}
+
 (async () => {
+  const inventory = checkInventory();
+  if (process.argv.includes('--inventory-only')) {
+    console.log('OGE_BASICS_CONTEXTUAL_INVENTORY_OK: 70 unchanged routes + division route, independent checkpoint and Arzhenikov map; no missing or unclassified HTML.');
+    return;
+  }
+  const {chromium} = require('playwright');
   fs.mkdirSync(output, {recursive:true});
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   origin = 'http://127.0.0.1:' + server.address().port;
@@ -194,12 +445,9 @@ async function miniCheckWithoutHelp(page) {
   try {
     browser = await chromium.launch({headless:true,
       ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? {executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE} : {})});
-    const all = htmlFiles(course);
-    assert.equal(all.length, 70, 'All 70 existing course routes are explicitly covered');
     const routePage = await browser.newPage({viewport:{width:1280,height:900}});
     routePage.on('pageerror', error => errors.push({route:routePage.url(),message:error.message}));
-    for (const file of all) {
-      const relative = path.relative(course, file).split(path.sep).join('/');
+    for (const relative of contextualRoutes) {
       await open(routePage, relative);
       await routePage.locator('main:visible,section:visible').first().waitFor();
       assert((await routePage.title()).trim(), relative + ': descriptive page title');
@@ -214,6 +462,7 @@ async function miniCheckWithoutHelp(page) {
       const page = await context.newPage();
       page.on('pageerror', error => errors.push({width,route:page.url(),message:error.message}));
       try {
+        await fractionControls(page);
         await retainDraftInHelp(page, {name:'order', route:'order-of-operations.html',
           answer:'#practiceAnswer input', prompt:'#practicePrompt', practice:'#view-practice'});
         await deepHelp(page);
@@ -231,11 +480,22 @@ async function miniCheckWithoutHelp(page) {
           answer:'#answer', prompt:'#problem', practice:'#workspace'});
         await miniCheckWithoutHelp(page);
         await diagnosticWithoutHelp(page);
+        await supplementalDivisionContracts(page);
+      } finally { await context.close(); }
+    }
+    for (const width of [320, 390]) {
+      const context = await browser.newContext({viewport:{width,height:900},isMobile:true,hasTouch:true});
+      const page = await context.newPage();
+      page.on('pageerror', error => errors.push({width,route:page.url(),message:error.message}));
+      try {
+        await fractionControls(page, 'tap');
       } finally { await context.close(); }
     }
     assert.deepEqual(errors, [], 'No browser runtime errors');
-    fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify({routes:70, widths, reports, errors}, null, 2));
-    console.log('OGE_BASICS_CONTEXTUAL_BROWSER_OK: 70 routes; 320/360/1280; deep help, draft retention, diagnostic boundaries and hit targets.');
+    fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify({routes:inventory.total,
+      contextualRoutes:inventory.contextualRoutes, supplementalRoutes:inventory.supplementalRoutes,
+      widths, reports, errors}, null, 2));
+    console.log('OGE_BASICS_CONTEXTUAL_BROWSER_OK: all original 70 routes + division route, independent checkpoint and Arzhenikov map; 320/360/1280; fraction touch at 320/390; deep help, draft retention, diagnostic boundaries and hit targets.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));

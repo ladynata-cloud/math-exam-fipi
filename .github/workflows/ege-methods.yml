@@ -1,0 +1,57 @@
+name: EGE methods — arithmetic and shared board
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/ege-methods.html'
+      - 'trainers/ege-methods/**'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/board-bridge.js'
+      - 'trainers/trainer-board.html'
+      - 'board-server/**'
+      - 'ege-baza/algebra/math.js'
+      - 'ege-baza/app.js'
+      - 'ege-baza/path/practice.js'
+      - 'ege-profil/index.html'
+      - 'ege-profil/azbuka-metodov/**'
+      - 'ege-profil/part-two/**'
+      - 'tools/ege-methods.*'
+      - '.github/workflows/ege-methods.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  lessons-and-room:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Check mathematics and saved work
+        run: node --test tools/ege-methods.test.cjs
+      - name: Install locked server and pinned browser
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/ege-methods-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/ege-methods-qa/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/ege-methods-qa/node_modules" >> "$GITHUB_ENV"
+      - name: Run independent learning and a two-participant room
+        env:
+          EGE_METHODS_SHOTS: ${{ runner.temp }}/ege-methods-shots
+        run: node tools/ege-methods.browser.cjs
+      - name: Save browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ege-methods-browser
+          path: ${{ runner.temp }}/ege-methods-shots
+          if-no-files-found: ignore
+          retention-days: 14

@@ -96,7 +96,7 @@ test('all174 tasks can open, manipulate and return from their first interactive 
 });
 
 test('visible previous-task and course navigation are present and do not mark skipped',t=>{
-  const ui=boot(t);assert.equal(ui.$('previous').disabled,true);const link=ui.w.document.querySelector('.course-return a');assert.equal(link.getAttribute('href'),'../oge/');assert.ok(fs.statSync(path.join(__dirname,'../oge/index.html')).isFile());
+  const ui=boot(t);assert.equal(ui.$('previous').disabled,true);const link=ui.w.document.querySelector('nav.oge-wayfinding a');assert.equal(link.getAttribute('href'),'/trainers/oge-course/');assert.ok(fs.statSync(path.join(__dirname,'../trainers/oge-course/index.html')).isFile());
   ui.evaluate('pos=2;renderTask()');const records=ui.evaluate('JSON.stringify(records)');ui.$('previous').click();assert.equal(ui.evaluate('pos'),1);assert.equal(ui.evaluate('JSON.stringify(records)'),records);
 });
 

@@ -1,0 +1,14 @@
+.profile-shared-board{margin-block:1.25rem}
+.profile-shared-board>h2,.profile-shared-board>h3,.profile-shared-board>h4{margin-top:0}
+.profile-shared-start{margin-block:1rem}
+.profile-shared-groups{display:grid;gap:.7rem}
+.profile-shared-group{border:1px solid var(--line,#dce5e3);border-radius:12px;padding:.8rem 1rem}
+.profile-shared-group>summary{cursor:pointer;font-weight:700;line-height:1.5}
+.profile-shared-group ol{margin:.5rem 0 0;padding-left:1.5rem}
+.profile-shared-group li{padding:.6rem 0;line-height:1.5}
+.profile-shared-group li+li{border-top:1px solid var(--line,#dce5e3)}
+.profile-shared-group li>.actions{margin-top:.45rem}
+.profile-shared-board .actions{flex-wrap:wrap}
+.profile-shared-board .button{white-space:normal;text-align:center}
+.program-course-card>.profile-shared-board{padding:1rem;margin-bottom:0}
+@media(max-width:520px){.profile-shared-start .button{width:100%}.profile-shared-group{padding:.7rem}.profile-shared-group .actions{align-items:stretch;flex-direction:column}.profile-shared-group .button{width:100%}}

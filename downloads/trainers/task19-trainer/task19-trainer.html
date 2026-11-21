@@ -113,6 +113,7 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
 .t19-textbook-close{color:var(--green);border-color:#d3ded5;margin:2px 0 8px}
 @media(max-width:540px){.t19-textbook-close{width:100%}.t19-textbook-sources{padding-left:19px}}
 @media(prefers-reduced-motion:reduce){svg .t19-linked-active,.t19-angle-pulse{animation:none!important}svg .t19-linked-active{filter:drop-shadow(0 0 3px currentColor)}}
+.task19-reason-step{display:block;margin:18px 0;padding:12px 14px;border-left:3px solid #216342;background:#f3f7f2;line-height:1.8}
 
 </style>
 
@@ -129,8 +130,17 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
 
 
 
+
+
+<!-- OGE video-model investigations: standalone practice -->
+
+
+
+
 </head>
 <body>
+<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="https://mathexam.space/trainers/oge-course/">← Все темы ОГЭ</a><a href="https://mathexam.space/">Главная</a></nav>
+
   <header><div class="page-width"><h1>ОГЭ №19. Геометрические утверждения</h1><p>Определи, верно ли утверждение</p></div></header>
   <main class="page-width">
     <section class="exercise" aria-labelledby="statement">
@@ -9624,7 +9634,9 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
     el('answerPanel').hidden = false;
     el('answerPanel').dataset.correct = String(correct);
     el('resultTitle').textContent = correct ? (answerHelpUsed ? 'Верно. С подсказкой.' : boardMode ? 'Верно. Разобрали на уроке.' : 'Да, ты прав.') : 'Давай разберёмся.';
-    el('answerExplanation').textContent = `${card.truth ? 'Утверждение верное.' : 'Утверждение неверное.'} ${card.explanation}`;
+    const explanation=el('answerExplanation');explanation.replaceChildren();
+    const parts=[['Условия',card.hint.preserve],['Обоснование',card.explanation],['Вывод',card.truth?'Утверждение верное.':'Утверждение неверное.']];
+    parts.forEach(([title,text],i)=>{const step=document.createElement('span');step.className='task19-reason-step';const heading=document.createElement('strong');heading.textContent='Шаг '+(i+1)+'. '+title;step.append(heading,document.createElement('br'),document.createTextNode(text));explanation.append(step);});
     el('btnTrue').disabled = el('btnFalse').disabled = true;
     el('btnTrue').setAttribute('aria-pressed', String(answer));
     el('btnFalse').setAttribute('aria-pressed', String(!answer));

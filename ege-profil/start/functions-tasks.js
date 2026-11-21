@@ -170,14 +170,24 @@
     // labels are reserved for an accepted answer or an explicitly opened helper.
     if (complete && s.target !== null) s.points.push({ x: s.target, y: fn(s.target), name: 'Найдено', coordinates: true, given: false });
     if (s.minY === null || s.maxY === null) {
-      const values = [0, ...s.points.map(p => p.y)];
-      for (const curve of s.curves) for (let i = 0; i <= 120; i++) {
-        const x = s.minX + (s.maxX - s.minX) * i / 120, y = curve.fn(x); if (finite(y)) values.push(y);
+      const anchors = s.points.map(p => p.y);
+      if (s.target !== null && finite(fn(s.target))) anchors.push(fn(s.target));
+      if (m.kind === 'extreme-quadratic' && m.h > m.left && m.h < m.right) anchors.push(fn(m.h));
+      if (m.kind === 'extreme-cubic') {
+        for (const x of [-m.a, m.a]) if (x > m.left && x < m.right) anchors.push(fn(x));
+      }
+      if (!anchors.length || !m.kind.startsWith('derivative-') || derivativeGraph) anchors.push(0);
+      const values = anchors.slice(), xSpan = s.maxX - s.minX;
+      for (let i = 0; i <= 120; i++) {
+        const y = fn(s.minX + xSpan * i / 120); if (finite(y)) values.push(y);
       }
       const lo = Math.min(...values), hi = Math.max(...values), pad = Math.max(1, (hi - lo) * .12);
-      s.minY = lo - pad; s.maxY = hi + pad;
+      const lower = Math.min(...anchors), upper = Math.max(...anchors);
+      // Fit the marked points first. Distant curve tails can extend beyond the view.
+      const margin = Math.max(1, (3 * xSpan - (upper - lower)) / 2);
+      s.minY = Math.max(lo - pad, lower - margin);
+      s.maxY = Math.min(hi + pad, upper + margin);
     }
-    s.tickX = niceStep(s.maxX - s.minX, 9); s.tickY = niceStep(s.maxY - s.minY, 7);
     s.cursorDomain = s.cursorDomain || [s.minX, s.maxX];
     return s;
   }
@@ -199,31 +209,38 @@
     return segments;
   }
   function svgFor(task, context, options, id) {
-    const s = sceneFor(task, context, options), W = 480, H = 358, box = { left: 48, right: 444, top: 42, bottom: 306 };
-    const px = x => box.left + (x - s.minX) / (s.maxX - s.minX) * (box.right - box.left);
-    const py = y => box.bottom - (y - s.minY) / (s.maxY - s.minY) * (box.bottom - box.top);
+    const s = sceneFor(task, context, options), W = 480, H = 358;
+    const xSpan = s.maxX - s.minX, ySpan = s.maxY - s.minY, scale = Math.min(396 / xSpan, 264 / ySpan);
+    const plotWidth = xSpan * scale, plotHeight = ySpan * scale;
+    const left = 246 - plotWidth / 2, top = 174 - plotHeight / 2;
+    const box = { left, right: left + plotWidth, top, bottom: top + plotHeight };
+    const px = x => box.left + (x - s.minX) * scale;
+    const py = y => box.top + (s.maxY - y) * scale;
     const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
     const zeroX = clamp(px(0), box.left, box.right), zeroY = clamp(py(0), box.top, box.bottom);
     const text = (x, y, value, attrs = '') => '<text x="' + x + '" y="' + y + '" font-family="system-ui,sans-serif" font-size="14" fill="' + C.ink + '" ' + attrs + '>' + escape(value) + '</text>';
     const line = (x1, y1, x2, y2, color, extra = '') => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + color + '" ' + extra + '/>';
-    let svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + escape(s.label + '. ' + s.caption) + '" data-function-kind="' + task.meta.kind + '" style="width:100%;height:auto;display:block"><title>' + escape(s.label) + '</title><defs><clipPath id="' + id + '"><rect x="48" y="42" width="396" height="264"/></clipPath></defs><rect width="480" height="358" fill="#fff"/>';
+    let svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + escape(s.label + '. ' + s.caption) + '" data-function-kind="' + task.meta.kind + '" style="width:100%;height:auto;display:block"><title>' + escape(s.label) + '</title><defs><clipPath id="' + id + '"><rect x="' + box.left + '" y="' + box.top + '" width="' + plotWidth + '" height="' + plotHeight + '"/></clipPath></defs><rect width="480" height="358" fill="#fff"/>';
     svg += text(16, 24, s.label, 'font-weight="700"');
-    if (s.interval) svg += '<rect x="' + px(s.interval[0]) + '" y="42" width="' + (px(s.interval[1]) - px(s.interval[0])) + '" height="264" fill="#e9f3ed" data-given-interval="true"/>';
-    const xStart = Math.ceil(s.minX / s.tickX) * s.tickX, yStart = Math.ceil(s.minY / s.tickY) * s.tickY;
-    for (let i = 0, x = xStart; x <= s.maxX + 1e-8 && i < 30; x = xStart + (++i) * s.tickX) {
+    if (s.interval) svg += '<rect x="' + px(s.interval[0]) + '" y="' + box.top + '" width="' + (px(s.interval[1]) - px(s.interval[0])) + '" height="' + plotHeight + '" fill="#e9f3ed" data-given-interval="true"/>';
+    const step = niceStep(Math.max(1, 20 / scale), 1);
+    const xStart = Math.ceil(s.minX / step), yStart = Math.ceil(s.minY / step);
+    for (let i = xStart; i * step <= s.maxX + 1e-8; i++) {
+      const x = i * step;
       svg += line(px(x), box.top, px(x), box.bottom, C.grid, 'stroke-width="1"');
-      svg += text(px(x), box.bottom + 19, fmt(x), 'text-anchor="middle" font-size="13"');
+      if (step * scale >= 30 || i % 2 === 0) svg += text(px(x), box.bottom + 19, fmt(x), 'text-anchor="middle" font-size="13"');
     }
-    for (let i = 0, y = yStart; y <= s.maxY + 1e-8 && i < 30; y = yStart + (++i) * s.tickY) {
+    for (let i = yStart; i * step <= s.maxY + 1e-8; i++) {
+      const y = i * step;
       svg += line(box.left, py(y), box.right, py(y), C.grid, 'stroke-width="1"');
       svg += text(box.left - 7, py(y) + 4, fmt(y), 'text-anchor="end" font-size="13"');
     }
-    svg += line(box.left, zeroY, box.right + 6, zeroY, C.muted, 'stroke-width="1.6"');
+    if (s.minY <= 0 && s.maxY >= 0) svg += line(box.left, zeroY, box.right + 6, zeroY, C.muted, 'stroke-width="1.6"');
     // Do not mislabel a clipped vertical line as x=0: the plotted y-axis exists
     // only when zero is in the displayed x interval.
     if (s.minX <= 0 && s.maxX >= 0) svg += line(zeroX, box.bottom, zeroX, box.top - 5, C.muted, 'stroke-width="1.6"');
     svg += text(box.right + 11, zeroY + 5, 'x');
-    svg += text(s.minX <= 0 && s.maxX >= 0 ? zeroX + 8 : box.left + 8, 38, s.derivativeGraph ? 'f′' : 'y');
+    svg += text(zeroX + 8, box.top - 4, s.derivativeGraph ? 'f′' : 'y');
     svg += '<g clip-path="url(#' + id + ')">';
     if (s.areas) for (const [left, right] of s.areas) {
       const fill = s.fn((left + right) / 2) < 0 ? '#e8b59e' : '#a7d5bb';
@@ -269,10 +286,22 @@
       const x = px(point.x), y = py(point.y);
       if (x < box.left || x > box.right || y < box.top || y > box.bottom) continue;
       const name = point.name === 'Левый конец' ? 'a' : point.name === 'Правый конец' ? 'b' : point.name === 'Вершина' ? 'V' : point.name === 'Касание' ? 'T' : point.name;
-      svg += text(clamp(x + 8, box.left + 5, box.right - 65), clamp(y - 10, box.top + 14, box.bottom - 4), name, 'font-weight="600"');
+      svg += text(clamp(x + 8, 8, W - 68), clamp(y - 10, box.top + 14, box.bottom - 4), name, 'font-weight="600"');
     }
-    svg += text(16, 350, 'Числа на сетке задают масштаб по каждой оси.', 'font-size="12" fill="' + C.muted + '"') + '</svg>';
+    svg += '</svg>';
     return { svg, scene: s };
+  }
+  function validBoardState(task, context, value) {
+    const keys = ['taskId', 'help', 'explore', 'cursor'];
+    if (!value || typeof value !== 'object' || Array.isArray(value) ||
+        ![Object.prototype, null].includes(Object.getPrototypeOf(value)) ||
+        Reflect.ownKeys(value).length !== keys.length || !keys.every(key => {
+          const property = Object.getOwnPropertyDescriptor(value, key);
+          return property && property.enumerable && Object.hasOwn(property, 'value');
+        }) || value.taskId !== task.id || typeof value.help !== 'boolean' || typeof value.explore !== 'boolean' ||
+        !finite(value.cursor)) return false;
+    const [min, max] = sceneFor(task, context, { help: value.help }).cursorDomain;
+    return value.cursor >= min && value.cursor <= max;
   }
   function render(container, task, context) {
     context = context || {};
@@ -283,12 +312,13 @@
     const button = doc.createElement('button'); button.type = 'button'; button.className = 'button quiet'; button.dataset.modelAction = 'function-help'; button.setAttribute('aria-pressed', 'false'); controls.append(button);
     const details = doc.createElement('details'), summary = doc.createElement('summary'), label = doc.createElement('label'), slider = doc.createElement('input'), output = doc.createElement('p');
     const independent = context.mode === 'independent' && !context.solved;
-    details.className = 'extra-help'; summary.textContent = independent ? 'Показать значения на графике (подсказка)' : 'Исследовать график'; details.append(summary);
+    details.className = 'extra-help function-explore'; summary.textContent = independent ? 'Показать значения на графике (подсказка)' : 'Исследовать график'; details.append(summary);
     label.textContent = 'Переместить точку по оси x'; label.style.display = 'block'; slider.type = 'range'; slider.setAttribute('aria-label', 'Координата x подвижной точки'); slider.style.width = '100%'; output.className = 'small'; output.setAttribute('aria-live', 'polite'); label.append(slider); details.append(label, output);
     wrap.append(plot, legend, caption, controls, helperText, details); container.replaceChildren(wrap);
     const initial = sceneFor(task, context, options);
     options.cursor = task.meta.x ?? task.meta.x0 ?? task.meta.a?.[0] ?? task.meta.px ?? (initial.cursorDomain[0] + initial.cursorDomain[1]) / 2;
     slider.min = String(initial.cursorDomain[0]); slider.max = String(initial.cursorDomain[1]); slider.step = String(niceStep(initial.cursorDomain[1] - initial.cursorDomain[0], 50) / 2); slider.value = String(options.cursor);
+    options.cursor = Number(slider.value);
     function assist() { if (independent && typeof context.onHelp === 'function') context.onHelp(); }
     function paint() {
       const result = svgFor(task, context, options, id), s = result.scene;
@@ -299,6 +329,7 @@
       if (options.explore) {
         const x = options.cursor, y = s.fn(x);
         output.textContent = 'x = ' + fmt(x) + '. ' + (finite(y) ? (s.derivativeGraph ? 'f′(x)' : 'f(x)') + ' = ' + fmt(y) + '.' : 'При этом x функция не определена.');
+        if (finite(y) && (y < s.minY || y > s.maxY)) output.textContent += ' Точка вне видимого окна.';
         output.dataset.revealedValue = 'true';
       } else { output.textContent = ''; delete output.dataset.revealedValue; }
     }
@@ -306,13 +337,28 @@
     details.ontoggle = () => { if (details.open && !options.explore) assist(); options.explore = details.open; paint(); };
     slider.oninput = () => { options.cursor = Number(slider.value); options.explore = details.open; paint(); };
     paint();
-    return () => { button.onclick = null; details.ontoggle = null; slider.oninput = null; };
+    let disposed = false;
+    const cleanup = () => { disposed = true; button.onclick = null; details.ontoggle = null; slider.oninput = null; };
+    cleanup.getBoardState = () => ({ taskId: task.id, help: options.help, explore: options.explore, cursor: options.cursor });
+    cleanup.applyBoardState = value => {
+      if (disposed || !validBoardState(task, context, value)) throw new TypeError('Invalid function model board state');
+      // Restore the construction directly. A delayed toggle event observes the
+      // restored explore flag and cannot turn hydration into a help action.
+      options.help = value.help; options.explore = value.explore; options.cursor = value.cursor;
+      slider.value = String(value.cursor); details.open = value.explore; paint();
+    };
+    return cleanup;
   }
   const lessons = (root.ProfileLessons || []).filter(l => ['calculus', 'functions'].includes(l.group) && /^(calc-|fn-)/.test(l.id));
   root.ProfileTaskModels = root.ProfileTaskModels || {}; root.ProfileModels = root.ProfileModels || {};
   lessons.forEach(l => {
-    l.tasks.forEach(task => { root.ProfileTaskModels[task.id] = render; });
+    l.tasks.forEach(task => {
+      const model = (container, current, context) => render(container, task, context);
+      model.validateBoardState = (value, context) => validBoardState(task, context, value);
+      root.ProfileTaskModels[task.id] = model;
+    });
     root.ProfileModels[l.model] = container => render(container, l.tasks[0], { mode: 'guided', step: 0 });
+    root.ProfileModels[l.model].validateBoardState = value => validBoardState(l.tasks[0], { mode: 'guided', step: 0 }, value);
   });
-  if (typeof module !== 'undefined' && module.exports) module.exports = { functionFor, sceneFor, curveSegments, svgFor, render };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { functionFor, sceneFor, curveSegments, svgFor, render, validBoardState };
 })(globalThis);

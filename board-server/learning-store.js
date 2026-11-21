@@ -14,6 +14,7 @@ const json = value => JSON.stringify(value);
 const parse = value => JSON.parse(value);
 function accountDTO(row) { return { id: row.id, role: row.role, name: row.name, login: row.login, teacherId: row.teacher_id, active: !!row.password_hash }; }
 const QUICK_TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
+const MAX_LESSON_MATERIALS = 12;
 
 function programValues(value) {
   exactKeys(value, ['grade', 'courseIds'], ['grade', 'courseIds']);
@@ -594,6 +595,50 @@ class LearningStore {
     if (learnerId === teacherId) this.run("UPDATE attempts SET controller='teacher' WHERE id=?", id);
     return this.attemptDTO(this.row('SELECT * FROM attempts WHERE id=?', id));
   }
+  lessonMaterial(auth, descriptor) {
+    this.teacher(auth);
+    exactKeys(descriptor, ['sourceAttemptId','trainerId','contentId','seed']);
+    if (Object.hasOwn(descriptor, 'sourceAttemptId')) {
+      exactKeys(descriptor, ['sourceAttemptId'], ['sourceAttemptId']);
+      const source = this.attemptRow(auth, descriptor.sourceAttemptId);
+      requireValue(source.archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
+      requireValue(!this.runGuard?.(source.id), 'LEARNING_RUN_ACTIVE', 409);
+      requireValue(!this.row("SELECT id FROM assignments WHERE attempt_id=? AND status!='published'", source.id), 'LEARNING_HOMEWORK_DRAFT', 409);
+      const taskSpec = parse(source.task_json);
+      requireValue(taskSpec && typeof taskSpec.contentId === 'string', 'LEARNING_TASK_INVALID');
+      return { trainerId: source.trainer_id, generated: { taskSpec, state: parse(source.initial_state_json) }, sourceAttemptId: source.id, sourceLearnerId: source.learner_id };
+    }
+    exactKeys(descriptor, ['trainerId','contentId','seed'], ['trainerId','contentId']);
+    return { trainerId: descriptor.trainerId, generated: this.contracts.create(descriptor.trainerId, descriptor.contentId, descriptor.seed), sourceAttemptId: null };
+  }
+  teacherRehearsal(auth, body) {
+    this.teacher(auth);
+    exactKeys(body, ['attemptId','trainerId','contentId','seed']);
+    if (Object.hasOwn(body, 'attemptId')) exactKeys(body, ['attemptId'], ['attemptId']);
+    const material = this.lessonMaterial(auth, Object.hasOwn(body, 'attemptId') ? { sourceAttemptId: body.attemptId } : body);
+    const at = this.clock();
+    // A rehearsal is an in-memory initial condition, never an attempt, event,
+    // assignment or learner result in the durable store.
+    return { attempt: { id: 'rehearsal_' + token(12), learnerId: auth.id, teacherId: auth.id,
+      trainerId: material.trainerId, contentId: material.generated.taskSpec.contentId,
+      taskSpec: material.generated.taskSpec, state: material.generated.state, strokes: [], version: 0, trainerVersion: 0,
+      controller: 'teacher', assistance: { teacher: false, hints: false }, outcome: 'started',
+      sourceAttemptId: material.sourceAttemptId, submission: null, archivedAt: null, createdAt: at, updatedAt: at } };
+  }
+  lessonMaterialIds(seat) {
+    // Legacy seats contain only the active attempt. They acquire a queue on
+    // their next mutation without a schema change or a new copy of the work.
+    return [...new Set([...(Array.isArray(seat.materialIds) ? seat.materialIds : []), ...(seat.attemptId ? [seat.attemptId] : [])])];
+  }
+  queueLessonAttempt(seat, attemptId, activate = true) {
+    const ids = this.lessonMaterialIds(seat);
+    if (!ids.includes(attemptId)) {
+      requireValue(ids.length < MAX_LESSON_MATERIALS, 'LEARNING_LESSON_QUEUE_FULL', 409);
+      ids.push(attemptId);
+    }
+    seat.materialIds = ids;
+    if (activate) seat.attemptId = attemptId;
+  }
   taskFingerprint(taskSpec) {
     if (typeof this.contracts.questionIdentity === 'function') return this.contracts.questionIdentity(taskSpec);
     const task = clone(taskSpec?.task ?? null);
@@ -626,6 +671,7 @@ class LearningStore {
         requireValue(source.controller === 'student', 'LEARNING_CONTROL_REQUIRED', 409);
         lesson = this.lessonRow(auth, body.lessonId); seats = parse(lesson.seats_json);
         requireValue(seats.some(seat => seat.learnerId === auth.id && seat.attemptId === source.id), 'LEARNING_LESSON_CONTEXT_INVALID', 409);
+        requireValue(this.lessonMaterialIds(seats.find(seat => seat.learnerId === auth.id)).length < MAX_LESSON_MATERIALS, 'LEARNING_LESSON_QUEUE_FULL', 409);
       }
       if (!body.fresh) {
         const existing = this.rows("SELECT * FROM attempts WHERE learner_id=? AND trainer_id=? AND outcome IN ('started') AND archived_at IS NULL AND NOT EXISTS(SELECT 1 FROM assignments a WHERE a.attempt_id=attempts.id AND a.status!='published') ORDER BY updated_at DESC", auth.id, body.trainerId)
@@ -646,7 +692,7 @@ class LearningStore {
       if (body.trainerId === 'vilenkin6-textbook' && exposure && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec)))) generated.state.task.repeated = true;
       const attempt = this.newAttempt(auth.id, auth.teacherId, body.trainerId, generated, source?.id || null);
       if (lesson) {
-        seats.find(seat => seat.learnerId === auth.id).attemptId = attempt.id;
+        this.queueLessonAttempt(seats.find(seat => seat.learnerId === auth.id), attempt.id);
         this.run('UPDATE lessons SET seats_json=?,version=version+1 WHERE id=?', json(seats), lesson.id);
       }
       return { attempt };
@@ -823,15 +869,21 @@ class LearningStore {
   }
   lessonDTO(auth, row) {
     const seats = parse(row.seats_json);
-    const visibleAttempt = id => {
-      const attempt = id && this.row('SELECT * FROM attempts WHERE id=? AND archived_at IS NULL', id);
+    const visibleRow = (id, columns = '*') => {
+      const attempt = id && this.row('SELECT ' + columns + ' FROM attempts WHERE id=? AND archived_at IS NULL', id);
       // An unpublished homework draft is never leaked through a lesson/presentation.
       if (!attempt || (auth.role !== 'teacher' && (this.runGuard?.(id) || this.row("SELECT id FROM assignments WHERE attempt_id=? AND status!='published'", id)))) return null;
-      return this.attemptDTO(attempt);
+      return attempt;
     };
+    const visibleAttempt = id => { const attempt = visibleRow(id); return attempt ? this.attemptDTO(attempt) : null; };
     const common = visibleAttempt(row.common_attempt_id);
-    const ownSeats = seats.filter(seat => auth.role === 'teacher' || seat.learnerId === auth.id).map(seat => ({ ...seat,
-      name: this.account(seat.learnerId).name, attempt: visibleAttempt(seat.attemptId) }));
+    const titles = this.lessonMaterialTitles ||= new Map((this.contracts.list?.() || []).map(item => [item.trainerId + ':' + item.contentId, item.title]));
+    const ownSeats = seats.filter(seat => auth.role === 'teacher' || seat.learnerId === auth.id).map(seat => ({
+      learnerId: seat.learnerId, attemptId: seat.attemptId, name: this.account(seat.learnerId).name, attempt: visibleAttempt(seat.attemptId),
+      materials: this.lessonMaterialIds(seat).map(id => visibleRow(id, "id,learner_id,teacher_id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,outcome"))
+        .filter(attempt => attempt && attempt.learner_id === seat.learnerId && attempt.teacher_id === row.teacher_id)
+        .map(attempt => ({ attemptId: attempt.id, title: titles.get(attempt.trainer_id + ':' + attempt.content_id) || attempt.content_id || 'Задание',
+          contentId: attempt.content_id, trainerId: attempt.trainer_id, outcome: attempt.outcome })) }));
     let presentation = { target: null };
     if (row.presentation_target) {
       const seat = seats.find(item => item.learnerId === row.presentation_target);
@@ -847,15 +899,22 @@ class LearningStore {
     return rows.filter(row => auth.role === 'teacher' || parse(row.seats_json).some(seat => seat.learnerId === auth.id)).map(row => this.lessonDTO(auth, row));
   }
   createLesson(auth, body) {
-    this.teacher(auth); exactKeys(body, ['opId','title','learnerIds'], ['opId','title','learnerIds']);
+    this.teacher(auth); exactKeys(body, ['opId','title','learnerIds','materials'], ['opId','title','learnerIds']);
     const title = safeName(body.title, 160);
     requireValue(Array.isArray(body.learnerIds) && body.learnerIds.length >= 1 && body.learnerIds.length <= 8 && new Set(body.learnerIds).size === body.learnerIds.length);
+    requireValue(body.materials === undefined || (Array.isArray(body.materials) && body.materials.length <= MAX_LESSON_MATERIALS), 'LEARNING_LESSON_MATERIALS_INVALID');
     return this.operation(auth, { operation: 'create-lesson', ...body }, () => {
       this.limit('lessons', 2000);
+      body.learnerIds.forEach(learnerId => this.ownsStudent(auth, learnerId));
+      const materials = (body.materials || []).map(descriptor => this.lessonMaterial(auth, descriptor));
       const seats = body.learnerIds.map(learnerId => {
-        this.ownsStudent(auth, learnerId);
+        if (materials.length) {
+          const materialIds = materials.map(material => this.newAttempt(learnerId, auth.id, material.trainerId, material.generated,
+            material.sourceLearnerId === learnerId ? material.sourceAttemptId : null).id);
+          return { learnerId, attemptId: materialIds[0], materialIds };
+        }
         const attempt = this.row("SELECT * FROM attempts WHERE learner_id=? AND archived_at IS NULL AND NOT EXISTS(SELECT 1 FROM assignments a WHERE a.attempt_id=attempts.id AND a.status!='published') ORDER BY updated_at DESC,id LIMIT 1", learnerId);
-        return { learnerId, attemptId: attempt?.id || null };
+        return { learnerId, attemptId: attempt?.id || null, materialIds: attempt ? [attempt.id] : [] };
       });
       const common = this.newAttempt(auth.id, auth.id, 'board', { taskSpec: null, state: null });
       const id = token(18);
@@ -874,15 +933,21 @@ class LearningStore {
       this.limit('lesson_operations', 100000);
       const seats = parse(row.seats_json);
       if (body.type === 'assign') {
-        exactKeys(body.payload, ['learnerIds','trainerId','contentId'], ['learnerIds','trainerId','contentId']);
+        exactKeys(body.payload, ['learnerIds','trainerId','contentId','seed','sourceAttemptId','activate'], ['learnerIds']);
+        requireValue(body.payload.activate === undefined || typeof body.payload.activate === 'boolean');
         const targets = body.payload.learnerIds;
         requireValue(Array.isArray(targets) && targets.length >= 1 && targets.length <= 9 && new Set(targets).size === targets.length
           && targets.every(target => target === 'common' || seats.some(seat => seat.learnerId === target)), 'LEARNING_SEAT_INVALID');
-        const generated = this.contracts.create(body.payload.trainerId, body.payload.contentId);
+        // The common board keeps its established replace-in-place semantics.
+        requireValue(body.payload.activate !== false || !targets.includes('common'), 'LEARNING_SEAT_INVALID');
+        const { learnerIds, activate, ...descriptor } = body.payload;
+        const material = this.lessonMaterial(auth, descriptor);
         for (const target of targets) {
-          const attempt = this.newAttempt(target === 'common' ? auth.id : target, auth.id, body.payload.trainerId, generated);
+          const learnerId = target === 'common' ? auth.id : target;
+          const attempt = this.newAttempt(learnerId, auth.id, material.trainerId, material.generated,
+            material.sourceLearnerId === learnerId ? material.sourceAttemptId : null);
           if (target === 'common') row.common_attempt_id = attempt.id;
-          else seats.find(seat => seat.learnerId === target).attemptId = attempt.id;
+          else this.queueLessonAttempt(seats.find(seat => seat.learnerId === target), attempt.id, activate !== false);
         }
         this.run('UPDATE lessons SET seats_json=?,common_attempt_id=?,version=version+1 WHERE id=?', json(seats), row.common_attempt_id, id);
       } else if (body.type === 'attach') {
@@ -892,7 +957,7 @@ class LearningStore {
         const attempt = this.attemptRow(auth, body.payload.attemptId);
         requireValue(attempt.learner_id === seat.learnerId && attempt.archived_at == null, 'LEARNING_ATTEMPT_INVALID');
         requireValue(!this.row("SELECT id FROM assignments WHERE attempt_id=? AND status!='published'", attempt.id), 'LEARNING_HOMEWORK_DRAFT', 409);
-        seat.attemptId = attempt.id;
+        this.queueLessonAttempt(seat, attempt.id);
         this.run('UPDATE lessons SET seats_json=?,version=version+1 WHERE id=?', json(seats), id);
       } else if (body.type === 'present') {
         exactKeys(body.payload, ['target'], ['target']);

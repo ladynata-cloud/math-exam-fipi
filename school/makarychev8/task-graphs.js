@@ -14,8 +14,13 @@ function parse(value){
  if(k===null||b===null||holes.some(x=>x===null)||new Set(holes).size!==holes.length)return null;
  return {k,b,holes};
 }
+function parsePair(value){
+ const parts=String(value).split(';');if(parts.length!==4)return null;
+ const values=parts.map(number);if(values.some(v=>v===null))return null;
+ return [{k:values[0],b:values[1],holes:[]},{k:values[2],b:values[3],holes:[]}];
+}
 function node(name,attrs,text){const el=document.createElementNS('http://www.w3.org/2000/svg',name);for(const [k,v]of Object.entries(attrs||{}))el.setAttribute(k,v);if(text!==undefined)el.textContent=text;return el;}
-function graph(k,b,holes,range,label){
+function graph(k,b,holes,range,label,otherLines=[]){
  const size=300,pad=24,scale=(size-2*pad)/(2*range),x=v=>150+scale*v,y=v=>150-scale*v;
  const svg=node('svg',{viewBox:'0 0 300 300',role:'img','aria-label':label});
  const line=(x1,y1,x2,y2,stroke,width=1)=>svg.append(node('line',{x1,y1,x2,y2,stroke,'stroke-width':width}));
@@ -24,13 +29,14 @@ function graph(k,b,holes,range,label){
  const step=range>4?2:1;
  for(let v=-range+1;v<range;v++)if(v&&v%step===0){svg.append(node('text',{x:x(v),y:169,'text-anchor':'middle','font-size':16,fill:'#203b36'},v));svg.append(node('text',{x:139,y:y(v)+5,'text-anchor':'end','font-size':16,fill:'#203b36'},v));}
  svg.append(node('text',{x:282,y:145,'font-size':18},'x'),node('text',{x:158,y:22,'font-size':18},'y'),node('text',{x:157,y:169,'font-size':14},'0'));
- if(k!==null){
+ for(const [index,g]of [{k,b,holes},...otherLines].entries())if(g.k!==null){
+  const {k,b,holes}=g,color=index?'#9b4d14':'#087c92';
   // Clip the mathematical line to the square without large coordinates or a shared SVG id.
   const points=[[-range,k*-range+b],[range,k*range+b]];
   if(k!==0)points.push([(-range-b)/k,-range],[(range-b)/k,range]);
   const inside=points.filter(([a,c])=>a>=-range-1e-9&&a<=range+1e-9&&c>=-range-1e-9&&c<=range+1e-9);
-  if(inside.length>=2){const p=inside[0],q=inside.find(v=>Math.hypot(v[0]-p[0],v[1]-p[1])>1e-9);if(q){const l=node('line',{x1:x(p[0]),y1:y(p[1]),x2:x(q[0]),y2:y(q[1]),stroke:'#087c92','stroke-width':3,'data-k':k,'data-b':b});svg.append(l);}}
-  for(const h of holes){const v=k*h+b;if(Math.abs(h)<=range&&Math.abs(v)<=range)svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:'#087c92','stroke-width':2,'data-hole-x':h,'data-hole-y':v}));}
+  if(inside.length>=2){const p=inside[0],q=inside.find(v=>Math.hypot(v[0]-p[0],v[1]-p[1])>1e-9);if(q){const l=node('line',{x1:x(p[0]),y1:y(p[1]),x2:x(q[0]),y2:y(q[1]),stroke:color,'stroke-width':3,'data-k':k,'data-b':b,'data-line-index':index});svg.append(l);}}
+  for(const h of holes){const v=k*h+b;if(Math.abs(h)<=range&&Math.abs(v)<=range)svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:color,'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));}
  }
  return svg;
 }
@@ -45,10 +51,16 @@ function render(host,config,value){
    fig.append(caption,graph(g.k,g.b,g.holes,3,label));host.append(fig);
    zoom.onclick=()=>{const dialog=document.createElement('dialog'),title=document.createElement('p'),close=document.createElement('button');dialog.className='graph-dialog';dialog.setAttribute('aria-label','Увеличенный график '+(i+1));title.textContent='График '+(i+1);close.type='button';close.textContent='Вернуться к выбору';dialog.append(title,graph(g.k,g.b,g.holes,3,label),close);host.append(dialog);close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>{dialog.remove();zoom.focus();},{once:true});dialog.showModal();};
   });
+ }else if(config.type==='pair'||config.type==='pair-reference'){
+  host.className='task-graphs construction';
+  const pair=parsePair(config.type==='pair-reference'?(config.lines||[]).flat().join(';'):value),caption=document.createElement('p');caption.className='small';
+  caption.textContent=config.type==='pair-reference'?'Сравни с точным решением.':pair?'Чертёж по твоей записи.':'Введи коэффициенты ниже.';
+  const label=pair?'Две прямые: '+pair.map(g=>'y='+g.k+'x'+(g.b<0?'':'+')+g.b).join('; '):'Координатные оси для построения двух прямых';
+  host.append(graph(pair?pair[0].k:null,pair?pair[0].b:0,[],config.range||4,label,pair?[pair[1]]:[]),caption);
  }else{
   host.className='task-graphs construction';const g=parse(value),caption=document.createElement('p');caption.className='small';caption.textContent=g?'Твой график по введённой записи. Проверь его кнопкой ниже.':'Твой чертёж появится после ввода k; b; исключённых x в поле ответа.';
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {parse,alternatives,render};
+return {parse,parsePair,alternatives,render};
 });

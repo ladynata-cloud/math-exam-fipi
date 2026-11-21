@@ -7,8 +7,20 @@ on:
       - 'sitemap.xml'
       - 'robots.txt'
       - 'assets/topic-pages.css'
+      - 'assets/course-examples*'
+      - 'assets/course-examples/**'
+      - 'content/course-entrances/**'
+      - 'tools/course-entrances*'
+      - 'tools/build-course-*'
+      - 'tools/grade5_course_entries.py'
+      - 'assets/grade5-course-entry.css'
+      - 'school/peterson5/data.js'
+      - 'school/peterson5/workshop-data.js'
+      - 'courses/vilenkin-5-part-1/data/**'
       - 'tools/build-sitemap.py'
       - 'tools/seo-*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-map.*'
+      - 'tools/arzhenikov-map.browser.cjs'
       - '.github/workflows/seo-quality.yml'
   workflow_dispatch:
 
@@ -18,17 +30,22 @@ permissions:
 jobs:
   public-seo:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # Include browser/dependency installation as well as the actual route checks.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          fetch-depth: 2
       - name: Sitemap exclusions, canonical routes and public entrances
         run: |
           python3 tools/seo-sitemap.test.py
           python3 tools/build-sitemap.py --check
           python3 tools/seo-check.py
           git diff --check
+      - name: New learner pages have a searchable public entry
+        if: github.event_name == 'pull_request'
+        run: python3 tools/seo-new-trainers.py --base HEAD^1
       - name: Static catalog and JavaScript destination parity
         run: |
           npm install --prefix "$RUNNER_TEMP/seo-catalog-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
@@ -38,3 +55,10 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/seo-browser-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
           "$RUNNER_TEMP/seo-browser-qa/node_modules/.bin/playwright" install --with-deps chromium
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/seo-entrypoints.browser.cjs
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-map.browser.cjs
+
+      - name: Course entrances, mathematical GIFs and retained work
+        run: |
+          python3 -m pip install Pillow==12.0.0
+          python3 tools/course-entrances.test.py
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/course-entrances.browser.cjs

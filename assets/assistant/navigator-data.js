@@ -9,6 +9,14 @@
   // Reviewed public destinations, not a conversation store or a model prompt.
   // Keep URLs literal: neither a query nor the current path may create a link.
   var rows = [
+    ["vpr", "ВПР по математике: выбрать класс и уровень", "/vpr/", "ВПР", ["впр", "подготовка", "проверочная работа"], {"grades": [5, 6, 7, 8, 10], "exam": "ВПР"}],
+    ["vpr-g5", "ВПР: 5 класс", "/trainers/vpr-math/index.html?route=g5", "ВПР", ["впр", "5 класс", "по шагам"], {"grades": [5], "exam": "ВПР"}],
+    ["vpr-g6", "ВПР: 6 класс", "/trainers/vpr-math/index.html?route=g6", "ВПР", ["впр", "6 класс", "по шагам"], {"grades": [6], "exam": "ВПР"}],
+    ["vpr-g7", "ВПР: 7 класс, базовый уровень", "/trainers/vpr-math/index.html?route=g7", "ВПР", ["впр", "7 класс", "базовый"], {"grades": [7], "exam": "ВПР", "examLevel": "базовый"}],
+    ["vpr-g7u", "ВПР: 7 класс, углублённый уровень", "/trainers/vpr-math/index.html?route=g7u", "ВПР", ["впр", "7 класс", "углублённый"], {"grades": [7], "exam": "ВПР", "examLevel": "углублённый"}],
+    ["vpr-g8", "ВПР: 8 класс, базовый уровень", "/trainers/vpr-math/index.html?route=g8", "ВПР", ["впр", "8 класс", "базовый"], {"grades": [8], "exam": "ВПР", "examLevel": "базовый"}],
+    ["vpr-g8u", "ВПР: 8 класс, углублённый уровень", "/trainers/vpr-math/index.html?route=g8u", "ВПР", ["впр", "8 класс", "углублённый"], {"grades": [8], "exam": "ВПР", "examLevel": "углублённый"}],
+    ["vpr-g10", "ВПР: 10 класс", "/trainers/vpr-math/index.html?route=g10", "ВПР", ["впр", "10 класс", "по шагам"], {"grades": [10], "exam": "ВПР"}],
     ["ege-base-reference", "Справочные материалы базового ЕГЭ", "/ege-baza/reference/exam.html", "ЕГЭ", ["справочник", "справочные листы", "формулы", "булавки", "закрепить лист", "вспомнить формулу"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
     ["ege-base-map", "Базовый ЕГЭ: карта курса", "/ege-baza/#map", "ЕГЭ", ["карта курса", "маршрут", "план подготовки", "все темы"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
     ["ege-base-foundation", "Базовый ЕГЭ: вспомнить основу", "/ege-baza/#foundation", "ЕГЭ", ["основы", "повторение", "пробелы", "с нуля"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
@@ -21,14 +29,14 @@
     ["ege-base-path", "Базовый ЕГЭ: тренажёры по позициям 1–21", "/ege-baza/path/index.html#map", "ЕГЭ", ["задания по номерам", "экзаменационные задания", "1–21"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
     ["ege-base-teacher", "Базовый ЕГЭ: преподавателю", "/ege-baza/#teacher", "ЕГЭ", ["учитель", "преподаватель", "режим учителя"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
     ["ege-profile-start", "Профильный ЕГЭ: учебный маршрут", "/ege-profil/start/index.html", "ЕГЭ", ["маршрут", "с нуля", "начать подготовку", "курс"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
-    ["ege-profile-inequalities-2027", "Профильный ЕГЭ 2027: неравенства второй части", "/ege-profil/start/index.html#exam/16", "ЕГЭ", ["неравенства", "вторая часть", "номер 16"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 16, "taskYear": 2027}],
-    ["ege-profile-planimetry-start", "Профильный ЕГЭ: планиметрия по шагам", "/ege-profil/start/index.html#calm/1", "ЕГЭ", ["планиметрия", "первое задание", "углы", "площади"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 1, "taskYear": 2027}],
-    ["ege-profile-vectors-start", "Профильный ЕГЭ: векторы по шагам", "/ege-profil/start/index.html#calm/2", "ЕГЭ", ["векторы", "второе задание", "скалярное произведение"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 2, "taskYear": 2027}],
-    ["ege-profile-stereo-start", "Профильный ЕГЭ: стереометрия по шагам", "/ege-profil/start/index.html#calm/3", "ЕГЭ", ["стереометрия", "третье задание", "пространственные фигуры"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 3, "taskYear": 2027}],
+    ["ege-profile-inequalities-2027", "Профильный ЕГЭ 2027: неравенства второй части", "/ege-profil/part-two/#fipi/2027/15", "ЕГЭ", ["неравенства", "вторая часть", "номер 15"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 15, "taskYear": 2027}],
+    ["ege-profile-planimetry-start", "Профильный ЕГЭ: планиметрия по шагам", "/ege-profil/start/#fipi/2027/1", "ЕГЭ", ["планиметрия", "первое задание", "углы", "площади"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 1, "taskYear": 2027}],
+    ["ege-profile-vectors-start", "Профильный ЕГЭ: векторы по шагам", "/ege-profil/start/#fipi/2027/2", "ЕГЭ", ["векторы", "второе задание", "скалярное произведение"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 2, "taskYear": 2027}],
+    ["ege-profile-stereo-start", "Профильный ЕГЭ: стереометрия по шагам", "/ege-profil/start/#fipi/2027/3", "ЕГЭ", ["стереометрия", "третье задание", "пространственные фигуры"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 3, "taskYear": 2027}],
     ["ege-profile-trigonometry-course", "Профильный ЕГЭ: единый курс тригонометрии", "/ege-profil/trigonometry/index.html", "ЕГЭ", ["тригонометрия", "мордкович", "единичная окружность", "синус", "косинус", "тангенс"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-log-inequalities", "Профильный ЕГЭ: логарифмические неравенства", "/trainers/ege-profile/log-inequalities/index.html", "ЕГЭ", ["логарифмические неравенства", "одз", "логарифмы", "метод интервалов"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-derivative", "Профильный ЕГЭ: производная по графику", "/ege-profil/trainers/derivative-t8.html", "ЕГЭ", ["производная", "касательная", "монотонность", "график производной"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
-    ["ege-profile-finance", "Профильный ЕГЭ: финансовая математика", "/ege-profil/trainers/finance.html", "ЕГЭ", ["кредит", "вклад", "платежи", "финансовая математика", "экономическая задача"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
+    ["ege-profile-finance", "Профильный ЕГЭ: финансовая математика", "/ege-profil/start/#fipi/2027/16", "ЕГЭ", ["кредит", "вклад", "платежи", "финансовая математика", "экономическая задача", "номер 16"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "task": 16, "taskYear": 2027}],
     ["ege-profile-parameters", "Профильный ЕГЭ: параметры с нуля", "/ege-profil/trainers/parameters-18/index.html", "ЕГЭ", ["параметры", "задача с параметром", "число решений"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-intervals", "Профильный ЕГЭ: метод интервалов", "/ege-profil/trainers/interval-method.html", "ЕГЭ", ["метод интервалов", "знаки", "рациональные неравенства"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-inequalities", "Профильный ЕГЭ: курс неравенств", "/ege-profil/trainers/inequalities.html", "ЕГЭ", ["неравенства", "рационализация", "показательные", "логарифмические"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
@@ -36,7 +44,8 @@
     ["ege-profile-probability", "Профильный ЕГЭ: вероятность", "/ege-profil/trainers/probability-t45.html", "ЕГЭ", ["вероятность", "монета", "кубик", "дерево событий", "бернулли"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-applied", "Профильный ЕГЭ: формулы и текстовые задачи", "/ege-profil/trainers/applied-t910.html", "ЕГЭ", ["текстовые задачи", "формулы", "движение", "работа", "смеси"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-functions", "Профильный ЕГЭ: графики и наибольшее значение", "/ege-profil/trainers/functions-t1112.html", "ЕГЭ", ["функции", "графики", "максимум", "минимум", "экстремум"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
-    ["ege-profile-full-exam", "Профильный ЕГЭ: пробный экзамен в формате 2026", "/ege-profil/exam/full-exam.html", "ЕГЭ", ["пробник", "полный вариант", "экзамен с таймером"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "formatYear": 2026}],
+    ["ege-profile-full-exam", "Профильный ЕГЭ: пробный экзамен в формате 2026", "/ege-profil/exam/full-exam.html", "ЕГЭ", ["пробник 2026", "полный вариант 2026", "экзамен с таймером 2026"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "formatYear": 2026}],
+    ["ege-profile-full-exam-2027", "Профильный ЕГЭ: пробник 2027", "/ege-profil/exam/full-exam.html?edition=2027", "ЕГЭ", ["пробник", "полный вариант", "экзамен с таймером"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный", "formatYear": 2027}],
     ["ege-profile-review", "Профильный ЕГЭ: работа над ошибками", "/ege-profil/review.html", "ЕГЭ", ["работа над ошибками", "журнал ошибок", "повторение"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["ege-profile-expert", "Профильный ЕГЭ: проверь как эксперт", "/ege-profil/trainers/expert.html", "ЕГЭ", ["критерии", "проверка решений", "эксперт", "развёрнутый ответ"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "профильный"}],
     ["oge-tires", "ОГЭ 1–5: Шины: маркировка и размеры колеса", "/trainers/oge-1-5-trainers/practice-1-5-tires.html", "ОГЭ", ["шины", "колёса", "покрышки", "резина", "маркировка", "195/65 r15"], {"grades": [9], "exam": "ОГЭ", "tasks": [1, 2, 3, 4, 5]}],
@@ -97,6 +106,9 @@
     ['simple-equations', 'Простые уравнения', '/trainers/simple-equations-stepwise.html', 'Алгебра', ['простые уравнения', 'обратное действие']],
     ['linear-systems', 'Системы линейных уравнений', '/trainers/linear-systems-trainer.html', 'Алгебра', ['системы', 'подстановка', 'сложение']],
     ['division-stepwise', 'Деление столбиком (уголком) по шагам', '/trainers/long-division-stepwise.html', 'Письменные алгоритмы', ['деление уголком']],
+    ['division-two-digit', 'Деление на двузначное число', '/trainers/long-division-stepwise.html#twoDigit', 'Письменные алгоритмы', ['делить на двузначный делитель']],
+    ['division-remainder', 'Деление с остатком по шагам', '/trainers/long-division-stepwise.html#remainder', 'Письменные алгоритмы', ['делить с остатком']],
+    ['division-quotient-digit', 'Подобрать одну цифру частного по шагам', '/trainers/long-division-stepwise.html#quotientDigit', 'Письменные алгоритмы', ['цифра частного в тренажёре']],
     ['division-digit', 'Подобрать цифру частного', '/trainers/oge-basics/multiplication-division/course-digit-choice.html', 'Письменные алгоритмы', ['выбрать цифру частного при делении']],
     ['division-notebook', 'Деление столбиком (уголком): тетрадный тренажёр', '/trainers/trainers/long-division.html', 'Письменные алгоритмы', ['тетрадный формат', 'деление']],
     ['multiplication-notebook', 'Умножение столбиком', '/trainers/trainers/long-multiplication.html', 'Письменные алгоритмы', ['умножение столбиком']],
@@ -304,10 +316,20 @@
     var pupil = /(?:^|[^а-я])(пяти|шести|семи|восьми|девяти|десяти|одиннадцати)класс/.exec(text);
     return pupil ? ['пяти','шести','семи','восьми','девяти','десяти','одиннадцати'].indexOf(pupil[1]) + 5 : null;
   }
+  function assignedWork(text) {
+    var lookup = /(?:^|\s)(?:что|како[ей]|каки[ех]|какую|где|покаж[иь]|назови|найти|открыть|посмотреть)(?:\s|$)/.exec(text);
+    if (!lookup) return false;
+    // Only the retrieval request itself can indicate private assignments; the
+    // preceding context may merely say «нам задали» before asking for practice.
+    var request = text.slice(lookup.index);
+    return /(?:мне|нам)\s+(?:было\s+)?(?:на\s+\S+\s+)?(?:зада(?:но|ны|ли|л[аи]?)|назнач(?:ен[а-я]*|ил[аи]?))|(?:зада(?:ли|л[аи]?)|назначил[аи]?)\s+(?:лично\s+)?(?:мне|нам)(?:\s|$)/.test(request) ||
+      /(?:мои|мое|свои|личные|посмотреть|увидеть|открыть|найти)\s+назначени[а-я]*|назначенн[а-я]*\s+(?:упражнен|задани|работ)/.test(request) ||
+      /(?:моя|мою|мое|мои)\s+(?:домашн[а-я]*\s+(?:работ|задан)|упражнен[а-я]*\s+от\s+(?:учител|преподавател))/.test(request);
+  }
   function accessIntent(text) {
     // Match the noun's case forms, without confusing "входная диагностика"
     // with an account problem. These intents never count as learning failure.
-    return /кабинет|парол|логин|личн.{0,8}ссыл|авторизац|авторизова|войти|(?:^|[^a-zа-я])pin(?:$|[^a-zа-я])|(?:^|[^а-я])пин(?:[- ]?код)?(?:$|[^а-я])/.test(text)
+    return assignedWork(text) || /кабинет|парол|логин|личн.{0,8}ссыл|авторизац|авторизова|войти|(?:^|[^a-zа-я])pin(?:$|[^a-zа-я])|(?:^|[^а-я])пин(?:[- ]?код)?(?:$|[^а-я])/.test(text)
       || /(?:^|[^а-я])вход(?:а|е|у|ом)?(?:$|[^а-я])/.test(text);
   }
   function explicitDifficulty(text) {
@@ -590,13 +612,11 @@
       if (/карта|маршрут|план подгот|все тем/.test(text)) return one('ege-base-map', 'В карте базового ЕГЭ выберите одну тему и начните с первого шага.');
     }
     if (examLevel === 'ege-profile' && !oge) {
-      if (number === 16 && !/неравен|геометр|кредит|финанс/.test(text)) {
-        if (/2027/.test(text)) return one('ege-profile-inequalities-2027', 'В маршруте ЕГЭ 2027 задание 16 посвящено неравенствам второй части.');
-        if (!/2026/.test(text) && byId['ege-profile-inequalities-2027']) return result('clarify', 'Какой формат нужен: неравенства в маршруте 2027 или финансовые задачи в подборке 2026?', ['ege-profile-inequalities-2027','ege-profile-finance'], state, [choice('2027: неравенства', 'ЕГЭ профиль 2027: задание 16'),choice('2026: финансовые задачи', 'ЕГЭ профиль 2026: финансовые задачи')]);
-      }
-      if (/пробник|полный вариант|экзамен.{0,12}целиком/.test(text) && byId['ege-profile-full-exam']) {
+      if (number === 15 && !/кредит|финанс|геометр/.test(text)) return one('ege-profile-inequalities-2027', 'По ФИПИ 2027 задание 15 — неравенства второй части.');
+      if (number === 16 && !/неравен|геометр/.test(text)) return one('ege-profile-finance', 'По ФИПИ 2027 задание 16 — финансовая задача. Здесь доступны основы, модели и учебные задачи.');
+      if (/пробник|пробн[а-яё]*\s+экзамен|полный вариант|экзамен.{0,12}целиком/.test(text) && byId['ege-profile-full-exam']) {
         if (/2026/.test(text)) return one('ege-profile-full-exam', 'Этот пробный экзамен использует формат 2026.');
-        return result('clarify', 'На сайте есть пробный экзамен в формате 2026 и учебный маршрут 2027. Что открыть?', ['ege-profile-full-exam','ege-profile-start'], state, [choice('Пробник 2026', 'ЕГЭ профиль: пробник 2026'),choice('Маршрут 2027', 'ЕГЭ профиль: карта курса 2027')]);
+        return one('ege-profile-full-exam-2027', 'Пробник ЕГЭ-2027: 19 заданий, таймер и проверка по первичным баллам.');
       }
       var topic = /работ.{0,10}над ошиб|журнал.{0,10}ошиб|разобрат.{0,12}ошиб/.test(text) ? 'ege-profile-review'
         : /критери|эксперт|провер.{0,12}(?:развернут|решени)/.test(text) ? 'ege-profile-expert'
@@ -619,6 +639,33 @@
     return null;
   }
 
+  function vprRequested(text) {
+    var positive = text.replace(/(?:^|[^а-я])(?:(?:не\s+(?:(?:к|для)\s+)?|без\s+|не\s+(?:хочу|хотим|нужен|нужна|нужно|нужны|готовлюсь|готовимся)\s+(?:готовиться\s+)?(?:(?:к|для)\s+)?)впр|впр\s+(?:мне\s+)?(?:пока\s+)?не\s+(?:нуж[а-я]*|интересу[а-я]*|сдаю))/g, ' ');
+    return /(?:^|[^а-я])впр(?:$|[^а-я])|всероссийск[а-я]*\s+проверочн[а-я]*\s+работ/.test(positive);
+  }
+  function vprGrade(text) {
+    var grade = classNumber(text);
+    var shorthand = /(?:^|[^а-я])впр\s*(?:по математике\s*)?[:,·-]?\s*(5|6|7|8|10)(?!\d)/.exec(text);
+    return grade === null && shorthand ? Number(shorthand[1]) : grade;
+  }
+  function vprDestination(text, state) {
+    var grade = vprGrade(text);
+    var single = {5:'vpr-g5',6:'vpr-g6',10:'vpr-g10'};
+    if (Object.hasOwn(single, grade)) return result('vpr', 'Откройте курс подготовки к ВПР: короткая теория, примеры, проверка шагов и самостоятельная практика. Прогресс сохраняется в этом браузере.', [single[grade], 'vpr'], state);
+    if (grade === 7 || grade === 8) {
+      var options = grade === 7 ? ['vpr-g7','vpr-g7u'] : ['vpr-g8','vpr-g8u'];
+      var withoutAdvanced = /(?:^|[^а-я])(?:не|без)\s+углубл[а-я]*/.test(text);
+      var withoutBasic = /(?:^|[^а-я])(?:не|без)\s+(?:базов|обычн|стандартн)[а-я]*/.test(text);
+      var positiveLevel = text.replace(/(?:^|[^а-я])(?:не|без)\s+(?:углубл|базов|обычн|стандартн)[а-я]*(?:\s+уров[а-я]*)?/g, ' ');
+      var advanced = /углуб/.test(positiveLevel) || (withoutBasic && !withoutAdvanced);
+      var basic = /базов|обычн|стандартн/.test(positiveLevel) || (withoutAdvanced && !withoutBasic);
+      if (advanced && !basic && !withoutAdvanced) return result('vpr', 'Откройте углублённый маршрут: общие темы и дополнительные задачи на преобразования и рассуждение. Прогресс сохраняется в этом браузере.', [options[1], 'vpr'], state);
+      if (basic && !advanced && !withoutBasic) return result('vpr', 'Откройте базовый маршрут: объяснения, пошаговая практика и самостоятельная проверка. Прогресс сохраняется в этом браузере.', [options[0], 'vpr'], state);
+      return result('clarify', 'Для ' + grade + ' класса есть базовый и углублённый маршруты ВПР. Выберите уровень, который изучаете в школе.', options, state,
+        [choice('Базовый уровень', 'ВПР ' + grade + ' класс базовый уровень'),choice('Углублённый уровень', 'ВПР ' + grade + ' класс углублённый уровень')]);
+    }
+    return result('vpr', grade === null ? 'В подготовке к ВПР доступны семь маршрутов для 5–8 и 10 классов. Откройте каталог и выберите класс и уровень.' : 'В этом каталоге есть курсы ВПР для 5–8 и 10 классов. Отдельного маршрута для ' + grade + ' класса здесь пока нет.', ['vpr'], state);
+  }
   function respond(input) {
     input = input && typeof input === 'object' ? input : {};
     var state = stateFrom(input);
@@ -645,13 +692,17 @@
     if (/(?:родител|мам[аыеу]|пап[аыеу]|мо(?:его|ей)\s+(?:ребенк|сына|дочер))/.test(text) && /успех|результат|прогресс|успеваемост|следить|наблюдат|посмотр|продвига/.test(text) && !/петерс[ое]н|дорофеев/.test(text) && context !== 'peterson6' && context !== 'atanasyan') {
       return result('parent-progress', 'О результатах ученика и доступе для родителя можно узнать у преподавателя. Если у вас уже есть данные для входа, откройте кабинет отдельно. Не вводите здесь PIN или личную ссылку.', ['cabinet', 'contact'], state);
     }
-    var namedLearningTopic = /дроб|делен|делить|уголком|умнож|процент|уравнен|неравен|график|треугол|окружност|вектор|вероятност|геометр|таблиц|учебник|задани|задач|номер/.test(text) || hasExam(text, 'огэ') || hasExam(text, 'егэ');
+    var namedLearningTopic = /дроб|делен|делить|уголком|умнож|процент|уравнен|неравен|график|треугол|окружност|вектор|вероятност|геометр|таблиц|учебник|задани|задач|номер/.test(text) || hasExam(text, 'огэ') || hasExam(text, 'егэ') || vprRequested(text);
     if (!accessIntent(text) && !namedLearningTopic && !tutorRequested(text) && /(?:бесплатн|бесплатно|платн|стоимост|сколько стоит|без регистрац)/.test(text) && /(?:сайт|тренаж|самостоятельн|занимат|заняти|учит|урок|доступ)/.test(text) && !/(?:мини[ -]?групп|с преподавател|у наталь|индивидуальн|репетитор)/.test(text)) {
       return result('pricing', 'На сайте есть бесплатные тренажёры для самостоятельной работы. Условия и стоимость занятий с преподавателем указаны отдельно на странице занятий.', ['trainers', 'lessons'], state);
     }
     if (accessIntent(text)) {
+      if (assignedWork(text) || (/кабинет/.test(text) && /задани|упражнен|назначен/.test(text))) {
+        return result('cabinet', 'Я не вижу личных заданий ученика. Откройте свой кабинет по ссылке преподавателя. Если пришлёте сюда условие упражнения, я помогу с первым шагом. Пароль и код входа оставьте в кабинете.', ['cabinet'], state);
+      }
       return result('cabinet', 'Кабинет открывается отдельно. Используйте личную ссылку или данные входа, выданные преподавателем. Если ссылка не работает или код потерян, попросите преподавателя помочь со входом. В навигатор код или пароль вводить не нужно.', ['cabinet'], state);
     }
+    if (vprRequested(text)) return vprDestination(text, state);
     var direct = !material ? directDestination(text, context, state, input.studyGoal) : null;
     if (direct) return direct;
     if (/(?:^|[^а-я])прогресс(?:$|[^а-я])|продвига[а-я]*|успеваемост|достижени|мои результаты|сохран(?:ить|ение|ено|ил|ятся)|результаты.{0,20}(?:пропал|где|посмотр)|где.{0,20}результат/.test(text)) {
@@ -674,7 +725,7 @@
       return result('navigation-help', 'Попробуйте открыть нужный раздел через каталог. Если не работает именно вход в кабинет, обратитесь к преподавателю за помощью со входом. Личные ссылки и коды сюда вводить не нужно.', ['trainers', 'cabinet'], state);
     }
     if (/как ты работаешь|что ты умеешь|ты.{0,15}(?:учишься|запоминаешь|искусственный|ии|модель|бот)|сохраняешь.{0,15}(?:переписку|сообщения)|автоматическ.{0,10}обуч|нейросет|языков.{0,8}модел|chatgpt|openai|qwen/.test(text)) {
-      return result('about', 'Я навигатор: подбираю ссылки по теме и разделу сайта с помощью подготовленных правил. Внешняя ИИ-модель здесь не подключена; условие, рисунок и ваш ответ я не вижу и не проверяю. Подбор выполняется в браузере: сообщения не отправляются сервису модели, а переписка не сохраняется между посещениями. Для разбора шагов откройте подходящий тренажёр.', ['trainers', 'topics'], state);
+      return result('about', 'Я навигатор: подбираю ссылки по теме и разделу сайта с помощью подготовленных правил. Внешняя ИИ-модель здесь не подключена; условие, рисунок и ваш ответ я не вижу и не проверяю. Обычный поиск работает в браузере. Если доступен серверный режим, его можно включить отдельно. История видна на этой странице до её закрытия. Для разбора шагов откройте подходящий тренажёр.', ['trainers', 'topics'], state);
     }
     var oge = hasExam(text, 'огэ');
     var ege = hasExam(text, 'егэ');
@@ -871,6 +922,31 @@
     var word = /^(пят|шест|седьм|восьм|девят|десят|одиннадцат)(?:ый|ой|ом|ого|ому|ым)(?:\s+класс(?:а|е)?)?$/.exec(s);
     return word ? gradeNames.indexOf(word[1]) + 5 : null;
   }
+  // Topic keys and URLs are fixed here. Only the selected key survives a turn.
+  var divisionTopics = {
+    general: {id:'division-stepwise', help:'Откройте простой пример. Посмотрите на первую цифру делимого: она уже достаточно велика, чтобы из неё вычесть делитель?', prompt:'С чего начнём: с деления на двузначное число, с остатка или с подбора цифры частного?'},
+    twoDigit: {id:'division-two-digit', help:'Посмотрите на делитель. Теперь читайте делимое слева: возьмите первую цифру и сравните с делителем. Если мало, присоедините следующую цифру справа.', prompt:'В тренажёре откроется деление на двузначное число. Начните с первой группы цифр делимого, в которой помещается делитель.'},
+    remainder: {id:'division-remainder', help:'Когда цифры делимого закончились, посмотрите на результат последнего вычитания. Можно ли вычесть из него делитель ещё раз?', prompt:'В тренажёре откроется пример с остатком. После последнего вычитания сравните остаток с делителем.'},
+    quotientDigit: {id:'division-quotient-digit', help:'Выберите пробную цифру и умножьте на неё делитель. Если произведение больше числа перед вами, попробуйте цифру меньше.', prompt:'Попробуйте подобрать одну цифру частного. В тренажёре сравните произведение делителя и пробной цифры с числом перед вами.'}
+  };
+  var divisionChoices = [choice('На двузначное', 'Делить на двузначное число'), choice('С остатком', 'Деление с остатком'), choice('Подобрать цифру', 'Подобрать цифру в тренажёре деления')];
+  function divisionDetail(text) {
+    if (/(?:на (?:двух?значн|2[- ]?значн|две цифры)|(?:двух?значн|2[- ]?значн)[а-я-]* делител)/.test(text)) return 'twoDigit';
+    if (/с остатком/.test(text)) return 'remainder';
+    return '';
+  }
+  function asksNextDivisionStep(text) {
+    return /^(?:объясни(?:те)? проще|я не понял[а]?|(?:вот )?(?:здесь|тут) я и запутал(?:ся|ась)|как начать|а дальше|что дальше|где потренироваться)$/.test(text);
+  }
+  function divisionFollowup(text, topic) {
+    if (!Object.hasOwn(divisionTopics, topic)) return '';
+    var answer = shortReply(text).replace(/^(?:да[,.]?\s+)?(?:(?:именно|тогда|лучше|а)\s+)?/, '');
+    if (/^(?:(?:делить|деление)\s+)?на (?:двух?значн[а-я]*|2[- ]?значн[а-я]*|две цифры)(?: (?:число|делитель))?$/.test(answer)) return 'twoDigit';
+    if (/^(?:(?:делить|деление) )?с остатком$/.test(answer)) return 'remainder';
+    if (/^(?:подобрать цифру(?: частного| в тренажере деления)?|какую цифру (?:брать|пробовать)|подбор цифры)$/.test(answer)) return 'quotientDigit';
+    if (asksNextDivisionStep(answer)) return topic;
+    return '';
+  }
   function choiceForReply(text, choices) {
     var s = shortReply(text), g = gradeReply(s);
     var matches = choices.filter(function (a) {
@@ -886,6 +962,23 @@
     });
     return matches.length === 1 ? matches[0].text : text;
   }
+  function vprLevelAnswer(text) {
+    var answer = text.replace(/[.,!?…;]+/g, ' ').replace(/\s+/g, ' ').trim()
+      .replace(/(?:^| )(?:класс тот же|тот же класс|класс прежний|класс без изменений)(?= |$)/g, ' ').trim();
+    var uncertainty = /^(?:(?:я|мы) )?(?:пока )?не (?:знаю|знаем|уверен[аы]?)(?: |$)/;
+    var unsure = uncertainty.test(answer);
+    if (unsure) answer = answer.replace(uncertainty, '');
+    if ((!answer && unsure) || /^(?:оба(?: уровня)?|какая разница)$/.test(answer)) return '';
+    answer = answer.replace(/^(?:(?:мне|нам) (?:нужен|нужна|нужно|нужны)|(?:я |мы )?(?:хочу|хотим)) /, '');
+    var words = answer.split(/\s+/);
+    var level = /^(?:углубленн[а-я]*|базов[а-я]*|база|обычн[а-я]*|стандартн[а-я]*)$/;
+    // Treat only a reply about the offered levels as a continuation. A new
+    // subject, class or exam must still go through the usual navigator.
+    var filler = /^(?:у|нас|меня|в|школе|мы|я|учусь|учимся|занимаюсь|занимаемся|по|на|да|нет|не|без|а|или|и|тогда|лучше|выберу|выбираю|только|пожалуйста|программ[а-я]*|уров[а-я]*|курс[а-я]*)$/;
+    if (!words.some(word => level.test(word)) || !words.every(word => level.test(word) || filler.test(word))) return null;
+    if (unsure || words.includes('или')) return '';
+    return words.map(word => word === 'база' ? 'базовый' : word).join(' ').replace(/не по /g, 'не ');
+  }
   function turn(input) {
     if (!input || typeof input.text !== 'string' || !input.text.trim() || input.text.length > 1000 || looksPrivate(normalize(input.text))) return respond(input);
     var previous = input.dialog || {};
@@ -896,6 +989,19 @@
     var original = shortReply(input.text);
     var changedGoal = /(?:^|\s)(?:раньше|до этого|сначала)\s.+?[,;]\s*(?:но\s+|а\s+)?(?:сейчас|теперь)\s+(.+)$/.exec(original);
     if (changedGoal) original = changedGoal[1];
+    if (previous.vprLevelGrade === 7 || previous.vprLevelGrade === 8) {
+      var levelAnswer = vprLevelAnswer(original);
+      if (levelAnswer !== null) original = 'впр ' + previous.vprLevelGrade + ' класс ' + levelAnswer;
+    }
+    // An explicit current VPR request selects a course after an OGE/EGE task.
+    // Leave access and privacy decisions in the normal response path.
+    if (vprRequested(normalize(original))) {
+      var vprResponse = respond(Object.assign({}, input, {text:original,studyGoal:'school'}));
+      var requestedGrade = vprGrade(original);
+      vprResponse.dialog = {goal:'school',grade:requestedGrade,choices:vprResponse.kind === 'clarify' ? (vprResponse.actions || []).slice(0,3) : []};
+      if (vprResponse.kind === 'clarify' && [7, 8].includes(requestedGrade)) vprResponse.dialog.vprLevelGrade = requestedGrade;
+      return vprResponse;
+    }
     // A bare number after an explicit exam goal is a task, not a new grade.
     // Naming a class still changes the goal to school in the normal path below.
     if (Object.hasOwn(goalLabels,goal) && /^\d{1,2}$/.test(original)) original = 'задание ' + original;
@@ -933,8 +1039,20 @@
     } else {
       response = respond(Object.assign({},input,state,{text:clean,pathname:path,studyGoal:goal}));
     }
+    // A fresh named topic, access request or different exam takes precedence.
+    var division = divisionFollowup(t, previous.divisionTopic);
+    if (!division && response.kind === 'division' && response.links[0]?.url === byId['division-stepwise'].url) {
+      division = divisionDetail(t) || 'general';
+    }
+    if (division) {
+      var selected = divisionTopics[division];
+      var guidance = asksNextDivisionStep(t) ? selected.help : selected.prompt;
+      if (division !== 'general' || asksNextDivisionStep(t)) guidance += ' В открытом примере можно нажать «Помочь с этим шагом».';
+      response = result('division', guidance, [selected.id], state, division === 'general' ? divisionChoices : []);
+    }
     if (response.kind === 'textbook' && !o && !e) goal = 'school';
     response.dialog = {goal:goal,grade:grade,choices:response.kind === 'clarify' ? (response.actions || []).slice(0,3) : []};
+    if (division) response.dialog.divisionTopic = division;
     return response;
   }
   return Object.freeze({ catalogue: catalogue, welcome: welcome, respond: turn });

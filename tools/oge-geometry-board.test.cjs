@@ -6,6 +6,27 @@ class Local extends ResourceLoader{constructor(capture){super();this.capture=cap
 const clone=(w,x)=>w.JSON.parse(JSON.stringify(x));
 async function load(n,board=true,captures=null){const route=`trainers/oge-task${n}-${{16:'circle',17:'quadrilaterals',18:'grid'}[n]}.html`,errors=[];const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));const dom=new JSDOM(fs.readFileSync(path.join(root,route),'utf8'),{url:'https://mathexam.space/'+route+(board?'?board=1':''),runScripts:'dangerously',resources:new Local(!!captures),pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){if(captures){const add=w.document.addEventListener.bind(w.document);w.document.addEventListener=(type,callback,capture)=>{if(capture===true){captures.set(type,callback);return add(type,function(event){if(!w.__skipGeometryCapture)return callback.call(this,event);},capture);}return add(type,callback,capture);};}w.localStorage.setItem('mathExamCourseProgress.v1','{"private-sentinel":{"solved":99},"'+({16:'oge-task16-circle',17:'oge-task17-quadrilaterals',18:'oge-task18-grid'}[n])+'":{"runs":77,"best":10}}');}});await new Promise(r=>dom.window.addEventListener('load',r,{once:true}));assert.deepEqual(errors,[]);return{dom,w:dom.window,d:dom.window.document,errors};}
 const tick=()=>new Promise(r=>setTimeout(r,0));
+test('OGE16: each revealed circle step restores with retained input and assistance',async()=>{
+ const a=await load(16),b=await load(16);try{
+  a.d.getElementById('courseHintToggle').click();fill(a.w,a.d,'ans','17');
+  for(let i=1;i<=a.w.eval('trTask.sol.length');i++){
+   a.d.getElementById('hintBtn').click();await tick();const packet=a.w.OgeGeometryBoard.getState();b.w.OgeGeometryBoard.applyState(clone(b.w,packet));
+   assert.equal(b.d.querySelectorAll('#task16Steps .step').length,i);assert.equal(b.d.getElementById('ans').value,'17');assert.equal(packet.helpUsed,true);
+  }
+ }finally{a.dom.window.close();b.dom.window.close();}
+});
+test('OGE18: all six revealed steps and figure restore in the peer view',async()=>{
+ const a=await load(18),b=await load(18);try{
+  a.w.eval('TR.task=archTask(ARCHIVE.find(t=>t.id===89));TR.done=false;TR.shown=false;drawTrain();');
+  a.d.getElementById('courseHintToggle').click();
+  for(let i=1;i<=6;i++){
+   a.d.getElementById('hintBtn').click();await tick();const packet=a.w.OgeGeometryBoard.getState();
+   assert.equal(packet.actions.filter(x=>x[0]==='first').length,i);b.w.OgeGeometryBoard.applyState(clone(b.w,packet));
+   assert.equal(b.d.querySelectorAll('#task18Steps .step').length,i);assert.equal(a.d.querySelector('#task18Steps').textContent,b.d.querySelector('#task18Steps').textContent);
+   assert.equal(a.d.querySelector('.figwrap').innerHTML,b.d.querySelector('.figwrap').innerHTML);
+  }
+ }finally{a.dom.window.close();b.dom.window.close();}
+});
 const state=w=>JSON.stringify(w.OgeGeometryBoard.getState());
 const native=n=>n===16?'trTask':n===17?'CUR':'TR.task';
 const ids=n=>({answer:n===18?'ansIn':'ans',check:{16:'check',17:'chk',18:'chkBtn'}[n],next:{16:'next',17:'nxt',18:'nextBtn'}[n],give:{16:'giveup',17:'give',18:'giveBtn'}[n]});

@@ -50,5 +50,7 @@ function render(){locked=false;const t=tasks[i];$('counter').textContent=`Зад
 function answer(btn,ch,t){if(locked)return;locked=true;document.querySelectorAll('.choice').forEach(b=>{if(b.textContent===t.a)b.classList.add('good')});if(ch===t.a){ok++;btn.classList.add('good');$('feedback').className='feedback ok';$('feedback').textContent='Верно. '+t.why}else{btn.classList.add('bad');$('feedback').className='feedback no';$('feedback').textContent='Почти. '+t.why}$('bar').style.width=`${(i+1)/tasks.length*100}%`;localStorage.setItem('sergeyPythonIfFor0506Embed',JSON.stringify({done:i+1,ok,date:'05.06'}));}
 $('next').onclick=()=>{i=(i+1)%tasks.length;render()};$('again').onclick=()=>{i=0;ok=0;render()};render();
 </script>
+
+<script defer src="/assets/assistant/home-link.js?v=20261110"></script>
 </body>
 </html>

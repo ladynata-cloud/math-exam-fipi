@@ -206,6 +206,25 @@ test('fractions keep parentheses, powers, roots and multiword trig quantities in
   } finally { f.dom.window.close(); }
 });
 
+test('the similar-triangle drawing and the worked proportion allow the same comparison', () => {
+  const f = fixture();
+  try {
+    const task = tasks.find(t => t.id === 'geo-similarity-from-area');
+    f.w.ProfileTaskModels[task.id](f.container, task, {});
+    f.container.querySelector('button').click();
+    const note = f.container.querySelector('.profile-model-note').textContent;
+    assert.match(note, /числители обеих дробей стороны одного треугольника/);
+    const proportion = f.api.steps(task).flatMap(row => row.lines).find(line => line.proportion).proportion;
+    const {from, to, side} = task.meta;
+    assert.deepEqual(Array.from(proportion.left), [String(Math.sqrt(from)), String(Math.sqrt(to))]);
+    assert.deepEqual(Array.from(proportion.right), [String(side), 'x']);
+    assert.match(task.steps[2].hint, /6 на 2,5/);
+    const cube = tasks.find(t => t.id === 'stereo-cube-edge');
+    assert.match(cube.steps[0].hint, /a · a · a = 125/);
+    assert.doesNotMatch(cube.steps[0].hint, /\b5\b/);
+  } finally { f.dom.window.close(); }
+});
+
 test('short stereometry explanations answer the requested coefficient or scale factor', () => {
   const f = fixture();
   try {

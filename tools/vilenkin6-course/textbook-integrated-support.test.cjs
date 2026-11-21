@@ -207,3 +207,54 @@ test('LCM practice entry is scoped to fraction tasks and stale or read-only cont
   assert.equal(actionsHost.childElementCount,0,'other task types do not receive a misleading LCM entry');
   other();dom.window.close();
 });
+
+
+test('five textbook themes expose their real predictive model without leaving or completing the source task', async () => {
+  const mappings=[[2,'percent'],[9,'common'],[13,'part'],[18,'ratio'],[21,'scale']];
+  const oldLessons=[1,2,3,4,5].flatMap(n=>JSON.parse(fs.readFileSync(path.join(root,`data/lessons-${n}.json`),'utf8')));
+  for(const [id,key] of mappings){
+    const unit=units.find(u=>u.id===id),task=unit.tasks.find(t=>t.role==='practice'&&t.answerType!=='self-check');assert(task);
+    const taskHash=`#unit/${id}/task/${encodeURIComponent(task.id)}`;let ctx=await open(taskHash);
+    const link=ctx.d.querySelector('[data-v6-model]');assert(link,'model link '+id);
+    assert.equal(link.dataset.v6Model,key);assert.equal(oldLessons.find(l=>l.id===id).lab,key,'link resolves to the intended existing lab');
+    assert.equal(link.href,`https://mathexam.space/courses/vilenkin-6-part-1/?legacy=1#lesson/${id}/theory`);
+    const destination=new URL(link.href);assert.deepEqual([...destination.searchParams.keys()],['legacy'],'no pupil, task or cabinet arguments');
+    assert.equal(destination.searchParams.get('legacy'),'1','bypass the public textbook redirect');
+    assert.equal(link.target,'_blank');assert(link.rel.includes('noopener'));assert(link.rel.includes('noreferrer'));
+    assert.equal(record(ctx,task),undefined,'showing the link does not record assistance');
+    const input=type(ctx,'17/'),form=ctx.d.querySelector('#answer-form'),condition=ctx.d.querySelector('.prompt').textContent;
+    assert.equal(record(ctx,task).helped,false);let clicked=false;
+    link.addEventListener('click',event=>{clicked=true;assert.equal(record(ctx,task).helped,true,'mark help before opening a model');event.preventDefault();});link.click();assert(clicked);
+    assert.equal(ctx.w.location.hash,taskHash);assert.equal(ctx.d.querySelector('#answer'),input);assert.equal(ctx.d.querySelector('#answer-form'),form);assert.equal(input.value,'17/');assert.equal(ctx.d.querySelector('.prompt').textContent,condition);
+    assert.equal(record(ctx,task).attempts,0);assert.equal(record(ctx,task).status,'');assert.equal(record(ctx,task).draft,'17/');
+    const saved=ctx.w.localStorage.getItem(KEY);ctx.close();ctx=await open(taskHash,saved);
+    assert.equal(record(ctx,task).helped,true);assert.equal(ctx.d.querySelector('#answer').value,'17/');assert.deepEqual(ctx.errors,[]);ctx.close();
+  }
+});
+
+test('a stale model link cannot open or mark work after navigation, and other topics keep their original support', async () => {
+  const unit=units.find(u=>u.id===2),task=unit.tasks.find(t=>t.role==='practice'&&t.answerType!=='self-check');
+  const ctx=await open(`#unit/2/task/${encodeURIComponent(task.id)}`);type(ctx,'не закончено');const link=ctx.d.querySelector('[data-v6-model]');
+  ctx.w.location.hash=route(practice);const before=ctx.w.localStorage.getItem(KEY),event=new ctx.w.MouseEvent('click',{bubbles:true,cancelable:true});link.dispatchEvent(event);
+  assert(event.defaultPrevented);assert.equal(ctx.w.localStorage.getItem(KEY),before);assert.equal(record(ctx,task).helped,false);
+  await tick();await tick();assert.equal(ctx.d.querySelector('[data-v6-model]'),null,'no unrelated model in another topic');assert.equal(ctx.d.querySelectorAll('[data-v6-practice]').length,6);assert.deepEqual(ctx.errors,[]);ctx.close();
+});
+
+
+test('middle-button model opening records help, while stale and read-only model links remain blocked', async () => {
+  const unit=units.find(u=>u.id===2),task=unit.tasks.find(t=>t.role==='practice'&&t.answerType!=='self-check');
+  const ctx=await open(`#unit/2/task/${encodeURIComponent(task.id)}`),input=type(ctx,'37');
+  const link=ctx.d.querySelector('[data-v6-model]');
+  for(const button of [0,2])link.dispatchEvent(new ctx.w.MouseEvent('auxclick',{button,bubbles:true,cancelable:true}));
+  assert.equal(record(ctx,task).helped,false,'other auxiliary buttons do not mark help');
+  let observed=false;link.addEventListener('auxclick',event=>{if(event.button!==1)return;observed=true;assert.equal(record(ctx,task).helped,true,'help saved before the native new-tab action');event.preventDefault();},{once:true});
+  link.dispatchEvent(new ctx.w.MouseEvent('auxclick',{button:1,bubbles:true,cancelable:true}));assert(observed);
+  assert.equal(ctx.d.querySelector('#answer'),input);assert.equal(input.value,'37');assert.equal(record(ctx,task).attempts,0);assert.equal(record(ctx,task).status,'');
+  ctx.w.location.hash=route(practice);const before=ctx.w.localStorage.getItem(KEY),stale=new ctx.w.MouseEvent('auxclick',{button:1,bubbles:true,cancelable:true});link.dispatchEvent(stale);assert(stale.defaultPrevented);assert.equal(ctx.w.localStorage.getItem(KEY),before);ctx.close();
+
+  const dom=new JSDOM('<main><div id="support"></div></main>',{runScripts:'outside-only'});dom.window.eval(scripts[1]);
+  const host=dom.window.document.querySelector('#support'),calls=[];
+  const dispose=dom.window.VilenkinStudySupport.mount(host,{unitId:2,isCurrent:()=>false,onUse:reason=>calls.push(reason)});
+  const blocked=new dom.window.MouseEvent('auxclick',{button:1,bubbles:true,cancelable:true});host.querySelector('[data-v6-model]').dispatchEvent(blocked);
+  assert(blocked.defaultPrevented);assert.deepEqual(calls,[]);dispose();dom.window.close();
+});

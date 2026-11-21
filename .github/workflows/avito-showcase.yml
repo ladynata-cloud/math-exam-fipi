@@ -10,6 +10,8 @@ on:
       - 'assets/lesson-showcase.css'
       - 'assets/oge-home.*'
       - 'assets/oge-home-topics.js'
+      - 'assets/oge-all-topics.css'
+      - 'assets/oge-entry-sections.css'
       - 'assets/oge-illustrations/**'
       - 'trainers/oge-course/index.html'
       - 'tools/oge-home.browser.cjs'

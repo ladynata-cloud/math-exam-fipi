@@ -1,0 +1,22 @@
+/* The course router replaces this outline inside main when the learner UI is ready. */
+.grade5-entry { max-width: 72rem; margin: 0 auto; }
+.grade5-entry .entry-intro { max-width: 62ch; line-height: 1.5; }
+.grade5-entry .entry-start {
+  display: inline-flex; align-items: center; min-height: 46px; padding: .55rem 1rem;
+  border-radius: .65rem; background: #185e48; color: white; font-weight: 650; text-decoration: none;
+}
+.grade5-entry h2 { margin: 1.75rem 0 .6rem; font-size: clamp(1.25rem, 3vw, 1.65rem); }
+.grade5-entry ul {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: .65rem; list-style: none; margin: 0; padding: 0;
+}
+.grade5-entry li {
+  min-width: 0; padding: .3rem 1rem .85rem; border: 1px solid #c8d8ce;
+  border-radius: .75rem; background: #fff; scroll-margin-top: 5rem;
+}
+.grade5-entry li:target { outline: 2px solid #327653; }
+.grade5-entry li a {
+  display: flex; align-items: center; min-height: 44px; color: #165e48; font-weight: 650;
+  line-height: 1.35; text-underline-offset: .18em; overflow-wrap: anywhere;
+}
+.grade5-entry li p { margin: 0; color: #394d43; font-size: 1rem; line-height: 1.45; }

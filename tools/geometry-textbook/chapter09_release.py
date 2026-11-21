@@ -8,6 +8,8 @@ from chapter09_extension import (ROOT,PREFIX,SCOPE,encoded,digest,require,
 def validate_release(bundle,root=ROOT,course=None,require_review=True,scope=None):
  course=course or root/PREFIX
  scope=scope or json.loads((root/'tools/geometry-textbook/release-scope.json').read_bytes())
+ from advanced8_release import historical_ix_projection
+ bundle,scope=historical_ix_projection(bundle,scope,root,course,require_review)
  assert_1247_preserved(bundle,root,course,scope)
  require(set(bundle)=={'catalog','lessons','sourceInventory','build'},'Unknown release envelope metadata')
  require(set(bundle['catalog'])=={'schemaVersion','book','inventoryComplete','entries'},'Unknown catalog metadata')

@@ -1,0 +1,45 @@
+name: Meaningful learner attempts
+on:
+  pull_request:
+    paths:
+      - 'school/**'
+      - 'trainers/college-functions/**'
+      - 'trainers/college-logarithms/**'
+      - 'trainers/oge-basics/**'
+      - 'tools/meaningful-attempts.test.cjs'
+      - '.github/workflows/meaningful-attempts.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'school/**'
+      - 'trainers/college-functions/**'
+      - 'trainers/college-logarithms/**'
+      - 'trainers/oge-basics/**'
+      - 'tools/meaningful-attempts.test.cjs'
+      - '.github/workflows/meaningful-attempts.yml'
+permissions:
+  contents: read
+concurrency:
+  group: meaningful-attempts-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  actual-dom-and-preserved-results:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated pinned DOM dependency
+        run: |
+          npm install --prefix "$RUNNER_TEMP/meaningful-attempts" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+          echo "NODE_PATH=$RUNNER_TEMP/meaningful-attempts/node_modules" >> "$GITHUB_ENV"
+      - name: Input, retained results and arithmetic room boundaries
+        run: |
+          node --test tools/meaningful-attempts.test.cjs
+          node --test tools/workshop-state.test.cjs
+          node --test tools/learning-column-multiplication.dom.cjs
+          git diff --check

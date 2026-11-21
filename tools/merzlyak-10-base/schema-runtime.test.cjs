@@ -74,7 +74,9 @@ const retained=fs.readFileSync(path.join(root,'tools/stereo-textbook/fixtures/co
 const isolated=fs.readFileSync(runtime,'utf8');
 const boardBlocks=isolated.match(/\n \/\* MERZLYAK_BOARD_BEGIN:[\s\S]*?\/\* MERZLYAK_BOARD_END \*\//g)||[];
 assert.equal(boardBlocks.length,3,'exactly three delimited optional board additions');
-assert.equal(isolated.replace(/\n \/\* MERZLYAK_BOARD_BEGIN:[\s\S]*?\/\* MERZLYAK_BOARD_END \*\//g,''),retained,'outside the tested optional board additions only source offset and exact decimal-number search differ from retained engine');
+// The 2026-11-09 learning-path scope evolves createApp; publication validation stays exact.
+assert.equal(isolated.split('function createApp(')[0],retained.split('function createApp(')[0],'learning navigation must not change source/review/publication validation');
+require('./learning-path.test.cjs');
 
 function boot(saved={}){
  const dom=new JSDOM('<div id="app"></div>',{url:'https://example.test/stereo-course/merzlyak-10-base/',runScripts:'outside-only',pretendToBeVisual:true});

@@ -485,7 +485,7 @@ async function run() {
         await settings(page, true);
         assert.equal(await page.locator('#taskPicker option').count(), 26, 'All existing 26 prototypes are selectable');
         await settings(page, false);
-        assert.equal(await page.locator('.course-back').getAttribute('href'), '../oge/', 'Course return remains available');
+        assert.equal(await page.locator('nav.oge-wayfinding a').first().getAttribute('href'), '/trainers/oge-course/', 'Course return remains available');
         const tasks = width === 320 ? CASES.filter(t => t.index === 0 || t.key === 'quad:4' || t.key === 'quad:6') : CASES;
         for (const task of tasks) await oneTask(page, task, width);
         if (width !== 320) await gradingAndNewRound(page);

@@ -77,7 +77,7 @@ async function followHelp(page, target, label) {
       const page = await context.newPage(); page.setDefaultTimeout(12000);
       page.on('pageerror', error => errors.push(error.message));
       page.on('response', response => { if (response.status() >= 400 && response.url().startsWith(origin)) failedRequests.push(response.status() + ' ' + response.url()); });
-      await page.goto(base); await page.locator('[data-calm-exam="13"]').waitFor();
+      await page.goto(base); await page.locator('[data-calm-exam="12"]').waitFor();
       async function seed(item, calm, suffix = '') {
         await page.evaluate(({ key, prefsKey, lessonId, taskId, mode, calm }) => {
           localStorage.clear();
@@ -211,7 +211,7 @@ async function followHelp(page, target, label) {
       await page.locator('.result-panel').waitFor();
       assert.equal((await stored(page)).records[probability.lesson.id].independent.length, 0, 'Help link does not grant independent credit');
       await readable(page, 'result typography:' + width); journeys++;
-      await page.goto(base + '#calm'); await page.locator('[data-calm-exam="13"]').waitFor();
+      await page.goto(base + '#calm'); await page.locator('[data-calm-exam="12"]').waitFor();
       await readable(page, 'catalogue typography:' + width);
       await page.goto(base + '#exam/16'); await page.getByRole('heading', { name: 'Неравенства.', exact: true }).waitFor();
       await readable(page, 'task 16 typography:' + width);

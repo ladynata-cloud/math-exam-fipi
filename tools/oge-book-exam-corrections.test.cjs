@@ -2,12 +2,49 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const {corrections,restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
+const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
+const {tyrePage,restoreTyreHints}=require('./oge-tyre-hints-preservation.cjs');
+const {restoreVideoModels,restoreGraphScale}=require('./oge-video-models-preservation.cjs');
+const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
+const {fractionsReturn,restoreFractionsReturn}=require('./oge-fractions-return-preservation.cjs');
 const root=path.resolve(__dirname,'..');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
 // These frozen inverses describe only the already reviewed PR340 board hooks.
 // The book check still seals the original pre-mirror bytes. Separate native
 // engine pins, transport and event-order gates test the current board engines.
 const boardInverse=require('./fixtures/oge-book-reviewed-board-inverse.json');
+function withoutReturnShell(html) {
+  const head = '<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">\n<script defer src="/assets/oge-wayfinding.js"></script>\n';
+  const bar = '\n<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>\n';
+  assert.equal(html.split(head).length, 2, 'One exact navigation asset pair');
+  assert.equal(html.split(bar).length, 2, 'One exact navigation bar');
+  return html.replace(head, '').replace(bar, '');
+}
+function currentPage(file){
+ let publicHtml=restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8');
+ if(file==='trainers/oge-task6-fractions.html') publicHtml=restoreFractionsReturn(publicHtml);
+ const teaching=restoreTyreHints(file,publicHtml);
+ let html=restoreVideoModels(file,withoutReturnShell(restoreTrainerDownload(file,teaching)));
+ if(file==='trainers/oge-task6-fractions.html'){
+  html=restoreFractionMultiplicationStep(html);
+  const replacement='<main class="wrap">\n\n<header>';
+  assert.equal(html.split(replacement).length,2,'Exact removed legacy return position');
+  html=html.replace(replacement,'<main class="wrap">\n<nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>\n<header>');
+ }
+ return restoreGraphScale(file,html);
+}
+test('6: the fraction return include has an exact, bounded inverse',()=>{
+ const source=fs.readFileSync(path.join(root,'trainers/oge-task6-fractions.html'),'utf8');
+ assert(!restoreFractionsReturn(source).includes('oge-fractions-return.js'));
+ for(const changed of [
+  source.replace(fractionsReturn,''),
+  source.replace(fractionsReturn,fractionsReturn+fractionsReturn),
+  source.replace(fractionsReturn,fractionsReturn.replace('defer','async')),
+  source.replace(fractionsReturn,fractionsReturn.replace('20261118-drafts','unreviewed')),
+  source.replace(fractionsReturn,'').replace('</head>',fractionsReturn+'</head>'),
+ ]) assert.throws(()=>restoreFractionsReturn(changed),/fraction return script/);
+});
 function beforeMirror(file,source){
  const rule=boardInverse[file];if(!rule)return source;
  let result=source;
@@ -20,14 +57,19 @@ function beforeMirror(file,source){
  assert.equal(sha(result),rule.baseSha256,'unreviewed changes outside board fragments');
  return result;
 }
+test('the book inverse rejects edits within either updated tyre renderer',()=>{
+ const html=fs.readFileSync(path.join(root,tyrePage),'utf8');
+ for(const start of ['function renderTask2(){','function renderTask5(){'])
+  assert.throws(()=>restoreTyreHints(tyrePage,html.replace(start,start+'\nvoid 0;')),/reviewed tyre renderer/);
+});
 for(const [file,rule]of Object.entries(corrections)){
  test(file+': exact inverse preserves the reviewed historical bytes',()=>{
-  const current=fs.readFileSync(path.join(root,file),'utf8');
+  const current=currentPage(file);
   assert.equal(sha(current),boardInverse[file].candidateSha256,'reviewed board candidate identity');
   assert.equal(sha(restoreHistoricalBytes(file,beforeMirror(file,current))),rule.historicalSha256);
  });
  test(file+': negative controls reject changed adapter fragments and extra engine code',()=>{
-  const current=beforeMirror(file,fs.readFileSync(path.join(root,file),'utf8'));
+  const current=beforeMirror(file,currentPage(file));
   for(const fragment of rule.fragments){
    const changed=fragment.after.slice(0,1)+'/* unreviewed */'+fragment.after.slice(1);
    assert.throws(()=>restoreHistoricalBytes(file,current.replace(fragment.after,changed)),/approved persistence fragment/);
@@ -35,7 +77,7 @@ for(const [file,rule]of Object.entries(corrections)){
   assert.notEqual(sha(restoreHistoricalBytes(file,current.replace('</script>','\nvoid "unreviewed engine change";\n</script>'))),rule.historicalSha256);
  });
  test(file+': every board inverse rejects mutation, omission and extra engine code',()=>{
-  const current=fs.readFileSync(path.join(root,file),'utf8');
+  const current=currentPage(file);
   for(const fragment of boardInverse[file].fragments){
    assert(current.includes(fragment.after),'negative probe must modify an existing fragment');
    for(const changed of [fragment.after+'/* unreviewed */',fragment.after.slice(1)])

@@ -1,4 +1,5 @@
 'use strict';
+const {restoreTyreHints}=require('./oge-tyre-hints-preservation.cjs');
 const retainedEngine=require('./oge-practical-retained-engine.cjs');
 const {restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),vm=require('node:vm');
@@ -34,7 +35,9 @@ function normalize(name,text){
 // percent-table-board, tire-exact-grading and the existing native/discovery suites.
 // roads-grid and the map remain pinned to their previously reviewed engines.
 const ENGINE_HASHES={
-  "practice-1-5-entry-diagnostic-2026.html": "01863d2cba47af52021564cff82a33e545f6f38c0d7a06fa15b7918baa1f8230",
+  // Foundation practice audit, f55bfea: a link after a wrong packing answer.
+  // The fingerprint still covers the entire normalized engine, including grading.
+  "practice-1-5-entry-diagnostic-2026.html": "ff4aeba28730b257b567323de36255c48338092fbc0b66baddc6f910cd1f7b47",
   "practice-1-5-tariffs.html": "deed6a7414def62124615ee2e219b2919bb785de88bcb1bea2b5139752595c83",
   "practice-1-5-plan-reading.html": "afc72aa727686ec192a33aa1da16795a2056296e8e7549dac89920f9b490c5f5",
   "practice-1-5-roads-grid.html": "0a8b72fc4c1a3554291e7d31569fc941982a558d9d5441d11b325774b4f17256",
@@ -43,8 +46,12 @@ const ENGINE_HASHES={
   "practice-1-5-roads-schema.html": "79e22555fac90ec073c59e08c111cb60efb1988f331a900b964f012f7046411d",
   "practice-1-5-map.html": "92a021c3a3a7c177f7efd9a6b439bd5e09139171758635b3bcb40b639bb2d903",
   "practice-1-5-tires.html": "7c9d25a566219e37698076db1e2e55083ea251f93aab2f948643b4d24c5c5501",
-  "percent-table-trainer.html": "384e143e5e5c3ca962d7b6e50fe3476184b2c05534318d4748cf9ad9fabb673d",
-  "practice-1-5-apartments.html": "e9957b28005a6a0a3fb029b570ab673307509349122f44e6738c51a20d5eefc4",
+  // PERCENT_CHECK_RESUME_20261109: independently reviewed exact source
+  // e258e438cd30e396c7741741384911f0a424581d; same normalization, new
+  // navigation/help accounting only. All other engines stay pinned.
+  "percent-table-trainer.html": "bb894316d96a9f0467214dbec873b4b666e37cdc52203a36aa1302d65be57e40",
+  // Packing feedback and the two minimality checks, source 18b44244753ac806d449a2040ad4b8c8af9acaf3.
+  "practice-1-5-apartments.html": "b3af7d3e165b2d812208a8fe02a2202b43cbbc6a4b4f842dcf7f9f445f2dbc00",
   "practice-1-5-stoves.html": "1efc4f134ee3e9df6fc8e705dd7a54e3ce8d56d7c155c212293c6021a1cb22aa",
   "practice-1-5-routes-checkpoint-2026.html": "cebdcffd0dd1ff43f8547ae5bf4bff4386d9da596ec20a651cc13183b6014584"
 };
@@ -53,7 +60,8 @@ test('all inline engines match their reviewed snapshots outside explicit UI norm
   const html=fs.readFileSync(path.join(dir,name),'utf8');
   inline(html).forEach((s,i)=>new vm.Script(s,{filename:name+':'+i}));
   // Reverse only exact reviewed book corrections; historical hashes stay pinned.
-  const historical=restoreHistoricalBytes('trainers/oge-1-5-trainers/'+name,html);
+  const file='trainers/oge-1-5-trainers/'+name;
+  const historical=restoreHistoricalBytes(file,restoreTyreHints(file,html));
   const normalized=normalize(name,inline(historical).join('\n'));
   assert.equal(crypto.createHash('sha256').update(normalized).digest('hex'),ENGINE_HASHES[name],name);
  }
@@ -105,6 +113,34 @@ for(const name of ['practice-1-5-entry-diagnostic-2026.html','practice-1-5-route
  }else{click(doc,'#next');await tick();assert.ok(shown(doc.querySelector('#question')));}
  assert.ok(shown(doc.querySelector(diagnostic?'#finish-btn':'#finish')));click(doc,diagnostic?'#finish-btn':'#finish');await tick();assert.equal(doc.querySelector('#result').hidden,false);assert.ok(dom.window.localStorage.getItem('mathExamCourseProgress.v1'));
 }finally{dom.window.close();}});
+test('entry diagnostic recommends packing practice only after an entered wrong packing answer',async()=>{
+ const {dom,doc}=await open('practice-1-5-entry-diagnostic-2026.html');
+ const practice='a[href="../oge-basics/rounding.html?practice=packages"]';
+ try{
+  for(const [answer,recommend,score] of [['6',true,'0'],['7',false,'1'],['',false,'0']]){
+   doc.querySelector('#variant-select').value='0';
+   click(doc,'#start-btn');
+   click(doc,'#stepper button:nth-child(6)');
+   assert.equal(doc.querySelector('#question-title').textContent,'Упаковки покрытия');
+   doc.querySelector('#answer-control').value=answer;
+   assert.equal(doc.querySelector('#result').hidden,true);
+   assert.equal(doc.querySelectorAll('#diagnostic '+practice).length,0,'practice stays hidden during the assessment');
+   click(doc,'#stepper button:nth-child(10)');
+   click(doc,'#finish-btn');
+   assert.equal(doc.querySelector('#score-val').textContent,score);
+   const resultLink=doc.querySelector('#topic-results '+practice);
+   assert.equal(Boolean(resultLink),recommend);
+   if(resultLink){
+    assert.equal(resultLink.closest('.topic-result').querySelector('h4').textContent,'Квартиры');
+    assert.equal(resultLink.target,'_blank');
+    assert.equal(resultLink.rel,'noopener');
+   }
+   click(doc,'#review-btn');
+   click(doc,'#stepper button:nth-child(6)');
+   assert.equal(Boolean(doc.querySelector('#review-box '+practice)),recommend);
+  }
+ }finally{dom.window.close();}
+});
 test('all twelve map routes and topic IDs remain available',async()=>{const{dom,doc}=await open('practice-1-5-map.html');try{const cards=[...doc.querySelectorAll('a[data-topic]')];assert.equal(cards.length,12);assert.equal(new Set(cards.map(x=>x.dataset.topic)).size,12);for(const card of cards){assert.ok(shown(card));assert.ok(fs.existsSync(path.join(dir,card.getAttribute('href'))));}}finally{dom.window.close();}});
 test('inverse tariff percentages restore the original base, and month matching follows the question',async()=>{const{dom,doc}=await open('practice-1-5-tariffs.html');try{
  const host=doc.querySelector('#task-q'), mount=dom.window.PracticalMinimal.mountHint;

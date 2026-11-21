@@ -32,3 +32,47 @@ Desktop browser inspection includes the home page, a worked-step journey and for
 ## Scope and rollback
 
 Additive course, catalog entry, sitemap seed and scoped CI. Existing foundational grade-seven pages, other courses and learner records are unchanged. Rollback removes these additive entries and the course route; there is no data migration.
+
+
+## Active learning audit application — 2026-11-09
+
+All 46 topic pages and 20 computation trainers now preserve a bounded journal of
+answers, checked steps and used help, with the first submitted answer stored
+separately. Empty or unrecognized numeric input and a correct value in the wrong
+requested representation do not consume a mathematical attempt. Result labels
+distinguish first-attempt independence, assistance, independent correction and
+familiar conditions. Historical results without explicit assistance provenance
+remain unknown and cannot become verified independence on reload or import.
+
+Ten authored model-family investigations use a written prediction, a real
+parameter change and a checked explanation. Formula, table and graph continue
+to use the existing mathematical model. Numeric fields supplement sliders;
+parameters, system presets and equation transformation stages survive return
+and reload. The model starts after the prediction. Changing it invalidates the
+previous explanation check. Model completion never awards independent task
+credit. This is ten reusable family investigations across 46 topics, not 46
+new independently authored investigations.
+
+After help or correction, the next action selects an untouched, distinct
+condition in the same topic, or a new generated computation example. If no new
+condition remains, familiar review creates a separate `review:<task>:<seed>`
+record without overwriting the original answer, notes or completion. Review is
+not independent mastery. The five-day reminder is a MathExam product choice,
+measured from the latest known successful topic attempt; no date is fabricated
+for historical work. Learner validation of this interval is still outstanding.
+
+When embedded in a frame, the native course is a demonstration with ephemeral
+state. It does not read or overwrite personal localStorage and does not import
+or export personal work. This does not implement shared-board synchronization.
+
+`test-audit.cjs` verifies the new behavior in JSDOM, including all 46 topic
+entry points, ten investigation families, recovery, repeated attempts,
+historical provenance and a same-origin iframe storage sentinel. Run it with
+the same jsdom dependency as `test-ui.cjs`. The original 276 problems, 795 steps,
+number mapping and answer keys are unchanged. External provider review and a
+real-pupil pilot have not been performed.
+
+Rollback must retain the sanitizer and support for new `learning`,
+`provenanceKnown`, timestamp and `review:` records. Reverting to a serializer
+that drops these fields would lose learner work on the next save; use a
+corrective release or presentation-only rollback instead.

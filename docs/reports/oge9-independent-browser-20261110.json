@@ -1,0 +1,452 @@
+{
+  "date": "2026-11-10",
+  "pullRequest": 539,
+  "baseHead": "ae3b5951ba87371ac1ff9e4a878a490cace88f8c",
+  "testedFile": "trainers/oge-task9-equations.html",
+  "testedFileSha256": "fbbac2d7b1d8b371116a5baab9cf7c1456f8272317f8f25e252c61bc34e03af4",
+  "status": "PASS",
+  "scenarioCount": 54,
+  "acceptedStepCount": 202,
+  "widths": [
+    320,
+    1280
+  ],
+  "scope": "All 27 EXAM_BANK cards: rendered source details, wrong/final answers, hints, full step input and layout. Step values reuse trainer factories for UI integration; independent mathematics is in task9-independent-review.test.cjs.",
+  "reproducibleScript": "tools/task9-independent-review.browser.cjs",
+  "evidence": [
+    {
+      "width": 320,
+      "id": "exam-demo-2027",
+      "question": "Решите уравнение  3(x + 8) − 2(x − 8) = 8.",
+      "steps": 5,
+      "accepted": "-32",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-demo-2026",
+      "question": "Решите уравнение  2x² − 3x + 1 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "0,5",
+      "wrongRejected": "1"
+    },
+    {
+      "width": 320,
+      "id": "exam-483ABF",
+      "question": "Решите уравнение  4(x − 6) = 5.",
+      "steps": 3,
+      "accepted": "7,25",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-36E26B",
+      "question": "Решите уравнение  x² − 144 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 3,
+      "accepted": "12",
+      "wrongRejected": "-12"
+    },
+    {
+      "width": 320,
+      "id": "exam-AB4778",
+      "question": "Решите уравнение  −1 − 3x = 2x + 1.",
+      "steps": 2,
+      "accepted": "-0,4",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-286CF5",
+      "question": "Решите уравнение  4x² = 20x. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 4,
+      "accepted": "0",
+      "wrongRejected": "5"
+    },
+    {
+      "width": 320,
+      "id": "exam-two-brackets-1",
+      "question": "Решите уравнение  5(x − 3) − 2(x + 4) = −11.",
+      "steps": 5,
+      "accepted": "4",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-540ABC",
+      "question": "Решите уравнение  x² − 11x + 30 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "5",
+      "wrongRejected": "6"
+    },
+    {
+      "width": 320,
+      "id": "exam-28287F",
+      "question": "Решите уравнение  2 + 3x = −7x − 5.",
+      "steps": 2,
+      "accepted": "-0,7",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-46C337",
+      "question": "Решите уравнение  x² − 25 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 3,
+      "accepted": "5",
+      "wrongRejected": "-5"
+    },
+    {
+      "width": 320,
+      "id": "exam-5572B4",
+      "question": "Решите уравнение  5(x + 4) = −9.",
+      "steps": 3,
+      "accepted": "-5,8",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-nonmonic-1",
+      "question": "Решите уравнение  5x² + x − 6 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 5,
+      "accepted": "1",
+      "wrongRejected": "-1,2"
+    },
+    {
+      "width": 320,
+      "id": "exam-one-bracket-x",
+      "question": "Решите уравнение  5(x − 3) = x − 2.",
+      "steps": 3,
+      "accepted": "3,25",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-69EC44",
+      "question": "Решите уравнение  x² − 9 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 3,
+      "accepted": "-3",
+      "wrongRejected": "3"
+    },
+    {
+      "width": 320,
+      "id": "exam-4F57B2",
+      "question": "Решите уравнение  −4x − 9 = 6x.",
+      "steps": 2,
+      "accepted": "-0,9",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-4318F0",
+      "question": "Решите уравнение  x² − 11x + 18 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 5,
+      "accepted": "9",
+      "wrongRejected": "2"
+    },
+    {
+      "width": 320,
+      "id": "exam-01DB8F",
+      "question": "Решите уравнение  5(x + 9) = −8.",
+      "steps": 3,
+      "accepted": "-10,6",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-factor-x-max",
+      "question": "Решите уравнение  6x² − 15x = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 3,
+      "accepted": "2,5",
+      "wrongRejected": "0"
+    },
+    {
+      "width": 320,
+      "id": "exam-two-brackets-2",
+      "question": "Решите уравнение  3(x − 4) = 7(x + 2).",
+      "steps": 4,
+      "accepted": "-6,5",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-EA4046",
+      "question": "Решите уравнение  x² − 9x + 18 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "3",
+      "wrongRejected": "6"
+    },
+    {
+      "width": 320,
+      "id": "exam-E1A33F",
+      "question": "Решите уравнение  x − 2 = −3x.",
+      "steps": 2,
+      "accepted": "0,5",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-nonmonic-2",
+      "question": "Решите уравнение  4x² − 4x − 3 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "-0,5",
+      "wrongRejected": "1,5"
+    },
+    {
+      "width": 320,
+      "id": "exam-two-brackets-3",
+      "question": "Решите уравнение  7(x + 3) − 2(x + 1) = 7.",
+      "steps": 5,
+      "accepted": "-2,4",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-30344D",
+      "question": "Решите уравнение  x² − 6x + 5 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "1",
+      "wrongRejected": "5"
+    },
+    {
+      "width": 320,
+      "id": "exam-transfer-1",
+      "question": "Решите уравнение  −7 + 3x = −5x + 6.",
+      "steps": 2,
+      "accepted": "1,625",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 320,
+      "id": "exam-9937FD",
+      "question": "Решите уравнение  x² = 5x. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 4,
+      "accepted": "0",
+      "wrongRejected": "5"
+    },
+    {
+      "width": 320,
+      "id": "exam-02AAF8",
+      "question": "Решите уравнение  x² − 12x + 20 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 5,
+      "accepted": "10",
+      "wrongRejected": "2"
+    },
+    {
+      "width": 1280,
+      "id": "exam-demo-2027",
+      "question": "Решите уравнение  3(x + 8) − 2(x − 8) = 8.",
+      "steps": 5,
+      "accepted": "-32",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-demo-2026",
+      "question": "Решите уравнение  2x² − 3x + 1 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "0,5",
+      "wrongRejected": "1"
+    },
+    {
+      "width": 1280,
+      "id": "exam-483ABF",
+      "question": "Решите уравнение  4(x − 6) = 5.",
+      "steps": 3,
+      "accepted": "7,25",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-36E26B",
+      "question": "Решите уравнение  x² − 144 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 3,
+      "accepted": "12",
+      "wrongRejected": "-12"
+    },
+    {
+      "width": 1280,
+      "id": "exam-AB4778",
+      "question": "Решите уравнение  −1 − 3x = 2x + 1.",
+      "steps": 2,
+      "accepted": "-0,4",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-286CF5",
+      "question": "Решите уравнение  4x² = 20x. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 4,
+      "accepted": "0",
+      "wrongRejected": "5"
+    },
+    {
+      "width": 1280,
+      "id": "exam-two-brackets-1",
+      "question": "Решите уравнение  5(x − 3) − 2(x + 4) = −11.",
+      "steps": 5,
+      "accepted": "4",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-540ABC",
+      "question": "Решите уравнение  x² − 11x + 30 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "5",
+      "wrongRejected": "6"
+    },
+    {
+      "width": 1280,
+      "id": "exam-28287F",
+      "question": "Решите уравнение  2 + 3x = −7x − 5.",
+      "steps": 2,
+      "accepted": "-0,7",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-46C337",
+      "question": "Решите уравнение  x² − 25 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 3,
+      "accepted": "5",
+      "wrongRejected": "-5"
+    },
+    {
+      "width": 1280,
+      "id": "exam-5572B4",
+      "question": "Решите уравнение  5(x + 4) = −9.",
+      "steps": 3,
+      "accepted": "-5,8",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-nonmonic-1",
+      "question": "Решите уравнение  5x² + x − 6 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 5,
+      "accepted": "1",
+      "wrongRejected": "-1,2"
+    },
+    {
+      "width": 1280,
+      "id": "exam-one-bracket-x",
+      "question": "Решите уравнение  5(x − 3) = x − 2.",
+      "steps": 3,
+      "accepted": "3,25",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-69EC44",
+      "question": "Решите уравнение  x² − 9 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 3,
+      "accepted": "-3",
+      "wrongRejected": "3"
+    },
+    {
+      "width": 1280,
+      "id": "exam-4F57B2",
+      "question": "Решите уравнение  −4x − 9 = 6x.",
+      "steps": 2,
+      "accepted": "-0,9",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-4318F0",
+      "question": "Решите уравнение  x² − 11x + 18 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 5,
+      "accepted": "9",
+      "wrongRejected": "2"
+    },
+    {
+      "width": 1280,
+      "id": "exam-01DB8F",
+      "question": "Решите уравнение  5(x + 9) = −8.",
+      "steps": 3,
+      "accepted": "-10,6",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-factor-x-max",
+      "question": "Решите уравнение  6x² − 15x = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 3,
+      "accepted": "2,5",
+      "wrongRejected": "0"
+    },
+    {
+      "width": 1280,
+      "id": "exam-two-brackets-2",
+      "question": "Решите уравнение  3(x − 4) = 7(x + 2).",
+      "steps": 4,
+      "accepted": "-6,5",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-EA4046",
+      "question": "Решите уравнение  x² − 9x + 18 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "3",
+      "wrongRejected": "6"
+    },
+    {
+      "width": 1280,
+      "id": "exam-E1A33F",
+      "question": "Решите уравнение  x − 2 = −3x.",
+      "steps": 2,
+      "accepted": "0,5",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-nonmonic-2",
+      "question": "Решите уравнение  4x² − 4x − 3 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "-0,5",
+      "wrongRejected": "1,5"
+    },
+    {
+      "width": 1280,
+      "id": "exam-two-brackets-3",
+      "question": "Решите уравнение  7(x + 3) − 2(x + 1) = 7.",
+      "steps": 5,
+      "accepted": "-2,4",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-30344D",
+      "question": "Решите уравнение  x² − 6x + 5 = 0. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 5,
+      "accepted": "1",
+      "wrongRejected": "5"
+    },
+    {
+      "width": 1280,
+      "id": "exam-transfer-1",
+      "question": "Решите уравнение  −7 + 3x = −5x + 6.",
+      "steps": 2,
+      "accepted": "1,625",
+      "wrongRejected": "12345"
+    },
+    {
+      "width": 1280,
+      "id": "exam-9937FD",
+      "question": "Решите уравнение  x² = 5x. Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "steps": 4,
+      "accepted": "0",
+      "wrongRejected": "5"
+    },
+    {
+      "width": 1280,
+      "id": "exam-02AAF8",
+      "question": "Решите уравнение  x² − 12x + 20 = 0. Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "steps": 5,
+      "accepted": "10",
+      "wrongRejected": "2"
+    }
+  ],
+  "errors": [],
+  "overflow": []
+}

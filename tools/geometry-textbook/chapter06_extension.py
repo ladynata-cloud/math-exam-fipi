@@ -74,6 +74,10 @@ def restore_manifest(name,raw,root=ROOT,course=None):
  return oldraw
 
 def assert_755_preserved(bundle,root=ROOT):
+ from advanced8_release import has_supplement,historical_ix_projection
+ if has_supplement(bundle=bundle):
+  scope=json.loads((root/'tools/geometry-textbook/release-scope.json').read_bytes())
+  bundle,_=historical_ix_projection(bundle,scope,root)
  base=frozen(root);lessons=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VI','VII','VIII','IX')];entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VI','VII','VIII','IX')]
  require(len(lessons)==len(entries)==755,'Unexpected old-card scope')
  require(digest(lessons)==base['lessonsSha256'],'Previous755 lesson/order/review/storage identity changed')

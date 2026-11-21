@@ -61,6 +61,14 @@ test('inverse coordinates and letterboxed click positions preserve graph values'
   assert.equal(P.pointFromEvent({getBoundingClientRect:()=>({width:0,height:0})},{clientX:0,clientY:0},t),null);
 });
 
+test('a unit has the same on-screen length on X and Y for every authored viewport', () => {
+  for (const t of D.tasks) {
+    const [xmin, , ymin] = t.viewport;
+    const a = P.toScreen(t, xmin, ymin), b = P.toScreen(t, xmin + 1, ymin + 1);
+    close(b.x - a.x, a.y - b.y, t.id);
+  }
+});
+
 function fakeSvg() {
   const document={createElementNS:(_ns,name)=>new Element(name)};
   class Element {

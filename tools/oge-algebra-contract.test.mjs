@@ -145,12 +145,13 @@ section('4. независимый пересчёт: весь банк и по 5
   { // 9
     const T = loadTrainer(TR[2].file, { seed: SEED });
     const bank = J(T, 'BANK.map(t=>({id:t.id,fam:t.fam,p:t.p,ask:t.ask,exp:t.exp,key:taskKey(t)}))');
+    const expectedBankSize = 135 + T.run('EXAM_BANK.length');
     let bad = 0, ex = '';
     for (const t of bank) {
       const a = R9.answer(t);
       if (a.bad || !eq(a.key, Fq(t.key)) || (t.exp != null && !eq(a.key, parseNum(t.exp)))) { bad++; ex = ex || t.id + ' ' + (a.bad || str(a.key)); }
     }
-    ok(!bad && bank.length === 135, '4', `9 банк: ${bank.length} задач, расхождений ${bad} ${ex}`);
+    ok(!bad && bank.length === expectedBankSize, '4', `9 банк: ${bank.length} задач, расхождений ${bad} ${ex}`);
     for (const g of J(T, 'Object.keys(GENS)')) {
       const tasks = J(T, `Array.from({length:${N}},()=>{const t=genTask(${JSON.stringify(g)});return {fam:t.fam,p:t.p,ask:t.ask,key:taskKey(t)};})`);
       let b = 0, e = '';

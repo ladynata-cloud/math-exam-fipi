@@ -10,10 +10,12 @@ if(process.env.ATANASYAN_IX_HEAD)assert.equal(head,process.env.ATANASYAN_IX_HEAD
 const out=path.resolve(process.env.ATANASYAN_IX_ARTIFACTS||'artifacts/atanasyan-chapter09-live');fs.mkdirSync(out,{recursive:true});
 const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const names=['index.html','data/course.json','source-inventory.json','assets/engine.js','assets/style.css','assets/math-text.js','assets/planar-viewer.js'];
-const files=Object.fromEntries(names.map(name=>[prefix+name,fs.readFileSync(path.join(root,prefix.slice(1),name))]));
+const resources=[...names.map(name=>prefix+name),'/assets/geometry-step-views.js'];
+const files=Object.fromEntries(resources.map(name=>[name,fs.readFileSync(path.join(root,name.slice(1)))]));
 const expected=Object.fromEntries(Object.entries(files).map(([name,bytes])=>[name,sha(bytes)]));
 for(const name of Object.keys(files))assert.equal(expected[name],sha(execFileSync('git',['show',head+':'+name.slice(1)],{cwd:root,maxBuffer:32*1024*1024})),name+' matches the source commit');
 const bundle=JSON.parse(files[prefix+'data/course.json']),ix=bundle.lessons.filter(l=>l.source.chapter==='IX');
+const releaseScope=JSON.parse(fs.readFileSync(path.join(__dirname,'release-scope.json'),'utf8'));
 const evidence={schemaVersion:1,head,mode,origin:null,startedAt:new Date().toISOString(),scriptSha256:sha(fs.readFileSync(__filename)),
   expectedHashes:expected,matchedHashes:{},browserMatchedHashes:{},lessons:bundle.lessons.length,chapterIXCards:ix.length,
   chapterIXPresent:ix.length>0,localSmokePassed:false,httpsReleaseVerified:false,completed:false,checks:[],errors:[]};
@@ -77,13 +79,18 @@ async function retainedWork(page,lesson,pending,width){
 (async()=>{try{
  assert.equal(bundle.build.publicationReviewMatches,true,'Expected bundle must be genuinely reviewed');
  assert(bundle.lessons.every(l=>l.status==='reviewed'),'Every published lesson is reviewed');
- if(ix.length){assert.equal(bundle.lessons.length,1407);assert.equal(ix.length,160);}else{assert.equal(bundle.lessons.length,1247);assert.equal(mode,'local','HTTPS release requires chapter IX');evidence.skipped='IX absent: legacy public smoke only, no IX release success';}
+ // Validate the complete source-bound scope before allowing its exact total.
+ // A later supplement must not relax the 160-card chapter IX or legacy checks.
+ execFileSync('python3',[path.join(__dirname,'build_course.py'),'--check'],{cwd:root,stdio:'inherit'});
+ execFileSync(process.execPath,[path.join(__dirname,'check_course.cjs'),'--require-reviewed'],{cwd:root,stdio:'inherit'});
+ assert.equal(bundle.lessons.length,releaseScope.totalCards,'Exact independently validated release scope');
+ if(ix.length){assert.equal(ix.length,160);}else{assert.equal(bundle.lessons.length,1247);assert.equal(mode,'local','HTTPS release requires chapter IX');evidence.skipped='IX absent: legacy public smoke only, no IX release success';}
  base=mode==='https'?'https://mathexam.space'+prefix:await serve();evidence.origin=base;
  if(mode==='https')await waitForPublication();else await verifyBytes();
  const ids=['main-736-part-1',...(ix.length?['main-737-part-1','main-823-part-1','theory-83-part-1','selfcheck-chapter-9-1-part-1']:[])].map(id=>'atanasyan-7-9-'+id);
  const lessons=ids.map(id=>{const lesson=bundle.lessons.find(l=>l.id===id);assert(lesson,'Source ID '+id);return lesson;});
  const sample=bundle.lessons.find(l=>l.source.chapter===(ix.length?'IX':'VIII')&&l.source.collection==='main'&&l.answer&&l.steps.length&&l.help.some(h=>h.id==='recall-theory'&&h.theoryIds?.length));assert(sample,'Source-linked theory interaction');
- browser=await chromium.launch({headless:true});evidence.browser=browser.version();
+ browser=await chromium.launch({headless:true,...(process.env.GEOMETRY_CHROMIUM?{executablePath:process.env.GEOMETRY_CHROMIUM}:{})});evidence.browser=browser.version();
  for(const width of [320,1280]){
   // Nonpersistent, empty contexts: no real account, cookie, learner state or disk profile.
   const context=await browser.newContext({viewport:{width,height:900},extraHTTPHeaders:{'Cache-Control':'no-cache'}}),page=await context.newPage(),pending=[];
@@ -97,7 +104,7 @@ async function retainedWork(page,lesson,pending,width){
   for(const lesson of lessons)await visit(page,lesson,pending,width);
   await retainedWork(page,sample,pending,width);await context.close();
  }
- for(const name of names.filter(n=>n!=='source-inventory.json'))assert.equal(evidence.browserMatchedHashes[prefix+name],expected[prefix+name],'Browser loaded '+name);
+ for(const name of resources.filter(n=>n!==prefix+'source-inventory.json'))assert.equal(evidence.browserMatchedHashes[name],expected[name],'Browser loaded '+name);
  await verifyBytes();assert.deepEqual(evidence.errors,[]);evidence.completed=true;
  evidence.localSmokePassed=mode==='local';evidence.httpsReleaseVerified=mode==='https'&&ix.length===160;
  console.log((evidence.httpsReleaseVerified?'ATANASYAN_IX_HTTPS_RELEASE_OK':'ATANASYAN_IX_LOCAL_PUBLIC_SMOKE_OK')+' '+JSON.stringify({head,lessons:bundle.lessons.length,ix:ix.length}));

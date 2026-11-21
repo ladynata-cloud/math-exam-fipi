@@ -3,10 +3,90 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
 const root=path.resolve(__dirname,'..'),shots=process.env.EGE_TASK_FIRST_SHOTS;
 const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));if(!file.startsWith(root+path.sep))throw Error();if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html','.json':'application/json'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));}catch{res.writeHead(404);res.end();}});
 async function openHelp(page,part){if(!await page.locator('#taskHelp').evaluate(e=>e.open))await page.locator('#taskHelp>summary').click();if(part){const id=part==='model'?'taskModel':'taskSteps';if(!await page.locator('#'+id).evaluate(e=>e.open))await page.locator('#'+id+'>summary').click();await page.locator(part==='model'?'#model':'#taskStepsBody').waitFor({state:'visible'});if(part==='model')await page.waitForFunction(()=>!!document.querySelector('#model')?.textContent.trim());}}
+async function roundStepsBrowser(browser,url,width){
+ const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ try{
+  // Seed before app.js mounts: a mounted course saves its current state during
+  // navigation. On later reloads keep the learner's real saved drafts intact.
+  await page.addInitScript(()=>{const key='mathexam.ege-baza.path.v1';if(localStorage.getItem(key)!==null)return;const state={version:1,serial:30,lessons:{round:{seed:3,stage:3,step:0,help:false,attempted:false,done:false,independent:0,guided:0,note:'',draft:'',checks:[]}},seen:{},runs:[],active:null};localStorage.setItem(key,JSON.stringify(state));});
+  await page.goto(url+'#lesson=round');const problem=await page.locator('.task-first-problem>.task').innerText();assert.match(problem,/49 тетрадей/);
+  assert.equal(await page.locator('#taskHelp>summary').innerText(),'Подсказка к задаче');assert.equal(await page.locator('#startSteps').innerText(),'Решать по шагам');assert(await page.locator('#startSteps').isVisible());
+  await page.locator('#answer').fill('7/');await page.locator('#startSteps').click();
+  assert(await page.locator('#stepAnswer').isVisible(),'one click exposes first step '+width);assert(await page.locator('#taskHelp').evaluate(e=>e.open));assert(await page.locator('#taskSteps').evaluate(e=>e.open));assert.equal(await page.locator('#taskModel').evaluate(e=>e.open),false);
+  const hint=await page.locator('#taskHint').innerText();assert.match(hint,/49/);assert.match(hint,/9/);assert(!/(^|\D)6(\D|$)/.test(hint));
+  await page.waitForFunction(()=>document.querySelector('#taskHelp>summary')?.textContent==='Скрыть подсказку');
+  await page.locator('#stepAnswer').fill('5');await page.locator('#stepAnswer').press('Enter');
+  await page.waitForFunction(()=>PathCourse.state().lessons.round.step===1);assert.notEqual(await page.locator('#taskHint').innerText(),hint);assert.match(await page.locator('#stepAnswerForm label').innerText(),/45 тетрадей/);
+  await page.locator('#stepAnswer').fill('4/');await page.locator('#returnToAnswer').click();assert.equal(await page.locator('#answer').inputValue(),'7/');
+  await page.locator('#startSteps').click();assert.equal(await page.locator('#stepAnswer').inputValue(),'4/');await page.reload();
+  assert.equal(await page.locator('#answer').inputValue(),'7/');assert.equal(await page.locator('#stepAnswer').inputValue(),'4/');
+  assert.equal(await page.evaluate(()=>PathCourse.state().lessons.round.step),1);assert.equal(await page.evaluate(()=>PathCourse.state().lessons.round.independent),0);
+  for(const value of [4,6]){await page.locator('#stepAnswer').fill(String(value));await page.locator('#stepAnswer').press('Enter');}
+  await page.getByRole('heading',{name:'Разбор завершён',exact:true}).waitFor();assert.equal(await page.locator('#answer').inputValue(),'7/');
+  assert.deepEqual(await page.evaluate(()=>PathCourse.state().lessons.round.taskFirst.stepAnswers),['5','4','6']);
+  await page.locator('#answer').fill('6');await page.locator('#answer').press('Enter');assert.equal(await page.evaluate(()=>PathCourse.state().lessons.round.independent),0);assert.equal(await page.evaluate(()=>PathCourse.state().lessons.round.checks.at(-1).independent),false);
+  assert.equal(await page.locator('#new').innerText(),'Решить похожую без подсказки');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'round steps no overflow '+width);
+  if(shots)await page.screenshot({path:path.join(shots,'base-'+width+'-round-concrete-steps.png'),fullPage:true});
+  await page.locator('#new').click();assert.notEqual(await page.locator('.task-first-problem>.task').innerText(),problem);assert.equal(await page.locator('#answer').inputValue(),'');assert.equal(await page.locator('#stepAnswer').inputValue(),'');assert.equal(await page.locator('#taskHelp').evaluate(e=>e.open),false);assert.equal(await page.evaluate(()=>PathCourse.state().lessons.round.help),false);
+  const fresh=await page.evaluate(()=>{const l=PathCourse.state().lessons.round;return PathData.task('round',l.seed).answer;});await page.locator('#answer').fill(String(fresh));await page.locator('#answer').press('Enter');assert.equal(await page.evaluate(()=>PathCourse.state().lessons.round.independent),1);assert.deepEqual(errors,[]);
+ }finally{await page.close();}
+}
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port+'/ege-baza/path/index.html',browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox']});
  try{const page=await browser.newPage({viewport:{width:1280,height:900},reducedMotion:'reduce'}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(url);
-  const ids=await page.evaluate(()=>PathData.meta.filter(m=>!m.grade7&&!m.pre7).map(m=>m.id));assert.equal(ids.length,111);
+  if(shots)fs.mkdirSync(shots,{recursive:true});for(const width of [320,1280])await roundStepsBrowser(browser,url,width);
+  const ids=await page.evaluate(()=>PathData.meta.filter(m=>!m.grade7&&!m.pre7).map(m=>m.id));assert.equal(ids.length,113);
   for(const id of ids){await page.goto(url+'#lesson='+id);assert(await page.locator('#answer').isVisible(),id+' final input');assert.equal(await page.locator('#taskHelp').evaluate(e=>e.open),false,id+' hidden help');assert.equal(await page.evaluate(id=>PathCourse.state().lessons[id].help,id),false,id+' no automatic help');const display=await page.evaluate(id=>{const l=PathCourse.state().lessons[id];return !!PathData.task(id,l.seed).display;},id);if(display)assert(await page.locator('.task-support svg,.task-support table').first().isVisible(),id+' givens');await page.locator('#answer').fill('7/');await openHelp(page,'model');assert(await page.locator('#model').isVisible(),id+' model');assert((await page.locator('#model').innerText()).trim(),id+' model content');await page.locator('#taskHelp>summary').click();assert.equal(await page.locator('#answer').inputValue(),'7/',id+' retained draft');assert.equal(await page.evaluate(id=>PathCourse.state().lessons[id].help,id),true,id+' assistance retained');}
+  for (const [width, id] of [[320, 'practice-mushroom-count'], [1280, 'practice-vase-order']]) {
+   await page.setViewportSize({ width, height: 900 });
+   await page.goto(url + '#lesson=' + id);
+   await page.locator('#new').click();
+   const condition = await page.locator('.task-first-problem > .task').innerText();
+   const map = page.locator('#reasoningSkillMap');
+   await page.locator('#answer').fill('7/');
+   assert.equal(await map.evaluate(element => element.open), false);
+   assert.equal(await page.evaluate(id => PathCourse.state().lessons[id].help, id), false);
+   await map.locator(':scope > summary').click();
+   assert.equal(await map.locator('li').count(), 5);
+   assert.equal(await map.locator('[aria-current="step"]').count(), 1);
+   assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+   await map.locator('#reasoningContinue').click();
+   const first = await page.evaluate(id => PathData.task(id, PathCourse.state().lessons[id].seed).steps[0].a, id);
+   await page.locator('#taskStepsBody [data-stepanswer-choice]').nth(first - 1).click();
+   await page.locator('#stepAnswerForm [type="submit"]').click();
+   assert.equal(await page.evaluate(id => PathCourse.state().lessons[id].step, id), 1);
+   assert.match(await map.locator('li').first().textContent(), /проверено в разборе/);
+   const firstLabel = await page.evaluate(id => PathData.task(id, PathCourse.state().lessons[id].seed).steps[0].choices[PathCourse.state().lessons[id].taskFirst.stepAnswers[0]-1].label, id);
+   assert.equal(await page.locator('#taskStepsBody .steps strong').first().textContent(), firstLabel);
+   await page.reload();
+   assert.equal(await page.locator('#answer').inputValue(), '7/');
+   assert.equal(await page.evaluate(id => PathCourse.state().lessons[id].step, id), 1);
+   await page.locator('#new').click();
+   assert.notEqual(await page.locator('.task-first-problem > .task').innerText(), condition);
+   const answer = await page.evaluate(id => PathData.task(id, PathCourse.state().lessons[id].seed).answer, id);
+   const before = await page.evaluate(id => PathCourse.state().lessons[id].independent, id);
+   await page.locator('#answer').fill(String(answer));
+   await page.locator('#answer').press('Enter');
+   assert.equal(await page.evaluate(id => PathCourse.state().lessons[id].independent, id), before + 1);
+  }
+  for(const id of ids){
+   await page.goto(url+'#lesson='+id);
+   const map=page.locator('#reasoningSkillMap,[data-ege-skill-map]');
+   assert.equal(await map.count(),1,id+' single map');
+   await map.locator('summary').first().click();
+   await map.locator('.esm-self-check > summary').click();
+   const check=map.locator('[data-skill-check]');
+   const info=await page.evaluate(id=>({
+    answer:EgeBazaSkillMaps.forLesson(id).selfCheck.answer,
+    count:PathCourse.state().lessons[id].independent
+   }),id);
+   await check.locator('input').fill('1/0');
+   await check.locator('button').click();
+   assert.match(await check.locator('[data-skill-check-result]').textContent(),/Введи число/);
+   await check.locator('input').fill(info.answer);
+   await check.locator('button').click();
+   assert.equal(await check.locator('[data-skill-check-result]').textContent(),'Верно.');
+   assert.equal(await page.evaluate(id=>PathCourse.state().lessons[id].independent,id),info.count);
+  }
   // A guided answer cannot overwrite the final answer; models survive collapse and reload.
   await page.goto(url+'#lesson=equations-linear');await page.locator('#new').click();await page.locator('#answer').fill('9/');await openHelp(page,'steps');await page.locator('#stepAnswer').fill('3/');await openHelp(page,'model');await page.locator('#divisor').fill('7');await page.locator('#taskHelp>summary').click();await page.reload();assert.equal(await page.locator('#answer').inputValue(),'9/');await openHelp(page,'steps');assert.equal(await page.locator('#stepAnswer').inputValue(),'3/');await openHelp(page,'model');assert.equal(await page.locator('#divisor').inputValue(),'7');
   while(await page.locator('#stepAnswer').count()){const answer=await page.evaluate(()=>{const l=PathCourse.state().lessons['equations-linear'];return PathData.task('equations-linear',l.seed).steps[l.step].a;});await page.locator('#stepAnswer').fill(String(answer));await page.locator('#stepAnswer').press('Enter');}
@@ -14,7 +94,7 @@ async function openHelp(page,part){if(!await page.locator('#taskHelp').evaluate(
   await page.locator('#new').click();const fresh=await page.evaluate(()=>{const l=PathCourse.state().lessons['equations-linear'];return {answer:PathData.task('equations-linear',l.seed).answer,count:l.independent};});await page.locator('#answer').fill(String(fresh.answer));await page.locator('#answer').press('Enter');assert.equal(await page.evaluate(()=>PathCourse.state().lessons['equations-linear'].independent),fresh.count+1);
   if(shots)fs.mkdirSync(shots,{recursive:true});
   for(const [width,id] of [[320,'equations-linear'],[1280,'practice-grid-cut']]){await page.setViewportSize({width,height:900});await page.goto(url+'#lesson='+id);await page.locator('#new').click();assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));if(shots)await page.screenshot({path:path.join(shots,'base-'+width+'-task.png'),fullPage:true});await page.locator('#answer').fill('17');await openHelp(page,'model');if(id==='practice-grid-cut'){await page.locator('#auxRect').click();assert.match(await page.locator('#constructionRead').innerText(),/вычесть/);}await openHelp(page,'steps');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+' open help overflow');if(shots)await page.screenshot({path:path.join(shots,'base-'+width+'-help.png'),fullPage:true});await page.locator('#returnToAnswer').click();assert.equal(await page.locator('#answer').inputValue(),'17');assert.equal(await page.locator('#taskHelp').evaluate(e=>e.open),false);}
-  const grade7=await page.evaluate(()=>PathData.meta.find(m=>m.grade7&&!m.geometryRebuild).id);await page.goto(url+'#lesson='+grade7);assert.equal(await page.locator('.task-first-course').count(),0);assert(await page.locator('[data-stage]').first().isVisible());await page.goto(url+'#exam');await page.locator('#start').click();assert.equal(await page.locator('#taskHelp').count(),0);assert(await page.locator('#answer').isVisible());assert.deepEqual(errors,[]);
-  console.log('EGE_BAZA_TASK_FIRST_BROWSER_OK: 111 task/model paths, essential givens, independent/assisted accounting, separate drafts and saved model, 320/1280px, interactive construction, grade7/exam exclusions; four screenshots');
+  const grade7=await page.evaluate(()=>PathData.meta.find(m=>m.grade7&&!m.geometryRebuild).id);await page.goto(url+'#lesson='+grade7);assert.equal(await page.locator('.task-first-course').count(),0);assert(await page.locator('[data-stage]').first().isVisible());await page.goto(url+'#exam');await page.locator('#start').click();assert.equal(await page.locator('#taskHelp').count(),0);assert.equal(await page.locator('#reasoningSkillMap').count(),0);assert(await page.locator('#answer').isVisible());assert.deepEqual(errors,[]);
+  console.log('EGE_BAZA_TASK_FIRST_BROWSER_OK: 113 task/model paths; 49÷9 one-click steps and restored drafts at320/1280px; essential givens, independent/assisted accounting, saved model, interactive construction, grade7/exam exclusions; six screenshots');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>server.close());

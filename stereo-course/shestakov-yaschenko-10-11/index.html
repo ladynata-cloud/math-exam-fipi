@@ -10,4 +10,6 @@
 <script src="../assets/math-text.js"></script><script src="../assets/task-scene-viewer.js"></script><script src="assets/engine.js"></script>
 <script>
 'use strict';fetch('data/course.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('course');return r.json();}).then(bundle=>{window.textbookApp=StereoTextbook.createApp(document.getElementById('textbook-app'),bundle);}).catch(()=>{document.getElementById('textbook-app').textContent='Не удалось загрузить курс. Обнови страницу или открой сохранённую автономную версию.';});
-</script></body></html>
+</script>
+<script defer src="/assets/assistant/home-link.js?v=20261110"></script>
+</body></html>

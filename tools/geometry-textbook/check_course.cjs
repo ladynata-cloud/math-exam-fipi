@@ -98,8 +98,38 @@ for(const chapter of scope.chapters){
 
 const supplements=scope.supplements||[];
 assert.deepEqual((bundle.build.supplements||[]).map(s=>s.key),supplements.map(s=>s.key),'Explicit supplementary scope');
-assert(supplements.length<=1,'No adjacent book sections are implicitly authorized');
+assert.deepEqual(supplements.map(s=>s.key),['7-advanced','8-advanced-824-841'].slice(0,supplements.length),'Only explicitly reviewed supplementary sections');
+assert(supplements.length<=2,'No adjacent book sections are implicitly authorized');
 for(const supplement of supplements){
+ if(supplement.key==='8-advanced-824-841'){
+  assert.deepEqual(supplement,{key:'8-advanced-824-841',label:'8 класс · повышенная трудность',exerciseNumbers:[824,841],mainParts:18,cards:18});
+  const source=read('preparation/grade-08-advanced-824-841.json');
+  assert.equal(source.bookId,'atanasyan-2023-7-9');assert.equal(source.grade,8);
+  assert.equal(source.source.sha256,'3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72');
+  assert.deepEqual(source.cards.map(c=>c.number),sequence([824,841]));
+  const actual=bundle.lessons.filter(l=>l.source.advancedGrade===8);
+  assert.equal(actual.length,18);
+  for(const [i,card]of actual.entries()){
+   const original=source.cards[i],number=824+i,page=number<=834?214:215;
+   assert.equal(card.id,'atanasyan-7-9-main-'+number+'-part-1');
+   assert.equal(card.revision,1);
+   assert.deepEqual(card.source,{bookId:'atanasyan-2023-7-9',collection:'main',chapter:supplement.label,advancedGrade:8,relatedChapters:[6],exercise:String(number),printedPages:[page],pdfPages:[page+1]});
+   assert.equal(card.statement.text,original.condition);
+   assert.equal(card.help.find(h=>h.id==='compare-result').text,original.answer);
+   assert.deepEqual(card.visualization.model,original.model);
+   assert.deepEqual(card.steps.map(s=>s.explanation),original.steps.map(s=>s.explanation));
+   assert.deepEqual(original.sourceFigures,number===837?[274]:[]);
+   assert.equal(card.answer.mode,'manual');
+  }
+  assert.equal(actual.reduce((n,l)=>n+l.steps.length,0),72);
+  assert.equal(actual.reduce((n,l)=>n+Object.keys(l.visualization.model.views).length,0),94);
+  const build=bundle.build.supplements.find(s=>s.key===supplement.key);
+  assert.equal(build.authoredCards,18);assert.equal(build.numberedExercises,18);
+  assert.equal(build.theoryPoints,0);assert.equal(build.selfcheckQuestions,0);
+  assert.equal(build.reviewFile,'release-review-advanced-08-824-841.json');
+  assert(actual.every(l=>l.status===(build.publicationReviewMatches?'reviewed':'in-review')));
+  continue;
+ }
  assert.equal(supplement.key,'7-advanced');assert.equal(supplement.label,'7 класс · повышенная трудность');
  assert.deepEqual(supplement.exerciseNumbers,[413,461]);
  const source=JSON.parse(fs.readFileSync(path.join(__dirname,'grade-07-advanced-source-map.json'),'utf8'));

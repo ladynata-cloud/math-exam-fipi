@@ -10,6 +10,7 @@ from pathlib import Path
 import re
 from urllib.parse import urlsplit
 import zipfile
+from public_navigator_preservation import restore_public_navigator
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'pedagogam/materialy'
@@ -108,5 +109,11 @@ with zipfile.ZipFile(OUT/'mathexam-5-komplektov.zip') as z:
     assert len(z.namelist())==16 and z.testzip() is None
     for p in packs:
         for filename in ('index.html','zadaniya.pdf','otvety.pdf'):
-            rel=p['slug']+'/'+filename;assert z.read(rel)==(OUT/rel).read_bytes()
+            rel=p['slug']+'/'+filename
+            published=(OUT/rel).read_bytes()
+            expected=published
+            if filename=='index.html':
+                expected=restore_public_navigator('pedagogam/materialy/'+rel, published)
+                assert expected != published and b'/assets/assistant/navigator-' not in expected, rel
+            assert z.read(rel)==expected, rel
 print(f'PEDAGOGAM_MATERIALS_OK: {checks} recomputed numeric tasks; SSA counterexample; {link_count} local links; exact ZIP contents.')

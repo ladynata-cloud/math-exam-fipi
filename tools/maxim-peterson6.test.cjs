@@ -18,8 +18,9 @@ const html = fs.readFileSync(path.join(courseDir, 'index.html'), 'utf8');
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
 const inline = scripts.filter(script => !/\bsrc\s*=/i.test(script[1]));
 assert.equal(inline.length, 1, 'Course engine remains one self-contained inline script');
-assert.equal(scripts.length, 3, 'Only the local versioned teaching content and optional helper are loaded');
+assert.equal(scripts.length, 4, 'Only the local versioned teaching content, optional helper and shared home return are loaded');
 assert.match(scripts.find(script => /peterson-assistant\.js/.test(script[1]))[1], /^\s+src="\.\.\/peterson-assistant\.js\?v=20261102-equations"$/);
+assert.match(scripts.find(script => /home-link\.js/.test(script[1]))[1], /^\s+defer src="\/assets\/assistant\/home-link\.js\?v=20261110"$/);
 const source = inline[0][2];
 const context = {window: {}};
 vm.runInNewContext(fs.readFileSync(path.join(courseDir, 'equation-method.js'), 'utf8'), context);
@@ -111,7 +112,7 @@ test('separate local storage and no network or cabinet bridge dependencies', () 
   assert.match(source, /localStorage\.setItem\(STORAGE_KEY,/);
   const linkedAssets = [...html.matchAll(/<(?:script|link)\b[^>]*(?:\bsrc|\bhref)="([^"]+)"[^>]*>/gi)]
     .map(match => match[1]).filter(url => !url.startsWith('https://'));
-  assert.deepEqual(linkedAssets, ['../peterson-assistant.css?v=20261028', '../peterson-assistant.js?v=20261102-equations', 'equation-method.js?v=20261102-exact-entry']);
+  assert.deepEqual(linkedAssets, ['../peterson-assistant.css?v=20261028', '../peterson-assistant.js?v=20261102-equations', 'equation-method.js?v=20261102-exact-entry', '/assets/assistant/home-link.js?v=20261110']);
   const helper = fs.readFileSync(path.join(root, 'trainers', 'peterson-assistant.js'), 'utf8');
   assert.doesNotMatch(helper, /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource)\s*\(|\.\s*(?:sendBeacon|postMessage)\s*\(|localStorage|sessionStorage/);
   assert.doesNotMatch(source, /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource)\s*\(/);

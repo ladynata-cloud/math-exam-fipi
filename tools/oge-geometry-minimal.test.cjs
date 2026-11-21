@@ -30,7 +30,7 @@ for(const [n,name,input,check,answer,next] of cases){
    assert.ok(settings.querySelector('.tabs'),'original mode controls available in settings');
    assert.ok(d.querySelector('svg'),'condition drawing retained');
    assert.equal(w.getComputedStyle(d.querySelector('h1')).color,'rgb(32, 40, 32)','heading remains readable on the pale page');
-   const hint=d.querySelector('#courseHintToggle'),panel=d.querySelector('#courseHintPanel');assert.ok(hint);assert.equal(hint.textContent,'Хочешь подсказку?');assert.equal(panel.hidden,true);assert.equal(hint.getAttribute('aria-expanded'),'false');
+   const hint=d.querySelector('#courseHintToggle'),panel=d.querySelector('#courseHintPanel');assert.ok(hint);assert.equal(hint.textContent,n<=18?'Разобрать по шагам':'Хочешь подсказку?');assert.equal(panel.hidden,true);assert.equal(hint.getAttribute('aria-expanded'),'false');
    const before=storage(w);hint.click();assert.equal(panel.hidden,false);assert.equal(hint.getAttribute('aria-expanded'),'true');hint.click();assert.equal(panel.hidden,true);assert.deepEqual(storage(w),before,'opening/closing help is not an answer or mistake');
    assert.equal(d.querySelectorAll('#courseHintToggle').length,1);assert.equal(d.querySelectorAll('#courseHintPanel').length,1);
    if(input&&answer){

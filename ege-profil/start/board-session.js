@@ -39,11 +39,17 @@
     path: '/trainers/ege-profile-equations.html', debugKey: '__profileEquationsBoard',
     lessonIds: Object.freeze(['algebra-exponential', 'algebra-logarithmic', 'eq-linear', 'eq-rational', 'eq-quadratic', 'eq-root'])
   });
+  const LOG_TRIG = Object.freeze({
+    id: 'ege-profile-log-trig', marker: 'log-trig', defaultRoute: '#course',
+    path: '/trainers/ege-profile-log-trig.html', debugKey: '__profileLogTrigBoard',
+    lessonIds: Object.freeze(['expr-logarithms', 'algebra-logarithmic', 'fn-explog',
+      'trig-angle', 'trig-coordinates', 'trig-special', 'trig-tangent', 'algebra-cosine', 'algebra-double-angle'])
+  });
   const MODES = ['guided', 'plan', 'independent'];
   const PROGRESS_KEY = 'mathexam.profileStart2027.v1';
   const PREFERENCES_KEY = 'mathexam.profileCalmPreferences.v1';
   const DETAIL_SELECTORS = Object.freeze({
-    lab: '#explore-lab', materials: '.extra-help', foundation: '.task-foundation',
+    lab: '#explore-lab', materials: '#main > details.extra-help', foundation: '.task-foundation',
     simpler: '.task-foundation details', numberInput: '.number-help', extraSupport: '.support-details',
     calmBasics: '.calm-number-foundations', trigBasics: '.calm-trig-foundations'
   });
@@ -61,7 +67,13 @@
   const integer = (value, min, max) => Number.isInteger(value) && value >= min && value <= max;
   const text = value => typeof value === 'string' && value.length <= 200 && !/<\/?[a-z][^>]*>/i.test(value);
   function validRoute(hash, config) {
-    if (hash === '#exam/' + config.number || hash === '#calm/' + config.number) return true;
+    if (config.defaultRoute && hash === config.defaultRoute) return true;
+    if (config.number && (hash === '#exam/' + config.number || hash === '#calm/' + config.number)) return true;
+    // Current public links are aliases for the same registered legacy scope.
+    // They cannot add a lesson or expand the synchronized payload boundary.
+    const entry = config.number && root.ProfileExamMap?.fromLegacyStart(config.number);
+    if (entry && hash === root.ProfileExamMap.hash(entry) && entry.source === 'start' &&
+        entry.lessonIds.every(id => config.lessonIds.includes(id))) return true;
     const match = /^#(lesson|example|practice|repair|pause)\/([a-z0-9-]+)(?:\/(guided|plan|independent))?$/.exec(hash || '');
     return !!match && config.lessonIds.includes(match[2]) &&
       (['lesson', 'example'].includes(match[1]) ? !match[3] : !!match[3]);
@@ -123,7 +135,11 @@
       });
     }
     function context(value) {
-      const [page, id, mode] = value.route.slice(1).split('/'), lesson = known.get(id);
+      let [page, id, mode] = value.route.slice(1).split('/');
+      // The canonical hash renders the same calm section; saved room schemas
+      // and the registered legacy number remain unchanged.
+      if (page === 'fipi' || page === 'topic') { page = 'calm'; id = String(config.number); mode = undefined; }
+      const lesson = known.get(id);
       const session = value.progress.sessions[id + ':' + mode];
       const task = page === 'example' ? lesson.tasks[0] : session ? tasks.get(session.taskId) : null;
       const live = page === 'practice' && !session.done;
@@ -163,7 +179,7 @@
               known.has(id) && integer(n, 0, root.ProfileSolutions.steps(known.get(id).tasks[0]).length - 1))) return false;
         const [page, id, mode] = value.route.slice(1).split('/');
         if (['practice', 'repair', 'pause'].includes(page) && !data.sessions[id + ':' + mode]) return false;
-        if (['calm', 'example'].includes(page) && !prefs.enabled) return false;
+        if (['calm', 'example', 'fipi', 'topic'].includes(page) && !prefs.enabled) return false;
         if (value.returnToTask !== null) {
           if (!routeValid(value.returnToTask) || !value.returnToTask.startsWith('#practice/') || value.returnToTask === value.route) return false;
           const [, lessonId, returnMode] = value.returnToTask.slice(1).split('/');
@@ -235,12 +251,13 @@
   function api(config) {
     return Object.freeze({
       LESSON_IDS: config.lessonIds, id: config.id, marker: config.marker,
-      path: config.path, debugKey: config.debugKey, defaultRoute: '#exam/' + config.number,
+      path: config.path, debugKey: config.debugKey, defaultRoute: config.defaultRoute || '#exam/' + config.number,
       validRoute: hash => validRoute(hash, config), create: lessons => create(lessons, config)
     });
   }
   const expressions = api(EXPRESSIONS), stereometry = api(STEREOMETRY), planimetry = api(PLANIMETRY),
-    vectors = api(VECTORS), probability = api(PROBABILITY), randomVariables = api(RANDOM_VARIABLES), equations = api(EQUATIONS);
+    vectors = api(VECTORS), probability = api(PROBABILITY), randomVariables = api(RANDOM_VARIABLES), equations = api(EQUATIONS),
+    logTrig = api(LOG_TRIG);
   root.ProfileExpressionsBoard = expressions;
   root.ProfileStereoBoard = stereometry;
   root.ProfilePlanimetryBoard = planimetry;
@@ -248,7 +265,8 @@
   root.ProfileProbabilityBoard = probability;
   root.ProfileRandomVariablesBoard = randomVariables;
   root.ProfileEquationsBoard = equations;
+  root.ProfileLogTrigBoard = logTrig;
   // Preserve the published №8 default and №3 named CommonJS APIs.
   if (typeof module !== 'undefined' && module.exports) module.exports = Object.freeze({ ...expressions, stereometry,
-    planimetry, vectors, probability, randomVariables, equations });
+    planimetry, vectors, probability, randomVariables, equations, logTrig });
 })(globalThis);

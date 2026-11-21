@@ -311,12 +311,18 @@ test('financial model disclosure records help first, ignores stale actions, and 
 });
 
 
-test('finance sources distinguish draft 2027 numbering from historical practice',()=>{
+test('finance sources identify the approved 2027 structure and retain honest preparation limits',()=>{
   for(const lesson of lessons) for(const link of lesson.links||[]) {
-    if(link.href.includes('/2027/')) assert.match(link.title,/проект/iu);
+    if(link.href.includes('/2027/')) {assert.match(link.title,/демоверсия.*2027/iu);assert.doesNotMatch(link.title,/проект/iu);}
     if(link.href.includes('2026')) assert.match(link.title,/2026/);
   }
+  for(const lesson of lessons)for(const task of lesson.tasks)for(const reference of task.meta?.provenance?.references||[]) {
+    if(reference.catalogueId!=='fipi-demo-2027-profile-13')continue; // Stable historical identity, not a display number.
+    assert.match(reference.label,/№16/);assert.match(reference.label,/общая структура; условия упражнений авторские/);
+    assert.equal(reference.printedPage,15);
+  }
   const app=fs.readFileSync(path.join(directory,'app.js'),'utf8');
-  assert.match(app,/проекту ЕГЭ 2027/);
-  assert.match(app,/их включение не означает, что каждый такой тип обязателен/);
+  assert.match(app,/утверждённой спецификацией ФИПИ 2027/);
+  assert.match(app,/не охватывает все возможные финансовые модели экзамена/);
+  assert.match(app,/не подтверждает полноту письменного решения/);
 });

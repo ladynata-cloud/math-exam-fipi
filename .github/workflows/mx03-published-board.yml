@@ -1,0 +1,54 @@
+name: MX03 published task 11 and 19 acceptance
+on:
+  push:
+    branches: [test/mx03-20261109]
+    paths:
+      - tools/mx03-published-board.browser.cjs
+      - .github/workflows/mx03-published-board.yml
+      - docs/tasks/MX03_PUBLISHED_BOARD_20261109.md
+  workflow_dispatch:
+    inputs:
+      confirm_synthetic_rooms:
+        description: Create two new anonymous test rooms; never use pupil accounts
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    if: github.event_name == 'push' || inputs.confirm_synthetic_rooms
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Syntax and patch checks
+        run: |
+          node --check tools/mx03-published-board.browser.cjs
+          git diff --check
+      - name: Install pinned test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/mx03" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          node "$RUNNER_TEMP/mx03/node_modules/playwright/cli.js" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/mx03/node_modules" >> "$GITHUB_ENV"
+      - name: Native adapter regression
+        run: |
+          node --test --test-name-pattern='OGE11:' tools/oge-native-10-14-board.test.cjs
+          node --test tools/task19-board.test.cjs
+      - name: Published two-role rooms, handoff, graphs, answers and restoration
+        env:
+          MATHEXAM_PUBLISHED_SMOKE: '1'
+        run: timeout 720s node tools/mx03-published-board.browser.cjs
+      - name: Sanitized acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mx03-published-board-acceptance
+          path: mx03-published-board-result.json
+          if-no-files-found: warn
+          retention-days: 14

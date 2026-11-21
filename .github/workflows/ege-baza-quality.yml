@@ -2,10 +2,10 @@ name: EGE base — virtual classroom
 
 on:
   pull_request:
-    paths: ['school/**', 'tools/textbook-*', 'ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', 'laboratory/**', '.github/workflows/ege-baza-quality.yml']
+    paths: ['school/**', 'tools/textbook-*', 'ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'downloads/trainers/simple-equations-stepwise/**', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', 'laboratory/**', '.github/workflows/ege-baza-quality.yml']
   push:
     branches: [main]
-    paths: ['school/**', 'tools/textbook-*', 'ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', 'laboratory/**', '.github/workflows/ege-baza-quality.yml']
+    paths: ['school/**', 'tools/textbook-*', 'ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'downloads/trainers/simple-equations-stepwise/**', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', 'laboratory/**', '.github/workflows/ege-baza-quality.yml']
   schedule:
     - cron: '23 20 * * *' # 03:23 Asia/Novosibirsk; scheduled runs may be delayed by GitHub.
   workflow_dispatch:
@@ -61,3 +61,31 @@ jobs:
           STUDENT: ${{ steps.student.outcome }}
           TESTER: ${{ steps.tester.outcome }}
         run: test "$TEACHER" = success && test "$STUDENT" = success && test "$TESTER" = success
+
+  production-smoke:
+    name: Simple equations — published page and offline downloads
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: classroom
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Install pinned browser dependency
+        run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Verify matching public artifacts and real browser journeys
+        run: node tools/ege-quality/simple-equations.browser.cjs --production
+      - name: Keep production verification for 14 days
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: simple-equations-production-${{ github.run_id }}
+          path: ege-quality-results/simple-equations-production.json
+          retention-days: 14
+          if-no-files-found: error

@@ -28,7 +28,7 @@ PDF_NAMES = ("samostoyatelnaya.pdf", "samostoyatelnaya-otvety.pdf",
 class Document(HTMLParser):
     def __init__(self, source):
         super().__init__(convert_charrefs=True)
-        self.links, self.canonicals, self.descriptions, self.jsonld = [], [], [], []
+        self.links, self.download_buttons, self.canonicals, self.descriptions, self.jsonld = [], [], [], [], []
         self.ids, self.names, self.robots = [], [], []
         self.h1_count, self.main_count, self.details_count = 0, 0, 0
         self.title, self.h1 = "", ""
@@ -49,6 +49,8 @@ class Document(HTMLParser):
                 self.links.append(a)
             if a.get("name"):
                 self.names.append(a["name"])
+        elif tag == "button" and a.get("data-numbered-source"):
+            self.download_buttons.append(a)
         elif tag == "h1":
             self.h1_count += 1
             self.in_h1 = True
@@ -187,21 +189,27 @@ def main():
                    for a in doc.links), (topic, "no catalog return")
         titles.append(doc.title)
         descriptions.append(doc.descriptions[0])
-        pdf_links = {urlsplit(urljoin(canonical, a["href"])).path: a for a in doc.links
-                     if urlsplit(a["href"]).path.endswith(".pdf")}
+        pdf_links = {urlsplit(urljoin(canonical, a["data-numbered-source"])).path: a
+                     for a in doc.download_buttons
+                     if urlsplit(a["data-numbered-source"]).path.endswith(".pdf")}
         expected_paths = {route + name for name in PDF_NAMES}
         assert set(pdf_links) == expected_paths, (topic, "wrong PDF selection", set(pdf_links))
         expected_hashes = {"/pedagogam/raboty/" + f["path"]: f["sha256"]
                            for f in manifest[topic]["files"]}
         for urlpath, link in pdf_links.items():
-            assert "download" in link, (topic, "missing download attribute", urlpath)
+            assert link.get("type") == "button" and "disabled" in link, (topic, "download must wait for numbering", urlpath)
+            assert "href" not in link and link.get("data-numbered-role") in ("student", "teacher"), (topic, "numbered action", urlpath)
             data = local_file(ORIGIN + urlpath).read_bytes()
             assert data.startswith(b"%PDF-"), urlpath
             assert sha256(data).hexdigest() == expected_hashes[urlpath], (urlpath, "hash")
             checks["pdfs"] += 1
         assert [v["name"] for v in bank[topic]["variants"]] == ["1", "2", "3", "4"]
         zip_path = route + "komplekt.zip"
-        assert any(urlsplit(urljoin(canonical, a["href"])).path == zip_path for a in doc.links), (topic, "ZIP")
+        zip_buttons = [a for a in doc.download_buttons
+                       if urlsplit(urljoin(canonical, a["data-numbered-source"])).path == zip_path]
+        assert len(zip_buttons) == 1 and zip_buttons[0].get("data-numbered-pack") == topic, (topic, "ZIP")
+        assert zip_buttons[0].get("type") == "button" and "disabled" in zip_buttons[0] and "href" not in zip_buttons[0], (topic, "ZIP must wait for numbering")
+        assert not any(urlsplit(a["href"]).path.endswith((".pdf", ".zip")) for a in doc.links), (topic, "silent unnumbered download")
         with zipfile.ZipFile(local_file(ORIGIN + zip_path)) as archive:
             archived_pdfs = {Path(n).name: archive.read(n) for n in archive.namelist() if n.endswith(".pdf")}
         assert set(archived_pdfs) == set(PDF_NAMES), (topic, "ZIP members")

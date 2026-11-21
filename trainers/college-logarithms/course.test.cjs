@@ -2,7 +2,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {JSDOM,VirtualConsole}=require('jsdom'),C=require('./core.js'),D=C.D,E=C.E;
 const ROOT=path.resolve(__dirname,'../..');
-function surface(board=false,seed=null){const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));const dom=new JSDOM(fs.readFileSync(path.join(__dirname,'index.html'),'utf8'),{url:'https://mathexam.space/trainers/college-logarithms/index.html'+(board?'?board=1':''),runScripts:'outside-only',pretendToBeVisual:true,virtualConsole:vc});const w=dom.window;if(seed)w.localStorage.setItem('mathExam.collegeLogarithms.v1',seed);for(const el of w.document.querySelectorAll('script[src]'))w.eval(fs.readFileSync(path.join(ROOT,new URL(el.src).pathname),'utf8'));const f={w,errors,q:s=>w.document.querySelector(s),state:()=>JSON.parse(JSON.stringify(w.LogCourseBoard.getState())),click:s=>f.q(s).click(),fill(v){const el=f.q('#answer');el.value=v;el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));},close(){assert.deepEqual(errors,[]);w.close();}};return f;}
+function surface(board=false,seed=null,task=null){const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));const dom=new JSDOM(fs.readFileSync(path.join(__dirname,'index.html'),'utf8'),{url:'https://mathexam.space/trainers/college-logarithms/index.html'+(board?'?board=1':'?')+(task?'&task='+encodeURIComponent(task):''),runScripts:'outside-only',pretendToBeVisual:true,virtualConsole:vc});const w=dom.window;if(seed)w.localStorage.setItem('mathExam.collegeLogarithms.v1',seed);for(const el of w.document.querySelectorAll('script[src]'))w.eval(fs.readFileSync(path.join(ROOT,new URL(el.src).pathname),'utf8'));const f={w,errors,q:s=>w.document.querySelector(s),state:()=>JSON.parse(JSON.stringify(w.LogCourseBoard.getState())),click:s=>f.q(s).click(),fill(v){const el=f.q('#answer');el.value=v;el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));},close(){assert.deepEqual(errors,[]);w.close();}};return f;}
 const numericalLog=(a,b)=>Math.log(b)/Math.log(a);
 for(const t of D.tasks)test('independent mathematics: '+t.id,()=>{const a=t.audit;assert.equal(t.steps.length>=2,true);for(const s of t.steps){assert.equal(s.hints.length,3);assert(s.error);if(s.kind==='number')assert.notEqual(E.parseNumber(s.answer),null);if(s.kind==='set')assert.notEqual(E.parseSet(s.answer),null);}
 let expected;
@@ -29,3 +29,20 @@ test('safe parsing excludes code, blank numbers, invalid denominators and wrong 
 test('graph laboratory covers every supported base and shift',()=>{for(const a of C.bases)for(let h=-3;h<=3;h++)for(let k=-3;k<=3;k++){const p={a,h,k};assert.equal(C.graphY(h,p),null);assert(Math.abs(C.graphY(h+1,p)-k)<1e-9);assert(Math.abs(C.graphY(h+a,p)-(k+1))<1e-9);assert.equal(C.graphY(h+2,p)>C.graphY(h+1,p),a>1);}});
 
 test('fixed graph window makes shifts visible instead of moving the coordinate window',()=>{const f=surface(),svg=f.q('#lab-graph');const point=()=>[...svg.querySelectorAll('[data-point] circle')].map(e=>[Number(e.getAttribute('cx')),Number(e.getAttribute('cy'))]);f.w.LogCoursePlot.render(svg,{a:2,h:0,k:0},[[1,0]],true);const zero=point()[0],curve=svg.querySelector('[data-curve]').getAttribute('d');f.w.LogCoursePlot.render(svg,{a:2,h:2,k:1},[[3,1]],true);const moved=point()[0];assert(moved[0]>zero[0]);assert(moved[1]<zero[1]);assert.notEqual(svg.querySelector('[data-curve]').getAttribute('d'),curve);f.close();});
+
+test('logarithm grid units are equal and clicking a displayed point recovers its coordinates', () => {
+  const f = surface();
+  try {
+    const svg = f.q('#lab-graph'), plot = f.w.LogCoursePlot;
+    plot.render(svg, {a: 2, h: 0, k: 0}, [[1, 0], [2, 1]]);
+    const [a, b] = Array.from(svg.querySelectorAll('[data-point] circle'), dot => [Number(dot.getAttribute('cx')), Number(dot.getAttribute('cy'))]);
+    assert(Math.abs(b[0] - a[0] - (a[1] - b[1])) < 1e-8);
+    svg.getBoundingClientRect = () => ({left: 12, top: 20, width: 920, height: 380});
+    const clicked = plot.coordinates(svg, {clientX: 12 + 160 + b[0], clientY: 20 + b[1]});
+    assert.deepEqual(Array.from(clicked), [2, 1]);
+    assert.equal(plot.coordinates(svg, {clientX: 30, clientY: 180}), null);
+  } finally { f.close(); }
+});
+
+// Intro links must select the requested task without discarding saved attempts.
+test('lesson task links preserve attempts and room initialization',()=>{const f=surface();f.fill('Допустимо');f.click('#check');const raw=f.w.localStorage.getItem('mathExam.collegeLogarithms.v1');const g=surface(false,raw,'graphs-1');assert.equal(g.state().taskId,'graphs-1');g.w.LogCourseApp.select('meaning-1');assert.equal(g.state().stage,1);const b=surface(true,raw,'values-1');assert.equal(b.state().taskId,'values-1');assert.equal(b.state().stage,0);const bad=surface(false,raw,'unknown');assert.equal(bad.state().taskId,'meaning-1');assert.equal(bad.state().stage,1);f.close();g.close();b.close();bad.close();});

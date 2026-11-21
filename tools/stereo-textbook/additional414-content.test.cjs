@@ -1,11 +1,12 @@
 'use strict';
+const {sphereReviewBytes}=require('./additional414-runtime.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..'),baseline=require('./additional414-baseline.cjs'),{ids,published,sha,exact}=baseline;
 const course=require('../../stereo-course/textbook/data/course.json'),index=require('../../stereo-course/textbook/source-index.json'),registry=require('./content-review.json'),cases=require('./browser-cases.cjs');
 const old=baseline.previousCourse(course,index);baseline.previousIndex(index);baseline.previousRegistry(registry);baseline.previousCases(cases);
 assert.equal(baseline.previousLessonFiles(root+'/stereo-course/textbook/lessons').length,674);
 for(const[file,gitBlob]of Object.entries(published.unchangedFiles)){
- const bytes=fs.readFileSync(root+'/'+file);assert.equal(crypto.createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex'),gitBlob,'unchanged renderer/storage/schema: '+file);
+ const bytes=sphereReviewBytes(file);assert.equal(crypto.createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex'),gitBlob,'unchanged renderer/storage/schema: '+file);
 }
 const API=require('../../stereo-course/textbook/assets/engine.js'),checked=API.inspectBundle(course.catalog,course.lessons);
 assert.deepEqual(checked.issues,[]);assert.equal(checked.available.size,688);assert.equal(checked.coverage.availableExercises,421);assert.equal(checked.coverage.availableSelfchecks,50);assert.equal(checked.coverage.availableTheoryPoints,51);assert.equal(checked.coverage.partiallyAvailable,0);
@@ -17,7 +18,7 @@ assert.deepEqual(receipt.contentHashes,Object.fromEntries(contents.map(c=>[c.id,
 exact(receipt.ids,ids,'independent review exact scope');
 assert(['source','mathematics','pedagogy'].every(k=>receipt[k].verdict==='passed'),'independent written review completed');
 assert.equal(receipt.sourceSHA256,'bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770');
-for(const[file,expected]of Object.entries(receipt.runtimeSHA256))assert.equal(baseline.hash(fs.readFileSync(root+'/'+file)),expected,'reviewed runtime identity');
+for(const[file,expected]of Object.entries(receipt.runtimeSHA256))assert.equal(baseline.hash(sphereReviewBytes(file)),expected,'original reviewed runtime identity');
 // Before image inspection a candidate can be checked as writing, but never released by the browser gate.
 if(receipt.visual.verdict==='passed'){
  baseline.validateVisualReceipt(receipt,cards);

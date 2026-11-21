@@ -306,6 +306,8 @@
     'practice-ring-meeting': ['motion'],
     'practice-average-speed': ['motion', 'fractions'],
     'practice-sets': ['logic-sets'],
+    'practice-mushroom-count': ['logic-sets', 'inequality-line'],
+    'practice-vase-order': ['logic-sets', 'reasoning'],
     'practice-integer-budget': ['reasoning', 'arithmetic', 'equations'],
     'practice-whole-count': ['reasoning', 'rounding', 'inequality-line'],
     'equations-linear': ['equations', 'arithmetic'],

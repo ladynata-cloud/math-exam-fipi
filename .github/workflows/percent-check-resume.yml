@@ -1,0 +1,44 @@
+name: Percent mini-check — resume and assistance
+on:
+  pull_request:
+    paths: ['trainers/oge-1-5-trainers/percent-table-trainer.html', 'tools/percent-check-resume*', '.github/workflows/percent-check-resume.yml']
+  push:
+    branches: [main]
+    paths: ['trainers/oge-1-5-trainers/percent-table-trainer.html', 'tools/percent-check-resume*', '.github/workflows/percent-check-resume.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  percent-check-resume:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned test tools
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          npx playwright install --with-deps chromium
+      - name: Existing and new mathematical and interaction gates
+        run: |
+          node --test tools/percent-check-resume.test.cjs tools/percent-action-clarity.test.cjs tools/task9-clear-actions.test.cjs
+          node --test --test-name-pattern='500 generated|1000 advanced|legacy numeric' tools/oge-percent-guided-showcase-v2.test.mjs
+          node tools/oge-algebra-contract.test.mjs
+          git diff --check
+      - name: Real browser return journeys
+        run: node tools/percent-check-resume.browser.cjs
+      - name: Exact public source and production browser checks
+        if: github.event_name == 'push'
+        run: node tools/percent-check-resume.browser.cjs --production
+      - name: Keep actual synthetic browser screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: percent-check-resume-ui
+          path: artifacts/percent-check-resume
+          retention-days: 14
+          if-no-files-found: warn

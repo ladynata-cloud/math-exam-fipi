@@ -39,3 +39,4 @@ jobs:
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev7/test-models.cjs --dom
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev7/test-ui.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev7/test-import.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev7/test-audit.cjs
