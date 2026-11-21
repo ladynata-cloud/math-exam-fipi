@@ -569,5 +569,43 @@
         {prompt:'Каков положительный корень, который не запрещён?',kind:'number',answer:String(r),hint:'Проверь положительные нули числителя в знаменателе.',explanation:'x = '+r+' сохраняет знаменатель ненулевым.'}]};
   }
 
-  return { mount, experiment, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const ratePractice={id:'rational-stories',title:'Две величины и дробное уравнение',
+    description:'Переведи условие о двух поездках или общей сумме на язык дробей. Проверь смысл каждого корня.'};
+  function practiceRates(seed,level){
+    let prompt,answer,explanation,kind='number',min=0,integer=false,varName,unit,rows,steps;
+    const row=(label,total,offset)=>({label,total,slope:1,offset,denominator:offset===0?'x':'x '+(offset>0?'+ ':'− ')+Math.abs(offset)});
+    const step=(prompt,answer,hint,explanation)=>({prompt,kind:'number',answer:String(answer),hint,explanation});
+    if(level===1){
+      const slow=3+seed%9,extra=1+Math.floor(seed/3)%4,m=1+seed%3,distance=slow*(slow+extra)*m;
+      const saving=extra*m;
+      prompt='На маршруте длиной '+distance+' км второй велосипедист движется на '+extra+' км/ч быстрее первого и тратит на '+saving+' ч меньше. Какова скорость первого?';
+      answer=String(slow);varName='скорость первого';unit='ч';
+      rows=[row('Первый велосипедист',distance,0),row('Второй велосипедист',distance,extra)];
+      steps=[step('Каков числитель обеих дробей времени?',distance,'Путь у них одинаковый.','Оба проходят '+distance+' км.'),
+        step('Чему равно время первого минус время второго?',saving,'Более медленный едет дольше.','Разность равна '+saving+' ч.')];
+      explanation='При x = '+slow+' получаем '+distance/slow+' и '+distance/(slow+extra)+' ч. Их разность '+saving+' ч. Второй корень −'+(slow+extra)+' нарушает x > 0.';
+    }else if(level===2){
+      const group=6+seed%12,out=1+seed%4,m=2+Math.floor(seed/4)%4,total=group*(group-out)*m,extra=out*m;
+      integer=true;min=out;varName='первоначальное число участников';unit='р.';
+      prompt='Группа делила поровну '+total+' р. Затем '+out+' человек отказались, и каждый из оставшихся внёс на '+extra+' р. больше. Сколько человек было первоначально?';
+      answer=String(group);rows=[row('Первоначальный взнос',total,0),row('Новый взнос',total,-out)];
+      steps=[step('На сколько уменьшился делитель при новом взносе?',out,'Делитель — это число участников.','Новый делитель x − '+out+'.'),
+        step('Чему равен новый взнос минус первоначальный?',extra,'Общая сумма сохранилась, плательщиков стало меньше.','Разность положительна и равна '+extra+' р.')];
+      explanation='При '+group+' участниках первоначальный взнос '+total/group+' р., новый '+total/(group-out)+' р. Другой корень '+(out-group)+' не даёт положительного количества участников.';
+    }else{
+      const r=4+2*(seed%6),s=r+2+2*(Math.floor(seed/4)%3),lake=r*s/2,up=lake+2-r-s;
+      kind='set';min=2;varName='скорость на озере';unit='ч';
+      prompt='Гребец проходит '+up+' км против течения (2 км/ч) на один час быстрее, чем '+lake+' км по озеру. Найди все возможные скорости на озере.';
+      answer=r+';'+s;rows=[row('Против течения',up,-2),row('По озеру',lake,0)];
+      steps=[step('При какой скорости на озере движение против течения прекращается?',2,'Речная скорость равна x − 2.','Нужно x > 2.'),
+        step('Каково произведение корней после устранения знаменателей?',2*lake,'Умножь '+lake+'/x − '+up+'/(x − 2) = 1 на x(x − 2) и собери квадратное уравнение.','Свободный член после приведения равен 2 · '+lake+'.')];
+      explanation='Уравнение сводится к x² − '+(r+s)+'x + '+r*s+' = 0. Оба значения '+r+' и '+s+' больше скорости течения и дают разность времён в один час.';
+    }
+    const hint='Составь дробь для каждой строки таблицы. Порядок вычитания выбери по условию, а каждый корень проверь по смыслу.';
+    return {title:ratePractice.title,prompt,kind,answer,hint,correction:hint,steps,explanation,
+      graph:{type:'rate-table',rows,min,integer,all:level===3,varName,unit},finalLabel:level===3?'Все возможные скорости, км/ч':level===2?'Число участников':'Скорость первого, км/ч',
+      source:{type:'authored',reference:'Тренировка по составлению дробных уравнений'},skills:[rationalEquationPractice.id]};
+  }
+
+  return { mount, experiment, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

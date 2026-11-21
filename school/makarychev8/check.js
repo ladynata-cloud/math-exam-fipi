@@ -277,7 +277,10 @@ function integerRoot(n){
  return x*x===n?x:null;
 }
 function sameRadicalSum(left,right){
- const a=radicalSum(left),b=radicalSum(right);if(!a||!b)return false;
+ return sameRadicalTerms(radicalSum(left),radicalSum(right));
+}
+function sameRadicalTerms(a,b){
+ if(!a||!b)return false;
  const pending=[...a,...b.map(v=>({...v,sign:-v.sign}))].filter(v=>v.sign);
  while(pending.length){
   const pivot=pending.pop();let sum=BigInt(pivot.sign),den=1n;
@@ -420,6 +423,24 @@ function classifyRationalCandidates(value,excluded,answers){
  return entries.map(term=>({term,status:banned.some(x=>sameRadicalSum(x,term))?'excluded':solutions.some(x=>sameRadicalSum(x,term))?'correct':'different'}));
 }
 
+function equationRatioStatus(input,ratios){
+ const parts=String(input).split(';').map(radicalSum);
+ if(parts.length!==3||parts.some(x=>!x))return 'format';
+ const [a,b,c]=parts;
+ if(sameRadicalTerms(a,[]))return 'leading';
+ const multiple=(coeff,ratio)=>{
+  const factor=signedSquare(ratio);
+  return sameRadicalTerms(coeff,a.map(t=>({sign:t.sign*factor.sign,n:t.n*factor.n,d:t.d*factor.d})));
+ };
+ if(!multiple(b,ratios[0]))return 'linear';
+ return multiple(c,ratios[1])?'correct':'constant';
+}
+function exampleEquationsStatus(input){
+ const parts=String(input).split(';').map(v=>M.parse(v));
+ if(parts.length!==4||parts.some(x=>!x))return 'format';
+ if(!parts[0].n)return 'linear';
+ return 'correct';
+}
 function progressionFactors(input){
  const pieces=String(input).split(';');
  if(pieces.length!==4||pieces.some(p=>!p.trim()))return 'format';
@@ -435,6 +456,8 @@ function progressionFactors(input){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='equation-from-roots')return equationRatioStatus(user,target.ratios)==='correct';
+ if(target.kind==='examples-of-equations')return exampleEquationsStatus(user)==='correct';
  if(target.kind==='rational-line-example')return reciprocalIntersections(user)?.count===target.intersectionCount;
  if(target.kind==='progression-factor-example')return progressionFactors(user)==='factored';
  if(target.factorizedAnswer)return factoredPair(user,target.answer,target.requiredFactors||2)==='factored';
@@ -495,5 +518,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

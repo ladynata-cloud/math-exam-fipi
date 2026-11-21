@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "cf3c533745f2c69c4a164d8821484cc437c40287",
+  "baseSha": "0e11896b6e5984db58dc09379b5c3944ec33ff87",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2234,8 +2234,8 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "1005795160b70519452fe60a040a2ad7484f89d2802bf77ebff9beb6d89482be",
-      "afterSha256": "acac9e34a3f04fbfa91a2539ef8a3e328c2b2c33a8c29a8ab8a5765a8bcb54e8",
+      "beforeSha256": "3053eeb7ccc68c5ab0fe82f9659d1c29539a690e60b9ec1f29de1cc85d2ed720",
+      "afterSha256": "b172b03c588f50876b35b557c7aa6ccfb633e127668bf915001b88160bbc1edc",
       "placement": "before-head-close",
       "sourceSha": "ea563c469d1a2d7b2a2eb8afb959d951625e39f0"
     },
@@ -6594,6 +6594,15 @@
       "previousBaseSha": "f32c09fd05dd434dce749278efd78c24b16b2e22",
       "sourceBaseSha": "cf3c533745f2c69c4a164d8821484cc437c40287",
       "task": "docs/tasks/MAKARYCHEV8_531_556.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "cf3c533745f2c69c4a164d8821484cc437c40287",
+      "sourceBaseSha": "0e11896b6e5984db58dc09379b5c3944ec33ff87",
+      "task": "docs/tasks/MAKARYCHEV8_648_670.md",
       "changedPaths": [
         "school/makarychev8/index.html"
       ],

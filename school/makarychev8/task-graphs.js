@@ -398,6 +398,56 @@ function quadraticEvidence(host,config,value){
  host.append(caption);
 }
 
+function equationExamples(host,value){
+ host.className='task-graphs quantity-model';
+ const parts=String(value||'').split(';').map(x=>x.trim());
+ const note=document.createElement('p');note.className='small';
+ if(parts.length!==4||parts.some(x=>!M.parse(x))){note.textContent='После ввода четырёх коэффициентов здесь появятся оба твоих уравнения.';}
+ else{
+  const [a,b,c,d]=parts;
+  note.textContent='Целое: ('+a+')x + ('+b+') = 0. Дробное: 1 / (x − ('+c+')) = '+d+'. Знаменатель исключает x = '+c+'.';
+  note.dataset.equationPair='';
+ }
+ host.append(note);
+}
+function rateTable(host,config,value){
+ host.className='task-graphs quantity-model';
+ const entries=String(value||'').split(';').map(x=>x.trim());
+ const selected=config.all?entries:[entries[config.answerIndex||0]];
+ const caption=document.createElement('p');
+ caption.className='small';
+ caption.textContent='Подставь своё значение x ('+config.varName+'). Для каждой строки сравни целое и делитель.';
+ host.append(caption);
+ const fraction=(n,d)=>{
+  const gcd=(a,b)=>b?gcd(b,a%b):a;
+  const g=gcd(n<0n?-n:n,d);
+  return d/g===1n?String(n/g):n/g+'/'+d/g;
+ };
+ const renderRows=x=>{
+  for(const row of config.rows){
+   const line=document.createElement('p');line.className='small';line.dataset.rateRow='';
+   line.textContent=row.label+' · '+row.total+' / ('+row.denominator+')';
+   if(x){
+    const denom=BigInt(row.slope)*BigInt(x.n)+BigInt(row.offset)*BigInt(x.d),result=document.createElement('strong');
+    result.dataset.rateResult='';result.textContent=fraction(BigInt(row.total)*BigInt(x.d),denom)+' '+config.unit;
+    line.append(' = ',result);
+   }
+   host.append(line);
+  }
+ };
+ if(!selected.some(Boolean)){renderRows(null);return;}
+ for(const raw of selected.slice(0,6)){
+  if(!raw)continue;
+  const x=M.parse(raw);
+  if(!x){renderRows(null);continue;}
+  const note=document.createElement('p');note.className='small';note.textContent='Подстановка x = '+raw;
+  host.append(note);
+  if((config.inclusiveMin?x.n<config.min*x.d:x.n<=config.min*x.d)||(config.max!==undefined&&x.n>=config.max*x.d)||(config.integer&&x.d!==1)){
+   note.dataset.rateDomain='';note.textContent+=' не подходит по смыслу. Нужно x '+(config.inclusiveMin?'≥ ':'> ')+config.min+
+      (config.max!==undefined?' и x < '+config.max:'')+(config.integer?', целое число':'')+'.';
+  }else renderRows(x);
+ }
+}
 function rationalEquationModel(host,config,value){
  host.className='task-graphs quantity-model';const note=document.createElement('p');note.className='small';
  if(!config.checked||!config.terms){
@@ -586,6 +636,8 @@ function render(host,config,value){
  if(config.type==='rational-equation-check'){rationalEquationModel(host,config,value);return;}
  if(config.type==='coefficient-example'){coefficientExample(host,config,value);return;}
  if(config.type==='vertex-form'){vertexForm(host,config,value);return;}
+ if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='rate-table'){rateTable(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}
  if(config.type==='vieta-relations'){vietaRelations(host,config,value);return;}
  if(config.type==='applied-shape'){appliedShape(host,config,value);return;}
