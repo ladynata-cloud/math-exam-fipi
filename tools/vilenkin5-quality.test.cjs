@@ -154,7 +154,7 @@ function sameDataFractionalForecastRegression(){
 }
 function sandAndCubesRegression(){
   const box='v5f-printed-5-22',cubes='v5f-printed-5-23',f=boot(),first=f.M.generate(box,0);
-  equal(plain([...first.steps,first].map(t=>Number(t.answer))),[315,504,223,72,590,4130,3]);const printedCubes=f.M.generate(cubes,0);equal(plain([...printedCubes.steps,printedCubes].map(t=>t.answer)),[2,8,4]);
+  equal(plain([...first.steps,first].map(t=>Number(t.answer))),[315,504,223,72,590,4130,3]);ok(first.why.includes('с. 172')&&first.why.includes('3626 г')&&first.why.includes('4130 г'));const printedCubes=f.M.generate(cubes,0);equal(plain([...printedCubes.steps,printedCubes].map(t=>t.answer)),[2,8,4]);
   const variants=new Set();for(let seed=0;seed<110;seed++){
     const task=f.M.generate(box,seed),{a,b,h,l,w,grams,rate,tin}=task.data.openBox;variants.add(task.conditionKey);
     const pieces=[a*b,b*h,a*h,l*w],skin=pieces[0]+2*pieces[1]+2*pieces[2],area=2*(skin+pieces[3]),paint=area*rate;
@@ -189,6 +189,20 @@ function squareSumsRegression(){
   const g=boot('#lesson/'+id);
   g.input('#v5-quality-note','Сначала сложу основания, а затем умножу сумму на себя.');equal(g.snapshot().scene.attempt,0);g.submit('3');ok(g.snapshot().scene.message.includes('сторону квадрата'));g.submit('9');ok(g.snapshot().scene.correct);ok(!g.snapshot().scene.assisted);g.click('[data-cmd=next]');
   const copy=boot('#lesson/'+id,g.saved());ok(copy.snapshot().scene.note.includes('основания'));equal(copy.snapshot().scene.step,1);g.close();copy.close();
+}
+
+function exactErroneousFractionsRegression(){
+  const f=boot(),p='v5f-printed-5-';
+  const ray=f.M.generate(p+'17',0);ok(f.M.equal('7,5',ray.steps[3].errors[0].value));ok(!f.M.equal('777',ray.steps[3].errors[0].value));
+  const seed=3,ex=f.M.generate(p+'16',seed),x=ex.data.groupDecrease;
+  ok(f.M.equal((x.total/x.divisor)+'/'+x.remove,ex.errors[0].value));ok(!f.M.equal('777',ex.errors[0].value));
+  for(let k=1;k<=20;k++)for(let n=0;n<90;n++){const t=f.M.generate(p+k,n);
+    for(const target of [...t.steps,t])for(const value of [target.answer,...(target.errors||[]).map(e=>e.value)])ok(typeof value!=='number'||Number.isInteger(value));
+  }
+  f.close();const g=boot('#lesson/'+p+'17');
+  for(const value of ['48','8','60']){g.submit(value);g.click('[data-cmd=next]');}
+  g.submit('777');equal(g.snapshot().scene.attempt,1);ok(!g.snapshot().scene.correct);equal(g.errors,[]);
+  g.submit('7,5');ok(g.snapshot().scene.message.includes('расстояние в клетках'));g.submit('30');ok(g.snapshot().scene.correct);ok(!g.snapshot().scene.assisted);g.close();
 }
 
 function cubeRowsRegression(){
@@ -1111,7 +1125,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    sandAndCubesRegression,squareSumsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,

@@ -47,7 +47,7 @@
     const divisor=seed?[2,4,5,10][random(0,3)]:10,part=seed?1000*random(4,45):100000,total=divisor*part,remove=seed?100*random(1,8):100;
     const target=part-remove;
     return {prompt:'Из полученной группы убери ещё '+remove+' единиц. Сколько останется?',inputPrompt:'Оставшееся число',answer:target,why:'Прибавь '+remove+' к остатку и умножь результат на '+divisor+'. Получится '+total+'.',
-      errors:[{value:part/remove,text:'Здесь сказано «на». Нужно вычесть указанное количество из одной группы.'},{value:part,text:'Одна группа уже найдена. Осталось убрать из неё '+remove+'.'},{value:total-remove,text:'Это результат вычитания из всего числа. Сначала найди размер одной группы.'}],
+      errors:[{value:part+'/'+remove,text:'Здесь сказано «на». Нужно вычесть указанное количество из одной группы.'},{value:part,text:'Одна группа уже найдена. Осталось убрать из неё '+remove+'.'},{value:total-remove,text:'Это результат вычитания из всего числа. Сначала найди размер одной группы.'}],
       steps:[step('Всего '+total+'. Раздели на '+divisor+' равных групп. Сколько в одной?',part,'Уменьшить в несколько раз — разделить. Сколько вместе дадут '+divisor+' одинаковых групп?',
         [{value:total-divisor,text:'Это вычитание нескольких единиц. Здесь нужно разделить всё число на равные группы.'}])],
       data:{groupDecrease:{total,divisor,remove}},conditionKey:'decrease/'+[total,divisor,remove].join('/')};
