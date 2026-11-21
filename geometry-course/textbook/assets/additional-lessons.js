@@ -103,7 +103,8 @@
       ['/geometry-course/textbook/data/radian-constructions.json', '№1204'],
       ['/geometry-course/textbook/data/disk-area-table.json', 'п. 120 и №1205–1206'],
       ['/geometry-course/textbook/data/areas-of-inscribed-disks.json', '№1207–1208'],
-      ['/geometry-course/textbook/data/disks-and-annuli.json', '№1209–1213']
+      ['/geometry-course/textbook/data/disks-and-annuli.json', '№1209–1213'],
+      ['/geometry-course/textbook/data/cut-disks-and-semicircles.json', '№1214–1216']
   ];
 
   async function forCourse(base) {
