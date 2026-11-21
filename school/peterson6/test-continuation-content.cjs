@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,387);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,421);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -238,6 +238,38 @@ const p33=D.lessons.find(l=>l.id==='p33');
  const sides=[[7,5],[4.5,3.1],[4.5,3.9],[4.7,3.1],[4.5,1.1],[2.3,3.1]];
  for(const [i,[w,h]]of sides.entries())assert(Math.abs(areas[i]-w*h)<1e-9);
  assert(Math.abs(areas.reduce((a,b)=>a+b)-11.5*8.1)<1e-9);
+}
+{
+ const coeff=D.lessons.find(l=>l.id==='p34'),reviewed=Array.from(coeff.tasks).slice(4);
+ assert.equal(coeff.tasks.length,38);assert(coeff.orderBySource);assert(reviewed.every(t=>t.source.page===9));
+ const mapped=Array.from(coeff.tasks);
+ assert.deepEqual(mapped.filter(t=>t.source.exercise===27).map(t=>t.source.subpart).sort(),['а','б','в','г','д','обоснование']);
+ assert.deepEqual(mapped.filter(t=>t.source.exercise===28).map(t=>t.source.readingKey).sort(),['а1','а2','а3','б1','б2','б3']);
+ for(const [n,letters]of [[29,'абвгде'],[30,'абвгдежзиклм'],[31,'абвгдежз']])assert.deepEqual(mapped.filter(t=>t.source.exercise===n).map(t=>t.source.subpart).sort(),[...letters].sort());
+ const plusOne=v=>Object.fromEntries([...Object.keys(v)].map(k=>[k,1]));
+ const values={a:2,b:3,c:-2,d:-1,k:1,m:2,n:-2,x:3,y:-1,p:4};
+ const originals={
+  '27а':o=>2*o.x*o.y,'27в':o=>-3*o.a*o.b**4,'27г':o=>-5/6*o.m**3*o.n**2,
+  '28а2':o=>-2*o.x**2,'28а3':o=>(-2)**2*o.x,'28б1':o=>(-2*o.m)**4,'28б2':o=>-2*o.m**4,'28б3':o=>(-2)**4*o.m,
+  '29а':o=>-o.a*(-o.b)*(-o.c)*o.d,'29б':o=>-o.x*(-o.y)*(-o.n)*(-o.m),'29в':o=>(-o.c)**2*(-o.m)**3,
+  '29г':o=>(-(o.c**2))*(-(o.m**3)),'29д':o=>(-o.a)**5*(-o.b)**4,'29е':o=>(-(o.a**5))*(-(o.b**4)),
+  '30а':o=>2*o.a*7,'30б':o=>3*o.b*(-5*o.c),'30в':o=>-.5*o.x*(-o.y),'30г':o=>4*o.m*o.n*(-.2),
+  '30д':o=>-o.x*2*o.p*(-.5),'30е':o=>-o.b*(-3*o.d)*(-1/3),'30ж':o=>2*o.c*(-o.c)*(-8),
+  '30з':o=>o.y*6*o.y*(-.01*o.y),'30и':o=>-.25*o.n*(-4*o.n**2),'30к':o=>(-5*o.a)**2,'30л':o=>-5*o.a**2,'30м':o=>(-5)**2*o.a,
+  '31а':o=>-3*o.a*(-2*o.b),'31б':o=>5/12*o.x*(-4*o.y),'31г':o=>o.c*(-4/9*o.c)*.9,'31д':o=>.8*o.d*o.y*(-12.5*o.y**2),
+  '31е':o=>-1/3*o.m**2*(-15*o.m*o.b),'31ж':o=>(-.7*o.n)**2,'31з':o=>-3*o.x*(-3*o.x)**2};
+ const numeric=q=>{const r=M.parse(q);return r.n/r.d;};
+ for(const task of reviewed.filter(t=>t.coefficientStudy)){
+  const source=task.source,op=originals[source.exercise+(source.readingKey||source.subpart)];
+  assert.equal(typeof op,'function',task.id);
+  const f=Array.from(task.coefficientStudy.factors);
+  for(const vector of [values,plusOne(values),Object.fromEntries(Object.keys(values).map((v,i)=>[v,i%3-1]))]){
+   const value=f.reduce((result,item)=>result*(numeric(item.coefficient)*Object.entries(item.variables).reduce((u,[letter,power])=>u*vector[letter]**power,1))**item.power,1);
+   assert(Math.abs(op(vector)-value)<1e-8,task.id);
+  }
+  assert(Math.abs(numeric(task.steps[1].answer)-op(plusOne(values)))<1e-10,task.id);
+ }
+ assert.equal(Object.keys(originals).length,33);
 }
 const printedColumns=['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб'];
 for(const [i,letters] of printedColumns.entries()) {

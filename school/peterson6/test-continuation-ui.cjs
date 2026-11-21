@@ -714,3 +714,23 @@ test('use calibrated map radii, a notched parcel and all six room areas on new d
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('coefficient scope, fresh powers and free explanations follow the printed sequence',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#lesson/p33/81');assert.equal(f.q('.navigation a').hash,'#lesson/p34/4');
+  f.nav('#lesson/p34/4');const order=[...f.d.querySelectorAll('.side-list [data-index]')].map(n=>Number(n.dataset.index));
+  assert.deepEqual(order.slice(0,12),[4,0,5,6,1,7,2,8,9,10,11,12]);
+  const go=i=>{f.nav('#lesson/p34/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  for(const [index,source,fresh,letters]of [[8,'−2','−4','x²'],[9,'4','16','x'],[10,'16','256','m⁴'],[13,'−1','1','abcd'],[21,'1/2','1','xy'],[37,'−27','−54','x³']]){
+   const ids=go(index);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,new RegExp('Коэффициент '+source+'$'));
+   f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
+   f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,new RegExp('Коэффициент '+fresh+'$'));
+   f.event(ids[0],'0','change');f.event(ids[1],'2','change');assert(f.q('#model .pm-result').textContent.includes('Буквенная часть: '+letters));
+  }
+  const power=go(10);f.event(power[1],'1','change');assert.equal(f.d.querySelectorAll('#model .pcm-factor-chip[data-sign=negative]').length,4);
+  const ids=go(7);f.event(ids[0],'1','change');f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/выделяется k⁵/);
+  f.event('#notebook','Я выделил k⁵: только в нём одна переменная.');f.click('[data-action="record-manual"]');
+  assert.equal(!!f.state().tasks['p34-t08'].correct,false);
+ }finally{f.close();}
+});

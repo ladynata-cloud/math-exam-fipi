@@ -28,3 +28,7 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .pm-visual .pm-table.pcm-route-table { width: 100%; min-width: 0; table-layout: fixed; }
 .pcm-route-table :is(th, td) { white-space: normal; overflow-wrap: anywhere; }
 .pcm-route-table :is(th, td):first-child { width: 35%; }
+
+.pcm-factor-strip { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; margin-block: .6rem; }
+.pcm-factor-chip { padding: .2rem .45rem; border: 1px solid #5c8069; border-radius: .35rem; color: #244d39; background: #e4f0e7; font-weight: 650; }
+.pcm-factor-chip[data-sign=negative] { color: #743e20; background: #f7e9d9; border-color: #aa7952; }

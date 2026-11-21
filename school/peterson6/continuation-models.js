@@ -311,6 +311,51 @@ function parcelPicture(fresh=false,mode=0){
  txt(picture,left+s*(width-cutWidth/2),top+s*cutHeight-5,num(cutHeight)+' см',{'font-size':12});
  return picture;
 }
+const exponentGlyphs=['','', '²','³','⁴','⁵','⁶','⁷','⁸','⁹'];
+function signedTerm(power,base) {return base+(power>1?exponentGlyphs[power]||'^'+power:'');}
+function coefficientParts(task,variant) {
+ const math=root.PetersonMath;
+ const factors=task.coefficientStudy.factors.map((factor,index)=>{
+  if(index!==0||variant===0)return factor;
+  if(task.source.exercise===29)return {...factor,power:factor.power+1};
+  return {...factor,coefficient:math.answer(math.operation('multiply',factor.coefficient,2))};
+ });
+ let coefficient=math.parse(1),negatives=0;
+ const degrees={},written=[],numericFactors=[];
+ for(const item of factors){
+  const value=math.parse(item.coefficient);
+  for(let i=0;i<item.power;i++){
+   coefficient=math.operation('multiply',coefficient,value);
+   numericFactors.push(math.answer(value).replace('-','−'));
+  }
+  if(value.n<0)negatives+=item.power;
+  for(const [letter,degree]of Object.entries(item.variables))degrees[letter]=(degrees[letter]||0)+degree*item.power;
+  const names=Object.entries(item.variables).map(([v,p])=>signedTerm(p,v)).join('');
+  const raw=math.answer(value),visible=raw.replace('-','−');
+  const formatted=names?(raw==='1'?'':raw==='-1'?'−':raw.includes('/')?'('+visible+')':visible)+names:visible;
+  written.push(item.power>1?signedTerm(item.power,'('+formatted+')'):value.n<0?'('+formatted+')':formatted);
+ }
+ const literal=Object.entries(degrees).sort(([a],[b])=>a.localeCompare(b)).map(([v,d])=>signedTerm(d,v)).join('');
+ return {coefficient:math.answer(coefficient).replace('-','−'),literal,negatives,degrees,numericFactors,written:written.join(' · ')};
+}
+function numericFactorDiagram(factors) {
+ const row=el('div','pcm-factor-strip');
+ row.setAttribute('role','img');row.setAttribute('aria-label','Числовые множители: '+factors.join(' умножить на '));
+ for(const [i,factor]of factors.entries()){
+  if(i)row.append(el('span','pcm-factor-times','×'));
+  const value=el('span','pcm-factor-chip',factor);
+  value.dataset.sign=factor.startsWith('−')?'negative':'positive';row.append(value);
+ }
+ return row;
+}
+function exponentDiagram(variables){
+ const wrap=el('div','pcm-exponents');
+ for(const [letter,degree]of Object.entries(variables)){
+  const row=el('p','pcm-exponent-row'),label=el('strong','',signedTerm(degree,letter)+' = ');
+  row.append(label,document.createTextNode(Array(degree).fill(letter).join(' · ')));wrap.append(row);
+ }
+ return wrap;
+}
 const scaleReadings={
  'enlarge-reduce':{titles:['Увеличить в 5 раз','Уменьшить в 100 раз'],scales:[[5,1],[1,100]],drawing:[5,2],units:'см'},
  plan400:{titles:['3 см на плане','7 см на плане'],scales:[[1,400],[1,400]],drawing:[3,7],units:'м'},
@@ -508,6 +553,8 @@ function configFor(lesson,task){
  if(lesson?.id==='p15' && task?.similarTangents)return {title:'Один угол, разные размеры треугольника',controls:[c('Треугольник',[[0,'ABC'],[1,'AB₁C₁'],[2,'AB₂C₂'],[3,'AB₃C₃']]),c('Луч из A',[[0,'Как на авторском чертеже'],[1,'Другой острый угол']])],initial:[0,0]};
  if(lesson?.id==='p15' && task?.differenceStudy)return {title:'Что принято за 100 процентов?',controls:[c('Числа A и B',[[0,'Из упражнения'],[1,'Другие числа']]),c('Основание разницы',[[0,'Число B'],[1,'Число A']])],initial:[0,task.source.subpart==='1'?0:1]};
 
+ if(lesson?.id==='p34' && task?.coefficientStudy)return {title:'Где кончается степень?',controls:[c('Выражение',[[0,'Из упражнения'],[1,'Новый пример']]),c('Как проверить?',[[0,'Сначала решу'],[1,'Числовая часть'],[2,'Буквенная часть']])],initial:[0,0]};
+ if(lesson?.id==='p34' && task?.coefficientContrast)return {title:'Один набор, разные признаки',controls:[c('Признак',[[0,'Нецелый коэффициент'],[1,'Только одна буква'],[2,'Два числовых множителя']]),c('Показ сравнения',[[0,'Сначала выберу сам'],[1,'Сверю свойство']])],initial:[0,0]};
  if(lesson?.id==='p16' && Number.isInteger(task?.cityMap))return {title:'Измеряем расстояние от Москвы',controls:[c('Город',mapCities.map(([name],i)=>[i,name])),c('Линейка',[[0,'Сначала измерю'],[1,'Сниму показание'],[2,'Сверю расстояние']])],initial:[task.cityMap,0]};
  if(lesson?.id==='p16' && task?.parcelScale)return {title:'План участка с вырезом',controls:[c('Размеры участка',[[0,'По рисунку книги'],[1,'Новый участок']]),c('Что сравнить?',[[0,'Сначала измерю'],[1,'Площадь и вырез'],[2,'Периметр']])],initial:[0,0]};
  if(lesson?.id==='p16' && task?.flatScale)return {title:'Измеряем помещения на плане',controls:[c('Помещение',flats.map((room,i)=>[i,room.name])),c('Масштаб рисунка',[[0,'1 : 200 (из упражнения)'],[1,'1 : 300 (другой дом)']]),c('Расчёт',[[0,'Сначала решу'],[1,'Сверю размеры и площадь']])],initial:[0,0,0]};
@@ -598,17 +645,34 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.flatScale || task.oralStudy || task.lineRelation || task.letterStudy || task.steamerStudy) && index<2)hiddenControl=2;
-  if((Number.isInteger(task.cityMap) || task.parcelScale || task.scaleReading || task.midpointStudy || task.neighborStudy || task.moneyStudy || task.travelStudy || task.chainStudy || task.rateStudy) && index===0)hiddenControl=1;
+  if((task.coefficientStudy || task.coefficientContrast || Number.isInteger(task.cityMap) || task.parcelScale || task.scaleReading || task.midpointStudy || task.neighborStudy || task.moneyStudy || task.travelStudy || task.chainStudy || task.rateStudy) && index===0)hiddenControl=1;
   if(hiddenControl!==null){state.values[hiddenControl]=0;selects[hiddenControl].value='0';}
   draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
+ if(n===34 && task.coefficientStudy){
+  const parts=coefficientParts(task,a);
+  formula(a===0?task.coefficientStudy.original:parts.written);
+  if(b===1){show(numericFactorDiagram(parts.numericFactors));say('Числовых минусов после раскрытия степеней: '+parts.negatives+'.');formula('Коэффициент '+parts.coefficient);}
+  if(b===2){
+   show(exponentDiagram(parts.degrees));say('Буквенная часть: '+parts.literal+'.');
+  }
+  stepList(['Отметь границы степеней. Степень у буквы не действует на число перед ней.','Перемножь числовые множители. Нечётное число отрицательных числовых множителей даёт минус.','Отдельно собери одинаковые буквы, затем проверь выражение с новыми данными.']);
+ }
+ else if(n===34 && task.coefficientContrast){
+  const rows=[['2xy','2'],['k⁵','1'],['−3ab⁴','−3'],['−(5/6)m³n²','−5/6'],['7c⁴d · (−2)','−14']];
+  const focused=[3,1,4][a];
+  show(table(['Запись','Коэффициент'],rows));say('Выбранный признак: '+['нецелый коэффициент','одна различная буква','два отдельно записанных числовых множителя'][a]+'.');
+  if(b===1)say('По этому признаку выделяется '+rows[focused][0]+'. Своё объяснение запиши в тетради.');
+  stepList(['Сначала сформулируй точное свойство.','Сверь по нему каждую из пяти записей.','Испытай другой признак.']);
+ }
+ else
  if(n===16 && Number.isInteger(task.cityMap)){
   const city=mapCities[a],distance=fromMoscow(city).distance;
   show(cityScaleFigure(a));say('Из Москвы по прямой до города '+city[0]+'. Сравни выделенный отрезок с отметкой 500 км.');
@@ -688,7 +752,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   say('Течение 2 км/ч; вниз '+down+' ч, вверх '+up+' ч.');formula('Собственная скорость '+num(speed)+' км/ч.');
   if(state.values[2]===1){
    const leg=(hours,v)=>hours+' ч × '+num(v)+' км/ч = '+num(hours*v)+' км';
-   const paths=table(['Участок','Как найти путь'],[['Вниз',leg(down,speed+2)],['Вверх',leg(up,speed-2)]]);
+   const paths=table(['Куда','Как найти путь'],[['Вниз',leg(down,speed+2)],['Вверх',leg(up,speed-2)]]);
    paths.classList.add('pcm-route-table');show(paths);
    say('Общий путь '+num(down*(speed+2)+up*(speed-2))+' км за 8 ч. Средняя скорость '+num((down*(speed+2)+up*(speed-2))/8)+' км/ч.');
   }

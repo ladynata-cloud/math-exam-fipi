@@ -280,7 +280,7 @@ function firstErrorsHTML(t,s){
       indices.sort((a, b) => {
         const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
         return left.exercise - right.exercise ||
-          subpartOrder.compare(String(left.subpart || ''), String(right.subpart || ''));
+          subpartOrder.compare(String(left.readingKey || left.subpart || ''), String(right.readingKey || right.subpart || ''));
       });
     }
     readingOrders.set(lesson, indices);
