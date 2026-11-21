@@ -1587,3 +1587,15 @@ test('read all six measured source outlines including the shorter d rectangle an
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('trace all thirty-seven labelled points, museum arrival and every exact nested fraction in the final three problems',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=open(122);assert(f.q('#task-figure').textContent.includes('A37 (6; 0)'));for(const [i,n]of [1,7,15,26,37,37].entries()){set(c,1,i);assert.equal(f.q('[data-bird-count]').dataset.birdCount,String(n));assert.equal(f.q('[data-bird-count]').dataset.birdClosed,String(i===5));}set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,5);assert(out().includes('A37 (7; 0)'));
+  c=open(123);set(c,1,2);assert(out().includes('18:30'));assert.equal(f.q('#model polyline').getAttribute('points').split(' ').length,6);set(c,0,1);set(c,1,2);assert(out().includes('19:00'));assert(out().includes('точно к началу'));
+  for(const [i,first,second]of [[124,'150','300'],[125,'24','72'],[126,'15/2','5/2']]){c=open(i);set(c,2,2);assert(out().includes('Результат '+first+' '));set(c,1,1);set(c,2,2);assert(out().includes('Результат '+second+' '));}
+  for(const [i,source,alt,e,changed]of [[127,'50','40','11/2','6'],[128,'63/25','66/25','28/5','33/5'],[129,'25%','50%','108/5','114/5']]){
+   c=open(i);set(c,1,2);assert(out().includes('E = '+e+'. Ответ '+source+'.'),out());set(c,0,1);set(c,1,2);assert(out().includes('E = '+changed+'. Ответ '+alt+'.'),out());
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
