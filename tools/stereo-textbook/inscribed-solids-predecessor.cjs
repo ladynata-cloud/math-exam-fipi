@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const coordinateVectorsAndDiagrams = makeReviewedIncrement(require('./coordinate-vectors-and-diagrams.json'));
+const signedCoordinateArithmetic = makeReviewedIncrement(require('./signed-coordinate-arithmetic.json'));
+const coordinateVectorsAndDiagrams = makeReviewedIncrement(require('./coordinate-vectors-and-diagrams.json'), signedCoordinateArithmetic);
 const cartesianCoordinateStart = makeReviewedIncrement(require('./cartesian-coordinate-start.json'), coordinateVectorsAndDiagrams);
 const vectorChapterSixEnd = makeReviewedIncrement(require('./vector-chapter-six-end.json'), cartesianCoordinateStart);
 const vectorSpanAndBarycentres = makeReviewedIncrement(require('./vector-span-and-barycentres.json'), vectorChapterSixEnd);

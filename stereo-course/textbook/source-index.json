@@ -14686,6 +14686,20 @@
         "к",
         "л",
         "м"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "ж",
+        "з",
+        "и",
+        "к",
+        "л",
+        "м"
       ]
     },
     {
@@ -14704,7 +14718,10 @@
           169
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0648",
@@ -14727,6 +14744,12 @@
         "б",
         "в",
         "г"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
       ]
     },
     {
@@ -14745,7 +14768,10 @@
           169
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0650",

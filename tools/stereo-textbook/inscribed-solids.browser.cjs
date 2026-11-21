@@ -51,7 +51,8 @@ const groups = {
   vectorSpanAndBarycentres: {manifests:[require('./vector-span-and-barycentres.json')],count:15},
   vectorChapterSixEnd: {manifests:[require('./vector-chapter-six-end.json')],count:14},
   cartesianCoordinateStart: {manifests:[require('./cartesian-coordinate-start.json')],count:14},
-  coordinateVectorsAndDiagrams: {manifests:[require('./coordinate-vectors-and-diagrams.json')],count:13}
+  coordinateVectorsAndDiagrams: {manifests:[require('./coordinate-vectors-and-diagrams.json')],count:13},
+  signedCoordinateArithmetic: {manifests:[require('./signed-coordinate-arithmetic.json')],count:18}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

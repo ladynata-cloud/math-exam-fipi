@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T22:15:19Z",
-  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–645, with 1,125 reviewed cards. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T22:19:54Z",
+  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–649, with 1,143 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1921,6 +1921,33 @@
       ],
       "evidence": "tools/stereo-textbook/coordinate-vectors-and-diagrams.json",
       "mathematicalReport": "tools/stereo-textbook/coordinate-vectors-and-diagrams.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 167, the four original sets of vector coordinates, exact signed decimal and fractional multipliers on printed 167, printed 269–270 where answers provided.",
+      "reviewedAt": "2026-11-21T22:19:54Z",
+      "scope": "All twelve variants of 646, both signed combinations of 647, the four independent formulas of 648, all six opposite vectors in 649, and printed keys on pages 269–270, with distinct new-data retries.",
+      "cardIds": [
+        "ex-main-0646-a",
+        "ex-main-0646-b",
+        "ex-main-0646-c",
+        "ex-main-0646-d",
+        "ex-main-0646-e",
+        "ex-main-0646-f",
+        "ex-main-0646-g",
+        "ex-main-0646-h",
+        "ex-main-0646-i",
+        "ex-main-0646-j",
+        "ex-main-0646-k",
+        "ex-main-0646-l",
+        "ex-main-0647",
+        "ex-main-0648-a",
+        "ex-main-0648-b",
+        "ex-main-0648-c",
+        "ex-main-0648-d",
+        "ex-main-0649"
+      ],
+      "evidence": "tools/stereo-textbook/signed-coordinate-arithmetic.json",
+      "mathematicalReport": "tools/stereo-textbook/signed-coordinate-arithmetic.test.cjs"
     }
   ],
   "cards": [
@@ -6423,6 +6450,78 @@
     {
       "id": "ex-main-0645",
       "sha256": "4f89aa7f7d672e66dc09e96cb8f8d1b4a88149c21e2d6504ead0f7c3925e3a53"
+    },
+    {
+      "id": "ex-main-0646-a",
+      "sha256": "1127d4a583c6d905e7846dfc15a7629ac55cd3790d3dfb6ff68acbb64ad1f41f"
+    },
+    {
+      "id": "ex-main-0646-b",
+      "sha256": "2c9678bae061580ae095478beb1fadc60d1864e2d203a3036dcde2e6918a14bf"
+    },
+    {
+      "id": "ex-main-0646-c",
+      "sha256": "2dc946cd2d4ad2e07604a793ce30d426feb24b8bc7b514272ec17a50acecb1d8"
+    },
+    {
+      "id": "ex-main-0646-d",
+      "sha256": "b0ffcf9434acf0e4c13d3314760d4d91b02da4aa2beca93f0f382313518a0c28"
+    },
+    {
+      "id": "ex-main-0646-e",
+      "sha256": "48b5efd6479a3860307d3cf6d6be69478a6add61dbfadbb3fa39059e3892eedb"
+    },
+    {
+      "id": "ex-main-0646-f",
+      "sha256": "6cd6d07ac0a23955d4c3b814b5f653985b891edb9b4143c4a6ac3bcbd6fe5d5e"
+    },
+    {
+      "id": "ex-main-0646-g",
+      "sha256": "ba7adb826f73e0aed85f5f20e552902583dad1db659e00c18abeac7aaa51d1bf"
+    },
+    {
+      "id": "ex-main-0646-h",
+      "sha256": "6f171e6091a04ea6dbd517484be52ddae6e81f6596c26f47e2d818d762536e56"
+    },
+    {
+      "id": "ex-main-0646-i",
+      "sha256": "e5dd4514d22d63d93c4b15d8b00f68c1b43b27a5f0932ef39a9266f6d0d6deee"
+    },
+    {
+      "id": "ex-main-0646-j",
+      "sha256": "86ebcfb6d5368cab22e06c2cfcdfd13617ece32c24a6d04409e5f446fd778b6e"
+    },
+    {
+      "id": "ex-main-0646-k",
+      "sha256": "1a91d50ebd667f54940cf335b19e79ea09f8eaeb3174bdcbb1f2dc2709bfa5be"
+    },
+    {
+      "id": "ex-main-0646-l",
+      "sha256": "4f4d7588f3823922ec66b44b23df550c49dbe66e258bf8ba0af3151c4a121881"
+    },
+    {
+      "id": "ex-main-0647",
+      "sha256": "7b843d61e4a2b0044a2202e7dd66db6f36c475507b38d78d04be9a4a362e6b79"
+    },
+    {
+      "id": "ex-main-0648-a",
+      "sha256": "64560d313602bcb58ac51984097fe3edbeccfad571f722d249d0fcfb20515fbc"
+    },
+    {
+      "id": "ex-main-0648-b",
+      "sha256": "abcd4ae493b09af8a915179f62c70b0103e3f63f600a6a91d35f2c5d136de4a0"
+    },
+    {
+      "id": "ex-main-0648-c",
+      "sha256": "97e4897cf6b76a9bc312fe05867de0047f9d0eaf967878979a334ffcd0245ffc"
+    },
+    {
+      "id": "ex-main-0648-d",
+      "sha256": "3ffb5ebbdbb0f57c9ad35da52f3ab9645cc1ffc6837bc09b2a9b524e5f23056b"
+    },
+    {
+      "id": "ex-main-0649",
+      "sha256": "f92030988c6ded86f4b523eb3f89298f6598ca71a4212afb4a5636d615b97865"
     }
   ]
 }
