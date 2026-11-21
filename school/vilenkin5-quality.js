@@ -156,6 +156,10 @@
   }
   function inputIssue(value,target){
     if(!text(value)||!value.trim())return 'Сначала запиши ответ. Пустое поле не считается ошибкой.';
+    if(target.answerFormat==='v5-pair'){
+      const parts=value.split(';');
+      if(parts.length!==2||parts.some(part=>!M.parse(part)))return 'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.';
+    }
     if(target.scaleChoice){
       const multiplier=M.parse(value), {divisor,powers}=target.scaleChoice;
       const listed=multiplier?.d===1&&powers.includes(multiplier.n);
@@ -198,7 +202,7 @@
     const cleanInput=event=>{if('value'in event.target&&event.target.type!=='number'&&event.target.type!=='range'){const safe=safeDraft(event.target.value);if(safe!==event.target.value)event.target.value=safe;}};
     host.addEventListener('input',cleanInput,true);
     const d=detail(session),captured=session;
-    const dispose=Models.mount(host,lesson,{state:d.model,onChange:value=>{
+    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,onChange:value=>{
       if(readOnly||captured!==connection?.getSession?.())return;
       d.model=Models.normalize(lesson,value);connection.save?.();
     }});
@@ -210,6 +214,11 @@
     if(isLegacy(session)){host.dataset.v5Quality='legacy';root.document.body.classList.add('v5-quality-active');host.querySelector('.lesson-head')?.insertAdjacentHTML('beforeend','<p class="panel" data-v5-legacy>Продолжаем сохранённый разбор. В старой записи нет текста некоторых выполненных шагов, поэтому ответы за тебя не подставляются. Можно закончить этот разбор; новое условие или режим откроет исследования с полным сохранением.</p>');return;}
     active=session;host.dataset.v5Quality='lesson';root.document.body.classList.add('v5-quality-active');
     const head=host.querySelector('.lesson-head'),task=host.querySelector('#task-panel'),model=host.querySelector('#model'),theory=host.querySelector('.v6-theory'),claim=host.querySelector('#claim-feedback')?.closest('section'),d=detail(session);
+    if(lesson.number)task.querySelector('.question').insertAdjacentHTML('afterend',root.Vilenkin5Numbered.taskTable(session.task,session));
+    if(['table-read','table-total'].includes(lesson.fullKey)&&C.pathById.vilenkin5.numbered?.length){
+      const numbered=C.pathById.vilenkin5.numbered.map(id=>'<a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a>');
+      head.insertAdjacentHTML('beforeend','<p>Задания учебника по таблицам, часть 1, с. 9: '+numbered.join(' · ')+'</p>');
+    }
     const modes={learn:'1 · Разберись',practice:'2 · Потренируйся',check:'3 · Проверь себя'};
     head.querySelectorAll('[data-cmd=mode]').forEach(b=>{b.textContent=modes[b.dataset.value];b.classList.add('v5q-mode');b.classList.toggle('is-current',b.dataset.value===session.mode);b.setAttribute('aria-pressed',String(b.dataset.value===session.mode));});
     head.insertAdjacentHTML('beforeend','<p class="v5q-source">Часть '+lesson.source.part+' · '+(lesson.point<=51?'пункт '+lesson.point:'дополнительный практикум')+' · '+(lesson.source.page!=='—'?'страница '+lesson.source.page:'переход в шестой класс')+'</p>');

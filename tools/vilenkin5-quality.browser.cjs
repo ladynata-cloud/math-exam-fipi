@@ -153,6 +153,18 @@ const server=http.createServer((req,res)=>{
     fs.writeFileSync(path.join(shots,'mobile-model-metrics.json'),JSON.stringify(visualMetrics,null,2));
     await page.locator('#answer').focus();await page.keyboard.type('65');assert.equal(await page.locator('#answer').inputValue(),'65');
     await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>document.body.style.zoom='2');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'200% zoom overflow');
-    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,screenshots:23,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
+    await page.close();page=await newLearnerPage();await page.setViewportSize({width:320,height:840});
+    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4]]){
+      await go('#lesson/'+id);
+      const survey=page.locator('#task-panel table').first();
+      assert.equal(await survey.locator('tbody tr').count(),rows);
+      assert(await survey.locator('caption').isVisible());
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'numbered table at 320px');
+      await survey.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,id+'-mobile.png')});
+      await page.locator('[data-cmd=mode][data-value=practice]').click();
+      assert.match(await page.locator('#task-panel .question').innerText(),/Новый авторский опрос/);
+      assert(await page.locator('#task-panel table').isVisible());
+    }
+    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numbered:2,screenshots:25,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

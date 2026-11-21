@@ -13,6 +13,7 @@
   function descriptor(lesson) {
     if (!lesson?.v5Course) throw new TypeError('Unknown Vilenkin lesson');
     const key = lesson.fullKey, point = lesson.point;
+    if (lesson.number) return {kind:'numbered'};
     if (['natural-add','natural-subtract','multiply-column','division-column','remainder-find'].includes(key)) return {kind:'arithmetic', skill:{'natural-add':'add','natural-subtract':'subtract','multiply-column':'multiply','division-column':'divide','remainder-find':'remainder'}[key]};
     if (key === 'formula-perimeter') return {kind:'lab', key:'area', show:'perimeter'};
     if (point <= 24) return {kind:'lab', key:part1[point]};
@@ -35,6 +36,7 @@
       return {...Object.fromEntries(config.controls.map(c => [c.k,c.def])),...(d.show?{show:d.show}:{})};
     }
     const common = {prediction:'',first:'',seen:false,notice:''};
+    if (d.kind==='numbered') return lesson.number==='1.1'?{...common,group:0}:{...common,group:0,weight:0};
     if (d.kind === 'arithmetic') return {seed:17,level:d.skill === 'multiply'?3:2,step:0,draft:'',helped:false,notice:''};
     if (d.kind === 'fraction') return {...common,an:d.op === 'subtract'?5:d.op === 'divide'?3:2,ad:d.op === 'subtract'?4:d.op === 'divide'?2:3,bn:1,bd:4,factor:2};
     if (d.kind === 'decimal') return {...common,a:lesson.fullKey==='decimal-divide-zero'?408:d.op === 'subtract'?300:d.op === 'divide'?150:d.op === 'round'?347:68,b:lesson.fullKey==='decimal-divide-zero'?4:d.naturalSecond?(d.powerOfTen?10:3):d.op === 'subtract'?48:d.op === 'divide'?25:57,places:1,factor:d.naturalSecond?1:10};
@@ -69,6 +71,7 @@
     }
     if (!text(s.prediction)||!text(s.first)||!text(s.notice,800)||typeof s.seen!=='boolean'||!s.seen&&s.first) throw new TypeError('Invalid model prediction');
     const check=(key,min,max)=>{if(!integer(s[key],min,max))throw new TypeError('Invalid model parameter '+key);};
+    if(d.kind==='numbered'){check('group',0,lesson.number==='1.1'?3:5);if(lesson.number==='1.2')check('weight',0,1);}
     if(d.kind==='fraction'){check('an',0,12);check('ad',2,12);check('bn',d.op==='divide'?1:0,12);check('bd',2,12);check('factor',1,6);if(d.op==='subtract'&&s.an*s.bd<s.bn*s.ad)throw new TypeError('Use nonnegative fraction difference');}
     if(d.kind==='decimal'){check('a',0,999);if(d.naturalSecond){if(d.powerOfTen){if(![10,100,1000].includes(s.b))throw new TypeError('Invalid power of ten');}else check('b',1,12);}else check('b',d.op==='divide'?1:0,999);check('places',0,1);if(![1,10,100].includes(s.factor))throw new TypeError('Invalid scale');if(d.op==='subtract'&&s.a<s.b)throw new TypeError('Use nonnegative decimal difference');}
     if(d.kind==='angle'){check('angle',0,180);check('target',10,170);check('start',0,10);}
@@ -210,8 +213,8 @@
     function draw() {
       if(!alive)return;
       if(d.kind==='arithmetic'){drawArithmetic();return;}
-      const view=describe(lesson,s,M);
-      host.innerHTML='<section class="v5q-model"><p class="eyebrow">Исследуй на отдельном примере</p><h2>'+view.title+'</h2>'+controls(view.controls)+'<div class="v5q-visual">'+view.visual+'</div><form data-v5-predict><label>'+mathHTML(view.question)+'<input data-v5-prediction autocomplete="off" value="'+esc(s.prediction)+'"'+(s.seen?' disabled':'')+'></label><button'+(s.seen?' disabled':'')+'>Проверить прогноз</button></form><p class="v5q-model-feedback" role="status">'+mathHTML(s.notice)+'</p>'+(s.seen?'<p class="v5q-model-why">'+mathHTML(view.why)+'</p>':'<button type="button" class="quiet" data-v5-reveal>Посмотреть объяснение</button>')+'<p class="tiny">Меняй числа и проверяй закономерность. Исследование помогает понять правило; самостоятельный результат проверяется на новой задаче.</p></section>';
+      const view=d.kind==='numbered'?root.Vilenkin5Numbered.explore(lesson,s,options.task):describe(lesson,s,M);
+      host.innerHTML='<section class="v5q-model"><p class="eyebrow">'+(d.kind==='numbered'?'Исследуй данные этого задания':'Исследуй на отдельном примере')+'</p><h2>'+view.title+'</h2>'+controls(view.controls)+'<div class="v5q-visual">'+view.visual+'</div><form data-v5-predict><label>'+mathHTML(view.question)+'<input data-v5-prediction autocomplete="off" value="'+esc(s.prediction)+'"'+(s.seen?' disabled':'')+'></label><button'+(s.seen?' disabled':'')+'>Проверить прогноз</button></form><p class="v5q-model-feedback" role="status">'+mathHTML(s.notice)+'</p>'+(s.seen?'<p class="v5q-model-why">'+mathHTML(view.why)+'</p>':'<button type="button" class="quiet" data-v5-reveal>Посмотреть объяснение</button>')+'<p class="tiny">Меняй числа и проверяй закономерность. Исследование помогает понять правило; самостоятельный результат проверяется на новой задаче.</p></section>';
       host.querySelectorAll('[data-v5-param]').forEach(input=>input.onchange=()=>{
         const key=input.dataset.v5Param,raw={...s,[key]:key==='shape'?input.value:Number(input.value),prediction:'',first:'',seen:false,notice:''};
         try{s=normalize(lesson,raw);publish();draw();host.querySelector('[data-v5-param="'+key+'"]').focus();}catch(_){s.notice='Проверь допустимый диапазон. Для вычитания первая величина должна быть не меньше второй.';publish();host.querySelector('[role=status]').textContent=s.notice;input.value=s[key];}
