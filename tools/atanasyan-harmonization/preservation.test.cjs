@@ -75,6 +75,7 @@ function filesAt(relative) {
 const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-length-problems.json": "42dd51007d5a151c356399a661b0bc6ad3d5b0d84fe7d2dba664563f21547316",
   "geometry-course/textbook/data/vector-extra-problems.json": "7acdbfc41b4d4aa1947528063f0e70f7f58d35129c2a4954347b7bbe57b56131",
+  "geometry-course/textbook/data/vector-chapter-review.json": "2f48803cc3c840225f1b9ce28deae063ad447acca7244b6de15e88310e3f25a0",
   "geometry-course/textbook/data/vector-applications.json": "1227351c9822dc500b156ab9ec8e0fa0108fb80d9daf60e3315f0798037fce5d",
   "geometry-course/textbook/data/vector-midpoint-proofs.json": "61a8005acb5f11baac33ae01b98ff4c7f2473d071c28afd285c66365e872fa7b",
   "geometry-course/textbook/data/scalar-problems.json": "5c031761c712f9ae51e4bdeb7f1e13d7fa7e5be6fb507d8b98dc83c3d7875686",
@@ -83,7 +84,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "49bf9a6c2808e3018aa0f6d9fa2f6eb57ba1bf81b04227b6e0c05c5af24bfecc",
+  "geometry-course/textbook/assets/additional-lessons.js": "237ffda6cd59c13acceee5021e486cd4ce9c0f65d07b5e864e4cb9fca34c6700",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
