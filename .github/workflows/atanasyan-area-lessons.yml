@@ -86,6 +86,8 @@ on:
       - 'tools/geometry-textbook/*scalar_coordinates*'
       - 'tools/geometry-textbook/*scalar_geometry*'
       - 'tools/geometry-textbook/*trigonometry_review*'
+      - 'tools/geometry-textbook/*triangle_review*'
+      - 'geometry-course/textbook/data/triangle-review.json'
       - 'geometry-course/textbook/data/trigonometry-review.json'
       - 'geometry-course/textbook/data/scalar-geometry.json'
       - 'geometry-course/textbook/data/scalar-coordinates.json'
@@ -152,6 +154,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/triangle_review.py --check && python3 tools/geometry-textbook/check_triangle_review.py
       - run: python3 tools/geometry-textbook/trigonometry_review.py --check && python3 tools/geometry-textbook/check_trigonometry_review.py
       - run: python3 tools/geometry-textbook/scalar_geometry.py --check && python3 tools/geometry-textbook/check_scalar_geometry.py
       - run: python3 tools/geometry-textbook/scalar_coordinates.py --check && python3 tools/geometry-textbook/check_scalar_coordinates.py

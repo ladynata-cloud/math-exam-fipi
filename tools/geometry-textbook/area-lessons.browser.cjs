@@ -31,6 +31,7 @@ const server=http.createServer((req,res)=>{
  const equationAnswers={1051:['2','13'],'1052-1':['5','4'],'1052-2':['2','9'],'1052-3':['-7','9/4'],'1052-4':['-3','25'],1053:['10','13'],1054:['25','25'],'1055-1':['2','13'],'1055-2':['3','10'],1056:['16','1'],1057:['4','3']};
  const lineAnswers={'1058-1':['3','-1'],'1058-2':['-3','-3'],'1058-3':['-6','-1'],1059:['3','2'],'1060-1':['1','-6'],'1060-2':['5','3'],1061:['5','-3'],'1062-1':['3','-2'],'1062-2':['-2','3'],'1062-3':['-4','1'],'1062-4':['7','-1'],1063:['5','4'],1064:['5','6']};
  const locusAnswers={1065:['8','1'],1066:['-3','0'],'1067-1':['0','4'],'1067-2':['1','0'],'1068-1':['2','1'],'1068-2':['3','0'],1069:['4','4'],'1070-1':['4','1'],'1070-2':['1/3','2/3'],1071:['1','2'],1072:['3','0'],1073:['-2','-3'],1074:['32','2'],1075:['-3','-2']};
+ const triangleReviewAnswers={"k8":["12","10"],"k9":["5","10"],"k10":["49","34"],"k11":["13","3"],"k12":["6","12"],"k13":["90","6"]};
  const trigonometryReviewAnswers={"k1":["2","1"],"k2":["-1","-1"],"k3":["90","-1"],"k4":["2","0"],"k5":["16","12"],"k6":["1","0"],"k7":["-2","3"]};
  const scalarGeometryAnswers={"1139":["20","49"],"1140":["2","1"],"1141":["29","-7"],"1142":["-8","11"],"1143":["13","5"],"1144":["3","3"],"1145":["0","4"]};
  const scalarCoordinateAnswers={"1133-1":["-3","-7/2"],"1133-2":["30","-60"],"1133-3":["-1","-7"],"1134":["0","4"],"1135":["0","-3"],"1136-1":["-30","5"],"1136-2":["-2","1"],"1136-3":["-3","0"],"1137":["18","-3"],"1138":["7","30"]};
@@ -51,12 +52,12 @@ const server=http.createServer((req,res)=>{
   await catalog.goto(base);
   await catalog.getByText(/Полностью доступны задачи: 1145/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
    const chapter11=Object.hasOwn(coordinateReviewAnswers,n);
-   const chapter12=Object.hasOwn(trigonometryReviewAnswers,n);
+   const chapter12=Object.hasOwn(trigonometryReviewAnswers,n)||Object.hasOwn(triangleReviewAnswers,n);
    const review=n.startsWith('r')||chapter11||chapter12;
    const [number,part='1']=(theory||review?n.slice(1):n).split('-');
    const id='atanasyan-7-9-'+(chapter12?'selfcheck-chapter-12-':chapter11?'selfcheck-chapter-11-':review?'selfcheck-chapter-10-':theory?'theory-':'main-')+number+'-part-'+part;
