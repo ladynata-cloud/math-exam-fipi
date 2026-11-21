@@ -904,3 +904,42 @@ test('use each arithmetic spoke independently, balance story quantities and dist
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('recognize a perpendicular from the correct vertex and distinguish the total percentage from its change',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p35/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),result=()=>f.q('#model .pm-result').textContent;
+  const delta=(line,axis)=>Number(line.getAttribute(axis+'2'))-Number(line.getAttribute(axis+'1'));
+  function perpendicular(one,two){
+   assert(Math.abs(delta(one,'x')*delta(two,'x')+delta(one,'y')*delta(two,'y'))<1e-7);
+  }
+  for(const [i,aux,side,mark]of [[53,'CL','AB','L'],[54,'DK','EF','K'],[55,'RS','PM','S'],[56,'ZT','XY','T']]){
+   const ids=go(i);
+   const height=f.q('#task-figure [data-aux="'+aux+'"]'),opposite=f.q('#task-figure [data-side="'+side+'"]');
+   perpendicular(height,opposite);assert(f.q('#task-figure [data-right-at="'+mark+'"]'));
+   if(i===54)assert(Number(height.getAttribute('x2'))<Math.min(Number(opposite.getAttribute('x1')),Number(opposite.getAttribute('x2'))));
+   set(ids[0],2);
+   if(i===55)assert(result().includes('RS не начинается в вершине MNP'));
+   if(i===56)assert(result().includes('катеты XZ, YZ'));
+  }
+  let ids=go(58);
+  for(const j of [0,1,2]){
+   set(ids[0],j);set(ids[1],2);const model='#model ';
+   assert.equal(f.d.querySelectorAll(model+'[data-altitude-from]').length,3);
+   const center=f.q(model+'[data-orthocenter]');assert.equal(center.dataset.orthocenter,String(j));
+   for(const [v,side]of [['A','BC'],['B','CA'],['C','AB']]){
+    const altitude=f.q(model+'[data-altitude-from="'+v+'"]'),opp=f.q(model+'[data-side="'+side+'"]');
+    perpendicular(altitude,opp);
+    const hx=Number(center.getAttribute('cx'))-Number(altitude.getAttribute('x1')),hy=Number(center.getAttribute('cy'))-Number(altitude.getAttribute('y1'));
+    assert(Math.abs(hx*delta(opp,'x')+hy*delta(opp,'y'))<1e-7);
+   }
+  }
+  assert(result().includes('за пределами треугольника'));
+  ids=go(49);set(ids[1],1);assert(result().includes('контрпример'));set(ids[0],2);set(ids[1],1);assert(result().includes('Один подходящий пример'));
+  ids=go(62);set(ids[1],1);assert(result().includes('100/3%'));set(ids[0],120);assert.deepEqual([...f.d.querySelectorAll('#model [data-bar-value]')].map(e=>Number(e.dataset.barValue)),[120,40]);
+  f.nav('#lesson/p35/67');f.event('#final-answer','25');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/процент итоговой величины/);
+  ids=go(73);set(ids[1],2);assert(f.q('#model table').textContent.replace(/\s/g,'').includes('15400'));set(ids[0],1);assert.equal(f.q(ids[1]).value,'0');set(ids[1],2);assert(f.q('#model table').textContent.replace(/\s/g,'').includes('27720'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

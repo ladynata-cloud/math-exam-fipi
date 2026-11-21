@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,568);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,595);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -485,6 +485,23 @@ const p33=D.lessons.find(l=>l.id==='p33');
   const [a,b]=t.differenceSquareStudy.source;assert.deepEqual(Array.from(t.steps,s=>val(s.answer)),[(a-b)**2,a*a-b*b,a*a-2*a*b+b*b]);assert.equal(val(t.answer),(a-b)**2);
  }
  assert.equal(get(53,'').kind,'manual');
+}
+
+{
+ const all=D.lessons.find(l=>l.id==='p35').tasks,rows=all.filter(t=>t.source.exercise>=54&&t.source.exercise<=58);
+ assert.equal(rows.length,27);assert(rows.every(t=>t.source.page===14));
+ const of=n=>rows.filter(t=>t.source.exercise===n),val=raw=>{const r=M.parse(raw);return r.n/r.d;};
+ for(const [n,letters]of [[54,'абвг'],[56,'абвгде'],[57,'абвгд'],[58,'абвгд']])assert.deepEqual(Array.from(of(n),t=>t.source.subpart),[...letters]);
+ assert.deepEqual(Array.from(of(55),t=>[t.source.subpart,t.source.diagram||null]),[['а',null],['б',1],['б',2],['б',3],['б',4],['в',null],['г',null]]);
+ for(const a of [-3,0,2])for(const b of [-2,0,.5,3])assert(-(a-b)===b-a);
+ assert(-(2+3)!==-2+3);assert((-1)**2>(-1+1)**2);assert(.5**3<.5**2);
+ assert.deepEqual(Array.from(of(55).slice(1,5),t=>t.answer),['CL','DK','Среди проведённых внутри отрезков высоты MNP нет','XZ, YZ и ZT']);
+ assert.deepEqual(Array.from(of(56),t=>val(t.answer)),[50,25,20,100/3,75,60]);assert.deepEqual(Array.from(of(57),t=>val(t.answer)),[100,200,75,25,50]);
+ for(const t of of(56)){assert(Math.abs(100*val(t.percentagePortion)-val(t.answer))<1e-9);}
+ for(const t of of(57)){assert(Math.abs(100*Math.abs(val(t.percentageChange)-1)-val(t.answer))<1e-9);}
+ assert.deepEqual(Array.from(of(58),t=>t.answer),['2,2a','25b/27','100(x − y)/x','1,54n','2,5k']);
+ const equations=[([first,next,total])=>next===1.2*first&&total===first+next,([sale,cost,profit])=>Math.abs(sale-1.08*cost)<1e-9&&profit===sale-cost,([first,last,rate])=>Math.abs(100*(first-last)/first-rate)<1e-9,([first,mid,last])=>Math.abs(mid-1.1*first)<1e-9&&Math.abs(last-1.4*mid)<1e-9,([last,mid,first])=>mid===.8*first&&last===.5*mid];
+ for(const [i,t]of of(58).entries())assert(t.percentNarrative.values.every(equations[i]));
 }
 
 const printedColumns=['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб'];
