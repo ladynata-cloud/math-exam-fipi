@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "25fe0faa37b1b6d7802f34214da53247f278af2d450c7ffb30cbd8f85ac77e92",
-      "afterSha256": "a02797dd9e5af15606cc8d2961b14f4e04f6b17db17172af77bd707f10eb9b49",
+      "beforeSha256": "d76b507f7aeb865e064c45ad21ff752e8a21319dc84231404678b4c5182ff4ae",
+      "afterSha256": "a6189b739b469c5a7f66ed9a5034dcd9bf53bcb246ea9ff699bed4586939db7f",
       "placement": "before-head-close",
-      "sourceSha": "57f08aa4568f97635b6e7da5c22fc31dd860098a"
+      "sourceSha": "256c3c47e03a5e9732f5f3eff1f8cf0e0b610952"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6821,6 +6821,16 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также девятнадцать номеров второй части, включая шесть переводов долей длины и шесть переводов долей массы, с обеими ролями."
+    },
+    {
+      "previousBaseSha": "57f08aa4568f97635b6e7da5c22fc31dd860098a",
+      "sourceBaseSha": "256c3c47e03a5e9732f5f3eff1f8cf0e0b610952",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the combined school entry with both numbered Vilenkin volumes and the reviewed Workshop maps.",
+      "boundary": "Explicit committed source identity only; printed pages and shared activities have separate subject checks."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
