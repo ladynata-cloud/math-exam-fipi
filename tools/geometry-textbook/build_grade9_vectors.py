@@ -14,8 +14,9 @@ def scene(points, stages, extra_cases=()):
     """Arrowheads are segments without point labels, so reversing an arrow changes its visible end."""
     all_stages = stages + list(extra_cases)
     pictures=[]
-    for label, visible, arrows, plain in all_stages:
-        pictures.append(drawing({name:points[name] for name in visible},list(plain)+list(arrows)))
+    coordinates=[points]*len(all_stages) if isinstance(points,dict) else points
+    for frame_points,(_,visible,arrows,plain) in zip(coordinates,all_stages,strict=True):
+        pictures.append(drawing({name:frame_points[name] for name in visible},list(plain)+list(arrows)))
     result=model(pictures)
     for i,(label,visible,arrows,plain) in enumerate(all_stages):
         key='neutral' if i==0 else f'step-{i}'
@@ -48,7 +49,7 @@ def make(number, *, kind, pages, title, statement, result, hint, stages, picture
     source=dict(bookId=BOOK,collection='theory' if kind=='theory' else 'main',chapter='X',
                 printedPages=pages,pdfPages=[n+1 for n in pages])
     source['point' if kind=='theory' else 'exercise']=str(number)
-    part_n='абвг'.index(part)+1 if part else 1
+    part_n='абвгд'.index(part)+1 if part else 1
     if part:source['subpart']=part
     prefix='theory' if kind=='theory' else 'main'
     steps=[]
