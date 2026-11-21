@@ -35,6 +35,7 @@ async function solveScene(page,scene,keyboard) {
       else await put(page,group).click();
     }
   }
+  assert.equal(await page.locator('.ws-instruction').innerText(),'Теперь нажми «Проверить раскладку».');
   await action(page,'check-layout').press('Enter');
   await stage(page,'answer');
   await page.locator('#workshop-play input[name="quantity"]').fill(String(expected(scene)));
@@ -56,6 +57,30 @@ async function journey(browser,width) {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   try {
+    await page.goto(trainer);
+    await stage(page,'layout');
+    const drawer = page.locator('#life-map .wm-drawer');
+    assert.equal(await drawer.evaluate(el => el.open),false,'The city map opens only on request');
+    assert(await page.locator('#workshop-play').evaluate(el =>
+      el.getBoundingClientRect().bottom <= document.querySelector('#life-map').getBoundingClientRect().top
+    ),'The task precedes the map');
+    const instruction = page.locator('.ws-instruction');
+    assert((await instruction.innerText()).includes('«Для Ани»'));
+    assert(await put(page,0).evaluate(el => el.classList.contains('ws-first-move')));
+    await put(page,1).press('Enter');
+    assert.equal(await put(page,1).locator('.ws-token').count(),1,'The suggested first move is optional');
+    assert.equal(await page.locator('.ws-first-move').count(),0);
+    await page.reload();
+    assert.equal(await put(page,1).locator('.ws-token').count(),1);
+    assert.equal(await instruction.innerText(),'Продолжай раздавать поровну.');
+    await action(page,'undo').press('Enter');
+    await drawer.locator('summary').press('Enter');
+    await drawer.locator('a[href="#workshop-picnic"]').press('Enter');
+    await page.waitForURL(url => url.hash === '#workshop-picnic');
+    await page.waitForFunction(() => document.activeElement === document.querySelector('.ws-title'));
+    assert.equal(await drawer.evaluate(el => el.open),false);
+    // A fresh deep link should also start at the top of the page.
+    await page.goto('about:blank');
     await page.goto(trainer + '#workshop-picnic');
     await stage(page,'layout');
     const places = await page.evaluate(() => window.ArzhenikovLife.places);

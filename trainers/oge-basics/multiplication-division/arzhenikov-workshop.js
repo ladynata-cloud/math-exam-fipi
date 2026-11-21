@@ -277,7 +277,8 @@
     const step = element('p', 'ws-step', complete ? place.name : place.name + ' · ' + (notation ? 'Запись ' : 'История ') + (run.step + 1) + ' из ' + seriesLength);
     const title = element('h3', 'ws-title', complete ? reward?.title || 'Три дела сделаны!' : scene.title);
     title.tabIndex = -1;
-    host.append(step, routeProgress(run), title);
+    host.append(step, title);
+    document.getElementById('workshop-route-progress')?.replaceChildren(routeProgress(run));
     if (focus) title.focus();
     function advance(stage) { run.stage = stage; save(); render(true); }
     function nextButton(label, fn) {
@@ -427,7 +428,7 @@
       return;
     }
 
-    const instruction = element('p', 'ws-instruction', 'Нажимай +, чтобы класть по одному.');
+    const instruction = element('p', 'ws-instruction');
     const stock = element('div', 'ws-stock');
     const targets = element('div', 'ws-targets');
     const actions = element('div', 'ws-actions');
@@ -461,6 +462,13 @@
     });
     function redraw() {
       const left = remaining(scene, run.piles);
+      const firstMove = left === scene.total;
+      // Suggest a starting point, but accept a move to any valid target.
+      if (firstMove) instruction.textContent = 'Нажми «+» на карточке «' + scene.targets[0] + '».';
+      else if (left === 0) instruction.textContent = 'Теперь нажми «Проверить раскладку».';
+      else if (scene.kind === 'share') instruction.textContent = 'Продолжай раздавать поровну.';
+      else instruction.textContent = 'Нажимай «+», чтобы класть по одному.';
+      placesUI[0].add.classList.toggle('ws-first-move', firstMove);
       const caption = scene.kind === 'count' ? (left ? 'Предметы на столе' : 'Все предметы разложены') : 'На столе осталось ' + left;
       stock.replaceChildren(element('span', 'ws-caption', caption), icons(scene.item, left));
       placesUI.forEach(({add, take}, i) => {

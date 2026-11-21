@@ -12,7 +12,6 @@
     return item;
   }
 
-  const small = matchMedia('(max-width: 760px)');
   const drawer = element('details', 'wm-drawer');
   const summary = element('summary', 'wm-summary');
   const label = element('strong', '', 'Карта города');
@@ -21,7 +20,6 @@
   preview.setAttribute('aria-hidden', 'true');
   preview.textContent = places.slice(0, 2).map(place => place.icon).join(' ');
   summary.append(preview, label, progress);
-  drawer.open = !small.matches;
 
   const board = element('div', 'wm-board');
   const canvas = element('canvas', 'wm-land');
@@ -99,13 +97,11 @@
   function focusTask() {
     const host = document.getElementById('workshop-play');
     if (!host) return;
-    if (small.matches) drawer.open = false;
+    drawer.open = false;
     const heading = host.querySelector('.ws-title, h3, h2') || host;
     heading.tabIndex = -1;
     heading.focus({preventScroll: true});
-    if (small.matches || heading.getBoundingClientRect().top < 0) {
-      heading.scrollIntoView({block: 'start'});
-    }
+    heading.scrollIntoView({block: 'start'});
   }
 
   let chosen = '';
@@ -124,7 +120,6 @@
     chosen = '';
   });
   window.addEventListener('workshop-progress', reflect);
-  small.addEventListener('change', () => { drawer.open = !small.matches; });
 
   // Draw the footpath through the actual pin positions, even when a label wraps.
   function draw() {
