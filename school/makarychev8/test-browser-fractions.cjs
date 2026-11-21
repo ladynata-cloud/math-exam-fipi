@@ -45,10 +45,13 @@ async function verify(width, url) {
     return page;
   }
   let page = await freshPage();
-  const cases = await page.evaluate(() => window.MakarychevCourse.lessons
-    .filter(lesson => lesson.order >= 5 && lesson.order <= 8)
-    .flatMap(lesson => lesson.studyOrder
-      .filter(index => lesson.tasks[index].source.type === 'textbook')
+  const cases = await page.evaluate(() => window.MakarychevCourse.lessons.flatMap(lesson =>
+    (lesson.studyOrder || lesson.tasks.map((_, index) => index))
+      .filter(index => {
+        const task = lesson.tasks[index];
+        const exercise = Number(/№\s*(\d+)/.exec(task.source.reference)?.[1]);
+        return task.source.type === 'textbook' && (exercise >= 110 && exercise <= 200 || exercise >= 231 && exercise <= 267);
+      })
       .map(index => ({ lessonId: lesson.id, index }))));
   const stats = { cards: cases.length, figures: 0, errors: [] };
   // A separate browser turn for each card lets Chromium release the preceding
@@ -69,7 +72,7 @@ async function verify(width, url) {
       if (document.querySelector('.task-heading h2')?.textContent !== task.title || !rect) errors.push(task.id + ' entry');
       if (document.documentElement.scrollWidth > innerWidth + 1 || rect?.left < 0 || rect?.right > innerWidth + 1) errors.push(task.id + ' overflow');
       const figures = task.graph ? document.querySelectorAll('#task-graph svg').length : 0;
-      if (task.graph && !figures) errors.push(task.id + ' missing graph');
+      if (task.graph && !['work-hours','equal-distances'].includes(task.graph.type) && !figures) errors.push(task.id + ' missing graph');
       return { figures, errors };
     }, entry).catch(error => {
       throw new Error('Could not render ' + entry.lessonId + ' card ' + entry.index + ' at ' + width + 'px', { cause: error });
@@ -78,8 +81,8 @@ async function verify(width, url) {
     stats.errors.push(...sample.errors);
   }
   assert.deepEqual(stats.errors, []);
-  assert.equal(stats.cards, 286);
-  for (let n = 110; n <= 230; n++) {
+  assert.equal(stats.cards, 386);
+  for (let n = 110; n <= 267; n++) {
     if ((n - 110) % 24 === 0) {
       await page.close();
       page = await freshPage();
@@ -87,6 +90,37 @@ async function verify(width, url) {
     await openNumber(page, n);
     assert(await page.locator('#number-result a.button:not(.quiet)').count() > 0, 'source number ' + n);
   }
+  const constructions=await page.evaluate(()=>MakarychevCourse.lessons.flatMap(l=>l.tasks.map((t,i)=>({t,i}))
+    .filter(({t})=>t.graph?.revealAfterSubmit)
+    .map(({t,i})=>({hash:'#lesson/'+l.id+'/'+i,id:t.id,answer:t.answer,holes:(t.graph.curves[0].holes||[]).length}))));
+  assert.equal(constructions.length,15);
+  for(const graph of constructions){
+    await page.evaluate(hash=>{history.replaceState(null,'',hash);MakarychevApp.route();},graph.hash);
+    assert.equal(await page.locator('#task-graph [data-root-curve]').count(),0);
+    await page.locator('#final-answer').fill(graph.answer);
+    assert.equal(await page.locator('#task-graph [data-root-curve]').count(),0,'no solved curve before submission');
+    assert.equal(await page.locator('#task-graph [data-point-x]').count(),graph.answer.split(';').length);
+    await page.locator('#answer-form button[type=submit]').click();
+    assert.equal(await page.locator('#task-graph [data-root-curve]').count(),1,graph.id);
+    assert.equal(await page.locator('#task-graph [data-hole-x]').count(),graph.holes,graph.id);
+  }
+  await openNumber(page, 250, '№ 250');
+  const formula=page.locator('.m8-exercise-formula');
+  assert.equal(await formula.locator('math').count(),1);
+  assert.equal(await formula.evaluate(el=>el.scrollWidth>el.clientWidth+1 ? (el.scrollLeft=el.scrollWidth,el.scrollLeft>0) : true),true);
+  await openNumber(page, 254, '№ 254');
+  await submit(page,'72/23');
+  assert.match(await page.locator('.quantity-model').innerText(),/Выполнено заказов: 1/);
+  await submit(page,'216/23');
+  assert.match(await page.locator('.quantity-model').innerText(),/Выполнено заказов: 3/);
+  await openNumber(page, 265, '№ 265б');
+  await submit(page,'-6;-9');
+  assert.equal(await page.locator('#task-graph [data-root-curve]').count(),2);
+  assert.equal(await page.locator('#task-graph [data-point-x="-2"][data-point-y="3"]').count(),1);
+  await openNumber(page, 267, '№ 267а');
+  assert.equal(await page.locator('#task-graph [data-root-curve]').count(),0);
+  await submit(page,'4;1;2');
+  assert.equal(await page.locator('#task-graph [data-point-x]').count(),2);
   await openNumber(page, 223, '№ 223');
   const claims=page.locator('#answer-form .reasoning-choices button');
   assert.equal(await claims.count(),6);
@@ -202,7 +236,7 @@ async function verify(width, url) {
   assert.equal(await page.locator('#notebook').inputValue(), 'Проверка своих точек');
   assert.deepEqual(errors, []);
   await page.close();
-  return { width, cards: stats.cards, figures: stats.figures, searches: 121 };
+  return { width, cards: stats.cards, figures: stats.figures, searches: 158 };
 }
 
 (async () => {

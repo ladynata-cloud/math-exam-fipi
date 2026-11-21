@@ -35,6 +35,10 @@ assert(C.check('3; -2',{answer:'-2;3',kind:'set'}));assert(!C.check('3;3',{answe
 assert(C.check('x^2 − 4',{answer:'x²-4',kind:'text'}));assert(!C.check('x²+4',{answer:'x²-4',kind:'text'}));
 assert(C.check('5/(6*x)',{answer:'5/(6x)',kind:'text'}));assert(C.check('x^3/(8*y^3)',{answer:'x³/(8y³)',kind:'text'}));assert(!C.check('2*3',{answer:'23',kind:'text'}));
 assert(!C.check('2abc',{answer:'2',kind:'number'}));assert(!C.check('1e309',{answer:'1',kind:'number'}));
+const solvedSourceNumbers=new Set(D.lessons.flatMap(l=>l.tasks)
+ .filter(t=>t.source.type==='textbook')
+ .map(t=>Number(/№\s*(\d+)/.exec(t.source.reference)[1])));
+for(let n=1;n<=509;n++)assert(solvedSourceNumbers.has(n),'missing numbered course work '+n);
 for(const id of ['p05','p06','p07']) {
  const lesson=D.lessons.find(l=>l.id===id),refs=lesson.studyOrder.map(i=>lesson.tasks[i].source);
  assert.equal(new Set(lesson.studyOrder).size,lesson.tasks.length,'all bookmarked indices appear once');

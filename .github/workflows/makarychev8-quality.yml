@@ -41,6 +41,7 @@ jobs:
           python school/makarychev8/test-exercises-212-214.py
           python school/makarychev8/test-exercises-215-220.py
           python school/makarychev8/test-exercises-221-230.py
+          python school/makarychev8/test-exercises-231-267.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs

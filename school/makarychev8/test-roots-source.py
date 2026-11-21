@@ -49,8 +49,9 @@ for topic, first, last in [('p05', 110, 133), ('p06', 134, 149),
                            ('p07', 150, 180), ('p08', 181, 200), ('p09', 201, 211), ('p01', 212, 214), ('p01', 215, 220)]:
     by_lesson[topic]['tasks'].extend(read(f'exercises-{first}-{last}.json'))
 
-for topic, tasks in read('exercises-221-230.json')['topics'].items():
-    by_lesson[topic]['tasks'].extend(tasks)
+for file in ['exercises-221-230.json','exercises-231-267.json']:
+    for topic,tasks in read(file)['topics'].items():
+        by_lesson[topic]['tasks'].extend(tasks)
 
 ranges = []
 for first, last in RANGES:

@@ -30,6 +30,11 @@ function parseRootPoints(value,xs){
  return xs.map((x,i)=>[x,ys[i]]);
 }
 function curveValue(curve,x){
+ if((curve.holes||[]).some(([h])=>x===h))return NaN;
+ if(curve.kind==='reciprocal-offset')return x===0?NaN:curve.b+curve.k/x;
+ if(curve.kind==='absolute-reciprocal')return x===0?NaN:curve.k/Math.abs(x);
+ if(curve.kind==='sign-linear')return x===curve.h?NaN:Math.sign(x-curve.h)*(curve.k*x+curve.b);
+ if(curve.kind==='abs-linear')return curve.k*Math.abs(x)+curve.b;
  if(curve.kind==='sqrt')return x>=0?Math.sqrt(x):NaN;
  if(curve.kind==='line')return curve.k*x+curve.b;
  if(curve.kind==='hyperbola')return x===0?NaN:curve.k/x;
@@ -87,11 +92,15 @@ function rootGraph(config,value){
  const definitions=buildCurves.flatMap(curve=>(curve.xs||[]).map(a=>({a,curve}))),xs=definitions.map(d=>d.a),points=learner?parseRootPoints(value,xs):null;
  // Construction begins with an empty coordinate plane. An exact curve is
  // shown only after the learner has supplied all correct defining points.
- const complete=points&&points.every(([a,b],i)=>Number.isFinite(curveValue(definitions[i].curve,a))&&b===curveValue(definitions[i].curve,a));
+ const complete=config.showSolution!==false&&points&&points.every(([a,b],i)=>Number.isFinite(curveValue(definitions[i].curve,a))&&b===curveValue(definitions[i].curve,a));
  const curves=learner?(complete?buildCurves:[]):(config.curves||[{kind:'sqrt'}]);
  curves.forEach((c,j)=>{
   let path='',open=false,previous=null;
+  const breaks=(c.holes||[]).map(([h])=>h);
+  if(['hyperbola','reciprocal-offset','absolute-reciprocal'].includes(c.kind))breaks.push(0);
+  if(c.kind==='sign-linear')breaks.push(c.h);
   const samples=Array.from({length:601},(_,i)=>xr[0]+(xr[1]-xr[0])*i/600);
+  for(const cut of breaks)if(cut>=xr[0]&&cut<=xr[1])samples.push(cut);
   if(xr[0]<=0&&xr[1]>=0)samples.push(0);
   if(c.kind==='sqrt-shift'&&c.h>=xr[0]&&c.h<=xr[1])samples.push(c.h);
   for(const a of c.xs||[])if(a>=xr[0]&&a<=xr[1])samples.push(a);
@@ -99,11 +108,12 @@ function rootGraph(config,value){
   for(const a of samples){
    const b=curveValue(c,a);
    const inside=Number.isFinite(b)&&b>=yr[0]&&b<=yr[1];
-   const continuous=previous&&!(c.kind==='hyperbola'&&previous[0]*a<=0)&&Math.abs(y(b)-y(previous[1]))<height/2;
+   const continuous=previous&&!breaks.some(h=>previous[0]<=h&&h<=a)&&Math.abs(y(b)-y(previous[1]))<height/2;
    if(inside){path+=(open&&continuous?'L':'M')+x(a).toFixed(3)+' '+y(b).toFixed(3)+' ';open=true;}else open=false;
    previous=[a,b];
   }
   svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
+  for(const [h,v] of c.holes||[])if(h>=xr[0]&&h<=xr[1]&&v>=yr[0]&&v<=yr[1])svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));
   if(c.kind==='abs-ratio'&&xr[0]<=0&&xr[1]>=0)for(const b of [-(c.scale??1),c.scale??1])if(b>=yr[0]&&b<=yr[1])svg.append(node('circle',{cx:x(0),cy:y(b),r:4,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':0,'data-hole-y':b}));
   if(c.label){
    const at=c.labelAt||[xr[1]-(xr[1]-xr[0])/8,curveValue(c,xr[1]-(xr[1]-xr[0])/8)];
@@ -261,8 +271,32 @@ function renderNaturalValues(host,config){
  }
  host.append(list);
 }
+function workEstimate(host,config,value){
+ host.className='task-graphs quantity-model';
+ const proposed=number(value),line=text=>{const p=document.createElement('p');p.className='small';p.textContent=text;host.append(p);};
+ if(proposed===null||proposed<=0){line('После проверки положительного ответа здесь можно сравнить модель с условием.');return;}
+ const decimal=x=>x.toLocaleString('ru',{maximumFractionDigits:4});
+ if(config.type==='work-hours'){
+  const total=[8,9,12].reduce((n,h)=>n+proposed/h,0);
+  for(const h of [8,9,12])line('Мастерица, которая тратит '+h+' ч на заказ, за '+decimal(proposed)+' ч выполнит такую долю заказа: '+decimal(proposed/h)+'.');
+  line('Выполнено заказов: '+decimal(total)+'. По условию требуется 3.');
+ }else{
+  line('Сравниваем две равные половины по 240 км: при 60 км/ч первая занимает 4 ч, при 80 км/ч вторая — 3 ч.');
+  line('Твоя скорость за 7 ч дала бы '+decimal(7*proposed)+' км. Общий путь в модели — 480 км.');
+ }
+}
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(['work-hours','equal-distances'].includes(config.type)){workEstimate(host,config,value);return;}
+ if(['intersection-example','shared-hyperbola-line'].includes(config.type)){
+  host.className='task-graphs root-graph';
+  const own=config.type==='shared-hyperbola-line',params=own?parseLine(value):config.reveal?{k:config.k,b:config.line[1]}:null;
+  const curves=params?[{kind:'hyperbola',k:params.k},{kind:'line',k:own?params.k:config.line[0],b:params.b}]:[];
+  const points=own?[config.point]:config.reveal?config.points:[];
+  const bound=own?Math.max(6,Math.abs(config.point[0])+2,Math.abs(config.point[1])+2):5;
+  host.append(rootGraph({type:'root-plane',curves,points,xRange:[-bound,bound],yRange:[-bound,bound]},''));
+  const note=document.createElement('p');note.className='small';note.textContent=own?'Данная точка отмечена. После проверки на осях появятся обе кривые по введённым k и b.':config.reveal?'Показаны кривые и точки именно из примера доказательства.':'После попытки можно сопоставить рассуждение с примером на этих осях.';host.append(note);return;
+ }
  if(config.type==='natural-values'){renderNaturalValues(host,config);return;}
  if(config.type==='domain-fraction'){renderDomainFraction(host,config);return;}
  if(config.type==='train-meeting'){renderTrainMeeting(host,value);return;}
@@ -285,7 +319,7 @@ function render(host,config,value){
  }else if(['root-plane','root-build','curve-build'].includes(config.type)){
   host.className='task-graphs root-graph';host.append(rootGraph(config,value));
   const caption=document.createElement('p');caption.className='small';
-  caption.textContent=['root-build','curve-build'].includes(config.type)?'Введи ординаты точек ниже — они появятся на твоём чертеже.':(config.caption||'На рисунке показана часть графика. Проверяй выводы по формуле.');host.append(caption);
+  caption.textContent=['root-build','curve-build'].includes(config.type)?(config.caption||'Введи ординаты точек ниже — они появятся на твоём чертеже.'):(config.caption||'На рисунке показана часть графика. Проверяй выводы по формуле.');host.append(caption);
  }else if(config.type==='choices'||config.type==='hyperbola-choices'){
   host.className='task-graphs alternatives';
   const inverse=config.type==='hyperbola-choices';

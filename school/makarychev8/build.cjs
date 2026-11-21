@@ -15,8 +15,8 @@ lessons.find(l=>l.id==='p08').tasks.push(...read('exercises-181-200.json'));
 lessons.find(l=>l.id==='p09').tasks.push(...read('exercises-201-211.json'));
 // Supplementary §1 work keeps the existing topic and every original bookmark.
 lessons.find(l=>l.id==='p01').tasks.push(...read('exercises-212-214.json'), ...read('exercises-215-220.json'));
-for(const [topic,tasks] of Object.entries(read('exercises-221-230.json').topics)){
- lessons.find(l=>l.id===topic).tasks.push(...tasks);
+for(const file of ['exercises-221-230.json','exercises-231-267.json']){
+ for(const [topic,tasks] of Object.entries(read(file).topics))lessons.find(l=>l.id===topic).tasks.push(...tasks);
 }
 // Present completed textbook points in source order while preserving every bookmarked array index.
 for (const lesson of lessons.filter(item=>item.order>=5&&item.order<=9)) {
@@ -24,6 +24,7 @@ for (const lesson of lessons.filter(item=>item.order>=5&&item.order<=9)) {
  const ref=index=>lesson.tasks[index].source;
  lesson.studyOrder=indices.sort((a,b)=>{
   if(ref(a).type!==ref(b).type)return ref(a).type==='textbook'?-1:1;
+  if(Boolean(ref(a).section)!==Boolean(ref(b).section))return ref(a).section?1:-1;
   if(lesson.order===8&&ref(a).type==='textbook'){
    const number=index=>Number(/№\s*(\d+)/.exec(ref(index).reference)[1]);
    const task=index=>lesson.tasks[index];
