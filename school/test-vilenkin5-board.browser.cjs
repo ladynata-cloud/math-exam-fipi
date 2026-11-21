@@ -895,6 +895,19 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both sides restored at the comparison');
   await teacherFrame.locator('#answer-form button').click();const greater=await same(teacherFrame,studentFrame,'C is to the right of K');assert(greater.scene.correct);assert.deepEqual(greater.scene.hintLevels,{});await narrow(student,studentFrame,'ray-with-half-cells');
 
+  phase = 'fractions of a centimetre and a centner, printed 5.18 and 5.19';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-18"]').click();await studentFrame.locator('h1').filter({hasText:'№5.18'}).waitFor();
+  await teacherFrame.locator('#answer').fill('100');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'whole decimetre supplied instead of half')).scene.message,/величина целого/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('50');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('#answer').fill('2 1/2');await studentFrame.locator('#answer-form button').click();const quarter=await same(studentFrame,teacherFrame,'exact mixed fraction for a quarter of one centimetre');assert(quarter.scene.correct);assert.deepEqual(quarter.scene.hintLevels,{});
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-19"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.19'}).waitFor();
+  await studentFrame.locator('[data-v5-param=unitChoice]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=portion]').selectOption({value:'8'});
+  await studentFrame.locator('[data-v5-prediction]').fill('1000');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('10');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('1000');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const partialMass=await same(studentFrame,teacherFrame,'one hundredth of a centner and unfinished answer for a tenth');assert.equal(partialMass.scene.model.unitChoice,1);assert.equal(partialMass.scene.model.portion,8);assert(partialMass.scene.model.seen);assert.equal(partialMass.scene.savedInput,'1000');
+  assert.equal(await teacherFrame.locator('#model svg').count(),2);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both recovered unit and two magnifications');await teacherFrame.locator('#answer').fill('10000');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'one tenth of a centner in grams')).scene.correct);await narrow(student,studentFrame,'parts-of-units');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
