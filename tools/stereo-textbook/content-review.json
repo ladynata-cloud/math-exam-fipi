@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T23:06:26Z",
-  "scope": "Chapters I–VI and chapter VII points 71–79, complete paragraph 1 and exercises 682–696, with 1,269 reviewed cards. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T23:21:29Z",
+  "scope": "Chapters I–VI and complete chapter VII paragraphs 1 and 2: points 71–79 and all 82 exercises 637–718, with 1,311 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2146,6 +2146,75 @@
       ],
       "evidence": "tools/stereo-textbook/spatial-direction-cosines-and-square.json",
       "mathematicalReport": "tools/stereo-textbook/spatial-direction-cosines-and-square.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 177, original supplied page 177, printed answer 271; proof identities, seven distinct requests for the oblique-base parallelepiped and all directed endpoints were checked independently.",
+      "reviewedAt": "2026-11-21T23:13:17Z",
+      "scope": "Every exercise on page 177 including both requested answers in each part of 700, all seven quantities and arrows of 703 and the general proofs with separately varied witnesses for distribution, coordinate projections and opposite tetrahedral edges.",
+      "cardIds": [
+        "ex-main-0697",
+        "ex-main-0698",
+        "ex-main-0699",
+        "ex-main-0700-a",
+        "ex-main-0700-b",
+        "ex-main-0701",
+        "ex-main-0702",
+        "ex-main-0703-a",
+        "ex-main-0703-b",
+        "ex-main-0703-c",
+        "ex-main-0703-d",
+        "ex-main-0703-e",
+        "ex-main-0703-f",
+        "ex-main-0703-g",
+        "ex-main-0704"
+      ],
+      "evidence": "tools/stereo-textbook/spatial-scalar-identities-and-opposite-edges.json",
+      "mathematicalReport": "tools/stereo-textbook/spatial-scalar-identities-and-opposite-edges.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 178, official issued pages 178–179 and printed answer key 271; all pairs, the radical height in 706, ratios 3:1 and 1:4 and the printed discrepancy for 708b were checked visually with independently recomputed angles.",
+      "reviewedAt": "2026-11-21T23:17:56Z",
+      "scope": "All pairs and plane choices in 705–711, the two marked section ratios, the radical prism height in 706 and the independently established angle of 54°44′ for 708b despite the printed key on 271.",
+      "cardIds": [
+        "ex-main-0705-a",
+        "ex-main-0705-b",
+        "ex-main-0705-c",
+        "ex-main-0705-d",
+        "ex-main-0706",
+        "ex-main-0707-a",
+        "ex-main-0707-b",
+        "ex-main-0707-c",
+        "ex-main-0707-d",
+        "ex-main-0708-a",
+        "ex-main-0708-b",
+        "ex-main-0709-a",
+        "ex-main-0709-b",
+        "ex-main-0709-c",
+        "ex-main-0710-a",
+        "ex-main-0710-b",
+        "ex-main-0710-c",
+        "ex-main-0711-a",
+        "ex-main-0711-b",
+        "ex-main-0711-c"
+      ],
+      "evidence": "tools/stereo-textbook/angles-with-lines-and-coordinate-faces.json",
+      "mathematicalReport": "tools/stereo-textbook/angles-with-lines-and-coordinate-faces.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 179, official issued pages 178–179 and printed answer key 271; all pairs, the radical height in 706, ratios 3:1 and 1:4 and the printed discrepancy for 708b were checked visually with independently recomputed angles.",
+      "reviewedAt": "2026-11-21T23:21:29Z",
+      "scope": "Every remaining exercise 712–718 of paragraph 2 on printed page 179. Includes the exhaustive cube-diagonal classification, two independent directions in both planes, the exact centroid radical and arbitrary-height proof. The following source page starts paragraph 3.",
+      "cardIds": [
+        "ex-main-0712",
+        "ex-main-0713",
+        "ex-main-0714",
+        "ex-main-0715",
+        "ex-main-0716",
+        "ex-main-0717",
+        "ex-main-0718"
+      ],
+      "evidence": "tools/stereo-textbook/cube-proofs-and-scalar-product-section-end.json",
+      "mathematicalReport": "tools/stereo-textbook/cube-proofs-and-scalar-product-section-end.test.cjs"
     }
   ],
   "cards": [
@@ -7224,6 +7293,174 @@
     {
       "id": "ex-main-0696-c",
       "sha256": "a6063db78bee3d716cc0408a1b2cc7cb3beb68a752bc914444c377f48e17b03e"
+    },
+    {
+      "id": "ex-main-0697",
+      "sha256": "d024c61835bb399a5a91cc143f34d2da352786821c3b63f73659ebd79324bd90"
+    },
+    {
+      "id": "ex-main-0698",
+      "sha256": "397217879fe8111226753c04a90002ce224d33ee0b93ab9cd1cf96adba58bca0"
+    },
+    {
+      "id": "ex-main-0699",
+      "sha256": "c392451664591e2b52c7db30d36df110b5f8ab37e4a443d06c5254d76c290005"
+    },
+    {
+      "id": "ex-main-0700-a",
+      "sha256": "04133a2dcdb91dbb22782c34ffa49b11c1b8eda7f4d707d0153a7db9ea96edd3"
+    },
+    {
+      "id": "ex-main-0700-b",
+      "sha256": "a7b5ab4d071e5b94a30a09828613ceca8ff57dad8681b58ada99323aa169cc60"
+    },
+    {
+      "id": "ex-main-0701",
+      "sha256": "e2108b253595975036e7e87686eff073cff307065c947033afc2e85883cac91f"
+    },
+    {
+      "id": "ex-main-0702",
+      "sha256": "ffa8c323b1ecc90bf690afc4212ec213dd0c90e37d9a07763754e4f3d8272ba2"
+    },
+    {
+      "id": "ex-main-0703-a",
+      "sha256": "fd23b225f297b119b9de0c61d54733bc821006b8a37de82e5260ba37ba4b0ecf"
+    },
+    {
+      "id": "ex-main-0703-b",
+      "sha256": "9e480b4a6ac9be9c6bc044fced78c368ca04f22160b3a3ac1465229539586e66"
+    },
+    {
+      "id": "ex-main-0703-c",
+      "sha256": "d5fde88d64eafb9926731d8c56aa1c06d5bea0f5467d42bf30422eca61abc0c1"
+    },
+    {
+      "id": "ex-main-0703-d",
+      "sha256": "ef28d7f62b142602f4b681148bf4bf12de5f57cc340d98dbd2959aa8fa6c2f3e"
+    },
+    {
+      "id": "ex-main-0703-e",
+      "sha256": "57031cb37512829b032f1f95d8c6a7f86f71e4c39c153338d5206dd9e73b07dc"
+    },
+    {
+      "id": "ex-main-0703-f",
+      "sha256": "90f7217bad1176d8d7fa0e9c02a812a8fbb68049ff5bf1820278d23856f762fd"
+    },
+    {
+      "id": "ex-main-0703-g",
+      "sha256": "b25bdd1f64756dbaca9643fecc3f76f9f11527e733533b81f457152573a5df47"
+    },
+    {
+      "id": "ex-main-0704",
+      "sha256": "c10be47975ef13e3170f435aeb34a1b49736d48458188faa422fbadc599e0c77"
+    },
+    {
+      "id": "ex-main-0705-a",
+      "sha256": "5bbf9aebe3e777350984f6c2c2bc069282d038bc1478a2287c26914b832bce60"
+    },
+    {
+      "id": "ex-main-0705-b",
+      "sha256": "aae464a2fad0e52a1c46e6ac0be395a29839bd5dcb15b42859177583ad61aec2"
+    },
+    {
+      "id": "ex-main-0705-c",
+      "sha256": "1a605fdacdd2427e687530062e940a12c2681ddfbd2454d0aeb74aa38642d181"
+    },
+    {
+      "id": "ex-main-0705-d",
+      "sha256": "f63ff4831ad870da81aa0a2efd0194ea3122e073a1aefa4b24790140cc6dee47"
+    },
+    {
+      "id": "ex-main-0706",
+      "sha256": "40e35d75e9bfefa998462948599fc6ecb2200726e59738e0e1cd9e64dab6cfd2"
+    },
+    {
+      "id": "ex-main-0707-a",
+      "sha256": "8dc31660ff26e2a408763c5ecbe7ee7f874f7a2f6f5ddcde3eec3270623b5db5"
+    },
+    {
+      "id": "ex-main-0707-b",
+      "sha256": "7687d204cfd71d20e1069ae905e699d5e5a847d7be72f001ab542ce0ee9f56a9"
+    },
+    {
+      "id": "ex-main-0707-c",
+      "sha256": "84d13f3a3a55f1dbb236a5b7b3f64ff6992bd9df11ca8612355b41d80b8de592"
+    },
+    {
+      "id": "ex-main-0707-d",
+      "sha256": "16ae072f917c3eb2fa47baf560e4dac1a77aa36a787365e31344ec3556d54ac0"
+    },
+    {
+      "id": "ex-main-0708-a",
+      "sha256": "6c9c294ffa1266bfe55d735e77cd035e7d923b690afdbce6bd848f8a9d178f08"
+    },
+    {
+      "id": "ex-main-0708-b",
+      "sha256": "8b89e85ac0ed842c53ab1c5455280aaf2fbab66de2b3996f60f4d0de5900c3c4"
+    },
+    {
+      "id": "ex-main-0709-a",
+      "sha256": "480c42c4cae8f53f61c7a56d7f4259e415256e8d85f8728c41dd3d28879429b1"
+    },
+    {
+      "id": "ex-main-0709-b",
+      "sha256": "91de254680a5a20f09bd5b59e072a7085e8dbb3097a105ed1ecb8a8234a1e6d2"
+    },
+    {
+      "id": "ex-main-0709-c",
+      "sha256": "67c5be1fc3c2e7d5dff576bdf1bba9eddb1a8f6cacb1053fd745fbb651e129c3"
+    },
+    {
+      "id": "ex-main-0710-a",
+      "sha256": "a33a3ee8556c64da6ec8153dc8191b70e3c256837b3c7eb018fdcb6b4a40e004"
+    },
+    {
+      "id": "ex-main-0710-b",
+      "sha256": "4f044d0e136ffed23380af9e684152c83aaac7cfa38c578d0a9e39aeabbcb847"
+    },
+    {
+      "id": "ex-main-0710-c",
+      "sha256": "c7309c516ca718098a7c38cffb7263d6de69aad3079d50e3827cface287b731e"
+    },
+    {
+      "id": "ex-main-0711-a",
+      "sha256": "a2d667a93a54d078882e42c577938d0b72a82d565b6191ad2a95a2f5cf810ca4"
+    },
+    {
+      "id": "ex-main-0711-b",
+      "sha256": "bcb071e2d05a58fb973b7d68bef596174a0637b70f66433c8a784246cf1b3813"
+    },
+    {
+      "id": "ex-main-0711-c",
+      "sha256": "dd355c16e1b77618426bd16c69d349493da335737786cd808053aa092caf4862"
+    },
+    {
+      "id": "ex-main-0712",
+      "sha256": "0054c622750a5f6881e12bfb4a60d4863fdfa721eb0bba2fe46fb13754046780"
+    },
+    {
+      "id": "ex-main-0713",
+      "sha256": "419d16c6fa4cdf30d881b0a06905357ea33d4b52d17d3a5ab9dce7eded32295e"
+    },
+    {
+      "id": "ex-main-0714",
+      "sha256": "086e0263faa5879f1950a5a6187395a51bfed78da077c51447837137471f95c9"
+    },
+    {
+      "id": "ex-main-0715",
+      "sha256": "f23ad6d63b6a9776ccf38f39fe3b3eb0e0ea5ec0d34a8071811a63507f1f2bef"
+    },
+    {
+      "id": "ex-main-0716",
+      "sha256": "fdc3959235584708d7a038e6e9044dbff8ca90a69bc8169eaa79830e6aac4e4f"
+    },
+    {
+      "id": "ex-main-0717",
+      "sha256": "cc47e85bb8f3cb22869bfb399a04b3d866fb8abce01e494aba5067bc2b765fa4"
+    },
+    {
+      "id": "ex-main-0718",
+      "sha256": "ec554030e9a21f4b1a4c3d86cb8de3f09553d04c5c58009f917c3910c6ce0934"
     }
   ]
 }

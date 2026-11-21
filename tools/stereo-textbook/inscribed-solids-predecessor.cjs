@@ -2,7 +2,10 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const spatialDirectionCosinesAndSquare = makeReviewedIncrement(require('./spatial-direction-cosines-and-square.json'), closedSections);
+const cubeProofsAndScalarProductSectionEnd = makeReviewedIncrement(require('./cube-proofs-and-scalar-product-section-end.json'), closedSections);
+const anglesWithLinesAndCoordinateFaces = makeReviewedIncrement(require('./angles-with-lines-and-coordinate-faces.json'), cubeProofsAndScalarProductSectionEnd);
+const spatialScalarIdentitiesAndOppositeEdges = makeReviewedIncrement(require('./spatial-scalar-identities-and-opposite-edges.json'), anglesWithLinesAndCoordinateFaces);
+const spatialDirectionCosinesAndSquare = makeReviewedIncrement(require('./spatial-direction-cosines-and-square.json'), spatialScalarIdentitiesAndOppositeEdges);
 const dotProductsCoordinateParameters = makeReviewedIncrement(require('./dot-products-coordinate-parameters.json'), spatialDirectionCosinesAndSquare);
 const scalarProductAnglesAndCube = makeReviewedIncrement(require('./scalar-product-angles-and-cube.json'), dotProductsCoordinateParameters);
 const coordinateSpheresSectionEnd = makeReviewedIncrement(require('./coordinate-spheres-section-end.json'), scalarProductAnglesAndCube);

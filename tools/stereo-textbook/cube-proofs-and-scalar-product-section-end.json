@@ -1,0 +1,389 @@
+{
+  "parts": {
+    "712": [
+      null
+    ],
+    "713": [
+      null
+    ],
+    "714": [
+      null
+    ],
+    "715": [
+      null
+    ],
+    "716": [
+      null
+    ],
+    "717": [
+      null
+    ],
+    "718": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "712": {
+      "id": "source-main-0712",
+      "kind": "exercise",
+      "title": "Задача № 712",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "712",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "713": {
+      "id": "source-main-0713",
+      "kind": "exercise",
+      "title": "Задача № 713",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "713",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "714": {
+      "id": "source-main-0714",
+      "kind": "exercise",
+      "title": "Задача № 714",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "714",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "715": {
+      "id": "source-main-0715",
+      "kind": "exercise",
+      "title": "Задача № 715",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "715",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "716": {
+      "id": "source-main-0716",
+      "kind": "exercise",
+      "title": "Задача № 716",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "716",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "717": {
+      "id": "source-main-0717",
+      "kind": "exercise",
+      "title": "Задача № 717",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "717",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "718": {
+      "id": "source-main-0718",
+      "kind": "exercise",
+      "title": "Задача № 718",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "718",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0712": {
+      "raw": "cdbcb1d4a154463fadc26a514cfeea410afe43273851e25fd3551fea55f70e25",
+      "authored": "0054c622750a5f6881e12bfb4a60d4863fdfa721eb0bba2fe46fb13754046780",
+      "integrated": "ecad0faf248c39be51e3997734580a04063600ac78181895ea95f636daa08e65"
+    },
+    "ex-main-0713": {
+      "raw": "f5a8f477667e38adafc5b5289adeb8dfd9e52091993622b677509a698df49463",
+      "authored": "419d16c6fa4cdf30d881b0a06905357ea33d4b52d17d3a5ab9dce7eded32295e",
+      "integrated": "cc0962222ded34a9410b508689b64fefe39054b348d67151e325aaa2c1df94bd"
+    },
+    "ex-main-0714": {
+      "raw": "8df6857117acc93d8843268f8c2650d7d9a69694fe1229422516a388a2dad25d",
+      "authored": "086e0263faa5879f1950a5a6187395a51bfed78da077c51447837137471f95c9",
+      "integrated": "734c5ef55a0d46b5825d6bf69c0fb3aa7b1c628beb181fbba82b33cf3bde8ef2"
+    },
+    "ex-main-0715": {
+      "raw": "a1d8cb866f5d6fdf0e5c66ce81251795c7f7e7ce190aa8501938f25ac35f5001",
+      "authored": "f23ad6d63b6a9776ccf38f39fe3b3eb0e0ea5ec0d34a8071811a63507f1f2bef",
+      "integrated": "937815c30cbb90bebfa8cbc0f3710c5fe6d6cdd07b7a1fbe845a1e9176b8e91c"
+    },
+    "ex-main-0716": {
+      "raw": "e6d7837d80614d375792115935d22b362bd6f784cf6b7aac7d8fb06bff5590f8",
+      "authored": "fdc3959235584708d7a038e6e9044dbff8ca90a69bc8169eaa79830e6aac4e4f",
+      "integrated": "15de7d5f24eed5cf420126ffa2dd76d7c99e647059ccd0bab1ef01bbf07ef36f"
+    },
+    "ex-main-0717": {
+      "raw": "7159990ed4fe574f53de292f28f12d6efd319656e83c55964a06949d1a6ee0b8",
+      "authored": "cc47e85bb8f3cb22869bfb399a04b3d866fb8abce01e494aba5067bc2b765fa4",
+      "integrated": "6afcd016932a7f40047f365227157df41965a611e0537d1c37cf322a33d027a9"
+    },
+    "ex-main-0718": {
+      "raw": "7805bbb2491dd0863d119f6549ce3a330975e24de987a224eb3b2017e1f8f156",
+      "authored": "ec554030e9a21f4b1a4c3d86cb8de3f09553d04c5c58009f917c3910c6ce0934",
+      "integrated": "f8509f8a21930ebc40e0758245761138e226c8fc42a6d2765a21378ee99d5600"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0712|condition",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0712-condition"
+    ],
+    [
+      "ex-main-0712|help:h1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0712-help-h1"
+    ],
+    [
+      "ex-main-0712|help:h2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0712-help-h2"
+    ],
+    [
+      "ex-main-0712|step-1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0712-step-1"
+    ],
+    [
+      "ex-main-0712|step-2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0712-step-2"
+    ],
+    [
+      "ex-main-0712|step-3",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0712-step-3"
+    ],
+    [
+      "ex-main-0713|condition",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0713-condition"
+    ],
+    [
+      "ex-main-0713|help:h1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0713-help-h1"
+    ],
+    [
+      "ex-main-0713|help:h2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0713-help-h2"
+    ],
+    [
+      "ex-main-0713|step-1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0713-step-1"
+    ],
+    [
+      "ex-main-0713|step-2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0713-step-2"
+    ],
+    [
+      "ex-main-0713|step-3",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0713-step-3"
+    ],
+    [
+      "ex-main-0714|condition",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0714-condition"
+    ],
+    [
+      "ex-main-0714|help:h1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0714-help-h1"
+    ],
+    [
+      "ex-main-0714|help:h2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0714-help-h2"
+    ],
+    [
+      "ex-main-0714|step-1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0714-step-1"
+    ],
+    [
+      "ex-main-0714|step-2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0714-step-2"
+    ],
+    [
+      "ex-main-0714|step-3",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0714-step-3"
+    ],
+    [
+      "ex-main-0715|condition",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0715-condition"
+    ],
+    [
+      "ex-main-0715|help:h1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0715-help-h1"
+    ],
+    [
+      "ex-main-0715|help:h2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0715-help-h2"
+    ],
+    [
+      "ex-main-0715|step-1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0715-step-1"
+    ],
+    [
+      "ex-main-0715|step-2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0715-step-2"
+    ],
+    [
+      "ex-main-0715|step-3",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0715-step-3"
+    ],
+    [
+      "ex-main-0716|condition",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0716-condition"
+    ],
+    [
+      "ex-main-0716|help:h1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0716-help-h1"
+    ],
+    [
+      "ex-main-0716|help:h2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0716-help-h2"
+    ],
+    [
+      "ex-main-0716|step-1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0716-step-1"
+    ],
+    [
+      "ex-main-0716|step-2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0716-step-2"
+    ],
+    [
+      "ex-main-0716|step-3",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0716-step-3"
+    ],
+    [
+      "ex-main-0717|condition",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0717-condition"
+    ],
+    [
+      "ex-main-0717|help:h1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0717-help-h1"
+    ],
+    [
+      "ex-main-0717|help:h2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0717-help-h2"
+    ],
+    [
+      "ex-main-0717|step-1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0717-step-1"
+    ],
+    [
+      "ex-main-0717|step-2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0717-step-2"
+    ],
+    [
+      "ex-main-0717|step-3",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0717-step-3"
+    ],
+    [
+      "ex-main-0718|condition",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0718-condition"
+    ],
+    [
+      "ex-main-0718|help:h1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0718-help-h1"
+    ],
+    [
+      "ex-main-0718|help:h2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0718-help-h2"
+    ],
+    [
+      "ex-main-0718|step-1",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0718-step-1"
+    ],
+    [
+      "ex-main-0718|step-2",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0718-step-2"
+    ],
+    [
+      "ex-main-0718|step-3",
+      "cube-proofs-and-scalar-product-section-end-ex-main-0718-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "bbf4a0c3778d42cdf7b494c807c862de8cd15b07f63af408b16dadd72dff90f6",
+      "afterSHA256": "5d98242a579457dd550da9b165586383708d7a7261a3c84cffd02c39adc3d8d5"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "d7cb27c11c1968ef248b8c3f0ee4e0f11effefc87a5dd9f18b17b1011daeb138",
+      "afterSHA256": "0d4cc64b183408951ae2a849b2a22b4801c4a685269be180aed65484ee849373"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T23:17:56Z",
+    "scope": "Chapters I–VI and chapter VII points 71–79, complete paragraph 1 and exercises 682–711, with 1,304 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "c8d16955bb13fc500069fb02df9a608a6b56d7265acce177c677a7ef30ea4760",
+    "index": "5140000a5140df758d55228039df76b99e6b055cfe64c51aa32f9decc4acb425",
+    "registry": "ed1e37f9f807b3c49ae8df9d51763d01bb19e678bcc2d68e9d8fc291b6f78842",
+    "cases": "72cd1895df76596be69795ed57bb1abd136dc87821eee57712ccf0ac7e680ab3"
+  }
+}
