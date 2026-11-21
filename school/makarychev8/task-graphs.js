@@ -193,8 +193,35 @@ function renderIntegerPairs(host,config,value){
  host.append(list);
 }
 
+function renderTrainMeeting(host,value){
+ host.className='task-graphs train-model';
+ const speeds=String(value||'').split(';');
+ for(const [index,time] of [7,6].entries()){
+  const figure=document.createElement('figure'),caption=document.createElement('figcaption');
+  const speed=number(speeds[index]||''),first=60*time;
+  const second=speed!==null&&speed>=0?speed*(time-3):null;
+  caption.textContent='До встречи '+time+' ч. Первый поезд в пути '+time+' ч, второй — '+(time-3)+' ч.';
+  const svg=node('svg',{viewBox:'0 0 300 62',role:'img','aria-label':'Путь от А до Б, 600 км'});
+  svg.append(node('line',{x1:16,y1:26,x2:284,y2:26,stroke:'#57656e','stroke-width':2}));
+  svg.append(node('text',{x:16,y:12,'text-anchor':'middle'},'А'),node('text',{x:284,y:12,'text-anchor':'middle'},'Б'));
+  if(second!==null){
+   const scale=268/600,bound=16+scale*first,end=284-Math.min(600,second)*scale;
+   svg.append(node('line',{x1:16,y1:23,x2:bound,y2:23,stroke:'#206946','stroke-width':6}),
+              node('circle',{cx:bound,cy:23,r:4,fill:'#206946'}),
+              node('line',{x1:284,y1:30,x2:end,y2:30,stroke:'#9a422d','stroke-width':6}),
+              node('path',{d:'M '+end+' 25 l -5 5 l 5 5 z',fill:'#9a422d'}));
+   const total=first+second;
+   const distance=n=>n.toLocaleString('ru',{maximumFractionDigits:2});
+   caption.textContent+=' Из А '+first+' км, из Б '+distance(second)+' км. Вместе '+distance(total)+' км.';
+   svg.setAttribute('aria-label',caption.textContent);
+  }
+  svg.append(node('text',{x:150,y:54,'text-anchor':'middle','font-size':13},'600 км'));
+  figure.append(caption,svg);host.append(figure);
+ }
+}
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(config.type==='train-meeting'){renderTrainMeeting(host,value);return;}
  if(config.type==='integer-pairs'){renderIntegerPairs(host,config,value);return;}
  if(config.type==='number-line'){host.className='task-graphs number-line';host.append(numberLine(config));if(config.caption){const caption=document.createElement('p');caption.className='small';caption.textContent=config.caption;host.append(caption);}
  }else if(config.type==='line-example'){
