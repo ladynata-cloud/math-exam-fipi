@@ -49,7 +49,15 @@ const groups = {
   vectorChapterSelfcheck: {manifests:[require('./vector-chapter-selfcheck.json')],count:28},
   additionalDirectedEdgeSums: {manifests:[require('./additional-directed-edge-sums.json')],count:14},
   vectorSpanAndBarycentres: {manifests:[require('./vector-span-and-barycentres.json')],count:15},
-  vectorChapterSixEnd: {manifests:[require('./vector-chapter-six-end.json')],count:14}
+  vectorChapterSixEnd: {manifests:[require('./vector-chapter-six-end.json')],count:14},
+  cartesianCoordinateStart: {manifests:[require('./cartesian-coordinate-start.json')],count:14},
+  coordinateVectorsAndDiagrams: {manifests:[require('./coordinate-vectors-and-diagrams.json')],count:13},
+  signedCoordinateArithmetic: {manifests:[require('./signed-coordinate-arithmetic.json')],count:18},
+  coordinateSpanRatios: {manifests:[require('./coordinate-span-ratios.json')],count:13},
+  spatialPointsAndCentroid: {manifests:[require('./spatial-points-and-centroid.json')],count:14},
+  midpointsAndVectorLengths: {manifests:[require('./midpoints-and-vector-lengths.json')],count:20},
+  spatialDistancesAndEqualLoci: {manifests:[require('./spatial-distances-and-equal-loci.json')],count:18},
+  coordinateSpheresSectionEnd: {manifests:[require('./coordinate-spheres-section-end.json')],count:13}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

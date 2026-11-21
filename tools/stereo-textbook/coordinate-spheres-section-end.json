@@ -1,0 +1,527 @@
+{
+  "parts": {
+    "677": [
+      null
+    ],
+    "678": [
+      "а",
+      "б",
+      "в"
+    ],
+    "679": [
+      "а",
+      "б",
+      "в"
+    ],
+    "680": [
+      "а",
+      "б"
+    ],
+    "681": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ]
+  },
+  "previousCatalog": {
+    "677": {
+      "id": "source-main-0677",
+      "kind": "exercise",
+      "title": "Задача № 677",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "677",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "678": {
+      "id": "source-main-0678",
+      "kind": "exercise",
+      "title": "Задача № 678",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "678",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "679": {
+      "id": "source-main-0679",
+      "kind": "exercise",
+      "title": "Задача № 679",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "679",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          173
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "680": {
+      "id": "source-main-0680",
+      "kind": "exercise",
+      "title": "Задача № 680",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "680",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          173
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "681": {
+      "id": "source-main-0681",
+      "kind": "exercise",
+      "title": "Задача № 681",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "681",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          173
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0677": {
+      "raw": "d8b5d4c545050e2e779cd8a64bcbed2fefd58ea1cb9eafa20212ef5308d8601d",
+      "authored": "c1e29951f3ada8101f2f7549414c3e205b046ecb5b75c06e13daf42d2033a45e",
+      "integrated": "30d339b8554e6c4df020dc73eb5d8e5dd05e304867c5562cf6332cb5d345b708"
+    },
+    "ex-main-0678-a": {
+      "raw": "fe06f55662bc2d2338723aec2cb804bfb2570614bf881fb8ed42d99d014a6ea9",
+      "authored": "668c8585f04992b6b6cc2621fa0d4ec8c48de2ecff0fb0be38c71c779c05e446",
+      "integrated": "fba3074c9dae861881ae5d563fdeabd8cdcad5663652f178de4a3cae3a8ba2fb"
+    },
+    "ex-main-0678-b": {
+      "raw": "8af6901abc92e90df338ffb2134611a86705b70b37b92184f26f2b98c0fc02b8",
+      "authored": "886b8511f30f2bce9e3d6937e9ac8c4af6b8330e9249627d1efb3957792fa231",
+      "integrated": "8aeff402f7bed2bdf18ef7fd2666d72507f2572bc1c8db846867ed2fec9216a3"
+    },
+    "ex-main-0678-c": {
+      "raw": "63898762901b2923d4b9879a43407557c606d7c24ab00141466afb86f5a05ed0",
+      "authored": "cde92b129fd717d56782180bca9d627960b1c92e8cd6bfea05981e7ba507fce4",
+      "integrated": "025b3f6185494cc910733560194d0b433bd821a04b1b67eb57047d7e55747e66"
+    },
+    "ex-main-0679-a": {
+      "raw": "1f7bb46c699f0eff8cd029cbaba020feb9bea0e8da565d6e0f77c61c38ccd44c",
+      "authored": "caa7dedb4256c1086a60d8967d18d242e572f32e119dd37a172a9b9c7628420a",
+      "integrated": "a319fd7e8a5b49b83fa09030525ef302de62771a49c942e53c72e546d8ae83ed"
+    },
+    "ex-main-0679-b": {
+      "raw": "7a32c17a030851fe0a120bf9d87508375d9bc756d19ad8ef33e40e81dca3d301",
+      "authored": "a5d206d0a2fd459c1c659e94445e62b344458f7a8eb4643add28df8db2f2935d",
+      "integrated": "3e6e48921ec37fd8548d5299644a2cf60e5982f23bd6af75084aa264dbb8ea4f"
+    },
+    "ex-main-0679-c": {
+      "raw": "b14b7db9181d68c9b80169d669808918009cd6e2010d2088f2fa9680b2531354",
+      "authored": "fd8e94042a99595a53741a2a79cfda6692e27f69b865ef54ac0830c4202dc547",
+      "integrated": "81c1cb84726729ce442b08b118a9e236ab5ec04e7bb7da6e179ea2d51d199623"
+    },
+    "ex-main-0680-a": {
+      "raw": "4afd818c2082de9dffe9157d5e814c9a8e57eafb77b7d95fdb2bf1f7292401a4",
+      "authored": "b00f5edab8416b5d99a359393199a7fca7822f5e26988db85029196ce6ae3bf9",
+      "integrated": "0ce3b87a04395268d8be2fc27e64948f1c5564fb86b2000dfc731e37d9c3c9ef"
+    },
+    "ex-main-0680-b": {
+      "raw": "ff6d0494706eca5477d51c0257441345453c929b7d83501eb0fa8c32865ade68",
+      "authored": "7e5941b83937547539e47122d77dfc84e1d178f4b35cc321f50a606639f57ca7",
+      "integrated": "77f2012c3116b615724f4ef592698d57f3008e0c23501270f4293fa65f26cbe2"
+    },
+    "ex-main-0681-a": {
+      "raw": "dae6e99199f23623f6985c28b1f6a5ee4938e0effa68aa7dc287d978f73cb8ba",
+      "authored": "c11103c06358c428bd1e5988a98486720a7d1616c742e87b75c45c2880df39de",
+      "integrated": "ca161f6297968619b09a0b88efe3345d5361b328d669e26441aeea47c70e3882"
+    },
+    "ex-main-0681-b": {
+      "raw": "0f39bcb7e94dbe0256f3cdaa294add5249ba7afd3bdbb1fc711b88d0b25d73d6",
+      "authored": "47c944078e2e0cd22effc1bd08c78b9e1f68a75594be2cc04a2553534978e548",
+      "integrated": "4f7dea8791f68990231d8dd3846d4cd28c2ee3852a8e98b55a7bd444a83ceffb"
+    },
+    "ex-main-0681-c": {
+      "raw": "bf0de2c1df449a4969e85edac9f4c237cc23823e82cf894173679c6ad86fe177",
+      "authored": "4bde28831d98f5229ddd86015a1f4a928f0b427ada69cd2aa2b5240ec1f73005",
+      "integrated": "8b76c7eb814108e36b0841ec08db6cf92a584972b5afb6eb10175d6d4c12afd9"
+    },
+    "ex-main-0681-d": {
+      "raw": "5288329c57b9ca600e26770009b927a485df70db29e4f81285c239f28ca8b471",
+      "authored": "1d1dd614da08156317b38a2a7dc89094da5f6e0402236ebcb17d7e2cac43d971",
+      "integrated": "7159faa7a1863f4ce82ab85b5a5db82a231a57bed299b44b273788740b434edb"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0677|condition",
+      "coordinate-spheres-section-end-ex-main-0677-condition"
+    ],
+    [
+      "ex-main-0677|help:h1",
+      "coordinate-spheres-section-end-ex-main-0677-help-h1"
+    ],
+    [
+      "ex-main-0677|help:h2",
+      "coordinate-spheres-section-end-ex-main-0677-help-h2"
+    ],
+    [
+      "ex-main-0677|step-1",
+      "coordinate-spheres-section-end-ex-main-0677-step-1"
+    ],
+    [
+      "ex-main-0677|step-2",
+      "coordinate-spheres-section-end-ex-main-0677-step-2"
+    ],
+    [
+      "ex-main-0677|step-3",
+      "coordinate-spheres-section-end-ex-main-0677-step-3"
+    ],
+    [
+      "ex-main-0678-a|condition",
+      "coordinate-spheres-section-end-ex-main-0678-a-condition"
+    ],
+    [
+      "ex-main-0678-a|help:h1",
+      "coordinate-spheres-section-end-ex-main-0678-a-help-h1"
+    ],
+    [
+      "ex-main-0678-a|help:h2",
+      "coordinate-spheres-section-end-ex-main-0678-a-help-h2"
+    ],
+    [
+      "ex-main-0678-a|step-1",
+      "coordinate-spheres-section-end-ex-main-0678-a-step-1"
+    ],
+    [
+      "ex-main-0678-a|step-2",
+      "coordinate-spheres-section-end-ex-main-0678-a-step-2"
+    ],
+    [
+      "ex-main-0678-a|step-3",
+      "coordinate-spheres-section-end-ex-main-0678-a-step-3"
+    ],
+    [
+      "ex-main-0678-b|condition",
+      "coordinate-spheres-section-end-ex-main-0678-b-condition"
+    ],
+    [
+      "ex-main-0678-b|help:h1",
+      "coordinate-spheres-section-end-ex-main-0678-b-help-h1"
+    ],
+    [
+      "ex-main-0678-b|help:h2",
+      "coordinate-spheres-section-end-ex-main-0678-b-help-h2"
+    ],
+    [
+      "ex-main-0678-b|step-1",
+      "coordinate-spheres-section-end-ex-main-0678-b-step-1"
+    ],
+    [
+      "ex-main-0678-b|step-2",
+      "coordinate-spheres-section-end-ex-main-0678-b-step-2"
+    ],
+    [
+      "ex-main-0678-b|step-3",
+      "coordinate-spheres-section-end-ex-main-0678-b-step-3"
+    ],
+    [
+      "ex-main-0678-c|condition",
+      "coordinate-spheres-section-end-ex-main-0678-c-condition"
+    ],
+    [
+      "ex-main-0678-c|help:h1",
+      "coordinate-spheres-section-end-ex-main-0678-c-help-h1"
+    ],
+    [
+      "ex-main-0678-c|help:h2",
+      "coordinate-spheres-section-end-ex-main-0678-c-help-h2"
+    ],
+    [
+      "ex-main-0678-c|step-1",
+      "coordinate-spheres-section-end-ex-main-0678-c-step-1"
+    ],
+    [
+      "ex-main-0678-c|step-2",
+      "coordinate-spheres-section-end-ex-main-0678-c-step-2"
+    ],
+    [
+      "ex-main-0678-c|step-3",
+      "coordinate-spheres-section-end-ex-main-0678-c-step-3"
+    ],
+    [
+      "ex-main-0679-a|condition",
+      "coordinate-spheres-section-end-ex-main-0679-a-condition"
+    ],
+    [
+      "ex-main-0679-a|help:h1",
+      "coordinate-spheres-section-end-ex-main-0679-a-help-h1"
+    ],
+    [
+      "ex-main-0679-a|help:h2",
+      "coordinate-spheres-section-end-ex-main-0679-a-help-h2"
+    ],
+    [
+      "ex-main-0679-a|step-1",
+      "coordinate-spheres-section-end-ex-main-0679-a-step-1"
+    ],
+    [
+      "ex-main-0679-a|step-2",
+      "coordinate-spheres-section-end-ex-main-0679-a-step-2"
+    ],
+    [
+      "ex-main-0679-a|step-3",
+      "coordinate-spheres-section-end-ex-main-0679-a-step-3"
+    ],
+    [
+      "ex-main-0679-b|condition",
+      "coordinate-spheres-section-end-ex-main-0679-b-condition"
+    ],
+    [
+      "ex-main-0679-b|help:h1",
+      "coordinate-spheres-section-end-ex-main-0679-b-help-h1"
+    ],
+    [
+      "ex-main-0679-b|help:h2",
+      "coordinate-spheres-section-end-ex-main-0679-b-help-h2"
+    ],
+    [
+      "ex-main-0679-b|step-1",
+      "coordinate-spheres-section-end-ex-main-0679-b-step-1"
+    ],
+    [
+      "ex-main-0679-b|step-2",
+      "coordinate-spheres-section-end-ex-main-0679-b-step-2"
+    ],
+    [
+      "ex-main-0679-b|step-3",
+      "coordinate-spheres-section-end-ex-main-0679-b-step-3"
+    ],
+    [
+      "ex-main-0679-c|condition",
+      "coordinate-spheres-section-end-ex-main-0679-c-condition"
+    ],
+    [
+      "ex-main-0679-c|help:h1",
+      "coordinate-spheres-section-end-ex-main-0679-c-help-h1"
+    ],
+    [
+      "ex-main-0679-c|help:h2",
+      "coordinate-spheres-section-end-ex-main-0679-c-help-h2"
+    ],
+    [
+      "ex-main-0679-c|step-1",
+      "coordinate-spheres-section-end-ex-main-0679-c-step-1"
+    ],
+    [
+      "ex-main-0679-c|step-2",
+      "coordinate-spheres-section-end-ex-main-0679-c-step-2"
+    ],
+    [
+      "ex-main-0679-c|step-3",
+      "coordinate-spheres-section-end-ex-main-0679-c-step-3"
+    ],
+    [
+      "ex-main-0680-a|condition",
+      "coordinate-spheres-section-end-ex-main-0680-a-condition"
+    ],
+    [
+      "ex-main-0680-a|help:h1",
+      "coordinate-spheres-section-end-ex-main-0680-a-help-h1"
+    ],
+    [
+      "ex-main-0680-a|help:h2",
+      "coordinate-spheres-section-end-ex-main-0680-a-help-h2"
+    ],
+    [
+      "ex-main-0680-a|step-1",
+      "coordinate-spheres-section-end-ex-main-0680-a-step-1"
+    ],
+    [
+      "ex-main-0680-a|step-2",
+      "coordinate-spheres-section-end-ex-main-0680-a-step-2"
+    ],
+    [
+      "ex-main-0680-a|step-3",
+      "coordinate-spheres-section-end-ex-main-0680-a-step-3"
+    ],
+    [
+      "ex-main-0680-b|condition",
+      "coordinate-spheres-section-end-ex-main-0680-b-condition"
+    ],
+    [
+      "ex-main-0680-b|help:h1",
+      "coordinate-spheres-section-end-ex-main-0680-b-help-h1"
+    ],
+    [
+      "ex-main-0680-b|help:h2",
+      "coordinate-spheres-section-end-ex-main-0680-b-help-h2"
+    ],
+    [
+      "ex-main-0680-b|step-1",
+      "coordinate-spheres-section-end-ex-main-0680-b-step-1"
+    ],
+    [
+      "ex-main-0680-b|step-2",
+      "coordinate-spheres-section-end-ex-main-0680-b-step-2"
+    ],
+    [
+      "ex-main-0680-b|step-3",
+      "coordinate-spheres-section-end-ex-main-0680-b-step-3"
+    ],
+    [
+      "ex-main-0681-a|condition",
+      "coordinate-spheres-section-end-ex-main-0681-a-condition"
+    ],
+    [
+      "ex-main-0681-a|help:h1",
+      "coordinate-spheres-section-end-ex-main-0681-a-help-h1"
+    ],
+    [
+      "ex-main-0681-a|help:h2",
+      "coordinate-spheres-section-end-ex-main-0681-a-help-h2"
+    ],
+    [
+      "ex-main-0681-a|step-1",
+      "coordinate-spheres-section-end-ex-main-0681-a-step-1"
+    ],
+    [
+      "ex-main-0681-a|step-2",
+      "coordinate-spheres-section-end-ex-main-0681-a-step-2"
+    ],
+    [
+      "ex-main-0681-a|step-3",
+      "coordinate-spheres-section-end-ex-main-0681-a-step-3"
+    ],
+    [
+      "ex-main-0681-b|condition",
+      "coordinate-spheres-section-end-ex-main-0681-b-condition"
+    ],
+    [
+      "ex-main-0681-b|help:h1",
+      "coordinate-spheres-section-end-ex-main-0681-b-help-h1"
+    ],
+    [
+      "ex-main-0681-b|help:h2",
+      "coordinate-spheres-section-end-ex-main-0681-b-help-h2"
+    ],
+    [
+      "ex-main-0681-b|step-1",
+      "coordinate-spheres-section-end-ex-main-0681-b-step-1"
+    ],
+    [
+      "ex-main-0681-b|step-2",
+      "coordinate-spheres-section-end-ex-main-0681-b-step-2"
+    ],
+    [
+      "ex-main-0681-b|step-3",
+      "coordinate-spheres-section-end-ex-main-0681-b-step-3"
+    ],
+    [
+      "ex-main-0681-c|condition",
+      "coordinate-spheres-section-end-ex-main-0681-c-condition"
+    ],
+    [
+      "ex-main-0681-c|help:h1",
+      "coordinate-spheres-section-end-ex-main-0681-c-help-h1"
+    ],
+    [
+      "ex-main-0681-c|help:h2",
+      "coordinate-spheres-section-end-ex-main-0681-c-help-h2"
+    ],
+    [
+      "ex-main-0681-c|step-1",
+      "coordinate-spheres-section-end-ex-main-0681-c-step-1"
+    ],
+    [
+      "ex-main-0681-c|step-2",
+      "coordinate-spheres-section-end-ex-main-0681-c-step-2"
+    ],
+    [
+      "ex-main-0681-c|step-3",
+      "coordinate-spheres-section-end-ex-main-0681-c-step-3"
+    ],
+    [
+      "ex-main-0681-d|condition",
+      "coordinate-spheres-section-end-ex-main-0681-d-condition"
+    ],
+    [
+      "ex-main-0681-d|help:h1",
+      "coordinate-spheres-section-end-ex-main-0681-d-help-h1"
+    ],
+    [
+      "ex-main-0681-d|help:h2",
+      "coordinate-spheres-section-end-ex-main-0681-d-help-h2"
+    ],
+    [
+      "ex-main-0681-d|step-1",
+      "coordinate-spheres-section-end-ex-main-0681-d-step-1"
+    ],
+    [
+      "ex-main-0681-d|step-2",
+      "coordinate-spheres-section-end-ex-main-0681-d-step-2"
+    ],
+    [
+      "ex-main-0681-d|step-3",
+      "coordinate-spheres-section-end-ex-main-0681-d-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "a95460d69b52bec4e1fbdb9cc272446add906eaddaeb7667e5f84639ad8d92fe",
+      "afterSHA256": "ac31a932ab5ffdc921def24e2be35784caa74edf6bc20d9fde4061c1b0c348b7"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "969f0a27a3e8b1728df8da8eb1e07b0ff70160ad10a6d2ac5a510b3f6cbe103b",
+      "afterSHA256": "69e7e23dd5d20fba45db97705c0be4383e9921ecd568bce053549c539702142c"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T22:42:51Z",
+    "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–676, with 1,208 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "b9404f1921260f6c7cc7d943d3a83b8a6405c55d592da4634039e4ff3958296d",
+    "index": "310971223fe583675e26c6c8f8622ffed1fbaad99a7c0983a4edb3c00ad1c093",
+    "registry": "130a2119646543893f65d2427f217a9a2857b9462800e3e55ede457f3802ae12",
+    "cases": "cbe1f2f826c7efa219d8fc7e23a682d38ea40445ebae60ba3ba681580ec4cdd0"
+  }
+}

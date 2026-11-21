@@ -1,0 +1,485 @@
+{
+  "parts": {
+    "650": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ],
+    "651": [
+      "а",
+      "б"
+    ],
+    "652": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е"
+    ]
+  },
+  "previousCatalog": {
+    "650": {
+      "id": "source-main-0650",
+      "kind": "exercise",
+      "title": "Задача № 650",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "650",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "651": {
+      "id": "source-main-0651",
+      "kind": "exercise",
+      "title": "Задача № 651",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "651",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "652": {
+      "id": "source-main-0652",
+      "kind": "exercise",
+      "title": "Задача № 652",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "652",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0650-a": {
+      "raw": "dfb146de42d6d94a504d82f84ee48b29821fc0c1bc5a3b97eb3f05e44bdf4d4d",
+      "authored": "bfaff69138409df44e7fee46045c5deab807e094fd9eded3d4e230e554a75630",
+      "integrated": "031b8b76c993b5011495ee94e57d95f258f933328909ed7e3690883ac1846bb6"
+    },
+    "ex-main-0650-b": {
+      "raw": "73b0d9ee08f85f0caeb99eccc24bb9ba8a40859cd1e62b2a3ed68e8b5cfa4e02",
+      "authored": "1a01ac7daae5d771ce16ef0cd9c56efa799bdd4f32579010004d35876ba2844e",
+      "integrated": "90fe2d74ac7e116a6f1c8d4123c3410882b7b01f8ac5f567e6e8ba493fad8110"
+    },
+    "ex-main-0650-c": {
+      "raw": "1db501e8486e10d78e5117701b8b2a9c7bda3a72bd5ea3cd79031503243a936a",
+      "authored": "faae5e43cff863eae2da622d299f13843bd837401ae75e5597a3c6663ff3dbc4",
+      "integrated": "9b3e1bc96216851dbf78d348a688eae3f730684d97eb05ea970320dabcfd4f15"
+    },
+    "ex-main-0650-d": {
+      "raw": "9c3ab94ce9c278386dfe39053241d8092861c5af9599bae85f1c3bc6797cac5b",
+      "authored": "5303d4e5e0aad5ab9be32496a25409879883eb8b0c6bd25f5f644dcf21a8d7b6",
+      "integrated": "ba9159219451fefb1b2fb05bf2d9cbc853fc107621150968063457fc4154481e"
+    },
+    "ex-main-0650-e": {
+      "raw": "553df8342f4817618b841312fa2294d48a19933a7dd75fa234a8c738bf2ee904",
+      "authored": "0cd2c6c0d62e0efeda3c4be9b05a4e46f85fcbf73565e7c592e8ab6f90179bc1",
+      "integrated": "9ebf72b89963d348aff4deca9333c24f9c6ffff4b4d6b3a85d349f96b782ebf7"
+    },
+    "ex-main-0651-a": {
+      "raw": "694fc213407796f83edf0bce5ea304f2ad5dabdf06a3c602761dc6d1d6fc91ac",
+      "authored": "2275de7f207219b49ac32e33505cf8e020f64ddf67f5255db99b2ea7d625fe7c",
+      "integrated": "730a91f248f08264189e51368f0a592938947956090d72da72ddf43a4148d1c6"
+    },
+    "ex-main-0651-b": {
+      "raw": "88f149ffdbc9df4b91507f0c0999f4950769b7b3c8dd7a2e3157651e4a5bb23e",
+      "authored": "fd45f2f73f7e1c5771fe98229a2bb44e3f6e80099a1698a71c7edfd0b9a859b1",
+      "integrated": "3cd1553c049064c5c0063e00dd72eeb0a0acff08fb224cd35e06226b805272aa"
+    },
+    "ex-main-0652-a": {
+      "raw": "63ae9506d606cadc81afb803564de1a21a1f138a3f0dd275bf047364b9dcf002",
+      "authored": "0d7597cab3b44e0ac26619e61da16eb851f995129ad91c625890f818327e91b3",
+      "integrated": "803758dd4f34794244742b37c91f811bae7ee0b13e41d48ae1cf30513949712f"
+    },
+    "ex-main-0652-b": {
+      "raw": "3d02ecc412ed9ba0b174bc59a690adffe34eb55db293359c349770d8601cfd3a",
+      "authored": "b57154c9596f55b20cb43071cff06c2dff78e1d86a2d134eabd2525df7ad4f47",
+      "integrated": "0a978b36bd242aaf48906757905a15f39b4b07c41ddf1fb2ca0fdb6bceaf132a"
+    },
+    "ex-main-0652-c": {
+      "raw": "d6528567b4e040efd3a33ab017227f4a72c3a7b6e3a67d8d7f698d5467b142fb",
+      "authored": "32419ac9e7239966e6654b662e91492a8d05d268acaf1f7d66f2e3f5bdb86471",
+      "integrated": "1392f6c8e7f99735b02b232efe7801f3e8840276044e572069e0c557bb94fc35"
+    },
+    "ex-main-0652-d": {
+      "raw": "f3fc803c86de91a181c3a8f1a816423f99668658bd4e1affc99490e4f809a1d5",
+      "authored": "76a75fdb49caf7426b7911070af4c0416a4158769a912febd14fa6b0d099681c",
+      "integrated": "2f44108bbd04ef1d89302c4bd54aa1a2ecf63e9a03fdc21e8e8faca2562ee3ec"
+    },
+    "ex-main-0652-e": {
+      "raw": "067c166e6dca11b7c055da59566a0a5f6f31a53d027a1f31dbcd6060930e68c4",
+      "authored": "082387c523ea9eba7f9c93d1a13d92230e20dd28a3351453293c8d2bd784a0f4",
+      "integrated": "a7d2b0523333d3471059870d7bfca3eedebcbfc0770301633d9358e8e5659824"
+    },
+    "ex-main-0652-f": {
+      "raw": "a22faa9698360a0b26f691faaefa779bff6075a64dc4c416892afe6395fb41a0",
+      "authored": "dd256bb456a0761cf58788772fe9a5703f02ec81930c31d3e88e5e49513c04a4",
+      "integrated": "bf525ffabb12c80fbe046b02fea9aab30c9ca625da0fdbdfe0853e4f99071de0"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0650-a|condition",
+      "coordinate-span-ratios-ex-main-0650-a-condition"
+    ],
+    [
+      "ex-main-0650-a|help:h1",
+      "coordinate-span-ratios-ex-main-0650-a-help-h1"
+    ],
+    [
+      "ex-main-0650-a|help:h2",
+      "coordinate-span-ratios-ex-main-0650-a-help-h2"
+    ],
+    [
+      "ex-main-0650-a|step-1",
+      "coordinate-span-ratios-ex-main-0650-a-step-1"
+    ],
+    [
+      "ex-main-0650-a|step-2",
+      "coordinate-span-ratios-ex-main-0650-a-step-2"
+    ],
+    [
+      "ex-main-0650-a|step-3",
+      "coordinate-span-ratios-ex-main-0650-a-step-3"
+    ],
+    [
+      "ex-main-0650-b|condition",
+      "coordinate-span-ratios-ex-main-0650-b-condition"
+    ],
+    [
+      "ex-main-0650-b|help:h1",
+      "coordinate-span-ratios-ex-main-0650-b-help-h1"
+    ],
+    [
+      "ex-main-0650-b|help:h2",
+      "coordinate-span-ratios-ex-main-0650-b-help-h2"
+    ],
+    [
+      "ex-main-0650-b|step-1",
+      "coordinate-span-ratios-ex-main-0650-b-step-1"
+    ],
+    [
+      "ex-main-0650-b|step-2",
+      "coordinate-span-ratios-ex-main-0650-b-step-2"
+    ],
+    [
+      "ex-main-0650-b|step-3",
+      "coordinate-span-ratios-ex-main-0650-b-step-3"
+    ],
+    [
+      "ex-main-0650-c|condition",
+      "coordinate-span-ratios-ex-main-0650-c-condition"
+    ],
+    [
+      "ex-main-0650-c|help:h1",
+      "coordinate-span-ratios-ex-main-0650-c-help-h1"
+    ],
+    [
+      "ex-main-0650-c|help:h2",
+      "coordinate-span-ratios-ex-main-0650-c-help-h2"
+    ],
+    [
+      "ex-main-0650-c|step-1",
+      "coordinate-span-ratios-ex-main-0650-c-step-1"
+    ],
+    [
+      "ex-main-0650-c|step-2",
+      "coordinate-span-ratios-ex-main-0650-c-step-2"
+    ],
+    [
+      "ex-main-0650-c|step-3",
+      "coordinate-span-ratios-ex-main-0650-c-step-3"
+    ],
+    [
+      "ex-main-0650-d|condition",
+      "coordinate-span-ratios-ex-main-0650-d-condition"
+    ],
+    [
+      "ex-main-0650-d|help:h1",
+      "coordinate-span-ratios-ex-main-0650-d-help-h1"
+    ],
+    [
+      "ex-main-0650-d|help:h2",
+      "coordinate-span-ratios-ex-main-0650-d-help-h2"
+    ],
+    [
+      "ex-main-0650-d|step-1",
+      "coordinate-span-ratios-ex-main-0650-d-step-1"
+    ],
+    [
+      "ex-main-0650-d|step-2",
+      "coordinate-span-ratios-ex-main-0650-d-step-2"
+    ],
+    [
+      "ex-main-0650-d|step-3",
+      "coordinate-span-ratios-ex-main-0650-d-step-3"
+    ],
+    [
+      "ex-main-0650-e|condition",
+      "coordinate-span-ratios-ex-main-0650-e-condition"
+    ],
+    [
+      "ex-main-0650-e|help:h1",
+      "coordinate-span-ratios-ex-main-0650-e-help-h1"
+    ],
+    [
+      "ex-main-0650-e|help:h2",
+      "coordinate-span-ratios-ex-main-0650-e-help-h2"
+    ],
+    [
+      "ex-main-0650-e|step-1",
+      "coordinate-span-ratios-ex-main-0650-e-step-1"
+    ],
+    [
+      "ex-main-0650-e|step-2",
+      "coordinate-span-ratios-ex-main-0650-e-step-2"
+    ],
+    [
+      "ex-main-0650-e|step-3",
+      "coordinate-span-ratios-ex-main-0650-e-step-3"
+    ],
+    [
+      "ex-main-0651-a|condition",
+      "coordinate-span-ratios-ex-main-0651-a-condition"
+    ],
+    [
+      "ex-main-0651-a|help:h1",
+      "coordinate-span-ratios-ex-main-0651-a-help-h1"
+    ],
+    [
+      "ex-main-0651-a|help:h2",
+      "coordinate-span-ratios-ex-main-0651-a-help-h2"
+    ],
+    [
+      "ex-main-0651-a|step-1",
+      "coordinate-span-ratios-ex-main-0651-a-step-1"
+    ],
+    [
+      "ex-main-0651-a|step-2",
+      "coordinate-span-ratios-ex-main-0651-a-step-2"
+    ],
+    [
+      "ex-main-0651-a|step-3",
+      "coordinate-span-ratios-ex-main-0651-a-step-3"
+    ],
+    [
+      "ex-main-0651-b|condition",
+      "coordinate-span-ratios-ex-main-0651-b-condition"
+    ],
+    [
+      "ex-main-0651-b|help:h1",
+      "coordinate-span-ratios-ex-main-0651-b-help-h1"
+    ],
+    [
+      "ex-main-0651-b|help:h2",
+      "coordinate-span-ratios-ex-main-0651-b-help-h2"
+    ],
+    [
+      "ex-main-0651-b|step-1",
+      "coordinate-span-ratios-ex-main-0651-b-step-1"
+    ],
+    [
+      "ex-main-0651-b|step-2",
+      "coordinate-span-ratios-ex-main-0651-b-step-2"
+    ],
+    [
+      "ex-main-0651-b|step-3",
+      "coordinate-span-ratios-ex-main-0651-b-step-3"
+    ],
+    [
+      "ex-main-0652-a|condition",
+      "coordinate-span-ratios-ex-main-0652-a-condition"
+    ],
+    [
+      "ex-main-0652-a|help:h1",
+      "coordinate-span-ratios-ex-main-0652-a-help-h1"
+    ],
+    [
+      "ex-main-0652-a|help:h2",
+      "coordinate-span-ratios-ex-main-0652-a-help-h2"
+    ],
+    [
+      "ex-main-0652-a|step-1",
+      "coordinate-span-ratios-ex-main-0652-a-step-1"
+    ],
+    [
+      "ex-main-0652-a|step-2",
+      "coordinate-span-ratios-ex-main-0652-a-step-2"
+    ],
+    [
+      "ex-main-0652-a|step-3",
+      "coordinate-span-ratios-ex-main-0652-a-step-3"
+    ],
+    [
+      "ex-main-0652-b|condition",
+      "coordinate-span-ratios-ex-main-0652-b-condition"
+    ],
+    [
+      "ex-main-0652-b|help:h1",
+      "coordinate-span-ratios-ex-main-0652-b-help-h1"
+    ],
+    [
+      "ex-main-0652-b|help:h2",
+      "coordinate-span-ratios-ex-main-0652-b-help-h2"
+    ],
+    [
+      "ex-main-0652-b|step-1",
+      "coordinate-span-ratios-ex-main-0652-b-step-1"
+    ],
+    [
+      "ex-main-0652-b|step-2",
+      "coordinate-span-ratios-ex-main-0652-b-step-2"
+    ],
+    [
+      "ex-main-0652-b|step-3",
+      "coordinate-span-ratios-ex-main-0652-b-step-3"
+    ],
+    [
+      "ex-main-0652-c|condition",
+      "coordinate-span-ratios-ex-main-0652-c-condition"
+    ],
+    [
+      "ex-main-0652-c|help:h1",
+      "coordinate-span-ratios-ex-main-0652-c-help-h1"
+    ],
+    [
+      "ex-main-0652-c|help:h2",
+      "coordinate-span-ratios-ex-main-0652-c-help-h2"
+    ],
+    [
+      "ex-main-0652-c|step-1",
+      "coordinate-span-ratios-ex-main-0652-c-step-1"
+    ],
+    [
+      "ex-main-0652-c|step-2",
+      "coordinate-span-ratios-ex-main-0652-c-step-2"
+    ],
+    [
+      "ex-main-0652-c|step-3",
+      "coordinate-span-ratios-ex-main-0652-c-step-3"
+    ],
+    [
+      "ex-main-0652-d|condition",
+      "coordinate-span-ratios-ex-main-0652-d-condition"
+    ],
+    [
+      "ex-main-0652-d|help:h1",
+      "coordinate-span-ratios-ex-main-0652-d-help-h1"
+    ],
+    [
+      "ex-main-0652-d|help:h2",
+      "coordinate-span-ratios-ex-main-0652-d-help-h2"
+    ],
+    [
+      "ex-main-0652-d|step-1",
+      "coordinate-span-ratios-ex-main-0652-d-step-1"
+    ],
+    [
+      "ex-main-0652-d|step-2",
+      "coordinate-span-ratios-ex-main-0652-d-step-2"
+    ],
+    [
+      "ex-main-0652-d|step-3",
+      "coordinate-span-ratios-ex-main-0652-d-step-3"
+    ],
+    [
+      "ex-main-0652-e|condition",
+      "coordinate-span-ratios-ex-main-0652-e-condition"
+    ],
+    [
+      "ex-main-0652-e|help:h1",
+      "coordinate-span-ratios-ex-main-0652-e-help-h1"
+    ],
+    [
+      "ex-main-0652-e|help:h2",
+      "coordinate-span-ratios-ex-main-0652-e-help-h2"
+    ],
+    [
+      "ex-main-0652-e|step-1",
+      "coordinate-span-ratios-ex-main-0652-e-step-1"
+    ],
+    [
+      "ex-main-0652-e|step-2",
+      "coordinate-span-ratios-ex-main-0652-e-step-2"
+    ],
+    [
+      "ex-main-0652-e|step-3",
+      "coordinate-span-ratios-ex-main-0652-e-step-3"
+    ],
+    [
+      "ex-main-0652-f|condition",
+      "coordinate-span-ratios-ex-main-0652-f-condition"
+    ],
+    [
+      "ex-main-0652-f|help:h1",
+      "coordinate-span-ratios-ex-main-0652-f-help-h1"
+    ],
+    [
+      "ex-main-0652-f|help:h2",
+      "coordinate-span-ratios-ex-main-0652-f-help-h2"
+    ],
+    [
+      "ex-main-0652-f|step-1",
+      "coordinate-span-ratios-ex-main-0652-f-step-1"
+    ],
+    [
+      "ex-main-0652-f|step-2",
+      "coordinate-span-ratios-ex-main-0652-f-step-2"
+    ],
+    [
+      "ex-main-0652-f|step-3",
+      "coordinate-span-ratios-ex-main-0652-f-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "411774da79cb7b798e295bb43a8e43f4fed7e5989b1ac911fbba06a44de1221a",
+      "afterSHA256": "d57856a6ae90e5142086b0b441aebc837839b9c15e95008d6c93151ce9574bea"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "220df2ac2a5951d51eb7b3c4aa76cc2fb95bf8af41be954e470cf409264c91a7",
+      "afterSHA256": "c300c13421afaa7968f520f82227729a4ff3ffd05261e591a3498abfc3b3e6b3"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T22:19:54Z",
+    "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–649, with 1,143 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "08fb80b0234d46cd475923689baa1715d92ed67ab6124b075c1e808cf13a6d88",
+    "index": "f7a7b656fafe80ccb467eec977d6e16b661743b43514e98fd6d1f567dabe0dc3",
+    "registry": "74b5342a1ebe1de5892a0360b4dabfbbb112fb8149da239a1375b6dcfbdf2f13",
+    "cases": "21161828420e2671c7ee875c203e21c86a4e153dbce9ed12b8f456ea23e31213"
+  }
+}

@@ -1,0 +1,620 @@
+{
+  "parts": {
+    "653": [
+      null
+    ],
+    "654": [
+      null
+    ],
+    "655": [
+      "а",
+      "б",
+      "в"
+    ],
+    "656": [
+      null
+    ],
+    "657": [
+      null
+    ],
+    "658": [
+      "а",
+      "б",
+      "в"
+    ],
+    "659": [
+      "а",
+      "б",
+      "в"
+    ],
+    "660": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "653": {
+      "id": "source-main-0653",
+      "kind": "exercise",
+      "title": "Задача № 653",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "653",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "654": {
+      "id": "source-main-0654",
+      "kind": "exercise",
+      "title": "Задача № 654",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "654",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "655": {
+      "id": "source-main-0655",
+      "kind": "exercise",
+      "title": "Задача № 655",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "655",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "656": {
+      "id": "source-main-0656",
+      "kind": "exercise",
+      "title": "Задача № 656",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "656",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "657": {
+      "id": "source-main-0657",
+      "kind": "exercise",
+      "title": "Задача № 657",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "657",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "658": {
+      "id": "source-main-0658",
+      "kind": "exercise",
+      "title": "Задача № 658",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "658",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "659": {
+      "id": "source-main-0659",
+      "kind": "exercise",
+      "title": "Задача № 659",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "659",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "660": {
+      "id": "source-main-0660",
+      "kind": "exercise",
+      "title": "Задача № 660",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "660",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0653": {
+      "raw": "299767651aa641a68d0c47df0f35a9bb2973da4d267fb4f23605bdb99dcd2e1f",
+      "authored": "2c8703fb1b1814cd19bdc163a5c4b9a82aa45e34676c274db95a85f59de7756e",
+      "integrated": "99dcb4b1ccd98a056b22b84fe5f4e8edfc9aa6499e4e23a51ab0402780366516"
+    },
+    "ex-main-0654": {
+      "raw": "9a593cea590a0098ed9bbe5c96f46b2e9bfa4bd23d214ff981824b55b6ea0c4b",
+      "authored": "18384e90753a821d9ca96b48abc5675a7d5fd369ae0816f930f41d9d3f30574c",
+      "integrated": "294ec19402ae41615e925255910397a5a4b83eeb431979d42a64bfeeb34ce9b8"
+    },
+    "ex-main-0655-a": {
+      "raw": "708ed0e44dd9bf02ab102dc170180d51d201b451c872d263b956faa777aa1ed6",
+      "authored": "7d66217864d438aa0f2a297dcc272dc58bbaa5db8eca0b61b82278b57ab8a908",
+      "integrated": "5a63c63868662e530778d37b529b4aefdd2da1ca3b024a149f62abcf5caa7129"
+    },
+    "ex-main-0655-b": {
+      "raw": "ae44340a376eeb666699a02069ff22f6588613958bddb9011a33d8324fdefa01",
+      "authored": "c9de62b5355607ddbca5b6a4b5c9fc06e45862908858c272507ff5dec466cdbb",
+      "integrated": "25ceaa7bca0c9538cd275822df5f7a5fa6134ed4c4e03a3068f56ec298a1abc7"
+    },
+    "ex-main-0655-c": {
+      "raw": "3a2fe0a367003843b3a089c23900b9e6e357d21114bcfb76422e78e6fcfdf4b3",
+      "authored": "42cad5a8b81fc176c0a57e52f6b8f6664821d16785e76f2a5f1abaf3fef2834d",
+      "integrated": "b6f55c6d2718ef5193cf6b1eed04c8005773906507c901669a877ae7f00bf646"
+    },
+    "ex-main-0656": {
+      "raw": "c2a4e464dff9b0f0ecba05687625e702ee4ceca13c88c2f7158f29a10b04e3c0",
+      "authored": "769290ec6bd254bab057838d6b1fc1fd0f9f21af8c15f5cfa52e7589892b9c8e",
+      "integrated": "99314fd16e43aa508c6e387805af4aae12a2f313dcc9bf7828a8792b540ae974"
+    },
+    "ex-main-0657": {
+      "raw": "53e08655cb52fa22865c09d3b93abb78266717aa7b86686e425084241b3843c7",
+      "authored": "c2109759035300fe1760fa95aa01605cba81c1586247817555d9e58e3d3613c9",
+      "integrated": "f78bcb6565c8140bee6e8bf7a1bdd8a075d6030a352c79b31c4360decd9cc6f2"
+    },
+    "ex-main-0658-a": {
+      "raw": "fb34723f6f6a155a3e3745d8618881f126fe515e289d4e9170dce9226f56487c",
+      "authored": "5df08e3d94aabe8d3528bdf5a1292f4c9fd47eb9ca9a35eee18cf9f8de4c187f",
+      "integrated": "8a7c21fb21f3b24a55da974260c34f71e49c0f5510d5cf249c3f50d0e45b1631"
+    },
+    "ex-main-0658-b": {
+      "raw": "f64e974d6a0d9336e98ea39315aabf1894ce356392356406024240eeb85291c6",
+      "authored": "ae25554ae89aea2d0102243c3245ce7bec9d888ddec9df1661e6f63a22fc8f23",
+      "integrated": "0831fe0a362e8e00e85e256e87c2d3430fd9eabe012b36e403f526a0bfa5b560"
+    },
+    "ex-main-0658-c": {
+      "raw": "cdda7180947862c0a6feb7fb3c987834a00a64f7671fd11303d6a7e8f130de70",
+      "authored": "44ec19a95d4081f7bb294aafa99a1ea8e0afd29cf606509f247e3ef54600556e",
+      "integrated": "9c9e35bdb924949cc0edc4937902c5d3594bccd467dafce2c2410347fd5089cb"
+    },
+    "ex-main-0659-a": {
+      "raw": "6081bb0a565d733d0a433bda69808f86b54b9af50e82d1fcc7777983746c83bd",
+      "authored": "4b61d394d21d61f9eeb923ccd4e064845aced0dc34ea7ce5dcf3882c04a3554a",
+      "integrated": "3a7ab6b57d2eafca0034189abb8c2e09e914ce1169602feaeebd9bae5bc21a2e"
+    },
+    "ex-main-0659-b": {
+      "raw": "4a401f5566c7745332bae001bee9bd0b30cf49cfdc268881be75215cb6878774",
+      "authored": "9a23c46304052fc56735196c95e266b93b53a4579d1344a24d7cd48338af3033",
+      "integrated": "a9a68eeb72fd0d434098f3a3527f7fe6a538f902d743d97bcdd379b8ff696d64"
+    },
+    "ex-main-0659-c": {
+      "raw": "923d51b327c8c127aecaee66b3c2e7066d9b22fe43462153cf24802d9ee40c5a",
+      "authored": "48a078928ec607c7eb8f9785cf413d9ee60048c551c5d4f7d1e467219aa6d355",
+      "integrated": "641694d88d698715b959cd2e7cb2ccc1d35639540ef7b1a0b444fb3a86dfb90d"
+    },
+    "ex-main-0660": {
+      "raw": "55d85ae649e4d754f1549b03e4911f91afea9194db1dcb9989cab1dfbb92e72d",
+      "authored": "4dd6b9faf7f2da45190005eb14716c395f37c55e2024f3adc64f7896e4388d84",
+      "integrated": "00d56a8ceecb68863ecc5cc692058d5f9711ab26b61b2d030c9fc78f9fdce2cc"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0653|condition",
+      "spatial-points-and-centroid-ex-main-0653-condition"
+    ],
+    [
+      "ex-main-0653|help:h1",
+      "spatial-points-and-centroid-ex-main-0653-help-h1"
+    ],
+    [
+      "ex-main-0653|help:h2",
+      "spatial-points-and-centroid-ex-main-0653-help-h2"
+    ],
+    [
+      "ex-main-0653|step-1",
+      "spatial-points-and-centroid-ex-main-0653-step-1"
+    ],
+    [
+      "ex-main-0653|step-2",
+      "spatial-points-and-centroid-ex-main-0653-step-2"
+    ],
+    [
+      "ex-main-0653|step-3",
+      "spatial-points-and-centroid-ex-main-0653-step-3"
+    ],
+    [
+      "ex-main-0654|condition",
+      "spatial-points-and-centroid-ex-main-0654-condition"
+    ],
+    [
+      "ex-main-0654|help:h1",
+      "spatial-points-and-centroid-ex-main-0654-help-h1"
+    ],
+    [
+      "ex-main-0654|help:h2",
+      "spatial-points-and-centroid-ex-main-0654-help-h2"
+    ],
+    [
+      "ex-main-0654|step-1",
+      "spatial-points-and-centroid-ex-main-0654-step-1"
+    ],
+    [
+      "ex-main-0654|step-2",
+      "spatial-points-and-centroid-ex-main-0654-step-2"
+    ],
+    [
+      "ex-main-0654|step-3",
+      "spatial-points-and-centroid-ex-main-0654-step-3"
+    ],
+    [
+      "ex-main-0655-a|condition",
+      "spatial-points-and-centroid-ex-main-0655-a-condition"
+    ],
+    [
+      "ex-main-0655-a|help:h1",
+      "spatial-points-and-centroid-ex-main-0655-a-help-h1"
+    ],
+    [
+      "ex-main-0655-a|help:h2",
+      "spatial-points-and-centroid-ex-main-0655-a-help-h2"
+    ],
+    [
+      "ex-main-0655-a|step-1",
+      "spatial-points-and-centroid-ex-main-0655-a-step-1"
+    ],
+    [
+      "ex-main-0655-a|step-2",
+      "spatial-points-and-centroid-ex-main-0655-a-step-2"
+    ],
+    [
+      "ex-main-0655-a|step-3",
+      "spatial-points-and-centroid-ex-main-0655-a-step-3"
+    ],
+    [
+      "ex-main-0655-b|condition",
+      "spatial-points-and-centroid-ex-main-0655-b-condition"
+    ],
+    [
+      "ex-main-0655-b|help:h1",
+      "spatial-points-and-centroid-ex-main-0655-b-help-h1"
+    ],
+    [
+      "ex-main-0655-b|help:h2",
+      "spatial-points-and-centroid-ex-main-0655-b-help-h2"
+    ],
+    [
+      "ex-main-0655-b|step-1",
+      "spatial-points-and-centroid-ex-main-0655-b-step-1"
+    ],
+    [
+      "ex-main-0655-b|step-2",
+      "spatial-points-and-centroid-ex-main-0655-b-step-2"
+    ],
+    [
+      "ex-main-0655-b|step-3",
+      "spatial-points-and-centroid-ex-main-0655-b-step-3"
+    ],
+    [
+      "ex-main-0655-c|condition",
+      "spatial-points-and-centroid-ex-main-0655-c-condition"
+    ],
+    [
+      "ex-main-0655-c|help:h1",
+      "spatial-points-and-centroid-ex-main-0655-c-help-h1"
+    ],
+    [
+      "ex-main-0655-c|help:h2",
+      "spatial-points-and-centroid-ex-main-0655-c-help-h2"
+    ],
+    [
+      "ex-main-0655-c|step-1",
+      "spatial-points-and-centroid-ex-main-0655-c-step-1"
+    ],
+    [
+      "ex-main-0655-c|step-2",
+      "spatial-points-and-centroid-ex-main-0655-c-step-2"
+    ],
+    [
+      "ex-main-0655-c|step-3",
+      "spatial-points-and-centroid-ex-main-0655-c-step-3"
+    ],
+    [
+      "ex-main-0656|condition",
+      "spatial-points-and-centroid-ex-main-0656-condition"
+    ],
+    [
+      "ex-main-0656|help:h1",
+      "spatial-points-and-centroid-ex-main-0656-help-h1"
+    ],
+    [
+      "ex-main-0656|help:h2",
+      "spatial-points-and-centroid-ex-main-0656-help-h2"
+    ],
+    [
+      "ex-main-0656|step-1",
+      "spatial-points-and-centroid-ex-main-0656-step-1"
+    ],
+    [
+      "ex-main-0656|step-2",
+      "spatial-points-and-centroid-ex-main-0656-step-2"
+    ],
+    [
+      "ex-main-0656|step-3",
+      "spatial-points-and-centroid-ex-main-0656-step-3"
+    ],
+    [
+      "ex-main-0657|condition",
+      "spatial-points-and-centroid-ex-main-0657-condition"
+    ],
+    [
+      "ex-main-0657|help:h1",
+      "spatial-points-and-centroid-ex-main-0657-help-h1"
+    ],
+    [
+      "ex-main-0657|help:h2",
+      "spatial-points-and-centroid-ex-main-0657-help-h2"
+    ],
+    [
+      "ex-main-0657|step-1",
+      "spatial-points-and-centroid-ex-main-0657-step-1"
+    ],
+    [
+      "ex-main-0657|step-2",
+      "spatial-points-and-centroid-ex-main-0657-step-2"
+    ],
+    [
+      "ex-main-0657|step-3",
+      "spatial-points-and-centroid-ex-main-0657-step-3"
+    ],
+    [
+      "ex-main-0658-a|condition",
+      "spatial-points-and-centroid-ex-main-0658-a-condition"
+    ],
+    [
+      "ex-main-0658-a|help:h1",
+      "spatial-points-and-centroid-ex-main-0658-a-help-h1"
+    ],
+    [
+      "ex-main-0658-a|help:h2",
+      "spatial-points-and-centroid-ex-main-0658-a-help-h2"
+    ],
+    [
+      "ex-main-0658-a|step-1",
+      "spatial-points-and-centroid-ex-main-0658-a-step-1"
+    ],
+    [
+      "ex-main-0658-a|step-2",
+      "spatial-points-and-centroid-ex-main-0658-a-step-2"
+    ],
+    [
+      "ex-main-0658-a|step-3",
+      "spatial-points-and-centroid-ex-main-0658-a-step-3"
+    ],
+    [
+      "ex-main-0658-b|condition",
+      "spatial-points-and-centroid-ex-main-0658-b-condition"
+    ],
+    [
+      "ex-main-0658-b|help:h1",
+      "spatial-points-and-centroid-ex-main-0658-b-help-h1"
+    ],
+    [
+      "ex-main-0658-b|help:h2",
+      "spatial-points-and-centroid-ex-main-0658-b-help-h2"
+    ],
+    [
+      "ex-main-0658-b|step-1",
+      "spatial-points-and-centroid-ex-main-0658-b-step-1"
+    ],
+    [
+      "ex-main-0658-b|step-2",
+      "spatial-points-and-centroid-ex-main-0658-b-step-2"
+    ],
+    [
+      "ex-main-0658-b|step-3",
+      "spatial-points-and-centroid-ex-main-0658-b-step-3"
+    ],
+    [
+      "ex-main-0658-c|condition",
+      "spatial-points-and-centroid-ex-main-0658-c-condition"
+    ],
+    [
+      "ex-main-0658-c|help:h1",
+      "spatial-points-and-centroid-ex-main-0658-c-help-h1"
+    ],
+    [
+      "ex-main-0658-c|help:h2",
+      "spatial-points-and-centroid-ex-main-0658-c-help-h2"
+    ],
+    [
+      "ex-main-0658-c|step-1",
+      "spatial-points-and-centroid-ex-main-0658-c-step-1"
+    ],
+    [
+      "ex-main-0658-c|step-2",
+      "spatial-points-and-centroid-ex-main-0658-c-step-2"
+    ],
+    [
+      "ex-main-0658-c|step-3",
+      "spatial-points-and-centroid-ex-main-0658-c-step-3"
+    ],
+    [
+      "ex-main-0659-a|condition",
+      "spatial-points-and-centroid-ex-main-0659-a-condition"
+    ],
+    [
+      "ex-main-0659-a|help:h1",
+      "spatial-points-and-centroid-ex-main-0659-a-help-h1"
+    ],
+    [
+      "ex-main-0659-a|help:h2",
+      "spatial-points-and-centroid-ex-main-0659-a-help-h2"
+    ],
+    [
+      "ex-main-0659-a|step-1",
+      "spatial-points-and-centroid-ex-main-0659-a-step-1"
+    ],
+    [
+      "ex-main-0659-a|step-2",
+      "spatial-points-and-centroid-ex-main-0659-a-step-2"
+    ],
+    [
+      "ex-main-0659-a|step-3",
+      "spatial-points-and-centroid-ex-main-0659-a-step-3"
+    ],
+    [
+      "ex-main-0659-b|condition",
+      "spatial-points-and-centroid-ex-main-0659-b-condition"
+    ],
+    [
+      "ex-main-0659-b|help:h1",
+      "spatial-points-and-centroid-ex-main-0659-b-help-h1"
+    ],
+    [
+      "ex-main-0659-b|help:h2",
+      "spatial-points-and-centroid-ex-main-0659-b-help-h2"
+    ],
+    [
+      "ex-main-0659-b|step-1",
+      "spatial-points-and-centroid-ex-main-0659-b-step-1"
+    ],
+    [
+      "ex-main-0659-b|step-2",
+      "spatial-points-and-centroid-ex-main-0659-b-step-2"
+    ],
+    [
+      "ex-main-0659-b|step-3",
+      "spatial-points-and-centroid-ex-main-0659-b-step-3"
+    ],
+    [
+      "ex-main-0659-c|condition",
+      "spatial-points-and-centroid-ex-main-0659-c-condition"
+    ],
+    [
+      "ex-main-0659-c|help:h1",
+      "spatial-points-and-centroid-ex-main-0659-c-help-h1"
+    ],
+    [
+      "ex-main-0659-c|help:h2",
+      "spatial-points-and-centroid-ex-main-0659-c-help-h2"
+    ],
+    [
+      "ex-main-0659-c|step-1",
+      "spatial-points-and-centroid-ex-main-0659-c-step-1"
+    ],
+    [
+      "ex-main-0659-c|step-2",
+      "spatial-points-and-centroid-ex-main-0659-c-step-2"
+    ],
+    [
+      "ex-main-0659-c|step-3",
+      "spatial-points-and-centroid-ex-main-0659-c-step-3"
+    ],
+    [
+      "ex-main-0660|condition",
+      "spatial-points-and-centroid-ex-main-0660-condition"
+    ],
+    [
+      "ex-main-0660|help:h1",
+      "spatial-points-and-centroid-ex-main-0660-help-h1"
+    ],
+    [
+      "ex-main-0660|help:h2",
+      "spatial-points-and-centroid-ex-main-0660-help-h2"
+    ],
+    [
+      "ex-main-0660|step-1",
+      "spatial-points-and-centroid-ex-main-0660-step-1"
+    ],
+    [
+      "ex-main-0660|step-2",
+      "spatial-points-and-centroid-ex-main-0660-step-2"
+    ],
+    [
+      "ex-main-0660|step-3",
+      "spatial-points-and-centroid-ex-main-0660-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "d57856a6ae90e5142086b0b441aebc837839b9c15e95008d6c93151ce9574bea",
+      "afterSHA256": "0b4cf34dd1a36252ccadc717b315e2bc6e8c1ff336d8e8c27d4dbb7665c5c784"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "c300c13421afaa7968f520f82227729a4ff3ffd05261e591a3498abfc3b3e6b3",
+      "afterSHA256": "096ff8153a993b61eb825336dfe625006222f6bfc86d5e00b9f2d80824e04b1b"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T22:25:21Z",
+    "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–652, with 1,156 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "d0440a28580933195e536b835318feea49068e35f0b31d1eadf1bf142d75702f",
+    "index": "652647c68a5f0330cfae022f1103e5190266f6c1da241957b99ac585633aa4f8",
+    "registry": "82a3c73549e83adfdc9ac772f2b4603a15dee107aa26c35c64d65518a116ad93",
+    "cases": "090e895ae5337eff23311f004aea5cfb6e20a0ba95a1d4b23f539268542e7ec3"
+  }
+}
