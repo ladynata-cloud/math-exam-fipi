@@ -12021,7 +12021,10 @@
           142
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0535",
@@ -12039,7 +12042,10 @@
           142
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0536",
@@ -12060,6 +12066,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -12078,7 +12088,10 @@
           142
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0538",

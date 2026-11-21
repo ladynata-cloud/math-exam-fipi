@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const pyramidAngleApplications = makeReviewedIncrement(require('./pyramid-angle-applications.json'));
+const pyramidComparisonApplications = makeReviewedIncrement(require('./pyramid-comparison-applications.json'));
+const pyramidAngleApplications = makeReviewedIncrement(require('./pyramid-angle-applications.json'), pyramidComparisonApplications);
 const normalPrismApplications = makeReviewedIncrement(require('./normal-prism-applications.json'), pyramidAngleApplications);
 const prismApplications = makeReviewedIncrement(require('./prism-applications.json'), normalPrismApplications);
 const volumeSelfcheck = makeReviewedIncrement(require('./volume-selfcheck.json'), prismApplications);

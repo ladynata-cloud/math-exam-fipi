@@ -147,6 +147,19 @@ const misconceptions = new Map([
   ['ex-main-0533/step-3', '2*sqrt(3)'], // Forgot one half in the area formula.
   ['ex-main-0533/step-4', '2*sqrt(3)'], // Calculated the corresponding prism volume.
   ['ex-main-0533/step-5', '2*sqrt(3)/3'], // Reused the preceding obtuse base.
+  ['ex-main-0534/step-1', '2'], // Submitted the half-diagonal.
+  ['ex-main-0534/step-3', '12*sqrt(3)'], // Forgot one half in the area.
+  ['ex-main-0534/step-4', '12*sqrt(3)'], // Omitted division by three.
+  ['ex-main-0536-a/step-4', 'sqrt(23)/2'], // Used the prism product.
+  ['ex-main-0536-a/step-5', 'sqrt(23)/6'], // Reused the preceding data.
+  ['ex-main-0536-b/step-3', '2*sqrt(3)'], // Used the area of the bounding rectangle.
+  ['ex-main-0535/step-1', '4'], // Replaced a rhombus altitude with its side.
+  ['ex-main-0536-a/step-2', '1/3'], // Lost the factor two in the cross term.
+  ['ex-main-0536-a/step-3', '2'], // Submitted the oblique segment squared.
+  ['ex-main-0536-b/step-1', '8'], // Used full edges for both horizontal offsets.
+  ['ex-main-0536-b/step-4', 'sqrt(3)/3'], // Counted only half of the tetrahedron.
+  ['ex-main-0537/step-2', '27'], // Cubed a height difference.
+  ['ex-main-0537/step-4', '31/73'], // Reused the initial sides after transfer.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

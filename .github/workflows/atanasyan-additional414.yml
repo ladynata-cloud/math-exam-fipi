@@ -56,6 +56,7 @@ jobs:
           node tools/stereo-textbook/prism-applications.test.cjs
           node tools/stereo-textbook/normal-prism-applications.test.cjs
           node tools/stereo-textbook/pyramid-angle-applications.test.cjs
+          node tools/stereo-textbook/pyramid-comparison-applications.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -152,6 +153,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: pyramidAngleApplications
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-angle-applications
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check pyramid diagonals, both pairs of equal tetrahedron edges and a midheight slice
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramidComparisonApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-comparison-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -204,5 +210,6 @@ jobs:
             artifacts/prism-applications/
             artifacts/normal-prism-applications/
             artifacts/pyramid-angle-applications/
+            artifacts/pyramid-comparison-applications/
           retention-days: 14
           if-no-files-found: error

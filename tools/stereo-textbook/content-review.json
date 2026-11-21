@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T16:44:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 533, points 52–62 and all chapter V self-checks, with 870 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T17:20:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 537, points 52–62 and all chapter V self-checks, with 875 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1414,6 +1414,20 @@
       ],
       "evidence": "tools/stereo-textbook/pyramid-angle-applications.json",
       "mathematicalReport": "tools/stereo-textbook/pyramid-angle-applications.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T17:20:00Z",
+      "scope": "Pyramid heights, adjacent and opposite pairs of equal edges, and midheight frustum slices, exercises 534–537",
+      "cardIds": [
+        "ex-main-0534",
+        "ex-main-0535",
+        "ex-main-0536-a",
+        "ex-main-0536-b",
+        "ex-main-0537"
+      ],
+      "evidence": "tools/stereo-textbook/pyramid-comparison-applications.json",
+      "mathematicalReport": "tools/stereo-textbook/pyramid-comparison-applications.test.cjs"
     }
   ],
   "cards": [
@@ -4896,6 +4910,26 @@
     {
       "id": "ex-main-0533",
       "sha256": "d17d75b173ecc15f22887ef544114663c6705f0c4194cd954c4eb73af266cfa9"
+    },
+    {
+      "id": "ex-main-0534",
+      "sha256": "b0f889e00d76912c60e8ef84e5c63b4844ed952328bb1f72189be10bf3c898d8"
+    },
+    {
+      "id": "ex-main-0535",
+      "sha256": "34685801326c86be23efd5c4a6f8df0d95299148a0956849385ee6c2eb0a1293"
+    },
+    {
+      "id": "ex-main-0536-a",
+      "sha256": "03d08f7cc683ec100b3c3754ac000f5801a83812ace2dd00b411f683480e8e85"
+    },
+    {
+      "id": "ex-main-0536-b",
+      "sha256": "1cbf7f13fd88ee0c857478aa61804af6483f20cc1c0e3ff1609706cbfdc7799f"
+    },
+    {
+      "id": "ex-main-0537",
+      "sha256": "801ccf0c7b39ba7c7b82064b95f078f575ad48aa890a2e7a4ed388258e2c691b"
     }
   ]
 }
