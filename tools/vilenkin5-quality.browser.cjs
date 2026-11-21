@@ -169,7 +169,7 @@ const server=http.createServer((req,res)=>{
         assert.match(await page.locator('#model svg').textContent(),/3003/);assert.equal(await page.locator('[data-v5-param=zone]').inputValue(),'1');
       }
       if(id==='v5f-printed-1-99'){
-        await page.locator('[data-v5-param=stage]').selectOption('2');await page.locator('[data-v5-param=tint]').selectOption('1');assert.equal(await page.locator('#model svg polygon').count(),7);
+        await page.locator('[data-v5-param=stage]').selectOption({value:'2'});await page.locator('[data-v5-param=tint]').selectOption('1');assert.equal(await page.locator('#model svg polygon').count(),7);
         await page.locator('[data-v5-param=shift]').selectOption('1');await page.reload();assert.equal(await page.locator('#model svg polygon').count(),2);assert.equal(await page.locator('[data-v5-param=stage]').inputValue(),'2');
       }
       if(id==='v5f-printed-1-95'){
