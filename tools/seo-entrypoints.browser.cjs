@@ -75,8 +75,9 @@ async function checkVilenkinEntrances(page, origin, javaScriptEnabled) {
     assert(lesson.startsWith(`v${grade}f-`), `${id}: expected a lesson from this course`);
     const savedUrl = `${origin}/school/index.html?course=${id}#lesson/${lesson}`;
     await Promise.all([page.waitForURL(savedUrl), next.click()]);
-    await page.getByRole('button', { name: 'Тренировка', exact: true }).click();
-    await page.locator('#answer').fill('ошибочный ответ');
+    await page.locator('[data-cmd="mode"][data-value="practice"]').click();
+    // A recognized, wrong number records a mathematical attempt; a format error does not.
+    await page.locator('#answer').fill('-999');
     await page.getByRole('button', { name: 'Проверить', exact: true }).click();
     const savedAttempt = () => page.evaluate(() =>
       JSON.parse(localStorage.getItem(window.WorkshopState.KEY)).events.at(-1));

@@ -73,6 +73,24 @@
       answer:{...lesson.answer,prompt:'Запиши вычисление и объясни, почему построенный отрезок перпендикулярен обеим прямым.'}};
   }
 
+  function addBookBoardLink() {
+    if (!root.document || !/^\/geometry-course\/textbook\/(?:index\.html)?$/.test(root.location.pathname)) return;
+    const nav = root.document.querySelector('.course-nav');
+    const app = root.document.getElementById('textbook-app');
+    if (!nav || !app) return;
+    const link = root.document.createElement('a');
+    link.id = 'textbook-board-link';
+    link.textContent = 'Открыть на общей доске';
+    const update = () => {
+      link.href = '/trainers/trainer-board.html?trainer=' + encodeURIComponent('/geometry-course/textbook/' + root.location.hash);
+    };
+    update();
+    nav.appendChild(link);
+    root.addEventListener('hashchange', update);
+    new root.MutationObserver(update).observe(app, { childList: true, subtree: true });
+  }
+  addBookBoardLink();
+
   const cards=new Map([['atanasyan-7-9-main-488-part-1',thales],
     ['merz-ex-10-032',commonPerpendicular],['merz-ex-10-033',commonPerpendicular]]);
   root.GeometryStepViews={prepare(bundle){

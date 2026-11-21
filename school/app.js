@@ -41,8 +41,8 @@
  if(readyState())startWorkshop(window.WorkshopState);else loadState();
  function startWorkshop(S){
  main.dataset.workshopBoot='ready';
- var C=window.WorkshopCurriculum,M=window.WorkshopMath,ids=C.lessons.map(function(l){return l.id;});
- var boardFrame=window.self!==window.top&&(/^(?:#lesson\/(?:m9|v[56]f-)|#(?:m9-check|m9-unit|v[56]-unit)\/|#course\/(?:makarychev9|vilenkin[56])$)/.test(location.hash)||['makarychev9','vilenkin5','vilenkin6'].includes(new URLSearchParams(location.search).get('course')));
+ var C=window.WorkshopCurriculum,M=window.WorkshopMath,ids=C.lessons.map(function(l){return l.id;}),V5Q=window.Vilenkin5Quality;
+ var boardFrame=document.body.hasAttribute('data-vilenkin5-board')||window.self!==window.top&&(/^(?:#lesson\/(?:m9|v[56]f-)|#(?:m9-check|m9-unit|v[56]-unit)\/|#course\/(?:makarychev9|vilenkin[56])$)/.test(location.hash)||['makarychev9','vilenkin5','vilenkin6'].includes(new URLSearchParams(location.search).get('course')));
  var restored=boardFrame?{state:S.blank(),warning:''}:S.load(localStorage,ids),state=restored.state,blocked=restored.blocked||false,session=null,returns=[],filter='',area='',teacher=S.teacherBlank(),filePurpose='',activeGroup='',assignmentCode='',flash='',teacherBlocked=false,lastDiagnostic=null;
  // A bounded history must not freeze practice at one seed after 3000 answers.
  // Remember the last practice seed before opening the lesson's explanation.
@@ -62,9 +62,11 @@
   return session&&isVilenkin(session.id)||returns.some(function(parent){return isVilenkin(parent.id);});
  }
  function forgetVilenkinSession(){if(hasVilenkinSession()){session=null;returns=[];}}
- function personalVilenkin(){return window.self===window.top&&!state.assignment&&!returns.length&&session&&isVilenkin(session.id)&&!session.diagnostic;}
+ function canUsePersonalVilenkin(){return window.self===window.top&&!boardFrame&&!state.assignment&&!returns.length;}
+ function personalVilenkin(){return canUsePersonalVilenkin()&&session&&isVilenkin(session.id)&&!session.diagnostic;}
  function saveLesson(){
   clearTimeout(draftTimer);
+  if(V5Q&&session&&C.byId[session.id]?.v5Course)V5Q.checkpoint(session);
   if(personalVilenkin()){
    S.checkpointVilenkin(state,session);
    session.dirtyInput=false;
@@ -76,7 +78,23 @@
   save();
  }
  function flushDraftInput(){if(session&&session.dirtyInput)saveLesson();}
- function savedVilenkin(key){return window.self===window.top&&!state.assignment?S.restoreVilenkin(state,key,M):null;}
+ function savedVilenkin(key){if(!canUsePersonalVilenkin())return null;return V5Q&&(key==='vilenkin5'||C.byId[key]?.v5Course)&&V5Q.restore(key)||S.restoreVilenkin(state,key,M);}
+ function reconcileVilenkinQuality(draft){
+  if(!canUsePersonalVilenkin())return null;
+  if(!state.vilenkinDrafts[draft.id])return draft;
+  // The canonical workshop draft owns generator compatibility and run evidence.
+  // A richer scene must not hide an incompatible imported task or start a new run.
+  var previous=S.restoreVilenkin(state,draft.id,M);
+  if(!previous)return null;
+  if(previous.mode!==draft.mode||previous.seed!==draft.seed)return draft;
+  var detail=draft.v5Detail;
+  if(detail){
+   if(draft.step!==previous.step||!previous.attempt)detail.firstAttempt=null;
+   if(detail.firstWrong&&detail.firstWrong.step>previous.step)detail.firstWrong=null;
+   detail.atStep=previous.step;
+  }
+  return Object.assign(draft,previous,{v5Detail:detail});
+ }
  function vilenkinCourseAction(course,next){
   var draft=savedVilenkin(course);
   var heading=draft?'Твоя сохранённая задача':'Твой следующий шаг';
@@ -87,7 +105,7 @@
  function saveTeacher(){if(boardFrame)return;if(teacherBlocked)throw Error('Сначала восстановите кабинет из корректной копии, чтобы не затереть повреждённую запись.');try{localStorage.setItem(S.TEACHER,JSON.stringify(teacher));}catch(e){notice.textContent='Кабинет не удалось сохранить. Скачайте его резервную копию.';}}
  function download(name,data,raw){var a=document.createElement('a'),url=URL.createObjectURL(new Blob([raw?data:JSON.stringify(data,null,2)],{type:'application/json'}));a.href=url;a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);}
  function routeIds(){return state.route==='5'?C.grade5:state.route==='6'?C.grade6:ids;}
- function enterBoardFrame(){if(window.self!==window.top&&!boardFrame){boardFrame=true;state=S.blank();session=null;returns=[];practiceSeeds=Object.create(null);teacher=S.teacherBlank();teacherBlocked=false;activeGroup='';assignmentCode='';blocked=false;}}
+ function enterBoardFrame(){if((window.self!==window.top||document.body.hasAttribute('data-vilenkin5-board'))&&!boardFrame){boardFrame=true;state=S.blank();session=null;returns=[];practiceSeeds=Object.create(null);teacher=S.teacherBlank();teacherBlocked=false;activeGroup='';assignmentCode='';blocked=false;}}
  function nextSkill(){var list=state.assignment?state.assignment.skills:activeCourse?(C.pathById[activeCourse].coreIds||C.pathById[activeCourse].ids):routeIds();return list.find(function(id){return !state.skills[id]||state.skills[id].checks.length<2;})||list[0];}
  function stats(){return {learned:ids.filter(function(id){return state.skills[id]&&state.skills[id].learned>0;}).length,independent:ids.filter(function(id){return state.skills[id]&&state.skills[id].checks.length>=2;}).length,retained:ids.filter(function(id){return state.skills[id]&&state.skills[id].reviews>0;}).length};}
  function routeSelect(){return '<label>Маршрут <select id="route"><option value="5" '+(state.route==='5'?'selected':'')+'>5 класс</option><option value="6" '+(state.route==='6'?'selected':'')+'>6 класс</option><option value="all" '+(state.route==='all'?'selected':'')+'>Все темы</option></select></label>';}
@@ -113,6 +131,7 @@
  function v5Course(p){
   enterBoardFrame();selectCourse(p.id);var next=nextSkill(),done=p.ids.filter(function(id){return state.skills[id]&&state.skills[id].checks.length>=2;}).length;
   main.innerHTML='<a href="#courses">← Все курсы</a><section class="v6-hero v5-hero"><p class="eyebrow">Виленкин · 5 класс · 2023 · две части</p><h1>Понимать. Пробовать.<br>Решать самому.</h1><p class="lead">'+p.ids.length+' подробных занятий. Собирай числа, исследуй дроби, строй фигуры и объясняй каждый шаг.</p><div class="v6-summary"><span><b>51</b> пункт учебника</span><span><b>8</b> действий с дробями</span><span><b>5 → 6</b> связанный маршрут</span></div></section><section class="panel featured">'+vilenkinCourseAction(p.id,next)+button('Определить пробелы','course-diagnostic',p.id,'quiet')+boardLink('#course/vilenkin5')+'</div><p>'+done+' из '+p.ids.length+' навыков прошли самостоятельную проверку.</p><progress max="'+p.ids.length+'" value="'+done+'" aria-label="Самостоятельно проверенные навыки"></progress></section>'+v5Achievements(p)+'<section class="panel"><h2>Быстрый вход в дроби</h2><div class="v5-fraction-links">'+[['fraction-same-add','Обыкновенные: +'],['fraction-same-sub','Обыкновенные: −'],['fraction-multiply','Обыкновенные: ×'],['fraction-divide','Обыкновенные: ÷'],['decimal-add','Десятичные: +'],['decimal-subtract','Десятичные: −'],['decimal-multiply','Десятичные: ×'],['decimal-divide','Десятичные: ÷']].map(function(x){return '<a href="#lesson/v5f-'+x[0]+'">'+x[1]+'</a>';}).join('')+'</div><p>Действия сначала видны на модели, затем выполняются по шагам и самостоятельно.</p></section><section class="panel"><label for="v5-search">Найти занятие<input type="search" id="v5-search" placeholder="Например: размен, запятая, уравнение"></label><div id="v5-search-results" aria-live="polite"></div></section>'+p.chapters.map(function(ch,i){return '<section class="section"><p class="eyebrow">Раздел '+(i+1)+'</p><h2>'+esc(ch[0])+'</h2><div class="v6-unit-grid">'+p.units.filter(function(u){return u.point>=ch[1]&&u.point<=ch[2];}).map(function(u){return '<a class="v6-unit-card v5-unit-card" href="#v5-unit/'+u.point+'"><span class="badge">'+(u.point<=51?'Пункт '+u.point:u.point===52?'Применяем знания':'Дополнительно')+'</span><h3>'+esc(u.title)+'</h3><p>'+u.ids.length+' занятий</p><span>Открыть →</span></a>';}).join('')+'</div></section>';}).join('')+'<section class="panel"><h2>Продолжаем в шестом классе</h2><p>В уроках шестого класса есть кнопки возврата к конкретной основе пятого. При таком переходе сохраняется текущий шаг и введённый ответ.</p><a class="button" href="#course/vilenkin6">Открыть Виленкина 6 →</a></section><p class="tiny">Авторские объяснения и упражнения по 51 пункту учебника. Это не сборник решений каждого номера. Проценты и среднее вынесены в дополнительный мост к шестому классу. Прогресс хранится в этом браузере; резервная копия доступна в разделе «Мой прогресс».</p>';
+  if(V5Q)V5Q.courseView(main,p);
   document.getElementById('v5-search').oninput=function(e){var q=e.target.value.trim().toLowerCase();document.getElementById('v5-search-results').innerHTML=q.length<2?'':p.ids.filter(function(id){var l=C.byId[id];return (l.title+' '+l.explanation+' пункт '+l.point).toLowerCase().includes(q);}).map(function(id){return '<p><a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a></p>';}).join('');};
  }
  function v5Unit(point){enterBoardFrame();var p=C.pathById.vilenkin5,u=p&&p.units[Number(point)-1];if(!u)return course('vilenkin5');selectCourse('vilenkin5');main.innerHTML='<a href="#course/vilenkin5">← Весь курс Виленкина 5</a><p class="eyebrow section">'+(u.point<=51?'Пункт '+u.point+' · часть '+u.part+' · с. '+u.page:'Практикум')+'</p><h1>'+esc(u.title)+'</h1><p class="lead">Смысл → модель → шаги решения → новая самостоятельная задача.</p><div class="skill-list">'+u.ids.map(skillRow).join('')+'</div>'+boardLink('#v5-unit/'+u.point)+(u.point<p.units.length?'<p><a href="#v5-unit/'+(u.point+1)+'">Следующий пункт →</a></p>':'');}
@@ -157,6 +176,7 @@
   flushDraftInput();
   if(isVilenkin(id)||C.byId[id].m9Course||/^m9-\d{2}$/.test(id))enterBoardFrame();
   opts=opts||{};
+  if(opts.qualityResume&&V5Q&&C.byId[id].v5Course&&canUsePersonalVilenkin()){var previous=V5Q.restore(id,mode);if(previous)return openVilenkin(previous);}
   if(opts.resume&&!returns.length&&isVilenkin(id)){
    var saved=savedVilenkin(id);
    if(saved)return openVilenkin(saved);
@@ -180,7 +200,7 @@
   session=draft;
   if(draft.mode==='practice')practiceSeeds[draft.id]=draft.seed;
   state.last={skill:draft.id,mode:draft.mode,seed:draft.seed};
-  saveLesson();
+  if(!V5Q||!V5Q.isLegacy(draft))saveLesson();
   if(location.hash!=='#lesson/'+draft.id)location.hash='#lesson/'+draft.id;else lesson();
  }
  function steps(){return session.task.steps.concat([{prompt:'Теперь запиши окончательный ответ к задаче.',answer:session.task.answer,answerFormat:session.task.answerFormat,why:'Сопоставь результат с условием и единицами.',v6Full:session.task.v6Full,errors:session.task.errors,hints:[session.task.m9Full?'Сверь результат с вопросом. Все корни и допустимые границы учтены?':'Сопоставь ответ с вопросом: часть, целое, значение или изменение?','Используй результаты предыдущих шагов. Проверь знак и единицы.']}]);}
@@ -205,18 +225,20 @@
    (session.diagnostic&&!session.correct?button('Пока не знаю','skip','','quiet'):'')+'</div><div id="help"></div></section>'+
    ((l.v6Course||l.v5Course||l.m9Course)&&l.next?'<section class="panel"><p class="eyebrow">Дальше по маршруту</p><a href="#lesson/'+l.next+'">'+esc(C.byId[l.next].title)+' →</a><p class="tiny">Лучше переходить после тренировки и самостоятельной проверки.</p></section>':'')+(l.edition==='v6'&&C.pathById.vilenkin6.fullCourse?'<section class="panel featured"><h2>Этот пункт теперь разобран подробнее</h2><a href="#v6-unit/'+Number(l.id.slice(-2))+'">Открыть подробные занятия →</a><p>Результат этого обзорного урока сохранится отдельно.</p></section>':'')+(l.related&&l.related.length?'<section class="panel"><h2>Связано с этим уроком</h2><p>Открой объяснение или другой способ решения. Кнопка возврата вернёт тебя к текущему шагу.</p><div class="row">'+l.related.map(function(id){return button(esc(C.byId[id].title),'prerequisite',id,'quiet');}).join('')+'</div></section>':'')+
    '<section class="panel"><h2>Если не хватает основы</h2><p class="tiny">Открой нужную тему и вернись на этот же шаг. Условие и введённый ход работы сохранятся на время перехода.</p><div class="row">'+(l.requires.length?l.requires.map(function(id){return button(esc(C.byId[id].title),'prerequisite',id,'quiet');}).join(''):'<p>Для этого занятия специальных предварительных тем нет.</p>')+'</div></section>';
-  if(isLearn){var model=t.model;if(t.m9Full){model=Object.assign({},t.model,{state:session.modelState,onState:function(value){session.modelState=value;save();}});}window.WorkshopModels.mount(document.getElementById('model'),model);}
+  if(isLearn){var model=t.model;if(t.m9Full){model=Object.assign({},t.model,{state:session.modelState,onState:function(value){session.modelState=value;save();}});}if(l.v5Course&&V5Q)V5Q.mountModel(document.getElementById('model'),l,session);else window.WorkshopModels.mount(document.getElementById('model'),model);}
   var input=document.getElementById('answer');
   if(session.savedInput&&(!session.correct||t.v6Full))input.value=session.savedInput;
   if(isVilenkin(l.id)){
    if(session.incompatibleDraft)document.getElementById('task-panel').insertAdjacentHTML('afterbegin','<p id="previous-vilenkin-draft">Открыт новый вариант задачи. Перед началом работы можно <a href="#progress">скачать резервную копию с прежним черновиком</a>.</p>');
    var level=session.hintLevels&&session.hintLevels[isLearn?session.step:'check'];
    if(level)document.getElementById('help').innerHTML=vilenkinHint(isLearn?current:t.steps[0],level);
-   if(personalVilenkin()){
-    input.maxLength=240;
+   if(personalVilenkin()||V5Q&&l.v5Course){
+    input.maxLength=240;var inputSession=session;
     input.oninput=function(){
+     if(V5Q&&l.v5Course){if(inputSession!==session||!input.isConnected)return;if(session.correct){input.value=session.savedInput||'';return;}input.value=V5Q.safeDraft(input.value,240);}
      session.savedInput=input.value;
      session.dirtyInput=true;
+     if(V5Q&&l.v5Course){saveLesson();return;}
      clearTimeout(draftTimer);
      draftTimer=setTimeout(flushDraftInput,300);
     };
@@ -225,11 +247,13 @@
   document.getElementById('answer-form').onsubmit=function(e){e.preventDefault();check(document.getElementById('answer').value);};
   if(t.v6Full&&boardFrame)main.querySelector('.lesson-head').insertAdjacentHTML('beforeend','<p class="tiny">На доске: общий разбор. Личный прогресс в этом окне не читается и не записывается.</p>');
   if(t.m9Full&&window.WorkshopM9Learning)window.WorkshopM9Learning.bind(main,l,session,save,M,answerText);
+  if(l.v5Course&&V5Q)V5Q.decorate(main,l,session);else if(V5Q)V5Q.routeRendered(main);
   if(/^m9-\d{2}$/.test(l.id)){main.querySelector('.lesson-head').insertAdjacentHTML('beforeend','<p><a href="#m9-unit/'+Number(l.id.slice(-2))+'">Подробный пункт: новые занятия и самостоятельная практика →</a></p>');}
   if(l.m7Course){var mp=Number(l.source?.point);main.querySelector('.lesson-head').insertAdjacentHTML('beforeend','<p><a href="makarychev7/'+(mp>=1&&mp<=46?'#lesson/p'+String(mp).padStart(2,'0'):'')+'">Полный курс Макарычева 7 и тренажёры →</a></p>');}
  }
  function check(value){
   if(session.correct)return;
+  if(V5Q&&C.byId[session.id]?.v5Course){value=V5Q.safeDraft(value,240);var answerInput=document.getElementById('answer');if(answerInput)answerInput.value=value;var issue=V5Q.inputIssue(String(value),session.mode==='learn'?steps()[session.step]:session.task);if(issue){session.savedInput=String(value).slice(0,400);session.message=issue;saveLesson();lesson();return;}}
   if(!String(value).trim()){
    var form=document.getElementById('answer-form'),input=document.getElementById('answer'),note=document.getElementById('answer-required');
    if(!note){note=document.createElement('p');note.id='answer-required';note.setAttribute('role','status');form.appendChild(note);input.addEventListener('input',function clear(){note.remove();},{once:true});}
@@ -237,12 +261,14 @@
   }
   session.savedInput=value;var m9Target=session.mode==='learn'?steps()[session.step]:session.task;if(session.task.m9Full&&window.WorkshopM9Learning&&(!window.WorkshopM9Learning.readable(value,m9Target,M)||!M.accepts(value,m9Target)&&m9Target.answerFormat&&M.equal(value,m9Target.answer))){session.message=(window.WorkshopM9Learning.readable(value,m9Target,M)?'Значение верное. Измени только запись ответа: ':'Запись пока не распознана. Это не математическая ошибка: ')+formatNote(m9Target);session.attemptLog=session.attemptLog||[];session.attemptLog.push({value:value.slice(0,400),step:session.step,correct:false,assisted:session.assisted,kind:'format',time:Date.now()});if(session.attemptLog.length>20)session.attemptLog.shift();save();lesson();return;}session.attempt++;
   var isLearn=session.mode==='learn',target=isLearn?steps()[session.step]:session.task,correct=M.accepts(value,target);
+  if(V5Q&&C.byId[session.id]?.v5Course)V5Q.recordAttempt(session,value,target,correct);
   if(isVilenkin(session.id)&&isLearn&&correct){
    session.answers=session.answers||[];
    session.answers[session.step]=value;
   }
   session.correct=correct;if(session.task.m9Full){session.answers=session.answers||[];if(correct&&isLearn)session.answers[session.step]=value;session.attemptLog=session.attemptLog||[];if(!session.firstAttempt)session.firstAttempt={value:value.slice(0,400),correct:correct,assisted:session.assisted};session.attemptLog.push({value:value.slice(0,400),step:session.step,correct:correct,assisted:session.assisted,time:Date.now()});if(session.attemptLog.length>20)session.attemptLog.shift();}
   session.message=correct?(isLearn?steps()[session.step].why:'Ответ верный. '+(session.assisted?'Использована помощь.':session.exposed?'Условие уже было знакомо.':session.attempt>1?'Решено после исправления.':'Получилось с первой попытки без помощи.')):(target.answerFormat&&M.equal(value,target.answer)?'Значение верное, теперь выполни требуемое преобразование. '+formatNote(target):'Пока не совпало. Проверь смысл действия, знак и единицы. Подсказка поможет разобрать именно этот шаг.');
+  if(V5Q&&boardFrame&&C.byId[session.id]?.v5Course&&correct&&!isLearn)session.message='Верно. Совместный разбор.';
   session.remedy='';if(!correct&&session.task.v6Full){var err=(target.errors||[]).find(function(e){return M.equal(value,e.value);});if(err){session.message=err.text;session.remedy=err.remedy&&C.byId[err.remedy]?err.remedy:'';}}
   if(!isLearn||session.step===steps().length-1){
    S.result(state,{skill:session.id,mode:session.mode,vilenkinRun:personalVilenkin()?session.vilenkinRun:undefined,correct:correct,assisted:session.assisted,exposed:session.exposed,attempt:session.attempt,time:Date.now(),fingerprint:S.fingerprint(session.id,session.task)});saveLesson();
@@ -272,7 +298,7 @@
   if(session.mode==='learn'&&session.step<steps().length-1){session.step++;session.remedy='';session.correct=false;session.message='';session.savedInput='';session.attempt=0;if(session.task.v6Full)saveLesson();return lesson();}
   if(session.diagnostic){var d=session.diagnostic;d.results.push({skill:session.id,correct:session.correct,independent:session.correct&&!session.assisted&&!session.exposed&&session.attempt===1});d.index++;if(d.index>=d.list.length){lastDiagnostic=d;session=null;location.hash='#diagnostic-result';return diagnosticResult();}return begin(d.list[d.index],'diagnostic',{seed:d.seed+d.index,diagnostic:d});}
   if(session.mode==='check'||session.mode==='review'){
-   var idx=session.checkIndex+1;if(idx>=3){if(personalVilenkin()){S.clearVilenkin(state,session.id);save();}flash='Проверка завершена. В прогрессе отдельно показаны самостоятельные успехи и работа с помощью.';session=null;location.hash='#progress';return;}
+   var idx=session.checkIndex+1;if(idx>=3){if(V5Q&&C.byId[session.id]?.v5Course)V5Q.finish(session);if(personalVilenkin()){S.clearVilenkin(state,session.id);save();}flash='Проверка завершена. В прогрессе отдельно показаны самостоятельные успехи и работа с помощью.';session=null;location.hash='#progress';return;}
    return begin(session.id,session.mode,{seed:session.seed+79,checkIndex:idx});
   }
   begin(session.id,'practice');
@@ -304,7 +330,7 @@
  document.getElementById('file-input').addEventListener('change',async function(e){
   var f=e.target.files[0];if(!f)return;if(f.size>3000000){notice.textContent='Файл слишком большой: предел 3 МБ.';return;}
   try{var data=JSON.parse(await f.text()),prepared;
-   if(filePurpose==='progress'){prepared=S.validate(data,ids);if(!confirm('Заменить прогресс только этой мастерской данными файла?'))return;state=prepared;forgetVilenkinSession();if(session?.task.m9Full)session=null;practiceSeeds=Object.create(null);if(state.last&&state.last.mode==='practice')practiceSeeds[state.last.skill]=state.last.seed;blocked=false;save();flash='Резервная копия загружена.';location.hash='#progress';progress();}
+   if(filePurpose==='progress'){var qualityCopy=V5Q?V5Q.validateStore(Object.hasOwn(data,'vilenkin5Quality')?data.vilenkin5Quality:{version:1,records:{},last:''}):null;prepared=S.validate(data,ids);if(!confirm('Заменить прогресс только этой мастерской данными файла?'))return;state=prepared;if(V5Q)V5Q.importState(qualityCopy);forgetVilenkinSession();if(session?.task.m9Full)session=null;practiceSeeds=Object.create(null);if(state.last&&state.last.mode==='practice')practiceSeeds[state.last.skill]=state.last.seed;blocked=false;save();flash='Резервная копия загружена.';location.hash='#progress';progress();}
    else if(filePurpose==='teacher'){prepared=S.validateTeacher(data,ids);if(!confirm('Заменить локальный кабинет преподавателя данными файла?'))return;teacher=prepared;teacherBlocked=false;activeGroup='';saveTeacher();teacherView();}
    else if(filePurpose==='report'){prepared=S.validateReport(data,ids);var g=getGroup();if(!g)throw Error('Сначала создайте группу.');var sameReport=function(r){return r.groupId===g.id&&r.data.alias===prepared.alias&&r.data.assignmentId===prepared.assignmentId;},existing=teacher.reports.find(sameReport);if(existing&&existing.data.createdAt>prepared.createdAt){notice.textContent='В кабинете уже есть более новый отчёт этого ученика по заданию. Сохранена более новая запись.';return;}var updatedReports=teacher.reports.filter(function(r){return !sameReport(r);});if(updatedReports.length>=300)throw Error('Достигнут предел 300 отчётов. Сохраните отдельную копию кабинета.');updatedReports.push({groupId:g.id,data:prepared});teacher.reports=updatedReports;saveTeacher();teacherView();}
    notice.textContent='';
@@ -314,16 +340,17 @@
  main.addEventListener('input',function(e){if(e.target.id==='book-search'){bookFilter=e.target.value;var caret=e.target.selectionStart;books();var field=document.getElementById('book-search');field.focus();try{field.setSelectionRange(caret,caret);}catch(ignore){}return;}if(e.target.id==='search'){filter=e.target.value;var pos=e.target.selectionStart;map();var input=document.getElementById('search');input.focus();input.setSelectionRange(pos,pos);}});
  main.addEventListener('click',function(e){
   var b=e.target.closest('[data-cmd]');if(!b)return;var cmd=b.dataset.cmd,val=b.dataset.value;
+  if(V5Q&&document.body.hasAttribute('data-vilenkin5-board')&&(['diagnostic','course-diagnostic'].includes(cmd)||cmd==='prerequisite'&&!C.byId[val]?.v5Course))return;
   try{
    if(cmd==='jump'){var target=document.getElementById(val);if(target){if(session?.task.m9Full&&val==='model'){var disclosure=target.closest('details');if(disclosure)disclosure.open=true;}target.scrollIntoView({block:'start'});if(val==='task-panel')document.getElementById('answer').focus({preventScroll:true});}}
    else if(cmd==='learn'){returns=[];begin(val,'learn',{resume:true});}
    else if(cmd==='resume-vilenkin'){var draft=savedVilenkin(val);if(draft)openVilenkin(draft);}
-   else if(cmd==='mode'){begin(session.id,val);}
+   else if(cmd==='mode'){if(V5Q&&C.byId[session.id]?.v5Course&&['check','review'].includes(session.mode)&&!session.correct&&val!==session.mode){session.assisted=true;saveLesson();}begin(session.id,val,{qualityResume:true});}
    else if(cmd==='review')begin(val,'review');
    else if(cmd==='next')next();
    else if(cmd==='hint')hint();
    else if(cmd==='show-step'){session.assisted=true;var st=session.mode==='learn'?steps()[session.step]:session.task.steps[0];document.getElementById('help').insertAdjacentHTML('beforeend','<p class="helper">Ответ к показанному шагу: <b>'+esc(answerText(st))+'</b>. '+esc(st.why||'')+'</p>');b.disabled=true;}
-   else if(cmd==='claim'){session.claimAnswered=true;document.getElementById('claim-feedback').textContent=(String(C.byId[session.id].claimTrue)===val?'Да, верно определено. ':'Посмотри ещё раз на объяснение. ')+C.byId[session.id].explanation;}
+   else if(cmd==='claim'){if(V5Q&&C.byId[session.id]?.v5Course)V5Q.setClaim(session,val);session.claimAnswered=true;document.getElementById('claim-feedback').textContent=(String(C.byId[session.id].claimTrue)===val?'Да, верно определено. ':'Посмотри ещё раз на объяснение. ')+C.byId[session.id].explanation;}
    else if(cmd==='prerequisite'){session.savedInput=document.getElementById('answer').value;session.assisted=true;if(personalVilenkin())saveLesson();returns.push(session);begin(val,'learn');}
    else if(cmd==='return'){session=returns.pop();if(!session)return;if(personalVilenkin()){state.last={skill:session.id,mode:session.mode,seed:session.seed};saveLesson();}location.hash='#lesson/'+session.id;lesson();document.getElementById('answer').value=session.savedInput||'';}
    else if(cmd==='diagnostic')diagnostic();
@@ -331,7 +358,7 @@
    else if(cmd==='skip'){S.result(state,{skill:session.id,mode:session.mode,correct:false,assisted:false,exposed:session.exposed,attempt:1,time:Date.now(),fingerprint:S.fingerprint(session.id,session.task)});save();next();}
    else if(cmd==='raw-progress')download('MathExam-progress-recovery.txt',localStorage.getItem(S.KEY)||'',true);
    else if(cmd==='raw-teacher')download('MathExam-teacher-recovery.txt',localStorage.getItem(S.TEACHER)||'',true);
-   else if(cmd==='backup')download('MathExam-progress.json',state);
+   else if(cmd==='backup')download('MathExam-progress.json',V5Q?Object.assign({},state,{vilenkin5Quality:V5Q.exportState()}):state);
    else if(cmd==='import-progress')fileLoad('progress');
    else if(cmd==='report'){var reportProgress=Object.assign({},state);delete reportProgress.vilenkinDrafts;download('MathExam-report.json',{schema:'mathexam-report',version:1,alias:document.getElementById('alias').value.trim(),assignmentId:state.assignment?state.assignment.id:'',createdAt:Date.now(),progress:reportProgress});}
    else if(cmd==='unblock'){if(confirm('Начать новую запись прогресса мастерской? Повреждённая запись будет заменена.')){blocked=false;save();notice.textContent='';progress();}}
@@ -348,11 +375,14 @@
  });
  function render(){
   main.removeAttribute('data-m9-lesson');
+  if(V5Q)V5Q.destroyModel();
   var hash=location.hash.slice(1)||'home',parts=hash.split('/');
+  if(V5Q&&V5Q.memoryOnly&&document.body.hasAttribute('data-vilenkin5-board')){if(!V5Q.validRoute('#'+hash)){history.replaceState(null,'',location.pathname+location.search+'#course/vilenkin5');hash='course/vilenkin5';parts=hash.split('/');}if(parts[0]!=='lesson'){state=S.blank();session=null;returns=[];}}
   document.querySelectorAll('[data-nav]').forEach(function(a){a.classList.toggle('active',a.dataset.nav===parts[0]||(parts[0]==='lesson'&&a.dataset.nav==='map'));});
   if(parts[0]==='lesson'){if(!C.byId[parts[1]]){location.hash='#map';return;}if(!session||session.id!==parts[1]){if(returns.length&&hasVilenkinSession())returns=[];return begin(parts[1],'learn',{resume:true});}lesson();}
   else if(parts[0]==='m9-check'){enterBoardFrame();if(C.byId[parts[1]])begin(parts[1],'check');else location.hash='#courses';}
   else if(parts[0]==='m9-unit')m9Unit(parts[1]);else if(parts[0]==='v5-unit')v5Unit(parts[1]);else if(parts[0]==='v6-unit')v6Unit(parts[1]);else if(parts[0]==='courses')courses();else if(parts[0]==='course')course(parts[1]);else if(parts[0]==='map')map();else if(parts[0]==='books')books();else if(parts[0]==='book')book(parts[1]);else if(parts[0]==='progress')progress();else if(parts[0]==='review')review();else if(parts[0]==='teacher')teacherView();else if(parts[0]==='concept')concept();else if(parts[0]==='diagnostic-result')diagnosticResult();else home();
+  if(V5Q)V5Q.routeRendered(main);
   if(parts[0]==='course'&&['7','8','makarychev7-start'].includes(parts[1])){var nativeGrade=parts[1]==='8'?'8':'7';main.insertAdjacentHTML('afterbegin','<p class="panel"><a href="makarychev'+nativeGrade+'/">Макарычев '+nativeGrade+': полный курс и тренажёры →</a><br><span class="tiny">Работа в этом обзорном маршруте сохранена отдельно.</span></p>');}
  }
  document.querySelector('.skip[href="#main"]')?.addEventListener('click',function(event){
@@ -368,6 +398,7 @@
  if(exerciseReturn&&/^\d{1,3}\.\d{1,3}$/.test(exerciseReturn)){
   var returnLink=document.createElement('a');returnLink.className='button quiet';returnLink.href='m9-exercises/index.html#'+exerciseReturn.replace('.','/');returnLink.textContent='← Вернуться к задаче и сохранённому шагу';main.parentNode.insertBefore(returnLink,main);
  }
+ if(V5Q)V5Q.connect({getSession:function(){return session;},canUsePersonal:canUsePersonalVilenkin,canPersistSession:function(draft){return draft===session&&personalVilenkin();},reconcilePersonal:reconcileVilenkinQuality,save:saveLesson,applyScene:function(route,draft){clearTimeout(draftTimer);session=draft;returns=[];if(draft?.mode==='practice')practiceSeeds[draft.id]=draft.seed;if(boardFrame)state=S.blank();activeCourse='vilenkin5';history.replaceState(null,'',location.pathname+location.search+route);render();}});
  render();
  }
 })();

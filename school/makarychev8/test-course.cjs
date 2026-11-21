@@ -35,6 +35,13 @@ assert(C.check('3; -2',{answer:'-2;3',kind:'set'}));assert(!C.check('3;3',{answe
 assert(C.check('x^2 − 4',{answer:'x²-4',kind:'text'}));assert(!C.check('x²+4',{answer:'x²-4',kind:'text'}));
 assert(C.check('5/(6*x)',{answer:'5/(6x)',kind:'text'}));assert(C.check('x^3/(8*y^3)',{answer:'x³/(8y³)',kind:'text'}));assert(!C.check('2*3',{answer:'23',kind:'text'}));
 assert(!C.check('2abc',{answer:'2',kind:'number'}));assert(!C.check('1e309',{answer:'1',kind:'number'}));
+for(const id of ['p05','p06']) {
+ const lesson=D.lessons.find(l=>l.id===id),refs=lesson.studyOrder.map(i=>lesson.tasks[i].source);
+ assert.equal(new Set(lesson.studyOrder).size,lesson.tasks.length,'all bookmarked indices appear once');
+ const names=refs.filter(r=>r.type==='textbook').map(r=>r.reference);
+ assert.deepEqual([...names],[...names].sort((a,b)=>a.localeCompare(b,'ru',{numeric:true})),'source order');
+ assert(refs.slice(names.length).every(r=>r.type==='authored'),'additional practice follows the book');
+}
 const equivalent=(answer,value)=>C.check(value,{kind:'text',answer,reducedExpression:true});
 assert(equivalent('(2*b-a)/7','(-a+2b)/7'));
 assert(equivalent('(x-5)*(x-4)/6','(x^2-9x+20)/6'));
