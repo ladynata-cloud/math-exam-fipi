@@ -308,7 +308,7 @@ test('read both opening sections in print order while old links retain their tas
  try {
   const parts=[
    {part:2,id:'p15',first:32,subparts:['аб','','абвгдежз','','абвг','абвгдежз','абвг','абвгде','12','123','абвгде','1234','1234','12','12345','1234','123456','','абвг']},
-   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб','абв','аб','аб']},
+   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб','абв','аб','аб','абвг','','абвг']},
   ];
   for(const {part,id,first,subparts} of parts) {
    const lesson=f.w.PetersonCourse.lessons.find(item=>item.id===id);
@@ -330,6 +330,39 @@ test('read both opening sections in print order while old links retain their tas
    assert.equal(f.q('[aria-current="step"]').dataset.index,'0');
    assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
   }
+ }finally{f.close();}
+});
+
+test('oral signs, a chained calculation and unequal travel times use genuinely different data',()=>{
+ const f=fixture(null,null,true);
+ try{
+  for(let i=56;i<=59;i++){
+   f.nav('#lesson/p33/'+i);f.click('[data-lesson-help="model"] > summary');
+   const ids=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id),task=f.w.PetersonCourse.lessons.find(l=>l.id==='p33').tasks[i];
+   for(const data of [0,1])for(let item=0;item<4;item++){
+    f.event(ids[0],String(item),'change');f.event(ids[1],String(data),'change');assert.equal(f.q(ids[2]).value,'0');
+    assert(f.q('#model .pm-equation').textContent.endsWith('= ?'));
+    f.event(ids[2],'1','change');
+    assert(f.q('#model .pm-equation').textContent.endsWith('= '+(data?task.oralStudy.freshAnswers:task.oralStudy.answers)[item]));
+   }
+  }
+  f.nav('#lesson/p33/60');f.click('[data-lesson-help="model"] > summary');
+  const ids=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);
+  for(const [i,answer] of ['40','6/5','-7/5','-9/2','-2','16'].entries()){
+   f.event(ids[0],String(i),'change');
+   for(let step=0;step<=4;step++){
+    f.event(ids[1],String(step),'change');assert.equal(f.d.querySelectorAll('#model tbody tr').length,step+1);
+   }
+   assert.equal(f.q('#model tbody tr:last-child td:last-child').textContent,answer);
+  }
+  f.event(ids[2],'1','change');assert.equal(f.d.querySelectorAll('#model svg polygon').length,1);
+  assert.equal(f.d.querySelectorAll('#model svg line').length,4);
+  f.nav('#lesson/p33/62');f.click('[data-lesson-help="model"] > summary');
+  const route=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);
+  assert.equal(f.d.querySelector('#model table'),null);
+  f.event(route[1],'1','change');assert(f.q('#model .pm-result').textContent.includes('75 м/мин'));
+  f.event(route[0],'1','change');assert.equal(f.d.querySelector('#model table'),null);assert.equal(f.q(route[1]).value,'0');
+  f.event(route[1],'1','change');assert(f.q('#model .pm-result').textContent.includes('60 м/мин'));
  }finally{f.close();}
 });
 

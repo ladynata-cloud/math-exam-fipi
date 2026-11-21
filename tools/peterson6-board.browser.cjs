@@ -675,6 +675,36 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
     assert.equal(secondInPrint.route, '#lesson/' + id + '/' + (index + 1));
   }
 
+  phase = 'chained calculations and unequal trip durations on the shared board';
+  await lesson(teacherFrame,'p33',60);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Буква',{exact:true}).selectOption('5');
+  await teacherFrame.getByLabel('Сколько действий выполнить',{exact:true}).selectOption('4');
+  await teacherFrame.getByLabel('Показать фигуру',{exact:true}).selectOption('1');
+  const letterState=await synchronized(teacherFrame,studentFrame,'four chained operations and the rhombus drawing');
+  assert.deepEqual(letterState.view.model.values,[5,4,1]);
+  assert.equal(await studentFrame.locator('#model tbody tr:last-child td:last-child').innerText(),'16');
+  assert.equal(await studentFrame.locator('#model svg line').count(),4);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-rhombus','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Буква',{exact:true}).selectOption('4');
+  assert.equal(await studentFrame.getByLabel('Сколько действий выполнить',{exact:true}).inputValue(),'0');
+  await studentFrame.getByLabel('Сколько действий выполнить',{exact:true}).selectOption('4');
+  await studentFrame.locator('#notebook').fill('Отметил четыре равные стороны ромба; у К получилось −2.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const independentRhom=await synchronized(studentFrame,teacherFrame,'new letter and a pupil drawing record');
+  await manualWithoutCredit(teacherFrame,'p33-t61',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,independentRhom,'restored alphabet chain and notebook');
+  await lesson(teacherFrame,'p33',62);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Авторские данные',{exact:true}).selectOption('1');
+  await teacherFrame.getByLabel('Показ расчёта',{exact:true}).selectOption('1');
+  await synchronized(teacherFrame,studentFrame,'five minutes and fifteen minutes have different weights');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/1200 м : 20 мин = 60 м\/мин/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-average-speed','#model table');
+
   phase = 'nested signs and a general remainder proof on both screens';
   await lesson(teacherFrame,'p33',51);
   await openModel(teacherFrame);
