@@ -23,6 +23,8 @@ for i,(c,part,expected_probes) in enumerate(zip(cards,subparts,probes,strict=Tru
         a,b=source_vectors[i];answer=tuple(map(int,c['answer']['accepted'][0].split(';')));assert answer==minus(b,a)
     else:
         assert c['answer']['mode']=='manual';assert len(c['statement']['givens'])==(5 if n==1022 else 8)
+    cases=[v['label'] for key,v in model['views'].items() if key.startswith('case-')]
+    assert len(cases)==len(set(cases))
     for key,v in model['views'].items():
         views+=1;raw=model['points'];suffix='__v'+v['points'][0].split('__v')[-1];o=raw['O'+suffix];u=raw['_unitX'+suffix][0]-o[0]
         assert u>0 and isclose(raw['_unitY'+suffix][1]-o[1],u)

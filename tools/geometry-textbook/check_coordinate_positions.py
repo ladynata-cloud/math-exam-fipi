@@ -29,6 +29,8 @@ for card,(n,part,pages,probes) in zip(cards,transcription,strict=True):
     if n in (1017,1020):assert card['answer']['accepted'][0]==('100;75' if n==1017 else '7;-3')
     elif not theory:assert card['answer']['mode']=='manual'
     model=card['visualization']['model'];scale=25 if n==1017 else 1
+    cases=[view['label'] for key,view in model['views'].items() if key.startswith('case-')]
+    assert len(cases)==len(set(cases))
     for key,view in model['views'].items():
         raw=model['points']; suffix='__v'+view['points'][0].split('__v')[1];O=raw['O'+suffix];unit=raw['_unitX'+suffix][0]-O[0]
         assert unit>0 and isclose(raw['_unitY'+suffix][1]-O[1],unit)

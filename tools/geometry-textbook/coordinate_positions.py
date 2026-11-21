@@ -49,7 +49,10 @@ def lesson(n, *, pages, frames, cases, unit='1 единица', part=None, **fie
             point[0] = 50 + (point[0]-center[0])*fit
             point[1] = 35 + (point[1]-center[1])*fit
     for name, label in model['labels'].items():
-        if label in ('X','Y'): model['labels'][name] = label.lower()
+        if label in ('X','Y'):
+            model['labels'][name] = label.lower()
+            # Put axis names on the outside of each axis, away from vertices on it.
+            model.setdefault('labelOffsets', {})[name] = [2,-3.5] if label=='X' else [-2.2,2.7]
     caption = f'Масштаб одной клетки — {unit}. Вправо возрастает x, вверх — y. Сверь положение каждой точки относительно осей.'
     entry['visualization']['caption'] = caption
     model['description'] = caption
@@ -86,7 +89,7 @@ def formulas():
 def axes():
     def triangle(x,y,full):
         pts={'A':(x,0),'B':(0,y)}
-        return panel('Треугольник на осях' if full else 'Две положительные полуоси',pts,'OA OB AB' if full else 'OA OB','',['AOB'])
+        return panel(f'Треугольник: OA={x}, OB={y}' if full else 'Две положительные полуоси',pts,'OA OB AB' if full else 'OA OB','',['AOB'])
     a=triangle(5,3,False); b=triangle(5,3,True); c=triangle(2,4,True)
     first=lesson(1016,part='а',pages=[255],question='Точки A и B лежат соответственно на положительных полуосях Ox и Oy. Найди координаты вершин треугольника ABO, если OA=5 и OB=3.',
         answer='A=(5;0), B=(0;3), O=(0;0). Первая точка имеет нулевую ординату, вторая — нулевую абсциссу.',
@@ -98,7 +101,7 @@ def axes():
     def rectangle(x,y,full):
         pts={'A':(x,0),'B':(0,y)}
         if full:pts['C']=(x,y)
-        return panel('Прямоугольник OACB' if full else 'Соседние стороны OA и OB',pts,'OA AC CB BO' if full else 'OA OB','',['AOB','OAC','ACB','CBO'] if full else ['AOB'])
+        return panel(f'Прямоугольник: a={x}, b={y}' if full else 'Соседние стороны OA и OB',pts,'OA AC CB BO' if full else 'OA OB','',['AOB','OAC','ACB','CBO'] if full else ['AOB'])
     a=rectangle(4,2,False);b=rectangle(4,2,True);c=rectangle(2,5,True)
     second=lesson(1016,part='б',pages=[255],question='Построй прямоугольник OACB. Точка A лежит на положительной полуоси Ox, B — на положительной полуоси Oy; OA=a, OB=b. Найди координаты четырёх вершин.',
         answer='O=(0;0), A=(a;0), C=(a;b), B=(0;b), где a и b положительны. У C такая же абсцисса, как у A, и та же ордината, что у B.',
@@ -144,7 +147,7 @@ def square():
 
 def isosceles():
     def drawing(a,h,full):
-        return panel('Проведи высоту из C' if full else 'Основание расположено на Ox',{'A':(-a,0),'B':(a,0),'C':(0,h)},'AB AC CB CO' if full else 'AB','',['AOC','BOC'] if full else [])
+        return panel(f'Основание {2*a}, высота {h}' if full else 'Основание расположено на Ox',{'A':(-a,0),'B':(a,0),'C':(0,h)},'AB AC CB CO' if full else 'AB','',['AOC','BOC'] if full else [])
     a=drawing(3,4,False);b=drawing(3,4,True);c=drawing(4,2,True)
     return lesson(1019,pages=[256],question='В равнобедренном ABC основание AB лежит на оси x, A левее O и B правее O. Высота CO лежит на положительной полуоси y. Найди координаты вершин, если AB=2a и CO=h.',
         answer='A=(−a;0), B=(a;0), C=(0;h). Высота из вершины равнобедренного треугольника делит основание на две равные части.',

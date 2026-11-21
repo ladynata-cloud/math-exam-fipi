@@ -73,8 +73,8 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
-  "geometry-course/textbook/data/coordinate-tables.json": "d5661a1ea96d1f5b1a1929353c038a62cfc33b34035b07b340ab687121f89ed9",
-  "geometry-course/textbook/data/coordinate-positions.json": "805d924552d8bf07225755d6ea5679d3c1ea6f63d079b7d53cdb40f95b980e90",
+  "geometry-course/textbook/data/coordinate-tables.json": "522e432e4012aa6f86ad222b937ff2d384102a00da9372c9b2d60a99f0955355",
+  "geometry-course/textbook/data/coordinate-positions.json": "ae2efb234da6b82a751bf54299112863d6fefdc31e51b4fbe5759bcf9371ad3f",
   "geometry-course/textbook/data/vector-length-problems.json": "42dd51007d5a151c356399a661b0bc6ad3d5b0d84fe7d2dba664563f21547316",
   "geometry-course/textbook/data/vector-extra-problems.json": "ad3db9e607fceb082635834128979a184590b15a191f75d5440aa1c314f08a27",
   "geometry-course/textbook/data/vector-chapter-review.json": "2f48803cc3c840225f1b9ce28deae063ad447acca7244b6de15e88310e3f25a0",
