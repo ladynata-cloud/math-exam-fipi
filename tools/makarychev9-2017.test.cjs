@@ -63,6 +63,31 @@ function answers(point,data) {
       const root=Array.from({length:20},(_,i)=>i+1).find(x=>x**c===a);
       return [root,root**b,1/(root**b)];
     }
+    case 12: {
+      const roots=Array.from({length:51},(_,i)=>i-25).filter(x=>x**4-a*x*x+b===0);
+      return [Math.min(...roots.map(x=>x*x)),roots.length,Math.min(...roots)];
+    }
+    case 13: {
+      const x=Array.from({length:41},(_,i)=>i-20).find(x=>(x*x-a*x+b)/(x-c)===0);
+      return [c,x,x-c];
+    }
+    case 14: {
+      const op=data.caption.match(/\(x−v\) ([≤<>≥]) 0/)[1];
+      const valid=x=>{const y=a*(x-b)*(x-c);return {'<':y<0,'≤':y<=0,'>':y>0,'≥':y>=0}[op];};
+      const solutions=Array.from({length:41},(_,i)=>i-20).filter(valid);
+      return [Math.min(b,c),solutions.length,Math.max(...solutions)];
+    }
+    case 15: {
+      const [leading,u,v,w]=r,fn=x=>leading*(x-u)*(x-u)*(x-v)*(x-w);
+      const switches=[u,v,w].filter(x=>fn(x-0.2)*fn(x+0.2)<0).length;
+      const valid=Array.from({length:w-u+3},(_,i)=>u-1+i).filter(x=>fn(x)<0);
+      return [switches,Math.sign(fn((v+w)/2)),valid.length];
+    }
+    case 16: {
+      const t=r[3],fn=x=>x**3+a*x*x+b*x+c;
+      const rest=Array.from({length:41},(_,i)=>i-20).filter(x=>x!==t && fn(x)===0);
+      return [-rest.reduce((sum,x)=>sum+x,0),rest.reduce((product,x)=>product*x,1),Math.max(...rest)];
+    }
     default: throw Error('uncovered point '+point);
   }
 }
@@ -72,7 +97,7 @@ function submit(w,value) {
   field.dispatchEvent(new w.Event('input',{bubbles:true}));
   w.document.querySelector('#work form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
 }
-for (const [i,page] of [5,14,22,27,31,38,44,49,54,60,65].entries()) {
+for (const [i,page] of [5,14,22,27,31,38,44,49,54,60,65,75,81,87,92,98].entries()) {
   const point=i+1,id='50-'+point,key='math:makarychev9-2017:v1:'+id;
   let dom=open(id),w=dom.window; const lesson=w.MathExamTopicPractice.lessons.get(id);
   assert.equal(lesson.page,page); assert.equal(w.document.querySelector('#lesson').value,id);
@@ -111,4 +136,4 @@ for (const [i,page] of [5,14,22,27,31,38,44,49,54,60,65].entries()) {
   click(w,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
   dom.window.close();
 }
-console.log('Source 50: 363 independent numeric checks and eleven pupil journeys with saved and assisted work.');
+console.log('Source 50: 528 independent numeric checks and sixteen pupil journeys with saved and assisted work.');

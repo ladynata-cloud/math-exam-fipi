@@ -13,18 +13,23 @@
     [4,49,'Функция y = xⁿ','Установи, когда смена знака аргумента изменит знак ординаты.'],
     [4,54,'Корень n-й степени','Различи запись арифметического корня и все корни уравнения.'],
     ['I',60,'Дробно-линейная функция и её график','Найди асимптоты двух ветвей и вычисли ординату заданной точки.'],
-    ['I',65,'Степень с рациональным показателем','Перейди от дробного показателя к корню и к целой степени.']
+    ['I',65,'Степень с рациональным показателем','Перейди от дробного показателя к корню и к целой степени.'],
+    [5,75,'Целое уравнение и его корни','Замени квадрат переменной и вернись от вспомогательных корней к исходным.'],
+    [5,81,'Дробные рациональные уравнения','Найди нули числителя и исключи значение, при котором знаменатель равен нулю.'],
+    [6,87,'Решение неравенств второй степени с одной переменной','Сопоставь знак параболы с промежутками, проверь границы и сосчитай целые решения.'],
+    [6,92,'Решение неравенств методом интервалов','Проследи знак на промежутках с простыми и двукратными нулями.'],
+    ['II',98,'Некоторые приёмы решения целых уравнений','Выдели линейный множитель по известному корню кубического многочлена.']
   ];
   book.totalPoints = 36;
   book.workshopRoute = '9';
   book.verifiedSource = book.source.source_url;
   book.sourceLabel = 'Открыть издание 2017 года';
   book.note = 'Выбери печатный пункт. В занятии можно изменить модель, разобрать пример и проверить себя на новых данных.';
-  book.status = 'Самостоятельная практика по 11 из 36 пунктов';
-  book.remaining = 'Остаются пункты 12–36, дополнительные упражнения к главам, упражнения на повторение и задания повышенной трудности. Упражнения практикума составлены для MathExam.';
+  book.status = 'Самостоятельная практика по 16 из 36 пунктов';
+  book.remaining = 'Остаются пункты 17–36, дополнительные упражнения к главам, упражнения на повторение и задания повышенной трудности. Упражнения практикума составлены для MathExam.';
   book.mapping = topics.map(([paragraph,page,title,focus],index)=>{
     const section=index+1, path='/trainers/makarychev9-2017/index.html#lesson/50-'+section;
-    const skill=['m9f-domain','m9f-read-graph','m9f-discriminant','m9f-grouping','m9f-parabola-coefficient','m9f-shift-points','m9f-quadratic-vertex','m9f-even-odd','m9f-root-square','m9f-rational-shift','m9f-powers'][index];
-    return {...(paragraph==='I'?{supplementaryChapter:paragraph}:{paragraph}),section,page,title,skill,focus,coverage:'module',externalPath:path,boardPath:path};
+    const skill=['m9f-domain','m9f-read-graph','m9f-discriminant','m9f-grouping','m9f-parabola-coefficient','m9f-shift-points','m9f-quadratic-vertex','m9f-even-odd','m9f-root-square','m9f-rational-shift','m9f-powers','m9f-biquadratic','m9f-domain','m9f-quadratic-sign','m9f-quadratic-sign','m9f-grouping'][index];
+    return {...(typeof paragraph==='string'?{supplementaryChapter:paragraph}:{paragraph}),section,page,title,skill,focus,coverage:'module',externalPath:path,boardPath:path};
   });
 })();
