@@ -2252,10 +2252,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "38974150e59034a4688242aaa451e00c5c45b490ad0705e974163d452dde5b1e",
-      "afterSha256": "3c6da9d9134d7126cde10df7f3ac0ae620db3acf77facaf35a83a93323608b18",
+      "beforeSha256": "1ebd0cb4dc460392d5d597a5af5fd691d94e11207a83912f7db8417dbda576ad",
+      "afterSha256": "705ca9f9555f70aa40c382d5ff46979f5b55e34ace51428b8dadd420320145ed",
       "placement": "before-head-close",
-      "sourceSha": "f9d064a6860b3f2750b6830aadbf7bfd5bff212f"
+      "sourceSha": "b77287e4358a829617e93e7dafd345f1cfbc6655"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -7028,6 +7028,15 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
+    },
+    {
+      "previousBaseSha": "f9d064a6860b3f2750b6830aadbf7bfd5bff212f",
+      "sourceBaseSha": "b77287e4358a829617e93e7dafd345f1cfbc6655",
+      "task": "docs/tasks/MAKARYCHEV8_696_701.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Формула в условиях снова видна в браузере, автономном HTML и на доске. В №250 отображаются обе части тождества Эйлера. Графические задания сохранили предметный рисунок и указание номера печатной страницы."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
