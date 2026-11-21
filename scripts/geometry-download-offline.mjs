@@ -63,24 +63,28 @@ export function prepareGeometryFolder(root, sourceDir, packageDir) {
   }
   const embed = (file, id, source) => {
     const json = fs.readFileSync(path.join(root, source), 'utf8');
-    JSON.parse(json); // malformed data stops the export before it is published
+    const data = JSON.parse(json);
     const safe = json.replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
     const target = path.join(packageDir, file);
     const html = fs.readFileSync(target, 'utf8');
     if (!html.includes('</head>') || html.includes('id="' + id + '"')) throw Error('Unexpected offline geometry entry: ' + file);
     fs.writeFileSync(target, html.replace('</head>', '<script type="application/json" id="' + id + '">' + safe + '</script>\n</head>'));
+    return data;
   };
   const replaceOnce = (file, from, to) => {
     const target = path.join(packageDir, file), text = fs.readFileSync(target, 'utf8');
     if (text.split(from).length !== 2) throw Error('Unexpected geometry offline bootstrap: ' + file);
     fs.writeFileSync(target, text.replace(from, to));
   };
-  embed('textbook/index.html', 'geometry-offline-textbook', 'geometry-course/textbook/data/course.json');
+  let completeTextbook = embed('textbook/index.html', 'geometry-offline-textbook', 'geometry-course/textbook/data/course.json');
   const ids = supplements.unitFiles.map(url => {
     const id = 'geometry-offline-' + path.basename(url, '.json');
-    embed('textbook/index.html', id, url.slice(1));
+    const unit = embed('textbook/index.html', id, url.slice(1));
+    completeTextbook = supplements.append(completeTextbook, unit);
     return id;
   });
+  replaceOnce('README.txt', 'Каталог задачника показывает число доступных карточек.',
+    'Доступно карточек в задачнике: ' + completeTextbook.lessons.length + '.');
   replaceOnce('textbook/index.html',
     "fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(GeometryAdditionalLessons.forCourse)",
     "Promise.resolve(" + JSON.stringify(ids) + ".reduce((course,id)=>GeometryAdditionalLessons.append(course,JSON.parse(document.getElementById(id).textContent)),JSON.parse(document.getElementById('geometry-offline-textbook').textContent)))");
