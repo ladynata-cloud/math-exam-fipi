@@ -1195,6 +1195,59 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+const quantifiedReadings = {
+ inverseTotal:'Для каждого рационального a существует обратное и их произведение равно 1.',
+ nonzeroProduct:'Произведение любых двух рациональных чисел отлично от нуля.',
+ existsOpposite:'Найдётся рациональное число, меньшее своего противоположного.',
+ existsSquare:'Найдётся рациональное число, для которого −a² больше (−a)².',
+};
+function evaluateClaim(rule,a,b){
+ switch(rule){
+  case 'inverseTotal':return a===0?'У нуля нет обратного: для этой подстановки запись не определена.':'Обратное существует. Произведение равно 1.';
+  case 'nonzeroProduct':return a+' × '+b+' = '+(a*b)+'. '+(a*b===0?'Это контрпример.':'На этой паре произведение отлично от нуля.');
+  case 'existsOpposite':return -a+' > '+a+(a<0?' — верно. Это свидетель существования.':' — неверно. Один неудачный выбор не опровергает существования.');
+  case 'existsSquare':return -(a*a)+' > '+a*a+' — неверно. Слева число не больше нуля, справа — не меньше нуля.';
+ }
+ throw new Error('Неизвестное высказывание');
+}
+const storyBalances={
+ subtractDouble:[
+  {equation:'2(x − 4) + 9 = x − 2',stages:['2x + 1 = x − 2','x + 1 = −2','x = −3'],calc:x=>[2*(x-4)+9,x-2]},
+  {equation:'2(x − 5) + 7 = x − 1',stages:['2x − 3 = x − 1','x − 3 = −1','x = 2'],calc:x=>[2*(x-5)+7,x-1]}],
+ gainRatio:[
+  {equation:'(x + 3)/(3x) = 11/15',stages:['x ≠ 0, 15(x + 3) = 33x','45 = 18x','x = 5/2'],calc:x=>x===0?null:[15*(x+3),33*x]},
+  {equation:'(x + 4)/(3x) = 2/3',stages:['x ≠ 0, 3(x + 4) = 6x','12 = 3x','x = 4'],calc:x=>x===0?null:[3*(x+4),6*x]}],
+ tripleFive:[
+  {equation:'3(5x − 8) = 3x',stages:['15x − 24 = 3x','12x = 24','x = 2'],calc:x=>[3*(5*x-8),3*x]},
+  {equation:'3(5x − 12) = 3x',stages:['15x − 36 = 3x','12x = 36','x = 3'],calc:x=>[3*(5*x-12),3*x]}],
+};
+const balanceCandidates=['-3','0','2','5/2','3','4','5'];
+const trialRules={
+ rectGrow:x=>x*(x+12),boundedThree:x=>x*(x-9)*(15-x),
+ rectSubtract:x=>x*(x-4),rectPlus3:x=>x*x+3*x,
+};
+const extraTrials={rectGrow:85,boundedThree:88,rectSubtract:117,rectPlus3:54};
+const endFamilyCandidates=['-9','-5','-3','-1','0','19/16','9/2','9'];
+function finalFamilyPair(rule,x){
+ switch(rule){
+  case 'linear48':return [6*(4*x-7)-3*(5-8*x),0];
+  case 'identity4':return [2*(9-5*x)+7*(2*x-4),4*(x-2.5)];
+  case 'squareEmpty':return [x*x,-4];
+  case 'square81':return [x*x,81];
+  case 'absZero':return [Math.abs(2*x-9),0];
+  case 'absDist':return [Math.abs(x+3),2];
+ }
+ throw new Error('Неизвестное множество корней');
+}
+function yearlyCapital(initial,cost){
+ const M=root.PetersonMath,rows=[];
+ let cap=M.parse(initial);
+ for(let i=0;i<3;i++){
+  const afterSpend=M.operation('subtract',cap,cost),added=M.operation('divide',afterSpend,3),next=M.operation('add',afterSpend,added);
+  rows.push([String(i+1),M.answer(afterSpend),M.answer(added),M.answer(next)]);cap=next;
+ }
+ return {rows,final:cap};
+}
 const proofProperties = {
  squareEven: {evaluate:x=>[(-x)**2,x*x],law:'В произведении (−x)(−x) два отрицательных множителя −1. Их произведение равно 1.'},
  cubeOdd: {evaluate:x=>[(-x)**3,-(x**3)],law:'В произведении трёх противоположных чисел коэффициент (−1)³ равен −1.'},
@@ -1865,6 +1918,11 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p36' && task?.quantifiedEquation){const pair=task.quantifiedEquation==='nonzeroProduct';return {title:'Свидетель и контрпример',controls:[c('Число a',range(-3,3)),...(pair?[c('Число b',range(-2,2))]:[]),c('Проверка',[[0,'Сначала сформулирую'],[1,'Подстановка'],[2,'Общая формулировка']])],initial:pair?[1,1,0]:[1,0]};}
+ if(lesson?.id==='p36' && task?.storyBalance)return {title:'Одна операция на обеих чашах',controls:[c('Задача',[[0,'Из книги'],[1,'Новые данные']]),c('Мой кандидат',balanceCandidates.map((v,i)=>[i,v])),c('Состояние равенства',[[0,'Исходное'],[1,'Первое преобразование'],[2,'Перенос слагаемых'],[3,'Результат и проверка']])],initial:[0,1,0]};
+ if(lesson?.id==='p36' && task?.naturalTrials)return {title:'Испытай натуральное число',controls:[c('Правая часть',[[0,String(task.naturalTrials.rhs)],[1,String(extraTrials[task.naturalTrials.rule])]]),c('Кандидат x',range(1,17)),c('Подстановка',[[0,'Предскажу'],[1,'Вычислить'],[2,'Границы перебора']])],initial:[0,1,0]};
+ if(lesson?.id==='p36' && task?.finalRootFamily)return {title:'Проверка и полнота множества решений',controls:[c('Подставить',endFamilyCandidates.map((v,i)=>[i,v])),c('Разбор',[[0,'Сначала решу'],[1,'Проверить число'],[2,'Общее решение']])],initial:[4,0]};
+ if(lesson?.id==='p36' && task?.newtonCapital)return {title:'Три года счёта купца',controls:[c('Годовой расход',[50,100]),c('Начальная сумма',[740,1000,1200,1480]),c('Сколько лет проверить?',range(0,3))],initial:[100,1200,0]};
  if(lesson?.id==='p36' && task?.identityProof)return {title:'Что показывает подстановка, а что доказывает общий закон?',controls:[c('Подставить x',range(-4,4)),c('Разбор',[[0,'Сначала исследую'],[1,'Пара значений'],[2,'Общий закон']])],initial:[0,0]};
  if(lesson?.id==='p36' && task?.rootFamily)return {title:'Какие значения дают равенство?',controls:[c('Проверить число',familyCandidates.map((v,i)=>[i,v])),c('Проверка',[[0,'Сначала решу'],[1,'Значения частей'],[2,'Полный ответ']])],initial:[4,0]};
  if(lesson?.id==='p36' && Number.isInteger(task?.rootDomain))return {title:'Нули произведения и числовое множество',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Новый пример']]),c('Множество',domainNames.map((v,i)=>[i,v])),c('Что показать?',[[0,'Сначала решу'],[1,'Нули множителей'],[2,'Отбор по множеству']])],initial:[0,task.rootDomain,0]};
@@ -2015,9 +2073,10 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
+  if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
   if(task.squareGridStudy && index<3)hiddenControl=3;
   if((task.integerTrial||task.lunchStudy||task.appleSaleStudy||task.oldCoinStudy) && index<2)hiddenControl=2;
   if((task.reverseRateStudy||task.fractionTreeStudy) && index===0)hiddenControl=1;
@@ -2025,8 +2084,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2261,6 +2320,43 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===36 && task.quantifiedEquation){
+  const rule=task.quantifiedEquation,mode=state.values.at(-1);say(quantifiedReadings[rule]);
+  say('Подстановка: a = '+num(a)+(rule==='nonzeroProduct'?', b = '+num(b):'')+'.');
+  if(mode>=1)say(evaluateClaim(rule,a,b));
+  if(mode===2)say(task.explanation);
+  stepList(['Уточни, нужно ли условие для всех или достаточно одного свидетеля.','Проверь граничное значение: ноль.','Для ложного утверждения смени квантор и отрицай условие.']);
+ }
+ else if(n===36 && task.storyBalance){
+  const t=storyBalances[task.storyBalance.rule][a],q=root.PetersonMath.parse(balanceCandidates[b]),x=q.n/q.d,mode=state.values[2];
+  formula(t.equation);if(mode){formula(t.stages[mode-1]);if(mode===3){const pair=t.calc(x);
+   if(pair){show(table(['Проверяем','Значение'],[['Слева',num(pair[0])],['Справа',num(pair[1])]]));say('Кандидат '+balanceCandidates[b]+(pair[0]===pair[1]?' подходит.':' не подходит.'));if(task.storyBalance.rule==='gainRatio')say('В таблице сравниваются произведения крайних и средних членов.');}
+   else say('Ноль исключён: исходный знаменатель равен нулю.');
+  }}
+  stepList(['Обозначь неизвестное буквой.','Применяй одинаковое действие к обеим частям.','Проверь результат в исходной задаче.']);
+ }
+ else if(n===36 && task.naturalTrials){
+  const t=task.naturalTrials,mode=state.values[2],rhs=a===0?t.rhs:extraTrials[t.rule],value=trialRules[t.rule](b);
+  formula(t.equation.split(' = ')[0]+' = '+rhs);say('Кандидат: x = '+b+'.');
+  if(mode>=1)say('Левая часть '+num(value)+', правая '+num(rhs)+'. Число '+(value===rhs?'подходит.':'не подходит.'));
+  if(mode===2){if(t.rule==='boundedThree'){const candidates=[10,11,12,13,14];show(table(['x','Произведение'],candidates.map(x=>[x,trialRules[t.rule](x)])));say('При x ≤ 9 и x ≥ 15 произведение неположительно. Для положительного ответа достаточно этой таблицы.');}else say(t.rule==='rectSubtract'?'При x ≤ 4 произведение неположительно, а для x ≥ 5 оба множителя положительны и растут.':'Оба положительных множителя растут с натуральным x. Найденное верное значение единственно.');}
+  stepList(['Выбери пробное число.','Сравни с требуемым результатом.','Объясни, какие оставшиеся кандидаты можно исключить.']);
+ }
+ else if(n===36 && task.finalRootFamily){
+  const t=task.finalRootFamily,q=root.PetersonMath.parse(endFamilyCandidates[a]),pair=finalFamilyPair(t.rule,q.n/q.d);
+  formula(t.equation);say('Проверяем число '+endFamilyCandidates[a]+'.');
+  if(b>=1){show(table(['Левая часть','Правая часть'],[[num(pair[0]),num(pair[1])]]));say(pair[0]===pair[1]?'Получили равенство.':'Части не равны.');}
+  if(b===2)say(task.explanation);
+  stepList(['Проверь знаки после раскрытия скобок.','При квадрате и модуле учти все варианты.','Обоснуй полное множество корней.']);
+ }
+ else if(n===36 && task.newtonCapital){
+  const years=state.values[2],history=yearlyCapital(b,a);
+  say('Старт '+b+' фунтов. В начале каждого года расход '+a+' фунтов, затем к остатку добавляется его треть.');
+  if(years)show(table(['Год','После расхода','Треть','Итог'],history.rows.slice(0,years)));
+  if(years===3){const good=root.PetersonMath.equal(history.final,2*b);say('Через три года '+root.PetersonMath.answer(history.final)+' фунтов. Двойная начальная сумма '+(2*b)+'. '+(good?'Кандидат подходит.':'Кандидат не подходит.'));}
+  stepList(['Вычти годовой расход до начисления.','Возьми треть именно нового остатка.','Сравни третий итог с удвоенной начальной суммой.']);
  }
  else
  if(n===36 && task.identityProof){
@@ -54516,6 +54612,931 @@ window.PetersonCourse = {
       [
        "4",
        "Проверь, входит ли знак минус под квадрат, модуль или черту дроби."
+      ]
+     ]
+    },
+    {
+     "id": "p36-t50",
+     "title": "К задаче №79а",
+     "kind": "choice",
+     "prompt": "Прочитай словами: ∀ a ∈ Q: a × (1/a) = 1. Определи истинность. Для ложной записи сформулируй отрицание.",
+     "answer": "Не для всех: у нуля нет обратного.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши фразу словами с точным квантором.",
+       "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+       "explanation": "Для любого рационального a произведение числа и обратного к нему якобы равно 1. При a = 0 правая операция не определена. Отрицание требования ко всем: найдётся рациональное число без обратного или с произведением, отличным от 1. Таким свидетелем служит ноль. Для области Q без нуля равенство верно."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Найди свидетель или общее рассуждение. Если запись ложна, сформулируй отрицание.",
+       "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+       "explanation": "Для любого рационального a произведение числа и обратного к нему якобы равно 1. При a = 0 правая операция не определена. Отрицание требования ко всем: найдётся рациональное число без обратного или с произведением, отличным от 1. Таким свидетелем служит ноль. Для области Q без нуля равенство верно."
+      }
+     ],
+     "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+     "explanation": "Для любого рационального a произведение числа и обратного к нему якобы равно 1. При a = 0 правая операция не определена. Отрицание требования ко всем: найдётся рациональное число без обратного или с произведением, отличным от 1. Таким свидетелем служит ноль. Для области Q без нуля равенство верно.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 79,
+      "reference": "№79а",
+      "subpart": "а"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "quantifiedEquation": "inverseTotal",
+     "errorCues": [
+      [
+       "Верно для всех, включая ноль.",
+       "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие."
+      ],
+      [
+       "Ложно при каждом ненулевом числе.",
+       "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие."
+      ]
+     ],
+     "choices": [
+      "Верно для всех, включая ноль.",
+      "Не для всех: у нуля нет обратного.",
+      "Ложно при каждом ненулевом числе."
+     ]
+    },
+    {
+     "id": "p36-t51",
+     "title": "К задаче №79б",
+     "kind": "choice",
+     "prompt": "Прочитай словами: ∀ a, b ∈ Q: ab ≠ 0. Определи истинность. Для ложной записи сформулируй отрицание.",
+     "answer": "Ложно: найдётся пара с ab = 0.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши фразу словами с точным квантором.",
+       "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+       "explanation": "Утверждают, что произведение любой пары рациональных чисел отлично от нуля. Отрицание: существуют рациональные a и b с произведением ноль. Например, 0 и 5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Найди свидетель или общее рассуждение. Если запись ложна, сформулируй отрицание.",
+       "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+       "explanation": "Утверждают, что произведение любой пары рациональных чисел отлично от нуля. Отрицание: существуют рациональные a и b с произведением ноль. Например, 0 и 5."
+      }
+     ],
+     "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+     "explanation": "Утверждают, что произведение любой пары рациональных чисел отлично от нуля. Отрицание: существуют рациональные a и b с произведением ноль. Например, 0 и 5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 79,
+      "reference": "№79б",
+      "subpart": "б"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "quantifiedEquation": "nonzeroProduct",
+     "errorCues": [
+      [
+       "Верно: оба числа всегда ненулевые.",
+       "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие."
+      ],
+      [
+       "Ложно только при двух нулях.",
+       "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие."
+      ]
+     ],
+     "choices": [
+      "Верно: оба числа всегда ненулевые.",
+      "Ложно только при двух нулях.",
+      "Ложно: найдётся пара с ab = 0."
+     ]
+    },
+    {
+     "id": "p36-t52",
+     "title": "К задаче №79в",
+     "kind": "choice",
+     "prompt": "Прочитай словами: ∃ a ∈ Q: −a > a. Определи истинность. Для ложной записи сформулируй отрицание.",
+     "answer": "Верно: подойдёт любое отрицательное a.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши фразу словами с точным квантором.",
+       "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+       "explanation": "Требуется хотя бы одно число со свойством: его противоположное больше него. Для a = −2 получается 2 > −2, так что свидетель найден."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Найди свидетель или общее рассуждение. Если запись ложна, сформулируй отрицание.",
+       "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+       "explanation": "Требуется хотя бы одно число со свойством: его противоположное больше него. Для a = −2 получается 2 > −2, так что свидетель найден."
+      }
+     ],
+     "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+     "explanation": "Требуется хотя бы одно число со свойством: его противоположное больше него. Для a = −2 получается 2 > −2, так что свидетель найден.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 79,
+      "reference": "№79в",
+      "subpart": "в"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "quantifiedEquation": "existsOpposite",
+     "errorCues": [
+      [
+       "Ложно: a и −a всегда равны.",
+       "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие."
+      ],
+      [
+       "Верно для каждого рационального a.",
+       "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие."
+      ]
+     ],
+     "choices": [
+      "Верно: подойдёт любое отрицательное a.",
+      "Ложно: a и −a всегда равны.",
+      "Верно для каждого рационального a."
+     ]
+    },
+    {
+     "id": "p36-t53",
+     "title": "К задаче №79г",
+     "kind": "choice",
+     "prompt": "Прочитай словами: ∃ a ∈ Q: −a² > (−a)². Определи истинность. Для ложной записи сформулируй отрицание.",
+     "answer": "Ложно: для всех a верно −a² ≤ (−a)².",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши фразу словами с точным квантором.",
+       "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+       "explanation": "Утверждают существование числа, у которого противоположное квадрату больше квадрата противоположного. Слева −a² ≤ 0, справа a² ≥ 0. Отрицание: для каждого рационального a выполняется −a² ≤ (−a)²."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Найди свидетель или общее рассуждение. Если запись ложна, сформулируй отрицание.",
+       "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+       "explanation": "Утверждают существование числа, у которого противоположное квадрату больше квадрата противоположного. Слева −a² ≤ 0, справа a² ≥ 0. Отрицание: для каждого рационального a выполняется −a² ≤ (−a)²."
+      }
+     ],
+     "hint": "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие.",
+     "explanation": "Утверждают существование числа, у которого противоположное квадрату больше квадрата противоположного. Слева −a² ≤ 0, справа a² ≥ 0. Отрицание: для каждого рационального a выполняется −a² ≤ (−a)².",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 79,
+      "reference": "№79г",
+      "subpart": "г"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "quantifiedEquation": "existsSquare",
+     "errorCues": [
+      [
+       "Верно при любом отрицательном a.",
+       "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие."
+      ],
+      [
+       "Отрицание требует строго меньшего значения при всех a.",
+       "Различай «для каждого» и «найдётся хотя бы один». Проверь ноль и отрицательное число. В отрицании меняются квантор и само условие."
+      ]
+     ],
+     "choices": [
+      "Верно при любом отрицательном a.",
+      "Ложно: для всех a верно −a² ≤ (−a)².",
+      "Отрицание требует строго меньшего значения при всех a."
+     ]
+    },
+    {
+     "id": "p36-t54",
+     "title": "К задаче №80а",
+     "kind": "number",
+     "prompt": "С неизвестным числом сделали три действия: вычли 4, удвоили результат и прибавили 9. Итог на 2 меньше исходного. Восстанови число с помощью равновесия.",
+     "answer": "-3",
+     "steps": [
+      {
+       "prompt": "Сложи постоянные −8 и +9 в левой части.",
+       "answer": "1",
+       "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+       "explanation": "После раскрытия скобок имеем 2x + 1 = x − 2. Вычитание x и 1 с обеих сторон даёт x = −3. Исходные части равны −5."
+      },
+      {
+       "prompt": "Сколько x остаётся слева, если с обеих сторон вычесть x?",
+       "answer": "1",
+       "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+       "explanation": "После раскрытия скобок имеем 2x + 1 = x − 2. Вычитание x и 1 с обеих сторон даёт x = −3. Исходные части равны −5."
+      }
+     ],
+     "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+     "explanation": "После раскрытия скобок имеем 2x + 1 = x − 2. Вычитание x и 1 с обеих сторон даёт x = −3. Исходные части равны −5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 80,
+      "reference": "№80а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "storyBalance": {
+      "rule": "subtractDouble",
+      "equation": "2(x − 4) + 9 = x − 2"
+     },
+     "errorCues": [
+      [
+       "3",
+       "После вычитания единицы из правой части получается −2 − 1."
+      ]
+     ]
+    },
+    {
+     "id": "p36-t55",
+     "title": "К задаче №80б",
+     "kind": "number",
+     "prompt": "Если к задуманному числу прибавить 3, а другое число получить утроением исходного, отношение результатов будет 11 : 15. Найди исходное число.",
+     "answer": "5/2",
+     "steps": [
+      {
+       "prompt": "Сколько x справа после перемножения крест-накрест?",
+       "answer": "33",
+       "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+       "explanation": "При x ≠ 0 умножаем обе стороны пропорции на 45x: 15(x + 3) = 33x. Значит, 45 = 18x, x = 5/2. Проверка: (11/2) : (15/2) = 11 : 15."
+      },
+      {
+       "prompt": "Какой постоянный член остаётся слева после раскрытия скобок?",
+       "answer": "45",
+       "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+       "explanation": "При x ≠ 0 умножаем обе стороны пропорции на 45x: 15(x + 3) = 33x. Значит, 45 = 18x, x = 5/2. Проверка: (11/2) : (15/2) = 11 : 15."
+      },
+      {
+       "prompt": "Сколько x останется справа после вычитания 15x?",
+       "answer": "18",
+       "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+       "explanation": "При x ≠ 0 умножаем обе стороны пропорции на 45x: 15(x + 3) = 33x. Значит, 45 = 18x, x = 5/2. Проверка: (11/2) : (15/2) = 11 : 15."
+      }
+     ],
+     "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+     "explanation": "При x ≠ 0 умножаем обе стороны пропорции на 45x: 15(x + 3) = 33x. Значит, 45 = 18x, x = 5/2. Проверка: (11/2) : (15/2) = 11 : 15.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 80,
+      "reference": "№80б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "storyBalance": {
+      "rule": "gainRatio",
+      "equation": "(x + 3)/(3x) = 11/15"
+     },
+     "errorCues": [
+      [
+       "0",
+       "У исходного отношения знаменатель 3x, он должен быть ненулевым."
+      ],
+      [
+       "2/5",
+       "Раздели 45 на 18, а не наоборот."
+      ]
+     ]
+    },
+    {
+     "id": "p36-t56",
+     "title": "К задаче №81а",
+     "kind": "number",
+     "prompt": "Найди все натуральные корни x(x + 12) = 64 методом проб.",
+     "answer": "4",
+     "steps": [
+      {
+       "prompt": "Вычисли левую часть при x = 3.",
+       "answer": "45",
+       "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+       "explanation": "При натуральных x множители x и x + 12 положительны и растут. 3 даёт 45, 5 даёт 85, а 4 × 16 = 64. Поэтому подходит только 4."
+      },
+      {
+       "prompt": "Вычисли левую часть при x = 5.",
+       "answer": "85",
+       "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+       "explanation": "При натуральных x множители x и x + 12 положительны и растут. 3 даёт 45, 5 даёт 85, а 4 × 16 = 64. Поэтому подходит только 4."
+      }
+     ],
+     "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+     "explanation": "При натуральных x множители x и x + 12 положительны и растут. 3 даёт 45, 5 даёт 85, а 4 × 16 = 64. Поэтому подходит только 4.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 81,
+      "reference": "№81а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "naturalTrials": {
+      "rule": "rectGrow",
+      "equation": "x(x + 12) = 64",
+      "rhs": 64
+     },
+     "errorCues": [
+      [
+       "3",
+       "Подстановка даёт 45, а требуется 64."
+      ]
+     ]
+    },
+    {
+     "id": "p36-t57",
+     "title": "К задаче №81б",
+     "kind": "number",
+     "prompt": "Найди все натуральные корни x(x − 9)(15 − x) = 70 методом перебора.",
+     "answer": "14",
+     "steps": [
+      {
+       "prompt": "Вычисли левую часть при x = 10.",
+       "answer": "50",
+       "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+       "explanation": "При x от 1 до 9 и от 15 и выше левая часть неположительна. Проверяем 10, 11, 12, 13, 14: получаем 50, 88, 108, 104, 70. Подходит только 14."
+      },
+      {
+       "prompt": "Вычисли левую часть при x = 13.",
+       "answer": "104",
+       "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+       "explanation": "При x от 1 до 9 и от 15 и выше левая часть неположительна. Проверяем 10, 11, 12, 13, 14: получаем 50, 88, 108, 104, 70. Подходит только 14."
+      }
+     ],
+     "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+     "explanation": "При x от 1 до 9 и от 15 и выше левая часть неположительна. Проверяем 10, 11, 12, 13, 14: получаем 50, 88, 108, 104, 70. Подходит только 14.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 81,
+      "reference": "№81б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "naturalTrials": {
+      "rule": "boundedThree",
+      "equation": "x(x − 9)(15 − x) = 70",
+      "rhs": 70
+     },
+     "errorCues": [
+      [
+       "10",
+       "Подстановка даёт 50, а требуется 70."
+      ]
+     ]
+    },
+    {
+     "id": "p36-t58",
+     "title": "К задаче №82а",
+     "kind": "choice",
+     "prompt": "Каково полное множество рациональных корней 6(4x − 7) − 3(5 − 8x) = 0?",
+     "answer": "Только 19/16",
+     "steps": [
+      {
+       "prompt": "Каков коэффициент у x после раскрытия скобок?",
+       "answer": "48",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "После раскрытия получаем 48x − 57 = 0. Деление даёт 57/48 = 19/16."
+      },
+      {
+       "prompt": "Какое число надо перенести вправо с противоположным знаком?",
+       "answer": "-57",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "После раскрытия получаем 48x − 57 = 0. Деление даёт 57/48 = 19/16."
+      }
+     ],
+     "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+     "explanation": "После раскрытия получаем 48x − 57 = 0. Деление даёт 57/48 = 19/16.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 82,
+      "reference": "№82а",
+      "subpart": "а"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "finalRootFamily": {
+      "rule": "linear48",
+      "equation": "6(4x − 7) − 3(5 − 8x) = 0"
+     },
+     "errorCues": [
+      [
+       "Только 57/24",
+       "После раскрытия получаем 48x − 57 = 0. Деление даёт 57/48 = 19/16."
+      ],
+      [
+       "Только −19/16",
+       "После раскрытия получаем 48x − 57 = 0. Деление даёт 57/48 = 19/16."
+      ]
+     ],
+     "choices": [
+      "Только 19/16",
+      "Только 57/24",
+      "Только −19/16"
+     ]
+    },
+    {
+     "id": "p36-t59",
+     "title": "К задаче №82б",
+     "kind": "choice",
+     "prompt": "Каково полное множество рациональных корней 2(9 − 5y) + 7(2y − 4) = 4(y − 2,5)?",
+     "answer": "Все рациональные числа",
+     "steps": [
+      {
+       "prompt": "Коэффициент при y слева после приведения подобных?",
+       "answer": "4",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Обе части равны 4y − 10. При любом рациональном y равенство верно."
+      },
+      {
+       "prompt": "Свободный член слева?",
+       "answer": "-10",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Обе части равны 4y − 10. При любом рациональном y равенство верно."
+      }
+     ],
+     "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+     "explanation": "Обе части равны 4y − 10. При любом рациональном y равенство верно.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 82,
+      "reference": "№82б",
+      "subpart": "б"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "finalRootFamily": {
+      "rule": "identity4",
+      "equation": "2(9 − 5y) + 7(2y − 4) = 4(y − 2,5)"
+     },
+     "errorCues": [
+      [
+       "Только 0",
+       "Обе части равны 4y − 10. При любом рациональном y равенство верно."
+      ],
+      [
+       "Корней нет",
+       "Обе части равны 4y − 10. При любом рациональном y равенство верно."
+      ]
+     ],
+     "choices": [
+      "Только 0",
+      "Все рациональные числа",
+      "Корней нет"
+     ]
+    },
+    {
+     "id": "p36-t60",
+     "title": "К задаче №82в",
+     "kind": "choice",
+     "prompt": "Каково полное множество рациональных корней n² = −4?",
+     "answer": "Корней нет",
+     "steps": [
+      {
+       "prompt": "Каково наименьшее значение квадрата рационального числа?",
+       "answer": "0",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Квадрат рационального числа неотрицателен, поэтому не может равняться −4."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни, может ли квадрат равняться −4.",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Квадрат рационального числа неотрицателен, поэтому не может равняться −4."
+      }
+     ],
+     "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+     "explanation": "Квадрат рационального числа неотрицателен, поэтому не может равняться −4.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 82,
+      "reference": "№82в",
+      "subpart": "в"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "finalRootFamily": {
+      "rule": "squareEmpty",
+      "equation": "n² = −4"
+     },
+     "errorCues": [
+      [
+       "−2 и 2",
+       "Квадрат рационального числа неотрицателен, поэтому не может равняться −4."
+      ],
+      [
+       "Только −2",
+       "Квадрат рационального числа неотрицателен, поэтому не может равняться −4."
+      ]
+     ],
+     "choices": [
+      "−2 и 2",
+      "Только −2",
+      "Корней нет"
+     ]
+    },
+    {
+     "id": "p36-t61",
+     "title": "К задаче №82г",
+     "kind": "choice",
+     "prompt": "Каково полное множество рациональных корней k² = 81?",
+     "answer": "−9 и 9",
+     "steps": [
+      {
+       "prompt": "Найди положительный корень.",
+       "answer": "9",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Модуль числа равен 9. Оба знака дают 81, так что подходят 9 и −9."
+      },
+      {
+       "prompt": "Найди противоположный ему корень.",
+       "answer": "-9",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Модуль числа равен 9. Оба знака дают 81, так что подходят 9 и −9."
+      }
+     ],
+     "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+     "explanation": "Модуль числа равен 9. Оба знака дают 81, так что подходят 9 и −9.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 82,
+      "reference": "№82г",
+      "subpart": "г"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "finalRootFamily": {
+      "rule": "square81",
+      "equation": "k² = 81"
+     },
+     "errorCues": [
+      [
+       "Только 9",
+       "Модуль числа равен 9. Оба знака дают 81, так что подходят 9 и −9."
+      ],
+      [
+       "Только −9",
+       "Модуль числа равен 9. Оба знака дают 81, так что подходят 9 и −9."
+      ]
+     ],
+     "choices": [
+      "−9 и 9",
+      "Только 9",
+      "Только −9"
+     ]
+    },
+    {
+     "id": "p36-t62",
+     "title": "К задаче №82д",
+     "kind": "choice",
+     "prompt": "Каково полное множество рациональных корней |2a − 9| = 0?",
+     "answer": "Только 9/2",
+     "steps": [
+      {
+       "prompt": "Чему равняется выражение под модулем?",
+       "answer": "0",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Расстояние от нуля равно нулю только у нуля: 2a − 9 = 0, откуда a = 9/2."
+      },
+      {
+       "prompt": "Каково значение 2a?",
+       "answer": "9",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Расстояние от нуля равно нулю только у нуля: 2a − 9 = 0, откуда a = 9/2."
+      }
+     ],
+     "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+     "explanation": "Расстояние от нуля равно нулю только у нуля: 2a − 9 = 0, откуда a = 9/2.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 82,
+      "reference": "№82д",
+      "subpart": "д"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "finalRootFamily": {
+      "rule": "absZero",
+      "equation": "|2a − 9| = 0"
+     },
+     "errorCues": [
+      [
+       "−9/2 и 9/2",
+       "Расстояние от нуля равно нулю только у нуля: 2a − 9 = 0, откуда a = 9/2."
+      ],
+      [
+       "Только −9/2",
+       "Расстояние от нуля равно нулю только у нуля: 2a − 9 = 0, откуда a = 9/2."
+      ]
+     ],
+     "choices": [
+      "−9/2 и 9/2",
+      "Только 9/2",
+      "Только −9/2"
+     ]
+    },
+    {
+     "id": "p36-t63",
+     "title": "К задаче №82е",
+     "kind": "choice",
+     "prompt": "Каково полное множество рациональных корней |b + 3| = 2?",
+     "answer": "−5 и −1",
+     "steps": [
+      {
+       "prompt": "Чему равен b, если b + 3 = −2?",
+       "answer": "-5",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Точки на расстоянии 2 от −3 — это −5 и −1. Их подстановка даёт модуль 2."
+      },
+      {
+       "prompt": "Чему равен b, если b + 3 = 2?",
+       "answer": "-1",
+       "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+       "explanation": "Точки на расстоянии 2 от −3 — это −5 и −1. Их подстановка даёт модуль 2."
+      }
+     ],
+     "hint": "Сравни обе части после упрощения. При квадрате и модуле проверь оба знака и допустимость результата.",
+     "explanation": "Точки на расстоянии 2 от −3 — это −5 и −1. Их подстановка даёт модуль 2.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 82,
+      "reference": "№82е",
+      "subpart": "е"
+     },
+     "finalLabel": "Выбери законченное обоснование.",
+     "finalRootFamily": {
+      "rule": "absDist",
+      "equation": "|b + 3| = 2"
+     },
+     "errorCues": [
+      [
+       "−2 и 2",
+       "Точки на расстоянии 2 от −3 — это −5 и −1. Их подстановка даёт модуль 2."
+      ],
+      [
+       "1 и 5",
+       "Точки на расстоянии 2 от −3 — это −5 и −1. Их подстановка даёт модуль 2."
+      ]
+     ],
+     "choices": [
+      "−2 и 2",
+      "1 и 5",
+      "−5 и −1"
+     ]
+    },
+    {
+     "id": "p36-t64",
+     "title": "К задаче №83а",
+     "kind": "number",
+     "prompt": "Найди все натуральные корни x(x − 4) = 96 методом проб.",
+     "answer": "12",
+     "steps": [
+      {
+       "prompt": "Вычисли левую часть при x = 10.",
+       "answer": "60",
+       "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+       "explanation": "До 4 включительно произведение неположительно. Начиная с 5 оба множителя положительны и растут. При x = 12 получаем 12 × 8 = 96, значит это единственный натуральный корень."
+      },
+      {
+       "prompt": "Вычисли левую часть при x = 11.",
+       "answer": "77",
+       "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+       "explanation": "До 4 включительно произведение неположительно. Начиная с 5 оба множителя положительны и растут. При x = 12 получаем 12 × 8 = 96, значит это единственный натуральный корень."
+      }
+     ],
+     "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+     "explanation": "До 4 включительно произведение неположительно. Начиная с 5 оба множителя положительны и растут. При x = 12 получаем 12 × 8 = 96, значит это единственный натуральный корень.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 83,
+      "reference": "№83а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "naturalTrials": {
+      "rule": "rectSubtract",
+      "equation": "x(x − 4) = 96",
+      "rhs": 96
+     },
+     "errorCues": [
+      [
+       "10",
+       "Подстановка даёт 60, а требуется 96."
+      ]
+     ]
+    },
+    {
+     "id": "p36-t65",
+     "title": "К задаче №83б",
+     "kind": "number",
+     "prompt": "Найди все натуральные корни x² + 3x = 40 методом перебора.",
+     "answer": "5",
+     "steps": [
+      {
+       "prompt": "Вычисли левую часть при x = 4.",
+       "answer": "28",
+       "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+       "explanation": "Можно перебирать значения x(x + 3). При x = 5 получаем 5 × 8 = 40. С ростом натурального x каждый множитель возрастает, поэтому следующий корень невозможен."
+      },
+      {
+       "prompt": "Вычисли левую часть при x = 6.",
+       "answer": "54",
+       "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+       "explanation": "Можно перебирать значения x(x + 3). При x = 5 получаем 5 × 8 = 40. С ростом натурального x каждый множитель возрастает, поэтому следующий корень невозможен."
+      }
+     ],
+     "hint": "Посмотри, как меняются множители на натуральных числах. Для трёх множителей сначала установи, где их произведение положительно.",
+     "explanation": "Можно перебирать значения x(x + 3). При x = 5 получаем 5 × 8 = 40. С ростом натурального x каждый множитель возрастает, поэтому следующий корень невозможен.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 83,
+      "reference": "№83б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "naturalTrials": {
+      "rule": "rectPlus3",
+      "equation": "x² + 3x = 40",
+      "rhs": 40
+     },
+     "errorCues": [
+      [
+       "4",
+       "Подстановка даёт 28, а требуется 40."
+      ]
+     ]
+    },
+    {
+     "id": "p36-t66",
+     "title": "К задаче №84",
+     "kind": "number",
+     "prompt": "Число умножили на 5, вычли 8 и утроили остаток. Получился тот же результат, что и при простом утроении исходного числа. Найди его по правилу весов.",
+     "answer": "2",
+     "steps": [
+      {
+       "prompt": "Какой коэффициент у x слева после раскрытия скобок?",
+       "answer": "15",
+       "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+       "explanation": "Имеем 15x − 24 = 3x. На обеих чашах вычтем 3x и прибавим 24: 12x = 24. Получили x = 2, обе исходные части равны 6."
+      },
+      {
+       "prompt": "Сколько x слева останется после вычитания 3x с двух сторон?",
+       "answer": "12",
+       "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+       "explanation": "Имеем 15x − 24 = 3x. На обеих чашах вычтем 3x и прибавим 24: 12x = 24. Получили x = 2, обе исходные части равны 6."
+      }
+     ],
+     "hint": "Сначала запиши исходное равенство. Применяй одну операцию к обеим его частям и проверяй ответ подстановкой.",
+     "explanation": "Имеем 15x − 24 = 3x. На обеих чашах вычтем 3x и прибавим 24: 12x = 24. Получили x = 2, обе исходные части равны 6.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 84,
+      "reference": "№84"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "storyBalance": {
+      "rule": "tripleFive",
+      "equation": "3(5x − 8) = 3x"
+     },
+     "errorCues": [
+      [
+       "8",
+       "Множитель 3 относится и к −8, поэтому получаем −24."
+      ]
+     ]
+    },
+    {
+     "id": "p36-t67",
+     "title": "К задаче №85",
+     "kind": "number",
+     "prompt": "Купец в начале каждого из трёх лет тратит 100 фунтов, а затем прибавляет к остатку его треть. Через три года денег вдвое больше первоначальной суммы. Сколько было первоначально?",
+     "answer": "1480",
+     "steps": [
+      {
+       "prompt": "Каким множителем заменить прибавление трети остатка?",
+       "answer": "4/3",
+       "hint": "После каждого расхода прибавляется треть именно остатка. Обозначь исходную сумму x и трижды примени правило c → (c − 100) × 4/3.",
+       "explanation": "Три последовательных остатка с добавкой: (4x − 400)/3, (16x − 2800)/9, (64x − 14800)/27. Последний равен 2x, поэтому 10x = 14800 и x = 1480. Проверка по годам: 1480 → 1840 → 2320 → 2960 фунтов."
+      },
+      {
+       "prompt": "В равенстве 64x − 14800 = 54x сколько x останется после вычитания 54x?",
+       "answer": "10",
+       "hint": "После каждого расхода прибавляется треть именно остатка. Обозначь исходную сумму x и трижды примени правило c → (c − 100) × 4/3.",
+       "explanation": "Три последовательных остатка с добавкой: (4x − 400)/3, (16x − 2800)/9, (64x − 14800)/27. Последний равен 2x, поэтому 10x = 14800 и x = 1480. Проверка по годам: 1480 → 1840 → 2320 → 2960 фунтов."
+      },
+      {
+       "prompt": "Посчитай третий итог при начальном капитале 1480.",
+       "answer": "2960",
+       "hint": "После каждого расхода прибавляется треть именно остатка. Обозначь исходную сумму x и трижды примени правило c → (c − 100) × 4/3.",
+       "explanation": "Три последовательных остатка с добавкой: (4x − 400)/3, (16x − 2800)/9, (64x − 14800)/27. Последний равен 2x, поэтому 10x = 14800 и x = 1480. Проверка по годам: 1480 → 1840 → 2320 → 2960 фунтов."
+      }
+     ],
+     "hint": "После каждого расхода прибавляется треть именно остатка. Обозначь исходную сумму x и трижды примени правило c → (c − 100) × 4/3.",
+     "explanation": "Три последовательных остатка с добавкой: (4x − 400)/3, (16x − 2800)/9, (64x − 14800)/27. Последний равен 2x, поэтому 10x = 14800 и x = 1480. Проверка по годам: 1480 → 1840 → 2320 → 2960 фунтов.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 19,
+      "exercise": 85,
+      "reference": "№85"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "newtonCapital": true,
+     "errorCues": [
+      [
+       "2960",
+       "Это последняя сумма после трёх лет. Найди первоначальную."
+      ],
+      [
+       "148",
+       "Расход в каждом году равен 100, проверь разряд постоянного слагаемого."
       ]
      ]
     }

@@ -1150,3 +1150,33 @@ test('distinguish a proof from an example, filter the entire root set and read i
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('finish the equation chapter with counterexamples, natural trials and three exact years of capital',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p36/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(49);set(c[0],0);set(c[1],1);assert(out().includes('не определена'));
+  c=go(50);set(c[0],-3);set(c[1],0);set(c[2],1);assert(out().includes('контрпример'));set(c[1],2);set(c[2],1);assert(out().includes('отлично от нуля'));
+  c=go(51);set(c[0],-3);set(c[1],1);assert(out().includes('свидетель существования'));c=go(52);set(c[0],0);set(c[1],1);assert(out().includes('0 > 0 — неверно'));
+  for(const [j,source,extra]of [[53,'-3','2'],[54,'5/2','4'],[65,'2','3']]){
+   c=go(j);
+   for(const [i,w]of [source,extra].entries()){set(c[0],i);const index=[...f.q(c[1]).options].find(o=>o.textContent===w).value;set(c[1],index);set(c[2],3);assert(out().includes(w+' подходит.'));}
+  }
+  c=go(54);set(c[1],1);set(c[2],3);assert(out().includes('Ноль исключён'));
+  for(const [j,orig,extra]of [[55,4,5],[56,14,11],[63,12,13],[64,5,6]]){
+   c=go(j);for(const [i,x]of [orig,extra].entries()){set(c[0],i);set(c[1],x);set(c[2],2);assert(out().includes('Число подходит.'));
+    if(j===56)assert.deepEqual([...f.d.querySelectorAll('#model tbody tr')].map(row=>row.cells[1].textContent),['50','88','108','104','70']);
+   }
+  }
+  for(const [j,matches] of [[57,['19/16']],[58,['-9','-5','-3','-1','0','19/16','9/2','9']],[59,[]],[60,['-9','9']],[61,['9/2']],[62,['-5','-1']]]){
+   c=go(j);const found=[];for(const o of [...f.q(c[0]).options]){set(c[0],o.value);set(c[1],1);if(out().includes('Получили равенство.'))found.push(o.textContent);}
+   assert.deepEqual(found,matches);
+  }
+  c=go(66);for(const [spend,start,last]of [[100,1480,2960],[50,740,1480]]){
+   set(c[0],spend);set(c[1],start);set(c[2],3);assert(out().includes('Кандидат подходит.'));const rows=[...f.d.querySelectorAll('#model tbody tr')];assert.equal(rows.length,3);assert.equal(rows[2].cells[3].textContent,String(last));
+  }
+  set(c[0],100);set(c[1],1000);set(c[2],3);assert(out().includes('Кандидат не подходит.'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

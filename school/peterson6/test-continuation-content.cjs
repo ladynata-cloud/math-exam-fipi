@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,741);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,759);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -827,6 +827,20 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  for(const [i,t]of part(76).entries()){assert.equal(t.rootDomain,i);const kept=all.filter(x=>[true,Number.isInteger(x),Number.isInteger(x)&&x>0,x>0,x>=0][i]);assert.equal(Number(t.steps[2].answer),kept.length);}
  const chain=part(77)[0],actual=Array.from(chain.steps,t=>Number(t.answer)).concat(Number(chain.answer));let x=36;assert.deepEqual(actual,[3,.01,10,2,5,4].map(d=>x/=d));
  assert.deepEqual(part(78).map(t=>{const q=M.parse(t.answer);return q.n/q.d;}),[-.5,2,.5,.5,2,-2,4,-4]);
+}
+{
+ const rows=D.lessons.find(l=>l.id==='p36').tasks;
+ const part=n=>Array.from(rows.filter(t=>t.source.exercise===n));
+ for(const [num,count]of [[79,4],[80,2],[81,2],[82,6],[83,2],[84,1],[85,1]]){assert.equal(part(num).length,count);assert(part(num).every(t=>t.source.page===19));}
+ assert.deepEqual(part(79).map(t=>t.quantifiedEquation),['inverseTotal','nonzeroProduct','existsOpposite','existsSquare']);
+ const affine=[[-3,x=>2*(x-4)+9,x=>x-2],[2.5,x=>(x+3)/(3*x),()=>11/15],[2,x=>3*(5*x-8),x=>3*x]];
+ [...part(80),...part(84)].forEach((t,i)=>{const [x,L,R]=affine[i],q=M.parse(t.answer);assert.equal(q.n/q.d,x);assert.equal(L(x),R(x));assert.notEqual(L(x+1),R(x+1));});
+ const candidates=Array.from({length:120},(_,i)=>i+1),lhs=[x=>x*(x+12),x=>x*(x-9)*(15-x),x=>x*(x-4),x=>x*x+3*x];
+ [...part(81),...part(83)].forEach((t,i)=>{const found=candidates.filter(x=>lhs[i](x)===t.naturalTrials.rhs);assert.deepEqual(found,[Number(t.answer)]);});
+ const probed=[-9,-5,-3,-1,0,19/16,9/2,9],solutions=[[19/16],probed,[],[-9,9],[9/2],[-5,-1]];
+ const check=[x=>Math.abs(48*x-57)<1e-10,()=>true,x=>x*x===-4,x=>x*x===81,x=>2*x===9,x=>Math.abs(x+3)===2];
+ part(82).forEach((t,i)=>assert.deepEqual(probed.filter(check[i]),solutions[i],t.id));
+ for(const cost of [100,50]){let x=Number(part(85)[0].answer)*cost/100;const initial=x;const yrs=[1,2,3].map(()=>x=(x-cost)*4/3);assert.deepEqual(yrs,[1840,2320,2960].map(v=>v*cost/100));assert.equal(x,2*initial);}
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
