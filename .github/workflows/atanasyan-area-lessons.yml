@@ -64,6 +64,8 @@ on:
       - 'geometry-course/textbook/data/circle-intersections.json'
       - 'geometry-course/textbook/data/circle-equations.json'
       - 'geometry-course/textbook/data/coordinate-lines.json'
+      - 'geometry-course/textbook/data/circle-line-positions.json'
+      - 'geometry-course/textbook/data/coordinate-loci.json'
       - 'tools/geometry-textbook/*coordinate_curves*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
@@ -110,6 +112,8 @@ jobs:
       - run: python3 tools/geometry-textbook/circle_intersections.py --check && python3 tools/geometry-textbook/check_circle_intersections.py
       - run: python3 tools/geometry-textbook/circle_equations.py --check && python3 tools/geometry-textbook/check_circle_equations.py
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
+      - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
+      - run: python3 tools/geometry-textbook/coordinate_loci.py --check && python3 tools/geometry-textbook/check_coordinate_loci.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons

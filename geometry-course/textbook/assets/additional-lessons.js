@@ -60,7 +60,9 @@
       ['/geometry-course/textbook/data/coordinate-curves.json', 'пункты 97–99, №1045–1046'],
       ['/geometry-course/textbook/data/circle-intersections.json', '№1047–1050'],
       ['/geometry-course/textbook/data/circle-equations.json', '№1051–1057'],
-      ['/geometry-course/textbook/data/coordinate-lines.json', '№1058–1064']
+      ['/geometry-course/textbook/data/coordinate-lines.json', '№1058–1064'],
+      ['/geometry-course/textbook/data/circle-line-positions.json', '№1065–1068'],
+      ['/geometry-course/textbook/data/coordinate-loci.json', '№1069–1075']
   ];
 
   async function forCourse(base) {

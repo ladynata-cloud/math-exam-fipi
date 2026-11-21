@@ -73,6 +73,8 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
+  "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
+  "geometry-course/textbook/data/coordinate-loci.json": "4807dcebe9906d0a69a694a9f5885d5c30214e33474b16b0f830947f86dda6e5",
   "geometry-course/textbook/data/coordinate-lines.json": "2c3a70fb08f4dbe8ae4fa84aabb6102d456686754224169ce80aeb574125a0d3",
   "geometry-course/textbook/data/circle-equations.json": "23c66b091a73a6ab27c60a3dd199f33a213ed6d1af1b7a3d672a472667f9e6e0",
   "geometry-course/textbook/data/circle-intersections.json": "ea4bf02eed64b3eaf1c16c325cb029bc405b7860a3538e408a32e2e5fc86f359",
@@ -98,7 +100,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "46ac43a1e2588a6ea56e5e1182018b1f1f049f34e8b7e4ecb8b51846ba069762",
+  "geometry-course/textbook/assets/additional-lessons.js": "2ff727cd5541fa0c803205447d50ce4f1fbdbf9dd9bb54f559eaefc428ae88b0",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",

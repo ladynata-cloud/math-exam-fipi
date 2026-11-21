@@ -40,7 +40,7 @@ def equation_inputs(c,q):
     return list(dict.fromkeys([s]+numeric+out))
 
 
-def chart(label,centers,points=None,segments=()):
+def chart(label,centers,points=None,segments=(),lines=()):
     # All native circles share the same coordinate units; extra loci are added after frame construction.
     vertices=dict(points or {});radii=[]
     for j,(name,c,q) in enumerate(centers):
@@ -48,13 +48,13 @@ def chart(label,centers,points=None,segments=()):
         for axis,v in enumerate([(c[0]+r,c[1]),(c[0]-r,c[1]),(c[0],c[1]+r),(c[0],c[1]-r)]):
             vertices['_radius'+str(j)+'p'+str(axis)]=v
         radii.append((c,q))
-    frame,aliases,circle,highlights=graph(label,vertices,edges=segments)
+    frame,aliases,circle,highlights=graph(label,vertices,edges=segments,lines=lines)
     aliases={k:'='.join(name for name in label.split('=') if not name.startswith('_')) for k,label in aliases.items()}
     return (frame,{k:v for k,v in aliases.items() if v},circle,highlights),radii
 
 
-def make(n,*,frames,cases,**data):
-    card=curve_lesson(n,pages=[264],frames=[g for g,curves in frames],cases=[g for g,curves in cases],**data)
+def make(n,*,frames,cases,pages=(264,),**data):
+    card=curve_lesson(n,pages=list(pages),frames=[g for g,curves in frames],cases=[g for g,curves in cases],**data)
     model=card['visualization']['model']
     for i,((_,circle_specs),view) in enumerate(zip(frames+cases,model['views'].values(),strict=True)):
         suffix=f'__v{i}';raw=model['points'];o=raw['O'+suffix];scale=raw['_unitX'+suffix][0]-o[0]
