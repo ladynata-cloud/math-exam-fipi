@@ -2,6 +2,11 @@
   "version": 1,
   "entries": [
     {
+      "title": "Атанасян 10–11 · задачи по номерам",
+      "href": "/stereo-course/textbook/",
+      "group": "Стереометрия"
+    },
+    {
       "title": "ЕГЭ база",
       "href": "/ege-baza/",
       "group": "ЕГЭ база"
