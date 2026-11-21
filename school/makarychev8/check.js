@@ -584,6 +584,18 @@ function systemEvidence(input,graph){
    return {a,b,excluded:false,valid};
  });
 }
+function vietaAudit(value,target){
+ const entries=quadraticEntries(value);
+ if(!entries||entries.length!==2)return null;
+ const [first,second]=entries.map(radicalSum);
+ const product=first.flatMap(a=>second.map(b=>({sign:a.sign*b.sign,n:a.n*b.n,d:a.d*b.d})));
+ return {sum:sameRadicalTerms([...first,...second],radicalSum(target.sum)),product:sameRadicalTerms(product,radicalSum(target.product))};
+}
+function coefficientAndRoots(value,answer){
+ const [user,...roots]=String(value).split(';'),[parameter,...expected]=String(answer).split(';');
+ return Boolean(M.parse(user)&&M.equal(user,parameter)&&roots.length===2&&sameQuadraticRoots(roots.join(';'),expected.join(';')));
+}
+
 function quadraticTrial(value,coefficients){
  const entries=quadraticEntries(value);if(!entries||!entries.length)return [];
  const terms=[coefficients.map((v,i)=>[String(v),2-i,0])];
@@ -664,6 +676,11 @@ function progressionFactors(input){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='symbolic-coefficients'){
+  const fields=user.split(';'),expected=String(target.answer).split(';');
+  return fields.length===expected.length&&fields.every((v,i)=>sameReducedExpression(v,expected[i]));
+ }
+ if(target.kind==='coefficient-and-roots')return coefficientAndRoots(user,target.answer);
  if(target.kind==='integer-runs'){
   const rows=G.sequenceEvidence(user,target.graph),expected=G.sequenceRows(target.answer,target.graph);
   return rows.length===expected.length&&new Set(rows.map(item=>item.row[0])).size===rows.length&&rows.every(item=>item.correct);
@@ -738,5 +755,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

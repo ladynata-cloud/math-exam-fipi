@@ -761,5 +761,19 @@
       graph:{type:'number-sequence',size:2,stride,power,weights:[-1,1],target,natural:true},skills:[appliedPractice.id],source:{type:'authored',reference:'Тренировка по отбору решений'}};
   }
 
-  return { mount, experiment, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const invariantPractice={id:'vieta-invariants',title:'Проверить сумму и произведение корней',description:'Восстанови две связи по коэффициентам и проверь свою пару, включая иррациональные числа.'};
+  function practiceInvariants(seed,level){
+    const h=2+seed%9,k=1+Math.floor(seed/3)%7,rad=level===1?'':level===2?'√2':'√3';
+    const first=level===1?String(-k):h+'-'+k+rad,second=level===1?String(h):h+'+'+k+rad;
+    const total=level===1?h-k:2*h,product=level===1?-h*k:h*h-(level===2?2:3)*k*k,answer=first+';'+second;
+    const signed=n=>n<0?' − '+Math.abs(n):' + '+n;
+    return {title:invariantPractice.title,prompt:'Найди пару корней уравнения x²'+signed(-total)+'x'+signed(product)+' = 0 и проверь обе связи Виета.',
+     kind:'quadratic-roots',answer,hint:'Нужны сумма '+total+' и произведение '+product+'.',correction:'Совпадения одной связи ещё недостаточно.',
+     explanation:'Числа '+first+' и '+second+' вместе дают нужные сумму и произведение.',
+     steps:[{kind:'number',answer:String(total),prompt:'Чему равна сумма корней?',hint:'Возьми коэффициент при x с обратным знаком.',explanation:'S = '+total+'.'},
+      {kind:'number',answer:String(product),prompt:'Чему равно произведение?',hint:'У приведённого уравнения это свободный член.',explanation:'P = '+product+'.'}],
+     graph:{type:'vieta-audit',sum:String(total),product:String(product)},skills:[invariantPractice.id],source:{type:'authored',reference:'Тренировка по Виету'}};
+  }
+
+  return { mount, experiment, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

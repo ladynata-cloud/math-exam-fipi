@@ -917,6 +917,17 @@ function render(host,config,value){
  if(config.type==='abs-line-choice'){absLineChoice(host,config);return;}
  if(config.type==='system-pair-audit'){systemPairModel(host,config);return;}
  if(config.type==='inequality-intervals'){inequalityIntervals(host,config);return;}
+ if(config.type==='vieta-audit'){
+  host.className='task-graphs quantity-model';
+  for(const [name,label] of [['sum','Сумма'],['product','Произведение']]){
+   const p=document.createElement('p');p.className='small';p.dataset.vietaRelation=name;
+   p.textContent=label+' по коэффициентам: '+config[name]+'. ';
+   if(config.audit){const good=config.audit[name];p.dataset.vietaCheck=good?'yes':'no';p.textContent+=good?'Введённые числа дают это значение.':'Введённые числа дают другое значение.';}
+   else p.textContent+='Введи оба корня для точной проверки.';
+   host.append(p);
+  }
+  return;
+ }
  if(config.type==='number-sequence'){sequenceScene(host,config,value);return;}
  if(config.type==='applied-measure'){measureScene(host,config,value);return;}
  if(config.type==='square-certificate'){squareCertificateScene(host,config,value);return;}
