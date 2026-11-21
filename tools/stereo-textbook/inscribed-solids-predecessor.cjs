@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const spatialPointsAndCentroid = makeReviewedIncrement(require('./spatial-points-and-centroid.json'));
+const midpointsAndVectorLengths = makeReviewedIncrement(require('./midpoints-and-vector-lengths.json'));
+const spatialPointsAndCentroid = makeReviewedIncrement(require('./spatial-points-and-centroid.json'), midpointsAndVectorLengths);
 const coordinateSpanRatios = makeReviewedIncrement(require('./coordinate-span-ratios.json'), spatialPointsAndCentroid);
 const signedCoordinateArithmetic = makeReviewedIncrement(require('./signed-coordinate-arithmetic.json'), coordinateSpanRatios);
 const coordinateVectorsAndDiagrams = makeReviewedIncrement(require('./coordinate-vectors-and-diagrams.json'), signedCoordinateArithmetic);

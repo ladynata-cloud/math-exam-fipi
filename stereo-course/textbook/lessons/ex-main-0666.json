@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0666",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "От начала координат до середины отрезка",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "666",
+    "chapter": "VII. Метод координат в пространстве. Движения",
+    "printedPages": [
+      170
+    ],
+    "pdfPages": [
+      172
+    ]
+  },
+  "statement": {
+    "text": "M(−4;7;0), N(0;−1;2). Пусть K — середина MN.",
+    "goal": "Найди расстояние OK."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "K — середина MN, O — начало координат.",
+    "model": {
+      "points": {
+        "O": [
+          0,
+          0,
+          0
+        ],
+        "X": [
+          5,
+          0,
+          0
+        ],
+        "Y": [
+          0,
+          5,
+          0
+        ],
+        "Z": [
+          0,
+          0,
+          5
+        ],
+        "_x": [
+          -5,
+          0,
+          0
+        ],
+        "_y": [
+          0,
+          -5,
+          0
+        ],
+        "_z": [
+          0,
+          0,
+          -5
+        ],
+        "M": [
+          -4,
+          7,
+          0
+        ],
+        "N": [
+          0,
+          -1,
+          2
+        ],
+        "K": [
+          -2.0,
+          3.0,
+          1.0
+        ],
+        "S": [
+          0,
+          0,
+          1
+        ]
+      },
+      "edges": [
+        [
+          "O",
+          "X"
+        ],
+        [
+          "O",
+          "Y"
+        ],
+        [
+          "O",
+          "Z"
+        ],
+        [
+          "_x",
+          "O"
+        ],
+        [
+          "_y",
+          "O"
+        ],
+        [
+          "_z",
+          "O"
+        ]
+      ],
+      "faces": [],
+      "arrows": [
+        [
+          "O",
+          "X"
+        ],
+        [
+          "O",
+          "Y"
+        ],
+        [
+          "O",
+          "Z"
+        ],
+        [
+          "O",
+          "K"
+        ],
+        [
+          "O",
+          "M"
+        ],
+        [
+          "O",
+          "N"
+        ],
+        [
+          "S",
+          "K"
+        ]
+      ],
+      "labelNames": [
+        "O",
+        "X",
+        "Y",
+        "Z",
+        "M",
+        "N",
+        "K"
+      ],
+      "views": {
+        "neutral": {
+          "label": "K — середина MN, O — начало координат.",
+          "segments": [
+            [
+              "M",
+              "K"
+            ],
+            [
+              "K",
+              "N"
+            ],
+            [
+              "O",
+              "K"
+            ]
+          ]
+        },
+        "mid": {
+          "label": "Стрелка OK идёт к полусумме координат концов, и начинается в O.",
+          "segments": [
+            [
+              "M",
+              "N"
+            ],
+            [
+              "O",
+              "M"
+            ],
+            [
+              "O",
+              "N"
+            ],
+            [
+              "O",
+              "K"
+            ]
+          ]
+        },
+        "new": {
+          "label": "Для другого начала S=(0,0,1) вертикальная составляющая SK равна нулю.",
+          "segments": [
+            [
+              "S",
+              "K"
+            ],
+            [
+              "O",
+              "K"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "С какого вектора начинать?",
+      "text": "Сначала координаты K: это полусумма M и N. Длина MN в вопросе не требуется.",
+      "view": "mid"
+    },
+    {
+      "id": "h2",
+      "question": "Какой корень останется?",
+      "text": "Для K=(−2,3,1) сумма квадратов равна 4+9+1. Расстояние — корень из неё.",
+      "view": "neutral"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Середина K",
+      "prompt": "Введи координаты K.",
+      "input": {
+        "prompt": "Середина K",
+        "accepted": [
+          "-2;3;1"
+        ],
+        "feedback": "Усредни отдельно −4 и 0, 7 и −1, 0 и 2."
+      },
+      "explanation": "K=(−2,3,1).",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-074"
+        }
+      ],
+      "view": "mid"
+    },
+    {
+      "id": "step-2",
+      "title": "Квадрат OK",
+      "prompt": "Чему равен OK²?",
+      "input": {
+        "prompt": "Квадрат OK",
+        "accepted": [
+          "14"
+        ],
+        "feedback": "Возведи в квадрат все три координаты K, так как OK начинается в O."
+      },
+      "explanation": "OK²=4+9+1.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-074"
+        }
+      ],
+      "view": "neutral"
+    },
+    {
+      "id": "step-3",
+      "title": "Другое начало",
+      "prompt": "При S=(0,0,1) чему равен квадрат SK?",
+      "input": {
+        "prompt": "Другое начало",
+        "accepted": [
+          "13"
+        ],
+        "feedback": "Разность по высоте исчезает, но две горизонтальные компоненты остаются."
+      },
+      "explanation": "SK²=(−2)²+3²=13.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-074"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "sqrt(14)"
+    ],
+    "prompt": "Введи расстояние OK.",
+    "feedback": "Расстояние равно √14."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 170, source point triples on pages 169 and 170; all radical signs and interpretations of vector magnitude verified in the issued page images and printed keys 270.",
+    "at": "2026-11-21T22:36:21Z"
+  }
+}

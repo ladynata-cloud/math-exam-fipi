@@ -106,4 +106,5 @@ require('./coordinate-vectors-and-diagrams.test.cjs');
 require('./signed-coordinate-arithmetic.test.cjs');
 require('./coordinate-span-ratios.test.cjs');
 require('./spatial-points-and-centroid.test.cjs');
+require('./midpoints-and-vector-lengths.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

@@ -15068,6 +15068,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -15087,6 +15092,12 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в",
@@ -15112,6 +15123,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -15130,7 +15145,10 @@
           172
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0665",
@@ -15156,6 +15174,15 @@
         "д",
         "е",
         "ж"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "ж"
       ]
     },
     {
@@ -15174,7 +15201,10 @@
           172
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0667",
@@ -15193,6 +15223,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
