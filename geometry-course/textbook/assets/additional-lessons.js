@@ -73,7 +73,10 @@
       ['/geometry-course/textbook/data/trigonometric-rays.json', '№1104–1106'],
       ['/geometry-course/textbook/data/slope-and-reflection.json', '№1107–1108'],
       ['/geometry-course/textbook/data/triangle-sine-area.json', 'п. 104 и №1109–1113'],
-      ['/geometry-course/textbook/data/triangle-relations.json', 'пп. 105–108']
+      ['/geometry-course/textbook/data/triangle-relations.json', 'пп. 105–108'],
+      ['/geometry-course/textbook/data/solve-triangle.json', '№1114, а–и'],
+      ['/geometry-course/textbook/data/oblique-triangle-cases.json', '№1115–1117'],
+      ['/geometry-course/textbook/data/triangle-section-applications.json', '№1118–1122']
   ];
 
   async function forCourse(base) {

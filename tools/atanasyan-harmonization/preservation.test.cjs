@@ -75,6 +75,9 @@ function filesAt(relative) {
 const approvedAreaFiles = {
   "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
   "geometry-course/textbook/data/triangle-sine-area.json": "329c77274a12acbab05da2084cfb72e09f7af67f4bb63773c241c7e8c6effcfa",
+  "geometry-course/textbook/data/solve-triangle.json": "d51ca83c1711b26949d4eba0e89e0ea2f7358f18da474aba767bc3896d233b5c",
+  "geometry-course/textbook/data/oblique-triangle-cases.json": "565304b423ae86a9faf10c0df28a4587460fa868cd476808a697b053ad61e828",
+  "geometry-course/textbook/data/triangle-section-applications.json": "22c4ffd1079c8abc17c39ec93ce4468c850356882f2240997128b7bb4adc6d3d",
   "geometry-course/textbook/data/triangle-relations.json": "64b65b5c40cd4edd1217d70b1c2a65c379c8f5887b036b8efc5494de81a483cc",
   "geometry-course/textbook/data/trigonometric-signs.json": "22d83be75d0a93f61fa9d230be762e7de0b27412608af570f0383cec57a9d944",
   "geometry-course/textbook/data/trigonometric-rays.json": "4f4f6f668aec42eef93fabd8b0cd7d0967a09c7a0f15780f5e1a31e977010940",
@@ -111,7 +114,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "fc46ae672d4703bb77af90bb145eb1d2c35586c29c062bfa6b7cb06e66dd3d4b",
+  "geometry-course/textbook/assets/additional-lessons.js": "f28eea77072b72175501eda20ea87965bdeb4eaa882c0633135932b85270c7f9",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
