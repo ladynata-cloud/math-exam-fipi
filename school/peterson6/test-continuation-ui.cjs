@@ -1698,3 +1698,17 @@ test('trace 27 actual consecutive corners, check two circle estimates and zoom a
   });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('read every requested level from the printed curve and both sides of the circle without exact-graph credit',()=>{
+ const f=fixture(null,null,true);try{
+  const reading=[[-3.4,-2.3],[-2.5,-1.5],[-1.8,-1.3],[-.6,-1],[0,-.8],[.7,-.1],[1.5,.9],[2.9,1.7],[3.6,2.5],[3.5,2.3],[2.7,1.6],[1.4,.8],[.8,0],[.5,-.4],[.1,-.7],[-3.1,-1.9],[-3.5,-2.4],[-3.6,-2.8]];
+  const fmt=v=>String(v).replace('.',','),coord=p=>'('+p.map(fmt).join('; ')+')';
+  const cases=[...reading.map(p=>[coord(p)]),...[0,1].flatMap(j=>[-2.8,-.5,1.9].map(v=>{const ry=Math.round(Math.sqrt(12.25-v*v)*10)/10;return[-ry,ry].map(u=>coord(j?[u,v]:[v,u]));}))];
+  cases.forEach((matches,i)=>{
+   f.nav('#lesson/p39/'+(37+i));f.click('[data-lesson-help="model"] > summary');const [dataset,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   assert.equal(f.d.querySelectorAll('#model [data-paper-reading]').length,0);f.event(step,'1','change');assert.equal(f.d.querySelectorAll('#model [data-first-projection]').length,1);
+   f.event(step,'2','change');const msg=f.q('#model .pm-result').textContent.replaceAll('−','-');for(const match of matches)assert(msg.includes(match),[i,msg,match]);
+   assert.equal(f.d.querySelectorAll('#model [data-paper-reading]').length,matches.length);f.event(dataset,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.notEqual(f.q('#model .pm-result').textContent.replaceAll('−','-'),msg);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

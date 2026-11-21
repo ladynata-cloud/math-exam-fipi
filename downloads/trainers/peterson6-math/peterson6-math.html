@@ -1514,13 +1514,46 @@ function stationSchedule(changed){
  const dt=changed?30:0,k=changed?.5:1;
  return stationPaths.map(points=>points.map(([time,km])=>[time+dt,km*k]));
 }
+const measuredOrdinateTenths=[-2.94,-2.73,-2.49,-2.28,-2.11,-2.01,-1.91,-1.83,-1.76,-1.7,-1.64,-1.59,-1.54,-1.5,-1.46,-1.43,-1.4,-1.37,-1.34,-1.32,-1.3,-1.28,-1.27,-1.26,-1.24,-1.22,-1.19,-1.17,-1.13,-1.1,-1.07,-1.04,-0.99,-0.95,-0.91,-0.87,-0.82,-0.78,-0.72,-0.67,-0.61,-0.54,-0.45,-0.31,-0.14,0.07,0.23,0.36,0.49,0.61,0.73,0.84,0.94,1.04,1.11,1.19,1.26,1.32,1.38,1.42,1.45,1.49,1.53,1.56,1.6,1.64,1.68,1.72,1.78,1.87,1.96,2.12,2.29,2.52];
+const measuredGraph=[[-3.73,-3],...measuredOrdinateTenths.map((y,i)=>[(i-37)/10,y]),[3.65,2.7],[3.68,2.84],[3.72,3]];
+const printedReadings={x:[-3.4,-2.5,-1.8,-.6,0,.7,1.5,2.9,3.6],y:[2.3,1.6,.8,0,-.4,-.7,-1.9,-2.4,-2.8]};
+function readMeasuredCurve(axis,position){
+ const n=axis==='x'?0:1,other=1-n,index=measuredGraph.findIndex(p=>p[n]>=position),hi=measuredGraph[Math.max(1,index)],lo=measuredGraph[Math.max(0,index-1)];
+ return lo[other]+(hi[other]-lo[other])*(position-lo[n])/(hi[n]-lo[n]);
+}
+function measuredPaperFigure(curve,axis,position,stage){
+ const circular=curve==='circle',bounds=circular?[-4,4,-4,4]:[-4,4,-3,3],{graph,X,Y,unit}=paperPlane(bounds,.1,1,circular?'Окружность с центром в начале координат, радиус 3,5.':'Возрастающая линия по измерениям печатного графика.');
+ if(circular)graph.append(svg('circle',{cx:X(0),cy:Y(0),r:3.5*unit,stroke:'#365c69',fill:'none','stroke-width':2.4,'data-reading-circle':'3.5'}));
+ else graph.append(svg('polyline',{points:measuredGraph.map(([x,y])=>X(x)+','+Y(y)).join(' '),fill:'none',stroke:'#355b49','stroke-width':2.4,'data-reading-line':'1'}));
+ let crossing=[];
+ if(stage){
+  const p=position,d=axis==='x';
+  if(d)ln(graph,X(p),Y(bounds[2]),X(p),Y(bounds[3]),{stroke:'#8c315b','stroke-width':1.8,'stroke-dasharray':'3 3','data-first-projection':'x'});
+  else ln(graph,X(bounds[0]),Y(p),X(bounds[1]),Y(p),{stroke:'#8c315b','stroke-width':1.8,'stroke-dasharray':'3 3','data-first-projection':'y'});
+  const other=circular?Math.sqrt(3.5**2-p**2):readMeasuredCurve(axis,p),values=circular?[-other,other]:[other];
+  crossing=values.map(v=>d?[p,v]:[v,p]);
+  if(stage===2)for(const [x,y]of crossing){graph.append(svg('circle',{cx:X(x),cy:Y(y),r:3.5,fill:'#ae5522','data-paper-reading':'1'}));}
+ }
+ return {graph,crossing};
+}
 const decimalPaperPoints=[[-13,20],[18,8],[-26,4],[18,-15],[0,-16],[-12,-7]];
 function paperPlane(bounds,minor,major,label){
  const [xmin,xmax,ymin,ymax]=bounds,unit=Math.min(228/(xmax-xmin),175/(ymax-ymin)),X=x=>143+(x-(xmin+xmax)/2)*unit,Y=y=>108-(y-(ymin+ymax)/2)*unit;
  const graph=svg('svg',{viewBox:'0 0 290 224',class:'pm-chart pcm-route-fractions',role:'img','aria-label':label});
- const axisColor='#304c44',isMajor=v=>Math.abs(v/major-Math.round(v/major))<1e-7;
- for(let i=Math.ceil(xmin/minor-1e-7);i<=xmax/minor+1e-7;i++){const v=i*minor;ln(graph,X(v),Y(ymin),X(v),Y(ymax),{stroke:i===0?axisColor:isMajor(v)?'#809c8e':'#d4dfda','stroke-width':i===0?1.8:isMajor(v)?1:0.65});if(isMajor(v))txt(graph,X(v),Y(ymin)+15,num(v),{'font-size':11});}
- for(let i=Math.ceil(ymin/minor-1e-7);i<=ymax/minor+1e-7;i++){const v=i*minor;ln(graph,X(xmin),Y(v),X(xmax),Y(v),{stroke:i===0?axisColor:isMajor(v)?'#809c8e':'#d4dfda','stroke-width':i===0?1.8:isMajor(v)?1:0.65});if(isMajor(v))txt(graph,X(xmin)-5,Y(v)+4,num(v),{'font-size':11,'text-anchor':'end'});}
+ const isMajor=v=>Math.abs(v/major-Math.round(v/major))<1e-7;
+ const grid={minor:[],major:[],axis:[]},labelValues=[];
+ for(let i=Math.ceil(xmin/minor-1e-7);i<=xmax/minor+1e-7;i++){
+  const v=i*minor,key=i===0?'axis':isMajor(v)?'major':'minor';
+  grid[key].push('M'+X(v)+' '+Y(ymin)+'V'+Y(ymax));
+  if(isMajor(v))labelValues.push([X(v),Y(ymin)+15,v,'middle']);
+ }
+ for(let i=Math.ceil(ymin/minor-1e-7);i<=ymax/minor+1e-7;i++){
+  const v=i*minor,key=i===0?'axis':isMajor(v)?'major':'minor';
+  grid[key].push('M'+X(xmin)+' '+Y(v)+'H'+X(xmax));
+  if(isMajor(v))labelValues.push([X(xmin)-5,Y(v)+4,v,'end']);
+ }
+ for(const [key,stroke,width]of [['minor','#d4dfda',.65],['major','#809c8e',1],['axis','#304c44',1.8]])if(grid[key].length)graph.append(svg('path',{d:grid[key].join(' '),fill:'none',stroke,'stroke-width':width,'data-grid-level':key}));
+ for(const [x,y,v,anchor]of labelValues)txt(graph,x,y,num(v),{'font-size':11,'text-anchor':anchor});
  txt(graph,X(xmax)+10,Y(ymin)+15,'x',{'font-size':13});txt(graph,X(xmin)-8,Y(ymax)-7,'y',{'font-size':13});return {graph,X,Y,unit};
 }
 function decimalPaper(point,fresh,stage){
@@ -2928,6 +2961,7 @@ function changeBars(before,after,labels=['Было','Стало']) {
  return pic;
 }
 function configFor(lesson,task){
+ if(lesson?.id==='p39'&&task?.paperIntersection)return {title:'Измерь координату по графику',controls:[c('Данные',[[0,'Из упражнения'],[1,'Другая координата']]),c('Шаг',[[0,'Измерю сам'],[1,'Провести линию'],[2,'Прочитать пересечения']])],initial:[0,0]};
  if(lesson?.id==='p39'&&task?.paperGridTask)return {title:'Построй и прочитай координаты',controls:[c('Чертёж',[[0,'Из упражнения'],[1,'Другие координаты']]),c('Шаг',[[0,'Моё построение'],[1,'Промежуточная проверка'],[2,'Проверить результат']])],initial:[0,0]};
  if(lesson?.id==='p39'&&task?.gridGeometry)return {title:'Проверь построение и свойства фигуры',controls:[c('Чертёж',[[0,'Из упражнения'],[1,'В два раза крупнее по координатам']]),c('Проверка',[[0,'Построю сам'],[1,'Сравнить данные'],[2,'Увидеть результат']])],initial:[0,0]};
  if(lesson?.id==='p39'&&task?.coordinateRule)return {title:'Проверь координаты на чертеже',controls:[c('Точки',[[0,'Из упражнения'],[1,'Новый пример']]),c('Проверка',[[0,'Построю сам'],[1,'Один признак'],[2,'Вся проверка']])],initial:[0,0]};
@@ -3216,12 +3250,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p39-print-construction'){picture=sourcePaperConstruction(f);}else if(f.type==='p39-construction'){picture=sourceConstruction(f.design,false,0).graph;}else if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p39-read-measurement'){picture=measuredPaperFigure(f.curve,'x',0,0).graph;}else if(f.type==='p39-print-construction'){picture=sourcePaperConstruction(f);}else if(f.type==='p39-construction'){picture=sourceConstruction(f.design,false,0).graph;}else if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.quantifiedEquation||task.mentalSeries||task.stationGraph||task.convertGroup||task.proportionOpening||Number.isInteger(task.walkingGap)) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -3232,7 +3266,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
   if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -4820,7 +4854,15 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
 
 
 
- else if(n===39&&task.paperGridTask){
+
+ else if(n===39&&task.paperIntersection){
+  const spec=task.paperIntersection,positions=spec.curve==='circle'?[-2.8,-.5,1.9]:printedReadings[spec.axis];
+  const position=positions[(spec.index+(a===1?1:0))%positions.length],drawing=measuredPaperFigure(spec.curve,spec.axis,position,b);
+  show(drawing.graph);say('Дано '+spec.axis+' = '+num(position)+'. Малая клетка равна 0,1.');
+  if(b>=1)say(spec.axis==='x'?'Проведи вертикаль через указанную абсциссу.':'Проведи горизонталь через указанную ординату.');
+  if(b===2){const point=p=>'('+p.map(v=>num(Math.round(v*10)/10)).join('; ')+')';say('По сетке приблизительно: '+drawing.crossing.map(point).join(' и ')+'.');}
+  stepList(['Найди заданное значение на правильной оси.','Проследи линию до каждого пересечения.','На другой оси считай вторую координату с разумной для сетки точностью.']);
+ } else if(n===39&&task.paperGridTask){
   const type=task.paperGridTask;
   if(type==='skier'){
    show(skierDrawing(task.figure.points,a===1,b));say(a===1?'У каждой точки измени знак абсциссы и сохрани ординату.':'Построй точки в порядке номеров из таблицы.');
@@ -85038,6 +85080,1566 @@ window.PetersonCourse = {
       "type": "p39-print-construction",
       "spec": "dotsF",
       "caption": "Координатная модель для самостоятельного построения."
+     }
+    },
+    {
+     "id": "p39-t38",
+     "title": "К задаче №181 (а, x=−3,4)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "а, x=−3,4",
+      "reference": "№181 (а, x=−3,4)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой x = −3,4. Оцени ординату и выбери диапазон, куда попадает измерение.",
+     "answer": "от −2,5 до −2,1",
+     "choices": [
+      "от −2,5 до −2,1",
+      "от −1,7 до −1,3",
+      "от −3,3 до −2,9",
+      "от −0,9 до −0,5"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "-34",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "-1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При x = −3,4 вторая координата приблизительно −2,3. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При x = −3,4 вторая координата приблизительно −2,3. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от −1,7 до −1,3",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −3,3 до −2,9",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −0,9 до −0,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "x",
+      "index": 0
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t39",
+     "title": "К задаче №181 (а, x=−2,5)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "а, x=−2,5",
+      "reference": "№181 (а, x=−2,5)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой x = −2,5. Оцени ординату и выбери диапазон, куда попадает измерение.",
+     "answer": "от −1,7 до −1,3",
+     "choices": [
+      "от −0,9 до −0,5",
+      "от −2,5 до −2,1",
+      "от −0,1 до 0,3",
+      "от −1,7 до −1,3"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "-25",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "-1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При x = −2,5 вторая координата приблизительно −1,5. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При x = −2,5 вторая координата приблизительно −1,5. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от −0,9 до −0,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −2,5 до −2,1",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −0,1 до 0,3",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "x",
+      "index": 1
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t40",
+     "title": "К задаче №181 (а, x=−1,8)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "а, x=−1,8",
+      "reference": "№181 (а, x=−1,8)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой x = −1,8. Оцени ординату и выбери диапазон, куда попадает измерение.",
+     "answer": "от −1,5 до −1,1",
+     "choices": [
+      "от −2,3 до −1,9",
+      "от 0,1 до 0,5",
+      "от −1,5 до −1,1",
+      "от −0,7 до −0,3"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "-18",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "-1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При x = −1,8 вторая координата приблизительно −1,3. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При x = −1,8 вторая координата приблизительно −1,3. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от −0,7 до −0,3",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −2,3 до −1,9",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 0,1 до 0,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "x",
+      "index": 2
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t41",
+     "title": "К задаче №181 (а, x=−0,6)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "а, x=−0,6",
+      "reference": "№181 (а, x=−0,6)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой x = −0,6. Оцени ординату и выбери диапазон, куда попадает измерение.",
+     "answer": "от −1,2 до −0,8",
+     "choices": [
+      "от 0,4 до 0,8",
+      "от −1,2 до −0,8",
+      "от −0,4 до 0",
+      "от −2 до −1,6"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "-6",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "-1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При x = −0,6 вторая координата приблизительно −1. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При x = −0,6 вторая координата приблизительно −1. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от −0,4 до 0",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −2 до −1,6",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 0,4 до 0,8",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "x",
+      "index": 3
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t42",
+     "title": "К задаче №181 (а, x=0)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "а, x=0",
+      "reference": "№181 (а, x=0)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой x = 0. Оцени ординату и выбери диапазон, куда попадает измерение.",
+     "answer": "от −1 до −0,6",
+     "choices": [
+      "от −1 до −0,6",
+      "от −0,2 до 0,2",
+      "от −1,8 до −1,4",
+      "от 0,6 до 1"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "0",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "-1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При x = 0 вторая координата приблизительно −0,8. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При x = 0 вторая координата приблизительно −0,8. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от −0,2 до 0,2",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −1,8 до −1,4",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 0,6 до 1",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "x",
+      "index": 4
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t43",
+     "title": "К задаче №181 (а, x=0,7)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "а, x=0,7",
+      "reference": "№181 (а, x=0,7)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой x = 0,7. Оцени ординату и выбери диапазон, куда попадает измерение.",
+     "answer": "от −0,3 до 0,1",
+     "choices": [
+      "от 0,5 до 0,9",
+      "от −1,1 до −0,7",
+      "от 1,3 до 1,7",
+      "от −0,3 до 0,1"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "7",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "-1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При x = 0,7 вторая координата приблизительно −0,1. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При x = 0,7 вторая координата приблизительно −0,1. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 0,5 до 0,9",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −1,1 до −0,7",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 1,3 до 1,7",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "x",
+      "index": 5
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t44",
+     "title": "К задаче №181 (а, x=1,5)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "а, x=1,5",
+      "reference": "№181 (а, x=1,5)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой x = 1,5. Оцени ординату и выбери диапазон, куда попадает измерение.",
+     "answer": "от 0,7 до 1,1",
+     "choices": [
+      "от −0,1 до 0,3",
+      "от 2,3 до 2,7",
+      "от 0,7 до 1,1",
+      "от 1,5 до 1,9"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "15",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При x = 1,5 вторая координата приблизительно 0,9. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При x = 1,5 вторая координата приблизительно 0,9. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 1,5 до 1,9",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −0,1 до 0,3",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 2,3 до 2,7",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "x",
+      "index": 6
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t45",
+     "title": "К задаче №181 (а, x=2,9)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "а, x=2,9",
+      "reference": "№181 (а, x=2,9)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой x = 2,9. Оцени ординату и выбери диапазон, куда попадает измерение.",
+     "answer": "от 1,5 до 1,9",
+     "choices": [
+      "от 3,1 до 3,5",
+      "от 1,5 до 1,9",
+      "от 2,3 до 2,7",
+      "от 0,7 до 1,1"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "29",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При x = 2,9 вторая координата приблизительно 1,7. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При x = 2,9 вторая координата приблизительно 1,7. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 2,3 до 2,7",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 0,7 до 1,1",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 3,1 до 3,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "x",
+      "index": 7
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t46",
+     "title": "К задаче №181 (а, x=3,6)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "а, x=3,6",
+      "reference": "№181 (а, x=3,6)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой x = 3,6. Оцени ординату и выбери диапазон, куда попадает измерение.",
+     "answer": "от 2,3 до 2,7",
+     "choices": [
+      "от 2,3 до 2,7",
+      "от 3,1 до 3,5",
+      "от 1,5 до 1,9",
+      "от 3,9 до 4,3"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "36",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При x = 3,6 вторая координата приблизительно 2,5. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При x = 3,6 вторая координата приблизительно 2,5. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 3,1 до 3,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 1,5 до 1,9",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 3,9 до 4,3",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "x",
+      "index": 8
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t47",
+     "title": "К задаче №181 (б, y=2,3)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "б, y=2,3",
+      "reference": "№181 (б, y=2,3)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой y = 2,3. Оцени абсциссу и выбери диапазон, куда попадает измерение.",
+     "answer": "от 3,3 до 3,7",
+     "choices": [
+      "от 4,1 до 4,5",
+      "от 2,5 до 2,9",
+      "от 4,9 до 5,3",
+      "от 3,3 до 3,7"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "23",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При y = 2,3 вторая координата приблизительно 3,5. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При y = 2,3 вторая координата приблизительно 3,5. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 4,1 до 4,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 2,5 до 2,9",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 4,9 до 5,3",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "y",
+      "index": 0
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t48",
+     "title": "К задаче №181 (б, y=1,6)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "б, y=1,6",
+      "reference": "№181 (б, y=1,6)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой y = 1,6. Оцени абсциссу и выбери диапазон, куда попадает измерение.",
+     "answer": "от 2,5 до 2,9",
+     "choices": [
+      "от 1,7 до 2,1",
+      "от 4,1 до 4,5",
+      "от 2,5 до 2,9",
+      "от 3,3 до 3,7"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "16",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При y = 1,6 вторая координата приблизительно 2,7. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При y = 1,6 вторая координата приблизительно 2,7. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 3,3 до 3,7",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 1,7 до 2,1",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 4,1 до 4,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "y",
+      "index": 1
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t49",
+     "title": "К задаче №181 (б, y=0,8)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "б, y=0,8",
+      "reference": "№181 (б, y=0,8)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой y = 0,8. Оцени абсциссу и выбери диапазон, куда попадает измерение.",
+     "answer": "от 1,2 до 1,6",
+     "choices": [
+      "от 2,8 до 3,2",
+      "от 1,2 до 1,6",
+      "от 2 до 2,4",
+      "от 0,4 до 0,8"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "8",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При y = 0,8 вторая координата приблизительно 1,4. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При y = 0,8 вторая координата приблизительно 1,4. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 2 до 2,4",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 0,4 до 0,8",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 2,8 до 3,2",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "y",
+      "index": 2
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t50",
+     "title": "К задаче №181 (б, y=0)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "б, y=0",
+      "reference": "№181 (б, y=0)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой y = 0. Оцени абсциссу и выбери диапазон, куда попадает измерение.",
+     "answer": "от 0,6 до 1",
+     "choices": [
+      "от 0,6 до 1",
+      "от 1,4 до 1,8",
+      "от −0,2 до 0,2",
+      "от 2,2 до 2,6"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "0",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При y = 0 вторая координата приблизительно 0,8. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При y = 0 вторая координата приблизительно 0,8. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 1,4 до 1,8",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −0,2 до 0,2",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 2,2 до 2,6",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "y",
+      "index": 3
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t51",
+     "title": "К задаче №181 (б, y=−0,4)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "б, y=−0,4",
+      "reference": "№181 (б, y=−0,4)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой y = −0,4. Оцени абсциссу и выбери диапазон, куда попадает измерение.",
+     "answer": "от 0,3 до 0,7",
+     "choices": [
+      "от 1,1 до 1,5",
+      "от −0,5 до −0,1",
+      "от 1,9 до 2,3",
+      "от 0,3 до 0,7"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "-4",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При y = −0,4 вторая координата приблизительно 0,5. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При y = −0,4 вторая координата приблизительно 0,5. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 1,1 до 1,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −0,5 до −0,1",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 1,9 до 2,3",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "y",
+      "index": 4
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t52",
+     "title": "К задаче №181 (б, y=−0,7)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "б, y=−0,7",
+      "reference": "№181 (б, y=−0,7)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой y = −0,7. Оцени абсциссу и выбери диапазон, куда попадает измерение.",
+     "answer": "от −0,1 до 0,3",
+     "choices": [
+      "от −0,9 до −0,5",
+      "от 1,5 до 1,9",
+      "от −0,1 до 0,3",
+      "от 0,7 до 1,1"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "-7",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При y = −0,7 вторая координата приблизительно 0,1. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При y = −0,7 вторая координата приблизительно 0,1. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от 0,7 до 1,1",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −0,9 до −0,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от 1,5 до 1,9",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "y",
+      "index": 5
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t53",
+     "title": "К задаче №181 (б, y=−1,9)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "б, y=−1,9",
+      "reference": "№181 (б, y=−1,9)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой y = −1,9. Оцени абсциссу и выбери диапазон, куда попадает измерение.",
+     "answer": "от −3,3 до −2,9",
+     "choices": [
+      "от −1,7 до −1,3",
+      "от −3,3 до −2,9",
+      "от −2,5 до −2,1",
+      "от −4,1 до −3,7"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "-19",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "-1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При y = −1,9 вторая координата приблизительно −3,1. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При y = −1,9 вторая координата приблизительно −3,1. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от −2,5 до −2,1",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −4,1 до −3,7",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −1,7 до −1,3",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "y",
+      "index": 6
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t54",
+     "title": "К задаче №181 (б, y=−2,4)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "б, y=−2,4",
+      "reference": "№181 (б, y=−2,4)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой y = −2,4. Оцени абсциссу и выбери диапазон, куда попадает измерение.",
+     "answer": "от −3,7 до −3,3",
+     "choices": [
+      "от −3,7 до −3,3",
+      "от −2,9 до −2,5",
+      "от −4,5 до −4,1",
+      "от −2,1 до −1,7"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "-24",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "-1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При y = −2,4 вторая координата приблизительно −3,5. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При y = −2,4 вторая координата приблизительно −3,5. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от −2,9 до −2,5",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −4,5 до −4,1",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −2,1 до −1,7",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "y",
+      "index": 7
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t55",
+     "title": "К задаче №181 (б, y=−2,8)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 181,
+      "subpart": "б, y=−2,8",
+      "reference": "№181 (б, y=−2,8)"
+     },
+     "kind": "choice",
+     "prompt": "На линии найди точку с координатой y = −2,8. Оцени абсциссу и выбери диапазон, куда попадает измерение.",
+     "answer": "от −3,8 до −3,4",
+     "choices": [
+      "от −3 до −2,6",
+      "от −4,6 до −4,2",
+      "от −2,2 до −1,8",
+      "от −3,8 до −3,4"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько десятых единицы составляет заданная координата, со знаком?",
+       "answer": "-28",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "На единицу приходится 10 малых клеток."
+      },
+      {
+       "prompt": "Каков знак найденной координаты: 1 для плюса, −1 для минуса?",
+       "answer": "-1",
+       "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+       "explanation": "При y = −2,8 вторая координата приблизительно −3,6. Небольшая погрешность допустима: это чтение кривой по сетке."
+      }
+     ],
+     "hint": "Если дан x, проведи вертикаль до линии и считай y. Если дан y, иди по горизонтали и считай x.",
+     "explanation": "При y = −2,8 вторая координата приблизительно −3,6. Небольшая погрешность допустима: это чтение кривой по сетке.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "от −3 до −2,6",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −4,6 до −4,2",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ],
+      [
+       "от −2,2 до −1,8",
+       "Доведи линию от данной координаты до кривой. Для считывания неизвестной проецируй к другой оси."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "printed",
+      "axis": "y",
+      "index": 8
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "printed",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t56",
+     "title": "К задаче №182 (а, x=−2,8)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 182,
+      "subpart": "а, x=−2,8",
+      "reference": "№182 (а, x=−2,8)"
+     },
+     "kind": "choice",
+     "prompt": "Построй окружность с центром O(0; 0) радиуса 3,5. Положи x = −2,8. Найди все точки окружности с таким условием. Какие два значения у координаты y, если читать сетку примерно до десятых?",
+     "answer": "Отрицательное и положительное, примерно −2,1 и 2,1",
+     "choices": [
+      "Только положительное, примерно 2,1",
+      "Только отрицательное, примерно −2,1",
+      "Два нуля",
+      "Отрицательное и положительное, примерно −2,1 и 2,1"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько единичных отрезков составляет радиус?",
+       "answer": "3.5",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: y приблизительно −2,1 и 2,1. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      },
+      {
+       "prompt": "Сколько точек пересечения с проведённой прямой?",
+       "answer": "2",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: y приблизительно −2,1 и 2,1. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      }
+     ],
+     "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+     "explanation": "Получаются две точки: y приблизительно −2,1 и 2,1. При отражении относительно оси заданная координата сохраняется, а другая меняет знак.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "Только положительное, примерно 2,1",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Только отрицательное, примерно −2,1",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Два нуля",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "circle",
+      "axis": "x",
+      "index": 0
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "circle",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t57",
+     "title": "К задаче №182 (а, x=−0,5)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 182,
+      "subpart": "а, x=−0,5",
+      "reference": "№182 (а, x=−0,5)"
+     },
+     "kind": "choice",
+     "prompt": "Построй окружность с центром O(0; 0) радиуса 3,5. Положи x = −0,5. Найди все точки окружности с таким условием. Какие два значения у координаты y, если читать сетку примерно до десятых?",
+     "answer": "Отрицательное и положительное, примерно −3,5 и 3,5",
+     "choices": [
+      "Только отрицательное, примерно −3,5",
+      "Два нуля",
+      "Отрицательное и положительное, примерно −3,5 и 3,5",
+      "Только положительное, примерно 3,5"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько единичных отрезков составляет радиус?",
+       "answer": "3.5",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: y приблизительно −3,5 и 3,5. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      },
+      {
+       "prompt": "Сколько точек пересечения с проведённой прямой?",
+       "answer": "2",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: y приблизительно −3,5 и 3,5. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      }
+     ],
+     "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+     "explanation": "Получаются две точки: y приблизительно −3,5 и 3,5. При отражении относительно оси заданная координата сохраняется, а другая меняет знак.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "Только положительное, примерно 3,5",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Только отрицательное, примерно −3,5",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Два нуля",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "circle",
+      "axis": "x",
+      "index": 1
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "circle",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t58",
+     "title": "К задаче №182 (а, x=1,9)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 182,
+      "subpart": "а, x=1,9",
+      "reference": "№182 (а, x=1,9)"
+     },
+     "kind": "choice",
+     "prompt": "Построй окружность с центром O(0; 0) радиуса 3,5. Положи x = 1,9. Найди все точки окружности с таким условием. Какие два значения у координаты y, если читать сетку примерно до десятых?",
+     "answer": "Отрицательное и положительное, примерно −2,9 и 2,9",
+     "choices": [
+      "Два нуля",
+      "Отрицательное и положительное, примерно −2,9 и 2,9",
+      "Только положительное, примерно 2,9",
+      "Только отрицательное, примерно −2,9"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько единичных отрезков составляет радиус?",
+       "answer": "3.5",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: y приблизительно −2,9 и 2,9. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      },
+      {
+       "prompt": "Сколько точек пересечения с проведённой прямой?",
+       "answer": "2",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: y приблизительно −2,9 и 2,9. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      }
+     ],
+     "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+     "explanation": "Получаются две точки: y приблизительно −2,9 и 2,9. При отражении относительно оси заданная координата сохраняется, а другая меняет знак.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "Только положительное, примерно 2,9",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Только отрицательное, примерно −2,9",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Два нуля",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "circle",
+      "axis": "x",
+      "index": 2
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "circle",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t59",
+     "title": "К задаче №182 (б, y=−2,8)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 182,
+      "subpart": "б, y=−2,8",
+      "reference": "№182 (б, y=−2,8)"
+     },
+     "kind": "choice",
+     "prompt": "Построй окружность с центром O(0; 0) радиуса 3,5. Положи y = −2,8. Найди все точки окружности с таким условием. Какие два значения у координаты x, если читать сетку примерно до десятых?",
+     "answer": "Отрицательное и положительное, примерно −2,1 и 2,1",
+     "choices": [
+      "Только отрицательное, примерно −2,1",
+      "Два нуля",
+      "Отрицательное и положительное, примерно −2,1 и 2,1",
+      "Только положительное, примерно 2,1"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько единичных отрезков составляет радиус?",
+       "answer": "3.5",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: x приблизительно −2,1 и 2,1. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      },
+      {
+       "prompt": "Сколько точек пересечения с проведённой прямой?",
+       "answer": "2",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: x приблизительно −2,1 и 2,1. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      }
+     ],
+     "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+     "explanation": "Получаются две точки: x приблизительно −2,1 и 2,1. При отражении относительно оси заданная координата сохраняется, а другая меняет знак.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "Только положительное, примерно 2,1",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Только отрицательное, примерно −2,1",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Два нуля",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "circle",
+      "axis": "y",
+      "index": 0
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "circle",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t60",
+     "title": "К задаче №182 (б, y=−0,5)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 182,
+      "subpart": "б, y=−0,5",
+      "reference": "№182 (б, y=−0,5)"
+     },
+     "kind": "choice",
+     "prompt": "Построй окружность с центром O(0; 0) радиуса 3,5. Положи y = −0,5. Найди все точки окружности с таким условием. Какие два значения у координаты x, если читать сетку примерно до десятых?",
+     "answer": "Отрицательное и положительное, примерно −3,5 и 3,5",
+     "choices": [
+      "Два нуля",
+      "Отрицательное и положительное, примерно −3,5 и 3,5",
+      "Только положительное, примерно 3,5",
+      "Только отрицательное, примерно −3,5"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько единичных отрезков составляет радиус?",
+       "answer": "3.5",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: x приблизительно −3,5 и 3,5. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      },
+      {
+       "prompt": "Сколько точек пересечения с проведённой прямой?",
+       "answer": "2",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: x приблизительно −3,5 и 3,5. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      }
+     ],
+     "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+     "explanation": "Получаются две точки: x приблизительно −3,5 и 3,5. При отражении относительно оси заданная координата сохраняется, а другая меняет знак.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "Только положительное, примерно 3,5",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Только отрицательное, примерно −3,5",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Два нуля",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "circle",
+      "axis": "y",
+      "index": 1
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "circle",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
+     }
+    },
+    {
+     "id": "p39-t61",
+     "title": "К задаче №182 (б, y=1,9)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 41,
+      "exercise": 182,
+      "subpart": "б, y=1,9",
+      "reference": "№182 (б, y=1,9)"
+     },
+     "kind": "choice",
+     "prompt": "Построй окружность с центром O(0; 0) радиуса 3,5. Положи y = 1,9. Найди все точки окружности с таким условием. Какие два значения у координаты x, если читать сетку примерно до десятых?",
+     "answer": "Отрицательное и положительное, примерно −2,9 и 2,9",
+     "choices": [
+      "Отрицательное и положительное, примерно −2,9 и 2,9",
+      "Только положительное, примерно 2,9",
+      "Только отрицательное, примерно −2,9",
+      "Два нуля"
+     ],
+     "steps": [
+      {
+       "prompt": "Сколько единичных отрезков составляет радиус?",
+       "answer": "3.5",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: x приблизительно −2,9 и 2,9. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      },
+      {
+       "prompt": "Сколько точек пересечения с проведённой прямой?",
+       "answer": "2",
+       "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+       "explanation": "Получаются две точки: x приблизительно −2,9 и 2,9. При отражении относительно оси заданная координата сохраняется, а другая меняет знак."
+      }
+     ],
+     "hint": "Заданная прямая проходит внутри окружности. По разные стороны оси она пересекает окружность на одинаковом расстоянии от этой оси.",
+     "explanation": "Получаются две точки: x приблизительно −2,9 и 2,9. При отражении относительно оси заданная координата сохраняется, а другая меняет знак.",
+     "skills": [
+      "integer-compare"
+     ],
+     "errorCues": [
+      [
+       "Только положительное, примерно 2,9",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Только отрицательное, примерно −2,9",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ],
+      [
+       "Два нуля",
+       "Проверь оба пересечения. Они симметричны относительно оси: меняется только знак второй координаты."
+      ]
+     ],
+     "finalLabel": "Выбери результат измерения.",
+     "paperIntersection": {
+      "curve": "circle",
+      "axis": "y",
+      "index": 2
+     },
+     "figure": {
+      "type": "p39-read-measurement",
+      "curve": "circle",
+      "caption": "Авторская координатная схема для измерения. Малое деление равно 0,1."
      }
     }
    ]

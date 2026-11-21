@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1240);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1264);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1091,6 +1091,12 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  const l=D.lessons.find(t=>t.id==='p39'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);
  assert.equal(g(178)[0].figure.points.length,27);assert.equal(g(178)[0].answer,'Лыжник');assert.equal(g(179)[0].answer,'(−2,3; 2,7) и (1,8; 1,1)');
  assert.deepEqual(g(180).map(t=>Array.from(t.steps,s=>Number(s.answer))),[[-1.3,2],[1.8,.8],[-2.6,.4],[1.8,-1.5],[0,-1.6],[-1.2,-.7]]);
+}
+{
+ const l=D.lessons.find(t=>t.id==='p39'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);
+ assert.equal(g(181).length,18);assert.equal(g(182).length,6);
+ assert.deepEqual(g(181).map(t=>t.paperIntersection.axis),[...Array(9).fill('x'),...Array(9).fill('y')]);
+ for(const task of [...g(181),...g(182)]){assert.equal(new Set(task.choices).size,4);assert(task.choices.includes(task.answer));assert.equal(task.source.page,41);}
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
