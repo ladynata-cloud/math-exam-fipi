@@ -24,10 +24,11 @@
     const ymin = Math.min(0, ...ys) - 1, ymax = Math.max(0, ...ys) + 1;
     const X = n => 32 + (n-xmin)/(xmax-xmin)*224;
     const Y = n => 151 - (n-ymin)/(ymax-ymin)*127;
-    const axis = '<path d="M24 '+Y(0)+'H264 M'+X(0)+' 15V158" stroke="#4b5865"/><text x="267" y="'+(Y(0)+4)+'">x</text><text x="'+(X(0)+5)+'" y="14">y</text>';
+    const [horizontal,vertical]=data.axes || ['x','y'];
+    const axis = '<path d="M24 '+Y(0)+'H264 M'+X(0)+' 15V158" stroke="#4b5865"/><text x="267" y="'+(Y(0)+4)+'">'+horizontal+'</text><text x="'+(X(0)+5)+'" y="14">'+vertical+'</text>';
     const line = curves.map((curve,index)=>'<polyline fill="none" stroke="'+(index && data.compare?'#935118':'#176a66')+'" '+(index && data.compare?'stroke-dasharray="6 3"':'')+' stroke-width="2.5" points="'+curve.map(([x,y])=>X(x)+','+Y(y)).join(' ')+'"/>').join('');
     const guides = data.asymptotes ? '<path d="M'+X(data.asymptotes[0])+' 15V158 M24 '+Y(data.asymptotes[1])+'H264" stroke="#935118" stroke-dasharray="4 3"/>' : '';
-    const dots = (data.marked || pts).map(([x,y]) => '<circle cx="'+X(x)+'" cy="'+Y(y)+'" r="3.5" fill="#12635d"/>').join('');
+    const dots = (curves.length ? (data.marked || pts) : pts).map(([x,y]) => '<circle cx="'+X(x)+'" cy="'+Y(y)+'" r="3.5" fill="#12635d"/>').join('');
     const labels=(data.marked||[]).map(([x,y])=>'<text x="'+X(x)+'" y="'+(Y(y)+(y===0?14:-7))+'" text-anchor="middle"'+(data.labelCoordinates?' style="paint-order:stroke;stroke:#f4faf7;stroke-width:3px;stroke-linejoin:round"':'')+'>'+(data.labelCoordinates?'('+x+'; '+y+')':(y===0?x:y))+'</text>').join('');
     return '<svg viewBox="0 0 283 176" role="img" aria-label="'+data.alt+'"><g font-size="11" fill="#20323c">'+axis+guides+line+dots+labels+'</g></svg>';
   }

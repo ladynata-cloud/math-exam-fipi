@@ -125,6 +125,67 @@ function answers(point,data) {
       const split=pairs.find(([x,y])=>x+y===a);
       return [equal[0],split[0]*split[1],pairs.length];
     }
+    case 24: {
+      const values=Array.from({length:21},(_,i)=>i*i+a);
+      return [values[b],values.indexOf(c),values[b+1]-values[b]];
+    }
+    case 25: {
+      const terms={};terms[a]=b;terms[a+1]=c;
+      for(let i=a-1;i>0;i--)terms[i]=2*terms[i+1]-terms[i+2];
+      for(let i=a+2;i<=r[3];i++)terms[i]=2*terms[i-1]-terms[i-2];
+      return [c-b,terms[1],terms[r[3]]];
+    }
+    case 26: {
+      const seats=Array.from({length:c},(_,i)=>a+i*b);
+      return [seats.at(-1),seats[0]+seats.at(-1),seats.reduce((sum,n)=>sum+n,0)];
+    }
+    case 27: {
+      const terms=[a,b];
+      while(terms.length<=c)terms.push(terms.at(-1)*b/a);
+      return [b/a,terms[c-1],terms[c]-terms[c-1]];
+    }
+    case 28: {
+      const terms=[a];
+      while(terms.length<=c)terms.push(terms.at(-1)*b);
+      return [terms[c-1],terms.slice(0,c).reduce((sum,n)=>sum+n),terms[c]];
+    }
+    case 29: {
+      let all=0,newBorder=0;
+      for(let x=0;x<=b;x++)for(let y=0;y<=b;y++){all+=a;if(x===b||y===b)newBorder+=a;}
+      return [a,newBorder,all];
+    }
+    case 30: {
+      const pairs=Array.from({length:a},(_,i)=>Array.from({length:b},(_,j)=>[i+1,j+1])).flat();
+      return [pairs.length,pairs.filter(([i,j])=>j!==1 || i>c).length,pairs.filter(([,j])=>j===1).length];
+    }
+    case 31: {
+      const orders=[];
+      function list(xs,left){if(!left.length){orders.push(xs);return;}for(const y of left)list([...xs,y],left.filter(x=>x!==y));}
+      list([],Array.from({length:a},(_,i)=>i+1));
+      return [orders.length,orders.filter(xs=>xs[0]===b).length,orders.filter(xs=>Math.abs(xs.indexOf(1)-xs.indexOf(2))===1).length];
+    }
+    case 32:
+    case 33: {
+      const triples=[];
+      for(let i=1;i<=a;i++)for(let j=1;j<=a;j++)for(let k=1;k<=a;k++)if(new Set([i,j,k]).size===3 && (point===32 || (i<j&&j<k)))triples.push([i,j,k]);
+      const includes=triples.filter(tr=>tr.includes(b));
+      if(point===33)return [triples.length,includes.length,triples.length-includes.length];
+      return [new Set(triples.map(([i,j])=>i+','+j)).size,triples.length,includes.length];
+    }
+    case 34: {
+      const trials=data.rows.map(([n,h])=>Array.from({length:n},(_,i)=>i<h));
+      return [trials[0].filter(Boolean).length/trials[0].length,trials.flat().filter(Boolean).length,trials.flat().filter(Boolean).length/trials.flat().length];
+    }
+    case 35: {
+      const totals=[];
+      for(let i=1;i<=a;i++)for(let j=1;j<=a;j++)totals.push(i+j);
+      const favorable=totals.filter(k=>k===b).length;
+      return [totals.length,favorable,favorable/totals.length];
+    }
+    case 36: {
+      const chips=['red','blue','white'].flatMap((color,i)=>Array(r[i]).fill(color)),outcomes=chips.flatMap(x=>chips.map(y=>[x,y]));
+      return [chips.filter(x=>x!=='white').length/chips.length,outcomes.filter(([x,y])=>x==='red'&&y==='red').length/outcomes.length,outcomes.filter(pair=>pair.includes('red')).length/outcomes.length];
+    }
     default: throw Error('uncovered point '+point);
   }
 }
@@ -134,7 +195,7 @@ function submit(w,value) {
   field.dispatchEvent(new w.Event('input',{bubbles:true}));
   w.document.querySelector('#work form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
 }
-for (const [i,page] of [5,14,22,27,31,38,44,49,54,60,65,75,81,87,92,98,108,114,117,122,125,130,134].entries()) {
+for (const [i,page] of [5,14,22,27,31,38,44,49,54,60,65,75,81,87,92,98,108,114,117,122,125,130,134,144,148,154,161,168,172,182,187,191,194,198,202,211].entries()) {
   const point=i+1,id='50-'+point,key='math:makarychev9-2017:v1:'+id;
   let dom=open(id),w=dom.window; const lesson=w.MathExamTopicPractice.lessons.get(id);
   assert.equal(lesson.page,page); assert.equal(w.document.querySelector('#lesson').value,id);
@@ -173,4 +234,4 @@ for (const [i,page] of [5,14,22,27,31,38,44,49,54,60,65,75,81,87,92,98,108,114,1
   click(w,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
   dom.window.close();
 }
-console.log('Source 50: 759 independent numeric checks and twenty-three pupil journeys with saved and assisted work.');
+console.log('Source 50: 1188 independent numeric checks and thirty-six pupil journeys with saved and assisted work.');
