@@ -23,7 +23,7 @@ const shell = new Set(['/assets/oge-wayfinding.js', '/assets/assistant/navigator
 // The full Vilenkin 5 course reuses these exact first-part pure math/model
 // modules. Execute them in the model world; unknown absolute scripts still fail.
 const courseModels = new Set(['/courses/vilenkin-5-part-1/math.js?v=20261120',
-  '/courses/vilenkin-5-part-1/labs.js?v=20261120', '/courses/vilenkin-5-part-1/practice.js?v=20261120']);
+  '/courses/vilenkin-5-part-1/labs.js?v=20261122-forecast-retry', '/courses/vilenkin-5-part-1/practice.js?v=20261120']);
 function loadSchoolModels(root, html, world) {
   const directory = path.join(root, 'school');
   for (const match of html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>/g)) {
