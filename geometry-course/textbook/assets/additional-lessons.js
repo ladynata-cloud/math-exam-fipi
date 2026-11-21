@@ -34,7 +34,8 @@
       ['/geometry-course/textbook/data/area-lessons.json', '№842–853'],
       ['/geometry-course/textbook/data/area-similarity-lessons.json', '№854–871'],
       ['/geometry-course/textbook/data/midpoint-lessons.json', '№872–899'],
-      ['/geometry-course/textbook/data/circle-lessons.json', '№900–925']
+      ['/geometry-course/textbook/data/circle-lessons.json', '№900–925'],
+      ['/geometry-course/textbook/data/grade9-vectors.json', '№926–929, теория 84–86']
   ];
 
   async function forCourse(base) {
