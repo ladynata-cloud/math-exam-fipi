@@ -58,4 +58,5 @@ require('./additional396-content.test.cjs');
 require('./additional404-content.test.cjs');
 require('./additional414-content.test.cjs');
 require('./inscribed-solids.test.cjs');
+require('./circumspheres.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

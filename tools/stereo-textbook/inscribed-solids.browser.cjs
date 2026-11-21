@@ -6,9 +6,9 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const {chromium} = require('playwright');
 const course = require('../../stereo-course/textbook/data/course.json');
-const manifest = require('./inscribed-solids.json');
+const manifests = [require('./inscribed-solids.json'), require('./circumspheres.json')];
 const root = path.resolve(__dirname, '../..');
-const cards = course.lessons.filter(card => Object.hasOwn(manifest.cards, card.id));
+const cards = course.lessons.filter(card => manifests.some(manifest => Object.hasOwn(manifest.cards, card.id)));
 const contentTypes = {'.html':'text/html;charset=utf-8','.js':'application/javascript','.css':'text/css','.json':'application/json'};
 
 async function serve(request, response) {
@@ -108,9 +108,9 @@ async function exercise(page, card, base, width) {
       for (const card of cards) checks += await exercise(page, card, base, width);
       await context.close();
     }
-    assert.equal(cards.length,10);
+    assert.equal(cards.length,20);
     assert.deepEqual(errors, []);
-    console.log('INSCRIBED_SOLIDS_BROWSER_OK: 30 phone and desktop journeys, ' + checks + ' wrong/correct step checks, model states and retained drafts');
+    console.log('INSCRIBED_SOLIDS_BROWSER_OK: 60 phone and desktop journeys, ' + checks + ' wrong/correct step checks, model states and retained drafts');
   } finally {
     await browser?.close();
     if (server) { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }

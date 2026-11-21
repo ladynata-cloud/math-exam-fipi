@@ -2,7 +2,7 @@
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
   "registeredAt": "2026-11-21T06:20:00Z",
-  "scope": "Introduction and chapters I–IV through exercise 427, with 698 reviewed cards. Later exercise positions remain drafts.",
+  "scope": "Introduction and chapters I–IV through exercise 432, with 708 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1089,6 +1089,25 @@
       ],
       "evidence": "tools/stereo-textbook/inscribed-solids.json",
       "mathematicalReport": "tools/stereo-textbook/inscribed-solids.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T06:20:00Z",
+      "scope": "Pyramids and spheres, exercises 428–432, all 10 parts",
+      "cardIds": [
+        "ex-main-0428-a",
+        "ex-main-0428-b",
+        "ex-main-0429",
+        "ex-main-0430-a",
+        "ex-main-0430-b",
+        "ex-main-0431-a",
+        "ex-main-0431-b",
+        "ex-main-0432-a",
+        "ex-main-0432-b",
+        "ex-main-0432-c"
+      ],
+      "evidence": "tools/stereo-textbook/circumspheres.json",
+      "mathematicalReport": "tools/stereo-textbook/circumspheres.test.cjs"
     }
   ],
   "cards": [
@@ -3883,6 +3902,46 @@
     {
       "id": "ex-main-0427-c",
       "sha256": "9cf2e97695ea3dee00c1f2ea0e075bd3648ab7ac6980d8d56c993c71316e7d56"
+    },
+    {
+      "id": "ex-main-0428-a",
+      "sha256": "19a0e0f8c7b6a6c1219330317f420a5c5962fbd8cd1eb3a5484e709c7f04ac23"
+    },
+    {
+      "id": "ex-main-0428-b",
+      "sha256": "c02b76e1d1b3bb0310d42885dc9d3e6de7a112f269154bcf2b86a4a065e0fc80"
+    },
+    {
+      "id": "ex-main-0429",
+      "sha256": "3e8556b4370db36226d130f18b294cd4f35e428f096d5e68d135453d2668bd21"
+    },
+    {
+      "id": "ex-main-0430-a",
+      "sha256": "97fd9b7b90408985580b1ece7feee92b70cf3ecad86db1c17f4bb2991a7b56bc"
+    },
+    {
+      "id": "ex-main-0430-b",
+      "sha256": "420f0335bd3010c26923c6590227cd0eae8b045f21a6d89ccdf1abb6085b57c1"
+    },
+    {
+      "id": "ex-main-0431-a",
+      "sha256": "ecced1f0dd012b2324760d5d4614698c4f1c1f922a110fa69ff6ece9dadaf3ec"
+    },
+    {
+      "id": "ex-main-0431-b",
+      "sha256": "2ee9c92ded9ce7d0654e82456e364d0d50bbabbc5903ae94c1a07f3dd13ead07"
+    },
+    {
+      "id": "ex-main-0432-a",
+      "sha256": "3f4f9e23939dfba47d2b5dd68ef50fd004c39d210845b9fde2f47087e9257e34"
+    },
+    {
+      "id": "ex-main-0432-b",
+      "sha256": "3a8248c75529303be2df125076e93d8c81be178bc2a7a309a3b7d37c8c0d7eed"
+    },
+    {
+      "id": "ex-main-0432-c",
+      "sha256": "c53b0b99378b4d1e5fb7eb23afd0e3424788e74427ca668949166ece3bc134b8"
     }
   ]
 }

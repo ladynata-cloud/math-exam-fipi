@@ -9686,6 +9686,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -9704,7 +9708,10 @@
           116
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0430",
@@ -9723,6 +9730,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -9746,6 +9757,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -9765,6 +9780,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
