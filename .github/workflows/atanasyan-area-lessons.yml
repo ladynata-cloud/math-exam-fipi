@@ -109,6 +109,8 @@ on:
       - 'tools/geometry-textbook/*areas_of_inscribed_disks*'
       - 'tools/geometry-textbook/*disks_and_annuli*'
       - 'tools/geometry-textbook/*cut_disks_and_semicircles*'
+      - 'tools/geometry-textbook/*sector_areas*'
+      - 'geometry-course/textbook/data/sector-areas.json'
       - 'geometry-course/textbook/data/cut-disks-and-semicircles.json'
       - 'geometry-course/textbook/data/disks-and-annuli.json'
       - 'geometry-course/textbook/data/areas-of-inscribed-disks.json'
@@ -198,6 +200,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/sector_areas.py --check && python3 tools/geometry-textbook/check_sector_areas.py
       - run: python3 tools/geometry-textbook/cut_disks_and_semicircles.py --check && python3 tools/geometry-textbook/check_cut_disks_and_semicircles.py
       - run: python3 tools/geometry-textbook/disks_and_annuli.py --check && python3 tools/geometry-textbook/check_disks_and_annuli.py
       - run: python3 tools/geometry-textbook/areas_of_inscribed_disks.py --check && python3 tools/geometry-textbook/check_areas_of_inscribed_disks.py
