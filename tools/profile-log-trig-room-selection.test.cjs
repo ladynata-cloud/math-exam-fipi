@@ -33,6 +33,7 @@ function fixture(id) {
     part('function canWrite(){', 'function readonly(){'),
     part('function addBoardSeedToTrainerUrl(', 'function compatLabel('),
     part('function bridgeStateFromPayload(', 'function requestTrainerState('),
+    part('function protectedPetersonId(', 'function trainerSelectionForRegistry('),
     part('async function createRoom(){','async function connectRoom(){')
   ].join('\n'),p);
   return {p,child,selected,key,entry,route,file};

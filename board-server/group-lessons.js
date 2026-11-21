@@ -7,6 +7,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const express = require('express');
+const geometryModel = require('../trainers/spacemath/model');
 
 const TRAINERS = Object.freeze([
   { id: 'negative-numbers-line', path: '/trainers/negative-numbers-line.html', title: 'Отрицательные числа на прямой' },
@@ -15,6 +16,8 @@ const TRAINERS = Object.freeze([
 const LIMITS = Object.freeze({ students: 8, lessons: 500, lessonBytes: 64 * 1024 * 1024,
   totalBytes: 512 * 1024 * 1024, actionBytes: 96 * 1024, stateBytes: 24 * 1024,
   events: 100000, strokes: 3000, points: 2000 });
+const ACTIONS = Object.freeze(['assign', 'insert', 'trainer', 'geometry', 'stroke', 'undo', 'erase', 'help', 'control', 'geometry-control', 'present']);
+const SURFACES = Object.freeze(['board', 'geometry', 'trainer', 'split']);
 const ID = /^[A-Za-z0-9_-]{8,80}$/;
 const TOKEN = /^[A-Za-z0-9_-]{43}$/;
 // A less-than followed by a variable is ordinary mathematics. Reject complete
@@ -126,12 +129,21 @@ function normalizeState(trainerId, state) {
   }
   return copy(state);
 }
+function normalizeGeometry(state) {
+  requireValue(plain(state), 'GROUP_GEOMETRY_STATE_INVALID');
+  requireValue(Buffer.byteLength(JSON.stringify(state)) <= geometryModel.MAX_BYTES, 'GROUP_STATE_TOO_LARGE');
+  safeJson(state);
+  try { return geometryModel.normalize(state); }
+  catch (_error) { fail('GROUP_GEOMETRY_STATE_INVALID'); }
+}
 function blankWorkspace(id, controller) {
-  return { assignmentId: id, trainerId: null, trainerState: null, strokes: [], controller, revision: 0, trainerVersion: 0 };
+  return { assignmentId: id, trainerId: null, trainerState: null, strokes: [], controller, revision: 0, trainerVersion: 0,
+    geometryState: geometryModel.empty(), geometryVersion: 0, geometryController: controller,
+    geometryAssignmentId: id, boardAssignmentId: id };
 }
 function fromHeader(header) {
   return { id: header.id, title: header.title, createdAt: header.createdAt, revision: 0,
-    presentationTarget: null, presentationRevision: 0,
+    presentationTarget: null, presentationSurface: 'split', presentationRevision: 0,
     students: header.students.map(student => ({ id: student.id, name: student.name, help: false,
       workspace: blankWorkspace(student.assignmentId, 'student') })),
     common: blankWorkspace(header.commonAssignmentId, 'teacher') };
@@ -142,16 +154,28 @@ function workspace(lesson, target) {
 }
 function affected(record) {
   if (record.type === 'present') return [];
-  return record.type === 'assign' ? record.payload.targets : [record.target];
+  return ['assign', 'insert'].includes(record.type) ? record.payload.targets : [record.target];
 }
 function applyRecord(lesson, record) {
   const { type, payload, actor, revision } = record;
   if (type === 'present') {
     lesson.presentationTarget = payload.target;
+    lesson.presentationSurface = payload.surface || 'split';
     lesson.presentationRevision = revision;
-  } else if (type === 'assign') {
+  } else if (type === 'assign' || type === 'insert') {
     for (const target of payload.targets) {
+      const previous = workspace(lesson, target);
       const next = blankWorkspace(payload.assignments[target], target === 'common' ? 'teacher' : 'student');
+      // Inserting a trainer replaces only that material; existing written work
+      // and constructions remain attached to this seat and retain authorship.
+      if (type === 'insert') {
+        next.strokes = previous.strokes;
+        next.geometryState = previous.geometryState;
+        next.geometryVersion = previous.geometryVersion;
+        next.geometryController = previous.geometryController;
+        next.geometryAssignmentId = previous.geometryAssignmentId;
+        next.boardAssignmentId = previous.boardAssignmentId;
+      }
       next.trainerId = payload.trainerId; next.trainerState = copy(payload.initialState);
       next.revision = revision;
       if (target === 'common') lesson.common = next;
@@ -160,6 +184,8 @@ function applyRecord(lesson, record) {
   } else {
     const work = workspace(lesson, record.target);
     if (type === 'trainer') { work.trainerState = copy(payload.state); work.trainerVersion++; }
+    if (type === 'geometry') { work.geometryState = normalizeGeometry(payload.state); work.geometryVersion++; }
+    if (type === 'geometry-control') { work.geometryController = payload.controller; work.geometryVersion++; }
     if (type === 'control') { work.controller = payload.controller; work.trainerVersion++; }
     if (type === 'stroke') work.strokes.push({ ...copy(payload), author: actor, at: record.at });
     if (type === 'undo' || type === 'erase') work.strokes = work.strokes.filter(stroke => stroke.id !== payload.strokeId);
@@ -199,7 +225,7 @@ class GroupLessonStore {
         for (const record of rows) {
           requireValue(record.revision === lesson.revision + 1 && ID.test(record.opId)
             && ['teacher', ...lesson.students.map(item => item.id)].includes(record.actor)
-            && ['assign', 'trainer', 'stroke', 'undo', 'erase', 'help', 'control', 'present'].includes(record.type));
+            && ACTIONS.includes(record.type));
           applyRecord(lesson, record); entries.push(record); dedup.set(`${record.actor}:${record.opId}`, record.fingerprint);
         }
         const bytes = Buffer.byteLength(raw); this.bytes += bytes;
@@ -252,7 +278,8 @@ class GroupLessonStore {
     });
   }
   status() { return { available: this.available, durable: this.available, reason: this.reason,
-    maxStudents: 8, trainers: TRAINERS, history: true, limits: { lessonBytes: this.limits.lessonBytes, strokes: this.limits.strokes } }; }
+    maxStudents: 8, trainers: TRAINERS, history: true, geometry: { id: 'spacemath', stateBytes: geometryModel.MAX_BYTES },
+    surfaces: SURFACES, insert: true, limits: { lessonBytes: this.limits.lessonBytes, strokes: this.limits.strokes } }; }
   ready() { if (!this.available) fail(this.reason, 503); }
   create(body) {
     this.ready(); exactKeys(body, ['title', 'names'], ['title', 'names']);
@@ -304,6 +331,7 @@ class GroupLessonStore {
     const presentationTarget = lesson.presentationTarget;
     snapshot.presentation = { target: presentationTarget };
     if (presentationTarget !== null) {
+      snapshot.presentation.surface = lesson.presentationSurface;
       const presentedWorkspace = workspace(lesson, presentationTarget);
       snapshot.presentation.name = presentationTarget === 'common' ? 'Общая доска'
         : lesson.students.find(student => student.id === presentationTarget).name;
@@ -321,18 +349,19 @@ class GroupLessonStore {
     requireValue(Buffer.byteLength(JSON.stringify(action)) <= this.limits.actionBytes, 'GROUP_ACTION_TOO_LARGE');
     safeJson(action);
     const { type, target, payload } = action, lesson = entry.lesson;
-    requireValue(['assign', 'trainer', 'stroke', 'undo', 'erase', 'help', 'control', 'present'].includes(type));
+    requireValue(ACTIONS.includes(type));
     const record = { opId: action.opId, actor: auth.actor, revision: lesson.revision + 1, at: new Date().toISOString(),
-      type, target: type === 'assign' ? null : target, payload: null, fingerprint: hash(canonical(action)) };
+      type, target: ['assign', 'insert'].includes(type) ? null : target, payload: null, fingerprint: hash(canonical(action)) };
     if (type === 'present') {
       if (auth.role !== 'teacher') fail('GROUP_FORBIDDEN', 403);
       requireValue(target === 'common', 'GROUP_TARGET_INVALID');
-      exactKeys(payload, ['target'], ['target']);
+      exactKeys(payload, ['target', 'surface'], ['target']);
+      requireValue(payload.surface === undefined || SURFACES.includes(payload.surface));
       requireValue(payload.target === null || !!workspace(lesson, payload.target), 'GROUP_TARGET_INVALID');
-      record.payload = { target: payload.target };
+      record.payload = { target: payload.target, surface: payload.surface || 'split' };
       return record;
     }
-    if (type === 'assign') {
+    if (type === 'assign' || type === 'insert') {
       if (auth.role !== 'teacher') fail('GROUP_FORBIDDEN', 403);
       exactKeys(payload, ['targets', 'trainerId', 'initialState'], ['targets', 'trainerId']);
       requireValue(Array.isArray(payload.targets) && payload.targets.length >= 1 && payload.targets.length <= 9
@@ -344,15 +373,22 @@ class GroupLessonStore {
       return record;
     }
     const work = workspace(lesson, target); requireValue(!!work, 'GROUP_TARGET_INVALID');
-    if (auth.role !== 'teacher' && (target !== auth.seatId || type === 'control')) fail('GROUP_FORBIDDEN', 403);
-    if (action.assignmentId !== work.assignmentId) fail('GROUP_ASSIGNMENT_STALE', 409);
+    if (auth.role !== 'teacher' && (target !== auth.seatId || type === 'control' || type === 'geometry-control')) fail('GROUP_FORBIDDEN', 403);
+    const expectedAssignment = ['geometry', 'geometry-control'].includes(type) ? work.geometryAssignmentId
+      : ['stroke', 'erase', 'undo'].includes(type) ? work.boardAssignmentId : work.assignmentId;
+    if (action.assignmentId !== expectedAssignment) fail('GROUP_ASSIGNMENT_STALE', 409);
     record.assignmentId = action.assignmentId;
     if (type === 'trainer') {
       exactKeys(payload, ['state'], ['state']);
       if (work.controller !== auth.role) fail('GROUP_CONTROL_REQUIRED', 409);
       if (action.expectedVersion !== work.trainerVersion) fail('GROUP_STATE_CONFLICT', 409);
       record.payload = { state: normalizeState(work.trainerId, payload.state) };
-    } else if (type === 'control') {
+    } else if (type === 'geometry') {
+      exactKeys(payload, ['state'], ['state']);
+      if (work.geometryController !== auth.role) fail('GROUP_CONTROL_REQUIRED', 409);
+      if (action.expectedVersion !== work.geometryVersion) fail('GROUP_STATE_CONFLICT', 409);
+      record.payload = { state: normalizeGeometry(payload.state) };
+    } else if (type === 'control' || type === 'geometry-control') {
       exactKeys(payload, ['controller'], ['controller']);
       requireValue(['teacher', 'student'].includes(payload.controller) && (target !== 'common' || payload.controller === 'teacher'));
       record.payload = { controller: payload.controller };
@@ -427,11 +463,11 @@ class GroupLessonStore {
     for (const record of entry.entries) {
       if (record.revision > through) break;
       if (!affected(record).includes(target)) continue;
-      if (record.type === 'assign') help = false;
+      if (record.type === 'assign' || record.type === 'insert') help = false;
       if (record.type === 'help') help = record.payload.active;
       if (record.revision <= after) continue;
       if (events.length === limit) { hasMore = true; break; }
-      const payload = record.type === 'assign'
+      const payload = ['assign', 'insert'].includes(record.type)
         ? { trainerId: record.payload.trainerId, initialState: copy(record.payload.initialState), assignmentId: record.payload.assignments[target] }
         : copy(record.payload);
       events.push({ revision: record.revision, at: record.at, actor: record.actor, type: record.type, target, payload,
