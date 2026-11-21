@@ -26,6 +26,8 @@ for e,(number,row) in zip(cards,tasks,strict=True):
     if row is not None:
         assert source['subpart']==f'строка {row+1}' and e['title'].endswith(source['subpart'])
         assert e['answer']['accepted'][0]==canonical[number][row] and e['answer']['mode']=='exact'
+    if number==1177 and row==3:
+        assert '5√3/2' in e['answer']['feedback'] and 'с. 401' in str(e['steps']) and not any(v.startswith('5√3/2;') for v in e['answer']['accepted'])
     model=e['visualization']['model'];raw=model['points']
     for key,view in model['views'].items():
         k=2 if key in ('case-3','step-3') else 1 if key in ('case-2','step-2') else 0
@@ -52,7 +54,7 @@ for e,(number,row) in zip(cards,tasks,strict=True):
         assert near(measured[known],value*(factor**2 if known=='S' else factor))
         assert near(sides[0]**2,side_squared*factor**2)
         if k==0:
-            forms=e['answer']['accepted'][1:];vals=[v for name,v in measured.items() if name!=known]
+            forms=[f for f in e['answer']['accepted'] if '√' not in f];vals=[v for name,v in measured.items() if name!=known]
             assert forms
             for f in forms:
                 parsed=[float(x.replace(',','.')) for x in f.split(';')]

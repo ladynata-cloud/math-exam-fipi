@@ -75,7 +75,7 @@ function filesAt(relative) {
 const approvedAreaFiles = {
   "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
   "geometry-course/textbook/data/triangle-sine-area.json": "329c77274a12acbab05da2084cfb72e09f7af67f4bb63773c241c7e8c6effcfa",
-  "geometry-course/textbook/data/regular-polygon-tables.json": "49c69c7212412821ceec59a4c08648cf1bf24b32fd092a62dc7bab1f55f5bb50",
+  "geometry-course/textbook/data/regular-polygon-tables.json": "d37771c6b0eefea41e67fc73f35ac403b4a6ece4e0bb3d592a62c00988a278ae",
   "geometry-course/textbook/data/regular-polygon-centers.json": "9c123147129a09042952095668d89b2b241e23763f3ebcb9bd08dc9ad3691292",
   "geometry-course/textbook/data/regular-polygon-angles.json": "a03682b0226304d9a116a4ebdf2c02cbdf317a9610f4906901dc52d81c5a0fc5",
   "geometry-course/textbook/data/regular-polygon-definition.json": "0835c8fab295b0b36d9b00f20676aa330eeae02559fc715b6660fad569fc1fd2",
