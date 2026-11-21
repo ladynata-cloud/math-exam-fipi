@@ -49,13 +49,41 @@ const ratePractice=window.MakarychevModels?.ratePractice;
 const planePractice=window.MakarychevModels?.planePractice;
 const systemPractice=window.MakarychevModels?.systemPractice;
 const graphicPractice=window.MakarychevModels?.graphicPractice;
-const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice].filter(Boolean)];
+const substitutionPractice=window.MakarychevModels?.substitutionPractice;
+const balancePractice=window.MakarychevModels?.balancePractice;
+const parameterPractice=window.MakarychevModels?.parameterPractice;
+const squarePractice=window.MakarychevModels?.squarePractice;
+const appliedPractice=window.MakarychevModels?.appliedPractice;
+const invariantPractice=window.MakarychevModels?.invariantPractice;
+const fractionDomainPractice=window.MakarychevModels?.fractionDomainPractice;
+const {mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice}=window.MakarychevModels||{};
+const auditPractice=window.MakarychevModels?.auditPractice;
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice,invariantPractice,fractionDomainPractice,auditPractice,mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
 function taskSignature(t){return t.prompt+(t.mathExpression?'\u241f'+JSON.stringify(t.mathExpression):'')+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
 function generatePractice(id,seed,level){
  if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
+ if(id===mixturePractice?.id)return window.MakarychevModels.practiceMixture(seed,level);
+ if(id===intersectionPractice?.id)return window.MakarychevModels.practiceIntersection(seed,level);
+ if(id===casePractice?.id)return window.MakarychevModels.practiceCase(seed,level);
+ if(id===rayPractice?.id)return window.MakarychevModels.practiceRay(seed,level);
+ if(id===axisPractice?.id)return window.MakarychevModels.practiceAxis(seed,level);
+ if(id===setPractice?.id)return window.MakarychevModels.practiceSets(seed,level);
+ if(id===combinedPractice?.id)return window.MakarychevModels.practiceCombined(seed,level);
+ if(id===boundsPractice?.id)return window.MakarychevModels.practiceBounds(seed,level);
+ if(id===orderPractice?.id)return window.MakarychevModels.practiceOrder(seed,level);
+ if(id===inequalityPractice?.id)return window.MakarychevModels.practiceInequality(seed,level);
+ if(id===jointPractice?.id)return window.MakarychevModels.practiceJoint(seed,level);
+ if(id===auditPractice?.id)return window.MakarychevModels.practiceRationalAudit(seed,level);
+ if(id===fractionDomainPractice?.id)return window.MakarychevModels.practiceFractionDomain(seed,level);
+ if(id===invariantPractice?.id)return window.MakarychevModels.practiceInvariants(seed,level);
+ if(id===appliedPractice?.id)return window.MakarychevModels.practiceAppliedReview(seed,level);
+ if(id===squarePractice?.id)return window.MakarychevModels.practiceCertificate(seed,level);
+ if(id===parameterPractice?.id)return window.MakarychevModels.practiceParameter(seed,level);
+ if(id===balancePractice?.id)return window.MakarychevModels.practiceBalance(seed,level);
+ if(id===substitutionPractice?.id)return window.MakarychevModels.practiceSubstitution(seed,level);
  if(id===graphicPractice?.id)return window.MakarychevModels.practiceGraphical(seed,level);
  if(id===systemPractice?.id)return window.MakarychevModels.practiceSystem(seed,level);
  if(id===planePractice?.id)return window.MakarychevModels.practicePlane(seed,level);
@@ -137,8 +165,44 @@ function formatProblem(value,q){
   const values=text.split(';');
   if(values.length!==2||values.some(part=>!M.parse(part))||!window.MakarychevTaskGraphs?.parseLine(text))return message;
  }
- if(['three-solutions','construct-lines'].includes(q.kind)&&!window.MakarychevCheck.pointGroups(text))return message;
+ if(['three-solutions','equation-point-example','construct-lines'].includes(q.kind)&&!window.MakarychevCheck.pointGroups(text))return message;
  if(q.kind==='line-pair-equation'&&window.MakarychevCheck.equationPlaneStatus(text,q.answer)==='format')return message;
+ if(q.kind==='algebra-pairs'&&!window.MakarychevCheck.algebraPairs(text))return q.inputNote||message;
+ if(q.kind==='graph-root-reading'&&!window.MakarychevCheck.graphRootEntries(text))return inputNote(q);
+ if(q.kind==='ordered-coordinates'&&!window.MakarychevTaskGraphs.coordinateEvidence(text,q.coordinateSymbols,q.coordinateOrder,q.coordinateBounds))return 'Введи по одной рациональной координате на каждую букву, через точку с запятой.';
+ if(q.kind==='ordered-comparison-sample'&&(text.split(';').length!==2||text.split(';').some(v=>!M.parse(v.trim()))))return 'Введи два рациональных числа a; b.';
+ if(q.kind==='transformed-order'&&!window.MakarychevCheck.orderInput(text,q))return q.numericSides?'Введи два вычисленных числа и знак < или > между ними.':'Введи два алгебраических выражения и знак < или > между ними.';
+ if(q.kind==='inequality-counterexample'&&!/^(всегда|да)$/i.test(text.trim())&&!M.parse(text))return q.inputNote||'Введи рациональный контрпример.';
+ if(q.kind==='source-domain-sample'&&(String(text).split(';').length!==q.probeCount||String(text).split(';').some(v=>!M.parse(v.trim()))))return q.inputNote||'Введи по одному рациональному числу для каждой переменной.';
+ if(q.kind==='unique-system-triple'&&!window.MakarychevCheck.systemTriple(text))return q.inputNote;
+ if(q.kind==='fraction-sample'&&!window.MakarychevTaskGraphs.fractionSample(text,q.probeCount))return 'Требуется '+(q.probeCount===2?'пара рациональных чисел через точку с запятой':'рациональное число')+' от −100 до 100.';
+ if(q.kind==='symbolic-coefficients'&&text.split(';').length!==2)return inputNote(q)+' Введи оба коэффициента.';
+ if(q.kind==='coefficient-and-roots'){
+  const [b,...roots]=text.split(';');
+  if(!M.parse(b)||roots.length!==2||!window.MakarychevCheck.quadraticEntries(roots.join(';')))return inputNote(q)+' Проверь запись коэффициента и обеих числовых частей.';
+ }
+ if(q.kind==='integer-runs'&&!window.MakarychevTaskGraphs.sequenceRows(text,q.graph))return inputNote(q)+' Проверь число членов и скобки.';
+ if(q.kind==='parameter-formulas'&&text.split(';').length!==String(q.answer).split(';').length)return inputNote(q)+' Количество частей не совпало с форматом записи.';
+ if(q.kind==='parameter-sample'&&window.MakarychevTaskGraphs.parameterSample(text)===null)return 'Для опыта укажи число от −24 до 24 с шагом 1/8. Можно использовать дробь, например −1/8.';
+ if(['system-single','system-intersection'].includes(q.kind)&&!window.MakarychevCheck.systemInput(text,q.variable||q.graph?.variable))return q.inputNote||'Запиши промежуток, неравенство с нужной буквой или ∅.';
+ if(q.kind==='system-examples'&&!window.MakarychevCheck.rationalList(text))return q.inputNote;
+ if(q.kind==='cube-graph-root'&&!window.MakarychevTaskGraphs.cubeRead(text))return q.inputNote;
+ if(q.kind==='universal-set'&&!window.MakarychevCheck.axisRanges(text)&&!['все','все действительные','все числа','r','ℝ'].includes(text.trim().toLowerCase()))return q.inputNote;
+ if(q.kind==='linear-ray'&&!window.MakarychevCheck.linearRay(text,q.graph.variable))return 'Запиши неравенство с буквой '+q.graph.variable+' и одной числовой границей или промежуток с точкой с запятой.';
+ if(q.kind==='linear-examples'&&!window.MakarychevCheck.rationalList(text))return 'Введи подходящие числа через точку с запятой.';
+ if(q.kind==='rational-probe'&&!M.parse(text))return 'Введи одно рациональное число, например −2 или 1/3.';
+ if(['axis-set','named-interval'].includes(q.kind)){
+  const parts=String(text).split('|'),ranges=window.MakarychevCheck.axisRanges(parts[0]);
+  if(!ranges)return 'Укажи промежуток с точкой с запятой. Бесконечность не включается; левый конец не больше правого.';
+  if(q.kind==='named-interval'&&(parts.length!==2||!parts[1].trim()))return 'После промежутка выбери название или добавь его через знак |.';
+ }
+ if(['rational-axis-list','fixed-denominator-list','near-two-examples'].includes(q.kind)&&!window.MakarychevCheck.rationalList(text))return 'Введи числа через точку с запятой, например 1/2; 1,75.';
+ if(q.kind==='explicit-set'&&!window.MakarychevTaskGraphs.setTokens(text,q.letters))return q.inputNote||'Введи список элементов или ∅.';
+ if(['integer-probe','multiple-witness'].includes(q.kind)&&window.MakarychevTaskGraphs.integerProbe(text)===null)return 'Введи целое число.';
+ if(q.kind==='segment-name'&&!/^[ABCD]{2}$/i.test(text.replace(/\s/g,'')))return 'Запиши две латинские буквы, обозначающие концы.';
+ if(['bound-corner','yield-pair','speed-pair','triangle-vertex'].includes(q.kind)&&!window.MakarychevTaskGraphs.cornerValues(text))return 'Введи два рациональных числа через точку с запятой.';
+ if(q.kind==='estimate-interval'&&!window.MakarychevCheck.estimateInput(text,q.graph.expression))return q.inputNote||'Укажи конечный интервал с двумя границами.';
+ if(q.kind==='open-intervals'&&!window.MakarychevCheck.openIntervals(text))return q.inputNote||message;
  if(q.kind==='equation-from-roots'&&window.MakarychevCheck.equationRatioStatus(text,q.ratios)==='format')return message;
  if(q.kind==='examples-of-equations'&&window.MakarychevCheck.exampleEquationsStatus(text)==='format')return message;
  if(q.kind==='quadratic-roots'&&!window.MakarychevCheck.quadraticEntries(text))return message;
@@ -149,6 +213,7 @@ function formatProblem(value,q){
   if(status==='format')return message;
   if(status==='expanded')return 'Коэффициенты и значение выражения верны. Представь его в виде произведения линейных множителей. Это уточнение формы.';
  }
+ if(q.kind==='squared-binomial'&&window.MakarychevCheck.squaredBinomial(text,q.answer)==='form')return 'Значение выражения верное. Запиши один двучлен в скобках и возведи его в квадрат. Уточнение формы не расходует попытку.';
  if(q.factorizedAnswer&&window.MakarychevCheck.factoredPair(text,q.answer,q.requiredFactors||2,q.productDegree||1)==='expanded')return 'Значение выражения верно. Собери произведение '+(q.requiredFactors===3?'трёх':'двух')+(q.productDegree>1?' множителей.':' линейных множителей.')+' Уточнение формы не расходует математическую попытку.';
  if(q.kind==='radical-value'&&!window.MakarychevCheck.radicalSum(text))return message;
  if(q.requireSimplified&&window.MakarychevCheck.sameRadicalSum(text,q.answer))return 'Значение верно. Вынеси полные квадраты из-под корней и объедини подобные слагаемые. Уточнение формы не расходует математическую попытку.';
@@ -173,6 +238,89 @@ function naturalCase(term,rule){
  return [36n-n*n,n*n];
 }
 function feedbackFor(value,q){
+ if(q.kind==='inequality-counterexample')return M.parse(value)?'При этой подстановке исходный знак выполняется. Проверь, может ли разность стать нулевой или изменить знак.':'Проверь знак разности при других значениях переменной. Для вывода «всегда» нужна общая причина.';
+ if(q.kind==='ordered-coordinates'){const result=window.MakarychevTaskGraphs.coordinateEvidence(value,q.coordinateSymbols,q.coordinateOrder,q.coordinateBounds),wrong=result?.pairs.find(row=>!row.ok);return wrong?'На прямой '+wrong.left+' должно быть строго левее '+wrong.right+'. Измени соответствующую координату.':'Проверь числовую границу вместе с порядком букв.';}
+ if(q.kind==='transformed-order'){if(q.numericSides){const match=/^([^<>]+)([<>])([^<>]+)$/.exec(value);if(match&&M.equal(match[1],match[3]))return 'Ты получил равные стороны. Одинаковое ненулевое масштабирование или сдвиг сохраняют различие исходных чисел.';}return 'Проверь отдельно новые левую и правую стороны, затем направление знака.';}
+ if(q.kind==='system-single')return q.hint;
+ if(q.kind==='system-intersection'&&q.graph?.rows){
+  const C=window.MakarychevCheck,proposal=C.systemInput(value,q.graph.variable),sets=C.axisRanges(proposal)||[];
+  if(q.graph.holes?.some(h=>sets.some(r=>(r.min<h||r.min===h&&!r.leftOpen)&&(r.max>h||r.max===h&&!r.rightOpen))))return 'Твоё множество содержит значение, при котором корни в знаменателе равны. Удали эту точку.';
+  if(q.graph.rows.some(r=>r.ray&&C.equalAxisSets(proposal,r.ray)))return 'Получилось множество одной строки. Проверь, вся ли его часть удовлетворяет другой строке.';
+  return 'Проверь в обеих строках каждый конечный конец своего промежутка. При строгом знаке равная граница исключена.';
+ }
+ if(q.kind==='system-examples'){
+  const xs=window.MakarychevCheck.rationalList(value)||[];
+  if(xs.length!==q.exampleCount||new Set(xs.map(M.answer)).size!==xs.length)return 'Нужны два разных числа. Например, 1/2 и 0,5 — это одно значение.';
+  for(const x of xs){const i=q.graph.rows.findIndex(r=>!window.MakarychevTaskGraphs.linearTrial(r,M.answer(x)).holds);if(i>=0)return 'Число '+M.answer(x)+' нарушает строку '+(i+1)+'. Проверь её подстановкой.';}
+ }
+ if(q.kind==='cube-graph-root')return 'Точка пересечения должна иметь одинаковые высоты на обеих кривых. Уточни x, сравнив 12/x и x².';
+ if(q.kind==='universal-set')return 'После сокращения переменной сравни оставшиеся числа. Ложное сравнение не даёт ни одной точки, истинное даёт всю прямую.';
+ if(q.kind==='axis-set'&&q.graph?.mode==='parameter-roots'){
+  const exceptional=q.graph.which===963?4:-5,ranges=window.MakarychevCheck.axisRanges(value)||[];
+  if(ranges.some(r=>(r.min<exceptional||r.min===exceptional&&!r.leftOpen)&&(r.max>exceptional||r.max===exceptional&&!r.rightOpen)))return 'Проверь параметр, при котором исчезает квадратный член. Линейное уравнение имеет один корень.';
+ }
+ if(q.kind==='linear-examples'){
+  const xs=window.MakarychevCheck.rationalList(value)||[];if(new Set(xs.map(M.answer)).size!==q.exampleCount)return 'Нужно '+q.exampleCount+' разных чисел.';
+  const wrong=xs.find(x=>!window.MakarychevTaskGraphs.linearTrial(q.graph,x).holds);return wrong?'При '+q.graph.variable+' = '+M.answer(wrong)+' исходный знак не выполняется. Сверь значения сторон в модели.':q.hint;
+ }
+ if(q.kind==='linear-ray'){
+  const C=window.MakarychevCheck,r=C.axisRanges(C.linearRay(value,q.graph.variable)||'')?.[0],bound=M.parse(q.graph.threshold);
+  if(r&&(M.equal(r.left,bound)||M.equal(r.right,bound))){const right=r.right==='+∞',target=q.graph.relation[0]==='>';if(right!==target)return 'Граница верна, но отмечен противоположный луч. Проверь знак коэффициента при делении.';return 'Граница и направление верны. Реши, допускается ли равенство на конце.';}
+  return 'Подставь найденную границу: на ней обе стороны должны быть равны. После переноса свободных членов раздели на коэффициент при переменной.';
+ }
+ if(q.kind==='axis-set'||q.kind==='named-interval'){
+  const C=window.MakarychevCheck,[v]=String(value).split('|'),[ans]=String(q.answer).split('|');
+  if(q.kind==='named-interval'&&C.equalAxisSets(v,ans))return 'Твой чертёж верен. Уточни название по числу конечных границ и их включению.';
+  const got=C.axisRanges(v),expected=C.axisRanges(ans);
+  if(got?.length!==expected?.length)return 'Проверь, не исчез ли разрыв между отдельными частями.';
+  if(got&&expected&&got.every((r,i)=>r.min===expected[i].min&&r.max===expected[i].max))return 'Границы находятся в правильных местах. Проверь по очереди, включена ли каждая точка.';
+  return 'Сопоставь левую и правую границы, а для луча проверь направление стрелки.';
+ }
+ if(q.kind==='fixed-denominator-list')return 'У каждой дроби нужен знаменатель 54. Перечисли подряд все допустимые натуральные числители.';
+ if(q.kind==='rational-axis-list')return 'Проверь каждый кандидат отдельно, особенно числа, равные концу промежутка.';
+ if(q.kind==='near-two-examples')return 'Оба числа должны быть разными, строго больше 1,98 и строго меньше 2.';
+ if(q.kind==='speed-pair')return 'Обратный поезд быстрее на 5 км/ч. Проверь также, равна ли разность времён 20 минутам.';
+ if(q.kind==='explicit-set'){const G=window.MakarychevTaskGraphs,yours=G.setTokens(value,q.letters),goal=G.setTokens(q.answer,q.letters);const extra=yours?.find(x=>!goal.includes(x));return extra!==undefined?'Элемент '+extra+' лишний. Проверь его принадлежность обоим исходным множествам.':'Часть элементов пропущена. Просмотри обе области схемы.';}
+ if(q.kind==='segment-name')return 'Посмотри на точки в порядке A, C, B, D и проверь, какой участок нужен целиком.';
+ if(q.kind==='multiple-witness')return 'Для опровержения возьми кратное 3 вне круга кратных 5. У общего кратного оба свойства выполняются.';
+ if(q.kind==='yield-pair')return 'Сначала укажи большую урожайность первого хозяйства. Проверь разность 2 ц/га и условие о площадях.';
+ if(q.kind==='bound-corner')return 'Сверь первую координату с границами '+q.variables[0]+', вторую — с '+q.variables[1]+'. Для вычитания и деления выбираются противоположные концы.';
+ if(q.kind==='triangle-vertex')return 'При v = 0 точки лежат на одной прямой, при v < 0 вершина ниже AC. Выбери v > 0.';
+ if(q.kind==='estimate-interval'){
+  const status=window.MakarychevCheck.estimateStatus(value,q);
+  if(status==='order')return 'Поставь меньшее число слева. При переходе к обратным положительным числам или отрицательном множителе концы меняются местами.';
+  if(status==='inclusion')return 'Численные границы верны. Проверь скобки: входят ли концы в исходный промежуток?';
+  return 'Проверь образ каждого исходного конца отдельно. '+q.hint;
+ }
+ if(q.kind==='ordered-comparison-sample')return 'Сначала проверь исходное a < b, затем сравни промежуток b − a с 5 для требуемого знака.';
+ if(q.kind==='source-domain-sample')return 'Проверь знак, указанную область и, для натуральной дроби, порядок числителя и знаменателя.';
+ if(q.kind==='unique-system-triple'){
+  const row=window.MakarychevCheck.systemTriple(value);if(row&&row.values[0]===0&&row.values[1]===0)return 'При a = b = 0 вторая строка не задаёт прямую. Измени хотя бы один коэффициент при переменной.';
+  return 'Твоя вторая прямая имеет то же направление, что и первая. Измени отношение коэффициентов при x и y.';
+ }
+ if(q.kind==='parameter-exclusion')return 'Нужно описать все значения параметра. Единственное исключение даёт совпадающие прямые.';
+ if(q.kind==='algebra-pairs'&&q.graph?.type==='rational-intersections'){
+  const {pairs}=rationalEvidence(q.graph,value);
+  for(const [x,y] of pairs){
+   const ordinates=q.graph.curves.map(curve=>window.MakarychevTaskGraphs.curveValue(curve,x));
+   if(ordinates.some(v=>!Number.isFinite(v)))return 'При этой абсциссе одна из исходных функций не определена. Выколотая точка не может быть общей.';
+   if(ordinates.some(v=>Math.abs(v-y)>1e-8))return 'Подставь абсциссу в обе формулы. Ордината должна совпасть с обоими полученными значениями.';
+  }
+  return 'Проверь все ветви графика и запиши каждую общую точку один раз.';
+ }
+ if(q.kind==='algebra-pairs'&&q.graph?.type==='system-pair-audit'){
+  const rows=window.MakarychevCheck.systemEvidence(value,q.graph)||[];
+  for(const row of rows){
+   if(row.excluded)return 'В паре ('+row.a+'; '+row.b+') один из исходных знаменателей равен нулю.';
+   if(!row.valid.every(Boolean))return 'Проверь пару ('+row.a+'; '+row.b+'). Она нарушает '+(!row.valid[0]?'первое':'второе')+' исходное равенство. Восстанови координату из подстановки.';
+  }
+  return rows.length?'Введённые пары проходят подстановку. Проверь повторяющиеся пары, оба знака и наличие всех корней.':'Проверь дискриминант и подставь допустимых кандидатов в оба уравнения.';
+ }
+ if(q.kind==='open-intervals'){
+  const ranges=window.MakarychevCheck.openIntervals(value)||[];
+  if(ranges.some(r=>!r.open))return 'При строгом неравенстве граничные точки не входят. Используй открытые концы промежутков.';
+  return 'Подставь по одному числу из каждой выделенной области. Проверь знак исходного выражения по обе стороны каждой границы.';
+ }
  if(q.kind==='integer-pairs'&&!q.graph?.rule){
   const G=window.MakarychevTaskGraphs,pairs=G.parseIntegerPairs(value)||[],solutions=G.parseIntegerPairs(q.answer)||[];
   if(new Set(pairs.map(p=>p.join(';'))).size!==pairs.length)return 'Одна и та же точка записана несколько раз. Найди другую общую точку или убери повтор.';
@@ -193,9 +341,9 @@ function feedbackFor(value,q){
   if(v&&!v.intercept)return v.k===0?'Горизонтальная прямая не имеет единственного пересечения оси x в заданной точке.':'При x = −3 должно получиться y = 0. Проверь равенство b = 3k.';
   if(v)return 'У твоей прямой пересечений с графиком y = |x|: '+v.count+'. Проверь обе полупрямые с учётом знака x.';
  }
- if(['three-solutions','construct-lines'].includes(q.kind)){
+ if(['three-solutions','equation-point-example','construct-lines'].includes(q.kind)){
   const reason=window.MakarychevCheck.planeResponse(value,q);
-  if(reason==='count')return q.kind==='three-solutions'?'Нужны три упорядоченные пары.':'Для каждой прямой дай ровно две точки. Группы раздели чертой |.';
+  if(reason==='count')return q.kind==='equation-point-example'?'Предложи одну пару (x; y).':q.kind==='three-solutions'?'Нужны три упорядоченные пары.':'Для каждой прямой дай ровно две точки. Группы раздели чертой |.';
   if(reason==='duplicate')return 'Пара повторяется. Подбери другую точку для этого построения.';
   if(reason==='same-branch')return 'Обе группы дали одну прямую. Найди вторую ветвь уравнения.';
   if(reason.startsWith('point-'))return 'Проверь пару №'+reason.slice(6)+': её подстановка нарушает равенство.';
@@ -228,6 +376,12 @@ function feedbackFor(value,q){
   const reason=window.MakarychevCheck.progressionFactors(value);
   const messages={natural:'Каждый коэффициент должен быть положительным целым числом.',ratio:'Расположи три коэффициента по величине. Второй должен быть вдвое, а третий втрое больше наименьшего.',roots:'У выбранного порядка коэффициентов дискриминант отрицателен. Попробуй сделать линейным коэффициентом наибольшее число.',different:'Подходящий набор коэффициентов найден. Раскрой свои скобки и сравни все три коэффициента с первыми полями.'};
   if(messages[reason])return messages[reason];
+ }
+ if(q.graph?.type==='rational-root-audit'&&window.MakarychevCheck.rationalRootTrial(value,q.graph).some(row=>row.forbidden))return 'Одно из твоих чисел обращает в нуль исходный знаменатель. Проверь его до сокращения.';
+ if(q.graph?.type==='vieta-audit'){
+  const audit=window.MakarychevCheck.vietaAudit(value,q.graph);
+  if(audit?.sum&&!audit.product)return 'Сумма твоих чисел совпала. Проверь произведение, в том числе знак и квадрат радикала.';
+  if(audit?.product&&!audit.sum)return 'Произведение твоих чисел совпало. Вспомни знак суммы −B/A.';
  }
  const knownMistake=q.mistakes?.find(m=>M.equal(value,m.value));
  if(knownMistake)return knownMistake.message;
@@ -385,14 +539,53 @@ ${D.chapters.map((chapter,i)=>'<section class="section" id="chapter-'+chapter.id
 }
 function findNumber(n){const r=document.getElementById('number-result');if(!Number.isInteger(n)||n<1||n>1340){r.textContent='Введи целый номер от 1 до 1340.';return;}const ref=D.sourceMap.sections.find(s=>s.exerciseRange&&n>=s.exerciseRange[0]&&n<=s.exerciseRange[1]);if(!ref){r.textContent='Номер не найден.';return;}const matches=D.lessons.flatMap(l=>l.tasks.map((t,i)=>({t,l,i}))).filter(x=>x.t.source?.type==='textbook'&&new RegExp('№\\s*'+n+'(?!\\d)').test(x.t.source.reference)).sort((a,b)=>a.l.order-b.l.order+(a.l.id===b.l.id?((a.l.studyOrder?.indexOf(a.i)??a.i)-(b.l.studyOrder?.indexOf(b.i)??b.i)):0));let related=ref.kind==='topic'?D.lessons.filter(l=>l.order===ref.id):D.lessons.filter(l=>(()=>{const c=D.chapters.find(c=>c.id===ref.chapter);return c&&l.order>=c.topics[0]&&l.order<=c.topics[1];})());if(ref.kind==='difficult')related=[];r.innerHTML='<h3>№ '+n+'</h3><p>'+e(ref.title)+' · с. '+ref.printedPage+'–'+ref.printedEndPage+'</p><div class="row">'+matches.map(x=>'<a class="button" href="#lesson/'+x.l.id+'/'+x.i+'">'+e(x.t.source.reference)+'</a>').join('')+related.map(l=>'<a class="button quiet" href="'+lessonEntry(l)+'">'+e(l.title)+'</a>').join('')+'</div>'+(matches.length?'':'<p class="small">Индивидуального разбора этого номера в курсе пока нет. Для повторения воспользуйся темами курса ниже или картой глав.</p>');}
 function skillPage(){main.innerHTML=returnBanner()+'<p class="eyebrow">Вычислительная мастерская</p><h1>Потренируй один навык</h1><p class="lead">Выбери действие. Начни с простых чисел, затем переходи к более сложным. Кнопка «Новый пример» даёт другое задание.</p><div class="skill-grid">'+Object.values(skills).map(s=>'<article class="skill-card"><span class="eyebrow">Практика</span><h2>'+e(s.title)+'</h2><p>'+e(s.description)+'</p><a class="button quiet" href="#practice/'+s.id+'/1">Начать →</a></article>').join('')+'</div>';}
-function lessonView(id,index){const l=byId[id];if(!l)return home();index=Math.max(0,Math.min(l.tasks.length-1,Math.trunc(Number(index))||0));const t=l.tasks[index],order=l.studyOrder||l.tasks.map((_,i)=>i),position=order.indexOf(index);active={lesson:l,task:t,index,practice:false};state.last={hash:'#lesson/'+id+'/'+index};save();main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a>'+boardEntry()+'<span>/ '+l.chapter+'</span></div><p class="eyebrow">'+(t.source?.section==='additional-1'?'Дополнительно к §'+(t.source.paragraph||1)+' · с. '+t.source.page:'Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange))+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details class="task-menu"'+(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches?' open':'')+'><summary>Задачи этой темы ('+l.tasks.length+')</summary><div class="side-list">'+order.map((i,pos)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':'')+'</span>'+(pos+1)+'. '+e(q.title)+'</button>';}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel"><summary>Коротко о главном</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><details class="panel model-panel"><summary>Исследовать на модели</summary><div id="model" class="model"></div></details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position<order.length-1?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):l.order<51?'<a class="button quiet" href="'+lessonEntry(byId['p'+String(l.order+1).padStart(2,'0')])+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';cleanup=window.MakarychevModels?.mount(document.getElementById('model'),l,{state:ts(t.id).investigation,onChange:value=>{const saved=ts(t.id);saved.investigation=sanitizeInvestigation(value);markAssisted(saved,'model');save();}});renderProblem();if(!sharedMode)window.MathExamCourseExamples?.mount(document.getElementById('problem'),'makarychev8',l.id,()=>{markAssisted(ts(t.id),'animation');save();});document.querySelectorAll('main details.panel').forEach(el=>{el.addEventListener('toggle',()=>{if(el.open){markAssisted(ts(t.id));save();}});});}
+function lessonView(id,index){const l=byId[id];if(!l)return home();index=Math.max(0,Math.min(l.tasks.length-1,Math.trunc(Number(index))||0));const t=l.tasks[index],order=l.studyOrder||l.tasks.map((_,i)=>i),position=order.indexOf(index);active={lesson:l,task:t,index,practice:false};state.last={hash:'#lesson/'+id+'/'+index};save();main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a>'+boardEntry()+'<span>/ '+l.chapter+'</span></div><p class="eyebrow">'+(/^additional-[1-6]$/.test(t.source?.section||'')?'Дополнительно к §'+(t.source.paragraph||1)+' · с. '+t.source.page:'Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange))+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details class="task-menu"'+(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches?' open':'')+'><summary>Задачи этой темы ('+l.tasks.length+')</summary><div class="side-list">'+order.map((i,pos)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':'')+'</span>'+(pos+1)+'. '+e(q.title)+'</button>';}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel"><summary>Коротко о главном</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><details class="panel model-panel"><summary>Исследовать на модели</summary><div id="model" class="model"></div></details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position<order.length-1?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):l.order<51?'<a class="button quiet" href="'+lessonEntry(byId['p'+String(l.order+1).padStart(2,'0')])+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';cleanup=window.MakarychevModels?.mount(document.getElementById('model'),l,{state:ts(t.id).investigation,onChange:value=>{const saved=ts(t.id);saved.investigation=sanitizeInvestigation(value);markAssisted(saved,'model');save();}});renderProblem();if(!sharedMode)window.MathExamCourseExamples?.mount(document.getElementById('problem'),'makarychev8',l.id,()=>{markAssisted(ts(t.id),'animation');save();});document.querySelectorAll('main details.panel').forEach(el=>{el.addEventListener('toggle',()=>{if(el.open){markAssisted(ts(t.id));save();}});});}
 function practiceView(id,level){if(!skills[id])return skillPage();level=[1,2,3].includes(Number(level))?Number(level):1;const key=id+':'+level;let p=state.practice[key];if(!p||!Number.isSafeInteger(p.seed))p=state.practice[key]={seed:1};const t=generatePractice(id,p.seed,level);t.id='practice:'+id+':'+level+':'+p.seed;t.signature=taskSignature(t);const saved=ts(t.id);if(!saved.signature){saved.signature=t.signature;saved.repeated=Object.entries(state.tasks).some(([other,r])=>other!==t.id&&r.signature===t.signature);}active={task:t,practice:true,skill:id,level,key};if(!state.origin)state.last={hash:'#practice/'+id+'/'+level};save();main.innerHTML=returnBanner()+'<div class="breadcrumb"><a href="#skills">← Выбрать другой навык</a></div><p class="eyebrow">Отдельная тренировка · пример '+p.seed+'</p><h1 class="lesson-title">'+e(skills[id].title)+'</h1><div class="row"><label for="level">Сложность</label><select id="level" class="level-select"><option value="1">1 · Начинаем с простого</option><option value="2">2 · Закрепляем</option><option value="3">3 · Проверяем себя</option></select><span class="small">Без ограничения времени</span></div><div id="problem" class="section"></div><div class="navigation">'+button('Новый пример →','new')+(state.origin?button('Вернуться к исходной задаче','return','',true):'<a class="button quiet" href="#skills">Другой навык</a>')+'</div><p class="small">Для самостоятельного результата реши новый пример без подсказок и с первой попытки. Разобранный пример остаётся в результатах как решение с помощью.</p>';document.getElementById('level').value=level;document.getElementById('level').onchange=ev=>go('#practice/'+id+'/'+ev.target.value);renderProblem();}
 function inRoots(){return active&&!active.practice&&active.lesson.order>=10&&active.lesson.order<=19;}
 function mathKeys(targetId){return inRoots()?'<div class="math-keys" role="group" aria-label="Математические знаки">'+['√','²','|','≥','≤',';'].map(v=>'<button type="button" class="quiet" data-action="math-key" data-target="'+targetId+'" data-symbol="'+e(v)+'" aria-label="Вставить '+e(v)+'">'+e(v)+'</button>').join('')+'</div>':'';}
 function inputNote(target){if(target.inputNote)return e(target.inputNote);if(target.kind==='rational-example'||target.kind==='square-equation-example')return 'Введи своё число: целое, десятичную дробь или обыкновенную дробь через /.';if(target.kind==='irrational-example')return 'Введи свой пример в форме √n или sqrt(n), где n — натуральное число, либо π.';if(target.kind==='interval-examples')return 'Введи разные подходящие числа через точку с запятой. Можно использовать точные дроби и десятичные дроби.';if(target.kind==='root-line-count')return 'Введи коэффициенты своей прямой y=kx+b в порядке k; b. Можно использовать целые числа, дроби и десятичные дроби.';if(['root-points','graph-values'].includes(target.kind))return 'Введи значения в указанном порядке через точку с запятой.';if(target.kind==='text')return 'Следуй формату в вопросе. Дробь вводи через /, квадрат — как ^2 или ².'+(inRoots()?' Корень можно записать как √3 или sqrt(3); скобки сохраняют выражение под корнем.':'');if(target.kind==='set')return 'Раздели значения точкой с запятой. Два противоположных числа можно записать как ±3 или +/-3. Порядок не важен. Если значений нет, введи «нет».';const f=target.answerFormat;return {'decimal':'Введи десятичную дробь с запятой или точкой.','reduced-fraction':'Введи несократимую дробь, например 3/4, или целое число.','improper-fraction':'Введи неправильную дробь, например 7/3.','mixed-number':'Введи смешанное число с пробелом: 2 1/3.','integer':'Введи целое число.'}[f]||'Можно ввести 3/4, 0,75 или 2 1/3. Единицы измерения не вводи.';}
+function axisBuilder(task,record,host){
+ const form=host.querySelector('#answer-form'),input=form.querySelector('#final-answer');if(!input)return;
+ const box=document.createElement('fieldset');box.className='reasoning-choices';const title=document.createElement('legend');title.textContent='Построить промежуток';box.append(title);
+ const selects=[];
+ function field(label,options){
+  const row=document.createElement('label');row.className='small';row.textContent=label+' ';
+  const control=document.createElement(options?'select':'input');if(options)for(const [val,name]of options){const op=document.createElement('option');op.value=val;op.textContent=name;control.append(op);}
+  else{control.type='text';control.size=8;control.maxLength=60;control.placeholder='граница';}
+  control.disabled=record.correct;row.append(control);box.append(row);selects.push(control);return control;
+ }
+ const l=field('Левая граница'),lc=field('Левый конец',[['(','исключён'],['[','включён']]),r=field('Правая граница'),rc=field('Правый конец',[[ ')','исключён'],[']','включён']]);
+ const t=task.kind==='named-interval'?field('Название',[['','выбери'],...['отрезок','интервал','полуинтервал','числовой луч','открытый числовой луч','числовая прямая'].map(n=>[n,n])]):null;
+ const note=document.createElement('p');note.className='small';note.textContent='Для бесконечного конца введи −∞ или +∞. Чтобы объединить несколько промежутков, запиши их в основном поле.';box.append(note);
+ function reflect(){
+  const [wire,name]=input.value.split('|').map(s=>s.trim()),match=/^([[(])([^;]*);([^;]*)([\])])$/.exec(wire);
+  if(match){[lc.value,l.value,r.value,rc.value]=match.slice(1);if(t)t.value=name||'';}
+  else if(!wire){l.value='';r.value='';lc.value='(';rc.value=')';if(t)t.value='';}
+ }
+ function changed(){input.value=(lc.value+l.value.trim()+';'+r.value.trim()+rc.value)+(t?' | '+t.value:'');input.dispatchEvent(new Event('input',{bubbles:true}));}
+ selects.forEach(c=>c.addEventListener(c.tagName==='SELECT'?'change':'input',changed));input.addEventListener('input',reflect);reflect();form.querySelector('.answer-controls').before(box);
+}
+function systemView(config,work,value,task){
+ const C=window.MakarychevCheck,range=(v)=>{const text=C.systemInput(v,config.variable);return text?C.axisRanges(text):null;};
+ return {...config,partial:work.values,rangeRows:config.fixed?[]:config.rows.map((_,i)=>range(work.values[i+1])),proposal:task.kind==='system-intersection'?range(value):null,exampleProbes:task.kind==='system-examples'||task.kind==='rational-axis-list'?C.rationalList(value):null};
+}
+
+
+function linearEvidence(config,work,value,task){
+ const C=window.MakarychevCheck,G=window.MakarychevTaskGraphs,range=config.draw?C.linearRay(value,config.variable):null;
+ const samples=task.kind==='linear-examples'?C.rationalList(value):null;
+ return {...config,partial:work.values,proposal:range?C.axisRanges(range):null,samplePoints:[M.parse(work.values[0])].filter(Boolean),exampleTrials:samples?.map(x=>[M.answer(x),G.linearTrial(config,x)])};
+}
+function axisEvidence(config,work,value){
+ const C=window.MakarychevCheck,part=String(value??'').split('|')[0],proposal=['draw','read','operation'].includes(config.mode)?C.axisRanges(part):null;
+ let points=config.probe!==undefined?[M.parse(config.probe)]:config.mode==='list'?(C.rationalList(value)||[]):config.useFinal?[M.parse(value)]:[];
+ return {...config,givenRows:(config.given||[]).map(C.axisRanges).filter(Boolean),proposal,points:points.filter(Boolean)};
+}
+
+
 function proofControls(task,record,host){
  const field=document.createElement('fieldset'),legend=document.createElement('legend');
- field.className='reasoning-choices';legend.textContent='Утверждения для доказательства';field.append(legend);
+ field.className='reasoning-choices';legend.textContent=task.orderLegend||'Утверждения для доказательства';field.append(legend);
  const input=host.querySelector('#final-answer');
  const buttons=task.proofClaims.map((text,index)=>{
   const button=document.createElement('button');button.type='button';button.className='quiet';
@@ -430,12 +623,15 @@ function stepChoiceControls(host,task){
  });
 }
 function renderProblem(){if(!active)return;const t=active.task,s=ts(t.id),host=document.getElementById('problem');host.innerHTML='<article class="problem"><div class="task-heading"><h2>'+e(t.title)+'</h2><span class="tag">'+(s.correct?learningLabel(s):'Твоя задача')+'</span></div>'+(t.source?'<p class="source-note">'+e(t.source.type==='textbook'?'Из учебника: '+t.source.reference+', с. '+t.source.page+(t.source.endPage?'–'+t.source.endPage:''):t.source.adaptation?'Самопроверка по учебнику: '+t.source.reference+', с. '+t.source.page:'Авторская задача по теме учебника')+'</p>':'')+'<div class="prompt">'+fmt(t.prompt)+(t.mathExpression?textbookFormula(t.mathExpression):'')+'</div>'+(t.graph?'<div id="task-graph"></div>':'')+'<div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+(t.steps?.length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило из раздела «Коротко о главном».')+'</p></div>':'')+(s.guided?renderSteps(t,s):'')+'<form class="answer-form" id="answer-form"><label for="final-answer">'+fmt(t.finalLabel||(t.kind==='choice'?'Выбери верный ответ на вопрос задачи.':'Чему равен результат? Введи число.'))+'</label>'+(t.kind==='choice'?'<div class="choices" role="group" aria-label="Варианты ответа">'+t.choices.map((v,i)=>'<button type="button" data-action="choice" data-choice="'+i+'" class="'+(s.value===v?'selected':'')+'" aria-pressed="'+(s.value===v)+'">'+fmt(v)+'</button>').join('')+'</div><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button>':'<p class="small">'+inputNote(t)+'</p><div class="answer-controls"><input id="final-answer" name="final-answer" type="text" inputmode="text" autocomplete="off" spellcheck="false" value="'+e(s.value)+'" '+(s.correct?'readonly':'')+'><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button></div>'+(!s.correct&&t.kind!=='proof-chain'?mathKeys('final-answer'):'')+'<div id="answer-preview" class="answer-preview small" aria-live="polite"></div>')+'<div class="feedback '+(s.feedback&&!s.correct?'error':'')+'" role="status">'+e(s.feedback)+'</div></form>'+(s.correct?'<div class="feedback"><strong>'+(s.independent?'Верно, самостоятельно.':'Верно. Теперь закрепи навык на новом примере.')+'</strong><p>'+fmt(t.explanation)+'</p>'+freshAction()+'</div>':'')+((t.skills?.length)?'<section class="detour"><h3>С вычислением нужна помощь?</h3><p class="small">Потренируй отдельное действие. Затем вернись к этому же условию и записям.</p><div class="row">'+skillLinks(t.skills)+'</div></section>':'')+'<details '+(s.note?'open':'')+'><summary>Мои записи к задаче</summary><label class="small" for="notebook">Сохраняются вместе с этой задачей</label><textarea id="notebook" placeholder="Запиши свою мысль или промежуточные вычисления">'+e(s.note)+'</textarea></details>'+historyView(s)+'</article>';
+const sourceNote=active.lesson?.sourceNotes?.[t.id];
+if(sourceNote&&(s.correct||s.hint||s.guided)){const note=document.createElement('p');note.className='small';note.dataset.sourceAnnotation='';note.textContent=sourceNote;host.querySelector('article').append(note);}
 const formula=host.querySelector('.m8-exercise-formula');
 if(formula){
  if(formula.scrollWidth>formula.clientWidth+1){
   const note=document.createElement('p');note.className='small';note.textContent='Формулу можно прокрутить вправо.';formula.after(note);
  }else formula.removeAttribute('tabindex');
 }
+if(t.graph?.builder)axisBuilder(t,s,host);
 if(t.kind==='proof-chain')proofControls(t,s,host);
 stepChoiceControls(host,t);
 if(t.graph){
@@ -446,6 +642,28 @@ if(t.graph){
   if(exact)graph={...graph,proposedTime:exact.sign*Math.sqrt(Number(exact.n)/Number(exact.d))};
  }
  if(['vertex-form','coefficient-example'].includes(graph.type))graph={...graph,evaluated:Boolean(s.attempts||s.correct)};
+ if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(graph.type))graph=rationalEvidence(graph,s.value);
+ if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(graph.type))graph={...graph,trial:s.values[0]};
+ if(graph.fixedInput)graph={...graph,partial:s.values,showValue:Boolean(s.correct)};
+ if(graph.type==='source-system-rays')graph=systemView(graph,s,s.value,t);
+ if(graph.type==='source-inequality-case')graph={...graph,partial:s.values,proposal:graph.showAxis?window.MakarychevCheck.axisRanges(s.value):null};
+ if(graph.type==='linear-ray-trial')graph=linearEvidence(graph,s,s.value,t);
+ if(graph.type==='source-interval-axis')graph=axisEvidence(graph,s,s.value);
+ if(graph.type==='interval-review')graph={...graph,partial:s.values};
+ if(graph.type==='euler-operation')graph={...graph,partial:s.values};
+ if(['combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square'].includes(graph.type))graph={...graph,partial:s.values,proposal:graph.type==='combined-intervals'?window.MakarychevCheck.estimateInput(s.value,graph.expression):null};
+ if(graph.type==='interval-image')graph={...graph,proposal:window.MakarychevCheck.estimateInput(s.value,graph.expression),partial:s.values};
+ if(graph.type==='rank-expressions')graph={...graph,trial:s.values[0],selected:graph.isOrder?window.MakarychevCheck.proofOrder(s.value,graph.labels.length):null};
+ if(graph.type==='square-substitution')graph={...graph,partial:s.values};
+ if(graph.type==='labelled-order')graph={...graph,trial:s.values[0]};
+ if(graph.stepTrials){const index=Math.min(s.step,graph.stepTrials.length-1);graph={...graph,trial:s.values[index]||s.values[0]};}
+ if(graph.type==='factor-witness')graph=factorEvidence(graph,s.value);
+ if(graph.type==='vieta-audit')graph={...graph,audit:window.MakarychevCheck.vietaAudit(s.value,graph)};
+ if(graph.type==='root-residual')graph={...graph,checks:window.MakarychevCheck.quadraticTrial(s.value,graph.coefficients)};
+ if(graph.type==='parameter-polynomial')graph={...graph,trial:s.values[0]};
+ if(graph.type==='story-balance')graph={...graph,trial:s.values[1]};
+ if(graph.type==='system-pair-audit')graph={...graph,evidence:window.MakarychevCheck.systemEvidence(s.value,graph),checked:Boolean(s.attempts||s.correct)};
+ if(graph.type==='inequality-intervals')graph={...graph,intervals:window.MakarychevCheck.openIntervals(s.value)};
  if(graph.type==='abs-line-choice')graph={...graph,analysis:window.MakarychevCheck.absLineIntersections(modelInput),checked:Boolean(s.attempts||s.correct)};
  if(graph.type==='rational-line-example')graph={...graph,analysis:window.MakarychevCheck.reciprocalIntersections(modelInput),checked:Boolean(s.attempts||s.correct)};
  if(graph.type==='rational-equation-check')graph={...graph,terms:window.MakarychevCheck.classifyRationalCandidates(s.value,graph.excluded,graph.solutions),checked:Boolean(s.attempts||s.correct)};
@@ -455,11 +673,43 @@ if(t.graph){
  if(modelInput&&graph.type==='natural-values')graph={...graph,rows:(window.MakarychevCheck.setEntries(modelInput)||[]).map(term=>({term,pair:naturalCase(term,t.naturalRule)}))};
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
-document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
-function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
+document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
+function rationalEvidence(graph,value){
+ const C=window.MakarychevCheck;
+ if(graph.type==='rational-root-audit')return {...graph,checks:C.rationalRootTrial(value,graph)};
+ if(graph.type==='graph-root-reading')return {...graph,readings:C.graphRootEntries(value)};
+ const pairs=C.algebraPairs(value)?.map(pair=>pair.map(C.radicalApprox))||[];
+ return {...graph,pairs:pairs.filter(pair=>pair.every(Number.isFinite))};
+}
+function factorEvidence(graph,value){
+ const [a,...roots]=String(value||'').split(';');
+ return {...graph,rightLeading:M.equal(a,graph.leading),audit:window.MakarychevCheck.vietaAudit(roots.join(';'),graph)};
+}
+function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
  const state=ts(active.task.id),base=active.task.graph;
  let graph=['vertex-form','coefficient-example'].includes(base.type)?{...base,evaluated:Boolean(state.attempts||state.correct)}:base;
  if(['own-lines','own-points'].includes(base.type))graph={...base,groups:window.MakarychevCheck.pointGroups(value)};
+ if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(base.type))graph=rationalEvidence(base,value);
+ if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(base.type))graph={...base,trial:state.values[0]};
+ if(base.fixedInput)graph={...graph,partial:state.values,showValue:Boolean(state.correct)};
+ if(base.type==='source-system-rays')graph=systemView(base,state,value,active.task);
+ if(base.type==='source-inequality-case')graph={...base,partial:state.values,proposal:base.showAxis?window.MakarychevCheck.axisRanges(value):null};
+ if(base.type==='linear-ray-trial')graph=linearEvidence(base,state,value,active.task);
+ if(base.type==='source-interval-axis')graph=axisEvidence(base,state,value);
+ if(base.type==='interval-review')graph={...base,partial:state.values};
+ if(base.type==='euler-operation')graph={...base,partial:state.values};
+ if(['combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square'].includes(base.type))graph={...base,partial:state.values,proposal:base.type==='combined-intervals'?window.MakarychevCheck.estimateInput(value,base.expression):null};
+ if(base.type==='interval-image')graph={...base,proposal:window.MakarychevCheck.estimateInput(value,base.expression),partial:state.values};
+ if(base.type==='rank-expressions')graph={...base,trial:state.values[0],selected:base.isOrder?window.MakarychevCheck.proofOrder(value,base.labels.length):null};
+ if(base.type==='square-substitution')graph={...base,partial:state.values};
+ if(base.type==='labelled-order')graph={...base,trial:state.values[0]};
+ if(base.stepTrials){const index=Math.min(state.step,base.stepTrials.length-1);graph={...graph,trial:state.values[index]||state.values[0]};}
+ if(base.type==='factor-witness')graph=factorEvidence(base,value);
+ if(base.type==='vieta-audit')graph={...base,audit:window.MakarychevCheck.vietaAudit(value,base)};
+ if(base.type==='root-residual')graph={...base,checks:window.MakarychevCheck.quadraticTrial(value,base.coefficients)};
+ if(base.type==='parameter-polynomial')graph={...base,trial:state.values[0]};
+ if(base.type==='story-balance')graph={...base,trial:state.values[1]};
+ if(base.type==='inequality-intervals')graph={...base,intervals:window.MakarychevCheck.openIntervals(value)};
  if(base.type==='abs-line-choice')graph={...base,analysis:window.MakarychevCheck.absLineIntersections(value),checked:Boolean(state.attempts||state.correct)};
  if(base.type==='rational-line-example')graph={...base,analysis:window.MakarychevCheck.reciprocalIntersections(value),checked:Boolean(state.attempts||state.correct)};
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph.revealAfterSubmit?{...graph,showSolution:ts(active.task.id).correct}:graph,value);
