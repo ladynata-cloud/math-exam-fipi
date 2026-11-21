@@ -77,6 +77,35 @@ function classifyAnswer(value,accepted){
  const equal=(a,b)=>Math.abs(a-b)<=1e-10*Math.max(1,Math.abs(a),Math.abs(b));
  return {status:compatible.some(target=>target.every((item,i)=>equal(item.value,parts[i].value)))?'correct':'wrong'};
 }
+const earlyBook = 'atanasyan-2024-10-11';
+const earlyTopics = [
+ ['Точки, прямые и плоскости','atanasyan2024-theory-002-a1','atanasyan2024-main-004-a'],
+ ['Параллельность прямой и плоскости','theory-006','ex-main-0018-a'],
+ ['Скрещивающиеся прямые и угол между ними','theory-007','theory-009','ex-main-0044-b'],
+ ['Параллельные плоскости','theory-010','ex-main-0063-a'],
+ ['Тетраэдр, параллелепипед и сечения','theory-012','theory-014-example-3a','ex-main-0073'],
+ ['Перпендикулярность прямой и плоскости','theory-017','ex-main-0121'],
+ ['Наклонная, проекция и угол с плоскостью','theory-019','theory-020','theory-021','ex-main-0164'],
+ ['Двугранный угол и перпендикулярность плоскостей','theory-022','ex-main-0167','theory-023','ex-main-0171'],
+ ['Прямоугольный параллелепипед и многогранные углы','theory-024','theory-025','theory-026','ex-main-0191']
+];
+const nearbyAnswers = {
+ 'ex-main-0044-b': [[['135','135°','135 градусов'], 'Ты указал угол AOB, который уже дан. Найди угол между прямыми OA и CD. Какой из двух смежных углов надо выбрать?']],
+ 'ex-main-0121': [
+  [['5','5 см'], 'Ты нашёл CM, медиану к гипотенузе. Найди на рисунке ещё один катет треугольника KCM. Как связан с ними отрезок KM?'],
+  [['12','12 см'], '12 см — длина перпендикуляра CK. Требуется отрезок KM. Выдели прямоугольный треугольник KCM.']
+ ],
+ 'ex-main-0164': [[['1/2'], 'Получилось отношение длин. В ответе нужна величина угла в градусах. Определи, какой тригонометрической функции соответствует это отношение.']],
+ 'ex-main-0171': [[['30','30°','30 градусов'], 'Это угол катета с плоскостью α. Вопрос о двух плоскостях. Выдели их общую прямую и построй линейный угол.']],
+ 'ex-main-0174': [[['90','90°','90 градусов'], 'Прямые углы уже даны. Найди ребро двугранного угла ABCD и его линейный угол.']]
+};
+function nearbyAnswerFeedback(lesson, input) {
+ if (lesson.source?.bookId !== earlyBook) return '';
+ if (!Object.hasOwn(nearbyAnswers,lesson.id)) return '';
+ const errors = nearbyAnswers[lesson.id];
+ const identified = errors.find(([answers])=>classifyAnswer(input,answers).status==='correct');
+ return identified ? identified[1] : '';
+}
 const localChapter=source=>['main','theory'].includes(source.collection)?null:source.chapter||null;
 const sourceGroup=entry=>stable([entry.kind,entry.source.bookId,entry.source.collection,localChapter(entry.source),entry.source.examTask||null,entry.kind==='theory'?entry.source.point:entry.source.exercise,entry.source.collection==='example'?entry.source.point||null:null]);
 function coverageGroups(entries,available){
@@ -232,7 +261,7 @@ function createApp(root,options){
  function status(text){if(![...alerts.children].some(node=>node.tagName==='P'&&node.textContent===text))alerts.append(el('p',text));}
  function safeRead(k){try{return storage?.getItem(k)||null;}catch{status('Сохранение в браузере недоступно. Оставь страницу открытой, чтобы сохранить текущие записи.');return null;}}
  function initial(){return {draft:'',stepDrafts:{},revealed:0,assisted:false,checked:false,camera:null,wrongAttempts:0,firstAttempt:null,checkedWith:null};}
- function readState(raw){try{const saved=JSON.parse(raw);if(!saved||typeof saved!=='object')return initial();return {draft:typeof saved.draft==='string'?saved.draft:'',stepDrafts:saved.stepDrafts&&typeof saved.stepDrafts==='object'?saved.stepDrafts:{},revealed:Number.isInteger(saved.revealed)?Math.max(0,Math.min(saved.revealed,current.steps.length)):0,assisted:saved.assisted===true,checked:saved.checked===true,camera:saved.camera&&Number.isFinite(saved.camera.yaw)&&Number.isFinite(saved.camera.pitch)?saved.camera:null,wrongAttempts:Number.isInteger(saved.wrongAttempts)?Math.max(0,Math.min(saved.wrongAttempts,10000)):0,firstAttempt:saved.firstAttempt&&typeof saved.firstAttempt.input==='string'&&['correct','wrong'].includes(saved.firstAttempt.status)?{input:saved.firstAttempt.input.slice(0,1000),status:saved.firstAttempt.status}:null,checkedWith:['independent','corrected','assisted'].includes(saved.checkedWith)?saved.checkedWith:null};}catch{return initial();}}
+ function readState(raw,lesson=current){try{const saved=JSON.parse(raw);if(!saved||typeof saved!=='object')return initial();return {draft:typeof saved.draft==='string'?saved.draft:'',stepDrafts:saved.stepDrafts&&typeof saved.stepDrafts==='object'?saved.stepDrafts:{},revealed:Number.isInteger(saved.revealed)?Math.max(0,Math.min(saved.revealed,lesson.steps.length)):0,assisted:saved.assisted===true,checked:saved.checked===true,camera:saved.camera&&Number.isFinite(saved.camera.yaw)&&Number.isFinite(saved.camera.pitch)?saved.camera:null,wrongAttempts:Number.isInteger(saved.wrongAttempts)?Math.max(0,Math.min(saved.wrongAttempts,10000)):0,firstAttempt:saved.firstAttempt&&typeof saved.firstAttempt.input==='string'&&['correct','wrong'].includes(saved.firstAttempt.status)?{input:saved.firstAttempt.input.slice(0,1000),status:saved.firstAttempt.status}:null,checkedWith:['independent','corrected','assisted'].includes(saved.checkedWith)?saved.checkedWith:null};}catch{return initial();}}
  function freeze(){
   if(locked)return;locked=true;
   const note=el('section',undefined,{class:'course-conflict'});note.append(el('strong','В другом окне уже сохранена новая работа. Твои записи ниже можно скопировать.'),el('p',current.statement.text));
@@ -304,11 +333,11 @@ function createApp(root,options){
    for(const id of item.theoryIds||[]){const button=theoryButton(id);if(button)details.append(button);}mountHelp(item.children||[],details,target);parent.append(details);
   }
  }
- function open(id){
+ function open(id,routeLink){
   if(destroyed||locked)return false;const lesson=available.get(id);if(!lesson){status('Этот материал ещё не прошёл все проверки.');return false;}
   if(!current&&view.querySelector('.catalog-filters')){
    const content=doc.createDocumentFragment();
-   const button=view.querySelector('[data-lesson="'+lesson.id+'"]');
+   const button=routeLink||view.querySelector('[data-lesson="'+lesson.id+'"]');
    content.append(...view.childNodes);
    catalogReturn={content,button};
   }
@@ -337,7 +366,7 @@ function createApp(root,options){
      if(!state.checked)state.checkedWith=state.assisted?'assisted':state.wrongAttempts?'corrected':'independent';state.checked=true;
     }else{
      state.wrongAttempts++;
-     const question=lesson.help[0]?.question||'Проверь, какой объект и какую величину нужно найти.';
+     const question=nearbyAnswerFeedback(lesson,input.value)||lesson.help[0]?.question||'Проверь, какой объект и какую величину нужно найти.';
      setDisplayText(feedback,'Пока не совпало. '+question+(state.wrongAttempts>=2?' Можно открыть «Хочешь подсказку?» и разобрать решение по шагам.':''));
     }save();
    });form.append(label,input,check,feedback);main.append(form);
@@ -357,15 +386,54 @@ function createApp(root,options){
   if(cached&&cached.base!==expected)freeze();
   return true;
  }
+ function updateRouteProgress(){
+  for(const row of view.querySelectorAll('[data-route-lesson]')){
+   const lesson=available.get(row.dataset.routeLesson);
+   const storageKey='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;
+   const record=readState(cache.get(storageKey)?.raw||safeRead(storageKey),lesson);
+   const progress=row.nextElementSibling;
+   let label='';
+   if(record.checked){
+    const labels={independent:'Верно с первой попытки',corrected:'Исправлено самостоятельно',assisted:'Решено с помощью'};
+    label=labels[record.checkedWith]||'Ответ проверен, самостоятельность не указана';
+   }else if(record.assisted||record.revealed) label='Открыта помощь';
+   else if(record.wrongAttempts) label='Можно исправить ответ';
+   else if(record.draft.trim()) label='Есть черновик';
+   progress.textContent=label?' · '+label:'';
+  }
+ }
+ function addEarlyRoute(){
+  if(catalog.book.id!==earlyBook||!earlyTopics.every(([, ...ids])=>ids.every(id=>available.has(id))))return;
+  const route=el('details',undefined,{'data-early-route':''});
+  route.open=new URLSearchParams(win.location.search).get('route')==='early';
+  route.append(el('summary','Первые две главы от аксиом до многогранных углов'));
+  for(const [title,...ids] of earlyTopics){
+   const topic=el('details'), list=el('ul');
+   topic.append(el('summary',title));
+   for(const id of ids){
+    const lesson=available.get(id), item=el('li');
+    const link=el('a',companionIdentity(lesson.source)+' · '+lesson.title,{href:'#'+id,'data-route-lesson':id});
+    link.addEventListener('click',event=>{
+     if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+     event.preventDefault();open(id,link);
+    });
+    item.append(link,el('span'));list.append(item);
+   }
+   topic.append(list);route.append(topic);
+  }
+  view.append(route);updateRouteProgress();
+ }
  function home(){if(destroyed||locked)return;destroyScene();if(navigation)root.before(navigation);current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);
   if(catalogReturn){
    const {content,button}=catalogReturn;
    catalogReturn=null;
    view.append(content);
+   updateRouteProgress();
    button?.focus();
    return;
   }
   view.append(el('h1','Курс к учебнику «'+catalog.book.title+'»'),el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
+  addEarlyRoute();
   if(!coverage.inventoryComplete)view.append(el('p','Список учебника ещё дополняется. Эти числа пока не означают полное покрытие книги.',{class:'course-note'}));
   if(!available.size)view.append(el('p','Проверенные материалы пока не опубликованы.'));
   const controls=el('section',undefined,{class:'catalog-filters','aria-label':'Найти материал'}),search=el('input',undefined,{id:'catalog-search',type:'search',placeholder:'Номер задачи, пункт, параграф или тема'});
@@ -397,9 +465,9 @@ function createApp(root,options){
   }
   function filterChanged(){readyPage=0;pendingPage=0;renderResults();}search.addEventListener('input',filterChanged);for(const node of [kind,collection,paragraph])node.addEventListener('change',filterChanged);chapter.addEventListener('change',()=>{updateParagraphs();filterChanged();});renderResults();
  }
- function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();}
+ function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();else if(!current&&(event.key===null||event.key?.startsWith('mathExamTextbook.v1:'+catalog.book.id+':')))updateRouteProgress();}
  win.addEventListener('storage',onStorage);const start=win.location.hash.slice(1);if(start&&available.has(start))open(start);else home();
  return {open,home,coverage,issues,destroy(){destroyed=true;catalogReturn=null;destroyScene();if(navigation)root.before(navigation);root.classList.remove('textbook-reading');win.removeEventListener('storage',onStorage);root.replaceChildren();}};
 }
-const api={validateLesson,inspectBundle,createApp,numericAnswer,classifyAnswer};global.StereoTextbook=api;if(typeof module!=='undefined')module.exports=api;
+const api={validateLesson,inspectBundle,createApp,numericAnswer,classifyAnswer,nearbyAnswerFeedback};global.StereoTextbook=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

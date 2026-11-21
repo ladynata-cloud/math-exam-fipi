@@ -134,7 +134,9 @@
         if (!work.value.trim()) message = 'Сначала запиши ответ или первый довод.';
         else if (card.answer?.mode === 'exact') {
           const result = StereoTextbook.classifyAnswer(work.value, card.answer.accepted);
-          message = result.status === 'correct' ? 'Ответ совпал.' : result.message || 'Проверь ответ. Можно открыть ближайшую подсказку.';
+          if (result.status === 'correct') message = 'Ответ совпал.';
+          else if (result.status === 'wrong') message = StereoTextbook.nearbyAnswerFeedback?.(card, work.value) || 'Проверь ответ. Можно открыть ближайшую подсказку.';
+          else message = result.message;
         } else message = card.answer?.feedback || 'Сопоставь переходы в своём рассуждении с пояснениями. Полный текст можно обсудить с преподавателем.';
         StereoMath.appendText(feedback, message);
       }

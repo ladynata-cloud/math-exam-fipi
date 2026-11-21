@@ -17,6 +17,15 @@ function replaceOnce(source, from, to) {
 }
 function beforeHarmonization(file, bytes, record = manifest) {
   if (file !== FILE) return bytes;
+  const route = require('./early-route-migration.json');
+  if (hash(bytes) === route.afterSHA256) {
+    assert.equal(route.file, FILE);
+    let restored = bytes.toString('utf8');
+    for (const operation of [...route.operations].reverse())
+      restored = replaceOnce(restored, operation.after, operation.before);
+    bytes = Buffer.from(restored);
+    assert.equal(hash(bytes), route.beforeSHA256, 'prior complete teaching runtime preserved');
+  }
   // Compose the exact two lesson identities with the independently reviewed engine.
   if (hash(bytes) === '98f27d0bedbfa8dab28f2d844fa33d7aec24a67e2264156a9447688fd3a64081') {
     const source = bytes.toString('utf8');

@@ -112,6 +112,36 @@ async function ready(host, id) {
     right = await ready(pupil, 'ex-main-0017');
     assert.equal(await right.locator('#work-step-1').inputValue(), '7');
     assert.equal(await right.locator('[data-step-feedback="step-1"]').getAttribute('data-answer-status'), 'correct');
+    if (!(await pupil.locator('body').evaluate(body=>body.classList.contains('control-owner')))) {
+      await teacher.locator('#openShare').click();
+      await teacher.locator('#controlToggle').click();
+      await pupil.waitForFunction(()=>document.body.classList.contains('control-owner'));
+      await teacher.locator('#sharePanel [data-close-panel]').click();
+    }
+    const adjacentAnswers = [
+      ['ex-main-0044-b','135°','угол AOB'], ['ex-main-0121','5 см','медиану к гипотенузе'],
+      ['ex-main-0121','12 см','перпендикуляра CK'], ['ex-main-0164','1/2','отношение длин'],
+      ['ex-main-0171','30°','угол катета'], ['ex-main-0174','90°','двугранного угла ABCD']
+    ];
+    for (const [id,value,diagnosis] of adjacentAnswers) {
+      await right.locator('#card').selectOption(id);
+      await left.waitForFunction(expected=>document.querySelector('#card').value===expected,id);
+      await right.locator('#work').fill(value);
+      await right.getByRole('button',{name:'Проверить ответ',exact:true}).click();
+      for (const frame of [left,right]) {
+        await frame.waitForFunction(expected=>[...document.querySelectorAll('[role="status"]')].some(p=>p.textContent.includes(expected)),diagnosis);
+        assert.equal(await frame.locator('#hint h3, #step h3').count(),0);
+      }
+    }
+    await pupil.reload();
+    right=await ready(pupil,'ex-main-0174');
+    assert.equal(await right.locator('#work').inputValue(),'90°');
+    await right.waitForFunction(()=>[...document.querySelectorAll('[role="status"]')].some(p=>p.textContent.includes('двугранного угла ABCD')));
+    const pupilControls=await pupil.locator('body').evaluate(body=>body.classList.contains('control-owner'));
+    const writer=pupilControls?right:left, observer=pupilControls?left:right;
+    await writer.locator('#work').fill('60°');
+    await writer.getByRole('button',{name:'Проверить ответ',exact:true}).click();
+    await observer.waitForFunction(()=>[...document.querySelectorAll('[role="status"]')].some(p=>p.textContent==='Ответ совпал.'));
     for (const frame of [left,right]) assert.equal(await frame.evaluate(key => localStorage.getItem(key), localKey), 'isolated-personal-record');
     assert.deepEqual(errors, []);
     console.log('ATANASYAN_STEREO_BOARD_OK: two room participants, rotated 3D, hints, checked step answers, final draft, transfer of control, reload, personal records isolated');

@@ -1,0 +1,51 @@
+{
+  "file": "stereo-course/textbook/assets/engine.js",
+  "beforeSHA256": "98f27d0bedbfa8dab28f2d844fa33d7aec24a67e2264156a9447688fd3a64081",
+  "afterSHA256": "0ccde26092bfd2db908c42f323a74fcaf9a97c14f72dde2543eecbbeb4fb09f0",
+  "operations": [
+    {
+      "before": "const localChapter=source=>",
+      "after": "const earlyBook = 'atanasyan-2024-10-11';\nconst earlyTopics = [\n ['Точки, прямые и плоскости','atanasyan2024-theory-002-a1','atanasyan2024-main-004-a'],\n ['Параллельность прямой и плоскости','theory-006','ex-main-0018-a'],\n ['Скрещивающиеся прямые и угол между ними','theory-007','theory-009','ex-main-0044-b'],\n ['Параллельные плоскости','theory-010','ex-main-0063-a'],\n ['Тетраэдр, параллелепипед и сечения','theory-012','theory-014-example-3a','ex-main-0073'],\n ['Перпендикулярность прямой и плоскости','theory-017','ex-main-0121'],\n ['Наклонная, проекция и угол с плоскостью','theory-019','theory-020','theory-021','ex-main-0164'],\n ['Двугранный угол и перпендикулярность плоскостей','theory-022','ex-main-0167','theory-023','ex-main-0171'],\n ['Прямоугольный параллелепипед и многогранные углы','theory-024','theory-025','theory-026','ex-main-0191']\n];\nconst nearbyAnswers = {\n 'ex-main-0044-b': [[['135','135°','135 градусов'], 'Ты указал угол AOB, который уже дан. Найди угол между прямыми OA и CD. Какой из двух смежных углов надо выбрать?']],\n 'ex-main-0121': [\n  [['5','5 см'], 'Ты нашёл CM, медиану к гипотенузе. Найди на рисунке ещё один катет треугольника KCM. Как связан с ними отрезок KM?'],\n  [['12','12 см'], '12 см — длина перпендикуляра CK. Требуется отрезок KM. Выдели прямоугольный треугольник KCM.']\n ],\n 'ex-main-0164': [[['1/2'], 'Получилось отношение длин. В ответе нужна величина угла в градусах. Определи, какой тригонометрической функции соответствует это отношение.']],\n 'ex-main-0171': [[['30','30°','30 градусов'], 'Это угол катета с плоскостью α. Вопрос о двух плоскостях. Выдели их общую прямую и построй линейный угол.']],\n 'ex-main-0174': [[['90','90°','90 градусов'], 'Прямые углы уже даны. Найди ребро двугранного угла ABCD и его линейный угол.']]\n};\nfunction nearbyAnswerFeedback(lesson, input) {\n if (lesson.source?.bookId !== earlyBook) return '';\n if (!Object.hasOwn(nearbyAnswers,lesson.id)) return '';\n const errors = nearbyAnswers[lesson.id];\n const identified = errors.find(([answers])=>classifyAnswer(input,answers).status==='correct');\n return identified ? identified[1] : '';\n}\nconst localChapter=source=>"
+    },
+    {
+      "before": "function readState(raw){",
+      "after": "function readState(raw,lesson=current){"
+    },
+    {
+      "before": "Math.min(saved.revealed,current.steps.length)",
+      "after": "Math.min(saved.revealed,lesson.steps.length)"
+    },
+    {
+      "before": "function open(id){",
+      "after": "function open(id,routeLink){"
+    },
+    {
+      "before": "const button=view.querySelector('[data-lesson=\"'+lesson.id+'\"]');",
+      "after": "const button=routeLink||view.querySelector('[data-lesson=\"'+lesson.id+'\"]');"
+    },
+    {
+      "before": "const question=lesson.help[0]?.question||",
+      "after": "const question=nearbyAnswerFeedback(lesson,input.value)||lesson.help[0]?.question||"
+    },
+    {
+      "before": " function home(){if(destroyed",
+      "after": " function updateRouteProgress(){\n  for(const row of view.querySelectorAll('[data-route-lesson]')){\n   const lesson=available.get(row.dataset.routeLesson);\n   const storageKey='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;\n   const record=readState(cache.get(storageKey)?.raw||safeRead(storageKey),lesson);\n   const progress=row.nextElementSibling;\n   let label='';\n   if(record.checked){\n    const labels={independent:'Верно с первой попытки',corrected:'Исправлено самостоятельно',assisted:'Решено с помощью'};\n    label=labels[record.checkedWith]||'Ответ проверен, самостоятельность не указана';\n   }else if(record.assisted||record.revealed) label='Открыта помощь';\n   else if(record.wrongAttempts) label='Можно исправить ответ';\n   else if(record.draft.trim()) label='Есть черновик';\n   progress.textContent=label?' · '+label:'';\n  }\n }\n function addEarlyRoute(){\n  if(catalog.book.id!==earlyBook||!earlyTopics.every(([, ...ids])=>ids.every(id=>available.has(id))))return;\n  const route=el('details',undefined,{'data-early-route':''});\n  route.open=new URLSearchParams(win.location.search).get('route')==='early';\n  route.append(el('summary','Первые две главы от аксиом до многогранных углов'));\n  for(const [title,...ids] of earlyTopics){\n   const topic=el('details'), list=el('ul');\n   topic.append(el('summary',title));\n   for(const id of ids){\n    const lesson=available.get(id), item=el('li');\n    const link=el('a',companionIdentity(lesson.source)+' · '+lesson.title,{href:'#'+id,'data-route-lesson':id});\n    link.addEventListener('click',event=>{\n     if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;\n     event.preventDefault();open(id,link);\n    });\n    item.append(link,el('span'));list.append(item);\n   }\n   topic.append(list);route.append(topic);\n  }\n  view.append(route);updateRouteProgress();\n }\n function home(){if(destroyed"
+    },
+    {
+      "before": "   view.append(content);\n   button?.focus();",
+      "after": "   view.append(content);\n   updateRouteProgress();\n   button?.focus();"
+    },
+    {
+      "before": "  if(!coverage.inventoryComplete)view.append(",
+      "after": "  addEarlyRoute();\n  if(!coverage.inventoryComplete)view.append("
+    },
+    {
+      "before": "function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();}",
+      "after": "function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();else if(!current&&(event.key===null||event.key?.startsWith('mathExamTextbook.v1:'+catalog.book.id+':')))updateRouteProgress();}"
+    },
+    {
+      "before": "numericAnswer,classifyAnswer};global.StereoTextbook",
+      "after": "numericAnswer,classifyAnswer,nearbyAnswerFeedback};global.StereoTextbook"
+    }
+  ]
+}
