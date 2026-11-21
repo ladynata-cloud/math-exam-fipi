@@ -488,6 +488,24 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'test directed rays and a reversed starting point, source exercise 1.93';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-93"]').click();await studentFrame.locator('h1').filter({hasText:'№1.93'}).waitFor();
+  await teacherFrame.locator('#answer').fill('да');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('да');await teacherFrame.locator('#answer-form button').click();const behind=await same(teacherFrame,studentFrame,'the meeting is behind the start of PN');assert.match(behind.scene.message,/позади/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('нет');await studentFrame.locator('#answer-form button').click();
+  await studentFrame.locator('[data-v5-param=item]').selectOption('4');await studentFrame.locator('[data-v5-param=reverse]').selectOption('1');await studentFrame.locator('[data-v5-prediction]').fill('0');await studentFrame.locator('[data-v5-predict] button').click();
+  const changed=await same(studentFrame,teacherFrame,'reversing MK produces a ray going the other way');assert(changed.scene.correct);assert.equal(changed.scene.model.reverse,1);assert.equal(changed.scene.model.first,'0');assert.match(changed.scene.model.notice,/подтвердился/);await ownership(teacher,student,false);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
+
+  phase = 'source 1.94, pairs of rays and the two straight angles';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-94"]').click();await studentFrame.locator('h1').filter({hasText:'№1.94'}).waitFor();
+  await teacherFrame.locator('#answer').fill('COD DOM');await teacherFrame.locator('#answer-form button').click();const omittedStraight=await same(teacherFrame,studentFrame,'missing the opposite pair in three rays');assert.match(omittedStraight.scene.message,/противоположных/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('MOD DOC MOC');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('3');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('[data-v5-param=picture]').selectOption('1');await studentFrame.locator('[data-v5-param=pair]').selectOption('5');await studentFrame.locator('[data-v5-param=ask]').selectOption('1');await studentFrame.locator('#answer').fill('4');await studentFrame.locator('#answer-form button').click();const four=await same(studentFrame,teacherFrame,'four adjacent angles omit two straight angles');assert.match(four.scene.message,/четыре угла/);
+  await studentFrame.locator('#answer').fill('6');await studentFrame.locator('#answer-form button').click();await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'six angles and chosen pair restore for pupil');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const six=await same(teacherFrame,studentFrame,'teacher restores six different angles');assert(six.scene.correct);assert.equal(six.scene.model.pair,5);assert.deepEqual(six.scene.hintLevels,{});
+
   phase = 'personal paper measurements, printed page twenty-two self-check';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-check-3-2"]').click();await studentFrame.locator('h1').filter({hasText:/периметр/i}).waitFor();
