@@ -46,6 +46,13 @@ for(const [slopeSign,interceptSign,right,wrong] of [[1,1,'2/3;7','0;7'],[-1,1,'-
  const branch={kind:'line-sign-example',answer:'0;1',slopeSign,interceptSign};
  assert(C.check(right,branch));assert(!C.check(wrong,branch));assert(!C.check('3;',branch));
 }
+const inverse=D.lessons.find(l=>l.id==='p08');
+const seq=inverse.studyOrder.map(i=>inverse.tasks[i]).filter(t=>t.source.type==='textbook');
+const nums=seq.map(t=>Number(/№\s*(\d+)/.exec(t.source.reference)[1]));
+assert.deepEqual([...nums],[...nums].sort((a,b)=>a-b));assert.equal(seq[0].id,'p08-t01');
+for(const [id,right,wrong] of [['p08-source-189-а','2,45;−2,44','2,45;2,44'],['p08-source-189-б','4.73;1.27','0;4.7'],['p08-source-190-б','1.68;−1.68','-1.68;2']]){
+ const t=inverse.tasks.find(q=>q.id===id);assert(C.check(right,t));assert(!C.check(wrong,t));assert(!C.check('1;',t));
+}
 const equivalent=(answer,value)=>C.check(value,{kind:'text',answer,reducedExpression:true});
 assert(equivalent('(2*b-a)/7','(-a+2b)/7'));
 assert(equivalent('(x-5)*(x-4)/6','(x^2-9x+20)/6'));

@@ -147,6 +147,13 @@ function check(user,target){
   if(a.n<=0)return false;const rational=squareInteger(a.n)&&squareInteger(a.d);
   return target.rootType==='rational'?rational:target.rootType==='irrational'?!rational:false;
  }
+ if(target.kind==='graph-estimates'){
+  if((target.exactAnswers||[]).some(answer=>normalize(user)===normalize(answer)||setEqual(user,answer)))return true;
+  const entries=user.split(';').map(v=>M.parse(v));
+  if(entries.length!==target.rootValues.length||entries.some(v=>!v))return false;
+  const values=entries.map(r=>r.n/r.d).sort((a,b)=>a-b);
+  return values.every((n,i)=>Math.abs(n-target.rootValues[i])<=target.tolerance+1e-10);
+ }
  if(target.kind==='line-sign-example'){
   const values=user.split(';').map(part=>M.parse(part));
   return Boolean(G?.parseLine(user)) && values.length===2 && values.every(Boolean) &&
