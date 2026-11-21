@@ -281,6 +281,12 @@
     if(session.correct){const status=memoryOnly?'Совместный разбор':session.assisted?'Решено с помощью':session.exposed?'Работа со знакомым условием':session.attempt>1?'Решено после исправления':session.mode==='learn'?'Шаг понятен':'Получилось самостоятельно';task.insertAdjacentHTML('beforeend','<p class="v5q-outcome">'+status+'</p>');}
     const ownSituations=lesson.number==='1.72';
     const extra=root.document.createElement('section');extra.className='v5q-notes';extra.innerHTML=ownSituations?'<h2>Твои два примера</h2><label>Что ты захочешь узнать в магазине? А на спортивной площадке? Запиши для каждого места свой вопрос и математический способ его проверить.<textarea id="v5-quality-note" maxlength="2000" rows="5"></textarea></label><p class="tiny">Сверь свою запись: указаны оба места, величины и способ проверки. Можно привести любые подходящие примеры. Текст сохраняется. Тренажёр отдельно проверяет только расчёты ниже.</p><div data-v5-media-host></div>':'<details><summary>Мои рассуждения и проверка</summary><label>Объясни способ своими словами. Как проверить результат?<textarea id="v5-quality-note" maxlength="2000" rows="3"></textarea></label><p class="tiny">Твои записи сохраняются. Свободное объяснение проверяется вместе с учителем.</p></details><div data-v5-media-host></div>';
+    if(lesson.number==='5.28'&&lesson.v5Course){
+      extra.querySelector('summary').textContent='Моё объяснение о часах';
+      extra.querySelector('label').firstChild.textContent='Назови одно преимущество солнечных часов, одно ограничение и общее свойство с сегодняшними часами. Выбери для сравнения конкретные часы.';
+      const input=extra.querySelector('textarea');input.rows=5;input.placeholder='Для солнечных часов удобно …\nИх ограничение …\nУ обоих приборов …';
+      extra.querySelector('.tiny').textContent='Запись сохранится для тебя и учителя. Результаты наблюдений в модели проверяются отдельно. Своё объяснение можно дополнить.';
+    }
     if(lesson.number==='5.21'&&lesson.v5Course){
       extra.querySelector('summary').textContent='Моя формулировка правила';
       extra.querySelector('label').firstChild.textContent='Как по числу слоёв узнать сумму кубов? Запиши правило своими словами и проверь на двух строках.';
