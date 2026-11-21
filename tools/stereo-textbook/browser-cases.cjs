@@ -2267,7 +2267,7 @@ const entries=[
  ["ex-main-0421|step-3","additional414-ex-main-0421-step-3"],
  ["ex-main-0421|step-4","additional414-ex-main-0421-step-4"],
 ];
-entries.push(...require('./inscribed-solids.json').cases, ...require('./circumspheres.json').cases, ...require('./round-bodies.json').cases, ...require('./box-volumes.json').cases, ...require('./prism-volumes.json').cases, ...require('./cross-sections.json').cases, ...require('./oblique-prisms.json').cases, ...require('./pyramid-volumes.json').cases, ...require('./pyramid-projections.json').cases);
+entries.push(...require('./inscribed-solids.json').cases, ...require('./circumspheres.json').cases, ...require('./round-bodies.json').cases, ...require('./box-volumes.json').cases, ...require('./prism-volumes.json').cases, ...require('./cross-sections.json').cases, ...require('./oblique-prisms.json').cases, ...require('./pyramid-volumes.json').cases, ...require('./pyramid-projections.json').cases, ...require('./pyramid-frusta.json').cases);
 assert.equal(new Set(entries.map(([key])=>key)).size,entries.length,'duplicate screenshot case key');
 assert.equal(new Set(entries.map(([,name])=>name)).size,entries.length,'duplicate screenshot filename');
 module.exports=new Map(entries);

@@ -57,6 +57,13 @@ const misconceptions = new Map([
   ['ex-main-0488-b/step-3', '128'], // Base altitude used for the spatial height.
   ['ex-main-0488-c/step-3', '60'], // Volume of the encompassing box.
   ['ex-main-0489/step-2', '21'], // Common edge instead of its perpendicular.
+  ['ex-main-0490/step-2', '144'], // Slanted face height in place of vertical height.
+  ['ex-main-0490/step-3', '5/4'], // Omitted geometric mean of base areas.
+  ['ex-main-0491/step-1', '6'], // Unhalved hypotenuse difference.
+  ['ex-main-0491/step-3', '29'], // Missing geometric mean.
+  ['ex-main-0492/step-1', '15'], // Horizontal circumradius in height field.
+  ['ex-main-0492/step-3', '180'], // Removed tip in place of remaining frustum.
+  ['ex-main-0493/step-2', '9'], // Height computed with side lengths, not diagonals.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

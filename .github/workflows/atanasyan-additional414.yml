@@ -46,6 +46,8 @@ jobs:
           node tools/stereo-textbook/cross-sections.test.cjs
           node tools/stereo-textbook/oblique-prisms.test.cjs
           node tools/stereo-textbook/pyramid-volumes.test.cjs
+          node tools/stereo-textbook/pyramid-projections.test.cjs
+          node tools/stereo-textbook/pyramid-frusta.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -97,6 +99,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: projections
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-projections
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify cut pyramids and diagonal sections on phone and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: frusta
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-frusta
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -140,5 +147,6 @@ jobs:
             artifacts/oblique-prisms/
             artifacts/pyramid-volumes/
             artifacts/pyramid-projections/
+            artifacts/pyramid-frusta/
           retention-days: 14
           if-no-files-found: error

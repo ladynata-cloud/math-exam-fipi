@@ -14,7 +14,8 @@ const groups = {
   cross: {manifests:[require('./cross-sections.json')],count:3},
   oblique: {manifests:[require('./oblique-prisms.json')],count:12},
   pyramids: {manifests:[require('./pyramid-volumes.json')],count:9},
-  projections: {manifests:[require('./pyramid-projections.json')],count:10}
+  projections: {manifests:[require('./pyramid-projections.json')],count:10},
+  frusta: {manifests:[require('./pyramid-frusta.json')],count:4}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
@@ -116,19 +117,33 @@ async function exercise(page, card, base, width) {
       await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
       base = 'http://127.0.0.1:' + server.address().port + '/stereo-course/textbook/';
     }
-    browser = await chromium.launch({headless:true, executablePath:process.env.GEOMETRY_CHROMIUM});
     const errors = [];
     let checks = 0;
+    // The complete bank is loaded twice per journey to check recovery after reload.
+    // Recycle the renderer processes between small sets, while keeping the same
+    // learner context throughout every individual attempt and reload.
+    const batchSize = 4;
     for (const width of [320,390,1280]) {
-      for (const card of cards) {
-        const context = await browser.newContext({viewport:{width,height:900}});
+      for (let start = 0; start < cards.length; start += batchSize) {
+        browser = await chromium.launch({
+          headless:true, executablePath:process.env.GEOMETRY_CHROMIUM,
+          args:['--disable-dev-shm-usage','--js-flags=--max-old-space-size=240']
+        });
         try {
-          const page = await context.newPage();
-          page.setDefaultTimeout(90000);
-          page.on('pageerror', error => errors.push(error.message));
-          checks += await exercise(page, card, base, width);
+          for (const card of cards.slice(start,start+batchSize)) {
+            const context = await browser.newContext({viewport:{width,height:900}});
+            try {
+              const page = await context.newPage();
+              page.setDefaultTimeout(90000);
+              page.on('pageerror', error => errors.push(error.message));
+              checks += await exercise(page, card, base, width);
+            } finally {
+              await context.close();
+            }
+          }
         } finally {
-          await context.close();
+          await browser.close();
+          browser = undefined;
         }
       }
     }

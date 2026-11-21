@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T15:22:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 489 and points 52–59, with 800 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T15:34:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 493 and points 52–59, with 804 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1263,6 +1263,19 @@
       ],
       "evidence": "tools/stereo-textbook/pyramid-projections.json",
       "mathematicalReport": "tools/stereo-textbook/pyramid-projections.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T15:34:00Z",
+      "scope": "Frustum altitude, similar slices and diagonal sections, exercises 490–493",
+      "cardIds": [
+        "ex-main-0490",
+        "ex-main-0491",
+        "ex-main-0492",
+        "ex-main-0493"
+      ],
+      "evidence": "tools/stereo-textbook/pyramid-frusta.json",
+      "mathematicalReport": "tools/stereo-textbook/pyramid-frusta.test.cjs"
     }
   ],
   "cards": [
@@ -4465,6 +4478,22 @@
     {
       "id": "ex-main-0489",
       "sha256": "c0812d568c34f4e1bcd159ebf38617e9507c8f8a0bd6f084cad1e22b0bacd00e"
+    },
+    {
+      "id": "ex-main-0490",
+      "sha256": "c15ff5bb342b3a96075b72942d08004cee7f1e0790b6b25ec1dda9ac51c5bb89"
+    },
+    {
+      "id": "ex-main-0491",
+      "sha256": "f5c8e810a920b86ff1217eb95063602de65267778483c05d47bc06fcf5b9270c"
+    },
+    {
+      "id": "ex-main-0492",
+      "sha256": "d9e94d894404cd3099c142f472b9087a68f7af4c9cd526751c60b811402d1aaa"
+    },
+    {
+      "id": "ex-main-0493",
+      "sha256": "e7b0f6777e1ac55d0ec81285c6ca50e6f4cf693f77c8eae71bdba4aee9c9fb0c"
     }
   ]
 }
