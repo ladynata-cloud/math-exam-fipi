@@ -31,3 +31,7 @@ nav{flex-wrap:wrap;gap:.35rem .75rem;padding-top:.4rem;padding-bottom:.4rem}.cab
 .garden-model{border-radius:12px;background:#eff7eb;padding:.8rem}.garden-trays,.garden-caption{flex-basis:100%}.garden-tray{display:inline-grid;grid-template-columns:repeat(3,8px);gap:3px;min-height:22px;border:2px solid #94683e;border-bottom-width:5px;background:#fff6e0;border-radius:5px;padding:3px}.garden-seed{width:8px;height:10px;border-radius:65% 35%;background:#277052}
 .garden-history{padding:.3rem .55rem}.garden-history details{border-top:1px solid #ccdbcc}.garden-history p{margin:.3rem .65rem}
 @media(max-width:540px){.garden-cover{grid-template-columns:1fr}.canopy{display:none}.garden-strip{align-items:start}.garden .fields label{width:100%}.garden .fields select{width:100%}}
+
+.garden-growth{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 1rem;color:#31523b}
+.garden-growth span{display:grid;place-items:center;width:2.1rem;height:2.1rem;font-size:1.3rem;background:#f1f2eb;border-radius:50%;filter:grayscale(1);opacity:.48}
+.garden-growth .sprouted{filter:none;opacity:1;background:#e4f0d5}.garden-growth strong{font-size:.9rem}

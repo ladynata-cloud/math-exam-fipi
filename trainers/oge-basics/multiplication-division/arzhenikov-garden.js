@@ -43,6 +43,7 @@
     document.querySelector('.garden-cover').hidden = status;
     panel.hidden = !status;
     layout.hidden = status;
+    document.querySelector('.intro .meter').hidden = status;
   }
   function model(parent, m, t) {
     const box = node('div',null,'garden-model'), view = node('div',null,'garden-trays');
@@ -150,6 +151,17 @@
     const emblem = node('span',station.icon,'garden-emblem'); emblem.setAttribute('aria-hidden','true');
     heading.append(emblem,title);
     panel.append(strip,gallery(station.id),heading);
+    if (!review) {
+      const grown = run.done ? 3 : run.step + Number(t.correct);
+      const growth = node('div',null,'garden-growth');
+      growth.setAttribute('aria-label','Рост растения: '+grown+' из 3 задач');
+      for (const [i,symbol] of ['🫘','🌱','🌿',station.icon].entries()) {
+        const sprout = node('span',symbol,i<=grown?'sprouted':'');
+        sprout.setAttribute('aria-hidden','true');growth.append(sprout);
+      }
+      growth.append(node('strong',['Семя посажено','Показался росток','Раскрылись листья','Растение выросло'][grown]));
+      panel.append(growth);
+    }
     if (shouldFocus) title.focus();
     if (run.done) {
       const log = progress(station.id);
