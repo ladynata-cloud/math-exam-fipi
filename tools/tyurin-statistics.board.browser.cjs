@@ -51,7 +51,9 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--vilenkin8-2010')?{
+const catalogue=process.argv.includes('--peterson9-2017')?{
+  directory:'peterson9-2017',entries:[[51,34,9]],uniqueLessons:8,search:'peterson9-2017',match:'множества и графики функций',lesson:'51-2-4',chart:'svg[aria-label*="График функции и три контрольные точки"]',storage:'math:peterson9-2017:v1:'
+}:process.argv.includes('--vilenkin8-2010')?{
   directory:'vilenkin8-2010',entries:[[82,89,14]],uniqueLessons:13,search:'vilenkin8-2010',match:'дроби и порядок деления',lesson:'82-3',chart:'svg[aria-label*="Порядок деления с разными скобками"]',storage:'math:vilenkin8-2010:v1:'
 }:process.argv.includes('--peterson8-part3')?{
   directory:'peterson8-2017',entries:[[73,21,27]],uniqueLessons:26,search:'peterson8-2017',match:'степенные функции и дроби',lesson:process.argv.includes('--domains')?'73-6b-4':'73-4f',chart:process.argv.includes('--domains')?'svg[aria-label*="Исходная и преобразованная области определения"]':'svg[aria-label*="Запрещённые значения исходной дроби"]',storage:'math:peterson8-2017:v1:'
