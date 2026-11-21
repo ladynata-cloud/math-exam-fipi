@@ -1,0 +1,2701 @@
+{
+  "schema": 1,
+  "source": {
+    "authors": [
+      "Г. В. Дорофеев",
+      "Л. Г. Петерсон"
+    ],
+    "title": "Математика. 6 класс. Учебник в 3 частях. Часть 1",
+    "publisher": "БИНОМ. Лаборатория знаний",
+    "year": 2019,
+    "pdfPages": 112,
+    "sha256": "852f8db30a68cb9f5d42fe7e02d28eb87a46fdff6aa4707902595e3761cf1d92"
+  },
+  "topics": [
+    {
+      "id": "negation",
+      "title": "Понятие отрицания",
+      "chapter": 1,
+      "section": 1,
+      "point": 1,
+      "startPage": 3,
+      "endPage": 9,
+      "firstExercise": 1,
+      "lastExercise": 25,
+      "kind": "topic"
+    },
+    {
+      "id": "general-negation",
+      "title": "Отрицания общих высказываний",
+      "chapter": 1,
+      "section": 1,
+      "point": 2,
+      "startPage": 10,
+      "endPage": 16,
+      "firstExercise": 26,
+      "lastExercise": 58,
+      "kind": "topic"
+    },
+    {
+      "id": "existence-negation",
+      "title": "Отрицания высказываний о существовании",
+      "chapter": 1,
+      "section": 1,
+      "point": 3,
+      "startPage": 17,
+      "endPage": 19,
+      "firstExercise": 59,
+      "lastExercise": 70,
+      "kind": "topic"
+    },
+    {
+      "id": "variables",
+      "title": "Понятие переменной. Выражения с переменными",
+      "chapter": 1,
+      "section": 2,
+      "point": 1,
+      "startPage": 20,
+      "endPage": 25,
+      "firstExercise": 71,
+      "lastExercise": 97,
+      "kind": "topic"
+    },
+    {
+      "id": "variable-propositions",
+      "title": "Предложения с переменными",
+      "chapter": 1,
+      "section": 2,
+      "point": 2,
+      "startPage": 26,
+      "endPage": 32,
+      "firstExercise": 98,
+      "lastExercise": 119,
+      "kind": "topic"
+    },
+    {
+      "id": "quantifiers",
+      "title": "Переменная и кванторы",
+      "chapter": 1,
+      "section": 2,
+      "point": 3,
+      "startPage": 33,
+      "endPage": 38,
+      "firstExercise": 120,
+      "lastExercise": 142,
+      "kind": "topic"
+    },
+    {
+      "id": "quantifier-negation",
+      "title": "Отрицание утверждений с кванторами",
+      "chapter": 1,
+      "section": 2,
+      "point": 4,
+      "startPage": 38,
+      "endPage": 42,
+      "firstExercise": 143,
+      "lastExercise": 166,
+      "kind": "topic"
+    },
+    {
+      "id": "logic-review",
+      "title": "Самопроверка: язык и логика",
+      "page": 43,
+      "firstExercise": 167,
+      "lastExercise": 175,
+      "kind": "review",
+      "startPage": 43,
+      "endPage": 43
+    },
+    {
+      "id": "mixed-fractions",
+      "title": "Совместные действия с обыкновенными и десятичными дробями",
+      "chapter": 2,
+      "section": 1,
+      "point": 1,
+      "startPage": 44,
+      "endPage": 55,
+      "firstExercise": 176,
+      "lastExercise": 220,
+      "kind": "topic"
+    },
+    {
+      "id": "river",
+      "title": "Задачи на движение по реке",
+      "chapter": 2,
+      "section": 1,
+      "point": 2,
+      "startPage": 56,
+      "endPage": 63,
+      "firstExercise": 221,
+      "lastExercise": 256,
+      "kind": "topic"
+    },
+    {
+      "id": "mean",
+      "title": "Среднее арифметическое",
+      "chapter": 2,
+      "section": 1,
+      "point": 3,
+      "startPage": 63,
+      "endPage": 72,
+      "firstExercise": 257,
+      "lastExercise": 296,
+      "kind": "topic"
+    },
+    {
+      "id": "arithmetic-review",
+      "title": "Самопроверка: числа и действия",
+      "page": 73,
+      "firstExercise": 297,
+      "lastExercise": 307,
+      "kind": "review",
+      "startPage": 73,
+      "endPage": 73
+    },
+    {
+      "id": "percent-concept",
+      "title": "Понятие о проценте",
+      "chapter": 2,
+      "section": 2,
+      "point": 1,
+      "startPage": 74,
+      "endPage": 82,
+      "firstExercise": 308,
+      "lastExercise": 350,
+      "kind": "topic"
+    },
+    {
+      "id": "percent-problems",
+      "title": "Задачи на проценты",
+      "chapter": 2,
+      "section": 2,
+      "point": 2,
+      "startPage": 83,
+      "endPage": 97,
+      "firstExercise": 351,
+      "lastExercise": 426,
+      "kind": "topic"
+    },
+    {
+      "id": "simple-growth",
+      "title": "Простой процентный рост",
+      "chapter": 2,
+      "section": 2,
+      "point": 3,
+      "startPage": 97,
+      "endPage": 105,
+      "firstExercise": 427,
+      "lastExercise": 461,
+      "kind": "topic"
+    },
+    {
+      "id": "compound-growth",
+      "title": "Сложный процентный рост",
+      "chapter": 2,
+      "section": 2,
+      "point": 4,
+      "startPage": 105,
+      "endPage": 109,
+      "firstExercise": 462,
+      "lastExercise": 487,
+      "kind": "topic"
+    },
+    {
+      "id": "percent-review",
+      "title": "Самопроверка: проценты",
+      "page": 110,
+      "firstExercise": 488,
+      "lastExercise": 497,
+      "kind": "review",
+      "startPage": 110,
+      "endPage": 110
+    }
+  ],
+  "exercises": [
+    {
+      "number": 1,
+      "topic": "negation",
+      "page": 6
+    },
+    {
+      "number": 2,
+      "topic": "negation",
+      "page": 6
+    },
+    {
+      "number": 3,
+      "topic": "negation",
+      "page": 6
+    },
+    {
+      "number": 4,
+      "topic": "negation",
+      "page": 6
+    },
+    {
+      "number": 5,
+      "topic": "negation",
+      "page": 7
+    },
+    {
+      "number": 6,
+      "topic": "negation",
+      "page": 7
+    },
+    {
+      "number": 7,
+      "topic": "negation",
+      "page": 7
+    },
+    {
+      "number": 8,
+      "topic": "negation",
+      "page": 7
+    },
+    {
+      "number": 9,
+      "topic": "negation",
+      "page": 7
+    },
+    {
+      "number": 10,
+      "topic": "negation",
+      "page": 7
+    },
+    {
+      "number": 11,
+      "topic": "negation",
+      "page": 7
+    },
+    {
+      "number": 12,
+      "topic": "negation",
+      "page": 7
+    },
+    {
+      "number": 13,
+      "topic": "negation",
+      "page": 8
+    },
+    {
+      "number": 14,
+      "topic": "negation",
+      "page": 8
+    },
+    {
+      "number": 15,
+      "topic": "negation",
+      "page": 8
+    },
+    {
+      "number": 16,
+      "topic": "negation",
+      "page": 8
+    },
+    {
+      "number": 17,
+      "topic": "negation",
+      "page": 8
+    },
+    {
+      "number": 18,
+      "topic": "negation",
+      "page": 8
+    },
+    {
+      "number": 19,
+      "topic": "negation",
+      "page": 9
+    },
+    {
+      "number": 20,
+      "topic": "negation",
+      "page": 9
+    },
+    {
+      "number": 21,
+      "topic": "negation",
+      "page": 9
+    },
+    {
+      "number": 22,
+      "topic": "negation",
+      "page": 9
+    },
+    {
+      "number": 23,
+      "topic": "negation",
+      "page": 9
+    },
+    {
+      "number": 24,
+      "topic": "negation",
+      "page": 9
+    },
+    {
+      "number": 25,
+      "topic": "negation",
+      "page": 9
+    },
+    {
+      "number": 26,
+      "topic": "general-negation",
+      "page": 12
+    },
+    {
+      "number": 27,
+      "topic": "general-negation",
+      "page": 12
+    },
+    {
+      "number": 28,
+      "topic": "general-negation",
+      "page": 12
+    },
+    {
+      "number": 29,
+      "topic": "general-negation",
+      "page": 13
+    },
+    {
+      "number": 30,
+      "topic": "general-negation",
+      "page": 13
+    },
+    {
+      "number": 31,
+      "topic": "general-negation",
+      "page": 13
+    },
+    {
+      "number": 32,
+      "topic": "general-negation",
+      "page": 13
+    },
+    {
+      "number": 33,
+      "topic": "general-negation",
+      "page": 13
+    },
+    {
+      "number": 34,
+      "topic": "general-negation",
+      "page": 14
+    },
+    {
+      "number": 35,
+      "topic": "general-negation",
+      "page": 14
+    },
+    {
+      "number": 36,
+      "topic": "general-negation",
+      "page": 14
+    },
+    {
+      "number": 37,
+      "topic": "general-negation",
+      "page": 14
+    },
+    {
+      "number": 38,
+      "topic": "general-negation",
+      "page": 14
+    },
+    {
+      "number": 39,
+      "topic": "general-negation",
+      "page": 14
+    },
+    {
+      "number": 40,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 41,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 42,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 43,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 44,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 45,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 46,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 47,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 48,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 49,
+      "topic": "general-negation",
+      "page": 15
+    },
+    {
+      "number": 50,
+      "topic": "general-negation",
+      "page": 16
+    },
+    {
+      "number": 51,
+      "topic": "general-negation",
+      "page": 16
+    },
+    {
+      "number": 52,
+      "topic": "general-negation",
+      "page": 16
+    },
+    {
+      "number": 53,
+      "topic": "general-negation",
+      "page": 16
+    },
+    {
+      "number": 54,
+      "topic": "general-negation",
+      "page": 16
+    },
+    {
+      "number": 55,
+      "topic": "general-negation",
+      "page": 16
+    },
+    {
+      "number": 56,
+      "topic": "general-negation",
+      "page": 16
+    },
+    {
+      "number": 57,
+      "topic": "general-negation",
+      "page": 16
+    },
+    {
+      "number": 58,
+      "topic": "general-negation",
+      "page": 16
+    },
+    {
+      "number": 59,
+      "topic": "existence-negation",
+      "page": 18
+    },
+    {
+      "number": 60,
+      "topic": "existence-negation",
+      "page": 18
+    },
+    {
+      "number": 61,
+      "topic": "existence-negation",
+      "page": 18
+    },
+    {
+      "number": 62,
+      "topic": "existence-negation",
+      "page": 18
+    },
+    {
+      "number": 63,
+      "topic": "existence-negation",
+      "page": 18
+    },
+    {
+      "number": 64,
+      "topic": "existence-negation",
+      "page": 19
+    },
+    {
+      "number": 65,
+      "topic": "existence-negation",
+      "page": 19
+    },
+    {
+      "number": 66,
+      "topic": "existence-negation",
+      "page": 19
+    },
+    {
+      "number": 67,
+      "topic": "existence-negation",
+      "page": 19
+    },
+    {
+      "number": 68,
+      "topic": "existence-negation",
+      "page": 19
+    },
+    {
+      "number": 69,
+      "topic": "existence-negation",
+      "page": 19
+    },
+    {
+      "number": 70,
+      "topic": "existence-negation",
+      "page": 19
+    },
+    {
+      "number": 71,
+      "topic": "variables",
+      "page": 22
+    },
+    {
+      "number": 72,
+      "topic": "variables",
+      "page": 22
+    },
+    {
+      "number": 73,
+      "topic": "variables",
+      "page": 22
+    },
+    {
+      "number": 74,
+      "topic": "variables",
+      "page": 22
+    },
+    {
+      "number": 75,
+      "topic": "variables",
+      "page": 22
+    },
+    {
+      "number": 76,
+      "topic": "variables",
+      "page": 22
+    },
+    {
+      "number": 77,
+      "topic": "variables",
+      "page": 23
+    },
+    {
+      "number": 78,
+      "topic": "variables",
+      "page": 23
+    },
+    {
+      "number": 79,
+      "topic": "variables",
+      "page": 23
+    },
+    {
+      "number": 80,
+      "topic": "variables",
+      "page": 23
+    },
+    {
+      "number": 81,
+      "topic": "variables",
+      "page": 23
+    },
+    {
+      "number": 82,
+      "topic": "variables",
+      "page": 23
+    },
+    {
+      "number": 83,
+      "topic": "variables",
+      "page": 24
+    },
+    {
+      "number": 84,
+      "topic": "variables",
+      "page": 24
+    },
+    {
+      "number": 85,
+      "topic": "variables",
+      "page": 24
+    },
+    {
+      "number": 86,
+      "topic": "variables",
+      "page": 24
+    },
+    {
+      "number": 87,
+      "topic": "variables",
+      "page": 24
+    },
+    {
+      "number": 88,
+      "topic": "variables",
+      "page": 24
+    },
+    {
+      "number": 89,
+      "topic": "variables",
+      "page": 25
+    },
+    {
+      "number": 90,
+      "topic": "variables",
+      "page": 25
+    },
+    {
+      "number": 91,
+      "topic": "variables",
+      "page": 25
+    },
+    {
+      "number": 92,
+      "topic": "variables",
+      "page": 25
+    },
+    {
+      "number": 93,
+      "topic": "variables",
+      "page": 25
+    },
+    {
+      "number": 94,
+      "topic": "variables",
+      "page": 25
+    },
+    {
+      "number": 95,
+      "topic": "variables",
+      "page": 25
+    },
+    {
+      "number": 96,
+      "topic": "variables",
+      "page": 25
+    },
+    {
+      "number": 97,
+      "topic": "variables",
+      "page": 25
+    },
+    {
+      "number": 98,
+      "topic": "variable-propositions",
+      "page": 28
+    },
+    {
+      "number": 99,
+      "topic": "variable-propositions",
+      "page": 28
+    },
+    {
+      "number": 100,
+      "topic": "variable-propositions",
+      "page": 28
+    },
+    {
+      "number": 101,
+      "topic": "variable-propositions",
+      "page": 28
+    },
+    {
+      "number": 102,
+      "topic": "variable-propositions",
+      "page": 29
+    },
+    {
+      "number": 103,
+      "topic": "variable-propositions",
+      "page": 29
+    },
+    {
+      "number": 104,
+      "topic": "variable-propositions",
+      "page": 29
+    },
+    {
+      "number": 105,
+      "topic": "variable-propositions",
+      "page": 29
+    },
+    {
+      "number": 106,
+      "topic": "variable-propositions",
+      "page": 29
+    },
+    {
+      "number": 107,
+      "topic": "variable-propositions",
+      "page": 30
+    },
+    {
+      "number": 108,
+      "topic": "variable-propositions",
+      "page": 30
+    },
+    {
+      "number": 109,
+      "topic": "variable-propositions",
+      "page": 31
+    },
+    {
+      "number": 110,
+      "topic": "variable-propositions",
+      "page": 31
+    },
+    {
+      "number": 111,
+      "topic": "variable-propositions",
+      "page": 31
+    },
+    {
+      "number": 112,
+      "topic": "variable-propositions",
+      "page": 32
+    },
+    {
+      "number": 113,
+      "topic": "variable-propositions",
+      "page": 32
+    },
+    {
+      "number": 114,
+      "topic": "variable-propositions",
+      "page": 32
+    },
+    {
+      "number": 115,
+      "topic": "variable-propositions",
+      "page": 32
+    },
+    {
+      "number": 116,
+      "topic": "variable-propositions",
+      "page": 32
+    },
+    {
+      "number": 117,
+      "topic": "variable-propositions",
+      "page": 32
+    },
+    {
+      "number": 118,
+      "topic": "variable-propositions",
+      "page": 32
+    },
+    {
+      "number": 119,
+      "topic": "variable-propositions",
+      "page": 32
+    },
+    {
+      "number": 120,
+      "topic": "quantifiers",
+      "page": 34
+    },
+    {
+      "number": 121,
+      "topic": "quantifiers",
+      "page": 34
+    },
+    {
+      "number": 122,
+      "topic": "quantifiers",
+      "page": 35
+    },
+    {
+      "number": 123,
+      "topic": "quantifiers",
+      "page": 35
+    },
+    {
+      "number": 124,
+      "topic": "quantifiers",
+      "page": 35
+    },
+    {
+      "number": 125,
+      "topic": "quantifiers",
+      "page": 35
+    },
+    {
+      "number": 126,
+      "topic": "quantifiers",
+      "page": 35
+    },
+    {
+      "number": 127,
+      "topic": "quantifiers",
+      "page": 35
+    },
+    {
+      "number": 128,
+      "topic": "quantifiers",
+      "page": 36
+    },
+    {
+      "number": 129,
+      "topic": "quantifiers",
+      "page": 36
+    },
+    {
+      "number": 130,
+      "topic": "quantifiers",
+      "page": 36
+    },
+    {
+      "number": 131,
+      "topic": "quantifiers",
+      "page": 36
+    },
+    {
+      "number": 132,
+      "topic": "quantifiers",
+      "page": 37
+    },
+    {
+      "number": 133,
+      "topic": "quantifiers",
+      "page": 37
+    },
+    {
+      "number": 134,
+      "topic": "quantifiers",
+      "page": 37
+    },
+    {
+      "number": 135,
+      "topic": "quantifiers",
+      "page": 37
+    },
+    {
+      "number": 136,
+      "topic": "quantifiers",
+      "page": 37
+    },
+    {
+      "number": 137,
+      "topic": "quantifiers",
+      "page": 37
+    },
+    {
+      "number": 138,
+      "topic": "quantifiers",
+      "page": 37
+    },
+    {
+      "number": 139,
+      "topic": "quantifiers",
+      "page": 37
+    },
+    {
+      "number": 140,
+      "topic": "quantifiers",
+      "page": 38
+    },
+    {
+      "number": 141,
+      "topic": "quantifiers",
+      "page": 38
+    },
+    {
+      "number": 142,
+      "topic": "quantifiers",
+      "page": 38
+    },
+    {
+      "number": 143,
+      "topic": "quantifier-negation",
+      "page": 39
+    },
+    {
+      "number": 144,
+      "topic": "quantifier-negation",
+      "page": 39
+    },
+    {
+      "number": 145,
+      "topic": "quantifier-negation",
+      "page": 39
+    },
+    {
+      "number": 146,
+      "topic": "quantifier-negation",
+      "page": 39
+    },
+    {
+      "number": 147,
+      "topic": "quantifier-negation",
+      "page": 40
+    },
+    {
+      "number": 148,
+      "topic": "quantifier-negation",
+      "page": 40
+    },
+    {
+      "number": 149,
+      "topic": "quantifier-negation",
+      "page": 40
+    },
+    {
+      "number": 150,
+      "topic": "quantifier-negation",
+      "page": 40
+    },
+    {
+      "number": 151,
+      "topic": "quantifier-negation",
+      "page": 40
+    },
+    {
+      "number": 152,
+      "topic": "quantifier-negation",
+      "page": 41
+    },
+    {
+      "number": 153,
+      "topic": "quantifier-negation",
+      "page": 41
+    },
+    {
+      "number": 154,
+      "topic": "quantifier-negation",
+      "page": 41
+    },
+    {
+      "number": 155,
+      "topic": "quantifier-negation",
+      "page": 41
+    },
+    {
+      "number": 156,
+      "topic": "quantifier-negation",
+      "page": 41
+    },
+    {
+      "number": 157,
+      "topic": "quantifier-negation",
+      "page": 41
+    },
+    {
+      "number": 158,
+      "topic": "quantifier-negation",
+      "page": 41
+    },
+    {
+      "number": 159,
+      "topic": "quantifier-negation",
+      "page": 42
+    },
+    {
+      "number": 160,
+      "topic": "quantifier-negation",
+      "page": 42
+    },
+    {
+      "number": 161,
+      "topic": "quantifier-negation",
+      "page": 42
+    },
+    {
+      "number": 162,
+      "topic": "quantifier-negation",
+      "page": 42
+    },
+    {
+      "number": 163,
+      "topic": "quantifier-negation",
+      "page": 42
+    },
+    {
+      "number": 164,
+      "topic": "quantifier-negation",
+      "page": 42
+    },
+    {
+      "number": 165,
+      "topic": "quantifier-negation",
+      "page": 42
+    },
+    {
+      "number": 166,
+      "topic": "quantifier-negation",
+      "page": 42
+    },
+    {
+      "number": 167,
+      "topic": "logic-review",
+      "page": 43
+    },
+    {
+      "number": 168,
+      "topic": "logic-review",
+      "page": 43
+    },
+    {
+      "number": 169,
+      "topic": "logic-review",
+      "page": 43
+    },
+    {
+      "number": 170,
+      "topic": "logic-review",
+      "page": 43
+    },
+    {
+      "number": 171,
+      "topic": "logic-review",
+      "page": 43
+    },
+    {
+      "number": 172,
+      "topic": "logic-review",
+      "page": 43
+    },
+    {
+      "number": 173,
+      "topic": "logic-review",
+      "page": 43
+    },
+    {
+      "number": 174,
+      "topic": "logic-review",
+      "page": 43
+    },
+    {
+      "number": 175,
+      "topic": "logic-review",
+      "page": 43
+    },
+    {
+      "number": 176,
+      "topic": "mixed-fractions",
+      "page": 46
+    },
+    {
+      "number": 177,
+      "topic": "mixed-fractions",
+      "page": 47
+    },
+    {
+      "number": 178,
+      "topic": "mixed-fractions",
+      "page": 47
+    },
+    {
+      "number": 179,
+      "topic": "mixed-fractions",
+      "page": 47
+    },
+    {
+      "number": 180,
+      "topic": "mixed-fractions",
+      "page": 47
+    },
+    {
+      "number": 181,
+      "topic": "mixed-fractions",
+      "page": 47
+    },
+    {
+      "number": 182,
+      "topic": "mixed-fractions",
+      "page": 47
+    },
+    {
+      "number": 183,
+      "topic": "mixed-fractions",
+      "page": 48
+    },
+    {
+      "number": 184,
+      "topic": "mixed-fractions",
+      "page": 48
+    },
+    {
+      "number": 185,
+      "topic": "mixed-fractions",
+      "page": 48
+    },
+    {
+      "number": 186,
+      "topic": "mixed-fractions",
+      "page": 48
+    },
+    {
+      "number": 187,
+      "topic": "mixed-fractions",
+      "page": 49
+    },
+    {
+      "number": 188,
+      "topic": "mixed-fractions",
+      "page": 49
+    },
+    {
+      "number": 189,
+      "topic": "mixed-fractions",
+      "page": 49
+    },
+    {
+      "number": 190,
+      "topic": "mixed-fractions",
+      "page": 49
+    },
+    {
+      "number": 191,
+      "topic": "mixed-fractions",
+      "page": 49
+    },
+    {
+      "number": 192,
+      "topic": "mixed-fractions",
+      "page": 50
+    },
+    {
+      "number": 193,
+      "topic": "mixed-fractions",
+      "page": 50
+    },
+    {
+      "number": 194,
+      "topic": "mixed-fractions",
+      "page": 50
+    },
+    {
+      "number": 195,
+      "topic": "mixed-fractions",
+      "page": 50
+    },
+    {
+      "number": 196,
+      "topic": "mixed-fractions",
+      "page": 51
+    },
+    {
+      "number": 197,
+      "topic": "mixed-fractions",
+      "page": 51
+    },
+    {
+      "number": 198,
+      "topic": "mixed-fractions",
+      "page": 51
+    },
+    {
+      "number": 199,
+      "topic": "mixed-fractions",
+      "page": 52
+    },
+    {
+      "number": 200,
+      "topic": "mixed-fractions",
+      "page": 52
+    },
+    {
+      "number": 201,
+      "topic": "mixed-fractions",
+      "page": 52
+    },
+    {
+      "number": 202,
+      "topic": "mixed-fractions",
+      "page": 52
+    },
+    {
+      "number": 203,
+      "topic": "mixed-fractions",
+      "page": 53
+    },
+    {
+      "number": 204,
+      "topic": "mixed-fractions",
+      "page": 53
+    },
+    {
+      "number": 205,
+      "topic": "mixed-fractions",
+      "page": 53
+    },
+    {
+      "number": 206,
+      "topic": "mixed-fractions",
+      "page": 53
+    },
+    {
+      "number": 207,
+      "topic": "mixed-fractions",
+      "page": 53
+    },
+    {
+      "number": 208,
+      "topic": "mixed-fractions",
+      "page": 54
+    },
+    {
+      "number": 209,
+      "topic": "mixed-fractions",
+      "page": 54
+    },
+    {
+      "number": 210,
+      "topic": "mixed-fractions",
+      "page": 54
+    },
+    {
+      "number": 211,
+      "topic": "mixed-fractions",
+      "page": 54
+    },
+    {
+      "number": 212,
+      "topic": "mixed-fractions",
+      "page": 54
+    },
+    {
+      "number": 213,
+      "topic": "mixed-fractions",
+      "page": 54
+    },
+    {
+      "number": 214,
+      "topic": "mixed-fractions",
+      "page": 54
+    },
+    {
+      "number": 215,
+      "topic": "mixed-fractions",
+      "page": 55
+    },
+    {
+      "number": 216,
+      "topic": "mixed-fractions",
+      "page": 55
+    },
+    {
+      "number": 217,
+      "topic": "mixed-fractions",
+      "page": 55
+    },
+    {
+      "number": 218,
+      "topic": "mixed-fractions",
+      "page": 55
+    },
+    {
+      "number": 219,
+      "topic": "mixed-fractions",
+      "page": 55
+    },
+    {
+      "number": 220,
+      "topic": "mixed-fractions",
+      "page": 55
+    },
+    {
+      "number": 221,
+      "topic": "river",
+      "page": 58
+    },
+    {
+      "number": 222,
+      "topic": "river",
+      "page": 58
+    },
+    {
+      "number": 223,
+      "topic": "river",
+      "page": 58
+    },
+    {
+      "number": 224,
+      "topic": "river",
+      "page": 58
+    },
+    {
+      "number": 225,
+      "topic": "river",
+      "page": 58
+    },
+    {
+      "number": 226,
+      "topic": "river",
+      "page": 58
+    },
+    {
+      "number": 227,
+      "topic": "river",
+      "page": 58
+    },
+    {
+      "number": 228,
+      "topic": "river",
+      "page": 59
+    },
+    {
+      "number": 229,
+      "topic": "river",
+      "page": 59
+    },
+    {
+      "number": 230,
+      "topic": "river",
+      "page": 59
+    },
+    {
+      "number": 231,
+      "topic": "river",
+      "page": 59
+    },
+    {
+      "number": 232,
+      "topic": "river",
+      "page": 59
+    },
+    {
+      "number": 233,
+      "topic": "river",
+      "page": 59
+    },
+    {
+      "number": 234,
+      "topic": "river",
+      "page": 60
+    },
+    {
+      "number": 235,
+      "topic": "river",
+      "page": 60
+    },
+    {
+      "number": 236,
+      "topic": "river",
+      "page": 60
+    },
+    {
+      "number": 237,
+      "topic": "river",
+      "page": 60
+    },
+    {
+      "number": 238,
+      "topic": "river",
+      "page": 60
+    },
+    {
+      "number": 239,
+      "topic": "river",
+      "page": 61
+    },
+    {
+      "number": 240,
+      "topic": "river",
+      "page": 61
+    },
+    {
+      "number": 241,
+      "topic": "river",
+      "page": 61
+    },
+    {
+      "number": 242,
+      "topic": "river",
+      "page": 61
+    },
+    {
+      "number": 243,
+      "topic": "river",
+      "page": 62
+    },
+    {
+      "number": 244,
+      "topic": "river",
+      "page": 62
+    },
+    {
+      "number": 245,
+      "topic": "river",
+      "page": 62
+    },
+    {
+      "number": 246,
+      "topic": "river",
+      "page": 62
+    },
+    {
+      "number": 247,
+      "topic": "river",
+      "page": 62
+    },
+    {
+      "number": 248,
+      "topic": "river",
+      "page": 62
+    },
+    {
+      "number": 249,
+      "topic": "river",
+      "page": 62
+    },
+    {
+      "number": 250,
+      "topic": "river",
+      "page": 62
+    },
+    {
+      "number": 251,
+      "topic": "river",
+      "page": 62
+    },
+    {
+      "number": 252,
+      "topic": "river",
+      "page": 63
+    },
+    {
+      "number": 253,
+      "topic": "river",
+      "page": 63
+    },
+    {
+      "number": 254,
+      "topic": "river",
+      "page": 63
+    },
+    {
+      "number": 255,
+      "topic": "river",
+      "page": 63
+    },
+    {
+      "number": 256,
+      "topic": "river",
+      "page": 63
+    },
+    {
+      "number": 257,
+      "topic": "mean",
+      "page": 66
+    },
+    {
+      "number": 258,
+      "topic": "mean",
+      "page": 66
+    },
+    {
+      "number": 259,
+      "topic": "mean",
+      "page": 66
+    },
+    {
+      "number": 260,
+      "topic": "mean",
+      "page": 66
+    },
+    {
+      "number": 261,
+      "topic": "mean",
+      "page": 66
+    },
+    {
+      "number": 262,
+      "topic": "mean",
+      "page": 66
+    },
+    {
+      "number": 263,
+      "topic": "mean",
+      "page": 66
+    },
+    {
+      "number": 264,
+      "topic": "mean",
+      "page": 67
+    },
+    {
+      "number": 265,
+      "topic": "mean",
+      "page": 67
+    },
+    {
+      "number": 266,
+      "topic": "mean",
+      "page": 67
+    },
+    {
+      "number": 267,
+      "topic": "mean",
+      "page": 67
+    },
+    {
+      "number": 268,
+      "topic": "mean",
+      "page": 67
+    },
+    {
+      "number": 269,
+      "topic": "mean",
+      "page": 67
+    },
+    {
+      "number": 270,
+      "topic": "mean",
+      "page": 68
+    },
+    {
+      "number": 271,
+      "topic": "mean",
+      "page": 68
+    },
+    {
+      "number": 272,
+      "topic": "mean",
+      "page": 68
+    },
+    {
+      "number": 273,
+      "topic": "mean",
+      "page": 68
+    },
+    {
+      "number": 274,
+      "topic": "mean",
+      "page": 68
+    },
+    {
+      "number": 275,
+      "topic": "mean",
+      "page": 69
+    },
+    {
+      "number": 276,
+      "topic": "mean",
+      "page": 69
+    },
+    {
+      "number": 277,
+      "topic": "mean",
+      "page": 69
+    },
+    {
+      "number": 278,
+      "topic": "mean",
+      "page": 69
+    },
+    {
+      "number": 279,
+      "topic": "mean",
+      "page": 69
+    },
+    {
+      "number": 280,
+      "topic": "mean",
+      "page": 69
+    },
+    {
+      "number": 281,
+      "topic": "mean",
+      "page": 70
+    },
+    {
+      "number": 282,
+      "topic": "mean",
+      "page": 70
+    },
+    {
+      "number": 283,
+      "topic": "mean",
+      "page": 70
+    },
+    {
+      "number": 284,
+      "topic": "mean",
+      "page": 70
+    },
+    {
+      "number": 285,
+      "topic": "mean",
+      "page": 71
+    },
+    {
+      "number": 286,
+      "topic": "mean",
+      "page": 71
+    },
+    {
+      "number": 287,
+      "topic": "mean",
+      "page": 71
+    },
+    {
+      "number": 288,
+      "topic": "mean",
+      "page": 71
+    },
+    {
+      "number": 289,
+      "topic": "mean",
+      "page": 71
+    },
+    {
+      "number": 290,
+      "topic": "mean",
+      "page": 71
+    },
+    {
+      "number": 291,
+      "topic": "mean",
+      "page": 71
+    },
+    {
+      "number": 292,
+      "topic": "mean",
+      "page": 71
+    },
+    {
+      "number": 293,
+      "topic": "mean",
+      "page": 72
+    },
+    {
+      "number": 294,
+      "topic": "mean",
+      "page": 72
+    },
+    {
+      "number": 295,
+      "topic": "mean",
+      "page": 72
+    },
+    {
+      "number": 296,
+      "topic": "mean",
+      "page": 72
+    },
+    {
+      "number": 297,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 298,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 299,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 300,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 301,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 302,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 303,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 304,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 305,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 306,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 307,
+      "topic": "arithmetic-review",
+      "page": 73
+    },
+    {
+      "number": 308,
+      "topic": "percent-concept",
+      "page": 75
+    },
+    {
+      "number": 309,
+      "topic": "percent-concept",
+      "page": 75
+    },
+    {
+      "number": 310,
+      "topic": "percent-concept",
+      "page": 76
+    },
+    {
+      "number": 311,
+      "topic": "percent-concept",
+      "page": 76
+    },
+    {
+      "number": 312,
+      "topic": "percent-concept",
+      "page": 76
+    },
+    {
+      "number": 313,
+      "topic": "percent-concept",
+      "page": 76
+    },
+    {
+      "number": 314,
+      "topic": "percent-concept",
+      "page": 76
+    },
+    {
+      "number": 315,
+      "topic": "percent-concept",
+      "page": 76
+    },
+    {
+      "number": 316,
+      "topic": "percent-concept",
+      "page": 76
+    },
+    {
+      "number": 317,
+      "topic": "percent-concept",
+      "page": 77
+    },
+    {
+      "number": 318,
+      "topic": "percent-concept",
+      "page": 77
+    },
+    {
+      "number": 319,
+      "topic": "percent-concept",
+      "page": 77
+    },
+    {
+      "number": 320,
+      "topic": "percent-concept",
+      "page": 77
+    },
+    {
+      "number": 321,
+      "topic": "percent-concept",
+      "page": 77
+    },
+    {
+      "number": 322,
+      "topic": "percent-concept",
+      "page": 77
+    },
+    {
+      "number": 323,
+      "topic": "percent-concept",
+      "page": 78
+    },
+    {
+      "number": 324,
+      "topic": "percent-concept",
+      "page": 78
+    },
+    {
+      "number": 325,
+      "topic": "percent-concept",
+      "page": 78
+    },
+    {
+      "number": 326,
+      "topic": "percent-concept",
+      "page": 78
+    },
+    {
+      "number": 327,
+      "topic": "percent-concept",
+      "page": 78
+    },
+    {
+      "number": 328,
+      "topic": "percent-concept",
+      "page": 78
+    },
+    {
+      "number": 329,
+      "topic": "percent-concept",
+      "page": 79
+    },
+    {
+      "number": 330,
+      "topic": "percent-concept",
+      "page": 79
+    },
+    {
+      "number": 331,
+      "topic": "percent-concept",
+      "page": 79
+    },
+    {
+      "number": 332,
+      "topic": "percent-concept",
+      "page": 79
+    },
+    {
+      "number": 333,
+      "topic": "percent-concept",
+      "page": 79
+    },
+    {
+      "number": 334,
+      "topic": "percent-concept",
+      "page": 79
+    },
+    {
+      "number": 335,
+      "topic": "percent-concept",
+      "page": 79
+    },
+    {
+      "number": 336,
+      "topic": "percent-concept",
+      "page": 79
+    },
+    {
+      "number": 337,
+      "topic": "percent-concept",
+      "page": 80
+    },
+    {
+      "number": 338,
+      "topic": "percent-concept",
+      "page": 80
+    },
+    {
+      "number": 339,
+      "topic": "percent-concept",
+      "page": 80
+    },
+    {
+      "number": 340,
+      "topic": "percent-concept",
+      "page": 81
+    },
+    {
+      "number": 341,
+      "topic": "percent-concept",
+      "page": 81
+    },
+    {
+      "number": 342,
+      "topic": "percent-concept",
+      "page": 81
+    },
+    {
+      "number": 343,
+      "topic": "percent-concept",
+      "page": 81
+    },
+    {
+      "number": 344,
+      "topic": "percent-concept",
+      "page": 81
+    },
+    {
+      "number": 345,
+      "topic": "percent-concept",
+      "page": 82
+    },
+    {
+      "number": 346,
+      "topic": "percent-concept",
+      "page": 82
+    },
+    {
+      "number": 347,
+      "topic": "percent-concept",
+      "page": 82
+    },
+    {
+      "number": 348,
+      "topic": "percent-concept",
+      "page": 82
+    },
+    {
+      "number": 349,
+      "topic": "percent-concept",
+      "page": 82
+    },
+    {
+      "number": 350,
+      "topic": "percent-concept",
+      "page": 82
+    },
+    {
+      "number": 351,
+      "topic": "percent-problems",
+      "page": 86
+    },
+    {
+      "number": 352,
+      "topic": "percent-problems",
+      "page": 86
+    },
+    {
+      "number": 353,
+      "topic": "percent-problems",
+      "page": 86
+    },
+    {
+      "number": 354,
+      "topic": "percent-problems",
+      "page": 86
+    },
+    {
+      "number": 355,
+      "topic": "percent-problems",
+      "page": 86
+    },
+    {
+      "number": 356,
+      "topic": "percent-problems",
+      "page": 86
+    },
+    {
+      "number": 357,
+      "topic": "percent-problems",
+      "page": 86
+    },
+    {
+      "number": 358,
+      "topic": "percent-problems",
+      "page": 86
+    },
+    {
+      "number": 359,
+      "topic": "percent-problems",
+      "page": 87
+    },
+    {
+      "number": 360,
+      "topic": "percent-problems",
+      "page": 87
+    },
+    {
+      "number": 361,
+      "topic": "percent-problems",
+      "page": 87
+    },
+    {
+      "number": 362,
+      "topic": "percent-problems",
+      "page": 87
+    },
+    {
+      "number": 363,
+      "topic": "percent-problems",
+      "page": 87
+    },
+    {
+      "number": 364,
+      "topic": "percent-problems",
+      "page": 87
+    },
+    {
+      "number": 365,
+      "topic": "percent-problems",
+      "page": 87
+    },
+    {
+      "number": 366,
+      "topic": "percent-problems",
+      "page": 87
+    },
+    {
+      "number": 367,
+      "topic": "percent-problems",
+      "page": 88
+    },
+    {
+      "number": 368,
+      "topic": "percent-problems",
+      "page": 88
+    },
+    {
+      "number": 369,
+      "topic": "percent-problems",
+      "page": 88
+    },
+    {
+      "number": 370,
+      "topic": "percent-problems",
+      "page": 88
+    },
+    {
+      "number": 371,
+      "topic": "percent-problems",
+      "page": 88
+    },
+    {
+      "number": 372,
+      "topic": "percent-problems",
+      "page": 88
+    },
+    {
+      "number": 373,
+      "topic": "percent-problems",
+      "page": 88
+    },
+    {
+      "number": 374,
+      "topic": "percent-problems",
+      "page": 88
+    },
+    {
+      "number": 375,
+      "topic": "percent-problems",
+      "page": 88
+    },
+    {
+      "number": 376,
+      "topic": "percent-problems",
+      "page": 89
+    },
+    {
+      "number": 377,
+      "topic": "percent-problems",
+      "page": 89
+    },
+    {
+      "number": 378,
+      "topic": "percent-problems",
+      "page": 89
+    },
+    {
+      "number": 379,
+      "topic": "percent-problems",
+      "page": 89
+    },
+    {
+      "number": 380,
+      "topic": "percent-problems",
+      "page": 89
+    },
+    {
+      "number": 381,
+      "topic": "percent-problems",
+      "page": 90
+    },
+    {
+      "number": 382,
+      "topic": "percent-problems",
+      "page": 90
+    },
+    {
+      "number": 383,
+      "topic": "percent-problems",
+      "page": 90
+    },
+    {
+      "number": 384,
+      "topic": "percent-problems",
+      "page": 90
+    },
+    {
+      "number": 385,
+      "topic": "percent-problems",
+      "page": 90
+    },
+    {
+      "number": 386,
+      "topic": "percent-problems",
+      "page": 90
+    },
+    {
+      "number": 387,
+      "topic": "percent-problems",
+      "page": 91
+    },
+    {
+      "number": 388,
+      "topic": "percent-problems",
+      "page": 91
+    },
+    {
+      "number": 389,
+      "topic": "percent-problems",
+      "page": 91
+    },
+    {
+      "number": 390,
+      "topic": "percent-problems",
+      "page": 91
+    },
+    {
+      "number": 391,
+      "topic": "percent-problems",
+      "page": 91
+    },
+    {
+      "number": 392,
+      "topic": "percent-problems",
+      "page": 91
+    },
+    {
+      "number": 393,
+      "topic": "percent-problems",
+      "page": 92
+    },
+    {
+      "number": 394,
+      "topic": "percent-problems",
+      "page": 92
+    },
+    {
+      "number": 395,
+      "topic": "percent-problems",
+      "page": 92
+    },
+    {
+      "number": 396,
+      "topic": "percent-problems",
+      "page": 92
+    },
+    {
+      "number": 397,
+      "topic": "percent-problems",
+      "page": 93
+    },
+    {
+      "number": 398,
+      "topic": "percent-problems",
+      "page": 93
+    },
+    {
+      "number": 399,
+      "topic": "percent-problems",
+      "page": 93
+    },
+    {
+      "number": 400,
+      "topic": "percent-problems",
+      "page": 93
+    },
+    {
+      "number": 401,
+      "topic": "percent-problems",
+      "page": 93
+    },
+    {
+      "number": 402,
+      "topic": "percent-problems",
+      "page": 93
+    },
+    {
+      "number": 403,
+      "topic": "percent-problems",
+      "page": 94
+    },
+    {
+      "number": 404,
+      "topic": "percent-problems",
+      "page": 94
+    },
+    {
+      "number": 405,
+      "topic": "percent-problems",
+      "page": 94
+    },
+    {
+      "number": 406,
+      "topic": "percent-problems",
+      "page": 94
+    },
+    {
+      "number": 407,
+      "topic": "percent-problems",
+      "page": 95
+    },
+    {
+      "number": 408,
+      "topic": "percent-problems",
+      "page": 95
+    },
+    {
+      "number": 409,
+      "topic": "percent-problems",
+      "page": 95
+    },
+    {
+      "number": 410,
+      "topic": "percent-problems",
+      "page": 95
+    },
+    {
+      "number": 411,
+      "topic": "percent-problems",
+      "page": 95
+    },
+    {
+      "number": 412,
+      "topic": "percent-problems",
+      "page": 95
+    },
+    {
+      "number": 413,
+      "topic": "percent-problems",
+      "page": 95
+    },
+    {
+      "number": 414,
+      "topic": "percent-problems",
+      "page": 95
+    },
+    {
+      "number": 415,
+      "topic": "percent-problems",
+      "page": 96
+    },
+    {
+      "number": 416,
+      "topic": "percent-problems",
+      "page": 96
+    },
+    {
+      "number": 417,
+      "topic": "percent-problems",
+      "page": 96
+    },
+    {
+      "number": 418,
+      "topic": "percent-problems",
+      "page": 96
+    },
+    {
+      "number": 419,
+      "topic": "percent-problems",
+      "page": 96
+    },
+    {
+      "number": 420,
+      "topic": "percent-problems",
+      "page": 96
+    },
+    {
+      "number": 421,
+      "topic": "percent-problems",
+      "page": 96
+    },
+    {
+      "number": 422,
+      "topic": "percent-problems",
+      "page": 96
+    },
+    {
+      "number": 423,
+      "topic": "percent-problems",
+      "page": 96
+    },
+    {
+      "number": 424,
+      "topic": "percent-problems",
+      "page": 97
+    },
+    {
+      "number": 425,
+      "topic": "percent-problems",
+      "page": 97
+    },
+    {
+      "number": 426,
+      "topic": "percent-problems",
+      "page": 97
+    },
+    {
+      "number": 427,
+      "topic": "simple-growth",
+      "page": 100
+    },
+    {
+      "number": 428,
+      "topic": "simple-growth",
+      "page": 100
+    },
+    {
+      "number": 429,
+      "topic": "simple-growth",
+      "page": 100
+    },
+    {
+      "number": 430,
+      "topic": "simple-growth",
+      "page": 100
+    },
+    {
+      "number": 431,
+      "topic": "simple-growth",
+      "page": 100
+    },
+    {
+      "number": 432,
+      "topic": "simple-growth",
+      "page": 100
+    },
+    {
+      "number": 433,
+      "topic": "simple-growth",
+      "page": 100
+    },
+    {
+      "number": 434,
+      "topic": "simple-growth",
+      "page": 100
+    },
+    {
+      "number": 435,
+      "topic": "simple-growth",
+      "page": 100
+    },
+    {
+      "number": 436,
+      "topic": "simple-growth",
+      "page": 101
+    },
+    {
+      "number": 437,
+      "topic": "simple-growth",
+      "page": 101
+    },
+    {
+      "number": 438,
+      "topic": "simple-growth",
+      "page": 101
+    },
+    {
+      "number": 439,
+      "topic": "simple-growth",
+      "page": 101
+    },
+    {
+      "number": 440,
+      "topic": "simple-growth",
+      "page": 101
+    },
+    {
+      "number": 441,
+      "topic": "simple-growth",
+      "page": 101
+    },
+    {
+      "number": 442,
+      "topic": "simple-growth",
+      "page": 102
+    },
+    {
+      "number": 443,
+      "topic": "simple-growth",
+      "page": 102
+    },
+    {
+      "number": 444,
+      "topic": "simple-growth",
+      "page": 102
+    },
+    {
+      "number": 445,
+      "topic": "simple-growth",
+      "page": 102
+    },
+    {
+      "number": 446,
+      "topic": "simple-growth",
+      "page": 102
+    },
+    {
+      "number": 447,
+      "topic": "simple-growth",
+      "page": 103
+    },
+    {
+      "number": 448,
+      "topic": "simple-growth",
+      "page": 103
+    },
+    {
+      "number": 449,
+      "topic": "simple-growth",
+      "page": 103
+    },
+    {
+      "number": 450,
+      "topic": "simple-growth",
+      "page": 103
+    },
+    {
+      "number": 451,
+      "topic": "simple-growth",
+      "page": 103
+    },
+    {
+      "number": 452,
+      "topic": "simple-growth",
+      "page": 103
+    },
+    {
+      "number": 453,
+      "topic": "simple-growth",
+      "page": 104
+    },
+    {
+      "number": 454,
+      "topic": "simple-growth",
+      "page": 104
+    },
+    {
+      "number": 455,
+      "topic": "simple-growth",
+      "page": 104
+    },
+    {
+      "number": 456,
+      "topic": "simple-growth",
+      "page": 104
+    },
+    {
+      "number": 457,
+      "topic": "simple-growth",
+      "page": 104
+    },
+    {
+      "number": 458,
+      "topic": "simple-growth",
+      "page": 104
+    },
+    {
+      "number": 459,
+      "topic": "simple-growth",
+      "page": 105
+    },
+    {
+      "number": 460,
+      "topic": "simple-growth",
+      "page": 105
+    },
+    {
+      "number": 461,
+      "topic": "simple-growth",
+      "page": 105
+    },
+    {
+      "number": 462,
+      "topic": "compound-growth",
+      "page": 107
+    },
+    {
+      "number": 463,
+      "topic": "compound-growth",
+      "page": 107
+    },
+    {
+      "number": 464,
+      "topic": "compound-growth",
+      "page": 107
+    },
+    {
+      "number": 465,
+      "topic": "compound-growth",
+      "page": 107
+    },
+    {
+      "number": 466,
+      "topic": "compound-growth",
+      "page": 108
+    },
+    {
+      "number": 467,
+      "topic": "compound-growth",
+      "page": 108
+    },
+    {
+      "number": 468,
+      "topic": "compound-growth",
+      "page": 108
+    },
+    {
+      "number": 469,
+      "topic": "compound-growth",
+      "page": 108
+    },
+    {
+      "number": 470,
+      "topic": "compound-growth",
+      "page": 108
+    },
+    {
+      "number": 471,
+      "topic": "compound-growth",
+      "page": 108
+    },
+    {
+      "number": 472,
+      "topic": "compound-growth",
+      "page": 108
+    },
+    {
+      "number": 473,
+      "topic": "compound-growth",
+      "page": 108
+    },
+    {
+      "number": 474,
+      "topic": "compound-growth",
+      "page": 108
+    },
+    {
+      "number": 475,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 476,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 477,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 478,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 479,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 480,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 481,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 482,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 483,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 484,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 485,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 486,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 487,
+      "topic": "compound-growth",
+      "page": 109
+    },
+    {
+      "number": 488,
+      "topic": "percent-review",
+      "page": 110
+    },
+    {
+      "number": 489,
+      "topic": "percent-review",
+      "page": 110
+    },
+    {
+      "number": 490,
+      "topic": "percent-review",
+      "page": 110
+    },
+    {
+      "number": 491,
+      "topic": "percent-review",
+      "page": 110
+    },
+    {
+      "number": 492,
+      "topic": "percent-review",
+      "page": 110
+    },
+    {
+      "number": 493,
+      "topic": "percent-review",
+      "page": 110
+    },
+    {
+      "number": 494,
+      "topic": "percent-review",
+      "page": 110
+    },
+    {
+      "number": 495,
+      "topic": "percent-review",
+      "page": 110
+    },
+    {
+      "number": 496,
+      "topic": "percent-review",
+      "page": 110
+    },
+    {
+      "number": 497,
+      "topic": "percent-review",
+      "page": 110
+    }
+  ]
+}

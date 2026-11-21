@@ -1,0 +1,1 @@
+body[data-peterson-board] :is(.metric-row, .practice-count, .progressbar, .topic-card h2 + .small, .practice-layout > .small:last-child, #main > .small, #main a:not([href^="#"])) { display: none; }

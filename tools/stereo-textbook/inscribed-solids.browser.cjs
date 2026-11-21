@@ -5,6 +5,7 @@ const http = require('node:http');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const {chromium} = require('playwright');
+const {wrongStepAnswers} = require('./wrong-step-answers.cjs');
 const course = require('../../stereo-course/textbook/data/course.json');
 const volumeGroup = process.env.TEXTBOOK_PRACTICE_GROUP === 'volume';
 const manifests = volumeGroup ? [require('./box-volumes.json')]
@@ -64,10 +65,12 @@ async function exercise(page, card, base, width) {
     const field = section.getByLabel(step.input.prompt, {exact:true});
     const button = section.getByRole('button', {name:'Проверить этот шаг'});
     const feedback = section.locator('form [role="status"]');
-    await field.fill('9999');
-    await button.click();
-    assert.equal(await feedback.getAttribute('data-answer-status'), 'wrong', card.id + ' ' + step.id);
-    assert((await feedback.textContent()).length > 10);
+    for (const wrong of wrongStepAnswers(card.id, step)) {
+      await field.fill(wrong);
+      await button.click();
+      assert.equal(await feedback.getAttribute('data-answer-status'), 'wrong', card.id + ' ' + step.id);
+      assert((await feedback.textContent()).length > 10);
+    }
     await field.fill(step.input.accepted[0]);
     await button.click();
     assert.equal(await feedback.getAttribute('data-answer-status'), 'correct', card.id + ' ' + step.id);
