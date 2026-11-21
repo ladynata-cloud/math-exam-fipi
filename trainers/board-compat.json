@@ -548,6 +548,20 @@
       "notes": "Совместная работа по 14 темам: задача, ответы, шаги, подсказки, модели и отдельные вычислительные тренировки с возвратом. Личный прогресс курса не изменяется."
     },
     {
+      "trainerId": "peterson6-complete",
+      "file": "trainers/peterson6-complete.html",
+      "title": "Петерсон · 6 класс · части 1–3",
+      "group": "Математика / 6 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместный курс трёх частей: задача, черновики, шаги, заметки, модели и переходы к тренировке. Личная самостоятельная работа и ручная проверка доказательств не подменяются общей работой."
+    },
+    {
       "trainerId": "merzlyak-10-base",
       "file": "trainers/merzlyak-10-base.html",
       "title": "Мерзляк · геометрия 10 класс · базовый уровень",
@@ -560,6 +574,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместная работа по курсу: карточка, ввод, шаги, подсказки, теория и ракурс модели. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "atanasyan-stereo-textbook",
+      "file": "trainers/atanasyan-stereo-textbook.html",
+      "title": "Атанасян 10–11 · задачи по номерам",
+      "group": "Стереометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общая карточка, ракурс, подсказки, шаги и запись сохраняются в комнате отдельно от личной работы."
     },
     {
       "trainerId": "sections-from-zero",
@@ -1176,6 +1204,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общий урок: 134 занятия, текущие шаги, ответы, модели, записи и GIF. Личный прогресс не читается и не изменяется."
+    },
+    {
+      "trainerId": "school-workshop-check",
+      "file": "trainers/school-workshop-check/index.html",
+      "title": "Итоговая работа школьной мастерской · 5–11 классы",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
     },
     {
       "trainerId": "tyurin-statistics",
