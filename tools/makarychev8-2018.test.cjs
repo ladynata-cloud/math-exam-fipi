@@ -18,7 +18,7 @@ for(const [n,count] of [[1,1],[2,8],[3,1],[4,4],[5,4],[6,6],[7,4],[8,2],[9,2],[1
  for(let j=0;j<count;j++)planned.push([String(n)+(count===1?'':keys[j]),String(n)+(count===1?'':letters[j])]);
 }
 assert.deepEqual(Array.from(book.exercises,r=>[r.path.split('/').pop(),r.printed]),planned.map(([id,label])=>['69-'+id,label]));
-const html=read(folder+'index.html'),scripts=['trainers/tyurin-statistics/content.js',folder+'fractions.js',folder+'sets-motion.js',folder+'domains.js',folder+'integer-zeros.js',folder+'proofs.js',folder+'edition-sets.js',folder+'edition-sets-practice.js',folder+'edition-sets-model.js','trainers/tyurin-statistics/app.js'].map(read);
+const html=read(folder+'index.html'),scripts=['trainers/tyurin-statistics/content.js',folder+'fractions.js',folder+'sets-motion.js',folder+'domains.js',folder+'integer-zeros.js',folder+'proofs.js',folder+'edition-sets.js',folder+'edition-sets-practice.js',folder+'edition-sets-model.js',folder+'function-graphs.js',folder+'function-comparison.js',folder+'function-applications.js',folder+'function-figure.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,saved){
  const dom=new JSDOM(html,{url:'https://example.test'+entry.path,runScripts:'outside-only'}),w=dom.window;w.TextEncoder=TextEncoder;w.Math.random=()=>0;
  const id=entry.path.split('/').pop(),key='math:makarychev8-2018:v1:'+id;if(saved)w.localStorage.setItem(key,saved);for(const code of scripts)w.eval(code);return {w,d:w.document,dom,key,l:w.MathExamTopicPractice.lessons.get(id)};
@@ -127,7 +127,7 @@ for(const [i,entry] of book.exercises.entries()){
  if(i<first||i>=last)continue;
  assert.equal(entry.path,entry.boardPath);
  let {w,d,dom,key,l}=open(entry);const id='69-'+planned[i][0],course=w.MathExamTopicEdition;
- assert.equal(d.querySelector('#lesson').value,id);assert.equal(d.querySelectorAll('#lesson option').length,148);
+ assert.equal(d.querySelector('#lesson').value,id);assert.equal(d.querySelectorAll('#lesson option').length,182);
  assert.equal(d.querySelector('#back').hash,'#book/source-69');assert.equal(d.querySelector('#source').hash,'#page='+(entry.page+1));
  assert.equal(d.querySelector('#related').hash,'#lesson/domain');assert.equal(d.querySelector('#board').href.includes(encodeURIComponent(entry.path)),true);
  assert.equal(l.title,entry.title);assert.equal(l.printedReference,'Упражнение №'+entry.printed);assert.equal(l.page,i<10?7:i<34?8:i<70?9:10);checkPrinted(i,l);

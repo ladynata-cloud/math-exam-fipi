@@ -55,6 +55,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --alimov-2012
           node tools/peterson7-2011.test.cjs
           node tools/peterson7-volumes.test.cjs
+          node tools/makarychev8-2018-functions.test.cjs
           node tools/makarychev8-2018-sets.test.cjs
           node tools/makarychev8-2018.test.cjs
           node tools/peterson8-2017.test.cjs
@@ -82,6 +83,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --peterson7-2011 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --peterson7-part2 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --peterson7-part3 --printed-identity
+          node tools/tyurin-statistics.board.browser.cjs --makarychev9-2018 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --makarychev7-2018 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --makarychev8-2018 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --peterson8-2017 --printed-identity --logic
