@@ -1241,15 +1241,64 @@ function flightPosition(points,minute){
  throw new Error('Неподдерживаемое время рейса');
 }
 function sourceChart(kind,series,xMark=null){
- const isFlight=kind==='flights',isFuel=kind==='fuel',xmin=isFlight?540:0,xmax=isFlight?1140:isFuel?100:120,ymax=isFlight?2400:isFuel?10:1.6;
- const s=svg('svg',{viewBox:'0 0 292 185',class:'pm-chart pcm-route-fractions',role:'img','aria-label':isFlight?'Расстояние от Внукова: A сплошная линия, Б пунктир':isFuel?'Расход бензина в литрах по километрам пути':'Скорость по площади сечения реки'});
+ const chartOptions={
+  flights:[540,1140,2400,[540,660,780,900,1020,1140],[0,800,1600,2400],'км','часы','Расстояние от Внукова: A сплошная линия, Б пунктир'],
+  fuel:[0,100,10,[0,20,40,60,80,100],[0,2,4,6,8,10],'л','км','Расход бензина в литрах по километрам пути'],
+  section:[0,120,1.6,[0,20,40,60,80,100,120],[0,.4,.8,1.2,1.6],'м/с','м²','Скорость по площади сечения реки'],
+  apples:[0,4,400,[0,1,2,3,4],[0,80,160,240,320,400],'р.','кг','Стоимость купленных яблок по массе'],
+  fixedTrip:[0,18,24,[0,3,6,9,12,15,18],[0,6,12,18,24],'км/ч','ч','Скорость по времени на одном пути'],
+ };
+ const [xmin,xmax,ymax,xTicks,yTicks,yUnit,xUnit,description]=chartOptions[kind],isFlight=kind==='flights';
+ const s=svg('svg',{viewBox:'0 0 292 185',class:'pm-chart pcm-route-fractions',role:'img','aria-label':description});
  const X=x=>38+238*(x-xmin)/(xmax-xmin),Y=y=>150-120*y/ymax;
- const xTicks=isFlight?[540,660,780,900,1020,1140]:isFuel?[0,20,40,60,80,100]:[0,20,40,60,80,100,120],yTicks=isFlight?[0,800,1600,2400]:isFuel?[0,2,4,6,8,10]:[0,.4,.8,1.2,1.6];
  for(const x of xTicks){ln(s,X(x),28,X(x),150,{stroke:'#d0dfd8'});txt(s,X(x),167,isFlight?String(x/60):String(x),{'font-size':12});}
  for(const y of yTicks){ln(s,X(xmin),Y(y),X(xmax),Y(y),{stroke:'#d0dfd8'});txt(s,32,Y(y)+4,num(y),{'text-anchor':'end','font-size':11.5});}
- ln(s,38,28,38,150);ln(s,38,150,278,150);txt(s,42,16,isFlight?'км':isFuel?'л':'м/с',{'font-size':13});txt(s,271,181,isFlight?'часы':isFuel?'км':'м²',{'font-size':12,'text-anchor':'end'});
+ ln(s,38,28,38,150);ln(s,38,150,278,150);txt(s,42,16,yUnit,{'font-size':13});txt(s,271,181,xUnit,{'font-size':12,'text-anchor':'end'});
  series.forEach((data,i)=>s.append(svg('polyline',{points:data.map(([x,y])=>X(x)+','+Y(y)).join(' '),fill:'none',stroke:i?'#a44c0d':'#226653','stroke-width':2.5,'stroke-dasharray':i?'6 3':'none','data-source-series':i})));
  if(xMark!==null)ln(s,X(xMark),25,X(xMark),150,{stroke:'#724a93','stroke-width':2,'stroke-dasharray':'3 3'});return s;
+}
+function baseHeightTriangle(base,height){
+ const s=svg('svg',{viewBox:'0 0 258 160',role:'img',class:'pm-chart pcm-route-fractions','aria-label':'Треугольник ABC. Высота BD под прямым углом к основанию AC.'});
+ const u=Math.min(205/base,105/height),ax=21,by=126-height*u,dx=ax+.55*base*u,cx=ax+base*u;
+ s.append(svg('polygon',{points:ax+',126 '+dx+','+by+' '+cx+',126',fill:'#e4f1e5',stroke:'#2e6250','stroke-width':2}));
+ ln(s,dx,126,dx,by,{stroke:'#924f11','stroke-dasharray':'4 3','stroke-width':2});
+ s.append(svg('path',{d:'M'+dx+' 118h8v8',fill:'none',stroke:'#924f11','stroke-width':1.8,'data-right-angle':'D'}));
+ for(const [x,y,t]of [[ax,143,'A'],[dx,by-8,'B'],[cx,143,'C'],[dx,143,'D']])txt(s,x,y,t,{'font-size':13});
+ return s;
+}
+function passageGeometry(tag,size){
+ if(tag===6){
+  const h=4;
+  return {diagram:baseHeightTriangle(size,h),labels:[['Основание',size+' см'],['Высота',h+' см'],['Обратные формулы','a = 2S/h, h = 2S/a']],formula:'S = ah/2',result:size*h/2+' см²'};
+ }
+ if(tag===9)return {diagram:solidFigure('cuboid'),labels:[['Площадь основания',size+' см²'],['Высота','3 см']],formula:'V = Sh',result:size*3+' см³'};
+ const points=[{name:'A',x:0,y:0},{name:'B',x:size,y:0},{name:'C',x:size,y:size},{name:'D',x:0,y:size}];
+ return {diagram:geometryFigure({points,segments:[['A','B'],['B','C'],['C','D'],['D','A']],caption:'Квадрат с четырьмя равными сторонами'}),labels:[['Сторона',size+' см']],formula:tag===7?'P = 4a':'S = a²',result:(tag===7?4*size:size*size)+(tag===7?' см':' см²')};
+}
+function printedStoryDetails(tag,variant,elapsed){
+ const m=root.PetersonMath,r=v=>m.answer(v),op=m.operation;
+ if(tag==='trains'){
+  const delay=variant?1.5:2.5,initial=72*delay,gap=initial-18*elapsed;
+  return {description:'Первый движется 72 км/ч. Второй начинает на '+num(delay)+' ч позже, скорость первого — 80% второго.',rows:[['Скорость второго',90],['Начальное отставание',initial],['Время после отправления второго',elapsed],['Положение первого',72*(elapsed+delay)],['Положение второго',90*elapsed]],answer:'Второй догонит первого через '+num(initial/18)+' ч после своего отправления. Сейчас расстояние '+num(Math.abs(gap))+' км. '+(gap>0?'Первый впереди.':gap<0?'Второй впереди.':'Поезда поравнялись.')};
+ }
+ if(tag==='rider'){
+  const wait=variant?3:2,walk=op('multiply','28/5','3/2'),ride=16*(wait+1.5),total=op('add',op('add',walk,ride),'54/5');
+  return {description:'Пешеход стартует спустя '+wait+' ч. После этого оба едут или идут 1,5 ч и между ними 10,8 км.',rows:[['Путь велосипедиста, км',ride],['Путь пешехода, км',r(walk)],['Осталось между ними, км','54/5']],answer:'Между посёлками '+r(total)+' км.'};
+ }
+ if(tag==='fuelAverage'){
+  const roadRate=variant?15:18,farmFuel=op('divide',roadRate,2),ten=op('divide',op('add',30,farmFuel),30);
+  return {description:'Шоссе 250 км, просёлок 50 км. На шоссе расход 12 л на 100 км; на просёлке '+roadRate+' л.',rows:[['Шоссе, л',30],['Просёлок, л',r(farmFuel)],['Общий путь, км',300]],answer:'На каждые 10 км в среднем '+r(ten)+' л.'};
+ }
+ if(tag==='meanThree'){
+  const diff=variant?'9/10':'7/2',x=op('divide',op('subtract','141/5',diff),'13/5'),first=op('add',x,diff),last=op('multiply','3/5',x);
+  return {description:'У трёх чисел среднее 9,4. Первое превосходит второе на '+r(diff)+', третье — 60% второго.',rows:[['Первое',r(first)],['Второе',r(x)],['Третье',r(last)]],answer:'Меньшее число '+r(last)+'.'};
+ }
+ if(tag==='meanFour'){
+  const diff=variant?'31/10':'8/5',x=op('divide',op('add','112/5',diff),'15/2'),second=op('multiply','5/2',x),third=op('multiply',3,x);
+  return {description:'Среднее четырёх чисел 5,6. Из первого вычитают '+r(diff)+', чтобы получить четвёртое.',rows:[['Первое',r(x)],['Второе',r(second)],['Третье',r(third)],['Четвёртое',r(op('subtract',x,diff))]],answer:'Среднее первого и третьего '+r(op('divide',op('add',x,third),2))+'.'};
+ }
+ const rear=variant?'1/2':'4/5',time=op('subtract',2,rear),first=op('divide',210,op('add',2,op('multiply','5/4',time))),second=op('multiply','5/4',first);
+ return {description:'Первый ехал 2 ч. Поздний выезд второго — на '+r(rear)+' ч. Оба прибыли одновременно.',rows:[['Скорость первого, км/ч',r(first)],['Скорость второго, км/ч',r(second)],['Путь первого, км',r(op('multiply',first,2))],['Путь второго, км',r(op('multiply',second,time))]],answer:'Вместе пути дают 210 км. Скорости '+r(first)+' и '+r(second)+' км/ч.'};
 }
 function sourceHobbyFigure(values,selected=-1){
  const s=svg('svg',{viewBox:'0 0 272 146',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Высота столбца — число ответов, категории подписаны буквами от а до з'});
@@ -1277,6 +1326,7 @@ function twoCarLanes(firstX,secondX,firstArrow,secondArrow,label){
  car(firstX,36,firstArrow,'#235b46','Первая машина');car(secondX,77,secondArrow,'#9f4e08','Вторая машина');return s;
 }
 function formulaGeometry(tag,a){
+ if(tag>=6)return passageGeometry(tag,a);
  const b=tag===3?10-a:4,c=5,perimeter=20;
  if(tag===0||tag===4)return {diagram:solidFigure('cube'),labels:[['Ребро',a+' см'],['Площадь одной грани',a*a+' см²']],formula:tag===0?'V = a³':'S = 6a²',result:tag===0?a**3+' см³':6*a*a+' см²'};
  if(tag===2)return {diagram:circleDiameterFigure(),labels:[['Радиус',a+' см'],['Число радиусов в диаметре','2']],formula:'D = 2R',result:2*a+' см'};
@@ -2279,6 +2329,17 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p19'&&task?.ratioRewrite)return {title:'Что изменилось в четырёх членах?',controls:[c('Набор',[[0,'Исходные числа'],[1,'Все четыре числа вдвое больше']]),c('Стадия',[[0,'До преобразования'],[1,'После преобразования'],[2,'Проверка']])],initial:[0,0]};
+ if(lesson?.id==='p19'&&task?.printedRateStory){
+  const train=task.printedRateStory==='trains';
+  return {title:train?'Место каждого поезда от общей станции':'Сопоставь величины исходной задачи',controls:[c('Данные',[[0,'Из учебника'],[1,'Изменённое условие']]),...(train?[c('После старта второго, ч',[0,4,6,10,15])]:[]),c('Разбор',[[0,'Сначала составлю модель'],[1,'Таблица'],[2,'Проверка ответа']])],initial:train?[0,0,0]:[0,0]};
+ }
+ if(lesson?.id==='p19'&&task?.marketDistanceGraph){
+  const apples=task.marketDistanceGraph==='apples';
+  return {title:apples?'Цена килограмма на графике':'Скорость на фиксированном пути',controls:[apples?c('Цена, р./кг',[80,100]):c('Расстояние, км',[18,24]),apples?c('Масса, кг',[0,1,2,3,4]):c('Время',[1,2,3,4,4.5,6,9,18].map((v,i)=>[i,num(v)+' ч'])),c('Стадия',[[0,'Выбери точку'],[1,'Значение'],[2,'Таблица и формула']])],initial:apples?[80,1,0]:[18,0,0]};
+ }
+ if(lesson?.id==='p19'&&task?.composeSourceRatio)return {title:'Пропорции из четырёх значений',controls:[c('Расстановка',[[0,'A/B и C/D'],[1,'A/C и B/D'],[2,'A/D и B/C']]),c('Проверка',[[0,'Предскажу'],[1,'Перекрёстные произведения']])],initial:[0,0]};
+ if(lesson?.id==='p19'&&task?.oilCans)return {title:'Две вместимости и целое число бидонов',controls:[c('Всего, л',[223,233,227]),c('Больших бидонов',range(0,13)),c('Проверка',[[0,'Сначала проверю'],[1,'Остаток'],[2,'Все подходящие варианты']])],initial:[223,0,0]};
  if(lesson?.id==='p19'&&task?.sourceFuelGraph)return {title:'Израсходованные литры по пути',controls:[c('Расход, л на 100 км',[8,10]),c('Путь, км',range(0,10).map(x=>x*10)),c('Проверка',[[0,'Сниму с графика'],[1,'Значение'],[2,'Таблица и формула']])],initial:[8,10,0]};
  if(lesson?.id==='p19'&&task?.flightGraph)return {title:'Проследи за двумя рейсами',controls:[c('Расписание',[[0,'Из учебника'],[1,'Рейс Б на 20 минут позже']]),c('Время',range(54,114).map(x=>[10*x,clockText(10*x)])),c('Проверка',[[0,'Предскажу по графику'],[1,'Положение обоих'],[2,'Точки маршрутов']])],initial:[0,720,0]};
  if(lesson?.id==='p19'&&task?.sectionFlow)return {title:'Площадь сечения и скорость',controls:[c('Расход, м³/с',[24,30]),c('Площадь, м²',[20,24,30,40,48,60,80,96,120]),c('Проверка',[[0,'Сначала предскажу'],[1,'График и точка'],[2,'Формула']])],initial:[24,48,0]};
@@ -2289,7 +2350,7 @@ function configFor(lesson,task){
   return task.quantityFamily<2?{title:task.quantityFamily?'Часть и основание процентного отношения':'Собственная скорость и течение',controls:[task.quantityFamily?c('Часть A',[12,18,24]):c('Скорость течения, км/ч',[2,3,4]),c('Проверка',[[0,'Условие'],[1,'Прямая зависимость'],[2,'Обратная зависимость']])],initial:task.quantityFamily?[12,0]:[2,0]}:
    {title:task.quantityFamily===2?'Равные прибавки по периодам':'Начисление на текущее значение',controls:[c('Ставка, %',[10,20]),c('Число периодов',[1,2,3]),c('Показать',[[0,'Сначала рассчитаю'],[1,'По периодам'],[2,'Итог и восстановление начального']])],initial:[10,2,0]};
  }
- if(lesson?.id==='p19'&&Number.isInteger(task?.geometryQuantity))return {title:'Свяжи размеры фигуры',controls:[c(task.geometryQuantity===2?'Радиус, см':'Размер a, см',[3,4,5]),c('Проверка',[[0,'Схема'],[1,'Известные размеры'],[2,'Формула и результат']])],initial:[3,0]};
+ if(lesson?.id==='p19'&&Number.isInteger(task?.geometryQuantity))return {title:'Свяжи размеры фигуры',controls:[c(task.geometryQuantity===2?'Радиус, см':task.geometryQuantity===9?'Площадь основания, см²':'Размер a, см',task.geometryQuantity===9?[6,10,12]:task.geometryQuantity===6?[3,6,8]:[3,4,5]),c('Проверка',[[0,'Схема'],[1,'Известные размеры'],[2,'Формула и результат']])],initial:[task.geometryQuantity===9?10:task.geometryQuantity===6?6:3,0]};
  if(lesson?.id==='p19'&&task?.productUnits){
   const t=task.productUnits,items={own:['Количество предметов',[5,6,8]],books:['Цена одной тетради, р.',[20,25,30]],typing:['Страниц за час',[20,30,40]],salt:['Масса раствора, г',[100,150,200]],telegram:['Число слов',[5,10,20]]}[t];
   return {title:'Свяжи формулу с единицами измерения',controls:[c(items[0],items[1]),c('Проверка',[[0,'Сначала запишу'],[1,'Состав величин'],[2,'Значение и проверка']])],initial:[items[1][0],0]};
@@ -2300,7 +2361,7 @@ function configFor(lesson,task){
   const tag=task.remainingStory,first=tag==='fuel'?['По 6 л','По 5 л']:tag==='park'?['94 липы','88 лип']:['140 т картофеля','128 т картофеля'];
   return {title:tag==='fuel'?'Две канистры':tag==='park'?'Состав деревьев в парке':'Остатки на овощной базе',controls:[c('Данные',first.map((x,i)=>[i,x])),...(tag==='park'?[]:[tag==='fuel'?c('Когда?',[[0,'До отбора'],[1,'После отбора']]):c('День',range(0,8))]),c('Показать',[[0,'Сначала составлю уравнение'],[1,'Таблицу'],[2,'Проверку']])],initial:tag==='park'?[0,0]:[0,0,0]};
  }
- if(lesson?.id==='p37'&&task?.expressionGroup)return {title:'Дерево арифметических действий',controls:[c('Условие',[[0,'По учебнику'],[1,'Удвоить первый операнд']]),c('Действий выполнено',range(0,expressionStages(task.expressionGroup.tree,false).steps.length))],initial:[0,0]};
+ if(['p19','p37'].includes(lesson?.id)&&task?.expressionGroup)return {title:'Дерево арифметических действий',controls:[c('Условие',[[0,'По учебнику'],[1,'Удвоить первый операнд']]),c('Действий выполнено',range(0,expressionStages(task.expressionGroup.tree,false).steps.length))],initial:[0,0]};
  if(lesson?.id==='p37'&&task?.percentDoubleFraction)return {title:'Сложные дроби и прибавка в процентах',controls:[c('Увеличение, %',[100,200,300]),c('Разобрать',[[0,'Условие'],[1,'Числители и знаменатели'],[2,'Большие дроби'],[3,'После увеличения']])],initial:[300,0]};
  if(lesson?.id==='p37'&&task?.threeDigits)return {title:'Три цифры и разные записи',controls:[c('Цифра',[1,2,4]),c('Конструкция',[[0,'Три цифры рядом'],[1,'Двузначное в степени'],[2,'Цифра в двузначной степени'],[3,'Башня степеней']])],initial:[task.threeDigits,0]};
  if(lesson?.id==='p37'&&task?.lifeTimeline)return {title:'Возраст Диофанта на временной линии',controls:[c('До рождения сына, лет',[5,14,23]),c('Разбор',[[0,'Сначала составлю уравнение'],[1,'Доли всей жизни'],[2,'Периоды по годам']])],initial:[5,0]};
@@ -2373,7 +2434,7 @@ function configFor(lesson,task){
  if(lesson?.id==='p17' && task?.circleRatio)return {title:'Диаметр и приближённая длина окружности',controls:[c('Данные',[[0,'Как в задаче'],[1,'Новая длина']]),c('Результат',[[0,'Сначала вычислю'],[1,'Без округления в модели'],[2,'С округлением до десятых']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.crossedChords)return {title:'Три опыта с пересечением хорд',controls:[c('Построение',[[0,'Первое'],[1,'Второе'],[2,'Третье']]),c('Сравнение',[[0,'Чертёж'],[1,'Части хорд'],[2,'Произведения и пропорция']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.oddExpressions)return {title:'Проверь правило на разных числах',controls:[c('Подстановка',[-2,0,1,2,3]),c('Что сравнить?',[[0,'Прогноз'],[1,'Значения'],[2,'Общий вид']])],initial:[0,0]};
- if(['p17','p18','p37'].includes(lesson?.id) && task?.affineRatios)return {title:'Проверь обе стороны при выбранном числе',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Со сдвигом неизвестного']]),c('Пробное число',affineRatioCandidates(task).map((v,i)=>[i,v])),c('Способ проверки',[[0,'Сначала вычислю'],[1,'Два отношения'],[2,'Два произведения']])],initial:[0,0,0]};
+ if(['p17','p18','p19','p37'].includes(lesson?.id) && task?.affineRatios)return {title:'Проверь обе стороны при выбранном числе',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Со сдвигом неизвестного']]),c('Пробное число',affineRatioCandidates(task).map((v,i)=>[i,v])),c('Способ проверки',[[0,'Сначала вычислю'],[1,'Два отношения'],[2,'Два произведения']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.linkedRatios)return {title:'От второй пропорции к первой',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новая вторая пропорция']]),c('Вычисления',[[0,'Сначала решу'],[1,'Промежуточное y'],[2,'Пара x и y']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.reorderSymbols)return {title:'Обе диагонали после перестановки',controls:[c('Расположение букв',range(1,8)),c('Проверка',[[0,'Ненулевые буквы'],[1,'Нулевые числители']])],initial:[1,0]};
  if(lesson?.id==='p17' && task?.copierRatio)return {title:'Оригинал и копия в одном масштабе',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новая длина']]),c('Сравнение',[[0,'Сначала решу'],[1,'Вычисления и чертёж']])],initial:[0,0]};
@@ -2488,12 +2549,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='paper-quantity-graph'){picture=f.variant==='fuel'?sourceChart('fuel',[[[0,0],[100,8]]]):sourceChart('flights',planeProfiles);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2504,8 +2565,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2748,7 +2809,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===2)say(data.conclusion);
   stepList(['Запиши, как связаны исходные величины.','Составь уравнение для изменившихся величин.','Проверь ответ в таблице.']);
  }
- else if(n===37&&task.expressionGroup){
+ else if((n===19||n===37)&&task.expressionGroup){
   const t=task.expressionGroup,trace=expressionStages(t.tree,a===1);
   formula(t.printed);if(a)say('Для нового примера удвой только самое первое число исходной записи.');
   if(b)show(table(['Действие','Результат'],trace.steps.slice(0,b)));
@@ -3284,7 +3345,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   stepList(['Чётко сформулируй выбранный признак.','Проверь каждое оставшееся выражение по формуле.','Отдельный числовой пример помогает проверить догадку, но общего вывода не доказывает.']);
  }
  else
- if((n===17||n===18||n===37) && task.affineRatios){
+ if((n===17||n===18||n===19||n===37) && task.affineRatios){
   const t=task.affineRatios,M=root.PetersonMath,z=M.parse(affineRatioCandidates(task)[b]),effective=M.operation('subtract',z,a),mode=state.values[2];
   say('Исходное равенство: '+t.printed+'.');
   if(a===1)say('Новый пример: в каждом месте вместо '+t.letter+' поставь ('+t.letter+' − 1).');
@@ -3784,6 +3845,36 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
  else if(n===16){show(geometryFigure({points:[{name:'A',x:0,y:0},{name:'B',x:a,y:0}],segments:[['A','B']],labels:[{x:a/2,y:-0.6,text:a+' см на карте'}],caption:'Схема отрезка на карте'}));formula('Масштаб 1 : '+b);say('На местности: '+a+' · '+b+' = '+a*b+' см = '+num(a*b/100)+' м.');stepList(['Масштаб сравнивает длины в одинаковых единицах.','Один сантиметр карты соответствует '+b+' сантиметрам на местности.','Размер схемы на экране не предназначен для измерения линейкой.']);}
  else if(n===17){show(eq(frac(3,5),' = ',frac(3*a,5*a)));const s=chart('Произведения крест-накрест');txt(s,190,90,'3');txt(s,190,270,'5');txt(s,410,90,3*a);txt(s,410,270,5*a);ln(s,155,177,225,177);ln(s,375,177,445,177);txt(s,300,185,'=');ln(s,215,105,385,245,{stroke:'#b4812a'});ln(s,215,245,385,105,{stroke:'#b4812a'});show(s);formula('3 · '+5*a+' = 5 · '+3*a+' = '+15*a);stepList(['Сначала сравни отношения: числитель и знаменатель увеличены в '+a+' раз.','Соедини числитель первой дроби со знаменателем второй — и наоборот.','Произведения равны. Все знаменатели ненулевые, поэтому пропорция верна.']);}
  else if(n===18){const pairs=[[[2,3],[8,12]],[[3,2],[12,8]],[[2,8],[3,12]],[[12,3],[8,2]]],p=pairs[a];show(eq(frac(...p[0]),' = ',frac(...p[1])));formula(p[0][0]+' · '+p[1][1]+' = '+p[0][1]+' · '+p[1][0]);say('Проверяем обе новые дроби, а не переставляем числа наугад.');stepList(['Исходная пропорция: 2 : 3 = 8 : 12.','После выбранного преобразования перекрёстные произведения равны '+p[0][0]*p[1][1]+'.']);}
+ else
+ if(n===19&&task.ratioRewrite){
+  const data=task.ratioRewrite,m=root.PetersonMath,values=(b?data.after:data.before).map(x=>m.operation('multiply',x,a?2:1));show(quartetFigure(values,b===2?2:0));
+  say(b?'После преобразования.':'До преобразования.');if(b>=1)say(data.law);if(b===2){const products=compareQuartet(values);say('Крайние: '+m.answer(products.outer)+'. Средние: '+m.answer(products.inner)+'.');}
+  stepList(['Отметь крайние и средние члены.','Сопоставь все четыре места слева направо.','Обоснуй равносильность преобразования.']);
+ }
+ else if(n===19&&task.printedRateStory){
+  const info=printedStoryDetails(task.printedRateStory,a,b),mode=state.values.at(-1);say(info.description);
+  if(mode>=1)show(table(['Величина','Значение'],info.rows));if(mode===2)say(info.answer);
+  stepList(['Отдели исходные величины от искомых.','Запиши зависимости до подстановки чисел.','Проверь единицы и ответ в исходной ситуации.']);
+ }
+ else if(n===19&&task.marketDistanceGraph){
+  const apples=task.marketDistanceGraph==='apples',mode=state.values[2],m=root.PetersonMath,times=[1,2,3,4,4.5,6,9,18],x=apples?b:times[b],calc=k=>apples?m.operation('multiply',a,k):m.operation('divide',a,k);
+  const curve=apples?[[0,0],[4,4*a]]:Array.from({length:137},(_,i)=>{const t=1+i/8;return [t,a/t];});show(sourceChart(task.marketDistanceGraph,[curve],x));
+  say(apples?'Масса '+x+' кг, цена '+a+' р./кг.':'Путь '+a+' км, время '+num(x)+' ч.');
+  if(mode>=1)say('Значение: '+m.answer(calc(x))+(apples?' р.':' км/ч.'));
+  if(mode===2){formula(apples?'C = '+a+'m':'v = '+a+'/t, t > 0');show(table(apples?['кг','рубли']:['ч','км/ч'],(apples?[0,1,2,3,4]:times).map(k=>[num(k),m.answer(calc(k))])));}
+  stepList(['Назови постоянную величину.','Отметь точки таблицы в соответствующих единицах.','Сопоставь форму графика с формулой.']);
+ }
+ else if(n===19&&task.composeSourceRatio){
+  const m=root.PetersonMath,vs=[[6,10,3,5],[6,3,10,5],[6,5,10,3]][a],cmp=compareQuartet(vs);show(quartetFigure(vs.map(m.parse),b?2:0));
+  if(b)say('Крайние: '+m.answer(cmp.outer)+'. Средние: '+m.answer(cmp.inner)+'. '+(cmp.same?'Пропорция верна.':'Эта расстановка не подходит.'));
+  stepList(['Используй каждое из четырёх значений один раз.','Сравни произведения по диагоналям.']);
+ }
+ else if(n===19&&task.oilCans){
+  const rem=a-17*b,mode=state.values[2];formula('10a + 17b = '+a+'. Выбрано b = '+b+'.');
+  if(mode>=1)say('Остаток '+rem+' л. '+(rem>=0&&rem%10===0?'Хватит на '+rem/10+' полных малых бидонов.':'Полными 10-литровыми бидонами его не заполнить.'));
+  if(mode===2){const variants=range(0,Math.floor(a/17)).filter(k=>(a-17*k)%10===0).map(k=>[(a-17*k)/10,k,(a-17*k)/10+k]);show(table(['Малых','Больших','Всего'],variants));say('Число подходящих вариантов: '+variants.length+'.');}
+  stepList(['Запиши уравнение общего объёма.','Ограничь число больших бидонов вместимостью.','Для каждого допустимого числа проверь остаток по модулю 10.']);
+ }
  else
  if(n===19&&task.sourceFuelGraph){
   const mode=state.values[2],m=root.PetersonMath,per=m.operation('divide',a,100);show(sourceChart('fuel',[[[0,0],[100,a]]],b));
@@ -39844,9 +39935,1944 @@ window.PetersonCourse = {
      ],
      "finalLabel": "Сохрани объяснение и свой чертёж.",
      "legoSurvey": true
+    },
+    {
+     "id": "p19-t42",
+     "title": "К задаче №145",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 145,
+      "reference": "№145"
+     },
+     "kind": "manual",
+     "prompt": "Основание AC = a, высота BD = h перпендикулярна AC. Свяжи их с площадью S треугольника и вырази каждую величину.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "При a = 6, h = 4 какова площадь?",
+       "answer": "12",
+       "hint": "Дополни треугольник до двух равных по площади частей параллелограмма либо используй прямоугольники у высоты.",
+       "explanation": "S = ah/2, поэтому a = 2S/h и h = 2S/a. Основание и высота положительны."
+      },
+      {
+       "prompt": "При S = 12, h = 4 чему равно основание?",
+       "answer": "6",
+       "hint": "Дополни треугольник до двух равных по площади частей параллелограмма либо используй прямоугольники у высоты.",
+       "explanation": "S = ah/2, поэтому a = 2S/h и h = 2S/a. Основание и высота положительны."
+      },
+      {
+       "prompt": "При S = 12, a = 6 чему равна высота?",
+       "answer": "4",
+       "hint": "Дополни треугольник до двух равных по площади частей параллелограмма либо используй прямоугольники у высоты.",
+       "explanation": "S = ah/2, поэтому a = 2S/h и h = 2S/a. Основание и высота положительны."
+      }
+     ],
+     "hint": "Дополни треугольник до двух равных по площади частей параллелограмма либо используй прямоугольники у высоты.",
+     "explanation": "S = ah/2, поэтому a = 2S/h и h = 2S/a. Основание и высота положительны.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "geometryQuantity": 6,
+     "figure": {
+      "type": "base-height-triangle",
+      "caption": "BD перпендикулярна основанию AC. Маленький квадрат отмечает прямой угол у D."
+     }
+    },
+    {
+     "id": "p19-t43",
+     "title": "К задаче №146(а)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 146,
+      "reference": "№146(а)",
+      "subpart": "а"
+     },
+     "kind": "manual",
+     "prompt": "Опиши допустимое преобразование: 7 : 3 = 14 : 6 → 6 : 3 = 14 : 7.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В новом равенстве чему равно произведение крайних членов?",
+       "answer": "42",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Поменяли крайние члены. В новом равенстве перекрёстные произведения равны 42."
+      },
+      {
+       "prompt": "Чему равно произведение средних членов?",
+       "answer": "42",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Поменяли крайние члены. В новом равенстве перекрёстные произведения равны 42."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Опиши словами, что поменялось в обеих частях. Возможны разные правильные объяснения.",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Поменяли крайние члены. В новом равенстве перекрёстные произведения равны 42."
+      }
+     ],
+     "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+     "explanation": "Поменяли крайние члены. В новом равенстве перекрёстные произведения равны 42.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "ratioRewrite": {
+      "rule": "swapEnds",
+      "before": [
+       "7",
+       "3",
+       "14",
+       "6"
+      ],
+      "after": [
+       "6",
+       "3",
+       "14",
+       "7"
+      ],
+      "law": "Поменяли крайние члены."
+     }
+    },
+    {
+     "id": "p19-t44",
+     "title": "К задаче №146(б)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 146,
+      "reference": "№146(б)",
+      "subpart": "б"
+     },
+     "kind": "manual",
+     "prompt": "Опиши допустимое преобразование: 8 : 16 = 1 : 2 → 8 : 1 = 16 : 2.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В новом равенстве чему равно произведение крайних членов?",
+       "answer": "16",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Поменяли средние члены. В новом равенстве перекрёстные произведения равны 16."
+      },
+      {
+       "prompt": "Чему равно произведение средних членов?",
+       "answer": "16",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Поменяли средние члены. В новом равенстве перекрёстные произведения равны 16."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Опиши словами, что поменялось в обеих частях. Возможны разные правильные объяснения.",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Поменяли средние члены. В новом равенстве перекрёстные произведения равны 16."
+      }
+     ],
+     "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+     "explanation": "Поменяли средние члены. В новом равенстве перекрёстные произведения равны 16.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "ratioRewrite": {
+      "rule": "swapMiddle",
+      "before": [
+       "8",
+       "16",
+       "1",
+       "2"
+      ],
+      "after": [
+       "8",
+       "1",
+       "16",
+       "2"
+      ],
+      "law": "Поменяли средние члены."
+     }
+    },
+    {
+     "id": "p19-t45",
+     "title": "К задаче №146(в)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 146,
+      "reference": "№146(в)",
+      "subpart": "в"
+     },
+     "kind": "manual",
+     "prompt": "Опиши допустимое преобразование: 2 : 5 = 2/5 : 1 → 1 : 2/5 = 5 : 2.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В новом равенстве чему равно произведение крайних членов?",
+       "answer": "2",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Перевернули обе дроби и поменяли стороны равенства местами. В новом равенстве перекрёстные произведения равны 2."
+      },
+      {
+       "prompt": "Чему равно произведение средних членов?",
+       "answer": "2",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Перевернули обе дроби и поменяли стороны равенства местами. В новом равенстве перекрёстные произведения равны 2."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Опиши словами, что поменялось в обеих частях. Возможны разные правильные объяснения.",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Перевернули обе дроби и поменяли стороны равенства местами. В новом равенстве перекрёстные произведения равны 2."
+      }
+     ],
+     "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+     "explanation": "Перевернули обе дроби и поменяли стороны равенства местами. В новом равенстве перекрёстные произведения равны 2.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "ratioRewrite": {
+      "rule": "flipSwap",
+      "before": [
+       "2",
+       "5",
+       "2/5",
+       "1"
+      ],
+      "after": [
+       "1",
+       "2/5",
+       "5",
+       "2"
+      ],
+      "law": "Перевернули обе дроби и поменяли стороны равенства местами."
+     }
+    },
+    {
+     "id": "p19-t46",
+     "title": "К задаче №146(г)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 146,
+      "reference": "№146(г)",
+      "subpart": "г"
+     },
+     "kind": "manual",
+     "prompt": "Опиши допустимое преобразование: 3 : 9 = 5 : 15 → 12 : 9 = 20 : 15.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В новом равенстве чему равно произведение крайних членов?",
+       "answer": "180",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Оба числителя умножили на 4. В новом равенстве перекрёстные произведения равны 180."
+      },
+      {
+       "prompt": "Чему равно произведение средних членов?",
+       "answer": "180",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Оба числителя умножили на 4. В новом равенстве перекрёстные произведения равны 180."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Опиши словами, что поменялось в обеих частях. Возможны разные правильные объяснения.",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Оба числителя умножили на 4. В новом равенстве перекрёстные произведения равны 180."
+      }
+     ],
+     "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+     "explanation": "Оба числителя умножили на 4. В новом равенстве перекрёстные произведения равны 180.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "ratioRewrite": {
+      "rule": "timesNumerators",
+      "before": [
+       "3",
+       "9",
+       "5",
+       "15"
+      ],
+      "after": [
+       "12",
+       "9",
+       "20",
+       "15"
+      ],
+      "law": "Оба числителя умножили на 4."
+     }
+    },
+    {
+     "id": "p19-t47",
+     "title": "К задаче №146(д)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 146,
+      "reference": "№146(д)",
+      "subpart": "д"
+     },
+     "kind": "manual",
+     "prompt": "Опиши допустимое преобразование: 5 : 6 = 20 : 24 → 5 : 1 = 20 : 4.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В новом равенстве чему равно произведение крайних членов?",
+       "answer": "20",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Оба знаменателя разделили на 6. В новом равенстве перекрёстные произведения равны 20."
+      },
+      {
+       "prompt": "Чему равно произведение средних членов?",
+       "answer": "20",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Оба знаменателя разделили на 6. В новом равенстве перекрёстные произведения равны 20."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Опиши словами, что поменялось в обеих частях. Возможны разные правильные объяснения.",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "Оба знаменателя разделили на 6. В новом равенстве перекрёстные произведения равны 20."
+      }
+     ],
+     "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+     "explanation": "Оба знаменателя разделили на 6. В новом равенстве перекрёстные произведения равны 20.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "ratioRewrite": {
+      "rule": "divideDenominators",
+      "before": [
+       "5",
+       "6",
+       "20",
+       "24"
+      ],
+      "after": [
+       "5",
+       "1",
+       "20",
+       "4"
+      ],
+      "law": "Оба знаменателя разделили на 6."
+     }
+    },
+    {
+     "id": "p19-t48",
+     "title": "К задаче №146(е)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 146,
+      "reference": "№146(е)",
+      "subpart": "е"
+     },
+     "kind": "manual",
+     "prompt": "Опиши допустимое преобразование: 4 : 3 = 8 : 6 → 7 : 1 = 14 : 2.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "В новом равенстве чему равно произведение крайних членов?",
+       "answer": "14",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "К каждому числителю прибавили его знаменатель, затем оба знаменателя разделили на 3. В новом равенстве перекрёстные произведения равны 14."
+      },
+      {
+       "prompt": "Чему равно произведение средних членов?",
+       "answer": "14",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "К каждому числителю прибавили его знаменатель, затем оба знаменателя разделили на 3. В новом равенстве перекрёстные произведения равны 14."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Опиши словами, что поменялось в обеих частях. Возможны разные правильные объяснения.",
+       "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+       "explanation": "К каждому числителю прибавили его знаменатель, затем оба знаменателя разделили на 3. В новом равенстве перекрёстные произведения равны 14."
+      }
+     ],
+     "hint": "Пронумеруй четыре места слева направо и сопоставь числа до и после преобразования.",
+     "explanation": "К каждому числителю прибавили его знаменатель, затем оба знаменателя разделили на 3. В новом равенстве перекрёстные произведения равны 14.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "ratioRewrite": {
+      "rule": "addAndScale",
+      "before": [
+       "4",
+       "3",
+       "8",
+       "6"
+      ],
+      "after": [
+       "7",
+       "1",
+       "14",
+       "2"
+      ],
+      "law": "К каждому числителю прибавили его знаменатель, затем оба знаменателя разделили на 3."
+     }
+    },
+    {
+     "id": "p19-t49",
+     "title": "К задаче №147(1)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 147,
+      "reference": "№147(1)",
+      "subpart": "1"
+     },
+     "kind": "number",
+     "prompt": "Найди корень пропорции a/1,8 = 5/3. Проверь ответ подстановкой.",
+     "answer": "3",
+     "steps": [
+      {
+       "prompt": "Используй исходную пропорцию без предварительного сокращения. Вычти правое перекрёстное произведение из левого. Какой коэффициент останется при букве?",
+       "answer": "3",
+       "hint": "Перекрёстное равенство: 3a = 9.",
+       "explanation": "Перекрёстное равенство: 3a = 9. Корень a = 3."
+      },
+      {
+       "prompt": "Какое число окажется справа после переноса свободных членов?",
+       "answer": "9",
+       "hint": "Перекрёстное равенство: 3a = 9.",
+       "explanation": "Перекрёстное равенство: 3a = 9. Корень a = 3."
+      }
+     ],
+     "hint": "Перекрёстное равенство: 3a = 9.",
+     "explanation": "Перекрёстное равенство: 3a = 9. Корень a = 3.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "affineRatios": {
+      "letter": "a",
+      "terms": [
+       [
+        "1",
+        "0"
+       ],
+       "9/5",
+       "5",
+       "3"
+      ],
+      "root": "3",
+      "printed": "a/1,8 = 5/3"
+     },
+     "errorCues": [
+      [
+       "-3",
+       "Проверь знаки перекрёстных произведений."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t50",
+     "title": "К задаче №147(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 147,
+      "reference": "№147(2)",
+      "subpart": "2"
+     },
+     "kind": "number",
+     "prompt": "Найди корень пропорции 2,5/(3 и 1/3) = 3c/0,4. Проверь ответ подстановкой.",
+     "answer": "1/10",
+     "steps": [
+      {
+       "prompt": "Используй исходную пропорцию без предварительного сокращения. Вычти правое перекрёстное произведение из левого. Какой коэффициент останется при букве?",
+       "answer": "-10",
+       "hint": "Левая дробь равна 3/4. Поэтому 3c = (3/4) × (2/5).",
+       "explanation": "Левая дробь равна 3/4. Поэтому 3c = (3/4) × (2/5). Корень c = 1/10."
+      },
+      {
+       "prompt": "Какое число окажется справа после переноса свободных членов?",
+       "answer": "-1",
+       "hint": "Левая дробь равна 3/4. Поэтому 3c = (3/4) × (2/5).",
+       "explanation": "Левая дробь равна 3/4. Поэтому 3c = (3/4) × (2/5). Корень c = 1/10."
+      }
+     ],
+     "hint": "Левая дробь равна 3/4. Поэтому 3c = (3/4) × (2/5).",
+     "explanation": "Левая дробь равна 3/4. Поэтому 3c = (3/4) × (2/5). Корень c = 1/10.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "affineRatios": {
+      "letter": "c",
+      "terms": [
+       "5/2",
+       "10/3",
+       [
+        "3",
+        "0"
+       ],
+       "2/5"
+      ],
+      "root": "1/10",
+      "printed": "2,5/(3 и 1/3) = 3c/0,4"
+     },
+     "errorCues": [
+      [
+       "-1/10",
+       "Проверь знаки перекрёстных произведений."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t51",
+     "title": "К задаче №147(3)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 147,
+      "reference": "№147(3)",
+      "subpart": "3"
+     },
+     "kind": "number",
+     "prompt": "Найди корень пропорции (x + 1)/7,2 = x/4. Проверь ответ подстановкой.",
+     "answer": "5/4",
+     "steps": [
+      {
+       "prompt": "Используй исходную пропорцию без предварительного сокращения. Вычти правое перекрёстное произведение из левого. Какой коэффициент останется при букве?",
+       "answer": "-16/5",
+       "hint": "Умножение крест-накрест даёт 4x + 4 = 7,2x.",
+       "explanation": "Умножение крест-накрест даёт 4x + 4 = 7,2x. Корень x = 5/4."
+      },
+      {
+       "prompt": "Какое число окажется справа после переноса свободных членов?",
+       "answer": "-4",
+       "hint": "Умножение крест-накрест даёт 4x + 4 = 7,2x.",
+       "explanation": "Умножение крест-накрест даёт 4x + 4 = 7,2x. Корень x = 5/4."
+      }
+     ],
+     "hint": "Умножение крест-накрест даёт 4x + 4 = 7,2x.",
+     "explanation": "Умножение крест-накрест даёт 4x + 4 = 7,2x. Корень x = 5/4.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       [
+        "1",
+        "1"
+       ],
+       "36/5",
+       [
+        "1",
+        "0"
+       ],
+       "4"
+      ],
+      "root": "5/4",
+      "printed": "(x + 1)/7,2 = x/4"
+     },
+     "errorCues": [
+      [
+       "-5/4",
+       "Проверь знаки перекрёстных произведений."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t52",
+     "title": "К задаче №147(4)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 147,
+      "reference": "№147(4)",
+      "subpart": "4"
+     },
+     "kind": "number",
+     "prompt": "Найди корень пропорции (12y − 9)/(2y) = 0,5/(1 и 1/3). Проверь ответ подстановкой.",
+     "answer": "4/5",
+     "steps": [
+      {
+       "prompt": "Какая подстановка обнуляет знаменатель?",
+       "answer": "0",
+       "hint": "Исключи y = 0. Правая дробь равна 3/8, поэтому 8(12y − 9) = 6y.",
+       "explanation": "Исключи y = 0. Правая дробь равна 3/8, поэтому 8(12y − 9) = 6y. Корень y = 4/5."
+      },
+      {
+       "prompt": "Используй исходную пропорцию без предварительного сокращения. Вычти правое перекрёстное произведение из левого. Какой коэффициент останется при букве?",
+       "answer": "15",
+       "hint": "Исключи y = 0. Правая дробь равна 3/8, поэтому 8(12y − 9) = 6y.",
+       "explanation": "Исключи y = 0. Правая дробь равна 3/8, поэтому 8(12y − 9) = 6y. Корень y = 4/5."
+      },
+      {
+       "prompt": "Какое число окажется справа после переноса свободных членов?",
+       "answer": "12",
+       "hint": "Исключи y = 0. Правая дробь равна 3/8, поэтому 8(12y − 9) = 6y.",
+       "explanation": "Исключи y = 0. Правая дробь равна 3/8, поэтому 8(12y − 9) = 6y. Корень y = 4/5."
+      }
+     ],
+     "hint": "Исключи y = 0. Правая дробь равна 3/8, поэтому 8(12y − 9) = 6y.",
+     "explanation": "Исключи y = 0. Правая дробь равна 3/8, поэтому 8(12y − 9) = 6y. Корень y = 4/5.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "affineRatios": {
+      "letter": "y",
+      "terms": [
+       [
+        "12",
+        "-9"
+       ],
+       [
+        "2",
+        "0"
+       ],
+       "1/2",
+       "4/3"
+      ],
+      "root": "4/5",
+      "printed": "(12y − 9)/(2y) = 0,5/(1 и 1/3)"
+     },
+     "errorCues": [
+      [
+       "0",
+       "Знаменатель при этой подстановке равен нулю."
+      ],
+      [
+       "-4/5",
+       "Проверь знаки перекрёстных произведений."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t53",
+     "title": "К задаче №148(1)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 148,
+      "reference": "№148(1)",
+      "subpart": "1"
+     },
+     "kind": "number",
+     "prompt": "Найди корень пропорции (3x + 2 и 1/7)/(2 и 1/7) = 9/2. Проверь ответ подстановкой.",
+     "answer": "5/2",
+     "steps": [
+      {
+       "prompt": "Используй исходную пропорцию без предварительного сокращения. Вычти правое перекрёстное произведение из левого. Какой коэффициент останется при букве?",
+       "answer": "6",
+       "hint": "Обе смешанные записи 2 и 1/7 равны 15/7. Получается 6x + 30/7 = 135/7.",
+       "explanation": "Обе смешанные записи 2 и 1/7 равны 15/7. Получается 6x + 30/7 = 135/7. Корень x = 5/2."
+      },
+      {
+       "prompt": "Какое число окажется справа после переноса свободных членов?",
+       "answer": "15",
+       "hint": "Обе смешанные записи 2 и 1/7 равны 15/7. Получается 6x + 30/7 = 135/7.",
+       "explanation": "Обе смешанные записи 2 и 1/7 равны 15/7. Получается 6x + 30/7 = 135/7. Корень x = 5/2."
+      }
+     ],
+     "hint": "Обе смешанные записи 2 и 1/7 равны 15/7. Получается 6x + 30/7 = 135/7.",
+     "explanation": "Обе смешанные записи 2 и 1/7 равны 15/7. Получается 6x + 30/7 = 135/7. Корень x = 5/2.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       [
+        "3",
+        "15/7"
+       ],
+       "15/7",
+       "9",
+       "2"
+      ],
+      "root": "5/2",
+      "printed": "(3x + 2 и 1/7)/(2 и 1/7) = 9/2"
+     },
+     "errorCues": [
+      [
+       "-5/2",
+       "Проверь знаки перекрёстных произведений."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t54",
+     "title": "К задаче №148(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 148,
+      "reference": "№148(2)",
+      "subpart": "2"
+     },
+     "kind": "number",
+     "prompt": "Найди корень пропорции 5,2/(2x − 5,2) = (4 и 1/3)/(5 и 2/3). Проверь ответ подстановкой.",
+     "answer": "6",
+     "steps": [
+      {
+       "prompt": "Какая подстановка обнуляет знаменатель?",
+       "answer": "13/5",
+       "hint": "Справа сократи трети до 13/17. Знаменатель 2x − 5,2 нельзя обнулить.",
+       "explanation": "Справа сократи трети до 13/17. Знаменатель 2x − 5,2 нельзя обнулить. Корень x = 6."
+      },
+      {
+       "prompt": "Используй исходную пропорцию без предварительного сокращения. Вычти правое перекрёстное произведение из левого. Какой коэффициент останется при букве?",
+       "answer": "-26/3",
+       "hint": "Справа сократи трети до 13/17. Знаменатель 2x − 5,2 нельзя обнулить.",
+       "explanation": "Справа сократи трети до 13/17. Знаменатель 2x − 5,2 нельзя обнулить. Корень x = 6."
+      },
+      {
+       "prompt": "Какое число окажется справа после переноса свободных членов?",
+       "answer": "-52",
+       "hint": "Справа сократи трети до 13/17. Знаменатель 2x − 5,2 нельзя обнулить.",
+       "explanation": "Справа сократи трети до 13/17. Знаменатель 2x − 5,2 нельзя обнулить. Корень x = 6."
+      }
+     ],
+     "hint": "Справа сократи трети до 13/17. Знаменатель 2x − 5,2 нельзя обнулить.",
+     "explanation": "Справа сократи трети до 13/17. Знаменатель 2x − 5,2 нельзя обнулить. Корень x = 6.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       "26/5",
+       [
+        "2",
+        "-26/5"
+       ],
+       "13/3",
+       "17/3"
+      ],
+      "root": "6",
+      "printed": "5,2/(2x − 5,2) = (4 и 1/3)/(5 и 2/3)"
+     },
+     "errorCues": [
+      [
+       "13/5",
+       "Знаменатель при этой подстановке равен нулю."
+      ],
+      [
+       "-6",
+       "Проверь знаки перекрёстных произведений."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t55",
+     "title": "К задаче №148(3)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 148,
+      "reference": "№148(3)",
+      "subpart": "3"
+     },
+     "kind": "number",
+     "prompt": "Найди корень пропорции (19 и 4/13)/(9/13) = (1,3x − 0,72)/0,72. Проверь ответ подстановкой.",
+     "answer": "16",
+     "steps": [
+      {
+       "prompt": "Используй исходную пропорцию без предварительного сокращения. Вычти правое перекрёстное произведение из левого. Какой коэффициент останется при букве?",
+       "answer": "-9/10",
+       "hint": "Слева сокращаются знаменатели 13, остаётся 251/9. Умножь на 0,72, затем прибавь 0,72.",
+       "explanation": "Слева сокращаются знаменатели 13, остаётся 251/9. Умножь на 0,72, затем прибавь 0,72. Корень x = 16."
+      },
+      {
+       "prompt": "Какое число окажется справа после переноса свободных членов?",
+       "answer": "-72/5",
+       "hint": "Слева сокращаются знаменатели 13, остаётся 251/9. Умножь на 0,72, затем прибавь 0,72.",
+       "explanation": "Слева сокращаются знаменатели 13, остаётся 251/9. Умножь на 0,72, затем прибавь 0,72. Корень x = 16."
+      }
+     ],
+     "hint": "Слева сокращаются знаменатели 13, остаётся 251/9. Умножь на 0,72, затем прибавь 0,72.",
+     "explanation": "Слева сокращаются знаменатели 13, остаётся 251/9. Умножь на 0,72, затем прибавь 0,72. Корень x = 16.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       "251/13",
+       "9/13",
+       [
+        "13/10",
+        "-18/25"
+       ],
+       "18/25"
+      ],
+      "root": "16",
+      "printed": "(19 и 4/13)/(9/13) = (1,3x − 0,72)/0,72"
+     },
+     "errorCues": [
+      [
+       "-16",
+       "Проверь знаки перекрёстных произведений."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t56",
+     "title": "К задаче №149",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 149,
+      "reference": "№149"
+     },
+     "kind": "number",
+     "prompt": "Из A в B велосипедист едет 16 км/ч. Через 2 ч навстречу из B отправляется пешеход со скоростью 35% велосипедной. Ещё через 1,5 ч на участке между посёлками их разделяют 10,8 км. Какова длина дороги?",
+     "answer": "376/5",
+     "steps": [
+      {
+       "prompt": "Скорость пешехода, км/ч?",
+       "answer": "28/5",
+       "hint": "Велосипедист двигался 2 + 1,5 = 3,5 ч, пешеход — 1,5 ч. Между ними осталось ещё 10,8 км.",
+       "explanation": "Скорость пешехода 16 × 0,35 = 5,6 км/ч. Пути равны 56 и 8,4 км. Добавим промежуток: 56 + 8,4 + 10,8 = 75,2 км."
+      },
+      {
+       "prompt": "Весь путь велосипедиста, км?",
+       "answer": "56",
+       "hint": "Велосипедист двигался 2 + 1,5 = 3,5 ч, пешеход — 1,5 ч. Между ними осталось ещё 10,8 км.",
+       "explanation": "Скорость пешехода 16 × 0,35 = 5,6 км/ч. Пути равны 56 и 8,4 км. Добавим промежуток: 56 + 8,4 + 10,8 = 75,2 км."
+      },
+      {
+       "prompt": "Весь путь пешехода, км?",
+       "answer": "42/5",
+       "hint": "Велосипедист двигался 2 + 1,5 = 3,5 ч, пешеход — 1,5 ч. Между ними осталось ещё 10,8 км.",
+       "explanation": "Скорость пешехода 16 × 0,35 = 5,6 км/ч. Пути равны 56 и 8,4 км. Добавим промежуток: 56 + 8,4 + 10,8 = 75,2 км."
+      }
+     ],
+     "hint": "Велосипедист двигался 2 + 1,5 = 3,5 ч, пешеход — 1,5 ч. Между ними осталось ещё 10,8 км.",
+     "explanation": "Скорость пешехода 16 × 0,35 = 5,6 км/ч. Пути равны 56 и 8,4 км. Добавим промежуток: 56 + 8,4 + 10,8 = 75,2 км.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "printedRateStory": "rider",
+     "errorCues": [
+      [
+       "64.4",
+       "Это лишь два пройденных пути. Учти промежуток между участниками."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t57",
+     "title": "К задаче №150",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 150,
+      "reference": "№150"
+     },
+     "kind": "manual",
+     "prompt": "Поезда едут в одну сторону. Первый проходит 72 км/ч, это 80% скорости второго. Второй отправился на 2,5 ч позже. Найди время погони и расстояния через 4 и 15 ч после отправления второго.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Скорость второго?",
+       "answer": "90",
+       "hint": "90 км/ч — скорость второго поезда. За опоздание 2,5 ч первый успел отъехать на 180 км. Считай время от отправления второго.",
+       "explanation": "72/0,8 = 90, сближение 18 км/ч. На встречу требуется 180/18 = 10 ч. Через 4 ч первый впереди на 108 км, через 15 ч впереди уже второй на 90 км."
+      },
+      {
+       "prompt": "Начальное отставание, км?",
+       "answer": "180",
+       "hint": "90 км/ч — скорость второго поезда. За опоздание 2,5 ч первый успел отъехать на 180 км. Считай время от отправления второго.",
+       "explanation": "72/0,8 = 90, сближение 18 км/ч. На встречу требуется 180/18 = 10 ч. Через 4 ч первый впереди на 108 км, через 15 ч впереди уже второй на 90 км."
+      },
+      {
+       "prompt": "Через сколько часов второй догонит первого?",
+       "answer": "10",
+       "hint": "90 км/ч — скорость второго поезда. За опоздание 2,5 ч первый успел отъехать на 180 км. Считай время от отправления второго.",
+       "explanation": "72/0,8 = 90, сближение 18 км/ч. На встречу требуется 180/18 = 10 ч. Через 4 ч первый впереди на 108 км, через 15 ч впереди уже второй на 90 км."
+      },
+      {
+       "prompt": "Расстояние через 4 ч?",
+       "answer": "108",
+       "hint": "90 км/ч — скорость второго поезда. За опоздание 2,5 ч первый успел отъехать на 180 км. Считай время от отправления второго.",
+       "explanation": "72/0,8 = 90, сближение 18 км/ч. На встречу требуется 180/18 = 10 ч. Через 4 ч первый впереди на 108 км, через 15 ч впереди уже второй на 90 км."
+      },
+      {
+       "prompt": "Расстояние через 15 ч?",
+       "answer": "90",
+       "hint": "90 км/ч — скорость второго поезда. За опоздание 2,5 ч первый успел отъехать на 180 км. Считай время от отправления второго.",
+       "explanation": "72/0,8 = 90, сближение 18 км/ч. На встречу требуется 180/18 = 10 ч. Через 4 ч первый впереди на 108 км, через 15 ч впереди уже второй на 90 км."
+      }
+     ],
+     "hint": "90 км/ч — скорость второго поезда. За опоздание 2,5 ч первый успел отъехать на 180 км. Считай время от отправления второго.",
+     "explanation": "72/0,8 = 90, сближение 18 км/ч. На встречу требуется 180/18 = 10 ч. Через 4 ч первый впереди на 108 км, через 15 ч впереди уже второй на 90 км.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "printedRateStory": "trains"
+    },
+    {
+     "id": "p19-t58",
+     "title": "К задаче №151",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 151,
+      "reference": "№151"
+     },
+     "kind": "number",
+     "prompt": "Автомобиль прошёл 250 км по шоссе и на 80% меньше по просёлку. На 100 км шоссе уходит 12 л, на просёлке на 50% больше. Сколько литров в среднем приходится на каждые 10 км?",
+     "answer": "13/10",
+     "steps": [
+      {
+       "prompt": "Длина просёлочного участка, км?",
+       "answer": "50",
+       "hint": "На просёлке длина пути составляет 20% шоссе, а расход на 100 км там в полтора раза больше. Усредняй литры по всему пути.",
+       "explanation": "По шоссе 250 км и 30 л. По просёлку 50 км и 9 л. Всего 39 л на 300 км, значит на 10 км в среднем 1,3 л."
+      },
+      {
+       "prompt": "Литры на шоссе?",
+       "answer": "30",
+       "hint": "На просёлке длина пути составляет 20% шоссе, а расход на 100 км там в полтора раза больше. Усредняй литры по всему пути.",
+       "explanation": "По шоссе 250 км и 30 л. По просёлку 50 км и 9 л. Всего 39 л на 300 км, значит на 10 км в среднем 1,3 л."
+      },
+      {
+       "prompt": "Литры на просёлке?",
+       "answer": "9",
+       "hint": "На просёлке длина пути составляет 20% шоссе, а расход на 100 км там в полтора раза больше. Усредняй литры по всему пути.",
+       "explanation": "По шоссе 250 км и 30 л. По просёлку 50 км и 9 л. Всего 39 л на 300 км, значит на 10 км в среднем 1,3 л."
+      },
+      {
+       "prompt": "Общая длина пути, км?",
+       "answer": "300",
+       "hint": "На просёлке длина пути составляет 20% шоссе, а расход на 100 км там в полтора раза больше. Усредняй литры по всему пути.",
+       "explanation": "По шоссе 250 км и 30 л. По просёлку 50 км и 9 л. Всего 39 л на 300 км, значит на 10 км в среднем 1,3 л."
+      }
+     ],
+     "hint": "На просёлке длина пути составляет 20% шоссе, а расход на 100 км там в полтора раза больше. Усредняй литры по всему пути.",
+     "explanation": "По шоссе 250 км и 30 л. По просёлку 50 км и 9 л. Всего 39 л на 300 км, значит на 10 км в среднем 1,3 л.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "printedRateStory": "fuelAverage",
+     "errorCues": [
+      [
+       "1.5",
+       "Простое среднее двух расходов неверно: длины участков различны."
+      ],
+      [
+       "13",
+       "Это расход на 100 км, запрошено на 10 км."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t59",
+     "title": "К задаче №152(1)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 152,
+      "reference": "№152(1)",
+      "subpart": "1"
+     },
+     "kind": "number",
+     "prompt": "Среднее трёх чисел 9,4. Первое на 3,5 больше второго, третье равно 60% второго. Найди меньшее.",
+     "answer": "57/10",
+     "steps": [
+      {
+       "prompt": "Сумма трёх чисел?",
+       "answer": "141/5",
+       "hint": "Пусть второе число x. Первое x + 3,5, третье 0,6x. Их сумма в три раза больше среднего.",
+       "explanation": "2,6x + 3,5 = 28,2, значит x = 9,5. Три числа: 13; 9,5; 5,7. Меньшее 5,7."
+      },
+      {
+       "prompt": "Второе число?",
+       "answer": "19/2",
+       "hint": "Пусть второе число x. Первое x + 3,5, третье 0,6x. Их сумма в три раза больше среднего.",
+       "explanation": "2,6x + 3,5 = 28,2, значит x = 9,5. Три числа: 13; 9,5; 5,7. Меньшее 5,7."
+      },
+      {
+       "prompt": "Первое число?",
+       "answer": "13",
+       "hint": "Пусть второе число x. Первое x + 3,5, третье 0,6x. Их сумма в три раза больше среднего.",
+       "explanation": "2,6x + 3,5 = 28,2, значит x = 9,5. Три числа: 13; 9,5; 5,7. Меньшее 5,7."
+      }
+     ],
+     "hint": "Пусть второе число x. Первое x + 3,5, третье 0,6x. Их сумма в три раза больше среднего.",
+     "explanation": "2,6x + 3,5 = 28,2, значит x = 9,5. Три числа: 13; 9,5; 5,7. Меньшее 5,7.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "printedRateStory": "meanThree",
+     "errorCues": [
+      [
+       "9.5",
+       "Это второе число; сравни его с 60% от него."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t60",
+     "title": "К задаче №152(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 38,
+      "exercise": 152,
+      "reference": "№152(2)",
+      "subpart": "2"
+     },
+     "kind": "number",
+     "prompt": "Среднее четырёх чисел 5,6. Второе в 2,5 раза больше первого. Третье составляет 120% второго, четвёртое на 1,6 меньше первого. Найди среднее первого и третьего.",
+     "answer": "32/5",
+     "steps": [
+      {
+       "prompt": "Сумма четырёх чисел?",
+       "answer": "112/5",
+       "hint": "Пусть первое x. Остальные: 2,5x; 1,2 × 2,5x = 3x; x − 1,6. Сумма четырёх равна 22,4.",
+       "explanation": "7,5x − 1,6 = 22,4, поэтому x = 3,2. Третье 9,6. Их среднее (3,2 + 9,6)/2 = 6,4."
+      },
+      {
+       "prompt": "Коэффициент третьего относительно первого?",
+       "answer": "3",
+       "hint": "Пусть первое x. Остальные: 2,5x; 1,2 × 2,5x = 3x; x − 1,6. Сумма четырёх равна 22,4.",
+       "explanation": "7,5x − 1,6 = 22,4, поэтому x = 3,2. Третье 9,6. Их среднее (3,2 + 9,6)/2 = 6,4."
+      },
+      {
+       "prompt": "Первое число?",
+       "answer": "16/5",
+       "hint": "Пусть первое x. Остальные: 2,5x; 1,2 × 2,5x = 3x; x − 1,6. Сумма четырёх равна 22,4.",
+       "explanation": "7,5x − 1,6 = 22,4, поэтому x = 3,2. Третье 9,6. Их среднее (3,2 + 9,6)/2 = 6,4."
+      },
+      {
+       "prompt": "Третье число?",
+       "answer": "48/5",
+       "hint": "Пусть первое x. Остальные: 2,5x; 1,2 × 2,5x = 3x; x − 1,6. Сумма четырёх равна 22,4.",
+       "explanation": "7,5x − 1,6 = 22,4, поэтому x = 3,2. Третье 9,6. Их среднее (3,2 + 9,6)/2 = 6,4."
+      }
+     ],
+     "hint": "Пусть первое x. Остальные: 2,5x; 1,2 × 2,5x = 3x; x − 1,6. Сумма четырёх равна 22,4.",
+     "explanation": "7,5x − 1,6 = 22,4, поэтому x = 3,2. Третье 9,6. Их среднее (3,2 + 9,6)/2 = 6,4.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "printedRateStory": "meanFour",
+     "errorCues": [
+      [
+       "5.6",
+       "Это среднее всех четырёх; возьми только первое и третье."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t61",
+     "title": "К задаче №153(1)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 153,
+      "reference": "№153(1)",
+      "subpart": "1"
+     },
+     "kind": "choice",
+     "prompt": "Свяжи периметр квадрата P и сторону a.",
+     "answer": "P = 4a",
+     "steps": [
+      {
+       "prompt": "При a = 3 какой результат?",
+       "answer": "12",
+       "hint": "Сложи четыре равные длины.",
+       "explanation": "Сложи четыре равные длины. Зависимость: P = 4a."
+      },
+      {
+       "prompt": "Проверь обратным вычислением: верни сторону a при результате 12.",
+       "answer": "3",
+       "hint": "Сложи четыре равные длины.",
+       "explanation": "Сложи четыре равные длины. Зависимость: P = 4a."
+      }
+     ],
+     "hint": "Сложи четыре равные длины.",
+     "explanation": "Сложи четыре равные длины. Зависимость: P = 4a.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "geometryQuantity": 7,
+     "choices": [
+      "P = a²",
+      "P = 2a",
+      "P = 4a"
+     ],
+     "errorCues": [
+      [
+       "P = a²",
+       "Сложи четыре равные длины."
+      ],
+      [
+       "P = 2a",
+       "Сложи четыре равные длины."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t62",
+     "title": "К задаче №153(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 153,
+      "reference": "№153(2)",
+      "subpart": "2"
+     },
+     "kind": "choice",
+     "prompt": "Свяжи площадь квадрата S и сторону a.",
+     "answer": "S = a²",
+     "steps": [
+      {
+       "prompt": "При a = 3 какой результат?",
+       "answer": "9",
+       "hint": "На каждом из a рядов по a единичных квадратов.",
+       "explanation": "На каждом из a рядов по a единичных квадратов. Зависимость: S = a²."
+      },
+      {
+       "prompt": "Проверь обратным вычислением: верни сторону a при результате 9.",
+       "answer": "3",
+       "hint": "На каждом из a рядов по a единичных квадратов.",
+       "explanation": "На каждом из a рядов по a единичных квадратов. Зависимость: S = a²."
+      }
+     ],
+     "hint": "На каждом из a рядов по a единичных квадратов.",
+     "explanation": "На каждом из a рядов по a единичных квадратов. Зависимость: S = a².",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "geometryQuantity": 8,
+     "choices": [
+      "S = 4a",
+      "S = 2a",
+      "S = a²"
+     ],
+     "errorCues": [
+      [
+       "S = 4a",
+       "На каждом из a рядов по a единичных квадратов."
+      ],
+      [
+       "S = 2a",
+       "На каждом из a рядов по a единичных квадратов."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t63",
+     "title": "К задаче №153(3)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 153,
+      "reference": "№153(3)",
+      "subpart": "3"
+     },
+     "kind": "choice",
+     "prompt": "Свяжи объём прямоугольного параллелепипеда V, площадь основания S и высоту h.",
+     "answer": "V = Sh",
+     "steps": [
+      {
+       "prompt": "При S = 10 и h = 3 какой результат?",
+       "answer": "30",
+       "hint": "Умножь площадь слоя на число слоёв по высоте.",
+       "explanation": "Умножь площадь слоя на число слоёв по высоте. Зависимость: V = Sh."
+      },
+      {
+       "prompt": "Проверь обратным вычислением: верни площадь основания при заданных высоте и объёме.",
+       "answer": "10",
+       "hint": "Умножь площадь слоя на число слоёв по высоте.",
+       "explanation": "Умножь площадь слоя на число слоёв по высоте. Зависимость: V = Sh."
+      }
+     ],
+     "hint": "Умножь площадь слоя на число слоёв по высоте.",
+     "explanation": "Умножь площадь слоя на число слоёв по высоте. Зависимость: V = Sh.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери формулу.",
+     "geometryQuantity": 9,
+     "choices": [
+      "V = S + h",
+      "V = S/h",
+      "V = Sh"
+     ],
+     "errorCues": [
+      [
+       "V = S + h",
+       "Умножь площадь слоя на число слоёв по высоте."
+      ],
+      [
+       "V = S/h",
+       "Умножь площадь слоя на число слоёв по высоте."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t64",
+     "title": "К задаче №154",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 154,
+      "reference": "№154"
+     },
+     "kind": "manual",
+     "prompt": "По графику покупок яблок восстанови таблицу для масс от 0 до 4 кг. Построй график в тетради и найди формулу стоимости.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "0 кг. Сколько рублей?",
+       "answer": "0",
+       "hint": "Прямая проходит через начало и точку (4 кг; 320 р.). Стоимость одного килограмма равна 320/4.",
+       "explanation": "C = 80m. При массе 0, 1, 2, 3, 4 кг стоимость равна 0, 80, 160, 240, 320 р."
+      },
+      {
+       "prompt": "1 кг. Сколько рублей?",
+       "answer": "80",
+       "hint": "Прямая проходит через начало и точку (4 кг; 320 р.). Стоимость одного килограмма равна 320/4.",
+       "explanation": "C = 80m. При массе 0, 1, 2, 3, 4 кг стоимость равна 0, 80, 160, 240, 320 р."
+      },
+      {
+       "prompt": "2 кг. Сколько рублей?",
+       "answer": "160",
+       "hint": "Прямая проходит через начало и точку (4 кг; 320 р.). Стоимость одного килограмма равна 320/4.",
+       "explanation": "C = 80m. При массе 0, 1, 2, 3, 4 кг стоимость равна 0, 80, 160, 240, 320 р."
+      },
+      {
+       "prompt": "3 кг. Сколько рублей?",
+       "answer": "240",
+       "hint": "Прямая проходит через начало и точку (4 кг; 320 р.). Стоимость одного килограмма равна 320/4.",
+       "explanation": "C = 80m. При массе 0, 1, 2, 3, 4 кг стоимость равна 0, 80, 160, 240, 320 р."
+      },
+      {
+       "prompt": "4 кг. Сколько рублей?",
+       "answer": "320",
+       "hint": "Прямая проходит через начало и точку (4 кг; 320 р.). Стоимость одного килограмма равна 320/4.",
+       "explanation": "C = 80m. При массе 0, 1, 2, 3, 4 кг стоимость равна 0, 80, 160, 240, 320 р."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Вырази стоимость C через массу m.",
+       "hint": "Прямая проходит через начало и точку (4 кг; 320 р.). Стоимость одного килограмма равна 320/4.",
+       "explanation": "C = 80m. При массе 0, 1, 2, 3, 4 кг стоимость равна 0, 80, 160, 240, 320 р."
+      }
+     ],
+     "hint": "Прямая проходит через начало и точку (4 кг; 320 р.). Стоимость одного килограмма равна 320/4.",
+     "explanation": "C = 80m. При массе 0, 1, 2, 3, 4 кг стоимость равна 0, 80, 160, 240, 320 р.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "marketDistanceGraph": "apples",
+     "figure": {
+      "type": "paper-quantity-graph",
+      "variant": "apples",
+      "caption": "Горизонтальная ось показывает массу в килограммах, вертикальная — стоимость в рублях."
+     }
+    },
+    {
+     "id": "p19-t65",
+     "title": "К задаче №155",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 155,
+      "reference": "№155"
+     },
+     "kind": "manual",
+     "prompt": "Расстояние между городами постоянно и равно 18 км. Для восьми заданных времён заполни таблицу скоростей. Запиши формулу и построй её график.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Время 1 ч. Скорость, км/ч?",
+       "answer": "18",
+       "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+       "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч."
+      },
+      {
+       "prompt": "Время 2 ч. Скорость, км/ч?",
+       "answer": "9",
+       "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+       "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч."
+      },
+      {
+       "prompt": "Время 3 ч. Скорость, км/ч?",
+       "answer": "6",
+       "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+       "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч."
+      },
+      {
+       "prompt": "Время 4 ч. Скорость, км/ч?",
+       "answer": "9/2",
+       "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+       "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч."
+      },
+      {
+       "prompt": "Время 4,5 ч. Скорость, км/ч?",
+       "answer": "4",
+       "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+       "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч."
+      },
+      {
+       "prompt": "Время 6 ч. Скорость, км/ч?",
+       "answer": "3",
+       "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+       "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч."
+      },
+      {
+       "prompt": "Время 9 ч. Скорость, км/ч?",
+       "answer": "2",
+       "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+       "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч."
+      },
+      {
+       "prompt": "Время 18 ч. Скорость, км/ч?",
+       "answer": "1",
+       "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+       "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Почему график расположен в первой четверти и убывает?",
+       "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+       "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч."
+      }
+     ],
+     "hint": "Расстояние остаётся 18 км. Поэтому умножение текущей скорости на время должно каждый раз давать 18.",
+     "explanation": "v = 18/t, t > 0. Для t = 1, 2, 3, 4, 4,5, 6, 9, 18 ч скорости равны 18; 9; 6; 4,5; 4; 3; 2; 1 км/ч.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "marketDistanceGraph": "fixedTrip"
+    },
+    {
+     "id": "p19-t66",
+     "title": "К задаче №156(1)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 156,
+      "reference": "№156(1)",
+      "subpart": "1"
+     },
+     "kind": "number",
+     "prompt": "Найди корень пропорции (x − 2/7)/(2/7) = 48,3/0,7. Проверь ответ подстановкой.",
+     "answer": "20",
+     "steps": [
+      {
+       "prompt": "Используй исходную пропорцию без предварительного сокращения. Вычти правое перекрёстное произведение из левого. Какой коэффициент останется при букве?",
+       "answer": "7/10",
+       "hint": "Правая часть равна 69. Получается x − 2/7 = 138/7.",
+       "explanation": "Правая часть равна 69. Получается x − 2/7 = 138/7. Корень x = 20."
+      },
+      {
+       "prompt": "Какое число окажется справа после переноса свободных членов?",
+       "answer": "14",
+       "hint": "Правая часть равна 69. Получается x − 2/7 = 138/7.",
+       "explanation": "Правая часть равна 69. Получается x − 2/7 = 138/7. Корень x = 20."
+      }
+     ],
+     "hint": "Правая часть равна 69. Получается x − 2/7 = 138/7.",
+     "explanation": "Правая часть равна 69. Получается x − 2/7 = 138/7. Корень x = 20.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       [
+        "1",
+        "-2/7"
+       ],
+       "2/7",
+       "483/10",
+       "7/10"
+      ],
+      "root": "20",
+      "printed": "(x − 2/7)/(2/7) = 48,3/0,7"
+     },
+     "errorCues": [
+      [
+       "-20",
+       "Проверь знаки перекрёстных произведений."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t67",
+     "title": "К задаче №156(2)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 156,
+      "reference": "№156(2)",
+      "subpart": "2"
+     },
+     "kind": "number",
+     "prompt": "Найди корень пропорции 1,8/6,8 = 0,042/[(1 и 1/6)x + 0,042]. Проверь ответ подстановкой.",
+     "answer": "1/10",
+     "steps": [
+      {
+       "prompt": "Какая подстановка обнуляет знаменатель?",
+       "answer": "-9/250",
+       "hint": "Слева 9/34. Знаменатель справа обращается в ноль при x = −9/250; исключи это значение.",
+       "explanation": "Слева 9/34. Знаменатель справа обращается в ноль при x = −9/250; исключи это значение. Корень x = 1/10."
+      },
+      {
+       "prompt": "Используй исходную пропорцию без предварительного сокращения. Вычти правое перекрёстное произведение из левого. Какой коэффициент останется при букве?",
+       "answer": "21/10",
+       "hint": "Слева 9/34. Знаменатель справа обращается в ноль при x = −9/250; исключи это значение.",
+       "explanation": "Слева 9/34. Знаменатель справа обращается в ноль при x = −9/250; исключи это значение. Корень x = 1/10."
+      },
+      {
+       "prompt": "Какое число окажется справа после переноса свободных членов?",
+       "answer": "21/100",
+       "hint": "Слева 9/34. Знаменатель справа обращается в ноль при x = −9/250; исключи это значение.",
+       "explanation": "Слева 9/34. Знаменатель справа обращается в ноль при x = −9/250; исключи это значение. Корень x = 1/10."
+      }
+     ],
+     "hint": "Слева 9/34. Знаменатель справа обращается в ноль при x = −9/250; исключи это значение.",
+     "explanation": "Слева 9/34. Знаменатель справа обращается в ноль при x = −9/250; исключи это значение. Корень x = 1/10.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       "9/5",
+       "34/5",
+       "21/500",
+       [
+        "7/6",
+        "21/500"
+       ]
+      ],
+      "root": "1/10",
+      "printed": "1,8/6,8 = 0,042/[(1 и 1/6)x + 0,042]"
+     },
+     "errorCues": [
+      [
+       "-9/250",
+       "Знаменатель при этой подстановке равен нулю."
+      ],
+      [
+       "-1/10",
+       "Проверь знаки перекрёстных произведений."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t68",
+     "title": "К задаче №157",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 157,
+      "reference": "№157"
+     },
+     "kind": "manual",
+     "prompt": "Автобусы уехали со станции в противоположные стороны. Первый вышел на 0,8 ч раньше и прибыл в свой город через 2 ч. Второй прибыл одновременно и ехал на 25% быстрее. Города в 210 км друг от друга. Восстанови обе скорости.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Время второго автобуса, ч?",
+       "answer": "6/5",
+       "hint": "Первый автобус был в пути 2 ч, второй — 2 − 0,8 = 1,2 ч. Скорость второго составляет 1,25 скорости первого.",
+       "explanation": "Если первая скорость x, то 2x + 1,2 × 1,25x = 210. Получаем x = 60, вторая скорость 75 км/ч. Пути 120 и 90 км."
+      },
+      {
+       "prompt": "Скорость первого, км/ч?",
+       "answer": "60",
+       "hint": "Первый автобус был в пути 2 ч, второй — 2 − 0,8 = 1,2 ч. Скорость второго составляет 1,25 скорости первого.",
+       "explanation": "Если первая скорость x, то 2x + 1,2 × 1,25x = 210. Получаем x = 60, вторая скорость 75 км/ч. Пути 120 и 90 км."
+      },
+      {
+       "prompt": "Скорость второго, км/ч?",
+       "answer": "75",
+       "hint": "Первый автобус был в пути 2 ч, второй — 2 − 0,8 = 1,2 ч. Скорость второго составляет 1,25 скорости первого.",
+       "explanation": "Если первая скорость x, то 2x + 1,2 × 1,25x = 210. Получаем x = 60, вторая скорость 75 км/ч. Пути 120 и 90 км."
+      },
+      {
+       "prompt": "Путь второго, км?",
+       "answer": "90",
+       "hint": "Первый автобус был в пути 2 ч, второй — 2 − 0,8 = 1,2 ч. Скорость второго составляет 1,25 скорости первого.",
+       "explanation": "Если первая скорость x, то 2x + 1,2 × 1,25x = 210. Получаем x = 60, вторая скорость 75 км/ч. Пути 120 и 90 км."
+      }
+     ],
+     "hint": "Первый автобус был в пути 2 ч, второй — 2 − 0,8 = 1,2 ч. Скорость второго составляет 1,25 скорости первого.",
+     "explanation": "Если первая скорость x, то 2x + 1,2 × 1,25x = 210. Получаем x = 60, вторая скорость 75 км/ч. Пути 120 и 90 км.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "printedRateStory": "buses"
+    },
+    {
+     "id": "p19-t69",
+     "title": "К задаче №158(A)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 158,
+      "reference": "№158(A)",
+      "subpart": "A",
+      "readingKey": "1"
+     },
+     "kind": "number",
+     "prompt": "Вычисли A = (160,272 : 3,18 − 3,18) : 7,87.",
+     "answer": "6",
+     "steps": [
+      {
+       "prompt": "20034/125 ÷ (159/50) = ?",
+       "answer": "252/5",
+       "hint": "Сначала выполни деление и вычитание в скобке.",
+       "explanation": "Сначала выполни деление и вычитание в скобке. Получается A = 6."
+      },
+      {
+       "prompt": "252/5 − (159/50) = ?",
+       "answer": "2361/50",
+       "hint": "Сначала выполни деление и вычитание в скобке.",
+       "explanation": "Сначала выполни деление и вычитание в скобке. Получается A = 6."
+      },
+      {
+       "prompt": "2361/50 ÷ (787/100) = ?",
+       "answer": "6",
+       "hint": "Сначала выполни деление и вычитание в скобке.",
+       "explanation": "Сначала выполни деление и вычитание в скобке. Получается A = 6."
+      }
+     ],
+     "hint": "Сначала выполни деление и вычитание в скобке.",
+     "explanation": "Сначала выполни деление и вычитание в скобке. Получается A = 6.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "expressionGroup": {
+      "tree": [
+       "÷",
+       [
+        "−",
+        [
+         "÷",
+         "160.272",
+         "3.18"
+        ],
+        "3.18"
+       ],
+       "7.87"
+      ],
+      "printed": "(160,272 : 3,18 − 3,18) : 7,87"
+     },
+     "errorCues": [
+      [
+       "-6",
+       "Проверь скобки и действие, которое выполняется последним."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t70",
+     "title": "К задаче №158(B)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 158,
+      "reference": "№158(B)",
+      "subpart": "B",
+      "readingKey": "2"
+     },
+     "kind": "number",
+     "prompt": "Вычисли B = 64,78 : (3,16 × 2,05) × [(8 и 3/25) : 8,12].",
+     "answer": "10",
+     "steps": [
+      {
+       "prompt": "79/25 × (41/20) = ?",
+       "answer": "3239/500",
+       "hint": "Смешанное число 8 и 3/25 в точности равно 8,12.",
+       "explanation": "Смешанное число 8 и 3/25 в точности равно 8,12. Получается B = 10."
+      },
+      {
+       "prompt": "3239/50 ÷ (3239/500) = ?",
+       "answer": "10",
+       "hint": "Смешанное число 8 и 3/25 в точности равно 8,12.",
+       "explanation": "Смешанное число 8 и 3/25 в точности равно 8,12. Получается B = 10."
+      },
+      {
+       "prompt": "203/25 ÷ (203/25) = ?",
+       "answer": "1",
+       "hint": "Смешанное число 8 и 3/25 в точности равно 8,12.",
+       "explanation": "Смешанное число 8 и 3/25 в точности равно 8,12. Получается B = 10."
+      },
+      {
+       "prompt": "10 × (1) = ?",
+       "answer": "10",
+       "hint": "Смешанное число 8 и 3/25 в точности равно 8,12.",
+       "explanation": "Смешанное число 8 и 3/25 в точности равно 8,12. Получается B = 10."
+      }
+     ],
+     "hint": "Смешанное число 8 и 3/25 в точности равно 8,12.",
+     "explanation": "Смешанное число 8 и 3/25 в точности равно 8,12. Получается B = 10.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "expressionGroup": {
+      "tree": [
+       "×",
+       [
+        "÷",
+        "64.78",
+        [
+         "×",
+         "3.16",
+         "2.05"
+        ]
+       ],
+       [
+        "÷",
+        "203/25",
+        "8.12"
+       ]
+      ],
+      "printed": "64,78 : (3,16 × 2,05) × [(8 и 3/25) : 8,12]"
+     },
+     "errorCues": [
+      [
+       "-10",
+       "Проверь скобки и действие, которое выполняется последним."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t71",
+     "title": "К задаче №158(C)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 158,
+      "reference": "№158(C)",
+      "subpart": "C",
+      "readingKey": "3"
+     },
+     "kind": "number",
+     "prompt": "Вычисли C = (6 и 1/3) : [(2 и 1/9) × 3,74 − 2,74 × (2 и 1/9)].",
+     "answer": "3",
+     "steps": [
+      {
+       "prompt": "19/9 × (187/50) = ?",
+       "answer": "3553/450",
+       "hint": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1.",
+       "explanation": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1. Получается C = 3."
+      },
+      {
+       "prompt": "137/50 × (19/9) = ?",
+       "answer": "2603/450",
+       "hint": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1.",
+       "explanation": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1. Получается C = 3."
+      },
+      {
+       "prompt": "3553/450 − (2603/450) = ?",
+       "answer": "19/9",
+       "hint": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1.",
+       "explanation": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1. Получается C = 3."
+      },
+      {
+       "prompt": "19/3 ÷ (19/9) = ?",
+       "answer": "3",
+       "hint": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1.",
+       "explanation": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1. Получается C = 3."
+      }
+     ],
+     "hint": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1.",
+     "explanation": "В знаменателе вынеси общий множитель 2 и 1/9. Остаётся 3,74 − 2,74 = 1. Получается C = 3.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "expressionGroup": {
+      "tree": [
+       "÷",
+       "19/3",
+       [
+        "−",
+        [
+         "×",
+         "19/9",
+         "3.74"
+        ],
+        [
+         "×",
+         "2.74",
+         "19/9"
+        ]
+       ]
+      ],
+      "printed": "(6 и 1/3) : [(2 и 1/9) × 3,74 − 2,74 × (2 и 1/9)]"
+     },
+     "errorCues": [
+      [
+       "-3",
+       "Проверь скобки и действие, которое выполняется последним."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t72",
+     "title": "К задаче №158(D)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 158,
+      "reference": "№158(D)",
+      "subpart": "D",
+      "readingKey": "4"
+     },
+     "kind": "number",
+     "prompt": "Вычисли D = (1 и 5/7) × 0,625 : (2/7) + [(1 и 1/2)³ − 3/4] : 2,1.",
+     "answer": "5",
+     "steps": [
+      {
+       "prompt": "12/7 × (5/8) = ?",
+       "answer": "15/14",
+       "hint": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части.",
+       "explanation": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части. Получается D = 5."
+      },
+      {
+       "prompt": "15/14 ÷ (2/7) = ?",
+       "answer": "15/4",
+       "hint": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части.",
+       "explanation": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части. Получается D = 5."
+      },
+      {
+       "prompt": "3/2 × (3/2) = ?",
+       "answer": "9/4",
+       "hint": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части.",
+       "explanation": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части. Получается D = 5."
+      },
+      {
+       "prompt": "9/4 × (3/2) = ?",
+       "answer": "27/8",
+       "hint": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части.",
+       "explanation": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части. Получается D = 5."
+      },
+      {
+       "prompt": "27/8 − (3/4) = ?",
+       "answer": "21/8",
+       "hint": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части.",
+       "explanation": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части. Получается D = 5."
+      },
+      {
+       "prompt": "21/8 ÷ (21/10) = ?",
+       "answer": "5/4",
+       "hint": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части.",
+       "explanation": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части. Получается D = 5."
+      },
+      {
+       "prompt": "15/4 + (5/4) = ?",
+       "answer": "5",
+       "hint": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части.",
+       "explanation": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части. Получается D = 5."
+      }
+     ],
+     "hint": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части.",
+     "explanation": "Куб смешанного числа равен (3/2)³ = 27/8. Вычитание и деление относятся ко всей второй части. Получается D = 5.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "expressionGroup": {
+      "tree": [
+       "+",
+       [
+        "÷",
+        [
+         "×",
+         "12/7",
+         "5/8"
+        ],
+        "2/7"
+       ],
+       [
+        "÷",
+        [
+         "−",
+         [
+          "×",
+          [
+           "×",
+           "3/2",
+           "3/2"
+          ],
+          "3/2"
+         ],
+         "3/4"
+        ],
+        "21/10"
+       ]
+      ],
+      "printed": "(1 и 5/7) × 0,625 : (2/7) + [(1 и 1/2)³ − 3/4] : 2,1"
+     },
+     "errorCues": [
+      [
+       "-5",
+       "Проверь скобки и действие, которое выполняется последним."
+      ]
+     ]
+    },
+    {
+     "id": "p19-t73",
+     "title": "К задаче №158(составление пропорции)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 158,
+      "reference": "№158(составление пропорции)",
+      "subpart": "составление пропорции",
+      "readingKey": "5"
+     },
+     "kind": "manual",
+     "prompt": "Вернись к четырём вычисленным значениям A, B, C, D. Составь любую верную пропорцию из четырёх чисел по одному разу.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Для проверки A и D: чему равно их произведение?",
+       "answer": "30",
+       "hint": "Перепробуй размещение четырёх значений так, чтобы произведение крайних равнялось произведению средних.",
+       "explanation": "A = 6, B = 10, C = 3, D = 5. Например, 6/10 = 3/5, поскольку 6 × 5 = 10 × 3 = 30. Подходят также другие равносильные перестановки."
+      },
+      {
+       "prompt": "А произведение B и C?",
+       "answer": "30",
+       "hint": "Перепробуй размещение четырёх значений так, чтобы произведение крайних равнялось произведению средних.",
+       "explanation": "A = 6, B = 10, C = 3, D = 5. Например, 6/10 = 3/5, поскольку 6 × 5 = 10 × 3 = 30. Подходят также другие равносильные перестановки."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свою пропорцию и обоснуй равенство.",
+       "hint": "Перепробуй размещение четырёх значений так, чтобы произведение крайних равнялось произведению средних.",
+       "explanation": "A = 6, B = 10, C = 3, D = 5. Например, 6/10 = 3/5, поскольку 6 × 5 = 10 × 3 = 30. Подходят также другие равносильные перестановки."
+      }
+     ],
+     "hint": "Перепробуй размещение четырёх значений так, чтобы произведение крайних равнялось произведению средних.",
+     "explanation": "A = 6, B = 10, C = 3, D = 5. Например, 6/10 = 3/5, поскольку 6 × 5 = 10 × 3 = 30. Подходят также другие равносильные перестановки.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани пояснение или собственную запись.",
+     "composeSourceRatio": true
+    },
+    {
+     "id": "p19-t74",
+     "title": "К задаче №159",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 39,
+      "exercise": 159,
+      "reference": "№159"
+     },
+     "kind": "number",
+     "prompt": "В магазин доставили 223 л масла в полных бидонах двух размеров, 10 и 17 л. Сколько всего бидонов? Обоснуй, что других вариантов нет.",
+     "answer": "16",
+     "steps": [
+      {
+       "prompt": "Сколько 17-литровых бидонов вообще может поместиться в 223 л, если округлить вниз?",
+       "answer": "13",
+       "hint": "Пусть b — число 17-литровых бидонов. Тогда 223 − 17b должно быть неотрицательным и делиться на 10. Последняя цифра 17b должна быть 3.",
+       "explanation": "Из 7b ≡ 3 по модулю 10 следует, что b заканчивается цифрой 9. По вместимости b ≤ 13, остаётся b = 9. Тогда (223 − 153)/10 = 7 малых бидонов, всего 16."
+      },
+      {
+       "prompt": "Сколько больших бидонов согласуется с последней цифрой?",
+       "answer": "9",
+       "hint": "Пусть b — число 17-литровых бидонов. Тогда 223 − 17b должно быть неотрицательным и делиться на 10. Последняя цифра 17b должна быть 3.",
+       "explanation": "Из 7b ≡ 3 по модулю 10 следует, что b заканчивается цифрой 9. По вместимости b ≤ 13, остаётся b = 9. Тогда (223 − 153)/10 = 7 малых бидонов, всего 16."
+      },
+      {
+       "prompt": "Сколько остаётся десятилитровых?",
+       "answer": "7",
+       "hint": "Пусть b — число 17-литровых бидонов. Тогда 223 − 17b должно быть неотрицательным и делиться на 10. Последняя цифра 17b должна быть 3.",
+       "explanation": "Из 7b ≡ 3 по модулю 10 следует, что b заканчивается цифрой 9. По вместимости b ≤ 13, остаётся b = 9. Тогда (223 − 153)/10 = 7 малых бидонов, всего 16."
+      }
+     ],
+     "hint": "Пусть b — число 17-литровых бидонов. Тогда 223 − 17b должно быть неотрицательным и делиться на 10. Последняя цифра 17b должна быть 3.",
+     "explanation": "Из 7b ≡ 3 по модулю 10 следует, что b заканчивается цифрой 9. По вместимости b ≤ 13, остаётся b = 9. Тогда (223 − 153)/10 = 7 малых бидонов, всего 16.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точный ответ.",
+     "oilCans": true,
+     "errorCues": [
+      [
+       "9",
+       "Это только большие бидоны."
+      ],
+      [
+       "7",
+       "Это только малые бидоны."
+      ]
+     ]
     }
    ],
-   "orderBySource": true
+   "orderBySource": true,
+   "completeSourceSection": {
+    "first": 132,
+    "last": 159,
+    "firstPage": 34,
+    "lastPage": 39,
+    "printingNote": "На с. 37 два разных задания с номером 143. Печатного №144 в этом издании нет."
+   }
   },
   {
    "id": "p20",
@@ -92941,6 +94967,7 @@ function firstErrorsHTML(t,s){
       coverage += '<p class="small">В теме «' + e(topic.title) + '» разобраны №' +
         section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
         section.lastPage + '). Число карточек с разбором — ' + count + '.</p>';
+      if (section.printingNote) coverage += '<p class="small">' + e(section.printingNote) + '</p>';
       lastPrinted = section.last;
       const review = topic.completeSourceReview;
       if (review && review.first === lastPrinted + 1) {

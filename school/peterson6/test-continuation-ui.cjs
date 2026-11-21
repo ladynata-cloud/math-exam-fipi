@@ -1459,3 +1459,26 @@ test('read both real flight tracks and separately recover the two printed survey
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('finish all actual printed dependencies and keep the missing 144 separate from both originals on page 37',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p19/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const choose=(id,label)=>set(id,[...f.q(id).options].find(o=>o.textContent===label).value);
+  f.nav('#part/2');assert(f.d.body.textContent.includes('Печатного №144 в этом издании нет.'));
+  let c=go(41);assert(f.q('#task-figure [data-right-angle]'));set(c[1],2);assert(out().includes('12 см²'));set(c[0],8);set(c[1],2);assert(out().includes('16 см²'));
+  c=go(47);set(c[1],2);assert(out().includes('Крайние: 14.'));set(c[0],1);set(c[1],2);assert(out().includes('Крайние: 56.'));
+  for(const [i,ans,excluded]of [[48,'3'],[49,'1/10'],[50,'5/4'],[51,'4/5','0'],[52,'5/2'],[53,'6','13/5'],[54,'16'],[65,'20'],[66,'1/10','-9/250']]){
+   c=go(i);choose(c[1],ans);set(c[2],2);assert(out().includes('Это корень'),out());if(excluded){choose(c[1],excluded);set(c[2],2);assert(out().includes('не допускается'));}
+  }
+  c=go(55);set(c[1],2);assert(out().includes('376/5 км'));set(c[0],1);set(c[1],2);assert(out().includes('456/5 км'));
+  c=go(56);set(c[1],15);set(c[2],2);assert(out().includes('90 км. Второй впереди'));set(c[1],4);set(c[2],2);assert(out().includes('108 км. Первый впереди'));
+  for(const [i,std,alt]of [[57,'13/10 л','5/4 л'],[58,'57/10.','63/10.'],[59,'32/5.','34/5.'],[67,'60 и 75 км/ч','1680/31 и 2100/31 км/ч']]){c=go(i);set(c[1],2);assert(out().includes(std),out());set(c[0],1);set(c[1],2);assert(out().includes(alt),out());}
+  c=go(62);set(c[1],2);assert(out().includes('30 см³'));c=go(63);set(c[1],4);set(c[2],2);assert(out().includes('320 р.'));c=go(64);set(c[1],4);set(c[2],2);assert(out().includes('4 км/ч.'));
+  for(const [j,k]of [6,10,3,5].entries()){c=go(68+j);set(c[1],f.q(c[1]).options.length-1);assert(out().includes('значение: '+k+'.'),out());}
+  c=go(72);set(c[1],1);assert(out().includes('Пропорция верна'));set(c[0],2);set(c[1],1);assert(out().includes('не подходит'));
+  c=go(73);set(c[1],9);set(c[2],2);assert(out().includes('7 полных'));assert.deepEqual([...f.d.querySelectorAll('#model tbody tr td')].map(x=>x.textContent),['7','9','16']);set(c[0],227);set(c[2],2);assert(out().includes('вариантов: 2.'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

@@ -299,6 +299,7 @@ function firstErrorsHTML(t,s){
       coverage += '<p class="small">В теме «' + e(topic.title) + '» разобраны №' +
         section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
         section.lastPage + '). Число карточек с разбором — ' + count + '.</p>';
+      if (section.printingNote) coverage += '<p class="small">' + e(section.printingNote) + '</p>';
       lastPrinted = section.last;
       const review = topic.completeSourceReview;
       if (review && review.first === lastPrinted + 1) {
