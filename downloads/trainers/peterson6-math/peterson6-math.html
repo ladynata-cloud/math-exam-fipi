@@ -1195,6 +1195,28 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+function linearBalanceValues(item,fresh){
+ const M=root.PetersonMath,add=(x,y)=>M.operation('add',x,y),sub=(x,y)=>M.operation('subtract',x,y);
+ const [a,b,c,d]=item.coefficients.map(M.parse),k=sub(a,c),identity=!k.n&&M.equal(b,d);
+ // Move the unknown in both original expressions, or change one constant of an identity.
+ const left=fresh&&!identity?sub(b,a):b,right=fresh?(identity?add(d,1):sub(d,c)):d,target=sub(right,left);
+ return {a,c,left,right,k,target,identity,root:k.n?M.operation('divide',target,k):null};
+}
+function linearBalanceCandidates(item){
+ const M=root.PetersonMath,values=new Set(['-2','0','1','2']);
+ for(const fresh of [false,true]){
+  const q=linearBalanceValues(item,fresh).root;
+  if(q)for(const off of [-1,0,1])values.add(M.answer(M.operation('add',q,off)));
+ }
+ return [...values].sort((u,v)=>{const a=M.parse(u),b=M.parse(v);return a.n/a.d-b.n/b.d;});
+}
+function writeLinearTerm(a,b,letter){
+ const M=root.PetersonMath;
+ const term=a.n===0?'':M.equal(a,1)?letter:M.equal(a,-1)?'−'+letter:'('+M.answer(a)+')'+letter;
+ if(!term)return M.answer(b);
+ if(!b.n)return term;
+ return term+(b.n<0?' − ':' + ')+M.answer(M.parse({n:Math.abs(b.n),d:b.d}));
+}
 function reviewOperationChain(which,fresh){
  const M=root.PetersonMath,op=M.operation;
  if(which===1){
@@ -2058,6 +2080,10 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p37' && task?.linearEquationStudy){
+  const item=task.linearEquationStudy,inputs=linearBalanceCandidates(item);
+  return {title:'Сохрани равенство обеих частей',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Новое условие']]),c('Пробное значение',inputs.map((v,i)=>[i,v])),c('Как проверить?',[[0,'Сначала решу'],[1,'После раскрытия'],[2,item.clear?'Целые коэффициенты':'Собрать слагаемые'],[3,'Проверить подстановку'],[4,'Полное решение']])],initial:[0,inputs.indexOf('0'),0]};
+ }
  if(lesson?.id==='p18' && task?.reviewRatio)return {title:task.reviewRatio.percent?'Первая величина в процентах от второй':'Отношение и его значение',controls:[c('Данные',[[0,'Исходные'],[1,'Удвоить первый член']]),c('Разбор',[[0,'Сначала решу'],[1,'Дробь'],[2,'Итог']])],initial:[0,0]};
  if(lesson?.id==='p18' && task?.cancelRatio)return {title:'Сокращение буквенного множителя',controls:[c('Значение a',[-2,0,1,3]),c('Значение b',[-3,0,3,6]),c('Подстановка',[[0,'Сначала упрости'],[1,'Сравнить']])],initial:[1,6,0]};
  if(lesson?.id==='p18' && task?.reviewMap)return {title:'Карта и расстояние по одному масштабу',controls:[c('Данные',[[0,'Из учебника'],[1,'Новые расстояния']]),c('Расчёт',[[0,'Сначала решу'],[1,'Сантиметр карты'],[2,'Три величины']])],initial:[0,0]};
@@ -2234,7 +2260,7 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2246,7 +2272,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
   if((task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2481,6 +2507,20 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===37 && task.linearEquationStudy){
+  const item=task.linearEquationStudy,M=root.PetersonMath,vals=linearBalanceValues(item,a===1),cand=linearBalanceCandidates(item)[b],mode=state.values[2],x=item.variable;
+  say('Исходная запись: '+item.printed+'.');
+  if(a===1)say(vals.identity?'В новом примере к правой части прибавь 1. Как изменилось множество корней?':'В новом примере в обеих частях вместо '+x+' поставь ('+x+' − 1).');
+  if(mode===1){show(table(['Часть','Коэффициент','Свободный член'],[['Левая',M.answer(vals.a),M.answer(vals.left)],['Правая',M.answer(vals.c),M.answer(vals.right)]]));}
+  if(mode===2){
+   if(item.clear){const scaled=[vals.a,vals.left,vals.c,vals.right].map(q=>M.operation('multiply',q,item.clear));say('Умножаем обе части на '+item.clear+'.');formula(writeLinearTerm(scaled[0],scaled[1],x)+' = '+writeLinearTerm(scaled[2],scaled[3],x));}
+   else{formula(writeLinearTerm(vals.k,M.parse(0),x)+' = '+M.answer(vals.target));say('Буквенные члены собраны слева, числа — справа.');}
+  }
+  if(mode===3){const pair=[[vals.a,vals.left],[vals.c,vals.right]].map(([coef,n])=>M.operation('add',M.operation('multiply',coef,cand),n));show(table(['Часть','При '+x+' = '+cand],[['Левая',M.answer(pair[0])],['Правая',M.answer(pair[1])]]));say(M.equal(...pair)?'Подстановка даёт равенство.':'Части не совпали, кандидат не подходит.');}
+  if(mode===4){if(vals.root)say('Корень '+x+' = '+M.answer(vals.root)+'.');else say(vals.target.n?'Получено противоречие. Корней нет.':'Получено верное равенство без переменной. Все рациональные числа являются корнями.');}
+  stepList(['Раскрой скобки и собери подобные члены на каждой стороне.','Сохрани равенство, применяя одну операцию к обеим сторонам.','Проверь найденный корень или докажи полное множество решений.']);
  }
  else
  if(n===18 && task.reviewRatio){
@@ -61230,7 +61270,7 @@ window.PetersonCourse = {
    "tasks": [
     {
      "title": "К задаче №86а",
-     "prompt": "Реши уравнение −x+3=2.",
+     "prompt": "Реши −x + 3 = 2 двумя способами. Запиши, какой из них оказался удобнее.",
      "kind": "number",
      "answer": "1",
      "steps": [
@@ -61250,7 +61290,7 @@ window.PetersonCourse = {
       }
      ],
      "hint": "2−3.",
-     "explanation": "Получаем −x=−1. x=1; проверка −1+3=2.",
+     "explanation": "Вычти 3, получишь −x = −1. Можно также сразу проверить, какое число надо вычесть из 3, чтобы осталось 2. Ответ: x = 1.",
      "skills": [
       "linear-equation",
       "signed-divide"
@@ -61265,7 +61305,18 @@ window.PetersonCourse = {
      },
      "finalLabel": "Введи корень x.",
      "answerFormat": "integer",
-     "id": "p37-t01"
+     "id": "p37-t01",
+     "linearEquationStudy": {
+      "printed": "−x + 3 = 2",
+      "variable": "x",
+      "coefficients": [
+       "-1",
+       "3",
+       "0",
+       "2"
+      ],
+      "clear": 0
+     }
     },
     {
      "title": "К задаче №87б",
@@ -61311,7 +61362,18 @@ window.PetersonCourse = {
      },
      "finalLabel": "Введи корень a.",
      "answerFormat": "integer",
-     "id": "p37-t02"
+     "id": "p37-t02",
+     "linearEquationStudy": {
+      "printed": "12a − 1 = −a + 25",
+      "variable": "a",
+      "coefficients": [
+       "12",
+       "-1",
+       "-1",
+       "25"
+      ],
+      "clear": 0
+     }
     },
     {
      "title": "К задаче №89б",
@@ -61357,7 +61419,18 @@ window.PetersonCourse = {
      },
      "finalLabel": "Введи корень b.",
      "answerFormat": "integer",
-     "id": "p37-t03"
+     "id": "p37-t03",
+     "linearEquationStudy": {
+      "printed": "0,4b + 0,8 = 0,9b − 2,7",
+      "variable": "b",
+      "coefficients": [
+       "2/5",
+       "4/5",
+       "9/10",
+       "-27/10"
+      ],
+      "clear": 10
+     }
     },
     {
      "title": "К задаче №90б",
@@ -61404,8 +61477,1316 @@ window.PetersonCourse = {
      "finalLabel": "Введи корень b.",
      "answerFormat": "decimal",
      "id": "p37-t04"
+    },
+    {
+     "id": "p37-t05",
+     "title": "К задаче №86б",
+     "kind": "number",
+     "prompt": "Реши двумя способами и объясни, какой тебе удобнее: −5 + y = −4.",
+     "answer": "1",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "1",
+       "hint": "Прибавь 5 к обеим частям. Второй способ — найти, на сколько −4 правее −5 на числовой прямой.",
+       "explanation": "Прибавь 5 к обеим частям. Второй способ — найти, на сколько −4 правее −5 на числовой прямой. Ответ: y = 1."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "1",
+       "hint": "Прибавь 5 к обеим частям. Второй способ — найти, на сколько −4 правее −5 на числовой прямой.",
+       "explanation": "Прибавь 5 к обеим частям. Второй способ — найти, на сколько −4 правее −5 на числовой прямой. Ответ: y = 1."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проверь неизвестное число подстановкой. Запиши ещё один способ или рассуждение на числовой прямой.",
+       "hint": "Прибавь 5 к обеим частям. Второй способ — найти, на сколько −4 правее −5 на числовой прямой.",
+       "explanation": "Прибавь 5 к обеим частям. Второй способ — найти, на сколько −4 правее −5 на числовой прямой. Ответ: y = 1."
+      }
+     ],
+     "hint": "Прибавь 5 к обеим частям. Второй способ — найти, на сколько −4 правее −5 на числовой прямой.",
+     "explanation": "Прибавь 5 к обеим частям. Второй способ — найти, на сколько −4 правее −5 на числовой прямой. Ответ: y = 1.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 86,
+      "subpart": "б",
+      "reference": "№86б"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "−5 + y = −4",
+      "variable": "y",
+      "coefficients": [
+       "1",
+       "-5",
+       "0",
+       "-4"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "-1",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "2",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t06",
+     "title": "К задаче №86в",
+     "kind": "number",
+     "prompt": "Реши двумя способами и объясни, какой тебе удобнее: z − 9 = −3.",
+     "answer": "6",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "1",
+       "hint": "Прибавление 9 к обеим частям отменяет вычитание. На прямой можно сдвинуться от −3 на девять шагов вправо.",
+       "explanation": "Прибавление 9 к обеим частям отменяет вычитание. На прямой можно сдвинуться от −3 на девять шагов вправо. Ответ: z = 6."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "6",
+       "hint": "Прибавление 9 к обеим частям отменяет вычитание. На прямой можно сдвинуться от −3 на девять шагов вправо.",
+       "explanation": "Прибавление 9 к обеим частям отменяет вычитание. На прямой можно сдвинуться от −3 на девять шагов вправо. Ответ: z = 6."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проверь неизвестное число подстановкой. Запиши ещё один способ или рассуждение на числовой прямой.",
+       "hint": "Прибавление 9 к обеим частям отменяет вычитание. На прямой можно сдвинуться от −3 на девять шагов вправо.",
+       "explanation": "Прибавление 9 к обеим частям отменяет вычитание. На прямой можно сдвинуться от −3 на девять шагов вправо. Ответ: z = 6."
+      }
+     ],
+     "hint": "Прибавление 9 к обеим частям отменяет вычитание. На прямой можно сдвинуться от −3 на девять шагов вправо.",
+     "explanation": "Прибавление 9 к обеим частям отменяет вычитание. На прямой можно сдвинуться от −3 на девять шагов вправо. Ответ: z = 6.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 86,
+      "subpart": "в",
+      "reference": "№86в"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "z − 9 = −3",
+      "variable": "z",
+      "coefficients": [
+       "1",
+       "-9",
+       "0",
+       "-3"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "-6",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "7",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t07",
+     "title": "К задаче №86г",
+     "kind": "number",
+     "prompt": "Реши двумя способами и объясни, какой тебе удобнее: −7 − t = 0.",
+     "answer": "-7",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "-1",
+       "hint": "Сумма слагаемых −7 и −t равна нулю, значит −t = 7. Другой способ — прибавить t к обеим частям: −7 = t.",
+       "explanation": "Сумма слагаемых −7 и −t равна нулю, значит −t = 7. Другой способ — прибавить t к обеим частям: −7 = t. Ответ: t = -7."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "7",
+       "hint": "Сумма слагаемых −7 и −t равна нулю, значит −t = 7. Другой способ — прибавить t к обеим частям: −7 = t.",
+       "explanation": "Сумма слагаемых −7 и −t равна нулю, значит −t = 7. Другой способ — прибавить t к обеим частям: −7 = t. Ответ: t = -7."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проверь неизвестное число подстановкой. Запиши ещё один способ или рассуждение на числовой прямой.",
+       "hint": "Сумма слагаемых −7 и −t равна нулю, значит −t = 7. Другой способ — прибавить t к обеим частям: −7 = t.",
+       "explanation": "Сумма слагаемых −7 и −t равна нулю, значит −t = 7. Другой способ — прибавить t к обеим частям: −7 = t. Ответ: t = -7."
+      }
+     ],
+     "hint": "Сумма слагаемых −7 и −t равна нулю, значит −t = 7. Другой способ — прибавить t к обеим частям: −7 = t.",
+     "explanation": "Сумма слагаемых −7 и −t равна нулю, значит −t = 7. Другой способ — прибавить t к обеим частям: −7 = t. Ответ: t = -7.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 86,
+      "subpart": "г",
+      "reference": "№86г"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "−7 − t = 0",
+      "variable": "t",
+      "coefficients": [
+       "-1",
+       "-7",
+       "0",
+       "0"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "7",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "-6",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t08",
+     "title": "К задаче №87а",
+     "kind": "number",
+     "prompt": "Перенеси слагаемые и реши: 9 − 4y = −5y.",
+     "answer": "-9",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "1",
+       "hint": "Прибавь 5y сразу к обеим частям. Получится 9 + y = 0.",
+       "explanation": "Прибавь 5y сразу к обеим частям. Получится 9 + y = 0. Ответ: y = -9."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "-9",
+       "hint": "Прибавь 5y сразу к обеим частям. Получится 9 + y = 0.",
+       "explanation": "Прибавь 5y сразу к обеим частям. Получится 9 + y = 0. Ответ: y = -9."
+      }
+     ],
+     "hint": "Прибавь 5y сразу к обеим частям. Получится 9 + y = 0.",
+     "explanation": "Прибавь 5y сразу к обеим частям. Получится 9 + y = 0. Ответ: y = -9.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 87,
+      "subpart": "а",
+      "reference": "№87а"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "9 − 4y = −5y",
+      "variable": "y",
+      "coefficients": [
+       "-4",
+       "9",
+       "-5",
+       "0"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "9",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "-8",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t09",
+     "title": "К задаче №87в",
+     "kind": "number",
+     "prompt": "Перенеси слагаемые и реши: 8 + 3b = −7 − 2b.",
+     "answer": "-3",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "5",
+       "hint": "Прибавление 2b даёт 5b слева; вычитание 8 справа даёт −15.",
+       "explanation": "Прибавление 2b даёт 5b слева; вычитание 8 справа даёт −15. Ответ: b = -3."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "-15",
+       "hint": "Прибавление 2b даёт 5b слева; вычитание 8 справа даёт −15.",
+       "explanation": "Прибавление 2b даёт 5b слева; вычитание 8 справа даёт −15. Ответ: b = -3."
+      }
+     ],
+     "hint": "Прибавление 2b даёт 5b слева; вычитание 8 справа даёт −15.",
+     "explanation": "Прибавление 2b даёт 5b слева; вычитание 8 справа даёт −15. Ответ: b = -3.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 87,
+      "subpart": "в",
+      "reference": "№87в"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "8 + 3b = −7 − 2b",
+      "variable": "b",
+      "coefficients": [
+       "3",
+       "8",
+       "-2",
+       "-7"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "3",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "-15",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t10",
+     "title": "К задаче №87г",
+     "kind": "number",
+     "prompt": "Перенеси слагаемые и реши: 4n = −2 + 6n + 7.",
+     "answer": "-5/2",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "-2",
+       "hint": "Сначала сложи свободные члены −2 и 7. При переносе 6n налево останется −2n = 5.",
+       "explanation": "Сначала сложи свободные члены −2 и 7. При переносе 6n налево останется −2n = 5. Ответ: n = -5/2."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "5",
+       "hint": "Сначала сложи свободные члены −2 и 7. При переносе 6n налево останется −2n = 5.",
+       "explanation": "Сначала сложи свободные члены −2 и 7. При переносе 6n налево останется −2n = 5. Ответ: n = -5/2."
+      }
+     ],
+     "hint": "Сначала сложи свободные члены −2 и 7. При переносе 6n налево останется −2n = 5.",
+     "explanation": "Сначала сложи свободные члены −2 и 7. При переносе 6n налево останется −2n = 5. Ответ: n = -5/2.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 87,
+      "subpart": "г",
+      "reference": "№87г"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "4n = −2 + 6n + 7",
+      "variable": "n",
+      "coefficients": [
+       "4",
+       "0",
+       "6",
+       "5"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "5/2",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "5",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t11",
+     "title": "К задаче №87д",
+     "kind": "number",
+     "prompt": "Перенеси слагаемые и реши: 2 − c = 5c + 1.",
+     "answer": "1/6",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "-6",
+       "hint": "Перенося 5c налево и 2 направо, получаем −6c = −1.",
+       "explanation": "Перенося 5c налево и 2 направо, получаем −6c = −1. Ответ: c = 1/6."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "-1",
+       "hint": "Перенося 5c налево и 2 направо, получаем −6c = −1.",
+       "explanation": "Перенося 5c налево и 2 направо, получаем −6c = −1. Ответ: c = 1/6."
+      }
+     ],
+     "hint": "Перенося 5c налево и 2 направо, получаем −6c = −1.",
+     "explanation": "Перенося 5c налево и 2 направо, получаем −6c = −1. Ответ: c = 1/6.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 87,
+      "subpart": "д",
+      "reference": "№87д"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "2 − c = 5c + 1",
+      "variable": "c",
+      "coefficients": [
+       "-1",
+       "2",
+       "5",
+       "1"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "-1/6",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "-1",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t12",
+     "title": "К задаче №87е",
+     "kind": "number",
+     "prompt": "Перенеси слагаемые и реши: −3d − 10 = 3d − 6.",
+     "answer": "-2/3",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "-6",
+       "hint": "Вычти 3d из обеих частей, затем прибавь 10. Получается −6d = 4.",
+       "explanation": "Вычти 3d из обеих частей, затем прибавь 10. Получается −6d = 4. Ответ: d = -2/3."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "4",
+       "hint": "Вычти 3d из обеих частей, затем прибавь 10. Получается −6d = 4.",
+       "explanation": "Вычти 3d из обеих частей, затем прибавь 10. Получается −6d = 4. Ответ: d = -2/3."
+      }
+     ],
+     "hint": "Вычти 3d из обеих частей, затем прибавь 10. Получается −6d = 4.",
+     "explanation": "Вычти 3d из обеих частей, затем прибавь 10. Получается −6d = 4. Ответ: d = -2/3.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 87,
+      "subpart": "е",
+      "reference": "№87е"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "−3d − 10 = 3d − 6",
+      "variable": "d",
+      "coefficients": [
+       "-3",
+       "-10",
+       "3",
+       "-6"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "2/3",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "4",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t13",
+     "title": "К задаче №87ж",
+     "kind": "number",
+     "prompt": "Перенеси слагаемые и реши: (5/6)m + 2 = (1/3)m − 0,8.",
+     "answer": "-28/5",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "1/2",
+       "hint": "Коэффициент слева 5/6 − 1/3 = 1/2. Справа −0,8 − 2 = −2,8.",
+       "explanation": "Коэффициент слева 5/6 − 1/3 = 1/2. Справа −0,8 − 2 = −2,8. Ответ: m = -28/5."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "-14/5",
+       "hint": "Коэффициент слева 5/6 − 1/3 = 1/2. Справа −0,8 − 2 = −2,8.",
+       "explanation": "Коэффициент слева 5/6 − 1/3 = 1/2. Справа −0,8 − 2 = −2,8. Ответ: m = -28/5."
+      }
+     ],
+     "hint": "Коэффициент слева 5/6 − 1/3 = 1/2. Справа −0,8 − 2 = −2,8.",
+     "explanation": "Коэффициент слева 5/6 − 1/3 = 1/2. Справа −0,8 − 2 = −2,8. Ответ: m = -28/5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 87,
+      "subpart": "ж",
+      "reference": "№87ж"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "(5/6)m + 2 = (1/3)m − 0,8",
+      "variable": "m",
+      "coefficients": [
+       "5/6",
+       "2",
+       "1/3",
+       "-4/5"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "28/5",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "-14/5",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t14",
+     "title": "К задаче №87з",
+     "kind": "number",
+     "prompt": "Перенеси слагаемые и реши: −1,6 − 0,3p = 0,9p + 0,2.",
+     "answer": "-3/2",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "-6/5",
+       "hint": "Собери −0,3p − 0,9p слева, а 0,2 + 1,6 справа.",
+       "explanation": "Собери −0,3p − 0,9p слева, а 0,2 + 1,6 справа. Ответ: p = -3/2."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "9/5",
+       "hint": "Собери −0,3p − 0,9p слева, а 0,2 + 1,6 справа.",
+       "explanation": "Собери −0,3p − 0,9p слева, а 0,2 + 1,6 справа. Ответ: p = -3/2."
+      }
+     ],
+     "hint": "Собери −0,3p − 0,9p слева, а 0,2 + 1,6 справа.",
+     "explanation": "Собери −0,3p − 0,9p слева, а 0,2 + 1,6 справа. Ответ: p = -3/2.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 87,
+      "subpart": "з",
+      "reference": "№87з"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "−1,6 − 0,3p = 0,9p + 0,2",
+      "variable": "p",
+      "coefficients": [
+       "-3/10",
+       "-8/5",
+       "9/10",
+       "1/5"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "3/2",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "9/5",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t15",
+     "title": "К задаче №87и",
+     "kind": "number",
+     "prompt": "Перенеси слагаемые и реши: (11/12)x − 2/3 = −0,5 − (3/4)x.",
+     "answer": "1/10",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "5/3",
+       "hint": "Слева 11/12 + 3/4 = 5/3, справа −1/2 + 2/3 = 1/6.",
+       "explanation": "Слева 11/12 + 3/4 = 5/3, справа −1/2 + 2/3 = 1/6. Ответ: x = 1/10."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "1/6",
+       "hint": "Слева 11/12 + 3/4 = 5/3, справа −1/2 + 2/3 = 1/6.",
+       "explanation": "Слева 11/12 + 3/4 = 5/3, справа −1/2 + 2/3 = 1/6. Ответ: x = 1/10."
+      }
+     ],
+     "hint": "Слева 11/12 + 3/4 = 5/3, справа −1/2 + 2/3 = 1/6.",
+     "explanation": "Слева 11/12 + 3/4 = 5/3, справа −1/2 + 2/3 = 1/6. Ответ: x = 1/10.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 87,
+      "subpart": "и",
+      "reference": "№87и"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "(11/12)x − 2/3 = −0,5 − (3/4)x",
+      "variable": "x",
+      "coefficients": [
+       "11/12",
+       "-2/3",
+       "-3/4",
+       "-1/2"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "-1/10",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "1/6",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t16",
+     "title": "К задаче №88а",
+     "kind": "number",
+     "prompt": "Раскрой скобки и найди все корни: 2a − (14 − 3a) = −10.",
+     "answer": "4/5",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "5",
+       "hint": "Минус перед скобкой превращает −3a в +3a и 14 в −14. После приведения слева 5a − 14.",
+       "explanation": "Минус перед скобкой превращает −3a в +3a и 14 в −14. После приведения слева 5a − 14. Ответ: a = 4/5."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "4",
+       "hint": "Минус перед скобкой превращает −3a в +3a и 14 в −14. После приведения слева 5a − 14.",
+       "explanation": "Минус перед скобкой превращает −3a в +3a и 14 в −14. После приведения слева 5a − 14. Ответ: a = 4/5."
+      }
+     ],
+     "hint": "Минус перед скобкой превращает −3a в +3a и 14 в −14. После приведения слева 5a − 14.",
+     "explanation": "Минус перед скобкой превращает −3a в +3a и 14 в −14. После приведения слева 5a − 14. Ответ: a = 4/5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 88,
+      "subpart": "а",
+      "reference": "№88а"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "2a − (14 − 3a) = −10",
+      "variable": "a",
+      "coefficients": [
+       "5",
+       "-14",
+       "0",
+       "-10"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "-4/5",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "4",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t17",
+     "title": "К задаче №88б",
+     "kind": "number",
+     "prompt": "Раскрой скобки и найди все корни: (9 − 2b) − (b + 5) = 16.",
+     "answer": "-4",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "-3",
+       "hint": "Перед первой скобкой плюс, перед второй минус. Поэтому слева 9 − 2b − b − 5 = 4 − 3b.",
+       "explanation": "Перед первой скобкой плюс, перед второй минус. Поэтому слева 9 − 2b − b − 5 = 4 − 3b. Ответ: b = -4."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "12",
+       "hint": "Перед первой скобкой плюс, перед второй минус. Поэтому слева 9 − 2b − b − 5 = 4 − 3b.",
+       "explanation": "Перед первой скобкой плюс, перед второй минус. Поэтому слева 9 − 2b − b − 5 = 4 − 3b. Ответ: b = -4."
+      }
+     ],
+     "hint": "Перед первой скобкой плюс, перед второй минус. Поэтому слева 9 − 2b − b − 5 = 4 − 3b.",
+     "explanation": "Перед первой скобкой плюс, перед второй минус. Поэтому слева 9 − 2b − b − 5 = 4 − 3b. Ответ: b = -4.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 88,
+      "subpart": "б",
+      "reference": "№88б"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "(9 − 2b) − (b + 5) = 16",
+      "variable": "b",
+      "coefficients": [
+       "-3",
+       "4",
+       "0",
+       "16"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "4",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "12",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t18",
+     "title": "К задаче №88в",
+     "kind": "number",
+     "prompt": "Раскрой скобки и найди все корни: −(4c − 7) = 5c + (11 − 7c).",
+     "answer": "-2",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "-2",
+       "hint": "Слева −4c + 7, справа −2c + 11. Одинаковые действия на чашах дают −2c = 4.",
+       "explanation": "Слева −4c + 7, справа −2c + 11. Одинаковые действия на чашах дают −2c = 4. Ответ: c = -2."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "4",
+       "hint": "Слева −4c + 7, справа −2c + 11. Одинаковые действия на чашах дают −2c = 4.",
+       "explanation": "Слева −4c + 7, справа −2c + 11. Одинаковые действия на чашах дают −2c = 4. Ответ: c = -2."
+      }
+     ],
+     "hint": "Слева −4c + 7, справа −2c + 11. Одинаковые действия на чашах дают −2c = 4.",
+     "explanation": "Слева −4c + 7, справа −2c + 11. Одинаковые действия на чашах дают −2c = 4. Ответ: c = -2.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 88,
+      "subpart": "в",
+      "reference": "№88в"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "−(4c − 7) = 5c + (11 − 7c)",
+      "variable": "c",
+      "coefficients": [
+       "-4",
+       "7",
+       "-2",
+       "11"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "2",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "4",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t19",
+     "title": "К задаче №88г",
+     "kind": "number",
+     "prompt": "Раскрой скобки и найди все корни: −6x + 2(5 − 3x) = 8.",
+     "answer": "1/6",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "-12",
+       "hint": "Множитель 2 умножает оба слагаемых: появляется 10 − 6x. Вместе с исходным −6x имеем −12x + 10.",
+       "explanation": "Множитель 2 умножает оба слагаемых: появляется 10 − 6x. Вместе с исходным −6x имеем −12x + 10. Ответ: x = 1/6."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "-2",
+       "hint": "Множитель 2 умножает оба слагаемых: появляется 10 − 6x. Вместе с исходным −6x имеем −12x + 10.",
+       "explanation": "Множитель 2 умножает оба слагаемых: появляется 10 − 6x. Вместе с исходным −6x имеем −12x + 10. Ответ: x = 1/6."
+      }
+     ],
+     "hint": "Множитель 2 умножает оба слагаемых: появляется 10 − 6x. Вместе с исходным −6x имеем −12x + 10.",
+     "explanation": "Множитель 2 умножает оба слагаемых: появляется 10 − 6x. Вместе с исходным −6x имеем −12x + 10. Ответ: x = 1/6.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 88,
+      "subpart": "г",
+      "reference": "№88г"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "−6x + 2(5 − 3x) = 8",
+      "variable": "x",
+      "coefficients": [
+       "-12",
+       "10",
+       "0",
+       "8"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "-1/6",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "-2",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t20",
+     "title": "К задаче №88д",
+     "kind": "number",
+     "prompt": "Раскрой скобки и найди все корни: 18 − 4y = 7(2 − y) + 6.",
+     "answer": "2/3",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "3",
+       "hint": "После раскрытия справа 14 − 7y + 6 = 20 − 7y. Прибавление 7y приводит к 18 + 3y = 20.",
+       "explanation": "После раскрытия справа 14 − 7y + 6 = 20 − 7y. Прибавление 7y приводит к 18 + 3y = 20. Ответ: y = 2/3."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "2",
+       "hint": "После раскрытия справа 14 − 7y + 6 = 20 − 7y. Прибавление 7y приводит к 18 + 3y = 20.",
+       "explanation": "После раскрытия справа 14 − 7y + 6 = 20 − 7y. Прибавление 7y приводит к 18 + 3y = 20. Ответ: y = 2/3."
+      }
+     ],
+     "hint": "После раскрытия справа 14 − 7y + 6 = 20 − 7y. Прибавление 7y приводит к 18 + 3y = 20.",
+     "explanation": "После раскрытия справа 14 − 7y + 6 = 20 − 7y. Прибавление 7y приводит к 18 + 3y = 20. Ответ: y = 2/3.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 88,
+      "subpart": "д",
+      "reference": "№88д"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "18 − 4y = 7(2 − y) + 6",
+      "variable": "y",
+      "coefficients": [
+       "-4",
+       "18",
+       "-7",
+       "20"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "-2/3",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "2",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t21",
+     "title": "К задаче №88е",
+     "kind": "choice",
+     "prompt": "Раскрой скобки и найди все корни: 4(−2z + 5) = 14 − 2(4z − 3).",
+     "answer": "Все рациональные числа",
+     "steps": [
+      {
+       "prompt": "Собери буквы в левой части. Каков коэффициент после вычитания буквенной части справа?",
+       "answer": "0",
+       "hint": "Слева −8z + 20. Справа 14 − 8z + 6 = 20 − 8z. Обе части одинаковы при любом рациональном z.",
+       "explanation": "Слева −8z + 20. Справа 14 − 8z + 6 = 20 − 8z. Обе части одинаковы при любом рациональном z. После вычитания совпадающих частей получаем 0 = 0."
+      },
+      {
+       "prompt": "Собери числа справа. Каково свободное число после вычитания свободного члена слева?",
+       "answer": "0",
+       "hint": "Слева −8z + 20. Справа 14 − 8z + 6 = 20 − 8z. Обе части одинаковы при любом рациональном z.",
+       "explanation": "Слева −8z + 20. Справа 14 − 8z + 6 = 20 − 8z. Обе части одинаковы при любом рациональном z. После вычитания совпадающих частей получаем 0 = 0."
+      }
+     ],
+     "hint": "Слева −8z + 20. Справа 14 − 8z + 6 = 20 − 8z. Обе части одинаковы при любом рациональном z.",
+     "explanation": "Слева −8z + 20. Справа 14 − 8z + 6 = 20 − 8z. Обе части одинаковы при любом рациональном z. После вычитания совпадающих частей получаем 0 = 0.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 88,
+      "subpart": "е",
+      "reference": "№88е"
+     },
+     "finalLabel": "Выбери полное множество корней.",
+     "linearEquationStudy": {
+      "printed": "4(−2z + 5) = 14 − 2(4z − 3)",
+      "variable": "z",
+      "coefficients": [
+       "-8",
+       "20",
+       "-8",
+       "20"
+      ],
+      "clear": 0
+     },
+     "errorCues": [
+      [
+       "Только 0",
+       "Запись 0 = 0 после преобразования не ограничивает z значением ноль."
+      ],
+      [
+       "Корней нет",
+       "Противоречия нет: получилось верное равенство при любом z."
+      ]
+     ],
+     "choices": [
+      "Только 0",
+      "Все рациональные числа",
+      "Корней нет"
+     ]
+    },
+    {
+     "id": "p37-t22",
+     "title": "К задаче №89а",
+     "kind": "number",
+     "prompt": "Приведи уравнение к целым коэффициентам и реши: x/5 − 4 = −0,1x + 2.",
+     "answer": "20",
+     "steps": [
+      {
+       "prompt": "На какое число можно умножить все члены, чтобы убрать дробные коэффициенты?",
+       "answer": "10",
+       "hint": "Домножь исходное равенство на 10. Тогда 2x − 40 = −x + 20, откуда 3x = 60.",
+       "explanation": "Домножь исходное равенство на 10. Тогда 2x − 40 = −x + 20, откуда 3x = 60. Ответ: x = 20."
+      },
+      {
+       "prompt": "После умножения и переноса букв налево чему равен их коэффициент?",
+       "answer": "3",
+       "hint": "Домножь исходное равенство на 10. Тогда 2x − 40 = −x + 20, откуда 3x = 60.",
+       "explanation": "Домножь исходное равенство на 10. Тогда 2x − 40 = −x + 20, откуда 3x = 60. Ответ: x = 20."
+      },
+      {
+       "prompt": "Какое число останется справа?",
+       "answer": "60",
+       "hint": "Домножь исходное равенство на 10. Тогда 2x − 40 = −x + 20, откуда 3x = 60.",
+       "explanation": "Домножь исходное равенство на 10. Тогда 2x − 40 = −x + 20, откуда 3x = 60. Ответ: x = 20."
+      }
+     ],
+     "hint": "Домножь исходное равенство на 10. Тогда 2x − 40 = −x + 20, откуда 3x = 60.",
+     "explanation": "Домножь исходное равенство на 10. Тогда 2x − 40 = −x + 20, откуда 3x = 60. Ответ: x = 20.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 89,
+      "subpart": "а",
+      "reference": "№89а"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "x/5 − 4 = −0,1x + 2",
+      "variable": "x",
+      "coefficients": [
+       "1/5",
+       "-4",
+       "-1/10",
+       "2"
+      ],
+      "clear": 10
+     },
+     "errorCues": [
+      [
+       "-20",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "6",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t23",
+     "title": "К задаче №89в",
+     "kind": "number",
+     "prompt": "Приведи уравнение к целым коэффициентам и реши: 1 − a/7 = a/14 − 0,25a.",
+     "answer": "-28",
+     "steps": [
+      {
+       "prompt": "На какое число можно умножить все члены, чтобы убрать дробные коэффициенты?",
+       "answer": "28",
+       "hint": "Общий знаменатель 28. Получаем 28 − 4a = 2a − 7a, значит 28 − 4a = −5a.",
+       "explanation": "Общий знаменатель 28. Получаем 28 − 4a = 2a − 7a, значит 28 − 4a = −5a. Ответ: a = -28."
+      },
+      {
+       "prompt": "После умножения и переноса букв налево чему равен их коэффициент?",
+       "answer": "1",
+       "hint": "Общий знаменатель 28. Получаем 28 − 4a = 2a − 7a, значит 28 − 4a = −5a.",
+       "explanation": "Общий знаменатель 28. Получаем 28 − 4a = 2a − 7a, значит 28 − 4a = −5a. Ответ: a = -28."
+      },
+      {
+       "prompt": "Какое число останется справа?",
+       "answer": "-28",
+       "hint": "Общий знаменатель 28. Получаем 28 − 4a = 2a − 7a, значит 28 − 4a = −5a.",
+       "explanation": "Общий знаменатель 28. Получаем 28 − 4a = 2a − 7a, значит 28 − 4a = −5a. Ответ: a = -28."
+      }
+     ],
+     "hint": "Общий знаменатель 28. Получаем 28 − 4a = 2a − 7a, значит 28 − 4a = −5a.",
+     "explanation": "Общий знаменатель 28. Получаем 28 − 4a = 2a − 7a, значит 28 − 4a = −5a. Ответ: a = -28.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 89,
+      "subpart": "в",
+      "reference": "№89в"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "1 − a/7 = a/14 − 0,25a",
+      "variable": "a",
+      "coefficients": [
+       "-1/7",
+       "1",
+       "-5/28",
+       "0"
+      ],
+      "clear": 28
+     },
+     "errorCues": [
+      [
+       "28",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "-1",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t24",
+     "title": "К задаче №89г",
+     "kind": "number",
+     "prompt": "Приведи уравнение к целым коэффициентам и реши: 3 − ((2/9)m + 1/6) = m/3 + 1,5.",
+     "answer": "12/5",
+     "steps": [
+      {
+       "prompt": "На какое число можно умножить все члены, чтобы убрать дробные коэффициенты?",
+       "answer": "18",
+       "hint": "Умножь всё равенство на 18: 54 − (4m + 3) = 6m + 27. Скобка после минуса даёт 51 − 4m.",
+       "explanation": "Умножь всё равенство на 18: 54 − (4m + 3) = 6m + 27. Скобка после минуса даёт 51 − 4m. Ответ: m = 12/5."
+      },
+      {
+       "prompt": "После умножения и переноса букв налево чему равен их коэффициент?",
+       "answer": "-10",
+       "hint": "Умножь всё равенство на 18: 54 − (4m + 3) = 6m + 27. Скобка после минуса даёт 51 − 4m.",
+       "explanation": "Умножь всё равенство на 18: 54 − (4m + 3) = 6m + 27. Скобка после минуса даёт 51 − 4m. Ответ: m = 12/5."
+      },
+      {
+       "prompt": "Какое число останется справа?",
+       "answer": "-24",
+       "hint": "Умножь всё равенство на 18: 54 − (4m + 3) = 6m + 27. Скобка после минуса даёт 51 − 4m.",
+       "explanation": "Умножь всё равенство на 18: 54 − (4m + 3) = 6m + 27. Скобка после минуса даёт 51 − 4m. Ответ: m = 12/5."
+      }
+     ],
+     "hint": "Умножь всё равенство на 18: 54 − (4m + 3) = 6m + 27. Скобка после минуса даёт 51 − 4m.",
+     "explanation": "Умножь всё равенство на 18: 54 − (4m + 3) = 6m + 27. Скобка после минуса даёт 51 − 4m. Ответ: m = 12/5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 89,
+      "subpart": "г",
+      "reference": "№89г"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "3 − ((2/9)m + 1/6) = m/3 + 1,5",
+      "variable": "m",
+      "coefficients": [
+       "-2/9",
+       "17/6",
+       "1/3",
+       "3/2"
+      ],
+      "clear": 18
+     },
+     "errorCues": [
+      [
+       "-12/5",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "-4/3",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t25",
+     "title": "К задаче №89д",
+     "kind": "number",
+     "prompt": "Приведи уравнение к целым коэффициентам и реши: 2,6z − 0,2(3z − 9) = −0,5(2z + 6).",
+     "answer": "-8/5",
+     "steps": [
+      {
+       "prompt": "На какое число можно умножить все члены, чтобы убрать дробные коэффициенты?",
+       "answer": "10",
+       "hint": "После умножения на 10 имеем 26z − 2(3z − 9) = −5(2z + 6). После раскрытия: 20z + 18 = −10z − 30.",
+       "explanation": "После умножения на 10 имеем 26z − 2(3z − 9) = −5(2z + 6). После раскрытия: 20z + 18 = −10z − 30. Ответ: z = -8/5."
+      },
+      {
+       "prompt": "После умножения и переноса букв налево чему равен их коэффициент?",
+       "answer": "30",
+       "hint": "После умножения на 10 имеем 26z − 2(3z − 9) = −5(2z + 6). После раскрытия: 20z + 18 = −10z − 30.",
+       "explanation": "После умножения на 10 имеем 26z − 2(3z − 9) = −5(2z + 6). После раскрытия: 20z + 18 = −10z − 30. Ответ: z = -8/5."
+      },
+      {
+       "prompt": "Какое число останется справа?",
+       "answer": "-48",
+       "hint": "После умножения на 10 имеем 26z − 2(3z − 9) = −5(2z + 6). После раскрытия: 20z + 18 = −10z − 30.",
+       "explanation": "После умножения на 10 имеем 26z − 2(3z − 9) = −5(2z + 6). После раскрытия: 20z + 18 = −10z − 30. Ответ: z = -8/5."
+      }
+     ],
+     "hint": "После умножения на 10 имеем 26z − 2(3z − 9) = −5(2z + 6). После раскрытия: 20z + 18 = −10z − 30.",
+     "explanation": "После умножения на 10 имеем 26z − 2(3z − 9) = −5(2z + 6). После раскрытия: 20z + 18 = −10z − 30. Ответ: z = -8/5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 89,
+      "subpart": "д",
+      "reference": "№89д"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "2,6z − 0,2(3z − 9) = −0,5(2z + 6)",
+      "variable": "z",
+      "coefficients": [
+       "2",
+       "9/5",
+       "-1",
+       "-3"
+      ],
+      "clear": 10
+     },
+     "errorCues": [
+      [
+       "8/5",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "-24/5",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t26",
+     "title": "К задаче №89е",
+     "kind": "number",
+     "prompt": "Приведи уравнение к целым коэффициентам и реши: (5/12)(c − 3) − (1/6)(2c − 7) = 2.",
+     "answer": "25",
+     "steps": [
+      {
+       "prompt": "На какое число можно умножить все члены, чтобы убрать дробные коэффициенты?",
+       "answer": "12",
+       "hint": "Умножь на 12: 5(c − 3) − 2(2c − 7) = 24. После раскрытия 5c − 15 − 4c + 14 = 24.",
+       "explanation": "Умножь на 12: 5(c − 3) − 2(2c − 7) = 24. После раскрытия 5c − 15 − 4c + 14 = 24. Ответ: c = 25."
+      },
+      {
+       "prompt": "После умножения и переноса букв налево чему равен их коэффициент?",
+       "answer": "1",
+       "hint": "Умножь на 12: 5(c − 3) − 2(2c − 7) = 24. После раскрытия 5c − 15 − 4c + 14 = 24.",
+       "explanation": "Умножь на 12: 5(c − 3) − 2(2c − 7) = 24. После раскрытия 5c − 15 − 4c + 14 = 24. Ответ: c = 25."
+      },
+      {
+       "prompt": "Какое число останется справа?",
+       "answer": "25",
+       "hint": "Умножь на 12: 5(c − 3) − 2(2c − 7) = 24. После раскрытия 5c − 15 − 4c + 14 = 24.",
+       "explanation": "Умножь на 12: 5(c − 3) − 2(2c − 7) = 24. После раскрытия 5c − 15 − 4c + 14 = 24. Ответ: c = 25."
+      }
+     ],
+     "hint": "Умножь на 12: 5(c − 3) − 2(2c − 7) = 24. После раскрытия 5c − 15 − 4c + 14 = 24.",
+     "explanation": "Умножь на 12: 5(c − 3) − 2(2c − 7) = 24. После раскрытия 5c − 15 − 4c + 14 = 24. Ответ: c = 25.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 22,
+      "exercise": 89,
+      "subpart": "е",
+      "reference": "№89е"
+     },
+     "finalLabel": "Введи корень.",
+     "linearEquationStudy": {
+      "printed": "(5/12)(c − 3) − (1/6)(2c − 7) = 2",
+      "variable": "c",
+      "coefficients": [
+       "1/12",
+       "-1/12",
+       "0",
+       "2"
+      ],
+      "clear": 12
+     },
+     "errorCues": [
+      [
+       "-25",
+       "Проверь знак коэффициента и свободного числа после переноса."
+      ],
+      [
+       "25/12",
+       "Подставь значение в обе исходные части и сравни их."
+      ]
+     ]
     }
-   ]
+   ],
+   "orderBySource": true
   },
   {
    "id": "p38",

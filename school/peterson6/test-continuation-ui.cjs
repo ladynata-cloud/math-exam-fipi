@@ -1324,3 +1324,21 @@ test('finish all nine printed self-check numbers and enter the original final ex
   } finally {independent.close();}
  }finally{f.close();}
 });
+
+test('solve every printed transfer and bracket item, with an identity and its contradictory variation',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const topic=f.w.PetersonCourse.lessons.find(l=>l.id==='p37');
+  for(const [i,task] of topic.tasks.entries()){
+   if(!task.linearEquationStudy)continue;const c=go(i);
+   if(task.kind==='choice'){set(c[2],4);assert(out().includes('Все рациональные числа'));set(c[0],1);set(c[2],4);assert(out().includes('Корней нет.'));continue;}
+   const M=f.w.PetersonMath,orig=M.parse(task.answer);
+   for(const fresh of [0,1]){const answer=M.answer(M.operation('add',orig,fresh)),id=[...f.q(c[1]).options].find(o=>o.textContent===answer).value;
+    set(c[0],fresh);set(c[1],id);set(c[2],3);assert(out().includes('Подстановка даёт равенство.'),[task.id,fresh,out()]);}
+   if(task.linearEquationStudy.clear){set(c[2],2);assert(out().includes('Умножаем обе части на '+task.linearEquationStudy.clear));}
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
