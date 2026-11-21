@@ -70,11 +70,12 @@ function filesAt(relative) {
     return filesAt(path.posix.join(relative, entry.name));
   });
 }
-// Exact digests of the two independently verified lesson units and their loader.
+// Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
-  "geometry-course/textbook/assets/additional-lessons.js": "8f59f67643b9c54edb30afaef23ee260d4187fea3913ddd3c978bdecc42ad6d0",
+  "geometry-course/textbook/assets/additional-lessons.js": "0c213ee100cd5754c3931e07ae4ec1895a1469b7f5d2e0927fa4f840b75c4ad3",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
-  "geometry-course/textbook/data/area-similarity-lessons.json": "a03d352a79dda749b3ed61d60c1ac40460a4a4e5f5eabdccaadd4bbe9401aa43"
+  "geometry-course/textbook/data/area-similarity-lessons.json": "a03d352a79dda749b3ed61d60c1ac40460a4a4e5f5eabdccaadd4bbe9401aa43",
+  "geometry-course/textbook/data/midpoint-lessons.json": "e61b548a9e236e0d8dcabb90dc0ca2820b8dd344fb3b6c85a1e9faf9427dbe71"
 };
 function verify(group, read = file => fs.readFileSync(path.join(root, file)), extra = []) {
   const files = [...new Set(group.paths.flatMap(filesAt).concat(extra))].filter(file => !group.excluded.includes(file)).sort();

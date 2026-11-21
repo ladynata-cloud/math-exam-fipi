@@ -160,7 +160,7 @@ def lesson(card):
             if 'theoryId' not in reason: reason['theoryId']=ref
         s=dict(id=f'step-{i}',title=f'Шаг {i}',prompt=item['prompt'],explanation=item['explanation'],
                view=f'step-{i}',justifications=[reason])
-        idx, question, accepted, feedback=CHECKS[(n,part) if part else n]
+        idx, question, accepted, feedback=card['practice'] if 'practice' in card else CHECKS[(n,part) if part else n]
         if i==idx: s['input']=dict(prompt=question,accepted=accepted,feedback=feedback)
         steps.append(s)
     hint=card['notes'][0].removeprefix('Подсказка. ')

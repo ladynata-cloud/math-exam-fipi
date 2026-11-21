@@ -33,7 +33,8 @@
   async function forCourse(base) {
     const units = [
       ['/geometry-course/textbook/data/area-lessons.json', '№842–853'],
-      ['/geometry-course/textbook/data/area-similarity-lessons.json', '№854–871']
+      ['/geometry-course/textbook/data/area-similarity-lessons.json', '№854–871'],
+      ['/geometry-course/textbook/data/midpoint-lessons.json', '№872–899']
     ];
     const results = await Promise.allSettled(units.map(([url]) => fetchUnit(url, root.fetch.bind(root))));
     let combined = base;
