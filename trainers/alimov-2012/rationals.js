@@ -41,7 +41,7 @@
   function shiftFigure(data) {
     const {scaleA,scaleB,high,low,repeat}=data.shift;
     const row=(y,k,whole)=>'<text x="12" y="'+y+'">'+k+' · |x|</text><text x="108" y="'+y+'">'+whole+',</text><rect x="156" y="'+(y-16)+'" width="105" height="22" rx="3" fill="#d9efeb"/><text x="165" y="'+y+'">'+repeat+repeat+'…</text>';
-    return '<svg viewBox="0 0 290 109" role="img" aria-label="Две строки с одинаковым периодическим хвостом"><g font-size="15" fill="#1d3942">'+row(26,scaleA,low)+row(61,scaleB,high)+'<path d="M9 73H275" stroke="#315a64"/><text x="12" y="96" font-size="13">При вычитании одинаковые хвосты исчезают</text></g></svg>';
+    return '<svg viewBox="0 0 290 109" role="img" aria-label="Две строки с одинаковым периодическим хвостом"><g font-size="15" fill="#1d3942">'+row(26,scaleA,low)+row(61,scaleB,high)+'<path d="M9 73H275" stroke="#315a64"/><text x="12" y="96" font-size="13">При вычитании хвосты исчезнут</text></g></svg>';
   }
   window.MathExamTopicEdition = {
     register,question,
