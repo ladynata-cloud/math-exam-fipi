@@ -49,7 +49,9 @@ async function healthy(url, child, logs) {
 }
 
 const printedProperties=process.argv.includes('--printed-identity');
-const catalogue=process.argv.includes('--mordkovich-2013') ? {
+const catalogue=process.argv.includes('--mordkovich-2020') ? {
+  directory:'mordkovich-2020',entries:[[25,50,24]],uniqueLessons:23,search:'mordkovich-2020',match:'множества и делимость',lesson:'25-review-7d',chart:'svg[aria-label*="Старшие разряды"]',storage:'math:mordkovich-2020:v1:'
+} : process.argv.includes('--mordkovich-2013') ? {
   directory:'mordkovich-2013',entries:[[21,60,66]],uniqueLessons:65,search:'mordkovich-2013',match:'тождества и знаки',lesson:process.argv.includes('--circle-flat')?'21-7-20d':process.argv.includes('--circle-range')?'21-7-11b':process.argv.includes('--circle-quadrants')?'21-7-10d':process.argv.includes('--circle-domain')?'21-7-6d':'21-7-2b',chart:process.argv.includes('--circle-flat')?'svg[aria-label*="Горизонтальный график"]':process.argv.includes('--circle-range')?'svg[aria-label*="Границы множества"]':process.argv.includes('--circle-quadrants')?'svg[aria-label*="Знаки проекций радиуса"]':process.argv.includes('--circle-domain')?'svg[aria-label*="исключённые положения угла"]':'svg[aria-label*="Квадраты координат"]',storage:'math:mordkovich-2013:v1:'
 }:process.argv.includes('--alimov-2012') ? {
   directory:'alimov-2012',entries:[[19,78,47]],uniqueLessons:45,search:'alimov-2012',match:'периодические дроби',lesson:process.argv.includes('--nested')?'19-12c':process.argv.includes('--root-bounds')?'19-7':process.argv.includes('--absolute')?'19-8b':process.argv.includes('--chain')?'19-5b':'19-3f',onlySelected:['--chain','--root-bounds','--absolute','--nested'].some(flag=>process.argv.includes(flag)),chart:process.argv.includes('--nested')?'svg[aria-label*="Раскрытие двух квадратов"]':process.argv.includes('--root-bounds')?'svg[aria-label*="двумя соседними десятыми"]':process.argv.includes('--absolute')?'svg[aria-label*="его модуль"]':process.argv.includes('--chain')?'svg[aria-label*="Дерево вычислений"]':'svg[aria-label*="одинаковым периодическим хвостом"]',storage:'math:alimov-2012:v1:'
@@ -69,7 +71,8 @@ async function run(browser, origin, serverOrigin) {
   try {
     const teacher=await tc.newPage(),student=await sc.newPage();
     for(const [book,count,direct] of catalogue.entries){
-      await student.goto(origin+'/school/index.html#book/source-'+book);
+      await student.goto(origin+'/school/index.html#book/source-'+book,{waitUntil:'domcontentloaded',timeout:60000});
+      await student.locator('#main .skill-row').first().waitFor({timeout:60000});
       assert.equal(await student.locator('#main .skill-row').count(),count);
       const links=await student.locator('#main a[href*="'+catalogue.directory+'/index.html"]').evaluateAll(links=>links.map(el=>el.href));
       assert.equal(links.length,direct);

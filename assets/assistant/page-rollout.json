@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 633,
-    "covered": 631,
+    "total": 634,
+    "covered": 632,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -42,7 +42,8 @@
     "trainers/makarychev9-2017/index.html",
     "trainers/makarychev7-2014/index.html",
     "trainers/alimov-2012/index.html",
-    "trainers/mordkovich-2013/index.html"
+    "trainers/mordkovich-2013/index.html",
+    "trainers/mordkovich-2020/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4031,7 +4032,8 @@
     "trainers/makarychev9-2017/index.html": "school/index.html",
     "trainers/makarychev7-2014/index.html": "school/index.html",
     "trainers/alimov-2012/index.html": "school/index.html",
-    "trainers/mordkovich-2013/index.html": "school/index.html"
+    "trainers/mordkovich-2013/index.html": "school/index.html",
+    "trainers/mordkovich-2020/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6795,6 +6797,14 @@
         "trainers/mordkovich-2013/index.html"
       ],
       "reason": "Печатные номера 7.1–7.2 и самостоятельные модели двухчастного задачника базового уровня 2013 года."
+    },
+    {
+      "sourceBaseSha": "d0e7f81d2af7713545f0b566a1b1c24726d52de0",
+      "task": "docs/tasks/WORKSHOP_MORDKOVICH_2020.md",
+      "addedPages": [
+        "trainers/mordkovich-2020/index.html"
+      ],
+      "reason": "Авторские модели множеств и делимости по всем частям №1–7 повторения конкретного издания 2020 года."
     }
   ]
 }

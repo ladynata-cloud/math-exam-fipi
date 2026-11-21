@@ -1372,6 +1372,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Все 75 печатных номеров, 289 подпунктов §§4–6 и 6 отдельных подготовительных задач. Совместный черновик изолирован от личной практики."
+    },
+    {
+      "trainerId": "mordkovich-2020",
+      "file": "trainers/mordkovich-2020/index.html",
+      "title": "Мордкович и Семёнов · 10 класс · 2020 · множества и делимость №1–7",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
     }
   ]
 }
