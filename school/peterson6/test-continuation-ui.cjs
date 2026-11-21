@@ -303,7 +303,7 @@ test('opening printed rules use directed distances, common cells and every signe
  } finally {f.close();}
 });
 
-test('read both opening sections in print order while old links retain their task', () => {
+test('read both opening sections in print order while old links retain their task', async () => {
  const f=fixture(null,null,true);
  try {
   const parts=[
@@ -322,6 +322,8 @@ test('read both opening sections in print order while old links retain their tas
    assert.deepEqual(indices.map(source),expected);
    for(const [ordinal,index] of indices.entries()) {
     f.nav('#lesson/'+id+'/'+index);
+    // Let queued navigation and observer callbacks run between actual student clicks.
+    await new Promise(resolve=>setImmediate(resolve));
     assert.equal(f.q('[aria-current="step"]').dataset.index,String(index));
     const adjacent=[...f.d.querySelectorAll('.navigation [data-action="task"]')].map(b=>Number(b.dataset.index));
     assert.deepEqual(adjacent,[indices[ordinal-1],indices[ordinal+1]].filter(i=>i!==undefined));
