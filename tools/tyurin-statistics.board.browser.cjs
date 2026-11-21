@@ -57,6 +57,8 @@ const catalogue=advanced8?{
   directory:'peterson7-2011',entries:volume2?[[102,17,52]]:[[103,21,34]],uniqueLessons:volume2?51:33,search:'peterson7-2011',match:'математические модели',lesson:volume2?'102-6m':process.argv.includes('--arrow-fork')?'103-2-1b':'103-7a',chart:volume2?'svg[aria-label*="Граница основания"]':process.argv.includes('--arrow-fork')?'svg[aria-label*="Стрелки между"]':'svg[aria-label*="Квадрат рационального"]',storage:'math:peterson7-2011:v1:'
 } : process.argv.includes('--peterson7-2011') ? {
   directory:'peterson7-2011',entries:[[101,22,70]],uniqueLessons:69,search:'peterson7-2011',match:'математические модели',lesson:process.argv.includes('--literal-n')?'101-1-3d':'101-16',chart:process.argv.includes('--literal-n')?'svg[aria-label*="Две полоски"]':'svg[aria-label*="встречном и попутном"]',storage:'math:peterson7-2011:v1:'
+} : process.argv.includes('--mordkovich-2020-theory') ? {
+  directory:'mordkovich-2020',entries:[[24,49,13]],uniqueLessons:12,onlySelected:process.argv.includes('--selected-room'),search:'mordkovich-2020',match:'множества и делимость',lesson:'24-example-1',chart:'svg[aria-label*="Последовательные целые"]',storage:'math:mordkovich-2020:v1:'
 } : process.argv.includes('--mordkovich-2020') ? {
   directory:'mordkovich-2020',entries:[[25,50,60]],uniqueLessons:59,search:'mordkovich-2020',match:'множества и делимость',lesson:'25-review-17d',chart:'svg[aria-label*="Разложения для сравнения"]',storage:'math:mordkovich-2020:v1:'
 } : process.argv.includes('--mordkovich-2013') ? {

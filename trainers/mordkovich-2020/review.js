@@ -165,8 +165,8 @@
     }
     return '<svg viewBox="0 0 280 105" role="img" aria-label="'+title+'"><g font-family="sans-serif" font-size="13" fill="#193e44">'+body+'</g></svg>';
   }
-  window.MathExamTopicEdition={trainerId:'mordkovich-2020',authors:'Мордкович, Семёнов · часть 2 · 2020',
-    grade:()=>'10 класс',unit:'упражнение',storePrefix:'math:mordkovich-2020:v1:',figure,
-    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000025.pdf#page='+(page-1),nextId:lesson=>ids[ids.indexOf(lesson.id)+1],
+  window.MathExamTopicEdition={trainerId:'mordkovich-2020',authors:'Мордкович, Семёнов · 2020',
+    grade:book=>'10 класс · часть '+(book===24?1:2),unit:'упражнение',storePrefix:'math:mordkovich-2020:v1:',figure,
+    source:(book,page)=>book===24?'https://pdf.my-uchebnik.ru/pdf/algebra/00000024.pdf#page='+(page<=48?page-1:page<=115?page:page+2):'https://pdf.my-uchebnik.ru/pdf/algebra/00000025.pdf#page='+(page<=169?page-1:page+1),nextId:lesson=>ids[ids.indexOf(lesson.id)+1],
     registerReview:register,question,model};
 })();

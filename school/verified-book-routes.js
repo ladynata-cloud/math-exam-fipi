@@ -487,6 +487,25 @@
   }));
   m2020.mapping=[{section:0,sectionLabel:'Повторение',title:'Повторение курса алгебры основной школы',page:4,coverage:'partial',focus:'Полный разбор №1–17 и 59 самостоятельных проверок.',sourcePath:pdf2020(4),externalPath:practice2020+'1a',boardPath:practice2020+'1a'},
     ...titles2020.map((title,i)=>({section:i+1,sectionLabel:'§ '+(i+1),title,page:pages2020[i],coverage:'source',bookOnly:true,sourcePath:pdf2020(pages2020[i]),focus:'Для решения этих упражнений открой свою книгу.'}))];
+  const theory2020=C.books.find(book=>book.id==='source-24');
+  const theoryStart=[5,23,29,32,45,48,59,72,86,88,94,105,113,129,133,136,146,149,154,156,165,187,206,218,226,230,235,243,250,252,254,263,271,279,292,303,318,327,338,349,358,369,375,380,393,398,413,420,433];
+  const theoryPath='/trainers/mordkovich-2020/index.html#lesson/24-';
+  const theoryPages=page=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000024.pdf#page='+(page<=48?page-1:page<=115?page:page+2);
+  const theoryLabels=['Цепочка делителей','Сумма двух кратных','Одно некратное слагаемое','Восстановить делимость слагаемого','Произведение двух отношений','Одинаковый множитель в двух числах','Переход к кратному произведению','Сумма с натуральными коэффициентами','Один полный ряд остатков'];
+  theory2020.verifiedSource=theory2020.source.source_url;theory2020.sourceLabel='Карточка учебника 10 класса, часть 1';
+  theory2020.totalPoints=49;theory2020.workshopRoute='10';
+  theory2020.note='В первой части Мордковича и Семёнова разбирают определения, свойства и примеры. Во второй части собраны задания. Для каждого разобранного места есть отдельная тренировка на новых данных.';
+  theory2020.status='Сверены страницы §§1–49 восьми глав. Есть 12 самостоятельных разборов начала §1.';
+  theory2020.remaining='Следующий подраздел «Признаки делимости» начинается на с. 9. Для последующих подразделов §1 и §§2–49 пока нужна своя книга.';
+  theory2020.exerciseHeading='Определение, свойства и пример';
+  theory2020.mapping=titles2020.map((shared,i)=>{
+    const page=theoryStart[i],section=i+1,title=section===22?'Простейшие тригонометрические уравнения и неравенства':section===25?'Тангенс суммы и разности аргументов':shared;
+    const item={section,sectionLabel:'§ '+section,title,page,sourcePath:theoryPages(page)};
+    return i?{...item,bookOnly:true,coverage:'source',focus:'Перейди к этому параграфу в своей книге.'}:
+      {...item,coverage:'partial',focus:'Введение и первый подраздел. Разложи числа на равные группы и докажи свойства делимости.',externalPath:theoryPath+'sets',boardPath:theoryPath+'sets'};
+  });
+  theory2020.exercises=[['sets','Введение к §1',5,'Знак принадлежности и включение множеств'],['definition','Определение 1',6,'Делитель, кратное и частное'],
+    ...theoryLabels.map((s,i)=>['property-'+(i+1),'Свойство '+(i+1),i===8?8:7,s]),['example-1','Пример 1',8,'Пять соседних множителей']].map(([key,label,page,title])=>({printed:label,printedLabel:label,page,title,path:theoryPath+key,boardPath:theoryPath+key}));
   const p72011=C.books.find(book=>book.id==='source-101');
   const practice7='/trainers/peterson7-2011/index.html#lesson/101-';
   const structure7=[

@@ -1,5 +1,11 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+if(process.argv.length===2){
+ const {execFileSync}=require('node:child_process');
+ for(let first=0;first<59;first+=10)execFileSync(process.execPath,[__filename,String(first),String(Math.min(59,first+10))],{stdio:'inherit'});
+ console.log('Mordkovich/Semenov 2020: 50 printed entries, 59 individual learning flows and 1947 independent answers.');
+ process.exit(0);
+}
 const {JSDOM}=require('jsdom');
 const root=path.join(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const cwd='trainers/mordkovich-2020/',html=read(cwd+'index.html');
@@ -19,7 +25,7 @@ for(const [n,count] of [[8,4],[9,4],[10,4],[11,4],[12,4],[13,4],[14,2],[15,2],[1
  for(let j=0;j<count;j++)ids.push(n+'abcd'[j]);
 assert.deepEqual(Array.from(book.exercises,r=>r.path.split('/').pop()),ids.map(x=>'25-review-'+x));
 assert.deepEqual(Array.from(book.exercises,r=>r.printed),ids.map(id=>id.replace(/[abcd]/g,x=>'абвг'['abcd'.indexOf(x)])));
-const scripts=['trainers/tyurin-statistics/content.js',cwd+'review.js',cwd+'division.js','trainers/tyurin-statistics/app.js'].map(read);
+const scripts=['trainers/tyurin-statistics/content.js',cwd+'review.js',cwd+'division.js',cwd+'theory-divisibility.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,saved){
  const dom=new JSDOM(html,{url:'https://math.example'+entry.path,runScripts:'outside-only'}),w=dom.window;
  w.TextEncoder=TextEncoder;w.Math.random=()=>0;
@@ -77,10 +83,13 @@ function oracle(i,d){
 }
 function click(doc,id){const el=doc.querySelector('[data-action="'+id+'"]');assert(el,id);el.click();}
 function reply(doc,v){const a=doc.querySelector('#answer');a.value=v;const E=doc.defaultView.Event;a.dispatchEvent(new E('input',{bubbles:true}));doc.querySelector('#work form').dispatchEvent(new E('submit',{bubbles:true,cancelable:true}));}
+const first=Number(process.argv[2]),last=Number(process.argv[3]);
+assert(Number.isInteger(first)&&Number.isInteger(last)&&first>=0&&first<last&&last<=book.exercises.length);
 for(const [i,entry] of book.exercises.entries()){
+ if(i<first||i>=last)continue;
  assert.equal(entry.path,entry.boardPath);assert.equal(entry.page,i<23?4:5);
  let {dom,w,doc,key,lesson}=open(entry);
- assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,59);
+ assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,71);
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),entry.path);
  assert.equal(doc.querySelector('#source').hash,i<23?'#page=3':'#page=4');assert(doc.querySelector('#worked-data svg[aria-label]'));
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,[]);
@@ -104,4 +113,4 @@ for(const [i,entry] of book.exercises.entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,['fixed','first','help']);
  click(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);dom.window.close();
 }
-console.log('Mordkovich/Semenov 2020: 50 printed entries, 59 individual learning flows, 1947 independently checked answers, 59 corrections, unaided answers, help, reloads and fresh retries.');
+console.log('Verified exercise routes '+(first+1)+'–'+last+' with their original and new variants.');
