@@ -491,9 +491,9 @@
       "integrated": "6495a6b22f634c45d8adb0ff77435f7628988ece529030944255225eaed8f2e4"
     },
     "theory-054": {
-      "raw": "eb112d402104672a56f0db40680d63677baf834937032a47625b49a366acd379",
-      "authored": "58348e0aef17945a5d8e045f45efcf8834f4217e56b5fb2634193a0e78e16f40",
-      "integrated": "5c8d92898e0eec785fc4616d181172307e1b518228ff7e43b2e0519e942200d3"
+      "raw": "b72a5665f54756f03721b44e3501bd6683fc2431272c2426a88b61769db194f7",
+      "authored": "ec7c42bcd33e6ce1802f11b857d70376809b821b9f89e876668f735fcd7455f5",
+      "integrated": "e2eda14bb0b01830ceb76dd3c57dd1956b8f27a457d594044e00616bd8b607bd"
     },
     "theory-055": {
       "raw": "e0dfb4f60676857934e9d919084543c72c05b5cdec6a0ef53d0035499c15d150",
@@ -1230,7 +1230,7 @@
   "files": {
     "stereo-course/textbook/data/course.json": {
       "beforeSHA256": "9aa198e5128107f007e0e0b85a3082854818fa767a8f913ba0ad9c55ce47aabc",
-      "afterSHA256": "7e751bed76f4c02d8ffdbc8a4ac959f1f69c6d5c1993405cd2443b9044e34771"
+      "afterSHA256": "289aeb10ae735df43fec7bfbc7f097857774f03b561d7b703ad0c6d8e2983031"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "33d377bd1f7b610dce18c694f6f2b33b7182fe7c192dd91c82ebf74a3dede99a",

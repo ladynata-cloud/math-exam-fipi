@@ -54,6 +54,13 @@ for (const card of cards) {
   const n = Number(card.source.exercise), part = card.source.subpart;
   if (card.kind === 'theory') {
     if (card.source.point === '54') {
+      const triangle = area(p,['A','B','C']);
+      close(area(p,['A','B','H']) + area(p,['B','C','H']),triangle);
+      close(length(p.A,p.H) + length(p.H,p.C),length(p.A,p.C));
+      close(dot(delta(p.B,p.H),delta(p.C,p.H)),0);
+      close(length(p.H,p.H1),length(p.A,p.A1));
+      assert.deepEqual(model.views[card.steps[0].view].polygon,['A','B','C']);
+      assert.deepEqual(model.views[card.steps[1].view].polygon,['B','H','H1','B1']);
       close(area(p,['A','B','C','D']), area(p,['A','B','C']) + area(p,['A','C','D']));
       close(length(p.A,p.A1),length(p.C,p.C1));
     } else {
