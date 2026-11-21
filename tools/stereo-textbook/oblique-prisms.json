@@ -1,0 +1,704 @@
+{
+  "parts": {
+    "469": [
+      null
+    ],
+    "470": [
+      null
+    ],
+    "471": [
+      null
+    ],
+    "472": [
+      null
+    ],
+    "473": [
+      null
+    ],
+    "474": [
+      null
+    ],
+    "475": [
+      null
+    ],
+    "476": [
+      null
+    ],
+    "theory-56": [
+      null
+    ],
+    "theory-57": [
+      null
+    ],
+    "theory-58": [
+      null
+    ],
+    "theory-59": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "469": {
+      "id": "source-main-0469",
+      "kind": "exercise",
+      "title": "Задача № 469",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "469",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          130
+        ],
+        "pdfPages": [
+          132
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "470": {
+      "id": "source-main-0470",
+      "kind": "exercise",
+      "title": "Задача № 470",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "470",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          130
+        ],
+        "pdfPages": [
+          132
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "471": {
+      "id": "source-main-0471",
+      "kind": "exercise",
+      "title": "Задача № 471",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "471",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          130
+        ],
+        "pdfPages": [
+          132
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "472": {
+      "id": "source-main-0472",
+      "kind": "exercise",
+      "title": "Задача № 472",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "472",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "473": {
+      "id": "source-main-0473",
+      "kind": "exercise",
+      "title": "Задача № 473",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "473",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "474": {
+      "id": "source-main-0474",
+      "kind": "exercise",
+      "title": "Задача № 474",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "474",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "475": {
+      "id": "source-main-0475",
+      "kind": "exercise",
+      "title": "Задача № 475",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "475",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "476": {
+      "id": "source-main-0476",
+      "kind": "exercise",
+      "title": "Задача № 476",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "476",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-56": {
+      "id": "source-theory-056",
+      "kind": "theory",
+      "title": "56. Вычисление объёмов тел с помощью определённого интеграла",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "56",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          125,
+          126
+        ],
+        "pdfPages": [
+          127,
+          128
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-57": {
+      "id": "source-theory-057",
+      "kind": "theory",
+      "title": "57. Объём наклонной призмы",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "57",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          126,
+          127
+        ],
+        "pdfPages": [
+          128,
+          129
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-58": {
+      "id": "source-theory-058",
+      "kind": "theory",
+      "title": "58. Объём пирамиды",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "58",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          128,
+          129
+        ],
+        "pdfPages": [
+          130,
+          131
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-59": {
+      "id": "source-theory-059",
+      "kind": "theory",
+      "title": "59. Объём конуса",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "59",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          129,
+          130
+        ],
+        "pdfPages": [
+          131,
+          132
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0469": {
+      "raw": "66b294cdc8d3128c91855e78a46f3ed24aba7920e43ee944ed5383b18630ff88",
+      "authored": "97d49adf53bdd73f4564b290c73b86b2c93ce08c45dfbae4c5c8e1a4fe5b325b",
+      "integrated": "ddfaf00fb9d1e57623bae509f202885bddc9800f8ab41093b2975615b9b3d8a7"
+    },
+    "ex-main-0470": {
+      "raw": "25ea5fb75283e624d24cc4d9c41005e7c18a12548ec3a8e354bf531c33f4d496",
+      "authored": "06996556ad23948270b82d440a58f4f525acb7e8e4297a7252b21294a0244885",
+      "integrated": "bf8bf8bc88d6c45708b9e3b417e96453ceba874fc8ba303bb97297fe99090e4b"
+    },
+    "ex-main-0471": {
+      "raw": "b086d7be222a2b3a9ad8151b0c5012cd89e61196bc82b9470189be0472da65a3",
+      "authored": "9a0823c569395d46e74703aaac1922370fad0a894016374433de982dae44325b",
+      "integrated": "27b182388324e8b18803254a9e15796c6d9d4c618ba37d20eedae211b079f10c"
+    },
+    "ex-main-0472": {
+      "raw": "5efdf16ece7721c4c126046b5933f24aa31e6c744e8a552d72aec8d63dba7e20",
+      "authored": "ade368232ae9f8ec111268ab4f1ff8d6ee9724241e4fa7272ada1439f9285cfe",
+      "integrated": "52c76d94ffbd8dbbfd8c029c28aab0568e867a21221fc33b24ec7e35c0294c4e"
+    },
+    "ex-main-0473": {
+      "raw": "3a255597ae5083fa8aed31ee7ccfc870153830749148c5c745199e94b26189d4",
+      "authored": "ec943c5c9fefa59d6be0d9681a0db90e725d5765b38f07ecf0e52b10440dc865",
+      "integrated": "63c1c6522007eec3d2d807a400fa39119bd7af0ab772f4691fc1d45b9f007e1b"
+    },
+    "ex-main-0474": {
+      "raw": "4442e111cec388b274be52c1430d8b5000c9e393e6f44cfe3743a5455bf94de1",
+      "authored": "e6944bd616a11a8f4b06de2ca32761f1bac9057b5d60413343a6ef60aadd1b0e",
+      "integrated": "5b7fc95799fa338adb1d76ecab1b1be8368831a7372139e59a305ed09fd4a8fc"
+    },
+    "ex-main-0475": {
+      "raw": "c8c4c00714d82056d7376445a64275d173406f2eb359e13e004e291cea80f0c7",
+      "authored": "00a400647bb934005eae62821fbc5af7003ed9bff14182d1ace1453fdfc74d66",
+      "integrated": "b548312230dc6047b556445fa9c168e6c1857fbf1de97c36b8695798000890e4"
+    },
+    "ex-main-0476": {
+      "raw": "0093b36edf5b76fcb150a5e8fc5d351bc80850a923e740939e03b97e3a155639",
+      "authored": "c3e59509c7f54a6b95ad9e6f0ee5858167297b6cfaa3ac00c0ecd9f34edbad1b",
+      "integrated": "8f7c2c2e61ca053b92c384466b2f7c21e7bc918abb060c6678b0e5c2033f6c11"
+    },
+    "theory-056": {
+      "raw": "53e0e48049566db919b1c7661178005b4217ddddb1870adff13ed29225d6fb45",
+      "authored": "88a20540da95f4643b5ec490b5c4f2a4ebc17464032358906aaf43bf6dde75cc",
+      "integrated": "94d99582380a95984433db6a1016ef847490be05c9b6de5a869ebd8ab0445448"
+    },
+    "theory-057": {
+      "raw": "4f2ec724b6e75eadf7759e2e156d52b3392ee8368c12c650a76c37c27a1a768c",
+      "authored": "6f683a90cbfbc47e13ba49cf143bdf4925f4538aff6032279353f92295389bb5",
+      "integrated": "3b2b74adc5644534ad5b7bdffd8552f6ef728a1f79700572cdc146c63f4e62d7"
+    },
+    "theory-058": {
+      "raw": "20835bfe68ce93d7fedb870ffebe0028b375a9a9121b4ab8fb0dc935efbb1d8d",
+      "authored": "0987364066e20f844cc7b2e5d383a794640fa92e04aec279c703315c736ad052",
+      "integrated": "f9c9e7cd5a5de56f45e5677900676e7f4844cdc5f777c72ee4cb9fb820eb2774"
+    },
+    "theory-059": {
+      "raw": "2dbc742a2d86a017ecf7d5851e131654d00eb32ad84dae4a1988551480b0b837",
+      "authored": "52e867ebd3311a958be86e5aec6a42d70b09a4bb8164e957d35907aa0559d577",
+      "integrated": "61fee135251ca5c9cb512e49dfda4fdd6722bc633e6ff86d1df8bd9b6c327b25"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0469|condition",
+      "oblique-prism-ex-main-0469-condition"
+    ],
+    [
+      "ex-main-0469|help:h1",
+      "oblique-prism-ex-main-0469-help-h1"
+    ],
+    [
+      "ex-main-0469|help:h2",
+      "oblique-prism-ex-main-0469-help-h2"
+    ],
+    [
+      "ex-main-0469|step-1",
+      "oblique-prism-ex-main-0469-step-1"
+    ],
+    [
+      "ex-main-0469|step-2",
+      "oblique-prism-ex-main-0469-step-2"
+    ],
+    [
+      "ex-main-0469|step-3",
+      "oblique-prism-ex-main-0469-step-3"
+    ],
+    [
+      "ex-main-0469|step-4",
+      "oblique-prism-ex-main-0469-step-4"
+    ],
+    [
+      "ex-main-0470|condition",
+      "oblique-prism-ex-main-0470-condition"
+    ],
+    [
+      "ex-main-0470|help:h1",
+      "oblique-prism-ex-main-0470-help-h1"
+    ],
+    [
+      "ex-main-0470|help:h2",
+      "oblique-prism-ex-main-0470-help-h2"
+    ],
+    [
+      "ex-main-0470|step-1",
+      "oblique-prism-ex-main-0470-step-1"
+    ],
+    [
+      "ex-main-0470|step-2",
+      "oblique-prism-ex-main-0470-step-2"
+    ],
+    [
+      "ex-main-0470|step-3",
+      "oblique-prism-ex-main-0470-step-3"
+    ],
+    [
+      "ex-main-0470|step-4",
+      "oblique-prism-ex-main-0470-step-4"
+    ],
+    [
+      "ex-main-0471|condition",
+      "oblique-prism-ex-main-0471-condition"
+    ],
+    [
+      "ex-main-0471|help:h1",
+      "oblique-prism-ex-main-0471-help-h1"
+    ],
+    [
+      "ex-main-0471|help:h2",
+      "oblique-prism-ex-main-0471-help-h2"
+    ],
+    [
+      "ex-main-0471|step-1",
+      "oblique-prism-ex-main-0471-step-1"
+    ],
+    [
+      "ex-main-0471|step-2",
+      "oblique-prism-ex-main-0471-step-2"
+    ],
+    [
+      "ex-main-0471|step-3",
+      "oblique-prism-ex-main-0471-step-3"
+    ],
+    [
+      "ex-main-0471|step-4",
+      "oblique-prism-ex-main-0471-step-4"
+    ],
+    [
+      "ex-main-0472|condition",
+      "oblique-prism-ex-main-0472-condition"
+    ],
+    [
+      "ex-main-0472|help:h1",
+      "oblique-prism-ex-main-0472-help-h1"
+    ],
+    [
+      "ex-main-0472|help:h2",
+      "oblique-prism-ex-main-0472-help-h2"
+    ],
+    [
+      "ex-main-0472|step-1",
+      "oblique-prism-ex-main-0472-step-1"
+    ],
+    [
+      "ex-main-0472|step-2",
+      "oblique-prism-ex-main-0472-step-2"
+    ],
+    [
+      "ex-main-0472|step-3",
+      "oblique-prism-ex-main-0472-step-3"
+    ],
+    [
+      "ex-main-0472|step-4",
+      "oblique-prism-ex-main-0472-step-4"
+    ],
+    [
+      "ex-main-0473|condition",
+      "oblique-prism-ex-main-0473-condition"
+    ],
+    [
+      "ex-main-0473|help:h1",
+      "oblique-prism-ex-main-0473-help-h1"
+    ],
+    [
+      "ex-main-0473|help:h2",
+      "oblique-prism-ex-main-0473-help-h2"
+    ],
+    [
+      "ex-main-0473|step-1",
+      "oblique-prism-ex-main-0473-step-1"
+    ],
+    [
+      "ex-main-0473|step-2",
+      "oblique-prism-ex-main-0473-step-2"
+    ],
+    [
+      "ex-main-0473|step-3",
+      "oblique-prism-ex-main-0473-step-3"
+    ],
+    [
+      "ex-main-0473|step-4",
+      "oblique-prism-ex-main-0473-step-4"
+    ],
+    [
+      "ex-main-0474|condition",
+      "oblique-prism-ex-main-0474-condition"
+    ],
+    [
+      "ex-main-0474|help:h1",
+      "oblique-prism-ex-main-0474-help-h1"
+    ],
+    [
+      "ex-main-0474|help:h2",
+      "oblique-prism-ex-main-0474-help-h2"
+    ],
+    [
+      "ex-main-0474|step-1",
+      "oblique-prism-ex-main-0474-step-1"
+    ],
+    [
+      "ex-main-0474|step-2",
+      "oblique-prism-ex-main-0474-step-2"
+    ],
+    [
+      "ex-main-0474|step-3",
+      "oblique-prism-ex-main-0474-step-3"
+    ],
+    [
+      "ex-main-0474|step-4",
+      "oblique-prism-ex-main-0474-step-4"
+    ],
+    [
+      "ex-main-0474|step-5",
+      "oblique-prism-ex-main-0474-step-5"
+    ],
+    [
+      "ex-main-0475|condition",
+      "oblique-prism-ex-main-0475-condition"
+    ],
+    [
+      "ex-main-0475|help:h1",
+      "oblique-prism-ex-main-0475-help-h1"
+    ],
+    [
+      "ex-main-0475|help:h2",
+      "oblique-prism-ex-main-0475-help-h2"
+    ],
+    [
+      "ex-main-0475|step-1",
+      "oblique-prism-ex-main-0475-step-1"
+    ],
+    [
+      "ex-main-0475|step-2",
+      "oblique-prism-ex-main-0475-step-2"
+    ],
+    [
+      "ex-main-0475|step-3",
+      "oblique-prism-ex-main-0475-step-3"
+    ],
+    [
+      "ex-main-0475|step-4",
+      "oblique-prism-ex-main-0475-step-4"
+    ],
+    [
+      "ex-main-0476|condition",
+      "oblique-prism-ex-main-0476-condition"
+    ],
+    [
+      "ex-main-0476|help:h1",
+      "oblique-prism-ex-main-0476-help-h1"
+    ],
+    [
+      "ex-main-0476|help:h2",
+      "oblique-prism-ex-main-0476-help-h2"
+    ],
+    [
+      "ex-main-0476|step-1",
+      "oblique-prism-ex-main-0476-step-1"
+    ],
+    [
+      "ex-main-0476|step-2",
+      "oblique-prism-ex-main-0476-step-2"
+    ],
+    [
+      "ex-main-0476|step-3",
+      "oblique-prism-ex-main-0476-step-3"
+    ],
+    [
+      "ex-main-0476|step-4",
+      "oblique-prism-ex-main-0476-step-4"
+    ],
+    [
+      "theory-056|condition",
+      "oblique-prism-theory-056-condition"
+    ],
+    [
+      "theory-056|help:h1",
+      "oblique-prism-theory-056-help-h1"
+    ],
+    [
+      "theory-056|help:h2",
+      "oblique-prism-theory-056-help-h2"
+    ],
+    [
+      "theory-056|step-1",
+      "oblique-prism-theory-056-step-1"
+    ],
+    [
+      "theory-056|step-2",
+      "oblique-prism-theory-056-step-2"
+    ],
+    [
+      "theory-056|step-3",
+      "oblique-prism-theory-056-step-3"
+    ],
+    [
+      "theory-056|step-4",
+      "oblique-prism-theory-056-step-4"
+    ],
+    [
+      "theory-057|condition",
+      "oblique-prism-theory-057-condition"
+    ],
+    [
+      "theory-057|help:h1",
+      "oblique-prism-theory-057-help-h1"
+    ],
+    [
+      "theory-057|help:h2",
+      "oblique-prism-theory-057-help-h2"
+    ],
+    [
+      "theory-057|step-1",
+      "oblique-prism-theory-057-step-1"
+    ],
+    [
+      "theory-057|step-2",
+      "oblique-prism-theory-057-step-2"
+    ],
+    [
+      "theory-057|step-3",
+      "oblique-prism-theory-057-step-3"
+    ],
+    [
+      "theory-057|step-4",
+      "oblique-prism-theory-057-step-4"
+    ],
+    [
+      "theory-058|condition",
+      "oblique-prism-theory-058-condition"
+    ],
+    [
+      "theory-058|help:h1",
+      "oblique-prism-theory-058-help-h1"
+    ],
+    [
+      "theory-058|help:h2",
+      "oblique-prism-theory-058-help-h2"
+    ],
+    [
+      "theory-058|step-1",
+      "oblique-prism-theory-058-step-1"
+    ],
+    [
+      "theory-058|step-2",
+      "oblique-prism-theory-058-step-2"
+    ],
+    [
+      "theory-058|step-3",
+      "oblique-prism-theory-058-step-3"
+    ],
+    [
+      "theory-058|step-4",
+      "oblique-prism-theory-058-step-4"
+    ],
+    [
+      "theory-059|condition",
+      "oblique-prism-theory-059-condition"
+    ],
+    [
+      "theory-059|help:h1",
+      "oblique-prism-theory-059-help-h1"
+    ],
+    [
+      "theory-059|help:h2",
+      "oblique-prism-theory-059-help-h2"
+    ],
+    [
+      "theory-059|step-1",
+      "oblique-prism-theory-059-step-1"
+    ],
+    [
+      "theory-059|step-2",
+      "oblique-prism-theory-059-step-2"
+    ],
+    [
+      "theory-059|step-3",
+      "oblique-prism-theory-059-step-3"
+    ],
+    [
+      "theory-059|step-4",
+      "oblique-prism-theory-059-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "aa07f9da103956b590e7995ed40dd098cdc9e2469968c2b31eed4156afec7676",
+      "afterSHA256": "63c1ba8ea4b6fa6b6ac011055dcbac49110f731f4819e63e8ec14946cc75ab6e"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "87b6188a3a522859130bb847649f0f5f9eab2798207023d2b0ce160561dee3ab",
+      "afterSHA256": "5d9c65dfd7780f19112832421aabfd13c2a877a04419a48db667767ceb9e90b8"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T14:00:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 468 and points 52–55, with 769 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "32aa70fa1b6ae6bc18b9f15735f45658ab28810f9ae1a7278b002bd076510777",
+    "index": "05f1f21d8db20eb01ed573294820f88131f1244d7d1e8da8ae4f101d376d49f1",
+    "registry": "d2536820053fef31e64ca4b3df55a76fd51709895e032210ff05ffc8f6f0ce3c",
+    "cases": "fdc7ab407e8aa1e3cabeb59f623c610ffb0d13a34aba0f15d5b56f598edc300a"
+  }
+}
