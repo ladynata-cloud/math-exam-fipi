@@ -1162,6 +1162,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместная текущая сцена: исследование, практика, проверка, модели, GIF и выбранные номера. Личные результаты не читаются и не изменяются."
+    },
+    {
+      "trainerId": "school-workshop-check",
+      "file": "trainers/school-workshop-check/index.html",
+      "title": "Школьная мастерская · итоговые работы 5–11 классов",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Синхронизируются курс, вариант, ответы, подсказки, модель и итог.",
+      "group": "Школьная мастерская"
     }
   ]
 }
