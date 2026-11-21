@@ -56,7 +56,72 @@ const segmentRatios = {
  less: {sign:'< 1',initial:8,matches:(left,right)=>left<right},
  double: {sign:'= 2',initial:6,matches:(left,right)=>left===2*right},
 };
+const ratioConstructions = {
+ segments: 'Два отрезка в отношении 2 : 3',
+ rectangle: 'Прямоугольник со сторонами в отношении 5 : 3',
+ triangle: 'Катеты и гипотенуза',
+ angle: 'Два угла внутри 60°',
+};
+function constructionConfig(kind) {
+ if (kind === 'angle') return {
+  title: ratioConstructions.angle,
+  controls: [c('Угол от нижней стороны, в градусах', [0,10,20,30,40,50,60])],
+  initial: [30],
+ };
+ return {
+  title: ratioConstructions[kind],
+  controls: [c('Длина одной доли, в сантиметрах', [1,2,3])],
+  initial: [2],
+ };
+}
+function constructionFigure(kind, value) {
+ const diagram = svg('svg', {
+  viewBox: '0 0 360 250', role: 'img', class: 'pm-chart pcm-segment',
+  'aria-label': ratioConstructions[kind] + (kind === 'angle'
+   ? '. Луч составляет с нижней стороной ' + value + ' градусов.'
+   : '. Длина одной доли — ' + value + ' см.'),
+ });
+ const main = { stroke:'#086850', 'stroke-width':4 };
+ const secondary = { stroke:'#9c510e', 'stroke-width':4 };
+ const ink = { 'font-size':21 };
+ const left = 47, bottom = 199, unit = 17*value;
+ if (kind === 'segments') {
+  for (const [count,y,style] of [[2,74,main],[3,166,secondary]]) {
+   ln(diagram,left,y,left+count*unit,y,style);
+   for (let index=0; index<=count; index++) ln(diagram,left+index*unit,y-6,left+index*unit,y+6,style);
+   txt(diagram,left+count*unit/2,y-16,count*value+' см',ink);
+  }
+ } else if (kind === 'angle') {
+  const point = (degrees,distance) => {
+   const radians = degrees*Math.PI/180;
+   return [left+distance*Math.cos(radians), bottom-distance*Math.sin(radians)];
+  };
+  for (const degrees of [0,60]) {
+   const [x,y] = point(degrees,205);
+   ln(diagram,left,bottom,x,y,main);
+  }
+  const [x,y] = point(value,185);
+  ln(diagram,left,bottom,x,y,{...secondary,'stroke-dasharray':'9 4'});
+  txt(diagram,68,228,'O',ink);
+  txt(diagram,262,208,'A',ink);
+  if(value>0 && value<60) txt(diagram,x+11,y-3,'X',ink);
+  txt(diagram,151,25,'B',ink);
+ } else {
+  const width=(kind==='rectangle'?5:4)*unit, height=3*unit;
+  if(kind==='rectangle') {
+   diagram.append(svg('rect',{x:left,y:bottom-height,width,height,fill:'#e4f1e9',...main}));
+  } else {
+   diagram.append(svg('polygon',{points:[[left,bottom],[left+width,bottom],[left,bottom-height]].map(pt=>pt.join(',')).join(' '),fill:'#e4f1e9',...main}));
+   txt(diagram,left+width*.62+14,bottom-height*.52-8,5*value+' см',ink);
+  }
+  diagram.append(svg('polyline',{points:[[left,bottom-10],[left+10,bottom-10],[left+10,bottom]].map(pt=>pt.join(',')).join(' '),fill:'none',stroke:'#234436','stroke-width':2}));
+  txt(diagram,left+width/2,bottom+25,(kind==='rectangle'?5:4)*value+' см',ink);
+  txt(diagram,left-4,bottom-height/2,3*value+' см',{...ink,'text-anchor':'end'});
+ }
+ return diagram;
+}
 function configFor(lesson,task){
+ if (lesson?.id === 'p15' && Object.hasOwn(ratioConstructions,task?.ratioConstruction)) return constructionConfig(task.ratioConstruction);
  const spec=lesson?.id==='p15'&&Object.hasOwn(segmentRatios,task?.segmentRatio)&&segmentRatios[task.segmentRatio];
  if(!spec)return configs[lesson?.id];
  return {title:'Где поставить точку C?',controls:[c('Положение C в клетках от A',range(0,12))],initial:[spec.initial]};
@@ -101,13 +166,37 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if(n===15&&Object.hasOwn(segmentRatios,task.segmentRatio)){
+ if (n===15 && Object.hasOwn(ratioConstructions,task.ratioConstruction)) {
+  const kind=task.ratioConstruction;
+  show(constructionFigure(kind,a));
+  if (kind==='angle') {
+   const remaining=60-a;
+   formula('∠AOX = '+a+'°, ∠XOB = '+remaining+'°');
+   if (!a || !remaining) say('Луч совпал со стороной исходного угла. Для двух углов внутри выбери промежуточное положение.');
+   else {
+    formula('∠AOX / ∠XOB = ',exactRatio(a,remaining));
+    if (2*a===remaining || 2*remaining===a) {
+     say(2*a===remaining?'Нижняя часть занимает одну долю, верхняя — две.':'Верхняя часть занимает одну долю, нижняя — две. Порядок записи определяет, с какой части начинаешь.');
+    } else say('Для отношения 1 : 2 больший угол должен быть ровно вдвое больше меньшего. Сравни выбранные величины.');
+   }
+   stepList(['Сначала отметь транспортиром угол 60°.','Раздели 60° на три одинаковые доли: одна достанется меньшему углу, две — большему.','Проверь на собственном чертеже обе величины и их сумму.']);
+  } else {
+   const sides=kind==='segments'?[2,3]:kind==='rectangle'?[5,3]:[3,4];
+   formula('Отношение длин: '+sides[0]*a+' : '+sides[1]*a+' = '+sides[0]+' : '+sides[1]);
+   if (kind==='triangle') {
+    formula('Короткий катет / гипотенуза = ',exactRatio(3*a,5*a));
+    formula('Длинный катет / гипотенуза = ',exactRatio(4*a,5*a));
+   }
+   stepList(['Измени мерку: обе длины увеличатся или уменьшатся вместе.','Проверь отношение делением и подпиши свои измерения на бумаге.','Сравни чертёж и модель: экран показывает пропорции, а мерку в сантиметрах отложи линейкой на бумаге.']);
+  }
+ }
+ else if(n===15&&Object.hasOwn(segmentRatios,task.segmentRatio)){
   const spec=segmentRatios[task.segmentRatio],right=12-a;
   show(splitSegmentFigure(a));
   formula('AC = '+a+', CB = '+right);

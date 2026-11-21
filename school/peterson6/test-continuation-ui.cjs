@@ -155,6 +155,45 @@ test('segment construction measures AC and CB on one scale without assigning cre
  }finally{f.close();}
 });
 
+test('ratio constructions preserve scale, right angles and the angular partition',()=>{
+ const f=fixture(null,null,true);
+ try {
+  for(const [index,kind] of ['segments','rectangle','triangle','angle'].entries()) {
+   const number=21+index;
+   f.nav('#lesson/p15/'+number);
+   const model=f.q('[data-lesson-help="model"]');
+   if(!model.open)f.click('[data-lesson-help="model"] > summary');
+   for(const value of (kind==='angle'?[0,10,20,30,40,50,60]:[1,2,3])) {
+    f.event('#model select',String(value),'change');
+    const diagram=f.q('#model svg'),feedback=f.q('#model .pm-result').textContent;
+    if(kind==='segments') {
+     const lines=[...diagram.querySelectorAll('line')].filter(line=>line.getAttribute('x1')!==line.getAttribute('x2'));
+     const lengths=lines.map(line=>Number(line.getAttribute('x2'))-Number(line.getAttribute('x1')));
+     assert.deepEqual(lengths,[34*value,51*value]);
+    } else if(kind==='rectangle') {
+     const side=diagram.querySelector('rect');
+     assert.equal(Number(side.getAttribute('width')),85*value);
+     assert.equal(Number(side.getAttribute('height')),51*value);
+    } else if(kind==='triangle') {
+     const [p,q,r]=diagram.querySelector('polygon').getAttribute('points').split(' ').map(pair=>pair.split(',').map(Number));
+     assert.equal(p[1],q[1]);assert.equal(p[0],r[0]);
+     assert.equal(Math.hypot(q[0]-r[0],q[1]-r[1]),85*value);
+     assert.match(feedback,/Короткий катет.*Длинный катет/);
+    } else {
+     const ray=diagram.querySelector('line[stroke-dasharray]');
+     const radians=Math.atan2(199-Number(ray.getAttribute('y2')),Number(ray.getAttribute('x2'))-47);
+     assert(Math.abs(radians*180/Math.PI-value)<1e-9);
+     if(value===0||value===60)assert.match(feedback,/совпал со стороной/);
+     else if(value===20||value===40)assert.match(feedback,/часть занимает одну долю/);
+     else assert.match(feedback,/больший угол должен быть/);
+    }
+    assert.equal(f.d.querySelector('#answer-form'),null);
+    assert.equal(f.state().tasks['p15-t'+(number+1)].correct,false);
+   }
+  }
+ } finally { f.close(); }
+});
+
 test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
  const f=fixture(null,null,true);
  try {

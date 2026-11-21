@@ -557,6 +557,35 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.equal(await teacherFrame.getByLabel('Положение C в клетках от A').inputValue(),'8');
   await ownership(teacher,student,false);
 
+  phase = 'construct and measure figures on a common scale';
+  for (const [offset, expected] of ['6 : 9', '15 : 9', '9 : 12'].entries()) {
+    await lesson(teacherFrame, 'p15', 21 + offset);
+    await openModel(teacherFrame);
+    await teacherFrame.getByLabel('Длина одной доли, в сантиметрах').selectOption('3');
+    const shared = await synchronized(teacherFrame, studentFrame, 'both figures reflect the same unit ' + offset);
+    assert.deepEqual(shared.view.model.values, [3]);
+    assert.match(await studentFrame.locator('#model .pm-result').innerText(), new RegExp(expected));
+    await narrowShot(teacher, teacherFrame, 'peterson-board-320-construction-' + offset, '#model svg');
+  }
+  await lesson(teacherFrame, 'p15', 24);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Угол от нижней стороны, в градусах').selectOption('20');
+  await synchronized(teacherFrame, studentFrame, 'a 60-degree angle splits into 20 and 40');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(), /Нижняя часть занимает одну долю/);
+  await narrowShot(teacher, teacherFrame, 'peterson-board-320-divided-angle', '#model svg');
+  await ownership(teacher, student, true);
+  await studentFrame.getByLabel('Угол от нижней стороны, в градусах').selectOption('40');
+  await studentFrame.locator('#notebook').fill('Отложил 40° от нижней стороны, сверху осталось 20°. Сумма 60°.');
+  await studentFrame.locator('[data-action="record-manual"]').click();
+  const changedAngle = await synchronized(studentFrame, teacherFrame, 'other participant constructs the reflected solution');
+  assert.match(await teacherFrame.locator('#model .pm-result').innerText(), /Верхняя часть занимает одну долю/);
+  await teacher.reload({waitUntil:'domcontentloaded'});
+  await waitConnected(teacher);
+  teacherFrame = await courseFrame(teacher);
+  await waitSnapshot(teacherFrame, changedAngle, 'constructed angle restored on returning to the room');
+  await manualWithoutCredit(teacherFrame, 'p15-t25', 0);
+  await ownership(teacher, student, false);
+
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
   await teacherFrame.locator('#book-part').selectOption('2');
