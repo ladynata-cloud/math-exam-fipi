@@ -39,12 +39,17 @@ function textbookFormula(expression){
  return '<div class="m8-exercise-formula" tabindex="0" aria-label="Формула задания"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">'+render(expression)+'</math></div>';
 }
 const extraPractice=window.MakarychevModels?.quadraticPractice;
-const skillCatalogue=extraPractice?[...M.skills,extraPractice]:M.skills;
+const formulaPractice=window.MakarychevModels?.formulaPractice;
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
 function taskSignature(t){return t.prompt+(t.mathExpression?'\u241f'+JSON.stringify(t.mathExpression):'')+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
-function generatePractice(id,seed,level){return id===extraPractice?.id?window.MakarychevModels.practiceQuadratic(seed,level):M.generate(id,seed,level);}
+function generatePractice(id,seed,level){
+ if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
+ if(id===formulaPractice?.id)return window.MakarychevModels.practiceFormula(seed,level);
+ return M.generate(id,seed,level);
+}
 function resolveTask(id){if(Object.prototype.hasOwnProperty.call(taskById,id))return taskById[id];const m=/^practice:([a-z-]+):([123]):(\d+)$/.exec(id);if(!m||!skills[m[1]])return null;const seed=Number(m[3]);if(!Number.isSafeInteger(seed)||seed<1||seed>=1000000)return null;try{const t=generatePractice(m[1],seed,Number(m[2]));t.id=id;return t;}catch(_){return null;}}
 function validRoute(hash){if(typeof hash!=='string')return null;let m=/^#lesson\/(p\d{2})(?:\/(\d+))?$/.exec(hash);if(m&&byId[m[1]]){const i=Number(m[2]||0);return i<byId[m[1]].tasks.length?'#lesson/'+m[1]+'/'+i:null;}m=/^#practice\/([a-z-]+)\/([123])$/.exec(hash);return m&&skills[m[1]]?hash:null;}
 function sanitizeTask(raw,t){const safe=fresh();if(!record(raw))return safe;for(const k of ['value','note','feedback'])if(typeof raw[k]==='string')safe[k]=raw[k].slice(0,15000);for(const k of ['guided','assisted','hint'])safe[k]=raw[k]===true;safe.attempts=Number.isSafeInteger(raw.attempts)?Math.max(0,Math.min(1000000,raw.attempts)):0;safe.values=Array.isArray(raw.values)?raw.values.slice(0,t.steps.length).map(v=>typeof v==='string'?v.slice(0,1000):''):[];for(const k of ['stepHints','reveals'])if(record(raw[k]))for(const [i,v] of Object.entries(raw[k]))if(/^\d{1,2}$/.test(i)&&Number(i)<t.steps.length&&v===true)safe[k][i]=true;
@@ -114,6 +119,9 @@ function formatProblem(value,q){
   const values=text.split(';');
   if(values.length!==2||values.some(part=>!M.parse(part))||!window.MakarychevTaskGraphs?.parseLine(text))return message;
  }
+ if(q.kind==='quadratic-roots'&&!window.MakarychevCheck.quadraticEntries(text))return message;
+ if(q.kind==='radical-value'&&!window.MakarychevCheck.radicalSum(text))return message;
+ if(q.requireSimplified&&window.MakarychevCheck.sameRadicalSum(text,q.answer))return 'Значение верно. Вынеси полные квадраты из-под корней и объедини подобные слагаемые. Уточнение формы не расходует математическую попытку.';
  if(q.kind==='incomplete-coefficients'){
   const parts=text.split(';');if(parts.length!==3||parts.some(v=>!M.parse(v)))return message;
  }
@@ -135,6 +143,15 @@ function naturalCase(term,rule){
  return [36n-n*n,n*n];
 }
 function feedbackFor(value,q){
+ if(q.kind==='quadratic-roots'&&q.quadraticCoefficients){
+  const [a,b,c]=q.quadraticCoefficients,disc=b*b-4*a*c;
+  const submitted=window.MakarychevCheck.quadraticEntries(value)||[];
+  const expected=window.MakarychevCheck.quadraticEntries(q.answer)||[];
+  if(expected.length===2&&submitted.length===1&&expected.some(root=>window.MakarychevCheck.sameRadicalSum(submitted[0],root)))return 'Одно решение найдено верно. Для другого корня измени знак перед квадратным корнем и оставь тот же знаменатель.';
+  if(expected.length===1&&submitted.length>1)return 'Дискриминант равен нулю. Совпадающие значения запиши один раз.';
+  if(!expected.length)return 'Для этих коэффициентов D = '+disc+' < 0. Действительного квадратного корня из D нет.';
+  if(!submitted.length)return 'Здесь D = '+disc+'. При неотрицательном дискриминанте действительные корни существуют.';
+ }
  if(q.kind==='incomplete-coefficients'){
   const [a,b,c]=value.split(';').map(M.parse);
   if(!a?.n)return 'При a = 0 член второй степени исчезает. Выбери ненулевое a.';
@@ -334,7 +351,7 @@ if(formula){
 if(t.kind==='proof-chain')proofControls(t,s,host);
 stepChoiceControls(host,t);
 if(t.graph){
- const modelInput=['domain-fraction','integer-pairs','train-meeting','natural-values','work-hours','equal-distances','shared-hyperbola-line','quadratic-story','quadratic-example'].includes(t.graph.type)&&!s.attempts&&!s.hint&&!s.guided?'':s.value;
+ const modelInput=['domain-fraction','integer-pairs','train-meeting','natural-values','work-hours','equal-distances','shared-hyperbola-line','quadratic-story','quadratic-example','quadratic-parameter','quadratic-discriminant','quadratic-reciprocals','check-common-point'].includes(t.graph.type)&&!s.attempts&&!s.hint&&!s.guided?'':s.value;
  let graph=t.graph.revealAfterSubmit?{...t.graph,showSolution:s.correct}:t.graph;
  if(modelInput&&graph.scene==='walk'){
   const exact=window.MakarychevCheck.signedSquare(modelInput);
@@ -349,7 +366,7 @@ document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFi
 function preview(value){if(['build','pair','root-build','curve-build','root-line','line-example'].includes(active?.task.graph?.type)){
  const graph=active.task.graph;
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph.revealAfterSubmit?{...graph,showSolution:ts(active.task.id).correct}:graph,value);
-}const p=document.getElementById('answer-preview');if(!p)return;if(active?.task.kind==='text'||active?.task.kind==='set'||active?.task.kind==='graph'||active?.task.kind==='graph-pair'||['incomplete-coefficients','proof-chain','separated-rational','domain-fraction','common-factor','integer-pairs','root-points','graph-values','root-line-count','irrational-example','interval-examples'].includes(active?.task.kind)){p.textContent=value.trim()?'Твоя запись: '+value:'';return;}const r=M.parse(value);p.innerHTML=value.trim()?(r?'Ты ввёл: '+fmt(displayValue(value)):'Формат пока не распознан. Примеры: 0,5 · 1/2 · 2 1/3') : '';}
+}const p=document.getElementById('answer-preview');if(!p)return;if(active?.task.kind==='text'||active?.task.kind==='set'||active?.task.kind==='graph'||active?.task.kind==='graph-pair'||['quadratic-roots','radical-value','incomplete-coefficients','proof-chain','separated-rational','domain-fraction','common-factor','integer-pairs','root-points','graph-values','root-line-count','irrational-example','interval-examples'].includes(active?.task.kind)){p.textContent=value.trim()?'Твоя запись: '+value:'';return;}const r=M.parse(value);p.innerHTML=value.trim()?(r?'Ты ввёл: '+fmt(displayValue(value)):'Формат пока не распознан. Примеры: 0,5 · 1/2 · 2 1/3') : '';}
 function renderSteps(t,s){let html='<section class="steps"><p class="small">Каждый завершённый шаг остаётся видимым. Разбор считается помощью.</p>';for(let i=0;i<Math.min(t.steps.length,s.step+1);i++){const q=t.steps[i],done=i<s.step;html+='<div class="step '+(done?'completed':'')+'"><span class="step-label">Шаг '+(i+1)+(done?' · готово':'')+'</span><h3>'+fmt(q.prompt)+'</h3>'+(done?'<div class="recorded">Твоя запись: '+fmt(displayValue(s.values[i]))+' ✓</div><p>'+fmt(q.explanation||'')+'</p>':'<form data-step-form="'+i+'"><p class="small">'+inputNote(q)+'</p><div class="answer-controls"><input id="step-answer-'+i+'" aria-label="Ответ к шагу '+(i+1)+'" data-step-input="'+i+'" type="text" autocomplete="off" value="'+e(s.values[i]||'')+'"><button>Проверить шаг</button></div>'+(q.kind==='choice'?'':mathKeys('step-answer-'+i))+'</form><div class="row">'+button(s.stepHints[i]?'Скрыть подсказку':'Подсказка к этому шагу','step-hint','data-step="'+i+'"',true)+(s.stepHints[i]?button('Показать этот шаг','reveal','data-step="'+i+'"',true):'')+'</div>'+(s.stepHints[i]?'<div class="help">'+fmt(q.hint||q.explanation)+'</div>':'')+(s.reveals[i]?'<div class="help">'+fmt(q.explanation||'Выполни указанное действие.')+'<p>Результат шага: '+fmt(displayValue(q.answer,q.answerFormat))+'. Введи его и проверь.</p></div>':'')+'<div id="step-feedback-'+i+'" class="feedback error" role="status"></div>')+'</div>';}if(s.step>=t.steps.length)html+='<p class="feedback">Все шаги готовы. Теперь ответь на вопрос исходной задачи ниже.</p>';return html+'</section>';}
 function check(user,q){return window.MakarychevCheck.check(user,q);}
 function checkFinal(){const t=active.task,s=ts(t.id);if(s.correct)return;if(!s.value.trim()){s.feedback=t.kind==='choice'?'Сначала выбери ответ.':'Сначала введи результат.';renderProblem();return;}const issue=formatProblem(s.value,t);if(issue){s.feedback=issue;save();renderProblem();return;}s.attempts++;const isCorrect=check(s.value,t);if(!s.firstAttempt)s.firstAttempt={value:s.value.slice(0,1000),correct:isCorrect,at:Date.now()};recordEvent(s,'answer',s.value,isCorrect);if(isCorrect){s.correct=true;if(boardMode)s.assisted=true;s.independent=!boardMode&&!s.assisted&&!s.repeated&&s.attempts===1;s.completion={attempts:s.attempts,assisted:s.assisted,independent:s.independent,at:Date.now()};s.feedback='';}else{s.feedback='Пока не совпало. '+feedbackFor(s.value,t)+(s.attempts>=2?' После двух попыток можно открыть подсказку или разобрать трудный шаг.':'');}save();renderProblem();}

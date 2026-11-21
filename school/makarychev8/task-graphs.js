@@ -71,13 +71,13 @@ function graph(k,b,holes,range,label,otherLines=[]){
 const alternatives=[{k:-1,b:1,holes:[0]},{k:1,b:-1,holes:[]},{k:-1,b:1,holes:[1]},{k:1,b:-1,holes:[1]}];
 function rootGraph(config,value){
  const xr=config.xRange||[-1,10],yr=config.yRange||[-1,6],width=360,height=260;
- const pad=Math.max(30,Math.max(...yr.map(v=>String(Math.round(v)).length))*10+6);
+ const pad=config.compactTicks?56:Math.max(30,Math.max(...yr.map(v=>String(Math.round(v)).length))*10+6);
  if(xr.length!==2||yr.length!==2||![...xr,...yr].every(Number.isFinite)||xr[0]>=xr[1]||yr[0]>=yr[1])throw Error('Invalid root graph bounds');
  const x=v=>pad+(v-xr[0])/(xr[1]-xr[0])*(width-2*pad),y=v=>height-pad-(v-yr[0])/(yr[1]-yr[0])*(height-2*pad);
  const svg=node('svg',{viewBox:'0 0 '+width+' '+height,role:'img','aria-label':config.label||(['root-build','curve-build'].includes(config.type)?'Координатная плоскость для твоего построения':'Графики функций на координатной плоскости')});
  const line=(x1,y1,x2,y2,color,attrs={})=>svg.append(node('line',{x1,y1,x2,y2,stroke:color,'stroke-width':1,...attrs}));
  const step=(a,b)=>{const size=(b-a)/(Math.max(Math.abs(a),Math.abs(b))>=10000?3:6),p=Math.pow(10,Math.floor(Math.log10(size)));return [1,2,5,10].find(n=>n*p>=size)*p;};
- const label=v=>Math.abs(v)>=10000?Number(v.toPrecision(3)).toString():Number(v.toFixed(4)).toString();
+ const label=v=>config.compactTicks&&Math.abs(v)>=10000?v.toExponential(0):Math.abs(v)>=10000?Number(v.toPrecision(3)).toString():Number(v.toFixed(4)).toString();
  const sx=config.xTickStep||step(...xr),sy=config.yTickStep||step(...yr),gx=config.gridStep||(xr[1]-xr[0]<=24?Math.min(1,sx):sx),gy=config.gridStep||(yr[1]-yr[0]<=24?Math.min(1,sy):sy),hasXAxis=yr[0]<=0&&yr[1]>=0,hasYAxis=xr[0]<=0&&xr[1]>=0;
  if(![sx,sy,gx,gy].every(v=>Number.isFinite(v)&&v>0)||(xr[1]-xr[0])/gx>200||(yr[1]-yr[0])/gy>200)throw Error('Invalid root grid');
  for(let v=Math.ceil(xr[0]/gx)*gx;v<=xr[1]+gx/100;v+=gx)line(x(v),pad,x(v),height-pad,'#e1e7e2');
@@ -113,7 +113,7 @@ function rootGraph(config,value){
    if(inside){path+=(open&&continuous?'L':'M')+x(a).toFixed(3)+' '+y(b).toFixed(3)+' ';open=true;}else open=false;
    previous=[a,b];
   }
-  svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
+  svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,...(c.dashed?{'stroke-dasharray':'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
   for(const [h,v] of c.holes||[])if(h>=xr[0]&&h<=xr[1]&&v>=yr[0]&&v<=yr[1])svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));
   if(c.kind==='abs-ratio'&&xr[0]<=0&&xr[1]>=0)for(const b of [-(c.scale??1),c.scale??1])if(b>=yr[0]&&b<=yr[1])svg.append(node('circle',{cx:x(0),cy:y(b),r:4,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':0,'data-hole-y':b}));
   if(c.label){
@@ -345,8 +345,62 @@ function quadraticStory(host,config,value){
  host.append(svg,caption);
 }
 
+function quadraticEvidence(host,config,value){
+ host.className='task-graphs root-graph';
+ const caption=document.createElement('p');caption.className='small';
+ if(config.type==='check-common-point'){
+  const answer=parseLine(value);
+  if(answer){
+   for(const [k,b] of config.lines){
+    const row=document.createElement('p');row.className='small';
+    const ordinate=k*answer.k+b;
+    row.textContent='При x = '+answer.k+' получаем y = '+ordinate+'. '+(Math.abs(ordinate-answer.b)<1e-9?'Ордината совпала.':'Твоя ордината '+answer.b+' отличается.');
+    host.append(row);
+   }
+  }else{caption.textContent='После проверки здесь появятся две подстановки твоей точки.';host.append(caption);}
+  return;
+ }
+ if(config.type==='quadratic-reciprocals'){
+  const roots=String(value).trim().split(';').map(v=>number(v));
+  if(!roots.length||roots.some(v=>v===null)){
+   caption.textContent='После проверки рациональных корней сравни подстановку r в первое уравнение и 1/r во второе.';host.append(caption);return;
+  }
+  for(const r of roots){
+   const row=document.createElement('p');row.className='small';
+   const {a,b,c}=config,dec=v=>v.toLocaleString('ru',{maximumFractionDigits:5});
+   row.textContent=r===0?'При r = 0 обратное число не определено. Свободный член данного уравнения не равен нулю.':
+    'r = '+dec(r)+', 1/r = '+dec(1/r)+'. Левая часть первого уравнения: '+dec(a*r*r+b*r+c)+'. После перестановки a и c при 1/r: '+dec(c/(r*r)+b/r+a)+'.';
+   host.append(row);
+  }
+  return;
+ }
+ let {a,b,c}=config;
+ if(config.type==='quadratic-parameter'){
+  const entry=M.parse(value),proposed=entry?entry.n/entry.d:null;
+  if(proposed===null){
+   caption.textContent='После ввода своего a и проверки появится его парабола.';host.append(caption);return;
+  }
+  a=1;b=-proposed;c=proposed-4;
+ }
+ if(!value){caption.textContent='После проверки можно сопоставить число корней с пересечениями оси x.';host.append(caption);return;}
+ const discriminant=b*b-4*a*c,h=-b/(2*a),vertex=-discriminant/(4*a);
+ const spread=discriminant>=0?Math.sqrt(discriminant)/(2*Math.abs(a)):0;
+ const radius=Math.max(1.5,spread*1.45);
+ const left=h-radius,right=h+radius;
+ const ymax=Math.max(1,vertex,a*radius*radius+vertex),ymin=Math.min(-1,vertex,a*radius*radius+vertex),margin=(ymax-ymin)*.13;
+ const plane={curves:[{kind:'quadratic',a,b,c}],compactTicks:Math.max(Math.abs(ymin),Math.abs(ymax))>=10000,xRange:[left,right],yRange:[ymin-margin,ymax+margin],
+              label:'Парабола и горизонтальная ось y = 0 для указанного уравнения'};
+ const points=discriminant>0?[[h-spread,0],[h+spread,0]]:discriminant===0?[[h,0]]:[];
+ plane.points=points;
+ host.append(rootGraph(plane,''));
+ caption.textContent=(config.type==='quadratic-parameter'?'Для a = '+(-b).toLocaleString('ru')+' ':'')+
+    'D = '+discriminant.toLocaleString('ru',{maximumFractionDigits:4})+'. Различных пересечений оси x: '+points.length+'.';
+ host.append(caption);
+}
+
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(['quadratic-discriminant','quadratic-parameter','quadratic-reciprocals','check-common-point'].includes(config.type)){quadraticEvidence(host,config,value);return;}
  if(config.type==='quadratic-story'){quadraticStory(host,config,value);return;}
  if(config.type==='quadratic-example'){quadraticExample(host,value);return;}
  if(['work-hours','equal-distances'].includes(config.type)){workEstimate(host,config,value);return;}
@@ -381,7 +435,7 @@ function render(host,config,value){
  }else if(['root-plane','root-build','curve-build'].includes(config.type)){
   host.className='task-graphs root-graph';host.append(rootGraph(config,value));
   const caption=document.createElement('p');caption.className='small';
-  caption.textContent=['root-build','curve-build'].includes(config.type)?(config.caption||'Введи ординаты точек ниже — они появятся на твоём чертеже.'):(config.caption||'На рисунке показана часть графика. Проверяй выводы по формуле.');host.append(caption);
+  caption.textContent=['root-build','curve-build'].includes(config.type)?((config.showSolution&&config.completeCaption)||config.caption||'Введи ординаты точек ниже — они появятся на твоём чертеже.'):(config.caption||'На рисунке показана часть графика. Проверяй выводы по формуле.');host.append(caption);
  }else if(config.type==='choices'||config.type==='hyperbola-choices'){
   host.className='task-graphs alternatives';
   const inverse=config.type==='hyperbola-choices';

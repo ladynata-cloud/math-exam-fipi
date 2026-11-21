@@ -161,5 +161,15 @@ student.d.querySelector('#answer-form').dispatchEvent(new student.w.Event('submi
 send(student,teacher);send(teacher,reconnect);
 assert.equal(reconnect.d.querySelectorAll('[data-root-curve="quadratic"]').length,1);
 assert.equal(reconnect.w.MakarychevApp.getState().tasks['p20-source-512-no-b'].independent,false);
+const formulaTopic=teacher.w.MakarychevCourse.lessons.find(l=>l.id==='p21');
+const plot=formulaTopic.tasks.findIndex(t=>t.id==='p21-source-546-a-plot');
+teacher.w.history.replaceState(null,'','#lesson/p21/'+plot);
+teacher.w.MakarychevApp.route();input(teacher,'#final-answer','1;0;4;-1;1;5');send(teacher,student);
+assert.equal(student.d.querySelectorAll('#task-graph [data-point-x]').length,6);
+assert.equal(student.d.querySelectorAll('#task-graph [data-root-curve]').length,0);
+student.d.querySelector('#answer-form').dispatchEvent(new student.w.Event('submit',{bubbles:true,cancelable:true}));
+send(student,teacher);send(teacher,reconnect);
+assert.equal(reconnect.d.querySelectorAll('#task-graph [data-root-curve]').length,2);
+assert.equal(reconnect.w.MakarychevApp.getState().tasks['p21-source-546-a-plot'].independent,false);
 [teacher,student,reconnect].forEach(p=>p.dom.window.close());
 console.log('PASS two participants, accepted step, notes, assist status, model, reconnect and isolation');

@@ -232,6 +232,98 @@ function sameReal(a,b){
  const x=signedSquare(a),y=signedSquare(b);
  return Boolean(x&&y&&x.sign===y.sign&&x.n*y.d===y.n*x.d);
 }
+// Compare sums of rational multiples of square roots without rounding them.
+// Two terms combine exactly when the ratio of their squared magnitudes is
+// the square of a rational number. This also recognises unsimplified radicals.
+function radicalSum(raw){
+ if(typeof raw!=='string'||raw.length>160)return null;
+ const ordinary=signedSquare(raw);if(ordinary)return [ordinary];
+ let input=normalize(raw),scale=M.parse('1'),depth=0;
+ // A common denominator, e.g. (3 − √29)/2, scales every numerator term.
+ if(input[0]==='('){
+  for(let i=0;i<input.length;i++){
+   if(input[i]==='(')depth++;else if(input[i]===')')depth--;
+   if(depth<0)return null;
+   if(!depth){
+    const suffix=input.slice(i+1);
+    if(!suffix||suffix[0]==='/'){
+     if(suffix){scale=M.parse(suffix.slice(1));if(!scale||!scale.n)return null;}
+     input=input.slice(1,i);
+    }
+    break;
+   }
+  }
+ }
+ const pieces=[];let start=0;depth=0;
+ for(let i=0;i<input.length;i++){
+  const c=input[i];
+  if(c==='(')depth++;else if(c===')')depth--;
+  if(depth<0)return null;
+  if(i>start&&!depth&&(c==='+'||c==='-')&&input[i-1]!=='/'){
+   pieces.push(input.slice(start,i));start=i;
+  }
+ }
+ if(depth||!input.length)return null;
+ pieces.push(input.slice(start));if(pieces.length>9)return null;
+ const multiplier=BigInt(scale.d),denominator=BigInt(scale.n);
+ const values=pieces.map(part=>signedSquare(part.replace(/^\+/,'')));
+ if(values.some(v=>!v))return null;
+ return values.map(v=>({sign:v.sign*Math.sign(scale.n),n:v.n*multiplier*multiplier,d:v.d*denominator*denominator}));
+}
+function gcdInteger(a,b){while(b){const r=a%b;a=b;b=r;}return a<0n?-a:a;}
+function integerRoot(n){
+ if(n<2n)return n;
+ let x=n,next=(x+1n)/2n;while(next<x){x=next;next=(x+n/x)/2n;}
+ return x*x===n?x:null;
+}
+function sameRadicalSum(left,right){
+ const a=radicalSum(left),b=radicalSum(right);if(!a||!b)return false;
+ const pending=[...a,...b.map(v=>({...v,sign:-v.sign}))].filter(v=>v.sign);
+ while(pending.length){
+  const pivot=pending.pop();let sum=BigInt(pivot.sign),den=1n;
+  for(let i=pending.length-1;i>=0;i--){
+   const candidate=pending[i];
+   let top=candidate.n*pivot.d,bottom=candidate.d*pivot.n;
+   const g=gcdInteger(top,bottom);top=integerRoot(top/g);bottom=integerRoot(bottom/g);
+   if(top===null||bottom===null)continue;
+   sum=sum*bottom+BigInt(candidate.sign)*top*den;den*=bottom;
+   const divisor=gcdInteger(sum,den);sum/=divisor;den/=divisor;pending.splice(i,1);
+  }
+  if(sum!==0n)return false;
+ }
+ return true;
+}
+function reducedRadicals(raw,expected){
+ const v=normalize(raw);
+ const radicands=v=>[...normalize(v).matchAll(/√(\d+)/g)].map(m=>m[1]).sort().join(';');
+ if(radicands(v)!==radicands(expected)||/^\(.+\)\//.test(v))return false;
+ const terms=radicalSum(raw),correct=radicalSum(expected);
+ if(!terms||terms.length!==correct.length)return false;
+ const pending=[...correct];
+ for(const term of terms){
+  const i=pending.findIndex(t=>term.sign===t.sign&&term.n*t.d===t.n*term.d);
+  if(i<0)return false;pending.splice(i,1);
+ }
+ return true;
+}
+function quadraticEntries(raw){
+ const text=String(raw).trim();if(/^(нет|неткорней|корнейнет|пусто|∅|\{\})$/.test(normalize(text)))return [];
+ const wrapped=text[0]==='{'&&text.endsWith('}')?text.slice(1,-1):text;
+ const parts=wrapped.replace(/\+\/-/g,'±').split(';').map(s=>s.trim());
+ if(parts.length>2||parts.some(s=>!s||s.length>160))return null;
+ if(parts.length===1&&parts[0].includes('±')){
+  if(parts[0].split('±').length!==2)return null;
+  const pair=[parts[0].replace('±','-'),parts[0].replace('±','+')];
+  return pair.every(radicalSum)?pair:null;
+ }
+ return parts.every(radicalSum)?parts:null;
+}
+function sameQuadraticRoots(raw,expected){
+ const a=quadraticEntries(raw),b=quadraticEntries(expected);
+ return Boolean(a&&b&&a.length===b.length&&(a.every((v,i)=>sameRadicalSum(v,b[i]))||
+   (a.length===2&&sameRadicalSum(a[0],b[1])&&sameRadicalSum(a[1],b[0]))));
+}
+
 function setEntries(value){
  let body=String(value).trim();
  if(body.startsWith('{')&&body.endsWith('}'))body=body.slice(1,-1);
@@ -288,6 +380,8 @@ function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
  if(target.kind==='separated-rational')return separatedRational(user,target.answer);
+ if(target.kind==='quadratic-roots')return sameQuadraticRoots(user,target.answer);
+ if(target.kind==='radical-value')return sameRadicalSum(user,target.answer)&&(!target.requireSimplified||reducedRadicals(user,target.answer));
  if(target.kind==='proof-chain')return (target.proofOrders||[target.answer]).includes(proofOrder(user,target.proofClaims.length)?.join(';'));
  if(target.kind==='common-factor')return equivalentCommonFactor(user,target.answer);
  if(target.kind==='domain-fraction')return inspectDomainFraction(user,target.exclusions).status==='correct';
@@ -314,7 +408,7 @@ function check(user,target){
   return target.rootType==='rational'?rational:target.rootType==='irrational'?!rational:false;
  }
  if(target.kind==='graph-estimates'){
-  if((target.exactAnswers||[]).some(answer=>normalize(user)===normalize(answer)||setEqual(user,answer)))return true;
+  if((target.exactAnswers||[]).some(answer=>normalize(user)===normalize(answer)||setEqual(user,answer)||sameQuadraticRoots(user,answer)))return true;
   const entries=user.split(';').map(v=>M.parse(v));
   if(entries.length!==target.rootValues.length||entries.some(v=>!v))return false;
   const values=entries.map(r=>r.n/r.d).sort((a,b)=>a-b);
@@ -342,5 +436,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

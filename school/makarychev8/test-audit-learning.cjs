@@ -162,9 +162,9 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–530 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–556 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–530 разобраны полностью/);
+ assert.match(overview.textContent,/№1–556 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
 });
@@ -194,6 +194,35 @@ test('incomplete quadratic practice covers each real-root case on new numbers an
    const roots=disc<0?'нет':[...new Set([(-b-Math.sqrt(disc))/(2*a),(-b+Math.sqrt(disc))/(2*a)])].join(';');
    assert(checker.check(roots,q));
    assert.deepEqual(model.practiceQuadratic(seed,level),q);
+  }
+ }
+});
+
+test('quadratic formula accepts exactly equivalent radical pairs, while simplification still requires reduced terms',()=>{
+ const C=require('./check.js'), model=require('./models.js');
+ for(const [answer,user] of [
+  ['(3-√29)/2;(3+√29)/2','(6±2sqrt(29))/4'],
+  ['(10-√2)/7;(10+√2)/7','10/7+sqrt(2)/7;10/7-sqrt(2)/7'],
+  ['-3-2√7;-3+2√7','-3±sqrt(28)'],
+  ['1;4/3','1 1/3;1'],['17','17'],['нет','∅']
+ ])assert(C.check(user,{kind:'quadratic-roots',answer}),user);
+ const pair={kind:'quadratic-roots',answer:'(3-√29)/2;(3+√29)/2'};
+ for(const value of ['(3±√28)/2','(3±√29)/4','(3±√29)/0','3/2;3/2','(3+√29)/2','(3±√29','-1.19258;4.19258','(3±√(-29))/2','±±3'])assert(!C.check(value,pair));
+ assert(C.check('√8+√2',{kind:'radical-value',answer:'3√2'}));
+ assert(!C.check('√8+√2',{kind:'radical-value',answer:'3√2',requireSimplified:true}));
+ assert(!C.check('2+3√20/2',{kind:'radical-value',answer:'2+3√5',requireSimplified:true}));
+ assert(C.check('3*sqrt(5)+2',{kind:'radical-value',answer:'2+3√5',requireSimplified:true}));
+ for(const level of [1,2,3]){
+  let prior='';
+  for(let seed=1;seed<=40;seed++){
+   const task=model.practiceFormula(seed,level),[a,b,c]=task.quadraticCoefficients;
+   const d=b*b-4*a*c;assert.equal(d,Number(task.steps[1].answer));
+   assert(C.check(task.answer,task));assert.notEqual(task.prompt,prior);prior=task.prompt;
+   const values=C.quadraticEntries(task.answer);assert.equal(values.length,d<0?0:d===0?1:2);
+   for(const value of values){
+    const number=C.radicalSum(value).reduce((total,t)=>total+t.sign*Math.sqrt(Number(t.n)/Number(t.d)),0);
+    assert(Math.abs(a*number*number+b*number+c)<1e-8);
+   }
   }
  }
 });

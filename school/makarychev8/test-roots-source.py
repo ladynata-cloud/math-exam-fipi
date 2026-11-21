@@ -54,6 +54,7 @@ for file in ['exercises-221-230.json','exercises-231-267.json']:
         by_lesson[topic]['tasks'].extend(tasks)
 
 by_lesson['p20']['tasks'].extend(read('exercises-510-530.json'))
+by_lesson['p21']['tasks'].extend(read('exercises-531-556.json'))
 
 ranges = []
 for first, last in RANGES:

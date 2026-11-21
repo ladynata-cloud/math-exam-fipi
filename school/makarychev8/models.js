@@ -443,5 +443,30 @@
       ]};
   }
 
-  return { mount, experiment, quadraticPractice, practiceQuadratic, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const formulaPractice={
+    id:'quadratic-formula',title:'Дискриминант и формула корней',
+    description:'Составь дискриминант, выбери число корней и проверь точные решения на новых коэффициентах.'
+  };
+  function practiceFormula(seed,level){
+    const h=3+seed%9,offset=(seed%13)+2,a=level===1?1:2+seed%4;
+    // At level 3, all three discriminant signs occur and a positive one can be irrational.
+    const delta=level===1?(1+seed%7)**2:level===2?(seed%3?offset**2:0):[0,-offset,2+seed%6][seed%3];
+    const b=-2*a*h,c=a*(h*h-delta),disc=b*b-4*a*c;
+    const root=Math.sqrt(delta);
+    const answer=delta<0?'нет':delta===0?String(h):Number.isInteger(root)?(h-root)+';'+(h+root):
+      h+'-√'+delta+';'+h+'+√'+delta;
+    const equation=(a===1?'':a)+'x² − '+(-b)+'x'+(c?' '+(c<0?'−':'+')+' '+Math.abs(c):'')+' = 0';
+    const hint='Возведи b в квадрат вместе со знаком. При D > 0 выпиши обе записи с разными знаками.';
+    return {title:'Реши по формуле корней',prompt:'Найди все действительные корни: '+equation,kind:'quadratic-roots',
+      answer,quadraticCoefficients:[a,b,c],finalLabel:'Все действительные корни',inputNote:'Введи корни через точку с запятой, одно число или «нет».',
+      hint,correction:hint,explanation:'D = '+disc+'. '+(disc<0?'Действительных решений нет.':disc===0?'Один корень: '+h+'.':'Квадрат разности (x − '+h+')² равен '+delta+'. Отсюда '+answer.replace(';',' и ')+'.'),
+      source:{type:'authored',reference:'Авторская тренировка по дискриминанту'},skills:[quadraticPractice.id],
+      steps:[
+        {prompt:'Какие a, b, c получаются в стандартной записи?',kind:'graph-values',answer:[a,b,c].join(';'),
+         hint:'Не потеряй минус перед членом первой степени.',explanation:'Коэффициенты: '+[a,b,c].join('; ')+'.'},
+        {prompt:'Вычисли b² − 4ac.',kind:'number',answer:String(disc),hint,explanation:'Из '+b*b+' вычитаем '+4*a*c+', получается '+disc+'.'}
+      ]};
+  }
+
+  return { mount, experiment, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });
