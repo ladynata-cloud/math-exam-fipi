@@ -88,6 +88,8 @@ on:
       - 'tools/geometry-textbook/*trigonometry_review*'
       - 'tools/geometry-textbook/*triangle_review*'
       - 'tools/geometry-textbook/*vector_product_review*'
+      - 'tools/geometry-textbook/*additional_triangle_area*'
+      - 'geometry-course/textbook/data/additional-triangle-area.json'
       - 'geometry-course/textbook/data/vector-product-review.json'
       - 'geometry-course/textbook/data/triangle-review.json'
       - 'geometry-course/textbook/data/trigonometry-review.json'
@@ -156,6 +158,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/additional_triangle_area.py --check && python3 tools/geometry-textbook/check_additional_triangle_area.py
       - run: python3 tools/geometry-textbook/vector_product_review.py --check && python3 tools/geometry-textbook/check_vector_product_review.py
       - run: python3 tools/geometry-textbook/triangle_review.py --check && python3 tools/geometry-textbook/check_triangle_review.py
       - run: python3 tools/geometry-textbook/trigonometry_review.py --check && python3 tools/geometry-textbook/check_trigonometry_review.py
