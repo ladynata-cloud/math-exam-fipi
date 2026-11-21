@@ -1,0 +1,25 @@
+name: Reproduce three reviewed Atanasyan coordinate banks
+on:
+  push:
+    branches:
+      - staging/atanasyan-681-reproduce-course-banks-20261121
+    paths:
+      - '.stereo-transfer/**'
+permissions:
+  contents: write
+jobs:
+  exact-book-banks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            stereo-course/textbook
+            tools/stereo-textbook
+            .stereo-transfer
+          persist-credentials: false
+      - name: Reproduce every snapshot and verify both digests before recording its Git object
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .stereo-transfer/verify.py

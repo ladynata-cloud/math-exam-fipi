@@ -1,0 +1,17 @@
+[
+  {
+    "sha": "70594c04c85a18db25c8037699fa538656c5de13",
+    "bytes": 15370497,
+    "sha256": "a95460d69b52bec4e1fbdb9cc272446add906eaddaeb7667e5f84639ad8d92fe"
+  },
+  {
+    "sha": "37830ed44fbe55c9df375d81a5e6c7d204f5c5b5",
+    "bytes": 15513501,
+    "sha256": "ac31a932ab5ffdc921def24e2be35784caa74edf6bc20d9fde4061c1b0c348b7"
+  },
+  {
+    "sha": "498f68c9978d4199d5cac10c6bd7433356d6580f",
+    "bytes": 15513390,
+    "sha256": "fc277eb4777469dd3bc5150270f306fedc0c5ffca872006d7a13574ed0c6dbc8"
+  }
+]
