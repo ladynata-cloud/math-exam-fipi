@@ -444,7 +444,7 @@ async function run(browser, origin, backend, failures) {
   const readFormat=await same(teacherFrame,studentFrame,'spoken form requested without an error');assert.equal(readFormat.scene.attempt,0);
   await teacherFrame.locator('#answer').fill('двадцать семь');await teacherFrame.locator('#answer-form button').click();
   await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'spoken form accepted then digit places');
-  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption('8');await studentFrame.locator('[data-v5-param=place]').selectOption('5');
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption({value:'8'});await studentFrame.locator('[data-v5-param=place]').selectOption({value:'5'});
   await studentFrame.locator('[data-v5-prediction]').fill('300000');await studentFrame.locator('[data-v5-predict] button').click();
   const digits=await same(studentFrame,teacherFrame,'three hundred thousands in printed 300007');assert.equal(digits.scene.model.row,8);assert.equal(digits.scene.model.place,5);assert(digits.scene.model.seen);
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(studentFrame,teacherFrame,'printed numeral and place value restored');
