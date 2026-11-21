@@ -7,13 +7,13 @@ const book=models.window.WorkshopCurriculum.books.find(b=>b.id==='source-73');
 assert.equal(book.source.sha256,'b03dcf7bae31a3479d017b776f6aaa661b489ca327624996e242faca5ccd1dcf');
 assert.equal(book.source.pages,147);assert(book.note.includes('978-5-9963-3229-8'));
 assert.deepEqual(Array.from(book.mapping,r=>r.page),[3,13,21,29,38,43,45,58,67,72,74,76,83,91,96,102,110,120,122,124,134]);
-const ids=['1','2a','2b','2c','3',...Array.from('abcdef',ch=>'4'+ch),'5a','5b'];
-const printed=['1','2а','2б','2в','3',...Array.from('абвгде',ch=>'4'+ch),'5а','5б'];
+const ids=['1','2a','2b','2c','3',...Array.from('abcdef',ch=>'4'+ch),'5a','5b',...['a','b'].flatMap(c=>Array.from({length:5},(_,j)=>'6'+c+'-'+(j+1))),'6c','6d','6e'];
+const printed=['1','2а','2б','2в','3',...Array.from('абвгде',ch=>'4'+ch),'5а','5б',...['а','б'].flatMap(c=>Array.from({length:5},(_,j)=>'6'+c+' ('+(j+1)+'-я дробь)')),'6в','6г','6д'];
 for(const [i,r] of book.mapping.entries()){
  assert.equal(r.sourcePath,'https://pdf.my-uchebnik.ru/pdf/algebra/00000059.pdf#page='+(r.page+2));
  if(i){assert(r.bookOnly);assert(!r.boardPath&&!r.externalPath);}else{assert.equal(r.coverage,'partial');assert.equal(r.boardPath,book.exercises[0].path);}
 }
-const scripts=['trainers/tyurin-statistics/content.js',...['questions','logic','powers','power-order','fractions'].map(p=>dir+p+'.js'),'trainers/tyurin-statistics/app.js'].map(read);
+const scripts=['trainers/tyurin-statistics/content.js',...['questions','logic','powers','power-order','fractions','restrictions'].map(p=>dir+p+'.js'),'trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,stash){
  const dom=new JSDOM(read(dir+'index.html'),{url:'https://math.example'+entry.path,runScripts:'outside-only'}),w=dom.window,doc=w.document;
  w.Math.random=()=>0;w.TextEncoder=TextEncoder;const id=entry.path.split('/').at(-1),key='math:peterson8-2017:v1:'+id;
@@ -22,6 +22,19 @@ function open(entry,stash){
 }
 const gcd=(a,b)=>b?gcd(b,a%b):a;
 function solve(i,s){
+ if(i>=23){
+  const h=s+3,expanded=i===24||(i===25&&s%2===1);return [expanded?1:2,h+2+(s%3),0];
+ }
+ if(i>=13){
+  const h=s+2,kind=(i-13)%5,v=2+s%4,j=2+s%3,a=s+3,b=s+5,t=s+4;
+  const oldDen=u=>[b*u,b*u*u,b*u,(v-u)*(v+u),(1-j*u)**3][kind];
+  const nums=[a*t,a*t,t*(t-v),v-t,1-j*t];
+  if(i<18)return [oldDen(t),[0,1,0,0,2][kind],nums[kind]/oldDen(t)];
+  const reducedDen=u=>[b,b*u,b,v+u,(1-j*u)**2][kind];
+  const possible=[0,1/j,v,-v],prior=possible.filter(u=>Math.abs(oldDen(u))<1e-9),after=possible.filter(u=>Math.abs(reducedDen(u))<1e-9);
+  const lost=prior.filter(u=>!after.includes(u));return [prior.length,after.length,h+(lost.length?lost[0]:after[0])];
+ }
+
  const h=s+2;
  if(i===0){const cards=Array.from({length:4},(_,j)=>(j+s)%4);return [cards.indexOf(1)+1,cards.indexOf(0)+1,2];}
  if(i===1)return [5*h,3*h/(5*h),3*h/(5*h)*100];
@@ -44,7 +57,7 @@ assert.equal(book.exercises.length,ids.length);
 for(const [i,r] of book.exercises.entries()){
  const id='73-'+ids[i];assert.equal(r.path,'/'+dir+'index.html#lesson/'+id);assert.equal(r.boardPath,r.path);assert.equal(r.printed,printed[i]);assert.equal(r.page,i<3?7:8);
  let {dom,w,doc,key,l}=open(r);
- assert.equal(doc.querySelector('#lesson').value,id);assert.equal(doc.querySelectorAll('#lesson option').length,84);
+ assert.equal(doc.querySelector('#lesson').value,id);assert.equal(doc.querySelectorAll('#lesson option').length,97);
  assert.equal(doc.querySelector('#source').href,'https://pdf.my-uchebnik.ru/pdf/algebra/00000059.pdf#page='+(r.page+2));assert.equal(doc.querySelector('#back').hash,'#book/source-73');
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),r.path);assert.equal(w.MathExamTopicEdition.nextId(l),ids[i+1]&&'73-'+ids[i+1]);assert.equal(r.title,l.title);
  const variants=new Set();for(let s=1;s<=11;s++){
@@ -62,4 +75,4 @@ for(const [i,r] of book.exercises.entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,['fixed','first','help']);action(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
  assert.equal(w.localStorage.getItem('math:peterson8-2017:v1:71-2'),'preserved');dom.window.close();
 }
-console.log('Part 3: 21 printed sections, 13 exercise routes, 429 independently checked answers, diagnostics and persisted individual records.');
+console.log('Part 3: 21 printed sections, 26 exercise routes, 858 independently checked answers, diagnostics and persisted individual records.');
