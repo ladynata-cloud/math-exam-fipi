@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "ddb06139db50bfa2cb1bde1a193b5c1c61d6488018124426496df182e6cac3af",
-      "afterSha256": "7d626175d27e87aee4ee5b1e77161a0a8c2a9b719b596f63bdb7bfc5d94a1797",
+      "beforeSha256": "d60732341202d3220ac499d45345602d22d8fc98569f3c53cc0e4d4d06f083d2",
+      "afterSha256": "5c77e4dbd87cddfd1268ebcb1b6dfebbe47039a8dba6a1d59f380ad79a33e098",
       "placement": "before-head-close",
-      "sourceSha": "36fcf6ce04bbc95988def5ea8f2d51c3144397c0"
+      "sourceSha": "03faa9458fca8050da5278b12583fcdd212e1e54"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6651,6 +6651,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в 70 печатных номеров и две проверочные первой части Виленкина, а также двенадцать номеров второй части, включая прямую и обратную оценку длины и диаметра, с обеими ролями."
+    },
+    {
+      "previousBaseSha": "36fcf6ce04bbc95988def5ea8f2d51c3144397c0",
+      "sourceBaseSha": "03faa9458fca8050da5278b12583fcdd212e1e54",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в 70 печатных номеров и две проверочные первой части Виленкина, а также четырнадцать номеров второй части, включая измерение бензина по аналоговой шкале и движение минутной стрелки, с обеими ролями."
     }
   ],
   "coverageUpdates": [
