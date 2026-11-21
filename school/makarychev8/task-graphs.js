@@ -135,8 +135,67 @@ function numberLine(config){
  for(const point of config.points||[])if(point.x>=min&&point.x<=max)svg.append(node('line',{x1:x(point.x),x2:x(point.x),y1:axis-5,y2:axis+5,stroke:'#087c92','stroke-width':2,'data-number-point':point.label,'data-number-x':point.x}),node('text',{x:x(point.x),y:axis-12,'text-anchor':'middle','font-size':20},point.label));
  return svg;
 }
+function parseIntegerPairs(value){
+ const text=String(value).trim().replace(/−/g,'-');
+ if(!text || text.length>1000)return null;
+ const pattern=/\(\s*([+-]?\d{1,8})\s*;\s*([+-]?\d{1,8})\s*\)/y;
+ const pairs=[];
+ let position=0;
+ while(position<text.length){
+  pattern.lastIndex=position;
+  const match=pattern.exec(text);
+  if(!match)return null;
+  pairs.push([Number(match[1]),Number(match[2])]);
+  position=pattern.lastIndex;
+  if(position===text.length)break;
+  const separator=/^\s*[,;]\s*/.exec(text.slice(position));
+  if(!separator)return null;
+  position+=separator[0].length;
+  if(position===text.length)return null;
+ }
+ return pairs;
+}
+
+function pairEquation(rule, pair){
+ const [x,y]=pair.map(BigInt);
+ switch(rule){
+  case '206-a':return {left:5n*x+y-x*y,right:2n};
+  case '206-b':return {left:x*y-x+y,right:8n};
+  case '207-all':return {left:(x-3n)*y,right:x*x-6n*x+1n,allowed:x!==3n};
+  case '209-all':return {left:7n*(x+y),right:x*y,allowed:x>0n&&y>0n};
+ }
+ throw Error('Unknown pair equation');
+}
+
+function renderIntegerPairs(host,config,value){
+ host.className='task-graphs pair-check';
+ const title=document.createElement('p');
+ title.textContent='Подстановка твоих пар в равенство';
+ host.append(title);
+ const pairs=parseIntegerPairs(value);
+ if(!pairs){
+  const guide=document.createElement('p');
+  guide.className='small';
+  guide.textContent='Введи пару в скобках, например (2;3), и нажми «Проверить». Здесь появятся значения левой и правой частей.';
+  host.append(guide);
+  return;
+ }
+ const formulas={'206-a':'5x + y − xy = 2','206-b':'xy − x + y = 8',
+                 '207-all':'(x − 3)y = x² − 6x + 1','209-all':'7(a + b) = ab'};
+ title.textContent+=' '+formulas[config.rule];
+ const list=document.createElement('ul');
+ for(const pair of pairs){
+  const result=pairEquation(config.rule,pair),row=document.createElement('li');
+  const status=result.allowed===false?'проверь область допустимых значений':result.left===result.right?'равенство верно':'значения различаются';
+  row.textContent='('+pair.join('; ')+'). '+'Слева '+result.left+', справа '+result.right+' — '+status+'.';
+  list.append(row);
+ }
+ host.append(list);
+}
+
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(config.type==='integer-pairs'){renderIntegerPairs(host,config,value);return;}
  if(config.type==='number-line'){host.className='task-graphs number-line';host.append(numberLine(config));if(config.caption){const caption=document.createElement('p');caption.className='small';caption.textContent=config.caption;host.append(caption);}
  }else if(config.type==='line-example'){
   host.className='task-graphs root-graph';
@@ -178,5 +237,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {parse,parsePair,parseLine,parseRootPoints,curveValue,alternatives,render,rootGraph,numberLine};
+return {parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

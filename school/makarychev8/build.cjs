@@ -12,8 +12,9 @@ lessons.find(l=>l.id==='p05').tasks.push(...read('exercises-110-133.json'));
 lessons.find(l=>l.id==='p06').tasks.push(...read('exercises-134-149.json'));
 lessons.find(l=>l.id==='p07').tasks.push(...read('exercises-150-180.json'));
 lessons.find(l=>l.id==='p08').tasks.push(...read('exercises-181-200.json'));
+lessons.find(l=>l.id==='p09').tasks.push(...read('exercises-201-211.json'));
 // Present completed textbook points in source order while preserving every bookmarked array index.
-for (const lesson of lessons.filter(item=>item.order>=5&&item.order<=8)) {
+for (const lesson of lessons.filter(item=>item.order>=5&&item.order<=9)) {
  const indices=lesson.tasks.map((_,index)=>index);
  const ref=index=>lesson.tasks[index].source;
  lesson.studyOrder=indices.sort((a,b)=>{
