@@ -48,13 +48,15 @@ const rationalEquationPractice=window.MakarychevModels?.rationalEquationPractice
 const ratePractice=window.MakarychevModels?.ratePractice;
 const planePractice=window.MakarychevModels?.planePractice;
 const systemPractice=window.MakarychevModels?.systemPractice;
-const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice].filter(Boolean)];
+const graphicPractice=window.MakarychevModels?.graphicPractice;
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
 function taskSignature(t){return t.prompt+(t.mathExpression?'\u241f'+JSON.stringify(t.mathExpression):'')+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
 function generatePractice(id,seed,level){
  if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
+ if(id===graphicPractice?.id)return window.MakarychevModels.practiceGraphical(seed,level);
  if(id===systemPractice?.id)return window.MakarychevModels.practiceSystem(seed,level);
  if(id===planePractice?.id)return window.MakarychevModels.practicePlane(seed,level);
  if(id===ratePractice?.id)return window.MakarychevModels.practiceRates(seed,level);
@@ -171,6 +173,21 @@ function naturalCase(term,rule){
  return [36n-n*n,n*n];
 }
 function feedbackFor(value,q){
+ if(q.kind==='integer-pairs'&&!q.graph?.rule){
+  const G=window.MakarychevTaskGraphs,pairs=G.parseIntegerPairs(value)||[],solutions=G.parseIntegerPairs(q.answer)||[];
+  if(new Set(pairs.map(p=>p.join(';'))).size!==pairs.length)return 'Одна и та же точка записана несколько раз. Найди другую общую точку или убери повтор.';
+  for(const [x,y] of pairs){
+   if(solutions.some(p=>p[0]===x&&p[1]===y))continue;
+   const point='Точка ('+x+'; '+y+') ';
+   if(q.graph?.curves?.length===2){
+    const hits=q.graph.curves.map(c=>G.curveValue(c,x)===y);
+    if(hits[0])return point+'лежит на первом графике. Сравни её ординату со вторым графиком при том же x.';
+    if(hits[1])return point+'лежит на втором графике. Проверь первое уравнение при том же x.';
+   }
+   return point+'не удовлетворяет всем условиям. Подставь обе координаты в исходные равенства.';
+  }
+  return 'Указанные точки подходят. Проверь, все ли общие точки или целые решения перечислены.';
+ }
  if(q.kind==='abs-line-example'){
   const v=window.MakarychevCheck.absLineIntersections(value);
   if(v&&!v.intercept)return v.k===0?'Горизонтальная прямая не имеет единственного пересечения оси x в заданной точке.':'При x = −3 должно получиться y = 0. Проверь равенство b = 3k.';
@@ -439,7 +456,7 @@ if(t.graph){
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
 document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
-function preview(value){if(['build','pair','root-build','curve-build','root-line','line-example','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
+function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
  const state=ts(active.task.id),base=active.task.graph;
  let graph=['vertex-form','coefficient-example'].includes(base.type)?{...base,evaluated:Boolean(state.attempts||state.correct)}:base;
  if(['own-lines','own-points'].includes(base.type))graph={...base,groups:window.MakarychevCheck.pointGroups(value)};

@@ -670,6 +670,10 @@ function appliedShape(host,config,value){
 
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(config.learnerIntersections){
+  const points=parseIntegerPairs(value)||[];
+  config=config.type==='line-figure'?{...config,fixedPoints:points}:{...config,points};
+ }
  if(['quadratic-discriminant','quadratic-parameter','quadratic-reciprocals','check-common-point'].includes(config.type)){quadraticEvidence(host,config,value);return;}
  if(config.type==='rational-line-example'){reciprocalExample(host,config,value);return;}
  if(config.type==='rational-equation-check'){rationalEquationModel(host,config,value);return;}

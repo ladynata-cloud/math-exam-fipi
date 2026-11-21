@@ -644,5 +644,23 @@
       graph:{type:'line-figure',lines:equations,distinguish:true,bounds:Math.max(6,Math.abs(b)+1,Math.abs(otherB)+1)},source:{type:'authored',reference:'Тренировка на новых системах'},skills:[planePractice.id]};
   }
 
-  return { mount, experiment, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const graphicPractice={id:'graphical-systems',title:'Общие точки прямой и параболы',
+    description:'Построй графики на новых данных, проверь координаты и число общих точек.'};
+  function practiceGraphical(seed,level){
+    const r=1+seed%4,s=level===1?-(1+Math.floor(seed/4)%4):r,delta=level===3?1+Math.floor(seed/3)%4:0;
+    const k=r+s,b=-r*s-delta,zero=level===3,count=zero?0:r===s?1:2,points=zero?[]:[r,...(r===s?[]:[s])];
+    const expression='y = '+(k?k+'x '+(b<0?'− ':'+ ')+Math.abs(b):String(b));
+    const answer=zero?'0':points.map(x=>'('+x+';'+x*x+')').join(', ');
+    const hint='В общей точке x² = kx + b. Для найденной абсциссы вычисли ординату и проверь её на обеих кривых.';
+    return {title:graphicPractice.title,prompt:'Рассмотри параболу y = x² и прямую '+expression+'. '+(zero?'Сколько у них общих точек?':'Запиши все общие точки (x; y).'),
+      kind:zero?'number':'integer-pairs',answer,finalLabel:zero?'Число общих точек':'Пары координат',hint,correction:hint,
+      explanation:zero?'После переноса получится (x − '+r+')² + '+delta+' = 0. Левая часть всегда положительна.':
+        'После приравнивания ординат найдено различных абсцисс: '+count+'. Проверь координаты '+answer+'.',
+      graph:{type:'root-plane',learnerIntersections:!zero,curves:[{kind:'quadratic',a:1,b:0,c:0},{kind:'line',k,b,dashed:true}],xRange:[-6,6],yRange:[Math.min(-3,b-1),Math.max(18,b+3)]},
+      steps:[{prompt:'Каков наклон прямой?',kind:'number',answer:String(k),hint:'Прочти коэффициент при x. У горизонтали он равен нулю.',explanation:'Наклон равен '+k+'.'},
+        {prompt:'Какова ордината прямой при x = 0?',kind:'number',answer:String(b),hint:'При x = 0 остаётся только свободное слагаемое.',explanation:'Пересечение с вертикальной осью имеет ординату '+b+'.'}],
+      source:{type:'authored',reference:'Тренировка на новых прямых и параболе'},skills:[systemPractice.id]};
+  }
+
+  return { mount, experiment, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });
