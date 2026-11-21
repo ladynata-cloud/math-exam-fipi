@@ -836,6 +836,44 @@ function linearTrial(config,raw){
  const holds={'<':delta<0n,'>':delta>0n,'≤':delta<=0n,'≥':delta>=0n}[config.operator];
  return {left:left.label,right:right.label,sign,holds};
 }
+function systemReviewView(host,g,value){
+ host.className='task-graphs quantity-model';
+ const q=M.parse(g.partial?.[0]),say=(text,key,v)=>{const p=boundNote(host,text);if(key)p.dataset[key]=String(v);};
+ if(g.proposal)intervalNumberLine(host,{mode:'operation',givenRows:[],proposal:g.proposal,points:[]},value);
+ if(!q){say({parameters:'Испытай параметр. Два корня будут отмечены разными знаками.',domains:'Подставь своё число, чтобы отдельно проверить корень и знаменатель.',natural:'Испытай натуральное n и проверь делимость 12.',formula:'Выбери своё положительное число для числовой проверки формулы.',ride:'Испытай положительную скорость в гору. Модель рассчитает времена обоих участков.'}[g.mode]);return;}
+ const n=BigInt(q.n),d=BigInt(q.d),x=q.n/q.d,fmt=v=>v.toLocaleString('ru-RU',{maximumSignificantDigits:8});
+ function fraction(a,b){let c=a<0n?-a:a,e=b;while(e){const t=c%e;c=e;e=t;}a/=c;b/=c;return String(a)+(b===1n?'':'/'+b);}
+ if(g.mode==='parameters'){
+  const cfg=g.settings||(g.which===995?{coefficient:-1,offset:0,radius:2,low:-6,high:6}:{coefficient:3,offset:0,radius:4,low:null,high:0});
+  const mid=BigInt(cfg.coefficient)*n+BigInt(cfg.offset)*d,rad=BigInt(cfg.radius),roots=[mid-rad*d,mid+rad*d];
+  const inside=(cfg.low===null||roots[0]>BigInt(cfg.low)*d)&&roots[1]<BigInt(cfg.high)*d;
+  const svg=node('svg',{viewBox:'0 0 306 110',role:'img','aria-label':'Положение двух корней на оси x и границы условия'}),limit=Math.max(10,Math.abs(cfg.low||0)+4,Math.abs(cfg.high)+4),px=u=>153+Math.max(-limit,Math.min(limit,u))*132/limit;
+  const y=58;svg.append(node('line',{x1:12,x2:294,y1:y,y2:y,stroke:'#536a62'}));const l=cfg.low??-limit,r=cfg.high;
+  svg.append(node('line',{x1:px(l),x2:px(r),y1:y,y2:y,stroke:'#7e5791','stroke-width':4}));
+  for(const bound of [cfg.low,cfg.high].filter(v=>v!==null))svg.append(node('circle',{cx:px(bound),cy:y,r:4,fill:'white',stroke:'#734484','stroke-width':2}),node('text',{x:px(bound),y:82,'font-size':13,'text-anchor':'middle'},String(bound)));
+  roots.forEach((k,i)=>{const u=Number(k)/q.d,h=i?28:41,pos=px(u),color=i?'#8a4010':'#07685d';svg.append(node('line',{x1:pos,x2:pos,y1:h+4,y2:y,stroke:color,'stroke-dasharray':'2 2'}));
+   if(Math.abs(u)>limit)svg.append(node('path',{d:'M'+pos+' '+h+' l'+(u>0?-9:9)+' -4 v8 z',fill:color,'data-parameter-mark':'outside'}));
+   else svg.append(i?node('rect',{x:pos-4,y:h-4,width:8,height:8,fill:color,'data-parameter-mark':'larger'}):node('circle',{cx:pos,cy:h,r:4,fill:color,'data-parameter-mark':'smaller'}));
+  });
+  host.append(svg);say('Круг — меньший корень '+fraction(roots[0],d)+', квадрат — больший '+fraction(roots[1],d)+'. Стрелка обозначает корень за рамкой.','rootPair',inside?'inside':'outside');return;
+ }
+ if(g.mode==='domains'){
+  const raw=g.which===0?12n*d-25n*n:g.which===1?5n*n-11n*d:(3n*n-2n*d)**2n,bottom=g.which===2?d*d:d,valid=g.which===0?raw>=0n:raw>0n;
+  say('Подкоренное выражение равно '+fraction(raw,bottom)+'. '+(raw<0n?'Корня среди действительных чисел нет.':raw===0n&&g.which!==0?'Корень равен нулю и находится в знаменателе.':g.which===0?'Знаменатель равен 6.':'Корень положителен, знаменатель ненулевой.'),'reviewDomain',valid?'yes':'no');return;
+ }
+ if(g.mode==='natural'){
+  if(n<=0n||d!==1n){say('Для опыта выбери натуральное число.');return;}
+  say('При n = '+n+' целая часть выражения 9n + 12 равна '+(9n*n+12n)+'. Слагаемое 12/n равно '+fraction(12n,n)+'.','divisorProbe',12n%n===0n?'yes':'no');return;
+ }
+ if(x<=0){say('Выбери положительное контрольное значение.');return;}
+ if(g.mode==='formula'){
+  const label=M.answer(q);say(g.which===0?'При основании a = 4 и площади S = '+label+' высота h = '+fraction(n,2n*d)+'. Подстановка: ah/2 = '+label+'.':g.which===1?'При m = 4 и s = '+label+' получаем p = '+fraction(n,2n*d)+'. Подстановка: s/p = 2 = 0,5m.':'При a = 2 и s = '+label+' положительное t = √('+label+') ≈ '+fmt(Math.sqrt(x))+'. Подстановка даёт at²/2 = '+label+'.','formulaProbe',g.which);return;
+ }
+ const up=fraction(20n*d,n),flat=fraction(60n*d,n+5n*d),total=fraction(20n*d*(n+5n*d)+60n*d*n,n*(n+5n*d));
+ const table=document.createElement('table');table.className='values-table';for(const cells of [['Участок','км','км/ч','ч'],['Подъём','20',M.answer(q),up],['Равнина','60',fraction(n+5n*d,d),flat]]){const row=table.insertRow();cells.forEach(v=>{row.insertCell().textContent=v;});}host.append(table);say('Общее время '+total+' ч при требуемых 6 ч.','rideTotal',total);
+}
+
+
 function systemTrialView(host,g,value){
  host.className='task-graphs quantity-model';
  const probe=g.fixed??g.partial?.[0],x=M.parse(probe);
@@ -846,7 +884,7 @@ function systemTrialView(host,g,value){
  }else boundNote(host,'На первом шаге укажи своё число. Сравни обе стороны каждой строки при одной подстановке.');
  if(g.rangeRows?.some(Boolean)||g.proposal){
   const lines=g.rangeRows?.some(Boolean)?g.rangeRows.map(r=>r||[]):[];
-  intervalNumberLine(host,{mode:'operation',givenRows:lines,rowLabels:['Твоя первая строка: ','Твоя вторая строка: '],enteredRows:g.rangeRows,proposal:g.proposal,points:x?[x]:[]},value);
+  intervalNumberLine(host,{mode:'operation',givenRows:lines,rowLabels:lines.map((_,i)=>'Твоя строка '+(i+1)+': '),enteredRows:g.rangeRows,proposal:g.proposal,points:x?[x]:[]},value);
   if(lines.length)boundNote(host,'Прямые идут в порядке строк задачи. Последней показана твоя запись общего решения, если она уже введена.');
  }
  if(g.exampleProbes?.length)for(const v of g.exampleProbes){const raw=M.answer(v),bad=g.rows.findIndex(r=>!linearTrial(r,raw).holds);boundNote(host,'Твой пример '+raw+(bad===-1?' выполняет обе строки.':' не выполняет строку '+(bad+1)+'.')).dataset.systemExample=bad===-1?'yes':'no';}
@@ -876,14 +914,15 @@ function intervalNumberLine(host,g,value){
  const draw=(set,y,color,i)=>{
   line(10,307,y,'#536a62',1.5);
   canvas.append(node('path',{d:'M301 '+(y-4)+' L307 '+y+' L301 '+(y+4),fill:'none',stroke:'#536a62'}));
-  for(const r of set){
+  for(const [partIndex,r] of set.entries()){
    const a=Number.isFinite(r.min)?x(r.min):11,b=Number.isFinite(r.max)?x(r.max):301;
    line(a,b,y,color,4);
    for(const [at,v,open,j]of [[a,r.left,r.leftOpen,0],[b,r.right,r.rightOpen,1]]){
+    const repeatedLabel=j===0&&partIndex>0&&r.min===set[partIndex-1].max;
     if(typeof v==='string'){const dx=j?-6:6;canvas.append(node('path',{d:'M'+(at+dx)+' '+(y-5)+' L'+at+' '+y+' L'+(at+dx)+' '+(y+5),fill:'none',stroke:color,'stroke-width':2,'data-axis-arrow':j?'right':'left'}));continue;}
     canvas.append(node('circle',{cx:at,cy:y,r:4,'stroke-width':2,stroke:color,fill:open?'white':color,'data-axis-end':open?'open':'closed'}));
     // Give adjacent labels different baselines; caption retains every exact value.
-    if(b-a>44||j===0)canvas.append(node('text',{x:at,y:y+(j?17:-8),'text-anchor':'middle','font-size':12},limitWords(v)));
+    if((b-a>44||j===0)&&!repeatedLabel)canvas.append(node('text',{x:at,y:y+(j?17:-8),'text-anchor':'middle','font-size':12},limitWords(v)));
    }
   }
   canvas.append(node('g',{'data-axis-row':i}));
@@ -1112,6 +1151,7 @@ function admissibleSample(raw,domain,count){
  if(domain==='nonnegative')return xs.every(v=>v.n>=0);
  if(xs.some(v=>v.n<=0))return false;
  if(domain==='positive')return true;
+ if(domain==='natural-single')return xs.length===1&&a.d===1;
  if(!b)return false;
  const diff=BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);
  if(domain==='positive-unequal')return diff!==0n;
@@ -1560,6 +1600,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-system-review'){systemReviewView(host,config,value);return;}
  if(config.type==='source-system-rays'){systemTrialView(host,config,value);return;}
  if(config.type==='linear-ray-trial'){linearTrialGraph(host,config,value);return;}
  if(config.type==='source-interval-axis'){intervalNumberLine(host,config,value);return;}
