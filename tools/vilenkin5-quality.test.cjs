@@ -152,6 +152,20 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function exactErroneousFractionsRegression(){
+  const f=boot(),p='v5f-printed-5-';
+  const ray=f.M.generate(p+'17',0);ok(f.M.equal('7,5',ray.steps[3].errors[0].value));ok(!f.M.equal('777',ray.steps[3].errors[0].value));
+  const seed=3,ex=f.M.generate(p+'16',seed),x=ex.data.groupDecrease;
+  ok(f.M.equal((x.total/x.divisor)+'/'+x.remove,ex.errors[0].value));ok(!f.M.equal('777',ex.errors[0].value));
+  for(let k=1;k<=20;k++)for(let n=0;n<90;n++){const t=f.M.generate(p+k,n);
+    for(const target of [...t.steps,t])for(const value of [target.answer,...(target.errors||[]).map(e=>e.value)])ok(typeof value!=='number'||Number.isInteger(value));
+  }
+  f.close();const g=boot('#lesson/'+p+'17');
+  for(const value of ['48','8','60']){g.submit(value);g.click('[data-cmd=next]');}
+  g.submit('777');equal(g.snapshot().scene.attempt,1);ok(!g.snapshot().scene.correct);equal(g.errors,[]);
+  g.submit('7,5');ok(g.snapshot().scene.message.includes('расстояние в клетках'));g.submit('30');ok(g.snapshot().scene.correct);ok(!g.snapshot().scene.assisted);g.close();
+}
+
 function cubeRowsRegression(){
   const f=boot(),id='v5f-printed-5-20',original=f.M.generate(id,0);
   equal(plain([...original.steps,original].map(x=>Number(x.answer))),[10,1000,100,1000000,10000,1,100]);
@@ -1072,7 +1086,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,

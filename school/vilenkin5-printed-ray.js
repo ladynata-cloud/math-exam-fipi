@@ -25,9 +25,9 @@
     const ticks=seed?{K:rand(2,6),C:rand(13,17),F:rand(21,25),N:rand(28,31),D:rand(34,36)}:{K:4,C:15,F:24,N:30,D:35};
     const number=k=>ticks[k]*unit/2;
     const steps=letters.map(k=>{
-      const ans=number(k),wrong=ticks[k]/2;
+      const ans=number(k);
       return step('Координата точки '+k+' при M('+5*unit+').',ans,'В одной целой клетке '+unit+' единиц. Половина клетки даёт '+unit/2+'.',
-        [{value:wrong,text:'Это расстояние в клетках. Умножь число клеток на цену одной.'},{value:ans+unit,text:'Ты прибавил лишнюю клетку. Отсчитывай промежутки от нуля.'}]);
+        [{value:ticks[k]+'/2',text:'Это расстояние в клетках. Умножь число клеток на цену одной.'},{value:ans+unit,text:'Ты прибавил лишнюю клетку. Отсчитывай промежутки от нуля.'}]);
     });
     const pairs=seed&&rand(0,1)?[['F','K'],['N','D']]:[['K','C'],['C','D']];
     function compare(pair){
