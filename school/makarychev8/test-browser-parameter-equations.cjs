@@ -59,7 +59,7 @@ async function verify(width,url){
   for(const [value,count] of [['0','1'],['-1/8','1'],['-1/4','0'],['1/8','2']]){
     await input.fill(value);assert.equal(await page.locator('[data-parameter-value]').getAttribute('data-solution-count'),count);
   }
-  await input.fill('-1/8');await page.locator('[data-step-form="0"] button').click();
+  await input.fill('-1/8');await page.locator('[data-step-form="0"]').getByRole('button',{name:'Проверить шаг',exact:true}).click();
   await submit(page,'-1/8');assert.match(await page.locator('#answer-form .feedback').innerText(),/линейное/);
   await submit(page,'-1/8;0');await page.reload({waitUntil:'domcontentloaded'});
   assert.equal(await page.locator('[data-parameter-value]').getAttribute('data-parameter-value'),'-0.125');
