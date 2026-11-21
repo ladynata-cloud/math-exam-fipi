@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,352);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,369);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -164,6 +164,52 @@ const quantities=group.filter(t=>t.source.exercise===10);
 assert.deepEqual(Array.from(quantities[0].steps.slice(1),s=>Number(s.answer)),[70,80,90].map(v=>625-(2*v+3*(v+10)+(v-5))));
 assert.deepEqual(Array.from(quantities[1].steps.slice(2),s=>Number(s.answer)),[10,15,20].map(n=>(3200-50*(n+(n+4)))/1000));
 const p33=D.lessons.find(l=>l.id==='p33');
+{
+ const printed=Array.from(p33.tasks).filter(task=>task.source.exercise>=17);
+ const letters=['абвг','абвг','','аб','','','','','',''];
+ assert.equal(printed.length,17);assert.equal(p33.tasks.length,82);
+ assert.deepEqual(Array.from(Object.values(p33.completeSourceSection)),[1,26,4,8]);
+ for(const [offset,subparts]of letters.entries()){
+  const rows=printed.filter(t=>t.source.exercise===17+offset);
+  assert.deepEqual(rows.map(t=>t.source.subpart||''),subparts?[...subparts]:['']);
+  assert(rows.every(t=>t.source.page===(offset<6?7:8)));
+ }
+ const mids=printed.filter(t=>t.source.exercise===17);
+ for(const [i,[center,radius]]of [[4,1],[2,3],[-1,2],[-3,4]].entries()){
+  const task=mids[i],left=Number(task.steps[1].answer),right=Number(task.steps[2].answer);
+  assert.equal(Math.abs(left-center),radius);assert.equal(Math.abs(right-center),radius);
+  assert.equal((left+right)/2,Number(task.answer));assert.notEqual(left,right);
+ }
+ const directions={a:[1,0],d:[1,0],c:[0,1],l:[0,1],b:[2,1]};
+ const pairs=['ab','ac','ad','al','bc','bd','bl','cd','cl','dl'];
+ const parallel=([a,b],[c,d])=>a*d===b*c,perp=([a,b],[c,d])=>a*c+b*d===0;
+ for(const [i,f]of [((a,b)=>!parallel(a,b)),parallel,parallel,perp].entries()){
+  const task=printed.filter(t=>t.source.exercise===18)[i];
+  assert.deepEqual(task.answer.split(', '),pairs.filter(([x,y])=>f(directions[x],directions[y])));
+ }
+ const exact19=[a=>-4.5+(-a+5.6),b=>-(2*b-3)+b,c=>c-(1.8-c),d=>-d-(.7-3*d),
+  m=>(-1.1+m)-(3.1-m),n=>-(n-4.6)+(2.9-n),x=>.5-(2*x+1.2)-x,y=>(y-5.4)-(-2.6+y)];
+ const exact23=[a=>-4*(a+1)-5,b=>2*b-3*(b-4),m=>-m+2*(-m+3),n=>4*(n-2)-3*(n+2),
+  d=>-2*(7+d)+3*(-d+5),x=>-x+(3-2*x)-2*(x+4)];
+ for(const [number,functions]of [[19,exact19],[23,exact23]]){
+  const task=printed.find(t=>t.source.exercise===number),byNumber=new Map();
+  for(const [i,row]of Array.from(task.letterStudy).entries()){
+   const v=Number(row.value),math=functions[i],answer=M.parse(task.steps[i].answer);
+   assert(Math.abs(math(v)-answer.n/answer.d)<1e-10);
+   for(const input of [v,v+2,-1,0,5])assert(Math.abs(math(input)-Number(row.coefficient)*input-Number(row.constant))<1e-10);
+   byNumber.set(Math.round(math(v)*10)/10,row.letter);
+  }
+  assert.equal(number===19?[-2.4,-2.8,4,-2.8,-1.5,-1.5,.2,-1.5,1.6,-.4,4,-2.8,-2.3,-2.3].map(n=>byNumber.get(n)).join(''):[...byNumber].sort((a,b)=>b[0]-a[0]).map(([,letter])=>letter).join(''),number===19?'ПАРАЛЛЕЛОГРАММ':'КОРЕНЬ');
+ }
+ const roots=printed.filter(t=>t.source.exercise===20).map(t=>Number(t.answer));
+ assert.equal(-(roots[0]+4)-19,7);
+ assert(Math.abs((2+1/3)-(roots[1]-5/12)-1.75)<1e-10);
+ const clowns=Number(printed.find(t=>t.source.exercise===21).answer);assert.equal(8+clowns+(clowns+6)+(clowns+6-7),28);
+ for(const n of [1,2,7,100])assert.equal(((n-1)+(n+1))/2,n);
+ const speeds=printed.find(t=>t.source.exercise===24).steps.slice(2).map(t=>M.parse(t.answer));
+ for(const [i,v]of [28,29.7,35.5].entries())assert(Math.abs((5*(v+2)+3*(v-2))/8-speeds[i].n/speeds[i].d)<1e-10);
+ assert.equal(.5+24.5,25);assert.equal(24.5/.5,49);assert.equal(5*2/3+8/3,6);
+}
 const printedColumns=['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб'];
 for(const [i,letters] of printedColumns.entries()) {
  const rows=p33.tasks.filter(t=>t.source.exercise===i+1);

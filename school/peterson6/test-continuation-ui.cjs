@@ -303,12 +303,12 @@ test('opening printed rules use directed distances, common cells and every signe
  } finally {f.close();}
 });
 
-test('read both opening sections in print order while old links retain their task', () => {
+test('read both opening sections in print order while old links retain their task', async () => {
  const f=fixture(null,null,true);
  try {
   const parts=[
    {part:2,id:'p15',first:32,subparts:['аб','','абвгдежз','','абвг','абвгдежз','абвг','абвгде','12','123','абвгде','1234','1234','12','12345','1234','123456','','абвг','12','абвгдежз','','','аб','','12','']},
-   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб','абв','аб','аб','абвг','','абвг']},
+   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб','абв','аб','аб','абвг','','абвг','абвг','абвг','','аб','','','','','','']},
   ];
   for(const {part,id,first,subparts} of parts) {
    const lesson=f.w.PetersonCourse.lessons.find(item=>item.id===id);
@@ -322,6 +322,8 @@ test('read both opening sections in print order while old links retain their tas
    assert.deepEqual(indices.map(source),expected);
    for(const [ordinal,index] of indices.entries()) {
     f.nav('#lesson/'+id+'/'+index);
+    // Let queued navigation and observer callbacks run between actual student clicks.
+    await new Promise(resolve=>setImmediate(resolve));
     assert.equal(f.q('[aria-current="step"]').dataset.index,String(index));
     const adjacent=[...f.d.querySelectorAll('.navigation [data-action="task"]')].map(b=>Number(b.dataset.index));
     assert.deepEqual(adjacent,[indices[ordinal-1],indices[ordinal+1]].filter(i=>i!==undefined));
@@ -619,5 +621,37 @@ test('part three switches from automatic answer to the actual manual card before
   assert.equal(f.q('#problem .task-heading h2').textContent,f.w.PetersonCourse.lessons.find(l=>l.id==='p39').tasks[1].title);
   assert.equal(f.d.querySelectorAll('#answer-form').length,0);
   assert(f.q('.manual-work'));assert(f.q('[data-action="record-manual"]'));
+ }finally{f.close();}
+});
+test('read the entire opening brackets topic and retry its source-specific models',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#home');assert.match(f.q('#main').textContent,/№1–26 со всеми подпунктами.*82/);
+  const go=index=>{f.nav('#lesson/p33/'+index);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);};
+  let ids=go(65);
+  f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/между 3 и 5 равна 4/);
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
+  f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/между 4 и 8 равна 6/);
+  ids=go(72);assert.equal(f.d.querySelectorAll('#task-figure [data-line]').length,5);
+  for(const [id,expression]of [[0,/отличным от прямого/],[1,/под прямым углом/],[2,/общих точек нет/]]){
+   f.event(ids[1],String(id),'change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');
+   assert.match(f.q('#model .pm-result').textContent,expression);
+  }
+  ids=go(73);f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/Р = 4/);
+  f.event(ids[1],'1','change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/Р = 2/);
+  f.event(ids[2],'2','change');assert.equal(f.d.querySelectorAll('#model svg polygon').length,1);
+  ids=go(75);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/Обе стороны равны/);
+  f.event(ids[0],'1','change');assert.match(f.q('#model .pm-result').textContent,/Стороны различаются/);
+  f.event(ids[1],'2','change');assert.match(f.q('#model .pm-result').textContent,/Обе стороны равны/);
+  ids=go(76);f.event(ids[1],'5','change');assert.match(f.q('#model .pm-result').textContent,/выполняют все условия/);
+  f.event(ids[0],'1','change');f.event(ids[1],'7','change');assert.match(f.q('#model .pm-result').textContent,/выполняют все условия/);
+  ids=go(77);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/0 \+ 2/);
+  ids=go(78);f.event(ids[0],'5','change');f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/К = 12/);
+  ids=go(79);f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/28,5 км\/ч/);
+  f.event(ids[1],'1','change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/27,5 км\/ч/);
+  ids=go(80);f.event(ids[1],'1','change');assert.match(f.q('#model table').textContent,/24,5/);f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
+  ids=go(81);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/2\/3 и 1\/3/);
+  f.event(ids[0],'1','change');assert.match(f.q('#model .pm-result').textContent,/отличается от 7/);f.event(ids[1],'2','change');assert.match(f.q('#model .pm-result').textContent,/1\/3 и 2\/3/);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
