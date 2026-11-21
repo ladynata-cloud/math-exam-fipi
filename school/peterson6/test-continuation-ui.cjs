@@ -1239,3 +1239,29 @@ test('prove derived proportions on the common domain and measure corresponding r
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('repair oral proportions, check six different equations and distinguish both percentage bases',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [k,j]of [33,34,35,36].entries()){
+   const c=go(j);for(const fresh of [0,1])for(let op=0;op<4;op++){set(c[0],fresh);set(c[1],op);set(c[2],1);assert.equal(out().includes('Равенство получилось.'),op===[0,3,2,1][k]);}
+  }
+  for(const [k,j]of [37,38,39,40,41,42,43,44].entries()){
+   const c=go(j),expected=['24','35/3','14/5','6/5','2/11','45/2','1/2','3/10'][k];
+   const find=v=>[...f.q(c[1]).options].find(o=>o.textContent===v).value;set(c[1],find(expected));set(c[2],2);assert(out().includes('подстановка подходит')||out().includes('Подстановка подходит'),out());
+  }
+  for(const [k,j]of [45,46,47,48,49,50].entries()){
+   const c=go(j),expected=['16/5','15','1/4','25','2','3/8'][k];const find=v=>[...f.q(c[1]).options].find(o=>o.textContent===v).value;
+   set(c[1],find(expected));set(c[2],1);assert(out().includes('Это корень.'));
+   if(k===0||k===2){set(c[1],find(k===0?'0':'-3/4'));set(c[2],2);assert(out().includes('не допускается'));}
+  }
+  for(const [j,a]of [[51,'4/5'],[52,'2']]){const c=go(j),idx=[...f.q(c[1]).options].find(o=>o.textContent===a).value;set(c[1],idx);set(c[2],3);assert(out().includes(a+' подходит.'));}
+  for(const [j,total]of [[53,6],[54,75]]){const c=go(j);for(const fresh of [0,1]){set(c[0],fresh);set(c[1],2);assert(out().includes('Целое '+(total*(1+fresh))+' '));}}
+  let c=go(55);set(c[1],2);assert(out().includes('25% и 20%'));set(c[0],1);set(c[1],2);assert(out().includes('25% и 15%'));
+  c=go(56);set(c[1],2);assert(out().includes('рост 8%'));set(c[0],1);set(c[1],2);assert(out().includes('уровень тот же'));
+  c=go(57);set(c[1],2);assert(out().includes('снижение 10%'));set(c[0],1);set(c[1],2);assert(out().includes('уровень тот же'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
