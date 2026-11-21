@@ -34,7 +34,8 @@ const groups = {
   vectorProperties: {manifests:[require('./vector-properties.json')],count:11},
   spatialVectorSums: {manifests:[require('./spatial-vector-sums.json')],count:11},
   oppositeDifference: {manifests:[require('./opposite-and-difference-vectors.json')],count:9},
-  vectorOriginPaths: {manifests:[require('./vector-origin-and-paths.json')],count:5}
+  vectorOriginPaths: {manifests:[require('./vector-origin-and-paths.json')],count:5},
+  diagonalPaths: {manifests:[require('./prism-diagonals-and-vector-paths.json')],count:7}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

@@ -67,6 +67,7 @@ jobs:
           node tools/stereo-textbook/spatial-vector-sums.test.cjs
           node tools/stereo-textbook/opposite-and-difference-vectors.test.cjs
           node tools/stereo-textbook/vector-origin-and-paths.test.cjs
+          node tools/stereo-textbook/prism-diagonals-and-vector-paths.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -218,6 +219,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: vectorOriginPaths
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-origin-and-paths
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check magnitudes of reflected prism diagonals and the exact result of each spatial path
+        env:
+          TEXTBOOK_PRACTICE_GROUP: diagonalPaths
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/prism-diagonals-and-vector-paths
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -281,5 +287,6 @@ jobs:
             artifacts/spatial-vector-sums/
             artifacts/opposite-and-difference-vectors/
             artifacts/vector-origin-and-paths/
+            artifacts/prism-diagonals-and-vector-paths/
           retention-days: 14
           if-no-files-found: error

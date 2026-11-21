@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T19:02:00Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–570, with 944 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T19:08:00Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–572, with 951 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1587,6 +1587,22 @@
       ],
       "evidence": "tools/stereo-textbook/vector-origin-and-paths.json",
       "mathematicalReport": "tools/stereo-textbook/vector-origin-and-paths.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:08:00Z",
+      "scope": "Seven source parts of 571–572: equality of prism diagonal norms and exact telescoping sums",
+      "cardIds": [
+        "ex-main-0571-a",
+        "ex-main-0571-b",
+        "ex-main-0571-c",
+        "ex-main-0572-a",
+        "ex-main-0572-b",
+        "ex-main-0572-c",
+        "ex-main-0572-d"
+      ],
+      "evidence": "tools/stereo-textbook/prism-diagonals-and-vector-paths.json",
+      "mathematicalReport": "tools/stereo-textbook/prism-diagonals-and-vector-paths.test.cjs"
     }
   ],
   "cards": [
@@ -5365,6 +5381,34 @@
     {
       "id": "ex-main-0570-b",
       "sha256": "0188082db506914e95e48e5fdadea3e0c4a94597b8e9b427af76f2b6538b988d"
+    },
+    {
+      "id": "ex-main-0571-a",
+      "sha256": "d0af8f330f78652a667a5cef4540753819521999ebd5dbb34912154b10ddb0c8"
+    },
+    {
+      "id": "ex-main-0571-b",
+      "sha256": "3af2237c61d9d6df9f3a99c27b49e1e2a51aab9e2e97da4e5a70ecd31f1469f9"
+    },
+    {
+      "id": "ex-main-0571-c",
+      "sha256": "95071aa5b87268e4f40e37d5f52fbff890acd91e298b5dd56e97c627da1f2562"
+    },
+    {
+      "id": "ex-main-0572-a",
+      "sha256": "678de7b487fd608596dc59b7df399503a88d2eccc86c0798c8944e144424c189"
+    },
+    {
+      "id": "ex-main-0572-b",
+      "sha256": "dd5be56e0b23656cfa3e4f85f4822ffbd7b2bde0909804f19f3c3bd9b37551ef"
+    },
+    {
+      "id": "ex-main-0572-c",
+      "sha256": "cb225b7be05087d2241b8ab89ea2b5d6f8214ba3693fb5a0948e44ac84d9baf8"
+    },
+    {
+      "id": "ex-main-0572-d",
+      "sha256": "115654b3e5d8eee18e5dc16ce86dec3a534a0fb5020e821a15a3170e7ae1a4f2"
     }
   ]
 }

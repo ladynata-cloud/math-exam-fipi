@@ -86,4 +86,5 @@ require('./vector-properties.test.cjs');
 require('./spatial-vector-sums.test.cjs');
 require('./opposite-and-difference-vectors.test.cjs');
 require('./vector-origin-and-paths.test.cjs');
+require('./prism-diagonals-and-vector-paths.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);
