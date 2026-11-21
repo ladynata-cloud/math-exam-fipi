@@ -704,6 +704,26 @@ function linearRay(raw,variable){
  if(left===variable)return asThreshold(sides[2],right);
  if(right!==variable)return null;return asThreshold({'<':'>','>':'<','<=':'>=','>=':'<='}[sides[2]],left);
 }
+function systemInput(raw,variable){
+ const text=String(raw??'').trim().replace(/−/g,'-').replace(/≤/g,'<=').replace(/≥/g,'>=');
+ if(/^(нет решений|пустое множество)$/i.test(text))return '∅';
+ if(/^(все( действительные( числа)?| числа)?|r|ℝ)$/i.test(text))return '(-∞;+∞)';
+ const single=linearRay(text,variable);if(single)return single;
+ const equal=text.split('=');
+ if(equal.length===2&&equal[0].trim()===variable){const v=M.parse(equal[1]);if(v){const n=M.answer(v);return '['+n+';'+n+']';}}
+ const chain=/^([^<>=]+?)\s*(<=|>=|<|>)\s*([a-z])\s*(<=|>=|<|>)\s*([^<>=]+)$/i.exec(text);
+ if(!chain||chain[3]!==variable||chain[2][0]!==chain[4][0])return null;
+ const a=M.parse(chain[1].trim()),b=M.parse(chain[5].trim());if(!a||!b)return null;
+ const inc=chain[2][0]==='<',left=inc?a:b,right=inc?b:a,first=inc?chain[2]:chain[4],last=inc?chain[4]:chain[2];
+ const range=(first.length===2?'[':'(')+M.answer(left)+';'+M.answer(right)+(last.length===2?']':')');
+ return axisRanges(range)?range:null;
+}
+function systemExamples(raw,target){
+ const xs=rationalList(raw);if(!xs||xs.length!==target.exampleCount||new Set(xs.map(M.answer)).size!==xs.length)return false;
+ return xs.every(x=>target.graph.rows.every(r=>G.linearTrial(r,M.answer(x)).holds)&&!(target.graph.holes||[]).some(h=>M.equal(x,M.parse(h))));
+}
+
+
 function linearExamples(raw,t){
  const samples=rationalList(raw);if(!samples||samples.length!==t.exampleCount||new Set(samples.map(M.answer)).size!==samples.length)return false;
  const bound=M.parse(t.graph.threshold);return samples.every(v=>{const d=endpointCompare(v,bound);return {'>':d>0,'>=':d>=0,'<':d<0,'<=':d<=0}[t.graph.relation];});
@@ -842,6 +862,8 @@ function check(user,target){
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
  if(target.kind==='rational-probe')return Boolean(M.parse(user));
  if(target.kind==='linear-ray'){const u=linearRay(user,target.graph.variable);return Boolean(u&&equalAxisSets(u,asThreshold(target.graph.relation,target.graph.threshold)));}
+ if(target.kind==='system-single'||target.kind==='system-intersection')return equalAxisSets(systemInput(user,target.variable||target.graph?.variable),target.answer);
+ if(target.kind==='system-examples')return systemExamples(user,target);
  if(target.kind==='linear-examples')return linearExamples(user,target);
  if(target.kind==='universal-set'){
   const s=String(user??'').trim().toLowerCase(),summary=['все','все действительные','r','ℝ','все числа'].includes(s)?'(-∞;+∞)':s;
@@ -934,5 +956,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {linearRay,asThreshold,axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {systemInput,linearRay,asThreshold,axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

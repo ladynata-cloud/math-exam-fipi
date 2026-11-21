@@ -836,6 +836,23 @@ function linearTrial(config,raw){
  const holds={'<':delta<0n,'>':delta>0n,'≤':delta<=0n,'≥':delta>=0n}[config.operator];
  return {left:left.label,right:right.label,sign,holds};
 }
+function systemTrialView(host,g,value){
+ host.className='task-graphs quantity-model';
+ const probe=g.fixed??g.partial?.[0],x=M.parse(probe);
+ if(x){
+  const label=M.answer(x);
+  g.rows.forEach((r,i)=>{const t=linearTrial(r,label);boundNote(host,'Строка '+(i+1)+' при '+g.variable+' = '+label+': слева '+t.left+', справа '+t.right+'; исходный знак '+r.operator+'.').dataset.systemTrial=(i+1)+'-'+(t.holds?'yes':'no');});
+  if(g.holes?.length)boundNote(host,g.holes.some(h=>M.equal(x,M.parse(h)))?'Корни равны. Знаменатель обращается в ноль.':'Проверь существование обоих корней и их разность.').dataset.systemHole=g.holes.some(h=>M.equal(x,M.parse(h)))?'yes':'no';
+ }else boundNote(host,'На первом шаге укажи своё число. Сравни обе стороны каждой строки при одной подстановке.');
+ if(g.rangeRows?.some(Boolean)||g.proposal){
+  const lines=g.rangeRows?.some(Boolean)?g.rangeRows.map(r=>r||[]):[];
+  intervalNumberLine(host,{mode:'operation',givenRows:lines,rowLabels:['Твоя первая строка: ','Твоя вторая строка: '],enteredRows:g.rangeRows,proposal:g.proposal,points:x?[x]:[]},value);
+  if(lines.length)boundNote(host,'Прямые идут в порядке строк задачи. Последней показана твоя запись общего решения, если она уже введена.');
+ }
+ if(g.exampleProbes?.length)for(const v of g.exampleProbes){const raw=M.answer(v),bad=g.rows.findIndex(r=>!linearTrial(r,raw).holds);boundNote(host,'Твой пример '+raw+(bad===-1?' выполняет обе строки.':' не выполняет строку '+(bad+1)+'.')).dataset.systemExample=bad===-1?'yes':'no';}
+}
+
+
 function linearTrialGraph(host,g,value){
  host.className='task-graphs quantity-model';
  const raw=g.fixed??g.partial?.[0],trial=linearTrial(g,raw);
@@ -877,7 +894,7 @@ function intervalNumberLine(host,g,value){
  host.append(canvas);
  const describe=r=>(r.leftOpen?'(':'[')+limitWords(r.left)+'; '+limitWords(r.right)+(r.rightOpen?')':']');
  if(g.mode==='read'){const first=rows[0]?.[0];if(first){const end=(v,open)=>typeof v==='string'?'стрелка к '+limitWords(v):(open?'пустая':'закрашенная')+' метка '+limitWords(v);canvas.setAttribute('aria-label','Слева '+end(first.left,first.leftOpen)+', справа '+end(first.right,first.rightOpen)+'. Выделен промежуток между ними.');}boundNote(host,'Читай рисунок: пустая метка исключена, закрашенная включена.');}
- else rows.forEach((r,i)=>boundNote(host,'Дано '+(rows.length>1?(i+1)+': ':'')+r.map(describe).join(' ∪ ')+'.'));
+ else rows.forEach((r,i)=>boundNote(host,(g.rowLabels?.[i]||('Дано '+(rows.length>1?(i+1)+': ':'')))+(r.length?r.map(describe).join(' ∪ '):g.rowLabels&&!g.enteredRows[i]?'пока не построено':'∅')+'.'));
  if(proposed)boundNote(host,'Твоё построение: '+(proposed.length?proposed.map(describe).join(' ∪ '):'∅')+'.').dataset.axisProposal='yes';
  if(pointValues.length)boundNote(host,'Отмечены числа: '+pointValues.map(M.answer).join('; ')+'.');
  if(Number.isFinite(g.surd))boundNote(host,'Отмечена точка √'+g.surd+'. Сравнивай точно с квадратами концов.');
@@ -1543,6 +1560,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-system-rays'){systemTrialView(host,config,value);return;}
  if(config.type==='linear-ray-trial'){linearTrialGraph(host,config,value);return;}
  if(config.type==='source-interval-axis'){intervalNumberLine(host,config,value);return;}
  if(config.type==='interval-review'){intervalReview(host,config,value);return;}

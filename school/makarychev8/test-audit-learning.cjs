@@ -169,9 +169,9 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–972 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–990 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–972 разобраны полностью/);
+ assert.match(overview.textContent,/№1–990 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
 });
