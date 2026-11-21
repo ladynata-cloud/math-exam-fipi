@@ -147,7 +147,11 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
     assert(expected.length>0);assert.deepEqual(await page.locator('#number-result a.button:not(.quiet)').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href'))),Array.from(expected,route),'source order for '+n);searches++;
    }
    await nav('#home');
-   for(const l of lessons.filter(l=>l.studyOrder))assert.equal(await page.locator('#chapter-2 .lesson-card').filter({has:page.getByText(l.title,{exact:true})}).getAttribute('href'),'#lesson/'+l.id+'/'+l.studyOrder[0],'chapter entry starts in source order '+l.id);
+   for(const l of lessons.filter(l=>l.studyOrder)){
+    const chapter=scope.window.MakarychevCourse.chapters.find(c=>c.title===l.chapter);
+    const entry=page.locator('#chapter-'+chapter.id+' .lesson-card').filter({has:page.getByText(l.title,{exact:true})});
+    assert.equal(await entry.getAttribute('href'),'#lesson/'+l.id+'/'+l.studyOrder[0],'chapter entry starts in source order '+l.id);
+   }
    const first=lessons.find(l=>l.id==='p10');await nav('#lesson/p10/'+first.studyOrder[0]);
    const next='#lesson/p10/'+first.studyOrder[1];await page.locator('.navigation [data-action="task"]').filter({hasText:'Следующая задача'}).click();await page.waitForFunction(h=>location.hash===h,next);
    await nav('#progress');assert.equal(await page.getByRole('link',{name:first.title,exact:true}).getAttribute('href'),'#lesson/p10/'+first.studyOrder[0],'progress entry keeps source order');
