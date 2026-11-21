@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1326);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1331);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1112,6 +1112,12 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
 {
  const l=D.lessons.find(t=>t.id==='p39'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);
  assert.deepEqual(g(191).map(t=>t.answer),['-7/4','2','1','-18','2/5','-4']);assert.deepEqual(g(192).map(t=>Number(t.answer)),[20,-8,5,3,-17,2]);assert.deepEqual(g(193).map(t=>t.answer),['3/5','-5/7','-3/20','5']);assert.equal(g(194).length,11);
+}
+{
+ const route=D.lessons.find(l=>l.id==='p39'),rows=Array.from(route.tasks).filter(t=>[195,196].includes(t.source.exercise));
+ assert.equal(rows.length,5);assert(rows.every(t=>t.source.page===43&&t.source.isbn==='978-5-9963-4599-1'));
+ assert.equal(5*8,4*(8+2));assert.equal(Number(rows[0].answer),5*8);
+ assert.equal((3/.25)*.45,27/5);assert.equal(rows[1].answer,'27/5');assert.deepEqual(rows.slice(2).map(t=>t.answer),['Ньютон','Паскаль','Торричелли']);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

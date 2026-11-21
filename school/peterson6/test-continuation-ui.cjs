@@ -1749,3 +1749,18 @@ test('evaluate all signed word expressions, powers, mixed proportions and nine d
   });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('field rates, pedestrian speed and three coordinate ciphers independently change data and reveal workings',()=>{
+ const f=fixture(null,null,true);try{
+  const source=['40 га','5,4 км/ч','НЬЮТОН','ПАСКАЛЬ','ТОРРИЧЕЛЛИ'],other=['90 га','9 км/ч','СОН','ЛЕС','ТОН'];
+  for(let i=0;i<source.length;i++){
+   f.nav('#lesson/p39/'+(123+i));f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   if(i>=2){assert.equal(f.d.querySelectorAll('#model [data-cipher-letter]').length,14);assert.equal([...f.d.querySelectorAll('#model tbody tr')].map(r=>r.cells[2].textContent).join(''),'…'.repeat(source[i].length));}
+   f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(source[i]));
+   if(i>=2)assert.equal([...f.d.querySelectorAll('#model tbody tr')].map(r=>r.cells[2].textContent).join(''),source[i]);
+   f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(other[i]));
+  }
+  f.nav('#lesson/p39/123');f.event('#final-answer','8');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/одного планового дня/);
+  f.event('#final-answer','40');f.submit('#answer-form');assert.equal(f.state().tasks['p39-t124'].correct,true);
+ }finally{f.close();}
+});
