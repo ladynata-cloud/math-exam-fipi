@@ -2,7 +2,7 @@
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
   "registeredAt": "2026-11-21T06:20:00Z",
-  "scope": "Introduction and chapters I–IV through exercise 432, with 708 reviewed cards. Later exercise positions remain drafts.",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 451 and points 52–53, with 740 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1108,6 +1108,56 @@
       ],
       "evidence": "tools/stereo-textbook/circumspheres.json",
       "mathematicalReport": "tools/stereo-textbook/circumspheres.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T06:20:00Z",
+      "scope": "Inscribed spheres, cones and cylinders, exercises 433–439, all 11 parts",
+      "cardIds": [
+        "ex-main-0433",
+        "ex-main-0434",
+        "ex-main-0435",
+        "ex-main-0436-a",
+        "ex-main-0436-b",
+        "ex-main-0436-c",
+        "ex-main-0437",
+        "ex-main-0438",
+        "ex-main-0439-a",
+        "ex-main-0439-b",
+        "ex-main-0439-c"
+      ],
+      "evidence": "tools/stereo-textbook/round-bodies.json",
+      "mathematicalReport": "tools/stereo-textbook/round-bodies.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T06:20:00Z",
+      "scope": "Volume of a rectangular solid, points 52–53 and exercises 440–451, all 21 parts",
+      "cardIds": [
+        "ex-main-0440-a",
+        "ex-main-0440-b",
+        "ex-main-0441-a",
+        "ex-main-0441-b",
+        "ex-main-0441-c",
+        "ex-main-0441-d",
+        "ex-main-0442-a",
+        "ex-main-0442-b",
+        "ex-main-0442-c",
+        "ex-main-0443",
+        "ex-main-0444",
+        "ex-main-0445",
+        "ex-main-0446",
+        "ex-main-0447",
+        "ex-main-0448",
+        "ex-main-0449",
+        "ex-main-0450-a",
+        "ex-main-0450-b",
+        "ex-main-0451",
+        "theory-052",
+        "theory-053"
+      ],
+      "evidence": "tools/stereo-textbook/box-volumes.json",
+      "mathematicalReport": "tools/stereo-textbook/box-volumes.test.cjs"
     }
   ],
   "cards": [
@@ -3942,6 +3992,134 @@
     {
       "id": "ex-main-0432-c",
       "sha256": "c53b0b99378b4d1e5fb7eb23afd0e3424788e74427ca668949166ece3bc134b8"
+    },
+    {
+      "id": "ex-main-0433",
+      "sha256": "f6b26c4b5743f0b3c000bf3eec57f354b7ef8c8f50a734177ce8040867f6bdce"
+    },
+    {
+      "id": "ex-main-0434",
+      "sha256": "b3633f7084e71b033f02ca6fbb50eaa95fde7307574e58e85a0cc1742ae86d0e"
+    },
+    {
+      "id": "ex-main-0435",
+      "sha256": "e433aa5d5781956ba9aad03385d729f87774680cf0cb198340ceef1149d717ea"
+    },
+    {
+      "id": "ex-main-0436-a",
+      "sha256": "cb116a8a214fd03d799c5ef58813bfcc064e6bcbe89a01025111e744952e2984"
+    },
+    {
+      "id": "ex-main-0436-b",
+      "sha256": "2c61bc4487324adda0be229656d230b1b3eade9502a7452475eac42d0b862fde"
+    },
+    {
+      "id": "ex-main-0436-c",
+      "sha256": "ad0af59e9369bec7152be3ab5806f9b347567bb8a10a2b6af0a98ef7654e3d56"
+    },
+    {
+      "id": "ex-main-0437",
+      "sha256": "6336108991e33b1dfb67e3aeacdac1f7ceb13bf975b606e505f7377814805d52"
+    },
+    {
+      "id": "ex-main-0438",
+      "sha256": "8bde31d46dc99094711e2d5b2ca69e1b669fa1139b951d3985d96e75f5edbbe4"
+    },
+    {
+      "id": "ex-main-0439-a",
+      "sha256": "aba661d03d3f4254bb870f5789a08f18b93e12cd05b98d64fb5c6d411d17d172"
+    },
+    {
+      "id": "ex-main-0439-b",
+      "sha256": "ea1adb2c9faccfd43509aa669981784e5f002b4779485e486d167ed5bd10ed79"
+    },
+    {
+      "id": "ex-main-0439-c",
+      "sha256": "2efa1b4b88a73a13a4f46ebc7620b3b6953246678d11300415fcf3403c507777"
+    },
+    {
+      "id": "ex-main-0440-a",
+      "sha256": "c2605d0f6db6bb30d2a8c43af6b34a39f1efe4cbcf9d72c4d5c14a6df629d15f"
+    },
+    {
+      "id": "ex-main-0440-b",
+      "sha256": "d332790226b90fd6b100705d5a985b17b569d528990fd307ba908c66dc0431d8"
+    },
+    {
+      "id": "ex-main-0441-a",
+      "sha256": "aa00726ebc5c3568062d3422c974c40fb73d525c5c544b2bf38b743476e3d247"
+    },
+    {
+      "id": "ex-main-0441-b",
+      "sha256": "0770f4f49b6864401099acbfd7c08844d87b21a98c61ec1e177ffa1fca278f10"
+    },
+    {
+      "id": "ex-main-0441-c",
+      "sha256": "0b0e1a31023e9fe8ebf64eef3530d20df7e905c1ae5168e68b405bbf61f1408b"
+    },
+    {
+      "id": "ex-main-0441-d",
+      "sha256": "c5d07cca5f02edee2ee9ea98439635634ff7a939b63aa4a5ef9775ee80db58ce"
+    },
+    {
+      "id": "ex-main-0442-a",
+      "sha256": "c33be0bd13ae41dfe0c2abdc4f5a3a1beb711c037f66b57c2d03854a67348b06"
+    },
+    {
+      "id": "ex-main-0442-b",
+      "sha256": "fb7a1dd378483fbe9143152266a0b34ff7a8e3bf981d208339bc396808b519a7"
+    },
+    {
+      "id": "ex-main-0442-c",
+      "sha256": "3e7d3a4b18b42d1d26a03afee6befd4bbdf205a05aa5191dd9cf2acc49d3e08f"
+    },
+    {
+      "id": "ex-main-0443",
+      "sha256": "c35971f2ff8d3b2a3bc71be42346e7bd77c4244d930f7520cf1012c0f1bc0b3d"
+    },
+    {
+      "id": "ex-main-0444",
+      "sha256": "e81d58c294b874fc53e57e70f31b0003a329be0a16f8322ddc92c597317812d3"
+    },
+    {
+      "id": "ex-main-0445",
+      "sha256": "40b5063e3e5527df7830e3c693931d1a44ae44d2af80c1fd81f2007761702eb2"
+    },
+    {
+      "id": "ex-main-0446",
+      "sha256": "cbc189162892e0f327e8728d9bec81f5ba5127df021d25f8d6269124868248d1"
+    },
+    {
+      "id": "ex-main-0447",
+      "sha256": "507088cbbfce977c04d72340a9213107cbbccf477a52d36e3b8124be89c05616"
+    },
+    {
+      "id": "ex-main-0448",
+      "sha256": "359be7461ff832965754dd5b9b910a50dba278204912ec708c1425716cca1676"
+    },
+    {
+      "id": "ex-main-0449",
+      "sha256": "dcf6e1cc38e9a19a5cf3b5dba3497ee2d361bfe3aa623baab6074633945096d5"
+    },
+    {
+      "id": "ex-main-0450-a",
+      "sha256": "b5f9e14d9b377111496283f55a9dbbfb252aac24914d83616de613cf2ce86f5d"
+    },
+    {
+      "id": "ex-main-0450-b",
+      "sha256": "9f39b7fd4edc0a5043d7e147690340ccd93d0faba808aa23d8adb3b9b9f27ed6"
+    },
+    {
+      "id": "ex-main-0451",
+      "sha256": "6834fb3244c0455f53367462e3ce4d83eb2ce5883c91c230f5b3ee6ebfb2c3fb"
+    },
+    {
+      "id": "theory-052",
+      "sha256": "fad8a649929bf0c50eb71cc53339713cd82d8448e877399da3e5df21af36e1c9"
+    },
+    {
+      "id": "theory-053",
+      "sha256": "5c10de13eddfabd84431e78372b92149a05386d58159a229c1276d39bc6dd0f8"
     }
   ]
 }

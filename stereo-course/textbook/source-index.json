@@ -9806,7 +9806,10 @@
           117
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0434",
@@ -9824,7 +9827,10 @@
           117
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0435",
@@ -9842,7 +9848,10 @@
           117
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0436",
@@ -9864,6 +9873,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -9882,7 +9896,10 @@
           117
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0438",
@@ -9900,7 +9917,10 @@
           117
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0439",
@@ -9919,6 +9939,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -9943,6 +9968,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -9962,6 +9991,12 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в",
@@ -9988,6 +10023,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -10006,7 +10046,10 @@
           123
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0444",
@@ -10024,7 +10067,10 @@
           123
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0445",
@@ -10042,7 +10088,10 @@
           123
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0446",
@@ -10060,7 +10109,10 @@
           123
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0447",
@@ -10078,7 +10130,10 @@
           123
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0448",
@@ -10096,7 +10151,10 @@
           123
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0449",
@@ -10114,7 +10172,10 @@
           123
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0450",
@@ -10135,6 +10196,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -10153,7 +10218,10 @@
           123
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0452",
@@ -23040,7 +23108,10 @@
           119,
           120
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-053",
@@ -23061,7 +23132,10 @@
           121,
           122
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-054",

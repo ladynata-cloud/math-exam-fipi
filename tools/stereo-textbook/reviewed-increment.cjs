@@ -4,7 +4,12 @@ const assert=require('node:assert/strict');
 const crypto=require('node:crypto');
 function makeReviewedIncrement(data, later) {
   const ids=new Set(Object.keys(data.cards));
-  const numberOf = entry => entry.source.collection==='main' && Object.hasOwn(data.parts,entry.source.exercise) ? entry.source.exercise : null;
+  function numberOf(entry) {
+    const source = entry.source;
+    const key = source.collection === 'main' ? source.exercise
+      : source.collection === 'theory' ? 'theory-' + source.point : null;
+    return key && Object.hasOwn(data.parts, key) ? key : null;
+  }
   const canon=value=>Array.isArray(value)?value.map(canon):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canon(value[k])])):value;
   const digest=value=>crypto.createHash('sha256').update(JSON.stringify(canon(value))).digest('hex');
   function indexBefore(index){
