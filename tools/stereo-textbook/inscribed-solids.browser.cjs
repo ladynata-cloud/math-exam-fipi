@@ -12,7 +12,8 @@ const groups = {
   volume: {manifests:[require('./box-volumes.json')],count:21},
   prism: {manifests:[require('./prism-volumes.json')],count:26},
   cross: {manifests:[require('./cross-sections.json')],count:3},
-  oblique: {manifests:[require('./oblique-prisms.json')],count:12}
+  oblique: {manifests:[require('./oblique-prisms.json')],count:12},
+  pyramids: {manifests:[require('./pyramid-volumes.json')],count:9}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
@@ -45,9 +46,14 @@ async function exercise(page, card, base, width) {
   const views = new Set([await model.getAttribute('data-view')]);
   const errors = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   assert(errors <= 1, card.id + ': no horizontal scrolling at ' + width);
-  const before = await model.getAttribute('data-yaw');
-  await page.getByRole('button', {name:'Повернуть вправо', exact:true}).click();
-  assert.notEqual(await model.getAttribute('data-yaw'), before);
+  const rotate = page.getByRole('button', {name:'Повернуть вправо', exact:true});
+  if (card.visualization.model.planar) {
+    assert.equal(await rotate.count(), 0, 'the exact plane angle is shown face-on');
+  } else {
+    const before = await model.getAttribute('data-yaw');
+    await rotate.click();
+    assert.notEqual(await model.getAttribute('data-yaw'), before);
+  }
   const out = process.env.INSCRIBED_SOLIDS_ARTIFACTS;
   if (out) {
     await fs.mkdir(out, {recursive:true});
@@ -113,12 +119,17 @@ async function exercise(page, card, base, width) {
     const errors = [];
     let checks = 0;
     for (const width of [320,390,1280]) {
-      const context = await browser.newContext({viewport:{width,height:900}});
-      const page = await context.newPage();
-      page.setDefaultTimeout(90000);
-      page.on('pageerror', error => errors.push(error.message));
-      for (const card of cards) checks += await exercise(page, card, base, width);
-      await context.close();
+      for (const card of cards) {
+        const context = await browser.newContext({viewport:{width,height:900}});
+        try {
+          const page = await context.newPage();
+          page.setDefaultTimeout(90000);
+          page.on('pageerror', error => errors.push(error.message));
+          checks += await exercise(page, card, base, width);
+        } finally {
+          await context.close();
+        }
+      }
     }
     assert.equal(cards.length,group.count);
     assert.deepEqual(errors, []);

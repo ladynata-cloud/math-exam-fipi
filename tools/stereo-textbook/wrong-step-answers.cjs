@@ -34,6 +34,16 @@ const misconceptions = new Map([
   ['theory-058/step-3', '24'], // Volume of the corresponding prism.
   ['theory-059/step-2', '1/2'], // Radius ratio in place of the area ratio.
   ['theory-059/step-3', '16'], // Volume coefficient for a full cylinder.
+  ['ex-main-0477-a/step-3', '18'], // Prism volume.
+  ['ex-main-0477-b/step-1', '13.5'], // Full sloping side rather than its projection.
+  ['ex-main-0477-b/step-2', '135'], // Omitting the triangular factor.
+  ['ex-main-0477-b/step-3', '2.2'], // Metres in a centimetre field.
+  ['ex-main-0479-a/step-2', '36'], // Circumradius squared rather than side squared.
+  ['ex-main-0479-b/step-1', '3'], // Half the edge from a bisected face.
+  ['ex-main-0479-c/step-1', '60'], // Full apex angle.
+  ['ex-main-0480/step-3', '54'], // Prism in place of pyramid.
+  ['ex-main-0481-a/step-2', '6'], // Square inradius in the side field.
+  ['ex-main-0481-b/step-2', '9'], // Squared inradius rather than circumradius.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

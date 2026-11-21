@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T14:45:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 476 and points 52–59, with 781 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T15:07:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 481 and points 52–59, with 790 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1226,6 +1226,24 @@
       ],
       "evidence": "tools/stereo-textbook/oblique-prisms.json",
       "mathematicalReport": "tools/stereo-textbook/oblique-prisms.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T15:07:00Z",
+      "scope": "Pyramids with a given height and regular pyramids with edges, plane angles and dihedral angles, exercises 477–481",
+      "cardIds": [
+        "ex-main-0477-a",
+        "ex-main-0477-b",
+        "ex-main-0478",
+        "ex-main-0479-a",
+        "ex-main-0479-b",
+        "ex-main-0479-c",
+        "ex-main-0480",
+        "ex-main-0481-a",
+        "ex-main-0481-b"
+      ],
+      "evidence": "tools/stereo-textbook/pyramid-volumes.json",
+      "mathematicalReport": "tools/stereo-textbook/pyramid-volumes.test.cjs"
     }
   ],
   "cards": [
@@ -4352,6 +4370,42 @@
     {
       "id": "theory-059",
       "sha256": "52e867ebd3311a958be86e5aec6a42d70b09a4bb8164e957d35907aa0559d577"
+    },
+    {
+      "id": "ex-main-0477-a",
+      "sha256": "e7e438d528823eb571bd049fd20b07b390d48f50ec70bc9f6c42da0e3878b64c"
+    },
+    {
+      "id": "ex-main-0477-b",
+      "sha256": "80d5f0845c271533132a51f5309a1cba9a430098651b4d309bf48dfcc66a68da"
+    },
+    {
+      "id": "ex-main-0478",
+      "sha256": "8173aab015488c9348976e83c7949bd83f7948e5001576b3abf5fdee35709ad3"
+    },
+    {
+      "id": "ex-main-0479-a",
+      "sha256": "407f3ddef2bd110aeb891e51d5fa80ad5f2de93ef7b8dc73f9c964b0ef7500d2"
+    },
+    {
+      "id": "ex-main-0479-b",
+      "sha256": "0d48ccd4680b91b1e8573ae3450ffdca103bcb20387682e79ba816e1c1356872"
+    },
+    {
+      "id": "ex-main-0479-c",
+      "sha256": "711fda425aac92450b7fa433a99b26182d6bf4d2495c7114f82ec05c0e87f6f3"
+    },
+    {
+      "id": "ex-main-0480",
+      "sha256": "07768a1e07b02ada35c5e8f0785d376134194a0ff70d26bdd468097c68f48d13"
+    },
+    {
+      "id": "ex-main-0481-a",
+      "sha256": "ccde50c3fc0b9db26bdd2a80fa7b3a3ab3fc96a26658cb089e0f548307da0caa"
+    },
+    {
+      "id": "ex-main-0481-b",
+      "sha256": "8edbddf9058c6eb872b904a20a61861a0b586c45cbe816a0fec4f8243f7e1dce"
     }
   ]
 }
