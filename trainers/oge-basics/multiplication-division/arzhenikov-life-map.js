@@ -15,7 +15,7 @@
   const small = matchMedia('(max-width: 760px)');
   const drawer = element('details', 'wm-drawer');
   const summary = element('summary', 'wm-summary');
-  const label = element('strong', '', 'Выбрать место');
+  const label = element('strong', '', 'Карта города');
   const progress = element('span', 'wm-progress');
   const preview = element('span', 'wm-preview');
   preview.setAttribute('aria-hidden', 'true');
@@ -34,12 +34,14 @@
     stop.style.gridColumn = column;
     stop.style.gridRow = row + 1;
     stop.href = '#workshop-' + place.id;
-    const pin = element('span', 'wm-pin', place.icon);
+    const pin = element('span', 'wm-pin adv-scene', place.icon);
+    pin.dataset.place = place.id;
     pin.setAttribute('aria-hidden', 'true');
     const title = element('strong', 'wm-place', place.name);
     const skill = element('span', 'wm-skill', place.skill);
+    const count = element('span', 'wm-story-count');
     const badge = element('span', 'wm-badge');
-    stop.append(pin, title, skill, badge);
+    stop.append(pin, title, skill, count, badge);
     grid.append(stop);
     return stop;
   });
@@ -72,7 +74,7 @@
     const record = window.ArzhenikovWorkshopProgress?.() || {};
     const active = record.active || places[0].id;
     const done = places.filter(p => record.completed?.includes(p.id));
-    progress.textContent = 'Пройдено ' + done.length + ' из ' + places.length;
+    progress.textContent = 'Открытки ' + done.length + '/' + places.length;
     for (const {kind, total, value, meter} of skillRows) {
       const solved = Math.min(total, Math.max(0, Number(record.skills?.[kind]) || 0));
       value.textContent = 'Решено ' + solved + ' из ' + total;
@@ -85,10 +87,12 @@
       if (current) stop.setAttribute('aria-current', 'location');
       else stop.removeAttribute('aria-current');
       stop.dataset.complete = String(complete);
+      const solved = Math.min(place.scenes.length, Math.max(0, Number(record.placeCounts?.[place.id]?.solved) || 0));
+      stop.querySelector('.wm-story-count').textContent = solved + '/' + place.scenes.length + ' историй';
       const badge = stop.lastElementChild;
       badge.textContent = complete ? '✓' : '';
       badge.setAttribute('aria-hidden', 'true');
-      stop.setAttribute('aria-label', place.name + '. ' + place.skill + (complete ? '. Пройдено' : ''));
+      stop.setAttribute('aria-label', place.name + '. ' + place.skill + '. Решено ' + solved + ' из ' + place.scenes.length + ' историй' + (complete ? '. Открытка в альбоме' : ''));
     });
   }
 
@@ -111,12 +115,12 @@
         event.shiftKey || event.altKey || event.button !== 0) return;
     chosen = stop.hash;
     if (location.hash === chosen) {
-      requestAnimationFrame(focusTask);
+      focusTask();
       chosen = '';
     }
   });
   window.addEventListener('hashchange', () => {
-    if (chosen && chosen === location.hash) requestAnimationFrame(focusTask);
+    if (chosen && chosen === location.hash) focusTask();
     chosen = '';
   });
   window.addEventListener('workshop-progress', reflect);

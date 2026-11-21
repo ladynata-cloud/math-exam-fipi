@@ -23,9 +23,16 @@ on:
       - 'tools/arzhenikov-map.browser.cjs'
       - 'tools/arzhenikov-garden*'
       - 'tools/arzhenikov-life*'
+      - 'tools/arzhenikov-adventure*'
+      - 'tools/arzhenikov-harbor*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-life*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-workshop*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-garden*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-adventure*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-harbor*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-art*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-*-atlas.png'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-peach.png'
       - '.github/workflows/seo-quality.yml'
   workflow_dispatch:
 
@@ -64,6 +71,17 @@ jobs:
           node --test tools/arzhenikov-garden.test.cjs
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-garden.browser.cjs
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-life.browser.cjs
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-adventure.browser.cjs
+          node --test tools/arzhenikov-harbor.test.cjs
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-harbor.browser.cjs
+
+      - name: Preserve child adventure screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arzhenikov-child-adventure
+          path: artifacts/arzhenikov-adventure/
+          if-no-files-found: ignore
 
       - name: Course entrances, mathematical GIFs and retained work
         run: |
