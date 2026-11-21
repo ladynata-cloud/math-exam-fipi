@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const additionalDirectedEdgeSums = makeReviewedIncrement(require('./additional-directed-edge-sums.json'));
+const vectorSpanAndBarycentres = makeReviewedIncrement(require('./vector-span-and-barycentres.json'));
+const additionalDirectedEdgeSums = makeReviewedIncrement(require('./additional-directed-edge-sums.json'), vectorSpanAndBarycentres);
 const vectorChapterSelfcheck = makeReviewedIncrement(require('./vector-chapter-selfcheck.json'), additionalDirectedEdgeSums);
 const heightAndMidpointProofs = makeReviewedIncrement(require('./height-and-midpoint-proofs.json'), vectorChapterSelfcheck);
 const centroidsInTetrahedra = makeReviewedIncrement(require('./centroids-in-tetrahedra.json'), heightAndMidpointProofs);

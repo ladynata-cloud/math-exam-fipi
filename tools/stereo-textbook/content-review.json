@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T21:42:14Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–618 and the full chapter VI self-check, with 1,069 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T21:48:53Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–626 and the full chapter VI self-check, with 1,084 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1829,6 +1829,30 @@
       ],
       "evidence": "tools/stereo-textbook/additional-directed-edge-sums.json",
       "mathematicalReport": "tools/stereo-textbook/additional-directed-edge-sums.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 158, printed page 158, the zero-vector convention on 142, and keys 269 where supplied; independent directed edge sums and original polyhedral models.",
+      "reviewedAt": "2026-11-21T21:48:53Z",
+      "scope": "Every printed part of exercises 619–626, including the exact Atanasyan nonnegative co-direction convention, arbitrary origin, strict inequality, extrapolated affine points and an actually disjoint plane for three skew-line connectors",
+      "cardIds": [
+        "ex-main-0619-a",
+        "ex-main-0619-b",
+        "ex-main-0619-c",
+        "ex-main-0619-d",
+        "ex-main-0620-a",
+        "ex-main-0620-b",
+        "ex-main-0621",
+        "ex-main-0622",
+        "ex-main-0623",
+        "ex-main-0624-a",
+        "ex-main-0624-b",
+        "ex-main-0624-c",
+        "ex-main-0625-a",
+        "ex-main-0625-b",
+        "ex-main-0626"
+      ],
+      "evidence": "tools/stereo-textbook/vector-span-and-barycentres.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-span-and-barycentres.test.cjs"
     }
   ],
   "cards": [
@@ -6107,6 +6131,66 @@
     {
       "id": "ex-main-0618",
       "sha256": "cabf487d5ef0641b3b72d69fc0118ea94d807fdd6678343db1ad0fa544e886b1"
+    },
+    {
+      "id": "ex-main-0619-a",
+      "sha256": "87dea07ebac3c785a84ed2a300f51255ec2292faf2eccddbc4db83af0386322f"
+    },
+    {
+      "id": "ex-main-0619-b",
+      "sha256": "ae9bfacd63874d3f783b76d8cb41ac302fb1dc74f3237684f9e9d64897ad7ee6"
+    },
+    {
+      "id": "ex-main-0619-c",
+      "sha256": "165fed0813a285e1dc6d372f3ff2ee2db5666ab1cc1d63ae62f4ac64f9342cc7"
+    },
+    {
+      "id": "ex-main-0619-d",
+      "sha256": "220585d1d8c966bc9c10c5f5cc90fe3d93f804e9a6fa98a22e80ba8aaa32bcb7"
+    },
+    {
+      "id": "ex-main-0620-a",
+      "sha256": "4117b9a426c383c3b0b411ed1d91b846acd7e1c7ec75044a4bf6c8260d218342"
+    },
+    {
+      "id": "ex-main-0620-b",
+      "sha256": "731098e375793a703e3323d6a4ce74b17a294bba0753129444a3f9a6ea8ef5fd"
+    },
+    {
+      "id": "ex-main-0621",
+      "sha256": "8c0018d85647fca20af33af52b5dbc6fd74bb205f52b45024eb70d4204a3eb6f"
+    },
+    {
+      "id": "ex-main-0622",
+      "sha256": "7dc40ba283a90ede859613022ae906af0792953704d4c65c91dc14476f3c8f91"
+    },
+    {
+      "id": "ex-main-0623",
+      "sha256": "55988000e74a6f02da6502492881e3009def792fb9523cd6dccdee977b98aebc"
+    },
+    {
+      "id": "ex-main-0624-a",
+      "sha256": "17962add5df74c42eaeac5f6f7a7a4efb51a52260371e2333d047a01eb2b5d2a"
+    },
+    {
+      "id": "ex-main-0624-b",
+      "sha256": "61ab7027e7652dd2479a12d1856709713acd01684db25775b9d8b1a4dfcdb1c3"
+    },
+    {
+      "id": "ex-main-0624-c",
+      "sha256": "83f3411d094ccd2110100866eba5733d499b0a798da0848e7688914eee470e9a"
+    },
+    {
+      "id": "ex-main-0625-a",
+      "sha256": "1d4e1149e5bb94f2a10c8e2ade3d78654ea928db927ab803505596ab80a45ce0"
+    },
+    {
+      "id": "ex-main-0625-b",
+      "sha256": "c09b7d1a439667a8290e6b797d71b7c004c6000387b8ffb95df8cf7b0d0b18ca"
+    },
+    {
+      "id": "ex-main-0626",
+      "sha256": "f4cac46168cba0cd571b65e19fa8e830da640c1d57480c13338d5ce901748b9f"
     }
   ]
 }
