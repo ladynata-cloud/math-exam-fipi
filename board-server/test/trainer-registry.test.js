@@ -764,7 +764,7 @@ test('an additional synthetic mirror entry needs no registry core change', () =>
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 74);
+    assert.equal(registry.entries.length, 75);
     assert.equal(registry.getById(synthetic.trainerId).file, synthetic.file);
   });
 });
@@ -775,7 +775,7 @@ test('removing a mirror entry removes its runtime authorization', () => {
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 72);
+    assert.equal(registry.entries.length, 73);
     assert.equal(registry.getById('linear-inequalities-stepwise'), null);
   });
 });
