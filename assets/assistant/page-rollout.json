@@ -3329,10 +3329,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": {
-      "beforeSha256": "f46118f5a7d6b5e004ae235fc258ffa5e78aafb6919576e7bc6b2645b5102505",
-      "afterSha256": "6360c88d4cc975451bda920f7ed3f31569bfe07c2f5d5241332ee088f6db9210",
+      "beforeSha256": "2a358f90088cebaab253bb0bac3aeccbebbc4abb7ebcc2c004194670d72d603c",
+      "afterSha256": "f50f699ecc2b32f9e80dd3174d1a226e4782547037a2340fee6d182254208a4f",
       "placement": "before-head-close",
-      "sourceSha": "3825700610047c5405d17c6ef34ecd7a1e6b4a5e"
+      "sourceSha": "316f81cde90e1dc9de21cd951ee2d503a72ff0bc"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
@@ -6694,6 +6694,14 @@
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
       "reason": "Bind the independently reviewed illustrated city and division harbor source; preserve exact navigator includes and all other page receipts."
+    },
+    {
+      "sourceBaseSha": "316f81cde90e1dc9de21cd951ee2d503a72ff0bc",
+      "task": "docs/tasks/ARZHENIKOV_FIRST_ACTION_20261122.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Bind the reviewed first-action page and preserve other navigator receipts."
     }
   ],
   "coverageUpdates": [
