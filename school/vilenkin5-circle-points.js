@@ -38,9 +38,9 @@
     const extra=highlight===3||highlight===4?'<path d="'+(highlight===3?shortArc:longArc)+'" fill="none" stroke="'+accent+'" stroke-width="5"/>':'';
     const position=f.points.map(([name,x,y])=>name+' ('+x+'; '+(-y)+')').join(', ');
     const dots=f.points.map(([name,x,y,dx,dy])=>'<g><circle cx="'+x+'" cy="'+y+'" r="2.9" fill="#162b3a"/><text x="'+(x+dx)+'" y="'+(y+dy)+'" font-size="13" font-family="sans-serif" font-weight="bold" fill="#162b3a">'+name+'</text></g>').join('');
-    return '<svg role="img" aria-label="Точки у окружности, дуги и радиуса O'+f.end+'" viewBox="0 0 226 181" style="width:100%;max-width:24rem;height:auto;display:block;margin:auto">'+
+    return '<svg class="v5q-printed-geometry" role="img" aria-label="Точки у окружности, дуги и радиуса O'+f.end+'" viewBox="0 0 226 181" style="width:100%;max-width:24rem;height:auto;display:block;margin:auto">'+
       '<desc>Положение на сетке. Центр O в начале координат, радиус 70 делений. Вправо и вверх — положительные направления. '+position+'. На рисунке проведён отрезок O'+f.end+'.</desc>'+
-      '<rect width="226" height="181" rx="8" fill="'+(highlight===2?'#fae7ce':'#fff')+'"/><g transform="translate(112,89)">'+
+      '<rect width="226" height="181" rx="8" fill="'+(highlight===2?'#fae7ce':'#fff')+'"/><g transform="translate(112,95)">'+
       '<circle r="70" fill="'+(highlight===1?'#f8ddb7':'#e7f3f1')+'" stroke="'+edge+'" stroke-width="'+(highlight===0?'4':'2')+'"/>'+extra+
       '<path d="M 0 0 L -42 56" stroke="'+(highlight===5?accent:stroke)+'" stroke-width="'+(highlight===5?'4':'2')+'"/>'+dots+'</g></svg>';
   }

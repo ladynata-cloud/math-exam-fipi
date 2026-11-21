@@ -199,10 +199,35 @@ async function draw(page, observer, offset = 0) {
   await page.waitForFunction(({ index, count }) => publicSnapshot().pages[index].strokes.length === count + 1, { index, count });
   assert((await inkState(page)).pages[index].strokes.at(-1).objectId); await sameInk(page, observer);
 }
+async function printedLabelsFit(frame, name) {
+  const problems = await frame.locator('.v5q-model svg.v5q-printed-geometry').evaluateAll(figures => {
+    const issues = [];
+    for (const svg of figures) {
+      const view = svg.viewBox.baseVal;
+      const labels = Array.from(svg.querySelectorAll('text'), text => {
+        const box = text.getBBox(), matrix = svg.getScreenCTM().inverse().multiply(text.getScreenCTM());
+        const a = new DOMPoint(box.x, box.y).matrixTransform(matrix);
+        const b = new DOMPoint(box.x + box.width, box.y + box.height).matrixTransform(matrix);
+        return { left: a.x, top: a.y, right: b.x, bottom: b.y, name: text.textContent };
+      });
+      for (const [index, label] of labels.entries()) {
+        if (label.left < -1 || label.top < -1 || label.right > view.width + 1 || label.bottom > view.height + 1) issues.push(label.name + ' clipped');
+        for (const other of labels.slice(index + 1)) {
+          const width = Math.min(label.right, other.right) - Math.max(label.left, other.left);
+          const height = Math.min(label.bottom, other.bottom) - Math.max(label.top, other.top);
+          if (width > 1.5 && height > 2) issues.push(label.name + ' overlaps ' + other.name);
+        }
+      }
+    }
+    return issues;
+  });
+  assert.deepEqual(problems, [], name + ': each label has its own space');
+}
 async function narrow(page, frame, name) {
   await page.setViewportSize({ width: 320, height: 900 });
   const size = await frame.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth }));
   assert(size.width <= 320 && size.scroll <= size.width + 1, name + ': no horizontal overflow at 320 px');
+  await printedLabelsFit(frame,name);
   if (process.env.VILENKIN5_BOARD_SHOTS) { mkdirSync(process.env.VILENKIN5_BOARD_SHOTS, { recursive: true }); await page.screenshot({ path: join(process.env.VILENKIN5_BOARD_SHOTS, name + '.png'), fullPage: true }); }
   await page.setViewportSize({ width: 1440, height: 1000 });
 }
@@ -456,6 +481,7 @@ async function run(browser, origin, backend, failures) {
   await teacherFrame.locator('[data-v5-param=opening]').selectOption('2');
   await teacherFrame.locator('[data-v5-param=stage]').selectOption('3');
   await same(teacherFrame,studentFrame,'teacher draws two radii');
+  await narrow(student,studentFrame,'compass-ruler-before-handoff');
   await ownership(teacher,student,true);
   await studentFrame.locator('[data-v5-prediction]').fill('36');await studentFrame.locator('[data-v5-predict] button').click();
   assert((await same(studentFrame,teacherFrame,'student doubles 18')).scene.model.seen);
