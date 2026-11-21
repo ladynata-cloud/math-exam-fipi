@@ -5,8 +5,8 @@ Static course at `/school/makarychev8/`, built around the existing Peterson cour
 ## Coverage
 
 - 51 topics in six chapters, including the six advanced topics.
-- 174 short theory blocks, 3759 tasks and 8653 worked steps.
-- 3526 textbook tasks/subparts with number and printed page, plus 233 explicitly labelled authored exercises/review adaptations. Exercises 1–1031, covering all three opening chapters, include all source subparts, substitutions, secondary questions and constructions. Other source ranges retain their selected examples.
+- 174 short theory blocks, 3936 tasks and 9055 worked steps.
+- 3701 textbook tasks/subparts with number and printed page, plus 235 explicitly labelled authored exercises/review adaptations. Exercises 1–1075 and 1077–1087, covering all three opening chapters, include all source subparts, substitutions, secondary questions and constructions. Other source ranges retain their selected examples.
 - Exercise navigator for all 1340 numbers. It distinguishes existing solutions from topic links; it does not claim solutions to every numbered exercise, every subpart, or the advanced problem bank.
 - Six interactive model families and 20 computation practice skills plus exercise generators for incomplete equations, the quadratic formula, applied word problems, Vieta’s theorem, completing the square, trinomial factorization and rational equations, each with three difficulty levels, preserved return to the original task.
 
@@ -54,7 +54,7 @@ cards. No prior task is replaced or renumbered.
 `coverage` gives the full source order, including preserved IDs. `studyOrder`
 uses those original indices for entry, navigation and number-search results;
 explicit old URLs still open the same card. The home page identifies the fully
-covered ranges without claiming all 1340 exercises are solved.
+covered ranges without claiming all 1340 exercises are solved. The two square-tile exercises at position 1076 are authored alternatives, recorded separately from the numbered source coverage.
 
 The course checks the learner's own rational/irrational examples, distinct
 rational values in strict intervals, coefficients producing the requested kind
