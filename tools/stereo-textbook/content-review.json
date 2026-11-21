@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T15:07:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 481 and points 52–59, with 790 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T15:22:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 489 and points 52–59, with 800 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1244,6 +1244,25 @@
       ],
       "evidence": "tools/stereo-textbook/pyramid-volumes.json",
       "mathematicalReport": "tools/stereo-textbook/pyramid-volumes.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T15:22:00Z",
+      "scope": "Pyramid projections, insphere decomposition and perpendicular faces, exercises 482–489",
+      "cardIds": [
+        "ex-main-0482",
+        "ex-main-0483",
+        "ex-main-0484",
+        "ex-main-0485",
+        "ex-main-0486",
+        "ex-main-0487",
+        "ex-main-0488-a",
+        "ex-main-0488-b",
+        "ex-main-0488-c",
+        "ex-main-0489"
+      ],
+      "evidence": "tools/stereo-textbook/pyramid-projections.json",
+      "mathematicalReport": "tools/stereo-textbook/pyramid-projections.test.cjs"
     }
   ],
   "cards": [
@@ -4406,6 +4425,46 @@
     {
       "id": "ex-main-0481-b",
       "sha256": "8edbddf9058c6eb872b904a20a61861a0b586c45cbe816a0fec4f8243f7e1dce"
+    },
+    {
+      "id": "ex-main-0482",
+      "sha256": "39138bd10bdd409f91efe528fd6eddd68d2323d69dbad610c63bd9825504fde4"
+    },
+    {
+      "id": "ex-main-0483",
+      "sha256": "832ed018b91b99dbb443a51e90fddf929c3b11cccbdb2e65120c332385f4b98d"
+    },
+    {
+      "id": "ex-main-0484",
+      "sha256": "e9d140086bf0da2a80c52ab51656c8303a0592f3e6ee4cf997c2450851fad06f"
+    },
+    {
+      "id": "ex-main-0485",
+      "sha256": "2a45dd111d1e622942ac508c5df2277b59d270b2b39cfc7e3620b8ef2daf0eb4"
+    },
+    {
+      "id": "ex-main-0486",
+      "sha256": "2f98fbf7c95aa1967c63bce9e8e94607df54a8d8a7da1bfc497c7a2019fb0fe5"
+    },
+    {
+      "id": "ex-main-0487",
+      "sha256": "2eb6df2ec4c6dff4670be0c6eee2fd2f989f930b46a6a54a4d20535ec7430a12"
+    },
+    {
+      "id": "ex-main-0488-a",
+      "sha256": "a1e5814d6464a30652c7c97fa704b298ca9996f33c020e345c678a6bf4b994a5"
+    },
+    {
+      "id": "ex-main-0488-b",
+      "sha256": "728ae0cb005eb64ae0b83d01d710a641239d25f30b03bd4d9e87fafb5d0fc155"
+    },
+    {
+      "id": "ex-main-0488-c",
+      "sha256": "cd81aba6702f0eed94ba78a3cdd6b905fe1c256c7374873d251dc879a9d38972"
+    },
+    {
+      "id": "ex-main-0489",
+      "sha256": "c0812d568c34f4e1bcd159ebf38617e9507c8f8a0bd6f084cad1e22b0bacd00e"
     }
   ]
 }

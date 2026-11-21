@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const pyramids = makeReviewedIncrement(require('./pyramid-volumes.json'));
+const projections = makeReviewedIncrement(require('./pyramid-projections.json'));
+const pyramids = makeReviewedIncrement(require('./pyramid-volumes.json'), projections);
 const oblique = makeReviewedIncrement(require('./oblique-prisms.json'), pyramids);
 const sections = makeReviewedIncrement(require('./cross-sections.json'), oblique);
 const prismVolumes = makeReviewedIncrement(require('./prism-volumes.json'), sections);

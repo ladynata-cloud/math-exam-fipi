@@ -65,4 +65,5 @@ require('./prism-volumes.test.cjs');
 require('./cross-sections.test.cjs');
 require('./oblique-prisms.test.cjs');
 require('./pyramid-volumes.test.cjs');
+require('./pyramid-projections.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

@@ -44,6 +44,19 @@ const misconceptions = new Map([
   ['ex-main-0480/step-3', '54'], // Prism in place of pyramid.
   ['ex-main-0481-a/step-2', '6'], // Square inradius in the side field.
   ['ex-main-0481-b/step-2', '9'], // Squared inradius rather than circumradius.
+  ['ex-main-0482/step-2', '64'], // Squared radius.
+  ['ex-main-0483/step-1', '9'], // Squared inradius in place of circumradius.
+  ['ex-main-0483/step-2', '160'], // Inradius used in the vertical triangle.
+  ['ex-main-0483/step-3', '6*sqrt(498)'], // Lateral area in the volume field.
+  ['ex-main-0483/step-4', '6*sqrt(471)'], // Volume in the lateral-area field.
+  ['ex-main-0484/step-2', '10/3'], // Inradius of triangular base.
+  ['ex-main-0485/step-2', '15/2'], // Full hypotenuse used for the projection.
+  ['ex-main-0486/step-1', '4'], // Missing the bottom face.
+  ['ex-main-0487/step-2', '36'], // Full perimeter.
+  ['ex-main-0488-a/step-1', '6'], // Opposite leg instead of adjacent leg.
+  ['ex-main-0488-b/step-3', '128'], // Base altitude used for the spatial height.
+  ['ex-main-0488-c/step-3', '60'], // Volume of the encompassing box.
+  ['ex-main-0489/step-2', '21'], // Common edge instead of its perpendicular.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 
