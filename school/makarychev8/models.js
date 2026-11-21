@@ -714,5 +714,28 @@
      source:{type:'authored',reference:'Тренировка по составлению систем'},skills:[systemPractice.id]};
   }
 
-  return { mount, experiment, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const parameterPractice={id:'parameter-equations',title:'Исследовать уравнение с параметром',description:'Разбери специальное значение, проверь число корней и найди общий ответ.'};
+  function practiceParameter(seed,level){
+    const h=1+seed%8,m=2+Math.floor(seed/3)%7,trial={kind:'parameter-sample',answer:'0',prompt:'Выбери для опыта значение t от −24 до 24 с шагом 1/8.',hint:'Можешь начать с 0.',explanation:'График изображает уравнение с твоим параметром.'};
+    let prompt,kind,answer,graph,reason,hint;
+    if(level===1){
+      prompt='При каком t уравнение (t − '+h+')x = '+m+'(t − '+h+') допускает любое x?';
+      kind='number';answer=String(h);graph=[[0],[-h,1],[m*h,-m]];
+      hint='Для тождества нужны нули с обеих сторон.';
+      reason={kind:'number',answer:String(m),prompt:'Каков единственный корень при t, отличном от особого значения?',hint:'Раздели обе части на t − '+h+'.',explanation:'Корень x = '+m+'.'};
+    }else if(level===2){
+      prompt='При каких t уравнение x² − 2tx + '+h*h+' = 0 имеет ровно один действительный корень?';
+      kind='set';answer=(-h)+';'+h;graph=[[1],[0,-2],[h*h]];
+      hint='Старший коэффициент равен 1. Приравняй дискриминант к нулю и учти оба знака t.';
+      reason={kind:'number',answer:String(h*h),prompt:'Какому числу должно равняться t²?',hint:'Раздели дискриминант на четыре.',explanation:'D = 4(t² − '+h*h+').'};
+    }else{
+      prompt='Найди все t, при которых tx² − '+2*h+'x + 1 = 0 имеет единственный действительный корень.';
+      kind='set';answer='0;'+h*h;graph=[[0,1],[-2*h],[1]];hint='Отдельно проверь t = 0, затем реши D = 0 для параболы.';
+      reason={kind:'number',answer:'1/'+(2*h),prompt:'Какой корень остаётся при t = 0?',hint:'Отбрось исчезнувший квадратный член.',explanation:'Линейное уравнение даёт x = 1/'+(2*h)+'.'};
+    }
+    return {title:parameterPractice.title,prompt,kind,answer,hint,correction:hint,explanation:hint+' Все нужные значения: '+answer+'.',steps:[trial,reason],
+      graph:{type:'parameter-polynomial',symbol:'t',coefficients:graph},skills:[parameterPractice.id],source:{type:'authored',reference:'Авторская тренировка по уравнениям с параметром'}};
+  }
+
+  return { mount, experiment, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

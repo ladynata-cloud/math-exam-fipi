@@ -507,6 +507,37 @@ function balanceScene(host,config,value){
  }
 }
 
+function parameterSample(value) {
+ const r=M.parse(String(value??''));
+ return r&&Math.abs(r.n/r.d)<=24&&8%r.d===0?r.n/r.d:null;
+}
+function parameterExample(config,value) {
+ const t=parameterSample(value);
+ if(t===null)return null;
+ const [a,b,c]=config.coefficients.map(row=>row.reduceRight((acc,coefficient)=>acc*t+coefficient,0));
+ const d=b*b-4*a*c;
+ const roots=a===0?(b===0?[]:[-c/b]):d<0?[]:d===0?[-b/(2*a)]:[(-b-Math.sqrt(d))/(2*a),(-b+Math.sqrt(d))/(2*a)].sort((u,v)=>u-v);
+ return {t,a,b,c,d,roots,count:a===0&&b===0&&c===0?'all':String(roots.length)};
+}
+function parameterScene(host,config) {
+ host.className='task-graphs construction';
+ const trial=config.trial,model=parameterExample(config,trial||'0'),caption=document.createElement('p');
+ caption.className='small';
+ if(!model){caption.textContent='Для опыта введи число от −24 до 24 с шагом 1/8.';host.append(caption);return;}
+ const {t,a,b,c,roots,count}=model;
+ const format=v=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:3}).format(v||0);
+ const center=a?-b/(2*a):0,vertex=a?c-b*b/(4*a):c;
+ const horizontal=Math.max(2,Math.abs(center)*1.25,...roots.map(v=>Math.abs(v)*1.25));
+ const vertical=Math.max(2,Math.abs(vertex)*1.25,Math.abs(c)*1.25,Math.abs(b)*horizontal*.2);
+ const graph=rootGraph({curves:[a?{kind:'quadratic',a,b,c}:{kind:'line',k:b,b:c}],points:roots.map(v=>[v,0]),
+  xRange:[-horizontal,horizontal],yRange:[-vertical,vertical],compactTicks:horizontal>=1000||vertical>=10000,
+  axisLabels:[config.unknown||'x','F'],label:'График левой части после переноса всех членов влево, при '+config.symbol+' = '+format(t)},'');
+ graph.dataset.parameterValue=String(t);graph.dataset.solutionCount=count;
+ const names={'all':'график совпадает с горизонтальной осью, подходит любое число','0':'пересечений с горизонтальной осью нет','1':'одна общая точка с горизонтальной осью','2':'две общие точки с горизонтальной осью'};
+ caption.textContent=(trial?'Твой опыт':'Начальный пример')+' при '+config.symbol+' = '+format(t)+'. '+(a?'Парабола':b?'Прямая':'Постоянная функция')+', '+names[count]+'.';
+ host.append(graph,caption);
+}
+
 function equationExamples(host,value){
  host.className='task-graphs quantity-model';
  const parts=String(value||'').split(';').map(x=>x.trim());
@@ -753,6 +784,7 @@ function render(host,config,value){
  if(config.type==='abs-line-choice'){absLineChoice(host,config);return;}
  if(config.type==='system-pair-audit'){systemPairModel(host,config);return;}
  if(config.type==='inequality-intervals'){inequalityIntervals(host,config);return;}
+ if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='rate-table'){rateTable(host,config,value);return;}
@@ -816,5 +848,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

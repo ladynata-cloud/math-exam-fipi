@@ -78,6 +78,45 @@ function polynomialFraction(raw, symbols) {
  }
  return parse(raw);
 }
+function parameterFormulas(value, target) {
+ const fields=value.split(';'), expected=String(target.answer).split(';');
+ if(fields.length!==expected.length||!fields.every(v=>v.trim()))return false;
+ const symbols=new Set([target.symbol]),excluded=target.exclusions||[];
+ function coefficients(poly){
+  const degree=Math.max(0,...[...poly.keys()].map(key=>key.length));
+  return Array.from({length:degree+1},(_,i)=>poly.get(target.symbol.repeat(i))||0n);
+ }
+ function product(a,b){
+  const result=Array(a.length+b.length-1).fill(0n);
+  a.forEach((v,i)=>b.forEach((w,j)=>{result[i+j]+=v*w;}));
+  return result;
+ }
+ function equivalent(field, reference){
+  try{
+   const [n,d]=polynomialFraction(normalize(field),symbols).map(coefficients);
+   const [rn,rd]=polynomialFraction(normalize(reference),symbols).map(coefficients);
+   // A cancelled factor may still remove a legitimate parameter value.
+   const allowed=excluded.filter(point=>evaluateAt(d,point)===0n).length;
+   if(Number.isInteger(target.below)){
+    // z = bound − u² covers precisely the half-line when u is nonzero.
+    let transformed=[];
+    for(const coefficient of [...d].reverse()){
+     transformed=product(transformed.length?transformed:[0n],[BigInt(target.below),0n,-1n]);
+     transformed[0]+=coefficient;
+    }
+    if(realRootCount(transformed)>(evaluateAt(d,String(target.below))===0n?1:0))return false;
+   }else if(realRootCount([...d])>allowed)return false;
+   const left=product(n,rd),right=product(rn,d);
+   return Array.from({length:Math.max(left.length,right.length)},(_,i)=>(left[i]||0n)===(right[i]||0n)).every(Boolean);
+  }catch(_){return false;}
+ }
+ if(target.ordered)return fields.every((field,i)=>equivalent(field,expected[i]));
+ const remaining=[...expected];
+ return fields.every(field=>{
+  const i=remaining.findIndex(reference=>equivalent(field,reference));
+  if(i<0)return false;remaining.splice(i,1);return true;
+ });
+}
 function sameReducedExpression(input, expected) {
  try{
   const symbols=new Set(String(expected).match(/[a-z]/g)||[]);
@@ -615,6 +654,8 @@ function progressionFactors(input){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='parameter-formulas')return parameterFormulas(user,target);
+ if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
  if(target.kind==='line-pair-equation')return equationPlaneStatus(user,target.answer)==='correct';
