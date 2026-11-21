@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1133);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1150);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1035,6 +1035,11 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  const l=D.lessons.find(t=>t.id==='p38'),group=n=>Array.from(l.tasks.filter(t=>t.source.exercise===n));
  assert.deepEqual(group(147).map(t=>Array.from(t.steps,s=>s.answer)),[['200','30','50','90','240','48'],['3/2','9','24','18','45','144'],['5/2','15','35','3/2','2','12/5']]);
  assert.deepEqual(group(148).map(t=>t.answer),['50 − 2,5t','50 + 2,5t','50 − 0,5t','50 + 0,5t']);assert.deepEqual(group(149).map(t=>t.answer),['105','40']);
+}
+{
+ const l=D.lessons.find(t=>t.id==='p38'),group=n=>Array.from(l.tasks.filter(t=>t.source.exercise===n));
+ assert.deepEqual(group(150)[0].steps.map(t=>t.answer).join(','),'350,500,1000,150');assert.deepEqual(group(153).map(t=>t.answer),['5/11','4/3','5a/(2b)','(x + y)/(xy)','2n/3']);
+ assert.deepEqual(group(155).map(t=>Array.from(t.steps,s=>s.answer).join(',')),['30,30,900,1','35,25,875,7/5','40,20,800,2','44,15,660,44/15','50,10,500,5','55,5,275,11']);assert.deepEqual(group(156).map(t=>t.answer),['18/25','1/20']);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

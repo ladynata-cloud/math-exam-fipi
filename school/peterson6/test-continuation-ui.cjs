@@ -1575,3 +1575,15 @@ test('convert all eighteen physical speeds and retain directions before a walkin
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('read all six measured source outlines including the shorter d rectangle and solve every paper calculation on page 35',()=>{
+ const f=fixture(null,null,true);try{
+  const samples=[['по 500 т','по 250 т'],['75 кг','90 кг'],['12/5 м²','16/5 м²'],['5/11','3/7'],['4/3','1.'],['1.','15/4'],['2/3','1/2'],['4.','6.'],['30 мин','25 мин'],['900 мм²','1024 мм²'],['875 мм²','1008 мм²'],['800 мм²','960 мм²'],['660 мм²','880 мм²'],['500 мм²','768 мм²'],['275 мм²','624 мм²'],['18/25','9/2'],['1/20','1/4']];
+  for(const [i,[before,after]]of samples.entries()){
+   f.nav('#lesson/p38/'+(105+i));if(i>=9&&i<=14)assert.equal(f.d.querySelectorAll('#task-figure [data-paper-rectangle]').length,6);f.click('[data-lesson-help="model"] > summary');
+   const c=[...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id),set=(j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;set(1,2);assert(out().includes(before),[i,out()]);
+   if(i===12){assert(out().includes('44/15'));const rect=f.q('#model [data-paper-rectangle="d"]');assert(Math.abs(Number(rect.getAttribute('width'))/Number(rect.getAttribute('height'))-43.76/14.99)<1e-6);}
+   set(0,1);assert.equal(f.q(c[1]).value,'0');set(1,2);assert(out().includes(after),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

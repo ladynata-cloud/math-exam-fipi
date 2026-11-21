@@ -1312,6 +1312,58 @@ function toyLineDiagram(nums){
  const total=nums.reduce((a,b)=>a+b,0),s=svg('svg',{viewBox:'0 0 285 167',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Длина каждой горизонтальной линии показывает процент голосов за серию.'});
  nums.forEach((n,i)=>{const y=15+i*22,percent=Math.round(100*n/total),end=94+percent*4.35;txt(s,90,y+4,toyNames[i],{'font-size':10.5,'text-anchor':'end'});ln(s,96,y,end,y,{stroke:'#30775c','stroke-width':7});txt(s,end+5,y+4,percent+'%',{'font-size':12,'text-anchor':'start'});});return s;
 }
+const measuredPaperMm=[[30,30],[35,25],[40,20],[43.76,14.99],[50,10],[55,5]];
+function rulerRectangles(focus,fresh){
+ const dimensions=fresh?[[32,32],[36,28],[40,24],[44,20],[48,16],[52,12]]:measuredPaperMm;
+ const s=svg('svg',{viewBox:'0 0 310 260',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Шесть прямоугольников в одном масштабе и линейка от 0 до 50 мм. Выбран '+String.fromCharCode(97+focus)+'.'});
+ const scale=2.35,xs=[10,156],ys=[14,100,166];
+ for(const [i,[w,h]]of dimensions.entries()){
+  const x=xs[i%2],y=ys[Math.floor(i/2)],colour=i===focus?'#8e4c16':'#376953';
+  s.append(svg('rect',{x,y,width:w*scale,height:h*scale,fill:i===focus?'#f5dfc1':'#e5efe9',stroke:colour,'stroke-width':i===focus?2.3:1.4,'data-paper-rectangle':String.fromCharCode(97+i)}));
+  txt(s,x+w*scale/2,y+h*scale/2+4,String.fromCharCode(97+i),{'font-size':14});
+ }
+ const baseY=226;ln(s,12,baseY,12+50*scale,baseY);
+ for(let mark=0;mark<=50;mark++){const x=12+mark*scale;ln(s,x,baseY,x,baseY+(mark%10===0?10:mark%5===0?7:3),{'stroke-width':1});if(mark%10===0)txt(s,x,250,String(mark),{'font-size':13});}
+ txt(s,156,234,'мм',{'font-size':16});return {picture:s,rounded:dimensions[focus].map(Math.round)};
+}
+function exactMeasureTask(tag,changed){
+ const m=root.PetersonMath,op=m.operation,r=x=>m.answer(x);let condition,formulaText,rows,answer;
+ if(tag==='grain'){
+  const u=changed?70:140,v=5*u/2,total=25*u/7,start=total;condition='Из первого элеватора вывезли '+u+' т, из второго — в 2,5 раза больше. Теперь остатки первого и второго относятся как 2,4:1.';
+  formulaText='x − '+u+' = 2,4(x − '+v+')';rows=[['В каждом сначала, т',start],['Остаток первого, т',start-u],['Остаток второго, т',start-v]];answer='В каждом по '+start+' т; всего '+2*start+' т.';
+ }else if(tag==='potatoes'){
+  const total=changed?216:180,left=5*total/12;condition='Всего '+total+' кг картофеля. Потрачено на 40% больше остатка.';
+  formulaText='x + 1,4x = '+total;rows=[['Остаток, кг',left],['Расход, кг',total-left]];answer='Осталось '+left+' кг.';
+ }else if(tag==='upholstery'){
+  const all=changed?'82/5':'123/10',sofa=op('multiply',all,'25/41'),chair=op('multiply',sofa,'8/25');condition='На диван и два кресла ушло '+r(all)+' м². Для кресла требуется на 68% меньше дивана.';
+  formulaText='x + 2 × 0,32x = '+r(all);rows=[['Диван, м²',r(sofa)],['Одно кресло, м²',r(chair)],['Два кресла, м²',r(op('multiply',2,chair))]];answer='На кресло '+r(chair)+' м².';
+ }else if(tag==='cyclistLate'){
+  const speed=changed?21:14,walk=speed*2/7,minutes=changed?35:42,motion=minutes*walk/speed;condition='Велосипедист выезжает через 15 мин, догоняет ещё через 6 мин при скорости '+speed+' км/ч. На весь путь пешеход затратил '+minutes+' мин.';
+  formulaText='v × 21/60 = '+speed+' × 6/60';rows=[['До встречи, мин пешком',21],['До встречи, мин на велосипеде',6],['Скорость пешехода, км/ч',walk],['Полный путь, мин на велосипеде',motion]];answer='Скорость пешехода '+walk+' км/ч. Разность длительностей '+(minutes-motion)+' мин.';
+ }else if(tag==='cancelSquareA'||tag==='cancelSquareB'){
+  const first=tag==='cancelSquareA',x=first?(changed?'3/2':'-3/5'):(changed?'3/4':'1/2'),y=first?(changed?'1/3':'-13/6'):(changed?'1/4':'1/5'),xs=op('multiply',x,x),ys=op('multiply',y,y),result=first?op('multiply',xs,2):op('subtract',xs,op('multiply',5,ys));
+  condition=first?'a = '+x+', x = '+y:'n = '+x+', k = '+y;
+  formulaText=first?'a² + ax − ax + x² + a² − x² = 2a²':'−2n² + 3nk − 3nk − 2k² + 3n² − 3k² = n² − 5k²';
+  rows=[[first?'a²':'n²',r(xs)],[first?'x², сокращается':'k²',r(ys)]];answer='Значение выражения '+r(result)+'.';
+ }else{
+  let numerator,denominator,num2,den2,factor;
+  if(tag==='frac510'){
+   [numerator,denominator]=changed?[360,840]:[510,1122];const reduced=op('divide',numerator,denominator);num2=reduced.n;den2=reduced.d;factor=String(numerator/num2);condition=numerator+'/'+denominator;
+  }else if(tag==='fracDecimal'){
+   const x=changed?9:'15/2',y=changed?3:'3/2',u=changed?4:'18/5',v=changed?2:'9/5';
+   numerator=op('multiply',u,op('subtract',x,y));denominator=op('multiply',v,op('add',x,y));num2=op('multiply',op('divide',u,v),op('subtract',x,y));den2=op('add',x,y);factor='Вынести общий множитель из каждой пары слагаемых';condition='('+x+' × '+u+' − '+u+' × '+y+') / ('+v+' × '+x+' + '+y+' × '+v+')';
+  }else if(tag==='fracLetters'){
+   const [a,b,c]=changed?[3,2,4]:[2,5,3];numerator=40*a*a*b*c;denominator=16*a*b*b*c;num2=5*a;den2=2*b;factor='8abc';condition='40a²bc/(16ab²c) при a = '+a+', b = '+b+', c = '+c;
+  }else if(tag==='fracSum'){
+   const [m,x,y]=changed?[5,3,6]:[6,2,6];numerator=m*x+m*y;denominator=m*x*y;num2=x+y;den2=x*y;factor='m';condition='(mx + my)/(mxy) при m = '+m+', x = '+x+', y = '+y;
+  }else{
+   const n=changed?9:6;numerator=2*n**3;denominator=3*n*n;num2=2*n;den2=3;factor='n²';condition='2n³/(3n²) при n = '+n;
+  }
+  formulaText='До: ('+r(numerator)+')/('+r(denominator)+'). После: ('+r(num2)+')/('+r(den2)+').';
+  rows=[['Общий множитель или приём',factor],['Значение до',r(op('divide',numerator,denominator))],['Значение после',r(op('divide',num2,den2))]];answer='Значение дроби '+r(op('divide',num2,den2))+'.';
+ }
+ return {condition,formulaText,rows,answer};
+}
 function unitSample(group,index,alternate){
  const m=root.PetersonMath,op=m.operation,r=x=>m.answer(x),units={'км/ч':'5/18','м/мин':'1/60','м/с':'1'},[v,from]=group.rows[index],to=group.dest;
  const factor=op('divide',units[from],units[to]),given=op('multiply',v,alternate?2:1),answer=op('multiply',given,factor);
@@ -2663,6 +2715,7 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&task?.paperMeasure)return {title:task.paperMeasure.startsWith('rectangle')?'Измерь по одной шкале':'Проверь величины и вычисление',controls:[c('Набор',[[0,'Из упражнения'],[1,'Другие данные']]),c('Шаг',[[0,'Решу самостоятельно'],[1,'Промежуточная проверка'],[2,'Результат']])],initial:[0,0]};
  if(lesson?.id==='p38'&&task?.convertGroup)return {title:'Переведи одну скорость и проверь единицы',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новые значения']]),c('Скорость',task.convertGroup.rows.map(([v,u],i)=>[i,String(i+1)+'. '+v+' '+u])),c('Проверка',[[0,'Переведу сам'],[1,'Множитель'],[2,'Проверка единиц']])],initial:[0,0,0]};
  if(lesson?.id==='p38'&&Number.isInteger(task?.walkingGap))return {title:'Проследи за промежутком во времени',controls:[c('Пешеходы',[[0,'Из упражнения'],[1,'Новые данные']]),c('Время, с',[[0,'0'],[1,'5'],[2,'10'],[3,'15']]),c('Проверка',[[0,'Смотрю направления'],[1,'Формула'],[2,'Расстояние']])],initial:[0,0,0]};
  if(lesson?.id==='p38'&&task?.calendarBalance)return {title:'Проверь три части целого',controls:[c('Ситуация',[[0,'Из упражнения'],[1,'Новые данные']]),c('Шаг',[[0,'Составлю уравнение'],[1,'Уравнение'],[2,'Проверка суммы']])],initial:[0,0]};
@@ -2894,12 +2947,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p38-station-graph'){picture=sourceChart('station',stationSchedule(false));}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=sourceChart('station',stationSchedule(false));}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.quantifiedEquation||task.mentalSeries||task.stationGraph||task.convertGroup||Number.isInteger(task.walkingGap)) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2910,7 +2963,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
   if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -4190,6 +4243,15 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
  else if(n===16){show(geometryFigure({points:[{name:'A',x:0,y:0},{name:'B',x:a,y:0}],segments:[['A','B']],labels:[{x:a/2,y:-0.6,text:a+' см на карте'}],caption:'Схема отрезка на карте'}));formula('Масштаб 1 : '+b);say('На местности: '+a+' · '+b+' = '+a*b+' см = '+num(a*b/100)+' м.');stepList(['Масштаб сравнивает длины в одинаковых единицах.','Один сантиметр карты соответствует '+b+' сантиметрам на местности.','Размер схемы на экране не предназначен для измерения линейкой.']);}
  else if(n===17){show(eq(frac(3,5),' = ',frac(3*a,5*a)));const s=chart('Произведения крест-накрест');txt(s,190,90,'3');txt(s,190,270,'5');txt(s,410,90,3*a);txt(s,410,270,5*a);ln(s,155,177,225,177);ln(s,375,177,445,177);txt(s,300,185,'=');ln(s,215,105,385,245,{stroke:'#b4812a'});ln(s,215,245,385,105,{stroke:'#b4812a'});show(s);formula('3 · '+5*a+' = 5 · '+3*a+' = '+15*a);stepList(['Сначала сравни отношения: числитель и знаменатель увеличены в '+a+' раз.','Соедини числитель первой дроби со знаменателем второй — и наоборот.','Произведения равны. Все знаменатели ненулевые, поэтому пропорция верна.']);}
  else if(n===18){const pairs=[[[2,3],[8,12]],[[3,2],[12,8]],[[2,8],[3,12]],[[12,3],[8,2]]],p=pairs[a];show(eq(frac(...p[0]),' = ',frac(...p[1])));formula(p[0][0]+' · '+p[1][1]+' = '+p[0][1]+' · '+p[1][0]);say('Проверяем обе новые дроби, а не переставляем числа наугад.');stepList(['Исходная пропорция: 2 : 3 = 8 : 12.','После выбранного преобразования перекрёстные произведения равны '+p[0][0]*p[1][1]+'.']);}
+ else
+ if(n===38&&task.paperMeasure){
+  const tag=task.paperMeasure;if(tag.startsWith('rectangle')){
+   const k=tag.slice(-1).charCodeAt(0)-97,shape=rulerRectangles(k,a===1),[w,h]=shape.rounded,m=root.PetersonMath;show(shape.picture);
+   say('Выбран прямоугольник '+tag.slice(-1)+'. Считай миллиметры по общей шкале.');if(b>=1)say('Стороны после округления: '+w+' и '+h+' мм.');
+   if(b===2){show(table(['Свойство','Значение'],[['Площадь, мм²',w*h],['Отношение сторон',m.answer(m.operation('divide',w,h))],['Периметр по этим размерам, мм',2*(w+h)]]));say('Площадь '+w*h+' мм². Отношение '+m.answer(m.operation('divide',w,h))+'.');}
+  }else{const v=exactMeasureTask(tag,a===1);say(v.condition);if(b>=1)formula(v.formulaText);if(b===2){show(table(['Проверяем','Значение'],v.rows));say(v.answer);}}
+  stepList(['Сначала установи, какое число дано и какое требуется.','Запиши промежуточные величины со своими единицами.','Проверь равенство на новом наборе данных.']);
+ }
  else
  if(n===38&&task.convertGroup){
   const g=unitSample(task.convertGroup,b,a===1),stage=state.values[2];say('Переведи '+g.given+' '+g.from+' в '+g.to+'.');
@@ -78239,6 +78301,821 @@ window.PetersonCourse = {
       [
        "20",
        "Это превышение над числом пасмурных, а спрашивается доля всех дней."
+      ]
+     ]
+    },
+    {
+     "id": "p38-t106",
+     "title": "К задаче №150",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 150,
+      "subpart": "",
+      "reference": "№150"
+     },
+     "kind": "manual",
+     "prompt": "Два зернохранилища начинали с одинаковыми запасами. Из первого вывезли 140 т, из второго в 2,5 раза больше. Теперь в первом хранилище в 2,4 раза больше зерна, чем во втором. Найди первоначальный запас каждого и их общий запас.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько тонн вывезли из второго?",
+       "answer": "350",
+       "hint": "Умножь 140 на 2,5.",
+       "explanation": "140 × 2,5 = 350."
+      },
+      {
+       "prompt": "Сколько тонн было изначально в каждом?",
+       "answer": "500",
+       "hint": "Пусть в каждом было x. Верно x − 140 = 2,4(x − 350).",
+       "explanation": "1,4x = 700. В каждом изначально 500 т."
+      },
+      {
+       "prompt": "Общий первоначальный запас, т?",
+       "answer": "1000",
+       "hint": "Исходные запасы равны.",
+       "explanation": "500 + 500 = 1000 т."
+      },
+      {
+       "prompt": "Сколько тонн осталось во втором?",
+       "answer": "150",
+       "hint": "Вычти 350 из 500.",
+       "explanation": "Осталось 150 и 360, причём 360/150 = 2,4."
+      }
+     ],
+     "hint": "Одинаковые величины в начале запиши одной буквой, а не одним и тем же остатком.",
+     "explanation": "Каждый элеватор хранил по 500 т, вместе 1000 т. После вывоза осталось 360 т и 150 т.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои вычисления.",
+     "paperMeasure": "grain"
+    },
+    {
+     "id": "p38-t107",
+     "title": "К задаче №151",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 151,
+      "subpart": "",
+      "reference": "№151"
+     },
+     "kind": "number",
+     "prompt": "Было 180 кг картофеля. Израсходовали на 40% больше, чем осталось к концу зимы. Найди остаток в килограммах.",
+     "answer": "75",
+     "steps": [
+      {
+       "prompt": "Чему равно отношение потраченного к остатку?",
+       "answer": "7/5",
+       "hint": "Потрачено 140% от остатка.",
+       "explanation": "140/100 = 7/5."
+      },
+      {
+       "prompt": "Сколько килограммов потратили?",
+       "answer": "105",
+       "hint": "Пусть остаток x. Тогда x + 1,4x = 180.",
+       "explanation": "x = 75, расход 1,4 × 75 = 105."
+      }
+     ],
+     "hint": "Сорок процентов относятся к остатку, а не ко всем 180 кг.",
+     "explanation": "Потрачено 105 кг, осталось 75. Проверка: разница 30 кг составляет 40% от 75.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи число.",
+     "paperMeasure": "potatoes",
+     "errorCues": [
+      [
+       "108",
+       "Ты взял 60% от первоначального запаса. В условии другое основание."
+      ],
+      [
+       "105",
+       "Это расход. Требуется остаток."
+      ]
+     ]
+    },
+    {
+     "id": "p38-t108",
+     "title": "К задаче №152",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 152,
+      "subpart": "",
+      "reference": "№152"
+     },
+     "kind": "number",
+     "prompt": "На диван и два одинаковых кресла ушло 12,3 м² ткани. Для одного кресла нужно на 68% меньше ткани, чем для дивана. Сколько квадратных метров ушло на одно кресло?",
+     "answer": "12/5",
+     "steps": [
+      {
+       "prompt": "Какую долю расхода на диван составляет расход на кресло?",
+       "answer": "8/25",
+       "hint": "Убери 68% из 100%.",
+       "explanation": "32% = 8/25."
+      },
+      {
+       "prompt": "Сколько ткани нужно на диван, м²?",
+       "answer": "15/2",
+       "hint": "Если на диван идёт x, два кресла требуют 0,64x.",
+       "explanation": "1,64x = 12,3, x = 7,5."
+      },
+      {
+       "prompt": "Сколько ткани идёт на оба кресла вместе, м²?",
+       "answer": "24/5",
+       "hint": "Вычти расход на диван из общего.",
+       "explanation": "12,3 − 7,5 = 4,8."
+      }
+     ],
+     "hint": "Кресло использует 32% диванной ткани. В наборе два таких кресла.",
+     "explanation": "Одно кресло требует 0,32 × 7,5 = 2,4 м². Проверка: 7,5 + 2 × 2,4 = 12,3.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи число.",
+     "paperMeasure": "upholstery",
+     "errorCues": [
+      [
+       "4.8",
+       "Это расход на два кресла. Раздели пополам."
+      ],
+      [
+       "7.5",
+       "Это расход на диван. Возьми 32% от него."
+      ]
+     ]
+    },
+    {
+     "id": "p38-t109",
+     "title": "К задаче №153а",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 153,
+      "subpart": "а",
+      "reference": "№153а"
+     },
+     "kind": "number",
+     "prompt": "Сократи 510/1122.",
+     "answer": "5/11",
+     "steps": [
+      {
+       "prompt": "Наибольший общий делитель?",
+       "answer": "102",
+       "hint": "Разность 1122 − 2 × 510 равна 102. Число 510 кратно 102.",
+       "explanation": "У обеих частей общий делитель 102."
+      },
+      {
+       "prompt": "Знаменатель сокращённой дроби?",
+       "answer": "11",
+       "hint": "1122 раздели на 102.",
+       "explanation": "102 × 11 = 1122."
+      }
+     ],
+     "hint": "Проверь сокращение в обеих частях одним множителем.",
+     "explanation": "510/1122 = (5 × 102)/(11 × 102) = 5/11.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи число.",
+     "paperMeasure": "frac510"
+    },
+    {
+     "id": "p38-t110",
+     "title": "К задаче №153б",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 153,
+      "subpart": "б",
+      "reference": "№153б"
+     },
+     "kind": "number",
+     "prompt": "Сократи дробь (7,5 × 3,6 − 3,6 × 1,5)/(1,8 × 7,5 + 1,5 × 1,8).",
+     "answer": "4/3",
+     "steps": [
+      {
+       "prompt": "7,5 − 1,5 = ?",
+       "answer": "6",
+       "hint": "В числителе после вынесения 3,6 остаётся разность.",
+       "explanation": "7,5 − 1,5 = 6."
+      },
+      {
+       "prompt": "7,5 + 1,5 = ?",
+       "answer": "9",
+       "hint": "В знаменателе знак плюс сохраняется.",
+       "explanation": "7,5 + 1,5 = 9."
+      },
+      {
+       "prompt": "Отношение 3,6 к 1,8?",
+       "answer": "2",
+       "hint": "Раздели обе записи на 1,8.",
+       "explanation": "3,6/1,8 = 2."
+      }
+     ],
+     "hint": "Вынеси 3,6 за скобки сверху и 1,8 снизу. Не сокращай отдельные слагаемые по разные стороны дробной черты.",
+     "explanation": "Получается (3,6/1,8) × (6/9) = 2 × 2/3 = 4/3.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи число.",
+     "paperMeasure": "fracDecimal"
+    },
+    {
+     "id": "p38-t111",
+     "title": "К задаче №153в",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 153,
+      "subpart": "в",
+      "reference": "№153в"
+     },
+     "kind": "choice",
+     "prompt": "Сократи 40a²bc/(16ab²c) при ненулевом знаменателе.",
+     "answer": "5a/(2b)",
+     "steps": [
+      {
+       "prompt": "Чему равно 40/16 в простейшем виде?",
+       "answer": "5/2",
+       "hint": "Подели на 8.",
+       "explanation": "40/16 = 5/2."
+      },
+      {
+       "prompt": "Значение при a = 2, b = 5, c = 3?",
+       "answer": "1",
+       "hint": "После сокращения c исчезает, в числителе остаётся a, в знаменателе b.",
+       "explanation": "5 × 2/(2 × 5) = 1."
+      }
+     ],
+     "hint": "Вынеси 8abc, затем сократи.",
+     "explanation": "Остаётся 5a/(2b). Исходная запись требует a ≠ 0, b ≠ 0 и c ≠ 0.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери запись.",
+     "paperMeasure": "fracLetters",
+     "choices": [
+      "5a/(2b)",
+      "5/(2ab)",
+      "2b/(5a)"
+     ]
+    },
+    {
+     "id": "p38-t112",
+     "title": "К задаче №153г",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 153,
+      "subpart": "г",
+      "reference": "№153г"
+     },
+     "kind": "choice",
+     "prompt": "Сократи (mx + my)/(mxy) при допустимых значениях.",
+     "answer": "(x + y)/(xy)",
+     "steps": [
+      {
+       "prompt": "Какой числовой общий множитель виден в числителе при m = 6?",
+       "answer": "6",
+       "hint": "Оба слагаемых содержат m.",
+       "explanation": "mx + my = m(x + y)."
+      },
+      {
+       "prompt": "Значение при x = 2, y = 6?",
+       "answer": "2/3",
+       "hint": "После сокращения m останется (x + y)/(xy).",
+       "explanation": "(2 + 6)/(2 × 6) = 8/12 = 2/3."
+      }
+     ],
+     "hint": "Сократить можно общий множитель всей суммы и всего знаменателя.",
+     "explanation": "Получается (x + y)/(xy), что также равно 1/x + 1/y при ненулевых x и y.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери запись.",
+     "paperMeasure": "fracSum",
+     "choices": [
+      "(x + y)/(xy)",
+      "1",
+      "(x + y)/m"
+     ]
+    },
+    {
+     "id": "p38-t113",
+     "title": "К задаче №153д",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 153,
+      "subpart": "д",
+      "reference": "№153д"
+     },
+     "kind": "choice",
+     "prompt": "Сократи 2n³/(3n²), когда знаменатель ненулевой.",
+     "answer": "2n/3",
+     "steps": [
+      {
+       "prompt": "Какова разность показателей 3 и 2?",
+       "answer": "1",
+       "hint": "Сократи два множителя n сверху и снизу.",
+       "explanation": "3 − 2 = 1."
+      },
+      {
+       "prompt": "Значение при n = 6?",
+       "answer": "4",
+       "hint": "Подставь в 2n/3.",
+       "explanation": "12/3 = 4."
+      }
+     ],
+     "hint": "У обеих частей есть множитель n²; он ненулевой по условию.",
+     "explanation": "Получаем 2n/3 при n ≠ 0.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери запись.",
+     "paperMeasure": "fracPower",
+     "choices": [
+      "2n/3",
+      "2/3",
+      "2n²/3"
+     ]
+    },
+    {
+     "id": "p38-t114",
+     "title": "К задаче №154",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 154,
+      "subpart": "",
+      "reference": "№154"
+     },
+     "kind": "manual",
+     "prompt": "Пешеход вышел первым. Через четверть часа за ним выехал велосипедист со скоростью 14 км/ч и догнал через 6 мин после выезда. Пешеход дошёл до остановки за 42 мин. Определи скорость пешехода и разницу длительностей поездки и ходьбы до остановки.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько минут шёл пешеход до встречи?",
+       "answer": "21",
+       "hint": "Его путь начался на 15 минут раньше.",
+       "explanation": "15 + 6 = 21 минута."
+      },
+      {
+       "prompt": "Сколько километров проехал велосипедист до встречи?",
+       "answer": "7/5",
+       "hint": "6 минут = 1/10 ч.",
+       "explanation": "14 × 1/10 = 1,4 км."
+      },
+      {
+       "prompt": "Скорость пешехода, км/ч?",
+       "answer": "4",
+       "hint": "21 минута равна 7/20 ч. Пешеход дошёл до той же точки.",
+       "explanation": "(7/5)/(7/20) = 4."
+      },
+      {
+       "prompt": "Длительность поездки до остановки, мин?",
+       "answer": "12",
+       "hint": "Пешеход за 42 минуты прошёл 2,8 км. Велосипедист проходит это при 14 км/ч.",
+       "explanation": "2,8/14 = 0,2 часа = 12 минут."
+      },
+      {
+       "prompt": "Разность длительностей, мин?",
+       "answer": "30",
+       "hint": "Сравни время каждого в пути без ожидания старта.",
+       "explanation": "42 − 12 = 30 минут."
+      }
+     ],
+     "hint": "Различай время до встречи и время полного пути. На каждом отрезке начало отсчёта у участников разное.",
+     "explanation": "Пешеход идёт со скоростью 4 км/ч. До остановки он был в пути 42 минуты, велосипедист 12 минут. Велосипедист затратил на 30 минут меньше.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои вычисления.",
+     "paperMeasure": "cyclistLate"
+    },
+    {
+     "id": "p38-t115",
+     "title": "К задаче №155(a)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 155,
+      "subpart": "(a)",
+      "reference": "№155(a)"
+     },
+     "kind": "manual",
+     "prompt": "Измерь фигуру a на общей схеме. Запиши площадь и отношение большей стороны к меньшей. Для экранной проверки пользуйся шкалой в миллиметрах и округли стороны до 1 мм.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Большая сторона по шкале, мм?",
+       "answer": "30",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 30 и 30 мм. Площадь 900 мм², отношение 1."
+      },
+      {
+       "prompt": "Меньшая сторона по шкале, мм?",
+       "answer": "30",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 30 и 30 мм. Площадь 900 мм², отношение 1."
+      },
+      {
+       "prompt": "Площадь по округлённым размерам, мм²?",
+       "answer": "900",
+       "hint": "Умножь длины в миллиметрах: единица результата — мм².",
+       "explanation": "По шкале до целого миллиметра стороны 30 и 30 мм. Площадь 900 мм², отношение 1."
+      },
+      {
+       "prompt": "Отношение большей стороны к меньшей?",
+       "answer": "1",
+       "hint": "Раздели большую длину на меньшую, порядок сохраняется.",
+       "explanation": "По шкале до целого миллиметра стороны 30 и 30 мм. Площадь 900 мм², отношение 1."
+      }
+     ],
+     "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+     "explanation": "По шкале до целого миллиметра стороны 30 и 30 мм. Площадь 900 мм², отношение 1. При одинаковом периметре наибольшую площадь имеет квадрат. При растяжении отношение растёт, а площадь уменьшается. В исходном печатном рисунке d ширина около 43,8 мм: его периметр лишь близок к периметрам остальных.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои вычисления.",
+     "paperMeasure": "rectanglea",
+     "figure": {
+      "type": "p38-source-rectangles",
+      "focus": 0,
+      "caption": "Шесть контуров в одном масштабе. Выделен выбранный прямоугольник. Отсчёт по собственной шкале рисунка, независимо от размера экрана."
+     }
+    },
+    {
+     "id": "p38-t116",
+     "title": "К задаче №155(b)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 155,
+      "subpart": "(b)",
+      "reference": "№155(b)"
+     },
+     "kind": "manual",
+     "prompt": "Измерь фигуру b на общей схеме. Запиши площадь и отношение большей стороны к меньшей. Для экранной проверки пользуйся шкалой в миллиметрах и округли стороны до 1 мм.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Большая сторона по шкале, мм?",
+       "answer": "35",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 35 и 25 мм. Площадь 875 мм², отношение 7/5."
+      },
+      {
+       "prompt": "Меньшая сторона по шкале, мм?",
+       "answer": "25",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 35 и 25 мм. Площадь 875 мм², отношение 7/5."
+      },
+      {
+       "prompt": "Площадь по округлённым размерам, мм²?",
+       "answer": "875",
+       "hint": "Умножь длины в миллиметрах: единица результата — мм².",
+       "explanation": "По шкале до целого миллиметра стороны 35 и 25 мм. Площадь 875 мм², отношение 7/5."
+      },
+      {
+       "prompt": "Отношение большей стороны к меньшей?",
+       "answer": "7/5",
+       "hint": "Раздели большую длину на меньшую, порядок сохраняется.",
+       "explanation": "По шкале до целого миллиметра стороны 35 и 25 мм. Площадь 875 мм², отношение 7/5."
+      }
+     ],
+     "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+     "explanation": "По шкале до целого миллиметра стороны 35 и 25 мм. Площадь 875 мм², отношение 7/5. При одинаковом периметре наибольшую площадь имеет квадрат. При растяжении отношение растёт, а площадь уменьшается. В исходном печатном рисунке d ширина около 43,8 мм: его периметр лишь близок к периметрам остальных.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои вычисления.",
+     "paperMeasure": "rectangleb",
+     "figure": {
+      "type": "p38-source-rectangles",
+      "focus": 1,
+      "caption": "Шесть контуров в одном масштабе. Выделен выбранный прямоугольник. Отсчёт по собственной шкале рисунка, независимо от размера экрана."
+     }
+    },
+    {
+     "id": "p38-t117",
+     "title": "К задаче №155(c)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 155,
+      "subpart": "(c)",
+      "reference": "№155(c)"
+     },
+     "kind": "manual",
+     "prompt": "Измерь фигуру c на общей схеме. Запиши площадь и отношение большей стороны к меньшей. Для экранной проверки пользуйся шкалой в миллиметрах и округли стороны до 1 мм.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Большая сторона по шкале, мм?",
+       "answer": "40",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 40 и 20 мм. Площадь 800 мм², отношение 2."
+      },
+      {
+       "prompt": "Меньшая сторона по шкале, мм?",
+       "answer": "20",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 40 и 20 мм. Площадь 800 мм², отношение 2."
+      },
+      {
+       "prompt": "Площадь по округлённым размерам, мм²?",
+       "answer": "800",
+       "hint": "Умножь длины в миллиметрах: единица результата — мм².",
+       "explanation": "По шкале до целого миллиметра стороны 40 и 20 мм. Площадь 800 мм², отношение 2."
+      },
+      {
+       "prompt": "Отношение большей стороны к меньшей?",
+       "answer": "2",
+       "hint": "Раздели большую длину на меньшую, порядок сохраняется.",
+       "explanation": "По шкале до целого миллиметра стороны 40 и 20 мм. Площадь 800 мм², отношение 2."
+      }
+     ],
+     "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+     "explanation": "По шкале до целого миллиметра стороны 40 и 20 мм. Площадь 800 мм², отношение 2. При одинаковом периметре наибольшую площадь имеет квадрат. При растяжении отношение растёт, а площадь уменьшается. В исходном печатном рисунке d ширина около 43,8 мм: его периметр лишь близок к периметрам остальных.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои вычисления.",
+     "paperMeasure": "rectanglec",
+     "figure": {
+      "type": "p38-source-rectangles",
+      "focus": 2,
+      "caption": "Шесть контуров в одном масштабе. Выделен выбранный прямоугольник. Отсчёт по собственной шкале рисунка, независимо от размера экрана."
+     }
+    },
+    {
+     "id": "p38-t118",
+     "title": "К задаче №155(d)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 155,
+      "subpart": "(d)",
+      "reference": "№155(d)"
+     },
+     "kind": "manual",
+     "prompt": "Измерь фигуру d на общей схеме. Запиши площадь и отношение большей стороны к меньшей. Для экранной проверки пользуйся шкалой в миллиметрах и округли стороны до 1 мм.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Большая сторона по шкале, мм?",
+       "answer": "44",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 44 и 15 мм. Площадь 660 мм², отношение 44/15."
+      },
+      {
+       "prompt": "Меньшая сторона по шкале, мм?",
+       "answer": "15",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 44 и 15 мм. Площадь 660 мм², отношение 44/15."
+      },
+      {
+       "prompt": "Площадь по округлённым размерам, мм²?",
+       "answer": "660",
+       "hint": "Умножь длины в миллиметрах: единица результата — мм².",
+       "explanation": "По шкале до целого миллиметра стороны 44 и 15 мм. Площадь 660 мм², отношение 44/15."
+      },
+      {
+       "prompt": "Отношение большей стороны к меньшей?",
+       "answer": "44/15",
+       "hint": "Раздели большую длину на меньшую, порядок сохраняется.",
+       "explanation": "По шкале до целого миллиметра стороны 44 и 15 мм. Площадь 660 мм², отношение 44/15."
+      }
+     ],
+     "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+     "explanation": "По шкале до целого миллиметра стороны 44 и 15 мм. Площадь 660 мм², отношение 44/15. При одинаковом периметре наибольшую площадь имеет квадрат. При растяжении отношение растёт, а площадь уменьшается. В исходном печатном рисунке d ширина около 43,8 мм: его периметр лишь близок к периметрам остальных.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои вычисления.",
+     "paperMeasure": "rectangled",
+     "figure": {
+      "type": "p38-source-rectangles",
+      "focus": 3,
+      "caption": "Шесть контуров в одном масштабе. Выделен выбранный прямоугольник. Отсчёт по собственной шкале рисунка, независимо от размера экрана."
+     }
+    },
+    {
+     "id": "p38-t119",
+     "title": "К задаче №155(e)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 155,
+      "subpart": "(e)",
+      "reference": "№155(e)"
+     },
+     "kind": "manual",
+     "prompt": "Измерь фигуру e на общей схеме. Запиши площадь и отношение большей стороны к меньшей. Для экранной проверки пользуйся шкалой в миллиметрах и округли стороны до 1 мм.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Большая сторона по шкале, мм?",
+       "answer": "50",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 50 и 10 мм. Площадь 500 мм², отношение 5."
+      },
+      {
+       "prompt": "Меньшая сторона по шкале, мм?",
+       "answer": "10",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 50 и 10 мм. Площадь 500 мм², отношение 5."
+      },
+      {
+       "prompt": "Площадь по округлённым размерам, мм²?",
+       "answer": "500",
+       "hint": "Умножь длины в миллиметрах: единица результата — мм².",
+       "explanation": "По шкале до целого миллиметра стороны 50 и 10 мм. Площадь 500 мм², отношение 5."
+      },
+      {
+       "prompt": "Отношение большей стороны к меньшей?",
+       "answer": "5",
+       "hint": "Раздели большую длину на меньшую, порядок сохраняется.",
+       "explanation": "По шкале до целого миллиметра стороны 50 и 10 мм. Площадь 500 мм², отношение 5."
+      }
+     ],
+     "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+     "explanation": "По шкале до целого миллиметра стороны 50 и 10 мм. Площадь 500 мм², отношение 5. При одинаковом периметре наибольшую площадь имеет квадрат. При растяжении отношение растёт, а площадь уменьшается. В исходном печатном рисунке d ширина около 43,8 мм: его периметр лишь близок к периметрам остальных.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои вычисления.",
+     "paperMeasure": "rectanglee",
+     "figure": {
+      "type": "p38-source-rectangles",
+      "focus": 4,
+      "caption": "Шесть контуров в одном масштабе. Выделен выбранный прямоугольник. Отсчёт по собственной шкале рисунка, независимо от размера экрана."
+     }
+    },
+    {
+     "id": "p38-t120",
+     "title": "К задаче №155(f)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 155,
+      "subpart": "(f)",
+      "reference": "№155(f)"
+     },
+     "kind": "manual",
+     "prompt": "Измерь фигуру f на общей схеме. Запиши площадь и отношение большей стороны к меньшей. Для экранной проверки пользуйся шкалой в миллиметрах и округли стороны до 1 мм.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Большая сторона по шкале, мм?",
+       "answer": "55",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 55 и 5 мм. Площадь 275 мм², отношение 11."
+      },
+      {
+       "prompt": "Меньшая сторона по шкале, мм?",
+       "answer": "5",
+       "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+       "explanation": "По шкале до целого миллиметра стороны 55 и 5 мм. Площадь 275 мм², отношение 11."
+      },
+      {
+       "prompt": "Площадь по округлённым размерам, мм²?",
+       "answer": "275",
+       "hint": "Умножь длины в миллиметрах: единица результата — мм².",
+       "explanation": "По шкале до целого миллиметра стороны 55 и 5 мм. Площадь 275 мм², отношение 11."
+      },
+      {
+       "prompt": "Отношение большей стороны к меньшей?",
+       "answer": "11",
+       "hint": "Раздели большую длину на меньшую, порядок сохраняется.",
+       "explanation": "По шкале до целого миллиметра стороны 55 и 5 мм. Площадь 275 мм², отношение 11."
+      }
+     ],
+     "hint": "Сравнивай длины в одних единицах. По образцу на шкале округли измерения до 1 мм.",
+     "explanation": "По шкале до целого миллиметра стороны 55 и 5 мм. Площадь 275 мм², отношение 11. При одинаковом периметре наибольшую площадь имеет квадрат. При растяжении отношение растёт, а площадь уменьшается. В исходном печатном рисунке d ширина около 43,8 мм: его периметр лишь близок к периметрам остальных.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои вычисления.",
+     "paperMeasure": "rectanglef",
+     "figure": {
+      "type": "p38-source-rectangles",
+      "focus": 5,
+      "caption": "Шесть контуров в одном масштабе. Выделен выбранный прямоугольник. Отсчёт по собственной шкале рисунка, независимо от размера экрана."
+     }
+    },
+    {
+     "id": "p38-t121",
+     "title": "К задаче №156а",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 156,
+      "subpart": "а",
+      "reference": "№156а"
+     },
+     "kind": "number",
+     "prompt": "Вычисли a(a + x) − x(a − x) − (−a² + x²) для a = −0,6 и x = −{{mix:2:1:6}}. Упрости до подстановки.",
+     "answer": "18/25",
+     "steps": [
+      {
+       "prompt": "Каков коэффициент при ax после сложения?",
+       "answer": "0",
+       "hint": "Из первых двух произведений выходят ax и −ax.",
+       "explanation": "Слагаемые взаимно уничтожаются."
+      },
+      {
+       "prompt": "Коэффициент при a²?",
+       "answer": "2",
+       "hint": "Первая скобка даёт a². Отрицание (−a²) в последней даёт ещё a².",
+       "explanation": "a² + a² = 2a²."
+      },
+      {
+       "prompt": "Квадрат числа −0,6?",
+       "answer": "9/25",
+       "hint": "−0,6 = −3/5.",
+       "explanation": "(−3/5)² = 9/25."
+      }
+     ],
+     "hint": "Раскрой скобки со знаками. Проверь, остаётся ли что-нибудь с x.",
+     "explanation": "Остаётся 2a² = 2 × 9/25 = 18/25.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи число.",
+     "paperMeasure": "cancelSquareA",
+     "errorCues": [
+      [
+       "9/25",
+       "Это один квадрат a. В выражении их два."
+      ]
+     ]
+    },
+    {
+     "id": "p38-t122",
+     "title": "К задаче №156б",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 35,
+      "exercise": 156,
+      "subpart": "б",
+      "reference": "№156б"
+     },
+     "kind": "number",
+     "prompt": "Упрости −n(2n − 3k) − k(3n + 2k) + 3(n² − k²), затем подставь n = 1/2, k = 0,2.",
+     "answer": "1/20",
+     "steps": [
+      {
+       "prompt": "Коэффициент при nk после приведения подобных?",
+       "answer": "0",
+       "hint": "3nk − 3nk = 0.",
+       "explanation": "Смешанные члены равны по модулю и противоположны."
+      },
+      {
+       "prompt": "Коэффициент при k²?",
+       "answer": "-5",
+       "hint": "Из двух скобок выходят −2k² и −3k².",
+       "explanation": "Итого −5k²."
+      },
+      {
+       "prompt": "Чему равно 5k² при k = 0,2?",
+       "answer": "1/5",
+       "hint": "0,2 = 1/5, возведи в квадрат, затем умножь на 5.",
+       "explanation": "5 × 1/25 = 1/5."
+      }
+     ],
+     "hint": "Собери три вида членов: n², nk и k².",
+     "explanation": "Остаётся n² − 5k² = 1/4 − 1/5 = 1/20.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи число.",
+     "paperMeasure": "cancelSquareB",
+     "errorCues": [
+      [
+       "1/4",
+       "Это только n². Вычти пять квадратов k."
       ]
      ]
     }
