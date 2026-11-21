@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "efd8038a35aef01763bf22b2f7e2506463fbee1fd137552b5c94604184e5ba6b",
-      "afterSha256": "b23529a236d7b5ea32c032629b095f05cd6a258b3326f53bef960937de2dd94f",
+      "beforeSha256": "4fe0d0f00085396b444bcf8a43d63b6736a9063392739eb170c24b797960847e",
+      "afterSha256": "dfe4e6c30f56c23a563ff8ace0e0bd0405d9fcb6f5444ff8e675c1894bf1c871",
       "placement": "before-head-close",
-      "sourceSha": "7401675c26a1e92ebbd5c117bd2c5adfcd37a10d"
+      "sourceSha": "e3d9570491cc051d2bb7697ab9487969605ef681"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6786,6 +6786,15 @@
         "school/index.html"
       ],
       "boundary": "Сверены №5.33–5.34 Виленкина: сравнение грубой и более точной оценки, все четыре исходных уравнения и проверка подстановкой."
+    },
+    {
+      "previousBaseSha": "7401675c26a1e92ebbd5c117bd2c5adfcd37a10d",
+      "sourceBaseSha": "e3d9570491cc051d2bb7697ab9487969605ef681",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Добавлены печатные №5.35–5.36, часть 2, §25, с. 11: все возможные делители и независимый подсчёт объёмов четырёх фигур. Прочие страницы исходного издания не заявляются."
     }
   ],
   "coverageUpdates": [
