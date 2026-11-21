@@ -1304,6 +1304,31 @@ function percentStrips(before,after){
  }
  return fig;
 }
+function trialLeft(rule,x){
+ switch(rule){
+  case 'square':return x*x;
+  case 'square-plus-nine':return x*x+9;
+  case 'square-minus-25':return x*x-25;
+  case 'neighbors':return x*x*(x+1);
+  case 'even-fourth':return x**4+x*x;
+  case 'fifth-difference':return x**4*(x-1);
+ }
+ throw new Error('Неизвестная форма уравнения');
+}
+function nestedFractionFigure(){
+ const fraction=el('div','pcm-printed-fraction');
+ const top=el('div','pcm-fraction-numerator','10,2 : [18,5 − (5 ⅔ × 1,75 − 3 ⅔ × 1,75) : 2 ⅓]'),
+  bottom=el('div','pcm-fraction-denominator','80,64 : 1,6 − 3,4 : ⅙');
+ fraction.append(top,bottom);
+ return fraction;
+}
+function largeFractionTrail(fresh){
+ const M=root.PetersonMath,op=(kind,a,b)=>M.operation(kind,a,b),factor=fresh?'7/2':'7/4',top=fresh?'15.5':'10.2';
+ const brackets=op('multiply',op('subtract','17/3','11/3'),factor);
+ const divider=op('subtract','18.5',op('divide',brackets,'7/3'));
+ const numerator=op('divide',top,divider),denominator=op('subtract',op('divide','80.64','1.6'),op('divide','3.4','1/6'));
+ return [['Разность произведений',brackets],['После вычитания из 18,5',divider],['Большой числитель',numerator],['Большой знаменатель',denominator],['Большая дробь',op('divide',numerator,denominator)]];
+}
 function gardenScale(placement,gate){
  const pic=svg('svg',{viewBox:'0 0 242 173',role:'img',class:'pm-chart pcm-group-rule pcm-plan-garden','aria-label':placement===undefined?'Прямоугольный участок длиной 40 м и шириной 30 м.':'Участок, дом и ворота на длинной нижней стороне.'});
  const x=21,y=19,s=20.5,gardenW=8,gardenH=6,home=2;
@@ -1557,6 +1582,12 @@ function configFor(lesson,task){
  if(lesson?.id==='p34' && Object.hasOwn(trickInputs,task?.numberTrick)){const options=trickInputs[task.numberTrick];return {title:'Пройди арифметический фокус по действиям',controls:[c('Исходное число',options),c('Выполнено действий',range(0,numberTrail(task.numberTrick,0).length-1))],initial:[0,0]};}
  if(lesson?.id==='p34' && task?.coefficientStudy)return {title:'Где кончается степень?',controls:[c('Выражение',[[0,'Из упражнения'],[1,'Новый пример']]),c('Как проверить?',[[0,'Сначала решу'],[1,'Числовая часть'],[2,'Буквенная часть']])],initial:[0,0]};
  if(lesson?.id==='p34' && task?.coefficientContrast)return {title:'Один набор, разные признаки',controls:[c('Признак',[[0,'Нецелый коэффициент'],[1,'Только одна буква'],[2,'Два числовых множителя']]),c('Показ сравнения',[[0,'Сначала выберу сам'],[1,'Сверю свойство']])],initial:[0,0]};
+ if(lesson?.id==='p35' && task?.integerTrial)return {title:'Проверь число и его противоположное',controls:[c('Уравнение',[[0,'Исходное'],[1,'Другая правая часть']]),c('Пробное x',range(-6,6)),c('Сравнение',[[0,'Сначала вычислю'],[1,'Одна проба'],[2,'Соседние числа']])],initial:[0,0,0]};
+ if(lesson?.id==='p35' && task?.lunchStudy)return {title:'Собери стоимость четырёх блюд',controls:[c('Меню',[[0,'Из задачи'],[1,'Другие цены']]),c('Борщ, р.',[16,20,25,30,45]),c('Проверка',[[0,'Сначала вычислю'],[1,'Сверю стоимость']])],initial:[0,16,0]};
+ if(lesson?.id==='p35' && task?.reverseRateStudy)return {title:'От цены или массы к исходной величине',controls:[c('Данные',[[0,'Из задачи'],[1,'Новые числа']]),c('Что сравнить?',[[0,'Условие'],[1,'Основание процента'],[2,'Вычисление']])],initial:[0,0]};
+ if(lesson?.id==='p35' && task?.appleSaleStudy)return {title:'Две цены одной продажи',controls:[c('Выручка',[[0,'3360 р.'],[1,'3280 р.']]),c('По новой цене, кг',[0,60,80,100,120,140,180]),c('Проверка',[[0,'Сначала вычислю'],[1,'Сверю выручку']])],initial:[0,60,0]};
+ if(lesson?.id==='p35' && task?.fractionTreeStudy)return {title:'Собери большую дробь снизу вверх',controls:[c('Данные',[[0,'Из задания'],[1,'Новый числитель']]),c('Сколько результатов открыть',range(0,5))],initial:[0,0]};
+ if(lesson?.id==='p35' && task?.oldCoinStudy)return {title:'Сравни две стоимости в полушках',controls:[c('Левая часть',[[0,'25 яиц без полушки'],[1,'15 яиц без полушки']]),c('Полушек за яйцо',[[0,'1/10'],[1,'1/5'],[2,'3/10'],[3,'1/2']]),c('Проверка',[[0,'Сначала вычислю'],[1,'Сверю равенство']])],initial:[0,0,0]};
  if(lesson?.id==='p35' && Number.isInteger(task?.logicalIdentity))return {title:'Проверь квантор на выбранных числах',controls:[c('Пара a, b',[[0,'2 и 3'],[1,'−1 и 1/2'],[2,'0 и 0'],[3,'−2 и −1']]),c('Проверка',[[0,'Сначала предскажу'],[1,'Сравню']])],initial:[0,0]};
  if(lesson?.id==='p35' && task?.altitudeStudy){
   if(task.altitudeStudy==='picture')return {title:'Проверь оба признака высоты',controls:[c('Вопрос',[[0,'Из какой вершины?'],[1,'К какой прямой?'],[2,'Оба условия']])],initial:[0]};
@@ -1689,15 +1720,17 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
-function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
+function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.squareGridStudy && index<3)hiddenControl=3;
+  if((task.integerTrial||task.lunchStudy||task.appleSaleStudy||task.oldCoinStudy) && index<2)hiddenControl=2;
+  if((task.reverseRateStudy||task.fractionTreeStudy) && index===0)hiddenControl=1;
   if((Number.isInteger(task.logicalIdentity)||task.percentagePortion||task.percentageChange||task.percentNarrative||task.altitudeStudy&&task.altitudeStudy!=='picture') && index===0)hiddenControl=1;
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
@@ -1777,6 +1810,61 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   show(table(['Запись','Коэффициент'],rows));say('Выбранный признак: '+['нецелый коэффициент','одна различная буква','два отдельно записанных числовых множителя'][a]+'.');
   if(b===1)say('По этому признаку выделяется '+rows[focused][0]+'. Своё объяснение запиши в тетради.');
   stepList(['Сначала сформулируй точное свойство.','Сверь по нему каждую из пяти записей.','Испытай другой признак.']);
+ }
+ else
+ if(n===35 && task.integerTrial){
+  const caseData=task.integerTrial,target=a===0?caseData.right:caseData.fresh,mode=state.values[2];
+  say(a===0?caseData.printed:'Оставь ту же левую часть. Новая правая часть: '+num(target)+'.');
+  say('Проверяем x = '+num(b)+'.');
+  if(mode>0){
+   const probes=mode===1?[b]:[b-1,b,b+1];
+   show(table(['x','Левая часть'],probes.map(x=>[num(x),num(trialLeft(caseData.rule,x))])));
+   say(trialLeft(caseData.rule,b)===target?'Пробное число — корень. Проверь, могут ли подойти ещё числа.':'При выбранном числе равенства нет.');
+  }
+  stepList(['Назови знаки возможных значений левой части.','Подставь выбранное число точно.','Обоснуй полный набор корней, а не только проверенные примеры.']);
+ }
+ else if(n===35 && task.lunchStudy){
+  const [salad,discount]=a===0?[24,16]:[30,12],patty=1.6*b,drink=b-discount,total=salad+b+patty+drink;
+  say('Салат '+salad+' р. Компот на '+discount+' р. дешевле борща. Борщ должен составлять четверть стоимости обеда.');
+  if(state.values[2]===1){show(table(['Блюдо','Цена, р.'],[['Салат',salad],['Борщ',b],['Котлеты',num(patty)],['Компот',num(drink)]]));say('Сумма '+num(total)+' р. По условию она должна равняться 4 × '+b+' = '+4*b+' р.');say(Math.abs(total-4*b)<1e-8?'Все условия выполнены.':'Проверь другую цену борща.');}
+  stepList(['Вырази каждое блюдо через борщ.','Сложи четыре цены.','Проверь, ровно ли четверть составляет борщ.']);
+ }
+ else if(n===35 && task.reverseRateStudy){
+  const kind=task.reverseRateStudy;
+  if(kind==='dry'){
+   const dry=a===0?27:18;say('Высушено '+dry+' кг; при сушке ушло 64% исходной массы.');
+   if(b>=1)say('Сушёные плоды составляют 36% исходной массы.');if(b===2)say('Свежих нужно '+dry+' : 0,36 = '+num(dry/.36)+' кг.');
+  }else if(kind==='loss'){
+   const sale=a===0?5100:8500;say('Выручено '+sale+' р., убыток — 15% себестоимости.');
+   if(b>=1)say('Себестоимость равна 100%, выручка составляет 85%.');if(b===2)say('Себестоимость '+sale+' : 0,85 = '+num(sale/.85)+' р.');
+  }else{
+   const [old,now]=a===0?[96,120]:[80,104];say('До повышения '+old+' р.; после повышения '+now+' р.');
+   if(b>=1)say('За 100% берём прежние '+old+' р.');if(b===2)say('Рост цены '+(now-old)+' : '+old+' × 100 = '+num(100*(now-old)/old)+'%.');
+  }
+  stepList(['Подпиши, что означает 100%.','Отличай известную часть от полной величины.','Сделай обратную проверку в денежных единицах или килограммах.']);
+ }
+ else if(n===35 && task.appleSaleStudy){
+  const revenue=a===0?3360:3280,cheap=180-b,received=cheap*16+b*20;
+  show(table(['Партия','Масса и цена'],[['Первая',cheap+' кг по 16 р.'],['Вторая',b+' кг по 20 р.']]));
+  if(state.values[2]===1){say('Выручка '+num(received)+' р., в условии '+revenue+' р.');if(received===revenue)formula('Подходящая доля: '+root.PetersonMath.answer(root.PetersonMath.operation('divide',b,180))+'.');else say('Измени число килограммов, проданных по новой цене.');}
+  stepList(['Общее количество товара сохраняется.','Вычисли выручку от каждой части и сложи.','Массу дорогой части сравни со всеми 180 кг.']);
+ }
+ else if(n===35 && task.fractionTreeStudy){
+  const trail=largeFractionTrail(a===1),M=root.PetersonMath;
+  say(a===0?'Во внутренней скобке множитель 1,75; снаружи числитель начинается с 10,2.':'Во внутренней скобке вместо 1,75 возьми 3,5. Вместо начального 10,2 возьми 15,5. Остальные числа прежние.');
+  show(table(['Что вычислено','Значение'],trail.map(([label,v],i)=>[label,i<b?M.answer(v):'…'])));
+  stepList(['Собери вложенные скобки отдельно.','Вычисли числитель и знаменатель большой дроби.','Последнее действие — деление большой дроби.']);
+ }
+ else if(n===35 && task.oldCoinStudy){
+  const M=root.PetersonMath,eggs=a===0?25:15,price=['1/10','1/5','3/10','1/2'][b];
+  say('Один десяток — 10 яиц. Проверяем цену '+price+' полушки за яйцо.');
+  if(state.values[2]===1){
+   const left=M.operation('subtract',M.operation('multiply',eggs,price),1),right=M.operation('subtract',5,M.operation('multiply',5,price));
+   show(table(['Что сравнили','В полушках'],[[eggs+' яиц без полушки',M.answer(left)],['5 полушек без 5 яиц',M.answer(right)]]));
+   if(M.equal(left,right)){const cost=M.operation('multiply',10,price);say('Равенство верно. Десяток стоит '+M.answer(cost)+' полушки, то есть '+M.answer(M.operation('divide',cost,4))+' копейки.');}
+   else say('Группы имеют разную стоимость. Измени цену одного яйца.');
+  }
+  stepList(['Переведи обе словесные части в одну единицу денег.','Найди цену яйца и цену десятка в полушках.','Только после этого переведи полушки в копейки.']);
  }
  else
  if(n===35 && Number.isInteger(task.logicalIdentity)){
@@ -45292,9 +45380,1387 @@ window.PetersonCourse = {
       "k/0,3",
       "2,5k"
      ]
+    },
+    {
+     "id": "p35-t76",
+     "title": "К задаче №59а",
+     "kind": "choice",
+     "prompt": "Найди все действительные решения уравнения x² = 4. Используй подстановки и объясни, почему других ответов нет.",
+     "answer": "−2 и 2",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Составь таблицу пробных чисел и значений левой части.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Оба противоположных числа имеют один квадрат. Других чисел с модулем 2 нет."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни, как знак или рост выражения ограничивает оставшиеся числа.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Оба противоположных числа имеют один квадрат. Других чисел с модулем 2 нет."
+      }
+     ],
+     "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+     "explanation": "Оба противоположных числа имеют один квадрат. Других чисел с модулем 2 нет.",
+     "skills": [
+      "signed-multiply",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 59,
+      "reference": "№59а",
+      "subpart": "а"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "integerTrial": {
+      "printed": "x² = 4",
+      "rule": "square",
+      "right": 4,
+      "fresh": 9
+     },
+     "errorCues": [
+      [
+       "Только 2",
+       "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный."
+      ],
+      [
+       "Нет решений",
+       "Подставь предложенные числа и проверь, не потерян ли другой знак."
+      ]
+     ],
+     "choices": [
+      "−2 и 2",
+      "Только 2",
+      "Нет решений"
+     ]
+    },
+    {
+     "id": "p35-t77",
+     "title": "К задаче №59б",
+     "kind": "choice",
+     "prompt": "Найди все действительные решения уравнения x² = −1. Используй подстановки и объясни, почему других ответов нет.",
+     "answer": "Нет решений",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Составь таблицу пробных чисел и значений левой части.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Квадрат действительного числа неотрицателен. Поэтому −1 не может быть квадратом."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни, как знак или рост выражения ограничивает оставшиеся числа.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Квадрат действительного числа неотрицателен. Поэтому −1 не может быть квадратом."
+      }
+     ],
+     "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+     "explanation": "Квадрат действительного числа неотрицателен. Поэтому −1 не может быть квадратом.",
+     "skills": [
+      "signed-multiply",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 59,
+      "reference": "№59б",
+      "subpart": "б"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "integerTrial": {
+      "printed": "x² = −1",
+      "rule": "square",
+      "right": -1,
+      "fresh": 0
+     },
+     "errorCues": [
+      [
+       "Только −1",
+       "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный."
+      ],
+      [
+       "−1 и 1",
+       "Подставь предложенные числа и проверь, не потерян ли другой знак."
+      ]
+     ],
+     "choices": [
+      "Только −1",
+      "Нет решений",
+      "−1 и 1"
+     ]
+    },
+    {
+     "id": "p35-t78",
+     "title": "К задаче №59в",
+     "kind": "choice",
+     "prompt": "Найди все действительные решения уравнения x² + 9 = 0. Используй подстановки и объясни, почему других ответов нет.",
+     "answer": "Нет решений",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Составь таблицу пробных чисел и значений левой части.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "При любом действительном x выражение x² + 9 не меньше 9. Оно не может равняться нулю."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни, как знак или рост выражения ограничивает оставшиеся числа.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "При любом действительном x выражение x² + 9 не меньше 9. Оно не может равняться нулю."
+      }
+     ],
+     "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+     "explanation": "При любом действительном x выражение x² + 9 не меньше 9. Оно не может равняться нулю.",
+     "skills": [
+      "signed-multiply",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 59,
+      "reference": "№59в",
+      "subpart": "в"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "integerTrial": {
+      "printed": "x² + 9 = 0",
+      "rule": "square-plus-nine",
+      "right": 0,
+      "fresh": 9
+     },
+     "errorCues": [
+      [
+       "−3 и 3",
+       "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный."
+      ],
+      [
+       "Только 0",
+       "Подставь предложенные числа и проверь, не потерян ли другой знак."
+      ]
+     ],
+     "choices": [
+      "−3 и 3",
+      "Только 0",
+      "Нет решений"
+     ]
+    },
+    {
+     "id": "p35-t79",
+     "title": "К задаче №59г",
+     "kind": "choice",
+     "prompt": "Найди все действительные решения уравнения x² − 25 = 0. Используй подстановки и объясни, почему других ответов нет.",
+     "answer": "−5 и 5",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Составь таблицу пробных чисел и значений левой части.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Перенос даёт x² = 25. Оба подходящих числа имеют модуль 5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни, как знак или рост выражения ограничивает оставшиеся числа.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Перенос даёт x² = 25. Оба подходящих числа имеют модуль 5."
+      }
+     ],
+     "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+     "explanation": "Перенос даёт x² = 25. Оба подходящих числа имеют модуль 5.",
+     "skills": [
+      "signed-multiply",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 59,
+      "reference": "№59г",
+      "subpart": "г"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "integerTrial": {
+      "printed": "x² − 25 = 0",
+      "rule": "square-minus-25",
+      "right": 0,
+      "fresh": -9
+     },
+     "errorCues": [
+      [
+       "Только 5",
+       "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный."
+      ],
+      [
+       "Нет решений",
+       "Подставь предложенные числа и проверь, не потерян ли другой знак."
+      ]
+     ],
+     "choices": [
+      "−5 и 5",
+      "Только 5",
+      "Нет решений"
+     ]
+    },
+    {
+     "id": "p35-t80",
+     "title": "К задаче №67а",
+     "kind": "choice",
+     "prompt": "Найди все целые корни уравнения x²(x + 1) = 80. Используй подстановки и объясни, почему других ответов нет.",
+     "answer": "Только 4",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Составь таблицу пробных чисел и значений левой части.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "При целом x ≤ −1 произведение неположительно, при x = 0 равно 0. Для положительных целых оба множителя растут. Между 3 (36) и 4 (80) других целых нет, дальше значения больше."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни, как знак или рост выражения ограничивает оставшиеся числа.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "При целом x ≤ −1 произведение неположительно, при x = 0 равно 0. Для положительных целых оба множителя растут. Между 3 (36) и 4 (80) других целых нет, дальше значения больше."
+      }
+     ],
+     "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+     "explanation": "При целом x ≤ −1 произведение неположительно, при x = 0 равно 0. Для положительных целых оба множителя растут. Между 3 (36) и 4 (80) других целых нет, дальше значения больше.",
+     "skills": [
+      "signed-multiply",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 67,
+      "reference": "№67а",
+      "subpart": "а"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "integerTrial": {
+      "printed": "x²(x + 1) = 80",
+      "rule": "neighbors",
+      "right": 80,
+      "fresh": 36
+     },
+     "errorCues": [
+      [
+       "−4 и 4",
+       "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный."
+      ],
+      [
+       "Только −4",
+       "Подставь предложенные числа и проверь, не потерян ли другой знак."
+      ]
+     ],
+     "choices": [
+      "−4 и 4",
+      "Только 4",
+      "Только −4"
+     ]
+    },
+    {
+     "id": "p35-t81",
+     "title": "К задаче №67б",
+     "kind": "choice",
+     "prompt": "Найди все целые корни уравнения x⁴ + x² = 20. Используй подстановки и объясни, почему других ответов нет.",
+     "answer": "−2 и 2",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Составь таблицу пробных чисел и значений левой части.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Положи u = x². Тогда u(u + 1) = 20, причём u ≥ 0. Соседние целые 4 и 5 дают 20, произведение возрастает с u. Значит u = 4 и x = ±2."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни, как знак или рост выражения ограничивает оставшиеся числа.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Положи u = x². Тогда u(u + 1) = 20, причём u ≥ 0. Соседние целые 4 и 5 дают 20, произведение возрастает с u. Значит u = 4 и x = ±2."
+      }
+     ],
+     "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+     "explanation": "Положи u = x². Тогда u(u + 1) = 20, причём u ≥ 0. Соседние целые 4 и 5 дают 20, произведение возрастает с u. Значит u = 4 и x = ±2.",
+     "skills": [
+      "signed-multiply",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 67,
+      "reference": "№67б",
+      "subpart": "б"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "integerTrial": {
+      "printed": "x⁴ + x² = 20",
+      "rule": "even-fourth",
+      "right": 20,
+      "fresh": 90
+     },
+     "errorCues": [
+      [
+       "Только 2",
+       "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный."
+      ],
+      [
+       "Только 4",
+       "Подставь предложенные числа и проверь, не потерян ли другой знак."
+      ]
+     ],
+     "choices": [
+      "Только 2",
+      "Только 4",
+      "−2 и 2"
+     ]
+    },
+    {
+     "id": "p35-t82",
+     "title": "К задаче №67в",
+     "kind": "choice",
+     "prompt": "Найди все целые корни уравнения x⁵ − x⁴ = 162. Используй подстановки и объясни, почему других ответов нет.",
+     "answer": "Только 3",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Составь таблицу пробных чисел и значений левой части.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Вынеси x⁴: x⁴(x − 1). При x ≤ 1 результат неположителен. Для целых x ≥ 2 произведение растёт. В точке 2 значение 16, в точке 3 оно равно 162."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни, как знак или рост выражения ограничивает оставшиеся числа.",
+       "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+       "explanation": "Вынеси x⁴: x⁴(x − 1). При x ≤ 1 результат неположителен. Для целых x ≥ 2 произведение растёт. В точке 2 значение 16, в точке 3 оно равно 162."
+      }
+     ],
+     "hint": "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный.",
+     "explanation": "Вынеси x⁴: x⁴(x − 1). При x ≤ 1 результат неположителен. Для целых x ≥ 2 произведение растёт. В точке 2 значение 16, в точке 3 оно равно 162.",
+     "skills": [
+      "signed-multiply",
+      "linear-equation"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 67,
+      "reference": "№67в",
+      "subpart": "в"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "integerTrial": {
+      "printed": "x⁵ − x⁴ = 162",
+      "rule": "fifth-difference",
+      "right": 162,
+      "fresh": 16
+     },
+     "errorCues": [
+      [
+       "−3 и 3",
+       "Проверь знак выражения и отдельно положительные и отрицательные кандидаты. Подтверди, что список решений полный."
+      ],
+      [
+       "Только −3",
+       "Подставь предложенные числа и проверь, не потерян ли другой знак."
+      ]
+     ],
+     "choices": [
+      "Только 3",
+      "−3 и 3",
+      "Только −3"
+     ]
+    },
+    {
+     "id": "p35-t83",
+     "title": "К задаче №60",
+     "kind": "number",
+     "prompt": "Салат стоит 24 р., борщ составляет четверть цены обеда. Котлеты на 60% дороже борща, компот на 16 р. дешевле борща. Сколько стоит обед из этих четырёх блюд?",
+     "answer": "80",
+     "steps": [
+      {
+       "prompt": "Во сколько раз обед дороже борща?",
+       "answer": "4",
+       "hint": "Удобно обозначить цену борща буквой s. Тогда весь обед стоит 4s, котлеты — 1,6s, а компот — s − 16.",
+       "explanation": "4s = 24 + s + 1,6s + s − 16 = 8 + 3,6s. Значит 0,4s = 8 и борщ стоит 20 р. Котлеты стоят 32 р., компот 4 р. Весь обед: 24 + 20 + 32 + 4 = 80 р."
+      },
+      {
+       "prompt": "Цена борща, р.?",
+       "answer": "20",
+       "hint": "Удобно обозначить цену борща буквой s. Тогда весь обед стоит 4s, котлеты — 1,6s, а компот — s − 16.",
+       "explanation": "4s = 24 + s + 1,6s + s − 16 = 8 + 3,6s. Значит 0,4s = 8 и борщ стоит 20 р. Котлеты стоят 32 р., компот 4 р. Весь обед: 24 + 20 + 32 + 4 = 80 р."
+      },
+      {
+       "prompt": "Сколько стоят котлеты, р.?",
+       "answer": "32",
+       "hint": "Удобно обозначить цену борща буквой s. Тогда весь обед стоит 4s, котлеты — 1,6s, а компот — s − 16.",
+       "explanation": "4s = 24 + s + 1,6s + s − 16 = 8 + 3,6s. Значит 0,4s = 8 и борщ стоит 20 р. Котлеты стоят 32 р., компот 4 р. Весь обед: 24 + 20 + 32 + 4 = 80 р."
+      },
+      {
+       "prompt": "Сколько стоит компот, р.?",
+       "answer": "4",
+       "hint": "Удобно обозначить цену борща буквой s. Тогда весь обед стоит 4s, котлеты — 1,6s, а компот — s − 16.",
+       "explanation": "4s = 24 + s + 1,6s + s − 16 = 8 + 3,6s. Значит 0,4s = 8 и борщ стоит 20 р. Котлеты стоят 32 р., компот 4 р. Весь обед: 24 + 20 + 32 + 4 = 80 р."
+      }
+     ],
+     "hint": "Удобно обозначить цену борща буквой s. Тогда весь обед стоит 4s, котлеты — 1,6s, а компот — s − 16.",
+     "explanation": "4s = 24 + s + 1,6s + s − 16 = 8 + 3,6s. Значит 0,4s = 8 и борщ стоит 20 р. Котлеты стоят 32 р., компот 4 р. Весь обед: 24 + 20 + 32 + 4 = 80 р.",
+     "skills": [
+      "linear-equation",
+      "percent-part"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 60,
+      "reference": "№60"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "lunchStudy": true,
+     "errorCues": [
+      [
+       "20",
+       "Это цена борща, то есть четверть всего обеда."
+      ],
+      [
+       "32",
+       "Это только котлеты. В обеде четыре блюда."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t84",
+     "title": "К задаче №61а",
+     "kind": "number",
+     "prompt": "Вычисли 2a − 9b + 7a + b + 5b − 8a при a = 2,5, b = 1/4. Сначала приведи подобные слагаемые.",
+     "answer": "7/4",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы a?",
+       "answer": "1",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт a − 3b."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы b?",
+       "answer": "-3",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт a − 3b."
+      }
+     ],
+     "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+     "explanation": "Суммирование числовых коэффициентов даёт a − 3b. После подстановки получается 7/4.",
+     "skills": [
+      "signed-add",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 61,
+      "reference": "№61а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "likeTermsStudy": {
+      "printed": "2a − 9b + 7a + b + 5b − 8a",
+      "groups": [
+       [
+        "a",
+        [
+         "2",
+         "7",
+         "-8"
+        ]
+       ],
+       [
+        "b",
+        [
+         "-9",
+         "1",
+         "5"
+        ]
+       ]
+      ],
+      "substitutions": [
+       {
+        "a": "2.5",
+        "b": "1/4"
+       },
+       {
+        "a": "4",
+        "b": "1/2"
+       }
+      ]
+     },
+     "errorCues": [
+      [
+       "-7/4",
+       "Проверь знак каждого коэффициента. Если есть квадрат отрицательного числа, сначала вычисли квадрат."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t85",
+     "title": "К задаче №61б",
+     "kind": "number",
+     "prompt": "Вычисли 8x + 3 − 9x − 7 + 5 − x при x = −0,3. Сначала приведи подобные слагаемые.",
+     "answer": "8/5",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы x?",
+       "answer": "-2",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт −2x + 1."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы без букв?",
+       "answer": "1",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт −2x + 1."
+      }
+     ],
+     "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+     "explanation": "Суммирование числовых коэффициентов даёт −2x + 1. После подстановки получается 8/5.",
+     "skills": [
+      "signed-add",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 61,
+      "reference": "№61б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "likeTermsStudy": {
+      "printed": "8x + 3 − 9x − 7 + 5 − x",
+      "groups": [
+       [
+        "x",
+        [
+         "8",
+         "-9",
+         "-1"
+        ]
+       ],
+       [
+        "1",
+        [
+         "3",
+         "-7",
+         "5"
+        ]
+       ]
+      ],
+      "substitutions": [
+       {
+        "x": "-.3"
+       },
+       {
+        "x": "1.5"
+       }
+      ]
+     },
+     "errorCues": [
+      [
+       "-8/5",
+       "Проверь знак каждого коэффициента. Если есть квадрат отрицательного числа, сначала вычисли квадрат."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t86",
+     "title": "К задаче №61в",
+     "kind": "number",
+     "prompt": "Вычисли −m² + 2m − 4 − 3m − 6 + 2m² + m при m = -5. Сначала приведи подобные слагаемые.",
+     "answer": "15",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы m²?",
+       "answer": "1",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт m² − 10."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы m?",
+       "answer": "0",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт m² − 10."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы без букв?",
+       "answer": "-10",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт m² − 10."
+      }
+     ],
+     "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+     "explanation": "Суммирование числовых коэффициентов даёт m² − 10. После подстановки получается 15.",
+     "skills": [
+      "signed-add",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 61,
+      "reference": "№61в",
+      "subpart": "в"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "likeTermsStudy": {
+      "printed": "−m² + 2m − 4 − 3m − 6 + 2m² + m",
+      "groups": [
+       [
+        "m²",
+        [
+         "-1",
+         "2"
+        ]
+       ],
+       [
+        "m",
+        [
+         "2",
+         "-3",
+         "1"
+        ]
+       ],
+       [
+        "1",
+        [
+         "-4",
+         "-6"
+        ]
+       ]
+      ],
+      "substitutions": [
+       {
+        "m": "-5"
+       },
+       {
+        "m": "-4"
+       }
+      ]
+     },
+     "errorCues": [
+      [
+       "-15",
+       "Проверь знак каждого коэффициента. Если есть квадрат отрицательного числа, сначала вычисли квадрат."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t87",
+     "title": "К задаче №62а",
+     "kind": "choice",
+     "prompt": "Раскрой скобки и собери подобные слагаемые в −3(a + b) + 2(a − b).",
+     "answer": "−a − 5b",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы a?",
+       "answer": "-1",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт −a − 5b."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы b?",
+       "answer": "-5",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт −a − 5b."
+      }
+     ],
+     "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+     "explanation": "Суммирование числовых коэффициентов даёт −a − 5b.",
+     "skills": [
+      "bracket-evaluate",
+      "signed-add"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 62,
+      "reference": "№62а",
+      "subpart": "а"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "likeTermsStudy": {
+      "printed": "−3(a + b) + 2(a − b)",
+      "groups": [
+       [
+        "a",
+        [
+         "-3",
+         "2"
+        ]
+       ],
+       [
+        "b",
+        [
+         "-3",
+         "-2"
+        ]
+       ]
+      ]
+     },
+     "errorCues": [
+      [
+       "−5a − b",
+       "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью."
+      ],
+      [
+       "−a + b",
+       "Проверь каждый член при умножении на внешний множитель."
+      ]
+     ],
+     "choices": [
+      "−5a − b",
+      "−a + b",
+      "−a − 5b"
+     ]
+    },
+    {
+     "id": "p35-t88",
+     "title": "К задаче №62б",
+     "kind": "choice",
+     "prompt": "Раскрой скобки и собери подобные слагаемые в 2(m − 4n) − 4(m − 2n).",
+     "answer": "−2m",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы m?",
+       "answer": "-2",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт −2m."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы n?",
+       "answer": "0",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт −2m."
+      }
+     ],
+     "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+     "explanation": "Суммирование числовых коэффициентов даёт −2m.",
+     "skills": [
+      "bracket-evaluate",
+      "signed-add"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 62,
+      "reference": "№62б",
+      "subpart": "б"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "likeTermsStudy": {
+      "printed": "2(m − 4n) − 4(m − 2n)",
+      "groups": [
+       [
+        "m",
+        [
+         "2",
+         "-4"
+        ]
+       ],
+       [
+        "n",
+        [
+         "-8",
+         "8"
+        ]
+       ]
+      ]
+     },
+     "errorCues": [
+      [
+       "−2m − 16n",
+       "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью."
+      ],
+      [
+       "6m",
+       "Проверь каждый член при умножении на внешний множитель."
+      ]
+     ],
+     "choices": [
+      "−2m",
+      "−2m − 16n",
+      "6m"
+     ]
+    },
+    {
+     "id": "p35-t89",
+     "title": "К задаче №62в",
+     "kind": "choice",
+     "prompt": "Раскрой скобки и собери подобные слагаемые в 5(x − 5) − 3(2x − 9).",
+     "answer": "2 − x",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы x?",
+       "answer": "-1",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт 2 − x."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы без букв?",
+       "answer": "2",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт 2 − x."
+      }
+     ],
+     "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+     "explanation": "Суммирование числовых коэффициентов даёт 2 − x.",
+     "skills": [
+      "bracket-evaluate",
+      "signed-add"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 62,
+      "reference": "№62в",
+      "subpart": "в"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "likeTermsStudy": {
+      "printed": "5(x − 5) − 3(2x − 9)",
+      "groups": [
+       [
+        "x",
+        [
+         "5",
+         "-6"
+        ]
+       ],
+       [
+        "1",
+        [
+         "-25",
+         "27"
+        ]
+       ]
+      ]
+     },
+     "errorCues": [
+      [
+       "−x − 52",
+       "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью."
+      ],
+      [
+       "11x + 2",
+       "Проверь каждый член при умножении на внешний множитель."
+      ]
+     ],
+     "choices": [
+      "−x − 52",
+      "2 − x",
+      "11x + 2"
+     ]
+    },
+    {
+     "id": "p35-t90",
+     "title": "К задаче №62г",
+     "kind": "choice",
+     "prompt": "Раскрой скобки и собери подобные слагаемые в 2y² − y(y − 3) + y(2 − y).",
+     "answer": "5y",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы y²?",
+       "answer": "0",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт 5y."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы y?",
+       "answer": "5",
+       "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+       "explanation": "Суммирование числовых коэффициентов даёт 5y."
+      }
+     ],
+     "hint": "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью.",
+     "explanation": "Суммирование числовых коэффициентов даёт 5y.",
+     "skills": [
+      "bracket-evaluate",
+      "signed-add"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 62,
+      "reference": "№62г",
+      "subpart": "г"
+     },
+     "finalLabel": "Выбери полный ответ.",
+     "likeTermsStudy": {
+      "printed": "2y² − y(y − 3) + y(2 − y)",
+      "groups": [
+       [
+        "y²",
+        [
+         "2",
+         "-1",
+         "-1"
+        ]
+       ],
+       [
+        "y",
+        [
+         "3",
+         "2"
+        ]
+       ]
+      ]
+     },
+     "errorCues": [
+      [
+       "5y²",
+       "Раскрой все скобки до подстановки и сохрани каждый знак. В группу входят только слагаемые с одной и той же буквенной частью."
+      ],
+      [
+       "2y² − y",
+       "Проверь каждый член при умножении на внешний множитель."
+      ]
+     ],
+     "choices": [
+      "5y²",
+      "2y² − y",
+      "5y"
+     ]
+    },
+    {
+     "id": "p35-t91",
+     "title": "К задаче №63а",
+     "kind": "number",
+     "prompt": "Реши −2(x − 9) + 5(x − 4) = 25 и проверь подстановкой.",
+     "answer": "9",
+     "steps": [
+      {
+       "prompt": "Коэффициент перед неизвестным после упрощения?",
+       "answer": "3",
+       "hint": "Не пропускай знак перед второй скобкой. После упрощения переведи свободное число на другую сторону.",
+       "explanation": "Левая часть превращается в (3) × x + (-2). Поэтому (3) × x = 27; корень 9."
+      },
+      {
+       "prompt": "Свободное число слева?",
+       "answer": "-2",
+       "hint": "Не пропускай знак перед второй скобкой. После упрощения переведи свободное число на другую сторону.",
+       "explanation": "Левая часть превращается в (3) × x + (-2). Поэтому (3) × x = 27; корень 9."
+      },
+      {
+       "prompt": "Новое число справа после переноса?",
+       "answer": "27",
+       "hint": "Не пропускай знак перед второй скобкой. После упрощения переведи свободное число на другую сторону.",
+       "explanation": "Левая часть превращается в (3) × x + (-2). Поэтому (3) × x = 27; корень 9."
+      }
+     ],
+     "hint": "Не пропускай знак перед второй скобкой. После упрощения переведи свободное число на другую сторону.",
+     "explanation": "Левая часть превращается в (3) × x + (-2). Поэтому (3) × x = 27; корень 9.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 63,
+      "reference": "№63а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "collectedEquation": {
+      "printed": "−2(x − 9) + 5(x − 4) = 25",
+      "variable": "x",
+      "factor": "3",
+      "constant": "-2",
+      "right": "25",
+      "solution": "9"
+     },
+     "errorCues": [
+      [
+       "-9",
+       "Проверь знак в делении и подставь свой ответ в обе части."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t92",
+     "title": "К задаче №63б",
+     "kind": "number",
+     "prompt": "Реши 4(5 − n) − 3(2n + 7) = 0 и проверь подстановкой.",
+     "answer": "-1/10",
+     "steps": [
+      {
+       "prompt": "Коэффициент перед неизвестным после упрощения?",
+       "answer": "-10",
+       "hint": "Не пропускай знак перед второй скобкой. После упрощения переведи свободное число на другую сторону.",
+       "explanation": "Левая часть превращается в (-10) × n + (-1). Поэтому (-10) × n = 1; корень -1/10."
+      },
+      {
+       "prompt": "Свободное число слева?",
+       "answer": "-1",
+       "hint": "Не пропускай знак перед второй скобкой. После упрощения переведи свободное число на другую сторону.",
+       "explanation": "Левая часть превращается в (-10) × n + (-1). Поэтому (-10) × n = 1; корень -1/10."
+      },
+      {
+       "prompt": "Новое число справа после переноса?",
+       "answer": "1",
+       "hint": "Не пропускай знак перед второй скобкой. После упрощения переведи свободное число на другую сторону.",
+       "explanation": "Левая часть превращается в (-10) × n + (-1). Поэтому (-10) × n = 1; корень -1/10."
+      }
+     ],
+     "hint": "Не пропускай знак перед второй скобкой. После упрощения переведи свободное число на другую сторону.",
+     "explanation": "Левая часть превращается в (-10) × n + (-1). Поэтому (-10) × n = 1; корень -1/10.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 63,
+      "reference": "№63б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "collectedEquation": {
+      "printed": "4(5 − n) − 3(2n + 7) = 0",
+      "variable": "n",
+      "factor": "-10",
+      "constant": "-1",
+      "right": "0",
+      "solution": "-1/10"
+     },
+     "errorCues": [
+      [
+       "1/10",
+       "Проверь знак в делении и подставь свой ответ в обе части."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t93",
+     "title": "К задаче №64а",
+     "kind": "number",
+     "prompt": "При сушке теряется 64% массы свежих плодов. Сколько кг свежих плодов нужно для 27 кг сушёных?",
+     "answer": "75",
+     "steps": [
+      {
+       "prompt": "Сколько процентов остаётся?",
+       "answer": "36",
+       "hint": "После сушки остаётся 36% исходной массы.",
+       "explanation": "0,36m = 27, поэтому m = 27/0,36 = 75 кг."
+      },
+      {
+       "prompt": "Сколько кг свежих плодов требуется?",
+       "answer": "75",
+       "hint": "После сушки остаётся 36% исходной массы.",
+       "explanation": "0,36m = 27, поэтому m = 27/0,36 = 75 кг."
+      }
+     ],
+     "hint": "После сушки остаётся 36% исходной массы.",
+     "explanation": "0,36m = 27, поэтому m = 27/0,36 = 75 кг.",
+     "skills": [
+      "percent-ratio",
+      "percent-part"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 64,
+      "reference": "№64а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reverseRateStudy": "dry",
+     "errorCues": [
+      [
+       "9,72",
+       "После сушки остаётся 36% исходной массы."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t94",
+     "title": "К задаче №64б",
+     "kind": "number",
+     "prompt": "После продажи товара за 5100 р. убыток составил 15% себестоимости. Какова себестоимость в рублях?",
+     "answer": "6000",
+     "steps": [
+      {
+       "prompt": "Сколько процентов от себестоимости выручено?",
+       "answer": "85",
+       "hint": "Полученная сумма равна 85% исходной стоимости.",
+       "explanation": "0,85c = 5100, поэтому c = 6000 р. Убыток 900 р. составляет 15% от 6000."
+      },
+      {
+       "prompt": "Величина убытка в рублях?",
+       "answer": "900",
+       "hint": "Полученная сумма равна 85% исходной стоимости.",
+       "explanation": "0,85c = 5100, поэтому c = 6000 р. Убыток 900 р. составляет 15% от 6000."
+      }
+     ],
+     "hint": "Полученная сумма равна 85% исходной стоимости.",
+     "explanation": "0,85c = 5100, поэтому c = 6000 р. Убыток 900 р. составляет 15% от 6000.",
+     "skills": [
+      "percent-ratio",
+      "percent-part"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 64,
+      "reference": "№64б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reverseRateStudy": "loss",
+     "errorCues": [
+      [
+       "5865",
+       "Полученная сумма равна 85% исходной стоимости."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t95",
+     "title": "К задаче №64в",
+     "kind": "number",
+     "prompt": "Цена метра ткани выросла с 96 до 120 рублей. На сколько процентов подорожал метр?",
+     "answer": "25",
+     "steps": [
+      {
+       "prompt": "Разность цен в рублях?",
+       "answer": "24",
+       "hint": "Разность цен сравнивай с исходной ценой.",
+       "explanation": "Цена выросла на 24 р. Это 24/96 = 1/4, то есть 25%."
+      },
+      {
+       "prompt": "Отношение разности к первоначальной цене?",
+       "answer": "1/4",
+       "hint": "Разность цен сравнивай с исходной ценой.",
+       "explanation": "Цена выросла на 24 р. Это 24/96 = 1/4, то есть 25%."
+      }
+     ],
+     "hint": "Разность цен сравнивай с исходной ценой.",
+     "explanation": "Цена выросла на 24 р. Это 24/96 = 1/4, то есть 25%.",
+     "skills": [
+      "percent-ratio",
+      "percent-part"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 64,
+      "reference": "№64в",
+      "subpart": "в"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reverseRateStudy": "rise",
+     "errorCues": [
+      [
+       "20",
+       "Разность цен сравнивай с исходной ценой."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t96",
+     "title": "К задаче №65",
+     "kind": "number",
+     "prompt": "Из 180 кг яблок часть продали по 16 р. за килограмм. Остаток продали после повышения цены на 25%. Всего получили 3360 р. Какая доля яблок продана по повышенной цене? Введи долю единицы.",
+     "answer": "2/3",
+     "steps": [
+      {
+       "prompt": "Новая цена за килограмм, р.?",
+       "answer": "20",
+       "hint": "Сравни общую выручку с продажей всех 180 кг по старой цене. Прибавка с каждого дорогого килограмма равна четырём рублям.",
+       "explanation": "Новая цена 20 р./кг. При старой цене за всё получили бы 2880 р., а получили на 480 р. больше. Значит, по новой цене продали 480/4 = 120 кг. Доля от 180 кг равна 2/3."
+      },
+      {
+       "prompt": "Дополнительная выручка сравнительно со старой ценой, р.?",
+       "answer": "480",
+       "hint": "Сравни общую выручку с продажей всех 180 кг по старой цене. Прибавка с каждого дорогого килограмма равна четырём рублям.",
+       "explanation": "Новая цена 20 р./кг. При старой цене за всё получили бы 2880 р., а получили на 480 р. больше. Значит, по новой цене продали 480/4 = 120 кг. Доля от 180 кг равна 2/3."
+      },
+      {
+       "prompt": "Масса яблок по новой цене, кг?",
+       "answer": "120",
+       "hint": "Сравни общую выручку с продажей всех 180 кг по старой цене. Прибавка с каждого дорогого килограмма равна четырём рублям.",
+       "explanation": "Новая цена 20 р./кг. При старой цене за всё получили бы 2880 р., а получили на 480 р. больше. Значит, по новой цене продали 480/4 = 120 кг. Доля от 180 кг равна 2/3."
+      }
+     ],
+     "hint": "Сравни общую выручку с продажей всех 180 кг по старой цене. Прибавка с каждого дорогого килограмма равна четырём рублям.",
+     "explanation": "Новая цена 20 р./кг. При старой цене за всё получили бы 2880 р., а получили на 480 р. больше. Значит, по новой цене продали 480/4 = 120 кг. Доля от 180 кг равна 2/3.",
+     "skills": [
+      "percent-part",
+      "fraction-reduce"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 65,
+      "reference": "№65"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "appleSaleStudy": true,
+     "errorCues": [
+      [
+       "120",
+       "Это масса в килограммах. Раздели её на все 180 кг."
+      ],
+      [
+       "1/3",
+       "Это доля, проданная по старой цене."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t97",
+     "title": "К задаче №66",
+     "kind": "number",
+     "prompt": "Числитель большой дроби: 10,2 : [18,5 − (5 2/3 × 1,75 − 3 2/3 × 1,75) : (2 1/3)]. Знаменатель: 80,64 : 1,6 − 3,4 : (1/6). Найди значение всей дроби.",
+     "answer": "1/50",
+     "steps": [
+      {
+       "prompt": "Разность двух произведений с общим множителем 1,75?",
+       "answer": "7/2",
+       "hint": "Сначала отдельно посчитай вложенную скобку в числителе и весь знаменатель большой дроби. Промежуточные дроби сохраняй без округления.",
+       "explanation": "Во внутренних скобках разность произведений равна (5 2/3 − 3 2/3) × 1,75 = 3,5. После деления на 2 1/3 останется 1,5. Знаменатель малого деления 18,5 − 1,5 = 17, поэтому числитель большой дроби 10,2/17 = 0,6. Большой знаменатель 50,4 − 20,4 = 30. Ответ 0,6/30 = 1/50."
+      },
+      {
+       "prompt": "Результат после деления этой разности на 2 1/3?",
+       "answer": "3/2",
+       "hint": "Сначала отдельно посчитай вложенную скобку в числителе и весь знаменатель большой дроби. Промежуточные дроби сохраняй без округления.",
+       "explanation": "Во внутренних скобках разность произведений равна (5 2/3 − 3 2/3) × 1,75 = 3,5. После деления на 2 1/3 останется 1,5. Знаменатель малого деления 18,5 − 1,5 = 17, поэтому числитель большой дроби 10,2/17 = 0,6. Большой знаменатель 50,4 − 20,4 = 30. Ответ 0,6/30 = 1/50."
+      },
+      {
+       "prompt": "Числитель всей дроби?",
+       "answer": "3/5",
+       "hint": "Сначала отдельно посчитай вложенную скобку в числителе и весь знаменатель большой дроби. Промежуточные дроби сохраняй без округления.",
+       "explanation": "Во внутренних скобках разность произведений равна (5 2/3 − 3 2/3) × 1,75 = 3,5. После деления на 2 1/3 останется 1,5. Знаменатель малого деления 18,5 − 1,5 = 17, поэтому числитель большой дроби 10,2/17 = 0,6. Большой знаменатель 50,4 − 20,4 = 30. Ответ 0,6/30 = 1/50."
+      },
+      {
+       "prompt": "Знаменатель всей дроби?",
+       "answer": "30",
+       "hint": "Сначала отдельно посчитай вложенную скобку в числителе и весь знаменатель большой дроби. Промежуточные дроби сохраняй без округления.",
+       "explanation": "Во внутренних скобках разность произведений равна (5 2/3 − 3 2/3) × 1,75 = 3,5. После деления на 2 1/3 останется 1,5. Знаменатель малого деления 18,5 − 1,5 = 17, поэтому числитель большой дроби 10,2/17 = 0,6. Большой знаменатель 50,4 − 20,4 = 30. Ответ 0,6/30 = 1/50."
+      }
+     ],
+     "hint": "Сначала отдельно посчитай вложенную скобку в числителе и весь знаменатель большой дроби. Промежуточные дроби сохраняй без округления.",
+     "explanation": "Во внутренних скобках разность произведений равна (5 2/3 − 3 2/3) × 1,75 = 3,5. После деления на 2 1/3 останется 1,5. Знаменатель малого деления 18,5 − 1,5 = 17, поэтому числитель большой дроби 10,2/17 = 0,6. Большой знаменатель 50,4 − 20,4 = 30. Ответ 0,6/30 = 1/50.",
+     "skills": [
+      "fraction-divide",
+      "decimal-subtract"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 66,
+      "reference": "№66"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "fractionTreeStudy": true,
+     "errorCues": [
+      [
+       "0,6",
+       "Это числитель большой дроби. Раздели его на большой знаменатель."
+      ],
+      [
+       "50",
+       "Ты перевернул большую дробь. Числитель здесь меньше знаменателя."
+      ]
+     ],
+     "figure": {
+      "type": "nested-numeric-fraction",
+      "caption": "Главная черта отделяет всё верхнее выражение от всего нижнего."
+     }
+    },
+    {
+     "id": "p35-t98",
+     "title": "К задаче №68",
+     "kind": "number",
+     "prompt": "Цена 25 яиц за вычетом одной полушки равна пяти полушкам за вычетом цены пяти яиц. Одна полушка равна четверти копейки. Сколько копеек стоит десяток яиц?",
+     "answer": "1/2",
+     "steps": [
+      {
+       "prompt": "Сколько яиц будет слева после добавления стоимости пяти яиц в обе части?",
+       "answer": "30",
+       "hint": "Считай в полушках. Пусть одно яйцо стоит p полушки. Фразы про вычитание в обеих частях надо перевести буквально.",
+       "explanation": "25p − 1 = 5 − 5p, откуда 30p = 6 и p = 1/5 полушки. Десять яиц стоят 2 полушки. При 1 полушке = 1/4 копейки это 1/2 копейки."
+      },
+      {
+       "prompt": "Цена одного яйца в полушках?",
+       "answer": "1/5",
+       "hint": "Считай в полушках. Пусть одно яйцо стоит p полушки. Фразы про вычитание в обеих частях надо перевести буквально.",
+       "explanation": "25p − 1 = 5 − 5p, откуда 30p = 6 и p = 1/5 полушки. Десять яиц стоят 2 полушки. При 1 полушке = 1/4 копейки это 1/2 копейки."
+      },
+      {
+       "prompt": "Цена десятка в полушках?",
+       "answer": "2",
+       "hint": "Считай в полушках. Пусть одно яйцо стоит p полушки. Фразы про вычитание в обеих частях надо перевести буквально.",
+       "explanation": "25p − 1 = 5 − 5p, откуда 30p = 6 и p = 1/5 полушки. Десять яиц стоят 2 полушки. При 1 полушке = 1/4 копейки это 1/2 копейки."
+      }
+     ],
+     "hint": "Считай в полушках. Пусть одно яйцо стоит p полушки. Фразы про вычитание в обеих частях надо перевести буквально.",
+     "explanation": "25p − 1 = 5 − 5p, откуда 30p = 6 и p = 1/5 полушки. Десять яиц стоят 2 полушки. При 1 полушке = 1/4 копейки это 1/2 копейки.",
+     "skills": [
+      "linear-equation",
+      "unit-conversion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 15,
+      "exercise": 68,
+      "reference": "№68"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "oldCoinStudy": true,
+     "errorCues": [
+      [
+       "2",
+       "Цена 2 выражена в полушках. Переведи её в копейки."
+      ],
+      [
+       "1/5",
+       "Это цена одного яйца в полушках, а требуется цена десятка в копейках."
+      ]
+     ]
     }
    ],
-   "orderBySource": true
+   "orderBySource": true,
+   "completeSourceSection": {
+    "first": 42,
+    "last": 68,
+    "firstPage": 12,
+    "lastPage": 15
+   }
   },
   {
    "id": "p36",

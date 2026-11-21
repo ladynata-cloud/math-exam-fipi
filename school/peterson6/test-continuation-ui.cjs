@@ -943,3 +943,24 @@ test('recognize a perpendicular from the correct vertex and distinguish the tota
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('compare possible roots, fractions of the whole and historical currency units on the printed last page',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p35/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),result=()=>f.q('#model .pm-result').textContent;
+  let controls=go(79);set(controls[1],4);set(controls[2],2);
+  assert(result().includes('Пробное число — корень'));assert.match(f.q('#model table').textContent,/3364805150/);
+  set(controls[0],1);set(controls[1],3);set(controls[2],1);assert(result().includes('Пробное число — корень'));
+  controls=go(82);set(controls[1],20);set(controls[2],1);assert(result().includes('Сумма 80 р.'));assert(result().includes('Все условия выполнены'));
+  set(controls[0],1);set(controls[1],45);set(controls[2],1);assert(result().includes('Сумма 180 р.'));assert(result().includes('Все условия выполнены'));
+  for(const [i,first,again]of [[92,'75 кг','50 кг'],[93,'6000 р.','10000 р.'],[94,'25%','30%']]){
+   controls=go(i);set(controls[1],2);assert(result().replace(/\u00a0/g,'').includes(first),result());set(controls[0],1);assert.equal(f.q(controls[1]).value,'0');set(controls[1],2);assert(result().replace(/\u00a0/g,'').includes(again),result());
+  }
+  controls=go(95);set(controls[1],120);set(controls[2],1);assert(result().includes('2/3'));set(controls[0],1);set(controls[1],100);set(controls[2],1);assert(result().includes('5/9'));
+  controls=go(96);assert(f.q('#task-figure .pcm-fraction-denominator').textContent.includes('80,64'));set(controls[1],5);assert(f.q('#model table').textContent.includes('Большая дробь1/50'));set(controls[0],1);set(controls[1],5);assert(f.q('#model table').textContent.includes('Большая дробь1/30'));
+  f.nav('#lesson/p35/97');f.event('#final-answer','2');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/Переведи её в копейки/);
+  controls=go(97);set(controls[1],1);set(controls[2],1);assert(result().includes('1/2 копейки'));set(controls[0],1);set(controls[1],2);set(controls[2],1);assert(result().includes('3/4 копейки'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
