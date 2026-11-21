@@ -16,7 +16,11 @@ for(const [name,sourcePages] of Object.entries(pages)){
  const dom=new JSDOM(entry,{url:'https://mathexam.space/school/index.html#book/'+name,runScripts:'outside-only'}),w=dom.window;
  w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
  for(const match of entry.matchAll(/<script defer src="([^"?]+\.js)/g)){
-  const file=match[1];if(!file.startsWith('/'))w.eval(fs.readFileSync(path.join(school,file),'utf8'));
+  const file=match[1];
+  if(!file.startsWith('/')||file.startsWith('/courses/')){
+   const source=file.startsWith('/')?path.join(root,file):path.join(school,file);
+   w.eval(fs.readFileSync(source,'utf8'));
+  }
  }
  const b=w.WorkshopCurriculum.books.find(b=>b.id===name);
  const expected=sourcePages.split(' ').map((s,i)=>s.includes(':')?s:(i+1)+':'+s);
