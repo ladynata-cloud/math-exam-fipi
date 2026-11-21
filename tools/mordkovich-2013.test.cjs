@@ -29,7 +29,7 @@ function open(entry,saved){
  w.TextEncoder=TextEncoder;w.Math.random=()=>0;
  const id=entry.path.split('/').pop(),storage='math:mordkovich-2013:v1:'+id;
  if(saved)w.localStorage.setItem(storage,saved);
- for(const name of ['../tyurin-statistics/content.js','identities.js','quotients.js','../tyurin-statistics/app.js'])w.eval(read(path.join(dir,name)));
+ for(const name of ['../tyurin-statistics/content.js','identities.js','quotients.js','quadrants.js','../tyurin-statistics/app.js'])w.eval(read(path.join(dir,name)));
  return {dom,w,storage,doc:w.document,lesson:w.MathExamTopicPractice.lessons.get(id)};
 }
 const click=(doc,act)=>doc.querySelector('[data-action="'+act+'"]').click();
@@ -48,6 +48,12 @@ const denominators=[
  s=>1-s,(s,c)=>1+c,()=>1,(s,c)=>3*s*s+3*c*c,()=>1,(s,c)=>s*s-c*c
 ];
 function expectAnswers(i,d){
+ if(i>=20){
+   const a=Math.atan2(d.y,d.x),values={sin:Math.sin(a),cos:Math.cos(a),tg:Math.tan(a),ctg:1/Math.tan(a)};
+   const actualQ=a>0?(a<Math.PI/2?1:2):(a<-Math.PI/2?3:4);
+   assert.equal(actualQ,d.quadrant);
+   return Object.keys(values).filter(k=>k!==d.given).map(k=>values[k]);
+ }
  if(i>=8){
    const n=i-8, y=d.s/d.r, x=d.c/d.r, original=quotients[n](y,x);
    const allowed=d.angles.filter(k=>Math.abs(denominators[n](Math.sin(k*Math.PI/4),Math.cos(k*Math.PI/4)))>1e-8);
@@ -58,17 +64,41 @@ function expectAnswers(i,d){
  const other=Number(match[1])/Number(match[2]),rest=1-other;
  return [(cos?c:s)**2,expressions[i](s/r,c/r),expressions[i](Math.sqrt(cos?other:rest),Math.sqrt(cos?rest:other))];
 }
+const printedSignProblems=[
+ ['sin',4/5,2],['sin',5/12,1],['sin',-.6,4],['sin',-.28,3],
+ ['cos',.8,1],['cos',-5/13,2],['cos',.6,4],['cos',-24/25,3],
+ ['tg',3/4,1],['tg',2.4,3],['tg',-3/4,2],['tg',-5/12,4],
+ ['ctg',12/5,3],['ctg',7/24,1],['ctg',-5/12,4],['ctg',-8/15,2]
+];
+function printedNumber(text){
+ const parts=text.replace(/−/g,'-').split('/');
+ const atom=v=>v&&v.startsWith('√')?Math.sqrt(Number(v.slice(1))):Number(v);
+ return atom(parts[0])/(parts[1]?atom(parts[1]):1);
+}
+function verifyPrintedSigns(index,guide){
+ const [fn,given,q]=printedSignProblems[index],sx=[2,3].includes(q)?-1:1,sy=q>2?-1:1;
+ let x,y;
+ if(fn==='sin'){y=given;x=sx*Math.sqrt(1-y*y);}
+ else if(fn==='cos'){x=given;y=sy*Math.sqrt(1-x*x);}
+ else{const tg=fn==='tg'?given:1/given;x=sx/Math.hypot(1,tg);y=tg*x;}
+ const model={sin:y,cos:x,tg:y/x,ctg:x/y}, found=new Set();
+ for(const m of guide.matchAll(/(sin|cos|tg|ctg) t = ([−0-9√/]+)/g)){
+   close(printedNumber(m[2]),model[m[1]]);found.add(m[1]);
+ }
+ assert.deepEqual([...found].sort(),Object.keys(model).filter(k=>k!==fn).sort());
+}
 const close=(a,b)=>assert(Math.abs(a-b)<1e-9,String(a)+' ≠ '+b);
 for(const [i,entry] of book.exercises.slice(75).entries()){
  let {dom,w,doc,lesson,storage}=open(entry);
  assert.equal(entry.boardPath,entry.path);assert.equal(doc.querySelector('#lesson').value,lesson.id);
- assert.equal(doc.querySelectorAll('#lesson option').length,20);assert.equal(doc.querySelector('#source').href.split('#').pop(),i<8?'page=23':'page=24');
+ assert.equal(doc.querySelectorAll('#lesson option').length,36);assert.equal(doc.querySelector('#source').href.split('#').pop(),i<8?'page=23':i<32?'page=24':'page=25');
  assert.equal(JSON.parse(w.localStorage.getItem(storage)).results.length,0);
  assert(!doc.querySelector('#work').textContent.includes(lesson.printedGuide));click(doc,'printed-guide');assert(doc.querySelector('#work').textContent.includes(lesson.printedGuide));
+ if(i>=20)verifyPrintedSigns(i-20,lesson.printedGuide);
  const seen=new Set();
  for(let seed=1;seed<=11;seed++){
   const d=lesson.make(seed), expected=expectAnswers(i,d);seen.add(JSON.stringify(d.rows));
-  assert.equal(d.s*d.s+d.c*d.c,d.r*d.r);
+  assert.equal(i<20?d.s*d.s+d.c*d.c:d.x*d.x+d.y*d.y,d.r*d.r);
   d.questions.forEach((q,j)=>{close(q.answer,expected[j]);for(const [wrong,msg] of q.mistakes){assert(Math.abs(wrong-q.answer)>1e-9);assert(msg.length>20);}});
  }
  assert.equal(seen.size,11);click(doc,'practice');submit(doc,9999);
@@ -83,4 +113,4 @@ for(const [i,entry] of book.exercises.slice(75).entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(storage)).results,['fixed','first','help']);
  click(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(storage)).variant,7);dom.window.close();
 }
-console.log('60 printed sections; 75 independently addressable circle exercises with 289 parts; 13 exact shared circle entries; 20 new printed identities, 660 direct mathematical checks and individual corrected/first/assisted/retry journeys.');
+console.log('60 printed sections; 75 independently addressable circle exercises with 289 parts; 13 exact shared circle entries; 36 authored printed identities and quadrant exercises, 1188 direct mathematical checks and individual corrected/first/assisted/retry journeys.');

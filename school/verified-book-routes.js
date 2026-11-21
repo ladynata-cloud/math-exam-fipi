@@ -373,7 +373,7 @@
   mord2013.workshopRoute='10';
   mord2013.status='60 параграфов по страницам · практика по §§4–7';
   mord2013.note='Часть 2, базовый уровень, 14-е издание. В разделах об окружности открой свой номер и выбери подпункт. Затем перейди к тождествам и проверь себя на других значениях.';
-  mord2013.remaining='Все 75 номеров §§4–6 разобраны. В §7 готовы №7.1–7.6, следующий №7.7. Свои разборы §§1–3, остальной части §7, §§8–60 и дополнительных задач с с. 205 ещё предстоят.';
+  mord2013.remaining='Все 75 номеров §§4–6 разобраны. В §7 готовы №7.1–7.10, следующий №7.11. Свои разборы §§1–3, остальной части §7, §§8–60 и дополнительных задач с с. 205 ещё предстоят.';
   mord2013.totalPoints=60;
   mord2013.exerciseHeading='Упражнения по печатным номерам';
   mord2013.mapping=mordTopics.map((title,i)=>{
@@ -384,7 +384,7 @@
       const span=section===4?20:section===5?14:41;
       Object.assign(row,{coverage:'module',bookOnly:false,externalPath:circle+section+'.1',focus:'Разборы каждого номера от '+section+'.1 до '+section+'.'+span+'.'});
       if(section!==4)row.boardPath=jointCircle+section+'.1';
-    }else if(section===7)Object.assign(row,{coverage:'partial',bookOnly:false,externalPath:identity+'7-1a',boardPath:identity+'7-1a',focus:'Двадцать подпунктов №7.1–7.6: квадраты координат, дроби, доказательства и допустимые углы.'});
+    }else if(section===7)Object.assign(row,{coverage:'partial',bookOnly:false,externalPath:identity+'7-1a',boardPath:identity+'7-1a',focus:'36 подпунктов №7.1–7.10: квадраты координат, дроби, доказательства, допустимые углы и знаки функций.'});
     return row;
   });
   const sectionLabels={
@@ -416,5 +416,11 @@
   for(const [number,titles] of fractionTitles)titles.forEach((title,i)=>{
     const path=identity+number.replace('.','-')+'abcd'[i];
     mord2013.exercises.push({printed:number+'абвг'[i],page:19,title,path,boardPath:path});
+  });
+  const givenFunctions=['синусу','косинусу','тангенсу','котангенсу'];
+  const printedQuadrants=[['II','I','IV','III'],['I','II','IV','III'],['I','III','II','IV'],['III','I','IV','II']];
+  for(let index=0;index<4;index++)printedQuadrants[index].forEach((quadrant,i)=>{
+    const n=index+7,path=identity+'7-'+n+'abcd'[i];
+    mord2013.exercises.push({printed:'7.'+n+'абвг'[i],page:n===10?20:19,title:'Три функции по '+givenFunctions[index]+', '+quadrant+' четверть',path,boardPath:path});
   });
 })();
