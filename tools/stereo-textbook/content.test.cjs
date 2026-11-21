@@ -115,4 +115,6 @@ require('./spatial-direction-cosines-and-square.test.cjs');
 require('./spatial-scalar-identities-and-opposite-edges.test.cjs');
 require('./angles-with-lines-and-coordinate-faces.test.cjs');
 require('./cube-proofs-and-scalar-product-section-end.test.cjs');
+require('./spatial-symmetries-and-fixed-sets.test.cjs');
+require('./isometries-of-space-section-end.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

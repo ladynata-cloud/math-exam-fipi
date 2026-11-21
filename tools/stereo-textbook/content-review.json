@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T23:21:29Z",
-  "scope": "Chapters I–VI and complete chapter VII paragraphs 1 and 2: points 71–79 and all 82 exercises 637–718, with 1,311 reviewed cards. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T23:34:04Z",
+  "scope": "Chapters I–VI and all three teaching paragraphs of chapter VII: points 71–84, exercises 637–730, 1,339 reviewed cards. Chapter VII self-check and additional tasks from 731 are inventoried separately. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2215,6 +2215,52 @@
       ],
       "evidence": "tools/stereo-textbook/cube-proofs-and-scalar-product-section-end.json",
       "mathematicalReport": "tools/stereo-textbook/cube-proofs-and-scalar-product-section-end.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 180, 181, official issued pages 180–185, printed notes 271; each of 21 transformed source points, all fixed sets, signed homothety, parallel lines and planes and the arbitrary axis-angle proof checked independently.",
+      "reviewedAt": "2026-11-21T23:28:42Z",
+      "scope": "All three distinct symmetries, translation, signed homothety, 21 coordinates of images in the actual three points of 719; all line and plane cases in 720–722. Sources: printed 180–185 and note 271.",
+      "cardIds": [
+        "theory-080",
+        "theory-081",
+        "theory-082",
+        "theory-083",
+        "theory-084",
+        "ex-main-0719-a",
+        "ex-main-0719-b",
+        "ex-main-0719-c",
+        "ex-main-0720-a",
+        "ex-main-0720-b",
+        "ex-main-0721-a",
+        "ex-main-0721-b",
+        "ex-main-0722-a",
+        "ex-main-0722-b"
+      ],
+      "evidence": "tools/stereo-textbook/spatial-symmetries-and-fixed-sets.json",
+      "mathematicalReport": "tools/stereo-textbook/spatial-symmetries-and-fixed-sets.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 185, issued exercise page 185, transition to self-check on page 186 and printed hints page 271; all fixed-set, coplanarity, surjectivity, inverse, segment, angle, disjointness, circle and box cases verified independently.",
+      "reviewedAt": "2026-11-21T23:34:04Z",
+      "scope": "All printed cases from exercise 723 through 730 on page 185, including the inverse-image and coplanarity requirements, non-pointwise invariant figures, the spatial circle plane, scaling/parallel plane exceptions and the interior of the rectangular solid. The chapter self-check begins on the following printed page.",
+      "cardIds": [
+        "ex-main-0723",
+        "ex-main-0724-a",
+        "ex-main-0724-b",
+        "ex-main-0725-a",
+        "ex-main-0725-b",
+        "ex-main-0726",
+        "ex-main-0727-a",
+        "ex-main-0727-b",
+        "ex-main-0728-a",
+        "ex-main-0728-b",
+        "ex-main-0729-a",
+        "ex-main-0729-b",
+        "ex-main-0730-a",
+        "ex-main-0730-b"
+      ],
+      "evidence": "tools/stereo-textbook/isometries-of-space-section-end.json",
+      "mathematicalReport": "tools/stereo-textbook/isometries-of-space-section-end.test.cjs"
     }
   ],
   "cards": [
@@ -7461,6 +7507,118 @@
     {
       "id": "ex-main-0718",
       "sha256": "ec554030e9a21f4b1a4c3d86cb8de3f09553d04c5c58009f917c3910c6ce0934"
+    },
+    {
+      "id": "theory-080",
+      "sha256": "784d55092c1c0f71b7cb4d8dbb974e182f6d52de47bf9014100d06b289ef24a8"
+    },
+    {
+      "id": "theory-081",
+      "sha256": "c2eaf09201ae3157c781bad1f63720e94c9bb02286cb82e9284fed4a67aa6f7f"
+    },
+    {
+      "id": "theory-082",
+      "sha256": "e0ad0279fd500584d5cebd66a9818e6b1d9855a6c29b09ca7a306df8ca1836e2"
+    },
+    {
+      "id": "theory-083",
+      "sha256": "5b55d3c22fd1c7f878ebcc18f1da7ffb356e8976791da45768d405535caef93d"
+    },
+    {
+      "id": "theory-084",
+      "sha256": "ca4e85cc4a97af577a4cb7baab4264be8b1f7c256606511f05d080c638a29dce"
+    },
+    {
+      "id": "ex-main-0719-a",
+      "sha256": "f9286e0cffa9aa2c5f52c4dd21e5878ccfadd684892f3ca9755ae07baa5b77ac"
+    },
+    {
+      "id": "ex-main-0719-b",
+      "sha256": "de406f9a33caa6cf910a1e5a492983f7f711586dd7eda6bb2ba5aaa5a113442d"
+    },
+    {
+      "id": "ex-main-0719-c",
+      "sha256": "2bfa84a3244db1c47fe3c469f039a7b9aac52db794cfe6c448225142f2ea7386"
+    },
+    {
+      "id": "ex-main-0720-a",
+      "sha256": "4f2f7e01b0feadcf916778861d1e064f8aa76874621f502d08466ef5118147bb"
+    },
+    {
+      "id": "ex-main-0720-b",
+      "sha256": "10a9880ef598e4b007c446061f03b7269c2bb1dd3047f448f4ac42771efe2d4d"
+    },
+    {
+      "id": "ex-main-0721-a",
+      "sha256": "eec135308a014381ba134cf32faf06a767c86cfde8823799d8ea49690ce62d86"
+    },
+    {
+      "id": "ex-main-0721-b",
+      "sha256": "3356aeb3c0f921545723499eb8694d2afed1c2782a2d52b3a3f01182071df655"
+    },
+    {
+      "id": "ex-main-0722-a",
+      "sha256": "bc7db7bf97449ece1027bdf112206da3723631bb35a6ec0675533454aa8986f4"
+    },
+    {
+      "id": "ex-main-0722-b",
+      "sha256": "c5ffd07ca87d48a795fc9d1a5e8a3866e13d2f7aa39f370e5f14115afb3a36e8"
+    },
+    {
+      "id": "ex-main-0723",
+      "sha256": "8ee5c79dcf8118b1eff605d45ba8b60b5ce7f8ad4efdc3fe4515488c590e0456"
+    },
+    {
+      "id": "ex-main-0724-a",
+      "sha256": "3f0960357cb22a847d2dc4e6c956480f85fe70f36cc9a783b8ad71d14b279749"
+    },
+    {
+      "id": "ex-main-0724-b",
+      "sha256": "3c649dad2db4e05208afc0784b22d353a0eba9249ea7a86eec30795e2333c7c9"
+    },
+    {
+      "id": "ex-main-0725-a",
+      "sha256": "543db44277f3439cf617c074ff695884e1614597ec4ebf62627772610cf5d588"
+    },
+    {
+      "id": "ex-main-0725-b",
+      "sha256": "24b7cff2bd89645620c9143c0be03f7ced07a1598e0f1aca61bece1296a27863"
+    },
+    {
+      "id": "ex-main-0726",
+      "sha256": "12edfc6553b47f830820de588509e5a3a7f717fba7e3b4497154859f97a653d6"
+    },
+    {
+      "id": "ex-main-0727-a",
+      "sha256": "c32f73724fcbcdf9b3400a45c3412e0cd8a56b8b18073ac6ed4d646cf995310d"
+    },
+    {
+      "id": "ex-main-0727-b",
+      "sha256": "bc79d5e847f6e2b2bd27fb2941de40bd06d69ad2d72c0b04bcaaa8634fabb7ac"
+    },
+    {
+      "id": "ex-main-0728-a",
+      "sha256": "988ab3a0a8f6aea64e504b2ed0e75d2f05a4c8441c03ab4a349b7ab5ff095f31"
+    },
+    {
+      "id": "ex-main-0728-b",
+      "sha256": "037a60a023755e54c8da40328b20af7124ff8a61c7829e3ff97efbef8e2550d6"
+    },
+    {
+      "id": "ex-main-0729-a",
+      "sha256": "36ca254f235bf8c7269013074443577f78c5eb6a3b5b5cec071122002c9ec639"
+    },
+    {
+      "id": "ex-main-0729-b",
+      "sha256": "8325fbb638c4b945ec31ba4a76e90215984fa75ab3c7b81ef64e0c7e10da0e68"
+    },
+    {
+      "id": "ex-main-0730-a",
+      "sha256": "12613d9a66c98ec5d178de376eb8c2afabfd86b788a81bacab994fe0d744466e"
+    },
+    {
+      "id": "ex-main-0730-b",
+      "sha256": "e30e11af76a5d4bef22a6b3154d70cc38e87ac679142b3d674ce863153fe4bbe"
     }
   ]
 }
