@@ -67,4 +67,5 @@ require('./oblique-prisms.test.cjs');
 require('./pyramid-volumes.test.cjs');
 require('./pyramid-projections.test.cjs');
 require('./pyramid-frusta.test.cjs');
+require('./cone-volumes.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

@@ -64,6 +64,16 @@ const misconceptions = new Map([
   ['ex-main-0492/step-1', '15'], // Horizontal circumradius in height field.
   ['ex-main-0492/step-3', '180'], // Removed tip in place of remaining frustum.
   ['ex-main-0493/step-2', '9'], // Height computed with side lengths, not diagonals.
+  ['ex-main-0494-a/step-1', '3'], // Diameter instead of squared radius.
+  ['ex-main-0494-b/step-3', '3'], // Forgot the factor three when recovering height.
+  ['ex-main-0494-c/step-2', '16'], // Returned squared radius.
+  ['ex-main-0495/step-1', '3/5'], // Distance from the lower base.
+  ['ex-main-0495/step-2', '4/25'], // Area ratio instead of volume ratio.
+  ['ex-main-0495/step-3', '192/125'], // Multiplied known small volume by its fraction.
+  ['ex-main-0496/step-3', '15'], // Slant height used in the volume.
+  ['ex-main-0497/step-2', '100'], // Squared the diameter.
+  ['ex-main-0498/step-3', '240'], // Swapped radius and height in the narrow cone.
+  ['ex-main-0498/step-4', '100'], // Swapped radius and height in the wide cone.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

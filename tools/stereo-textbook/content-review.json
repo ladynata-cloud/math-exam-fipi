@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T15:34:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 493 and points 52–59, with 804 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T15:41:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 498 and points 52–59, with 811 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1276,6 +1276,22 @@
       ],
       "evidence": "tools/stereo-textbook/pyramid-frusta.json",
       "mathematicalReport": "tools/stereo-textbook/pyramid-frusta.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T15:41:00Z",
+      "scope": "Cone volume, inverse dimensions, similar sections and two admissible configurations, exercises 494–498",
+      "cardIds": [
+        "ex-main-0494-a",
+        "ex-main-0494-b",
+        "ex-main-0494-c",
+        "ex-main-0495",
+        "ex-main-0496",
+        "ex-main-0497",
+        "ex-main-0498"
+      ],
+      "evidence": "tools/stereo-textbook/cone-volumes.json",
+      "mathematicalReport": "tools/stereo-textbook/cone-volumes.test.cjs"
     }
   ],
   "cards": [
@@ -4494,6 +4510,34 @@
     {
       "id": "ex-main-0493",
       "sha256": "e7b0f6777e1ac55d0ec81285c6ca50e6f4cf693f77c8eae71bdba4aee9c9fb0c"
+    },
+    {
+      "id": "ex-main-0494-a",
+      "sha256": "24928fd44885c18cd4d0d7fe29d9d9ded77c40adf7b68bfe14255f41f6294559"
+    },
+    {
+      "id": "ex-main-0494-b",
+      "sha256": "95fee20f7ffd258fbc029c478d88df245c172617690b2435dbcf2bf2ecc41ee5"
+    },
+    {
+      "id": "ex-main-0494-c",
+      "sha256": "0e5742afc85bd7db0bb5bcc2f8f5bad7ed5e2cb61a152f22ba270ad38d7a250e"
+    },
+    {
+      "id": "ex-main-0495",
+      "sha256": "92a36dadf2dd717cceb775700cda38dfb134d47716884b00d081042ec2bc6161"
+    },
+    {
+      "id": "ex-main-0496",
+      "sha256": "51e05ed6e6e60a045e5c811af18d5e85b633706d80089da60938a58d1660fa6c"
+    },
+    {
+      "id": "ex-main-0497",
+      "sha256": "faf7cbf9cfa4a2012c43ab8a601846cae73c68a89cb4f2f8fda6fd7f1c1b49cb"
+    },
+    {
+      "id": "ex-main-0498",
+      "sha256": "704be6c32f462ba049d4926f7e4f11c8b982c6cf523eebbedea8d4da1997bdb3"
     }
   ]
 }
