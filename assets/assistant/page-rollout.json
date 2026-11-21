@@ -3392,7 +3392,7 @@
     "azbuka-postroeniy-reviewed/trainers/perpendicular-external-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
     "azbuka-postroeniy-reviewed/trainers/perpendicular-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
     "azbuka-postroeniy-reviewed/trainers/segment-trainer-v6.html": "azbuka-postroeniy-reviewed/index.html",
-    "books/index.html": "index.html",
+    "books/index.html": "sitemap",
     "courses/index.html": "sitemap",
     "courses/vilenkin-5-part-1/index.html": "sitemap",
     "courses/vilenkin-5/index.html": "sitemap",
@@ -6737,7 +6737,7 @@
       "addedPages": [
         "books/index.html"
       ],
-      "reason": "Каталог авторских книг опубликован с главной страницы и включён в sitemap."
+      "reason": "The canonical book catalog is linked from the homepage and sitemap and carries the shared public navigator."
     }
   ]
 }
