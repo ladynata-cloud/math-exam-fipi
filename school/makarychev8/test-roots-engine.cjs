@@ -119,10 +119,11 @@ dom.window.close();delete global.document;
 
 // New root input kinds must retain current-main attempt/history semantics.
 // Exercise the actual UI handlers, including persisted drafts and a real reload.
+const loadCourseWindow=require('./test-course-window.cjs');
 function lessonApp(id,saved){
  const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://roots.test/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;
  w.scrollTo=()=>{};if(saved)w.localStorage.setItem('mathexam.makarychev8.2024.v1',JSON.stringify(saved));
- for(const file of ['../peterson6/math.js','task-graphs.js','check.js','models.js','data.js','app.js'])w.eval(fs.readFileSync(__dirname+'/'+file,'utf8'));
+ loadCourseWindow(dom);
  const lesson=w.MakarychevCourse.lessons.find(l=>l.tasks.some(t=>t.id===id)),index=lesson.tasks.findIndex(t=>t.id===id),task=lesson.tasks[index];
  w.history.replaceState(null,'','#lesson/'+lesson.id+'/'+index);w.MakarychevApp.route();const d=w.document;
  return {w,d,task,api:w.MakarychevApp,close:()=>w.close(),record:()=>w.MakarychevApp.getState().tasks[id],answer(value){const el=d.querySelector('#final-answer');el.value=value;el.dispatchEvent(new w.Event('input',{bubbles:true}));d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}};

@@ -5,8 +5,8 @@ Static course at `/school/makarychev8/`, built around the existing Peterson cour
 ## Coverage
 
 - 51 topics in six chapters, including the six advanced topics.
-- 174 short theory blocks, 3150 tasks and 7075 worked steps.
-- 2917 textbook tasks/subparts with number and printed page, plus 233 explicitly labelled authored exercises/review adaptations. Exercises 1–837, covering all three opening chapters, include all source subparts, substitutions, secondary questions and constructions. Other source ranges retain their selected examples.
+- 174 short theory blocks, 3180 tasks and 7141 worked steps.
+- 2947 textbook tasks/subparts with number and printed page, plus 233 explicitly labelled authored exercises/review adaptations. Exercises 1–845, covering all three opening chapters, include all source subparts, substitutions, secondary questions and constructions. Other source ranges retain their selected examples.
 - Exercise navigator for all 1340 numbers. It distinguishes existing solutions from topic links; it does not claim solutions to every numbered exercise, every subpart, or the advanced problem bank.
 - Six interactive model families and 20 computation practice skills plus exercise generators for incomplete equations, the quadratic formula, applied word problems, Vieta’s theorem, completing the square, trinomial factorization and rational equations, each with three difficulty levels, preserved return to the original task.
 

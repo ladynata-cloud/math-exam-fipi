@@ -119,7 +119,7 @@ function rootGraph(config,value){
    previous=[a,b];
   }
   if(c.kind==='vertical'&&c.h>=xr[0]&&c.h<=xr[1])path='M'+x(c.h)+' '+pad+' L'+x(c.h)+' '+(height-pad);
-  svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,...(c.dashed?{'stroke-dasharray':'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
+  svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,...(c.dashed?{'stroke-dasharray':c.dashPattern||'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
   for(const [h,v] of c.holes||[])if(h>=xr[0]&&h<=xr[1]&&v>=yr[0]&&v<=yr[1])svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));
   if(c.kind==='abs-ratio'&&xr[0]<=0&&xr[1]>=0)for(const b of [-(c.scale??1),c.scale??1])if(b>=yr[0]&&b<=yr[1])svg.append(node('circle',{cx:x(0),cy:y(b),r:4,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':0,'data-hole-y':b}));
   if(c.label){
@@ -648,8 +648,9 @@ function fractionSample(value,count){
  const parts=String(value??'').split(';').map(v=>M.parse(v.trim()));
  return parts.length===count&&parts.every(v=>v&&Math.abs(v.n/v.d)<=100)?parts:null;
 }
-function sourceFractionTrial(config,value){
- const fields=fractionSample(value,config.symbols.length);
+function sourceFractionTrial(config,value,unrestricted=false){
+ const fields=unrestricted?String(value??'').split(';').map(v=>M.parse(v)):fractionSample(value,config.symbols.length);
+ if(unrestricted&&(fields.length!==config.symbols.length||fields.some(v=>!v)))return null;
  if(!fields)return null;
  const values=new Map(config.symbols.map((symbol,i)=>[symbol,fields[i]]));
  function evaluate(tree){
@@ -763,6 +764,38 @@ function equationExamples(host,value){
  }
  host.append(note);
 }
+function inequalityTrial(config,value,unrestricted=false){
+ const input=String(value??'').trim(),parts=input.split(';');
+ if(parts.length!==config.symbols.length||parts.some(v=>!M.parse(v)))return null;
+ const evidence=sourceFractionTrial({symbols:config.symbols,original:config.left,reduced:config.right},input,unrestricted);
+ if(!evidence||evidence.original===null||evidence.reduced===null)return null;
+ const [an,ad='1']=evidence.original.split('/'),[bn,bd='1']=evidence.reduced.split('/');
+ const delta=BigInt(an)*BigInt(bd)-BigInt(bn)*BigInt(ad);
+ return {left:evidence.original,right:evidence.reduced,sign:delta>0n?'>':delta<0n?'<':'='};
+}
+function inequalityScene(host,config,value){
+ host.className='task-graphs quantity-model';
+ const input=config.mode==='given'?config.given:config.mode==='counter'&&String(value??'').trim()&&M.parse(value)?value:config.trial;
+ const add=(txt,key,state)=>{const p=document.createElement('p');p.className='small';p.textContent=txt;if(key)p.dataset[key]=state;host.append(p);};
+ if(!input){add('На числовой прямой большее значение располагается правее. Подставь число в первом шаге и сравни обе стороны.');return;}
+ const check=inequalityTrial(config,input,config.mode==='counter');if(!check){add('Введи отдельное рациональное значение для каждой переменной.');return;}
+ const setting=String(input).split(';').map((v,i)=>config.symbols[i]+' = '+v).join(', ');
+ add('При '+setting+' получаем: '+check.left+' '+check.sign+' '+check.right+'.','inequalityRelation',check.sign);
+ const svg=node('svg',{viewBox:'0 0 320 107',role:'img','aria-label':'Расположение значений из этой подстановки: '+check.left+' '+check.sign+' '+check.right});
+ // A local scale spans the two submitted values. Heights separate the two
+ // labels when the values coincide; no absolute zero is implied by placement.
+ const positions=check.sign==='<'?[55,265]:check.sign==='>'?[265,55]:[160,160];
+ svg.append(node('line',{x1:20,x2:301,y1:52,y2:52,stroke:'#536d65','stroke-width':2}),node('path',{d:'M294 47 L301 52 L294 57',stroke:'#536d65',fill:'none'}));
+ for(const [i,x]of positions.entries()){
+  const c=i?'#99500e':'#087981',label=i?'вторая':'первая';
+  svg.append(node('line',{x1:x,x2:x,y1:52,y2:i?72:31,stroke:c,'stroke-width':2}));
+  svg.append(i?node('rect',{x:x-4,y:48,width:8,height:8,fill:c}):node('circle',{cx:x,cy:52,r:6,fill:'white',stroke:c,'stroke-width':2}));
+  svg.append(node('text',{x,y:i?89:21,'text-anchor':'middle','font-size':15,fill:c},label));
+ }
+ host.prepend(svg);
+ if(config.mode!=='given')add('Модель проверяет эту подстановку. Для вывода при любых значениях обоснуй знак разности алгебраически.');
+}
+
 function linearReview(host,config,value){
  host.className='task-graphs root-graph';
  const C=window.MakarychevCheck;
@@ -806,7 +839,13 @@ function linearReview(host,config,value){
     }
   }else say(config.fromSystem?'На рисунке показаны исходные прямые и данная точка. Введи формулу искомой прямой.':'По заданным точкам составь формулу y = kx + d. Введённая прямая появится на рисунке.');
  }
- const b=config.bounds;host.prepend(rootGraph({curves,points,xRange:[-b,b],yRange:[-b,b],label:'Координатные оси, данные точки и прямые из полученных уравнений'},''));
+ const legend=document.createElement('p');legend.className='small';
+ if(config.fromSystem){
+  legend.textContent='Сплошная: 3x − 2y = 16. Короткие штрихи: 4x + 3y = −7.';
+  if(curves.length===3){curves[2].dashPattern='14 3';legend.textContent+=' Длинные штрихи: введённая функция.';}
+ }else if(config.mode==='through')legend.textContent=curves.length?'Сплошная линия показывает введённую функцию. Точки заданы в условии.':'На рисунке отмечены заданные точки.';
+ else legend.textContent='Сплошная линия показывает первую строку.'+(curves.length>1?' Штриховая — вторую строку.':'');
+ const b=config.bounds;host.prepend(rootGraph({curves,points,xRange:[-b,b],yRange:[-b,b],label:legend.textContent},''),legend);
 }
 
 function quantityTrial(graph,raw){
@@ -1148,6 +1187,7 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='inequality-evidence'){inequalityScene(host,config,value);return;}
  if(config.type==='linear-review'){linearReview(host,config,value);return;}
  if(config.type==='quantity-audit'){quantityAudit(host,config,value);return;}
  if(config.type==='travel-times'){travelTimes(host,config,value);return;}
@@ -1212,5 +1252,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

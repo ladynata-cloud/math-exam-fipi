@@ -750,6 +750,7 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='inequality-counterexample'){const probe=G.inequalityTrial(target.graph,user,true);return Boolean(probe&&probe.sign!==target.graph.operator);}
  if(target.kind==='unique-system-triple')return Boolean(systemTriple(user)?.nonzero);
  if(target.kind==='parameter-exclusion')return excludedParameter(user,target.excluded);
  if(target.kind==='line-pair-equation')return equationPlaneStatus(user,target.answer)==='correct';
