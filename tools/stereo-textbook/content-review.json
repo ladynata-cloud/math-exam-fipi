@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T20:48:13Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–596, with 1,001 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T21:28:45Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–612 and the 15 printed chapter VI self-check questions, with 1,055 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1716,6 +1716,96 @@
       ],
       "evidence": "tools/stereo-textbook/parallelepiped-directed-bases.json",
       "mathematicalReport": "tools/stereo-textbook/parallelepiped-directed-bases.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 154, answer key 268 and printed derivations where given; independent field and vector computations.",
+      "reviewedAt": "2026-11-21T21:05:43Z",
+      "scope": "Both printed parts of exercise 597 with fields at six cube positions, and every vector decomposition, length and midpoint proof in 598–603",
+      "cardIds": [
+        "ex-main-0597-a",
+        "ex-main-0597-b",
+        "ex-main-0598",
+        "ex-main-0599",
+        "ex-main-0600",
+        "ex-main-0601",
+        "ex-main-0602",
+        "ex-main-0603"
+      ],
+      "evidence": "tools/stereo-textbook/fields-and-midpoint-vectors.json",
+      "mathematicalReport": "tools/stereo-textbook/fields-and-midpoint-vectors.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 155, answer key 268–269 where supplied; independent affine, Euclidean and geometric verification.",
+      "reviewedAt": "2026-11-21T21:14:01Z",
+      "scope": "Weighted median 604; all seven plane-basis questions 605; inverse centroid 606; four regular-tetrahedron heights in 607; strict tetrahedral inequality 608 and the oblique diagonal trisection proof in 609",
+      "cardIds": [
+        "ex-main-0604",
+        "ex-main-0605-a",
+        "ex-main-0605-b",
+        "ex-main-0605-c",
+        "ex-main-0605-d",
+        "ex-main-0605-e",
+        "ex-main-0605-f",
+        "ex-main-0605-g",
+        "ex-main-0606",
+        "ex-main-0607-a",
+        "ex-main-0607-b",
+        "ex-main-0607-c",
+        "ex-main-0607-d",
+        "ex-main-0608",
+        "ex-main-0609"
+      ],
+      "evidence": "tools/stereo-textbook/centroids-in-tetrahedra.json",
+      "mathematicalReport": "tools/stereo-textbook/centroids-in-tetrahedra.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 156, printed note for 610 on pages 268–269; independent signed-height and midpoint checks for 610–612.",
+      "reviewedAt": "2026-11-21T21:19:38Z",
+      "scope": "The final three source exercises of chapter VI paragraph 3: signed and ordinary projection heights, strict inequality for two skew opposite sides, and the common midpoint of the two diagonals in the four-midpoint parallelogram",
+      "cardIds": [
+        "ex-main-0610",
+        "ex-main-0611",
+        "ex-main-0612"
+      ],
+      "evidence": "tools/stereo-textbook/height-and-midpoint-proofs.json",
+      "mathematicalReport": "tools/stereo-textbook/height-and-midpoint-proofs.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued 2024 volume, chapter VI questions, printed page 156. Source-part order and independent explicit spatial models checked.",
+      "reviewedAt": "2026-11-21T21:28:45Z",
+      "scope": "All 28 source-level tasks within the 15 printed chapter VI self-check questions (156–157); proof, counterexample, affine and metric models, and new-data checks",
+      "cardIds": [
+        "ex-selfcheck-vi-01-a",
+        "ex-selfcheck-vi-01-b",
+        "ex-selfcheck-vi-01-c",
+        "ex-selfcheck-vi-01-d",
+        "ex-selfcheck-vi-01-e",
+        "ex-selfcheck-vi-01-f",
+        "ex-selfcheck-vi-02",
+        "ex-selfcheck-vi-03-a",
+        "ex-selfcheck-vi-03-b",
+        "ex-selfcheck-vi-04-a",
+        "ex-selfcheck-vi-04-b",
+        "ex-selfcheck-vi-05",
+        "ex-selfcheck-vi-06",
+        "ex-selfcheck-vi-07",
+        "ex-selfcheck-vi-08",
+        "ex-selfcheck-vi-09",
+        "ex-selfcheck-vi-10",
+        "ex-selfcheck-vi-11-a",
+        "ex-selfcheck-vi-11-b",
+        "ex-selfcheck-vi-11-c",
+        "ex-selfcheck-vi-11-d",
+        "ex-selfcheck-vi-12-a",
+        "ex-selfcheck-vi-12-b",
+        "ex-selfcheck-vi-13-a",
+        "ex-selfcheck-vi-13-b",
+        "ex-selfcheck-vi-14-a",
+        "ex-selfcheck-vi-14-b",
+        "ex-selfcheck-vi-15"
+      ],
+      "evidence": "tools/stereo-textbook/vector-chapter-selfcheck.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-chapter-selfcheck.test.cjs"
     }
   ],
   "cards": [
@@ -5722,6 +5812,222 @@
     {
       "id": "ex-main-0596-b",
       "sha256": "ba121838433c48ae2a2dea087240ab7871682cf05cf350fae685a3d9439905b3"
+    },
+    {
+      "id": "ex-main-0597-a",
+      "sha256": "006128ad43890fc391138bda8805f091d0adace93d54a8876903b8471c6582f0"
+    },
+    {
+      "id": "ex-main-0597-b",
+      "sha256": "fb29f0fe224f7f3df091badd6f69574f14c1f621302ffb75d12ccac542acf8c9"
+    },
+    {
+      "id": "ex-main-0598",
+      "sha256": "f32dc9d18120e2b2b79d269af2b6638d9e050be8844c28b6d36e0b8e176d9218"
+    },
+    {
+      "id": "ex-main-0599",
+      "sha256": "654fa9118452c596fc9b089703e95c6fc221cf39fcd51194c091d34a9c25cbb8"
+    },
+    {
+      "id": "ex-main-0600",
+      "sha256": "76b1e11570c239307be05a886de620c371f0e090d45638f6f84e7f2541136b5a"
+    },
+    {
+      "id": "ex-main-0601",
+      "sha256": "cc4034e4c900ef3c8dea557df4dedd9df73e49cb57981acbe9c36ac91ef514c7"
+    },
+    {
+      "id": "ex-main-0602",
+      "sha256": "43f4de3fe62e3065e1a2e99f1fb6ae7bbb7445867f237bdeb23bf056d649f741"
+    },
+    {
+      "id": "ex-main-0603",
+      "sha256": "9a42d2b93099937ec0c46be0f527219a426454e698fa390de6831eeb3c84180c"
+    },
+    {
+      "id": "ex-main-0604",
+      "sha256": "1b70eec3f4987928aed2f392ecdcc2e22ac6ad47ecec2b73f414b32988d18f45"
+    },
+    {
+      "id": "ex-main-0605-a",
+      "sha256": "4c811cf5e0ec451028fe1ac45b9539226f15a4502d72cb978a9407c867203893"
+    },
+    {
+      "id": "ex-main-0605-b",
+      "sha256": "915e667662f525e559937de4bd3675a0c9fc10b7c3444cdca11fc35d6a3a5cf3"
+    },
+    {
+      "id": "ex-main-0605-c",
+      "sha256": "673bb18a324bb0edad524de1ff2c6f0c14eed5208cd2b58af8d1597b30971d6d"
+    },
+    {
+      "id": "ex-main-0605-d",
+      "sha256": "d9e47bdd00588c9cd128c58cd75f818ddedf876750230e10b057ac52a2eb3e70"
+    },
+    {
+      "id": "ex-main-0605-e",
+      "sha256": "cca435f8675ac42007951edd4d00180a88a62a51a03f01f6aa832f9228351d58"
+    },
+    {
+      "id": "ex-main-0605-f",
+      "sha256": "024ce9753b48277e87ee9083a8331cc1051df957f62d5f5d48c750a4047155ef"
+    },
+    {
+      "id": "ex-main-0605-g",
+      "sha256": "ea9b3a04e1ded76e64d4409b9d3be543785f3f6f26ed36fbd00cd7686408d067"
+    },
+    {
+      "id": "ex-main-0606",
+      "sha256": "b430a19d840a94ab50a0e75742c30d2fdcaedf58746f9cde4efa0eca823234f1"
+    },
+    {
+      "id": "ex-main-0607-a",
+      "sha256": "4b54d80ef64f641e11188aa8c2de44158b2c887d241d565cfc0253085cc31644"
+    },
+    {
+      "id": "ex-main-0607-b",
+      "sha256": "6af216861def054b4cbdd10acaab0456376c320a956629d86fc368e068d3b847"
+    },
+    {
+      "id": "ex-main-0607-c",
+      "sha256": "f32b2e79a723002aaa0799f0c0fb18c3f6febd4a96175606ff5754d68cb2c079"
+    },
+    {
+      "id": "ex-main-0607-d",
+      "sha256": "b2f072f00026a936f5b59bff9142d480134ec5af779ff302ea3d562d0f27da60"
+    },
+    {
+      "id": "ex-main-0608",
+      "sha256": "b552a78e840bc371eea2952710510fea50cd5f922b87bd8329090ce943ac5ac1"
+    },
+    {
+      "id": "ex-main-0609",
+      "sha256": "49ca60f3eca1749e817397e7cd617a41402ac56ef5eb3ea8bc504490361ad470"
+    },
+    {
+      "id": "ex-main-0610",
+      "sha256": "642d2a3bcef5c43c86052df8a954180736298ee0dd99b73f045c2f1b9fe39d8f"
+    },
+    {
+      "id": "ex-main-0611",
+      "sha256": "3e4aafd81b4622331bb108e8760b1435469965fdcbeafa1e4cc162126565b531"
+    },
+    {
+      "id": "ex-main-0612",
+      "sha256": "905c597acfeb98e794c5ac18c0f2ee918558b180effad5c54eeca83957e7d763"
+    },
+    {
+      "id": "ex-selfcheck-vi-01-a",
+      "sha256": "25f3741cde45dc3b4bcff113a5e066cd1bad7568b424b8e21627f1ea4458a6fc"
+    },
+    {
+      "id": "ex-selfcheck-vi-01-b",
+      "sha256": "e1f73cea07b9b257e06d68dab8104937f9d15581b1fbeaa58876aa8c8a2dd065"
+    },
+    {
+      "id": "ex-selfcheck-vi-01-c",
+      "sha256": "38505583a4f49c475c59ae3b7a2c191aa4e89888c0b7d29c8d3b9d594df9380a"
+    },
+    {
+      "id": "ex-selfcheck-vi-01-d",
+      "sha256": "8e134142a14598a478cb6e7d70c543c49b7a42a4f8962ff024e8edc1d502fea3"
+    },
+    {
+      "id": "ex-selfcheck-vi-01-e",
+      "sha256": "51b6a554861ed82e1c50381ee308974a69b42b96a1a74933e0dea7394fd2a539"
+    },
+    {
+      "id": "ex-selfcheck-vi-01-f",
+      "sha256": "f28148670ec86392c21edf7e1188ba7cb8f4c72803c1209d007cf757f383e798"
+    },
+    {
+      "id": "ex-selfcheck-vi-02",
+      "sha256": "5d9fd1e31cc3e258e2ed1aad8b0db20107dbf8f25c1f3a5c5482bbe2d9f1d9b5"
+    },
+    {
+      "id": "ex-selfcheck-vi-03-a",
+      "sha256": "c2a08de6030bf00eb9c42c7020303ff81dc90c897d21899d51c80f4fa2b83ace"
+    },
+    {
+      "id": "ex-selfcheck-vi-03-b",
+      "sha256": "1feb8f85245fb9bf822640ecfef1577095f8b4df0a32c5da3b9c5d53db01ee7f"
+    },
+    {
+      "id": "ex-selfcheck-vi-04-a",
+      "sha256": "ac8308cd6627f2f4ca351e6fae5bf8885dcf4e4b139db1ea7f8421117fe660a2"
+    },
+    {
+      "id": "ex-selfcheck-vi-04-b",
+      "sha256": "dfb1e4bc0847caa3a632ccadf3ca919bec3e7fcbfa8413f9fff358120e96d62f"
+    },
+    {
+      "id": "ex-selfcheck-vi-05",
+      "sha256": "93e1d6f8bba39fc05ac723c5cd1c5085ae69f8e36deb8bb99d2a64f02349eedb"
+    },
+    {
+      "id": "ex-selfcheck-vi-06",
+      "sha256": "30ee122b80ac16e40bfd53ac1319ee8a7667d88f967b8df8dccf5b7a2fd744ef"
+    },
+    {
+      "id": "ex-selfcheck-vi-07",
+      "sha256": "931d3e08e60b0362916c901e540e22cde5c9219885eeaed206c2f4fc48d5605d"
+    },
+    {
+      "id": "ex-selfcheck-vi-08",
+      "sha256": "4ee09935a0ea84a5236674c3a21761a2ceda1c8793c1b50f3eaac68e2f5c5a23"
+    },
+    {
+      "id": "ex-selfcheck-vi-09",
+      "sha256": "8abb74d5f7a2f33c87d9d3d8a242f43b0c491dba20ea37101489ad8023ccc362"
+    },
+    {
+      "id": "ex-selfcheck-vi-10",
+      "sha256": "1fc4b6104145974a545a632fe181698e60feedf7cc56a3b24524fa9aa6dbebef"
+    },
+    {
+      "id": "ex-selfcheck-vi-11-a",
+      "sha256": "41b386a1129bb3f49986f8594118a7db810cb1486d7b1aa2dc84ee7ed4da5baa"
+    },
+    {
+      "id": "ex-selfcheck-vi-11-b",
+      "sha256": "a2b56e4b7eb74187ba1e84d4c3521df53ab0db263ed8ba00f6dc0835ecb2d56a"
+    },
+    {
+      "id": "ex-selfcheck-vi-11-c",
+      "sha256": "01da7498f64a8001ea2f9e7e14086fa4374ded5175c9d64a2c7a916d812f54d9"
+    },
+    {
+      "id": "ex-selfcheck-vi-11-d",
+      "sha256": "03c8b46a3d7dff3a2c06c75570efe4bd38f2ea246f316a946fe271e5448253b9"
+    },
+    {
+      "id": "ex-selfcheck-vi-12-a",
+      "sha256": "6d78ffa4b088187e7e49fc8d2df42e9ab43200c1a266db06654a0c6fda589dc3"
+    },
+    {
+      "id": "ex-selfcheck-vi-12-b",
+      "sha256": "49925edcdd05f4c7818a74b7b6e72be009f0ffed0abf4d77f6d0c4c4d2fe6b39"
+    },
+    {
+      "id": "ex-selfcheck-vi-13-a",
+      "sha256": "94e3e1b5753efd0ecdd3a9525e2b435a16ba887dca395b18b6c3c62466dc6a03"
+    },
+    {
+      "id": "ex-selfcheck-vi-13-b",
+      "sha256": "14e67ae13faeace276deb2dc79c3738d9158fb114d2fa35391f8209caeb0d842"
+    },
+    {
+      "id": "ex-selfcheck-vi-14-a",
+      "sha256": "be66d66f9722c310f38c6af904b48f1fe20334cffc21a557057a19c242792f29"
+    },
+    {
+      "id": "ex-selfcheck-vi-14-b",
+      "sha256": "58812e63e80e871785d3862735d8715bfce0dde399222738245888c668981139"
+    },
+    {
+      "id": "ex-selfcheck-vi-15",
+      "sha256": "b278a9fcef2fc790303b2f78903971d1f1f836a61991e4f650f76cb9c9ab5103"
     }
   ]
 }

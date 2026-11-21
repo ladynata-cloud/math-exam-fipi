@@ -1,0 +1,377 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0600",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Недостающая вершина параллелограмма и центр основания",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "600",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      154
+    ],
+    "pdfPages": [
+      156
+    ]
+  },
+  "statement": {
+    "text": "В пирамиде OABCD основание ABCD — параллелограмм. В точке M пересекаются его диагонали. Пусть a=OA, b=OB, c=OC.",
+    "goal": "Восстанови OD, затем найди OM."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "M — пересечение диагоналей параллелограмма. Базис начинается в вершине O.",
+    "model": {
+      "points": {
+        "O": [
+          0.7,
+          0.5,
+          3.1
+        ],
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          3,
+          0,
+          0
+        ],
+        "D": [
+          0.6,
+          2.4,
+          0
+        ],
+        "C": [
+          3.6,
+          2.4,
+          0
+        ],
+        "M": [
+          1.8,
+          1.2,
+          0.0
+        ],
+        "N": [
+          0.3,
+          1.2,
+          0.0
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "B"
+        ],
+        [
+          "O",
+          "C"
+        ],
+        [
+          "O",
+          "D"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "D",
+          "C",
+          "B"
+        ],
+        [
+          "O",
+          "A",
+          "B"
+        ],
+        [
+          "O",
+          "B",
+          "C"
+        ],
+        [
+          "O",
+          "C",
+          "D"
+        ],
+        [
+          "O",
+          "D",
+          "A"
+        ]
+      ],
+      "arrows": [
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "B"
+        ],
+        [
+          "O",
+          "C"
+        ],
+        [
+          "A",
+          "D"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "O",
+          "D"
+        ],
+        [
+          "O",
+          "M"
+        ],
+        [
+          "O",
+          "N"
+        ]
+      ],
+      "labelNames": [
+        "O",
+        "A",
+        "B",
+        "D",
+        "C",
+        "M",
+        "N"
+      ],
+      "views": {
+        "neutral": {
+          "label": "M — пересечение диагоналей параллелограмма. Базис начинается в вершине O.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "O",
+              "B"
+            ],
+            [
+              "O",
+              "C"
+            ],
+            [
+              "A",
+              "C"
+            ],
+            [
+              "B",
+              "D"
+            ]
+          ]
+        },
+        "fourth": {
+          "label": "AD равно BC, поэтому переход к D проходит из O через A.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "A",
+              "D"
+            ],
+            [
+              "B",
+              "C"
+            ],
+            [
+              "O",
+              "D"
+            ]
+          ]
+        },
+        "center": {
+          "label": "M посередине AC и BD.",
+          "segments": [
+            [
+              "A",
+              "M"
+            ],
+            [
+              "M",
+              "C"
+            ],
+            [
+              "B",
+              "M"
+            ],
+            [
+              "M",
+              "D"
+            ],
+            [
+              "O",
+              "M"
+            ]
+          ]
+        },
+        "new": {
+          "label": "В дополнительном примере N — середина стороны AD.",
+          "segments": [
+            [
+              "A",
+              "N"
+            ],
+            [
+              "N",
+              "D"
+            ],
+            [
+              "O",
+              "N"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Как добраться до D через A?",
+      "text": "После OA нужен AD. На противоположной стороне то же перемещение даёт BC=OC−OB.",
+      "view": "fourth"
+    },
+    {
+      "id": "h2",
+      "question": "Почему проще взять AC?",
+      "text": "Оба её конца уже выражены базисными векторами из O.",
+      "view": "center"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Сторона BC",
+      "prompt": "Найди коэффициенты BC в порядке a,b,c.",
+      "input": {
+        "prompt": "Сторона BC",
+        "accepted": [
+          "0;-1;1"
+        ],
+        "feedback": "Чтобы получить BC, вычти вектор к началу B из вектора к концу C."
+      },
+      "explanation": "BC=c−b. Он же равен AD.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Разность радиус-векторов направлена от вычитаемого конца к уменьшаемому.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "fourth"
+    },
+    {
+      "id": "step-2",
+      "title": "Вершина D",
+      "prompt": "Разложи OD.",
+      "input": {
+        "prompt": "Вершина D",
+        "accepted": [
+          "1;-1;1"
+        ],
+        "feedback": "После OA добавь найденный BC, равный AD."
+      },
+      "explanation": "OD=a−b+c.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Путь O → A → D складывается по правилу треугольника.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "fourth"
+    },
+    {
+      "id": "step-3",
+      "title": "Центр основания",
+      "prompt": "Запиши коэффициенты OM.",
+      "input": {
+        "prompt": "Центр основания",
+        "accepted": [
+          "1/2;0;1/2"
+        ],
+        "feedback": "Это полусумма OA и OC. Коэффициент при OB равен нулю."
+      },
+      "explanation": "OM=(a+c)/2. Проверка по другой диагонали: (b+a−b+c)/2 даёт то же.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Диагонали параллелограмма делятся пополам.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "center"
+    },
+    {
+      "id": "step-4",
+      "title": "Середина стороны",
+      "prompt": "На новом шаге N делит AD пополам. Вырази ON.",
+      "input": {
+        "prompt": "Середина стороны",
+        "accepted": [
+          "1;-1/2;1/2"
+        ],
+        "feedback": "Усредни OA и OD. Оба содержат по одному a."
+      },
+      "explanation": "ON=(a+(a−b+c))/2=a−b/2+c/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Коэффициенты двух концов усредняются покомпонентно.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "1;-1;1;1/2;0;1/2"
+    ],
+    "prompt": "Запиши по порядку три коэффициента OD и три OM через точку с запятой.",
+    "feedback": "OD=a−b+c, а OM берётся по диагонали AC."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 154, answer key 268 and printed derivations where given; independent field and vector computations.",
+    "at": "2026-11-21T21:05:43Z"
+  }
+}

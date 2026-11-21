@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0602",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Две середины подряд и отрицательный коэффициент",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "602",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      154
+    ],
+    "pdfPages": [
+      156
+    ]
+  },
+  "statement": {
+    "text": "Точка O вне плоскости параллелограмма. M лежит посередине AB, а K посередине MD. Отсчитывай векторы в базисе a=OA, b=OB, c=OC.",
+    "goal": "Разложи OM, затем OK."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "M делит AB пополам, а K — середина другого отрезка MD.",
+    "model": {
+      "points": {
+        "O": [
+          0.7,
+          0.5,
+          3.1
+        ],
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          3,
+          0,
+          0
+        ],
+        "D": [
+          0.6,
+          2.4,
+          0
+        ],
+        "C": [
+          3.6,
+          2.4,
+          0
+        ],
+        "M": [
+          1.5,
+          0.0,
+          0.0
+        ],
+        "K": [
+          1.05,
+          1.2,
+          0.0
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "B"
+        ],
+        [
+          "O",
+          "C"
+        ],
+        [
+          "O",
+          "D"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "D",
+          "C",
+          "B"
+        ],
+        [
+          "O",
+          "A",
+          "B"
+        ],
+        [
+          "O",
+          "B",
+          "C"
+        ],
+        [
+          "O",
+          "C",
+          "D"
+        ],
+        [
+          "O",
+          "D",
+          "A"
+        ]
+      ],
+      "arrows": [
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "B"
+        ],
+        [
+          "O",
+          "C"
+        ],
+        [
+          "O",
+          "M"
+        ],
+        [
+          "O",
+          "D"
+        ],
+        [
+          "O",
+          "K"
+        ]
+      ],
+      "labelNames": [
+        "O",
+        "A",
+        "B",
+        "D",
+        "C",
+        "M",
+        "K"
+      ],
+      "views": {
+        "neutral": {
+          "label": "M делит AB пополам, а K — середина другого отрезка MD.",
+          "segments": [
+            [
+              "A",
+              "M"
+            ],
+            [
+              "M",
+              "B"
+            ],
+            [
+              "M",
+              "K"
+            ],
+            [
+              "K",
+              "D"
+            ],
+            [
+              "O",
+              "K"
+            ]
+          ]
+        },
+        "first": {
+          "label": "Сначала усредни OA и OB, получив OM.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "O",
+              "B"
+            ],
+            [
+              "A",
+              "M"
+            ],
+            [
+              "M",
+              "B"
+            ],
+            [
+              "O",
+              "M"
+            ]
+          ]
+        },
+        "second": {
+          "label": "Теперь усредни OM и OD. Предварительно вырази OD через три заданные стрелки.",
+          "segments": [
+            [
+              "O",
+              "M"
+            ],
+            [
+              "O",
+              "D"
+            ],
+            [
+              "M",
+              "K"
+            ],
+            [
+              "K",
+              "D"
+            ],
+            [
+              "O",
+              "K"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "У каких двух концов брать среднее первым?",
+      "text": "Для M это A и B. Для K второе усреднение идёт уже между M и D.",
+      "view": "first"
+    },
+    {
+      "id": "h2",
+      "question": "Как выразить D?",
+      "text": "Используй OD=OA+BC и BC=OC−OB. Сохрани минус при b.",
+      "view": "second"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Первая середина",
+      "prompt": "Разложи OM по a,b,c.",
+      "input": {
+        "prompt": "Первая середина",
+        "accepted": [
+          "1/2;1/2;0"
+        ],
+        "feedback": "M лежит посередине AB, поэтому веса OA и OB равны."
+      },
+      "explanation": "OM=(a+b)/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Формула середины отрезка.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "first"
+    },
+    {
+      "id": "step-2",
+      "title": "Недостающий конец",
+      "prompt": "Найди коэффициенты OD.",
+      "input": {
+        "prompt": "Недостающий конец",
+        "accepted": [
+          "1;-1;1"
+        ],
+        "feedback": "BC=c−b. Перенеси эту сторону к A."
+      },
+      "explanation": "OD=a−b+c.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Противоположные стороны параллелограмма дают равные векторы.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "second"
+    },
+    {
+      "id": "step-3",
+      "title": "Вторая середина",
+      "prompt": "Запиши коэффициенты OK.",
+      "input": {
+        "prompt": "Вторая середина",
+        "accepted": [
+          "3/4;-1/4;1/2"
+        ],
+        "feedback": "При b в полусумме получается (1/2−1)/2. Проверь знак."
+      },
+      "explanation": "OK=(OM+OD)/2=3a/4−b/4+c/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Коэффициенты полусуммы усредняются отдельно.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "second"
+    },
+    {
+      "id": "step-4",
+      "title": "Новое деление",
+      "prompt": "Теперь от M пройдена только треть MD. Запиши коэффициенты нового вектора из O.",
+      "input": {
+        "prompt": "Новое деление",
+        "accepted": [
+          "2/3;0;1/3"
+        ],
+        "feedback": "Возьми (2OM+OD)/3. При b появятся +1 и −1."
+      },
+      "explanation": "Получаем (2a+c)/3.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Точка на трети от M к D имеет веса 2/3 и 1/3.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "second"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "1/2;1/2;0;3/4;-1/4;1/2"
+    ],
+    "prompt": "Запиши три коэффициента OM и три OK через точку с запятой.",
+    "feedback": "Для K нужны OM и OD. Положение точки O вне основания не мешает формулам середины."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 154, answer key 268 and printed derivations where given; independent field and vector computations.",
+    "at": "2026-11-21T21:05:43Z"
+  }
+}

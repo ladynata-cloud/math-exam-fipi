@@ -1,0 +1,465 @@
+{
+  "parts": {
+    "597": [
+      "а",
+      "б"
+    ],
+    "598": [
+      null
+    ],
+    "599": [
+      null
+    ],
+    "600": [
+      null
+    ],
+    "601": [
+      null
+    ],
+    "602": [
+      null
+    ],
+    "603": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "597": {
+      "id": "source-main-0597",
+      "kind": "exercise",
+      "title": "Задача № 597",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "597",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "598": {
+      "id": "source-main-0598",
+      "kind": "exercise",
+      "title": "Задача № 598",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "598",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "599": {
+      "id": "source-main-0599",
+      "kind": "exercise",
+      "title": "Задача № 599",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "599",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "600": {
+      "id": "source-main-0600",
+      "kind": "exercise",
+      "title": "Задача № 600",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "600",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "601": {
+      "id": "source-main-0601",
+      "kind": "exercise",
+      "title": "Задача № 601",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "601",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "602": {
+      "id": "source-main-0602",
+      "kind": "exercise",
+      "title": "Задача № 602",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "602",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "603": {
+      "id": "source-main-0603",
+      "kind": "exercise",
+      "title": "Задача № 603",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "603",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          154,
+          155
+        ],
+        "pdfPages": [
+          156,
+          157
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0597-a": {
+      "raw": "527184008ba79d0dbf6b62fb14351e9bf3fe73f56deeb503dca6d6dbaa824980",
+      "authored": "006128ad43890fc391138bda8805f091d0adace93d54a8876903b8471c6582f0",
+      "integrated": "4a42069f7509a69bf4c64eda69f159035109c3bd20c97f5e9452859157d57f50"
+    },
+    "ex-main-0597-b": {
+      "raw": "a732273910617138128c417b1ac24d3362d442bd666211364fd55f47c3f17539",
+      "authored": "fb29f0fe224f7f3df091badd6f69574f14c1f621302ffb75d12ccac542acf8c9",
+      "integrated": "362e51a33f3d33ecb04036b826bd8798bf4d5abc316b50a2e761e977580307b4"
+    },
+    "ex-main-0598": {
+      "raw": "3756ced7beb5cd026209c754d9832332ad960c549dade439e4a602a7083b479b",
+      "authored": "f32dc9d18120e2b2b79d269af2b6638d9e050be8844c28b6d36e0b8e176d9218",
+      "integrated": "14b21cfc508b09d1101eac73c1410bb3987308df30a405402a65c3e4e38ada4b"
+    },
+    "ex-main-0599": {
+      "raw": "56faad1b1ff43a87d6c5035f5b523eef7c7e0ae665ea75e6327f2d78807fd9e5",
+      "authored": "654fa9118452c596fc9b089703e95c6fc221cf39fcd51194c091d34a9c25cbb8",
+      "integrated": "af04bab3259ec8c420a0bf6cf04e0880830680d25d3812f350c796f41b8959b9"
+    },
+    "ex-main-0600": {
+      "raw": "c1080bcb89d5c070b3dd21e66eeee730946db3db751aa39afae5c15d5261b9a2",
+      "authored": "76b1e11570c239307be05a886de620c371f0e090d45638f6f84e7f2541136b5a",
+      "integrated": "b1b41242b08726a0f55d0d2663437584af70930aa438b96fadeee941dcde508a"
+    },
+    "ex-main-0601": {
+      "raw": "8b62c79b3ee73758738990308c9faa1480b5353e93d94e7641c7b4f7ee4079d4",
+      "authored": "cc4034e4c900ef3c8dea557df4dedd9df73e49cb57981acbe9c36ac91ef514c7",
+      "integrated": "17f3663271a7e94244285f349c35a1a2f9b38b14e086dff2f2d8a94f83658e2a"
+    },
+    "ex-main-0602": {
+      "raw": "481ce5a8dae903cca2802c0e14c160cea7a0538607c4f52f779f3c874e61c474",
+      "authored": "43f4de3fe62e3065e1a2e99f1fb6ae7bbb7445867f237bdeb23bf056d649f741",
+      "integrated": "0b6610253affd979494779f698ce18fdca39a1f53595db4a939fe4b0505b2eaf"
+    },
+    "ex-main-0603": {
+      "raw": "af33c4de105c8c86232205594c8b7aac356c884bd39a9ee9955a05271b7f13c6",
+      "authored": "9a42d2b93099937ec0c46be0f527219a426454e698fa390de6831eeb3c84180c",
+      "integrated": "bcc8eefee886503bcc6c0bc4ca187e3ae685cbe05ecd28964ef4002d3b82108b"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0597-a|condition",
+      "fields-and-midpoint-vectors-ex-main-0597-a-condition"
+    ],
+    [
+      "ex-main-0597-a|help:h1",
+      "fields-and-midpoint-vectors-ex-main-0597-a-help-h1"
+    ],
+    [
+      "ex-main-0597-a|help:h2",
+      "fields-and-midpoint-vectors-ex-main-0597-a-help-h2"
+    ],
+    [
+      "ex-main-0597-a|step-1",
+      "fields-and-midpoint-vectors-ex-main-0597-a-step-1"
+    ],
+    [
+      "ex-main-0597-a|step-2",
+      "fields-and-midpoint-vectors-ex-main-0597-a-step-2"
+    ],
+    [
+      "ex-main-0597-a|step-3",
+      "fields-and-midpoint-vectors-ex-main-0597-a-step-3"
+    ],
+    [
+      "ex-main-0597-a|step-4",
+      "fields-and-midpoint-vectors-ex-main-0597-a-step-4"
+    ],
+    [
+      "ex-main-0597-a|step-5",
+      "fields-and-midpoint-vectors-ex-main-0597-a-step-5"
+    ],
+    [
+      "ex-main-0597-b|condition",
+      "fields-and-midpoint-vectors-ex-main-0597-b-condition"
+    ],
+    [
+      "ex-main-0597-b|help:h1",
+      "fields-and-midpoint-vectors-ex-main-0597-b-help-h1"
+    ],
+    [
+      "ex-main-0597-b|help:h2",
+      "fields-and-midpoint-vectors-ex-main-0597-b-help-h2"
+    ],
+    [
+      "ex-main-0597-b|help:h3",
+      "fields-and-midpoint-vectors-ex-main-0597-b-help-h3"
+    ],
+    [
+      "ex-main-0597-b|step-1",
+      "fields-and-midpoint-vectors-ex-main-0597-b-step-1"
+    ],
+    [
+      "ex-main-0597-b|step-2",
+      "fields-and-midpoint-vectors-ex-main-0597-b-step-2"
+    ],
+    [
+      "ex-main-0597-b|step-3",
+      "fields-and-midpoint-vectors-ex-main-0597-b-step-3"
+    ],
+    [
+      "ex-main-0597-b|step-4",
+      "fields-and-midpoint-vectors-ex-main-0597-b-step-4"
+    ],
+    [
+      "ex-main-0597-b|step-5",
+      "fields-and-midpoint-vectors-ex-main-0597-b-step-5"
+    ],
+    [
+      "ex-main-0598|condition",
+      "fields-and-midpoint-vectors-ex-main-0598-condition"
+    ],
+    [
+      "ex-main-0598|help:h1",
+      "fields-and-midpoint-vectors-ex-main-0598-help-h1"
+    ],
+    [
+      "ex-main-0598|help:h2",
+      "fields-and-midpoint-vectors-ex-main-0598-help-h2"
+    ],
+    [
+      "ex-main-0598|step-1",
+      "fields-and-midpoint-vectors-ex-main-0598-step-1"
+    ],
+    [
+      "ex-main-0598|step-2",
+      "fields-and-midpoint-vectors-ex-main-0598-step-2"
+    ],
+    [
+      "ex-main-0598|step-3",
+      "fields-and-midpoint-vectors-ex-main-0598-step-3"
+    ],
+    [
+      "ex-main-0598|step-4",
+      "fields-and-midpoint-vectors-ex-main-0598-step-4"
+    ],
+    [
+      "ex-main-0599|condition",
+      "fields-and-midpoint-vectors-ex-main-0599-condition"
+    ],
+    [
+      "ex-main-0599|help:h1",
+      "fields-and-midpoint-vectors-ex-main-0599-help-h1"
+    ],
+    [
+      "ex-main-0599|help:h2",
+      "fields-and-midpoint-vectors-ex-main-0599-help-h2"
+    ],
+    [
+      "ex-main-0599|step-1",
+      "fields-and-midpoint-vectors-ex-main-0599-step-1"
+    ],
+    [
+      "ex-main-0599|step-2",
+      "fields-and-midpoint-vectors-ex-main-0599-step-2"
+    ],
+    [
+      "ex-main-0599|step-3",
+      "fields-and-midpoint-vectors-ex-main-0599-step-3"
+    ],
+    [
+      "ex-main-0599|step-4",
+      "fields-and-midpoint-vectors-ex-main-0599-step-4"
+    ],
+    [
+      "ex-main-0600|condition",
+      "fields-and-midpoint-vectors-ex-main-0600-condition"
+    ],
+    [
+      "ex-main-0600|help:h1",
+      "fields-and-midpoint-vectors-ex-main-0600-help-h1"
+    ],
+    [
+      "ex-main-0600|help:h2",
+      "fields-and-midpoint-vectors-ex-main-0600-help-h2"
+    ],
+    [
+      "ex-main-0600|step-1",
+      "fields-and-midpoint-vectors-ex-main-0600-step-1"
+    ],
+    [
+      "ex-main-0600|step-2",
+      "fields-and-midpoint-vectors-ex-main-0600-step-2"
+    ],
+    [
+      "ex-main-0600|step-3",
+      "fields-and-midpoint-vectors-ex-main-0600-step-3"
+    ],
+    [
+      "ex-main-0600|step-4",
+      "fields-and-midpoint-vectors-ex-main-0600-step-4"
+    ],
+    [
+      "ex-main-0601|condition",
+      "fields-and-midpoint-vectors-ex-main-0601-condition"
+    ],
+    [
+      "ex-main-0601|help:h1",
+      "fields-and-midpoint-vectors-ex-main-0601-help-h1"
+    ],
+    [
+      "ex-main-0601|help:h2",
+      "fields-and-midpoint-vectors-ex-main-0601-help-h2"
+    ],
+    [
+      "ex-main-0601|step-1",
+      "fields-and-midpoint-vectors-ex-main-0601-step-1"
+    ],
+    [
+      "ex-main-0601|step-2",
+      "fields-and-midpoint-vectors-ex-main-0601-step-2"
+    ],
+    [
+      "ex-main-0601|step-3",
+      "fields-and-midpoint-vectors-ex-main-0601-step-3"
+    ],
+    [
+      "ex-main-0601|step-4",
+      "fields-and-midpoint-vectors-ex-main-0601-step-4"
+    ],
+    [
+      "ex-main-0602|condition",
+      "fields-and-midpoint-vectors-ex-main-0602-condition"
+    ],
+    [
+      "ex-main-0602|help:h1",
+      "fields-and-midpoint-vectors-ex-main-0602-help-h1"
+    ],
+    [
+      "ex-main-0602|help:h2",
+      "fields-and-midpoint-vectors-ex-main-0602-help-h2"
+    ],
+    [
+      "ex-main-0602|step-1",
+      "fields-and-midpoint-vectors-ex-main-0602-step-1"
+    ],
+    [
+      "ex-main-0602|step-2",
+      "fields-and-midpoint-vectors-ex-main-0602-step-2"
+    ],
+    [
+      "ex-main-0602|step-3",
+      "fields-and-midpoint-vectors-ex-main-0602-step-3"
+    ],
+    [
+      "ex-main-0602|step-4",
+      "fields-and-midpoint-vectors-ex-main-0602-step-4"
+    ],
+    [
+      "ex-main-0603|condition",
+      "fields-and-midpoint-vectors-ex-main-0603-condition"
+    ],
+    [
+      "ex-main-0603|help:h1",
+      "fields-and-midpoint-vectors-ex-main-0603-help-h1"
+    ],
+    [
+      "ex-main-0603|help:h2",
+      "fields-and-midpoint-vectors-ex-main-0603-help-h2"
+    ],
+    [
+      "ex-main-0603|step-1",
+      "fields-and-midpoint-vectors-ex-main-0603-step-1"
+    ],
+    [
+      "ex-main-0603|step-2",
+      "fields-and-midpoint-vectors-ex-main-0603-step-2"
+    ],
+    [
+      "ex-main-0603|step-3",
+      "fields-and-midpoint-vectors-ex-main-0603-step-3"
+    ],
+    [
+      "ex-main-0603|step-4",
+      "fields-and-midpoint-vectors-ex-main-0603-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "06933277466476333b7778840348339f89ff3aadab13a4b72713c8847c0c23a8",
+      "afterSHA256": "71ada6b9f9ce86a1159596a337fa6fe553693d1b998b01f6cefb06c509282df3"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "d83c24abbd62f69d582414b20ac3c19da1bc07f52425b3b7bdfae46d7231bee2",
+      "afterSHA256": "a981e6826faab709edeb9828fc8ca33a5fbd03aaaa09287ce131b8e3eb000696"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T20:48:13Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–596, with 1,001 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "148c2a7c47d38b6cfcee20a834445f232e51aa826b0e56ba4deaf40a34320e60",
+    "index": "ad14ae4c2159c38748a13ca8e05f444f14f3cd4c76cf92f081e0aebc33416dc0",
+    "registry": "91950a321b4b11894a9543a53030206cb492434147c244f61f0cf6f2c916b6b2",
+    "cases": "a3d8a184ca4b74dc30ebfc0ba9d0bcc96a767087afa3b05c50de2501204345ec"
+  }
+}

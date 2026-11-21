@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,774);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,916);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -861,6 +861,80 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
   for(const [i,y]of expected.entries())assert(M.equal(y,t.steps[i].answer),t.id);
   assert(M.equal(M.operation('divide',s.inputs[1],s.inputs[0]),M.operation('divide',expected[1],expected[0])));
  }
+}
+{
+ const rows=D.lessons.find(l=>l.id==='p18').tasks,group=n=>Array.from(rows.filter(t=>t.source.exercise===n)).sort((a,b)=>Number(a.source.subpart)-Number(b.source.subpart));
+ for(const [n,total]of [[100,7],[101,4],[102,3],[103,1]]){assert.equal(group(n).length,total);assert(group(n).every(t=>t.source.page===27));}
+ for(const [i,t]of group(100).entries()){assert.equal(t.derivedProof,i+1);assert.equal(t.kind,'manual');}
+ for(const [id,t] of group(101).entries()){assert.equal(t.deriveThree.terms.length,4);assert.equal(t.deriveThree.variant,id===0?'subtract':'complement');}
+ assert.deepEqual(group(102).map(t=>t.parallelIntercept),['measure','explore','sum']);assert(group(102).every(t=>t.kind==='manual'));
+ const t=group(103)[0],truth=Array.from(t.thalesCipher).filter(([l,a,b,c,d])=>M.equal(M.operation('multiply',a,d),M.operation('multiply',b,c))).map(v=>v[0]);
+ assert.equal(truth.join(''),'ФАЛЕС');assert.equal(t.answer,'Фалес');
+}
+{
+ const rows=D.lessons.find(l=>l.id==='p18').tasks,group=n=>Array.from(rows.filter(t=>t.source.exercise===n));
+ for(const [n,total]of [[104,4],[105,8],[106,6],[107,2],[108,2],[109,1],[110,1],[111,1]]){assert.equal(group(n).length,total);assert(group(n).every(t=>t.source.page===28));}
+ for(const t of group(104)){const f=t.missingOperation;const matches=['add','subtract','multiply','divide'].filter(k=>M.equal(M.operation(k,...f.terms),f.target));assert.equal(matches.length,1);assert.equal(t.answer,{add:'+',subtract:'−',multiply:'×',divide:'÷'}[matches[0]]);}
+ for(const t of group(105)){for(const [j,vals] of t.missingRatio.sets.entries()){const v=Array.from(vals,x=>x===null?t.missingRatio.answers[j]:x);assert(M.equal(M.operation('multiply',v[0],v[3]),M.operation('multiply',v[1],v[2])),t.id);}}
+ for(const t of group(106)){const q=t.affineRatios,vals=q.terms.map(v=>Array.isArray(v)?M.operation('add',M.operation('multiply',v[0],t.answer),v[1]):M.parse(v));assert(vals[1].n!==0&&vals[3].n!==0);assert(M.equal(M.operation('divide',vals[0],vals[1]),M.operation('divide',vals[2],vals[3])));}
+ for(const [j,ans]of ['4/5','2'].entries())assert(M.equal(group(107)[j].answer,ans));
+ for(const t of group(108)){const q=t.wholeFromExtras,all=M.parse(t.answer);const [f,g,a,b]=q.values.map(M.parse);assert(M.equal(all,M.operation('add',M.operation('multiply',all,M.operation('add',f,g)),M.operation('add',a,b))));}
+ assert.equal(group(109)[0].answer,'На первом заводе');assert.equal(Number(group(110)[0].answer),90*1.2-100);assert.equal(Number(group(111)[0].answer),100-360*.25);
+}
+{
+ const topic=D.lessons.find(l=>l.id==='p18'),rows=topic.tasks,group=n=>Array.from(rows.filter(t=>t.source.exercise===n));
+ assert.deepEqual(Object.values(topic.completeSourceSection),[96,122,26,30]);
+ for(const [n,count] of [[112,1],[113,1],[114,3],[115,3],[116,4],[117,2],[118,1],[119,1],[120,1],[121,2],[122,1]]){assert.equal(group(n).length,count);assert(group(n).every(t=>t.source.page===(n<=116?29:30)));}
+ const salary=group(112)[0];assert.equal(Number(salary.answer),8000+8*2000);assert.deepEqual(Array.from(salary.steps,z=>Number(z.answer)),[2000,8,3,200]);
+ const scores=Array.from(group(113)[0].scoreRanking).map(([letter,...marks])=>[letter,marks.reduce((x,y)=>x+y)/300]);assert.deepEqual(scores.map(x=>x[1]),[.60,1.20,.80,.96,1.04,1.32,.98]);assert.equal(scores.sort((a,b)=>b[1]-a[1]).map(x=>x[0]).join(''),'РЕЙТИНГ');
+ for(const t of [...group(116),...group(120)]){const z=M.parse(t.answer),v=t.affineRatios.terms.map(x=>Array.isArray(x)?M.operation('add',M.operation('multiply',x[0],z),x[1]):M.parse(x));assert(M.equal(M.operation('divide',v[0],v[1]),M.operation('divide',v[2],v[3])),t.id);}
+ assert.equal(Number(group(118)[0].answer),36);assert.equal(Number(group(119)[0].answer),(5225-5000)/5000/6*12*100);
+ for(const [i,target]of ['0123456789','123456789'].entries()){
+  const ks=[];for(let n=1;n<20;n++){const vals=[1,2,3,4,5].map(v=>v*n);if(vals.join('').split('').sort().join('')===target&&(i||vals.every(v=>v>=10&&v<100)))ks.push(n);}assert.deepEqual(ks,[i?9:18]);
+ }
+}
+{
+ const topic=D.lessons.find(l=>l.id==='p18'),groups=n=>Array.from(topic.tasks.filter(t=>t.source.exercise===n));
+ assert.deepEqual(Object.values(topic.completeSourceReview),[123,131,31,31]);
+ for(const [n,total]of [[123,4],[124,4],[125,3],[126,4],[127,3],[128,1],[129,2],[130,4],[131,2]]){assert.equal(groups(n).length,total);assert(groups(n).every(t=>t.source.page===31));assert(D.exerciseIndexByPart[2][n].review);}
+ for(const t of [...groups(123),...groups(124)].filter(t=>t.reviewRatio)){const s=t.reviewRatio,q=M.operation('divide',...s.values);assert(M.equal(t.answer,s.percent?M.operation('multiply',100,q):q));}
+ const [S,cm,km]=groups(125);assert(M.equal(S.answer,M.operation('divide',74400000,'18.6')));assert(M.equal(cm.answer,M.operation('divide',1490,100)));assert(M.equal(km.answer,M.operation('multiply','13.7',80)));
+ for(const t of groups(126)){const s=t.missingRatio;for(const [i,values]of s.sets.entries()){const a=values.map(v=>v===null?s.answers[i]:v);assert(M.equal(M.operation('divide',a[0],a[1]),M.operation('divide',a[2],a[3])));}}
+ for(const t of groups(127)){const s=t.affineRatios,q=M.parse(t.answer),v=s.terms.map(x=>Array.isArray(x)?M.operation('add',M.operation('multiply',x[0],q),x[1]):M.parse(x));assert(M.equal(M.operation('divide',v[0],v[1]),M.operation('divide',v[2],v[3])));}
+ assert(M.equal(groups(129)[0].answer,21));assert(M.equal(groups(129)[1].answer,'.3'));assert.deepEqual(groups(130).map(t=>t.answer),['5a','9b/20','100d/c','x/25']);
+ assert.deepEqual(groups(131).map(t=>Number(t.answer)),[100,0]);
+}
+{
+ const topic=D.lessons.find(l=>l.id==='p37'),rows=topic.tasks;
+ const sorted=n=>Array.from(rows.filter(t=>t.source.exercise===n)).sort((a,b)=>a.source.subpart.localeCompare(b.source.subpart,'ru'));
+ const answers={86:['1','1','6','-7'],87:['-9','2','-3','-5/2','1/6','-2/3','-28/5','-3/2','1/10'],88:['4/5','-4','-2','1/6','2/3','Все рациональные числа'],89:['20','7','-28','12/5','-8/5','25']};
+ for(const n of [86,87,88,89]){
+  const group=sorted(n);assert.equal(group.length,answers[n].length);
+  for(const [i,t] of group.entries()){
+   assert.equal(t.source.page,22);assert(t.linearEquationStudy);assert(t.kind==='choice'?t.answer===answers[n][i]:M.equal(t.answer,answers[n][i]));const s=t.linearEquationStudy,[a,b,c,d]=s.coefficients.map(M.parse);
+   if(t.kind==='number'){const q=M.parse(t.answer);assert(M.equal(M.operation('add',M.operation('multiply',a,q),b),M.operation('add',M.operation('multiply',c,q),d)),t.id);}
+   else{assert(M.equal(a,c));assert(M.equal(b,d));}
+   if(n===89)for(const v of [a,b,c,d])assert.equal(M.operation('multiply',v,s.clear).d,1);
+  }
+ }
+}
+{
+ const l=D.lessons.find(l=>l.id==='p37'),group=n=>Array.from(l.tasks.filter(t=>t.source.exercise===n)).sort((a,b)=>a.source.subpart.localeCompare(b.source.subpart,'ru'));
+ for(const [n,number]of [[90,4],[91,2],[92,2],[93,2],[94,2],[95,2],[96,8]]){assert.equal(group(n).length,number);assert(group(n).every(t=>t.source.page===23));}
+ const expected={90:['6','-27/10','-21','-50'],91:['2','3'],92:['3','Корней нет'],93:['2','240'],94:['210','324'],95:['15','100'],96:['0','-1/4','1/6','Корней нет','25','-9','2/5','21/44']};
+ for(const [n,keys]of Object.entries(expected))group(Number(n)).forEach((t,i)=>assert(t.kind==='choice'?t.answer===keys[i]:M.equal(t.answer,keys[i]),t.id));
+ const fns=[x=>7*x*(9-2*x),x=>x*(2*x-1)*(4-x)*(x+1),x=>x*(x+8),x=>3*x*x-14*x-15];
+ [...group(91),...group(92)].forEach((t,i)=>{const target=[70,60,33,0][i];const candidates=Array.from({length:75},(_,j)=>j+1).filter(x=>fns[i](x)===target);assert.deepEqual(candidates,[[2],[3],[3],[]][i]);});
+ for(const t of [...group(90),group(96).at(-1)]){const q=t.affineRatios;const a=q.terms.map(v=>Array.isArray(v)?M.operation('add',M.operation('multiply',v[0],t.answer),v[1]):M.parse(v));assert(M.equal(M.operation('divide',a[0],a[1]),M.operation('divide',a[2],a[3])));}
+ assert.equal(2-.5,1+.5);assert.equal(240-60,1.5*(60+60));assert.equal(105+60+45,210);assert.equal(108+120+96,324);assert.equal(150-5*15,120-3*15);assert.equal(300-25*10,(300-20*10)/2);
+}
+{
+ const rows=D.lessons.find(l=>l.id==='p37').tasks,group=n=>Array.from(rows.filter(t=>t.source.exercise===n));
+ for(const [n,total]of [[97,1],[98,2],[99,6],[100,6]]){assert.equal(group(n).length,total);assert(group(n).every(t=>t.source.page===24));}
+ assert(M.equal(group(97)[0].answer,'27/2'));assert(M.equal(M.operation('multiply','27/2','20/27'),10));
+ for(const [i,t]of group(98).entries()){const v=t.directedCycle;let n=M.parse(v.start);const vals=v.ops.map(([k,x])=>n=M.operation({'+':'add','−':'subtract','×':'multiply','÷':'divide'}[k],n,x));assert(M.equal(vals[5],v.start));assert.equal(t.steps.length,6);for(let k=0;k<5;k++)assert(M.equal(vals[k],t.steps[k].answer));assert.equal(v.side,i);}
+ const keys=[['3/5','17/10','26/5','39/10','-1/2','-7/5'],['2/25','9/20','15','-3/50','9/25','-80']];
+ for(const [j,n]of [99,100].entries())group(n).forEach((t,i)=>{assert(M.equal(t.answer,keys[j][i]),t.id);assert.equal(t.steps[0].kind,'choice');});
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-selfcheck-vi-05",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Коллинеарность после вычитания слагаемого",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "selfcheck",
+    "exercise": "5",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      156
+    ],
+    "pdfPages": [
+      158
+    ]
+  },
+  "statement": {
+    "text": "Если a и a+b коллинеарны, обязательно ли коллинеарны a и b?",
+    "goal": "Следует ли коллинеарность a и b? Введи «да» или «нет»."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "AB изображает a, CD — b, EF — a+b.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0.0,
+          0.0
+        ],
+        "B": [
+          2,
+          1.0,
+          0.0
+        ],
+        "C": [
+          0,
+          1.7,
+          0.0
+        ],
+        "D": [
+          -6,
+          -1.3,
+          0.0
+        ],
+        "E": [
+          0,
+          3.4,
+          0.0
+        ],
+        "F": [
+          -4,
+          1.4,
+          0.0
+        ],
+        "G": [
+          0,
+          0.0,
+          0.8
+        ],
+        "H": [
+          1,
+          0.0,
+          0.8
+        ],
+        "I": [
+          0,
+          1.7,
+          0.8
+        ],
+        "J": [
+          2,
+          1.7,
+          0.8
+        ],
+        "K": [
+          0,
+          3.4,
+          0.8
+        ],
+        "L": [
+          3,
+          3.4,
+          0.8
+        ]
+      },
+      "edges": [],
+      "faces": [],
+      "arrows": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "E",
+          "F"
+        ],
+        [
+          "G",
+          "H"
+        ],
+        [
+          "I",
+          "J"
+        ],
+        [
+          "K",
+          "L"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L"
+      ],
+      "views": {
+        "neutral": {
+          "label": "AB изображает a, CD — b, EF — a+b.",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "C",
+              "D"
+            ],
+            [
+              "E",
+              "F"
+            ]
+          ]
+        },
+        "reason": {
+          "label": "Из a+b=t·a следует b=(t−1)·a.",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "C",
+              "D"
+            ],
+            [
+              "E",
+              "F"
+            ]
+          ]
+        },
+        "transfer": {
+          "label": "В новом примере a+b=3a.",
+          "segments": [
+            [
+              "G",
+              "H"
+            ],
+            [
+              "I",
+              "J"
+            ],
+            [
+              "K",
+              "L"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Что вычесть, чтобы получить b?",
+      "text": "Для a≠0 запиши a+b=t·a и вычти a. Если a=0, нулевой вектор коллинеарен любому.",
+      "view": "reason"
+    },
+    {
+      "id": "h2",
+      "question": "Как меняется коэффициент?",
+      "text": "Коэффициент b по a всегда на единицу меньше коэффициента суммы.",
+      "view": "transfer"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Конкретный множитель",
+      "prompt": "Пусть a+b=−2a. Чему равен t в b=t·a?",
+      "explanation": "b=−2a−a=−3a.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Равенство векторов допускает вычитание одного слагаемого.",
+          "theoryId": "theory-065"
+        }
+      ],
+      "view": "reason",
+      "input": {
+        "prompt": "Конкретный множитель",
+        "accepted": [
+          "-3"
+        ],
+        "feedback": "Из −2 вычти единицу."
+      }
+    },
+    {
+      "id": "step-2",
+      "title": "Общий вывод",
+      "prompt": "Может ли при таком условии b иметь ненулевую составляющую поперёк ненулевого a?",
+      "explanation": "Поперечная составляющая сохранилась бы в a+b, вопреки коллинеарности.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Линейная комбинация векторов одного направления остаётся на той же прямой.",
+          "theoryId": "theory-065"
+        }
+      ],
+      "view": "neutral",
+      "input": {
+        "prompt": "Общий вывод",
+        "accepted": [
+          "нет"
+        ],
+        "feedback": "Вычитание самого a не может создать поперечную составляющую."
+      }
+    },
+    {
+      "id": "step-3",
+      "title": "Новые данные",
+      "prompt": "В другом примере a+b=3a. Каков коэффициент b по a?",
+      "explanation": "b=2a.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Разность 3a−a равна 2a.",
+          "theoryId": "theory-065"
+        }
+      ],
+      "view": "transfer",
+      "input": {
+        "prompt": "Новые данные",
+        "accepted": [
+          "2"
+        ],
+        "feedback": "Отнимай единичный коэффициент a."
+      }
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "да"
+    ],
+    "prompt": "Следует ли коллинеарность a и b? Введи «да» или «нет».",
+    "feedback": "Для ненулевого a имеем b=(t−1)a. Для a=0 вывод следует из определения коллинеарности."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: issued 2024 volume, chapter VI questions, printed page 156. Source-part order and independent explicit spatial models checked.",
+    "at": "2026-11-21T21:28:45Z"
+  }
+}

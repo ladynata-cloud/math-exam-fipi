@@ -98,16 +98,20 @@ const midlinesVectorCoefficients = require('../stereo-textbook/midlines-vector-c
 const collinearityVectorConditions = require('../stereo-textbook/collinearity-vector-conditions.json');
 const coplanarVectorDirections = require('../stereo-textbook/coplanar-vector-directions.json');
 const parallelepipedDirectedBases = require('../stereo-textbook/parallelepiped-directed-bases.json');
-const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards, ...round.cards, ...volumes.cards, ...prismVolumes.cards, ...sections.cards, ...oblique.cards, ...pyramids.cards, ...projections.cards, ...frusta.cards, ...cones.cards, ...sectors.cards, ...spheres.cards, ...sphereApplications.cards, ...volumeSelfcheck.cards, ...prismApplications.cards, ...normalPrismApplications.cards, ...pyramidAngleApplications.cards, ...pyramidComparisonApplications.cards, ...cylinderApplications.cards, ...inscribedVolumeApplications.cards, ...sphereVolumeAngles.cards, ...volumeChapterEnd.cards, ...vectorBasics.cards, ...vectorPairs.cards, ...vectorProperties.cards, ...spatialVectorSums.cards, ...oppositeDifference.cards, ...vectorOriginPaths.cards, ...diagonalPaths.cards, ...signedVectorCombinations.cards, ...prismVectorEquations.cards, ...pyramidVectorMidpoints.cards, ...midlinesVectorCoefficients.cards, ...collinearityVectorConditions.cards, ...coplanarVectorDirections.cards, ...parallelepipedDirectedBases.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
+const fieldsAndMidpointVectors = require('../stereo-textbook/fields-and-midpoint-vectors.json');
+const centroidsInTetrahedra = require('../stereo-textbook/centroids-in-tetrahedra.json');
+const heightAndMidpointProofs = require('../stereo-textbook/height-and-midpoint-proofs.json');
+const vectorChapterSelfcheck = require('../stereo-textbook/vector-chapter-selfcheck.json');
+const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards, ...round.cards, ...volumes.cards, ...prismVolumes.cards, ...sections.cards, ...oblique.cards, ...pyramids.cards, ...projections.cards, ...frusta.cards, ...cones.cards, ...sectors.cards, ...spheres.cards, ...sphereApplications.cards, ...volumeSelfcheck.cards, ...prismApplications.cards, ...normalPrismApplications.cards, ...pyramidAngleApplications.cards, ...pyramidComparisonApplications.cards, ...cylinderApplications.cards, ...inscribedVolumeApplications.cards, ...sphereVolumeAngles.cards, ...volumeChapterEnd.cards, ...vectorBasics.cards, ...vectorPairs.cards, ...vectorProperties.cards, ...spatialVectorSums.cards, ...oppositeDifference.cards, ...vectorOriginPaths.cards, ...diagonalPaths.cards, ...signedVectorCombinations.cards, ...prismVectorEquations.cards, ...pyramidVectorMidpoints.cards, ...midlinesVectorCoefficients.cards, ...collinearityVectorConditions.cards, ...coplanarVectorDirections.cards, ...parallelepipedDirectedBases.cards, ...fieldsAndMidpointVectors.cards, ...centroidsInTetrahedra.cards, ...heightAndMidpointProofs.cards, ...vectorChapterSelfcheck.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
 const closedSections = require('../stereo-textbook/closed-section-boundaries.json');
 for (const [id, receipt] of Object.entries(closedSections.cards)) {
   const file = 'stereo-course/textbook/lessons/' + id + '.json';
   assert.equal(extraCards[file], receipt.before.raw, 'original protected lesson: ' + id);
   extraCards[file] = receipt.after.raw;
 }
-const continuedClosedBank = require('../stereo-textbook/closed-section-bank-596.json');
+const continuedClosedBank = require('../stereo-textbook/closed-section-bank-vi.json');
 const amendmentChains = {};
-for (const supplement of [...supplements, sphere, mixed, circumspheres, round, volumes, prismVolumes, sections, oblique, pyramids, projections, frusta, cones, sectors, spheres, sphereApplications, volumeSelfcheck, prismApplications, normalPrismApplications, pyramidAngleApplications, pyramidComparisonApplications, cylinderApplications, inscribedVolumeApplications, sphereVolumeAngles, volumeChapterEnd, vectorBasics, vectorPairs, vectorProperties, spatialVectorSums, oppositeDifference, vectorOriginPaths, diagonalPaths, signedVectorCombinations, prismVectorEquations, pyramidVectorMidpoints, midlinesVectorCoefficients, collinearityVectorConditions, coplanarVectorDirections, parallelepipedDirectedBases, continuedClosedBank]) {
+for (const supplement of [...supplements, sphere, mixed, circumspheres, round, volumes, prismVolumes, sections, oblique, pyramids, projections, frusta, cones, sectors, spheres, sphereApplications, volumeSelfcheck, prismApplications, normalPrismApplications, pyramidAngleApplications, pyramidComparisonApplications, cylinderApplications, inscribedVolumeApplications, sphereVolumeAngles, volumeChapterEnd, vectorBasics, vectorPairs, vectorProperties, spatialVectorSums, oppositeDifference, vectorOriginPaths, diagonalPaths, signedVectorCombinations, prismVectorEquations, pyramidVectorMidpoints, midlinesVectorCoefficients, collinearityVectorConditions, coplanarVectorDirections, parallelepipedDirectedBases, fieldsAndMidpointVectors, centroidsInTetrahedra, heightAndMidpointProofs, vectorChapterSelfcheck, continuedClosedBank]) {
   for (const [file, amendment] of Object.entries(supplement.files)) {
     const chain = amendmentChains[file] ||= [];
     if (chain.length) assert.equal(amendment.beforeSHA256, chain.at(-1).afterSHA256, 'exact amendment chain: ' + file);
@@ -126,6 +130,18 @@ function filesAt(relative) {
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
   "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
+  "geometry-course/textbook/data/triangle-sine-area.json": "329c77274a12acbab05da2084cfb72e09f7af67f4bb63773c241c7e8c6effcfa",
+  "geometry-course/textbook/data/scalar-coordinates.json": "72da8b006bb404b4b67b6acfbad20fa2e5f2179fd14af6c3c1e529e942b97390",
+  "geometry-course/textbook/data/scalar-product.json": "183a1bab4b8115daf7cf3d323179751752b7e2af962436139e4689c7a7b66cb2",
+  "geometry-course/textbook/data/field-trigonometry.json": "62b7344a8caee414869f36ea48a1053bbf724c69291d7f1c6bc6870dae9adfc6",
+  "geometry-course/textbook/data/solve-triangle.json": "d51ca83c1711b26949d4eba0e89e0ea2f7358f18da474aba767bc3896d233b5c",
+  "geometry-course/textbook/data/oblique-triangle-cases.json": "565304b423ae86a9faf10c0df28a4587460fa868cd476808a697b053ad61e828",
+  "geometry-course/textbook/data/triangle-section-applications.json": "22c4ffd1079c8abc17c39ec93ce4468c850356882f2240997128b7bb4adc6d3d",
+  "geometry-course/textbook/data/triangle-relations.json": "64b65b5c40cd4edd1217d70b1c2a65c379c8f5887b036b8efc5494de81a483cc",
+  "geometry-course/textbook/data/trigonometric-signs.json": "22d83be75d0a93f61fa9d230be762e7de0b27412608af570f0383cec57a9d944",
+  "geometry-course/textbook/data/trigonometric-rays.json": "4f4f6f668aec42eef93fabd8b0cd7d0967a09c7a0f15780f5e1a31e977010940",
+  "geometry-course/textbook/data/slope-and-reflection.json": "745546f67b66680bf4575f64daad403e1a921aeb8e29468b262ba2d9287e6d34",
+  "geometry-course/textbook/data/upper-semicircle.json": "1e11581e38e95bdcc1c6e8fea01042fba0be077290bc83bbeab240d084c4d10c",
   "geometry-course/textbook/data/coordinate-additional-curves.json": "fee66bf53ff6b7d72bf4ea1291b3c0d301e88367f00f364df226e0bb3534d0b7",
   "geometry-course/textbook/data/coordinate-additional-applications.json": "9605c0578794ed4ced607dcd172cfbc23c348764863ba3a94110eed9e4cb151c",
   "geometry-course/textbook/data/coordinate-additional-figures.json": "f56367e0be6b845b59f84fa65d7ab70dd4691d5ff5faebc656ddb845438afd91",
@@ -157,7 +173,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "798e1ab4e2c87cf64a42faa25bb88ec5a0be88b35c4a4067a35c8317d033f37c",
+  "geometry-course/textbook/assets/additional-lessons.js": "60a1f256c98e46897a49dd3de9c4bd249ac4ea46fa0ec93e0d42bc02e48eeee2",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
@@ -188,7 +204,7 @@ function verify(group, read = file => fs.readFileSync(path.join(root, file)), ex
 for (const group of baseline.groups) verify(group);
 const geometry = require(root + '/geometry-course/textbook/data/course.json');
 const currentStereo = require(root + '/stereo-course/textbook/data/course.json');
-assert.equal(currentStereo.lessons.length, 1001);
+assert.equal(currentStereo.lessons.length, 1055);
 const stereo = require('../stereo-textbook/additional414-baseline.cjs').previousCourse(currentStereo, require(root + '/stereo-course/textbook/source-index.json'));
 const first = require(root + '/learning/atanasyan-first-steps/course.json');
 const literacy = require(root + '/stereo-course/literacy/data/course.json');

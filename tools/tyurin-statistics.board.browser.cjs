@@ -51,7 +51,13 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--vilenkin8-2010')?{
+const catalogue=process.argv.includes('--vilenkin-analysis-2014')?{
+  directory:'vilenkin-analysis-2014',entries:[[30,123,31]],uniqueLessons:30,search:'vilenkin-analysis-2014',match:'действительные числа и рациональные корни',lesson:process.argv.includes('--digits')?'30-14':'30-7-6',chart:process.argv.includes('--digits')?'svg[aria-label*="Префикс и повторяющаяся"]':'svg[aria-label*="Две десятичные границы"]',storage:'math:vilenkin-analysis-2014:v1:'
+}:process.argv.includes('--peterson9-roots')?{
+  directory:'peterson9-2017',entries:[[52,40,14]],uniqueLessons:13,search:'peterson9-2017',match:'корни высших степеней',lesson:'52-5-2',chart:'svg[aria-label*="Пересечение возрастающей нечётной степени"]',storage:'math:peterson9-2017:v1:'
+}:process.argv.includes('--peterson9-2017')?{
+  directory:'peterson9-2017',entries:[[51,34,25]],uniqueLessons:24,search:'peterson9-2017',match:'множества и графики функций',lesson:process.argv.includes('--hotel')?'51-9-3':'51-2-4',chart:process.argv.includes('--hotel')?'svg[aria-label*="Сдвиг мест в счётной гостинице"]':'svg[aria-label*="График функции и три контрольные точки"]',storage:'math:peterson9-2017:v1:'
+}:process.argv.includes('--vilenkin8-2010')?{
   directory:'vilenkin8-2010',entries:[[82,89,14]],uniqueLessons:13,search:'vilenkin8-2010',match:'дроби и порядок деления',lesson:'82-3',chart:'svg[aria-label*="Порядок деления с разными скобками"]',storage:'math:vilenkin8-2010:v1:'
 }:process.argv.includes('--peterson8-part3')?{
   directory:'peterson8-2017',entries:[[73,21,27]],uniqueLessons:26,search:'peterson8-2017',match:'степенные функции и дроби',lesson:process.argv.includes('--domains')?'73-6b-4':'73-4f',chart:process.argv.includes('--domains')?'svg[aria-label*="Исходная и преобразованная области определения"]':'svg[aria-label*="Запрещённые значения исходной дроби"]',storage:'math:peterson8-2017:v1:'
@@ -69,6 +75,8 @@ const catalogue=process.argv.includes('--vilenkin8-2010')?{
   directory:'mordkovich-2020',entries:[[24,49,13]],uniqueLessons:12,onlySelected:process.argv.includes('--selected-room'),search:'mordkovich-2020',match:'множества и делимость',lesson:'24-example-1',chart:'svg[aria-label*="Последовательные целые"]',storage:'math:mordkovich-2020:v1:'
 } : process.argv.includes('--mordkovich-2020') ? {
   directory:'mordkovich-2020',entries:[[25,50,60]],uniqueLessons:59,search:'mordkovich-2020',match:'множества и делимость',lesson:'25-review-17d',chart:'svg[aria-label*="Разложения для сравнения"]',storage:'math:mordkovich-2020:v1:'
+} : process.argv.includes('--mordkovich-2013-theory') ? {
+  directory:'mordkovich-2013',entries:[[20,62,31]],uniqueLessons:29,search:'mordkovich-2013',match:'числовые функции первого тома',lesson:process.argv.includes('--bounds')?'20-prop-7b':'20-example1b',chart:process.argv.includes('--bounds')?'svg[aria-label*="Концы области и их отражения"]':'svg[aria-label*="Три ветви кусочной функции"]',storage:'math:mordkovich-2013:v1:'
 } : process.argv.includes('--mordkovich-2013') ? {
   directory:'mordkovich-2013',entries:[[21,60,66]],uniqueLessons:65,search:'mordkovich-2013',match:'тождества и знаки',lesson:process.argv.includes('--circle-flat')?'21-7-20d':process.argv.includes('--circle-range')?'21-7-11b':process.argv.includes('--circle-quadrants')?'21-7-10d':process.argv.includes('--circle-domain')?'21-7-6d':'21-7-2b',chart:process.argv.includes('--circle-flat')?'svg[aria-label*="Горизонтальный график"]':process.argv.includes('--circle-range')?'svg[aria-label*="Границы множества"]':process.argv.includes('--circle-quadrants')?'svg[aria-label*="Знаки проекций радиуса"]':process.argv.includes('--circle-domain')?'svg[aria-label*="исключённые положения угла"]':'svg[aria-label*="Квадраты координат"]',storage:'math:mordkovich-2013:v1:'
 }:process.argv.includes('--alimov-2012') ? {
