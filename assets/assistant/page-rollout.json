@@ -2235,10 +2235,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8b0e01e7550ca3cfc4efe9344964402bba25aacadafbdd4d75db359fe4a1ded4",
-      "afterSha256": "b7d6c064d17dcde2244b4127072017b9205861286b29b44d421fff536c8f51a0",
+      "beforeSha256": "6c5d80666c8b31bb78389ad3633c6430eba123df46937edc100ce6ba5fb57d0d",
+      "afterSha256": "ea1705a7a923c92d633ef3743edefcd53e258f5c5131d82dd455fd42c72f2ef7",
       "placement": "before-head-close",
-      "sourceSha": "c8a77c4923027c76d9b547d1f50d336bb439ed44"
+      "sourceSha": "1d197956d3242000364d5662547b6d6810979399"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7224,6 +7224,51 @@
         "school/index.html"
       ],
       "bindingScope": "Per-page sourceSha for the shared school entry after integrating both printed Vilenkin routes through 1.125 and 5.50 and their separate assessments."
+    },
+    {
+      "previousBaseSha": "c8a77c4923027c76d9b547d1f50d336bb439ed44",
+      "sourceBaseSha": "5d7ef191640506697f769c083879fc211be525a7",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the numbered Vilenkin scale exercises on printed pages 28 and 29."
+    },
+    {
+      "previousBaseSha": "5d7ef191640506697f769c083879fc211be525a7",
+      "sourceBaseSha": "1d197956d3242000364d5662547b6d6810979399",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for all primary readings and both directions of mass conversion, Vilenkin 1.126–1.134."
+    },
+    {
+      "previousBaseSha": "99b9e5fd106cb65a5e3d6ee714b0eaadd427cb1f",
+      "sourceBaseSha": "ae832cd8cabdce859aca250fe5f85d5c2fd26be2",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, §26, с. 15. По №5.51 и №5.52 проверены каждое чтение, исходная пара чисел и различие верной величины с продиктованной записью. Мобильные занятия на двух размерах и математическая проверка прошли."
+    },
+    {
+      "previousBaseSha": "ae832cd8cabdce859aca250fe5f85d5c2fd26be2",
+      "sourceBaseSha": "7442a597b30f40d6a3f8f69cbd7b987b31778644",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "II часть, §26, с. 15. В №5.53–5.56 подтверждены исходные данные, личные уроки на 320 и 375 пикселях и совместный урок о доле високосного года с ошибкой, исправлением, передачей управления и двойной перезагрузкой."
+    },
+    {
+      "previousBaseSha": "7442a597b30f40d6a3f8f69cbd7b987b31778644",
+      "sourceBaseSha": "2090e98ae3755b42352a77f3be88b005603b395e",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, II часть, §26, с. 15–16. Исходные №5.57–5.60: Проверены индивидуальные мобильные уроки и исследование в новой комнате, где каждая точка обозначает одну собаку, включая две перезагрузки и исправление без подсказки."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",

@@ -152,6 +152,69 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function knownShareRegression(){
+  const f=boot(),src=[[6,180],[2,10],['1/2','9/2'],[50,750],[2,18,8],[20,21,1]];
+  for(let num=61;num<=66;num++)for(let seed=0;seed<43;seed++){
+    const t=f.M.generate('v5f-printed-5-'+num,seed),p=t.data.knownShare;
+    if(!seed)src[num-61].forEach((a,i)=>ok(f.M.accepts(String(a),[...t.steps,t][i])));
+    if(num===66){
+      equal(14*p.a,5*p.total);equal(8*p.b,3*p.total);ok(p.b>p.a);equal(f.w.Vilenkin5KnownShare.explore(t,{focus:2}).answer,p.total-p.a-p.b);
+    }else for(const count of [0,1,p.n,p.d]){
+      const model=f.w.Vilenkin5KnownShare.explore(t,{count});equal(model.answer.n*p.n,model.answer.d*p.given*count);ok(model.visual.includes('нижней полосе'));
+    }
+  }
+  f.close();
+}
+
+function portionStoriesRegression(){
+  const f=boot(),src=[['4','12'],['300','1500'],['2','12','16'],['4500','500','4000','500']];
+  for(let n=57;n<=60;n++)for(let seed=0;seed<45;seed++){
+    const t=f.M.generate('v5f-printed-5-'+n,seed),x=t.data.portion;
+    equal(x.piece*x.den,x.whole);equal(x.piece*x.taken+x.remain,x.whole);
+    if(!seed)src[n-57].forEach((v,i)=>ok(f.M.accepts(v,[...t.steps,t][i])));
+    for(const groups of [-1,0,1,x.den])for(const ask of [0,1]){
+      const view=f.w.Vilenkin5Portions.explore(t,{groups,ask}),k=groups<0?x.taken:groups;
+      equal(view.answer,(ask?x.den-k:k)*x.piece);
+      if(n===59)equal((view.visual.match(/<circle /g)||[]).length,x.whole);
+    }
+  }
+  f.close();
+}
+
+function partWholeStoriesRegression(){
+  const f=boot(),original=[['1/12','7/12'],['366','29/366','31/366','30/366'],['8','9/34','7/34','10/34','8/34','1/2'],['86','34','17/60']];
+  for(let n=53;n<=56;n++){
+    const id='v5f-printed-5-'+n;
+    for(let seed=0;seed<40;seed++){
+      const t=f.M.generate(id,seed),x=t.data.partWhole,items=[...t.steps,t];
+      if(!seed)original[n-53].forEach((v,i)=>ok(f.M.accepts(v,items[i])));
+      if(n===54){equal(x.whole,new Date(Date.UTC(x.year,1,29)).getUTCMonth()===1?366:365);x.indices.forEach((month,i)=>equal(x.parts[i],new Date(Date.UTC(x.year,month+1,0)).getUTCDate()));}
+      else equal(x.parts.reduce((a,b)=>a+b),x.whole);
+      for(const [i,v] of x.parts.entries())for(const mode of [0,1]){
+        const m=f.w.Vilenkin5PartWhole.explore(t,{pick:i,modeIndex:mode});equal(m.answer.n*x.whole,m.answer.d*(mode?x.whole-v:v));
+      }
+    }
+  }
+  f.close();const g=boot('#lesson/v5f-printed-5-54');g.submit('366');g.click('[data-cmd=next]');g.submit('1/12');ok(g.snapshot().scene.message.includes('разное число дней'));g.submit('29/366');ok(g.snapshot().scene.correct);g.close();
+}
+
+function fractionLanguageRegression(){
+  const f=boot(),M=f.M,read=M.generate('v5f-printed-5-51',0),write=M.generate('v5f-printed-5-52',0);
+  const expected=['две пятых','три четверти','семь десятых','три тринадцатых','тринадцать тысячных','пятнадцать триста сорок седьмых','семьдесят пять девяностотысячных'];
+  const pairs=['2;5','3;4','7;10','3;13','13;1000','15;347','75;90000'];
+  const rows=[...read.steps,read];equal(rows.length,14);
+  expected.forEach((v,i)=>{ok(M.accepts(v,rows[2*i]));ok(M.accepts(pairs[i],rows[2*i+1]));});
+  const raw=['4/8','1/3','1/2','2/4','8/10','3/100','13/49'];[...write.steps,write].forEach((v,i)=>ok(M.accepts(raw[i],v)));
+  ok(!M.accepts('1/2',write.steps[0]));ok(!M.accepts('4/80',write.steps[0]));
+  ok(!f.w.Vilenkin5FractionLanguage.literal('1 3/49'));ok(!f.w.Vilenkin5FractionLanguage.literal('4/0'));
+  for(let seed=1;seed<32;seed++)for(const num of [51,52]){
+    const t=M.generate('v5f-printed-5-'+num,seed);ok(t.conditionKey!==(num===51?read:write).conditionKey);
+    equal(t.data.languageRows.length,7);equal(new Set(t.data.languageRows.map(r=>r.join('/'))).size,7);
+    t.data.languageRows.forEach((row,i)=>row.forEach((n,j)=>equal(f.w.Vilenkin5FractionLanguage.explore(t,{row:i,part:j}).answer,n)));
+  }
+  f.close();const g=boot('#lesson/v5f-printed-5-52');g.submit('1/2');equal(g.snapshot().scene.attempt,0);g.submit('8/4');ok(g.snapshot().scene.message.includes('верх и низ'));g.submit('4/8');ok(g.snapshot().scene.correct);equal(g.snapshot().scene.attempt,2);g.close();
+}
+
 function shareStoryRegression(){
   const f=boot(),source=[[150,50],[4800,480,400,3920],[80,20,60,20],[100,25,'3/4']];
   for(let number=47;number<=50;number++){
@@ -779,7 +842,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:125},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50'));
+  equal(plain(path.numbered),Array.from({length:134},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50','v5f-printed-5-51','v5f-printed-5-52','v5f-printed-5-53','v5f-printed-5-54','v5f-printed-5-55','v5f-printed-5-56','v5f-printed-5-57','v5f-printed-5-58','v5f-printed-5-59','v5f-printed-5-60','v5f-printed-5-61','v5f-printed-5-62','v5f-printed-5-63','v5f-printed-5-64','v5f-printed-5-65','v5f-printed-5-66'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -1300,6 +1363,68 @@ function exactPrintedMistakeRegression(){
   f.close();
 }
 
+function printedMassOnScalesRegression(){
+  const f=boot(),nums=['1.130','1.131','1.132','1.133','1.134'],expected=[
+    [4200,50020,1700,680,9430,2704],[7350,12030,5043,102000,220500,303070],
+    [[5,982],[4,31]],[[71,500],[3,40]],[[12,30],[5,3]]
+  ],N=f.w.Vilenkin5Numbered;
+  for(const [index,number] of nums.entries()){
+    const id='v5f-printed-'+number.replace('.','-'),l=f.C.byId[id],src=f.M.generate(id,0);
+    equal(l.source.page,29);equal(l.source.point,5);equal(plain([...src.steps.map(x=>x.answer),src.answer]),expected[index]);
+    const conditions=new Set();
+    for(let seed=0;seed<40;seed++){
+      const t=f.M.generate(id,seed),d=t.data;
+      conditions.add(t.conditionKey);
+      for(const q of [...t.steps,t])ok(f.M.accepts(Array.isArray(q.answer)?q.answer.join(';'):String(q.answer),q));
+      const rowCount=d.massGroups?6:2;
+      for(let row=0;row<rowCount;row++)for(const extra of [0,1,9]){
+        let model=N.explore(l,{row,extra,ask:0},t);
+        if(d.massGroups){
+          const [ton,centner,kilo,gram]=d.massGroups.rows[row],base=ton*1000000+centner*100000+kilo*1000+gram;
+          equal(model.answer,base/(index===0?1000:1)+extra);
+        }else{
+          const total=d.massSplit.totals[row]+extra,unit=index===4?100:1000;
+          equal(model.answer,Math.floor(total/unit));
+          model=N.explore(l,{row,extra,ask:1},t);equal(model.answer,total-Math.floor(total/unit)*unit);
+        }
+      }
+    }ok(conditions.size>30);
+  }
+  f.route('#lesson/v5f-printed-1-131');f.submit('357');ok(f.snapshot().scene.message.includes('разными единицами'));
+  f.submit('7350');ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});
+  f.route('#lesson/v5f-printed-1-134');f.submit('30;12');ok(f.snapshot().scene.message.includes('местами'));f.submit('12;30');ok(f.snapshot().scene.correct);
+  f.click('[data-cmd=next]');f.submit('5;3');ok(f.snapshot().scene.correct);f.close();
+}
+
+function printedSourceScalesRegression(){
+  const f=boot(),N=f.w.Vilenkin5Numbered,ids=[126,127,128,129].map(i=>'v5f-printed-1-'+i),src=ids.map(id=>f.M.generate(id,0));
+  equal(plain(src[0].steps.map(s=>s.answer)),[[26,25,10,34],[33,32,17,41],[24,23,8,32],[30,29,14,38],[19,18,3,27],[28,27,12,36]]);
+  for(const q of src[0].steps){
+    const fromBook=Array.from(q.answer);fromBook[3]++;
+    ok(f.M.accepts(fromBook.join(';'),q));fromBook[3]++;
+    ok(!f.M.accepts(fromBook.join(';'),q));fromBook[3]--;fromBook[1]++;
+    ok(!f.M.accepts(fromBook.join(';'),q));
+  }
+  for(const q of f.M.generate(ids[0],2).steps){const off=Array.from(q.answer);off[3]++;ok(!f.M.accepts(off.join(';'),q));}
+  f.route('#lesson/'+ids[0]);f.submit('26;25;10;35');ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');f.submit('33;32;17;42');ok(f.snapshot().scene.correct);
+  equal(plain(src[1].answer),[-4,10,-18,12,4,4]);equal(plain(src[2].answer),[22,25,30,35,37]);equal(plain(src[3].steps.map(q=>q.answer)),[[1,3,4],[5],[1,4],[2,5],[1],[2,3,5]]);
+  equal(plain(src[3].answer),[5,2,3,4,1]);equal(f.C.byId[ids[0]].source.page,28);for(const id of ids.slice(1))equal(f.C.byId[id].source.page,29);
+  for(let seed=0;seed<56;seed++){const a=ids.map(id=>f.M.generate(id,seed)),model=(i,state)=>N.explore(f.C.byId[ids[i]],state,a[i]);for(const t of a)for(const q of [...t.steps,t]){const answer=Array.isArray(q.answer)?q.answer.join(';'):String(q.answer);ok(f.M.accepts(answer,q));}
+    const th=a[0].data.thermo;for(let i=0;i<4;i++)for(let row=0;row<6;row++)for(const phase of [0,1]){const shifts=row?th.deltas[row-1]:[];equal(model(0,{which:i,row,phase}).answer,th.levels[i]+shifts.slice(0,phase?shifts.length:1).reduce((p,q)=>p+q,0));}
+    const mv=a[1].data.moves;for(let row=0;row<6;row++)for(const scale of [0,1,5])equal(model(1,{row,scale}).answer,mv.moves[row].reduce((p,q)=>p+q,0)*(scale||mv.size));
+    const arc=a[2].data.arcScale;for(let i=0;i<5;i++)for(const ask of [0,1])equal(model(2,{which:i,ask}).answer,ask?arc.base+arc.positions[i]*arc.unit:arc.positions[i]);
+    const h=a[3].data.ranking.levels;for(let i=0;i<h.length;i++){const low=h.filter(n=>n<h[i]).length,high=h.filter(n=>n>h[i]).length;equal(model(3,{ref:i,upper:0}).answer,low);equal(model(3,{ref:i,upper:1}).answer,high);equal(low+high,4);}
+  }
+  f.route('#lesson/'+ids[1]);f.submit('-2');ok(f.snapshot().scene.message.includes('делениях'));f.submit('4');ok(f.snapshot().scene.message.includes('направление'));f.submit('-4');ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});
+  const sendForecast=value=>{f.input('[data-v5-prediction]',value);f.$('[data-v5-predict]').dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));};
+  const select=(key,value)=>{const el=f.$('[data-v5-param="'+key+'"]');el.value=String(value);el.dispatchEvent(new f.w.Event('change',{bubbles:true}));};
+  select('row',5);select('scale',3);sendForecast('2');
+  let scaleModel=f.snapshot().scene.model;equal(scaleModel.first,'2');ok(!scaleModel.seen);ok(scaleModel.notice.includes('Исправь прогноз'));ok(!scaleModel.notice.includes('undefined'));ok(!f.$('[data-v5-prediction]').disabled);
+  sendForecast('6');scaleModel=f.snapshot().scene.model;equal(scaleModel.first,'2');equal(scaleModel.prediction,'6');ok(scaleModel.seen);ok(scaleModel.notice.includes('самостоятельно'));
+  select('scale',4);scaleModel=f.snapshot().scene.model;equal(scaleModel.first,'');ok(!scaleModel.seen);f.click('[data-v5-reveal]');scaleModel=f.snapshot().scene.model;ok(scaleModel.seen);ok(scaleModel.notice.includes('по твоему запросу'));
+  f.route('#lesson/'+ids[3]);f.submit('4;1;3');ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');f.submit('5');ok(f.snapshot().scene.correct);f.close();
+}
+
 function printedPointFourAssessmentRegression(){
   const f=boot(),id='v5f-printed-check-4',G=f.w.Vilenkin5PrintedCheck4,N=f.w.Vilenkin5Numbered,lesson=f.C.byId[id],source=f.M.generate(id,0);
   equal(lesson.source.point,4);equal(lesson.source.page,27);ok(!f.C.pathById.vilenkin5.numbered.includes(id));ok(f.C.pathById.vilenkin5.printedChecks.includes(id));equal(source.table.rows.length,7);
@@ -1753,12 +1878,12 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    knownShareRegression,portionStoriesRegression,partWholeStoriesRegression,fractionLanguageRegression,shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
     printedSegmentRegression,compassAndCompoundRegression,printedChecksRegression,printedLengthUnitsRegression,
-    buildablePathsRegression,pageNineteenBoundariesRegression,pageTwentyReviewRegression,originalChainsRegression,everydayReasoningRegression,numberingAndPathsRegression,pageTwentyOneFirstRegression,sixMeasurementsRegression,comparisonsAndMixedMeasuresRegression,perimeterAndMassRegression,exactPrintedMistakeRegression,mountainsAndTravelRegression,printedPointThreeChecksRegression,printedPlaneIntersectionRegression,printedOpenLineConstructionsRegression,printedPlaneRegionsRegression,chosenRayNamesRegression,printedOralSubtractionRegression,printedLengthPolygonRegression,printedPage25FirstRegression,printedPage25ConstructionsRegression,printedPage26FreeRegression,closingPlanePointCalculationRegression,printedPointFourAssessmentRegression,
+    buildablePathsRegression,pageNineteenBoundariesRegression,pageTwentyReviewRegression,originalChainsRegression,everydayReasoningRegression,numberingAndPathsRegression,pageTwentyOneFirstRegression,sixMeasurementsRegression,comparisonsAndMixedMeasuresRegression,perimeterAndMassRegression,exactPrintedMistakeRegression,mountainsAndTravelRegression,printedPointThreeChecksRegression,printedPlaneIntersectionRegression,printedOpenLineConstructionsRegression,printedPlaneRegionsRegression,chosenRayNamesRegression,printedOralSubtractionRegression,printedLengthPolygonRegression,printedPage25FirstRegression,printedPage25ConstructionsRegression,printedPage26FreeRegression,closingPlanePointCalculationRegression,printedPointFourAssessmentRegression,printedSourceScalesRegression,printedMassOnScalesRegression,
   ]){
     check();
     await tick(); // Let closed lesson windows finish disposal before loading the next group.

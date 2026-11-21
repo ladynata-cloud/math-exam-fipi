@@ -156,6 +156,13 @@
   }
   function inputIssue(value,target){
     if(!text(value)||!value.trim())return 'Сначала запиши ответ. Пустое поле не считается ошибкой.';
+    if(target.answerFormat==='v5-spoken-fraction'&&!/^[а-яёА-ЯЁ.,!?«»\s]+$/u.test(value))return 'Произнеси дробь вслух и запиши её словами. Можно поправить черновик.';
+    if(target.answerFormat==='v5-dictated-fraction'){
+      const v=root.Vilenkin5FractionLanguage.literal(value);
+      if(!v)return 'Запиши одно целое число над чертой и другое под ней, например 2/7. Пока это черновик.';
+      const [n,d]=root.Vilenkin5FractionLanguage.literal(target.answer);
+      if(BigInt(v[0])*BigInt(d)===BigInt(v[1])*BigInt(n)&&(v[0]!==n||v[1]!==d))return 'Величина верна. Для записи с голоса сохрани оба названных числа. Эту запись можно уточнить.';
+    }
     if(target.answerFormat==='v5-fraction-reading'&&!/[а-яё]/i.test(value))return 'Числа уже записаны в условии. Произнеси дробь вслух и введи словами вместе с названием целого. Пока это черновик.';
     if(['v5-pair','v5-triple'].includes(target.answerFormat)){
       const parts=value.split(';'),pair=target.answerFormat==='v5-pair';
