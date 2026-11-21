@@ -46,7 +46,8 @@
       ['/geometry-course/textbook/data/vector-applications.json', '№976–980'],
       ['/geometry-course/textbook/data/vector-length-problems.json', '№981–987'],
       ['/geometry-course/textbook/data/vector-extra-problems.json', '№988–997'],
-      ['/geometry-course/textbook/data/vector-chapter-review.json', 'вопросы 1–20 к главе «Векторы»']
+      ['/geometry-course/textbook/data/vector-chapter-review.json', 'вопросы 1–20 к главе «Векторы»'],
+      ['/geometry-course/textbook/data/coordinate-coefficients.json', 'пункты 93–94, №998–999']
   ];
 
   async function forCourse(base) {
