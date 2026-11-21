@@ -49,7 +49,8 @@ const groups = {
   vectorChapterSelfcheck: {manifests:[require('./vector-chapter-selfcheck.json')],count:28},
   additionalDirectedEdgeSums: {manifests:[require('./additional-directed-edge-sums.json')],count:14},
   vectorSpanAndBarycentres: {manifests:[require('./vector-span-and-barycentres.json')],count:15},
-  vectorChapterSixEnd: {manifests:[require('./vector-chapter-six-end.json')],count:14}
+  vectorChapterSixEnd: {manifests:[require('./vector-chapter-six-end.json')],count:14},
+  cartesianCoordinateStart: {manifests:[require('./cartesian-coordinate-start.json')],count:14}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

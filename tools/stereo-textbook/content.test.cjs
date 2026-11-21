@@ -101,4 +101,5 @@ require('./vector-chapter-selfcheck.test.cjs');
 require('./additional-directed-edge-sums.test.cjs');
 require('./vector-span-and-barycentres.test.cjs');
 require('./vector-chapter-six-end.test.cjs');
+require('./cartesian-coordinate-start.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

@@ -82,6 +82,7 @@ jobs:
           node tools/stereo-textbook/additional-directed-edge-sums.test.cjs
           node tools/stereo-textbook/vector-span-and-barycentres.test.cjs
           node tools/stereo-textbook/vector-chapter-six-end.test.cjs
+          node tools/stereo-textbook/cartesian-coordinate-start.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -308,6 +309,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: vectorChapterSixEnd
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-chapter-six-end
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check coordinate axes, planes, all eighteen projections and each cube point on small and large screens
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cartesianCoordinateStart
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cartesian-coordinate-start
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -386,5 +392,6 @@ jobs:
             artifacts/additional-directed-edge-sums/
             artifacts/vector-span-and-barycentres/
             artifacts/vector-chapter-six-end/
+            artifacts/cartesian-coordinate-start/
           retention-days: 14
           if-no-files-found: error

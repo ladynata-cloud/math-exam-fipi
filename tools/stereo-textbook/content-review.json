@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T21:59:56Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–636 and the full chapter VI self-check, with 1,098 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T22:11:08Z",
+  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–639, with 1,112 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1876,6 +1876,29 @@
       ],
       "evidence": "tools/stereo-textbook/vector-chapter-six-end.json",
       "mathematicalReport": "tools/stereo-textbook/vector-chapter-six-end.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 160, 161, coordinate definitions on 160–166, all radicals and directions checked visually on issued 166 and answer key 269 where present.",
+      "reviewedAt": "2026-11-21T22:11:08Z",
+      "scope": "Full rectangular coordinate system, vectors, midpoints and sphere foundations with the authentic coordinate triples, all six membership groups, all 18 projections preserving each radical, and four remaining cube coordinates.",
+      "cardIds": [
+        "theory-071",
+        "theory-072",
+        "theory-073",
+        "theory-074",
+        "theory-075",
+        "ex-main-0637-a",
+        "ex-main-0637-b",
+        "ex-main-0637-c",
+        "ex-main-0637-d",
+        "ex-main-0637-e",
+        "ex-main-0637-f",
+        "ex-main-0638-a",
+        "ex-main-0638-b",
+        "ex-main-0639"
+      ],
+      "evidence": "tools/stereo-textbook/cartesian-coordinate-start.json",
+      "mathematicalReport": "tools/stereo-textbook/cartesian-coordinate-start.test.cjs"
     }
   ],
   "cards": [
@@ -6270,6 +6293,62 @@
     {
       "id": "ex-main-0636",
       "sha256": "bb8406088042c0ad046702dc9e0e6fdf1ddd3a4182989a40cd6e27fb4801485c"
+    },
+    {
+      "id": "theory-071",
+      "sha256": "d42a2146cd3dfa7b9f61a7cb2b5b5b275399300cef3858c4d5f09a4ea71c4443"
+    },
+    {
+      "id": "theory-072",
+      "sha256": "655f1c9d91dab2e9d7cb093dabd40f732c2cbcc38a1cda728ff461f885189db6"
+    },
+    {
+      "id": "theory-073",
+      "sha256": "5f570185eae7209c853dc2eb1f0c1149ccc1096f9be88e401f2b424cbb619ed3"
+    },
+    {
+      "id": "theory-074",
+      "sha256": "24709bcdc4b7dc114a010458e340ee32ffbb2704892aed3955c6950bbba3844d"
+    },
+    {
+      "id": "theory-075",
+      "sha256": "0568e93de3539cef2eb5d0731a6d53ce28190db6d2731754713008ffdf4d8c56"
+    },
+    {
+      "id": "ex-main-0637-a",
+      "sha256": "3e807684ea2e2f3877cd146189ba878e943cd666a5c85354f7293b937ea982ff"
+    },
+    {
+      "id": "ex-main-0637-b",
+      "sha256": "fcc9c2271d306d21e3ea0c38ffc1708d23f60e968b6db36083378cd53dc98ee2"
+    },
+    {
+      "id": "ex-main-0637-c",
+      "sha256": "63d675ca25d5efd04360aeee73ff5eef25e3bbaa7a17d1221cd94b3ae33199f6"
+    },
+    {
+      "id": "ex-main-0637-d",
+      "sha256": "9483cbb34e3771334634b0a04bdd67d214f27064f7cad18006ebbf920743460a"
+    },
+    {
+      "id": "ex-main-0637-e",
+      "sha256": "feed6f1d4f052d1b34cad154be6ba35c49ad886dde9756fee0c20ba4b6b6c362"
+    },
+    {
+      "id": "ex-main-0637-f",
+      "sha256": "8364448f8550c7079c32886de86fd4742c942a64f6b6a6135efcf8c13126f9aa"
+    },
+    {
+      "id": "ex-main-0638-a",
+      "sha256": "da1ec3a629c57b95b612ae91fcc32a865581c422e060db5031bf2fe01c377e1a"
+    },
+    {
+      "id": "ex-main-0638-b",
+      "sha256": "5cd1268a7e3d42d1b83983e62defe5d3b7c37f82001f1d402338a27920e3a60e"
+    },
+    {
+      "id": "ex-main-0639",
+      "sha256": "ca4ad2ff4d5f9d81b066d5e34aa8b92bc3262e0b3c2fb0f976b250c589c82c6a"
     }
   ]
 }
