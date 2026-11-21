@@ -20,6 +20,10 @@ function resolvePublicScript(root, directory, src) {
 
 const shell = new Set(['/assets/oge-wayfinding.js', '/assets/assistant/navigator-data.js?v=20261105-site1',
   '/assets/assistant/navigator-widget.js?v=20261105-site1']);
+// The full Vilenkin 5 course reuses these exact first-part pure math/model
+// modules. Execute them in the model world; unknown absolute scripts still fail.
+const courseModels = new Set(['/courses/vilenkin-5-part-1/math.js?v=20261120',
+  '/courses/vilenkin-5-part-1/labs.js?v=20261120', '/courses/vilenkin-5-part-1/practice.js?v=20261120']);
 function loadSchoolModels(root, html, world) {
   const directory = path.join(root, 'school');
   for (const match of html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>/g)) {
@@ -28,9 +32,10 @@ function loadSchoolModels(root, html, world) {
     const file = resolvePublicScript(root, directory, src);
     const compiled = new vm.Script(fs.readFileSync(file, 'utf8'), {filename: src});
     if (filename.startsWith('/')) {
-      assert.ok(shell.has(src), 'Unreviewed site-wide school script: ' + src);
+      assert.ok(shell.has(src) || courseModels.has(src), 'Unreviewed site-wide school script: ' + src);
       assert.equal(match[0], '<script defer src="' + src + '">');
-      continue; // These DOM shells are exercised by real browser gates.
+      if (courseModels.has(src)) compiled.runInContext(world);
+      continue; // DOM shells are exercised by real browser gates.
     }
     if (filename !== 'app.js') compiled.runInContext(world);
   }
