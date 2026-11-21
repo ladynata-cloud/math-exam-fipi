@@ -169,7 +169,50 @@ function trigFigure(measurable, selectedAngle, sample=0, showRoles=false) {
  }
  return picture;
 }
+const groupRules = {
+ add: 'Два прибавления на прямой',
+ subtract: 'Два вычитания на прямой',
+ distribute: 'Прямоугольник из двух частей',
+};
+function drawGroupRule(rule,b,c) {
+ const picture=svg('svg',{viewBox:'0 0 360 192',role:'img',class:'pm-chart pcm-group-rule',
+  'aria-label':groupRules[rule]+'. b = '+b+', c = '+c+'.'});
+ const green='#086850',amber='#9c510e',blue='#354b71';
+ if(rule==='distribute') {
+  const cell=31, left=(360-(b+c)*cell)/2, y=40, rows=3;
+  for(const [start,count,color] of [[0,b,'#d6ebe0'],[b,c,'#f6e0c9']]) {
+   picture.append(svg('rect',{x:left+start*cell,y,width:count*cell,height:rows*cell,fill:color,stroke:'#234436','stroke-width':2}));
+  }
+  for(let k=1;k<b+c;k++) ln(picture,left+k*cell,y,left+k*cell,y+rows*cell,{'stroke-width':k===b?3:1});
+  for(let k=1;k<rows;k++) ln(picture,left,y+k*cell,left+(b+c)*cell,y+k*cell,{'stroke-width':1});
+  txt(picture,left+b*cell/2,y-11,'b = '+b,{'font-size':18});
+  txt(picture,left+(b+c/2)*cell,y-11,'c = '+c,{'font-size':18});
+  txt(picture,180,y+rows*cell+34,'3 ряда',{'font-size':21});
+  return picture;
+ }
+ const sign=rule==='add'?1:-1,initial=10,middle=initial+sign*b,end=middle+sign*c;
+ const low=Math.min(initial,end)-1, high=Math.max(initial,end)+1;
+ const X=v=>25+(v-low)/(high-low)*310;
+ const lineY=151;
+ ln(picture,12,lineY,348,lineY,{stroke:'#677871','stroke-width':2});
+ for(let v=low;v<=high;v++) ln(picture,X(v),lineY-4,X(v),lineY+4,{'stroke-width':1.5});
+ for(const v of [initial,middle,end]) txt(picture,X(v),lineY+26,v,{'font-size':20});
+ function arrow(from,to,y,color,id) {
+  const x=X(from),last=X(to),direction=Math.sign(last-x);
+  ln(picture,x,y,last,y,{stroke:color,'stroke-width':3,'data-move':id});
+  ln(picture,last,y,last-8*direction,y-5,{stroke:color,'stroke-width':3});
+  ln(picture,last,y,last-8*direction,y+5,{stroke:color,'stroke-width':3});
+  txt(picture,(x+last)/2,y-9,(sign>0?'+':'−')+Math.abs(to-from),{'font-size':20});
+ }
+ arrow(initial,end,52,blue,'sum');
+ arrow(initial,middle,104,green,'first');
+ arrow(middle,end,104,amber,'second');
+ return picture;
+}
 function configFor(lesson,task){
+ if (lesson?.id==='p33' && Object.hasOwn(groupRules,task?.groupRule)) return {
+  title:groupRules[task.groupRule],controls:[c('Число b',[1,2,3,4]),c('Число c',[1,2,3,4])],initial:[2,3],
+ };
  if (lesson?.id==='p15' && ['named','measured','general'].includes(task?.trigStudy)) return trigConfig(task.trigStudy);
  if (lesson?.id === 'p15' && Object.hasOwn(ratioConstructions,task?.ratioConstruction)) return constructionConfig(task.ratioConstruction);
  const spec=lesson?.id==='p15'&&Object.hasOwn(segmentRatios,task?.segmentRatio)&&segmentRatios[task.segmentRatio];
@@ -216,13 +259,27 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if (n===15 && task.trigStudy) {
+ if (n===33 && Object.hasOwn(groupRules,task.groupRule)) {
+  const rule=task.groupRule;
+  show(drawGroupRule(rule,a,b));
+  if (rule==='distribute') {
+   formula('3 × ('+a+' + '+b+') = '+3*(a+b));
+   formula('3 × '+a+' + 3 × '+b+' = '+(3*a)+' + '+(3*b));
+   stepList(['Сосчитай все клетки по числу рядов и столбцов.','Сосчитай клетки в каждой цветной полосе отдельно.','Измени ширину одной полосы. Объясни, почему оба способа по-прежнему дают одно число.']);
+  } else {
+   const op=rule==='add'?' + ':' − ',sign=rule==='add'?1:-1,end=10+sign*(a+b);
+   formula('10'+op+'('+a+' + '+b+') = '+end);
+   formula('(10'+op+a+')'+op+b+' = '+end);
+   stepList(['На верхней дорожке пройди весь путь за один шаг.','На нижней дорожке сначала пройди b, потом c.','Сравни конечные точки и попробуй другие длины шагов.']);
+  }
+ }
+ else if (n===15 && task.trigStudy) {
   const alpha=a===0?'A':'B', opposite=a===0?'BC':'AC', adjacent=a===0?'AC':'BC';
   const measurable=task.trigStudy!=='named', sample=measurable?b:0;
   const chosen=['','AC','BC','AB'][state.values[measurable?2:1]];

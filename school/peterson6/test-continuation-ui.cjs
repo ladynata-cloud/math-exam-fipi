@@ -268,6 +268,41 @@ test('part three additional groups diagnose sign, unnecessary inputs and what re
  } finally {f.close();}
 });
 
+test('opening printed rules use directed distances, common cells and every signed term',()=>{
+ const f=fixture(null,null,true);
+ try {
+  for(const [index,rule] of ['add','subtract','distribute'].entries()) {
+   f.nav('#lesson/p33/'+(31+index));
+   const details=f.q('[data-lesson-help="model"]');
+   if(!details.open)f.click('[data-lesson-help="model"] > summary');
+   const ids=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);
+   for(const b of [1,2,3,4]) for(const c of [1,2,3,4]) {
+    f.event(ids[0],String(b),'change');f.event(ids[1],String(c),'change');
+    const figure=f.q('#model svg');
+    if(rule==='distribute') {
+     const rectangles=[...figure.querySelectorAll('rect')];
+     assert.deepEqual(rectangles.map(r=>Number(r.getAttribute('width'))),[b*31,c*31]);
+     assert(rectangles.every(r=>Number(r.getAttribute('height'))===3*31));
+    } else {
+     const line=s=>figure.querySelector('[data-move="'+s+'"]');
+     const distance=s=>Number(line(s).getAttribute('x2'))-Number(line(s).getAttribute('x1'));
+     assert(Math.abs(distance('sum')-distance('first')-distance('second'))<1e-8);
+     assert(Math.abs(distance('first')*c-distance('second')*b)<1e-8);
+     assert.equal(Math.sign(distance('sum')),rule==='add'?1:-1);
+    }
+   }
+   assert.equal(f.state().tasks['p33-t'+(32+index)].correct,false);
+   assert.equal(f.d.querySelector('#answer-form'),null);
+  }
+  f.nav('#lesson/p33/38');f.click('[data-action="hint"]');
+  assert.match(f.q('.help figure').textContent,/−1 × \(−n\).*−1 × \(\+r\).*−1 × \(−s\)/);
+  f.nav('#lesson/p33/42');f.event('#final-answer','7/9');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/Сравни 2 и 2 7\/9/);
+  f.event('#final-answer','-7/9');f.submit('#answer-form');
+  assert.match(f.q('.task-heading').textContent,/Исправлено без подсказки/);
+ } finally {f.close();}
+});
+
 test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
  const f=fixture(null,null,true);
  try {

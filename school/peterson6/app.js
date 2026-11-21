@@ -520,8 +520,8 @@ ${[1, 2, 3]
     const products = bracketTerms(t);
     if (!products) return '';
     return '<figure><figcaption>Куда идёт множитель перед скобками?</figcaption><ul>' +
-      products.map(([factor,one,two]) => '<li>' + e(factor + ' × (' + one + ')') + ' и ' +
-        e(factor + ' × (' + two + ')') + '</li>').join('') +
+      products.map(([factor,...terms]) => '<li>' +
+        terms.map(term => e(factor + ' × (' + term + ')')).join(' и ') + '</li>').join('') +
       '</ul><p>Проверь знак числа или коэффициента в каждом произведении. Слагаемые за скобками перепиши со своими знаками.</p></figure>';
   }
   function wrongAnswerCue(t,value) {

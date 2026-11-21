@@ -84,7 +84,7 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .help figure ul { margin: .65rem 0; padding-inline-start: 1.15rem; }
 .help figure li + li { margin-top: .4rem; }
 .help figure meter { display: block; width: min(100%, 14rem); }
-.pm-visual .pm-chart.pcm-segment { min-width: 0; }
+.pm-visual .pm-chart.pcm-segment, .pm-visual .pm-chart.pcm-group-rule { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-ratio-triangle, .pm-visual .pm-chart.pcm-ratio-triangle { min-width: 0; }
 
 </style>
@@ -857,7 +857,50 @@ function trigFigure(measurable, selectedAngle, sample=0, showRoles=false) {
  }
  return picture;
 }
+const groupRules = {
+ add: 'Два прибавления на прямой',
+ subtract: 'Два вычитания на прямой',
+ distribute: 'Прямоугольник из двух частей',
+};
+function drawGroupRule(rule,b,c) {
+ const picture=svg('svg',{viewBox:'0 0 360 192',role:'img',class:'pm-chart pcm-group-rule',
+  'aria-label':groupRules[rule]+'. b = '+b+', c = '+c+'.'});
+ const green='#086850',amber='#9c510e',blue='#354b71';
+ if(rule==='distribute') {
+  const cell=31, left=(360-(b+c)*cell)/2, y=40, rows=3;
+  for(const [start,count,color] of [[0,b,'#d6ebe0'],[b,c,'#f6e0c9']]) {
+   picture.append(svg('rect',{x:left+start*cell,y,width:count*cell,height:rows*cell,fill:color,stroke:'#234436','stroke-width':2}));
+  }
+  for(let k=1;k<b+c;k++) ln(picture,left+k*cell,y,left+k*cell,y+rows*cell,{'stroke-width':k===b?3:1});
+  for(let k=1;k<rows;k++) ln(picture,left,y+k*cell,left+(b+c)*cell,y+k*cell,{'stroke-width':1});
+  txt(picture,left+b*cell/2,y-11,'b = '+b,{'font-size':18});
+  txt(picture,left+(b+c/2)*cell,y-11,'c = '+c,{'font-size':18});
+  txt(picture,180,y+rows*cell+34,'3 ряда',{'font-size':21});
+  return picture;
+ }
+ const sign=rule==='add'?1:-1,initial=10,middle=initial+sign*b,end=middle+sign*c;
+ const low=Math.min(initial,end)-1, high=Math.max(initial,end)+1;
+ const X=v=>25+(v-low)/(high-low)*310;
+ const lineY=151;
+ ln(picture,12,lineY,348,lineY,{stroke:'#677871','stroke-width':2});
+ for(let v=low;v<=high;v++) ln(picture,X(v),lineY-4,X(v),lineY+4,{'stroke-width':1.5});
+ for(const v of [initial,middle,end]) txt(picture,X(v),lineY+26,v,{'font-size':20});
+ function arrow(from,to,y,color,id) {
+  const x=X(from),last=X(to),direction=Math.sign(last-x);
+  ln(picture,x,y,last,y,{stroke:color,'stroke-width':3,'data-move':id});
+  ln(picture,last,y,last-8*direction,y-5,{stroke:color,'stroke-width':3});
+  ln(picture,last,y,last-8*direction,y+5,{stroke:color,'stroke-width':3});
+  txt(picture,(x+last)/2,y-9,(sign>0?'+':'−')+Math.abs(to-from),{'font-size':20});
+ }
+ arrow(initial,end,52,blue,'sum');
+ arrow(initial,middle,104,green,'first');
+ arrow(middle,end,104,amber,'second');
+ return picture;
+}
 function configFor(lesson,task){
+ if (lesson?.id==='p33' && Object.hasOwn(groupRules,task?.groupRule)) return {
+  title:groupRules[task.groupRule],controls:[c('Число b',[1,2,3,4]),c('Число c',[1,2,3,4])],initial:[2,3],
+ };
  if (lesson?.id==='p15' && ['named','measured','general'].includes(task?.trigStudy)) return trigConfig(task.trigStudy);
  if (lesson?.id === 'p15' && Object.hasOwn(ratioConstructions,task?.ratioConstruction)) return constructionConfig(task.ratioConstruction);
  const spec=lesson?.id==='p15'&&Object.hasOwn(segmentRatios,task?.segmentRatio)&&segmentRatios[task.segmentRatio];
@@ -904,13 +947,27 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if (n===15 && task.trigStudy) {
+ if (n===33 && Object.hasOwn(groupRules,task.groupRule)) {
+  const rule=task.groupRule;
+  show(drawGroupRule(rule,a,b));
+  if (rule==='distribute') {
+   formula('3 × ('+a+' + '+b+') = '+3*(a+b));
+   formula('3 × '+a+' + 3 × '+b+' = '+(3*a)+' + '+(3*b));
+   stepList(['Сосчитай все клетки по числу рядов и столбцов.','Сосчитай клетки в каждой цветной полосе отдельно.','Измени ширину одной полосы. Объясни, почему оба способа по-прежнему дают одно число.']);
+  } else {
+   const op=rule==='add'?' + ':' − ',sign=rule==='add'?1:-1,end=10+sign*(a+b);
+   formula('10'+op+'('+a+' + '+b+') = '+end);
+   formula('(10'+op+a+')'+op+b+' = '+end);
+   stepList(['На верхней дорожке пройди весь путь за один шаг.','На нижней дорожке сначала пройди b, потом c.','Сравни конечные точки и попробуй другие длины шагов.']);
+  }
+ }
+ else if (n===15 && task.trigStudy) {
   const alpha=a===0?'A':'B', opposite=a===0?'BC':'AC', adjacent=a===0?'AC':'BC';
   const measurable=task.trigStudy!=='named', sample=measurable?b:0;
   const chosen=['','AC','BC','AB'][state.values[measurable?2:1]];
@@ -21804,6 +21861,1160 @@ window.PetersonCourse = {
       "question": "Как сложить число мешков, перевести в тонны и найти именно остаток?"
      },
      "relatedTask": "p33-t30"
+    },
+    {
+     "id": "p33-t32",
+     "title": "К задаче №1а",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши своё равенство и объяснение или укажи, где хранится чертёж.",
+     "prompt": "Запиши буквами правило прибавления суммы к числу. Объясни его своими словами и изобрази на рисунке. Подойдут перемещения на прямой или прямоугольник по клеткам. Возьми свои числа для проверки.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое равенство точно передаёт правило?",
+       "answer": "a + (b + c) = (a + b) + c",
+       "choices": [
+        "a + (b + c) = (a + b) + c",
+        "a + (b + c) = a + b − c",
+        "a + (b + c) = a − b + c"
+       ],
+       "hint": "Слева прибавь всю сумму одним действием, справа сделай два последовательных прибавления.",
+       "explanation": "a + (b + c) = (a + b) + c."
+      },
+      {
+       "prompt": "Сколько получится при a = 10, b = 2, c = 3?",
+       "answer": "15",
+       "hint": "Слева прибавь всю сумму одним действием, справа сделай два последовательных прибавления.",
+       "explanation": "10 + (2 + 3) = 15; отдельно 10 + 2 + 3 = 15."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Нарисуй собственный пример и отметь на нём обе стороны равенства.",
+       "hint": "Подпиши исходное число и оба изменения либо размеры частей прямоугольника.",
+       "explanation": "На числовой прямой начни в a. Отложи вправо b, затем c. Конец совпадает с концом одного перемещения на b + c."
+      }
+     ],
+     "hint": "Слева прибавь всю сумму одним действием, справа сделай два последовательных прибавления.",
+     "explanation": "a + (b + c) = (a + b) + c. На числовой прямой начни в a. Отложи вправо b, затем c. Конец совпадает с концом одного перемещения на b + c.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 1,
+      "subpart": "а",
+      "reference": "№1а"
+     },
+     "relatedTask": "p33-t33",
+     "groupRule": "add"
+    },
+    {
+     "id": "p33-t33",
+     "title": "К задаче №1б",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши своё равенство и объяснение или укажи, где хранится чертёж.",
+     "prompt": "Запиши буквами правило вычитания суммы из числа. Объясни его своими словами и изобрази на рисунке. Подойдут перемещения на прямой или прямоугольник по клеткам. Возьми свои числа для проверки.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое равенство точно передаёт правило?",
+       "answer": "a − (b + c) = (a − b) − c",
+       "choices": [
+        "a − (b + c) = (a − b) − c",
+        "a − (b + c) = a − b + c",
+        "a − (b + c) = a + b − c"
+       ],
+       "hint": "Сравни один шаг назад длиной b + c с двумя шагами назад.",
+       "explanation": "a − (b + c) = (a − b) − c."
+      },
+      {
+       "prompt": "Сколько получится при a = 10, b = 2, c = 3?",
+       "answer": "5",
+       "hint": "Сравни один шаг назад длиной b + c с двумя шагами назад.",
+       "explanation": "10 − (2 + 3) = 5, и 10 − 2 − 3 = 5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Нарисуй собственный пример и отметь на нём обе стороны равенства.",
+       "hint": "Подпиши исходное число и оба изменения либо размеры частей прямоугольника.",
+       "explanation": "На числовой прямой разность a − (b + c) можно показать двумя последовательными движениями влево на b и c."
+      }
+     ],
+     "hint": "Сравни один шаг назад длиной b + c с двумя шагами назад.",
+     "explanation": "a − (b + c) = (a − b) − c. На числовой прямой разность a − (b + c) можно показать двумя последовательными движениями влево на b и c.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 1,
+      "subpart": "б",
+      "reference": "№1б"
+     },
+     "relatedTask": "p33-t34",
+     "groupRule": "subtract"
+    },
+    {
+     "id": "p33-t34",
+     "title": "К задаче №1в",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши своё равенство и объяснение или укажи, где хранится чертёж.",
+     "prompt": "Запиши буквами правило распределительного свойства умножения. Объясни его своими словами и изобрази на рисунке. Подойдут перемещения на прямой или прямоугольник по клеткам. Возьми свои числа для проверки.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое равенство точно передаёт правило?",
+       "answer": "a(b + c) = ab + ac",
+       "choices": [
+        "a(b + c) = ab + ac",
+        "a(b + c) = ab + c",
+        "a(b + c) = ab + bc"
+       ],
+       "hint": "В каждом из a рядов есть b клеток одной группы и ещё c клеток другой.",
+       "explanation": "a(b + c) = ab + ac."
+      },
+      {
+       "prompt": "Сколько клеток при a = 3, b = 2, c = 3?",
+       "answer": "15",
+       "hint": "В каждом из a рядов есть b клеток одной группы и ещё c клеток другой.",
+       "explanation": "3 · (2 + 3) = 15, и 3 · 2 + 3 · 3 = 15."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Нарисуй собственный пример и отметь на нём обе стороны равенства.",
+       "hint": "Подпиши исходное число и оба изменения либо размеры частей прямоугольника.",
+       "explanation": "Прямоугольник высотой a и шириной b + c разделён на полосы шириной b и c. Обе высоты равны a, поэтому площади частей равны ab и ac."
+      }
+     ],
+     "hint": "В каждом из a рядов есть b клеток одной группы и ещё c клеток другой.",
+     "explanation": "a(b + c) = ab + ac. Прямоугольник высотой a и шириной b + c разделён на полосы шириной b и c. Обе высоты равны a, поэтому площади частей равны ab и ac.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 1,
+      "subpart": "в",
+      "reference": "№1в"
+     },
+     "relatedTask": "p33-t32",
+     "groupRule": "distribute"
+    },
+    {
+     "id": "p33-t35",
+     "title": "К задаче №2б",
+     "kind": "choice",
+     "answer": "−c − d",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши −(c + d) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Во что превращается +d под внешним минусом?",
+       "answer": "−d",
+       "choices": [
+        "+d",
+        "−d",
+        "0"
+       ],
+       "hint": "Внешний минус умножает оба слагаемых на −1.",
+       "explanation": "Внешний минус умножает оба слагаемых на −1."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Начни с первого c: у него тоже меняется знак."
+      }
+     ],
+     "hint": "Внешний минус умножает оба слагаемых на −1.",
+     "explanation": "После раскрытия получаем −c − d. Начни с первого c: у него тоже меняется знак.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "б",
+      "reference": "№2б"
+     },
+     "choices": [
+      "−c + d",
+      "c − d",
+      "−c − d"
+     ],
+     "errorCues": [
+      [
+       "−c + d",
+       "Сверь знаки слагаемых по очереди. Внешний минус умножает оба слагаемых на −1."
+      ],
+      [
+       "c − d",
+       "Начни с первого c: у него тоже меняется знак."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "c",
+       "+d"
+      ]
+     ],
+     "relatedTask": "p33-t36"
+    },
+    {
+     "id": "p33-t36",
+     "title": "К задаче №2в",
+     "kind": "choice",
+     "answer": "x − y",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши −(−x + y) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Чему равен результат умножения −1 на −x?",
+       "answer": "+x",
+       "choices": [
+        "−x",
+        "+x",
+        "0"
+       ],
+       "hint": "Два отрицательных множителя дают +x.",
+       "explanation": "Два отрицательных множителя дают +x."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Второе слагаемое +y тоже умножено на −1."
+      }
+     ],
+     "hint": "Два отрицательных множителя дают +x.",
+     "explanation": "После раскрытия получаем x − y. Второе слагаемое +y тоже умножено на −1.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "в",
+      "reference": "№2в"
+     },
+     "choices": [
+      "x − y",
+      "−x − y",
+      "x + y"
+     ],
+     "errorCues": [
+      [
+       "−x − y",
+       "Сверь знаки слагаемых по очереди. Два отрицательных множителя дают +x."
+      ],
+      [
+       "x + y",
+       "Второе слагаемое +y тоже умножено на −1."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "−x",
+       "+y"
+      ]
+     ],
+     "relatedTask": "p33-t37"
+    },
+    {
+     "id": "p33-t37",
+     "title": "К задаче №2г",
+     "kind": "choice",
+     "answer": "d + k − t",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши d − (−k + t) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Каким будет первое слагаемое из скобок?",
+       "answer": "+k",
+       "choices": [
+        "+k",
+        "−k",
+        "+d"
+       ],
+       "hint": "Вычитается отрицательное число −k.",
+       "explanation": "Вычитается отрицательное число −k."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Вычитается вся скобка, включая +t."
+      }
+     ],
+     "hint": "Вычитается отрицательное число −k.",
+     "explanation": "После раскрытия получаем d + k − t. Вычитается вся скобка, включая +t.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "г",
+      "reference": "№2г"
+     },
+     "choices": [
+      "d − k − t",
+      "d + k − t",
+      "d + k + t"
+     ],
+     "errorCues": [
+      [
+       "d − k − t",
+       "Сверь знаки слагаемых по очереди. Вычитается отрицательное число −k."
+      ],
+      [
+       "d + k + t",
+       "Вычитается вся скобка, включая +t."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "−k",
+       "+t"
+      ]
+     ],
+     "relatedTask": "p33-t38"
+    },
+    {
+     "id": "p33-t38",
+     "title": "К задаче №2д",
+     "kind": "choice",
+     "answer": "−m + a − c",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши −m + (a − c) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что делает знак + перед скобками?",
+       "answer": "Сохраняет знаки обоих слагаемых.",
+       "choices": [
+        "Сохраняет знаки обоих слагаемых.",
+        "Меняет знак второго слагаемого.",
+        "Меняет оба знака."
+       ],
+       "hint": "Если скобку прибавляют, внутри ничего не меняется.",
+       "explanation": "Если скобку прибавляют, внутри ничего не меняется."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "0",
+       "choices": [
+        "1",
+        "0",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Отдельное слагаемое −m не находится в скобках."
+      }
+     ],
+     "hint": "Если скобку прибавляют, внутри ничего не меняется.",
+     "explanation": "После раскрытия получаем −m + a − c. Отдельное слагаемое −m не находится в скобках.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "д",
+      "reference": "№2д"
+     },
+     "choices": [
+      "−m + a + c",
+      "m + a − c",
+      "−m + a − c"
+     ],
+     "errorCues": [
+      [
+       "−m + a + c",
+       "Сверь знаки слагаемых по очереди. Если скобку прибавляют, внутри ничего не меняется."
+      ],
+      [
+       "m + a − c",
+       "Отдельное слагаемое −m не находится в скобках."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "a",
+       "−c"
+      ]
+     ],
+     "relatedTask": "p33-t39"
+    },
+    {
+     "id": "p33-t39",
+     "title": "К задаче №2е",
+     "kind": "choice",
+     "answer": "p + n − r + s",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши p − (−n + r − s) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Каким станет последнее слагаемое −s?",
+       "answer": "+s",
+       "choices": [
+        "+s",
+        "−s",
+        "0"
+       ],
+       "hint": "Вычитать −s означает прибавлять s.",
+       "explanation": "Вычитать −s означает прибавлять s."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Внешний минус относится ко всем трём слагаемым."
+      }
+     ],
+     "hint": "Вычитать −s означает прибавлять s.",
+     "explanation": "После раскрытия получаем p + n − r + s. Внешний минус относится ко всем трём слагаемым.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "е",
+      "reference": "№2е"
+     },
+     "choices": [
+      "p + n − r + s",
+      "p + n − r − s",
+      "p − n + r − s"
+     ],
+     "errorCues": [
+      [
+       "p + n − r − s",
+       "Сверь знаки слагаемых по очереди. Вычитать −s означает прибавлять s."
+      ],
+      [
+       "p − n + r − s",
+       "Внешний минус относится ко всем трём слагаемым."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "−n",
+       "+r",
+       "−s"
+      ]
+     ],
+     "relatedTask": "p33-t40"
+    },
+    {
+     "id": "p33-t40",
+     "title": "К задаче №2ж",
+     "kind": "choice",
+     "answer": "c − b − c + a − a + b",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши c − (b + c − a) + (−a + b) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что дают после раскрытия вторые скобки?",
+       "answer": "−a + b",
+       "choices": [
+        "−a + b",
+        "a − b",
+        "−a − b"
+       ],
+       "hint": "Перед второй скобкой стоит плюс.",
+       "explanation": "Перед второй скобкой стоит плюс."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "В первой скобке меняются все три знака. После раскрытия всё выражение сокращается до 0."
+      }
+     ],
+     "hint": "Перед второй скобкой стоит плюс.",
+     "explanation": "После раскрытия получаем c − b − c + a − a + b. В первой скобке меняются все три знака. После раскрытия всё выражение сокращается до 0.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "ж",
+      "reference": "№2ж"
+     },
+     "choices": [
+      "c − b + c − a − a + b",
+      "c − b − c + a − a + b",
+      "c − b − c + a + a − b"
+     ],
+     "errorCues": [
+      [
+       "c − b + c − a − a + b",
+       "Сверь знаки слагаемых по очереди. Перед второй скобкой стоит плюс."
+      ],
+      [
+       "c − b − c + a + a − b",
+       "В первой скобке меняются все три знака. После раскрытия всё выражение сокращается до 0."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "b",
+       "+c",
+       "−a"
+      ],
+      [
+       "+1",
+       "−a",
+       "+b"
+      ]
+     ],
+     "relatedTask": "p33-t41"
+    },
+    {
+     "id": "p33-t41",
+     "title": "К задаче №2з",
+     "kind": "choice",
+     "answer": "d − m − b + m − x − d + x",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши (d − m) − b − (−m + x + d) + x без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какой набор даёт вычитание последней скобки?",
+       "answer": "+m − x − d",
+       "choices": [
+        "−m − x − d",
+        "+m + x + d",
+        "+m − x − d"
+       ],
+       "hint": "Каждый из трёх членов скобки меняет свой знак.",
+       "explanation": "Каждый из трёх членов скобки меняет свой знак."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Числа перед скобками и следующее +x сохрани. Упрощённое выражение равно −b."
+      }
+     ],
+     "hint": "Каждый из трёх членов скобки меняет свой знак.",
+     "explanation": "После раскрытия получаем d − m − b + m − x − d + x. Числа перед скобками и следующее +x сохрани. Упрощённое выражение равно −b.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "з",
+      "reference": "№2з"
+     },
+     "choices": [
+      "d − m − b − m − x − d + x",
+      "d − m − b + m + x + d + x",
+      "d − m − b + m − x − d + x"
+     ],
+     "errorCues": [
+      [
+       "d − m − b − m − x − d + x",
+       "Сверь знаки слагаемых по очереди. Каждый из трёх членов скобки меняет свой знак."
+      ],
+      [
+       "d − m − b + m + x + d + x",
+       "Числа перед скобками и следующее +x сохрани. Упрощённое выражение равно −b."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "d",
+       "−m"
+      ],
+      [
+       "−1",
+       "−m",
+       "+x",
+       "+d"
+      ]
+     ],
+     "relatedTask": "p33-t42"
+    },
+    {
+     "id": "p33-t42",
+     "title": "К задаче №2и",
+     "kind": "choice",
+     "answer": "k − y + c + d − c − y − k + d",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши k − (y − c) + (d − c − y) + (−k + d) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какой знак стоит у c из первой скобки?",
+       "answer": "Плюс.",
+       "choices": [
+        "Минус.",
+        "Это слагаемое исчезает сразу.",
+        "Плюс."
+       ],
+       "hint": "Перед первой скобкой минус, внутри стоит −c.",
+       "explanation": "Перед первой скобкой минус, внутри стоит −c."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Перед второй и третьей скобками стоят плюсы. После объединения останется 2d − 2y."
+      }
+     ],
+     "hint": "Перед первой скобкой минус, внутри стоит −c.",
+     "explanation": "После раскрытия получаем k − y + c + d − c − y − k + d. Перед второй и третьей скобками стоят плюсы. После объединения останется 2d − 2y.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "и",
+      "reference": "№2и"
+     },
+     "choices": [
+      "k − y + c + d − c − y − k + d",
+      "k − y − c + d − c − y − k + d",
+      "k − y + c − d + c + y − k + d"
+     ],
+     "errorCues": [
+      [
+       "k − y − c + d − c − y − k + d",
+       "Сверь знаки слагаемых по очереди. Перед первой скобкой минус, внутри стоит −c."
+      ],
+      [
+       "k − y + c − d + c + y − k + d",
+       "Перед второй и третьей скобками стоят плюсы. После объединения останется 2d − 2y."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "y",
+       "−c"
+      ],
+      [
+       "+1",
+       "d",
+       "−c",
+       "−y"
+      ],
+      [
+       "+1",
+       "−k",
+       "+d"
+      ]
+     ],
+     "relatedTask": "p33-t35"
+    },
+    {
+     "id": "p33-t43",
+     "title": "К задаче №3б",
+     "kind": "number",
+     "answer": "-7/9",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: 1 3/8 + (−2 7/9 + 5/8). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Сколько получится из 1 3/8 + 5/8?",
+       "answer": "2",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "3/8 + 5/8 = 1; прибавь целую часть."
+      },
+      {
+       "prompt": "Какая дробная часть останется при 2 − 2 7/9?",
+       "answer": "-7/9",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "Две целые единицы сокращаются, а 7/9 вычитается."
+      }
+     ],
+     "hint": "3/8 + 5/8 = 1; прибавь целую часть.",
+     "explanation": "3/8 + 5/8 = 1; прибавь целую часть. Две целые единицы сокращаются, а 7/9 вычитается. Получаем −7/9.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "б",
+      "reference": "№3б"
+     },
+     "errorCues": [
+      [
+       "7/9",
+       "Сравни 2 и 2 7/9: какое число больше?"
+      ],
+      [
+       "-73/36",
+       "Перед скобками знак плюс: сохрани знак +5/8."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "−2 7/9",
+       "+5/8"
+      ]
+     ],
+     "relatedTask": "p33-t44"
+    },
+    {
+     "id": "p33-t44",
+     "title": "К задаче №3в",
+     "kind": "number",
+     "answer": "2.2",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: (5,6 − 7,2) − (−7,2 + 3,4). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Сколько дают −7,2 и член из второй скобки с модулем 7,2?",
+       "answer": "0",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Вычитается −7,2, поэтому появляется +7,2."
+      },
+      {
+       "prompt": "Какую величину нужно вычесть из 5,6?",
+       "answer": "3.4",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "После раскрытия остаётся 5,6 − 3,4."
+      }
+     ],
+     "hint": "Вычитается −7,2, поэтому появляется +7,2.",
+     "explanation": "Вычитается −7,2, поэтому появляется +7,2. После раскрытия остаётся 5,6 − 3,4. Получаем 2,2.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "в",
+      "reference": "№3в"
+     },
+     "errorCues": [
+      [
+       "9",
+       "Проверь знак +3,4 из вычитаемой скобки."
+      ],
+      [
+       "-2.2",
+       "Соблюдай порядок 5,6 − 3,4."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "5,6",
+       "−7,2"
+      ],
+      [
+       "−1",
+       "−7,2",
+       "+3,4"
+      ]
+     ],
+     "relatedTask": "p33-t45"
+    },
+    {
+     "id": "p33-t45",
+     "title": "К задаче №3г",
+     "kind": "number",
+     "answer": "0.5",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: (2,4 − 2/3) + 2,4 − (1,8 + 1 5/6). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Чему равна десятичная часть 2,4 + 2,4 − 1,8?",
+       "answer": "3",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Сложи 2,4 и 2,4, затем вычти 1,8."
+      },
+      {
+       "prompt": "Сколько составляют вместе вычитаемые 2/3 и 1 5/6?",
+       "answer": "5/2",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "2/3 = 4/6, а 1 5/6 = 11/6. Их сумма 15/6."
+      }
+     ],
+     "hint": "Сложи 2,4 и 2,4, затем вычти 1,8.",
+     "explanation": "Сложи 2,4 и 2,4, затем вычти 1,8. 2/3 = 4/6, а 1 5/6 = 11/6. Их сумма 15/6. Получаем 0,5.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "г",
+      "reference": "№3г"
+     },
+     "errorCues": [
+      [
+       "5.5",
+       "Проверь знаки двух дробей: от 3 нужно вычесть их сумму."
+      ],
+      [
+       "-0.5",
+       "Проверь порядок: 3 минус 2,5."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "2,4",
+       "−2/3"
+      ],
+      [
+       "−1",
+       "1,8",
+       "+1 5/6"
+      ]
+     ],
+     "relatedTask": "p33-t46"
+    },
+    {
+     "id": "p33-t46",
+     "title": "К задаче №3д",
+     "kind": "number",
+     "answer": "-8",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: 45 − (−7 + 18) − (34 − 18 + 26). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Сколько дают два члена с модулем 18 после раскрытия?",
+       "answer": "0",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Первое +18 вычитается. Второе −18 тоже вычитается."
+      },
+      {
+       "prompt": "Чему равна сумма отрицательных членов −34 и −26?",
+       "answer": "-60",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "Оба члена поступают из вычитаемой второй скобки."
+      }
+     ],
+     "hint": "Первое +18 вычитается. Второе −18 тоже вычитается.",
+     "explanation": "Первое +18 вычитается. Второе −18 тоже вычитается. Оба члена поступают из вычитаемой второй скобки. Получаем −8.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "д",
+      "reference": "№3д"
+     },
+     "errorCues": [
+      [
+       "8",
+       "Сравни положительную сумму 45 + 7 и модуль отрицательной суммы."
+      ],
+      [
+       "44",
+       "Проверь знак числа 26 из вычитаемой скобки."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "−7",
+       "+18"
+      ],
+      [
+       "−1",
+       "34",
+       "−18",
+       "+26"
+      ]
+     ],
+     "relatedTask": "p33-t47"
+    },
+    {
+     "id": "p33-t47",
+     "title": "К задаче №3е",
+     "kind": "number",
+     "answer": "7.5",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: −9,7 + (−3,8 + 5,2) − (2,9 − 5,2 − 9,7) + 3,8. Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Чему равна сумма двух оставшихся слагаемых с модулем 5,2?",
+       "answer": "10.4",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Вычитание −5,2 даёт +5,2."
+      },
+      {
+       "prompt": "Что остаётся вычесть из 10,4?",
+       "answer": "2.9",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "Пары −9,7 и +9,7, а также −3,8 и +3,8 сократились."
+      }
+     ],
+     "hint": "Вычитание −5,2 даёт +5,2.",
+     "explanation": "Вычитание −5,2 даёт +5,2. Пары −9,7 и +9,7, а также −3,8 и +3,8 сократились. Получаем 7,5.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "е",
+      "reference": "№3е"
+     },
+     "errorCues": [
+      [
+       "-2.9",
+       "Два числа 5,2 имеют один знак, поэтому не сокращаются."
+      ],
+      [
+       "13.3",
+       "Посмотри на +2,9 внутри вычитаемой скобки."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "−3,8",
+       "+5,2"
+      ],
+      [
+       "−1",
+       "2,9",
+       "−5,2",
+       "−9,7"
+      ]
+     ],
+     "relatedTask": "p33-t48"
+    },
+    {
+     "id": "p33-t48",
+     "title": "К задаче №3ж",
+     "kind": "number",
+     "answer": "-1.11",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: (1,8 − 6,03) − (−4,14 + 2,25 − 6,03) − 4,8. Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Чему равна сумма положительных чисел после сокращения пары 6,03?",
+       "answer": "5.94",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Сложи 1,8 и 4,14."
+      },
+      {
+       "prompt": "Чему равна сумма модулей оставшихся отрицательных чисел?",
+       "answer": "7.05",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "2,25 + 4,8 = 7,05."
+      }
+     ],
+     "hint": "Сложи 1,8 и 4,14.",
+     "explanation": "Сложи 1,8 и 4,14. 2,25 + 4,8 = 7,05. Получаем −1,11.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "ж",
+      "reference": "№3ж"
+     },
+     "errorCues": [
+      [
+       "1.11",
+       "Модуль отрицательной суммы 7,05 больше положительной суммы."
+      ],
+      [
+       "3.39",
+       "Проверь знак у 2,25 из вычитаемых скобок."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "1,8",
+       "−6,03"
+      ],
+      [
+       "−1",
+       "−4,14",
+       "+2,25",
+       "−6,03"
+      ]
+     ],
+     "relatedTask": "p33-t49"
+    },
+    {
+     "id": "p33-t49",
+     "title": "К задаче №3з",
+     "kind": "number",
+     "answer": "-3",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: −(5 1/3 − 4 5/16) + 2 1/16 − (1 2/3 − 1 5/16 + 3 11/16). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Чему равна сумма слагаемых −5 1/3 и −1 2/3?",
+       "answer": "-7",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Сложи 1/3 и 2/3 и учти минусы."
+      },
+      {
+       "prompt": "Сколько дают четыре слагаемых со знаменателем 16, учитывая целые части?",
+       "answer": "4",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "4 5/16 + 2 1/16 + 1 5/16 − 3 11/16 = (4 + 2 + 1 − 3) + (5 + 1 + 5 − 11)/16."
+      }
+     ],
+     "hint": "Сложи 1/3 и 2/3 и учти минусы.",
+     "explanation": "Сложи 1/3 и 2/3 и учти минусы. 4 5/16 + 2 1/16 + 1 5/16 − 3 11/16 = (4 + 2 + 1 − 3) + (5 + 1 + 5 − 11)/16. Получаем −3.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "з",
+      "reference": "№3з"
+     },
+     "errorCues": [
+      [
+       "3",
+       "Сравни −7 и +4 перед сложением."
+      ],
+      [
+       "-7",
+       "В группе дробей со знаменателем 16 дробные части сокращаются, целые остаются."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "5 1/3",
+       "−4 5/16"
+      ],
+      [
+       "−1",
+       "1 2/3",
+       "−1 5/16",
+       "+3 11/16"
+      ]
+     ],
+     "relatedTask": "p33-t43"
     }
    ]
   },
@@ -45361,8 +46572,8 @@ ${[1, 2, 3]
     const products = bracketTerms(t);
     if (!products) return '';
     return '<figure><figcaption>Куда идёт множитель перед скобками?</figcaption><ul>' +
-      products.map(([factor,one,two]) => '<li>' + e(factor + ' × (' + one + ')') + ' и ' +
-        e(factor + ' × (' + two + ')') + '</li>').join('') +
+      products.map(([factor,...terms]) => '<li>' +
+        terms.map(term => e(factor + ' × (' + term + ')')).join(' и ') + '</li>').join('') +
       '</ul><p>Проверь знак числа или коэффициента в каждом произведении. Слагаемые за скобками перепиши со своими знаками.</p></figure>';
   }
   function wrongAnswerCue(t,value) {

@@ -636,6 +636,34 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
   await waitSnapshot(studentFrame,train,'learner reopens the same three-stage model and reading error');
 
+  phase = 'read the first three printed tasks of part three';
+  await lesson(teacherFrame,'p33',32);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Число b',{exact:true}).selectOption('4');
+  await teacherFrame.getByLabel('Число c',{exact:true}).selectOption('1');
+  const subtraction=await synchronized(teacherFrame,studentFrame,'two backwards steps match one displacement');
+  assert.deepEqual(subtraction.view.model.values,[4,1]);
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/10 − \(4 \+ 1\) = 5/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-subtraction-path','#model svg');
+  await ownership(teacher,student,true);
+  await lesson(studentFrame,'p33',33);
+  await openModel(studentFrame);
+  await studentFrame.getByLabel('Число b',{exact:true}).selectOption('4');
+  await studentFrame.getByLabel('Число c',{exact:true}).selectOption('1');
+  await studentFrame.locator('#notebook').fill('Нарисовал 3 ряда, в каждой строке 4 зелёные и 1 оранжевая клетка.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const areas=await synchronized(studentFrame,teacherFrame,'the pupil measures two rectangle areas');
+  assert.deepEqual(await teacherFrame.locator('#model svg rect').evaluateAll(rows=>rows.map(row=>row.getAttribute('width'))),['124','31']);
+  await manualWithoutCredit(teacherFrame,'p33-t34',0);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-products-area','#model svg');
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,areas,'area and notebook restored after recharge');
+  await lesson(teacherFrame,'p33',38);
+  await teacherFrame.locator('[data-action=hint]').click();
+  await synchronized(teacherFrame,studentFrame,'all three signed products are present for 2e');
+  assert.match(await studentFrame.locator('.help figure').innerText(),/−1 × \(−n\).*−1 × \(\+r\).*−1 × \(−s\)/s);
+
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
   await teacherFrame.locator('#book-part').selectOption('2');
