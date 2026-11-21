@@ -20,7 +20,8 @@ module.exports = async function checkAlimov(browser, origin, serverOrigin) {
       const n=i+1, route='#lesson/p'+String(n).padStart(2,'0')+'/0';
       assert.equal(row.label,(n>73?'Приложение · § '+(n-73):'§ '+n)+' · с. '+pages[i]);
       assert.equal(new URL(row.board).searchParams.get('trainer'),'/trainers/alimov10-11.html'+route);
-      await pupil.goto(row.personal,{waitUntil:'domcontentloaded'});
+      if (i===0) await pupil.goto(row.personal,{waitUntil:'domcontentloaded'});
+      else await pupil.evaluate(href=>{location.hash=new URL(href).hash;},row.personal);
       await pupil.waitForFunction(([n,page])=>{
         const l=window.AlimovCourse?.lessons[n-1];
         return l?.page===page && document.querySelector('.lesson-title')?.textContent===l.title &&
@@ -28,10 +29,22 @@ module.exports = async function checkAlimov(browser, origin, serverOrigin) {
       },[n,pages[i]]);
       assert.equal(await pupil.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'page '+pages[i]);
     }
-    await pupil.goto(links[28].personal);await pupil.locator('#final-answer').fill('101/103');
+    await pupil.evaluate(href=>{location.hash=new URL(href).hash;},links[28].personal);
+    await pupil.waitForFunction(()=>document.querySelector('.lesson-title')?.textContent==='Формулы двойного угла');
+    await pupil.locator('#final-answer').fill('12/25');
+    await pupil.locator('#answer-form button[type=submit]').click();
+    await pupil.locator('#problem').getByText(/удвой это произведение/).waitFor();
+    await pupil.locator('#final-answer').fill('24/25');await pupil.locator('#answer-form button[type=submit]').click();
+    await pupil.locator('.task-heading .tag').filter({hasText:'Исправлено самостоятельно'}).waitFor();
+    await pupil.getByRole('button',{name:/Следующая задача/}).click();
+    await pupil.locator('[data-action=hint]').click();
+    await pupil.locator('#final-answer').fill('120/169');await pupil.locator('#answer-form button[type=submit]').click();
+    await pupil.locator('.task-heading .tag').filter({hasText:'С помощью'}).waitFor();
+    await pupil.getByRole('button',{name:/Следующая задача/}).click();
+    await pupil.locator('#final-answer').fill('101/103');
     const key='mathexam.alimov10-11.2016.v1';
     const personal=await pupil.evaluate(k=>localStorage.getItem(k),key);
-    assert.equal(JSON.parse(personal).tasks['p29-a1'].value,'101/103');
+    assert.equal(JSON.parse(personal).tasks['p29-a3'].value,'101/103');
     const shared=new URL(links[28].board);shared.searchParams.set('server',serverOrigin);
     await teacher.goto(shared.href,{waitUntil:"domcontentloaded"});await teacher.locator('#openShare').click();await teacher.locator('#createRoom').click();
     await teacher.waitForFunction(()=>document.querySelector('#studentLink')?.value.includes('role=student'));
@@ -42,6 +55,10 @@ module.exports = async function checkAlimov(browser, origin, serverOrigin) {
     const received=(page,selector,expected)=>page.waitForFunction(([selector,expected])=>document.querySelector('#trainerFrame')?.contentDocument?.querySelector(selector)?.value===expected,[selector,expected]);
     await received(pupil,'#final-answer','');
     const slider='#model input[type=range]';
+    await t.getByText('Исследовать на модели',{exact:true}).click();
+    await t.locator('#model .model-readout').filter({hasText:'sin α = 3/5'}).waitFor();
+    await t.locator('#model select').selectOption('show');
+    await s.locator('#model .model-readout').filter({hasText:/sin 2α ≈ 0[,.]96/}).waitFor();
     await t.locator(slider).first().press('ArrowRight');
     await received(pupil,slider,await t.locator(slider).first().inputValue());
     await t.locator('#final-answer').fill('12/25');await t.locator('#answer-form button[type=submit]').click();
@@ -51,6 +68,7 @@ module.exports = async function checkAlimov(browser, origin, serverOrigin) {
     await s.locator('.step.completed').first().waitFor();
     await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.locator('#sharePanel [data-close-panel]').click();
     await pupil.waitForFunction(()=>document.body.classList.contains('control-owner'));
+    await s.getByText('Мои записи к задаче',{exact:true}).click();
     await s.locator('#notebook').fill('Сначала 3/5 × 4/5, потом удвою');await received(teacher,'#notebook','Сначала 3/5 × 4/5, потом удвою');
     await s.locator(slider).first().press('ArrowLeft');await received(teacher,slider,await s.locator(slider).first().inputValue());
     await teacher.reload({waitUntil:"domcontentloaded"});await connected(teacher);await received(teacher,'#notebook','Сначала 3/5 × 4/5, потом удвою');
@@ -59,10 +77,22 @@ module.exports = async function checkAlimov(browser, origin, serverOrigin) {
     assert.equal(await pupil.evaluate(k=>localStorage.getItem(k),key),personal);
     const owner=await teacher.locator('body').evaluate(body=>body.classList.contains('control-owner'))?teacher:pupil;
     const watcher=owner===teacher?pupil:teacher;
-    await frame(owner).locator('button[data-action=task][data-index="1"]').first().click();
+    await frame(owner).getByRole('button',{name:/Следующая задача/}).click();
     await watcher.waitForFunction(()=>document.querySelector('#trainerFrame')?.contentWindow?.location.hash==='#lesson/p29/1');
     assert.equal(await watcher.frameLocator('#trainerFrame').locator('#final-answer').inputValue(),'');
+    const controller=frame(owner), viewer=frame(watcher);
+    const chooser=controller.getByRole('button',{name:/№ 503\(1\)/});
+    if (!(await chooser.isVisible())) await controller.getByText('Задачи этой темы',{exact:true}).click();
+    await chooser.click();await viewer.locator('#problem h2').filter({hasText:'№ 503(1)'}).waitFor();
+    await controller.locator('#final-answer').fill('24/25');await controller.locator('#answer-form button[type=submit]').click();
+    await viewer.locator('.feedback').filter({hasText:'Модуль подходит'}).waitFor();
+    await controller.locator('#final-answer').fill('-24/25');await controller.locator('#answer-form button[type=submit]').click();
+    await viewer.locator('.task-heading .tag').filter({hasText:'С помощью'}).waitFor();
+    await controller.getByRole('button',{name:/Следующая задача/}).click();
+    await viewer.locator('#problem h2').filter({hasText:'№ 503(2)'}).waitFor();
+    await controller.locator('#final-answer').fill('24/25');await controller.locator('#answer-form button[type=submit]').click();
+    await viewer.locator('.task-heading .tag').filter({hasText:'С помощью'}).waitFor();
     assert.deepEqual(errors,[]);
-    console.log('ALIMOV_WORKSHOP_BOARD_OK: 78 printed sections, mobile forms and models, two independent participants, double-angle error, step, new task, control transfer, two reloads, isolated personal draft.');
+    console.log('ALIMOV_WORKSHOP_BOARD_OK: 78 printed sections, mobile forms and models, two independent participants, both printed №503 solutions, double-angle error, step, new task, control transfer, two reloads, isolated personal draft.');
   } finally {await teacherContext.close();await pupilContext.close();}
 };
