@@ -49,9 +49,9 @@ async function healthy(url, child, logs) {
 }
 
 const catalogue=process.argv.includes('--makarychev9-2017-supplement')?{
-  directory:'makarychev9-2017',entries:[[50,36,62]],search:'makarychev9-2017',match:'36 пунктов',lesson:process.argv.includes('--parameter')?'50-216':process.argv.includes('--graph')?'50-213':'50-202',onlySelected:true,chart:process.argv.includes('--parameter')?'svg[aria-label*="Парабола при найденном"]':process.argv.includes('--graph')?'svg[aria-label*="Обе ветви"]':'svg[aria-label*="Сечение"]',storage:'math:makarychev9-2017:v1:'
+  directory:'makarychev9-2017',entries:[[50,36,68]],search:'makarychev9-2017',match:'36 пунктов',lesson:process.argv.includes('--radical-sum')?'50-219':process.argv.includes('--parameter')?'50-216':process.argv.includes('--graph')?'50-213':'50-202',onlySelected:true,chart:process.argv.includes('--radical-sum')?'svg[aria-label*="Корни вспомогательного"]':process.argv.includes('--parameter')?'svg[aria-label*="Парабола при найденном"]':process.argv.includes('--graph')?'svg[aria-label*="Обе ветви"]':'svg[aria-label*="Сечение"]',storage:'math:makarychev9-2017:v1:'
 }:process.argv.includes('--makarychev9-2017')?{
-  directory:'makarychev9-2017',entries:[[50,36,62]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
+  directory:'makarychev9-2017',entries:[[50,36,68]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
 }:process.argv.includes('--merzlyak9-2014')?{
   directory:'merzlyak9-2014',entries:[[55,26,26]],search:'merzlyak9-2014',match:'все параграфы',lesson:'55-13',chart:'svg[aria-label*="штриховая"]',storage:'math:merzlyak9-2014:v1:'
 }:{

@@ -253,6 +253,8 @@ const extra={
   '215a':([u,v,A])=>{const f=x=>(x-u)*(x-v),constant=f(0),linear=f(1)-constant-1;return [linear,constant,A*linear];},
   '215b':([h,r])=>{const u=h-Math.sqrt(r),v=h+Math.sqrt(r);return [Math.round(u+v),Math.round(u*v),-Math.round(u+v)];},
   '216':([a,b])=>{const parameter=Array.from({length:81},(_,i)=>i-40).find(p=>-2*p-2*a===0);const root=Array.from({length:41},(_,i)=>i-20).find(x=>x!==0&&2*parameter*x*x-b*x-2*parameter-2*a===0);return [parameter,2*parameter,root];},
+  '218':([k,m])=>{const pairs=[];for(let p=1;p<30;p++)for(let q=-90;q<0;q++){const f=x=>x*x+k*p*x+m*q;if(f(p)===0 && f(q)===0)pairs.push([p,q]);}assert.equal(pairs.length,1);const [p,q]=pairs[0];return [p,q,p*q];},
+  '219':([P,T])=>{const roots=[];for(let n=1;n<=P;n++){if(P%n===0 && Math.sqrt(n)+Math.sqrt(P/n)===T)roots.push(n);}assert.equal(roots.length,2);return [roots[0]+roots[1],...roots];},
   '210':r=>{const [h,p,q]=r,x=Array.from({length:41},(_,i)=>h+i-20),sets=[x.map(v=>(v-h)**2+p),x.map(v=>-((v-h)**2)-q),x.map(v=>(v-h)**2)];return [Math.min(...sets[0]),Math.max(...sets[1]),sets.filter(values=>values.every(y=>y>0)||values.every(y=>y<0)).length];},
   '211':r=>{const [a,k,d]=r,values=Array.from({length:d*d+2},(_,i)=>a-i).map(x=>[x,Math.sqrt(a-x)]);return [values[0][0],values.find(pair=>pair[1]===k)[0],values.find(pair=>pair[0]===a-d*d)[1]];},
   '212':r=>{const [h,k,d]=r,values=Array.from({length:2*d+1},(_,i)=>[h-d+i,k+Math.abs(i-d)]);const min=values.reduce((p,q)=>q[1]<p[1]?q:p);assert.equal(values[0][1],values.at(-1)[1]);return [min[0],min[1],values[0][1]];},
@@ -263,15 +265,20 @@ for(const key of ['214b','214c','214d']) extra[key]=([a,b,c])=>{
  const delta=b*b-4*a*c,left=(-b-Math.sqrt(delta))/(2*a),right=(-b+Math.sqrt(delta))/(2*a),t=Math.sqrt(a);
  return [t,Math.round((left+right)*t/2),Math.round(((right-left)*t/2)**2)];
 };
+for(const key of ['217a','217b','217c','217d']) extra[key]=([A,B,C])=>{
+ const roots=Array.from({length:65},(_,i)=>i-32).filter(x=>A*x*x+B*x+C===0);
+ assert.equal(roots.length,2);
+ return [A*A*(roots[1]-roots[0])**2,roots[0]+roots[1],roots[0]*roots[1]];
+};
 const pathKeys=Object.keys(extra).sort((a,b)=>parseInt(a)-parseInt(b)||a.localeCompare(b));
-assert.deepEqual(pathKeys,['200a','200b','200c','201','202','203','204','205','206a','206b','206c','207','208','209a','209b','210','211','212','213','214a','214b','214c','214d','215a','215b','216']);
+assert.deepEqual(pathKeys,['200a','200b','200c','201','202','203','204','205','206a','206b','206c','207','208','209a','209b','210','211','212','213','214a','214b','214c','214d','215a','215b','216','217a','217b','217c','217d','218','219']);
 for(const name of pathKeys) {
   const id='50-'+name,key='math:makarychev9-2017:v1:'+id;
   let dom=open(id),w=dom.window;
   const lesson=w.MathExamTopicPractice.lessons.get(id);
   const printedPage=parseInt(name)>=214?70:parseInt(name)>=205?69:68;
   assert.equal(lesson.page,printedPage);assert.equal(w.document.querySelector('#lesson').value,id);
-  assert.match(w.document.querySelector('#edition').textContent,/Упражнение №2(?:0[0-9]|1[0-6])/);
+  assert.match(w.document.querySelector('#edition').textContent,/Упражнение №2[01][0-9]/);
   assert(w.document.querySelector('#work').textContent.includes(lesson.printedGuide));
   assert.equal(new URL(w.document.querySelector('#source').href).hash,'#page='+(printedPage+1));
   assert.equal(new URL(w.document.querySelector('#board').href).searchParams.get('trainer'),'/trainers/makarychev9-2017/index.html#lesson/'+id);
@@ -306,4 +313,4 @@ for(const name of pathKeys) {
   click(w,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
   dom.window.close();
 }
-console.log('Source 50: 1188 topic checks and 858 printed-exercise checks; all 62 pupil journeys preserve saved, corrected and assisted work.');
+console.log('Source 50: 1188 topic checks and 1056 printed-exercise checks; all 68 pupil journeys preserve saved, corrected and assisted work.');
