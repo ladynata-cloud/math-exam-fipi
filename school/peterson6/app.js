@@ -300,6 +300,15 @@ function firstErrorsHTML(t,s){
         section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
         section.lastPage + '). Число карточек с разбором — ' + count + '.</p>';
       lastPrinted = section.last;
+      const review = topic.completeSourceReview;
+      if (review && review.first === lastPrinted + 1) {
+        const start = readingOrder(topic).find(i => topic.tasks[i].source.exercise === review.first);
+        if (Number.isInteger(start)) {
+          coverage += '<p class="small"><a href="#lesson/' + e(topic.id) + '/' + start + '">Самопроверка · №' +
+            review.first + '–' + review.last + ' · с. ' + review.firstPage + '</a></p>';
+          lastPrinted = review.last;
+        }
+      }
     }
     return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
       'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>' + coverage;

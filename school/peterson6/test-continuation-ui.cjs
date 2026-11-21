@@ -1203,3 +1203,179 @@ test('construct all eight valid source rearrangements and compare rates in all f
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('prove derived proportions on the common domain and measure corresponding ray segments',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [rule,j]of [4,21,22,23,24,25,26].entries()){
+   const c=go(j);
+   for(const i of [0,1,2,3,4,5]){
+    set(c[0],i);set(c[1],1);const rows=[...f.d.querySelectorAll('#model tbody tr')],message=rows.map(row=>row.cells[2].textContent);
+    assert.equal(rows.length,rule===6?3:2);
+    if(i===0||i===1)assert(message.every(m=>m.includes(i===0?'Равенство верно':'Равенство ложно')));
+    if(i===5)assert(message[0].includes('нулевой знаменатель'));
+    if(i===2&&[4,5,6].includes(rule))assert(message[1].includes('нулевой знаменатель'));
+    if(i===3&&[3,6].includes(rule))assert(message.some(m=>m.includes('нулевой знаменатель')));
+   }
+  }
+  for(const j of [3,27,28,29]){
+   const c=go(j);set(c[0],1);
+   for(const op of [0,1,2]){set(c[1],op);set(c[2],1);assert(out().includes('Равенство верно'));}
+  }
+  for(const j of [30,31,5]){
+   const c=go(j);
+   for(const [vi,k]of [1.5,2,2.5].entries()){
+    set(c[0],50);set(c[1],vi);set(c[2],2);
+    const rays=['B','C'].map(v=>f.q('#model [data-measured-branch="'+v+'"]'));
+    const vec=l=>[l.getAttribute('x2')-l.getAttribute('x1'),l.getAttribute('y2')-l.getAttribute('y1')],len=l=>Math.hypot(...vec(l));assert(Math.abs(len(rays[0])/len(rays[1])-k)<1e-9);
+    const cuts=[...f.d.querySelectorAll('#model [data-transversal]')].map(vec);assert.equal(cuts.length,3);for(const t of cuts.slice(1))assert(Math.abs(cuts[0][0]*t[1]-cuts[0][1]*t[0])<1e-8);
+   }
+  }
+  const c=go(32),correct=[];assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,9);
+  for(let i=0;i<9;i++){set(c[0],i);set(c[1],1);if(out().includes('буква входит'))correct.push(f.q(c[0]).selectedOptions[0].textContent);}
+  assert.equal(correct.join(''),'ФАЛЕС');set(c[1],2);assert(f.q('#model .pm-visual a').href.startsWith('https://mathshistory.st-andrews.ac.uk/'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('repair oral proportions, check six different equations and distinguish both percentage bases',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [k,j]of [33,34,35,36].entries()){
+   const c=go(j);for(const fresh of [0,1])for(let op=0;op<4;op++){set(c[0],fresh);set(c[1],op);set(c[2],1);assert.equal(out().includes('Равенство получилось.'),op===[0,3,2,1][k]);}
+  }
+  for(const [k,j]of [37,38,39,40,41,42,43,44].entries()){
+   const c=go(j),expected=['24','35/3','14/5','6/5','2/11','45/2','1/2','3/10'][k];
+   const find=v=>[...f.q(c[1]).options].find(o=>o.textContent===v).value;set(c[1],find(expected));set(c[2],2);assert(out().includes('подстановка подходит')||out().includes('Подстановка подходит'),out());
+  }
+  for(const [k,j]of [45,46,47,48,49,50].entries()){
+   const c=go(j),expected=['16/5','15','1/4','25','2','3/8'][k];const find=v=>[...f.q(c[1]).options].find(o=>o.textContent===v).value;
+   set(c[1],find(expected));set(c[2],1);assert(out().includes('Это корень.'));
+   if(k===0||k===2){set(c[1],find(k===0?'0':'-3/4'));set(c[2],2);assert(out().includes('не допускается'));}
+  }
+  for(const [j,a]of [[51,'4/5'],[52,'2']]){const c=go(j),idx=[...f.q(c[1]).options].find(o=>o.textContent===a).value;set(c[1],idx);set(c[2],3);assert(out().includes(a+' подходит.'));}
+  for(const [j,total]of [[53,6],[54,75]]){const c=go(j);for(const fresh of [0,1]){set(c[0],fresh);set(c[1],2);assert(out().includes('Целое '+(total*(1+fresh))+' '));}}
+  let c=go(55);set(c[1],2);assert(out().includes('25% и 20%'));set(c[0],1);set(c[1],2);assert(out().includes('25% и 15%'));
+  c=go(56);set(c[1],2);assert(out().includes('рост 8%'));set(c[0],1);set(c[1],2);assert(out().includes('уровень тот же'));
+  c=go(57);set(c[1],2);assert(out().includes('снижение 10%'));set(c[0],1);set(c[1],2);assert(out().includes('уровень тот же'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('complete the tariff, seven exact rankings, parallel-section triangle, cell cuttings and digit sets',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(58);set(c[1],9);set(c[2],2);assert(out().includes('200%'));assert(f.q('#model tbody').textContent.replace(/\s/g,'').includes('24000'));
+  c=go(59);assert.equal(f.d.querySelectorAll('#task-figure tr').length,8);set(c[2],2);assert(out().includes('РЕЙТИНГ'));set(c[1],1);set(c[2],2);assert.notEqual(f.q('#model tbody').rows[6].cells[1].textContent,'Г');
+  for(const j of [70,71]){
+   c=go(j);for(const shape of [0,1])for(const [i,t]of [1/3,1/2,2/3].entries()){
+    set(c[0],shape);set(c[1],i);set(c[2],2);const get=p=>{const n=f.q('#model [data-triangle-point="'+p+'"]');return [Number(n.getAttribute('cx')),Number(n.getAttribute('cy'))];},len=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]),[A,B,C,K,N]=['A','B','C','M','N'].map(get);
+    assert(Math.abs(len(A,K)/len(A,B)-t)<1e-9);assert(Math.abs(len(C,N)/len(C,B)-t)<1e-9);assert.equal(K[1],N[1]);
+   }
+  }
+  c=go(72);set(c[0],4);set(c[1],2);assert(out().includes('В классе 48 чел.'));
+  c=go(73);set(c[1],2);assert(out().includes('годовая ставка 9%'));set(c[0],1);set(c[1],2);assert(out().includes('годовая ставка 12%'));
+  for(const [j,area,nDot]of [[75,15,0],[76,24,8]]){
+   c=go(j);assert.equal(f.d.querySelectorAll('#task-figure [data-cell]').length,area);assert.equal(f.d.querySelectorAll('#task-figure [data-dot="1"]').length,nDot);
+   for(const which of [1,2,3]){set(c[0],which);set(c[2],1);assert.equal(out().includes('выполняет оба условия'),which<3);assert.equal(f.d.querySelectorAll('#model [data-cell]').length,area);}
+  }
+  c=go(77);for(const [mode,k]of [[0,18],[1,9]]){set(c[0],mode);set(c[1],k);set(c[2],1);assert(out().includes('раскладка подходит'));const tr=[...f.d.querySelectorAll('#model tbody tr')].map(r=>Number(r.cells[1].textContent));assert.deepEqual(tr,[1,2,3,4,5].map(i=>i*k));}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('finish all nine printed self-check numbers and enter the original final expression by a three-digit route',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,word]of [[78,'3 : 5'],[79,'45 : 4'],[80,'5 : 3'],[82,'75%'],[83,'40%'],[84,'140%'],[85,'45%']]){const c=go(j);set(c[1],2);assert(out().includes(word));}
+  let c=go(81);set(c[0],0);set(c[2],1);assert(out().includes('не определена'));set(c[0],-2);set(c[1],6);set(c[2],1);assert(out().includes('b/3 = 2'));
+  for(const [j,known]of [[86,'4 000 000'],[87,'14,9 см'],[88,'1 096 км']]){
+   c=go(j);set(c[1],2);const txt=f.q('#model tbody').textContent.replace(/\s/g,'');assert(txt.includes(known.replace(/\s/g,'')),[j,txt]);set(c[0],1);assert(!f.d.querySelector('#model table'));
+  }
+  for(const [j,v]of [[97,'21'],[98,'3/10']]){const c=go(j),idx=[...f.q(c[1]).options].find(o=>o.textContent===v).value;set(c[1],idx);set(c[2],3);assert(out().includes(v+' подходит.'));}
+  for(const [j,answers]of [[99,['100 км','180 км']],[100,['36 страниц','54 страниц']],[101,['15%','20%']],[102,['4.','6.']]]){
+   c=go(j);set(c[1],2);assert(out().includes(answers[0]),[j,out()]);set(c[0],1);set(c[1],2);assert(out().includes(answers[1]),[j,out()]);
+  }
+  c=go(103);set(c[1],4);assert(out().includes('значение 100.'));set(c[0],1);set(c[1],4);assert(out().includes('значение 101.'));
+  c=go(104);set(c[1],6);assert(out().includes('значение 0.'));set(c[0],1);set(c[1],6);assert(out().includes('значение 2/5.'));assert.equal(f.d.querySelectorAll('#model tbody tr').length,6);
+  f.nav('#home');const entry=f.d.querySelector('a[href="#lesson/p18/78"]');assert(entry);assert(entry.textContent.includes('Самопроверка'));assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+  const independent=fixture(null,null,true);
+  try {
+   independent.nav('#lesson/p18/104');
+   assert.equal(independent.state().tasks['p18-t105'].correct,false);
+   independent.event('#final-answer','155,6');independent.submit('#answer-form');
+   assert(independent.q('.answer-form .feedback').textContent.includes('последнего минуса'));
+   const resumed=fixture(independent.state(),null,true);
+   try {
+    resumed.nav('#lesson/p18/104');const original=resumed.state().tasks['p18-t105'];assert.equal(original.attempts,1);assert.equal(original.assisted,false);
+    resumed.event('#final-answer','0');resumed.submit('#answer-form');const solved=resumed.state().tasks['p18-t105'];
+    assert.equal(solved.correct,true);assert.equal(solved.attempts,2);assert.equal(solved.assisted,false);assert.equal(solved.independent,false);
+    resumed.nav('#lesson/p18/103');resumed.click('[data-lesson-help="model"] > summary');resumed.event('#final-answer','100');resumed.submit('#answer-form');
+    assert.equal(resumed.state().tasks['p18-t104'].assisted,true);assert.equal(resumed.state().tasks['p18-t104'].independent,false);
+   } finally {resumed.close();}
+  } finally {independent.close();}
+ }finally{f.close();}
+});
+
+test('solve every printed transfer and bracket item, with an identity and its contradictory variation',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const topic=f.w.PetersonCourse.lessons.find(l=>l.id==='p37');
+  for(const [i,task] of topic.tasks.entries()){
+   if(!task.linearEquationStudy||task.source.page!==22)continue;const c=go(i);
+   if(task.kind==='choice'){set(c[2],4);assert(out().includes('Все рациональные числа'));set(c[0],1);set(c[2],4);assert(out().includes('Корней нет.'));continue;}
+   const M=f.w.PetersonMath,orig=M.parse(task.answer);
+   for(const fresh of [0,1]){const answer=M.answer(M.operation('add',orig,fresh)),id=[...f.q(c[1]).options].find(o=>o.textContent===answer).value;
+    set(c[0],fresh);set(c[1],id);set(c[2],3);assert(out().includes('Подстановка даёт равенство.'),[task.id,fresh,out()]);}
+   if(task.linearEquationStudy.clear){set(c[2],2);assert(out().includes('Умножаем обе части на '+task.linearEquationStudy.clear));}
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('bound each natural-root search, compare all six word models and reject each excluded denominator',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(28);for(const raw of ['4','-7/5']){const option=[...f.q(c[1]).options].find(o=>o.textContent===raw);set(c[1],option.value);set(c[2],2);assert(out().includes('не допускается'));}
+  for(const [j,target,newTarget]of [[29,2,3],[30,3,2],[31,3,4],[32,null,5]]){
+   c=go(j);for(const [i,val]of [target,newTarget].entries()){set(c[0],i);set(c[1],val||5);set(c[2],2);assert.equal(out().includes('Число подходит.'),val!==null);
+    if(j===29||j===30||j===32){const rows=[...f.d.querySelectorAll('#model tbody tr')].map(r=>Number(r.cells[0].textContent));assert.deepEqual(rows,j===29?[1,2,3,4]:j===30?[1,2,3]:i?[1,5]:[1,3,5,15]);}
+   }
+  }
+  c=go(33);set(c[1],1);set(c[2],2);assert(out().includes('1,5 и 1,5 л'));c=go(34);set(c[0],1);set(c[1],1);set(c[2],2);assert(out().includes('90 и 60 л'));
+  c=go(35);set(c[1],2);assert(out().includes('Всего 210'));c=go(36);set(c[0],6);set(c[1],2);assert(out().includes('Весь путь 162 км'));
+  c=go(37);set(c[1],15);set(c[2],1);assert(out().includes('Запасы равны'));set(c[0],1);set(c[1],20);set(c[2],1);assert(out().includes('Запасы равны'));
+  c=go(38);set(c[1],2);assert(out().includes('300 деталей'));set(c[0],1);set(c[1],2);assert(out().includes('180 деталей'));
+  c=go(42);set(c[2],4);assert(out().includes('Корней нет.'));set(c[0],1);set(c[2],4);assert(out().includes('Все рациональные числа'));
+  c=go(46);const bad=[...f.q(c[1]).options].find(o=>o.textContent==='1/4');set(c[1],bad.value);set(c[2],2);assert(out().includes('не допускается'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('follow both original cycle directions and distinguish divisor, dividend, minuend and subtrahend',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(47);set(c[1],2);assert(out().includes('x = 27/2'));set(c[0],20);set(c[1],2);assert(out().includes('x = 27'));
+  for(const j of [48,49]){c=go(j);assert.equal(f.d.querySelectorAll('#task-figure [data-directed-step]').length,6);assert.equal(f.d.querySelectorAll('#model [data-position]').length,6);
+   set(c[1],6);assert(out().includes('вернулась'));set(c[0],1);set(c[1],6);assert(out().includes('отличается от старта'));
+  }
+  const answers=['3/5','17/10','26/5','39/10','-1/2','-7/5','2/25','9/20','15','-3/50','9/25','-80'];
+  const fresh=['21/10','7/5','33/5','73/10','-9/5','-32/5','4/25','9/10','15/2','-3/25','18/25','-40'];
+  for(const [i,ans]of answers.entries()){c=go(50+i);set(c[1],2);assert(out().includes('x = '+ans+'.'),[i,out()]);set(c[0],1);set(c[1],2);assert(out().includes('x = '+fresh[i]+'.'),[i,out()]);}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
