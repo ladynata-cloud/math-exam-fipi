@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1053);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1064);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -997,6 +997,16 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  }
  assert.equal(3*1.2+7*1.2/6,5);assert.equal(23/25,0.92);assert.equal(27/30,0.9);assert.equal(9*4/3,12);assert.equal(480/(6+1.5)*3.5,224);assert.equal(792-200,592);
  assert.deepEqual([5+16+6+3,(5+16)*100/30],[30,70]);assert.equal(15*.4,12*.5);assert.equal(6+15+24,45);assert.equal((500+240)/.05,14800);
+}
+{
+ const sec=D.lessons.find(l=>l.id==='p38');
+ for(let n=127;n<=131;n++){
+  const group=Array.from(sec.tasks.filter(t=>t.source.exercise===n)).sort((a,b)=>a.source.subpart.localeCompare(b.source.subpart,'ru'));
+  assert.deepEqual(group.map(t=>t.source.subpart),n===131?['а','б','в','г']:['а','б']);assert(group.every(t=>t.source.page===31&&t.printedJourney));
+ }
+ for(const [i,s]of [[25,['240','160']],[28,['18','16']],[32,['75','60']],[33,['68','100']],[34,['440/3','616/3']],[35,['120','84']]])assert.deepEqual(Array.from(sec.tasks[i].steps.slice(-2),s=>s.answer),s);
+ assert.equal((160+80)/(400+80),.5);assert.equal((10+50)/(200+50),.24);assert.equal(40+36+14,90);assert.equal(9+15+18+16,58);assert.equal(3.25/(2.5),1.3);
+ assert(Math.abs(2.4*6-14.4)<1e-10);assert.equal(30/40,.75);assert.equal(75*1.8+60*1.8,243);assert.equal(52+168*1.5,304);assert.equal(30+462-330,162);assert.equal(24+84*2/3-120*2/3,0);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

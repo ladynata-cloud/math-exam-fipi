@@ -1506,3 +1506,14 @@ test('compare the correct reference quantity in every original and fresh printed
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('resolve all printed mixture, geometry and directed vehicle cases with their own source measurements',()=>{
+ const f=fixture(null,null,true);try{
+  const cases=[[3,'течения 2 км/ч','течения 3 км/ч'],[25,'240 г, мяты 160','120 г, мяты 80'],[26,'10 г соли','5 г соли'],[27,'90 см','135 см'],[28,'9, 15, 18, 16','15, 25, 30, 22'],[29,'13/4 см²','13 см²'],[30,'72/5 см²','18/5 см²'],[31,'35/2 км/ч','21 км/ч'],[32,'75 и 60','165/2 и 135/2'],[33,'68 и 100','76 и 108'],[34,'440/3 и 616/3','140 и 196'],[35,'120 и 84','90 и 63']];
+  for(const [i,before,after]of cases){
+   f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');const c=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id),set=(j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+   set(1,2);assert(out().includes(before),[i,out()]);if(i>=32){const d=[...f.d.querySelectorAll('#task-figure [data-drive]')].map(x=>Number(x.dataset.drive));assert.deepEqual(d,[[1,-1],[-1,1],[1,1],[1,1]][i-32]);const diagrams=[...f.d.querySelectorAll('#model svg')];assert.equal(diagrams.length,2);const [a,b]=diagrams.map(s=>s.querySelectorAll('circle'));assert(Number(a[0].getAttribute('cx'))<Number(a[1].getAttribute('cx')));const separation=(p)=>Math.abs(Number(p[0].getAttribute('cx'))-Number(p[1].getAttribute('cx')));if(i===32||i===35)assert(separation(b)<1e-6);else assert(separation(b)>separation(a));}
+   set(0,1);assert.equal(f.q(c[1]).value,'0');set(1,2);assert(out().includes(after),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
