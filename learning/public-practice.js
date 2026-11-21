@@ -35,7 +35,7 @@
   }
   function enhance(host){
     for(const link of host.querySelectorAll(launches)){
-      if(link.closest('[data-public-workspace], [data-peterson-workspace]'))continue;
+      if(link.hasAttribute('data-personal-study-tab')||link.closest('[data-public-workspace], [data-peterson-workspace]'))continue;
       const raw=link.getAttribute('href');
       if(!raw.startsWith(publicOrigin+'/'))continue;
       const next=href(raw);

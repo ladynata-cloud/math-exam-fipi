@@ -48,15 +48,22 @@ async function healthy(url, child, logs) {
   throw new Error('Local server not ready: ' + logs());
 }
 
+const catalogue=process.argv.includes('--makarychev9-2017')?{
+  directory:'makarychev9-2017',entries:[[50,36,36]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
+}:process.argv.includes('--merzlyak9-2014')?{
+  directory:'merzlyak9-2014',entries:[[55,26,26]],search:'merzlyak9-2014',match:'все параграфы',lesson:'55-13',chart:'svg[aria-label*="штриховая"]',storage:'math:merzlyak9-2014:v1:'
+}:{
+  directory:'tyurin-statistics',entries:[[113,67,23],[114,29,10]],search:'Тюрин',match:'вероятность и статистика',lesson:'114-28',chart:'svg[aria-label*="рассеивания"]',storage:'math:tyurin-stats:v1:'
+};
 async function run(browser, origin, serverOrigin) {
   const tc=await browser.newContext(),sc=await browser.newContext({viewport:{width:360,height:780}});
   try {
     const teacher=await tc.newPage(),student=await sc.newPage();
-    for(const [book,count] of [[113,67],[114,29]]){
+    for(const [book,count,direct] of catalogue.entries){
       await student.goto(origin+'/school/index.html#book/source-'+book);
       assert.equal(await student.locator('#main .skill-row').count(),count);
-      const links=await student.locator('#main a[href*="tyurin-statistics/index.html"]').evaluateAll(links=>links.map(el=>el.href));
-      assert.equal(links.length,book===113?23:10);
+      const links=await student.locator('#main a[href*="'+catalogue.directory+'/index.html"]').evaluateAll(links=>links.map(el=>el.href));
+      assert.equal(links.length,direct);
       for(const url of links){
         await student.goto(url);await student.locator('#model').waitFor();
         assert(await student.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),url);
@@ -69,25 +76,59 @@ async function run(browser, origin, serverOrigin) {
     phase='joint room';
     await teacher.goto(origin+'/trainers/trainer-board.html?server='+encodeURIComponent(serverOrigin));
     await teacher.locator('#openShare').click();await teacher.locator('#createRoom').click();
-    await teacher.waitForFunction(()=>document.querySelector('#studentLink')?.value.includes('role=student'));
+    try {
+      await teacher.waitForFunction(()=>document.querySelector('#studentLink')?.value.includes('role=student'));
+    } catch (error) {
+      const status=await teacher.locator('#shareStatus').innerText();
+      throw new Error('Unable to open the test room: '+status,{cause:error});
+    }
     const invite=await teacher.locator('#studentLink').inputValue();await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(invite);
-    await teacher.locator('#chooseTrainer').click();await teacher.locator('#pickerSearch').fill('Тюрин');
-    await teacher.locator('#pickerResults .picker-item').filter({hasText:'вероятность и статистика'}).first().click();
+    await teacher.locator('#chooseTrainer').click();await teacher.locator('#pickerSearch').fill(catalogue.search);
+    await teacher.locator('#pickerResults .picker-item').filter({hasText:catalogue.match}).first().click();
     const connected=p=>p.waitForFunction(()=>document.querySelector('#mirrorStatus')?.dataset.mirrorStatus==='connected');
     await Promise.all([connected(student),connected(teacher)]);
     const frame=p=>p.frameLocator('#trainerFrame'),t=frame(teacher),s=frame(student);
     const value=(page,id,v)=>page.waitForFunction(([k,a])=>document.querySelector('#trainerFrame')?.contentDocument?.getElementById(k)?.value===a,[id,v]);
-    await t.locator('#lesson').selectOption('114-28');await value(student,'lesson','114-28');
+    await t.locator('#lesson').selectOption(catalogue.lesson);await value(student,'lesson',catalogue.lesson);
     await t.locator('#model').focus();await t.locator('#model').press('ArrowRight');await value(student,'model','1');
-    assert.equal(await s.locator('svg[aria-label*="рассеивания"]').count(),1);
+    assert.equal(await s.locator(catalogue.chart).count(),1);
     await t.locator('[data-action=practice]').click();await t.locator('#answer').fill('1234');await value(student,'answer','1234');
     await t.locator('#work form button').click();await s.locator('#feedback').filter({hasText:'Проверь ещё раз'}).waitFor();
     await t.locator('[data-action=hint]').click();await s.locator('#work ol li').first().waitFor();
     await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();
     await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
     await s.locator('[data-action=hint]').click();await t.locator('#work ol li').nth(1).waitFor();
-    assert.equal(await student.evaluate(()=>JSON.parse(localStorage.getItem('math:tyurin-stats:v1:114-28')).draft),'9999999');
-    console.log('All 33 mobile practice entries; real teacher/student model, draft, error, help, transfer and personal storage passed.');
+    await teacher.reload();
+    await connected(teacher);
+    await value(teacher,'answer','1234');
+    await t.locator('#work ol li').nth(1).waitFor();
+    await s.locator('#answer').fill('4321');await value(teacher,'answer','4321');
+    await student.reload();
+    await connected(student);
+    await value(student,'answer','4321');
+    await s.locator('#work ol li').nth(1).waitFor();
+    assert.equal(await student.evaluate(key=>JSON.parse(localStorage.getItem(key)).draft,catalogue.storage+catalogue.lesson),'9999999');
+    // A pupil disconnect returns control to the teacher. Re-grant it to the
+    // reconnected pupil before exercising changes in the other direction.
+    if (await teacher.locator('body').evaluate(body=>body.classList.contains('control-owner'))) {
+      await teacher.locator('#openShare').click();
+      await teacher.locator('#controlToggle').click();
+      await teacher.locator('#sharePanel [data-close-panel]').click();
+    }
+    await student.waitForFunction(()=>document.body.classList.contains('control-owner'));
+    const alternate=await s.locator('#lesson').evaluate(select=>Array.from(select.options).find(option=>option.value!==select.value).value);
+    await s.locator('#lesson').selectOption(alternate);
+    await value(teacher,'lesson',alternate);
+    await s.locator('#model').focus();
+    await s.locator('#model').press('ArrowRight');
+    await value(teacher,'model','1');
+    await s.locator('[data-action=practice]').click();
+    await t.locator('#answer').waitFor();
+    await s.locator('#answer').fill('98765');
+    await value(teacher,'answer','98765');
+    await s.locator('#work form button').click();
+    await t.locator('#feedback').filter({hasText:'Проверь ещё раз'}).waitFor();
+    console.log(catalogue.directory+' mobile practice entries; real teacher/student model, draft, error, help, transfer and personal storage passed.');
   } finally {await tc.close();await sc.close();}
 }
 (async()=>{const server=staticServer();let browser,child,watchdog,logs='';try{

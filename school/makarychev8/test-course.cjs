@@ -35,12 +35,28 @@ assert(C.check('3; -2',{answer:'-2;3',kind:'set'}));assert(!C.check('3;3',{answe
 assert(C.check('x^2 − 4',{answer:'x²-4',kind:'text'}));assert(!C.check('x²+4',{answer:'x²-4',kind:'text'}));
 assert(C.check('5/(6*x)',{answer:'5/(6x)',kind:'text'}));assert(C.check('x^3/(8*y^3)',{answer:'x³/(8y³)',kind:'text'}));assert(!C.check('2*3',{answer:'23',kind:'text'}));
 assert(!C.check('2abc',{answer:'2',kind:'number'}));assert(!C.check('1e309',{answer:'1',kind:'number'}));
-for(const id of ['p05','p06']) {
+const solvedSourceNumbers=new Set(D.lessons.flatMap(l=>l.tasks)
+ .filter(t=>t.source.type==='textbook')
+ .map(t=>Number(/№\s*(\d+)/.exec(t.source.reference)[1])));
+assert.deepEqual(Array.from(D.completedSourceRanges,r=>Array.from(r)),[[1,509]],'published range of complete source coverage');
+for(let n=1;n<=509;n++)assert(solvedSourceNumbers.has(n),'missing numbered course work '+n);
+for(const id of ['p05','p06','p07']) {
  const lesson=D.lessons.find(l=>l.id===id),refs=lesson.studyOrder.map(i=>lesson.tasks[i].source);
  assert.equal(new Set(lesson.studyOrder).size,lesson.tasks.length,'all bookmarked indices appear once');
  const names=refs.filter(r=>r.type==='textbook').map(r=>r.reference);
  assert.deepEqual([...names],[...names].sort((a,b)=>a.localeCompare(b,'ru',{numeric:true})),'source order');
  assert(refs.slice(names.length).every(r=>r.type==='authored'),'additional practice follows the book');
+}
+for(const [slopeSign,interceptSign,right,wrong] of [[1,1,'2/3;7','0;7'],[-1,1,'-4;1/5','-4;-1/5'],[-1,-1,'-3;-2','3;-2'],[0,1,'0;9','1;9']]){
+ const branch={kind:'line-sign-example',answer:'0;1',slopeSign,interceptSign};
+ assert(C.check(right,branch));assert(!C.check(wrong,branch));assert(!C.check('3;',branch));
+}
+const inverse=D.lessons.find(l=>l.id==='p08');
+const seq=inverse.studyOrder.map(i=>inverse.tasks[i]).filter(t=>t.source.type==='textbook');
+const nums=seq.map(t=>Number(/№\s*(\d+)/.exec(t.source.reference)[1]));
+assert.deepEqual([...nums],[...nums].sort((a,b)=>a-b));assert.equal(seq[0].id,'p08-t01');
+for(const [id,right,wrong] of [['p08-source-189-а','2,45;−2,44','2,45;2,44'],['p08-source-189-б','4.73;1.27','0;4.7'],['p08-source-190-б','1.68;−1.68','-1.68;2']]){
+ const t=inverse.tasks.find(q=>q.id===id);assert(C.check(right,t));assert(!C.check(wrong,t));assert(!C.check('1;',t));
 }
 const equivalent=(answer,value)=>C.check(value,{kind:'text',answer,reducedExpression:true});
 assert(equivalent('(2*b-a)/7','(-a+2b)/7'));
