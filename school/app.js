@@ -143,8 +143,18 @@
   var list=C.books.filter(function(b){return bookFilter.toLowerCase().trim().split(/\s+/).every(function(q){return (b.title+' '+b.edition).toLowerCase().includes(q);});});
   main.innerHTML='<p class="eyebrow">Разные учебники · общие навыки</p><h1>По своему учебнику</h1><p class="lead">Выбери автора и издание. Сверенные пункты и общие тренажёры показаны отдельно: наличие книги не означает, что курс по ней завершён.</p><label class="label" for="book-search">Найти автора, класс или год</label><input id="book-search" type="search" placeholder="Например, Мерзляк 8 или 2024" value="'+esc(bookFilter)+'"><p class="tiny">'+list.length+' из '+C.books.length+' карточек · '+C.lessons.length+' общих учебных блоков</p><div class="grid">'+list.map(function(b){return '<article class="card"><span class="badge">'+esc(b.status)+'</span><h2>'+esc(b.title)+'</h2><p>'+esc(b.edition)+'</p>'+(b.publicPath?'<p>'+esc(b.note)+'</p><a class="button quiet" href="'+esc(b.publicPath)+'">Открыть курс</a>':'<a class="button quiet" href="#book/'+b.id+'">Темы и состояние курса</a>')+'</article>';}).join('')+'</div><section class="panel section"><h2>Геометрия — отдельные мастерские</h2><p>Сохраняются их построения, модели и текущие карты покрытия.</p><div class="row"><a href="../geometry-course/index.html">Атанасян 7–9</a><a href="../stereo-course/index.html">Атанасян 10–11</a><a href="../courses/">Все курсы, в том числе Мерзляк и Погорелов</a></div></section>';
  }
+ function verifiedBook(b){
+  var rows=b.mapping.map(function(m){
+   var label='Пункт '+m.section+' · с. '+m.page;
+   var entry=m.externalPath?'<a class="button" href="'+esc(m.externalPath)+'">Разобрать и решить</a>':button('Разобрать и решить','book-skill',b.id+'/'+m.section);
+   var boardUrl=m.boardPath;
+   var mirror=boardUrl?'<a class="button quiet" href="../trainers/trainer-board.html?trainer='+encodeURIComponent(boardUrl)+'">Решать на общей доске</a>':'';
+   return '<article class="skill-row"><div><p class="eyebrow">'+label+'</p><h3>'+esc(m.focus)+'</h3></div><div class="row">'+entry+mirror+'</div></article>';
+  }).join('');
+  main.innerHTML='<a href="#books">← Все учебники</a><h1>'+esc(b.title)+'</h1><p class="lead">'+esc(b.note)+'</p><p>'+esc(b.status)+'. '+esc(b.remaining)+'</p><p><a href="'+esc(b.verifiedSource)+'">'+esc(b.sourceLabel)+'</a></p><div class="skill-list">'+rows+'</div>';
+ }
  function book(id){
-  var b=C.books.find(function(b){return b.id===id;});if(!b)return books();if(b.course)return course(b.course);
+  var b=C.books.find(function(b){return b.id===id;});if(!b)return books();if(b.verifiedSource)return verifiedBook(b);if(b.course)return course(b.course);
   if(b.publicPath){
    main.innerHTML='<a href="#books">← Все учебники</a><h1 class="section">'+esc(b.title)+'</h1><p>'+esc(b.edition)+'</p><p class="lead">'+esc(b.note)+'</p><a class="button" href="'+esc(b.publicPath)+'">Открыть курс</a>';
    return;
@@ -317,6 +327,11 @@
   try{
    if(cmd==='jump'){var target=document.getElementById(val);if(target){if(session?.task.m9Full&&val==='model'){var disclosure=target.closest('details');if(disclosure)disclosure.open=true;}target.scrollIntoView({block:'start'});if(val==='task-panel')document.getElementById('answer').focus({preventScroll:true});}}
    else if(cmd==='learn'){returns=[];begin(val,'learn',{resume:true});}
+   else if(cmd==='book-skill'){
+    var pair=val.split('/'),bookEntry=C.books.find(function(b){return b.id===pair[0]&&b.verifiedSource;});
+    var mapped=bookEntry&&bookEntry.mapping.find(function(m){return m.section===Number(pair[1]);});
+    if(mapped&&!mapped.externalPath){returns=[];selectCourse(bookEntry.workshopRoute);begin(mapped.skill,'learn',{seed:mapped.seed});}
+   }
    else if(cmd==='resume-vilenkin'){var draft=savedVilenkin(val);if(draft)openVilenkin(draft);}
    else if(cmd==='mode'){begin(session.id,val);}
    else if(cmd==='review')begin(val,'review');
