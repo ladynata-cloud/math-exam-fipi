@@ -3,8 +3,8 @@
   const {add,lessons,example}=window.MathExamTopicPractice,ids=[];
   const q=(prompt,answer,calculation,error,wrong,diagnosis)=>({prompt,answer,calculation,error,mistakes:[[wrong,diagnosis]]});
   const make=(caption,rows,questions,chart,data)=>Object.assign(example(caption,['Величина','Данные'],rows,questions,chart),data);
-  function register(key,printed,page,title,prompt,guide,rule,related,fn){
-    add(70,key,page,title,prompt,rule,related,fn);const lesson=lessons.get('70-'+key);
+  function register(key,printed,page,title,prompt,guide,rule,related,fn,book=70){
+    add(book,key,page,title,prompt,rule,related,fn);const lesson=lessons.get(book+'-'+key);
     Object.assign(lesson,{printedReference:'Упражнение №'+printed,printedPrompt:prompt,printedGuide:guide});ids.push(lesson.id);
   }
   const time=h=>String(h%24).padStart(2,'0')+':00';
@@ -121,6 +121,7 @@
     else {title='Одинаковые доли в двух группах';body=tx(8,18,'Размер одной части в обеих группах один')+Array.from({length:11},(_,i)=>rect(12+(i<5?i:i-5)*37,i<5?33:74,31,19,i<5?'#a5d6c3':'#e5c792')).join('');}
     return '<svg viewBox="0 0 270 120" role="img" aria-label="'+title+'"><g font-family="sans-serif" font-size="12" fill="#24484a">'+body+'</g></svg>';
   }
-  window.MathExamTopicEdition={trainerId:'peterson8-2017',authors:'Петерсон и др. · 2017',grade:()=>'8 класс · часть 1',unit:'упражнение',register,q,make,storePrefix:'math:peterson8-2017:v1:',figure,
-    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000057.pdf#page='+(page+2),nextId:l=>ids[ids.indexOf(l.id)+1]};
+  window.MathExamTopicEdition={trainerId:'peterson8-2017',authors:'Петерсон и др. · 2017',grade:book=>'8 класс · часть '+(book===71?'2':'1'),unit:'упражнение',register,q,make,storePrefix:'math:peterson8-2017:v1:',figure,
+    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+(book===71?'00000058':'00000057')+'.pdf#page='+(page+2),
+    nextId:l=>{const next=lessons.get(ids[ids.indexOf(l.id)+1]);return next?.book===l.book?next.id:undefined;}};
 })();

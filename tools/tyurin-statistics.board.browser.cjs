@@ -51,7 +51,9 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--peterson8-2017')?{
+const catalogue=process.argv.includes('--peterson8-part2')?{
+  directory:'peterson8-2017',entries:[[71,24,20]],uniqueLessons:19,search:'peterson8-2017',match:'степенные функции',lesson:'71-4-7',chart:'svg[aria-label*="График куба с парой"]',storage:'math:peterson8-2017:v1:'
+}:process.argv.includes('--peterson8-2017')?{
   directory:'peterson8-2017',entries:[[70,21,31]],uniqueLessons:30,search:'peterson8-2017',match:'искусство задавать вопросы',lesson:process.argv.includes('--logic')?'70-9-3':'70-6',chart:process.argv.includes('--logic')?'svg[aria-label*="Строки истинности"]':'svg[aria-label*="Начальный капитал"]',storage:'math:peterson8-2017:v1:'
 }:advanced8?{
   directory:'makarychev8-2018',onlySelected:process.argv.includes('--selected-room'),entries:[[69,62,93]],uniqueLessons:92,search:'makarychev8-2018',match:'углублённый уровень',lesson:process.argv.includes('--punctured-line')?'69-14b':process.argv.includes('--two-lines')?'69-13c':'69-17c',chart:process.argv.includes('--punctured-line')?'svg[aria-label*="со снятой точкой"]':process.argv.includes('--two-lines')?'svg[aria-label*="две диагонали"]':'svg[aria-label*="Делители числителя"]',storage:'math:makarychev8-2018:v1:'
