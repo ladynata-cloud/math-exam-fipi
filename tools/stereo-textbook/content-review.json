@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T16:34:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 517, points 52–62 and the 14 chapter V self-checks, with 854 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T16:44:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 524, points 52–62 and all chapter V self-checks, with 861 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1371,6 +1371,22 @@
       ],
       "evidence": "tools/stereo-textbook/volume-selfcheck.json",
       "mathematicalReport": "tools/stereo-textbook/volume-selfcheck.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T16:44:00Z",
+      "scope": "Rectangular solids, perpendicular space diagonals and triangular prisms, exercises 518–524",
+      "cardIds": [
+        "ex-main-0518",
+        "ex-main-0519",
+        "ex-main-0520",
+        "ex-main-0521",
+        "ex-main-0522",
+        "ex-main-0523",
+        "ex-main-0524"
+      ],
+      "evidence": "tools/stereo-textbook/prism-applications.json",
+      "mathematicalReport": "tools/stereo-textbook/prism-applications.test.cjs"
     }
   ],
   "cards": [
@@ -4789,6 +4805,34 @@
     {
       "id": "ex-selfcheck-v-14",
       "sha256": "c45cacae81e8d5c14f2f6967a627c93fd7d06e5dd047f334b35a468865ccf2e6"
+    },
+    {
+      "id": "ex-main-0518",
+      "sha256": "706dd83c3ee334f3aa8718faa35d999e24aa567776e3448739895e3cf9975026"
+    },
+    {
+      "id": "ex-main-0519",
+      "sha256": "13b118ab0b27b0aea79689b1c0c863c057b12efb6b146dbd13112911c82aab2a"
+    },
+    {
+      "id": "ex-main-0520",
+      "sha256": "875e91122e1477efb87869e3d371e05289f43b6344f24b32129d01fc4ac0d0b9"
+    },
+    {
+      "id": "ex-main-0521",
+      "sha256": "46de5457c4ce62822d6b92a9e6179beed0e49ae497422d687c7bec539eefbfe4"
+    },
+    {
+      "id": "ex-main-0522",
+      "sha256": "ccbfaf97930ca4e838f7b8a4b46c479fcf353fbd1729d40775305267dddb5757"
+    },
+    {
+      "id": "ex-main-0523",
+      "sha256": "fae5f8f78d9a0305fabef38d714cc0590764d6715723a68f1fb4f9fd01176715"
+    },
+    {
+      "id": "ex-main-0524",
+      "sha256": "b78e2035dc554fae1932fd4c0ddbed29c8e69fba9d920b5cdb07fc85f8b36153"
     }
   ]
 }

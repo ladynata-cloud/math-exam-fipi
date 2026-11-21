@@ -121,6 +121,15 @@ const misconceptions = new Map([
   ['ex-selfcheck-v-12-b/step-2', '324'], // Scaled the area by the volume ratio.
   ['ex-selfcheck-v-13/step-2', '8'], // Left the given volume ratio unchanged.
   ['ex-selfcheck-v-14/step-2', '9/4'], // Left the given surface ratio unchanged.
+  ['ex-main-0518/step-3', '1296'], // Product of the three face areas is the squared volume.
+  ['ex-main-0519/step-1', '194'], // Counted every squared edge twice.
+  ['ex-main-0519/step-3', '16*sqrt(11)'], // Failed to simplify the radical product.
+  ['ex-main-0520/step-2', '2'], // Subtracted lengths instead of squared lengths.
+  ['ex-main-0521/step-2', '109'], // Selected the longer diagonal.
+  ['ex-main-0522/step-3', '28'], // Returned the difference of squared diagonals.
+  ['ex-main-0522/step-4', '176'], // Used the squared base area.
+  ['ex-main-0523/step-2', '16'], // Treated the common leg as the hypotenuse.
+  ['ex-main-0524/step-2', '3'], // Confused shortest base leg with the side face area.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

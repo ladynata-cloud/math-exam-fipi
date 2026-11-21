@@ -53,6 +53,7 @@ jobs:
           node tools/stereo-textbook/sphere-measures.test.cjs
           node tools/stereo-textbook/sphere-applications.test.cjs
           node tools/stereo-textbook/volume-selfcheck.test.cjs
+          node tools/stereo-textbook/prism-applications.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -134,6 +135,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: volumeSelfcheck
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/volume-selfcheck
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify prism areas, perpendicular diagonals and reconstructed side lengths
+        env:
+          TEXTBOOK_PRACTICE_GROUP: prismApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/prism-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -183,5 +189,6 @@ jobs:
             artifacts/sphere-measures/
             artifacts/sphere-applications/
             artifacts/volume-selfcheck/
+            artifacts/prism-applications/
           retention-days: 14
           if-no-files-found: error

@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const volumeSelfcheck = makeReviewedIncrement(require('./volume-selfcheck.json'));
+const prismApplications = makeReviewedIncrement(require('./prism-applications.json'));
+const volumeSelfcheck = makeReviewedIncrement(require('./volume-selfcheck.json'), prismApplications);
 const sphereApplications = makeReviewedIncrement(require('./sphere-applications.json'), volumeSelfcheck);
 const spheres = makeReviewedIncrement(require('./sphere-measures.json'), sphereApplications);
 const sectors = makeReviewedIncrement(require('./cone-nets-and-frusta.json'), spheres);
