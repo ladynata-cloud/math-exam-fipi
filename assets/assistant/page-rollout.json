@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 628,
-    "covered": 626,
+    "total": 629,
+    "covered": 627,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -38,7 +38,8 @@
     "trainers/oge-basics/multiplication-division/division-checkpoint.html",
     "trainers/oge-basics/multiplication-division/division-path.html",
     "trainers/school-workshop-check/index.html",
-    "trainers/tyurin-statistics/index.html"
+    "trainers/tyurin-statistics/index.html",
+    "trainers/makarychev9-2017/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4015,7 +4016,8 @@
     "trainers/tyurin-statistics/index.html": "school/index.html",
     "school/peterson6/textbook/index.html": "sitemap",
     "trainers/peterson6-workshop/index.html": "sitemap",
-    "trainers/merzlyak9-2014/index.html": "school/index.html"
+    "trainers/merzlyak9-2014/index.html": "school/index.html",
+    "trainers/makarychev9-2017/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6647,6 +6649,14 @@
         "trainers/merzlyak9-2014/index.html"
       ],
       "reason": "New canonical interactive entry for all 26 verified textbook sections."
+    },
+    {
+      "sourceBaseSha": "f9e5ab5026349aa4995d8b3738f805fc329ee56d",
+      "task": "docs/tasks/MAKARYCHEV9_2017_PRACTICE.md",
+      "addedPages": [
+        "trainers/makarychev9-2017/index.html"
+      ],
+      "reason": "Сверенные пункты 1–4 издания 2017 года и самостоятельная практика."
     }
   ]
 }
