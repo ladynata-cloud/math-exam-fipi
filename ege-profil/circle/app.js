@@ -1,5 +1,5 @@
 (function(){'use strict';
-const registeredBoardPath=location.pathname==='/trainers/ege-profile-circle.html';
+const registeredBoardPath=['/trainers/ege-profile-circle.html','/trainers/mordkovich-2013-circle.html'].includes(location.pathname);
 const boardAdapter=registeredBoardPath&&globalThis.CircleBoard&&document.body.dataset.circleBoard===CircleBoard.marker?CircleBoard:null;
 // A missing SDK or adapter must never turn the shared wrapper into a personal
 // course. In particular, do not even obtain a localStorage reference here.
@@ -21,7 +21,7 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const btn=(label,id,quiet=false)=>'<button type="button" class="button'+(quiet?' quiet':'')+'" id="'+id+'">'+label+'</button>';
 const total=lessons.reduce((n,l)=>n+l.tasks.length,0),books=[...new Set([...tasks.values()].map(x=>x.t.book).filter(x=>/^\d/.test(x)))];
 const chapters={0:['Перед §4','Устроим окружность','Два коротких вводных урока, чтобы не начинать с заучивания.'],4:['§4','Числовая окружность','Путь, точка, направление, дуги и полные обороты.'],5:['§5','Окружность на координатной плоскости','Координаты превращают рисунок в точный инструмент.'],6:['§6','Синус, косинус, тангенс и котангенс','От смысла функций — к значениям, тождествам и неравенствам.']};
-function board(hash){if(boardSession||window.self!==window.top)return '';const selected=hash==='#home'||globalThis.CircleBoard?.LESSON_IDS.includes(hash.split('/')[1]);const path=selected?CircleBoard.path:'/ege-profil/circle/index.html'+(globalThis.ProfileRouteNav?.query()||'');return '<a class="button quiet board-link" href="/trainers/trainer-board.html?trainer='+encodeURIComponent(path+hash)+'">Открыть на доске</a>';}
+function board(hash){if(boardSession||window.self!==window.top)return '';const selected=hash==='#home'||globalThis.CircleBoard?.LESSON_IDS.includes(hash.split('/')[1]);const path=selected?CircleBoard.path:'/trainers/mordkovich-2013-circle.html';return '<a class="button quiet board-link" href="/trainers/trainer-board.html?trainer='+encodeURIComponent(path+hash)+'">Открыть на доске</a>';}
 function warn(){const w=document.getElementById('storage-warning'),message=boardSession&&typeof globalThis.MathExamBoard?.register!=='function'?'Не удалось подключить совместную доску. Обновите страницу, чтобы продолжить.':state.warning;w.hidden=!message;w.textContent=message;}
 function save(){if(applyingBoardState)return;state.save();warn();}
 function shell(html){cleanup();cleanup=()=>{};boardLab=null;boardFeedback='none';boardFeedbackField=null;boardRenderFeedback=()=>{};boardRenderHint=()=>{};main.innerHTML=html;if(boardSession)boardSession.scopeLinks(main);else globalThis.ProfileRouteNav?.render();warn();const h=main.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}window.scrollTo(0,0);}

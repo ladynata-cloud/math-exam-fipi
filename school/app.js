@@ -186,7 +186,7 @@
  function verifiedBook(b){
   var rows=b.mapping.map(function(m){
    var label=m.sectionLabel?esc(m.sectionLabel)+' · с. '+esc(m.page):(m.paragraph?'§ '+m.paragraph+' · ':m.supplementaryChapter?'Глава '+m.supplementaryChapter+' · Для тех, кто хочет знать больше · ':'')+'Пункт '+m.section+' · с. '+m.page;
-   var entry=m.bookOnly?'<a class="button quiet" href="'+esc(m.sourcePath)+'">Сверить страницу в книге</a>':m.externalPath?'<a class="button" href="'+esc(m.externalPath)+'">Разобрать и решить</a>':button('Разобрать и решить','book-skill',b.id+'/'+m.section);
+   var entry=m.bookOnly?'<a class="button quiet" href="'+esc(m.sourcePath)+'">'+esc(m.sourceLinkLabel||'Сверить страницу в книге')+'</a>':m.externalPath?'<a class="button" href="'+esc(m.externalPath)+'">Разобрать и решить</a>':button('Разобрать и решить','book-skill',b.id+'/'+m.section);
    var boardUrl=m.boardPath;
    var mirror=boardUrl?'<a class="button quiet" href="../trainers/trainer-board.html?trainer='+encodeURIComponent(boardUrl)+'">Решать на общей доске</a>':'';
    return '<article class="skill-row"><div><p class="eyebrow">'+label+'</p><h3>'+esc(m.title||m.focus)+'</h3>'+(m.title&&m.focus?'<p>'+esc(m.focus)+'</p>':'')+'</div><div class="row">'+entry+mirror+'</div></article>';
@@ -194,7 +194,7 @@
   var extras=(b.exercises||[]).map(function(ex){
    var target=Object.prototype.hasOwnProperty.call(ex,'boardPath')?ex.boardPath:ex.path;
    var board=target?'<a class="button quiet" href="../trainers/trainer-board.html?trainer='+esc(encodeURIComponent(target))+'">Решать на общей доске</a>':'';
-   return '<li><p><b>№'+esc(ex.printed)+'</b> · с. '+esc(ex.page)+' · '+esc(ex.title)+'</p><div class="row"><a class="button quiet" href="'+esc(ex.path)+'">Разбор и тренировка</a>'+board+'</div></li>';
+   return '<li><p><b>'+esc(ex.printedLabel||'№'+ex.printed)+'</b> · с. '+esc(ex.page)+' · '+esc(ex.title)+'</p><div class="row"><a class="button quiet" href="'+esc(ex.path)+'">Разбор и тренировка</a>'+board+'</div></li>';
   }).join('');
   main.innerHTML='<a href="#books">← Все учебники</a><h1>'+esc(b.title)+'</h1><p class="lead">'+esc(b.note)+'</p><p>'+esc(b.status)+'. '+esc(b.remaining)+'</p><p><a href="'+esc(b.verifiedSource)+'">'+esc(b.sourceLabel)+'</a></p><div class="skill-list">'+rows+'</div>'+(extras?'<section class="section"><h2>'+esc(b.exerciseHeading||'Дополнительные упражнения по номерам')+'</h2><ul>'+extras+'</ul></section>':'');
  }

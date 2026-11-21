@@ -1,8 +1,22 @@
 (function (root) {
   'use strict';
-  // The wrapper is a fixed teaching selection. Loading this module on the
-  // ordinary course never activates a room or reads a personal save.
-  const LESSON_IDS = Object.freeze(['before-circle', 'before-radians', 'm5-coordinates', 'm6-axis', 'm6-calculation', 'm6-identities', 'm6-equations']);
+  // The established EGE room keeps its selected lessons. The edition wrapper
+  // admits the two author introductions and all printed exercises of §§4–6.
+  const editionPath='/trainers/mordkovich-2013-circle.html';
+  const complete=!!root.location && root.location.pathname===editionPath;
+  const compactIds=['before-circle','before-radians','m5-coordinates','m6-axis','m6-calculation','m6-identities','m6-equations'];
+  const editionIds=[
+    'before-circle', 'before-radians', 'm4-arc-length', 'm4-arc-ratios',
+    'm4-axis-turns', 'm4-fractional-turns', 'm4-negative-large', 'm4-line-circle',
+    'm4-all-numbers', 'm4-radians-without-pi', 'm4-open-arcs', 'm5-coordinates',
+    'm5-coordinate-turns', 'm5-coordinate-inverse', 'm5-ordinate-slices', 'm5-abscissa-slices',
+    'm5-coordinate-signs', 'm5-abscissa-inequalities', 'm5-ordinate-inequalities', 'm6-axis',
+    'm6-special', 'm6-calculation', 'm6-identities', 'm6-arguments',
+    'm6-range', 'm6-equations', 'm6-undefined', 'm6-signs',
+    'm6b-identities', 'm6b-equations', 'm6-root-domain', 'm6-comparison',
+    'm6-inequalities'
+  ];
+  const LESSON_IDS=Object.freeze(complete?editionIds:compactIds);
   const MODES = Object.freeze(['guided', 'independent']);
   const KEY = 'mathexam.mordkovichCircle.v1';
   const MAX_SESSIONS = 16, MAX_PROGRESS_BYTES = 48 * 1024;
@@ -173,7 +187,7 @@
     }
     return { storage, progress, validRoute, validateState, replace, scopeLinks };
   }
-  const api = Object.freeze({ id: 'ege-profile-circle', marker: 'circle', path: '/trainers/ege-profile-circle.html', debugKey: '__profileCircleBoard', defaultRoute: '#home', LESSON_IDS, create });
+  const api = Object.freeze({ id: complete?'mordkovich-2013-circle':'ege-profile-circle', marker: complete?'mordkovich-2013':'circle', path: complete?editionPath:'/trainers/ege-profile-circle.html', debugKey: complete?'__mordkovich2013CircleBoard':'__profileCircleBoard', defaultRoute: '#home', LESSON_IDS, create });
   root.CircleBoard = api;
   if (typeof module !== 'undefined') module.exports = api;
 })(globalThis);

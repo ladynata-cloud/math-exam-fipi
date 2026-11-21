@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 633,
-    "covered": 631,
+    "total": 638,
+    "covered": 636,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -42,7 +42,12 @@
     "trainers/makarychev9-2017/index.html",
     "trainers/makarychev7-2014/index.html",
     "trainers/alimov-2012/index.html",
-    "trainers/mordkovich-2013/index.html"
+    "trainers/mordkovich-2013/index.html",
+    "trainers/mordkovich-2020/index.html",
+    "trainers/peterson7-2011/index.html",
+    "trainers/makarychev8-2018/index.html",
+    "trainers/peterson8-2017/index.html",
+    "trainers/vilenkin8-2010/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4031,7 +4036,12 @@
     "trainers/makarychev9-2017/index.html": "school/index.html",
     "trainers/makarychev7-2014/index.html": "school/index.html",
     "trainers/alimov-2012/index.html": "school/index.html",
-    "trainers/mordkovich-2013/index.html": "school/index.html"
+    "trainers/mordkovich-2013/index.html": "school/index.html",
+    "trainers/mordkovich-2020/index.html": "school/index.html",
+    "trainers/peterson7-2011/index.html": "school/index.html",
+    "trainers/makarychev8-2018/index.html": "school/index.html",
+    "trainers/peterson8-2017/index.html": "school/index.html",
+    "trainers/vilenkin8-2010/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6911,6 +6921,46 @@
         "trainers/mordkovich-2013/index.html"
       ],
       "reason": "Печатные номера 7.1–7.2 и самостоятельные модели двухчастного задачника базового уровня 2013 года."
+    },
+    {
+      "sourceBaseSha": "d0e7f81d2af7713545f0b566a1b1c24726d52de0",
+      "task": "docs/tasks/WORKSHOP_MORDKOVICH_2020.md",
+      "addedPages": [
+        "trainers/mordkovich-2020/index.html"
+      ],
+      "reason": "Авторские модели множеств и делимости по всем частям №1–7 повторения конкретного издания 2020 года."
+    },
+    {
+      "sourceBaseSha": "cec835eca153e128e66ca172f14bdadbd2372ac4",
+      "task": "docs/tasks/WORKSHOP_PETERSON7_2011.md",
+      "addedPages": [
+        "trainers/peterson7-2011/index.html"
+      ],
+      "reason": "Построение моделей для каждой истории и каждого набора первых трёх номеров первой части учебника Петерсона за 7 класс."
+    },
+    {
+      "sourceBaseSha": "e285af805b4653cfb07da20522dbd993833ea409",
+      "task": "docs/tasks/WORKSHOP_MAKARYCHEV8_2018.md",
+      "addedPages": [
+        "trainers/makarychev8-2018/index.html"
+      ],
+      "reason": "Самостоятельные разборы печатных №1–6 углублённого пособия 2018 года и раздельные модели числителя, знаменателя и внешних операций."
+    },
+    {
+      "sourceBaseSha": "42f91c5babe2eb876d26b703df86f98e80852307",
+      "task": "docs/tasks/WORKSHOP_PETERSON8_2017.md",
+      "addedPages": [
+        "trainers/peterson8-2017/index.html"
+      ],
+      "reason": "Первые задачи об аналогии и разбиении на шаги из первого тома алгебры Петерсона для восьмого класса, с отдельным указанием печатных подпунктов."
+    },
+    {
+      "sourceBaseSha": "437d276ebdde3301c464e52dc7cf5313e52c3fc6",
+      "task": "docs/tasks/WORKSHOP_VILENKIN8_2010.md",
+      "addedPages": [
+        "trainers/vilenkin8-2010/index.html"
+      ],
+      "reason": "Виленкин, углублённая алгебра 8 класса 2010 года. Сопоставление дробей и вложенных делений по напечатанным номерам и подпунктам."
     }
   ]
 }

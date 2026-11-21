@@ -17,7 +17,7 @@ assert.equal(all.length,289);assert.equal(joint.size,13);assert.equal(expected.l
 assert.deepEqual(Array.from(book.exercises.slice(0,75),r=>r.printed),expected);
 for(const entry of book.exercises.slice(0,75)){
  assert.equal(entry.path,'/ege-profil/circle/index.html#number/'+entry.printed);
- assert.equal(entry.boardPath,joint.has(entry.printed)?'/trainers/ege-profile-circle.html#number/'+entry.printed:null);
+ assert.equal(entry.boardPath,'/trainers/mordkovich-2013-circle.html#number/'+entry.printed);
 }
 const expressions=[
  (s,c)=>1-s*s, (s,c)=>c*c-1, (s,c)=>1-c*c, (s,c)=>s*s-1,
@@ -169,4 +169,4 @@ for(const [i,entry] of book.exercises.slice(75).entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(storage)).results,['fixed','first','help']);
  click(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(storage)).variant,7);dom.window.close();
 }
-console.log('60 printed sections; 75 independently addressable circle exercises with 289 parts; 13 exact shared circle entries; all 65 numbered subparts in §7, 2145 direct mathematical checks and individual corrected/first/assisted/retry journeys.');
+console.log('60 printed sections; 75 independently addressable circle exercises with 289 parts; 75 exact shared circle entries and unchanged 13-number legacy selection; all 65 numbered subparts in §7, 2145 direct mathematical checks and individual corrected/first/assisted/retry journeys.');
