@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const isometriesOfSpaceSectionEnd = makeReviewedIncrement(require('./isometries-of-space-section-end.json'));
+const coordinatesChapterSevenSelfCheck = makeReviewedIncrement(require('./coordinates-chapter-seven-self-check.json'));
+const isometriesOfSpaceSectionEnd = makeReviewedIncrement(require('./isometries-of-space-section-end.json'), coordinatesChapterSevenSelfCheck);
 const spatialSymmetriesAndFixedSets = makeReviewedIncrement(require('./spatial-symmetries-and-fixed-sets.json'), isometriesOfSpaceSectionEnd);
 const cubeProofsAndScalarProductSectionEnd = makeReviewedIncrement(require('./cube-proofs-and-scalar-product-section-end.json'), spatialSymmetriesAndFixedSets);
 const anglesWithLinesAndCoordinateFaces = makeReviewedIncrement(require('./angles-with-lines-and-coordinate-faces.json'), cubeProofsAndScalarProductSectionEnd);

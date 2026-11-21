@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T23:34:04Z",
-  "scope": "Chapters I–VI and all three teaching paragraphs of chapter VII: points 71–84, exercises 637–730, 1,339 reviewed cards. Chapter VII self-check and additional tasks from 731 are inventoried separately. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T23:52:06Z",
+  "scope": "Chapters I–VI, chapter VII points 71–84, numbered exercises through 730, and all 17 questions on printed page 186 (39 cards); additional questions from 731 are inventoried separately.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2261,6 +2261,54 @@
       ],
       "evidence": "tools/stereo-textbook/isometries-of-space-section-end.json",
       "mathematicalReport": "tools/stereo-textbook/isometries-of-space-section-end.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued 2024 volume, chapter VII questions on printed page 186; source notation, dimensional cases and independent model checks.",
+      "reviewedAt": "2026-11-21T23:52:06Z",
+      "scope": "All subparts of the chapter VII end-of-chapter questions from page 186. Includes the convention for BB in question 13e from point 76 on printed page 171, the free parameters in question 3 and all three isometries in question 17.",
+      "cardIds": [
+        "ex-selfcheck-vii-01-a",
+        "ex-selfcheck-vii-01-b",
+        "ex-selfcheck-vii-02",
+        "ex-selfcheck-vii-03-a",
+        "ex-selfcheck-vii-03-b",
+        "ex-selfcheck-vii-03-c",
+        "ex-selfcheck-vii-04",
+        "ex-selfcheck-vii-05-a",
+        "ex-selfcheck-vii-05-b",
+        "ex-selfcheck-vii-05-c",
+        "ex-selfcheck-vii-06-a",
+        "ex-selfcheck-vii-06-b",
+        "ex-selfcheck-vii-07-a",
+        "ex-selfcheck-vii-07-b",
+        "ex-selfcheck-vii-08-a",
+        "ex-selfcheck-vii-08-b",
+        "ex-selfcheck-vii-09-a",
+        "ex-selfcheck-vii-09-b",
+        "ex-selfcheck-vii-10-a",
+        "ex-selfcheck-vii-10-b",
+        "ex-selfcheck-vii-11-a",
+        "ex-selfcheck-vii-11-b",
+        "ex-selfcheck-vii-11-c",
+        "ex-selfcheck-vii-11-d",
+        "ex-selfcheck-vii-11-e",
+        "ex-selfcheck-vii-12-a",
+        "ex-selfcheck-vii-12-b",
+        "ex-selfcheck-vii-12-c",
+        "ex-selfcheck-vii-13-a",
+        "ex-selfcheck-vii-13-b",
+        "ex-selfcheck-vii-13-c",
+        "ex-selfcheck-vii-13-d",
+        "ex-selfcheck-vii-13-e",
+        "ex-selfcheck-vii-14-a",
+        "ex-selfcheck-vii-14-b",
+        "ex-selfcheck-vii-14-c",
+        "ex-selfcheck-vii-15",
+        "ex-selfcheck-vii-16",
+        "ex-selfcheck-vii-17"
+      ],
+      "evidence": "tools/stereo-textbook/coordinates-chapter-seven-self-check.json",
+      "mathematicalReport": "tools/stereo-textbook/coordinates-chapter-seven-self-check.test.cjs"
     }
   ],
   "cards": [
@@ -7619,6 +7667,162 @@
     {
       "id": "ex-main-0730-b",
       "sha256": "e30e11af76a5d4bef22a6b3154d70cc38e87ac679142b3d674ce863153fe4bbe"
+    },
+    {
+      "id": "ex-selfcheck-vii-01-a",
+      "sha256": "47a67047e0607fb8428af201f2c3251dd6f771b1070ffc57792cae2f3481b4d2"
+    },
+    {
+      "id": "ex-selfcheck-vii-01-b",
+      "sha256": "12c1e90388e550a8ded7fe96b1a041d02d7ecfc838915260dcdcae8cc14aeb59"
+    },
+    {
+      "id": "ex-selfcheck-vii-02",
+      "sha256": "2a4bc8c5053dc1e42a2ae0e354320b14198f0dbe753e9069176345df765673bb"
+    },
+    {
+      "id": "ex-selfcheck-vii-03-a",
+      "sha256": "2dc657aca7cdc4ad36cd8fc43c19deffd99ef50bbcdd11853654fb9ca0465338"
+    },
+    {
+      "id": "ex-selfcheck-vii-03-b",
+      "sha256": "88ddf59d573f477807f580feea9d1e8d835e550aeed99f090ebda1ba1875bb78"
+    },
+    {
+      "id": "ex-selfcheck-vii-03-c",
+      "sha256": "3c8ad40ad821624a2820beb5959f922e1150cf2bc88b11bfa4bde406409e0a78"
+    },
+    {
+      "id": "ex-selfcheck-vii-04",
+      "sha256": "f7d314613aabab23e3ff1f45264f23ea38c8e4cf77c87b0d06725a8da2b6f9d4"
+    },
+    {
+      "id": "ex-selfcheck-vii-05-a",
+      "sha256": "1d8ffac7cff20e90884b5c64e4267e2e37648f8b689075f5848f5d78d6828ece"
+    },
+    {
+      "id": "ex-selfcheck-vii-05-b",
+      "sha256": "8b3d96e98aa0767b6db4a01a9356426977508cbb6c24dd6acfef9b7e6861cc32"
+    },
+    {
+      "id": "ex-selfcheck-vii-05-c",
+      "sha256": "8d74557648683b6de5892d89bc5f8b101bec889104e6c016e6f80fe4664e4230"
+    },
+    {
+      "id": "ex-selfcheck-vii-06-a",
+      "sha256": "f5aa8a46df4cf12978a59115aa311e61793f967f8f3bbec9c6e4c42966ae3502"
+    },
+    {
+      "id": "ex-selfcheck-vii-06-b",
+      "sha256": "85f116c7dadfd2cffc68244ab4ae558b768182665b0054f374d0408bcc045d54"
+    },
+    {
+      "id": "ex-selfcheck-vii-07-a",
+      "sha256": "382e16bfe2b1b8321373b5838cbca5fc6af50d22fa8f65984568d1eaaab9917e"
+    },
+    {
+      "id": "ex-selfcheck-vii-07-b",
+      "sha256": "f7d5d41c041a9403e3cf955878265b5a4650f8be9da436e6003beb6d946a9a75"
+    },
+    {
+      "id": "ex-selfcheck-vii-08-a",
+      "sha256": "5745f83c433cd20ae2bf999f6788e76fbd94ae002ad51900516f7722fa73ae83"
+    },
+    {
+      "id": "ex-selfcheck-vii-08-b",
+      "sha256": "c1922c86f570aaa2ee879e764b52ba49c13a22735e0b4d191fea7669dacf5ba0"
+    },
+    {
+      "id": "ex-selfcheck-vii-09-a",
+      "sha256": "ebacffc584b1dca61007f479b8a888b98a7789cf610029a8f616d6c85684d772"
+    },
+    {
+      "id": "ex-selfcheck-vii-09-b",
+      "sha256": "a37f1c308d94840177462849145039570391393fed14e80cc11f2a0cccd792a2"
+    },
+    {
+      "id": "ex-selfcheck-vii-10-a",
+      "sha256": "75e9ab753ae85adbc3eaa37c3c959256c2cd3e3d74200b1d364f91705e379105"
+    },
+    {
+      "id": "ex-selfcheck-vii-10-b",
+      "sha256": "f96053ce01ee8f32c93195aa7dc3bbd09422e89b271550653c45c624b9547e10"
+    },
+    {
+      "id": "ex-selfcheck-vii-11-a",
+      "sha256": "cafca66b947e9311fb3c5bb498ec9caebb6a66fb6e046cd0470390dcfeca4167"
+    },
+    {
+      "id": "ex-selfcheck-vii-11-b",
+      "sha256": "4680540f2069f7a4b5e7ae374fe8789fa98cc3cfb47059528818892d2391cf49"
+    },
+    {
+      "id": "ex-selfcheck-vii-11-c",
+      "sha256": "af8e2d42bc437d61f174c375521ca3c6f414856d67193977f7284e47edeca44f"
+    },
+    {
+      "id": "ex-selfcheck-vii-11-d",
+      "sha256": "6b13cbdcd78816b744370ce09c7876415b5e122063c92a9b92ba42b2ebbba7d3"
+    },
+    {
+      "id": "ex-selfcheck-vii-11-e",
+      "sha256": "4bb23abb9d616628808ed635478b97d4fbf47eaf691d727a7dd38881290aa11f"
+    },
+    {
+      "id": "ex-selfcheck-vii-12-a",
+      "sha256": "657dafbadf78af18b052480448cf356f4dd0b4bb6ebb640e505b4786810240b1"
+    },
+    {
+      "id": "ex-selfcheck-vii-12-b",
+      "sha256": "6182d999f19f3ee9bcd9388ef77e8da521f9ae37809d32eddcf83e1a6189409e"
+    },
+    {
+      "id": "ex-selfcheck-vii-12-c",
+      "sha256": "e6b446eea4d225d14b9c5da4b483147aa5bcf83184ca776b2040e68a46091fa1"
+    },
+    {
+      "id": "ex-selfcheck-vii-13-a",
+      "sha256": "033d9ddf84d55054c68f76c8816835b4d8ae9fc8f863b5950da970756269da7b"
+    },
+    {
+      "id": "ex-selfcheck-vii-13-b",
+      "sha256": "85137371807996b28b161e0ef6ea2b12927099452e4d9d5f4e17c1e946f365e0"
+    },
+    {
+      "id": "ex-selfcheck-vii-13-c",
+      "sha256": "ec28e1df95e0418b91b3c75ca8f36de4799c053ca5d06ab016e47b2a59e0dd92"
+    },
+    {
+      "id": "ex-selfcheck-vii-13-d",
+      "sha256": "9252c69ce522f13bd4c8fb946718321077950565dc98078f8fb21e89e63d4034"
+    },
+    {
+      "id": "ex-selfcheck-vii-13-e",
+      "sha256": "f590444a397e7dcf53ea811cf0b7dd4c58f25ed8fb549d1f0f0c9a1e2f9870c2"
+    },
+    {
+      "id": "ex-selfcheck-vii-14-a",
+      "sha256": "a635f0509c51e64347e59dcfe93b249f0415331eeb17539e97add51657dda672"
+    },
+    {
+      "id": "ex-selfcheck-vii-14-b",
+      "sha256": "7959d91aea0d5b9c9f27e8b8acf89010ae7d75fcb821e0399dbc771714d64455"
+    },
+    {
+      "id": "ex-selfcheck-vii-14-c",
+      "sha256": "ba8d79c93b3fba7f1421c33224203487199955cf03fda2a341ee7f40ad42b271"
+    },
+    {
+      "id": "ex-selfcheck-vii-15",
+      "sha256": "87cc91b37ddab412bfc6de01357f26fb262bdb7cb074dddd6108fa7585b4856e"
+    },
+    {
+      "id": "ex-selfcheck-vii-16",
+      "sha256": "2b02128fba7c2734c17beef5b8249d644ca524eb5eacb47a91b78f0b45c43d58"
+    },
+    {
+      "id": "ex-selfcheck-vii-17",
+      "sha256": "38ff7c8db4f9263593e4b2d5ffcd3f707d1078904e6693971c1981f741698b73"
     }
   ]
 }
