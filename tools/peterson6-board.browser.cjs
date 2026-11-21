@@ -470,13 +470,17 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   const lateSession = await contextFor(browser, siteOrigin, 'late', failures);
   await lateSession.page.goto(studentLink, { waitUntil: 'domcontentloaded' });
   await waitConnected(lateSession.page);
-  const lateFrame = await courseFrame(lateSession.page);
+  let lateFrame = await courseFrame(lateSession.page);
   await waitSnapshot(lateFrame, studentMean, 'late join');
   assert.deepEqual(await view(lateFrame), await view(teacherFrame), 'late join restores complete visible model');
   await teacherFrame.getByRole('button', { name: 'Переложить 1 кружок', exact: true }).click();
   const afterLate = await synchronized(teacherFrame, lateFrame, 'late participant follows teacher');
   await synchronized(teacherFrame, studentFrame, 'original participant follows teacher');
   assert.deepEqual(afterLate.view.model.piles, [5, 5, 5]);
+  await assertPersonalStorage(lateSession,lateFrame);
+  // This observer leaves and later rejoins the same room with the same browser storage.
+  await lateSession.page.goto('about:blank',{waitUntil:'commit'});
+
 
   phase = 'feedback for ratio order and distributed signs';
   await lesson(teacherFrame, 'p15', 0);
@@ -963,6 +967,11 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.equal(rejected, true);
   assert.deepEqual(await snapshot(teacherFrame), beforeBad);
   assert.deepEqual(await view(teacherFrame), beforeBadView);
+  await lateSession.page.goto(studentLink,{waitUntil:'domcontentloaded'});
+  await waitConnected(lateSession.page);
+  lateFrame=await courseFrame(lateSession.page);
+  await waitSnapshot(lateFrame,beforeBad,'returning observer restores the final state after the complete lesson');
+  assert.deepEqual(await view(lateFrame),beforeBadView,'returning observer sees the same model and work');
   const stable = await quietMessages([teacher, student, lateSession.page], 'final quiescence');
   await wait(500);
   assert.deepEqual(await Promise.all([teacher, student, lateSession.page].map(messages)), stable);

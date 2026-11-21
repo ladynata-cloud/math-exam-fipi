@@ -406,11 +406,12 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
  }
  else if(n===33 && task.chainStudy) {
   const math=root.PetersonMath,chain=task.chainStudy[a],ops={'+':'add','−':'subtract','×':'multiply',':':'divide'};
-  let current=chain.start;const rows=[['Начало',current]];
-  for(let i=0;i<b;i++){const [sign,operand]=chain.steps[i];const next=math.answer(math.operation(ops[sign],current,operand));rows.push([current+' '+sign+' '+operand,next]);current=next;}
+  const written=v=>math.decimal(v).replace('-','−');
+  let current=chain.start;const rows=[['Начало',written(current)]];
+  for(let i=0;i<b;i++){const [sign,operand]=chain.steps[i];const next=math.answer(math.operation(ops[sign],current,operand));rows.push([written(current)+' '+sign+' '+written(operand),written(next)]);current=next;}
   show(table(['Действие','Результат'],rows));
-  if(b<4)say('Следующее действие: '+chain.steps[b].join(' ')+'. Сначала выполни его сам.');
-  else say('Запиши число '+current+' рядом с буквой '+chain.letter+'.');
+  if(b<4)say('Следующее действие: '+chain.steps[b][0]+' '+written(chain.steps[b][1])+'. Сначала выполни его сам.');
+  else say('Запиши число '+written(current)+' рядом с буквой '+chain.letter+'.');
   if(state.values[2]===1){show(rhombusPicture());say('Ромб: все четыре стороны равны. Проверь свой чертёж.');}
   stepList(['Запиши промежуточное значение.','В следующей строке используй именно этот результат.','После всех шести дорожек расположи итоги по возрастанию.']);
  }

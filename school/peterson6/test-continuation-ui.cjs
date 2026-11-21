@@ -353,8 +353,9 @@ test('oral signs, a chained calculation and unequal travel times use genuinely d
    for(let step=0;step<=4;step++){
     f.event(ids[1],String(step),'change');assert.equal(f.d.querySelectorAll('#model tbody tr').length,step+1);
    }
-   assert.equal(f.q('#model tbody tr:last-child td:last-child').textContent,answer);
+   assert.equal(f.q('#model tbody tr:last-child td:last-child').textContent,f.w.PetersonMath.decimal(answer).replace('-','−'));
   }
+  assert.equal(f.q('#model tbody tr:nth-child(2) td').textContent,'4 : 0,8');
   f.event(ids[2],'1','change');assert.equal(f.d.querySelectorAll('#model svg polygon').length,1);
   assert.equal(f.d.querySelectorAll('#model svg line').length,4);
   f.nav('#lesson/p33/62');f.click('[data-lesson-help="model"] > summary');
