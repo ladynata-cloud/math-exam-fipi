@@ -437,6 +437,40 @@ function absLineChoice(host,config){
  if(p){note.dataset.absSlope=String(p.k);note.dataset.absCrossings=String(p.count);}
  host.append(note);
 }
+function systemPairModel(host,config){
+ host.className='task-graphs quantity-model';
+ const message=document.createElement('p');message.className='small';
+ if(!config.checked||!config.evidence){
+  message.textContent='После проверки для каждой предложенной пары появится результат подстановки в первое и второе равенства.';host.append(message);return;
+ }
+ if(!config.evidence.length){
+  message.textContent='Ты указал, что решений нет. Проверь все допустимые значения из уравнения с одной переменной.';host.append(message);return;
+ }
+ for(const row of config.evidence){
+  const p=document.createElement('p');p.className='small';p.dataset.systemEvidence=row.excluded?'excluded':row.valid.map(x=>x?'yes':'no').join('-');
+  p.textContent='('+row.a+'; '+row.b+') — '+(row.excluded?'нулевая координата попадает в исходный знаменатель.':
+      'первое равенство '+(row.valid[0]?'верно':'не выполняется')+', второе '+(row.valid[1]?'верно':'не выполняется')+'.');
+  host.append(p);
+ }
+}
+function inequalityIntervals(host,config){
+ host.className='task-graphs number-line';
+ const finite=config.cuts.map(s=>M.parse(s)).map(z=>z.n/z.d),delta=Math.max(1,(finite[1]-finite[0])/4),
+       min=finite[0]-delta,max=finite[1]+delta,x=v=>30+(v-min)/(max-min)*300;
+ const svg=numberLine({range:[min,max],major:Math.max(1,Math.ceil((max-min)/4)),points:[],label:'Предложенные промежутки и граничные точки неравенства'});
+ for(const item of config.intervals||[]){
+  const lo=Math.max(min,item.min),hi=Math.min(max,item.max);
+  if(lo>=hi)continue;
+  svg.append(node('line',{x1:x(lo),x2:x(hi),y1:76,y2:76,stroke:'#16735d','stroke-width':6,'data-interval-range':lo+';'+hi}));
+  if(item.min===-Infinity)svg.append(node('path',{d:'M38 69 L30 76 L38 83',fill:'none',stroke:'#16735d','stroke-width':2}));
+  if(item.max===Infinity)svg.append(node('path',{d:'M322 69 L330 76 L322 83',fill:'none',stroke:'#16735d','stroke-width':2}));
+  for(const [v,open] of [[item.min,item.leftOpen],[item.max,item.rightOpen]])if(Number.isFinite(v)&&v>=min&&v<=max)svg.append(node('circle',{cx:x(v),cy:76,r:5,fill:open?'white':'#16735d',stroke:'#16735d','stroke-width':2}));
+ }
+ finite.forEach((v,i)=>svg.append(node('text',{x:x(v),y:39,'text-anchor':'middle','font-size':19,'data-critical-point':config.cuts[i]},config.cuts[i])));
+ const note=document.createElement('p');note.className='small';note.textContent='Подписаны границы из условия. Зелёным отмечаются введённые тобой промежутки; стрелка показывает продолжение до бесконечности.';
+ host.append(svg,note);
+}
+
 function equationExamples(host,value){
  host.className='task-graphs quantity-model';
  const parts=String(value||'').split(';').map(x=>x.trim());
@@ -681,6 +715,8 @@ function render(host,config,value){
  if(config.type==='vertex-form'){vertexForm(host,config,value);return;}
  if(['line-figure','own-lines','own-points'].includes(config.type)){planeConstruction(host,config,value);return;}
  if(config.type==='abs-line-choice'){absLineChoice(host,config);return;}
+ if(config.type==='system-pair-audit'){systemPairModel(host,config);return;}
+ if(config.type==='inequality-intervals'){inequalityIntervals(host,config);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='rate-table'){rateTable(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}

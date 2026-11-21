@@ -53,6 +53,7 @@ jobs:
           python school/makarychev8/test-exercises-671-686.py
           python school/makarychev8/test-exercises-687-695.py
           python school/makarychev8/test-exercises-696-701.py
+          python school/makarychev8/test-exercises-702-718.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -67,6 +68,7 @@ jobs:
           node school/makarychev8/test-plane-equations.cjs
           node school/makarychev8/test-linear-systems.cjs
           node school/makarychev8/test-graphical-systems.cjs
+          node school/makarychev8/test-system-substitution.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -109,6 +111,8 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-linear-systems.cjs
       - name: Chromium graphical systems and independent intersection coordinates
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-graphical-systems.cjs
+      - name: Chromium substitution, radical pairs and strict intervals
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-system-substitution.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction

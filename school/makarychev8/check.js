@@ -496,6 +496,81 @@ function equationPlaneStatus(input,expected){
  return [...wanted].every(([k,v])=>actual.get(k)*b===v*a)?'correct':'different';
 }
 
+function algebraPairs(input){
+ const text=String(input||'').trim();
+ if(/^(нет|нетрешений|решенийнет|∅|\{\})$/.test(normalize(text)))return [];
+ if(!text||text.length>700)return null;
+ const pairs=[];let index=0;
+ while(index<text.length){
+  if(text[index]!=='(')return null;
+  let depth=1,split=-1,end=-1;
+  for(let j=index+1;j<text.length;j++){
+   if(text[j]==='(')depth++;
+   else if(text[j]===')'){if(!--depth){end=j;break;}}
+   else if(text[j]===';'&&depth===1){if(split>=0)return null;split=j;}
+  }
+  if(end<0||split<0)return null;
+  const pair=[text.slice(index+1,split).trim(),text.slice(split+1,end).trim()];
+  if(pair.some(x=>!radicalSum(x)))return null;
+  pairs.push(pair);if(pairs.length>8)return null;index=end+1;
+  if(index<text.length){const delim=/^\s*[,|;]\s*/.exec(text.slice(index));if(!delim)return null;index+=delim[0].length;if(index===text.length)return null;}
+ }
+ return pairs;
+}
+function sameAlgebraPairs(raw,expected){
+ const user=algebraPairs(raw),right=algebraPairs(expected);
+ if(!user||!right||user.length!==right.length)return false;
+ const unused=right.slice();
+ for(const [x,y] of user){
+  const i=unused.findIndex(([a,b])=>sameRadicalSum(x,a)&&sameRadicalSum(y,b));
+  if(i<0)return false;unused.splice(i,1);
+ }
+ return true;
+}
+function systemEvidence(input,graph){
+ const submitted=algebraPairs(input);
+ if(!submitted)return null;
+ const mul=(a,b)=>a.flatMap(u=>b.map(v=>({sign:u.sign*v.sign,n:u.n*v.n,d:u.d*v.d})));
+ const one=[{sign:1,n:1n,d:1n}];
+ return submitted.map(([a,b])=>{
+   const x=radicalSum(a),y=radicalSum(b);
+   const excluded=graph.excludeZero&&(sameRadicalTerms(x,[])||sameRadicalTerms(y,[]));
+   if(excluded)return {a,b,excluded:true,valid:[]};
+   const powers=[x,y].map(z=>[one,z,mul(z,z)]);
+   const valid=graph.terms.map(poly=>{
+    const terms=poly.flatMap(([c,i,j])=>mul(mul(radicalSum(c),powers[0][i]),powers[1][j]));
+    return sameRadicalTerms(terms,[]);
+   });
+   return {a,b,excluded:false,valid};
+ });
+}
+function openIntervals(input){
+ const text=String(input||'').trim().replace(/−|–/g,'-').replace(/\s+/g,'').replace(/или|union|∪/gi,'|');
+ if(!text||text.length>180)return null;
+ const endpoint=s=>/^-∞$|^-inf(?:inity)?$/i.test(s)?'-∞':/^\+?(∞|inf(?:inity)?)$/i.test(s)?'+∞':M.parse(s);
+ const list=[];
+ for(const part of text.split('|')){
+  const m=/^([[(])([^;]+);([^;]+)([\])])$/.exec(part);if(!m)return null;
+  const left=endpoint(m[2]),right=endpoint(m[3]);
+  if(!left||!right)return null;
+  function value(r){return r==='-∞'?-Infinity:r==='+∞'?Infinity:r.n/r.d;}
+  list.push({left,right,min:value(left),max:value(right),open:m[1]==='('&&m[4]===')',leftOpen:m[1]==='(',rightOpen:m[4]===')'});
+ }
+ return list;
+}
+function intervalMatch(user,right){
+ const a=openIntervals(user),b=openIntervals(right);
+ if(!a||!b||a.length!==b.length)return false;
+ const equal=(v,w)=>typeof v==='string'||typeof w==='string'?v===w:M.equal(v,w);
+ const pending=b.slice();
+ for(const item of a){
+  if(!item.open||item.min>=item.max)return false;
+  const i=pending.findIndex(p=>equal(item.left,p.left)&&equal(item.right,p.right));
+  if(i<0)return false;pending.splice(i,1);
+ }
+ return true;
+}
+
 function equationRatioStatus(input,ratios){
  const parts=String(input).split(';').map(radicalSum);
  if(parts.length!==3||parts.some(x=>!x))return 'format';
@@ -531,6 +606,8 @@ function check(user,target){
  const answers=[target.answer,...(target.accepts||[])].map(String);
  if(['three-solutions','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
  if(target.kind==='line-pair-equation')return equationPlaneStatus(user,target.answer)==='correct';
+ if(target.kind==='algebra-pairs')return sameAlgebraPairs(user,target.answer);
+ if(target.kind==='open-intervals')return intervalMatch(user,target.answer);
  if(target.kind==='equation-from-roots')return equationRatioStatus(user,target.ratios)==='correct';
  if(target.kind==='examples-of-equations')return exampleEquationsStatus(user)==='correct';
  if(target.kind==='abs-line-example'){const v=absLineIntersections(user);return Boolean(v?.intercept&&v.count===target.reqCount);}
@@ -594,5 +671,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

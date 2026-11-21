@@ -662,5 +662,26 @@
       source:{type:'authored',reference:'Тренировка на новых прямых и параболе'},skills:[systemPractice.id]};
   }
 
-  return { mount, experiment, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const substitutionPractice={id:'system-substitution',title:'Подстановка и проверка пары',
+    description:'Вырази переменную, найди все корни и проверь соответствие координат в исходной системе.'};
+  function practiceSubstitution(seed,level){
+    const r=1+seed%5,s=level===2?r:-(1+Math.floor(seed/4)%5),h=1+seed%4,b=level===3?2-r*s:-r*s;
+    const points=[r,...(r===s?[]:[s])].map(x=>[x,h*x+b]),answer=points.map(([x,y])=>'('+x+';'+y+')').join(', ');
+    // x² − (r + s)x + rs = 0 follows from y = hx + b and y = x² + (h − r − s)x + b + rs.
+    const linear=h-r-s,constant=b+r*s;
+    const expr=n=>(n<0?' − ':' + ')+Math.abs(n);
+    const eq1='y = '+h+'x'+expr(b),eq2='y = x²'+(linear?expr(linear)+'x':'')+(constant?expr(constant):'');
+    const graph={type:'system-pair-audit',equations:[eq1,eq2],symbols:['x','y'],excludeZero:false,
+      terms:[[[String(h),1,0],['-1',0,1],[String(b),0,0]],[['1',2,0],[String(linear),1,0],['-1',0,1],[String(constant),0,0]]]};
+    const hint='Приравняй два выражения для y. Каждую найденную абсциссу подставь в первое уравнение.';
+    const answers=points.map(p=>p[0]).join(';');
+    return {title:substitutionPractice.title,prompt:'Реши систему '+eq1+' и '+eq2+'. Запиши пары (x; y).',kind:'algebra-pairs',answer,graph,steps:[
+      {prompt:'После приведения к старшему коэффициенту 1 чему равны B и C в x² + Bx + C = 0?',kind:'graph-values',answer:[-(r+s),r*s].join(';'),hint,explanation:'Линейный коэффициент равен '+(-(r+s))+', свободный член '+r*s+'.'},
+      {prompt:'Укажи все абсциссы решения.',kind:'quadratic-roots',answer:answers,hint:'Разложи полученный трёхчлен.',explanation:'Корни: '+answers+'.'}],
+      hint,correction:hint,finalLabel:'Все пары координат',inputNote:'Впиши пары в скобках через запятую, например (1;2), (3;4).',
+      explanation:'После решения квадратного уравнения координаты восстанавливаются согласованными парами: '+answer+'.',
+      source:{type:'authored',reference:'Авторская тренировка по подстановке'},skills:[graphicPractice.id]};
+  }
+
+  return { mount, experiment, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });
