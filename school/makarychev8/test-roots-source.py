@@ -43,6 +43,10 @@ for record in baseline['records']:
     task = by_lesson[record['lesson']]['tasks'][record['index']]
     ok(task['id'] == record['id'] and digest(task) == record['sha256'], 'old task payload/route changed: ' + record['id'])
 
+# Verify the two appended lesson ranges against their source files as well.
+for topic, first, last in [('p05', 110, 133), ('p06', 134, 149)]:
+    by_lesson[topic]['tasks'].extend(read(f'exercises-{first}-{last}.json'))
+
 ranges = []
 for first, last in RANGES:
     name = f'roots-{first}-{last}.json'
