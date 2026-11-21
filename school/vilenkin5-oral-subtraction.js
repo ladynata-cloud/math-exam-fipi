@@ -53,7 +53,7 @@
       return {...step('Столбец '+(i+1)+'. Введи уменьшаемое, вычитаемое и разность через точку с запятой. Сохрани печатные числа.'+(i>=3?' Подбери свой допустимый вариант.':''),[a,b,v],'Проверь вычитание обратным действием: вычитаемое плюс разность даёт уменьшаемое.'),answerFormat:'v5-triple',subtractionColumn:c};
     });
     return {prefix:'Три строки в исходной таблице образуют в каждом столбце одно равенство. ',prompt:'Сколько из шести столбцов можно восстановить однозначно — без собственного выбора числа?',inputPrompt:'Число однозначных столбцов',answer:3,steps,
-      errors:[err(6,'Посмотри на последние три столбца. В каждом дано только одно число, поэтому можно составить разные равенства.')],data:{subtract:src},table:{caption:'Каждая строка экрана — один печатный столбец',headers:['№',...names],rows:src.map((col,i)=>[i+1,...col.map(v=>v??'—')])},conditionKey:src.flat().join('/')};
+      errors:[err(6,'Посмотри на последние три столбца. В каждом дано только одно число, поэтому можно составить разные равенства.')],data:{subtract:src},table:{caption:'Шесть печатных столбцов: уменьшаемое минус вычитаемое равно разности',headers:['№','Равенство'],rows:src.map((col,i)=>[i+1,subtractionRow(col)])},conditionKey:src.flat().join('/')};
   }
   function mental(seed,r,step){
     const entries=seed?(()=>{const p=r(3,9),q=r(11,17),k=r(3,8);return [[p*30,p*10,'÷',p],[q*100,q*r(2,8),'÷',q],[r(2,5)*100,100,'×',r(3,9)],[100*r(3,8),r(2,7),'×',k]];})():[[240,80,'÷',8],[1300,26,'÷',13],[300,100,'×',7],[600,2,'×',6]];
@@ -86,7 +86,9 @@
 
   function accepts(raw,t,M){if(t.zeroWitness){const v=String(raw).split(';').map(s=>M.parse(s));return v.length===2&&v.every(x=>x?.d===1&&x.n>=0)&&v[1].n===0;}const v=tables.fields(raw,M);return v&&tables.columnFits([v[1],v[2],v[0]],[t.subtractionColumn[1],t.subtractionColumn[2],t.subtractionColumn[0]]);}
   function mistake(raw,t,M){if(t.zeroWitness)return 'Проверь оба действия на своей паре. Положительное второе число при сложении увеличивает первое, а при вычитании уменьшает его.';const v=tables.fields(raw,M);if(!v)return '';const i=t.subtractionColumn.findIndex((n,i)=>n!==null&&n!==v[i]);if(i>=0)return 'В этом столбце уже дано число в строке «'+names[i]+'». Сохрани его на своём месте.';if(v.some(n=>n<0))return 'Для этой таблицы выбери целые неотрицательные числа.';return 'Сложи своё вычитаемое и разность. Сумма должна совпасть с первым числом.';}
-  function filled(t,scene,table){const cells=t.data.subtract;return table(t.table.caption,t.table.headers,cells.map((c,i)=>{const got=scene?.answers?.[i];return [i+1,...(got?got.split(';').map(v=>v.trim()):c.map(x=>x??'—'))];}));}
+  function subtractionRow(values){const [a,b,d]=values.map(n=>n??'□');return a+' − '+b+' = '+d;}
+  function filled(t,scene,table){const cells=t.data.subtract;return table(t.table.caption,t.table.headers,cells.map((c,i)=>{const got=scene?.answers?.[i];return [i+1,subtractionRow(got?got.split(';').map(v=>v.trim()):c)];}));}
+
   function explore(l,s,t,table){
     if(t.data.mental||t.data.sumDifference||t.data.quotients)return exploreReasoning(s,t,table);
     if(t.data.oral){const e=t.data.oral[s.group][s.item],v=calc(e),sorted=t.data.oral[s.group].map((q,i)=>[i+1,show(q)]);return {title:'Выбери выражение для проверки',controls:[select('group','Группа',Array.from('абвгд')),select('item','Строка',['Первая','Вторая','Третья','Четвёртая','Пятая'])],visual:table('Текущая группа',['№','Выражение'],sorted),question:show(e)+' — чему равно?',answer:v,why:concise(...e)};}
