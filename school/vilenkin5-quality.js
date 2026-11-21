@@ -222,7 +222,7 @@
     const d=detail(session),captured=session;
     const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,onDrawing:value=>{
       if(readOnly||captured!==connection?.getSession?.()||!['learn','practice'].includes(session.mode))return;
-      const next=session.task.data.threeCompass?root.Vilenkin5ThreeCompassPoints.selection(session.task,value):root.Vilenkin5PrintedBuildablePaths.selection(session.task,value);
+      const next=session.task.data.checkPositions?root.Vilenkin5CircleCheck.selection(session.task,value):session.task.data.threeCompass?root.Vilenkin5ThreeCompassPoints.selection(session.task,value):root.Vilenkin5PrintedBuildablePaths.selection(session.task,value);
       if(next!==null&&M.generate(session.id,next).conditionKey!==session.task.conditionKey)connection?.chooseSourceDrawing?.(next);
     },onChange:value=>{
       if(readOnly||captured!==connection?.getSession?.())return;
