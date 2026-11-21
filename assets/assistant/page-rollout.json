@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 623,
-    "covered": 621,
+    "total": 625,
+    "covered": 623,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -35,7 +35,9 @@
     "trainers/index.html",
     "trainers/long-division-claude.html",
     "trainers/oge-basics/multiplication-division/division-checkpoint.html",
-    "trainers/oge-basics/multiplication-division/division-path.html"
+    "trainers/oge-basics/multiplication-division/division-path.html",
+    "trainers/school-workshop-check/index.html",
+    "trainers/tyurin-statistics/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -901,9 +903,10 @@
       "placement": "before-head-close"
     },
     "geometry-course/textbook/index.html": {
-      "beforeSha256": "c26e8f026e5560c39bd0f9a841c0458b7ff4d260c038a42b4ccb2ed7a060ec2e",
-      "afterSha256": "706cd7def6810a4692834081378f1d994a804e073709f8f209ecf2ca4a9d119d",
-      "placement": "before-head-close"
+      "beforeSha256": "215296704e24b496cc6ab9b6c48c243d04ddb19becc0129c5d63565393b709cc",
+      "afterSha256": "f3ac86319ecb5c0a8bae00b67ef356cc5f9a52e7b49690edba167842fa0ac5e6",
+      "placement": "before-head-close",
+      "sourceSha": "4a7c2d1f1ef1c8fa7e97263269a74ce8df899772"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
       "beforeSha256": "b79e90862fdcfead5543fb6bf42bd031913635f28e3896f7d4951d6004c8bc61",
@@ -2214,10 +2217,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "fc49b6277cf575ad6efe1159dcef9d2f6baca5ce54847028ef0d9b6586e89d3a",
-      "afterSha256": "5ab223371e4e39dba5f86cc6ed85576619302e8390acc04a18f1986e255f1772",
+      "beforeSha256": "d53d7b74038748c747f772a8fc836f5fbc4e6c5cd6f9be00d70eb05b93350b62",
+      "afterSha256": "9f8694db8b81c84ee0c29c77c625c991bd992ae0d47d314c2dbeabaeda6749f6",
       "placement": "before-head-close",
-      "sourceSha": "903c8a4b37b671c88e0b19d6dbd4b4dc2f7f7147"
+      "sourceSha": "e4cd17295e277772602cf4620c067c1d54f4fbd5"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -3994,7 +3997,9 @@
     "trainers/geometry-7/control-work.html": "sitemap",
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": "sitemap",
     "trainers/practice-topics/index.html": "sitemap",
-    "trainers/vilenkin6-percent/index.html": "sitemap"
+    "trainers/vilenkin6-percent/index.html": "sitemap",
+    "trainers/school-workshop-check/index.html": "school/index.html",
+    "trainers/tyurin-statistics/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6463,6 +6468,26 @@
     },
     {
       "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "4a7c2d1f1ef1c8fa7e97263269a74ce8df899772",
+      "task": "docs/tasks/ATANASYAN_7_9_AREAS_842_847.md",
+      "changedPaths": [
+        "geometry-course/textbook/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "previousBaseSha": "a772c84c92a64553f3a4da099718ef527c0a9aa8",
+      "sourceBaseSha": "e4cd17295e277772602cf4620c067c1d54f4fbd5",
+      "task": "docs/tasks/SCHOOL_FINAL_WORK_20261121.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Published Workshop source page with verified textbook routes and final assessments.",
+      "boundary": "Preserve the verified edition, Vilenkin and final assessment entries together."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
       "sourceBaseSha": "cf4e1a9305820d894ee901183427dbd1257311a2",
       "task": "docs/tasks/MAKARYCHEV8_ROOTS_BOARD_RELEASE.md",
       "changedPaths": [
@@ -6582,6 +6607,22 @@
         "trainers/vilenkin6-percent/index.html"
       ],
       "reason": "New canonical public entries in the search catalogue, each with the common navigator bound to the exact reviewed source."
+    },
+    {
+      "sourceBaseSha": "e4cd17295e277772602cf4620c067c1d54f4fbd5",
+      "task": "docs/tasks/SCHOOL_FINAL_WORK_20261121.md",
+      "addedPages": [
+        "trainers/school-workshop-check/index.html"
+      ],
+      "reason": "New canonical, authored final-assessment entry carries the full public navigator."
+    },
+    {
+      "sourceBaseSha": "119a07b0122566746da71b076d5eacf020bb8853",
+      "task": "docs/tasks/TYURIN_INDEPENDENT_33_20261121.md",
+      "addedPages": [
+        "trainers/tyurin-statistics/index.html"
+      ],
+      "reason": "New canonical practice entry discovered from the verified edition cards and included in the navigator."
     }
   ]
 }
