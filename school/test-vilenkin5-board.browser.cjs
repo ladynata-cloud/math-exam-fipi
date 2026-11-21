@@ -1199,6 +1199,17 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'recovered counting model');
   await teacherFrame.locator('#answer-form button').click();const sledFixed=await same(teacherFrame,studentFrame,'sixteen remained on base');assert(sledFixed.scene.correct);assert.equal(sledFixed.scene.attempt,2);assert.deepEqual(sledFixed.scene.hintLevels,{});await narrow(student,studentFrame,'polar-dog-groups');
 
+  phase = 'source 5.63: two kilometres represent four ninths';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-63"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.63'}).waitFor();
+  await teacherFrame.locator('#answer').fill('2/9');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'divide the known section by four')).scene.message,/число закрашенных долей/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=count]').selectOption({value:'7'});await studentFrame.locator('[data-v5-prediction]').fill('3,5');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('0,5');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const avenueDraft=await same(studentFrame,teacherFrame,'restored segment, selected seven ninths and draft');assert(avenueDraft.scene.model.seen);assert.equal(avenueDraft.scene.model.count,7);assert.equal(avenueDraft.scene.savedInput,'0,5');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'two fractions of one avenue');await teacherFrame.locator('#answer-form button').click();const unitNinth=await same(teacherFrame,studentFrame,'one ninth equals half a kilometre');assert(unitNinth.scene.correct);assert.equal(unitNinth.scene.attempt,2);
+  await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('4,5');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'four and one half kilometres as a whole')).scene.correct);await narrow(student,studentFrame,'avenue-from-four-ninths');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
