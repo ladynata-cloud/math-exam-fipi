@@ -2235,10 +2235,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "4926ae574fcf5465db209c8544b48e30f4743ae00cd80da140cf4a9085efabfb",
-      "afterSha256": "9372aaca9470ae528ddbb74d65a79b0a78167e5293a198da230dd55485fc8f60",
+      "beforeSha256": "6c5d80666c8b31bb78389ad3633c6430eba123df46937edc100ce6ba5fb57d0d",
+      "afterSha256": "ea1705a7a923c92d633ef3743edefcd53e258f5c5131d82dd455fd42c72f2ef7",
       "placement": "before-head-close",
-      "sourceSha": "5d7ef191640506697f769c083879fc211be525a7"
+      "sourceSha": "1d197956d3242000364d5662547b6d6810979399"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7233,6 +7233,15 @@
         "school/index.html"
       ],
       "bindingScope": "Per-page sourceSha for the numbered Vilenkin scale exercises on printed pages 28 and 29."
+    },
+    {
+      "previousBaseSha": "5d7ef191640506697f769c083879fc211be525a7",
+      "sourceBaseSha": "1d197956d3242000364d5662547b6d6810979399",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for all primary readings and both directions of mass conversion, Vilenkin 1.126–1.134."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
