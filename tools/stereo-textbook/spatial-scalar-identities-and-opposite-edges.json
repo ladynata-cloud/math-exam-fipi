@@ -1,0 +1,658 @@
+{
+  "parts": {
+    "697": [
+      null
+    ],
+    "698": [
+      null
+    ],
+    "699": [
+      null
+    ],
+    "700": [
+      "а",
+      "б"
+    ],
+    "701": [
+      null
+    ],
+    "702": [
+      null
+    ],
+    "703": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж"
+    ],
+    "704": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "697": {
+      "id": "source-main-0697",
+      "kind": "exercise",
+      "title": "Задача № 697",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "697",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          177
+        ],
+        "pdfPages": [
+          179
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "698": {
+      "id": "source-main-0698",
+      "kind": "exercise",
+      "title": "Задача № 698",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "698",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          177
+        ],
+        "pdfPages": [
+          179
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "699": {
+      "id": "source-main-0699",
+      "kind": "exercise",
+      "title": "Задача № 699",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "699",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          177
+        ],
+        "pdfPages": [
+          179
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "700": {
+      "id": "source-main-0700",
+      "kind": "exercise",
+      "title": "Задача № 700",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "700",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          177
+        ],
+        "pdfPages": [
+          179
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "701": {
+      "id": "source-main-0701",
+      "kind": "exercise",
+      "title": "Задача № 701",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "701",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          177
+        ],
+        "pdfPages": [
+          179
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "702": {
+      "id": "source-main-0702",
+      "kind": "exercise",
+      "title": "Задача № 702",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "702",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          177
+        ],
+        "pdfPages": [
+          179
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "703": {
+      "id": "source-main-0703",
+      "kind": "exercise",
+      "title": "Задача № 703",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "703",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          177
+        ],
+        "pdfPages": [
+          179
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "704": {
+      "id": "source-main-0704",
+      "kind": "exercise",
+      "title": "Задача № 704",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "704",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          177
+        ],
+        "pdfPages": [
+          179
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0697": {
+      "raw": "3be1e63654d1b0274a7dcbd9bffda66c730a59c2d8ab579c73d8025088fd330c",
+      "authored": "d024c61835bb399a5a91cc143f34d2da352786821c3b63f73659ebd79324bd90",
+      "integrated": "3016dd5d27a6b57ea622f1589e754ad1d3ab5571be1854f34afc31e03a5ccbbe"
+    },
+    "ex-main-0698": {
+      "raw": "fa10d13a596061d266ad1ec50a0060a2e35d43a4a847e70128fd40118b38b223",
+      "authored": "397217879fe8111226753c04a90002ce224d33ee0b93ab9cd1cf96adba58bca0",
+      "integrated": "d58485d45fa1cd94607bfd9ffa7b20a4c6fd56bfe2c34bf956016b10ed128b60"
+    },
+    "ex-main-0699": {
+      "raw": "7a3cb452a453e4ef39b3a4cca527760ec230cf87c19d33ef42c710b6ea3e3d74",
+      "authored": "c392451664591e2b52c7db30d36df110b5f8ab37e4a443d06c5254d76c290005",
+      "integrated": "5399592cb3ad61414f59d493f634df545da852199653644dcc96d24de109811a"
+    },
+    "ex-main-0700-a": {
+      "raw": "4b2af21ee4ea2b87c521a404b76e81f777d2730c0e2a435138d4ced41c808cfe",
+      "authored": "04133a2dcdb91dbb22782c34ffa49b11c1b8eda7f4d707d0153a7db9ea96edd3",
+      "integrated": "00514f2e0ef3e8e18eac343697ebd7242709f2c9051375fb1acf85fc19d72390"
+    },
+    "ex-main-0700-b": {
+      "raw": "628707bdc375a8a7da47c7fa712012eaa35d36b05e02b88ce64d6a77210dc54c",
+      "authored": "a7b5ab4d071e5b94a30a09828613ceca8ff57dad8681b58ada99323aa169cc60",
+      "integrated": "5e0516560098380f7d4668e471e6e92a793bd8a3287e73bebb66b9dc1fefdf37"
+    },
+    "ex-main-0701": {
+      "raw": "c2e4a4c3a80bd6dd36905a7428196e3c1db76d67a5a0d43503580760aa3e2f37",
+      "authored": "e2108b253595975036e7e87686eff073cff307065c947033afc2e85883cac91f",
+      "integrated": "d4aa55140067dcff03e991b0b11f968754351cfb3213971d3bb3602e4f88de1c"
+    },
+    "ex-main-0702": {
+      "raw": "59b31f8a1d332da6b26ce423ee62eca3ea3c88582787e8d0ae48b09607d39175",
+      "authored": "ffa8c323b1ecc90bf690afc4212ec213dd0c90e37d9a07763754e4f3d8272ba2",
+      "integrated": "e425866cba67d57b47ab9ca92759b48b9e60fcb9a064eb9976b1a0f8b419eb99"
+    },
+    "ex-main-0703-a": {
+      "raw": "0d2d5bcd642b3ee2187b44eff30401eeede25ce15ba40ebf39e392e77e8f8dc9",
+      "authored": "fd23b225f297b119b9de0c61d54733bc821006b8a37de82e5260ba37ba4b0ecf",
+      "integrated": "0191524fba99a0bd32c1b4da6f771889940116051a440cfaf57e3ab7065038eb"
+    },
+    "ex-main-0703-b": {
+      "raw": "e4e96bf0ca7c1898ab351b3942fed5b43e138234855f66b09937664b5763d47b",
+      "authored": "9e480b4a6ac9be9c6bc044fced78c368ca04f22160b3a3ac1465229539586e66",
+      "integrated": "8f0dec23f34a9b2e1516cabb4939df06fd1d9b8beafbb28ec30875e910135eba"
+    },
+    "ex-main-0703-c": {
+      "raw": "f84de5e179ed8e1f666e1734c0a8b5f4753320a78d6bdfa534e98388c6cf72b2",
+      "authored": "d5fde88d64eafb9926731d8c56aa1c06d5bea0f5467d42bf30422eca61abc0c1",
+      "integrated": "09d267ff49f748581b4f7df8fc4e32c6cdd015dbae6aa2e21072c98de6fe2bbc"
+    },
+    "ex-main-0703-d": {
+      "raw": "9ec01f06a1594a5ad377f7bc87ad1e8b8b3832e4553e667c8853ecce1d505abf",
+      "authored": "ef28d7f62b142602f4b681148bf4bf12de5f57cc340d98dbd2959aa8fa6c2f3e",
+      "integrated": "c2a62b9f18149ed4d5408fd97375ca5fa551e706631eaef3ae1f41f6d88c328f"
+    },
+    "ex-main-0703-e": {
+      "raw": "eeccf0a6489c41d00ce7208f7f650b3222a904ce5c549099e6dbc3c1dcd7d4b6",
+      "authored": "57031cb37512829b032f1f95d8c6a7f86f71e4c39c153338d5206dd9e73b07dc",
+      "integrated": "84bb844854e4ea491ca792518451589e547d1a2cb695fff485a4f3bdc48712c3"
+    },
+    "ex-main-0703-f": {
+      "raw": "01a5d32169229f666b6e5ad59c2ddba9cdb597f4a8df9d43e6cd98cc429d8648",
+      "authored": "90f7217bad1176d8d7fa0e9c02a812a8fbb68049ff5bf1820278d23856f762fd",
+      "integrated": "dc1d80287217cd183134d7fc3d8add880b73adb4616f4e846663b713bf3bfc59"
+    },
+    "ex-main-0703-g": {
+      "raw": "61ec09111db52f974d243bfd23e5f50a72345164cbb9d8edf4f07bf618f24522",
+      "authored": "b25bdd1f64756dbaca9643fecc3f76f9f11527e733533b81f457152573a5df47",
+      "integrated": "102750fe88eaf801387931239125bc93d5e7b0b97d0d98ffa3110c17285d64d5"
+    },
+    "ex-main-0704": {
+      "raw": "3480fc9445799fad6b1143ce4376dc6b7715aaaf2b921b35cac26fc9f25483d0",
+      "authored": "c10be47975ef13e3170f435aeb34a1b49736d48458188faa422fbadc599e0c77",
+      "integrated": "484abd61b4437899592d1a0f9b1c106f38b7d275e5ba5e1df0ae5be773983472"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0697|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0697-condition"
+    ],
+    [
+      "ex-main-0697|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0697-help-h1"
+    ],
+    [
+      "ex-main-0697|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0697-help-h2"
+    ],
+    [
+      "ex-main-0697|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0697-step-1"
+    ],
+    [
+      "ex-main-0697|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0697-step-2"
+    ],
+    [
+      "ex-main-0697|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0697-step-3"
+    ],
+    [
+      "ex-main-0698|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0698-condition"
+    ],
+    [
+      "ex-main-0698|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0698-help-h1"
+    ],
+    [
+      "ex-main-0698|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0698-help-h2"
+    ],
+    [
+      "ex-main-0698|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0698-step-1"
+    ],
+    [
+      "ex-main-0698|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0698-step-2"
+    ],
+    [
+      "ex-main-0698|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0698-step-3"
+    ],
+    [
+      "ex-main-0699|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0699-condition"
+    ],
+    [
+      "ex-main-0699|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0699-help-h1"
+    ],
+    [
+      "ex-main-0699|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0699-help-h2"
+    ],
+    [
+      "ex-main-0699|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0699-step-1"
+    ],
+    [
+      "ex-main-0699|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0699-step-2"
+    ],
+    [
+      "ex-main-0699|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0699-step-3"
+    ],
+    [
+      "ex-main-0700-a|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-a-condition"
+    ],
+    [
+      "ex-main-0700-a|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-a-help-h1"
+    ],
+    [
+      "ex-main-0700-a|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-a-help-h2"
+    ],
+    [
+      "ex-main-0700-a|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-a-step-1"
+    ],
+    [
+      "ex-main-0700-a|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-a-step-2"
+    ],
+    [
+      "ex-main-0700-a|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-a-step-3"
+    ],
+    [
+      "ex-main-0700-a|step-4",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-a-step-4"
+    ],
+    [
+      "ex-main-0700-b|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-b-condition"
+    ],
+    [
+      "ex-main-0700-b|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-b-help-h1"
+    ],
+    [
+      "ex-main-0700-b|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-b-help-h2"
+    ],
+    [
+      "ex-main-0700-b|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-b-step-1"
+    ],
+    [
+      "ex-main-0700-b|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-b-step-2"
+    ],
+    [
+      "ex-main-0700-b|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-b-step-3"
+    ],
+    [
+      "ex-main-0700-b|step-4",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0700-b-step-4"
+    ],
+    [
+      "ex-main-0701|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0701-condition"
+    ],
+    [
+      "ex-main-0701|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0701-help-h1"
+    ],
+    [
+      "ex-main-0701|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0701-help-h2"
+    ],
+    [
+      "ex-main-0701|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0701-step-1"
+    ],
+    [
+      "ex-main-0701|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0701-step-2"
+    ],
+    [
+      "ex-main-0701|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0701-step-3"
+    ],
+    [
+      "ex-main-0702|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0702-condition"
+    ],
+    [
+      "ex-main-0702|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0702-help-h1"
+    ],
+    [
+      "ex-main-0702|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0702-help-h2"
+    ],
+    [
+      "ex-main-0702|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0702-step-1"
+    ],
+    [
+      "ex-main-0702|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0702-step-2"
+    ],
+    [
+      "ex-main-0702|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0702-step-3"
+    ],
+    [
+      "ex-main-0703-a|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-a-condition"
+    ],
+    [
+      "ex-main-0703-a|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-a-help-h1"
+    ],
+    [
+      "ex-main-0703-a|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-a-help-h2"
+    ],
+    [
+      "ex-main-0703-a|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-a-step-1"
+    ],
+    [
+      "ex-main-0703-a|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-a-step-2"
+    ],
+    [
+      "ex-main-0703-a|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-a-step-3"
+    ],
+    [
+      "ex-main-0703-b|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-b-condition"
+    ],
+    [
+      "ex-main-0703-b|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-b-help-h1"
+    ],
+    [
+      "ex-main-0703-b|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-b-help-h2"
+    ],
+    [
+      "ex-main-0703-b|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-b-step-1"
+    ],
+    [
+      "ex-main-0703-b|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-b-step-2"
+    ],
+    [
+      "ex-main-0703-b|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-b-step-3"
+    ],
+    [
+      "ex-main-0703-c|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-c-condition"
+    ],
+    [
+      "ex-main-0703-c|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-c-help-h1"
+    ],
+    [
+      "ex-main-0703-c|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-c-help-h2"
+    ],
+    [
+      "ex-main-0703-c|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-c-step-1"
+    ],
+    [
+      "ex-main-0703-c|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-c-step-2"
+    ],
+    [
+      "ex-main-0703-c|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-c-step-3"
+    ],
+    [
+      "ex-main-0703-d|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-d-condition"
+    ],
+    [
+      "ex-main-0703-d|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-d-help-h1"
+    ],
+    [
+      "ex-main-0703-d|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-d-help-h2"
+    ],
+    [
+      "ex-main-0703-d|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-d-step-1"
+    ],
+    [
+      "ex-main-0703-d|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-d-step-2"
+    ],
+    [
+      "ex-main-0703-d|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-d-step-3"
+    ],
+    [
+      "ex-main-0703-e|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-e-condition"
+    ],
+    [
+      "ex-main-0703-e|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-e-help-h1"
+    ],
+    [
+      "ex-main-0703-e|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-e-help-h2"
+    ],
+    [
+      "ex-main-0703-e|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-e-step-1"
+    ],
+    [
+      "ex-main-0703-e|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-e-step-2"
+    ],
+    [
+      "ex-main-0703-e|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-e-step-3"
+    ],
+    [
+      "ex-main-0703-f|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-f-condition"
+    ],
+    [
+      "ex-main-0703-f|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-f-help-h1"
+    ],
+    [
+      "ex-main-0703-f|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-f-help-h2"
+    ],
+    [
+      "ex-main-0703-f|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-f-step-1"
+    ],
+    [
+      "ex-main-0703-f|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-f-step-2"
+    ],
+    [
+      "ex-main-0703-f|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-f-step-3"
+    ],
+    [
+      "ex-main-0703-g|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-g-condition"
+    ],
+    [
+      "ex-main-0703-g|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-g-help-h1"
+    ],
+    [
+      "ex-main-0703-g|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-g-help-h2"
+    ],
+    [
+      "ex-main-0703-g|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-g-step-1"
+    ],
+    [
+      "ex-main-0703-g|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-g-step-2"
+    ],
+    [
+      "ex-main-0703-g|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0703-g-step-3"
+    ],
+    [
+      "ex-main-0704|condition",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0704-condition"
+    ],
+    [
+      "ex-main-0704|help:h1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0704-help-h1"
+    ],
+    [
+      "ex-main-0704|help:h2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0704-help-h2"
+    ],
+    [
+      "ex-main-0704|step-1",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0704-step-1"
+    ],
+    [
+      "ex-main-0704|step-2",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0704-step-2"
+    ],
+    [
+      "ex-main-0704|step-3",
+      "spatial-scalar-identities-and-opposite-edges-ex-main-0704-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "d969ce0eef958ab481e29312b734214b85adfa02a1531e41415feacdcc64aa80",
+      "afterSHA256": "3594685cb7088bf03259cace8a5e51c16e466da5774cb94addf0f64cd7b36541"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "8dd1c1b7e8db6b128404c19a85af22bfdddc830429ffefb77064a768f5c7bbc1",
+      "afterSHA256": "719b0d66bb31549f5fd0c6733f6dda16c64791328018a38d1a6ffa957c6941c5"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T23:06:26Z",
+    "scope": "Chapters I–VI and chapter VII points 71–79, complete paragraph 1 and exercises 682–696, with 1,269 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "17f9100b7b2c477480023885b8a036dfc85f0041178b54af65af9f85a4a8769e",
+    "index": "1ec2a0774aab28f7a99d150b20f04a27d2a0ecab6a7eb0c5a5a0f05c4ca09544",
+    "registry": "7e188838bfb20e3838e65a8c15de27b6bf2ee797ab6eb0e8c74fbde259181ec3",
+    "cases": "f284b5b8ac3c96b8aba7ca2ba3d629176a5b41b4ee12f345b8c5cca91b3f26dc"
+  }
+}

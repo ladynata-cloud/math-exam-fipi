@@ -1,0 +1,779 @@
+{
+  "parts": {
+    "705": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "706": [
+      null
+    ],
+    "707": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "708": [
+      "а",
+      "б"
+    ],
+    "709": [
+      "а",
+      "б",
+      "в"
+    ],
+    "710": [
+      "а",
+      "б",
+      "в"
+    ],
+    "711": [
+      "а",
+      "б",
+      "в"
+    ]
+  },
+  "previousCatalog": {
+    "705": {
+      "id": "source-main-0705",
+      "kind": "exercise",
+      "title": "Задача № 705",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "705",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          178
+        ],
+        "pdfPages": [
+          180
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "706": {
+      "id": "source-main-0706",
+      "kind": "exercise",
+      "title": "Задача № 706",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "706",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          178
+        ],
+        "pdfPages": [
+          180
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "707": {
+      "id": "source-main-0707",
+      "kind": "exercise",
+      "title": "Задача № 707",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "707",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          178
+        ],
+        "pdfPages": [
+          180
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "708": {
+      "id": "source-main-0708",
+      "kind": "exercise",
+      "title": "Задача № 708",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "708",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "709": {
+      "id": "source-main-0709",
+      "kind": "exercise",
+      "title": "Задача № 709",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "709",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "710": {
+      "id": "source-main-0710",
+      "kind": "exercise",
+      "title": "Задача № 710",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "710",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "711": {
+      "id": "source-main-0711",
+      "kind": "exercise",
+      "title": "Задача № 711",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "711",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          179
+        ],
+        "pdfPages": [
+          181
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0705-a": {
+      "raw": "075154f47828ba86b263b4633937514e0f11448a085e543b19b2c252f2138176",
+      "authored": "5bbf9aebe3e777350984f6c2c2bc069282d038bc1478a2287c26914b832bce60",
+      "integrated": "ddd79f385852b1039581c20858ad8b6485ff1984b121c35b775446f96bb204e5"
+    },
+    "ex-main-0705-b": {
+      "raw": "76c4ccc2a41655dbd683b4885dfd00203c1fd17a11ca493e18bfed6c9c2d474a",
+      "authored": "aae464a2fad0e52a1c46e6ac0be395a29839bd5dcb15b42859177583ad61aec2",
+      "integrated": "bb821bfaf6549fb37e7d6c0c32a23e2d07b69fb4a943ef414621c87552ac1dd5"
+    },
+    "ex-main-0705-c": {
+      "raw": "4ee2bfd1d5330579a516762c5f03eea722cd653c7e38f8723dce671a169316a9",
+      "authored": "1a605fdacdd2427e687530062e940a12c2681ddfbd2454d0aeb74aa38642d181",
+      "integrated": "4fbc0e2e70eb8e6edb612e7ebd03bb418e105c4b5787f270f46ed48b0a0b70e5"
+    },
+    "ex-main-0705-d": {
+      "raw": "8200448114a14e9ed8a0ef3785bcf8192788c9e4b539bb0b634926945f2d7654",
+      "authored": "f63ff4831ad870da81aa0a2efd0194ea3122e073a1aefa4b24790140cc6dee47",
+      "integrated": "0c153624ed348d8e85758c64cc3e080bff4b642e91fdf126a400331445da0e52"
+    },
+    "ex-main-0706": {
+      "raw": "10dbe2b22add600c2676db435bb9eb0a07397e8c63f9b4ac8e1fdac4bad0cb54",
+      "authored": "40e35d75e9bfefa998462948599fc6ecb2200726e59738e0e1cd9e64dab6cfd2",
+      "integrated": "b460f825b9ae8e01851cfbda52c379036becb0ed3fa59f201842cb0135b8c006"
+    },
+    "ex-main-0707-a": {
+      "raw": "e3e7f72795f7707259dc9ee8a2a539c59261f2ce7949677b08f29a8e8ae1763a",
+      "authored": "8dc31660ff26e2a408763c5ecbe7ee7f874f7a2f6f5ddcde3eec3270623b5db5",
+      "integrated": "61e2afcd1ab48b52fa1ab5df0501bc565421859ee3123570abbee4acda9f447e"
+    },
+    "ex-main-0707-b": {
+      "raw": "183edf6a7f85b434ea9346102293f65d41fce9a53f696dadf277357773dd849a",
+      "authored": "7687d204cfd71d20e1069ae905e699d5e5a847d7be72f001ab542ce0ee9f56a9",
+      "integrated": "f20a411e82aa29d9b53d33ce7e1f9d92b8a91fef153f781520e6fa375e3437a9"
+    },
+    "ex-main-0707-c": {
+      "raw": "859770466c7ae52aa0dfb965f798bf8865462b6d8bb19f076822f653cefb1afa",
+      "authored": "84d13f3a3a55f1dbb236a5b7b3f64ff6992bd9df11ca8612355b41d80b8de592",
+      "integrated": "da646d74cbb6f2ea8ed4e7d40a45730f8c2fdcc643f6388003f78226446e60bc"
+    },
+    "ex-main-0707-d": {
+      "raw": "088278a3616238b6390017b7d8bae15ba54df2b0c354314ac49fdbb8b934ad28",
+      "authored": "16ae072f917c3eb2fa47baf560e4dac1a77aa36a787365e31344ec3556d54ac0",
+      "integrated": "7d937bcc4188e8e4cb1c59dd686d9cebbf2b01a639bffb55fd138ff50d1fd887"
+    },
+    "ex-main-0708-a": {
+      "raw": "b410b6d21c8dc4e8e7c4aa54bccf5bbde395b176f637bf5dbfde693ea621de33",
+      "authored": "6c9c294ffa1266bfe55d735e77cd035e7d923b690afdbce6bd848f8a9d178f08",
+      "integrated": "2d6c6a97f3dcbd3515efe774af41e0205d3519cd259b4ef60d2ddd983915f059"
+    },
+    "ex-main-0708-b": {
+      "raw": "d88f4d3438cfc05fbe77f672fb23b292b0874d8e1c97fb09814c406caf89dc54",
+      "authored": "8b89e85ac0ed842c53ab1c5455280aaf2fbab66de2b3996f60f4d0de5900c3c4",
+      "integrated": "4acc20928f3608df5d3f12263cc7a7e25a938304a21c200c6b131da4e6977967"
+    },
+    "ex-main-0709-a": {
+      "raw": "bc85cbbd346f62882a8fff113a1c575ca24fa70640db4605e5fa9de4300e4720",
+      "authored": "480c42c4cae8f53f61c7a56d7f4259e415256e8d85f8728c41dd3d28879429b1",
+      "integrated": "81906fe4d3f46cc20e654e4f00982d66988d68ec9abff4d462841aca8de1c585"
+    },
+    "ex-main-0709-b": {
+      "raw": "47d613d7547e4c360dde2d64ddd6ed423f624809f48c9607ffc429ccd505ea1e",
+      "authored": "91de254680a5a20f09bd5b59e072a7085e8dbb3097a105ed1ecb8a8234a1e6d2",
+      "integrated": "df8ebbc4aeb168f18dd1678e8b9e7b40c8a91d0f5c0771dd45958cbce1b28a1f"
+    },
+    "ex-main-0709-c": {
+      "raw": "2d5882d9475e7c490a4a26881877438942a61156c0c183c402ef9f50e271813c",
+      "authored": "67c5be1fc3c2e7d5dff576bdf1bba9eddb1a8f6cacb1053fd745fbb651e129c3",
+      "integrated": "0fbfac50061850cd19a8c717fbe115e3d9ceced411102b2d7f4d04723e8f9f54"
+    },
+    "ex-main-0710-a": {
+      "raw": "3cb6b47cf97f4593f61c1f984d1affb33e56568153bc80f089bd794a42f70979",
+      "authored": "a33a3ee8556c64da6ec8153dc8191b70e3c256837b3c7eb018fdcb6b4a40e004",
+      "integrated": "128717db82992856334c15ba26b38fda0a64d67e14d4dde0c766d38a4ded7a16"
+    },
+    "ex-main-0710-b": {
+      "raw": "c5b86eb485aff3919236c2247ea10afa141223637ebf83dad53988a235d8063c",
+      "authored": "4f044d0e136ffed23380af9e684152c83aaac7cfa38c578d0a9e39aeabbcb847",
+      "integrated": "d06e098fe9a8f6ba333652b157362fffb1b03a8a18f0eed6fa4339b998ecef1e"
+    },
+    "ex-main-0710-c": {
+      "raw": "c977eaf3b234e7cfa6a7dfbc2a9ca3a77da47669b6b99c66ec941bf96b03f1a4",
+      "authored": "c7309c516ca718098a7c38cffb7263d6de69aad3079d50e3827cface287b731e",
+      "integrated": "5d6d3feafae974c5a0c524676a40c18102868e1e2102c81a442cbfa9aa91bcc4"
+    },
+    "ex-main-0711-a": {
+      "raw": "7aaf692e147cc83054507a466d5d18a9f44f139c5d963fed6fcdbc618e48ac4f",
+      "authored": "a2d667a93a54d078882e42c577938d0b72a82d565b6191ad2a95a2f5cf810ca4",
+      "integrated": "8bd14720250150ad3ed2bb23292a014e9cf134de41b97693837a65e04aa1c741"
+    },
+    "ex-main-0711-b": {
+      "raw": "36c4df5053360bf30796be465cfe109468bf310af7ce3b9d08243a1a9add1c09",
+      "authored": "bcb071e2d05a58fb973b7d68bef596174a0637b70f66433c8a784246cf1b3813",
+      "integrated": "d7f3f209ed501ec2557e3d35d5dc07b78c3c8461e21e7299b65bfc696224850b"
+    },
+    "ex-main-0711-c": {
+      "raw": "ff460d68887c72446cb2377af8b3fab553c897c72a052f71064f2c35486a0506",
+      "authored": "dd355c16e1b77618426bd16c69d349493da335737786cd808053aa092caf4862",
+      "integrated": "3ab4b38117866ab8835c55e86976d52d5320ca1f636728ff41c6b2de99893f15"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0705-a|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-a-condition"
+    ],
+    [
+      "ex-main-0705-a|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-a-help-h1"
+    ],
+    [
+      "ex-main-0705-a|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-a-help-h2"
+    ],
+    [
+      "ex-main-0705-a|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-a-step-1"
+    ],
+    [
+      "ex-main-0705-a|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-a-step-2"
+    ],
+    [
+      "ex-main-0705-a|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-a-step-3"
+    ],
+    [
+      "ex-main-0705-b|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-b-condition"
+    ],
+    [
+      "ex-main-0705-b|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-b-help-h1"
+    ],
+    [
+      "ex-main-0705-b|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-b-help-h2"
+    ],
+    [
+      "ex-main-0705-b|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-b-step-1"
+    ],
+    [
+      "ex-main-0705-b|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-b-step-2"
+    ],
+    [
+      "ex-main-0705-b|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-b-step-3"
+    ],
+    [
+      "ex-main-0705-c|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-c-condition"
+    ],
+    [
+      "ex-main-0705-c|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-c-help-h1"
+    ],
+    [
+      "ex-main-0705-c|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-c-help-h2"
+    ],
+    [
+      "ex-main-0705-c|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-c-step-1"
+    ],
+    [
+      "ex-main-0705-c|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-c-step-2"
+    ],
+    [
+      "ex-main-0705-c|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-c-step-3"
+    ],
+    [
+      "ex-main-0705-d|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-d-condition"
+    ],
+    [
+      "ex-main-0705-d|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-d-help-h1"
+    ],
+    [
+      "ex-main-0705-d|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-d-help-h2"
+    ],
+    [
+      "ex-main-0705-d|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-d-step-1"
+    ],
+    [
+      "ex-main-0705-d|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-d-step-2"
+    ],
+    [
+      "ex-main-0705-d|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0705-d-step-3"
+    ],
+    [
+      "ex-main-0706|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0706-condition"
+    ],
+    [
+      "ex-main-0706|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0706-help-h1"
+    ],
+    [
+      "ex-main-0706|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0706-help-h2"
+    ],
+    [
+      "ex-main-0706|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0706-step-1"
+    ],
+    [
+      "ex-main-0706|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0706-step-2"
+    ],
+    [
+      "ex-main-0706|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0706-step-3"
+    ],
+    [
+      "ex-main-0707-a|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-a-condition"
+    ],
+    [
+      "ex-main-0707-a|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-a-help-h1"
+    ],
+    [
+      "ex-main-0707-a|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-a-help-h2"
+    ],
+    [
+      "ex-main-0707-a|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-a-step-1"
+    ],
+    [
+      "ex-main-0707-a|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-a-step-2"
+    ],
+    [
+      "ex-main-0707-a|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-a-step-3"
+    ],
+    [
+      "ex-main-0707-b|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-b-condition"
+    ],
+    [
+      "ex-main-0707-b|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-b-help-h1"
+    ],
+    [
+      "ex-main-0707-b|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-b-help-h2"
+    ],
+    [
+      "ex-main-0707-b|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-b-step-1"
+    ],
+    [
+      "ex-main-0707-b|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-b-step-2"
+    ],
+    [
+      "ex-main-0707-b|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-b-step-3"
+    ],
+    [
+      "ex-main-0707-c|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-c-condition"
+    ],
+    [
+      "ex-main-0707-c|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-c-help-h1"
+    ],
+    [
+      "ex-main-0707-c|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-c-help-h2"
+    ],
+    [
+      "ex-main-0707-c|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-c-step-1"
+    ],
+    [
+      "ex-main-0707-c|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-c-step-2"
+    ],
+    [
+      "ex-main-0707-c|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-c-step-3"
+    ],
+    [
+      "ex-main-0707-d|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-d-condition"
+    ],
+    [
+      "ex-main-0707-d|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-d-help-h1"
+    ],
+    [
+      "ex-main-0707-d|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-d-help-h2"
+    ],
+    [
+      "ex-main-0707-d|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-d-step-1"
+    ],
+    [
+      "ex-main-0707-d|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-d-step-2"
+    ],
+    [
+      "ex-main-0707-d|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0707-d-step-3"
+    ],
+    [
+      "ex-main-0708-a|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-a-condition"
+    ],
+    [
+      "ex-main-0708-a|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-a-help-h1"
+    ],
+    [
+      "ex-main-0708-a|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-a-help-h2"
+    ],
+    [
+      "ex-main-0708-a|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-a-step-1"
+    ],
+    [
+      "ex-main-0708-a|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-a-step-2"
+    ],
+    [
+      "ex-main-0708-a|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-a-step-3"
+    ],
+    [
+      "ex-main-0708-b|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-b-condition"
+    ],
+    [
+      "ex-main-0708-b|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-b-help-h1"
+    ],
+    [
+      "ex-main-0708-b|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-b-help-h2"
+    ],
+    [
+      "ex-main-0708-b|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-b-step-1"
+    ],
+    [
+      "ex-main-0708-b|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-b-step-2"
+    ],
+    [
+      "ex-main-0708-b|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0708-b-step-3"
+    ],
+    [
+      "ex-main-0709-a|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-a-condition"
+    ],
+    [
+      "ex-main-0709-a|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-a-help-h1"
+    ],
+    [
+      "ex-main-0709-a|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-a-help-h2"
+    ],
+    [
+      "ex-main-0709-a|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-a-step-1"
+    ],
+    [
+      "ex-main-0709-a|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-a-step-2"
+    ],
+    [
+      "ex-main-0709-a|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-a-step-3"
+    ],
+    [
+      "ex-main-0709-b|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-b-condition"
+    ],
+    [
+      "ex-main-0709-b|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-b-help-h1"
+    ],
+    [
+      "ex-main-0709-b|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-b-help-h2"
+    ],
+    [
+      "ex-main-0709-b|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-b-step-1"
+    ],
+    [
+      "ex-main-0709-b|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-b-step-2"
+    ],
+    [
+      "ex-main-0709-b|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-b-step-3"
+    ],
+    [
+      "ex-main-0709-c|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-c-condition"
+    ],
+    [
+      "ex-main-0709-c|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-c-help-h1"
+    ],
+    [
+      "ex-main-0709-c|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-c-help-h2"
+    ],
+    [
+      "ex-main-0709-c|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-c-step-1"
+    ],
+    [
+      "ex-main-0709-c|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-c-step-2"
+    ],
+    [
+      "ex-main-0709-c|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0709-c-step-3"
+    ],
+    [
+      "ex-main-0710-a|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-a-condition"
+    ],
+    [
+      "ex-main-0710-a|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-a-help-h1"
+    ],
+    [
+      "ex-main-0710-a|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-a-help-h2"
+    ],
+    [
+      "ex-main-0710-a|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-a-step-1"
+    ],
+    [
+      "ex-main-0710-a|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-a-step-2"
+    ],
+    [
+      "ex-main-0710-a|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-a-step-3"
+    ],
+    [
+      "ex-main-0710-b|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-b-condition"
+    ],
+    [
+      "ex-main-0710-b|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-b-help-h1"
+    ],
+    [
+      "ex-main-0710-b|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-b-help-h2"
+    ],
+    [
+      "ex-main-0710-b|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-b-step-1"
+    ],
+    [
+      "ex-main-0710-b|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-b-step-2"
+    ],
+    [
+      "ex-main-0710-b|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-b-step-3"
+    ],
+    [
+      "ex-main-0710-c|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-c-condition"
+    ],
+    [
+      "ex-main-0710-c|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-c-help-h1"
+    ],
+    [
+      "ex-main-0710-c|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-c-help-h2"
+    ],
+    [
+      "ex-main-0710-c|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-c-step-1"
+    ],
+    [
+      "ex-main-0710-c|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-c-step-2"
+    ],
+    [
+      "ex-main-0710-c|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0710-c-step-3"
+    ],
+    [
+      "ex-main-0711-a|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-a-condition"
+    ],
+    [
+      "ex-main-0711-a|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-a-help-h1"
+    ],
+    [
+      "ex-main-0711-a|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-a-help-h2"
+    ],
+    [
+      "ex-main-0711-a|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-a-step-1"
+    ],
+    [
+      "ex-main-0711-a|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-a-step-2"
+    ],
+    [
+      "ex-main-0711-a|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-a-step-3"
+    ],
+    [
+      "ex-main-0711-b|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-b-condition"
+    ],
+    [
+      "ex-main-0711-b|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-b-help-h1"
+    ],
+    [
+      "ex-main-0711-b|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-b-help-h2"
+    ],
+    [
+      "ex-main-0711-b|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-b-step-1"
+    ],
+    [
+      "ex-main-0711-b|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-b-step-2"
+    ],
+    [
+      "ex-main-0711-b|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-b-step-3"
+    ],
+    [
+      "ex-main-0711-c|condition",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-c-condition"
+    ],
+    [
+      "ex-main-0711-c|help:h1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-c-help-h1"
+    ],
+    [
+      "ex-main-0711-c|help:h2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-c-help-h2"
+    ],
+    [
+      "ex-main-0711-c|step-1",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-c-step-1"
+    ],
+    [
+      "ex-main-0711-c|step-2",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-c-step-2"
+    ],
+    [
+      "ex-main-0711-c|step-3",
+      "angles-with-lines-and-coordinate-faces-ex-main-0711-c-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "3594685cb7088bf03259cace8a5e51c16e466da5774cb94addf0f64cd7b36541",
+      "afterSHA256": "bbf4a0c3778d42cdf7b494c807c862de8cd15b07f63af408b16dadd72dff90f6"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "719b0d66bb31549f5fd0c6733f6dda16c64791328018a38d1a6ffa957c6941c5",
+      "afterSHA256": "d7cb27c11c1968ef248b8c3f0ee4e0f11effefc87a5dd9f18b17b1011daeb138"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T23:13:17Z",
+    "scope": "Chapters I–VI and chapter VII points 71–79, complete paragraph 1 and exercises 682–704, with 1,284 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "b98526b8c7036c1b88a9891c3a4b1b4e8b6091859a9c6f77974253e1019df5a4",
+    "index": "42f3b10c59f7516babe6c022cddf2d610fc82eae75948beecb8743ee82d8f160",
+    "registry": "1fe4067112dc6e11d3925f18e5f771fb82013859be290a16e7cdaf32c0c6d72c",
+    "cases": "8a35f111140190a984dae50b0e2938fa4aa581b255d3ba1b58e4e17963d76522"
+  }
+}
