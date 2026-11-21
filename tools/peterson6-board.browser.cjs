@@ -518,6 +518,17 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.match(await teacherFrame.locator('.task-heading').innerText(),/Решено на уроке/);
   await ownership(teacher,student,false);
 
+  phase = 'source equation for the three sides of a triangle';
+  await lesson(teacherFrame,'p33',17);
+  await teacherFrame.locator('#final-answer').fill('17,3');
+  await teacherFrame.locator('#answer-form button[type="submit"]').click();
+  await synchronized(teacherFrame,studentFrame,'longer side distinguished from the required side');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/большая/);
+  await teacherFrame.locator('[data-action="hint"]').click();
+  await synchronized(teacherFrame,studentFrame,'triangle side model displayed');
+  assert.match(await studentFrame.locator('.help figure').innerText(),/y см и ещё 1,9 см/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-triangle-sides','.help figure');
+
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
   await teacherFrame.locator('#book-part').selectOption('2');

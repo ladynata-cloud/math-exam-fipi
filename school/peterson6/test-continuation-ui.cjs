@@ -106,6 +106,26 @@ test('numbered applications distinguish part from whole and a rate from its reci
  } finally {f.close();}
 });
 
+test('source equations retain a signed correction and the comparison of sides',async()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#lesson/p33/15');
+  f.event('#final-answer','-3,6');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/для −k/);
+  f.event('#final-answer','3,6');f.submit('#answer-form');
+  assert.match(f.q('.task-heading').textContent,/Исправлено без подсказки/);
+  f.nav('#lesson/p33/17');
+  f.event('#final-answer','17,3');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/большая/);
+  f.click('[data-action="hint"]');assert.match(f.q('.help figure').textContent,/y см и ещё 1,9 см/);
+  f.event('#final-answer','15,4');f.submit('#answer-form');
+  assert.equal(f.state().tasks['p33-t18'].assisted,true);
+  f.click('#problem [data-action="task"][data-index="16"]');await f.settle();
+  assert.equal(f.w.location.hash,'#lesson/p33/16');
+  assert.match(f.q('.prompt').textContent,/конкурс/);
+ }finally{f.close();}
+});
+
 test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
  const f=fixture(null,null,true);
  try {
