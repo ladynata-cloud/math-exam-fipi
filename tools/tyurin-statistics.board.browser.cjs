@@ -49,7 +49,7 @@ async function healthy(url, child, logs) {
 }
 
 const catalogue=process.argv.includes('--alimov-2012') ? {
-  directory:'alimov-2012',entries:[[19,78,19]],search:'alimov-2012',match:'периодические дроби',lesson:'19-3f',chart:'svg[aria-label*="одинаковым периодическим хвостом"]',storage:'math:alimov-2012:v1:'
+  directory:'alimov-2012',entries:[[19,78,23]],uniqueLessons:22,search:'alimov-2012',match:'периодические дроби',lesson:process.argv.includes('--chain')?'19-5b':'19-3f',onlySelected:process.argv.includes('--chain'),chart:process.argv.includes('--chain')?'svg[aria-label*="Дерево вычислений"]':'svg[aria-label*="одинаковым периодическим хвостом"]',storage:'math:alimov-2012:v1:'
 }:process.argv.includes('--makarychev7-2014') ? {
   directory:'makarychev7-2014',entries:[[95,46,5]],search:'makarychev7-2014',match:'выражения и статистика',lesson:'95-10',chart:'svg[aria-label*="Средние места"]',storage:'math:makarychev7-2014:v1:'
 }: process.argv.includes('--makarychev9-2017-supplement')?{
@@ -70,10 +70,13 @@ async function run(browser, origin, serverOrigin) {
       assert.equal(await student.locator('#main .skill-row').count(),count);
       const links=await student.locator('#main a[href*="'+catalogue.directory+'/index.html"]').evaluateAll(links=>links.map(el=>el.href));
       assert.equal(links.length,direct);
-      const individual=catalogue.onlySelected?links.filter(url=>new URL(url).hash==='#lesson/'+catalogue.lesson):links;
+      // A topic and its first printed exercise can deliberately have the same target.
+      const targets=[...new Set(links)];
+      if(catalogue.uniqueLessons)assert.equal(targets.length,catalogue.uniqueLessons);
+      const individual=catalogue.onlySelected?targets.filter(url=>new URL(url).hash==='#lesson/'+catalogue.lesson):targets;
       if(catalogue.onlySelected)assert.equal(individual.length,1);
       for(const url of individual){
-        await student.goto(url);await student.locator('#model').waitFor();
+        await student.goto(url,{waitUntil:'domcontentloaded'});await student.locator('#model').waitFor();
         assert(await student.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),url);
         const id=new URL(url).hash.slice(8);
         assert.equal(await student.locator('#lesson').inputValue(),id);

@@ -22,10 +22,10 @@ for(const [i,row] of book.mapping.entries()){
  assert.equal(row.boardPath,i===0?book.exercises[0].path:'/trainers/alimov10-11.html#lesson/p'+String(i+1).padStart(2,'0')+'/0');
 }
 assert.equal(book.mapping[76].title,'Дробно-линейная функция и её график');
-const keys=['1a','1b','1c','1d','1e','1f','2a','2b','2c','2d','2e','2f','3a','3b','3c','3d','3e','3f'];
-const original=['0,(6)','0,(72)','0,6','−0,75','−8,(285714)','0,(13)','0,(29)','1,(282051)','1,58(3)','0,49(6)','0,225','1,3(2)','2/3','14/9','11/90','−8/9','−36/11','−2359/990'];
+const keys=['1a','1b','1c','1d','1e','1f','2a','2b','2c','2d','2e','2f','3a','3b','3c','3d','3e','3f','4a','4b','5a','5b'];
+const original=['0,(6)','0,(72)','0,6','−0,75','−8,(285714)','0,(13)','0,(29)','1,(282051)','1,58(3)','0,49(6)','0,225','1,3(2)','2/3','14/9','11/90','−8/9','−36/11','−2359/990','126,16:31,54=4','19/4=4,75','7,31+1,19=8,5','1,3+2,5+2=5,8'];
 const values=[[2,3],[8,11],[3,5],[-3,4],[-58,7],[13,99],[29,99],[50,39],[19,12],[149,300],[9,40],[119,90]];
-assert.equal(book.exercises.length,18);
+assert.equal(book.exercises.length,22);
 const html=read(path.join(dir,'index.html'));
 function open(key,saved){
  const id='19-'+key,storage='math:alimov-2012:v1:'+id;
@@ -55,6 +55,13 @@ function rational(text){
 }
 function expected(key,d){
  const row=Array.from(d.rows[0]);const group=key[0];
+ if(group==='4'||group==='5'){
+   const [a,b,c,f]=row;
+   if(key==='4a')return [a/2,b/(1/2),(a+4*b)/(2*c+2*f)];
+   if(key==='4b')return [3*a/12,8*b/32,(a+b+c)/4];
+   if(key==='5a')return [a+b,c-f,((a+b)*3+c-f)/2];
+   return [a*5/20,b*8/16,(a*5+b*10+c*8)/20];
+ }
  if(group==='3'){
    const [num,den]=rational(d.caption.match(/для (−?\d+,\d*\(\d+\))/)[1]);
    const before=10**row[1]*(10**row[2].length-1);
@@ -82,7 +89,7 @@ for(const [i,key] of keys.entries()){
  let view=open(key),{dom,w,doc,storage,lesson}=view;
  assert.equal(book.exercises[i].path,'/trainers/alimov-2012/index.html#lesson/'+lesson.id);
  assert.equal(book.exercises[i].printed,lesson.printedReference.replace('Упражнение №',''));
- assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,18);
+ assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,22);
  assert.equal(new URL(doc.querySelector('#source').href).hash,'#page=7');
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),book.exercises[i].path);
  assert(lesson.printedGuide.includes(original[i]),key+' printed answer');
@@ -109,4 +116,4 @@ for(const [i,key] of keys.entries()){
  click(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(storage)).variant,7);
  dom.window.close();
 }
-console.log('Alimov 2012: 78 individual paragraph links, all 18 original subparts, 594 independent numerical checks, 18 saved/corrected/assisted journeys.');
+console.log('Alimov 2012: 78 individual paragraph links, all 22 original subparts, 726 independent numerical checks, 22 saved/corrected/assisted journeys.');
