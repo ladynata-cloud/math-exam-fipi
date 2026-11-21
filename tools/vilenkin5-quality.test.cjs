@@ -146,6 +146,7 @@ function numberedTablesRegression(){
   equal(path.ids.length,134);
   equal(plain(path.numbered),['v5f-printed-1-1','v5f-printed-1-2']);
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
+  f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
   equal(plain(animals.steps.map(s=>s.answer)),[[1,1],10,2,47,5,9,39]);equal(animals.answer,39);
   equal(plain(reading.steps.map(s=>s.answer)),[[4,12],[7,28],[9,45],[8,48],[4,28],32,4,0]);equal(reading.answer,161);
@@ -159,6 +160,8 @@ function numberedTablesRegression(){
     [a,r].forEach((task,i)=>fingerprints[i].add(f.w.WorkshopState.fingerprint(path.numbered[i],task)));
   }
   ok(fingerprints.every(set=>set.size>170),'fresh surveys have distinct fingerprints');
+  f.route('#lesson/'+path.numbered[0]);f.submit('2;5');
+  equal(f.snapshot().scene.firstWrong,null);equal(f.snapshot().scene.attempt,0);ok(f.snapshot().scene.message.includes('действительно стоят птицы'));
   f.route('#lesson/'+path.numbered[1]);
   ok(f.$('#task-panel table').textContent.includes('Анкеты читателей'));
   equal(f.snapshot().scene.firstAttempt,null);f.submit('4');equal(f.snapshot().scene.attempt,0);
