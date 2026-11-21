@@ -14,9 +14,12 @@ assert.deepEqual(Array.from(book.mapping,r=>r.page),pages);for(const [i,r] of bo
 const keys='abcd',letters='абвг',ids=[],printed=[];
 for(let t=1;t<=3;t++)for(let j=0;j<4;j++){ids.push('1-'+t+keys[j]);printed.push('1('+t+')'+letters[j]);}
 for(const [t,n] of [[2,3],[3,3],[4,3],[5,4]])for(let j=0;j<n;j++){ids.push(t+keys[j]);printed.push(t+letters[j]);}
+for(let i=0;i<8;i++){ids.push('6'+'abcdefgh'[i]);printed.push('6'+'абвгдежз'[i]);}
+ids.push('7');printed.push('7');
+for(let k=1;k<=4;k++)for(let j=0;j<4;j++){ids.push('8-'+k+'abcd'[j]);printed.push('8('+k+')'+'абвг'[j]);}
 assert.deepEqual(Array.from(book.exercises,r=>r.path.split('/').pop()),ids.map(x=>'101-'+x));
 assert.deepEqual(Array.from(book.exercises,r=>r.printed),printed);
-const scripts=['trainers/tyurin-statistics/content.js',cwd+'modelling.js',cwd+'budget-remainders.js','trainers/tyurin-statistics/app.js'].map(read);
+const scripts=['trainers/tyurin-statistics/content.js',cwd+'modelling.js',cwd+'budget-remainders.js',cwd+'classify-powers.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,saved){
  const dom=new JSDOM(html,{url:'https://math.example'+entry.path,runScripts:'outside-only'}),w=dom.window;
  w.TextEncoder=TextEncoder;w.Math.random=()=>0;
@@ -25,6 +28,22 @@ function open(entry,saved){
  return {dom,w,doc:w.document,key,lesson:w.MathExamTopicPractice.lessons.get(id)};
 }
 function oracle(i,d){
+ if(i>=34){
+  const f=(a,b)=>[a**2+b**2,(a+b)*(a+b),a**2-b**2,(a-b)*(a-b)][d.kind];
+  const a=d.x,b=d.y;return [d.kind%2===0?a*a:d.kind===1?a+b:a-b,f(a,b),f(2*a,2*b)];
+ }
+ if(i===33)return [1,(d.a+d.b)-d.b,d.b-(d.a+d.b)];
+ if(i>=25){
+  const k=d.i,a=d.a,b=d.b,c=d.c,v=d.v;
+  if(k===0)return [1,b*c,a+b*c];
+  if(k===1){const rhs=c*v-a;return [2,rhs+a,(rhs+a)/c];}
+  if(k===2)return [1,-c*b,-a-c*(b*v+1)];
+  if(k===3)return [3,Number(a>a+1),[0,1,2,3].find(u=>a+u>a+1)];
+  if(k===4)return [1,b*b*b,a*a*a-b*b*b];
+  if(k===5)return [1,a-b,(a-b)*(a-b)*(a-b)];
+  if(k===6)return [3,1,Array.from({length:3*c},(_,x)=>a-c+x).filter(x=>a<=x&&x<a+c).length];
+  return [3,(a-a)**2,Array.from({length:2*a+1},(_,x)=>x).filter(x=>!((x-a)**2>0)).length];
+ }
  if(i>=21){
   const pairs=[];for(let n=1;n<d.sum;n++)if(n%d.mod===d.first&&(d.sum-n)%d.mod===d.last)pairs.push(n);
   return [(d.sum-d.first-d.last)/d.mod,pairs.length,Math.max(...pairs)];
@@ -41,6 +60,9 @@ function oracle(i,d){
  return [change/100,base/100,(base+corrections[d.target])/100];
 }
 function printedSolutions(i,l){
+ if(i>=34){const pairs=[[8,2],[-4,3],[7,-5],[-9,-6]],j=i-34,[a,b]=pairs[j%4];
+  const v=[a*a+b*b,(a+b)**2,a*a-b*b,(a-b)**2][Math.floor(j/4)];assert(l.printedGuide.includes('получается '+v+'.'));return;}
+ if(i>=25){assert(l.printedGuide.length>45);if(i===28)assert(l.printedGuide.includes('ложно'));return;}
  if(i<12){
    const input=[[208,50],[180,46],[242,110],[210,62]][i%4];
    const expected=i>=8?input[0]:(input[0]+input[1])/2;
@@ -59,7 +81,7 @@ function reply(doc,v){const a=doc.querySelector('#answer');a.value=v;const E=doc
 for(const [i,entry] of book.exercises.entries()){
  assert.equal(entry.path,entry.boardPath);assert.equal(entry.page,i<12?6:i<21?7:8);
  let {dom,w,doc,key,lesson}=open(entry);
- assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,25);
+ assert.equal(doc.querySelector('#lesson').value,lesson.id);assert.equal(doc.querySelectorAll('#lesson option').length,50);
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),entry.path);
  assert.equal(doc.querySelector('#source').hash,i<12?'#page=8':i<21?'#page=9':'#page=10');assert(doc.querySelector('#worked-data svg[aria-label]'));
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,[]);
@@ -83,4 +105,4 @@ for(const [i,entry] of book.exercises.entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,['fixed','first','help']);
  click(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);dom.window.close();
 }
-console.log('Peterson 7, part 1 (2011): 19 numbered sections and 3 reviews, 25 exact original entries, 825 model answers, all 25 independent corrections, help, return and retry. The literal repeated n in 1(3) is preserved for all four numeric sets.');
+console.log('Peterson 7, part 1 (2011): 19 numbered sections and 3 reviews, 50 exact original entries, 1650 model answers, all 50 independent corrections, help, return and retry. The literal repeated n in 1(3) is preserved for all four numeric sets.');
