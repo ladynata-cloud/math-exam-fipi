@@ -488,6 +488,24 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'relative solar distances and final units, printed exercise 1.75';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-75"]').click();await studentFrame.locator('h1').filter({hasText:'№1.75'}).waitFor();
+  await teacherFrame.locator('#answer').fill('5263');await teacherFrame.locator('#answer-form button').click();
+  const farther=await same(teacherFrame,studentFrame,'the nearer planet was placed farther away');assert.match(farther.scene.message,/меньше|ближе/i);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=from]').selectOption({value:'2'});await studentFrame.locator('[data-v5-param=to]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=unit]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('1385000000');await studentFrame.locator('[data-v5-predict] button').click();
+  const spaceUnits=await same(studentFrame,teacherFrame,'common scale in kilometres');assert.equal(spaceUnits.scene.model.to,1);assert.equal(spaceUnits.scene.model.unit,1);assert(spaceUnits.scene.model.seen);
+  for(const [step,number] of ['207','1350','1385'].entries()){
+    await studentFrame.locator('#answer').fill(number);await studentFrame.locator('#answer-form button').click();const position=await same(studentFrame,teacherFrame,'solved distance '+step);assert(position.scene.correct);assert.equal(position.scene.step,step);
+    await studentFrame.locator('[data-cmd=next]').click();
+  }
+  await studentFrame.locator('#answer').fill('1385');await studentFrame.locator('#answer-form button').click();const millions=await same(studentFrame,teacherFrame,'pupil forgot to convert millions');assert.match(millions.scene.message,/миллион/i);
+  await studentFrame.locator('#answer').fill('1 385 000 000');await studentFrame.locator('#answer-form button').click();const kilometres=await same(studentFrame,teacherFrame,'correct final kilometres with no hint');assert(kilometres.scene.correct);assert.deepEqual(kilometres.scene.hintLevels,{});
+  await ownership(teacher,student,false);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores converted final and model');
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(studentFrame,teacherFrame,'pupil restores converted final and model');assert.equal(await studentFrame.locator('#answer').inputValue(),'1 385 000 000');
+
   phase = 'open applications in a shop and a sports ground, printed 1.72';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-72"]').click();await studentFrame.locator('h1').filter({hasText:'№1.72'}).waitFor();
