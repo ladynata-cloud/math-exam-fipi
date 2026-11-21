@@ -873,6 +873,9 @@ function check(user,target){
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
  if(target.kind==='rational-probe')return Boolean(M.parse(user));
  if(target.kind==='linear-ray'){const u=linearRay(user,target.graph.variable);return Boolean(u&&equalAxisSets(u,asThreshold(target.graph.relation,target.graph.threshold)));}
+ if(target.kind==='trip-table'){
+  const a=G.domainCoefficients(user,4),b=G.domainCoefficients(target.answer,4);return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
+ }
  if(target.kind==='behavior-table'){
   const fields=G.domainCoefficients(user,target.graph.xs.length),expected=target.graph.tableValues;return Boolean(fields&&fields.every((q,i)=>M.equal(M.answer(q),expected[i])));
  }

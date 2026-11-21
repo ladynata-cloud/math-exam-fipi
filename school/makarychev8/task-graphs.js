@@ -40,6 +40,7 @@ function curveValue(curve,x){
  if(curve.kind==='absolute-reciprocal')return x===0?NaN:curve.k/Math.abs(x);
  if(curve.kind==='sign-linear')return x===curve.h?NaN:Math.sign(x-curve.h)*(curve.k*x+curve.b);
  if(curve.kind==='abs-linear')return curve.k*Math.abs(x)+curve.b;
+ if(curve.kind==='trip-distance')return tripCurve(x);
  if(curve.kind==='behavior-function')return behaviorHeight(curve.mode,x);
  if(curve.kind==='behavior-linear-points'){
   const n=curve.nodes,i=n.findIndex(p=>p[0]>=x);if(i<0||x<n[0][0])return NaN;if(i===0)return n[0][1];const [a,lo]=n[i-1],[b,hi]=n[i];return lo+(hi-lo)*(x-a)/(b-a);
@@ -87,7 +88,7 @@ function graph(k,b,holes,range,label,otherLines=[]){
 }
 const alternatives=[{k:-1,b:1,holes:[0]},{k:1,b:-1,holes:[]},{k:-1,b:1,holes:[1]},{k:1,b:-1,holes:[1]}];
 function rootGraph(config,value){
- const xr=config.xRange||[-1,10],yr=config.yRange||[-1,6],width=360,height=260;
+ const xr=config.xRange||[-1,10],yr=config.yRange||[-1,6],width=360,height=config.plotHeight||260;
  const pad=config.compactTicks?56:Math.max(30,Math.max(...yr.map(v=>String(Math.round(v)).length))*10+6);
  if(xr.length!==2||yr.length!==2||![...xr,...yr].every(Number.isFinite)||xr[0]>=xr[1]||yr[0]>=yr[1])throw Error('Invalid root graph bounds');
  const x=v=>pad+(v-xr[0])/(xr[1]-xr[0])*(width-2*pad),y=v=>height-pad-(v-yr[0])/(yr[1]-yr[0])*(height-2*pad);
@@ -95,7 +96,7 @@ function rootGraph(config,value){
  const line=(x1,y1,x2,y2,color,attrs={})=>svg.append(node('line',{x1,y1,x2,y2,stroke:color,'stroke-width':1,...attrs}));
  const step=(a,b)=>{const size=(b-a)/(Math.max(Math.abs(a),Math.abs(b))>=10000?3:6),p=Math.pow(10,Math.floor(Math.log10(size)));return [1,2,5,10].find(n=>n*p>=size)*p;};
  const label=v=>config.compactTicks&&Math.abs(v)>=10000?v.toExponential(0):Math.abs(v)>=10000?Number(v.toPrecision(3)).toString():Number(v.toFixed(4)).toString();
- const sx=config.xTickStep||step(...xr),sy=config.yTickStep||step(...yr),gx=config.gridStep||(xr[1]-xr[0]<=24?Math.min(1,sx):sx),gy=config.gridStep||(yr[1]-yr[0]<=24?Math.min(1,sy):sy),hasXAxis=yr[0]<=0&&yr[1]>=0,hasYAxis=xr[0]<=0&&xr[1]>=0;
+ const sx=config.xTickStep||step(...xr),sy=config.yTickStep||step(...yr),gx=config.xGridStep||config.gridStep||(xr[1]-xr[0]<=24?Math.min(1,sx):sx),gy=config.yGridStep||config.gridStep||(yr[1]-yr[0]<=24?Math.min(1,sy):sy),hasXAxis=yr[0]<=0&&yr[1]>=0,hasYAxis=xr[0]<=0&&xr[1]>=0;
  if(![sx,sy,gx,gy].every(v=>Number.isFinite(v)&&v>0)||(xr[1]-xr[0])/gx>200||(yr[1]-yr[0])/gy>200)throw Error('Invalid root grid');
  for(let v=Math.ceil(xr[0]/gx)*gx;v<=xr[1]+gx/100;v+=gx)line(x(v),pad,x(v),height-pad,'#e1e7e2');
  for(let v=Math.ceil(yr[0]/gy)*gy;v<=yr[1]+gy/100;v+=gy)line(pad,y(v),width-pad,y(v),'#e1e7e2');
@@ -908,6 +909,32 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function tripValue(raw){
+ const q=M.parse(raw);if(!q)return null;
+ const n=BigInt(q.n),d=BigInt(q.d);if(n<0n||2n*n>5n*d)return null;
+ if(6n*n<7n*d)return {stage:'away',s:functionValueAt({numerator:['0','15'],denominator:['1']},raw)};
+ if(2n*n<=3n*d)return {stage:'stop',s:'35/2'};
+ return {stage:'return',s:functionValueAt({numerator:['71/2','-12'],denominator:['1']},raw)};
+}
+function tripCurve(x){if(x<0||x>2.5)return NaN;return x<7/6?15*x:x<=1.5?17.5:35.5-12*x;}
+function rootEstimate(raw){const q=M.parse(raw);if(q)return q.n/q.d;const m=/^([+-]?)\s*(?:√\s*(?:\(\s*(\d+)\s*\)|(\d+))|sqrt\s*\(\s*(\d+)\s*\))$/i.exec(String(raw??'').trim().replace(/−/g,'-'));return m?(m[1]==='-'?-1:1)*Math.sqrt(Number(m[2]||m[3]||m[4])):NaN;}
+function tripEquationView(host,g,value){
+ host.className='task-graphs quantity-model';const free=g.partial?.[0],trial=M.parse(free),points=[],curves=[];
+ if(g.mode==='equation'){
+  const coeff=s=>s.map(v=>{const q=M.parse(v);return q.n/q.d;});const left=coeff(g.left),right=coeff(g.right),r=Array.from({length:Math.max(left.length,right.length)},(_,i)=>(left[i]||0)-(right[i]||0));
+  curves.push({kind:'quotient',numerator:r,denominator:[1]});const put=raw=>{const x=rootEstimate(raw);if(Number.isFinite(x)&&x>=-12&&x<=12){points.push([x,0,'']);return x;}};
+  const proposals=String(value??'').split(';').map(put).filter(x=>x!==undefined);
+  if(trial){const a=functionValueAt({numerator:g.left,denominator:['1']},free),b=functionValueAt({numerator:g.right,denominator:['1']},free);if(a!==null&&b!==null){const dif=M.operation('subtract',a,b),x=trial.n/trial.d;boundNote(host,'При x='+M.answer(trial)+' левая часть '+a+', правая '+b+'. '+(M.equal(a,b)?'Равенство выполняется.':'Значения различаются.')).dataset.tripEquation=M.equal(a,b)?'equal':'different';points.push([x,dif.n/dif.d,'']);}}
+  const svg=rootGraph({curves,points,xRange:[-12,12],yRange:[-10,16],xTickStep:3,yTickStep:5,label:'Разность левой и правой частей и предложенные корни на горизонтальной оси'},'');svg.dataset.tripRoots=proposals.join(';');host.append(svg);boundNote(host,'Кривая показывает левую часть минус правую. Твой корень должен лежать на её пересечении с осью x.');return;
+ }
+ const times=[0,7/6,1.5,2.5],build=g.mode==='trip-build',given=['0','35/2','35/2','11/2'];
+ if(build){const parts=String(value??'').split(';'),marks=[];times.forEach((t,i)=>{const v=M.parse(parts[i]);if(v){marks.push([t,v.n/v.d]);points.push([t,v.n/v.d,'']);}});if(marks.length>=2)curves.push({kind:'behavior-linear-points',nodes:marks,xs:marks.map(p=>p[0])});boundNote(host,'Каждая введённая ордината задаёт расстояние от базы.').dataset.tripTable=parts.length===4&&parts.every((v,i)=>M.equal(v,given[i]))?'exact':String(marks.length);}
+ else{curves.push({kind:'trip-distance',xs:times});points.push(...times.map(t=>[t,tripCurve(t),'']));}
+ if(trial){const info=tripValue(free);if(info){const s=M.parse(info.s),x=trial.n/trial.d;if(!build)points.push([x,s.n/s.d,'']);boundNote(host,'При t='+M.answer(trial)+' ч расстояние '+info.s+' км. '+({away:'Велосипедист удаляется.',stop:'Велосипедист стоит.',return:'Он едет в сторону базы.'})[info.stage]).dataset.tripStage=info.stage;}else boundNote(host,'Наблюдение идёт только от 0 до 5/2 часа включительно.').dataset.tripStage='outside';}
+ const val=M.parse(value),arg=M.parse(g.at);const marker=!build&&val&&arg?[arg.n/arg.d,val.n/val.d]:null;
+ const svg=rootGraph({curves,points,studentPoint:marker,xRange:[0,8/3],yRange:[0,20],xTickStep:.5,yTickStep:5,xGridStep:1/6,yGridStep:2.5,plotHeight:210,axisLabels:['t','s'],label:'Расстояние до базы: малая клетка по времени 1/6 часа, по расстоянию 2,5 км'},'');host.append(svg);boundNote(host,'Сетка: одна малая клетка — 1/6 ч по горизонтали и 2,5 км по вертикали.');
+}
+
 const riverReadings=[[0,0],[1,.5],[2,1.5],[3,4],[4,5.5],[6,6.2],[8,5.8],[10,5],[12,4]];
 function tankTrial(t){
  if(!Number.isFinite(t)||t<0||t>150)return null;
@@ -2133,6 +2160,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-trip-review'){tripEquationView(host,config,value);return;}
  if(config.type==='source-behavior-review'){behaviorView(host,config,value);return;}
  if(config.type==='source-function-features'){featureView(host,config,value);return;}
  if(config.type==='source-reading-graph'){graphReadingView(host,config,value);return;}
@@ -2229,5 +2257,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
