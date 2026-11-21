@@ -28,6 +28,8 @@ on:
       - 'geometry-course/textbook/data/vector-scaling.json'
       - 'tools/geometry-textbook/*vector_scaling*'
       - 'tools/geometry-textbook/vector_model_measurements.py'
+      - 'geometry-course/textbook/data/scalar-problems.json'
+      - 'tools/geometry-textbook/*scalar_problems*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
@@ -53,6 +55,7 @@ jobs:
       - run: python3 tools/geometry-textbook/vector_sum_problems.py --check && python3 tools/geometry-textbook/check_vector_sum_problems.py
       - run: python3 tools/geometry-textbook/vector_identities.py --check && python3 tools/geometry-textbook/check_vector_identities.py
       - run: python3 tools/geometry-textbook/vector_scaling.py --check && python3 tools/geometry-textbook/check_vector_scaling.py
+      - run: python3 tools/geometry-textbook/scalar_problems.py --check && python3 tools/geometry-textbook/check_scalar_problems.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons
