@@ -231,6 +231,23 @@ async function run(){
   f.$(project+' button[type="button"]').click();
   ok(f.$(project+' [role=status]').textContent.includes('Объяснение открыто без прогноза'));
   equal(f.snapshot().scene.model.inquiryFirst,'');equal(f.snapshot().scene.attempt,0);
+  f.route('#lesson/v5f-volume-litres');
+  const tank='#model .g5-lab-inquiry',answerField=tank+' input';
+  const testCapacity=value=>{f.input(answerField,value);f.$(tank).dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));};
+  ok(f.$('#model .g5-lab-visual').hidden===false);
+  equal(f.w.document.querySelectorAll('#model .g5-lab-visual svg').length,2,'floor area and layer height have distinct views');
+  ok(f.$('#model .g5-lab-visual').textContent.includes('Дно 50 × 30 см'));
+  testCapacity('30000');ok(f.$(tank+' [role=status]').textContent.includes('кубических сантиметрах у тебя уже есть'));
+  equal(f.snapshot().scene.attempt,0);
+  f.input('#g5-lab-volume-2','3');equal(f.$(answerField).value,'');
+  testCapacity('45');ok(f.$(tank+' [role=status]').textContent.includes('высоту слоя'));
+  f.input('#g5-lab-volume-2','5');f.input(answerField,'37,');
+  const resumedTank=boot('#lesson/v5f-volume-litres',f.saved());
+  equal(resumedTank.$(answerField).value,'37,');equal(resumedTank.snapshot().scene.model.h,5);resumedTank.close();
+  testCapacity('37,5');ok(f.$(tank+' [role=status]').textContent.includes('Прогноз подтвердился'));
+  f.input('#g5-lab-volume-2','1');f.input('#g5-lab-volume-0','1');f.input('#g5-lab-volume-1','1');
+  testCapacity('1/2');ok(f.$(tank+' [role=status]').textContent.includes('0,5 л'));
+  equal(f.snapshot().scene.firstAttempt,null,'exploration does not complete an independent task');
   // A real investigation writes digits into their exact place and resumes after reload.
   f.route('#lesson/v5f-division-column');
   const arithmetic=f.w.ArithmeticPractice.generate('divide',2,17);

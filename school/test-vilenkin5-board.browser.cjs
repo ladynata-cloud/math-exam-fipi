@@ -308,6 +308,18 @@ async function run(browser, origin, backend, failures) {
   assert.match(await teacherFrame.locator(forecast + ' [role=status]').innerText(), /Прогноз подтвердился/);
   await ownership(teacher, student, false);
 
+  phase = 'tank dimensions and a fractional litre';
+  await lesson(teacherFrame, 'v5f-volume-litres');
+  await same(teacherFrame, studentFrame, 'tank diagram before predicting');
+  assert.equal(await studentFrame.locator('#model .g5-lab-visual svg').count(), 2);
+  await teacherFrame.locator('#g5-lab-volume-2').press('ArrowLeft');
+  const lower = await same(teacherFrame, studentFrame, 'three five-centimetre layers');
+  assert.equal(lower.scene.model.h, 3);
+  await teacherFrame.locator(forecast + ' input').fill('22,5');
+  await teacherFrame.locator(forecast + ' button[type="submit"]').click();
+  await same(teacherFrame, studentFrame, 'fractional capacity checked in litres');
+  assert.match(await studentFrame.locator(forecast + ' [role=status]').innerText(), /22,5 л/);
+
   phase = 'both-part route coverage, late join and shared handwritten board';
   for (const id of ['v5f-table-read', 'v5f-place-build', 'v5f-remainder-find', 'v5f-area-grid', 'v5f-fraction-parts', 'v5f-decimal-divide', 'v5f-angle-build']) {
     await lesson(teacherFrame, id); await same(teacherFrame, studentFrame, id);
