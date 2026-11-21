@@ -4,8 +4,8 @@ const {JSDOM}=require('jsdom');
 const root=path.resolve(__dirname,'..'),school=path.join(root,'school'),entry=fs.readFileSync(path.join(school,'index.html'),'utf8');
 const pages={
  'source-64':'5 10 19 24 35 41 51 59 67 75 89 94 105 109 116 126 133 144 157 164 172 182 188 197',
- 'source-113':'1:6 2:10 3:13 7:27 8:33 10:44 11:48 12:54 14:57 20:75 21:76 22:79 23:84 25:89 26:90 27:94 28:95 29:98 30:103 31:106 32:113 33:118 34:123 36:130 37:133 38:135 39:146 40:148 42:154 45:163 46:165 47:170 48:173 49:176 50:179 51:182 52:186 53:189 54:193 56:197 58:201 59:203 60:205 64:215',
- 'source-114':'1:6 2:14 3:24 4:28 5:37 6:50 7:71 8:77 9:84 14:124 15:131 16:133 17:141 18:143 19:148 24:160 25:163 26:166 27:183'
+ 'source-113':'1:6 2:10 3:13 4:17 5:18 6:20 7:27 8:33 9:39 10:44 11:48 12:54 13:56 14:57 15:60 16:61 17:63 18:67 19:71 20:75 21:76 22:79 23:84 24:86 25:89 26:90 27:94 28:95 29:98 30:103 31:106 32:113 33:118 34:123 35:127 36:130 37:133 38:135 39:146 40:148 41:151 42:154 43:157 44:160 45:163 46:165 47:170 48:173 49:176 50:179 51:182 52:186 53:189 54:193 55:195 56:197 57:198 58:201 59:203 60:205 61:208 62:209 63:211 64:215 65:216 66:220 67:223',
+ 'source-114':'1:6 2:14 3:24 4:28 5:37 6:50 7:71 8:77 9:84 10:97 11:102 12:111 13:119 14:124 15:131 16:133 17:141 18:143 19:148 20:152 21:154 22:156 23:157 24:160 25:163 26:166 27:183 28:192 29:197'
 };
 const m8={window:{}};vm.runInNewContext(fs.readFileSync(path.join(school,'makarychev8/data.js'),'utf8'),m8);
 const m8Ids=new Set(m8.window.MakarychevCourse.lessons.map(l=>l.id));
@@ -32,7 +32,8 @@ for(const [name,sourcePages] of Object.entries(pages)){
    const url=new URL(row.externalPath,w.location.href),dest=path.join(root,url.pathname);
    assert(fs.existsSync(dest),dest);const id=url.hash.split('/')[1];
    if(row.boardPath){
-    assert(profile.some(l=>l.id===id&&l.tasks.length>=6));
+    if(row.coverage==='module')assert.equal(id,name.slice(7)+'-'+row.section);
+    else assert(profile.some(l=>l.id===id&&l.tasks.length>=6));
     const board=new URL(row.boardPath,w.location.href),reg=registry.find(r=>'/'+r.file===board.pathname);
     assert.equal(reg.boardCompatibility,'board-mirror');assert.equal(board.hash,url.hash);mirrors++;
    }else assert(m8Ids.has(id));

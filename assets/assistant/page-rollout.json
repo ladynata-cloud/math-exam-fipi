@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 624,
-    "covered": 622,
+    "total": 625,
+    "covered": 623,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -36,7 +36,8 @@
     "trainers/long-division-claude.html",
     "trainers/oge-basics/multiplication-division/division-checkpoint.html",
     "trainers/oge-basics/multiplication-division/division-path.html",
-    "trainers/school-workshop-check/index.html"
+    "trainers/school-workshop-check/index.html",
+    "trainers/tyurin-statistics/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -2233,9 +2234,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "64f1e9d53eb1f07aef0d9e04b0861db2357f8e43d9f17ab69918f94194dddbe6",
-      "afterSha256": "877d952d78805979f56f323b947caf9884e799076b35ee68721c3b97eb975397",
-      "placement": "before-head-close"
+      "beforeSha256": "df661a303e82089235044e5c1d373357958317b2467f0e0e6a74361e0cff0831",
+      "afterSha256": "a53aa4164874dead5317af90b2c4f427decc8cc4e59696088d3ff0d0351528e4",
+      "placement": "before-head-close",
+      "sourceSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -3996,7 +3998,8 @@
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": "sitemap",
     "trainers/practice-topics/index.html": "sitemap",
     "trainers/vilenkin6-percent/index.html": "sitemap",
-    "trainers/school-workshop-check/index.html": "school/index.html"
+    "trainers/school-workshop-check/index.html": "school/index.html",
+    "trainers/tyurin-statistics/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6482,6 +6485,36 @@
       ],
       "bindingScope": "Published Workshop source page with verified textbook routes and final assessments.",
       "boundary": "Preserve the verified edition, Vilenkin and final assessment entries together."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "cf4e1a9305820d894ee901183427dbd1257311a2",
+      "task": "docs/tasks/MAKARYCHEV8_ROOTS_BOARD_RELEASE.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "7583a1d704a2b3ab30a5caf24545b20c8a2e5bcc",
+      "task": "docs/tasks/MAKARYCHEV8_110_133.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60",
+      "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     }
   ],
   "coverageUpdates": [
@@ -6582,6 +6615,14 @@
         "trainers/school-workshop-check/index.html"
       ],
       "reason": "New canonical, authored final-assessment entry carries the full public navigator."
+    },
+    {
+      "sourceBaseSha": "119a07b0122566746da71b076d5eacf020bb8853",
+      "task": "docs/tasks/TYURIN_INDEPENDENT_33_20261121.md",
+      "addedPages": [
+        "trainers/tyurin-statistics/index.html"
+      ],
+      "reason": "New canonical practice entry discovered from the verified edition cards and included in the navigator."
     }
   ]
 }

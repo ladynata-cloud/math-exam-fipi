@@ -1,0 +1,15 @@
+main { max-width: 52rem; margin: 0 auto; padding: 0 1rem 4rem; }
+main, .panel, .row, form { min-width: 0; }
+h1, h2, h3, p, td, th { overflow-wrap: anywhere; }
+select { max-width: 100%; width: min(100%, 35rem); margin: .4rem 0; display: block; }
+.panel { margin: 1.2rem 0; }
+.data-table { border-collapse: collapse; width: 100%; margin: .6rem 0 1rem; }
+.data-table td, .data-table th { text-align: left; border-bottom: 1px solid #71868b; padding: .45rem .35rem; }
+.data-table caption { text-align: left; font-weight: 700; padding: .5rem 0; }
+#work svg { width: 100%; max-width: 28rem; height: auto; display: block; background: #f6faf9; border-radius: .5rem; color:#203948; }
+input[type=range] { width: min(100%, 22rem); }
+input[type=text] { min-width: 0; max-width: 100%; width: 13rem; }
+[hidden] { display:none !important; }
+.feedback { min-height: 1.4em; font-weight: 650; }
+#work li + li { margin-top: .45rem; }
+@media(max-width:520px) { .data-table { font-size: .89rem; } .panel { padding: .8rem; } }
