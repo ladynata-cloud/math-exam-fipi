@@ -3321,10 +3321,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/practice-topics/index.html": {
-      "beforeSha256": "01beb9878c16fa55b0077b800edeeeec98a68e508ffa194fe2133205cabdee71",
-      "afterSha256": "b4c82662a43f97469a09993b555878b16e1b65fd8ca20f6d5c5ffb15d216b57d",
+      "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
+      "afterSha256": "0503f230444fede8098f53d5b1fa8e5c6dfc979b080f97da341d94f32c0924cf",
       "placement": "before-head-close",
-      "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
+      "sourceSha": "99a6630d5d60321a5ce9abba3b009872fc1a544b"
     },
     "trainers/vilenkin6-percent/index.html": {
       "beforeSha256": "07a7f39fcffc8291884708fb8524fc8637a257d88b3d534e73b6a9cd88446b82",
@@ -6435,6 +6435,16 @@
         "trainers/oge-basics/multiplication-division/course-subtract.html",
         "trainers/oge-basics/multiplication-division/course-whole-two-digit.html",
         "trainers/oge-basics/multiplication-division/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "99a6630d5d60321a5ce9abba3b009872fc1a544b",
+      "task": "docs/tasks/ARZHENIKOV_TRAINER_SEARCH_20261121.md",
+      "changedPaths": [
+        "trainers/practice-topics/index.html"
       ],
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
