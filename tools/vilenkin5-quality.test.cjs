@@ -152,6 +152,28 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function squareSumsRegression(){
+  const id='v5f-printed-5-21',f=boot(),original=f.M.generate(id,0);
+  equal(plain([...original.steps,original].map(t=>t.answer)),[9,36,100,2,28,784]);
+  const arithmetic=n=>Array.from({length:n},(_,i)=>i+1);
+  const seen=new Set();
+  for(let seed=0;seed<140;seed++){
+    const t=f.M.generate(id,seed),{rows,last}=t.data.squareSums;seen.add(t.conditionKey);
+    if(seed)ok(t.conditionKey!==original.conditionKey);
+    for(const [i,k] of rows.entries()){
+      const total=arithmetic(k).reduce((sum,j)=>sum+j**3,0),side=arithmetic(k).reduce((sum,j)=>sum+j,0);equal(t.steps[i].answer,total);equal(total,side**2);
+    }
+    equal(t.answer,arithmetic(last).reduce((total,k)=>total+k**3,0));
+    for(let rank=2;rank<=9;rank++)for(const measure of [0,1,2]){
+      const view=f.w.Vilenkin5SquareSums.explore(t,{rank,measure,lattice:1}),side=arithmetic(rank).reduce((sum,j)=>sum+j,0),old=side-rank;
+      equal(view.answer,[side,side**2-old**2,side**2][measure]);ok(view.visual.includes('новый Г-образный слой'));
+    }
+  }ok(seen.size>10);f.close();
+  const g=boot('#lesson/'+id);
+  g.input('#v5-quality-note','Сначала сложу основания, а затем умножу сумму на себя.');equal(g.snapshot().scene.attempt,0);g.submit('3');ok(g.snapshot().scene.message.includes('сторону квадрата'));g.submit('9');ok(g.snapshot().scene.correct);ok(!g.snapshot().scene.assisted);g.click('[data-cmd=next]');
+  const copy=boot('#lesson/'+id,g.saved());ok(copy.snapshot().scene.note.includes('основания'));equal(copy.snapshot().scene.step,1);g.close();copy.close();
+}
+
 function cubeRowsRegression(){
   const f=boot(),id='v5f-printed-5-20',original=f.M.generate(id,0);
   equal(plain([...original.steps,original].map(x=>Number(x.answer))),[10,1000,100,1000000,10000,1,100]);
@@ -468,7 +490,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20'));
+  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -1072,7 +1094,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    squareSumsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,

@@ -921,6 +921,19 @@ async function run(browser, origin, backend, failures) {
   for(const v of ['100','1000000','10000','1']){await teacherFrame.locator('#answer').fill(v);await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();}
   await teacherFrame.locator('#answer').fill('100');await teacherFrame.locator('#answer-form button').click();const ratio=await same(teacherFrame,studentFrame,'one hundred times longer');assert(ratio.scene.correct);assert.deepEqual(ratio.scene.hintLevels,{});await narrow(student,studentFrame,'cube-row-length');
 
+  phase = 'square layers, a rule in the pupil’s own words and seven cubes';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-21"]').click();await studentFrame.locator('h1').filter({hasText:'№5.21'}).waitFor();
+  await teacherFrame.locator('summary').filter({hasText:'Моя формулировка правила'}).click();await teacherFrame.locator('#v5-quality-note').fill('Сторона большого квадрата равна сумме оснований.');
+  const ownRule=await same(teacherFrame,studentFrame,'writing the rule does not mark any step complete');assert.equal(ownRule.scene.attempt,0);assert.equal(ownRule.scene.firstAttempt,null);
+  await teacherFrame.locator('#answer').fill('3');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'side mistaken for area')).scene.message,/сторону квадрата/);await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=rank]').fill('7');await studentFrame.locator('[data-v5-param=rank]').press('Tab');await studentFrame.locator('[data-v5-param=measure]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('49');await studentFrame.locator('[data-v5-predict] button').click();const squareMistake=await same(studentFrame,teacherFrame,'one layer is still open for correction');assert(!squareMistake.scene.model.seen);assert.equal(squareMistake.scene.model.first,'49');
+  await studentFrame.locator('[data-v5-prediction]').fill('343');await studentFrame.locator('[data-v5-predict] button').click();assert.match((await same(studentFrame,teacherFrame,'seventh layer independently corrected')).scene.model.notice,/самостоятельно/);
+  for(const value of ['9','36','100','2','28']){await studentFrame.locator('#answer').fill(value);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();}
+  await studentFrame.locator('#answer').fill('78');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const squareDraft=await same(studentFrame,teacherFrame,'rule, geometry and unfinished final value recovered');assert.equal(squareDraft.scene.savedInput,'78');assert.equal(squareDraft.scene.step,5);assert.equal(squareDraft.scene.model.rank,7);assert(squareDraft.scene.note.includes('оснований'));
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'pupil restored original seven-cube calculation');await teacherFrame.locator('#answer').fill('784');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'seven cubes give 784')).scene.correct);await narrow(student,studentFrame,'sum-of-seven-cubes');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
