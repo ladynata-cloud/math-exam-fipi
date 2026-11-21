@@ -183,7 +183,7 @@ html.arz-world-ready .arz-adventure .ws-postcard-icon.adv-scene { font-size: 0; 
 .arz-adventure #adventure-album > summary, .arz-adventure #adventure-route > summary { display: list-item; min-height: 48px; color: #4f637d; padding: .8rem 1rem; }
 .arz-adventure #adventure-album[open] > summary, .arz-adventure #adventure-route[open] > summary { border-bottom: 1px solid #e4eaf1; }
 .arz-adventure .adv-album-note { font-size: .87rem; color: #63758a; padding: .75rem 1rem 0; }
-.arz-adventure #adventure-album-count { float: right; margin-left: .5rem; font-size: .8rem; font-weight: 650; line-height: 1.6; }
+.arz-adventure #adventure-album-count { display: inline-block; margin-left: .5rem; font-size: .8rem; font-weight: 650; line-height: 1.6; }
 .arz-adventure #adventure-album .adv-album-note:last-child { padding-bottom: 1rem; }
 .arz-adventure .adv-postcards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; padding: 1rem; }
 .arz-adventure .adv-postcard { position: relative; min-width: 0; display: grid; justify-items: center; align-content: start; gap: .35rem; padding: .85rem; text-align: center; border: 1px solid #e0e3f1; border-radius: 16px; background: #f6f5fc; color: #6a708b; text-decoration: none; transition: transform .17s ease, box-shadow .17s ease; }
