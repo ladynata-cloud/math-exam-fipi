@@ -12,17 +12,44 @@ function makeReviewedIncrement(data, later) {
     return key && Object.hasOwn(data.parts, key) ? key : null;
   }
   const canon=value=>Array.isArray(value)?value.map(canon):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canon(value[k])])):value;
-  const digest=value=>crypto.createHash('sha256').update(JSON.stringify(canon(value))).digest('hex');
+  function digest(value) {
+    const hash=crypto.createHash('sha256');
+    if(!value || !Array.isArray(value.lessons))return hash.update(JSON.stringify(canon(value))).digest('hex');
+    // Keep one canonical lesson in memory at a time. This emits the same sorted-key JSON
+    // bytes as hashing the whole course and leaves shared historical lessons untouched.
+    hash.update('{');
+    const fields=Object.keys(Object.fromEntries(Object.keys(value).sort().map(key=>[key,null])));
+    let separator='';
+    for(const key of fields){
+      if(key!=='lessons'){
+        const json=JSON.stringify(canon(value[key]));
+        if(json===undefined)continue;
+        hash.update(separator+JSON.stringify(key)+':'+json);
+      }else{
+        hash.update(separator+'"lessons":[');
+        for(let i=0;i<value.lessons.length;i++){
+          if(i)hash.update(',');
+          hash.update(JSON.stringify(canon(value.lessons[i]))??'null');
+        }
+        hash.update(']');
+      }
+      separator=',';
+    }
+    return hash.update('}').digest('hex');
+  }
   function indexBefore(index){
     if (later) index=later.indexBefore(index);
     const rows=index.entries.filter(entry=>numberOf(entry)&&Object.hasOwn(entry,'requiredParts'));
     if(!rows.length)return index;
     assert.equal(rows.length,Object.keys(data.parts).length);
-    const result=structuredClone(index);
-    for(const row of result.entries.filter(numberOf)){
-      assert.deepEqual(row.requiredParts,data.parts[numberOf(row)]);
-      delete row.requiredParts;
-    }
+    const entries=index.entries.map(row=>{
+      const key=numberOf(row);
+      if(!key)return row;
+      assert.deepEqual(row.requiredParts,data.parts[key]);
+      const {requiredParts,...previousRow}=row;
+      return previousRow;
+    });
+    const result={...index,entries};
     assert.equal(digest(result),data.before.index);
     return result;
   }
@@ -32,7 +59,7 @@ function makeReviewedIncrement(data, later) {
     if(!added.length)return course;
     assert.equal(added.length,ids.size);
     indexBefore(index);
-    const result=structuredClone(course), seen=new Set();
+    const result={...course,catalog:{...course.catalog}}, seen=new Set();
     for(const card of added)assert.equal(digest(card),data.cards[card.id].integrated);
     result.lessons=result.lessons.filter(c=>!ids.has(c.id));
     result.catalog.entries=result.catalog.entries.flatMap(entry=>{
@@ -50,10 +77,10 @@ function makeReviewedIncrement(data, later) {
     if(!added.length)return registry;
     assert.equal(added.length,ids.size);
     for(const row of added)assert.equal(row.sha256,data.cards[row.id].authored);
-    const result=structuredClone(registry);
-    assert.deepEqual(result.batches.pop().cardIds,[...ids]);
-    result.cards=result.cards.filter(row=>!ids.has(row.id));
-    Object.assign(result,data.registryMetadata);
+    assert.deepEqual(registry.batches.at(-1).cardIds,[...ids]);
+    const result={...registry,...data.registryMetadata,
+      batches:registry.batches.slice(0,-1),
+      cards:registry.cards.filter(row=>!ids.has(row.id))};
     assert.equal(digest(result),data.before.registry);
     return result;
   }

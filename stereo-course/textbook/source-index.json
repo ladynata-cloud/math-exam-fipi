@@ -12711,6 +12711,13 @@
         "в",
         "г",
         "д"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
       ]
     },
     {
@@ -12730,6 +12737,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -23769,7 +23781,10 @@
           147,
           148
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-066",
@@ -23788,7 +23803,10 @@
           148,
           149
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-067",
@@ -23807,7 +23825,10 @@
           149,
           150
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-068",

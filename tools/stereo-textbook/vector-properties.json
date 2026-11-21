@@ -79,19 +79,19 @@
   },
   "cards": {
     "ex-main-0561-a": {
-      "raw": "c5d254218fbfc1f7bcb8876572336fec16ca45e19c32a6786b14dcef20e61b5e",
-      "authored": "3a2df0bf7b4e9e36de89a654c527131331aa8195fdaa3e28b317e2f0a8919d16",
-      "integrated": "925974f6fa401378852f108878c9cf7383cf25200a7e24ed47967dfbb4dcf324"
+      "raw": "a39ba0e6fdb057cb027b074382879c63dcf248d456a90f4fbe27f40b2204075e",
+      "authored": "9d37951d77a9d1770581e8cc388940ec8b1e4c52da287138f060f2a0e8e64a8c",
+      "integrated": "c78ee21d4f31435560b12db989b5473fae5df1e2254f492b27fd72e84b71a311"
     },
     "ex-main-0561-b": {
-      "raw": "2e436ef73f75ab788281c400143067c640ea304e378082087673082e30151599",
-      "authored": "2543e376dc194b9fa1cf09e22ec4a758a6c6dc1881149ee5baf07d4a05940cab",
-      "integrated": "3cc0f8dbfdfdb17fa7bad9eb4d46482d54ce069f196cf50c0763a30258f3a729"
+      "raw": "9c795e6629b81cc2b8d4a63151a248d75795b716bc5580b1a5c056304e9e38dc",
+      "authored": "207619fbe6cce7bbb122e0b552bedc37672dbf4b865dea259d7153620b822897",
+      "integrated": "086054fa42a56e84191c6987aa571cd66db5398d1be0139eca70cf8677610828"
     },
     "ex-main-0561-c": {
-      "raw": "c48f175db46998535c51e02ff55fe9ac033a07dd49a89322f16c67f21b8c357b",
-      "authored": "98fb43a407105f43c8a6e6b8cc1db7e7ac78af9b858e4b147964179e42c8b37a",
-      "integrated": "3401a2c214096bfa3b4c1bc68887cc2b5922fc76ac49550625d11a2b8f3c3ec0"
+      "raw": "d38777932b4f58915c0b0afcb6e8e27e06a37aa00bb68e2dd0b20adf408aeebf",
+      "authored": "899981257f67e9a526a2808028a13af989eecd98e6654b518fa2e8bbe88db79c",
+      "integrated": "91afbaa8b02b7022e597947cc5ddedc65b35baf73ee59e4e9250c5e7e4c18e27"
     },
     "ex-main-0562-a": {
       "raw": "c502b415f083713a0a2d97644f3a41784cc3afa775fc224b79d81e7235a83887",
@@ -458,8 +458,8 @@
   ],
   "files": {
     "stereo-course/textbook/data/course.json": {
-      "beforeSHA256": "62deca5ae3d09a96755c68201a05d5fbff4089b0e4148601c78c8e903a6fc955",
-      "afterSHA256": "4081fdada0b62ebf56b2efc86b3371089378af588bfbd3d96f01a91707412010"
+      "beforeSHA256": "23738783a52a6c5b9822be0ecd8644421e9dee9b872db7ce96f9d99b7713a651",
+      "afterSHA256": "a976d2e81a1bcabb7af8b92f0a332f75c6b7a0ac7cf21cfd5ae3b9cdca0cb11e"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "fb3ca9c3b709c5d6b5649ed339bdebce88a688902ef720d1ea8a7ba4228a4ab9",
@@ -473,9 +473,9 @@
     "scope": "Introduction and chapters I–V, followed by chapter VI points 63–64 and source exercises 557–560, with 908 reviewed cards. Later exercise positions remain drafts."
   },
   "before": {
-    "course": "c136c1f0acda010603529ff14188f01458d4997d84de2eb0ef675791c6e1e793",
+    "course": "afe206a6a65eab1e3cdc981b39101e01b99ade79dadabf92028c07a0492fe59c",
     "index": "ff70679fd4b58f681e07e159519d1da583ed0c1c596fcbeeeba05c9e219ff517",
-    "registry": "22bf4b265747e6a8fe532df8afbe4e739a6a9084a8f2a6de5e57140760f185a3",
+    "registry": "3784236598837d19a68464ae48277589f97e7e6aa791d307bb93aa9d93d1253a",
     "cases": "27c5faeab23ee8ae77fb826d8ae6a8ee5ad61bc89e40a4df82e2ee2edf03db3d"
   }
 }

@@ -31,7 +31,8 @@ const groups = {
   volumeChapterEnd: {manifests:[require('./volume-chapter-end.json')],count:7},
   vectorBasics: {manifests:[require('./vector-basics.json')],count:6},
   vectorPairs: {manifests:[require('./vector-pairs.json')],count:5},
-  vectorProperties: {manifests:[require('./vector-properties.json')],count:11}
+  vectorProperties: {manifests:[require('./vector-properties.json')],count:11},
+  spatialVectorSums: {manifests:[require('./spatial-vector-sums.json')],count:11}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

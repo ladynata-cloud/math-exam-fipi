@@ -64,6 +64,7 @@ jobs:
           node tools/stereo-textbook/vector-basics.test.cjs
           node tools/stereo-textbook/vector-pairs.test.cjs
           node tools/stereo-textbook/vector-properties.test.cjs
+          node tools/stereo-textbook/spatial-vector-sums.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -200,6 +201,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: vectorProperties
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-properties
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check polygon, scalar and parallelogram rules with all named sum vectors and three proofs in a tetrahedron
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialVectorSums
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-vector-sums
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -260,5 +266,6 @@ jobs:
             artifacts/vector-basics/
             artifacts/vector-pairs/
             artifacts/vector-properties/
+            artifacts/spatial-vector-sums/
           retention-days: 14
           if-no-files-found: error

@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T18:42:00Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–64 and source exercises 557–563, with 919 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T18:48:00Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–565, with 930 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1535,6 +1535,26 @@
       ],
       "evidence": "tools/stereo-textbook/vector-properties.json",
       "mathematicalReport": "tools/stereo-textbook/vector-properties.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:48:00Z",
+      "scope": "Points 65–67 and eight source subparts 564–565: all vertex-to-vertex vector sums and three proofs in an arbitrary tetrahedron",
+      "cardIds": [
+        "ex-main-0564-a",
+        "ex-main-0564-b",
+        "ex-main-0564-c",
+        "ex-main-0564-d",
+        "ex-main-0564-e",
+        "ex-main-0565-a",
+        "ex-main-0565-b",
+        "ex-main-0565-c",
+        "theory-065",
+        "theory-066",
+        "theory-067"
+      ],
+      "evidence": "tools/stereo-textbook/spatial-vector-sums.json",
+      "mathematicalReport": "tools/stereo-textbook/spatial-vector-sums.test.cjs"
     }
   ],
   "cards": [
@@ -5156,7 +5176,7 @@
     },
     {
       "id": "ex-main-0559-b",
-      "sha256": "11fab105481d82bbcd16100e43a78fe1ba9c62a61536f13047ebdaaae0531edc"
+      "sha256": "2681a5dcbb5b708d4a6a04dbba1d109345436203c57ef4687911a89354654b2c"
     },
     {
       "id": "ex-main-0559-c",
@@ -5172,15 +5192,15 @@
     },
     {
       "id": "ex-main-0561-a",
-      "sha256": "3a2df0bf7b4e9e36de89a654c527131331aa8195fdaa3e28b317e2f0a8919d16"
+      "sha256": "9d37951d77a9d1770581e8cc388940ec8b1e4c52da287138f060f2a0e8e64a8c"
     },
     {
       "id": "ex-main-0561-b",
-      "sha256": "2543e376dc194b9fa1cf09e22ec4a758a6c6dc1881149ee5baf07d4a05940cab"
+      "sha256": "207619fbe6cce7bbb122e0b552bedc37672dbf4b865dea259d7153620b822897"
     },
     {
       "id": "ex-main-0561-c",
-      "sha256": "98fb43a407105f43c8a6e6b8cc1db7e7ac78af9b858e4b147964179e42c8b37a"
+      "sha256": "899981257f67e9a526a2808028a13af989eecd98e6654b518fa2e8bbe88db79c"
     },
     {
       "id": "ex-main-0562-a",
@@ -5213,6 +5233,50 @@
     {
       "id": "ex-main-0563-e",
       "sha256": "e7651fedcadb539df08f281876a5fdc15e3393c9551cc0990509ec2689006e86"
+    },
+    {
+      "id": "ex-main-0564-a",
+      "sha256": "eba30a657229d21f09c9174f492987e43a1283dc6eb9b1d87f1cef20c1193f63"
+    },
+    {
+      "id": "ex-main-0564-b",
+      "sha256": "b54821f9964c8090ddab3f266c9c96079879116092a33d542ca208fc66e4fad7"
+    },
+    {
+      "id": "ex-main-0564-c",
+      "sha256": "25f75a3cd24de2fe601b0d3e48798498810856d84f2323c36334ab836c59b9be"
+    },
+    {
+      "id": "ex-main-0564-d",
+      "sha256": "ea26558b97df887a52d0d09339dbe570cf4263cca7aa0a265015f39d350219b7"
+    },
+    {
+      "id": "ex-main-0564-e",
+      "sha256": "c9806ba43974bfc4a7baf95444a157089cfa847e7f944a7719ad9dc3b599b2ce"
+    },
+    {
+      "id": "ex-main-0565-a",
+      "sha256": "3819bfc41d0db1513355233e51eb3303107d6417a263be8045f4ba3a11ed12c2"
+    },
+    {
+      "id": "ex-main-0565-b",
+      "sha256": "e7eab2aca5061d9834190ba5c62f60df1f73b36d2f4e27e7257dd652d4c3f353"
+    },
+    {
+      "id": "ex-main-0565-c",
+      "sha256": "b892695f8af1329126394dc1dae3672fbab859e76b3ceb577010aac3241eeb9d"
+    },
+    {
+      "id": "theory-065",
+      "sha256": "5a2b507681a774099c9bedeef7a1e4f32a7841b7123d568fc435d5e8cc3a14cc"
+    },
+    {
+      "id": "theory-066",
+      "sha256": "cef2b943e3ca21ec719205bf7d0c8b60bb0be7d9cf07f5ffc8f66ce5cee56211"
+    },
+    {
+      "id": "theory-067",
+      "sha256": "1700cad9da00d5961043e98c2f3c893819e5192c4ec84b186b5f8e3b2b838d12"
     }
   ]
 }

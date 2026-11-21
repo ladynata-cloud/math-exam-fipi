@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const vectorProperties = makeReviewedIncrement(require('./vector-properties.json'));
+const spatialVectorSums = makeReviewedIncrement(require('./spatial-vector-sums.json'));
+const vectorProperties = makeReviewedIncrement(require('./vector-properties.json'), spatialVectorSums);
 const vectorPairs = makeReviewedIncrement(require('./vector-pairs.json'), vectorProperties);
 const vectorBasics = makeReviewedIncrement(require('./vector-basics.json'), vectorPairs);
 const volumeChapterEnd = makeReviewedIncrement(require('./volume-chapter-end.json'), vectorBasics);
