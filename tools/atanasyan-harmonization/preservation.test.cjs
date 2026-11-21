@@ -72,9 +72,10 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
+  "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "1d9b582ca80f72b10cb32d84bbad8e1dd959231c74d220d5a01759168dc0d82f",
+  "geometry-course/textbook/assets/additional-lessons.js": "13629959300fafe0aca602a8c6d17ec968d2be4172e525a3f89903768490fa1a",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",

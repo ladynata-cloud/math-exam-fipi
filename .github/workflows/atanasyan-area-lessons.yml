@@ -21,6 +21,8 @@ on:
       - 'geometry-course/textbook/data/vector-conclusions.json'
       - 'tools/geometry-textbook/*vector_sums*'
       - 'geometry-course/textbook/data/vector-sums.json'
+      - 'tools/geometry-textbook/*vector_sum_problems*'
+      - 'geometry-course/textbook/data/vector-sum-problems.json'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
@@ -43,6 +45,7 @@ jobs:
       - run: python3 tools/geometry-textbook/build_grade9_vectors.py --check && python3 tools/geometry-textbook/check_grade9_vectors.py
       - run: python3 tools/geometry-textbook/build_vector_conclusions.py --check && python3 tools/geometry-textbook/check_vector_conclusions.py
       - run: python3 tools/geometry-textbook/build_vector_sums.py --check && python3 tools/geometry-textbook/check_vector_sums.py
+      - run: python3 tools/geometry-textbook/vector_sum_problems.py --check && python3 tools/geometry-textbook/check_vector_sum_problems.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons
