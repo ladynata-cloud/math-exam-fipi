@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "b4b7f33139c648fa628070bf73ffa23aa662c8cb78c24e8b0ba891a4fec2612a",
-      "afterSha256": "d4f1ad2983763fb1983762fc323bf9d9573715ad03e147ea61c9c849366a6cd2",
+      "beforeSha256": "65719df64d8975cdad51a5219d959a3498576f4e3cd583eb7db615d4e1034e6b",
+      "afterSha256": "39e14ae4967a4fd8e2413dad6f05a56f38abb2ec26135aac6081e9dd8a2c44a3",
       "placement": "before-head-close",
-      "sourceSha": "15a6cc0e3c787efbc8a63d7fdf5c523415a1f2df"
+      "sourceSha": "904cd14a07b85907156954dcd21e338daba6ded6"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6732,6 +6732,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, часть 2, №5.24–5.25. Шаблон по клеткам и масса мёда."
+    },
+    {
+      "previousBaseSha": "15a6cc0e3c787efbc8a63d7fdf5c523415a1f2df",
+      "sourceBaseSha": "904cd14a07b85907156954dcd21e338daba6ded6",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, №5.26–5.27. Обратный ход событий и порядок двух действий."
     }
   ],
   "coverageUpdates": [
