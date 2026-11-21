@@ -2235,10 +2235,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8b0e01e7550ca3cfc4efe9344964402bba25aacadafbdd4d75db359fe4a1ded4",
-      "afterSha256": "b7d6c064d17dcde2244b4127072017b9205861286b29b44d421fff536c8f51a0",
+      "beforeSha256": "4926ae574fcf5465db209c8544b48e30f4743ae00cd80da140cf4a9085efabfb",
+      "afterSha256": "9372aaca9470ae528ddbb74d65a79b0a78167e5293a198da230dd55485fc8f60",
       "placement": "before-head-close",
-      "sourceSha": "c8a77c4923027c76d9b547d1f50d336bb439ed44"
+      "sourceSha": "5d7ef191640506697f769c083879fc211be525a7"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7224,6 +7224,15 @@
         "school/index.html"
       ],
       "bindingScope": "Per-page sourceSha for the shared school entry after integrating both printed Vilenkin routes through 1.125 and 5.50 and their separate assessments."
+    },
+    {
+      "previousBaseSha": "c8a77c4923027c76d9b547d1f50d336bb439ed44",
+      "sourceBaseSha": "5d7ef191640506697f769c083879fc211be525a7",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the numbered Vilenkin scale exercises on printed pages 28 and 29."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
