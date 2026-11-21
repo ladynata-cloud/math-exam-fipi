@@ -3326,10 +3326,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": {
-      "beforeSha256": "e2b0f9a16938679f788f680871b27b3a2667faa75bdffce426e1cab0ba40c6b1",
-      "afterSha256": "f2bfe89bf153b3b41c80c3ba17efc9374678136d87a67394d66bb4a5923b8409",
+      "beforeSha256": "6d3e88fad0762ee0c39875db7c956f7efeb8ccff60485729fc08ad9571d90e5c",
+      "afterSha256": "5bc2658dfa068553ac92ff474dd35c3036612999334c758acff535ffab41b29b",
       "placement": "before-head-close",
-      "sourceSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb"
+      "sourceSha": "c8a04a3a99ee9fa239d219875a592b5e89f7e0d2"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
@@ -6544,6 +6544,14 @@
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
       "reason": "Reviewed garden entrance, content and script links on the existing Arzhenikov skill map."
+    },
+    {
+      "sourceBaseSha": "c8a04a3a99ee9fa239d219875a592b5e89f7e0d2",
+      "task": "docs/tasks/ARZHENIKOV_LIFE_STORIES.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Add the reviewed everyday-object workshop to the published Arzhenikov map."
     }
   ],
   "coverageUpdates": [
