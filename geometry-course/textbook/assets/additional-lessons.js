@@ -50,7 +50,8 @@
       ['/geometry-course/textbook/data/coordinate-coefficients.json', 'пункты 93–94, №998–999'],
       ['/geometry-course/textbook/data/coordinate-relations.json', '№1000–1003'],
       ['/geometry-course/textbook/data/coordinate-grid.json', '№1004–1008'],
-      ['/geometry-course/textbook/data/coordinate-actions.json', '№1009–1015']
+      ['/geometry-course/textbook/data/coordinate-actions.json', '№1009–1015'],
+      ['/geometry-course/textbook/data/coordinate-positions.json', 'пункты 95–96 и №1016–1020']
   ];
 
   async function forCourse(base) {
