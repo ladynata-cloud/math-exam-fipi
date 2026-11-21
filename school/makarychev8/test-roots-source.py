@@ -46,7 +46,7 @@ for record in baseline['records']:
 # Reconstruct later chapter-I additions only after checking all 722 historical
 # addresses. The final bank comparison below must include every appended card.
 for topic, first, last in [('p05', 110, 133), ('p06', 134, 149),
-                           ('p07', 150, 180), ('p08', 181, 200), ('p09', 201, 211), ('p01', 212, 214)]:
+                           ('p07', 150, 180), ('p08', 181, 200), ('p09', 201, 211), ('p01', 212, 214), ('p01', 215, 220)]:
     by_lesson[topic]['tasks'].extend(read(f'exercises-{first}-{last}.json'))
 
 ranges = []

@@ -12,10 +12,8 @@ function normalize(value){return String(value??'').trim().toLowerCase()
  .replace(/([0-9]),(?=[0-9])/g,'$1.').replace(/[х]/g,'x');}
 // Work with integer-coefficient polynomials in a fraction. Keeping its denominator
 // lets the checker reject extra variable factors and lost domain restrictions.
-function sameReducedExpression(input, expected) {
- const source=normalize(input);
- if(source.length>120||/[^0-9.a-z()+*/^\-]/.test(source))return false;
- const symbols=new Set(String(expected).match(/[a-z]/g)||[]);
+function polynomialFraction(raw, symbols) {
+ if(raw.length>120||/[^0-9.a-z()+*/^\-]/.test(raw))throw RangeError();
  const constant=value=>new Map(value===0n?[]:[['',value]]);
  let remaining=5000;
  function term(poly,word,value){
@@ -78,12 +76,117 @@ function sameReducedExpression(input, expected) {
   }
   const pair=sum();if(i!==tokens.length||!pair[1].size)throw Error();return pair;
  }
+ return parse(raw);
+}
+function sameReducedExpression(input, expected) {
  try{
-  const [n1,d1]=parse(source),[n2,d2]=parse(normalize(expected));
+  const symbols=new Set(String(expected).match(/[a-z]/g)||[]);
+  const [n1,d1]=polynomialFraction(normalize(input),symbols),[n2,d2]=polynomialFraction(normalize(expected),symbols);
   if(n1.size!==n2.size||d1.size!==d2.size)return false;
   const [pivot,q2]=d2.entries().next().value,q1=d1.get(pivot);if(!q1)return false;
   return [[n1,n2],[d1,d2]].every(([left,right])=>
    [...right].every(([key,value])=>left.has(key)&&left.get(key)*q2===value*q1));
+ }catch(_){return false;}
+}
+// Coefficients ascend by degree. Positive normalization preserves the signs in
+// Sturm's sequence, including when the polynomial has repeated real roots.
+function primitive(coefficients){
+ while(coefficients.length&&coefficients.at(-1)===0n)coefficients.pop();
+ let gcd=0n;
+ for(let x of coefficients){
+  x=x<0n?-x:x;
+  while(x){[gcd,x]=[x,gcd%x];}
+ }
+ return gcd>1n?coefficients.map(v=>v/gcd):coefficients;
+}
+function realRootCount(coefficients){
+ if(coefficients.length<2)return 0;
+ const sequence=[primitive([...coefficients]),primitive(coefficients.slice(1).map((c,i)=>c*BigInt(i+1)))];
+ while(sequence.at(-1).length>1){
+  let rest=[...sequence.at(-2)];
+  const divisor=sequence.at(-1),lead=divisor.at(-1),sign=lead<0n?-1n:1n;
+  while(rest.length>=divisor.length){
+   const shift=rest.length-divisor.length,top=rest.at(-1);
+   rest=primitive(rest.map((c,i)=>sign*(lead*c-(i>=shift?top*divisor[i-shift]:0n))));
+  }
+  if(!rest.length)break;
+  sequence.push(rest.map(c=>-c));
+ }
+ function variations(negative){
+  let previous=0,changes=0;
+  for(const poly of sequence){
+   const sign=(poly.at(-1)>0n?1:-1)*(negative&&(poly.length-1)%2?-1:1);
+   if(previous&&previous!==sign)changes++;
+   previous=sign;
+  }
+  return changes;
+ }
+ return variations(true)-variations(false);
+}
+function evaluateAt(coefficients, point){
+ const rational=M.parse(point),n=BigInt(rational.n),d=BigInt(rational.d);
+ let value=0n,power=1n;
+ for(let i=coefficients.length-1;i>=0;i--){value=value*n+coefficients[i]*power;power*=d;}
+ return value;
+}
+function inspectDomainFraction(input, exclusions){
+ // A single fraction of polynomials. Coefficients may be fractions or decimals.
+ let raw=normalize(input);
+ if(!raw||raw.length>120)return {status:'format'};
+ const stripOuter=text=>{
+  while(text[0]==='('&&text.at(-1)===')'){
+   let depth=0,end=0;
+   for(;end<text.length;end++){
+    if(text[end]==='(')depth++;
+    if(text[end]===')'&&--depth===0)break;
+   }
+   if(end!==text.length-1)break;
+   text=text.slice(1,-1);
+  }
+  return text;
+ };
+ raw=stripOuter(raw);
+ let depth=0,division=-1;
+ for(let i=0;i<raw.length;i++){
+  if(raw[i]==='(')depth++;
+  else if(raw[i]===')')depth--;
+  else if(raw[i]==='/'&&!depth){if(division>=0)return {status:'format'};division=i;}
+  if(depth<0)return {status:'format'};
+ }
+ if(depth||division<1||division===raw.length-1)return {status:'format'};
+ const numeratorText=raw.slice(0,division),denominatorText=raw.slice(division+1);
+ // Match ordinary operator precedence: 1/x-2 must never stand for 1/(x-2).
+ if(stripOuter(denominatorText)===denominatorText&&!/^[+-]?(?:x(?:\^\d+)?|\d+(?:\.\d+)?)$/.test(denominatorText))return {status:'format'};
+ depth=0;
+ for(let i=0;i<numeratorText.length;i++){
+  if(numeratorText[i]==='(')depth++;
+  else if(numeratorText[i]===')')depth--;
+  else if(!depth&&i&&/[+-]/.test(numeratorText[i]))return {status:'format'};
+ }
+ try{
+  const symbols=new Set(['x']);
+  function coefficients(part){
+   const [poly,scale]=polynomialFraction(part,symbols);
+   if(!scale.has('')||scale.size!==1)throw Error();
+   const result=[];
+   for(const [key,value] of poly)result[key.length]=value;
+   return Array.from(result,v=>v||0n);
+  }
+  coefficients(numeratorText);
+  const denominator=coefficients(denominatorText);
+  if(!denominator.length)return {status:'zero'};
+  const zeros=exclusions.map(point=>evaluateAt(denominator,point)===0n);
+  const count=realRootCount(denominator);
+  return {status:zeros.includes(false)?'missing':count>exclusions.length?'extra':'correct',zeros,count};
+ }catch(_){return {status:'format'};}
+}
+function equivalentCommonFactor(input, expected){
+ try{
+  const symbols=new Set(normalize(expected).match(/[a-z]/g)||[]);
+  const [candidate,d1]=polynomialFraction(normalize(input),symbols),[factor,d2]=polynomialFraction(normalize(expected),symbols);
+  if(d1.size!==1||!d1.has('')||d2.size!==1||!d2.has('')||candidate.size!==factor.size)return false;
+  const [pivot,reference]=factor.entries().next().value,scale=candidate.get(pivot);
+  return Boolean(scale)&&[...factor].every(([key,v])=>candidate.has(key)&&candidate.get(key)*reference===scale*v);
  }catch(_){return false;}
 }
 function setEntries(value){
@@ -136,6 +239,8 @@ function rootLineCount(user){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='common-factor')return equivalentCommonFactor(user,target.answer);
+ if(target.kind==='domain-fraction')return inspectDomainFraction(user,target.exclusions).status==='correct';
  if(target.kind==='integer-pairs'){
   const pairs=G.parseIntegerPairs(user),expected=G.parseIntegerPairs(target.answer);
   if(!pairs||!expected||pairs.length!==expected.length)return false;
@@ -182,5 +287,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

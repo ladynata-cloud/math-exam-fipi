@@ -71,5 +71,44 @@ student.d.querySelector('#answer-form').dispatchEvent(new student.w.Event('submi
 send(student,reconnect);
 assert.match(reconnect.d.querySelectorAll('.train-model figcaption')[1].textContent,/Вместе 600 км/);
 assert.equal(reconnect.w.MakarychevApp.getState().tasks['ch1-extra-213-speeds'].correct,true);
+const domainIndex=appendix.tasks.findIndex(t=>t.id==='ch1-extra-215-b');
+teacher.w.history.replaceState(null,'','#lesson/p01/'+domainIndex);
+teacher.w.MakarychevApp.route();
+input(teacher,'#final-answer','1/(x-3)');
+teacher.d.querySelector('#answer-form').dispatchEvent(new teacher.w.Event('submit',{bubbles:true,cancelable:true}));
+send(teacher,student);
+assert.match(student.d.querySelector('.exclusion-model li').textContent,/x = 0: знаменатель отличен от нуля/);
+input(student,'#final-answer','(x+4)/(x*(x-3)*(x^2+1))');
+student.d.querySelector('#answer-form').dispatchEvent(new student.w.Event('submit',{bubbles:true,cancelable:true}));
+send(student,reconnect);
+assert.equal(reconnect.w.MakarychevApp.getState().tasks['ch1-extra-215-b'].correct,true);
+assert.match(reconnect.d.querySelector('.exclusion-model').textContent,/знаменателя: 2/);
+teacher.w.history.replaceState(null,'','#lesson/p51/5');
+teacher.w.MakarychevApp.route();
+const prediction=teacher.d.querySelector('#model .m8-prediction select');
+prediction.value='0';
+teacher.d.querySelector('#model .m8-prediction button').click();
+function setComparison(p,index,value){
+ const controls=p.d.querySelectorAll('#model .m8-controls select');
+ controls[index].value=value;
+ controls[index].dispatchEvent(new p.w.Event('change',{bubbles:true}));
+}
+function compare(p,power,x){
+ assert.deepEqual(Array.from(p.d.querySelectorAll('#model .m8-controls select'),c=>c.value),[power,x]);
+ assert.equal(p.w.MakarychevApp.getState().tasks['p51-t06'].correct,false);
+ const graphic=p.d.querySelector('#model .m8-chart');
+ assert.equal(Number(graphic.querySelector('[data-reciprocal-value]').dataset.reciprocalValue),1/Number(x));
+ assert.equal(Number(graphic.querySelector('[data-square-reciprocal-value]').dataset.squareReciprocalValue),1/(Number(x)**2));
+}
+setComparison(teacher,0,'-2');
+setComparison(teacher,1,'-0.5');
+send(teacher,student);
+compare(student,'-2','-0.5');
+setComparison(student,1,'2');
+send(student,teacher);
+compare(teacher,'-2','2');
+setComparison(teacher,1,'-0.5');
+send(teacher,reconnect);
+compare(reconnect,'-2','-0.5');
 [teacher,student,reconnect].forEach(p=>p.dom.window.close());
 console.log('PASS two participants, accepted step, notes, assist status, model, reconnect and isolation');

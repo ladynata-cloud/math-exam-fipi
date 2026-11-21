@@ -79,7 +79,7 @@ async function verify(width, url) {
   }
   assert.deepEqual(stats.errors, []);
   assert.equal(stats.cards, 286);
-  for (let n = 110; n <= 214; n++) {
+  for (let n = 110; n <= 220; n++) {
     if ((n - 110) % 24 === 0) {
       await page.close();
       page = await freshPage();
@@ -87,6 +87,26 @@ async function verify(width, url) {
     await openNumber(page, n);
     assert(await page.locator('#number-result a.button:not(.quiet)').count() > 0, 'source number ' + n);
   }
+  await openNumber(page, 215, '№ 215в');
+  assert.match(await page.locator('main > .eyebrow').innerText(), /Дополнительно к §1 · с. 56/i);
+  assert.equal(await page.locator('.exclusion-model li').count(), 0);
+  await submit(page, '1/(x-3)');
+  assert.match(await page.locator('.exclusion-model').innerText(), /x = -3: знаменатель отличен от нуля/);
+  assert.match(await page.locator('#problem').innerText(), /Подставь x = -3/);
+  await submit(page, '1/((x^2-9)*(x^2-2))');
+  assert.match(await page.locator('#problem').innerText(), /дополнительные действительные нули/);
+  await page.reload();
+  assert.match(await page.locator('.exclusion-model').innerText(), /нулей у твоего знаменателя: 4/);
+  await submit(page, '(x+1)/((x^2-9)^2*(x^2+1))');
+  const domainState = await page.evaluate(() => MakarychevApp.getState().tasks['ch1-extra-215-c']);
+  assert.equal(domainState.correct, true);
+  assert.equal(domainState.assisted, false);
+  assert.equal(domainState.independent, false);
+  await openNumber(page, 220, '№ 220в');
+  assert.match(await page.locator('main > .eyebrow').innerText(), /Дополнительно к §1 · с. 57/i);
+  await submit(page, 'z/(z^2-xy)');
+  await submit(page, '-z/(z^2-xy)');
+  assert.equal(await page.evaluate(() => MakarychevApp.getState().tasks['ch1-extra-220-c'].correct), true);
   await openNumber(page, 213, '№ 213, скорости');
   assert.equal(await page.locator('.train-model svg').count(), 2);
   assert.equal(await page.locator('.train-model circle').count(), 0);
@@ -156,7 +176,7 @@ async function verify(width, url) {
   assert.equal(await page.locator('#notebook').inputValue(), 'Проверка своих точек');
   assert.deepEqual(errors, []);
   await page.close();
-  return { width, cards: stats.cards, figures: stats.figures, searches: 105 };
+  return { width, cards: stats.cards, figures: stats.figures, searches: 111 };
 }
 
 (async () => {

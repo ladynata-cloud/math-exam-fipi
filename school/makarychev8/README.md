@@ -5,12 +5,12 @@ Static course at `/school/makarychev8/`, built around the existing Peterson cour
 ## Coverage
 
 - 51 topics in six chapters, including the six advanced topics.
-- 174 short theory blocks, 2089 tasks and 4771 worked steps.
-- 1864 textbook tasks/subparts with number and printed page, plus 225 explicitly labelled authored exercises/review adaptations. Exercises 1–214 and the entire square-roots chapter, 268–509, include all source subparts, substitutions, secondary questions and constructions. Other source ranges retain their selected examples.
+- 174 short theory blocks, 2110 tasks and 4816 worked steps.
+- 1885 textbook tasks/subparts with number and printed page, plus 225 explicitly labelled authored exercises/review adaptations. Exercises 1–220 and the entire square-roots chapter, 268–509, include all source subparts, substitutions, secondary questions and constructions. Other source ranges retain their selected examples.
 - Exercise navigator for all 1340 numbers. It distinguishes existing solutions from topic links; it does not claim solutions to every numbered exercise, every subpart, or the advanced problem bank.
 - Six interactive model families and 20 computation practice skills, three difficulty levels, preserved return to the original task.
 
-The uploaded textbook PDF is not copied into this public directory. Source structure is recorded in `source-map.json`. Source conditions and authored explanations are in the chapter JSON files and `exercises-{1-24,25-54,55-74,75-109,110-133,134-149,150-180,181-200,201-211,212-214}.json`. These append 93, 124, 73, 126, 76, 50, 71, 81 and 12 cards to topics 1–9 respectively. Ten supplementary cards for §1 follow those existing addresses; original task indices, IDs and existing learner records remain unchanged. Regenerate `data.js` with `node school/makarychev8/build.cjs` after editing content.
+The uploaded textbook PDF is not copied into this public directory. Source structure is recorded in `source-map.json`. Source conditions and authored explanations are in the chapter JSON files and `exercises-{1-24,25-54,55-74,75-109,110-133,134-149,150-180,181-200,201-211,212-214,215-220}.json`. These append 93, 124, 73, 126, 76, 50, 71, 81 and 12 cards to topics 1–9 respectively. Thirty-one supplementary cards for §1 follow those existing addresses; original task indices, IDs and existing learner records remain unchanged. Regenerate `data.js` with `node school/makarychev8/build.cjs` after editing content.
 
 ## Behavior and dependencies
 

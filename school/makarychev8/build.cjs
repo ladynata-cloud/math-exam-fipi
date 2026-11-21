@@ -14,7 +14,7 @@ lessons.find(l=>l.id==='p07').tasks.push(...read('exercises-150-180.json'));
 lessons.find(l=>l.id==='p08').tasks.push(...read('exercises-181-200.json'));
 lessons.find(l=>l.id==='p09').tasks.push(...read('exercises-201-211.json'));
 // Supplementary §1 work keeps the existing topic and every original bookmark.
-lessons.find(l=>l.id==='p01').tasks.push(...read('exercises-212-214.json'));
+lessons.find(l=>l.id==='p01').tasks.push(...read('exercises-212-214.json'), ...read('exercises-215-220.json'));
 // Present completed textbook points in source order while preserving every bookmarked array index.
 for (const lesson of lessons.filter(item=>item.order>=5&&item.order<=9)) {
  const indices=lesson.tasks.map((_,index)=>index);

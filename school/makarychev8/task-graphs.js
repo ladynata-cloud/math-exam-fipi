@@ -219,8 +219,31 @@ function renderTrainMeeting(host,value){
   figure.append(caption,svg);host.append(figure);
  }
 }
+function renderDomainFraction(host,config){
+ host.className='task-graphs exclusion-model';
+ const title=document.createElement('p');
+ title.textContent='Что происходит в точках из условия?';
+ host.append(title);
+ const analysis=config.analysis;
+ if(!analysis?.zeros){
+  const guide=document.createElement('p');
+  guide.className='small';
+  guide.textContent=analysis?.status==='zero'?'Знаменатель всегда равен нулю. Попробуй изменить его.':'После проверки дроби здесь появится результат подстановки каждой исключённой точки.';
+  host.append(guide);return;
+ }
+ const list=document.createElement('ul');
+ config.points.forEach((point,i)=>{
+  const item=document.createElement('li');
+  item.textContent='x = '+point+': '+(analysis.zeros[i]?'знаменатель равен нулю, точка исключена.':'знаменатель отличен от нуля, точка осталась в области.');
+  list.append(item);
+ });
+ const count=document.createElement('p');
+ count.className='small';count.textContent='Всего различных действительных нулей у твоего знаменателя: '+analysis.count+'.';
+ host.append(list,count);
+}
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(config.type==='domain-fraction'){renderDomainFraction(host,config);return;}
  if(config.type==='train-meeting'){renderTrainMeeting(host,value);return;}
  if(config.type==='integer-pairs'){renderIntegerPairs(host,config,value);return;}
  if(config.type==='number-line'){host.className='task-graphs number-line';host.append(numberLine(config));if(config.caption){const caption=document.createElement('p');caption.className='small';caption.textContent=config.caption;host.append(caption);}

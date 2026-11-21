@@ -119,3 +119,43 @@ test('the unknown in a square-root equation has no assumed sign', () => {
  assert.doesNotMatch(task.feedback,/неотрицательн/);
  rt.close();
 });
+
+test('both reciprocal graphs use one x and retain their shared investigation', () => {
+ const rt=boot('#lesson/p51/5');
+ const id='p51-t06';
+ try {
+  begin(rt,0);
+  const [power,abscissa]=rt.d.querySelectorAll('#model .m8-controls select');
+  const graph=() => rt.d.querySelector('#model .m8-chart');
+  rt.input(power,'-2');
+  for (const x of [-2,-1,-0.5,0,0.5,1,2]) {
+   rt.input(abscissa,x);
+   const round=graph().querySelector('[data-reciprocal-value]');
+   const square=graph().querySelector('[data-square-reciprocal-value]');
+   assert.equal(graph().querySelectorAll('path').length,4,'four disjoint branches');
+   if (x===0) {
+    assert.equal(round,null);
+    assert.equal(square,null);
+    assert.match(rt.d.querySelector('.m8-result').textContent,/ноль в знаменателе/);
+    continue;
+   }
+   assert.equal(Number(round.dataset.reciprocalValue),1/x);
+   assert.equal(Number(square.dataset.squareReciprocalValue),1/(x*x));
+   assert.equal(Number(round.getAttribute('cx')),Number(square.getAttribute('x'))+3);
+   assert.equal(Math.sign(Number(square.getAttribute('y'))+3-Number(round.getAttribute('cy'))),Math.sign(1/x-1/(x*x)));
+  }
+  rt.input(abscissa,'-0.5');
+  const state=rt.api.getState();
+  assert.equal(state.tasks[id].correct,false,'exploring records no mastery');
+  const restored=boot('#lesson/p51/5',state);
+  try {
+   assert.deepEqual(Array.from(restored.d.querySelectorAll('#model .m8-controls select'),s=>s.value),['-2','-0.5']);
+   assert.match(restored.d.querySelector('.m8-result').textContent,/Квадрат выше круга/);
+  } finally { restored.close(); }
+  state.tasks[id].investigation.parameters=['-2'];
+  const legacy=boot('#lesson/p51/5',state);
+  try {
+   assert.deepEqual(Array.from(legacy.d.querySelectorAll('#model .m8-controls select'),s=>s.value),['-2','1']);
+  } finally { legacy.close(); }
+ } finally { rt.close(); }
+});
