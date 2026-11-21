@@ -137,6 +137,13 @@
  .lesson-page .breadcrumb:has(.button) > span { grid-column: 1 / -1; }
 }
 
+/* On narrow phones keep the floating navigator out of the plotted coordinate space. */
+@media (max-width: 360px) {
+ .lesson-page .task-graphs.root-graph {
+  max-width: min(100%, calc(100vw - 108px));
+ }
+}
+
 </style>
   <style data-inline-source="/assets/course-examples.css">
 /* Shared, scoped to course entrances and optional native lesson explanations. */
