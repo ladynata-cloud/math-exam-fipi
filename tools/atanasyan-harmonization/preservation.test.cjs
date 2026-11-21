@@ -74,6 +74,10 @@ function filesAt(relative) {
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
   "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
+  "geometry-course/textbook/data/trigonometric-signs.json": "22d83be75d0a93f61fa9d230be762e7de0b27412608af570f0383cec57a9d944",
+  "geometry-course/textbook/data/trigonometric-rays.json": "861ef554bf2a503ff9a169b15f39bb36d3d15540c737098ec603093b1201ac03",
+  "geometry-course/textbook/data/slope-and-reflection.json": "f66358c5ce09530800ecda0b3c46a4ab0c5ec1c5fccf647f6ac4b49e2aedbc40",
+  "geometry-course/textbook/data/upper-semicircle.json": "1e11581e38e95bdcc1c6e8fea01042fba0be077290bc83bbeab240d084c4d10c",
   "geometry-course/textbook/data/coordinate-additional-curves.json": "fee66bf53ff6b7d72bf4ea1291b3c0d301e88367f00f364df226e0bb3534d0b7",
   "geometry-course/textbook/data/coordinate-additional-applications.json": "9605c0578794ed4ced607dcd172cfbc23c348764863ba3a94110eed9e4cb151c",
   "geometry-course/textbook/data/coordinate-additional-figures.json": "f56367e0be6b845b59f84fa65d7ab70dd4691d5ff5faebc656ddb845438afd91",
@@ -105,7 +109,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "798e1ab4e2c87cf64a42faa25bb88ec5a0be88b35c4a4067a35c8317d033f37c",
+  "geometry-course/textbook/assets/additional-lessons.js": "a510ca4ca21ae39686487b2b4ecb04de8d9c2909751bfc2ff44be8824f0ddb09",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",

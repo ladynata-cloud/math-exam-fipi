@@ -73,6 +73,14 @@ on:
       - 'tools/geometry-textbook/*coordinate_additional_curves*'
       - 'geometry-course/textbook/data/coordinate-additional-curves.json'
       - 'tools/geometry-textbook/*coordinate_additional_applications*'
+      - 'tools/geometry-textbook/*upper_semicircle*'
+      - 'tools/geometry-textbook/*trigonometric_signs*'
+      - 'geometry-course/textbook/data/trigonometric-signs.json'
+      - 'tools/geometry-textbook/*trigonometric_rays*'
+      - 'geometry-course/textbook/data/trigonometric-rays.json'
+      - 'tools/geometry-textbook/*slope_and_reflection*'
+      - 'geometry-course/textbook/data/slope-and-reflection.json'
+      - 'geometry-course/textbook/data/upper-semicircle.json'
       - 'geometry-course/textbook/data/coordinate-additional-applications.json'
       - 'geometry-course/textbook/data/coordinate-additional-figures.json'
       - 'geometry-course/textbook/data/coordinate-additional-vectors.json'
@@ -123,6 +131,8 @@ jobs:
       - run: python3 tools/geometry-textbook/circle_equations.py --check && python3 tools/geometry-textbook/check_circle_equations.py
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
+      - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/upper_semicircle.py --check && python3 tools/geometry-textbook/check_upper_semicircle.py
       - run: python3 tools/geometry-textbook/coordinate_additional_curves.py --check && python3 tools/geometry-textbook/coordinate_additional_applications.py --check && python3 tools/geometry-textbook/check_coordinate_additional_curves.py
       - run: python3 tools/geometry-textbook/coordinate_additional_figures.py --check && python3 tools/geometry-textbook/check_coordinate_additional_figures.py
       - run: python3 tools/geometry-textbook/coordinate_additional_vectors.py --check && python3 tools/geometry-textbook/check_coordinate_additional_vectors.py

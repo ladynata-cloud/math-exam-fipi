@@ -67,7 +67,11 @@
       ['/geometry-course/textbook/data/coordinate-additional-vectors.json', '№1076–1078'],
       ['/geometry-course/textbook/data/coordinate-additional-figures.json', '№1079–1086'],
       ['/geometry-course/textbook/data/coordinate-additional-curves.json', '№1087–1092'],
-      ['/geometry-course/textbook/data/coordinate-additional-applications.json', '№1093–1097']
+      ['/geometry-course/textbook/data/coordinate-additional-applications.json', '№1093–1097'],
+      ['/geometry-course/textbook/data/upper-semicircle.json', 'пп. 100–103 и №1098–1099'],
+      ['/geometry-course/textbook/data/trigonometric-signs.json', '№1100–1103'],
+      ['/geometry-course/textbook/data/trigonometric-rays.json', '№1104–1106'],
+      ['/geometry-course/textbook/data/slope-and-reflection.json', '№1107–1108']
   ];
 
   async function forCourse(base) {

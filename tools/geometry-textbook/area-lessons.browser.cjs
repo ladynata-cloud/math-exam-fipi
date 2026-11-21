@@ -31,6 +31,8 @@ const server=http.createServer((req,res)=>{
  const equationAnswers={1051:['2','13'],'1052-1':['5','4'],'1052-2':['2','9'],'1052-3':['-7','9/4'],'1052-4':['-3','25'],1053:['10','13'],1054:['25','25'],'1055-1':['2','13'],'1055-2':['3','10'],1056:['16','1'],1057:['4','3']};
  const lineAnswers={'1058-1':['3','-1'],'1058-2':['-3','-3'],'1058-3':['-6','-1'],1059:['3','2'],'1060-1':['1','-6'],'1060-2':['5','3'],1061:['5','-3'],'1062-1':['3','-2'],'1062-2':['-2','3'],'1062-3':['-4','1'],'1062-4':['7','-1'],1063:['5','4'],1064:['5','6']};
  const locusAnswers={1065:['8','1'],1066:['-3','0'],'1067-1':['0','4'],'1067-2':['1','0'],'1068-1':['2','1'],'1068-2':['3','0'],1069:['4','4'],'1070-1':['4','1'],'1070-2':['1/3','2/3'],1071:['1','2'],1072:['3','0'],1073:['-2','-3'],1074:['32','2'],1075:['-3','-2']};
+ const trigRayAnswers={"1100-1":["3","4"],"1100-2":["5","3"],"1100-3":["0","1"],"1101-1":["2","3"],"1101-2":["15","4"],"1101-3":["2","0"],"1102-1":["0","0"],"1102-2":["1","-4"],"1102-3":["1","-1"],"1102-4":["-4","3"],"1103":["-1","1"],"1104-1":["2","1"],"1104-2":["1","1"],"1104-3":["-1","1"],"1105-1":["9","36"],"1105-2":["0","3"],"1105-3":["-1","5"],"1105-4":["0","-2"],"1105-5":["1","2"],"1106-1":["45","135"],"1106-2":["90","90"],"1106-3":["30","30"],"1106-4":["45","45"],"1107-1":["1","135"],"1107-2":["-1","45"],"1107-3":["1","150"],"1107-4":["-1","30"],"1107-5":["-1","60"],"1108":["5","5"]};
+ const semicircleAnswers={"t100":["1","-1"],"t101":["1","-1"],"t102":["1","-2"],"t103":["1","135"],"1098-1":["3","0"],"1098-2":["2","1"],"1099":["1","1"]};
  const endCoordinateAnswers={"1087-1":["25","3"],"1087-2":["1","2"],"1087-3":["-20","2"],"1087-4":["25","1"],"1087-5":["4","3"],"1088":["5","8"],"1089-1":["5/2","5"],"1089-2":["-2","4"],"1090-1":["16","2"],"1090-2":["-4","1"],"1090-3":["-17","2"],"1091":["2","3"],"1092-1":["2","3"],"1092-2":["3","-2"],"1092-3":["3","15"],"1093":["709","97"],"1094":["3","1"],"1095":["10","-10"],"1096":["20","97"],"1097-1":["-2","6"],"1097-2":["1","20"]};
  const additionalFigureAnswers={"1079":["73","13"],"1080":["289","13"],"1081-1":["25","3"],"1081-2":["100","5"],"1082":["65","2"],"1083-1":["6","1"],"1083-2":["50","32"],"1083-3":["4","3"],"1084":["36","25"],"1085":["58","24"],"1086":["3","6"]};
  const additionalVectorAnswers={"1076-1":["-1","-2/3"],"1076-2":["-1","2"],"1076-3":["1","3"],"1076-4":["2","-4"],"1077-1":["-1","125"],"1077-2":["4","100"],"1077-3":["5","205"],"1077-4":["-18","180"],"1078":["6","4"]};
@@ -40,9 +42,9 @@ const server=http.createServer((req,res)=>{
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1097/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1108/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -54,6 +56,33 @@ const server=http.createServer((req,res)=>{
    await page.locator('[data-main-model] svg').waitFor();
    assert.equal(await page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1'))?.checked===true,id),false);
    const coefficient={
+    "1100-1":["-√3/2","√3/2","неотрицателен","sqrt(3)/2"],
+    "1100-2":["-√5/3","√5/3","неотрицателен","sqrt(5)/3"],
+    "1100-3":["1","0","неотрицателен","0.0"],
+    "1101-1":["1/2","±1/2","две абсциссы","0.5 и -0.5"],
+    "1101-2":["√15/4","±√15/4","две абсциссы","sqrt(15)/4 и -sqrt(15)/4"],
+    "1101-3":["1","±1","две абсциссы","1 и -1"],
+    "1102-1":["1","0","знаменатель","0.0"],
+    "1102-2":["√3/3","-√3/3","знаменатель","-1/sqrt(3)"],
+    "1102-3":["-1","1","знаменатель","+1"],
+    "1102-4":["3/4","-3/4","знаменатель","-¾"],
+    "1103":["√3/2;-1/2;-√3","√3/2;-1/2;-√3;√2/2;-√2/2;-1;1/2;-√3/2;-√3/3","тупым углам","sqrt(3)/2; -1/2; -sqrt(3); sqrt(2)/2; -sqrt(2)/2; -1; 1/2; -sqrt(3)/2; -1/sqrt(3)"],
+    "1105-1":["3/2;3/2","(3*sqrt(2)/2; 3*sqrt(2)/2)","каждой координаты","3√2/2;3√2/2"],
+    "1105-2":["1,5;0","(0; 1,5)","каждой координаты","0;3/2"],
+    "1105-3":["5√3/2;5/2","(-5*sqrt(3)/2; 2,5)","каждой координаты","-5√3/2;5/2"],
+    "1105-4":["1;0","(-1; 0)","каждой координаты","-1;0"],
+    "1105-5":["1;√3","(sqrt(3); 1)","каждой координаты","√3;1"],
+    "1106-1":["135","45","четверть","45 градусов"],
+    "1106-2":["0","90","четверть","90 градусов"],
+    "1106-3":["30","150","четверть","150 градусов"],
+    "1106-4":["45","135","четверть","135 градусов"],
+    "1107-1":["135","45","Знак k","45 градусов"],
+    "1107-2":["45","135","Знак k","135 градусов"],
+    "1107-3":["150","30","Знак k","30 градусов"],
+    "1107-4":["30","150","Знак k","150 градусов"],
+    "1107-5":["60","120","Знак k","120 градусов"],
+    "1108":["1;-5;-1;5;-10;-15","1;-5;-1;5;-10;15","горизонтальное направление","y=x−5; y=−x+5; (−10;15)"],
+    '1098-1':['1;2','1;2;3','Отрицательная абсцисса','1, 2, 3'],'1098-2':['1;2;5','1;2','без округления','1, 2'],
     "1087-1":["1;-2;25","1;-2;5","знак правой части","(1;−2);5"],
     "1087-2":["0;7;1","0;-7;1","знак правой части","(0;−7);1"],
     "1087-3":["-4;2;20","нет","знак правой части","не является окружностью"],
@@ -152,7 +181,7 @@ const server=http.createServer((req,res)=>{
    const midpointCases={'972-1':5,'972-2':4,973:3,974:3,975:3};
    const appliedCases={976:2,977:4,978:2,979:3,980:3};
    const lengthCases={981:3,982:3,983:2,984:2,985:3,986:3,987:3};
-   const extraCase=(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
+   const extraCase=n==='1103'?'case-4':Object.hasOwn(trigRayAnswers,n)?'case-3':(n==='1098-1'||n==='1098-2')?'case-6':n==='1099'?'case-5':n==='t100'?'case-4':Object.hasOwn(semicircleAnswers,n)?'case-3':(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
    const gridCase=Object.hasOwn(gridAnswers,n)?'case-'+(Number(number)<=1006?6:3):null;
    const actionCase=Object.hasOwn(actionAnswers,n)?'case-'+(n==='1011'?4:n==='1012'?6:3):null;
    const positionCase=Object.hasOwn(positionAnswers,n)?'case-3':null;
