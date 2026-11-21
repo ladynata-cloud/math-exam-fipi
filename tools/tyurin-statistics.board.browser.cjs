@@ -51,7 +51,9 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--makarychev9-2018')?{
+const catalogue=process.argv.includes('--merzlyak7-2015')?{
+  directory:'merzlyak9-2014',entries:[[93,51,53]],uniqueLessons:52,search:'merzlyak9-2014',match:'введение',lesson:'93-6-3',chart:'svg[aria-label*="Дерево выражения"]',storage:'math:merzlyak9-2014:v1:'
+}:process.argv.includes('--makarychev9-2018')?{
   directory:'makarychev8-2018',entries:[[49,80,35]],uniqueLessons:34,search:'makarychev8-2018',match:'углублённый уровень',lesson:'49-4b',chart:'svg[aria-label*="График функции с отдельными ветвями"]',storage:'math:makarychev8-2018:v1:'
 }:process.argv.includes('--makarychev7-2018')?{
   directory:'makarychev8-2018',entries:[[91,61,57]],uniqueLessons:56,search:'makarychev8-2018',match:'углублённый уровень',lesson:'91-18',chart:'svg[aria-label*="Изменение величины по этапам"]',storage:'math:makarychev8-2018:v1:'
