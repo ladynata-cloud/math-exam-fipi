@@ -24,6 +24,9 @@ taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
 const reviewedSingleScripts={
+  // Reviewed interactive ruler and notebook. The historic HTML controls stay pinned;
+  // the full arithmetic path, boundary positions and assistance are exercised in the standalone/browser suites.
+  'trainers/oge-basics/multiplication-division/long-division-quotient-digit.html':'2f3c6b5aad8a60134100f8fcfbd1b004ab3a5d788f58bc8025ed673884d21e8e',
   // The requested first percentage uses the existing table, visual model and grading.
   // The normal random route and the article example are exercised separately.
   'trainers/percent-part-whole-trainer.html':'1b1e2bbd1bc8a3f3ff60a584b183131ea1311ed2285d913f315266183ea0c631',
