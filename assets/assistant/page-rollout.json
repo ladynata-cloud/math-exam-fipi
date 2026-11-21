@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "ab2434e0b967dc76eaed061c1fd13f9f2f5a42007ac92a70b61d067453ea8ecb",
-      "afterSha256": "4f51719c847561e464aed5bcf9a098ceb33b5466932c6844a6023f3374ea1d27",
+      "beforeSha256": "dbc46ead1ab85d7f4e40b5b5d478a2d9bef433f4a5e527e6c7d63196f94c2451",
+      "afterSha256": "1e6a605a7a68cdacfff243e79b110dc8154bae60b4001e0309058821fd560a17",
       "placement": "before-head-close",
-      "sourceSha": "7442a597b30f40d6a3f8f69cbd7b987b31778644"
+      "sourceSha": "2090e98ae3755b42352a77f3be88b005603b395e"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6876,6 +6876,15 @@
         "school/index.html"
       ],
       "boundary": "II часть, §26, с. 15. В №5.53–5.56 подтверждены исходные данные, личные уроки на 320 и 375 пикселях и совместный урок о доле високосного года с ошибкой, исправлением, передачей управления и двойной перезагрузкой."
+    },
+    {
+      "previousBaseSha": "7442a597b30f40d6a3f8f69cbd7b987b31778644",
+      "sourceBaseSha": "2090e98ae3755b42352a77f3be88b005603b395e",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, II часть, §26, с. 15–16. Исходные №5.57–5.60: Проверены индивидуальные мобильные уроки и исследование в новой комнате, где каждая точка обозначает одну собаку, включая две перезагрузки и исправление без подсказки."
     }
   ],
   "coverageUpdates": [
