@@ -12,13 +12,15 @@ const pageList=[3,5,5,9,10,13,16,21,24,27,28,31,33,36,43,47,50,55,57,60,63,68,70
 assert.deepEqual(Array.from(book.mapping,r=>r.page),pageList);assert.deepEqual(Array.from(book.mapping.filter(r=>r.sectionLabel.endsWith('*')),r=>r.sectionLabel),['2.3.5*','2.3.6*','3.2.6*']);
 for(const [i,r] of book.mapping.entries()){
  assert.equal(r.sourcePath,source(r.page));if(i===1||i===2){assert.equal(r.coverage,'module');assert(r.boardPath.endsWith('/6-topic-'+i));}
+ else if(i===3){assert.equal(r.coverage,'module');assert(r.boardPath.endsWith('/6-3-1'));}
  else {assert(r.bookOnly);assert(!r.boardPath&&!r.externalPath);}
 }
 const entries=[...Array.from(book.mapping.slice(1,3),r=>({path:r.externalPath,page:r.page})),...book.exercises];
 const keys=['topic-1','topic-2','1-1','1-2','1-3','1-4','2-1','2-2','2-3','2-4','2-5','2-6'];
 const print=['1 (1)','1 (2)','1 (3)','1 (4)','2 (1)','2 (2)','2 (3)','2 (4)','2 (5)','2 (6)'];
+keys.push('3-1','3-2','3-3','3-4','3-5','3-6','3-7','3-8','4-1','4-2','4-3','4-4');print.push('3 (1)','3 (2)','3 (3)','3 (4)','3 (5)','3 (6)','3 (7)','3 (8)','4 (1)','4 (2)','4 (3)','4 (4)');
 assert.deepEqual(Array.from(book.exercises,x=>x.printed),print);
-const scripts=['trainers/tyurin-statistics/content.js',dir+'/irrationality.js',dir+'/decimal-bounds.js',dir+'/antiderivatives.js','trainers/tyurin-statistics/app.js'].map(read);
+const scripts=['trainers/tyurin-statistics/content.js',dir+'/irrationality.js',dir+'/decimal-bounds.js',dir+'/antiderivatives.js',dir+'/direct-integration.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(path,stash){
  const dom=new JSDOM(html,{url:'https://example.test'+path,runScripts:'outside-only'}),w=dom.window,doc=w.document;
  w.TextEncoder=TextEncoder;w.Math.random=()=>0;const id=path.split('/').at(-1),key='math:vilenkin-analysis-2014:v1:'+id;
@@ -38,7 +40,22 @@ function independent(i,s){
  if(i===8)return [2,3*k,2*s+3];
  if(i===9){const x=1/(2*k);return [k*k,2*k,1/Math.sqrt(1-1/(16*k*k))];}
  if(i===10){const x=(1+s%3)**2,b=s+3;return [1/(2*Math.sqrt(x)),-2*b,-(s+2)*Math.sin(Math.sqrt(x))/(2*Math.sqrt(x))-2*b*x*Math.cos(x*x)];}
- return [2+s%5,3+s%5,k];
+ if(i===11)return [2+s%5,3+s%5,k];
+ if(i>=12&&i<16){
+  const a=s+2,b=2*s+3,x=(s+1)/(s+4);
+  if(i===12)return [-a,-b,-a*Math.cos(x)-b*Math.tan(x)];
+  if(i===13)return [a,b,a*Math.asin(x)+b*Math.atan(x)];
+  if(i===14)return [a,-b,a*Math.sin(x)-b*Math.atan(x)];
+  return [-a,-b,-a/Math.tan(x)-b*Math.asin(x)];
+ }
+ if(i===16){const a=s+1,b=s+3,c=2*s+5;return [a,b-a,c-(b-a)];}
+ if(i===17){const a=s+2,b=2*s+1;return [a,-b,a-b];}
+ if(i===18){const a=s+1;return [-a,-a/3,a*a];}
+ if(i===19){const k=s+2;return [1/k,1/k,Math.asin(.5)/k];}
+ if(i===20){const a=s+2,b=2*s+3,x=1+s%3;return [a/2,-b,(a*x**3-b*x*x+a*x-b)/(x*x+1)];}
+ if(i===21){const a=s+2,b=2*s+5;return [a,b-a,b];}
+ if(i===22)return [1,-(2*s+1),-(2*s+1)];
+ const a=s+2;return [a*a,a*a+1,2];
 }
 const act=(doc,k)=>doc.querySelector('[data-action="'+k+'"]').click();
 function submit(doc,value){const a=doc.querySelector('#answer');a.value=String(value);a.dispatchEvent(new doc.defaultView.Event('input',{bubbles:true}));a.form.dispatchEvent(new doc.defaultView.Event('submit',{bubbles:true,cancelable:true}));}
@@ -46,7 +63,7 @@ for(const [i,r] of entries.entries()){
  const id='6-'+keys[i];assert.equal(r.path,'/'+dir+'/index.html#lesson/'+id);
  let {dom,w,doc,key,lesson}=open(r.path);
  if(i>1){assert.equal(r.title,lesson.title);assert.equal(r.path,r.boardPath);}
- assert.equal(doc.querySelectorAll('#lesson option').length,42);assert(doc.querySelector('#edition').textContent.includes('11 класс'));
+ assert.equal(doc.querySelectorAll('#lesson option').length,54);assert(doc.querySelector('#edition').textContent.includes('11 класс'));
  assert.equal(doc.querySelector('#back').hash,'#book/source-6');assert.equal(doc.querySelector('#source').href,source(r.page));
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),r.path);
  assert.equal(w.MathExamTopicEdition.nextId(lesson),keys[i+1]&&'6-'+keys[i+1]);
@@ -66,4 +83,4 @@ for(const [i,r] of entries.entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,['fixed','first','help']);act(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
  assert.equal(w.localStorage.getItem('math:vilenkin-analysis-2014:v1:30-14'),'earlier local state');dom.window.close();
 }
-console.log('Vilenkin grade 11 advanced 2014: 95 printed rows; two introduction models, all ten subparts of exercises 1 and 2, 396 mathematical answers, local progress and book isolation.');
+console.log('Vilenkin grade 11 advanced 2014: 95 printed rows; two introduction models, all 22 subparts of exercises 1–4, 792 mathematical answers, local progress and book isolation.');
