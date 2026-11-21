@@ -87,7 +87,7 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .pm-visual .pm-chart.pcm-segment, .pm-visual .pm-chart.pcm-group-rule { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-ratio-triangle, .pm-visual .pm-chart.pcm-ratio-triangle { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-dissection, .pm-visual .pm-chart.pcm-dissection { min-width: 0; }
-.pm-task-figure .pm-chart.pcm-tangent-nest, .pm-task-figure .pm-chart.pcm-five-lines, .pm-task-figure .pm-chart.pcm-city-scale, .pm-task-figure .pm-chart.pcm-flat-scale, .pm-task-figure .pm-chart.pcm-parcel-scale, .pm-task-figure .pm-chart.pcm-hundred-table, .pm-task-figure .pm-chart.pcm-plan-garden, .pm-task-figure .pm-chart.pcm-road-triangle { min-width: 0; }
+.pm-task-figure .pm-chart.pcm-tangent-nest, .pm-task-figure .pm-chart.pcm-five-lines, .pm-task-figure .pm-chart.pcm-city-scale, .pm-task-figure .pm-chart.pcm-flat-scale, .pm-task-figure .pm-chart.pcm-parcel-scale, .pm-task-figure .pm-chart.pcm-operation-spokes, .pm-task-figure .pm-chart.pcm-hundred-table, .pm-task-figure .pm-chart.pcm-plan-garden, .pm-task-figure .pm-chart.pcm-road-triangle { min-width: 0; }
 
 .pm-visual .pm-table.pcm-route-table { width: 100%; min-width: 0; table-layout: fixed; }
 .pcm-route-table :is(th, td) { white-space: normal; overflow-wrap: anywhere; }
@@ -1210,6 +1210,32 @@ for(let a=0;a<4;a++)for(let b=0;b<4;b++)for(let c=0;c<4;c++){
  if(a===b||b===c||a===c)continue;
  quartetOrders.push([a,b,c,6-a-b-c]);
 }
+function wheelLabel(v){return String(v).replace(/^(-?)\./,'$10.').replace('.' ,',').replace('-', '−');}
+function wheelFigure(scenario,selected=-1){
+ const onIn=scenario.direction==='in',cx=119,cy=113,radius=80;
+ const fig=svg('svg',{viewBox:'0 0 239 229',role:'img',class:'pm-chart pcm-group-rule pcm-operation-spokes','aria-label':onIn?'Восемь чисел. От каждого стрелка к операции деления в центре.':'От начального числа в центре к восьми отдельным действиям направлены стрелки.'});
+ const center=wheelLabel(scenario.center);
+ fig.append(svg('circle',{cx,cy,r:23,fill:'#dfecdb',stroke:'#45694c','stroke-width':1.5}));
+ txt(fig,cx,cy+5,(onIn?'÷ ':'')+center,{'font-size':14,'font-weight':700});
+ for(const [i,[op,operand]] of scenario.spokes.entries()){
+  const theta=(-112.5+i*45)*Math.PI/180,dx=Math.cos(theta),dy=Math.sin(theta),outerX=cx+dx*radius,outerY=cy+dy*radius;
+  const start=onIn?radius-24:24,end=onIn?25:radius-25;
+  const px=cx+end*dx,py=cy+end*dy,dir=onIn?-1:1,color=i===selected?'#a15129':'#607468';
+  ln(fig,cx+start*dx,cy+start*dy,px,py,{stroke:color,'stroke-width':i===selected?2.7:1.4,'data-ray':i+1,'data-direction':scenario.direction});
+  fig.append(svg('polygon',{points:[[px,py],[px-dir*6*dx+3*dy,py-dir*6*dy-3*dx],[px-dir*6*dx-3*dy,py-dir*6*dy+3*dx]].map(p=>p.join(',')).join(' '),fill:color}));
+  fig.append(svg('rect',{x:outerX-23,y:outerY-15,width:46,height:30,rx:8,fill:i===selected?'#f4dbc1':'#f8f9f3',stroke:color,'stroke-width':i===selected?2:1}));
+  txt(fig,outerX,outerY+4,(onIn?'':op)+wheelLabel(operand),{'font-size':13,'font-weight':i===selected?700:500});
+  txt(fig,cx+dx*(radius+32),cy+dy*(radius+32)+3,String(i+1),{'font-size':12,'data-ray-label':i+1});
+ }
+ return fig;
+}
+function tripDistances(first,second){
+ const figure=svg('svg',{viewBox:'0 0 236 111',role:'img',class:'pm-chart pcm-group-rule','aria-label':'Две полоски в общем масштабе показывают путь по течению и против течения.'});
+ const factor=180/Math.max(first,second);
+ for(const [i,[d,label,color]]of [[first,'По течению','#548b70'],[second,'Против течения','#a57851']].entries()){
+  const y=32+i*48;txt(figure,14,y-6,label,{'font-size':13,'text-anchor':'start'});figure.append(svg('rect',{x:14,y,width:d*factor,height:10,fill:color,'data-km':d}));txt(figure,14,y+25,num(d)+' км',{'font-size':12,'text-anchor':'start'});
+ }return figure;
+}
 function gardenScale(placement,gate){
  const pic=svg('svg',{viewBox:'0 0 242 173',role:'img',class:'pm-chart pcm-group-rule pcm-plan-garden','aria-label':placement===undefined?'Прямоугольный участок длиной 40 м и шириной 30 м.':'Участок, дом и ворота на длинной нижней стороне.'});
  const x=21,y=19,s=20.5,gardenW=8,gardenH=6,home=2;
@@ -1463,6 +1489,20 @@ function configFor(lesson,task){
  if(lesson?.id==='p34' && Object.hasOwn(trickInputs,task?.numberTrick)){const options=trickInputs[task.numberTrick];return {title:'Пройди арифметический фокус по действиям',controls:[c('Исходное число',options),c('Выполнено действий',range(0,numberTrail(task.numberTrick,0).length-1))],initial:[0,0]};}
  if(lesson?.id==='p34' && task?.coefficientStudy)return {title:'Где кончается степень?',controls:[c('Выражение',[[0,'Из упражнения'],[1,'Новый пример']]),c('Как проверить?',[[0,'Сначала решу'],[1,'Числовая часть'],[2,'Буквенная часть']])],initial:[0,0]};
  if(lesson?.id==='p34' && task?.coefficientContrast)return {title:'Один набор, разные признаки',controls:[c('Признак',[[0,'Нецелый коэффициент'],[1,'Только одна буква'],[2,'Два числовых множителя']]),c('Показ сравнения',[[0,'Сначала выберу сам'],[1,'Сверю свойство']])],initial:[0,0]};
+ if(lesson?.id==='p35' && task?.collectedEquation){
+  const M=root.PetersonMath,r=task.collectedEquation.solution,options=[-1,0,1].map((delta,i)=>[i,M.answer(M.operation('add',r,delta))]);
+  return {title:'Сверь обе стороны уравнения',controls:[c('Уравнение',[[0,'Из задания'],[1,'Другая правая часть']]),c('Неизвестное',options),c('Проверка',[[0,'Сначала решу'],[1,'Сверю значения']])],initial:[0,0,0]};
+ }
+ if(lesson?.id==='p35' && task?.packingStudy)return {title:'Собери партии пакетов и коробок',controls:[c('Партия',[[0,'32 кг; разница 16'],[1,'45 кг; разница 10']]),c('Число пакетов',[8,12,16,20,24]),c('Проверка',[[0,'Сначала оценю'],[1,'Сверю массу']])],initial:[0,8,0]};
+ if(lesson?.id==='p35' && task?.patrolStudy)return {title:'Две части пути по реке и движение по озеру',controls:[c('Маршрут',[[0,'Из задания'],[1,'Новый маршрут']]),c('Скорость в стоячей воде',[8,9,12,15]),c('Проверка',[[0,'Сначала оценю'],[1,'Сверю расстояние']])],initial:[0,8,0]};
+ if(lesson?.id==='p35' && task?.spokeStudy)return {title:'Прочти действие по направлению стрелки',controls:[c('Луч',range(1,8)),c('Число в центре',[[0,'Из задания'],[1,'Другое число']]),c('Ответ',[[0,'Сначала вычислю'],[1,'Сверю']])],initial:[1,0,0]};
+ if(lesson?.id==='p35' && task?.factorSum)return {title:'Вынеси общий числовой множитель',controls:[c('Пример',[[0,'Из задания'],[1,'Изменить слагаемое']]),c('Проверка',[[0,'Сначала решу'],[1,'Содержимое скобок'],[2,'Весь результат']])],initial:[0,0]};
+ if(lesson?.id==='p35' && task?.differenceSquareStudy){
+  const cases=task.differenceSquareStudy;
+  const controls=cases.free?[c('Число a',range(-6,6)),c('Число b',range(-6,6))]:[c('Числа',[[0,'Из учебника'],[1,'Другая пара']])];
+  controls.push(c('Как проверить?',[[0,'Сначала вычислю'],[1,'Три выражения'],[2,'Площади']]));
+  return {title:'Квадрат разности и разность квадратов',controls,initial:cases.free?[4,1,0]:[0,0]};
+ }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.ratioCollection){
@@ -1574,15 +1614,17 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.squareGridStudy && index<3)hiddenControl=3;
+  if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
+  if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -1659,6 +1701,54 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   show(table(['Запись','Коэффициент'],rows));say('Выбранный признак: '+['нецелый коэффициент','одна различная буква','два отдельно записанных числовых множителя'][a]+'.');
   if(b===1)say('По этому признаку выделяется '+rows[focused][0]+'. Своё объяснение запиши в тетради.');
   stepList(['Сначала сформулируй точное свойство.','Сверь по нему каждую из пяти записей.','Испытай другой признак.']);
+ }
+ else
+ if(n===35 && task.collectedEquation){
+  const e=task.collectedEquation,M=root.PetersonMath,x=M.operation('add',e.solution,b-1);
+  const right=a===0?M.parse(e.right):M.operation('add',e.right,e.factor);let left=M.operation('add',M.operation('multiply',e.factor,x),e.constant);
+  say(a===0?e.printed:'Слева оставь те же скобки. Теперь вместо прежней правой части поставь '+M.answer(right)+'.');say(e.variable+' = '+M.answer(x)+'.');
+  if(state.values[2]===1){show(table(['Часть','Значение'],[['Слева',M.answer(left)],['Справа',M.answer(right)]]));say(M.equal(left,right)?'Равенство выполняется. Корень подходит.':'Значения различны. Проверь другой вариант.');}
+  stepList(['Раскрой каждую скобку вместе со знаком множителя.','Собери коэффициенты и свободные числа.','Подставь предложенное число в обе части.']);
+ }
+ else if(n===35 && task.packingStudy){
+  const delta=a===0?16:10,target=a===0?32:45,boxes=b+delta,m1=b*1.5,m2=boxes*.5;
+  show(table(['Упаковки','Масса одного вида'],[[b+' пакетов',num(b)+' × 1,5 кг'],[boxes+' коробок',num(boxes)+' × 0,5 кг']]));
+  say('Коробок на '+delta+' больше, всего требуется '+target+' кг.');
+  if(state.values[2]===1){say('Получилось '+num(m1)+' + '+num(m2)+' = '+num(m1+m2)+' кг.');say(m1+m2===target?'Масса совпала. Всего упаковок '+(b+boxes)+'.':'Масса пока отличается. Одна добавочная пара меняет её на 2 кг.');}
+  stepList(['Обозначь число пакетов буквой.','Прибавь разницу, чтобы узнать число коробок.','Сложи массы, затем отдельно сложи количества.']);
+ }
+ else if(n===35 && task.patrolStudy){
+  const [v,t1,t2,target,lake]=a===0?[2,6,8,164,54]:[1,4,6,88,45],s1=(b+v)*t1,s2=(b-v)*t2;
+  say('Течение '+v+' км/ч. По течению '+t1+' ч, против — '+t2+' ч. Заданный путь '+target+' км. На озере предстоит '+lake+' км.');
+  if(state.values[2]===1){show(tripDistances(s1,s2));say('Речной путь '+s1+' + '+s2+' = '+(s1+s2)+' км.');say(s1+s2===target?'Данные согласуются. На озере '+lake+' : '+b+' = '+num(lake/b)+' ч.':'Этот путь отличается от заданного. Проверь другую собственную скорость.');}
+  stepList(['Добавь скорость течения только при движении вниз по реке.','Встречное течение замедляет катер.','Для времени на озере используй собственную скорость.']);
+ }
+ else if(n===35 && task.spokeStudy){
+  const st=task.spokeStudy,M=root.PetersonMath,center=b===0?st.center:st.fresh,[op,v]=st.spokes[a-1];
+  const incoming=st.direction==='in',left=incoming?v:center,right=incoming?center:v;
+  const operation={'+':'add','−':'subtract','×':'multiply','÷':'divide'}[op];
+  show(wheelFigure({...st,center},a-1));say('Луч '+a+': '+wheelLabel(left)+' '+op+' ('+wheelLabel(right)+').');
+  if(state.values[2]===1)formula('Ответ '+M.answer(M.operation(operation,left,right))+'.');
+  stepList(['Установи начало стрелки.','Прочитай оба числа с их знаками.','Следующий луч считай отдельно от предыдущего.']);
+ }
+ else if(n===35 && task.factorSum){
+  const f=task.factorSum,M=root.PetersonMath,x=a===0?M.parse(f.terms[0]):M.operation('add',f.terms[0],1),y=M.parse(f.terms[1]);
+  say(a===0?f.printed:'Увеличь на 1 первое число внутри скобки после вынесения общего множителя.');
+  formula('Общий множитель '+M.answer(M.parse(f.factor))+'.');
+  if(b!==0){const inside=M.operation('add',x,y);say('В скобках: ('+M.answer(x)+') + ('+M.answer(y)+') = '+M.answer(inside)+'.');if(b===2)say('Весь результат '+M.answer(M.operation('multiply',inside,f.factor))+'.');}
+  stepList(['Найди множитель, присутствующий в обоих слагаемых.','Сохрани знак между оставшимися частями.','Выполни одно умножение после сложения.']);
+ }
+ else if(n===35 && task.differenceSquareStudy){
+  const st=task.differenceSquareStudy,[u,v]=st.free?[a,b]:(a===0?st.source:st.fresh),mode=st.free?state.values[2]:b;
+  say('a = '+num(u)+', b = '+num(v)+'.');
+  if(mode===1)show(table(['Выражение','Значение'],[['(a − b)²',(u-v)**2],['a² − b²',u*u-v*v],['a² − 2ab + b²',u*u-2*u*v+v*v]]));
+  if(mode===2){
+   if(u===0&&v===0)say('Обе длины равны нулю: квадрат стягивается в точку, его площадь 0.');
+   else show(squarePartition(u,-v));
+   say('Сторона квадрата — |a − b| = '+num(Math.abs(u-v))+'. Площадь '+num((u-v)**2)+'.');
+   say(u*v>0?'Модули вычитаются. Убери две полосы и верни одно общее пересечение.':u*v<0?'При разных знаках исходных чисел модули складываются. Получаются два квадрата и два одинаковых прямоугольника.':'Один из модулей равен нулю, смешанный прямоугольник имеет нулевую площадь.');
+  }
+  stepList(['Поставь скобки в квадрате всей разности.','Сравни вычисления для разных знаков.','Обоснуй тождество раскрытием произведения двух скобок.']);
  }
  else
  if(n===35 && task.likeTermsStudy){
@@ -42134,6 +42224,1562 @@ window.PetersonCourse = {
       "−3c − d",
       "c − 0,2d"
      ]
+    },
+    {
+     "id": "p35-t26",
+     "title": "К задаче №48а",
+     "kind": "number",
+     "prompt": "Реши уравнение 8(x − 4) + 3(2 − x) = −21. После решения сравни обе части при найденном значении.",
+     "answer": "1",
+     "steps": [
+      {
+       "prompt": "Коэффициент при x после раскрытия скобок?",
+       "answer": "5",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при x равен 5, свободное число -26. −21 + 26 = 5. Деление на 5 даёт x = 1."
+      },
+      {
+       "prompt": "Свободное число слева?",
+       "answer": "-26",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при x равен 5, свободное число -26. −21 + 26 = 5. Деление на 5 даёт x = 1."
+      },
+      {
+       "prompt": "Какое число останется справа, если перенести свободное число?",
+       "answer": "5",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при x равен 5, свободное число -26. −21 + 26 = 5. Деление на 5 даёт x = 1."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+     "explanation": "В левой части коэффициент при x равен 5, свободное число -26. −21 + 26 = 5. Деление на 5 даёт x = 1.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 48,
+      "reference": "№48а",
+      "subpart": "а"
+     },
+     "collectedEquation": {
+      "printed": "8(x − 4) + 3(2 − x) = −21",
+      "variable": "x",
+      "factor": "5",
+      "constant": "-26",
+      "right": "-21",
+      "solution": "1"
+     },
+     "errorCues": [
+      [
+       "-1",
+       "Подставь число обратно: обе стороны должны совпасть. Проверь знак перед скобкой и перед свободным числом."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t27",
+     "title": "К задаче №48б",
+     "kind": "number",
+     "prompt": "Реши уравнение 2(3y + 4) − (9y − 7) = 15. После решения сравни обе части при найденном значении.",
+     "answer": "0",
+     "steps": [
+      {
+       "prompt": "Коэффициент при y после раскрытия скобок?",
+       "answer": "-3",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при y равен -3, свободное число 15. После вычитания 15 получаем −3y = 0, поэтому y = 0."
+      },
+      {
+       "prompt": "Свободное число слева?",
+       "answer": "15",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при y равен -3, свободное число 15. После вычитания 15 получаем −3y = 0, поэтому y = 0."
+      },
+      {
+       "prompt": "Какое число останется справа, если перенести свободное число?",
+       "answer": "0",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при y равен -3, свободное число 15. После вычитания 15 получаем −3y = 0, поэтому y = 0."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+     "explanation": "В левой части коэффициент при y равен -3, свободное число 15. После вычитания 15 получаем −3y = 0, поэтому y = 0.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 48,
+      "reference": "№48б",
+      "subpart": "б"
+     },
+     "collectedEquation": {
+      "printed": "2(3y + 4) − (9y − 7) = 15",
+      "variable": "y",
+      "factor": "-3",
+      "constant": "15",
+      "right": "15",
+      "solution": "0"
+     },
+     "errorCues": [
+      [
+       "15",
+       "Подставь число обратно: обе стороны должны совпасть. Проверь знак перед скобкой и перед свободным числом."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t28",
+     "title": "К задаче №48в",
+     "kind": "number",
+     "prompt": "Реши уравнение 3(2n − 5) − 2(3 − 4n) = 0. После решения сравни обе части при найденном значении.",
+     "answer": "3/2",
+     "steps": [
+      {
+       "prompt": "Коэффициент при n после раскрытия скобок?",
+       "answer": "14",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при n равен 14, свободное число -21. 14n = 21. Деление на 14 даёт 3/2."
+      },
+      {
+       "prompt": "Свободное число слева?",
+       "answer": "-21",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при n равен 14, свободное число -21. 14n = 21. Деление на 14 даёт 3/2."
+      },
+      {
+       "prompt": "Какое число останется справа, если перенести свободное число?",
+       "answer": "21",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при n равен 14, свободное число -21. 14n = 21. Деление на 14 даёт 3/2."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+     "explanation": "В левой части коэффициент при n равен 14, свободное число -21. 14n = 21. Деление на 14 даёт 3/2.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 48,
+      "reference": "№48в",
+      "subpart": "в"
+     },
+     "collectedEquation": {
+      "printed": "3(2n − 5) − 2(3 − 4n) = 0",
+      "variable": "n",
+      "factor": "14",
+      "constant": "-21",
+      "right": "0",
+      "solution": "3/2"
+     },
+     "errorCues": [
+      [
+       "-3/2",
+       "Подставь число обратно: обе стороны должны совпасть. Проверь знак перед скобкой и перед свободным числом."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t29",
+     "title": "К задаче №48г",
+     "kind": "number",
+     "prompt": "Реши уравнение −4(0,3k − 0,4) + 6(−0,8k + 0,2) = 0. После решения сравни обе части при найденном значении.",
+     "answer": "7/15",
+     "steps": [
+      {
+       "prompt": "Коэффициент при k после раскрытия скобок?",
+       "answer": "-6",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при k равен -6, свободное число 14/5. −6k + 2,8 = 0. При делении двух отрицательных чисел получается k = 2,8/6 = 7/15."
+      },
+      {
+       "prompt": "Свободное число слева?",
+       "answer": "14/5",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при k равен -6, свободное число 14/5. −6k + 2,8 = 0. При делении двух отрицательных чисел получается k = 2,8/6 = 7/15."
+      },
+      {
+       "prompt": "Какое число останется справа, если перенести свободное число?",
+       "answer": "-14/5",
+       "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+       "explanation": "В левой части коэффициент при k равен -6, свободное число 14/5. −6k + 2,8 = 0. При делении двух отрицательных чисел получается k = 2,8/6 = 7/15."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Раскрой скобки и отдельно собери коэффициенты при неизвестном и свободные числа. Проверь корень подстановкой с обеих сторон.",
+     "explanation": "В левой части коэффициент при k равен -6, свободное число 14/5. −6k + 2,8 = 0. При делении двух отрицательных чисел получается k = 2,8/6 = 7/15.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 48,
+      "reference": "№48г",
+      "subpart": "г"
+     },
+     "collectedEquation": {
+      "printed": "−4(0,3k − 0,4) + 6(−0,8k + 0,2) = 0",
+      "variable": "k",
+      "factor": "-6",
+      "constant": "14/5",
+      "right": "0",
+      "solution": "7/15"
+     },
+     "errorCues": [
+      [
+       "-7/15",
+       "Подставь число обратно: обе стороны должны совпасть. Проверь знак перед скобкой и перед свободным числом."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t30",
+     "title": "К задаче №49а",
+     "kind": "number",
+     "prompt": "Вычисли 2(6a − 1) + 4(2 − a) при a = -0,625. Начни с упрощения, затем подставь значения.",
+     "answer": "1",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы a?",
+       "answer": "8",
+       "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+       "explanation": "После приведения подобных слагаемых остаётся 8a + 6. Подстановка данных из задания даёт 1."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы без букв?",
+       "answer": "6",
+       "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+       "explanation": "После приведения подобных слагаемых остаётся 8a + 6. Подстановка данных из задания даёт 1."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+     "explanation": "После приведения подобных слагаемых остаётся 8a + 6. Подстановка данных из задания даёт 1.",
+     "skills": [
+      "bracket-evaluate",
+      "signed-multiply"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 49,
+      "reference": "№49а",
+      "subpart": "а"
+     },
+     "likeTermsStudy": {
+      "printed": "2(6a − 1) + 4(2 − a)",
+      "groups": [
+       [
+        "a",
+        [
+         "12",
+         "-4"
+        ]
+       ],
+       [
+        "1",
+        [
+         "-2",
+         "8"
+        ]
+       ]
+      ],
+      "substitutions": [
+       {
+        "a": "-0.625"
+       },
+       {
+        "a": "1.25"
+       }
+      ]
+     },
+     "errorCues": [
+      [
+       "-11",
+       "Проверь знаки произведений и сумму коэффициентов отдельных групп до подстановки."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t31",
+     "title": "К задаче №49б",
+     "kind": "number",
+     "prompt": "Вычисли 15b − 3(2b + 5) + 2(−5b + 7) при b = -0,8. Начни с упрощения, затем подставь значения.",
+     "answer": "-1/5",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы b?",
+       "answer": "-1",
+       "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+       "explanation": "После приведения подобных слагаемых остаётся −b − 1. Подстановка данных из задания даёт -1/5."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы без букв?",
+       "answer": "-1",
+       "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+       "explanation": "После приведения подобных слагаемых остаётся −b − 1. Подстановка данных из задания даёт -1/5."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+     "explanation": "После приведения подобных слагаемых остаётся −b − 1. Подстановка данных из задания даёт -1/5.",
+     "skills": [
+      "bracket-evaluate",
+      "signed-multiply"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 49,
+      "reference": "№49б",
+      "subpart": "б"
+     },
+     "likeTermsStudy": {
+      "printed": "15b − 3(2b + 5) + 2(−5b + 7)",
+      "groups": [
+       [
+        "b",
+        [
+         "15",
+         "-6",
+         "-10"
+        ]
+       ],
+       [
+        "1",
+        [
+         "-15",
+         "14"
+        ]
+       ]
+      ],
+      "substitutions": [
+       {
+        "b": "-0.8"
+       },
+       {
+        "b": "2"
+       }
+      ]
+     },
+     "errorCues": [
+      [
+       "-1.8",
+       "Проверь знаки произведений и сумму коэффициентов отдельных групп до подстановки."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t32",
+     "title": "К задаче №49в",
+     "kind": "number",
+     "prompt": "Вычисли 2n(n − 4) − n(n − 8) при n = -1,5. Начни с упрощения, затем подставь значения.",
+     "answer": "9/4",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы n²?",
+       "answer": "1",
+       "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+       "explanation": "После приведения подобных слагаемых остаётся n². Подстановка данных из задания даёт 9/4."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы n?",
+       "answer": "0",
+       "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+       "explanation": "После приведения подобных слагаемых остаётся n². Подстановка данных из задания даёт 9/4."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+     "explanation": "После приведения подобных слагаемых остаётся n². Подстановка данных из задания даёт 9/4.",
+     "skills": [
+      "bracket-evaluate",
+      "signed-multiply"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 49,
+      "reference": "№49в",
+      "subpart": "в"
+     },
+     "likeTermsStudy": {
+      "printed": "2n(n − 4) − n(n − 8)",
+      "groups": [
+       [
+        "n²",
+        [
+         "2",
+         "-1"
+        ]
+       ],
+       [
+        "n",
+        [
+         "-8",
+         "8"
+        ]
+       ]
+      ],
+      "substitutions": [
+       {
+        "n": "-1.5"
+       },
+       {
+        "n": "2.5"
+       }
+      ]
+     },
+     "errorCues": [
+      [
+       "-2.25",
+       "Проверь знаки произведений и сумму коэффициентов отдельных групп до подстановки."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t33",
+     "title": "К задаче №49г",
+     "kind": "number",
+     "prompt": "Вычисли x(x + y) − y(x − y) при x = -4, y = -5. Начни с упрощения, затем подставь значения.",
+     "answer": "41",
+     "steps": [
+      {
+       "prompt": "Сумма коэффициентов группы x²?",
+       "answer": "1",
+       "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+       "explanation": "После приведения подобных слагаемых остаётся x² + y². Подстановка данных из задания даёт 41."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы xy?",
+       "answer": "0",
+       "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+       "explanation": "После приведения подобных слагаемых остаётся x² + y². Подстановка данных из задания даёт 41."
+      },
+      {
+       "prompt": "Сумма коэффициентов группы y²?",
+       "answer": "1",
+       "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+       "explanation": "После приведения подобных слагаемых остаётся x² + y². Подстановка данных из задания даёт 41."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Сначала раскрой каждую скобку с её множителем. Вместе собираются только одинаковые степени одних и тех же букв.",
+     "explanation": "После приведения подобных слагаемых остаётся x² + y². Подстановка данных из задания даёт 41.",
+     "skills": [
+      "bracket-evaluate",
+      "signed-multiply"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 49,
+      "reference": "№49г",
+      "subpart": "г"
+     },
+     "likeTermsStudy": {
+      "printed": "x(x + y) − y(x − y)",
+      "groups": [
+       [
+        "x²",
+        [
+         "1"
+        ]
+       ],
+       [
+        "xy",
+        [
+         "1",
+         "-1"
+        ]
+       ],
+       [
+        "y²",
+        [
+         "1"
+        ]
+       ]
+      ],
+      "substitutions": [
+       {
+        "x": "-4",
+        "y": "-5"
+       },
+       {
+        "x": "-2",
+        "y": "3"
+       }
+      ]
+     },
+     "errorCues": [
+      [
+       "-9",
+       "Проверь знаки произведений и сумму коэффициентов отдельных групп до подстановки."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t34",
+     "title": "К задаче №50а",
+     "kind": "number",
+     "prompt": "32 кг конфет расфасовали в пакеты по 1,5 кг и коробки по 0,5 кг. Пакетов оказалось на 16 меньше. Сколько пакетов и коробок вместе понадобилось?",
+     "answer": "40",
+     "steps": [
+      {
+       "prompt": "Масса шестнадцати добавочных коробок в кг?",
+       "answer": "8",
+       "hint": "Пусть p — число пакетов. Коробок больше: их p + 16. Масса каждой упаковки умножается на число упаковок такого типа.",
+       "explanation": "1,5p + 0,5(p + 16) = 32, то есть 2p + 8 = 32. Получаем 12 пакетов и 28 коробок. Массы 18 и 14 кг дают 32 кг. Всего 40 упаковок."
+      },
+      {
+       "prompt": "Сколько пакетов?",
+       "answer": "12",
+       "hint": "Пусть p — число пакетов. Коробок больше: их p + 16. Масса каждой упаковки умножается на число упаковок такого типа.",
+       "explanation": "1,5p + 0,5(p + 16) = 32, то есть 2p + 8 = 32. Получаем 12 пакетов и 28 коробок. Массы 18 и 14 кг дают 32 кг. Всего 40 упаковок."
+      },
+      {
+       "prompt": "Сколько коробок?",
+       "answer": "28",
+       "hint": "Пусть p — число пакетов. Коробок больше: их p + 16. Масса каждой упаковки умножается на число упаковок такого типа.",
+       "explanation": "1,5p + 0,5(p + 16) = 32, то есть 2p + 8 = 32. Получаем 12 пакетов и 28 коробок. Массы 18 и 14 кг дают 32 кг. Всего 40 упаковок."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Пусть p — число пакетов. Коробок больше: их p + 16. Масса каждой упаковки умножается на число упаковок такого типа.",
+     "explanation": "1,5p + 0,5(p + 16) = 32, то есть 2p + 8 = 32. Получаем 12 пакетов и 28 коробок. Массы 18 и 14 кг дают 32 кг. Всего 40 упаковок.",
+     "skills": [
+      "linear-equation",
+      "decimal-multiply"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 50,
+      "reference": "№50а",
+      "subpart": "а"
+     },
+     "packingStudy": true,
+     "errorCues": [
+      [
+       "12",
+       "Это число пакетов. В ответ входят также коробки."
+      ],
+      [
+       "28",
+       "Это число коробок. Добавь число пакетов."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t35",
+     "title": "К задаче №50б",
+     "kind": "number",
+     "prompt": "Катер шёл 6 ч по течению и 8 ч против течения, всего 164 км. Течение 2 км/ч. Сколько часов займут 54 км по озеру при той же собственной скорости?",
+     "answer": "9/2",
+     "steps": [
+      {
+       "prompt": "Сколько часов занимали обе части речного пути?",
+       "answer": "14",
+       "hint": "По течению к собственной скорости прибавляют скорость реки, против течения её вычитают. На озере течения нет.",
+       "explanation": "6(v + 2) + 8(v − 2) = 164. Получаем 14v − 4 = 164, значит v = 12 км/ч. На озере время равно 54/12 = 4,5 ч (4 ч 30 мин)."
+      },
+      {
+       "prompt": "Скорость катера на озере в км/ч?",
+       "answer": "12",
+       "hint": "По течению к собственной скорости прибавляют скорость реки, против течения её вычитают. На озере течения нет.",
+       "explanation": "6(v + 2) + 8(v − 2) = 164. Получаем 14v − 4 = 164, значит v = 12 км/ч. На озере время равно 54/12 = 4,5 ч (4 ч 30 мин)."
+      },
+      {
+       "prompt": "Скорость на реке против течения, км/ч?",
+       "answer": "10",
+       "hint": "По течению к собственной скорости прибавляют скорость реки, против течения её вычитают. На озере течения нет.",
+       "explanation": "6(v + 2) + 8(v − 2) = 164. Получаем 14v − 4 = 164, значит v = 12 км/ч. На озере время равно 54/12 = 4,5 ч (4 ч 30 мин)."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "По течению к собственной скорости прибавляют скорость реки, против течения её вычитают. На озере течения нет.",
+     "explanation": "6(v + 2) + 8(v − 2) = 164. Получаем 14v − 4 = 164, значит v = 12 км/ч. На озере время равно 54/12 = 4,5 ч (4 ч 30 мин).",
+     "skills": [
+      "linear-equation",
+      "decimal-divide"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 50,
+      "reference": "№50б",
+      "subpart": "б"
+     },
+     "patrolStudy": true,
+     "errorCues": [
+      [
+       "12",
+       "Это скорость на озере. Время получают делением расстояния на скорость."
+      ],
+      [
+       "4",
+       "Остаются ещё полчаса. Вырази всё время в часах."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t36",
+     "title": "К задаче №51а",
+     "kind": "manual",
+     "prompt": "Сначала стоит число -6. Восемь стрелок расходятся от него: выполняй по одному действию с каждого луча. Порядок лучей на авторской схеме: от левого верхнего по часовой стрелке.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "К -6 применяем действие + (4). Результат?",
+       "answer": "-2",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -2, -9, -4, -20, -28/5, -1/2, 0, -39/7. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -6 применяем действие − (3). Результат?",
+       "answer": "-9",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -2, -9, -4, -20, -28/5, -1/2, 0, -39/7. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -6 применяем действие × (2/3). Результат?",
+       "answer": "-4",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -2, -9, -4, -20, -28/5, -1/2, 0, -39/7. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -6 применяем действие ÷ (.3). Результат?",
+       "answer": "-20",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -2, -9, -4, -20, -28/5, -1/2, 0, -39/7. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -6 применяем действие + (.4). Результат?",
+       "answer": "-28/5",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -2, -9, -4, -20, -28/5, -1/2, 0, -39/7. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -6 применяем действие ÷ (12). Результат?",
+       "answer": "-1/2",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -2, -9, -4, -20, -28/5, -1/2, 0, -39/7. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -6 применяем действие × (0). Результат?",
+       "answer": "0",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -2, -9, -4, -20, -28/5, -1/2, 0, -39/7. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -6 применяем действие + (3/7). Результат?",
+       "answer": "-39/7",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -2, -9, -4, -20, -28/5, -1/2, 0, -39/7. Направление задаёт, откуда брать первое число."
+      }
+     ],
+     "finalLabel": "Сохрани своё объяснение или проверку.",
+     "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+     "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -2, -9, -4, -20, -28/5, -1/2, 0, -39/7. Направление задаёт, откуда брать первое число.",
+     "skills": [
+      "signed-divide",
+      "fraction-multiply"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 51,
+      "reference": "№51а",
+      "subpart": "а"
+     },
+     "spokeStudy": {
+      "direction": "out",
+      "center": "-6",
+      "fresh": "-3",
+      "spokes": [
+       [
+        "+",
+        "4"
+       ],
+       [
+        "−",
+        "3"
+       ],
+       [
+        "×",
+        "2/3"
+       ],
+       [
+        "÷",
+        ".3"
+       ],
+       [
+        "+",
+        ".4"
+       ],
+       [
+        "÷",
+        "12"
+       ],
+       [
+        "×",
+        "0"
+       ],
+       [
+        "+",
+        "3/7"
+       ]
+      ]
+     },
+     "figure": {
+      "type": "operation-wheel",
+      "direction": "out",
+      "center": "-6",
+      "spokes": [
+       [
+        "+",
+        "4"
+       ],
+       [
+        "−",
+        "3"
+       ],
+       [
+        "×",
+        "2/3"
+       ],
+       [
+        "÷",
+        ".3"
+       ],
+       [
+        "+",
+        ".4"
+       ],
+       [
+        "÷",
+        "12"
+       ],
+       [
+        "×",
+        "0"
+       ],
+       [
+        "+",
+        "3/7"
+       ]
+      ],
+      "caption": "Цифры 1–8 задают порядок лучей. Каждая стрелка выполняется отдельно."
+     }
+    },
+    {
+     "id": "p35-t37",
+     "title": "К задаче №51б",
+     "kind": "manual",
+     "prompt": "Восемь чисел направлены к операции деления на 2/3. Для каждого внешнего числа найди частное. Порядок лучей на авторской схеме: от левого верхнего по часовой стрелке.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Число -1/3 делим на 2/3. Результат?",
+       "answer": "-1/2",
+       "hint": "Стрелки идут к центру. Бери число на конце каждой стрелки и дели его на 2/3. Ноль делят на ненулевую дробь, это разрешено.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -1/2, 9/10, -3/2, 2, -6, 21/10, -1, 0. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "Число .6 делим на 2/3. Результат?",
+       "answer": "9/10",
+       "hint": "Стрелки идут к центру. Бери число на конце каждой стрелки и дели его на 2/3. Ноль делят на ненулевую дробь, это разрешено.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -1/2, 9/10, -3/2, 2, -6, 21/10, -1, 0. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "Число -1 делим на 2/3. Результат?",
+       "answer": "-3/2",
+       "hint": "Стрелки идут к центру. Бери число на конце каждой стрелки и дели его на 2/3. Ноль делят на ненулевую дробь, это разрешено.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -1/2, 9/10, -3/2, 2, -6, 21/10, -1, 0. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "Число 4/3 делим на 2/3. Результат?",
+       "answer": "2",
+       "hint": "Стрелки идут к центру. Бери число на конце каждой стрелки и дели его на 2/3. Ноль делят на ненулевую дробь, это разрешено.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -1/2, 9/10, -3/2, 2, -6, 21/10, -1, 0. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "Число -4 делим на 2/3. Результат?",
+       "answer": "-6",
+       "hint": "Стрелки идут к центру. Бери число на конце каждой стрелки и дели его на 2/3. Ноль делят на ненулевую дробь, это разрешено.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -1/2, 9/10, -3/2, 2, -6, 21/10, -1, 0. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "Число 7/5 делим на 2/3. Результат?",
+       "answer": "21/10",
+       "hint": "Стрелки идут к центру. Бери число на конце каждой стрелки и дели его на 2/3. Ноль делят на ненулевую дробь, это разрешено.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -1/2, 9/10, -3/2, 2, -6, 21/10, -1, 0. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "Число -2/3 делим на 2/3. Результат?",
+       "answer": "-1",
+       "hint": "Стрелки идут к центру. Бери число на конце каждой стрелки и дели его на 2/3. Ноль делят на ненулевую дробь, это разрешено.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -1/2, 9/10, -3/2, 2, -6, 21/10, -1, 0. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "Число 0 делим на 2/3. Результат?",
+       "answer": "0",
+       "hint": "Стрелки идут к центру. Бери число на конце каждой стрелки и дели его на 2/3. Ноль делят на ненулевую дробь, это разрешено.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -1/2, 9/10, -3/2, 2, -6, 21/10, -1, 0. Направление задаёт, откуда брать первое число."
+      }
+     ],
+     "finalLabel": "Сохрани своё объяснение или проверку.",
+     "hint": "Стрелки идут к центру. Бери число на конце каждой стрелки и дели его на 2/3. Ноль делят на ненулевую дробь, это разрешено.",
+     "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем -1/2, 9/10, -3/2, 2, -6, 21/10, -1, 0. Направление задаёт, откуда брать первое число.",
+     "skills": [
+      "signed-divide",
+      "fraction-multiply"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 51,
+      "reference": "№51б",
+      "subpart": "б"
+     },
+     "spokeStudy": {
+      "direction": "in",
+      "center": "2/3",
+      "fresh": "3/4",
+      "spokes": [
+       [
+        "÷",
+        "-1/3"
+       ],
+       [
+        "÷",
+        ".6"
+       ],
+       [
+        "÷",
+        "-1"
+       ],
+       [
+        "÷",
+        "4/3"
+       ],
+       [
+        "÷",
+        "-4"
+       ],
+       [
+        "÷",
+        "7/5"
+       ],
+       [
+        "÷",
+        "-2/3"
+       ],
+       [
+        "÷",
+        "0"
+       ]
+      ]
+     },
+     "figure": {
+      "type": "operation-wheel",
+      "direction": "in",
+      "center": "2/3",
+      "spokes": [
+       [
+        "÷",
+        "-1/3"
+       ],
+       [
+        "÷",
+        ".6"
+       ],
+       [
+        "÷",
+        "-1"
+       ],
+       [
+        "÷",
+        "4/3"
+       ],
+       [
+        "÷",
+        "-4"
+       ],
+       [
+        "÷",
+        "7/5"
+       ],
+       [
+        "÷",
+        "-2/3"
+       ],
+       [
+        "÷",
+        "0"
+       ]
+      ],
+      "caption": "Цифры 1–8 задают порядок лучей. Каждая стрелка выполняется отдельно."
+     }
+    },
+    {
+     "id": "p35-t38",
+     "title": "К задаче №51в",
+     "kind": "manual",
+     "prompt": "Сначала стоит число -.4. Восемь стрелок расходятся от него: выполняй по одному действию с каждого луча. Порядок лучей на авторской схеме: от левого верхнего по часовой стрелке.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "К -.4 применяем действие + (1.2). Результат?",
+       "answer": "4/5",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем 4/5, -13/10, -1/25, -2, 13/5, -3/5, -1/4, -1. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -.4 применяем действие − (.9). Результат?",
+       "answer": "-13/10",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем 4/5, -13/10, -1/25, -2, 13/5, -3/5, -1/4, -1. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -.4 применяем действие × (.1). Результат?",
+       "answer": "-1/25",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем 4/5, -13/10, -1/25, -2, 13/5, -3/5, -1/4, -1. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -.4 применяем действие ÷ (.2). Результат?",
+       "answer": "-2",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем 4/5, -13/10, -1/25, -2, 13/5, -3/5, -1/4, -1. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -.4 применяем действие + (3). Результат?",
+       "answer": "13/5",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем 4/5, -13/10, -1/25, -2, 13/5, -3/5, -1/4, -1. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -.4 применяем действие − (1/5). Результат?",
+       "answer": "-3/5",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем 4/5, -13/10, -1/25, -2, 13/5, -3/5, -1/4, -1. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -.4 применяем действие × (5/8). Результат?",
+       "answer": "-1/4",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем 4/5, -13/10, -1/25, -2, 13/5, -3/5, -1/4, -1. Направление задаёт, откуда брать первое число."
+      },
+      {
+       "prompt": "К -.4 применяем действие × (2.5). Результат?",
+       "answer": "-1",
+       "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+       "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем 4/5, -13/10, -1/25, -2, 13/5, -3/5, -1/4, -1. Направление задаёт, откуда брать первое число."
+      }
+     ],
+     "finalLabel": "Сохрани своё объяснение или проверку.",
+     "hint": "Каждая стрелка идёт из центра. Для каждого луча вернись к одному исходному числу и выполни только подписанную операцию.",
+     "explanation": "Отсчитывая от верхнего левого луча по часовой стрелке, получаем 4/5, -13/10, -1/25, -2, 13/5, -3/5, -1/4, -1. Направление задаёт, откуда брать первое число.",
+     "skills": [
+      "signed-divide",
+      "fraction-multiply"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 51,
+      "reference": "№51в",
+      "subpart": "в"
+     },
+     "spokeStudy": {
+      "direction": "out",
+      "center": "-.4",
+      "fresh": "-.8",
+      "spokes": [
+       [
+        "+",
+        "1.2"
+       ],
+       [
+        "−",
+        ".9"
+       ],
+       [
+        "×",
+        ".1"
+       ],
+       [
+        "÷",
+        ".2"
+       ],
+       [
+        "+",
+        "3"
+       ],
+       [
+        "−",
+        "1/5"
+       ],
+       [
+        "×",
+        "5/8"
+       ],
+       [
+        "×",
+        "2.5"
+       ]
+      ]
+     },
+     "figure": {
+      "type": "operation-wheel",
+      "direction": "out",
+      "center": "-.4",
+      "spokes": [
+       [
+        "+",
+        "1.2"
+       ],
+       [
+        "−",
+        ".9"
+       ],
+       [
+        "×",
+        ".1"
+       ],
+       [
+        "÷",
+        ".2"
+       ],
+       [
+        "+",
+        "3"
+       ],
+       [
+        "−",
+        "1/5"
+       ],
+       [
+        "×",
+        "5/8"
+       ],
+       [
+        "×",
+        "2.5"
+       ]
+      ],
+      "caption": "Цифры 1–8 задают порядок лучей. Каждая стрелка выполняется отдельно."
+     }
+    },
+    {
+     "id": "p35-t39",
+     "title": "К задаче №52а",
+     "kind": "number",
+     "prompt": "Быстро вычисли 0,8 × 19 + 0,8 × 21, предварительно вынеся общий множитель.",
+     "answer": "32",
+     "steps": [
+      {
+       "prompt": "Какой общий множитель использован в обоих слагаемых?",
+       "answer": "4/5",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим .8 и складываем 19 и 21. Получается (.8) × (40) = 32."
+      },
+      {
+       "prompt": "Какова сумма оставшихся чисел с их знаками?",
+       "answer": "40",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим .8 и складываем 19 и 21. Получается (.8) × (40) = 32."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+     "explanation": "Выносим .8 и складываем 19 и 21. Получается (.8) × (40) = 32.",
+     "skills": [
+      "fraction-multiply",
+      "signed-add"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 52,
+      "reference": "№52а",
+      "subpart": "а"
+     },
+     "factorSum": {
+      "printed": "0,8 × 19 + 0,8 × 21",
+      "factor": ".8",
+      "terms": [
+       "19",
+       "21"
+      ]
+     }
+    },
+    {
+     "id": "p35-t40",
+     "title": "К задаче №52б",
+     "kind": "number",
+     "prompt": "Быстро вычисли (2/9) × 43 + (2/9) × 32, предварительно вынеся общий множитель.",
+     "answer": "50/3",
+     "steps": [
+      {
+       "prompt": "Какой общий множитель использован в обоих слагаемых?",
+       "answer": "2/9",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим 2/9 и складываем 43 и 32. Получается (2/9) × (75) = 50/3."
+      },
+      {
+       "prompt": "Какова сумма оставшихся чисел с их знаками?",
+       "answer": "75",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим 2/9 и складываем 43 и 32. Получается (2/9) × (75) = 50/3."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+     "explanation": "Выносим 2/9 и складываем 43 и 32. Получается (2/9) × (75) = 50/3.",
+     "skills": [
+      "fraction-multiply",
+      "signed-add"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 52,
+      "reference": "№52б",
+      "subpart": "б"
+     },
+     "factorSum": {
+      "printed": "(2/9) × 43 + (2/9) × 32",
+      "factor": "2/9",
+      "terms": [
+       "43",
+       "32"
+      ]
+     }
+    },
+    {
+     "id": "p35-t41",
+     "title": "К задаче №52в",
+     "kind": "number",
+     "prompt": "Быстро вычисли 6 × (−0,9) + 14 × (−0,9), предварительно вынеся общий множитель.",
+     "answer": "-18",
+     "steps": [
+      {
+       "prompt": "Какой общий множитель использован в обоих слагаемых?",
+       "answer": "-9/10",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим -.9 и складываем 6 и 14. Получается (-.9) × (20) = -18."
+      },
+      {
+       "prompt": "Какова сумма оставшихся чисел с их знаками?",
+       "answer": "20",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим -.9 и складываем 6 и 14. Получается (-.9) × (20) = -18."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+     "explanation": "Выносим -.9 и складываем 6 и 14. Получается (-.9) × (20) = -18.",
+     "skills": [
+      "fraction-multiply",
+      "signed-add"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 52,
+      "reference": "№52в",
+      "subpart": "в"
+     },
+     "factorSum": {
+      "printed": "6 × (−0,9) + 14 × (−0,9)",
+      "factor": "-.9",
+      "terms": [
+       "6",
+       "14"
+      ]
+     }
+    },
+    {
+     "id": "p35-t42",
+     "title": "К задаче №52г",
+     "kind": "number",
+     "prompt": "Быстро вычисли 0,3 × (7/11) − (7/11) × 5,8, предварительно вынеся общий множитель.",
+     "answer": "-7/2",
+     "steps": [
+      {
+       "prompt": "Какой общий множитель использован в обоих слагаемых?",
+       "answer": "7/11",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим 7/11 и складываем .3 и -5.8. Получается (7/11) × (-11/2) = -7/2."
+      },
+      {
+       "prompt": "Какова сумма оставшихся чисел с их знаками?",
+       "answer": "-11/2",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим 7/11 и складываем .3 и -5.8. Получается (7/11) × (-11/2) = -7/2."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+     "explanation": "Выносим 7/11 и складываем .3 и -5.8. Получается (7/11) × (-11/2) = -7/2.",
+     "skills": [
+      "fraction-multiply",
+      "signed-add"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 52,
+      "reference": "№52г",
+      "subpart": "г"
+     },
+     "factorSum": {
+      "printed": "0,3 × (7/11) − (7/11) × 5,8",
+      "factor": "7/11",
+      "terms": [
+       ".3",
+       "-5.8"
+      ]
+     }
+    },
+    {
+     "id": "p35-t43",
+     "title": "К задаче №52д",
+     "kind": "number",
+     "prompt": "Быстро вычисли 0,9 × 2,43 − 2,43, предварительно вынеся общий множитель.",
+     "answer": "-243/1000",
+     "steps": [
+      {
+       "prompt": "Какой общий множитель использован в обоих слагаемых?",
+       "answer": "243/100",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим 2.43 и складываем .9 и -1. Получается (2.43) × (-1/10) = -243/1000."
+      },
+      {
+       "prompt": "Какова сумма оставшихся чисел с их знаками?",
+       "answer": "-1/10",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим 2.43 и складываем .9 и -1. Получается (2.43) × (-1/10) = -243/1000."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+     "explanation": "Выносим 2.43 и складываем .9 и -1. Получается (2.43) × (-1/10) = -243/1000.",
+     "skills": [
+      "fraction-multiply",
+      "signed-add"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 52,
+      "reference": "№52д",
+      "subpart": "д"
+     },
+     "factorSum": {
+      "printed": "0,9 × 2,43 − 2,43",
+      "factor": "2.43",
+      "terms": [
+       ".9",
+       "-1"
+      ]
+     }
+    },
+    {
+     "id": "p35-t44",
+     "title": "К задаче №52е",
+     "kind": "number",
+     "prompt": "Быстро вычисли (1 1/3) × 4,6 − (1 1/3) × 4,35, предварительно вынеся общий множитель.",
+     "answer": "1/3",
+     "steps": [
+      {
+       "prompt": "Какой общий множитель использован в обоих слагаемых?",
+       "answer": "4/3",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим 4/3 и складываем 4.6 и -4.35. Получается (4/3) × (1/4) = 1/3."
+      },
+      {
+       "prompt": "Какова сумма оставшихся чисел с их знаками?",
+       "answer": "1/4",
+       "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+       "explanation": "Выносим 4/3 и складываем 4.6 и -4.35. Получается (4/3) × (1/4) = 1/3."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Выбери общий множитель. В оставшейся скобке сохрани знак каждого слагаемого. Число без записанного множителя можно умножить на 1.",
+     "explanation": "Выносим 4/3 и складываем 4.6 и -4.35. Получается (4/3) × (1/4) = 1/3.",
+     "skills": [
+      "fraction-multiply",
+      "signed-add"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 52,
+      "reference": "№52е",
+      "subpart": "е"
+     },
+     "factorSum": {
+      "printed": "(1 1/3) × 4,6 − (1 1/3) × 4,35",
+      "factor": "4/3",
+      "terms": [
+       "4.6",
+       "-4.35"
+      ]
+     }
+    },
+    {
+     "id": "p35-t45",
+     "title": "К задаче №53а",
+     "kind": "number",
+     "prompt": "Прочти три выражения: (a − b)², a² − b², a² − 2ab + b². Найди их значения при a = 4, b = 1. В последнем поле запиши значение квадрата разности.",
+     "answer": "9",
+     "steps": [
+      {
+       "prompt": "Значение квадрата всей разности?",
+       "answer": "9",
+       "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+       "explanation": "При a = 4, b = 1 три значения по порядку: 9, 15, 9. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b)."
+      },
+      {
+       "prompt": "Значение разности двух квадратов?",
+       "answer": "15",
+       "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+       "explanation": "При a = 4, b = 1 три значения по порядку: 9, 15, 9. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b)."
+      },
+      {
+       "prompt": "Значение a² − 2ab + b²?",
+       "answer": "9",
+       "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+       "explanation": "При a = 4, b = 1 три значения по порядку: 9, 15, 9. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b)."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+     "explanation": "При a = 4, b = 1 три значения по порядку: 9, 15, 9. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b).",
+     "skills": [
+      "signed-multiply",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 53,
+      "reference": "№53а",
+      "subpart": "а"
+     },
+     "differenceSquareStudy": {
+      "source": [
+       4,
+       1
+      ],
+      "fresh": [
+       6,
+       2
+      ]
+     },
+     "errorCues": [
+      [
+       "15",
+       "Это разность двух квадратов. Сначала вычисли разность самих чисел, затем возведи её в квадрат."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t46",
+     "title": "К задаче №53б",
+     "kind": "number",
+     "prompt": "Прочти три выражения: (a − b)², a² − b², a² − 2ab + b². Найди их значения при a = -3, b = 2. В последнем поле запиши значение квадрата разности.",
+     "answer": "25",
+     "steps": [
+      {
+       "prompt": "Значение квадрата всей разности?",
+       "answer": "25",
+       "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+       "explanation": "При a = -3, b = 2 три значения по порядку: 25, 5, 25. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b)."
+      },
+      {
+       "prompt": "Значение разности двух квадратов?",
+       "answer": "5",
+       "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+       "explanation": "При a = -3, b = 2 три значения по порядку: 25, 5, 25. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b)."
+      },
+      {
+       "prompt": "Значение a² − 2ab + b²?",
+       "answer": "25",
+       "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+       "explanation": "При a = -3, b = 2 три значения по порядку: 25, 5, 25. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b)."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+     "explanation": "При a = -3, b = 2 три значения по порядку: 25, 5, 25. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b).",
+     "skills": [
+      "signed-multiply",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 53,
+      "reference": "№53б",
+      "subpart": "б"
+     },
+     "differenceSquareStudy": {
+      "source": [
+       -3,
+       2
+      ],
+      "fresh": [
+       -2,
+       5
+      ]
+     },
+     "errorCues": [
+      [
+       "5",
+       "Это разность двух квадратов. Сначала вычисли разность самих чисел, затем возведи её в квадрат."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t47",
+     "title": "К задаче №53в",
+     "kind": "number",
+     "prompt": "Прочти три выражения: (a − b)², a² − b², a² − 2ab + b². Найди их значения при a = -1, b = -5. В последнем поле запиши значение квадрата разности.",
+     "answer": "16",
+     "steps": [
+      {
+       "prompt": "Значение квадрата всей разности?",
+       "answer": "16",
+       "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+       "explanation": "При a = -1, b = -5 три значения по порядку: 16, -24, 16. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b)."
+      },
+      {
+       "prompt": "Значение разности двух квадратов?",
+       "answer": "-24",
+       "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+       "explanation": "При a = -1, b = -5 три значения по порядку: 16, -24, 16. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b)."
+      },
+      {
+       "prompt": "Значение a² − 2ab + b²?",
+       "answer": "16",
+       "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+       "explanation": "При a = -1, b = -5 три значения по порядку: 16, -24, 16. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b)."
+      }
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "hint": "Скобки в первом выражении возводятся в квадрат целиком. Во втором разность образована из двух квадратов. В третьем есть смешанный член −2ab.",
+     "explanation": "При a = -1, b = -5 три значения по порядку: 16, -24, 16. Совпадают первое и третье выражения, это следует и из умножения (a − b)(a − b).",
+     "skills": [
+      "signed-multiply",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 53,
+      "reference": "№53в",
+      "subpart": "в"
+     },
+     "differenceSquareStudy": {
+      "source": [
+       -1,
+       -5
+      ],
+      "fresh": [
+       -3,
+       -7
+      ]
+     },
+     "errorCues": [
+      [
+       "-24",
+       "Это разность двух квадратов. Сначала вычисли разность самих чисел, затем возведи её в квадрат."
+      ]
+     ]
+    },
+    {
+     "id": "p35-t48",
+     "title": "К задаче №53",
+     "kind": "manual",
+     "prompt": "Сравни три выражения из №53 на своих a и b. Запиши тождество, обоснуй его раскрытием скобок и объясни, какие области на квадрате отвечают членам формулы.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши три значения на двух самостоятельно выбранных парах чисел.",
+       "hint": "Раскрой произведение (a − b)(a − b). При объяснении площадями геометрические длины положительны; знак алгебраического произведения учитывается отдельно.",
+       "explanation": "Для любых рациональных a,b распределительный закон даёт a² − ab − ab + b². При a ≥ b ≥ 0 из квадрата стороны a можно убрать две полосы ширины b и вернуть дважды убранный квадрат b². Это доказывает соответствующую формулу площадей. При любых знаках алгебраическое доказательство сохраняется."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Обоснуй два смешанных члена алгебраически.",
+       "hint": "Раскрой произведение (a − b)(a − b). При объяснении площадями геометрические длины положительны; знак алгебраического произведения учитывается отдельно.",
+       "explanation": "Для любых рациональных a,b распределительный закон даёт a² − ab − ab + b². При a ≥ b ≥ 0 из квадрата стороны a можно убрать две полосы ширины b и вернуть дважды убранный квадрат b². Это доказывает соответствующую формулу площадей. При любых знаках алгебраическое доказательство сохраняется."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Разбери площадь квадрата на собственном рисунке с a ≥ b ≥ 0.",
+       "hint": "Раскрой произведение (a − b)(a − b). При объяснении площадями геометрические длины положительны; знак алгебраического произведения учитывается отдельно.",
+       "explanation": "Для любых рациональных a,b распределительный закон даёт a² − ab − ab + b². При a ≥ b ≥ 0 из квадрата стороны a можно убрать две полосы ширины b и вернуть дважды убранный квадрат b². Это доказывает соответствующую формулу площадей. При любых знаках алгебраическое доказательство сохраняется."
+      }
+     ],
+     "finalLabel": "Сохрани своё объяснение или проверку.",
+     "hint": "Раскрой произведение (a − b)(a − b). При объяснении площадями геометрические длины положительны; знак алгебраического произведения учитывается отдельно.",
+     "explanation": "Для любых рациональных a,b распределительный закон даёт a² − ab − ab + b². При a ≥ b ≥ 0 из квадрата стороны a можно убрать две полосы ширины b и вернуть дважды убранный квадрат b². Это доказывает соответствующую формулу площадей. При любых знаках алгебраическое доказательство сохраняется.",
+     "skills": [
+      "bracket-evaluate",
+      "rectangle-area"
+     ],
+     "source": {
+      "part": 3,
+      "type": "textbook",
+      "page": 13,
+      "exercise": 53,
+      "reference": "№53",
+      "readingKey": "я"
+     },
+     "differenceSquareStudy": {
+      "free": true
+     }
     }
    ],
    "orderBySource": true

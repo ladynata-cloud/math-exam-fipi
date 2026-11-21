@@ -878,3 +878,29 @@ test('compare exact quotients and the two products with fresh terms and every re
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('use each arithmetic spoke independently, balance story quantities and distinguish two squares',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p35/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),result=()=>f.q('#model .pm-result').textContent;
+  for(let i=25;i<29;i++){
+   const ids=go(i);set(ids[1],1);set(ids[2],1);assert(result().includes('Корень подходит'));
+   set(ids[0],1);set(ids[2],1);assert(result().includes('Значения различны'));set(ids[1],2);set(ids[2],1);assert(result().includes('Корень подходит'));
+  }
+  let ids=go(33);set(ids[1],12);set(ids[2],1);assert(result().includes('Всего упаковок 40'));set(ids[0],1);set(ids[1],20);set(ids[2],1);assert(result().includes('Всего упаковок 50'));
+  ids=go(34);set(ids[1],12);set(ids[2],1);assert(result().includes('4,5 ч'));assert.deepEqual([...f.d.querySelectorAll('#model [data-km]')].map(n=>n.dataset.km),['84','80']);
+  set(ids[0],1);set(ids[1],9);set(ids[2],1);assert(result().includes('5 ч'));
+  for(const [index,dir,expected]of [[35,'out',['-2','-9','-4','-20','-28/5','-1/2','0','-39/7']],[36,'in',['-1/2','9/10','-3/2','2','-6','21/10','-1','0']],[37,'out',['4/5','-13/10','-1/25','-2','13/5','-3/5','-1/4','-1']]]){
+   ids=go(index);assert.equal(f.d.querySelectorAll('#task-figure [data-direction="'+dir+'"]').length,8);
+   for(const [i,want]of expected.entries()){set(ids[0],i+1);set(ids[2],1);assert(result().includes('Ответ '+want+'.'),index+'/'+i);}
+   set(ids[1],1);assert.equal(f.q(ids[2]).value,'0');
+  }
+  ids=go(42);set(ids[1],2);assert(result().includes('-243/1000'));set(ids[0],1);set(ids[1],2);assert(result().includes('2187/1000'));
+  ids=go(45);set(ids[1],2);assert.equal(f.d.querySelectorAll('#model [data-piece="uv"]').length,2);
+  ids=go(47);set(ids[0],4);set(ids[1],1);set(ids[2],2);assert.equal(f.d.querySelectorAll('#model [data-piece="cut"]').length,2);
+  set(ids[0],0);set(ids[1],0);set(ids[2],2);assert(result().includes('стягивается в точку'));
+  set(ids[0],-3);set(ids[1],2);set(ids[2],1);assert.match(f.q('#model table').textContent,/\(a − b\)²25a² − b²5a² − 2ab \+ b²25/);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
