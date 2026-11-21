@@ -139,6 +139,7 @@ jobs:
           node school/makarychev8/test-observed-phases.cjs
           node school/makarychev8/test-curve-properties.cjs
           node school/makarychev8/test-graph-witnesses.cjs
+          node school/makarychev8/test-formula-zeros.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -255,6 +256,8 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-curve-properties.cjs
       - name: Chromium graph reading and free polygon construction
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-graph-witnesses.cjs
+      - name: Chromium formula zeros, radical boundaries and excluded denominators
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-formula-zeros.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction

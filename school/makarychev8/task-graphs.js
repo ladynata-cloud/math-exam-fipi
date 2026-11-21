@@ -910,6 +910,49 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function functionZeroTrial(g,raw){
+ const value=M.parse(raw);if(!value)return null;
+ const x=value.n/value.d,n=BigInt(value.n),d=BigInt(value.d);
+ let numerator,denominator=1,radicand=null,zero=false,pole=false;
+ switch(g.formula){
+  case 'linear-old':numerator=12-.8*x;zero=n===15n*d;break;
+  case 'rational-old':numerator=4+2*x;denominator=x*x+5;zero=n===-2n*d;break;
+  case 'product':numerator=(3*x-10)*(x+6);zero=3n*n===10n*d||n===-6n*d;break;
+  case 'constant':numerator=6;denominator=(x-1)*(x+8);pole=n===d||n===-8n*d;break;
+  case 'linear':numerator=2.1*x-70;zero=3n*n===100n*d;break;
+  case 'double':numerator=4*x*(x-2);zero=n===0n||n===2n*d;break;
+  case 'reciprocal':numerator=6-x;denominator=x;zero=n===6n*d;pole=n===0n;break;
+  case 'root-above':
+   radicand=Number(n+6n*d)/value.d;numerator=radicand>=0?x-Math.sqrt(radicand):NaN;
+   denominator=x+5;zero=n===3n*d;pole=n===-5n*d;break;
+  case 'root-below':
+   radicand=Number(10n*d-6n*n)/value.d;numerator=4*x*x+25*x;
+   denominator=radicand>=0?2*x-Math.sqrt(radicand):NaN;
+   zero=n===0n||4n*n===-25n*d;pole=n===d;break;
+  case 'generated':
+   numerator=x-g.zero;denominator=x-g.excluded;zero=n===BigInt(g.zero)*d;pole=n===BigInt(g.excluded)*d;break;
+  default:return null;
+ }
+ const valid=!(radicand!==null&&radicand<0)&&!pole;
+ return {x,entered:M.answer(value),radicand,numerator:zero?0:numerator,denominator:pole?0:denominator,
+  status:!valid?(pole?'pole':'radical'):zero?'zero':'nonzero',output:valid?(zero?0:numerator/denominator):null};
+}
+function functionZeroGraph(host,g,raw){
+ host.className='task-graphs quantity-model';boundNote(host,'Проверяем исходную запись y = '+g.original+'.');
+ const probe=(g.partial?.[0]||'').trim()||String(raw||'').split(';')[0];
+ const r=functionZeroTrial(g,probe);
+ if(!r){boundNote(host,'Введи рациональный аргумент в первом шаге или предложи нуль. Увидишь подстановку и положение точки относительно оси x.');return;}
+ const numberText=v=>String(Number(v.toPrecision(6))).replace('.',',');
+ if(r.radicand!==null)boundNote(host,'Под корнем при x = '+r.entered+' получается '+numberText(r.radicand)+'.');
+ const status={pole:'Знаменатель равен нулю. Точки на графике нет.',radical:'Подкоренное число отрицательно. Точки на вещественном графике нет.',zero:'Обе проверки пройдены. Точка лежит на оси x.',nonzero:'Значение функции отлично от нуля.'};
+ if(Number.isFinite(r.numerator)&&Number.isFinite(r.denominator))boundNote(host,'При подстановке числитель ≈ '+numberText(r.numerator)+', знаменатель ≈ '+numberText(r.denominator)+'.');
+ const note=boundNote(host,status[r.status]);note.dataset.zeroTrial=r.entered;note.dataset.zeroStatus=r.status;
+ if(r.output===null)return;
+ const bound=v=>Math.max(2,Math.abs(v)*1.3),rx=bound(r.x),ry=bound(r.output);
+ const svg=rootGraph({curves:[],points:[[r.x,r.output,'']],xRange:[-rx,rx],yRange:[-ry,ry],compactTicks:Math.max(rx,ry)>1000,axisLabels:['x','y'],label:'Проверенная точка графика на координатной плоскости'},'');
+ host.append(svg);boundNote(host,'Проверенная точка при x = '+r.entered+' имеет ординату '+(r.output===0?'0':'≈ '+numberText(r.output))+'.');
+}
+
 function witnessMarks(g,raw){
  const entries=String(raw??'').split(';');
  const heights=g.xs.map((x,i)=>{const q=M.parse(entries[i]);return q?q.n/q.d:null;});
@@ -2258,6 +2301,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-formula-zeros'){functionZeroGraph(host,config,value);return;}
  if(config.type==='source-graph-witness'){graphWitness(host,config,value);return;}
  if(config.type==='source-curve-properties'){propertiesView(host,config,value);return;}
  if(config.type==='source-phase-reading'){observedPhases(host,config,value);return;}
@@ -2358,5 +2402,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
