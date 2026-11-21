@@ -38,7 +38,8 @@
       ['/geometry-course/textbook/data/grade9-vectors.json', '№926–936, теория 84–86'],
       ['/geometry-course/textbook/data/vector-conclusions.json', '№937–940'],
       ['/geometry-course/textbook/data/vector-sums.json', '№941–946, теория 87–90'],
-      ['/geometry-course/textbook/data/vector-sum-problems.json', '№947–952']
+      ['/geometry-course/textbook/data/vector-sum-problems.json', '№947–952'],
+      ['/geometry-course/textbook/data/vector-identities.json', '№953–962']
   ];
 
   async function forCourse(base) {
