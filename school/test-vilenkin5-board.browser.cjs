@@ -531,6 +531,35 @@ async function run(browser, origin, backend, failures) {
   assert.equal(radiusResume.scene.model.point,3);assert(radiusResume.scene.correct);
   await narrow(student,studentFrame,'four-radii');
 
+  phase = 'two compass constructions in the second volume';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-6"]').click();
+  await studentFrame.locator('#task-panel').getByRole('img',{name:'Построение двух окружностей с центрами H и P'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=stage]').selectOption('3');
+  await teacherFrame.locator('[data-v5-param=leg]').selectOption('3');
+  assert.equal((await same(teacherFrame,studentFrame,'both see NP on the second circle')).scene.model.leg,3);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('#answer').fill('3');await studentFrame.locator('#answer-form button').click();
+  assert.match((await same(studentFrame,teacherFrame,'wrong centre for MH')).scene.message,/другой окружности/);
+  await studentFrame.locator('#answer').fill('2');await studentFrame.locator('#answer-form button').click();
+  await studentFrame.locator('[data-cmd=next]').click();
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  assert.equal((await same(studentFrame,teacherFrame,'first comparison recovered after teacher reload')).scene.step,1);
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await studentFrame.locator('a[href="#lesson/v5f-printed-5-7"]').click();
+  await studentFrame.locator('[data-v5-param=stage]').selectOption('3');
+  await studentFrame.locator('[data-v5-param=distance]').selectOption('1');
+  await studentFrame.locator('[data-v5-prediction]').fill('1');await studentFrame.locator('[data-v5-predict] button').click();
+  assert((await same(studentFrame,teacherFrame,'two possible points coalesce at tangency')).scene.model.seen);
+  await narrow(student,studentFrame,'tangent-circles');
+  await ownership(teacher,student,false);
+  await teacherFrame.locator('[data-v5-param=distance]').selectOption('4');
+  await teacherFrame.locator('[data-v5-prediction]').fill('0');await teacherFrame.locator('[data-v5-predict] button').click();
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  const nested=await same(teacherFrame,studentFrame,'both see unequal concentric circles after student reload');
+  assert.equal(nested.scene.model.distance,4);assert(nested.scene.model.seen);
+  await narrow(student,studentFrame,'concentric-circles');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
