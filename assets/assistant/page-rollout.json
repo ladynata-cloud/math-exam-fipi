@@ -2252,10 +2252,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "38974150e59034a4688242aaa451e00c5c45b490ad0705e974163d452dde5b1e",
-      "afterSha256": "3c6da9d9134d7126cde10df7f3ac0ae620db3acf77facaf35a83a93323608b18",
+      "beforeSha256": "d23bd9bc1176c48d551b97bc1640c96ec2d11de975a604b2523fb2f376d21787",
+      "afterSha256": "761d3034881da8294f8ef77ef2de3bbe25ea34e1fb21d16e171f236740de51a0",
       "placement": "before-head-close",
-      "sourceSha": "f9d064a6860b3f2750b6830aadbf7bfd5bff212f"
+      "sourceSha": "7b21f6551d6e0046125e3b84035b339f0edf643e"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -7028,6 +7028,15 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
+    },
+    {
+      "previousBaseSha": "f9d064a6860b3f2750b6830aadbf7bfd5bff212f",
+      "sourceBaseSha": "7b21f6551d6e0046125e3b84035b339f0edf643e",
+      "task": "docs/tasks/MAKARYCHEV8_1080_1087.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Личный курс и вход доски открывают авторские задания по №1–1075, №1077–1087. На месте №1076 обозначено отдельное авторское упражнение. В №1080–1087 ученик строит графики, проверяет интервалы и исследует область значений."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",

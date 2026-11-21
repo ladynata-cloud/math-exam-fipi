@@ -711,6 +711,14 @@ function systemInput(raw,variable){
  const text=String(raw??'').trim().replace(/−/g,'-').replace(/≤/g,'<=').replace(/≥/g,'>=');
  if(/^(нет решений|пустое множество)$/i.test(text))return '∅';
  if(/^(все( действительные( числа)?| числа)?|r|ℝ)$/i.test(text))return '(-∞;+∞)';
+ const exclusions=text.replace(/≠/g,'!=').split(/\s+и\s+|\s*&&\s*/i);
+ if(typeof variable==='string'&&exclusions.length<=20&&exclusions.every(s=>s.split('!=')[0]?.trim()===variable&&s.split('!=').length===2)){
+  const points=exclusions.map(s=>M.parse(s.split('!=')[1].trim()));
+  if(points.every(Boolean)){
+   points.sort((a,b)=>{const x=BigInt(a.n)*BigInt(b.d),y=BigInt(b.n)*BigInt(a.d);return x<y?-1:x>y?1:0;});
+   const bounds=['-∞',...new Set(points.map(q=>M.answer(q))),'+∞'];return bounds.slice(0,-1).map((left,i)=>'('+left+';'+bounds[i+1]+')').join('∪');
+  }
+ }
  const single=linearRay(text,variable);if(single)return single;
  const equal=text.split('=');
  if(equal.length===2&&equal[0].trim()===variable){const v=M.parse(equal[1]);if(v){const n=M.answer(v);return '['+n+';'+n+']';}}
@@ -865,6 +873,21 @@ function check(user,target){
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
  if(target.kind==='rational-probe')return Boolean(M.parse(user));
  if(target.kind==='linear-ray'){const u=linearRay(user,target.graph.variable);return Boolean(u&&equalAxisSets(u,asThreshold(target.graph.relation,target.graph.threshold)));}
+ if(target.kind==='feature-points'){
+  const n=target.graph.constructionXs.length,a=G.domainCoefficients(user,n),b=G.domainCoefficients(target.answer,n);return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
+ }
+ if(target.kind==='feature-coefficients'){
+  const a=G.domainCoefficients(user,2),b=G.domainCoefficients(target.answer,2);return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
+ }
+ if(target.kind==='positive-probe'){const r=M.parse(user);return Boolean(r&&r.n>0);}
+ if(target.kind==='domain-family'){
+  const f=G.familyDomain(user);if(!f)return false;
+  return target.graph.excluded===null?f.domain==='all':f.domain==='except'&&M.equal(f.cut,String(target.graph.excluded));
+ }
+ if(target.kind==='reciprocal-hole'){
+  const a=G.domainCoefficients(user,3),b=G.domainCoefficients(target.answer,3);
+  return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
+ }
  if(target.kind==='system-single'||target.kind==='system-intersection')return equalAxisSets(systemInput(user,target.variable||target.graph?.variable),target.answer);
  if(target.kind==='system-examples')return systemExamples(user,target);
  if(target.kind==='linear-examples')return linearExamples(user,target);
@@ -889,6 +912,11 @@ function check(user,target){
  if(target.kind==='ordered-coordinates')return Boolean(G.coordinateEvidence(user,target.coordinateSymbols,target.coordinateOrder,target.coordinateBounds)?.valid);
  if(target.kind==='ordered-comparison-sample')return G.admissibleSample(user,target.graph.sourceDomain,2)&&G.inequalityTrial(target.graph,user,true)?.sign===target.requiredSign;
  if(target.kind==='transformed-order')return transformedOrder(user,target);
+ if(target.kind==='between-surd')return G.betweenSurd(user,target);
+ if(target.kind==='extrema-pair'){
+  const parts=String(user).split(';'),expected=target.answer.split(';');
+  return parts.length===2&&parts.every((p,i)=>expected[i]==='нет'?['нет','не существует','отсутствует'].includes(p.trim().toLowerCase()):M.equal(p,expected[i]));
+ }
  if(target.kind==='bounded-point')return G.withinBounds(user,target.limits);
  if(target.kind==='source-domain-sample')return G.admissibleSample(user,target.sourceDomain,target.probeCount);
  if(target.kind==='inequality-counterexample'){const probe=G.inequalityTrial(target.graph,user,true);return Boolean(probe&&probe.sign!==target.graph.operator);}
