@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
+const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '../..');
 test('locally served JSXGraph matches the pinned official distribution and license', () => {
   const expected = {
@@ -15,10 +16,18 @@ test('locally served JSXGraph matches the pinned official distribution and licen
     assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, 'trainers/spacemath/vendor', file))).digest('hex'), hash, file);
   }
   const html = fs.readFileSync(path.join(root, 'trainers/spacemath/index.html'), 'utf8');
-  const resources = [...html.matchAll(/<(?:script|link)\b[^>]*\b(?:src|href)="([^"]+)"/g)].map(match => match[1]);
+  const document = new JSDOM(html).window.document;
+  const canonical = [...document.querySelectorAll('head link[rel="canonical" i]')];
+  assert.deepEqual(canonical.map(link => link.getAttribute('href')),
+    ['https://mathexam.space/trainers/spacemath/']);
+  const resources = [...document.querySelectorAll('script[src], link[href]')]
+    .filter(element => element !== canonical[0])
+    .map(element => element.getAttribute(element.localName === 'script' ? 'src' : 'href'));
   assert(resources.includes('vendor/jsxgraphcore.js') && resources.includes('vendor/jsxgraph.css'));
   for (const resource of resources) {
-    assert(!/^(?:https?:)?\/\//.test(resource), 'Runtime asset is local: ' + resource);
-    assert(fs.existsSync(path.resolve(root, 'trainers/spacemath', resource)), 'Runtime asset exists: ' + resource);
+    const url = new URL(resource, 'https://mathexam.space/trainers/spacemath/');
+    assert.equal(url.origin, 'https://mathexam.space', 'Runtime asset is local: ' + resource);
+    const filename = path.join(root, decodeURIComponent(url.pathname));
+    assert(fs.statSync(filename).isFile(), 'Runtime asset exists: ' + resource);
   }
 });

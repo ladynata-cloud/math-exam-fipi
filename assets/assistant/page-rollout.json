@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 625,
-    "covered": 623,
+    "total": 628,
+    "covered": 626,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -3336,6 +3336,24 @@
       "afterSha256": "6ee5a47b7e97309cdb033c24fd13e49a85d11c41dbb44f8f62a5d3df4422413f",
       "placement": "before-head-close",
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
+    },
+    "school/peterson6/textbook/index.html": {
+      "beforeSha256": "1ad2be5d3e03ac79c2accad985deaa2c25aabd6157161c249efb002ed9b53fde",
+      "afterSha256": "117aa66ba06948b5d783148f446eba0b168ec6bbbadb0841b1369bf8c462184b",
+      "placement": "before-head-close",
+      "sourceSha": "0d19bdd31e50a8de2d2f842bf022b7e1d3403ba6"
+    },
+    "trainers/peterson6-workshop/index.html": {
+      "beforeSha256": "709eb38bb4e74d92e7592242c5b14f10cb9ae64c270d7207f8fc056c9aaa1a45",
+      "afterSha256": "81cc77dbd08449059f4f8aa1e672ab0a4eadca0e9dd73be4385bfa1cd7bd7184",
+      "placement": "before-head-close",
+      "sourceSha": "0d19bdd31e50a8de2d2f842bf022b7e1d3403ba6"
+    },
+    "trainers/spacemath/index.html": {
+      "beforeSha256": "ec78c2638f3acf62b0a07ad86298ed1c6453f5fd58e1c80def95ebbd331ab236",
+      "afterSha256": "e60345436e1fbb07ca3eb02962aad9d437c552b85b3d63d47577861018f1d3a2",
+      "placement": "before-head-close",
+      "sourceSha": "0d19bdd31e50a8de2d2f842bf022b7e1d3403ba6"
     }
   },
   "provenance": {
@@ -3999,7 +4017,10 @@
     "trainers/practice-topics/index.html": "sitemap",
     "trainers/vilenkin6-percent/index.html": "sitemap",
     "trainers/school-workshop-check/index.html": "school/index.html",
-    "trainers/tyurin-statistics/index.html": "school/index.html"
+    "trainers/tyurin-statistics/index.html": "school/index.html",
+    "school/peterson6/textbook/index.html": "sitemap",
+    "trainers/peterson6-workshop/index.html": "sitemap",
+    "trainers/spacemath/index.html": "sitemap"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6623,6 +6644,16 @@
         "trainers/tyurin-statistics/index.html"
       ],
       "reason": "New canonical practice entry discovered from the verified edition cards and included in the navigator."
+    },
+    {
+      "sourceBaseSha": "0d19bdd31e50a8de2d2f842bf022b7e1d3403ba6",
+      "task": "docs/tasks/UNIFIED_BOARD_CONTINUITY_20261111.md",
+      "addedPages": [
+        "school/peterson6/textbook/index.html",
+        "trainers/peterson6-workshop/index.html",
+        "trainers/spacemath/index.html"
+      ],
+      "reason": "Canonical sitemap entries for the Peterson practice pages and standalone SpaceMath. The navigator skips embedded views."
     }
   ]
 }
