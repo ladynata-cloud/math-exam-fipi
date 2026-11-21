@@ -53,8 +53,11 @@ const sphere = require('./preservation-sphere-414.json');
 const { ids: sphereIds } = require('../stereo-textbook/additional414-baseline.cjs');
 assert.deepEqual(Object.keys(sphere.additions).sort(), [...sphereIds].map(id => 'stereo-course/textbook/lessons/' + id + '.json').sort());
 assert.deepEqual(Object.keys(sphere.files).sort(), ['stereo-course/textbook/data/course.json', 'stereo-course/textbook/source-index.json']);
+const mixed = require('../stereo-textbook/inscribed-solids.json');
+const circumspheres = require('../stereo-textbook/circumspheres.json');
+const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
 const amendmentChains = {};
-for (const supplement of [...supplements, sphere]) {
+for (const supplement of [...supplements, sphere, mixed, circumspheres]) {
   for (const [file, amendment] of Object.entries(supplement.files)) {
     const chain = amendmentChains[file] ||= [];
     if (chain.length) assert.equal(amendment.beforeSHA256, chain.at(-1).afterSHA256, 'exact amendment chain: ' + file);
@@ -75,9 +78,10 @@ const approvedAreaFiles = {
   "geometry-course/textbook/assets/additional-lessons.js": "82e927e05ed568da30843ad7f79d4a75463e0fc096c827aa6cba2551b2ee68eb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4"
 };
+const newGroups = {geometry_textbook: approvedAreaFiles, stereo_textbook: {...sphere.additions, ...extraCards}};
 function verify(group, read = file => fs.readFileSync(path.join(root, file)), extra = []) {
   const files = [...new Set(group.paths.flatMap(filesAt).concat(extra))].filter(file => !group.excluded.includes(file)).sort();
-  const additions = {geometry_textbook: approvedAreaFiles, stereo_textbook: sphere.additions}[group.group] || {};
+  const additions = newGroups[group.group] || {};
   assert.equal(files.length, group.fileCount + Object.keys(additions).length, group.group + ': exact protected file set size');
   for (const file of Object.keys(additions)) assert(files.includes(file), 'required reviewed addition: ' + file);
   const digest = crypto.createHash('sha256');
@@ -98,7 +102,7 @@ function verify(group, read = file => fs.readFileSync(path.join(root, file)), ex
 for (const group of baseline.groups) verify(group);
 const geometry = require(root + '/geometry-course/textbook/data/course.json');
 const currentStereo = require(root + '/stereo-course/textbook/data/course.json');
-assert.equal(currentStereo.lessons.length, 688);
+assert.equal(currentStereo.lessons.length, 708);
 const stereo = require('../stereo-textbook/additional414-baseline.cjs').previousCourse(currentStereo, require(root + '/stereo-course/textbook/source-index.json'));
 const first = require(root + '/learning/atanasyan-first-steps/course.json');
 const literacy = require(root + '/stereo-course/literacy/data/course.json');
@@ -119,7 +123,6 @@ for (const file of Object.keys(amendmentChains)) {
   assert(group, 'every exact amendment remains inside the original protected inventory');
   assert.throws(() => verify(group, name => name === file ? Buffer.concat([fs.readFileSync(path.join(root, name)), Buffer.from('\nUNREVIEWED')]) : fs.readFileSync(path.join(root, name))), /exact reviewed amendment/);
 }
-const newGroups = {geometry_textbook: approvedAreaFiles, stereo_textbook: sphere.additions};
 for (const group of baseline.groups.filter(group => newGroups[group.group])) {
   const sample = Object.keys(newGroups[group.group])[0];
   assert.throws(() => verify(group, file => file === sample ? Buffer.from('CHANGED') : fs.readFileSync(path.join(root, file))), /exact reviewed new source/);

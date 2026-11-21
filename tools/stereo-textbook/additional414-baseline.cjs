@@ -2,6 +2,7 @@
 // Validate the entire increment before projecting to the exact published 674 cards.
 // No unknown card, partial source contract, altered review or missing old byte is ignored.
 const assert=require('node:assert/strict'),crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path');
+const later=require('./inscribed-solids-predecessor.cjs');
 const published=require('./additional414-baseline.json'),ids=new Set(published.ids);
 const canon=v=>Array.isArray(v)?v.map(canon):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canon(v[k])])):v;
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex'),sha=v=>hash(JSON.stringify(canon(v)));
@@ -9,12 +10,14 @@ const target=e=>e.source.collection==='main'&&Object.hasOwn(published.parts,e.so
 const originals=new Map(published.originalSources.map(e=>[e.source.exercise,e]));
 function exact(actual,expected,label){assert.equal(new Set(actual).size,actual.length,label+': unique');assert.deepEqual([...actual].sort(),[...expected].sort(),label);}
 function previousIndex(index){
+ index=later.indexBefore(index);
  const copy=structuredClone(index),entries=copy.entries.filter(target);assert.equal(entries.length,8,'eight original source exercises');
  const contracts=entries.filter(e=>Object.hasOwn(e,'requiredParts')).length;assert(contracts===0||contracts===8,'all eight contracts together');
  for(const e of entries){if(contracts)assert.deepEqual(e.requiredParts,published.parts[e.source.exercise],'exact Cyrillic source parts');delete e.requiredParts;assert.deepEqual(e,originals.get(e.source.exercise),'unchanged source metadata');}
  assert.equal(sha(copy),published.sourceIndexSHA256,'complete published source index');return copy;
 }
 function previousCourse(course,index){
+ course=later.courseBefore(course,index);index=later.indexBefore(index);
  previousIndex(index);const added=course.lessons.filter(c=>ids.has(c.id)),catalog=course.catalog.entries.filter(e=>ids.has(e.id));
  if(!added.length&&!catalog.length){assert.equal(sha(course),published.canonicalBundleSHA256,'exact pre-increment course');return structuredClone(course);}
  assert(index.entries.filter(target).every(e=>Object.hasOwn(e,'requiredParts')),'integrated additions require all eight source contracts');
@@ -32,6 +35,7 @@ function previousCourse(course,index){
  assert.equal(sha(copy),published.canonicalBundleSHA256,'every published lesson and catalogue flag preserved');return copy;
 }
 function previousRegistry(registry){
+ registry=later.registryBefore(registry);
  const added=registry.cards.filter(c=>ids.has(c.id));if(!added.length){assert.equal(sha(registry),published.registrySHA256);return structuredClone(registry);}
  exact(added.map(c=>c.id),ids,'fourteen review rows');assert.equal(registry.batches.length,published.reviewBatches+1);exact(registry.batches.at(-1).cardIds,ids,'one exact new batch');
  for(const row of added)assert.equal(row.sha256,published.contentHashes[row.id],'new content hash');
@@ -39,12 +43,14 @@ function previousRegistry(registry){
  assert.equal(sha(copy),published.registrySHA256,'all prior review records preserved');return copy;
 }
 function previousCases(cases){
+ cases=later.casesBefore(cases);
  const all=[...cases],old=all.filter(([key])=>!ids.has(key.split('|')[0]));
  assert.equal(old.length,published.screenshotCases);assert.equal(sha(old),published.screenshotCasesSHA256,'all previous browser cases preserved');
  if(old.length!==all.length){assert.deepEqual(all.slice(0,old.length),old,'new cases append only');exact([...new Set(all.slice(old.length).map(([key])=>key.split('|')[0]))],ids,'every new card has cases');}
  return new Map(old);
 }
 function previousRawLessons(rows){
+ rows=later.rawBefore(rows);
  const added=rows.filter(([name])=>ids.has(name.replace(/\.json$/,'')));if(added.length)exact(added.map(([name])=>name.slice(0,-5)),ids,'fourteen new lesson files');
  const old=rows.filter(([name])=>!ids.has(name.replace(/\.json$/,''))).sort(([a],[b])=>a<b?-1:a>b?1:0);
  assert.equal(old.length,674);assert.equal(sha(old),published.rawLessonManifestSHA256,'all 674 raw lesson bytes');return old;

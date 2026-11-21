@@ -130,17 +130,7 @@ function hostStatic(){
 function watch(target){target.on('pageerror',error=>evidence.errors.push({case:activeCase,message:error.message}));target.on('response',response=>{const url=new URL(response.url());if(response.status()>=400&&url.origin===new URL(base).origin&&url.pathname!=='/favicon.ico')evidence.errors.push({case:activeCase,status:response.status(),url:response.url()});});}
 async function settle(target=page){await target.evaluate(async()=>{if(document.fonts)await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});}
 async function textWithFractions(locator){return locator.evaluate(node=>{const copy=node.cloneNode(true);[...copy.querySelectorAll('.stereo-fraction')].reverse().forEach(f=>f.replaceWith(f.querySelector(':scope > .stereo-numerator').textContent+'/'+f.querySelector(':scope > .stereo-denominator').textContent));return copy.textContent;});}
-function wrongStepAnswers(step){
- // Every current input step has an independently readable integer/fraction as
- // its first authored answer. Change its numerator by one, retaining a valid
- // mathematical expression (e.g. 48 -> 49 and 4/9 -> 5/9).
- const match=/^(\d+)(?:\/(\d+))?$/.exec(step.input.accepted[0]);assert(match,'review a meaningful wrong answer for '+step.id);
- const answers=[String(Number(match[1])+1)+(match[2]?'/'+match[2]:'')];
- if(step.input.accepted.some(answer=>/^[а-яё]+$/iu.test(answer))){
-  const words={3:'четыре',6:'семь'};assert(words[match[1]],'review a wrong word for mixed numeric/text input');answers.push(words[match[1]]);
- }
- return answers;
-}
+const {wrongStepAnswers}=require('./wrong-step-answers.cjs');
 async function camera(target=page,selector='[data-main-model] svg'){return target.locator(selector).evaluate(svg=>({yaw:svg.dataset.yaw,pitch:svg.dataset.pitch}));}
 async function readRecord(target,lesson){return target.evaluate(key=>JSON.parse(localStorage.getItem(key)),stateKey(lesson));}
 async function isOpen(locator){return locator.evaluate(node=>node.open);}
@@ -387,7 +377,7 @@ async function card(lesson,width){
    const afterDraft=await readRecord(page,lesson);for(const key of ['wrongAttempts','firstAttempt','checked','checkedWith','assisted'])assert.deepEqual(afterDraft[key],beforeInput[key],lesson.id+' intermediate draft retains '+key);
    // Help was explicitly opened above. Its authored mathematical feedback is
    // tested with a well-formed wrong answer, including real wrong number words.
-   for(const wrong of wrongStepAnswers(authoredStep)){
+   for(const wrong of wrongStepAnswers(lesson.id,authoredStep)){
     await field.fill(wrong);await step.locator('form button').click();assert.equal(await feedback.getAttribute('data-answer-status'),'wrong',lesson.id+' mathematically wrong step answer '+wrong);
     assert.equal(await textWithFractions(feedback),authoredStep.input.feedback,lesson.id+' authored feedback preserved');
     if(lesson.id==='ex-main-0063-b')assert.equal(await feedback.locator('.stereo-fraction').count(),1,'alternate-order numerical hint has a fraction bar');

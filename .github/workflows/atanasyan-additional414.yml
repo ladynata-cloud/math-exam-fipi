@@ -38,6 +38,8 @@ jobs:
           node tools/stereo-textbook/schema.test.cjs
           node tools/stereo-textbook/model-geometry.test.cjs
           node tools/stereo-textbook/additional414-content.test.cjs
+          node tools/stereo-textbook/inscribed-solids.test.cjs
+          node tools/stereo-textbook/circumspheres.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -55,6 +57,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Every new card and every state on two phones and desktop
         run: node tools/stereo-textbook/additional414.browser.cjs
+      - name: Check inscribed-solids independent practice on two phones and desktop
+        env:
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/inscribed-solids
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -91,5 +97,6 @@ jobs:
           path: |
             artifacts/atanasyan-additional414/
             artifacts/atanasyan-additional414-live/
+            artifacts/inscribed-solids/
           retention-days: 14
           if-no-files-found: error
