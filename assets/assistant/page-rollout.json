@@ -5,9 +5,10 @@
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
     "total": 623,
-    "covered": 622,
+    "covered": 621,
     "excluded": {
-      "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
+      "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
+      "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
     }
   },
   "existingPages": [
@@ -3283,12 +3284,6 @@
       "placement": "before-head-close",
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
-    "oge/skills/index.html": {
-      "beforeSha256": "357b83d1471e363bd0d6888ae35a22eff70efbc40c47b5575712528ff7f8ed92",
-      "afterSha256": "10a575cebc480ff42270e8f4ebfdb6ef3f8ec7d5912dca487243a7f624d53bd3",
-      "placement": "before-head-close",
-      "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
-    },
     "stereo-course/literacy/index.html": {
       "beforeSha256": "8f2cc6c0a23dc3990847e586ed02af1af76d91fdbe3fb9dda37a6f99f4ea1268",
       "afterSha256": "3bef5da61c57d512b483dad6bfdb27289e828350a25f4b9ad97caaf5a20904e4",
@@ -3990,7 +3985,6 @@
     "pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/index.html": "sitemap",
     "ege-profil/azbuka-metodov/index.html": "sitemap",
     "equations/linear-pilot/index.html": "sitemap",
-    "oge/skills/index.html": "sitemap",
     "stereo-course/literacy/index.html": "sitemap",
     "trainers/college-stereometry/index.html": "sitemap",
     "trainers/college-stereometry/lessons/index.html": "sitemap",
@@ -4036,7 +4030,8 @@
     "video-lessons/studio.html": "private/archived/helper/board/offline",
     "trainers/geometry7-practice.html": "Board shell; loaded source reference is the native-session boundary, not a public standalone exercise.",
     "book/": "Immutable published book editions.",
-    "b/": "Immutable short book aliases."
+    "b/": "Immutable short book aliases.",
+    "oge/skills/index.html": "Standalone offline course with built-in guidance and task-aware links to the course, practice, and cabinet."
   },
   "originBaseSha": "f9f3aae35e6f35efcf55b0fc5f70019c906d3245",
   "sourceBindingUpdates": [
@@ -6525,7 +6520,6 @@
       "addedPages": [
         "ege-profil/azbuka-metodov/index.html",
         "equations/linear-pilot/index.html",
-        "oge/skills/index.html",
         "stereo-course/literacy/index.html",
         "trainers/college-stereometry/index.html",
         "trainers/college-stereometry/lessons/index.html",
