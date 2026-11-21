@@ -866,6 +866,22 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
   await same(teacherFrame,studentFrame,'both participants recover clock and separate checked task');await narrow(student,studentFrame,'scale-and-clock');
 
+  phase = 'printed 5.15 and 5.16, five operation chains and the two meanings of decrease';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-15"]').click();await studentFrame.locator('h1').filter({hasText:'№5.15'}).waitFor();
+  await teacherFrame.locator('#answer').fill('43');await teacherFrame.locator('#answer-form button').click();const wrongSum=await same(teacherFrame,studentFrame,'confused subtraction with addition');
+  assert.match(wrongSum.scene.message,/знак −/);await ownership(teacher,student,true);
+  await studentFrame.locator('#answer').fill('5');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('[data-v5-param=column]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=operation]').selectOption({value:'4'});
+  await studentFrame.locator('[data-v5-prediction]').fill('2');await studentFrame.locator('[data-v5-predict] button').click();
+  const route=await same(studentFrame,teacherFrame,'fourth chain final row 34 divided by 17');assert.equal(route.scene.model.column,3);assert.equal(route.scene.model.operation,4);assert(route.scene.model.seen);assert.equal(route.scene.step,1);assert.deepEqual(route.scene.hintLevels,{});
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-16"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.16'}).waitFor();
+  await studentFrame.locator('[data-v5-param=groupChoice]').selectOption({value:'2'});await studentFrame.locator('[data-v5-param=hundreds]').fill('3');await studentFrame.locator('[data-v5-param=hundreds]').press('Tab');
+  await studentFrame.locator('#answer').fill('100000');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('99');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const draft=await same(studentFrame,teacherFrame,'one fifth marked on the model and unfinished final answer survive');assert.equal(draft.scene.savedInput,'99');assert.equal(draft.scene.step,1);assert.equal(draft.scene.model.hundreds,3);assert.equal(draft.scene.model.groupChoice,2);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'learner reconnects to the same chain');
+  await teacherFrame.locator('#answer').fill('99900');await teacherFrame.locator('#answer-form button').click();const endDecrease=await same(teacherFrame,studentFrame,'original million independently reduced to 99900');assert(endDecrease.scene.correct);assert.deepEqual(endDecrease.scene.hintLevels,{});await narrow(student,studentFrame,'chains-and-decrease');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
