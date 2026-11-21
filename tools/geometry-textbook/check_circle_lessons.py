@@ -109,13 +109,33 @@ def verify(item):
         near(length('M','H'),length('M','Y'))
 
 
+    elif number == 910:
+        near(length('A','B')/length('B','C'),length('A','D')/length('D','C'))
+        near(length('B','D')**2,length('A','B')*length('B','C')-length('A','D')*length('D','C'))
+        v = {key.split('__')[0]: val[:2] for key,val in points.items() if key.endswith('__v3')}
+        near(dist(v['B'],v['D'])*dist(v['D'],v['E']),dist(v['A'],v['D'])*dist(v['D'],v['C']))
+    elif number == 911:
+        near(length('E','A'),length('E','C'))
+        near(length('O','B'),length('O','E'))
+        near(angle('O','B','E'),angle('E','B','H'))
+    elif number == 912:
+        near(length('A','X'),length('B','X')+length('C','X'))
+        v = {key.split('__')[0]: val[:2] for key,val in points.items() if key.endswith('__v3')}
+        near(dist(v['A'],v['Y']),dist(v['C'],v['X']))
+        near(dist(v['Y'],v['X']),dist(v['B'],v['X']))
+    elif number == 913:
+        diameter=2*length('O','A')
+        for a,b,c,d in [('A','B','C','D'),('B','C','D','A')]:
+            near(length(a,b)**2+length(c,d)**2,diameter**2)
+
+
 if __name__ == '__main__':
     lessons = json.loads(DATA.read_text())['lessons']
     parts = [(int(l['source']['exercise']), l['source'].get('subpart')) for l in lessons]
-    assert parts == [(900,None),(901,'а'),(901,'б'),(901,'в')] + [(n,None) for n in range(902,910)]
+    assert parts == [(900,None),(901,'а'),(901,'б'),(901,'в')] + [(n,None) for n in range(902,914)]
     for item in lessons:
         try:
             verify(item)
         except AssertionError as exc:
             raise AssertionError(item['id']) from exc
-    print('ATANASYAN_CIRCLE_MODELS_OK 10 номеров, 12 авторских решений, 24 числовые проверки')
+    print('ATANASYAN_CIRCLE_MODELS_OK 14 номеров, 16 авторских решений, 32 числовые проверки')
