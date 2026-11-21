@@ -31,6 +31,7 @@ for(const [suffix,values] of Object.entries(answers)){
   assert.deepEqual(card.source.pdfPages,[152]);
   assert.equal(card.answer.mode,'manual');
   assert.deepEqual(new Set(['neutral',...card.help.map(h=>h.view),...card.steps.map(s=>s.view)]),new Set(Object.keys(m.views)));
+  assert.equal(!!m.planar, suffix !== '0586', 'only the arbitrary point O needs a spatial diagram');
   viewer.prepare(m);
   for(const [i,step] of card.steps.entries()){
     assert.equal(engine.classifyAnswer(values[i],step.input.accepted).status,'correct',id+'/'+step.id);

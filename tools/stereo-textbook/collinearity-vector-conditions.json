@@ -141,54 +141,54 @@
   },
   "cards": {
     "ex-main-0586": {
-      "raw": "fb1a3cdddb890e6959a94f38e5aa956bf5e26768fde1954f87b8af907eb1e1d7",
-      "authored": "dd95b48a068f10cb48ad1796b74e84885abdb3ca3f99377addc786386c38fc9a",
-      "integrated": "0fef9964dfd34ccefa343fe3f988c9a3056b12656f78b2b3d5b6f44a1aae2031"
+      "raw": "109a7d23c0f13805fb98d0d016ee7bd9a6448fe8331a35b1e3bbe53a56c9343f",
+      "authored": "2aa448b1eedf1bd855e4dab55d18aeca44b3716f57b6bf5a9db9a30043dbb6b5",
+      "integrated": "2ed5e1f0e78343c8387016892b06b5a4ae9d96200447b865951d593269ebc3f1"
     },
     "ex-main-0587": {
-      "raw": "2617f79e97266647f7fceb2745d2f136b5c7b98b8487998db4b87db503a75143",
-      "authored": "c7b5f9424f23cc21f0c9736374aa05f90d2ff869a511093238e2ca09fd421c51",
-      "integrated": "ae3a847e8acaea30dea2dc7952f3a8534e51ddd6722ffb46ea063ee6903af545"
+      "raw": "e297d26946216d9dc367cde5bd67001646e003eb81e6c8f0d7281e601aa622b9",
+      "authored": "4a8fdd82e7a7b9be989f34d832570bd80623673d62f5f590e6c47b7127d8021c",
+      "integrated": "56246f686f52e00ca0024323764b1a44c7efc91106d807f4022418c1113ee8fb"
     },
     "ex-main-0588-a": {
-      "raw": "8bc10039da7baa0fd24f3feaf889e85ff19536c387a88ff05a186e56e5463dfc",
-      "authored": "6f2b561da888ab6fc88866f9e9aa21a3327d0367cead74841a921499e0b84348",
-      "integrated": "9aecfd9db4963ed4b3bda2f5b9de3e1e2cffd509d6be1e5405ef5dfbebf27b93"
+      "raw": "a9e655322df32b8b360d89d77fc331574f6b055f0d6550dd8828adecdda8e11c",
+      "authored": "3d89ac29e3dc79df926b227922333824620aeea4bd6e1aeb3eaa9c0dfc869886",
+      "integrated": "56c9e58f598108d527b6dc503642c08325dcc574b49a06d11394d79b29015c20"
     },
     "ex-main-0588-b": {
-      "raw": "b8e7cbb093bf1b7c83a5ede9e7fd3a2521d6bc8460b64f97fb1d27b2f4eb52d2",
-      "authored": "5d23e44fa1316850fcf08c41c1eed20bde7ec3de27b04a31cdbc8bac4ae0b2cb",
-      "integrated": "fc945a0e7b2d9e2e0e2ff83479d48abde1370d893f7822332ff5702a8b984ba6"
+      "raw": "d04ca3f9c601966d33cb784122065e034083b888f9fbc8d0e0a2e5ad626a75cb",
+      "authored": "dd390652bb71098ea5ca9254dcc4ee96cea932a33dddc8cd4179cd82be3c3230",
+      "integrated": "5cefe6ccf766aef8c6aaf47e7a3dea87a0c0f6290f190b06dd27abd8ec8ea27c"
     },
     "ex-main-0588-c": {
-      "raw": "b4ce6d5a6c9a4a8189d8e8622cf0212e273e2b8b18f35d4387a2802674c225c6",
-      "authored": "f30c51cee6699144f28fb02cc408bbacdadf4b5baef76273ffbbbc817d72b485",
-      "integrated": "85637838c2bfaf9d60bf2c483c6b0fdb35fb02b4d83d5ff48e9b38992f800fa8"
+      "raw": "aeeb8e5cba0d8bbb639453f6592129cdce3cceea57fac7b13e8fef1573e5fafc",
+      "authored": "46a912ca6908ffcdfca949a3bcbd5dad62c6940d01449fd97986d5a0e808b7b8",
+      "integrated": "7e97397e0d7b282f8b21e3eecb6f6cd1e3f40d52ce1f35122c7f1ad512af77ad"
     },
     "ex-main-0588-d": {
-      "raw": "c6157d92b447a812eb80a7644aa17077b2b4ce6177743bb0ef65514ec7fe2a18",
-      "authored": "228dfe61969c19c57af2f065d1977a6ea9042ab3d6fedf482467094ad41c3a35",
-      "integrated": "7b5aa80b3961b2daa340fb2103f9e9bf5073119beddafeaabc2924253a44af43"
+      "raw": "778ed3f25db6428d87a6b707706e390ef09df27a60e0f6ab2030166a3518d4df",
+      "authored": "b42e4658908af9af49f3d1ce3a7ff2ae3e7c420f2fbb6c14e42ecf1660ceb382",
+      "integrated": "0503a1edaa0cde32f3557999a8c32e903c53dc93e83e7d485db9e0278b5f71ee"
     },
     "ex-main-0589": {
-      "raw": "f7f3fb6198546f173b2dd7b91ce40e48fe822e0c687d72a857212b5e182909a5",
-      "authored": "6d6213927dc59b61763cb70dfca2b583bf176e9c80c0babc1bfda4d780773ee2",
-      "integrated": "3ad6f8cfdc1cfe86568d7a408b4e6d5943efde2972545159e404943bc283e8ef"
+      "raw": "c841204ed7cdfb9d2376cc2aad361bd3f7284b630e766854c9db239f7911bfac",
+      "authored": "859a05b686948324613de258498d0926cf4854d5fda781d317bd4d81e55c6cdb",
+      "integrated": "20543597da183c9615954fcffc0721838e6ba7ee840fbde5c1a6c2578052a167"
     },
     "ex-main-0590": {
-      "raw": "4a1171be7fa08d7a3ea80cb9f89c296f91ede04cae4bce5379c20cbe89bd46b6",
-      "authored": "e1f4d228601e649200126da7255b0546339c9d9872ddcdee2150efa70918ff68",
-      "integrated": "d6e3b36bda910d63d689d1ed041e55a80b5599f16ad4350ff1b800bfd4560796"
+      "raw": "e1087918767435132b9e403dee1f230e72d0258e56c8570440961bca1c0ac25c",
+      "authored": "fb5217f278ef41463c2a44f5aa73b147fab957b2d32fe13e93365cfd95ebc58a",
+      "integrated": "87c9865082ffa29f5725bfe6a58abcd4ed4acc234a14c15ca082667330776d71"
     },
     "ex-main-0591-a": {
-      "raw": "6c5badd85520e8497a988b9349c2b44171314eef7815cf41e2adac1326a80ab2",
-      "authored": "2d5175646fae9bb1a22d63491f2855d4f07e42b59018b35b5e98d03a4e5570a0",
-      "integrated": "01b41690d2a96a7d990eedb681a2e522e31f9ae2cb1d2699edbb2048f24bcbf9"
+      "raw": "f7fbad83ce79291e94981e878ca330ae49eea32a5fdca82ea119f0df1875a02f",
+      "authored": "562a9c197d9dbc21e2508fe605f49dff2f31fda5998b99148a3f9a6032d6901e",
+      "integrated": "732b69784f4577e66e729b4e1db127f7db821ba4fb6dfbf028e82cd126deac31"
     },
     "ex-main-0591-b": {
-      "raw": "58d5290c5c5ba464a3b94271112f346dff6a596eb11f06bb40fd8d62afe3faab",
-      "authored": "2acdb1f5a47738d4db181f14c8c364136944916a6f3cf961667ba301ec60c2f7",
-      "integrated": "2cef6ba91b674e3000f912ef5b12b04228d98a208ad7781a4949c63d2ab6bcc8"
+      "raw": "d4420af72dbf24c0f1b5e9e52e3a3d01438c810fc35fc69f4b00b14a446ca9b0",
+      "authored": "e55b40ec90ec2002ebde2a156de351bde7a2fc2e1e8a25af5f597e103e8e0818",
+      "integrated": "5b40b58c83fbd4c3464fa27e2f9ddc6664dd574b26158895f767924507ce43d4"
     }
   },
   "cases": [
@@ -476,7 +476,7 @@
   "files": {
     "stereo-course/textbook/data/course.json": {
       "beforeSHA256": "455135f3db49b6bebe9f0558dac22669cff3c79dc9dcbbcabef361b8cf9493a5",
-      "afterSHA256": "d7bcd349937f754754b457b0430d620888d48fb6ca4b57a54ad3675dd1f12e26"
+      "afterSHA256": "1d7f3775d96dd04b2ece16400c1952ee4785f7e8f914a98de0fd00fd9e61cb96"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "5a13fe32eba928c5bcbf247a96b83dc03f9a8d4a88cd9df5761e94b950d3e05f",
