@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>От счёта группами до деления уголком — карта навыков по Арженикову | MathExam</title>
+  <meta name="description" content="Восемь шагов от счёта равными группами до деления уголком. Соберите коробки, выберите цифру частного, разберитесь с нулём и остатком и решите новый пример самостоятельно.">
+  <link rel="canonical" href="https://mathexam.space/trainers/oge-basics/multiplication-division/arzhenikov-map.html">
+  <link rel="stylesheet" href="arzhenikov-map.css">
+  <script src="arzhenikov-map.js" defer></script>
+</head>
+<body>
+  <header><nav aria-label="Навигация"><a class="brand" href="/">MathExam</a><span>/</span><a href="index.html">Умножение и деление</a><a class="cabinet" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/">В кабинет</a></nav></header>
+  <main>
+    <div class="intro"><div><h1>От групп к делению уголком</h1><p>Карта навыков по Арженикову. Выберите, что хотите научиться делать.</p></div><div class="meter"><strong id="total">Пройдено 0 из 8</strong><progress id="bar" value="0" max="8" aria-label="Пройденные навыки"></progress></div></div>
+    <div class="layout">
+      <details id="route" open><summary>Карта навыков</summary>
+        <ol id="skills">
+          <li><a href="#count">Считаю равными шагами</a></li>
+          <li><a href="#share">Делю поровну</a></li>
+          <li><a href="#pack">Собираю равные группы</a></li>
+          <li><a href="#inverse">Нахожу множитель</a></li>
+          <li><a href="#bridge">Выбираю цифру частного</a></li>
+          <li><a href="#zero">Сохраняю ноль в частном</a></li>
+          <li><a href="#remainder">Объясняю остаток</a></li>
+          <li><a href="#transfer">Проверяю себя без модели</a></li>
+        </ol>
+      </details>
+      <section class="sheet" id="sheet" aria-labelledby="heading">
+        <div class="topline"><span id="phase">Практика</span><span id="stepNo"></span></div>
+        <h2 id="heading" tabindex="-1">Считаю равными шагами</h2>
+        <p id="prompt">Сосчитайте предметы равными группами, затем переходите к записи числом.</p>
+        <div id="activity"></div>
+        <p class="feedback" id="feedback" aria-live="polite"></p>
+        <noscript>Для ввода ответов включите JavaScript. Ниже есть ссылки на дополнительные упражнения и источники.</noscript>
+      </section>
+    </div>
+    <details class="teachers"><summary>Для преподавателя · как провести сравнение</summary>
+      <p>На пятой ступени у ученика есть два входа в один пример. В первом он наполняет коробки, во втором пробует цифру и проверяет произведение. Выберите один вход до начала занятия и дайте одинаковое время на работу. Записав первый ответ на новой задаче, обсудите ошибку.</p>
+      <p>В восьмой ступени проверяются первая цифра, её обоснование, частное и остаток. Для следующей попытки предлагается другой пример. Чтобы сравнить два объяснения, чередуйте назначенный вход между учениками с похожей подготовкой и используйте один контрольный пример. Повторный ответ того же ученика уже зависит от тренировки.</p>
+      <p id="record">Результат самостоятельной проверки появится здесь после решения.</p>
+    </details>
+    <details class="teachers"><summary>Откуда взяты задания</summary>
+      <p>В задачнике К. П. Арженикова 1923 года в № 233 восемь килограммов распределяют на четыре дня, а в № 257 восемь картин располагают рядами по четыре. Эти два смысла деления лежат в основе второй и третьей ступеней. Порядок действий в пределах десятка, двадцати и круглых десятков виден и в издании 1924 года.</p>
+      <p>В третьей части задачника (1924, с. 24) записано деление 32 935 на 7 с нулём в частном. Разряды мы показываем на меньших числах. Коробки, экранная последовательность и контрольные примеры разработаны для MathExam. Успех на карте показывает выполнение этих заданий. Эффект методики на учениках требует отдельной проверки.</p>
+      <p><a href="https://djvu.online/file/1DTOtoJ55rIWv">Задачник, часть I (1923)</a> · <a href="https://ussrvopros.ru/sbornik-zadach-po-matematike-dlya-shkol-1-j-stupeni-chast-p1-1924">Часть I (1924)</a> · <a href="https://djvu.online/file/Zmmk0C6Gqh83D">Часть III (1924)</a> · <a href="https://repo.nspu.ru/handle/nspu/5833">«Методика начальной арифметики» (1936, переработка А. С. Пчёлко)</a></p>
+    </details>
+    <footer><span>Продолжить в MathExam</span><a href="long-division-quotient-digit.html">Линейка кратных</a><a href="long-division-zero-in-quotient.html">Нули в частном</a><a href="division-with-remainder.html">Деление с остатком</a></footer>
+    <p id="storage" role="status"></p>
+  </main>
+</body>
+</html>
