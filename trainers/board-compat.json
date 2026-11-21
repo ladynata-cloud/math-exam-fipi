@@ -1162,6 +1162,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместная текущая сцена: исследование, практика, проверка, модели, GIF и выбранные номера. Личные результаты не читаются и не изменяются."
+    },
+    {
+      "trainerId": "vilenkin5",
+      "file": "trainers/vilenkin5.html",
+      "title": "Виленкин · 5 класс · обе части",
+      "group": "Школа · математика · 5 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общий урок: 134 занятия, текущие шаги, ответы, модели, записи и GIF. Личный прогресс не читается и не изменяется."
     }
   ]
 }
