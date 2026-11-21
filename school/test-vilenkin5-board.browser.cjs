@@ -417,12 +417,35 @@ async function run(browser, origin, backend, failures) {
   await studentFrame.locator('[data-v5-param=region]').selectOption('3');
   await studentFrame.locator('#answer').fill('лВд');await studentFrame.locator('#answer-form button').click();
   const circleCorrection=await same(studentFrame,teacherFrame,'student identifies the circumference and shows the short arc');
-  assert.equal(circleCorrection.scene.model.region,3);assert(circleCorrection.scene.correct);assert(!circleCorrection.scene.assisted);
+  assert.equal(circleCorrection.scene.model.region,3);assert(circleCorrection.scene.correct);assert(circleCorrection.scene.assisted);assert.deepEqual(circleCorrection.scene.hintLevels,{});
   await studentFrame.locator('[data-cmd=next]').click();
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
   const circleReload=await same(studentFrame,teacherFrame,'printed part 2 retains model and corrected first step');
   assert.equal(circleReload.scene.step,1);assert.equal(circleReload.scene.answers[0],'лВд');
   await narrow(student,studentFrame,'circle-points');await ownership(teacher,student,false);
+
+  phase = 'compass radius and two arcs between the same pair';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-2"]').click();await studentFrame.locator('#task-panel svg').waitFor();
+  await same(teacherFrame,studentFrame,'compass and offset ruler appear');
+  await teacherFrame.locator('[data-v5-param=opening]').selectOption('2');
+  await teacherFrame.locator('[data-v5-param=stage]').selectOption('3');
+  await same(teacherFrame,studentFrame,'teacher draws two radii');
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-prediction]').fill('36');await studentFrame.locator('[data-v5-predict] button').click();
+  assert((await same(studentFrame,teacherFrame,'student doubles 18')).scene.model.seen);
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await studentFrame.locator('a[href="#lesson/v5f-printed-5-3"]').click();
+  await studentFrame.locator('#answer').fill('KDB');await studentFrame.locator('#answer-form button').click();
+  assert.match((await same(studentFrame,teacherFrame,'distinguishing the two paths')).scene.message,/другую дугу/);
+  await studentFrame.locator('#answer').fill('BPK');await studentFrame.locator('#answer-form button').click();
+  assert((await same(studentFrame,teacherFrame,'same short arc in reverse')).scene.correct);
+  await studentFrame.locator('[data-v5-param=turn]').selectOption('2');
+  await studentFrame.locator('[data-v5-param=side]').selectOption('1');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const arcsAgain=await same(studentFrame,teacherFrame,'rotation, side and own correction survive');
+  assert.equal(arcsAgain.scene.model.turn,2);assert.equal(arcsAgain.scene.model.side,1);assert(arcsAgain.scene.assisted);assert.deepEqual(arcsAgain.scene.hintLevels,{});
+  await narrow(student,studentFrame,'compass-arcs');await ownership(teacher,student,false);
 
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
