@@ -18,10 +18,18 @@
       ['Если ширина 20 см, а длина в три раза больше, длина 60 см.','Периметр 160 см, поэтому у квадрата с таким периметром сторона 40 см.'],'При равном периметре квадрат обязательно имеет сторону, равную длине прямоугольника.','Как доказать равенство периметров обратным вычислением?'],
     ['1.87','Мука на несколько приготовлений','Вырази весь запас в граммах. Расход одного приготовления умножь на число приготовлений, затем вычти общий расход из запаса.',
       ['В пакете 2 кг, или 2000 г. На три приготовления по 250 г уйдёт 750 г.','Останется 1250 г. Проверка: 750 + 1250 = 2000 г.'],'Остаток муки равен расходу за все приготовления.','Какая сумма должна восстановить первоначальный запас?'],
+    ['1.88','Высоты по цепочке сравнений','Каждый перепад отсчитывается от названной перед ним вершины. Если следующая вершина ниже, вычитай перепад; если выше — прибавляй. Для ответа «на сколько» сравни последнюю высоту с первой.',
+      ['Например, из 2100 м спускаемся на 430 м и получаем 1670 м.','Если затем подняться на 710 м, новая высота 2380 м. Она выше исходной на 280 м.'],'Все три перепада надо отсчитывать от одной и той же первой вершины.','Как восстановить высоту третьей вершины из последней?'],
+    ['1.89','Рысь и галоп на одном пути','Сначала восстанови длину пути по времени и скорости рыси. На том же расстоянии время галопа находят делением на скорость галопа.',
+      ['Пусть за 6 минут при скорости 140 м/мин пройдено 840 м.','При скорости 210 м/мин на те же 840 м уйдёт 4 минуты.'],'Более высокая скорость требует больше времени на той же дистанции.','Как проверить время галопа умножением?'],
+    ['1.90','Туристы в автобусе и на катере','У каждого вида транспорта свои скорость и время. Умножь величины из одной строки, затем сложи пройденные километры.',
+      ['За 2 ч автобус со скоростью 48 км/ч проедет 96 км.','Ещё 1 ч на катере при 20 км/ч даёт 20 км. Вместе пройдено 116 км.'],'После смены транспорта нужно брать среднее арифметическое двух скоростей.','Почему длину второго участка надо прибавить к длине первого?'],
+    ['1.91','Умножение, деление и скобки в четырёх выражениях','Определи, что составляет каждый множитель или делитель. Сначала вычисли действие в скобках; без скобок умножение и деление идут до сложения.',
+      ['В записи 720 : (10 + 8) делят на всю сумму 18. Получается 40.','В записи 720 : 18 + 8 сначала получают 40, а затем 48.'],'В выражении с делением можно сложить любые соседние числа перед делением.','Как проверить найденное частное обратным произведением?'],
     ['1.79','Первое действие и значение выражения','Сначала работай в скобках. Если скобок нет, умножение выполняй раньше вычитания. Запиши промежуточное число и подставь его в оставшееся действие.',
       ['В записи 360 − 14 · 25 первым получим 350, а затем 10.','В записи (40 − 18) · 5 первым получим 22, а затем 110.'],'Вычисления во всех выражениях надо начинать с самого левого действия.','Как изменится порядок, если скобками объединить разность?']
   ];
-  const links={'1.77':['natural-multiply','formula-distance'],'1.78':['division-measure','division-share'],'1.79':['order-brackets','order-equal'],'1.81':['segment-length','broken-length'],'1.82':['segment-length','natural-multiply'],'1.83':['segment-length','division-column'],'1.85':['segment-length','broken-length'],'1.86':['formula-perimeter','division-share'],'1.87':['natural-multiply','natural-subtract']};
+  const links={'1.77':['natural-multiply','formula-distance'],'1.78':['division-measure','division-share'],'1.79':['order-brackets','order-equal'],'1.81':['segment-length','broken-length'],'1.82':['segment-length','natural-multiply'],'1.83':['segment-length','division-column'],'1.85':['segment-length','broken-length'],'1.86':['formula-perimeter','division-share'],'1.87':['natural-multiply','natural-subtract'],'1.88':['natural-subtract','natural-add'],'1.89':['formula-distance','division-measure'],'1.90':['formula-distance','natural-add'],'1.91':['order-brackets','division-column']};
   const lessons=descriptions.map(([number,title,explanation,worked,misconception,reflect])=>({number,title,explanation,worked,misconception,reflect,key:'printed-'+number.replace('.','-'),point:3,part:1,page:21,requires:['v5f-'+links[number][0]],related:['v5f-'+links[number][1]]}));
   const nat=(step,prompt,answer,hint,errors=[])=>({...step(prompt,answer,hint,errors),answerFormat:'v5-natural'});
   const err=(value,text)=>({value,text});
@@ -54,11 +62,64 @@
       {expr:'('+a+' − '+b+') · '+c,operation:a+' − '+b,partial:a-b,end:(a-b)*c,finish:(a-b)+' · '+c,hint:'Сначала посчитай разность внутри скобок.',wrong:b*c},
       {expr:left+' · ('+large+' − '+small+')',operation:large+' − '+small,partial:large-small,end:left*(large-small),finish:left+' · '+(large-small),hint:'Скобки отделяют действие справа. Вычисли разность до умножения.',wrong:left*large},
       {expr:count+' · '+unit+' − '+unit,operation:count+' · '+unit,partial:count*unit,end:(count-1)*unit,finish:(count*unit)+' − '+unit,hint:'Сначала вычисли произведение. Затем убери ровно одну группу.',wrong:0}];
-    const steps=rows.flatMap((row,i)=>[nat(step,(i+1)+') '+row.expr+'. Каков результат первого действия?',row.partial,row.hint,[err(row.wrong,row.hint)]),
-      nat(step,(i+1)+') После первого действия осталось '+row.finish+'. Найди значение выражения.',row.end,'Подставь промежуточный результат в оставшееся действие.',[err(row.partial,'Первое действие уже выполнено. Осталось '+row.finish+'.')])]);
-    return {prompt:'Найди значения четырёх выражений и введи их в порядке строк.',inputPrompt:'Четыре значения по порядку',answer:rows.map(v=>v.end),answerFormat:'v5-list',steps,
-      data:{operations:rows},table:{caption:'Четыре исходные записи',headers:['Строка','Выражение'],rows:rows.map((v,i)=>[i+1,v.expr]),columnWidths:[22,78]},conditionKey:rows.map(v=>v.expr).join('/')};
+    return orderTask(rows,step,rows.map((_,i)=>String(i+1)));
   }
+  function orderTask(rows,step,labels){
+    const steps=rows.flatMap((row,i)=>[nat(step,labels[i]+') '+row.expr+'. Каков результат первого действия?',row.partial,row.hint,[err(row.wrong,row.hint)]),
+      nat(step,labels[i]+') После первого действия осталось '+row.finish+'. Найди значение выражения.',row.end,'Подставь промежуточный результат в оставшееся действие.',[err(row.partial,'Первое действие уже выполнено. Осталось '+row.finish+'.')])]);
+    return {prompt:'Найди значения четырёх выражений и введи их в порядке строк.',inputPrompt:'Четыре значения по порядку',answer:rows.map(v=>v.end),answerFormat:'v5-list',steps,
+      data:{operations:rows},table:{caption:'Четыре исходные записи',headers:['Строка','Выражение'],rows:rows.map((v,i)=>[labels[i],v.expr]),columnWidths:[22,78]},conditionKey:rows.map(v=>v.expr).join('/')};
+  }
+  function summits(seed,r,step){
+    const origin=seed?r(3900,4600):4750,drop1=seed?r(370,680):613,drop2=seed?r(1700,2570):2948,rise=seed?drop1+drop2+r(120,480):3911;
+    const levels=[origin,origin-drop1,origin-drop1-drop2,origin-drop1-drop2+rise],gap=levels[3]-levels[0];
+    const names=seed?['Первая вершина','Вторая вершина','Третья вершина','Четвёртая вершина']:['Ключевская Сопка','Маашей-Баши','Часначорр','Пик Пушкина'];
+    const steps=[nat(step,names[1]+' ниже первой вершины на '+drop1+' м. Какова её высота над уровнем моря?',levels[1],'Вычти первый перепад из исходной высоты.',[err(origin+drop1,'При сложении вторая вершина оказалась выше первой. Нужное направление — вниз.')]),
+      nat(step,names[2]+' ниже второй вершины на '+drop2+' м. Какова высота третьей вершины?',levels[2],'Отсчитай второй перепад от второй вершины.',[err(origin-drop2,'Здесь сравнивают со второй вершиной. Начни от уже найденной высоты второй.')]),
+      nat(step,names[3]+' выше третьей на '+rise+' м. Какова высота четвёртой вершины?',levels[3],'Теперь поднимись от третьей вершины: прибавь последний перепад.',[err(rise,'Дан подъём от третьей вершины, а не от уровня моря. Прибавь начальную высоту этого подъёма.')]),
+      nat(step,'На сколько метров первая вершина ниже четвёртой?',gap,'Вычти из большей высоты меньшую.',[err(levels[3],'Это полная высота. Ответ на «на сколько» — разность двух высот.')])];
+    return {prefix:seed?'Новая авторская схема условных высот. ':'Вычисления по высотам из учебника. ',prompt:'Определи высоту последней вершины над уровнем моря и на сколько метров она выше первой. Запиши два числа в этом порядке.',inputPrompt:'Высота; разность, м',answer:[levels[3],gap],answerFormat:'v5-list',steps,
+      data:{summits:{levels,names}},table:{caption:'Цепочка сравнений высот',headers:['Вершина','Дано, м'],rows:[[names[0],origin],[names[1],'ниже первой на '+drop1],[names[2],'ниже второй на '+drop2],[names[3],'выше третьей на '+rise]],columnWidths:[49,51]},conditionKey:[origin,drop1,drop2,rise].join('/')};
+  }
+  function horse(seed,r,step){
+    const scale=seed?r(55,95):100,slow=2*scale,fast=3*scale,n=seed?r(3,6):2,minutes=3*n,distance=slow*minutes,time=2*n;
+    const steps=[nat(step,'Лошадь бежала рысью '+minutes+' мин со скоростью '+slow+' м/мин. Сколько метров она прошла?',distance,'Возьми длину минутного участка столько раз, сколько минут она бежала.',[err(slow+minutes,'Метры в минуту не складывают с минутами. Умножь скорость на время.')]),
+      nat(step,'Галопом за минуту лошадь проходит '+fast+' м. Сколько таких участков нужно для той же длины пути?',time,'Раздели найденное расстояние на длину минутного участка галопа.')];
+    return {prompt:'Лошадь снова преодолевает тот же путь, теперь галопом. Сколько минут ей понадобится?',inputPrompt:'Время галопа, мин',answer:time,answerFormat:'v5-natural',steps,
+      errors:[err(minutes,'Это время рыси. На той же длине пути большая скорость даёт меньшее время.')],data:{horse:{slow,fast,minutes,distance,time}},
+      table:{caption:'Один и тот же путь: скорость и время',headers:['Аллюр','м/мин','мин'],rows:[['Рысь',slow+' м/мин',minutes+' мин'],['Галоп',fast+' м/мин','?']],columnWidths:[32,42,26]},conditionKey:[scale,n].join('/')};
+  }
+  function excursions(seed,r,step){
+    const hours=seed?[r(2,5),r(1,4)]:[3,2],speed=seed?[r(42,64),r(12,25)]:[65,18],distance=hours.map((n,i)=>n*speed[i]),answer=distance[0]+distance[1];
+    const labels=['Автобус','Катер'],hoursLabels=['Часы в автобусе','Часы на катере'];
+    const steps=[nat(step,'Сколько километров туристы проехали в автобусе?',distance[0],'Время в автобусе умножь на скорость автобуса.',[err(hours[0]*speed[1],'Ты использовал скорость катера в расчёте автобусного пути. Найди в таблице строку первого участка.')]),
+      nat(step,'Сколько километров туристы проплыли на катере?',distance[1],'Умножь время на воде на скорость катера.',[err(hours[1]*speed[0],'Это скорость автобуса. На воде за каждый час пройден другой путь.')])];
+    return {prompt:'Туристы сменили автобус на катер. Какое расстояние прошли за всё путешествие?',inputPrompt:'Общий путь, км',answer,answerFormat:'v5-natural',steps,
+      errors:[err(Math.abs(distance[0]-distance[1]),'Оба участка пройдены. Длины пути по суше и по воде надо сложить.'),err(distance[0],'Это путь по суше. Добавь водный участок.')],
+      data:{trip:{hours,speed,distance,labels,hoursLabels}},table:{caption:'Путь по суше и воде',headers:['Участок','ч','км/ч'],rows:labels.map((title,i)=>[title,hours[i],speed[i]]),columnWidths:[49,21,30]},conditionKey:[...hours,...speed].join('/')};
+  }
+  function fourOperations(seed,r,step){
+    const a=seed?r(24,42):43,b=seed?r(12,18):13,c=seed?r(160,330):316,h=seed?r(22,65):63,j=seed?r(35,78):59,k=seed?r(35,80):75;
+    const divisor=seed?r(22,47):43,q=seed?r(175,312):285,added=seed?r(90,190):174,m=seed?r(13,25):18,n=seed?r(31,56):48,last=seed?r(680,855):804;
+    const pretty=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+    const rows=[{expr:a+' · '+b+' + '+c,operation:a+' · '+b,partial:a*b,finish:a*b+' + '+c,end:a*b+c,hint:'Умножение выполняется раньше сложения.',wrong:b+c},
+      {expr:'('+h+' + '+j+') · '+k,operation:h+' + '+j,partial:h+j,finish:(h+j)+' · '+k,end:(h+j)*k,hint:'Сначала сложи числа внутри скобок.',wrong:j*k},
+      {expr:pretty(q*divisor)+' : '+divisor+' + '+added,operation:pretty(q*divisor)+' : '+divisor,partial:q,finish:q+' + '+added,end:q+added,hint:'Выполни деление перед сложением. Частное можно проверить умножением.',wrong:divisor+added},
+      {expr:pretty((m+n)*last)+' : ('+m+' + '+n+')',operation:m+' + '+n,partial:m+n,finish:pretty((m+n)*last)+' : '+(m+n),end:last,hint:'Делитель — сумма в скобках. Сначала вычисли её целиком.',wrong:(m+n)*last}];
+    return orderTask(rows,step,firstLetter);
+  }
+  function summitView(state,task,table){
+    const d=task.data.summits,a=state.from,b=state.to,delta=Math.abs(d.levels[a]-d.levels[b]),top=Math.max(...d.levels);
+    const picture='<svg viewBox="0 0 260 96" role="img" aria-label="Высоты четырёх вершин в одной шкале над уровнем моря"><path d="M8 85H250" stroke="#4d605b"/>'+d.levels.map((n,i)=>{const x=20+59*i,y=85-70*n/top;return '<rect x="'+x+'" y="'+y+'" height="'+(85-y)+'" width="28" fill="'+(i===a||i===b?'#9d501e':'#3d7b89')+'"/><text x="'+(x+14)+'" y="95" font-size="10" text-anchor="middle">'+(i+1)+'</text>';}).join('')+'</svg>';
+    return {title:'Сравни высоты над одним уровнем',controls:[{key:'from',title:'Первая вершина',values:d.names.map((v,i)=>[i,v])},{key:'to',title:'Вторая вершина',values:d.names.map((v,i)=>[i,v])}],
+      visual:picture+table('Подписи столбиков слева направо',['Номер','Вершина'],d.names.map((v,i)=>[i+1,v])),question:'Какой перепад высот между выбранными вершинами, в метрах?',answer:delta,why:'Высоты '+d.levels[a]+' и '+d.levels[b]+' м отличаются на '+delta+' м.'};
+  }
+  function horseView(state,task,table){
+    const d=task.data.horse,speed=state.gait?d.fast:d.slow,way=speed*state.minutes,gap=Math.abs(way-d.distance);
+    return {title:'Сравни два способа пройти одну дистанцию',controls:[{key:'gait',title:'Движение',values:[[0,'Рысь'],[1,'Галоп']]},{key:'minutes',title:'Сколько минут бежала лошадь',min:0,max:18,step:1},{key:'measure',title:'Что найти',values:[[0,'Пройденный путь'],[1,'Разницу с исходной дистанцией']]}],
+      visual:table('Минутные участки',['По сколько метров','Сколько раз'],[[speed,state.minutes]]),question:'Какова выбранная длина в метрах?',answer:state.measure?gap:way,why:'За '+state.minutes+' мин пройдено '+speed+' × '+state.minutes+' = '+way+' м. Исходная дистанция — '+d.distance+' м.'};
+  }
+
   function triangle(seed,r,step){
     const km=seed?r(48,79):68,diff=seed?r(6,17):13,lk=seed?r(31,58):40,ml=km-diff,total=km+ml+lk;
     const text=n=>Math.floor(n/10)+' см '+n%10+' мм';
@@ -176,9 +237,9 @@
   }
 
   const roadNames=['Шоссе','Грунтовая дорога'],flightNames=['Вертолёт и самолёт','Ласточка и стриж'];
-  function roadStrip(kilometres,speed){
+  function roadStrip(kilometres,speed,labels=roadNames){
     const unit=240/(6*(speed[0]+speed[1])),w=kilometres.map(k=>unit*k);
-    return '<svg role="img" aria-label="Общая длина поездки. Шоссе показано синим, грунтовая дорога оранжевым." viewBox="0 0 260 42"><line x1="10" y1="28" x2="250" y2="28" stroke="currentColor"/><rect x="10" y="8" width="'+w[0]+'" height="16" fill="#20648e"/><rect x="'+(10+w[0])+'" y="8" width="'+w[1]+'" height="16" fill="#a65716"/></svg>';
+    return '<svg role="img" aria-label="Общая длина поездки. Первый участок ('+labels[0]+') показан синим, второй ('+labels[1]+') оранжевым." viewBox="0 0 260 42"><line x1="10" y1="28" x2="250" y2="28" stroke="currentColor"/><rect x="10" y="8" width="'+w[0]+'" height="16" fill="#20648e"/><rect x="'+(10+w[0])+'" y="8" width="'+w[1]+'" height="16" fill="#a65716"/></svg>';
   }
   function flightStrips(fast,slow,pieces){
     const unit=236/Math.max(fast,6*slow),bars=Array.from({length:pieces},(_,i)=>'<rect x="'+(12+i*slow*unit)+'" y="33" width="'+Math.max(0,slow*unit-1)+'" height="14" fill="#246989"/>').join('');
@@ -186,6 +247,8 @@
   }
   function explore(lesson,state,task,table){
     const d=task.data;
+    if(d.summits)return summitView(state,task,table);
+    if(d.horse)return horseView(state,task,table);
     if(d.triangle)return triangleView(state,task);
     if(d.tabletop)return tableView(state,task);
     if(d.flour)return flourView(state,task,table);
@@ -193,10 +256,10 @@
     if(d.kilometres)return scaleView(state,task,table);
     if(d.conversionRows)return conversionView(state,task,table);
     if(d.trip){
-      const {speed,hours}=d.trip,selected=[state.hoursRoad,state.hoursDirt],kilometres=selected.map((n,i)=>speed[i]*n);
-      return {title:'Собери поездку из часовых участков',controls:[{key:'hoursRoad',title:'Часы на шоссе',min:0,max:6,step:1},{key:'hoursDirt',title:'Часы на грунтовой дороге',min:0,max:6,step:1}],
-        visual:roadStrip(kilometres,speed)+table('Километры за выбранные часы',['Участок','За час','Часы'],roadNames.map((v,i)=>[v,speed[i]+' км',String(selected[i])])),
-        question:'Сколько всего километров пройдёт грузовик за выбранные часы?',answer:kilometres[0]+kilometres[1],why:kilometres[0]+' + '+kilometres[1]+' = '+(kilometres[0]+kilometres[1])+' км. В условии часы на двух дорогах — '+hours.join(' и ')+'.'};
+      const {speed,hours,labels=roadNames,hoursLabels=['Часы на шоссе','Часы на грунтовой дороге']}=d.trip,selected=[state.hoursRoad,state.hoursDirt],kilometres=selected.map((n,i)=>speed[i]*n);
+      return {title:'Собери поездку из часовых участков',controls:[{key:'hoursRoad',title:hoursLabels[0],min:0,max:6,step:1},{key:'hoursDirt',title:hoursLabels[1],min:0,max:6,step:1}],
+        visual:roadStrip(kilometres,speed,labels)+table('Километры за выбранные часы',['Участок','За час','Часы'],labels.map((v,i)=>[v,speed[i]+' км',String(selected[i])])),
+        question:'Сколько всего километров будет пройдено за выбранные часы?',answer:kilometres[0]+kilometres[1],why:kilometres[0]+' + '+kilometres[1]+' = '+(kilometres[0]+kilometres[1])+' км. В условии часы на двух участках — '+hours.join(' и ')+'.'};
     }
     if(d.flights){
       const i=state.pair,slow=d.flights.slow[i],fast=d.flights.fast[i],used=slow*state.pieces;
@@ -209,8 +272,8 @@
       visual:table('Сейчас вычисляем',['Запись','Действие'],[[row.expr,part?row.finish:row.operation]]),
       question:'Каков результат выбранного действия?',answer:part?row.end:row.partial,why:(part?row.finish:row.operation)+' = '+(part?row.end:row.partial)+'. '+row.hint};
   }
-  const generators={'1.77':trip,'1.78':flights,'1.79':order,'1.81':orderedLine,'1.82':kilometres,'1.83':conversions,'1.85':triangle,'1.86':tabletops,'1.87':flour};
-  const bounds={'1.77':{hoursRoad:[0,6,3],hoursDirt:[0,6,2]},'1.78':{pair:[0,1,0],pieces:[0,6,1]},'1.79':{row:[0,3,0],stage:[0,1,0]},'1.81':{row:[0,2,0],reverse:[0,1,0],mirror:[0,1,0],ap:[0,6,0],ps:[0,6,0],sb:[0,6,0]},'1.82':{how:[0,9,0],unit:[0,2,0]},'1.83':{row:[0,12,0],stage:[0,1,0]},'1.85':{gap:[0,20,0],side:[0,3,0]},'1.86':{width:[0,70,0],mult:[0,3,0],measure:[0,2,0]},'1.87':{portions:[0,3,0],rest:[0,1,0]}};
+  const generators={'1.77':trip,'1.78':flights,'1.79':order,'1.81':orderedLine,'1.82':kilometres,'1.83':conversions,'1.85':triangle,'1.86':tabletops,'1.87':flour,'1.88':summits,'1.89':horse,'1.90':excursions,'1.91':fourOperations};
+  const bounds={'1.77':{hoursRoad:[0,6,3],hoursDirt:[0,6,2]},'1.78':{pair:[0,1,0],pieces:[0,6,1]},'1.79':{row:[0,3,0],stage:[0,1,0]},'1.81':{row:[0,2,0],reverse:[0,1,0],mirror:[0,1,0],ap:[0,6,0],ps:[0,6,0],sb:[0,6,0]},'1.82':{how:[0,9,0],unit:[0,2,0]},'1.83':{row:[0,12,0],stage:[0,1,0]},'1.85':{gap:[0,20,0],side:[0,3,0]},'1.86':{width:[0,70,0],mult:[0,3,0],measure:[0,2,0]},'1.87':{portions:[0,3,0],rest:[0,1,0]},'1.88':{from:[0,3,0],to:[0,3,3]},'1.89':{gait:[0,1,0],minutes:[0,18,6],measure:[0,1,0]},'1.90':{hoursRoad:[0,6,3],hoursDirt:[0,6,2]},'1.91':{row:[0,3,0],stage:[0,1,0]}};
   const api={lessons,generators,bounds,explore};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.Vilenkin5PrintedPageTwentyOne=api;
 })(typeof window!=='undefined'?window:globalThis);

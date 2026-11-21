@@ -6862,6 +6862,42 @@
       "boundary": "Per-page source binding; mathematical and shared-board behavior are covered by the Vilenkin tests."
     },
     {
+      "previousBaseSha": "288d962db62c38ca1a6aefcb6aaa739bd0781428",
+      "sourceBaseSha": "c0fc9b9dc4641bb5b57b762659d94479e6329e25",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также двадцать один номер второй части, включая авторскую модель вложенных квадратов, собственную формулировку правила и проверку суммы кубов до семи, с обеими ролями."
+    },
+    {
+      "previousBaseSha": "c0fc9b9dc4641bb5b57b762659d94479e6329e25",
+      "sourceBaseSha": "a80aac50cefdc4b2101dff08ebea6b47ffab7c12",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в №5.1–5.23 второй части. В №5.22 показаны отдельно 3626 г при окраске одной стороны крышки и 4130 г при окраске обеих, включая пояснение к печатному ключу на с. 172."
+    },
+    {
+      "previousBaseSha": "a80aac50cefdc4b2101dff08ebea6b47ffab7c12",
+      "sourceBaseSha": "15a6cc0e3c787efbc8a63d7fdf5c523415a1f2df",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, №5.24–5.25. Шаблон по клеткам и масса мёда."
+    },
+    {
+      "previousBaseSha": "15a6cc0e3c787efbc8a63d7fdf5c523415a1f2df",
+      "sourceBaseSha": "904cd14a07b85907156954dcd21e338daba6ded6",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, №5.26–5.27. Обратный ход событий и порядок двух действий."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
