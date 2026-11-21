@@ -234,4 +234,47 @@ for (const [i,page] of [5,14,22,27,31,38,44,49,54,60,65,75,81,87,92,98,108,114,1
   click(w,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
   dom.window.close();
 }
-console.log('Source 50: 1188 independent numeric checks and thirty-six pupil journeys with saved and assisted work.');
+const extra={
+  '200a':r=>[r[0],r[1],Array.from({length:r[1]-r[0]+1},(_,i)=>r[0]+i).filter(x=>r[2]*(x-r[0])!==0 && x-r[1]!==0).length],
+  '200b':r=>{const candidates=Array.from({length:r[2]+5},(_,i)=>i-3).filter(x=>Number.isFinite(Math.sqrt(x-r[0])-Math.sqrt(x-r[1])) && x<=r[2]);return [Math.min(...candidates),Math.sqrt(candidates[0]-r[1]),candidates.length];},
+  '200c':r=>{const [a,b]=r;return [0,-a,b/(1+a/a)];},
+  '201':r=>{const [l,w,x]=r;const areas=Array.from({length:w+1},(_,i)=>i*l);return [areas[x],areas.length-1,Math.max(...areas)];},
+  '202':r=>{const [base,side,x]=r;const H=Array.from({length:101},(_,i)=>i).find(y=>y*y+base*base/4===side*side);const at=d=>d*base/H;return [H,at(x),at(x+1)-at(x)];},
+  '203':r=>{const [a,b,t]=r;return [a/(0+b),Number(a===0),a/(t*t+b)];}
+};
+const pathKeys=Object.keys(extra).sort((a,b)=>parseInt(a)-parseInt(b)||a.localeCompare(b));
+assert.deepEqual(pathKeys,['200a','200b','200c','201','202','203']);
+for(const name of pathKeys) {
+  const id='50-'+name,key='math:makarychev9-2017:v1:'+id;
+  let dom=open(id),w=dom.window;
+  const lesson=w.MathExamTopicPractice.lessons.get(id);
+  assert.equal(lesson.page,68);assert.equal(w.document.querySelector('#lesson').value,id);
+  assert.match(w.document.querySelector('#edition').textContent,/Упражнение №20[0-3]/);
+  assert(w.document.querySelector('#work').textContent.includes(lesson.printedGuide));
+  assert.equal(new URL(w.document.querySelector('#source').href).hash,'#page=69');
+  assert.equal(new URL(w.document.querySelector('#board').href).searchParams.get('trainer'),'/trainers/makarychev9-2017/index.html#lesson/'+id);
+  for(let s=1;s<=11;s++) {
+    const data=lesson.make(s),expected=extra[name](data.rows[0]);
+    assert.notEqual(JSON.stringify(data.rows),JSON.stringify(lesson.make(1+(s-1+7)%11).rows),id+' repeats');
+    data.questions.forEach((q,i)=>{
+      assert.equal(q.answer,expected[i],id+' '+s+' '+i);
+      assert(q.mistakes.length>0);
+      for(const [wrong,message] of q.mistakes){assert.notEqual(q.answer,wrong);assert(message.length>12);}
+    });
+  }
+  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,[]);
+  click(w,'practice');submit(w,999999);
+  const saved=w.localStorage.getItem(key);dom.window.close();dom=open(id,saved);w=dom.window;
+  assert.equal(w.document.querySelector('#answer').value,'999999');
+  submit(w,extra[name](lesson.make(2).rows[0])[2]);click(w,'next');
+  for(let i=0;i<3;i++){
+    const data=lesson.make(4+i);
+    if(i===0){submit(w,data.questions[i].mistakes[0][0]);assert(w.document.querySelector('#feedback').textContent.includes(data.questions[i].mistakes[0][1]));}
+    if(i===2)click(w,'hint');
+    submit(w,extra[name](data.rows[0])[i]);click(w,'next');
+  }
+  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,['fixed','first','help']);
+  click(w,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
+  dom.window.close();
+}
+console.log('Source 50: 1188 topic checks and 198 printed-exercise checks; all 42 pupil journeys preserve saved, corrected and assisted work.');

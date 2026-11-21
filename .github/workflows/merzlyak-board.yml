@@ -44,6 +44,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --merzlyak9-2014
           node tools/makarychev9-2017.test.cjs
           node tools/tyurin-statistics.board.browser.cjs --makarychev9-2017
+          node tools/tyurin-statistics.board.browser.cjs --makarychev9-2017-supplement
       - name: Assigned cabinet program opens a shared teacher and pupil room
         run: node tools/merzlyak-program-room.browser.cjs
       - name: Preserve existing registry arrival and role boundaries

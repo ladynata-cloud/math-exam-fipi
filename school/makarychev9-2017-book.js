@@ -46,7 +46,15 @@
   book.sourceLabel = 'Открыть издание 2017 года';
   book.note = 'Выбери печатный пункт. В занятии можно изменить модель, разобрать пример и проверить себя на новых данных.';
   book.status = 'Самостоятельная практика по всем 36 нумерованным пунктам';
-  book.remaining = 'Отдельно остаются дополнительные упражнения к главам, упражнения на повторение и задания повышенной трудности. Упражнения практикума составлены для MathExam.';
+  book.remaining = 'Из дополнительных упражнений разобраны №200 (а–в) и №201–203 на с. 68. Остаются другие упражнения к главам, упражнения на повторение и задания повышенной трудности. Упражнения практикума составлены для MathExam.';
+  book.exercises=[
+    ['200a','200а','Два знаменателя'],
+    ['200b','200б','Два квадратных корня'],
+    ['200c','200в','Дробь в знаменателе'],
+    ['201','201','Площадь движущейся полосы'],
+    ['202','202','Сечение равнобедренного треугольника'],
+    ['203','203','Дробная функция и оси координат']
+  ].map(([key,printed,title])=>({printed,title,page:68,path:'/trainers/makarychev9-2017/index.html#lesson/50-'+key}));
   book.mapping = topics.map(([paragraph,page,skill,title,focus],index)=>{
     const section=index+1, path='/trainers/makarychev9-2017/index.html#lesson/50-'+section;
     return {...(typeof paragraph==='string'?{supplementaryChapter:paragraph}:{paragraph}),section,page,title,skill,focus,coverage:'module',externalPath:path,boardPath:path};

@@ -48,8 +48,10 @@ async function healthy(url, child, logs) {
   throw new Error('Local server not ready: ' + logs());
 }
 
-const catalogue=process.argv.includes('--makarychev9-2017')?{
-  directory:'makarychev9-2017',entries:[[50,36,36]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
+const catalogue=process.argv.includes('--makarychev9-2017-supplement')?{
+  directory:'makarychev9-2017',entries:[[50,36,42]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-202',onlySelected:true,chart:'svg[aria-label*="Сечение"]',storage:'math:makarychev9-2017:v1:'
+}:process.argv.includes('--makarychev9-2017')?{
+  directory:'makarychev9-2017',entries:[[50,36,42]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
 }:process.argv.includes('--merzlyak9-2014')?{
   directory:'merzlyak9-2014',entries:[[55,26,26]],search:'merzlyak9-2014',match:'все параграфы',lesson:'55-13',chart:'svg[aria-label*="штриховая"]',storage:'math:merzlyak9-2014:v1:'
 }:{
@@ -64,7 +66,9 @@ async function run(browser, origin, serverOrigin) {
       assert.equal(await student.locator('#main .skill-row').count(),count);
       const links=await student.locator('#main a[href*="'+catalogue.directory+'/index.html"]').evaluateAll(links=>links.map(el=>el.href));
       assert.equal(links.length,direct);
-      for(const url of links){
+      const individual=catalogue.onlySelected?links.filter(url=>new URL(url).hash==='#lesson/'+catalogue.lesson):links;
+      if(catalogue.onlySelected)assert.equal(individual.length,1);
+      for(const url of individual){
         await student.goto(url);await student.locator('#model').waitFor();
         assert(await student.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),url);
         const id=new URL(url).hash.slice(8);
