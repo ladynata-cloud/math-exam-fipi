@@ -81,6 +81,8 @@ on:
       - 'geometry-course/textbook/data/triangle-sine-area.json'
       - 'tools/geometry-textbook/*triangle_relations*'
       - 'tools/geometry-textbook/*solve_triangle*'
+      - 'tools/geometry-textbook/*field_trigonometry*'
+      - 'geometry-course/textbook/data/field-trigonometry.json'
       - 'geometry-course/textbook/data/solve-triangle.json'
       - 'tools/geometry-textbook/*oblique_triangle_cases*'
       - 'geometry-course/textbook/data/oblique-triangle-cases.json'
@@ -142,6 +144,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/field_trigonometry.py --check && python3 tools/geometry-textbook/check_field_trigonometry.py
       - run: python3 tools/geometry-textbook/solve_triangle.py --check && python3 tools/geometry-textbook/oblique_triangle_cases.py --check && python3 tools/geometry-textbook/triangle_section_applications.py --check && python3 tools/geometry-textbook/check_triangle_section_applications.py
       - run: python3 tools/geometry-textbook/triangle_sine_area.py --check && python3 tools/geometry-textbook/triangle_relations.py --check && python3 tools/geometry-textbook/check_triangle_sine_area.py
       - run: python3 tools/geometry-textbook/upper_semicircle.py --check && python3 tools/geometry-textbook/check_upper_semicircle.py
