@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8edabcc6b01b372c84b99be8f8fab87d15c146246a011c1d923beb12896634bb",
-      "afterSha256": "f3b7b428f2d442bf73e9ee8925f9390f30659bf60abff4c908b4a3500da2c715",
+      "beforeSha256": "9d9221aeb529458a49e32241f4155b75eb74dc475737348f732be9a275b9969d",
+      "afterSha256": "8a87b08e32f62b83e7ff328553984b115b63c81f028fa19d71086c8656a702d0",
       "placement": "before-head-close",
-      "sourceSha": "debfc46ef4462352a20fe53dc9ba0396d79653aa"
+      "sourceSha": "f80304716dbd1dfd1066eb0deec549613f2c05c4"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6894,6 +6894,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин 5, ч.2, §26, с.16. Проверены шесть номеров №5.61–5.66, новые данные, наглядность на 320/375, вход двух участников, возврат управления и обе перезагрузки в №5.63. Исходные величины не округляются."
+    },
+    {
+      "previousBaseSha": "debfc46ef4462352a20fe53dc9ba0396d79653aa",
+      "sourceBaseSha": "f80304716dbd1dfd1066eb0deec549613f2c05c4",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Добавлены №5.67 и №5.68 части 2, страница 17. Проверены все 25 переходов в пяти столбиках, три шага уменьшения числа, новая практика, два мобильных размера и восстановление работы двух участников."
     }
   ],
   "coverageUpdates": [
