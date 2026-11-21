@@ -1006,3 +1006,37 @@ test('retain excluded denominators, both linked unknowns and the direction of a 
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('measure five corresponding sides and three different chord constructions before making a conjecture',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(49);
+  assert.equal(f.d.querySelectorAll('#task-figure [data-given="no"]').length,4);
+  const verify=(factor)=>{
+   const [a,b]=f.d.querySelectorAll('#model .pcm-pentagon-pair svg');assert(a&&b);
+   for(const side of ['AB','BC','CD','DE','EA']){
+    const l=a.querySelector('[data-side="'+side+'"]'),r=b.querySelector('[data-side="'+side+'"]');
+    const span=n=>Math.hypot(Number(n.getAttribute('x2'))-Number(n.getAttribute('x1')),Number(n.getAttribute('y2'))-Number(n.getAttribute('y1')));
+    assert(Math.abs(span(l)/18-Number(l.dataset.length))<1e-8);
+    assert(Math.abs(span(r)/span(l)-factor)<1e-8);
+   }
+  };
+  set(c[1],1);verify(1.6);assert(out().includes('160%'));set(c[0],1);set(c[1],1);verify(1.2);assert(out().includes('120%'));
+  c=go(50);set(c[1],2);assert(out().includes('Золота 32 г, серебра 80 г.'));set(c[0],1);set(c[1],2);assert(out().includes('Золота 24 г, серебра 60 г.'));
+  for(const [i,right,again]of [[52,'31,4 см','44,0 см'],[53,'19,1 см','28,0 см']]){
+   c=go(i);set(c[1],2);assert(out().includes(right));set(c[0],1);set(c[1],2);assert(out().includes(again));
+  }
+  c=go(55);
+  for(const [j,m]of [16,9,144].entries()){
+   set(c[0],j);set(c[1],2);const frame=f.q('#model .pm-visual'),circle=frame.querySelector('circle[data-circle]'),cx=Number(circle.getAttribute('cx')),cy=Number(circle.getAttribute('cy')),r=Number(circle.getAttribute('r'));
+   const coord=k=>{const p=frame.querySelector('[data-point="'+k+'"]');return [Number(p.getAttribute('cx')),Number(p.getAttribute('cy'))];};
+   const lengths=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);const o=coord('O');for(const k of 'ABCD')assert(Math.abs(lengths(coord(k),[cx,cy])-r)<1e-8);
+   assert(Math.abs(lengths(coord('A'),o)*lengths(coord('B'),o)-lengths(coord('C'),o)*lengths(coord('D'),o))<1e-7);
+   assert(out().includes('= '+m+' см².'));assert(out().includes('требует доказательства'));
+  }
+  c=go(58);set(c[0],0);set(c[1],2);assert(out().includes('(a + b)y'));assert(f.q('#model table').textContent.includes('4,6'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
