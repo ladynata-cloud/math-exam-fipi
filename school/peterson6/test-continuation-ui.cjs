@@ -1482,3 +1482,14 @@ test('finish all actual printed dependencies and keep the missing 144 separate f
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('distinguish original and remaining quantities in all fourteen source equation stories on pages 28 and 29',()=>{
+ const f=fixture(null,null,true);try{
+  const go=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [index,first,alternate]of [[0,'04:00','04:48'],[1,'36 и 24','54 и 36'],[2,'75, ученик 60','100, ученик 80'],[4,'15:00','16:00'],[5,'1400 км','1000 км'],[6,'360 км','180 км'],[7,'30 км','60 км'],[8,'24 шт.','36 шт.'],[9,'7/5 м','14/5 м'],[10,'200 саженцев','250 саженцев'],[11,'1200 и 400 м³','600 и 200 м³'],[12,'8/5 и 12/5 л','16/5 и 24/5 л'],[13,'24 см','36 см'],[14,'12,5%','20%']]){
+   const c=go(index);set(c[1],2);assert(out().includes(first),[index,out()]);assert.equal(f.d.querySelectorAll('#model [data-change-bar]').length,2);set(c[0],1);assert.equal(f.q(c[1]).value,'0');set(c[1],2);assert(out().includes(alternate),[index,out()]);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
