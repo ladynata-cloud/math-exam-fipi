@@ -40,6 +40,8 @@ jobs:
           node tools/stereo-textbook/additional414-content.test.cjs
           node tools/stereo-textbook/inscribed-solids.test.cjs
           node tools/stereo-textbook/circumspheres.test.cjs
+          node tools/stereo-textbook/round-bodies.test.cjs
+          node tools/stereo-textbook/box-volumes.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -60,6 +62,11 @@ jobs:
       - name: Check inscribed-solids independent practice on two phones and desktop
         env:
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/inscribed-solids
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify independent practice in volume problems and theoretical lessons
+        env:
+          TEXTBOOK_PRACTICE_GROUP: volume
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/box-volumes
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
@@ -98,5 +105,6 @@ jobs:
             artifacts/atanasyan-additional414/
             artifacts/atanasyan-additional414-live/
             artifacts/inscribed-solids/
+            artifacts/box-volumes/
           retention-days: 14
           if-no-files-found: error
