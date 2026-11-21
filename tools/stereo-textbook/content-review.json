@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T19:08:00Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–572, with 951 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T19:13:00Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–574, with 957 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1603,6 +1603,21 @@
       ],
       "evidence": "tools/stereo-textbook/prism-diagonals-and-vector-paths.json",
       "mathematicalReport": "tools/stereo-textbook/prism-diagonals-and-vector-paths.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:13:00Z",
+      "scope": "All six source parts of 573–574: signed combinations and every two-vector sum for arbitrary vertices",
+      "cardIds": [
+        "ex-main-0573-a",
+        "ex-main-0573-b",
+        "ex-main-0573-c",
+        "ex-main-0574-a",
+        "ex-main-0574-b",
+        "ex-main-0574-c"
+      ],
+      "evidence": "tools/stereo-textbook/signed-vector-combinations.json",
+      "mathematicalReport": "tools/stereo-textbook/signed-vector-combinations.test.cjs"
     }
   ],
   "cards": [
@@ -5409,6 +5424,30 @@
     {
       "id": "ex-main-0572-d",
       "sha256": "115654b3e5d8eee18e5dc16ce86dec3a534a0fb5020e821a15a3170e7ae1a4f2"
+    },
+    {
+      "id": "ex-main-0573-a",
+      "sha256": "087eebc55282da303e3a63562f7d5334f31732643fbc892e4e621244bc4801ad"
+    },
+    {
+      "id": "ex-main-0573-b",
+      "sha256": "ff60fd084fab115be769f79b07e14a967adad96f4a1301bc2f940f8c70c81d57"
+    },
+    {
+      "id": "ex-main-0573-c",
+      "sha256": "c03c8623daf248da6caf48eb52e34708cab2d6582bc758926a9524dfcf8c0027"
+    },
+    {
+      "id": "ex-main-0574-a",
+      "sha256": "dd4d93750006ec577d0e0c08a24eedf701d68fa83274f801ca40f472170a8d7c"
+    },
+    {
+      "id": "ex-main-0574-b",
+      "sha256": "918f75e5481f7e1052c5d09ef5386bb0faf8063ba1a2487920bc200d87120700"
+    },
+    {
+      "id": "ex-main-0574-c",
+      "sha256": "fcd1cb1d770ce03065fdd8a56184f4827ba046c6811d3979c6e656a844563962"
     }
   ]
 }
