@@ -230,8 +230,11 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-chapter-four-end.cjs
       - name: Chromium function input, ordinate, inverse and excluded arguments
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-function-input-output.cjs
+      - name: Chromium constructed function domains and missing reciprocal points
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-function-domains.cjs
+      - name: Chromium pressure and original graph reading
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-graph-reading.cjs
+      - name: Chromium constructed function graphs and endpoint ranges
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-function-features.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
