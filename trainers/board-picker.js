@@ -82,6 +82,9 @@ function normalize(value){
  if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-profil/circle/','/ege-profil/circle/index.html'].includes(u.pathname)&&profileCircleRoute(u.hash)){
   return '/trainers/ege-profile-circle.html'+u.search+u.hash;
  }
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/stereo-course/textbook/','/stereo-course/textbook/index.html'].includes(u.pathname)){
+  return '/trainers/atanasyan-stereo-textbook.html'+u.search+u.hash;
+ }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/stereo-course/merzlyak-10-base/','/stereo-course/merzlyak-10-base/index.html'].includes(u.pathname)){
   return '/trainers/merzlyak-10-base.html'+u.search+u.hash;
  }

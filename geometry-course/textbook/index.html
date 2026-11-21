@@ -12,9 +12,10 @@
 <noscript>Для интерактивных чертежей нужен JavaScript.</noscript>
 <script src="assets/math-text.js"></script><script src="assets/planar-viewer.js"></script><script src="assets/engine.js"></script>
 <script src="/assets/geometry-step-views.js"></script>
+<script src="assets/additional-lessons.js"></script>
 <script>
 'use strict';
-fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(bundle=>{
+fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(GeometryAdditionalLessons.forCourse).then(bundle=>{
  window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),GeometryStepViews.prepare(bundle));
 }).catch(()=>{document.getElementById('textbook-app').textContent='Материалы сейчас не удалось открыть. Попробуй обновить страницу.';});
 </script></body></html>

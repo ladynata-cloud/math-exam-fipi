@@ -576,6 +576,20 @@
       "notes": "Совместная работа по курсу: карточка, ввод, шаги, подсказки, теория и ракурс модели. Личный прогресс курса не изменяется."
     },
     {
+      "trainerId": "atanasyan-stereo-textbook",
+      "file": "trainers/atanasyan-stereo-textbook.html",
+      "title": "Атанасян 10–11 · задачи по номерам",
+      "group": "Стереометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общая карточка, ракурс, подсказки, шаги и запись сохраняются в комнате отдельно от личной работы."
+    },
+    {
       "trainerId": "sections-from-zero",
       "file": "trainers/sections-from-zero.html",
       "title": "Сечения с нуля",
