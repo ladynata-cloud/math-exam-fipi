@@ -627,5 +627,22 @@
       source:{type:'authored',reference:'Тренировка на новых прямых'},skills:[]};
   }
 
-  return { mount, experiment, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const systemPractice={id:'system-lines',title:'Сколько решений у двух прямых',
+    description:'Исследуй на новых коэффициентах пересечение, параллельность и совпадение двух прямых.'};
+  function practiceSystem(seed,level){
+    const k=(seed%2?-1:1)*(1+seed%4),b=(Math.floor(seed/3)%13)-6,delta=(seed%3)+1;
+    const example=seed%3,otherK=example===0?k+(level===1?1:delta):k,otherB=example===1?b+delta:b;
+    const scale=level===1?1:level===2?2+seed%3:-(2+seed%3);
+    const equations=[[k,-1,-b],[scale*otherK,-scale,-scale*otherB]];
+    const asText=([a,c,d])=>a+'x '+(c<0?'− ':'+ ')+Math.abs(c)+'y = '+d;
+    const choices=['Одно решение','Нет решений','Бесконечно много решений'];
+    const hint='Вырази y в каждом уравнении. При равных наклонах сравни, где прямые пересекают ось y.';
+    const steps=[{prompt:'Укажи два наклона через ;.',kind:'graph-values',answer:k+';'+otherK,hint,explanation:'После деления на коэффициент при y наклоны равны '+k+' и '+otherK+'.'},
+      {prompt:'Укажи две ординаты пересечений с осью y через ;.',kind:'graph-values',answer:b+';'+otherB,hint:'Подставь x = 0.',explanation:'При x = 0 получаем '+b+' и '+otherB+'.'}];
+    return {title:systemPractice.title,prompt:'Сколько решений имеет система '+equations.map(asText).join(' и ')+'?',kind:'choice',choices,answer:choices[example],hint,correction:hint,steps,
+      finalLabel:'Число решений',explanation:example===0?'Наклоны различны: ровно одна общая точка.':example===1?'Наклоны равны, свободные члены различны: общих точек нет.':'Совпадают и наклоны, и свободные члены: решениями являются все точки одной прямой.',
+      graph:{type:'line-figure',lines:equations,distinguish:true,bounds:Math.max(6,Math.abs(b)+1,Math.abs(otherB)+1)},source:{type:'authored',reference:'Тренировка на новых системах'},skills:[planePractice.id]};
+  }
+
+  return { mount, experiment, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

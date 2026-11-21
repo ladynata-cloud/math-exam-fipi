@@ -30,6 +30,7 @@ function parseRootPoints(value,xs){
  return xs.map((x,i)=>[x,ys[i]]);
 }
 function curveValue(curve,x){
+ if(curve.domain&&(x<curve.domain[0]||x>curve.domain[1]))return NaN;
  if((curve.holes||[]).some(([h])=>x===h))return NaN;
  if(curve.kind==='reciprocal-offset')return x===0?NaN:curve.b+curve.k/x;
  if(curve.kind==='absolute-reciprocal')return x===0?NaN:curve.k/Math.abs(x);
@@ -85,8 +86,8 @@ function rootGraph(config,value){
  for(let v=Math.ceil(xr[0]/sx)*sx;v<=xr[1]+sx/100;v+=sx){svg.append(node('text',{x:x(v),y:height-7,'text-anchor':'middle','font-size':18},label(v)));}
  for(let v=Math.ceil(yr[0]/sy)*sy;v<=yr[1]+sy/100;v+=sy){svg.append(node('text',{x:pad-5,y:y(v)+4,'text-anchor':'end','font-size':18},label(v)));}
  // A cropped view may omit zero. Its boundary is not a coordinate axis.
- if(hasXAxis){line(pad,y(0),width-pad,y(0),'#567468',{'data-axis':'x'});svg.append(node('text',{x:width-14,y:y(0)-6,'font-size':18,'data-axis-label':'x'},'x'));}
- if(hasYAxis){line(x(0),pad,x(0),height-pad,'#567468',{'data-axis':'y'});svg.append(node('text',{x:x(0)+6,y:18,'font-size':18,'data-axis-label':'y'},'y'));}
+ if(hasXAxis){line(pad,y(0),width-pad,y(0),'#567468',{'data-axis':'x'});svg.append(node('text',{x:config.axisLabels?width-6:width-14,...(config.axisLabels?{'text-anchor':'end'}:{}),y:y(0)-6,'font-size':18,'data-axis-label':'x'},config.axisLabels?.[0]||'x'));}
+ if(hasYAxis){line(x(0),pad,x(0),height-pad,'#567468',{'data-axis':'y'});svg.append(node('text',{x:x(0)+6,y:18,'font-size':18,'data-axis-label':'y'},config.axisLabels?.[1]||'y'));}
  const colors=['#087c92','#9b4d14','#7657ad'];
  const learner=['root-build','curve-build'].includes(config.type);
  const buildCurves=config.type==='curve-build'?(config.curves||[]):[{...(config.curve||{kind:'sqrt'}),xs:config.xs||[0,1,4,9]}];
@@ -403,10 +404,10 @@ function planeConstruction(host,config,value){
  host.className='task-graphs root-graph';const note=document.createElement('p');note.className='small';
  const num=z=>{const r=M.parse(String(z));return r.n/r.d;};
  const toCurve=([a,b,c])=>b?{kind:'line',k:-a/b,b:c/b}:{kind:'vertical',h:c/a};
- const groups=(config.groups||[]).map(g=>g.map(p=>p.map(r=>r.n/r.d))),points=groups.flat(),curves=[];
+ const groups=(config.groups||[]).map(g=>g.map(p=>p.map(r=>r.n/r.d))),points=[...groups.flat(),...(config.fixedPoints||[])],curves=[];
  if(config.type==='line-figure'){
   config.lines.forEach((l,i)=>{
-   const c=toCurve(l.map(num));if(config.labels){c.label=config.labels[i];c.labelAt=config.labelPoints[i];}curves.push(c);
+   const c=toCurve(l.map(num));if(config.distinguish&&i===1)c.dashed=true;if(config.labels){c.label=config.labels[i];c.labelAt=config.labelPoints[i];}curves.push(c);
   });
  }else if(config.type==='own-lines'){
   for(const row of groups){
@@ -418,10 +419,24 @@ function planeConstruction(host,config,value){
  }
  const max=config.bounds||Math.min(1000000,Math.max(5,...points.flat().map(v=>Math.ceil(Math.abs(v)*1.15))));
  host.append(rootGraph({curves,points,xRange:[-max,max],yRange:[-max,max],compactTicks:max>=10000,label:config.type==='line-figure'?'Координатный рисунок к заданию':'Координатная плоскость с твоими точками и прямыми'},''));
- note.textContent=config.type==='line-figure'?'На обеих осях отмечен ноль. Отсчитывай координаты по подписанным делениям.':config.type==='own-points'?'Введённые пары отмечаются точками. Проверь каждую подстановкой в исходное уравнение.':'Через две разные точки каждой группы проводится прямая. Верная прямая содержит только решения исходного уравнения.';
+ note.textContent=config.distinguish?'Первая прямая сплошная, вторая штриховая. При совпадении сплошная линия видна между штрихами.':config.type==='line-figure'?'На обеих осях отмечен ноль. Отсчитывай координаты по подписанным делениям.':config.type==='own-points'?'Введённые пары отмечаются точками. Проверь каждую подстановкой в исходное уравнение.':'Через две разные точки каждой группы проводится прямая. Верная прямая содержит только решения исходного уравнения.';
  host.append(note);
 }
 
+function absLineChoice(host,config){
+ host.className='task-graphs root-graph';
+ const curves=[{kind:'abs-linear',k:1,b:0}],p=config.analysis,points=[[-3,0]];
+ if(p)curves.push({kind:'line',k:p.k,b:p.b,dashed:true});
+ if(config.checked&&p)points.push(...p.points);
+ const size=Math.max(5,...points.flat().map(Math.abs))*1.15;
+ host.append(rootGraph({curves,points,xRange:[-size,size],yRange:[-size/2,size],compactTicks:size>10000,
+    label:'График модуля, заданная точка на оси x и твоя прямая'},''));
+ const note=document.createElement('p');note.className='small';
+ note.textContent='Сплошной линией показан модуль, отмечена заданная точка (−3; 0). Введённые k и b задают штриховую прямую.';
+ if(config.checked&&p)note.textContent+=' Общих точек с модулем: '+(Number.isFinite(p.count)?p.count:'бесконечно много')+'.';
+ if(p){note.dataset.absSlope=String(p.k);note.dataset.absCrossings=String(p.count);}
+ host.append(note);
+}
 function equationExamples(host,value){
  host.className='task-graphs quantity-model';
  const parts=String(value||'').split(';').map(x=>x.trim());
@@ -661,6 +676,7 @@ function render(host,config,value){
  if(config.type==='coefficient-example'){coefficientExample(host,config,value);return;}
  if(config.type==='vertex-form'){vertexForm(host,config,value);return;}
  if(['line-figure','own-lines','own-points'].includes(config.type)){planeConstruction(host,config,value);return;}
+ if(config.type==='abs-line-choice'){absLineChoice(host,config);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='rate-table'){rateTable(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}
