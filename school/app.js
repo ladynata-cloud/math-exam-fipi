@@ -443,7 +443,7 @@
   var returnLink=document.createElement('a');returnLink.className='button quiet';returnLink.href='m9-exercises/index.html#'+exerciseReturn.replace('.','/');returnLink.textContent='← Вернуться к задаче и сохранённому шагу';main.parentNode.insertBefore(returnLink,main);
  }
  if(V5Q)V5Q.connect({chooseSourceDrawing:function(seed){
-  if(!session||!['1.56','1.57','1.59'].includes(C.byId[session.id]?.number)||!['learn','practice'].includes(session.mode)||!Number.isInteger(seed)||seed<0||seed>1000000)return;
+  if(!session||!['1.56','1.57','1.59','1.80'].includes(C.byId[session.id]?.number)||!['learn','practice'].includes(session.mode)||!Number.isInteger(seed)||seed<0||seed>1000000)return;
   begin(session.id,session.mode,{seed:seed});
  },choosePrintedNumber:function(number){
   if(session?.id!=='v5f-printed-check-2-2'||!['learn','practice'].includes(session.mode)||!Number.isInteger(number)||number<100||number>999||session.task.data.original===number)return;

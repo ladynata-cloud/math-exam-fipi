@@ -488,6 +488,21 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'measure the six edges of a pupil-built open polyline, printed 1.80';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-80"]').click();await studentFrame.locator('h1').filter({hasText:'№1.80'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=vertex]').selectOption({value:'1'});await teacherFrame.locator('[data-v5-param=p1]').selectOption({value:'2'});
+  const vertexR=await same(teacherFrame,studentFrame,'R moves, changing exactly its two adjacent lengths');assert.equal(vertexR.scene.model.p1,2);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-apply-drawing]').click();
+  const ownSix=await same(studentFrame,teacherFrame,'one personal geometry in both frames');assert.equal(ownSix.scene.seed,100005);assert.equal(ownSix.scene.attempt,0);assert.equal(ownSix.scene.step,0);
+  await studentFrame.locator('#answer').fill('PR RM MK KS ST TA AP');await studentFrame.locator('#answer-form button').click();const closing=await same(studentFrame,teacherFrame,'an unwanted closing segment');assert.match(closing.scene.message,/замкнул/);
+  await studentFrame.locator('#answer').fill('TA ST KS MK RM PR');await studentFrame.locator('#answer-form button').click();const openEdges=await same(studentFrame,teacherFrame,'six open edges with no extra side');assert(openEdges.scene.correct);assert.deepEqual(openEdges.scene.hintLevels,{});
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-v5-param=edge]').selectOption({value:'0'});
+  await studentFrame.locator('[data-v5-prediction]').fill('19');await studentFrame.locator('[data-v5-predict] button').click();const ruler=await same(studentFrame,teacherFrame,'moved PR measures nineteen millimetres');assert(ruler.scene.model.seen);
+  await studentFrame.locator('#answer').fill('1');await same(studentFrame,teacherFrame,'first digit of the measured length');
+  await ownership(teacher,student,false);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restored same open construction and draft');
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(studentFrame,teacherFrame,'pupil restored six-edge construction');assert.equal(await studentFrame.locator('#answer').inputValue(),'1');
+
   phase = 'ratio and difference of two flying speeds, printed exercise 1.78';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-78"]').click();await studentFrame.locator('h1').filter({hasText:'№1.78'}).waitFor();

@@ -27,7 +27,7 @@
       explanation:'Каждая запись в списке принадлежит одному читателю. Посчитай одинаковые записи. Чтобы получить число книг в группе, умножь число читателей на результат одного из них.',
       worked:['Трое прочитали по 2 книги, двое — по 5.','Читателей 3 + 2 = 5. В первой группе прочитано 3 × 2 = 6 книг, во второй 2 × 5 = 10.','Всего 16 книг. Пять читателей и шестнадцать книг отвечают на разные вопросы.'],
       misconception:'Сумма частот всегда равна числу прочитанных книг.', reflect:'Какая сумма позволяет проверить, что ни одна запись не пропущена?'}
-  ].concat(tables.lessons,diary.lesson,finalPoint.lessons,digits.lessons,textNumbers.lessons,digitTree.lessons,calculations.lessons,p15.lessons,checks.lessons,segments.lessons,units.lessons,buildable.lessons,boundaries.lessons,review.lessons,pageTwenty.lessons,pageTwentyOne.lessons,circles.lesson);
+  ].concat(tables.lessons,diary.lesson,finalPoint.lessons,digits.lessons,textNumbers.lessons,digitTree.lessons,calculations.lessons,p15.lessons,checks.lessons,segments.lessons,units.lessons,buildable.lessons,boundaries.lessons,review.lessons,pageTwenty.lessons,pageTwentyOne.lessons,buildable.measuredLesson,circles.lesson);
   const pets = ['Кошка','Собака','Хомяк','Черепаха','Морская свинка','Кролик','Птицы','Рыбки','Змеи','Нет животных'];
   const mammal = [0,1,2,4,5], fourLegs = [...mammal,3];
   const sourceCounts = [19,11,3,8,5,1,5,9,0,5];
