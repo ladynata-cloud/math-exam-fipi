@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,369);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,387);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -209,6 +209,35 @@ const p33=D.lessons.find(l=>l.id==='p33');
  const speeds=printed.find(t=>t.source.exercise===24).steps.slice(2).map(t=>M.parse(t.answer));
  for(const [i,v]of [28,29.7,35.5].entries())assert(Math.abs((5*(v+2)+3*(v-2))/8-speeds[i].n/speeds[i].d)<1e-10);
  assert.equal(.5+24.5,25);assert.equal(24.5/.5,49);assert.equal(5*2/3+8/3,6);
+}
+{
+ const scale=D.lessons.find(l=>l.id==='p16');assert(scale.orderBySource);
+ for(const [id,expected] of [[28,['1','2а','2б','2в']],[29,['1','2','3']],[30,['']],[31,['1','2','3','4']],[32,['']]]){
+  const rows=Array.from(scale.tasks).filter(t=>t.source.exercise===id);
+  assert.deepEqual(rows.map(t=>t.source.subpart||'').sort(),expected);assert(rows.every(t=>t.source.page===12));
+ }
+ const extra=Array.from(scale.tasks).slice(6,14);
+ assert.equal(extra.length,8);assert.equal(extra[4].answer,String(50*100000/(2*10)));
+ assert.deepEqual(extra.slice(5).map(t=>Number(t.answer)),[1,1.8*10,35/10].map(cm=>cm*1000000/100000));
+ assert.deepEqual(extra.slice(1,4).map(t=>Number(t.steps[1].answer)),[3*400/100,3*500000/100000,12/3]);
+}
+{
+ const scale=D.lessons.find(l=>l.id==='p16'),extra=Array.from(scale.tasks).slice(14);
+ assert.deepEqual(extra.map(t=>t.source.exercise),[33,33,33,33,33,33,33,33,34,35]);
+ assert.deepEqual(extra.slice(0,8).map(t=>t.source.subpart),['1','2','3','4','5','6','7','8']);
+ assert(extra.every(t=>t.kind==='manual'&&t.source.page===12));
+ // Independent haversine evaluation of the eight WGS84 place coordinates.
+ const points=[[59.94096,30.31407],[55.75189,49.12440],[56.85003,53.23002],[50.43531,30.51468],[50.08697,14.42294],[52.52376,13.39960],[48.85809,2.35299],[51.50194,-.11867]];
+ for(const [i,[lat,lon]]of points.entries()){
+  const r=Math.PI/180,a=Math.sin((lat-55.75411)*r/2)**2+Math.cos(lat*r)*Math.cos(55.75411*r)*Math.sin((lon-37.61358)*r/2)**2;
+  const km=12742*Math.asin(Math.sqrt(a));assert.equal(Number(extra[i].steps[2].answer),Math.round(km/100)*100);
+ }
+ const parcel=extra[8];assert.equal(Number(parcel.steps[2].answer),2*(5+2.4)*40);
+ assert.equal(Number(parcel.steps[4].answer),(5*2.4-2*1)*40**2);
+ const areas=extra[9].steps.slice(1,7).map(step=>M.parse(step.answer)).map(q=>q.n/q.d);
+ const sides=[[7,5],[4.5,3.1],[4.5,3.9],[4.7,3.1],[4.5,1.1],[2.3,3.1]];
+ for(const [i,[w,h]]of sides.entries())assert(Math.abs(areas[i]-w*h)<1e-9);
+ assert(Math.abs(areas.reduce((a,b)=>a+b)-11.5*8.1)<1e-9);
 }
 const printedColumns=['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб'];
 for(const [i,letters] of printedColumns.entries()) {

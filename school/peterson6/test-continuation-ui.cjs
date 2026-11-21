@@ -670,3 +670,47 @@ test('read the entire opening brackets topic and retry its source-specific model
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('move directly into the first printed scale question and compare differently labelled rulers',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#lesson/p15/92');const next=f.q('.navigation a');assert.equal(next.hash,'#lesson/p16/6');f.nav(next.hash);
+  assert.match(f.q('[aria-current="step"]').textContent,/№28\(1\)/);
+  const ids=()=>[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+  const go=i=>{f.nav('#lesson/p16/'+i);f.click('[data-lesson-help="model"] > summary');return ids();};
+  let controls=go(6);f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/1 см/);
+  f.event(controls[0],'1','change');assert.equal(f.q(controls[1]).value,'0');
+  f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/200 см/);
+  controls=go(10);f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent.replace(/\s/g,''),/1:250000/);
+  f.event(controls[0],'1','change');f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent.replace(/\s/g,''),/1:160000/);
+  controls=go(13);f.event(controls[0],'1','change');f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/42 км/);
+  f.nav('#lesson/p16/2');f.event('#final-answer','0,2');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/Ответ требуется в миллиметрах/);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('use calibrated map radii, a notched parcel and all six room areas on new data',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p16/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);};
+  for(let i=0;i<8;i++){
+   const ids=go(14+i),base=f.q('#task-figure [data-measure="500km"]'),ray=f.q('#task-figure [data-measure="radius"]');
+   const length=el=>Math.hypot(Number(el.getAttribute('x1'))-Number(el.getAttribute('x2')),Number(el.getAttribute('y1'))-Number(el.getAttribute('y2')));
+   assert.equal(f.q(ids[0]).value,String(i));assert.equal(f.d.querySelectorAll('#task-figure [data-city]').length,8);
+   const km=length(ray)/length(base)*500;assert(Math.abs(km-[634,719,969,757,1668,1609,2486,2500][i])<.5);
+   f.event(ids[1],'2','change');assert.match(f.q('#model .pm-result').textContent,/Расчёт по координатам/);
+   f.event(ids[0],String((i+1)%8),'change');assert.equal(f.q(ids[1]).value,'0');
+  }
+  let ids=go(22);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent.replace(/\s/g,''),/16000м²/);
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');f.event(ids[1],'2','change');assert.match(f.q('#model .pm-result').textContent,/720 м/);
+  ids=go(23);assert.equal(f.d.querySelectorAll('#task-figure [data-room]').length,6);
+  for(const [i,area]of ['35','13,95','17,55','14,57','4,95','7,13'].entries()){
+   f.event(ids[0],String(i),'change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');
+   assert(f.q('#model .pm-result').textContent.includes('помещения '+area+' м²'));
+  }
+  f.event(ids[0],'0','change');f.event(ids[1],'1','change');f.event(ids[2],'1','change');
+  assert(f.q('#model .pm-result').textContent.includes('помещения 78,75 м²'));
+  f.event(ids[0],'2','change');f.event(ids[2],'1','change');assert(f.q('#model .pm-result').textContent.includes('помещения 39,4875 м²'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
