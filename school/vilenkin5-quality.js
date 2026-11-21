@@ -156,11 +156,21 @@
   }
   function inputIssue(value,target){
     if(!text(value)||!value.trim())return 'Сначала запиши ответ. Пустое поле не считается ошибкой.';
+    if(target.answerFormat==='v5-fraction-reading'&&!/[а-яё]/i.test(value))return 'Числа уже записаны в условии. Произнеси дробь вслух и введи словами вместе с названием целого. Пока это черновик.';
     if(['v5-pair','v5-triple'].includes(target.answerFormat)){
       const parts=value.split(';'),pair=target.answerFormat==='v5-pair';
       if(parts.length!==(pair?2:3)||parts.some(part=>{const n=M.parse(part);return !n||(!pair&&n.d!==1);}))return pair?'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.':'Запиши три целых числа через точку с запятой, например 2; 5; 7.';
     }
     if(['v5-segments','v5-line-points','v5-equal-segments'].includes(target.answerFormat)&&!root.Vilenkin5PrintedSegments.canonical(value,target.answerFormat))return target.answerFormat==='v5-equal-segments'?'Введи два равенства с парами букв, например AB=CD; KL=MN.':target.answerFormat==='v5-segments'?'У каждого отрезка две разные буквы. Между парами поставь пробел, например AB CD.':'Введи буквы подписанных точек, например A, B.';
+    if(target.answerFormat==='v5-equivalent-length'&&root.Vilenkin5LengthPolygon.mm(value,M)===null)return 'Укажи число с единицей. Можно записать одну длину или две части по убыванию единиц, например 2 м 5 см.';
+    if(target.answerFormat==='v5-polygon-path'&&!root.Vilenkin5LengthPolygon.polygonKey(value))return 'Перечисли буквы вершин подряд по обходу. В середине обхода вершина не должна повторяться.';
+    if(target.answerFormat==='v5-figure124'&&!root.Vilenkin5PrintedCheck4.parse(value,target.geometryKind))return root.Vilenkin5PrintedCheck4.diagnosis(value,target);
+    if((target.answerFormat==='v5-drawn-angles'&&!root.Vilenkin5Constructions26.angles(value))||(['v5-seven-ray','v5-positioned-segment'].includes(target.answerFormat)&&!root.Vilenkin5Constructions26.cells(value,target.plotNames)))return root.Vilenkin5Constructions26.check(value,target);
+    if(target.answerFormat==='v5-subrays'&&!root.Vilenkin5Constructions25.rayReply(value)||target.answerFormat==='v5-free-line-plot'&&!root.Vilenkin5Constructions25.placement(value))return root.Vilenkin5Constructions25.feedback(value,target.answerFormat);
+    if(target.answerFormat==='v5-ray-objects'&&!root.Vilenkin5RayObjects.read(value,target.objectRule))return target.objectRule.kind==='points'?'Напиши буквы выбранных точек.':'Запиши каждую фигуру двумя разными буквами и раздели имена пробелами.';
+    if(target.answerFormat==='v5-open-position'&&root.Vilenkin5PointFourBuild.parsePosition(value)===null)return 'Выбери целое деление на нарисованной шкале и запиши его номер цифрами.';
+    if(target.answerFormat==='v5-ordered-line-names'&&root.Vilenkin5PointFourBuild.orderedNames(value)===null)return 'Разделяй записи пробелами или точкой с запятой. Для каждого названия нужны две разные буквы.';
+    if(target.answerFormat==='v5-angle-set'&&!root.Vilenkin5PrintedLines.angleNames(value))return 'Введи каждое название тремя разными буквами. Углы можно разделять пробелами или точкой с запятой.';
     if(target.answerFormat==='v5-length-pairs'&&root.Vilenkin5PrintedLengthUnits.readLengths(value)===null)return 'У каждой строки укажи обе единицы, например 2 см 5 мм. Ответы разных строк отдели точкой с запятой.';
     if(target.answerFormat==='v5-classes'&&!/^[0-9\s|]+$/.test(value))return 'Введи цифры с границами между классами. Границей может быть пробел или вертикальная черта.';
     if(target.answerFormat==='v5-natural')return root.Vilenkin5PrintedDigits.natural(value)===null?'Запиши целое число цифрами. Между классами можно оставить пробел, справа от старшего класса должно быть по три цифры. Пока это черновик.':'';
@@ -174,6 +184,7 @@
     if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
     if(target.answerFormat==='v5-object-shape'&&!root.Vilenkin5RoundObjects.read(value))return 'В ответе к рисунку нужно название формы: окружность, круг, цилиндр или шар. Свои предметы запиши в «Мои четыре примера». Написанное можно уточнить.';
     if(target.answerFormat==='v5-arc'&&!/^[ABCDKMPST]{3}$/.test(root.Vilenkin5Numbered.readArc(value)))return 'Нужны три буквы. Сначала запиши начало дуги, затем промежуточную метку и конец.';
+    if(target.answerFormat==='v5-membership-set'&&!root.Vilenkin5DiskMembership.read(value))return 'Укажи буквы с этого рисунка. Их можно разделять запятыми или пробелами.';
     if(target.answerFormat==='v5-point-set'&&!root.Vilenkin5Numbered.readPointSet(value))return 'Введи буквы точек с рисунка. Запись можно поправить без потери попытки.';
     const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
     if(clarification)return clarification.text;
@@ -221,7 +232,7 @@
     const d=detail(session),captured=session;
     const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,onDrawing:value=>{
       if(readOnly||captured!==connection?.getSession?.()||!['learn','practice'].includes(session.mode))return;
-      const next=root.Vilenkin5PrintedBuildablePaths.selection(session.task,value);
+      const next=session.task.data.checkPositions?root.Vilenkin5CircleCheck.selection(session.task,value):session.task.data.threeCompass?root.Vilenkin5ThreeCompassPoints.selection(session.task,value):root.Vilenkin5PrintedBuildablePaths.selection(session.task,value);
       if(next!==null&&M.generate(session.id,next).conditionKey!==session.task.conditionKey)connection?.chooseSourceDrawing?.(next);
     },onChange:value=>{
       if(readOnly||captured!==connection?.getSession?.())return;
@@ -281,6 +292,12 @@
     if(session.correct){const status=memoryOnly?'Совместный разбор':session.assisted?'Решено с помощью':session.exposed?'Работа со знакомым условием':session.attempt>1?'Решено после исправления':session.mode==='learn'?'Шаг понятен':'Получилось самостоятельно';task.insertAdjacentHTML('beforeend','<p class="v5q-outcome">'+status+'</p>');}
     const ownSituations=lesson.number==='1.72';
     const extra=root.document.createElement('section');extra.className='v5q-notes';extra.innerHTML=ownSituations?'<h2>Твои два примера</h2><label>Что ты захочешь узнать в магазине? А на спортивной площадке? Запиши для каждого места свой вопрос и математический способ его проверить.<textarea id="v5-quality-note" maxlength="2000" rows="5"></textarea></label><p class="tiny">Сверь свою запись: указаны оба места, величины и способ проверки. Можно привести любые подходящие примеры. Текст сохраняется. Тренажёр отдельно проверяет только расчёты ниже.</p><div data-v5-media-host></div>':'<details><summary>Мои рассуждения и проверка</summary><label>Объясни способ своими словами. Как проверить результат?<textarea id="v5-quality-note" maxlength="2000" rows="3"></textarea></label><p class="tiny">Твои записи сохраняются. Свободное объяснение проверяется вместе с учителем.</p></details><div data-v5-media-host></div>';
+    if(lesson.number==='5.28'&&lesson.v5Course){
+      extra.querySelector('summary').textContent='Моё объяснение о часах';
+      extra.querySelector('label').firstChild.textContent='Назови одно преимущество солнечных часов, одно ограничение и общее свойство с сегодняшними часами. Выбери для сравнения конкретные часы.';
+      const input=extra.querySelector('textarea');input.rows=5;input.placeholder='Для солнечных часов удобно …\nИх ограничение …\nУ обоих приборов …';
+      extra.querySelector('.tiny').textContent='Запись сохранится для тебя и учителя. Результаты наблюдений в модели проверяются отдельно. Своё объяснение можно дополнить.';
+    }
     if(lesson.number==='5.21'&&lesson.v5Course){
       extra.querySelector('summary').textContent='Моя формулировка правила';
       extra.querySelector('label').firstChild.textContent='Как по числу слоёв узнать сумму кубов? Запиши правило своими словами и проверь на двух строках.';

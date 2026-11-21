@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "041bb74a218267e572a9ca98503b9789cace3cecc9a556ed1123d9b7567fb147",
-      "afterSha256": "25edab60be434fe281979bc130084d7f559b241f91f319b402d6b96cad16b209",
+      "beforeSha256": "8b0e01e7550ca3cfc4efe9344964402bba25aacadafbdd4d75db359fe4a1ded4",
+      "afterSha256": "b7d6c064d17dcde2244b4127072017b9205861286b29b44d421fff536c8f51a0",
       "placement": "before-head-close",
-      "sourceSha": "0ca5de06e4f79bae52c5738ac98a69fd5106fa2e"
+      "sourceSha": "c8a77c4923027c76d9b547d1f50d336bb439ed44"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7041,6 +7041,202 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Личный курс и вход доски открывают авторские задания по №1–1075, №1077–1087. На месте №1076 обозначено отдельное авторское упражнение. В №1080–1087 ученик строит графики, проверяет интервалы и исследует область значений."
+    },
+    {
+      "previousBaseSha": "904cd14a07b85907156954dcd21e338daba6ded6",
+      "sourceBaseSha": "c9f2e71aa306c8ddfa136d627b35c3d8a06db711",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, №5.28. Открытый вопрос о сравнении часов с собственным наблюдением."
+    },
+    {
+      "previousBaseSha": "c9f2e71aa306c8ddfa136d627b35c3d8a06db711",
+      "sourceBaseSha": "6a59d3de39c42767bb5c830d0b845767ec86d580",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Построение окружности, сравнение внутренней области с границей и сохранение своей перестановки точки."
+    },
+    {
+      "previousBaseSha": "6a59d3de39c42767bb5c830d0b845767ec86d580",
+      "sourceBaseSha": "d246cf6828a91cb5ff093b094facb5f5898a5a23",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Три точки на одном расстоянии от центра: собственный раствор, направления и восстановление построения у обоих участников."
+    },
+    {
+      "previousBaseSha": "d246cf6828a91cb5ff093b094facb5f5898a5a23",
+      "sourceBaseSha": "7c9128938244ce242102a911763022e3e31dad95",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Две окружности в исходных номерах №5.31–5.32, внешнее и внутреннее касания, отдельные метки центров и точек пересечения."
+    },
+    {
+      "previousBaseSha": "7c9128938244ce242102a911763022e3e31dad95",
+      "sourceBaseSha": "7401675c26a1e92ebbd5c117bd2c5adfcd37a10d",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены №5.33–5.34 Виленкина: сравнение грубой и более точной оценки, все четыре исходных уравнения и проверка подстановкой."
+    },
+    {
+      "previousBaseSha": "7401675c26a1e92ebbd5c117bd2c5adfcd37a10d",
+      "sourceBaseSha": "e3d9570491cc051d2bb7697ab9487969605ef681",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Добавлены печатные №5.35–5.36, часть 2, §25, с. 11: все возможные делители и независимый подсчёт объёмов четырёх фигур. Прочие страницы исходного издания не заявляются."
+    },
+    {
+      "previousBaseSha": "0ca5de06e4f79bae52c5738ac98a69fd5106fa2e",
+      "sourceBaseSha": "5bd8bc40b84d8f6583e7b0505c6c9933aa9f6670",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "School entry for Vilenkin printed exercises through 1.118 and 5.36, four separate book self-checks and the thematic route.",
+      "boundary": "Only this page is bound to the combined source."
+    },
+    {
+      "previousBaseSha": "e3d9570491cc051d2bb7697ab9487969605ef681",
+      "sourceBaseSha": "61a245df14fbd4d71ec659462f94053845f9b21e",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Часть 2, §25, с. 11, №5.37–5.39: литры и граммы, неполное частное и остаток, четыре вычисления со степенями. Номера после этого блока и проверочная работа учитываются отдельно."
+    },
+    {
+      "previousBaseSha": "5bd8bc40b84d8f6583e7b0505c6c9933aa9f6670",
+      "sourceBaseSha": "8923a6cad53ea70c6ba762e6d88e939e48847f7e",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "School course entry for Vilenkin through 1.118 and 5.39, including the final three numbered exercises in paragraph 25.",
+      "boundary": "Only the combined school entry receives this page binding."
+    },
+    {
+      "previousBaseSha": "8923a6cad53ea70c6ba762e6d88e939e48847f7e",
+      "sourceBaseSha": "16e8a8660fa1d108b90c228fb2b2b196db761550",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "First-volume printed Vilenkin exercises through 1.121 and second-volume exercises through 5.39.",
+      "boundary": "Only the combined school entry receives this page binding."
+    },
+    {
+      "previousBaseSha": "61a245df14fbd4d71ec659462f94053845f9b21e",
+      "sourceBaseSha": "972d64936768deedcfa0bb3a04f08b27ba9338ef",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Три отдельных задания одной печатной проверочной работы §25, часть 2, с. 11. Рисунок ученика сохранён и передаётся на доску. Список сквозных номеров заканчивается перед работой на №5.39."
+    },
+    {
+      "previousBaseSha": "16e8a8660fa1d108b90c228fb2b2b196db761550",
+      "sourceBaseSha": "219601fcf9d62ed661ec288f17e5669c7bc7c893",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "First-volume printed Vilenkin exercises through 1.121 and second-volume exercises through 5.39.",
+      "boundary": "Only the combined school entry receives this page binding."
+    },
+    {
+      "previousBaseSha": "219601fcf9d62ed661ec288f17e5669c7bc7c893",
+      "sourceBaseSha": "8a12679f60c81829b6a011a379f3afd856dec2ae",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "First-volume printed Vilenkin exercises through 1.125 and second-volume exercises through 5.39.",
+      "boundary": "Only the combined school entry receives this page binding."
+    },
+    {
+      "previousBaseSha": "8a12679f60c81829b6a011a379f3afd856dec2ae",
+      "sourceBaseSha": "a266d9004567aaf959fbee0817635ebad1aac290",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "First-volume printed Vilenkin exercises through 1.125 and second-volume exercises through 5.39.",
+      "boundary": "Only the combined school entry receives this page binding."
+    },
+    {
+      "previousBaseSha": "972d64936768deedcfa0bb3a04f08b27ba9338ef",
+      "sourceBaseSha": "f9a9b337e7cb944e9156c8aa36ada37054b28e61",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Часть 2, §26, печатная с. 13. Проверены упражнения №5.40–5.42, равносильные дроби, цветные интервалы и разбиение квадрата на шесть равных площадей."
+    },
+    {
+      "previousBaseSha": "a266d9004567aaf959fbee0817635ebad1aac290",
+      "sourceBaseSha": "5132714b059c6613ad42d5f8488ccae1e60d0eea",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "First-volume printed Vilenkin exercises through 1.125 and second-volume exercises through 5.42.",
+      "boundary": "Only the combined school entry receives this page binding."
+    },
+    {
+      "previousBaseSha": "f9a9b337e7cb944e9156c8aa36ada37054b28e61",
+      "sourceBaseSha": "5f783e742ce47a57504cad831835ffba9f166dc1",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверены №5.43 и 5.44 второй части на печатных с. 13–14: все восемь единиц, в том числе 1/100 тонны, и три доли квадрата со стороной 8 см. У поворачиваемой модели проверена площадь каждого многоугольника."
+    },
+    {
+      "previousBaseSha": "5f783e742ce47a57504cad831835ffba9f166dc1",
+      "sourceBaseSha": "bd9b44f3fad05993e8bdbb28d2124b926e13342a",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Часть 2, §26, с. 14, №5.45: все шесть печатных дробей, допустимые словесные формы, отдельная обратная связь и собственный черновик. В №5.43 при повторе используются новые пары единиц."
+    },
+    {
+      "previousBaseSha": "bd9b44f3fad05993e8bdbb28d2124b926e13342a",
+      "sourceBaseSha": "8d57d37a9363dcd6e5689e4754cb918fdab2ed27",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Часть 2, §26, с. 14, №5.46: тринадцать исходных рисунков в авторской реализации, новые данные для повторения, смена участников и мобильные проверки. Полный сценарий доски проверяется отдельно."
+    },
+    {
+      "previousBaseSha": "8d57d37a9363dcd6e5689e4754cb918fdab2ed27",
+      "sourceBaseSha": "99b9e5fd106cb65a5e3d6ee714b0eaadd427cb1f",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, §26, с. 14, №5.47–5.50. Ткань, два куска, доля остатка прогулки, четверти квадрата. Проверены 320 и 375 пикселей, обе роли, смена управления и возврат."
+    },
+    {
+      "previousBaseSha": "0ca5de06e4f79bae52c5738ac98a69fd5106fa2e",
+      "sourceBaseSha": "c8a77c4923027c76d9b547d1f50d336bb439ed44",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the shared school entry after integrating both printed Vilenkin routes through 1.125 and 5.50 and their separate assessments."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
