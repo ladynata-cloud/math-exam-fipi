@@ -17,6 +17,20 @@
   function svg(body,label,desc){
     return '<svg role="img" aria-label="'+label+'" viewBox="0 0 270 188" style="display:block;width:100%;max-width:26rem;height:auto;margin:auto"><desc>'+desc+'</desc><g font-family="sans-serif" font-size="13" fill="#16394c">'+body+'</g></svg>';
   }
+  function rulerDetail(origin,radius){
+    const max=Math.ceil((origin+radius+2)/10)*10,start=16,unit=234/max;
+    let marks='';
+    for(let v=0;v<=max;v++){
+      const x=start+unit*v;
+      marks+='<path d="M '+x+' 29 v '+(v%5?7:13)+'" stroke="#584c2c" stroke-width="'+(v%5?1:1.5)+'"/>';
+      if(v%10===0)marks+='<text x="'+x+'" y="59" text-anchor="middle" font-size="16">'+v+'</text>';
+    }
+    const pointer=(v,label)=>{
+      const x=start+unit*v;
+      return '<text x="'+x+'" y="14" text-anchor="middle" font-size="15" font-weight="bold">'+label+'</text><path d="M '+x+' 16 v 12 m -3 -5 l 3 5 3 -5" fill="none" stroke="#8c340d" stroke-width="2"/>';
+    };
+    return '<figure style="margin:.35rem auto .8rem;max-width:26rem"><figcaption>Линейка крупнее · миллиметры</figcaption><svg viewBox="0 0 270 64" style="display:block;width:100%;height:auto" role="img" aria-label="Крупная шкала под центром и правым краем"><desc>Центр над отметкой '+origin+' мм, край над отметкой '+(origin+radius)+' мм.</desc><g font-family="sans-serif" fill="#16394c"><rect x="7" y="28" width="252" height="35" rx="2" fill="#fff2ca"/>'+marks+pointer(origin,'O')+pointer(origin+radius,'край')+'</g></svg></figure>';
+  }
   function compass(radius,origin,stage){
     const scale=2.4,cx=126,cy=88,r=radius*scale;
     const ray='<path d="M '+cx+' '+cy+' h '+r+'" fill="none" stroke="#ac470a" stroke-width="3"/>';
@@ -35,7 +49,7 @@
       body+='<path d="M '+cx+' '+cy+' L '+(cx+r/2)+' 25 L '+(cx+r)+' '+cy+'" stroke="#5d7080" stroke-width="4" stroke-linecap="round" fill="none"/>';
     }
     body+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="#16394c"/><text x="'+(cx-7)+'" y="'+(cy-8)+'" text-anchor="end">O</text><circle cx="'+(cx+r)+'" cy="'+cy+'" r="3" fill="#16394c"/>';
-    return svg(body,'Циркуль с иглой в O и миллиметровая шкала',stage>=2?'Центр O находится над отметкой '+origin+' мм. Правый край находится над отметкой '+(origin+radius)+' мм.':'Игла циркуля в O, карандаш справа. Раскрытие выбрано в настройке модели.');
+    return svg(body,'Циркуль с иглой в O и миллиметровая шкала',stage>=2?'Центр O находится над отметкой '+origin+' мм. Правый край находится над отметкой '+(origin+radius)+' мм.':'Игла циркуля в O, карандаш справа. Раскрытие выбрано в настройке модели.')+(stage>=2?rulerDetail(origin,radius):'');
   }
   function measure(seed,random,step){
     const r=seed?random(12,36):24,origin=seed?random(0,10):5;
@@ -65,7 +79,7 @@
     }
     for(let i=0;i<6;i++){
       const [x,y]=at(i),lx=135+(x-135)*1.22,ly=92+(y-92)*1.22+4;
-      body+='<circle cx="'+x+'" cy="'+y+'" r="'+(i%2?2.5:4)+'" fill="#16394c"/><text x="'+lx+'" y="'+ly+'" font-weight="'+(i%2?'normal':'bold')+'" text-anchor="middle">'+f.letters[i]+'</text>';
+      body+='<circle cx="'+x+'" cy="'+y+'" r="'+(i%2?2.5:4)+'" fill="#16394c"/><text x="'+lx+'" y="'+ly+'" font-size="15" font-weight="'+(i%2?'normal':'bold')+'" text-anchor="middle">'+f.letters[i]+'</text>';
     }
     return svg(body,'Три отмеченные точки и три малые метки между ними','По часовой стрелке расположены '+f.letters.join(', ')+'. Крупные точки — '+[0,2,4].map(i=>f.letters[i]).join(', ')+'.');
   }
