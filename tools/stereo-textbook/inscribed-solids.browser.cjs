@@ -6,9 +6,14 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const {chromium} = require('playwright');
 const course = require('../../stereo-course/textbook/data/course.json');
-const volumeGroup = process.env.TEXTBOOK_PRACTICE_GROUP === 'volume';
-const manifests = volumeGroup ? [require('./box-volumes.json')]
-  : [require('./inscribed-solids.json'), require('./circumspheres.json'), require('./round-bodies.json')];
+const groups = {
+  solids: {manifests:[require('./inscribed-solids.json'),require('./circumspheres.json'),require('./round-bodies.json')],count:31},
+  volume: {manifests:[require('./box-volumes.json')],count:21},
+  prism: {manifests:[require('./prism-volumes.json')],count:26}
+};
+const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
+assert(group, 'Unknown textbook practice group');
+const manifests = group.manifests;
 const root = path.resolve(__dirname, '../..');
 const cards = course.lessons.filter(card => manifests.some(manifest => Object.hasOwn(manifest.cards, card.id)));
 const contentTypes = {'.html':'text/html;charset=utf-8','.js':'application/javascript','.css':'text/css','.json':'application/json'};
@@ -110,7 +115,7 @@ async function exercise(page, card, base, width) {
       for (const card of cards) checks += await exercise(page, card, base, width);
       await context.close();
     }
-    assert.equal(cards.length,volumeGroup?21:31);
+    assert.equal(cards.length,group.count);
     assert.deepEqual(errors, []);
     console.log('TEXTBOOK_PRACTICE_BROWSER_OK: ' + cards.length*3 + ' phone and desktop journeys, ' + checks + ' wrong/correct step checks, model states and retained drafts');
   } finally {
