@@ -21,6 +21,8 @@ on:
       - 'tools/seo-*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-map.*'
       - 'tools/arzhenikov-map.browser.cjs'
+      - 'tools/arzhenikov-garden*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-garden*'
       - '.github/workflows/seo-quality.yml'
   workflow_dispatch:
 
@@ -56,6 +58,8 @@ jobs:
           "$RUNNER_TEMP/seo-browser-qa/node_modules/.bin/playwright" install --with-deps chromium
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/seo-entrypoints.browser.cjs
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-map.browser.cjs
+          node --test tools/arzhenikov-garden.test.cjs
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-garden.browser.cjs
 
       - name: Course entrances, mathematical GIFs and retained work
         run: |
