@@ -44,9 +44,14 @@ test('normalization cannot hide altered tags, missing or duplicate scripts, extr
     assert.deepEqual(restorePublicNavigator('unrelated.html',raw),raw,'wrong route cannot normalize');
   }
 });
-test('sitemap coverage is complete except the existing dedicated Peterson helper',()=>{
+test('sitemap coverage is complete with two dedicated learning interfaces',()=>{
   const xml=fs.readFileSync(path.join(root,'sitemap.xml'),'utf8'),urls=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(x=>new URL(x[1]).pathname);
   assert.equal(urls.length,rollout.sitemap.total);
+  assert.deepEqual(Object.keys(rollout.sitemap.excluded).sort(),['/oge/skills/','/school/peterson6/']);
+  const offline=fs.readFileSync(path.join(root,'oge/skills/index.html'),'utf8');
+  assert.doesNotMatch(offline,/<script\b[^>]*\bsrc\s*=/i,'The standalone skills course must run offline');
+  for(const action of ['course','trainer','cabinet'])assert.ok(offline.includes('data-skill-link="'+action+'"'),'Built-in skills navigation: '+action);
+  assert.ok(offline.includes('data-mathexam-home-link'),'The offline course keeps its home link');
   let covered=0;
   for(const url of urls){const file=url.slice(1)+(url.endsWith('/')?'index.html':'');if(pages.includes(file)){covered++;continue;}assert.equal(rollout.sitemap.excluded[url],'Existing dedicated task-aware helper; no competing launcher.',url);}
   assert.equal(covered,rollout.sitemap.covered);

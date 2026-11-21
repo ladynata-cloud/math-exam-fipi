@@ -237,6 +237,16 @@ def grid(c, x, y, cols, rows, cell, filled, fill=GREEN):
             c.rect(x+col*cell, y+r*cell, cell, cell, fill if r*cols+col < filled else WHITE, LINE, 1, 0)
 
 
+def right_angle(c, vertex, u, v):
+    # u and v are projections of equal, perpendicular sides of a small square.
+    # Draw only its two inner sides; the figure already supplies the other two.
+    points = [(vertex[0]+u[0], vertex[1]+u[1]),
+              (vertex[0]+u[0]+v[0], vertex[1]+u[1]+v[1]),
+              (vertex[0]+v[0], vertex[1]+v[1])]
+    c.line(points, BG, 6)
+    c.line(points, INK, 3)
+
+
 def render(point, t):
     if point in REUSED:
         return P5.render(REUSED[point][0], t)
@@ -383,11 +393,11 @@ def render(point, t):
             c.dot(x0+(x1-x0)*a,y0+(y1-y0)*a,12,GOLD if i>=15 else GREEN)
         c.text("17 = 5 · 3 + 2",320,380,53)
     elif point in (20,21):
-        x,y,cw,ch=165,121,76,58
-        c.rect(x,y,4*cw,3*ch,WHITE,GREEN,3,0)
-        c.text("4 см",x+2*cw,333,48);c.text(3,118,y+1.5*ch,48)
+        x,y,cell=204,121,58
+        c.rect(x,y,4*cell,3*cell,WHITE,GREEN,3,0)
+        c.text("4 см",x+2*cell,333,48);c.text("3 см",139,y+1.5*cell,42)
         if point==20:
-            corners=[(x,y),(x+4*cw,y),(x+4*cw,y+3*ch),(x,y+3*ch),(x,y)]
+            corners=[(x,y),(x+4*cell,y),(x+4*cell,y+3*cell),(x,y+3*cell),(x,y)]
             f=t*4
             for side in range(4):
                 amount=clamp(f-side);p,q=corners[side],corners[side+1]
@@ -396,17 +406,20 @@ def render(point, t):
         else:
             count=min(12,int(t*13))
             for row in range(3):
-                for col in range(4): c.rect(x+cw*col,y+ch*row,cw,ch,GREEN if row*4+col<count else WHITE,LINE,2,0)
+                for col in range(4): c.rect(x+cell*col,y+cell*row,cell,cell,GREEN if row*4+col<count else WHITE,LINE,2,0)
             c.text("4 · 3 = 12 см²",320,388,52)
+        right_angle(c,(x,y+3*cell),(20,0),(0,-20))
     elif point == 22:
         c.rect(210,127,220,220,WHITE,GREEN,3,0)
         for i in range(1,10):
             c.line([(210+i*22,127),(210+i*22,127+220*a)],LINE,1)
             c.line([(210,127+i*22),(210+220*a,127+i*22)],LINE,1)
+        right_angle(c,(210,347),(18,0),(0,-18))
         c.text("1 дм",320,87,48)
         c.text("1 дм² = 100 см²",320,385,49,mix(BG,GREEN,b))
     elif point == 23:
-        coords={(x,y,z):(165+x*210+y*90,285-y*67-z*125) for x in (0,1) for y in (0,1) for z in (0,1)}
+        def project(x,y,z): return 165+70*x+45*y,285-33.5*y-62.5*z
+        coords={(x,y,z):project(3*x,2*y,2*z) for x in (0,1) for y in (0,1) for z in (0,1)}
         for direction in range(3):
             show=clamp(z*1.5-direction+1)
             for key,p in coords.items():
@@ -414,6 +427,10 @@ def render(point, t):
                 other=list(key);other[direction]=1;q=coords[tuple(other)]
                 c.line([p,q],mix(LINE,(GREEN,GOLD,CLAY)[direction],show),5 if show>.5 else 2)
         for p in coords.values(): c.dot(*p,5,INK)
+        # The upper face is the x/y plane. Project a 0.35 by 0.35 square,
+        # rather than drawing a screen-aligned 90-degree mark in perspective.
+        vertex=project(3,0,2);px=project(2.65,0,2);py=project(3,.35,2)
+        right_angle(c,vertex,(px[0]-vertex[0],px[1]-vertex[1]),(py[0]-vertex[0],py[1]-vertex[1]))
         c.text("4 + 4 + 4 = 12",320,365,55)
     elif point == 24:
         def pos(x,y,z): return 140+66*x+30*y,310-22*y-58*z
@@ -611,10 +628,11 @@ def validate_mathematics():
     assert 8*5==40 and 40//5==8 and 8*700==5600 and F(25,100)*80==20
 
 
-def write_assets():
+def write_assets(points=None):
     OUT.mkdir(parents=True,exist_ok=True)
-    manifest=[]
-    for point in range(1,54):
+    selected=sorted(set(points)) if points else list(range(1,54))
+    manifest=json.loads((OUT/'manifest.json').read_text()) if len(selected)<53 else [None]*53
+    for point in selected:
         frames=[render(point,i/32) for i in range(33)]
         contact=Image.new('RGB',(160*11,105*3),BG)
         for i,frame in enumerate(frames): contact.paste(frame.resize((160,105)),((i%11)*160,(i//11)*105))
@@ -625,7 +643,7 @@ def write_assets():
         with Image.open(OUT/(name+'.gif')) as gif:
             count=gif.n_frames;duration=sum(frame.info.get('duration',0) for frame in ImageSequence.Iterator(gif))
             gif.seek(count-1);gif.convert('RGB').save(OUT/(name+'.png'),compress_level=9)
-        manifest.append({'id':name,'point':point,'src':f'vilenkin5-media/{name}.gif','poster':f'vilenkin5-media/{name}.png','title':TOPICS[point-1][0],'description':TOPICS[point-1][1],'frames':count,'durationMs':duration,'width':W,'height':H})
+        manifest[point-1]={'id':name,'point':point,'src':f'vilenkin5-media/{name}.gif','poster':f'vilenkin5-media/{name}.png','title':TOPICS[point-1][0],'description':TOPICS[point-1][1],'frames':count,'durationMs':duration,'width':W,'height':H}
         print(name,count,duration,flush=True)
     payload=json.dumps(manifest,ensure_ascii=False,indent=2)
     (OUT/'manifest.json').write_text(payload+'\n')
@@ -659,9 +677,11 @@ def check_assets():
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check',action='store_true',help='read and validate assets without recreating them')
+    parser.add_argument('--points',type=int,nargs='+',choices=range(1,54),help='rebuild only these points, preserving other completed assets')
     parser.add_argument('--peterson-source',type=Path,default=ROOT/'tools/build-peterson5-animations.py',help='shared deterministic drawing source, needed only when rebuilding')
     args=parser.parse_args()
+    if args.check and args.points: parser.error('--points rebuilds assets and cannot be combined with --check')
     configure_metadata();validate_mathematics()
     if not args.check:
-        load_drawing(args.peterson_source);write_assets()
+        load_drawing(args.peterson_source);write_assets(args.points)
     check_assets()

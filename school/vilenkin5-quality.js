@@ -209,6 +209,20 @@
     if(theory){const box=root.document.createElement('details');box.className='v5q-theory';box.innerHTML='<summary>Правило и разобранный пример</summary>';theory.before(box);box.append(theory);}
     if(claim){const box=root.document.createElement('details');box.className='v5q-theory';box.innerHTML='<summary>Объясни правило своими словами</summary>';claim.before(box);box.append(claim);if(d.claim)claim.querySelector('#claim-feedback').textContent=(String(lesson.claimTrue)===d.claim?'Да, верно определено. ':'Посмотри ещё раз на объяснение. ')+lesson.explanation;}
     const workspace=root.document.createElement('div');workspace.className='v5q-workspace';head.after(workspace);if(model)workspace.append(model);workspace.append(task);if(!model)workspace.classList.add('v5q-solo');
+    const original=session.task.model;
+    if(model && !memoryOnly && original?.kind==='v5lab' && ['fraction','decimal','angle'].includes(original.family)){
+      const lab=root.document.createElement('details');
+      lab.className='v5q-theory';
+      lab.dataset.v5OriginalLab='';
+      const summary=root.document.createElement('summary');
+      summary.textContent={fraction:'Лаборатория дробей: доли и действия',decimal:'Лаборатория разрядов и обменов',angle:'Построение угла по шкале'}[original.family];
+      const canvas=root.document.createElement('div');
+      lab.append(summary,canvas);
+      workspace.after(lab);
+      lab.addEventListener('toggle',()=>{
+        if(lab.open && !canvas.firstChild)root.WorkshopModels.mount(canvas,original);
+      });
+    }
     const target=session.mode==='learn'?[...session.task.steps,session.task][session.step]:session.task;
     task.querySelector('label[for=answer]').textContent=target.prompt;
     task.querySelector('[data-cmd=hint]')?.replaceChildren('Хочешь подсказку?');

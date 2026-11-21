@@ -91,7 +91,8 @@ const contextualRoutes = Object.freeze([
 ]);
 const supplementalRoutes = Object.freeze({
   divisionRoute: 'multiplication-division/division-path.html',
-  independentCheckpoint: 'multiplication-division/division-checkpoint.html'
+  independentCheckpoint: 'multiplication-division/division-checkpoint.html',
+  arzhenikovMap: 'multiplication-division/arzhenikov-map.html'
 });
 
 function htmlFiles(folder) {
@@ -372,6 +373,13 @@ async function miniCheckWithoutHelp(page) {
 async function supplementalDivisionContracts(page) {
   // These are a route map and an independent answer check, not contextual
   // lesson pages. Dedicated division suites cover their complete journeys.
+  await open(page, supplementalRoutes.arzhenikovMap + '#transfer');
+  assert.equal(await page.locator('#skills a').count(), 8);
+  assert.equal(await page.locator('#skills a[aria-current]').getAttribute('href'), '#transfer');
+  assert.equal(await page.getByRole('button', {name:'Подсказка', exact:true}).count(), 0);
+  await hitTarget(page.getByRole('button', {name:'Проверить', exact:true}), 'Independent skill check');
+  await noOverflow(page, 'Arzhenikov transfer');
+
   await open(page, supplementalRoutes.divisionRoute);
   await page.locator('#continue-division').waitFor({state:'visible'});
   const topics = ['start','oneDigit','zero','remainder','twoDigit','decimalNatural','appendZeros','decimalDivisor'];
@@ -426,7 +434,7 @@ async function supplementalDivisionContracts(page) {
 (async () => {
   const inventory = checkInventory();
   if (process.argv.includes('--inventory-only')) {
-    console.log('OGE_BASICS_CONTEXTUAL_INVENTORY_OK: 70 unchanged routes + explicit division route and independent checkpoint; no missing or unclassified HTML.');
+    console.log('OGE_BASICS_CONTEXTUAL_INVENTORY_OK: 70 unchanged routes + division route, independent checkpoint and Arzhenikov map; no missing or unclassified HTML.');
     return;
   }
   const {chromium} = require('playwright');
@@ -487,7 +495,7 @@ async function supplementalDivisionContracts(page) {
     fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify({routes:inventory.total,
       contextualRoutes:inventory.contextualRoutes, supplementalRoutes:inventory.supplementalRoutes,
       widths, reports, errors}, null, 2));
-    console.log('OGE_BASICS_CONTEXTUAL_BROWSER_OK: all original 70 routes + division route and independent checkpoint; 320/360/1280; fraction touch at 320/390; deep help, draft retention, diagnostic boundaries and hit targets.');
+    console.log('OGE_BASICS_CONTEXTUAL_BROWSER_OK: all original 70 routes + division route, independent checkpoint and Arzhenikov map; 320/360/1280; fraction touch at 320/390; deep help, draft retention, diagnostic boundaries and hit targets.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));

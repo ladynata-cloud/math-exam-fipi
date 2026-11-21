@@ -78,6 +78,10 @@
     return s;
   }
   const fractionHTML=(n,d)=>'<span class="v5q-fraction" role="math" aria-label="'+n+' разделить на '+d+'"><span>'+esc(n)+'</span><span>'+esc(d)+'</span></span>';
+  function mathHTML(value) {
+    const escaped=esc(value);
+    return escaped.replace(/(\d+)\s*\/\s*(\d+)/g,(_,n,d)=>fractionHTML(n,d));
+  }
   const svg=(body,label,h=230,kind='',viewBox='')=>'<svg'+(kind?' class="v5q-plot--'+kind+'"':'')+' viewBox="'+(viewBox||'0 0 560 '+h)+'" role="img" aria-label="'+esc(label)+'">'+body+'</svg>';
   const rect=(x,y,w,h,cls='fill')=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" class="v5q-'+cls+'"/>';
   const line=(x,y,X,Y)=>'<path d="M '+x+' '+y+' L '+X+' '+Y+'" class="v5q-line"/>';
@@ -206,7 +210,7 @@
       if(!alive)return;
       if(d.kind==='arithmetic'){drawArithmetic();return;}
       const view=describe(lesson,s,M);
-      host.innerHTML='<section class="v5q-model"><p class="eyebrow">Исследуй на отдельном примере</p><h2>'+view.title+'</h2>'+controls(view.controls)+'<div class="v5q-visual">'+view.visual+'</div><form data-v5-predict><label>'+esc(view.question)+'<input data-v5-prediction autocomplete="off" value="'+esc(s.prediction)+'"'+(s.seen?' disabled':'')+'></label><button'+(s.seen?' disabled':'')+'>Проверить прогноз</button></form><p class="v5q-model-feedback" role="status">'+esc(s.notice)+'</p>'+(s.seen?'<p class="v5q-model-why">'+esc(view.why)+'</p>':'<button type="button" class="quiet" data-v5-reveal>Посмотреть объяснение</button>')+'<p class="tiny">Меняй числа и проверяй закономерность. Исследование помогает понять правило; самостоятельный результат проверяется на новой задаче.</p></section>';
+      host.innerHTML='<section class="v5q-model"><p class="eyebrow">Исследуй на отдельном примере</p><h2>'+view.title+'</h2>'+controls(view.controls)+'<div class="v5q-visual">'+view.visual+'</div><form data-v5-predict><label>'+mathHTML(view.question)+'<input data-v5-prediction autocomplete="off" value="'+esc(s.prediction)+'"'+(s.seen?' disabled':'')+'></label><button'+(s.seen?' disabled':'')+'>Проверить прогноз</button></form><p class="v5q-model-feedback" role="status">'+mathHTML(s.notice)+'</p>'+(s.seen?'<p class="v5q-model-why">'+mathHTML(view.why)+'</p>':'<button type="button" class="quiet" data-v5-reveal>Посмотреть объяснение</button>')+'<p class="tiny">Меняй числа и проверяй закономерность. Исследование помогает понять правило; самостоятельный результат проверяется на новой задаче.</p></section>';
       host.querySelectorAll('[data-v5-param]').forEach(input=>input.onchange=()=>{
         const key=input.dataset.v5Param,raw={...s,[key]:key==='shape'?input.value:Number(input.value),prediction:'',first:'',seen:false,notice:''};
         try{s=normalize(lesson,raw);publish();draw();host.querySelector('[data-v5-param="'+key+'"]').focus();}catch(_){s.notice='Проверь допустимый диапазон. Для вычитания первая величина должна быть не меньше второй.';publish();host.querySelector('[role=status]').textContent=s.notice;input.value=s[key];}
