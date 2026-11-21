@@ -32,7 +32,8 @@ for (const [suffix,answers] of Object.entries(expected)) {
   for (const [i,step] of c.steps.entries()) {
     assert.equal(engine.classifyAnswer(String(answers[i]),step.input.accepted).status,'correct',id+'/'+step.id);
     for (const wrong of wrongStepAnswers(id,step)) assert.equal(engine.classifyAnswer(wrong,step.input.accepted).status,'wrong');
-    if (i===2) assert(available.has(step.justifications[0].theoryId));fields++;
+    if (i===2) assert.equal(step.justifications[0].theoryId, 'theory-058');
+    fields++;
   }
   for (const v of Object.values(m.views)) for (const [a,o,b] of v.rightAngles||[]) near(dot(delta(p[a],p[o]),delta(p[b],p[o])),0);
   if (suffix==='0534') {
