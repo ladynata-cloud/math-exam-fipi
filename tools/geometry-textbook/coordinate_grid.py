@@ -49,6 +49,18 @@ def cartesian(n,*,part=None,cases,initial,frames,**data):
         heads=[pair for pair in v['segments'] if pair[1].startswith('head_')]
         shafts=[pair for pair in v['segments'] if not pair[1].startswith('head_')]
         v['highlightSegments']=shafts[2:]+heads[4:]
+        # Each case has an independent, labelled grid. Fit its complete axes and
+        # arrowheads so one short source vector remains readable on a narrow screen.
+        suffix=v['points'][0].split('__v')[-1]
+        names=set(v['points']).union(name for pair in v['segments']+v['dashSegments'] for name in pair)
+        names.update('_unit'+axis+'__v'+suffix for axis in 'XY')
+        coords=[model['points'][name] for name in names]
+        xs=[point[0] for point in coords];ys=[point[1] for point in coords]
+        cx=(min(xs)+max(xs))/2;cy=(min(ys)+max(ys))/2
+        fit=min(72/(max(xs)-min(xs)),49/(max(ys)-min(ys)))
+        for point in coords:
+            point[0]=50+fit*(point[0]-cx)
+            point[1]=35+fit*(point[1]-cy)
     for key,name in model['labels'].items():
         if name in ('X','Y'):model['labels'][key]=name.lower()
         elif name.startswith('S') and len(name)>1:model['labels'][key]='нач.'

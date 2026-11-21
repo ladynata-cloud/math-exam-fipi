@@ -28,6 +28,8 @@ for c in cards:
             else:assert a.startswith('_gy') and close(cart(a)[1],cart(b)[1]) and close(cart(a)[1],round(cart(a)[1]))
         assert view['segments'][0]==['_left'+suffix,'X'+suffix] and view['segments'][1]==['_base'+suffix,'Y'+suffix]
         assert cart('X'+suffix)[0]>0 and cart('Y'+suffix)[1]>0
+        width=coords['X'+suffix][0]-coords['_left'+suffix][0];height=coords['Y'+suffix][1]-coords['_base'+suffix][1]
+        assert max(width/72,height/49)>.99, 'axes must occupy the assigned drawing area'
         shafts=[e for e in view['highlightSegments'] if not e[1].startswith('head_')]
         heads=[e for e in view['highlightSegments'] if e[1].startswith('head_')]
         assert len(heads)==2*len(shafts)

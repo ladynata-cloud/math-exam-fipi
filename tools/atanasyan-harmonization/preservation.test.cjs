@@ -78,7 +78,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-chapter-review.json": "2f48803cc3c840225f1b9ce28deae063ad447acca7244b6de15e88310e3f25a0",
   "geometry-course/textbook/data/coordinate-coefficients.json": "d5faaa4ec6da050268895496c94f31053786567701de7b4c364b65aba16bf3a9",
   "geometry-course/textbook/data/coordinate-relations.json": "f4d52e1e905701c2ea90517ac69003dc0eaa4aae9e15e5b1596c4124311b274b",
-  "geometry-course/textbook/data/coordinate-grid.json": "c43c06cfd293e984ea7c5bccc92c145fbb8187ee16d82da04495947ce7937009",
+  "geometry-course/textbook/data/coordinate-grid.json": "fb6c040e8619e360592ed00fe918c694945bfffedab935cff77a98c7e2a41c99",
   "geometry-course/textbook/data/vector-applications.json": "1227351c9822dc500b156ab9ec8e0fa0108fb80d9daf60e3315f0798037fce5d",
   "geometry-course/textbook/data/vector-midpoint-proofs.json": "61a8005acb5f11baac33ae01b98ff4c7f2473d071c28afd285c66365e872fa7b",
   "geometry-course/textbook/data/scalar-problems.json": "5c031761c712f9ae51e4bdeb7f1e13d7fa7e5be6fb507d8b98dc83c3d7875686",
