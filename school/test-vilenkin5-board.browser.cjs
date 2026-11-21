@@ -488,6 +488,17 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'heights above the common sea level, printed exercise 1.88';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-88"]').click();await studentFrame.locator('h1').filter({hasText:'№1.88'}).waitFor();
+  await teacherFrame.locator('#answer').fill('5363');await teacherFrame.locator('#answer-form button').click();const raised=await same(teacherFrame,studentFrame,'mistaken rise at a downhill step');assert.match(raised.scene.message,/выше/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('4137');await studentFrame.locator('#answer-form button').click();const lowerPeak=await same(studentFrame,teacherFrame,'correct first descent without help');assert(lowerPeak.scene.correct);assert.deepEqual(lowerPeak.scene.hintLevels,{});
+  await studentFrame.locator('[data-v5-param=from]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=to]').selectOption({value:'3'});await studentFrame.locator('[data-v5-prediction]').fill('963');await studentFrame.locator('[data-v5-predict] button').click();
+  const altitudes=await same(studentFrame,teacherFrame,'height difference for the selected peaks');assert.equal(altitudes.scene.model.from,1);assert(altitudes.scene.model.seen);assert.match(altitudes.scene.model.notice,/подтвердился/);
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('11');await same(studentFrame,teacherFrame,'unfinished height of the third summit');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'pupil restored the selected altitudes');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restored the same summit and draft');assert.equal(await teacherFrame.locator('#answer').inputValue(),'11');
+
   phase = 'choose and measure a new MNPKS pentagon, printed exercise 1.84';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-84"]').click();await studentFrame.locator('h1').filter({hasText:'№1.84'}).waitFor();
