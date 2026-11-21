@@ -78,6 +78,14 @@ async function verify(width,url){
   const prior=await page.locator('.prompt').innerText();await page.locator('[data-action=new]').first().click();
   assert.notEqual(await page.locator('.prompt').innerText(),prior);await page.locator('[data-action=return]').first().click();
   assert.equal(await page.locator('.task-heading h2').innerText(),'№ 586');
+  await page.close();page=await fresh();await openNumber(page,591,'№ 591, правило');
+  await submit(page,'4;2;1;3');
+  assert.match(await page.locator('#problem').innerText(),/Утверждение №4 опирается.*Условия существования/s);
+  const after=await page.evaluate(()=>MakarychevApp.getState().tasks['p23-source-591-rule']);
+  assert.equal(after.attempts,1);assert(!after.correct&&!after.assisted&&!after.hint);
+  await submit(page,'5;2;4;1');assert.match(await page.locator('#problem').innerText(),/Утверждение №5 не следует/);
+  await submit(page,'2;4;1;3');await page.reload();
+  assert(await page.evaluate(()=>MakarychevApp.getState().tasks['p23-source-591-rule'].correct));
   assert.deepEqual(errors,[]);await page.close();return {width,cards:cards.length};
 }
 (async () => {
