@@ -37,10 +37,14 @@ async function submit(page, value) {
 }
 
 async function verify(width, url) {
-  const page = await browser.newPage({ viewport: { width, height: 900 } });
   const errors = [];
-  page.on('pageerror', e => errors.push(String(e)));
-  await page.goto(url);
+  async function freshPage() {
+    const page = await browser.newPage({ viewport: { width, height: 900 } });
+    page.on('pageerror', e => errors.push(String(e)));
+    await page.goto(url);
+    return page;
+  }
+  let page = await freshPage();
   const cases = await page.evaluate(() => window.MakarychevCourse.lessons
     .filter(lesson => lesson.order >= 5 && lesson.order <= 8)
     .flatMap(lesson => lesson.studyOrder
@@ -49,7 +53,12 @@ async function verify(width, url) {
   const stats = { cards: cases.length, figures: 0, errors: [] };
   // A separate browser turn for each card lets Chromium release the preceding
   // diagram and DOM, as it does when a pupil navigates between exercises.
-  for (const entry of cases) {
+  for (const [position, entry] of cases.entries()) {
+    // Independent inventory samples share neither a student nor saved work.
+    if (position && position % 24 === 0) {
+      await page.close();
+      page = await freshPage();
+    }
     const sample = await page.evaluate(({lessonId, index}) => {
       const lesson = window.MakarychevCourse.lessons.find(item => item.id === lessonId);
       const task = lesson.tasks[index];
@@ -62,13 +71,19 @@ async function verify(width, url) {
       const figures = task.graph ? document.querySelectorAll('#task-graph svg').length : 0;
       if (task.graph && !figures) errors.push(task.id + ' missing graph');
       return { figures, errors };
-    }, entry);
+    }, entry).catch(error => {
+      throw new Error('Could not render ' + entry.lessonId + ' card ' + entry.index + ' at ' + width + 'px', { cause: error });
+    });
     stats.figures += sample.figures;
     stats.errors.push(...sample.errors);
   }
   assert.deepEqual(stats.errors, []);
   assert.equal(stats.cards, 286);
   for (let n = 110; n <= 200; n++) {
+    if ((n - 110) % 24 === 0) {
+      await page.close();
+      page = await freshPage();
+    }
     await openNumber(page, n);
     assert(await page.locator('#number-result a.button:not(.quiet)').count() > 0, 'source number ' + n);
   }
@@ -84,8 +99,11 @@ async function verify(width, url) {
   await page.locator('dialog[open] svg').waitFor();
   await page.getByRole('button', { name: 'Вернуться к выбору' }).click();
   await openNumber(page, 189, '№ 189б');
+  await submit(page, '1,27');
+  assert.match(await page.locator('#problem').innerText(), /Одна абсцисса подходит/);
   await submit(page, '4,73;1,27');
   assert.equal(await page.evaluate(() => MakarychevApp.getState().tasks['p08-source-189-б'].correct), true);
+  assert.equal(await page.evaluate(() => MakarychevApp.getState().tasks['p08-source-189-б'].assisted), false);
   await openNumber(page, 188, '№ 188а');
   assert.equal(await page.locator('#task-graph [data-root-curve]').count(), 0);
   await submit(page, '-1;-2;2;1');

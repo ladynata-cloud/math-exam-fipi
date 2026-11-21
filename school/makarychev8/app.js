@@ -81,7 +81,7 @@ function formatProblem(value,q){
  }
  if(q.kind==='graph-estimates'){
   const entries=text.split(';');
-  if(entries.length!==q.rootValues.length||entries.some(value=>!M.parse(value)&&!/[√]|sqrt\(/.test(value)))return message;
+  if(entries.length>q.rootValues.length||entries.some(value=>!M.parse(value)&&!/[√]|sqrt\(/.test(value)))return message;
  }
  if(q.kind==='line-sign-example'){
   const values=text.split(';');
@@ -102,6 +102,17 @@ function feedbackFor(value,q){
   return 'Здесь требуется одно число. Ты указал два противоположных значения. Проверь каждое из них по условию.';
  }
  if(q.answerFormat&&M.equal(value,q.answer))return 'Значение верное. '+inputNote(q);
+ if(q.kind==='graph-estimates'){
+  const submitted=value.split(';').map(part=>M.parse(part));
+  if(submitted.some(part=>!part))return 'Запиши абсциссы числом или точным выражением. Между двумя решениями поставь точку с запятой.';
+  const hits=new Set();
+  for(const point of submitted){
+   const i=q.rootValues.findIndex(root=>Math.abs(point.n/point.d-root)<=q.tolerance+1e-10);
+   if(i>=0)hits.add(i);
+  }
+  if(hits.size===1&&q.rootValues.length===2)return 'Одна абсцисса подходит. Найди второе пересечение и проведи от него вертикаль к оси x. Запиши обе абсциссы.';
+  return 'Поставь палец на точку, где пересекаются именно две кривые. Проведи от неё вертикаль к оси x и проверь цену деления на этой оси.';
+ }
  if(q.kind==='set'&&active?.lesson?.order===12){
   const submitted=window.MakarychevCheck.setEntries(value),expected=window.MakarychevCheck.setEntries(q.answer);
   if(submitted?.length===1&&expected?.length===2&&expected.some(root=>M.equal(root,submitted[0])))return 'Это число подходит. Найди ещё одно значение x, которое тоже удовлетворяет уравнению, и запиши оба.';
