@@ -22,6 +22,12 @@ const misconceptions = new Map([
   ['ex-main-0468/step-1', '1/2'], // Height in place of horizontal radius.
   ['ex-main-0468/step-2', '1/4'], // Radius before squaring it.
   ['ex-main-0468/step-3', '1/3'], // Integrating the radius instead of its square.
+  ['ex-main-0469/step-1', '6'], // Half of the base instead of its altitude.
+  ['ex-main-0469/step-2', '96'], // Omitting the triangle area factor.
+  ['ex-main-0470/step-3', '5'], // Side length in the height field.
+  ['ex-main-0471/step-1', '27'], // Squared median before taking two thirds.
+  ['ex-main-0472/step-2', '25'], // Diameter instead of radius.
+  ['ex-main-0472/step-3', '168'], // Area of the enclosing rectangle.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

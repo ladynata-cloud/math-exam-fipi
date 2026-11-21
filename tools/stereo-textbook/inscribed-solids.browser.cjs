@@ -11,7 +11,8 @@ const groups = {
   solids: {manifests:[require('./inscribed-solids.json'),require('./circumspheres.json'),require('./round-bodies.json')],count:31},
   volume: {manifests:[require('./box-volumes.json')],count:21},
   prism: {manifests:[require('./prism-volumes.json')],count:26},
-  cross: {manifests:[require('./cross-sections.json')],count:3}
+  cross: {manifests:[require('./cross-sections.json')],count:3},
+  oblique: {manifests:[require('./oblique-prisms.json')],count:4}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

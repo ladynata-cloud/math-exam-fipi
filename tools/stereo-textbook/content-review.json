@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T19:00:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 468 and points 52–55, with 769 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T19:20:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 472 and points 52–55, with 773 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1205,6 +1205,19 @@
       ],
       "evidence": "tools/stereo-textbook/cross-sections.json",
       "mathematicalReport": "tools/stereo-textbook/cross-sections.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:20:00Z",
+      "scope": "Oblique triangular prisms, exercises 469–472, including projection and dihedral conditions",
+      "cardIds": [
+        "ex-main-0469",
+        "ex-main-0470",
+        "ex-main-0471",
+        "ex-main-0472"
+      ],
+      "evidence": "tools/stereo-textbook/oblique-prisms.json",
+      "mathematicalReport": "tools/stereo-textbook/oblique-prisms.test.cjs"
     }
   ],
   "cards": [
@@ -4283,6 +4296,22 @@
     {
       "id": "ex-main-0468",
       "sha256": "3e2c5570908d8ada7a0458b65ea7f1ccdf3f65531257ac1ca3228f7caea9db88"
+    },
+    {
+      "id": "ex-main-0469",
+      "sha256": "97d49adf53bdd73f4564b290c73b86b2c93ce08c45dfbae4c5c8e1a4fe5b325b"
+    },
+    {
+      "id": "ex-main-0470",
+      "sha256": "06996556ad23948270b82d440a58f4f525acb7e8e4297a7252b21294a0244885"
+    },
+    {
+      "id": "ex-main-0471",
+      "sha256": "9a0823c569395d46e74703aaac1922370fad0a894016374433de982dae44325b"
+    },
+    {
+      "id": "ex-main-0472",
+      "sha256": "ade368232ae9f8ec111268ab4f1ff8d6ee9724241e4fa7272ada1439f9285cfe"
     }
   ]
 }
