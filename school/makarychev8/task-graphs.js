@@ -857,6 +857,55 @@ function drawMidsegment(host,mode,top,bottom){
  mid.forEach(x=>svg.append(node('circle',{cx:x,cy:51,r:4,fill:'#894418'})));
  host.append(svg);
 }
+function betweenSurd(raw,g){
+ const x=M.parse(raw);if(!x||x.n<=0)return false;
+ const n=BigInt(x.n),d=BigInt(x.d),rad=BigInt(g.radicand)*d*d,edge=BigInt(g.bound)*d;
+ return g.aboveRoot?n*n>rad&&n<edge:n*n<rad&&n>edge;
+}
+function isInAxis(row,q){
+ if(!q)return false;
+ return row.some(r=>(r.left==='-∞'||(r.leftOpen?compareRationals(q,r.left)>0n:compareRationals(q,r.left)>=0n))&&
+                     (r.right==='+∞'||(r.rightOpen?compareRationals(q,r.right)<0n:compareRationals(q,r.right)<=0n)));
+}
+function setProbe(mode,q){
+ if(mode==='integer-positive')return [q.d===1,q.n>0];
+ if(q.d!==1||q.n<1)return [false,false];
+ let prime=q.n>=2;
+ for(let d=2;prime&&d*d<=q.n;d++)if(q.n%d===0)prime=false;
+ return [prime,q.n%2===1];
+}
+function intervalSetReview(host,g,value){
+ host.className='task-graphs quantity-model';
+ const entered=g.trialStep===null?'':g.partial?.[g.trialStep];
+ const raw=['witness','surd'].includes(g.mode)&&String(value||'').trim()?value:entered;
+ const q=M.parse(raw),word=condition=>condition?'да':'нет';
+ if(g.mode==='integer-positive'||g.mode==='prime-odd'){
+  if(!q){boundNote(host,'Предложи число на первом шаге, чтобы проверить оба признака.');return;}
+  if(!withinBounds(raw,[['-100','100',true]])){boundNote(host,'Для наглядной подстановки выбери число от −100 до 100.');return;}
+  const [one,two]=setProbe(g.mode,q),both=g.operation==='intersection',names=g.mode==='integer-positive'?['Целое','Положительное']:['Простое','Нечётное натуральное'];
+  for(const [i,flag] of [one,two].entries())boundNote(host,names[i]+' число: '+word(flag)+'.').dataset.predicate=String(i+1)+'-'+word(flag);
+  const inResult=both?one&&two:one||two;boundNote(host,'Число '+M.answer(q)+(inResult?' входит':' не входит')+' в '+(both?'пересечение.':'объединение.')).dataset.setResult=word(inResult);return;
+ }
+ const rows=g.rows||[];
+ if(g.mode==='surd'){
+  intervalNumberLine(host,{mode:'operation',givenRows:rows,points:q?[q]:[],surd:g.radicand,distinguishSurd:true},value);
+  if(q){
+   const square=sourceFractionTrial({original:['^','x','2'],reduced:'0',symbols:['x']},raw,true).original;
+   boundNote(host,'Твоя точка '+M.answer(q)+', её квадрат '+square+'. '+(betweenSurd(raw,g)?'Она строго между корнем и целой границей.':'Сверь знак числа, положение относительно целой границы и квадрат с подкоренным числом.')).dataset.surdWitness=word(betweenSurd(raw,g));
+  }else boundNote(host,'Укажи свою положительную рациональную точку между целым числом и корнем.');
+  return;
+ }
+ intervalNumberLine(host,{mode:'operation',givenRows:rows,points:q?[q]:[]},value);
+ if(g.mode==='endpoints'){boundNote(host,'Закрашенная точка входит, пустая исключена. Конечная граница служит крайним элементом только тогда, когда она входит.');return;}
+ if(!q){boundNote(host,'Введи рациональную подстановку на шаге опыта.');return;}
+ if(g.mode==='witness'){
+  const good=withinBounds(raw,g.limits);
+  boundNote(host,'Точка '+M.answer(q)+(isInAxis(rows[0],q)?' входит':' не входит')+' в исходный промежуток. '+(good?'Она лежит между исходным числом и открытым концом.':'Испытай число между '+g.pivot+' и открытым концом.')).dataset.intervalWitness=word(good);return;
+ }
+ const [one,two,claim]=rows.map(row=>isInAxis(row,q)),included=g.operation==='intersection'?one&&two:one||two;
+ boundNote(host,'В первом множестве: '+word(one)+'. Во втором: '+word(two)+'. Результат операции: '+word(included)+'. В правой части равенства: '+word(claim)+'.').dataset.operationProbe=included===claim?'agrees':'counterexample';
+}
+
 function geometryBoundView(host,g,value){
  host.className='task-graphs quantity-model';
  const raw=g.partial?.[0],valid=withinBounds(raw,g.bounds);
@@ -1023,14 +1072,17 @@ function intervalNumberLine(host,g,value){
  };
  all.forEach((row,i)=>draw(row,24+52*i,i===rows.length?'#744481':i===0?'#087169':'#a65b24',i));
  if(!all.length)draw([],24,'#087169',0);
- const py=24+52*Math.max(0,all.length-1);for(const p of candidateNs)canvas.append(node('path',{d:'M'+x(p)+' '+(py-2)+' l-4 -7 h8 z',fill:'#9a432b','data-axis-probe':String(p)}));
+ const py=24+52*Math.max(0,all.length-1);for(const [i,p] of candidateNs.entries()){
+  const isRoot=g.distinguishSurd&&i===candidateNs.length-1&&Number.isFinite(g.surd);
+  canvas.append(node('path',{d:isRoot?'M'+x(p)+' '+(py+1)+' l4 5 -4 5 -4 -5 z':'M'+x(p)+' '+(py-2)+' l-4 -7 h8 z',fill:isRoot?'#68468a':'#9a432b','data-axis-probe':String(p),'data-probe-shape':isRoot?'diamond':'triangle'}));
+ }
  host.append(canvas);
  const describe=r=>(r.leftOpen?'(':'[')+limitWords(r.left)+'; '+limitWords(r.right)+(r.rightOpen?')':']');
  if(g.mode==='read'){const first=rows[0]?.[0];if(first){const end=(v,open)=>typeof v==='string'?'стрелка к '+limitWords(v):(open?'пустая':'закрашенная')+' метка '+limitWords(v);canvas.setAttribute('aria-label','Слева '+end(first.left,first.leftOpen)+', справа '+end(first.right,first.rightOpen)+'. Выделен промежуток между ними.');}boundNote(host,'Читай рисунок: пустая метка исключена, закрашенная включена.');}
  else rows.forEach((r,i)=>boundNote(host,(g.rowLabels?.[i]||('Дано '+(rows.length>1?(i+1)+': ':'')))+(r.length?r.map(describe).join(' ∪ '):g.rowLabels&&!g.enteredRows[i]?'пока не построено':'∅')+'.'));
  if(proposed)boundNote(host,'Твоё построение: '+(proposed.length?proposed.map(describe).join(' ∪ '):'∅')+'.').dataset.axisProposal='yes';
  if(pointValues.length)boundNote(host,'Отмечены числа: '+pointValues.map(M.answer).join('; ')+'.');
- if(Number.isFinite(g.surd))boundNote(host,'Отмечена точка √'+g.surd+'. Сравнивай точно с квадратами концов.');
+ if(Number.isFinite(g.surd))boundNote(host,(g.distinguishSurd?'Ромб обозначает √':'Отмечена точка √')+g.surd+'. '+(g.distinguishSurd&&pointValues.length?'Треугольник — твоя точка. ':'')+'Сравнивай точно с квадратами концов.');
 }
 function intervalReview(host,g,value){
  host.className='task-graphs quantity-model';const q=M.parse(value);
@@ -1722,6 +1774,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='interval-set-review'){intervalSetReview(host,config,value);return;}
  if(config.type==='geometry-bound-review'){geometryBoundView(host,config,value);return;}
  if(config.type==='source-proof-review'){proofReviewModel(host,config);return;}
  if(config.type==='source-system-review'){systemReviewView(host,config,value);return;}
@@ -1810,5 +1863,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

@@ -889,6 +889,11 @@ function check(user,target){
  if(target.kind==='ordered-coordinates')return Boolean(G.coordinateEvidence(user,target.coordinateSymbols,target.coordinateOrder,target.coordinateBounds)?.valid);
  if(target.kind==='ordered-comparison-sample')return G.admissibleSample(user,target.graph.sourceDomain,2)&&G.inequalityTrial(target.graph,user,true)?.sign===target.requiredSign;
  if(target.kind==='transformed-order')return transformedOrder(user,target);
+ if(target.kind==='between-surd')return G.betweenSurd(user,target);
+ if(target.kind==='extrema-pair'){
+  const parts=String(user).split(';'),expected=target.answer.split(';');
+  return parts.length===2&&parts.every((p,i)=>expected[i]==='нет'?['нет','не существует','отсутствует'].includes(p.trim().toLowerCase()):M.equal(p,expected[i]));
+ }
  if(target.kind==='bounded-point')return G.withinBounds(user,target.limits);
  if(target.kind==='source-domain-sample')return G.admissibleSample(user,target.sourceDomain,target.probeCount);
  if(target.kind==='inequality-counterexample'){const probe=G.inequalityTrial(target.graph,user,true);return Boolean(probe&&probe.sign!==target.graph.operator);}
