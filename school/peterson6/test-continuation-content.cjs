@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,696);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,715);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -791,6 +791,23 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
   if(Number(a==='А')+Number(b==='Б')===1&&Number(b==='А')+Number(c==='Г')===1&&Number(b==='В')+Number(d==='Г')===1)orders.push(a+b+c+d);
  }
  assert.deepEqual(orders,['АВГБ']);
+}
+{
+ const rows=D.lessons.find(l=>l.id==='p36').tasks,sel=n=>rows.filter(t=>t.source.exercise===n);
+ for(const [n,k,page]of [[69,5,17],[70,4,18],[71,4,18],[72,9,18]]){assert.equal(sel(n).length,k);assert(sel(n).every(t=>t.source.page===page));}
+ for(const [i,x]of [0,1,2,3,1].entries())assert.equal(sel(69)[i].equationNotation.kind,x);
+ const functions={absSign:x=>[Math.abs(-x),-x],selfSquare:x=>[x*x,2*x],triple:x=>[x*(x-1)*(x+1),0],quadratic:x=>[2*x*x+5*x+2,0]};
+ for(const t of rows.filter(t=>t.rootProbe)){
+  const r=M.parse(t.rootProbe.initial),pair=functions[t.rootProbe.rule](r.n/r.d);
+  assert.deepEqual(Array.from(t.steps,z=>{const x=M.parse(z.answer);return x.n/x.d;}),pair);assert.equal(t.answer==='Это корень.',pair[0]===pair[1]);
+ }
+ const roots=[[],[0],[-4,4],[],[0],[5],[-3,6],[-4,-2,0,1,3]];
+ for(const [j,t]of sel(72).filter(t=>t.rootCount).entries()){
+  const item=t.rootCount,found=[];for(let n=-12;n<=12;n++){
+   const expressions={abs:Math.abs(n),square:n*n,fractionX:n===0?NaN:(n*n-5*n)/n,fractionY:n===0?NaN:2*(n*n-3*n-18)/n,fiveFactors:-4*n*(n-1)*(n+2)*(n-3)*(n+4)};
+   if(expressions[item.rule]===item.rhs)found.push(n);
+  }assert.deepEqual(found,roots[j]);assert.equal(Number(t.steps[1].answer),found.length);
+ }
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

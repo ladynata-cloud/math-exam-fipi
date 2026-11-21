@@ -1107,3 +1107,20 @@ test('complete the proportion chapter, including reciprocal areas, a right angle
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('order all printed equation types and exclude undefined substitutions before counting roots',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p36/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,str]of [[4,'равенство чисел'],[5,'Это уравнение'],[6,'выражение без равенства'],[7,'Это неравенство'],[8,'Это уравнение']]){
+   const c=go(j);set(c[1],2);assert(out().includes(str),j);set(c[0],1);set(c[1],2);assert(out().includes(str),j);
+  }
+  let c=go(9);set(c[1],2);assert(out().includes('не является корнем'));const index=(val)=>[...f.q(c[0]).options].find(o=>o.textContent===val).value;
+  set(c[0],index('-2'));set(c[1],2);assert(out().includes('является корнем'));assert(!out().includes('не является'));
+  c=go(20);set(c[1],2);assert(out().includes('не допускается'));set(c[0],5);set(c[1],2);assert(out().includes('Выбранное число подходит'));
+  c=go(21);for(const x of [-3,6]){set(c[0],x);set(c[1],2);assert(out().includes('Выбранное число подходит'));}set(c[0],0);set(c[1],2);assert(out().includes('не допускается'));
+  c=go(22);const good=[];for(let x=-6;x<=7;x++){set(c[0],x);set(c[1],2);if(out().includes('Выбранное число подходит'))good.push(x);}assert.deepEqual(good,[-4,-2,0,1,3]);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
