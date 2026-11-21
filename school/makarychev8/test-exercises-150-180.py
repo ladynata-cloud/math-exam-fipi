@@ -39,7 +39,13 @@ for n,rs in expected.items():
    coef=q['graph']['curves'][0]
    assert [sp.Rational(str(coef['k']))*x+coef['b'] for x in coef['xs']]==[parse(t) for t in target]
   if n==178:assert (q['slopeSign'],q['interceptSign'])==tuple(map(int,target))
-assert all(q['source']['page'] in range(41,46) and len(q['steps'])>=2 for q in new)
+page_ranges = [(41, 150, 153), (42, 154, 158), (43, 159, 166),
+               (44, 167, 174), (45, 175, 180)]
+for page, first, last in page_ranges:
+ for n in range(first, last + 1):
+  matching = [task for name, task in cards.items() if re.match(rf'№\s*{n}(?!\d)', name)]
+  assert matching and all(task['source']['page'] == page for task in matching), (n, page)
+assert all(len(q['steps'])>=2 for q in new)
 a,b,x=symbols['a'],symbols['b'],symbols['x']
 original=(sp.Rational(1,2)*(a-1)**2-18)*((a+5)/(a-7)+(a-7)/(a+5))
 assert sp.cancel(original-(a-1)**2-36)==0 and original.subs(a,1)==36

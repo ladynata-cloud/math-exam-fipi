@@ -41,28 +41,31 @@ async function verify(width, url) {
   const errors = [];
   page.on('pageerror', e => errors.push(String(e)));
   await page.goto(url);
-  const stats = await page.evaluate(() => {
-    let cards = 0, figures = 0;
-    const errors = [];
-    for (const lesson of window.MakarychevCourse.lessons.filter(l => l.order >= 5 && l.order <= 8)) {
-      for (const index of lesson.studyOrder) {
-        const t = lesson.tasks[index];
-        if (t.source.type !== 'textbook') continue;
-        history.replaceState(null, '', '#lesson/' + lesson.id + '/' + index);
-        window.MakarychevApp.route();
-        const rect = document.querySelector('.prompt')?.getBoundingClientRect();
-        if (document.querySelector('.task-heading h2')?.textContent !== t.title || !rect) errors.push(t.id + ' entry');
-        if (document.documentElement.scrollWidth > innerWidth + 1 || rect?.left < 0 || rect?.right > innerWidth + 1) errors.push(t.id + ' overflow');
-        if (t.graph) {
-          const graphs = document.querySelectorAll('#task-graph svg');
-          if (!graphs.length) errors.push(t.id + ' missing graph');
-          figures += graphs.length;
-        }
-        cards++;
-      }
-    }
-    return { cards, figures, errors };
-  });
+  const cases = await page.evaluate(() => window.MakarychevCourse.lessons
+    .filter(lesson => lesson.order >= 5 && lesson.order <= 8)
+    .flatMap(lesson => lesson.studyOrder
+      .filter(index => lesson.tasks[index].source.type === 'textbook')
+      .map(index => ({ lessonId: lesson.id, index }))));
+  const stats = { cards: cases.length, figures: 0, errors: [] };
+  // A separate browser turn for each card lets Chromium release the preceding
+  // diagram and DOM, as it does when a pupil navigates between exercises.
+  for (const entry of cases) {
+    const sample = await page.evaluate(({lessonId, index}) => {
+      const lesson = window.MakarychevCourse.lessons.find(item => item.id === lessonId);
+      const task = lesson.tasks[index];
+      history.replaceState(null, '', '#lesson/' + lessonId + '/' + index);
+      window.MakarychevApp.route();
+      const rect = document.querySelector('.prompt')?.getBoundingClientRect();
+      const errors = [];
+      if (document.querySelector('.task-heading h2')?.textContent !== task.title || !rect) errors.push(task.id + ' entry');
+      if (document.documentElement.scrollWidth > innerWidth + 1 || rect?.left < 0 || rect?.right > innerWidth + 1) errors.push(task.id + ' overflow');
+      const figures = task.graph ? document.querySelectorAll('#task-graph svg').length : 0;
+      if (task.graph && !figures) errors.push(task.id + ' missing graph');
+      return { figures, errors };
+    }, entry);
+    stats.figures += sample.figures;
+    stats.errors.push(...sample.errors);
+  }
   assert.deepEqual(stats.errors, []);
   assert.equal(stats.cards, 286);
   for (let n = 110; n <= 200; n++) {

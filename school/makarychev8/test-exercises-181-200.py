@@ -42,5 +42,9 @@ values(198,[('а','5/9'),('б','9/4')])
 x=sp.Symbol('x')
 a,b=map(int,by('199')['answer'].split(';'));assert sp.expand(a*(x+2)+b*(x-5))==5*x+31
 original=(3/(x+2)-1/(x-2)-12/(4-x*x))/((x+7)/(x-2));assert sp.cancel(original-sp.sympify(by('200')['answer']))==0
-assert all(48<=q['source']['page']<=52 and len(q['steps'])>=2 for q in new)
+for page, first, last in [(48,181,184), (49,185,191), (50,192,196),
+                          (51,197,199), (52,200,200)]:
+ for n in range(first, last+1):
+  assert refs(n) and all(task['source']['page']==page for task in refs(n)), (n,page)
+assert all(len(q['steps'])>=2 for q in new)
 print('PASS 20 exercises and 83 source cases, every table cell, exact graph scales, coefficients, real intersections, proofs and training steps')

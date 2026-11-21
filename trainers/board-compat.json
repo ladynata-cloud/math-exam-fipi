@@ -548,6 +548,34 @@
       "notes": "Совместная работа по 14 темам: задача, ответы, шаги, подсказки, модели и отдельные вычислительные тренировки с возвратом. Личный прогресс курса не изменяется."
     },
     {
+      "trainerId": "peterson6-textbook",
+      "file": "trainers/peterson6-textbook.html",
+      "title": "Петерсон · 6 класс · часть 1 · задачи № 1–497",
+      "group": "Математика / 6 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Номер, подпункт, шаги, черновик и отдельный вариант авторского примера на общей доске."
+    },
+    {
+      "trainerId": "peterson6-workshop",
+      "file": "trainers/peterson6-workshop.html",
+      "title": "Петерсон · 6 класс · часть 1 · тренажёры по 37 темам",
+      "group": "Математика / 6 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Тема, уровень, числа текущего примера, ответы, подсказки и черновик на общей доске."
+    },
+    {
       "trainerId": "peterson6-complete",
       "file": "trainers/peterson6-complete.html",
       "title": "Петерсон · 6 класс · части 1–3",
