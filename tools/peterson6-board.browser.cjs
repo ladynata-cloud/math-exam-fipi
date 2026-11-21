@@ -675,6 +675,36 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
     assert.equal(secondInPrint.route, '#lesson/' + id + '/' + (index + 1));
   }
 
+  phase = 'compare equal areas and the same root in both equation sides';
+  await lesson(teacherFrame,'p15',70);
+  assert.equal(await teacherFrame.locator('#task-figure [data-triangle]').count(),8);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Длины катетов',{exact:true}).selectOption('1');
+  await teacherFrame.getByLabel('Раскладка',{exact:true}).selectOption('1');
+  const rearranged=await synchronized(teacherFrame,studentFrame,'same four triangles surround a square of area 169');
+  assert.deepEqual(rearranged.view.model.values,[1,1]);
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/13² = 169/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-pythagoras','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Раскладка',{exact:true}).selectOption('0');
+  await studentFrame.locator('#notebook').fill('Из равных площадей вычли четыре одинаковых треугольника.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const twoSquares=await synchronized(studentFrame,teacherFrame,'student rearrangement and proof recorded for review');
+  await manualWithoutCredit(teacherFrame,'p15-t71',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,twoSquares,'saved dissection and proof restore');
+  await lesson(teacherFrame,'p15',74);
+  await teacherFrame.locator('#final-answer').fill('3/2');
+  await teacherFrame.locator('#answer-form button[type=submit]').click();
+  await synchronized(teacherFrame,studentFrame,'reciprocal root is diagnosed');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/обратное отношение/);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Какое значение проверяем?',{exact:true}).selectOption('2');
+  await synchronized(teacherFrame,studentFrame,'both sides have the same negative value at the exact root');
+  assert.deepEqual(await studentFrame.locator('#model tbody tr td:last-child').allTextContents(),['-47/3','-47/3']);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-both-sides','#model table');
+
   phase = 'first part-two pages compare two groups with a chosen reference';
   await lesson(teacherFrame,'p15',41);
   await openModel(teacherFrame);

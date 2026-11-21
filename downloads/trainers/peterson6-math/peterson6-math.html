@@ -919,7 +919,47 @@ function compareBars(left,right,first,second) {
  }
  return picture;
 }
+const pythagorasCases=[[3,4,5],[5,12,13],[8,15,17]];
+function dissectionFigure(a,b,central) {
+ const size=a+b,side=150,x0=15,y0=12,unit=side/size;
+ const picture=svg('svg',{viewBox:'0 0 180 181',role:'img',class:'pm-chart',
+  'aria-label':central?'Четыре прямоугольных треугольника вокруг квадрата со стороной c.':'Четыре прямоугольных треугольника рядом с квадратами со сторонами a и b.'});
+ picture.append(svg('rect',{x:x0,y:y0,width:side,height:side,fill:'white',stroke:'#244a39','stroke-width':1.5}));
+ const triangles=central
+  ? [[[0,0],[a,0],[0,b]],[[a,0],[size,0],[size,a]],[[size,a],[size,size],[b,size]],[[b,size],[0,size],[0,b]]]
+  : [[[a,0],[size,0],[a,a]],[[size,0],[size,a],[a,a]],[[0,a],[a,a],[a,size]],[[0,a],[a,size],[0,size]]];
+ for(const triangle of triangles) {
+  const points=triangle.map(([x,y])=>[x0+x*unit,y0+y*unit].join(',')).join(' ');
+  picture.append(svg('polygon',{points,fill:'#b4d7c4',stroke:'#245942','stroke-width':1.4,'data-triangle':'1'}));
+ }
+ const caption=(x,y,label)=>txt(picture,x0+x*unit,y0+y*unit+4,label,{'font-size':15});
+ if(central)caption(size/2,size/2,'c²');
+ else {caption(a/2,a/2,'a²');caption(a+b/2,a+b/2,'b²');}
+ txt(picture,90,177,'Сторона a + b',{'font-size':12});
+ return picture;
+}
+function changeBars(before,after) {
+ const pic=svg('svg',{viewBox:'0 0 330 125',role:'img',class:'pm-chart pcm-group-rule',
+  'aria-label':'Исходное и новое числа на одной шкале: '+before+' и '+after+'.'});
+ const value=raw=>{const parsed=root.PetersonMath.parse(raw);return parsed.n/parsed.d;};
+ const max=Math.max(value(before),value(after));
+ for(const [label,amount,y,color] of [['Было',before,31,'#34745d'],['Стало',after,93,'#925719']]) {
+  txt(pic,12,y-8,label+' · '+amount,{'font-size':19,'text-anchor':'start'});
+  pic.append(svg('rect',{x:12,y,width:300,height:13,fill:'#e3eae7'}));
+  pic.append(svg('rect',{x:12,y,width:300*value(amount)/max,height:13,fill:color,'data-change-bar':label}));
+ }
+ return pic;
+}
 function configFor(lesson,task){
+ if (lesson?.id==='p15' && task?.pythagorasStudy) return {
+  title:'Две раскладки четырёх одинаковых треугольников',
+  controls:[c('Длины катетов',pythagorasCases.map(([a,b],i)=>[i,a+' и '+b])),c('Раскладка',[[0,'Два белых квадрата'],[1,'Один белый квадрат']])],
+  initial:[0,0],
+ };
+ if (lesson?.id==='p15' && task?.balanceStudy) return {
+  title:'Сравни обе части при подстановке',controls:[c('Какое значение проверяем?',[[0,'Ноль'],[1,'Единица'],[2,'Найденный корень'],[3,'На единицу больше корня']])],initial:[0],
+ };
+ if (lesson?.id==='p15' && task?.changeStudy) return {title:'Исходная величина и результат',controls:[c('Какой пример сравниваем?',[[0,'Из упражнения'],[1,'Новое исходное число']])],initial:[0]};
  if (lesson?.id==='p15' && task?.partComparison) return compareConfig(task);
  if (lesson?.id==='p33' && Object.hasOwn(groupRules,task?.groupRule)) return {
   title:groupRules[task.groupRule],controls:[c('Число b',[1,2,3,4]),c('Число c',[1,2,3,4])],initial:[2,3],
@@ -965,18 +1005,47 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
-function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
+function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if (n===15 && task.partComparison) {
+ if (n===15 && task.pythagorasStudy) {
+  const [legA,legB,hyp]=pythagorasCases[a];
+  show(dissectionFigure(legA,legB,b===1));
+  const remaining=legA*legA+legB*legB,covered=2*legA*legB,outer=(legA+legB)**2;
+  formula('Внешняя площадь: ('+legA+' + '+legB+')² = '+outer);
+  formula('Четыре треугольника: 4 × ('+legA+' × '+legB+' / 2) = '+covered);
+  formula(b===0?'Белая площадь: '+legA+'² + '+legB+'² = '+remaining:'Белая площадь: '+hyp+'² = '+remaining);
+  stepList(['Сравни площади до и после перекладки.','Найди четыре гипотенузы во второй раскладке.','Объясни, почему между соседними гипотенузами прямой угол.']);
+ }
+ else if (n===15 && task.balanceStudy) {
+  const spec=task.balanceStudy,math=root.PetersonMath;
+  const input=['0','1',spec.root,math.answer(math.operation('add',spec.root,'1'))][a];
+  const [m,p,k,q]=spec.coefficients;
+  const evaluate=(factor,constant)=>math.answer(math.operation('add',math.operation('multiply',factor,input),constant));
+  const left=evaluate(m,p),right=evaluate(k,q),equal=math.equal(left,right);
+  show(table(['Подстановка','Значение'],[['Слева',left],['Справа',right]]));
+  formula(spec.variable+' = '+input+';   '+left+(equal?' = ':' ≠ ')+right);
+  say(equal?'Обе части равны. Эта подстановка подтверждает корень.':'Значения различаются. Это число не является корнем.');
+  stepList(['Сначала приведи подобные слагаемые с каждой стороны.','При подстановке используй одно число в обеих частях.','Сравни значения точно, без округления.']);
+ }
+ else if (n===15 && task.changeStudy) {
+  const study=task.changeStudy,before=a===0?study.base:study.alternate,after=a===0?study.result:study.nextResult;
+  show(changeBars(before,after));
+  say('Как изменяется исходная величина: '+study.statement+'.');
+  formula(before+' '+study.sign+' '+study.operand+' = '+after);
+  const isDifference=study.sign==='+'||study.sign==='−';
+  say(isDifference?'Здесь сохраняется разность между новым и исходным числом.':'Здесь сохраняется отношение нового числа к исходному.');
+  stepList(['Сначала сравни, какая полоса длиннее.','Проверь равенство обратным действием.','Смени исходное число. Какое свойство не изменилось?']);
+ }
+ else if (n===15 && task.partComparison) {
   const [example,firstIndex,baseIndex]=state.values;
   const spec=task.partComparison;
   const [left,right]=spec.sets[example],sizes=[left,right,left+right];
@@ -15956,6 +16025,981 @@ window.PetersonCourse = {
      ],
      "relatedTask": "p15-t57",
      "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t61",
+     "title": "К задаче №16(1)",
+     "prompt": "Дано 2,75. Найди число, которое больше данного на 1/4.",
+     "kind": "number",
+     "answer": "3",
+     "finalLabel": "Введи результат действия.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая запись передаёт изменение?",
+       "answer": "2,75 + 1/4",
+       "choices": [
+        "2,75 : 1/4",
+        "2,75 + 1/4",
+        "2,75 − 1/4"
+       ],
+       "hint": "Слова «больше на» означают прибавить разность.",
+       "explanation": "Сначала определи смысл слов, затем вычисляй."
+      },
+      {
+       "prompt": "Сколько четвертей будет после прибавления?",
+       "answer": "12",
+       "hint": "Запиши исходное число как 11/4.",
+       "explanation": "11 + 1 = 12."
+      },
+      {
+       "prompt": "Вычисли полученное выражение.",
+       "answer": "3",
+       "hint": "Слова «больше на» означают прибавить разность.",
+       "explanation": "2,75 = 11/4. Ещё одна четверть даёт 12/4 = 3."
+      }
+     ],
+     "hint": "Слова «больше на» означают прибавить разность.",
+     "explanation": "2,75 = 11/4. Ещё одна четверть даёт 12/4 = 3.",
+     "skills": [
+      "fraction-add",
+      "decimal-add"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 16,
+      "subpart": "1",
+      "reference": "№16(1)"
+     },
+     "changeStudy": {
+      "statement": "на четверть больше",
+      "base": "11/4",
+      "operand": "1/4",
+      "result": "3",
+      "alternate": "7/4",
+      "nextResult": "2",
+      "sign": "+"
+     },
+     "errorCues": [
+      [
+       "11/16",
+       "Ты умножил на четверть. При увеличении на четверть прибавь её к исходному числу."
+      ]
+     ]
+    },
+    {
+     "id": "p15-t62",
+     "title": "К задаче №16(2)",
+     "prompt": "Исходное число 4 2/15 уменьшают в 3,1 раза. Вычисли результат.",
+     "kind": "number",
+     "answer": "4/3",
+     "finalLabel": "Введи результат действия.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая запись передаёт изменение?",
+       "answer": "4 2/15 : 3,1",
+       "choices": [
+        "4 2/15 × 3,1",
+        "4 2/15 − 3,1",
+        "4 2/15 : 3,1"
+       ],
+       "hint": "Если исходное число больше результата в 3,1 раза, раздели исходное на 3,1.",
+       "explanation": "Сначала определи смысл слов, затем вычисляй."
+      },
+      {
+       "prompt": "Какой числитель получится при записи 4 2/15 одной дробью?",
+       "answer": "62",
+       "hint": "Умножь 4 на 15, затем прибавь 2.",
+       "explanation": "4 · 15 + 2 = 62."
+      },
+      {
+       "prompt": "Вычисли полученное выражение.",
+       "answer": "4/3",
+       "hint": "Если исходное число больше результата в 3,1 раза, раздели исходное на 3,1.",
+       "explanation": "4 2/15 = 62/15; поэтому (62/15) : (31/10) = 4/3."
+      }
+     ],
+     "hint": "Если исходное число больше результата в 3,1 раза, раздели исходное на 3,1.",
+     "explanation": "4 2/15 = 62/15; поэтому (62/15) : (31/10) = 4/3.",
+     "skills": [
+      "fraction-divide",
+      "decimal-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 16,
+      "subpart": "2",
+      "reference": "№16(2)"
+     },
+     "changeStudy": {
+      "statement": "в 3,1 раза меньше",
+      "base": "62/15",
+      "operand": "31/10",
+      "result": "4/3",
+      "alternate": "93/10",
+      "nextResult": "3",
+      "sign": ":"
+     },
+     "errorCues": [
+      [
+       "961/75",
+       "У тебя получилось произведение. При делении на число больше единицы результат меньше исходного."
+      ]
+     ]
+    },
+    {
+     "id": "p15-t63",
+     "title": "К задаче №16(3)",
+     "prompt": "Дано 9 3/8. Найди число, которое меньше данного на 4,37.",
+     "kind": "number",
+     "answer": "1001/200",
+     "finalLabel": "Введи результат действия.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая запись передаёт изменение?",
+       "answer": "9 3/8 − 4,37",
+       "choices": [
+        "9 3/8 − 4,37",
+        "9 3/8 : 4,37",
+        "9 3/8 + 4,37"
+       ],
+       "hint": "«На 4,37» задаёт разность. Удобно показать оба числа тысячными.",
+       "explanation": "Сначала определи смысл слов, затем вычисляй."
+      },
+      {
+       "prompt": "Сколько тысячных содержит 9 3/8?",
+       "answer": "9375",
+       "hint": "3/8 = 0,375. В каждой целой единице тысяча тысячных.",
+       "explanation": "9 · 1000 + 375 = 9375."
+      },
+      {
+       "prompt": "Вычисли полученное выражение.",
+       "answer": "1001/200",
+       "hint": "«На 4,37» задаёт разность. Удобно показать оба числа тысячными.",
+       "explanation": "9 3/8 = 9,375. Из 9375 тысячных вычти 4370 тысячных: получится 5,005."
+      }
+     ],
+     "hint": "«На 4,37» задаёт разность. Удобно показать оба числа тысячными.",
+     "explanation": "9 3/8 = 9,375. Из 9375 тысячных вычти 4370 тысячных: получится 5,005.",
+     "skills": [
+      "fraction-subtract",
+      "decimal-subtract"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 16,
+      "subpart": "3",
+      "reference": "№16(3)"
+     },
+     "changeStudy": {
+      "statement": "меньше на 4,37",
+      "base": "75/8",
+      "operand": "437/100",
+      "result": "1001/200",
+      "alternate": "737/100",
+      "nextResult": "3",
+      "sign": "−"
+     },
+     "errorCues": [
+      [
+       "2749/200",
+       "Ты сложил оба числа. Новое значение должно быть меньше 9 3/8 ровно на 4,37."
+      ]
+     ]
+    },
+    {
+     "id": "p15-t64",
+     "title": "К задаче №16(4)",
+     "prompt": "Исходное число 5,4 увеличили в 1 1/27 раза. Вычисли результат.",
+     "kind": "number",
+     "answer": "28/5",
+     "finalLabel": "Введи результат действия.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая запись передаёт изменение?",
+       "answer": "5,4 × 1 1/27",
+       "choices": [
+        "5,4 : 1 1/27",
+        "5,4 × 1 1/27",
+        "5,4 − 1 1/27"
+       ],
+       "hint": "«В … раза больше» задаёт множитель. Сократи до перемножения числителей.",
+       "explanation": "Сначала определи смысл слов, затем вычисляй."
+      },
+      {
+       "prompt": "Какой числитель у множителя со знаменателем 27?",
+       "answer": "28",
+       "hint": "Одна целая равна 27/27.",
+       "explanation": "27 + 1 = 28."
+      },
+      {
+       "prompt": "Вычисли полученное выражение.",
+       "answer": "28/5",
+       "hint": "«В … раза больше» задаёт множитель. Сократи до перемножения числителей.",
+       "explanation": "(27/5) · (28/27) = 28/5 = 5,6. Это немного больше 5,4: множитель лишь на 1/27 больше единицы."
+      }
+     ],
+     "hint": "«В … раза больше» задаёт множитель. Сократи до перемножения числителей.",
+     "explanation": "(27/5) · (28/27) = 28/5 = 5,6. Это немного больше 5,4: множитель лишь на 1/27 больше единицы.",
+     "skills": [
+      "fraction-multiply",
+      "decimal-multiply"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 16,
+      "subpart": "4",
+      "reference": "№16(4)"
+     },
+     "changeStudy": {
+      "statement": "в 1 1/27 раза больше",
+      "base": "27/5",
+      "operand": "28/27",
+      "result": "28/5",
+      "alternate": "27/2",
+      "nextResult": "14",
+      "sign": "×"
+     },
+     "errorCues": [
+      [
+       "869/135",
+       "Ты прибавил множитель. Слова «в … раза» требуют умножить на него."
+      ]
+     ]
+    },
+    {
+     "id": "p15-t65",
+     "title": "К задаче №17(1)",
+     "prompt": "Число b взяли за исходное. Запиши зависимость: a в 7 раз меньше, чем b.",
+     "kind": "choice",
+     "answer": "a = b/7",
+     "finalLabel": "Выбери равенство для всех допустимых значений.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое число в этой записи является основанием сравнения?",
+       "answer": "b",
+       "choices": [
+        "a",
+        "ни одно из них",
+        "b"
+       ],
+       "hint": "Определи, от какой величины отсчитывают изменение.",
+       "explanation": "Основание — b; через него выражают a."
+      },
+      {
+       "prompt": "Во сколько раз новое число больше или меньше исходного? Введи отношение нового числа к исходному.",
+       "answer": "1/7",
+       "hint": "Уменьшение в несколько раз — деление.",
+       "explanation": "Уменьшение в несколько раз — деление. Тогда a = b/7. Например, при b = 28 получится a = 4."
+      },
+      {
+       "prompt": "Проверь запись, подставив b = 28.",
+       "answer": "4",
+       "hint": "Уменьшение в несколько раз — деление. Проверь свою запись на маленьком положительном числе.",
+       "explanation": "Уменьшение в несколько раз — деление. Тогда a = b/7. Например, при b = 28 получится a = 4."
+      }
+     ],
+     "hint": "Уменьшение в несколько раз — деление.",
+     "explanation": "Уменьшение в несколько раз — деление. Тогда a = b/7. Например, при b = 28 получится a = 4.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 17,
+      "subpart": "1",
+      "reference": "№17(1)"
+     },
+     "changeStudy": {
+      "statement": "в 7 раз меньше",
+      "base": "28",
+      "operand": "7",
+      "result": "4",
+      "alternate": "42",
+      "nextResult": "6",
+      "sign": ":"
+     },
+     "errorCues": [
+      [
+       "a = 7b",
+       "Семь таких величин равны b. Умножение на 7 сделало бы результат больше b."
+      ],
+      [
+       "a = b − 7",
+       "Уменьшение в несколько раз — деление. Проверь свою запись на маленьком положительном числе."
+      ]
+     ],
+     "choices": [
+      "a = 7b",
+      "a = b − 7",
+      "a = b/7"
+     ]
+    },
+    {
+     "id": "p15-t66",
+     "title": "К задаче №17(2)",
+     "prompt": "Число d взяли за исходное. Запиши зависимость: c на 3 больше, чем d.",
+     "kind": "choice",
+     "answer": "c = d + 3",
+     "finalLabel": "Выбери равенство для всех допустимых значений.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое число в этой записи является основанием сравнения?",
+       "answer": "d",
+       "choices": [
+        "d",
+        "c",
+        "ни одно из них"
+       ],
+       "hint": "Определи, от какой величины отсчитывают изменение.",
+       "explanation": "Основание — d; через него выражают c."
+      },
+      {
+       "prompt": "Какова разность нового и исходного чисел?",
+       "answer": "3",
+       "hint": "Слова «на 3» обозначают разность.",
+       "explanation": "Слова «на 3» обозначают разность. Тогда c = d + 3. Например, при d = 5 получится c = 8."
+      },
+      {
+       "prompt": "Проверь запись, подставив d = 5.",
+       "answer": "8",
+       "hint": "Слова «на 3» обозначают разность. Проверь свою запись на маленьком положительном числе.",
+       "explanation": "Слова «на 3» обозначают разность. Тогда c = d + 3. Например, при d = 5 получится c = 8."
+      }
+     ],
+     "hint": "Слова «на 3» обозначают разность.",
+     "explanation": "Слова «на 3» обозначают разность. Тогда c = d + 3. Например, при d = 5 получится c = 8.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 17,
+      "subpart": "2",
+      "reference": "№17(2)"
+     },
+     "changeStudy": {
+      "statement": "на 3 больше",
+      "base": "5",
+      "operand": "3",
+      "result": "8",
+      "alternate": "12",
+      "nextResult": "15",
+      "sign": "+"
+     },
+     "errorCues": [
+      [
+       "c = 3d",
+       "Тройка здесь прибавка к d. Запись 3d задаёт умножение."
+      ],
+      [
+       "c = d − 3",
+       "Слова «на 3» обозначают разность. Проверь свою запись на маленьком положительном числе."
+      ]
+     ],
+     "choices": [
+      "c = d − 3",
+      "c = d + 3",
+      "c = 3d"
+     ]
+    },
+    {
+     "id": "p15-t67",
+     "title": "К задаче №17(3)",
+     "prompt": "Число n взяли за исходное. Запиши зависимость: m составляет две девятых от исходного числа.",
+     "kind": "choice",
+     "answer": "m = 2n/9",
+     "finalLabel": "Выбери равенство для всех допустимых значений.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое число в этой записи является основанием сравнения?",
+       "answer": "n",
+       "choices": [
+        "m",
+        "n",
+        "ни одно из них"
+       ],
+       "hint": "Определи, от какой величины отсчитывают изменение.",
+       "explanation": "Основание — n; через него выражают m."
+      },
+      {
+       "prompt": "Во сколько раз новое число больше или меньше исходного? Введи отношение нового числа к исходному.",
+       "answer": "2/9",
+       "hint": "Доля от числа равна произведению доли и этого числа.",
+       "explanation": "Доля от числа равна произведению доли и этого числа. Тогда m = 2n/9. Например, при n = 18 получится m = 4."
+      },
+      {
+       "prompt": "Проверь запись, подставив n = 18.",
+       "answer": "4",
+       "hint": "Доля от числа равна произведению доли и этого числа. Проверь свою запись на маленьком положительном числе.",
+       "explanation": "Доля от числа равна произведению доли и этого числа. Тогда m = 2n/9. Например, при n = 18 получится m = 4."
+      }
+     ],
+     "hint": "Доля от числа равна произведению доли и этого числа.",
+     "explanation": "Доля от числа равна произведению доли и этого числа. Тогда m = 2n/9. Например, при n = 18 получится m = 4.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 17,
+      "subpart": "3",
+      "reference": "№17(3)"
+     },
+     "changeStudy": {
+      "statement": "две девятых от исходного числа",
+      "base": "18",
+      "operand": "2/9",
+      "result": "4",
+      "alternate": "45",
+      "nextResult": "10",
+      "sign": "×"
+     },
+     "errorCues": [
+      [
+       "m = 9n/2",
+       "Раздели целое на девять равных частей и возьми две. Множитель должен быть меньше единицы."
+      ],
+      [
+       "m = 2/(9n)",
+       "Доля от числа равна произведению доли и этого числа. Проверь свою запись на маленьком положительном числе."
+      ]
+     ],
+     "choices": [
+      "m = 2n/9",
+      "m = 9n/2",
+      "m = 2/(9n)"
+     ]
+    },
+    {
+     "id": "p15-t68",
+     "title": "К задаче №17(4)",
+     "prompt": "Число t взяли за исходное. Запиши зависимость: k составляет 80 % исходного числа.",
+     "kind": "choice",
+     "answer": "k = 0,8t",
+     "finalLabel": "Выбери равенство для всех допустимых значений.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое число в этой записи является основанием сравнения?",
+       "answer": "t",
+       "choices": [
+        "k",
+        "ни одно из них",
+        "t"
+       ],
+       "hint": "Определи, от какой величины отсчитывают изменение.",
+       "explanation": "Основание — t; через него выражают k."
+      },
+      {
+       "prompt": "Во сколько раз новое число больше или меньше исходного? Введи отношение нового числа к исходному.",
+       "answer": "4/5",
+       "hint": "80 % от t — это восемь десятых t.",
+       "explanation": "80 % от t — это восемь десятых t. Тогда k = 0,8t. Например, при t = 15 получится k = 12."
+      },
+      {
+       "prompt": "Проверь запись, подставив t = 15.",
+       "answer": "12",
+       "hint": "80 % от t — это восемь десятых t. Проверь свою запись на маленьком положительном числе.",
+       "explanation": "80 % от t — это восемь десятых t. Тогда k = 0,8t. Например, при t = 15 получится k = 12."
+      }
+     ],
+     "hint": "80 % от t — это восемь десятых t.",
+     "explanation": "80 % от t — это восемь десятых t. Тогда k = 0,8t. Например, при t = 15 получится k = 12.",
+     "skills": [
+      "proportion",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 17,
+      "subpart": "4",
+      "reference": "№17(4)"
+     },
+     "changeStudy": {
+      "statement": "80 % исходного числа",
+      "base": "15",
+      "operand": "4/5",
+      "result": "12",
+      "alternate": "35",
+      "nextResult": "28",
+      "sign": "×"
+     },
+     "errorCues": [
+      [
+       "k = 0,2t",
+       "Ты нашёл недостающие до целого 20 %. Требуется сама доля 80 из 100."
+      ],
+      [
+       "k = 80t",
+       "80 % от t — это восемь десятых t. Проверь свою запись на маленьком положительном числе."
+      ]
+     ],
+     "choices": [
+      "k = 0,2t",
+      "k = 80t",
+      "k = 0,8t"
+     ]
+    },
+    {
+     "id": "p15-t69",
+     "title": "К задаче №17(5)",
+     "prompt": "Число y взяли за исходное. Запиши зависимость: x на 28 % больше, чем y.",
+     "kind": "choice",
+     "answer": "x = 1,28y",
+     "finalLabel": "Выбери равенство для всех допустимых значений.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое число в этой записи является основанием сравнения?",
+       "answer": "y",
+       "choices": [
+        "y",
+        "x",
+        "ни одно из них"
+       ],
+       "hint": "Определи, от какой величины отсчитывают изменение.",
+       "explanation": "Основание — y; через него выражают x."
+      },
+      {
+       "prompt": "Во сколько раз новое число больше или меньше исходного? Введи отношение нового числа к исходному.",
+       "answer": "32/25",
+       "hint": "Исходная величина — 100 %, вместе с прибавкой получается 128 %.",
+       "explanation": "Исходная величина — 100 %, вместе с прибавкой получается 128 %. Тогда x = 1,28y. Например, при y = 25 получится x = 32."
+      },
+      {
+       "prompt": "Проверь запись, подставив y = 25.",
+       "answer": "32",
+       "hint": "Исходная величина — 100 %, вместе с прибавкой получается 128 %. Проверь свою запись на маленьком положительном числе.",
+       "explanation": "Исходная величина — 100 %, вместе с прибавкой получается 128 %. Тогда x = 1,28y. Например, при y = 25 получится x = 32."
+      }
+     ],
+     "hint": "Исходная величина — 100 %, вместе с прибавкой получается 128 %.",
+     "explanation": "Исходная величина — 100 %, вместе с прибавкой получается 128 %. Тогда x = 1,28y. Например, при y = 25 получится x = 32.",
+     "skills": [
+      "proportion",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 17,
+      "subpart": "5",
+      "reference": "№17(5)"
+     },
+     "changeStudy": {
+      "statement": "на 28 % больше",
+      "base": "25",
+      "operand": "32/25",
+      "result": "32",
+      "alternate": "75",
+      "nextResult": "96",
+      "sign": "×"
+     },
+     "errorCues": [
+      [
+       "x = 0,28y",
+       "0,28y показывает только прибавку. Новое число содержит всё исходное y и эту прибавку."
+      ],
+      [
+       "x = 0,72y",
+       "Исходная величина — 100 %, вместе с прибавкой получается 128 %. Проверь свою запись на маленьком положительном числе."
+      ]
+     ],
+     "choices": [
+      "x = 0,72y",
+      "x = 1,28y",
+      "x = 0,28y"
+     ]
+    },
+    {
+     "id": "p15-t70",
+     "title": "К задаче №17(6)",
+     "prompt": "Число s взяли за исходное. Запиши зависимость: p на 40 % меньше, чем s.",
+     "kind": "choice",
+     "answer": "p = 0,6s",
+     "finalLabel": "Выбери равенство для всех допустимых значений.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое число в этой записи является основанием сравнения?",
+       "answer": "s",
+       "choices": [
+        "p",
+        "s",
+        "ни одно из них"
+       ],
+       "hint": "Определи, от какой величины отсчитывают изменение.",
+       "explanation": "Основание — s; через него выражают p."
+      },
+      {
+       "prompt": "Во сколько раз новое число больше или меньше исходного? Введи отношение нового числа к исходному.",
+       "answer": "3/5",
+       "hint": "Найди, какая часть исходного числа остаётся после уменьшения.",
+       "explanation": "Найди, какая часть исходного числа остаётся после уменьшения. Тогда p = 0,6s. Например, при s = 20 получится p = 12."
+      },
+      {
+       "prompt": "Проверь запись, подставив s = 20.",
+       "answer": "12",
+       "hint": "Найди, какая часть исходного числа остаётся после уменьшения. Проверь свою запись на маленьком положительном числе.",
+       "explanation": "Найди, какая часть исходного числа остаётся после уменьшения. Тогда p = 0,6s. Например, при s = 20 получится p = 12."
+      }
+     ],
+     "hint": "Найди, какая часть исходного числа остаётся после уменьшения.",
+     "explanation": "Найди, какая часть исходного числа остаётся после уменьшения. Тогда p = 0,6s. Например, при s = 20 получится p = 12.",
+     "skills": [
+      "proportion",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 17,
+      "subpart": "6",
+      "reference": "№17(6)"
+     },
+     "changeStudy": {
+      "statement": "на 40 % меньше",
+      "base": "20",
+      "operand": "3/5",
+      "result": "12",
+      "alternate": "45",
+      "nextResult": "27",
+      "sign": "×"
+     },
+     "errorCues": [
+      [
+       "p = 0,4s",
+       "40 % составляют убавку. После уменьшения сохраняются 100 % − 40 % от исходного."
+      ],
+      [
+       "p = 1,4s",
+       "Найди, какая часть исходного числа остаётся после уменьшения. Проверь свою запись на маленьком положительном числе."
+      ]
+     ],
+     "choices": [
+      "p = 0,6s",
+      "p = 0,4s",
+      "p = 1,4s"
+     ]
+    },
+    {
+     "id": "p15-t71",
+     "title": "К задаче №18",
+     "prompt": "У прямоугольного треугольника катеты a и b, а гипотенуза c. Объясни по двум раскладкам одинаковых треугольников, почему площадь квадрата на гипотенузе равна сумме площадей квадратов на катетах. Запиши равенство.",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши доказательство или отметь, где оно выполнено.",
+     "figure": {
+      "type": "pythagoras-dissection",
+      "caption": "Две авторские раскладки. У внешних квадратов одинаковая сторона a + b. Пересчитай закрашенные треугольники и сравни оставшиеся белые области."
+     },
+     "steps": [
+      {
+       "prompt": "Сколько равных прямоугольных треугольников закрашено в каждом внешнем квадрате?",
+       "answer": "4",
+       "hint": "В двух прямоугольниках первой раскладки по два треугольника.",
+       "explanation": "И в первом, и во втором квадрате четыре треугольника с катетами a и b."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови белые области первой раскладки и сложи их площади.",
+       "hint": "Каковы стороны двух белых квадратов?",
+       "explanation": "Белые квадраты имеют стороны a и b. Их общая площадь a² + b²."
+      },
+      {
+       "prompt": "В середине второй раскладки встретились гипотенузы. Чему равен угол центральной фигуры в градусах?",
+       "answer": "90",
+       "hint": "Вычти из развёрнутого угла два острых угла прямоугольного треугольника.",
+       "explanation": "Два острых угла дают 90°. Поэтому оставшийся угол равен 180° − 90° = 90°."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни, почему центральная фигура — квадрат и чему равна её площадь.",
+       "hint": "Посмотри, какие стороны треугольников образуют белую границу.",
+       "explanation": "Все четыре стороны равны гипотенузе c, все углы прямые. Площадь белого квадрата c²."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Вычти одинаковую закрашенную площадь из двух равных внешних площадей и запиши вывод.",
+       "hint": "Из равных площадей вычитают четыре одинаковых треугольника.",
+       "explanation": "Две белые площади равны: a² + b² = c²."
+      }
+     ],
+     "hint": "Сначала сравни внешние квадраты, затем только закрашенные части. Что обязано остаться равным?",
+     "explanation": "У внешних квадратов сторона a + b. В каждом закрашены четыре треугольника площади ab/2. В первом остаются квадраты площадей a² и b². Во втором гипотенузы окружают квадрат площади c²: смежные острые углы треугольников в сумме дают 90°. Вычитание равных закрашенных площадей доказывает a² + b² = c².",
+     "skills": [
+      "rectangle-area",
+      "triangle-angle"
+     ],
+     "relatedTask": "p15-t32",
+     "pythagorasStudy": true,
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 18,
+      "reference": "№18"
+     }
+    },
+    {
+     "id": "p15-t72",
+     "title": "К задаче №19а",
+     "prompt": "Пользуясь правилом весов, реши уравнение 0,9a + 4,96 = 3,6 + 1,4a. Выполняй одно и то же действие с обеими частями. Проверь корень подстановкой.",
+     "kind": "number",
+     "answer": "68/25",
+     "finalLabel": "Введи корень уравнения.",
+     "steps": [
+      {
+       "prompt": "Приведи уравнение к виду «положительный коэффициент · a = число». Чему равен коэффициент?",
+       "answer": "0,5",
+       "hint": "Вычти 0,9a из обеих частей, затем вычти 3,6.",
+       "explanation": "Разность 4,96 − 3,6 положительна. Получаем 0,5a = 1,36."
+      },
+      {
+       "prompt": "Какое число окажется отдельно справа при таком положительном коэффициенте?",
+       "answer": "1,36",
+       "hint": "Вычти 0,9a из обеих частей, затем вычти 3,6.",
+       "explanation": "Разность 4,96 − 3,6 положительна. Получаем 0,5a = 1,36."
+      },
+      {
+       "prompt": "Чему равна a?",
+       "answer": "68/25",
+       "hint": "Раздели правую часть на положительный коэффициент.",
+       "explanation": "Разность 4,96 − 3,6 положительна. Получаем 0,5a = 1,36. Деление даёт a = 68/25."
+      }
+     ],
+     "hint": "Вычти 0,9a из обеих частей, затем вычти 3,6.",
+     "explanation": "Разность 4,96 − 3,6 положительна. Получаем 0,5a = 1,36. Раздели обе части на 0,5. Получится a = 68/25. Подставь это число в обе части исходного равенства.",
+     "skills": [
+      "linear-equation",
+      "decimal-divide"
+     ],
+     "errorCues": [
+      [
+       "−2,72",
+       "Знак поменялся только у одного члена. При вычитании одного и того же с обеих сторон остаётся 0,5a = 1,36."
+      ]
+     ],
+     "balanceStudy": {
+      "variable": "a",
+      "coefficients": [
+       "9/10",
+       "124/25",
+       "7/5",
+       "18/5"
+      ],
+      "root": "68/25"
+     },
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 19,
+      "subpart": "а",
+      "reference": "№19а"
+     }
+    },
+    {
+     "id": "p15-t73",
+     "title": "К задаче №19б",
+     "prompt": "Пользуясь правилом весов, реши уравнение 4 1/3 · b + b = 6b − 10,4. Выполняй одно и то же действие с обеими частями. Проверь корень подстановкой.",
+     "kind": "number",
+     "answer": "78/5",
+     "finalLabel": "Введи корень уравнения.",
+     "steps": [
+      {
+       "prompt": "Приведи уравнение к виду «положительный коэффициент · b = число». Чему равен коэффициент?",
+       "answer": "2/3",
+       "hint": "Сначала сложи коэффициенты 4 1/3 и 1. Прибавь 10,4 к обеим сторонам.",
+       "explanation": "Слева первоначально 16b/3. Вычитание 16b/3 с обеих сторон даёт (2/3)b = 10,4."
+      },
+      {
+       "prompt": "Какое число окажется отдельно справа при таком положительном коэффициенте?",
+       "answer": "10,4",
+       "hint": "Сначала сложи коэффициенты 4 1/3 и 1. Прибавь 10,4 к обеим сторонам.",
+       "explanation": "Слева первоначально 16b/3. Вычитание 16b/3 с обеих сторон даёт (2/3)b = 10,4."
+      },
+      {
+       "prompt": "Чему равна b?",
+       "answer": "78/5",
+       "hint": "Раздели правую часть на положительный коэффициент.",
+       "explanation": "Слева первоначально 16b/3. Вычитание 16b/3 с обеих сторон даёт (2/3)b = 10,4. Деление даёт b = 78/5."
+      }
+     ],
+     "hint": "Сначала сложи коэффициенты 4 1/3 и 1. Прибавь 10,4 к обеим сторонам.",
+     "explanation": "Слева первоначально 16b/3. Вычитание 16b/3 с обеих сторон даёт (2/3)b = 10,4. Раздели обе части на 2/3. Получится b = 78/5. Подставь это число в обе части исходного равенства.",
+     "skills": [
+      "linear-equation",
+      "decimal-divide"
+     ],
+     "errorCues": [
+      [
+       "6,24",
+       "Проверь сумму коэффициентов: b — это ещё 1 · b. Разность 6 − 5 1/3 равна 2/3."
+      ]
+     ],
+     "balanceStudy": {
+      "variable": "b",
+      "coefficients": [
+       "16/3",
+       "0",
+       "6",
+       "-52/5"
+      ],
+      "root": "78/5"
+     },
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 19,
+      "subpart": "б",
+      "reference": "№19б"
+     }
+    },
+    {
+     "id": "p15-t74",
+     "title": "К задаче №19в",
+     "prompt": "Пользуясь правилом весов, реши уравнение 0,4(2x + 0,3) = (6x − 7,2)/6. Выполняй одно и то же действие с обеими частями. Проверь корень подстановкой.",
+     "kind": "number",
+     "answer": "33/5",
+     "finalLabel": "Введи корень уравнения.",
+     "steps": [
+      {
+       "prompt": "Приведи уравнение к виду «положительный коэффициент · x = число». Чему равен коэффициент?",
+       "answer": "0,2",
+       "hint": "Раскрой обе скобки. Делитель 6 относится к обоим слагаемым правой части.",
+       "explanation": "Слева 0,8x + 0,12, справа x − 1,2. Вычти 0,8x и прибавь 1,2 с обеих сторон: 0,2x = 1,32."
+      },
+      {
+       "prompt": "Какое число окажется отдельно справа при таком положительном коэффициенте?",
+       "answer": "1,32",
+       "hint": "Раскрой обе скобки. Делитель 6 относится к обоим слагаемым правой части.",
+       "explanation": "Слева 0,8x + 0,12, справа x − 1,2. Вычти 0,8x и прибавь 1,2 с обеих сторон: 0,2x = 1,32."
+      },
+      {
+       "prompt": "Чему равна x?",
+       "answer": "33/5",
+       "hint": "Раздели правую часть на положительный коэффициент.",
+       "explanation": "Слева 0,8x + 0,12, справа x − 1,2. Вычти 0,8x и прибавь 1,2 с обеих сторон: 0,2x = 1,32. Деление даёт x = 33/5."
+      }
+     ],
+     "hint": "Раскрой обе скобки. Делитель 6 относится к обоим слагаемым правой части.",
+     "explanation": "Слева 0,8x + 0,12, справа x − 1,2. Вычти 0,8x и прибавь 1,2 с обеих сторон: 0,2x = 1,32. Раздели обе части на 0,2. Получится x = 33/5. Подставь это число в обе части исходного равенства.",
+     "skills": [
+      "linear-equation",
+      "decimal-divide"
+     ],
+     "errorCues": [
+      [
+       "5,4",
+       "Заново сравни свободные члены. Число −1,2 справа устраняется прибавлением +1,2 к обеим сторонам."
+      ]
+     ],
+     "balanceStudy": {
+      "variable": "x",
+      "coefficients": [
+       "4/5",
+       "3/25",
+       "1",
+       "-6/5"
+      ],
+      "root": "33/5"
+     },
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 19,
+      "subpart": "в",
+      "reference": "№19в"
+     }
+    },
+    {
+     "id": "p15-t75",
+     "title": "К задаче №19г",
+     "prompt": "Пользуясь правилом весов, реши уравнение 5(y − 3,8) = 4,7(y − 4). Выполняй одно и то же действие с обеими частями. Проверь корень подстановкой.",
+     "kind": "number",
+     "answer": "2/3",
+     "finalLabel": "Введи корень уравнения.",
+     "steps": [
+      {
+       "prompt": "Приведи уравнение к виду «положительный коэффициент · y = число». Чему равен коэффициент?",
+       "answer": "0,3",
+       "hint": "Распредели оба множителя на оба слагаемых. Затем вычти 4,7y с обеих сторон.",
+       "explanation": "После раскрытия скобок 5y − 19 = 4,7y − 18,8. Получаем 0,3y = 19 − 18,8 = 0,2."
+      },
+      {
+       "prompt": "Какое число окажется отдельно справа при таком положительном коэффициенте?",
+       "answer": "0,2",
+       "hint": "Распредели оба множителя на оба слагаемых. Затем вычти 4,7y с обеих сторон.",
+       "explanation": "После раскрытия скобок 5y − 19 = 4,7y − 18,8. Получаем 0,3y = 19 − 18,8 = 0,2."
+      },
+      {
+       "prompt": "Чему равна y?",
+       "answer": "2/3",
+       "hint": "Раздели правую часть на положительный коэффициент.",
+       "explanation": "После раскрытия скобок 5y − 19 = 4,7y − 18,8. Получаем 0,3y = 19 − 18,8 = 0,2. Деление даёт y = 2/3."
+      }
+     ],
+     "hint": "Распредели оба множителя на оба слагаемых. Затем вычти 4,7y с обеих сторон.",
+     "explanation": "После раскрытия скобок 5y − 19 = 4,7y − 18,8. Получаем 0,3y = 19 − 18,8 = 0,2. Раздели обе части на 0,3. Получится y = 2/3. Подставь это число в обе части исходного равенства.",
+     "skills": [
+      "linear-equation",
+      "decimal-divide"
+     ],
+     "errorCues": [
+      [
+       "3/2",
+       "Это обратное отношение. В равенстве 0,3y = 0,2 делят 0,2 на 0,3."
+      ]
+     ],
+     "balanceStudy": {
+      "variable": "y",
+      "coefficients": [
+       "5",
+       "-19",
+       "47/10",
+       "-94/5"
+      ],
+      "root": "2/3"
+     },
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 8,
+      "exercise": 19,
+      "subpart": "г",
+      "reference": "№19г"
+     }
     }
    ]
   },

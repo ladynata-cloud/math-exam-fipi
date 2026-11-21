@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,303);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,318);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -205,7 +205,43 @@ for(const [i,letters] of ratioColumns.entries()) {
  assert.deepEqual(Array.from(rows,t=>t.source.subpart||'').sort(),expected.sort(),'every printed prompt at part 2 number '+(i+1));
  assert(rows.every(t=>t.source.page===(i<8?6:i<14?7:8)));
 }
-assert.equal(p15.tasks.length,60);
+assert.equal(p15.tasks.length,75);
+const proofs=p15.tasks.filter(t=>t.source.exercise===18);
+assert.equal(proofs.length,1);assert.equal(proofs[0].kind,'manual');assert.equal(proofs[0].figure.type,'pythagoras-dissection');
+const equations19=p15.tasks.filter(t=>t.source.exercise===19);
+const lhs=[x=>0.9*x+4.96,x=>(4+1/3)*x+x,x=>0.4*(2*x+0.3),x=>5*(x-3.8)];
+const rhs=[x=>3.6+1.4*x,x=>6*x-10.4,x=>(6*x-7.2)/6,x=>4.7*(x-4)];
+for(const [i,t] of equations19.entries()){
+ const r=M.parse(t.answer),v=r.n/r.d;
+ assert.equal(t.source.subpart,'абвг'[i]);
+ assert(Math.abs(lhs[i](v)-rhs[i](v))<1e-10,t.source.reference);
+ assert(Math.abs(lhs[i](v+1)-rhs[i](v+1))>0.1);
+ const [m,p,k,q]=t.balanceStudy.coefficients.map(raw=>{const n=M.parse(raw);return n.n/n.d;});
+ for(const x of [-3,0,1,v,v+1]) {
+  assert(Math.abs(m*x+p-lhs[i](x))<1e-10);
+  assert(Math.abs(k*x+q-rhs[i](x))<1e-10);
+ }
+}
+const numericalChanges=p15.tasks.filter(t=>t.source.exercise===16);
+assert.deepEqual(Array.from(numericalChanges,t=>t.source.subpart),['1','2','3','4']);
+for(const [i,result] of ['3','4/3','1001/200','28/5'].entries()) {
+ assert.equal(numericalChanges[i].answer,result);
+ assert(numericalChanges[i].errorCues.every(([wrong])=>!M.equal(wrong,result)));
+}
+const rules=p15.tasks.filter(t=>t.source.exercise===17);
+assert.deepEqual(Array.from(rules,t=>t.answer),['a = b/7','c = d + 3','m = 2n/9','k = 0,8t','x = 1,28y','p = 0,6s']);
+const expected=[
+ v=>v+1/4,v=>v/(31/10),v=>v-437/100,v=>v*28/27,
+ v=>v/7,v=>v+3,v=>2*v/9,v=>4*v/5,v=>v+28*v/100,v=>v-40*v/100,
+];
+for(const [i,t] of [...numericalChanges,...rules].entries()) {
+ const study=t.changeStudy;
+ for(const [before,after] of [[study.base,study.result],[study.alternate,study.nextResult]]) {
+  const input=M.parse(before),output=M.parse(after);
+  assert(Math.abs(expected[i](input.n/input.d)-output.n/output.d)<1e-10,t.source.reference+' numeric model');
+ }
+}
+
 const bySource=(n,sub)=>p15.tasks.find(t=>t.source.exercise===n&&t.source.subpart===sub);
 for(const [sub,left,right]of [['в',2.5,3],['г',4,1/3],['д',0.34,1.7],['е',3+1/9,4+2/3]]) {
  const t=bySource(3,sub),q=M.parse(t.answer);
