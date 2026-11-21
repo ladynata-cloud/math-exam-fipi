@@ -31,6 +31,7 @@ const server=http.createServer((req,res)=>{
  const equationAnswers={1051:['2','13'],'1052-1':['5','4'],'1052-2':['2','9'],'1052-3':['-7','9/4'],'1052-4':['-3','25'],1053:['10','13'],1054:['25','25'],'1055-1':['2','13'],'1055-2':['3','10'],1056:['16','1'],1057:['4','3']};
  const lineAnswers={'1058-1':['3','-1'],'1058-2':['-3','-3'],'1058-3':['-6','-1'],1059:['3','2'],'1060-1':['1','-6'],'1060-2':['5','3'],1061:['5','-3'],'1062-1':['3','-2'],'1062-2':['-2','3'],'1062-3':['-4','1'],'1062-4':['7','-1'],1063:['5','4'],1064:['5','6']};
  const locusAnswers={1065:['8','1'],1066:['-3','0'],'1067-1':['0','4'],'1067-2':['1','0'],'1068-1':['2','1'],'1068-2':['3','0'],1069:['4','4'],'1070-1':['4','1'],'1070-2':['1/3','2/3'],1071:['1','2'],1072:['3','0'],1073:['-2','-3'],1074:['32','2'],1075:['-3','-2']};
+ const additionalScalarVectorAnswers={"1154":["-5","0"],"1155":["25","10"],"1156":["6","353"],"1157":["17","-340"],"1158":["4","34"]};
  const additionalSolveAnswers={"1149-1":["105","5"],"1149-2":["75","6"],"1149-3":["1","30"],"1149-4":["48","60"],"1150-1":["-1","5"],"1150-2":["5","60"],"1150-3":["6","10"],"1151":["7","90"],"1152":["2","3"],"1153":["37","13"]};
  const additionalAreaAnswers={"1146":["2","1"],"1147-1":["64","4"],"1147-2":["28","4"],"1148":["12","24"]};
  const vectorProductReviewAnswers={"k14":["45","0"],"k15":["90","4"],"k16":["-6","0"],"k17-1":["3","-6"],"k17-2":["3","0"],"k17-3":["-3","0"],"k18":["11","-5"],"k19":["0","4"],"k20":["10","3"],"k21":["-18","4"],"k22":["0","-7"]};
@@ -53,9 +54,9 @@ const server=http.createServer((req,res)=>{
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1153/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1158/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers,...vectorProductReviewAnswers,...additionalAreaAnswers,...additionalSolveAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers,...vectorProductReviewAnswers,...additionalAreaAnswers,...additionalSolveAnswers,...additionalScalarVectorAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -74,6 +75,11 @@ const server=http.createServer((req,res)=>{
    assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key))?.checked===true,storageKey),false);
    if(revised)assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).checked,revisionKey+'1'),true);
    const coefficient={
+    "1154":["5/√34","-5/√34","отрицательно","-5*sqrt(34)/34"],
+    "1155":["-1","5","катеты","5.0"],
+    "1156":["15;593","15;√593","множитель","15;24.4"],
+    "1157":["20","40","ноль","40.0"],
+    "1158":["36:51","36°52′","52′","arccos(4/5)"],
     "1149-1":["75;6;4","105;5,86;4,14","AB","105°;5.86;4.14"],
     "1149-2":["60;5;5","75;5,58;4,08","BC","75°;5.58;4.08"],
     "1149-3":["137;5;3","42,9;88,6;4,4","двум углам","42.9°;88.6°;4.40"],
@@ -273,7 +279,7 @@ const server=http.createServer((req,res)=>{
    const midpointCases={'972-1':5,'972-2':4,973:3,974:3,975:3};
    const appliedCases={976:2,977:4,978:2,979:3,980:3};
    const lengthCases={981:3,982:3,983:2,984:2,985:3,986:3,987:3};
-   const extraCase=Object.hasOwn(additionalSolveAnswers,n)?'case-3':Object.hasOwn(additionalAreaAnswers,n)?'case-3':chapter12?'case-3':Object.hasOwn(scalarGeometryAnswers,n)?'case-3':Object.hasOwn(scalarCoordinateAnswers,n)?'case-3':(n==='t109'||n==='t110')?'case-4':Object.hasOwn(scalarProductAnswers,n)?'case-3':Object.hasOwn(fieldTrigAnswers,n)?'case-3':['1117','1118','1122'].includes(n)?'case-4':Object.hasOwn(solvedTriangleAnswers,n)?'case-3':n==='t107'?'case-4':Object.hasOwn(triangleAreaAnswers,n)?'case-3':n==='1103'?'case-4':Object.hasOwn(trigRayAnswers,n)?'case-3':(n==='1098-1'||n==='1098-2')?'case-6':n==='1099'?'case-5':n==='t100'?'case-4':Object.hasOwn(semicircleAnswers,n)?'case-3':(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
+   const extraCase=Object.hasOwn(additionalScalarVectorAnswers,n)?'case-3':Object.hasOwn(additionalSolveAnswers,n)?'case-3':Object.hasOwn(additionalAreaAnswers,n)?'case-3':chapter12?'case-3':Object.hasOwn(scalarGeometryAnswers,n)?'case-3':Object.hasOwn(scalarCoordinateAnswers,n)?'case-3':(n==='t109'||n==='t110')?'case-4':Object.hasOwn(scalarProductAnswers,n)?'case-3':Object.hasOwn(fieldTrigAnswers,n)?'case-3':['1117','1118','1122'].includes(n)?'case-4':Object.hasOwn(solvedTriangleAnswers,n)?'case-3':n==='t107'?'case-4':Object.hasOwn(triangleAreaAnswers,n)?'case-3':n==='1103'?'case-4':Object.hasOwn(trigRayAnswers,n)?'case-3':(n==='1098-1'||n==='1098-2')?'case-6':n==='1099'?'case-5':n==='t100'?'case-4':Object.hasOwn(semicircleAnswers,n)?'case-3':(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
    const gridCase=Object.hasOwn(gridAnswers,n)?'case-'+(Number(number)<=1006?6:3):null;
    const actionCase=Object.hasOwn(actionAnswers,n)?'case-'+(n==='1011'?4:n==='1012'?6:3):null;
    const positionCase=Object.hasOwn(positionAnswers,n)?'case-3':null;
