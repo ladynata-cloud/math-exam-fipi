@@ -49,6 +49,7 @@ body.v5-quality-active{--ink:#203d33;--muted:#5b7469;--green:#176b50;background:
 .v5q-empty{fill:#fffef7;stroke:#668775;stroke-width:1.5}
 .v5q-line{fill:none;stroke:#3c6952;stroke-width:1.6}
 .v5q-right-angle{fill:none;stroke:#245f43;stroke-width:2.2}
+.v5q-table-scroll{max-width:100%;overflow-x:auto}
 .v5q-place-table{border-collapse:collapse;width:100%;margin:20px 0;font-variant-numeric:tabular-nums;font-size:17px}
 .v5q-place-table caption{font-size:14px;text-align:left;margin-bottom:8px;color:#526e5e}
 .v5q-place-table th,.v5q-place-table td{border:1px solid #c9dcca;padding:10px 6px;text-align:center;overflow-wrap:anywhere}

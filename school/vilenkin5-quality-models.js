@@ -142,7 +142,7 @@
       else if(!['place','round'].includes(op))control('b','Второе число, в сотых',op==='divide'?1:0,999);
       const names={place:'Разряды после запятой',compare:'Выравниваем одинаковые разряды',round:'К какой отметке ближе?',add:'Сотые складываются с сотыми',subtract:'Размен перед вычитанием',multiply:'Размер доли в произведении',divide:'Меняем обе единицы счёта',order:'Калькулятор и порядок действий'};
       title=d.naturalSecond?(d.powerOfTen?(op==='multiply'?'Умножаем на 10, 100, 1000':'Делим на 10, 100, 1000'):(op==='multiply'?'Несколько равных десятичных величин':'Делим десятичную величину поровну')):names[op];
-      visual='<table class="v5q-place-table"><caption>'+(d.naturalSecond?'Десятичная величина по разрядам':'Одинаковые разряды в одном столбце')+'</caption><thead><tr><th>Число</th><th>Еди&shy;ницы</th><th>Деся&shy;тые</th><th>Со&shy;тые</th></tr></thead><tbody>'+[s.a,...(['place','round'].includes(op)||d.naturalSecond?[]:[s.b])].map(n=>'<tr><th>'+decimal(n)+'</th><td>'+Math.floor(n/100)+'</td><td>'+Math.floor(n/10)%10+'</td><td>'+n%10+'</td></tr>').join('')+'</tbody></table>';
+      visual='<div class="v5q-table-scroll" role="region" tabindex="0" aria-label="Таблица разрядов"><table class="v5q-place-table"><caption>'+(d.naturalSecond?'Десятичная величина по разрядам':'Одинаковые разряды в одном столбце')+'</caption><thead><tr><th>Число</th><th>Еди&shy;ницы</th><th>Деся&shy;тые</th><th>Со&shy;тые</th></tr></thead><tbody>'+[s.a,...(['place','round'].includes(op)||d.naturalSecond?[]:[s.b])].map(n=>'<tr><th>'+decimal(n)+'</th><td>'+Math.floor(n/100)+'</td><td>'+Math.floor(n/10)%10+'</td><td>'+n%10+'</td></tr>').join('')+'</tbody></table></div>';
       if(op==='place'){answer=a;question='Запиши '+s.a+' сотых десятичной дробью.';why=s.a+' / 100 = '+decimal(s.a)+'. Нуль сохраняет пустой разряд.';}
       if(op==='compare'){answer=s.a>s.b?'>':s.a<s.b?'<':'=';question='Сравни '+decimal(s.a)+' и '+decimal(s.b)+'. Введи <, > или =.';why='Сравнивай слева направо: единицы, десятые, сотые. Дописанный справа нуль величину не меняет.';}
       if(op==='round'){
@@ -172,7 +172,7 @@
       if(s.angle===90)drawing+='<path d="M 280 202 H 298 V 220" class="v5q-right-angle"/>';
       drawing+='<circle cx="280" cy="220" r="4" class="v5q-fill"/><circle cx="430" cy="220" r="3" class="v5q-fill"/><circle cx="'+bx+'" cy="'+by+'" r="3" class="v5q-fill"/>';
       drawing+=label(257,266,'O','middle')+label(430,266,'A','middle')+label(bx-24*Math.sin(r),by-24*Math.cos(r),'B','middle');
-      visual=svg(drawing,'Угол AOB. Ноль шкалы справа',292,'angle')+legend(['O — вершина. Отсчёт начинаем от нуля справа, на стороне OA.']);answer=s.target;question='Поверни луч до '+s.target+'°. Затем запиши величину построенного угла.';why='Отсчёт начинается от нуля на стороне OA. Угол задаёт поворот, а длины лучей на него не влияют.';
+      visual=svg(drawing,'Угол AOB. Ноль шкалы справа',312,'angle','0 -20 560 312')+legend(['O — вершина. Отсчёт начинаем от нуля справа, на стороне OA.']);answer=s.target;question='Поверни луч до '+s.target+'°. Затем запиши величину построенного угла.';why='Отсчёт начинается от нуля на стороне OA. Угол задаёт поворот, а длины лучей на него не влияют.';
     } else if(d.kind==='circle') {
       title='Граница, область и объём';control('radius','Радиус, см',1,10);controls.push({key:'shape',title:'Исследуем объект',values:[['boundary','Окружность'],['circle','Круг'],['sphere','Шар'],['cylinder','Цилиндр']]});
       const radius=s.radius*10;
