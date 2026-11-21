@@ -241,6 +241,33 @@ test('right triangle uses one measurable scale, swaps legs and withholds credit 
  } finally {f.close();}
 });
 
+test('part three additional groups diagnose sign, unnecessary inputs and what remains',()=>{
+ const f=fixture(null,null,true);
+ try {
+  const wrong=(index,value,expected)=>{
+   f.nav('#lesson/p33/'+index);
+   const task=f.w.PetersonCourse.lessons.find(l=>l.id==='p33').tasks[index];
+   if(task.kind==='choice')f.click('[data-choice="'+task.choices.indexOf(value)+'"]');
+   else f.event('#final-answer',value);
+   f.submit('#answer-form');
+   assert.match(f.q('.answer-form .feedback').textContent,expected);
+   return task;
+  };
+  const algebra=wrong(23,'b − 7',/Минус перед вторыми скобками/);
+  f.click('[data-action="hint"]');
+  assert.match(f.q('.help figure').textContent,/−2 × \(b\).*−2 × \(−2\)/);
+  f.click('[data-choice="'+algebra.choices.indexOf(algebra.answer)+'"]');f.submit('#answer-form');
+  assert.equal(f.state().tasks[algebra.id].assisted,true);
+  wrong(26,'-3',/отрицательный коэффициент/);
+  f.event('#final-answer','3');f.submit('#answer-form');
+  assert.match(f.q('.task-heading').textContent,/Исправлено без подсказки/);
+  wrong(29,'6v + 25; 445, 505, 565 км',/пройденный путь/);
+  f.click('[data-action="hint"]');assert.match(f.q('.help figure').textContent,/3 ч, скорость v \+ 10/);
+  wrong(30,'0,1n + 0,2; 1,2, 1,7 и 2,2 т',/масса проданного/);
+  f.click('[data-action="hint"]');assert.match(f.q('.help figure').textContent,/n \+ 4 мешка/);
+ } finally {f.close();}
+});
+
 test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
  const f=fixture(null,null,true);
  try {

@@ -487,6 +487,7 @@ ${[1, 2, 3]
     return null;
   }
   function bracketTerms(t) {
+    if (t.distributedTerms) return t.distributedTerms;
     if (bracketProducts[t.id]) return bracketProducts[t.id];
     if (active.skill === 'bracket-evaluate' && t.calculation?.op === 'bracket') {
       const {right,third} = t.calculation;
@@ -495,7 +496,7 @@ ${[1, 2, 3]
     return null;
   }
   function repairSkill(t) {
-    if (t.id === 'p33-t01' || t.id === 'p33-t02') return 'bracket-evaluate';
+    if (t.distributedTerms || t.id === 'p33-t01' || t.id === 'p33-t02') return 'bracket-evaluate';
     if (ratioExamples[t.id]) return ['p15-t01','p15-t02'].includes(t.id) ? 'ratio' : 'percent-ratio';
     return null;
   }

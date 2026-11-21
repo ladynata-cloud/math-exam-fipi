@@ -613,6 +613,29 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await manualWithoutCredit(teacherFrame,'p15-t32',0);
   await ownership(teacher,student,false);
 
+  phase = 'part three printed distributive law and remaining distance';
+  await lesson(teacherFrame,'p33',23);
+  await teacherFrame.getByRole('button',{name:'b − 7',exact:true}).click();
+  await teacherFrame.locator('#answer-form button[type=submit]').click();
+  await synchronized(teacherFrame,studentFrame,'wrong sign of the second constant sent to pupil');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/Минус перед вторыми скобками/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-action=hint]').click();
+  await synchronized(studentFrame,teacherFrame,'two distributed products visible to teacher');
+  assert.match(await teacherFrame.locator('.help figure').innerText(),/−2 × \(b\).*−2 × \(−2\)/s);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-distributed-terms','.help figure');
+  await lesson(studentFrame,'p33',29);
+  await studentFrame.getByRole('button',{name:'6v + 25; 445, 505, 565 км',exact:true}).click();
+  await studentFrame.locator('#answer-form button[type=submit]').click();
+  await studentFrame.locator('[data-action=hint]').click();
+  const train=await synchronized(studentFrame,teacherFrame,'train stages, remaining-distance cue and quantity table');
+  assert.match(await teacherFrame.locator('.answer-form .feedback').innerText(),/пройденный путь/);
+  assert.match(await teacherFrame.locator('.help figure').innerText(),/3 ч, скорость v \+ 10/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-train-stages','.help figure');
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,train,'learner reopens the same three-stage model and reading error');
+
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
   await teacherFrame.locator('#book-part').selectOption('2');
