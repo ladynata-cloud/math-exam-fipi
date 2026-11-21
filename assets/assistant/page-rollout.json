@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "c7b386e303d6da0dc38a4b811bcea1f77f6c698dcfa157fb0139369996464029",
-      "afterSha256": "6148cbc6b3f3b9cde9fc42edcc040d2783a29dc4043d131a68dbb98e50c0b8dc",
+      "beforeSha256": "aaaba70f655f4a1851afb578a6b61fafea50e9fde277f83728db34167463b8f6",
+      "afterSha256": "2e02a472aa5abb7ee1f1531c381801a0bea2afb179d10813a5b8db3c2ef7f1e6",
       "placement": "before-head-close",
-      "sourceSha": "a266d9004567aaf959fbee0817635ebad1aac290"
+      "sourceSha": "5132714b059c6613ad42d5f8488ccae1e60d0eea"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7047,6 +7047,16 @@
         "school/index.html"
       ],
       "boundary": "Часть 2, §26, печатная с. 13. Проверены упражнения №5.40–5.42, равносильные дроби, цветные интервалы и разбиение квадрата на шесть равных площадей."
+    },
+    {
+      "previousBaseSha": "a266d9004567aaf959fbee0817635ebad1aac290",
+      "sourceBaseSha": "5132714b059c6613ad42d5f8488ccae1e60d0eea",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "First-volume printed Vilenkin exercises through 1.125 and second-volume exercises through 5.42.",
+      "boundary": "Only the combined school entry receives this page binding."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
