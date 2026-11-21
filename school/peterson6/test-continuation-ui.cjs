@@ -1289,3 +1289,38 @@ test('complete the tariff, seven exact rankings, parallel-section triangle, cell
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('finish all nine printed self-check numbers and enter the original final expression by a three-digit route',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,word]of [[78,'3 : 5'],[79,'45 : 4'],[80,'5 : 3'],[82,'75%'],[83,'40%'],[84,'140%'],[85,'45%']]){const c=go(j);set(c[1],2);assert(out().includes(word));}
+  let c=go(81);set(c[0],0);set(c[2],1);assert(out().includes('не определена'));set(c[0],-2);set(c[1],6);set(c[2],1);assert(out().includes('b/3 = 2'));
+  for(const [j,known]of [[86,'4 000 000'],[87,'14,9 см'],[88,'1 096 км']]){
+   c=go(j);set(c[1],2);const txt=f.q('#model tbody').textContent.replace(/\s/g,'');assert(txt.includes(known.replace(/\s/g,'')),[j,txt]);set(c[0],1);assert(!f.d.querySelector('#model table'));
+  }
+  for(const [j,v]of [[97,'21'],[98,'3/10']]){const c=go(j),idx=[...f.q(c[1]).options].find(o=>o.textContent===v).value;set(c[1],idx);set(c[2],3);assert(out().includes(v+' подходит.'));}
+  for(const [j,answers]of [[99,['100 км','180 км']],[100,['36 страниц','54 страниц']],[101,['15%','20%']],[102,['4.','6.']]]){
+   c=go(j);set(c[1],2);assert(out().includes(answers[0]),[j,out()]);set(c[0],1);set(c[1],2);assert(out().includes(answers[1]),[j,out()]);
+  }
+  c=go(103);set(c[1],4);assert(out().includes('значение 100.'));set(c[0],1);set(c[1],4);assert(out().includes('значение 101.'));
+  c=go(104);set(c[1],6);assert(out().includes('значение 0.'));set(c[0],1);set(c[1],6);assert(out().includes('значение 2/5.'));assert.equal(f.d.querySelectorAll('#model tbody tr').length,6);
+  f.nav('#home');const entry=f.d.querySelector('a[href="#lesson/p18/78"]');assert(entry);assert(entry.textContent.includes('Самопроверка'));assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+  const independent=fixture(null,null,true);
+  try {
+   independent.nav('#lesson/p18/104');
+   assert.equal(independent.state().tasks['p18-t105'].correct,false);
+   independent.event('#final-answer','155,6');independent.submit('#answer-form');
+   assert(independent.q('.answer-form .feedback').textContent.includes('последнего минуса'));
+   const resumed=fixture(independent.state(),null,true);
+   try {
+    resumed.nav('#lesson/p18/104');const original=resumed.state().tasks['p18-t105'];assert.equal(original.attempts,1);assert.equal(original.assisted,false);
+    resumed.event('#final-answer','0');resumed.submit('#answer-form');const solved=resumed.state().tasks['p18-t105'];
+    assert.equal(solved.correct,true);assert.equal(solved.attempts,2);assert.equal(solved.assisted,false);assert.equal(solved.independent,false);
+    resumed.nav('#lesson/p18/103');resumed.click('[data-lesson-help="model"] > summary');resumed.event('#final-answer','100');resumed.submit('#answer-form');
+    assert.equal(resumed.state().tasks['p18-t104'].assisted,true);assert.equal(resumed.state().tasks['p18-t104'].independent,false);
+   } finally {resumed.close();}
+  } finally {independent.close();}
+ }finally{f.close();}
+});

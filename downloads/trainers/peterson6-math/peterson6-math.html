@@ -1195,6 +1195,20 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+function reviewOperationChain(which,fresh){
+ const M=root.PetersonMath,op=M.operation;
+ if(which===1){
+  const diff=op('subtract','17/5','1.141'),quo=op('divide',diff,'.45'),prod=op('multiply',quo,'14.5'),sum=op('add',fresh?'28.21':'27.21',prod);
+  return {expr:(fresh?'28,21':'27,21')+' + (3⅖ − 1,141) : 0,45 × 14,5',steps:[['Разность в скобках',diff],['После деления',quo],['После умножения',prod],['Итог',sum]]};
+ }
+ const diff=op('subtract','31/7','23/14'),quo=op('divide','7.8',diff),sum=op('add',quo,'.312'),lhs=op('divide',sum,'.02'),rhs=op('multiply',fresh?'3.88':'3.89',40),final=op('subtract',lhs,rhs);
+ return {expr:'[7,8 : (4 3/7 − 1 9/14) + 0,312] : 0,02 − '+(fresh?'3,88':'3,89')+' × 40',steps:[['Разность смешанных чисел',diff],['После первого деления',quo],['В квадратных скобках',sum],['Левая часть итоговой разности',lhs],['Правая часть',rhs],['Итог',final]]};
+}
+const unitMapData={
+ scale:[[18.6,744,4000000],[12,600,5000000]],
+ map:[[14.9,1490,10000000],[22,880,4000000]],
+ land:[[13.7,1096,8000000],[17.5,700,4000000]],
+};
 const cutPatterns={
  pentomino:{w:4,h:4,outside:new Set(['3,3']),dots:new Set(),plans:[['1133','1133','1223','2220'],['1112','1122','3322','3330'],['2133','1133','1123','2220']]},
  dotTrios:{w:6,h:4,outside:new Set(),dots:new Set(['1,0','1,1','3,1','4,1','5,1','5,2','1,3','3,3']),plans:[['777811','668821','564223','554433'],['778811','766821','564223','554433'],['111222','333444','555666','777888']]},
@@ -1321,6 +1335,12 @@ function evaluateClaim(rule,a,b){
  throw new Error('Неизвестное высказывание');
 }
 const storyBalances={
+ oneHalf:[
+  {equation:'1,5a − 3 = a + 7,5',stages:['0,5a − 3 = 7,5','0,5a = 10,5','a = 21'],calc:x=>[1.5*x-3,x+7.5]},
+  {equation:'1,5a − 3 = a + 4,5',stages:['0,5a − 3 = 4,5','0,5a = 7,5','a = 15'],calc:x=>[1.5*x-3,x+4.5]}],
+ threeTimes:[
+  {equation:'1,8b = 3(b − 0,12)',stages:['1,8b = 3b − 0,36','1,2b = 0,36','b = 3/10'],calc:x=>[45*x/25,(75*x-9)/25]},
+  {equation:'1,8b = 3(b − 0,24)',stages:['1,8b = 3b − 0,72','1,2b = 0,72','b = 3/5'],calc:x=>[45*x/25,(75*x-18)/25]}],
  halfAfterFive:[
   {equation:'(5x − 3)/2 = x − 0,3',stages:['5x − 3 = 2x − 0,6','3x = 2,4','x = 4/5'],calc:x=>[(25*x-15)/5,(10*x-3)/5]},
   {equation:'(5x − 4)/2 = x − 0,2',stages:['5x − 4 = 2x − 0,4','3x = 3,6','x = 6/5'],calc:x=>[(25*x-20)/5,(10*x-2)/5]}],
@@ -1338,7 +1358,10 @@ const storyBalances={
   {equation:'3(5x − 12) = 3x',stages:['15x − 36 = 3x','12x = 36','x = 3'],calc:x=>[3*(5*x-12),3*x]}],
 };
 const balanceCandidates=['-3','0','2','5/2','3','4','5'];
-function balanceInputs(task){return task.storyBalance.rule==='halfAfterFive'?balanceCandidates.concat('4/5','6/5'):balanceCandidates;}
+function balanceInputs(task){
+ const extra={halfAfterFive:['4/5','6/5'],oneHalf:['21','15'],threeTimes:['3/10','3/5']}[task.storyBalance.rule];
+ return extra?balanceCandidates.concat(extra):balanceCandidates;
+}
 const trialRules={
  rectGrow:x=>x*(x+12),boundedThree:x=>x*(x-9)*(15-x),
  rectSubtract:x=>x*(x-4),rectPlus3:x=>x*x+3*x,
@@ -2035,6 +2058,11 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p18' && task?.reviewRatio)return {title:task.reviewRatio.percent?'Первая величина в процентах от второй':'Отношение и его значение',controls:[c('Данные',[[0,'Исходные'],[1,'Удвоить первый член']]),c('Разбор',[[0,'Сначала решу'],[1,'Дробь'],[2,'Итог']])],initial:[0,0]};
+ if(lesson?.id==='p18' && task?.cancelRatio)return {title:'Сокращение буквенного множителя',controls:[c('Значение a',[-2,0,1,3]),c('Значение b',[-3,0,3,6]),c('Подстановка',[[0,'Сначала упрости'],[1,'Сравнить']])],initial:[1,6,0]};
+ if(lesson?.id==='p18' && task?.reviewMap)return {title:'Карта и расстояние по одному масштабу',controls:[c('Данные',[[0,'Из учебника'],[1,'Новые расстояния']]),c('Расчёт',[[0,'Сначала решу'],[1,'Сантиметр карты'],[2,'Три величины']])],initial:[0,0]};
+ if(lesson?.id==='p18' && task?.reviewPercentageWord)return {title:'Проверь буквенное выражение на числах',controls:[c('Пример',[[0,'Первый'],[1,'Другие числа']]),c('Проверка',[[0,'Сначала составлю'],[1,'Промежуточное значение'],[2,'Подстановка']])],initial:[0,0]};
+ if(lesson?.id==='p18' && task?.reviewArithmetic)return {title:'Порядок действий и точные промежуточные дроби',controls:[c('Числа',[[0,'Из упражнения'],[1,'Новый пример']]),c('До какого шага?',range(0,task.reviewArithmetic===1?4:6))],initial:[0,0]};
  if(lesson?.id==='p18' && task?.tariffStudy)return {title:'Постоянная прибавка от первого тарифа',controls:[c('Первый тариф',[6000,8000]),c('Разряд',range(1,9)),c('Сравнение',[[0,'Сначала решу'],[1,'Сумма и отношение'],[2,'Процент изменения']])],initial:[8000,1,0]};
  if(lesson?.id==='p18' && task?.scoreRanking)return {title:'Средние баллы и порядок коэффициентов',controls:[c('Строка',task.scoreRanking.map(([l],i)=>[i,(i+1)+' · '+l])),c('Таблица',[[0,'Из упражнения'],[1,'Другие баллы первой строки']]),c('Проверка',[[0,'Сначала решу'],[1,'Коэффициент'],[2,'Порядок всех строк']])],initial:[0,0,0]};
  if(lesson?.id==='p18' && task?.triangleSection)return {title:'Сечение треугольника параллельно основанию',controls:[c('Треугольник',[[0,'Вершина справа'],[1,'Вершина слева']]),c('Доля AM от AB',[[0,'1/3'],[1,'1/2'],[2,'2/3']]),c('Измерения',[[0,'Только чертёж'],[1,'Четыре длины'],[2,'Пропорции']])],initial:[0,0,0]};
@@ -2206,7 +2234,7 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2217,8 +2245,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2453,6 +2481,42 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===18 && task.reviewRatio){
+  const t=task.reviewRatio,M=root.PetersonMath,x=M.operation('multiply',t.values[0],a?2:1),y=M.parse(t.values[1]),q=M.operation('divide',x,y);
+  formula('('+M.answer(x)+') : ('+M.answer(y)+')');
+  if(b>=1)say('Значение отношения '+M.answer(q)+'.');
+  if(b===2)say(t.percent?'Процентное отношение '+M.answer(M.operation('multiply',q,100))+'%.':'Целые взаимно простые члены: '+q.n+' : '+q.d+'.');
+  stepList(['Переведи величины в одинаковые единицы.','Раздели первый член на второй.','Для процента умножь значение отношения на 100.']);
+ }
+ else if(n===18 && task.cancelRatio){
+  const M=root.PetersonMath;formula('2ab/(6a)');say('a = '+a+', b = '+b+'.');
+  if(state.values[2]){if(a===0)say('Исходная дробь не определена. Сокращение не разрешает подставить исключённое значение a = 0.');else say('Исходное значение '+M.answer(M.operation('divide',2*a*b,6*a))+' и b/3 = '+M.answer(M.operation('divide',b,3))+'.');}
+  stepList(['Выдели общий множитель.','Проверь, что он не равен нулю.','Сохрани ограничение после сокращения.']);
+ }
+ else if(n===18 && task.reviewMap){
+  const type=task.reviewMap,[cm,km,scale]=unitMapData[type][a],per=scale/100000;
+  if(type==='scale')say('На карте '+num(cm)+' см, на местности '+num(km)+' км.');
+  else if(type==='map')say('На местности '+num(km)+' км. Масштаб 1 : '+num(scale)+'.');
+  else say('На карте '+num(cm)+' см. Масштаб 1 : '+num(scale)+'.');
+  if(b>=1)say('Одному сантиметру соответствует '+num(per)+' км.');
+  if(b===2)show(table(['Величина','Значение'],[['Карта',num(cm)+' см'],['Местность',num(km)+' км'],['Масштаб','1 : '+num(scale)]]));
+  stepList(['Установи связь 1 км = 100 000 см.','Найди расстояние, приходящееся на 1 см карты.','Сопоставь длину на карте и на местности.']);
+ }
+ else if(n===18 && task.reviewPercentageWord){
+  const k=task.reviewPercentageWord;
+  if(k==='distance'){const part=a?36:20;say('Известная пятая часть пути: '+part+' км.');if(b>=1)say('Один процент: '+num(part/20)+' км.');if(b===2)say('Весь путь '+num(part*5)+' км.');}
+  if(k==='printer'){const total=a?120:80;say('Страниц в документе '+total+'.');if(b>=1)say('За две минуты напечатали '+num(.55*total)+' страниц.');if(b===2)say('Осталось '+num(.45*total)+' страниц.');}
+  if(k==='price'){const price=a?250:200,gain=a?50:30;say('Начальная цена '+price+' руб., прибавка '+gain+' руб.');if(b>=1)say('Новая цена '+(price+gain)+' руб.');if(b===2)say('Процентное повышение '+num(100*gain/price)+'%.');}
+  if(k==='winners'){const total=a?150:100;say('Участников '+total+'.');if(b>=1)say('Призёров '+num(total*.1)+'.');if(b===2)say('Женщин среди призёров '+num(total*.04)+'.');}
+  stepList(['Назови исходную величину для процента.','Проверь буквенное выражение на выбранных числах.','Проверь, разумны ли единицы ответа.']);
+ }
+ else if(n===18 && task.reviewArithmetic){
+  const M=root.PetersonMath,c=reviewOperationChain(task.reviewArithmetic,a===1);formula(c.expr);
+  if(b)show(table(['Действие','Точное значение'],c.steps.slice(0,b).map(([name,val])=>[name,M.answer(val)])));
+  if(b===c.steps.length)say('Окончательное значение '+M.answer(c.steps.at(-1)[1])+'.');
+  stepList(['Сначала вычисли внутренние скобки.','Отрабатывай умножение и деление равного приоритета слева направо.','Заверши последнее сложение или вычитание.']);
  }
  else
  if(n===18 && task.tariffStudy){
@@ -35305,6 +35369,1402 @@ window.PetersonCourse = {
      },
      "finalLabel": "Запиши исследование для проверки.",
      "fiveMultiples": true
+    },
+    {
+     "id": "p18-t79",
+     "title": "К задаче №123а",
+     "kind": "number",
+     "prompt": "Прочитай и упрости 18 : 30. Запиши значение несократимой дробью.",
+     "answer": "3/5",
+     "steps": [
+      {
+       "prompt": "Какое число стоит в первой позиции? Запиши обыкновенной дробью.",
+       "answer": "18",
+       "hint": "Отношение равно частному. Сделай деление двух точных дробей и сократи общий множитель.",
+       "explanation": "Отношение (18) : (30) даёт 3/5. Соответствующая запись с целыми членами: 3 : 5."
+      },
+      {
+       "prompt": "Чему равно обратное ко второму числу?",
+       "answer": "1/30",
+       "hint": "Отношение равно частному. Сделай деление двух точных дробей и сократи общий множитель.",
+       "explanation": "Отношение (18) : (30) даёт 3/5. Соответствующая запись с целыми членами: 3 : 5."
+      }
+     ],
+     "hint": "Отношение равно частному. Сделай деление двух точных дробей и сократи общий множитель.",
+     "explanation": "Отношение (18) : (30) даёт 3/5. Соответствующая запись с целыми членами: 3 : 5.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 123,
+      "reference": "№123а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewRatio": {
+      "values": [
+       "18",
+       "30"
+      ],
+      "percent": false
+     },
+     "errorCues": [
+      [
+       "5/3",
+       "Первая величина делится на вторую, а не наоборот."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t80",
+     "title": "К задаче №123б",
+     "kind": "number",
+     "prompt": "Прочитай и упрости 7,2 : 0,64. Запиши значение несократимой дробью.",
+     "answer": "45/4",
+     "steps": [
+      {
+       "prompt": "Какое число стоит в первой позиции? Запиши обыкновенной дробью.",
+       "answer": "7.2",
+       "hint": "Отношение равно частному. Сделай деление двух точных дробей и сократи общий множитель.",
+       "explanation": "Отношение (36/5) : (16/25) даёт 45/4. Соответствующая запись с целыми членами: 45 : 4."
+      },
+      {
+       "prompt": "Чему равно обратное ко второму числу?",
+       "answer": "25/16",
+       "hint": "Отношение равно частному. Сделай деление двух точных дробей и сократи общий множитель.",
+       "explanation": "Отношение (36/5) : (16/25) даёт 45/4. Соответствующая запись с целыми членами: 45 : 4."
+      }
+     ],
+     "hint": "Отношение равно частному. Сделай деление двух точных дробей и сократи общий множитель.",
+     "explanation": "Отношение (36/5) : (16/25) даёт 45/4. Соответствующая запись с целыми членами: 45 : 4.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 123,
+      "reference": "№123б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewRatio": {
+      "values": [
+       "7.2",
+       "0.64"
+      ],
+      "percent": false
+     },
+     "errorCues": [
+      [
+       "4/45",
+       "Первая величина делится на вторую, а не наоборот."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t81",
+     "title": "К задаче №123в",
+     "kind": "number",
+     "prompt": "Прочитай и упрости 5⅓ : 3,2. Запиши значение несократимой дробью.",
+     "answer": "5/3",
+     "steps": [
+      {
+       "prompt": "Какое число стоит в первой позиции? Запиши обыкновенной дробью.",
+       "answer": "16/3",
+       "hint": "Отношение равно частному. Сделай деление двух точных дробей и сократи общий множитель.",
+       "explanation": "Отношение (16/3) : (16/5) даёт 5/3. Соответствующая запись с целыми членами: 5 : 3."
+      },
+      {
+       "prompt": "Чему равно обратное ко второму числу?",
+       "answer": "5/16",
+       "hint": "Отношение равно частному. Сделай деление двух точных дробей и сократи общий множитель.",
+       "explanation": "Отношение (16/3) : (16/5) даёт 5/3. Соответствующая запись с целыми членами: 5 : 3."
+      }
+     ],
+     "hint": "Отношение равно частному. Сделай деление двух точных дробей и сократи общий множитель.",
+     "explanation": "Отношение (16/3) : (16/5) даёт 5/3. Соответствующая запись с целыми членами: 5 : 3.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 123,
+      "reference": "№123в",
+      "subpart": "в"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewRatio": {
+      "values": [
+       "16/3",
+       "3.2"
+      ],
+      "percent": false
+     },
+     "errorCues": [
+      [
+       "3/5",
+       "Первая величина делится на вторую, а не наоборот."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t82",
+     "title": "К задаче №123г",
+     "kind": "choice",
+     "prompt": "Упрости (2ab)/(6a), когда a ≠ 0.",
+     "answer": "b/3",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "На какой общий ненулевой буквенный множитель можно сократить?",
+       "hint": "В числителе и знаменателе a — множитель, и по условию a не равен нулю.",
+       "explanation": "2ab/(6a) = b/3. При a = 0 исходная запись не определена, хотя после сокращения буква a исчезла."
+      },
+      {
+       "prompt": "Какое значение получится при b = 6?",
+       "answer": "2",
+       "hint": "В числителе и знаменателе a — множитель, и по условию a не равен нулю.",
+       "explanation": "2ab/(6a) = b/3. При a = 0 исходная запись не определена, хотя после сокращения буква a исчезла."
+      }
+     ],
+     "hint": "В числителе и знаменателе a — множитель, и по условию a не равен нулю.",
+     "explanation": "2ab/(6a) = b/3. При a = 0 исходная запись не определена, хотя после сокращения буква a исчезла.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 123,
+      "reference": "№123г",
+      "subpart": "г"
+     },
+     "finalLabel": "Выбери выражение.",
+     "cancelRatio": true,
+     "errorCues": [
+      [
+       "3b",
+       "Коэффициент после сокращения равен 2/6, а не 6/2."
+      ],
+      [
+       "b/(3a)",
+       "Буква a сократилась в числителе и знаменателе."
+      ]
+     ],
+     "choices": [
+      "3b",
+      "b/3",
+      "b/(3a)"
+     ]
+    },
+    {
+     "id": "p18-t83",
+     "title": "К задаче №124а",
+     "kind": "number",
+     "prompt": "Каково процентное отношение 3 к 4? Введи число процентов.",
+     "answer": "75",
+     "steps": [
+      {
+       "prompt": "Запиши вторую величину в тех же единицах, что и первая.",
+       "answer": "4",
+       "hint": "Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+       "explanation": "Получаем (3) : (4) × 100% = 75%."
+      },
+      {
+       "prompt": "Чему равно их отношение до умножения на 100?",
+       "answer": "3/4",
+       "hint": "Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+       "explanation": "Получаем (3) : (4) × 100% = 75%."
+      }
+     ],
+     "hint": "Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+     "explanation": "Получаем (3) : (4) × 100% = 75%.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 124,
+      "reference": "№124а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewRatio": {
+      "values": [
+       "3",
+       "4"
+      ],
+      "percent": true
+     },
+     "errorCues": [
+      [
+       "3/4",
+       "Это доля. Умножь её на 100, чтобы получить число процентов."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t84",
+     "title": "К задаче №124б",
+     "kind": "number",
+     "prompt": "Каково процентное отношение 0,15 к ⅜? Введи число процентов.",
+     "answer": "40",
+     "steps": [
+      {
+       "prompt": "Запиши вторую величину в тех же единицах, что и первая.",
+       "answer": "3/8",
+       "hint": "Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+       "explanation": "Получаем (0.15) : (3/8) × 100% = 40%."
+      },
+      {
+       "prompt": "Чему равно их отношение до умножения на 100?",
+       "answer": "2/5",
+       "hint": "Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+       "explanation": "Получаем (0.15) : (3/8) × 100% = 40%."
+      }
+     ],
+     "hint": "Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+     "explanation": "Получаем (0.15) : (3/8) × 100% = 40%.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 124,
+      "reference": "№124б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewRatio": {
+      "values": [
+       "0.15",
+       "3/8"
+      ],
+      "percent": true
+     },
+     "errorCues": [
+      [
+       "2/5",
+       "Это доля. Умножь её на 100, чтобы получить число процентов."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t85",
+     "title": "К задаче №124в",
+     "kind": "number",
+     "prompt": "Каково процентное отношение 7 м к 5 м? Введи число процентов.",
+     "answer": "140",
+     "steps": [
+      {
+       "prompt": "Запиши вторую величину в тех же единицах, что и первая.",
+       "answer": "5",
+       "hint": "Единицы длины здесь уже одинаковы. Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+       "explanation": "Единицы длины здесь уже одинаковы. Получаем (7) : (5) × 100% = 140%."
+      },
+      {
+       "prompt": "Чему равно их отношение до умножения на 100?",
+       "answer": "7/5",
+       "hint": "Единицы длины здесь уже одинаковы. Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+       "explanation": "Единицы длины здесь уже одинаковы. Получаем (7) : (5) × 100% = 140%."
+      }
+     ],
+     "hint": "Единицы длины здесь уже одинаковы. Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+     "explanation": "Единицы длины здесь уже одинаковы. Получаем (7) : (5) × 100% = 140%.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 124,
+      "reference": "№124в",
+      "subpart": "в"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewRatio": {
+      "values": [
+       "7",
+       "5"
+      ],
+      "percent": true
+     },
+     "errorCues": [
+      [
+       "7/5",
+       "Это доля. Умножь её на 100, чтобы получить число процентов."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t86",
+     "title": "К задаче №124г",
+     "kind": "number",
+     "prompt": "Каково процентное отношение 9 см² к 0,2 дм²? Введи число процентов.",
+     "answer": "45",
+     "steps": [
+      {
+       "prompt": "Запиши вторую величину в тех же единицах, что и первая.",
+       "answer": "20",
+       "hint": "Сначала 0,2 дм² умножь на 100: это 20 см². Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+       "explanation": "Сначала 0,2 дм² умножь на 100: это 20 см². Получаем (9) : (20) × 100% = 45%."
+      },
+      {
+       "prompt": "Чему равно их отношение до умножения на 100?",
+       "answer": "9/20",
+       "hint": "Сначала 0,2 дм² умножь на 100: это 20 см². Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+       "explanation": "Сначала 0,2 дм² умножь на 100: это 20 см². Получаем (9) : (20) × 100% = 45%."
+      }
+     ],
+     "hint": "Сначала 0,2 дм² умножь на 100: это 20 см². Раздели первую величину на вторую, переведённую в ту же единицу. Умножь частное на 100.",
+     "explanation": "Сначала 0,2 дм² умножь на 100: это 20 см². Получаем (9) : (20) × 100% = 45%.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 124,
+      "reference": "№124г",
+      "subpart": "г"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewRatio": {
+      "values": [
+       "9",
+       "20"
+      ],
+      "percent": true
+     },
+     "errorCues": [
+      [
+       "9/20",
+       "Это доля. Умножь её на 100, чтобы получить число процентов."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t87",
+     "title": "К задаче №125(1)",
+     "kind": "number",
+     "prompt": "На карте учебника расстояние Москва — Харьков равно 18,6 см, по условию ему соответствует 744 км. Найди знаменатель масштаба 1 : n.",
+     "answer": "4000000",
+     "steps": [
+      {
+       "prompt": "Сколько сантиметров в километре?",
+       "answer": "100000",
+       "hint": "Переведи знаменатель масштаба из сантиметров в километры. Определи, нужно ли умножить расстояние карты или разделить расстояние местности.",
+       "explanation": "1 см изображает 744/18,6 = 40 км, то есть 4 000 000 см. Масштаб 1 : 4 000 000."
+      },
+      {
+       "prompt": "Сколько километров изображает 1 см карты?",
+       "answer": "40",
+       "hint": "Переведи знаменатель масштаба из сантиметров в километры. Определи, нужно ли умножить расстояние карты или разделить расстояние местности.",
+       "explanation": "1 см изображает 744/18,6 = 40 км, то есть 4 000 000 см. Масштаб 1 : 4 000 000."
+      }
+     ],
+     "hint": "Переведи знаменатель масштаба из сантиметров в километры. Определи, нужно ли умножить расстояние карты или разделить расстояние местности.",
+     "explanation": "1 см изображает 744/18,6 = 40 км, то есть 4 000 000 см. Масштаб 1 : 4 000 000.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 125,
+      "reference": "№125(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewMap": "scale",
+     "errorCues": [
+      [
+       "40000000",
+       "Перепроверь переход между сантиметрами, метрами и километрами."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t88",
+     "title": "К задаче №125(2)",
+     "kind": "number",
+     "prompt": "По условию расстояние Москва — Севастополь 1490 км. Найди длину на карте в сантиметрах при масштабе 1 : 10 000 000.",
+     "answer": "149/10",
+     "steps": [
+      {
+       "prompt": "Сколько километров представляет 1 см?",
+       "answer": "100",
+       "hint": "Переведи знаменатель масштаба из сантиметров в километры. Определи, нужно ли умножить расстояние карты или разделить расстояние местности.",
+       "explanation": "1 см карты представляет 100 км. Разделив 1490 на 100, получаем 14,9 см."
+      },
+      {
+       "prompt": "Какова длина на карте в миллиметрах?",
+       "answer": "149",
+       "hint": "Переведи знаменатель масштаба из сантиметров в километры. Определи, нужно ли умножить расстояние карты или разделить расстояние местности.",
+       "explanation": "1 см карты представляет 100 км. Разделив 1490 на 100, получаем 14,9 см."
+      }
+     ],
+     "hint": "Переведи знаменатель масштаба из сантиметров в километры. Определи, нужно ли умножить расстояние карты или разделить расстояние местности.",
+     "explanation": "1 см карты представляет 100 км. Разделив 1490 на 100, получаем 14,9 см.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 125,
+      "reference": "№125(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewMap": "map",
+     "errorCues": [
+      [
+       "149",
+       "Перепроверь переход между сантиметрами, метрами и километрами."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t89",
+     "title": "К задаче №125(3)",
+     "kind": "number",
+     "prompt": "На карте масштаба 1 : 8 000 000 от Москвы до Ростова-на-Дону 13,7 см. Сколько километров задано этим расстоянием?",
+     "answer": "1096",
+     "steps": [
+      {
+       "prompt": "Сколько километров на местности означает 1 см карты?",
+       "answer": "80",
+       "hint": "Переведи знаменатель масштаба из сантиметров в километры. Определи, нужно ли умножить расстояние карты или разделить расстояние местности.",
+       "explanation": "1 см соответствует 80 км. Тогда 13,7 × 80 = 1096 км."
+      },
+      {
+       "prompt": "Сколько километров изображают 13 см?",
+       "answer": "1040",
+       "hint": "Переведи знаменатель масштаба из сантиметров в километры. Определи, нужно ли умножить расстояние карты или разделить расстояние местности.",
+       "explanation": "1 см соответствует 80 км. Тогда 13,7 × 80 = 1096 км."
+      }
+     ],
+     "hint": "Переведи знаменатель масштаба из сантиметров в километры. Определи, нужно ли умножить расстояние карты или разделить расстояние местности.",
+     "explanation": "1 см соответствует 80 км. Тогда 13,7 × 80 = 1096 км.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 125,
+      "reference": "№125(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewMap": "land",
+     "errorCues": [
+      [
+       "10960",
+       "Перепроверь переход между сантиметрами, метрами и километрами."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t90",
+     "title": "К задаче №126(1)",
+     "kind": "number",
+     "prompt": "Восстанови член a в пропорции (a) : (8) = (9) : (4).",
+     "answer": "18",
+     "steps": [
+      {
+       "prompt": "Найди известное перекрёстное произведение.",
+       "answer": "72",
+       "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+       "explanation": "Из основного свойства получаем (4) × a = 72. Отсюда a = 18."
+      },
+      {
+       "prompt": "На какой множитель требуется его разделить?",
+       "answer": "4",
+       "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+       "explanation": "Из основного свойства получаем (4) × a = 72. Отсюда a = 18."
+      }
+     ],
+     "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+     "explanation": "Из основного свойства получаем (4) × a = 72. Отсюда a = 18.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 126,
+      "reference": "№126(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "missingRatio": {
+      "letter": "a",
+      "slot": 0,
+      "sets": [
+       [
+        null,
+        "8",
+        "9",
+        "4"
+       ],
+       [
+        null,
+        "24",
+        "27",
+        "12"
+       ]
+      ],
+      "answers": [
+       "18",
+       "54"
+      ]
+     },
+     "errorCues": [
+      [
+       "1/18",
+       "Сравни обе стороны после подстановки. Возможно, деление перевёрнуто."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t91",
+     "title": "К задаче №126(2)",
+     "kind": "number",
+     "prompt": "Восстанови член b в пропорции (5) : (b) = (15) : (12).",
+     "answer": "4",
+     "steps": [
+      {
+       "prompt": "Найди известное перекрёстное произведение.",
+       "answer": "60",
+       "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+       "explanation": "Из основного свойства получаем (15) × b = 60. Отсюда b = 4."
+      },
+      {
+       "prompt": "На какой множитель требуется его разделить?",
+       "answer": "15",
+       "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+       "explanation": "Из основного свойства получаем (15) × b = 60. Отсюда b = 4."
+      }
+     ],
+     "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+     "explanation": "Из основного свойства получаем (15) × b = 60. Отсюда b = 4.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 126,
+      "reference": "№126(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "missingRatio": {
+      "letter": "b",
+      "slot": 1,
+      "sets": [
+       [
+        "5",
+        null,
+        "15",
+        "12"
+       ],
+       [
+        "15",
+        null,
+        "45",
+        "36"
+       ]
+      ],
+      "answers": [
+       "4",
+       "12"
+      ]
+     },
+     "errorCues": [
+      [
+       "1/4",
+       "Сравни обе стороны после подстановки. Возможно, деление перевёрнуто."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t92",
+     "title": "К задаче №126(3)",
+     "kind": "number",
+     "prompt": "Восстанови член c в пропорции (7) : (3,6) = (c) : (1,44).",
+     "answer": "14/5",
+     "steps": [
+      {
+       "prompt": "Найди известное перекрёстное произведение.",
+       "answer": "252/25",
+       "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+       "explanation": "Из основного свойства получаем (18/5) × c = 252/25. Отсюда c = 14/5."
+      },
+      {
+       "prompt": "На какой множитель требуется его разделить?",
+       "answer": "18/5",
+       "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+       "explanation": "Из основного свойства получаем (18/5) × c = 252/25. Отсюда c = 14/5."
+      }
+     ],
+     "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+     "explanation": "Из основного свойства получаем (18/5) × c = 252/25. Отсюда c = 14/5.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 126,
+      "reference": "№126(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "missingRatio": {
+      "letter": "c",
+      "slot": 2,
+      "sets": [
+       [
+        "7",
+        "3.6",
+        null,
+        "1.44"
+       ],
+       [
+        "21",
+        "54/5",
+        null,
+        "108/25"
+       ]
+      ],
+      "answers": [
+       "14/5",
+       "42/5"
+      ]
+     },
+     "errorCues": [
+      [
+       "5/14",
+       "Сравни обе стороны после подстановки. Возможно, деление перевёрнуто."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t93",
+     "title": "К задаче №126(4)",
+     "kind": "number",
+     "prompt": "Восстанови член d в пропорции (0,5) : (3) = (4/3) : (d).",
+     "answer": "8",
+     "steps": [
+      {
+       "prompt": "Найди известное перекрёстное произведение.",
+       "answer": "4",
+       "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+       "explanation": "Из основного свойства получаем (1/2) × d = 4. Отсюда d = 8."
+      },
+      {
+       "prompt": "На какой множитель требуется его разделить?",
+       "answer": "1/2",
+       "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+       "explanation": "Из основного свойства получаем (1/2) × d = 4. Отсюда d = 8."
+      }
+     ],
+     "hint": "Перепиши четыре места пропорции. Только одна диагональ содержит неизвестное.",
+     "explanation": "Из основного свойства получаем (1/2) × d = 4. Отсюда d = 8.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 126,
+      "reference": "№126(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "missingRatio": {
+      "letter": "d",
+      "slot": 3,
+      "sets": [
+       [
+        "0.5",
+        "3",
+        "4/3",
+        null
+       ],
+       [
+        "3/2",
+        "9",
+        "4",
+        null
+       ]
+      ],
+      "answers": [
+       "8",
+       "24"
+      ]
+     },
+     "errorCues": [
+      [
+       "1/8",
+       "Сравни обе стороны после подстановки. Возможно, деление перевёрнуто."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t94",
+     "title": "К задаче №127(1)",
+     "kind": "number",
+     "prompt": "Реши уравнение 18/(5 + x) = 3/2.",
+     "answer": "7",
+     "steps": [
+      {
+       "prompt": "Чему равен знаменатель 5 + x?",
+       "answer": "12",
+       "hint": "Сохрани порядок членов. При переменной в знаменателе сначала исключи значения, обнуляющие его.",
+       "explanation": "x = −5 исключён. Обратное отношение даёт 5 + x = 12, откуда x = 7."
+      },
+      {
+       "prompt": "Какое число x надо исключить?",
+       "answer": "-5",
+       "hint": "Сохрани порядок членов. При переменной в знаменателе сначала исключи значения, обнуляющие его.",
+       "explanation": "x = −5 исключён. Обратное отношение даёт 5 + x = 12, откуда x = 7."
+      }
+     ],
+     "hint": "Сохрани порядок членов. При переменной в знаменателе сначала исключи значения, обнуляющие его.",
+     "explanation": "x = −5 исключён. Обратное отношение даёт 5 + x = 12, откуда x = 7.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 127,
+      "reference": "№127(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       "18",
+       [
+        "1",
+        "5"
+       ],
+       "3",
+       "2"
+      ],
+      "root": "7",
+      "printed": "18/(5 + x) = 3/2"
+     },
+     "errorCues": [
+      [
+       "-7",
+       "Проверь знак найденного числа подстановкой."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t95",
+     "title": "К задаче №127(2)",
+     "kind": "number",
+     "prompt": "Реши уравнение (4y) : 1,2 = (1/6) : 0,1.",
+     "answer": "1/2",
+     "steps": [
+      {
+       "prompt": "Чему равно правое отношение?",
+       "answer": "5/3",
+       "hint": "Сохрани порядок членов. При переменной в знаменателе сначала исключи значения, обнуляющие его.",
+       "explanation": "Справа 5/3, значит 4y = (6/5) × (5/3) = 2. Получаем y = 1/2."
+      },
+      {
+       "prompt": "Какое значение имеет 4y?",
+       "answer": "2",
+       "hint": "Сохрани порядок членов. При переменной в знаменателе сначала исключи значения, обнуляющие его.",
+       "explanation": "Справа 5/3, значит 4y = (6/5) × (5/3) = 2. Получаем y = 1/2."
+      }
+     ],
+     "hint": "Сохрани порядок членов. При переменной в знаменателе сначала исключи значения, обнуляющие его.",
+     "explanation": "Справа 5/3, значит 4y = (6/5) × (5/3) = 2. Получаем y = 1/2.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 127,
+      "reference": "№127(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "y",
+      "terms": [
+       [
+        "4",
+        "0"
+       ],
+       "1.2",
+       "1/6",
+       "0.1"
+      ],
+      "root": "1/2",
+      "printed": "(4y) : 1,2 = (1/6) : 0,1"
+     },
+     "errorCues": [
+      [
+       "-1/2",
+       "Проверь знак найденного числа подстановкой."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t96",
+     "title": "К задаче №127(3)",
+     "kind": "number",
+     "prompt": "Реши уравнение 7/3 = (2z − 11)/9.",
+     "answer": "16",
+     "steps": [
+      {
+       "prompt": "Чему равен числитель 2z − 11?",
+       "answer": "21",
+       "hint": "Сохрани порядок членов. При переменной в знаменателе сначала исключи значения, обнуляющие его.",
+       "explanation": "Из 7/3 = (2z − 11)/9 следует 2z − 11 = 21. Прибавь 11 и раздели на 2."
+      },
+      {
+       "prompt": "Чему равно 2z?",
+       "answer": "32",
+       "hint": "Сохрани порядок членов. При переменной в знаменателе сначала исключи значения, обнуляющие его.",
+       "explanation": "Из 7/3 = (2z − 11)/9 следует 2z − 11 = 21. Прибавь 11 и раздели на 2."
+      }
+     ],
+     "hint": "Сохрани порядок членов. При переменной в знаменателе сначала исключи значения, обнуляющие его.",
+     "explanation": "Из 7/3 = (2z − 11)/9 следует 2z − 11 = 21. Прибавь 11 и раздели на 2.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 127,
+      "reference": "№127(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "z",
+      "terms": [
+       "7",
+       "3",
+       [
+        "2",
+        "-11"
+       ],
+       "9"
+      ],
+      "root": "16",
+      "printed": "7/3 = (2z − 11)/9"
+     },
+     "errorCues": [
+      [
+       "-16",
+       "Проверь знак найденного числа подстановкой."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t97",
+     "title": "К задаче №128",
+     "kind": "manual",
+     "prompt": "Запиши все формальные перестановки в ненулевых членах пропорции a/x = b/y, сохраняющие исходную связь.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько вариантов выбора пары крайних?",
+       "answer": "2",
+       "hint": "Исходное произведение крайних ay равно произведению средних xb.",
+       "explanation": "С одной стороны перекрёстного равенства стоят a и y, с другой x и b. Выбор крайних и два независимых порядка дают 8 форм."
+      },
+      {
+       "prompt": "Сколько форм получишь с учётом порядка обеих пар?",
+       "answer": "8",
+       "hint": "Исходное произведение крайних ay равно произведению средних xb.",
+       "explanation": "С одной стороны перекрёстного равенства стоят a и y, с другой x и b. Выбор крайних и два независимых порядка дают 8 форм."
+      }
+     ],
+     "hint": "Исходное произведение крайних ay равно произведению средних xb.",
+     "explanation": "С одной стороны перекрёстного равенства стоят a и y, с другой x и b. Выбор крайних и два независимых порядка дают 8 форм.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 128,
+      "reference": "№128"
+     },
+     "finalLabel": "Запиши рассуждение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "a",
+       "x",
+       "b",
+       "y"
+      ],
+      "symbolic": true
+     }
+    },
+    {
+     "id": "p18-t98",
+     "title": "К задаче №129(1)",
+     "kind": "number",
+     "prompt": "Используя правило весов, реши 1,5a − 3 = a + 7,5.",
+     "answer": "21",
+     "steps": [
+      {
+       "prompt": "После вычитания a сколько a останется слева?",
+       "answer": "1/2",
+       "hint": "Делай одну операцию сразу в обеих частях. Собери буквы отдельно от чисел.",
+       "explanation": "Имеем 0,5a = 10,5. Обе стороны умножаем на 2: a = 21."
+      },
+      {
+       "prompt": "Чему равна правая часть после прибавления 3?",
+       "answer": "21/2",
+       "hint": "Делай одну операцию сразу в обеих частях. Собери буквы отдельно от чисел.",
+       "explanation": "Имеем 0,5a = 10,5. Обе стороны умножаем на 2: a = 21."
+      }
+     ],
+     "hint": "Делай одну операцию сразу в обеих частях. Собери буквы отдельно от чисел.",
+     "explanation": "Имеем 0,5a = 10,5. Обе стороны умножаем на 2: a = 21.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 129,
+      "reference": "№129(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "storyBalance": {
+      "rule": "oneHalf",
+      "equation": "1,5a − 3 = a + 7,5"
+     },
+     "errorCues": [
+      [
+       "-21",
+       "Проверь знак свободного члена после переноса."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t99",
+     "title": "К задаче №129(2)",
+     "kind": "number",
+     "prompt": "Используя правило весов, реши 1,8b = 3(b − 0,12).",
+     "answer": "3/10",
+     "steps": [
+      {
+       "prompt": "Каков положительный модуль постоянного члена после раскрытия скобок?",
+       "answer": "9/25",
+       "hint": "Делай одну операцию сразу в обеих частях. Собери буквы отдельно от чисел.",
+       "explanation": "Раскрываем скобки: 1,8b = 3b − 0,36. Отсюда 1,2b = 0,36 и b = 0,3."
+      },
+      {
+       "prompt": "Сколько b остаётся в 3b − 1,8b?",
+       "answer": "6/5",
+       "hint": "Делай одну операцию сразу в обеих частях. Собери буквы отдельно от чисел.",
+       "explanation": "Раскрываем скобки: 1,8b = 3b − 0,36. Отсюда 1,2b = 0,36 и b = 0,3."
+      }
+     ],
+     "hint": "Делай одну операцию сразу в обеих частях. Собери буквы отдельно от чисел.",
+     "explanation": "Раскрываем скобки: 1,8b = 3b − 0,36. Отсюда 1,2b = 0,36 и b = 0,3.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 129,
+      "reference": "№129(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "storyBalance": {
+      "rule": "threeTimes",
+      "equation": "1,8b = 3(b − 0,12)"
+     },
+     "errorCues": [
+      [
+       "-3/10",
+       "Проверь знак свободного члена после переноса."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t100",
+     "title": "К задаче №130(1)",
+     "kind": "choice",
+     "prompt": "Если a км — 20% всего пути аэросаней, каким выражением задаётся весь путь?",
+     "answer": "5a",
+     "steps": [
+      {
+       "prompt": "Проверь формулу при a = 20.",
+       "answer": "100",
+       "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+       "explanation": "Раздели известную часть на 0,2. Целое равно 5a."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни словами, от какой величины берётся каждый процент.",
+       "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+       "explanation": "Раздели известную часть на 0,2. Целое равно 5a."
+      }
+     ],
+     "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+     "explanation": "Раздели известную часть на 0,2. Целое равно 5a.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 130,
+      "reference": "№130(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Выбери выражение.",
+     "reviewPercentageWord": "distance",
+     "errorCues": [
+      [
+       "a/5",
+       "Раздели известную часть на 0,2. Целое равно 5a."
+      ],
+      [
+       "1,2a",
+       "Раздели известную часть на 0,2. Целое равно 5a."
+      ]
+     ],
+     "choices": [
+      "a/5",
+      "5a",
+      "1,2a"
+     ]
+    },
+    {
+     "id": "p18-t101",
+     "title": "К задаче №130(2)",
+     "kind": "choice",
+     "prompt": "В документе b страниц. Напечатали 30% всего документа и затем ещё 25% всего документа. Сколько страниц осталось?",
+     "answer": "9b/20",
+     "steps": [
+      {
+       "prompt": "Проверь формулу при b = 80.",
+       "answer": "36",
+       "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+       "explanation": "Обе доли отсчитываются от b. После печати 55% остаётся 45%, то есть 9b/20."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни словами, от какой величины берётся каждый процент.",
+       "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+       "explanation": "Обе доли отсчитываются от b. После печати 55% остаётся 45%, то есть 9b/20."
+      }
+     ],
+     "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+     "explanation": "Обе доли отсчитываются от b. После печати 55% остаётся 45%, то есть 9b/20.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 130,
+      "reference": "№130(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Выбери выражение.",
+     "reviewPercentageWord": "printer",
+     "errorCues": [
+      [
+       "11b/20",
+       "Обе доли отсчитываются от b. После печати 55% остаётся 45%, то есть 9b/20."
+      ],
+      [
+       "21b/40",
+       "Обе доли отсчитываются от b. После печати 55% остаётся 45%, то есть 9b/20."
+      ]
+     ],
+     "choices": [
+      "11b/20",
+      "9b/20",
+      "21b/40"
+     ]
+    },
+    {
+     "id": "p18-t102",
+     "title": "К задаче №130(3)",
+     "kind": "choice",
+     "prompt": "Начальная цена пылесоса c рублей, прибавка d рублей. Каким выражением задаётся число процентов подорожания при c > 0?",
+     "answer": "100d/c",
+     "steps": [
+      {
+       "prompt": "Проверь формулу при c = 200 и d = 30.",
+       "answer": "15",
+       "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+       "explanation": "Сравни прибавку с начальной ценой: d/c. Для числа процентов умножь на 100."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни словами, от какой величины берётся каждый процент.",
+       "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+       "explanation": "Сравни прибавку с начальной ценой: d/c. Для числа процентов умножь на 100."
+      }
+     ],
+     "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+     "explanation": "Сравни прибавку с начальной ценой: d/c. Для числа процентов умножь на 100.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 130,
+      "reference": "№130(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Выбери выражение.",
+     "reviewPercentageWord": "price",
+     "errorCues": [
+      [
+       "100c/d",
+       "Сравни прибавку с начальной ценой: d/c. Для числа процентов умножь на 100."
+      ],
+      [
+       "100d/(c+d)",
+       "Сравни прибавку с начальной ценой: d/c. Для числа процентов умножь на 100."
+      ]
+     ],
+     "choices": [
+      "100c/d",
+      "100d/c",
+      "100d/(c+d)"
+     ]
+    },
+    {
+     "id": "p18-t103",
+     "title": "К задаче №130(4)",
+     "kind": "choice",
+     "prompt": "В соревновании x участников. Десятая часть стала призёрами, а среди призёров женщины составили 40%. Сколько женщин получили призы?",
+     "answer": "x/25",
+     "steps": [
+      {
+       "prompt": "Проверь формулу при x = 100.",
+       "answer": "4",
+       "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+       "explanation": "Умножь 0,1x на 0,4. Получим 0,04x = x/25. Для реального количества участников все промежуточные количества должны быть целыми."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Объясни словами, от какой величины берётся каждый процент.",
+       "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+       "explanation": "Умножь 0,1x на 0,4. Получим 0,04x = x/25. Для реального количества участников все промежуточные количества должны быть целыми."
+      }
+     ],
+     "hint": "Запиши долю от той величины, которую назвали исходной. На отдельном числовом примере проверь единицы и размер ответа.",
+     "explanation": "Умножь 0,1x на 0,4. Получим 0,04x = x/25. Для реального количества участников все промежуточные количества должны быть целыми.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 130,
+      "reference": "№130(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Выбери выражение.",
+     "reviewPercentageWord": "winners",
+     "errorCues": [
+      [
+       "x/2",
+       "Умножь 0,1x на 0,4. Получим 0,04x = x/25. Для реального количества участников все промежуточные количества должны быть целыми."
+      ],
+      [
+       "2x/5",
+       "Умножь 0,1x на 0,4. Получим 0,04x = x/25. Для реального количества участников все промежуточные количества должны быть целыми."
+      ]
+     ],
+     "choices": [
+      "x/2",
+      "x/25",
+      "2x/5"
+     ]
+    },
+    {
+     "id": "p18-t104",
+     "title": "К задаче №131(1)",
+     "kind": "number",
+     "prompt": "Вычисли точно: 27,21 + (3⅖ − 1,141) : 0,45 × 14,5.",
+     "answer": "100",
+     "steps": [
+      {
+       "prompt": "Какова разность в скобках?",
+       "answer": "2259/1000",
+       "hint": "Сначала заверши действия в скобках. Деление и умножение одного уровня выполняй слева направо.",
+       "explanation": "Разность 2,259. Частное 5,02, произведение 72,79. Прибавь 27,21 и получишь 100."
+      },
+      {
+       "prompt": "Чему равно частное после деления на 0,45?",
+       "answer": "251/50",
+       "hint": "Сначала заверши действия в скобках. Деление и умножение одного уровня выполняй слева направо.",
+       "explanation": "Разность 2,259. Частное 5,02, произведение 72,79. Прибавь 27,21 и получишь 100."
+      },
+      {
+       "prompt": "После умножения на 14,5 получилось сколько?",
+       "answer": "7279/100",
+       "hint": "Сначала заверши действия в скобках. Деление и умножение одного уровня выполняй слева направо.",
+       "explanation": "Разность 2,259. Частное 5,02, произведение 72,79. Прибавь 27,21 и получишь 100."
+      }
+     ],
+     "hint": "Сначала заверши действия в скобках. Деление и умножение одного уровня выполняй слева направо.",
+     "explanation": "Разность 2,259. Частное 5,02, произведение 72,79. Прибавь 27,21 и получишь 100.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 131,
+      "reference": "№131(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewArithmetic": 1,
+     "errorCues": [
+      [
+       "72.79",
+       "Осталось прибавить начальное число 27,21."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t105",
+     "title": "К задаче №131(2)",
+     "kind": "number",
+     "prompt": "Вычисли точно: [7,8 : (4 3/7 − 1 9/14) + 0,312] : 0,02 − 3,89 × 40.",
+     "answer": "0",
+     "steps": [
+      {
+       "prompt": "Чему равняется разность двух смешанных чисел?",
+       "answer": "39/14",
+       "hint": "Сначала заверши действия в скобках. Деление и умножение одного уровня выполняй слева направо.",
+       "explanation": "Разность 39/14, частное 2,8, в скобках всего 3,112. Далее 3,112 : 0,02 = 155,6. Это же 3,89 × 40, поэтому итог 0."
+      },
+      {
+       "prompt": "Чему равно 7,8 : (39/14)?",
+       "answer": "14/5",
+       "hint": "Сначала заверши действия в скобках. Деление и умножение одного уровня выполняй слева направо.",
+       "explanation": "Разность 39/14, частное 2,8, в скобках всего 3,112. Далее 3,112 : 0,02 = 155,6. Это же 3,89 × 40, поэтому итог 0."
+      },
+      {
+       "prompt": "Чему равен результат в квадратных скобках?",
+       "answer": "389/125",
+       "hint": "Сначала заверши действия в скобках. Деление и умножение одного уровня выполняй слева направо.",
+       "explanation": "Разность 39/14, частное 2,8, в скобках всего 3,112. Далее 3,112 : 0,02 = 155,6. Это же 3,89 × 40, поэтому итог 0."
+      },
+      {
+       "prompt": "Вычисли левую часть последней разности.",
+       "answer": "778/5",
+       "hint": "Сначала заверши действия в скобках. Деление и умножение одного уровня выполняй слева направо.",
+       "explanation": "Разность 39/14, частное 2,8, в скобках всего 3,112. Далее 3,112 : 0,02 = 155,6. Это же 3,89 × 40, поэтому итог 0."
+      }
+     ],
+     "hint": "Сначала заверши действия в скобках. Деление и умножение одного уровня выполняй слева направо.",
+     "explanation": "Разность 39/14, частное 2,8, в скобках всего 3,112. Далее 3,112 : 0,02 = 155,6. Это же 3,89 × 40, поэтому итог 0.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 31,
+      "exercise": 131,
+      "reference": "№131(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "reviewArithmetic": 2,
+     "errorCues": [
+      [
+       "155.6",
+       "155,6 получилось и слева, и справа от последнего минуса. Вычти второе значение из первого."
+      ]
+     ]
     }
    ],
    "orderBySource": true,
@@ -35313,6 +36773,12 @@ window.PetersonCourse = {
     "last": 122,
     "firstPage": 26,
     "lastPage": 30
+   },
+   "completeSourceReview": {
+    "first": 123,
+    "last": 131,
+    "firstPage": 31,
+    "lastPage": 31
    }
   },
   {
@@ -82428,6 +83894,15 @@ function firstErrorsHTML(t,s){
         section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
         section.lastPage + '). Число карточек с разбором — ' + count + '.</p>';
       lastPrinted = section.last;
+      const review = topic.completeSourceReview;
+      if (review && review.first === lastPrinted + 1) {
+        const start = readingOrder(topic).find(i => topic.tasks[i].source.exercise === review.first);
+        if (Number.isInteger(start)) {
+          coverage += '<p class="small"><a href="#lesson/' + e(topic.id) + '/' + start + '">Самопроверка · №' +
+            review.first + '–' + review.last + ' · с. ' + review.firstPage + '</a></p>';
+          lastPrinted = review.last;
+        }
+      }
     }
     return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
       'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>' + coverage;
