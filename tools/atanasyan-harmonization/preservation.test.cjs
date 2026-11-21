@@ -73,7 +73,7 @@ function filesAt(relative) {
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
   "geometry-course/textbook/assets/additional-lessons.js": "4ae408e64528931592f683a241e050427f0b6003acbe982c265e93b6a8ad459d",
-  "geometry-course/textbook/data/circle-lessons.json": "39c22f3ba1af7a31ccc0a040544f1e55ed3f7e8600dc836f20f32ad25542f83c",
+  "geometry-course/textbook/data/circle-lessons.json": "a659217fe99e2fe78e1026f5106771b85c3f91aac72fc5d9c6930807bdd79fdb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
   "geometry-course/textbook/data/area-similarity-lessons.json": "a03d352a79dda749b3ed61d60c1ac40460a4a4e5f5eabdccaadd4bbe9401aa43",
   "geometry-course/textbook/data/midpoint-lessons.json": "e61b548a9e236e0d8dcabb90dc0ca2820b8dd344fb3b6c85a1e9faf9427dbe71"
