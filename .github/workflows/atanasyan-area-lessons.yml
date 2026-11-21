@@ -99,6 +99,8 @@ on:
       - 'tools/geometry-textbook/*polygon_circle_applications*'
       - 'tools/geometry-textbook/*regular_polygon_areas*'
       - 'tools/geometry-textbook/*regular_polygon_constructions*'
+      - 'tools/geometry-textbook/*circumference_lengths*'
+      - 'geometry-course/textbook/data/circumference-lengths.json'
       - 'geometry-course/textbook/data/regular-polygon-constructions.json'
       - 'geometry-course/textbook/data/regular-polygon-areas.json'
       - 'geometry-course/textbook/data/polygon-circle-applications.json'
@@ -178,6 +180,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/circumference_lengths.py --check && python3 tools/geometry-textbook/check_circumference_lengths.py
       - run: python3 tools/geometry-textbook/regular_polygon_constructions.py --check && python3 tools/geometry-textbook/check_regular_polygon_constructions.py
       - run: python3 tools/geometry-textbook/regular_polygon_areas.py --check && python3 tools/geometry-textbook/check_regular_polygon_areas.py
       - run: python3 tools/geometry-textbook/polygon_circle_applications.py --check && python3 tools/geometry-textbook/check_polygon_circle_applications.py

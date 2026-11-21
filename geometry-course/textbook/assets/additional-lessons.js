@@ -94,7 +94,8 @@
       ['/geometry-course/textbook/data/regular-polygon-tables.json', 'п. 116 и №1176–1177'],
       ['/geometry-course/textbook/data/polygon-circle-applications.json', 'п. 117 и №1178–1182'],
       ['/geometry-course/textbook/data/regular-polygon-areas.json', '№1183–1187'],
-      ['/geometry-course/textbook/data/regular-polygon-constructions.json', '№1188–1189']
+      ['/geometry-course/textbook/data/regular-polygon-constructions.json', '№1188–1189'],
+      ['/geometry-course/textbook/data/circumference-lengths.json', 'п. 118 и №1190–1192']
   ];
 
   async function forCourse(base) {

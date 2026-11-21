@@ -31,6 +31,7 @@ const server=http.createServer((req,res)=>{
  const equationAnswers={1051:['2','13'],'1052-1':['5','4'],'1052-2':['2','9'],'1052-3':['-7','9/4'],'1052-4':['-3','25'],1053:['10','13'],1054:['25','25'],'1055-1':['2','13'],'1055-2':['3','10'],1056:['16','1'],1057:['4','3']};
  const lineAnswers={'1058-1':['3','-1'],'1058-2':['-3','-3'],'1058-3':['-6','-1'],1059:['3','2'],'1060-1':['1','-6'],'1060-2':['5','3'],1061:['5','-3'],'1062-1':['3','-2'],'1062-2':['-2','3'],'1062-3':['-4','1'],'1062-4':['7','-1'],1063:['5','4'],1064:['5','6']};
  const locusAnswers={1065:['8','1'],1066:['-3','0'],'1067-1':['0','4'],'1067-2':['1','0'],'1068-1':['2','1'],'1068-2':['3','0'],1069:['4','4'],'1070-1':['4','1'],'1070-2':['1/3','2/3'],1071:['1','2'],1072:['3','0'],1073:['-2','-3'],1074:['32','2'],1075:['-3','-2']};
+ const circumferenceAnswers={"t118":["12","4"],"1190-1":["8","50,24"],"1190-2":["6","56,52"],"1190-3":["6,28","26,11"],"1190-4":["18","18"],"1190-5":["1,4","13,19"],"1190-6":["2","2"],"1190-7":["203","1274,84"],"1190-8":["7","43,96"],"1190-9":["2","0,90"],"1191-1":["3","20"],"1191-2":["1","1"],"1191-3":["4","20"],"1191-4":["1","1"],"1192-1":["3","20"],"1192-2":["1","1"]};
  const polygonCompassAnswers={"1188":["45","2"],"1189-1":["60","6"],"1189-2":["120","108"],"1189-3":["90","72"],"1189-4":["45","4"]};
  const polygonAreaAnswers={"1183-1":["18","144"],"1183-2":["8","4"],"1183-3":["6","18"],"1183-4":["75","200"],"1184":["3","4"],"1185":["6","24"],"1186":["3","4"],"1187-1":["6","12"],"1187-2":["1","12"]};
  const polygonCircleAnswers={"t117":["12","16"],"1178":["6","96"],"1179":["3","48"],"1180":["3","4"],"1181":["8","16"],"1182":["2","3"]};
@@ -62,9 +63,9 @@ const server=http.createServer((req,res)=>{
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1189/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1192/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers,...vectorProductReviewAnswers,...additionalAreaAnswers,...additionalSolveAnswers,...additionalScalarVectorAnswers,...chapterTwelveFinalAnswers,...regularDefinitionAnswers,...regularAngleAnswers,...regularCenterAnswers,...regularTableAnswers,...polygonCircleAnswers,...polygonAreaAnswers,...polygonCompassAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers,...vectorProductReviewAnswers,...additionalAreaAnswers,...additionalSolveAnswers,...additionalScalarVectorAnswers,...chapterTwelveFinalAnswers,...regularDefinitionAnswers,...regularAngleAnswers,...regularCenterAnswers,...regularTableAnswers,...polygonCircleAnswers,...polygonAreaAnswers,...polygonCompassAnswers,...circumferenceAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -83,6 +84,21 @@ const server=http.createServer((req,res)=>{
    assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key))?.checked===true,storageKey),false);
    if(revised)assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).checked,revisionKey+'1'),true);
    const coefficient={
+    "1190-1":["-100","25,12","Отрезок от цент","25.12"],
+    "1190-2":["-100","18,84","Отрезок от цент","18.84"],
+    "1190-3":["-100","13,06","Из C=2πR вырази","13.06"],
+    "1190-4":["-100","9","Сохрани π в чис","9"],
+    "1190-5":["-100","4,40","Отрезок от цент","4.396"],
+    "1190-6":["-100","1","Из C=2πR вырази","1"],
+    "1190-7":["-100","637,42","Отрезок от цент","637.42"],
+    "1190-8":["-100","14,65","Отрезок от цент","14.65"],
+    "1190-9":["-100","0,45","Из C=2πR вырази","0.45"],
+    "1191-1":["-100","3","Запиши C₂/C₁. И","3"],
+    "1191-2":["-100","1/2","Запиши C₂/C₁. И","0.5"],
+    "1191-3":["-100","k","Запиши C₂/C₁. И","к"],
+    "1191-4":["-100","1/k","Запиши C₂/C₁. И","1/к"],
+    "1192-1":["-100","k","Запиши R₂/R₁. И","к"],
+    "1192-2":["-100","1/k","Запиши R₂/R₁. И","1/к"],
     "1188":["2R²","√2R²","У вершин, номер","R^2*sqrt(2)"],
     "1183-1":["18","36","Исходное R дове","36.0"],
     "1183-2":["64","16√3","Раздели перимет","16sqrt(3)"],
@@ -336,7 +352,7 @@ const server=http.createServer((req,res)=>{
    const midpointCases={'972-1':5,'972-2':4,973:3,974:3,975:3};
    const appliedCases={976:2,977:4,978:2,979:3,980:3};
    const lengthCases={981:3,982:3,983:2,984:2,985:3,986:3,987:3};
-   const extraCase=n.startsWith('1189-')?'case-4':n==='1188'?'case-3':n==='1185'?'case-4':Object.hasOwn(polygonAreaAnswers,n)?'case-3':Object.hasOwn(polygonCircleAnswers,n)?'case-3':Object.hasOwn(regularTableAnswers,n)?'case-3':Object.hasOwn(regularCenterAnswers,n)?'case-3':Object.hasOwn(regularAngleAnswers,n)?'case-3':Object.hasOwn(regularDefinitionAnswers,n)?'case-3':Object.hasOwn(chapterTwelveFinalAnswers,n)?'case-3':Object.hasOwn(additionalScalarVectorAnswers,n)?'case-3':Object.hasOwn(additionalSolveAnswers,n)?'case-3':Object.hasOwn(additionalAreaAnswers,n)?'case-3':chapter12?'case-3':Object.hasOwn(scalarGeometryAnswers,n)?'case-3':Object.hasOwn(scalarCoordinateAnswers,n)?'case-3':(n==='t109'||n==='t110')?'case-4':Object.hasOwn(scalarProductAnswers,n)?'case-3':Object.hasOwn(fieldTrigAnswers,n)?'case-3':['1117','1118','1122'].includes(n)?'case-4':Object.hasOwn(solvedTriangleAnswers,n)?'case-3':n==='t107'?'case-4':Object.hasOwn(triangleAreaAnswers,n)?'case-3':n==='1103'?'case-4':Object.hasOwn(trigRayAnswers,n)?'case-3':(n==='1098-1'||n==='1098-2')?'case-6':n==='1099'?'case-5':n==='t100'?'case-4':Object.hasOwn(semicircleAnswers,n)?'case-3':(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
+   const extraCase=Object.hasOwn(circumferenceAnswers,n)?'case-3':n.startsWith('1189-')?'case-4':n==='1188'?'case-3':n==='1185'?'case-4':Object.hasOwn(polygonAreaAnswers,n)?'case-3':Object.hasOwn(polygonCircleAnswers,n)?'case-3':Object.hasOwn(regularTableAnswers,n)?'case-3':Object.hasOwn(regularCenterAnswers,n)?'case-3':Object.hasOwn(regularAngleAnswers,n)?'case-3':Object.hasOwn(regularDefinitionAnswers,n)?'case-3':Object.hasOwn(chapterTwelveFinalAnswers,n)?'case-3':Object.hasOwn(additionalScalarVectorAnswers,n)?'case-3':Object.hasOwn(additionalSolveAnswers,n)?'case-3':Object.hasOwn(additionalAreaAnswers,n)?'case-3':chapter12?'case-3':Object.hasOwn(scalarGeometryAnswers,n)?'case-3':Object.hasOwn(scalarCoordinateAnswers,n)?'case-3':(n==='t109'||n==='t110')?'case-4':Object.hasOwn(scalarProductAnswers,n)?'case-3':Object.hasOwn(fieldTrigAnswers,n)?'case-3':['1117','1118','1122'].includes(n)?'case-4':Object.hasOwn(solvedTriangleAnswers,n)?'case-3':n==='t107'?'case-4':Object.hasOwn(triangleAreaAnswers,n)?'case-3':n==='1103'?'case-4':Object.hasOwn(trigRayAnswers,n)?'case-3':(n==='1098-1'||n==='1098-2')?'case-6':n==='1099'?'case-5':n==='t100'?'case-4':Object.hasOwn(semicircleAnswers,n)?'case-3':(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
    const gridCase=Object.hasOwn(gridAnswers,n)?'case-'+(Number(number)<=1006?6:3):null;
    const actionCase=Object.hasOwn(actionAnswers,n)?'case-'+(n==='1011'?4:n==='1012'?6:3):null;
    const positionCase=Object.hasOwn(positionAnswers,n)?'case-3':null;
