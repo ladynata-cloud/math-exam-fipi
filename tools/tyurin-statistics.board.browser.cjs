@@ -51,7 +51,9 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--dorofeev7')?{
+const catalogue=process.argv.includes('--dorofeev8')?{
+  directory:'dorofeev-algebra-7-9',entries:[[72,60,28]],uniqueLessons:27,search:'dorofeev-algebra-7-9',match:'алгебраические дроби',lesson:'72-6c',chart:'svg[aria-label*="Числитель и знаменатель"]',storage:'math:dorofeev-algebra-7-9:v1:'
+}:process.argv.includes('--dorofeev7')?{
   directory:'dorofeev-algebra-7-9',entries:[[96,73,58]],uniqueLessons:57,search:'dorofeev-algebra-7-9',match:'сравнение дробей',lesson:'96-12',chart:'svg[aria-label*="Сравнение долей годной продукции"]',storage:'math:dorofeev-algebra-7-9:v1:'
 }:process.argv.includes('--merzlyak7-2015')?{
   directory:'merzlyak9-2014',entries:[[93,51,125]],uniqueLessons:124,search:'merzlyak9-2014',match:'введение',lesson:process.argv.includes('--boundary')?'93-20-2':'93-6-3',chart:process.argv.includes('--boundary')?'svg[aria-label*="Контур фигуры с размерами"]':'svg[aria-label*="Дерево выражения"]',storage:'math:merzlyak9-2014:v1:'
