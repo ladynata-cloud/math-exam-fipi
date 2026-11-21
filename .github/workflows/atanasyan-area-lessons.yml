@@ -52,6 +52,8 @@ on:
       - 'tools/geometry-textbook/*coordinate_positions*'
       - 'geometry-course/textbook/data/coordinate-tables.json'
       - 'tools/geometry-textbook/*coordinate_tables*'
+      - 'geometry-course/textbook/data/coordinate-distances.json'
+      - 'tools/geometry-textbook/*coordinate_distances*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
@@ -89,6 +91,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_actions.py --check && python3 tools/geometry-textbook/check_coordinate_actions.py
       - run: python3 tools/geometry-textbook/coordinate_positions.py --check && python3 tools/geometry-textbook/check_coordinate_positions.py
       - run: python3 tools/geometry-textbook/coordinate_tables.py --check && python3 tools/geometry-textbook/check_coordinate_tables.py
+      - run: python3 tools/geometry-textbook/coordinate_distances.py --check && python3 tools/geometry-textbook/check_coordinate_distances.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons

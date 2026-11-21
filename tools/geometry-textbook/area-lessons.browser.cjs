@@ -22,14 +22,15 @@ const server=http.createServer((req,res)=>{
  const actionAnswers={'1009-1':['7','1'],'1009-2':['1','1'],'1009-3':['1','-3'],'1009-4':['0','4'],'1010-1':['2','-7'],'1010-2':['0','-5'],'1010-3':['9','6'],'1010-4':['-2','2'],1011:['-6','-8'],1012:['2','8'],'1013-1':['7','9'],'1013-2':['28','-9'],'1013-3':['3','7'],'1013-4':['3','3'],1014:['-2','0'],1015:['2','21']};
  const positionAnswers={t95:['5','7'],t96:['5','-6'],'1016-1':['0','4'],'1016-2':['4','2,5'],1017:['75','50'],1018:['3','8'],1019:['-3','6'],1020:['7','3']};
  const tableAnswers={'1021-1':['-4','0'],'1021-2':['0','-10'],'1021-3':['3','4'],'1021-4':['-4','-2'],1022:['1','-3','1,5','3','2','6'],1023:['-0,5','-11','6','3,5','-4','6,5','2','-3','3']};
+ const distanceAnswers={1024:['-7','3'],'1025-1':['106','13'],'1025-2':['25','25'],'1025-3':['200','18'],'1025-4':['389','25'],'1025-5':['242','8'],'1025-6':['100','49'],'1026-1':['4','25'],'1026-2':['9','16'],'1026-3':['13','41'],'1027-1':['0','9'],'1027-2':['-8','16'],'1027-3':['4','25'],'1027-4':['-3','25'],1028:['98','82','10'],1029:['-1','5']};
  const reviewAnswers={r1:['7','0'],r2:['-3','0'],r3:['5','13'],r4:['2','5'],r5:['2','4'],r6:['4','6'],r7:['2','3'],r8:['3','8'],r9:['2','3'],r10:['4','-2'],r11:['3','-5'],r12:['3','-3'],r13:['-3','3'],r14:['-3','2'],'r15-1':['0','12'],'r15-2':['0','5'],r16:['-3','0'],r17:['-6','6'],r18:['-2','14'],r19:['5','7'],r20:['6','15']};
  for(const width of [320,1280]) {
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1023/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1029/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -42,6 +43,9 @@ const server=http.createServer((req,res)=>{
    const coefficient={
     '998-1':['4','-4','отрицательный','−4,0'],'998-2':['2','20','в сантиметры','+20'],'998-3':['1','-1','противоположные','−1.0'],'998-4':['25','5','возведения в квадрат','+5'],
     '999-1':['0,5','2','обратный переход','2.0'],'999-2':['2','1/2','короче','½'],'999-3':['1/2','-1/2','отрицательным','−0,5'],'999-4':['-1','1','D→C','+1'],'999-5':['1','-1','направлению','−1.0'],
+    '1025-1':['106','√106','квадрат длины','sqrt(106)'],'1025-2':['25','5','квадрат длины','5,0'],'1025-3':['200','10√2','квадрат длины','10*sqrt(2)'],'1025-4':['389','√389','квадрат длины','sqrt(389)'],'1025-5':['242','11√2','квадрат длины','√242'],'1025-6':['100','10','квадрат длины','10.0'],
+    '1026-1':['-2','2','|yM|','2.0'],'1026-2':['2','3','|xM|','3,0'],'1026-3':['13','√13','обе координаты','sqrt(13)'],
+    '1027-1':['-4','4','Извлеки корень','4,0'],'1027-2':['-8','8','Извлеки корень','8.0'],'1027-3':['25','5','Извлеки корень','sqrt(25)'],'1027-4':['25','5','Извлеки корень','5,0'],1029:['13','√13','усреднены B и C','sqrt(13)'],
     '1021-1':['4;0','-4;0','одной горизонтали','(−4; 0)'],'1021-2':['0;-26','0;26','одной вертикали','(0; 26)'],'1021-3':['-3;-4','3;4','поменялись местами','(3; 4)'],'1021-4':['4;3','-4;-3','поменялись местами','(−4; −3)'],
     1017:['130;75','100;75','координаты финиша','(100; 75)'],1020:['17;-3','7;-3','складывает B и C','(7; −3)'],
     '1009-1':['1;-3','5;7','противоположное действие','(5; 7)'],'1009-2':['2;-9','4;1','противоположное действие','(4; 1)'],'1009-3':['-9;-5','1;1','противоположное действие','(1; 1)'],'1009-4':['5;14','-1;0','взаимно компенсируются','(−1; 0)'],
@@ -106,7 +110,8 @@ const server=http.createServer((req,res)=>{
    const actionCase=Object.hasOwn(actionAnswers,n)?'case-'+(n==='1011'?4:n==='1012'?6:3):null;
    const positionCase=Object.hasOwn(positionAnswers,n)?'case-3':null;
    const tableCase=Object.hasOwn(tableAnswers,n)?'case-'+(n==='1022'?6:n==='1023'?9:3):null;
-   const switchCase=tableCase||positionCase||actionCase||gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
+   const distanceCase=Object.hasOwn(distanceAnswers,n)?'case-'+(n==='1028'?4:3):null;
+   const switchCase=distanceCase||tableCase||positionCase||actionCase||gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
    if(switchCase) {
     await page.locator('[data-case="'+switchCase+'"]').click();
     assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),switchCase);
