@@ -141,10 +141,36 @@ function decimalStepInstructions(){
   ok(product.$('label[for=answer]').textContent.includes('до сокращения'));
   equal(product.errors,[]);product.close();
 }
+function circlePointsRegression(){
+  const f=boot(), id='v5f-printed-5-1', course=f.C.byId[id];
+  equal([course.source.part,course.source.point,course.source.page],[2,25,7]);
+  f.route('#v5-unit/1');ok(!f.$('a[href="#lesson/'+id+'"]'));
+  f.route('#v5-unit/25');ok(f.$('a[href="#lesson/'+id+'"]'));
+  const task=f.M.generate(id,0), answers=['LDB','KEFAMO','MLDEBAO','FK','LB','DLB','LEO','MDBA'];
+  const targets=[...task.steps,task];
+  targets.forEach((t,i)=>ok(f.M.accepts(answers[i],t)));
+  f.route('#lesson/'+id);f.submit('X');equal(f.snapshot().scene.attempt,0);
+  f.submit('MLDEBAO');ok(f.snapshot().scene.message.includes('изнутри'));
+  f.submit('л, В, д');ok(f.snapshot().scene.correct);
+  f.click('[data-cmd=next]');const reloaded=boot('#lesson/'+id,f.saved());equal(reloaded.snapshot().scene.step,1);reloaded.close();
+  const variants=new Set();
+  for(let seed=0;seed<90;seed++){
+    const t=f.M.generate(id,seed),shape=t.data.circle;
+    variants.add(t.conditionKey);
+    for(const [name,x,y] of shape.points){
+      equal(shape.ring.includes(name),x*x+y*y===4900);
+      equal(shape.disk.includes(name),x*x+y*y<=4900);
+      equal(shape.radius.includes(name),x*56===-42*y&&x<=0&&x>=-42);
+    }
+    equal([...shape.short].filter(n=>shape.long.includes(n)).sort().join(''),[shape.start,shape.end].sort().join(''));
+    ok(t.steps.every(s=>f.M.accepts(s.answer,s)));ok(f.M.accepts(t.answer,t));
+  }
+  ok(variants.size>75);equal(f.errors,[]);f.close();
+}
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),[1,2,3,4,5,6,7].map(n=>'v5f-printed-1-'+n));
+  equal(plain(path.numbered),[1,2,3,4,5,6,7].map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -238,7 +264,7 @@ function orderAndJourneyRegression(){
   f.submit('30;70;2');ok(f.snapshot().scene.correct);equal(f.errors,[]);f.close();
 }
 async function run(){
-  numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);

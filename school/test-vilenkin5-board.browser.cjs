@@ -371,6 +371,24 @@ async function run(browser, origin, backend, failures) {
   await same(studentFrame,teacherFrame,'model meets the source target');assert.match(await teacherFrame.locator('.v5q-model-why').innerText(),/совпала/);
   await narrow(student,studentFrame,'numbered-travel');await ownership(teacher,student,false);
 
+  phase = 'circle, disk and radius in the second printed volume';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();
+  await studentFrame.locator('#task-panel svg').waitFor();
+  await same(teacherFrame,studentFrame,'new geometric figure opens on both boards');
+  await teacherFrame.locator('#answer').fill('ABDELMO');await teacherFrame.locator('#answer-form button').click();
+  assert.match((await same(teacherFrame,studentFrame,'circle versus disk')).scene.message,/изнутри/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=region]').selectOption('3');
+  await studentFrame.locator('#answer').fill('лВд');await studentFrame.locator('#answer-form button').click();
+  const circleCorrection=await same(studentFrame,teacherFrame,'student identifies the circumference and shows the short arc');
+  assert.equal(circleCorrection.scene.model.region,3);assert(circleCorrection.scene.correct);assert(!circleCorrection.scene.assisted);
+  await studentFrame.locator('[data-cmd=next]').click();
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const circleReload=await same(studentFrame,teacherFrame,'printed part 2 retains model and corrected first step');
+  assert.equal(circleReload.scene.step,1);assert.equal(circleReload.scene.answers[0],'лВд');
+  await narrow(student,studentFrame,'circle-points');await ownership(teacher,student,false);
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
