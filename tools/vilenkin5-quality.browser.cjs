@@ -25,7 +25,7 @@ const server=http.createServer((req,res)=>{
       return [1,2].map(part=>list.filter(lesson=>lesson.source.part===part).map(lesson=>lesson.number));
     });
     assert.deepEqual(printedCounts[0],Array.from({length:87},(_,i)=>'1.'+(i+1)));
-    assert.deepEqual(printedCounts[1],Array.from({length:19},(_,i)=>'5.'+(i+1)));
+    assert.deepEqual(printedCounts[1],Array.from({length:20},(_,i)=>'5.'+(i+1)));
     // Every canonical lesson mounts its actual visual, including all of part two.
     for(const [i,id]of ids.entries()){
       await page.evaluate(id=>{location.hash='#lesson/'+id;},id);await page.waitForFunction(id=>Vilenkin5Quality.getState().scene?.id===id,id);

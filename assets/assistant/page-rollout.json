@@ -6833,6 +6833,15 @@
       "boundary": "Explicit committed source identity only; printed pages and shared activities have separate subject checks."
     },
     {
+      "previousBaseSha": "1dd946fe634df17214537aa2bbb85d1f71154173",
+      "sourceBaseSha": "288d962db62c38ca1a6aefcb6aaa739bd0781428",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также двадцать номеров второй части, включая объём слоя и сравнение длины двух рядов кубиков, возможность самостоятельно исправить прогноз и записать точную дробь, с обеими ролями."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
