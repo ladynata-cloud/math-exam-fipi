@@ -67,7 +67,19 @@
       ['/geometry-course/textbook/data/coordinate-additional-vectors.json', '№1076–1078'],
       ['/geometry-course/textbook/data/coordinate-additional-figures.json', '№1079–1086'],
       ['/geometry-course/textbook/data/coordinate-additional-curves.json', '№1087–1092'],
-      ['/geometry-course/textbook/data/coordinate-additional-applications.json', '№1093–1097']
+      ['/geometry-course/textbook/data/coordinate-additional-applications.json', '№1093–1097'],
+      ['/geometry-course/textbook/data/upper-semicircle.json', 'пп. 100–103 и №1098–1099'],
+      ['/geometry-course/textbook/data/trigonometric-signs.json', '№1100–1103'],
+      ['/geometry-course/textbook/data/trigonometric-rays.json', '№1104–1106'],
+      ['/geometry-course/textbook/data/slope-and-reflection.json', '№1107–1108'],
+      ['/geometry-course/textbook/data/triangle-sine-area.json', 'п. 104 и №1109–1113'],
+      ['/geometry-course/textbook/data/triangle-relations.json', 'пп. 105–108'],
+      ['/geometry-course/textbook/data/solve-triangle.json', '№1114, а–и'],
+      ['/geometry-course/textbook/data/oblique-triangle-cases.json', '№1115–1117'],
+      ['/geometry-course/textbook/data/triangle-section-applications.json', '№1118–1122'],
+      ['/geometry-course/textbook/data/field-trigonometry.json', '№1123–1127'],
+      ['/geometry-course/textbook/data/scalar-product.json', 'пп. 109–112 и №1128–1132'],
+      ['/geometry-course/textbook/data/scalar-coordinates.json', '№1133–1138']
   ];
 
   async function forCourse(base) {
