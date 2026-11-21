@@ -115,6 +115,6 @@
     }
     return '<svg viewBox="0 0 280 126" role="img" aria-label="'+title+'"><g fill="#22483e" font-family="sans-serif" font-size="12">'+body+'</g></svg>';
   }
-  window.MathExamTopicEdition={trainerId:'peterson9-2017',authors:'Петерсон и соавторы · Ювента, 2017',grade:()=>'9 класс · часть 1',unit:'упражнение',storePrefix:'math:peterson9-2017:v1:',figure,
+  window.MathExamTopicEdition={trainerId:'peterson9-2017',authors:'Петерсон и соавторы · Ювента, 2017',grade:()=>'9 класс · часть 1',unit:'упражнение',storePrefix:'math:peterson9-2017:v1:',figure,addLesson:lesson,question,data,
     source:(_,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000043.pdf#page='+(page+2),nextId:l=>ids[ids.indexOf(l.id)+1]};
 })();

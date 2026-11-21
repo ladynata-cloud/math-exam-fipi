@@ -74,6 +74,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --peterson8-part2 --printed-identity --interval
           node tools/tyurin-statistics.board.browser.cjs --peterson8-part3 --printed-identity --domains
           node tools/tyurin-statistics.board.browser.cjs --peterson9-2017 --printed-identity
+          node tools/tyurin-statistics.board.browser.cjs --peterson9-2017 --printed-identity --hotel
           node tools/tyurin-statistics.board.browser.cjs --vilenkin8-2010 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich-2020 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich-2020-theory --printed-identity
