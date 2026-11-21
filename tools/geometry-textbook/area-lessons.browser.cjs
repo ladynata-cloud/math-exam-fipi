@@ -102,7 +102,8 @@ const server=http.createServer((req,res)=>{
    const extraCase=review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
    const gridCase=Object.hasOwn(gridAnswers,n)?'case-'+(Number(number)<=1006?6:3):null;
    const actionCase=Object.hasOwn(actionAnswers,n)?'case-'+(n==='1011'?4:n==='1012'?6:3):null;
-   const switchCase=actionCase||gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
+   const positionCase=Object.hasOwn(positionAnswers,n)?'case-3':null;
+   const switchCase=positionCase||actionCase||gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
    if(switchCase) {
     await page.locator('[data-case="'+switchCase+'"]').click();
     assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),switchCase);
