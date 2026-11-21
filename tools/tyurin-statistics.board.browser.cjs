@@ -51,8 +51,10 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--nikolsky7-natural')?{
-  directory:'nikolsky-algebra-7-9',entries:[[99,77,35]],uniqueLessons:34,search:'nikolsky-algebra-7-9',match:'натуральные числа и делимость',lesson:'99-19-c',chart:'svg[aria-label*="Пятёрки из кратных"]',storage:'math:nikolsky-algebra-7-9:v1:'
+const catalogue=process.argv.includes('--nikolsky8-inequalities')?{
+  directory:'nikolsky-algebra-7-9',entries:[[75,69,25]],uniqueLessons:24,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:'75-5-f',chart:'svg[aria-label*="Числовая прямая с точками сравнения"]',storage:'math:nikolsky-algebra-7-9:v1:'
+}:process.argv.includes('--nikolsky7-natural')?{
+  directory:'nikolsky-algebra-7-9',entries:[[99,77,35]],uniqueLessons:34,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:'99-19-c',chart:'svg[aria-label*="Пятёрки из кратных"]',storage:'math:nikolsky-algebra-7-9:v1:'
 }:process.argv.includes('--alimov9-division')?{
   directory:'alimov-algebra-7-9',entries:[[58,48,39]],uniqueLessons:38,search:'alimov-algebra-7-9',match:'выражения, знаки и многочлены',lesson:'58-7-3',chart:'svg[aria-label*="Коэффициенты остатка при пробном параметре"]',storage:'math:alimov-algebra-7-9:v1:'
 }:process.argv.includes('--alimov8-signs')?{

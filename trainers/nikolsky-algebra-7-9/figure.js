@@ -6,7 +6,16 @@
   const bar=(x,y,w,fill)=>'<rect x="'+x+'" y="'+y+'" width="'+Math.max(w,1)+'" height="12" rx="2" fill="'+fill+'"/>';
   function figure(data){
     const m=data.marks;let title,body='';
-    if(data.chart==='line'){
+    if(data.chart==='orderedPoints'){
+      title='Числовая прямая с точками сравнения';
+      const min=Math.min(...m),max=Math.max(...m),left=37,right=240;
+      body+=line(10,58,267,58);
+      m.forEach((v,i)=>{
+        const x=min===max?136:left+(right-left)*(v-min)/(max-min);
+        const lab=Number(v.toFixed(4)).toLocaleString('ru-RU',{useGrouping:false,maximumFractionDigits:4}),y=[22,94,38][i];
+        body+=line(x,58,x,i===1?77:43)+'<circle cx="'+x+'" cy="58" r="4" fill="'+['#276948','#9a5559','#885d80'][i]+'"/><text text-anchor="middle" x="'+x+'" y="'+y+'">'+['A','B','C'][i]+' '+lab+'</text>';
+      });
+    }else if(data.chart==='line'){
       title='Позиции на числовой прямой';
       const positions=[...new Set(m)].sort((a,b)=>a-b),min=positions[0],max=positions.at(-1);
       body+=line(12,61,263,61);
@@ -40,8 +49,8 @@
     return '<svg viewBox="0 0 280 112" role="img" aria-label="'+title+'"><g font-family="sans-serif" font-size="12" fill="#193e32">'+body+'</g></svg>';
   }
   window.MathExamTopicEdition={
-    trainerId:'nikolsky-algebra-7-9',storePrefix:'math:nikolsky-algebra-7-9:v1:',authors:'Никольский и соавторы',grade:()=> '7 класс · 2013',unit:'упражнение',figure,
-    source:(_book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000077.pdf#page='+(page+1),
-    nextId(l){return order[order.indexOf(l.id)+1];}
+    trainerId:'nikolsky-algebra-7-9',storePrefix:'math:nikolsky-algebra-7-9:v1:',authors:'Никольский и соавторы',grade:book=>book===75?'8 класс · 2014':'7 класс · 2013',unit:'упражнение',figure,
+    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+(book===75?'00000055':'00000077')+'.pdf#page='+(page+1),
+    nextId(l){const next=order[order.indexOf(l.id)+1];return next&&window.MathExamTopicPractice.lessons.get(next).book===l.book?next:undefined;}
   };
 })();
