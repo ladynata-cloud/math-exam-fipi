@@ -1558,7 +1558,11 @@ test('read every formula and distinguish all moving, resting and overlapping int
   const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
   for(const [ix,original,changed]of [[84,'24 см²','27 см²'],[85,'20 см','24 см'],[86,'14 км','27 км'],[87,'30 км','26 км'],[88,'60 см³','84 см³'],[89,'94 см²','136 см²'],[90,'38.','37.'],[91,'13 км/ч','17 км/ч']]){const c=open(ix);set(c,1,2);assert(out().includes(original),[ix,out()]);set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(changed),[ix,out()]);}
   for(const [ix,before,after]of [[92,'09:00, велосипедиста 09:30','09:30, велосипедиста 10:00'],[93,'12 км от деревни с 12:00 до 13:00','6 км от деревни с 12:30 до 13:30'],[94,'4, 6 и 6 км/ч','2, 3 и 3 км/ч'],[95,'60 и 30 мин','60 и 30 мин']]){
-   const c=open(ix);assert.equal(f.d.querySelectorAll('#task-figure [data-source-series]').length,2);assert.deepEqual([...f.d.querySelectorAll('#task-figure details table')].map(table=>table.tBodies[0].rows.length),[6,4]);const lines=[...f.d.querySelectorAll('#model [data-source-series]')];assert.deepEqual(lines.map(n=>n.getAttribute('points').split(' ').length),[6,4]);set(c,1,3);assert(out().includes('12:30'));set(c,2,2);assert(out().includes(before),out());set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes(after),out());assert(out().includes('13:00'));
+   const c=open(ix);assert.equal(f.d.querySelectorAll('#task-figure [data-source-series]').length,2);
+   assert.equal(f.d.querySelectorAll('#task-figure details').length,0);
+   const dataRows=f.d.querySelectorAll('#task-figure [data-station-values] tbody tr');
+   assert.deepEqual([...dataRows].map(row=>[...row.cells].map(cell=>cell.textContent)),[['09:00 · 0','09:30 · 36'],['12:00 · 12','11:30 · 12'],['13:00 · 12','13:00 · 12'],['15:00 · 24','14:00 · 0'],['15:30 · 24','—'],['17:30 · 36','—']]);
+   const lines=[...f.d.querySelectorAll('#model [data-source-series]')];assert.deepEqual(lines.map(n=>n.getAttribute('points').split(' ').length),[6,4]);set(c,1,3);assert(out().includes('12:30'));set(c,2,2);assert(out().includes(before),out());set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes(after),out());assert(out().includes('13:00'));
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
@@ -1628,6 +1632,16 @@ test('identify all ten laws and fill the correct x or y cell of each of the four
   for(const [i,k,changed,filled]of [[29,'14/5','21/5',['42/5','56/5','14','84/5']],[5,'30','180',['20','15','12','10']],[30,'5','15/2',['24','4','12','8/5']],[31,'8','48',['16','8','5/2','10']]]){
    const c=go(i),original=[...f.d.querySelectorAll('#task-figure tbody tr')].map(row=>[...row.querySelectorAll('td')].map(cell=>cell.textContent));
    assert.equal(original.flat().filter(x=>x==='□').length,4);set(c,1,2);const rows=[...f.d.querySelectorAll('#model tbody tr')].map(row=>[...row.querySelectorAll('td')].map(cell=>cell.textContent));assert.deepEqual(original.flatMap((row,j)=>row.flatMap((x,ix)=>x==='□'?[rows[j][ix]]:[])),filled);assert(out().includes('Коэффициент '+k+'.'));set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes('Коэффициент '+changed+'.'));
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('resolve each part of the second-volume proportion chapter including true curves and the first valid 2008 multiple',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p20/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [i,before,after]of [[32,'= 10%.','= 15%.'],[33,'= 15%.','= 120/7%.'],[34,'27/2.','20.'],[35,'21/2.','16.'],[36,'Корень 60.','Корень 90.'],[37,'Корень 8/5.','Корень 16/5.'],[38,'Корень 5.','Корень 10.'],[39,'результат 4/5.','результат 8/5.'],[40,'результат 8.','результат 16.'],[41,'результат 10.','результат 20.'],[42,'результат 24.','результат 48.'],[43,'y/x равно 3.','y/x равно 6.'],[44,'xy равно 18.','xy равно 36.'],[45,'= 10%.','= 100/7%.'],[46,'число 2008440','число 2010960']]){
+   const c=open(i);set(c,1,2);assert(out().includes(before),[i,out()]);if(i===43||i===44){assert.equal(f.d.querySelectorAll('#model [data-law-point]').length,i===43?6:7);const curve=f.q('[data-law-curve]');if(i===44)assert.equal(curve.getAttribute('points').split(' ').length,150);}
+   if(i===46)assert.equal(f.d.querySelectorAll('#model tbody tr').length,4);set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(after),[i,out()]);
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });

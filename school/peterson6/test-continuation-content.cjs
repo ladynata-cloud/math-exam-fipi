@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1192);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1207);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1063,6 +1063,12 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  const l=D.lessons.find(t=>t.id==='p20'),group=n=>Array.from(l.tasks.filter(t=>t.source.exercise===n)).sort((a,b)=>Number(a.source.subpart)-Number(b.source.subpart));
  assert.equal(group(164).length,10);assert.deepEqual(group(164).map(t=>t.classifyLaw.kind),['direct','affine','direct','inverse','inverse','inverse','direct','inverse','inverse','square']);
  assert.deepEqual(group(165).map(t=>t.fillProportionTable.k),['14/5','30','5','8']);for(const t of group(165)){assert.equal(t.fillProportionTable.blank.filter(Boolean).length,4);assert.equal(t.figure.type,'p20-paper-table');}
+}
+{
+ const sec=D.lessons.find(t=>t.id==='p20'),g=n=>Array.from(sec.tasks.filter(t=>t.source.exercise===n));
+ assert.equal(sec.completeSourceSection.first,160);assert.equal(sec.completeSourceSection.last,172);for(let n=160;n<=172;n++)assert(g(n).length);
+ assert.deepEqual(g(166).map(t=>t.answer),['10','15']);assert.deepEqual(g(168).map(t=>t.answer),['60','8/5','5']);assert.deepEqual(g(169).map(t=>t.answer),['4/5','8','10','24']);assert.deepEqual(g(170).map(t=>t.paperLawGraph.kind),['direct','inverse']);assert.equal(g(171)[0].answer,'10');assert.equal(g(172)[0].answer,'2008440');
+ assert.equal(Array.from({length:798},(_,i)=>i*2520).find(n=>String(n).startsWith('2008')),2008440);for(let d=1;d<=9;d++)assert.equal(2008440%d,0);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
