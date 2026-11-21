@@ -162,12 +162,14 @@
       const mixedStart = whole ? left.start - whole[0].length : -1;
       const mixed = whole && !/[\p{L}\p{N}.,]/u.test(text[mixedStart - 1] || '');
       appendAtoms(parent, text.slice(cursor, mixed ? mixedStart : left.start));
+      let container = parent;
       if (mixed) {
-        const node = span(parent, 'stereo-mixed-number', '');
-        appendAtoms(node, whole[1]);
-        node.append(document.createTextNode(whole[2]));
-        fraction(node, numerator, denominator);
-      } else fraction(parent, numerator, denominator);
+        container = span(parent, 'stereo-mixed-number', '');
+        appendAtoms(container, whole[1]);
+        container.append(document.createTextNode(whole[2]));
+      }
+      // Keep authored spaces adjacent to the slash inside the corresponding term.
+      fraction(container, text.slice(left.start, slash), text.slice(slash + 1, right.end));
       cursor = right.end;
       slash = right.end - 1;
     }
