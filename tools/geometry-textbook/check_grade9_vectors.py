@@ -6,7 +6,7 @@ import json
 root=Path(__file__).resolve().parents[2]
 cards=json.loads((root/'geometry-course/textbook/data/grade9-vectors.json').read_text())['lessons']
 expected=[('theory',84,''),('theory',85,''),('theory',86,''),('main',926,''),('main',927,''),
-          ('main',928,'а'),('main',928,'б')]+[('main',929,s) for s in 'абвг']+[('main',930,s) for s in 'абв']+[('main',n,'') for n in (931,932,933)]
+          ('main',928,'а'),('main',928,'б')]+[('main',929,s) for s in 'абвг']+[('main',930,s) for s in 'абв']+[('main',n,'') for n in (931,932,933,934)]+[('main',935,s) for s in 'абв']+[('main',936,s) for s in 'абвг']
 identities=[]
 heads=0
 
@@ -29,11 +29,12 @@ for card in cards:
     m=card['visualization']['model'];points=m['points']
     for name,view in m['views'].items():
         pairs=view['segments']
-        for tip,left in [(a,b) for a,b in pairs if b.startswith('head_') and b.endswith('_l')]:
+        left_heads=[(a,b) for a,b in pairs if b.startswith('head_') and b.endswith('_l')]
+        shafts=[(a,b) for a,b in pairs if not b.startswith('head_')][-len(left_heads):] if left_heads else []
+        for (tip,left),(shaft,shaft_tip) in zip(left_heads,shafts):
             right=left[:-1]+'r'
             assert [tip,right] in pairs and left not in view['points'] and right not in view['points']
-            shaft=next((a for a,b in reversed(pairs) if b==tip and not a.startswith('head_')),None)
-            assert shaft
+            assert shaft_tip==tip
             u=delta(points[shaft],points[tip]);v=delta(points[tip],points[left]);w=delta(points[tip],points[right])
             near(v[0]*u[0]+v[1]*u[1],w[0]*u[0]+w[1]*u[1])
             near(v[0]*u[1]-v[1]*u[0],-(w[0]*u[1]-w[1]*u[0]))
@@ -114,6 +115,39 @@ for card in cards:
             for x,y,t in zip(point('A',view_index),point('B',view_index),point('M',view_index)):near((x+y)/2,t)
         near(3**2+4**2,5**2)
         near((3/2)**2+4**2,73/4)
+
+    elif n==934:
+        unit=length('A','D')/12
+        for ab,want in [('AB',5),('DH',5),('AH',7),('CH',5),('BD',13),('CD',50**.5),('AC',74**.5)]:
+            near(length(*ab)/unit,want)
+        near(vector('A','D')[1],0);near(vector('C','H')[0],0)
+        assert len(m['views']['step-1']['rightAngles'])==2
+        near(9**2+6**2,117)
+    elif n==935:
+        from itertools import combinations
+        vertices={'а':'MNPQ','б':'ABCD','в':'FGH'}[part]
+        arrow_pairs=[]
+        for a,b in zip(vertices,vertices[1:]+vertices[0]):
+            arrow_pairs.extend([(a,b),(b,a)])
+        same=[];opposite=[]
+        for (a,b),(c,d) in combinations(arrow_pairs,2):
+            u,v=vector(a,b),vector(c,d)
+            if abs(u[0]*v[1]-u[1]*v[0])<1e-6:
+                target=same if u[0]*v[0]+u[1]*v[1]>0 else opposite
+                target.append((a+'→'+b,c+'→'+d))
+        assert (len(same),len(opposite))=={'а':(4,8),'б':(2,6),'в':(0,3)}[part]
+        result=card['help'][-1]['text']
+        for a,b in same+opposite:assert a+' и '+b in result or b+' и '+a in result
+        assert len([view for view in m['views'] if view.startswith('case-')])==len(vertices)
+    elif n==936:
+        x,y={'а':('AB','DC'),'б':('BC','DA'),'в':('AO','OC'),'г':('AC','BD')}[part]
+        u,v=vector(*x),vector(*y)
+        assert all(isclose(a,b,rel_tol=1e-8,abs_tol=1e-7) for a,b in zip(u,v))==(part in 'ав')
+        if part=='б':
+            for a,b in zip(u,v):near(a,-b)
+        if part=='г':assert abs(u[0]*v[1]-u[1]*v[0])>1
+        for a,b in [('A','C'),('B','D')]:
+            for i,j,k in zip(point(a),point(b),point('O')):near((i+j)/2,k)
 
 assert identities==expected and heads>0
 print('GRADE9_NUMBERED_VECTORS_OK',len(cards),'карточек. Проверено стрелок',heads)
