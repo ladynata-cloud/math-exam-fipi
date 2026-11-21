@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T19:13:00Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–574, with 957 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T19:17:00Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–577, with 963 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1618,6 +1618,21 @@
       ],
       "evidence": "tools/stereo-textbook/signed-vector-combinations.json",
       "mathematicalReport": "tools/stereo-textbook/signed-vector-combinations.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:17:00Z",
+      "scope": "Source 575 and all five equations of 576–577: arbitrary origin identity and every valid prism endpoint",
+      "cardIds": [
+        "ex-main-0575",
+        "ex-main-0576-a",
+        "ex-main-0576-b",
+        "ex-main-0577-a",
+        "ex-main-0577-b",
+        "ex-main-0577-c"
+      ],
+      "evidence": "tools/stereo-textbook/prism-vector-equations.json",
+      "mathematicalReport": "tools/stereo-textbook/prism-vector-equations.test.cjs"
     }
   ],
   "cards": [
@@ -5448,6 +5463,30 @@
     {
       "id": "ex-main-0574-c",
       "sha256": "fcd1cb1d770ce03065fdd8a56184f4827ba046c6811d3979c6e656a844563962"
+    },
+    {
+      "id": "ex-main-0575",
+      "sha256": "7ce12c41e6163c64b42fe167fffbbb9e81c5dab1494730c5f0b4dec0de178eb0"
+    },
+    {
+      "id": "ex-main-0576-a",
+      "sha256": "fa22354c74fe76bf851a0091b87cf14e164a4c015e63be7b8c1eb4acaae99a38"
+    },
+    {
+      "id": "ex-main-0576-b",
+      "sha256": "b97ca34e7891a6a4b667b1857ff8b6d197a358b21d8f3d5b05c639f754f359b0"
+    },
+    {
+      "id": "ex-main-0577-a",
+      "sha256": "06013e2e085a91ca13cc9ac2f53db1b3a8b164f8699bb10180e79793fff9f5b0"
+    },
+    {
+      "id": "ex-main-0577-b",
+      "sha256": "2e346b6480b73379856c026f7617426debccc017be036dcc93dc85a0408d864d"
+    },
+    {
+      "id": "ex-main-0577-c",
+      "sha256": "8b2118d42bd6e077c056dcfdf633d26c5ad48415915119f7219e93f97c1168b1"
     }
   ]
 }

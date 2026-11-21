@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const signedVectorCombinations = makeReviewedIncrement(require('./signed-vector-combinations.json'));
+const prismVectorEquations = makeReviewedIncrement(require('./prism-vector-equations.json'));
+const signedVectorCombinations = makeReviewedIncrement(require('./signed-vector-combinations.json'), prismVectorEquations);
 const diagonalPaths = makeReviewedIncrement(require('./prism-diagonals-and-vector-paths.json'), signedVectorCombinations);
 const vectorOriginPaths = makeReviewedIncrement(require('./vector-origin-and-paths.json'), diagonalPaths);
 const oppositeDifference = makeReviewedIncrement(require('./opposite-and-difference-vectors.json'), vectorOriginPaths);
