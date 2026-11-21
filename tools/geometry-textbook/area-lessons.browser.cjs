@@ -19,14 +19,15 @@ const server=http.createServer((req,res)=>{
  const coordinateAnswers={t93:['3','5'],t94:['-2','-4'],'998-1':['4','-3'],'998-2':['240','3'],'998-3':['400','-0,2'],'998-4':['25','4'],'999-1':['6','1/3'],'999-2':['7','1/4'],'999-3':['9','-1/3'],'999-4':['9','-1'],'999-5':['8','1'],'999-6':['5','-1/5'],'999-7':['12','4'],'999-8':['12','-5/4'],'999-9':['1','2']};
  const relationAnswers={'1000-1':['7','-5'],'1000-2':['-1','-5'],'1001-1':['1','-2'],'1001-2':['-1','2'],'1001-3':['3','4'],1002:['8','10'],'1003-1':['3','-4'],'1003-2':['-5','7'],'1003-3':['0','-7'],'1003-4':['1/3','2/3']};
  const gridAnswers={1004:['-3','5'],1005:['-5','5'],1006:['-0,5','0'],'1007-1':['1','-2'],'1007-2':['-3','4'],'1007-3':['0','-6'],'1007-4':['3','-4'],'1007-5':['0','-3'],'1008-1':['-2','-3'],'1008-2':['-3','-3'],'1008-3':['0','8'],'1008-4':['0','-2']};
+ const actionAnswers={'1009-1':['7','1'],'1009-2':['1','1'],'1009-3':['1','-3'],'1009-4':['0','4'],'1010-1':['2','-7'],'1010-2':['0','-5'],'1010-3':['9','6'],'1010-4':['-2','2'],1011:['-6','-8'],1012:['2','8'],'1013-1':['7','9'],'1013-2':['28','-9'],'1013-3':['3','7'],'1013-4':['3','3'],1014:['-2','0'],1015:['2','21']};
  const reviewAnswers={r1:['7','0'],r2:['-3','0'],r3:['5','13'],r4:['2','5'],r5:['2','4'],r6:['4','6'],r7:['2','3'],r8:['3','8'],r9:['2','3'],r10:['4','-2'],r11:['3','-5'],r12:['3','-3'],r13:['-3','3'],r14:['-3','2'],'r15-1':['0','12'],'r15-2':['0','5'],r16:['-3','0'],r17:['-6','6'],r18:['-2','14'],r19:['5','7'],r20:['6','15']};
  for(const width of [320,1280]) {
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1008/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1015/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -39,6 +40,9 @@ const server=http.createServer((req,res)=>{
    const coefficient={
     '998-1':['4','-4','отрицательный','−4,0'],'998-2':['2','20','в сантиметры','+20'],'998-3':['1','-1','противоположные','−1.0'],'998-4':['25','5','возведения в квадрат','+5'],
     '999-1':['0,5','2','обратный переход','2.0'],'999-2':['2','1/2','короче','½'],'999-3':['1/2','-1/2','отрицательным','−0,5'],'999-4':['-1','1','D→C','+1'],'999-5':['1','-1','направлению','−1.0'],
+    '1009-1':['1;-3','5;7','противоположное действие','(5; 7)'],'1009-2':['2;-9','4;1','противоположное действие','(4; 1)'],'1009-3':['-9;-5','1;1','противоположное действие','(1; 1)'],'1009-4':['5;14','-1;0','взаимно компенсируются','(−1; 0)'],
+    '1010-1':['7;4','3;2','вычитание отрицательной','(3; 2)'],'1010-2':['0;4','6;0','взаимно компенсируются','(6; 0)'],'1010-3':['7;3','-1;9','вычитание отрицательной','(−1; 9)'],'1010-4':['-3;-10','-7;-2','вычитание отрицательной','(−7; −2)'],
+    '1013-1':['21;21','21;-21','знак множителя','(21; −21)'],'1013-2':['13;-24','13;24','знак множителя','(13; 24)'],'1013-3':['-21;14','-21;-14','знак множителя','(−21; −14)'],'1013-4':['2;-4','8;-10','знак множителя','(8; −10)'],
     '1008-1':['-2;5','5;-2','знак','(5; −2)'],'1008-2':['7;-3','-3;7','оси','(−3; 7)'],'1008-3':['0;-4','-4;0','нулевая','(−4; 0)'],'1008-4':['1;0','0;0','обе координаты','(0; 0)'],
     '1003-1':['3;-1','-1;3','порядок','(−1; 3)'],'1003-2':['4;5','4;-5','5+y','(4; −5)'],'1003-3':['3;0','0;3','xa','(0; 3)'],'1003-4':['1/3;-1','-1;1/3','порядок','−1;⅓'],
     '999-6':['1/4','-1/4','четверть','−¼'],'999-7':['1/3','3','не со всей','+3'],'999-8':['-3/4','-4/3','Делим целое','−4/3']
@@ -95,7 +99,8 @@ const server=http.createServer((req,res)=>{
    const lengthCases={981:3,982:3,983:2,984:2,985:3,986:3,987:3};
    const extraCase=review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
    const gridCase=Object.hasOwn(gridAnswers,n)?'case-'+(Number(number)<=1006?6:3):null;
-   const switchCase=gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
+   const actionCase=Object.hasOwn(actionAnswers,n)?'case-'+(n==='1011'?4:n==='1012'?6:3):null;
+   const switchCase=actionCase||gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
    if(switchCase) {
     await page.locator('[data-case="'+switchCase+'"]').click();
     assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),switchCase);
