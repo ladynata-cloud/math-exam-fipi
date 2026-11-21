@@ -93,6 +93,8 @@ on:
       - 'tools/geometry-textbook/*additional_scalar_vectors*'
       - 'tools/geometry-textbook/*chapter_twelve_finale*'
       - 'tools/geometry-textbook/*regular_polygon_definition*'
+      - 'tools/geometry-textbook/*regular_polygon_angles*'
+      - 'geometry-course/textbook/data/regular-polygon-angles.json'
       - 'geometry-course/textbook/data/regular-polygon-definition.json'
       - 'geometry-course/textbook/data/chapter-twelve-finale.json'
       - 'geometry-course/textbook/data/additional-scalar-vectors.json'
@@ -166,6 +168,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/regular_polygon_angles.py --check && python3 tools/geometry-textbook/check_regular_polygon_angles.py
       - run: python3 tools/geometry-textbook/regular_polygon_definition.py --check && python3 tools/geometry-textbook/check_regular_polygon_definition.py
       - run: python3 tools/geometry-textbook/chapter_twelve_finale.py --check && python3 tools/geometry-textbook/check_chapter_twelve_finale.py
       - run: python3 tools/geometry-textbook/additional_scalar_vectors.py --check && python3 tools/geometry-textbook/check_additional_scalar_vectors.py
