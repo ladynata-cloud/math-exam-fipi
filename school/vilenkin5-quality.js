@@ -174,6 +174,7 @@
     if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
     if(target.answerFormat==='v5-object-shape'&&!root.Vilenkin5RoundObjects.read(value))return 'В ответе к рисунку нужно название формы: окружность, круг, цилиндр или шар. Свои предметы запиши в «Мои четыре примера». Написанное можно уточнить.';
     if(target.answerFormat==='v5-arc'&&!/^[ABCDKMPST]{3}$/.test(root.Vilenkin5Numbered.readArc(value)))return 'Нужны три буквы. Сначала запиши начало дуги, затем промежуточную метку и конец.';
+    if(target.answerFormat==='v5-membership-set'&&!root.Vilenkin5DiskMembership.read(value))return 'Укажи буквы с этого рисунка. Их можно разделять запятыми или пробелами.';
     if(target.answerFormat==='v5-point-set'&&!root.Vilenkin5Numbered.readPointSet(value))return 'Введи буквы точек с рисунка. Запись можно поправить без потери попытки.';
     const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
     if(clarification)return clarification.text;
