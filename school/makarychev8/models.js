@@ -468,5 +468,32 @@
       ]};
   }
 
-  return { mount, experiment, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const storyPractice={id:'quadratic-story-problems',title:'Составить квадратное уравнение по условию',
+    description:'Переведи размеры или подсчёт пар в уравнение, отбери решение и проверь единицы.'};
+  function practiceStory(seed,level){
+    const x=3+seed%15,delta=2+seed%7;
+    const rectangle=level===1,meeting=level===2;
+    const length=x+delta,total=rectangle?x*length:meeting?x*(x-1)/2:4*x+2*delta;
+    const prompt=rectangle?'У прямоугольного плаката площадь '+total+' см². Длина на '+delta+' см больше ширины. Найди периметр в сантиметрах.':
+      meeting?'На кружке каждая пара обменялась одной карточкой. Всего состоялось '+total+' обменов. Сколько ребят было в кружке?':
+      'Периметр участка '+total+' м, длинная сторона на '+delta+' м больше короткой. Найди площадь участка в м².';
+    const answer=rectangle?2*(x+length):meeting?x:x*length;
+    const hint=rectangle?'Произведение сторон даёт площадь; в периметре каждую длину считают два раза.':
+      meeting?'У каждого n − 1 партнёров. Два участника описывают один и тот же обмен.':
+      'Половина периметра — сумма соседних сторон; разность равна '+delta+' м.';
+    const choices=rectangle?['u(u + '+delta+') = '+total,'2u + '+delta+' = '+total]:
+      meeting?['u(u − 1) = '+total,'u(u − 1)/2 = '+total]:
+      ['2(u + u + '+delta+') = '+total,'u(u + '+delta+') = '+total];
+    return {title:'Выбери величину, составь модель и ответь на вопрос',prompt,kind:'number',answer:String(answer),
+      finalLabel:rectangle?'Периметр, см':meeting?'Число ребят':'Площадь, м²',hint,correction:hint,
+      explanation:meeting?x+' ребят дают '+x+' · '+(x-1)+'/2 = '+total+' обменов.':
+        'Стороны '+x+' и '+length+'. Периметр '+2*(x+length)+', площадь '+x*length+'.',
+      source:{type:'authored',reference:'Новые условия для составления математической модели'},skills:[formulaPractice.id],
+      steps:[{prompt:meeting?'Обозначь число ребят буквой u и выбери равенство.':'Обозначь короткую сторону буквой u и выбери равенство.',
+        kind:'choice',choices,answer:choices[meeting?1:0],hint,explanation:hint},
+        {prompt:meeting?'Найди число партнёров одного участника.':'Найди ширину.',kind:'number',answer:String(meeting?x-1:x),hint,
+          explanation:meeting?x+' участникам доступны по '+(x-1)+' партнёров.':'Короткая сторона равна '+x+'.'}]};
+  }
+
+  return { mount, experiment, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

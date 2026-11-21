@@ -40,13 +40,15 @@ function textbookFormula(expression){
 }
 const extraPractice=window.MakarychevModels?.quadraticPractice;
 const formulaPractice=window.MakarychevModels?.formulaPractice;
-const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice].filter(Boolean)];
+const storyPractice=window.MakarychevModels?.storyPractice;
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
 function taskSignature(t){return t.prompt+(t.mathExpression?'\u241f'+JSON.stringify(t.mathExpression):'')+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
 function generatePractice(id,seed,level){
  if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
+ if(id===storyPractice?.id)return window.MakarychevModels.practiceStory(seed,level);
  if(id===formulaPractice?.id)return window.MakarychevModels.practiceFormula(seed,level);
  return M.generate(id,seed,level);
 }
@@ -143,6 +145,8 @@ function naturalCase(term,rule){
  return [36n-n*n,n*n];
 }
 function feedbackFor(value,q){
+ const knownMistake=q.mistakes?.find(m=>M.equal(value,m.value));
+ if(knownMistake)return knownMistake.message;
  if(q.kind==='quadratic-roots'&&q.quadraticCoefficients){
   const [a,b,c]=q.quadraticCoefficients,disc=b*b-4*a*c;
   const submitted=window.MakarychevCheck.quadraticEntries(value)||[];
@@ -363,7 +367,7 @@ if(t.graph){
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
 document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
-function preview(value){if(['build','pair','root-build','curve-build','root-line','line-example'].includes(active?.task.graph?.type)){
+function preview(value){if(['build','pair','root-build','curve-build','root-line','line-example','applied-shape'].includes(active?.task.graph?.type)){
  const graph=active.task.graph;
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph.revealAfterSubmit?{...graph,showSolution:ts(active.task.id).correct}:graph,value);
 }const p=document.getElementById('answer-preview');if(!p)return;if(active?.task.kind==='text'||active?.task.kind==='set'||active?.task.kind==='graph'||active?.task.kind==='graph-pair'||['quadratic-roots','radical-value','incomplete-coefficients','proof-chain','separated-rational','domain-fraction','common-factor','integer-pairs','root-points','graph-values','root-line-count','irrational-example','interval-examples'].includes(active?.task.kind)){p.textContent=value.trim()?'Твоя запись: '+value:'';return;}const r=M.parse(value);p.innerHTML=value.trim()?(r?'Ты ввёл: '+fmt(displayValue(value)):'Формат пока не распознан. Примеры: 0,5 · 1/2 · 2 1/3') : '';}

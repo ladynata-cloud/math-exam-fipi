@@ -398,9 +398,66 @@ function quadraticEvidence(host,config,value){
  host.append(caption);
 }
 
+function appliedShape(host,config,value){
+ host.className='task-graphs quantity-model';
+ const svg=node('svg',{viewBox:'0 0 300 175',role:'img'}),caption=document.createElement('p');
+ caption.className='small';
+ const rect=(x,y,w,h,attrs={})=>svg.append(node('rect',{x,y,width:w,height:h,fill:'#d8eeeb',stroke:'#184e56','stroke-width':1.7,...attrs}));
+ const line=(x1,y1,x2,y2,attrs={})=>svg.append(node('line',{x1,y1,x2,y2,stroke:'#184e56','stroke-width':1.8,...attrs}));
+ const label=(x,y,t)=>svg.append(node('text',{x,y,'text-anchor':'middle','font-size':15,fill:'#17393f'},t));
+ const fmt=n=>Number(n.toFixed(4)).toLocaleString('ru');
+ const scene=config.scene;
+ if(scene==='scaled-cuts'){
+  const entries=String(value).trim().split(';').map(part=>number(part,100));
+  const [total,a,b,h]=entries;
+  const valid=entries.length===4&&entries.every(x=>x!==null&&x>0)&&a<b&&b<total;
+  if(valid){
+   const scale=Math.min(235/total,104/h),x=32,y=32,w=total*scale,height=h*scale;
+   rect(x,y,w,height,{fill:'#f3f7f6','data-source-cut':'sheet'});rect(x+a*scale,y,(b-a)*scale,height,{'data-source-cut':'middle'});
+   line(x+a*scale,y,x+a*scale,y+height,{'stroke-dasharray':'3 3'});line(x+b*scale,y,x+b*scale,y+height,{'stroke-dasharray':'3 3'});
+   label(x+w/2,20,'Лист '+fmt(total)+' × '+fmt(h)+' см');label(x+w/2,159,'Разрезы: '+fmt(a)+' и '+fmt(b)+' см');
+   caption.textContent='Чертёж по твоим размерам. Ширина левой, средней и правой частей: '+[a,b-a,total-b].map(fmt).join('; ')+' см на бумаге.';
+  }else{
+   line(28,114,272,114);line(28,107,28,121);label(29,142,'0');label(150,62,'Масштаб 1 : 2');
+   caption.textContent=String(value).trim()?'Для построения нужны четыре положительные длины. Отметки идут от левого края и лежат внутри листа.':'Размеры чертежа вводятся ниже. После ввода увидишь расположение обоих разрезов.';
+  }
+ }else if(scene==='round-robin'){
+  const pts=[[150,20],[241,77],[207,141],[93,141],[59,77]];
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++)line(...pts[i],...pts[j],{stroke:i===0?'#226776':'#a3b4b4','stroke-dasharray':i===0?'none':'4 3'});
+  pts.forEach(([x,y],i)=>{svg.append(node('circle',{cx:x,cy:y,r:8,fill:i===0?'#a34725':'#225963'}));});
+  caption.textContent='Пример с пятью участниками. Точка — участник, линия — общая игра. Сплошные линии показывают все встречи одного участника. Каждая линия имеет два конца.';
+ }else if(scene==='box-net'){
+  const x=47,y=14,w=195,h=130,d=30;
+  rect(x,y,w,h,{fill:'#f5f7f4','stroke-dasharray':'4 3'});rect(x+d,y,w-2*d,h);rect(x,y+d,w,h-2*d);
+  rect(x+d,y+d,w-2*d,h-2*d,{fill:'#b9ddd6','stroke-dasharray':'5 3'});
+  label(x+w/2,y+h/2+4,'дно');label(x+w/2,167,'60 см');label(25,85,'40');label(x+d/2,y+19,'x');
+  caption.textContent='Четыре угловых квадрата убирают. По штриховым линиям отгибают четыре борта. Дно — внутренний прямоугольник.';
+ }else if(scene==='end-squares'){
+  rect(26,42,248,64,{fill:'#f8f3e5'});rect(90,42,120,64);line(90,42,90,106);line(210,42,210,106);
+  label(150,28,'26 см');label(59,80,'x');label(240,80,'x');label(150,82,'26 − 2x');label(150,143,'Ширина листа — x');
+  caption.textContent='Два крайних квадрата вырезают. Средний участок сохраняет ширину листа.';
+ }else if(scene==='triangle'){
+  const x=60,y=128,w=166,h=w*config.h/config.w;
+  svg.append(node('polygon',{points:[[x,y],[x+w,y],[x,y-h]].map(p=>p.join(',')).join(' '),fill:'#d8eeeb',stroke:'#184e56','stroke-width':2}));
+  line(x+10,y,x+10,y-10);line(x+10,y-10,x,y-10);label(x+w/2,y+22,config.label1);label(x-23,y-h/2,config.label2);
+  caption.textContent='Подписи относятся к перпендикулярным сторонам. Наклонная сторона — гипотенуза. Схема помогает составить уравнение.';
+ }else{
+  const x=58,y=22,w=182,h=Math.min(107,w*config.h/config.w);
+  rect(x,y,w,h);
+  if(scene==='square-cut'){line(x+h,y,x+h,y+h,{'stroke-dasharray':'5 3'});label(x+(w+h)/2,y+h/2+5,'120 см');}
+  if(scene==='seats'){
+   for(let row=0;row<4;row++)for(let col=0;col<7;col++)svg.append(node('circle',{cx:x+18+col*24,cy:y+18+row*23,r:4,fill:'#286477'}));
+  }
+  label(x+w/2,y+h+22,config.label1);label(29,y+h/2,config.label2);
+  caption.textContent=scene==='seats'?'Схема показывает, как строки и столбцы образуют произведение. Точки на примере не задают число мест в условии.':scene==='square-cut'?'Штриховая линия — распил. Квадрат и прямоугольная часть имеют одинаковую ширину.':'Соседние подписи обозначают разные стороны. Противоположные стороны равны.';
+ }
+ svg.setAttribute('aria-label',caption.textContent);host.append(svg,caption);
+}
+
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
  if(['quadratic-discriminant','quadratic-parameter','quadratic-reciprocals','check-common-point'].includes(config.type)){quadraticEvidence(host,config,value);return;}
+ if(config.type==='applied-shape'){appliedShape(host,config,value);return;}
  if(config.type==='quadratic-story'){quadraticStory(host,config,value);return;}
  if(config.type==='quadratic-example'){quadraticExample(host,value);return;}
  if(['work-hours','equal-distances'].includes(config.type)){workEstimate(host,config,value);return;}
