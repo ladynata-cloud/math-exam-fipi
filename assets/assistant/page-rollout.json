@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "3e9f398febd1c16f411587403bd60177e4e39e934ae1bd17723d4e7510b80ae9",
-      "afterSha256": "a837a8a29246632261cd53802ec59426f28e1d0fff19deb8009e2d30f6e761d5",
+      "beforeSha256": "041bb74a218267e572a9ca98503b9789cace3cecc9a556ed1123d9b7567fb147",
+      "afterSha256": "25edab60be434fe281979bc130084d7f559b241f91f319b402d6b96cad16b209",
       "placement": "before-head-close",
-      "sourceSha": "8d19a8344e54a3c208dfe95481cb50501481baff"
+      "sourceSha": "0ca5de06e4f79bae52c5738ac98a69fd5106fa2e"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6896,6 +6896,16 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, часть 2, №5.26–5.27. Обратный ход событий и порядок двух действий."
+    },
+    {
+      "previousBaseSha": "8d19a8344e54a3c208dfe95481cb50501481baff",
+      "sourceBaseSha": "0ca5de06e4f79bae52c5738ac98a69fd5106fa2e",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "School course entry for printed Vilenkin exercises through 1.91 and 5.27, and the two self-checks on page 22.",
+      "boundary": "The numbered banks, worked steps, model behavior and two-role rooms have independent subject checks."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
