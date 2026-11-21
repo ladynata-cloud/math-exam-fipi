@@ -3332,10 +3332,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": {
-      "beforeSha256": "6d3e88fad0762ee0c39875db7c956f7efeb8ccff60485729fc08ad9571d90e5c",
-      "afterSha256": "5bc2658dfa068553ac92ff474dd35c3036612999334c758acff535ffab41b29b",
+      "beforeSha256": "f46118f5a7d6b5e004ae235fc258ffa5e78aafb6919576e7bc6b2645b5102505",
+      "afterSha256": "6360c88d4cc975451bda920f7ed3f31569bfe07c2f5d5241332ee088f6db9210",
       "placement": "before-head-close",
-      "sourceSha": "c8a04a3a99ee9fa239d219875a592b5e89f7e0d2"
+      "sourceSha": "3825700610047c5405d17c6ef34ecd7a1e6b4a5e"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
@@ -6614,6 +6614,25 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
+      "previousBaseSha": "aee65d44605b23694c3d7bcb6212233d150448a0",
+      "sourceBaseSha": "b0d4b70bdc9cf5f17dac3ce32f58f68940c761cb",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the reviewed Vilenkin 5 laboratory cache version.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "19b33486332fce8cfaaea77fad4b782eb9ecaad4",
+      "sourceBaseSha": "00a70523fa4d69dc815999f5de9c9918281e6d1d",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверен общий вход в новые книги Мастерской и Виленкина. Два авторских опыта различают исправление прогноза и открытие полного объяснения."
+    },
+    {
       "previousBaseSha": "19b33486332fce8cfaaea77fad4b782eb9ecaad4",
       "sourceBaseSha": "f9162f738221882f7159357e9feb6371c8d5e146",
       "task": "docs/tasks/WORKSHOP_MAKARYCHEV7_2014.md",
@@ -6695,25 +6714,6 @@
       "boundary": "Сверена страница с разборчивой шкалой, дугами и буквами точек при передаче управления."
     },
     {
-      "previousBaseSha": "aee65d44605b23694c3d7bcb6212233d150448a0",
-      "sourceBaseSha": "b0d4b70bdc9cf5f17dac3ce32f58f68940c761cb",
-      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
-      "changedPaths": [
-        "school/index.html"
-      ],
-      "bindingScope": "Per-page sourceSha for the reviewed Vilenkin 5 laboratory cache version.",
-      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
-    },
-    {
-      "previousBaseSha": "19b33486332fce8cfaaea77fad4b782eb9ecaad4",
-      "sourceBaseSha": "00a70523fa4d69dc815999f5de9c9918281e6d1d",
-      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
-      "changedPaths": [
-        "school/index.html"
-      ],
-      "boundary": "Проверен общий вход в новые книги Мастерской и Виленкина. Два авторских опыта различают исправление прогноза и открытие полного объяснения."
-    },
-    {
       "previousBaseSha": "efcdf5589786a8a4eb64ac4307c7ea2414893ee3",
       "sourceBaseSha": "57f08aa4568f97635b6e7da5c22fc31dd860098a",
       "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
@@ -6747,6 +6747,14 @@
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
       "reason": "Add the reviewed everyday-object workshop to the published Arzhenikov map."
+    },
+    {
+      "sourceBaseSha": "3825700610047c5405d17c6ef34ecd7a1e6b4a5e",
+      "task": "docs/tasks/ARZHENIKOV_CHILD_ADVENTURE_20261122.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Bind the independently reviewed illustrated city and division harbor source; preserve exact navigator includes and all other page receipts."
     }
   ],
   "coverageUpdates": [

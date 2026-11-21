@@ -3,30 +3,55 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>От счёта группами до деления уголком — карта навыков по Арженикову | MathExam</title>
-  <meta name="description" content="Карта житейских задач для детей по мотивам задачника Арженикова. Разложи предметы, сравни группы, запиши своё решение и перейди к делению уголком.">
+  <title>Город маленьких дел — математическая игра по мотивам Арженикова | MathExam</title>
+  <meta name="description" content="Детская математическая игра: 48 житейских историй, 8 мест и альбом открыток. Сначала разложи предметы, затем запиши решение. По мотивам задачника К. П. Арженикова.">
+  <meta name="theme-color" content="#235b49">
   <link rel="canonical" href="https://mathexam.space/trainers/oge-basics/multiplication-division/arzhenikov-map.html">
   <link rel="stylesheet" href="arzhenikov-map.css">
   <link rel="stylesheet" href="arzhenikov-workshop.css">
+  <link rel="stylesheet" href="arzhenikov-adventure.css">
+  <link rel="stylesheet" href="arzhenikov-harbor.css">
+  <link rel="stylesheet" href="arzhenikov-art.css">
+  <script src="arzhenikov-art.js" defer></script>
   <script src="arzhenikov-map.js" defer></script>
   <script src="arzhenikov-garden-bank.js" defer></script>
   <script src="arzhenikov-life-bank.js" defer></script>
   <script src="arzhenikov-workshop.js" defer></script>
   <script src="arzhenikov-life-map.js" defer></script>
   <script src="arzhenikov-garden.js" defer></script>
+  <script src="arzhenikov-harbor-bank.js" defer></script>
+  <script src="arzhenikov-harbor.js" defer></script>
+  <script src="arzhenikov-adventure.js" defer></script>
 
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 </head>
-<body>
+<body class="arz-adventure">
   <header><nav aria-label="Навигация"><a class="brand" href="/" data-mathexam-home-link target="_self" aria-label="На главную MathExam">MathExam</a><span>/</span><a href="index.html">Умножение и деление</a><a class="cabinet" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/">В кабинет</a></nav></header>
   <main>
-    <div class="intro"><div><h1>От групп к делению уголком</h1><p>Задачи с предметами по мотивам задачника К. П. Арженикова.</p></div><div class="meter"><strong id="total">Пройдено 0 из 8</strong><progress id="bar" value="0" max="8" aria-label="Пройденные навыки"></progress></div></div>
+    <div class="intro">
+      <div class="adv-heading">
+        <span class="adv-mascot" id="adventure-mascot" aria-hidden="true">🦊</span>
+        <div><p class="adv-eyebrow" id="adventure-eyebrow">Игра с математикой</p><h1 id="adventure-title">Город маленьких дел</h1><p class="adv-subtitle" id="adventure-subtitle">Помоги друзьям. Собери 8 открыток.</p></div>
+      </div>
+      <div class="meter"><strong id="total">Пройдено 0 из 8</strong><progress id="bar" value="0" max="8" aria-label="Пройденные навыки"></progress></div>
+    </div>
     <section id="workshop" class="workshop" aria-labelledby="workshop-title">
-      <div class="ws-intro"><h2 id="workshop-title">Карта маленьких дел</h2><p>Выбери место или начни с первой истории. После трёх дел ты сможешь записать свои решения числами.</p></div>
+      <div class="ws-intro">
+        <h2 id="workshop-title" class="adv-sr-only">Истории города</h2>
+        <div class="adv-hud"><span><span aria-hidden="true">✦</span> <strong id="adventure-story-count">0 из 48</strong> историй</span><button type="button" id="adventure-album-link" aria-controls="adventure-album" aria-expanded="false"><span aria-hidden="true">✉</span> Открытки <strong id="adventure-postcard-count">0 из 8</strong></button></div>
+      </div>
       <nav id="life-map" aria-label="Карта житейских задач"></nav>
       <div id="workshop-play"><noscript>Чтобы раскладывать предметы и сохранять решения, включите JavaScript. Можно заниматься и устно. На пикнике у трёх друзей шесть яблок. Как разделить их поровну? А если положить по два яблока в пакет, сколько пакетов удастся наполнить?</noscript></div>
     </section>
+    <details id="adventure-album" class="adv-album">
+      <summary><span>Альбом открытий</span><span id="adventure-album-count">0 из 8 открыток</span></summary>
+      <p class="adv-album-note" id="adventure-album-note">Открытка — за три истории и их записи. В каждом месте есть ещё три истории.</p>
+      <div class="adv-postcards" id="adventure-postcards"></div>
+      <p class="adv-album-note" id="adventure-album-message">Можно выбирать любое место и возвращаться к нему.</p>
+    </details>
+    <a class="adv-harbor-stop" id="adventure-harbor-link" href="#harbor"><span class="adv-scene" data-place="harbor" aria-hidden="true">⛴️</span><span><strong>Порт отправлений</strong><span>Хватит ли полных наборов? Куда деть остаток?</span><small id="adventure-harbor-count">12 новых миссий и своя задача</small></span><span aria-hidden="true">→</span></a>
+    <section id="division-harbor" aria-label="Порт отправлений: деление и остаток" hidden><div id="harbor-play"></div></section>
     <section class="garden" id="garden" aria-labelledby="garden-title">
       <div class="garden-cover">
         <div class="canopy" aria-hidden="true"><span>🌱</span><span>🌷</span><span>🌻</span></div>
@@ -59,17 +84,30 @@
       </section>
     </div>
     <nav class="life-modes" aria-label="Разделы тренажёра">
-      <a href="#workshop">Карта маленьких дел</a><a href="#garden-count">Оранжерея равных групп</a><a href="#count">От групп к делению уголком</a>
+      <a href="#workshop">Город маленьких дел</a><a href="#harbor">Порт отправлений</a><a href="#garden-count">Оранжерея равных групп</a><a href="#count">Деление по шагам</a>
     </nav>
-    <details class="teachers"><summary>Для преподавателя · как провести сравнение</summary>
-      <p>В «Карте маленьких дел» ребёнок раскладывает предметы в трёх разных ситуациях. Затем он подбирает числовую запись к тому, что сделал. Попросите показать на рисунке, что означает каждое число. При раздаче поровну известны получатели, а при упаковке — сколько предметов помещается в одну группу.</p>
+    <details class="teachers" id="adventure-route"><summary>Куда можно отправиться дальше</summary>
+      <div class="adv-route-options">
+        <a href="#workshop"><strong>Город маленьких дел</strong><span>48 историй с предметами. Делись поровну, собирай наборы и считай группами.</span></a>
+        <a href="#harbor"><strong>Порт отправлений</strong><span>12 миссий: деление нацело, остаток, полные наборы и место для всего груза. Можно менять числа в своей задаче.</span></a>
+        <a href="#garden-count"><strong>Оранжерея равных групп</strong><span>Новые задачи, самостоятельная проверка и повторение после перерыва.</span></a>
+        <a href="#count"><strong>Деление по шагам</strong><span>Восемь навыков: от равных групп до деления уголком, нуля в частном и остатка.</span></a>
+      </div>
+      <p>Выбирай по силам. В оранжерее и пошаговом делении встречаются большие числа. Можно оставаться в городе, пробовать другое место или сделать паузу.</p>
+    </details>
+    <details class="teachers"><summary>Взрослым · как устроено занятие</summary>
+      <p>Это авторская игровая адаптация по мотивам задачника К. П. Арженикова. Город подходит для работы с ребёнком, который уже считает предметы в пределах двадцати. Если читать условия пока трудно, взрослый может прочитать их вслух. Формат охватывает равные группы, умножение и деление; это не полный курс начальной арифметики.</p>
+      <p>В городе 48 житейских историй: по шесть в восьми местах. Сначала ребёнок действует с предметами, затем подбирает запись к своим решениям. Открытка появляется после трёх историй и их записей. Подсказки и исправления разрешены. Открытки отмечают завершённые места, а счётчик — разные решённые истории; они не заменяют самостоятельную проверку на новой задаче.</p>
+      <p>Попросите показать на рисунке, что означает каждое число. При раздаче поровну известны получатели, а при упаковке — сколько предметов помещается в одну группу. Экранное действие полезно повторить с настоящими предметами: например, раздать шесть карандашей двум людям, а затем собрать из этих карандашей наборы по два.</p>
+      <p>Прогресс сохраняется в этом браузере на этом устройстве. Можно закрыть страницу и продолжить позже. Регистрация и ключ ИИ для игры не нужны.</p>
+      <p>В порту одно деление отвечает на разные вопросы. Для 14 предметов и вместимости 4 получаются 3 полные группы и остаток 2. Готовых наборов будет 3 — берём целую часть частного (округление вниз). Чтобы перевезти всё, нужны 4 ёмкости — округление вверх. Если остаток равен нулю, дополнительная ёмкость не нужна. Это выбор по смыслу задачи, а не округление до ближайшего целого.</p>
       <p>На пятой ступени у ученика есть два входа в один пример. В первом он наполняет коробки, во втором пробует цифру и проверяет произведение. Выберите один вход до начала занятия и дайте одинаковое время на работу. Записав первый ответ на новой задаче, обсудите ошибку.</p>
       <p>В восьмой ступени проверяются первая цифра, её обоснование, частное и остаток. Для следующей попытки предлагается другой пример. Чтобы сравнить два объяснения, чередуйте назначенный вход между учениками с похожей подготовкой и используйте один контрольный пример. Повторный ответ того же ученика уже зависит от тренировки.</p>
       <p id="record">Результат самостоятельной проверки появится здесь после решения.</p>
     </details>
     <details class="teachers"><summary>Откуда взяты задания</summary>
       <p>В задачнике К. П. Арженикова 1923 года в № 233 восемь килограммов распределяют на четыре дня, а в № 257 восемь картин располагают рядами по четыре. Эти два смысла деления лежат в основе второй и третьей ступеней. Порядок действий в пределах десятка, двадцати и круглых десятков виден и в издании 1924 года.</p>
-      <p>В третьей части задачника (1924, с. 24) записано деление 32 935 на 7 с нулём в частном. Разряды мы показываем на меньших числах. Житейские истории, игровая карта и переход к записи после трёх решений разработаны для MathExam. Успех на карте показывает выполнение этих заданий. Эффект методики на учениках требует отдельной проверки.</p>
+      <p>В третьей части задачника (1924, с. 24) записано деление 32 935 на 7 с нулём в частном. Разряды мы показываем на меньших числах. Житейские истории, город, открытки и переход к записи после трёх решений разработаны для MathExam. Успех на карте показывает выполнение этих заданий. Эффект методики на учениках требует отдельной проверки.</p>
       <p><a href="https://djvu.online/file/1DTOtoJ55rIWv">Задачник, часть I (1923)</a> · <a href="https://ussrvopros.ru/sbornik-zadach-po-matematike-dlya-shkol-1-j-stupeni-chast-p1-1924">Часть I (1924)</a> · <a href="https://djvu.online/file/Zmmk0C6Gqh83D">Часть III (1924)</a> · <a href="https://repo.nspu.ru/handle/nspu/5833">«Методика начальной арифметики» (1936, переработка А. С. Пчёлко)</a></p>
     </details>
     <footer><span>Продолжить в MathExam</span><a href="long-division-quotient-digit.html">Линейка кратных</a><a href="long-division-zero-in-quotient.html">Нули в частном</a><a href="division-with-remainder.html">Деление с остатком</a></footer>
