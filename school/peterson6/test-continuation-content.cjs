@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,618);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,625);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -694,6 +694,22 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  const value=cents(row(66)[0].answer),num=10.2/(18.5-((5+2/3)*1.75-(3+2/3)*1.75)/(2+1/3)),den=80.64/1.6-3.4/(1/6);
  near(num/den,value);
  const price=cents(row(68)[0].answer)*4/10;near(25*price-1,5-5*price);
+}
+{
+ const topic=D.lessons.find(l=>l.id==='p17'),of=n=>topic.tasks.filter(t=>t.source.exercise===n);
+ for(const n of [64,65,66])assert(of(n).every(t=>t.source.page===19));
+ assert.equal(of(64)[0].answer,'8');assert.equal(of(65)[0].steps.length,9);
+ const answers=new Map(Array.from(of(66),t=>[t.source.subpart,t.answer]));
+ assert.deepEqual(Array.from(answers.keys(),Number).sort((a,b)=>a-b),[1,2,3,4,5,6,7,8]);
+ for(const [i,x]of ['10','36','12','12/5','20','6','21/2','120'].entries())assert(M.equal(answers.get(String(i+1)),x));
+ const expected=[[12,15],[12/5,15/2],[20,15],[6,7],[120,100]];
+ for(const [j,t]of of(66).filter(t=>t.missingRatio).entries()){
+  for(const [variant,cells]of t.missingRatio.sets.entries()){
+   const values=cells.map(raw=>raw===null?expected[j][variant]:(v=>v.n/v.d)(M.parse(raw)));
+   assert(Math.abs(values[0]*values[3]-values[1]*values[2])<1e-9);
+   const q=M.parse(t.missingRatio.answers[variant]);assert(Math.abs(q.n/q.d-expected[j][variant])<1e-9);
+  }
+ }
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

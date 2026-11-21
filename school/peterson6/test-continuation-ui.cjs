@@ -964,3 +964,25 @@ test('compare possible roots, fractions of the whole and historical currency uni
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('decode all nine equalities and check each unknown in both oral proportions without assigning mastery',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let fields=go(25),valid=0;
+  for(let j=0;j<24;j++){set(fields[0],j);set(fields[2],2);if(out().includes('Равенство верно'))valid++;}
+  assert.equal(valid,8);fields=go(26);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,9);
+  let word=[];for(let j=0;j<9;j++){set(fields[0],j);set(fields[1],1);if(out().includes('Буква входит в слово'))word.push(f.q(fields[0]).selectedOptions[0].textContent);}
+  assert.deepEqual(word,['Р','Д','А','О','Х']);set(fields[1],2);const chord=f.q('#model [data-chord="AB"]');
+  const x1=Number(chord.getAttribute('x1')),x2=Number(chord.getAttribute('x2')),y=Number(chord.getAttribute('y1'));
+  assert(Math.abs(Math.hypot(x1-108,y-55)-43)<1e-8);assert(Math.abs(Math.hypot(x2-108,y-55)-43)<1e-8);assert.notEqual(y,55);
+  for(const [i,before,after] of [[27,'12','15'],[28,'12/5','15/2'],[29,'20','15'],[30,'6','7'],[31,'120','100']]){
+   fields=go(i);const select=(value)=>{const option=[...f.q(fields[1]).options].find(el=>el.textContent===value);assert(option);set(fields[1],option.value);};
+   select(before);set(fields[2],1);assert(out().includes('Подстановка подходит.'),i);
+   set(fields[0],1);assert.equal(f.q(fields[2]).value,'0');select(after);set(fields[2],2);assert(out().includes('Подстановка подходит.'),i);
+   select('0');set(fields[2],1);if(i===27||i===31)assert.match(out(),/делителей равен нулю/);else assert.match(out(),/Значения различаются/);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
