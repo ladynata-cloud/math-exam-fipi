@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "5331d26adbe14a76259bc6a3a8892badcf5ca38a3c76c7c5e135e1f1bf3e7f3d",
-      "afterSha256": "4f0da7e8c7234664db9b7d2919355061eb20cabbc4ffa1a1e704df7ccff11546",
+      "beforeSha256": "be617bc2d8fd99f30bb1b98b3002a76c18edb03fce214e8e80ebdd7db17bffd5",
+      "afterSha256": "ca2bcf062f135605168d0b23ef1ced9596df243929ee98bd55afc007854a994e",
       "placement": "before-head-close",
-      "sourceSha": "16e8a8660fa1d108b90c228fb2b2b196db761550"
+      "sourceSha": "219601fcf9d62ed661ec288f17e5669c7bc7c893"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7008,6 +7008,16 @@
         "school/index.html"
       ],
       "boundary": "Три отдельных задания одной печатной проверочной работы §25, часть 2, с. 11. Рисунок ученика сохранён и передаётся на доску. Список сквозных номеров заканчивается перед работой на №5.39."
+    },
+    {
+      "previousBaseSha": "16e8a8660fa1d108b90c228fb2b2b196db761550",
+      "sourceBaseSha": "219601fcf9d62ed661ec288f17e5669c7bc7c893",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "First-volume printed Vilenkin exercises through 1.121 and second-volume exercises through 5.39.",
+      "boundary": "Only the combined school entry receives this page binding."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
