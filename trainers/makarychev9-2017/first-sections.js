@@ -5,21 +5,31 @@
     return {...task(prompt, answer, working, reminder), mistakes};
   }
   function diagram(data) {
+    if (data.chart==='rootSigns') {
+      const [even,odd]=data.rows;
+      return '<svg viewBox="0 0 286 130" role="img" aria-label="Знак чётной и нечётной степени. Слева две противоположные величины, справа знаки результатов"><g fill="none" stroke="#276a66" stroke-width="2"><path d="M45 33L215 34M45 97L215 34M45 97H215" stroke-dasharray="4 3"/></g><g fill="#233e49" font-size="13"><text x="8" y="32">+u</text><text x="8" y="100">−u</text><text x="225" y="37">+ число</text><text x="225" y="100">− число</text><text x="68" y="21">степень '+even[0]+'</text><text x="69" y="83">степень '+even[0]+'</text><text x="69" y="116">степень '+odd[0]+'</text></g></svg>';
+    }
+    if (data.chart==='powerPath') {
+      const [[base,m,n]]=data.rows;
+      return '<svg viewBox="0 0 286 105" role="img" aria-label="От основания сначала перейди к положительному корню указанной степени, затем возведи результат в целую степень"><g fill="none" stroke="#276a66" stroke-width="2"><path d="M53 54H116L110 49M116 54L110 59 M161 54H241L235 49M241 54L235 59"/></g><g fill="#233e49" text-anchor="middle" font-size="14"><text x="28" y="59">'+base+'</text><text x="142" y="59">u</text><text x="262" y="59">v</text><text x="85" y="36">корень '+n+'-й</text><text x="201" y="36">степень '+m+'</text><text x="142" y="85">u &gt; 0</text></g></svg>';
+    }
     if (data.chart==='factors') {
       const [[a,u,v]]=data.rows;
       return '<svg viewBox="0 0 284 135" role="img" aria-label="Таблица раскрытия скобок: умножь множитель строки на множитель столбца, затем учти внешний коэффициент"><g fill="none" stroke="#286b69"><path d="M62 34H268V122H62Z M165 34V122 M62 78H268"/></g><g text-anchor="middle" fill="#20323c" font-size="14"><text x="112" y="24">x</text><text x="215" y="24">'+(-v)+'</text><text x="42" y="60">x</text><text x="42" y="107">'+(-u)+'</text><text x="112" y="62">x²</text><text x="215" y="62">('+(-v)+')x</text><text x="112" y="105">('+(-u)+')x</text><text x="215" y="105">'+(u*v)+'</text><text x="26" y="20">× '+a+'</text></g></svg>';
     }
-    const pts = data.coordinates;
+    const curves = data.curves || (data.joined ? [data.coordinates] : []);
+    const pts = curves.length ? curves.flat() : data.coordinates;
     const xs = pts.map(row => row[0]), ys = pts.map(row => row[1]);
     const xmin = Math.min(0, ...xs) - 1, xmax = Math.max(0, ...xs) + 1;
     const ymin = Math.min(0, ...ys) - 1, ymax = Math.max(0, ...ys) + 1;
     const X = n => 32 + (n-xmin)/(xmax-xmin)*224;
     const Y = n => 151 - (n-ymin)/(ymax-ymin)*127;
     const axis = '<path d="M24 '+Y(0)+'H264 M'+X(0)+' 15V158" stroke="#4b5865"/><text x="267" y="'+(Y(0)+4)+'">x</text><text x="'+(X(0)+5)+'" y="14">y</text>';
-    const line = data.joined ? '<polyline fill="none" stroke="#176a66" stroke-width="2.5" points="'+pts.map(([x,y])=>X(x)+','+Y(y)).join(' ')+'"/>' : '';
+    const line = curves.map((curve,index)=>'<polyline fill="none" stroke="'+(index && data.compare?'#935118':'#176a66')+'" '+(index && data.compare?'stroke-dasharray="6 3"':'')+' stroke-width="2.5" points="'+curve.map(([x,y])=>X(x)+','+Y(y)).join(' ')+'"/>').join('');
+    const guides = data.asymptotes ? '<path d="M'+X(data.asymptotes[0])+' 15V158 M24 '+Y(data.asymptotes[1])+'H264" stroke="#935118" stroke-dasharray="4 3"/>' : '';
     const dots = (data.marked || pts).map(([x,y]) => '<circle cx="'+X(x)+'" cy="'+Y(y)+'" r="3.5" fill="#12635d"/>').join('');
     const labels=(data.marked||[]).map(([x,y])=>'<text x="'+X(x)+'" y="'+(Y(y)+(y===0?14:-7))+'" text-anchor="middle">'+(y===0?x:y)+'</text>').join('');
-    return '<svg viewBox="0 0 283 176" role="img" aria-label="'+data.alt+'"><g font-size="11" fill="#20323c">'+axis+line+dots+labels+'</g></svg>';
+    return '<svg viewBox="0 0 283 176" role="img" aria-label="'+data.alt+'"><g font-size="11" fill="#20323c">'+axis+guides+line+dots+labels+'</g></svg>';
   }
   function chart(data, coordinates, joined, alt, marked) {
     return Object.assign(data, {chart:'coordinates', coordinates, joined, alt, marked});
@@ -27,6 +37,7 @@
   function point(n, page, title, aim, rule, skill, make) {
     add(50, n, page, title, aim, rule, skill, make);
   }
+  window.Makarychev9Practice = {point, question, chart};
   window.MathExamTopicEdition = {
     trainerId:'makarychev9-2017', storePrefix:'math:makarychev9-2017:v1:',
     authors:'Макарычев, Миндюк, Нешков, Суворова · 2017', grade:()=>'9 класс', unit:'пункт',

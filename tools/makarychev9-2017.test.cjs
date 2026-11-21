@@ -29,8 +29,42 @@ function answers(point,data) {
     const roots=Array.from({length:101},(_,i)=>i-50).filter(x=>a*x*x+b*x+c===0);
     return [roots[0],roots[1],roots[0]*roots[1]];
   }
-  const polynomial=x=>a*(x-b)*(x-c);
-  return [-b,(polynomial(1)-polynomial(-1))/2,polynomial(0)];
+  switch (point) {
+    case 4: {
+      const polynomial=x=>a*(x-b)*(x-c);
+      return [-b,(polynomial(1)-polynomial(-1))/2,polynomial(0)];
+    }
+    case 5: return [b/(a*a),b,4*b];
+    case 6: {
+      const rule=data.caption.split('Штриховая линия g(x) = ')[1];
+      const inside=rule.match(/\(x ([+−]) (\d+)\)²/), outside=rule.match(/x² ([+−]) (\d+)/);
+      const h=inside ? (inside[1]==='+'?-1:1)*Number(inside[2]) : 0;
+      const k=outside ? (outside[1]==='+'?1:-1)*Number(outside[2]) : 0;
+      return [h,k,k];
+    }
+    case 7: {
+      const fn=x=>a*x*x+b*x+c, high=a<0;
+      const xs=Array.from({length:31},(_,i)=>i-15);
+      const extreme=xs.reduce((best,x)=>(high ? fn(x)>fn(best) : fn(x)<fn(best))?x:best);
+      const mate=xs.find(x=>x!==r[3] && fn(x)===fn(r[3]));
+      return [extreme,fn(extreme),mate];
+    }
+    case 8: {
+      const answers=Array.from({length:17},(_,i)=>i-8).filter(x=>x**a===c);
+      return [(-b)**a,answers.length,b**a-(-b)**a];
+    }
+    case 9: {
+      const integers=Array.from({length:17},(_,i)=>i-8);
+      const positive=integers.filter(x=>x**a===b);
+      return [Math.max(...positive),positive.length,integers.find(x=>x**t[0]===t[1])];
+    }
+    case 10: return [c,a,(a*r[3]+b)/(r[3]-c)];
+    case 11: {
+      const root=Array.from({length:20},(_,i)=>i+1).find(x=>x**c===a);
+      return [root,root**b,1/(root**b)];
+    }
+    default: throw Error('uncovered point '+point);
+  }
 }
 function click(w,action) {w.document.querySelector('[data-action="'+action+'"]').click();}
 function submit(w,value) {
@@ -38,14 +72,22 @@ function submit(w,value) {
   field.dispatchEvent(new w.Event('input',{bubbles:true}));
   w.document.querySelector('#work form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
 }
-for (const [i,page] of [5,14,22,27].entries()) {
+for (const [i,page] of [5,14,22,27,31,38,44,49,54,60,65].entries()) {
   const point=i+1,id='50-'+point,key='math:makarychev9-2017:v1:'+id;
   let dom=open(id),w=dom.window; const lesson=w.MathExamTopicPractice.lessons.get(id);
   assert.equal(lesson.page,page); assert.equal(w.document.querySelector('#lesson').value,id);
   assert.equal(w.document.querySelector('#work svg').getAttribute('role'),'img');
+  if(point===6) assert.equal(w.document.querySelectorAll('#work svg polyline').length,2);
+  if(point===10) {
+    const model=lesson.make(4), asymptote=model.asymptotes[0];
+    assert.equal(w.document.querySelectorAll('#work svg polyline').length,2);
+    assert(model.curves[0].every(p=>p[0]<asymptote) && model.curves[1].every(p=>p[0]>asymptote));
+  }
   assert.equal(new URL(w.document.querySelector('#board').href).searchParams.get('trainer'),'/trainers/makarychev9-2017/index.html#lesson/'+id);
   for(let s=1;s<=11;s++) {
     const d=lesson.make(s), correct=answers(point,d);
+    const afterRepeat = lesson.make(1+(s-1+7)%11);
+    assert.notEqual(JSON.stringify(d.rows),JSON.stringify(afterRepeat.rows),id+' repeated source data');
     for(const [j,q] of d.questions.entries()) {
       assert.equal(q.answer,correct[j],id+' variant '+s+' question '+j);
       assert(q.calculation && q.error);
@@ -69,4 +111,4 @@ for (const [i,page] of [5,14,22,27].entries()) {
   click(w,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
   dom.window.close();
 }
-console.log('Source 50: 132 independent numeric checks and four pupil journeys with saved and assisted work.');
+console.log('Source 50: 363 independent numeric checks and eleven pupil journeys with saved and assisted work.');
