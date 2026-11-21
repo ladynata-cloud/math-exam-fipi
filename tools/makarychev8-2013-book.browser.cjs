@@ -71,7 +71,17 @@ async function checkDestination(tab, href) {
       assert.equal(link.pathname,'/trainers/trainer-board.html');
       const entry=registry.find(e=>'/'+e.file===destination.pathname);
       assert.equal(entry?.boardCompatibility,'board-mirror',destination.pathname);mirrorIds.add(entry.trainerId);
-      await Promise.all([checkDestination(personal,row.personal),checkDestination(shared,destination.href)]);
+      for (const [page, href] of [[personal, row.personal], [shared, destination.href]]) {
+        try {
+          await checkDestination(page, href);
+        } catch (cause) {
+          throw new Error('Пункт ' + (i + 1) + ', ' + href + ': ' + cause.message, {cause});
+        }
+      }
+      if (i === 41) {
+        assert.equal(destination.hash, '#lesson/p51/5');
+        assert.match(await personal.locator('#problem h2').innerText(), /Сравни две функции/);
+      }
     }
     assert.deepEqual([...mirrorIds].sort(),['makarychev8','tyurin-statistics','vilenkin5']);
     assert.deepEqual(errors,[]);console.log('Макарычев 2013: checked 43 printed points, six supplements, all 43 individual and 43 registered board destinations, and mobile layout.');
