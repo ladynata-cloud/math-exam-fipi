@@ -25,7 +25,7 @@ def cross(a, b):
 def verify(item):
     source = item['source']
     number = int(source['exercise'])
-    page = 221 if number <= 902 else 222
+    page = 221 if number <= 902 else 222 if number <= 913 else 223
     assert source['bookId'] == 'atanasyan-2023-7-9'
     assert source['printedPages'] == [page] and source['pdfPages'] == [page + 1]
     assert source['relatedChapters'] == [9] and source['advancedGrade'] == 8
@@ -129,13 +129,47 @@ def verify(item):
             near(length(a,b)**2+length(c,d)**2,diameter**2)
 
 
+    elif number == 914:
+        collinear('C','P','D')
+        near(angle('D','A','P'),angle('P','A','B'))
+        near(angle('A','B','P'),angle('P','B','C'))
+        near(length('D','C'),length('A','D')+length('B','C'))
+        for name in 'BCD':
+            near(length('O',name),length('O','A'))
+    elif number == 915:
+        near((length('A','B')+length('C','D'))*length('A','D')/2,length('A','B')*length('C','D'))
+        for a,b in [('A','B'),('B','C'),('C','D'),('D','A')]:
+            near(abs(cross(direction(a,b),direction(a,'O')))/length(a,b),length('O','U'))
+    elif number == 916:
+        near(length('A','C')*length('B','D'),length('A','B')*length('C','D')+length('A','D')*length('B','C'))
+        v={key.split('__')[0]:val[:2] for key,val in points.items() if key.endswith('__v3')}
+        near(dist(v['A'],v['K'])*dist(v['B'],v['D']),dist(v['A'],v['B'])*dist(v['C'],v['D']))
+    elif number == 917:
+        v={key.split('__')[0]:val[:2] for key,val in points.items() if key.endswith('__v2')}
+        R=dist(v['O'],v['A']);r=dist(v['I'],v['T'])
+        near(dist(v['O'],v['I'])**2,R**2-2*R*r)
+        near(dist(v['I'],v['M']),dist(v['B'],v['M']))
+        near(dist(v['A'],v['I'])*dist(v['I'],v['M']),2*R*r)
+    elif number == 918:
+        assert model['views']['case-all-nine']['availableFromStep']==3
+        v={key.split('__')[0]:val[:2] for key,val in points.items() if key.endswith('__v4')}
+        for name in 'UVWFGKDEJ':
+            near(dist(v['Q'],v[name]),dist(v['O'],v['A'])/2)
+    elif number == 919:
+        collinear('P','Q','R')
+        for a,b,f in [('A','B','P'),('B','C','Q'),('C','A','R')]:
+            near(dot(direction(a,b),direction(f,'X')),0)
+            collinear(a,f,b)
+        near(length('O','A'),length('O','X'))
+
+
 if __name__ == '__main__':
     lessons = json.loads(DATA.read_text())['lessons']
     parts = [(int(l['source']['exercise']), l['source'].get('subpart')) for l in lessons]
-    assert parts == [(900,None),(901,'а'),(901,'б'),(901,'в')] + [(n,None) for n in range(902,914)]
+    assert parts == [(900,None),(901,'а'),(901,'б'),(901,'в')] + [(n,None) for n in range(902,920)]
     for item in lessons:
         try:
             verify(item)
         except AssertionError as exc:
             raise AssertionError(item['id']) from exc
-    print('ATANASYAN_CIRCLE_MODELS_OK 14 номеров, 16 авторских решений, 32 числовые проверки')
+    print('ATANASYAN_CIRCLE_MODELS_OK 20 номеров, 22 авторских решения, 44 числовые проверки')
