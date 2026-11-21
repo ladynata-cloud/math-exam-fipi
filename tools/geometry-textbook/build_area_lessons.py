@@ -108,6 +108,28 @@ def next_three():
 # Each question uses a fresh numeric instance. The child's answer is saved by the
 # normal textbook step-input engine and the general proof remains a written task.
 CHECKS = {
+    863: (2,'Если AB=10, AE=BF=2 и MC=15, чему равна длина MK?', ['9'], 'Отрезок ME равен 5−2. Доля MK от MC равна ME/MA.'),
+    864: (3,'Если сумма катетов равна 10, чему равен квадрат CO?', ['50'], 'Подставь 10 в CO²=a²/2.'),
+    865: (1,'Из скольких седьмых окружности состоит меньшая дуга WA?', ['3'], 'На этой дуге между W и A ещё две вершины семиугольника.'),
+    866: (1,'При угле AOB в 60° и OP=4 найди OR.', ['2'], 'Проекция даёт OR=OP·cos 60°, а cos 60°=1/2.'),
+    867: (2,'Пусть a=3, b=4, x=1,92. Чему равна координата y точки H?', ['1,44','1.44'], 'Из ax=by получаем y=ax/b.'),
+    (868,'а'): (1,'Если катеты равны 6 и 8, какова длина высоты CD к гипотенузе?', ['4,8','4.8'], 'Сначала найди гипотенузу по теореме Пифагора, затем раздели произведение катетов на неё.'),
+    (868,'б'): (3,'При AB=10 сколько составляет AE²+BF²+3CD²?', ['100'], 'Доказанное равенство превращает сумму в квадрат гипотенузы.'),
+    (868,'в'): (3,'Если AB=8, чему равна сумма ∛(AE²)+∛(BF²)?', ['4'], 'Вычисли кубический корень из 64.'),
+    (869,'а'): (3,'У трёх вершин углы равны 75°, 60° и 90°. Сколько градусов у четвёртой?', ['135'], 'Выпуклый четырёхугольник имеет сумму углов 360°.'),
+    (869,'б'): (1,'Сколько градусов в угле BAP, соответствующем углу BDA?', ['30'], 'Вычти угол DAP из угла DAB.'),
+    870: (2,'Если сторона AB равна 7, чему равно MP?', ['14'], 'AB соединяет середины двух сторон MNP.'),
+    871: (3,'Если AB=12 и CD=8, какой числовой верхней границе строго уступает MN?', ['10'], 'Найди полусумму длин противоположных сторон.'),
+    854: (3,'В другом параллелограмме S₁=9, S₂=16. Найди его площадь.', ['24'], 'Найди корень из произведения двух площадей и удвой.'),
+    855: (2,'При OM/OK=3/4 и OC=12 найди OE.', ['9'], 'Длина OE занимает такую же долю OC, как OM от OK.'),
+    856: (3,'При α=74° чему равен угол BKM в градусах?', ['37'], 'У равнобедренного ADC два одинаковых угла при основании.'),
+    857: (3,'Если MB=6, MC=7, MD=8, сколько составляет квадрат MA?', ['51'], 'Найди сумму 6² и 8² и вычти 7².'),
+    858: (3,'Если AD=3, DC=6, BD=4, найди квадрат MB.', ['61'], 'Сложи квадраты трёх данных длин.'),
+    859: (3,'При AC=9 и BC=12 найди OA²+OB².', ['125'], 'Сначала вычисли OC²=(9²+12²)/9.'),
+    (860,'а'): (3,'Сколько градусов в угле AFE?', ['108'], 'Два других угла этого треугольника равны 36° каждый.'),
+    (860,'б'): (3,'Если DF/AF близко к 1,62, а DF=8, вычисли приближённую длину DA.', ['12,96','12.96'], 'Умножь DF на доказанное отношение DA/DF.'),
+    861: (3,'AB=8, AC=4, D лежит на AB, E — на продолжении CA за A. Из AD=AE и BD=CE найди CE.', ['6'], 'Обозначь AD=AE через x. Тогда 8−x=4+x. Найди x, затем CE.'),
+    862: (3,'Если угол A равен 58°, сколько градусов в угле ADE?', ['32'], 'Угол ADE дополняет A до прямого угла.'),
     842: (2,'При площади большого параллелограмма 50 и x=y=1/5 какова площадь MPBQ?', ['8'], 'Возьми долю (1−x)y от всей площади.'),
     843: (1,'Проверь на новых данных: S₁=4, S₂=8, S₃=6. Какова площадь OMK?', ['3'], 'Сначала найди OM/OB, затем умножь эту долю на S₃.'),
     844: (4,'Проверь формулу при S₁=1 и S₂=27. Какова площадь всего треугольника?', ['64'], 'Извлеки корни, сложи их и только потом возведи в куб.'),
@@ -126,7 +148,9 @@ CHECKS = {
 def lesson(card):
     n=card['number']
     origin=dict(bookId=BOOK, collection='main', chapter='8 класс · повышенная трудность', advancedGrade=8,
-                relatedChapters=[7],exercise=str(n),printedPages=card['printedPages'],pdfPages=card['pdfPages'])
+                relatedChapters=[card.get('relatedChapter',7)],exercise=str(n),printedPages=card['printedPages'],pdfPages=card['pdfPages'])
+    part=card.get('sourcePart')
+    if part: origin['subpart']=part
     steps=[]; refs=[]
     for i, item in enumerate(card['steps'], 1):
         reason=dict(kind='reason', text=item['justification'])
@@ -136,15 +160,20 @@ def lesson(card):
             if 'theoryId' not in reason: reason['theoryId']=ref
         s=dict(id=f'step-{i}',title=f'Шаг {i}',prompt=item['prompt'],explanation=item['explanation'],
                view=f'step-{i}',justifications=[reason])
-        idx, question, accepted, feedback=CHECKS[n]
+        idx, question, accepted, feedback=CHECKS[(n,part) if part else n]
         if i==idx: s['input']=dict(prompt=question,accepted=accepted,feedback=feedback)
         steps.append(s)
     hint=card['notes'][0].removeprefix('Подсказка. ')
     help_items=[dict(id='first-hint',question='С чего начать?',text=hint)]
     if refs: help_items.append(dict(id='recall-theory',question='Вспомнить свойство',text='Открой объяснение рядом с задачей.',theoryIds=refs))
     help_items.append(dict(id='compare-result',question='Сверить свой итог',text=card['answer']))
-    return dict(schemaVersion=1,id=f'atanasyan-7-9-main-{n}-part-1',revision=1,kind='exercise',
-                title=f'Задача {n}',status='reviewed',source=origin,review=GEOMETRY,
+    review=GEOMETRY
+    if n>=854:
+        printed_page=card['printedPages'][0]
+        review={**GEOMETRY,'reviewer':f'Codex, сверка печатной с. {printed_page} и проверка геометрических зависимостей'}
+    part_number={'а':1,'б':2,'в':3}[part] if part else 1
+    return dict(schemaVersion=1,id=f'atanasyan-7-9-main-{n}-part-{part_number}',revision=1,kind='exercise',
+                title=f'Задача {n}',status='reviewed',source=origin,review=review,
                 statement=dict(text=card['condition'],goal='Сначала предложи своё решение. Подсказки и разбор можно открыть рядом.'),
                 visualization=dict(type='scene3d',caption='Меняй шаг разбора, чтобы увидеть соответствующее построение.',model=card['model']),
                 help=help_items,steps=steps,answer=dict(mode='manual',prompt='Запиши своё обоснование.'))
