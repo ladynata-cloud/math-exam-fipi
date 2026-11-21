@@ -121,6 +121,22 @@
 
 .task-graphs.number-line{max-width:420px}.number-line svg{max-height:160px}.number-line p{font-size:.72rem;line-height:1.35;margin:5px 0}
 
+/* Keep the lesson and shared-board links on one row above small-screen diagrams. */
+@media (max-width: 390px) {
+ .lesson-page .breadcrumb:has(.button) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 4px;
+ }
+ .lesson-page .breadcrumb .button {
+  min-height: 44px;
+  padding: 4px 8px;
+  font-size: inherit;
+ }
+ .lesson-page .breadcrumb:has(.button) > span { grid-column: 1 / -1; }
+}
+
 </style>
   <style data-inline-source="/assets/course-examples.css">
 /* Shared, scoped to course entrances and optional native lesson explanations. */
