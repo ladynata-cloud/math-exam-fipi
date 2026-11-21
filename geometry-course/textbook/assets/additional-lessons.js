@@ -99,7 +99,8 @@
       ['/geometry-course/textbook/data/inscribed-circle-lengths.json', '№1193–1194'],
       ['/geometry-course/textbook/data/circle-length-applications.json', '№1195–1199'],
       ['/geometry-course/textbook/data/measured-arc-devices.json', '№1200–1202'],
-      ['/geometry-course/textbook/data/radian-table.json', 'п. 119 и №1203']
+      ['/geometry-course/textbook/data/radian-table.json', 'п. 119 и №1203'],
+      ['/geometry-course/textbook/data/radian-constructions.json', '№1204']
   ];
 
   async function forCourse(base) {
