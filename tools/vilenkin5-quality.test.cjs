@@ -152,6 +152,23 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function massDividendPowerRegression(){
+  const f=boot(),ids=[37,38,39].map(n=>'v5f-printed-5-'+n),v=f.w.Vilenkin5MassDividendPowers;
+  const answers=t=>plain([...t.steps,t].map(x=>x.answer));
+  equal(answers(f.M.generate(ids[0],0)),[63750,63,[63,750]]);
+  equal(answers(f.M.generate(ids[1],0)),[41478,41480]);
+  equal(answers(f.M.generate(ids[2],0)),[423300,605,62920,486220,3040728,5673,3244,2744,343,3087,7,441,729,216,513,263169]);
+  for(let seed=0;seed<100;seed++){
+    const [t,u,z]=ids.map(id=>f.M.generate(id,seed)),m=t.data.tankMass,{b,q,rem}=u.data.dividend;
+    equal(t.answer[0]*1000+t.answer[1],m.litres*m.gramsPerLitre);ok(t.answer[1]>=0&&t.answer[1]<1000);
+    equal(Math.floor(u.answer/b),q);equal(u.answer%b,rem);for(let extra=0;extra<=2;extra++)equal(v.explore(u,{extra}).answer,u.answer+extra*b);
+    for(const litres of [1,10,100])equal(v.explore(t,{litres}).answer,litres*m.gramsPerLitre);
+    const [a,c,d,e]=z.data.orderWithPowers,totals=[a[0]*a[1]+a[2]/a[3]*a[4],(c[0]+c[1])/c[2]-c[3],(d[0]**3+d[1]**3)/(d[0]-d[1]),(e[0]**3-e[1]**3)**2];
+    for(let row=0;row<4;row++){ok(Number.isSafeInteger(totals[row]));equal(v.explore(z,{row,focus:1}).answer,totals[row]);}
+  }
+  f.close();const g=boot('#lesson/'+ids[1]);g.submit('41478');g.click('[data-cmd=next]');g.submit('41478');ok(g.snapshot().scene.message.includes('Добавь остаток'));g.submit('41480');ok(g.snapshot().scene.correct&&!g.snapshot().scene.assisted);g.close();
+}
+
 function boxDivisorsAndLayersRegression(){
   const f=boot(),a='v5f-printed-5-35',b='v5f-printed-5-36',module=f.w.Vilenkin5GroupsAndLayers;
   const answers=t=>plain([...t.steps,t].map(x=>x.answer));
@@ -670,7 +687,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:118},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36'));
+  equal(plain(path.numbered),Array.from({length:118},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -1593,7 +1610,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
