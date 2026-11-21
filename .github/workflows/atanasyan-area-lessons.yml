@@ -106,6 +106,8 @@ on:
       - 'tools/geometry-textbook/*radian_table*'
       - 'tools/geometry-textbook/*radian_constructions*'
       - 'tools/geometry-textbook/*disk_area_table*'
+      - 'tools/geometry-textbook/*areas_of_inscribed_disks*'
+      - 'geometry-course/textbook/data/areas-of-inscribed-disks.json'
       - 'geometry-course/textbook/data/disk-area-table.json'
       - 'geometry-course/textbook/data/radian-constructions.json'
       - 'geometry-course/textbook/data/radian-table.json'
@@ -192,6 +194,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/areas_of_inscribed_disks.py --check && python3 tools/geometry-textbook/check_areas_of_inscribed_disks.py
       - run: python3 tools/geometry-textbook/disk_area_table.py --check && python3 tools/geometry-textbook/check_disk_area_table.py
       - run: python3 tools/geometry-textbook/radian_constructions.py --check && python3 tools/geometry-textbook/check_radian_constructions.py
       - run: python3 tools/geometry-textbook/radian_table.py --check && python3 tools/geometry-textbook/check_radian_table.py
