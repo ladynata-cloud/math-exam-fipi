@@ -75,7 +75,7 @@ function filesAt(relative) {
 const approvedAreaFiles = {
   "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
   "geometry-course/textbook/data/triangle-sine-area.json": "329c77274a12acbab05da2084cfb72e09f7af67f4bb63773c241c7e8c6effcfa",
-  "geometry-course/textbook/data/field-trigonometry.json": "31cae89dcaf446babbd090b42738c1567672feb6dd92463c33f5c93058cab883",
+  "geometry-course/textbook/data/field-trigonometry.json": "62b7344a8caee414869f36ea48a1053bbf724c69291d7f1c6bc6870dae9adfc6",
   "geometry-course/textbook/data/solve-triangle.json": "d51ca83c1711b26949d4eba0e89e0ea2f7358f18da474aba767bc3896d233b5c",
   "geometry-course/textbook/data/oblique-triangle-cases.json": "565304b423ae86a9faf10c0df28a4587460fa868cd476808a697b053ad61e828",
   "geometry-course/textbook/data/triangle-section-applications.json": "22c4ffd1079c8abc17c39ec93ce4468c850356882f2240997128b7bb4adc6d3d",
