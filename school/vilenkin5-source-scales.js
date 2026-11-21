@@ -15,8 +15,17 @@
     const up=seed?r(4,8):7,down=seed?r(2,4):2,mild=seed?r(2,6):4,fall=seed?r(5,8):7,last=seed?r(1,up-1):5;
     const deltas=[[up],[-down],[mild],[-fall],[up,-last]],adjust=(change)=>levels.map(x=>x+change.reduce((s,v)=>s+v,0));
     const steps=[asStep(step,'Прочитай четыре исходных температуры слева направо. Введи четыре целых числа через точку с запятой.',levels,'Следи за верхним краем каждого красного столбика. Между соседними длинными отметками десять малых делений.')];
-    deltas.forEach((d,i)=>steps.push(asStep(step,'абвгд'[i]+'. Для каждого из четырёх исходных термометров сдвиг в делениях: '+summary(d)+'. Каковы четыре новых показания слева направо?',adjust(d),'Каждый подпункт начинается с исходного ряда. Изменения внутри текущей строки выполняй последовательно.',[err(levels,'Записаны исходные показания. Теперь сдвинь каждый столбик по стрелке этой строки.')])));const final=adjust(deltas[4]);
-    return {prefix:seed?'Новые авторские шкалы. ':'Авторские шкалы передают исходные уровни рисунка 1.30. ',prompt:'На сколько градусов после обоих действий пункта д изменилось показание каждого термометра? Повышение запиши положительным числом.',inputPrompt:'Общее изменение, °C',answer:final[0]-levels[0],steps,errors:[err(up+last,'Второе движение направлено вниз. Оно частично отменяет первое.')],data:{thermo:{levels,deltas}},table:{caption:'Направление движения столбиков',headers:['№','Деления'],rows:deltas.map((d,i)=>['абвгд'[i],summary(d)])},conditionKey:[...levels,...deltas.flat()].join('/')};
+    deltas.forEach((d,i)=>steps.push(asStep(step,'абвгд'[i]+'. Для каждого из четырёх исходных термометров сдвиг в делениях: '+summary(d)+'. Каковы четыре новых показания слева направо?',adjust(d),'Каждый подпункт начинается с исходного ряда. Изменения внутри текущей строки выполняй последовательно.',[err(levels,'Записаны исходные показания. Теперь сдвинь каждый столбик по стрелке этой строки.')])));
+    if(!seed){
+      // The top of the fourth column in the supplied print scan lies between two adjacent marks.
+      for(const question of steps){
+        const [first,second,third,fourth]=question.answer;
+        question.printedThermometerAlternative=[first,second,third,fourth+1];
+      }
+      steps[0].prompt+=' У четвёртого столбика в бумажной книге округли размытый верхний край до ближайшей риски. В следующих подпунктах считай от выбранного показания.';
+    }
+    const final=adjust(deltas[4]);
+    return {prefix:seed?'Новые авторские шкалы. ':'В авторской модели риски точные. У четвёртого столбика на печатном рисунке верхний край размыт. ',prompt:'На сколько градусов после обоих действий пункта д изменилось показание каждого термометра? Повышение запиши положительным числом.',inputPrompt:'Общее изменение, °C',answer:final[0]-levels[0],steps,errors:[err(up+last,'Второе движение направлено вниз. Оно частично отменяет первое.')],data:{thermo:{levels,deltas}},table:{caption:'Направление движения столбиков',headers:['№','Деления'],rows:deltas.map((d,i)=>['абвгд'[i],summary(d)])},conditionKey:[...levels,...deltas.flat()].join('/')};
   }
   function signedMoves(seed,r,step){
     const size=seed?r(2,4):2,moves=seed?[[-r(2,5)],[r(3,7)],[-r(6,9)],[r(4,8)],[r(6,9),-r(2,5)],[-r(2,4),r(5,8)]]:[[-2],[5],[-9],[6],[8,-6],[-3,5]],total=moves.map(xs=>xs.reduce((a,b)=>a+b,0)*size);

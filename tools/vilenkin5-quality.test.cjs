@@ -1336,6 +1336,14 @@ function printedMassOnScalesRegression(){
 function printedSourceScalesRegression(){
   const f=boot(),N=f.w.Vilenkin5Numbered,ids=[126,127,128,129].map(i=>'v5f-printed-1-'+i),src=ids.map(id=>f.M.generate(id,0));
   equal(plain(src[0].steps.map(s=>s.answer)),[[26,25,10,34],[33,32,17,41],[24,23,8,32],[30,29,14,38],[19,18,3,27],[28,27,12,36]]);
+  for(const q of src[0].steps){
+    const fromBook=Array.from(q.answer);fromBook[3]++;
+    ok(f.M.accepts(fromBook.join(';'),q));fromBook[3]++;
+    ok(!f.M.accepts(fromBook.join(';'),q));fromBook[3]--;fromBook[1]++;
+    ok(!f.M.accepts(fromBook.join(';'),q));
+  }
+  for(const q of f.M.generate(ids[0],2).steps){const off=Array.from(q.answer);off[3]++;ok(!f.M.accepts(off.join(';'),q));}
+  f.route('#lesson/'+ids[0]);f.submit('26;25;10;35');ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');f.submit('33;32;17;42');ok(f.snapshot().scene.correct);
   equal(plain(src[1].answer),[-4,10,-18,12,4,4]);equal(plain(src[2].answer),[22,25,30,35,37]);equal(plain(src[3].steps.map(q=>q.answer)),[[1,3,4],[5],[1,4],[2,5],[1],[2,3,5]]);
   equal(plain(src[3].answer),[5,2,3,4,1]);equal(f.C.byId[ids[0]].source.page,28);for(const id of ids.slice(1))equal(f.C.byId[id].source.page,29);
   for(let seed=0;seed<56;seed++){const a=ids.map(id=>f.M.generate(id,seed)),model=(i,state)=>N.explore(f.C.byId[ids[i]],state,a[i]);for(const t of a)for(const q of [...t.steps,t]){const answer=Array.isArray(q.answer)?q.answer.join(';'):String(q.answer);ok(f.M.accepts(answer,q));}
