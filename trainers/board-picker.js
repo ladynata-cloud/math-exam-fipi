@@ -92,11 +92,18 @@ function normalize(value){
   return '/trainers/stereo-literacy-atanasyan.html'+u.hash;
  }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson5/','/school/peterson5/index.html'].includes(u.pathname)&&(!u.hash||/^#(?:home|topics|skills|progress|topic\/p(?:0[1-9]|[1-3]\d|4[0-3])\/(?:discover|check|practice(?:\/[01])?)|lesson\/p(?:0[1-9]|[1-3]\d|4[0-3])(?:\/\d{1,2})?|practice\/[a-z-]+\/[123])$/.test(u.hash)))return '/trainers/peterson5.html'+u.search+(u.hash||'#home');
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/school/','/school/index.html'].includes(u.pathname)&&
+   (u.hash==='#course/vilenkin5'||/^#v5-unit\/(?:[1-9]|[1-4]\d|5[0-3])$/.test(u.hash)||/^#lesson\/v5f-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(u.hash)||!u.hash&&u.searchParams.get('course')==='vilenkin5'))return '/trainers/vilenkin5.html'+(u.hash||'#course/vilenkin5');
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/courses/vilenkin-5/','/courses/vilenkin-5/index.html'].includes(u.pathname)&&['','#course/vilenkin5'].includes(u.hash))return '/trainers/vilenkin5.html#course/vilenkin5';
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson6/','/school/peterson6/index.html'].includes(u.pathname)&&petersonRoute(u.hash)){
   return '/trainers/peterson6-complete.html'+u.search+u.hash;
  }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/geometry-course/textbook/','/geometry-course/textbook/index.html'].includes(u.pathname)&&u.hash==='#atanasyan-7-9-main-92-part-1')return '/trainers/atanasyan-7-9.html'+u.search+u.hash;
- if(u.origin===location.origin&&rawPath===u.pathname&&['/geometry-course/textbook/','/geometry-course/textbook/index.html','/geometry-course/first-steps/','/geometry-course/first-steps/index.html'].includes(u.pathname))return '/trainers/atanasyan-grade7.html'+u.search+u.hash;
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/geometry-course/textbook/','/geometry-course/textbook/index.html'].includes(u.pathname)){
+  u.searchParams.set('scope','book');
+  return '/trainers/atanasyan-grade7.html'+u.search+u.hash;
+ }
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/geometry-course/first-steps/','/geometry-course/first-steps/index.html'].includes(u.pathname))return '/trainers/atanasyan-grade7.html'+u.search+u.hash;
  if(u.origin===location.origin&&rawPath===u.pathname&&/^\/geometry-course\/trainers\/ch[1-4]-[a-z0-9-]+\.html$/.test(u.pathname))return '/trainers/geometry7-practice.html?activity='+u.pathname.split('/').pop().replace(/\.html$/,'');
  return raw;
 }

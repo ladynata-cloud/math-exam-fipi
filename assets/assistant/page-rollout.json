@@ -2214,9 +2214,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "359864447bcaa6f710c66dd6194f3258146293ce1dbb8c572f4a02d3de45b9cc",
-      "afterSha256": "95b8e6e435b9b9e0ae56db46658b5a2ddced4762f1f9ed36644f71d2e9c76d52",
-      "placement": "before-head-close"
+      "beforeSha256": "e62c215edef7095d55e52aaa0cf843d5f502384e8cf901ae55268d70ab131e26",
+      "afterSha256": "01691e00e18e65fe9ac3f272f017e7a1b0cd06ec0f53b94cf9694d05ee3cb3db",
+      "placement": "before-head-close",
+      "sourceSha": "a772c84c92a64553f3a4da099718ef527c0a9aa8"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6445,6 +6446,16 @@
       "task": "docs/tasks/ARZHENIKOV_TRAINER_SEARCH_20261121.md",
       "changedPaths": [
         "trainers/practice-topics/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "903c8a4b37b671c88e0b19d6dbd4b4dc2f7f7147",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
       ],
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
