@@ -1379,3 +1379,238 @@ test('follow both original cycle directions and distinguish divisor, dividend, m
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('traverse all ordered fraction routes and continue mixed numbers, expression chains and comparison signs',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,expected]of ['-17/12','-3/4','-3/2','5/8'].entries()){const c=go(62+j);assert.equal(f.d.querySelectorAll('#task-figure svg rect').length,7);set(c[0],2);set(c[1],2);set(c[2],1);assert(out().includes('Результат: '+expected+'.'),out());set(c[1],1);assert.equal(f.q(c[2]).value,'0');set(c[0],5);set(c[2],1);assert(out().includes('Результат: '));}
+  let c=go(66);set(c[2],1);assert(out().includes('7/3'));set(c[0],3);set(c[1],5);set(c[2],1);assert(out().includes('16/5'));
+  c=go(67);set(c[0],7);set(c[2],1);assert(out().includes('256/15 = 17 и 1/15'));set(c[1],5);set(c[2],1);assert(out().includes('320/15 = 21 и 1/3'));
+  for(const [j,k]of [[0,'-14/3'],[1,'-35/6'],[2,'-15'],[3,'7/5'],[4,'-5'],[5,'1']]){c=go(68+j);const last=f.q(c[1]).options.length-1;set(c[1],last);assert(out().includes('Итог: '+k+'.'),out());set(c[0],1);set(c[1],last);assert(out().includes('Итог: '));assert(!out().includes('Итог: '+k+'.'));}
+  const signs=['<','>','>','<','<','<','>','<'];for(const [i,sign]of signs.entries()){c=go(74+i);set(c[1],2);assert(out().includes(' '+sign+' '));set(c[0],1);set(c[1],2);assert(out().includes(' '+(sign==='<'?'>':'<')+' '));set(c[0],2);set(c[1],2);assert(out().includes('Сравнение: '));}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('finish the printed equation section including forbidden denominators, finite roots, exact stocks and Diophantus',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const choose=(id,label)=>set(id,[...f.q(id).options].find(o=>o.textContent===label).value);
+  let c=go(93);choose(c[1],'-7/10');set(c[2],2);assert(out().includes('не допускается'));choose(c[1],'11');set(c[2],2);assert(out().includes('Это корень'));set(c[0],1);choose(c[1],'12');set(c[2],2);assert(out().includes('Это корень'));
+  c=go(92);set(c[2],4);assert(out().includes('Все рациональные числа'));set(c[0],1);set(c[2],4);assert(out().includes('Корней нет'));
+  for(const [i,x,y]of [[94,3,4],[95,5,4]]){c=go(i);set(c[1],x);set(c[2],2);assert(out().includes('Число подходит.'));set(c[0],1);set(c[1],y);set(c[2],2);assert(out().includes('Число подходит.'));}
+  c=go(96);set(c[1],1);set(c[2],2);assert(out().includes('3 к 1'));let tableRows=[...f.d.querySelectorAll('#model tbody tr')];assert.deepEqual(tableRows.map(x=>x.cells[1].textContent),['18','6']);
+  c=go(97);set(c[1],2);assert(out().includes('840'));set(c[0],1);set(c[1],2);assert(out().includes('795'));
+  c=go(98);set(c[1],8);set(c[2],2);assert(out().includes('17,5'));assert.deepEqual([...f.d.querySelectorAll('#model tbody tr')].map(r=>r.cells[1].textContent),['40','40']);set(c[0],1);set(c[2],2);assert(out().includes('14 т.'));
+  for(const [j,ans]of ['-17/6','-221/40','-23/15','3','-16','2'].entries()){c=go(99+j);set(c[1],f.q(c[1]).options.length-1);assert(out().includes('значение: '+ans+'.'),out());}
+  c=go(105);assert.equal(f.d.querySelectorAll('#task-figure .pcm-printed-fraction').length,2);set(c[1],3);assert(out().includes('Результат: 3.'));set(c[0],100);set(c[1],3);assert(out().includes('Результат: 3/2.'));
+  c=go(108);set(c[1],3);assert(out().includes('155 цифр'));set(c[0],2);set(c[1],2);assert(out().includes('4194304'));
+  c=go(109);set(c[1],2);assert(out().includes('84 лет'));assert.deepEqual([...f.d.querySelectorAll('#model tbody tr')].map(r=>r.cells[2].textContent),['14','21','33','38','80','84']);set(c[0],14);set(c[1],2);assert(out().includes('168 лет'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('read every source unit table and reconstruct speed, time and distance for meeting and pursuit',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p19/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(6);set(c[0],6);set(c[1],2);assert(out().includes('108 р.'));c=go(7);set(c[0],40);set(c[1],2);assert(out().includes('6 ч.'));
+  for(const [k,x,newx]of [[8,'км/мин','дм/ч'],[9,'шт.','дет.'],[10,'р./м','р./км']]){c=go(k);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,4);set(c[1],3);set(c[2],1);assert(out().includes(x));set(c[0],1);set(c[2],1);assert(out().includes(newx));}
+  for(const [k,x,fresh]of [[2,25,50],[3,11,22],[11,1,2],[12,5,10],[13,60,100],[14,100,140]]){
+   c=go(k);set(c[1],2);set(c[2],2);assert(out().includes('Ответ: '+x+' '),out());const dots=f.d.querySelectorAll('#model svg circle');assert.equal(dots[0].getAttribute('cx'),dots[1].getAttribute('cx'));
+   set(c[0],1);set(c[2],2);assert(out().includes('Ответ: '+fresh+' '),out());
+  }
+  c=go(4);set(c[0],10);set(c[1],2);assert(out().includes('29 р.'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('read four signed gaps, compound versus simple increases and all six geometry dependencies',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p19/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,n]of [40,160,80,120].entries()){let c=go(15+j);set(c[1],2);set(c[2],2);assert(out().includes('Расстояние сейчас '+n+' км'));assert(out().includes('v₁ ='));set(c[0],120);set(c[2],2);assert(out().includes('Расстояние сейчас '+(n+20)+' км'));}
+  let c=go(19);set(c[0],3);set(c[1],2);assert(out().includes('Течение (13 − 7)/2 = 3 км/ч'));c=go(20);set(c[0],24);set(c[1],2);assert(out().includes('30%'));
+  for(const [i,v,other]of [[21,1200,1600],[22,1210,1728]]){c=go(i);set(c[2],2);assert(out().includes('Итог: '+v+'.'));set(c[0],20);set(c[1],3);set(c[2],2);assert(out().includes('Итог: '+other+'.'));}
+  const orig=['27 см³','6 см²','6 см','21 см²','54 см²','94 см²'],fresh=['64 см³','8 см²','8 см','24 см²','96 см²','112 см²'];
+  for(const [i,res]of orig.entries()){c=go(23+i);set(c[1],2);assert(f.q('#model svg'));assert(out().includes('Результат: '+res+'.'),out());set(c[0],4);set(c[1],2);assert(out().includes('Результат: '+fresh[i]+'.'),out());}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('read both real flight tracks and separately recover the two printed surveys numbered 143',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p19/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(5);set(c[1],60);set(c[2],2);assert(out().includes('24/5 л'));assert.equal(f.d.querySelectorAll('#model tbody tr').length,10);set(c[0],10);set(c[2],1);assert(out().includes('6 л'));
+  c=go(32);assert.equal(f.d.querySelectorAll('#task-figure [data-source-series]').length,2);
+  for(const [time,black,pink]of [[720,'1600','800'],[860,'2400','1600'],[1000,'3200/3','800']]){set(c[1],time);set(c[2],1);assert(out().includes('A: '+black+' км'));assert(out().includes('Б: '+pink+' км'));if(time===860)assert(out().includes('Б: 1600 км, окончание стоянки'));if(time===1000)assert(out().includes('Б: 800 км, на земле'));}
+  set(c[0],1);set(c[1],860);set(c[2],2);assert(out().includes('Б: 1600 км, на земле'));assert.equal(f.d.querySelectorAll('#model [data-source-series]').length,2);
+  c=go(34);set(c[1],96);set(c[2],2);assert(out().includes('1/4 м/с'));set(c[0],30);set(c[2],2);assert(out().includes('5/16 м/с'));
+  c=go(35);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,8);set(c[1],5);set(c[2],2);assert(out().includes('114'));set(c[0],1);set(c[2],2);assert(out().includes('117'));
+  c=go(40);set(c[1],2);set(c[2],2);assert(out().includes('17%'));assert.equal(f.d.querySelectorAll('#model tbody tr').length,7);set(c[0],1);set(c[1],6);set(c[2],2);assert(out().includes('7%'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('finish all actual printed dependencies and keep the missing 144 separate from both originals on page 37',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p19/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const choose=(id,label)=>set(id,[...f.q(id).options].find(o=>o.textContent===label).value);
+  f.nav('#part/2');assert(f.d.body.textContent.includes('Печатного №144 в этом издании нет.'));
+  let c=go(41);assert(f.q('#task-figure [data-right-angle]'));set(c[1],2);assert(out().includes('12 см²'));set(c[0],8);set(c[1],2);assert(out().includes('16 см²'));
+  c=go(47);set(c[1],2);assert(out().includes('Крайние: 14.'));set(c[0],1);set(c[1],2);assert(out().includes('Крайние: 56.'));
+  for(const [i,ans,excluded]of [[48,'3'],[49,'1/10'],[50,'5/4'],[51,'4/5','0'],[52,'5/2'],[53,'6','13/5'],[54,'16'],[65,'20'],[66,'1/10','-9/250']]){
+   c=go(i);choose(c[1],ans);set(c[2],2);assert(out().includes('Это корень'),out());if(excluded){choose(c[1],excluded);set(c[2],2);assert(out().includes('не допускается'));}
+  }
+  c=go(55);set(c[1],2);assert(out().includes('376/5 км'));set(c[0],1);set(c[1],2);assert(out().includes('456/5 км'));
+  c=go(56);set(c[1],15);set(c[2],2);assert(out().includes('90 км. Второй впереди'));set(c[1],4);set(c[2],2);assert(out().includes('108 км. Первый впереди'));
+  for(const [i,std,alt]of [[57,'13/10 л','5/4 л'],[58,'57/10.','63/10.'],[59,'32/5.','34/5.'],[67,'60 и 75 км/ч','1680/31 и 2100/31 км/ч']]){c=go(i);set(c[1],2);assert(out().includes(std),out());set(c[0],1);set(c[1],2);assert(out().includes(alt),out());}
+  c=go(62);set(c[1],2);assert(out().includes('30 см³'));c=go(63);set(c[1],4);set(c[2],2);assert(out().includes('320 р.'));c=go(64);set(c[1],4);set(c[2],2);assert(out().includes('4 км/ч.'));
+  for(const [j,k]of [6,10,3,5].entries()){c=go(68+j);set(c[1],f.q(c[1]).options.length-1);assert(out().includes('значение: '+k+'.'),out());}
+  c=go(72);set(c[1],1);assert(out().includes('Пропорция верна'));set(c[0],2);set(c[1],1);assert(out().includes('не подходит'));
+  c=go(73);set(c[1],9);set(c[2],2);assert(out().includes('7 полных'));assert.deepEqual([...f.d.querySelectorAll('#model tbody tr td')].map(x=>x.textContent),['7','9','16']);set(c[0],227);set(c[2],2);assert(out().includes('вариантов: 2.'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('distinguish original and remaining quantities in all fourteen source equation stories on pages 28 and 29',()=>{
+ const f=fixture(null,null,true);try{
+  const go=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [index,first,alternate]of [[0,'04:00','04:48'],[1,'36 и 24','54 и 36'],[2,'75, ученик 60','100, ученик 80'],[4,'15:00','16:00'],[5,'1400 км','1000 км'],[6,'360 км','180 км'],[7,'30 км','60 км'],[8,'24 шт.','36 шт.'],[9,'7/5 м','14/5 м'],[10,'200 саженцев','250 саженцев'],[11,'1200 и 400 м³','600 и 200 м³'],[12,'8/5 и 12/5 л','16/5 и 24/5 л'],[13,'24 см','36 см'],[14,'12,5%','20%']]){
+   const c=go(index);set(c[1],2);assert(out().includes(first),[index,out()]);assert.equal(f.d.querySelectorAll('#model [data-change-bar]').length,2);set(c[0],1);assert.equal(f.q(c[1]).value,'0');set(c[1],2);assert(out().includes(alternate),[index,out()]);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('compare the correct reference quantity in every original and fresh printed percent story on page 30',()=>{
+ const f=fixture(null,null,true);try{
+  const limits=[['18/5 кг, второй 7/5 кг','27/5 кг, второй 21/10 кг'],['25 и 23','50 и 46'],['по 27','по 54'],['по 24','по 32'],['224 руб.','336 руб.'],['592 руб.','740 руб.'],['16, пятёрок 5','32, пятёрок 10'],['25%, меньшее отстаёт от большего на 20%','50%, меньшее отстаёт от большего на 100/3%'],['6, 15, 24','8, 20, 32'],['14800 книг','7400 книг']];
+  for(let i=0;i<limits.length;i++){
+   f.nav('#lesson/p38/'+(15+i));f.click('[data-lesson-help="model"] > summary');
+   const controls=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id),set=(j,v)=>f.event(controls[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+   set(1,2);assert(out().includes(limits[i][0]),out());assert.equal(f.d.querySelectorAll('#model [data-change-bar]').length,2);
+   set(0,1);assert.equal(f.q(controls[1]).value,'0');set(1,2);assert(out().includes(limits[i][1]),out());
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('resolve all printed mixture, geometry and directed vehicle cases with their own source measurements',()=>{
+ const f=fixture(null,null,true);try{
+  const cases=[[3,'течения 2 км/ч','течения 3 км/ч'],[25,'240 г, мяты 160','120 г, мяты 80'],[26,'10 г соли','5 г соли'],[27,'90 см','135 см'],[28,'9, 15, 18, 16','15, 25, 30, 22'],[29,'13/4 см²','13 см²'],[30,'72/5 см²','18/5 см²'],[31,'35/2 км/ч','21 км/ч'],[32,'75 и 60','165/2 и 135/2'],[33,'68 и 100','76 и 108'],[34,'440/3 и 616/3','140 и 196'],[35,'120 и 84','90 и 63']];
+  for(const [i,before,after]of cases){
+   f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');const c=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id),set=(j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+   set(1,2);assert(out().includes(before),[i,out()]);if(i>=32){const d=[...f.d.querySelectorAll('#task-figure [data-drive]')].map(x=>Number(x.dataset.drive));assert.deepEqual(d,[[1,-1],[-1,1],[1,1],[1,1]][i-32]);const diagrams=[...f.d.querySelectorAll('#model svg')];assert.equal(diagrams.length,2);const [a,b]=diagrams.map(s=>s.querySelectorAll('circle'));assert(Number(a[0].getAttribute('cx'))<Number(a[1].getAttribute('cx')));const separation=(p)=>Math.abs(Number(p[0].getAttribute('cx'))-Number(p[1].getAttribute('cx')));if(i===32||i===35)assert(separation(b)<1e-6);else assert(separation(b)>separation(a));}
+   set(0,1);assert.equal(f.q(c[1]).value,'0');set(1,2);assert(out().includes(after),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('separate each departure clock, thirty source operations, and the eight forward and inverse fraction cases',()=>{
+ const f=fixture(null,null,true);try{
+  const start=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const source=[['6 и 18','12 и 24'],['64 и 96','48 и 72'],['9/2 и 18/5','27/4 и 27/5'],['60 и 50','72 и 60']];
+  for(let i=0;i<4;i++){const c=start(36+i);set(c,1,2);assert(out().includes(source[i][0]),out());set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(source[i][1]),out());}
+  const printed=[['4/5','-59/10','-3/2','-5','39/20','-23/10','12/5','9/5','-18/5','39/50'],['-9/20','39/500','-260','3/5','9/100','-8','-1/4','19/100','-56','-1/125'],['-3/20','-3/5','1','-1/7','-9/10','27/10','-5/3','-2/25','7','-1/30']];
+  for(let series=0;series<3;series++){
+   const c=start(40+series);for(let i=0;i<10;i++){set(c,0,0);set(c,1,i);set(c,2,2);assert(out().includes('Точный ответ: '+printed[series][i]+'.'),[series,i,out()]);set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(!out().includes('Точный ответ: '+printed[series][i]+'.'));} 
+  }
+  const portions=['3','54/5','10','14','27/5','175','12','6'],fresh=['6','108/5','20','28','54/5','350','24','12'];
+  for(let i=0;i<8;i++){const c=start(43+i);set(c,1,2);assert(out().includes('Ответ: '+portions[i]+'.'),out());set(c,0,1);set(c,1,2);assert(out().includes('Ответ: '+fresh[i]+'.'));}assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('keep additive change separate and test both reference percentages, legal reductions, and quantified square claims',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [i,before,after] of [[51,'300','600'],[52,'75','150'],[53,'102','204'],[54,'252','504'],[55,'58','118'],[56,'40','80'],[57,'48','96'],[58,'57','114']]){const c=open(i);set(c,1,2);assert(out().includes('Результат '+before+'.'));set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes('Результат '+after+'.'));}
+  for(const [i,percent,fresh]of [[59,'40','75/2'],[60,'250','800/3'],[61,'80','75'],[62,'200','300'],[63,'60','200/3'],[64,'1000/9','125']]){const c=open(i);set(c,1,2);assert(out().includes('a составляет '+percent+'%'),out());set(c,0,1);set(c,1,2);assert(out().includes('a составляет '+fresh+'%'),out());}
+  for(const [i,original,newValue]of [[65,'3/5','3/5'],[66,'3/5','7/10'],[67,'1/4','7/16'],[68,'3/2','4/3'],[69,'3/4','5/8'],[70,'2/5','3/5'],[71,'4/5','5/6']]){const c=open(i);set(c,1,2);assert(out().includes(original+' = '+original),out());set(c,0,1);set(c,1,2);assert(out().includes(newValue+' = '+newValue),out());}
+  for(let i=0;i<4;i++){const c=open(72+i);set(c,1,2);assert(out().includes(['строгая положительность','Все квадраты','Ни один квадрат','подходящее число'][i]));set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert.equal(f.q('#model tbody tr').textContent.includes('не выполнено'),[true,false,true,false][i]);}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('verify the three printed area outlines, both numerical patterns, and perpendicular coordinate diagonals with a fresh translation',()=>{
+ const f=fixture(null,null,true);try{
+  for(const [i,expected,alternate]of [[76,'−2ab = 7.','−2ab = 12.'],[77,'2x² = 1/2.','2x² = 9/2.'],[78,'44 кв. ед.','54 кв. ед.'],[79,'38 кв. ед.','71 кв. ед.'],[80,'45 кв. ед.','51 кв. ед.'],[81,'Следующее число 20.','Следующее число 25.'],[82,'Следующее число -1540.','Следующее число -1200.'],[83,'Пересечение (6; 4).','Пересечение (7; 5).']]){
+   f.nav('#lesson/p38/'+i);if(i>=78&&i<=80)assert(f.q('#task-figure svg').classList.contains('pcm-route-fractions'));
+   f.click('[data-lesson-help="model"] > summary');const c=[...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id),set=(j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+   set(1,2);assert(out().includes(expected),[i,out()]);if(i===83)assert.equal(f.q('[data-kite-intersection]').dataset.kiteIntersection,'6,4');set(0,1);assert.equal(f.q(c[1]).value,'0');set(1,2);assert(out().includes(alternate),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('read every formula and distinguish all moving, resting and overlapping intervals on the station graph',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [ix,original,changed]of [[84,'24 см²','27 см²'],[85,'20 см','24 см'],[86,'14 км','27 км'],[87,'30 км','26 км'],[88,'60 см³','84 см³'],[89,'94 см²','136 см²'],[90,'38.','37.'],[91,'13 км/ч','17 км/ч']]){const c=open(ix);set(c,1,2);assert(out().includes(original),[ix,out()]);set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(changed),[ix,out()]);}
+  for(const [ix,before,after]of [[92,'09:00, велосипедиста 09:30','09:30, велосипедиста 10:00'],[93,'12 км от деревни с 12:00 до 13:00','6 км от деревни с 12:30 до 13:30'],[94,'4, 6 и 6 км/ч','2, 3 и 3 км/ч'],[95,'60 и 30 мин','60 и 30 мин']]){
+   const c=open(ix);assert.equal(f.d.querySelectorAll('#task-figure [data-source-series]').length,2);
+   assert.equal(f.d.querySelectorAll('#task-figure details').length,0);
+   const dataRows=f.d.querySelectorAll('#task-figure [data-station-values] tbody tr');
+   assert.deepEqual([...dataRows].map(row=>[...row.cells].map(cell=>cell.textContent)),[['09:00 · 0','09:30 · 36'],['12:00 · 12','11:30 · 12'],['13:00 · 12','13:00 · 12'],['15:00 · 24','14:00 · 0'],['15:30 · 24','—'],['17:30 · 36','—']]);
+   const lines=[...f.d.querySelectorAll('#model [data-source-series]')];assert.deepEqual(lines.map(n=>n.getAttribute('points').split(' ').length),[6,4]);set(c,1,3);assert(out().includes('12:30'));set(c,2,2);assert(out().includes(before),out());set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes(after),out());assert(out().includes('13:00'));
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('convert all eighteen physical speeds and retain directions before a walking meeting or overtaking',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const original=[['200','30','50','90','240','48'],['3/2','9','24','18','45','144'],['5/2','15','35','3/2','2','12/5']],fresh=[['400','60','100','180','480','96'],['3','18','48','36','90','288'],['5','30','70','3','4','24/5']];
+  for(let g=0;g<3;g++){const c=open(96+g);for(let i=0;i<6;i++){set(c,0,0);set(c,1,i);set(c,2,2);assert(out().includes('Результат '+original[g][i]+' '));set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes('Результат '+fresh[g][i]+' '));}}
+  for(const [i,dist,newDist]of [[99,25,30],[100,75,90],[101,45,54],[102,55,66]]){
+   const c=open(i);set(c,1,2);set(c,2,2);assert(out().includes('Расстояние '+dist+' м.'),out());assert.equal(f.d.querySelectorAll('#model [data-walker]').length,2);set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes('Расстояние '+newDist+' м.'),out());
+  }
+  for(const [i,before,after]of [[103,'105 марок','150 марок'],[104,'40%','48%']]){const c=open(i);set(c,1,2);assert(out().includes(before),out());set(c,0,1);set(c,1,2);assert(out().includes(after),out());}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('read all six measured source outlines including the shorter d rectangle and solve every paper calculation on page 35',()=>{
+ const f=fixture(null,null,true);try{
+  const samples=[['по 500 т','по 250 т'],['75 кг','90 кг'],['12/5 м²','16/5 м²'],['5/11','3/7'],['4/3','1.'],['1.','15/4'],['2/3','1/2'],['4.','6.'],['30 мин','25 мин'],['900 мм²','1024 мм²'],['875 мм²','1008 мм²'],['800 мм²','960 мм²'],['660 мм²','880 мм²'],['500 мм²','768 мм²'],['275 мм²','624 мм²'],['18/25','9/2'],['1/20','1/4']];
+  for(const [i,[before,after]]of samples.entries()){
+   f.nav('#lesson/p38/'+(105+i));if(i>=9&&i<=14)assert.equal(f.d.querySelectorAll('#task-figure [data-paper-rectangle]').length,6);f.click('[data-lesson-help="model"] > summary');
+   const c=[...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id),set=(j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;set(1,2);assert(out().includes(before),[i,out()]);
+   if(i===12){assert(out().includes('44/15'));const rect=f.q('#model [data-paper-rectangle="d"]');assert(Math.abs(Number(rect.getAttribute('width'))/Number(rect.getAttribute('height'))-43.76/14.99)<1e-6);}
+   set(0,1);assert.equal(f.q(c[1]).value,'0');set(1,2);assert(out().includes(after),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('trace all thirty-seven labelled points, museum arrival and every exact nested fraction in the final three problems',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=open(122);assert(f.q('#task-figure').textContent.includes('A37 (6; 0)'));for(const [i,n]of [1,7,15,26,37,37].entries()){set(c,1,i);assert.equal(f.q('[data-bird-count]').dataset.birdCount,String(n));assert.equal(f.q('[data-bird-count]').dataset.birdClosed,String(i===5));}set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,5);assert(out().includes('A37 (7; 0)'));
+  c=open(123);set(c,1,2);assert(out().includes('18:30'));assert.equal(f.q('#model polyline').getAttribute('points').split(' ').length,6);set(c,0,1);set(c,1,2);assert(out().includes('19:00'));assert(out().includes('точно к началу'));
+  for(const [i,first,second]of [[124,'150','300'],[125,'24','72'],[126,'15/2','5/2']]){c=open(i);set(c,2,2);assert(out().includes('Результат '+first+' '));set(c,1,1);set(c,2,2);assert(out().includes('Результат '+second+' '));}
+  for(const [i,source,alt,e,changed]of [[127,'50','40','11/2','6'],[128,'63/25','66/25','28/5','33/5'],[129,'25%','50%','108/5','114/5']]){
+   c=open(i);set(c,1,2);assert(out().includes('E = '+e+'. Ответ '+source+'.'),out());set(c,0,1);set(c,1,2);assert(out().includes('E = '+changed+'. Ответ '+alt+'.'),out());
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('enumerate the complete two-digit source lists and all allowed leading-place and unordered cases through 167',()=>{
+ const f=fixture(null,null,true);try{
+  for(const [i,answer,fresh,groups]of [[130,'пар 6, только из разных видов 3','пар 10, только из разных видов 6',6],[131,'16 чисел','16 чисел',4],[132,'12 чисел','12 чисел',4],[133,'трёхзначных чисел равно 60.','трёхзначных чисел равно 24.',5],[134,'трёхзначных чисел равно 125.','трёхзначных чисел равно 64.',5],[135,'трёхзначных чисел равно 48.','трёхзначных чисел равно 18.',4],[136,'трёхзначных чисел равно 100.','трёхзначных чисел равно 48.',4],[137,'костюмов равно 40.','костюмов равно 54.',3]]){
+   f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');const c=[...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id),set=(j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+   set(1,1);assert.equal(f.d.querySelectorAll('#model tbody tr').length,1);set(1,2);assert(out().includes(answer),[i,out()]);assert.equal(f.d.querySelectorAll('#model tbody tr').length,groups);
+   if(i===131||i===132){const list=[...f.d.querySelectorAll('#model tbody tr td:nth-child(2)')].flatMap(td=>td.textContent.split(', ').map(Number));assert.equal(list.length,i===131?16:12);assert.deepEqual(list,[...new Set(list)].sort((a,b)=>a-b));}
+   set(0,1);assert.equal(f.q(c[1]).value,'0');set(1,2);assert(out().includes(fresh),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

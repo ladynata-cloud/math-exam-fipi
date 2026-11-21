@@ -493,6 +493,657 @@ function ratioCandidates(task){
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
 const cycleKeys={'+':'add','−':'subtract','×':'multiply','÷':'divide'};
+const freshUnitRows={
+ 's = vt':[['км','км/с','с'],['м','м/мин','мин'],['дм','дм/ч','ч'],['мм','мм/с','с']],
+ 'A = wt':[['л','л/ч','ч'],['м²','м²/день','день'],['дет.','дет./мин','мин'],['м³','м³/с','с']],
+ 'C = an':[['р.','р./л','л'],['р.','р./т','т'],['р.','р./км','км'],['р.','р./книгу','книг']]
+};
+function missingUnitsTable(item,row=-1,shown=false,fresh=false){
+ const source=fresh?freshUnitRows[item.formula]:item.rows;
+ const body=source.map((values,i)=>values.map((v,j)=>j===item.missing[i]&&!(i===row&&shown)?'?' : v));
+ return table(item.headers,body);
+}
+function approachCase(t,fresh){
+ const m=root.PetersonMath,op=m.operation,near=t.approach,first=+t.a,second=m.parse(t.b),orig=m.parse(t.given),g=op('multiply',orig,fresh?(t.unknown==='first'?'3/2':2):1);
+ if(t.unknown==='first'){
+  const relative=op('divide',g,second),v1=op(near?'subtract':'add',relative,first);
+  return {v1:m.answer(v1),v2:String(first),time:m.answer(second),space:m.answer(g),relative:m.answer(relative),answer:m.answer(v1)};
+ }
+ const relative=op(near?'add':'subtract',first,second),time=t.unknown==='time'?op('divide',g,relative):g;
+ const space=t.unknown==='time'?g:op('multiply',relative,time);
+ return {v1:String(first),v2:m.answer(second),time:m.answer(time),space:m.answer(space),relative:m.answer(relative),answer:m.answer(t.unknown==='time'?time:space)};
+}
+const planeProfiles=[
+ [[540,0],[600,800],[660,800],[780,2400],[860,2400],[900,1600],[960,1600],[1080,0]],
+ [[640,0],[800,1600],[860,1600],[940,800],[1040,800],[1120,0]],
+];
+const hobbyNames=['Музыка и танцы','Спорт','Компьютерные игры','Фильмы','Слушать музыку','Чтение','Театр','Путешествия'];
+const hobbyFigures=[8,19,24,19,16,4,2,22],toyNames=['Френдс','Город','Майнкрафт','Звёздные войны','Техник','Бионикл','Ниндзяго'],toyFigures=[9,6,5,3,3,3,1];
+function clockText(minutes){return String(Math.floor(minutes/60)).padStart(2,'0')+':'+String(minutes%60).padStart(2,'0');}
+function flightProfile(which,fresh){return planeProfiles[which].map(([t,h])=>[t+(which&&fresh?20:0),h]);}
+function flightPosition(points,minute){
+ const m=root.PetersonMath;
+ if(minute<points[0][0]||minute>points.at(-1)[0])return {range:'0',state:'во Внукове вне показанного рейса'};
+ for(const [i,[t,h]]of points.entries()){
+  if(t===minute){
+   if(i===0)return {range:String(h),state:'вылет из Внукова'};
+   if(i===points.length-1)return {range:String(h),state:'возвращение во Внуково'};
+   if(points[i-1][1]===h)return {range:String(h),state:'окончание стоянки, взлёт'};
+   if(points[i+1][1]===h)return {range:String(h),state:'посадка, начало стоянки'};
+  }
+  if(i&&points[i-1][0]<minute&&minute<t){
+   const [ta,ha]=points[i-1];return {range:m.answer(m.operation('add',ha,m.operation('multiply',h-ha,m.operation('divide',minute-ta,t-ta)))),state:ha===h?'на земле, стоянка':'в воздухе'};
+  }
+ }
+ throw new Error('Неподдерживаемое время рейса');
+}
+function sourceChart(kind,series,xMark=null){
+ const chartOptions={
+  outing:[540,1140,16,[540,660,780,900,1020,1140],[0,4,8,12,16],'км','часы','Расстояние туристов от пансионата во времени.'],
+  station:[540,1080,36,[540,600,660,720,780,840,900,960,1020,1080],[0,4,8,12,16,20,24,28,32,36],'км','часы','Поездка к станции: пешеход сплошной, велосипедист пунктиром.'],
+  flights:[540,1140,2400,[540,660,780,900,1020,1140],[0,800,1600,2400],'км','часы','Расстояние от Внукова: A сплошная линия, Б пунктир'],
+  fuel:[0,100,10,[0,20,40,60,80,100],[0,2,4,6,8,10],'л','км','Расход бензина в литрах по километрам пути'],
+  section:[0,120,1.6,[0,20,40,60,80,100,120],[0,.4,.8,1.2,1.6],'м/с','м²','Скорость по площади сечения реки'],
+  apples:[0,4,400,[0,1,2,3,4],[0,80,160,240,320,400],'р.','кг','Стоимость купленных яблок по массе'],
+  fixedTrip:[0,18,24,[0,3,6,9,12,15,18],[0,6,12,18,24],'км/ч','ч','Скорость по времени на одном пути'],
+ };
+ const [xmin,xmax,ymax,xTicks,yTicks,yUnit,xUnit,description]=chartOptions[kind],isFlight=kind==='flights'||kind==='station'||kind==='outing';
+ const s=svg('svg',{viewBox:'0 0 292 185',class:'pm-chart pcm-route-fractions',role:'img','aria-label':description});
+ const X=x=>38+238*(x-xmin)/(xmax-xmin),Y=y=>150-120*y/ymax;
+ if(kind==='station')for(let tm=570;tm<1080;tm+=60)ln(s,X(tm),28,X(tm),150,{stroke:'#e4ebe6','stroke-width':1});
+ for(const x of xTicks){ln(s,X(x),28,X(x),150,{stroke:'#d0dfd8'});if(kind!=='station'||x===1080||(x-540)%120===0)txt(s,X(x),167,isFlight?String(x/60):String(x),{'font-size':kind==='station'||kind==='outing'?16:12});}
+ for(const y of yTicks){ln(s,X(xmin),Y(y),X(xmax),Y(y),{stroke:'#d0dfd8'});if(kind!=='station'||y%12===0)txt(s,32,Y(y)+4,num(y),{'text-anchor':'end','font-size':kind==='station'||kind==='outing'?16:11.5});}
+ ln(s,38,28,38,150);ln(s,38,150,278,150);txt(s,42,16,yUnit,{'font-size':13});txt(s,271,181,xUnit,{'font-size':12,'text-anchor':'end'});
+ series.forEach((data,i)=>s.append(svg('polyline',{points:data.map(([x,y])=>X(x)+','+Y(y)).join(' '),fill:'none',stroke:i?'#a44c0d':'#226653','stroke-width':2.5,'stroke-dasharray':i?'6 3':'none','data-source-series':i})));
+ if(xMark!==null)ln(s,X(xMark),25,X(xMark),150,{stroke:'#724a93','stroke-width':2,'stroke-dasharray':'3 3'});return s;
+}
+function baseHeightTriangle(base,height){
+ const s=svg('svg',{viewBox:'0 0 258 160',role:'img',class:'pm-chart pcm-route-fractions','aria-label':'Треугольник ABC. Высота BD под прямым углом к основанию AC.'});
+ const u=Math.min(205/base,105/height),ax=21,by=126-height*u,dx=ax+.55*base*u,cx=ax+base*u;
+ s.append(svg('polygon',{points:ax+',126 '+dx+','+by+' '+cx+',126',fill:'#e4f1e5',stroke:'#2e6250','stroke-width':2}));
+ ln(s,dx,126,dx,by,{stroke:'#924f11','stroke-dasharray':'4 3','stroke-width':2});
+ s.append(svg('path',{d:'M'+dx+' 118h8v8',fill:'none',stroke:'#924f11','stroke-width':1.8,'data-right-angle':'D'}));
+ for(const [x,y,t]of [[ax,143,'A'],[dx,by-8,'B'],[cx,143,'C'],[dx,143,'D']])txt(s,x,y,t,{'font-size':13});
+ return s;
+}
+function passageGeometry(tag,size){
+ if(tag===6){
+  const h=4;
+  return {diagram:baseHeightTriangle(size,h),labels:[['Основание',size+' см'],['Высота',h+' см'],['Обратные формулы','a = 2S/h, h = 2S/a']],formula:'S = ah/2',result:size*h/2+' см²'};
+ }
+ if(tag===9)return {diagram:solidFigure('cuboid'),labels:[['Площадь основания',size+' см²'],['Высота','3 см']],formula:'V = Sh',result:size*3+' см³'};
+ const points=[{name:'A',x:0,y:0},{name:'B',x:size,y:0},{name:'C',x:size,y:size},{name:'D',x:0,y:size}];
+ return {diagram:geometryFigure({points,segments:[['A','B'],['B','C'],['C','D'],['D','A']],caption:'Квадрат с четырьмя равными сторонами'}),labels:[['Сторона',size+' см']],formula:tag===7?'P = 4a':'S = a²',result:(tag===7?4*size:size*size)+(tag===7?' см':' см²')};
+}
+function printedStoryDetails(tag,variant,elapsed){
+ const m=root.PetersonMath,r=v=>m.answer(v),op=m.operation;
+ if(tag==='trains'){
+  const delay=variant?1.5:2.5,initial=72*delay,gap=initial-18*elapsed;
+  return {description:'Первый движется 72 км/ч. Второй начинает на '+num(delay)+' ч позже, скорость первого — 80% второго.',rows:[['Скорость второго',90],['Начальное отставание',initial],['Время после отправления второго',elapsed],['Положение первого',72*(elapsed+delay)],['Положение второго',90*elapsed]],answer:'Второй догонит первого через '+num(initial/18)+' ч после своего отправления. Сейчас расстояние '+num(Math.abs(gap))+' км. '+(gap>0?'Первый впереди.':gap<0?'Второй впереди.':'Поезда поравнялись.')};
+ }
+ if(tag==='rider'){
+  const wait=variant?3:2,walk=op('multiply','28/5','3/2'),ride=16*(wait+1.5),total=op('add',op('add',walk,ride),'54/5');
+  return {description:'Пешеход стартует спустя '+wait+' ч. После этого оба едут или идут 1,5 ч и между ними 10,8 км.',rows:[['Путь велосипедиста, км',ride],['Путь пешехода, км',r(walk)],['Осталось между ними, км','54/5']],answer:'Между посёлками '+r(total)+' км.'};
+ }
+ if(tag==='fuelAverage'){
+  const roadRate=variant?15:18,farmFuel=op('divide',roadRate,2),ten=op('divide',op('add',30,farmFuel),30);
+  return {description:'Шоссе 250 км, просёлок 50 км. На шоссе расход 12 л на 100 км; на просёлке '+roadRate+' л.',rows:[['Шоссе, л',30],['Просёлок, л',r(farmFuel)],['Общий путь, км',300]],answer:'На каждые 10 км в среднем '+r(ten)+' л.'};
+ }
+ if(tag==='meanThree'){
+  const diff=variant?'9/10':'7/2',x=op('divide',op('subtract','141/5',diff),'13/5'),first=op('add',x,diff),last=op('multiply','3/5',x);
+  return {description:'У трёх чисел среднее 9,4. Первое превосходит второе на '+r(diff)+', третье — 60% второго.',rows:[['Первое',r(first)],['Второе',r(x)],['Третье',r(last)]],answer:'Меньшее число '+r(last)+'.'};
+ }
+ if(tag==='meanFour'){
+  const diff=variant?'31/10':'8/5',x=op('divide',op('add','112/5',diff),'15/2'),second=op('multiply','5/2',x),third=op('multiply',3,x);
+  return {description:'Среднее четырёх чисел 5,6. Из первого вычитают '+r(diff)+', чтобы получить четвёртое.',rows:[['Первое',r(x)],['Второе',r(second)],['Третье',r(third)],['Четвёртое',r(op('subtract',x,diff))]],answer:'Среднее первого и третьего '+r(op('divide',op('add',x,third),2))+'.'};
+ }
+ const rear=variant?'1/2':'4/5',time=op('subtract',2,rear),first=op('divide',210,op('add',2,op('multiply','5/4',time))),second=op('multiply','5/4',first);
+ return {description:'Первый ехал 2 ч. Поздний выезд второго — на '+r(rear)+' ч. Оба прибыли одновременно.',rows:[['Скорость первого, км/ч',r(first)],['Скорость второго, км/ч',r(second)],['Путь первого, км',r(op('multiply',first,2))],['Путь второго, км',r(op('multiply',second,time))]],answer:'Вместе пути дают 210 км. Скорости '+r(first)+' и '+r(second)+' км/ч.'};
+}
+function sourceHobbyFigure(values,selected=-1){
+ const s=svg('svg',{viewBox:'0 0 272 146',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Высота столбца — число ответов, категории подписаны буквами от а до з'});
+ const Y=n=>116-4*n;
+ for(const n of [0,8,16,24]){ln(s,28,Y(n),260,Y(n),{stroke:'#c8d9d2'});txt(s,24,Y(n)+4,n,{'font-size':12,'text-anchor':'end'});}
+ values.forEach((v,i)=>{const x=34+28*i;s.append(svg('rect',{x,y:Y(v),width:17,height:116-Y(v),fill:i===selected?'#b26725':'#659f89',stroke:'#315742'}));txt(s,x+8,134,'абвгдежз'[i],{'font-size':14});});return s;
+}
+function toyLineDiagram(nums){
+ const total=nums.reduce((a,b)=>a+b,0),s=svg('svg',{viewBox:'0 0 285 167',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Длина каждой горизонтальной линии показывает процент голосов за серию.'});
+ nums.forEach((n,i)=>{const y=15+i*22,percent=Math.round(100*n/total),end=94+percent*4.35;txt(s,90,y+4,toyNames[i],{'font-size':10.5,'text-anchor':'end'});ln(s,96,y,end,y,{stroke:'#30775c','stroke-width':7});txt(s,end+5,y+4,percent+'%',{'font-size':12,'text-anchor':'start'});});return s;
+}
+function countSourceCases(tag,changed){
+ let condition,header,rows,result;
+ if(tag==='flowers'){
+  const names=changed?['Василёк','Ромашка','Колокольчик','Мак']:['Василёк','Ромашка','Колокольчик'],pairs=[];
+  for(const [i,a]of names.entries())for(const [j,b]of names.entries())if(i<=j)pairs.push([a,b,i===j?'Один вид':'Разные']);
+  condition='Доступные цветы: '+names.join(', ')+'. Два порядка одной пары считаются один раз.';
+  header=['Первые цветы','Вторые цветы','Тип'];rows=pairs;result='Любых пар '+pairs.length+', только из разных видов '+(pairs.length-names.length)+'.';
+ }else if(tag.startsWith('double')){
+  const digits=changed?[2,4,6,8]:[1,3,5,7],again=tag==='doubleRepeat';
+  const groups=digits.map(x=>digits.filter(y=>again||x!==y).map(y=>10*x+y));
+  condition='Цифры '+digits.join(', ')+'. '+(again?'Повторение разрешено.':'Повторение запрещено.');header=['Десятки','Полная группа'];rows=groups.map((g,i)=>[digits[i],g.join(', ')]);result='Все группы содержат '+groups.flat().length+' чисел.';
+ }else if(tag==='outfit'){
+  const skirts=changed?3:4,blouses=changed?6:5,jackets=changed?3:2;condition='Юбок '+skirts+', блузок '+blouses+', жакетов '+jackets+'. Нужна одна вещь каждого вида.';
+  header=['Выбрано','Число вариантов'];rows=[['Юбка',skirts],['Юбка и блузка',skirts*blouses],['Все три вещи',skirts*blouses*jackets]];result='Количество костюмов равно '+skirts*blouses*jackets+'.';
+ }else{
+  const even=tag.startsWith('even'),repeat=tag.endsWith('Repeat'),digits=even?(changed?[0,1,2,4]:[0,2,4,6,8]):(changed?[1,2,3,4]:[1,2,3,4,5]),heads=digits.filter(n=>n!==0);
+  rows=heads.map(h=>{const nums=[];for(const t of digits)for(const u of digits)if(repeat||new Set([h,t,u]).size===3)nums.push(100*h+10*t+u);return [h,nums.length,nums[0]+' … '+nums.at(-1)];});
+  const total=rows.reduce((n,row)=>n+row[1],0);
+  condition='Доступны '+digits.join(', ')+'. '+(repeat?'Допускаются повторения.':'Цифры все различны.');header=['Сотни','Количество','Крайние в строке'];result='Количество трёхзначных чисел равно '+total+'.';
+ }
+ return {condition,header,rows,result};
+}
+const paperBird=[[5,0],[5,5],[3,5],[3,6],[2,6],[2,11],[0,11],[1,12],[1,13],[3,13],[3,7],[4,7],[4,8],[5,8],[5,9],[9,9],[9,8],[10,8],[10,7],[11,7],[11,8],[12,8],[12,9],[13,9],[13,10],[14,10],[14,7],[12,7],[12,6],[11,6],[11,5],[9,5],[9,0],[8,0],[8,5],[6,5],[6,0]];
+function birdTable(){
+ const text=i=>i<paperBird.length?'A'+(i+1)+' ('+paperBird[i].join('; ')+')':'';
+ return table(['Первые вершины','Продолжение'],Array.from({length:19},(_,i)=>[text(i),text(19+i)]));
+}
+function orderedContour(from,through,closed){
+ const shift=from?1:0,pts=paperBird.slice(0,through).map(([x,y])=>[x+shift,y]);
+ const s=svg('svg',{viewBox:'0 0 305 260',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'По координатам отмечено '+through+' из 37 вершин; контур '+(closed?'замкнут':'пока открыт')+'.'});
+ const X=x=>26+16*x,Y=y=>235-16*y;
+ for(let i=0;i<=15;i++){ln(s,X(i),Y(0),X(i),Y(14),{stroke:'#e1eae3','stroke-width':1});if(i%2===0)txt(s,X(i),251,String(i),{'font-size':12});}
+ for(let j=0;j<=14;j++){ln(s,X(0),Y(j),X(15),Y(j),{stroke:'#e1eae3','stroke-width':1});if(j%2===0)txt(s,14,Y(j)+4,String(j),{'font-size':12});}
+ const outline=pts.map(([x,y])=>X(x)+','+Y(y)).join(' ');s.append(svg(closed?'polygon':'polyline',{points:outline,fill:closed?'#e0eadb':'none',stroke:'#2b694e','stroke-width':2.5,'data-bird-count':through,'data-bird-closed':String(closed)}));
+ const [x,y]=pts.at(-1);s.append(svg('circle',{cx:X(x),cy:Y(y),r:3.5,fill:'#9b5025'}));return s;
+}
+function outingTimeline(changed){
+ const speed=changed?'32/5':8,m=root.PetersonMath,returnTime=m.operation('divide',16,speed),returnMinutes=m.parse(m.operation('multiply',60,returnTime)).n;
+ return {speed:m.answer(speed),returnTime:m.answer(returnTime),end:990+returnMinutes,route:[[540,0],[660,6],[720,6],[870,16],[990,16],[990+returnMinutes,0]]};
+}
+function complexPercentSource(tag,alternate){
+ const m=root.PetersonMath,op=m.operation,r=v=>m.answer(v),add=(a,b)=>op('add',a,b),sub=(a,b)=>op('subtract',a,b),mul=(a,b)=>op('multiply',a,b),div=(a,b)=>op('divide',a,b);
+ let values,caption,rule,total,final;
+ if(tag==='complex160'){
+  const f1=div(div(add('9/20','1/4'),'21/5'),div(add('9/10','1/2'),'21/10')),f2=div(sub('15/4',sub('151/20','19/5')),add(mul('4/25','1/4'),'623/100')),f3=div(div('57/8','19/10'),sub(1,mul(div('3/5','4/5'),'1/3')));
+  const lead=alternate?'1/4':'1/8',pct=alternate?15:11;values=[f1,f2,f3];total=add(div(lead,sub(f1,f2)),f3);final=div(total,div(pct,100));caption='E = '+lead+' : (F₁ − F₂) + F₃. Известно '+pct+'% целого.';rule='Целое = E : ('+pct+'/100).';
+ }else if(tag==='complex161'){
+  const f1=div(add('13/6','3/2'),sub('13/6','3/2')),f2=div(mul('2/13',add('146/25','179/25')),sub(div('4/9','40/9'),'1/20')),f3=div(div(sub(div('96/5','3/25'),'17/5'),'9/10'),mul(div('6/5','1/29'),'1/2'));
+  const term=alternate?'289/10':'299/10',pct=alternate?40:45;values=[f1,f2,f3];total=sub(sub(add(f1,f2),f3),term);final=mul(total,div(pct,100));caption='E = F₁ + F₂ − F₃ − '+term+'. Требуется '+pct+'% от E.';rule='Часть = E × ('+pct+'/100).';
+ }else{
+  const f1=div(sub('-199/7',div('18/5','-9/100')),sub(sub(mul('1/5','43/7'),mul('3/2','1/5')),mul('1/5','10/7'))),lead=alternate?'57/20':'57/10',f2=div(mul(div(lead,'37/2'),'37/10'),div(mul('7/10','19/10'),'-14/5')),f3=div(sub(add('13/8','115/12'),'491/24'),sub('73/24','3/2'));
+  const compared=alternate?'171/5':27;values=[f1,f2,f3];total=sub(add(f1,f2),f3);final=mul(100,div(sub(compared,total),total));caption='Первое число в числителе F₂: '+lead+'. Сравниваем '+r(compared)+' с E = F₁ + F₂ − F₃.';rule='Процент превышения = (сравниваемое − E) : E × 100.';
+ }
+ return {values:values.map(r),total:r(total),final:r(final),caption,rule};
+}
+const measuredPaperMm=[[30,30],[35,25],[40,20],[43.76,14.99],[50,10],[55,5]];
+function rulerRectangles(focus,fresh){
+ const dimensions=fresh?[[32,32],[36,28],[40,24],[44,20],[48,16],[52,12]]:measuredPaperMm;
+ const s=svg('svg',{viewBox:'0 0 310 260',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Шесть прямоугольников в одном масштабе и линейка от 0 до 50 мм. Выбран '+String.fromCharCode(97+focus)+'.'});
+ const scale=2.35,xs=[10,156],ys=[14,100,166];
+ for(const [i,[w,h]]of dimensions.entries()){
+  const x=xs[i%2],y=ys[Math.floor(i/2)],colour=i===focus?'#8e4c16':'#376953';
+  s.append(svg('rect',{x,y,width:w*scale,height:h*scale,fill:i===focus?'#f5dfc1':'#e5efe9',stroke:colour,'stroke-width':i===focus?2.3:1.4,'data-paper-rectangle':String.fromCharCode(97+i)}));
+  txt(s,x+w*scale/2,y+h*scale/2+4,String.fromCharCode(97+i),{'font-size':14});
+ }
+ const baseY=226;ln(s,12,baseY,12+50*scale,baseY);
+ for(let mark=0;mark<=50;mark++){const x=12+mark*scale;ln(s,x,baseY,x,baseY+(mark%10===0?10:mark%5===0?7:3),{'stroke-width':1});if(mark%10===0)txt(s,x,250,String(mark),{'font-size':13});}
+ txt(s,156,234,'мм',{'font-size':16});return {picture:s,rounded:dimensions[focus].map(Math.round)};
+}
+function exactMeasureTask(tag,changed){
+ const m=root.PetersonMath,op=m.operation,r=x=>m.answer(x);let condition,formulaText,rows,answer;
+ if(tag==='grain'){
+  const u=changed?70:140,v=5*u/2,total=25*u/7,start=total;condition='Из первого элеватора вывезли '+u+' т, из второго — в 2,5 раза больше. Теперь остатки первого и второго относятся как 2,4:1.';
+  formulaText='x − '+u+' = 2,4(x − '+v+')';rows=[['В каждом сначала, т',start],['Остаток первого, т',start-u],['Остаток второго, т',start-v]];answer='В каждом по '+start+' т; всего '+2*start+' т.';
+ }else if(tag==='potatoes'){
+  const total=changed?216:180,left=5*total/12;condition='Всего '+total+' кг картофеля. Потрачено на 40% больше остатка.';
+  formulaText='x + 1,4x = '+total;rows=[['Остаток, кг',left],['Расход, кг',total-left]];answer='Осталось '+left+' кг.';
+ }else if(tag==='upholstery'){
+  const all=changed?'82/5':'123/10',sofa=op('multiply',all,'25/41'),chair=op('multiply',sofa,'8/25');condition='На диван и два кресла ушло '+r(all)+' м². Для кресла требуется на 68% меньше дивана.';
+  formulaText='x + 2 × 0,32x = '+r(all);rows=[['Диван, м²',r(sofa)],['Одно кресло, м²',r(chair)],['Два кресла, м²',r(op('multiply',2,chair))]];answer='На кресло '+r(chair)+' м².';
+ }else if(tag==='cyclistLate'){
+  const speed=changed?21:14,walk=speed*2/7,minutes=changed?35:42,motion=minutes*walk/speed;condition='Велосипедист выезжает через 15 мин, догоняет ещё через 6 мин при скорости '+speed+' км/ч. На весь путь пешеход затратил '+minutes+' мин.';
+  formulaText='v × 21/60 = '+speed+' × 6/60';rows=[['До встречи, мин пешком',21],['До встречи, мин на велосипеде',6],['Скорость пешехода, км/ч',walk],['Полный путь, мин на велосипеде',motion]];answer='Скорость пешехода '+walk+' км/ч. Разность длительностей '+(minutes-motion)+' мин.';
+ }else if(tag==='cancelSquareA'||tag==='cancelSquareB'){
+  const first=tag==='cancelSquareA',x=first?(changed?'3/2':'-3/5'):(changed?'3/4':'1/2'),y=first?(changed?'1/3':'-13/6'):(changed?'1/4':'1/5'),xs=op('multiply',x,x),ys=op('multiply',y,y),result=first?op('multiply',xs,2):op('subtract',xs,op('multiply',5,ys));
+  condition=first?'a = '+x+', x = '+y:'n = '+x+', k = '+y;
+  formulaText=first?'a² + ax − ax + x² + a² − x² = 2a²':'−2n² + 3nk − 3nk − 2k² + 3n² − 3k² = n² − 5k²';
+  rows=[[first?'a²':'n²',r(xs)],[first?'x², сокращается':'k²',r(ys)]];answer='Значение выражения '+r(result)+'.';
+ }else{
+  let numerator,denominator,num2,den2,factor;
+  if(tag==='frac510'){
+   [numerator,denominator]=changed?[360,840]:[510,1122];const reduced=op('divide',numerator,denominator);num2=reduced.n;den2=reduced.d;factor=String(numerator/num2);condition=numerator+'/'+denominator;
+  }else if(tag==='fracDecimal'){
+   const x=changed?9:'15/2',y=changed?3:'3/2',u=changed?4:'18/5',v=changed?2:'9/5';
+   numerator=op('multiply',u,op('subtract',x,y));denominator=op('multiply',v,op('add',x,y));num2=op('multiply',op('divide',u,v),op('subtract',x,y));den2=op('add',x,y);factor='Вынести общий множитель из каждой пары слагаемых';condition='('+x+' × '+u+' − '+u+' × '+y+') / ('+v+' × '+x+' + '+y+' × '+v+')';
+  }else if(tag==='fracLetters'){
+   const [a,b,c]=changed?[3,2,4]:[2,5,3];numerator=40*a*a*b*c;denominator=16*a*b*b*c;num2=5*a;den2=2*b;factor='8abc';condition='40a²bc/(16ab²c) при a = '+a+', b = '+b+', c = '+c;
+  }else if(tag==='fracSum'){
+   const [m,x,y]=changed?[5,3,6]:[6,2,6];numerator=m*x+m*y;denominator=m*x*y;num2=x+y;den2=x*y;factor='m';condition='(mx + my)/(mxy) при m = '+m+', x = '+x+', y = '+y;
+  }else{
+   const n=changed?9:6;numerator=2*n**3;denominator=3*n*n;num2=2*n;den2=3;factor='n²';condition='2n³/(3n²) при n = '+n;
+  }
+  formulaText='До: ('+r(numerator)+')/('+r(denominator)+'). После: ('+r(num2)+')/('+r(den2)+').';
+  rows=[['Общий множитель или приём',factor],['Значение до',r(op('divide',numerator,denominator))],['Значение после',r(op('divide',num2,den2))]];answer='Значение дроби '+r(op('divide',num2,den2))+'.';
+ }
+ return {condition,formulaText,rows,answer};
+}
+function unitSample(group,index,alternate){
+ const m=root.PetersonMath,op=m.operation,r=x=>m.answer(x),units={'км/ч':'5/18','м/мин':'1/60','м/с':'1'},[v,from]=group.rows[index],to=group.dest;
+ const factor=op('divide',units[from],units[to]),given=op('multiply',v,alternate?2:1),answer=op('multiply',given,factor);
+ return {from,to,given:r(given),factor:r(factor),answer:r(answer),metresSecond:r(op('multiply',given,units[from]))};
+}
+function movingWalkers(mode,fresh,t){
+ const gap=fresh?60:50,v1=fresh?'9/5':'3/2',v2=fresh?'6/5':1,dir1=[1,-1,1,1][mode],dir2=[-1,1,1,1][mode],m=root.PetersonMath,op=m.operation,r=x=>m.answer(x);
+ const fasterAhead=mode===3,current1=fasterAhead?v2:v1,current2=fasterAhead?v1:v2;
+ const rate=op('subtract',op('multiply',dir2,current2),op('multiply',dir1,current1)),distance=op('add',gap,op('multiply',rate,t));
+ const convert=v=>{const f=m.parse(v);return f.n/f.d;},x1=dir1*convert(current1)*t,x2=gap+dir2*convert(current2)*t;
+ const low=Math.min(0,dir1*convert(current1)*15),high=Math.max(gap,gap+dir2*convert(current2)*15),X=x=>28+212*(x-low)/(high-low);
+ return {gap,rate:r(rate),distance:r(distance),v1:r(v1),v2:r(v2),positions:[X(x1),X(x2)],dirs:[dir1,dir2]};
+}
+function walkTracks(points,dirs){
+ const s=svg('svg',{viewBox:'0 0 270 87',role:'img',class:'pm-chart pcm-route-fractions','aria-label':'Два пешехода на одном масштабе. Стрелка возле кружка показывает направление.'});
+ for(let i=0;i<2;i++){
+  const x=points[i],y=i?64:30,d=dirs[i],c=i?'#94551a':'#245c48';ln(s,16,y,255,y,{stroke:'#a7b9b1'});s.append(svg('circle',{cx:x,cy:y,r:5,fill:c,'data-walker':i}));ln(s,x,y,x+12*d,y,{stroke:c});ln(s,x+12*d,y,x+8*d,y-3,{stroke:c});ln(s,x+12*d,y,x+8*d,y+3,{stroke:c});
+ }
+ return s;
+}
+function printedFormulaSample(tag,changed){
+ const a=changed?9:6,b=changed?3:4;
+ switch(tag){
+ case 'area':return {given:'Стороны '+a+' и '+b+' см.',calculation:a+' × '+b,answer:a*b+' см²',rows:[['Число рядов',a],['Клеток в ряду',b]]};
+ case 'perimeter':return {given:'Стороны '+a+' и '+b+' см.',calculation:'2 × ('+a+' + '+b+')',answer:2*(a+b)+' см',rows:[['Полупериметр, см',a+b],['Два полупериметра',2*(a+b)]]};
+ case 'distance':{const speed=changed?9:7,hours=changed?3:2;return {given:speed+' км/ч в течение '+hours+' ч.',calculation:speed+' × '+hours,answer:speed*hours+' км',rows:[['Скорость, км/ч',speed],['Время, ч',hours]]};}
+ case 'closure':{const u=changed?5:4,v=changed?8:6,t=changed?2:3;return {given:'Движутся навстречу со скоростями '+u+' и '+v+' км/ч в течение '+t+' ч.',calculation:'('+u+' + '+v+') × '+t,answer:(u+v)*t+' км',rows:[['Скорость сближения, км/ч',u+v],['Время до встречи, ч',t]]};}
+ case 'volume':case 'surface':{const dims=changed?[2,6,7]:[3,4,5],[x,y,z]=dims;const volume=tag==='volume';
+  return {given:'Рёбра '+dims.join(', ')+' см.',calculation:volume?dims.join(' × '):'2 × ('+x*y+' + '+y*z+' + '+x*z+')',answer:volume?x*y*z+' см³':2*(x*y+y*z+x*z)+' см²',rows:volume?[['Слой основания, см²',x*y],['Число слоёв',z]]:[['Грань ab',x*y],['Грань bc',y*z],['Грань ac',x*z]],shape:solidFigure('cuboid')};}
+ case 'remainder':{const divisor=changed?8:7,q=changed?4:5,rest=changed?5:3;return {given:'Делитель '+divisor+', частное '+q+', остаток '+rest+'.',calculation:divisor+' × '+q+' + '+rest,answer:String(divisor*q+rest),rows:[['Полные группы',q],['Полных единиц',divisor*q],['Остаток',rest]]};}
+ default:{const down=changed?21:16,up=changed?13:10;return {given:'По течению '+down+' км/ч, против '+up+' км/ч.',calculation:'('+down+' + '+up+') ÷ 2',answer:(down+up)/2+' км/ч',rows:[['Собственная скорость, км/ч',(down+up)/2],['Скорость воды, км/ч',(down-up)/2]]};}
+ }
+}
+const stationPaths=[
+ [[540,0],[720,12],[780,12],[900,24],[930,24],[1050,36]],
+ [[570,36],[690,12],[780,12],[840,0]],
+];
+function stationSchedule(changed){
+ const dt=changed?30:0,k=changed?.5:1;
+ return stationPaths.map(points=>points.map(([time,km])=>[time+dt,km*k]));
+}
+function stationSourceFigure(){
+ const holder=el('div'),tracks=stationSchedule(false);
+ const position=point=>point?clockText(point[0])+' · '+point[1]:'—';
+ const rows=tracks[0].map((point,i)=>[position(point),position(tracks[1][i])]);
+ const values=table(['Пешеход','Велосипедист'],rows);
+ values.setAttribute('data-station-values','');
+ values.prepend(el('caption','','Точки линий по порядку. В каждой ячейке — время и расстояние от деревни в километрах.'));
+ holder.append(sourceChart('station',tracks),values);
+ return holder;
+}
+function stationLegs(track){
+ return track.slice(1).map(([end,next],i)=>{const [start,first]=track[i];return {start,end,minutes:end-start,speed:60*Math.abs(next-first)/(end-start),from:first,to:next};});
+}
+function stationResults(tag,changed){
+ const tracks=stationSchedule(changed),legs=tracks.map(stationLegs),[walk,bike]=tracks,[w,b]=legs,at=clockText;
+ const stand=legs.map(sequence=>sequence.filter(s=>!s.speed));
+ if(tag==='starts')return {rows:[['Пешеход',at(walk[0][0]),'Деревня → станция'],['Велосипедист',at(bike[0][0]),'Станция → деревня']],head:['Путь','Начало','Направление'],result:'Старт пешехода '+at(walk[0][0])+', велосипедиста '+at(bike[0][0])+'.'};
+ if(tag==='meeting'){
+  const first=Math.max(stand[0][0].start,stand[1][0].start),last=Math.min(stand[0][0].end,stand[1][0].end);
+  return {head:['Общее положение','Время'],rows:[['Впервые',at(first)],['Разъезжаются',at(last)],['Вместе, мин',last-first]],result:'Оба в '+walk[1][1]+' км от деревни с '+at(first)+' до '+at(last)+'.'};
+ }
+ if(tag==='speeds')return {head:['Путь','Интервал','Скорость, км/ч'],rows:legs.flatMap((sequence,i)=>sequence.map(u=>[i?'Велосипедист':'Пешеход',at(u.start)+'–'+at(u.end),u.speed])),result:'Пешеход: '+w[0].speed+', '+w[2].speed+' и '+w[4].speed+' км/ч в движении. Велосипедист: '+b[0].speed+' км/ч на обоих наклонных участках.'};
+ return {head:['Участник','Остановка','Минуты'],rows:stand.flatMap((seq,i)=>seq.map(u=>[i?'Велосипедист':'Пешеход',at(u.start)+'–'+at(u.end),u.minutes])),result:'Пешеход отдыхает '+stand[0][0].minutes+' и '+stand[0][1].minutes+' мин. Велосипедист — '+stand[1][0].minutes+' мин.'};
+}
+function paperArea(tag,fresh,reveal,letters){
+ const a=fresh?8:6,b=fresh?5:4,c=fresh?2:1,d=fresh?3:2;
+ const A=tag==='oneStep'?a:fresh?9:8,B=tag==='oneStep'?b:fresh?7:6,C=tag==='squareHole'?(fresh?3:2):c;
+ const W=tag==='oneStep'?a+d:tag==='squareHole'?A:B,H=tag==='oneStep'?b+c:tag==='squareHole'?B:A;
+ const h=160,w=220,unit=Math.min(w/W,h/H),x0=(315-W*unit)/2,y0=21;
+ const X=x=>x0+x*unit,Y=y=>y0+y*unit,coord=(x,y)=>X(x)+','+Y(y);
+ const s=svg('svg',{viewBox:'0 0 315 215',class:'pm-chart pcm-route-fractions',role:'img','aria-label':{squareHole:'Прямоугольник с квадратным отверстием',oneStep:'Ступенчатая фигура с одной ступенью',twoSteps:'Прямоугольник с тремя вырезанными угловыми квадратами'}[tag]});
+ const outline={fill:'#ead5e2',stroke:'#553348','stroke-width':2.3},label=(x,y,t,v)=>txt(s,X(x),Y(y),letters?t:String(v),{'font-size':19}),line=(x1,y1,x2,y2)=>ln(s,X(x1),Y(y1),X(x2),Y(y2),{stroke:'#286452','stroke-dasharray':'5 4','stroke-width':2});
+ let area,formulaText,dimensions;
+ if(tag==='squareHole'){
+  const ox=(W-C)/2,oy=(H-C)/2;s.append(svg('rect',{x:X(0),y:Y(0),width:W*unit,height:H*unit,...outline}),svg('rect',{x:X(ox),y:Y(oy),width:C*unit,height:C*unit,fill:'#fff',stroke:'#553348','stroke-width':2.3}));
+  label(W/2,-.22,'a',A);label(W+.44,H/2,'b',B);label(W/2,oy-.2,'c',C);
+  if(reveal)line(ox,oy+C/2,ox+C,oy+C/2);
+  area=A*B-C*C;formulaText='S = ab − c²';dimensions='a = '+A+', b = '+B+', c = '+C;
+ }else if(tag==='oneStep'){
+  s.append(svg('polygon',{points:[[0,0],[a,0],[a,c],[W,c],[W,H],[0,H]].map(([x,y])=>coord(x,y)).join(' '),...outline}));
+  label(a/2,-.15,'a',a);label(a+.33,c/2,'c',c);label(a+d/2,c-.12,'d',d);label(W+.36,c+b/2,'b',b);
+  if(reveal)line(0,c,a,c);area=(a+d)*b+a*c;formulaText='S = (a + d)b + ac';dimensions='a = '+a+', b = '+b+', c = '+c+', d = '+d;
+ }else{
+  s.append(svg('polygon',{points:[[0,0],[W-2*C,0],[W-2*C,C],[W-C,C],[W-C,2*C],[W,2*C],[W,H],[0,H]].map(([x,y])=>coord(x,y)).join(' '),...outline}));
+  label(-.42,H/2,'a',A);label(W/2,H+.8,'b',B);label(W-2*C+.28,C*.65,'c',C);label(W-1.5*C,C-.1,'c',C);label(W-C+.27,1.7*C,'c',C);label(W-.48*C,2*C-.1,'c',C);
+  if(reveal){line(W-2*C,0,W,0);line(W,0,W,2*C);line(W-C,0,W-C,C);line(W-C,C,W,C);}
+  area=A*B-3*C*C;formulaText='S = ab − 3c²';dimensions='a = '+A+', b = '+B+', c = '+C;
+ }
+ return {picture:s,area,formulaText,dimensions};
+}
+function coordinateKite(delta,mode){
+ const raw=[[4,2],[2,8],[14,12],[10,0]],pts=raw.map(([x,y])=>[x+delta,y+delta]),intersection=[6+delta,4+delta];
+ const s=svg('svg',{viewBox:'0 0 315 282',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Четырёхугольник и координатная сетка. '+pts.map((p,i)=>'ABCD'[i]+'('+p.join('; ')+')').join(', ')});
+ const X=x=>27+16*x,Y=y=>245-16*y;
+ for(let i=0;i<=16;i++){ln(s,X(i),Y(0),X(i),Y(14),{stroke:'#e2e7e4','stroke-width':1});if(i%2===0)txt(s,X(i),260,String(i),{'font-size':13});}
+ for(let j=0;j<=14;j++){ln(s,X(0),Y(j),X(16),Y(j),{stroke:'#e2e7e4','stroke-width':1});if(j%2===0)txt(s,14,Y(j)+4,String(j),{'font-size':13});}
+ ln(s,X(0),Y(0),X(16.6),Y(0));ln(s,X(0),Y(0),X(0),Y(14.5));txt(s,300,248,'x',{'font-size':16});txt(s,24,12,'y',{'font-size':16});
+ const link=(p,q,style={})=>ln(s,X(p[0]),Y(p[1]),X(q[0]),Y(q[1]),style);
+ for(let i=0;i<4;i++){const [x,y]=pts[i];link(pts[i],pts[(i+1)%4]);s.append(svg('circle',{cx:X(x),cy:Y(y),r:3,fill:'#32664e'}));txt(s,X(x)+9,Y(y)-4,'ABCD'[i],{'font-size':16});}
+ if(mode>=1){link(pts[0],pts[2],{stroke:'#99482f','stroke-dasharray':'5 3'});link(pts[1],pts[3],{stroke:'#4b5ea0','stroke-dasharray':'5 3'});}
+ if(mode===2){s.append(svg('circle',{cx:X(intersection[0]),cy:Y(intersection[1]),r:4.2,fill:'#822c30','data-kite-intersection':intersection.join(',')}));txt(s,X(intersection[0])+11,Y(intersection[1])+13,'M',{'font-size':16});}
+ return {picture:s,coords:pts,intersection};
+}
+function printedSequence(tag,alt){
+ const mul=(a,b)=>['×',a,b],div=(a,b)=>['÷',a,b],sub=(a,b)=>['−',a,b],add=(a,b)=>['+',a,b],square=a=>mul(a,a);
+ const groups=tag==='seriesA'?(alt?[sub(div(-3,'1/20'),div(10,-1)),mul(sub(4,'9/2'),div(5,'1/10')),add(div(square('-3/2'),'-3/4'),mul(3,1))]:[sub(div(-2,'3/100'),div('35/3',-1)),mul(sub('9/2','31/6'),div('9/2','1/10')),add(div(square('-4/3'),'-4/5'),mul('25/9',-1))]):
+ (alt?[add(mul('1/4','-4/5'),mul('2/3','-3/2')),sub(sub(mul(3,'3/2'),'31/2'),1),div(sub(square('-1/5'),div('29/125','-1/5')),'-1/100')]:[add(mul('1/8','-8/25'),mul('5/9','-27/10')),sub(sub(mul('12/5','17/12'),'89/5'),square(-1)),div(sub(square('-1/5'),div('1/4','-1/6')),'-1/100')]);
+ const m=root.PetersonMath,list=groups.map(tree=>expressionStages(tree,false)),v=list.map(q=>q.value),rule=tag==='seriesA'?m.operation('subtract',v[1],v[0]):m.operation('divide',v[1],v[0]),next=m.operation(tag==='seriesA'?'add':'multiply',v[2],rule);
+ return {list,v,rule:m.answer(rule),next:m.answer(next)};
+}
+function magnitudesForRule(rule,fresh){
+ const m=root.PetersonMath,x=fresh?120:60,y=rule==='minusTwo'?m.operation('subtract',x,2):m.operation('multiply',x,rule);
+ return {given:x,result:m.answer(y),delta:m.answer(m.operation('subtract',y,x)),expression:rule==='minusTwo'?'y − 2':rule+' × '+(m.parse(rule).n>m.parse(rule).d?'x':'y')};
+}
+function compareBothBases(item,fresh){
+ const m=root.PetersonMath,op=m.operation,r=v=>m.answer(v),ratio=fresh?({'2/5':'3/8','5/2':'8/3','4/5':'3/4','2':'3','3/5':'2/3','10/9':'5/4'}[item.ratio]):item.ratio;
+ const b=item.fixed?(fresh?(item.ratio==='2/5'?8:3):(item.ratio==='2/5'?12:'24/5')):180,a=op('multiply',b,ratio);
+ const p=op('multiply',ratio,100),q=op('divide',100,ratio),diff=v=>{const z=op('subtract',v,100);return r({n:Math.abs(z.n),d:z.d});};
+ return {a:r(a),b:r(b),p:r(p),q:r(q),deltaA:diff(p),deltaB:diff(q),aLarger:p.n>100*p.d};
+}
+function reducedFormExample(key,fresh){
+ const m=root.PetersonMath,op=m.operation,r=x=>m.answer(x);
+ if(key==='principle'||key==='numbersA'||key==='numbersB'){
+  const pairs={principle:[[18,30],[21,35]],numbersA:[[546,910],[385,550]],numbersB:[[264,1056],[294,672]]},[n,d]=pairs[key][fresh?1:0],reduced=op('divide',n,d),factor=n/reduced.n,answer=r(reduced);
+  return {given:n+'/'+d,factor:String(factor),reduced:answer,original:answer,substitution:'Числитель '+n+', знаменатель '+d,small:[n/factor,d/factor]};
+ }
+ const examples={
+  lettersA:{values:fresh?[3,12,2]:[2,9,3],letters:['a','b','c'],original:'4abc/(12a²c)',factor:'4ac',reduced:'b/(3a)',both:([a,b,c])=>[4*a*b*c,12*a*a*c,b,3*a]},
+  lettersB:{values:fresh?[5,2,3]:[4,3,2],letters:['x','y','z'],original:'15x²y/(40xyz)',factor:'5xy',reduced:'3x/(8z)',both:([x,y,z])=>[15*x*x*y,40*x*y*z,3*x,8*z]},
+  lettersC:{values:fresh?[4,8,2]:[5,7,3],letters:['a','x','y'],original:'(ax − ay)/(ax + ay)',factor:'a',reduced:'(x − y)/(x + y)',both:([a,x,y])=>[a*x-a*y,a*x+a*y,x-y,x+y]},
+  lettersD:{values:fresh?[6,5]:[3,4],letters:['m','n'],original:'mn/(mn + m)',factor:'m',reduced:'n/(n + 1)',both:([m,n])=>[m*n,m*n+m,n,n+1]}
+ };
+ const em=examples[key],[num0,den0,num1,den1]=em.both(em.values);
+ return {given:em.original,reduced:em.reduced,factor:em.factor,substitution:em.letters.map((k,i)=>k+' = '+em.values[i]).join(', '),original:r(op('divide',num0,den0)),small:[num1,den1]};
+}
+function sharedJourney(tag,changed) {
+ let condition,equation,labels,bar,rows,result;
+ if(tag==='rider'){
+  const distance=changed?3:2,sum=distance*12,walk=(sum-12)/2,rider=walk+12;
+  condition='Пешеход и всадник сближаются из пунктов в '+distance+' км. Встреча через пять минут. Разность скоростей 12 км/ч.';
+  equation='(v + v + 12) × 1/12 = '+distance;labels=['Пешеход','Всадник'];bar=[walk,rider];rows=[['Время обоих, ч','1/12'],['Скорость сближения, км/ч',sum],['Путь пешехода, км',root.PetersonMath.answer(root.PetersonMath.operation('divide',walk,12))],['Путь всадника, км',root.PetersonMath.answer(root.PetersonMath.operation('divide',rider,12))]];result='Скорости '+walk+' и '+rider+' км/ч.';
+ }else if(tag==='trainsCatch'){
+  const initial=changed?192:256,gap=initial/8,freight=2*gap,passenger=3*gap;
+  condition='Пассажирский догоняет товарный. Начальное отставание '+initial+' км. Время погони 8 ч, преимущество в скорости 50%.';
+  equation='(1,5v − v) × 8 = '+initial;labels=['Товарный','Пассажирский'];bar=[freight,passenger];rows=[['Скорость сближения, км/ч',gap],['Товарный за 8 ч, км',8*freight],['Пассажирский за 8 ч, км',8*passenger]];result='Скорости '+freight+' и '+passenger+' км/ч.';
+ }else if(tag==='afterMeet'){
+  const apart=changed?36:54,sum=3*apart,truck=4*sum/9,car=5*sum/9,m=root.PetersonMath,time=v=>m.answer(m.operation('divide',324,v));
+  condition='Спустя треть часа после встречи машины разделяют '+apart+' км. Скорости даны в отношении 4:5. Каждой нужно пройти 324 км.';
+  equation='(4k + 5k) × 1/3 = '+apart;labels=['Грузовик','Легковая'];bar=[truck,car];rows=[['Сумма скоростей, км/ч',sum],['Грузовик, км/ч',truck],['Легковая, км/ч',car],['Время грузовика, ч',time(truck)],['Время легковой, ч',time(car)]];result='На 324 км нужны '+time(truck)+' и '+time(car)+' ч.';
+ }else{
+  const gap=changed?24:20,slow=gap*5/2,fast=slow*6/5;condition='Первый автобус выехал на 15 мин раньше и едет на 20% быстрее. Через 30 мин после выезда второго разрыв '+gap+' км.';
+  equation='1,2v × 3/4 − v × 1/2 = '+gap;labels=['Междугородный','Рейсовый'];bar=[fast,slow];rows=[['Первый в пути, ч','3/4'],['Второй в пути, ч','1/2'],['Путь первого, км',fast*3/4],['Путь второго, км',slow/2]];result='Скорости '+fast+' и '+slow+' км/ч.';
+ }
+ return {condition,equation,labels,bar,rows,result};
+}
+function oneMentalOperation(tuple,alternate){
+ const [source,sign,y]=tuple,m=root.PetersonMath,op=m.operation,r=x=>m.answer(x),x=alternate?op('multiply',source,2):m.parse(source),right=m.parse(y);
+ const keys={'+':'add','−':'subtract','×':'multiply','÷':'divide'};
+ let value;
+ if(sign==='^'){value=op('multiply',x,x);if(Number(y)===3)value=op('multiply',value,x);}
+ else value=op(keys[sign],x,right);
+ const abs=z=>r({n:Math.abs(z.n),d:z.d}),entry=z=>z.n<0?'('+r(z)+')':r(z),expression=sign==='^'?entry(x)+(y==='2'?'²':'³'):entry(x)+' '+sign+' '+entry(right);
+ let guidance;
+ if(sign==='^')guidance=Number(y)===2?'Два отрицательных множителя дают положительный квадрат.':'В произведении три отрицательных множителя, поэтому куб отрицателен.';
+ else if(sign==='÷')guidance='Для модуля умножь '+abs(x)+' на '+r(op('divide',1,{n:Math.abs(right.n),d:right.d}))+'. Сравни знаки делимого и делителя.';
+ else if(sign==='×')guidance='Умножь модули '+abs(x)+' и '+abs(right)+'. Одинаковые знаки дают плюс, разные дают минус.';
+ else guidance=sign==='−'?'Представь вычитание как прибавление противоположного. Слева на числовой прямой числа уменьшаются.':'Сравни модули '+abs(x)+' и '+abs(right)+'. При разных знаках вычти меньший модуль из большего.';
+ return {expression,guidance,value:r(value),sign:value.n>0?'Плюс':value.n<0?'Минус':'Ноль',left:r(x),right:r(right)};
+}
+function startingCarDiagram(route) {
+ const drawings={
+  carsMeet:{arrows:[1,-1],marks:['x + 15','x'],distance:243,time:'1 ч 48 мин',end:0},
+  carsApart:{arrows:[-1,1],marks:['x','x + 32'],distance:52,time:'1 ч 30 мин',end:304},
+  carsLead:{arrows:[1,1],marks:['x','1,4x'],distance:30,time:'2 ч 15 мин',end:162},
+  carsCatch:{arrows:[1,1],marks:['x','0,7x'],distance:24,time:'40 мин',end:0}
+ },data=drawings[route],after=data.end?'промежуток '+data.end+' км':'встреча';
+ const picture=svg('svg',{viewBox:'0 0 315 165',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Начальная схема. '+data.distance+' км. Левая едет '+(data.arrows[0]>0?'вправо':'влево')+', правая '+(data.arrows[1]>0?'вправо':'влево')+'. Через '+data.time+' '+after+'.'});
+ ln(picture,18,68,298,68,{stroke:'#8da79a'});
+ const points=[72,239];
+ for(let i=0;i<2;i++){
+  const x=points[i],dir=data.arrows[i],end=x+35*dir,color=i?'#915018':'#22664a';
+  txt(picture,x,25,data.marks[i]+' км/ч',{'font-size':21});
+  ln(picture,x,61,x,75,{stroke:color});ln(picture,x,52,end,52,{stroke:color,'stroke-width':3});ln(picture,end,52,end-8*dir,46,{stroke:color});ln(picture,end,52,end-8*dir,58,{stroke:color});
+  picture.append(svg('circle',{cx:x,cy:68,r:4,fill:color,'data-drive':dir}));
+ }
+ ln(picture,72,85,239,85,{stroke:'#688274','stroke-width':1});ln(picture,72,79,72,85);ln(picture,239,79,239,85);
+ txt(picture,157,108,'Вначале '+data.distance+' км',{'font-size':20});txt(picture,157,135,'Через '+data.time,{'font-size':19});txt(picture,157,159,data.end?'Расстояние '+data.end+' км':'Встреча',{'font-size':19});
+ return picture;
+}
+function sourceRoute(spec,changed){
+ const m=root.PetersonMath,r=x=>m.answer(x),op=m.operation;
+ let condition,equation,labels,bar,rows,result,shape;
+ if(spec==='mint'||spec==='salt'){
+  const mint=spec==='mint',added=mint?(changed?40:80):(changed?25:50),initial=mint?5*added:4*added,substance=mint?.4*initial:.05*initial,other=initial-substance;
+  condition=mint?'Мята составляет 40% смеси. Добавили '+added+' г мяты, и теперь массы мяты и зверобоя равны.':'Исходная концентрация соли 5%. После добавления '+added+' г чистой соли концентрация стала 24%.';
+  equation=mint?'0,4x + '+added+' = 0,6x':'0,05x + '+added+' = 0,24(x + '+added+')';labels=mint?['Мята до','Зверобой до']:['Соль до','Соль после'];bar=mint?[substance,other]:[substance,substance+added];
+  rows=[['Масса смеси до, г',initial],[mint?'Мята до, г':'Соль до, г',substance],[mint?'Зверобой, г':'Вода, г',other],['Масса смеси после, г',initial+added],[mint?'Мята после, г':'Соль после, г',substance+added]];
+  result=mint?'Первоначально зверобоя '+other+' г, мяты '+substance+' г.':'В исходном растворе '+substance+' г соли.';
+ }else if(spec==='triangle'||spec==='quad'){
+  const tri=spec==='triangle',third=changed?21:14,x=tri?third*45/7:(changed?25:15),sides=tri?[x*4/9,x*2/5,third]:[.6*x,x,1.2*x,.6*x+7],per=sides.reduce((a,b)=>a+b,0);
+  condition=tri?'Первая сторона равна 4/9 периметра. Вторая равна 90% первой. Третья '+third+' см.':'Периметр '+per+' см. Первая сторона 60% второй. Третья 75% суммы первых двух. Четвёртая на 7 см длиннее первой.';
+  equation=tri?'(1 − 4/9 − 2/5)P = '+third:'0,6x + x + 1,2x + 0,6x + 7 = '+per;
+  labels=['Первая сторона','Вторая сторона'];bar=sides.slice(0,2);rows=sides.map((length,i)=>['Сторона '+(i+1)+', см',length]);rows.push(['Периметр, см',per]);
+  result=tri?'Периметр '+per+' см. Стороны: '+sides.join(', ')+' см.':'Стороны по порядку: '+sides.join(', ')+' см.';
+  if(tri){
+   const [ab,bc,ca]=sides,xx=(ab**2+ca**2-bc**2)/(2*ab),yy=Math.sqrt(ca**2-xx**2);
+   shape=geometryFigure({caption:'Треугольник в едином масштабе. AB '+ab+', BC '+bc+', CA '+ca+' см.',points:[{name:'A',x:0,y:0},{name:'B',x:ab,y:0},{name:'C',x:xx,y:yy}],segments:[['A','B'],['B','C'],['C','A']]});
+  }
+ }else if(spec==='rectPercent'||spec==='rectDifference'){
+  const percent=spec==='rectPercent',width=percent?(changed?'13/5':'13/10'):(changed?'6/5':'12/5'),length=percent?(changed?5:'5/2'):(changed?3:6);
+  const perimeter=r(op('multiply',2,op('add',width,length))),area=r(op('multiply',width,length)),diff=r(op('subtract',length,width));
+  condition=percent?'Дан периметр '+perimeter+' см, ширина на 48% меньше длины.':'Длина больше ширины на '+diff+' см. Ширина равна одной седьмой периметра.';
+  equation=percent?'2(x + 0,52x) = '+perimeter:'2(w + w + '+diff+') = 7w';labels=['Длина','Ширина'];bar=[r(length),width];
+  rows=[['Длина, см',bar[0]],['Ширина, см',width],['Периметр, см',perimeter],['Площадь, см²',area]];result='Площадь '+area+' см².';
+  const decimal=x=>{const f=m.parse(x);return f.n/f.d;},a=decimal(length),b=decimal(width);
+  shape=geometryFigure({caption:'Длина и ширина в одном масштабе: '+bar[0]+' и '+width+' см.',points:[{name:'A',x:0,y:0},{name:'B',x:a,y:0},{name:'C',x:a,y:b},{name:'D',x:0,y:b}],segments:[['A','B'],['B','C'],['C','D'],['D','A']]});
+ }else if(spec==='riverEqual'||spec==='riverRatio'){
+  const equal=spec==='riverEqual',c=equal?(changed?3:2):(changed?3:'5/2'),own=equal?r(op('multiply',c,11)):r(op('multiply',c,7)),up=r(op('subtract',own,c)),down=r(op('add',own,c));
+  condition=equal?'Лодка в стоячей воде прошла бы '+own+' км за час. 1 ч 15 мин по течению и 1 ч 30 мин против дают равные пути.':'Скорость воды '+r(c)+' км/ч. За одинаковое время путь против течения составляет три четверти пути по течению.';
+  equation=equal?'(5/4)('+own+' + c) = (3/2)('+own+' − c)':'v − '+r(c)+' = (3/4)(v + '+r(c)+')';
+  labels=['Против течения','По течению'];bar=[up,down];rows=[['Скорость воды, км/ч',r(c)],['Собственная скорость, км/ч',own],['Против течения, км/ч',up],['По течению, км/ч',down]];
+  result=equal?'Скорость течения '+r(c)+' км/ч. Пути по '+r(op('multiply',down,'5/4'))+' км.':'Собственная скорость '+own+' км/ч. Точное общее время сокращается.';
+ }else{
+  const variations={
+   carsMeet:{directions:[1,-1],initial:changed?270:243,hours:'9/5',end:0,rule:'v₁ = v₂ + 15'},
+   carsApart:{directions:[-1,1],initial:52,hours:'3/2',end:changed?328:304,rule:'v₂ = v₁ + 32'},
+   carsLead:{directions:[1,1],initial:30,hours:'9/4',end:changed?156:162,rule:'v₂ = (7/5)v₁'},
+   carsCatch:{directions:[1,1],initial:changed?18:24,hours:'2/3',end:0,rule:'v₂ = (7/10)v₁'}
+  },v=variations[spec],gapRate=op('divide',Math.abs(v.end-v.initial),v.hours);
+  let left,right;
+  if(spec==='carsMeet'){right=op('divide',op('subtract',gapRate,15),2);left=op('add',right,15);}
+  else if(spec==='carsApart'){left=op('divide',op('subtract',gapRate,32),2);right=op('add',left,32);}
+  else{left=op('divide',gapRate,spec==='carsLead'?'2/5':'3/10');right=op('multiply',left,spec==='carsLead'?'7/5':'7/10');}
+  const decimal=x=>{const f=m.parse(x);return f.n/f.d;},finalLeft=v.directions[0]*decimal(op('multiply',left,v.hours)),finalRight=v.initial+v.directions[1]*decimal(op('multiply',right,v.hours)),lo=Math.min(0,v.initial,finalLeft,finalRight),hi=Math.max(0,v.initial,finalLeft,finalRight),place=x=>28+212*(x-lo)/(hi-lo);
+  condition='Начальный промежуток '+v.initial+' км. Через '+v.hours+' ч промежуток '+v.end+' км. '+v.rule+'.';
+  equation=(spec==='carsMeet'?'(v₁ + v₂)t':spec==='carsApart'?'(v₁ + v₂)t':spec==='carsLead'?'(v₂ − v₁)t':'(v₁ − v₂)t')+' = '+Math.abs(v.end-v.initial);
+  labels=['Левая вначале','Правая вначале'];bar=[r(left),r(right)];rows=[['Промежуток вначале, км',v.initial],['Промежуток в конце, км',v.end],['Скорость изменения, км/ч',r(gapRate)],['Левая машина, км/ч',r(left)],['Правая машина, км/ч',r(right)]];
+  result='Скорости слева направо: '+r(left)+' и '+r(right)+' км/ч.';
+  shape=el('div');const frames=[['Старт',0,v.initial],['Через '+v.hours+' ч',finalLeft,finalRight]];
+  for(const [title,x,y] of frames){shape.append(el('p','pm-note',title),twoCarLanes(place(x),place(y),...v.directions,title+': расстояние '+Math.round(Math.abs(y-x))+' км.'));}
+ }
+ return {condition,equation,labels,bar,rows,result,shape};
+}
+function comparedAmounts(kind,changed){
+ const m=root.PetersonMath,op=m.operation,r=x=>m.answer(x);
+ let condition,equation,labels,bar,rows,result;
+ if(kind==='sugar'){
+  const total=changed?'15/2':5,left=op('multiply',total,'6/25'),first=op('multiply',left,3),second=op('subtract',total,first);
+  condition='В двух пакетах '+r(total)+' кг. После изъятия 2/3 первого и 1/7 второго остатки равны.';
+  equation='3r + (7/6)r = '+r(total);labels=['Первый пакет','Второй пакет'];bar=[r(first),r(second)];
+  rows=[['В первом сначала, кг',bar[0]],['Во втором сначала, кг',bar[1]],['Осталось в каждом, кг',r(left)]];
+  result='Первый пакет '+bar[0]+' кг, второй '+bar[1]+' кг. В каждом осталось '+r(left)+' кг.';
+ }else if(kind==='tram'){
+  const k=changed?2:1,first=20*k,second=24*k,nowFirst=25*k,nowSecond=23*k;
+  condition='Второй вагон вначале перевозит 1,2 от числа пассажиров первого. В первом прибыло '+5*k+', во втором убыло '+k+'. Теперь во втором на 8% меньше.';
+  equation='1,2x − '+k+' = 0,92(x + '+5*k+')';labels=['Первый после','Второй после'];bar=[nowFirst,nowSecond];
+  rows=[['Первый: сначала',first],['Второй: сначала',second],['Первый: после',nowFirst],['Второй: после',nowSecond]];
+  result='После остановки в вагонах '+nowFirst+' и '+nowSecond+' чел. Разность равна 8% от '+nowFirst+'.';
+ }else if(kind==='classes'){
+  const gap=changed?10:5,small=5*gap,big=6*gap,now=27*gap/5;
+  condition='Первый класс вначале меньше второго на '+gap+' чел. После роста первого на 8% и сокращения второго на 10% численность сравнялась.';
+  equation='1,08x = 0,9(x + '+gap+')';labels=['Первый до','Второй до'];bar=[small,big];
+  rows=[['Первый: до',small],['Второй: до',big],['Первый: после',now],['Второй: после',now]];result='Стало по '+now+' чел. в каждом классе.';
+ }else if(kind==='cinema'){
+  const g=changed?16:12,delta=g/4,moreGirls=g+delta,fewerBoys=3*delta;
+  condition='В первом классе '+g+' девочек, во втором на четверть больше. Мальчиков в первом на треть больше, чем во втором. Общие числа равны.';
+  equation=g+' + (4/3)b = '+moreGirls+' + b';labels=['Мальчики первого','Мальчики второго'];bar=[4*delta,fewerBoys];
+  rows=[['Девочки первого',g],['Девочки второго',moreGirls],['Мальчики первого',bar[0]],['Мальчики второго',bar[1]]];
+  result='От каждого класса пришло по '+(g+bar[0])+' чел.';
+ }else if(kind==='tea'){
+  const total=changed?720:480,cup=2*total/15,kettle=3*cup/2;
+  condition='Чайник и шесть чашек вместе стоят '+total+' руб. Чайник на 50% дороже чашки.';
+  equation='(6 + 1,5)c = '+total;labels=['Чайник','Две чашки'];bar=[kettle,2*cup];
+  rows=[['Чашка, руб.',cup],['Чайник, руб.',kettle],['Две чашки, руб.',2*cup]];
+  result='Чайник с двумя чашками стоит '+(kettle+2*cup)+' руб.';
+ }else if(kind==='clothes'){
+  const total=changed?990:792,shorts=total*25/99,shirt=shorts*4/5,jacket=(shorts+shirt)*6/5;
+  condition='Три вещи стоят '+total+' руб. Футболка на 20% дешевле шорт, жакет на 20% дороже обеих вещей вместе.';
+  equation='x + 0,8x + 1,2(x + 0,8x) = '+total;labels=['Футболка','Жакет'];bar=[shirt,jacket];
+  rows=[['Шорты, руб.',shorts],['Футболка, руб.',shirt],['Жакет, руб.',jacket]];result='Футболка и жакет стоят '+(shirt+jacket)+' руб.';
+ }else if(kind==='marks'){
+  const k=changed?2:1,n=30*k,difference=10*k,twos=3*k;
+  condition='Доли пятёрок и четвёрок 1/6 и 8/15. Троек на '+difference+' меньше, чем четвёрок, двоек '+twos+'.';
+  equation='n/6 + 8n/15 + (8n/15 − '+difference+') + '+twos+' = n';labels=['Четвёрки','Пятёрки'];bar=[16*k,5*k];
+  rows=[['Четвёрки',bar[0]],['Пятёрки',bar[1]],['Тройки',6*k],['Двойки',twos],['Всего',n]];
+  result='Оценки 4 и 5 получили '+(21*k)+' из '+n+' учащихся (70%). Четвёрок '+bar[0]+', пятёрок '+bar[1]+'.';
+ }else if(kind==='asymmetric'){
+  const rise=changed?60:50,gap=3,small=40*gap/(rise-40),big=small+gap;
+  condition='Меньшее число увеличивают на '+rise+'%, большее уменьшают на 40%. Сумма сохраняется, а изначальная разность равна 3.';
+  equation=rise+'x = 40(x + 3)';labels=['Меньшее','Большее'];bar=[small,big];
+  const above=r(op('divide',100*gap,small)),below=r(op('divide',100*gap,big));rows=[['Меньшее',small],['Большее',big],['Разность',gap],['Превышение, %',above],['Недостача, %',below]];
+  result='Большее превышает меньшее на '+above+'%, меньшее отстаёт от большего на '+below+'%.';
+ }else if(kind==='brothers'){
+  const total=changed?60:45,middle=total/3,young=2*middle/5,old=8*middle/5;
+  condition='Троим вместе '+total+' лет. Возраст младшего на 60% меньше среднего, возраст старшего на 60% больше среднего.';
+  equation='0,4x + x + 1,6x = '+total;labels=['Младший','Старший'];bar=[young,old];
+  rows=[['Младший, лет',young],['Средний, лет',middle],['Старший, лет',old]];result='Возраст братьев по порядку: '+young+', '+middle+', '+old+' лет.';
+ }else{
+  const gap=changed?130:260,english=gap*25/13,french=english*12/25,combined=english+french,all=20*combined;
+  condition='Французских книг 48% от числа английских. Их на '+gap+' меньше. Вместе эти группы составляют 5% фонда.';
+  equation='(1 − 0,48)E = '+gap+'; 0,05N = E + 0,48E';labels=['Английские','Французские'];bar=[english,french];
+  rows=[['Английские',english],['Французские',french],['На двух языках',combined],['Весь фонд',all]];result='Во всей библиотеке '+all+' книг.';
+ }
+ return {condition,equation,labels,bar,rows,result};
+}
+function modelStory(opening,changed){
+ const m=root.PetersonMath,op=m.operation,r=x=>m.answer(x);
+ let condition,equation,labels,bar,rows,result;
+ if(opening==='clockElapsed'||opening==='clockRemain'){
+  const elapsedFirst=opening==='clockElapsed',ratio=elapsedFirst?(changed?'1/4':'1/5'):(changed?'1/2':'3/5');
+  const larger=op('divide',24,op('add',1,ratio)),smaller=op('subtract',24,larger),elapsed=elapsedFirst?smaller:larger,remaining=elapsedFirst?larger:smaller;
+  condition=(elapsedFirst?'Прошло '+ratio+' оставшегося времени.':'Осталось '+ratio+' прошедшего времени.');equation=elapsedFirst?'x = ('+ratio+')(24 − x)':'24 − x = ('+ratio+')x';
+  labels=['Прошло','Осталось'];bar=[r(elapsed),r(remaining)];rows=[['Прошло, ч',bar[0]],['Осталось, ч',bar[1]],['Всего, ч',24]];result='На часах '+clockText(Number(r(op('multiply',elapsed,60))))+'.';
+ }else if(opening==='craft'||opening==='trainWork'){
+  const workshop=opening==='craft',gap=workshop?(changed?20:15):(changed?20:28),ta=workshop?8:10,tb=workshop?10:12.5,slow=gap*ta/(tb-ta),fast=slow+gap,total=fast*ta;
+  condition=workshop?'Мастер завершает тот же заказ за 8 ч, ученик — за 10 ч. Разность производительностей '+gap+' деталей/ч.':'Скорый поезд в пути 10 ч, пассажирский 12,5 ч. Разность скоростей '+gap+' км/ч.';
+  equation=ta+'(x + '+gap+') = '+num(tb)+'x';labels=workshop?['Мастер','Ученик']:['Скорый','Пассажирский'];bar=[fast,slow];rows=[[labels[0]+': за час',fast],[labels[1]+': за час',slow],[workshop?'Один заказ, деталей':'Путь, км',total]];result=workshop?'За час мастер делает '+fast+', ученик '+slow+'.':'Расстояние '+total+' км.';
+ }else if(opening==='threeDays'||opening==='repair'){
+  const drive=opening==='threeDays',remainder=drive?(changed?220:440):(changed?10:5),total=drive?remainder*30/11:remainder*9,first=drive?total/3:total*2/9,second=total-remainder-first;
+  condition=drive?'В третьем дне '+remainder+' км. Второй день составляет 90% первого.':'В июне '+remainder+' км. В мае выполнено 6/7 остатка после апреля.';
+  equation=drive?'x/3 + (9/10)(x/3) + '+remainder+' = x':'(1/7)(7/9)x = '+remainder;
+  labels=drive?['Первый день','Второй день']:['Апрель','Май'];bar=[first,second];rows=[[labels[0],first],[labels[1],second],[drive?'Третий день':'Июнь',remainder],['Всего, км',total]];result=(drive?'Во второй день ':'В мае ')+second+' км.';
+ }else if(opening==='candy'){
+  const q=changed?6:4,total=9*q,left=6*q;condition='Сначала взяли '+q+' конфет, потом четверть остатка. Остались две трети начального числа.';equation='(3/4)(x − '+q+') = (2/3)x';labels=['Вначале','В конце'];bar=[total,left];rows=[['Начало',total],['После первой операции',8*q],['Затем взяли',2*q],['В конце',left]];result='Остаток: '+left+' шт.';
+ }else if(opening==='log'){
+  const last=changed?'21/5':'21/10',total=op('divide',last,'21/50'),middle=op('multiply',total,'7/10'),second=op('multiply',middle,'2/5');
+  condition='Конечный остаток бревна '+r(last)+' м. По очереди отрезано 30% и 40% остатка.';equation='(7/10)(3/5)x = '+r(last);labels=['До второго','После второго'];bar=[r(middle),r(last)];rows=[['Вначале',r(total)],['Перед вторым распилом',r(middle)],['Второй отпил',r(second)],['Осталось',r(last)]];result='Второй отпил '+r(second)+' м.';
+ }else if(opening==='nursery'){
+  const gap=changed?120:150,x=(270-gap)/3;condition='После продаж яблонь осталось на '+gap+' больше, чем слив. Начальные количества 450 и 180.';equation='(450 − 4x) − (180 − x) = '+gap;labels=['Продано яблонь','Продано слив'];bar=[4*x,x];rows=[['Продано яблонь',4*x],['Продано слив',x],['Осталось яблонь',450-4*x],['Осталось слив',180-x]];result='Продано '+5*x+' саженцев.';
+ }else if(opening==='basins'){
+  const q=changed?100:200;condition='Из каждого бассейна выкачали по '+q+' м³. Начальное отношение 3:1, конечное 5:1.';equation='3x − '+q+' = 5(x − '+q+')';labels=['Первый сначала','Второй сначала'];bar=[6*q,2*q];rows=[['Первый: сначала',6*q],['Второй: сначала',2*q],['Первый: после',5*q],['Второй: после',q]];result='Сначала было '+6*q+' и '+2*q+' м³.';
+ }else if(opening==='notebooks'||opening==='oilTransfer'){
+  const books=opening==='notebooks',q=books?(changed?9:6):(changed?'16/5':'8/5'),small=op('multiply',q,books?4:'1/2'),big=op('multiply',small,books?'3/2':4),first=op('subtract',big,q),second=op('add',small,q);
+  condition=(books?'Из первой пачки во вторую переложили ':'Из первого бидона во второй перелили ')+r(q)+(books?' тетрадей.':' л.');equation=books?'1,5x − '+q+' = x + '+q:'x + '+q+' = 1,5(4x − '+q+')';labels=['Первая после','Вторая после'];bar=[r(first),r(second)];rows=[['Первая: вначале',r(big)],['Вторая: вначале',r(small)],['Первая: после',r(first)],['Вторая: после',r(second)]];result=books?'Сначала было '+r(big)+' и '+r(small)+' тетрадей.':'Конечные объёмы '+r(first)+' и '+r(second)+' л.';
+ }else if(opening==='segments'){
+  const extra=changed?6:3,cd=4*(extra+3),ab=cd/2;condition='AB увеличивают на '+extra+' см, а CD уменьшают на 40 мм = 4 см.';equation='x/2 + '+extra+' = (3/4)(x − 4)';labels=['Новый AB','Новый CD'];bar=[ab+extra,cd-4];rows=[['AB сначала',ab],['CD сначала',cd],['AB после',bar[0]],['CD после',bar[1]]];result='Первоначальный CD равен '+cd+' см.';
+ }else{
+  const percent=changed?75:80,second=80,first=90*second/percent;condition=percent+'% первого куска равны 90% второго.';equation=percent+'A = 90B';labels=['Первый','Второй'];bar=[first,second];rows=[['Первый кусок, условных единиц',first],['Второй кусок',second],['Одинаковая доля каждого',72]];result='Первый длиннее на '+num((first-second)/second*100)+'%.';
+ }
+ return {condition,equation,labels,bar,rows,result};
+}
+function changingGap(type,initial,t){
+ const direct1=type===1||type===3?-1:1,direct2=type===0||type===3?-1:1,v1=20,v2=10;
+ const left=direct1*v1*t,right=initial+direct2*v2*t;
+ const min=Math.min(0,initial,direct1*v1*3,initial+direct2*v2*3),max=Math.max(0,initial,direct1*v1*3,initial+direct2*v2*3);
+ return {left,right,distance:right-left,firstDirection:direct1,secondDirection:direct2,pos:x=>26+216*(x-min)/(max-min)};
+}
+function twoCarLanes(firstX,secondX,firstArrow,secondArrow,label){
+ const s=svg('svg',{viewBox:'0 0 270 104',class:'pm-chart pcm-route-fractions',role:'img','aria-label':label});
+ const car=(x,y,dir,colour,caption)=>{
+  ln(s,20,y,250,y,{stroke:'#9aafa3'});s.append(svg('circle',{cx:x,cy:y,r:7,fill:colour}));
+  const end=x+dir*14;ln(s,x,y,end,y,{stroke:'#314d42','stroke-width':2});ln(s,end,y,end-dir*4,y-4,{stroke:'#314d42'});ln(s,end,y,end-dir*4,y+4,{stroke:'#314d42'});
+  txt(s,135,y-17,caption,{'font-size':13});
+ };
+ car(firstX,36,firstArrow,'#235b46','Первая машина');car(secondX,77,secondArrow,'#9f4e08','Вторая машина');return s;
+}
+function formulaGeometry(tag,a){
+ if(tag>=6)return passageGeometry(tag,a);
+ const b=tag===3?10-a:4,c=5,perimeter=20;
+ if(tag===0||tag===4)return {diagram:solidFigure('cube'),labels:[['Ребро',a+' см'],['Площадь одной грани',a*a+' см²']],formula:tag===0?'V = a³':'S = 6a²',result:tag===0?a**3+' см³':6*a*a+' см²'};
+ if(tag===2)return {diagram:circleDiameterFigure(),labels:[['Радиус',a+' см'],['Число радиусов в диаметре','2']],formula:'D = 2R',result:2*a+' см'};
+ if(tag===5)return {diagram:solidFigure('cuboid'),labels:[['a × b',a*b+' см²'],['a × c',a*c+' см²'],['b × c',b*c+' см²']],formula:'S = 2(ab + ac + bc)',result:2*(a*b+a*c+b*c)+' см²'};
+ const tri=tag===1,points=[{name:'A',x:0,y:0},{name:'B',x:a,y:0},{name:'C',x:tri?0:a,y:b}];if(!tri)points.push({name:'D',x:0,y:b});
+ const pairs=tri?[['A','B'],['B','C'],['C','A']]:[['A','B'],['B','C'],['C','D'],['D','A']];
+ return {diagram:geometryFigure({points,segments:pairs,caption:tri?'Два катета под прямым углом':'Прямоугольник данного периметра'}),labels:tri?[['Первый катет',a+' см'],['Второй катет',b+' см']]:[['Периметр',perimeter+' см'],['Первая сторона',a+' см'],['Вторая сторона',b+' см']],formula:tri?'S = ab/2':'S = a(P/2 − a)',result:(tri?a*b/2:a*b)+' см²'};
+}
+function approachDiagram(t,d,stage){
+ const m=root.PetersonMath,toNum=v=>{const q=m.parse(v);return q.n/q.d;};
+ const space=toNum(d.space),v1=toNum(d.v1),v2=toNum(d.v2),time=toNum(d.time),vSecond=t.approach?-v2:v2,last=Math.max(space,time*v1,space+time*vSecond),phase=stage/2;
+ const x=n=>26+216*n/last,one=x(time*v1*phase),two=x(space+time*vSecond*phase);
+ return twoCarLanes(one,two,1,t.approach?-1:1,t.approach?'Встречное движение: стрелки направлены навстречу':'Вдогонку: обе стрелки идут вправо');
+}
+function lastSectionStory(tag,a,b){
+ if(tag==='fuel'){
+  const draw=a?5:6,small=2*draw,large=4*draw,withdrawn=b?draw:0;
+  return {title:'Из обеих канистр отлили по '+draw+' л.',columns:['Канистра','Сейчас, л'],rows:[['Первая',large-withdrawn],['Вторая',small-withdrawn]],conclusion:'Отношение сейчас '+(b?3:2)+' к 1.'};
+ }
+ if(tag==='park'){
+  const lindens=a?88:94,total=(lindens+18)*15/2;
+  return {title:'Лип '+lindens+', дубов на 18 больше, чем клёнов.',columns:['Вид','Количество'],rows:[['Берёзы',total/5],['Клёны',total/3],['Дубы',total/3+18],['Липы',lindens]],conclusion:'Всего '+total+' деревьев.'};
+ }
+ const potatoes=a?128:140,cabbage=80,cabbageDaily=(potatoes-cabbage)/12,potatoDaily=2.5*cabbageDaily;
+ return {title:'Запасы в начале: '+potatoes+' т картофеля, '+cabbage+' т капусты.',columns:['Овощи','Осталось, т'],rows:[['Картофель',potatoes-b*potatoDaily],['Капуста',cabbage-b*cabbageDaily]],conclusion:'В сутки вывозят '+num(potatoDaily)+' + '+num(cabbageDaily)+' = '+num(potatoDaily+cabbageDaily)+' т.'};
+}
+function expressionStages(tree,fresh){
+ const m=root.PetersonMath,steps=[];let visited=false;
+ function value(node){
+  if(!Array.isArray(node)){const v=m.operation('multiply',node,!visited&&fresh?2:1);visited=true;return v;}
+  const [op,l,r]=node,a=value(l),b=value(r),v=m.operation(cycleKeys[op],a,b);
+  steps.push([m.answer(a)+' '+op+' ('+m.answer(b)+')',m.answer(v)]);return v;
+ }
+ return {value:m.answer(value(tree)),steps};
+}
+function fractionPairFigure(){
+ const pair=el('div','pcm-sum-fractions');
+ for(const [i,lines]of [['(−2/9) × (3/7) × (−4/5)','(1/21) × (−2/15) × 4'],['5/8 − 3/4 − 1/2','2/3 − 7/12 − 1/4']].entries()){
+  if(i)pair.append(el('span','pcm-sum-symbol','+'));const f=el('div','pcm-printed-fraction');
+  f.append(el('div','pcm-fraction-numerator',lines[0]),el('div','pcm-fraction-denominator',lines[1]));pair.append(f);
+ }
+ return pair;
+}
+function lifeYears(yearsBeforeBirth,yearsAfterDeath){
+ const age=(yearsBeforeBirth+yearsAfterDeath)*28/3;
+ return {age,segments:[['Детство',age/6],['Следующий этап',age/12],['До брака',age/7],['От свадьбы до рождения сына',yearsBeforeBirth],['Жизнь сына',age/2],['После смерти сына',yearsAfterDeath]]};
+}
+function fractionRouteFigure(data,top,bottom) {
+ const s=svg('svg',{viewBox:'0 0 270 152',role:'img',class:'pm-chart pcm-route-fractions','aria-label':'Три верхних числа, знак '+data.sign+' и три нижних числа. Первый операнд сверху.'});
+ const node=(x,y,label,picked)=>{
+  s.append(svg('rect',{x:x-26,y:y-15,width:52,height:30,rx:8,stroke:picked?'#914a08':'#527369',fill:picked?'#ffdfa8':'#eef7ef','stroke-width':picked?3:1}));
+  txt(s,x,y+5,label,{'font-size':15});
+ };
+ const arrows=(x1,y1,x2,y2)=>{
+  ln(s,x1,y1,x2,y2,{stroke:'#496d60','stroke-width':1.5});
+  const angle=Math.atan2(y2-y1,x2-x1),back=Math.PI/7;
+  s.append(svg('path',{d:'M'+(x2-6*Math.cos(angle-back))+' '+(y2-6*Math.sin(angle-back))+' L'+x2+' '+y2+' L'+(x2-6*Math.cos(angle+back))+' '+(y2-6*Math.sin(angle+back)),fill:'none',stroke:'#496d60','stroke-width':1.5}));
+ };
+ for(let i=0;i<3;i++){const x=43+92*i;arrows(x,44,125+10*i,60);arrows(125+10*i,91,x,107);node(x,27,data.upper[i],i===top);node(x,126,data.lower[i],i===bottom);}
+ node(135,76,data.sign,true);return s;
+}
+function fractionRouteResult(t,i,j){return root.PetersonMath.operation(cycleKeys[t.sign],t.upper[i],t.lower[j]);}
+function mixedTermText(n,d){const whole=Math.floor(n/d),rest=n%d;return rest?whole+' и '+root.PetersonMath.answer(root.PetersonMath.operation('divide',rest,d)):String(whole);}
+function schoolChain(data,fresh){
+ const m=root.PetersonMath,first=m.operation('multiply',data.vals[0],fresh?2:1),values=[first];
+ for(const [i,op]of data.ops.entries())values.push(m.operation(cycleKeys[op],values.at(-1),data.vals[i+1]));
+ return values;
+}
 function cycleValues(t,start){
  const M=root.PetersonMath,values=[M.parse(start)];
  for(const [sign,v]of t.ops)values.push(M.operation(cycleKeys[sign],values.at(-1),v));
@@ -533,6 +1184,8 @@ function situationConfig(tag){
  return {title:'Три часа пути',controls:[c('Прибавка во второй час, км',[6,12,18]),c('Этап',[[0,'Сначала составлю уравнение'],[1,'Сколько в первый час'],[2,'Три участка и весь путь']])],initial:[12,0]};
 }
 const finiteSourceCases={
+ quadratic107:{candidates:[1,2,3,4,5],why:'При каждом переходе от x к x + 1 левая часть увеличивается на 10x − 2. Для натурального x это положительно, поэтому найденное решение единственно.'},
+ threeFactors107:{candidates:[4,5,6],why:'При x ≤ 3 или x ≥ 7 один из двух последних множителей неположителен, а другой положителен. Положительная правая часть оставляет только x = 4, 5, 6.'},
  sevenTimes:{candidates:[1,2,3,4],why:'При x ≥ 5 множитель 9 − 2x отрицателен. Требуется положительное произведение.'},
  fourMinus:{candidates:[1,2,3],why:'Начиная с x = 4 множитель 4 − x неположителен. Положительное значение невозможно.'},
  plusEight:{why:'Для положительных x множители x и x + 8 растут. Найденное натуральное решение единственно.'},
@@ -728,11 +1381,12 @@ function balanceInputs(task){
  return extra?balanceCandidates.concat(extra):balanceCandidates;
 }
 const trialRules={
+ quadratic107:x=>5*x*x-7*x-24,threeFactors107:x=>4*x*(x-3)*(7-x),
  sevenTimes:x=>7*x*(9-2*x),fourMinus:x=>x*(2*x-1)*(4-x)*(x+1),plusEight:x=>x*(x+8),threeSquare:x=>3*x*x-14*x-15,
  rectGrow:x=>x*(x+12),boundedThree:x=>x*(x-9)*(15-x),
  rectSubtract:x=>x*(x-4),rectPlus3:x=>x*x+3*x,
 };
-const extraTrials={sevenTimes:63,fourMinus:36,plusEight:48,threeSquare:-10,rectGrow:85,boundedThree:88,rectSubtract:117,rectPlus3:54};
+const extraTrials={quadratic107:28,threeFactors107:48,sevenTimes:63,fourMinus:36,plusEight:48,threeSquare:-10,rectGrow:85,boundedThree:88,rectSubtract:117,rectPlus3:54};
 const endFamilyCandidates=['-9','-5','-3','-1','0','19/16','9/2','9'];
 function finalFamilyPair(rule,x){
  switch(rule){
@@ -1424,6 +2078,62 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&task?.countingPaper)return {title:'Перебери все варианты без пропусков',controls:[c('Набор',[[0,'Из упражнения'],[1,'Новые данные']]),c('Варианты',[[0,'Начну свой список'],[1,'Первая группа'],[2,'Проверить весь перебор']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&task?.p38Tour==='bird')return {title:'Построй контур по точкам',controls:[c('Начало',[[0,'Исходные координаты'],[1,'Все точки вправо на клетку']]),c('Построение',[[0,'Первая точка'],[1,'До A7'],[2,'До A15'],[3,'До A26'],[4,'До A37'],[5,'Замкнуть контур']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&task?.p38Tour)return {title:task.p38Tour==='outing'?'Построй график экскурсии':'Проверь дроби и основание процента',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новый вариант']]),c('Шаг',[[0,'Сначала решу сам'],[1,'Промежуточные значения'],[2,'Окончательная проверка']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&task?.paperMeasure)return {title:task.paperMeasure.startsWith('rectangle')?'Измерь по одной шкале':'Проверь величины и вычисление',controls:[c('Набор',[[0,'Из упражнения'],[1,'Другие данные']]),c('Шаг',[[0,'Решу самостоятельно'],[1,'Промежуточная проверка'],[2,'Результат']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&task?.convertGroup)return {title:'Переведи одну скорость и проверь единицы',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новые значения']]),c('Скорость',task.convertGroup.rows.map(([v,u],i)=>[i,String(i+1)+'. '+v+' '+u])),c('Проверка',[[0,'Переведу сам'],[1,'Множитель'],[2,'Проверка единиц']])],initial:[0,0,0]};
+ if(lesson?.id==='p38'&&Number.isInteger(task?.walkingGap))return {title:'Проследи за промежутком во времени',controls:[c('Пешеходы',[[0,'Из упражнения'],[1,'Новые данные']]),c('Время, с',[[0,'0'],[1,'5'],[2,'10'],[3,'15']]),c('Проверка',[[0,'Смотрю направления'],[1,'Формула'],[2,'Расстояние']])],initial:[0,0,0]};
+ if(lesson?.id==='p38'&&task?.calendarBalance)return {title:'Проверь три части целого',controls:[c('Ситуация',[[0,'Из упражнения'],[1,'Новые данные']]),c('Шаг',[[0,'Составлю уравнение'],[1,'Уравнение'],[2,'Проверка суммы']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&task?.formulaWords)return {title:'Прочитай и проверь формулу',controls:[c('Данные',[[0,'Первый пример'],[1,'Другой пример']]),c('Шаг',[[0,'Объясню сам'],[1,'Подстановка'],[2,'Проверка']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&task?.stationGraph)return {title:'Прочитай обе линии и общее время',controls:[c('Расписание',[[0,'Из упражнения'],[1,'Новый маршрут']]),c('Метка времени',[[0,'Без отметки'],[1,'Начало остановки велосипедиста'],[2,'Начало общей остановки'],[3,'Середина общей остановки'],[4,'Конец общей остановки'],[5,'Конец второй остановки пешехода']]),c('Проверка',[[0,'Прочитаю график'],[1,'Как читать'],[2,'Проверить вывод']])],initial:[0,0,0]};
+ if(lesson?.id==='p38'&&task?.p38Shape)return {title:'Проследи шаги и проверь результат',controls:[c('Набор',[[0,'Из упражнения'],[1,'Новые данные']]),c('Шаг',[[0,'Решу сам'],[1,'Промежуточная проверка'],[2,'Проверка результата']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&(task?.sizeRule||task?.percentBasis||task?.reduceStudy))return {title:task.reduceStudy?'Сократи и проверь равенство':task.percentBasis?'Смени основание сравнения':'Проверь изменение величины',controls:[c('Данные',[[0,'Из упражнения'],[1,'Другой пример']]),c('Шаг',[[0,'Решу сам'],[1,'Запись'],[2,'Проверка']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&Number.isInteger(task?.squareClaim))return {title:'Проверь частный пример и общий вывод',controls:[c('Число a',[[0,'−2/3'],[1,'0'],[2,'3/2']]),c('Шаг',[[0,'Предположение'],[1,'Квадрат'],[2,'Смысл квантора']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&task?.mentalSeries)return {title:'Проверь одно вычисление',controls:[c('Набор',[[0,'Из счёт-теста'],[1,'Новые числа']]),c('Пример',task.mentalSeries.map((_,i)=>[i,String(i+1)])),c('Проверка',[[0,'Вычислю сам'],[1,'Разобрать действие'],[2,'Проверить результат']])],initial:[0,0,0]};
+ if(lesson?.id==='p38'&&task?.portionRow)return {title:'Восстанови целое или найди долю',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новые числа']]),c('Проверка',[[0,'Выберу действие'],[1,'Связь'],[2,'Вычисление']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&(task?.appliedBalance||task?.appliedCompare||task?.printedJourney||task?.sharedRate))return {title:'Составь и проверь уравнение для этой ситуации',controls:[c('Условие',[[0,'Из учебника'],[1,'Новые данные']]),c('Шаг',[[0,'Сначала составлю сам'],[1,'Уравнение'],[2,'Модель и проверка']])],initial:[0,0]};
+ if(lesson?.id==='p19'&&task?.ratioRewrite)return {title:'Что изменилось в четырёх членах?',controls:[c('Набор',[[0,'Исходные числа'],[1,'Все четыре числа вдвое больше']]),c('Стадия',[[0,'До преобразования'],[1,'После преобразования'],[2,'Проверка']])],initial:[0,0]};
+ if(lesson?.id==='p19'&&task?.printedRateStory){
+  const train=task.printedRateStory==='trains';
+  return {title:train?'Место каждого поезда от общей станции':'Сопоставь величины исходной задачи',controls:[c('Данные',[[0,'Из учебника'],[1,'Изменённое условие']]),...(train?[c('После старта второго, ч',[0,4,6,10,15])]:[]),c('Разбор',[[0,'Сначала составлю модель'],[1,'Таблица'],[2,'Проверка ответа']])],initial:train?[0,0,0]:[0,0]};
+ }
+ if(lesson?.id==='p19'&&task?.marketDistanceGraph){
+  const apples=task.marketDistanceGraph==='apples';
+  return {title:apples?'Цена килограмма на графике':'Скорость на фиксированном пути',controls:[apples?c('Цена, р./кг',[80,100]):c('Расстояние, км',[18,24]),apples?c('Масса, кг',[0,1,2,3,4]):c('Время',[1,2,3,4,4.5,6,9,18].map((v,i)=>[i,num(v)+' ч'])),c('Стадия',[[0,'Выбери точку'],[1,'Значение'],[2,'Таблица и формула']])],initial:apples?[80,1,0]:[18,0,0]};
+ }
+ if(lesson?.id==='p19'&&task?.composeSourceRatio)return {title:'Пропорции из четырёх значений',controls:[c('Расстановка',[[0,'A/B и C/D'],[1,'A/C и B/D'],[2,'A/D и B/C']]),c('Проверка',[[0,'Предскажу'],[1,'Перекрёстные произведения']])],initial:[0,0]};
+ if(lesson?.id==='p19'&&task?.oilCans)return {title:'Две вместимости и целое число бидонов',controls:[c('Всего, л',[223,233,227]),c('Больших бидонов',range(0,13)),c('Проверка',[[0,'Сначала проверю'],[1,'Остаток'],[2,'Все подходящие варианты']])],initial:[223,0,0]};
+ if(lesson?.id==='p19'&&task?.sourceFuelGraph)return {title:'Израсходованные литры по пути',controls:[c('Расход, л на 100 км',[8,10]),c('Путь, км',range(0,10).map(x=>x*10)),c('Проверка',[[0,'Сниму с графика'],[1,'Значение'],[2,'Таблица и формула']])],initial:[8,10,0]};
+ if(lesson?.id==='p19'&&task?.flightGraph)return {title:'Проследи за двумя рейсами',controls:[c('Расписание',[[0,'Из учебника'],[1,'Рейс Б на 20 минут позже']]),c('Время',range(54,114).map(x=>[10*x,clockText(10*x)])),c('Проверка',[[0,'Предскажу по графику'],[1,'Положение обоих'],[2,'Точки маршрутов']])],initial:[0,720,0]};
+ if(lesson?.id==='p19'&&task?.sectionFlow)return {title:'Площадь сечения и скорость',controls:[c('Расход, м³/с',[24,30]),c('Площадь, м²',[20,24,30,40,48,60,80,96,120]),c('Проверка',[[0,'Сначала предскажу'],[1,'График и точка'],[2,'Формула']])],initial:[24,48,0]};
+ if(lesson?.id==='p19'&&task?.hobbySurvey)return {title:'Столбцы опроса об увлечениях',controls:[c('Данные',[[0,'Из учебника'],[1,'Ещё три ответа за чтение']]),c('Категория',hobbyNames.map((n,i)=>[i,n])),c('Проверка',[[0,'Сниму высоту'],[1,'Значение'],[2,'Все ответы']])],initial:[0,0,0]};
+ if(lesson?.id==='p19'&&task?.legoSurvey)return {title:'Из голосов в проценты',controls:[c('Данные',[[0,'Из учебника'],[1,'Один голос из Френдс переходит в Ниндзяго']]),c('Серия',toyNames.map((n,i)=>[i,n])),c('Проверка',[[0,'Сначала посчитаю'],[1,'Процент'],[2,'Линейная диаграмма']])],initial:[0,0,0]};
+ if(lesson?.id==='p19'&&Number.isInteger(task?.gapDirection))return {title:'Промежуток между двумя машинами',controls:[c('Начальное расстояние, км',[100,120]),c('Время, ч',range(0,3)),c('Проверка',[[0,'Покажи положение машин'],[1,'Найти расстояние'],[2,'Обратные формулы']])],initial:[100,0,0]};
+ if(lesson?.id==='p19'&&Number.isInteger(task?.quantityFamily)){
+  return task.quantityFamily<2?{title:task.quantityFamily?'Часть и основание процентного отношения':'Собственная скорость и течение',controls:[task.quantityFamily?c('Часть A',[12,18,24]):c('Скорость течения, км/ч',[2,3,4]),c('Проверка',[[0,'Условие'],[1,'Прямая зависимость'],[2,'Обратная зависимость']])],initial:task.quantityFamily?[12,0]:[2,0]}:
+   {title:task.quantityFamily===2?'Равные прибавки по периодам':'Начисление на текущее значение',controls:[c('Ставка, %',[10,20]),c('Число периодов',[1,2,3]),c('Показать',[[0,'Сначала рассчитаю'],[1,'По периодам'],[2,'Итог и восстановление начального']])],initial:[10,2,0]};
+ }
+ if(lesson?.id==='p19'&&Number.isInteger(task?.geometryQuantity))return {title:'Свяжи размеры фигуры',controls:[c(task.geometryQuantity===2?'Радиус, см':task.geometryQuantity===9?'Площадь основания, см²':'Размер a, см',task.geometryQuantity===9?[6,10,12]:task.geometryQuantity===6?[3,6,8]:[3,4,5]),c('Проверка',[[0,'Схема'],[1,'Известные размеры'],[2,'Формула и результат']])],initial:[task.geometryQuantity===9?10:task.geometryQuantity===6?6:3,0]};
+ if(lesson?.id==='p19'&&task?.productUnits){
+  const t=task.productUnits,items={own:['Количество предметов',[5,6,8]],books:['Цена одной тетради, р.',[20,25,30]],typing:['Страниц за час',[20,30,40]],salt:['Масса раствора, г',[100,150,200]],telegram:['Число слов',[5,10,20]]}[t];
+  return {title:'Свяжи формулу с единицами измерения',controls:[c(items[0],items[1]),c('Проверка',[[0,'Сначала запишу'],[1,'Состав величин'],[2,'Значение и проверка']])],initial:[items[1][0],0]};
+ }
+ if(lesson?.id==='p19'&&task?.unitBlanks)return {title:'Какая единица пропущена?',controls:[c('Набор',[[0,'Из таблицы'],[1,'Новые величины']]),c('Строка',[1,2,3,4]),c('Подсказка',[[0,'Сначала подберу'],[1,'Открыть ячейку']])],initial:[0,1,0]};
+ if(lesson?.id==='p19'&&task?.approachFormula)return {title:'Как исчезает начальный промежуток?',controls:[c('Данные',[[0,'Из условия'],[1,'Новое расстояние или время']]),c('Момент',[[0,'Старт'],[1,'Половина времени'],[2,'Встреча']]),c('Сверка',[[0,'Сначала решу'],[1,'Скорость сближения'],[2,'Ответ и единицы']])],initial:[0,0,0]};
+ if(lesson?.id==='p37'&&task?.remainingStory){
+  const tag=task.remainingStory,first=tag==='fuel'?['По 6 л','По 5 л']:tag==='park'?['94 липы','88 лип']:['140 т картофеля','128 т картофеля'];
+  return {title:tag==='fuel'?'Две канистры':tag==='park'?'Состав деревьев в парке':'Остатки на овощной базе',controls:[c('Данные',first.map((x,i)=>[i,x])),...(tag==='park'?[]:[tag==='fuel'?c('Когда?',[[0,'До отбора'],[1,'После отбора']]):c('День',range(0,8))]),c('Показать',[[0,'Сначала составлю уравнение'],[1,'Таблицу'],[2,'Проверку']])],initial:tag==='park'?[0,0]:[0,0,0]};
+ }
+ if(['p19','p37'].includes(lesson?.id)&&task?.expressionGroup)return {title:'Дерево арифметических действий',controls:[c('Условие',[[0,'По учебнику'],[1,'Удвоить первый операнд']]),c('Действий выполнено',range(0,expressionStages(task.expressionGroup.tree,false).steps.length))],initial:[0,0]};
+ if(lesson?.id==='p37'&&task?.percentDoubleFraction)return {title:'Сложные дроби и прибавка в процентах',controls:[c('Увеличение, %',[100,200,300]),c('Разобрать',[[0,'Условие'],[1,'Числители и знаменатели'],[2,'Большие дроби'],[3,'После увеличения']])],initial:[300,0]};
+ if(lesson?.id==='p37'&&task?.threeDigits)return {title:'Три цифры и разные записи',controls:[c('Цифра',[1,2,4]),c('Конструкция',[[0,'Три цифры рядом'],[1,'Двузначное в степени'],[2,'Цифра в двузначной степени'],[3,'Башня степеней']])],initial:[task.threeDigits,0]};
+ if(lesson?.id==='p37'&&task?.lifeTimeline)return {title:'Возраст Диофанта на временной линии',controls:[c('До рождения сына, лет',[5,14,23]),c('Разбор',[[0,'Сначала составлю уравнение'],[1,'Доли всей жизни'],[2,'Периоды по годам']])],initial:[5,0]};
+ if(lesson?.id==='p37'&&task?.fractionRoutes)return {title:'Два операнда на одном маршруте',controls:[c('Верхний узел',task.fractionRoutes.upper.map((x,i)=>[i,x]).concat(task.fractionRoutes.upper.map((x,i)=>[3+i,'Новый набор: '+root.PetersonMath.answer(root.PetersonMath.operation('add',x,1))]))),c('Нижний узел',task.fractionRoutes.lower.map((x,i)=>[i,x])),c('Ответ',[[0,'Сначала посчитаю'],[1,'Сверить результат']])],initial:[0,0,0]};
+ if(lesson?.id==='p37'&&task?.mixedRule)return {title:'Пересчитай целое в равные доли',controls:[c('Целая часть',[2,3,4]),c('Знаменатель',[3,5,7]),c('Показать',[[0,'Модель числа'],[1,'Сосчитать доли']])],initial:[2,3,0]};
+ if(lesson?.id==='p37'&&task?.mixedSeries)return {title:'Две закономерности одной дроби',controls:[c('Номер члена',range(1,7)),c('Начальный числитель',[4,5]),c('Проверка',[[0,'Сначала продолжу'],[1,'Дробь и целая часть']])],initial:[1,4,0]};
+ if(lesson?.id==='p37'&&task?.rationalChain)return {title:'Запиши промежуточный результат точно',controls:[c('Данные',[[0,'Из книги'],[1,'Первое число вдвое больше по модулю']]),c('Выполни действий',range(0,task.rationalChain.ops.length))],initial:[0,0]};
+ if(lesson?.id==='p37'&&task?.fractionCompare)return {title:'Сравни две дроби',controls:[c('Порядок',[[0,'Из книги'],[1,'Поменять местами'],[2,'Добавить слева одну долю']]),c('Проверка',[[0,'Сначала сравню'],[1,'Способ'],[2,'Ответ']])],initial:[0,0]};
  if(lesson?.id==='p37' && task?.papyrusBlock)return {title:'Повторяющийся блок и две трети',controls:[c('Правая часть',[10,20,30]),c('Этап',[[0,'Условие'],[1,'Значение блока B'],[2,'Найти x и проверить']])],initial:[10,0]};
  if(lesson?.id==='p37' && task?.directedCycle)return {title:'Двигайся по стрелкам от стартового числа',controls:[c('Старт',[[0,'Из книги'],[1,'Новые данные']]),c('Сколько действий выполнить?',range(0,6))],initial:[0,0]};
  if(lesson?.id==='p37' && task?.operationRole)return {title:'Неизвестный компонент действия',controls:[c('Условие',[[0,'Исходное'],[1,'Удвоить результат']]),c('Разбор',[[0,'Сначала решу'],[1,'Правило'],[2,'Проверка ответа']])],initial:[0,0]};
@@ -1488,7 +2198,7 @@ function configFor(lesson,task){
  if(lesson?.id==='p17' && task?.circleRatio)return {title:'Диаметр и приближённая длина окружности',controls:[c('Данные',[[0,'Как в задаче'],[1,'Новая длина']]),c('Результат',[[0,'Сначала вычислю'],[1,'Без округления в модели'],[2,'С округлением до десятых']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.crossedChords)return {title:'Три опыта с пересечением хорд',controls:[c('Построение',[[0,'Первое'],[1,'Второе'],[2,'Третье']]),c('Сравнение',[[0,'Чертёж'],[1,'Части хорд'],[2,'Произведения и пропорция']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.oddExpressions)return {title:'Проверь правило на разных числах',controls:[c('Подстановка',[-2,0,1,2,3]),c('Что сравнить?',[[0,'Прогноз'],[1,'Значения'],[2,'Общий вид']])],initial:[0,0]};
- if(['p17','p18','p37'].includes(lesson?.id) && task?.affineRatios)return {title:'Проверь обе стороны при выбранном числе',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Со сдвигом неизвестного']]),c('Пробное число',affineRatioCandidates(task).map((v,i)=>[i,v])),c('Способ проверки',[[0,'Сначала вычислю'],[1,'Два отношения'],[2,'Два произведения']])],initial:[0,0,0]};
+ if(['p17','p18','p19','p37'].includes(lesson?.id) && task?.affineRatios)return {title:'Проверь обе стороны при выбранном числе',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Со сдвигом неизвестного']]),c('Пробное число',affineRatioCandidates(task).map((v,i)=>[i,v])),c('Способ проверки',[[0,'Сначала вычислю'],[1,'Два отношения'],[2,'Два произведения']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.linkedRatios)return {title:'От второй пропорции к первой',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новая вторая пропорция']]),c('Вычисления',[[0,'Сначала решу'],[1,'Промежуточное y'],[2,'Пара x и y']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.reorderSymbols)return {title:'Обе диагонали после перестановки',controls:[c('Расположение букв',range(1,8)),c('Проверка',[[0,'Ненулевые буквы'],[1,'Нулевые числители']])],initial:[1,0]};
  if(lesson?.id==='p17' && task?.copierRatio)return {title:'Оригинал и копия в одном масштабе',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новая длина']]),c('Сравнение',[[0,'Сначала решу'],[1,'Вычисления и чертёж']])],initial:[0,0]};
@@ -1603,15 +2313,15 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
-function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
+function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
-  if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
+  if((task.quantifiedEquation||task.mentalSeries||task.stationGraph||task.convertGroup||Number.isInteger(task.walkingGap)) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
   if(task.squareGridStudy && index<3)hiddenControl=3;
   if((task.integerTrial||task.lunchStudy||task.appleSaleStudy||task.oldCoinStudy) && index<2)hiddenControl=2;
   if((task.reverseRateStudy||task.fractionTreeStudy) && index===0)hiddenControl=1;
@@ -1619,8 +2329,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -1855,6 +2565,71 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===37&&task.remainingStory){
+  const tag=task.remainingStory,data=lastSectionStory(tag,a,b),mode=state.values.at(-1);say(data.title);
+  if(mode>=1){show(table(data.columns,data.rows));if(tag==='fuel')show(changeBars(...data.rows.map(row=>row[1]),['Первая','Вторая']));}
+  if(mode===2)say(data.conclusion);
+  stepList(['Запиши, как связаны исходные величины.','Составь уравнение для изменившихся величин.','Проверь ответ в таблице.']);
+ }
+ else if((n===19||n===37)&&task.expressionGroup){
+  const t=task.expressionGroup,trace=expressionStages(t.tree,a===1);
+  formula(t.printed);if(a)say('Для нового примера удвой только самое первое число исходной записи.');
+  if(b)show(table(['Действие','Результат'],trace.steps.slice(0,b)));
+  if(b===trace.steps.length)say('Точное значение: '+trace.value+'.');
+  stepList(['Сначала разбери умножения и деления и выражения в скобках.','При сложении и вычитании выбери общий знаменатель.','Проверь знак результата.']);
+ }
+ else if(n===37&&task.percentDoubleFraction){
+  show(fractionPairFigure());say('Увеличь сумму на '+a+'%.');
+  if(b>=1)show(table(['Выражение','Числитель','Знаменатель'],[['Первое','8/105','−8/315'],['Второе','−5/8','−1/6']]));
+  if(b>=2)say('Большие дроби −3 и 15/4. Вместе 3/4.');
+  if(b===3)say('Множитель '+(1+a/100)+'. Результат: '+root.PetersonMath.answer(root.PetersonMath.operation('multiply','3/4',1+a/100))+'.');
+  stepList(['Вычисли над и под каждой большой чертой.','Найди две дроби и сложи.','Увеличение на p% умножает на 1 + p/100.']);
+ }
+ else if(n===37&&task.threeDigits){
+  const digit=BigInt(a),double=BigInt(11*a),values=[BigInt(111*a),double**digit,digit**double,digit**(digit**digit)],labels=[String(a).repeat(3),String(a).repeat(2)+' в степени '+a,a+' в степени '+String(a).repeat(2),a+' в степени ('+a+' в степени '+a+')'];
+  formula(labels[b]);const v=String(values[b]);say(v.length<30?'Значение: '+v+'.':'В значении '+v.length+' цифр. Оно начинается с '+v.slice(0,8)+'…');
+  stepList(['Назови разрешённые операции.','В самой формуле проверь число использованных одинаковых цифр.','Сравни записи по значению или по показателям степени.']);
+ }
+ else if(n===37&&task.lifeTimeline){
+  const data=lifeYears(a,4);formula('T/6 + T/12 + T/7 + '+a+' + T/2 + 4 = T.');
+  if(b>=1)say('Доли дают 25/28 жизни. На оставшиеся 3/28 приходится '+(a+4)+' лет.');
+  if(b===2){let age=0;show(table(['Период','Длился, лет','Возраст в конце'],data.segments.map(([s,n])=>[s,n,age+=n])));say('Возраст в конце: '+data.age+' лет.');}
+  stepList(['Обозначь полную длину жизни буквой.','Вырази известные доли через один объект.','Сложи шесть непересекающихся интервалов и сверь возраст.']);
+ }
+ else
+ if(n===37&&task.fractionRoutes){
+  const printed=task.fractionRoutes,idx=a%3,m=root.PetersonMath;
+  const t=a<3?printed:{...printed,upper:printed.upper.map(x=>m.answer(m.operation('add',x,1)))};
+  show(fractionRouteFigure(t,idx,b));formula(t.upper[idx]+' '+t.sign+' ('+t.lower[b]+')');
+  if(state.values[2]===1)say('Результат: '+root.PetersonMath.answer(fractionRouteResult(t,idx,b))+'.');
+  stepList(['Выбери верхний узел.','Пройди через знак действия к нижнему узлу.','Сначала посчитай сам, затем сверь.']);
+ }
+ else if(n===37&&task.mixedRule){
+  const sections=Array.from({length:a},(_,i)=>['Целая единица '+(i+1),b+' равных долей']);sections.push(['Остаток','1 доля']);
+  show(table(['Часть числа','Сколько долей'],sections));formula(a+' и 1/'+b);
+  if(state.values[2])say('Всего долей: '+a+' × '+b+' + 1 = '+(a*b+1)+'. Дробь: '+(a*b+1)+'/'+b+'.');
+  stepList(['Разбей каждую целую единицу на одинаковые доли.','Добавь оставшуюся долю.','Знаменатель остаётся прежним.']);
+ }
+ else if(n===37&&task.mixedSeries){
+  const num=b*2**(a-1),den=2*a+1;formula('Начало: '+b+'/3. Выбран член №'+a+'.');
+  if(a>1)say('На предыдущем месте: '+(num/2)+'/'+(den-2)+'.');
+  if(state.values[2])say('Получается '+num+'/'+den+' = '+mixedTermText(num,den)+'.');
+  stepList(['Удваивай числитель.','Прибавляй к знаменателю два.','Раздели числитель на знаменатель с остатком.']);
+ }
+ else if(n===37&&task.rationalChain){
+  const m=root.PetersonMath,t=task.rationalChain,values=schoolChain(t,a===1);
+  formula(a===0?t.print:[m.answer(values[0]),...t.ops.map((v,i)=>v+' ('+t.vals[i+1]+')')].join(' '));
+  if(b>0)show(table(['Действие','Точный результат'],t.ops.slice(0,b).map((op,i)=>[m.answer(values[i])+' '+op+' ('+t.vals[i+1]+')',m.answer(values[i+1])])));
+  if(b===t.ops.length)say('Итог: '+m.answer(values.at(-1))+'.');
+  stepList(['Переведи числа в дроби.','Сохраняй порядок действий и проверяй знак.','Сокращай и контролируй промежуточные результаты.']);
+ }
+ else if(n===37&&task.fractionCompare){
+  const m=root.PetersonMath,t=task.fractionCompare,first=m.parse(t.left),second=m.parse(t.right),u=a===2?m.operation('add',first,'1/'+first.d):a===1?second:first,v=a===1?first:second,cross1=u.n*v.d,cross2=v.n*u.d;
+  formula(m.answer(u)+'   ?   '+m.answer(v));if(b>=1){show(table(['Произведение','Значение'],[[u.n+' × '+v.d,cross1],[v.n+' × '+u.d,cross2]]));if(!a)say(t.method+'. '+task.hint);}
+  if(b===2)say('Сравнение: '+m.answer(u)+' '+(cross1<cross2?'<':cross1>cross2?'>':'=')+' '+m.answer(v)+'.');
+  stepList(['Проверь, можно ли обойтись без общего знаменателя.','Для положительных знаменателей знак определяет порядок перекрёстных произведений.']);
  }
  else
  if(n===37 && task.papyrusBlock){
@@ -2334,7 +3109,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   stepList(['Чётко сформулируй выбранный признак.','Проверь каждое оставшееся выражение по формуле.','Отдельный числовой пример помогает проверить догадку, но общего вывода не доказывает.']);
  }
  else
- if((n===17||n===18||n===37) && task.affineRatios){
+ if((n===17||n===18||n===19||n===37) && task.affineRatios){
   const t=task.affineRatios,M=root.PetersonMath,z=M.parse(affineRatioCandidates(task)[b]),effective=M.operation('subtract',z,a),mode=state.values[2];
   say('Исходное равенство: '+t.printed+'.');
   if(a===1)say('Новый пример: в каждом месте вместо '+t.letter+' поставь ('+t.letter+' − 1).');
@@ -2834,7 +3609,241 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
  else if(n===16){show(geometryFigure({points:[{name:'A',x:0,y:0},{name:'B',x:a,y:0}],segments:[['A','B']],labels:[{x:a/2,y:-0.6,text:a+' см на карте'}],caption:'Схема отрезка на карте'}));formula('Масштаб 1 : '+b);say('На местности: '+a+' · '+b+' = '+a*b+' см = '+num(a*b/100)+' м.');stepList(['Масштаб сравнивает длины в одинаковых единицах.','Один сантиметр карты соответствует '+b+' сантиметрам на местности.','Размер схемы на экране не предназначен для измерения линейкой.']);}
  else if(n===17){show(eq(frac(3,5),' = ',frac(3*a,5*a)));const s=chart('Произведения крест-накрест');txt(s,190,90,'3');txt(s,190,270,'5');txt(s,410,90,3*a);txt(s,410,270,5*a);ln(s,155,177,225,177);ln(s,375,177,445,177);txt(s,300,185,'=');ln(s,215,105,385,245,{stroke:'#b4812a'});ln(s,215,245,385,105,{stroke:'#b4812a'});show(s);formula('3 · '+5*a+' = 5 · '+3*a+' = '+15*a);stepList(['Сначала сравни отношения: числитель и знаменатель увеличены в '+a+' раз.','Соедини числитель первой дроби со знаменателем второй — и наоборот.','Произведения равны. Все знаменатели ненулевые, поэтому пропорция верна.']);}
  else if(n===18){const pairs=[[[2,3],[8,12]],[[3,2],[12,8]],[[2,8],[3,12]],[[12,3],[8,2]]],p=pairs[a];show(eq(frac(...p[0]),' = ',frac(...p[1])));formula(p[0][0]+' · '+p[1][1]+' = '+p[0][1]+' · '+p[1][0]);say('Проверяем обе новые дроби, а не переставляем числа наугад.');stepList(['Исходная пропорция: 2 : 3 = 8 : 12.','После выбранного преобразования перекрёстные произведения равны '+p[0][0]*p[1][1]+'.']);}
- else if(n===19){const y=2*a+(b?3:0);show(table(['x','y','y : x'],range(1,5).map(x=>[x,2*x+(b?3:0),num((2*x+(b?3:0))/x)])));formula('x = '+a+' → y = '+y);say(b?'Прибавка 3 делает отношение y : x непостоянным. Это зависимость, но не прямая пропорциональность.':'Отношение y : x всегда равно 2. Это прямая пропорциональность.');}
+ else
+ if(n===38&&task.countingPaper){
+  const example=countSourceCases(task.countingPaper,a===1);say(example.condition);if(b>=1){const rows=b===1?example.rows.slice(0,1):example.rows;show(table(example.header,rows));}
+  if(b===2)say(example.result);stepList(['Реши, создаёт ли перемена порядка новый результат.','Зафиксируй первый выбор и перечисли все допустимые продолжения.','Проверь ограничения на повтор и ведущий ноль, затем объедини группы.']);
+ }
+ else
+ if(n===38&&task.p38Tour){
+  const tag=task.p38Tour;
+  if(tag==='bird'){
+   const length=[1,7,15,26,37,37][b],closed=b===5,shift=a===1?1:0,last=paperBird[length-1];show(orderedContour(a===1,length,closed));say('A'+length+' ('+(last[0]+shift)+'; '+last[1]+'). '+(closed?'Контур замкнут.':'Контур пока открыт.'));
+   if(closed)say('Получился силуэт длинношеей птицы. Можно описать её своими словами.');
+  }else if(tag==='outing'){
+   const t=outingTimeline(a===1),stage=b;say('Скорость лодки '+t.speed+' км/ч. Ужин в 19:00.');
+   if(stage>=1){show(sourceChart('outing',[t.route]));show(table(['Момент','Расстояние, км'],t.route.map(([time,km])=>[clockText(time),km])));}
+   if(stage===2)say('Обратный путь '+t.returnTime+' ч. Возвращение в '+clockText(t.end)+'. '+(t.end===1140?'Успели точно к началу ужина.':'До ужина осталось '+(1140-t.end)+' мин.'));
+  }else{
+   const v=complexPercentSource(tag,a===1);say(v.caption);
+   if(b>=1)show(table(['Часть записи','Точное значение'],v.values.map((x,i)=>['F'+(i+1),x])));if(b===2){formula(v.rule);say('Вычисленное E = '+v.total+'. Ответ '+v.final+(tag==='complex162'?'%.':'.'));}
+  }
+  stepList(['Раздели исходную запись на понятные части.','Проверь каждую координату, время или дробь в отдельности.','Собери результат и проверь, что ответил на последний вопрос.']);
+ }
+ else
+ if(n===38&&task.paperMeasure){
+  const tag=task.paperMeasure;if(tag.startsWith('rectangle')){
+   const k=tag.slice(-1).charCodeAt(0)-97,shape=rulerRectangles(k,a===1),[w,h]=shape.rounded,m=root.PetersonMath;show(shape.picture);
+   say('Выбран прямоугольник '+tag.slice(-1)+'. Считай миллиметры по общей шкале.');if(b>=1)say('Стороны после округления: '+w+' и '+h+' мм.');
+   if(b===2){show(table(['Свойство','Значение'],[['Площадь, мм²',w*h],['Отношение сторон',m.answer(m.operation('divide',w,h))],['Периметр по этим размерам, мм',2*(w+h)]]));say('Площадь '+w*h+' мм². Отношение '+m.answer(m.operation('divide',w,h))+'.');}
+  }else{const v=exactMeasureTask(tag,a===1);say(v.condition);if(b>=1)formula(v.formulaText);if(b===2){show(table(['Проверяем','Значение'],v.rows));say(v.answer);}}
+  stepList(['Сначала установи, какое число дано и какое требуется.','Запиши промежуточные величины со своими единицами.','Проверь равенство на новом наборе данных.']);
+ }
+ else
+ if(n===38&&task.convertGroup){
+  const g=unitSample(task.convertGroup,b,a===1),stage=state.values[2];say('Переведи '+g.given+' '+g.from+' в '+g.to+'.');
+  if(stage>=1)formula('Переход от '+g.from+' к '+g.to+': умножить на '+g.factor);
+  if(stage===2){show(table(['Проверка','Скорость'],[['В исходных единицах',g.given+' '+g.from],['В метрах в секунду',g.metresSecond+' м/с'],['В целевых единицах',g.answer+' '+g.to]]));say('Результат '+g.answer+' '+g.to+'.');}
+  stepList(['Проверь, в каких единицах записаны расстояние и время.','Измени числитель и знаменатель отдельно.','Оцени ответ по смыслу одного часа, минуты или секунды.']);
+ }else if(n===38&&Number.isInteger(task.walkingGap)){
+  const t=[0,5,10,15][b],sample=movingWalkers(task.walkingGap,a===1,t),stage=state.values[2];say('В начале '+sample.gap+' м; скорости '+sample.v1+' и '+sample.v2+' м/с. Показываем момент '+t+' с.');
+  show(walkTracks(sample.positions,sample.dirs));
+  if(stage>=1)formula('d(t) = '+sample.gap+(sample.rate[0]==='-'?' − '+sample.rate.slice(1):' + '+sample.rate)+'t');
+  if(stage===2)say('Расстояние '+sample.distance+' м. Изменение за секунду '+sample.rate+' м.');
+  stepList(['Проверь единицы скоростей.','Отметь направления участников и реши, складывать или вычитать модули.','Сравни расстояние в начале с промежутком через несколько секунд.']);
+ }else if(n===38&&task.calendarBalance){
+  const albums=task.calendarBalance==='albums',last=a?80:56,all=last*15/8,first=all/5,second=all-first-last,days=a?25:30,rainGap=a?9:4,cloudy=(days+rainGap)/3.4,sunny=cloudy*1.2,rain=sunny-rainGap;
+  say(albums?'Третий альбом содержит '+last+' марок. За основу второй доли взяли остаток после первого.':'За '+days+' дней наблюдения солнечных было на 20% больше, чем пасмурных. Дождливых на '+rainGap+' меньше солнечных.');
+  if(b>=1)formula(albums?'(2/3)(4/5)N = '+last:'x + 1,2x + (1,2x − '+rainGap+') = '+days);
+  if(b===2){const rows=albums?[['Первый альбом',first],['Второй',second],['Третий',last]]:[['Пасмурные',cloudy],['Солнечные',sunny],['Дождливые',rain]];show(table(['Группа','Количество'],rows));say(albums?'Изначально '+all+' марок.':'Солнечных '+sunny+' из '+days+', то есть '+(sunny*100/days)+'%.');}
+  stepList(['Отметь целое, с которым сравнивается каждое число.','Сложи три непересекающиеся группы.','Проверь ответ по исходной сумме.']);
+ }
+ else
+ if(n===38&&task.formulaWords){
+  const sample=printedFormulaSample(task.formulaWords,a===1);say(sample.given);if(b>=1)formula(sample.calculation);
+  if(b===2){if(sample.shape)show(sample.shape);show(table(['Величина','Значение'],sample.rows));say('По формуле получаем '+sample.answer+'.');}
+  stepList(['Назови каждую величину и её единицы.','Объясни, что означает каждое действие в формуле.','Проверь своё объяснение на другом числовом примере.']);
+ }else if(n===38&&task.stationGraph){
+  const change=a===1,tracks=stationSchedule(change),shift=change?30:0,mark=[null,690+shift,720+shift,750+shift,780+shift,930+shift][b],stage=state.values[2],sample=stationResults(task.stationGraph,change);
+  say(change?'Новое расписание: старт на полчаса позже, путь до станции вдвое короче.':'Расписание из упражнения. Пешеход идёт из деревни, велосипедист едет со станции.');
+  show(sourceChart('station',tracks,mark));if(mark!==null)say('Вертикальная отметка: '+clockText(mark)+'.');
+  if(stage>=1)say({starts:'Для начала каждого пути найди его первую точку.',meeting:'Отметь, где и как долго линии совпадают.',speeds:'Вычти расстояния в концах отрезка и раздели модуль разности на время в часах.',stops:'Ищи горизонтальные участки каждой линии по отдельности.'}[task.stationGraph]);
+  if(stage===2){show(table(sample.head,sample.rows));say(sample.result);}
+  stepList(['Различи сплошную и штриховую линии.','Проверь время по горизонтали и положение по вертикали.','Сохрани единицы и подпиши участников.']);
+ }
+ else
+ if(n===38&&task.p38Shape){
+  const tag=task.p38Shape,alt=a===1,m=root.PetersonMath,op=m.operation,r=x=>m.answer(x);
+  if(tag==='simplifyA'||tag==='simplifyB'){
+   const first=tag==='simplifyA',x=first?(alt?'-3/2':'-7/3'):(alt?'3/2':'-1/2'),y=first?(alt?4:'3/2'):(alt?'-1/2':'8/7'),value=first?op('multiply',-2,op('multiply',x,y)):op('multiply',2,op('multiply',x,x));
+   say(first?'a = '+x+', b = '+y:'x = '+x+', y = '+y);if(b>=1)formula(first?'2a² − ab − ab + 2b² − 2a² − 2b²':'x² + 3xy − 3xy + y² + x² − y²');
+   if(b===2){show(table(['Коэффициент',first?'При a², ab, b²':'При x², xy, y²'],[['После сбора',first?'0, −2, 0':'2, 0, 0']]));say((first?'−2ab':'2x²')+' = '+r(value)+'.');}
+  }else if(tag==='squareHole'||tag==='oneStep'||tag==='twoSteps'){
+   const s=paperArea(tag,alt,b>0,false);say(s.dimensions+'.');show(s.picture);
+   if(b>=1)formula(s.formulaText);if(b===2)say('Площадь '+s.area+' кв. ед.');
+  }else if(tag==='seriesA'||tag==='seriesB'){
+   const seq=printedSequence(tag,alt);say(alt?'Новый ряд из трёх вычислений.':'Ряд из трёх выражений учебника.');
+   const expression=i=>seq.list[i].steps.map(([operation,value],j)=>[j+1,operation,b>=1?value:'?']);
+   for(let i=0;i<3;i++){if(b>=1)show(table(['Шаг','Действие','Результат'],expression(i)));else{const first=seq.list[i].steps[0];say('Начни ряд '+(i+1)+' с '+first[0]+'.');}}
+   if(b>=1)say('Первые три значения: '+seq.v.join(', ')+'.');if(b===2)say((tag==='seriesA'?'Разность ':'Множитель ')+seq.rule+'. Следующее число '+seq.next+'.');
+  }else{
+   const draw=coordinateKite(alt?1:0,b);say(draw.coords.map((xy,i)=>'ABCD'[i]+'('+xy.join('; ')+')').join(', ')+'.');show(draw.picture);
+   if(b>=1)say('Одна диагональ поднимается на одну клетку при движении вправо на клетку, другая опускается.');
+   if(b===2){say('Пересечение ('+draw.intersection.join('; ')+'). Диагонали перпендикулярны.');show(table(['Проверка','Результат'],[['AB² и AD²','40 и 40'],['CB² и CD²','160 и 160'],['MB² и MD²','32 и 32']]));}
+  }
+  stepList(['Составь решение по исходному условию.','Сравни каждый переход с проверкой.','На новых данных проверь, какое свойство сохранилось.']);
+ }
+ else
+ if(n===38&&task.sizeRule){
+  const v=magnitudesForRule(task.sizeRule,a===1);say('Начальное число '+v.given+'. Применим правило из задания.');
+  if(b>=1)formula(v.expression);if(b===2){show(changeBars(v.given,v.result,['Было','Стало']));say('Результат '+v.result+'. Изменение со знаком '+v.delta+'.');}
+  stepList(['Определи, что означает «на», «в» или знак процента.','Запиши действие с буквой.','Подставь другое исходное число и проверь разницу.']);
+ }else if(n===38&&task.percentBasis){
+  const v=compareBothBases(task.percentBasis,a===1);say('Сравниваем a = '+v.a+' и b = '+v.b+'.');
+  if(b>=1)formula('a/b × 100% и b/a × 100%');
+  if(b===2){show(changeBars(v.a,v.b,['Число a','Число b']));show(table(['Основание','Отношение','Отклонение'],[['b',v.p+'%',v.deltaA+'%'],['a',v.q+'%',v.deltaB+'%']]));say('a составляет '+v.p+'% от b; b составляет '+v.q+'% от a.');say('a '+(v.aLarger?'больше':'меньше')+' b на '+v.deltaA+'%. b '+(v.aLarger?'меньше':'больше')+' a на '+v.deltaB+'%.');}
+  stepList(['Подчеркни число, от которого считаешь проценты.','Для обратного сравнения переставь числитель и знаменатель.','Разность с 100% показывает изменение, а не полное отношение.']);
+ }else if(n===38&&task.reduceStudy){
+  const v=reducedFormExample(task.reduceStudy,a===1),m=root.PetersonMath,after=m.answer(m.operation('divide',...v.small));say(v.given+'. '+v.substitution+'.');
+  if(b>=1)say('Общий ненулевой множитель: '+v.factor+'.');
+  if(b===2){formula(v.given+' = '+v.reduced);show(table(['Проверка','Значение'],[['До сокращения',v.original],['После сокращения',after],['Числитель после',v.small[0]],['Знаменатель после',v.small[1]]]));say('Значения равны: '+v.original+' = '+after+'.');}
+  stepList(['Представь весь числитель и весь знаменатель произведениями.','Раздели оба на один ненулевой множитель.','Подставь допустимые числа до сокращения и после него.']);
+ }else if(n===38&&Number.isInteger(task.squareClaim)){
+  const q=task.squareClaim,m=root.PetersonMath,x=['-2/3','0','3/2'][a],sx=m.operation('multiply',x,x),test=[sx.n>0,sx.n>=0,sx.n<0,sx.n<=0][q];
+  say('Проверим рациональное a = '+x+'.');if(b>=1)formula('a² = ('+x+') × ('+x+') = '+m.answer(sx));
+  if(b===2){show(table(['Проверка','Вывод'],[['У выбранного числа неравенство',test?'выполнено':'не выполнено'],['Утверждение с квантором',['ложно','истинно','ложно','истинно'][q]]]));say(['Для a = 0 строгая положительность нарушена. Отрицание: существует a с a² ≤ 0.','Все квадраты неотрицательны: два множителя имеют одинаковый знак или равны нулю.','Ни один квадрат не бывает отрицательным. Отрицание: для каждого a квадрат неотрицателен.','Существует подходящее число: a = 0, ведь 0² ≤ 0.'][q]);}
+  stepList(['Различай «для каждого» и «существует».','Проверь отдельно a = 0 и любое ненулевое число.','Для общего вывода используй правило знаков, для существования достаточно примера.']);
+ }
+ else
+ if(n===38&&task.mentalSeries){
+  const sample=oneMentalOperation(task.mentalSeries[b],a===1),stage=state.values[2];say('Пример '+(b+1)+'. '+sample.expression+' = ?');
+  if(stage>=1)say(sample.guidance);if(stage===2){show(table(['Проверка','Значение'],[['Первое число',sample.left],['Второе число или показатель',sample.right],['Знак результата',sample.sign],['Результат',sample.value]]));say('Точный ответ: '+sample.value+'.');}
+  stepList(['Оцени знак результата до вычисления.','Сосчитай модуль, затем запиши ответ со знаком.','Проверь тот же приём на новом наборе чисел.']);
+ }
+ else if(n===38&&task.portionRow){
+  const q=task.portionRow,m=root.PetersonMath,op=m.operation,r=x=>m.answer(x),known=op('multiply',q.given,a===1?2:1),whole=q.whole?op('divide',known,q.ratio):known,part=op('multiply',whole,q.ratio);
+  say((q.symbol?'При '+q.symbol+' = '+r(known)+'. ':'')+(q.whole?'Известная часть: ':'Данное целое: ')+r(known)+'. Доля '+q.ratio+'.');
+  if(b>=1)formula(q.whole?'Целое = часть ÷ доля':'Часть = целое × доля');
+  if(b===2){show(changeBars(r(whole),r(part),['Целое','Сравниваемая величина']));show(table(['Что проверяем','Значение'],[['Целое',r(whole)],['Коэффициент',q.ratio],['Часть',r(part)]]));say('Ответ: '+(q.whole?r(whole):r(part))+'.');}
+  stepList(['Реши, известны целое или его часть.','Дробь может быть больше единицы. Сравни результат с целым.','Подставь ответ в связь «часть = целое × доля».']);
+ }
+ else if(n===38&&(task.appliedBalance||task.appliedCompare||task.printedJourney||task.sharedRate)){
+  const sample=task.sharedRate?sharedJourney(task.sharedRate,a===1):task.printedJourney?sourceRoute(task.printedJourney,a===1):task.appliedCompare?comparedAmounts(task.appliedCompare,a===1):modelStory(task.appliedBalance,a===1);say(sample.condition);
+  if(b>=1)formula(sample.equation);if(b===2){show(sample.shape||changeBars(...sample.bar,sample.labels));show(table(['Величина','Значение'],sample.rows));say(sample.result);}
+  stepList(['Определи, к какому исходному числу относится доля.','Запиши, что остаётся тем же или как меняется величина.','Подставь найденное значение и проверь именно запрошенный результат.']);
+ }
+ else
+ if(n===19&&task.ratioRewrite){
+  const data=task.ratioRewrite,m=root.PetersonMath,values=(b?data.after:data.before).map(x=>m.operation('multiply',x,a?2:1));show(quartetFigure(values,b===2?2:0));
+  say(b?'После преобразования.':'До преобразования.');if(b>=1)say(data.law);if(b===2){const products=compareQuartet(values);say('Крайние: '+m.answer(products.outer)+'. Средние: '+m.answer(products.inner)+'.');}
+  stepList(['Отметь крайние и средние члены.','Сопоставь все четыре места слева направо.','Обоснуй равносильность преобразования.']);
+ }
+ else if(n===19&&task.printedRateStory){
+  const info=printedStoryDetails(task.printedRateStory,a,b),mode=state.values.at(-1);say(info.description);
+  if(mode>=1)show(table(['Величина','Значение'],info.rows));if(mode===2)say(info.answer);
+  stepList(['Отдели исходные величины от искомых.','Запиши зависимости до подстановки чисел.','Проверь единицы и ответ в исходной ситуации.']);
+ }
+ else if(n===19&&task.marketDistanceGraph){
+  const apples=task.marketDistanceGraph==='apples',mode=state.values[2],m=root.PetersonMath,times=[1,2,3,4,4.5,6,9,18],x=apples?b:times[b],calc=k=>apples?m.operation('multiply',a,k):m.operation('divide',a,k);
+  const curve=apples?[[0,0],[4,4*a]]:Array.from({length:137},(_,i)=>{const t=1+i/8;return [t,a/t];});show(sourceChart(task.marketDistanceGraph,[curve],x));
+  say(apples?'Масса '+x+' кг, цена '+a+' р./кг.':'Путь '+a+' км, время '+num(x)+' ч.');
+  if(mode>=1)say('Значение: '+m.answer(calc(x))+(apples?' р.':' км/ч.'));
+  if(mode===2){formula(apples?'C = '+a+'m':'v = '+a+'/t, t > 0');show(table(apples?['кг','рубли']:['ч','км/ч'],(apples?[0,1,2,3,4]:times).map(k=>[num(k),m.answer(calc(k))])));}
+  stepList(['Назови постоянную величину.','Отметь точки таблицы в соответствующих единицах.','Сопоставь форму графика с формулой.']);
+ }
+ else if(n===19&&task.composeSourceRatio){
+  const m=root.PetersonMath,vs=[[6,10,3,5],[6,3,10,5],[6,5,10,3]][a],cmp=compareQuartet(vs);show(quartetFigure(vs.map(m.parse),b?2:0));
+  if(b)say('Крайние: '+m.answer(cmp.outer)+'. Средние: '+m.answer(cmp.inner)+'. '+(cmp.same?'Пропорция верна.':'Эта расстановка не подходит.'));
+  stepList(['Используй каждое из четырёх значений один раз.','Сравни произведения по диагоналям.']);
+ }
+ else if(n===19&&task.oilCans){
+  const rem=a-17*b,mode=state.values[2];formula('10a + 17b = '+a+'. Выбрано b = '+b+'.');
+  if(mode>=1)say('Остаток '+rem+' л. '+(rem>=0&&rem%10===0?'Хватит на '+rem/10+' полных малых бидонов.':'Полными 10-литровыми бидонами его не заполнить.'));
+  if(mode===2){const variants=range(0,Math.floor(a/17)).filter(k=>(a-17*k)%10===0).map(k=>[(a-17*k)/10,k,(a-17*k)/10+k]);show(table(['Малых','Больших','Всего'],variants));say('Число подходящих вариантов: '+variants.length+'.');}
+  stepList(['Запиши уравнение общего объёма.','Ограничь число больших бидонов вместимостью.','Для каждого допустимого числа проверь остаток по модулю 10.']);
+ }
+ else
+ if(n===19&&task.sourceFuelGraph){
+  const mode=state.values[2],m=root.PetersonMath,per=m.operation('divide',a,100);show(sourceChart('fuel',[[[0,0],[100,a]]],b));
+  say('За 100 км расходуется '+a+' л. Выбран путь '+b+' км.');
+  if(mode>=1)say('Расход: '+m.answer(m.operation('multiply',per,b))+' л.');if(mode===2){formula('B = '+num(a/100)+'s');show(table(['км','л'],range(1,10).map(k=>[10*k,num(k*a/10)])));}
+  stepList(['Найди пройденный путь на горизонтальной оси.','Поднимись до линии и посмотри на вертикальную ось.','Проверь отношение литров к километрам.']);
+ }
+ else if(n===19&&task.flightGraph){
+  const mode=state.values[2],series=[flightProfile(0,a),flightProfile(1,a)],positions=series.map(p=>flightPosition(p,b));show(sourceChart('flights',series,b));
+  say('Время '+clockText(b)+'. A — сплошная линия, Б — пунктир.');
+  if(mode>=1){show(table(['Самолёт','От Внукова, км','Состояние'],positions.map((p,i)=>[i?'Б':'A',p.range,p.state])));positions.forEach((p,i)=>say((i?'Б':'A')+': '+p.range+' км, '+p.state+'.'));}
+  if(mode===2){series.forEach((points,i)=>show(table([i?'Б: время':'A: время','км'],points.map(([t,v])=>[clockText(t),v]))));}
+  stepList(['Горизонталь обозначает стоянку, наклон означает полёт.','Модуль наклона равен скорости.','Для времени на заданном расстоянии найди все пересечения с горизонталью.']);
+ }
+ else if(n===19&&task.sectionFlow){
+  const mode=state.values[2],m=root.PetersonMath,points=range(20,120).map(x=>[x,a/x]);show(sourceChart('section',[points],b));
+  say('Расход воды '+a+' м³/с. Выбранное сечение '+b+' м².');if(mode>=1)say('Скорость '+m.answer(m.operation('divide',a,b))+' м/с.');if(mode===2)formula('v = '+a+'/P, P > 0.');
+  stepList(['Проверь произведение площади на скорость.','Отметь пары на координатной плоскости.','Соедини точки плавной убывающей кривой для положительной площади.']);
+ }
+ else if(n===19&&task.hobbySurvey){
+  const vals=hobbyFigures.slice(),mode=state.values[2];if(a)vals[5]+=3;show(sourceHobbyFigure(vals,b));say('Выбрано: '+hobbyNames[b]+'.');
+  if(mode>=1)say('Отмечено: '+vals[b]+'.');if(mode===2){show(table(['Занятие','Ответов'],hobbyNames.map((n,i)=>[n,vals[i]])));say('Сумма отметок '+vals.reduce((sum,v)=>sum+v,0)+'.');}
+  stepList(['Сопоставь букву названию занятия.','Считай высоту в голосах.','Отличай количество отметок от числа опрошенных.']);
+ }
+ else if(n===19&&task.legoSurvey){
+  const nums=toyFigures.slice(),mode=state.values[2];if(a){nums[0]--;nums[6]++;}const total=nums.reduce((s,v)=>s+v,0),rate=Math.round(100*nums[b]/total);
+  say(toyNames[b]+': '+nums[b]+' голосов из '+total+'.');if(mode>=1)say('Округлённая доля: '+rate+'%.');if(mode===2){show(toyLineDiagram(nums));show(table(['Серия','Голоса','Доля, %'],nums.map((q,i)=>[toyNames[i],q,Math.round(100*q/total)])));}
+  stepList(['Найди общее число голосов.','Раздели количество выбранной серии на общее и умножь на 100.','Покажи округлённый процент длиной горизонтальной линии.']);
+ }
+ else
+ if(n===19&&Number.isInteger(task.gapDirection)){
+  const type=task.gapDirection,d=changingGap(type,a,b),sign=type===0||type===2?'−':'+',oper=type<2?'+':'−',delta=type===0||type===2?'s₀ − d':'d − s₀';
+  say('Сначала между машинами '+a+' км. Скорости 20 и 10 км/ч. Прошло '+b+' ч.');
+  show(twoCarLanes(d.pos(d.left),d.pos(d.right),d.firstDirection,d.secondDirection,task.hint));
+  if(state.values[2]>=1){formula('d = s₀ '+sign+' (v₁ '+oper+' v₂)t');say('Расстояние сейчас '+d.distance+' км.');}
+  if(state.values[2]===2){formula('t = ('+delta+')/(v₁ '+oper+' v₂)');formula('v₁ = ('+delta+')/t '+(type<2?'−':'+')+' v₂');say('Для восстановления скорости по этим формулам необходимо t > 0.');}
+  stepList(['Определи направление обеих скоростей.','Проверь знак изменения промежутка.','Вырази время и первую скорость из одной связи.']);
+ }
+ else if(n===19&&Number.isInteger(task.quantityFamily)){
+  const tag=task.quantityFamily;
+  if(tag===0){const down=10+a,up=10-a;say('Лодка идёт '+down+' км/ч по течению и '+up+' км/ч против.');
+   if(b>=1)formula('vпо = u + c; vпр = u − c');if(b===2)say('Собственная скорость ('+down+' + '+up+')/2 = 10 км/ч. Течение ('+down+' − '+up+')/2 = '+a+' км/ч.');
+  }else if(tag===1){say('Часть A = '+a+', основание B = 80.');if(b>=1)say('p = 100A/B = '+num(100*a/80)+'%.');if(b===2)say('B = 100A/p = 80. А = pB/100 = '+a+'.');}
+  else{
+   const m=root.PetersonMath,compound=tag===3,rate=m.operation('divide',a,100),rows=[];let value=m.parse(1000);
+   say('Начальное значение 1000, ставка '+a+'%, периодов '+b+'.');
+   for(let k=1;k<=b;k++){const increase=m.operation('multiply',compound?value:1000,rate);value=m.operation('add',value,increase);rows.push([k,m.answer(increase),m.answer(value)]);}
+   if(state.values[2]>=1)show(table(['Период','Прибавка','Итог'],rows));if(state.values[2]===2){say('Итог: '+m.answer(value)+'.');formula(compound?'S₀ = S/(1 + p/100)ⁿ':'S₀ = S/(1 + np/100)');}
+  }
+  stepList(['Определи основание или исходную величину.','Запиши прямую связь.','Проверь обратную формулу на тех же данных.']);
+ }
+ else if(n===19&&Number.isInteger(task.geometryQuantity)){
+  const geo=formulaGeometry(task.geometryQuantity,a);show(geo.diagram);if(b>=1)show(table(['Величина','Значение'],geo.labels));
+  if(b===2){formula(geo.formula);say('Результат: '+geo.result+'.');}
+  stepList(['Назови размеры на схеме.','Различи длину, площадь и объём.','Проверь размерность численного результата.']);
+ }
+ else
+ if(n===19&&task.productUnits){
+  const key=task.productUnits;
+  const data={
+   own:{formula:'C = a × n',units:'(р./шт.) × шт. = р.',condition:'Цена 18 р., предметов '+a+'.',answer:18*a+' р. Обратно: '+(18*a)+' / '+a+' = 18 р./шт.'},
+   books:{formula:'n = 600/a',units:'р. / (р./тетрадь) = тетради',condition:'На тетради есть 600 р., цена одной '+a+' р.',answer:600/a+' тетрадей. Проверь: '+(600/a)+' × '+a+' = 600 р.'},
+   typing:{formula:'t = 240/w',units:'стр. / (стр./ч) = ч',condition:'Рукопись 240 страниц, набор '+a+' стр./ч.',answer:240/a+' ч. Проверь: '+(240/a)+' × '+a+' = 240 стр.'},
+   salt:{formula:'m = (30/100)M',units:'доля × г = г',condition:'В растворе '+a+' г, массовая доля соли 30%.',answer:num(a*.3)+' г соли. На остальное приходится '+num(a*.7)+' г.'},
+   telegram:{formula:'C = 18 + 1,1n',units:'р. + (р./слово) × слов = р.',condition:'Слов '+a+'. Подача стоит 18 р., каждое слово — ещё 1,1 р.',answer:num(18+1.1*a)+' р. Одна подача и '+a+' оплаченных слов.'}
+  }[key];say(data.condition);if(b>=1){formula(data.formula);say(data.units);}if(b===2)say('Ответ: '+data.answer);
+  stepList(['Назови величины и их единицы.','Запиши зависимость, опираясь на смысл предметов, времени или массы.','Проверь результат обратным действием либо по частям суммы.']);
+ }
+ else if(n===19&&task.unitBlanks){
+  const d=task.unitBlanks,idx=b-1,mode=state.values[2],rows=a?freshUnitRows[d.formula]:d.rows;
+  formula(d.formula);show(missingUnitsTable(d,idx,mode===1,a===1));say('Строка '+b+', пропущено: '+d.headers[d.missing[idx]]+'.');
+  if(mode)say('Подходит единица '+rows[idx][d.missing[idx]]+'.');stepList(['Определи, что измеряет столбец.','Сократи единицу времени или количества в произведении.','Проверь оставшуюся размерность.']);
+ }
+ else if(n===19&&task.approachFormula){
+  const t=task.approachFormula,data=approachCase(t,a===1),mode=state.values[2];show(approachDiagram(t,data,b));
+  say(t.unknown==='distance'?'Скорости '+data.v1+' и '+data.v2+' км/ч, время '+data.time+' ч.':t.unknown==='time'?'Промежуток '+data.space+' км, скорости '+data.v1+' и '+data.v2+' км/ч.':'Промежуток '+data.space+' км, время '+data.time+' ч, вторая скорость '+data.v2+' км/ч.');
+  if(mode>=1)say('Скорость сближения: '+(t.approach?'v₁ + v₂':'v₁ − v₂')+' = '+data.relative+' км/ч.');
+  if(mode===2)say('Ответ: '+data.answer+' '+(t.unknown==='distance'?'км':t.unknown==='time'?'ч':'км/ч')+'. Проверка: '+data.relative+' × '+data.time+' = '+data.space+' км.');
+  stepList(['Определи направление обеих стрелок.','Найди, насколько уменьшается промежуток за час.','Используй s = vсбл × t, проверяя единицы.']);
+ }
+ else
+ if(n===19){const y=2*a+(b?3:0);show(table(['x','y','y : x'],range(1,5).map(x=>[x,2*x+(b?3:0),num((2*x+(b?3:0))/x)])));formula('x = '+a+' → y = '+y);say(b?'Прибавка 3 делает отношение y : x непостоянным. Это зависимость, но не прямая пропорциональность.':'Отношение y : x всегда равно 2. Это прямая пропорциональность.');}
  else if(n===20){const y=b?12/a:12*a;show(table(['x','y',b?'x · y':'y : x'],range(1,6).map(x=>[x,num(b?12/x:12*x),12])));formula('x = '+a+'; y = '+num(y));say(b?'Увеличиваем x — y уменьшается во столько же раз. Произведение равно 12.':'Увеличиваем x — y увеличивается во столько же раз. Отношение равно 12.');}
  else if(n===21){const poly=[];for(let x=b?0.5:0;x<=6;x+=0.1){const y=b?a/x:a*x;if(y<=12)poly.push([x,y]);}show(planeFigure({xMin:0,xMax:6,yMin:0,yMax:12,polylines:[poly],points:[{name:'A',x:2,y:b?a/2:2*a}],caption:b?'График обратной пропорциональности при x > 0':'График y = kx при x ≥ 0'}));show(table(['x',1,2,3,6],[[b?'k : x':'kx',... [1,2,3,6].map(x=>b?exactRatio(a,x):a*x)]]));say(b?'Точки обратной пропорциональности не лежат на одной прямой. x = 0 запрещён.':'График прямой пропорциональности лежит на прямой через начало координат.');}
  else if(n===22){show(table(['Масса, кг','Стоимость, р.'],[[2,6],[a,3*a]]));formula(frac(2,a),' = ',frac(6,3*a));stepList(['Цена неизменна: 6 : 2 = 3 р. за килограмм.','Масса и стоимость прямо пропорциональны. Сохраняй одинаковый порядок строк.','Стоимость '+a+' кг: 3 · '+a+' = '+3*a+' р.']);}
