@@ -1232,6 +1232,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
+    },
+    {
+      "trainerId": "makarychev8",
+      "file": "trainers/makarychev8.html",
+      "title": "Макарычев · Алгебра · 8 класс",
+      "group": "Учебники · 7–9 классы",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общие условия, чертёж, введённые ответы, принятые шаги, подсказки и записи."
     }
   ]
 }

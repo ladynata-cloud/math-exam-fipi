@@ -2234,9 +2234,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "64f1e9d53eb1f07aef0d9e04b0861db2357f8e43d9f17ab69918f94194dddbe6",
-      "afterSha256": "877d952d78805979f56f323b947caf9884e799076b35ee68721c3b97eb975397",
-      "placement": "before-head-close"
+      "beforeSha256": "e02c47a1a1c81df04422b538252f34941abdce3c8b1cec8889e970e6bc992747",
+      "afterSha256": "5b85eb01b64be617e7cde2c98a49b084927274cd83a6f0b18d90ed03b64a8eb4",
+      "placement": "before-head-close",
+      "sourceSha": "cf4e1a9305820d894ee901183427dbd1257311a2"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6484,6 +6485,16 @@
       ],
       "bindingScope": "Published Workshop source page with verified textbook routes and final assessments.",
       "boundary": "Preserve the verified edition, Vilenkin and final assessment entries together."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "cf4e1a9305820d894ee901183427dbd1257311a2",
+      "task": "docs/tasks/MAKARYCHEV8_ROOTS_BOARD_RELEASE.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     }
   ],
   "coverageUpdates": [

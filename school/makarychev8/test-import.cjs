@@ -13,7 +13,7 @@ const importedResult = () => ({ value: task.answer, correct: true, independent: 
 function runtime(initial) {
   const elements = {};
   const node = () => ({ innerHTML: '', textContent: '', value: '', hidden: true, querySelectorAll: () => [], setAttribute() {}, removeAttribute() {}, addEventListener() {} });
-  const document = { getElementById: id => elements[id] || (elements[id] = node()), querySelectorAll: () => [], querySelector: () => node(), addEventListener() {} };
+  const document = { body: { dataset: {} }, getElementById: id => elements[id] || (elements[id] = node()), querySelectorAll: () => [], querySelector: () => node(), addEventListener() {} };
   const window = { MakarychevCourse: { lessons, chapters: [], sourceMap: { sections: [] } }, PetersonMath: M, MakarychevCheck: require('./check.js'), addEventListener() {}, scrollTo() {} };
   const ctx = { window, document, localStorage: { getItem: () => JSON.stringify(initial), setItem() {} }, location: { hash: '#progress' }, console, requestAnimationFrame: f => f(), setTimeout, URL, Blob };
   vm.runInNewContext(fs.readFileSync(__dirname + '/app.js', 'utf8'), ctx);
