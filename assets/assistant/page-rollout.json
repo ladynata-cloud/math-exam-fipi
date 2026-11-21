@@ -2245,10 +2245,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "866af2faab06e60296210e2b7eefe726744eac9ca3fe9e6fc0374474876886a0",
-      "afterSha256": "7e29fefb1634fcdfd32a3a6c702017a610cab3e2d8dade8855b819914324eec7",
+      "beforeSha256": "a6e30e58b83c236742a86a46f71a1dd7633737141cca59c222dc6cf29c430d84",
+      "afterSha256": "0d58abfd2e6aa97ff4e9990a5613c929b5280e8bc09619694ea601bba98d4510",
       "placement": "before-head-close",
-      "sourceSha": "5d24a1293f8812d6758f8a95e4fee4d4edf32d25"
+      "sourceSha": "9fffa34b7c4e98ba0169c7f23867cc231e732e7e"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6731,6 +6731,33 @@
         "stereo-course/index.html"
       ],
       "boundary": "Автономная сборка содержит проверенный движок видимости. Для №467 проверены собственная грань, перекрытие другой гранью и повёрнутые модели."
+    },
+    {
+      "previousBaseSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60",
+      "sourceBaseSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520",
+      "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
+      "previousBaseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+      "sourceBaseSha": "f24eff9a5e474470847498d23cf056833ddc200c",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
+      "previousBaseSha": "5d24a1293f8812d6758f8a95e4fee4d4edf32d25",
+      "sourceBaseSha": "9fffa34b7c4e98ba0169c7f23867cc231e732e7e",
+      "task": "docs/tasks/MAKARYCHEV8_696_701.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
