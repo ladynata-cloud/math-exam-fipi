@@ -89,3 +89,4 @@
 .m8-exercise-formula{max-width:100%;overflow-x:auto;padding:8px 1px 12px;margin:4px 0 0;line-height:1.4;overscroll-behavior-inline:contain}
 .m8-exercise-formula math{width:max-content;max-width:none;font-size:1.05em;text-align:left}
 .m8-exercise-formula:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.task-graphs .values-table{width:100%;table-layout:fixed}.task-graphs .values-table td{overflow-wrap:anywhere}

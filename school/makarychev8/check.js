@@ -376,8 +376,11 @@ function setEntries(value){
   const term=token.trim().replace(/[−–—]/g,'-').replace(/^([+-])\s+/,'$1');
   if(!term)continue;
   const pair=/^(?:±|\+\/-)\s*(.*)$/.exec(term);
-  if(!pair){entries.push(term);continue;}
-  const magnitude=M.parse(pair[1]);
+  const rawMagnitude=pair?pair[1]:term;
+  const rational=M.parse(rawMagnitude);
+  if(!rational&&/\d\s+\d/.test(rawMagnitude))return null;
+  if(!pair){entries.push(rational?M.answer(rational):term);continue;}
+  const magnitude=rational;
   if(!magnitude){
    const radical=signedSquare(pair[1]);if(!radical)return null;
    const unsigned=pair[1].trim().replace(/^[+−–—-]/,'');
@@ -886,6 +889,7 @@ function check(user,target){
  if(target.kind==='ordered-coordinates')return Boolean(G.coordinateEvidence(user,target.coordinateSymbols,target.coordinateOrder,target.coordinateBounds)?.valid);
  if(target.kind==='ordered-comparison-sample')return G.admissibleSample(user,target.graph.sourceDomain,2)&&G.inequalityTrial(target.graph,user,true)?.sign===target.requiredSign;
  if(target.kind==='transformed-order')return transformedOrder(user,target);
+ if(target.kind==='bounded-point')return G.withinBounds(user,target.limits);
  if(target.kind==='source-domain-sample')return G.admissibleSample(user,target.sourceDomain,target.probeCount);
  if(target.kind==='inequality-counterexample'){const probe=G.inequalityTrial(target.graph,user,true);return Boolean(probe&&probe.sign!==target.graph.operator);}
  if(target.kind==='unique-system-triple')return Boolean(systemTriple(user)?.nonzero);
@@ -950,7 +954,7 @@ function check(user,target){
   return [[0,1,2,3],[2,3,0,1]].some(order=>order.every((j,i)=>M.equal(u[i],v[j])));
  }
  if(target.kind==='graph'){const a=G?.parse(user),b=G?.parse(String(target.answer));if(!a||!b||a.holes.length!==b.holes.length)return false;const u=user.split(';'),v=String(target.answer).split(';');return M.equal(u[0],v[0])&&M.equal(u[1],v[1])&&(a.holes.length===0||u.slice(2).every(x=>v.slice(2).some(y=>M.equal(x,y))));}
- if(target.kind==='choice')return user===String(target.answer);
+ if(target.kind==='choice')return target.hypothesis===true?target.choices.includes(user):user===String(target.answer);
  if(target.kind==='set')return answers.some(a=>setEqual(user,a));
  if(target.reducedExpression && target.kind==='text')return sameReducedExpression(user,target.answer);
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));

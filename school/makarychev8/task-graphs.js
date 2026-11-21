@@ -836,6 +836,138 @@ function linearTrial(config,raw){
  const holds={'<':delta<0n,'>':delta>0n,'≤':delta<=0n,'≥':delta>=0n}[config.operator];
  return {left:left.label,right:right.label,sign,holds};
 }
+function compareRationals(a,b){
+ return BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);
+}
+function withinBounds(raw,bounds){
+ const values=String(raw??'').split(';').map(v=>M.parse(v));
+ if(values.length!==bounds.length||values.some(v=>!v))return false;
+ return bounds.every(([low,high,closed],i)=>{
+  const a=compareRationals(values[i],M.parse(low)),b=compareRationals(values[i],M.parse(high));
+  return closed?a>=0n&&b<=0n:a>0n&&b<0n;
+ });
+}
+function drawMidsegment(host,mode,top,bottom){
+ const svg=node('svg',{viewBox:'0 0 280 110',role:'img','aria-label':mode==='triangle-mid'?'Треугольник и отрезок между серединами боковых сторон':'Трапеция и отрезок между серединами боковых сторон'});
+ const width=234/Math.max(top,bottom),left=140-bottom*width/2,right=140+bottom*width/2;
+ const a=140-top*width/2,b=140+top*width/2;
+ svg.append(node('polygon',{points:[left+',90',right+',90',b+',12',a+',12'].join(' '),fill:'#edf6f3',stroke:'#275e57','stroke-width':2}));
+ const mid=[(left+a)/2,(right+b)/2];
+ svg.append(node('line',{x1:mid[0],x2:mid[1],y1:51,y2:51,stroke:'#894418','stroke-width':3,'data-midsegment':mode}));
+ mid.forEach(x=>svg.append(node('circle',{cx:x,cy:51,r:4,fill:'#894418'})));
+ host.append(svg);
+}
+function geometryBoundView(host,g,value){
+ host.className='task-graphs quantity-model';
+ const raw=g.partial?.[0],valid=withinBounds(raw,g.bounds);
+ if(raw&&!valid)boundNote(host,'Значение вышло за исходные границы. Круглые скобки исключают концы промежутка.').dataset.boundTrial='outside';
+ if(!raw)boundNote(host,'На первом шаге введи свои исходные значения в указанном порядке.');
+ if(valid){
+  const vars=g.symbols,c=g.coef;
+  const expr=g.operation==='pair'?['+',['*',c[0],vars[0]],['*',c[1],vars[1]]]:['+',[g.operation==='affine'?'*':'/',c[0],vars[0]],c[1]];
+  const trial=sourceFractionTrial({symbols:vars,original:expr,reduced:'0'},raw,true);
+  if(g.mode==='triangle-mid'||g.mode==='trapezoid-mid'){
+   const data=raw.split(';').map(u=>M.parse(u)).map(q=>q.n/q.d);
+   drawMidsegment(host,g.mode,g.mode==='triangle-mid'?0:data[0],data[data.length-1]);
+   boundNote(host,'Коричневый отрезок соединяет середины боковых сторон. Его длина при твоих значениях равна '+trial.original+'.').dataset.boundTrial=trial.original;
+  }else boundNote(host,'Значение выражения при твоей подстановке равно '+trial.original+'. Сопоставь результат с предложенными границами.').dataset.boundTrial=trial.original;
+ }
+ if(g.proposal)intervalNumberLine(host,{mode:'operation',givenRows:[],proposal:g.proposal,points:[]},value);
+}
+function geometryProof(host,g,raw,vals){
+ const nums=vals.map(v=>v.n/v.d),[a,b,c]=nums;
+ const exact=expr=>sourceFractionTrial({symbols:g.symbols,original:expr,reduced:'0'},raw,true).original;
+ const svg=node('svg',{viewBox:'0 0 292 126',role:'img'});
+ if(g.mode==='triangle'){
+  const top=Math.max(a,b,c),A=a/top,B=b/top,C=c/top,x=(A*A+B*B-C*C)/(2*A),y=Math.sqrt(Math.max(0,B*B-x*x));
+  const low=Math.min(0,x),high=Math.max(A,x),scale=Math.min(244/(high-low),96/Math.max(y,1e-30));
+  const px=v=>146+(v-(low+high)/2)*scale;
+  svg.setAttribute('aria-label','Треугольник с тремя заданными сторонами; a — основание');
+  svg.append(node('polygon',{points:px(0)+',105 '+px(A)+',105 '+px(x)+','+(105-y*scale),fill:'#edf6f3',stroke:'#275e57','stroke-width':2}));
+  svg.append(node('text',{x:(px(0)+px(A))/2,y:122,'text-anchor':'middle'},'a'));host.append(svg);
+  const p=['/',['+',['+','a','b'],'c'],'2'];
+  boundNote(host,'Полупериметр '+exact(p)+'. Он больше сторон a, b, c соответственно на '+g.symbols.map(v=>exact(['-',p,v])).join('; ')+'.').dataset.proofComparison='>';return;
+ }
+ if(g.mode==='equal-perimeter'){
+  const s=(a+b)/2,scale=Math.min(114/Math.max(a,s),96/Math.max(b,s));
+  svg.setAttribute('aria-label','Прямоугольник и равнопериметрический квадрат в одном масштабе');
+  [[12,a,b],[160,s,s]].forEach(([x,w,h],i)=>svg.append(node('rect',{x,y:104-h*scale,width:w*scale,height:h*scale,fill:i?'#fff2d9':'#edf6f3',stroke:i?'#894418':'#275e57','stroke-width':2})));
+  host.append(svg);boundNote(host,'Площадь прямоугольника '+exact(['*','a','b'])+', равнопериметрического квадрата '+exact(['^',['/',['+','a','b'],'2'],'2'])+'.').dataset.proofComparison=compareRationals(vals[0],vals[1])===0n?'=':'>';return;
+ }
+ if(g.mode==='largest'){
+  const delta=['/',['*',['-','a','b'],['-','a','c']],'a'],d=['/',['*','b','c'],'a'];
+  boundNote(host,'Четвёртый член d = '+exact(d)+'. Разность (a+d)−(b+c) равна '+exact(delta)+'.').dataset.proofComparison=exact(delta)==='0'?'=':'>';return;
+ }
+ const equal=exact(['-',['*','a',['^','c','2']],'b'])==='0';
+ const fmt=v=>v.toLocaleString('ru-RU',{maximumSignificantDigits:8});
+ boundNote(host,'Слагаемые ac = '+exact(['*','a','c'])+' и b/c = '+exact(['/','b','c'])+'. Их сумма '+exact(['+',['*','a','c'],['/','b','c']])+', удвоенное геометрическое среднее ≈ '+fmt(2*Math.sqrt(a*b))+'. '+(equal?'Слагаемые равны.':'Слагаемые различны, поэтому оценка строгая.')).dataset.proofComparison=equal?'=':'>';
+}
+
+function proofReviewModel(host,g){
+ host.className='task-graphs quantity-model';
+ const raw=g.trial||'',good=admissibleSample(raw,g.domain,g.symbols.length);
+ if(!raw){boundNote(host,'Выбери числа на первом шаге. Для полного доказательства затем обоснуй знак при всех допустимых значениях.');return;}
+ if(!good){boundNote(host,{'triangle-sides':'Все стороны должны быть положительными, каждая меньше суммы двух других.','strict-max':'Нужны положительные числа, причём a строго больше b и c.','weak-max':'Нужны положительные числа, причём a не меньше b и c.',positive:'Все введённые числа должны быть положительными.','root-sum-one':'Нужны три числа с суммой 1; каждое не меньше −1/4.','above-one':'Для этой задачи a должно быть строго больше 1.'}[g.domain]).dataset.proofDomain='invalid';return;}
+ const vals=String(raw).split(';').map(s=>M.parse(s)),nums=vals.map(v=>v.n/v.d),fmt=v=>v.toLocaleString('ru-RU',{maximumSignificantDigits:8});
+ if(['triangle','equal-perimeter','am-gm','largest'].includes(g.mode)){geometryProof(host,g,raw,vals);return;}
+ let left,right,relation,note;
+ if(g.mode==='fixed-radical-а'||g.mode==='fixed-radical-б'){
+  const k=nums[0],first=g.mode==='fixed-radical-а';
+  left=k*(first?Math.sqrt(7)+2*Math.sqrt(5):4*Math.sqrt(6)+2);
+  right=k*(first?2+Math.sqrt(35):2*Math.sqrt(3)+4*Math.sqrt(2));
+  relation=first?'<':'>';note='Твой положительный множитель растягивает обе полосы. Точный знак устанавливает разложение разности, а не округлённые длины.';
+ }else if(g.mode==='four-roots'){
+  const [a,b,c,d]=nums;left=Math.sqrt((a+c)*(b+d));right=Math.sqrt(a*b)+Math.sqrt(c*d);
+  const [p,q,r,s]=vals;const equal=BigInt(p.n)*BigInt(s.n)*BigInt(q.d)*BigInt(r.d)===BigInt(q.n)*BigInt(r.n)*BigInt(p.d)*BigInt(s.d);
+  relation=equal?'=':'>';note=equal?'Здесь ad = bc, квадрат разности корней равен нулю.':'Здесь ad ≠ bc, поэтому квадрат разности корней положителен.';
+ }else if(g.mode==='three-roots'){
+  left=nums.reduce((sum,v)=>sum+Math.sqrt(1+4*v),0);right=5;relation='<';note='По отдельности сравни √(1+4t) с 1+2t. Каждая разность квадратов равна 4t². Все три t одновременно нулём при сумме 1 быть не могут.';
+ }else{
+  const [a]=nums;left=1/Math.sqrt(a);right=2/(Math.sqrt(a+1)+Math.sqrt(a-1));relation='<';note='Сопряжённая сумма положительна. Её квадрат меньше 4a, так как √(a²−1) < a. При близких числах округлённые записи могут совпасть.';
+ }
+ const svg=node('svg',{viewBox:'0 0 310 100',role:'img','aria-label':'Длины отрезков пропорциональны численным значениям сторон при твоей подстановке.'});
+ const top=Math.max(left,right,1e-100);for(const [i,v]of [left,right].entries()){const y=28+i*40,end=23+244*v/top,color=i?'#925323':'#087267';svg.append(node('line',{x1:23,x2:280,y1:y,y2:y,stroke:'#d7dedb'}),node('line',{x1:23,x2:end,y1:y,y2:y,stroke:color,'stroke-width':5}),node('text',{x:23,y:y-7,'font-size':12},i?'Правая сторона':'Левая сторона'),i?node('rect',{x:end-3,y:y-3,width:6,height:6,fill:color}):node('circle',{cx:end,cy:y,r:4,fill:color}));}host.append(svg);
+ const line=document.createElement('p');line.className='small';line.dataset.proofComparison=relation;line.textContent='При твоих значениях левая сторона ≈ '+fmt(left)+', правая ≈ '+fmt(right)+'.';host.append(line);boundNote(host,note);
+}
+
+function systemReviewView(host,g,value){
+ host.className='task-graphs quantity-model';
+ const q=M.parse(g.partial?.[0]),say=(text,key,v)=>{const p=boundNote(host,text);if(key)p.dataset[key]=String(v);};
+ if(g.proposal)intervalNumberLine(host,{mode:'operation',givenRows:[],proposal:g.proposal,points:[]},value);
+ if(!q){say({parameters:'Испытай параметр. Два корня будут отмечены разными знаками.',domains:'Подставь своё число, чтобы отдельно проверить корень и знаменатель.',natural:'Испытай натуральное n и проверь делимость 12.',formula:'Выбери своё положительное число для числовой проверки формулы.',ride:'Испытай положительную скорость в гору. Модель рассчитает времена обоих участков.'}[g.mode]);return;}
+ const n=BigInt(q.n),d=BigInt(q.d),x=q.n/q.d,fmt=v=>v.toLocaleString('ru-RU',{maximumSignificantDigits:8});
+ function fraction(a,b){let c=a<0n?-a:a,e=b;while(e){const t=c%e;c=e;e=t;}a/=c;b/=c;return String(a)+(b===1n?'':'/'+b);}
+ if(g.mode==='parameters'){
+  const cfg=g.settings||(g.which===995?{coefficient:-1,offset:0,radius:2,low:-6,high:6}:{coefficient:3,offset:0,radius:4,low:null,high:0});
+  const mid=BigInt(cfg.coefficient)*n+BigInt(cfg.offset)*d,rad=BigInt(cfg.radius),roots=[mid-rad*d,mid+rad*d];
+  const inside=(cfg.low===null||roots[0]>BigInt(cfg.low)*d)&&roots[1]<BigInt(cfg.high)*d;
+  const svg=node('svg',{viewBox:'0 0 306 110',role:'img','aria-label':'Положение двух корней на оси x и границы условия'}),limit=Math.max(10,Math.abs(cfg.low||0)+4,Math.abs(cfg.high)+4),px=u=>153+Math.max(-limit,Math.min(limit,u))*132/limit;
+  const y=58;svg.append(node('line',{x1:12,x2:294,y1:y,y2:y,stroke:'#536a62'}));const l=cfg.low??-limit,r=cfg.high;
+  svg.append(node('line',{x1:px(l),x2:px(r),y1:y,y2:y,stroke:'#7e5791','stroke-width':4}));
+  for(const bound of [cfg.low,cfg.high].filter(v=>v!==null))svg.append(node('circle',{cx:px(bound),cy:y,r:4,fill:'white',stroke:'#734484','stroke-width':2}),node('text',{x:px(bound),y:82,'font-size':13,'text-anchor':'middle'},String(bound)));
+  roots.forEach((k,i)=>{const u=Number(k)/q.d,h=i?28:41,pos=px(u),color=i?'#8a4010':'#07685d';svg.append(node('line',{x1:pos,x2:pos,y1:h+4,y2:y,stroke:color,'stroke-dasharray':'2 2'}));
+   if(Math.abs(u)>limit)svg.append(node('path',{d:'M'+pos+' '+h+' l'+(u>0?-9:9)+' -4 v8 z',fill:color,'data-parameter-mark':'outside'}));
+   else svg.append(i?node('rect',{x:pos-4,y:h-4,width:8,height:8,fill:color,'data-parameter-mark':'larger'}):node('circle',{cx:pos,cy:h,r:4,fill:color,'data-parameter-mark':'smaller'}));
+  });
+  host.append(svg);say('Круг — меньший корень '+fraction(roots[0],d)+', квадрат — больший '+fraction(roots[1],d)+'. Стрелка обозначает корень за рамкой.','rootPair',inside?'inside':'outside');return;
+ }
+ if(g.mode==='domains'){
+  const raw=g.which===0?12n*d-25n*n:g.which===1?5n*n-11n*d:(3n*n-2n*d)**2n,bottom=g.which===2?d*d:d,valid=g.which===0?raw>=0n:raw>0n;
+  say('Подкоренное выражение равно '+fraction(raw,bottom)+'. '+(raw<0n?'Корня среди действительных чисел нет.':raw===0n&&g.which!==0?'Корень равен нулю и находится в знаменателе.':g.which===0?'Знаменатель равен 6.':'Корень положителен, знаменатель ненулевой.'),'reviewDomain',valid?'yes':'no');return;
+ }
+ if(g.mode==='natural'){
+  if(n<=0n||d!==1n){say('Для опыта выбери натуральное число.');return;}
+  say('При n = '+n+' целая часть выражения 9n + 12 равна '+(9n*n+12n)+'. Слагаемое 12/n равно '+fraction(12n,n)+'.','divisorProbe',12n%n===0n?'yes':'no');return;
+ }
+ if(x<=0){say('Выбери положительное контрольное значение.');return;}
+ if(g.mode==='formula'){
+  const label=M.answer(q);say(g.which===0?'При основании a = 4 и площади S = '+label+' высота h = '+fraction(n,2n*d)+'. Подстановка: ah/2 = '+label+'.':g.which===1?'При m = 4 и s = '+label+' получаем p = '+fraction(n,2n*d)+'. Подстановка: s/p = 2 = 0,5m.':'При a = 2 и s = '+label+' положительное t = √('+label+') ≈ '+fmt(Math.sqrt(x))+'. Подстановка даёт at²/2 = '+label+'.','formulaProbe',g.which);return;
+ }
+ const up=fraction(20n*d,n),flat=fraction(60n*d,n+5n*d),total=fraction(20n*d*(n+5n*d)+60n*d*n,n*(n+5n*d));
+ const table=document.createElement('table');table.className='values-table';for(const cells of [['Участок','км','км/ч','ч'],['Подъём','20',M.answer(q),up],['Равнина','60',fraction(n+5n*d,d),flat]]){const row=table.insertRow();cells.forEach(v=>{row.insertCell().textContent=v;});}host.append(table);say('Общее время '+total+' ч при требуемых 6 ч.','rideTotal',total);
+}
+
+
 function systemTrialView(host,g,value){
  host.className='task-graphs quantity-model';
  const probe=g.fixed??g.partial?.[0],x=M.parse(probe);
@@ -846,7 +978,7 @@ function systemTrialView(host,g,value){
  }else boundNote(host,'На первом шаге укажи своё число. Сравни обе стороны каждой строки при одной подстановке.');
  if(g.rangeRows?.some(Boolean)||g.proposal){
   const lines=g.rangeRows?.some(Boolean)?g.rangeRows.map(r=>r||[]):[];
-  intervalNumberLine(host,{mode:'operation',givenRows:lines,rowLabels:['Твоя первая строка: ','Твоя вторая строка: '],enteredRows:g.rangeRows,proposal:g.proposal,points:x?[x]:[]},value);
+  intervalNumberLine(host,{mode:'operation',givenRows:lines,rowLabels:lines.map((_,i)=>'Твоя строка '+(i+1)+': '),enteredRows:g.rangeRows,proposal:g.proposal,points:x?[x]:[]},value);
   if(lines.length)boundNote(host,'Прямые идут в порядке строк задачи. Последней показана твоя запись общего решения, если она уже введена.');
  }
  if(g.exampleProbes?.length)for(const v of g.exampleProbes){const raw=M.answer(v),bad=g.rows.findIndex(r=>!linearTrial(r,raw).holds);boundNote(host,'Твой пример '+raw+(bad===-1?' выполняет обе строки.':' не выполняет строку '+(bad+1)+'.')).dataset.systemExample=bad===-1?'yes':'no';}
@@ -876,14 +1008,15 @@ function intervalNumberLine(host,g,value){
  const draw=(set,y,color,i)=>{
   line(10,307,y,'#536a62',1.5);
   canvas.append(node('path',{d:'M301 '+(y-4)+' L307 '+y+' L301 '+(y+4),fill:'none',stroke:'#536a62'}));
-  for(const r of set){
+  for(const [partIndex,r] of set.entries()){
    const a=Number.isFinite(r.min)?x(r.min):11,b=Number.isFinite(r.max)?x(r.max):301;
    line(a,b,y,color,4);
    for(const [at,v,open,j]of [[a,r.left,r.leftOpen,0],[b,r.right,r.rightOpen,1]]){
+    const repeatedLabel=j===0&&partIndex>0&&r.min===set[partIndex-1].max;
     if(typeof v==='string'){const dx=j?-6:6;canvas.append(node('path',{d:'M'+(at+dx)+' '+(y-5)+' L'+at+' '+y+' L'+(at+dx)+' '+(y+5),fill:'none',stroke:color,'stroke-width':2,'data-axis-arrow':j?'right':'left'}));continue;}
     canvas.append(node('circle',{cx:at,cy:y,r:4,'stroke-width':2,stroke:color,fill:open?'white':color,'data-axis-end':open?'open':'closed'}));
     // Give adjacent labels different baselines; caption retains every exact value.
-    if(b-a>44||j===0)canvas.append(node('text',{x:at,y:y+(j?17:-8),'text-anchor':'middle','font-size':12},limitWords(v)));
+    if((b-a>44||j===0)&&!repeatedLabel)canvas.append(node('text',{x:at,y:y+(j?17:-8),'text-anchor':'middle','font-size':12},limitWords(v)));
    }
   }
   canvas.append(node('g',{'data-axis-row':i}));
@@ -1109,9 +1242,33 @@ function admissibleSample(raw,domain,count){
   if(xs.length!==2)return false;
   const delta=BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);return domain==='lt-pair'?delta<0n:delta>0n;
  }
+ if(domain==='all-real')return true;
+ if(['triangle-sides','strict-max','weak-max','tied-max'].includes(domain)){
+  if(xs.length!==3||xs.some(v=>v.n<=0))return false;
+  const c=xs[2],ab=compareRationals(a,b),ac=compareRationals(a,c);
+  if(domain==='strict-max')return ab>0n&&ac>0n;
+  if(domain==='weak-max')return ab>=0n&&ac>=0n;
+  if(domain==='tied-max')return ab===0n&&ac>=0n;
+  const den=xs.reduce((v,t)=>v*BigInt(t.d),1n),scaled=xs.map(q=>BigInt(q.n)*(den/BigInt(q.d))),sum=scaled.reduce((s,v)=>s+v,0n);
+  return scaled.every(t=>sum>2n*t);
+ }
+ if(domain==='above-three')return xs.length===1&&BigInt(a.n)>3n*BigInt(a.d);
+ if(domain==='speed-current'||domain==='two-rivers'){
+  const gt=(u,v)=>BigInt(u.n)*BigInt(v.d)>BigInt(v.n)*BigInt(u.d);
+  return domain==='speed-current'?xs.length===2&&b.n>0&&gt(a,b):xs.length===4&&b.n>0&&xs[3].n>0&&gt(a,xs[2])&&gt(xs[2],b);
+ }
+ if(domain==='above-one')return xs.length===1&&a.n>a.d;
+ if(domain==='ride-plan')return xs.length===2&&BigInt(a.n)>2n*BigInt(a.d)&&b.n>0;
+ if(domain==='product-nine')return xs.length===3&&xs.every(v=>v.n>0)&&xs.reduce((p,v)=>p*BigInt(v.n),1n)===9n*xs.reduce((p,v)=>p*BigInt(v.d),1n);
+ if(domain==='root-sum-one'){
+  if(xs.length!==3||xs.some(v=>4n*BigInt(v.n)<-BigInt(v.d)))return false;
+  const den=xs.reduce((p,v)=>p*BigInt(v.d),1n);
+  return xs.reduce((sum,v)=>sum+BigInt(v.n)*(den/BigInt(v.d)),0n)===den;
+ }
  if(domain==='nonnegative')return xs.every(v=>v.n>=0);
  if(xs.some(v=>v.n<=0))return false;
  if(domain==='positive')return true;
+ if(domain==='natural-single')return xs.length===1&&a.d===1;
  if(!b)return false;
  const diff=BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);
  if(domain==='positive-unequal')return diff!==0n;
@@ -1144,9 +1301,14 @@ function inequalityScene(host,config,value){
  host.className='task-graphs quantity-model';
  const input=config.mode==='given'?config.given:config.mode==='pair-example'&&String(value??'').trim()?value:config.mode==='counter'&&String(value??'').trim()&&M.parse(value)?value:config.trial;
  const add=(txt,key,state)=>{const p=document.createElement('p');p.className='small';p.textContent=txt;if(key)p.dataset[key]=state;host.append(p);};
+ if(config.predictionStep!==undefined){
+  if(!config.prediction){add(config.completed?'Доказательство завершено: дольше во второй день. До проверки гипотеза не записана.':'Сначала запиши гипотезу. Можно предположить любой из трёх исходов.','predictionStatus',config.completed?'no-forecast':'pending');return;}
+  const actual='дольше во второй день',message=config.completed?(config.prediction===actual?'Прогноз подтвердился: ':'Исследование изменило твой прогноз: ')+actual+'.':'Твой исходный прогноз: '+config.prediction+'. Теперь проверь времена по формулам.';
+  add(message,'predictionStatus',config.completed?'reviewed':'saved');
+ }
  if(!input){add('На числовой прямой большее значение располагается правее. Подставь число в первом шаге и сравни обе стороны.');return;}
  if(config.sourceDomain&&!admissibleSample(input,config.sourceDomain,config.symbols.length)){
-  const constraints={'lt-pair':'первое число должно быть меньше второго','gt-pair':'первое число должно быть больше второго','natural-gt':'нужны натуральные a > b','natural-lt':'нужны натуральные a < b','positive':'каждая величина должна быть положительна','nonnegative':'нужны неотрицательные величины','positive-unequal':'нужны положительные и разные a и b'};
+  const constraints={'lt-pair':'первое число должно быть меньше второго','gt-pair':'первое число должно быть больше второго','natural-gt':'нужны натуральные a > b','natural-lt':'нужны натуральные a < b','positive':'каждая величина должна быть положительна','nonnegative':'нужны неотрицательные величины','positive-unequal':'нужны положительные и разные a и b','product-nine':'нужны положительные a,b,c с произведением 9','ride-plan':'плановая скорость должна превышать 2, а расстояние быть положительным','above-three':'требуется a>3','above-one':'требуется значение больше 1','all-real':'подставь действительные числа','speed-current':'нужно v>c>0','two-rivers':'нужно x>z>y>0 и s>0'};
   add('Подстановка вне условия: '+constraints[config.sourceDomain]+'.','inequalityDomain','invalid');return;
  }
  if(config.compareSquares)add('На оси показаны квадраты двух неотрицательных сторон.');
@@ -1560,6 +1722,9 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='geometry-bound-review'){geometryBoundView(host,config,value);return;}
+ if(config.type==='source-proof-review'){proofReviewModel(host,config);return;}
+ if(config.type==='source-system-review'){systemReviewView(host,config,value);return;}
  if(config.type==='source-system-rays'){systemTrialView(host,config,value);return;}
  if(config.type==='linear-ray-trial'){linearTrialGraph(host,config,value);return;}
  if(config.type==='source-interval-axis'){intervalNumberLine(host,config,value);return;}
@@ -1645,5 +1810,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

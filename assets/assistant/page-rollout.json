@@ -2250,10 +2250,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "8f56e95a432345669dbb1f22747f71020022b4825d74ce222cb8393fd48b1e01",
-      "afterSha256": "2f2ac9b84432ed88d0fb338ddd3d972de5507861cbe1d8e5d254ad101510c823",
+      "beforeSha256": "35951181a792f1821af24e65a067a88322d9d5db6dd5738f43bfff3d8f0ac923",
+      "afterSha256": "ae15648b2ad865a6161ebc937a47ed0cc171886e8905116b76ef4262875ac442",
       "placement": "before-head-close",
-      "sourceSha": "a6497151af0635726e554d8ec4f3b255d8696da9"
+      "sourceSha": "8e6640f97780fd10eedbdd25edd7d2d1d3f514f1"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",

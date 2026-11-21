@@ -154,6 +154,15 @@ for(const [id,wrong]of [['roots-353-e','1;0'],['roots-288-main','0;0'],['roots-2
  const step=(index,value)=>{const el=rt.d.querySelector('[data-step-input="'+index+'"]');el.value=value;el.dispatchEvent(new rt.w.Event('input',{bubbles:true}));rt.d.querySelector('[data-step-form="'+index+'"]').dispatchEvent(new rt.w.Event('submit',{bubbles:true,cancelable:true}));};
  step(0,'-2');step(1,'1/');let s=rt.record();ok(s.step===1&&s.values[0]==='-2'&&s.values[1]==='1/','unfinished numeric step retains earlier accepted work');ok(s.stepAttempts[1]===undefined&&s.events.filter(e=>e.type==='step').length===1,'unfinished step adds no mathematical history');step(1,'-1');s=rt.record();ok(s.step===2&&s.stepAttempts[1]===1&&s.events.filter(e=>e.type==='step').length===2,'corrected step has one genuine attempt');rt.close();await releaseWindows();
 }
+{
+ const id='roots-454-irrational',bad='√1 01;√102',incorrect='√100;√102';
+ let ui=lessonApp(id);ui.answer(bad);
+ ok(!ui.record().correct&&ui.record().attempts===0&&!ui.record().firstAttempt&&ui.d.body.textContent.includes('Цифры одного числа'),'separated radicand digits need format help, zero attempts');
+ const saved=ui.api.getState();ui.close();ui=lessonApp(id,saved);
+ ok(ui.d.querySelector('#final-answer').value===bad,'incomplete radicand draft survives reload');
+ ui.answer(incorrect);ok(ui.record().attempts===1&&ui.record().firstAttempt.value===incorrect&&ui.d.body.textContent.includes('√100 = 10.'),'rational endpoint receives mathematical explanation');
+ ui.answer('√101;√102');ok(ui.record().correct&&ui.record().attempts===2&&!ui.record().independent,'genuine correction preserves first attempt');ui.close();
+}
 console.log(JSON.stringify({status:'PASS',checks,contracts:['radical notation','required form','arithmetic versus equation roots','zero/domain','absolute value','ordered construction','blank learner graph','root domain and coordinates','hyperbola pole','source figure labels','bounded curve labels','cropped views retain true zero axes','mixed-number graph input','shifted root endpoints','absolute value graphs','excluded zero holes','number line scales','free rational/irrational examples','strict intervals and distinctness','exact equation root classification','arbitrary line examples and tangency','malformed root input preserves first attempt','well-formed mistakes retain history','guided draft and reload']}));
 
 }
