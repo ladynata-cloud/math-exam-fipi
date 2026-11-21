@@ -882,6 +882,19 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'learner reconnects to the same chain');
   await teacherFrame.locator('#answer').fill('99900');await teacherFrame.locator('#answer-form button').click();const endDecrease=await same(teacherFrame,studentFrame,'original million independently reduced to 99900');assert(endDecrease.scene.correct);assert.deepEqual(endDecrease.scene.hintLevels,{});await narrow(student,studentFrame,'chains-and-decrease');
 
+  phase = 'source 5.17, coordinates of both midpoints and rightward comparisons';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-17"]').click();await studentFrame.locator('h1').filter({hasText:'№5.17'}).waitFor();
+  await teacherFrame.locator('#answer').fill('12');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'cell count differs from coordinates')).scene.message,/расстояние в клетках/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=point]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=halves]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('30');await studentFrame.locator('[data-v5-predict] button').click();
+  for(const value of ['48','8','60','30','70']){await studentFrame.locator('#answer').fill(value);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();}
+  await studentFrame.locator('#answer').fill('K');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'lower coordinate chosen')).scene.message,/левее/);
+  await studentFrame.locator('#answer').fill('с');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const marked=await same(studentFrame,teacherFrame,'draft and half-step markings restored');assert.equal(marked.scene.savedInput,'с');assert.equal(marked.scene.model.halves,1);assert.equal(marked.scene.model.point,3);assert.equal(marked.scene.step,5);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both sides restored at the comparison');
+  await teacherFrame.locator('#answer-form button').click();const greater=await same(teacherFrame,studentFrame,'C is to the right of K');assert(greater.scene.correct);assert.deepEqual(greater.scene.hintLevels,{});await narrow(student,studentFrame,'ray-with-half-cells');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');

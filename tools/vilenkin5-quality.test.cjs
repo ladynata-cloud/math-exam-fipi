@@ -141,6 +141,25 @@ function decimalStepInstructions(){
   ok(product.$('label[for=answer]').textContent.includes('до сокращения'));
   equal(product.errors,[]);product.close();
 }
+function printedRayRegression(){
+  const id='v5f-printed-5-17',f=boot(),initial=f.M.generate(id,0);
+  equal(plain([...initial.steps,initial].map(t=>t.answer)),[48,8,60,30,70,'C','D']);
+  equal(f.w.Vilenkin5PrintedRay.read(' с '),'C');equal(f.w.Vilenkin5PrintedRay.read('48'),null);equal(f.w.Vilenkin5PrintedRay.read('CC'),null);
+  const variants=new Set();for(let seed=0;seed<132;seed++){
+    const task=f.M.generate(id,seed),r=task.data.markedRay,coords={O:0,M:5*r.unit};variants.add(task.conditionKey);
+    for(const [index,key] of ['F','K','N','C','D'].entries()){
+      coords[key]=r.unit*r.ticks[key]/2;equal(task.steps[index].answer,coords[key]);
+      for(const halves of [0,1]){const model=f.w.Vilenkin5PrintedRay.explore(task,{point:index,halves});equal(model.answer,coords[key]);ok(model.visual.includes('<svg'));}
+    }
+    ok(coords.K<coords.M&&coords.M<coords.C&&coords.C<coords.F&&coords.F<coords.N&&coords.N<coords.D);
+    for(const target of [task.steps[5],task]){ok(coords[target.answer]>coords[target.wrongLetter]);ok(f.M.accepts(target.answer.toLowerCase(),target));ok(!f.M.accepts(target.wrongLetter,target));}
+  }ok(variants.size>125);f.close();
+  const g=boot('#lesson/'+id);
+  g.submit('12');ok(g.snapshot().scene.message.includes('расстояние в клетках'));g.submit('48');g.click('[data-cmd=next]');
+  for(const value of [8,60,30,70]){g.submit(String(value));g.click('[data-cmd=next]');}
+  g.submit('30');equal(g.snapshot().scene.attempt,0);g.submit('K');ok(g.snapshot().scene.message.includes('левее'));g.submit('с');ok(g.snapshot().scene.correct);ok(!g.snapshot().scene.assisted);g.click('[data-cmd=next]');g.submit('д');ok(g.snapshot().scene.correct);g.close();
+}
+
 function smallChainsRegression(){
   const f=boot(),first='v5f-printed-5-15',second='v5f-printed-5-16';
   const printed=f.M.generate(first,0),million=f.M.generate(second,0),targets=[...printed.steps,printed];
@@ -399,7 +418,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16'));
+  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -1003,7 +1022,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
