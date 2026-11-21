@@ -48,7 +48,8 @@ const groups = {
   heightAndMidpointProofs: {manifests:[require('./height-and-midpoint-proofs.json')],count:3},
   vectorChapterSelfcheck: {manifests:[require('./vector-chapter-selfcheck.json')],count:28},
   additionalDirectedEdgeSums: {manifests:[require('./additional-directed-edge-sums.json')],count:14},
-  vectorSpanAndBarycentres: {manifests:[require('./vector-span-and-barycentres.json')],count:15}
+  vectorSpanAndBarycentres: {manifests:[require('./vector-span-and-barycentres.json')],count:15},
+  vectorChapterSixEnd: {manifests:[require('./vector-chapter-six-end.json')],count:14}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

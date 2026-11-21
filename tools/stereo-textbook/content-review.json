@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T21:48:53Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–626 and the full chapter VI self-check, with 1,084 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T21:59:56Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–636 and the full chapter VI self-check, with 1,098 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1853,6 +1853,29 @@
       ],
       "evidence": "tools/stereo-textbook/vector-span-and-barycentres.json",
       "mathematicalReport": "tools/stereo-textbook/vector-span-and-barycentres.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 158, source problems and answers on 269, vector superposition, independent affine identities and original models.",
+      "reviewedAt": "2026-11-21T21:59:56Z",
+      "scope": "All ten remaining chapter VI problems, every lettered item, four unequal-charge fields and their superposed vector arrows, eight oriented diagonals, affine basis changes, disjoint parallel planes, all centroid identities and the final tetrahedron homothety",
+      "cardIds": [
+        "ex-main-0627-a",
+        "ex-main-0627-b",
+        "ex-main-0627-c",
+        "ex-main-0627-d",
+        "ex-main-0628",
+        "ex-main-0629",
+        "ex-main-0630-a",
+        "ex-main-0630-b",
+        "ex-main-0631",
+        "ex-main-0632",
+        "ex-main-0633",
+        "ex-main-0634",
+        "ex-main-0635",
+        "ex-main-0636"
+      ],
+      "evidence": "tools/stereo-textbook/vector-chapter-six-end.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-chapter-six-end.test.cjs"
     }
   ],
   "cards": [
@@ -6191,6 +6214,62 @@
     {
       "id": "ex-main-0626",
       "sha256": "f4cac46168cba0cd571b65e19fa8e830da640c1d57480c13338d5ce901748b9f"
+    },
+    {
+      "id": "ex-main-0627-a",
+      "sha256": "db5b48f2a037a0d9866ec2ff72ff8a08ac589c6ef54b6e378a02ef966a9dfd17"
+    },
+    {
+      "id": "ex-main-0627-b",
+      "sha256": "b4ebc4205f9342bcf4b469a4dcf9a6c376d03dae6a2bd501fd44f8c14314d71e"
+    },
+    {
+      "id": "ex-main-0627-c",
+      "sha256": "f18a351ad3ded412c982da13998b6fc7ab1a5f73012c90656b199eaf425906c1"
+    },
+    {
+      "id": "ex-main-0627-d",
+      "sha256": "4a3396fbd2144f29aea935d1326d2322181d80158a73165121e290f7437b840e"
+    },
+    {
+      "id": "ex-main-0628",
+      "sha256": "d6b92f40149f546938453076dc771db1835ac3d6925618c186de8a20a3d6ca0d"
+    },
+    {
+      "id": "ex-main-0629",
+      "sha256": "0b78061006b2c060f8fe8e2cbd4c06416030c6bd9e5b043fe7823317460786e9"
+    },
+    {
+      "id": "ex-main-0630-a",
+      "sha256": "af19d99f903a6b5d5edf745e87de7092a9be1d1cb9f4df93604b0848064d7ec8"
+    },
+    {
+      "id": "ex-main-0630-b",
+      "sha256": "58766d127806994eaf5fb5406f536741351dde5dad8779a6818b687bb5bd9e13"
+    },
+    {
+      "id": "ex-main-0631",
+      "sha256": "7321990fa1327d55504968f03756992d4a68e491fc78369f32ca431b097aaf40"
+    },
+    {
+      "id": "ex-main-0632",
+      "sha256": "11c8bac0153862b65ccd64513319977c532f52cba5f8e788a0c745aaa1f835dd"
+    },
+    {
+      "id": "ex-main-0633",
+      "sha256": "78a93682188deaf68dc2648164f9b54f78bd35ecdf70db739e9fb97a1f95fdf9"
+    },
+    {
+      "id": "ex-main-0634",
+      "sha256": "641e722757a29696ecf83a72fa3f46cffd5e16eff1c15d8ab5977a19f8a234c8"
+    },
+    {
+      "id": "ex-main-0635",
+      "sha256": "636289c3f4f88ed9000530a2c212310206a1f599b055bd94fc6a105a4b6c669c"
+    },
+    {
+      "id": "ex-main-0636",
+      "sha256": "bb8406088042c0ad046702dc9e0e6fdf1ddd3a4182989a40cd6e27fb4801485c"
     }
   ]
 }

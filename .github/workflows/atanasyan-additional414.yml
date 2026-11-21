@@ -81,6 +81,7 @@ jobs:
           node tools/stereo-textbook/vector-chapter-selfcheck.test.cjs
           node tools/stereo-textbook/additional-directed-edge-sums.test.cjs
           node tools/stereo-textbook/vector-span-and-barycentres.test.cjs
+          node tools/stereo-textbook/vector-chapter-six-end.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -302,6 +303,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: vectorSpanAndBarycentres
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-span-and-barycentres
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Exercise every chapter VI closing field and centroid task on phone and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorChapterSixEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-chapter-six-end
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -379,5 +385,6 @@ jobs:
             artifacts/vector-chapter-selfcheck/
             artifacts/additional-directed-edge-sums/
             artifacts/vector-span-and-barycentres/
+            artifacts/vector-chapter-six-end/
           retention-days: 14
           if-no-files-found: error
