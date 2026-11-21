@@ -9,9 +9,10 @@ const ROOT = resolve(__dirname, '..');
 const { LESSON_IDS } = require('../ege-profil/circle/board-session.js');
 const clone = value => JSON.parse(JSON.stringify(value));
 
-function fixture({ bridge = true } = {}) {
-  const dom = new JSDOM(readFileSync(resolve(ROOT, 'trainers/ege-profile-circle.html'), 'utf8'), {
-    url: 'https://local.example/trainers/ege-profile-circle.html#home', runScripts: 'outside-only', pretendToBeVisual: true
+function fixture({ bridge = true, edition = false } = {}) {
+  const id=edition?'mordkovich-2013-circle':'ege-profile-circle',file='trainers/'+id+'.html';
+  const dom = new JSDOM(readFileSync(resolve(ROOT, file), 'utf8'), {
+    url: 'https://local.example/'+file+'#home', runScripts: 'outside-only', pretendToBeVisual: true
   });
   const w = dom.window, accesses = { local: 0, session: 0 };
   w.TextEncoder = TextEncoder;
@@ -26,10 +27,10 @@ function fixture({ bridge = true } = {}) {
     if (path === '/trainers/board-bridge.js') continue;
     w.eval(readFileSync(resolve(ROOT, '.' + path), 'utf8'));
   }
-  const api = w.__profileCircleBoard;
+  const api = edition?w.__mordkovich2013CircleBoard:w.__profileCircleBoard;
   assert(api);
   if (bridge) {
-    assert.equal(registration.id, 'ege-profile-circle');
+    assert.equal(registration.id, id);
     assert.equal(registration.parentOrigin, 'https://local.example');
   } else assert.equal(registration, undefined);
   const intoWindow = value => w.JSON.parse(JSON.stringify(value));
@@ -287,4 +288,35 @@ test('ordinary Circle keeps all lessons and its original personal state format',
   const restored = State.create(global.MordLessons, storage);
   assert.equal(restored.data.sessions[task.id + ':independent'].draft.answer, 'personal draft');
   assert(memory.has(State.KEY));
+});
+
+test('the 2013 edition authorizes all 289 printed parts while keeping the legacy Circle selection restricted', async () => {
+  const f=fixture({edition:true});
+  try{
+    const all=f.w.MordLessons.filter(lesson=>lesson.chapter), exercises=all.flatMap(l=>l.tasks), numbers=[...new Set(exercises.map(t=>t.book))];
+    assert.equal(exercises.length,289);
+    assert.equal(numbers.length,75);
+    const initial=f.state();
+    assert.deepEqual(initial.progress.records,{});
+    for(const n of numbers)assert(f.valid({...initial,route:'#number/'+n}));
+    const old=fixture();
+    try{assert(!old.valid({...old.state(),route:'#number/4.1'}));assert(!old.valid({...old.state(),route:'#number/6.41'}));}
+    finally{old.dom.window.close();}
+    for(const task of exercises){
+      await f.navigate('#task/'+task.id+'/independent');
+      const before=f.state();
+      assert(f.valid(before),task.id+' draft');
+      assert(!before.progress.records[task.id]);
+      f.answer(task.fields);
+      const accepted=f.state();assert(f.valid(accepted),task.id+' answered');
+      f.w.document.querySelector('#next').click();
+      if(['4.1','5.12','6.36','6.41'].includes(task.book))f.roundtrip(task.id+' checked result');
+    }
+    const completed=f.state();
+    assert.equal(Object.keys(completed.progress.records).length,289);
+    assert(Object.keys(completed.progress.sessions).length<=16);
+    assert(new TextEncoder().encode(JSON.stringify(completed.progress)).length<=48*1024);
+    assert(f.valid(completed));
+    assert.deepEqual(f.accesses,{local:0,session:0});
+  }finally{f.dom.window.close();}
 });

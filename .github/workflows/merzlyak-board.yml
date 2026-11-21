@@ -1,7 +1,7 @@
 name: Merzlyak cabinet and shared board
 on:
   pull_request:
-    paths: ['learning/**', 'stereo-course/merzlyak-10-base/**', 'trainers/merzlyak-10-base.html', 'trainers/merzlyak9-2014/**', 'trainers/makarychev9-2017/**', 'trainers/makarychev7-2014/**', 'school/makarychev7-2014-book.js', 'tools/makarychev7-2014.test.cjs', 'school/makarychev9-2017-book.js', 'tools/makarychev9-2017.test.cjs', 'trainers/tyurin-statistics/**', 'school/verified-book-routes.js', 'school/alimov10-11/**', 'trainers/alimov10-11.html', 'trainers/alimov-2012/**', 'trainers/mordkovich-2013/**', 'tools/mordkovich-2013.test.cjs', 'tools/alimov-2012.test.cjs', 'tools/alimov-2012-display.cjs', 'tools/alimov-workshop.board.cjs', 'tools/merzlyak9-2014.test.cjs', 'tools/tyurin-statistics.board.browser.cjs', 'trainers/board-*.js', 'trainers/board-*.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/merzlyak-*', '.github/workflows/merzlyak-board.yml']
+    paths: ['learning/**', 'stereo-course/merzlyak-10-base/**', 'trainers/merzlyak-10-base.html', 'trainers/merzlyak9-2014/**', 'trainers/makarychev9-2017/**', 'trainers/makarychev7-2014/**', 'school/makarychev7-2014-book.js', 'tools/makarychev7-2014.test.cjs', 'school/makarychev9-2017-book.js', 'tools/makarychev9-2017.test.cjs', 'trainers/tyurin-statistics/**', 'school/verified-book-routes.js', 'school/alimov10-11/**', 'trainers/alimov10-11.html', 'trainers/alimov-2012/**', 'trainers/mordkovich-2013/**', 'trainers/mordkovich-2013-circle.html', 'ege-profil/circle/**', 'tools/mordkovich-2013-circle.board.cjs', 'tools/profile-circle-board.test.cjs', 'tools/mordkovich-2013.test.cjs', 'tools/alimov-2012.test.cjs', 'tools/alimov-2012-display.cjs', 'tools/alimov-workshop.board.cjs', 'tools/merzlyak9-2014.test.cjs', 'tools/tyurin-statistics.board.browser.cjs', 'trainers/board-*.js', 'trainers/board-*.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/merzlyak-*', '.github/workflows/merzlyak-board.yml']
 permissions:
   contents: read
 concurrency:
@@ -55,6 +55,8 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --alimov-2012
           node tools/mordkovich-2013.test.cjs
           node tools/tyurin-statistics.board.browser.cjs --mordkovich-2013 --printed-identity --circle-flat
+          node --test tools/profile-circle-board.test.cjs
+          node tools/tyurin-statistics.board.browser.cjs --mordkovich-circle-suite
       - name: Assigned cabinet program opens a shared teacher and pupil room
         run: node tools/merzlyak-program-room.browser.cjs
       - name: Preserve existing registry arrival and role boundaries

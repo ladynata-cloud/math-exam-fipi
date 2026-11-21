@@ -1358,6 +1358,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
+    },
+    {
+      "trainerId": "mordkovich-2013-circle",
+      "file": "trainers/mordkovich-2013-circle.html",
+      "title": "Мордкович · 10–11 · 2013 · окружность и тригонометрия · 75 номеров",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Все 75 печатных номеров, 289 подпунктов §§4–6 и 6 отдельных подготовительных задач. Совместный черновик изолирован от личной практики."
     }
   ]
 }

@@ -365,7 +365,7 @@
     'Первообразная','Определённый интеграл','Статистическая обработка данных','Простейшие вероятностные задачи','Сочетания и размещения','Формула бинома Ньютона','Случайные события и их вероятности','Равносильность уравнений','Общие методы решения уравнений','Решение неравенств с одной переменной','Уравнения и неравенства с двумя переменными','Системы уравнений','Задачи с параметрами'
   ];
   const circle='/ege-profil/circle/index.html#number/';
-  const jointCircle='/trainers/ege-profile-circle.html#number/';
+  const jointCircle='/trainers/mordkovich-2013-circle.html#number/';
   const identity='/trainers/mordkovich-2013/index.html#lesson/21-';
   const atBook='Самостоятельного разбора по номерам этого параграфа пока нет.';
   mord2013.verifiedSource=mord2013.source.source_url;
@@ -383,7 +383,7 @@
     if(section>=4&&section<=6){
       const span=section===4?20:section===5?14:41;
       Object.assign(row,{coverage:'module',bookOnly:false,externalPath:circle+section+'.1',focus:'Разборы каждого номера от '+section+'.1 до '+section+'.'+span+'.'});
-      if(section!==4)row.boardPath=jointCircle+section+'.1';
+      row.boardPath=jointCircle+section+'.1';
     }else if(section===7)Object.assign(row,{coverage:'module',bookOnly:false,externalPath:identity+'7-1a',boardPath:identity+'7-1a',focus:'Все №7.1–7.20: тождества, допустимые углы, знаки функций, достижимые границы и графики.'});
     return row;
   });
@@ -393,13 +393,12 @@
     6:[[2,'Значения на осях'],[5,'Значения в особых точках'],[9,'Вычисление выражений'],[12,'Тождества и область определения'],[14,'Аргументы и квадраты'],[15,'Наименьшее и наибольшее значения'],[18,'Уравнения'],[19,'Где дробь не определена'],[26,'Знак числа или выражения'],[29,'Периодичность и тождества'],[32,'Уравнения с тригонометрическими функциями'],[33,'Область определения корня'],[38,'Сравнение значений'],[41,'Неравенства на окружности']]
   };
   const exercisePages={4:[[4,10],[16,11],[20,12]],5:[[5,12],[14,13]],6:[[3,13],[10,14],[17,15],[27,16],[35,17],[41,18]]};
-  const boardNumbers=new Set(['5.1','6.1','6.2','6.6','6.7','6.8','6.9','6.10','6.11','6.12','6.16','6.17','6.18']);
   mord2013.exercises=[];
   for(const section of [4,5,6]){
     const pages=exercisePages[section], end=pages[pages.length-1][0];
     for(let n=1;n<=end;n++){
       const printed=section+'.'+n,page=pages.find(([last])=>n<=last)[1],title=sectionLabels[section].find(([last])=>n<=last)[1];
-      mord2013.exercises.push({printed,page,title,path:circle+printed,boardPath:boardNumbers.has(printed)?jointCircle+printed:null});
+      mord2013.exercises.push({printed,page,title,path:circle+printed,boardPath:jointCircle+printed});
     }
   }
   const identityTitles=['Остаток после квадрата синуса','Вычесть целое из квадрата косинуса','Остаток после квадрата косинуса','Вычесть целое из квадрата синуса','Произведение скобок с синусом','Два одинаковых квадрата','Произведение скобок с косинусом','Выделить сумму квадратов'];
