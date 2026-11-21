@@ -2242,10 +2242,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "0d1077d191f401a11be61f27808d051d995bf5fe89261c457ec78f0c437fb27a",
-      "afterSha256": "79679584bbc8054221feee2a5de9ae222cd373ec3a55a44e3544df1ca884bc72",
+      "beforeSha256": "42a19a7e9ffacf60fee4f37fd5a931b5cf615cb148051975fd1152e6645803b1",
+      "afterSha256": "f4d15bd1c0c1a39a615c80a3f15e1845fe071b28b8123ff241030c264436f2fd",
       "placement": "before-head-close",
-      "sourceSha": "e71d6a23654aefee32ad74eee8a377337a56c3c1"
+      "sourceSha": "81dd1b8f78d1043df5e4cae07da27aacf403815d"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6692,6 +6692,15 @@
     {
       "previousBaseSha": "adcd6cfa74d06cf43243b322d05a2f6c284969ad",
       "sourceBaseSha": "e71d6a23654aefee32ad74eee8a377337a56c3c1",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Формула в условиях снова видна в браузере, автономном HTML и на доске. В №250 отображаются обе части тождества Эйлера. Графические задания сохранили предметный рисунок и указание номера печатной страницы."
+    },
+    {
+      "previousBaseSha": "e71d6a23654aefee32ad74eee8a377337a56c3c1",
+      "sourceBaseSha": "81dd1b8f78d1043df5e4cae07da27aacf403815d",
       "task": "docs/tasks/MAKARYCHEV8_231_267.md",
       "changedPaths": [
         "school/makarychev8/index.html"
