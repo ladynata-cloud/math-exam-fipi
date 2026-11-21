@@ -49,7 +49,7 @@ async function healthy(url, child, logs) {
 }
 
 const catalogue=process.argv.includes('--makarychev7-2014') ? {
-  directory:'makarychev7-2014',entries:[[95,46,2]],search:'makarychev7-2014',match:'среднее, мода и медиана',lesson:'95-10',chart:'svg[aria-label*="Средние места"]',storage:'math:makarychev7-2014:v1:'
+  directory:'makarychev7-2014',entries:[[95,46,5]],search:'makarychev7-2014',match:'выражения и статистика',lesson:'95-10',chart:'svg[aria-label*="Средние места"]',storage:'math:makarychev7-2014:v1:'
 } : process.argv.includes('--makarychev9-2017')?{
   directory:'makarychev9-2017',entries:[[50,36,36]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
 }:process.argv.includes('--merzlyak9-2014')?{

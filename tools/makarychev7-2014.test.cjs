@@ -13,7 +13,7 @@ function open(point, saved) {
   const {window:w}=dom;
   w.Math.random=()=>0;
   if(saved) w.localStorage.setItem(key,saved);
-  for(const asset of ['../tyurin-statistics/content.js','statistics.js','../tyurin-statistics/app.js']) w.eval(read(path.join(folder,asset)));
+  for(const asset of ['../tyurin-statistics/content.js','edition.js','expressions.js','statistics.js','../tyurin-statistics/app.js']) w.eval(read(path.join(folder,asset)));
   return {dom,w,doc:w.document,id,key};
 }
 const book={id:'source-95',source:{source_url:'https://my-uchebnik.ru/book/algebra/1/algebra-00000074.htm'}};
@@ -26,30 +26,49 @@ const pages=[5,8,12,17,20,25,28,32,36,42,46,55,59,62,69,75,84,93,99,103,108,110,
 assert.deepEqual(Array.from(book.mapping,row=>row.page),pages);
 for(const [i,row] of book.mapping.entries()){
   assert.equal(row.section,i+1);
-  if(row.boardPath){assert.ok([9,10].includes(row.section));assert.equal(row.boardPath,row.externalPath);continue;}
+  if(row.boardPath){assert.ok([1,2,3,9,10].includes(row.section));assert.equal(row.boardPath,row.externalPath);continue;}
   const m=/^\/school\/makarychev7\/index.html#lesson\/(p\d\d)\/(\d+)$/.exec(row.externalPath);
   assert.ok(m&&byId.get(m[1])?.tasks[Number(m[2])]?.steps.length);
 }
-assert.equal(book.mapping.filter(r=>r.boardPath).length,2);
+assert.equal(book.mapping.filter(r=>r.boardPath).length,5);
 mapDom.window.close();
-for(const point of [9,10]){
+for(const point of [1,2,3,9,10]){
   const view=open(point),{w,doc,id,key}=view, lesson=w.MathExamTopicPractice.lessons.get(id);
-  assert.equal(doc.querySelector('#source').href.split('#')[1],point===9?'page=36':'page=42');
+  assert.equal(doc.querySelector('#source').href.split('#')[1],'page='+pages[point-1]);
   assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),'/trainers/makarychev7-2014/index.html#lesson/'+id);
   const initial=JSON.parse(w.localStorage.getItem(key));assert.deepEqual(initial.results,[]);
   const variants=new Set();
   for(let n=1;n<=11;n++){
     const data=lesson.make(n);
-    const values=Array.from(data.rows,r=>r[1]);
-    variants.add(values.join(','));
-    const sorted=[...values].sort((a,b)=>a-b);
-    const sum=values.reduce((total,v)=>total+v,0);
-    const count=v=>values.filter(x=>x===v).length;
-    const mode=sorted.find(v=>count(v)===3);
-    const median=(sorted[2]+sorted[3])/2;
-    const expected=point===9?[sum/values.length,sorted.at(-1)-sorted[0],mode]:[
-      values.slice(0,5).sort((a,b)=>a-b)[2],median,median
-    ];
+    const rows=Array.from(data.rows,row=>Array.from(row));
+    const values=rows.map(row=>row[1]);
+    variants.add(JSON.stringify(rows));
+    function expectedAnswers(){
+      if(point===1){
+        const [boxes,perBox,free]=values;
+        const packed=Array.from({length:boxes},()=>perBox).reduce((a,b)=>a+b,0);
+        return [packed,packed+free,packed+boxes*free];
+      }
+      if(point===2){
+        const [sheets,totalPlaces,closed]=values,open=totalPlaces-closed;
+        assert.ok(open>0 && sheets%open===0);
+        return [open,sheets/open,totalPlaces];
+      }
+      if(point===3){
+        const [a,b]=rows.map(row=>row[2]/row[1]);
+        assert.ok(rows[0][2]>rows[1][2] && a<b,'Comparing totals reverses the per-spool comparison');
+        return [a,b,a-b];
+      }
+      const sorted=[...values].sort((a,b)=>a-b);
+      if(point===9){
+        const sum=values.reduce((total,v)=>total+v,0);
+        const mode=sorted.find(v=>values.filter(x=>x===v).length===3);
+        return [sum/values.length,sorted.at(-1)-sorted[0],mode];
+      }
+      const median=(sorted[2]+sorted[3])/2;
+      return [values.slice(0,5).sort((a,b)=>a-b)[2],median,median];
+    }
+    const expected=expectedAnswers();
     assert.deepEqual(Array.from(data.questions,q=>q.answer),expected);
     for(const q of data.questions){for(const [wrong,explanation] of q.mistakes){assert.notEqual(wrong,q.answer);assert.ok(explanation.length>20);}}
   }
@@ -72,4 +91,4 @@ for(const point of [9,10]){
   resumed.doc.querySelector('[data-action="again"]').click();assert.notEqual(JSON.parse(resumed.w.localStorage.getItem(key)).variant,get().variant);
   resumed.dom.window.close();view.dom.window.close();
 }
-console.log('46 printed points, 44 specific course tasks, two interactive routes, 22 independent statistical samples, explicit help, correction, fresh attempts, restoration.');
+console.log('46 printed points, 41 specific course tasks, five interactive routes, 55 independently verified samples, explicit help, correction, fresh attempts, restoration.');
