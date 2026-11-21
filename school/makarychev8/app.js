@@ -83,6 +83,7 @@ function formatProblem(value,q){
   const empty=/^(нет|неткорней|корнейнет|пусто|∅|\{\})$/;
   const norm=window.MakarychevCheck.normalize(text);
   if(empty.test(norm))return '';
+  if(!window.MakarychevCheck.setEntries(text))return 'Уточни запись. Цифры одного числа пишутся подряд. Между целой и дробной частями смешанного числа оставь пробел, между ответами поставь точку с запятой.';
   const expected=String(q.answer).replace(/[{}]/g,'').split(';');
   if(empty.test(window.MakarychevCheck.normalize(q.answer))||expected.every(v=>M.parse(v))){const parts=window.MakarychevCheck.setEntries(text);if(!parts||parts.some(v=>!M.parse(v)))return message;}
  }
@@ -94,6 +95,11 @@ function feedbackFor(value,q){
   return 'Здесь требуется одно число. Ты указал два противоположных значения. Проверь каждое из них по условию.';
  }
  if(q.answerFormat&&M.equal(value,q.answer))return 'Значение верное. '+inputNote(q);
+ if(q.id==='roots-454-irrational'){
+  const entries=window.MakarychevCheck.setEntries(value)||[];
+  if(entries.some(v=>window.MakarychevCheck.normalize(v)==='√100'||M.equal(v,'10')))return '√100 = 10. Это рациональное число на нижней границе, а оба примера должны лежать строго внутри (10; 10,1).';
+  return 'Проверь каждое подкоренное число n: нужно 100 < n < 102,01. Выбери два разных натуральных n, которые не являются полными квадратами.';
+ }
  if(q.kind==='set'&&active?.lesson?.order===12){
   const submitted=window.MakarychevCheck.setEntries(value),expected=window.MakarychevCheck.setEntries(q.answer);
   if(submitted?.length===1&&expected?.length===2&&expected.some(root=>M.equal(root,submitted[0])))return 'Это число подходит. Найди ещё одно значение x, которое тоже удовлетворяет уравнению, и запиши оба.';
