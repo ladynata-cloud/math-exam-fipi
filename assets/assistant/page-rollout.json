@@ -6625,6 +6625,14 @@
         "trainers/tyurin-statistics/index.html"
       ],
       "reason": "New canonical practice entry discovered from the verified edition cards and included in the navigator."
+    },
+    {
+      "sourceBaseSha": "2d344c04e318527b2bc8b6636d7b4ffddf941edd",
+      "task": "docs/tasks/MERZLYAK9_2014_20261121.md",
+      "addedPages": [
+        "trainers/merzlyak9-2014/index.html"
+      ],
+      "reason": "New canonical interactive entry for all 26 verified textbook sections."
     }
   ]
 }
