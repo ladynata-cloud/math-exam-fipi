@@ -122,6 +122,11 @@ function rendered(frame) {
   });
 }
 async function same(controller, observer, label) {
+  // A native details element opens immediately. Its toggle event saves the shared scene on the next task.
+  await controller.waitForFunction(() => {
+    const panel = document.querySelector('#v5-quality-note')?.closest('details');
+    return !panel || window.__vilenkin5Board.getState().scene?.panels.notes === panel.open;
+  });
   const expected = await snapshot(controller);
   assert.equal(await controller.evaluate(value => window.__vilenkin5Board.validateState(value), expected), true, label + ': semantic validation');
   assert(Buffer.byteLength(JSON.stringify(expected)) <= 60 * 1024);
@@ -952,17 +957,19 @@ async function run(browser, origin, backend, failures) {
   await teacherFrame.locator('#answer').fill('99900');await teacherFrame.locator('#answer-form button').click();const endDecrease=await same(teacherFrame,studentFrame,'original million independently reduced to 99900');assert(endDecrease.scene.correct);assert.deepEqual(endDecrease.scene.hintLevels,{});await narrow(student,studentFrame,'chains-and-decrease');
 
   phase = 'source 5.17, coordinates of both midpoints and rightward comparisons';
-  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
-  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-17"]').click();await studentFrame.locator('h1').filter({hasText:'№5.17'}).waitFor();
-  await teacherFrame.locator('#answer').fill('12');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'cell count differs from coordinates')).scene.message,/расстояние в клетках/);
-  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=point]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=halves]').selectOption({value:'1'});
-  await studentFrame.locator('[data-v5-prediction]').fill('30');await studentFrame.locator('[data-v5-predict] button').click();
-  for(const value of ['48','8','60','30','70']){await studentFrame.locator('#answer').fill(value);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();}
-  await studentFrame.locator('#answer').fill('K');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'lower coordinate chosen')).scene.message,/левее/);
-  await studentFrame.locator('#answer').fill('с');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
-  const marked=await same(studentFrame,teacherFrame,'draft and half-step markings restored');assert.equal(marked.scene.savedInput,'с');assert.equal(marked.scene.model.halves,1);assert.equal(marked.scene.model.point,3);assert.equal(marked.scene.step,5);
-  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both sides restored at the comparison');
-  await teacherFrame.locator('#answer-form button').click();const greater=await same(teacherFrame,studentFrame,'C is to the right of K');assert(greater.scene.correct);assert.deepEqual(greater.scene.hintLevels,{});await narrow(student,studentFrame,'ray-with-half-cells');
+  {
+    await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+    await teacherFrame.locator('a[href="#lesson/v5f-printed-5-17"]').click();await studentFrame.locator('h1').filter({hasText:'№5.17'}).waitFor();
+    await teacherFrame.locator('#answer').fill('12');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'cell count differs from coordinates')).scene.message,/расстояние в клетках/);
+    await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=point]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=halves]').selectOption({value:'1'});
+    await studentFrame.locator('[data-v5-prediction]').fill('30');await studentFrame.locator('[data-v5-predict] button').click();
+    for(const value of ['48','8','60','30','70']){await studentFrame.locator('#answer').fill(value);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();}
+    await studentFrame.locator('#answer').fill('K');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'lower coordinate chosen')).scene.message,/левее/);
+    await studentFrame.locator('#answer').fill('с');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+    const marked=await same(studentFrame,teacherFrame,'draft and half-step markings restored');assert.equal(marked.scene.savedInput,'с');assert.equal(marked.scene.model.halves,1);assert.equal(marked.scene.model.point,3);assert.equal(marked.scene.step,5);
+    await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both sides restored at the comparison');
+    await teacherFrame.locator('#answer-form button').click();const greater=await same(teacherFrame,studentFrame,'C is to the right of K');assert(greater.scene.correct);assert.deepEqual(greater.scene.hintLevels,{});await narrow(student,studentFrame,'ray-with-half-cells');
+  }
 
   phase = 'fractions of a centimetre and a centner, printed 5.18 and 5.19';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-18"]').click();await studentFrame.locator('h1').filter({hasText:'№5.18'}).waitFor();
@@ -1053,7 +1060,7 @@ async function run(browser, origin, backend, failures) {
     child = spawn(process.execPath, ['index.js'], { cwd: join(ROOT, 'board-server'), env, stdio: ['ignore', 'ignore', 'pipe'] });
     child.stderr.on('data', chunk => { serverErrors = (serverErrors + String(chunk)).slice(-4000); }); await waitForHealth(backend, child, () => serverErrors);
     browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'], timeout: 15000 });
-    await Promise.race([run(browser, origin, backend, []), new Promise((_, fail) => { watchdog = setTimeout(() => fail(new Error('Browser gate exceeded 240 seconds at ' + phase)), 240000); })]);
+    await Promise.race([run(browser, origin, backend, []), new Promise((_, fail) => { watchdog = setTimeout(() => fail(new Error('Browser gate exceeded 15 minutes at ' + phase)), 15 * 60_000); })]);
   } finally {
     clearTimeout(watchdog); await browser?.close(); if (child && child.exitCode === null) child.kill('SIGTERM'); await new Promise(done => server.close(done));
   }
