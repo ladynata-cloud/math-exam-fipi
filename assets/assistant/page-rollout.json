@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "05c2c4c6d11834216f7c766a8d5e593bfdd1888407f0bd330b3fd9af7b2e4da3",
-      "afterSha256": "e24bd38b29d82e12ebf8fe8540c6a6640ba11f82f2b89e4563d53d3b03b9a922",
+      "beforeSha256": "559fbff9cfe4bfe30ed4a156d998eaad6e4959061aeed96529af9fc8cc71a912",
+      "afterSha256": "0ee2c156e028315b4bd9e987422025dcb75c749e119fb6abc5e9c7e0e8b0b041",
       "placement": "before-head-close",
-      "sourceSha": "8ccf2845f330c1c25677f5aec8eef1aba728a144"
+      "sourceSha": "6d9f6bfa0d79d2ac8719f4a82a1096467dab5841"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6666,6 +6666,15 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8ccf2845f330c1c25677f5aec8eef1aba728a144",
+      "sourceBaseSha": "6d9f6bfa0d79d2ac8719f4a82a1096467dab5841",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в оба тома Виленкина и точные маршруты десяти изданий Школьной мастерской."
     }
   ],
   "coverageUpdates": [
