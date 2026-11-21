@@ -72,8 +72,8 @@
     function validRoute(hash) {
       if (['#home', '#skills', '#progress', '#diagnostic'].includes(hash)) return true;
       if (typeof hash !== 'string') return false;
-      let match = matchExact(/^#lesson\/(p\d{2})(?:\/(0|[1-9]\d?))?$/, hash);
-      if (match) return known.has(match[1]) && Number(match[2] || 0) < known.get(match[1]).tasks.length;
+      let match = matchExact(/^#lesson\/(p\d{2})(?:\/(0|[1-9]\d*))?$/, hash);
+      if (match) return known.has(match[1]) && integer(Number(match[2] || 0), 0, known.get(match[1]).tasks.length - 1);
       match = matchExact(/^#(?:practice|check)\/([a-z-]+)\/([123])$/, hash);
       return !!match && skills.has(match[1]);
     }

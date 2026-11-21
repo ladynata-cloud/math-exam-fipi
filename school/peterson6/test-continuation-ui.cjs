@@ -303,12 +303,12 @@ test('opening printed rules use directed distances, common cells and every signe
  } finally {f.close();}
 });
 
-test('read both opening sections in print order while old links retain their task', () => {
+test('read both opening sections in print order while old links retain their task', async () => {
  const f=fixture(null,null,true);
  try {
   const parts=[
    {part:2,id:'p15',first:32,subparts:['аб','','абвгдежз','','абвг','абвгдежз','абвг','абвгде','12','123','абвгде','1234','1234','12','12345','1234','123456','','абвг','12','абвгдежз','','','аб','','12','']},
-   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб','абв','аб','аб','абвг','','абвг']},
+   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб','абв','аб','аб','абвг','','абвг','абвг','абвг','','аб','','','','','','']},
   ];
   for(const {part,id,first,subparts} of parts) {
    const lesson=f.w.PetersonCourse.lessons.find(item=>item.id===id);
@@ -322,6 +322,8 @@ test('read both opening sections in print order while old links retain their tas
    assert.deepEqual(indices.map(source),expected);
    for(const [ordinal,index] of indices.entries()) {
     f.nav('#lesson/'+id+'/'+index);
+    // Let queued navigation and observer callbacks run between actual student clicks.
+    await new Promise(resolve=>setImmediate(resolve));
     assert.equal(f.q('[aria-current="step"]').dataset.index,String(index));
     const adjacent=[...f.d.querySelectorAll('.navigation [data-action="task"]')].map(b=>Number(b.dataset.index));
     assert.deepEqual(adjacent,[indices[ordinal-1],indices[ordinal+1]].filter(i=>i!==undefined));
@@ -619,5 +621,585 @@ test('part three switches from automatic answer to the actual manual card before
   assert.equal(f.q('#problem .task-heading h2').textContent,f.w.PetersonCourse.lessons.find(l=>l.id==='p39').tasks[1].title);
   assert.equal(f.d.querySelectorAll('#answer-form').length,0);
   assert(f.q('.manual-work'));assert(f.q('[data-action="record-manual"]'));
+ }finally{f.close();}
+});
+test('read the entire opening brackets topic and retry its source-specific models',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#home');assert.match(f.q('#main').textContent,/№1–26 со всеми подпунктами.*82/);
+  const go=index=>{f.nav('#lesson/p33/'+index);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);};
+  let ids=go(65);
+  f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/между 3 и 5 равна 4/);
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
+  f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/между 4 и 8 равна 6/);
+  ids=go(72);assert.equal(f.d.querySelectorAll('#task-figure [data-line]').length,5);
+  for(const sample of [0,1]){
+   f.event(ids[0],String(sample),'change');
+   const lines=[...f.d.querySelectorAll('#model [data-line]')].map(el=>['x1','y1','x2','y2'].map(k=>Number(el.getAttribute(k))));
+   const intersections=[];
+   for(const [i,[x,y,u,v]]of lines.entries())for(const [a,b,c,d]of lines.slice(i+1)){
+    const determinant=(u-x)*(d-b)-(v-y)*(c-a);
+    if(determinant===0)continue;
+    const t=((a-x)*(d-b)-(b-y)*(c-a))/determinant;
+    intersections.push([x+t*(u-x),y+t*(v-y)]);
+   }
+   assert.equal(intersections.length,8);
+   for(const [i,[x,y]]of intersections.entries())for(const [a,b]of intersections.slice(i+1))assert(Math.hypot(x-a,y-b)>8);
+  }
+
+  for(const [id,expression]of [[0,/отличным от прямого/],[1,/под прямым углом/],[2,/общих точек нет/]]){
+   f.event(ids[1],String(id),'change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');
+   assert.match(f.q('#model .pm-result').textContent,expression);
+  }
+  ids=go(73);f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/Р = 4/);
+  f.event(ids[1],'1','change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/Р = 2/);
+  f.event(ids[2],'2','change');assert.equal(f.d.querySelectorAll('#model svg polygon').length,1);
+  ids=go(75);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/Обе стороны равны/);
+  f.event(ids[0],'1','change');assert.match(f.q('#model .pm-result').textContent,/Стороны различаются/);
+  f.event(ids[1],'2','change');assert.match(f.q('#model .pm-result').textContent,/Обе стороны равны/);
+  ids=go(76);f.event(ids[1],'5','change');assert.match(f.q('#model .pm-result').textContent,/выполняют все условия/);
+  f.event(ids[0],'1','change');f.event(ids[1],'7','change');assert.match(f.q('#model .pm-result').textContent,/выполняют все условия/);
+  ids=go(77);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/0 \+ 2/);
+  ids=go(78);f.event(ids[0],'5','change');f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/К = 12/);
+  ids=go(79);f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/28,5 км\/ч/);
+  f.event(ids[1],'1','change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');assert.match(f.q('#model .pm-result').textContent,/27,5 км\/ч/);
+  assert.equal(f.d.querySelectorAll('#model .pcm-route-table thead th').length,2);assert(f.q('#model .pcm-route-table').textContent.includes('5 ч × 26 км/ч = 130 км'));
+  ids=go(80);f.event(ids[1],'1','change');assert.match(f.q('#model table').textContent,/24,5/);f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
+  ids=go(81);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/2\/3 и 1\/3/);
+  f.event(ids[0],'1','change');assert.match(f.q('#model .pm-result').textContent,/отличается от 7/);f.event(ids[1],'2','change');assert.match(f.q('#model .pm-result').textContent,/1\/3 и 2\/3/);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('move directly into the first printed scale question and compare differently labelled rulers',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#lesson/p15/92');const next=f.q('.navigation a');assert.equal(next.hash,'#lesson/p16/6');f.nav(next.hash);
+  assert.match(f.q('[aria-current="step"]').textContent,/№28\(1\)/);
+  const ids=()=>[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+  const go=i=>{f.nav('#lesson/p16/'+i);f.click('[data-lesson-help="model"] > summary');return ids();};
+  let controls=go(6);f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/1 см/);
+  f.event(controls[0],'1','change');assert.equal(f.q(controls[1]).value,'0');
+  f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/200 см/);
+  controls=go(10);f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent.replace(/\s/g,''),/1:250000/);
+  f.event(controls[0],'1','change');f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent.replace(/\s/g,''),/1:160000/);
+  controls=go(13);f.event(controls[0],'1','change');f.event(controls[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/42 км/);
+  f.nav('#lesson/p16/2');f.event('#final-answer','0,2');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/Ответ требуется в миллиметрах/);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('use calibrated map radii, a notched parcel and all six room areas on new data',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p16/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);};
+  for(let i=0;i<8;i++){
+   const ids=go(14+i),base=f.q('#task-figure [data-measure="500km"]'),ray=f.q('#task-figure [data-measure="radius"]');
+   const length=el=>Math.hypot(Number(el.getAttribute('x1'))-Number(el.getAttribute('x2')),Number(el.getAttribute('y1'))-Number(el.getAttribute('y2')));
+   assert.equal(f.q(ids[0]).value,String(i));assert.equal(f.d.querySelectorAll('#task-figure [data-city]').length,8);
+   const km=length(ray)/length(base)*500;assert(Math.abs(km-[634,719,969,757,1668,1609,2486,2500][i])<.5);
+   f.event(ids[1],'2','change');assert.match(f.q('#model .pm-result').textContent,/Расчёт по координатам/);
+   f.event(ids[0],String((i+1)%8),'change');assert.equal(f.q(ids[1]).value,'0');
+  }
+  let ids=go(22);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent.replace(/\s/g,''),/16000м²/);
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');f.event(ids[1],'2','change');assert.match(f.q('#model .pm-result').textContent,/720 м/);
+  ids=go(23);assert.equal(f.d.querySelectorAll('#task-figure [data-room]').length,6);
+  for(const [i,area]of ['35','13,95','17,55','14,57','4,95','7,13'].entries()){
+   f.event(ids[0],String(i),'change');assert.equal(f.q(ids[2]).value,'0');f.event(ids[2],'1','change');
+   assert(f.q('#model .pm-result').textContent.includes('помещения '+area+' м²'));
+  }
+  f.event(ids[0],'0','change');f.event(ids[1],'1','change');f.event(ids[2],'1','change');
+  assert(f.q('#model .pm-result').textContent.includes('помещения 78,75 м²'));
+  f.event(ids[0],'2','change');f.event(ids[2],'1','change');assert(f.q('#model .pm-result').textContent.includes('помещения 39,4875 м²'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('coefficient scope, fresh powers and free explanations follow the printed sequence',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#lesson/p33/81');assert.equal(f.q('.navigation a').hash,'#lesson/p34/4');
+  f.nav('#lesson/p34/4');const order=[...f.d.querySelectorAll('.side-list [data-index]')].map(n=>Number(n.dataset.index));
+  assert.deepEqual(order.slice(0,12),[4,0,5,6,1,7,2,8,9,10,11,12]);
+  const go=i=>{f.nav('#lesson/p34/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  for(const [index,source,fresh,letters]of [[8,'−2','−4','x²'],[9,'4','16','x'],[10,'16','256','m⁴'],[13,'−1','1','abcd'],[21,'1/2','1','xy'],[37,'−27','−54','x³']]){
+   const ids=go(index);f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,new RegExp('Коэффициент '+source+'$'));
+   f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
+   f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,new RegExp('Коэффициент '+fresh+'$'));
+   f.event(ids[0],'0','change');f.event(ids[1],'2','change');assert(f.q('#model .pm-result').textContent.includes('Буквенная часть: '+letters));
+  }
+  const power=go(10);f.event(power[1],'1','change');assert.equal(f.d.querySelectorAll('#model .pcm-factor-chip[data-sign=negative]').length,4);
+  const ids=go(7);f.event(ids[0],'1','change');f.event(ids[1],'1','change');assert.match(f.q('#model .pm-result').textContent,/выделяется k⁵/);
+  f.event('#notebook','Я выделил k⁵: только в нём одна переменная.');f.click('[data-action="record-manual"]');
+  assert.equal(!!f.state().tasks['p34-t08'].correct,false);
+ }finally{f.close();}
+});
+
+test('complete the coefficient chapter with quantifiers, signed squares and reversible tricks',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#home');assert.match(f.q('#main').textContent,/№27–41 со всеми подпунктами.*67/);
+  const go=i=>{f.nav('#lesson/p34/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  let ids=go(41);f.event(ids[1],'1','change');let result=()=>f.q('#model .pm-result').textContent;
+  assert(result().includes('при d: 0'));assert(result().includes('при k: −4'));
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');
+  ids=go(45);f.event(ids[1],'2','change');assert(result().includes('−9'));f.event(ids[0],'1','change');f.event(ids[1],'2','change');assert(result().includes('−18'));
+  ids=go(47);f.event(ids[1],'1','change');assert(result().includes('значения равны'));
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');f.event(ids[1],'1','change');assert(result().includes('значения различны'));
+  ids=go(50);f.event(ids[1],'2','change');assert.equal(f.d.querySelectorAll('#model [data-piece="uv"]').length,2);
+  f.event(ids[0],'1','change');assert.equal(f.q(ids[1]).value,'0');f.event(ids[1],'2','change');
+  assert.equal(f.d.querySelectorAll('#model [data-piece="cut"]').length,2);assert.equal(f.d.querySelectorAll('#model [data-piece="overlap"]').length,1);
+  ids=go(52);f.event(ids[1],'1','change');assert.match(f.q('#model table').textContent,/\(a \+ b\)²1a² \+ b²13/);
+  ids=go(53);f.event(ids[0],'3','change');f.event(ids[1],'4','change');assert.match(f.q('#model table').textContent,/Вычли 3x25/);
+  ids=go(54);f.event(ids[1],'4','change');assert.match(f.q('#model table').textContent,/Вычли из 157/);
+  ids=go(64);f.event(ids[1],'3','change');assert.match(f.q('#model table').textContent,/Вычли из 4012/);
+  ids=go(66);f.event(ids[0],'2','change');f.event(ids[1],'4','change');assert.match(f.q('#model table').textContent,/Прибавили 16,25Корень и минус 11,5/);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('place a garden, find the first broken transition, check gear pairs and measure a road horizontally',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p16/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,value)=>f.event(id,String(value),'change'), result=()=>f.q('#model .pm-result').textContent;
+  let ids=go(24);
+  assert.equal(f.d.querySelector('#task-figure [data-home]'),null);
+  set(ids[0],0);set(ids[1],0);const border=f.q('#model svg rect'),house=f.q('#model [data-home="0"]');
+  const value=(e,attr)=>Number(e.getAttribute(attr));
+  for(const [start,size] of [['x','width'],['y','height']])
+   assert.equal(value(house,start)+value(house,size)/2,value(border,start)+value(border,size)/2);
+  assert.equal(f.q('#model [data-gate-center]').dataset.gateCenter,'4');
+  ids=go(25);set(ids[0],104);set(ids[1],73);
+  assert(f.q('#model table').textContent.includes('10,4 м10,4 см'));assert(f.q('#model table').textContent.includes('7,3 м7,3 см'));
+  for(const [i,source,fresh] of [[26,'2,8 см','3 см'],[27,'4 см','7 см'],[28,'0,016','0,2'],[29,'10,5','3 + 5 = 8'],[30,'24 вместо 18','8 вместо 7'],[31,'9/34','5/14']]){
+   ids=go(i);set(ids[1],1);assert(result().includes(source),source);
+   set(ids[0],1);assert.equal(f.q(ids[1]).value,'0');set(ids[1],1);assert(result().includes(fresh),fresh);
+  }
+  for(const [i,[a,b]] of [[5,1],[1,2],[1,4],[1,6],[2,3],[2,5],[5,6],[3,4]].entries()){
+   ids=go(32+i);const choices=[...f.q(ids[0]).options].map(o=>Number(o.value));
+   assert.deepEqual(choices,Array.from({length:22},(_,j)=>15+5*j));
+   // Generate admissible pairs independently by multiplying the reduced integer ratio.
+   const valid=Array.from({length:120},(_,i)=>[a*(i+1),b*(i+1)]).filter(([x,y])=>choices.includes(x)&&choices.includes(y));
+   assert(valid.length>1);
+   assert(result().includes('Отношение пока другое'));
+   for(const [x,y] of valid){
+    set(ids[0],x);set(ids[1],y);assert(result().includes('выполняют условие'));
+    const shapes=[...f.d.querySelectorAll('#model polygon[data-teeth]')];
+    assert.deepEqual(shapes.map(n=>n.getAttribute('points').split(' ').length),[x*4,y*4]);
+   }
+   set(ids[2],1);assert(result().includes('Отношение пока другое'));
+   set(ids[0],valid[0][1]);set(ids[1],valid[0][0]);assert(result().includes('выполняют условие'));
+  }
+  ids=go(40);set(ids[1],2);assert(result().includes('второй магазин'));
+  set(ids[0],1);set(ids[1],2);assert(result().includes('первый магазин'));
+  for(const [i,marks,output]of [[41,[.20,.12],['80 м','30 м']],[42,[.025,.0375],['2,5 %','3,75 %']]]){
+   ids=go(i);
+   for(const [sample,expected]of marks.entries()){
+    set(ids[0],sample);
+    const road=f.q('#model [data-run]'),run=value(road,'x2')-value(road,'x1'),rise=value(road,'y1')-value(road,'y2');
+    assert(Math.abs(rise/run-expected)<1e-9);
+    set(ids[1],1);assert(result().includes(output[sample]));
+   }
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('finish the scale chapter in source order with changed cross products and groups in the hundred square',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#home');assert.match(f.q('#main').textContent,/№28–56 со всеми подпунктами.*79/);
+  const go=i=>{f.nav('#lesson/p16/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,to)=>f.event(id,String(to),'change'), result=()=>f.q('#model .pm-result').textContent;
+  let ids=go(43);set(ids[1],1);assert(result().includes('0,0(3)'));set(ids[0],1);assert.equal(f.q(ids[1]).value,'0');set(ids[1],1);assert(result().includes('0,11(6)'));
+  for(const i of [60,61,62,63,64,65,66,67]){
+   ids=go(i);set(ids[1],1);set(ids[2],1);assert(result().includes('Произведения равны'),String(i));
+   set(ids[0],1);assert.equal(f.q(ids[2]).value,'0');set(ids[2],1);assert(result().includes('Произведения различны'));
+   set(ids[1],2);assert.equal(f.q(ids[2]).value,'0');set(ids[2],1);assert(result().includes('Произведения равны'));
+  }
+  ids=go(69);for(const i of [0,1,2]){set(ids[0],i);set(ids[2],1);assert(result().includes('60 км'));}
+  set(ids[1],1);set(ids[2],1);assert(result().includes('90 км'));
+  ids=go(70);const tableWidth=()=>Number(f.q('#model [data-furniture]').getAttribute('width'));
+  const before=tableWidth();set(ids[1],2);set(ids[2],1);assert.equal(tableWidth(),before/4);assert(result().includes('2,5 × 2 см'));
+  ids=go(71);set(ids[1],1);assert(result().includes('Круче первая'));set(ids[0],1);set(ids[1],1);assert(result().includes('Круче вторая'));
+  const incline=el=>(Number(el.getAttribute('y1'))-Number(el.getAttribute('y2')))/(Number(el.getAttribute('x2'))-Number(el.getAttribute('x1')));
+  assert(Math.abs(incline(f.q('#model [data-ladder="2"]'))-2.1/1.4)<1e-10);
+  f.nav('#lesson/p16/75');assert.equal(f.q('.navigation button:last-child').dataset.index,'76');
+  ids=go(77);assert.equal(f.d.querySelectorAll('#task-figure [data-hundred-number]').length,100);set(ids[0],8);set(ids[1],8);set(ids[3],1);assert(result().includes('89 + 100 = 189'));
+  set(ids[2],1);assert.equal(f.q(ids[3]).value,'0');set(ids[3],1);assert(result().includes('90 + 99 = 189'));
+  ids=go(78);set(ids[0],7);set(ids[1],7);const groups=new Set();
+  for(let i=0;i<8;i++){
+   set(ids[2],i);set(ids[3],1);
+   const numbers=[...f.d.querySelectorAll('#model [data-in-group="true"]')].map(el=>Number(el.dataset.cellNumber));
+   assert.equal(numbers.length,3);assert.equal(numbers.reduce((a,b)=>a+b),267);groups.add(numbers.join(','));assert(result().includes('= 267'));
+  }
+  assert.equal(groups.size,8);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('keep unlike powers apart, cancel entire groups and substitute a fresh pair of values',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#lesson/p34/66');assert.equal(f.q('.navigation a').hash,'#lesson/p35/0');
+  const go=i=>{f.nav('#lesson/p35/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),result=()=>f.q('#model .pm-result').textContent;
+  for(const index of [0,1,2,3]){const previous=go(index);assert.equal(previous.length,2);assert.equal(f.q(previous[0]).value,'3');}
+  let ids=go(10);assert.deepEqual([...f.d.querySelectorAll('#model [data-symbol]')].map(e=>e.dataset.symbol),['x²y','xy²']);
+  assert.match(f.q('#model [data-symbol="x²y"]').textContent,/−3\/10; 5/);set(ids[2],1);assert(result().includes('47/10'));
+  set(ids[0],1);assert.equal(f.q(ids[2]).value,'0');set(ids[2],1);assert(result().includes('-11/10'));
+  set(ids[1],1);set(ids[2],1);assert(result().includes('-1/10'));
+  ids=go(17);set(ids[2],1);assert(result().includes('0.'));set(ids[0],1);set(ids[2],1);assert(result().includes('1/2'));
+  ids=go(18);set(ids[2],2);assert(result().includes('выражения: -6'));set(ids[1],1);set(ids[2],2);assert(result().includes('выражения: 12'));
+  ids=go(19);set(ids[2],2);assert(result().includes('выражения: 16/5'));set(ids[1],1);set(ids[2],2);assert(result().includes('выражения: 36/5'));
+  ids=go(23);set(ids[2],1);assert(result().includes('0.'));set(ids[0],1);set(ids[2],1);assert(result().includes('-2.'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('compare exact quotients and the two products with fresh terms and every rearrangement',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'), result=()=>f.q('#model .pm-result').textContent;
+  for(const i of [0,1]){const legacy=go(i);assert.equal(legacy.length,1);assert.equal(f.q(legacy[0]).value,'2');}
+  let ids=go(6);set(ids[1],2);assert(result().includes('120 и 120'));assert.equal(f.q('#model [data-relation]').dataset.relation,'=');
+  set(ids[0],1);assert.equal(f.q(ids[1]).value,'0');set(ids[1],2);assert(result().includes('120 и 123'));assert.equal(f.q('#model [data-relation]').dataset.relation,'≠');
+  ids=go(16);set(ids[0],3);set(ids[1],8);set(ids[2],1);assert(result().includes('1/15 и 1/15'));
+  set(ids[1],3);set(ids[2],2);assert(result().includes('два разных номера'));
+  ids=go(17);set(ids[1],1);assert(result().includes('m × p = n × k'));set(ids[0],1);set(ids[1],1);assert(result().includes('4 × 15 = 6 × 10 = 60'));
+  for(const index of [19,20,21,22]){
+   ids=go(index);assert.equal(f.q(ids[0]).options.length,24);let accepted=0;
+   for(let j=0;j<24;j++){set(ids[0],j);set(ids[2],2);if(result().includes('Равенство верно'))accepted++;}
+   assert.equal(accepted,8);
+  }
+  ids=go(24);set(ids[0],7);set(ids[1],4);assert(result().includes('Обе равны 1/3'));set(ids[2],1);assert(result().includes('Обе равны 3'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('use each arithmetic spoke independently, balance story quantities and distinguish two squares',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p35/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),result=()=>f.q('#model .pm-result').textContent;
+  for(let i=25;i<29;i++){
+   const ids=go(i);set(ids[1],1);set(ids[2],1);assert(result().includes('Корень подходит'));
+   set(ids[0],1);set(ids[2],1);assert(result().includes('Значения различны'));set(ids[1],2);set(ids[2],1);assert(result().includes('Корень подходит'));
+  }
+  let ids=go(33);set(ids[1],12);set(ids[2],1);assert(result().includes('Всего упаковок 40'));set(ids[0],1);set(ids[1],20);set(ids[2],1);assert(result().includes('Всего упаковок 50'));
+  ids=go(34);set(ids[1],12);set(ids[2],1);assert(result().includes('4,5 ч'));assert.deepEqual([...f.d.querySelectorAll('#model [data-km]')].map(n=>n.dataset.km),['84','80']);
+  set(ids[0],1);set(ids[1],9);set(ids[2],1);assert(result().includes('5 ч'));
+  for(const [index,dir,expected]of [[35,'out',['-2','-9','-4','-20','-28/5','-1/2','0','-39/7']],[36,'in',['-1/2','9/10','-3/2','2','-6','21/10','-1','0']],[37,'out',['4/5','-13/10','-1/25','-2','13/5','-3/5','-1/4','-1']]]){
+   ids=go(index);assert.equal(f.d.querySelectorAll('#task-figure [data-direction="'+dir+'"]').length,8);
+   for(const [i,want]of expected.entries()){set(ids[0],i+1);set(ids[2],1);assert(result().includes('Ответ '+want+'.'),index+'/'+i);}
+   set(ids[1],1);assert.equal(f.q(ids[2]).value,'0');
+  }
+  ids=go(42);set(ids[1],2);assert(result().includes('-243/1000'));set(ids[0],1);set(ids[1],2);assert(result().includes('2187/1000'));
+  ids=go(45);set(ids[1],2);assert.equal(f.d.querySelectorAll('#model [data-piece="uv"]').length,2);
+  ids=go(47);set(ids[0],4);set(ids[1],1);set(ids[2],2);assert.equal(f.d.querySelectorAll('#model [data-piece="cut"]').length,2);
+  set(ids[0],0);set(ids[1],0);set(ids[2],2);assert(result().includes('стягивается в точку'));
+  set(ids[0],-3);set(ids[1],2);set(ids[2],1);assert.match(f.q('#model table').textContent,/\(a − b\)²25a² − b²5a² − 2ab \+ b²25/);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('recognize a perpendicular from the correct vertex and distinguish the total percentage from its change',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p35/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),result=()=>f.q('#model .pm-result').textContent;
+  const delta=(line,axis)=>Number(line.getAttribute(axis+'2'))-Number(line.getAttribute(axis+'1'));
+  function perpendicular(one,two){
+   assert(Math.abs(delta(one,'x')*delta(two,'x')+delta(one,'y')*delta(two,'y'))<1e-7);
+  }
+  for(const [i,aux,side,mark]of [[53,'CL','AB','L'],[54,'DK','EF','K'],[55,'RS','PM','S'],[56,'ZT','XY','T']]){
+   const ids=go(i);
+   const height=f.q('#task-figure [data-aux="'+aux+'"]'),opposite=f.q('#task-figure [data-side="'+side+'"]');
+   perpendicular(height,opposite);assert(f.q('#task-figure [data-right-at="'+mark+'"]'));
+   if(i===54)assert(Number(height.getAttribute('x2'))<Math.min(Number(opposite.getAttribute('x1')),Number(opposite.getAttribute('x2'))));
+   set(ids[0],2);
+   if(i===55)assert(result().includes('RS не начинается в вершине MNP'));
+   if(i===56)assert(result().includes('катеты XZ, YZ'));
+  }
+  let ids=go(58);
+  for(const j of [0,1,2]){
+   set(ids[0],j);set(ids[1],2);const model='#model ';
+   assert.equal(f.d.querySelectorAll(model+'[data-altitude-from]').length,3);
+   const center=f.q(model+'[data-orthocenter]');assert.equal(center.dataset.orthocenter,String(j));
+   for(const [v,side]of [['A','BC'],['B','CA'],['C','AB']]){
+    const altitude=f.q(model+'[data-altitude-from="'+v+'"]'),opp=f.q(model+'[data-side="'+side+'"]');
+    perpendicular(altitude,opp);
+    const hx=Number(center.getAttribute('cx'))-Number(altitude.getAttribute('x1')),hy=Number(center.getAttribute('cy'))-Number(altitude.getAttribute('y1'));
+    assert(Math.abs(hx*delta(opp,'x')+hy*delta(opp,'y'))<1e-7);
+   }
+  }
+  assert(result().includes('за пределами треугольника'));
+  ids=go(49);set(ids[1],1);assert(result().includes('контрпример'));set(ids[0],2);set(ids[1],1);assert(result().includes('Один подходящий пример'));
+  ids=go(62);set(ids[1],1);assert(result().includes('100/3%'));set(ids[0],120);assert.deepEqual([...f.d.querySelectorAll('#model [data-bar-value]')].map(e=>Number(e.dataset.barValue)),[120,40]);
+  f.nav('#lesson/p35/67');f.event('#final-answer','25');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/процент итоговой величины/);
+  ids=go(73);set(ids[1],2);assert(f.q('#model table').textContent.replace(/\s/g,'').includes('15400'));set(ids[0],1);assert.equal(f.q(ids[1]).value,'0');set(ids[1],2);assert(f.q('#model table').textContent.replace(/\s/g,'').includes('27720'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('compare possible roots, fractions of the whole and historical currency units on the printed last page',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p35/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),result=()=>f.q('#model .pm-result').textContent;
+  let controls=go(79);set(controls[1],4);set(controls[2],2);
+  assert(result().includes('Пробное число — корень'));assert.match(f.q('#model table').textContent,/3364805150/);
+  set(controls[0],1);set(controls[1],3);set(controls[2],1);assert(result().includes('Пробное число — корень'));
+  controls=go(82);set(controls[1],20);set(controls[2],1);assert(result().includes('Сумма 80 р.'));assert(result().includes('Все условия выполнены'));
+  set(controls[0],1);set(controls[1],45);set(controls[2],1);assert(result().includes('Сумма 180 р.'));assert(result().includes('Все условия выполнены'));
+  for(const [i,first,again]of [[92,'75 кг','50 кг'],[93,'6000 р.','10000 р.'],[94,'25%','30%']]){
+   controls=go(i);set(controls[1],2);assert(result().replace(/\u00a0/g,'').includes(first),result());set(controls[0],1);assert.equal(f.q(controls[1]).value,'0');set(controls[1],2);assert(result().replace(/\u00a0/g,'').includes(again),result());
+  }
+  controls=go(95);set(controls[1],120);set(controls[2],1);assert(result().includes('2/3'));set(controls[0],1);set(controls[1],100);set(controls[2],1);assert(result().includes('5/9'));
+  controls=go(96);assert(f.q('#task-figure .pcm-fraction-denominator').textContent.includes('80,64'));set(controls[1],5);assert(f.q('#model table').textContent.includes('Большая дробь1/50'));set(controls[0],1);set(controls[1],5);assert(f.q('#model table').textContent.includes('Большая дробь1/30'));
+  f.nav('#lesson/p35/97');f.event('#final-answer','2');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/Переведи её в копейки/);
+  controls=go(97);set(controls[1],1);set(controls[2],1);assert(result().includes('1/2 копейки'));set(controls[0],1);set(controls[1],2);set(controls[2],1);assert(result().includes('3/4 копейки'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('decode all nine equalities and check each unknown in both oral proportions without assigning mastery',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let fields=go(25),valid=0;
+  for(let j=0;j<24;j++){set(fields[0],j);set(fields[2],2);if(out().includes('Равенство верно'))valid++;}
+  assert.equal(valid,8);fields=go(26);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,9);
+  let word=[];for(let j=0;j<9;j++){set(fields[0],j);set(fields[1],1);if(out().includes('Буква входит в слово'))word.push(f.q(fields[0]).selectedOptions[0].textContent);}
+  assert.deepEqual(word,['Р','Д','А','О','Х']);set(fields[1],2);const chord=f.q('#model [data-chord="AB"]');
+  const x1=Number(chord.getAttribute('x1')),x2=Number(chord.getAttribute('x2')),y=Number(chord.getAttribute('y1'));
+  assert(Math.abs(Math.hypot(x1-108,y-55)-43)<1e-8);assert(Math.abs(Math.hypot(x2-108,y-55)-43)<1e-8);assert.notEqual(y,55);
+  for(const [i,before,after] of [[27,'12','15'],[28,'12/5','15/2'],[29,'20','15'],[30,'6','7'],[31,'120','100']]){
+   fields=go(i);const select=(value)=>{const option=[...f.q(fields[1]).options].find(el=>el.textContent===value);assert(option);set(fields[1],option.value);};
+   select(before);set(fields[2],1);assert(out().includes('Подстановка подходит.'),i);
+   set(fields[0],1);assert.equal(f.q(fields[2]).value,'0');select(after);set(fields[2],2);assert(out().includes('Подстановка подходит.'),i);
+   select('0');set(fields[2],1);if(i===27||i===31)assert.match(out(),/делителей равен нулю/);else assert.match(out(),/Значения различаются/);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('retain excluded denominators, both linked unknowns and the direction of a copier scale',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(41);const select=(value)=>{const option=[...f.q(c[1]).options].find(el=>el.textContent===value);assert(option,value);set(c[1],option.value);};
+  for(const forbidden of ['1/4','-4']){select(forbidden);set(c[2],1);assert(out().includes('не допускается'),forbidden);}
+  select('64');set(c[2],2);assert(out().includes('Это корень.'));set(c[0],1);select('65');set(c[2],1);assert(out().includes('Это корень.'));select('5/4');set(c[2],2);assert(out().includes('не допускается'));
+  c=go(43);set(c[1],2);assert(out().includes('= 32.'));assert(out().includes('= 12.'));set(c[0],1);set(c[1],2);assert(out().includes('= 20.'));assert(out().includes('= 15/2.'));
+  c=go(44);set(c[1],2);assert(out().includes('= 2/5.'));assert(out().includes('= 1/5.'));set(c[0],1);set(c[1],2);assert(out().includes('= 3/5.'));assert(out().includes('= 3/10.'));
+  c=go(45);let retained=0;for(let j=1;j<=8;j++){set(c[0],j);set(c[1],1);if(out().includes('Обе дроби равны нулю'))retained++;}assert.equal(retained,2);
+  for(const [i,original,copy,again]of [[46,12.5,7.5,15],[47,8,4.8,12]]){
+   c=go(i);set(c[1],1);const spans=()=>[...f.d.querySelectorAll('#model [data-length]')];
+   const [a,b]=spans();assert.equal(Number(a.dataset.length),original);assert.equal(Number(b.dataset.length),copy);const len=v=>Number(v.getAttribute('x2'))-Number(v.getAttribute('x1'));assert(Math.abs(len(b)/len(a)-.6)<1e-10);
+   set(c[0],1);set(c[1],1);assert.equal(Number(spans()[0].dataset.length),again);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('measure five corresponding sides and three different chord constructions before making a conjecture',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(49);
+  assert.equal(f.d.querySelectorAll('#task-figure [data-given="no"]').length,4);
+  const verify=(factor)=>{
+   const [a,b]=f.d.querySelectorAll('#model .pcm-pentagon-pair svg');assert(a&&b);
+   for(const side of ['AB','BC','CD','DE','EA']){
+    const l=a.querySelector('[data-side="'+side+'"]'),r=b.querySelector('[data-side="'+side+'"]');
+    const span=n=>Math.hypot(Number(n.getAttribute('x2'))-Number(n.getAttribute('x1')),Number(n.getAttribute('y2'))-Number(n.getAttribute('y1')));
+    assert(Math.abs(span(l)/18-Number(l.dataset.length))<1e-8);
+    assert(Math.abs(span(r)/span(l)-factor)<1e-8);
+   }
+  };
+  set(c[1],1);verify(1.6);assert(out().includes('160%'));set(c[0],1);set(c[1],1);verify(1.2);assert(out().includes('120%'));
+  c=go(50);set(c[1],2);assert(out().includes('Золота 32 г, серебра 80 г.'));set(c[0],1);set(c[1],2);assert(out().includes('Золота 24 г, серебра 60 г.'));
+  for(const [i,right,again]of [[52,'31,4 см','44,0 см'],[53,'19,1 см','28,0 см']]){
+   c=go(i);set(c[1],2);assert(out().includes(right));set(c[0],1);set(c[1],2);assert(out().includes(again));
+  }
+  c=go(55);
+  for(const [j,m]of [16,9,144].entries()){
+   set(c[0],j);set(c[1],2);const frame=f.q('#model .pm-visual'),circle=frame.querySelector('circle[data-circle]'),cx=Number(circle.getAttribute('cx')),cy=Number(circle.getAttribute('cy')),r=Number(circle.getAttribute('r'));
+   const coord=k=>{const p=frame.querySelector('[data-point="'+k+'"]');return [Number(p.getAttribute('cx')),Number(p.getAttribute('cy'))];};
+   const lengths=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);const o=coord('O');for(const k of 'ABCD')assert(Math.abs(lengths(coord(k),[cx,cy])-r)<1e-8);
+   assert(Math.abs(lengths(coord('A'),o)*lengths(coord('B'),o)-lengths(coord('C'),o)*lengths(coord('D'),o))<1e-7);
+   assert(out().includes('= '+m+' см².'));assert(out().includes('требует доказательства'));
+  }
+  c=go(58);set(c[0],0);set(c[1],2);assert(out().includes('(a + b)y'));assert(f.q('#model table').textContent.includes('4,6'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('distinguish percent of time from percent of speed and test the zero boundary of a quantified comparison',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(59);set(c[1],2);assert(out().includes('контрпример'));set(c[0],1);set(c[1],2);assert(out().includes('одного совпадения мало'));
+  c=go(68);set(c[1],2);assert(out().includes('Строгое неравенство здесь ложно'));set(c[0],1);set(c[1],2);assert(out().includes('разность c/30 положительна'));
+  c=go(69);set(c[2],1);assert(out().includes('отношение 80%'));assert(out().includes('изменения 20%'));set(c[1],1);set(c[2],1);assert(out().includes('отношение 125%'));assert(out().includes('изменения 25%'));
+  c=go(74);set(c[1],2);assert(out().includes('Уменьшение на 200/3%'));set(c[0],120);set(c[1],2);assert(out().includes('Новое число 40'));
+  c=go(78);set(c[1],2);assert(out().includes('3/2 раза'));set(c[0],2);set(c[1],2);assert(out().includes('5/3 раза'));
+  c=go(79);set(c[2],2);assert(out().includes('встречи 15 мин'));set(c[0],1);set(c[2],2);assert(out().includes('встречи 50/3 мин'));set(c[1],1);set(c[2],2);assert(out().includes('встречи 50/3 мин'));
+  set(c[1],2);set(c[2],2);assert(out().includes('встречи 160/9 мин'));set(c[0],0);set(c[2],2);assert(out().includes('встречи 120/7 мин'));
+  c=go(80);set(c[1],2);assert(out().includes('пешехода 22/5 км/ч, велосипедиста 77/5'));set(c[0],2);set(c[1],2);assert(out().includes('пешехода 6 км/ч, велосипедиста 15'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('draw actual moving boats, a quadratic fall curve and two source constructions at the correct scale',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,dist]of [[81,36],[82,84],[83,56],[84,64]]){
+   const c=go(j);set(c[1],2);set(c[2],1);
+   const pos=[...f.d.querySelectorAll('#model [data-boat]')].map(e=>Number(e.dataset.position));assert.equal(pos[1]-pos[0],dist);assert(out().includes('катерами '+dist+' км.'));
+   set(c[0],1);set(c[1],4);set(c[2],1);assert(f.q('#model [data-boat="II"]'));
+  }
+  let c=go(85);assert.equal(f.d.querySelectorAll('#model [data-time]').length,6);set(c[0],5);set(c[1],2);assert(out().includes('31,25 м'));assert.equal(f.q('#model [data-preview-height]').dataset.previewHeight,'31.25');
+  assert(f.q('#model [data-curve="5t²"]'));c=go(86);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,12);
+  const letters=[];for(let j=0;j<12;j++){set(c[0],j);set(c[1],1);if(out().includes('Буква входит в название'))letters.push(f.q(c[0]).selectedOptions[0].textContent);}
+  assert.deepEqual(letters,['А','О','Н','К','Р']);set(c[1],2);assert(f.q('#model table').textContent.includes('ЧехияCZK'));assert.equal(f.q('#model .pm-visual a').target,'_blank');
+  c=go(91);set(c[1],1);assert.equal(Number(f.q('#model [data-segment="AC"]').dataset.cm),9);assert.equal(Number(f.q('#model [data-segment="BD"]').dataset.cm),4.905);
+  c=go(92);set(c[1],1);assert.equal(Number(f.q('#model [data-segment="NK"]').dataset.cm),5);assert.equal(Number(f.q('#model [data-segment="LM"]').dataset.cm),3);assert.equal(Number(f.q('#model [data-segment="LE"]').dataset.cm),2);
+  for(const id of ['LE','MF']){const s=f.q('#model [data-segment="'+id+'"]');assert.equal(s.getAttribute('x1'),s.getAttribute('x2'));}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('complete the proportion chapter, including reciprocal areas, a right angle and every sporting outcome',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(93);set(c[1],2);assert(out().includes('площадь 567 см²'));c=go(94);set(c[1],2);assert(out().includes('встречи 1 ч'));set(c[0],2);set(c[1],2);assert(out().includes('встречи 4/3 ч'));
+  c=go(95);for(const area of [12,24]){set(c[0],area);set(c[1],5);set(c[2],1);
+   const p=[...f.d.querySelectorAll('#model [data-side-a]')];assert.equal(p.length,7);
+   p.forEach(n=>assert.equal(Number(n.dataset.sideA)*Number(n.dataset.sideB),area));assert.equal(Number(f.q('#model [data-selected-b]').dataset.selectedB),area/8);
+  }
+  c=go(96);
+  for(const r of [3,4,5])for(const v of [30,60,90,120,150,210,270,315]){
+   set(c[0],r);set(c[1],v);set(c[2],1);assert(f.q('#model [data-right-angle="C"]'));
+   const pos=name=>{const p=f.q('#model [data-point="'+name+'"]');return [Number(p.getAttribute('cx')),Number(p.getAttribute('cy'))];};
+   const [a,b,c0,o]=['A','B','C','O'].map(pos),dx=a[0]-c0[0],dy=a[1]-c0[1];assert(Math.abs(dx*(b[0]-c0[0])+dy*(b[1]-c0[1]))<1e-7);assert(Math.abs(Math.hypot(c0[0]-o[0],c0[1]-o[1])-11.5*r)<1e-7);
+  }
+  c=go(98);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,4);
+  for(const [i,val]of [5,1,15,3].entries()){set(c[0],i);set(c[1],2);assert(out().includes('= '+val+'.'));}
+  c=go(100);set(c[1],96);set(c[2],2);assert(out().includes('1023457896'));set(c[0],18);set(c[2],2);assert(out().includes('1023456798'));
+  f.nav('#lesson/p17/100');f.event('#final-answer','1023456789');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/89/);
+  c=go(101);set(c[0],9);set(c[2],1);assert(out().includes('в точности совпали'));set(c[1],3);set(c[2],1);assert(out().includes('не совпадают'));
+  c=go(102);for(const next of [0,1]){
+   let good=[];set(c[1],next);for(let i=0;i<24;i++){set(c[0],i);set(c[2],1);if(out().includes('Порядок удовлетворяет'))good.push(f.q(c[0]).selectedOptions[0].textContent);}
+   assert.deepEqual(good,[next?'Б · В · Г · А':'А · В · Г · Б']);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('order all printed equation types and exclude undefined substitutions before counting roots',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p36/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,str]of [[4,'равенство чисел'],[5,'Это уравнение'],[6,'выражение без равенства'],[7,'Это неравенство'],[8,'Это уравнение']]){
+   const c=go(j);set(c[1],2);assert(out().includes(str),j);set(c[0],1);set(c[1],2);assert(out().includes(str),j);
+  }
+  let c=go(9);set(c[1],2);assert(out().includes('не является корнем'));const index=(val)=>[...f.q(c[0]).options].find(o=>o.textContent===val).value;
+  set(c[0],index('-2'));set(c[1],2);assert(out().includes('является корнем'));assert(!out().includes('не является'));
+  c=go(20);set(c[1],2);assert(out().includes('не допускается'));set(c[0],5);set(c[1],2);assert(out().includes('Выбранное число подходит'));
+  c=go(21);for(const x of [-3,6]){set(c[0],x);set(c[1],2);assert(out().includes('Выбранное число подходит'));}set(c[0],0);set(c[1],2);assert(out().includes('не допускается'));
+  c=go(22);const good=[];for(let x=-6;x<=7;x++){set(c[0],x);set(c[1],2);if(out().includes('Выбранное число подходит'))good.push(x);}assert.deepEqual(good,[-4,-2,0,1,3]);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('distinguish a proof from an example, filter the entire root set and read inverse chains in order',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p36/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const i of [23,24,25,26,27,28,29]){
+   const c=go(i);for(const x of [-4,0,3]){set(c[0],x);set(c[1],2);assert(out().includes(i<=26?'части равны':'части различаются'));assert(f.q('#model table'));}
+   assert(f.q('[data-action="record-manual"]'));
+  }
+  for(const [j,good] of [[30,[]],[31,['-5','5']],[32,[]],[33,['-4/5']],[34,['1','3']]]){
+   const c=go(j),hits=[];for(const option of [...f.q(c[0]).options]){set(c[0],option.value);set(c[1],1);if(out().includes('число подходит.'))hits.push(option.textContent);}
+   assert.deepEqual(hits,good);
+  }
+  let c=go(35);
+  for(const vi of [0,1])for(const [i,s]of (vi?['-3, 0, 5/2','-3, 0','корней нет','5/2','0, 5/2']:['-2, 0, 5/3','-2, 0','корней нет','5/3','0, 5/3']).entries()){
+   set(c[0],vi);set(c[1],i);set(c[2],2);assert(out().includes(s+'.'),[vi,i,out()]);assert.equal(f.d.querySelectorAll('#model tbody tr').length,3);
+  }
+  c=go(40);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,6);
+  for(const start of [36,48,72]){let x=start;for(const [i,div]of [3,.01,10,2,5,4].entries()){x/=div;set(c[0],start);set(c[1],i+1);set(c[2],1);assert(out().replace(/[\s\u00a0\u202f]/g,'').includes('шага:'+String(x).replace('.',',')+'.'),[start,i,x,out()]);}}
+  for(const [i,samples]of [['-1/2','1/3',null],['2','-3','0'],['1/2','-1/3',null],['1/2','-1/3',null],['2','3','0'],['-2','-3','0'],['4','9','0'],['-4','-9','0']].entries()){
+   c=go(41+i);for(const [j,x] of [-2,3,0].entries()){set(c[0],x);set(c[1],1);assert(out().includes(samples[j]===null?'делить на ноль':'выражения: '+samples[j]+'.'),[i,x,out()]);}
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('finish the equation chapter with counterexamples, natural trials and three exact years of capital',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p36/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(49);set(c[0],0);set(c[1],1);assert(out().includes('не определена'));
+  c=go(50);set(c[0],-3);set(c[1],0);set(c[2],1);assert(out().includes('контрпример'));set(c[1],2);set(c[2],1);assert(out().includes('отлично от нуля'));
+  c=go(51);set(c[0],-3);set(c[1],1);assert(out().includes('свидетель существования'));c=go(52);set(c[0],0);set(c[1],1);assert(out().includes('0 > 0 — неверно'));
+  for(const [j,source,extra]of [[53,'-3','2'],[54,'5/2','4'],[65,'2','3']]){
+   c=go(j);
+   for(const [i,w]of [source,extra].entries()){set(c[0],i);const index=[...f.q(c[1]).options].find(o=>o.textContent===w).value;set(c[1],index);set(c[2],3);assert(out().includes(w+' подходит.'));}
+  }
+  c=go(54);set(c[1],1);set(c[2],3);assert(out().includes('Ноль исключён'));
+  for(const [j,orig,extra]of [[55,4,5],[56,14,11],[63,12,13],[64,5,6]]){
+   c=go(j);for(const [i,x]of [orig,extra].entries()){set(c[0],i);set(c[1],x);set(c[2],2);assert(out().includes('Число подходит.'));
+    if(j===56)assert.deepEqual([...f.d.querySelectorAll('#model tbody tr')].map(row=>row.cells[1].textContent),['50','88','108','104','70']);
+   }
+  }
+  for(const [j,matches] of [[57,['19/16']],[58,['-9','-5','-3','-1','0','19/16','9/2','9']],[59,[]],[60,['-9','9']],[61,['9/2']],[62,['-5','-1']]]){
+   c=go(j);const found=[];for(const o of [...f.q(c[0]).options]){set(c[0],o.value);set(c[1],1);if(out().includes('Получили равенство.'))found.push(o.textContent);}
+   assert.deepEqual(found,matches);
+  }
+  c=go(66);for(const [spend,start,last]of [[100,1480,2960],[50,740,1480]]){
+   set(c[0],spend);set(c[1],start);set(c[2],3);assert(out().includes('Кандидат подходит.'));const rows=[...f.d.querySelectorAll('#model tbody tr')];assert.equal(rows.length,3);assert.equal(rows[2].cells[3].textContent,String(last));
+  }
+  set(c[0],100);set(c[1],1000);set(c[2],3);assert(out().includes('Кандидат не подходит.'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('construct all eight valid source rearrangements and compare rates in all four settings',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const j of [0,1,2,6,7,8,9,10,11,12,13,14,15,16]){
+   const c=go(j);
+   for(const second of [0,1]){
+    set(c[1],second);
+    const orders=j===6&&second===0?Array.from({length:24},(_,i)=>i):[0,1];
+    const valid=orders.filter(i=>{set(c[0],i);set(c[2],1);return out().includes('сохраняет исходные пары');});
+    assert.equal(valid.length,orders.length===24?8:1,j);
+    set(c[2],2);const tab=f.d.querySelectorAll('#model table')[1];assert.equal(tab.tBodies[0].rows.length,8);
+   }
+  }
+  for(const j of [17,18,19,20]){
+   const c=go(j);set(c[1],2);assert(out().includes('5/2 раза'));const before=f.q('#model tbody').textContent;
+   set(c[0],1);assert(!out().includes('раза'));set(c[1],2);assert(out().includes('5/2 раза'));assert.notEqual(f.q('#model tbody').textContent,before);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });

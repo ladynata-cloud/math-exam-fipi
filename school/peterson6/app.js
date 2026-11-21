@@ -280,7 +280,7 @@ function firstErrorsHTML(t,s){
       indices.sort((a, b) => {
         const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
         return left.exercise - right.exercise ||
-          subpartOrder.compare(String(left.subpart || ''), String(right.subpart || ''));
+          subpartOrder.compare(String(left.readingKey || left.subpart || ''), String(right.readingKey || right.subpart || ''));
       });
     }
     readingOrders.set(lesson, indices);
@@ -290,12 +290,17 @@ function firstErrorsHTML(t,s){
     const first = D.lessons.find(lesson => partOf(lesson) === part);
     if (!first?.orderBySource) return '';
     const index = readingOrder(first)[0];
-    const section = first.completeSourceSection;
-    const coverage = section ? '<p class="small">В теме «' + e(first.title) + '» разобраны №' +
-      section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
-      section.lastPage + '). Число карточек с разбором — ' + first.tasks.filter(task =>
-        task.source?.type === 'textbook' && task.source.exercise >= section.first && task.source.exercise <= section.last).length +
-      '.</p>' : '';
+    let lastPrinted = 0, coverage = '';
+    for (const topic of D.lessons.filter(candidate => partOf(candidate) === part)) {
+      const section = topic.completeSourceSection;
+      if (!section || section.first !== lastPrinted + 1) break;
+      const count = topic.tasks.filter(task => task.source?.type === 'textbook' &&
+        task.source.exercise >= section.first && task.source.exercise <= section.last).length;
+      coverage += '<p class="small">В теме «' + e(topic.title) + '» разобраны №' +
+        section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
+        section.lastPage + '). Число карточек с разбором — ' + count + '.</p>';
+      lastPrinted = section.last;
+    }
     return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
       'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>' + coverage;
   }
@@ -434,10 +439,11 @@ ${[1, 2, 3]
     const order = readingOrder(l), position = order.indexOf(index);
     const t = workTask(l.tasks[index]),
       next = D.lessons[D.lessons.indexOf(l) + 1];
+    const nextLessonRoute = next && '#lesson/' + next.id + (next.orderBySource ? '/' + readingOrder(next)[0] : '');
     active={lesson:l,task:t,index,practice:false,checking:false};
     state.last={hash:'#lesson/'+id+'/'+index};
     save();
-    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+order.map((i,ordinal)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(ordinal+1)+'. '+e(q.title)+'</button>'}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position+1<order.length?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
+    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+order.map((i,ordinal)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(ordinal+1)+'. '+e(q.title)+'</button>'}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position+1<order.length?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):next?'<a class="button quiet" href="'+nextLessonRoute+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
     renderProblem();
     cleanup=window.PetersonModels?.mount(document.getElementById('model'),l,boardSession?{task:t}:{
       task:t,inquiry:true,state:ts(t.id).inquiry,onChange(value){
