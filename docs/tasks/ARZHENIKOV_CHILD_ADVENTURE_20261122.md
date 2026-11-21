@@ -93,12 +93,14 @@ Turn the existing Arzhenikov route into a coherent, attractive children's game t
 
 - Actual branch: feat/arzhenikov-child-adventure-20261122
 - Actual base: 8ede1297e8457b14e37da44ef392c0e556a5b58d
-- Actual head / PR / release evidence: to be recorded after validation.
+- PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/731. First published candidate: 3825700610047c5405d17c6ef34ecd7a1e6b4a5e, parent 2de1212d2d4b185a61b5d26709071053d676ab3f, tree ab5b71e33a2242ae2a4ae98f4644775810f56690. Final release evidence is recorded in the PR after validation.
 - External audit and real-child pilot: not performed.
 - Scope deviations: none; the port and second graphics pass follow explicit additional owner instructions in this same task.
 - Local validation: all 512 garden conditions and three independent port arithmetic tests PASS; all changed JavaScript/test syntax and workflow YAML parse PASS. Focused real Chromium interaction checks and the city adventure regression passed during implementation. Full life/port browser attempts were interrupted by local renderer crashes/timeouts at different points; the complete assertions remain enabled for CI and are not reported as passed locally.
 - Independent internal runtime/mathematics review of local source commit 6c7faf33026b96f9d7fa78c98e1b681b19ed1cd3: PASS, with full CI still required. Findings about unfinished notation, same-location album return, packing feedback and a paired-fruit illustration were corrected.
 - Concurrent main 2de1212d2d4b185a61b5d26709071053d676ab3f comes from PR #726 (Vilenkin 5 floor/volume work), nine non-overlapping files. A clean read-only virtual composition preserved the task's 20-file set and affected blob identities. Current remote main/head must still be rechecked immediately before release.
+- Full game CI passed on the first published candidate: https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/44940937251. This includes the original eight-skill route, all 512 garden conditions, garden/life browser gates, all 48 stories, city progression and all 12 port missions at 320/375/1280 px. Artifact 14721392872 contains 23 actual browser screenshots.
+- The first public-navigator run correctly rejected the old HTML receipt. The follow-up changes only this page's three binding fields and appends its source provenance in assets/assistant/page-rollout.json (the 21st task file). It binds the unchanged reviewed HTML to commit 3825700610047c5405d17c6ef34ecd7a1e6b4a5e; no navigator assertion, runtime or other page receipt changes. Five binding negative/control tests and the exact page restoration check pass locally. A new complete CI run remains required for the follow-up head.
 
 ## Required handoff
 
