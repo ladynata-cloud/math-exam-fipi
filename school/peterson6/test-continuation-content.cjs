@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,674);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,686);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -759,6 +759,17 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  }
  for(const [i,raw]of ['24','15','12/5','50/3'].entries())assert(M.equal(r.steps[i].answer,raw));
  const bike=M.parse(of(82)[0].answer),walk=bike.n/bike.d/3.5;assert(Math.abs((bike.n/bike.d-walk)*1.5-16.5)<1e-8);
+}
+{
+ const all=D.lessons.find(l=>l.id==='p17').tasks,of=n=>all.filter(t=>t.source.exercise===n);
+ for(const [n,k]of [[83,4],[84,1],[85,1],[86,3],[87,3]]){assert.equal(of(n).length,k);assert(of(n).every(t=>t.source.page===22));}
+ for(const [i,x]of [36,84,56,64].entries())assert.equal(Number(of(83)[i].steps[1].answer),x);
+ assert.equal(of(84)[0].kind,'manual');assert.equal(of(85)[0].steps.length,12);
+ const expressions=[x=>[x/250,5.08/12.5],y=>[1.32/(3+1/7),1.4*y/(5/6)],z=>[4.8/(2*z+15),.2/5]];
+ for(const [i,t]of of(86).entries()){const r=M.parse(t.answer),[a,b]=expressions[i](r.n/r.d);assert(Math.abs(a-b)<1e-9,t.source.reference);}
+ const figure=of(87);assert.equal(figure[0].answer,'50');assert.equal(figure[1].kind,'manual');assert.equal(figure[2].kind,'manual');
+ const pdfToCm=2.54/72;assert(Math.abs(170.10*pdfToCm-6)<.01);assert(Math.abs(92.65*pdfToCm-3.27)<.01);
+ for(const [span,cm]of [[212.60,7.5],[127.55,4.5],[85.05,3]])assert(Math.abs(span*pdfToCm-cm)<.01);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

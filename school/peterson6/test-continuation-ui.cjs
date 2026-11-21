@@ -1057,3 +1057,24 @@ test('distinguish percent of time from percent of speed and test the zero bounda
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('draw actual moving boats, a quadratic fall curve and two source constructions at the correct scale',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,dist]of [[81,36],[82,84],[83,56],[84,64]]){
+   const c=go(j);set(c[1],2);set(c[2],1);
+   const pos=[...f.d.querySelectorAll('#model [data-boat]')].map(e=>Number(e.dataset.position));assert.equal(pos[1]-pos[0],dist);assert(out().includes('катерами '+dist+' км.'));
+   set(c[0],1);set(c[1],4);set(c[2],1);assert(f.q('#model [data-boat="II"]'));
+  }
+  let c=go(85);assert.equal(f.d.querySelectorAll('#model [data-time]').length,6);set(c[0],5);set(c[1],2);assert(out().includes('31,25 м'));assert.equal(f.q('#model [data-preview-height]').dataset.previewHeight,'31.25');
+  assert(f.q('#model [data-curve="5t²"]'));c=go(86);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,12);
+  const letters=[];for(let j=0;j<12;j++){set(c[0],j);set(c[1],1);if(out().includes('Буква входит в название'))letters.push(f.q(c[0]).selectedOptions[0].textContent);}
+  assert.deepEqual(letters,['А','О','Н','К','Р']);set(c[1],2);assert(f.q('#model table').textContent.includes('ЧехияCZK'));assert.equal(f.q('#model .pm-visual a').target,'_blank');
+  c=go(91);set(c[1],1);assert.equal(Number(f.q('#model [data-segment="AC"]').dataset.cm),9);assert.equal(Number(f.q('#model [data-segment="BD"]').dataset.cm),4.905);
+  c=go(92);set(c[1],1);assert.equal(Number(f.q('#model [data-segment="NK"]').dataset.cm),5);assert.equal(Number(f.q('#model [data-segment="LM"]').dataset.cm),3);assert.equal(Number(f.q('#model [data-segment="LE"]').dataset.cm),2);
+  for(const id of ['LE','MF']){const s=f.q('#model [data-segment="'+id+'"]');assert.equal(s.getAttribute('x1'),s.getAttribute('x2'));}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

@@ -1195,6 +1195,46 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+function boatStudy(direction,variant,time){
+ const [s,fast,slow]=variant===0?[60,7,5]:[75,9,6];
+ const speeds=[[fast,-slow],[-fast,slow],[fast,slow],[slow,fast]][direction-1],x=speeds[0]*time,y=s+speeds[1]*time;
+ const min=-4*fast-6,max=s+4*fast+6,X=n=>15+(n-min)*188/(max-min),svgRoot=svg('svg',{viewBox:'0 0 220 115',class:'pm-chart pcm-group-rule',role:'img','aria-label':'Места старта и положения двух катеров на одной прямой.'});
+ for(const [name,start,pos,velocity,yy,fill]of [['I',0,x,speeds[0],32,'#296f62'],['II',s,y,speeds[1],75,'#925b2d']]){
+  const xx=X(pos),right=velocity>0?1:-1,end=xx+8*right;
+  ln(svgRoot,X(min),yy,X(max),yy,{stroke:'#d8dfdb','stroke-width':1});ln(svgRoot,X(start),yy-4,X(start),yy+4,{stroke:'#66746e','stroke-width':1.5});
+  ln(svgRoot,X(start),yy,xx,yy,{stroke:fill,'stroke-width':2.2});ln(svgRoot,xx,yy,end,yy,{stroke:fill,'stroke-width':2});
+  ln(svgRoot,end,yy,end-3*right,yy-3,{stroke:fill,'stroke-width':1.6});ln(svgRoot,end,yy,end-3*right,yy+3,{stroke:fill,'stroke-width':1.6});
+  svgRoot.append(svg('circle',{cx:xx,cy:yy,r:3,fill,'data-boat':name,'data-position':pos}));txt(svgRoot,xx,yy-9,name,{'font-size':11});
+ }
+ txt(svgRoot,108,104,'Засечки обозначают пристани',{'font-size':10.5});
+ return {picture:svgRoot,s,fast,slow,speeds,d:y-x};
+}
+function fallGraph(t,curve){
+ const fig=svg('svg',{viewBox:'0 0 235 160',class:'pm-chart pcm-group-rule',role:'img','aria-label':'График расстояния в метрах от времени в секундах: h = 5t².'}),X=x=>32+33*x,Y=h=>132-.82*h;
+ ln(fig,32,18,32,132);ln(fig,32,132,213,132);txt(fig,13,15,'h, м',{'font-size':10});txt(fig,210,152,'t, с',{'font-size':10});
+ for(const h of [0,25,50,75,100,125]){ln(fig,30,Y(h),200,Y(h),{stroke:'#d6dfd9','stroke-width':.7});txt(fig,24,Y(h)+3,h,{'font-size':9,'text-anchor':'end'});}
+ for(let x=0;x<=5;x++){ln(fig,X(x),131,X(x),135,{stroke:'#345e50','stroke-width':1});txt(fig,X(x),146,x,{'font-size':9});}
+ if(curve){
+  let path='';for(let i=0;i<=60;i++){const x=i/12;path+=(i?' L ':'M ')+X(x)+' '+Y(5*x*x);}fig.append(svg('path',{d:path,stroke:'#327268','stroke-width':2,fill:'none','data-curve':'5t²'}));
+ }
+ for(let i=0;i<=5;i++)fig.append(svg('circle',{cx:X(i),cy:Y(5*i*i),r:2.3,fill:'#364f47','data-time':i,'data-height':5*i*i}));
+ fig.append(svg('circle',{cx:X(t),cy:Y(5*t*t),r:4,fill:'#ab6324','data-preview-time':t,'data-preview-height':5*t*t}));return fig;
+}
+function copyConstruction(kind,scale){
+ const isRhombus=kind==='rhombus',unit=18*scale;
+ const template=isRhombus?{A:[-3,0],B:[0,1.635],C:[3,0],D:[0,-1.635],O:[0,0]}:{K:[-3.75,0],L:[-2.25,3],M:[2.25,3],N:[3.75,0],E:[-2.25,0],F:[2.25,0]};
+ const points=Object.fromEntries(Object.entries(template).map(([n,[x,y]])=>[n,[112+x*unit,(isRhombus?72:103)-y*unit]]));
+ const root=svg('svg',{viewBox:'0 0 224 154',class:'pm-chart pcm-group-rule',role:'img','aria-label':isRhombus?'Ромб ABCD с пересечением диагоналей в точке O.':'Трапеция KLMN с двумя высотами LE и MF.'});
+ for(const pair of isRhombus?['AB','BC','CD','DA','AC','BD']:['KL','LM','MN','NK','LE','MF']){
+  const [a,b]=pair;ln(root,...points[a],...points[b],{stroke:'#396b5d','stroke-width':1.6,'data-segment':pair,'data-cm':Number((Math.hypot(template[a][0]-template[b][0],template[a][1]-template[b][1])*scale).toFixed(5))});
+ }
+ for(const [n,[x,y]]of Object.entries(points)){
+  const offset=isRhombus?{A:[-9,3],B:[2,-6],C:[9,3],D:[2,12],O:[7,11]}[n]:{K:[-8,11],L:[0,-7],M:[2,-7],N:[8,11],E:[0,12],F:[0,12]}[n];
+  txt(root,x+offset[0],y+offset[1],n,{'font-size':11});
+ }
+ const base=18;ln(root,17,138,17+base,138,{stroke:'#88582e','stroke-width':2});for(const x of [17,17+base])ln(root,x,135,x,141,{stroke:'#88582e','stroke-width':1.3});
+ txt(root,43,142,'1 см в масштабе схемы',{'font-size':10,'text-anchor':'start'});return root;
+}
 function claimExample(key,index){
  const n=[1,4,7][index],[a,b]=[[8,2],[3,3],[2,8]][index],M=root.PetersonMath,frac=(x,y)=>M.answer(M.operation('divide',x,y));
  switch(key){
@@ -1723,6 +1763,10 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p17' && task?.boatGap)return {title:'Два катера на одной прямой',controls:[c('Пристани и скорости',[[0,'60 км; 7 и 5 км/ч'],[1,'75 км; 9 и 6 км/ч']]),c('Время, ч',range(0,4)),c('Результат',[[0,'Сначала посчитаю'],[1,'Проверю промежуток']])],initial:[0,0,0]};
+ if(lesson?.id==='p17' && task?.fallCurve)return {title:'Расстояние за первые пять секунд',controls:[c('Время',range(0,10).map(v=>[v,num(v/2)+' с'])),c('График',[[0,'Точки таблицы'],[1,'Добавить кривую'],[2,'Значение в выбранный момент']])],initial:[0,0]};
+ if(lesson?.id==='p17' && task?.currencyCipher)return {title:'Узнай валюту по двенадцати сравнениям',controls:[c('Буква строки',task.currencyCipher.map(([letter],i)=>[i,letter])),c('Что показать?',[[0,'Исходные отношения'],[1,'Проверка строки'],[2,'Страны и коды']])],initial:[0,0]};
+ if(lesson?.id==='p17' && task?.copyDrawing)return {title:'Перестрой чертёж в нужном масштабе',controls:[c('Множитель',[[0,'Из упражнения'],[1,'Другой пример']]),c('Чертёж',[[0,'Данный'],[1,'После преобразования']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.proportionClaim)return {title:'Подстановка и утверждение для всех чисел',controls:[c('Пример',[[0,'Первый'],[1,'Второй'],[2,'Третий']]),c('Разбор',[[0,'Сначала проверю'],[1,'Вычисления'],[2,'Что показывает пример']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.twoPercentBases)return {title:'Что здесь принято за сто процентов?',controls:[c('Пара чисел',[[0,'28 и 35'],[1,'30 и 50'],[2,'36 и 48']]),c('Направление',[[0,'От большего к меньшему'],[1,'От меньшего к большему']]),c('Сравнение',[[0,'Сначала проверю'],[1,'Отношение и изменение']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.percentTransform)return {title:'Доля результата и процент изменения',controls:[c('Исходное число',[60,120,300]),c('Разбор',[[0,'Сначала посчитаю'],[1,'Новое значение'],[2,'Изменение']])],initial:[60,0]};
@@ -1848,12 +1892,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.squareGridStudy && index<3)hiddenControl=3;
@@ -1863,8 +1907,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2099,6 +2143,35 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===17 && task.boatGap){
+  const r=boatStudy(task.boatGap,a,b);show(r.picture);say('Между пристанями '+r.s+' км. Скорости '+r.fast+' и '+r.slow+' км/ч, время '+b+' ч.');
+  if(state.values[2]===1)say('Расстояние между катерами '+r.d+' км. Относительная скорость изменения промежутка '+(r.speeds[1]-r.speeds[0])+' км/ч.');
+  stepList(['Отметь пристани и положительное направление.','Сначала определи, растёт или уменьшается промежуток.','Проверь свою формулу в начале и после выбранного времени.']);
+ }
+ else if(n===17 && task.fallCurve){
+  const t=a/2;show(fallGraph(t,b>=1));say('Выбран момент времени '+num(t)+' с. Тёмные точки — шесть исходных наблюдений.');
+  if(b===2)say('По приближённой модели h = 5t² получается '+num(5*t*t)+' м. Между измеренными секундами это предсказание модели.');
+  stepList(['Отметь начальную точку.','Для ненулевого времени проверь h/t².','Проведи плавную кривую и сравни её с точками.']);
+ }
+ else if(n===17 && task.currencyCipher){
+  const [letter,...raw]=task.currencyCipher[a],M=root.PetersonMath,values=raw.map(q=>M.parse(q));
+  if(b===2){
+   show(table(['Страна','Код кроны'],[['Дания','DKK'],['Исландия','ISK'],['Норвегия','NOK'],['Чехия','CZK'],['Швеция','SEK']]));
+   const source=el('a','','Таблица валют центрального банка Швеции');source.target='_blank';source.rel='noopener noreferrer';source.href='https://www.riksbank.se/en-gb/statistics/interest-rates-and-exchange-rates/explanations--interest-rates-and-exchange-rates/currency/';show(source);
+   say('Общее русское название «крона» объединяет разные валюты. Их коды различны.');
+  }else{
+   show(quartetFigure(values,b===1?2:0));say('Строка '+letter+'.');
+   if(b===1){const r=compareQuartet(values);say('Произведения '+M.answer(r.outer)+' и '+M.answer(r.inner)+'. '+(r.same?'Буква входит в название.':'Буква не входит в название.'));}
+  }
+  stepList(['Проверь все двенадцать равенств.','Собери буквы верных строк.','Сверь название с обозначениями валют.']);
+ }
+ else if(n===17 && task.copyDrawing){
+  const isRhombus=task.copyDrawing==='rhombus',k=a===0?(isRhombus?1.5:2/3):isRhombus?1.25:.8;
+  show(copyConstruction(task.copyDrawing,b===1?k:1));say('Множитель перехода от показанного исходного чертежа к требуемому: '+root.PetersonMath.answer(root.PetersonMath.parse(isRhombus?(a===0?'3/2':'5/4'):(a===0?'2/3':'4/5')))+'.');
+  if(b===1){say(isRhombus?'Новый AC ≈ '+num(6*k)+' см; BD ≈ '+num(Math.round(3.27*k*10)/10)+' см до десятых.':'Получились основания '+num(7.5*k)+' и '+num(4.5*k)+' см, высота '+num(3*k)+' см.');}
+  stepList(['Выбери удобные длины для построения.','Примени один и тот же множитель к каждой из них.','Сохрани расположение вершин, пересечения и прямые углы.']);
  }
  else
  if(n===17 && task.proportionClaim){
@@ -28878,6 +28951,903 @@ window.PetersonCourse = {
        "Это скорость пешехода. Велосипедист быстрее."
       ]
      ]
+    },
+    {
+     "id": "p17-t82",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 83,
+      "reference": "№83(1)",
+      "subpart": "1"
+     },
+     "title": "К задаче №83(1)",
+     "kind": "choice",
+     "prompt": "Два катера вышли одновременно с пристаней на расстоянии s км. Скорости v₁ > v₂. Катера движутся навстречу. Составь формулу расстояния d между ними через t часов, до возможной встречи. Для промежуточной проверки возьми s = 60, v₁ = 7, v₂ = 5.",
+     "answer": "d = s − (v₁ + v₂)t",
+     "steps": [
+      {
+       "prompt": "На сколько километров за час меняется промежуток в числовой проверке?",
+       "answer": "12",
+       "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+       "explanation": "d = s − (v₁ + v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 36 км."
+      },
+      {
+       "prompt": "Расстояние через 2 часа в этом примере, км?",
+       "answer": "36",
+       "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+       "explanation": "d = s − (v₁ + v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 36 км."
+      }
+     ],
+     "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+     "explanation": "d = s − (v₁ + v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 36 км.",
+     "skills": [
+      "ratio",
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери полный ответ.",
+     "boatGap": 1,
+     "errorCues": [
+      [
+       "d = s − (v₁ − v₂)t",
+       "Начерти направления обоих катеров и подпиши знаки изменения расстояния."
+      ],
+      [
+       "d = (v₁ + v₂)t",
+       "При t = 0 формула должна дать начальное расстояние s."
+      ]
+     ],
+     "choices": [
+      "d = s − (v₁ + v₂)t",
+      "d = s − (v₁ − v₂)t",
+      "d = (v₁ + v₂)t"
+     ]
+    },
+    {
+     "id": "p17-t83",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 83,
+      "reference": "№83(2)",
+      "subpart": "2"
+     },
+     "title": "К задаче №83(2)",
+     "kind": "choice",
+     "prompt": "Два катера вышли одновременно с пристаней на расстоянии s км. Скорости v₁ > v₂. Катера расходятся от пристаней в противоположные стороны. Составь формулу расстояния d между ними через t часов, до возможной встречи. Для промежуточной проверки возьми s = 60, v₁ = 7, v₂ = 5.",
+     "answer": "d = s + (v₁ + v₂)t",
+     "steps": [
+      {
+       "prompt": "На сколько километров за час меняется промежуток в числовой проверке?",
+       "answer": "12",
+       "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+       "explanation": "d = s + (v₁ + v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 84 км."
+      },
+      {
+       "prompt": "Расстояние через 2 часа в этом примере, км?",
+       "answer": "84",
+       "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+       "explanation": "d = s + (v₁ + v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 84 км."
+      }
+     ],
+     "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+     "explanation": "d = s + (v₁ + v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 84 км.",
+     "skills": [
+      "ratio",
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери полный ответ.",
+     "boatGap": 2,
+     "errorCues": [
+      [
+       "d = s + (v₁ − v₂)t",
+       "Начерти направления обоих катеров и подпиши знаки изменения расстояния."
+      ],
+      [
+       "d = (v₁ + v₂)t",
+       "При t = 0 формула должна дать начальное расстояние s."
+      ]
+     ],
+     "choices": [
+      "d = s + (v₁ − v₂)t",
+      "d = s + (v₁ + v₂)t",
+      "d = (v₁ + v₂)t"
+     ]
+    },
+    {
+     "id": "p17-t84",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 83,
+      "reference": "№83(3)",
+      "subpart": "3"
+     },
+     "title": "К задаче №83(3)",
+     "kind": "choice",
+     "prompt": "Два катера вышли одновременно с пристаней на расстоянии s км. Скорости v₁ > v₂. Катера более быстрый догоняет медленного в одном направлении. Составь формулу расстояния d между ними через t часов, до возможной встречи. Для промежуточной проверки возьми s = 60, v₁ = 7, v₂ = 5.",
+     "answer": "d = s − (v₁ − v₂)t",
+     "steps": [
+      {
+       "prompt": "На сколько километров за час меняется промежуток в числовой проверке?",
+       "answer": "2",
+       "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+       "explanation": "d = s − (v₁ − v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 56 км."
+      },
+      {
+       "prompt": "Расстояние через 2 часа в этом примере, км?",
+       "answer": "56",
+       "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+       "explanation": "d = s − (v₁ − v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 56 км."
+      }
+     ],
+     "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+     "explanation": "d = s − (v₁ − v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 56 км.",
+     "skills": [
+      "ratio",
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери полный ответ.",
+     "boatGap": 3,
+     "errorCues": [
+      [
+       "d = s + (v₁ − v₂)t",
+       "Начерти направления обоих катеров и подпиши знаки изменения расстояния."
+      ],
+      [
+       "d = (v₁ + v₂)t",
+       "При t = 0 формула должна дать начальное расстояние s."
+      ]
+     ],
+     "choices": [
+      "d = s + (v₁ − v₂)t",
+      "d = (v₁ + v₂)t",
+      "d = s − (v₁ − v₂)t"
+     ]
+    },
+    {
+     "id": "p17-t85",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 83,
+      "reference": "№83(4)",
+      "subpart": "4"
+     },
+     "title": "К задаче №83(4)",
+     "kind": "choice",
+     "prompt": "Два катера вышли одновременно с пристаней на расстоянии s км. Скорости v₁ > v₂. Катера более быстрый идёт впереди медленного в одном направлении. Составь формулу расстояния d между ними через t часов, до возможной встречи. Для промежуточной проверки возьми s = 60, v₁ = 7, v₂ = 5.",
+     "answer": "d = s + (v₁ − v₂)t",
+     "steps": [
+      {
+       "prompt": "На сколько километров за час меняется промежуток в числовой проверке?",
+       "answer": "2",
+       "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+       "explanation": "d = s + (v₁ − v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 64 км."
+      },
+      {
+       "prompt": "Расстояние через 2 часа в этом примере, км?",
+       "answer": "64",
+       "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+       "explanation": "d = s + (v₁ − v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 64 км."
+      }
+     ],
+     "hint": "Отметь, увеличивается или уменьшается исходный промежуток s. Если направления противоположны, действует сумма скоростей; для одного направления нужна их разность.",
+     "explanation": "d = s + (v₁ − v₂)t. До встречи расстояние остаётся неотрицательным. При s = 60 км, v₁ = 7 и v₂ = 5 км/ч за два часа получится 64 км.",
+     "skills": [
+      "ratio",
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери полный ответ.",
+     "boatGap": 4,
+     "errorCues": [
+      [
+       "d = s − (v₁ − v₂)t",
+       "Начерти направления обоих катеров и подпиши знаки изменения расстояния."
+      ],
+      [
+       "d = (v₁ + v₂)t",
+       "При t = 0 формула должна дать начальное расстояние s."
+      ]
+     ],
+     "choices": [
+      "d = s + (v₁ − v₂)t",
+      "d = s − (v₁ − v₂)t",
+      "d = (v₁ + v₂)t"
+     ]
+    },
+    {
+     "id": "p17-t86",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 84,
+      "reference": "№84"
+     },
+     "title": "К задаче №84",
+     "kind": "manual",
+     "prompt": "По таблице падения в течение первых пяти секунд подбери формулу h(t) и построй график в тетради. При t в секундах 0, 1, 2, 3, 4, 5 пройденные расстояния h в метрах равны 0, 5, 20, 45, 80, 125. Обозначь масштаб каждой оси.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Вычисли h/t² при t = 2.",
+       "answer": "5",
+       "hint": "Сравни h не с t, а с t². При t = 0 нельзя делить на t², поэтому проверь начало координат отдельно.",
+       "explanation": "В таблице h/t² = 5 при t = 1, 2, 3, 4, 5. Подходит приближённая модель h = 5t², при t = 0 она также даёт 0. График на 0 ≤ t ≤ 5 — плавная возрастающая ветвь параболы, а не прямые отрезки с одинаковым наклоном."
+      },
+      {
+       "prompt": "Какое расстояние даёт модель при t = 4, м?",
+       "answer": "80",
+       "hint": "Сравни h не с t, а с t². При t = 0 нельзя делить на t², поэтому проверь начало координат отдельно.",
+       "explanation": "В таблице h/t² = 5 при t = 1, 2, 3, 4, 5. Подходит приближённая модель h = 5t², при t = 0 она также даёт 0. График на 0 ≤ t ≤ 5 — плавная возрастающая ветвь параболы, а не прямые отрезки с одинаковым наклоном."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши h(t), начерти оси, отметь все шесть данных и проведи график модели.",
+       "hint": "Сравни h не с t, а с t². При t = 0 нельзя делить на t², поэтому проверь начало координат отдельно.",
+       "explanation": "В таблице h/t² = 5 при t = 1, 2, 3, 4, 5. Подходит приближённая модель h = 5t², при t = 0 она также даёт 0. График на 0 ≤ t ≤ 5 — плавная возрастающая ветвь параболы, а не прямые отрезки с одинаковым наклоном."
+      }
+     ],
+     "hint": "Сравни h не с t, а с t². При t = 0 нельзя делить на t², поэтому проверь начало координат отдельно.",
+     "explanation": "В таблице h/t² = 5 при t = 1, 2, 3, 4, 5. Подходит приближённая модель h = 5t², при t = 0 она также даёт 0. График на 0 ≤ t ≤ 5 — плавная возрастающая ветвь параболы, а не прямые отрезки с одинаковым наклоном.",
+     "skills": [
+      "rectangle-area",
+      "coefficient"
+     ],
+     "finalLabel": "Сохрани построение или его описание.",
+     "fallCurve": true
+    },
+    {
+     "id": "p17-t87",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 85,
+      "reference": "№85"
+     },
+     "title": "К задаче №85",
+     "kind": "choice",
+     "prompt": "Из букв верных равенств составь название денежной единицы. Назови страны с такими валютами и сравни их обозначения в модели.",
+     "answer": "Крона",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Д. Равны ли 0,2 : 6 и 1 : 1/3?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Нет",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 1/15 и 6."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Б. Равны ли 2 : 3 и 0,7 : 10,5?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Нет",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 21 и 21/10."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Ь. Равны ли 1,75 : 0,2 и 3,5 : 4?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Нет",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 7 и 7/10."
+      },
+      {
+       "kind": "choice",
+       "prompt": "А. Равны ли 2 : 1/3 и 3 : 0,5?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Да",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 1 и 1."
+      },
+      {
+       "kind": "choice",
+       "prompt": "О. Равны ли 2,7 : 0,36 и 3 : 0,4?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Да",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 27/25 и 27/25."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Н. Равны ли 1 2/3 : 1/6 и 0,1 : 0,01?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Да",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 1/60 и 1/60."
+      },
+      {
+       "kind": "choice",
+       "prompt": "П. Равны ли 1,5 : 3 и 3 : 4?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Нет",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 6 и 9."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Л. Равны ли 1 : 7 и 10 : 0,7?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Нет",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 7/10 и 70."
+      },
+      {
+       "kind": "choice",
+       "prompt": "У. Равны ли 6,3 : 3 и 2 : 100?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Нет",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 630 и 6."
+      },
+      {
+       "kind": "choice",
+       "prompt": "С. Равны ли 0,9 : 6 и 0,06 : 4?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Нет",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 18/5 и 9/25."
+      },
+      {
+       "kind": "choice",
+       "prompt": "К. Равны ли 2,4 : 0,6 и 20 : 5?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Да",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 12 и 12."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Р. Равны ли 0,04 : 0,8 и 0,5 : 10?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Да",
+       "hint": "Сопоставь крайние и средние множители.",
+       "explanation": "Перекрёстные произведения 2/5 и 2/5."
+      }
+     ],
+     "hint": "Решай каждую строку отдельно. Переставь буквы только тех строк, в которых равенство действительно верно.",
+     "explanation": "Верные буквы А, О, Н, К, Р образуют слово «крона». Так по-русски называются разные национальные валюты Дании (DKK), Исландии (ISK), Норвегии (NOK), Чехии (CZK) и Швеции (SEK).",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "finalLabel": "Выбери полный ответ.",
+     "currencyCipher": [
+      [
+       "Д",
+       ".2",
+       "6",
+       "1",
+       "1/3"
+      ],
+      [
+       "Б",
+       "2",
+       "3",
+       ".7",
+       "10.5"
+      ],
+      [
+       "Ь",
+       "1.75",
+       ".2",
+       "3.5",
+       "4"
+      ],
+      [
+       "А",
+       "2",
+       "1/3",
+       "3",
+       ".5"
+      ],
+      [
+       "О",
+       "2.7",
+       ".36",
+       "3",
+       ".4"
+      ],
+      [
+       "Н",
+       "1 2/3",
+       "1/6",
+       ".1",
+       ".01"
+      ],
+      [
+       "П",
+       "1.5",
+       "3",
+       "3",
+       "4"
+      ],
+      [
+       "Л",
+       "1",
+       "7",
+       "10",
+       ".7"
+      ],
+      [
+       "У",
+       "6.3",
+       "3",
+       "2",
+       "100"
+      ],
+      [
+       "С",
+       ".9",
+       "6",
+       ".06",
+       "4"
+      ],
+      [
+       "К",
+       "2.4",
+       ".6",
+       "20",
+       "5"
+      ],
+      [
+       "Р",
+       ".04",
+       ".8",
+       ".5",
+       "10"
+      ]
+     ],
+     "figure": {
+      "type": "coded-ratios",
+      "rows": [
+       [
+        "Д",
+        ".2",
+        "6",
+        "1",
+        "1/3"
+       ],
+       [
+        "Б",
+        "2",
+        "3",
+        ".7",
+        "10.5"
+       ],
+       [
+        "Ь",
+        "1.75",
+        ".2",
+        "3.5",
+        "4"
+       ],
+       [
+        "А",
+        "2",
+        "1/3",
+        "3",
+        ".5"
+       ],
+       [
+        "О",
+        "2.7",
+        ".36",
+        "3",
+        ".4"
+       ],
+       [
+        "Н",
+        "1 2/3",
+        "1/6",
+        ".1",
+        ".01"
+       ],
+       [
+        "П",
+        "1.5",
+        "3",
+        "3",
+        "4"
+       ],
+       [
+        "Л",
+        "1",
+        "7",
+        "10",
+        ".7"
+       ],
+       [
+        "У",
+        "6.3",
+        "3",
+        "2",
+        "100"
+       ],
+       [
+        "С",
+        ".9",
+        "6",
+        ".06",
+        "4"
+       ],
+       [
+        "К",
+        "2.4",
+        ".6",
+        "20",
+        "5"
+       ],
+       [
+        "Р",
+        ".04",
+        ".8",
+        ".5",
+        "10"
+       ]
+      ],
+      "caption": "Знак дроби внутри числа относится к этому числу; двоеточие отделяет члены отношения."
+     },
+     "errorCues": [
+      [
+       "Рубль",
+       "Проверь буквы: Ь не проходит проверку произведений."
+      ],
+      [
+       "Доллар",
+       "Сверь строки Д и Л. В обеих отношения не равны."
+      ]
+     ],
+     "choices": [
+      "Рубль",
+      "Доллар",
+      "Крона"
+     ]
+    },
+    {
+     "id": "p17-t88",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 86,
+      "reference": "№86(1)",
+      "subpart": "1"
+     },
+     "title": "К задаче №86(1)",
+     "kind": "number",
+     "prompt": "Реши уравнение x : 250 = 5,08 : 12,5. Проверь корень в исходной пропорции.",
+     "answer": "508/5",
+     "steps": [
+      {
+       "prompt": "Коэффициент при неизвестном в разности «крайние минус средние»?",
+       "answer": "25/2",
+       "hint": "Сначала сравни произведения крайних и средних членов. Скобку умножай целиком.",
+       "explanation": "После переноса переменных влево и постоянных вправо получаем (25/2) × x = 1270. Корень 508/5."
+      },
+      {
+       "prompt": "Что получится справа после переноса постоянного члена?",
+       "answer": "1270",
+       "hint": "Сначала сравни произведения крайних и средних членов. Скобку умножай целиком.",
+       "explanation": "После переноса переменных влево и постоянных вправо получаем (25/2) × x = 1270. Корень 508/5."
+      }
+     ],
+     "hint": "Сначала сравни произведения крайних и средних членов. Скобку умножай целиком.",
+     "explanation": "После переноса переменных влево и постоянных вправо получаем (25/2) × x = 1270. Корень 508/5.",
+     "skills": [
+      "proportion",
+      "linear-equation"
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       [
+        "1",
+        "0"
+       ],
+       "250",
+       "5.08",
+       "12.5"
+      ],
+      "root": "508/5",
+      "printed": "x : 250 = 5,08 : 12,5"
+     },
+     "errorCues": [
+      [
+       "513/5",
+       "Перепроверь подстановку в оба отношения."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t89",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 86,
+      "reference": "№86(2)",
+      "subpart": "2"
+     },
+     "title": "К задаче №86(2)",
+     "kind": "number",
+     "prompt": "Реши уравнение 1,32 : 3 ⅐ = (1,4y) : (5/6). Проверь корень в исходной пропорции.",
+     "answer": "1/4",
+     "steps": [
+      {
+       "prompt": "Коэффициент при неизвестном в разности «крайние минус средние»?",
+       "answer": "-22/5",
+       "hint": "Сначала сравни произведения крайних и средних членов. Скобку умножай целиком.",
+       "explanation": "После переноса переменных влево и постоянных вправо получаем (-22/5) × y = -11/10. Корень 1/4."
+      },
+      {
+       "prompt": "Что получится справа после переноса постоянного члена?",
+       "answer": "-11/10",
+       "hint": "Сначала сравни произведения крайних и средних членов. Скобку умножай целиком.",
+       "explanation": "После переноса переменных влево и постоянных вправо получаем (-22/5) × y = -11/10. Корень 1/4."
+      }
+     ],
+     "hint": "Сначала сравни произведения крайних и средних членов. Скобку умножай целиком.",
+     "explanation": "После переноса переменных влево и постоянных вправо получаем (-22/5) × y = -11/10. Корень 1/4.",
+     "skills": [
+      "proportion",
+      "linear-equation"
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "y",
+      "terms": [
+       "1.32",
+       "22/7",
+       [
+        "1.4",
+        "0"
+       ],
+       "5/6"
+      ],
+      "root": "1/4",
+      "printed": "1,32 : 3 ⅐ = (1,4y) : (5/6)"
+     },
+     "errorCues": [
+      [
+       "5/4",
+       "Перепроверь подстановку в оба отношения."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t90",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 86,
+      "reference": "№86(3)",
+      "subpart": "3"
+     },
+     "title": "К задаче №86(3)",
+     "kind": "number",
+     "prompt": "Реши уравнение 4,8 : (2z + 15) = 0,2 : 5. Проверь корень в исходной пропорции.",
+     "answer": "105/2",
+     "steps": [
+      {
+       "prompt": "Коэффициент при неизвестном в разности «крайние минус средние»?",
+       "answer": "-2/5",
+       "hint": "Сначала сравни произведения крайних и средних членов. Скобку умножай целиком.",
+       "explanation": "После переноса переменных влево и постоянных вправо получаем (-2/5) × z = -21. Корень 105/2. Значение −7,5 исключается из-за нулевого знаменателя."
+      },
+      {
+       "prompt": "Что получится справа после переноса постоянного члена?",
+       "answer": "-21",
+       "hint": "Сначала сравни произведения крайних и средних членов. Скобку умножай целиком.",
+       "explanation": "После переноса переменных влево и постоянных вправо получаем (-2/5) × z = -21. Корень 105/2. Значение −7,5 исключается из-за нулевого знаменателя."
+      }
+     ],
+     "hint": "Сначала сравни произведения крайних и средних членов. Скобку умножай целиком.",
+     "explanation": "После переноса переменных влево и постоянных вправо получаем (-2/5) × z = -21. Корень 105/2. Значение −7,5 исключается из-за нулевого знаменателя.",
+     "skills": [
+      "proportion",
+      "linear-equation"
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "z",
+      "terms": [
+       "4.8",
+       [
+        "2",
+        "15"
+       ],
+       ".2",
+       "5"
+      ],
+      "root": "105/2",
+      "printed": "4,8 : (2z + 15) = 0,2 : 5"
+     },
+     "errorCues": [
+      [
+       "107/2",
+       "Перепроверь подстановку в оба отношения."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t91",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 87,
+      "reference": "№87(1)",
+      "subpart": "1"
+     },
+     "title": "К задаче №87(1)",
+     "kind": "number",
+     "prompt": "Все длины увеличили в отношении 3 : 2. Какой процент оригинала составляет копия и на сколько процентов выросла каждая длина? В итоге укажи процент прироста.",
+     "answer": "50",
+     "steps": [
+      {
+       "prompt": "Коэффициент увеличения?",
+       "answer": "3/2",
+       "hint": "Каждая длина увеличилась в 3/2 раза. Вырази отдельно новую длину в процентах и прибавку относительно исходной.",
+       "explanation": "3/2 = 150%. Копия составляет 150% исходной длины. Увеличение самой длины равно 150% − 100% = 50%."
+      },
+      {
+       "prompt": "Сколько процентов от исходной длины составляет новая?",
+       "answer": "150",
+       "hint": "Каждая длина увеличилась в 3/2 раза. Вырази отдельно новую длину в процентах и прибавку относительно исходной.",
+       "explanation": "3/2 = 150%. Копия составляет 150% исходной длины. Увеличение самой длины равно 150% − 100% = 50%."
+      }
+     ],
+     "hint": "Каждая длина увеличилась в 3/2 раза. Вырази отдельно новую длину в процентах и прибавку относительно исходной.",
+     "explanation": "3/2 = 150%. Копия составляет 150% исходной длины. Увеличение самой длины равно 150% − 100% = 50%.",
+     "skills": [
+      "scale",
+      "percent-ratio"
+     ],
+     "finalLabel": "Введи числовой ответ.",
+     "copyDrawing": "rhombus",
+     "errorCues": [
+      [
+       "150",
+       "Это новая длина в процентах исходной. Для прироста вычти 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t92",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 87,
+      "reference": "№87(2)",
+      "subpart": "2"
+     },
+     "title": "К задаче №87(2)",
+     "kind": "manual",
+     "prompt": "Построй копию четырёхугольника ABCD с диагоналями AC и BD, увеличив исходную схему в 3/2 раза. Для доступного экранного образца измерения исходной страницы приведены рядом с рисунком. Сохрани исходные измерения и выбранный масштаб.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Если AC около 6 см, какой длины будет AC в копии, см?",
+       "answer": "9",
+       "hint": "Вначале измерь обе диагонали оригинала. Для копии умножь каждую на 3/2. Через общую середину восстанови четыре вершины.",
+       "explanation": "В исходном PDF AC около 6,0 см, BD около 3,27 см. В полуторной копии это около 9,0 и 4,9 см. Оба отрезка сохраняют направление, их середины совпадают. При измерении собственного экземпляра принимай воспроизводимую точность своей линейки."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Построй две увеличенные диагонали, отметь O и соедини вершины. Запиши обе исходные и обе новые длины.",
+       "hint": "Вначале измерь обе диагонали оригинала. Для копии умножь каждую на 3/2. Через общую середину восстанови четыре вершины.",
+       "explanation": "В исходном PDF AC около 6,0 см, BD около 3,27 см. В полуторной копии это около 9,0 и 4,9 см. Оба отрезка сохраняют направление, их середины совпадают. При измерении собственного экземпляра принимай воспроизводимую точность своей линейки."
+      }
+     ],
+     "hint": "Вначале измерь обе диагонали оригинала. Для копии умножь каждую на 3/2. Через общую середину восстанови четыре вершины.",
+     "explanation": "В исходном PDF AC около 6,0 см, BD около 3,27 см. В полуторной копии это около 9,0 и 4,9 см. Оба отрезка сохраняют направление, их середины совпадают. При измерении собственного экземпляра принимай воспроизводимую точность своей линейки.",
+     "skills": [
+      "scale",
+      "ratio"
+     ],
+     "finalLabel": "Сохрани построение или его описание.",
+     "copyDrawing": "rhombus",
+     "figure": {
+      "type": "copy-construction",
+      "drawing": "rhombus",
+      "caption": "Печатный ориентир: AC ≈ 6 см, BD ≈ 3,27 см. Ширина экрана меняет видимый размер рисунка."
+     }
+    },
+    {
+     "id": "p17-t93",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 22,
+      "exercise": 87,
+      "reference": "№87(3)",
+      "subpart": "3"
+     },
+     "title": "К задаче №87(3)",
+     "kind": "manual",
+     "prompt": "По увеличенной в 3/2 раза копии трапеции KLMN восстанови исходную трапецию с высотами LE и MF. Пользуйся измерениями своего экземпляра или печатными ориентирами под авторской схемой.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Исходная длина нижнего основания, если на копии 7,5 см?",
+       "answer": "5",
+       "hint": "Теперь дана увеличенная копия. Для возвращения к оригиналу умножай её размеры на 2/3. Восстанови и основания, и высоту.",
+       "explanation": "Нижнее и верхнее основания копии около 7,5 см и 4,5 см, высота около 3 см. В оригинале получатся 5 см, 3 см и 2 см. Боковые выступы нижнего основания равны и составляют по 1 см в оригинале."
+      },
+      {
+       "prompt": "Исходная высота при высоте копии 3 см?",
+       "answer": "2",
+       "hint": "Теперь дана увеличенная копия. Для возвращения к оригиналу умножай её размеры на 2/3. Восстанови и основания, и высоту.",
+       "explanation": "Нижнее и верхнее основания копии около 7,5 см и 4,5 см, высота около 3 см. В оригинале получатся 5 см, 3 см и 2 см. Боковые выступы нижнего основания равны и составляют по 1 см в оригинале."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проведи оба основания, восстанови высоты и боковые стороны. Сохрани расчёт реальных размеров.",
+       "hint": "Теперь дана увеличенная копия. Для возвращения к оригиналу умножай её размеры на 2/3. Восстанови и основания, и высоту.",
+       "explanation": "Нижнее и верхнее основания копии около 7,5 см и 4,5 см, высота около 3 см. В оригинале получатся 5 см, 3 см и 2 см. Боковые выступы нижнего основания равны и составляют по 1 см в оригинале."
+      }
+     ],
+     "hint": "Теперь дана увеличенная копия. Для возвращения к оригиналу умножай её размеры на 2/3. Восстанови и основания, и высоту.",
+     "explanation": "Нижнее и верхнее основания копии около 7,5 см и 4,5 см, высота около 3 см. В оригинале получатся 5 см, 3 см и 2 см. Боковые выступы нижнего основания равны и составляют по 1 см в оригинале.",
+     "skills": [
+      "scale",
+      "ratio"
+     ],
+     "finalLabel": "Сохрани построение или его описание.",
+     "copyDrawing": "trapezoid",
+     "figure": {
+      "type": "copy-construction",
+      "drawing": "trapezoid",
+      "caption": "Печатные ориентиры копии: KN ≈ 7,5 см, LM ≈ 4,5 см, LE ≈ MF ≈ 3 см."
+     }
     }
    ],
    "orderBySource": true
