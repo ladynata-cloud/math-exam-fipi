@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T22:25:21Z",
-  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–652, with 1,156 reviewed cards. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T22:29:04Z",
+  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–660, with 1,170 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1970,6 +1970,29 @@
       ],
       "evidence": "tools/stereo-textbook/coordinate-span-ratios.json",
       "mathematicalReport": "tools/stereo-textbook/coordinate-span-ratios.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 169, source triples on printed page 169 and keys on 270, independent directed differences, collinearity, planes and affine barycentres.",
+      "reviewedAt": "2026-11-21T22:29:04Z",
+      "scope": "All original position vectors, directed triangle and parallelogram paths, three exact line and three plane decisions, with the centroid median theorem and transferred-origin examples from printed page 169.",
+      "cardIds": [
+        "ex-main-0653",
+        "ex-main-0654",
+        "ex-main-0655-a",
+        "ex-main-0655-b",
+        "ex-main-0655-c",
+        "ex-main-0656",
+        "ex-main-0657",
+        "ex-main-0658-a",
+        "ex-main-0658-b",
+        "ex-main-0658-c",
+        "ex-main-0659-a",
+        "ex-main-0659-b",
+        "ex-main-0659-c",
+        "ex-main-0660"
+      ],
+      "evidence": "tools/stereo-textbook/spatial-points-and-centroid.json",
+      "mathematicalReport": "tools/stereo-textbook/spatial-points-and-centroid.test.cjs"
     }
   ],
   "cards": [
@@ -6596,6 +6619,62 @@
     {
       "id": "ex-main-0652-f",
       "sha256": "dd256bb456a0761cf58788772fe9a5703f02ec81930c31d3e88e5e49513c04a4"
+    },
+    {
+      "id": "ex-main-0653",
+      "sha256": "2c8703fb1b1814cd19bdc163a5c4b9a82aa45e34676c274db95a85f59de7756e"
+    },
+    {
+      "id": "ex-main-0654",
+      "sha256": "18384e90753a821d9ca96b48abc5675a7d5fd369ae0816f930f41d9d3f30574c"
+    },
+    {
+      "id": "ex-main-0655-a",
+      "sha256": "7d66217864d438aa0f2a297dcc272dc58bbaa5db8eca0b61b82278b57ab8a908"
+    },
+    {
+      "id": "ex-main-0655-b",
+      "sha256": "c9de62b5355607ddbca5b6a4b5c9fc06e45862908858c272507ff5dec466cdbb"
+    },
+    {
+      "id": "ex-main-0655-c",
+      "sha256": "42cad5a8b81fc176c0a57e52f6b8f6664821d16785e76f2a5f1abaf3fef2834d"
+    },
+    {
+      "id": "ex-main-0656",
+      "sha256": "769290ec6bd254bab057838d6b1fc1fd0f9f21af8c15f5cfa52e7589892b9c8e"
+    },
+    {
+      "id": "ex-main-0657",
+      "sha256": "c2109759035300fe1760fa95aa01605cba81c1586247817555d9e58e3d3613c9"
+    },
+    {
+      "id": "ex-main-0658-a",
+      "sha256": "5df08e3d94aabe8d3528bdf5a1292f4c9fd47eb9ca9a35eee18cf9f8de4c187f"
+    },
+    {
+      "id": "ex-main-0658-b",
+      "sha256": "ae25554ae89aea2d0102243c3245ce7bec9d888ddec9df1661e6f63a22fc8f23"
+    },
+    {
+      "id": "ex-main-0658-c",
+      "sha256": "44ec19a95d4081f7bb294aafa99a1ea8e0afd29cf606509f247e3ef54600556e"
+    },
+    {
+      "id": "ex-main-0659-a",
+      "sha256": "4b61d394d21d61f9eeb923ccd4e064845aced0dc34ea7ce5dcf3882c04a3554a"
+    },
+    {
+      "id": "ex-main-0659-b",
+      "sha256": "9a23c46304052fc56735196c95e266b93b53a4579d1344a24d7cd48338af3033"
+    },
+    {
+      "id": "ex-main-0659-c",
+      "sha256": "48a078928ec607c7eb8f9785cf413d9ee60048c551c5d4f7d1e467219aa6d355"
+    },
+    {
+      "id": "ex-main-0660",
+      "sha256": "4dd6b9faf7f2da45190005eb14716c395f37c55e2024f3adc64f7896e4388d84"
     }
   ]
 }

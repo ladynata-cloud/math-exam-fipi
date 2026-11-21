@@ -1,0 +1,312 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0655-a",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Как пройти от A к B по трём осям",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "655",
+    "chapter": "VII. Метод координат в пространстве. Движения",
+    "printedPages": [
+      169
+    ],
+    "pdfPages": [
+      171
+    ],
+    "subpart": "а"
+  },
+  "statement": {
+    "text": "A=(3;-1;2), B=(2;-1;4). Начало стрелки находится в A.",
+    "goal": "Найди координаты AB."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "A — начало стрелки, B — её конец. OA и OB отсчитываются от O.",
+    "model": {
+      "points": {
+        "O": [
+          0,
+          0,
+          0
+        ],
+        "X": [
+          4.5,
+          0,
+          0
+        ],
+        "Y": [
+          0,
+          4.5,
+          0
+        ],
+        "Z": [
+          0,
+          0,
+          4.5
+        ],
+        "_x": [
+          -4.5,
+          0,
+          0
+        ],
+        "_y": [
+          0,
+          -4.5,
+          0
+        ],
+        "_z": [
+          0,
+          0,
+          -4.5
+        ],
+        "A": [
+          3,
+          -1,
+          2
+        ],
+        "B": [
+          2,
+          -1,
+          4
+        ],
+        "D": [
+          -1,
+          0,
+          2
+        ],
+        "S": [
+          0.25,
+          -0.5,
+          2
+        ],
+        "T": [
+          -0.75,
+          -0.5,
+          4
+        ]
+      },
+      "edges": [
+        [
+          "O",
+          "X"
+        ],
+        [
+          "O",
+          "Y"
+        ],
+        [
+          "O",
+          "Z"
+        ],
+        [
+          "_x",
+          "O"
+        ],
+        [
+          "_y",
+          "O"
+        ],
+        [
+          "_z",
+          "O"
+        ]
+      ],
+      "faces": [],
+      "arrows": [
+        [
+          "O",
+          "X"
+        ],
+        [
+          "O",
+          "Y"
+        ],
+        [
+          "O",
+          "Z"
+        ],
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "B"
+        ],
+        [
+          "A",
+          "B"
+        ],
+        [
+          "O",
+          "D"
+        ],
+        [
+          "S",
+          "T"
+        ],
+        [
+          "T",
+          "S"
+        ]
+      ],
+      "labelNames": [
+        "O",
+        "X",
+        "Y",
+        "Z",
+        "A",
+        "B",
+        "D",
+        "S",
+        "T"
+      ],
+      "views": {
+        "neutral": {
+          "label": "A — начало стрелки, B — её конец. OA и OB отсчитываются от O.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "O",
+              "B"
+            ],
+            [
+              "A",
+              "B"
+            ]
+          ]
+        },
+        "difference": {
+          "label": "OD получена переносом AB к началу координат.",
+          "segments": [
+            [
+              "O",
+              "D"
+            ],
+            [
+              "A",
+              "B"
+            ]
+          ]
+        },
+        "new": {
+          "label": "ST — ещё один перенос AB. При движении от T к S меняются все знаки.",
+          "segments": [
+            [
+              "S",
+              "T"
+            ],
+            [
+              "T",
+              "S"
+            ],
+            [
+              "A",
+              "B"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "В каком порядке вычитать?",
+      "text": "Вычитай A из B покомпонентно. Иначе получится BA.",
+      "view": "difference"
+    },
+    {
+      "id": "h2",
+      "question": "На какой знак обратить внимание?",
+      "text": "У A и B совпадают ординаты. Их разность нуль.",
+      "view": "neutral"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Разность по x",
+      "prompt": "Найди абсциссу AB.",
+      "input": {
+        "prompt": "Разность по x",
+        "accepted": [
+          "-1"
+        ],
+        "feedback": "Абсцисса конца минус абсцисса начала. У A и B совпадают ординаты. Их разность нуль."
+      },
+      "explanation": "ABₓ=2−(3).",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-073"
+        }
+      ],
+      "view": "difference"
+    },
+    {
+      "id": "step-2",
+      "title": "Разность по y",
+      "prompt": "Найди ординату AB.",
+      "input": {
+        "prompt": "Разность по y",
+        "accepted": [
+          "0"
+        ],
+        "feedback": "У A и B совпадают ординаты. Их разность нуль."
+      },
+      "explanation": "ABᵧ=-1−(-1).",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-073"
+        }
+      ],
+      "view": "neutral"
+    },
+    {
+      "id": "step-3",
+      "title": "Другая стрелка",
+      "prompt": "При ST=AB запиши координаты обратной TS.",
+      "input": {
+        "prompt": "Другая стрелка",
+        "accepted": [
+          "1;0;-2"
+        ],
+        "feedback": "Поменяй знак у каждой компоненты AB. Ноль сохраняется."
+      },
+      "explanation": "TS=−AB.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-073"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "-1;0;2"
+    ],
+    "prompt": "Запиши x;y;z для AB.",
+    "feedback": "Разность B−A даёт (-1;0;2)."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 169, source triples on printed page 169 and keys on 270, independent directed differences, collinearity, planes and affine barycentres.",
+    "at": "2026-11-21T22:29:04Z"
+  }
+}
