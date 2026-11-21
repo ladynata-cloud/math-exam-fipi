@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "041bb74a218267e572a9ca98503b9789cace3cecc9a556ed1123d9b7567fb147",
-      "afterSha256": "25edab60be434fe281979bc130084d7f559b241f91f319b402d6b96cad16b209",
+      "beforeSha256": "c404cc8bce2764d1464252ab1d1b14593c46bfdf667aefd8da1adc71874f403c",
+      "afterSha256": "4a40811f18485bd7eef145614dd4bb8da87387eebc1d7452451a1f7d1cff22c7",
       "placement": "before-head-close",
-      "sourceSha": "0ca5de06e4f79bae52c5738ac98a69fd5106fa2e"
+      "sourceSha": "5bd8bc40b84d8f6583e7b0505c6c9933aa9f6670"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6960,6 +6960,16 @@
         "school/index.html"
       ],
       "boundary": "Добавлены печатные №5.35–5.36, часть 2, §25, с. 11: все возможные делители и независимый подсчёт объёмов четырёх фигур. Прочие страницы исходного издания не заявляются."
+    },
+    {
+      "previousBaseSha": "0ca5de06e4f79bae52c5738ac98a69fd5106fa2e",
+      "sourceBaseSha": "5bd8bc40b84d8f6583e7b0505c6c9933aa9f6670",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "School entry for Vilenkin printed exercises through 1.118 and 5.36, four separate book self-checks and the thematic route.",
+      "boundary": "Only this page is bound to the combined source."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
