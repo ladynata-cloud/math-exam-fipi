@@ -39,8 +39,21 @@ async function exercise(page, card, base, width) {
   await page.goto(base + '?exercise=' + card.id + '#' + card.id);
   await page.waitForFunction(title => document.querySelector('main>header>h1')?.textContent === title, card.title);
   const model = page.locator('[data-main-model] svg');
-  const bounds = await model.boundingBox();
-  assert(bounds.width >= 180 && bounds.height >= 260 && bounds.y + bounds.height <= 901, card.id + ': model on first screen');
+  async function checkFirstScreen() {
+    const bounds = await model.boundingBox();
+    assert(bounds && bounds.width >= 180 && bounds.height >= 260 && bounds.y + bounds.height <= 901,
+      card.id + ' model on first screen at ' + width + 'px: ' + JSON.stringify(bounds));
+  }
+  await checkFirstScreen();
+  if (width === 320 && card.id === 'ex-main-0446') {
+    const font = await page.addStyleTag({content: '.textbook-reading { font-family: "DejaVu Sans", sans-serif; }'});
+    try {
+      await page.evaluate(() => document.fonts.ready);
+      await checkFirstScreen();
+    } finally {
+      await font.evaluate(node => node.remove());
+    }
+  }
   assert.equal(await page.locator('[data-step]').count(), 0);
   const views = new Set([await model.getAttribute('data-view')]);
   const errors = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
