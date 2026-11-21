@@ -65,6 +65,7 @@ jobs:
           node tools/stereo-textbook/vector-pairs.test.cjs
           node tools/stereo-textbook/vector-properties.test.cjs
           node tools/stereo-textbook/spatial-vector-sums.test.cjs
+          node tools/stereo-textbook/opposite-and-difference-vectors.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -206,6 +207,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: spatialVectorSums
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-vector-sums
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check source opposites, edge versus diagonal convention and every possible difference endpoint
+        env:
+          TEXTBOOK_PRACTICE_GROUP: oppositeDifference
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/opposite-and-difference-vectors
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -267,5 +273,6 @@ jobs:
             artifacts/vector-pairs/
             artifacts/vector-properties/
             artifacts/spatial-vector-sums/
+            artifacts/opposite-and-difference-vectors/
           retention-days: 14
           if-no-files-found: error

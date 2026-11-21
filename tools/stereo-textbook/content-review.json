@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T18:48:00Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–565, with 930 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T18:56:00Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–567, with 939 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1555,6 +1555,24 @@
       ],
       "evidence": "tools/stereo-textbook/spatial-vector-sums.json",
       "mathematicalReport": "tools/stereo-textbook/spatial-vector-sums.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:56:00Z",
+      "scope": "All nine source subparts 566–567: opposite vectors, the special edge wording in 566b and all directed difference endpoints",
+      "cardIds": [
+        "ex-main-0566-a",
+        "ex-main-0566-b",
+        "ex-main-0566-c",
+        "ex-main-0566-d",
+        "ex-main-0567-a",
+        "ex-main-0567-b",
+        "ex-main-0567-c",
+        "ex-main-0567-d",
+        "ex-main-0567-e"
+      ],
+      "evidence": "tools/stereo-textbook/opposite-and-difference-vectors.json",
+      "mathematicalReport": "tools/stereo-textbook/opposite-and-difference-vectors.test.cjs"
     }
   ],
   "cards": [
@@ -5277,6 +5295,42 @@
     {
       "id": "theory-067",
       "sha256": "1700cad9da00d5961043e98c2f3c893819e5192c4ec84b186b5f8e3b2b838d12"
+    },
+    {
+      "id": "ex-main-0566-a",
+      "sha256": "7ddb23cb132a49fa7d0e15fca88d4bffa8b22c180de56cc232e7ea8a2cabbe8e"
+    },
+    {
+      "id": "ex-main-0566-b",
+      "sha256": "242d40eadce144f6e757e2c6e37524d97ee48e9ce9fa72e9c881fba57643f8ac"
+    },
+    {
+      "id": "ex-main-0566-c",
+      "sha256": "fe5b2276e15ccd9a1d3332399a4b3b1faeb7c781c255aab31fb2caa12a4a7814"
+    },
+    {
+      "id": "ex-main-0566-d",
+      "sha256": "5051ff4a561b59cea219bbe7c16ffc2d9a49f2cdc8f85ee8466e24a34af9681a"
+    },
+    {
+      "id": "ex-main-0567-a",
+      "sha256": "2f051c81b72a697eba24b8d8fb87e8b5bde793b38d71fcb7082fcc02f47c32b1"
+    },
+    {
+      "id": "ex-main-0567-b",
+      "sha256": "95621810bb34d584ca789d99eb8d4af1d4adfb09577b8b03ee3e809934c8e2f4"
+    },
+    {
+      "id": "ex-main-0567-c",
+      "sha256": "af8abba90d54e7584bd3fefb0679eb82b7b16d75c9c064ddfa6abde0da4fb436"
+    },
+    {
+      "id": "ex-main-0567-d",
+      "sha256": "1a87d53415bd7c05c77dc5fb82e2c298165d2b35d8846739d832968abfb97fa9"
+    },
+    {
+      "id": "ex-main-0567-e",
+      "sha256": "e00d59f1cd42419ed322d0a625727d2680d0e387631cee5bbcef864bcb358aa6"
     }
   ]
 }
