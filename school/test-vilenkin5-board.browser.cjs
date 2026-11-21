@@ -450,7 +450,8 @@ async function run(browser, origin, backend, failures) {
 
   phase = 'compass radius and two arcs between the same pair';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
-  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-2"]').click();await studentFrame.locator('#task-panel svg').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-2"]').click();
+  await studentFrame.locator('#task-panel').getByRole('img',{name:'Циркуль с иглой в O и миллиметровая шкала',exact:true}).waitFor();
   await same(teacherFrame,studentFrame,'compass and offset ruler appear');
   await teacherFrame.locator('[data-v5-param=opening]').selectOption('2');
   await teacherFrame.locator('[data-v5-param=stage]').selectOption('3');
