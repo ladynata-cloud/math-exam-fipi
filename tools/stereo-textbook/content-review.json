@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T18:56:00Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–567, with 939 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T19:02:00Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–570, with 944 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1573,6 +1573,20 @@
       ],
       "evidence": "tools/stereo-textbook/opposite-and-difference-vectors.json",
       "mathematicalReport": "tools/stereo-textbook/opposite-and-difference-vectors.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:02:00Z",
+      "scope": "All source parts of 568–570: arbitrary origins, every correct marked-point difference and two spatial vector paths",
+      "cardIds": [
+        "ex-main-0568-a",
+        "ex-main-0568-b",
+        "ex-main-0569",
+        "ex-main-0570-a",
+        "ex-main-0570-b"
+      ],
+      "evidence": "tools/stereo-textbook/vector-origin-and-paths.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-origin-and-paths.test.cjs"
     }
   ],
   "cards": [
@@ -5331,6 +5345,26 @@
     {
       "id": "ex-main-0567-e",
       "sha256": "e00d59f1cd42419ed322d0a625727d2680d0e387631cee5bbcef864bcb358aa6"
+    },
+    {
+      "id": "ex-main-0568-a",
+      "sha256": "9178a654442098b21817fbb9c97df17e3a7d010d3d50f44e4a4a411c95ea8967"
+    },
+    {
+      "id": "ex-main-0568-b",
+      "sha256": "304648c6fd0bef7201cf108b4b69bee3b2bf3b349ac2cf0a700f1c3da030bcf7"
+    },
+    {
+      "id": "ex-main-0569",
+      "sha256": "4e8610472b6bf2a47c7b0ddfc54645727bda5edaa4ae1bcf8010a43917d92120"
+    },
+    {
+      "id": "ex-main-0570-a",
+      "sha256": "70a5b9b33f261506005509697ebd43c04be46aa412e15a285053dda77b9ceabb"
+    },
+    {
+      "id": "ex-main-0570-b",
+      "sha256": "0188082db506914e95e48e5fdadea3e0c4a94597b8e9b427af76f2b6538b988d"
     }
   ]
 }
