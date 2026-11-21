@@ -1542,3 +1542,13 @@ test('keep additive change separate and test both reference percentages, legal r
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('verify the three printed area outlines, both numerical patterns, and perpendicular coordinate diagonals with a fresh translation',()=>{
+ const f=fixture(null,null,true);try{
+  for(const [i,expected,alternate]of [[76,'−2ab = 7.','−2ab = 12.'],[77,'2x² = 1/2.','2x² = 9/2.'],[78,'44 кв. ед.','54 кв. ед.'],[79,'38 кв. ед.','71 кв. ед.'],[80,'45 кв. ед.','51 кв. ед.'],[81,'Следующее число 20.','Следующее число 25.'],[82,'Следующее число -1540.','Следующее число -1200.'],[83,'Пересечение (6; 4).','Пересечение (7; 5).']]){
+   f.nav('#lesson/p38/'+i);if(i>=78&&i<=80)assert(f.q('#task-figure svg').classList.contains('pcm-route-fractions'));
+   f.click('[data-lesson-help="model"] > summary');const c=[...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id),set=(j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+   set(1,2);assert(out().includes(expected),[i,out()]);if(i===83)assert.equal(f.q('[data-kite-intersection]').dataset.kiteIntersection,'6,4');set(0,1);assert.equal(f.q(c[1]).value,'0');set(1,2);assert(out().includes(alternate),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

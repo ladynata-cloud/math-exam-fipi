@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1104);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1112);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1020,6 +1020,11 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  assert.deepEqual(at(136).map(t=>t.source.subpart),['(1а)','(1б)','(1в)','(1г)','(2а)','(2б)','(2в)','(2г)']);
  assert.deepEqual(at(137).map(t=>t.answer),['60','150']);assert.deepEqual(at(138).map(t=>Array.from(t.steps,s=>s.answer)),[['80','125','20','25'],['200','50','100','50'],['60','500/3','40','200/3'],['1000/9','90','100/9','10']]);
  assert.deepEqual(at(139).map(t=>t.answer),['Сохраняется','3/5','1/4','b/(3a)','3x/(8z)','(x − y)/(x + y)','n/(n + 1)']);assert.deepEqual(at(140).map(t=>t.squareClaim),[0,1,2,3]);
+}
+{
+ const g=n=>Array.from(D.lessons.find(l=>l.id==='p38').tasks.filter(t=>t.source.exercise===n));
+ assert.deepEqual(g(141).map(t=>t.answer),['7','1/2']);assert.deepEqual(g(142).map(t=>t.figure.variant),['squareHole','oneStep','twoSteps']);
+ assert.deepEqual(g(143).map(t=>Array.from(t.steps,s=>s.answer)),[['-55','-30','-5','25'],['-77/50','-77/5','-154','10']]);assert.deepEqual(Array.from(g(144)[0].steps,s=>s.answer),['6','4','40','160','32']);assert.equal(g(144)[0].source.page,34);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
