@@ -35,6 +35,8 @@ async function solveScene(page,scene,keyboard) {
       else await put(page,group).click();
     }
   }
+  assert.equal(await page.locator('.ws-instruction').innerText(),'Теперь нажми «Проверить раскладку».');
+  assert(await action(page,'check-layout').evaluate(el=>el.classList.contains('primary')));
   await action(page,'check-layout').press('Enter');
   await stage(page,'answer');
   await page.locator('#workshop-play input[name="quantity"]').fill(String(expected(scene)));
@@ -56,6 +58,41 @@ async function journey(browser,width) {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   try {
+    await page.goto(trainer);
+    await stage(page,'layout');
+    if (width <= 375) {
+      await page.setViewportSize({width,height:568});
+      await page.screenshot({path:path.join(artifacts,'short-phone-' + width + '.png')});
+      for (let child = 0; child < 3; child++) {
+        const target = await put(page,child).boundingBox();
+        assert(target && target.y >= 0 && target.y + target.height <= 568,
+          'Picnic recipient ' + child + ' at ' + width + 'x568: ' + JSON.stringify(target));
+      }
+      await page.setViewportSize({width,height:850});
+    }
+    const drawer = page.locator('#life-map .wm-drawer');
+    assert.equal(await drawer.evaluate(el => el.open),false,'The city map opens only on request');
+    assert(await page.locator('#workshop-play').evaluate(el =>
+      el.getBoundingClientRect().bottom <= document.querySelector('#life-map').getBoundingClientRect().top
+    ),'The task precedes the map');
+    const instruction = page.locator('.ws-instruction');
+    assert((await instruction.innerText()).includes('«Для Ани»'));
+    assert.equal(await action(page,'check-layout').evaluate(el=>el.classList.contains('primary')),false);
+    assert(await put(page,0).evaluate(el => el.classList.contains('ws-first-move')));
+    await put(page,1).press('Enter');
+    assert.equal(await put(page,1).locator('.ws-token').count(),1,'The suggested first move is optional');
+    assert.equal(await page.locator('.ws-first-move').count(),0);
+    await page.reload();
+    assert.equal(await put(page,1).locator('.ws-token').count(),1);
+    assert.equal(await instruction.innerText(),'Продолжай раздавать поровну.');
+    await action(page,'undo').press('Enter');
+    await drawer.locator(':scope > summary').press('Enter');
+    await drawer.locator('a[href="#workshop-picnic"]').press('Enter');
+    await page.waitForURL(url => url.hash === '#workshop-picnic');
+    await page.waitForFunction(() => document.activeElement === document.querySelector('.ws-title'));
+    assert.equal(await drawer.evaluate(el => el.open),false);
+    // A fresh deep link should also start at the top of the page.
+    await page.goto('about:blank');
     await page.goto(trainer + '#workshop-picnic');
     await stage(page,'layout');
     const places = await page.evaluate(() => window.ArzhenikovLife.places);

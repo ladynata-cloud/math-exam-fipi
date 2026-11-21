@@ -3339,10 +3339,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": {
-      "beforeSha256": "f46118f5a7d6b5e004ae235fc258ffa5e78aafb6919576e7bc6b2645b5102505",
-      "afterSha256": "6360c88d4cc975451bda920f7ed3f31569bfe07c2f5d5241332ee088f6db9210",
+      "beforeSha256": "2a358f90088cebaab253bb0bac3aeccbebbc4abb7ebcc2c004194670d72d603c",
+      "afterSha256": "f50f699ecc2b32f9e80dd3174d1a226e4782547037a2340fee6d182254208a4f",
       "placement": "before-head-close",
-      "sourceSha": "3825700610047c5405d17c6ef34ecd7a1e6b4a5e"
+      "sourceSha": "316f81cde90e1dc9de21cd951ee2d503a72ff0bc"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
@@ -6563,6 +6563,16 @@
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     },
     {
+      "previousBaseSha": "aee65d44605b23694c3d7bcb6212233d150448a0",
+      "sourceBaseSha": "b0d4b70bdc9cf5f17dac3ce32f58f68940c761cb",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the reviewed Vilenkin 5 laboratory cache version.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
       "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
       "sourceBaseSha": "d0575a63a6351578f6d7faa236fe57d2739c4fe3",
       "task": "docs/tasks/MAKARYCHEV8_150_180.md",
@@ -6625,16 +6635,6 @@
       "changedPaths": [
         "school/makarychev8/index.html"
       ],
-      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
-    },
-    {
-      "previousBaseSha": "aee65d44605b23694c3d7bcb6212233d150448a0",
-      "sourceBaseSha": "b0d4b70bdc9cf5f17dac3ce32f58f68940c761cb",
-      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
-      "changedPaths": [
-        "school/index.html"
-      ],
-      "bindingScope": "Per-page sourceSha for the reviewed Vilenkin 5 laboratory cache version.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
@@ -6922,30 +6922,6 @@
       "boundary": "The numbered banks, worked steps, model behavior and two-role rooms have independent subject checks."
     },
     {
-      "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
-      "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
-      "changedPaths": [
-        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
-      ],
-      "reason": "Reviewed garden entrance, content and script links on the existing Arzhenikov skill map."
-    },
-    {
-      "sourceBaseSha": "c8a04a3a99ee9fa239d219875a592b5e89f7e0d2",
-      "task": "docs/tasks/ARZHENIKOV_LIFE_STORIES.md",
-      "changedPaths": [
-        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
-      ],
-      "reason": "Add the reviewed everyday-object workshop to the published Arzhenikov map."
-    },
-    {
-      "sourceBaseSha": "3825700610047c5405d17c6ef34ecd7a1e6b4a5e",
-      "task": "docs/tasks/ARZHENIKOV_CHILD_ADVENTURE_20261122.md",
-      "changedPaths": [
-        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
-      ],
-      "reason": "Bind the independently reviewed illustrated city and division harbor source; preserve exact navigator includes and all other page receipts."
-    },
-    {
       "previousBaseSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60",
       "sourceBaseSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520",
       "task": "docs/tasks/MAKARYCHEV8_134_149.md",
@@ -7007,6 +6983,38 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
+      "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
+      "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Reviewed garden entrance, content and script links on the existing Arzhenikov skill map."
+    },
+    {
+      "sourceBaseSha": "c8a04a3a99ee9fa239d219875a592b5e89f7e0d2",
+      "task": "docs/tasks/ARZHENIKOV_LIFE_STORIES.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Add the reviewed everyday-object workshop to the published Arzhenikov map."
+    },
+    {
+      "sourceBaseSha": "3825700610047c5405d17c6ef34ecd7a1e6b4a5e",
+      "task": "docs/tasks/ARZHENIKOV_CHILD_ADVENTURE_20261122.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Bind the independently reviewed illustrated city and division harbor source; preserve exact navigator includes and all other page receipts."
+    },
+    {
+      "sourceBaseSha": "316f81cde90e1dc9de21cd951ee2d503a72ff0bc",
+      "task": "docs/tasks/ARZHENIKOV_FIRST_ACTION_20261122.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Bind the reviewed first-action page and preserve other navigator receipts."
     }
   ],
   "coverageUpdates": [
