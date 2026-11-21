@@ -720,6 +720,28 @@ async function run(browser, origin, backend, failures) {
   const ownAgain=await same(teacherFrame,studentFrame,'second participant recovered the same four own examples');
   assert.equal(ownAgain.scene.note,copy.scene.note);await narrow(student,studentFrame,'round-objects');
 
+  phase = 'three measured circles in the same notebook';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-10"]').click();
+  await studentFrame.locator('#task-panel table').getByText('Отдельный опыт для самопроверки').waitFor();
+  const mfield=(f,key)=>f.locator('[data-v5-param="'+key+'"]');
+  const measure=async(f,key,v)=>{const input=mfield(f,key);await input.fill(String(v));await input.press('Tab');};
+  await measure(teacherFrame,'d1',32);await measure(teacherFrame,'c1',101);
+  await mfield(teacherFrame,'stage').selectOption('1');
+  const thread1=await same(teacherFrame,studentFrame,'diameter and string saved for the first physical disc');
+  assert.equal(thread1.scene.model.c1,101);assert.equal(thread1.scene.attempt,0);
+  await ownership(teacher,student,true);
+  await mfield(studentFrame,'row').selectOption('2');await measure(studentFrame,'d3',73);await measure(studentFrame,'c3',230);
+  await studentFrame.locator('#answer').fill('125');await studentFrame.locator('#answer-form button').click();
+  assert.match((await same(studentFrame,teacherFrame,'string length confused with three diameters')).scene.message,/длину нитки/);
+  await studentFrame.locator('#answer').fill('120');await studentFrame.locator('#answer-form button').click();
+  await studentFrame.locator('[data-cmd=next]').click();
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const threadCopy=await same(studentFrame,teacherFrame,'first and third circles restored together on teacher reload');
+  assert.equal(threadCopy.scene.step,1);assert.equal(threadCopy.scene.model.c1,101);assert.equal(threadCopy.scene.model.c3,230);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'shared table and correction survive pupil reload');await narrow(student,studentFrame,'thread-circles');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');

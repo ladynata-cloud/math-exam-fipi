@@ -141,6 +141,37 @@ function decimalStepInstructions(){
   ok(product.$('label[for=answer]').textContent.includes('до сокращения'));
   equal(product.errors,[]);product.close();
 }
+function threadMeasurementRegression(){
+  const id='v5f-printed-5-10',f=boot('#lesson/'+id);
+  const change=(key,val)=>{const el=f.$('[data-v5-param="'+key+'"]');el.value=String(val);el.dispatchEvent(new f.w.Event('change',{bubbles:true}));};
+  const t=f.M.generate(id,0),cfg=f.C.byId[id];equal(cfg.source.page,8);equal(cfg.source.part,2);
+  equal(plain(t.data.thread.rows),[{d:20,c:63},{d:40,c:125},{d:60,c:189}]);equal(t.answer,'3,1');
+  equal(f.snapshot().scene.attempt,0);ok(!f.snapshot().scene.correct);ok(f.$('#task-panel table').textContent.includes('для самопроверки'));
+  change('d1',32);change('c1',101);
+  change('row',1);equal(f.$('[data-v5-param="d2"]').value,'40');
+  change('c2',120);change('stage',1);
+  const own=f.snapshot();equal(own.scene.model.c1,101);equal(own.scene.model.c2,120);equal(own.scene.model.stage,1);
+  const returned=boot('#lesson/'+id,f.saved());equal(plain(returned.snapshot().scene.model),plain(own.scene.model));returned.close();
+  f.submit('125');ok(f.snapshot().scene.message.includes('длину нитки'));f.submit('120');ok(f.snapshot().scene.correct);equal(f.snapshot().scene.assisted,false);
+  f.click('[data-cmd=next]');f.submit('5');f.click('[data-cmd=next]');f.submit('3,1');ok(f.snapshot().scene.correct);
+  const cases=new Set();
+  for(let seed=0;seed<140;seed++){
+    const task=f.M.generate(id,seed),data=task.data.thread;cases.add(task.conditionKey);
+    const r=data.rows[data.choose],model=f.w.Vilenkin5ThreadMeasurement;
+    equal(task.steps[0].answer,3*r.d);equal(task.steps[1].answer,r.c-3*r.d);
+    equal(Number(task.answer.replace(',','.')),Math.floor((20*r.c+r.d)/(2*r.d))/10);ok(f.M.accepts(String(task.answer).replace('.',','),task));
+    for(const [n,row] of data.rows.entries()){
+      ok(Math.abs(row.c-Math.PI*row.d)<=1.51);
+      for(const stage of [0,1]){
+        const s={d1:20,d2:40,d3:60,c1:63,c2:125,c3:189,row:n,stage,['d'+(n+1)]:row.d,['c'+(n+1)]:row.c};
+        const view=model.explore(task,s,(title,_,rows)=>title+rows.map(x=>x.join(' ')).join(' '));
+        equal(view.answer,Math.floor(row.c/row.d));ok(view.visual.includes('мм'));ok(view.visual.includes(stage?'Распрямлённая':'От края до края'));
+      }
+    }
+  }
+  ok(cases.size>45);equal(f.errors,[]);f.close();
+}
+
 function objectExamplesRegression(){
   const id='v5f-printed-5-9',f=boot('#lesson/'+id),bank=f.w.Vilenkin5RoundObjects;
   const t=f.M.generate(id,0);equal(plain([...t.steps,t].map(x=>x.answer)),['окружность','круг','цилиндр','шар']);ok(t.prompt.startsWith('Авторская проверка к №5.9.'));
@@ -285,7 +316,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:59},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9'));
+  equal(plain(path.numbered),Array.from({length:59},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -781,7 +812,7 @@ function buildablePathsRegression(){
 
 async function run(){
   for(const check of [
-    objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
