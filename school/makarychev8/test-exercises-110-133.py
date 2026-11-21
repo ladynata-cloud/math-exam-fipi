@@ -45,6 +45,7 @@ for n, answers in expected.items():
         elif q['id']=='p05-t02': actual='x**3/(8*y**3)' if 'x^3/(8y^3)' in q.get('accepts',[]) else q['answer']
         else: actual=q['answer']
         assert sp.cancel(val(actual)-val(expr))==0,(n,letter,actual,expr)
+assert '17,5' in entries['№ 113а']['steps'][0]['explanation']
 assert len(cards)==76 and len(entries)==78 and len(entries['№ 130']['steps'])>=2
 assert set(range(110,134))=={int(re.search(r'\d+',q).group()) for q in entries}
 assert all(q['source']['page'] in range(32,36) and len(q['steps'])>=2 for q in cards)
