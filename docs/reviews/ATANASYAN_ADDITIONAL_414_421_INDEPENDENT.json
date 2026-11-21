@@ -1,0 +1,1027 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "ChatGPT root, independent of lesson author",
+  "reviewedAt": "2026-11-06",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_PEDAGOGY_AND_VISUAL",
+  "scope": {
+    "exercises": "414–421",
+    "cards": 14,
+    "steps": 58,
+    "modelStates": 60
+  },
+  "authoredSHA256": "1712465d90a82a8bf14b22dacedacb54a305b3834f2f39a8a64b5007aa376048",
+  "contentHashes": {
+    "ex-main-0414-a": "a299150f022178e7349242dc9f07a63fdcd5aeeb6b8fefa69a14170e469e9662",
+    "ex-main-0414-b": "a99efba557f1d59b5c51d9279fd0c3220bedf9cd2157f68f43a42b3c853df9ba",
+    "ex-main-0414-c": "f1b5a45367b70a0f68af024dc3481ac37ebb82e77f6fe27e0aee357f0fc136a8",
+    "ex-main-0415-a": "deaa3f782ad0185375210f0930fd0e8a4ea8f1d6ececf9c6b5e16b31de023e3c",
+    "ex-main-0415-b": "c2fd7e1669e6b505e363dcd7c003941df0cc15ba7381f54901f9da03cb738c6d",
+    "ex-main-0416-a": "0cd2e06b581a112d0227b6167a40b9ce7418112a6f3afca1b8f998be7638c4d2",
+    "ex-main-0416-b": "957d0a6cb3aafcecd29b204e5307ce079cd8d3f268efdbabef69f04fad0366ed",
+    "ex-main-0417": "753f428f7a8e2ba11681eb663576679a8122f735044f149052360b1647b89fd7",
+    "ex-main-0418-a": "3932f4f8b60816022df5141d8efc53f52aeab98a0b1eadff0aa5c6b212ec5908",
+    "ex-main-0418-b": "96ed2b5f40420781f430bf12c986590c071ef51e8c74a96da0733fe81434aa50",
+    "ex-main-0419-a": "8134f32bda4f83f5f88c0bbeadec6115eebb0d8ea0c27d704415ce8bba1c1a4e",
+    "ex-main-0419-b": "d35d90289aacaf31e961b04a6f844a559fb5df2f7cda281c31c5c78883e05d5e",
+    "ex-main-0420": "9964c6006eba45db7569b17ac03fa15a459e704daefcb5bde690acf986b0ad0e",
+    "ex-main-0421": "309d48f225de1db7a70a6c10948d2c7233b6650d31ca6a0e6f7ad717db865e4c"
+  },
+  "ids": [
+    "ex-main-0414-a",
+    "ex-main-0414-b",
+    "ex-main-0414-c",
+    "ex-main-0415-a",
+    "ex-main-0415-b",
+    "ex-main-0416-a",
+    "ex-main-0416-b",
+    "ex-main-0417",
+    "ex-main-0418-a",
+    "ex-main-0418-b",
+    "ex-main-0419-a",
+    "ex-main-0419-b",
+    "ex-main-0420",
+    "ex-main-0421"
+  ],
+  "steps": 58,
+  "views": 60,
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "pages": {
+    "printed": [
+      113,
+      114
+    ],
+    "pdf": [
+      115,
+      116
+    ],
+    "answersPrinted": 265,
+    "answersPdf": 267
+  },
+  "runtimeSHA256": {
+    "stereo-course/textbook/assets/engine.js": "14cb7f4c44b7e6aa78da563503592cd97a8f62ae7d6e57dc23942565a7d3a413",
+    "stereo-course/assets/task-scene-viewer.js": "91ef00cd15e0e831fa835c089116e5150813ce0bd6554280d3e9f76a5c547f64",
+    "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "stereo-course/textbook/index.html": "9539a3f97374f41fd9caa49b6d25c4922096afd7d52d5010184f66536839fb3c"
+  },
+  "source": {
+    "verdict": "passed",
+    "edition": "Атанасян, Геометрия 10–11, 2024",
+    "sha256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+    "pages": {
+      "printed": [
+        113,
+        114
+      ],
+      "pdf": [
+        115,
+        116
+      ],
+      "answersPrinted": 265,
+      "answersPdf": 267
+    },
+    "method": "Actually read both complete source pages and the printed answer page; compared every numbered and lettered condition with all fourteen authored cards."
+  },
+  "mathematics": {
+    "verdict": "passed",
+    "method": "Independently read and reasoned through all 58 written proof steps, results, conditions and both directions of loci/symmetry claims.",
+    "notes": [
+      "414: central, axial and plane symmetries prove both inclusions; 414b now explicitly excludes H=O before referring to a right triangle.",
+      "415: the right triangle determines the sphere diameter in (a); the centre-to-plane distance in (b) is 2√10.",
+      "416: angle 30° and ratio 35/144 follow from the section radii and centre distances.",
+      "417: intersect the two nonparallel normal lines in the perpendicular-bisector plane; the resulting centre is equidistant from all six vertices.",
+      "418: distinct equal spheres, 0<d<2R, have the stated common circle; with d=1.6R its radius is 0.6R.",
+      "419: the printed answer order does not match the requested AB then AD order. The authored derivation correctly gives AD=2R√((3−4sin²φ)/3), AB=2AD sinφ, 0<φ<60°; the section disk area in (b) is 16πR²sin²φ(3−4sin²φ)/9.",
+      "420: OM=26, plane offset 50/13, circle radius 120/13, circumference 240π/13; necessity and sufficiency proved.",
+      "421: the central annulus and tangent-plane outer section both have area π(R²−r²)."
+    ]
+  },
+  "pedagogy": {
+    "verdict": "passed",
+    "method": "Checked written prompts, help and proof sequencing. Accepted explicit nondegeneracy in 414b and deferred centre/radii disclosure in the neutral 415a model."
+  },
+  "visual": {
+    "verdict": "passed",
+    "method": "Independently inspected 60 model states at each of 320, 390 and 1280 CSS pixels. After the wording change, 172 final model captures were byte-identical to the reviewed captures; independently inspected the 8 changed captures for 416b at 320 and 390 px. Independently read all 14 final full pages at 320 px and 416b at 390 and 1280 px. The lesson author separately inspected all 42 full-page initial screenshots.",
+    "inspectionOnly": true,
+    "publicReleaseGatePerformedByThisReceipt": false,
+    "browserVersion": "134.0.6998.35",
+    "widths": [
+      320,
+      390,
+      1280
+    ],
+    "reviewedModelViews": 180,
+    "independentInitialFullPages": 16,
+    "authorInitialFullPages": 42,
+    "reviewedContentSHA256": "1712465d90a82a8bf14b22dacedacb54a305b3834f2f39a8a64b5007aa376048",
+    "captureEvidenceSHA256": "7c38375a17e3d4dcc16c8cc3ecc9a24eddf923538d664d60115d28b71f05d4c6",
+    "findings": "Model labels, highlighting and section disks remain readable at all widths. 415a initially conceals the centre; in 416b the requested disk-to-sphere ratio is explicit. All 42 initial models fit within the 900 px viewport; final geometry and staged hints match the reviewed proofs.",
+    "captureHashes": [
+      {
+        "file": "320-ex-main-0414-a-initial.png",
+        "sha256": "502c2fad39c6bea591994a7df9233621ee4f351f529bd57f5ea61493a8481ac8"
+      },
+      {
+        "file": "320-ex-main-0414-a-neutral.png",
+        "sha256": "8c7038f8aed6f31604a9432ca6640b540efab2d79b87b799c906c14e4f43d96d"
+      },
+      {
+        "file": "320-ex-main-0414-a-image.png",
+        "sha256": "46be8ca8fa509785a9da3a213ac790a99587617d016036fd60bbdbbc7006e21d"
+      },
+      {
+        "file": "320-ex-main-0414-a-radii.png",
+        "sha256": "9e694f1f730fffe1e8b7a7104d20e072b31aa33b5382bde5c45670028f64dfdc"
+      },
+      {
+        "file": "320-ex-main-0414-b-initial.png",
+        "sha256": "6f84d489687a27066eca3f599fcade8d8de57d4ae9c2acb4921c753718d64277"
+      },
+      {
+        "file": "320-ex-main-0414-b-neutral.png",
+        "sha256": "7886e71c93237e4fc44b0c449d1e0f0121191268fd9da105b84a23786edd73e5"
+      },
+      {
+        "file": "320-ex-main-0414-b-image.png",
+        "sha256": "b07a01985a784711b7e3bcc8706c4c55e7ee1151e8842bffc97e60a3896130e1"
+      },
+      {
+        "file": "320-ex-main-0414-b-foot.png",
+        "sha256": "8f6bae45c8a969ec280712121dc747beb3a8a430a27198dc563f373b5da71930"
+      },
+      {
+        "file": "320-ex-main-0414-b-equal.png",
+        "sha256": "a0e64e847340bc217f89e66cba60ddff7d7ddb3211d085c3ca39228962b11496"
+      },
+      {
+        "file": "320-ex-main-0414-c-initial.png",
+        "sha256": "5ec16b54e2f7833da8400afcdc0cf32f2f43a7334bc6e4e78c1a8a37f4e9ffbe"
+      },
+      {
+        "file": "320-ex-main-0414-c-neutral.png",
+        "sha256": "672a38ac0ab516241a0df0177668c099a5a4b99c2bae86e42677b65a40f2a181"
+      },
+      {
+        "file": "320-ex-main-0414-c-image.png",
+        "sha256": "cb8e57b0f51ea9df299092f793902970463fe35d05cd837bf2e3ac8b92fde68e"
+      },
+      {
+        "file": "320-ex-main-0414-c-foot.png",
+        "sha256": "84fae4c4a0fd40d8ca5e6339a0d7c0b7bcd27d8f6436853cd60230750fcbd2d2"
+      },
+      {
+        "file": "320-ex-main-0414-c-equal.png",
+        "sha256": "3c03765cd93200dc5e4d526ce0538ab3e9dc410cade762abfe5282954c4fb431"
+      },
+      {
+        "file": "320-ex-main-0415-a-initial.png",
+        "sha256": "6b4c0dfdcc1aad070b69f970dd129c51be725c463983c588205442256c6739b2"
+      },
+      {
+        "file": "320-ex-main-0415-a-neutral.png",
+        "sha256": "8a4a1412cb8288cdf9a4f1499e2b19d5ebada323f26f67be122620fa441b716c"
+      },
+      {
+        "file": "320-ex-main-0415-a-hypotenuse.png",
+        "sha256": "f06dbe589a0a4282269fd7acbdf0d7464da84e51a14b2864bf262e82bd34d844"
+      },
+      {
+        "file": "320-ex-main-0415-a-diameter.png",
+        "sha256": "0211e04956c68af2547bb9addfccd81cbf53aae2149ab8436d8edb5df97a86ce"
+      },
+      {
+        "file": "320-ex-main-0415-b-initial.png",
+        "sha256": "439131b9c4c5095c6818e58bf8984dcc0ab1d8918f251fab6db7f366ec336acb"
+      },
+      {
+        "file": "320-ex-main-0415-b-neutral.png",
+        "sha256": "9ff620507337260b6487b7e4b50a54d5c589a416869fa2990c9c6d54b20446c8"
+      },
+      {
+        "file": "320-ex-main-0415-b-center.png",
+        "sha256": "3915d674d182e3cd27e1d82ab7d72e5f8b7af1df1a97bea0b1dcd4715eca488c"
+      },
+      {
+        "file": "320-ex-main-0415-b-hypotenuse.png",
+        "sha256": "0530218d47eedc55a3157d22afcd1808649a62d36a8c4e3afbe4fd5f2311e35c"
+      },
+      {
+        "file": "320-ex-main-0415-b-distance.png",
+        "sha256": "323b4afdf54f0169424608941af007feffdfc868c7211997917550f1ffaa61e0"
+      },
+      {
+        "file": "320-ex-main-0416-a-initial.png",
+        "sha256": "392ad912d36672a7afd0911cc6280ad6c2b7f8eebded11300342e367e98975d3"
+      },
+      {
+        "file": "320-ex-main-0416-a-neutral.png",
+        "sha256": "70c721d3dd4baf265552d449bc64db818061b322a0d01eb2d0b87e5f7344bbcc"
+      },
+      {
+        "file": "320-ex-main-0416-a-tangent.png",
+        "sha256": "74441b76516ba142638b142ecb6c711e83bf5f0abffcec878b6ff5bb1f02d9a5"
+      },
+      {
+        "file": "320-ex-main-0416-a-triangle.png",
+        "sha256": "47b151a34b70481582385faaee1262fee7d01efd7f10024080175bfbd7d3f077"
+      },
+      {
+        "file": "320-ex-main-0416-b-initial.png",
+        "sha256": "f5b090b9a00e642040386ecd2ba4c62dac8ef9d0199bd1875cc0b167c9bb5a28"
+      },
+      {
+        "file": "320-ex-main-0416-b-neutral.png",
+        "sha256": "70c721d3dd4baf265552d449bc64db818061b322a0d01eb2d0b87e5f7344bbcc"
+      },
+      {
+        "file": "320-ex-main-0416-b-section.png",
+        "sha256": "294a7e71c7d7a762d629738e488008dd2d7039a39bbb2b8598eb27252fdfbb92"
+      },
+      {
+        "file": "320-ex-main-0416-b-disk.png",
+        "sha256": "ab0a29300077f9b98660251ea454a6cdb82294cfaf3edb3a08f030801ec2fdb7"
+      },
+      {
+        "file": "320-ex-main-0416-b-tangent.png",
+        "sha256": "74441b76516ba142638b142ecb6c711e83bf5f0abffcec878b6ff5bb1f02d9a5"
+      },
+      {
+        "file": "320-ex-main-0417-initial.png",
+        "sha256": "bb73a9acf517120850bb241da49379edfbd1b17b3a8ad55f868820206b564c6d"
+      },
+      {
+        "file": "320-ex-main-0417-neutral.png",
+        "sha256": "df34db6f3872ce65725f60cd917ce9a20f0f03b4cd6a3554ffee498eec52c46e"
+      },
+      {
+        "file": "320-ex-main-0417-normal.png",
+        "sha256": "db8f400518c3e6341fab0b26643c12384ba6e6286d8973f79c5f8e0683d28b9c"
+      },
+      {
+        "file": "320-ex-main-0417-perpendicular.png",
+        "sha256": "dbc640ec8df1319cd13fa0cf96fb186f3b93a521103ddbe639369846436b535d"
+      },
+      {
+        "file": "320-ex-main-0417-centers.png",
+        "sha256": "5491ce2ddc8bfab22b68f05e86d250865ac39cf906f88c52804522da76e3e4a6"
+      },
+      {
+        "file": "320-ex-main-0417-radii.png",
+        "sha256": "62e7f91356dbe3fad2e8b99f3be86b13b221fa9add81a6f38d31e749462c8a9f"
+      },
+      {
+        "file": "320-ex-main-0417-sphere.png",
+        "sha256": "dd739a5ec28d7a080f8e0e7e6d67766d9b7c38c75b3c0ee6016473f2ba22c139"
+      },
+      {
+        "file": "320-ex-main-0418-a-initial.png",
+        "sha256": "1e67edcfdaab05b12f130d0434bf7596eb4fb631bff767cdb19cd3bfb4bc6355"
+      },
+      {
+        "file": "320-ex-main-0418-a-neutral.png",
+        "sha256": "2d3e128b78e241a364f422bca5a2c530fc2ce1f3749e6fc289d08b52b04bac34"
+      },
+      {
+        "file": "320-ex-main-0418-a-equal.png",
+        "sha256": "63d31809e5c7eaab35768367633d49663890936b93338f88b1988316268c7a22"
+      },
+      {
+        "file": "320-ex-main-0418-a-plane.png",
+        "sha256": "3ff3bc21337c02d41ee2061037e36c31aafdbb798f2ef4cd33d3261ceb4ac961"
+      },
+      {
+        "file": "320-ex-main-0418-a-radius.png",
+        "sha256": "22c6ce3eb64f47b0e2d1d79b431481fd77e72db50688af2f906b62f210998a23"
+      },
+      {
+        "file": "320-ex-main-0418-b-initial.png",
+        "sha256": "a2bb0aa3cf1ea218a1bedc1af8bcce439c1fc876ab9991d88151dc4783db4adb"
+      },
+      {
+        "file": "320-ex-main-0418-b-neutral.png",
+        "sha256": "2d3e128b78e241a364f422bca5a2c530fc2ce1f3749e6fc289d08b52b04bac34"
+      },
+      {
+        "file": "320-ex-main-0418-b-plane.png",
+        "sha256": "3ff3bc21337c02d41ee2061037e36c31aafdbb798f2ef4cd33d3261ceb4ac961"
+      },
+      {
+        "file": "320-ex-main-0418-b-equal.png",
+        "sha256": "63d31809e5c7eaab35768367633d49663890936b93338f88b1988316268c7a22"
+      },
+      {
+        "file": "320-ex-main-0418-b-radius.png",
+        "sha256": "22c6ce3eb64f47b0e2d1d79b431481fd77e72db50688af2f906b62f210998a23"
+      },
+      {
+        "file": "320-ex-main-0419-a-initial.png",
+        "sha256": "0d7fbb42bb47dcd1be7155d0f1cf5901293ebcb7379f625f6628f08e08be1498"
+      },
+      {
+        "file": "320-ex-main-0419-a-neutral.png",
+        "sha256": "b54e56c0ef4bcca8631f4e9a4dfe7479842fdf666c63a6dc0727cdfb47b8f84c"
+      },
+      {
+        "file": "320-ex-main-0419-a-face.png",
+        "sha256": "72ec901ba06c91729fa2a0beac5a65bf53b817a431a6ba97e8fa6a2e9579ceff"
+      },
+      {
+        "file": "320-ex-main-0419-a-diameter.png",
+        "sha256": "2d6d925b3a52611aa53fa84a7ab1c32a3dedc29e14890b3317e9ecc51a55d6bd"
+      },
+      {
+        "file": "320-ex-main-0419-a-height.png",
+        "sha256": "947f8d65dac8e1884e1bea1db9e1fcd6aa6f9299be16b8bdedb9abddfc6784f3"
+      },
+      {
+        "file": "320-ex-main-0419-a-lengths.png",
+        "sha256": "dd2f85ebff19175bd0a40cf5fbdde1f94a25ed8de2be24df3001229bbeeac24e"
+      },
+      {
+        "file": "320-ex-main-0419-b-initial.png",
+        "sha256": "215c8dafdcdc044839659dc0c657271ff41e5c874bbc2ebea60688400b303add"
+      },
+      {
+        "file": "320-ex-main-0419-b-neutral.png",
+        "sha256": "86ddf9255372d4056d20f1d064c790bff1d832d68009c3ac93cf1f9bdeaf3781"
+      },
+      {
+        "file": "320-ex-main-0419-b-section.png",
+        "sha256": "ab214d8ff1970c821d90b9661382397e122ffa4ea67aad20bedfc422653773fd"
+      },
+      {
+        "file": "320-ex-main-0419-b-diameter.png",
+        "sha256": "c881d7c9c814eaa4fcb54d0105bdb9d6f6570da8924d0ebca02a2144abe62891"
+      },
+      {
+        "file": "320-ex-main-0419-b-face.png",
+        "sha256": "af6f11a9a0df86dbaf5ccce5be21118069ece2e94a5e1356da68c5d41879e083"
+      },
+      {
+        "file": "320-ex-main-0419-b-height.png",
+        "sha256": "659569707dbea4370901b507542e940537daf3351fb4cf2e09c360a8a8aa2a87"
+      },
+      {
+        "file": "320-ex-main-0419-b-lengths.png",
+        "sha256": "4da8d68c534b9c53396964a383a6aa438eb2f11c897233191feadabcd44f6d94"
+      },
+      {
+        "file": "320-ex-main-0420-initial.png",
+        "sha256": "9b13ab77d07a5f34a5e4ccaaa4ec63f21f8876f538584b8db1c0cad6304f2ae6"
+      },
+      {
+        "file": "320-ex-main-0420-neutral.png",
+        "sha256": "6038d41b7d330bec761ad64fa8eacd7791d954a94eef64dcafcc01f5db405ae7"
+      },
+      {
+        "file": "320-ex-main-0420-nearest.png",
+        "sha256": "4288a06c021ceb8ff9e619cb28583097f941805eede053ea11c5785004ad2ea5"
+      },
+      {
+        "file": "320-ex-main-0420-projection.png",
+        "sha256": "f848fb4c74d35186b6ea2c8e5454a13058352d7a83a8d58d670b8e2d9f814962"
+      },
+      {
+        "file": "320-ex-main-0420-distances.png",
+        "sha256": "de312d300d38f812fd3918f96407d481538c1aa484e76beefe10a693470ed4d4"
+      },
+      {
+        "file": "320-ex-main-0420-circle.png",
+        "sha256": "e4f7a5581d7f7701cd86e8a0c762dc31073008583f434891c5e9519cae1b6bc5"
+      },
+      {
+        "file": "320-ex-main-0421-initial.png",
+        "sha256": "b108e86969abb41a8cc57853edd948b34df57ea0c2c6c90868f139827fc47eaa"
+      },
+      {
+        "file": "320-ex-main-0421-neutral.png",
+        "sha256": "ff9ae031095884c56a22dfe5d6ecc7c5ea754f774e363fae3c61a0b4d962c56e"
+      },
+      {
+        "file": "320-ex-main-0421-central.png",
+        "sha256": "8f68de7ddec6f960a607474fb47747844ed139d928a6b246f6843cff2d8a498f"
+      },
+      {
+        "file": "320-ex-main-0421-triangle.png",
+        "sha256": "52cf4ab8b0b47a2e82cc3c67475d38f105e62c1a797f77d4652f51a5e76de69c"
+      },
+      {
+        "file": "320-ex-main-0421-tangent.png",
+        "sha256": "e696fc69c693f3de8550d67ba61332e0e94ddb29b38ca487cdeefce5b7b55c06"
+      },
+      {
+        "file": "320-ex-main-0421-area.png",
+        "sha256": "e4d560c0a660f7f574ef38938e8042e4b60e9516f6aa7d5a228a4bc25b0eff1f"
+      },
+      {
+        "file": "390-ex-main-0414-a-initial.png",
+        "sha256": "df11711881d9a918a7c6da19cd711ab01430465b24af7b6ad0898cade7072f27"
+      },
+      {
+        "file": "390-ex-main-0414-a-neutral.png",
+        "sha256": "467900969c691cc199fad9cf8003e70035aa79c7df610e560bf36546e535cf94"
+      },
+      {
+        "file": "390-ex-main-0414-a-image.png",
+        "sha256": "71513d44a66331286eeca4a4e39c57f445cca0789c6b9dfc2fa3aef4416da592"
+      },
+      {
+        "file": "390-ex-main-0414-a-radii.png",
+        "sha256": "84a1482c94cf5fdaeefb0bdf086db0dd85b0f16b3182f31462946ac8e2a9e810"
+      },
+      {
+        "file": "390-ex-main-0414-b-initial.png",
+        "sha256": "a6f128913d2abf9ba00c64fc671b75f600d59764c993bf33259f07c16f20c62a"
+      },
+      {
+        "file": "390-ex-main-0414-b-neutral.png",
+        "sha256": "87a5ed592309925a3f788ff7857edefd1ab1ed9e0063e4752d1a46965527aef8"
+      },
+      {
+        "file": "390-ex-main-0414-b-image.png",
+        "sha256": "6d3128a150e9e6519e2c006f00287b7284e298238065ac466293dcce2a041d32"
+      },
+      {
+        "file": "390-ex-main-0414-b-foot.png",
+        "sha256": "87b096c4f1b484d8e046cd61b0b26fd4cd2fa565b4a25d5dae09286798fd27a0"
+      },
+      {
+        "file": "390-ex-main-0414-b-equal.png",
+        "sha256": "a6c86befd0758e0b804331ca3d9b39b64d4046b03f6db242f01cbc06b1122e3b"
+      },
+      {
+        "file": "390-ex-main-0414-c-initial.png",
+        "sha256": "9b437b2ad93c67bf9463a21b9196bda44cb86ce7312ec1e9e9f6bd2845d3ecb8"
+      },
+      {
+        "file": "390-ex-main-0414-c-neutral.png",
+        "sha256": "bccf98390b8b4f52b7472e51ac51b5c1dab9ccfe314b01915ec87fa12f5d5b44"
+      },
+      {
+        "file": "390-ex-main-0414-c-image.png",
+        "sha256": "4a4995e5ee9b65ff08229f2ffb981ab01927ee6801d48036d0b9a36d57c6e7bb"
+      },
+      {
+        "file": "390-ex-main-0414-c-foot.png",
+        "sha256": "24d7affebbf57e4fc19db40cc40314f15c2ee8d427af1a246fc0c7480fc15364"
+      },
+      {
+        "file": "390-ex-main-0414-c-equal.png",
+        "sha256": "49934dda6007f18555fb7398251f2921d2a950583fc95ecf3c64d9f350d59c95"
+      },
+      {
+        "file": "390-ex-main-0415-a-initial.png",
+        "sha256": "155c37c99acf62d50ea5688628864d977ccfa8f95e45a7bb2cd90a7ae64da11d"
+      },
+      {
+        "file": "390-ex-main-0415-a-neutral.png",
+        "sha256": "cc83b26927a74e8592333ca844025bb2c6078e08bc496cf06d9b21e9e1d3a094"
+      },
+      {
+        "file": "390-ex-main-0415-a-hypotenuse.png",
+        "sha256": "07ce6f12ef93f526c252d731ea3e924e00fee355fda5479b9efd5e10a4449490"
+      },
+      {
+        "file": "390-ex-main-0415-a-diameter.png",
+        "sha256": "2bdb14096b7bfa3944f610fa42adf92c14069785d63d7ffd2ff2b3f3ecc50228"
+      },
+      {
+        "file": "390-ex-main-0415-b-initial.png",
+        "sha256": "9ab88444e67e25f8c833d9444fd25ee8572948c949be352197f3dc632be0ec58"
+      },
+      {
+        "file": "390-ex-main-0415-b-neutral.png",
+        "sha256": "e1596470e19ee55a8b27b1929a037255823c91ffe56263b5ad9d951779fc9e90"
+      },
+      {
+        "file": "390-ex-main-0415-b-center.png",
+        "sha256": "dd47b171b223a9253ac0ec0dd9be94b43ccfa88cc00d4c1fdcda337d0bf24c38"
+      },
+      {
+        "file": "390-ex-main-0415-b-hypotenuse.png",
+        "sha256": "b42caea018181117362b5ca07a179e89b3a2e2e8075bf6acecfe3c008cbdc78c"
+      },
+      {
+        "file": "390-ex-main-0415-b-distance.png",
+        "sha256": "60627a9a731bd0b49f972e5c1155a37e10d662d29c1e123b1eeee7e4c325bd5c"
+      },
+      {
+        "file": "390-ex-main-0416-a-initial.png",
+        "sha256": "3071cd61ceefd2b060f8b7f57a3528adc88505ce7ab7fc2ac9db207426154e3a"
+      },
+      {
+        "file": "390-ex-main-0416-a-neutral.png",
+        "sha256": "d7d5c5a94b06cae72ab7f0e25c9789df030f8ab9b943694acbe66045ccf3b073"
+      },
+      {
+        "file": "390-ex-main-0416-a-tangent.png",
+        "sha256": "352a55afeb58f1a55d18402fcdf73eba9c09174c1534baef8e5877e30c7c1d1b"
+      },
+      {
+        "file": "390-ex-main-0416-a-triangle.png",
+        "sha256": "e35e16968ca5cbf936df90a5dd80fa0a12b543b2c4c5729129530fa005246340"
+      },
+      {
+        "file": "390-ex-main-0416-b-initial.png",
+        "sha256": "48e1a201cd4da9890741a71baa38eb77bdc266120fef47416e1457dddaed7a0b"
+      },
+      {
+        "file": "390-ex-main-0416-b-neutral.png",
+        "sha256": "5d266a013ba911753b72406b5b3e577be266a62e8e699090cb36afd33e0797d7"
+      },
+      {
+        "file": "390-ex-main-0416-b-section.png",
+        "sha256": "0808c273af60707074da81666b730b488a7b7064072cc77004d548f36496e565"
+      },
+      {
+        "file": "390-ex-main-0416-b-disk.png",
+        "sha256": "dde9f248ea86f0f2a56a0fbc7e6574e9da16a3c7c421a73cff01f783e855b010"
+      },
+      {
+        "file": "390-ex-main-0416-b-tangent.png",
+        "sha256": "12503893fdb2cb9d3e65fdeb465a0ad0454f705c5c8a3ae37b44da043265344e"
+      },
+      {
+        "file": "390-ex-main-0417-initial.png",
+        "sha256": "61558eb43188a073b2e1352d2132ebbf1f170b983d7a095aa0d0bf7dd9e60dbe"
+      },
+      {
+        "file": "390-ex-main-0417-neutral.png",
+        "sha256": "28c000b423da3b9474d03e0216d8234a93ff6320528fed344c8f93efd39ff358"
+      },
+      {
+        "file": "390-ex-main-0417-normal.png",
+        "sha256": "5c50778d0ec93bc4fd2b237c46503ed5f43b5c6e3da2580e1afda39f0c8acecf"
+      },
+      {
+        "file": "390-ex-main-0417-perpendicular.png",
+        "sha256": "d452ea2c278ac28b0c43dc37573fbfcfe3db80a159b2dc6d4a294f87791f60ca"
+      },
+      {
+        "file": "390-ex-main-0417-centers.png",
+        "sha256": "3575024268b879e632978037400a24e7f2a2fc30f5763ffb533745da039b339a"
+      },
+      {
+        "file": "390-ex-main-0417-radii.png",
+        "sha256": "7fb78e63f72c611bfee4fc8480e32f0aecdb691a57148c3b7eda0e6ccf003cb2"
+      },
+      {
+        "file": "390-ex-main-0417-sphere.png",
+        "sha256": "c278099c7d25b31763fad48c30fb077d9d9329893501f8bbf5a0f2d0bb8ecd61"
+      },
+      {
+        "file": "390-ex-main-0418-a-initial.png",
+        "sha256": "3006abd19c3f235970e230d781f87e7ece9d97fac0fa0f1a9a23b50c12cbe2c6"
+      },
+      {
+        "file": "390-ex-main-0418-a-neutral.png",
+        "sha256": "f7ab3d6ea2868c0b5d15101616670a63257ffd2ccbf4573b15d4a50b57e08333"
+      },
+      {
+        "file": "390-ex-main-0418-a-equal.png",
+        "sha256": "3afefa4ff1332cbcb4c33885af6de438362ca2fc591aa48bae81032e1eb17233"
+      },
+      {
+        "file": "390-ex-main-0418-a-plane.png",
+        "sha256": "d88eae708ef41f94f950e56973acde9dec0c4e80affca359d12fd9cbd9a79439"
+      },
+      {
+        "file": "390-ex-main-0418-a-radius.png",
+        "sha256": "8b888c5151c930b28bb9bdd08eb58090af51f60c75c364c69a661360b80ebe93"
+      },
+      {
+        "file": "390-ex-main-0418-b-initial.png",
+        "sha256": "279e1088637d49f910a5cc70349f3df1635de3b9f1ff22f4802cb0cff4e90f63"
+      },
+      {
+        "file": "390-ex-main-0418-b-neutral.png",
+        "sha256": "f7ab3d6ea2868c0b5d15101616670a63257ffd2ccbf4573b15d4a50b57e08333"
+      },
+      {
+        "file": "390-ex-main-0418-b-plane.png",
+        "sha256": "d88eae708ef41f94f950e56973acde9dec0c4e80affca359d12fd9cbd9a79439"
+      },
+      {
+        "file": "390-ex-main-0418-b-equal.png",
+        "sha256": "3afefa4ff1332cbcb4c33885af6de438362ca2fc591aa48bae81032e1eb17233"
+      },
+      {
+        "file": "390-ex-main-0418-b-radius.png",
+        "sha256": "8b888c5151c930b28bb9bdd08eb58090af51f60c75c364c69a661360b80ebe93"
+      },
+      {
+        "file": "390-ex-main-0419-a-initial.png",
+        "sha256": "3ed86f660e0ecca9d19ae53e949cec4b99cb9cccc6d3cd2fb3bf010db1c79a0f"
+      },
+      {
+        "file": "390-ex-main-0419-a-neutral.png",
+        "sha256": "2bf2e352995509cdf1cf22ca57ca45489805c01599eca93ba3ef7797825ab6ee"
+      },
+      {
+        "file": "390-ex-main-0419-a-face.png",
+        "sha256": "74003066a7dfa6a93aa68e176c2811b94f59105756335c2c8863386f7b010f18"
+      },
+      {
+        "file": "390-ex-main-0419-a-diameter.png",
+        "sha256": "0f91c9006a1a84aa85104ac7b775232c8c723028e00c406ff33fc9c73128578d"
+      },
+      {
+        "file": "390-ex-main-0419-a-height.png",
+        "sha256": "bad64159489751f6ce4ed0950d07531ab16c42173f3010e8d42c9167c937531b"
+      },
+      {
+        "file": "390-ex-main-0419-a-lengths.png",
+        "sha256": "47becd41746ee05f5b6501cd37b198b8fd7173bbb08ddcf3d44c9208febb63ad"
+      },
+      {
+        "file": "390-ex-main-0419-b-initial.png",
+        "sha256": "b313fc63d511596ad56a302275d20bf35e552e3410f0181cfc764eecdcacc189"
+      },
+      {
+        "file": "390-ex-main-0419-b-neutral.png",
+        "sha256": "f90464b342872a9a590c8737ac61123bf069197e43594ca73b50b46ba4597b54"
+      },
+      {
+        "file": "390-ex-main-0419-b-section.png",
+        "sha256": "f39d35d3c2b3583956a97ef94dcbb73eac47dd55a6e2c8feaa3aff6fc8bfdfc5"
+      },
+      {
+        "file": "390-ex-main-0419-b-diameter.png",
+        "sha256": "6abbf2d423f764bb4abae6f2fc6f35a55f86af8b9aca0bc3971343d2ac4f474a"
+      },
+      {
+        "file": "390-ex-main-0419-b-face.png",
+        "sha256": "2dd7952f448f39fe5d3e795fb0086eabded0c42a3a1430a621c29e1ac907be39"
+      },
+      {
+        "file": "390-ex-main-0419-b-height.png",
+        "sha256": "2338bb4654ff5fcd70e309e195e3f924249ffb14558f14327ad86653c1b6722b"
+      },
+      {
+        "file": "390-ex-main-0419-b-lengths.png",
+        "sha256": "1c8bad9a6332e067646214c6341993230bc77bd7329092bf540e877dc1f6db5b"
+      },
+      {
+        "file": "390-ex-main-0420-initial.png",
+        "sha256": "193fcb9137469a5d4652b28349381e5172adccfc7434b067a97ccf3bc951630d"
+      },
+      {
+        "file": "390-ex-main-0420-neutral.png",
+        "sha256": "c72db23013a79d9ee7044332d5d9f7dd2a886073cdd8add90b3ab1c79fd58cf9"
+      },
+      {
+        "file": "390-ex-main-0420-nearest.png",
+        "sha256": "fd3bed0f3c9889ccdb2563601838de745f4da79ea5d768da538672b48b1f1385"
+      },
+      {
+        "file": "390-ex-main-0420-projection.png",
+        "sha256": "569fbe4abf2bb8c997a926cf660f69d2712b206309d990217657b31928a45472"
+      },
+      {
+        "file": "390-ex-main-0420-distances.png",
+        "sha256": "dd759f0ed10efafeaf375497712a72602f5787ccf4cf8d7f09d00f2b1746a22d"
+      },
+      {
+        "file": "390-ex-main-0420-circle.png",
+        "sha256": "eb8c6e41a23b4e65ea87b405353adf24c92edf26636e676958410df364c2de84"
+      },
+      {
+        "file": "390-ex-main-0421-initial.png",
+        "sha256": "4d12ce09cfa516f60813c13b50d921ec3d7dec43a773fd48a681d2da0ee3b60e"
+      },
+      {
+        "file": "390-ex-main-0421-neutral.png",
+        "sha256": "4c8376eea5c490974a4c1054a42367ea358531ab1eb130dc9a3818c998c3b2e9"
+      },
+      {
+        "file": "390-ex-main-0421-central.png",
+        "sha256": "faa7d1f762f4dedb94ebf6c4042914aebe5aca930a429bac10e489a0941a65ab"
+      },
+      {
+        "file": "390-ex-main-0421-triangle.png",
+        "sha256": "232e351478daf22d6078a4167dff6b60964de87182c9030fecf93029e7182282"
+      },
+      {
+        "file": "390-ex-main-0421-tangent.png",
+        "sha256": "aebdc00814dee64a22c43eac119551c7dc66ead01ae94f20ca1fa7301b3634e8"
+      },
+      {
+        "file": "390-ex-main-0421-area.png",
+        "sha256": "74d4a4bc5a4ba12a934903c709dab80cd70c0f8ff2386391b8ad2b35e9f07604"
+      },
+      {
+        "file": "1280-ex-main-0414-a-initial.png",
+        "sha256": "fd5ed2ce38deccfc0a812847bcd9d4c171373c8a81cce31652c654f4e408b9a6"
+      },
+      {
+        "file": "1280-ex-main-0414-a-neutral.png",
+        "sha256": "78af7148dee297317e409208c6f08e34838150b1919d14f184afa51e03d9185a"
+      },
+      {
+        "file": "1280-ex-main-0414-a-image.png",
+        "sha256": "2cc8842e86f4f8f45fddd8247b549e76c1daa6c692078fe1b5dc4cfa5c2ad61b"
+      },
+      {
+        "file": "1280-ex-main-0414-a-radii.png",
+        "sha256": "153b8679930b997fc4907b770ca2b7c1bb008038d70ca9d48abd4a79e59f6bb6"
+      },
+      {
+        "file": "1280-ex-main-0414-b-initial.png",
+        "sha256": "4b7c1dc7e9c1d10fdbdaa194732ff54eaa5ddf40499571c12b11022c198b2eb6"
+      },
+      {
+        "file": "1280-ex-main-0414-b-neutral.png",
+        "sha256": "1917d318427158e3f34578d74aa9ee3d995387c721f30a1cd2c3c24519cefc84"
+      },
+      {
+        "file": "1280-ex-main-0414-b-image.png",
+        "sha256": "cf0a31205766752bb7e2c8a7d1750382665f24a0a5eb71b72d66cf3d870115b1"
+      },
+      {
+        "file": "1280-ex-main-0414-b-foot.png",
+        "sha256": "ddde3fd68dc8fd05129a3b03538437f3fe5fbf8af931c38b7b23fd201cc07702"
+      },
+      {
+        "file": "1280-ex-main-0414-b-equal.png",
+        "sha256": "a42d49e2a88e35d4638dce1d332c649d531a6af057b5a8fb9437d23e97929994"
+      },
+      {
+        "file": "1280-ex-main-0414-c-initial.png",
+        "sha256": "8046e4ec8139263286f1509e72cabc15f6767a614434a34a8422d9aa39de1f53"
+      },
+      {
+        "file": "1280-ex-main-0414-c-neutral.png",
+        "sha256": "fe8e14dd2ce0da261c5c5ae3668718abe7c102ef7dab5f81c051a2ed23d1cecb"
+      },
+      {
+        "file": "1280-ex-main-0414-c-image.png",
+        "sha256": "26502362d3a9c08566f70bfc100155c5516d9881bfcc40d84dc3e27e64b7d5b5"
+      },
+      {
+        "file": "1280-ex-main-0414-c-foot.png",
+        "sha256": "fe61785e1d488651e59db3bb01349d80b66af302a930e0542e84e9a09db47f27"
+      },
+      {
+        "file": "1280-ex-main-0414-c-equal.png",
+        "sha256": "70018f6d41fdcebaf22a093c663c6dd204a1297d75b1843264ad86484b7fe371"
+      },
+      {
+        "file": "1280-ex-main-0415-a-initial.png",
+        "sha256": "fd76208e30a500a53d94d5cb7b11e3a0b4bcbea643783d1961c3d1c478d30995"
+      },
+      {
+        "file": "1280-ex-main-0415-a-neutral.png",
+        "sha256": "041dffc94b02b84f80c22f37c6bb8cae1e4489a073926ea8b4ee7fde2ceb47c1"
+      },
+      {
+        "file": "1280-ex-main-0415-a-hypotenuse.png",
+        "sha256": "6b5f67cba45295858dece560f201cfb9b9241e5d7697e03629f9310820d0a2e6"
+      },
+      {
+        "file": "1280-ex-main-0415-a-diameter.png",
+        "sha256": "0548887638cfd9736e24677c706ca331aaed5948cabcc336e512f8d96a827e4e"
+      },
+      {
+        "file": "1280-ex-main-0415-b-initial.png",
+        "sha256": "2bc0561c12c0709947980731d98b6fc4dc3510189fbcf1ba1c0bba625f6ddbbf"
+      },
+      {
+        "file": "1280-ex-main-0415-b-neutral.png",
+        "sha256": "260102e0fb1ebe31530744d07e61395d1c4483f581c816bc4810cb6135b93578"
+      },
+      {
+        "file": "1280-ex-main-0415-b-center.png",
+        "sha256": "d0001c3abb27243f45f77c2861c6d3bad6dd208e1c0e0a39eddf4d46b84a87d2"
+      },
+      {
+        "file": "1280-ex-main-0415-b-hypotenuse.png",
+        "sha256": "09cc7ef1148b3bb1f75084649296f687cad7e76e889f3cc31c4be8d7dff17d6c"
+      },
+      {
+        "file": "1280-ex-main-0415-b-distance.png",
+        "sha256": "1939e5e05550412f4e2a406d2251972134e00a992f6c049cc15efd932c2ac8d9"
+      },
+      {
+        "file": "1280-ex-main-0416-a-initial.png",
+        "sha256": "6afb030f1b2d9fd522cff331c379668f1c1ffee6b423b61d42341a3142803f12"
+      },
+      {
+        "file": "1280-ex-main-0416-a-neutral.png",
+        "sha256": "1caf95e8aac08eb4246a8f0dde8ebc9d0edf4d75d4c2779a1550181015381cf2"
+      },
+      {
+        "file": "1280-ex-main-0416-a-tangent.png",
+        "sha256": "0b19d178778a4d776b9da77f700f2458eb06f194613b816a805e3c368d2cf9cc"
+      },
+      {
+        "file": "1280-ex-main-0416-a-triangle.png",
+        "sha256": "fe5414a123fa943806e2cf4ce3f7a1b217757f579900fcca633429941f2ef3ae"
+      },
+      {
+        "file": "1280-ex-main-0416-b-initial.png",
+        "sha256": "0584eb34cde5befd8541fdb72d98b89c634939ccf7e274e2656dc61399b381f1"
+      },
+      {
+        "file": "1280-ex-main-0416-b-neutral.png",
+        "sha256": "1caf95e8aac08eb4246a8f0dde8ebc9d0edf4d75d4c2779a1550181015381cf2"
+      },
+      {
+        "file": "1280-ex-main-0416-b-section.png",
+        "sha256": "07f22568405d065697496389697e5136afa3e5ec7a2a28e62f9d05668d76a479"
+      },
+      {
+        "file": "1280-ex-main-0416-b-disk.png",
+        "sha256": "b5e48f7a6f180c27a1845426290d6c0d8075f8fc1205224f300c5e087bf5849c"
+      },
+      {
+        "file": "1280-ex-main-0416-b-tangent.png",
+        "sha256": "0b19d178778a4d776b9da77f700f2458eb06f194613b816a805e3c368d2cf9cc"
+      },
+      {
+        "file": "1280-ex-main-0417-initial.png",
+        "sha256": "c7d25bdbe6cfd306891bc77b3419ccb37d07b2806796918f70743669254e9f5c"
+      },
+      {
+        "file": "1280-ex-main-0417-neutral.png",
+        "sha256": "cb9c17d96edadc2c75ed2fd1f6c8a554657c98a387854f11752b1b9008bee227"
+      },
+      {
+        "file": "1280-ex-main-0417-normal.png",
+        "sha256": "1c7964018b925c65e6974afc3f77f302e4533af361bbef3e704e7eee7e94921f"
+      },
+      {
+        "file": "1280-ex-main-0417-perpendicular.png",
+        "sha256": "c02c126f7f8d4eb2a90de6840c44505ae6b8f00b57a0ffd81719991fe7f5a95a"
+      },
+      {
+        "file": "1280-ex-main-0417-centers.png",
+        "sha256": "a344f4b112671b1cbfccc0b87db939713ef7c4fe97609a9e09533d244731eb2c"
+      },
+      {
+        "file": "1280-ex-main-0417-radii.png",
+        "sha256": "924cb6ff4b4c8c4895e760b9edd5c482a7cccfde5b3806923a512882a5f97d8a"
+      },
+      {
+        "file": "1280-ex-main-0417-sphere.png",
+        "sha256": "83bbce28b36101ebbfc37fc648368ffba59f7116e534fe96d12dc7ab4ea73f32"
+      },
+      {
+        "file": "1280-ex-main-0418-a-initial.png",
+        "sha256": "b4f3493b2609981edabf813d93a72d9f953bcfad5baa01cdbd4039a3d6d0b8f8"
+      },
+      {
+        "file": "1280-ex-main-0418-a-neutral.png",
+        "sha256": "0d8487cc79066cdcddeeafa9c8e7732f4f0de3ff6f94cd94602f7a5689497bca"
+      },
+      {
+        "file": "1280-ex-main-0418-a-equal.png",
+        "sha256": "0e80e32d586c527a90122e274506f95d68fe26696caf2ee58dc4aa3514418d8f"
+      },
+      {
+        "file": "1280-ex-main-0418-a-plane.png",
+        "sha256": "cc1584280141a8da2286b8edae4e8608be6325d18f7ea085c0c60368a904e5d0"
+      },
+      {
+        "file": "1280-ex-main-0418-a-radius.png",
+        "sha256": "b03585fc499bc133c7f93aa8116c38ebb809462cf7fc5e82ceaee6485164d33a"
+      },
+      {
+        "file": "1280-ex-main-0418-b-initial.png",
+        "sha256": "d489e4d3366bfc01fc62b482198eb7a13e59f685ded93ecdf37f0ee490282bc8"
+      },
+      {
+        "file": "1280-ex-main-0418-b-neutral.png",
+        "sha256": "0d8487cc79066cdcddeeafa9c8e7732f4f0de3ff6f94cd94602f7a5689497bca"
+      },
+      {
+        "file": "1280-ex-main-0418-b-plane.png",
+        "sha256": "cc1584280141a8da2286b8edae4e8608be6325d18f7ea085c0c60368a904e5d0"
+      },
+      {
+        "file": "1280-ex-main-0418-b-equal.png",
+        "sha256": "0e80e32d586c527a90122e274506f95d68fe26696caf2ee58dc4aa3514418d8f"
+      },
+      {
+        "file": "1280-ex-main-0418-b-radius.png",
+        "sha256": "b03585fc499bc133c7f93aa8116c38ebb809462cf7fc5e82ceaee6485164d33a"
+      },
+      {
+        "file": "1280-ex-main-0419-a-initial.png",
+        "sha256": "ebc4c8bd9ea787017fea15a2d7b7b09574401262f429c4207396440430637aff"
+      },
+      {
+        "file": "1280-ex-main-0419-a-neutral.png",
+        "sha256": "71319762b3dcb9fcf729ee9b540505953e731ad44786b0e6c928db3568a68c0f"
+      },
+      {
+        "file": "1280-ex-main-0419-a-face.png",
+        "sha256": "274887706ac061782bd3da68ff71a18701ef2ae1eaaf8bf6b531ebbe88c28997"
+      },
+      {
+        "file": "1280-ex-main-0419-a-diameter.png",
+        "sha256": "61c77aab8635af9b7d4f7c0db5fd1b5532958e62da80bf598d9174c1a15cdfbe"
+      },
+      {
+        "file": "1280-ex-main-0419-a-height.png",
+        "sha256": "3eaddec292e84b914ff2b4c93927f6c50b17df46eedc9f30281e63b74ee45d51"
+      },
+      {
+        "file": "1280-ex-main-0419-a-lengths.png",
+        "sha256": "a1b083a52afbb93723daf9bc548428d45c880505d649cd0a1d2ef4803d763cf9"
+      },
+      {
+        "file": "1280-ex-main-0419-b-initial.png",
+        "sha256": "019b971ab4ba2d34d8deebbff430662c2a39b5b74353b71a2cb36ca640157e60"
+      },
+      {
+        "file": "1280-ex-main-0419-b-neutral.png",
+        "sha256": "71319762b3dcb9fcf729ee9b540505953e731ad44786b0e6c928db3568a68c0f"
+      },
+      {
+        "file": "1280-ex-main-0419-b-section.png",
+        "sha256": "ae5ca1a3691adb7a5e99eced9729304c0271b5dc7afb6991dc57a52defc09423"
+      },
+      {
+        "file": "1280-ex-main-0419-b-diameter.png",
+        "sha256": "61c77aab8635af9b7d4f7c0db5fd1b5532958e62da80bf598d9174c1a15cdfbe"
+      },
+      {
+        "file": "1280-ex-main-0419-b-face.png",
+        "sha256": "274887706ac061782bd3da68ff71a18701ef2ae1eaaf8bf6b531ebbe88c28997"
+      },
+      {
+        "file": "1280-ex-main-0419-b-height.png",
+        "sha256": "3eaddec292e84b914ff2b4c93927f6c50b17df46eedc9f30281e63b74ee45d51"
+      },
+      {
+        "file": "1280-ex-main-0419-b-lengths.png",
+        "sha256": "a1b083a52afbb93723daf9bc548428d45c880505d649cd0a1d2ef4803d763cf9"
+      },
+      {
+        "file": "1280-ex-main-0420-initial.png",
+        "sha256": "de8283fc4c308b3decdd060518d45974754b9f05e2624f987e4d5ca1e4ebdec3"
+      },
+      {
+        "file": "1280-ex-main-0420-neutral.png",
+        "sha256": "84499c1b5251605d741ee574593cebe471cdeb99aa3fb09b1e4ac4be3be112f7"
+      },
+      {
+        "file": "1280-ex-main-0420-nearest.png",
+        "sha256": "d3e57cd4e07798d1bcac6525dfe5f0d48166858fc1d18d77b254cc1488ff3f57"
+      },
+      {
+        "file": "1280-ex-main-0420-projection.png",
+        "sha256": "ac4f637f27c1fe58725d2e88aae53b22ea023a3f97bc476f8a39e95bcb108a41"
+      },
+      {
+        "file": "1280-ex-main-0420-distances.png",
+        "sha256": "1484708302d656b2dddd04ccf0c65e2a6be016e8e1acc5b4d44e8185186317e7"
+      },
+      {
+        "file": "1280-ex-main-0420-circle.png",
+        "sha256": "49ba5c2b36d68b9f334f1456ea0ff527428124735c179321fc9768784be2c738"
+      },
+      {
+        "file": "1280-ex-main-0421-initial.png",
+        "sha256": "4d7c6c6d43d94da12cd27dc7deed06a88daf229da2346b16246a3c48c9a372da"
+      },
+      {
+        "file": "1280-ex-main-0421-neutral.png",
+        "sha256": "647952d7807d2b7182c887ff502fb295e043e4d4e77bef2e20ebb878c74dab59"
+      },
+      {
+        "file": "1280-ex-main-0421-central.png",
+        "sha256": "74ebe7f0825cfad65c587dd36cad3898ef2776ee7d732711bf16959c0bf5bb46"
+      },
+      {
+        "file": "1280-ex-main-0421-triangle.png",
+        "sha256": "9913703ba5464ce8132beb6949fa9753f95f49b96450b645d875c86fb5323f0f"
+      },
+      {
+        "file": "1280-ex-main-0421-tangent.png",
+        "sha256": "668dead08278b68f5bd730af11fd5bc6cedf34663e1ea9bbbf4e5d8b7c5ba402"
+      },
+      {
+        "file": "1280-ex-main-0421-area.png",
+        "sha256": "874ee67796a00f2bab09f703c5f1f1efa8bf851e6ffd8a754c0b123ccee0adf1"
+      }
+    ]
+  },
+  "externalReview": {
+    "requested": false,
+    "performed": false,
+    "reason": "Owner waived external model review; this is an independent in-session review."
+  },
+  "revisions": [
+    {
+      "date": "2026-11-06",
+      "card": "ex-main-0416-b",
+      "field": "statement.goal",
+      "reason": "Shortened the goal without changing the requested ratio; allows the initial drawing to fit a 320px-wide screen.",
+      "oldContentSHA256": "9522d06aca7259f750559e715b03df234f9553d53514cf469833c3d48f474dba",
+      "newContentSHA256": "957d0a6cb3aafcecd29b204e5307ce079cd8d3f268efdbabef69f04fad0366ed",
+      "writtenPedagogy": "passed",
+      "visual": "passed on all three corrected initial captures and eight changed 320/390 model captures"
+    }
+  ]
+}

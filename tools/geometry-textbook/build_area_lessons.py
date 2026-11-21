@@ -167,9 +167,13 @@ def lesson(card):
     help_items=[dict(id='first-hint',question='С чего начать?',text=hint)]
     if refs: help_items.append(dict(id='recall-theory',question='Вспомнить свойство',text='Открой объяснение рядом с задачей.',theoryIds=refs))
     help_items.append(dict(id='compare-result',question='Сверить свой итог',text=card['answer']))
+    review=GEOMETRY
+    if n>=854:
+        printed_page=card['printedPages'][0]
+        review={**GEOMETRY,'reviewer':f'Codex, сверка печатной с. {printed_page} и проверка геометрических зависимостей'}
     part_number={'а':1,'б':2,'в':3}[part] if part else 1
     return dict(schemaVersion=1,id=f'atanasyan-7-9-main-{n}-part-{part_number}',revision=1,kind='exercise',
-                title=f'Задача {n}',status='reviewed',source=origin,review=GEOMETRY,
+                title=f'Задача {n}',status='reviewed',source=origin,review=review,
                 statement=dict(text=card['condition'],goal='Сначала предложи своё решение. Подсказки и разбор можно открыть рядом.'),
                 visualization=dict(type='scene3d',caption='Меняй шаг разбора, чтобы увидеть соответствующее построение.',model=card['model']),
                 help=help_items,steps=steps,answer=dict(mode='manual',prompt='Запиши своё обоснование.'))
