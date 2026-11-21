@@ -529,6 +529,31 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.match(await studentFrame.locator('.help figure').innerText(),/y см и ещё 1,9 см/);
   await narrowShot(teacher,teacherFrame,'peterson-board-320-triangle-sides','.help figure');
 
+  phase = 'construct a segment in the ratio two to one';
+  await lesson(teacherFrame,'p15',20);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Положение C в клетках от A').selectOption('8');
+  const split=await synchronized(teacherFrame,studentFrame,'C moved to eight of twelve equal intervals');
+  assert.deepEqual(split.view.model.values,[8]);
+  assert.equal(await studentFrame.locator('#model svg circle').getAttribute('cx'),'232');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/положение подходит/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-segment-ratio','#model svg');
+  assert(await teacherFrame.locator('#model .pm-visual').evaluate(el=>el.scrollWidth<=el.clientWidth+1),
+    'both endpoints fit inside the mobile diagram without scrolling');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Положение C в клетках от A').selectOption('12');
+  await synchronized(studentFrame,teacherFrame,'denominator zero shown to teacher');
+  assert.match(await teacherFrame.locator('#model .pm-result').innerText(),/не определено/);
+  await studentFrame.getByLabel('Положение C в клетках от A').selectOption('8');
+  await studentFrame.locator('#notebook').fill('Начертил отрезок 12 см: AC = 8 см, CB = 4 см.');
+  await studentFrame.locator('[data-action="record-manual"]').click();
+  const drawing=await synchronized(studentFrame,teacherFrame,'construction recorded for review');
+  await manualWithoutCredit(teacherFrame,'p15-t21',0);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await courseFrame(teacher);
+  await waitSnapshot(teacherFrame,drawing,'constructed segment survives observer reload');
+  assert.equal(await teacherFrame.getByLabel('Положение C в клетках от A').inputValue(),'8');
+  await ownership(teacher,student,false);
+
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
   await teacherFrame.locator('#book-part').selectOption('2');

@@ -126,6 +126,35 @@ test('source equations retain a signed correction and the comparison of sides',a
  }finally{f.close();}
 });
 
+test('segment construction measures AC and CB on one scale without assigning credit',async()=>{
+ const f=fixture(null,null,true);
+ try{
+  for(const [i,valid] of [[17,[6]],[18,[7,8,9,10,11]],[19,[0,1,2,3,4,5]],[20,[8]]]){
+   f.nav('#lesson/p15/'+i);
+   const model=f.q('[data-lesson-help="model"]');if(!model.open)f.click('[data-lesson-help="model"] > summary');
+   for(let position=0;position<=12;position++){
+    f.event('#model select',String(position),'change');
+    const text=f.q('#model .pm-result').textContent;
+    if(position===12)assert.match(text,/не определено/);
+    else{
+     assert.equal(text.includes('положение подходит для'),valid.includes(position));
+     assert.match(text,new RegExp('AC = '+position+', CB = '+(12-position)));
+    }
+    assert.equal(f.q('#model svg circle').getAttribute('cx'),String(24+26*position));
+   }
+   assert.equal(f.d.querySelector('#answer-form'),null);
+   assert.equal(f.state().tasks['p15-t'+(i+1)].correct,false);
+  }
+  f.event('#model select','8','change');
+  f.event('#notebook','Взял отрезок 12 см. AC = 8 см, CB = 4 см.');
+  f.click('[data-action="record-manual"]');
+  const saved=f.state(),g=fixture(saved,null,true);
+  try{g.nav('#lesson/p15/20');assert.equal(g.q('#model select').value,'8');assert.match(g.q('#notebook').value,/8 см/);
+   assert.equal(g.state().tasks['p15-t21'].correct,false);
+  }finally{g.close();}
+ }finally{f.close();}
+});
+
 test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
  const f=fixture(null,null,true);
  try {
