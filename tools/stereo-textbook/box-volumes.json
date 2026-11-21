@@ -358,19 +358,19 @@
       "integrated": "bb0a43ec1dc330502c8f14e96aada89e38ae735445dfd0e617588eb183ea5305"
     },
     "ex-main-0442-a": {
-      "raw": "23fd010be4058a70878d78f014037ba859ef6f46a4010d34bc5e92210a8a852f",
-      "authored": "c33be0bd13ae41dfe0c2abdc4f5a3a1beb711c037f66b57c2d03854a67348b06",
-      "integrated": "1fd7b0dd7dc8a854b61530d794842818c8534e3c855b2fa47bd2c9c69903a18a"
+      "raw": "202684456d94317f9968603bc3e7f5b3a977b4b62ec2c505b46cb30c9b9c2caa",
+      "authored": "e18de34e6df9f84fc0f773a0eef62c69886dc4f063da2c3d54e6c3244f9bcccc",
+      "integrated": "ace6f1ae17d00862ee61b50c473c7e9ef2ccaef5557e7e8bb0418c2a253c51e4"
     },
     "ex-main-0442-b": {
-      "raw": "49a6a4ca962ec6ec256ec4e52079c974e9f645de96edcdb128f07e897f46b4ba",
-      "authored": "fb7a1dd378483fbe9143152266a0b34ff7a8e3bf981d208339bc396808b519a7",
-      "integrated": "acd62664b5fa5e0f7fb9743b96eaa5506f922d89e3c2c69b841fe3f044a4d36b"
+      "raw": "97b86694509039952ca2ba5b20b64ac8a8da24624308d8d0c51b61247ef358e3",
+      "authored": "50043417354f682848e59e92be378c3a7e39d386bc9d76686804257c78eba666",
+      "integrated": "fc7fb059f6e00aa698cbfcb4bb5dafaa318966baecf489968bea551358158080"
     },
     "ex-main-0442-c": {
-      "raw": "f5c48d8026ddfb3fa5af097bd07a15eaa8b4926fe91bbac663560837dbdd6684",
-      "authored": "3e7d3a4b18b42d1d26a03afee6befd4bbdf205a05aa5191dd9cf2acc49d3e08f",
-      "integrated": "f5e4e63e8d79780950f08ffdb32fd54ccea5b7c2bebe26be3838a9c64f2d0073"
+      "raw": "994a5314ec27c9613d8182d0f984f4bbebc68031077f90e56dc374b17602d793",
+      "authored": "e2300d52baed4dcbe766fb9b73233aa3c558afe58036d256f9d3c13db8285d96",
+      "integrated": "4e8780c1d77df3140c87c39dc00ca2eaef93c4631cc0b06a611001451db10dfe"
     },
     "ex-main-0443": {
       "raw": "e8ce4a41579f444ec1b22ede6b755e8b38a22c11a4fcbff96e88a66cd1ab86f8",
@@ -383,44 +383,44 @@
       "integrated": "88147e9cb214e71ceb5500d6fb91cbbf219c9f922592efb4e35590e40aee5669"
     },
     "ex-main-0445": {
-      "raw": "21ecbd2dee9f21e1b3fc013cbf78a3913fa437a29e36115e7bfbcd8028e7ea6e",
-      "authored": "40b5063e3e5527df7830e3c693931d1a44ae44d2af80c1fd81f2007761702eb2",
-      "integrated": "212b286b1e8a9a6410d3f44701412cd99b5083f75715d13cff838fc3d1fe69fa"
+      "raw": "0bbc7a53620ba3eee15e699673c7e3e765b18b9b6910ef086655f7c0e6620563",
+      "authored": "1d05ea23da676b02314d0088ef7f8ce02323f3e838e0c5c2b241eb66cc5cc1a1",
+      "integrated": "3bdebd7a5d4ecfcdd3b41640f5282b6d4a534163e97ac6024c7ab22a551c8dfd"
     },
     "ex-main-0446": {
-      "raw": "18ed4887e13541331e5b8c3efbf666b8e751562338eef6e9d48cce8266c2266a",
-      "authored": "cbc189162892e0f327e8728d9bec81f5ba5127df021d25f8d6269124868248d1",
-      "integrated": "ec93831244b8d189e32dc6a039fac65920996b9d6fae67b8ccd64ca8851e5907"
+      "raw": "9bb61f90e98c5fc0bab9ef09291afcfa1bc390d397f44a422efc7555e9a23922",
+      "authored": "0abb1298124020d7ad1e8d1c0e4dd05c0d3ffb9f3d3e288844225fde9f003e1c",
+      "integrated": "2ea74046bec3dc9dd1e398f8998a4fb446ab186873a5faff45361e60362ba003"
     },
     "ex-main-0447": {
-      "raw": "c8456a52870ceacc8cd0f8eddb06f2e567b6f953a5d273cf719fc3719520d6de",
-      "authored": "507088cbbfce977c04d72340a9213107cbbccf477a52d36e3b8124be89c05616",
-      "integrated": "6bc37b442071ec61070346268097494be1e1db188275c3d1b8f68613a7cfe752"
+      "raw": "66c328e68dd39deb2551c91bf8473abcccf1fab87e981e8f857356f933b95353",
+      "authored": "9c01d992f84e04459c6405072252ee160e1ae0e3326ee76b436c5f0cbfcaab39",
+      "integrated": "93435c751036d5fed3cb9e0c8741ea5365b2aebd0c7cf931e1fabf8c4f32c4ac"
     },
     "ex-main-0448": {
-      "raw": "86f0fbd11364567cf867cd60cc57c2d9e7d9794444eda0625715b6be66904d31",
-      "authored": "359be7461ff832965754dd5b9b910a50dba278204912ec708c1425716cca1676",
-      "integrated": "d636f52a37a498d492515e68099299e864b282eb2ea9f4dc3e1ea7ed7642186c"
+      "raw": "28402f2cc245272e22385f64692f77020947cefc07ff0835f81594c05492df4b",
+      "authored": "d917740c157a19804a2cdcb7247cc322267c41fbeb544fedfb375ba7ad35d9c8",
+      "integrated": "b1b42072d71c53f5d33d701907a10aaab2d322e28ff4b694cab0c50ea0aa3052"
     },
     "ex-main-0449": {
-      "raw": "462bca4c30d7ecf3332015338aa0c5263c2e9541f344756c1a1c0f2ffe6aa689",
-      "authored": "dcf6e1cc38e9a19a5cf3b5dba3497ee2d361bfe3aa623baab6074633945096d5",
-      "integrated": "5c9db951c0363bd53be936eee1629fdfb8812c1acec7c0b63ad888c48ba1be73"
+      "raw": "9a7178282981c0074fd60c38546e08062c124e1b7a06e0be89869f0b1d2654d3",
+      "authored": "31ad084c5d35dc0a17a5835999ea6669bdaefe230f48ed2ca74da2ffa64afc8a",
+      "integrated": "2b8c4fa384206f32ad3bd9d15d6fecf6f80afb6225900ef8af3d0381216babcc"
     },
     "ex-main-0450-a": {
-      "raw": "7de8deb0bb86f08b08b0ebd3f9cd5c080e021500f92ecb84ec2c20683a0b58f3",
-      "authored": "b5f9e14d9b377111496283f55a9dbbfb252aac24914d83616de613cf2ce86f5d",
-      "integrated": "ecede82722d66326ccde78a21b518c472ab6a8e2abe60a1c77b6a73ee2aa06d5"
+      "raw": "e73a2d86020cef3d4b2e067b9df0484aa0b4b13922f8b28296730ae34cc07e13",
+      "authored": "0e1c51bf3a9c3066b60bdc5d39f102bf2f731248c63df6b74cbdb963313e8da9",
+      "integrated": "848abb4d923b2966d639ac1ce323f4c5c01a4841e30c1bae581c044290bc7d41"
     },
     "ex-main-0450-b": {
-      "raw": "9a3adc2dee5b0174a03103ee4a9c72d6e4dc4f02b8039137d47931b0b199a24a",
-      "authored": "9f39b7fd4edc0a5043d7e147690340ccd93d0faba808aa23d8adb3b9b9f27ed6",
-      "integrated": "6a353eb866987b72ffaab73bb8b188f5e39aabd0e2f1cb62ea59de8970ddcbaf"
+      "raw": "a8f1ed189e06db4005c3c8e639c9dc392f99835de4be3a3934b1b1e81a02903a",
+      "authored": "06695fc73be6bc28b1dc2b5cd6601d52c264760e6bf7a3d12608c096a94b46b7",
+      "integrated": "5be9d996e3fd06154818fc1e338dcaec9780ceba5e8b89ab549f0198696d2bbd"
     },
     "ex-main-0451": {
-      "raw": "536bf6428a2874ede26c231649e7e809401ba17f7a860caf782d4a12a7f45c1d",
-      "authored": "6834fb3244c0455f53367462e3ce4d83eb2ce5883c91c230f5b3ee6ebfb2c3fb",
-      "integrated": "ac494cd57f8c9d2db901b6415d23843d1b539b70daf574c42e1b96b745900c55"
+      "raw": "20f2a87c0eb2450fa638231f1c6ed57d72eb9acd6fce1def30db84c0a858ee31",
+      "authored": "8ea5ea20b7615cfc98ba65e8165ffd589e486abe0a468fd499aa7d184c670348",
+      "integrated": "483fdb9283637eb2fe881ce8f35a2096651077089478892f70c4080db28d3e56"
     },
     "theory-052": {
       "raw": "b6b25ab2a48460752508190e9cdf7a235654ea33f85a403297e9c3f386d07386",
@@ -1014,7 +1014,7 @@
   "files": {
     "stereo-course/textbook/data/course.json": {
       "beforeSHA256": "76f713ef94e4f1b2040cf7aeeacb129f42a18a32a08a387dd921233077ddf666",
-      "afterSHA256": "86b612e9ca7a340f8e5581081758aa62410989956e4a406325d93075cb22b27a"
+      "afterSHA256": "9aa198e5128107f007e0e0b85a3082854818fa767a8f913ba0ad9c55ce47aabc"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "b6f251a5b24b961f198a292a0b5a71a54de2f965d79e406d7d8619e1a316db8f",
