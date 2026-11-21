@@ -4,10 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>От счёта группами до деления уголком — карта навыков по Арженикову | MathExam</title>
-  <meta name="description" content="Восемь шагов от счёта равными группами до деления уголком. Соберите коробки, выберите цифру частного, разберитесь с нулём и остатком и решите новый пример самостоятельно.">
+  <meta name="description" content="Игровая оранжерея по Арженикову: 8 участков, счёт группами, деление поровну и с остатком, цифра частного и деление уголком. Задачи с моделями и самостоятельные проверки.">
   <link rel="canonical" href="https://mathexam.space/trainers/oge-basics/multiplication-division/arzhenikov-map.html">
   <link rel="stylesheet" href="arzhenikov-map.css">
   <script src="arzhenikov-map.js" defer></script>
+  <script src="arzhenikov-garden-bank.js" defer></script>
+  <script src="arzhenikov-garden.js" defer></script>
 
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
@@ -16,6 +18,15 @@
   <header><nav aria-label="Навигация"><a class="brand" href="/" data-mathexam-home-link target="_self" aria-label="На главную MathExam">MathExam</a><span>/</span><a href="index.html">Умножение и деление</a><a class="cabinet" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/">В кабинет</a></nav></header>
   <main>
     <div class="intro"><div><h1>От групп к делению уголком</h1><p>Карта навыков по Арженикову. Выберите, что хотите научиться делать.</p></div><div class="meter"><strong id="total">Пройдено 0 из 8</strong><progress id="bar" value="0" max="8" aria-label="Пройденные навыки"></progress></div></div>
+    <section class="garden" id="garden" aria-labelledby="garden-title">
+      <div class="garden-cover">
+        <div class="canopy" aria-hidden="true"><span>🌱</span><span>🌷</span><span>🌻</span></div>
+        <div><h2 id="garden-title">Оранжерея равных групп</h2>
+        <p>Посей семена, собери букеты и рассчитай места в теплице. На каждом участке тебя ждут три задачи и новое растение для коллекции.</p>
+        <a class="garden-go" id="garden-start" href="#garden-count">Посадить первую грядку</a> <a class="garden-go" id="garden-repeat" href="#garden-review" hidden>Повторить после перерыва</a></div>
+      </div>
+      <div id="garden-play" hidden></div>
+    </section>
     <div class="layout">
       <details id="route" open><summary>Карта навыков</summary>
         <ol id="skills">
