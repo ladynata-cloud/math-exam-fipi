@@ -74,8 +74,8 @@ function filesAt(relative) {
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
   "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
-  "geometry-course/textbook/data/triangle-sine-area.json": "c9b4cf370c0e0fc7a24b374149ec8d553b44ce5b3494fc896bf613134f90c133",
-  "geometry-course/textbook/data/triangle-relations.json": "1dba92a1cc737af93254c1ff7a16b08ac21a646af3376462bd9f9a5aa0e0a1f3",
+  "geometry-course/textbook/data/triangle-sine-area.json": "329c77274a12acbab05da2084cfb72e09f7af67f4bb63773c241c7e8c6effcfa",
+  "geometry-course/textbook/data/triangle-relations.json": "64b65b5c40cd4edd1217d70b1c2a65c379c8f5887b036b8efc5494de81a483cc",
   "geometry-course/textbook/data/trigonometric-signs.json": "22d83be75d0a93f61fa9d230be762e7de0b27412608af570f0383cec57a9d944",
   "geometry-course/textbook/data/trigonometric-rays.json": "4f4f6f668aec42eef93fabd8b0cd7d0967a09c7a0f15780f5e1a31e977010940",
   "geometry-course/textbook/data/slope-and-reflection.json": "745546f67b66680bf4575f64daad403e1a921aeb8e29468b262ba2d9287e6d34",

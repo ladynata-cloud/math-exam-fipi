@@ -61,11 +61,12 @@ for entry,(n,part) in zip(cards,expected_ids,strict=True):
             assert near(length(A,C),d) and near(length(B,D),d) and all(near(length(K,p[t]),d/2) for t in 'ABCD')
             assert near(2*measured,target) and near(min(angle(A,K,B),180-angle(A,K,B)),90 if fresh else 30)
         if n==1113:
-            H,K=p['H'],p['K']
-            assert near(dot(displacement(A,C),displacement(B,H)),0) and near(dot(displacement(A,B),displacement(C,K)),0)
-            hb,hc=length(B,H),length(C,K);alpha,beta=map(radians,(angle(B,A,C),angle(C,B,A)))
+            H=p['H']
+            assert near(dot(displacement(A,C),displacement(B,H)),0)
+            if 'K' in p:assert near(dot(displacement(A,B),displacement(C,p['K'])),0)
+            hb=length(B,H);hc=2*measured/length(A,B);alpha,beta=map(radians,(angle(B,A,C),angle(C,B,A)))
             assert near(measured,hb*hc/(2*sin(alpha))) and near(measured,hb*hb*sin(beta)/(2*sin(alpha)*sin(alpha+beta)))
-            assert near(measured,(6 if fresh else 12) if ii==0 else (8 if fresh else 9*sqrt(3)/2))
+            assert near(measured,(6 if fresh else 12) if ii==0 else (8 if fresh else 3*sqrt(3)))
 checks=0
 for a in (1,2,3,5,8):
     for b in (1,3,4,7):

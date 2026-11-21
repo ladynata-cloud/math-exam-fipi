@@ -7,7 +7,7 @@ from upper_semicircle import BOOK, ROOT, author
 from trigonometric_signs import grade
 
 OUT = ROOT / 'geometry-course/textbook/data/triangle-sine-area.json'
-CAPTION = 'На сетке одна клетка равна одной единице. Высота перпендикулярна прямой, содержащей основание.'
+CAPTION = 'На чертеже сохраняются отношения длин и величины углов. Высота перпендикулярна прямой, содержащей основание.'
 
 
 def triangle(label, names, base, side, angle, altitude=True):
@@ -37,10 +37,50 @@ def rectangle(label,diagonal,angle):
     return graph(label,points,edges=[('A','B'),('B','C'),('C','D'),('D','A'),('A','C'),('B','D')])
 
 
-def heights(label,angle,b,c):
+def heights(label,angle,b,c,show_k=True):
     x=round(cos(radians(angle)),10);y=round(sin(radians(angle)),10)
     points={'A':(0,0),'B':(c,0),'C':(b*x,b*y),'H':(c*x*x,c*x*y),'K':(b*x,0)}
-    return graph(label,points,edges=[('A','B'),('A','C'),('B','C'),('B','H'),('C','K')])
+    # Merge exact geometric coincidences before building visible labels.
+    for name in ('H','K'):
+        for v in 'ABC':
+            if sum((q-r)**2 for q,r in zip(points[name],points[v]))<1e-12:points[name]=points[v];break
+    edges=[('A','B'),('A','C'),('B','C'),('B','H'),('H','C')]
+    if show_k:
+        edges.extend([('C','K'),('K','B')])
+    else:
+        del points['K']
+    return graph(label,points,edges=edges)
+
+
+def school_figure(card):
+    model=card['visualization']['model']
+    for view in model['views'].values():
+        view['dashSegments']=[]
+        view['segments']=[pair for pair in view['segments'] if not any(key.startswith(('_left__','_base__','head_')) for key in pair)]
+        visible=[]
+        for key in view['points']:
+            names=[name for name in model['labels'][key].split('=') if name not in ('O','x','y')]
+            if not names:continue
+            model['labels'][key]='='.join(names)
+            visible.append(key)
+        view['points']=visible
+        ids={name:key for key in visible for name in model['labels'][key].split('=')}
+        # A candidate mark is drawn only where both displayed line segments really are perpendicular.
+        for foot in ('H','K'):
+            if foot not in ids:continue
+            key=ids[foot];neighbors=[]
+            for a,b in view['segments']:
+                if a==key and b!=key:neighbors.append(b)
+                if b==key and a!=key:neighbors.append(a)
+            if len(neighbors)<2:continue
+            pts=model['points'];center=pts[key];marked=False
+            for i,a in enumerate(neighbors):
+                for b in neighbors[i+1:]:
+                    u=[v-w for v,w in zip(pts[a],center)];v=[n-w for n,w in zip(pts[b],center)]
+                    if abs(u[0]*v[0]+u[1]*v[1])<.00001 and min(u[0]**2+u[1]**2,v[0]**2+v[1]**2)>2:
+                        view['rightAngles'].append({'vertex':key,'a':a,'b':b,'size':1.6});marked=True;break
+                if marked:break
+    return card
 
 
 def area(n,part,pages,question,reason,hint,steps,views,probes,*,title=None,refs=None):
@@ -48,7 +88,7 @@ def area(n,part,pages,question,reason,hint,steps,views,probes,*,title=None,refs=
     if item['kind']=='exercise':
         item['help'][1]['text']='Найди вершину угла между данными сторонами и проведи высоту к выбранному основанию.'
         item['answer']['prompt']='Обоснуй формулу, объяснив каждый множитель с помощью сторон, углов, диагоналей или высот.'
-    return item
+    return school_figure(item)
 
 
 def theorem():
@@ -129,11 +169,11 @@ def altitude_formulas():
                    ('Рассмотри прямой угол','При α=90° и тех же высотах 3, 4 получаем площадь 6. В этом случае стороны AB и AC сами служат высотами.','Проверь значение синуса прямого угла.')]
             probes=[('Какова площадь при α=30°, h_b=3, h_c=4?','12','Знаменатель 2 sin 30° равен единице.'),('Какова площадь при α=90° и тех же высотах?','6','Знаменатель стал равен 2.')]
         else:
-            views=[heights('Углы A, B и высота BH',30,3*sqrt(3),6),heights('Восстанови основание AC',30,3*sqrt(3),6),heights('Углы 45°, 45° и высота 4',45,4,4*sqrt(2))]
+            views=[heights('Углы A, B и высота BH',30,2*sqrt(3),6,False),heights('Восстанови основание AC',30,2*sqrt(3),6,False),heights('Углы 45°, 45° и высота 4',45,4,4*sqrt(2),False)]
             question='Известны ∠A=α, ∠B=β и высота h из B к прямой AC. Найди площадь через α, β и h.'
             reason='Из прямоугольного треугольника AB=h/sin α. Для γ=180°−α−β выполняется sin γ=sin(α+β). По теореме синусов AC=AB·sin β/sin γ. Затем S=AC·h/2=h² sin β/(2 sin α sin(α+β)).'
-            steps=[('Восстанови сторону AB','Из BH=AB sin α имеем AB=h/sin α. При α=30°, β=60° и h=3 получаем AB=6.','Это высота из B к основанию AC.'),
-                   ('Найди AC и площадь',reason+' В числовой модели γ=90°, AC=6 sin 60°=3√3, площадь 9√3/2.','Сторона AC противолежит β, а AB противолежит γ.'),
+            steps=[('Восстанови сторону AB','Из BH=AB sin α имеем AB=h/sin α. При α=30°, β=30° и h=3 получаем AB=6.','Это высота из B к основанию AC.'),
+                   ('Найди AC и площадь',reason+' В числовой модели γ=120°, AC=6 sin 30°/sin 120°=2√3, площадь 3√3. Основание высоты H лежит за C на прямой AC.','Сторона AC противолежит β, а AB противолежит γ.'),
                    ('Проверь другие углы','Пусть α=β=45°, h=4. Тогда γ=90°, AB=4√2, AC=4 и площадь 4·4/2=8.','При прямом угле C сторона AB является гипотенузой.')]
             probes=[('Чему равно AB при α=30°, h=3?','6','Раздели 3 на sin 30°.'),('Чему равна площадь при α=β=45°, h=4?','8','Основание AC равно 4.')]
         hint='Проверь, из какой вершины проведена высота и на какую сторону она опущена. Для теоремы синусов сопоставь сторону именно противолежащему углу.'
