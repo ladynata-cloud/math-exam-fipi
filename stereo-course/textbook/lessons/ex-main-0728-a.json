@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0728-a",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Образ отрезка и порядок точек",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "728",
+    "chapter": "VII. Метод координат в пространстве. Движения",
+    "printedPages": [
+      185
+    ],
+    "pdfPages": [
+      187
+    ],
+    "subpart": "а"
+  },
+  "statement": {
+    "text": "Докажи, что движение отображает отрезок AB на отрезок A₁B₁.",
+    "goal": "Выдели среди всей прямой именно точки между концами."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "T лежит внутри AB, U — за B. Порядок виден по равенствам расстояний.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          2,
+          0,
+          0
+        ],
+        "C": [
+          0,
+          2,
+          0
+        ],
+        "T": [
+          0.5,
+          0,
+          0
+        ],
+        "U": [
+          3,
+          0,
+          0
+        ],
+        "X": [
+          1,
+          1,
+          0
+        ],
+        "Y": [
+          0,
+          3,
+          0
+        ],
+        "A1": [
+          1,
+          -1,
+          2
+        ],
+        "B1": [
+          1,
+          1,
+          2
+        ],
+        "C1": [
+          -1,
+          -1,
+          2
+        ],
+        "T1": [
+          1,
+          -0.5,
+          2
+        ],
+        "U1": [
+          1,
+          2,
+          2
+        ],
+        "X1": [
+          0,
+          0,
+          2
+        ],
+        "Y1": [
+          -2,
+          -1,
+          2
+        ]
+      },
+      "edges": [],
+      "faces": [],
+      "arrows": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A1",
+          "B1"
+        ],
+        [
+          "B1",
+          "U1"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "T",
+        "U"
+      ],
+      "views": {
+        "neutral": {
+          "label": "T лежит внутри AB, U — за B. Порядок виден по равенствам расстояний.",
+          "segments": [
+            [
+              "A",
+              "T"
+            ],
+            [
+              "T",
+              "B"
+            ],
+            [
+              "B",
+              "U"
+            ]
+          ]
+        },
+        "map": {
+          "label": "T₁ делит A₁B₁ в том же отношении, что T делит AB.",
+          "segments": [
+            [
+              "A1",
+              "T1"
+            ],
+            [
+              "T1",
+              "B1"
+            ],
+            [
+              "A1",
+              "B1"
+            ]
+          ]
+        },
+        "new": {
+          "label": "На той же прямой лежит и U₁, но вне отрезка.",
+          "segments": [
+            [
+              "A1",
+              "B1"
+            ],
+            [
+              "B1",
+              "U1"
+            ],
+            [
+              "A1",
+              "U1"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Как отличить отрезок от полной прямой?",
+      "text": "Точка X принадлежит закрытому отрезку AB тогда и только тогда, когда AX+XB=AB, включая X=A и X=B.",
+      "view": "map"
+    },
+    {
+      "id": "h2",
+      "question": "Почему хватает этого критерия?",
+      "text": "Движение и его обратное сохраняют три длины. Значит равенство выполняется одновременно у точки и у её образа.",
+      "view": "new"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Внутренняя точка",
+      "prompt": "При AT=1/2, TB=3/2, AB=2 найди A₁T₁+T₁B₁.",
+      "input": {
+        "prompt": "Внутренняя точка",
+        "accepted": [
+          "2"
+        ],
+        "feedback": "Каждое слагаемое сохранилось."
+      },
+      "explanation": "T₁ лежит на новом отрезке.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-080"
+        }
+      ],
+      "view": "map"
+    },
+    {
+      "id": "step-2",
+      "title": "За границей",
+      "prompt": "Для U=(3,0,0), A=(0,0,0), B=(2,0,0) найди A₁U₁+U₁B₁.",
+      "input": {
+        "prompt": "За границей",
+        "accepted": [
+          "4"
+        ],
+        "feedback": "До U расстояния от A и B равны 3 и 1."
+      },
+      "explanation": "Сумма больше A₁B₁, поэтому U₁ вне отрезка.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-080"
+        }
+      ],
+      "view": "new"
+    },
+    {
+      "id": "step-3",
+      "title": "Конец",
+      "prompt": "При X=A сколько равно AX+XB в этом примере?",
+      "input": {
+        "prompt": "Конец",
+        "accepted": [
+          "2"
+        ],
+        "feedback": "Слагаемое AX нулевое."
+      },
+      "explanation": "Концы входят в доказанный образ.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-080"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "отрезок",
+      "отрезком"
+    ],
+    "prompt": "Назови образ отрезка AB.",
+    "feedback": "Множество всех образов есть закрытый отрезок A₁B₁."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 185, issued exercise page 185, transition to self-check on page 186 and printed hints page 271; all fixed-set, coplanarity, surjectivity, inverse, segment, angle, disjointness, circle and box cases verified independently.",
+    "at": "2026-11-21T23:34:04Z"
+  }
+}

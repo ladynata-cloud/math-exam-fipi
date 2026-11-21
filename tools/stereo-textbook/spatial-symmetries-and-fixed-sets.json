@@ -1,0 +1,695 @@
+{
+  "parts": {
+    "719": [
+      "а",
+      "б",
+      "в"
+    ],
+    "720": [
+      "а",
+      "б"
+    ],
+    "721": [
+      "а",
+      "б"
+    ],
+    "722": [
+      "а",
+      "б"
+    ],
+    "theory-80": [
+      null
+    ],
+    "theory-81": [
+      null
+    ],
+    "theory-82": [
+      null
+    ],
+    "theory-83": [
+      null
+    ],
+    "theory-84": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "719": {
+      "id": "source-main-0719",
+      "kind": "exercise",
+      "title": "Задача № 719",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "719",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "720": {
+      "id": "source-main-0720",
+      "kind": "exercise",
+      "title": "Задача № 720",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "720",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "721": {
+      "id": "source-main-0721",
+      "kind": "exercise",
+      "title": "Задача № 721",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "721",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "722": {
+      "id": "source-main-0722",
+      "kind": "exercise",
+      "title": "Задача № 722",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "722",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-80": {
+      "id": "source-theory-080",
+      "kind": "theory",
+      "title": "80. Центральная симметрия",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "80",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          180,
+          181
+        ],
+        "pdfPages": [
+          182,
+          183
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-81": {
+      "id": "source-theory-081",
+      "kind": "theory",
+      "title": "81. Осевая симметрия",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "81",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          181
+        ],
+        "pdfPages": [
+          183
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-82": {
+      "id": "source-theory-082",
+      "kind": "theory",
+      "title": "82. Зеркальная симметрия",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "82",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          182
+        ],
+        "pdfPages": [
+          184
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-83": {
+      "id": "source-theory-083",
+      "kind": "theory",
+      "title": "83. Параллельный перенос",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "83",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          182,
+          183
+        ],
+        "pdfPages": [
+          184,
+          185
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-84": {
+      "id": "source-theory-084",
+      "kind": "theory",
+      "title": "84. Преобразование подобия",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "84",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          183,
+          184
+        ],
+        "pdfPages": [
+          185,
+          186
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "theory-080": {
+      "raw": "163c64b609bcb9b9a48a89b421b2ad64beb95c9c6f4337e16c5b981f952b8ed1",
+      "authored": "784d55092c1c0f71b7cb4d8dbb974e182f6d52de47bf9014100d06b289ef24a8",
+      "integrated": "e1407360e1935d181998ba60d99d63ce3077ec201b50f78995eef7791c28b2a1"
+    },
+    "theory-081": {
+      "raw": "3a9d4718b776ff276c01d7d32f97bb43c55932171355c21c6d8a389120da2d81",
+      "authored": "c2eaf09201ae3157c781bad1f63720e94c9bb02286cb82e9284fed4a67aa6f7f",
+      "integrated": "99c6eb0223cd0086789465e06c7c598e7c2cb71a3a990e0dd4c1d0da820d5462"
+    },
+    "theory-082": {
+      "raw": "22828d6afb3d5c5a39b3a2eb1132d1551ff7903b25a339a03498b543d5376918",
+      "authored": "e0ad0279fd500584d5cebd66a9818e6b1d9855a6c29b09ca7a306df8ca1836e2",
+      "integrated": "92fdd7c3aaef8ecb4dc174a0f84305a373d1c86eb906430459173a0adb8f1335"
+    },
+    "theory-083": {
+      "raw": "963d6665dbaa0a051e423e978bf6df70bd86297945a407ffe814ada96ca7738f",
+      "authored": "5b55d3c22fd1c7f878ebcc18f1da7ffb356e8976791da45768d405535caef93d",
+      "integrated": "afee6681ca0c69356955f6a3510196819415a90c4d33700bb8a9118025f23371"
+    },
+    "theory-084": {
+      "raw": "682555bec7bdd03752054a74dac0a18eb4ec571269ecafa22681dcaa681ae5ed",
+      "authored": "ca4e85cc4a97af577a4cb7baab4264be8b1f7c256606511f05d080c638a29dce",
+      "integrated": "749d6a9665e5ad4416721dfa20f1549be74240672a40e85e071ddeb9084c051a"
+    },
+    "ex-main-0719-a": {
+      "raw": "48fe99bb332de357db22b4430ed6877d247dea81c00b51e600ac52dbd61a057b",
+      "authored": "f9286e0cffa9aa2c5f52c4dd21e5878ccfadd684892f3ca9755ae07baa5b77ac",
+      "integrated": "e577e8d6d8b92d7c93e28518aba0a5c1f6afb4490f48390dafc12be91467ebe8"
+    },
+    "ex-main-0719-b": {
+      "raw": "000d9fecabe44aefb8986133c4bece0fb67b5cc1d0299c7d5de2b1fcefbe7a3b",
+      "authored": "de406f9a33caa6cf910a1e5a492983f7f711586dd7eda6bb2ba5aaa5a113442d",
+      "integrated": "554590f9729548c6851cc396db7bee81c8670d0a86a7b84d2cd5125dae69fde3"
+    },
+    "ex-main-0719-c": {
+      "raw": "70e736175d8e3ea919ac3ce4a144054bb05073d495736ddf57320cf9fc9969ce",
+      "authored": "2bfa84a3244db1c47fe3c469f039a7b9aac52db794cfe6c448225142f2ea7386",
+      "integrated": "6e68b6a319d2de549cfa4809a854906ae5a81880db8ce300baef737ede3a4571"
+    },
+    "ex-main-0720-a": {
+      "raw": "7ac0bb0c2611bd2ecfbe446bb698ed8975b80290204b4d7fbddd0b4c6815d5b5",
+      "authored": "4f2f7e01b0feadcf916778861d1e064f8aa76874621f502d08466ef5118147bb",
+      "integrated": "618a4ae2b6894b0b1e9adc943a10c6befb148276b4393558bf20d0a3a0aaa86b"
+    },
+    "ex-main-0720-b": {
+      "raw": "61dbaba193c34b63bb30857de720dc69957ffef55e2337451d3de270681850cb",
+      "authored": "10a9880ef598e4b007c446061f03b7269c2bb1dd3047f448f4ac42771efe2d4d",
+      "integrated": "7624e972e387015db3ce749a46225b4f51f9614edf72ad5b852b2e1c76670bbb"
+    },
+    "ex-main-0721-a": {
+      "raw": "f63877affedd309b390f47ef4f581d83cae615c5cc0952151ddcb208d4eb0e98",
+      "authored": "eec135308a014381ba134cf32faf06a767c86cfde8823799d8ea49690ce62d86",
+      "integrated": "c3a86d9e7fe3c7dcc1dbda7ef72240c0eebb9c2916bcd66e652ff190c790572a"
+    },
+    "ex-main-0721-b": {
+      "raw": "80bc054cb5c1057b2c6c145ee6f1b3ff3aca03ef405c5ffcd9745d9f728daada",
+      "authored": "3356aeb3c0f921545723499eb8694d2afed1c2782a2d52b3a3f01182071df655",
+      "integrated": "08dbbba76bcfccd800478c580b439a9df8cc6a058343e47ef7a3909267b968b7"
+    },
+    "ex-main-0722-a": {
+      "raw": "55584993459fbc102ed9b8da6892257476769a6066e4ec25e008f0f10be20382",
+      "authored": "bc7db7bf97449ece1027bdf112206da3723631bb35a6ec0675533454aa8986f4",
+      "integrated": "acebfa54c3706a6b61f4d6e0be6b4f8b9ffc6b6aa8467c397cbd3dc6435c759b"
+    },
+    "ex-main-0722-b": {
+      "raw": "3c6c72b3f7eb5e3b7e2667e3a784cb37b8ce0a74004d1bc401484d6dba3843d8",
+      "authored": "c5ffd07ca87d48a795fc9d1a5e8a3866e13d2f7aa39f370e5f14115afb3a36e8",
+      "integrated": "6a62d09193f91aab0be1089eed332a7821fbe3f416d8cea72088d41bc5bdeaf2"
+    }
+  },
+  "cases": [
+    [
+      "theory-080|condition",
+      "spatial-symmetries-and-fixed-sets-theory-080-condition"
+    ],
+    [
+      "theory-080|help:h1",
+      "spatial-symmetries-and-fixed-sets-theory-080-help-h1"
+    ],
+    [
+      "theory-080|help:h2",
+      "spatial-symmetries-and-fixed-sets-theory-080-help-h2"
+    ],
+    [
+      "theory-080|step-1",
+      "spatial-symmetries-and-fixed-sets-theory-080-step-1"
+    ],
+    [
+      "theory-080|step-2",
+      "spatial-symmetries-and-fixed-sets-theory-080-step-2"
+    ],
+    [
+      "theory-080|step-3",
+      "spatial-symmetries-and-fixed-sets-theory-080-step-3"
+    ],
+    [
+      "theory-081|condition",
+      "spatial-symmetries-and-fixed-sets-theory-081-condition"
+    ],
+    [
+      "theory-081|help:h1",
+      "spatial-symmetries-and-fixed-sets-theory-081-help-h1"
+    ],
+    [
+      "theory-081|help:h2",
+      "spatial-symmetries-and-fixed-sets-theory-081-help-h2"
+    ],
+    [
+      "theory-081|step-1",
+      "spatial-symmetries-and-fixed-sets-theory-081-step-1"
+    ],
+    [
+      "theory-081|step-2",
+      "spatial-symmetries-and-fixed-sets-theory-081-step-2"
+    ],
+    [
+      "theory-081|step-3",
+      "spatial-symmetries-and-fixed-sets-theory-081-step-3"
+    ],
+    [
+      "theory-082|condition",
+      "spatial-symmetries-and-fixed-sets-theory-082-condition"
+    ],
+    [
+      "theory-082|help:h1",
+      "spatial-symmetries-and-fixed-sets-theory-082-help-h1"
+    ],
+    [
+      "theory-082|help:h2",
+      "spatial-symmetries-and-fixed-sets-theory-082-help-h2"
+    ],
+    [
+      "theory-082|step-1",
+      "spatial-symmetries-and-fixed-sets-theory-082-step-1"
+    ],
+    [
+      "theory-082|step-2",
+      "spatial-symmetries-and-fixed-sets-theory-082-step-2"
+    ],
+    [
+      "theory-082|step-3",
+      "spatial-symmetries-and-fixed-sets-theory-082-step-3"
+    ],
+    [
+      "theory-083|condition",
+      "spatial-symmetries-and-fixed-sets-theory-083-condition"
+    ],
+    [
+      "theory-083|help:h1",
+      "spatial-symmetries-and-fixed-sets-theory-083-help-h1"
+    ],
+    [
+      "theory-083|help:h2",
+      "spatial-symmetries-and-fixed-sets-theory-083-help-h2"
+    ],
+    [
+      "theory-083|step-1",
+      "spatial-symmetries-and-fixed-sets-theory-083-step-1"
+    ],
+    [
+      "theory-083|step-2",
+      "spatial-symmetries-and-fixed-sets-theory-083-step-2"
+    ],
+    [
+      "theory-083|step-3",
+      "spatial-symmetries-and-fixed-sets-theory-083-step-3"
+    ],
+    [
+      "theory-084|condition",
+      "spatial-symmetries-and-fixed-sets-theory-084-condition"
+    ],
+    [
+      "theory-084|help:h1",
+      "spatial-symmetries-and-fixed-sets-theory-084-help-h1"
+    ],
+    [
+      "theory-084|help:h2",
+      "spatial-symmetries-and-fixed-sets-theory-084-help-h2"
+    ],
+    [
+      "theory-084|step-1",
+      "spatial-symmetries-and-fixed-sets-theory-084-step-1"
+    ],
+    [
+      "theory-084|step-2",
+      "spatial-symmetries-and-fixed-sets-theory-084-step-2"
+    ],
+    [
+      "theory-084|step-3",
+      "spatial-symmetries-and-fixed-sets-theory-084-step-3"
+    ],
+    [
+      "ex-main-0719-a|condition",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-a-condition"
+    ],
+    [
+      "ex-main-0719-a|help:h1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-a-help-h1"
+    ],
+    [
+      "ex-main-0719-a|help:h2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-a-help-h2"
+    ],
+    [
+      "ex-main-0719-a|step-1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-a-step-1"
+    ],
+    [
+      "ex-main-0719-a|step-2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-a-step-2"
+    ],
+    [
+      "ex-main-0719-a|step-3",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-a-step-3"
+    ],
+    [
+      "ex-main-0719-b|condition",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-condition"
+    ],
+    [
+      "ex-main-0719-b|help:h1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-help-h1"
+    ],
+    [
+      "ex-main-0719-b|help:h2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-help-h2"
+    ],
+    [
+      "ex-main-0719-b|step-1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-step-1"
+    ],
+    [
+      "ex-main-0719-b|step-2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-step-2"
+    ],
+    [
+      "ex-main-0719-b|step-3",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-step-3"
+    ],
+    [
+      "ex-main-0719-b|step-4",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-step-4"
+    ],
+    [
+      "ex-main-0719-b|step-5",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-step-5"
+    ],
+    [
+      "ex-main-0719-b|step-6",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-step-6"
+    ],
+    [
+      "ex-main-0719-b|step-7",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-step-7"
+    ],
+    [
+      "ex-main-0719-b|step-8",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-step-8"
+    ],
+    [
+      "ex-main-0719-b|step-9",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-b-step-9"
+    ],
+    [
+      "ex-main-0719-c|condition",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-condition"
+    ],
+    [
+      "ex-main-0719-c|help:h1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-help-h1"
+    ],
+    [
+      "ex-main-0719-c|help:h2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-help-h2"
+    ],
+    [
+      "ex-main-0719-c|step-1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-step-1"
+    ],
+    [
+      "ex-main-0719-c|step-2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-step-2"
+    ],
+    [
+      "ex-main-0719-c|step-3",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-step-3"
+    ],
+    [
+      "ex-main-0719-c|step-4",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-step-4"
+    ],
+    [
+      "ex-main-0719-c|step-5",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-step-5"
+    ],
+    [
+      "ex-main-0719-c|step-6",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-step-6"
+    ],
+    [
+      "ex-main-0719-c|step-7",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-step-7"
+    ],
+    [
+      "ex-main-0719-c|step-8",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-step-8"
+    ],
+    [
+      "ex-main-0719-c|step-9",
+      "spatial-symmetries-and-fixed-sets-ex-main-0719-c-step-9"
+    ],
+    [
+      "ex-main-0720-a|condition",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-a-condition"
+    ],
+    [
+      "ex-main-0720-a|help:h1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-a-help-h1"
+    ],
+    [
+      "ex-main-0720-a|help:h2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-a-help-h2"
+    ],
+    [
+      "ex-main-0720-a|step-1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-a-step-1"
+    ],
+    [
+      "ex-main-0720-a|step-2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-a-step-2"
+    ],
+    [
+      "ex-main-0720-a|step-3",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-a-step-3"
+    ],
+    [
+      "ex-main-0720-b|condition",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-b-condition"
+    ],
+    [
+      "ex-main-0720-b|help:h1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-b-help-h1"
+    ],
+    [
+      "ex-main-0720-b|help:h2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-b-help-h2"
+    ],
+    [
+      "ex-main-0720-b|step-1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-b-step-1"
+    ],
+    [
+      "ex-main-0720-b|step-2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-b-step-2"
+    ],
+    [
+      "ex-main-0720-b|step-3",
+      "spatial-symmetries-and-fixed-sets-ex-main-0720-b-step-3"
+    ],
+    [
+      "ex-main-0721-a|condition",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-a-condition"
+    ],
+    [
+      "ex-main-0721-a|help:h1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-a-help-h1"
+    ],
+    [
+      "ex-main-0721-a|help:h2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-a-help-h2"
+    ],
+    [
+      "ex-main-0721-a|step-1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-a-step-1"
+    ],
+    [
+      "ex-main-0721-a|step-2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-a-step-2"
+    ],
+    [
+      "ex-main-0721-a|step-3",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-a-step-3"
+    ],
+    [
+      "ex-main-0721-b|condition",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-b-condition"
+    ],
+    [
+      "ex-main-0721-b|help:h1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-b-help-h1"
+    ],
+    [
+      "ex-main-0721-b|help:h2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-b-help-h2"
+    ],
+    [
+      "ex-main-0721-b|step-1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-b-step-1"
+    ],
+    [
+      "ex-main-0721-b|step-2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-b-step-2"
+    ],
+    [
+      "ex-main-0721-b|step-3",
+      "spatial-symmetries-and-fixed-sets-ex-main-0721-b-step-3"
+    ],
+    [
+      "ex-main-0722-a|condition",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-a-condition"
+    ],
+    [
+      "ex-main-0722-a|help:h1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-a-help-h1"
+    ],
+    [
+      "ex-main-0722-a|help:h2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-a-help-h2"
+    ],
+    [
+      "ex-main-0722-a|step-1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-a-step-1"
+    ],
+    [
+      "ex-main-0722-a|step-2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-a-step-2"
+    ],
+    [
+      "ex-main-0722-a|step-3",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-a-step-3"
+    ],
+    [
+      "ex-main-0722-b|condition",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-b-condition"
+    ],
+    [
+      "ex-main-0722-b|help:h1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-b-help-h1"
+    ],
+    [
+      "ex-main-0722-b|help:h2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-b-help-h2"
+    ],
+    [
+      "ex-main-0722-b|step-1",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-b-step-1"
+    ],
+    [
+      "ex-main-0722-b|step-2",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-b-step-2"
+    ],
+    [
+      "ex-main-0722-b|step-3",
+      "spatial-symmetries-and-fixed-sets-ex-main-0722-b-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "5d98242a579457dd550da9b165586383708d7a7261a3c84cffd02c39adc3d8d5",
+      "afterSHA256": "75b8695a9ed8ef2422f318d6fb9b1c7e698f47c052cde9a44447ea00753b3d7a"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "0d4cc64b183408951ae2a849b2a22b4801c4a685269be180aed65484ee849373",
+      "afterSHA256": "0be31d87263b40990d5edd2b2737ed2f1dddf33341771f8cce9978babc7c349a"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T23:21:29Z",
+    "scope": "Chapters I–VI and complete chapter VII paragraphs 1 and 2: points 71–79 and all 82 exercises 637–718, with 1,311 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "055255813c09291adae51c5bbf7392cbe32884d42c1261b40eedf775e4ea8457",
+    "index": "d29e2a6cca81936235b485f06144f0543295e74826b7b9f39d937d2fd324b309",
+    "registry": "24b9c320a1c5ee593ead430ce060143fdb883debb8d33b7c2e579a49ee416f77",
+    "cases": "b3af96fb4cbf60b453f2bc78f056731ffc355123e9e4b0d2f29bfc7408c1b6da"
+  }
+}
