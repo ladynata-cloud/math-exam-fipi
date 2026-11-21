@@ -50,15 +50,104 @@ cfg(55,'Отражение относительно оси',[c('Координа
 cfg(56,'Преобразование сохраняет расстояния',[c('Преобразование',[[0,'Перенос'],[1,'Отражение'],[2,'Поворот на 180°']]),c('Сдвиг по горизонтали',range(-2,3))],[0,2]);
 cfg(57,'У правильного многоугольника равны стороны и углы',[c('Число сторон',[3,4,5,6,8])],[5]);
 cfg(58,'Пять правильных многогранников',[c('Фигура',[[0,'Тетраэдр'],[1,'Куб'],[2,'Октаэдр'],[3,'Додекаэдр'],[4,'Икосаэдр']])],[0]);
+const segmentRatios = {
+ equal: {sign:'= 1',initial:4,matches:(left,right)=>left===right},
+ greater: {sign:'> 1',initial:4,matches:(left,right)=>left>right},
+ less: {sign:'< 1',initial:8,matches:(left,right)=>left<right},
+ double: {sign:'= 2',initial:6,matches:(left,right)=>left===2*right},
+};
+const ratioConstructions = {
+ segments: 'Два отрезка в отношении 2 : 3',
+ rectangle: 'Прямоугольник со сторонами в отношении 5 : 3',
+ triangle: 'Катеты и гипотенуза',
+ angle: 'Два угла внутри 60°',
+};
+function constructionConfig(kind) {
+ if (kind === 'angle') return {
+  title: ratioConstructions.angle,
+  controls: [c('Угол от нижней стороны, в градусах', [0,10,20,30,40,50,60])],
+  initial: [30],
+ };
+ return {
+  title: ratioConstructions[kind],
+  controls: [c('Длина одной доли, в сантиметрах', [1,2,3])],
+  initial: [2],
+ };
+}
+function constructionFigure(kind, value) {
+ const diagram = svg('svg', {
+  viewBox: '0 0 360 250', role: 'img', class: 'pm-chart pcm-segment',
+  'aria-label': ratioConstructions[kind] + (kind === 'angle'
+   ? '. Луч составляет с нижней стороной ' + value + ' градусов.'
+   : '. Длина одной доли — ' + value + ' см.'),
+ });
+ const main = { stroke:'#086850', 'stroke-width':4 };
+ const secondary = { stroke:'#9c510e', 'stroke-width':4 };
+ const ink = { 'font-size':21 };
+ const left = 47, bottom = 199, unit = 17*value;
+ if (kind === 'segments') {
+  for (const [count,y,style] of [[2,74,main],[3,166,secondary]]) {
+   ln(diagram,left,y,left+count*unit,y,style);
+   for (let index=0; index<=count; index++) ln(diagram,left+index*unit,y-6,left+index*unit,y+6,style);
+   txt(diagram,left+count*unit/2,y-16,count*value+' см',ink);
+  }
+ } else if (kind === 'angle') {
+  const point = (degrees,distance) => {
+   const radians = degrees*Math.PI/180;
+   return [left+distance*Math.cos(radians), bottom-distance*Math.sin(radians)];
+  };
+  for (const degrees of [0,60]) {
+   const [x,y] = point(degrees,205);
+   ln(diagram,left,bottom,x,y,main);
+  }
+  const [x,y] = point(value,185);
+  ln(diagram,left,bottom,x,y,{...secondary,'stroke-dasharray':'9 4'});
+  txt(diagram,68,228,'O',ink);
+  txt(diagram,262,208,'A',ink);
+  if(value>0 && value<60) txt(diagram,x+11,y-3,'X',ink);
+  txt(diagram,151,25,'B',ink);
+ } else {
+  const width=(kind==='rectangle'?5:4)*unit, height=3*unit;
+  if(kind==='rectangle') {
+   diagram.append(svg('rect',{x:left,y:bottom-height,width,height,fill:'#e4f1e9',...main}));
+  } else {
+   diagram.append(svg('polygon',{points:[[left,bottom],[left+width,bottom],[left,bottom-height]].map(pt=>pt.join(',')).join(' '),fill:'#e4f1e9',...main}));
+   txt(diagram,left+width*.62+14,bottom-height*.52-8,5*value+' см',ink);
+  }
+  diagram.append(svg('polyline',{points:[[left,bottom-10],[left+10,bottom-10],[left+10,bottom]].map(pt=>pt.join(',')).join(' '),fill:'none',stroke:'#234436','stroke-width':2}));
+  txt(diagram,left+width/2,bottom+25,(kind==='rectangle'?5:4)*value+' см',ink);
+  txt(diagram,left-4,bottom-height/2,3*value+' см',{...ink,'text-anchor':'end'});
+ }
+ return diagram;
+}
+function configFor(lesson,task){
+ if (lesson?.id === 'p15' && Object.hasOwn(ratioConstructions,task?.ratioConstruction)) return constructionConfig(task.ratioConstruction);
+ const spec=lesson?.id==='p15'&&Object.hasOwn(segmentRatios,task?.segmentRatio)&&segmentRatios[task.segmentRatio];
+ if(!spec)return configs[lesson?.id];
+ return {title:'Где поставить точку C?',controls:[c('Положение C в клетках от A',range(0,12))],initial:[spec.initial]};
+}
 const allowed=(item,v)=>item.values.some(a=>(Array.isArray(a)?a[0]:a)===v);
 function fields(v,names){if(!v||typeof v!=='object'||Array.isArray(v)||![Object.prototype,null].includes(Object.getPrototypeOf(v)))return false;return Reflect.ownKeys(v).length===names.length&&names.every(k=>{const d=Object.getOwnPropertyDescriptor(v,k);return !!d&&d.enumerable&&Object.hasOwn(d,'value');});}
-function validateBoardState(lesson,value,task){try{const conf=configs[lesson?.id];if(lesson?.model!=='continuation'||!conf||!task||typeof task.id!=='string'||!fields(value,['lessonId','kind','taskId','values','stage']))return false;if(value.lessonId!==lesson.id||value.kind!=='continuation'||value.taskId!==task.id||!Number.isInteger(value.stage)||value.stage<0||value.stage>5)return false;const vals=value.values;if(!Array.isArray(vals)||Object.getPrototypeOf(vals)!==Array.prototype||vals.length!==conf.controls.length||Reflect.ownKeys(vals).length!==vals.length+1)return false;for(let i=0;i<vals.length;i++){const d=Object.getOwnPropertyDescriptor(vals,String(i));if(!d||!d.enumerable||!Object.hasOwn(d,'value')||!Number.isInteger(d.value)||!allowed(conf.controls[i],d.value))return false;}return true;}catch{return false;}}
+function validateBoardState(lesson,value,task){try{const conf=configFor(lesson,task);if(lesson?.model!=='continuation'||!conf||!task||typeof task.id!=='string'||!fields(value,['lessonId','kind','taskId','values','stage']))return false;if(value.lessonId!==lesson.id||value.kind!=='continuation'||value.taskId!==task.id||!Number.isInteger(value.stage)||value.stage<0||value.stage>5)return false;const vals=value.values;if(!Array.isArray(vals)||Object.getPrototypeOf(vals)!==Array.prototype||vals.length!==conf.controls.length||Reflect.ownKeys(vals).length!==vals.length+1)return false;for(let i=0;i<vals.length;i++){const d=Object.getOwnPropertyDescriptor(vals,String(i));if(!d||!d.enumerable||!Object.hasOwn(d,'value')||!Number.isInteger(d.value)||!allowed(conf.controls[i],d.value))return false;}return true;}catch{return false;}}
 function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=String(text);return n;}
 function svg(tag,attrs){const n=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs||{}))n.setAttribute(k,String(v));return n;}
 function chart(label){return svg('svg',{viewBox:'0 0 600 370',role:'img','aria-label':label,class:'pm-chart'});}
 function txt(s,x,y,text,attrs={}){const t=svg('text',{x,y,'font-size':20,'text-anchor':'middle',fill:'#234436',...attrs});t.textContent=String(text);s.append(t);return t;}
 function ln(s,x1,y1,x2,y2,attrs={}){s.append(svg('line',{x1,y1,x2,y2,stroke:'#205b46','stroke-width':2.5,...attrs}));}
 function dot(s,x,y,name,color='#176b51'){s.append(svg('circle',{cx:x,cy:y,r:4,fill:color}));if(name)txt(s,x+10,y-12,name,{'text-anchor':'start'});}
+function splitSegmentFigure(left){
+ const right=12-left,cx=24+26*left,y=65;
+ const picture=svg('svg',{viewBox:'0 0 360 115',role:'img',class:'pm-chart pcm-segment',
+  'aria-label':'Отрезок AB из 12 клеток. AC — '+left+', CB — '+right+'.'});
+ ln(picture,24,y,336,y,{stroke:'#89978f','stroke-width':2});
+ for(let i=0;i<=12;i++)ln(picture,24+26*i,y-4,24+26*i,y+5,{stroke:'#64746d','stroke-width':1.5});
+ ln(picture,24,y,cx,y,{stroke:'#086850','stroke-width':5});
+ ln(picture,cx,y,336,y,{stroke:'#9c510e','stroke-width':5});
+ txt(picture,24,y-16,'A',{'font-size':23});txt(picture,336,y-16,'B',{'font-size':23});
+ picture.append(svg('circle',{cx,cy:y,r:6,fill:'#152d26'}));
+ txt(picture,cx,y+32,'C',{'font-size':23});
+ return picture;
+}
 function frac(a,b){const n=el('span','pm-fraction');n.setAttribute('aria-label',a+' делить на '+b);n.append(el('span','',a),el('span','',b));return n;}
 function eq(...items){const n=el('p','pm-equation');for(const v of items)n.append(typeof v==='object'?v:document.createTextNode(String(v)));return n;}
 function exactRatio(n,d){let a=Math.abs(n),b=Math.abs(d);while(b){const r=a%b;a=b;b=r;}return d/a===1?String(n/a):frac(n/a,d/a);}
@@ -75,15 +164,54 @@ function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=char
 function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
-function mount(container,lesson,task){const conf=configs[lesson?.id];if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
+function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if(n===15){show(table(['Первая величина','Вторая величина','Единицы'],[[a,b,'одинаковые']]));formula(a+' : '+b+' = ',frac(a,b));say('Порядок важен: отношение '+a+' к '+b+' — первое число делим на второе.');stepList(['Сначала вырази обе величины в одинаковых единицах.','Если переставить числа, получится обратное отношение: '+b+' : '+a+'.','Отношение не отвечает на вопрос «на сколько больше»: для этого нужна разность.']);}
+ if (n===15 && Object.hasOwn(ratioConstructions,task.ratioConstruction)) {
+  const kind=task.ratioConstruction;
+  show(constructionFigure(kind,a));
+  if (kind==='angle') {
+   const remaining=60-a;
+   formula('∠AOX = '+a+'°, ∠XOB = '+remaining+'°');
+   if (!a || !remaining) say('Луч совпал со стороной исходного угла. Для двух углов внутри выбери промежуточное положение.');
+   else {
+    formula('∠AOX / ∠XOB = ',exactRatio(a,remaining));
+    if (2*a===remaining || 2*remaining===a) {
+     say(2*a===remaining?'Нижняя часть занимает одну долю, верхняя — две.':'Верхняя часть занимает одну долю, нижняя — две. Порядок записи определяет, с какой части начинаешь.');
+    } else say('Для отношения 1 : 2 больший угол должен быть ровно вдвое больше меньшего. Сравни выбранные величины.');
+   }
+   stepList(['Сначала отметь транспортиром угол 60°.','Раздели 60° на три одинаковые доли: одна достанется меньшему углу, две — большему.','Проверь на собственном чертеже обе величины и их сумму.']);
+  } else {
+   const sides=kind==='segments'?[2,3]:kind==='rectangle'?[5,3]:[3,4];
+   formula('Отношение длин: '+sides[0]*a+' : '+sides[1]*a+' = '+sides[0]+' : '+sides[1]);
+   if (kind==='triangle') {
+    formula('Короткий катет / гипотенуза = ',exactRatio(3*a,5*a));
+    formula('Длинный катет / гипотенуза = ',exactRatio(4*a,5*a));
+   }
+   stepList(['Измени мерку: обе длины увеличатся или уменьшатся вместе.','Проверь отношение делением и подпиши свои измерения на бумаге.','Сравни чертёж и модель: экран показывает пропорции, а мерку в сантиметрах отложи линейкой на бумаге.']);
+  }
+ }
+ else if(n===15&&Object.hasOwn(segmentRatios,task.segmentRatio)){
+  const spec=segmentRatios[task.segmentRatio],right=12-a;
+  show(splitSegmentFigure(a));
+  formula('AC = '+a+', CB = '+right);
+  if(!right)say('C совпала с B. В знаменателе ноль, поэтому отношение AC/BC не определено.');
+  else{
+   formula('AC / BC = ',exactRatio(a,right));
+   say(spec.matches(a,right)?'Выбранное положение подходит для AC/BC '+spec.sign+'.':
+    'Выбранное положение пока не подходит для AC/BC '+spec.sign+'. Передвинь C.');
+   if(!a)say('C совпала с A, поэтому AC равно нулю. Чтобы на чертеже были три разные точки, выбери положение между концами.');
+  }
+  stepList(['Сравни две части по клеткам, считая от концов до точки C.',
+   'У середины AC и CB равны. При движении C к B левая часть растёт, а правая уменьшается.',
+   'Покажи на своём рисунке, какое из двух расстояний попало в знаменатель.']);
+ }
+ else if(n===15){show(table(['Первая величина','Вторая величина','Единицы'],[[a,b,'одинаковые']]));formula(a+' : '+b+' = ',frac(a,b));say('Порядок важен: отношение '+a+' к '+b+' — первое число делим на второе.');stepList(['Сначала вырази обе величины в одинаковых единицах.','Если переставить числа, получится обратное отношение: '+b+' : '+a+'.','Отношение не отвечает на вопрос «на сколько больше»: для этого нужна разность.']);}
  else if(n===16){show(geometryFigure({points:[{name:'A',x:0,y:0},{name:'B',x:a,y:0}],segments:[['A','B']],labels:[{x:a/2,y:-0.6,text:a+' см на карте'}],caption:'Схема отрезка на карте'}));formula('Масштаб 1 : '+b);say('На местности: '+a+' · '+b+' = '+a*b+' см = '+num(a*b/100)+' м.');stepList(['Масштаб сравнивает длины в одинаковых единицах.','Один сантиметр карты соответствует '+b+' сантиметрам на местности.','Размер схемы на экране не предназначен для измерения линейкой.']);}
  else if(n===17){show(eq(frac(3,5),' = ',frac(3*a,5*a)));const s=chart('Произведения крест-накрест');txt(s,190,90,'3');txt(s,190,270,'5');txt(s,410,90,3*a);txt(s,410,270,5*a);ln(s,155,177,225,177);ln(s,375,177,445,177);txt(s,300,185,'=');ln(s,215,105,385,245,{stroke:'#b4812a'});ln(s,215,245,385,105,{stroke:'#b4812a'});show(s);formula('3 · '+5*a+' = 5 · '+3*a+' = '+15*a);stepList(['Сначала сравни отношения: числитель и знаменатель увеличены в '+a+' раз.','Соедини числитель первой дроби со знаменателем второй — и наоборот.','Произведения равны. Все знаменатели ненулевые, поэтому пропорция верна.']);}
  else if(n===18){const pairs=[[[2,3],[8,12]],[[3,2],[12,8]],[[2,8],[3,12]],[[12,3],[8,2]]],p=pairs[a];show(eq(frac(...p[0]),' = ',frac(...p[1])));formula(p[0][0]+' · '+p[1][1]+' = '+p[0][1]+' · '+p[1][0]);say('Проверяем обе новые дроби, а не переставляем числа наугад.');stepList(['Исходная пропорция: 2 : 3 = 8 : 12.','После выбранного преобразования перекрёстные произведения равны '+p[0][0]*p[1][1]+'.']);}
