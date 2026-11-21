@@ -843,7 +843,12 @@ function proofReviewModel(host,g){
  if(!good){boundNote(host,{positive:'Все введённые числа должны быть положительными.','root-sum-one':'Нужны три числа с суммой 1; каждое не меньше −1/4.','above-one':'Для этой задачи a должно быть строго больше 1.'}[g.domain]).dataset.proofDomain='invalid';return;}
  const vals=String(raw).split(';').map(s=>M.parse(s)),nums=vals.map(v=>v.n/v.d),fmt=v=>v.toLocaleString('ru-RU',{maximumSignificantDigits:8});
  let left,right,relation,note;
- if(g.mode==='four-roots'){
+ if(g.mode==='fixed-radical-а'||g.mode==='fixed-radical-б'){
+  const k=nums[0],first=g.mode==='fixed-radical-а';
+  left=k*(first?Math.sqrt(7)+2*Math.sqrt(5):4*Math.sqrt(6)+2);
+  right=k*(first?2+Math.sqrt(35):2*Math.sqrt(3)+4*Math.sqrt(2));
+  relation=first?'<':'>';note='Твой положительный множитель растягивает обе полосы. Точный знак устанавливает разложение разности, а не округлённые длины.';
+ }else if(g.mode==='four-roots'){
   const [a,b,c,d]=nums;left=Math.sqrt((a+c)*(b+d));right=Math.sqrt(a*b)+Math.sqrt(c*d);
   const [p,q,r,s]=vals;const equal=BigInt(p.n)*BigInt(s.n)*BigInt(q.d)*BigInt(r.d)===BigInt(q.n)*BigInt(r.n)*BigInt(p.d)*BigInt(s.d);
   relation=equal?'=':'>';note=equal?'Здесь ad = bc, квадрат разности корней равен нулю.':'Здесь ad ≠ bc, поэтому квадрат разности корней положителен.';
@@ -1169,6 +1174,12 @@ function admissibleSample(raw,domain,count){
   if(xs.length!==2)return false;
   const delta=BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);return domain==='lt-pair'?delta<0n:delta>0n;
  }
+ if(domain==='all-real')return true;
+ if(domain==='above-three')return xs.length===1&&BigInt(a.n)>3n*BigInt(a.d);
+ if(domain==='speed-current'||domain==='two-rivers'){
+  const gt=(u,v)=>BigInt(u.n)*BigInt(v.d)>BigInt(v.n)*BigInt(u.d);
+  return domain==='speed-current'?xs.length===2&&b.n>0&&gt(a,b):xs.length===4&&b.n>0&&xs[3].n>0&&gt(a,xs[2])&&gt(xs[2],b);
+ }
  if(domain==='above-one')return xs.length===1&&a.n>a.d;
  if(domain==='ride-plan')return xs.length===2&&BigInt(a.n)>2n*BigInt(a.d)&&b.n>0;
  if(domain==='product-nine')return xs.length===3&&xs.every(v=>v.n>0)&&xs.reduce((p,v)=>p*BigInt(v.n),1n)===9n*xs.reduce((p,v)=>p*BigInt(v.d),1n);
@@ -1213,9 +1224,14 @@ function inequalityScene(host,config,value){
  host.className='task-graphs quantity-model';
  const input=config.mode==='given'?config.given:config.mode==='pair-example'&&String(value??'').trim()?value:config.mode==='counter'&&String(value??'').trim()&&M.parse(value)?value:config.trial;
  const add=(txt,key,state)=>{const p=document.createElement('p');p.className='small';p.textContent=txt;if(key)p.dataset[key]=state;host.append(p);};
+ if(config.predictionStep!==undefined){
+  if(!config.prediction){add(config.completed?'Доказательство завершено: дольше во второй день. До проверки гипотеза не записана.':'Сначала запиши гипотезу. Можно предположить любой из трёх исходов.','predictionStatus',config.completed?'no-forecast':'pending');return;}
+  const actual='дольше во второй день',message=config.completed?(config.prediction===actual?'Прогноз подтвердился: ':'Исследование изменило твой прогноз: ')+actual+'.':'Твой исходный прогноз: '+config.prediction+'. Теперь проверь времена по формулам.';
+  add(message,'predictionStatus',config.completed?'reviewed':'saved');
+ }
  if(!input){add('На числовой прямой большее значение располагается правее. Подставь число в первом шаге и сравни обе стороны.');return;}
  if(config.sourceDomain&&!admissibleSample(input,config.sourceDomain,config.symbols.length)){
-  const constraints={'lt-pair':'первое число должно быть меньше второго','gt-pair':'первое число должно быть больше второго','natural-gt':'нужны натуральные a > b','natural-lt':'нужны натуральные a < b','positive':'каждая величина должна быть положительна','nonnegative':'нужны неотрицательные величины','positive-unequal':'нужны положительные и разные a и b','product-nine':'нужны положительные a,b,c с произведением 9','ride-plan':'плановая скорость должна превышать 2, а расстояние быть положительным'};
+  const constraints={'lt-pair':'первое число должно быть меньше второго','gt-pair':'первое число должно быть больше второго','natural-gt':'нужны натуральные a > b','natural-lt':'нужны натуральные a < b','positive':'каждая величина должна быть положительна','nonnegative':'нужны неотрицательные величины','positive-unequal':'нужны положительные и разные a и b','product-nine':'нужны положительные a,b,c с произведением 9','ride-plan':'плановая скорость должна превышать 2, а расстояние быть положительным','above-three':'требуется a>3','above-one':'требуется значение больше 1','all-real':'подставь действительные числа','speed-current':'нужно v>c>0','two-rivers':'нужно x>z>y>0 и s>0'};
   add('Подстановка вне условия: '+constraints[config.sourceDomain]+'.','inequalityDomain','invalid');return;
  }
  if(config.compareSquares)add('На оси показаны квадраты двух неотрицательных сторон.');
