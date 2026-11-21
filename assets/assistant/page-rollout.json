@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 636,
-    "covered": 634,
+    "total": 637,
+    "covered": 635,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -45,7 +45,8 @@
     "trainers/mordkovich-2013/index.html",
     "trainers/mordkovich-2020/index.html",
     "trainers/peterson7-2011/index.html",
-    "trainers/makarychev8-2018/index.html"
+    "trainers/makarychev8-2018/index.html",
+    "trainers/peterson8-2017/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4037,7 +4038,8 @@
     "trainers/mordkovich-2013/index.html": "school/index.html",
     "trainers/mordkovich-2020/index.html": "school/index.html",
     "trainers/peterson7-2011/index.html": "school/index.html",
-    "trainers/makarychev8-2018/index.html": "school/index.html"
+    "trainers/makarychev8-2018/index.html": "school/index.html",
+    "trainers/peterson8-2017/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6825,6 +6827,14 @@
         "trainers/makarychev8-2018/index.html"
       ],
       "reason": "Самостоятельные разборы печатных №1–6 углублённого пособия 2018 года и раздельные модели числителя, знаменателя и внешних операций."
+    },
+    {
+      "sourceBaseSha": "42f91c5babe2eb876d26b703df86f98e80852307",
+      "task": "docs/tasks/WORKSHOP_PETERSON8_2017.md",
+      "addedPages": [
+        "trainers/peterson8-2017/index.html"
+      ],
+      "reason": "Первые задачи об аналогии и разбиении на шаги из первого тома алгебры Петерсона для восьмого класса, с отдельным указанием печатных подпунктов."
     }
   ]
 }

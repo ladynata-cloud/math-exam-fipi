@@ -1414,6 +1414,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
+    },
+    {
+      "trainerId": "peterson8-2017",
+      "file": "trainers/peterson8-2017/index.html",
+      "title": "Петерсон · 8 класс · часть 1 · 2017 · искусство задавать вопросы",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
     }
   ]
 }
