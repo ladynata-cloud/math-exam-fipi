@@ -1531,3 +1531,14 @@ test('separate each departure clock, thirty source operations, and the eight for
   for(let i=0;i<8;i++){const c=start(43+i);set(c,1,2);assert(out().includes('Ответ: '+portions[i]+'.'),out());set(c,0,1);set(c,1,2);assert(out().includes('Ответ: '+fresh[i]+'.'));}assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('keep additive change separate and test both reference percentages, legal reductions, and quantified square claims',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [i,before,after] of [[51,'300','600'],[52,'75','150'],[53,'102','204'],[54,'252','504'],[55,'58','118'],[56,'40','80'],[57,'48','96'],[58,'57','114']]){const c=open(i);set(c,1,2);assert(out().includes('Результат '+before+'.'));set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes('Результат '+after+'.'));}
+  for(const [i,percent,fresh]of [[59,'40','75/2'],[60,'250','800/3'],[61,'80','75'],[62,'200','300'],[63,'60','200/3'],[64,'1000/9','125']]){const c=open(i);set(c,1,2);assert(out().includes('a составляет '+percent+'%'),out());set(c,0,1);set(c,1,2);assert(out().includes('a составляет '+fresh+'%'),out());}
+  for(const [i,original,newValue]of [[65,'3/5','3/5'],[66,'3/5','7/10'],[67,'1/4','7/16'],[68,'3/2','4/3'],[69,'3/4','5/8'],[70,'2/5','3/5'],[71,'4/5','5/6']]){const c=open(i);set(c,1,2);assert(out().includes(original+' = '+original),out());set(c,0,1);set(c,1,2);assert(out().includes(newValue+' = '+newValue),out());}
+  for(let i=0;i<4;i++){const c=open(72+i);set(c,1,2);assert(out().includes(['строгая положительность','Все квадраты','Ни один квадрат','подходящее число'][i]));set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert.equal(f.q('#model tbody tr').textContent.includes('не выполнено'),[true,false,true,false][i]);}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

@@ -1310,6 +1310,31 @@ function toyLineDiagram(nums){
  const total=nums.reduce((a,b)=>a+b,0),s=svg('svg',{viewBox:'0 0 285 167',class:'pm-chart pcm-route-fractions',role:'img','aria-label':'Длина каждой горизонтальной линии показывает процент голосов за серию.'});
  nums.forEach((n,i)=>{const y=15+i*22,percent=Math.round(100*n/total),end=94+percent*4.35;txt(s,90,y+4,toyNames[i],{'font-size':10.5,'text-anchor':'end'});ln(s,96,y,end,y,{stroke:'#30775c','stroke-width':7});txt(s,end+5,y+4,percent+'%',{'font-size':12,'text-anchor':'start'});});return s;
 }
+function magnitudesForRule(rule,fresh){
+ const m=root.PetersonMath,x=fresh?120:60,y=rule==='minusTwo'?m.operation('subtract',x,2):m.operation('multiply',x,rule);
+ return {given:x,result:m.answer(y),delta:m.answer(m.operation('subtract',y,x)),expression:rule==='minusTwo'?'y − 2':rule+' × '+(m.parse(rule).n>m.parse(rule).d?'x':'y')};
+}
+function compareBothBases(item,fresh){
+ const m=root.PetersonMath,op=m.operation,r=v=>m.answer(v),ratio=fresh?({'2/5':'3/8','5/2':'8/3','4/5':'3/4','2':'3','3/5':'2/3','10/9':'5/4'}[item.ratio]):item.ratio;
+ const b=item.fixed?(fresh?(item.ratio==='2/5'?8:3):(item.ratio==='2/5'?12:'24/5')):180,a=op('multiply',b,ratio);
+ const p=op('multiply',ratio,100),q=op('divide',100,ratio),diff=v=>{const z=op('subtract',v,100);return r({n:Math.abs(z.n),d:z.d});};
+ return {a:r(a),b:r(b),p:r(p),q:r(q),deltaA:diff(p),deltaB:diff(q),aLarger:p.n>100*p.d};
+}
+function reducedFormExample(key,fresh){
+ const m=root.PetersonMath,op=m.operation,r=x=>m.answer(x);
+ if(key==='principle'||key==='numbersA'||key==='numbersB'){
+  const pairs={principle:[[18,30],[21,35]],numbersA:[[546,910],[385,550]],numbersB:[[264,1056],[294,672]]},[n,d]=pairs[key][fresh?1:0],reduced=op('divide',n,d),factor=n/reduced.n,answer=r(reduced);
+  return {given:n+'/'+d,factor:String(factor),reduced:answer,original:answer,substitution:'Числитель '+n+', знаменатель '+d,small:[n/factor,d/factor]};
+ }
+ const examples={
+  lettersA:{values:fresh?[3,12,2]:[2,9,3],letters:['a','b','c'],original:'4abc/(12a²c)',factor:'4ac',reduced:'b/(3a)',both:([a,b,c])=>[4*a*b*c,12*a*a*c,b,3*a]},
+  lettersB:{values:fresh?[5,2,3]:[4,3,2],letters:['x','y','z'],original:'15x²y/(40xyz)',factor:'5xy',reduced:'3x/(8z)',both:([x,y,z])=>[15*x*x*y,40*x*y*z,3*x,8*z]},
+  lettersC:{values:fresh?[4,8,2]:[5,7,3],letters:['a','x','y'],original:'(ax − ay)/(ax + ay)',factor:'a',reduced:'(x − y)/(x + y)',both:([a,x,y])=>[a*x-a*y,a*x+a*y,x-y,x+y]},
+  lettersD:{values:fresh?[6,5]:[3,4],letters:['m','n'],original:'mn/(mn + m)',factor:'m',reduced:'n/(n + 1)',both:([m,n])=>[m*n,m*n+m,n,n+1]}
+ };
+ const em=examples[key],[num0,den0,num1,den1]=em.both(em.values);
+ return {given:em.original,reduced:em.reduced,factor:em.factor,substitution:em.letters.map((k,i)=>k+' = '+em.values[i]).join(', '),original:r(op('divide',num0,den0)),small:[num1,den1]};
+}
 function sharedJourney(tag,changed) {
  let condition,equation,labels,bar,rows,result;
  if(tag==='rider'){
@@ -2535,6 +2560,8 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&(task?.sizeRule||task?.percentBasis||task?.reduceStudy))return {title:task.reduceStudy?'Сократи и проверь равенство':task.percentBasis?'Смени основание сравнения':'Проверь изменение величины',controls:[c('Данные',[[0,'Из упражнения'],[1,'Другой пример']]),c('Шаг',[[0,'Решу сам'],[1,'Запись'],[2,'Проверка']])],initial:[0,0]};
+ if(lesson?.id==='p38'&&Number.isInteger(task?.squareClaim))return {title:'Проверь частный пример и общий вывод',controls:[c('Число a',[[0,'−2/3'],[1,'0'],[2,'3/2']]),c('Шаг',[[0,'Предположение'],[1,'Квадрат'],[2,'Смысл квантора']])],initial:[0,0]};
  if(lesson?.id==='p38'&&task?.mentalSeries)return {title:'Проверь одно вычисление',controls:[c('Набор',[[0,'Из счёт-теста'],[1,'Новые числа']]),c('Пример',task.mentalSeries.map((_,i)=>[i,String(i+1)])),c('Проверка',[[0,'Вычислю сам'],[1,'Разобрать действие'],[2,'Проверить результат']])],initial:[0,0,0]};
  if(lesson?.id==='p38'&&task?.portionRow)return {title:'Восстанови целое или найди долю',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новые числа']]),c('Проверка',[[0,'Выберу действие'],[1,'Связь'],[2,'Вычисление']])],initial:[0,0]};
  if(lesson?.id==='p38'&&(task?.appliedBalance||task?.appliedCompare||task?.printedJourney||task?.sharedRate))return {title:'Составь и проверь уравнение для этой ситуации',controls:[c('Условие',[[0,'Из учебника'],[1,'Новые данные']]),c('Шаг',[[0,'Сначала составлю сам'],[1,'Уравнение'],[2,'Модель и проверка']])],initial:[0,0]};
@@ -2763,7 +2790,7 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.mentalSeries||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.mentalSeries||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.quantifiedEquation||task.mentalSeries) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2774,7 +2801,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
   if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -4054,6 +4081,27 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
  else if(n===16){show(geometryFigure({points:[{name:'A',x:0,y:0},{name:'B',x:a,y:0}],segments:[['A','B']],labels:[{x:a/2,y:-0.6,text:a+' см на карте'}],caption:'Схема отрезка на карте'}));formula('Масштаб 1 : '+b);say('На местности: '+a+' · '+b+' = '+a*b+' см = '+num(a*b/100)+' м.');stepList(['Масштаб сравнивает длины в одинаковых единицах.','Один сантиметр карты соответствует '+b+' сантиметрам на местности.','Размер схемы на экране не предназначен для измерения линейкой.']);}
  else if(n===17){show(eq(frac(3,5),' = ',frac(3*a,5*a)));const s=chart('Произведения крест-накрест');txt(s,190,90,'3');txt(s,190,270,'5');txt(s,410,90,3*a);txt(s,410,270,5*a);ln(s,155,177,225,177);ln(s,375,177,445,177);txt(s,300,185,'=');ln(s,215,105,385,245,{stroke:'#b4812a'});ln(s,215,245,385,105,{stroke:'#b4812a'});show(s);formula('3 · '+5*a+' = 5 · '+3*a+' = '+15*a);stepList(['Сначала сравни отношения: числитель и знаменатель увеличены в '+a+' раз.','Соедини числитель первой дроби со знаменателем второй — и наоборот.','Произведения равны. Все знаменатели ненулевые, поэтому пропорция верна.']);}
  else if(n===18){const pairs=[[[2,3],[8,12]],[[3,2],[12,8]],[[2,8],[3,12]],[[12,3],[8,2]]],p=pairs[a];show(eq(frac(...p[0]),' = ',frac(...p[1])));formula(p[0][0]+' · '+p[1][1]+' = '+p[0][1]+' · '+p[1][0]);say('Проверяем обе новые дроби, а не переставляем числа наугад.');stepList(['Исходная пропорция: 2 : 3 = 8 : 12.','После выбранного преобразования перекрёстные произведения равны '+p[0][0]*p[1][1]+'.']);}
+ else
+ if(n===38&&task.sizeRule){
+  const v=magnitudesForRule(task.sizeRule,a===1);say('Начальное число '+v.given+'. Применим правило из задания.');
+  if(b>=1)formula(v.expression);if(b===2){show(changeBars(v.given,v.result,['Было','Стало']));say('Результат '+v.result+'. Изменение со знаком '+v.delta+'.');}
+  stepList(['Определи, что означает «на», «в» или знак процента.','Запиши действие с буквой.','Подставь другое исходное число и проверь разницу.']);
+ }else if(n===38&&task.percentBasis){
+  const v=compareBothBases(task.percentBasis,a===1);say('Сравниваем a = '+v.a+' и b = '+v.b+'.');
+  if(b>=1)formula('a/b × 100% и b/a × 100%');
+  if(b===2){show(changeBars(v.a,v.b,['Число a','Число b']));show(table(['Основание','Отношение','Отклонение'],[['b',v.p+'%',v.deltaA+'%'],['a',v.q+'%',v.deltaB+'%']]));say('a составляет '+v.p+'% от b; b составляет '+v.q+'% от a.');say('a '+(v.aLarger?'больше':'меньше')+' b на '+v.deltaA+'%. b '+(v.aLarger?'меньше':'больше')+' a на '+v.deltaB+'%.');}
+  stepList(['Подчеркни число, от которого считаешь проценты.','Для обратного сравнения переставь числитель и знаменатель.','Разность с 100% показывает изменение, а не полное отношение.']);
+ }else if(n===38&&task.reduceStudy){
+  const v=reducedFormExample(task.reduceStudy,a===1),m=root.PetersonMath,after=m.answer(m.operation('divide',...v.small));say(v.given+'. '+v.substitution+'.');
+  if(b>=1)say('Общий ненулевой множитель: '+v.factor+'.');
+  if(b===2){formula(v.given+' = '+v.reduced);show(table(['Проверка','Значение'],[['До сокращения',v.original],['После сокращения',after],['Числитель после',v.small[0]],['Знаменатель после',v.small[1]]]));say('Значения равны: '+v.original+' = '+after+'.');}
+  stepList(['Представь весь числитель и весь знаменатель произведениями.','Раздели оба на один ненулевой множитель.','Подставь допустимые числа до сокращения и после него.']);
+ }else if(n===38&&Number.isInteger(task.squareClaim)){
+  const q=task.squareClaim,m=root.PetersonMath,x=['-2/3','0','3/2'][a],sx=m.operation('multiply',x,x),test=[sx.n>0,sx.n>=0,sx.n<0,sx.n<=0][q];
+  say('Проверим рациональное a = '+x+'.');if(b>=1)formula('a² = ('+x+') × ('+x+') = '+m.answer(sx));
+  if(b===2){show(table(['Проверка','Вывод'],[['У выбранного числа неравенство',test?'выполнено':'не выполнено'],['Утверждение с квантором',['ложно','истинно','ложно','истинно'][q]]]));say(['Для a = 0 строгая положительность нарушена. Отрицание: существует a с a² ≤ 0.','Все квадраты неотрицательны: два множителя имеют одинаковый знак или равны нулю.','Ни один квадрат не бывает отрицательным. Отрицание: для каждого a квадрат неотрицателен.','Существует подходящее число: a = 0, ведь 0² ≤ 0.'][q]);}
+  stepList(['Различай «для каждого» и «существует».','Проверь отдельно a = 0 и любое ненулевое число.','Для общего вывода используй правило знаков, для существования достаточно примера.']);
+ }
  else
  if(n===38&&task.mentalSeries){
   const sample=oneMentalOperation(task.mentalSeries[b],a===1),stage=state.values[2];say('Пример '+(b+1)+'. '+sample.expression+' = ?');
@@ -75476,6 +75524,1065 @@ window.PetersonCourse = {
       "2d/5",
       "5d/2",
       "d/250"
+     ]
+    },
+    {
+     "id": "p38-t52",
+     "title": "К задаче №136(1а)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 136,
+      "subpart": "(1а)",
+      "reference": "№136(1а)"
+     },
+     "kind": "choice",
+     "prompt": "Как записать результат, если число x нужно увеличить в пять раз?",
+     "answer": "5x",
+     "steps": [
+      {
+       "prompt": "Каким будет результат при x = 60?",
+       "answer": "300",
+       "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+       "explanation": "После действия получаем 5x. Если x = 60, то результат 300, а прибавка со знаком равна 240."
+      },
+      {
+       "prompt": "На сколько изменилось 60? Для убыли запиши отрицательное число.",
+       "answer": "240",
+       "hint": "Вычти из полученного числа исходные 60.",
+       "explanation": "300 − 60 = 240."
+      }
+     ],
+     "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+     "explanation": "После действия получаем 5x. Если x = 60, то результат 300, а прибавка со знаком равна 240.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "sizeRule": "5",
+     "choices": [
+      "5x",
+      "x + 5",
+      "x/5"
+     ]
+    },
+    {
+     "id": "p38-t53",
+     "title": "К задаче №136(1б)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 136,
+      "subpart": "(1б)",
+      "reference": "№136(1б)"
+     },
+     "kind": "choice",
+     "prompt": "Как записать результат, если число x нужно увеличить на четверть?",
+     "answer": "5x/4",
+     "steps": [
+      {
+       "prompt": "Каким будет результат при x = 60?",
+       "answer": "75",
+       "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+       "explanation": "После действия получаем 5x/4. Если x = 60, то результат 75, а прибавка со знаком равна 15."
+      },
+      {
+       "prompt": "На сколько изменилось 60? Для убыли запиши отрицательное число.",
+       "answer": "15",
+       "hint": "Вычти из полученного числа исходные 60.",
+       "explanation": "75 − 60 = 15."
+      }
+     ],
+     "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+     "explanation": "После действия получаем 5x/4. Если x = 60, то результат 75, а прибавка со знаком равна 15.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "sizeRule": "5/4",
+     "choices": [
+      "5x/4",
+      "x/4",
+      "4x/5"
+     ]
+    },
+    {
+     "id": "p38-t54",
+     "title": "К задаче №136(1в)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 136,
+      "subpart": "(1в)",
+      "reference": "№136(1в)"
+     },
+     "kind": "choice",
+     "prompt": "Как записать результат, если число x нужно увеличить на 70%?",
+     "answer": "17x/10",
+     "steps": [
+      {
+       "prompt": "Каким будет результат при x = 60?",
+       "answer": "102",
+       "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+       "explanation": "После действия получаем 17x/10. Если x = 60, то результат 102, а прибавка со знаком равна 42."
+      },
+      {
+       "prompt": "На сколько изменилось 60? Для убыли запиши отрицательное число.",
+       "answer": "42",
+       "hint": "Вычти из полученного числа исходные 60.",
+       "explanation": "102 − 60 = 42."
+      }
+     ],
+     "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+     "explanation": "После действия получаем 17x/10. Если x = 60, то результат 102, а прибавка со знаком равна 42.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "sizeRule": "17/10",
+     "choices": [
+      "17x/10",
+      "7x/10",
+      "x + 70"
+     ]
+    },
+    {
+     "id": "p38-t55",
+     "title": "К задаче №136(1г)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 136,
+      "subpart": "(1г)",
+      "reference": "№136(1г)"
+     },
+     "kind": "choice",
+     "prompt": "Как записать результат, если число x нужно увеличить на 320%?",
+     "answer": "21x/5",
+     "steps": [
+      {
+       "prompt": "Каким будет результат при x = 60?",
+       "answer": "252",
+       "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+       "explanation": "После действия получаем 21x/5. Если x = 60, то результат 252, а прибавка со знаком равна 192."
+      },
+      {
+       "prompt": "На сколько изменилось 60? Для убыли запиши отрицательное число.",
+       "answer": "192",
+       "hint": "Вычти из полученного числа исходные 60.",
+       "explanation": "252 − 60 = 192."
+      }
+     ],
+     "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+     "explanation": "После действия получаем 21x/5. Если x = 60, то результат 252, а прибавка со знаком равна 192.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "sizeRule": "21/5",
+     "choices": [
+      "21x/5",
+      "16x/5",
+      "x + 320"
+     ]
+    },
+    {
+     "id": "p38-t56",
+     "title": "К задаче №136(2а)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 136,
+      "subpart": "(2а)",
+      "reference": "№136(2а)"
+     },
+     "kind": "choice",
+     "prompt": "Как записать результат, если число y нужно уменьшить на 2?",
+     "answer": "y − 2",
+     "steps": [
+      {
+       "prompt": "Каким будет результат при y = 60?",
+       "answer": "58",
+       "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+       "explanation": "После действия получаем y − 2. Если y = 60, то результат 58, а прибавка со знаком равна -2."
+      },
+      {
+       "prompt": "На сколько изменилось 60? Для убыли запиши отрицательное число.",
+       "answer": "-2",
+       "hint": "Вычти из полученного числа исходные 60.",
+       "explanation": "58 − 60 = -2."
+      }
+     ],
+     "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+     "explanation": "После действия получаем y − 2. Если y = 60, то результат 58, а прибавка со знаком равна -2.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "sizeRule": "minusTwo",
+     "choices": [
+      "y − 2",
+      "y/2",
+      "2y"
+     ]
+    },
+    {
+     "id": "p38-t57",
+     "title": "К задаче №136(2б)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 136,
+      "subpart": "(2б)",
+      "reference": "№136(2б)"
+     },
+     "kind": "choice",
+     "prompt": "Как записать результат, если число y нужно уменьшить на треть?",
+     "answer": "2y/3",
+     "steps": [
+      {
+       "prompt": "Каким будет результат при y = 60?",
+       "answer": "40",
+       "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+       "explanation": "После действия получаем 2y/3. Если y = 60, то результат 40, а прибавка со знаком равна -20."
+      },
+      {
+       "prompt": "На сколько изменилось 60? Для убыли запиши отрицательное число.",
+       "answer": "-20",
+       "hint": "Вычти из полученного числа исходные 60.",
+       "explanation": "40 − 60 = -20."
+      }
+     ],
+     "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+     "explanation": "После действия получаем 2y/3. Если y = 60, то результат 40, а прибавка со знаком равна -20.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "sizeRule": "2/3",
+     "choices": [
+      "2y/3",
+      "y/3",
+      "3y/2"
+     ]
+    },
+    {
+     "id": "p38-t58",
+     "title": "К задаче №136(2в)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 136,
+      "subpart": "(2в)",
+      "reference": "№136(2в)"
+     },
+     "kind": "choice",
+     "prompt": "Как записать результат, если число y нужно уменьшить на 20%?",
+     "answer": "4y/5",
+     "steps": [
+      {
+       "prompt": "Каким будет результат при y = 60?",
+       "answer": "48",
+       "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+       "explanation": "После действия получаем 4y/5. Если y = 60, то результат 48, а прибавка со знаком равна -12."
+      },
+      {
+       "prompt": "На сколько изменилось 60? Для убыли запиши отрицательное число.",
+       "answer": "-12",
+       "hint": "Вычти из полученного числа исходные 60.",
+       "explanation": "48 − 60 = -12."
+      }
+     ],
+     "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+     "explanation": "После действия получаем 4y/5. Если y = 60, то результат 48, а прибавка со знаком равна -12.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "sizeRule": "4/5",
+     "choices": [
+      "4y/5",
+      "y/5",
+      "y − 20"
+     ]
+    },
+    {
+     "id": "p38-t59",
+     "title": "К задаче №136(2г)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 136,
+      "subpart": "(2г)",
+      "reference": "№136(2г)"
+     },
+     "kind": "choice",
+     "prompt": "Как записать результат, если число y нужно уменьшить на 5%?",
+     "answer": "19y/20",
+     "steps": [
+      {
+       "prompt": "Каким будет результат при y = 60?",
+       "answer": "57",
+       "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+       "explanation": "После действия получаем 19y/20. Если y = 60, то результат 57, а прибавка со знаком равна -3."
+      },
+      {
+       "prompt": "На сколько изменилось 60? Для убыли запиши отрицательное число.",
+       "answer": "-3",
+       "hint": "Вычти из полученного числа исходные 60.",
+       "explanation": "57 − 60 = -3."
+      }
+     ],
+     "hint": "Посмотри, задано изменение на несколько единиц, долю исходного или кратность всего результата.",
+     "explanation": "После действия получаем 19y/20. Если y = 60, то результат 57, а прибавка со знаком равна -3.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "sizeRule": "19/20",
+     "choices": [
+      "19y/20",
+      "y/20",
+      "y − 5"
+     ]
+    },
+    {
+     "id": "p38-t60",
+     "title": "К задаче №137а",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 137,
+      "subpart": "а",
+      "reference": "№137а"
+     },
+     "kind": "number",
+     "prompt": "4,8 сравнивают с 12. Сколько процентов составляет первое от второго? На сколько процентов первое меньше второго? Финальным ответом укажи процент изменения.",
+     "answer": "60",
+     "steps": [
+      {
+       "prompt": "Каково отношение первого числа ко второму?",
+       "answer": "2/5",
+       "hint": "Сравниваемое число находится в числителе, основание в знаменателе.",
+       "explanation": "4,8 сравнивают с 12. Полное отношение равно 40%. Отклонение от 100% составляет 60%."
+      },
+      {
+       "prompt": "Запиши полное отношение в процентах.",
+       "answer": "40",
+       "hint": "Отношение умножается на 100.",
+       "explanation": "4,8 сравнивают с 12. Полное отношение равно 40%. Отклонение от 100% составляет 60%."
+      }
+     ],
+     "hint": "Сначала вычисли отношение. Для вопроса «на сколько» сравни его со 100%.",
+     "explanation": "4,8 сравнивают с 12. Полное отношение равно 40%. Отклонение от 100% составляет 60%.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи ответ.",
+     "percentBasis": {
+      "ratio": "2/5",
+      "fixed": true
+     },
+     "errorCues": [
+      [
+       "40",
+       "Это полное отношение в процентах. Теперь найди расстояние от него до 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p38-t61",
+     "title": "К задаче №137б",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 137,
+      "subpart": "б",
+      "reference": "№137б"
+     },
+     "kind": "number",
+     "prompt": "12 сравнивают с 4,8. Сколько процентов составляет первое от второго? На сколько процентов первое больше второго? Финальным ответом укажи процент изменения.",
+     "answer": "150",
+     "steps": [
+      {
+       "prompt": "Каково отношение первого числа ко второму?",
+       "answer": "5/2",
+       "hint": "Сравниваемое число находится в числителе, основание в знаменателе.",
+       "explanation": "12 сравнивают с 4,8. Полное отношение равно 250%. Отклонение от 100% составляет 150%."
+      },
+      {
+       "prompt": "Запиши полное отношение в процентах.",
+       "answer": "250",
+       "hint": "Отношение умножается на 100.",
+       "explanation": "12 сравнивают с 4,8. Полное отношение равно 250%. Отклонение от 100% составляет 150%."
+      }
+     ],
+     "hint": "Сначала вычисли отношение. Для вопроса «на сколько» сравни его со 100%.",
+     "explanation": "12 сравнивают с 4,8. Полное отношение равно 250%. Отклонение от 100% составляет 150%.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи ответ.",
+     "percentBasis": {
+      "ratio": "5/2",
+      "fixed": true
+     },
+     "errorCues": [
+      [
+       "250",
+       "Это полное отношение в процентах. Теперь найди расстояние от него до 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p38-t62",
+     "title": "К задаче №138(1)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 138,
+      "subpart": "(1)",
+      "reference": "№138(1)"
+     },
+     "kind": "manual",
+     "prompt": "Положительные a и b связаны равенством a = 0,8b. Найди оба отношения в процентах и обе разности в процентах.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько процентов составляет a от b?",
+       "answer": "80",
+       "hint": "Умножь коэффициент при b на сто.",
+       "explanation": "Для a = 0,8b отношение a к b равно 80%, а b к a — 125%. Значит, a меньше b на 20%, b больше a на 25%."
+      },
+      {
+       "prompt": "Сколько процентов составляет b от a?",
+       "answer": "125",
+       "hint": "Возьми обратную дробь и умножь на сто.",
+       "explanation": "Для a = 0,8b отношение a к b равно 80%, а b к a — 125%. Значит, a меньше b на 20%, b больше a на 25%."
+      },
+      {
+       "prompt": "На сколько процентов a меньше b?",
+       "answer": "20",
+       "hint": "Вычисли отклонение первого отношения от 100%.",
+       "explanation": "Для a = 0,8b отношение a к b равно 80%, а b к a — 125%. Значит, a меньше b на 20%, b больше a на 25%."
+      },
+      {
+       "prompt": "На сколько процентов b больше a?",
+       "answer": "25",
+       "hint": "Считай разницу относительно второго основания.",
+       "explanation": "Для a = 0,8b отношение a к b равно 80%, а b к a — 125%. Значит, a меньше b на 20%, b больше a на 25%."
+      }
+     ],
+     "hint": "Рассматриваем положительные величины. При смене числителя и знаменателя дробь обращается.",
+     "explanation": "Для a = 0,8b отношение a к b равно 80%, а b к a — 125%. Значит, a меньше b на 20%, b больше a на 25%.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои выводы.",
+     "percentBasis": {
+      "ratio": "4/5"
+     }
+    },
+    {
+     "id": "p38-t63",
+     "title": "К задаче №138(2)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 138,
+      "subpart": "(2)",
+      "reference": "№138(2)"
+     },
+     "kind": "manual",
+     "prompt": "Положительные a и b связаны равенством a = 2b. Найди оба отношения в процентах и обе разности в процентах.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько процентов составляет a от b?",
+       "answer": "200",
+       "hint": "Умножь коэффициент при b на сто.",
+       "explanation": "Для a = 2b отношение a к b равно 200%, а b к a — 50%. Значит, a больше b на 100%, b меньше a на 50%."
+      },
+      {
+       "prompt": "Сколько процентов составляет b от a?",
+       "answer": "50",
+       "hint": "Возьми обратную дробь и умножь на сто.",
+       "explanation": "Для a = 2b отношение a к b равно 200%, а b к a — 50%. Значит, a больше b на 100%, b меньше a на 50%."
+      },
+      {
+       "prompt": "На сколько процентов a больше b?",
+       "answer": "100",
+       "hint": "Вычисли отклонение первого отношения от 100%.",
+       "explanation": "Для a = 2b отношение a к b равно 200%, а b к a — 50%. Значит, a больше b на 100%, b меньше a на 50%."
+      },
+      {
+       "prompt": "На сколько процентов b меньше a?",
+       "answer": "50",
+       "hint": "Считай разницу относительно второго основания.",
+       "explanation": "Для a = 2b отношение a к b равно 200%, а b к a — 50%. Значит, a больше b на 100%, b меньше a на 50%."
+      }
+     ],
+     "hint": "Рассматриваем положительные величины. При смене числителя и знаменателя дробь обращается.",
+     "explanation": "Для a = 2b отношение a к b равно 200%, а b к a — 50%. Значит, a больше b на 100%, b меньше a на 50%.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои выводы.",
+     "percentBasis": {
+      "ratio": "2"
+     }
+    },
+    {
+     "id": "p38-t64",
+     "title": "К задаче №138(3)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 138,
+      "subpart": "(3)",
+      "reference": "№138(3)"
+     },
+     "kind": "manual",
+     "prompt": "Положительные a и b связаны равенством a = 0,6b. Найди оба отношения в процентах и обе разности в процентах.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько процентов составляет a от b?",
+       "answer": "60",
+       "hint": "Умножь коэффициент при b на сто.",
+       "explanation": "Для a = 0,6b отношение a к b равно 60%, а b к a — 500/3%. Значит, a меньше b на 40%, b больше a на 200/3%."
+      },
+      {
+       "prompt": "Сколько процентов составляет b от a?",
+       "answer": "500/3",
+       "hint": "Возьми обратную дробь и умножь на сто.",
+       "explanation": "Для a = 0,6b отношение a к b равно 60%, а b к a — 500/3%. Значит, a меньше b на 40%, b больше a на 200/3%."
+      },
+      {
+       "prompt": "На сколько процентов a меньше b?",
+       "answer": "40",
+       "hint": "Вычисли отклонение первого отношения от 100%.",
+       "explanation": "Для a = 0,6b отношение a к b равно 60%, а b к a — 500/3%. Значит, a меньше b на 40%, b больше a на 200/3%."
+      },
+      {
+       "prompt": "На сколько процентов b больше a?",
+       "answer": "200/3",
+       "hint": "Считай разницу относительно второго основания.",
+       "explanation": "Для a = 0,6b отношение a к b равно 60%, а b к a — 500/3%. Значит, a меньше b на 40%, b больше a на 200/3%."
+      }
+     ],
+     "hint": "Рассматриваем положительные величины. При смене числителя и знаменателя дробь обращается.",
+     "explanation": "Для a = 0,6b отношение a к b равно 60%, а b к a — 500/3%. Значит, a меньше b на 40%, b больше a на 200/3%.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои выводы.",
+     "percentBasis": {
+      "ratio": "3/5"
+     }
+    },
+    {
+     "id": "p38-t65",
+     "title": "К задаче №138(4)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 138,
+      "subpart": "(4)",
+      "reference": "№138(4)"
+     },
+     "kind": "manual",
+     "prompt": "Положительные a и b связаны равенством a = 10b/9. Найди оба отношения в процентах и обе разности в процентах.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько процентов составляет a от b?",
+       "answer": "1000/9",
+       "hint": "Умножь коэффициент при b на сто.",
+       "explanation": "Для a = 10b/9 отношение a к b равно 1000/9%, а b к a — 90%. Значит, a больше b на 100/9%, b меньше a на 10%."
+      },
+      {
+       "prompt": "Сколько процентов составляет b от a?",
+       "answer": "90",
+       "hint": "Возьми обратную дробь и умножь на сто.",
+       "explanation": "Для a = 10b/9 отношение a к b равно 1000/9%, а b к a — 90%. Значит, a больше b на 100/9%, b меньше a на 10%."
+      },
+      {
+       "prompt": "На сколько процентов a больше b?",
+       "answer": "100/9",
+       "hint": "Вычисли отклонение первого отношения от 100%.",
+       "explanation": "Для a = 10b/9 отношение a к b равно 1000/9%, а b к a — 90%. Значит, a больше b на 100/9%, b меньше a на 10%."
+      },
+      {
+       "prompt": "На сколько процентов b меньше a?",
+       "answer": "10",
+       "hint": "Считай разницу относительно второго основания.",
+       "explanation": "Для a = 10b/9 отношение a к b равно 1000/9%, а b к a — 90%. Значит, a больше b на 100/9%, b меньше a на 10%."
+      }
+     ],
+     "hint": "Рассматриваем положительные величины. При смене числителя и знаменателя дробь обращается.",
+     "explanation": "Для a = 10b/9 отношение a к b равно 1000/9%, а b к a — 90%. Значит, a больше b на 100/9%, b меньше a на 10%.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Сохрани свои выводы.",
+     "percentBasis": {
+      "ratio": "10/9"
+     }
+    },
+    {
+     "id": "p38-t66",
+     "title": "К задаче №139а",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 139,
+      "subpart": "а",
+      "reference": "№139а"
+     },
+     "kind": "choice",
+     "prompt": "При сокращении дроби числитель и знаменатель делятся на одно и то же ненулевое число. Что происходит со значением дроби? Объясни формулой.",
+     "answer": "Сохраняется",
+     "steps": [
+      {
+       "prompt": "Запиши значение 18/30 после деления числителя и знаменателя на 6.",
+       "answer": "3/5",
+       "hint": "Выполни деление обеих частей.",
+       "explanation": "18/6 = 3, 30/6 = 5."
+      },
+      {
+       "prompt": "Какой ненулевой множитель вернёт 3 и 5 к 18 и 30?",
+       "answer": "6",
+       "hint": "Найди 18/3.",
+       "explanation": "Умножение обеих частей на 6 возвращает исходную дробь."
+      }
+     ],
+     "hint": "Рассуждай о значении дроби, а не о величине её записи.",
+     "explanation": "Для k ≠ 0 и v ≠ 0 справедливо (ku)/(kv) = u/v. Частное не изменилось.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "reduceStudy": "principle",
+     "choices": [
+      "Сохраняется",
+      "Всегда становится меньше",
+      "Всегда становится больше"
+     ]
+    },
+    {
+     "id": "p38-t67",
+     "title": "К задаче №139б(1)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 139,
+      "subpart": "б(1)",
+      "reference": "№139б(1)"
+     },
+     "kind": "number",
+     "prompt": "Сократи дробь 546/910.",
+     "answer": "3/5",
+     "steps": [
+      {
+       "prompt": "Наибольший общий делитель числителя и знаменателя?",
+       "answer": "182",
+       "hint": "Используй деление с остатком или разложи оба числа на множители.",
+       "explanation": "Оба числа делятся на 182."
+      },
+      {
+       "prompt": "Знаменатель после сокращения?",
+       "answer": "5",
+       "hint": "Раздели исходный знаменатель на найденный общий делитель.",
+       "explanation": "910 ÷ 182 = 5."
+      }
+     ],
+     "hint": "После деления на общий множитель числитель и знаменатель уже не имеют общего делителя больше 1.",
+     "explanation": "546/910 = 3/5, поскольку числитель и знаменатель поделили на 182.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи ответ.",
+     "reduceStudy": "numbersA"
+    },
+    {
+     "id": "p38-t68",
+     "title": "К задаче №139б(2)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 139,
+      "subpart": "б(2)",
+      "reference": "№139б(2)"
+     },
+     "kind": "number",
+     "prompt": "Сократи дробь 264/1056.",
+     "answer": "1/4",
+     "steps": [
+      {
+       "prompt": "Наибольший общий делитель числителя и знаменателя?",
+       "answer": "264",
+       "hint": "Используй деление с остатком или разложи оба числа на множители.",
+       "explanation": "Оба числа делятся на 264."
+      },
+      {
+       "prompt": "Знаменатель после сокращения?",
+       "answer": "4",
+       "hint": "Раздели исходный знаменатель на найденный общий делитель.",
+       "explanation": "1056 ÷ 264 = 4."
+      }
+     ],
+     "hint": "После деления на общий множитель числитель и знаменатель уже не имеют общего делителя больше 1.",
+     "explanation": "264/1056 = 1/4, поскольку числитель и знаменатель поделили на 264.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи ответ.",
+     "reduceStudy": "numbersB"
+    },
+    {
+     "id": "p38-t69",
+     "title": "К задаче №139б(3)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 139,
+      "subpart": "б(3)",
+      "reference": "№139б(3)"
+     },
+     "kind": "choice",
+     "prompt": "Сократи 4abc/(12a²c), учитывая, что знаменатель отличен от нуля.",
+     "answer": "b/(3a)",
+     "steps": [
+      {
+       "prompt": "4/12 равно какой дроби?",
+       "answer": "1/3",
+       "hint": "Подели числитель и знаменатель на 4.",
+       "explanation": "4/12 = 1/3."
+      },
+      {
+       "prompt": "Значение при a = 2, b = 9, c = 3?",
+       "answer": "3/2",
+       "hint": "Подставь в сокращённую запись b/(3a).",
+       "explanation": "9/6 = 3/2."
+      }
+     ],
+     "hint": "Вынеси общий множитель 4ac. В знаменателе останется ещё одна степень a.",
+     "explanation": "4abc/(12a²c) = b/(3a) при a ≠ 0 и c ≠ 0.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "reduceStudy": "lettersA",
+     "choices": [
+      "b/(3a)",
+      "b/3",
+      "3ab"
+     ]
+    },
+    {
+     "id": "p38-t70",
+     "title": "К задаче №139б(4)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 139,
+      "subpart": "б(4)",
+      "reference": "№139б(4)"
+     },
+     "kind": "choice",
+     "prompt": "Сократи 15x²y/(40xyz), учитывая, что знаменатель отличен от нуля.",
+     "answer": "3x/(8z)",
+     "steps": [
+      {
+       "prompt": "Сократи 15/40.",
+       "answer": "3/8",
+       "hint": "Раздели оба числа на пять.",
+       "explanation": "15/40 = 3/8."
+      },
+      {
+       "prompt": "Значение при x = 4, y = 3, z = 2?",
+       "answer": "3/4",
+       "hint": "x остаётся в числителе, z — в знаменателе.",
+       "explanation": "12/16 = 3/4."
+      }
+     ],
+     "hint": "Убери общий ненулевой множитель 5xy.",
+     "explanation": "Результат 3x/(8z). Изначально x, y и z отличны от нуля.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "reduceStudy": "lettersB",
+     "choices": [
+      "3x/(8z)",
+      "3/(8z)",
+      "3x/8"
+     ]
+    },
+    {
+     "id": "p38-t71",
+     "title": "К задаче №139б(5)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 139,
+      "subpart": "б(5)",
+      "reference": "№139б(5)"
+     },
+     "kind": "choice",
+     "prompt": "Сократи (ax − ay)/(ax + ay), учитывая, что знаменатель отличен от нуля.",
+     "answer": "(x − y)/(x + y)",
+     "steps": [
+      {
+       "prompt": "Какой общий числовой множитель надо вынести при a = 5?",
+       "answer": "5",
+       "hint": "a стоит у каждого слагаемого.",
+       "explanation": "Числитель 5(x − y), знаменатель 5(x + y)."
+      },
+      {
+       "prompt": "Значение при x = 7, y = 3?",
+       "answer": "2/5",
+       "hint": "После вынесения a остаются скобки.",
+       "explanation": "(7 − 3)/(7 + 3) = 4/10 = 2/5."
+      }
+     ],
+     "hint": "Сокращай общий множитель целых скобок. Удалять отдельные слагаемые суммы нельзя.",
+     "explanation": "Результат (x − y)/(x + y) при a ≠ 0 и x + y ≠ 0.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "reduceStudy": "lettersC",
+     "choices": [
+      "(x − y)/(x + y)",
+      "−1",
+      "(x − y)/(x − y)"
+     ]
+    },
+    {
+     "id": "p38-t72",
+     "title": "К задаче №139б(6)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 139,
+      "subpart": "б(6)",
+      "reference": "№139б(6)"
+     },
+     "kind": "choice",
+     "prompt": "Сократи mn/(mn + m), учитывая, что знаменатель отличен от нуля.",
+     "answer": "n/(n + 1)",
+     "steps": [
+      {
+       "prompt": "Какое число останется от нижнего слагаемого m при вынесении m?",
+       "answer": "1",
+       "hint": "m = m × 1.",
+       "explanation": "mn + m = m(n + 1)."
+      },
+      {
+       "prompt": "Значение при n = 4?",
+       "answer": "4/5",
+       "hint": "Подставь в n/(n + 1).",
+       "explanation": "4/(4 + 1) = 4/5."
+      }
+     ],
+     "hint": "Знаменатель является суммой. Сначала преобразуй всю сумму в произведение.",
+     "explanation": "Сокращение на m даёт n/(n + 1), если m ≠ 0 и n ≠ −1.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "reduceStudy": "lettersD",
+     "choices": [
+      "n/(n + 1)",
+      "1",
+      "n/(n + m)"
+     ]
+    },
+    {
+     "id": "p38-t73",
+     "title": "К задаче №140а",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 140,
+      "subpart": "а",
+      "reference": "№140а"
+     },
+     "kind": "choice",
+     "prompt": "Верно ли высказывание «для каждого рационального a верно a² > 0»? Если ложно, выбери его точное отрицание.",
+     "answer": "Ложно. Существует a, для которого a² ≤ 0.",
+     "steps": [
+      {
+       "prompt": "Каков квадрат 0?",
+       "answer": "0",
+       "hint": "Подставь ноль.",
+       "explanation": "0 × 0 = 0."
+      },
+      {
+       "prompt": "Каков квадрат −2/3?",
+       "answer": "4/9",
+       "hint": "Квадрат отрицательного числа положителен.",
+       "explanation": "(−2/3) × (−2/3) = 4/9."
+      }
+     ],
+     "hint": "Утверждается строгая положительность даже для нуля.",
+     "explanation": "Достаточно a = 0: его квадрат не больше нуля.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "squareClaim": 0,
+     "choices": [
+      "Ложно. Существует a, для которого a² ≤ 0.",
+      "Ложно. Для каждого a выполнено a² > 0.",
+      "Истинно. У каждого отрицательного a квадрат отрицателен."
+     ]
+    },
+    {
+     "id": "p38-t74",
+     "title": "К задаче №140б",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 140,
+      "subpart": "б",
+      "reference": "№140б"
+     },
+     "kind": "choice",
+     "prompt": "Верно ли высказывание «для каждого рационального a верно a² ≥ 0»? Если ложно, выбери его точное отрицание.",
+     "answer": "Истинно. Любой квадрат неотрицателен.",
+     "steps": [
+      {
+       "prompt": "Каков квадрат 0?",
+       "answer": "0",
+       "hint": "Подставь ноль.",
+       "explanation": "0 × 0 = 0."
+      },
+      {
+       "prompt": "Каков квадрат −2/3?",
+       "answer": "4/9",
+       "hint": "Квадрат отрицательного числа положителен.",
+       "explanation": "(−2/3) × (−2/3) = 4/9."
+      }
+     ],
+     "hint": "Произведение двух одинаковых чисел положительно или равно нулю.",
+     "explanation": "Для положительного a оба множителя положительны; для отрицательного оба отрицательны; при нуле квадрат нулевой.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "squareClaim": 1,
+     "choices": [
+      "Истинно. Любой квадрат неотрицателен.",
+      "Ложно. Для каждого a выполнено a² > 0.",
+      "Истинно. У каждого отрицательного a квадрат отрицателен."
+     ]
+    },
+    {
+     "id": "p38-t75",
+     "title": "К задаче №140в",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 140,
+      "subpart": "в",
+      "reference": "№140в"
+     },
+     "kind": "choice",
+     "prompt": "Верно ли высказывание «существует рациональное a, для которого a² \u003c 0»? Если ложно, выбери его точное отрицание.",
+     "answer": "Ложно. Для каждого a выполнено a² ≥ 0.",
+     "steps": [
+      {
+       "prompt": "Каков квадрат 0?",
+       "answer": "0",
+       "hint": "Подставь ноль.",
+       "explanation": "0 × 0 = 0."
+      },
+      {
+       "prompt": "Каков квадрат −2/3?",
+       "answer": "4/9",
+       "hint": "Квадрат отрицательного числа положителен.",
+       "explanation": "(−2/3) × (−2/3) = 4/9."
+      }
+     ],
+     "hint": "Чтобы опровергнуть существование, докажи невозможность для каждого рационального числа.",
+     "explanation": "Квадрат рационального числа неотрицателен независимо от исходного знака.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "squareClaim": 2,
+     "choices": [
+      "Ложно. Для каждого a выполнено a² ≥ 0.",
+      "Ложно. Для каждого a выполнено a² > 0.",
+      "Истинно. У каждого отрицательного a квадрат отрицателен."
+     ]
+    },
+    {
+     "id": "p38-t76",
+     "title": "К задаче №140г",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 33,
+      "exercise": 140,
+      "subpart": "г",
+      "reference": "№140г"
+     },
+     "kind": "choice",
+     "prompt": "Верно ли высказывание «существует рациональное a, для которого a² ≤ 0»? Если ложно, выбери его точное отрицание.",
+     "answer": "Истинно. Подходит a = 0.",
+     "steps": [
+      {
+       "prompt": "Каков квадрат 0?",
+       "answer": "0",
+       "hint": "Подставь ноль.",
+       "explanation": "0 × 0 = 0."
+      },
+      {
+       "prompt": "Каков квадрат −2/3?",
+       "answer": "4/9",
+       "hint": "Квадрат отрицательного числа положителен.",
+       "explanation": "(−2/3) × (−2/3) = 4/9."
+      }
+     ],
+     "hint": "Для существования достаточно одного примера.",
+     "explanation": "Квадрат нуля равен нулю и удовлетворяет нестрогому неравенству.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "squareClaim": 3,
+     "choices": [
+      "Истинно. Подходит a = 0.",
+      "Ложно. Для каждого a выполнено a² > 0.",
+      "Истинно. У каждого отрицательного a квадрат отрицателен."
      ]
     }
    ],
