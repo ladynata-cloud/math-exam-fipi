@@ -59,11 +59,59 @@
     });
     return {prompt:'Какие строки нужно исправить? Проверь все шесть равенств и перечисли только номера неверных строк через точку с запятой, в любом порядке.',inputPrompt:'Номера ошибочных равенств',answer:wrong,answerFormat:'unordered',steps,errors:[],table:{caption:'Записи для проверки',headers:['№','Равенство'],rows:rows.map(([a,op,b,g],i)=>[(i+1)+' ('+letters[i]+')',a+' '+op+' '+b+' = '+g])},data:{calculations:rows},conditionKey:JSON.stringify(rows)};
   }
-  const generators={'1.3':schedule,'1.4':columns,'1.5':arithmetic};
-  const bounds={'1.3':{day0:[0,3,0],day1:[0,3,0],day2:[0,3,0]},'1.4':{column:[0,7,4],left:[0,120,20],right:[0,120,10]},'1.5':{row:[0,5,0]}};
+  lessons.push(
+    {number:'1.6',key:'printed-1-6',page:10,title:'В каком порядке считать?',explanation:'Умножение и деление имеют одинаковый приоритет. В цепочке без скобок их выполняют слева направо. Если часть записи взята в скобки, начни с неё, даже когда она стоит справа.',worked:['Без скобок 24 : 3 · 2 означает (24 : 3) · 2. Сначала получается 8, затем 16.','В записи 24 : (3 · 2) сначала получается 6. Теперь 24 : 6 = 4.','Сравни: те же числа и действия дают разные результаты, потому что изменился порядок.'],misconception:'Умножение всегда нужно делать раньше деления.',reflect:'Как заметить, что скобки меняют именно первое действие?'},
+    {number:'1.7',key:'printed-1-7',page:10,title:'Путь, скорость и время в трёх поездках',explanation:'При постоянной скорости за каждый час прибавляется одно и то же расстояние. Путь равен скорости, умноженной на время. Если неизвестен один из множителей, раздели путь на известный множитель.',worked:['Турист идёт 3 часа по 4 км за час. Три равных участка дают 12 км.','Если даны 12 км и 3 часа, скорость равна 12 : 3 = 4 км/ч.','Если даны 12 км и скорость 4 км/ч, время равно 12 : 4 = 3 ч.'],misconception:'Чтобы найти любую пустую клетку, нужно перемножить два известных числа.',reflect:'Чем отличаются вопросы «сколько километров за час» и «сколько часов в пути»?'}
+  );
+  function arithmeticOrder(seed,random,step){
+    const source=[[42,':',7,'·',8],[60,'·',5,':',10],[630,':',9,'·',3],[72,':',8,'·',3],[44,':',4,'·',2],[360,':',4,':',3],[12,'·',3,':',9],[46,':',2,'·',3],[280,':',4,':',7],[37,'+',11,':',24,'left'],[53,'−',39,'·',6,'left'],[49,':',71,'−',64,'right']];
+    const op=(a,action,b)=>({'+':()=>a+b,'−':()=>a-b,'·':()=>a*b,':':()=>a/b}[action]());
+    const entries=source.map((original,i)=>{
+      let [a,op1,b,op2,c,bracket]=original;
+      if(seed){
+        const x=random(3,10),y=random(2,9),z=random(2,8);
+        if(bracket==='right'){a=x*y;c=z;b=y+z;}
+        else if(op1==='+'){c=z;b=random(1,x*z-1);a=x*z-b;}
+        else if(op1==='−'){a=x+y;b=y;c=z;}
+        else if(op1==='·'){a=x*z;b=y;c=z;}
+        else {a=op2===':'?x*y*z:x*y;b=y;c=z;}
+      }
+      const right=bracket==='right',first=right?op(b,op2,c):op(a,op1,b);
+      const second=right?op(a,op1,first):op(first,op2,c);
+      const leftText=a+' '+op1+' '+b,rightText=b+' '+op2+' '+c;
+      const expression=right?a+' '+op1+' ('+rightText+')':bracket?'('+leftText+') '+op2+' '+c:leftText+' '+op2+' '+c;
+      return {label:['а','б','в','г'][Math.floor(i/3)]+(i%3+1),expression,first,second,begin:right?rightText:leftText,end:right?a+' '+op1+' '+first:first+' '+op2+' '+c,bracket:Boolean(bracket),other:right?op(a,op1,b):op(b,op2,c)};
+    });
+    const steps=entries.map((line,i)=>{
+      const prompt=line.label+'. Для выражения '+line.expression+' запиши результат первого действия и окончательный результат через точку с запятой.';
+      const why=line.bracket?'Сначала закончи выражение в скобках. Их внутренняя запись — '+line.begin+'. Затем используй это число во внешнем действии.':'Умножение и деление равноправны. Первое действие здесь '+line.begin+', дальше двигайся вправо.';
+      const s=step(prompt,[line.first,line.second],why);s.orderRules={first:line.first,other:line.other,begin:line.begin,end:line.end,bracket:line.bracket};return s;
+    });
+    const group=seed?random(0,3):3, selected=entries.slice(group*3,group*3+3), labels=selected.map(line=>line.label).join('; ');
+    return {prompt:'Вычисли три выражения группы '+['а','б','в','г'][group]+'. Введи результаты по порядку через точку с запятой. В разборе отдельно проверь все двенадцать выражений.',inputPrompt:'Результаты '+labels,answer:selected.map(line=>line.second),answerFormat:'v5-triple',steps,errors:[],table:{caption:'Выражения из четырёх групп. Цифра около буквы показывает место в группе.',headers:['Строка','Выражение'],rows:entries.map(line=>[line.label,line.expression])},data:{order:entries},conditionKey:entries.map(line=>line.expression).join('|')};
+  }
+  function transport(seed,random,step){
+    const specs=seed?[[random(2,5),random(8,19)],[random(3,8),random(35,95)],[random(2,6),random(35,90)*10]]:[[2,15],[5,70],[2,600]];
+    const names=['Велосипед','Автомобиль','Самолёт'];
+    const trips=specs.map(([hours,rate],i)=>({name:names[i],hours,rate,distance:hours*rate,hidden:['distance','rate','hours'][i]}));
+    const [bike,car,plane]=trips;
+    const steps=[
+      step('Велосипед. Найди путь в километрах.',bike.distance,'Скорость показывает путь за один час. Возьми столько равных участков, сколько часов длилась поездка.',[{value:bike.hours+bike.rate,text:'Часы и километры в час складывать нельзя. Возьми путь за один час столько раз, сколько часов в пути.'}]),
+      step('Автомобиль. Найди скорость в километрах в час.',car.rate,'Раздели весь путь на число часов. Сколько километров приходится на один час?', [{value:car.distance*car.hours,text:'Ты умножил уже известный путь на время. Нужна доля всего пути, которую проезжают за один час.'}]),
+      step('Самолёт. Найди время полёта в часах.',plane.hours,'Сколько участков по одному часу помещается во всём пути? Раздели путь на скорость.',[{value:plane.rate/plane.distance,text:'Получилось отношение пути за час ко всему пути. Переставь делимое и делитель.'}])
+    ];
+    return {prompt:'Восстанови три пропуска в таблице. Запиши по порядку путь велосипеда в км, скорость автомобиля в км/ч и время самолёта в часах через точку с запятой.',inputPrompt:'Путь велосипеда; скорость автомобиля; время самолёта',answer:[bike.distance,car.rate,plane.hours],answerFormat:'v5-triple',steps,errors:[],data:{trips},table:{caption:'Равномерное движение. Время в часах, скорость в километрах в час, путь в километрах.',headers:['Транспорт','ч','км/ч','км'],columnWidths:[42,15,23,20],rows:trips.map((trip,i)=>[i===1?'Авто':trip.name,...['hours','rate','distance'].map(key=>key===trip.hidden?'—':trip[key])])},conditionKey:JSON.stringify(specs)};
+  }
+  const generators={'1.3':schedule,'1.4':columns,'1.5':arithmetic,'1.6':arithmeticOrder,'1.7':transport};
+  const bounds={'1.3':{day0:[0,3,0],day1:[0,3,0],day2:[0,3,0]},'1.4':{column:[0,7,4],left:[0,120,20],right:[0,120,10]},'1.5':{row:[0,5,0]},'1.6':{row:[0,11,0],stage:[0,1,0]},'1.7':{vehicle:[0,2,0],hours:[0,8,1],rate:[5,125,40]}};
   function fields(input,M){const tokens=String(input).split(';');if(tokens.length!==3)return null;const nums=tokens.map(token=>M.parse(token));if(nums.some(v=>!v||v.d!==1||!Number.isSafeInteger(v.n)))return null;return nums.map(v=>v.n);}
   function columnFits(values,given){return values&&values.every(n=>n>=0)&&values[0]+values[1]===values[2]&&given.every((n,i)=>n===null||n===values[i]);}
   function mistake(input,target,M){
+    if(target.orderRules){
+      const tokens=String(input).split(';'),r=target.orderRules;
+      if(tokens.length===2&&M.equal(tokens[0],r.first))return 'Первое действие верно. Теперь вычисли '+r.end+'.';
+      if(tokens.length===2&&Number.isInteger(r.other)&&M.equal(tokens[0],r.other))return (r.bracket?'Начни со скобок. ':'Умножение не опережает деление. ')+'Первым здесь стоит '+r.begin+'.';
+    }
     const values=fields(input,M);if(!values)return '';
     if(target.columnRules){
       if(values.some(n=>n<0))return 'Здесь заполняем таблицу неотрицательными целыми числами. Проверь знаки.';
@@ -78,6 +126,23 @@
   }
   function explore(lesson,state,task,table){
     const data=task.data;
+    if(lesson.number==='1.6'){
+      const line=data.order[state.row],first=state.stage===0;
+      return {title:'Покажи первое и оставшееся действие',controls:[{key:'row',title:'Выражение',values:data.order.map((e,i)=>[i,e.label])},{key:'stage',title:'Что исследуем',values:[[0,'Первое действие'],[1,'Оставшееся действие']]}],visual:table('Цепочка вычислений',['Запись','Выбранное действие'],[[line.expression,first?line.begin:line.end]]),question:'Чему равно выбранное действие?',answer:first?line.first:line.second,why:(first?line.begin:line.end)+' = '+(first?line.first:line.second)+'. '+(line.bracket?'Скобки выделяют вычисление, которое выполняется первым.':'При умножении и делении без скобок двигайся слева направо.')};
+    }
+    if(lesson.number==='1.7'){
+      const trip=data.trips[state.vehicle],speed=trip.hidden==='rate'?state.rate:trip.rate,time=state.hours,distance=speed*time;
+      const controls=[{key:'vehicle',title:'Транспорт',values:data.trips.map((t,i)=>[i,t.name])},{key:'hours',title:'Часов прошло на модели',min:0,max:8,step:1}];
+      if(trip.hidden==='rate')controls.push({key:'rate',title:'Испытай скорость, км/ч',min:5,max:125,step:1});
+      const goal=trip.hidden==='distance'?null:trip.distance,scale=260/Math.max(goal||0,distance,speed,1),start=18;
+      const x=dist=>Math.round((start+dist*scale)*100)/100;
+      let track='<line x1="18" x2="285" y1="46" y2="46" stroke="#486855" stroke-width="2"/>';
+      for(let hour=0;hour<time;hour++)track+='<line x1="'+x(hour*speed)+'" x2="'+x((hour+1)*speed)+'" y1="46" y2="46" stroke="'+(hour%2?'#406f86':'#527a43')+'" stroke-width="8"/><line x1="'+x(hour*speed)+'" x2="'+x(hour*speed)+'" y1="38" y2="54" stroke="#193b2a"/>';
+      if(goal!==null)track+='<line x1="'+x(goal)+'" x2="'+x(goal)+'" y1="20" y2="63" stroke="#7b4826" stroke-dasharray="4 2" stroke-width="2"/>';
+      track+='<circle cx="'+x(distance)+'" cy="46" r="5" fill="#192f24" stroke="white" stroke-width="2"/>';
+      const visual='<p>Один отрезок — путь за час при скорости '+speed+' км/ч.'+(goal===null?'':' Штрих показывает заданный путь '+goal+' км.')+'</p><svg viewBox="0 0 305 75" role="img" aria-label="Модель пути: '+time+' часовых участков при скорости '+speed+' километров в час"><title>Путь по часам</title>'+track+'</svg>';
+      return {title:'Пройди путь по одному часу',controls,visual,question:'Сколько километров прошёл транспорт за выбранное время?',answer:distance,why:speed+' × '+time+' = '+distance+' км.'+(goal===null?'':distance===goal?' Отметка совпала с заданным путём.':distance<goal?' До заданного пути ещё не доехали.':' Заданный путь уже позади.')};
+    }
     if(lesson.number==='1.3'){
       const picked=[state.day0,state.day1,state.day2],valid=new Set(),notes=[];
       const rows=data.days.map((day,d)=>{const n=picked[d];let note;if(!n)note='ещё не выбран';else if(data.forbidden[n-1]===d+1)note='в этот день не работает';else if(valid.has(n))note='уже был в плане';else {note='подходит';valid.add(n);}notes.push(note);return [shortDay[day],n?data.clubs[n-1]+' — '+note:note];});

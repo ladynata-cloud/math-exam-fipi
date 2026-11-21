@@ -144,7 +144,7 @@ function decimalStepInstructions(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),[1,2,3,4,5].map(n=>'v5f-printed-1-'+n));
+  equal(plain(path.numbered),[1,2,3,4,5,6,7].map(n=>'v5f-printed-1-'+n));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -217,8 +217,28 @@ function scheduleAndEqualityRegression(){
   for(const step of calc.steps){f.submit(String(step.answer));f.click('[data-cmd=next]');}
   f.submit('5;1;2');ok(f.snapshot().scene.correct);equal(f.errors,[]);f.close();
 }
+function orderAndJourneyRegression(){
+  const f=boot(),[order,journey]=f.C.pathById.vilenkin5.numbered.slice(5);
+  const o=f.M.generate(order,0),j=f.M.generate(journey,0);
+  equal(plain(o.steps.map(s=>s.answer)),[[6,48],[300,30],[70,210],[9,27],[11,22],[90,30],[36,4],[23,69],[70,10],[48,2],[14,84],[7,7]]);
+  equal(plain(o.answer),[2,84,7]);equal(plain(j.answer),[30,70,2]);
+  const expressionValue=expr=>{const [n,op,z]=expr.split(' '),a=+n,b=+z;switch(op){case '+':return a+b;case '−':return a-b;case ':':return a/b;default:return a*b;}};
+  const groups=new Set();
+  for(let s=1;s<=80;s++){
+    const task=f.M.generate(order,s);groups.add(task.inputPrompt);
+    for(const row of task.data.order){equal(expressionValue(row.begin),row.first);equal(expressionValue(row.end),row.second);ok(Number.isInteger(row.first)&&Number.isInteger(row.second));}
+    const trip=f.M.generate(journey,s);trip.data.trips.forEach(t=>equal(t.hours*t.rate,t.distance));equal(plain(trip.answer),[trip.data.trips[0].distance,trip.data.trips[1].rate,trip.data.trips[2].hours]);
+  }
+  equal(groups.size,4);
+  f.route('#lesson/'+order);f.submit('56;48');ok(f.snapshot().scene.message.includes('не опережает'));f.submit('6;47');ok(f.snapshot().scene.message.includes('Первое действие верно'));
+  for(const step of o.steps){f.submit(step.answer.join(';'));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}f.submit('2;84;7');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+journey);f.submit('17');ok(f.snapshot().scene.message.includes('складывать нельзя'));
+  for(const step of j.steps){f.submit(String(step.answer));f.click('[data-cmd=next]');}
+  equal([...f.$('#task-panel table').tBodies[0].rows[1].cells].map(cell=>cell.textContent),['Авто','5','70','350']);
+  f.submit('30;70;2');ok(f.snapshot().scene.correct);equal(f.errors,[]);f.close();
+}
 async function run(){
-  numberedTablesRegression();scheduleAndEqualityRegression();
+  numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);

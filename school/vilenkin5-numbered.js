@@ -94,6 +94,10 @@
       });
       return table('Твоя таблица. Каждая строка на экране — один столбец учебника.',headers,filled,columnWidths);
     }
+    if(scene.mode==='learn'&&task.data.trips){
+      const filled=rows.map((row,i)=>row.map(cell=>cell==='—'&&scene.answers?.[i]?scene.answers[i]:cell));
+      return table(caption,headers,filled,columnWidths);
+    }
     if(scene.mode==='learn'&&task.data.calculations){
       const checked=rows.map((row,i)=>[...row,scene.answers?.[i]||'—']);
       return table(caption,[...headers,'Ответ'],checked,[16,53,31]);

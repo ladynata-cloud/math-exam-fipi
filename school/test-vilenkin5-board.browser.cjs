@@ -354,6 +354,23 @@ async function run(browser, origin, backend, failures) {
   assert.equal(ownSum.scene.correct,true);assert.equal(ownSum.scene.answers[4],'50;13;63');
   assert.match(await studentFrame.locator('#task-panel table tbody tr').nth(4).innerText(),/5\s+50\s+13\s+63/);
 
+  phase = 'numbered transport table and hour-by-hour model';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('.v5-hero').waitFor();await same(teacherFrame,studentFrame,'course before transport');
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-7"]').click();await studentFrame.locator('h1').filter({hasText:'№1.7'}).waitFor();
+  await same(teacherFrame,studentFrame,'source transport table');
+  await teacherFrame.locator('#answer').fill('17');await teacherFrame.locator('#answer-form button').click();
+  const transportMistake=await same(teacherFrame,studentFrame,'different units are not added');assert.equal(transportMistake.scene.firstWrong.value,'17');
+  await solve(teacherFrame);await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'bicycle distance filled');
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=vehicle]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-param=hours]').fill('5');await studentFrame.locator('[data-v5-param=hours]').press('Tab');
+  await studentFrame.locator('[data-v5-param=rate]').fill('70');await studentFrame.locator('[data-v5-param=rate]').press('Tab');
+  const moving=await same(studentFrame,teacherFrame,'car model travels five hours at seventy');assert.equal(moving.scene.model.hours,5);assert.equal(moving.scene.model.rate,70);
+  await studentFrame.locator('[data-v5-prediction]').fill('350');await studentFrame.locator('[data-v5-predict] button').click();
+  await same(studentFrame,teacherFrame,'model meets the source target');assert.match(await teacherFrame.locator('.v5q-model-why').innerText(),/совпала/);
+  await narrow(student,studentFrame,'numbered-travel');await ownership(teacher,student,false);
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
