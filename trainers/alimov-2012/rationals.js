@@ -21,8 +21,8 @@
   function question(prompt, answer, calculation, error, wrong, diagnosis) {
     return {prompt, answer, calculation, error, mistakes:[[wrong,diagnosis]]};
   }
-  function register(key, reference, title, aim, rule, guide, make) {
-    add(19, key, 6, title, aim, rule, 'core-fraction-reduce', make);
+  function register(key, reference, title, aim, rule, guide, make, page=6) {
+    add(19, key, page, title, aim, rule, 'core-fraction-reduce', make);
     const id = '19-' + key;
     Object.assign(lessons.get(id), {printedReference:'Упражнение №' + reference, printedGuide:guide});
     order.push(id);
@@ -44,6 +44,7 @@
     return '<svg viewBox="0 0 290 109" role="img" aria-label="Две строки с одинаковым периодическим хвостом"><g font-size="15" fill="#1d3942">'+row(26,scaleA,low)+row(61,scaleB,high)+'<path d="M9 73H275" stroke="#315a64"/><text x="12" y="96" font-size="13">При вычитании одинаковые хвосты исчезают</text></g></svg>';
   }
   window.MathExamTopicEdition = {
+    register,question,
     trainerId:'alimov-2012', storePrefix:'math:alimov-2012:v1:', authors:'Алимов и др. · 18-е издание · 2012',
     grade:()=>'10–11 классы', unit:'упражнение', nextId:lesson=>order[order.indexOf(lesson.id)+1],
     source:(_book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000033.pdf#page='+(page+1),

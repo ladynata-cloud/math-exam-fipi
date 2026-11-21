@@ -49,7 +49,7 @@ async function healthy(url, child, logs) {
 }
 
 const catalogue=process.argv.includes('--alimov-2012') ? {
-  directory:'alimov-2012',entries:[[19,78,23]],uniqueLessons:22,search:'alimov-2012',match:'периодические дроби',lesson:process.argv.includes('--chain')?'19-5b':'19-3f',onlySelected:process.argv.includes('--chain'),chart:process.argv.includes('--chain')?'svg[aria-label*="Дерево вычислений"]':'svg[aria-label*="одинаковым периодическим хвостом"]',storage:'math:alimov-2012:v1:'
+  directory:'alimov-2012',entries:[[19,78,32]],uniqueLessons:30,search:'alimov-2012',match:'периодические дроби',lesson:process.argv.includes('--root-bounds')?'19-7':process.argv.includes('--absolute')?'19-8b':process.argv.includes('--chain')?'19-5b':'19-3f',onlySelected:['--chain','--root-bounds','--absolute'].some(flag=>process.argv.includes(flag)),chart:process.argv.includes('--root-bounds')?'svg[aria-label*="двумя соседними десятыми"]':process.argv.includes('--absolute')?'svg[aria-label*="его модуль"]':process.argv.includes('--chain')?'svg[aria-label*="Дерево вычислений"]':'svg[aria-label*="одинаковым периодическим хвостом"]',storage:'math:alimov-2012:v1:'
 }:process.argv.includes('--makarychev7-2014') ? {
   directory:'makarychev7-2014',entries:[[95,46,5]],search:'makarychev7-2014',match:'выражения и статистика',lesson:'95-10',chart:'svg[aria-label*="Средние места"]',storage:'math:makarychev7-2014:v1:'
 }: process.argv.includes('--makarychev9-2017-supplement')?{
