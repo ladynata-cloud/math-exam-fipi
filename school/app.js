@@ -134,7 +134,7 @@
   main.querySelector('.v5-hero h1').insertAdjacentHTML('afterend',finalCheckLink(p.id));
   if(V5Q)V5Q.courseView(main,p);
   main.querySelector('.v5-hero').insertAdjacentHTML('afterend',v5NumberedLinks(p));
-  document.getElementById('v5-search').oninput=function(e){var q=e.target.value.trim().toLowerCase();document.getElementById('v5-search-results').innerHTML=q.length<2?'':p.ids.filter(function(id){var l=C.byId[id];return (l.title+' '+l.explanation+' пункт '+l.point).toLowerCase().includes(q);}).map(function(id){return '<p><a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a></p>';}).join('');};
+  document.getElementById('v5-search').oninput=function(e){var q=e.target.value.trim().toLowerCase();document.getElementById('v5-search-results').innerHTML=q.length<2?'':p.ids.concat(p.numbered||[]).filter(function(id){var l=C.byId[id];return (l.title+' '+l.explanation+' пункт '+l.point).toLowerCase().includes(q);}).map(function(id){return '<p><a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a></p>';}).join('');};
  }
  function v5NumberedLinks(path){
   if(!path.numbered?.length)return '';

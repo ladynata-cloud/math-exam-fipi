@@ -160,6 +160,8 @@
       const parts=value.split(';');
       if(parts.length!==2||parts.some(part=>!M.parse(part)))return 'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.';
     }
+    const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
+    if(clarification)return clarification.text;
     if(target.scaleChoice){
       const multiplier=M.parse(value), {divisor,powers}=target.scaleChoice;
       const listed=multiplier?.d===1&&powers.includes(multiplier.n);
@@ -217,7 +219,7 @@
     if(lesson.number)task.querySelector('.question').insertAdjacentHTML('afterend',root.Vilenkin5Numbered.taskTable(session.task,session));
     if(['table-read','table-total'].includes(lesson.fullKey)&&C.pathById.vilenkin5.numbered?.length){
       const numbered=C.pathById.vilenkin5.numbered.map(id=>'<a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a>');
-      head.insertAdjacentHTML('beforeend','<p>Задания учебника по таблицам, часть 1, с. 9: '+numbered.join(' · ')+'</p>');
+      head.insertAdjacentHTML('beforeend','<p>Задания к таблицам на с. 9 первой части. '+numbered.join(' · ')+'</p>');
     }
     const modes={learn:'1 · Разберись',practice:'2 · Потренируйся',check:'3 · Проверь себя'};
     head.querySelectorAll('[data-cmd=mode]').forEach(b=>{b.textContent=modes[b.dataset.value];b.classList.add('v5q-mode');b.classList.toggle('is-current',b.dataset.value===session.mode);b.setAttribute('aria-pressed',String(b.dataset.value===session.mode));});
