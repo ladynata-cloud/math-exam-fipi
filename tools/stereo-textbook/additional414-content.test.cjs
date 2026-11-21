@@ -2,7 +2,9 @@
 const {sphereReviewBytes}=require('./additional414-runtime.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..'),baseline=require('./additional414-baseline.cjs'),{ids,published,sha,exact}=baseline;
-const course=require('../../stereo-course/textbook/data/course.json'),index=require('../../stereo-course/textbook/source-index.json'),registry=require('./content-review.json'),cases=require('./browser-cases.cjs');
+const later=require('./inscribed-solids-predecessor.cjs');
+const rawIndex=require('../../stereo-course/textbook/source-index.json');
+const course=later.courseBefore(require('../../stereo-course/textbook/data/course.json'),rawIndex),index=later.indexBefore(rawIndex),registry=later.registryBefore(require('./content-review.json')),cases=later.casesBefore(require('./browser-cases.cjs'));
 const old=baseline.previousCourse(course,index);baseline.previousIndex(index);baseline.previousRegistry(registry);baseline.previousCases(cases);
 assert.equal(baseline.previousLessonFiles(root+'/stereo-course/textbook/lessons').length,674);
 for(const[file,gitBlob]of Object.entries(published.unchangedFiles)){
