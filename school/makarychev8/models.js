@@ -662,5 +662,271 @@
       source:{type:'authored',reference:'Тренировка на новых прямых и параболе'},skills:[systemPractice.id]};
   }
 
-  return { mount, experiment, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const substitutionPractice={id:'system-substitution',title:'Подстановка и проверка пары',
+    description:'Вырази переменную, найди все корни и проверь соответствие координат в исходной системе.'};
+  function practiceSubstitution(seed,level){
+    const r=1+seed%5,s=level===2?r:-(1+Math.floor(seed/4)%5),h=1+seed%4,b=level===3?2-r*s:-r*s;
+    const points=[r,...(r===s?[]:[s])].map(x=>[x,h*x+b]),answer=points.map(([x,y])=>'('+x+';'+y+')').join(', ');
+    // x² − (r + s)x + rs = 0 follows from y = hx + b and y = x² + (h − r − s)x + b + rs.
+    const linear=h-r-s,constant=b+r*s;
+    const expr=n=>(n<0?' − ':' + ')+Math.abs(n);
+    const eq1='y = '+h+'x'+expr(b),eq2='y = x²'+(linear?expr(linear)+'x':'')+(constant?expr(constant):'');
+    const graph={type:'system-pair-audit',equations:[eq1,eq2],symbols:['x','y'],excludeZero:false,
+      terms:[[[String(h),1,0],['-1',0,1],[String(b),0,0]],[['1',2,0],[String(linear),1,0],['-1',0,1],[String(constant),0,0]]]};
+    const hint='Приравняй два выражения для y. Каждую найденную абсциссу подставь в первое уравнение.';
+    const answers=points.map(p=>p[0]).join(';');
+    return {title:substitutionPractice.title,prompt:'Реши систему '+eq1+' и '+eq2+'. Запиши пары (x; y).',kind:'algebra-pairs',answer,graph,steps:[
+      {prompt:'После приведения к старшему коэффициенту 1 чему равны B и C в x² + Bx + C = 0?',kind:'graph-values',answer:[-(r+s),r*s].join(';'),hint,explanation:'Линейный коэффициент равен '+(-(r+s))+', свободный член '+r*s+'.'},
+      {prompt:'Укажи все абсциссы решения.',kind:'quadratic-roots',answer:answers,hint:'Разложи полученный трёхчлен.',explanation:'Корни: '+answers+'.'}],
+      hint,correction:hint,finalLabel:'Все пары координат',inputNote:'Впиши пары в скобках через запятую, например (1;2), (3;4).',
+      explanation:'После решения квадратного уравнения координаты восстанавливаются согласованными парами: '+answer+'.',
+      source:{type:'authored',reference:'Авторская тренировка по подстановке'},skills:[graphicPractice.id]};
+  }
+
+  const balancePractice={id:'models-of-systems',title:'Проверить две величины по двум условиям',
+    description:'Составь систему по новому сюжету и проверь оба числа в предметной модели.'};
+  function practiceBalance(seed,level){
+    const x=3+seed%11,y=2+Math.floor(seed/3)%9;
+    let labels,prompt,unit,checks,restriction='natural';
+    const row=(label,a,b,rhs)=>({label,coeff:[String(a),String(b)],rhs:String(rhs)});
+    if(level===1){
+     const price=3+seed%3,other=price+2,total=x*price+y*other;
+     labels=['малые альбомы','большие альбомы'];unit='шт.';
+     prompt='Продали '+(x+y)+' альбомов — маленькие по '+price+' р. и большие по '+other+' р. Получили '+total+' р. Сколько маленьких и больших альбомов?';
+     checks=[row('Число альбомов',1,1,x+y),row('Выручка, р.',price,other,total)];
+    }else if(level===2){
+     const width=x,length=x+y;
+     labels=['ширина','длина'];unit='см';restriction='positive';
+     const perimeter=2*(width+length);
+     prompt='Периметр прямоугольника '+perimeter+' см, длина на '+y+' см больше ширины. Определи ширину и длину.';
+     checks=[row('Периметр, см',2,2,perimeter),row('Разность сторон, см',-1,1,y)];
+    }else{
+     const first=5*x,second=5*y,total=first+second,after=6*x+4*y;
+     labels=['в первой коробке','во второй коробке'];unit='шт.';
+     prompt='Первоначально в двух коробках '+total+' деталей. В первую добавили 20% её количества, из второй убрали 20% её количества, и всего стало '+after+'. Сколько деталей было в каждой сначала?';
+     checks=[row('Первоначально всего',1,1,total),row('Всего после изменения','6/5','4/5',after)];
+    }
+    const answer=(level===2?[x,x+y]:level===3?[5*x,5*y]:[x,y]).join(';'),hint='Обозначь два искомых количества разными буквами. Проверь свою пару и по сумме, и по второму отношению.';
+    return {title:balancePractice.title,prompt,kind:'graph-values',answer,hint,correction:hint,finalLabel:'Первое и второе число',
+     explanation:'Для пары '+answer+' выполнены обе строки таблицы.',graph:{type:'story-balance',labels,checks,restriction,mode:'pair',unit},
+     steps:[{prompt:'Запиши правые части двух уравнений в порядке таблицы.',kind:'graph-values',answer:checks.map(r=>r.rhs).join(';'),hint,explanation:'Исходные значения справа: '+checks.map(r=>r.rhs).join(';')+'.'},
+       {prompt:'Сколько единиц первой величины получается из системы?',kind:'number',answer:answer.split(';')[0],hint,explanation:'Первое значение '+answer.split(';')[0]+'.'}],
+     source:{type:'authored',reference:'Тренировка по составлению систем'},skills:[systemPractice.id]};
+  }
+
+  const parameterPractice={id:'parameter-equations',title:'Исследовать уравнение с параметром',description:'Разбери специальное значение, проверь число корней и найди общий ответ.'};
+  function practiceParameter(seed,level){
+    const h=1+seed%8,m=2+Math.floor(seed/3)%7,trial={kind:'parameter-sample',answer:'0',prompt:'Выбери для опыта значение t от −24 до 24 с шагом 1/8.',hint:'Можешь начать с 0.',explanation:'График изображает уравнение с твоим параметром.'};
+    let prompt,kind,answer,graph,reason,hint;
+    if(level===1){
+      prompt='При каком t уравнение (t − '+h+')x = '+m+'(t − '+h+') допускает любое x?';
+      kind='number';answer=String(h);graph=[[0],[-h,1],[m*h,-m]];
+      hint='Для тождества нужны нули с обеих сторон.';
+      reason={kind:'number',answer:String(m),prompt:'Каков единственный корень при t, отличном от особого значения?',hint:'Раздели обе части на t − '+h+'.',explanation:'Корень x = '+m+'.'};
+    }else if(level===2){
+      prompt='При каких t уравнение x² − 2tx + '+h*h+' = 0 имеет ровно один действительный корень?';
+      kind='set';answer=(-h)+';'+h;graph=[[1],[0,-2],[h*h]];
+      hint='Старший коэффициент равен 1. Приравняй дискриминант к нулю и учти оба знака t.';
+      reason={kind:'number',answer:String(h*h),prompt:'Какому числу должно равняться t²?',hint:'Раздели дискриминант на четыре.',explanation:'D = 4(t² − '+h*h+').'};
+    }else{
+      prompt='Найди все t, при которых tx² − '+2*h+'x + 1 = 0 имеет единственный действительный корень.';
+      kind='set';answer='0;'+h*h;graph=[[0,1],[-2*h],[1]];hint='Отдельно проверь t = 0, затем реши D = 0 для параболы.';
+      reason={kind:'number',answer:'1/'+(2*h),prompt:'Какой корень остаётся при t = 0?',hint:'Отбрось исчезнувший квадратный член.',explanation:'Линейное уравнение даёт x = 1/'+(2*h)+'.'};
+    }
+    return {title:parameterPractice.title,prompt,kind,answer,hint,correction:hint,explanation:hint+' Все нужные значения: '+answer+'.',steps:[trial,reason],
+      graph:{type:'parameter-polynomial',symbol:'t',coefficients:graph},skills:[parameterPractice.id],source:{type:'authored',reference:'Авторская тренировка по уравнениям с параметром'}};
+  }
+
+  const squarePractice={id:'square-certificates',title:'Доказать положительность квадратичного выражения',description:'Представь трёхчлен полным квадратом с положительным остатком.'};
+  function practiceCertificate(seed,level){
+    const k=level===1?1:2+seed%4,h=seed%13-6,r=2+Math.floor(seed/3)%11;
+    const a=k,b=-2*k*h,c=k*h*h+r,sign=n=>n<0?' − '+Math.abs(n):' + '+n,answer=[k,h,r].join(';');
+    return {title:squarePractice.title,prompt:'Докажи, что '+a+'x²'+sign(b)+'x'+sign(c)+' всегда положительно. Подбери K; H; R для записи K(x − H)² + R.',
+      kind:'graph-values',answer,hint:'Сравни коэффициент при x с −2KH.',correction:'Проверь знак H и остаток R после раскрытия скобок.',
+      explanation:'Коэффициенты '+answer+' возвращают исходный трёхчлен и R > 0.',graph:{type:'square-certificate',targets:[[a,b,c]],labels:['трёхчлен'],symbol:'x'},
+      steps:[{kind:'number',answer:String(k),prompt:'Чему равно K?',hint:'Посмотри на старший коэффициент.',explanation:'K = '+k+'.'},
+       {kind:'number',answer:String(h),prompt:'В какой точке квадрат обращается в нуль?',hint:'Используй −B/(2A).',explanation:'H = '+h+'.'}],
+      skills:[squarePractice.id],source:{type:'authored',reference:'Тренировка по доказательству положительности'}};
+  }
+
+  const appliedPractice={id:'applied-quadratic-review',title:'Отобрать решения по смыслу задачи',description:'Проверь целые числа, шаг последовательности и исходную разность степеней.'};
+  function practiceAppliedReview(seed,level){
+    const first=2+seed%16,stride=level===1?1:2,power=level===3?3:2;
+    const second=first+stride,target=second**power-first**power,answer=first+';'+second;
+    return {title:appliedPractice.title,prompt:'Два натуральных числа отличаются на '+stride+'. Разность '+(power===2?'их квадратов':'их кубов')+' равна '+target+'. Найди числа по возрастанию.',
+      kind:'graph-values',answer,hint:'Обозначь меньшее число x и запиши большее как x + '+stride+'.',
+      correction:'Проверь шаг, положительность и разность степеней.',explanation:'Для пары '+answer+' разность степеней равна '+target+'.',
+      steps:[{kind:'text',answer:'x+'+stride,reducedExpression:true,prompt:'Как выразить второе число через первое x?',hint:'Прибавь шаг.',explanation:'Второе число больше на '+stride+'.'},
+       {kind:'number',answer:String(first),prompt:'Какое натуральное значение имеет меньшее число?',hint:'Раскрой степени и реши полученное уравнение.',explanation:'Меньшее равно '+first+'.'}],
+      graph:{type:'number-sequence',size:2,stride,power,weights:[-1,1],target,natural:true},skills:[appliedPractice.id],source:{type:'authored',reference:'Тренировка по отбору решений'}};
+  }
+
+  const invariantPractice={id:'vieta-invariants',title:'Проверить сумму и произведение корней',description:'Восстанови две связи по коэффициентам и проверь свою пару, включая иррациональные числа.'};
+  function practiceInvariants(seed,level){
+    const h=2+seed%9,k=1+Math.floor(seed/3)%7,rad=level===1?'':level===2?'√2':'√3';
+    const first=level===1?String(-k):h+'-'+k+rad,second=level===1?String(h):h+'+'+k+rad;
+    const total=level===1?h-k:2*h,product=level===1?-h*k:h*h-(level===2?2:3)*k*k,answer=first+';'+second;
+    const signed=n=>n<0?' − '+Math.abs(n):' + '+n;
+    return {title:invariantPractice.title,prompt:'Найди пару корней уравнения x²'+signed(-total)+'x'+signed(product)+' = 0 и проверь обе связи Виета.',
+     kind:'quadratic-roots',answer,hint:'Нужны сумма '+total+' и произведение '+product+'.',correction:'Совпадения одной связи ещё недостаточно.',
+     explanation:'Числа '+first+' и '+second+' вместе дают нужные сумму и произведение.',
+     steps:[{kind:'number',answer:String(total),prompt:'Чему равна сумма корней?',hint:'Возьми коэффициент при x с обратным знаком.',explanation:'S = '+total+'.'},
+      {kind:'number',answer:String(product),prompt:'Чему равно произведение?',hint:'У приведённого уравнения это свободный член.',explanation:'P = '+product+'.'}],
+     graph:{type:'vieta-audit',sum:String(total),product:String(product)},skills:[invariantPractice.id],source:{type:'authored',reference:'Тренировка по Виету'}};
+  }
+
+  const fractionDomainPractice={id:'fraction-domain-review',title:'Сохранить область исходной дроби',description:'Найди исключённые точки до сокращения и проверь их подстановкой.'};
+  function practiceFractionDomain(seed,level){
+    const h=1+seed%8,k=h+1+Math.floor(seed/3)%5,offset=level+1;
+    const linear=n=>['-','x',String(n)],cancel=linear(h),den=linear(k),num=['+','x',String(offset)];
+    const answer=h+';'+k,hint='Найди нули обоих исходных множителей знаменателя. Сокращение не возвращает первый из них.';
+    return {title:fractionDomainPractice.title,prompt:'Назови все запреты для дроби ((x − '+h+')(x + '+offset+')) / ((x − '+h+')(x − '+k+')).',
+      kind:'set',answer,hint,correction:hint,explanation:'Точки '+h+' и '+k+' запрещены. В первой сокращённая формула имеет значение, а исходная дробь нет.',
+      graph:{type:'source-fraction',symbols:['x'],original:['/',['*',cancel,num],['*',cancel,den]],reduced:['/',num,den]},
+      steps:[{kind:'fraction-sample',probeCount:1,answer:String(h),prompt:'Испытай любое рациональное x от −100 до 100.',hint:'Попробуй один из нулей знаменателя.',explanation:'Обе формы проверены при твоём значении.'},
+       {kind:'number',answer:String(h),prompt:'Какое запрещённое значение перестало быть видимым в сокращённом знаменателе?',hint:'Посмотри на общий множитель.',explanation:'У сокращённого множителя нуль '+h+'.'}],
+      skills:[fractionDomainPractice.id],source:{type:'authored',reference:'Тренировка по сохранению области дроби'}};
+  }
+
+  const auditPractice={id:'rational-root-audit',title:'Отобрать корни дробного уравнения',description:'Сравни нули числителя с запретами исходного знаменателя.'};
+  function practiceRationalAudit(seed,level){
+    const h=1+seed%8,k=h+1+Math.floor(seed/2)%6,r=level===3?-k:k;
+    const numerator=level===1?'(x − '+r+')':'(x − '+h+')(x '+(r<0?'+ '+(-r):'− '+r)+')';
+    return {title:auditPractice.title,prompt:'Реши '+numerator+' / (x − '+h+') = 0. При проверке сохрани исходный запрет.',
+      kind:'quadratic-roots',answer:String(r),hint:'Сначала исключи нуль знаменателя. Затем найди нули числителя.',
+      correction:'Проверь, разрешено ли найденное x в исходном знаменателе.',explanation:'Допустим только '+r+'.',
+      graph:{type:'rational-root-audit',coefficients:level===1?[0,1,-r]:[1,-h-r,h*r],excluded:[String(h)],symbol:'x'},
+      steps:[{kind:'number',answer:String(h),prompt:'При каком x знаменатель нулевой?',hint:'Реши x − '+h+' = 0.',explanation:'Исключается '+h+'.'},
+       {kind:'number',answer:String(r),prompt:'Какой нуль числителя остаётся допустимым?',hint:'Отбери значение, отличное от '+h+'.',explanation:'Остаётся '+r+'.'}],
+      skills:[auditPractice.id],source:{type:'authored',reference:'Тренировка по проверке дробного уравнения'}};
+  }
+
+  const mixturePractice={id:'mixture-points',title:'Доля вещества до и после добавки',description:'Следи за массой вещества и сравнивай его доли.'};
+  const jointPractice={id:'work-fraction',title:'Часть работы за заданное время',description:'Переводи одиночные сроки в доли работы за один час.'};
+  function practiceMixture(seed,level){
+    const mass=50*(1+seed%8),prior=6*(1+Math.floor(seed/3)%14),copper=mass*prior/100;
+    const multiple=2+Math.floor(seed/11)%2,added=mass*(multiple-1),after=prior/multiple;
+    const hint='Прибавь массу добавленного цинка к общей массе. Масса меди сохраняется.';
+    const labels=['Какова доля меди в процентах до добавки?','Какова доля меди в процентах после добавки?','На сколько процентных пунктов снизилась доля меди?'];
+    return {title:mixturePractice.title,prompt:'Имеется '+mass+' кг сплава с '+copper+' кг меди. Добавили '+added+' кг чистого цинка. '+labels[level-1],
+      kind:'number',answer:String(level===1?prior:level===2?after:prior-after),steps:[{prompt:'Сколько килограммов меди останется?',kind:'number',answer:String(copper),hint,explanation:hint},{prompt:'Чему равна новая общая масса в кг?',kind:'number',answer:String(mass+added),hint,explanation:hint}],
+      hint,correction:level===3?'Вычти новый процент из старого.':hint,explanation:'Было '+prior+'%, стало '+after+'%. Потеря '+(prior-after)+' процентных пунктов.',
+      skills:[mixturePractice.id],source:{type:'authored',reference:'Тренировка по массовым долям'}};
+  }
+  function practiceJoint(seed,level){
+    const factor=2+seed%8,duration=1+Math.floor(seed/3)%factor;
+    const answer=(a,b)=>{const gcd=(m,n)=>n?gcd(n,m%n):m,g=gcd(a,b);return b/g===1?String(a/g):a/g+'/'+b/g;};
+    const hint='Если всё дело занимает t часов, за один час выполняется 1/t работы.';
+    const prompts=['Какую часть заказа первая выполнит за '+duration+' ч?','Какую часть заказа обе выполнят за '+duration+' ч?','За сколько часов они выполнят заказ вместе?'];
+    return {title:jointPractice.title,prompt:'Первой бригаде на заказ нужно '+2*factor+' ч, второй — '+3*factor+' ч. '+prompts[level-1],kind:'number',
+      answer:level===1?answer(duration,2*factor):level===2?answer(5*duration,6*factor):answer(6*factor,5),hint,correction:hint,explanation:'Часовые выработки складываются: вместе это '+answer(5,6*factor)+' заказа за час.',
+      steps:[{prompt:'Какова часовая доля первой бригады?',kind:'number',answer:answer(1,2*factor),hint,explanation:hint},{prompt:'Какова часовая доля второй?',kind:'number',answer:answer(1,3*factor),hint,explanation:hint}],
+      skills:[jointPractice.id],source:{type:'authored',reference:'Тренировка по совместной работе'}};
+  }
+
+  const inequalityPractice={id:'inequality-evidence',title:'Контрпример и знак разности',description:'Сравни две стороны и выясни, нужен ли общий довод или достаточно контрпримера.'};
+  function practiceInequality(seed,level){
+    const h=1+seed%12,k=1+Math.floor(seed/3)%7,polynomial='(x − '+h+')²',question=level===1?'Вычисли разность при x = '+(h+k)+'.':level===2?'При каком x значения станут равны?':'Назови любой рациональный x, при котором x + '+k+' > '+h+' неверно.';
+    const hint=level===3?'Проверь значение, при котором обе стороны равны, или возьми меньшее.':'Квадрат разности неотрицателен, а равенство нулю достигается при равенстве двух чисел.';
+    const probe={prompt:'Попробуй рациональное x от −100 до 100 в модели.',kind:'fraction-sample',probeCount:1,answer:'1',hint,explanation:hint};
+    const graph={type:'inequality-evidence',symbols:['x'],left:level===3?['+','x',String(k)]:['^',['-','x',String(h)],'2'],right:level===3?String(h):'0',mode:level===3?'counter':'probe',operator:'>'};
+    return {title:inequalityPractice.title,prompt:(level===3?'':'Сравни '+polynomial+' с нулём. ')+question,kind:level===3?'inequality-counterexample':'number',answer:String(level===1?k*k:level===2?h:h-k),steps:[probe,{prompt:level===3?'При каком x стороны равны?':'Где квадрат равен нулю?',kind:'number',answer:String(level===3?h-k:h),hint,explanation:hint}],
+      graph,hint,correction:hint,explanation:level===3?'Любое x ≤ '+(h-k)+' опровергает строгий знак.':'Ноль достигается при x = '+h+'. Подстановка x = '+(h+k)+' даёт '+k*k+'.',skills:[inequalityPractice.id],source:{type:'authored',reference:'Тренировка по сравнению выражений'}};
+  }
+
+  const orderPractice={id:'order-preserving',title:'Как меняется знак при преобразовании',description:'Преобразуй обе стороны неравенства и проверь направление знака.'};
+  function practiceOrder(seed,level){
+    const a=seed%17-8,b=a+1+Math.floor(seed/2)%7,k=2+Math.floor(seed/3)%5;
+    const action=level===1?'прибавь '+k:level===2?'умножь на '+k:'умножь на −'+k;
+    const left=level===1?a+k:level===2?a*k:-a*k,right=level===1?b+k:level===2?b*k:-b*k;
+    const sign=left<right?'<':'>',hint='Применяй одно действие к обеим сторонам. Отрицательный множитель разворачивает знак.';
+    return {title:orderPractice.title,prompt:'К обеим сторонам '+a+' < '+b+' примени действие: '+action+'. Запиши числовой результат.',kind:'transformed-order',numericSides:true,answer:left+sign+right,hint,correction:hint,explanation:'Получаем '+left+' '+sign+' '+right+'.',graph:{type:'transformed-numbers',original:a+' < '+b,action},
+      steps:[{prompt:'Чему равна новая левая сторона?',kind:'number',answer:String(left),hint,explanation:hint},{prompt:'Чему равна новая правая сторона?',kind:'number',answer:String(right),hint,explanation:hint}],
+      skills:[orderPractice.id],source:{type:'authored',reference:'Тренировка преобразований неравенств'}};
+  }
+
+  const boundsPractice={id:'bound-estimates',title:'Как меняются границы промежутка',description:'Преобразуй концы и проверь, входят ли они в оценку.'};
+  function practiceBounds(seed,level){
+    const left=1+seed%13,right=left+2+Math.floor(seed/2)%9,magnitude=2+Math.floor(seed/3)%5,k=level===2?-magnitude:magnitude,shift=seed%5,closed=seed%2===0;
+    const reciprocal=level>=3,expression=reciprocal?'1/x':k+'x + '+shift;
+    const a=reciprocal?'1/'+left:String(k*left+shift),b=reciprocal?'1/'+right:String(k*right+shift);
+    const flip=reciprocal||k<0,answer=(closed?'[':'(')+(flip?b:a)+';'+(flip?a:b)+(closed?']':')'),relation=closed?' ≤ ':' < ';
+    const hint='Преобразуй оба конца. Проверь направление и строгость.';
+    return {title:boundsPractice.title,prompt:'Из '+left+relation+'x'+relation+right+' найди точные границы для '+expression+'.',kind:'estimate-interval',answer,hint,correction:hint,explanation:'Получаем '+answer+'.',inputNote:'Введи интервал через точку с запятой.',
+      graph:{type:'interval-image',source:[String(left),String(right)],closed,variable:'x',expression,operation:reciprocal?'reciprocal':'affine',slope:String(k),offset:String(shift)},
+      steps:[{prompt:'Куда переходит исходный левый конец?',kind:'number',answer:a,hint,explanation:hint},{prompt:'Куда переходит исходный правый конец?',kind:'number',answer:b,hint,explanation:hint}],skills:[boundsPractice.id],source:{type:'authored',reference:'Тренировка преобразования промежутков'}};
+  }
+
+
+  const combinedPractice={id:'combined-bounds',title:'Оценки по двум промежуткам',description:'Выбирай концы двух промежутков для суммы, разности и частного.'};
+  function practiceCombined(seed,level){
+   const a=1+seed%11,b=a+2+Math.floor(seed/3)%5,c=2+Math.floor(seed/4)%7,d=c+2+Math.floor(seed/7)%5,closed=seed%2===0;
+   const expressions=['x + y','x − y','x/y'],ops=['sum','difference','quotient'],i=level-1,expression=expressions[i],r=closed?' ≤ ':' < ';
+   const lo=[String(a+c),String(a-d),a+'/'+d][i],hi=[String(b+d),String(b-c),b+'/'+c][i];
+   const answer=(closed?'[':'(')+lo+';'+hi+(closed?']':')'),hint='Учитывай влияние второго числа: увеличение вычитаемого или положительного делителя уменьшает результат.';
+   return {title:combinedPractice.title,kind:'estimate-interval',answer,prompt:'Дано '+a+r+'x'+r+b+' и '+c+r+'y'+r+d+'. Оцени '+expression+'.',hint,correction:hint,explanation:'Получаем '+answer+'.',inputNote:'Запиши интервал через точку с запятой.',graph:{type:'combined-intervals',symbols:['x','y'],ranges:[[String(a),String(b)],[String(c),String(d)]],expression,operation:ops[i],closed},steps:[{prompt:'Какие концы x; y дадут нижнюю границу?',kind:'bound-corner',variables:['x','y'],answer:a+';'+(i?d:c),hint,explanation:hint},{prompt:'Какой будет верхняя граница?',kind:'number',answer:hi,hint,explanation:hint}],skills:[combinedPractice.id],source:{type:'authored',reference:'Практика оценки выражений по двум переменным'}};
+  }
+
+
+  const setPractice={id:'set-diagrams',title:'Элементы пересечения и объединения',description:'По признакам двух множеств составь нужный список.'};
+  function practiceSets(seed,level){
+    const offset=seed%17,k=2+Math.floor(seed/5)%4,h=2+Math.floor(seed/3)%5,all=Array.from({length:12},(_,i)=>offset+i);
+    const a=all.filter(x=>x%k===0),b=all.filter(x=>(x+seed%3)%h===0);
+    const op=level===2?'union':'intersection',literals=op==='union'?[...new Set([...a,...b])].sort((x,y)=>x-y):a.filter(x=>b.includes(x));
+    const prompt=level===3?'Рассмотри целые x от '+offset+' до '+(offset+11)+' включительно. В A входят кратные '+k+', в B — те x, для которых x + '+(seed%3)+' кратно '+h+'. Перечисли их пересечение.':'A = {'+a.join(', ')+'}, B = {'+b.join(', ')+'}. Перечисли '+(op==='union'?'объединение':'пересечение')+'.';
+    const answer=literals.length?literals.join(';'):'∅',hint='Отмечай каждое число отдельно в A и B. Для пересечения нужны оба признака.';
+    return {title:setPractice.title,kind:'explicit-set',answer,prompt,hint,correction:hint,explanation:'Получается {'+literals.join(', ')+'}.',inputNote:'Введи элементы через точку с запятой. Для пустого множества введи ∅ или нет.',
+      graph:{type:'euler-operation',left:'A',right:'B',relation:setRelation(a,b),operation:op,first:a,second:b},
+      steps:[{prompt:'Сколько элементов входит в оба множества?',kind:'number',answer:String(a.filter(x=>b.includes(x)).length),hint,explanation:hint},{prompt:'Сколько элементов в требуемом множестве?',kind:'number',answer:String(literals.length),hint,explanation:hint}],
+      skills:[setPractice.id],source:{type:'authored',reference:'Тренировка операций над конечными множествами'}};
+  }
+  function setRelation(a,b){if(a.length===b.length&&a.every(x=>b.includes(x)))return 'equal';if(a.every(x=>b.includes(x)))return 'left-in-right';if(b.every(x=>a.includes(x)))return 'right-in-left';return a.some(x=>b.includes(x))?'overlap':'disjoint';}
+
+
+  const axisPractice={id:'interval-axis',title:'Точки, границы и объединения',description:'Восстанавливай промежутки по неравенствам и условиям принадлежности.'};
+  function practiceAxis(seed,level){
+    const a=seed%21-10,b=a+2+Math.floor(seed/3)%6,c=b+2+(seed%4),close=seed%2===0;
+    const first=(close?'[':'(')+a+';'+b+')',second='['+b+';'+c+']',gap='('+(b+1)+';'+c+']';
+    const arr=level===1?[]:[first,level===2?second:gap];
+    const ans=level===1?first:level===2?(close?'[':'(')+a+';'+c+']':first+'∪'+gap;
+    const hint='Проверь каждый конец отдельно. Выброшенная точка оставляет разрыв, если она не входит ни в один из промежутков.';
+    return {title:axisPractice.title,prompt:level===1?'Построй решение '+a+(close?' ≤ ':' < ')+'x < '+b+'.':'Изобрази объединение '+arr.join(' и ')+'.',kind:'axis-set',answer:ans,hint,correction:hint,explanation:'Получаем '+ans+'.',inputNote:'Запиши промежуток; две части соединяй знаком ∪.',
+      graph:{type:'source-interval-axis',mode:level===1?'draw':'operation',given:arr,builder:level===1},steps:[{prompt:'Какова крайняя левая граница?',kind:'number',answer:String(a),hint,explanation:hint},{prompt:'Сколько отдельных промежутков в результате?',kind:'number',answer:level===3?'2':'1',hint,explanation:hint}],skills:[axisPractice.id],source:{type:'authored',reference:'Практика границ и объединений на прямой'}};
+  }
+
+
+  const rayPractice={id:'linear-inequality',title:'Решение линейного неравенства',description:'Перенеси члены, найди границу и проверь выбранную точку.'};
+  function practiceRay(seed,level){
+   const cutoff=seed%19-9,k=2+seed%7,coefficient=level===2?-k:k,rightSlope=level===3?1+seed%4:0,leftSlope=coefficient+rightSlope;
+   const offset=seed%9-4,constant=coefficient*cutoff+offset,strict=seed%2===0,operator=strict?'<':'≤',relation=coefficient>0?(strict?'<':'<='):(strict?'>':'>=');
+   const graph={type:'linear-ray-trial',variable:'x',left:[String(offset),String(leftSlope),'0'],right:[String(constant),String(rightSlope),'0'],operator,threshold:String(cutoff),relation,draw:true};
+   const signed=n=>n<0?' − '+Math.abs(n):' + '+n,side=(a,b)=>a?a+'x'+signed(b):String(b),answer='x'+({'<=':'≤','>=':'≥'}[relation]||relation)+cutoff;
+   const h='Перенеси переменные влево, свободные числа вправо; при делении на отрицательный коэффициент разверни знак.';
+   return {title:rayPractice.title,prompt:'Реши '+side(leftSlope,offset)+' '+operator+' '+side(rightSlope,constant)+'.',kind:'linear-ray',answer,hint:h,correction:h,explanation:'После переноса '+coefficient+'x '+operator+' '+(constant-offset)+', то есть '+answer+'.',inputNote:'Введи неравенство с x или промежуток через точку с запятой.',steps:[{prompt:'Выбери пробное x.',kind:'rational-probe',answer:'0',hint:h,explanation:h},{prompt:'Каков коэффициент при x после переноса?',kind:'number',answer:String(coefficient),hint:h,explanation:h}],graph,skills:[rayPractice.id],source:{type:'authored',reference:'Практика линейных неравенств'}};
+  }
+
+
+  const casePractice={id:'inequality-cases',title:'Ограничение корня и знаменателя',description:'Сначала проверь подкоренное выражение, затем исключи запрещённую точку.'};
+  function practiceCase(seed,level){
+   const end=2+seed%15,delta=1+Math.floor(seed/2)%5,ban=end-delta,op=level===1?'≥':'≤';
+   const ans=level===1?'['+end+';+∞)':level===2?'(-∞;'+end+']':'(-∞;'+ban+')∪('+ban+';'+end+']';
+   const extra=level===3?'/(x − ('+ban+'))':'',expr=level===1?'√(x − '+end+')':'√('+end+' − x)'+extra;
+   const hint='Радиканд может быть равен нулю. Если знаменатель нулевой, исключи точку независимо от корня.';
+   return {title:casePractice.title,prompt:'Найди область определения '+expr+'.',kind:'axis-set',answer:ans,hint,correction:hint,explanation:'Из корня x '+op+' '+end+(level===3?', из знаменателя x ≠ '+ban:'')+'.',inputNote:'Запиши промежуток или объединение через ∪.',graph:{type:'source-interval-axis',mode:'operation',given:[]},steps:[{prompt:'На какой границе корень обращается в нуль?',kind:'number',answer:String(end),hint,explanation:hint},{prompt:level===3?'Какой x исключает знаменатель?':'Сколько конечных границ имеет область?',kind:'number',answer:level===3?String(ban):'1',hint,explanation:hint}],skills:[casePractice.id],source:{type:'authored',reference:'Практика областей определения'}};
+  }
+
+
+  const intersectionPractice={id:'solve-inequality-system',title:'Общие решения двух неравенств',description:'Проверь две строки при одном значении и найди общую часть лучей.'};
+  function practiceIntersection(seed,level){
+   const a=seed%11-5,b=a+1+(Math.floor(seed/11)%6),same=level===2,empty=level===3&&seed%2===0;
+   const p=empty?b:a,q=empty?a:b,leftClosed=Boolean(seed%2),rightClosed=Boolean(Math.floor(seed/3)%2),first=leftClosed?'≥':'>',second=same?(rightClosed?'≥':'>'):(rightClosed?'≤':'<');
+   const r1=(leftClosed?'[':'(')+p+';+∞)',r2=same?(rightClosed?'[':'(')+q+';+∞)':'(-∞;'+q+(rightClosed?']':')');
+   const answer=empty?'∅':same?r2:(leftClosed?'[':'(')+p+';'+q+(rightClosed?']':')');
+   const rows=[{left:['0','1'],right:[String(p)],operator:first},{left:['0','1'],right:[String(q)],operator:second}];
+   const hint='Одно число должно пройти обе проверки. Проверь сначала каждый конец, затем хотя бы одну точку между ними.';
+   return {title:intersectionPractice.title,prompt:'При каких x одновременно верны x '+first+' '+p+' и x '+second+' '+q+'?',kind:'system-intersection',answer,hint,correction:hint,explanation:'Пересечение '+r1+' и '+r2+' даёт '+answer+'.',inputNote:'Введи промежуток, неравенство или ∅.',graph:{type:'source-system-rays',variable:'x',rows},steps:[{kind:'rational-probe',answer:String(p),prompt:'Подставь своё число в обе строки.',hint,explanation:hint},...[[r1,'первой'],[r2,'второй']].map(([ans,name])=>({kind:'system-single',variable:'x',prompt:'Запиши множество решений '+name+' строки.',answer:ans,hint,explanation:hint}))],skills:[intersectionPractice.id],source:{type:'authored',reference:'Практика систем неравенств'}};
+  }
+
+
+  return { mount, experiment, intersectionPractice, practiceIntersection, casePractice, practiceCase, rayPractice, practiceRay, axisPractice, practiceAxis, setPractice, practiceSets, combinedPractice, practiceCombined, boundsPractice, practiceBounds, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

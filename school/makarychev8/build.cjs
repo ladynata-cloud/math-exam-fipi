@@ -89,6 +89,73 @@ const graphicalLesson=lessons.find(l=>l.id==='p30'),graphicalTasks=read('exercis
 graphicalLesson.tasks.push(...graphicalTasks);
 const graphicalOrder=['p30-t01','p30-t02',...graphicalTasks.map(t=>t.id)],graphicalIndex=new Map(graphicalLesson.tasks.map((t,i)=>[t.id,i]));
 graphicalLesson.studyOrder=[...graphicalOrder.map(id=>graphicalIndex.get(id)),...graphicalLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
+const solveLesson=lessons.find(l=>l.id==='p31'),solveTasks=read('exercises-702-718.json');
+solveLesson.tasks.push(...solveTasks);
+const solveOrder=['p31-t01',...solveTasks.map(t=>t.id)];
+solveOrder.splice(solveOrder.indexOf('p31-source-703-a'),0,'p31-t02');
+const solveIndex=new Map(solveLesson.tasks.map((t,i)=>[t.id,i]));
+solveLesson.studyOrder=[...solveOrder.map(id=>solveIndex.get(id)),...solveLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
+const balanceLesson=lessons.find(l=>l.id==='p32'),balanceTasks=read('exercises-719-732.json');
+balanceLesson.tasks.push(...balanceTasks);
+const balanceOrder=['p32-t01',balanceTasks[0].id,'p32-t02',...balanceTasks.slice(1).map(t=>t.id)],balanceIndex=new Map(balanceLesson.tasks.map((t,i)=>[t.id,i]));
+balanceLesson.studyOrder=[...balanceOrder.map(id=>balanceIndex.get(id)),...balanceLesson.tasks.map((t,i)=>t.source.type==='authored'&&!t.source.adaptation?i:null).filter(i=>i!==null)];
+balanceLesson.sourceNotes={'p32-t02':'Проверка по условию на стр. 170: 40 курток и 25 костюмов дают всего 65 изделий и отношение 1,6. В ответах на стр. 310 указано 65 курток и 25 костюмов; это дало бы 90 изделий.'};
+const parameterLesson=lessons.find(l=>l.id==='p33'),parameterTasks=read('exercises-733-742.json');
+parameterLesson.tasks.push(...parameterTasks);
+const parameterOrder=[...parameterTasks.map(t=>t.id)];
+parameterOrder.splice(parameterOrder.indexOf('p33-source-738-b'),0,'p33-t01');
+parameterOrder.push('p33-t02');
+const parameterIndex=new Map(parameterLesson.tasks.map((t,i)=>[t.id,i]));
+parameterLesson.studyOrder=[...parameterOrder.map(id=>parameterIndex.get(id)),...parameterLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
+const extraQuadratics=[...read('exercises-743-752.json'),...read('exercises-753-763.json'),...read('exercises-764-782.json'),...read('exercises-783-797.json'),...read('exercises-798-805.json'),...read('exercises-806-821.json'),...read('exercises-822-831.json'),...read('exercises-832-837.json')];
+for(const lesson of lessons.filter(l=>l.order>=20&&l.order<=29)){
+ const additional=extraQuadratics.filter(t=>t.id.startsWith(lesson.id+'-'));
+ const start=lesson.tasks.length;lesson.tasks.push(...additional);
+ const oldOrder=lesson.studyOrder||Array.from({length:start},(_,i)=>i);
+ const authored=oldOrder.findIndex(i=>lesson.tasks[i].source.type==='authored');
+ const order=[...oldOrder];order.splice(authored<0?order.length:authored,0,...additional.map((t,i)=>start+i));lesson.studyOrder=order;
+}
+// Preserve the original №842а/б tasks and saved addresses; insert the
+// new source rows in book order ahead of the optional authored review.
+const inequalitiesLesson=lessons.find(l=>l.id==='p34'),signTasks=[...read('exercises-838-845.json'),...read('exercises-846-859.json')];
+inequalitiesLesson.tasks.push(...signTasks);
+const originalSigns=['p34-t01','p34-t02'],signOrder=signTasks.map(t=>t.id);
+signOrder.splice(signOrder.indexOf('p34-source-842-c'),0,...originalSigns);
+const signIndices=new Map(inequalitiesLesson.tasks.map((t,i)=>[t.id,i]));
+inequalitiesLesson.studyOrder=[...signOrder.map(id=>signIndices.get(id)),...inequalitiesLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
+const orderLesson=lessons.find(l=>l.id==='p35'),orderTasks=[...read('exercises-860-868.json'),...read('exercises-869-880.json')];
+orderLesson.tasks.push(...orderTasks);
+const ruleOrder=orderTasks.map(t=>t.id);
+for(const [old,next] of [['p35-t01','p35-source-864-c-3'],['p35-t02','p35-source-864-d-3']])ruleOrder.splice(ruleOrder.indexOf(next),0,old);
+const ruleIndices=new Map(orderLesson.tasks.map((t,i)=>[t.id,i]));
+orderLesson.studyOrder=[...ruleOrder.map(id=>ruleIndices.get(id)),...orderLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
+const combinedLesson=lessons.find(l=>l.id==='p36'),combinedTasks=read('exercises-881-897.json');
+combinedLesson.tasks.push(...combinedTasks);
+const combinedOrder=combinedTasks.map(t=>t.id);
+for(const [old,next]of [['p36-t01','p36-source-881-b'],['p36-t02','p36-source-882-b']])combinedOrder.splice(combinedOrder.indexOf(next),0,old);
+const combinedIndices=new Map(combinedLesson.tasks.map((t,i)=>[t.id,i]));
+combinedLesson.studyOrder=[...combinedOrder.map(id=>combinedIndices.get(id)),...combinedLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
+const setLesson=lessons.find(l=>l.id==='p37'),setTasks=read('exercises-898-910.json');setLesson.tasks.push(...setTasks);
+const setOrder=setTasks.map(t=>t.id);
+for(const [old,next]of [['p37-t01','p37-source-898-lists-union'],['p37-t02','p37-source-899-lists-union']])setOrder.splice(setOrder.indexOf(next),0,old);
+const setIndices=new Map(setLesson.tasks.map((t,i)=>[t.id,i]));
+setLesson.studyOrder=[...setOrder.map(id=>setIndices.get(id)),...setLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
+const axisLesson=lessons.find(l=>l.id==='p38'),axisTasks=read('exercises-911-931.json');axisLesson.tasks.push(...axisTasks);
+const axisOrder=axisTasks.map(t=>t.id);
+for(const [old,next]of [['p38-t01','p38-source-914-a'],['p38-t02','p38-source-915-b']])axisOrder.splice(axisOrder.indexOf(next),0,old);
+const axisIndices=new Map(axisLesson.tasks.map((t,i)=>[t.id,i]));
+axisLesson.studyOrder=[...axisOrder.map(id=>axisIndices.get(id)),...axisLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
+const rayLesson=lessons.find(l=>l.id==='p39'),rayTasks=[...read('exercises-932-955.json'),...read('exercises-956-972.json')];rayLesson.tasks.push(...rayTasks);
+const rayOrder=rayTasks.map(t=>t.id);
+for(const [old,next]of [['p39-t01','p39-source-935-c'],['p39-t02','p39-source-936-m']])rayOrder.splice(rayOrder.indexOf(next),0,old);
+const rayIndices=new Map(rayLesson.tasks.map((t,i)=>[t.id,i]));
+rayLesson.studyOrder=[...rayOrder.map(id=>rayIndices.get(id)),...rayLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
+const systemLesson=lessons.find(l=>l.id==='p40'),systemTasks=read('exercises-973-990.json');systemLesson.tasks.push(...systemTasks);
+const systemOrder=systemTasks.map(t=>t.id);
+systemOrder.splice(systemOrder.indexOf('p40-source-975-f'),0,'p40-t01');
+systemOrder.splice(systemOrder.indexOf('p40-source-977-a'),0,'p40-t02');
+const systemIndices=new Map(systemLesson.tasks.map((t,i)=>[t.id,i]));
+systemLesson.studyOrder=[...systemOrder.map(id=>systemIndices.get(id)),...systemLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
 // Supplementary §1 work keeps the existing topic and every original bookmark.
 lessons.find(l=>l.id==='p01').tasks.push(...read('exercises-212-214.json'), ...read('exercises-215-220.json'));
 for(const file of ['exercises-221-230.json','exercises-231-267.json']){
@@ -136,6 +203,6 @@ for(const l of lessons.filter(l=>l.order>=10&&l.order<=19)){
 
 for(const l of lessons){const ref=sourceMap.sections.find(s=>s.kind==='topic'&&s.id===l.order);if(!ref)throw Error('Unknown topic '+l.order);l.advanced=ref.advanced;l.page=ref.printedPage;l.sourceRange=ref.exerciseRange.join('–');l.chapter=sourceMap.chapters.find(c=>c.id===ref.chapter).title;}
 if(lessons.length!==51||new Set(lessons.map(l=>l.order)).size!==51)throw Error('Expected exactly 51 topics');
-const data={completedSourceRanges:[[1,701]],edition:'makarychev8-2024',chapters:sourceMap.chapters,sourceMap,lessons};
+const data={completedSourceRanges:[[1,990]],edition:'makarychev8-2024',chapters:sourceMap.chapters,sourceMap,lessons};
 fs.writeFileSync(path.join(__dirname,'data.js'),'/* Generated by build.cjs; edit chapter JSON sources. */\nwindow.MakarychevCourse='+JSON.stringify(data)+';\n');
 console.log(JSON.stringify({topics:lessons.length,tasks:lessons.reduce((s,l)=>s+l.tasks.length,0),textbookTasks:lessons.flatMap(l=>l.tasks).filter(t=>t.source.type==='textbook').length}));
