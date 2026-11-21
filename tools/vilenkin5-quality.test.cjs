@@ -141,6 +141,33 @@ function decimalStepInstructions(){
   ok(product.$('label[for=answer]').textContent.includes('до сокращения'));
   equal(product.errors,[]);product.close();
 }
+function sameDataFractionalForecastRegression(){
+  const id='v5f-printed-5-18',f=boot('#lesson/'+id);
+  const choose=(key,value)=>{const el=f.$('[data-v5-param="'+key+'"]');el.value=String(value);el.dispatchEvent(new f.w.Event('change',{bubbles:true}));};
+  choose('unitChoice',0);choose('portion',1);
+  const send=value=>{f.input('[data-v5-prediction]',value);f.$('[data-v5-predict]').dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));};
+  send('10');let m=f.snapshot().scene.model;equal(m.first,'10');ok(!m.seen);ok(m.notice.includes('исправь')||m.notice.includes('Исправь'));ok(!f.$('.v5q-model-why'));
+  send('5/2');m=f.snapshot().scene.model;ok(m.seen);equal(m.first,'10');ok(m.notice.includes('исправлен самостоятельно'));
+  const restored=boot('#lesson/'+id,f.saved());equal(restored.snapshot().scene.model.first,'10');ok(restored.snapshot().scene.model.seen);restored.close();
+  choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
+  f.close();
+}
+function cubeRowsRegression(){
+  const f=boot(),id='v5f-printed-5-20',original=f.M.generate(id,0);
+  equal(plain([...original.steps,original].map(x=>Number(x.answer))),[10,1000,100,1000000,10000,1,100]);
+  const seen=new Set();for(let seed=0;seed<150;seed++){
+    const task=f.M.generate(id,seed),{side,a,b}=task.data.cubeRows;
+    seen.add(task.conditionKey);
+    // All dimensions below are expressed in cm, then change only the final length to m.
+    const volume=side**3,first=volume/(a*a*100),second=volume/(b*b*100);
+    const correct=[side/a,volume/(a**3),first,volume/(b**3),second,1,second/first];
+    for(const [i,t] of [...task.steps,task].entries()){ok(Math.abs(Number(t.answer)-correct[i])<1e-10);ok(f.M.accepts(String(t.answer).replace('.',','),t));}
+    for(const [set,edge] of [a,b].entries())for(let what=0;what<4;what++){
+      const m=f.w.Vilenkin5CubesInARow.explore(task,{set,what});equal(Number(m.answer),[(side/edge),(side/edge)**2,volume/edge**3,volume/(100*edge**2)][what]);ok(m.visual.includes('слоя'));
+    }
+  }equal(seen.size,7);const g=boot('#lesson/'+id);g.submit('100');ok(g.snapshot().scene.message.includes('во всём слое'));g.submit('10');g.click('[data-cmd=next]');g.submit('100');ok(g.snapshot().scene.message.includes('один слой'));g.submit('1000');ok(g.snapshot().scene.correct);ok(!g.snapshot().scene.assisted);g.close();f.close();
+}
+
 function partsOfUnitsRegression(){
   const ids=['v5f-printed-5-18','v5f-printed-5-19'],f=boot();
   for(const [which,id] of ids.entries()){
@@ -441,7 +468,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19'));
+  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -1045,7 +1072,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,

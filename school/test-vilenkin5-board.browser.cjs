@@ -908,6 +908,19 @@ async function run(browser, origin, backend, failures) {
   assert.equal(await teacherFrame.locator('#model svg').count(),2);
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both recovered unit and two magnifications');await teacherFrame.locator('#answer').fill('10000');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'one tenth of a centner in grams')).scene.correct);await narrow(student,studentFrame,'parts-of-units');
 
+  phase = 'source 5.20, from a square layer to the length of the row';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-20"]').click();await studentFrame.locator('h1').filter({hasText:'№5.20'}).waitFor();
+  await teacherFrame.locator('#answer').fill('10');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('100');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'counted one square layer instead of the whole cube')).scene.message,/один слой/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=set]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=what]').selectOption({value:'3'});await studentFrame.locator('[data-v5-prediction]').fill('100');await studentFrame.locator('[data-v5-predict] button').click();
+  const partialProjection=await same(studentFrame,teacherFrame,'wrong comparison is still editable on the original model');assert(!partialProjection.scene.model.seen);assert.equal(partialProjection.scene.model.first,'100');assert.equal(await studentFrame.locator('.v5q-model-why').count(),0);
+  await studentFrame.locator('[data-v5-prediction]').fill('10 000');await studentFrame.locator('[data-v5-predict] button').click();const fixedProjection=await same(studentFrame,teacherFrame,'projection independently corrected on original cube');assert.match(fixedProjection.scene.model.notice,/исправлен самостоятельно/);assert.equal(fixedProjection.scene.model.first,'100');
+  await studentFrame.locator('#answer').fill('1000');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('10');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const cubeDraft=await same(studentFrame,teacherFrame,'ten typed so far and metre projection recovered');assert.equal(cubeDraft.scene.savedInput,'10');assert.equal(cubeDraft.scene.step,2);assert.equal(cubeDraft.scene.model.set,1);assert.equal(cubeDraft.scene.model.what,3);assert(cubeDraft.scene.model.seen);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both see same projection and metre question');
+  for(const v of ['100','1000000','10000','1']){await teacherFrame.locator('#answer').fill(v);await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();}
+  await teacherFrame.locator('#answer').fill('100');await teacherFrame.locator('#answer-form button').click();const ratio=await same(teacherFrame,studentFrame,'one hundred times longer');assert(ratio.scene.correct);assert.deepEqual(ratio.scene.hintLevels,{});await narrow(student,studentFrame,'cube-row-length');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
