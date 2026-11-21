@@ -1562,3 +1562,16 @@ test('read every formula and distinguish all moving, resting and overlapping int
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('convert all eighteen physical speeds and retain directions before a walking meeting or overtaking',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const original=[['200','30','50','90','240','48'],['3/2','9','24','18','45','144'],['5/2','15','35','3/2','2','12/5']],fresh=[['400','60','100','180','480','96'],['3','18','48','36','90','288'],['5','30','70','3','4','24/5']];
+  for(let g=0;g<3;g++){const c=open(96+g);for(let i=0;i<6;i++){set(c,0,0);set(c,1,i);set(c,2,2);assert(out().includes('Результат '+original[g][i]+' '));set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes('Результат '+fresh[g][i]+' '));}}
+  for(const [i,dist,newDist]of [[99,25,30],[100,75,90],[101,45,54],[102,55,66]]){
+   const c=open(i);set(c,1,2);set(c,2,2);assert(out().includes('Расстояние '+dist+' м.'),out());assert.equal(f.d.querySelectorAll('#model [data-walker]').length,2);set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes('Расстояние '+newDist+' м.'),out());
+  }
+  for(const [i,before,after]of [[103,'105 марок','150 марок'],[104,'40%','48%']]){const c=open(i);set(c,1,2);assert(out().includes(before),out());set(c,0,1);set(c,1,2);assert(out().includes(after),out());}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
