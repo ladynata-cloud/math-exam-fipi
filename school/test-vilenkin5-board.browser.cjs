@@ -1128,6 +1128,31 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const restoredAtlas=await same(studentFrame,teacherFrame,'hundred-cell investigation restored');assert.equal(restoredAtlas.scene.model.row,7);assert.equal(restoredAtlas.scene.model.first,'9/50');assert.equal(restoredAtlas.scene.savedInput,'5/7;2/7');
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'learner sees the last two-fraction answer');await teacherFrame.locator('#answer').fill('2/7;5/7');await teacherFrame.locator('#answer-form button').click();const atlasComplete=await same(teacherFrame,studentFrame,'coloured and free sevenths');assert(atlasComplete.scene.correct);assert.equal(atlasComplete.scene.attempt,2);await narrow(student,studentFrame,'thirteen-shaded-figures');
 
+  phase = 'source 5.49: two fractions use different wholes';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-49"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.49'}).waitFor();
+  for(const value of ['80','20','60']){
+    await teacherFrame.locator('#answer').fill(value);
+    await teacherFrame.locator('#answer-form button').click();
+    await teacherFrame.locator('[data-cmd=next]').click();
+  }
+  await teacherFrame.locator('#answer').fill('80/3');await teacherFrame.locator('#answer-form button').click();
+  const fullWalkThird=await same(teacherFrame,studentFrame,'third of the initial walk');
+  assert.match(fullWalkThird.scene.message,/треть всей прогулки/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=scale]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-param=ask]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('40');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('20');await teacher.reload({waitUntil:'domcontentloaded'});
+  await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const restoredWalk=await same(studentFrame,teacherFrame,'changed whole and hockey draft restored');
+  assert.equal(restoredWalk.scene.savedInput,'20');assert.equal(restoredWalk.scene.model.scale,1);assert(restoredWalk.scene.model.seen);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});
+  await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both participants return to the walk');
+  await teacherFrame.locator('#answer-form button').click();const finalWalk=await same(teacherFrame,studentFrame,'twenty minutes of hockey');
+  assert(finalWalk.scene.correct);assert.equal(finalWalk.scene.attempt,2);assert.deepEqual(finalWalk.scene.hintLevels,{});await narrow(student,studentFrame,'fraction-of-remaining-walk');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
