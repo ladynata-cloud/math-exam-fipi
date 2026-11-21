@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 635,
-    "covered": 633,
+    "total": 636,
+    "covered": 634,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -44,7 +44,8 @@
     "trainers/alimov-2012/index.html",
     "trainers/mordkovich-2013/index.html",
     "trainers/mordkovich-2020/index.html",
-    "trainers/peterson7-2011/index.html"
+    "trainers/peterson7-2011/index.html",
+    "trainers/makarychev8-2018/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4035,7 +4036,8 @@
     "trainers/alimov-2012/index.html": "school/index.html",
     "trainers/mordkovich-2013/index.html": "school/index.html",
     "trainers/mordkovich-2020/index.html": "school/index.html",
-    "trainers/peterson7-2011/index.html": "school/index.html"
+    "trainers/peterson7-2011/index.html": "school/index.html",
+    "trainers/makarychev8-2018/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6815,6 +6817,14 @@
         "trainers/peterson7-2011/index.html"
       ],
       "reason": "Построение моделей для каждой истории и каждого набора первых трёх номеров первой части учебника Петерсона за 7 класс."
+    },
+    {
+      "sourceBaseSha": "e285af805b4653cfb07da20522dbd993833ea409",
+      "task": "docs/tasks/WORKSHOP_MAKARYCHEV8_2018.md",
+      "addedPages": [
+        "trainers/makarychev8-2018/index.html"
+      ],
+      "reason": "Самостоятельные разборы печатных №1–6 углублённого пособия 2018 года и раздельные модели числителя, знаменателя и внешних операций."
     }
   ]
 }

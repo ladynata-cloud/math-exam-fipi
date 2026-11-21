@@ -50,7 +50,10 @@ async function healthy(url, child, logs) {
 
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
-const catalogue=volume2||volume3 ? {
+const advanced8=process.argv.includes('--makarychev8-2018');
+const catalogue=advanced8?{
+  directory:'makarychev8-2018',entries:[[69,62,25]],uniqueLessons:24,search:'makarychev8-2018',match:'углублённый уровень',lesson:'69-6e',chart:'svg[aria-label*="Числитель, знаменатель"]',storage:'math:makarychev8-2018:v1:'
+}:volume2||volume3 ? {
   directory:'peterson7-2011',entries:volume2?[[102,17,52]]:[[103,21,34]],uniqueLessons:volume2?51:33,search:'peterson7-2011',match:'математические модели',lesson:volume2?'102-6m':process.argv.includes('--arrow-fork')?'103-2-1b':'103-7a',chart:volume2?'svg[aria-label*="Граница основания"]':process.argv.includes('--arrow-fork')?'svg[aria-label*="Стрелки между"]':'svg[aria-label*="Квадрат рационального"]',storage:'math:peterson7-2011:v1:'
 } : process.argv.includes('--peterson7-2011') ? {
   directory:'peterson7-2011',entries:[[101,22,70]],uniqueLessons:69,search:'peterson7-2011',match:'математические модели',lesson:process.argv.includes('--literal-n')?'101-1-3d':'101-16',chart:process.argv.includes('--literal-n')?'svg[aria-label*="Две полоски"]':'svg[aria-label*="встречном и попутном"]',storage:'math:peterson7-2011:v1:'
@@ -87,7 +90,7 @@ async function run(browser, origin, serverOrigin) {
       const individual=catalogue.onlySelected?targets.filter(url=>new URL(url).hash==='#lesson/'+catalogue.lesson):targets;
       if(catalogue.onlySelected)assert.equal(individual.length,1);
       for(const url of individual){
-        const page=volume2||volume3?await sc.newPage():student;
+        const page=volume2||volume3||advanced8?await sc.newPage():student;
         try {
           await page.goto(url,{waitUntil:'domcontentloaded'});await page.locator('#model').waitFor();
           assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),url);
