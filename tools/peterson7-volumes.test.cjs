@@ -8,13 +8,13 @@ require('./public-page-script.cjs').loadSchoolModels(root,read('school/index.htm
 const html=read(folder+'index.html');
 const scripts=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1]).filter(src=>!src.startsWith('/')&&!src.includes('board-bridge')).map(src=>read(path.join(folder,src)));
 const books=catalog.window.WorkshopCurriculum.books;
-const letters='абвгдежз',letterKeys='abcdefgh';
+const letters='абвгдежзиклмнопрст',letterKeys='abcdefghijklmnopqr';
 const letterNumbers=(n,k)=>Array.from({length:k},(_,i)=>[n+letterKeys[i],n+letters[i]]);
 const plans=[
   {book:102,count:155,hash:'91997f47edb243ebdad947970dbe26919c45f13e79aacf2713f6eaa27b6c711a',file:'00000006',pages:[3,10,19,25,32,38,46,52,62,70,80,88,98,107,116,127,136],
-   items:[['1a','1а'],['1b-1','1б(1)'],['1b-2','1б(2)'],['1c','1в'],...letterNumbers(2,4),...letterNumbers(3,8)]},
+   items:[['1a','1а'],['1b-1','1б(1)'],['1b-2','1б(2)'],['1c','1в'],...letterNumbers(2,4),...letterNumbers(3,8),...letterNumbers(4,6),...letterNumbers(5,10),...letterNumbers(6,18),['7','7']]},
   {book:103,count:219,hash:'957031260835d66d763824274bc17ec50d061d15582849caa19f9a91f8c6420f',file:'00000007',pages:[3,11,20,27,36,46,59,63,76,88,98,114,124,129,137,144,156,168,176,184,190],
-   items:[...letterNumbers(1,6),...Array.from({length:4},(_,i)=>['2-1'+letterKeys[i],'2(1)'+letters[i]]),['2-2','2(2)'],['2-3','2(3)'],['2-4','2(4)'],...letterNumbers(3,4)]}
+   items:[...letterNumbers(1,6),...Array.from({length:4},(_,i)=>['2-1'+letterKeys[i],'2(1)'+letters[i]]),['2-2','2(2)'],['2-3','2(3)'],['2-4','2(4)'],...letterNumbers(3,4),...letterNumbers(4,5),...letterNumbers(5,4),...letterNumbers(6,5),...letterNumbers(7,2)]}
 ];
 function open(entry,previous){
  const id=entry.path.split('/').pop(),key='math:peterson7-2011:v1:'+id;
@@ -25,6 +25,22 @@ function open(entry,previous){
 function multiply(x,n){let v=1;for(let j=0;j<n;j++)v*=x;return v;}
 function expected102(i,d){
  const {kind,a,n,m,den,b,coef,x,y}=d;
+ if(d.type==='numeric')return [d.base,n,multiply(d.base,n)];
+ if(d.type==='bracket'){
+   const {group,all,c}=d;
+   const coefficient=[-1,c,-1,1,c][group];
+   const base=all?[-a,c*a,-a*b,a+c*b,c*a-b][group]:[a,a,b,b,b][group];
+   const value=all?multiply(base,n):[coefficient*multiply(a,n),coefficient*multiply(a,n),-a*multiply(b,n),a+c*multiply(b,n),c*a-multiply(b,n)][group];
+   return [base,n,value];
+ }
+ if(d.type==='signed'){
+   const factors=Array(n).fill(d.style===1?-a:a);
+   const negative=factors.filter(x=>x<0).length+Number(d.style===2);
+   const val=factors.reduce((v,x)=>v*x,d.style===2?-1:1);
+   return [negative,Number(d.style!==2),val];
+ }
+ if(d.type==='table')return [a,multiply(a,n),multiply(a,n+1)];
+
  if(i<3)return [n,n-1,multiply(a,n)];
  if(i===3)return [n,multiply(-1,n),multiply(a,n)];
  if(i===4)return [n,multiply(-1,n),multiply(-1/den,n)];
@@ -37,6 +53,11 @@ function expected102(i,d){
  return [kind===6?x-y:y,n,kind===6?multiply(x-y,n):x-multiply(y,n)];
 }
 function expected103(d){
+ if(d.chart==='cube-edge'){const factors=[d.a,d.a,d.a];return [d.a*d.a,factors.reduce((p,x)=>p*x,1),2*2*2];}
+ if(d.chart==='travel-time'){const hours=d.minutes/60;return [hours,d.speed*hours,d.speed*30/60];}
+ if(d.chart==='remainder-line'){const mod=Math.abs(d.divisor);const candidates=Array.from({length:mod},(_,i)=>i).filter(r=>Number.isInteger((d.dividend-r)/d.divisor));assert.equal(candidates.length,1);return [mod-1,candidates[0],(d.dividend-candidates[0])/d.divisor];}
+ if(d.chart==='square-shift'){const evaluate=x=>(x-d.vertex)*(x-d.vertex)+d.floor;const value=evaluate(d.vertex+d.step),possible=Array.from({length:2*d.step+1},(_,i)=>d.vertex-d.step+i);return [Math.min(...possible.map(evaluate)),value,possible.filter(x=>evaluate(x)===value).length];}
+
  const xs=Array.from(d.xs),ys=Array.from(d.ys),pairs=Array.from(d.pairs,p=>Array.from(p));
  const outputs=x=>new Set(pairs.filter(p=>p[0]===x).map(p=>p[1]));
  const functional=Number(xs.every(x=>outputs(x).size===1));
@@ -48,8 +69,9 @@ function expected103(d){
  if(d.family==='relation')return [outputs(d.focus).size,functional,ys.filter(y=>pairs.every(p=>p[1]!==y)).length];
  return [new Set(pairs.map(p=>p[0])).size,new Set(pairs.map(p=>p[1])).size,functional];
 }
-const marks102=['4⁷','n множителей','a¹ = a','−8/27','−1/343','−(9,4)⁵','(−1)⁶','(26/9)⁴ · (5/6)⁷','(−y)⁴ = y⁴','−y⁴','(ab)⁶ = a⁶b⁶','ab⁶','200m²n³','−10m²n³','(p − q)⁵','p − q⁵'];
-const marks103=['3, 9, 15, 9','1/2, 2, 0, −2','4, −4, 2, −2','5, 5, 0, 20','3, 0, 4, 6','7, 7, 7, 7','1→7, 2→4, 4→12, 6→9','к 11 и к 12','5 и 6 переходят в 7','аргумента 1','количество одинаковых билетов','единственное значение','различные выходы','{−2, −1, 0, 1, 3}','0,1 и 0,3','{−3, −1}','{4, 5, 6}'];
+const marks102=['4⁷','n множителей','a¹ = a','−8/27','−1/343','−(9,4)⁵','(−1)⁶','(26/9)⁴ · (5/6)⁷','(−y)⁴ = y⁴','−y⁴','(ab)⁶ = a⁶b⁶','ab⁶','200m²n³','−10m²n³','(p − q)⁵','p − q⁵','125','16','0,0001','−8/27','25/4','−3,6','(−x) · (−x)','−(x · x)','8c³','2 · c · c · c','m⁴n⁴','−m · n · n · n · n','(a + 3b) · (a + 3b)','a + 3 · b · b','(2x − y) · (2x − y) · (2x − y)','2x − y · y · y',
+ ...['32','81','0,000064','0,0025','10 000 000','0,001'].flatMap((v,i)=>['Значение '+v+'.','Значение '+([0,4,5].includes(i)?'−':'')+v+'.','Значение −'+v+'.']),'125, 625'];
+const marks103=['3, 9, 15, 9','1/2, 2, 0, −2','4, −4, 2, −2','5, 5, 0, 20','3, 0, 4, 6','7, 7, 7, 7','1→7, 2→4, 4→12, 6→9','к 11 и к 12','5 и 6 переходят в 7','аргумента 1','количество одинаковых билетов','единственное значение','различные выходы','{−2, −1, 0, 1, 3}','0,1 и 0,3','{−3, −1}','{4, 5, 6}','27 см³','8 м³','1/8 дм³','1000 мм³, или 1 см³','1/64 м³','15 км','5/4 км','20/3 км','35/2 км','0, 1, 2, 3, 4','0, 1, 2, 3, 4, 5, 6, 7','0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10','0, 1, 2','0, 1, 2, 3, 4','{3 + t² | t ∈ ℚ}','{t² − 2 | t ∈ ℚ}'];
 const click=(doc,action)=>doc.querySelector('[data-action="'+action+'"]').click();
 let num=0;
 for(const p of plans){
@@ -66,7 +88,7 @@ for(const p of plans){
    const id=p.book+'-'+p.items[i][0],l=w.MathExamTopicPractice.lessons.get(id),course=w.MathExamTopicEdition;
    assert.equal(d.querySelector('#lesson').value,id);
    const options=Array.from(d.querySelectorAll('#lesson option'),x=>x.value);
-   assert.deepEqual([101,102,103].map(b=>options.filter(x=>x.startsWith(b+'-')).length),[69,16,17]);
+   assert.deepEqual([101,102,103].map(b=>options.filter(x=>x.startsWith(b+'-')).length),[69,51,33]);
    assert.equal(d.querySelector('#back').hash,'#book/source-'+p.book);
    assert.equal(d.querySelector('#source').href,'https://pdf.my-uchebnik.ru/pdf/mathematics/'+p.file+'.pdf#page='+(entry.page+2));
    assert(d.querySelector('#edition').textContent.includes('часть '+(p.book-100)));
@@ -93,5 +115,5 @@ for(const p of plans){
    dom.window.close();
  }
 }
-assert.equal(num,1089);
-console.log('Two physically matched Peterson grade 7 volumes, 38 mapped points/checkpoints, 33 original lessons, 1089 independent answer checks.');
+assert.equal(num,2772);
+console.log('Two physically matched Peterson grade 7 volumes, 38 mapped points/checkpoints, 84 original lessons, 2772 independent answer checks.');

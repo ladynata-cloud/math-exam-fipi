@@ -51,7 +51,7 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const catalogue=volume2||volume3 ? {
-  directory:'peterson7-2011',entries:volume2?[[102,17,17]]:[[103,21,18]],uniqueLessons:volume2?16:17,search:'peterson7-2011',match:'математические модели',lesson:volume2?'102-3e':'103-2-1b',chart:volume2?'svg[aria-label*="Группы одинаковых"]':'svg[aria-label*="Стрелки между"]',storage:'math:peterson7-2011:v1:'
+  directory:'peterson7-2011',entries:volume2?[[102,17,52]]:[[103,21,34]],uniqueLessons:volume2?51:33,search:'peterson7-2011',match:'математические модели',lesson:volume2?'102-6m':process.argv.includes('--arrow-fork')?'103-2-1b':'103-7a',chart:volume2?'svg[aria-label*="Граница основания"]':process.argv.includes('--arrow-fork')?'svg[aria-label*="Стрелки между"]':'svg[aria-label*="Квадрат рационального"]',storage:'math:peterson7-2011:v1:'
 } : process.argv.includes('--peterson7-2011') ? {
   directory:'peterson7-2011',entries:[[101,22,70]],uniqueLessons:69,search:'peterson7-2011',match:'математические модели',lesson:process.argv.includes('--literal-n')?'101-1-3d':'101-16',chart:process.argv.includes('--literal-n')?'svg[aria-label*="Две полоски"]':'svg[aria-label*="встречном и попутном"]',storage:'math:peterson7-2011:v1:'
 } : process.argv.includes('--mordkovich-2020') ? {
@@ -87,14 +87,17 @@ async function run(browser, origin, serverOrigin) {
       const individual=catalogue.onlySelected?targets.filter(url=>new URL(url).hash==='#lesson/'+catalogue.lesson):targets;
       if(catalogue.onlySelected)assert.equal(individual.length,1);
       for(const url of individual){
-        await student.goto(url,{waitUntil:'domcontentloaded'});await student.locator('#model').waitFor();
-        assert(await student.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),url);
-        if(catalogue.directory==='alimov-2012' && !catalogue.onlySelected && url===individual[0])
-          await require('./alimov-2012-display.cjs')(student);
-        const id=new URL(url).hash.slice(8);
-        assert.equal(await student.locator('#lesson').inputValue(),id);
-        await student.locator('[data-action=practice]').click();await student.locator('#answer').fill('9999999');
-        await student.locator('#work form button').click();await student.locator('#feedback').filter({hasText:'Проверь ещё раз'}).waitFor();
+        const page=volume2||volume3?await sc.newPage():student;
+        try {
+          await page.goto(url,{waitUntil:'domcontentloaded'});await page.locator('#model').waitFor();
+          assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),url);
+          if(catalogue.directory==='alimov-2012' && !catalogue.onlySelected && url===individual[0])
+            await require('./alimov-2012-display.cjs')(page);
+          const id=new URL(url).hash.slice(8);
+          assert.equal(await page.locator('#lesson').inputValue(),id);
+          await page.locator('[data-action=practice]').click();await page.locator('#answer').fill('9999999');
+          await page.locator('#work form button').click();await page.locator('#feedback').filter({hasText:'Проверь ещё раз'}).waitFor();
+        } finally { if(page!==student)await page.close(); }
       }
     }
     phase='joint room';
