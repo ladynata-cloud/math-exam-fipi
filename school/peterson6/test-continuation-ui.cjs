@@ -1712,3 +1712,16 @@ test('read every requested level from the printed curve and both sides of the ci
   });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('measure both decimal-line crossings, all three water stages and eight printed mental expressions',()=>{
+ const f=fixture(null,null,true);try{
+  const cases=[['(4,15; 1,09)','(5,15; 0,09)'],['(-0,46; 2,28)','(0,54; 1,28)'],['1,875','3,75'],['3,4375','6,875'],['5 мин','10 мин'],['2 мин','4 мин'],['4,375 и 10','8,75 и 20'],['-7/9','-5/9'],['12/5','17/5'],['-7/5','-12/5'],['Значение 0.','Значение 1/10.'],['-3/5','-6/5'],['7/10','6/5'],['-9/10','-27/10'],['Значение 1.','Значение 2.']];
+  cases.forEach(([first,second],i)=>{
+   f.nav('#lesson/p39/'+(61+i));if(i>=2&&i<=6)assert.equal(f.d.querySelectorAll('#task-figure tbody td').length,24);
+   f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'2','change');const read=()=>f.q('#model .pm-result').textContent.replaceAll('−','-');assert(read().includes(first),[i,read(),first]);
+   if(i<2){assert.equal(f.d.querySelectorAll('#model [data-measured-line]').length,2);assert.equal(f.d.querySelectorAll('#model [data-line-crossing]').length,1);}
+   if(i===5||i===6)assert.equal(f.d.querySelectorAll('#model [data-temperature-crossing]').length,2);f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert(read().includes(second),[i,read(),second]);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
