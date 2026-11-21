@@ -152,6 +152,23 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function circleChapterCheckRegression(){
+  const f=boot(),v=f.w.Vilenkin5CircleCheck,ids=[1,2,3].map(n=>'v5f-printed-check-25-'+n),answer=t=>plain([...t.steps,t].map(x=>x.answer));
+  ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));equal(answer(f.M.generate(ids[0],0)),[26,41,98,570,[26,41,98,570]]);equal(answer(f.M.generate(ids[1],0)),[4,[1,3],[3,1],[1,1,0]]);equal(answer(f.M.generate(ids[2],0)),[30,[32,28],[60,4],2]);
+  const crossings=(a,b,d)=>a+b<d||Math.abs(a-b)>d?0:a+b===d||Math.abs(a-b)===d?1:2,outcomes=new Set();
+  for(let seed=0;seed<100;seed++){
+    const [t,u,z]=ids.map(id=>f.M.generate(id,seed)),a=t.data.checkDiameter;equal(plain(t.answer),[a[0]*2,a[1]/2,a[2]/2,a[3]*2]);
+    const pair=z.data.checkCirclePair;equal(z.answer,crossings(pair.a,pair.b,pair.dist));outcomes.add(z.answer);
+    for(const [i,d] of [pair.dist,pair.a+pair.b,pair.a+pair.b+5,Math.abs(pair.a-pair.b)||1].entries())equal(v.explore(z,{trial:i}).answer,crossings(pair.a,pair.b,d));
+    const init={opening:0,a:1,b:3,c:7,r:8,t:0};
+    const own=v.selection(u,init);ok(Number.isSafeInteger(own));const q=f.M.generate(ids[1],own);ok(q.data.checkPositions.own);equal(q.data.checkPositions.radius,u.data.checkPositions.radius);equal(plain(q.steps[1].answer),[3,1]);equal(v.selection(u,{...init,b:1}),null);equal(v.selection(u,{...init,r:10}),null);equal(v.selection(u,{...init,t:8}),null);
+  }
+  equal([...outcomes].sort(),[0,1,2]);f.close();
+  const child=boot('#lesson/'+ids[1]);for(const [k,value] of [['phase',1],['r',8],['t',0]]){const field=child.$('[data-v5-param='+k+']');field.value=String(value);field.dispatchEvent(new child.w.Event('change',{bubbles:true}));}
+  child.click('[data-v5-apply-drawing]');ok(child.snapshot().scene.seed>=650000);equal(plain(child.M.generate(ids[1],child.snapshot().scene.seed).steps[1].answer),[3,1]);child.close();
+  const g=boot('#lesson/'+ids[2]);g.submit('3');ok(!g.snapshot().scene.assisted);g.submit('30');ok(g.snapshot().scene.correct);g.close();
+}
+
 function massDividendPowerRegression(){
   const f=boot(),ids=[37,38,39].map(n=>'v5f-printed-5-'+n),v=f.w.Vilenkin5MassDividendPowers;
   const answers=t=>plain([...t.steps,t].map(x=>x.answer));
@@ -1121,7 +1138,7 @@ function compassAndCompoundRegression(){
 
 function printedChecksRegression(){
   const f=boot(),ids=['v5f-printed-check-2-1','v5f-printed-check-2-2'],fl=f.C.pathById.vilenkin5;
-  equal(plain(fl.printedChecks),ids.concat('v5f-printed-check-3-1','v5f-printed-check-3-2'));ok(!fl.numbered.some(id=>ids.includes(id)));equal(fl.ids.length,134);ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));
+  equal(plain(fl.printedChecks),ids.concat('v5f-printed-check-3-1','v5f-printed-check-3-2','v5f-printed-check-25-1','v5f-printed-check-25-2','v5f-printed-check-25-3'));ok(!fl.numbered.some(id=>ids.includes(id)));equal(fl.ids.length,134);ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));
   const buy=f.M.generate(ids[0],0);equal(plain(buy.steps.map(s=>s.answer)),[56,3,130,655]);equal(buy.answer,700);
   for(let seed=0;seed<220;seed++){
     const t=f.M.generate(ids[0],seed),d=t.data;
@@ -1404,7 +1421,7 @@ function printedPlaneIntersectionRegression(){
 
 function printedPointThreeChecksRegression(){
   const ids=['v5f-printed-check-3-1','v5f-printed-check-3-2'],f=boot(),path=f.C.pathById.vilenkin5,N=f.w.Vilenkin5Numbered;
-  equal(plain(path.printedChecks.slice(-2)),ids);for(const id of ids){ok(!path.numbered.includes(id));ok(!path.ids.includes(id));equal(f.C.byId[id].source.page,22);equal(f.C.byId[id].source.point,3);ok(f.$('a[href="#lesson/'+id+'"]'));}
+  equal(plain(path.printedChecks.filter(id=>f.C.byId[id].source.part===1&&f.C.byId[id].source.point===3)),ids);for(const id of ids){ok(!path.numbered.includes(id));ok(!path.ids.includes(id));equal(f.C.byId[id].source.page,22);equal(f.C.byId[id].source.point,3);ok(f.$('a[href="#lesson/'+id+'"]'));}
   const a=f.M.generate(ids[0],0),b=f.M.generate(ids[1],0);
   equal(plain(a.steps.map(x=>x.answer)),[500,79,42,13,'8 км 563 м','30 км 600 м','34 м','20 м',6]);equal(a.answer,12);
   for(const [val,part] of [['34 м',6],['3400см',6],['0,034 км',6],['2 0',-1],['200 дм',7],['20000мм',7]])if(part>=0)ok(f.M.accepts(val,a.steps[part]));
@@ -1629,7 +1646,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,

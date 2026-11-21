@@ -7001,6 +7001,15 @@
       "boundary": "Only the combined school entry receives this page binding."
     },
     {
+      "previousBaseSha": "61a245df14fbd4d71ec659462f94053845f9b21e",
+      "sourceBaseSha": "972d64936768deedcfa0bb3a04f08b27ba9338ef",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Три отдельных задания одной печатной проверочной работы §25, часть 2, с. 11. Рисунок ученика сохранён и передаётся на доску. Список сквозных номеров заканчивается перед работой на №5.39."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [

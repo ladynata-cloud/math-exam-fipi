@@ -26,6 +26,8 @@ const server=http.createServer((req,res)=>{
     });
     assert.deepEqual(printedCounts[0],Array.from({length:121},(_,i)=>'1.'+(i+1)));
     assert.deepEqual(printedCounts[1],Array.from({length:39},(_,i)=>'5.'+(i+1)));
+    const assessmentCards=await page.evaluate(()=>WorkshopCurriculum.pathById.vilenkin5.printedChecks);
+    assert.deepEqual(assessmentCards,['check-2-1','check-2-2','check-3-1','check-3-2','check-25-1','check-25-2','check-25-3'].map(key=>'v5f-printed-'+key));
     // Every canonical lesson mounts its actual visual, including all of part two.
     for(const [i,id]of ids.entries()){
       await page.evaluate(id=>{location.hash='#lesson/'+id;},id);await page.waitForFunction(id=>Vilenkin5Quality.getState().scene?.id===id,id);
@@ -249,6 +251,6 @@ const server=http.createServer((req,res)=>{
       assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.step),1);await own.scrollIntoViewIfNeeded();
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(shots,'printed-chosen-number-'+width+'.png')});
     }
-    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:printedCounts[0].length,numberedPart2:printedCounts[1].length,printedChecks:4,screenshots:152,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
+    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:printedCounts[0].length,numberedPart2:printedCounts[1].length,printedAssessmentCards:assessmentCards.length,screenshots:152,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});
