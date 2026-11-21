@@ -6608,6 +6608,16 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
+      "previousBaseSha": "aee65d44605b23694c3d7bcb6212233d150448a0",
+      "sourceBaseSha": "b0d4b70bdc9cf5f17dac3ce32f58f68940c761cb",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the reviewed Vilenkin 5 laboratory cache version.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
