@@ -105,7 +105,7 @@
     }
     return '<svg viewBox="0 0 280 120" role="img" aria-label="'+title+'"><g fill="#244c3e" font-family="sans-serif" font-size="12">'+body+'</g></svg>';
   }
-  window.MathExamTopicEdition={trainerId:'alimov-algebra-7-9',storePrefix:'math:alimov-algebra-7-9:v1:',authors:'Алимов и соавторы',grade:book=>book===81?'8 класс · 2012':'7 класс · 2011',unit:'упражнение',figure,lesson,q,sample,
-    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+(book===81?'00000068':'00000079')+'.pdf#page='+(page+1),
+  window.MathExamTopicEdition={trainerId:'alimov-algebra-7-9',storePrefix:'math:alimov-algebra-7-9:v1:',authors:'Алимов и соавторы',grade:book=>book===58?'9 класс · 2012':book===81?'8 класс · 2012':'7 класс · 2011',unit:'упражнение',figure,lesson,q,sample,
+    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+(book===58?'00000049':book===81?'00000068':'00000079')+'.pdf#page='+(page+1),
     nextId(l){const next=ids[ids.indexOf(l.id)+1];return next&&lessons.get(next).book===l.book?next:undefined;}};
 })();

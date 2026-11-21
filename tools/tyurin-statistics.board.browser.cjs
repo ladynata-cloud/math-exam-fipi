@@ -51,10 +51,12 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--alimov8-signs')?{
-  directory:'alimov-algebra-7-9',entries:[[81,55,51]],uniqueLessons:50,search:'alimov-algebra-7-9',match:'числовые выражения и знаки',lesson:process.argv.includes('--strict-sign')?'81-12-4':'81-5-3',chart:process.argv.includes('--strict-sign')?'svg[aria-label*="Две части доказательства"]':'svg[aria-label*="Знаки трёх степеней"]',storage:'math:alimov-algebra-7-9:v1:'
+const catalogue=process.argv.includes('--alimov9-division')?{
+  directory:'alimov-algebra-7-9',entries:[[58,48,39]],uniqueLessons:38,search:'alimov-algebra-7-9',match:'выражения, знаки и многочлены',lesson:'58-7-3',chart:'svg[aria-label*="Коэффициенты остатка при пробном параметре"]',storage:'math:alimov-algebra-7-9:v1:'
+}:process.argv.includes('--alimov8-signs')?{
+  directory:'alimov-algebra-7-9',entries:[[81,55,51]],uniqueLessons:50,search:'alimov-algebra-7-9',match:'выражения, знаки и многочлены',lesson:process.argv.includes('--strict-sign')?'81-12-4':'81-5-3',chart:process.argv.includes('--strict-sign')?'svg[aria-label*="Две части доказательства"]':'svg[aria-label*="Знаки трёх степеней"]',storage:'math:alimov-algebra-7-9:v1:'
 }:process.argv.includes('--alimov-school-2011')?{
-  directory:'alimov-algebra-7-9',entries:[[104,53,44]],uniqueLessons:43,search:'alimov-algebra-7-9',match:'числовые выражения и знаки',lesson:process.argv.includes('--hike')?'104-10':'104-5-2',chart:process.argv.includes('--hike')?'svg[aria-label*="Временная шкала ходьбы"]':'svg[aria-label*="Уровни порядка"]',storage:'math:alimov-algebra-7-9:v1:'
+  directory:'alimov-algebra-7-9',entries:[[104,53,44]],uniqueLessons:43,search:'alimov-algebra-7-9',match:'выражения, знаки и многочлены',lesson:process.argv.includes('--hike')?'104-10':'104-5-2',chart:process.argv.includes('--hike')?'svg[aria-label*="Временная шкала ходьбы"]':'svg[aria-label*="Уровни порядка"]',storage:'math:alimov-algebra-7-9:v1:'
 }:process.argv.includes('--vilenkin11-antiderivatives')?{
   directory:'vilenkin-analysis-2014',entries:[[6,95,25]],uniqueLessons:24,search:'vilenkin-analysis-2014',match:'действительные числа и первообразная',lesson:process.argv.includes('--hole')?'6-4-4':'6-2-4',chart:process.argv.includes('--hole')?'svg[aria-label*="Два промежутка с независимыми"]':'svg[aria-label*="Шаги дифференцирования"]',storage:'math:vilenkin-analysis-2014:v1:'
 }:process.argv.includes('--vilenkin-analysis-2014')?{
