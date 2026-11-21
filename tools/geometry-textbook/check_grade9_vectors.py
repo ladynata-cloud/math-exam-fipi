@@ -6,7 +6,7 @@ import json
 root=Path(__file__).resolve().parents[2]
 cards=json.loads((root/'geometry-course/textbook/data/grade9-vectors.json').read_text())['lessons']
 expected=[('theory',84,''),('theory',85,''),('theory',86,''),('main',926,''),('main',927,''),
-          ('main',928,'а'),('main',928,'б')]+[('main',929,s) for s in 'абвг']
+          ('main',928,'а'),('main',928,'б')]+[('main',929,s) for s in 'абвг']+[('main',930,s) for s in 'абв']+[('main',n,'') for n in (931,932,933)]
 identities=[]
 heads=0
 
@@ -23,7 +23,7 @@ for card in cards:
     src=card['source'];collection=src['collection'];n=int(src.get('point',src.get('exercise')))
     part=src.get('subpart','');identities.append((collection,n,part))
     assert src['chapter']=='X' and src['bookId']=='atanasyan-2023-7-9'
-    assert src['printedPages']=={84:[224,225],85:[226,227],86:[227,228]}.get(n,[228])
+    assert src['printedPages']=={84:[224,225],85:[226,227],86:[227,228]}.get(n,[229] if n>=930 else [228])
     assert src['pdfPages']==[p+1 for p in src['printedPages']]
     assert len([s for s in card['steps'] if s.get('input')])==2
     m=card['visualization']['model'];points=m['points']
@@ -79,6 +79,41 @@ for card in cards:
             v=vector(*pair)
             near(src[0]*v[1]-src[1]*v[0],0)
             assert (src[0]*v[0]+src[1]*v[1]>0)==(part in 'аб')
+
+    elif n==930:
+        a,b=vector('A','B'),vector('C','D')
+        near(length('A','B'),length('C','D'))
+        determinant=a[0]*b[1]-a[1]*b[0]
+        if part=='а':
+            assert abs(determinant)>1
+        else:
+            near(determinant,0)
+            assert (a[0]*b[0]+a[1]*b[1]>0)==(part=='б')
+    elif n==931:
+        base=vector('P','Q')
+        assert base[0]>0 and base[1]>0
+        near(base[0]/base[1],2)
+        for start,end in ('AD','BE','CF'):
+            for x,y in zip(vector(start,end),base): near(x,y)
+    elif n==932:
+        a,b,f=vector('A','B'),vector('C','D'),vector('P','Q')
+        for x,y in zip(a,b):near(x,-y)
+        assert a[0]>0 and f[1]>0
+        near(a[1],0);near(f[0],0)
+    elif n==933:
+        relations=['AB','BC','DC','MC','MA','CB','AC']
+        expected_lengths=[3,4,3,73**.5/2,1.5,4,5]
+        assert {f'case-{i}' for i in range(1,8)} <= set(m['views'])
+        for j,(pair,size) in enumerate(zip(relations,expected_lengths),1):
+            view_index=3+j
+            view=m['views'][f'case-{j}']
+            start,end=pair
+            assert [f'{start}__v{view_index}',f'{end}__v{view_index}'] in view['segments']
+            # The scene independently rescales each frame; infer that frame's unit from AB.
+            near(length(start,end,view_index)/length('A','B',view_index),size/3)
+            for x,y,t in zip(point('A',view_index),point('B',view_index),point('M',view_index)):near((x+y)/2,t)
+        near(3**2+4**2,5**2)
+        near((3/2)**2+4**2,73/4)
 
 assert identities==expected and heads>0
 print('GRADE9_NUMBERED_VECTORS_OK',len(cards),'карточек. Проверено стрелок',heads)

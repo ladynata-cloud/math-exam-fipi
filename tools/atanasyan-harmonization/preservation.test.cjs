@@ -72,8 +72,8 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
-  "geometry-course/textbook/assets/additional-lessons.js": "eb4f6cba2c415358790699c1d71d02ead65c7f534a2d55fb17c711f58b45436b",
-  "geometry-course/textbook/data/grade9-vectors.json": "440c5d4282a6052330a8b980d142dc45ae8329f9dd4480faadcc6399ac01b65c",
+  "geometry-course/textbook/assets/additional-lessons.js": "3632d82ddb52a15886fa0362bc8800f436cfdcae23fcf7e39379972c924e7688",
+  "geometry-course/textbook/data/grade9-vectors.json": "e72d45dd878a4e0f6c767066bd4c116bb9db8f2698f3c98aa7c2fa9aeaa52104",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
   "geometry-course/textbook/data/area-similarity-lessons.json": "a03d352a79dda749b3ed61d60c1ac40460a4a4e5f5eabdccaadd4bbe9401aa43",
