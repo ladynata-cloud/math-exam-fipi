@@ -96,6 +96,16 @@ const misconceptions = new Map([
   ['ex-main-0506/step-2', '125/3'], // Counted both portions as full balls.
   ['ex-main-0507/step-3', '8/75'], // Counted just one ball.
   ['ex-main-0508/step-2', '5'], // Confused the base and sphere radii.
+  ['ex-main-0509/step-3', '5/32'], // Counted a single cap.
+  ['ex-main-0510/step-2', '45'], // Used the centre-to-plane distance without calculating the cap.
+  ['ex-main-0510/step-3', '58500'], // Repeated the small cap instead of its complement.
+  ['ex-main-0511/step-4', '52/3'], // Did not divide by the model radius cubed.
+  ['ex-main-0512/step-1', '18'], // Used the diameter as the radius.
+  ['ex-main-0513/step-2', '45'], // Used the cone height.
+  ['ex-main-0514/step-3', 'sqrt(3)/3'], // Used the axial projection in place of cap height.
+  ['ex-main-0515/step-1', '3/4'], // Returned the water fraction.
+  ['ex-main-0516/step-3', '32'], // Counted only the seam allowance.
+  ['ex-main-0517/step-3', '2'], // Computed lateral surface alone.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

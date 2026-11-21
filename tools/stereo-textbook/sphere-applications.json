@@ -1,0 +1,527 @@
+{
+  "parts": {
+    "509": [
+      null
+    ],
+    "510": [
+      null
+    ],
+    "511": [
+      null
+    ],
+    "512": [
+      null
+    ],
+    "513": [
+      null
+    ],
+    "514": [
+      null
+    ],
+    "515": [
+      null
+    ],
+    "516": [
+      null
+    ],
+    "517": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "509": {
+      "id": "source-main-0509",
+      "kind": "exercise",
+      "title": "Задача № 509",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "509",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "510": {
+      "id": "source-main-0510",
+      "kind": "exercise",
+      "title": "Задача № 510",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "510",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "511": {
+      "id": "source-main-0511",
+      "kind": "exercise",
+      "title": "Задача № 511",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "511",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "512": {
+      "id": "source-main-0512",
+      "kind": "exercise",
+      "title": "Задача № 512",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "512",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "513": {
+      "id": "source-main-0513",
+      "kind": "exercise",
+      "title": "Задача № 513",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "513",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "514": {
+      "id": "source-main-0514",
+      "kind": "exercise",
+      "title": "Задача № 514",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "514",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "515": {
+      "id": "source-main-0515",
+      "kind": "exercise",
+      "title": "Задача № 515",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "515",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "516": {
+      "id": "source-main-0516",
+      "kind": "exercise",
+      "title": "Задача № 516",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "516",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "517": {
+      "id": "source-main-0517",
+      "kind": "exercise",
+      "title": "Задача № 517",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "517",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          137
+        ],
+        "pdfPages": [
+          139
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0509": {
+      "raw": "adb0287d44195196f0527fa53943157dbe1a946b65bfbf9ed4797edde918dced",
+      "authored": "bd5e3fe8aaf01a5850bf58727daea4abf0b0339cb26c7e817c0ed1d75277eb1d",
+      "integrated": "919d67efece542d82b914a9162f2624b3d98415de84ad87f8caad83c29f4e650"
+    },
+    "ex-main-0510": {
+      "raw": "966292b7d0d6fb0688fa6d53efa9c237f50f52cfd12f1f87ecf5ce63adeb3b11",
+      "authored": "c4d8b6d4731dad69b42f33eae9bdcc6c246616c070d458e7ea1d8f08cf7a0234",
+      "integrated": "b9120f2ac06eff5eeef20c4244770501ceeaa99478a38c02f651fb1298017f66"
+    },
+    "ex-main-0511": {
+      "raw": "a15dbc3018d90ed217a132ae02c5e8401abcd43b146c798f884ce7efe8fcc32f",
+      "authored": "2220246bd750783dd4256120f428ef991561fdb1e69fe604decdcd7d1961cc82",
+      "integrated": "3133d1a47d143195b0332e1b7c367c84b68797022ee93ee6c660195d7f636bce"
+    },
+    "ex-main-0512": {
+      "raw": "52d98c74fd37fcf64b670601665c632e49cf8726fce64117280f3c024d61ac84",
+      "authored": "b0d3ff28adc7288b6416540c8422c757963905c052ddec0250de0d7097e42f70",
+      "integrated": "e695ea202102cacb19d84ebd2c79b8c4919aa12b7a92b41ce94a2d724b48195b"
+    },
+    "ex-main-0513": {
+      "raw": "59bfe1596a589e489693f175d6baf2714fc7d269d93c1e4a18409443f6fae3f6",
+      "authored": "a4ca5077291a744aeeaaaf7e7672adfa197c684f1751469a516b57b285c67114",
+      "integrated": "957958dcd626fc629f36a7f50f19851dddf2df9a8c74b69090346d7e9ea9691b"
+    },
+    "ex-main-0514": {
+      "raw": "be002c7342be1d808ee46d32dc80d1a53457fad450b5f5e941f41b518a38b6af",
+      "authored": "884ab50a82fb26bf9fed504899f37e524b52afb4c7d0e086cfb7e80844bf07dd",
+      "integrated": "4fedbf625ade0acbe8a7d2d67e6250d800f7186be41e1daa0145202a2eafcf99"
+    },
+    "ex-main-0515": {
+      "raw": "477df3e00fd5326d25abe60f98e98b5ead22c6ced33a544601c540cae85c9d20",
+      "authored": "a97cc0733f823e65f9004a3a2467156ad838888bdc0f2ff43450fde928fbe9d6",
+      "integrated": "ef3dd035123e42f1fb69750e12e75660e19bb080e04be93cf5fb4364bfd035ea"
+    },
+    "ex-main-0516": {
+      "raw": "96b0c64ff9fa9811dd1116895681a336fbdd144068549614c356081ae04a3094",
+      "authored": "f16cbdcca1f4c5aea9642388279a4d3f720df11fca4a6fe5cab97710c1db0b6c",
+      "integrated": "c4d85210adec04585428c738e12cedbd01fb6ccaa711256fa1cddead41a577ac"
+    },
+    "ex-main-0517": {
+      "raw": "67223dcfd5ea8269da5980fd2ec07deb49fde2a592a9824ffc6d013c174bd80f",
+      "authored": "01ec5d9821cb79ac6216124d2a2037db22714d9ef771127a3609da068d8d234a",
+      "integrated": "c370f887ac3c2c0bebbbaa1d8729406831dc898634273b06d7dd79672a03d558"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0509|condition",
+      "sphere-sector-ex-main-0509-condition"
+    ],
+    [
+      "ex-main-0509|help:h1",
+      "sphere-sector-ex-main-0509-help-h1"
+    ],
+    [
+      "ex-main-0509|help:h2",
+      "sphere-sector-ex-main-0509-help-h2"
+    ],
+    [
+      "ex-main-0509|step-1",
+      "sphere-sector-ex-main-0509-step-1"
+    ],
+    [
+      "ex-main-0509|step-2",
+      "sphere-sector-ex-main-0509-step-2"
+    ],
+    [
+      "ex-main-0509|step-3",
+      "sphere-sector-ex-main-0509-step-3"
+    ],
+    [
+      "ex-main-0509|step-4",
+      "sphere-sector-ex-main-0509-step-4"
+    ],
+    [
+      "ex-main-0510|condition",
+      "sphere-sector-ex-main-0510-condition"
+    ],
+    [
+      "ex-main-0510|help:h1",
+      "sphere-sector-ex-main-0510-help-h1"
+    ],
+    [
+      "ex-main-0510|help:h2",
+      "sphere-sector-ex-main-0510-help-h2"
+    ],
+    [
+      "ex-main-0510|step-1",
+      "sphere-sector-ex-main-0510-step-1"
+    ],
+    [
+      "ex-main-0510|step-2",
+      "sphere-sector-ex-main-0510-step-2"
+    ],
+    [
+      "ex-main-0510|step-3",
+      "sphere-sector-ex-main-0510-step-3"
+    ],
+    [
+      "ex-main-0510|step-4",
+      "sphere-sector-ex-main-0510-step-4"
+    ],
+    [
+      "ex-main-0511|condition",
+      "sphere-sector-ex-main-0511-condition"
+    ],
+    [
+      "ex-main-0511|help:h1",
+      "sphere-sector-ex-main-0511-help-h1"
+    ],
+    [
+      "ex-main-0511|help:h2",
+      "sphere-sector-ex-main-0511-help-h2"
+    ],
+    [
+      "ex-main-0511|step-1",
+      "sphere-sector-ex-main-0511-step-1"
+    ],
+    [
+      "ex-main-0511|step-2",
+      "sphere-sector-ex-main-0511-step-2"
+    ],
+    [
+      "ex-main-0511|step-3",
+      "sphere-sector-ex-main-0511-step-3"
+    ],
+    [
+      "ex-main-0511|step-4",
+      "sphere-sector-ex-main-0511-step-4"
+    ],
+    [
+      "ex-main-0512|condition",
+      "sphere-sector-ex-main-0512-condition"
+    ],
+    [
+      "ex-main-0512|help:h1",
+      "sphere-sector-ex-main-0512-help-h1"
+    ],
+    [
+      "ex-main-0512|help:h2",
+      "sphere-sector-ex-main-0512-help-h2"
+    ],
+    [
+      "ex-main-0512|step-1",
+      "sphere-sector-ex-main-0512-step-1"
+    ],
+    [
+      "ex-main-0512|step-2",
+      "sphere-sector-ex-main-0512-step-2"
+    ],
+    [
+      "ex-main-0512|step-3",
+      "sphere-sector-ex-main-0512-step-3"
+    ],
+    [
+      "ex-main-0512|step-4",
+      "sphere-sector-ex-main-0512-step-4"
+    ],
+    [
+      "ex-main-0513|condition",
+      "sphere-sector-ex-main-0513-condition"
+    ],
+    [
+      "ex-main-0513|help:h1",
+      "sphere-sector-ex-main-0513-help-h1"
+    ],
+    [
+      "ex-main-0513|help:h2",
+      "sphere-sector-ex-main-0513-help-h2"
+    ],
+    [
+      "ex-main-0513|step-1",
+      "sphere-sector-ex-main-0513-step-1"
+    ],
+    [
+      "ex-main-0513|step-2",
+      "sphere-sector-ex-main-0513-step-2"
+    ],
+    [
+      "ex-main-0513|step-3",
+      "sphere-sector-ex-main-0513-step-3"
+    ],
+    [
+      "ex-main-0513|step-4",
+      "sphere-sector-ex-main-0513-step-4"
+    ],
+    [
+      "ex-main-0514|condition",
+      "sphere-sector-ex-main-0514-condition"
+    ],
+    [
+      "ex-main-0514|help:h1",
+      "sphere-sector-ex-main-0514-help-h1"
+    ],
+    [
+      "ex-main-0514|help:h2",
+      "sphere-sector-ex-main-0514-help-h2"
+    ],
+    [
+      "ex-main-0514|step-1",
+      "sphere-sector-ex-main-0514-step-1"
+    ],
+    [
+      "ex-main-0514|step-2",
+      "sphere-sector-ex-main-0514-step-2"
+    ],
+    [
+      "ex-main-0514|step-3",
+      "sphere-sector-ex-main-0514-step-3"
+    ],
+    [
+      "ex-main-0514|step-4",
+      "sphere-sector-ex-main-0514-step-4"
+    ],
+    [
+      "ex-main-0515|condition",
+      "sphere-sector-ex-main-0515-condition"
+    ],
+    [
+      "ex-main-0515|help:h1",
+      "sphere-sector-ex-main-0515-help-h1"
+    ],
+    [
+      "ex-main-0515|help:h2",
+      "sphere-sector-ex-main-0515-help-h2"
+    ],
+    [
+      "ex-main-0515|step-1",
+      "sphere-sector-ex-main-0515-step-1"
+    ],
+    [
+      "ex-main-0515|step-2",
+      "sphere-sector-ex-main-0515-step-2"
+    ],
+    [
+      "ex-main-0515|step-3",
+      "sphere-sector-ex-main-0515-step-3"
+    ],
+    [
+      "ex-main-0515|step-4",
+      "sphere-sector-ex-main-0515-step-4"
+    ],
+    [
+      "ex-main-0516|condition",
+      "sphere-sector-ex-main-0516-condition"
+    ],
+    [
+      "ex-main-0516|help:h1",
+      "sphere-sector-ex-main-0516-help-h1"
+    ],
+    [
+      "ex-main-0516|help:h2",
+      "sphere-sector-ex-main-0516-help-h2"
+    ],
+    [
+      "ex-main-0516|step-1",
+      "sphere-sector-ex-main-0516-step-1"
+    ],
+    [
+      "ex-main-0516|step-2",
+      "sphere-sector-ex-main-0516-step-2"
+    ],
+    [
+      "ex-main-0516|step-3",
+      "sphere-sector-ex-main-0516-step-3"
+    ],
+    [
+      "ex-main-0516|step-4",
+      "sphere-sector-ex-main-0516-step-4"
+    ],
+    [
+      "ex-main-0517|condition",
+      "sphere-sector-ex-main-0517-condition"
+    ],
+    [
+      "ex-main-0517|help:h1",
+      "sphere-sector-ex-main-0517-help-h1"
+    ],
+    [
+      "ex-main-0517|help:h2",
+      "sphere-sector-ex-main-0517-help-h2"
+    ],
+    [
+      "ex-main-0517|step-1",
+      "sphere-sector-ex-main-0517-step-1"
+    ],
+    [
+      "ex-main-0517|step-2",
+      "sphere-sector-ex-main-0517-step-2"
+    ],
+    [
+      "ex-main-0517|step-3",
+      "sphere-sector-ex-main-0517-step-3"
+    ],
+    [
+      "ex-main-0517|step-4",
+      "sphere-sector-ex-main-0517-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "a9006722063cd94659003ce7aa417efd418528f08b366f10e1248d55ee729683",
+      "afterSHA256": "8159c0597cf1ff466e8ab88265b78146314a5d44b5dd7a6d147050ec657e0a2a"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "f85ac44f6bf0c96a1b9c620fc8fe1648950beaf1c52e7fce24703d19632fee48",
+      "afterSHA256": "87e49d1c05b8278849297f67c95ef414d53b6b05a817d2b1f98e82693ce46643"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T15:59:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 508 and points 52–62, with 828 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "626170b90bc736786547133c84ecbbd1af5d4980d5566be98c32fd78ddce11c4",
+    "index": "db0b29c978a40601ce1f6a4cb408daf7a84a3219a46bafdf7d020958dc479028",
+    "registry": "23fe35ea29e98cc619585f8f4ba58b9f6c6c71419f309cfd95f4a4d5a87c4da7",
+    "cases": "b861ed34936bf6a09c7552cdfe008444e06daaaa2f112d97ad52be1b4cdd2485"
+  }
+}

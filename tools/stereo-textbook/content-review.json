@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T15:59:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 508 and points 52–62, with 828 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T16:26:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 517 and points 52–62, with 837 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1327,6 +1327,24 @@
       ],
       "evidence": "tools/stereo-textbook/sphere-measures.json",
       "mathematicalReport": "tools/stereo-textbook/sphere-measures.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T16:26:00Z",
+      "scope": "Spherical intersections, segments, sectors, approximate surface areas and a cone proof, exercises 509–517",
+      "cardIds": [
+        "ex-main-0509",
+        "ex-main-0510",
+        "ex-main-0511",
+        "ex-main-0512",
+        "ex-main-0513",
+        "ex-main-0514",
+        "ex-main-0515",
+        "ex-main-0516",
+        "ex-main-0517"
+      ],
+      "evidence": "tools/stereo-textbook/sphere-applications.json",
+      "mathematicalReport": "tools/stereo-textbook/sphere-applications.test.cjs"
     }
   ],
   "cards": [
@@ -4641,6 +4659,42 @@
     {
       "id": "theory-062",
       "sha256": "cacb67f1cb518207ea04638490005cbfcead72e0a9e4ab83f65f25610fec1eb7"
+    },
+    {
+      "id": "ex-main-0509",
+      "sha256": "bd5e3fe8aaf01a5850bf58727daea4abf0b0339cb26c7e817c0ed1d75277eb1d"
+    },
+    {
+      "id": "ex-main-0510",
+      "sha256": "c4d8b6d4731dad69b42f33eae9bdcc6c246616c070d458e7ea1d8f08cf7a0234"
+    },
+    {
+      "id": "ex-main-0511",
+      "sha256": "2220246bd750783dd4256120f428ef991561fdb1e69fe604decdcd7d1961cc82"
+    },
+    {
+      "id": "ex-main-0512",
+      "sha256": "b0d3ff28adc7288b6416540c8422c757963905c052ddec0250de0d7097e42f70"
+    },
+    {
+      "id": "ex-main-0513",
+      "sha256": "a4ca5077291a744aeeaaaf7e7672adfa197c684f1751469a516b57b285c67114"
+    },
+    {
+      "id": "ex-main-0514",
+      "sha256": "884ab50a82fb26bf9fed504899f37e524b52afb4c7d0e086cfb7e80844bf07dd"
+    },
+    {
+      "id": "ex-main-0515",
+      "sha256": "a97cc0733f823e65f9004a3a2467156ad838888bdc0f2ff43450fde928fbe9d6"
+    },
+    {
+      "id": "ex-main-0516",
+      "sha256": "f16cbdcca1f4c5aea9642388279a4d3f720df11fca4a6fe5cab97710c1db0b6c"
+    },
+    {
+      "id": "ex-main-0517",
+      "sha256": "01ec5d9821cb79ac6216124d2a2037db22714d9ef771127a3609da068d8d234a"
     }
   ]
 }
