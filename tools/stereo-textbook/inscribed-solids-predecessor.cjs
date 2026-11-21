@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const sphereVolumeAngles = makeReviewedIncrement(require('./sphere-volume-angles.json'));
+const volumeChapterEnd = makeReviewedIncrement(require('./volume-chapter-end.json'));
+const sphereVolumeAngles = makeReviewedIncrement(require('./sphere-volume-angles.json'), volumeChapterEnd);
 const inscribedVolumeApplications = makeReviewedIncrement(require('./inscribed-volume-applications.json'), sphereVolumeAngles);
 const cylinderApplications = makeReviewedIncrement(require('./cylinder-applications.json'), inscribedVolumeApplications);
 const pyramidComparisonApplications = makeReviewedIncrement(require('./pyramid-comparison-applications.json'), cylinderApplications);

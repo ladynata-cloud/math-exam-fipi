@@ -194,6 +194,22 @@ const misconceptions = new Map([
   ['ex-main-0550/step-2', '288'], // Used the second admissible case instead of the key.
   ['ex-main-0550/step-3', '2*sqrt(3)'], // Kept the tall case after rotating the bisector.
   ['ex-main-0550/step-4', '32*sqrt(3)'], // Reused the tall-cylinder volume.
+  ['ex-main-0551/step-1', '1'], // Removed the sign of a coordinate below the base.
+  ['ex-main-0551/step-4', '100'], // Gave a surface area coefficient instead of a volume.
+  ['ex-main-0552/step-2', '1'], // Used the base circumradius for the sphere.
+  ['ex-main-0553/step-2', '5'], // Submitted half the rectangle diagonal.
+  ['ex-main-0554/step-1', '1.5'], // Confused the rim radius with the cap sphere radius.
+  ['ex-main-0554/step-3', '7.56'], // Included both end caps in the requested generator length.
+  ['ex-main-0555/step-3', 'sqrt(5)'], // Counted the lateral surface only.
+  ['ex-main-0555/step-4', 'pi'], // Submitted the cube face area.
+  ['ex-main-0556-a/step-1', '4.6'], // Removed the wall thickness twice from the radius.
+  ['ex-main-0556-a/step-2', '0.884736'], // Submitted the cavity fraction.
+  ['ex-main-0556-a/step-3', '8.9'], // Used the density of solid copper.
+  ['ex-main-0556-a/step-4', '1.026'], // Kept the older wall thickness.
+  ['ex-main-0556-b/step-1', '3.5'], // Read millimetres as centimetres.
+  ['ex-main-0556-b/step-2', '0.912673'], // Used the air fraction.
+  ['ex-main-0556-b/step-3', '8.9'], // Used the material density for the shell.
+  ['ex-main-0556-b/step-4', '0.777'], // Reused the preceding diameter ratio.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

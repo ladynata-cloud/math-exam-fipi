@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T18:11:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 550, points 52–62 and all chapter V self-checks, with 890 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T18:18:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 556, points 52–62 and all chapter V self-checks, with 897 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1470,6 +1470,22 @@
       ],
       "evidence": "tools/stereo-textbook/sphere-volume-angles.json",
       "mathematicalReport": "tools/stereo-textbook/sphere-volume-angles.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:18:00Z",
+      "scope": "Complete chapter V through exercise 556, circumspheres, a tank, an equal-area comparison and two hollow copper shells",
+      "cardIds": [
+        "ex-main-0551",
+        "ex-main-0552",
+        "ex-main-0553",
+        "ex-main-0554",
+        "ex-main-0555",
+        "ex-main-0556-a",
+        "ex-main-0556-b"
+      ],
+      "evidence": "tools/stereo-textbook/volume-chapter-end.json",
+      "mathematicalReport": "tools/stereo-textbook/volume-chapter-end.test.cjs"
     }
   ],
   "cards": [
@@ -5032,6 +5048,34 @@
     {
       "id": "ex-main-0550",
       "sha256": "032a9e3db0f6972588a36d807fb8c5721e1b54ff7ecdf6601e483112bc26b30f"
+    },
+    {
+      "id": "ex-main-0551",
+      "sha256": "089c1306bf3daf912c49c15f0ba4996e73f97938d3771aa7d2ec8aa89ae5b5bc"
+    },
+    {
+      "id": "ex-main-0552",
+      "sha256": "e4f03a8868e6aac8f3f56284530f4b9f64be10a0d20727165ec81cfb5cebd605"
+    },
+    {
+      "id": "ex-main-0553",
+      "sha256": "e4a6efe69adff22328c087cfc7c84a50e2336243eb9694ddd5f886ed0bfcd8b6"
+    },
+    {
+      "id": "ex-main-0554",
+      "sha256": "7a47d127964039b014aa750b56012c4b1aacc37a936bde785cf9fef0ee16c182"
+    },
+    {
+      "id": "ex-main-0555",
+      "sha256": "f036e8476b499799384f64d750cee65945e28f7bd1db7dd6427a161d1592cd23"
+    },
+    {
+      "id": "ex-main-0556-a",
+      "sha256": "aa290e816aa150fbcb47ad0750d79362bfcad722283d8a980535583150212b1c"
+    },
+    {
+      "id": "ex-main-0556-b",
+      "sha256": "2021187572ebb735297928adf0524cc1630fda942970ae6d3b6b2df107d337c6"
     }
   ]
 }
