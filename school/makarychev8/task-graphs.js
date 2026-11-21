@@ -674,10 +674,16 @@ function sourceFractionTrial(config,value,unrestricted=false){
  return {original:format(evaluate(config.original)),reduced:format(evaluate(config.reduced))};
 }
 function sourceFractionScene(host,config){
- host.className='task-graphs quantity-model';const input=config.trial||config.symbols.map(()=>0).join(';'),check=sourceFractionTrial(config,input);
+ host.className='task-graphs quantity-model';const input=config.fixedInput||config.trial||config.symbols.map(()=>0).join(';'),check=sourceFractionTrial(config,input);
  const add=(message,k,status)=>{const row=document.createElement('p');row.className='small';row.textContent=message;if(k){row.dataset.fractionSide=k;row.dataset.fractionStatus=status;}host.append(row);};
  if(!check){add('Введи '+(config.symbols.length===2?'пару рациональных чисел через точку с запятой':'рациональное число')+' от −100 до 100.');return;}
  add((config.trial?'Твоя подстановка: ':'Пример подстановки: ')+config.symbols.map((s,i)=>s+' = '+input.split(';')[i]).join(', ')+'.');
+ if(config.fixedInput&&!config.showValue){
+  add('Вычисли знаменатель и числитель при указанном x. Итоговая дробь появится после проверки результата.');
+  if(config.partial?.[0])add('Твой знаменатель: '+config.partial[0]+'.');
+  if(config.partial?.[1])add('Твой числитель: '+config.partial[1]+'.');
+  return;
+ }
  const row=(title,k)=>add(title+(check[k]===null?'не определена.':'равна '+check[k]+'.'),k,check[k]===null?'undefined':'defined');
  row('Исходная запись ', 'original');row('Упрощённая формула ', 'reduced');
  if(check.original===null&&check.reduced!==null)add('После сокращения получено число, но исходное выражение здесь не определено. Запрет сохраняется.');
@@ -764,6 +770,32 @@ function equationExamples(host,value){
  }
  host.append(note);
 }
+function admissibleSample(raw,domain,count){
+ const xs=String(raw??'').split(';').map(v=>M.parse(v.trim()));
+ if(xs.length!==count||xs.some(v=>!v))return false;
+ const [a,b]=xs;
+ if(domain==='nonnegative')return xs.every(v=>v.n>=0);
+ if(xs.some(v=>v.n<=0))return false;
+ if(domain==='positive')return true;
+ if(!b)return false;
+ const diff=BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);
+ if(domain==='positive-unequal')return diff!==0n;
+ if(!xs.every(v=>v.d===1))return false;
+ return domain==='natural-gt'?diff>0n:domain==='natural-lt'&&diff<0n;
+}
+function radicalComparison(host,config,value){
+ host.className='task-graphs quantity-model';
+ const add=message=>{const p=document.createElement('p');p.className='small';p.textContent=message;host.append(p);};
+ for(const [i,[a,b,sign]] of config.pairs.entries()){
+  add('Квадрат '+(i?'второго':'первого')+' выражения: '+(a+b)+(sign>0?' + ':' − ')+'2√'+(a*b)+'.');
+ }
+ if(['<','=','>'].includes(value)){
+  const [[a,b,sign],[c,d,otherSign]]=config.pairs;
+  if(a+b!==c+d||sign!==otherSign)return;
+  const comparison=sign*Math.sign(a*b-c*d),ok=value===(comparison<0?'<':comparison>0?'>':'=');
+  const row=document.createElement('p');row.className='small';row.dataset.radicalOrder=ok?'yes':'no';row.textContent='Твой знак: '+config.labels.join(' '+value+' ')+'. '+(ok?'Сравнение согласуется с квадратами.':'Проверь знак перед удвоенным корнем.');host.append(row);
+ }
+}
 function inequalityTrial(config,value,unrestricted=false){
  const input=String(value??'').trim(),parts=input.split(';');
  if(parts.length!==config.symbols.length||parts.some(v=>!M.parse(v)))return null;
@@ -775,10 +807,15 @@ function inequalityTrial(config,value,unrestricted=false){
 }
 function inequalityScene(host,config,value){
  host.className='task-graphs quantity-model';
- const input=config.mode==='given'?config.given:config.mode==='counter'&&String(value??'').trim()&&M.parse(value)?value:config.trial;
+ const input=config.mode==='given'?config.given:config.mode==='pair-example'&&String(value??'').trim()?value:config.mode==='counter'&&String(value??'').trim()&&M.parse(value)?value:config.trial;
  const add=(txt,key,state)=>{const p=document.createElement('p');p.className='small';p.textContent=txt;if(key)p.dataset[key]=state;host.append(p);};
  if(!input){add('На числовой прямой большее значение располагается правее. Подставь число в первом шаге и сравни обе стороны.');return;}
- const check=inequalityTrial(config,input,config.mode==='counter');if(!check){add('Введи отдельное рациональное значение для каждой переменной.');return;}
+ if(config.sourceDomain&&!admissibleSample(input,config.sourceDomain,config.symbols.length)){
+  const constraints={'natural-gt':'нужны натуральные a > b','natural-lt':'нужны натуральные a < b','positive':'каждая величина должна быть положительна','nonnegative':'нужны неотрицательные величины','positive-unequal':'нужны положительные и разные a и b'};
+  add('Подстановка вне условия: '+constraints[config.sourceDomain]+'.','inequalityDomain','invalid');return;
+ }
+ if(config.compareSquares)add('На оси показаны квадраты двух неотрицательных сторон.');
+ const check=inequalityTrial(config,input,Boolean(config.sourceDomain)||config.mode==='counter'||config.mode==='pair-example');if(!check){add('Введи отдельное рациональное значение для каждой переменной.');return;}
  const setting=String(input).split(';').map((v,i)=>config.symbols[i]+' = '+v).join(', ');
  add('При '+setting+' получаем: '+check.left+' '+check.sign+' '+check.right+'.','inequalityRelation',check.sign);
  const svg=node('svg',{viewBox:'0 0 320 107',role:'img','aria-label':'Расположение значений из этой подстановки: '+check.left+' '+check.sign+' '+check.right});
@@ -1187,6 +1224,7 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='radical-comparison'){radicalComparison(host,config,value);return;}
  if(config.type==='inequality-evidence'){inequalityScene(host,config,value);return;}
  if(config.type==='linear-review'){linearReview(host,config,value);return;}
  if(config.type==='quantity-audit'){quantityAudit(host,config,value);return;}
@@ -1252,5 +1290,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

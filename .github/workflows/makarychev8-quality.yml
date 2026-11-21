@@ -65,6 +65,7 @@ jobs:
           python school/makarychev8/test-exercises-822-831.py
           python school/makarychev8/test-exercises-832-837.py
           python school/makarychev8/test-exercises-838-845.py
+          python school/makarychev8/test-exercises-846-859.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -90,6 +91,7 @@ jobs:
           node school/makarychev8/test-mixtures-work.cjs
           node school/makarychev8/test-lines-review.cjs
           node school/makarychev8/test-inequality-evidence.cjs
+          node school/makarychev8/test-comparison-proofs.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -104,7 +106,7 @@ jobs:
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --expose-gc school/makarychev8/test-audit-learning.cjs
       - name: Square roots and two board participants
         run: |
-          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-roots-engine.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --expose-gc --max-old-space-size=250 school/makarychev8/test-roots-engine.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-board.cjs
       - name: Numbered fractions, self-drawn graphs and saved notes
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-fractions.cjs
@@ -156,6 +158,8 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-lines-review.cjs
       - name: Chromium comparison, equality and independent counterexamples
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-inequality-evidence.cjs
+      - name: Chromium paired comparisons, allowed examples and square-root means
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-comparison-proofs.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction
