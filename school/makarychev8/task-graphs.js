@@ -874,6 +874,51 @@ function setProbe(mode,q){
  for(let d=2;prime&&d*d<=q.n;d++)if(q.n%d===0)prime=false;
  return [prime,q.n%2===1];
 }
+function signGraph(host,g,q){
+ const x0=-1,x1=5,px=x=>30+(x-x0)*246/(x1-x0),py=y=>105-y*4.4;
+ const svg=node('svg',{viewBox:'0 0 304 205',role:'img','aria-label':'График y = −6x + 12, точка пересечения с осью и участок, заданный твоим ответом'});
+ const segment=(a,b,color,width,attrs={})=>svg.append(node('line',{x1:px(a),y1:py(12-6*a),x2:px(b),y2:py(12-6*b),stroke:color,'stroke-width':width,...attrs}));
+ svg.append(node('line',{x1:12,x2:291,y1:py(0),y2:py(0),stroke:'#445c56'}),node('line',{x1:px(0),x2:px(0),y1:14,y2:195,stroke:'#445c56'}));
+ segment(x0,x1,'#798984',2);
+ for(const r of g.proposal||[]){
+  const lo=Math.max(x0,r.min),hi=Math.min(x1,r.max);
+  if(lo>hi)continue;
+  segment(lo,hi,'#087067',5,{'data-function-interval':'selected'});
+  for(const [v,open] of [[r.min,r.leftOpen],[r.max,r.rightOpen]])if(Number.isFinite(v)&&v>=x0&&v<=x1)svg.append(node('circle',{cx:px(v),cy:py(12-6*v),r:5,fill:open?'white':'#087067',stroke:'#087067','stroke-width':2,'data-function-end':open?'open':'closed'}));
+ }
+ for(const [x,y,label]of [[0,12,'12'],[2,0,'2'],[0,0,'0']])svg.append(node('text',{x:px(x)+(x?5:-8),y:py(y)+(y?0:15),'font-size':12,'text-anchor':x?'start':'end'},label));
+ svg.append(node('text',{x:290,y:py(0)-7,'font-size':13},'x'),node('text',{x:px(0)+6,y:16,'font-size':13},'y'));
+ if(q){const x=q.n/q.d;if(x>=x0&&x<=x1){const y=12-6*x;svg.append(node('line',{x1:px(x),x2:px(x),y1:py(0),y2:py(y),stroke:'#a04b23','stroke-dasharray':'2 2'}),node('rect',{x:px(x)-3,y:py(y)-3,width:6,height:6,fill:'#94451c','data-ordinate-mark':'inside'}));}
+ else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
+ host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
+}
+function solutionAudit(host,g,value){
+ host.className='task-graphs quantity-model';
+ const q=M.parse(g.partial?.[0]);
+ if(g.mode==='function')signGraph(host,g,q);
+ if(q){
+  const r=linearTrial(g,M.answer(q));
+  if(g.mode==='abs'){
+   const zero=r.sign==='=',positive=r.sign==='>',ratio=g.absMode.startsWith('ratio');
+   if(ratio&&zero)boundNote(host,'Аргумент равен нулю. Знаменатель обнуляется, поэтому отношение не определено.').dataset.modulusProbe='undefined';
+   else{
+    const holds=g.absMode==='same'?positive||zero:g.absMode==='opposite'?!positive:g.absMode==='ratio-plus'?positive:!positive;
+    boundNote(host,'При m = '+M.answer(q)+' аргумент равен '+r.left+'. '+(ratio?'Отношение модуля к аргументу равно '+(positive?'1':'−1')+'. ':'Модуль равен '+r.left.replace(/^-/,'')+'. ')+(holds?'Равенство выполняется.':'Равенство не выполняется.')).dataset.modulusProbe=holds?'yes':'no';
+   }
+  }else if(g.mode==='root')boundNote(host,'При '+g.variable+' = '+M.answer(q)+' корень x = '+g.formula+' равен '+r.left+'. Требуемый знак '+g.operator+' 0 '+(r.holds?'выполняется.':'не выполняется.')).dataset.rootSign=r.holds?'yes':'no';
+  else{
+   const valid=g.mode!=='natural'||q.d===1&&q.n>0;
+   const label=g.mode==='function'?'Ордината равна '+r.left+', сравниваем её с нулём.':'Левая часть '+r.left+', правая '+r.right+'.';
+   boundNote(host,'При '+g.variable+' = '+M.answer(q)+': '+label+' '+(valid?(r.holds?'Условие выполняется.':'Исходный знак не выполняется.'):'Подстановка не является натуральным числом.')).dataset.solutionProbe=r.holds&&valid?'yes':'no';
+  }
+ }else boundNote(host,'На первом шаге выбери число и испытай его в исходной записи.');
+ if(g.mode==='natural'&&g.selected){
+  for(const v of g.selected){const t=linearTrial(g,M.answer(v)),valid=v.d===1&&v.n>0;
+   boundNote(host,'Твой элемент '+M.answer(v)+': '+(!valid?'не натуральный.':t.holds?'подходит.':'не выполняет неравенство.')).dataset.naturalProposal=t.holds&&valid?'yes':'no';}
+ }
+ if(g.proposal&&g.mode!=='function')intervalNumberLine(host,{mode:'operation',givenRows:[],proposal:g.proposal,points:q?[q]:[]},value);
+}
+
 function intervalSetReview(host,g,value){
  host.className='task-graphs quantity-model';
  const entered=g.trialStep===null?'':g.partial?.[g.trialStep];
@@ -1774,6 +1819,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-solution-audit'){solutionAudit(host,config,value);return;}
  if(config.type==='interval-set-review'){intervalSetReview(host,config,value);return;}
  if(config.type==='geometry-bound-review'){geometryBoundView(host,config,value);return;}
  if(config.type==='source-proof-review'){proofReviewModel(host,config);return;}

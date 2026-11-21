@@ -79,6 +79,7 @@ jobs:
           python school/makarychev8/test-exercises-1014-1021.py
           python school/makarychev8/test-exercises-1022-1031.py
           python school/makarychev8/test-exercises-1032-1038.py
+          python school/makarychev8/test-exercises-1039-1048.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -118,6 +119,7 @@ jobs:
           node school/makarychev8/test-river-proofs.cjs
           node school/makarychev8/test-geometry-bounds.cjs
           node school/makarychev8/test-open-interval-examples.cjs
+          node school/makarychev8/test-source-solution-audit.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -212,6 +214,8 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-geometry-bounds.cjs
       - name: Chromium open endpoints, counterexamples and infinite-set membership
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-open-interval-examples.cjs
+      - name: Chromium parameter signs, open denominator and constructed graph
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-source-solution-audit.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction
