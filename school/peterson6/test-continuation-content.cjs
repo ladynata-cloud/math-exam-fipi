@@ -59,6 +59,22 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,204);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,215);assert(manual>0);
+const applications=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise>=9&&t.source.exercise<=11);
+assert.deepEqual(Array.from(applications,t=>[t.source.exercise,t.source.subpart,t.source.page]),[
+ [9,'1',7],[9,'2',7],[10,'1',7],[10,'2',7],[10,'3',7],
+ ...['а','б','в','г','д','е'].map(part=>[11,part,7]),
+]);
+assert(M.equal(applications[0].answer,273/300*100));
+const concentration=M.parse(applications[3].answer);
+assert.equal(concentration.n*(5600+140),concentration.d*100*140,'salt mass divided by the mass of the whole solution');
+assert.equal(Number(applications[4].answer)+18+7,3*10,'mass-weighted mean for three equal portions');
+const rates=[[4,2,'м/мин'],[25,4,'км/ч'],[280,7,'руб./м'],[120,5,'руб./кг'],[6,3,'детали/мин'],[50,2,'страниц/ч']];
+for(const [i,[amount,measure,unit]]of rates.entries()){
+ const t=applications[5+i];
+ assert.equal(t.steps[0].answer,unit);
+ assert(M.equal(t.steps[1].answer,amount/measure));
+ assert(t.answer.startsWith(String(amount/measure).replace('.',',')+' '+unit+' — '));
+}
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

@@ -501,6 +501,23 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.match(await studentFrame.locator('.help figure').innerText(), /−1 × \(a\) и −1 × \(−b\)/);
   await narrowShot(teacher, teacherFrame, 'peterson-board-320-bracket-feedback', '.help figure');
 
+  phase = 'exact salt concentration and feedback on the shared board';
+  await lesson(teacherFrame, 'p15', 9);
+  await teacherFrame.locator('#final-answer').fill('2,5');
+  await teacherFrame.locator('#answer-form button[type="submit"]').click();
+  await synchronized(teacherFrame,studentFrame,'compare salt with solution');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/массу воды/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-action="hint"]').click();
+  await synchronized(studentFrame,teacherFrame,'mixture model shared');
+  assert.match(await teacherFrame.locator('.help figure').innerText(),/масса воды \+ масса соли/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-salt-solution','.help figure');
+  await studentFrame.locator('#final-answer').fill('100/41');
+  await studentFrame.locator('#answer-form button[type="submit"]').click();
+  await synchronized(studentFrame,teacherFrame,'exact fractional percent accepted');
+  assert.match(await teacherFrame.locator('.task-heading').innerText(),/Решено на уроке/);
+  await ownership(teacher,student,false);
+
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
   await teacherFrame.locator('#book-part').selectOption('2');

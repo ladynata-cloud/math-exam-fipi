@@ -500,6 +500,12 @@ ${[1, 2, 3]
     return null;
   }
   function methodModel(t) {
+    if (t.quantityModel) {
+      const {caption,rows,question}=t.quantityModel;
+      return '<figure><figcaption>'+e(caption)+'</figcaption><ul>'+
+        rows.map(([label,amount])=>'<li><strong>'+e(label)+'</strong> — '+e(amount)+'</li>').join('')+
+        '</ul><p>'+e(question)+'</p></figure>';
+    }
     const pair = ratioPair(t);
     if (pair) {
       const [first, second, unit = ''] = pair;
@@ -519,6 +525,10 @@ ${[1, 2, 3]
   }
   function wrongAnswerCue(t,value) {
     if (check(value,t)) return '';
+    if (t.errorCues) {
+      const cue=t.errorCues.find(([answer])=>t.kind==='choice'?answer===value:M.equal(answer,value));
+      if (cue) return cue[1];
+    }
     const pair = ratioPair(t);
     if (pair) {
       const [first,second] = pair;
@@ -574,6 +584,7 @@ ${[1, 2, 3]
     boardStepFeedback = '';
     const help=checking?'':('<div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+(t.steps?.length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило темы.')+'</p>'+methodModel(t)+'</div>':'')+(s.guided?renderSteps(t,s):''));
     const focusedSkill = repairSkill(t);
+    const relatedIndex = t.relatedTask && active.lesson ? active.lesson.tasks.findIndex(item=>item.id===t.relatedTask) : -1;
     const taskSkills = focusedSkill ? [focusedSkill,...(t.skills || []).filter(id => id !== focusedSkill)] : t.skills;
     const label=t.finalLabel||(manual?'Запиши рассуждение или выполни построение.':t.kind==='choice'?'Выбери верный ответ на вопрос задачи.':'Чему равен результат? Введи число.');
     const feedback = '<div class="feedback ' +
@@ -641,6 +652,9 @@ ${[1, 2, 3]
         ? '<div class="independent-check">'+button('Проверить себя на новом примере','independent-check')+
           '<p class="small">Разбор сохранён. Новая попытка проверяет навык без открытых подсказок.</p></div>'
         : '') +
+      (s.correct && relatedIndex >= 0
+        ? '<p>'+button('Ещё задача с другими величинами · '+e(active.lesson.tasks[relatedIndex].source.reference),'task','data-index="'+relatedIndex+'"',true)+'</p>'
+        : '') +
       (!checking && taskSkills?.length
         ? '<section class="detour"><h3>С вычислением нужна помощь?</h3><p class="small">Потренируй отдельное действие. Затем вернись к этому же условию и записям.</p><div class="row">' +
           skillLinks(taskSkills) +
@@ -662,7 +676,7 @@ ${[1, 2, 3]
       if (boardSession) inp.maxLength=200;
       inp.oninput=()=>{
         if (s.correct) return;
-        if (!checking && s.feedback.startsWith('Пока не совпало.') && (ratioPair(t) || bracketTerms(t))) {
+        if (!checking && s.feedback.startsWith('Пока не совпало.') && (t.errorCues || ratioPair(t) || bracketTerms(t))) {
           s.feedback='';
           host.querySelector('.answer-form .feedback').textContent='';
         }

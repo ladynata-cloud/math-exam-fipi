@@ -74,6 +74,38 @@ test('source ratios and brackets diagnose the entered error and restore the work
  } finally {f.close();}
 });
 
+test('numbered applications distinguish part from whole and a rate from its reciprocal',async()=>{
+ const f=fixture(null,null,true);
+ try {
+  f.nav('#lesson/p15/9');
+  f.event('#final-answer','2,5');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/массу воды/);
+  assert.equal(f.state().tasks['p15-t10'].correct,false);
+  f.click('[data-action="hint"]');
+  assert.match(f.q('.help figure').textContent,/масса воды \+ масса соли/);
+  f.event('#final-answer','100/41');f.submit('#answer-form');
+  assert.equal(f.state().tasks['p15-t10'].correct,true);
+  assert.equal(f.state().tasks['p15-t10'].assisted,true);
+  f.click('[data-action="independent-check"]');await f.settle();
+  assert.equal(f.w.location.hash,'#check/percent-ratio/1');
+  f.nav('#lesson/p15/6');f.event('#final-answer','9');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/без всходов/);
+  f.event('#final-answer','91');f.submit('#answer-form');
+  assert.match(f.q('.task-heading').textContent,/Исправлено без подсказки/);
+  f.nav('#lesson/p15/11');f.click('[data-choice="0"]');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/обратный вопрос/);
+  f.click('[data-action="hint"]');assert.match(f.q('.help figure').textContent,/4 м.*2 мин/);
+  f.click('[data-choice="1"]');f.submit('#answer-form');
+  assert.equal(f.state().tasks['p15-t12'].correct,true);
+  f.click('#problem [data-action="task"][data-index="12"]');await f.settle();
+  assert.equal(f.w.location.hash,'#lesson/p15/12');
+  assert.equal(f.state().tasks['p15-t13'].correct,false);
+  f.nav('#home');
+  f.event('#book-part','2','change');f.event('#exercise-number','11');f.submit('#number-form');
+  assert.equal(f.d.querySelectorAll('#number-result a[href^="#lesson/p15/"]').length,6);
+ } finally {f.close();}
+});
+
 test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
  const f=fixture(null,null,true);
  try {
