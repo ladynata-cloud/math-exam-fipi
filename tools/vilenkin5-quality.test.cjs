@@ -141,7 +141,46 @@ function decimalStepInstructions(){
   ok(product.$('label[for=answer]').textContent.includes('до сокращения'));
   equal(product.errors,[]);product.close();
 }
+function numberedTablesRegression(){
+  const f=boot(),path=f.C.pathById.vilenkin5;
+  equal(path.ids.length,134);
+  equal(plain(path.numbered),['v5f-printed-1-1','v5f-printed-1-2']);
+  for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
+  const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
+  equal(plain(animals.steps.map(s=>s.answer)),[[1,1],10,2,47,5,9,39]);equal(animals.answer,39);
+  equal(plain(reading.steps.map(s=>s.answer)),[[4,12],[7,28],[9,45],[8,48],[4,28],32,4,0]);equal(reading.answer,161);
+  const fingerprints=path.numbered.map(()=>new Set());
+  for(let seed=1;seed<=180;seed++){
+    const a=f.M.generate(path.numbered[0],seed),r=f.M.generate(path.numbered[1],seed);
+    const c=a.data.counts,b=r.data.books;
+    equal(a.steps[3].answer,c.slice(0,6).reduce((s,n)=>s+n,0));equal(a.answer,a.steps[3].answer-c[3]);
+    equal(c[a.steps[1].answer-2],0);equal(c[a.steps[2].answer-2],Math.max(...c.slice(0,9)));
+    equal(r.steps.at(-3).answer,b.length);equal(r.steps.at(-2).answer,b.filter(n=>n===7).length);equal(r.steps.at(-1).answer,b.filter(n=>n===8).length);equal(r.answer,b.reduce((s,n)=>s+n,0));
+    [a,r].forEach((task,i)=>fingerprints[i].add(f.w.WorkshopState.fingerprint(path.numbered[i],task)));
+  }
+  ok(fingerprints.every(set=>set.size>170),'fresh surveys have distinct fingerprints');
+  f.route('#lesson/'+path.numbered[1]);
+  ok(f.$('#task-panel table').textContent.includes('Анкеты читателей'));
+  equal(f.snapshot().scene.firstAttempt,null);f.submit('4');equal(f.snapshot().scene.attempt,0);
+  f.submit('4;4');equal(f.snapshot().scene.firstWrong.value,'4;4');ok(f.snapshot().scene.message.includes('умножь частоту'));
+  f.submit('4;12');f.click('[data-cmd=next]');equal(f.snapshot().scene.step,1);
+  const tables=f.w.document.querySelectorAll('#task-panel table');equal(tables.length,2);
+  equal([...tables[1].tBodies[0].rows[0].cells].map(cell=>cell.textContent),['3','4','12']);
+  const reload=boot('#lesson/'+path.numbered[1],f.saved());equal(reload.snapshot().scene.step,1);equal(reload.snapshot().scene.answers[0],'4;12');reload.close();
+  const opt=f.$('[data-v5-param=group]');opt.value='5';opt.dispatchEvent(new f.w.Event('change',{bubbles:true}));equal(f.snapshot().scene.model.group,5);
+  f.input('[data-v5-prediction]','0');f.$('[data-v5-predict]').dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));ok(f.snapshot().scene.model.seen);
+  for(const id of path.numbered){
+    const full=boot('#lesson/'+id);const task=full.M.generate(id,0);
+    for(const s of task.steps){full.submit(Array.isArray(s.answer)?s.answer.join(';'):String(s.answer));ok(full.snapshot().scene.correct);full.click('[data-cmd=next]');}
+    full.submit(String(task.answer));ok(full.snapshot().scene.correct);
+    full.click('[data-cmd=mode][data-value=practice]');const practice=full.snapshot().scene;ok(practice.seed!==0);ok(!full.$('#model'));
+    const data=full.M.generate(id,practice.seed);full.submit(String(data.answer));ok(full.snapshot().scene.correct);
+    equal(full.errors,[]);full.close();
+  }
+  equal(f.errors,[]);f.close();
+}
 async function run(){
+  numberedTablesRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
