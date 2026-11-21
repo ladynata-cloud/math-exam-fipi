@@ -1493,3 +1493,16 @@ test('distinguish original and remaining quantities in all fourteen source equat
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('compare the correct reference quantity in every original and fresh printed percent story on page 30',()=>{
+ const f=fixture(null,null,true);try{
+  const limits=[['18/5 кг, второй 7/5 кг','27/5 кг, второй 21/10 кг'],['25 и 23','50 и 46'],['по 27','по 54'],['по 24','по 32'],['224 руб.','336 руб.'],['592 руб.','740 руб.'],['16, пятёрок 5','32, пятёрок 10'],['25%, меньшее отстаёт от большего на 20%','50%, меньшее отстаёт от большего на 100/3%'],['6, 15, 24','8, 20, 32'],['14800 книг','7400 книг']];
+  for(let i=0;i<limits.length;i++){
+   f.nav('#lesson/p38/'+(15+i));f.click('[data-lesson-help="model"] > summary');
+   const controls=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id),set=(j,v)=>f.event(controls[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+   set(1,2);assert(out().includes(limits[i][0]),out());assert.equal(f.d.querySelectorAll('#model [data-change-bar]').length,2);
+   set(0,1);assert.equal(f.q(controls[1]).value,'0');set(1,2);assert(out().includes(limits[i][1]),out());
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
