@@ -160,6 +160,7 @@
       const parts=value.split(';'),pair=target.answerFormat==='v5-pair';
       if(parts.length!==(pair?2:3)||parts.some(part=>{const n=M.parse(part);return !n||(!pair&&n.d!==1);}))return pair?'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.':'Запиши три целых числа через точку с запятой, например 2; 5; 7.';
     }
+    if(target.answerFormat==='v5-point-set'&&!root.Vilenkin5Numbered.readPointSet(value))return 'Введи буквы точек с рисунка. Запись можно поправить без потери попытки.';
     const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
     if(clarification)return clarification.text;
     if(target.scaleChoice){
@@ -217,9 +218,9 @@
     active=session;host.dataset.v5Quality='lesson';root.document.body.classList.add('v5-quality-active');
     const head=host.querySelector('.lesson-head'),task=host.querySelector('#task-panel'),model=host.querySelector('#model'),theory=host.querySelector('.v6-theory'),claim=host.querySelector('#claim-feedback')?.closest('section'),d=detail(session);
     if(lesson.number)task.querySelector('.question').insertAdjacentHTML('afterend',root.Vilenkin5Numbered.taskTable(session.task,session));
-    if(['table-read','table-total'].includes(lesson.fullKey)&&C.pathById.vilenkin5.numbered?.length){
-      const numbered=C.pathById.vilenkin5.numbered.map(id=>'<a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a>');
-      head.insertAdjacentHTML('beforeend','<p>Задания к таблицам в первой части. '+numbered.join(' · ')+'</p>');
+    if(['table-read','table-total','circle-shapes','circle-radius'].includes(lesson.fullKey)&&C.pathById.vilenkin5.numbered?.length){
+      const numbered=C.pathById.vilenkin5.numbered.filter(id=>C.byId[id].point===lesson.point).map(id=>'<a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a>');
+      if(numbered.length)head.insertAdjacentHTML('beforeend','<p>Задания из этого пункта учебника. '+numbered.join(' · ')+'</p>');
     }
     const modes={learn:'1 · Разберись',practice:'2 · Потренируйся',check:'3 · Проверь себя'};
     head.querySelectorAll('[data-cmd=mode]').forEach(b=>{b.textContent=modes[b.dataset.value];b.classList.add('v5q-mode');b.classList.toggle('is-current',b.dataset.value===session.mode);b.setAttribute('aria-pressed',String(b.dataset.value===session.mode));});
