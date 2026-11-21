@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8df2d927655d5985dcde0b317c896445b6e94b67f5ab50713231316b756c92d1",
-      "afterSha256": "c9a9f0e7988f701304a64d478be1ebd7c0847cc6ff1c43a4a2cd9c40c04301a8",
+      "beforeSha256": "8d75e774397a19d82ab8cb7a26a6d10cc41a7ab6639c0e7f1003eccc418932b9",
+      "afterSha256": "599c7e96554420131d1ae4ecc43ee9facafac98b7638c41802e92c0aa33be8ee",
       "placement": "before-head-close",
-      "sourceSha": "288d962db62c38ca1a6aefcb6aaa739bd0781428"
+      "sourceSha": "c0fc9b9dc4641bb5b57b762659d94479e6329e25"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6705,6 +6705,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также двадцать номеров второй части, включая объём слоя и сравнение длины двух рядов кубиков, возможность самостоятельно исправить прогноз и записать точную дробь, с обеими ролями."
+    },
+    {
+      "previousBaseSha": "288d962db62c38ca1a6aefcb6aaa739bd0781428",
+      "sourceBaseSha": "c0fc9b9dc4641bb5b57b762659d94479e6329e25",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также двадцать один номер второй части, включая авторскую модель вложенных квадратов, собственную формулировку правила и проверку суммы кубов до семи, с обеими ролями."
     }
   ],
   "coverageUpdates": [
