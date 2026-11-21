@@ -160,7 +160,7 @@
       const parts=value.split(';'),pair=target.answerFormat==='v5-pair';
       if(parts.length!==(pair?2:3)||parts.some(part=>{const n=M.parse(part);return !n||(!pair&&n.d!==1);}))return pair?'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.':'Запиши три целых числа через точку с запятой, например 2; 5; 7.';
     }
-    if(['v5-segments','v5-line-points'].includes(target.answerFormat)&&!root.Vilenkin5PrintedSegments.canonical(value,target.answerFormat))return target.answerFormat==='v5-segments'?'У каждого отрезка две разные буквы. Между парами поставь пробел, например AB CD.':'Введи буквы подписанных точек, например A, B.';
+    if(['v5-segments','v5-line-points','v5-equal-segments'].includes(target.answerFormat)&&!root.Vilenkin5PrintedSegments.canonical(value,target.answerFormat))return target.answerFormat==='v5-equal-segments'?'Введи два равенства с парами букв, например AB=CD; KL=MN.':target.answerFormat==='v5-segments'?'У каждого отрезка две разные буквы. Между парами поставь пробел, например AB CD.':'Введи буквы подписанных точек, например A, B.';
     if(target.answerFormat==='v5-classes'&&!/^[0-9\s|]+$/.test(value))return 'Введи цифры с границами между классами. Границей может быть пробел или вертикальная черта.';
     if(target.answerFormat==='v5-natural')return root.Vilenkin5PrintedDigits.natural(value)===null?'Запиши целое число цифрами. Между классами можно оставить пробел, справа от старшего класса должно быть по три цифры. Пока это черновик.':'';
     if(target.answerFormat==='v5-reading'&&!/^[а-яёА-ЯЁ.,!?\s-]+$/.test(value))return 'Прочитай число и запиши словами. Цифрами здесь уже дано условие.';

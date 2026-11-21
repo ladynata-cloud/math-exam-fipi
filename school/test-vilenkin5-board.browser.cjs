@@ -488,6 +488,20 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'compass opening and an equal transferred segment';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-46"]').click();await studentFrame.locator('h1').filter({hasText:'№1.46'}).waitFor();
+  await teacherFrame.locator('#answer').fill('EF=MK; CD=PT');await teacherFrame.locator('#answer-form button').click();
+  const equalPairs=await same(teacherFrame,studentFrame,'two geometrically equal pairs');assert(equalPairs.scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'construction follows the comparison');
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=sample]').selectOption({value:'0'});
+  await studentFrame.locator('[data-v5-param=delta]').selectOption({value:'3'});
+  await studentFrame.locator('[data-v5-prediction]').fill('3');await studentFrame.locator('[data-v5-predict] button').click();
+  const longer=await same(studentFrame,teacherFrame,'opening the compass too far produces a longer copy');assert.equal(longer.scene.model.delta,3);assert(longer.scene.model.seen);
+  await studentFrame.locator('[data-v5-param=delta]').selectOption({value:'2'});await studentFrame.locator('[data-v5-prediction]').fill('2');await studentFrame.locator('[data-v5-predict] button').click();
+  const replica=await same(studentFrame,teacherFrame,'unchanged compass opening reproduces the length');assert.equal(replica.scene.model.delta,2);assert(replica.scene.model.seen);
+  await narrow(student,studentFrame,'equal-segment-with-compass');await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();
