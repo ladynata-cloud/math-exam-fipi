@@ -781,7 +781,11 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
- if(target.kind==='bound-corner'){
+ if(target.kind==='explicit-set'){const a=G.setTokens(user,target.letters),b=G.setTokens(target.answer,target.letters);return Boolean(a&&b&&a.length===b.length&&a.every(x=>b.includes(x)));}
+ if(target.kind==='integer-probe')return G.integerProbe(user)!==null;
+ if(target.kind==='multiple-witness'){const n=G.integerProbe(user);return n!==null&&n%3===0&&n%5!==0;}
+ if(target.kind==='segment-name'){const p=String(user??'').toUpperCase().replace(/\s/g,'');return p===target.answer||p===target.answer.split('').reverse().join('');}
+ if(target.kind==='bound-corner'||target.kind==='yield-pair'){
   const p=G.cornerValues(user),q=G.cornerValues(target.answer);return Boolean(p&&q&&p.every((x,i)=>M.equal(x,q[i])));
  }
  if(target.kind==='triangle-vertex'){const p=G.cornerValues(user);return Boolean(p&&p[1].n>0);}

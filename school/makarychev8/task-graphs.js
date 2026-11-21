@@ -773,6 +773,61 @@ function equationExamples(host,value){
 function boundNote(host,text) {
  const p=document.createElement('p'); p.className='small'; p.textContent=text;host.append(p);return p;
 }
+function setTokens(raw,letters){
+ const s=String(raw??'').trim().toLowerCase().replace(/^\{(.*)\}$/,'$1').trim();
+ if(!s)return null;if(['∅','нет','пусто'].includes(s))return [];
+ const parts=s.split(/[,;\s]+/);if(parts.length>130)return null;
+ if(!parts.every(x=>letters?/^[а-яё]$/.test(x):/^[+-]?\d{1,12}$/.test(x)))return null;
+ return [...new Set(parts.map(v=>letters?v:String(Number(v))))];
+}
+function integerProbe(raw){const v=M.parse(raw);return v?.d===1?v.n:null;}
+function setMembership(g,token){
+ if(g.first)return [g.first.some(x=>String(x)===String(token)),g.second.some(x=>String(x)===String(token))];
+ const n=integerProbe(token);if(n===null)return null;
+ // Any integer above 40 is composite or prime independently of the finite source set.
+ const prime=k=>{if(k<2)return false;if(k%2===0)return k===2;for(let f=3;f*f<=k;f+=2)if(k%f===0)return false;return true;};
+ if(g.rule==='prime40-digit')return [n<=40&&prime(n),n>=10&&n<=99];if(g.rule==='digit-multiple')return [n>=10&&n<=99,n>0&&n%19===0];
+ if(g.rule==='square-cube')return [n>0&&Number.isInteger(Math.sqrt(n)),n>0&&Math.round(Math.cbrt(n))**3===n];
+ if(g.rule==='prime-composite'){const simple=prime(n);return [simple,n>1&&!simple];}
+ const multiple=/^m(\d+)-m(\d+)$/.exec(g.rule||'');return multiple?[n%Number(multiple[1])===0,n%Number(multiple[2])===0]:null;
+}
+function eulerDiagram(host,g,value){
+ host.className='task-graphs quantity-model';
+ const relNames={'пересекаются без вложения':'overlap','первое содержится во втором':'left-in-right','второе содержится в первом':'right-in-left','не пересекаются':'disjoint'};
+ const chosen=relNames[g.partial?.[g.relationStep]],rel=chosen||g.relation;
+ const svg=node('svg',{viewBox:'0 0 320 142',role:'img','aria-label':'Круги Эйлера для '+g.left+' и '+g.right,'data-euler-relation':rel});
+ const lookup={equal:[[160,71,62],[160,71,62]],overlap:[[117,71,62],[201,71,62]],'left-in-right':[[134,71,32],[157,71,64]],'right-in-left':[[156,71,64],[181,71,32]],disjoint:[[78,71,57],[242,71,57]],triple:[[135,71,28],[150,71,45],[163,71,64]]};
+ const regions=lookup[rel],colors=['#148078','#94602c','#486b9f'];if(!regions)return;
+ const circle=([cx,cy,r],other)=>node('circle',{cx,cy,r,...other});
+ if(rel!=='triple'){
+  if(g.operation==='intersection'){const clip=node('clipPath',{id:'m8-common-set'});clip.append(circle(regions[0],{}));const defs=node('defs');defs.append(clip);svg.append(defs,circle(regions[1],{fill:'#b7dfd0','clip-path':'url(#m8-common-set)'}));}
+  if(g.operation==='union'||g.operation==='left'||g.operation==='right')regions.forEach((z,i)=>{if(g.operation==='union'||i===(g.operation==='left'?0:1))svg.append(circle(z,{fill:'#d3e9e2'}));});
+ }
+ regions.forEach((z,i)=>svg.append(circle(z,{fill:'none',stroke:colors[i],'stroke-width':3,'stroke-dasharray':i===1?'7 3':'none'})));
+ const glyphs=rel==='equal'?[[134,75,'A'],[185,75,'B']]:rel==='triple'?[[135,75,'N'],[177,75,'Z'],[208,75,'Q']]:rel==='left-in-right'?[[134,75,'A'],[201,75,'B']]:rel==='right-in-left'?[[109,75,'A'],[181,75,'B']]:[[regions[0][0]-19,75,'A'],[regions[1][0]+19,75,'B']];
+ glyphs.forEach(([x,y,s])=>svg.append(node('text',{x,y,'font-size':15,'text-anchor':'middle'},s)));host.append(svg);
+ boundNote(host,rel==='triple'?'N — натуральные, Z — целые, Q — рациональные.':'A: '+g.left+'. B: '+g.right+'.');
+ const tokens=g.first?setTokens(value,g.letters):g.fixed!==undefined?[g.fixed]:[g.own?value:g.partial?.[0]];
+ if(tokens)for(const token of tokens){const which=setMembership(g,token);if(!which)continue;const [a,b]=which;boundNote(host,String(token)+' — '+(a&&b?'в обоих множествах':a?'только в A':b?'только в B':'вне обоих множеств')+'.').dataset.setArea=a&&b?'both':a?'left':b?'right':'outside';}
+}
+function segmentDiagram(host,g,value){
+ host.className='task-graphs quantity-model';const pts={A:27,C:138,B:189,D:296};
+ const svg=node('svg',{viewBox:'0 0 320 98',role:'img','aria-label':'Отрезки AB и CD на одной прямой, точки A, C, B, D'});
+ svg.append(node('line',{x1:pts.A,x2:pts.B,y1:33,y2:33,stroke:'#147769','stroke-width':4}),node('line',{x1:pts.C,x2:pts.D,y1:40,y2:40,stroke:'#a45829','stroke-width':4,'stroke-dasharray':'7 2'}));
+ for(const [s,x]of Object.entries(pts))svg.append(node('circle',{cx:x,cy:37,r:3,fill:'#243d33'}),node('text',{x,y:65,'text-anchor':'middle','font-size':15},s));
+ const pair=String(value??'').toUpperCase().replaceAll(/\s/g,'');if(/^[ABCD]{2}$/.test(pair)&&pair[0]!==pair[1])svg.append(node('line',{x1:pts[pair[0]],x2:pts[pair[1]],y1:78,y2:78,stroke:'#4c528c','stroke-width':5,'data-proposed-segment':pair}));
+ host.append(svg);boundNote(host,'Зелёная линия — AB, штриховая — CD. Твой отрезок появится под буквами.');
+}
+function setReview(host,g,value){
+ host.className='task-graphs quantity-model';
+ if(g.type==='harvest-check'){const v=cornerValues(value);if(!v||v.some(x=>x.n<=0)){boundNote(host,'Раздели урожай каждого хозяйства на его урожайность, чтобы найти площадь.');return;}
+  const x=v[0].n/v[0].d,y=v[1].n/v[1].d;boundNote(host,'При твоих урожайностях площади равны '+(180/x).toLocaleString('ru-RU',{maximumSignificantDigits:6})+' и '+(160/y).toLocaleString('ru-RU',{maximumSignificantDigits:6})+' га.').dataset.harvestTrial='yes';return;}
+ const k=M.parse(value);if(!k){boundNote(host,'Проверь вид y = kx: нулевому x соответствует нулевой y.');return;}
+ const slope=k.n/k.d;boundNote(host,'У твоей прямой при x = 1 получаем y = '+M.answer(k)+'.').dataset.lineTrial='yes';
+ host.append(graph(slope,0,[],4,'Предложенная прямая через начало координат'));
+}
+
+
 function cornerValues(raw){
  const parts=String(raw??'').split(';').map(s=>M.parse(s.trim()));return parts.length===2&&parts.every(Boolean)?parts:null;
 }
@@ -1368,6 +1423,9 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='euler-operation'){eulerDiagram(host,config,value);return;}
+ if(config.type==='overlap-segments'){segmentDiagram(host,config,value);return;}
+ if(['proportion-coefficient','harvest-check'].includes(config.type)){setReview(host,config,value);return;}
  if(config.type==='combined-intervals'){combinedBounds(host,config);return;}
  if(config.type==='two-comparisons'){comparisonPair(host,config,value);return;}
  if(config.type==='power-order'){powerOrder(host,config);return;}
@@ -1446,5 +1504,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cornerValues,coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

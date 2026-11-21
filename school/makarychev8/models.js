@@ -868,5 +868,20 @@
   }
 
 
-  return { mount, experiment, combinedPractice, practiceCombined, boundsPractice, practiceBounds, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const setPractice={id:'set-diagrams',title:'Элементы пересечения и объединения',description:'По признакам двух множеств составь нужный список.'};
+  function practiceSets(seed,level){
+    const offset=seed%17,k=2+Math.floor(seed/5)%4,h=2+Math.floor(seed/3)%5,all=Array.from({length:12},(_,i)=>offset+i);
+    const a=all.filter(x=>x%k===0),b=all.filter(x=>(x+seed%3)%h===0);
+    const op=level===2?'union':'intersection',literals=op==='union'?[...new Set([...a,...b])].sort((x,y)=>x-y):a.filter(x=>b.includes(x));
+    const prompt=level===3?'Рассмотри целые x от '+offset+' до '+(offset+11)+' включительно. В A входят кратные '+k+', в B — те x, для которых x + '+(seed%3)+' кратно '+h+'. Перечисли их пересечение.':'A = {'+a.join(', ')+'}, B = {'+b.join(', ')+'}. Перечисли '+(op==='union'?'объединение':'пересечение')+'.';
+    const answer=literals.length?literals.join(';'):'∅',hint='Отмечай каждое число отдельно в A и B. Для пересечения нужны оба признака.';
+    return {title:setPractice.title,kind:'explicit-set',answer,prompt,hint,correction:hint,explanation:'Получается {'+literals.join(', ')+'}.',inputNote:'Введи элементы через точку с запятой. Для пустого множества введи ∅ или нет.',
+      graph:{type:'euler-operation',left:'A',right:'B',relation:setRelation(a,b),operation:op,first:a,second:b},
+      steps:[{prompt:'Сколько элементов входит в оба множества?',kind:'number',answer:String(a.filter(x=>b.includes(x)).length),hint,explanation:hint},{prompt:'Сколько элементов в требуемом множестве?',kind:'number',answer:String(literals.length),hint,explanation:hint}],
+      skills:[setPractice.id],source:{type:'authored',reference:'Тренировка операций над конечными множествами'}};
+  }
+  function setRelation(a,b){if(a.length===b.length&&a.every(x=>b.includes(x)))return 'equal';if(a.every(x=>b.includes(x)))return 'left-in-right';if(b.every(x=>a.includes(x)))return 'right-in-left';return a.some(x=>b.includes(x))?'overlap':'disjoint';}
+
+
+  return { mount, experiment, setPractice, practiceSets, combinedPractice, practiceCombined, boundsPractice, practiceBounds, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });
