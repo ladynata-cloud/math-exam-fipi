@@ -16,6 +16,27 @@ const originals={
 };
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 function historicalRead(file,read=name=>fs.readFileSync(path.join(root,name))){
+ if (file === 'stereo-course/assets/math-text.js') {
+  const bytes = read(file);
+  const before = '8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b';
+  if (hash(bytes) === before) return bytes;
+  assert.equal(hash(bytes), '70c13e249bb55c45054a1a9d20a646fda866972aafbda7e0d2259710479a9e5b', 'the exact reviewed fraction-spacing correction');
+  const old = Buffer.from(bytes.toString('utf8').replace(`      let container = parent;
+      if (mixed) {
+        container = span(parent, 'stereo-mixed-number', '');
+        appendAtoms(container, whole[1]);
+        container.append(document.createTextNode(whole[2]));
+      }
+      // Keep authored spaces adjacent to the slash inside the corresponding term.
+      fraction(container, text.slice(left.start, slash), text.slice(slash + 1, right.end));`, `      if (mixed) {
+        const node = span(parent, 'stereo-mixed-number', '');
+        appendAtoms(node, whole[1]);
+        node.append(document.createTextNode(whole[2]));
+        fraction(node, numerator, denominator);
+      } else fraction(parent, numerator, denominator);`));
+  assert.equal(hash(old), before, 'all previously frozen math renderer bytes');
+  return old;
+ }
  if (file === SCHEMA_PATH) return beforeRightAngleSchema(read(file));
  if(!Object.hasOwn(originals,file))return beforeProfileComposition(file,beforeRightAngles(file,beforeCompactPreview(file,read(file))));
  assert.equal(manifest.base,'0d96ad84f0dd9dcadf123b3845db75c5476be93a');
