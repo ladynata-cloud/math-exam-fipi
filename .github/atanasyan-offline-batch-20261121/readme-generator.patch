@@ -1,0 +1,70 @@
+diff --git a/geometry-course/README.txt b/geometry-course/README.txt
+index 426dc39a..cec83906 100644
+--- a/geometry-course/README.txt
++++ b/geometry-course/README.txt
+@@ -1,8 +1,9 @@
+ Геометрия · 7–9 классы — атлас и задачи Атанасяна
+ ==============================================
+ 
+-63 тематических урока 7–9 классов, задачник из 1425 карточек,
+-начальный маршрут из 255 карточек и 70 прежних тренажёров.
++В атласе 63 тематических урока для 7–9 классов.
++Каталог задачника показывает число доступных карточек.
++Начальный маршрут включает 255 карточек. Сохранены 70 прежних тренажёров.
+ Начальный маршрут использует часть задачника; его карточки не являются
+ дополнительными независимыми задачами.
+ 
+diff --git a/scripts/geometry-download-offline.mjs b/scripts/geometry-download-offline.mjs
+index becd7c75..b9dc73f6 100644
+--- a/scripts/geometry-download-offline.mjs
++++ b/scripts/geometry-download-offline.mjs
+@@ -63,24 +63,28 @@ export function prepareGeometryFolder(root, sourceDir, packageDir) {
+   }
+   const embed = (file, id, source) => {
+     const json = fs.readFileSync(path.join(root, source), 'utf8');
+-    JSON.parse(json); // malformed data stops the export before it is published
++    const data = JSON.parse(json);
+     const safe = json.replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+     const target = path.join(packageDir, file);
+     const html = fs.readFileSync(target, 'utf8');
+     if (!html.includes('</head>') || html.includes('id="' + id + '"')) throw Error('Unexpected offline geometry entry: ' + file);
+     fs.writeFileSync(target, html.replace('</head>', '<script type="application/json" id="' + id + '">' + safe + '</script>\n</head>'));
++    return data;
+   };
+   const replaceOnce = (file, from, to) => {
+     const target = path.join(packageDir, file), text = fs.readFileSync(target, 'utf8');
+     if (text.split(from).length !== 2) throw Error('Unexpected geometry offline bootstrap: ' + file);
+     fs.writeFileSync(target, text.replace(from, to));
+   };
+-  embed('textbook/index.html', 'geometry-offline-textbook', 'geometry-course/textbook/data/course.json');
++  let completeTextbook = embed('textbook/index.html', 'geometry-offline-textbook', 'geometry-course/textbook/data/course.json');
+   const ids = supplements.unitFiles.map(url => {
+     const id = 'geometry-offline-' + path.basename(url, '.json');
+-    embed('textbook/index.html', id, url.slice(1));
++    const unit = embed('textbook/index.html', id, url.slice(1));
++    completeTextbook = supplements.append(completeTextbook, unit);
+     return id;
+   });
++  replaceOnce('README.txt', 'Каталог задачника показывает число доступных карточек.',
++    'Доступно карточек в задачнике: ' + completeTextbook.lessons.length + '.');
+   replaceOnce('textbook/index.html',
+     "fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(GeometryAdditionalLessons.forCourse)",
+     "Promise.resolve(" + JSON.stringify(ids) + ".reduce((course,id)=>GeometryAdditionalLessons.append(course,JSON.parse(document.getElementById(id).textContent)),JSON.parse(document.getElementById('geometry-offline-textbook').textContent)))");
+diff --git a/tools/atanasyan-harmonization/download.test.cjs b/tools/atanasyan-harmonization/download.test.cjs
+index 9c71cc6e..bd353c98 100644
+--- a/tools/atanasyan-harmonization/download.test.cjs
++++ b/tools/atanasyan-harmonization/download.test.cjs
+@@ -78,11 +78,11 @@ const manifest = require(root + '/downloads/trainers-manifest.json');
+ const entry = manifest.trainers.find(item => item.slug === 'geometry-course');
+ assert.match(entry.title, /7–9/);
+ assert.match(entry.level, /7–9/);
+-assert.match(read('README.txt'), /1425/);
++assert(read('README.txt').includes('Доступно карточек в задачнике: ' + completeTextbook.lessons.length + '.'), 'readme matches the fully embedded bank');
+ for (const entrypoint of ['index.html', 'geometry-course.html']) {
+   assert.match(read(entrypoint), /href="https:\/\/mathexam\.space\/geometry-course\/ichenskaya-7-works\//, 'adjacent course remains an explicit website link');
+   assert(!/href="(?:\.\/)?ichenskaya-7-works\//.test(read(entrypoint)), 'an uncopied adjacent bank must not be offered as an offline course');
+ }
+-console.log('ATANASYAN_HARMONIZATION_DOWNLOAD_OK ' + JSON.stringify({topics: 63, textbookCards: 1425, firstSteps: 255, legacy: 70, localResources: resources, zipFiles: files.length}));
++console.log('ATANASYAN_HARMONIZATION_DOWNLOAD_OK ' + JSON.stringify({topics: 63, textbookCards: completeTextbook.lessons.length, firstSteps: 255, legacy: 70, localResources: resources, zipFiles: files.length}));
+ module.exports = {folder, root, course, textbook, first, completeTextbook};
+ if (require.main === module) fs.rmSync(folder, {recursive: true, force: true});
