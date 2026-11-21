@@ -162,9 +162,9 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–630 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–647 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–630 разобраны полностью/);
+ assert.match(overview.textContent,/№1–647 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
 });
@@ -307,4 +307,16 @@ test('factor forms allow multiplicity, scalar positions and both families of fre
  assert.equal(c.progressionFactors('6;10;3;6(x+1)^2'),'ratio');
  assert.equal(c.factoredPair('(1/6)(1+x)(x+2)','(x+1)(x+2)/6'),'factored');
  assert.equal(c.factoredPair('2(2a-b)(a^2-b^2)','2(2a-b)(a-b)(a+b)',3),'expanded');
+});
+
+test('reciprocal line cases use exact discriminant and generated rational roots survive every original denominator',()=>{
+ const c=require('./check.js'),{practiceRationalEquation}=require('./models.js');
+ for(const [line,count] of [['0;0',0],['0;-2',1],['-1;0',0],['-1;-2',1],['-1;3',2],['1/9;0',2],['-1/4;1',1],['-1/4;1.001',2]])assert.equal(c.reciprocalIntersections(line).count,count,line);
+ for(const level of [1,2,3])for(let seed=0;seed<60;seed++){
+  const q=practiceRationalEquation(seed,level),banned=c.quadraticEntries(q.excludedRoots),answer=c.quadraticEntries(q.answer);
+  assert(q.steps.every(step=>c.check(step.answer,step))&&c.check(q.answer,q));
+  assert(answer.every(v=>!banned.includes(v)));
+  assert(!c.check(banned[0],q));
+ }
+ assert.deepEqual(c.classifyRationalCandidates('2;3/2','2','3/2').map(g=>g.status),['excluded','correct']);
 });

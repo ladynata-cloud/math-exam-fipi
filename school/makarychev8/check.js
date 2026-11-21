@@ -406,6 +406,20 @@ function factoredPair(value,expected,required=2){
  }catch(_){return 'expanded';}
  return count===required?'factored':'expanded';
 }
+function reciprocalIntersections(raw){
+ const fields=String(raw).split(';');if(fields.length!==2)return null;
+ const [slope,intercept]=fields.map(v=>M.parse(v));if(!slope||!intercept)return null;
+ const an=BigInt(slope.n),ad=BigInt(slope.d),bn=BigInt(intercept.n),bd=BigInt(intercept.d);
+ const numerator=bn*bn*ad+4n*an*bd*bd;
+ const count=an===0n?(bn===0n?0:1):numerator<0n?0:numerator===0n?1:2;
+ return {a:slope.n/slope.d,b:intercept.n/intercept.d,count,discriminant:Number(numerator)/Number(ad*bd*bd)};
+}
+function classifyRationalCandidates(value,excluded,answers){
+ const entries=quadraticEntries(value);if(!entries)return null;
+ const banned=excluded==='нет'?[]:excluded.split(';'),solutions=quadraticEntries(answers)||[];
+ return entries.map(term=>({term,status:banned.some(x=>sameRadicalSum(x,term))?'excluded':solutions.some(x=>sameRadicalSum(x,term))?'correct':'different'}));
+}
+
 function progressionFactors(input){
  const pieces=String(input).split(';');
  if(pieces.length!==4||pieces.some(p=>!p.trim()))return 'format';
@@ -421,6 +435,7 @@ function progressionFactors(input){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='rational-line-example')return reciprocalIntersections(user)?.count===target.intersectionCount;
  if(target.kind==='progression-factor-example')return progressionFactors(user)==='factored';
  if(target.factorizedAnswer)return factoredPair(user,target.answer,target.requiredFactors||2)==='factored';
  if(target.kind==='separated-rational')return separatedRational(user,target.answer);
@@ -480,5 +495,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

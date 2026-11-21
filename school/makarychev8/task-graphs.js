@@ -398,6 +398,43 @@ function quadraticEvidence(host,config,value){
  host.append(caption);
 }
 
+function rationalEquationModel(host,config,value){
+ host.className='task-graphs quantity-model';const note=document.createElement('p');note.className='small';
+ if(!config.checked||!config.terms){
+  note.textContent='После проверки можно проследить для каждого предложенного корня: разрешают ли его знаменатели и верно ли исходное равенство.';host.append(note);return;
+ }
+ if(!config.terms.length){
+  note.textContent='Ты указал, что решений нет. Проверь отдельно кандидатов уравнения без дробей и исходные ограничения.';host.append(note);return;
+ }
+ for(const {term,status} of config.terms){
+  const row=document.createElement('p');row.className='small';row.dataset.candidateStatus=status;
+  row.textContent=term+' — '+({excluded:'значение обнуляет исходный знаменатель; его нужно исключить.',correct:'все знаменатели определены и равенство выполняется.',different:'знаменатели допустимы, но исходное равенство не выполняется.'})[status];host.append(row);
+ }
+}
+function reciprocalExample(host,config,value){
+ host.className='task-graphs root-graph';
+ const caption=document.createElement('p');caption.className='small';
+ if(!config.analysis){
+  caption.textContent='Введи коэффициенты a и b, чтобы построить свою прямую и гиперболу.';host.append(caption);return;
+ }
+ const {a,b,count,discriminant}=config.analysis,points=[];
+ if(a===0&&b!==0)points.push([1/b,b]);
+ if(a!==0&&count===1){const x=-b/(2*a);points.push([x,1/x]);}
+ if(a!==0&&count===2){
+  const q=-(b+(b>=0?1:-1)*Math.sqrt(discriminant))/2;
+  for(const x of [q/a,-1/q])points.push([x,1/x]);
+ }
+ const xs=points.map(p=>p[0]);const ys=points.map(p=>p[1]);
+ // Fit each axis independently so intersections remain visible for steep lines.
+ const xEnd=Math.max(3,...xs.map(Math.abs))*1.18,yEnd=Math.max(3,Math.abs(b),...ys.map(Math.abs))*1.18;
+ const visible=points.filter(p=>p.every(Number.isFinite));
+ const plane={curves:[{kind:'hyperbola',k:1,xs:[-2,-1,1,2,...xs]},{kind:'line',k:a,b,dashed:true,xs}],points:config.checked?visible:[],xRange:[-xEnd,xEnd],yRange:[-yEnd,yEnd],
+  compactTicks:Math.max(xEnd,yEnd)>1000,label:'Сплошная гипербола y = 1/x и твоя штриховая прямая'};
+ const svg=rootGraph(plane,'');svg.dataset.reciprocalSlope=String(a);svg.dataset.reciprocalIntercept=String(b);host.append(svg);
+ caption.textContent='Сплошная кривая — y = 1/x, штриховая прямая определяется твоими a и b.'+(config.checked?' Число действительных точек встречи: '+count+'.':'');
+ host.append(caption);
+}
+
 function coefficientExample(host,config,value){
  host.className='task-graphs root-graph';
  const caption=document.createElement('p');caption.className='small';
@@ -545,6 +582,8 @@ function appliedShape(host,config,value){
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
  if(['quadratic-discriminant','quadratic-parameter','quadratic-reciprocals','check-common-point'].includes(config.type)){quadraticEvidence(host,config,value);return;}
+ if(config.type==='rational-line-example'){reciprocalExample(host,config,value);return;}
+ if(config.type==='rational-equation-check'){rationalEquationModel(host,config,value);return;}
  if(config.type==='coefficient-example'){coefficientExample(host,config,value);return;}
  if(config.type==='vertex-form'){vertexForm(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}

@@ -552,5 +552,22 @@
           explanation:'Сумма равна '+(r+s)+', произведение '+r*s+'.'}]};
   }
 
-  return { mount, experiment, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const rationalEquationPractice={id:'rational-equation',title:'Дробное уравнение и посторонние корни',
+    description:'Найди запреты и проверь кандидатов в исходных знаменателях.'};
+  function practiceRationalEquation(seed,level){
+    const hole=1+seed%9,r=hole+1+seed%5,s=-(1+seed%7);
+    const factor=z=>'(x '+(z>0?'−':'+')+' '+Math.abs(z)+')';
+    const top=level===1?factor(r):level===2?factor(hole)+factor(r):factor(r)+factor(s);
+    const answer=level<3?String(r):s+';'+r,banned=level<3?String(hole):hole+';'+(-r-8);
+    const den=level<3?factor(hole):factor(hole)+factor(-r-8);
+    return {title:'Отдели корни от запрещённых значений',prompt:'Реши ('+top+') / ('+den+') = 0.',kind:'quadratic-roots',
+      answer,excludedRoots:banned,graph:{type:'rational-equation-check',excluded:banned,solutions:answer},
+      finalLabel:'Все допустимые корни',hint:'Дробь равна нулю, если числитель равен нулю и знаменатель отличен от нуля.',
+      explanation:'Нули знаменателя: '+banned+'. После проверки остаются '+answer+'.',
+      source:{type:'authored',reference:'Авторская тренировка по области допустимых значений'},skills:[vietaPractice.id],
+      steps:[{prompt:'Запиши все нули исходного знаменателя.',kind:'quadratic-roots',answer:banned,hint:'Обнуляй каждый множитель знаменателя отдельно.',explanation:'Исходные запреты: '+banned+'.'},
+        {prompt:'Каков положительный корень, который не запрещён?',kind:'number',answer:String(r),hint:'Проверь положительные нули числителя в знаменателе.',explanation:'x = '+r+' сохраняет знаменатель ненулевым.'}]};
+  }
+
+  return { mount, experiment, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });
