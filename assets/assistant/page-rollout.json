@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "a46ad6545b7229c52772993943efeaf623f859e3fcda84dea1acca4496b0b3ff",
-      "afterSha256": "1a8aaeea5ef645411d0c78fd7b5ca8984a606115271280408b142804a678f54b",
+      "beforeSha256": "548d7ccf6ea5f3ffc503b4588e936bd1efe069e7b692a7c9fcf87fce068b9420",
+      "afterSha256": "35d6229899213e8e897b22953693a4333d0788a0a16c014214bb35cf4c8b520d",
       "placement": "before-head-close",
-      "sourceSha": "ec0f796f751036b5e59bf0cf6af933409ddaee17"
+      "sourceSha": "67265c8f2514cff500d1a974f7f39e320c10d54a"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6624,6 +6624,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в 59 печатных номеров и две проверочные первой части Виленкина, а также девять номеров второй части, включая свои примеры в тетради, с обеими ролями."
+    },
+    {
+      "previousBaseSha": "ec0f796f751036b5e59bf0cf6af933409ddaee17",
+      "sourceBaseSha": "67265c8f2514cff500d1a974f7f39e320c10d54a",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в 59 печатных номеров и две проверочные первой части Виленкина, а также десять номеров второй части, в том числе измерение диаметра и длины трёх окружностей, с обеими ролями."
     }
   ],
   "coverageUpdates": [
