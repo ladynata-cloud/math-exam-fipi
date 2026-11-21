@@ -26,14 +26,15 @@ const server=http.createServer((req,res)=>{
  const figureAnswers={1030:['5','10'],1031:['18','41'],'1032-1':['0','-3'],'1032-2':['3','-3'],'1033-1':['26','2,5'],'1033-2':['13','10'],'1034-1':['25','20'],'1034-2':['8','20'],'1035-1':['8','6'],'1035-2':['17','6']};
  const courierAnswers={1036:['36','40','1800'],1037:['44','48','2200']};
  const methodAnswers={1038:['3','5'],1039:['20','56'],1040:['60','90'],1041:['12','3'],1042:['8','0'],1043:['32','0'],1044:['25','45']};
+ const curveAnswers={t97:['-2','-1'],t98:['9','5'],t99:['1','4'],'1045-1':['0','0'],'1045-2':['-2','-2'],'1045-3':['3','-4'],'1045-4':['0','3'],'1045-5':['-2','2'],'1046-1':['2','4'],'1046-2':['1','1'],'1046-3':['2','2']};
  const reviewAnswers={r1:['7','0'],r2:['-3','0'],r3:['5','13'],r4:['2','5'],r5:['2','4'],r6:['4','6'],r7:['2','3'],r8:['3','8'],r9:['2','3'],r10:['4','-2'],r11:['3','-5'],r12:['3','-3'],r13:['-3','3'],r14:['-3','2'],'r15-1':['0','12'],'r15-2':['0','5'],r16:['-3','0'],r17:['-6','6'],r18:['-2','14'],r19:['5','7'],r20:['6','15']};
  for(const width of [320,1280]) {
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1044/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1046/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -46,6 +47,8 @@ const server=http.createServer((req,res)=>{
    const coefficient={
     '998-1':['4','-4','отрицательный','−4,0'],'998-2':['2','20','в сантиметры','+20'],'998-3':['1','-1','противоположные','−1.0'],'998-4':['25','5','возведения в квадрат','+5'],
     '999-1':['0,5','2','обратный переход','2.0'],'999-2':['2','1/2','короче','½'],'999-3':['1/2','-1/2','отрицательным','−0,5'],'999-4':['-1','1','D→C','+1'],'999-5':['1','-1','направлению','−1.0'],
+    '1045-1':['0;0;9','0;0;3','квадрат радиуса','(0; 0); 3'],'1045-2':['-1;2;2','1;-2;2','знаки у центра','(1; −2); 2'],'1045-3':['5;-3;5','-5;3;5','знаки у центра','(−5; 3); 5'],'1045-4':['1;0;4','1;0;2','квадрат радиуса','(1; 0); 2'],'1045-5':['0;-2;2','0;-2;√2','квадрат радиуса','(0; −2); sqrt(2)'],
+    '1046-1':['A','A,C','всех пяти','С и А'],'1046-2':['D','B','всех пяти','в'],'1046-3':['A,D','B,D','гипербола','Д; В'],
     1040:['80','100','горизонтальная составляющая','100 см'],1041:['5','13','вертикальная часть','13 см'],
     1036:['36','3600','дан в делениях','3,6 км'],1037:['4800','4400','4800 м','4.4 км'],
     '1032-1':['0','2','Вертикальная разность','+2'],'1032-2':['3','3;-13/5','Одного числа недостаточно','−2,6; 3'],
@@ -120,7 +123,8 @@ const server=http.createServer((req,res)=>{
    const figureCase=Object.hasOwn(figureAnswers,n)?'case-'+(n==='1031'||n.startsWith('1034-')?4:3):null;
    const courierCase=Object.hasOwn(courierAnswers,n)?'case-'+(n==='1036'?4:5):null;
    const methodCase=Object.hasOwn(methodAnswers,n)?'case-'+(['1043','1044'].includes(n)?4:3):null;
-   const switchCase=methodCase||courierCase||figureCase||distanceCase||tableCase||positionCase||actionCase||gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
+   const curveCase=Object.hasOwn(curveAnswers,n)?'case-'+(n==='t99'||n.startsWith('1046-')?4:3):null;
+   const switchCase=curveCase||methodCase||courierCase||figureCase||distanceCase||tableCase||positionCase||actionCase||gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
    if(switchCase) {
     await page.locator('[data-case="'+switchCase+'"]').click();
     assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),switchCase);
