@@ -420,6 +420,16 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(studentFrame,teacherFrame,'printed numeral and place value restored');
   await narrow(student,studentFrame,'reading-and-place-value');await ownership(teacher,student,false);
 
+  phase = 'preserving every digit while grouping thousands';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-17"]').click();await studentFrame.locator('h1').filter({hasText:'№1.17'}).waitFor();
+  await teacherFrame.locator('#answer').fill('30 42');await teacherFrame.locator('#answer-form button').click();
+  const prior=await same(teacherFrame,studentFrame,'right digits, wrong boundary');assert.match(prior.scene.message,/Цифры сохранены/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('3 | 042');await studentFrame.locator('#answer-form button').click();
+  const corrected=await same(studentFrame,teacherFrame,'student corrects the class after the teacher');assert(corrected.scene.correct);assert.equal(corrected.scene.answers[0],'3 | 042');
+  assert.deepEqual(corrected.scene.hintLevels,{});
+  await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();
@@ -431,7 +441,7 @@ async function run(browser, origin, backend, failures) {
   await studentFrame.locator('[data-v5-param=region]').selectOption('3');
   await studentFrame.locator('#answer').fill('лВд');await studentFrame.locator('#answer-form button').click();
   const circleCorrection=await same(studentFrame,teacherFrame,'student identifies the circumference and shows the short arc');
-  assert.equal(circleCorrection.scene.model.region,3);assert(circleCorrection.scene.correct);assert(!circleCorrection.scene.assisted);
+  assert.equal(circleCorrection.scene.model.region,3);assert(circleCorrection.scene.correct);assert(circleCorrection.scene.assisted);assert.deepEqual(circleCorrection.scene.hintLevels,{});
   await studentFrame.locator('[data-cmd=next]').click();
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
   const circleReload=await same(studentFrame,teacherFrame,'printed part 2 retains model and corrected first step');

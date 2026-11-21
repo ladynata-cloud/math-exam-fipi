@@ -170,7 +170,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:16},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:19},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -381,8 +381,40 @@ function printedDigitsRegression(){
   for(const row of dictate.steps){f.submit(String(row.answer).replace(/\B(?=(\d{3})+(?!\d))/g,' '));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
   f.submit('117 000 002 030');ok(f.snapshot().scene.correct);equal(f.errors,[]);f.close();
 }
+function printedClassesRegression(){
+  const f=boot(),D=f.w.Vilenkin5PrintedDigits,ids=[17,18,19].map(n=>'v5f-printed-1-'+n),[parts,spoken,units]=ids.map(id=>f.M.generate(id,0));
+  equal(plain(parts.data.values),[3042,14670,200418,4290000,1029503731,48000790001,400300987654,505050505050]);
+  equal(plain(parts.steps.map(s=>s.answer)),['3 042','14 670','200 418','4 290 000','1 029 503 731','48 000 790 001','400 300 987 654','505 050 505 050']);
+  equal(plain(spoken.data.values),[407,7003,80403,6000730249,41000604000,32072000000,120003040900,79740000600,1000000044,71004000010,1000100321,494274303101]);
+  equal(spoken.steps[3].answer,'шесть миллиардов семьсот тридцать тысяч двести сорок девять');
+  equal(spoken.steps[8].answer,'один миллиард сорок четыре');
+  equal(D.cleanReading('один миллиард одна тысяча'),D.cleanReading('миллиард тысяча'));
+  ok(D.cleanReading('двадцать один миллиард')!==D.cleanReading('двадцать миллиард'));
+  ok(D.cleanReading('двадцать одна тысяча')!==D.cleanReading('двадцать тысяча'));
+  equal(plain(units.data.values),[4000,207000,2031000,74505000,21000000,209000000,993000000000,105307000,27000000823]);
+  const seedSets=ids.map(()=>new Set());
+  for(let seed=1;seed<=80;seed++){
+    const [p,s,u]=ids.map((id,i)=>{const t=f.M.generate(id,seed);seedSets[i].add(t.conditionKey);return t;});
+    p.steps.forEach((step,i)=>{equal(D.splitClasses(step.answer),String(p.data.values[i]));ok(f.M.accepts(step.answer.replaceAll(' ',' | '),step));});
+    s.steps.forEach((step,i)=>equal(step.answer,D.words(s.data.values[i])));
+    u.table.rows.forEach(([_,text],i)=>{
+      const groups=String(text).replace(/(?<=\d) (?=\d{3}(?: |$))/g,'').matchAll(/(\d+)(?: (тыс\.|млн|млрд))?/g);
+      const expected=Array.from(groups,match=>Number(match[1])*({'тыс.':1000,'млн':1e6,'млрд':1e9}[match[2]]||1)).reduce((a,b)=>a+b,0);
+      equal(expected,u.steps[i].answer);
+    });
+  }
+  seedSets.forEach(s=>equal(s.size,80));
+  for(const raw of ['3042','03 042','30 42','3||042','3  42','3 0a2'])equal(D.splitClasses(raw),null);
+  f.route('#lesson/'+ids[0]);f.submit('30 42');ok(f.snapshot().scene.message.includes('Цифры сохранены'));
+  f.submit('3 402');ok(f.snapshot().scene.message.includes('исходные цифры'));
+  parts.steps.forEach(s=>{f.submit(s.answer.replaceAll(' ',' | '));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');});f.submit(parts.answer);ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[1]);spoken.steps.forEach(s=>{f.submit(s.answer);ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');});f.submit('миллиард сорок четыре');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[2]);f.submit('4');ok(f.snapshot().scene.message.includes('количество тысяч'));
+  units.steps.forEach(s=>{f.submit(String(s.answer));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');});f.submit('27 000 000 823');ok(f.snapshot().scene.correct);
+  equal(f.errors,[]);f.close();
+}
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
