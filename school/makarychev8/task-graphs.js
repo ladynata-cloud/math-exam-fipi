@@ -763,6 +763,52 @@ function equationExamples(host,value){
  }
  host.append(note);
 }
+function linearReview(host,config,value){
+ host.className='task-graphs root-graph';
+ const C=window.MakarychevCheck;
+ const parse=z=>{const r=M.parse(z);return r?r.n/r.d:NaN;};
+ const asCurve=([a,b,c],i)=>b?{kind:'line',k:-a/b,b:c/b,dashed:i>0}:{kind:'vertical',h:c/a,dashed:i>0};
+ const curves=config.lines.map(asCurve),points=[...(config.points||[])];
+ const say=(message,key,status)=>{const p=document.createElement('p');p.className='small';p.textContent=message;if(key)p.dataset[key]=status;host.append(p);};
+ if(config.mode==='parameters'){
+  const coordinates=String(value||'').split(';');
+  const data=coordinates.map(parse);
+  if(data.length===2&&data.every(Number.isFinite)){
+   const [m,b]=data;curves.push(asCurve([2,-b,-10],1));points.push([m,3]);
+   const subs=[-3*m+3,2*m-3*b];say('При (m; 3) левые части приближённо равны '+subs.map(v=>v.toLocaleString('ru',{maximumFractionDigits:5})).join(' и ')+'. Справа стоят 9 и −10.','parameterPoint',M.equal(coordinates[0],'-2')&&M.equal(coordinates[1],'2')?'yes':'no');
+  }else say('Введите m и b, чтобы провести вторую прямую и проверить точку (m; 3).');
+ }else if(config.mode==='triple'){
+  const t=C.systemTriple(value);
+  if(t){const [a,b,c]=t.values;
+   if(a!==0||b!==0)curves.push(asCurve(t.values,1));
+   const message=t.nonzero?'У прямых разные направления. Они пересекаются в одной точке.':a===0&&b===0?'Вторая строка вообще не задаёт прямую.':t.same?'Второе уравнение задаёт ту же прямую.':'Прямые параллельны и различны.';
+   say(message,'lineRelation',t.nonzero?'intersect':a===0&&b===0?'degenerate':'parallel-or-same');
+  }else say('Сплошная прямая задана условием. Введи a; b; c, чтобы добавить свой вариант.');
+ }else if(config.mode==='constant'){
+  const raw=config.trial||value,r=M.parse(raw);
+  if(r){curves.push(asCurve([10,-4,r.n/r.d],1));const same=M.equal(raw,'6');say('При c = '+raw+(same?' обе строки дают одну прямую.':' две прямые параллельны и различны.'),'lineRelation',same?'same':'parallel');}
+  else say('Подставь пробное c в первом шаге, чтобы увидеть вторую прямую.');
+ }else{
+  if(config.fromSystem&&config.trial){
+   const coords=String(config.trial).split(';').map(parse);
+   if(coords.length===2&&coords.every(Number.isFinite)){
+    points.push(coords);const [x,y]=coords;
+    const valid=3*x-2*y===16&&4*x+3*y===-7;
+    say(valid?'Пробная точка удовлетворяет обеим исходным прямым.':'Проверь пробную точку в обоих исходных уравнениях.','systemPoint',valid?'yes':'no');
+   }
+  }
+  const proposal=C.affinePlot(value);
+  if(proposal){curves.push({kind:'line',...proposal,dashed:curves.length>0});const required=config.fromSystem?[...config.points,[2,-5]]:config.points;
+    for(const [x,y] of required){
+     const on=proposal.atPoint(x,y);
+     const label=config.fromSystem&&x===2?'Точка пересечения исходных прямых':'Точка ('+x+'; '+y+')';
+     say(label+(on?' лежит на введённой прямой.':' не лежит на введённой прямой.'),'pointOnCandidate',on?'yes':'no');
+    }
+  }else say(config.fromSystem?'На рисунке показаны исходные прямые и данная точка. Введи формулу искомой прямой.':'По заданным точкам составь формулу y = kx + d. Введённая прямая появится на рисунке.');
+ }
+ const b=config.bounds;host.prepend(rootGraph({curves,points,xRange:[-b,b],yRange:[-b,b],label:'Координатные оси, данные точки и прямые из полученных уравнений'},''));
+}
+
 function quantityTrial(graph,raw){
  const [x]=fractionSample(raw,1)||[];
  if(!x)return null;
@@ -1102,6 +1148,7 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='linear-review'){linearReview(host,config,value);return;}
  if(config.type==='quantity-audit'){quantityAudit(host,config,value);return;}
  if(config.type==='travel-times'){travelTimes(host,config,value);return;}
  if(config.type==='rate-table'){rateTable(host,config,value);return;}

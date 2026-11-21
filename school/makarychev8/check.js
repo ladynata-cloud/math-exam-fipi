@@ -567,6 +567,33 @@ function sameAlgebraPairs(raw,expected){
  }
  return true;
 }
+function systemTriple(raw){
+ const parts=String(raw??'').split(';').map(p=>M.parse(p.trim()));
+ if(parts.length!==3||parts.some(p=>!p))return null;
+ const [a,b,c]=parts,nonzero=-8n*BigInt(b.n)*BigInt(a.d)-9n*BigInt(a.n)*BigInt(b.d)!==0n;
+ const same=!nonzero&&a.n!==0&&-8n*BigInt(c.n)*BigInt(a.d)===10n*BigInt(a.n)*BigInt(c.d);
+ return {values:parts.map(p=>p.n/p.d),nonzero,same};
+}
+function excludedParameter(raw,excluded){
+ const text=String(raw??'').trim().replace(/[−–]/g,'-');
+ const one=/^\s*(?:c|с)\s*(?:≠|!=|<>)\s*(.+)$/i.exec(text);
+ if(one)return M.equal(one[1],excluded);
+ const real=/^(?:R|ℝ)\s*[\\∖]\s*\{\s*([^{}]+)\s*\}$/i.exec(text);
+ if(real)return M.equal(real[1],excluded);
+ return intervalMatch(text,'(-∞;'+excluded+')∪('+excluded+';+∞)');
+}
+function affinePlot(raw){
+ const values=normalize(raw).split('=');
+ if(values.length!==2||values.some(s=>!s))return null;
+ try{
+  const [n,d]=polynomialFraction('('+values[0]+')-('+values[1]+')',new Set(['x','y']));
+  if(d.size!==1||!d.has('')||[...n.keys()].some(k=>!['','x','y'].includes(k)))return null;
+  const a=n.get('x')||0n,b=n.get('y')||0n,c=-(n.get('')||0n);
+  if(!b)return null;
+  return {k:-Number(a)/Number(b),b:Number(c)/Number(b),atPoint:(x,y)=>a*BigInt(x)+b*BigInt(y)===c};
+ }catch(_){return null;}
+}
+
 function systemEvidence(input,graph){
  const submitted=algebraPairs(input);
  if(!submitted)return null;
@@ -723,6 +750,8 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='unique-system-triple')return Boolean(systemTriple(user)?.nonzero);
+ if(target.kind==='parameter-exclusion')return excludedParameter(user,target.excluded);
  if(target.kind==='line-pair-equation')return equationPlaneStatus(user,target.answer)==='correct';
  if(target.kind==='algebra-pairs')return sameAlgebraPairs(user,target.answer);
  if(target.kind==='open-intervals')return intervalMatch(user,target.answer);
@@ -789,5 +818,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });
