@@ -46,6 +46,7 @@ function petersonRoute(hash){
  const practice=/^#(?:practice|check)\/([a-z-]+)\/([123])$/.exec(hash);
  return !!practice&&PETERSON_SKILLS.has(practice[1]);
 }
+const PETERSON_VOLUME_SKILLS=new Set(["logic-negation","logic-quantifiers","variable-value","equation","fraction-reduce","fraction-mixed","fraction-add","fraction-subtract","fraction-multiply","fraction-divide","decimal-add","decimal-subtract","decimal-multiply","decimal-divide","decimal-to-fraction","fraction-to-decimal","mixed-multiply","mixed-divide","unlike-multiply","unlike-divide","order-operations","time-units","meeting","chase","speed-ratio","river-roundtrip","joint-work","mean","percent-to-number","number-to-percent","percent-part","percent-whole","percent-ratio","percent-change","percent-mixture","simple-growth","compound-growth"]);
 function profileCourseRoute(hash,position,lessons){
  const parts=hash.slice(1).split('/');
  if(parts.length===2&&['exam','calm'].includes(parts[0])&&parts[1]===position)return true;
@@ -98,6 +99,17 @@ function normalize(value){
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/','/school/index.html'].includes(u.pathname)&&
    (u.hash==='#course/vilenkin5'||/^#v5-unit\/(?:[1-9]|[1-4]\d|5[0-3])$/.test(u.hash)||/^#lesson\/v5f-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(u.hash)||!u.hash&&u.searchParams.get('course')==='vilenkin5'))return '/trainers/vilenkin5.html'+(u.hash||'#course/vilenkin5');
  if(u.origin===location.origin&&rawPath===u.pathname&&['/courses/vilenkin-5/','/courses/vilenkin-5/index.html'].includes(u.pathname)&&['','#course/vilenkin5'].includes(u.hash))return '/trainers/vilenkin5.html#course/vilenkin5';
+ if(u.origin===location.origin&&rawPath===u.pathname){
+  const path=u.pathname.replace(/index\.html$/,'');
+  if(path==='/school/peterson6/textbook/'){
+   const n=/^#n\/([1-9]\d{0,2})(?:\/([a-zA-Z0-9_-]{1,80}))?$/.exec(u.hash);
+   if(!u.hash||u.hash==='#map'||(n&&Number(n[1])<=497))return '/trainers/peterson6-textbook.html'+(u.hash||'#map');
+  }
+  if(path==='/trainers/peterson6-workshop/'){
+   const trainer=/^#train\/([a-z-]+)\/[123]$/.exec(u.hash);
+   if(!u.hash||u.hash==='#map'||(trainer&&PETERSON_VOLUME_SKILLS.has(trainer[1])))return '/trainers/peterson6-workshop.html'+(u.hash||'#map');
+  }
+ }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson6/','/school/peterson6/index.html'].includes(u.pathname)&&petersonRoute(u.hash)){
   return '/trainers/peterson6-complete.html'+u.search+u.hash;
  }
