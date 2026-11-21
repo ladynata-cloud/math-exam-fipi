@@ -26,6 +26,23 @@ test('grade 7 textbook: all 619 cards, private isolation, catalog and reasoning 
  }
  }finally{f.close();}
 });
+test('personal textbook opens the current exercise on the board', async () => {
+ const dom = new JSDOM(readFileSync(resolve(ROOT,'geometry-course/textbook/index.html'),'utf8'), {
+  url:'https://local.example/geometry-course/textbook/', runScripts:'outside-only'
+ });
+ try {
+  const w = dom.window;
+  w.eval(readFileSync(resolve(ROOT,'assets/geometry-step-views.js'),'utf8'));
+  const link = w.document.getElementById('textbook-board-link');
+  const destination = () => new URL(link.href).searchParams.get('trainer');
+  assert.equal(destination(), '/geometry-course/textbook/');
+  w.history.replaceState(null, '', '#atanasyan-7-9-main-841-part-1');
+  w.document.getElementById('textbook-app').replaceChildren(w.document.createElement('article'));
+  await new Promise(resolve => w.setTimeout(resolve,0));
+  assert.equal(destination(), '/geometry-course/textbook/#atanasyan-7-9-main-841-part-1');
+ } finally { dom.window.close(); }
+});
+
 test('whole textbook mirrors grade 8 drafts and filtered catalog pages into another window', () => {
  const teacher = fixture('?scope=book');
  const pupil = fixture('?scope=book');

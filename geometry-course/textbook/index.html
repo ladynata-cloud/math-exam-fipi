@@ -7,19 +7,13 @@
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
-</head><body><nav class="course-nav"><a href="../">Курс геометрии 7–9</a><a href="../../stereo-course/textbook/">Атанасян 10–11</a><a id="textbook-board-link" href="/trainers/trainer-board.html?trainer=%2Fgeometry-course%2Ftextbook%2F">Открыть на общей доске</a></nav>
+</head><body><nav class="course-nav"><a href="../">Курс геометрии 7–9</a><a href="../../stereo-course/textbook/">Атанасян 10–11</a></nav>
 <div id="textbook-app"><h1>Курс к учебнику Атанасяна и соавторов · Геометрия 7–9</h1><p>Базовый уровень, 14-е переработанное издание, 2023. Авторские тренажёры к задачам и объяснения к параграфам и главам учебника.</p><p>Загружаем материалы курса…</p></div>
 <noscript>Для интерактивных чертежей нужен JavaScript.</noscript>
 <script src="assets/math-text.js"></script><script src="assets/planar-viewer.js"></script><script src="assets/engine.js"></script>
 <script src="/assets/geometry-step-views.js"></script>
 <script>
 'use strict';
-const boardLink = document.getElementById('textbook-board-link');
-function updateBoardLink() {
-  boardLink.href = '/trainers/trainer-board.html?trainer=' + encodeURIComponent(location.pathname + location.hash);
-}
-updateBoardLink();
-new MutationObserver(updateBoardLink).observe(document.getElementById('textbook-app'), { childList: true, subtree: true });
 fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(bundle=>{
  window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),GeometryStepViews.prepare(bundle));
 }).catch(()=>{document.getElementById('textbook-app').textContent='Материалы сейчас не удалось открыть. Попробуй обновить страницу.';});
