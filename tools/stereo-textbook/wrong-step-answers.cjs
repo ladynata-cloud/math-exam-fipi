@@ -138,6 +138,15 @@ const misconceptions = new Map([
   ['ex-main-0528/step-3', '10.8'], // Returned semiperimeter instead of area.
   ['ex-main-0528/step-4', '12.24'], // Forgot the edge length.
   ['ex-main-0528/step-5', '6.12'], // Used the old edge length.
+  ['ex-main-0529/step-2', '27'], // Used the complete altitude of the triangular base.
+  ['ex-main-0530/step-1', '1'], // Confused the midpoint distance with the vertex height.
+  ['ex-main-0531/step-3', '2*sqrt(2)'], // Substituted a lateral edge for the base radius.
+  ['ex-main-0532/step-3', '2'], // Used a triangle instead of the entire square.
+  ['ex-main-0532/step-4', '4*sqrt(2)'], // Omitted division by three.
+  ['ex-main-0532/step-5', '4*sqrt(2)/3'], // Kept a square after changing the base.
+  ['ex-main-0533/step-3', '2*sqrt(3)'], // Forgot one half in the area formula.
+  ['ex-main-0533/step-4', '2*sqrt(3)'], // Calculated the corresponding prism volume.
+  ['ex-main-0533/step-5', '2*sqrt(3)/3'], // Reused the preceding obtuse base.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

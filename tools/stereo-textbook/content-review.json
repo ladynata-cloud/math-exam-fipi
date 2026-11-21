@@ -2,7 +2,7 @@
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
   "registeredAt": "2026-11-21T16:44:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 528, points 52–62 and all chapter V self-checks, with 865 reviewed cards. Later exercise positions remain drafts.",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 533, points 52–62 and all chapter V self-checks, with 870 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1400,6 +1400,20 @@
       ],
       "evidence": "tools/stereo-textbook/normal-prism-applications.json",
       "mathematicalReport": "tools/stereo-textbook/normal-prism-applications.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T16:44:00Z",
+      "scope": "Face inclinations, dihedral angles and circumscribed radii of pyramids, exercises 529–533",
+      "cardIds": [
+        "ex-main-0529",
+        "ex-main-0530",
+        "ex-main-0531",
+        "ex-main-0532",
+        "ex-main-0533"
+      ],
+      "evidence": "tools/stereo-textbook/pyramid-angle-applications.json",
+      "mathematicalReport": "tools/stereo-textbook/pyramid-angle-applications.test.cjs"
     }
   ],
   "cards": [
@@ -4862,6 +4876,26 @@
     {
       "id": "ex-main-0528",
       "sha256": "1b9e8ef478557dbcb132b3dd19d6982c27f17cdcd046568c32b6ff4e674f6b6c"
+    },
+    {
+      "id": "ex-main-0529",
+      "sha256": "4d919bd23355cb8a28d419d7a74d4c546a1dfcf6b65beca6344e87a5528fe02e"
+    },
+    {
+      "id": "ex-main-0530",
+      "sha256": "7bcb4f6f90fe9239122e07f03696b7d1e3d8e98beb0a97352d36c2d2724c2400"
+    },
+    {
+      "id": "ex-main-0531",
+      "sha256": "b0c59a7bca096973643fbeff0d2e9dc3017bc2c541a188dcca1ee38fbbfe91bb"
+    },
+    {
+      "id": "ex-main-0532",
+      "sha256": "e18f6ce23a741477ad72bf7556f4b1c9eaa3473e1eb3511c0042eaf151c0e3b8"
+    },
+    {
+      "id": "ex-main-0533",
+      "sha256": "d17d75b173ecc15f22887ef544114663c6705f0c4194cd954c4eb73af266cfa9"
     }
   ]
 }

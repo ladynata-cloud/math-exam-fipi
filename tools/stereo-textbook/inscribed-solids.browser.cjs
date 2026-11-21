@@ -22,7 +22,8 @@ const groups = {
   sphereApplications: {manifests:[require('./sphere-applications.json')],count:9},
   volumeSelfcheck: {manifests:[require('./volume-selfcheck.json')],count:17},
   prismApplications: {manifests:[require('./prism-applications.json')],count:7},
-  normalPrismApplications: {manifests:[require('./normal-prism-applications.json')],count:4}
+  normalPrismApplications: {manifests:[require('./normal-prism-applications.json')],count:4},
+  pyramidAngleApplications: {manifests:[require('./pyramid-angle-applications.json')],count:5}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
