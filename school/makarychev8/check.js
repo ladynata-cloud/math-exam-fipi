@@ -147,6 +147,11 @@ function check(user,target){
   if(a.n<=0)return false;const rational=squareInteger(a.n)&&squareInteger(a.d);
   return target.rootType==='rational'?rational:target.rootType==='irrational'?!rational:false;
  }
+ if(target.kind==='line-sign-example'){
+  const values=user.split(';').map(part=>M.parse(part));
+  return Boolean(G?.parseLine(user)) && values.length===2 && values.every(Boolean) &&
+   Math.sign(values[0].n)===target.slopeSign && Math.sign(values[1].n)===target.interceptSign;
+ }
  if(target.kind==='root-line-count')return [0,1,2].includes(target.intersectionCount)&&rootLineCount(user)===target.intersectionCount;
  if(['root-points','graph-values'].includes(target.kind)){
   const u=user.split(';'),v=String(target.answer).split(';');
