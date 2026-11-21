@@ -60,6 +60,14 @@ def historical_bytes(path, raw=None):
     raw = before_quantity_check(path, raw)
     if path.name == 'index.html':
         raw = restore_public_navigator('geometry-course/textbook/index.html', raw)
+        # The new independently loaded supplement has its own content and browser
+        # checks. Undo precisely its two entry edits for older source receipts.
+        if sha(raw) == '215296704e24b496cc6ab9b6c48c243d04ddb19becc0129c5d63565393b709cc':
+            restored = raw.replace(b'<script src="assets/additional-lessons.js"></script>\n', b'', 1)
+            restored = restored.replace(b'}).then(GeometryAdditionalLessons.forCourse).then(bundle=>{',
+                                        b'}).then(bundle=>{', 1)
+            assert sha(restored) == 'c26e8f026e5560c39bd0f9a841c0458b7ff4d260c038a42b4ccb2ed7a060ec2e'
+            raw = restored
         # Restore the textbook entry as it was reviewed before the three-card
         # construction supplement. Historical receipts cover the original course.
         if sha(raw) == 'c26e8f026e5560c39bd0f9a841c0458b7ff4d260c038a42b4ccb2ed7a060ec2e':

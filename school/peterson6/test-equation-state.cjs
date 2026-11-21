@@ -39,8 +39,8 @@ function boot({ state = null, hash = ROUTE, board = false } = {}) {
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', error => errors.push(error.message));
   virtualConsole.on('error', error => errors.push(String(error)));
-  const htmlPath = board ? 'trainers/peterson6.html' : 'school/peterson6/index.html';
-  const pathname = board ? '/trainers/peterson6.html' : '/school/peterson6/';
+  const htmlPath = board ? 'trainers/peterson6-complete.html' : 'school/peterson6/index.html';
+  const pathname = board ? '/trainers/peterson6-complete.html' : '/school/peterson6/';
   const dom = new JSDOM(read(htmlPath), {
     url: 'https://mathexam.space' + pathname + hash,
     runScripts: 'outside-only', pretendToBeVisual: true, virtualConsole,
@@ -56,7 +56,7 @@ function boot({ state = null, hash = ROUTE, board = false } = {}) {
   w.URL.revokeObjectURL = () => {};
   w.HTMLAnchorElement.prototype.click = () => {};
   if (state) w.localStorage.setItem(KEY, JSON.stringify(state));
-  for (const file of ['math.js', 'data.js', 'models.js'])
+  for (const file of ['math.js', 'data.js', 'continuation-models.js', 'models.js'])
     w.eval(read('school/peterson6/' + file));
   if (board) {
     w.eval(read('school/peterson6/board-session.js'));
@@ -396,7 +396,8 @@ async function test(name, action) {
     }],
     ['current board choices roundtrip without personal progress fields or storage writes', () => {
       const rt = boot({ board: true });
-      assert.equal(rt.registration().version, '1.1.0');
+      assert.equal(rt.registration().id, 'peterson6-complete');
+      assert.equal(rt.registration().version, '1.0.0');
       assert.equal(rt.registration().stateSchemaVersion, 1);
       assert.equal(rt.w.localStorage.getItem(KEY), null);
       rt.click('[data-action="guided"]'); chooseStep(rt, currentTasks[ID], 0);
