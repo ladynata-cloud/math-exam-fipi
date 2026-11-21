@@ -122,6 +122,11 @@ function rendered(frame) {
   });
 }
 async function same(controller, observer, label) {
+  // A native details element opens immediately. Its toggle event saves the shared scene on the next task.
+  await controller.waitForFunction(() => {
+    const panel = document.querySelector('#v5-quality-note')?.closest('details');
+    return !panel || window.__vilenkin5Board.getState().scene?.panels.notes === panel.open;
+  });
   const expected = await snapshot(controller);
   assert.equal(await controller.evaluate(value => window.__vilenkin5Board.validateState(value), expected), true, label + ': semantic validation');
   assert(Buffer.byteLength(JSON.stringify(expected)) <= 60 * 1024);
@@ -924,7 +929,6 @@ async function run(browser, origin, backend, failures) {
   phase = 'square layers, a rule in the pupil’s own words and seven cubes';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-21"]').click();await studentFrame.locator('h1').filter({hasText:'№5.21'}).waitFor();
   await teacherFrame.locator('summary').filter({hasText:'Моя формулировка правила'}).click();await teacherFrame.locator('#v5-quality-note').fill('Сторона большого квадрата равна сумме оснований.');
-  await teacherFrame.waitForFunction(() => window.__vilenkin5Board.getState().scene?.panels.notes === true);
   const ownRule=await same(teacherFrame,studentFrame,'writing the rule does not mark any step complete');assert.equal(ownRule.scene.attempt,0);assert.equal(ownRule.scene.firstAttempt,null);
   await teacherFrame.locator('#answer').fill('3');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'side mistaken for area')).scene.message,/сторону квадрата/);await ownership(teacher,student,true);
   await studentFrame.locator('[data-v5-param=rank]').fill('7');await studentFrame.locator('[data-v5-param=rank]').press('Tab');await studentFrame.locator('[data-v5-param=measure]').selectOption({value:'1'});
@@ -1152,6 +1156,24 @@ async function run(browser, origin, backend, failures) {
   await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both participants return to the walk');
   await teacherFrame.locator('#answer-form button').click();const finalWalk=await same(teacherFrame,studentFrame,'twenty minutes of hockey');
   assert(finalWalk.scene.correct);assert.equal(finalWalk.scene.attempt,2);assert.deepEqual(finalWalk.scene.hintLevels,{});await narrow(student,studentFrame,'fraction-of-remaining-walk');
+
+  phase = 'source 5.52: the exact fraction heard and the reversed numbers';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-52"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.52'}).waitFor();
+  await teacherFrame.locator('#answer').fill('1/2');await teacherFrame.locator('#answer-form button').click();
+  const equivalentDictation=await same(teacherFrame,studentFrame,'equal value but a different transcription');
+  assert.equal(equivalentDictation.scene.attempt,0);assert.equal(equivalentDictation.scene.firstWrong,null);
+  await teacherFrame.locator('#answer').fill('8/4');await teacherFrame.locator('#answer-form button').click();
+  assert.match((await same(teacherFrame,studentFrame,'inverted dictated fraction')).scene.message,/верх и низ/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption({value:'6'});
+  await studentFrame.locator('[data-v5-param=part]').selectOption({value:'1'});await studentFrame.locator('[data-v5-prediction]').fill('49');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('4/8');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const restorationDictation=await same(studentFrame,teacherFrame,'written fraction, prior error and model after reconnect');assert.equal(restorationDictation.scene.savedInput,'4/8');assert.equal(restorationDictation.scene.model.row,6);assert(restorationDictation.scene.model.seen);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'pupil has the same draft after returning');
+  await teacherFrame.locator('#answer-form button').click();const correctedDictation=await same(teacherFrame,studentFrame,'exact dictation corrected independently');
+  assert(correctedDictation.scene.correct);assert.equal(correctedDictation.scene.attempt,2);assert.deepEqual(correctedDictation.scene.hintLevels,{});await narrow(student,studentFrame,'dictated-fraction');
 
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
