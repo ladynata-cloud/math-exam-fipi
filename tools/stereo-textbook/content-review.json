@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T18:28:00Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–64 and source exercises 557–558, with 903 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T18:35:00Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–64 and source exercises 557–560, with 908 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1501,6 +1501,20 @@
       ],
       "evidence": "tools/stereo-textbook/vector-basics.json",
       "mathematicalReport": "tools/stereo-textbook/vector-basics.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:35:00Z",
+      "scope": "Printed directed segments on figures 157–158, all three vector relations of 559 and both parts of 560",
+      "cardIds": [
+        "ex-main-0559-a",
+        "ex-main-0559-b",
+        "ex-main-0559-c",
+        "ex-main-0560-a",
+        "ex-main-0560-b"
+      ],
+      "evidence": "tools/stereo-textbook/vector-pairs.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-pairs.test.cjs"
     }
   ],
   "cards": [
@@ -5115,6 +5129,26 @@
     {
       "id": "theory-064",
       "sha256": "1d827d3f9e3ece6a8e7aad20fb86a91501786ee3c80c86be480cfe796c47f9d3"
+    },
+    {
+      "id": "ex-main-0559-a",
+      "sha256": "53e6a4db3ed1143936c620ed4c665c417ef7e4709663e85c7f613de17439664a"
+    },
+    {
+      "id": "ex-main-0559-b",
+      "sha256": "e1d1755457a533d000160126f85adf012e9fba1e80a2af3e73aace02a5d2fc51"
+    },
+    {
+      "id": "ex-main-0559-c",
+      "sha256": "59a1b5d4f25cb2b97796add99188b62d307dbd705c5f2bbe5ef853bdfd917ebb"
+    },
+    {
+      "id": "ex-main-0560-a",
+      "sha256": "995d81cb50fd2a4e10a6c60b2a64c3fae60a303f25b0125132bdeec8188b6e3e"
+    },
+    {
+      "id": "ex-main-0560-b",
+      "sha256": "0d078d693884c9da205cbbdf09241c86796fa12b37e1c6a01c655162bc35caea"
     }
   ]
 }

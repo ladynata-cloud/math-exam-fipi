@@ -62,6 +62,7 @@ jobs:
           node tools/stereo-textbook/sphere-volume-angles.test.cjs
           node tools/stereo-textbook/volume-chapter-end.test.cjs
           node tools/stereo-textbook/vector-basics.test.cjs
+          node tools/stereo-textbook/vector-pairs.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -188,6 +189,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: vectorBasics
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-basics
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check same, opposite and equal arrows on two source solids and the square midpoint section
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorPairs
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-pairs
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -246,5 +252,6 @@ jobs:
             artifacts/sphere-volume-angles/
             artifacts/volume-chapter-end/
             artifacts/vector-basics/
+            artifacts/vector-pairs/
           retention-days: 14
           if-no-files-found: error

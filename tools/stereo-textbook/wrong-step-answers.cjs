@@ -221,6 +221,26 @@ const misconceptions = new Map([
   ['ex-main-0558-b/step-1', '17'], // Used a space diagonal for a face.
   ['ex-main-0558-b/step-2', 'sqrt(145)'], // Gave the length where its square was requested.
   ['ex-main-0558-b/step-3', '15'], // Reused a side face diagonal.
+  ['ex-main-0559-a/step-1', 'B1C1'],
+  ['ex-main-0559-a/step-2', 'AD'],
+  ['ex-main-0559-a/step-3', 'MC'],
+  ['ex-main-0559-a/step-4', '12'],
+  ['ex-main-0559-b/step-1', 'C1C'],
+  ['ex-main-0559-b/step-2', 'BA'],
+  ['ex-main-0559-b/step-3', '1'],
+  ['ex-main-0559-b/step-4', '3'],
+  ['ex-main-0559-c/step-1', 'MB1'],
+  ['ex-main-0559-c/step-2', 'BC'],
+  ['ex-main-0559-c/step-3', 'MC'],
+  ['ex-main-0559-c/step-4', '8'],
+  ['ex-main-0560-a/step-1', 'PQ'],
+  ['ex-main-0560-a/step-2', 'NP'],
+  ['ex-main-0560-a/step-3', 'PD'],
+  ['ex-main-0560-a/step-4', '3'],
+  ['ex-main-0560-b/step-1', '8'],
+  ['ex-main-0560-b/step-2', '32'],
+  ['ex-main-0560-b/step-3', '60'],
+  ['ex-main-0560-b/step-4', '100'],
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

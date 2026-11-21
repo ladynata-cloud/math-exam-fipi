@@ -81,4 +81,5 @@ require('./inscribed-volume-applications.test.cjs');
 require('./sphere-volume-angles.test.cjs');
 require('./volume-chapter-end.test.cjs');
 require('./vector-basics.test.cjs');
+require('./vector-pairs.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

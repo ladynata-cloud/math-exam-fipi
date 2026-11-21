@@ -29,7 +29,8 @@ const groups = {
   inscribedVolumeApplications: {manifests:[require('./inscribed-volume-applications.json')],count:6},
   sphereVolumeAngles: {manifests:[require('./sphere-volume-angles.json')],count:4},
   volumeChapterEnd: {manifests:[require('./volume-chapter-end.json')],count:7},
-  vectorBasics: {manifests:[require('./vector-basics.json')],count:6}
+  vectorBasics: {manifests:[require('./vector-basics.json')],count:6},
+  vectorPairs: {manifests:[require('./vector-pairs.json')],count:5}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
