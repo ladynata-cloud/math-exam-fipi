@@ -560,6 +560,34 @@ async function run(browser, origin, backend, failures) {
   assert.equal(nested.scene.model.distance,4);assert(nested.scene.model.seen);
   await narrow(student,studentFrame,'concentric-circles');
 
+  phase = 'straight cuts across a pancake and through a cake';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-8"]').click();
+  await studentFrame.locator('#task-panel').getByRole('img',{name:'Блин, вид сверху'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=stage]').selectOption('3');
+  await teacherFrame.locator('[data-v5-param=labels]').selectOption('1');
+  await same(teacherFrame,studentFrame,'each participant sees the same seven marked pancake pieces');
+  assert.equal(await studentFrame.locator('.v5q-model .v5q-cut-label').count(),7);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=style]').selectOption('1');
+  await studentFrame.locator('[data-v5-prediction]').fill('6');await studentFrame.locator('[data-v5-predict] button').click();
+  assert((await same(studentFrame,teacherFrame,'six pieces when the third line crosses the common point')).scene.model.seen);
+  await studentFrame.locator('#answer').fill('2');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('#answer').fill('4');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('#answer').fill('2');await studentFrame.locator('#answer-form button').click();
+  assert.match((await same(studentFrame,teacherFrame,'intersections and intervals have different counts')).scene.message,/промежутки/);
+  await studentFrame.locator('#answer').fill('3');await studentFrame.locator('#answer-form button').click();
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const pancake=await same(studentFrame,teacherFrame,'teacher recovered corrected count and third concurrent line');
+  assert(pancake.scene.correct);assert.deepEqual(pancake.scene.hintLevels,{});assert.equal(pancake.scene.model.style,1);
+  await studentFrame.locator('[data-v5-param=object]').selectOption('1');await studentFrame.locator('[data-v5-param=style]').selectOption('0');
+  await same(studentFrame,teacherFrame,'four pieces in each horizontal layer');
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  const cake=await same(teacherFrame,studentFrame,'student rejoined two separate layers and preserved step');
+  assert.equal(cake.scene.model.object,1);assert.equal(cake.scene.step,2);assert.equal(await studentFrame.locator('.v5q-model .v5q-cut-label').count(),8);
+  await narrow(student,studentFrame,'two-horizontal-layers');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
