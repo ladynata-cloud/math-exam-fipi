@@ -87,7 +87,8 @@
       ['/geometry-course/textbook/data/additional-triangle-area.json', '№1146–1148'],
       ['/geometry-course/textbook/data/additional-solve-triangles.json', '№1149–1153'],
       ['/geometry-course/textbook/data/additional-scalar-vectors.json', '№1154–1158'],
-      ['/geometry-course/textbook/data/chapter-twelve-finale.json', '№1159–1166']
+      ['/geometry-course/textbook/data/chapter-twelve-finale.json', '№1159–1166'],
+      ['/geometry-course/textbook/data/regular-polygon-definition.json', 'п. 113 и №1167–1169']
   ];
 
   async function forCourse(base) {
