@@ -4,9 +4,9 @@
   const decimal=n=>Number(n.toFixed(6)).toLocaleString('ru-RU',{maximumFractionDigits:6,useGrouping:false});
   const q=(prompt,answer,calc,wrong,why)=>({prompt,answer,calculation:calc,error:why,mistakes:[[wrong,why]]});
   const sample=(caption,rows,qs,chart,model)=>Object.assign(example(caption,['Часть выражения','Значение'],rows,qs,chart),model);
-  function lesson(key,title,prompt,guide,rule,make,page=6,reference){
-    const [n,p]=key.split('-'),ref=n+(p?' ('+p+')':'');add(104,key,page,title,prompt,rule,'fraction',make);
-    const record=lessons.get('104-'+key);Object.assign(record,{printedReference:reference||'Упражнение №'+ref,printedPrompt:prompt,printedGuide:guide});ids.push(record.id);
+  function lesson(key,title,prompt,guide,rule,make,page=6,reference,book=104){
+    const [n,p]=key.split('-'),ref=n+(p?' ('+p+')':'');add(book,key,page,title,prompt,rule,'fraction',make);
+    const record=lessons.get(book+'-'+key);Object.assign(record,{printedReference:reference||'Упражнение №'+ref,printedPrompt:prompt,printedGuide:guide});ids.push(record.id);
   }
   const arith=[
     ['1-1','Вычитание сотых из целого','Вычти 3,75 из 75.','Размени целое на сотые. Запись 75,00 − 3,75 даёт 71,25. Прибавь 3,75 обратно и получи 75.',
@@ -105,6 +105,7 @@
     }
     return '<svg viewBox="0 0 280 120" role="img" aria-label="'+title+'"><g fill="#244c3e" font-family="sans-serif" font-size="12">'+body+'</g></svg>';
   }
-  window.MathExamTopicEdition={trainerId:'alimov-algebra-7-9',storePrefix:'math:alimov-algebra-7-9:v1:',authors:'Алимов и соавторы · 2011',grade:()=>'7 класс',unit:'упражнение',figure,lesson,q,sample,
-    source:(_,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000079.pdf#page='+(page+1),nextId:l=>ids[ids.indexOf(l.id)+1]};
+  window.MathExamTopicEdition={trainerId:'alimov-algebra-7-9',storePrefix:'math:alimov-algebra-7-9:v1:',authors:'Алимов и соавторы',grade:book=>book===81?'8 класс · 2012':'7 класс · 2011',unit:'упражнение',figure,lesson,q,sample,
+    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+(book===81?'00000068':'00000079')+'.pdf#page='+(page+1),
+    nextId(l){const next=ids[ids.indexOf(l.id)+1];return next&&lessons.get(next).book===l.book?next:undefined;}};
 })();
