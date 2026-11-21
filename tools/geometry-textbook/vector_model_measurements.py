@@ -37,6 +37,6 @@ def measurements(model,key):
         assert close(determinant(direction,l),-determinant(direction,r))
         assert abs(determinant(direction,l))>1e-8 and dot(direction,l)<0
     def vector(names):
-        a,b=re.findall(r'[A-Z]₁?',names)
+        a,b=re.findall(r'[A-Z][₁₂]?',names)
         return tuple(v/unit[0] for v in minus(pts[b],pts[a]))
     return vector,[a.split('__v')[0]+b.split('__v')[0] for a,b in shafts]
