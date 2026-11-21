@@ -84,7 +84,7 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .help figure ul { margin: .65rem 0; padding-inline-start: 1.15rem; }
 .help figure li + li { margin-top: .4rem; }
 .help figure meter { display: block; width: min(100%, 14rem); }
-.pm-visual .pm-chart.pcm-segment { min-width: 0; }
+.pm-visual .pm-chart.pcm-segment, .pm-visual .pm-chart.pcm-group-rule { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-ratio-triangle, .pm-visual .pm-chart.pcm-ratio-triangle { min-width: 0; }
 
 </style>
@@ -857,7 +857,73 @@ function trigFigure(measurable, selectedAngle, sample=0, showRoles=false) {
  }
  return picture;
 }
+const groupRules = {
+ add: 'Два прибавления на прямой',
+ subtract: 'Два вычитания на прямой',
+ distribute: 'Прямоугольник из двух частей',
+};
+function drawGroupRule(rule,b,c) {
+ const picture=svg('svg',{viewBox:'0 0 360 192',role:'img',class:'pm-chart pcm-group-rule',
+  'aria-label':groupRules[rule]+'. b = '+b+', c = '+c+'.'});
+ const green='#086850',amber='#9c510e',blue='#354b71';
+ if(rule==='distribute') {
+  const cell=31, left=(360-(b+c)*cell)/2, y=40, rows=3;
+  for(const [start,count,color] of [[0,b,'#d6ebe0'],[b,c,'#f6e0c9']]) {
+   picture.append(svg('rect',{x:left+start*cell,y,width:count*cell,height:rows*cell,fill:color,stroke:'#234436','stroke-width':2}));
+  }
+  for(let k=1;k<b+c;k++) ln(picture,left+k*cell,y,left+k*cell,y+rows*cell,{'stroke-width':k===b?3:1});
+  for(let k=1;k<rows;k++) ln(picture,left,y+k*cell,left+(b+c)*cell,y+k*cell,{'stroke-width':1});
+  txt(picture,left+b*cell/2,y-11,'b = '+b,{'font-size':18});
+  txt(picture,left+(b+c/2)*cell,y-11,'c = '+c,{'font-size':18});
+  txt(picture,180,y+rows*cell+34,'3 ряда',{'font-size':21});
+  return picture;
+ }
+ const sign=rule==='add'?1:-1,initial=10,middle=initial+sign*b,end=middle+sign*c;
+ const low=Math.min(initial,end)-1, high=Math.max(initial,end)+1;
+ const X=v=>25+(v-low)/(high-low)*310;
+ const lineY=151;
+ ln(picture,12,lineY,348,lineY,{stroke:'#677871','stroke-width':2});
+ for(let v=low;v<=high;v++) ln(picture,X(v),lineY-4,X(v),lineY+4,{'stroke-width':1.5});
+ for(const v of [initial,middle,end]) txt(picture,X(v),lineY+26,v,{'font-size':20});
+ function arrow(from,to,y,color,id) {
+  const x=X(from),last=X(to),direction=Math.sign(last-x);
+  ln(picture,x,y,last,y,{stroke:color,'stroke-width':3,'data-move':id});
+  ln(picture,last,y,last-8*direction,y-5,{stroke:color,'stroke-width':3});
+  ln(picture,last,y,last-8*direction,y+5,{stroke:color,'stroke-width':3});
+  txt(picture,(x+last)/2,y-9,(sign>0?'+':'−')+Math.abs(to-from),{'font-size':20});
+ }
+ arrow(initial,end,52,blue,'sum');
+ arrow(initial,middle,104,green,'first');
+ arrow(middle,end,104,amber,'second');
+ return picture;
+}
+function compareConfig(task) {
+ const choices=task.partComparison.labels.map((label,i)=>[i,label]);
+ return {
+  title:'Что берём за основание отношения?',
+  controls:[c('Набор чисел',[[0,'Из задачи'],[1,'Другой пример']]),c('Первая величина',choices),c('Вторая величина — основание',choices)],
+  initial:[0,0,2],
+ };
+}
+function compareBars(left,right,first,second) {
+ const total=left+right;
+ const picture=svg('svg',{viewBox:'0 0 350 193',role:'img',class:'pm-chart pcm-group-rule',
+  'aria-label':'Две части: '+left+' и '+right+'. Сравниваются '+first+' и '+second+' в одном масштабе.'});
+ const x=16,width=308;
+ picture.append(svg('rect',{x,y:13,width:width*left/total,height:17,fill:'#99c8af',stroke:'#315649','data-portion':'left'}));
+ picture.append(svg('rect',{x:x+width*left/total,y:13,width:width*right/total,height:17,fill:'#ebc9a1',stroke:'#775530','data-portion':'right'}));
+ for(const [id,title,amount,y,color] of [['first','Первая',first,77,'#197354'],['base','Основание',second,150,'#97531b']]) {
+  txt(picture,x,y-10,title+': '+amount,{'font-size':21,'text-anchor':'start'});
+  picture.append(svg('rect',{x,y,width,height:13,fill:'#e2ebe5'}));
+  picture.append(svg('rect',{x,y,width:width*amount/total,height:13,fill:color,'data-measure':id}));
+ }
+ return picture;
+}
 function configFor(lesson,task){
+ if (lesson?.id==='p15' && task?.partComparison) return compareConfig(task);
+ if (lesson?.id==='p33' && Object.hasOwn(groupRules,task?.groupRule)) return {
+  title:groupRules[task.groupRule],controls:[c('Число b',[1,2,3,4]),c('Число c',[1,2,3,4])],initial:[2,3],
+ };
  if (lesson?.id==='p15' && ['named','measured','general'].includes(task?.trigStudy)) return trigConfig(task.trigStudy);
  if (lesson?.id === 'p15' && Object.hasOwn(ratioConstructions,task?.ratioConstruction)) return constructionConfig(task.ratioConstruction);
  const spec=lesson?.id==='p15'&&Object.hasOwn(segmentRatios,task?.segmentRatio)&&segmentRatios[task.segmentRatio];
@@ -904,13 +970,42 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if (n===15 && task.trigStudy) {
+ if (n===15 && task.partComparison) {
+  const [example,firstIndex,baseIndex]=state.values;
+  const spec=task.partComparison;
+  const [left,right]=spec.sets[example],sizes=[left,right,left+right];
+  const first=sizes[firstIndex],base=sizes[baseIndex];
+  show(compareBars(left,right,first,base));
+  say(spec.labels[0]+': '+left+'. '+spec.labels[1]+': '+right+'. '+spec.labels[2]+': '+(left+right)+'.');
+  formula(spec.labels[firstIndex]+' / '+spec.labels[baseIndex]+' = ',exactRatio(first,base));
+  formula('В процентах: ',exactRatio(100*first,base),' %');
+  if(firstIndex===baseIndex) say('Сравнивается одна группа с собой. Измени первое или второе поле, чтобы ответить на другой вопрос.');
+  else if(first===base) say('Группы имеют равную численность. Одна составляет 100 % другой.');
+  else if(first>base) say('Числитель больше выбранного основания, поэтому получилось больше 100 %.');
+  else say('Сравни полосы: первая величина составляет только часть выбранного основания.');
+  stepList(['Сначала назови, о какой группе задаётся вопрос.','Выбери основание: с чем сравнивается первая группа?','Поменяй группы местами или выбери другой пример. Предскажи, окажется ли новое отношение больше единицы.']);
+ }
+ else if (n===33 && Object.hasOwn(groupRules,task.groupRule)) {
+  const rule=task.groupRule;
+  show(drawGroupRule(rule,a,b));
+  if (rule==='distribute') {
+   formula('3 × ('+a+' + '+b+') = '+3*(a+b));
+   formula('3 × '+a+' + 3 × '+b+' = '+(3*a)+' + '+(3*b));
+   stepList(['Сосчитай все клетки по числу рядов и столбцов.','Сосчитай клетки в каждой цветной полосе отдельно.','Измени ширину одной полосы. Объясни, почему оба способа по-прежнему дают одно число.']);
+  } else {
+   const op=rule==='add'?' + ':' − ',sign=rule==='add'?1:-1,end=10+sign*(a+b);
+   formula('10'+op+'('+a+' + '+b+') = '+end);
+   formula('(10'+op+a+')'+op+b+' = '+end);
+   stepList(['На верхней дорожке пройди весь путь за один шаг.','На нижней дорожке сначала пройди b, потом c.','Сравни конечные точки и попробуй другие длины шагов.']);
+  }
+ }
+ else if (n===15 && task.trigStudy) {
   const alpha=a===0?'A':'B', opposite=a===0?'BC':'AC', adjacent=a===0?'AC':'BC';
   const measurable=task.trigStudy!=='named', sample=measurable?b:0;
   const chosen=['','AC','BC','AB'][state.values[measurable?2:1]];
@@ -12211,6 +12306,7 @@ window.PetersonCourse = {
    "id": "p15",
    "order": 15,
    "part": 2,
+   "orderBySource": true,
    "title": "Понятие отношения",
    "chapter": "Арифметика",
    "page": 3,
@@ -14175,6 +14271,1691 @@ window.PetersonCourse = {
       "subpart": "5",
       "reference": "№15(5)"
      }
+    },
+    {
+     "id": "p15-t33",
+     "title": "К задаче №1а",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "Сравни две нагрузки: пять уроков математики за день и пять за весь месяц. Объясни, почему одно число воспринимается по-разному. Придумай похожий пример со своими числами.",
+     "finalLabel": "Запиши своё объяснение или укажи, где находится запись.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что нужно уточнить, чтобы оценить число уроков?",
+       "answer": "За какое время проходят уроки.",
+       "choices": [
+        "Только номер кабинета.",
+        "Только одно число 5.",
+        "За какое время проходят уроки."
+       ],
+       "hint": "Сравни длительность периодов.",
+       "explanation": "Одно и то же число занятий может приходиться на разные промежутки."
+      },
+      {
+       "prompt": "В своём примере возьмём 20 учебных дней. Сколько занятий было бы за это время при пяти занятиях каждый день?",
+       "answer": "100",
+       "hint": "Умножь дневное число на выбранное число учебных дней.",
+       "explanation": "5 · 20 = 100. Если пять занятий распределены на весь такой месяц, их всего 5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Придумай другой пример: одна и та же величина должна относиться к разным периодам или разным целым.",
+       "hint": "Запиши, что именно меняется в твоём сравнении.",
+       "explanation": "Можно сравнить 3 страницы за одну минуту и 3 страницы за весь день."
+      }
+     ],
+     "hint": "Введи одинаковый период сравнения. Число 20 — выбранный для модели пример, календарный месяц может содержать другое число учебных дней.",
+     "explanation": "В первом случае пять занятий приходятся на каждый день, во втором — на месяц целиком. При равных длительностях сравниваемых периодов разница становится видна.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 1,
+      "reference": "№1а",
+      "subpart": "а"
+     },
+     "quantityModel": {
+      "caption": "Временная основа сравнения",
+      "rows": [
+       [
+        "Первый случай",
+        "5 уроков за 1 день"
+       ],
+       [
+        "Второй случай",
+        "5 уроков за целый месяц"
+       ]
+      ],
+      "question": "Какие две величины надо учитывать вместе?"
+     },
+     "relatedTask": "p15-t34"
+    },
+    {
+     "id": "p15-t34",
+     "title": "К задаче №1б",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "Муравей и слон прибавили по одному грамму. Что одинаково у этих двух изменений и почему относительная прибавка разная? Объясни на своём примере.",
+     "finalLabel": "Запиши своё объяснение или укажи, где находится запись.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что заведомо одинаково в обеих историях?",
+       "answer": "Абсолютная прибавка — 1 г.",
+       "choices": [
+        "Доля от начальной массы.",
+        "Абсолютная прибавка — 1 г.",
+        "Итоговая масса животных."
+       ],
+       "hint": "Отдели прибавку от исходной массы.",
+       "explanation": "Грамм остаётся граммом, но начальные массы разные."
+      },
+      {
+       "prompt": "Для числовой модели возьми пакет массой 10 г. Сколько процентов от него составляет прибавка 1 г?",
+       "answer": "10",
+       "hint": "Раздели прибавку на исходную массу, затем умножь на 100.",
+       "explanation": "1/10 · 100 % = 10 %."
+      },
+      {
+       "prompt": "У второго модельного пакета начальная масса 1000 г. Сколько процентов составит тот же грамм?",
+       "answer": "0.1",
+       "hint": "Используй новую исходную массу в знаменателе.",
+       "explanation": "1/1000 · 100 % = 0,1 %."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Сравни относительные прибавки у животных словами и запиши свой пример.",
+       "hint": "Точные массы животных в задании не сообщаются.",
+       "explanation": "Одна и та же прибавка составляет большую долю меньшей начальной массы."
+      }
+     ],
+     "hint": "Подумай, что стоит в знаменателе: для каждого животного нужна его собственная начальная масса.",
+     "explanation": "Абсолютное изменение одинаково. Относительное изменение равно 1 г, делённому на исходную массу. Для муравья доля больше; вычислять точные проценты животных без исходных масс не требуется.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 1,
+      "reference": "№1б",
+      "subpart": "б"
+     },
+     "quantityModel": {
+      "caption": "Одинаковая прибавка, разные основания",
+      "rows": [
+       [
+        "Изменение массы",
+        "1 г в обоих случаях"
+       ],
+       [
+        "Первое основание",
+        "начальная масса меньшего животного"
+       ],
+       [
+        "Второе основание",
+        "начальная масса большего животного"
+       ]
+      ],
+      "question": "При каком знаменателе доля одного грамма больше?"
+     },
+     "relatedTask": "p15-t33"
+    },
+    {
+     "id": "p15-t35",
+     "title": "К задаче №2",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "Для сравнения возьми данные из условия: около 15 лет у кобры и около 90 лет у крокодила. Сравни продолжительности разностью, прямым и обратным отношением. Объясни значение каждого числа.",
+     "finalLabel": "Запиши своё объяснение или укажи, где находится запись.",
+     "steps": [
+      {
+       "prompt": "На сколько лет второе значение больше первого?",
+       "answer": "75",
+       "hint": "Из большего числа вычти меньшее.",
+       "explanation": "90 − 15 = 75 лет."
+      },
+      {
+       "prompt": "Во сколько раз второе значение больше?",
+       "answer": "6",
+       "hint": "Дели 90 на 15.",
+       "explanation": "90/15 = 6. Это число раз, а не число лет."
+      },
+      {
+       "prompt": "Какую долю второго значения составляет первое?",
+       "answer": "1/6",
+       "hint": "Во втором отношении поменяй числа местами.",
+       "explanation": "15/90 = 1/6."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Вырази одно из этих отношений в процентах и укажи, что выбрано за 100 %.",
+       "hint": "90 лет относительно 15 лет — это 6 · 100 %.",
+       "explanation": "Получаются около 600 % или около 16 2/3 % при обратном основании. Сами исходные длительности приблизительные."
+      }
+     ],
+     "hint": "Разность отвечает на «на сколько», отношение — на «во сколько раз» или «какую часть». В процентах всегда называй основание.",
+     "explanation": "Второе число больше первого: примерно на 75 лет и в 6 раз. Первое составляет приблизительно 1/6 второго. Обратная доля даёт 6; 600 % исходного уровня соответствует увеличению на 500 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 2,
+      "reference": "№2"
+     },
+     "quantityModel": {
+      "caption": "Две продолжительности",
+      "rows": [
+       [
+        "Сравниваемые данные",
+        "15 лет и 90 лет"
+       ],
+       [
+        "Разность",
+        "сохраняет единицу «лет»"
+       ],
+       [
+        "Отношение",
+        "сравнивает равные единицы между собой"
+       ]
+      ],
+      "question": "Какая величина выбрана за основание каждой дроби?"
+     },
+     "relatedTask": "p15-t42"
+    },
+    {
+     "id": "p15-t36",
+     "title": "К задаче №3в",
+     "kind": "number",
+     "answer": "5/6",
+     "prompt": "Прочитай отношение 2,5 : 3 и сократи. Запиши несократимую дробь или целое число. Объясни, какое изменение обоих членов сохраняет значение отношения.",
+     "finalLabel": "Введи значение отношения.",
+     "steps": [
+      {
+       "prompt": "Сколько десятых в первой величине?",
+       "answer": "25",
+       "hint": "Умножь оба числа на 10, чтобы получить целые числа.",
+       "explanation": "25/30 = 5/6."
+      },
+      {
+       "prompt": "Сколько десятых во второй величине?",
+       "answer": "30",
+       "hint": "Умножь оба числа на 10, чтобы получить целые числа.",
+       "explanation": "После перевода обе величины выражены одной меркой."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какое действие сохраняет отношение?",
+       "answer": "Умножение или деление обоих членов на одно и то же ненулевое число.",
+       "choices": [
+        "Прибавление одного числа к обоим членам.",
+        "Умножение только первого члена.",
+        "Умножение или деление обоих членов на одно и то же ненулевое число."
+       ],
+       "hint": "Сравни, что произойдёт с числителем и знаменателем дроби.",
+       "explanation": "Общий ненулевой множитель сокращается. При перестановке двух ненулевых членов отношение становится обратным."
+      }
+     ],
+     "hint": "Умножь оба числа на 10, чтобы получить целые числа.",
+     "explanation": "25/30 = 5/6. Значение отношения сохраняется при одинаковом ненулевом множителе обоих членов.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 3,
+      "reference": "№3в",
+      "subpart": "в"
+     },
+     "ratioQuantities": [
+      25,
+      30,
+      " десятых"
+     ],
+     "relatedTask": "p15-t37",
+     "answerFormat": "reduced-fraction"
+    },
+    {
+     "id": "p15-t37",
+     "title": "К задаче №3г",
+     "kind": "number",
+     "answer": "12",
+     "prompt": "Прочитай отношение 4 : (1/3) и сократи. Запиши несократимую дробь или целое число. Объясни, какое изменение обоих членов сохраняет значение отношения.",
+     "finalLabel": "Введи значение отношения.",
+     "steps": [
+      {
+       "prompt": "Сколько третей в первой величине?",
+       "answer": "12",
+       "hint": "Покажи обе величины в третях.",
+       "explanation": "4 — это 12 третей."
+      },
+      {
+       "prompt": "Сколько третей во второй величине?",
+       "answer": "1",
+       "hint": "Покажи обе величины в третях.",
+       "explanation": "После перевода обе величины выражены одной меркой."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какое действие сохраняет отношение?",
+       "answer": "Умножение или деление обоих членов на одно и то же ненулевое число.",
+       "choices": [
+        "Прибавление одного числа к обоим членам.",
+        "Умножение только первого члена.",
+        "Умножение или деление обоих членов на одно и то же ненулевое число."
+       ],
+       "hint": "Сравни, что произойдёт с числителем и знаменателем дроби.",
+       "explanation": "Общий ненулевой множитель сокращается. При перестановке двух ненулевых членов отношение становится обратным."
+      }
+     ],
+     "hint": "Покажи обе величины в третях.",
+     "explanation": "4 — это 12 третей. Значит, 4 : (1/3) = 12. Значение отношения сохраняется при одинаковом ненулевом множителе обоих членов.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 3,
+      "reference": "№3г",
+      "subpart": "г"
+     },
+     "ratioQuantities": [
+      12,
+      1,
+      " третей"
+     ],
+     "relatedTask": "p15-t38",
+     "answerFormat": "reduced-fraction"
+    },
+    {
+     "id": "p15-t38",
+     "title": "К задаче №3д",
+     "kind": "number",
+     "answer": "1/5",
+     "prompt": "Прочитай отношение 0,34 : 1,7 и сократи. Запиши несократимую дробь или целое число. Объясни, какое изменение обоих членов сохраняет значение отношения.",
+     "finalLabel": "Введи значение отношения.",
+     "steps": [
+      {
+       "prompt": "Сколько сотых в первой величине?",
+       "answer": "34",
+       "hint": "Запиши обе величины в сотых.",
+       "explanation": "34/170 сокращается на 34: получается 1/5."
+      },
+      {
+       "prompt": "Сколько сотых во второй величине?",
+       "answer": "170",
+       "hint": "Запиши обе величины в сотых.",
+       "explanation": "После перевода обе величины выражены одной меркой."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какое действие сохраняет отношение?",
+       "answer": "Умножение или деление обоих членов на одно и то же ненулевое число.",
+       "choices": [
+        "Прибавление одного числа к обоим членам.",
+        "Умножение только первого члена.",
+        "Умножение или деление обоих членов на одно и то же ненулевое число."
+       ],
+       "hint": "Сравни, что произойдёт с числителем и знаменателем дроби.",
+       "explanation": "Общий ненулевой множитель сокращается. При перестановке двух ненулевых членов отношение становится обратным."
+      }
+     ],
+     "hint": "Запиши обе величины в сотых.",
+     "explanation": "34/170 сокращается на 34: получается 1/5. Значение отношения сохраняется при одинаковом ненулевом множителе обоих членов.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 3,
+      "reference": "№3д",
+      "subpart": "д"
+     },
+     "ratioQuantities": [
+      34,
+      170,
+      " сотых"
+     ],
+     "relatedTask": "p15-t39",
+     "answerFormat": "reduced-fraction"
+    },
+    {
+     "id": "p15-t39",
+     "title": "К задаче №3е",
+     "kind": "number",
+     "answer": "2/3",
+     "prompt": "Прочитай отношение 3 1/9 : 4 2/3 и сократи. Запиши несократимую дробь или целое число. Объясни, какое изменение обоих членов сохраняет значение отношения.",
+     "finalLabel": "Введи значение отношения.",
+     "steps": [
+      {
+       "prompt": "Сколько девятых в первой величине?",
+       "answer": "28",
+       "hint": "Приведи обе величины к девятым.",
+       "explanation": "3 1/9 = 28/9, 4 2/3 = 42/9."
+      },
+      {
+       "prompt": "Сколько девятых во второй величине?",
+       "answer": "42",
+       "hint": "Приведи обе величины к девятым.",
+       "explanation": "После перевода обе величины выражены одной меркой."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какое действие сохраняет отношение?",
+       "answer": "Умножение или деление обоих членов на одно и то же ненулевое число.",
+       "choices": [
+        "Прибавление одного числа к обоим членам.",
+        "Умножение только первого члена.",
+        "Умножение или деление обоих членов на одно и то же ненулевое число."
+       ],
+       "hint": "Сравни, что произойдёт с числителем и знаменателем дроби.",
+       "explanation": "Общий ненулевой множитель сокращается. При перестановке двух ненулевых членов отношение становится обратным."
+      }
+     ],
+     "hint": "Приведи обе величины к девятым.",
+     "explanation": "3 1/9 = 28/9, 4 2/3 = 42/9. Отношение равно 28/42 = 2/3. Значение отношения сохраняется при одинаковом ненулевом множителе обоих членов.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 3,
+      "reference": "№3е",
+      "subpart": "е"
+     },
+     "ratioQuantities": [
+      28,
+      42,
+      " девятых"
+     ],
+     "relatedTask": "p15-t36",
+     "answerFormat": "reduced-fraction"
+    },
+    {
+     "id": "p15-t40",
+     "title": "К задаче №3ж",
+     "kind": "choice",
+     "answer": "3c/a",
+     "prompt": "Прочитай и упрости 15abc / (5a²b), где a ≠ 0 и b ≠ 0. Учитывай ограничения на переменные.",
+     "finalLabel": "Выбери верный вариант.",
+     "steps": [
+      {
+       "prompt": "Какой числовой коэффициент остаётся в числителе?",
+       "answer": "3",
+       "hint": "Разложи знаменатель в произведение 5 · a · a · b.",
+       "explanation": "В числителе 15 · a · b · c. Сокращение на 5ab оставляет 3c/a. Один множитель a в знаменателе сохраняется."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какой множитель остаётся в знаменателе после сокращения?",
+       "answer": "a",
+       "choices": [
+        "b",
+        "c",
+        "a"
+       ],
+       "hint": "Разложи знаменатель в произведение 5 · a · a · b.",
+       "explanation": "В числителе 15 · a · b · c. Сокращение на 5ab оставляет 3c/a. Один множитель a в знаменателе сохраняется."
+      }
+     ],
+     "hint": "Разложи знаменатель в произведение 5 · a · a · b.",
+     "explanation": "В числителе 15 · a · b · c. Сокращение на 5ab оставляет 3c/a. Один множитель a в знаменателе сохраняется.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 3,
+      "reference": "№3ж",
+      "subpart": "ж"
+     },
+     "choices": [
+      "3ac",
+      "3c/a",
+      "3c"
+     ],
+     "errorCues": [
+      [
+       "3ac",
+       "Проверь, какие множители есть и сверху, и снизу. Разложи знаменатель в произведение 5 · a · a · b."
+      ],
+      [
+       "3c",
+       "Отметь каждый сокращённый множитель только один раз. Разложи знаменатель в произведение 5 · a · a · b."
+      ]
+     ],
+     "quantityModel": {
+      "caption": "Сокращение общих множителей",
+      "rows": [
+       [
+        "Числитель",
+        "15 · a · b · c"
+       ],
+       [
+        "Знаменатель",
+        "5 · a · a · b"
+       ]
+      ],
+      "question": "Какие пары можно зачеркнуть при заданных ограничениях?"
+     },
+     "relatedTask": "p15-t41"
+    },
+    {
+     "id": "p15-t41",
+     "title": "К задаче №3з",
+     "kind": "choice",
+     "answer": "x/(5y)",
+     "prompt": "Прочитай и упрости (4x²) : (20xy), где x ≠ 0 и y ≠ 0. Учитывай ограничения на переменные.",
+     "finalLabel": "Выбери верный вариант.",
+     "steps": [
+      {
+       "prompt": "Какой числовой коэффициент остаётся в знаменателе?",
+       "answer": "5",
+       "hint": "Запиши x² как x · x, затем найди общие множители числителя и знаменателя.",
+       "explanation": "Деление обоих членов на 4x даёт x/(5y). Множитель y сокращать нельзя, в числителе его нет."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какая буква останется в знаменателе после сокращения?",
+       "answer": "y",
+       "choices": [
+        "x",
+        "1",
+        "y"
+       ],
+       "hint": "Запиши x² как x · x, затем найди общие множители числителя и знаменателя.",
+       "explanation": "Деление обоих членов на 4x даёт x/(5y). Множитель y сокращать нельзя, в числителе его нет."
+      }
+     ],
+     "hint": "Запиши x² как x · x, затем найди общие множители числителя и знаменателя.",
+     "explanation": "Деление обоих членов на 4x даёт x/(5y). Множитель y сокращать нельзя, в числителе его нет.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 3,
+      "reference": "№3з",
+      "subpart": "з"
+     },
+     "choices": [
+      "x/(5y)",
+      "4x/(5y)",
+      "x/5"
+     ],
+     "errorCues": [
+      [
+       "x/5",
+       "Проверь, какие множители есть и сверху, и снизу. Запиши x² как x · x, затем найди общие множители числителя и знаменателя."
+      ],
+      [
+       "4x/(5y)",
+       "Отметь каждый сокращённый множитель только один раз. Запиши x² как x · x, затем найди общие множители числителя и знаменателя."
+      ]
+     ],
+     "quantityModel": {
+      "caption": "Сокращение общих множителей",
+      "rows": [
+       [
+        "Числитель",
+        "4 · x · x"
+       ],
+       [
+        "Знаменатель",
+        "20 · x · y"
+       ]
+      ],
+      "question": "Какие пары можно зачеркнуть при заданных ограничениях?"
+     },
+     "relatedTask": "p15-t40"
+    },
+    {
+     "id": "p15-t42",
+     "title": "К задаче №4",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "На клумбе 6 белых и 12 красных роз. Объясни, что сравнивается в каждой записи: 6 : 12, 12 : 6, 6 : 18, 18 : 12. Придумай ещё одно отношение, назови обе величины и сократи его.",
+     "finalLabel": "Запиши своё объяснение или укажи, где находится запись.",
+     "steps": [
+      {
+       "prompt": "Чему равно отношение белых роз к красным?",
+       "answer": "1/2",
+       "hint": "Начни с числа белых.",
+       "explanation": "6/12 = 1/2. Белых вдвое меньше."
+      },
+      {
+       "prompt": "А красных к белым?",
+       "answer": "2",
+       "hint": "Поменяй числитель и знаменатель.",
+       "explanation": "12/6 = 2. Красных вдвое больше."
+      },
+      {
+       "prompt": "Какую долю всех роз составляют белые?",
+       "answer": "1/3",
+       "hint": "Всего 6 + 12 роз.",
+       "explanation": "6/18 = 1/3."
+      },
+      {
+       "prompt": "Чему равно отношение всех роз к красным?",
+       "answer": "3/2",
+       "hint": "Первая величина теперь — вся клумба.",
+       "explanation": "18/12 = 3/2. Это отношение может быть больше единицы."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свой пример и поясни словами оба члена.",
+       "hint": "Можно взять красные розы и всю клумбу.",
+       "explanation": "12/18 = 2/3: столько всех роз составляют красные."
+      }
+     ],
+     "hint": "Подпиши 6, 12 и 18 словами. Читай отношение в указанном порядке.",
+     "explanation": "6 : 12 = 1 : 2, 12 : 6 = 2 : 1; 6 : 18 = 1 : 3, а 18 : 12 = 3 : 2. Другой пример: отношение красных ко всем равно 2 : 3.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 4,
+      "reference": "№4"
+     },
+     "partComparison": {
+      "labels": [
+       "Белые",
+       "Красные",
+       "Все розы"
+      ],
+      "sets": [
+       [
+        6,
+        12
+       ],
+       [
+        9,
+        6
+       ]
+      ]
+     },
+     "relatedTask": "p15-t43"
+    },
+    {
+     "id": "p15-t43",
+     "title": "К задаче №5а",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В классе 10 мальчиков и 15 девочек. Составь свои отношения, объясни каждое словами и упрости. Можно сравнить часть с частью или часть со всеми.",
+     "finalLabel": "Запиши своё объяснение или укажи, где находится запись.",
+     "steps": [
+      {
+       "prompt": "Чему равно число всех учеников?",
+       "answer": "25",
+       "hint": "Отличай целое от двух его частей.",
+       "explanation": "Мальчики: 10. Девочки: 15. Всего 25."
+      },
+      {
+       "prompt": "Какую долю класса составляют мальчики?",
+       "answer": "2/5",
+       "hint": "Запиши число из первой группы в числителе, общее — в знаменателе.",
+       "explanation": "10/25 = 2/5."
+      },
+      {
+       "prompt": "Чему равно отношение числа мальчиков к числу девочек?",
+       "answer": "2/3",
+       "hint": "Теперь в знаменателе только вторая группа.",
+       "explanation": "10/15 = 2/3."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Составь ещё одно отношение и поясни его смысл.",
+       "hint": "Измени выбор числителя или знаменателя в модели, затем подпиши смысл словами.",
+       "explanation": "Слова «части ко всему» и «всего к части» задают обратный порядок."
+      }
+     ],
+     "hint": "Реши сначала, что выбираешь за основание. Для сравнения с целым найди общее число.",
+     "explanation": "Один вариант: мальчики ко всем — 2/5; первая группа ко второй — 2/3. Для своих записей тоже укажи, что стоит в знаменателе.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 5,
+      "reference": "№5а",
+      "subpart": "а"
+     },
+     "partComparison": {
+      "labels": [
+       "Мальчики",
+       "Девочки",
+       "Весь класс"
+      ],
+      "sets": [
+       [
+        10,
+        15
+       ],
+       [
+        14,
+        16
+       ]
+      ]
+     },
+     "relatedTask": "p15-t44"
+    },
+    {
+     "id": "p15-t44",
+     "title": "К задаче №5б",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В тетради 12 листов, из них 4 исписаны. Составь свои отношения, объясни каждое словами и упрости. Можно сравнить часть с частью или часть со всеми.",
+     "finalLabel": "Запиши своё объяснение или укажи, где находится запись.",
+     "steps": [
+      {
+       "prompt": "Сколько осталось чистых листов?",
+       "answer": "8",
+       "hint": "Отличай целое от двух его частей.",
+       "explanation": "Исписанные: 4. Чистые: 8. Всего 12."
+      },
+      {
+       "prompt": "Какую долю всех листов составляют исписанные?",
+       "answer": "1/3",
+       "hint": "Запиши число из первой группы в числителе, общее — в знаменателе.",
+       "explanation": "4/12 = 1/3."
+      },
+      {
+       "prompt": "Чему равно отношение исписанных к чистым?",
+       "answer": "1/2",
+       "hint": "Теперь в знаменателе только вторая группа.",
+       "explanation": "4/8 = 1/2."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Составь ещё одно отношение и поясни его смысл.",
+       "hint": "Измени выбор числителя или знаменателя в модели, затем подпиши смысл словами.",
+       "explanation": "Слова «части ко всему» и «всего к части» задают обратный порядок."
+      }
+     ],
+     "hint": "Реши сначала, что выбираешь за основание. Для сравнения с целым найди общее число.",
+     "explanation": "Один вариант: исписанные ко всем — 1/3; первая группа ко второй — 1/2. Для своих записей тоже укажи, что стоит в знаменателе.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 5,
+      "reference": "№5б",
+      "subpart": "б"
+     },
+     "partComparison": {
+      "labels": [
+       "Исписанные",
+       "Чистые",
+       "Все листы"
+      ],
+      "sets": [
+       [
+        4,
+        8
+       ],
+       [
+        8,
+        4
+       ]
+      ]
+     },
+     "relatedTask": "p15-t45"
+    },
+    {
+     "id": "p15-t45",
+     "title": "К задаче №5в",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "Из пяти выстрелов биатлониста два оказались промахами. Составь свои отношения, объясни каждое словами и упрости. Можно сравнить часть с частью или часть со всеми.",
+     "finalLabel": "Запиши своё объяснение или укажи, где находится запись.",
+     "steps": [
+      {
+       "prompt": "Сколько было попаданий?",
+       "answer": "3",
+       "hint": "Отличай целое от двух его частей.",
+       "explanation": "Попадания: 3. Промахи: 2. Всего 5."
+      },
+      {
+       "prompt": "Какую долю всех попыток составили попадания?",
+       "answer": "3/5",
+       "hint": "Запиши число из первой группы в числителе, общее — в знаменателе.",
+       "explanation": "3/5 = 3/5."
+      },
+      {
+       "prompt": "Чему равно отношение попаданий к промахам?",
+       "answer": "3/2",
+       "hint": "Теперь в знаменателе только вторая группа.",
+       "explanation": "3/2 = 3/2."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Составь ещё одно отношение и поясни его смысл.",
+       "hint": "Измени выбор числителя или знаменателя в модели, затем подпиши смысл словами.",
+       "explanation": "Слова «части ко всему» и «всего к части» задают обратный порядок."
+      }
+     ],
+     "hint": "Реши сначала, что выбираешь за основание. Для сравнения с целым найди общее число.",
+     "explanation": "Один вариант: попадания ко всем — 3/5; первая группа ко второй — 3/2. Для своих записей тоже укажи, что стоит в знаменателе.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 5,
+      "reference": "№5в",
+      "subpart": "в"
+     },
+     "partComparison": {
+      "labels": [
+       "Попадания",
+       "Промахи",
+       "Все попытки"
+      ],
+      "sets": [
+       [
+        3,
+        2
+       ],
+       [
+        7,
+        3
+       ]
+      ]
+     },
+     "relatedTask": "p15-t46"
+    },
+    {
+     "id": "p15-t46",
+     "title": "К задаче №5г",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В викторине участвовали 200 человек. Победителями стали 50. Составь свои отношения, объясни каждое словами и упрости. Можно сравнить часть с частью или часть со всеми.",
+     "finalLabel": "Запиши своё объяснение или укажи, где находится запись.",
+     "steps": [
+      {
+       "prompt": "Сколько участников не вошли в число победителей?",
+       "answer": "150",
+       "hint": "Отличай целое от двух его частей.",
+       "explanation": "Победители: 50. Остальные: 150. Всего 200."
+      },
+      {
+       "prompt": "Какую долю участников составили победители?",
+       "answer": "1/4",
+       "hint": "Запиши число из первой группы в числителе, общее — в знаменателе.",
+       "explanation": "50/200 = 1/4."
+      },
+      {
+       "prompt": "Чему равно отношение победителей к остальным участникам?",
+       "answer": "1/3",
+       "hint": "Теперь в знаменателе только вторая группа.",
+       "explanation": "50/150 = 1/3."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Составь ещё одно отношение и поясни его смысл.",
+       "hint": "Измени выбор числителя или знаменателя в модели, затем подпиши смысл словами.",
+       "explanation": "Слова «части ко всему» и «всего к части» задают обратный порядок."
+      }
+     ],
+     "hint": "Реши сначала, что выбираешь за основание. Для сравнения с целым найди общее число.",
+     "explanation": "Один вариант: победители ко всем — 1/4; первая группа ко второй — 1/3. Для своих записей тоже укажи, что стоит в знаменателе.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 5,
+      "reference": "№5г",
+      "subpart": "г"
+     },
+     "partComparison": {
+      "labels": [
+       "Победители",
+       "Остальные",
+       "Все участники"
+      ],
+      "sets": [
+       [
+        50,
+        150
+       ],
+       [
+        60,
+        140
+       ]
+      ]
+     },
+     "relatedTask": "p15-t43"
+    },
+    {
+     "id": "p15-t47",
+     "title": "К задаче №6б",
+     "kind": "number",
+     "answer": "36",
+     "prompt": "Запиши отношение 9 : 25 в процентах.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Чему равно отношение до перевода в проценты?",
+       "answer": "9/25",
+       "hint": "Удобно умножить числитель и знаменатель на 4.",
+       "explanation": "Частное равно 9/25."
+      },
+      {
+       "prompt": "Сколько процентов соответствует целой единице?",
+       "answer": "100",
+       "hint": "Процент — сотая часть единицы.",
+       "explanation": "Умножь значение отношения на 100, чтобы получить число процентов."
+      }
+     ],
+     "hint": "Удобно умножить числитель и знаменатель на 4.",
+     "explanation": "Отношение равно 9/25. Умножение на 100 даёт 36 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 6,
+      "reference": "№6б",
+      "subpart": "б"
+     },
+     "errorCues": [
+      [
+       "9/25",
+       "Это частное до перевода. Сколько процентов в одной единице?"
+      ]
+     ],
+     "ratioQuantities": [
+      9,
+      25
+     ],
+     "relatedTask": "p15-t48",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t48",
+     "title": "К задаче №6в",
+     "kind": "number",
+     "answer": "500",
+     "prompt": "Запиши отношение 15 : 3 в процентах.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Чему равно отношение до перевода в проценты?",
+       "answer": "5",
+       "hint": "Первая величина больше второй. Процент может превышать 100.",
+       "explanation": "Частное равно 5."
+      },
+      {
+       "prompt": "Сколько процентов соответствует целой единице?",
+       "answer": "100",
+       "hint": "Процент — сотая часть единицы.",
+       "explanation": "Умножь значение отношения на 100, чтобы получить число процентов."
+      }
+     ],
+     "hint": "Первая величина больше второй. Процент может превышать 100.",
+     "explanation": "Отношение равно 5. Умножение на 100 даёт 500 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 6,
+      "reference": "№6в",
+      "subpart": "в"
+     },
+     "errorCues": [
+      [
+       "5",
+       "Это частное до перевода. Сколько процентов в одной единице?"
+      ]
+     ],
+     "ratioQuantities": [
+      15,
+      3
+     ],
+     "relatedTask": "p15-t49",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t49",
+     "title": "К задаче №6г",
+     "kind": "number",
+     "answer": "275",
+     "prompt": "Запиши отношение 77 : 28 в процентах.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Чему равно отношение до перевода в проценты?",
+       "answer": "11/4",
+       "hint": "Сократи 77/28 на 7.",
+       "explanation": "Частное равно 11/4."
+      },
+      {
+       "prompt": "Сколько процентов соответствует целой единице?",
+       "answer": "100",
+       "hint": "Процент — сотая часть единицы.",
+       "explanation": "Умножь значение отношения на 100, чтобы получить число процентов."
+      }
+     ],
+     "hint": "Сократи 77/28 на 7.",
+     "explanation": "Отношение равно 11/4. Умножение на 100 даёт 275 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 6,
+      "reference": "№6г",
+      "subpart": "г"
+     },
+     "errorCues": [
+      [
+       "11/4",
+       "Это частное до перевода. Сколько процентов в одной единице?"
+      ]
+     ],
+     "ratioQuantities": [
+      77,
+      28
+     ],
+     "relatedTask": "p15-t50",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t50",
+     "title": "К задаче №6д",
+     "kind": "number",
+     "answer": "30",
+     "prompt": "Запиши отношение 1,6 : 5 1/3 в процентах.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Чему равно отношение до перевода в проценты?",
+       "answer": "3/10",
+       "hint": "Переведи оба числа в одинаковые дробные доли: 1,6 = 48/30, а 5 1/3 = 160/30.",
+       "explanation": "Частное равно 3/10."
+      },
+      {
+       "prompt": "Сколько процентов соответствует целой единице?",
+       "answer": "100",
+       "hint": "Процент — сотая часть единицы.",
+       "explanation": "Умножь значение отношения на 100, чтобы получить число процентов."
+      }
+     ],
+     "hint": "Переведи оба числа в одинаковые дробные доли: 1,6 = 48/30, а 5 1/3 = 160/30.",
+     "explanation": "Отношение равно 3/10. Умножение на 100 даёт 30 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 6,
+      "reference": "№6д",
+      "subpart": "д"
+     },
+     "errorCues": [
+      [
+       "3/10",
+       "Это частное до перевода. Сколько процентов в одной единице?"
+      ]
+     ],
+     "ratioQuantities": [
+      48,
+      160,
+      " тридцатых"
+     ],
+     "relatedTask": "p15-t51",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t51",
+     "title": "К задаче №6е",
+     "kind": "number",
+     "answer": "9",
+     "prompt": "Запиши отношение 6,3 : 70 в процентах.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Чему равно отношение до перевода в проценты?",
+       "answer": "9/100",
+       "hint": "Умножь оба члена на 10, затем сократи.",
+       "explanation": "Частное равно 9/100."
+      },
+      {
+       "prompt": "Сколько процентов соответствует целой единице?",
+       "answer": "100",
+       "hint": "Процент — сотая часть единицы.",
+       "explanation": "Умножь значение отношения на 100, чтобы получить число процентов."
+      }
+     ],
+     "hint": "Умножь оба члена на 10, затем сократи.",
+     "explanation": "Отношение равно 9/100. Умножение на 100 даёт 9 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 6,
+      "reference": "№6е",
+      "subpart": "е"
+     },
+     "errorCues": [
+      [
+       "9/100",
+       "Это частное до перевода. Сколько процентов в одной единице?"
+      ]
+     ],
+     "ratioQuantities": [
+      63,
+      700,
+      " десятых"
+     ],
+     "relatedTask": "p15-t52",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t52",
+     "title": "К задаче №6ж",
+     "kind": "number",
+     "answer": "25",
+     "prompt": "Запиши отношение a : (4a), где a ≠ 0 в процентах.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Чему равно отношение до перевода в проценты?",
+       "answer": "1/4",
+       "hint": "Сократи ненулевой множитель a.",
+       "explanation": "Частное равно 1/4."
+      },
+      {
+       "prompt": "Сколько процентов соответствует целой единице?",
+       "answer": "100",
+       "hint": "Процент — сотая часть единицы.",
+       "explanation": "Умножь значение отношения на 100, чтобы получить число процентов."
+      }
+     ],
+     "hint": "Сократи ненулевой множитель a.",
+     "explanation": "Отношение равно 1/4. Умножение на 100 даёт 25 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 6,
+      "reference": "№6ж",
+      "subpart": "ж"
+     },
+     "errorCues": [
+      [
+       "1/4",
+       "Это частное до перевода. Сколько процентов в одной единице?"
+      ]
+     ],
+     "quantityModel": {
+      "caption": "Ненулевой общий множитель",
+      "rows": [
+       [
+        "Первое выражение",
+        "a"
+       ],
+       [
+        "Второе выражение",
+        "4 · a"
+       ],
+       [
+        "Ограничение",
+        "a ≠ 0"
+       ]
+      ],
+      "question": "Что останется после сокращения общей буквы?"
+     },
+     "relatedTask": "p15-t53",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t53",
+     "title": "К задаче №6з",
+     "kind": "number",
+     "answer": "200",
+     "prompt": "Запиши отношение (8,4b) : (4 1/5 · b), где b ≠ 0 в процентах.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Чему равно отношение до перевода в проценты?",
+       "answer": "2",
+       "hint": "Сократи b и запиши смешанное число 4 1/5 десятичной дробью.",
+       "explanation": "Частное равно 2."
+      },
+      {
+       "prompt": "Сколько процентов соответствует целой единице?",
+       "answer": "100",
+       "hint": "Процент — сотая часть единицы.",
+       "explanation": "Умножь значение отношения на 100, чтобы получить число процентов."
+      }
+     ],
+     "hint": "Сократи b и запиши смешанное число 4 1/5 десятичной дробью.",
+     "explanation": "Отношение равно 2. Умножение на 100 даёт 200 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 6,
+      "reference": "№6з",
+      "subpart": "з"
+     },
+     "errorCues": [
+      [
+       "2",
+       "Это частное до перевода. Сколько процентов в одной единице?"
+      ]
+     ],
+     "quantityModel": {
+      "caption": "Ненулевой общий множитель",
+      "rows": [
+       [
+        "Первое выражение",
+        "8,4 · b"
+       ],
+       [
+        "Второе выражение",
+        "4,2 · b"
+       ],
+       [
+        "Ограничение",
+        "b ≠ 0"
+       ]
+      ],
+      "question": "Что останется после сокращения общей буквы?"
+     },
+     "relatedTask": "p15-t47",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t54",
+     "title": "К задаче №7а",
+     "kind": "choice",
+     "answer": "33 1/3 % и 300 %",
+     "prompt": "Вырази в процентах 1 : 3, а затем обратное отношение. Сохрани именно такой порядок и объясни, почему ответы различаются.",
+     "finalLabel": "Выбери верный вариант.",
+     "steps": [
+      {
+       "prompt": "Чему равно прямое отношение до перевода в проценты?",
+       "answer": "1/3",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "Прямое частное равно 1/3."
+      },
+      {
+       "prompt": "Сколько процентов в прямом отношении?",
+       "answer": "100/3",
+       "hint": "Умножь прямое частное на 100.",
+       "explanation": "Получится 100/3 %: дробный ответ можно оставить точным."
+      },
+      {
+       "prompt": "Чему равно обратное частное до перевода в проценты?",
+       "answer": "3",
+       "hint": "Переверни дробь, оба числа ненулевые.",
+       "explanation": "Обратное частное равно 3."
+      },
+      {
+       "prompt": "Сколько процентов в обратном отношении?",
+       "answer": "300",
+       "hint": "Снова умножь отношение на 100.",
+       "explanation": "Получится 300 %."
+      }
+     ],
+     "hint": "Составь обе дроби. Порядок имеет значение и при прямом, и при обратном сравнении.",
+     "explanation": "Прямое частное 1/3, обратное 3. В процентах: 33 1/3 % и 300 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 7,
+      "reference": "№7а",
+      "subpart": "а"
+     },
+     "choices": [
+      "300 % и 33 1/3 %",
+      "33 1/3 % и 300 %",
+      "33 1/3 % и 3 %"
+     ],
+     "errorCues": [
+      [
+       "300 % и 33 1/3 %",
+       "Ответы поменяны местами. Начни с первого числа исходной записи."
+      ],
+      [
+       "33 1/3 % и 3 %",
+       "Проверь, переведено ли второе частное в проценты."
+      ]
+     ],
+     "quantityModel": {
+      "caption": "Одни числа, два основания",
+      "rows": [
+       [
+        "Первое действие",
+        "первая величина / вторая"
+       ],
+       [
+        "Обратное действие",
+        "вторая величина / первая"
+       ],
+       [
+        "Переход к процентам",
+        "каждое частное умножь на 100"
+       ]
+      ],
+      "question": "В какой строке числитель больше знаменателя?"
+     },
+     "relatedTask": "p15-t55"
+    },
+    {
+     "id": "p15-t55",
+     "title": "К задаче №7в",
+     "kind": "choice",
+     "answer": "20 % и 500 %",
+     "prompt": "Вырази в процентах 7,2 : 36, а затем обратное отношение. Сохрани именно такой порядок и объясни, почему ответы различаются.",
+     "finalLabel": "Выбери верный вариант.",
+     "steps": [
+      {
+       "prompt": "Чему равно прямое отношение до перевода в проценты?",
+       "answer": "1/5",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "Прямое частное равно 1/5."
+      },
+      {
+       "prompt": "Сколько процентов в прямом отношении?",
+       "answer": "20",
+       "hint": "Умножь прямое частное на 100.",
+       "explanation": "Получится 20 %: дробный ответ можно оставить точным."
+      },
+      {
+       "prompt": "Чему равно обратное частное до перевода в проценты?",
+       "answer": "5",
+       "hint": "Переверни дробь, оба числа ненулевые.",
+       "explanation": "Обратное частное равно 5."
+      },
+      {
+       "prompt": "Сколько процентов в обратном отношении?",
+       "answer": "500",
+       "hint": "Снова умножь отношение на 100.",
+       "explanation": "Получится 500 %."
+      }
+     ],
+     "hint": "Составь обе дроби. Порядок имеет значение и при прямом, и при обратном сравнении.",
+     "explanation": "Прямое частное 1/5, обратное 5. В процентах: 20 % и 500 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 7,
+      "reference": "№7в",
+      "subpart": "в"
+     },
+     "choices": [
+      "20 % и 500 %",
+      "20 % и 5 %",
+      "500 % и 20 %"
+     ],
+     "errorCues": [
+      [
+       "500 % и 20 %",
+       "Ответы поменяны местами. Начни с первого числа исходной записи."
+      ],
+      [
+       "20 % и 5 %",
+       "Проверь, переведено ли второе частное в проценты."
+      ]
+     ],
+     "quantityModel": {
+      "caption": "Одни числа, два основания",
+      "rows": [
+       [
+        "Первое действие",
+        "первая величина / вторая"
+       ],
+       [
+        "Обратное действие",
+        "вторая величина / первая"
+       ],
+       [
+        "Переход к процентам",
+        "каждое частное умножь на 100"
+       ]
+      ],
+      "question": "В какой строке числитель больше знаменателя?"
+     },
+     "relatedTask": "p15-t56"
+    },
+    {
+     "id": "p15-t56",
+     "title": "К задаче №7г",
+     "kind": "choice",
+     "answer": "60 % и 166 2/3 %",
+     "prompt": "Вырази в процентах (9/20) : 0,75, а затем обратное отношение. Сохрани именно такой порядок и объясни, почему ответы различаются.",
+     "finalLabel": "Выбери верный вариант.",
+     "steps": [
+      {
+       "prompt": "Чему равно прямое отношение до перевода в проценты?",
+       "answer": "3/5",
+       "hint": "Первую величину раздели на вторую.",
+       "explanation": "Прямое частное равно 3/5."
+      },
+      {
+       "prompt": "Сколько процентов в прямом отношении?",
+       "answer": "60",
+       "hint": "Умножь прямое частное на 100.",
+       "explanation": "Получится 60 %: дробный ответ можно оставить точным."
+      },
+      {
+       "prompt": "Чему равно обратное частное до перевода в проценты?",
+       "answer": "5/3",
+       "hint": "Переверни дробь, оба числа ненулевые.",
+       "explanation": "Обратное частное равно 5/3."
+      },
+      {
+       "prompt": "Сколько процентов в обратном отношении?",
+       "answer": "500/3",
+       "hint": "Снова умножь отношение на 100.",
+       "explanation": "Получится 500/3 %."
+      }
+     ],
+     "hint": "Составь обе дроби. Порядок имеет значение и при прямом, и при обратном сравнении.",
+     "explanation": "Прямое частное 3/5, обратное 5/3. В процентах: 60 % и 166 2/3 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 7,
+      "reference": "№7г",
+      "subpart": "г"
+     },
+     "choices": [
+      "166 2/3 % и 60 %",
+      "60 % и 166 2/3 %",
+      "60 % и 1 2/3 %"
+     ],
+     "errorCues": [
+      [
+       "166 2/3 % и 60 %",
+       "Ответы поменяны местами. Начни с первого числа исходной записи."
+      ],
+      [
+       "60 % и 1 2/3 %",
+       "Проверь, переведено ли второе частное в проценты."
+      ]
+     ],
+     "quantityModel": {
+      "caption": "Одни числа, два основания",
+      "rows": [
+       [
+        "Первое действие",
+        "первая величина / вторая"
+       ],
+       [
+        "Обратное действие",
+        "вторая величина / первая"
+       ],
+       [
+        "Переход к процентам",
+        "каждое частное умножь на 100"
+       ]
+      ],
+      "question": "В какой строке числитель больше знаменателя?"
+     },
+     "relatedTask": "p15-t54"
+    },
+    {
+     "id": "p15-t57",
+     "title": "К задаче №8б",
+     "kind": "number",
+     "answer": "60",
+     "prompt": "Сколько процентов составляет отношение 0,3 км к 500 м? Приведи величины к одинаковым единицам.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Каково первое значение в единицах «м»?",
+       "answer": "300",
+       "hint": "Переведи километры в метры.",
+       "explanation": "0,3 км = 300 м."
+      },
+      {
+       "prompt": "Каково второе значение в тех же единицах?",
+       "answer": "500",
+       "hint": "Переведи километры в метры.",
+       "explanation": "0,3 км = 300 м."
+      }
+     ],
+     "hint": "Переведи километры в метры.",
+     "explanation": "0,3 км = 300 м. Затем раздели первое значение на второе и умножь на 100. Получится 60 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 8,
+      "reference": "№8б",
+      "subpart": "б"
+     },
+     "ratioQuantities": [
+      300,
+      500,
+      " м"
+     ],
+     "relatedTask": "p15-t58",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t58",
+     "title": "К задаче №8в",
+     "kind": "number",
+     "answer": "30",
+     "prompt": "Сколько процентов составляет отношение 12 ц к 4 т? Приведи величины к одинаковым единицам.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Каково первое значение в единицах «ц»?",
+       "answer": "12",
+       "hint": "Вырази обе массы в центнерах.",
+       "explanation": "1 т = 10 ц, поэтому 4 т = 40 ц."
+      },
+      {
+       "prompt": "Каково второе значение в тех же единицах?",
+       "answer": "40",
+       "hint": "Вырази обе массы в центнерах.",
+       "explanation": "1 т = 10 ц, поэтому 4 т = 40 ц."
+      }
+     ],
+     "hint": "Вырази обе массы в центнерах.",
+     "explanation": "1 т = 10 ц, поэтому 4 т = 40 ц. Затем раздели первое значение на второе и умножь на 100. Получится 30 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 8,
+      "reference": "№8в",
+      "subpart": "в"
+     },
+     "ratioQuantities": [
+      12,
+      40,
+      " ц"
+     ],
+     "relatedTask": "p15-t59",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t59",
+     "title": "К задаче №8г",
+     "kind": "number",
+     "answer": "17",
+     "prompt": "Сколько процентов составляет отношение 0,034 ц к 20 кг? Приведи величины к одинаковым единицам.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Каково первое значение в единицах «кг»?",
+       "answer": "3.4",
+       "hint": "Вырази обе массы в килограммах.",
+       "explanation": "1 ц = 100 кг, поэтому 0,034 ц = 3,4 кг."
+      },
+      {
+       "prompt": "Каково второе значение в тех же единицах?",
+       "answer": "20",
+       "hint": "Вырази обе массы в килограммах.",
+       "explanation": "1 ц = 100 кг, поэтому 0,034 ц = 3,4 кг."
+      }
+     ],
+     "hint": "Вырази обе массы в килограммах.",
+     "explanation": "1 ц = 100 кг, поэтому 0,034 ц = 3,4 кг. Затем раздели первое значение на второе и умножь на 100. Получится 17 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 8,
+      "reference": "№8г",
+      "subpart": "г"
+     },
+     "ratioQuantities": [
+      3.4,
+      20,
+      " кг"
+     ],
+     "relatedTask": "p15-t60",
+     "answerFormat": "integer"
+    },
+    {
+     "id": "p15-t60",
+     "title": "К задаче №8д",
+     "kind": "number",
+     "answer": "10",
+     "prompt": "Сколько процентов составляет отношение 6 минут к 1 часу? Приведи величины к одинаковым единицам.",
+     "finalLabel": "Введи число процентов без знака %.",
+     "steps": [
+      {
+       "prompt": "Каково первое значение в единицах «мин»?",
+       "answer": "6",
+       "hint": "Вырази время в минутах.",
+       "explanation": "1 час = 60 минут."
+      },
+      {
+       "prompt": "Каково второе значение в тех же единицах?",
+       "answer": "60",
+       "hint": "Вырази время в минутах.",
+       "explanation": "1 час = 60 минут."
+      }
+     ],
+     "hint": "Вырази время в минутах.",
+     "explanation": "1 час = 60 минут. Затем раздели первое значение на второе и умножь на 100. Получится 10 %.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 6,
+      "exercise": 8,
+      "reference": "№8д",
+      "subpart": "д"
+     },
+     "ratioQuantities": [
+      6,
+      60,
+      " мин"
+     ],
+     "relatedTask": "p15-t57",
+     "answerFormat": "integer"
     }
    ]
   },
@@ -19669,6 +21450,7 @@ window.PetersonCourse = {
    "id": "p33",
    "order": 33,
    "part": 3,
+   "orderBySource": true,
    "title": "Раскрытие скобок",
    "chapter": "Уравнения",
    "page": 3,
@@ -21804,6 +23586,1160 @@ window.PetersonCourse = {
       "question": "Как сложить число мешков, перевести в тонны и найти именно остаток?"
      },
      "relatedTask": "p33-t30"
+    },
+    {
+     "id": "p33-t32",
+     "title": "К задаче №1а",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши своё равенство и объяснение или укажи, где хранится чертёж.",
+     "prompt": "Запиши буквами правило прибавления суммы к числу. Объясни его своими словами и изобрази на рисунке. Подойдут перемещения на прямой или прямоугольник по клеткам. Возьми свои числа для проверки.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое равенство точно передаёт правило?",
+       "answer": "a + (b + c) = (a + b) + c",
+       "choices": [
+        "a + (b + c) = (a + b) + c",
+        "a + (b + c) = a + b − c",
+        "a + (b + c) = a − b + c"
+       ],
+       "hint": "Слева прибавь всю сумму одним действием, справа сделай два последовательных прибавления.",
+       "explanation": "a + (b + c) = (a + b) + c."
+      },
+      {
+       "prompt": "Сколько получится при a = 10, b = 2, c = 3?",
+       "answer": "15",
+       "hint": "Слева прибавь всю сумму одним действием, справа сделай два последовательных прибавления.",
+       "explanation": "10 + (2 + 3) = 15; отдельно 10 + 2 + 3 = 15."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Нарисуй собственный пример и отметь на нём обе стороны равенства.",
+       "hint": "Подпиши исходное число и оба изменения либо размеры частей прямоугольника.",
+       "explanation": "На числовой прямой начни в a. Отложи вправо b, затем c. Конец совпадает с концом одного перемещения на b + c."
+      }
+     ],
+     "hint": "Слева прибавь всю сумму одним действием, справа сделай два последовательных прибавления.",
+     "explanation": "a + (b + c) = (a + b) + c. На числовой прямой начни в a. Отложи вправо b, затем c. Конец совпадает с концом одного перемещения на b + c.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 1,
+      "subpart": "а",
+      "reference": "№1а"
+     },
+     "relatedTask": "p33-t33",
+     "groupRule": "add"
+    },
+    {
+     "id": "p33-t33",
+     "title": "К задаче №1б",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши своё равенство и объяснение или укажи, где хранится чертёж.",
+     "prompt": "Запиши буквами правило вычитания суммы из числа. Объясни его своими словами и изобрази на рисунке. Подойдут перемещения на прямой или прямоугольник по клеткам. Возьми свои числа для проверки.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое равенство точно передаёт правило?",
+       "answer": "a − (b + c) = (a − b) − c",
+       "choices": [
+        "a − (b + c) = (a − b) − c",
+        "a − (b + c) = a − b + c",
+        "a − (b + c) = a + b − c"
+       ],
+       "hint": "Сравни один шаг назад длиной b + c с двумя шагами назад.",
+       "explanation": "a − (b + c) = (a − b) − c."
+      },
+      {
+       "prompt": "Сколько получится при a = 10, b = 2, c = 3?",
+       "answer": "5",
+       "hint": "Сравни один шаг назад длиной b + c с двумя шагами назад.",
+       "explanation": "10 − (2 + 3) = 5, и 10 − 2 − 3 = 5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Нарисуй собственный пример и отметь на нём обе стороны равенства.",
+       "hint": "Подпиши исходное число и оба изменения либо размеры частей прямоугольника.",
+       "explanation": "На числовой прямой разность a − (b + c) можно показать двумя последовательными движениями влево на b и c."
+      }
+     ],
+     "hint": "Сравни один шаг назад длиной b + c с двумя шагами назад.",
+     "explanation": "a − (b + c) = (a − b) − c. На числовой прямой разность a − (b + c) можно показать двумя последовательными движениями влево на b и c.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 1,
+      "subpart": "б",
+      "reference": "№1б"
+     },
+     "relatedTask": "p33-t34",
+     "groupRule": "subtract"
+    },
+    {
+     "id": "p33-t34",
+     "title": "К задаче №1в",
+     "kind": "manual",
+     "answer": "",
+     "finalLabel": "Запиши своё равенство и объяснение или укажи, где хранится чертёж.",
+     "prompt": "Запиши буквами правило распределительного свойства умножения. Объясни его своими словами и изобрази на рисунке. Подойдут перемещения на прямой или прямоугольник по клеткам. Возьми свои числа для проверки.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какое равенство точно передаёт правило?",
+       "answer": "a(b + c) = ab + ac",
+       "choices": [
+        "a(b + c) = ab + ac",
+        "a(b + c) = ab + c",
+        "a(b + c) = ab + bc"
+       ],
+       "hint": "В каждом из a рядов есть b клеток одной группы и ещё c клеток другой.",
+       "explanation": "a(b + c) = ab + ac."
+      },
+      {
+       "prompt": "Сколько клеток при a = 3, b = 2, c = 3?",
+       "answer": "15",
+       "hint": "В каждом из a рядов есть b клеток одной группы и ещё c клеток другой.",
+       "explanation": "3 · (2 + 3) = 15, и 3 · 2 + 3 · 3 = 15."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Нарисуй собственный пример и отметь на нём обе стороны равенства.",
+       "hint": "Подпиши исходное число и оба изменения либо размеры частей прямоугольника.",
+       "explanation": "Прямоугольник высотой a и шириной b + c разделён на полосы шириной b и c. Обе высоты равны a, поэтому площади частей равны ab и ac."
+      }
+     ],
+     "hint": "В каждом из a рядов есть b клеток одной группы и ещё c клеток другой.",
+     "explanation": "a(b + c) = ab + ac. Прямоугольник высотой a и шириной b + c разделён на полосы шириной b и c. Обе высоты равны a, поэтому площади частей равны ab и ac.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 1,
+      "subpart": "в",
+      "reference": "№1в"
+     },
+     "relatedTask": "p33-t32",
+     "groupRule": "distribute"
+    },
+    {
+     "id": "p33-t35",
+     "title": "К задаче №2б",
+     "kind": "choice",
+     "answer": "−c − d",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши −(c + d) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Во что превращается +d под внешним минусом?",
+       "answer": "−d",
+       "choices": [
+        "+d",
+        "−d",
+        "0"
+       ],
+       "hint": "Внешний минус умножает оба слагаемых на −1.",
+       "explanation": "Внешний минус умножает оба слагаемых на −1."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Начни с первого c: у него тоже меняется знак."
+      }
+     ],
+     "hint": "Внешний минус умножает оба слагаемых на −1.",
+     "explanation": "После раскрытия получаем −c − d. Начни с первого c: у него тоже меняется знак.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "б",
+      "reference": "№2б"
+     },
+     "choices": [
+      "−c + d",
+      "c − d",
+      "−c − d"
+     ],
+     "errorCues": [
+      [
+       "−c + d",
+       "Сверь знаки слагаемых по очереди. Внешний минус умножает оба слагаемых на −1."
+      ],
+      [
+       "c − d",
+       "Начни с первого c: у него тоже меняется знак."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "c",
+       "+d"
+      ]
+     ],
+     "relatedTask": "p33-t36"
+    },
+    {
+     "id": "p33-t36",
+     "title": "К задаче №2в",
+     "kind": "choice",
+     "answer": "x − y",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши −(−x + y) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Чему равен результат умножения −1 на −x?",
+       "answer": "+x",
+       "choices": [
+        "−x",
+        "+x",
+        "0"
+       ],
+       "hint": "Два отрицательных множителя дают +x.",
+       "explanation": "Два отрицательных множителя дают +x."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Второе слагаемое +y тоже умножено на −1."
+      }
+     ],
+     "hint": "Два отрицательных множителя дают +x.",
+     "explanation": "После раскрытия получаем x − y. Второе слагаемое +y тоже умножено на −1.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "в",
+      "reference": "№2в"
+     },
+     "choices": [
+      "x − y",
+      "−x − y",
+      "x + y"
+     ],
+     "errorCues": [
+      [
+       "−x − y",
+       "Сверь знаки слагаемых по очереди. Два отрицательных множителя дают +x."
+      ],
+      [
+       "x + y",
+       "Второе слагаемое +y тоже умножено на −1."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "−x",
+       "+y"
+      ]
+     ],
+     "relatedTask": "p33-t37"
+    },
+    {
+     "id": "p33-t37",
+     "title": "К задаче №2г",
+     "kind": "choice",
+     "answer": "d + k − t",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши d − (−k + t) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Каким будет первое слагаемое из скобок?",
+       "answer": "+k",
+       "choices": [
+        "+k",
+        "−k",
+        "+d"
+       ],
+       "hint": "Вычитается отрицательное число −k.",
+       "explanation": "Вычитается отрицательное число −k."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Вычитается вся скобка, включая +t."
+      }
+     ],
+     "hint": "Вычитается отрицательное число −k.",
+     "explanation": "После раскрытия получаем d + k − t. Вычитается вся скобка, включая +t.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "г",
+      "reference": "№2г"
+     },
+     "choices": [
+      "d − k − t",
+      "d + k − t",
+      "d + k + t"
+     ],
+     "errorCues": [
+      [
+       "d − k − t",
+       "Сверь знаки слагаемых по очереди. Вычитается отрицательное число −k."
+      ],
+      [
+       "d + k + t",
+       "Вычитается вся скобка, включая +t."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "−k",
+       "+t"
+      ]
+     ],
+     "relatedTask": "p33-t38"
+    },
+    {
+     "id": "p33-t38",
+     "title": "К задаче №2д",
+     "kind": "choice",
+     "answer": "−m + a − c",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши −m + (a − c) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что делает знак + перед скобками?",
+       "answer": "Сохраняет знаки обоих слагаемых.",
+       "choices": [
+        "Сохраняет знаки обоих слагаемых.",
+        "Меняет знак второго слагаемого.",
+        "Меняет оба знака."
+       ],
+       "hint": "Если скобку прибавляют, внутри ничего не меняется.",
+       "explanation": "Если скобку прибавляют, внутри ничего не меняется."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "0",
+       "choices": [
+        "1",
+        "0",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Отдельное слагаемое −m не находится в скобках."
+      }
+     ],
+     "hint": "Если скобку прибавляют, внутри ничего не меняется.",
+     "explanation": "После раскрытия получаем −m + a − c. Отдельное слагаемое −m не находится в скобках.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "д",
+      "reference": "№2д"
+     },
+     "choices": [
+      "−m + a + c",
+      "m + a − c",
+      "−m + a − c"
+     ],
+     "errorCues": [
+      [
+       "−m + a + c",
+       "Сверь знаки слагаемых по очереди. Если скобку прибавляют, внутри ничего не меняется."
+      ],
+      [
+       "m + a − c",
+       "Отдельное слагаемое −m не находится в скобках."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "a",
+       "−c"
+      ]
+     ],
+     "relatedTask": "p33-t39"
+    },
+    {
+     "id": "p33-t39",
+     "title": "К задаче №2е",
+     "kind": "choice",
+     "answer": "p + n − r + s",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши p − (−n + r − s) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Каким станет последнее слагаемое −s?",
+       "answer": "+s",
+       "choices": [
+        "+s",
+        "−s",
+        "0"
+       ],
+       "hint": "Вычитать −s означает прибавлять s.",
+       "explanation": "Вычитать −s означает прибавлять s."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Внешний минус относится ко всем трём слагаемым."
+      }
+     ],
+     "hint": "Вычитать −s означает прибавлять s.",
+     "explanation": "После раскрытия получаем p + n − r + s. Внешний минус относится ко всем трём слагаемым.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "е",
+      "reference": "№2е"
+     },
+     "choices": [
+      "p + n − r + s",
+      "p + n − r − s",
+      "p − n + r − s"
+     ],
+     "errorCues": [
+      [
+       "p + n − r − s",
+       "Сверь знаки слагаемых по очереди. Вычитать −s означает прибавлять s."
+      ],
+      [
+       "p − n + r − s",
+       "Внешний минус относится ко всем трём слагаемым."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "−n",
+       "+r",
+       "−s"
+      ]
+     ],
+     "relatedTask": "p33-t40"
+    },
+    {
+     "id": "p33-t40",
+     "title": "К задаче №2ж",
+     "kind": "choice",
+     "answer": "c − b − c + a − a + b",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши c − (b + c − a) + (−a + b) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что дают после раскрытия вторые скобки?",
+       "answer": "−a + b",
+       "choices": [
+        "−a + b",
+        "a − b",
+        "−a − b"
+       ],
+       "hint": "Перед второй скобкой стоит плюс.",
+       "explanation": "Перед второй скобкой стоит плюс."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "В первой скобке меняются все три знака. После раскрытия всё выражение сокращается до 0."
+      }
+     ],
+     "hint": "Перед второй скобкой стоит плюс.",
+     "explanation": "После раскрытия получаем c − b − c + a − a + b. В первой скобке меняются все три знака. После раскрытия всё выражение сокращается до 0.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "ж",
+      "reference": "№2ж"
+     },
+     "choices": [
+      "c − b + c − a − a + b",
+      "c − b − c + a − a + b",
+      "c − b − c + a + a − b"
+     ],
+     "errorCues": [
+      [
+       "c − b + c − a − a + b",
+       "Сверь знаки слагаемых по очереди. Перед второй скобкой стоит плюс."
+      ],
+      [
+       "c − b − c + a + a − b",
+       "В первой скобке меняются все три знака. После раскрытия всё выражение сокращается до 0."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "b",
+       "+c",
+       "−a"
+      ],
+      [
+       "+1",
+       "−a",
+       "+b"
+      ]
+     ],
+     "relatedTask": "p33-t41"
+    },
+    {
+     "id": "p33-t41",
+     "title": "К задаче №2з",
+     "kind": "choice",
+     "answer": "d − m − b + m − x − d + x",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши (d − m) − b − (−m + x + d) + x без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какой набор даёт вычитание последней скобки?",
+       "answer": "+m − x − d",
+       "choices": [
+        "−m − x − d",
+        "+m + x + d",
+        "+m − x − d"
+       ],
+       "hint": "Каждый из трёх членов скобки меняет свой знак.",
+       "explanation": "Каждый из трёх членов скобки меняет свой знак."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Числа перед скобками и следующее +x сохрани. Упрощённое выражение равно −b."
+      }
+     ],
+     "hint": "Каждый из трёх членов скобки меняет свой знак.",
+     "explanation": "После раскрытия получаем d − m − b + m − x − d + x. Числа перед скобками и следующее +x сохрани. Упрощённое выражение равно −b.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "з",
+      "reference": "№2з"
+     },
+     "choices": [
+      "d − m − b − m − x − d + x",
+      "d − m − b + m + x + d + x",
+      "d − m − b + m − x − d + x"
+     ],
+     "errorCues": [
+      [
+       "d − m − b − m − x − d + x",
+       "Сверь знаки слагаемых по очереди. Каждый из трёх членов скобки меняет свой знак."
+      ],
+      [
+       "d − m − b + m + x + d + x",
+       "Числа перед скобками и следующее +x сохрани. Упрощённое выражение равно −b."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "d",
+       "−m"
+      ],
+      [
+       "−1",
+       "−m",
+       "+x",
+       "+d"
+      ]
+     ],
+     "relatedTask": "p33-t42"
+    },
+    {
+     "id": "p33-t42",
+     "title": "К задаче №2и",
+     "kind": "choice",
+     "answer": "k − y + c + d − c − y − k + d",
+     "finalLabel": "Выбери раскрытую запись.",
+     "prompt": "Запиши k − (y − c) + (d − c − y) + (−k + d) без скобок, сохрани порядок слагаемых. Затем проверь, какие из них можно объединить.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какой знак стоит у c из первой скобки?",
+       "answer": "Плюс.",
+       "choices": [
+        "Минус.",
+        "Это слагаемое исчезает сразу.",
+        "Плюс."
+       ],
+       "hint": "Перед первой скобкой минус, внутри стоит −c.",
+       "explanation": "Перед первой скобкой минус, внутри стоит −c."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Сколько групп в этой записи раскрывается с изменением знаков?",
+       "answer": "1",
+       "choices": [
+        "0",
+        "1",
+        "2"
+       ],
+       "hint": "Ищи минус перед скобками, а не внутри них.",
+       "explanation": "Перед второй и третьей скобками стоят плюсы. После объединения останется 2d − 2y."
+      }
+     ],
+     "hint": "Перед первой скобкой минус, внутри стоит −c.",
+     "explanation": "После раскрытия получаем k − y + c + d − c − y − k + d. Перед второй и третьей скобками стоят плюсы. После объединения останется 2d − 2y.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 2,
+      "subpart": "и",
+      "reference": "№2и"
+     },
+     "choices": [
+      "k − y + c + d − c − y − k + d",
+      "k − y − c + d − c − y − k + d",
+      "k − y + c − d + c + y − k + d"
+     ],
+     "errorCues": [
+      [
+       "k − y − c + d − c − y − k + d",
+       "Сверь знаки слагаемых по очереди. Перед первой скобкой минус, внутри стоит −c."
+      ],
+      [
+       "k − y + c − d + c + y − k + d",
+       "Перед второй и третьей скобками стоят плюсы. После объединения останется 2d − 2y."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "y",
+       "−c"
+      ],
+      [
+       "+1",
+       "d",
+       "−c",
+       "−y"
+      ],
+      [
+       "+1",
+       "−k",
+       "+d"
+      ]
+     ],
+     "relatedTask": "p33-t35"
+    },
+    {
+     "id": "p33-t43",
+     "title": "К задаче №3б",
+     "kind": "number",
+     "answer": "-7/9",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: 1 3/8 + (−2 7/9 + 5/8). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Сколько получится из 1 3/8 + 5/8?",
+       "answer": "2",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "3/8 + 5/8 = 1; прибавь целую часть."
+      },
+      {
+       "prompt": "Какая дробная часть останется при 2 − 2 7/9?",
+       "answer": "-7/9",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "Две целые единицы сокращаются, а 7/9 вычитается."
+      }
+     ],
+     "hint": "3/8 + 5/8 = 1; прибавь целую часть.",
+     "explanation": "3/8 + 5/8 = 1; прибавь целую часть. Две целые единицы сокращаются, а 7/9 вычитается. Получаем −7/9.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "б",
+      "reference": "№3б"
+     },
+     "errorCues": [
+      [
+       "7/9",
+       "Сравни 2 и 2 7/9: какое число больше?"
+      ],
+      [
+       "-73/36",
+       "Перед скобками знак плюс: сохрани знак +5/8."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "−2 7/9",
+       "+5/8"
+      ]
+     ],
+     "relatedTask": "p33-t44"
+    },
+    {
+     "id": "p33-t44",
+     "title": "К задаче №3в",
+     "kind": "number",
+     "answer": "2.2",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: (5,6 − 7,2) − (−7,2 + 3,4). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Сколько дают −7,2 и член из второй скобки с модулем 7,2?",
+       "answer": "0",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Вычитается −7,2, поэтому появляется +7,2."
+      },
+      {
+       "prompt": "Какую величину нужно вычесть из 5,6?",
+       "answer": "3.4",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "После раскрытия остаётся 5,6 − 3,4."
+      }
+     ],
+     "hint": "Вычитается −7,2, поэтому появляется +7,2.",
+     "explanation": "Вычитается −7,2, поэтому появляется +7,2. После раскрытия остаётся 5,6 − 3,4. Получаем 2,2.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "в",
+      "reference": "№3в"
+     },
+     "errorCues": [
+      [
+       "9",
+       "Проверь знак +3,4 из вычитаемой скобки."
+      ],
+      [
+       "-2.2",
+       "Соблюдай порядок 5,6 − 3,4."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "5,6",
+       "−7,2"
+      ],
+      [
+       "−1",
+       "−7,2",
+       "+3,4"
+      ]
+     ],
+     "relatedTask": "p33-t45"
+    },
+    {
+     "id": "p33-t45",
+     "title": "К задаче №3г",
+     "kind": "number",
+     "answer": "0.5",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: (2,4 − 2/3) + 2,4 − (1,8 + 1 5/6). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Чему равна десятичная часть 2,4 + 2,4 − 1,8?",
+       "answer": "3",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Сложи 2,4 и 2,4, затем вычти 1,8."
+      },
+      {
+       "prompt": "Сколько составляют вместе вычитаемые 2/3 и 1 5/6?",
+       "answer": "5/2",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "2/3 = 4/6, а 1 5/6 = 11/6. Их сумма 15/6."
+      }
+     ],
+     "hint": "Сложи 2,4 и 2,4, затем вычти 1,8.",
+     "explanation": "Сложи 2,4 и 2,4, затем вычти 1,8. 2/3 = 4/6, а 1 5/6 = 11/6. Их сумма 15/6. Получаем 0,5.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "г",
+      "reference": "№3г"
+     },
+     "errorCues": [
+      [
+       "5.5",
+       "Проверь знаки двух дробей: от 3 нужно вычесть их сумму."
+      ],
+      [
+       "-0.5",
+       "Проверь порядок: 3 минус 2,5."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "2,4",
+       "−2/3"
+      ],
+      [
+       "−1",
+       "1,8",
+       "+1 5/6"
+      ]
+     ],
+     "relatedTask": "p33-t46"
+    },
+    {
+     "id": "p33-t46",
+     "title": "К задаче №3д",
+     "kind": "number",
+     "answer": "-8",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: 45 − (−7 + 18) − (34 − 18 + 26). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Сколько дают два члена с модулем 18 после раскрытия?",
+       "answer": "0",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Первое +18 вычитается. Второе −18 тоже вычитается."
+      },
+      {
+       "prompt": "Чему равна сумма отрицательных членов −34 и −26?",
+       "answer": "-60",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "Оба члена поступают из вычитаемой второй скобки."
+      }
+     ],
+     "hint": "Первое +18 вычитается. Второе −18 тоже вычитается.",
+     "explanation": "Первое +18 вычитается. Второе −18 тоже вычитается. Оба члена поступают из вычитаемой второй скобки. Получаем −8.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "д",
+      "reference": "№3д"
+     },
+     "errorCues": [
+      [
+       "8",
+       "Сравни положительную сумму 45 + 7 и модуль отрицательной суммы."
+      ],
+      [
+       "44",
+       "Проверь знак числа 26 из вычитаемой скобки."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "−7",
+       "+18"
+      ],
+      [
+       "−1",
+       "34",
+       "−18",
+       "+26"
+      ]
+     ],
+     "relatedTask": "p33-t47"
+    },
+    {
+     "id": "p33-t47",
+     "title": "К задаче №3е",
+     "kind": "number",
+     "answer": "7.5",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: −9,7 + (−3,8 + 5,2) − (2,9 − 5,2 − 9,7) + 3,8. Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Чему равна сумма двух оставшихся слагаемых с модулем 5,2?",
+       "answer": "10.4",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Вычитание −5,2 даёт +5,2."
+      },
+      {
+       "prompt": "Что остаётся вычесть из 10,4?",
+       "answer": "2.9",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "Пары −9,7 и +9,7, а также −3,8 и +3,8 сократились."
+      }
+     ],
+     "hint": "Вычитание −5,2 даёт +5,2.",
+     "explanation": "Вычитание −5,2 даёт +5,2. Пары −9,7 и +9,7, а также −3,8 и +3,8 сократились. Получаем 7,5.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "е",
+      "reference": "№3е"
+     },
+     "errorCues": [
+      [
+       "-2.9",
+       "Два числа 5,2 имеют один знак, поэтому не сокращаются."
+      ],
+      [
+       "13.3",
+       "Посмотри на +2,9 внутри вычитаемой скобки."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "−3,8",
+       "+5,2"
+      ],
+      [
+       "−1",
+       "2,9",
+       "−5,2",
+       "−9,7"
+      ]
+     ],
+     "relatedTask": "p33-t48"
+    },
+    {
+     "id": "p33-t48",
+     "title": "К задаче №3ж",
+     "kind": "number",
+     "answer": "-1.11",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: (1,8 − 6,03) − (−4,14 + 2,25 − 6,03) − 4,8. Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Чему равна сумма положительных чисел после сокращения пары 6,03?",
+       "answer": "5.94",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Сложи 1,8 и 4,14."
+      },
+      {
+       "prompt": "Чему равна сумма модулей оставшихся отрицательных чисел?",
+       "answer": "7.05",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "2,25 + 4,8 = 7,05."
+      }
+     ],
+     "hint": "Сложи 1,8 и 4,14.",
+     "explanation": "Сложи 1,8 и 4,14. 2,25 + 4,8 = 7,05. Получаем −1,11.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "ж",
+      "reference": "№3ж"
+     },
+     "errorCues": [
+      [
+       "1.11",
+       "Модуль отрицательной суммы 7,05 больше положительной суммы."
+      ],
+      [
+       "3.39",
+       "Проверь знак у 2,25 из вычитаемых скобок."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "+1",
+       "1,8",
+       "−6,03"
+      ],
+      [
+       "−1",
+       "−4,14",
+       "+2,25",
+       "−6,03"
+      ]
+     ],
+     "relatedTask": "p33-t49"
+    },
+    {
+     "id": "p33-t49",
+     "title": "К задаче №3з",
+     "kind": "number",
+     "answer": "-3",
+     "finalLabel": "Введи значение выражения.",
+     "prompt": "Раскрой скобки и вычисли: −(5 1/3 − 4 5/16) + 2 1/16 − (1 2/3 − 1 5/16 + 3 11/16). Сначала поищи пары, которые удобно объединить.",
+     "steps": [
+      {
+       "prompt": "Чему равна сумма слагаемых −5 1/3 и −1 2/3?",
+       "answer": "-7",
+       "hint": "Расставь знаки всех слагаемых первой нужной группы.",
+       "explanation": "Сложи 1/3 и 2/3 и учти минусы."
+      },
+      {
+       "prompt": "Сколько дают четыре слагаемых со знаменателем 16, учитывая целые части?",
+       "answer": "4",
+       "hint": "Собери вторую группу после раскрытия, сохраняя знаки.",
+       "explanation": "4 5/16 + 2 1/16 + 1 5/16 − 3 11/16 = (4 + 2 + 1 − 3) + (5 + 1 + 5 − 11)/16."
+      }
+     ],
+     "hint": "Сложи 1/3 и 2/3 и учти минусы.",
+     "explanation": "Сложи 1/3 и 2/3 и учти минусы. 4 5/16 + 2 1/16 + 1 5/16 − 3 11/16 = (4 + 2 + 1 − 3) + (5 + 1 + 5 − 11)/16. Получаем −3.",
+     "skills": [
+      "bracket-evaluate",
+      "like-terms"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 4,
+      "exercise": 3,
+      "subpart": "з",
+      "reference": "№3з"
+     },
+     "errorCues": [
+      [
+       "3",
+       "Сравни −7 и +4 перед сложением."
+      ],
+      [
+       "-7",
+       "В группе дробей со знаменателем 16 дробные части сокращаются, целые остаются."
+      ]
+     ],
+     "distributedTerms": [
+      [
+       "−1",
+       "5 1/3",
+       "−4 5/16"
+      ],
+      [
+       "−1",
+       "1 2/3",
+       "−1 5/16",
+       "+3 11/16"
+      ]
+     ],
+     "relatedTask": "p33-t43"
     }
    ]
   },
@@ -45110,6 +48046,23 @@ function firstErrorsHTML(t,s){
     helpOpen[taskId] = value;
     try { localStorage.setItem(HELP_KEY, JSON.stringify(helpOpen)); } catch (_) {}
   }
+  // A saved link or a board snapshot always uses the original array index.
+  function readingOrder(lesson) {
+    const indices = lesson.tasks.map((_, index) => index);
+    if (!lesson.orderBySource) return indices;
+    return indices.sort((a, b) => {
+      const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
+      return left.exercise - right.exercise ||
+        String(left.subpart || '').localeCompare(String(right.subpart || ''), 'ru', { numeric: true });
+    });
+  }
+  function partStart(part) {
+    const first = D.lessons.find(lesson => partOf(lesson) === part);
+    if (!first?.orderBySource) return '';
+    const index = readingOrder(first)[0];
+    return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
+      'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>';
+  }
   function partOf(lesson){return Number(lesson?.part)||1;}
   function sourceLimit(part){return ({1:497,2:589,3:778})[part]||497;}
   function isGenerated(id){return /^(?:practice|check):/.test(id);}
@@ -45167,7 +48120,7 @@ ${[1, 2, 3]
         2: 'Отношения, пропорции и целые числа',
         3: 'Рациональные числа, геометрия и координаты',
       }[part] +
-      '</h2><div class="grid">' +
+      '</h2>' + partStart(part) + '<div class="grid">' +
       D.lessons
         .filter((l) => partOf(l) === part)
         .map(
@@ -45234,7 +48187,7 @@ ${[1, 2, 3]
   r.innerHTML='<h3>№ '+n+' · страница '+ref.page+'</h3><p>'+e(exact.topic)+'</p><div class="row"><a class="button" href="'+e(href)+'" target="'+(inCabinet?'_self':'_blank')+'" rel="noopener noreferrer">Разобрать № '+n+' через неизвестную '+(inCabinet?'→':'↗')+'</a></div><p class="small">'+note+'</p>';
   return;
  }
-    const matches=ref?.missing?[]:D.lessons.filter(x=>partOf(x)===part).flatMap(x=>x.tasks.map((t,i)=>({t,l:x,i}))).filter(x=>x.t.source?.type==='textbook'&&(Number(String(x.t.source.number||'').match(/\d+/)?.[0])===n||new RegExp('№\\s*'+n+'(?!\\d)').test(x.t.source.reference||'')));
+    const matches=ref?.missing?[]:D.lessons.filter(x=>partOf(x)===part).flatMap(x=>readingOrder(x).map(i=>({t:x.tasks[i],l:x,i}))).filter(x=>x.t.source?.type==='textbook'&&(Number(String(x.t.source.number||'').match(/\d+/)?.[0])===n||new RegExp('№\\s*'+n+'(?!\\d)').test(x.t.source.reference||'')));
     r.innerHTML='<h3>Часть '+part+' · № '+n+(ref?' · страница '+ref.page:'')+'</h3>'+((ref?.notice||ref?.sourceNotice)?'<p class="source-note">'+e(ref.notice||ref.sourceNotice)+'</p>':'')+(l?'<p>'+e(ref.review?'Блок самопроверки. Повтори связанные темы.':l.title)+'</p>':'')+'<div class="row">'+(l?'<a class="button quiet" href="#lesson/'+l.id+'">Открыть тему</a>':'')+matches.map(x=>'<a class="button quiet" href="#lesson/'+x.l.id+'/'+x.i+'">Разбор '+e(x.t.source.reference)+'</a>').join('')+'</div>'+(matches.length?'':'<p class="small">'+(ref?.missing?'Такого номера в этой части учебника нет. Ориентируйся на соседние номера и страницу.':'Индивидуальный разбор этого номера ещё не включён. Выбери его тему в курсе.')+'</p>')+(l?'<div class="row">'+skillLinks(l.skills)+'</div>':'');
   }
   function skillPage(){main.innerHTML=returnBanner()+'<p class="eyebrow">Вычислительная мастерская</p><h1>Потренируй один навык</h1><p class="lead">Выбери действие. Начни с простых чисел, затем переходи к более сложным. Кнопка «Новый пример» даёт другое задание.</p><div class="skill-grid">'+M.skills.map(s=>'<article class="skill-card"><span class="eyebrow">Практика</span><h2>'+e(s.title)+'</h2><p>'+e(s.description)+'</p><a class="button quiet" href="#practice/'+s.id+'/1">Начать →</a></article>').join('')+'</div>';}
@@ -45242,12 +48195,13 @@ ${[1, 2, 3]
     const l = byId[id];
     if (!l) return home();
     index=Math.max(0,Math.min(l.tasks.length-1,Number(index)||0));
+    const order = readingOrder(l), position = order.indexOf(index);
     const t = workTask(l.tasks[index]),
       next = D.lessons[D.lessons.indexOf(l) + 1];
     active={lesson:l,task:t,index,practice:false,checking:false};
     state.last={hash:'#lesson/'+id+'/'+index};
     save();
-    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+l.tasks.map((q,i)=>'<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(i+1)+'. '+e(q.title)+'</button>').join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(index?button('← Предыдущая','task','data-index="'+(index-1)+'"',true):'<span></span>')+(index<l.tasks.length-1?button('Следующая задача →','task','data-index="'+(index+1)+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
+    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+order.map((i,ordinal)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(ordinal+1)+'. '+e(q.title)+'</button>'}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position+1<order.length?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
     renderProblem();
     cleanup=window.PetersonModels?.mount(document.getElementById('model'),l,boardSession?{task:t}:{
       task:t,inquiry:true,state:ts(t.id).inquiry,onChange(value){
@@ -45322,6 +48276,7 @@ ${[1, 2, 3]
     'p33-t04': [['−2', 'y', '−1'], ['+3', '−y', '−4']],
   };
   function ratioPair(t) {
+    if (t.ratioQuantities) return t.ratioQuantities;
     if (ratioExamples[t.id]) return ratioExamples[t.id];
     if (active.skill === 'ratio' && t.calculation?.op === 'divide')
       return [Number(t.calculation.left), Number(t.calculation.right)];
@@ -45338,7 +48293,7 @@ ${[1, 2, 3]
   }
   function repairSkill(t) {
     if (t.distributedTerms || t.id === 'p33-t01' || t.id === 'p33-t02') return 'bracket-evaluate';
-    if (ratioExamples[t.id]) return ['p15-t01','p15-t02'].includes(t.id) ? 'ratio' : 'percent-ratio';
+    if (t.ratioQuantities || ratioExamples[t.id]) return t.answerFormat === 'reduced-fraction' ? 'ratio' : 'percent-ratio';
     return null;
   }
   function methodModel(t) {
@@ -45352,7 +48307,7 @@ ${[1, 2, 3]
     if (pair) {
       const [first, second, unit = ''] = pair;
       const max = Math.max(first, second);
-      const row = (name,value) => '<li>' + name + ' — ' + e(value + unit) + ' <meter aria-label="' +
+      const row = (name,value) => '<li>' + name + ' — ' + e(String(value).replace('.',',') + unit) + ' <meter aria-label="' +
         name + '" min="0" max="' + max + '" value="' + value + '"></meter></li>';
       return '<figure><figcaption>Две величины в одном масштабе</figcaption><ul>' +
         row('Первая',first) + row('Вторая',second) +
@@ -45361,8 +48316,8 @@ ${[1, 2, 3]
     const products = bracketTerms(t);
     if (!products) return '';
     return '<figure><figcaption>Куда идёт множитель перед скобками?</figcaption><ul>' +
-      products.map(([factor,one,two]) => '<li>' + e(factor + ' × (' + one + ')') + ' и ' +
-        e(factor + ' × (' + two + ')') + '</li>').join('') +
+      products.map(([factor,...terms]) => '<li>' +
+        terms.map(term => e(factor + ' × (' + term + ')')).join(' и ') + '</li>').join('') +
       '</ul><p>Проверь знак числа или коэффициента в каждом произведении. Слагаемые за скобками перепиши со своими знаками.</p></figure>';
   }
   function wrongAnswerCue(t,value) {

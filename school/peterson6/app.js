@@ -269,6 +269,23 @@ function firstErrorsHTML(t,s){
     helpOpen[taskId] = value;
     try { localStorage.setItem(HELP_KEY, JSON.stringify(helpOpen)); } catch (_) {}
   }
+  // A saved link or a board snapshot always uses the original array index.
+  function readingOrder(lesson) {
+    const indices = lesson.tasks.map((_, index) => index);
+    if (!lesson.orderBySource) return indices;
+    return indices.sort((a, b) => {
+      const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
+      return left.exercise - right.exercise ||
+        String(left.subpart || '').localeCompare(String(right.subpart || ''), 'ru', { numeric: true });
+    });
+  }
+  function partStart(part) {
+    const first = D.lessons.find(lesson => partOf(lesson) === part);
+    if (!first?.orderBySource) return '';
+    const index = readingOrder(first)[0];
+    return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
+      'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>';
+  }
   function partOf(lesson){return Number(lesson?.part)||1;}
   function sourceLimit(part){return ({1:497,2:589,3:778})[part]||497;}
   function isGenerated(id){return /^(?:practice|check):/.test(id);}
@@ -326,7 +343,7 @@ ${[1, 2, 3]
         2: 'Отношения, пропорции и целые числа',
         3: 'Рациональные числа, геометрия и координаты',
       }[part] +
-      '</h2><div class="grid">' +
+      '</h2>' + partStart(part) + '<div class="grid">' +
       D.lessons
         .filter((l) => partOf(l) === part)
         .map(
@@ -393,7 +410,7 @@ ${[1, 2, 3]
   r.innerHTML='<h3>№ '+n+' · страница '+ref.page+'</h3><p>'+e(exact.topic)+'</p><div class="row"><a class="button" href="'+e(href)+'" target="'+(inCabinet?'_self':'_blank')+'" rel="noopener noreferrer">Разобрать № '+n+' через неизвестную '+(inCabinet?'→':'↗')+'</a></div><p class="small">'+note+'</p>';
   return;
  }
-    const matches=ref?.missing?[]:D.lessons.filter(x=>partOf(x)===part).flatMap(x=>x.tasks.map((t,i)=>({t,l:x,i}))).filter(x=>x.t.source?.type==='textbook'&&(Number(String(x.t.source.number||'').match(/\d+/)?.[0])===n||new RegExp('№\\s*'+n+'(?!\\d)').test(x.t.source.reference||'')));
+    const matches=ref?.missing?[]:D.lessons.filter(x=>partOf(x)===part).flatMap(x=>readingOrder(x).map(i=>({t:x.tasks[i],l:x,i}))).filter(x=>x.t.source?.type==='textbook'&&(Number(String(x.t.source.number||'').match(/\d+/)?.[0])===n||new RegExp('№\\s*'+n+'(?!\\d)').test(x.t.source.reference||'')));
     r.innerHTML='<h3>Часть '+part+' · № '+n+(ref?' · страница '+ref.page:'')+'</h3>'+((ref?.notice||ref?.sourceNotice)?'<p class="source-note">'+e(ref.notice||ref.sourceNotice)+'</p>':'')+(l?'<p>'+e(ref.review?'Блок самопроверки. Повтори связанные темы.':l.title)+'</p>':'')+'<div class="row">'+(l?'<a class="button quiet" href="#lesson/'+l.id+'">Открыть тему</a>':'')+matches.map(x=>'<a class="button quiet" href="#lesson/'+x.l.id+'/'+x.i+'">Разбор '+e(x.t.source.reference)+'</a>').join('')+'</div>'+(matches.length?'':'<p class="small">'+(ref?.missing?'Такого номера в этой части учебника нет. Ориентируйся на соседние номера и страницу.':'Индивидуальный разбор этого номера ещё не включён. Выбери его тему в курсе.')+'</p>')+(l?'<div class="row">'+skillLinks(l.skills)+'</div>':'');
   }
   function skillPage(){main.innerHTML=returnBanner()+'<p class="eyebrow">Вычислительная мастерская</p><h1>Потренируй один навык</h1><p class="lead">Выбери действие. Начни с простых чисел, затем переходи к более сложным. Кнопка «Новый пример» даёт другое задание.</p><div class="skill-grid">'+M.skills.map(s=>'<article class="skill-card"><span class="eyebrow">Практика</span><h2>'+e(s.title)+'</h2><p>'+e(s.description)+'</p><a class="button quiet" href="#practice/'+s.id+'/1">Начать →</a></article>').join('')+'</div>';}
@@ -401,12 +418,13 @@ ${[1, 2, 3]
     const l = byId[id];
     if (!l) return home();
     index=Math.max(0,Math.min(l.tasks.length-1,Number(index)||0));
+    const order = readingOrder(l), position = order.indexOf(index);
     const t = workTask(l.tasks[index]),
       next = D.lessons[D.lessons.indexOf(l) + 1];
     active={lesson:l,task:t,index,practice:false,checking:false};
     state.last={hash:'#lesson/'+id+'/'+index};
     save();
-    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+l.tasks.map((q,i)=>'<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(i+1)+'. '+e(q.title)+'</button>').join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(index?button('← Предыдущая','task','data-index="'+(index-1)+'"',true):'<span></span>')+(index<l.tasks.length-1?button('Следующая задача →','task','data-index="'+(index+1)+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
+    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+order.map((i,ordinal)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(ordinal+1)+'. '+e(q.title)+'</button>'}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position+1<order.length?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
     renderProblem();
     cleanup=window.PetersonModels?.mount(document.getElementById('model'),l,boardSession?{task:t}:{
       task:t,inquiry:true,state:ts(t.id).inquiry,onChange(value){
@@ -481,6 +499,7 @@ ${[1, 2, 3]
     'p33-t04': [['−2', 'y', '−1'], ['+3', '−y', '−4']],
   };
   function ratioPair(t) {
+    if (t.ratioQuantities) return t.ratioQuantities;
     if (ratioExamples[t.id]) return ratioExamples[t.id];
     if (active.skill === 'ratio' && t.calculation?.op === 'divide')
       return [Number(t.calculation.left), Number(t.calculation.right)];
@@ -497,7 +516,7 @@ ${[1, 2, 3]
   }
   function repairSkill(t) {
     if (t.distributedTerms || t.id === 'p33-t01' || t.id === 'p33-t02') return 'bracket-evaluate';
-    if (ratioExamples[t.id]) return ['p15-t01','p15-t02'].includes(t.id) ? 'ratio' : 'percent-ratio';
+    if (t.ratioQuantities || ratioExamples[t.id]) return t.answerFormat === 'reduced-fraction' ? 'ratio' : 'percent-ratio';
     return null;
   }
   function methodModel(t) {
@@ -511,7 +530,7 @@ ${[1, 2, 3]
     if (pair) {
       const [first, second, unit = ''] = pair;
       const max = Math.max(first, second);
-      const row = (name,value) => '<li>' + name + ' — ' + e(value + unit) + ' <meter aria-label="' +
+      const row = (name,value) => '<li>' + name + ' — ' + e(String(value).replace('.',',') + unit) + ' <meter aria-label="' +
         name + '" min="0" max="' + max + '" value="' + value + '"></meter></li>';
       return '<figure><figcaption>Две величины в одном масштабе</figcaption><ul>' +
         row('Первая',first) + row('Вторая',second) +
@@ -520,8 +539,8 @@ ${[1, 2, 3]
     const products = bracketTerms(t);
     if (!products) return '';
     return '<figure><figcaption>Куда идёт множитель перед скобками?</figcaption><ul>' +
-      products.map(([factor,one,two]) => '<li>' + e(factor + ' × (' + one + ')') + ' и ' +
-        e(factor + ' × (' + two + ')') + '</li>').join('') +
+      products.map(([factor,...terms]) => '<li>' +
+        terms.map(term => e(factor + ' × (' + term + ')')).join(' и ') + '</li>').join('') +
       '</ul><p>Проверь знак числа или коэффициента в каждом произведении. Слагаемые за скобками перепиши со своими знаками.</p></figure>';
   }
   function wrongAnswerCue(t,value) {
