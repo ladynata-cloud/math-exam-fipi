@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "c9bcdf4c8aff97727b48855fb125cc8023777462cf30f758aeb7e9e2891890ca",
-      "afterSha256": "f62c1e7e80afdce198b077b160587d512da151686bffd2462101088193068336",
+      "beforeSha256": "bbef3181b158eaa1d9700b25c49f910b210dfbd58a86432ebcc079cb9e2b5762",
+      "afterSha256": "a9885b1397351ac49150ed27b91f5b867152c5eb1064290985ba6efb0774a59e",
       "placement": "before-head-close",
-      "sourceSha": "8d57d37a9363dcd6e5689e4754cb918fdab2ed27"
+      "sourceSha": "99b9e5fd106cb65a5e3d6ee714b0eaadd427cb1f"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6849,6 +6849,15 @@
         "school/index.html"
       ],
       "boundary": "Часть 2, §26, с. 14, №5.46: тринадцать исходных рисунков в авторской реализации, новые данные для повторения, смена участников и мобильные проверки. Полный сценарий доски проверяется отдельно."
+    },
+    {
+      "previousBaseSha": "8d57d37a9363dcd6e5689e4754cb918fdab2ed27",
+      "sourceBaseSha": "99b9e5fd106cb65a5e3d6ee714b0eaadd427cb1f",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, §26, с. 14, №5.47–5.50. Ткань, два куска, доля остатка прогулки, четверти квадрата. Проверены 320 и 375 пикселей, обе роли, смена управления и возврат."
     }
   ],
   "coverageUpdates": [
