@@ -70,16 +70,21 @@ function filesAt(relative) {
     return filesAt(path.posix.join(relative, entry.name));
   });
 }
+// Independently authored assets in source commit 4a7c2d1; the old textbook bank stays byte-identical.
+const approvedAreaFiles = {
+  "geometry-course/textbook/assets/additional-lessons.js": "82e927e05ed568da30843ad7f79d4a75463e0fc096c827aa6cba2551b2ee68eb",
+  "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4"
+};
 function verify(group, read = file => fs.readFileSync(path.join(root, file)), extra = []) {
   const files = [...new Set(group.paths.flatMap(filesAt).concat(extra))].filter(file => !group.excluded.includes(file)).sort();
-  const additions = group.group === 'stereo_textbook' ? sphere.additions : {};
+  const additions = {geometry_textbook: approvedAreaFiles, stereo_textbook: sphere.additions}[group.group] || {};
   assert.equal(files.length, group.fileCount + Object.keys(additions).length, group.group + ': exact protected file set size');
-  for (const file of Object.keys(additions)) assert(files.includes(file), 'missing reviewed card: ' + file);
+  for (const file of Object.keys(additions)) assert(files.includes(file), 'required reviewed addition: ' + file);
   const digest = crypto.createHash('sha256');
   for (const file of files) {
     const current = hash(read(file)), chain = amendmentChains[file];
     if (Object.hasOwn(additions, file)) {
-      assert.equal(current, additions[file], 'exact reviewed new card: ' + file);
+      assert.equal(current, additions[file], 'exact reviewed new source: ' + file);
       continue;
     }
     if (chain) {
@@ -114,4 +119,9 @@ for (const file of Object.keys(amendmentChains)) {
   assert(group, 'every exact amendment remains inside the original protected inventory');
   assert.throws(() => verify(group, name => name === file ? Buffer.concat([fs.readFileSync(path.join(root, name)), Buffer.from('\nUNREVIEWED')]) : fs.readFileSync(path.join(root, name))), /exact reviewed amendment/);
 }
-console.log('ATANASYAN_HARMONIZATION_PRESERVATION_OK ' + JSON.stringify({geometryCards: 1425, stereoCards: currentStereo.lessons.length, preservedStereoCards: stereo.lessons.length, firstSteps: 255, literacy: 36, legacy: 70, protectedFiles: baseline.groups.reduce((n, group) => n + group.fileCount, 0), exactReviewedAmendments: Object.values(amendmentChains).reduce((n, chain) => n + chain.length, 0), amendedFiles: Object.keys(amendmentChains).length, negativeControls: 2 + Object.keys(amendmentChains).length}));
+const newGroups = {geometry_textbook: approvedAreaFiles, stereo_textbook: sphere.additions};
+for (const group of baseline.groups.filter(group => newGroups[group.group])) {
+  const sample = Object.keys(newGroups[group.group])[0];
+  assert.throws(() => verify(group, file => file === sample ? Buffer.from('CHANGED') : fs.readFileSync(path.join(root, file))), /exact reviewed new source/);
+}
+console.log('ATANASYAN_HARMONIZATION_PRESERVATION_OK ' + JSON.stringify({geometryCards: 1425, stereoCards: currentStereo.lessons.length, preservedStereoCards: stereo.lessons.length, firstSteps: 255, literacy: 36, legacy: 70, protectedFiles: baseline.groups.reduce((n, group) => n + group.fileCount, 0), exactReviewedAmendments: Object.values(amendmentChains).reduce((n, chain) => n + chain.length, 0), amendedFiles: Object.keys(amendmentChains).length, negativeControls: 2 + Object.keys(amendmentChains).length + Object.keys(newGroups).length}));
