@@ -499,7 +499,8 @@ function quartetFigure(values,mode){
  ln(fig,18,59,74,59);ln(fig,156,59,212,59);
  const symbolic=values.some(v=>typeof v==='string'&&/[a-z]/.test(v));
  const relation=mode===0?'?':symbolic||compareQuartet(values.map(v=>typeof v==='string'?M.parse(v):v)).same?'=':'≠';
- txt(fig,115,65,relation,{'font-size':20,'data-relation':relation});return fig;
+ fig.append(svg('rect',{x:104,y:48,width:23,height:22,rx:4,fill:'#f8faf4'}));
+ txt(fig,115,65,relation,{'font-size':20,'font-weight':650,'data-relation':relation});return fig;
 }
 const quartetOrders=[];
 for(let a=0;a<4;a++)for(let b=0;b<4;b++)for(let c=0;c<4;c++){
