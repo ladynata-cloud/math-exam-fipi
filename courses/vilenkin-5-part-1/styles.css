@@ -8,3 +8,11 @@
 
 /* Long adjacent lesson names wrap within their own mobile navigation column. */
 .lesson-nav a{min-width:0;overflow-wrap:anywhere}
+
+@media (max-width: 480px) {
+  .top { gap: 6px 10px; padding: 10px 12px; }
+  .top .brand { gap: 7px; }
+  .top .brand-icon { width: 32px; height: 32px; font-size: 23px; }
+  .top nav { gap: 0 12px; padding-top: 4px; }
+  .top nav > a, .top nav > button { display: inline-flex; align-items: center; min-height: 44px; }
+}

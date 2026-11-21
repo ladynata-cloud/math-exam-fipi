@@ -7,7 +7,7 @@ const html=fs.readFileSync(path.join(course,'index.html'),'utf8');
 const bundle=JSON.parse(fs.readFileSync(path.join(course,'data/course.json'),'utf8'));
 const scripts=[...html.matchAll(/<script(?: src="([^"]+)")?>([\s\S]*?)<\/script>/g)];
 assert.deepEqual(scripts.map(match=>match[1]??null),[
- '../assets/math-text.js','../assets/task-scene-viewer.js','assets/engine.js','/assets/geometry-step-views.js',null,
+ '../assets/math-text.js','../assets/task-scene-viewer.js?v=20261118-2571e795','assets/engine.js','/assets/geometry-step-views.js',null,
 ]);
 async function boot(fetchResult){
  const dom=new JSDOM(html,{url:'https://example.test/stereo-course/merzlyak-10-base/',runScripts:'outside-only',pretendToBeVisual:true});

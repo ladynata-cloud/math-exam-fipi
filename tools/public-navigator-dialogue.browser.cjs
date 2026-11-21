@@ -56,4 +56,12 @@ module.exports = async function verifyNavigatorDialogue(page, origin) {
   assert.equal(await host.locator('.visitor').count(), 0);
   assert.equal(await mode.isChecked(), false);
   assert.ok(!(await host.locator('.log').innerText()).includes('Выбран тренажёр с двузначным делителем.'));
+  await ask('Мне бы подготовиться к ВПР, восьмой класс.');
+  await mode.check();
+  await ask('У нас углублённая.');
+  const vpr = await page.evaluate(() => window.requests.at(-1));
+  assert.deepEqual(vpr.state, {surface:'navigator', dialog:{goal:'school', grade:8, vprLevelGrade:8}});
+  assert.equal(vpr.message, 'У нас углублённая.');
+  await host.locator('.clear').click();
+  await page.evaluate(() => window.finishTestReply());
 };

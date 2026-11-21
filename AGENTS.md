@@ -7,6 +7,7 @@ add local constraints, but they must not weaken this file.
 
 - [Current project status](docs/PROJECT_STATUS.md)
 - [Roadmap](docs/ROADMAP.md)
+- [Required right-angle marks for all geometry problems and formats](docs/GEOMETRY_DRAWINGS.md)
 - [Review policy](docs/REVIEW_POLICY.md)
 - [Standing publication authorization](docs/OWNER_RELEASE_AUTHORIZATION.md)
 - [Task specification template](docs/tasks/TASK_TEMPLATE.md)

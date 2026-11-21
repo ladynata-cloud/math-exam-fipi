@@ -58,13 +58,15 @@ function submit(e,selector){e.doc.querySelector(selector).dispatchEvent(new e.w.
  const failed=boot(undefined,{},false,custom);failed.app.open('fixture-exercise');input(failed,'#final-answer','сохранённое');quota=true;input(failed,'#final-answer','несохранённый черновик');const latest=JSON.parse(memory.get(key));latest.draft='работа другого окна';memory.set(key,JSON.stringify(latest));failed.app.home();failed.app.open('fixture-exercise');assert.equal(failed.doc.querySelector('#final-answer').readOnly,true);assert.match(failed.doc.querySelector('.course-conflict textarea').value,/несохранённый черновик/);quota=false;click(failed,'.course-conflict button');assert.equal(failed.doc.querySelector('#final-answer').value,'работа другого окна');failed.close();
  // Source text is never an HTML injection path; missing theory has no fake link.
  const hostile=clone(fixture);hostile.lessons[0].statement.text='<img src=x onerror=alert(1)> 1/2';hostile.lessons[0].help[0].theoryIds=['not-published'];const escaped=boot(hostile);escaped.app.open('fixture-exercise');assert.equal(escaped.doc.querySelector('img'),null);assert.match(escaped.doc.querySelector('.textbook-condition').textContent,/<img/);assert.equal(escaped.doc.querySelector('[data-help=help-main]>button'),null);escaped.close();
- // Regression: dynamically replaced feedback must use the same safe fraction
- // display as explanations, both for intermediate and final answer attempts.
+ // Regression: explanations requested by the learner use the same safe fraction
+ // display as intermediate feedback. A malformed answer must not disclose the
+ // final explanation; the approved harmonization makes that an explicit action.
  const fractionData=clone(fixture);fractionData.lessons[0].answer.feedback='<img src=x onerror=alert(1)> 1/2';fractionData.lessons[0].steps[0].input.feedback='5x=72, поэтому x=72/5.';
  const fractions=boot(fractionData);fractions.app.open('fixture-exercise');const fractionModel=fractions.doc.querySelector('[data-main-model] svg');
- input(fractions,'#final-answer','неверно');submit(fractions,'[data-final-form]');let result=fractions.doc.querySelector('[data-final-feedback]');assert.equal(result.querySelector('.stereo-numerator').textContent,'1');assert.equal(result.querySelector('.stereo-denominator').textContent,'2');assert.equal(result.querySelector('img'),null);assert.match(result.textContent,/<img/);
+ input(fractions,'#final-answer','неверно');submit(fractions,'[data-final-form]');let result=fractions.doc.querySelector('[data-final-feedback]');assert.equal(result.dataset.answerStatus,'invalid');assert.equal(result.querySelector('.stereo-fraction'),null,'invalid input does not disclose the result');
+ click(fractions,'[data-main-help]>summary');await tick();click(fractions,'[data-answer-explanation]');assert.equal(result.querySelector('.stereo-numerator').textContent,'1');assert.equal(result.querySelector('.stereo-denominator').textContent,'2');assert.equal(result.querySelector('img'),null);assert.match(result.textContent,/<img/);
  input(fractions,'#final-answer','1/2');submit(fractions,'[data-final-form]');assert.equal(result.querySelector('.stereo-fraction'),null,'success replaces earlier feedback instead of accumulating it');
- click(fractions,'[data-main-help]>summary');await tick();click(fractions,'[data-steps]+button');input(fractions,'#step-step-first','неверно');submit(fractions,'[data-step=step-first] form');result=fractions.doc.querySelector('[data-step=step-first] [role=status]');assert.equal(result.querySelector('.stereo-numerator').textContent,'72');assert.equal(result.querySelector('.stereo-denominator').textContent,'5');assert.equal(fractions.doc.querySelector('#step-step-first').value,'неверно');assert.strictEqual(fractions.doc.querySelector('[data-main-model] svg'),fractionModel);
+ assert.equal(fractions.doc.querySelector('[data-main-help]').open,true);click(fractions,'[data-steps]+button');input(fractions,'#step-step-first','999');submit(fractions,'[data-step=step-first] form');result=fractions.doc.querySelector('[data-step=step-first] [role=status]');assert.equal(result.querySelector('.stereo-numerator').textContent,'72');assert.equal(result.querySelector('.stereo-denominator').textContent,'5');assert.equal(fractions.doc.querySelector('#step-step-first').value,'999');assert.strictEqual(fractions.doc.querySelector('[data-main-model] svg'),fractionModel);
  input(fractions,'#step-step-first',fractionData.lessons[0].steps[0].input.accepted[0]);submit(fractions,'[data-step=step-first] form');assert.equal(result.querySelector('.stereo-fraction'),null);assert.match(result.textContent,/совпал/);fractions.close();
  // Real shared viewer: both mounts satisfy its scoped fullscreen CSS contract.
  // Escape handled by the inner drawing must not also dismiss the theory dialog.
@@ -87,5 +89,39 @@ function submit(e,selector){e.doc.querySelector(selector).dispatchEvent(new e.w.
  const list=boot(large);assert.equal(list.doc.querySelectorAll('[data-catalog-ready] [data-lesson]').length,3);assert.equal(list.doc.querySelectorAll('[data-catalog-pending] article').length,24);assert.equal(list.doc.querySelectorAll('[data-catalog-pending] [data-lesson]').length,0);input(list,'#catalog-search','1253');assert.equal(list.doc.querySelectorAll('[data-catalog-pending] article').length,1);assert.match(list.doc.querySelector('[data-catalog-pending] article').textContent,/1253/);
  input(list,'#catalog-search','1');const kind=list.doc.querySelector('#catalog-kind');kind.value='theory';kind.dispatchEvent(new list.w.Event('change',{bubbles:true}));assert.equal(list.doc.querySelectorAll('[data-catalog-ready] [data-lesson]').length,1);assert.equal(list.doc.querySelector('[data-catalog-ready] [data-lesson]').dataset.lesson,'fixture-theory');
  input(list,'#catalog-search','');kind.value='';kind.dispatchEvent(new list.w.Event('change',{bubbles:true}));const chapter=list.doc.querySelector('#catalog-chapter');chapter.value='2';chapter.dispatchEvent(new list.w.Event('change',{bubbles:true}));assert.equal(list.doc.querySelectorAll('[data-catalog-ready] [data-lesson]').length,1);assert.equal(list.doc.querySelector('[data-catalog-ready] [data-lesson]').dataset.lesson,'fixture-proof');list.close();
+ // Returning from a real card keeps the complete filtered list, including its page.
+ const route=boot(production);
+ const selectFilter=(id,value)=>{
+  const field=route.doc.getElementById(id);
+  field.value=value;
+  field.dispatchEvent(new route.w.Event('change',{bubbles:true}));
+ };
+ selectFilter('catalog-kind','exercise');
+ selectFilter('catalog-collection','main');
+ selectFilter('catalog-chapter','II. Перпендикулярность прямых и плоскостей');
+ selectFilter('catalog-paragraph','II:3');
+ input(route,'#catalog-search','двугранный');
+ const ids=()=>[...route.doc.querySelectorAll('[data-catalog-ready] [data-lesson]')].map(button=>button.dataset.lesson);
+ const firstPage=ids();
+ click(route,'[data-catalog-ready] nav button:last-child');
+ const secondPage=ids();
+ assert.notDeepEqual(secondPage,firstPage);
+ const original=click(route,'[data-catalog-ready] [data-lesson]');
+ assert.equal(route.doc.querySelector('#catalog-search'),null);
+ click(route,'.textbook-lesson-header > button');
+ assert.equal(route.doc.activeElement,original);
+ assert.deepEqual(ids(),secondPage);
+ for(const [id,value] of Object.entries({'catalog-search':'двугранный','catalog-kind':'exercise','catalog-collection':'main','catalog-chapter':'II. Перпендикулярность прямых и плоскостей','catalog-paragraph':'II:3'})){
+  assert.equal(route.doc.getElementById(id).value,value);
+ }
+ input(route,'#catalog-search','167');
+ assert.deepEqual(ids(),['ex-main-0167']);
+ click(route,'[data-lesson=ex-main-0167]');
+ input(route,'#final-answer','MB и MD перпендикулярны ребру AC.');
+ click(route,'.textbook-lesson-header > button');
+ assert.deepEqual(ids(),['ex-main-0167']);
+ click(route,'[data-lesson=ex-main-0167]');
+ assert.equal(route.doc.querySelector('#final-answer').value,'MB и MD перпендикулярны ребру AC.');
+ route.close();
  assert.equal(e.errors.length,0);console.log('ATANASYAN_TEXTBOOK_RUNTIME_OK: publication gate, source identities, exact models, help/camera/drafts, proof honesty, revision and stale recovery');
 })().catch(error=>{console.error(error);process.exitCode=1;});

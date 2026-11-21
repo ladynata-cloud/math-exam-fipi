@@ -316,10 +316,20 @@
     var pupil = /(?:^|[^а-я])(пяти|шести|семи|восьми|девяти|десяти|одиннадцати)класс/.exec(text);
     return pupil ? ['пяти','шести','семи','восьми','девяти','десяти','одиннадцати'].indexOf(pupil[1]) + 5 : null;
   }
+  function assignedWork(text) {
+    var lookup = /(?:^|\s)(?:что|како[ей]|каки[ех]|какую|где|покаж[иь]|назови|найти|открыть|посмотреть)(?:\s|$)/.exec(text);
+    if (!lookup) return false;
+    // Only the retrieval request itself can indicate private assignments; the
+    // preceding context may merely say «нам задали» before asking for practice.
+    var request = text.slice(lookup.index);
+    return /(?:мне|нам)\s+(?:было\s+)?(?:на\s+\S+\s+)?(?:зада(?:но|ны|ли|л[аи]?)|назнач(?:ен[а-я]*|ил[аи]?))|(?:зада(?:ли|л[аи]?)|назначил[аи]?)\s+(?:лично\s+)?(?:мне|нам)(?:\s|$)/.test(request) ||
+      /(?:мои|мое|свои|личные|посмотреть|увидеть|открыть|найти)\s+назначени[а-я]*|назначенн[а-я]*\s+(?:упражнен|задани|работ)/.test(request) ||
+      /(?:моя|мою|мое|мои)\s+(?:домашн[а-я]*\s+(?:работ|задан)|упражнен[а-я]*\s+от\s+(?:учител|преподавател))/.test(request);
+  }
   function accessIntent(text) {
     // Match the noun's case forms, without confusing "входная диагностика"
     // with an account problem. These intents never count as learning failure.
-    return /кабинет|парол|логин|личн.{0,8}ссыл|авторизац|авторизова|войти|(?:^|[^a-zа-я])pin(?:$|[^a-zа-я])|(?:^|[^а-я])пин(?:[- ]?код)?(?:$|[^а-я])/.test(text)
+    return assignedWork(text) || /кабинет|парол|логин|личн.{0,8}ссыл|авторизац|авторизова|войти|(?:^|[^a-zа-я])pin(?:$|[^a-zа-я])|(?:^|[^а-я])пин(?:[- ]?код)?(?:$|[^а-я])/.test(text)
       || /(?:^|[^а-я])вход(?:а|е|у|ом)?(?:$|[^а-я])/.test(text);
   }
   function explicitDifficulty(text) {
@@ -633,10 +643,13 @@
     var positive = text.replace(/(?:^|[^а-я])(?:(?:не\s+(?:(?:к|для)\s+)?|без\s+|не\s+(?:хочу|хотим|нужен|нужна|нужно|нужны|готовлюсь|готовимся)\s+(?:готовиться\s+)?(?:(?:к|для)\s+)?)впр|впр\s+(?:мне\s+)?(?:пока\s+)?не\s+(?:нуж[а-я]*|интересу[а-я]*|сдаю))/g, ' ');
     return /(?:^|[^а-я])впр(?:$|[^а-я])|всероссийск[а-я]*\s+проверочн[а-я]*\s+работ/.test(positive);
   }
-  function vprDestination(text, state) {
+  function vprGrade(text) {
     var grade = classNumber(text);
     var shorthand = /(?:^|[^а-я])впр\s*(?:по математике\s*)?[:,·-]?\s*(5|6|7|8|10)(?!\d)/.exec(text);
-    if (grade === null && shorthand) grade = Number(shorthand[1]);
+    return grade === null && shorthand ? Number(shorthand[1]) : grade;
+  }
+  function vprDestination(text, state) {
+    var grade = vprGrade(text);
     var single = {5:'vpr-g5',6:'vpr-g6',10:'vpr-g10'};
     if (Object.hasOwn(single, grade)) return result('vpr', 'Откройте курс подготовки к ВПР: короткая теория, примеры, проверка шагов и самостоятельная практика. Прогресс сохраняется в этом браузере.', [single[grade], 'vpr'], state);
     if (grade === 7 || grade === 8) {
@@ -684,6 +697,9 @@
       return result('pricing', 'На сайте есть бесплатные тренажёры для самостоятельной работы. Условия и стоимость занятий с преподавателем указаны отдельно на странице занятий.', ['trainers', 'lessons'], state);
     }
     if (accessIntent(text)) {
+      if (assignedWork(text) || (/кабинет/.test(text) && /задани|упражнен|назначен/.test(text))) {
+        return result('cabinet', 'Я не вижу личных заданий ученика. Откройте свой кабинет по ссылке преподавателя. Если пришлёте сюда условие упражнения, я помогу с первым шагом. Пароль и код входа оставьте в кабинете.', ['cabinet'], state);
+      }
       return result('cabinet', 'Кабинет открывается отдельно. Используйте личную ссылку или данные входа, выданные преподавателем. Если ссылка не работает или код потерян, попросите преподавателя помочь со входом. В навигатор код или пароль вводить не нужно.', ['cabinet'], state);
     }
     if (vprRequested(text)) return vprDestination(text, state);
@@ -946,6 +962,23 @@
     });
     return matches.length === 1 ? matches[0].text : text;
   }
+  function vprLevelAnswer(text) {
+    var answer = text.replace(/[.,!?…;]+/g, ' ').replace(/\s+/g, ' ').trim()
+      .replace(/(?:^| )(?:класс тот же|тот же класс|класс прежний|класс без изменений)(?= |$)/g, ' ').trim();
+    var uncertainty = /^(?:(?:я|мы) )?(?:пока )?не (?:знаю|знаем|уверен[аы]?)(?: |$)/;
+    var unsure = uncertainty.test(answer);
+    if (unsure) answer = answer.replace(uncertainty, '');
+    if ((!answer && unsure) || /^(?:оба(?: уровня)?|какая разница)$/.test(answer)) return '';
+    answer = answer.replace(/^(?:(?:мне|нам) (?:нужен|нужна|нужно|нужны)|(?:я |мы )?(?:хочу|хотим)) /, '');
+    var words = answer.split(/\s+/);
+    var level = /^(?:углубленн[а-я]*|базов[а-я]*|база|обычн[а-я]*|стандартн[а-я]*)$/;
+    // Treat only a reply about the offered levels as a continuation. A new
+    // subject, class or exam must still go through the usual navigator.
+    var filler = /^(?:у|нас|меня|в|школе|мы|я|учусь|учимся|занимаюсь|занимаемся|по|на|да|нет|не|без|а|или|и|тогда|лучше|выберу|выбираю|только|пожалуйста|программ[а-я]*|уров[а-я]*|курс[а-я]*)$/;
+    if (!words.some(word => level.test(word)) || !words.every(word => level.test(word) || filler.test(word))) return null;
+    if (unsure || words.includes('или')) return '';
+    return words.map(word => word === 'база' ? 'базовый' : word).join(' ').replace(/не по /g, 'не ');
+  }
   function turn(input) {
     if (!input || typeof input.text !== 'string' || !input.text.trim() || input.text.length > 1000 || looksPrivate(normalize(input.text))) return respond(input);
     var previous = input.dialog || {};
@@ -956,11 +989,17 @@
     var original = shortReply(input.text);
     var changedGoal = /(?:^|\s)(?:раньше|до этого|сначала)\s.+?[,;]\s*(?:но\s+|а\s+)?(?:сейчас|теперь)\s+(.+)$/.exec(original);
     if (changedGoal) original = changedGoal[1];
+    if (previous.vprLevelGrade === 7 || previous.vprLevelGrade === 8) {
+      var levelAnswer = vprLevelAnswer(original);
+      if (levelAnswer !== null) original = 'впр ' + previous.vprLevelGrade + ' класс ' + levelAnswer;
+    }
     // An explicit current VPR request selects a course after an OGE/EGE task.
     // Leave access and privacy decisions in the normal response path.
     if (vprRequested(normalize(original))) {
       var vprResponse = respond(Object.assign({}, input, {text:original,studyGoal:'school'}));
-      vprResponse.dialog = {goal:'school',grade:classNumber(normalize(original)),choices:vprResponse.kind === 'clarify' ? (vprResponse.actions || []).slice(0,3) : []};
+      var requestedGrade = vprGrade(original);
+      vprResponse.dialog = {goal:'school',grade:requestedGrade,choices:vprResponse.kind === 'clarify' ? (vprResponse.actions || []).slice(0,3) : []};
+      if (vprResponse.kind === 'clarify' && [7, 8].includes(requestedGrade)) vprResponse.dialog.vprLevelGrade = requestedGrade;
       return vprResponse;
     }
     // A bare number after an explicit exam goal is a task, not a new grade.

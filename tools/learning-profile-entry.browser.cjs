@@ -106,6 +106,9 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
       assert.deepEqual(await cards.evaluateAll(nodes => nodes.map(node => Number(node.dataset.profileExam))), Array.from({ length: 12 }, (_, i) => i + 1));
       assert.deepEqual(await catalogue.locator('a[data-profile-exam-start]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))),
         EXPECTED_ENTRIES.map(id => COURSE + '#practice/' + id + '/independent'), 'Every card starts with a real independent exam task');
+      const basics = catalogue.locator('[data-profile-vector-basics]');
+      assert.equal(await basics.getAttribute('href'), 'https://mathexam.space' + MAP.href(MAP.get(2)));
+      assert.equal(await basics.locator('..').getAttribute('data-profile-exam'), '2');
       for (const [index, id] of EXPECTED_ENTRIES.entries()) {
         const lesson = LESSONS.find(item => item.id === id);
         assert(EXAMS[index].lessonIds.includes(id), 'The entry belongs to its official exam topic');
@@ -140,6 +143,37 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
     await sp.setViewportSize({ width: 390, height: 844 });
     assert(await sp.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Profile entry fits a phone');
     await entry(sp);
+
+    for (const width of [320, 390, 1280]) {
+      await sp.setViewportSize({ width, height: 844 });
+      const back = sp.locator('[data-cabinet-return]');
+      const workspace = sp.locator('[data-public-workspace]');
+      const frame = workspace.frameLocator('iframe');
+      await navigate(sp, 'course');
+      await sp.locator('[data-profile-vector-basics]').click();
+      await back.waitFor();
+      assert.equal(await back.getAttribute('href'), '#course');
+      assert.equal(await workspace.locator('[data-public-home-return]').getAttribute('href'), 'https://mathexam.space/');
+      assert.equal(await workspace.locator('[data-public-home-return]').isVisible(), true);
+      assert.match(await frame.locator('main h1').first().innerText(), /Векторы с нуля/);
+      assert.equal(new URL(await workspace.locator('iframe').getAttribute('src')).hash, '#fipi/2027/2');
+      const geometry = await sp.evaluate(() => ({ scrollbar: document.documentElement.scrollWidth, viewport: innerWidth,
+        offenders: [...document.body.querySelectorAll('*')].filter(node => node.getBoundingClientRect().right > innerWidth + 1)
+          .slice(0, 12).map(node => [node.tagName, node.className, Math.round(node.getBoundingClientRect().right)]) }));
+      assert(geometry.scrollbar <= width + 1, `Workspace at ${width}px: ${JSON.stringify(geometry)}`);
+      await back.click();
+
+      await sp.locator('[data-profile-exam="2"] [data-profile-exam-start]').click();
+      await frame.locator('#answer-form').waitFor();
+      assert.equal(new URL(await workspace.locator('iframe').getAttribute('src')).hash, '#practice/vec-coordinates/independent');
+      await back.click();
+
+      await sp.locator('[data-profile-second-part] a').first().click();
+      await frame.getByRole('heading', { name: /Уравнения/ }).first().waitFor();
+      assert.equal(new URL(await workspace.locator('iframe').getAttribute('src')).hash, '#fipi/2027/13');
+      await back.click();
+      await entry(sp);
+    }
     const secondDevice = await login(learner); await entry(secondDevice);
     assert.equal((await api(sp, '/attempts')).attempts.length, 0, 'Opening the external course entry fabricates no cabinet result');
 
@@ -210,7 +244,7 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
       assert.equal(await unchanged.locator('[data-profile-course]').count(), 0);
     }
     assert.deepEqual(errors, []); assert.deepEqual(external, []);
-    console.log('LEARNING_PROFILE_ENTRY_OK: real profile save, separate pupils, exam-first 13-task catalogue on home/course/route, focus escaping, phone/reload/second device, honest local progress, teacher assignment fallback, parent view, free started work survives course change, four existing directions');
+    console.log('LEARNING_PROFILE_ENTRY_OK: 12 first-part and 7 second-part links, returnable practice at 320/390/1280, vectors from scratch, saved pupil profiles, honest local progress, teacher and parent views, retained earlier work and courses');
   } finally {
     await browser?.close(); await close(server); await close(trainerServer); store.close(); fs.rmSync(directory, { recursive: true, force: true });
   }
