@@ -84,6 +84,36 @@ on:
       - 'tools/geometry-textbook/*field_trigonometry*'
       - 'tools/geometry-textbook/*scalar_product*'
       - 'tools/geometry-textbook/*scalar_coordinates*'
+      - 'tools/geometry-textbook/*scalar_geometry*'
+      - 'tools/geometry-textbook/*trigonometry_review*'
+      - 'tools/geometry-textbook/*triangle_review*'
+      - 'tools/geometry-textbook/*vector_product_review*'
+      - 'tools/geometry-textbook/*additional_triangle_area*'
+      - 'tools/geometry-textbook/*additional_solve_triangles*'
+      - 'tools/geometry-textbook/*additional_scalar_vectors*'
+      - 'tools/geometry-textbook/*chapter_twelve_finale*'
+      - 'tools/geometry-textbook/*regular_polygon_definition*'
+      - 'tools/geometry-textbook/*regular_polygon_angles*'
+      - 'tools/geometry-textbook/*regular_polygon_centers*'
+      - 'tools/geometry-textbook/*regular_polygon_tables*'
+      - 'tools/geometry-textbook/*polygon_circle_applications*'
+      - 'tools/geometry-textbook/*regular_polygon_areas*'
+      - 'tools/geometry-textbook/*regular_polygon_constructions*'
+      - 'geometry-course/textbook/data/regular-polygon-constructions.json'
+      - 'geometry-course/textbook/data/regular-polygon-areas.json'
+      - 'geometry-course/textbook/data/polygon-circle-applications.json'
+      - 'geometry-course/textbook/data/regular-polygon-tables.json'
+      - 'geometry-course/textbook/data/regular-polygon-centers.json'
+      - 'geometry-course/textbook/data/regular-polygon-angles.json'
+      - 'geometry-course/textbook/data/regular-polygon-definition.json'
+      - 'geometry-course/textbook/data/chapter-twelve-finale.json'
+      - 'geometry-course/textbook/data/additional-scalar-vectors.json'
+      - 'geometry-course/textbook/data/additional-solve-triangles.json'
+      - 'geometry-course/textbook/data/additional-triangle-area.json'
+      - 'geometry-course/textbook/data/vector-product-review.json'
+      - 'geometry-course/textbook/data/triangle-review.json'
+      - 'geometry-course/textbook/data/trigonometry-review.json'
+      - 'geometry-course/textbook/data/scalar-geometry.json'
       - 'geometry-course/textbook/data/scalar-coordinates.json'
       - 'geometry-course/textbook/data/scalar-product.json'
       - 'geometry-course/textbook/data/field-trigonometry.json'
@@ -148,6 +178,21 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/regular_polygon_constructions.py --check && python3 tools/geometry-textbook/check_regular_polygon_constructions.py
+      - run: python3 tools/geometry-textbook/regular_polygon_areas.py --check && python3 tools/geometry-textbook/check_regular_polygon_areas.py
+      - run: python3 tools/geometry-textbook/polygon_circle_applications.py --check && python3 tools/geometry-textbook/check_polygon_circle_applications.py
+      - run: python3 tools/geometry-textbook/regular_polygon_tables.py --check && python3 tools/geometry-textbook/check_regular_polygon_tables.py
+      - run: python3 tools/geometry-textbook/regular_polygon_centers.py --check && python3 tools/geometry-textbook/check_regular_polygon_centers.py
+      - run: python3 tools/geometry-textbook/regular_polygon_angles.py --check && python3 tools/geometry-textbook/check_regular_polygon_angles.py
+      - run: python3 tools/geometry-textbook/regular_polygon_definition.py --check && python3 tools/geometry-textbook/check_regular_polygon_definition.py
+      - run: python3 tools/geometry-textbook/chapter_twelve_finale.py --check && python3 tools/geometry-textbook/check_chapter_twelve_finale.py
+      - run: python3 tools/geometry-textbook/additional_scalar_vectors.py --check && python3 tools/geometry-textbook/check_additional_scalar_vectors.py
+      - run: python3 tools/geometry-textbook/additional_solve_triangles.py --check && python3 tools/geometry-textbook/check_additional_solve_triangles.py
+      - run: python3 tools/geometry-textbook/additional_triangle_area.py --check && python3 tools/geometry-textbook/check_additional_triangle_area.py
+      - run: python3 tools/geometry-textbook/vector_product_review.py --check && python3 tools/geometry-textbook/check_vector_product_review.py
+      - run: python3 tools/geometry-textbook/triangle_review.py --check && python3 tools/geometry-textbook/check_triangle_review.py
+      - run: python3 tools/geometry-textbook/trigonometry_review.py --check && python3 tools/geometry-textbook/check_trigonometry_review.py
+      - run: python3 tools/geometry-textbook/scalar_geometry.py --check && python3 tools/geometry-textbook/check_scalar_geometry.py
       - run: python3 tools/geometry-textbook/scalar_coordinates.py --check && python3 tools/geometry-textbook/check_scalar_coordinates.py
       - run: python3 tools/geometry-textbook/scalar_product.py --check && python3 tools/geometry-textbook/check_scalar_product.py
       - run: python3 tools/geometry-textbook/field_trigonometry.py --check && python3 tools/geometry-textbook/check_field_trigonometry.py
