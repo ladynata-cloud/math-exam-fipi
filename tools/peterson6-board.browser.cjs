@@ -280,6 +280,11 @@ async function narrowShot(page, frame, name, selector) {
   if (layout.width > 320 || layout.scroll > layout.width + 1) console.error('PETERSON6_NARROW_LAYOUT', JSON.stringify({ name, ...layout }));
   assert(layout.width <= 320, name + ': iframe is narrow');
   assert(layout.scroll <= layout.width + 1, name + ': no horizontal document overflow');
+  if (selector === '#model svg') {
+    const diagram = frame.locator('#model .pm-visual');
+    assert(await diagram.evaluate(element => element.scrollWidth <= element.clientWidth + 1),
+      name + ': both endpoints fit inside the mobile diagram without scrolling');
+  }
   await page.setViewportSize({ width: 1440, height: 1000 });
 }
 
@@ -538,8 +543,6 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.equal(await studentFrame.locator('#model svg circle').getAttribute('cx'),'232');
   assert.match(await studentFrame.locator('#model .pm-result').innerText(),/положение подходит/);
   await narrowShot(teacher,teacherFrame,'peterson-board-320-segment-ratio','#model svg');
-  assert(await teacherFrame.locator('#model .pm-visual').evaluate(el=>el.scrollWidth<=el.clientWidth+1),
-    'both endpoints fit inside the mobile diagram without scrolling');
   await ownership(teacher,student,true);
   await studentFrame.getByLabel('Положение C в клетках от A').selectOption('12');
   await synchronized(studentFrame,teacherFrame,'denominator zero shown to teacher');
