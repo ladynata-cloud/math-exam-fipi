@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "3986e1b2b7ea258cb8d3360cfba662226319fa37045b15213e03da8200e1529d",
-      "afterSha256": "0aa98e3cb9079731ed4ca1e309aa0a73a16a2dca21e1dc6aa4e4b6d8517f63cf",
+      "beforeSha256": "a46ad6545b7229c52772993943efeaf623f859e3fcda84dea1acca4496b0b3ff",
+      "afterSha256": "1a8aaeea5ef645411d0c78fd7b5ca8984a606115271280408b142804a678f54b",
       "placement": "before-head-close",
-      "sourceSha": "5297ff46e29ac1278e7f3d160b60d4eabcacb8e6"
+      "sourceSha": "ec0f796f751036b5e59bf0cf6af933409ddaee17"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6615,6 +6615,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в 59 печатных номеров и две проверочные первой части Виленкина, а также восемь номеров второй части с обеими ролями."
+    },
+    {
+      "previousBaseSha": "5297ff46e29ac1278e7f3d160b60d4eabcacb8e6",
+      "sourceBaseSha": "ec0f796f751036b5e59bf0cf6af933409ddaee17",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в 59 печатных номеров и две проверочные первой части Виленкина, а также девять номеров второй части, включая свои примеры в тетради, с обеими ролями."
     }
   ],
   "coverageUpdates": [
