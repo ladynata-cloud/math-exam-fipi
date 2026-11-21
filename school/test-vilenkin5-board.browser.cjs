@@ -488,6 +488,19 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'compensation of a rounded sum, printed part 1 page 20';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-70"]').click();await studentFrame.locator('h1').filter({hasText:'№1.70'}).waitFor();
+  await teacherFrame.locator('#answer').fill('150');await teacherFrame.locator('#answer-form button').click();
+  const roundedTooFar=await same(teacherFrame,studentFrame,'both added amounts still need subtraction');assert.match(roundedTooFar.scene.message,/округлённых/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=method]').selectOption('1');await same(studentFrame,teacherFrame,'switch to transfer on same two numbers');
+  await studentFrame.locator('#answer').fill('147');await studentFrame.locator('#answer-form button').click();const sameSum=await same(studentFrame,teacherFrame,'corrected the same sum');assert(sameSum.scene.correct);assert.deepEqual(sameSum.scene.hintLevels,{});
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('94');await same(studentFrame,teacherFrame,'draft of the second sum');
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'reloaded second sum');assert.equal(await studentFrame.locator('#answer').inputValue(),'94');
+  if(await student.evaluate(()=>document.body.classList.contains('control-owner')))await ownership(teacher,student,false);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'returned to same second sum on both screens');
+
   phase = 'compass opening and an equal transferred segment';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-46"]').click();await studentFrame.locator('h1').filter({hasText:'№1.46'}).waitFor();

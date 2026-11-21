@@ -170,7 +170,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:66},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:70},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -665,6 +665,40 @@ function buildablePathsRegression(){
 }
 
 
+
+function pageTwentyReviewRegression(){
+  const f=boot(),ids=Array.from({length:4},(_,i)=>'v5f-printed-1-'+(67+i)),N=f.w.Vilenkin5Numbered;
+  const src=ids.map(id=>f.M.generate(id,0));
+  equal(plain(src[0].data.values),[241,802,50024,490220,700243,9999999]);
+  equal(plain(src[1].steps.map(s=>s.answer)),[22003008,28015302,507080000,1010009000,423340600980,52000008012,777000608000]);
+  equal(plain(src[2].steps.map(s=>s.answer)),[16,22,35,21,43,8,8,6,8,32,42,36,64,45,54,8,8,8,9,5]);
+  equal(plain(src[3].steps.map(s=>s.answer)),[147,942,384]);
+  ok(f.M.accepts('пятьдесят тысяч двадцать четыре',src[0].steps[2]));
+  ok(f.M.accepts('семьсот тысяч двести сорок три',src[0].steps[4]));
+  ok(!f.M.accepts('двести сорок три',src[0].steps[4]));
+  ok(f.M.accepts('22 003 008',src[1].steps[0]));ok(!f.M.accepts('2238',src[1].steps[0]));
+  for(let seed=0;seed<35;seed++){
+    for(const [i,id]of ids.entries()){
+      const l=f.C.byId[id],t=f.M.generate(id,seed),d=t.data;
+      equal(l.point,3);equal(l.source.page,20);ok(l.requires.every(k=>f.C.byId[k]));
+      equal(t.steps.length,[6,7,20,3][i]);if(seed)ok(t.conditionKey!==src[i].conditionKey);
+      if(i<2){for(const [j,n]of d.values.entries()){const place=j%9;equal(N.explore(l,{row:j,place},t).answer,Math.floor(n/(10**place))%10*(10**place));}continue;}
+      if(i===2){for(const [j,r]of d.operations.entries()){
+        const res=[r.a+r.b,r.a-r.b,r.a*r.b,r.a/r.b][r.g],m=N.explore(l,{row:j},t);
+        equal(t.steps[j].answer,res);equal(m.answer,res);equal((m.visual.match(/<circle /g)||[]).length,[r.a+r.b,r.a,r.a*r.b,r.a][r.g]);}continue;}
+      for(const [j,[a,b]]of d.pairs.entries()){
+        const x=Math.ceil(a/10)*10,y=Math.ceil(b/10)*10;
+        equal(t.steps[j].answer,a+b);equal(N.explore(l,{row:j,method:0},t).answer,(x-a)+(y-b));
+        equal(N.explore(l,{row:j,method:1},t).answer,b-(x-a));equal(x+(b-(x-a)),a+b);
+      }
+    }
+  }
+  f.route('#lesson/'+ids[3]);f.submit('150');ok(!f.snapshot().scene.correct);
+  ok(f.snapshot().scene.message.includes('округлённых'));f.submit('147');ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});
+  f.click('[data-cmd=next]');f.submit('942');f.click('[data-cmd=next]');const again=boot('#lesson/'+ids[3],f.saved());equal(again.snapshot().scene.step,2);
+  again.close();f.close();
+}
+
 function pageNineteenBoundariesRegression(){
   const f=boot(),ids=Array.from({length:7},(_,i)=>'v5f-printed-1-'+(60+i)),src=ids.map(id=>f.M.generate(id,0)),[build,diags]=src;
   equal(plain(src.slice(2).map(t=>t.answer)),[150,280,63,16,[82,5]]);
@@ -685,7 +719,7 @@ function pageNineteenBoundariesRegression(){
 }
 
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();printedSegmentRegression();compassAndCompoundRegression();printedChecksRegression();printedLengthUnitsRegression();buildablePathsRegression();pageNineteenBoundariesRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();printedSegmentRegression();compassAndCompoundRegression();printedChecksRegression();printedLengthUnitsRegression();buildablePathsRegression();pageNineteenBoundariesRegression();pageTwentyReviewRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
