@@ -101,6 +101,8 @@ on:
       - 'tools/geometry-textbook/*regular_polygon_constructions*'
       - 'tools/geometry-textbook/*circumference_lengths*'
       - 'tools/geometry-textbook/*inscribed_circle_lengths*'
+      - 'tools/geometry-textbook/*circle_length_applications*'
+      - 'geometry-course/textbook/data/circle-length-applications.json'
       - 'geometry-course/textbook/data/inscribed-circle-lengths.json'
       - 'geometry-course/textbook/data/circumference-lengths.json'
       - 'geometry-course/textbook/data/regular-polygon-constructions.json'
@@ -182,6 +184,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/circle_length_applications.py --check && python3 tools/geometry-textbook/check_circle_length_applications.py
       - run: python3 tools/geometry-textbook/inscribed_circle_lengths.py --check && python3 tools/geometry-textbook/check_inscribed_circle_lengths.py
       - run: python3 tools/geometry-textbook/circumference_lengths.py --check && python3 tools/geometry-textbook/check_circumference_lengths.py
       - run: python3 tools/geometry-textbook/regular_polygon_constructions.py --check && python3 tools/geometry-textbook/check_regular_polygon_constructions.py
