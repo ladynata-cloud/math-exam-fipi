@@ -2,9 +2,9 @@
   'use strict';
   const {lessons, add, example}=window.MathExamTopicPractice;
   const ids=[];
-  function lesson(key,ref,page,title,aim,guide,rule,related,make){
-    add(51,key,page,title,aim,rule,related,make);
-    const found=lessons.get('51-'+key);
+  function lesson(key,ref,page,title,aim,guide,rule,related,make,book=51){
+    add(book,key,page,title,aim,rule,related,make);
+    const found=lessons.get(book+'-'+key);
     Object.assign(found,{printedReference:'Упражнение №'+ref,printedPrompt:aim,printedGuide:guide});
     ids.push(found.id);
   }
@@ -115,6 +115,6 @@
     }
     return '<svg viewBox="0 0 280 126" role="img" aria-label="'+title+'"><g fill="#22483e" font-family="sans-serif" font-size="12">'+body+'</g></svg>';
   }
-  window.MathExamTopicEdition={trainerId:'peterson9-2017',authors:'Петерсон и соавторы · Ювента, 2017',grade:()=>'9 класс · часть 1',unit:'упражнение',storePrefix:'math:peterson9-2017:v1:',figure,addLesson:lesson,question,data,
-    source:(_,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000043.pdf#page='+(page+2),nextId:l=>ids[ids.indexOf(l.id)+1]};
+  window.MathExamTopicEdition={trainerId:'peterson9-2017',authors:'Петерсон и соавторы · Ювента, 2017',grade:book=>'9 класс · часть '+(book===52?'2':'1'),unit:'упражнение',storePrefix:'math:peterson9-2017:v1:',figure,addLesson:lesson,question,data,
+    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+(book===52?'00000044':'00000043')+'.pdf#page='+(page+2),nextId:l=>{const next=ids[ids.indexOf(l.id)+1];return lessons.get(next)?.book===l.book?next:undefined;}};
 })();
