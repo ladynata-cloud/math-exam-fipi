@@ -22,13 +22,33 @@ for(const [id,answers]of Object.entries(cases6)){
 }
 for(const [grade,id,wrong,right]of [[5,'p25','1/3','2/3'],[6,'p11','20','30']]){
  let r=page(grade,'#lesson/'+id+'/0');const task=r.w.PetersonCourse.lessons.find(l=>l.id===id).tasks[0],tid=task.id;const state=()=>r.api.getState().tasks[tid];
+ if (grade === 6) click(r, 'details.inquiry-model > summary');
  submit(r,'draft');assert.equal(state().attempts,0);assert(!state().assisted,'empty inquiry is no help');input(r,'draft',wrong);assert(!state().assisted,'draft prediction is no help');submit(r,'draft');assert(state().assisted,'checking reveals guidance');assert.equal(state().attempts,0,'inquiry does not answer textbook');input(r,'draft',right);submit(r,'draft');submit(r,'draft');const snapshot=r.api.getState(),inquiry=grade===5?state().model:state().inquiry;assert.equal(inquiry[grade===5?'iq_first':'first'],wrong);assert.equal(inquiry[grade===5?'iq_last':'last'],right);assert(!state().correct);r.dom.window.close();
  // Verify sanitizer and real reload through the actual storage key.
  r=page(grade,'#lesson/'+id+'/0');const storageKey=Object.keys(r.w.localStorage).find(k=>k.includes('peterson'));assert(storageKey);r.w.localStorage.setItem(storageKey,JSON.stringify(snapshot));r.dom.window.close();
  r=page(grade,'#lesson/'+id+'/0');const sanitized=r.api.validateState(snapshot);r.dom.window.close();
  const dir=path.join(root,'peterson'+grade),dom=new JSDOM(fs.readFileSync(path.join(dir,'index.html'),'utf8'),{url:'https://mathexam.test/school/peterson'+grade+'/#lesson/'+id+'/0',runScripts:'outside-only',pretendToBeVisual:true});dom.window.scrollTo=()=>{};dom.window.localStorage.setItem(storageKey,JSON.stringify(sanitized));for(const f of ['math.js','models.js','data.js','app.js'])dom.window.eval(fs.readFileSync(path.join(dir,f),'utf8'));r={dom,w:dom.window,d:dom.window.document,api:dom.window.PetersonApp};assert.equal(r.d.querySelector('[data-inquiry-input="draft"]').value,right);assert(r.d.querySelector('.model-inquiry').textContent.includes('Первая запись: '+wrong));
- final(r,task.answer);assert(r.api.getState().tasks[tid].correct);assert(!r.api.getState().tasks[tid].independent);click(r,'[data-action="independent-check"]');nav(r,r.w.location.hash);const practice=r.api.getState().practice,match=/^#practice\/([^/]+)\/([123])$/.exec(r.w.location.hash);assert(match,'fresh check route');const seed=practice[match[1]+':'+match[2]].seed,pt=r.w.PetersonMath.generate(match[1],seed,Number(match[2]));assert.equal(r.api.getState().tasks['practice:'+match[1]+':'+match[2]+':'+seed].attempts,0);final(r,pt.answer);assert(r.api.getState().tasks['practice:'+match[1]+':'+match[2]+':'+seed].independent,'fresh answer independently credited');assert(!r.api.getState().tasks[tid].independent,'old assisted result unchanged');r.dom.window.close();checks++;
+ final(r, task.answer);
+ assert(r.api.getState().tasks[tid].correct);
+ assert(!r.api.getState().tasks[tid].independent);
+ click(r, '[data-action="independent-check"]');
+ nav(r, r.w.location.hash);
+ const match = /^#(practice|check)\/([^/]+)\/([123])$/.exec(r.w.location.hash);
+ assert(match, 'fresh check route');
+ const [, mode, skill, level] = match;
+ assert.equal(mode, grade === 6 ? 'check' : 'practice');
+ const seed = r.api.getState().practice[skill + ':' + level].seed;
+ const newTask = r.w.PetersonMath.generate(skill, seed, Number(level));
+ const newTaskId = [mode, skill, level, seed].join(':');
+ assert.equal(r.api.getState().tasks[newTaskId].attempts, 0);
+ final(r, newTask.answer);
+ assert(r.api.getState().tasks[newTaskId].independent, 'fresh answer independently credited');
+ assert(!r.api.getState().tasks[tid].independent, 'old assisted result unchanged');
+ r.dom.window.close();
+ checks++;
  // A draft forecast alone must not turn the textbook answer into assisted work.
- r=page(grade,'#lesson/'+id+'/0');input(r,'draft',wrong);final(r,task.answer);assert(r.api.getState().tasks[tid].independent,'prediction draft alone');r.dom.window.close();checks++;
+ r=page(grade,'#lesson/'+id+'/0');
+ if (grade === 6) click(r, 'details.inquiry-model > summary');
+ input(r,'draft',wrong);final(r,task.answer);assert(r.api.getState().tasks[tid].independent,'prediction draft alone');r.dom.window.close();checks++;
 }
 console.log('PETERSON_INQUIRY_OK: '+checks+' family/integration cases; arithmetic, equal fractions, forecast-before-model, first-answer retention, reload, empty/repeat/disclosure boundaries, fresh independent practice and unchanged board state.');

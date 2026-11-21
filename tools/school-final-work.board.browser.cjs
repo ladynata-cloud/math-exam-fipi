@@ -59,6 +59,7 @@ async function run(browser, origin, serverOrigin) {
       await student.goto(origin+'/school/index.html#course/'+id);
       const link=student.locator('a[href*="school-workshop-check/index.html"]').first();
       assert.match(await link.getAttribute('href'),new RegExp('course='+id+'$'));
+      assert(await link.evaluate(el=>el.getBoundingClientRect().bottom<=innerHeight),'First-screen access '+id);
       await link.click();await student.locator('#answer').waitFor();
       assert.equal(await student.locator('#course').inputValue(),id);
       assert(await student.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));

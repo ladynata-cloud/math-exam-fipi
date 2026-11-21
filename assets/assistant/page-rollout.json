@@ -6477,10 +6477,11 @@
       "previousBaseSha": "a772c84c92a64553f3a4da099718ef527c0a9aa8",
       "sourceBaseSha": "e4cd17295e277772602cf4620c067c1d54f4fbd5",
       "task": "docs/tasks/SCHOOL_FINAL_WORK_20261121.md",
-      "changedPages": [
+      "changedPaths": [
         "school/index.html"
       ],
-      "reason": "Preserve the verified edition, Vilenkin and final assessment entries together."
+      "bindingScope": "Published Workshop source page with verified textbook routes and final assessments.",
+      "boundary": "Preserve the verified edition, Vilenkin and final assessment entries together."
     }
   ],
   "coverageUpdates": [
