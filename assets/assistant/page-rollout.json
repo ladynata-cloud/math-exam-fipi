@@ -2302,10 +2302,10 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "faa952fcf0c691926110f4d63828fd46b3f27caa892bfe26f3aa424d40a7ceb6",
-      "afterSha256": "eb0d6b0b236df0df93ee199e96bbbe40ea742197a87c8ac84145a3c9937e2102",
+      "beforeSha256": "0487d4709a4df979876b962a436befae891424b3a961f5695cf93415f121f3a0",
+      "afterSha256": "69aecef55fcb12b3255e2481e260c6fb47464cdb2f37b7e527dab88034bb34e4",
       "placement": "before-head-close",
-      "sourceSha": "85ceeb823ddf1ab06c9a78e3391858c85712367a"
+      "sourceSha": "a063e8a62817bbea594089453d28d24551b37371"
     },
     "stereo-course/merzlyak-10-base/index.html": {
       "beforeSha256": "5ec4467e0bffdc283921d9bc2aac8449f549474b77be4f7fbba7d29289758cfb",
@@ -6722,6 +6722,15 @@
       ],
       "bindingScope": "Per-page sourceSha for the combined Workshop and Vilenkin entry, numeric lessons and corrected forecast.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "85ceeb823ddf1ab06c9a78e3391858c85712367a",
+      "sourceBaseSha": "a063e8a62817bbea594089453d28d24551b37371",
+      "task": "docs/tasks/STEREO_HIDDEN_LINES.md",
+      "changedPaths": [
+        "stereo-course/index.html"
+      ],
+      "boundary": "Автономная сборка содержит проверенный движок видимости. Для №467 проверены собственная грань, перекрытие другой гранью и повёрнутые модели."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
