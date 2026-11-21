@@ -773,6 +773,63 @@ function equationExamples(host,value){
 function boundNote(host,text) {
  const p=document.createElement('p'); p.className='small'; p.textContent=text;host.append(p);return p;
 }
+function cornerValues(raw){
+ const parts=String(raw??'').split(';').map(s=>M.parse(s.trim()));return parts.length===2&&parts.every(Boolean)?parts:null;
+}
+function combinedBounds(host,g){
+ host.className='task-graphs quantity-model';
+ g.ranges.forEach((r,i)=>{boundNote(host,'Данные границы для '+g.symbols[i]);intervalDiagram(host,'Промежуток для '+g.symbols[i],r.map(M.parse),[!g.closed,!g.closed]);});
+ const learner=cornerValues(g.partial?.[0]);
+ if(learner)boundNote(host,'Для нижней оценки выбраны '+g.symbols.map((s,i)=>s+' = '+M.answer(learner[i])).join(', ')+'.').dataset.boundCorner='yes';
+ if(g.proposal){const q=g.proposal;boundNote(host,'Твой промежуток для '+g.expression+(g.unit?' ('+g.unit+')':''));intervalDiagram(host,'Твой ответ',[q.left,q.right],[q.leftOpen,q.rightOpen]);}
+}
+function comparisonPair(host,g,value){
+ host.className='task-graphs quantity-model';const op=g.operation==='sum'?'+':'·';
+ const [a,b]=g.sides[0],[c,d]=g.sides[1];boundNote(host,'Слева: ('+a+') '+op+' ('+c+'). Справа: ('+b+') '+op+' ('+d+').');
+ if(value)boundNote(host,'Твоё получившееся сравнение: '+value).dataset.combinedTrial='yes';
+}
+function powerOrder(host,g){
+ host.className='task-graphs quantity-model';const probe=cornerValues(g.partial?.[0]);if(!probe){boundNote(host,'Введи свои положительные основания a и b на первом шаге.');return;}
+ const [a,b]=probe.map(v=>v.n/v.d),r=g.powers;
+ for(const p of r){const x=a**p,y=b**p,relation=x<y?' < ':x>y?' > ':' = ';boundNote(host,'Степень '+p+': '+x.toLocaleString('ru-RU',{maximumSignificantDigits:7})+relation+y.toLocaleString('ru-RU',{maximumSignificantDigits:7})+'.').dataset.powerTrial=String(p);}
+}
+function medianFigure(host,g,value){
+ host.className='task-graphs quantity-model';
+ const raw=g.own?value:g.partial?.[0],trial=cornerValues(raw);
+ if(!trial||trial[1].n<=0){boundNote(host,'Возьми A(0;0), C(2;0), предложи свои координаты B(u;v) выше основания. Точка O — середина AC.');return;}
+ const u=trial[0].n/trial[0].d,v=trial[1].n/trial[1].d;
+ const vertices={A:[0,0],B:[u,v],C:[2,0],D:[2-u,-v],O:[1,0]};
+ const xs=Object.values(vertices).map(p=>p[0]),span=Math.max(2,Math.max(...xs)-Math.min(...xs)),mid=(Math.max(...xs)+Math.min(...xs))/2;
+ const scale=Math.min(262/span,88/v),project=([x,y])=>[160+(x-mid)*scale,106-y*scale];
+ const canvas=node('svg',{viewBox:'0 0 320 216',role:'img','aria-label':'Треугольник ABC, медиана BO и отрезок OD на её продолжении'});
+ function segment(a,b,stroke,dashed=false){const [x1,y1]=project(vertices[a]),[x2,y2]=project(vertices[b]);canvas.append(node('line',{x1,y1,x2,y2,stroke,'stroke-width':2,'stroke-dasharray':dashed?'6 4':'none'}));}
+ segment('A','B','#2b554a');segment('B','C','#2b554a');segment('A','C','#2b554a');segment('B','O','#9c3f27');segment('O','D','#9c3f27',true);segment('A','D','#37688b',true);segment('C','D','#37688b',true);
+ for(const [k,xy]of Object.entries(vertices)){const [x,y]=project(xy),dx=k==='A'?-9:k==='C'?9:0,dy=k==='D'?13:-6;canvas.append(node('circle',{cx:x,cy:y,r:3,fill:'#145e54','data-median-point':k}),node('text',{x:x+dx,y:y+dy,'text-anchor':'middle','font-size':13},k));}
+ host.append(canvas);boundNote(host,'Твои координаты B: ('+trial.map(M.answer).join('; ')+'). Вектор OD противоположен OB. По построению BO = OD, AO = OC.').dataset.medianTrial='yes';
+}
+function diagonalProof(host,g){
+ host.className='task-graphs quantity-model';const pts={A:[48,115],B:[170,29],C:[270,115],D:[170,174],O:[170,115]};
+ const svg=node('svg',{viewBox:'0 0 320 200',role:'img','aria-label':'Выпуклый четырёхугольник ABCD и треугольники AOB, COD'});
+ for(const [a,b,col]of [['A','B','#274d45'],['B','C','#274d45'],['C','D','#274d45'],['D','A','#274d45'],['A','C','#37688b'],['B','D','#a65026']]){
+  const [x1,y1]=pts[a],[x2,y2]=pts[b];svg.append(node('line',{x1,y1,x2,y2,stroke:col,'stroke-width':2}));
+ }
+ for(const [k,[x,y]]of Object.entries(pts))svg.append(node('circle',{cx:x,cy:y,r:3,fill:'#145e54'}),node('text',{x:x+7,y:y-6,'font-size':14},k));
+ host.append(svg);boundNote(host,'O — пересечение диагоналей. Сопоставь сторону AB с ломаной AOB и сторону CD с COD.');
+}
+function contextBound(host,g,value){
+ host.className='task-graphs quantity-model';
+ if(g.type==='mean-factors'){
+  const pairs=g.mode==='three'?[['a','b'],['b','c'],['a','c']]:g.mode==='four'?[['a','1'],['b','1'],['a','c'],['b','c']]:[['a','b']];
+  for(const [x,y]of pairs)boundNote(host,'('+x+' + '+y+')/2 ≥ √('+x+'·'+y+').');
+  if(g.partial?.[0])boundNote(host,'Твой первый шаг: '+g.partial[0]+'.');return;
+ }
+ if(g.type==='signed-square-proof'){boundNote(host,g.k===3?'После приведения дроби к общему знаменателю: (3a − 1)²/a.':'После приведения дроби к общему знаменателю: (5b + 1)²/b.');if(g.partial?.[0])boundNote(host,'Твоё значение для равенства: '+g.symbol+' = '+g.partial[0]+'.');return;}
+ if(g.type==='library-area'){boundNote(host,'Наименьший прямоугольник: '+g.base.join(' × ')+' м. Требование: не менее '+g.required+' м².');if(g.partial?.[0])boundNote(host,'Твоя оценка минимальной площади: '+g.partial[0]+' м².');return;}
+ if(g.type==='cancel-ratio'){boundNote(host,'Разложи 16 − 9x² на два линейных множителя и отдельно проверь нули внешнего делителя.');if(g.partial?.[0])boundNote(host,'Твой список недопустимых значений: '+g.partial[0]+'.');return;}
+ if(g.type==='cut-square'){const v=M.parse(value);boundNote(host,'Сторона листа x, ширина отрезанной полосы 5 дм. Остаток имеет стороны x и x − 5.');if(v){const x=v.n/v.d;boundNote(host,x<=5?'Такой лист не оставляет прямоугольника положительной площади.':'При твоей стороне остаток имеет площадь '+(x*(x-5)).toLocaleString('ru-RU',{maximumSignificantDigits:8})+' дм².');}}
+}
+
+
 function intervalDiagram(host,label,ends,opened){
  const bounds=ends.map(M.answer),svg=node('svg',{viewBox:'0 0 340 74',role:'img','aria-label':label+' '+bounds.join(' … ')});
  const [a,b]=ends;
@@ -1311,6 +1368,12 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='combined-intervals'){combinedBounds(host,config);return;}
+ if(config.type==='two-comparisons'){comparisonPair(host,config,value);return;}
+ if(config.type==='power-order'){powerOrder(host,config);return;}
+ if(config.type==='median-investigation'){medianFigure(host,config,value);return;}
+ if(config.type==='diagonal-proof'){diagonalProof(host,config);return;}
+ if(['mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square'].includes(config.type)){contextBound(host,config,value);return;}
  if(config.type==='interval-image'){estimateDiagram(host,config);return;}
  if(config.type==='rank-expressions'){rankExpressions(host,config);return;}
  if(config.type==='compare-surd-values'){surdComparison(host,config,value);return;}
@@ -1383,5 +1446,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cornerValues,coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

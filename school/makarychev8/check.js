@@ -781,6 +781,10 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='bound-corner'){
+  const p=G.cornerValues(user),q=G.cornerValues(target.answer);return Boolean(p&&q&&p.every((x,i)=>M.equal(x,q[i])));
+ }
+ if(target.kind==='triangle-vertex'){const p=G.cornerValues(user);return Boolean(p&&p[1].n>0);}
  if(target.kind==='estimate-interval')return estimateStatus(user,target)==='correct';
  if(target.kind==='ordered-coordinates')return Boolean(G.coordinateEvidence(user,target.coordinateSymbols,target.coordinateOrder,target.coordinateBounds)?.valid);
  if(target.kind==='ordered-comparison-sample')return G.admissibleSample(user,target.graph.sourceDomain,2)&&G.inequalityTrial(target.graph,user,true)?.sign===target.requiredSign;
