@@ -119,7 +119,7 @@ function rootGraph(config,value){
    previous=[a,b];
   }
   if(c.kind==='vertical'&&c.h>=xr[0]&&c.h<=xr[1])path='M'+x(c.h)+' '+pad+' L'+x(c.h)+' '+(height-pad);
-  svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,...(c.dashed?{'stroke-dasharray':'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
+  svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,...(c.dashed?{'stroke-dasharray':c.dashPattern||'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
   for(const [h,v] of c.holes||[])if(h>=xr[0]&&h<=xr[1]&&v>=yr[0]&&v<=yr[1])svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));
   if(c.kind==='abs-ratio'&&xr[0]<=0&&xr[1]>=0)for(const b of [-(c.scale??1),c.scale??1])if(b>=yr[0]&&b<=yr[1])svg.append(node('circle',{cx:x(0),cy:y(b),r:4,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':0,'data-hole-y':b}));
   if(c.label){
@@ -806,7 +806,13 @@ function linearReview(host,config,value){
     }
   }else say(config.fromSystem?'На рисунке показаны исходные прямые и данная точка. Введи формулу искомой прямой.':'По заданным точкам составь формулу y = kx + d. Введённая прямая появится на рисунке.');
  }
- const b=config.bounds;host.prepend(rootGraph({curves,points,xRange:[-b,b],yRange:[-b,b],label:'Координатные оси, данные точки и прямые из полученных уравнений'},''));
+ const legend=document.createElement('p');legend.className='small';
+ if(config.fromSystem){
+  legend.textContent='Сплошная: 3x − 2y = 16. Короткие штрихи: 4x + 3y = −7.';
+  if(curves.length===3){curves[2].dashPattern='14 3';legend.textContent+=' Длинные штрихи: введённая функция.';}
+ }else if(config.mode==='through')legend.textContent=curves.length?'Сплошная линия показывает введённую функцию. Точки заданы в условии.':'На рисунке отмечены заданные точки.';
+ else legend.textContent='Сплошная линия показывает первую строку.'+(curves.length>1?' Штриховая — вторую строку.':'');
+ const b=config.bounds;host.prepend(rootGraph({curves,points,xRange:[-b,b],yRange:[-b,b],label:legend.textContent},''),legend);
 }
 
 function quantityTrial(graph,raw){

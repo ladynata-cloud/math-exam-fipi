@@ -65,6 +65,8 @@ async function verify(width,url){
   await page.locator('[data-step-form="0"] button').first().click();await page.locator('#step-answer-1').fill('-5/2');await page.locator('[data-step-form="1"] button').first().click();
   await page.locator('#step-answer-2').fill('0');await page.locator('[data-step-form="2"] button').first().click();await submit(page,'2y+5x=0');
   assert.equal(await page.locator('[data-point-on-candidate=yes]').count(),2);
+  assert.equal(await page.locator('[data-root-curve][stroke-dasharray="14 3"]').count(),1);
+  assert.match(await page.locator('#task-graph').textContent(),/Длинные штрихи/);
   const drill=page.locator('[data-action=detour][data-skill=system-lines]').first();
   await drill.evaluate(el=>{for(let p=el.parentElement;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;});await drill.click();
   const prior=await page.locator('.prompt').innerText();await page.locator('[data-action=new]').first().click();assert.notEqual(await page.locator('.prompt').innerText(),prior);
