@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "65719df64d8975cdad51a5219d959a3498576f4e3cd583eb7db615d4e1034e6b",
-      "afterSha256": "39e14ae4967a4fd8e2413dad6f05a56f38abb2ec26135aac6081e9dd8a2c44a3",
+      "beforeSha256": "1c3feba9c7c39e5a5a3f59f85c34a7e8e698498e22755e155d6587bb5427855a",
+      "afterSha256": "b1a84eb3f3d7a0eb6c1a7283ec3fbb6b34c85523665b83d9575c5080ca32745b",
       "placement": "before-head-close",
-      "sourceSha": "904cd14a07b85907156954dcd21e338daba6ded6"
+      "sourceSha": "c9f2e71aa306c8ddfa136d627b35c3d8a06db711"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6741,6 +6741,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, часть 2, №5.26–5.27. Обратный ход событий и порядок двух действий."
+    },
+    {
+      "previousBaseSha": "904cd14a07b85907156954dcd21e338daba6ded6",
+      "sourceBaseSha": "c9f2e71aa306c8ddfa136d627b35c3d8a06db711",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, №5.28. Открытый вопрос о сравнении часов с собственным наблюдением."
     }
   ],
   "coverageUpdates": [
