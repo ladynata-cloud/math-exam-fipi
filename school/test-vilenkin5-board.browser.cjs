@@ -767,6 +767,33 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
   await same(teacherFrame,studentFrame,'shared table and correction survive pupil reload');await narrow(student,studentFrame,'thread-circles');
 
+  phase = 'circumference and diameter as inverse estimates';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-11"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.11'}).waitFor();
+  await teacherFrame.locator('#answer').fill('3');await teacherFrame.locator('#answer-form button').click();
+  assert.match((await same(teacherFrame,studentFrame,'one diameter is too short for the edge')).scene.message,/одного диаметра/);
+  await teacherFrame.locator('#answer').fill('9');await teacherFrame.locator('#answer-form button').click();
+  await teacherFrame.locator('[data-cmd=next]').click();
+  await ownership(teacher,student,true);
+  await studentFrame.locator('#answer').fill('25');await studentFrame.locator('#answer-form button').click();
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('75');await studentFrame.locator('#answer-form button').click();
+  const estimated=await same(studentFrame,teacherFrame,'two units of length converted before multiplying');
+  assert.equal(estimated.scene.correct,true);assert.equal(estimated.scene.assisted,true);assert.deepEqual(estimated.scene.hintLevels,{});
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await studentFrame.locator('a[href="#lesson/v5f-printed-5-12"]').click();
+  await teacherFrame.locator('h1').filter({hasText:'№5.12'}).waitFor();
+  await studentFrame.locator('[data-v5-param=size]').fill('12');await studentFrame.locator('[data-v5-param=size]').press('Tab');
+  await studentFrame.locator('[data-v5-param=direction]').selectOption({value:'0'});
+  await studentFrame.locator('[data-v5-prediction]').fill('36');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('14');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('#answer').fill('750');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const partialInverse=await same(studentFrame,teacherFrame,'inverse task, new model relation and partial metres on teacher reload');
+  assert.equal(partialInverse.scene.model.size,12);assert.equal(partialInverse.scene.model.prediction,'36');assert.equal(partialInverse.scene.step,1);assert.equal(partialInverse.scene.savedInput,'750');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'pupil recovers same inverse estimate');await narrow(student,studentFrame,'circumference-estimates');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
