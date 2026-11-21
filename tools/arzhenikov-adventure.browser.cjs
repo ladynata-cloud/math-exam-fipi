@@ -84,7 +84,7 @@ async function journey(browser,width) {
     assert.equal(await put(page,1).locator('.ws-token').count(),1);
     assert.equal(await instruction.innerText(),'Продолжай раздавать поровну.');
     await action(page,'undo').press('Enter');
-    await drawer.locator('summary').press('Enter');
+    await drawer.locator(':scope > summary').press('Enter');
     await drawer.locator('a[href="#workshop-picnic"]').press('Enter');
     await page.waitForURL(url => url.hash === '#workshop-picnic');
     await page.waitForFunction(() => document.activeElement === document.querySelector('.ws-title'));
