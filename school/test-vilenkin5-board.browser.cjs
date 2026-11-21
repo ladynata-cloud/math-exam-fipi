@@ -488,6 +488,19 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'personal paper measurements, printed page twenty-two self-check';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-check-3-2"]').click();await studentFrame.locator('h1').filter({hasText:/периметр/i}).waitFor();
+  await teacherFrame.locator('#answer').fill('замкнутая');await teacherFrame.locator('#answer-form button').click();const shortcut=await same(teacherFrame,studentFrame,'named open path was confused with complete boundary');assert.match(shortcut.scene.message,/ABCDA/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('открытая ломаная');await studentFrame.locator('#answer-form button').click();const rightPath=await same(studentFrame,teacherFrame,'pupil distinguished path from boundary');assert(rightPath.scene.correct);assert.deepEqual(rightPath.scene.hintLevels,{});
+  await studentFrame.locator('[data-v5-param=paper]').selectOption({value:'1'});
+  for(const [i,v] of [31,22,17,19].entries()){await studentFrame.locator('[data-v5-param=edge]').selectOption({value:String(i)});const box=studentFrame.locator('[data-v5-param=length'+i+']');await box.fill(String(v));await box.press('Tab');}
+  await studentFrame.locator('[data-v5-param=ask]').selectOption({value:'3'});await studentFrame.locator('[data-v5-prediction]').fill('8,9');await studentFrame.locator('[data-v5-predict] button').click();
+  const paperMeasures=await same(studentFrame,teacherFrame,'both see four measurements from the same synthetic paper drawing');assert.equal(paperMeasures.scene.model.length3,19);assert.match(paperMeasures.scene.model.notice,/подтвердился/);
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('четырёх');await same(studentFrame,teacherFrame,'unfinished shape name');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'pupil restores measured drawing and draft');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const reading=await same(teacherFrame,studentFrame,'teacher restores same drawing');assert.deepEqual([reading.scene.model.length0,reading.scene.model.length1,reading.scene.model.length2,reading.scene.model.length3],[31,22,17,19]);assert.equal(await teacherFrame.locator('#answer').inputValue(),'четырёх');
+
   phase = 'heights above the common sea level, printed exercise 1.88';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-88"]').click();await studentFrame.locator('h1').filter({hasText:'№1.88'}).waitFor();

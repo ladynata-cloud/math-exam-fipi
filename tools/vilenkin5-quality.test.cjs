@@ -604,7 +604,7 @@ function compassAndCompoundRegression(){
 
 function printedChecksRegression(){
   const f=boot(),ids=['v5f-printed-check-2-1','v5f-printed-check-2-2'],fl=f.C.pathById.vilenkin5;
-  equal(plain(fl.printedChecks),ids);ok(!fl.numbered.some(id=>ids.includes(id)));equal(fl.ids.length,134);ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));
+  equal(plain(fl.printedChecks),ids.concat('v5f-printed-check-3-1','v5f-printed-check-3-2'));ok(!fl.numbered.some(id=>ids.includes(id)));equal(fl.ids.length,134);ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));
   const buy=f.M.generate(ids[0],0);equal(plain(buy.steps.map(s=>s.answer)),[56,3,130,655]);equal(buy.answer,700);
   for(let seed=0;seed<220;seed++){
     const t=f.M.generate(ids[0],seed),d=t.data;
@@ -668,6 +668,28 @@ function buildablePathsRegression(){
 
 
 
+
+function printedPointThreeChecksRegression(){
+  const ids=['v5f-printed-check-3-1','v5f-printed-check-3-2'],f=boot(),path=f.C.pathById.vilenkin5,N=f.w.Vilenkin5Numbered;
+  equal(plain(path.printedChecks.slice(-2)),ids);for(const id of ids){ok(!path.numbered.includes(id));ok(!path.ids.includes(id));equal(f.C.byId[id].source.page,22);equal(f.C.byId[id].source.point,3);ok(f.$('a[href="#lesson/'+id+'"]'));}
+  const a=f.M.generate(ids[0],0),b=f.M.generate(ids[1],0);
+  equal(plain(a.steps.map(x=>x.answer)),[500,79,42,13,'8 км 563 м','30 км 600 м','34 м','20 м',6]);equal(a.answer,12);
+  for(const [val,part] of [['34 м',6],['3400см',6],['0,034 км',6],['2 0',-1],['200 дм',7],['20000мм',7]])if(part>=0)ok(f.M.accepts(val,a.steps[part]));
+  for(const val of ['34','34 кг','340 см','3,4 м','0,0000003 км'])ok(!f.M.accepts(val,a.steps[6]));
+  equal(plain(b.data.quadCheck.sides),[24,20,15,7]);equal(b.data.quadCheck.sum,66);ok(f.M.equal('6,6',b.answer));equal(plain(b.steps.map(x=>x.answer)),['незамкнутая','четырёхугольник','ABCD','AB BC CD DA',24,{n:12,d:5},66]);
+  ok(f.M.accepts('Открытая ломаная',b.steps[0]));ok(!f.M.accepts('замкнутая',b.steps[0]));ok(f.M.accepts('Четырехугольник',b.steps[1]));ok(!f.M.accepts('трапеция',b.steps[1]));ok(f.M.accepts('AD DC CB BA',b.steps[3]));
+  for(let seed=0;seed<50;seed++){
+    const u=f.M.generate(ids[0],seed),p=f.M.generate(ids[1],seed),d=u.data.unitFence;equal(u.answer,(d.posts-1)*d.gap);
+    for(let posts=1;posts<=12;posts++)for(let gap=1;gap<=6;gap++)for(let what=0;what<2;what++)equal(N.explore(f.C.byId[ids[0]],{posts,gap,what},u).answer,what?(posts-1)*gap:posts-1);
+    ok(N.explore(f.C.byId[ids[1]],{paper:0,edge:0,ask:0},p).visual.includes('Прямой угол при A'));
+    const shape=p.data.quadCheck;shape.coords.forEach(([x,y],i)=>{const [u,v]=shape.coords[(i+1)%4];equal(shape.sides[i],Math.hypot(x-u,y-v));});
+    ok(f.M.equal(String(shape.sides.reduce((sum,e)=>sum+e,0)/10),p.answer));
+    const measured=[31,22,17,19];for(let edge=0;edge<4;edge++)for(let ask=0;ask<4;ask++)for(const paper of [0,1]){const state={edge,ask,paper,length0:31,length1:22,length2:17,length3:19},data=paper?measured:shape.sides;ok(f.M.equal(String((ask<2?data[edge]:data.reduce((x,y)=>x+y,0))/(ask%2?10:1)),N.explore(f.C.byId[ids[1]],state,p).answer));}
+    equal(N.explore(f.C.byId[ids[1]],{paper:1,ask:2,edge:0,length0:0,length1:20,length2:10,length3:0},p).answer,2);
+  }
+  f.route('#lesson/'+ids[0]);for(const [i,q] of a.steps.entries()){f.submit(i===6?'0,034 км':i===7?'2000 см':value(f.M,q));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}f.submit('14');ok(f.snapshot().scene.message.includes('столбы'));f.submit('12');ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});
+  f.route('#lesson/'+ids[1]);f.submit('замкнутая');ok(f.snapshot().scene.message.includes('ABCDA'));for(const q of b.steps){f.submit(value(f.M,q));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}f.submit('6,6');ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});f.close();
+}
 
 function mountainsAndTravelRegression(){
   const f=boot(),N=f.w.Vilenkin5Numbered,ids=[88,89,90,91].map(n=>'v5f-printed-1-'+n),src=ids.map(id=>f.M.generate(id,0));equal(plain(src[0].steps.map(x=>x.answer)),[4137,1189,5100,350]);equal(plain(src[0].answer),[5100,350]);
@@ -873,7 +895,7 @@ function pageNineteenBoundariesRegression(){
 }
 
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();printedSegmentRegression();compassAndCompoundRegression();printedChecksRegression();printedLengthUnitsRegression();buildablePathsRegression();pageNineteenBoundariesRegression();pageTwentyReviewRegression();originalChainsRegression();everydayReasoningRegression();numberingAndPathsRegression();pageTwentyOneFirstRegression();sixMeasurementsRegression();comparisonsAndMixedMeasuresRegression();perimeterAndMassRegression();mountainsAndTravelRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();printedSegmentRegression();compassAndCompoundRegression();printedChecksRegression();printedLengthUnitsRegression();buildablePathsRegression();pageNineteenBoundariesRegression();pageTwentyReviewRegression();originalChainsRegression();everydayReasoningRegression();numberingAndPathsRegression();pageTwentyOneFirstRegression();sixMeasurementsRegression();comparisonsAndMixedMeasuresRegression();perimeterAndMassRegression();mountainsAndTravelRegression();printedPointThreeChecksRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
