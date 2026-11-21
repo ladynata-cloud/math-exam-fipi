@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T20:40:53Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–594, with 994 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T20:48:13Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–596, with 1,001 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1700,6 +1700,22 @@
       ],
       "evidence": "tools/stereo-textbook/coplanar-vector-directions.json",
       "mathematicalReport": "tools/stereo-textbook/coplanar-vector-directions.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied 2024 volume, printed page 154 and key 268. All five directed paths and both oblique coordinate decompositions.",
+      "reviewedAt": "2026-11-21T20:48:13Z",
+      "scope": "All five vertex-to-vertex sums in exercise 595 and both oblique vector decompositions in exercise 596, including a descending basis diagonal",
+      "cardIds": [
+        "ex-main-0595-a",
+        "ex-main-0595-b",
+        "ex-main-0595-c",
+        "ex-main-0595-d",
+        "ex-main-0595-e",
+        "ex-main-0596-a",
+        "ex-main-0596-b"
+      ],
+      "evidence": "tools/stereo-textbook/parallelepiped-directed-bases.json",
+      "mathematicalReport": "tools/stereo-textbook/parallelepiped-directed-bases.test.cjs"
     }
   ],
   "cards": [
@@ -5678,6 +5694,34 @@
     {
       "id": "ex-main-0594",
       "sha256": "674c7a8092062cad91f9d191a5b461a7dbb368dbad1cf02f900837c51a080a45"
+    },
+    {
+      "id": "ex-main-0595-a",
+      "sha256": "44f5ae40881ef700596b3dc0ef556583a2c1f5fe8d5e1fe50cbf1c4a643ec880"
+    },
+    {
+      "id": "ex-main-0595-b",
+      "sha256": "d3c519b4ac5c750328bc1625e45707534d64244349799fe8cb3fb1ce69327f33"
+    },
+    {
+      "id": "ex-main-0595-c",
+      "sha256": "ea3512c51ef6d283ff500e3bd1cb98368108cbe7975a608427b70f9aa971eb52"
+    },
+    {
+      "id": "ex-main-0595-d",
+      "sha256": "6f7156b0b4cdf0203df152cd4434f5fffa6579a48739b7957989187d25bda17f"
+    },
+    {
+      "id": "ex-main-0595-e",
+      "sha256": "b7155a3d84bc1388bdebf595e5b915b985e37c0820328ed8fb22c551e721261d"
+    },
+    {
+      "id": "ex-main-0596-a",
+      "sha256": "e32d0246c3a86cddc0481fd5a5b25b8affe8a67bc02e720c5bbb5d184d12efa7"
+    },
+    {
+      "id": "ex-main-0596-b",
+      "sha256": "ba121838433c48ae2a2dea087240ab7871682cf05cf350fae685a3d9439905b3"
     }
   ]
 }

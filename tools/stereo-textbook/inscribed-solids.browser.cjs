@@ -41,7 +41,8 @@ const groups = {
   pyramidVectorMidpoints: {manifests:[require('./pyramid-vector-midpoints.json')],count:6},
   midlinesVectorCoefficients: {manifests:[require('./midlines-vector-coefficients.json')],count:6},
   collinearityVectorConditions: {manifests:[require('./collinearity-vector-conditions.json')],count:10},
-  coplanarVectorDirections: {manifests:[require('./coplanar-vector-directions.json')],count:9}
+  coplanarVectorDirections: {manifests:[require('./coplanar-vector-directions.json')],count:9},
+  parallelepipedDirectedBases: {manifests:[require('./parallelepiped-directed-bases.json')],count:7}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

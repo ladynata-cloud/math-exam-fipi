@@ -74,6 +74,7 @@ jobs:
           node tools/stereo-textbook/midlines-vector-coefficients.test.cjs
           node tools/stereo-textbook/collinearity-vector-conditions.test.cjs
           node tools/stereo-textbook/coplanar-vector-directions.test.cjs
+          node tools/stereo-textbook/parallelepiped-directed-bases.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -260,6 +261,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: coplanarVectorDirections
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coplanar-vector-directions
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all five translated edge paths and both coefficient triples in the printed parallelepiped exercises
+        env:
+          TEXTBOOK_PRACTICE_GROUP: parallelepipedDirectedBases
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/parallelepiped-directed-bases
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -330,5 +336,6 @@ jobs:
             artifacts/midlines-vector-coefficients/
             artifacts/collinearity-vector-conditions/
             artifacts/coplanar-vector-directions/
+            artifacts/parallelepiped-directed-bases/
           retention-days: 14
           if-no-files-found: error
