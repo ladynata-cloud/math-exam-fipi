@@ -42,13 +42,13 @@ async function verify(width,url){
   const errors=[];
   const fresh=async()=>{const p=await browser.newPage({viewport:{width,height:900}});p.setDefaultTimeout(60000);p.on('pageerror',e=>errors.push(e.message));await p.goto(url);return p;};
   let page=await fresh();
-  const cards=await page.evaluate(()=>MakarychevCourse.lessons.flatMap(l=>l.tasks.map((t,i)=>({l:l.id,i,title:t.title,section:t.source.section}))).filter(t=>t.section==='additional-3'&&Number(t.title.match(/№ (\d+)/)[1])>=753));
+  const cards=await page.evaluate(()=>MakarychevCourse.lessons.flatMap(l=>l.tasks.map((t,i)=>({l:l.id,i,title:t.title,section:t.source.section}))).filter(t=>t.section==='additional-3'&&/^№ (75[3-9]|76[0-3])(?:$|[^0-9])/.test(t.title)));
   assert.equal(cards.length,11);
   for(const [index,card] of cards.entries()){
     if(index&&index%8===0){await page.close();page=await fresh();}
     await page.evaluate(({l,i})=>{history.replaceState(null,'','#lesson/'+l+'/'+i);MakarychevApp.route();},card);
     assert.equal(await page.locator('.task-heading h2').innerText(),card.title);
-    assert.match(await page.locator('p.eyebrow').filter({hasText:'Дополнительно к §7'}).first().innerText(),/Дополнительно к §7/);
+    assert.match(await page.locator('p.eyebrow').filter({hasText:'Дополнительно к §7'}).first().textContent(),/Дополнительно к §7/);
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),card.title);
   }
   await page.close();page=await fresh();
