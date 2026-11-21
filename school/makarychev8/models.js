@@ -517,5 +517,23 @@
       ]};
   }
 
-  return { mount, experiment, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const trinomialPractice={id:'trinomial-square',title:'Выделить квадрат и найти вершину',
+    description:'Построй квадрат двучлена и исследуй экстремум на новых коэффициентах.'};
+  function practiceTrinomial(seed,level){
+    const a=level===1?1:(seed%2?-1:1)*(2+seed%4),h=(seed%3?-1:1)*(1+seed%8),k=seed%13-5,b=-2*a*h,c=a*h*h+k;
+    const term=(n,s)=>!n?'':(n<0?' − ':' + ')+(s&&Math.abs(n)===1?'':Math.abs(n))+s;
+    const source=(a===1?'':a===-1?'−':a)+'x²'+term(b,'x')+term(c,'');
+    const vertexQuestion=level===3;
+    const prompt='Дан трёхчлен '+source+'. '+(vertexQuestion?'Найди x и '+(a>0?'минимум':'максимум')+' трёхчлена.':'Приведи к виду A(x − h)² + k. Найди A, h и k.');
+    const hint='Сравни b с −2Ah. После нахождения h подставь его в исходный трёхчлен, чтобы найти k.';
+    return {title:'Квадрат двучлена и вершина',prompt,kind:'graph-values',answer:(vertexQuestion?[h,k]:[a,h,k]).join(';'),
+      finalLabel:vertexQuestion?'Аргумент; значение':'A; h; k',hint,correction:hint,
+      explanation:'A = '+a+', h = '+h+', k = '+k+'. При x = '+h+' квадрат исчезает.',
+      graph:{type:'vertex-form',a,h,k,mode:vertexQuestion?'point':'formula'},
+      source:{type:'authored',reference:'Авторская тренировка по выделению квадрата'},skills:[formulaPractice.id],
+      steps:[{prompt:'Чему равен старший коэффициент?',kind:'number',answer:String(a),hint:'Прочитай множитель при x².',explanation:'A = '+a+'.'},
+        {prompt:'Какой линейный коэффициент должен дать раскрытый квадрат?',kind:'number',answer:String(b),hint:'Он равен исходному коэффициенту при x.',explanation:'−2Ah = '+b+'.'}]};
+  }
+
+  return { mount, experiment, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

@@ -162,9 +162,9 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–597 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–616 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–597 разобраны полностью/);
+ assert.match(overview.textContent,/№1–616 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
 });
@@ -268,4 +268,22 @@ test('Vieta practice recovers the coefficients from both new roots',()=>{
   }
   assert(prompts.size>=15);
  }
+});
+
+test('trinomial practice, factored form, common scalar and expanded correction',()=>{
+ const {practiceTrinomial}=require('./models.js'),c=require('./check.js');
+ for(const level of [1,2,3]){
+  const prompts=new Set();
+  for(let seed=0;seed<35;seed++){
+   const task=practiceTrinomial(seed,level);prompts.add(task.prompt);
+   const {a,h,k}=task.graph;assert.deepEqual(task.answer.split(';').map(Number),level===3?[h,k]:[a,h,k]);
+   assert.equal(Number(task.steps[0].answer),a);assert.equal(Number(task.steps[1].answer),-2*a*h);
+   assert(c.check(task.answer,task));
+  }
+  assert(prompts.size>=16);
+ }
+ const expected='(a+3)*(b-5)';
+ for(const candidate of ['(a+3)(b-5)','(b-5)(3+a)','-(5-b)(a+3)','(2a+6)(b/2-5/2)','((3+a)(b-5))'])assert.equal(c.factoredPair(candidate,expected),'factored');
+ for(const candidate of ['ab+3b-5a-15','1*(ab+3b-5a-15)','(ab+3b-5a-15)(1)'])assert.equal(c.factoredPair(candidate,expected),'expanded');
+ assert.equal(c.factoredPair('(a-3)(b-5)',expected),'different');
 });

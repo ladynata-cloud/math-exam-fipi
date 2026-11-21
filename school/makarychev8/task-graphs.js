@@ -398,6 +398,47 @@ function quadraticEvidence(host,config,value){
  host.append(caption);
 }
 
+function vertexForm(host,config,value){
+ host.className='task-graphs root-graph';
+ const parts=String(value).split(';').map(v=>number(v)),pointOnly=config.mode==='point';
+ const caption=document.createElement('p');caption.className='small';
+ if(parts.length!==(pointOnly?2:3)||parts.some(v=>v===null)){
+  caption.textContent=pointOnly?'Введи обе координаты предложенной вершины: на чертеже появится твоя точка.':'Запись A; h; k построит твою параболу с вершиной (h; k).';host.append(caption);return;
+ }
+ const [a,h,k]=pointOnly?[config.a,...parts]:parts;
+ if(!a){caption.textContent='При A = 0 получается постоянная функция. У исходного квадратного трёхчлена A отличается от нуля.';host.append(caption);return;}
+ const fmt=n=>Number(n.toFixed(6)).toLocaleString('ru',{maximumFractionDigits:6});
+ const curve=(a,h,k,dashed=false)=>({kind:'quadratic',a,b:-2*a*h,c:a*h*h+k,dashed});
+ const curves=pointOnly?[]:[curve(a,h,k)];
+ if(config.evaluated)curves.push(curve(config.a,config.h,config.k,true));
+ const xs=config.evaluated?[h,config.h]:[h],left=Math.min(...xs)-2,right=Math.max(...xs)+2;
+ const limits=[k];for(const q of curves){
+  const center=-q.b/(2*q.a);limits.push(curveValue(q,left),curveValue(q,right),curveValue(q,center));
+ }
+ let bottom=Math.min(...limits),top=Math.max(...limits);const margin=Math.max(1,(top-bottom)*.13);bottom-=margin;top+=margin;
+ const formula=fmt(a)+'(x '+(h<0?'+':'−')+' '+fmt(Math.abs(h))+')² '+(k<0?'−':'+')+' '+fmt(Math.abs(k));
+ const note=pointOnly?'Предложенная точка ('+fmt(h)+'; '+fmt(k)+').':'Твоя запись: '+formula+'. Вершина ('+fmt(h)+'; '+fmt(k)+').';
+ const svg=rootGraph({curves,points:[[h,k]],xRange:[left,right],yRange:[bottom,top],compactTicks:Math.max(Math.abs(bottom),Math.abs(top))>1000,label:note},'');
+ caption.textContent=note+(config.evaluated?' Штриховая линия показывает исходный трёхчлен.':'');
+ host.append(svg,caption);
+}
+function legTrial(host,value){
+ host.className='task-graphs quantity-model';
+ const caption=document.createElement('p');caption.className='small';
+ const x=number(value);
+ if(x===null||x<=0||x>=6){
+  caption.textContent=String(value).trim()?'Оба катета должны иметь положительную длину: 0 < x < 6.':'Укажи возможный катет от 0 до 6 см, исключая концы. Изменяя длину, сравнивай площади.';
+  host.append(caption);return;
+ }
+ const other=6-x,area=x*other/2,scale=138/Math.max(x,other),w=x*scale,h=other*scale;
+ const svg=node('svg',{viewBox:'0 0 260 190',role:'img','aria-label':'Прямоугольный треугольник для введённого катета'});
+ const fmt=n=>n.toLocaleString('ru',{maximumFractionDigits:6});
+ svg.append(node('polygon',{points:[[58,154],[58+w,154],[58,154-h]].map(p=>p.join(',')).join(' '),fill:'#d3eee7',stroke:'#166753','stroke-width':2,'data-first-leg':x,'data-second-leg':other,'data-trial-area':area}));
+ svg.append(node('text',{x:58+w/2,y:175,'font-size':15,'text-anchor':'middle'},fmt(x)+' см'));
+ svg.append(node('text',{x:29,y:154-h/2,'font-size':15,'text-anchor':'middle'},fmt(other)+' см'));
+ caption.textContent='Катеты '+fmt(x)+' и '+fmt(other)+' см. Текущая площадь '+fmt(area)+' см².';host.append(svg,caption);
+}
+
 function vietaRelations(host,config,value){
  host.className='task-graphs quantity-model';
  const parts=String(value).split(';');
@@ -481,6 +522,8 @@ function appliedShape(host,config,value){
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
  if(['quadratic-discriminant','quadratic-parameter','quadratic-reciprocals','check-common-point'].includes(config.type)){quadraticEvidence(host,config,value);return;}
+ if(config.type==='vertex-form'){vertexForm(host,config,value);return;}
+ if(config.type==='leg-trial'){legTrial(host,value);return;}
  if(config.type==='vieta-relations'){vietaRelations(host,config,value);return;}
  if(config.type==='applied-shape'){appliedShape(host,config,value);return;}
  if(config.type==='quadratic-story'){quadraticStory(host,config,value);return;}

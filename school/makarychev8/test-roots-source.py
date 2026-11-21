@@ -57,6 +57,7 @@ by_lesson['p20']['tasks'].extend(read('exercises-510-530.json'))
 by_lesson['p21']['tasks'].extend(read('exercises-531-556.json'))
 by_lesson['p22']['tasks'].extend(read('exercises-557-577.json'))
 by_lesson['p23']['tasks'].extend(read('exercises-578-597.json'))
+by_lesson['p24']['tasks'].extend(read('exercises-598-616.json'))
 
 ranges = []
 for first, last in RANGES:
