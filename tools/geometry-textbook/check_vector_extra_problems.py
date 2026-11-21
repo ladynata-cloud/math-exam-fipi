@@ -74,14 +74,18 @@ for entry in cards:
             assert close(norm(v('AC')),norm(v('CD'))) and norm(v('AC'))<norm(v('BD'))
             assert close(norm(v('AH')),norm(v('HD'))) and close(norm(v('MN')),.75*norm(v('CD')))
         elif n == 997:
+            xx,yy=zip(*(model['points'][name][:2] for name in view['points']))
+            assert max(xx)-min(xx)>=36 and max(yy)-min(yy)>=36, 'the complete model must occupy the mobile drawing area'
             assert eq(v('AM'),v('MB')) and eq(v('CN'),v('ND'))
             assert close(determinant(v('MN'),v('MP')),0)
-            foot = 'S' if 'S' in points else 'M'
-            for vertex, side, perpendicular in [('A','AD','PH'),('A','AB','P'+foot),('B','BC','PK')]:
+            for vertex,side,perpendicular in [('A','AD','PH'),('A','AB','PS'),('B','BC','PK')]:
                 assert close(distance(v(vertex+'P'),v(side)),2)
-                assert close(norm(v(perpendicular)),2) and close(dot(v(perpendicular),v(side)),0)
+                if perpendicular[-1] in points:
+                    assert close(norm(v(perpendicular)),2) and close(dot(v(perpendicular),v(side)),0)
             if key in ('step-3','case-3'):
-                assert dot(v('NP'),v('MN'))>0
+                assert dot(v('NP'),v('MN'))>0 and norm(v('NP'))>1
+                positions=[model['points'][name] for name in view['points']]
+                assert len({tuple(p) for p in positions})==len(positions), 'distinct labels in the extension view'
             else:
                 assert dot(v('NP'),v('MN'))<0
 

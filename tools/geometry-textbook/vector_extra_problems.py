@@ -176,10 +176,11 @@ def final_trapezoids():
         p=dict(A=(0,0),B=(offset,4),C=(top,4),D=(bottom,0),M=(offset/2,2),N=((top+bottom)/2,2),
                P=(px,2),H=(px,0),K=(px,4),S=(t*offset,4*t))
         return figure(p,'AB BC CD DA AP BP PH PK PS MN')
-    f=drawing(2,6,8);g=drawing(0,1,1.6)
+    f=drawing(2,6,8)
     angle=f('Биссектрисы углов A и B','AP BP')
     distances=f('Перпендикуляры к трём прямым','PH PS PK')
-    outside=g('Точка на продолжении средней линии','MN NP')
+    outside_points=dict(A=(0,0),B=(-3,4),C=(-1.4,4),D=(1.3,0),M=(-1.5,2),N=(-.05,2),P=(1,2))
+    outside=figure(outside_points,'AB BC CD DA AP BP MN NP')('Точка на продолжении средней линии','MN NP')
     second=task(997,
         question='Биссектрисы внутренних углов трапеции, прилежащих к одной боковой стороне, пересекаются в P. Докажи, что P лежит на прямой, содержащей среднюю линию.',
         answer='P равноудалена от прямых обеих сторон каждого из двух углов. Поскольку боковая сторона общая, расстояния до параллельных оснований равны. P лежит между основаниями, значит её расстояние до каждого равно половине высоты. На такой высоте проходит прямая средней линии.',
@@ -190,6 +191,18 @@ def final_trapezoids():
         frames=[angle,distances,distances,outside],cases=[angle,distances,outside],
         prompts=[('Высота трапеции равна 4. Каково расстояние от P до нижнего основания?', '2','Расстояния до двух оснований равны, а в сумме дают 4.'),
                  ('В другой трапеции расстояние от P до общей боковой стороны равно 3,5. Найди высоту.', '7','Обе биссектрисы дают по 3,5 до каждого из двух оснований.')])
+    # The second trapezoid uses a different placement. Center each view, its
+    # arrowheads and the unit mark together so the short extension is legible on a phone.
+    model=second['visualization']['model']
+    for view in model['views'].values():
+        names=set(view['points']).union(name for pair in view['segments'] for name in pair)
+        coords=[model['points'][name] for name in names]
+        xs=[point[0] for point in coords];ys=[point[1] for point in coords]
+        cx=(min(xs)+max(xs))/2;cy=(min(ys)+max(ys))/2
+        fit=min(72/(max(xs)-min(xs)),49/(max(ys)-min(ys)))
+        for point in coords:
+            point[0]=50+(point[0]-cx)*fit
+            point[1]=35+(point[1]-cy)*fit
     return [first,second]
 
 
