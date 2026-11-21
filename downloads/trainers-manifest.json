@@ -1,6 +1,6 @@
 {
   "stage": "8",
-  "updated": "2026-11-18",
+  "updated": "2026-11-21",
   "notes": "Этап 8 добавляет курс «Делимость, остатки и инварианты» и 186 карточек «Сечения с нуля».",
   "trainers": [
     {
@@ -836,7 +836,7 @@
       "sourceHtml": "/school/peterson6/index.html",
       "subject": "математика",
       "level": "6 класс",
-      "topic": "дроби, проценты, движение и задачи первой части учебника",
+      "topic": "дроби, проценты, пропорции, рациональные числа, уравнения и геометрия по трём частям учебника",
       "description": "Действующий курс с авторскими карточками, моделями и локальными подсказками.",
       "mode": "single",
       "assets": [],
@@ -849,6 +849,7 @@
         "/assets/course-examples.js",
         "/trainers/peterson-assistant.js",
         "/school/peterson6/math.js",
+        "/school/peterson6/continuation-models.js",
         "/school/peterson6/models.js",
         "/school/peterson6/data.js",
         "/school/peterson6/app.js"

@@ -74,7 +74,7 @@
       storage: 'browser', publicPath: '/geometry-course/textbook/' },
     { id: 'atanasyan10-11', title: 'Атанасян · геометрия 10–11', grades: [10,11], directions: ['school','ege','ege-profile'],
       description: 'Опубликованные разделы стереометрии: задачи, объяснения и пространственные модели.',
-      storage: 'browser', publicPath: '/stereo-course/textbook/' },
+      storage: 'browser', publicPath: '/stereo-course/textbook/', boardPath: '/trainers/atanasyan-stereo-textbook.html' },
     { id: 'peterson5', title: 'Петерсон · 5 класс', grades: [5], directions: ['school','foundations'],
       description: 'Темы курса, наглядные модели и тренировка вычислений.',
       storage: 'browser', publicPath: '/school/peterson5/' },

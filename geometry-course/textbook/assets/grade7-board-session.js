@@ -63,13 +63,13 @@
       return typeof decoded==='string' && decoded.length<=max && encodeText(decoded)===value;
     }
     function readyCount(catalog) {
-      const names={main:'Основные задачи',ege:'ЕГЭ в учебнике',practical:'Практические задачи',research:'Исследования',selfcheck:'Вопросы для самопроверки',theory:'Теория',example:'Разобранные примеры'};
-      const q=decodeText(catalog.search).trim().toLocaleLowerCase('ru').replace(/ё/g,'е'),number=q.match(/^(?:№\s*)?(\d+(?:\.\d+)?)$/)?.[1];
+      const names={main:'Задачи учебника',ege:'ЕГЭ в учебнике',practical:'Практические задачи',research:'Исследования',selfcheck:'Вопросы для самопроверки',theory:'Теория',example:'Разобранные примеры'};
+      const q=decodeText(catalog.search).trim().toLocaleLowerCase('ru').replace(/ё/g,'е'),number=q.match(/^(?:№\s*)?(\d+)$/)?.[1];
       return [...lessons.values()].filter(entry=>{
         const s=entry.source;
         if(catalog.kind&&entry.kind!==catalog.kind||catalog.collection&&s.collection!==catalog.collection||catalog.chapter&&s.chapter!==catalog.chapter)return false;
         if(!q)return true;if(number)return (entry.kind==='theory'?s.point:s.exercise)===number;
-        return [entry.title,s.exercise,s.point,s.subpart,s.chapter,names[s.collection],s.examTask?'ЕГЭ '+s.examTask:''].filter(Boolean).join(' ').toLocaleLowerCase('ru').replace(/ё/g,'е').includes(q);
+        return [root.GeometryTextbook.lessonTitle(entry),root.GeometryTextbook.sourceLocation(s,bundle.sourceInventory),s.exercise,s.point,s.subpart,s.chapter,names[s.collection],s.examTask?'ЕГЭ '+s.examTask:''].filter(Boolean).join(' ').toLocaleLowerCase('ru').replace(/ё/g,'е').includes(q);
       }).length;
     }
     function validateState(value) {
@@ -136,8 +136,25 @@
   }
   function boot(bundle, element) {
     if (root.location.pathname !== PATH || root.document.body.dataset.atanasyanGrade7Board !== 'true') throw new Error('Board wrapper required');
-    const allowed=new Set(['I','II','III','IV','7 класс · повышенная трудность']);
-    bundle={...bundle,lessons:bundle.lessons.filter(x=>allowed.has(x.source.chapter)),catalog:{...bundle.catalog,entries:bundle.catalog.entries.filter(x=>allowed.has(x.source.chapter))},sourceInventory:{...bundle.sourceInventory,chapters:bundle.sourceInventory.chapters.filter(x=>x.grade===7),advanced:bundle.sourceInventory.advanced.filter(x=>x.grade===7)}};
+    const wholeBook = new URLSearchParams(root.location.search).get('scope') === 'book';
+    if (wholeBook) {
+      const note = root.document.querySelector('.course-note');
+      if (note) note.textContent = 'Задачник 7–9 классов. Выберите номер или тему. Ответы, шаги и чертёж видны участникам доски. Личный прогресс хранится отдельно.';
+      root.document.title = 'Атанасян · задачник 7–9 · общая доска';
+    } else {
+      const allowed = new Set(['I', 'II', 'III', 'IV', '7 класс · повышенная трудность']);
+      const inGrade7 = entry => allowed.has(entry.source.chapter);
+      bundle = {
+        ...bundle,
+        lessons: bundle.lessons.filter(inGrade7),
+        catalog: { ...bundle.catalog, entries: bundle.catalog.entries.filter(inGrade7) },
+        sourceInventory: {
+          ...bundle.sourceInventory,
+          chapters: bundle.sourceInventory.chapters.filter(x => x.grade === 7),
+          advanced: bundle.sourceInventory.advanced.filter(x => x.grade === 7)
+        }
+      };
+    }
     const session = create(bundle);
     const app = root.GeometryTextbook.createApp(element, { ...bundle, storage: session.storage, boardSession: session, sceneViewer:root.PlanarViewer, math:root.StereoMath });
     session.start(); return { app, session };

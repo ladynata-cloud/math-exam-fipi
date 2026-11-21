@@ -205,7 +205,6 @@ async function exercise(page, origin) {
 }
 
 const legacyRef = '7fe55249048e6cd2b88d1b2e6e8b459b7e480506';
-const legacyApp = '20261109-audit2';
 const legacyState = '20261109-audit1';
 const recoveryState = '20261118-vilenkin-resume';
 
@@ -230,8 +229,11 @@ async function mixedCache(page, origin) {
     return serialized;
   });
   const [oldApp, oldState] = await Promise.all([legacyFile('app'), legacyFile('state')]);
+  const shell = await fs.readFile(path.join(root, 'school/index.html'), 'utf8');
+  const appScript = shell.match(/<script\b[^>]*\bsrc=["'](app\.js(?:\?[^"']*)?)["']/);
+  assert(appScript, 'the current shell must include its app script');
   const stableStatePath = '/school/state.js?v=' + legacyState;
-  const stableAppPath = '/school/app.js?v=' + legacyApp;
+  const currentAppPath = '/school/' + appScript[1];
   const recoveryPath = '/school/state.js?v=' + recoveryState;
   let mode = 'current';
   let failRecovery = true;
@@ -255,7 +257,7 @@ async function mixedCache(page, origin) {
     const url = new URL(route.request().url());
     const file = url.pathname + url.search;
     requests.push(file);
-    if (mode === 'old-app' && file === stableAppPath) return route.fulfill({contentType: 'application/javascript', body: oldApp});
+    if (mode === 'old-app' && file === currentAppPath) return route.fulfill({contentType: 'application/javascript', body: oldApp});
     if (mode === 'old-state' && file === stableStatePath) return route.fulfill({contentType: 'application/javascript', body: oldState});
     if (mode === 'old-state' && file === recoveryPath) {
       if (failRecovery) return route.abort('failed');
@@ -264,18 +266,18 @@ async function mixedCache(page, origin) {
     return route.continue();
   });
 
-  // Verify the unchanged shell URLs and that an up-to-date pair incurs no recovery request.
+  // Verify the current shell URLs and that an up-to-date pair incurs no recovery request.
   const url = (grade, route) => origin + '/school/index.html?course=vilenkin' + grade + '#' + route;
   await page.goto(url(6, 'course/vilenkin6'));
   await page.locator('main h1').waitFor();
-  assert.deepEqual(requests.sort(), [stableStatePath, stableAppPath].sort());
+  assert.deepEqual(requests.sort(), [stableStatePath, currentAppPath].sort());
 
   // A cached prior UI can still read and save a record validated by the new state library.
   mode = 'old-app';
   requests = [];
   await page.goto(url(5, 'lesson/v5f-place-build'));
   await page.locator('#answer').waitFor();
-  assert.deepEqual(requests.sort(), [stableStatePath, stableAppPath].sort());
+  assert.deepEqual(requests.sort(), [stableStatePath, currentAppPath].sort());
   const oldUi = await readState(page);
   assert.equal(oldUi.last.skill, 'v5f-place-build');
   assert.deepEqual(oldUi.vilenkinDrafts[fifth], initialDraft);

@@ -71,3 +71,92 @@ test('health, browser client and local demonstration are available in the same s
   const input = {site:'mathexam',message:'дроби',context:{surface:'navigator'}};
   assert.equal((await post(input,endpoint)).status,200);
 });
+
+test('the trainer responds to digit and remainder attempts without completing the calculation', async () => {
+  const digit = {surface:'division',step:'digit',divisor:14,partial:78,attempt:8};
+  const high = await ok('mathexam','Ввёл восемь. Стирать?',digit);
+  assert.match(high.reply,/только 8 × 14/u);
+  assert.doesNotMatch(high.reply,/112|больше|меньшую/u);
+  assert.doesNotMatch(high.reply,/(?<!\d)5(?!\d)/u);
+  const simple = await ok('mathexam','Я запуталась, помедленнее',digit,high.state);
+  assert.match(simple.reply,/группа — это 14.*8 таких групп/u);
+  const low = await ok('mathexam','А такая цифра влезает?',{...digit,attempt:2});
+  assert.match(low.reply,/2 × 14/u);
+  const place = await ok('mathexam','Можно сносить следующую?',{...digit,partial:3,attempt:undefined,quotientStarted:true,placeExponent:-2});
+  assert.match(place.reply,/Запиши 0 в разряде сотых/u);
+  const verify = await ok('mathexam','Получилось 11 с остатком 2. Проверяю?',{surface:'division',step:'verify',divisor:7,dividend:'79'});
+  assert.match(verify.reply,/11 на 7/u);
+  assert.doesNotMatch(verify.reply,/прибавь|сравни|77|79/u);
+  const contrary = await ok('mathexam','Получилось 3 с остатком 12. Проверяю?',{surface:'division',step:'verify',divisor:7,dividend:'33'});
+  assert.match(contrary.reply,/меньше делителя/u);
+  const decimal = await ok('mathexam','Получилось 3 с остатком 1. Проверяю?',{surface:'division',step:'verify',divisor:25,originalDivisor:'2,5',dividend:'8,5'});
+  assert.match(decimal.reply,/3 на 2,5/u);
+  assert.doesNotMatch(decimal.reply,/на 25/u);
+});
+
+test('requesting spoiler-free reading does not restore a rejected title', async () => {
+  const context = {surface:'reader',mode:'before_reading'};
+  const previous = await ok('uzel','«Тоска» Чехова',context);
+  const corrected = await ok('uzel','Без спойлеров, я перепутала, это «Каштанка» Чехова',context,previous.state);
+  assert.deepEqual(corrected.links,[]);
+  assert.deepEqual(corrected.state.candidates,[]);
+});
+
+test('decimal shift uses the original pair and leaves the transformed number to the learner', async () => {
+  const step = {surface:'division',step:'shift-dividend',divisor:25,originalDivisor:'0.0250',dividend:'4.7'};
+  const moved = await ok('mathexam','Что сделать дальше?',step);
+  assert.match(moved.reply,/4,7.*три разряда.*два нуля/u);
+  assert.doesNotMatch(moved.reply,/4700|188/u);
+  const whole = await ok('mathexam','Что сделать дальше?',{...step,divisor:12,originalDivisor:'1,2',dividend:'15'});
+  assert.match(whole.reply,/после последней цифры.*один разряд.*один ноль/u);
+  const enough = await ok('mathexam','Подскажи',{...step,dividend:'3,1415'});
+  assert.match(enough.reply,/три разряда/u);
+  assert.doesNotMatch(enough.reply,/допиши|3141/u);
+  const count = await ok('mathexam','С чего начать?',{...step,step:'shift-count'});
+  assert.doesNotMatch(count.reply,/три разряда/);
+});
+test('personal and neutral assignment queries reach the cabinet; general practice stays public', async () => {
+  const context = {surface:'navigator'};
+  for (const q of ['Какие упражнения преподаватель назначил лично мне?', 'Где посмотреть назначения?', 'Что мне задали на завтра?', 'Что мне было задано на понедельник?']) {
+    const result = await ok('mathexam',q,context);
+    assert.equal(result.links[0].id,'cabinet');
+    assert.match(result.reply,/не вижу личных заданий/u);
+  }
+  for (const q of ['Дай задания по дробям для 6 класса', 'Мне задали уравнение 2x+5=19, с чего начать?', 'Нам задали умножать дроби, найди похожий тренажёр']) {
+    const general = await ok('mathexam',q,context);
+    assert.notEqual(general.links[0]?.id,'cabinet');
+  }
+});
+
+test('digit conversation keeps a named probe through numeric and why follow-ups', async () => {
+  const c = {surface:'division',step:'digit',divisor:3,partial:12,attempt:8};
+  let r = await ok('mathexam','Пробую 3',c);
+  assert.match(r.reply,/3 × 3/);
+  r = await ok('mathexam','Почему так?',c,r.state);
+  assert.equal(r.state.attempt,3);
+  r = await ok('mathexam','Что дальше?',c,r.state);
+  assert.match(r.reply,/3 × 3/);
+  r = await ok('mathexam','9',c,r.state);
+  assert.match(r.reply,/Сравни полученное 9 с 12/);
+  const wrong = await ok('mathexam','равно',c,r.state);
+  assert.match(wrong.reply,/Перепроверь сравнение/);
+  r = await ok('mathexam','А дальше?',c,r.state);
+  assert.match(r.reply,/Прибавь.*9.*3/);
+  r = await ok('mathexam','12',c,r.state);
+  assert.match(r.reply,/Ещё одна целая группа помещается/);
+  r = await ok('mathexam','Что дальше?',{...c,attempt:2},r.state);
+  assert.match(r.reply,/2 × 3/);
+  const changed = await ok('mathexam','Что дальше?',{...c,partial:15,attempt:undefined},r.state);
+  assert.match(changed.reply,/выбери одну цифру/iu);
+  assert.equal(changed.state.attempt,undefined);
+});
+
+test('division context rejects invalid place and impossible one-digit partial, unknown place stays neutral', async () => {
+  const base = {site:'mathexam',message:'Подскажи',context:{surface:'division',step:'digit',divisor:7,partial:3}};
+  for (const extra of [{placeExponent:'сотые'},{placeExponent:2.5},{quotientStarted:'yes'},{partial:70}]) {
+    assert.equal((await post({...base,context:{...base.context,...extra}},math)).status,400);
+  }
+  const neutral = await ok('mathexam','Подскажи',{...base.context,quotientStarted:true,placeExponent:-12});
+  assert.match(neutral.reply,/на этом месте частного/);
+  assert.doesNotMatch(neutral.reply,/сотых|десятых/);
+});

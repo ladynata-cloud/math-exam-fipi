@@ -92,8 +92,9 @@ async function peterson(width,grade){
   const history=await page.locator('.first-errors').innerText();assert(history.includes('99'));assert(history.includes('без подсказки'));assert(history.includes('Исправлено: '+answer));
   if(grade===6)await helperHistory(page,width);
   await capture(page,'peterson'+grade+'-retained-first-error',width,page.locator('.first-errors'));
-  await page.locator('[data-action=independent-check]').click();await page.waitForURL('**/#practice/**');await page.waitForFunction(()=>Object.keys(window.PetersonApp.getState().tasks).some(id=>id.startsWith('practice:')));
-  const practice=await page.evaluate(()=>{const s=window.PetersonApp.getState();return s.tasks[Object.keys(s.tasks).find(id=>id.startsWith('practice:'))];});
+  const freshMode=grade===6?'check':'practice';
+  await page.locator('[data-action=independent-check]').click();await page.waitForURL('**/#'+freshMode+'/**');await page.waitForFunction(mode=>Object.keys(window.PetersonApp.getState().tasks).some(id=>id.startsWith(mode+':')),freshMode);
+  const practice=await page.evaluate(mode=>{const s=window.PetersonApp.getState();return s.tasks[Object.keys(s.tasks).find(id=>id.startsWith(mode+':'))];},freshMode);
   assert(practice);assert(!practice.firstErrors.final);assert.deepEqual(practice.firstErrors.steps,{});assert.equal(practice.attempts,0);
   assert.deepEqual((await current()).firstErrors.final,savedError,'a new practice keeps the original history');
   report.scenarios.push({name:'Peterson '+grade+' first error/correction/reload/keyboard/fresh practice',width,status:'PASS'});await browser.close();

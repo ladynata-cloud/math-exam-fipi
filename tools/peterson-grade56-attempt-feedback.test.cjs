@@ -90,7 +90,9 @@ for (const grade of [5, 6]) {
     assert.match(history.textContent, /999/); assert.match(history.textContent, /без подсказки/);
     assert.match(history.textContent, new RegExp('Исправлено: ' + answer));
     r.click('[data-action="independent-check"]'); r.go(r.w.location.hash);
-    const practice = Object.entries(r.state().tasks).find(([key]) => key.startsWith('practice:'));
+    const prefix = grade === 6 ? 'check:' : 'practice:';
+    assert(r.w.location.hash.startsWith('#' + prefix.slice(0, -1) + '/'));
+    const practice = Object.entries(r.state().tasks).find(([key]) => key.startsWith(prefix));
     assert(practice); assert.equal(practice[1].attempts, 0);
     assert.deepEqual(practice[1].firstErrors, { steps: {} });
   });
