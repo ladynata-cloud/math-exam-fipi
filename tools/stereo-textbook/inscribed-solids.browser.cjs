@@ -12,7 +12,7 @@ const groups = {
   volume: {manifests:[require('./box-volumes.json')],count:21},
   prism: {manifests:[require('./prism-volumes.json')],count:26},
   cross: {manifests:[require('./cross-sections.json')],count:3},
-  oblique: {manifests:[require('./oblique-prisms.json')],count:4}
+  oblique: {manifests:[require('./oblique-prisms.json')],count:8}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

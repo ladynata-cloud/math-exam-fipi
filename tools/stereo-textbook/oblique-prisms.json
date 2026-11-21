@@ -11,6 +11,18 @@
     ],
     "472": [
       null
+    ],
+    "473": [
+      null
+    ],
+    "474": [
+      null
+    ],
+    "475": [
+      null
+    ],
+    "476": [
+      null
     ]
   },
   "previousCatalog": {
@@ -89,28 +101,124 @@
       },
       "revision": 1,
       "status": "draft"
+    },
+    "473": {
+      "id": "source-main-0473",
+      "kind": "exercise",
+      "title": "Задача № 473",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "473",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "474": {
+      "id": "source-main-0474",
+      "kind": "exercise",
+      "title": "Задача № 474",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "474",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "475": {
+      "id": "source-main-0475",
+      "kind": "exercise",
+      "title": "Задача № 475",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "475",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "476": {
+      "id": "source-main-0476",
+      "kind": "exercise",
+      "title": "Задача № 476",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "476",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          131
+        ],
+        "pdfPages": [
+          133
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
     }
   },
   "cards": {
     "ex-main-0469": {
-      "raw": "60829d0192e8f69ee785a369617c6afb2efe0545602d8255f352ccb0674302fc",
+      "raw": "66b294cdc8d3128c91855e78a46f3ed24aba7920e43ee944ed5383b18630ff88",
       "authored": "97d49adf53bdd73f4564b290c73b86b2c93ce08c45dfbae4c5c8e1a4fe5b325b",
-      "integrated": "d4c94aa0c2a593b5b24eac56aff98fe47a3fdf86eb902412c03d8c1b8a5e450d"
+      "integrated": "ddfaf00fb9d1e57623bae509f202885bddc9800f8ab41093b2975615b9b3d8a7"
     },
     "ex-main-0470": {
-      "raw": "a2712feacab14351a5ee499ad682b9fcef7e6eea7d13148c7bc021246c257db6",
+      "raw": "25ea5fb75283e624d24cc4d9c41005e7c18a12548ec3a8e354bf531c33f4d496",
       "authored": "06996556ad23948270b82d440a58f4f525acb7e8e4297a7252b21294a0244885",
-      "integrated": "06a8da673a5675af5ce07b59af17ab9489d74146fadf94713647f7b84df6e2db"
+      "integrated": "bf8bf8bc88d6c45708b9e3b417e96453ceba874fc8ba303bb97297fe99090e4b"
     },
     "ex-main-0471": {
-      "raw": "a460703ff5a6062c1629ae91564259a35e119bc629e85dc8b5023270e094aa50",
+      "raw": "b086d7be222a2b3a9ad8151b0c5012cd89e61196bc82b9470189be0472da65a3",
       "authored": "9a0823c569395d46e74703aaac1922370fad0a894016374433de982dae44325b",
-      "integrated": "aa9e484373390ab8b9e461277685ef1cd55045e0bb46c89d34516002206fdd5d"
+      "integrated": "27b182388324e8b18803254a9e15796c6d9d4c618ba37d20eedae211b079f10c"
     },
     "ex-main-0472": {
-      "raw": "89a4f6acb0b00db79c667eda8b49996f546aae1f0c79aed7b78c03e24bbb255e",
+      "raw": "5efdf16ece7721c4c126046b5933f24aa31e6c744e8a552d72aec8d63dba7e20",
       "authored": "ade368232ae9f8ec111268ab4f1ff8d6ee9724241e4fa7272ada1439f9285cfe",
-      "integrated": "50d1b93e2f86f076fdf2bed2e653fca671ee1aee8fa005de2493352c8e0dfb5b"
+      "integrated": "52c76d94ffbd8dbbfd8c029c28aab0568e867a21221fc33b24ec7e35c0294c4e"
+    },
+    "ex-main-0473": {
+      "raw": "3a255597ae5083fa8aed31ee7ccfc870153830749148c5c745199e94b26189d4",
+      "authored": "ec943c5c9fefa59d6be0d9681a0db90e725d5765b38f07ecf0e52b10440dc865",
+      "integrated": "63c1c6522007eec3d2d807a400fa39119bd7af0ab772f4691fc1d45b9f007e1b"
+    },
+    "ex-main-0474": {
+      "raw": "4442e111cec388b274be52c1430d8b5000c9e393e6f44cfe3743a5455bf94de1",
+      "authored": "e6944bd616a11a8f4b06de2ca32761f1bac9057b5d60413343a6ef60aadd1b0e",
+      "integrated": "5b7fc95799fa338adb1d76ecab1b1be8368831a7372139e59a305ed09fd4a8fc"
+    },
+    "ex-main-0475": {
+      "raw": "c8c4c00714d82056d7376445a64275d173406f2eb359e13e004e291cea80f0c7",
+      "authored": "00a400647bb934005eae62821fbc5af7003ed9bff14182d1ace1453fdfc74d66",
+      "integrated": "b548312230dc6047b556445fa9c168e6c1857fbf1de97c36b8695798000890e4"
+    },
+    "ex-main-0476": {
+      "raw": "0093b36edf5b76fcb150a5e8fc5d351bc80850a923e740939e03b97e3a155639",
+      "authored": "c3e59509c7f54a6b95ad9e6f0ee5858167297b6cfaa3ac00c0ecd9f34edbad1b",
+      "integrated": "8f7c2c2e61ca053b92c384466b2f7c21e7bc918abb060c6678b0e5c2033f6c11"
     }
   },
   "cases": [
@@ -225,28 +333,144 @@
     [
       "ex-main-0472|step-4",
       "oblique-prism-ex-main-0472-step-4"
+    ],
+    [
+      "ex-main-0473|condition",
+      "oblique-prism-ex-main-0473-condition"
+    ],
+    [
+      "ex-main-0473|help:h1",
+      "oblique-prism-ex-main-0473-help-h1"
+    ],
+    [
+      "ex-main-0473|help:h2",
+      "oblique-prism-ex-main-0473-help-h2"
+    ],
+    [
+      "ex-main-0473|step-1",
+      "oblique-prism-ex-main-0473-step-1"
+    ],
+    [
+      "ex-main-0473|step-2",
+      "oblique-prism-ex-main-0473-step-2"
+    ],
+    [
+      "ex-main-0473|step-3",
+      "oblique-prism-ex-main-0473-step-3"
+    ],
+    [
+      "ex-main-0473|step-4",
+      "oblique-prism-ex-main-0473-step-4"
+    ],
+    [
+      "ex-main-0474|condition",
+      "oblique-prism-ex-main-0474-condition"
+    ],
+    [
+      "ex-main-0474|help:h1",
+      "oblique-prism-ex-main-0474-help-h1"
+    ],
+    [
+      "ex-main-0474|help:h2",
+      "oblique-prism-ex-main-0474-help-h2"
+    ],
+    [
+      "ex-main-0474|step-1",
+      "oblique-prism-ex-main-0474-step-1"
+    ],
+    [
+      "ex-main-0474|step-2",
+      "oblique-prism-ex-main-0474-step-2"
+    ],
+    [
+      "ex-main-0474|step-3",
+      "oblique-prism-ex-main-0474-step-3"
+    ],
+    [
+      "ex-main-0474|step-4",
+      "oblique-prism-ex-main-0474-step-4"
+    ],
+    [
+      "ex-main-0474|step-5",
+      "oblique-prism-ex-main-0474-step-5"
+    ],
+    [
+      "ex-main-0475|condition",
+      "oblique-prism-ex-main-0475-condition"
+    ],
+    [
+      "ex-main-0475|help:h1",
+      "oblique-prism-ex-main-0475-help-h1"
+    ],
+    [
+      "ex-main-0475|help:h2",
+      "oblique-prism-ex-main-0475-help-h2"
+    ],
+    [
+      "ex-main-0475|step-1",
+      "oblique-prism-ex-main-0475-step-1"
+    ],
+    [
+      "ex-main-0475|step-2",
+      "oblique-prism-ex-main-0475-step-2"
+    ],
+    [
+      "ex-main-0475|step-3",
+      "oblique-prism-ex-main-0475-step-3"
+    ],
+    [
+      "ex-main-0475|step-4",
+      "oblique-prism-ex-main-0475-step-4"
+    ],
+    [
+      "ex-main-0476|condition",
+      "oblique-prism-ex-main-0476-condition"
+    ],
+    [
+      "ex-main-0476|help:h1",
+      "oblique-prism-ex-main-0476-help-h1"
+    ],
+    [
+      "ex-main-0476|help:h2",
+      "oblique-prism-ex-main-0476-help-h2"
+    ],
+    [
+      "ex-main-0476|step-1",
+      "oblique-prism-ex-main-0476-step-1"
+    ],
+    [
+      "ex-main-0476|step-2",
+      "oblique-prism-ex-main-0476-step-2"
+    ],
+    [
+      "ex-main-0476|step-3",
+      "oblique-prism-ex-main-0476-step-3"
+    ],
+    [
+      "ex-main-0476|step-4",
+      "oblique-prism-ex-main-0476-step-4"
     ]
   ],
   "files": {
     "stereo-course/textbook/data/course.json": {
-      "beforeSHA256": "47d9bac7424de30d02030bb27651b2ed9dfe84ce0847ae51e7133a70a2bbd10f",
-      "afterSHA256": "b31171aa94a6ee7fb0751bb577eff475a2300d9b0146d345f6012d53f92cfcf0"
+      "beforeSHA256": "aa07f9da103956b590e7995ed40dd098cdc9e2469968c2b31eed4156afec7676",
+      "afterSHA256": "2c453e99429e021309c30a51ff39e77d75c6baaf82e170c3c8eeaa9fdb4ee907"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "87b6188a3a522859130bb847649f0f5f9eab2798207023d2b0ce160561dee3ab",
-      "afterSHA256": "4d44af7de83a350be74a9518ba05b5b3d6d6e8c0511af2300211b43fb89d0044"
+      "afterSHA256": "adb5f8cc8e682e46b5f7a1b78e9793caa3acb18ab2f96f51d121e7d0a5e73a49"
     }
   },
   "registryMetadata": {
     "reviewer": "Independent Codex content and coordinate reviews; see batches",
     "reviewedAt": "2026-11-01T21:33:52Z",
-    "registeredAt": "2026-11-21T19:00:00Z",
+    "registeredAt": "2026-11-21T14:00:00Z",
     "scope": "Introduction and chapters I–IV, plus chapter V through exercise 468 and points 52–55, with 769 reviewed cards. Later exercise positions remain drafts."
   },
   "before": {
-    "course": "d9b204343544c93dc53bc53d0fb531f32f44fac51462c78f7055427e49c4533b",
+    "course": "32aa70fa1b6ae6bc18b9f15735f45658ab28810f9ae1a7278b002bd076510777",
     "index": "05f1f21d8db20eb01ed573294820f88131f1244d7d1e8da8ae4f101d376d49f1",
-    "registry": "9a0af442b513721083dae526a034e8afef83589fe9686967bed3941728dd7d42",
+    "registry": "d2536820053fef31e64ca4b3df55a76fd51709895e032210ff05ffc8f6f0ce3c",
     "cases": "fdc7ab407e8aa1e3cabeb59f623c610ffb0d13a34aba0f15d5b56f598edc300a"
   }
 }

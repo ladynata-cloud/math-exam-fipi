@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T19:20:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 472 and points 52–55, with 773 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T14:20:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 476 and points 52–55, with 777 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1196,7 +1196,7 @@
     },
     {
       "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
-      "reviewedAt": "2026-11-21T19:00:00Z",
+      "reviewedAt": "2026-11-21T14:00:00Z",
       "scope": "Volume by cross sections, exercises 466–468 with diagrams 146–148",
       "cardIds": [
         "ex-main-0466",
@@ -1208,13 +1208,17 @@
     },
     {
       "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
-      "reviewedAt": "2026-11-21T19:20:00Z",
-      "scope": "Oblique triangular prisms, exercises 469–472, including projection and dihedral conditions",
+      "reviewedAt": "2026-11-21T14:20:00Z",
+      "scope": "Oblique prisms and normal sections, exercises 469–476, including projection and dihedral conditions",
       "cardIds": [
         "ex-main-0469",
         "ex-main-0470",
         "ex-main-0471",
-        "ex-main-0472"
+        "ex-main-0472",
+        "ex-main-0473",
+        "ex-main-0474",
+        "ex-main-0475",
+        "ex-main-0476"
       ],
       "evidence": "tools/stereo-textbook/oblique-prisms.json",
       "mathematicalReport": "tools/stereo-textbook/oblique-prisms.test.cjs"
@@ -4312,6 +4316,22 @@
     {
       "id": "ex-main-0472",
       "sha256": "ade368232ae9f8ec111268ab4f1ff8d6ee9724241e4fa7272ada1439f9285cfe"
+    },
+    {
+      "id": "ex-main-0473",
+      "sha256": "ec943c5c9fefa59d6be0d9681a0db90e725d5765b38f07ecf0e52b10440dc865"
+    },
+    {
+      "id": "ex-main-0474",
+      "sha256": "e6944bd616a11a8f4b06de2ca32761f1bac9057b5d60413343a6ef60aadd1b0e"
+    },
+    {
+      "id": "ex-main-0475",
+      "sha256": "00a400647bb934005eae62821fbc5af7003ed9bff14182d1ace1453fdfc74d66"
+    },
+    {
+      "id": "ex-main-0476",
+      "sha256": "c3e59509c7f54a6b95ad9e6f0ee5858167297b6cfaa3ac00c0ecd9f34edbad1b"
     }
   ]
 }
