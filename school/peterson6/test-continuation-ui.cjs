@@ -805,3 +805,36 @@ test('place a garden, find the first broken transition, check gear pairs and mea
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('finish the scale chapter in source order with changed cross products and groups in the hundred square',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#home');assert.match(f.q('#main').textContent,/№28–56 со всеми подпунктами.*79/);
+  const go=i=>{f.nav('#lesson/p16/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,to)=>f.event(id,String(to),'change'), result=()=>f.q('#model .pm-result').textContent;
+  let ids=go(43);set(ids[1],1);assert(result().includes('0,0(3)'));set(ids[0],1);assert.equal(f.q(ids[1]).value,'0');set(ids[1],1);assert(result().includes('0,11(6)'));
+  for(const i of [60,61,62,63,64,65,66,67]){
+   ids=go(i);set(ids[1],1);set(ids[2],1);assert(result().includes('Произведения равны'),String(i));
+   set(ids[0],1);assert.equal(f.q(ids[2]).value,'0');set(ids[2],1);assert(result().includes('Произведения различны'));
+   set(ids[1],2);assert.equal(f.q(ids[2]).value,'0');set(ids[2],1);assert(result().includes('Произведения равны'));
+  }
+  ids=go(69);for(const i of [0,1,2]){set(ids[0],i);set(ids[2],1);assert(result().includes('60 км'));}
+  set(ids[1],1);set(ids[2],1);assert(result().includes('90 км'));
+  ids=go(70);const tableWidth=()=>Number(f.q('#model [data-furniture]').getAttribute('width'));
+  const before=tableWidth();set(ids[1],2);set(ids[2],1);assert.equal(tableWidth(),before/4);assert(result().includes('2,5 × 2 см'));
+  ids=go(71);set(ids[1],1);assert(result().includes('Круче первая'));set(ids[0],1);set(ids[1],1);assert(result().includes('Круче вторая'));
+  const incline=el=>(Number(el.getAttribute('y1'))-Number(el.getAttribute('y2')))/(Number(el.getAttribute('x2'))-Number(el.getAttribute('x1')));
+  assert(Math.abs(incline(f.q('#model [data-ladder="2"]'))-2.1/1.4)<1e-10);
+  f.nav('#lesson/p16/75');assert.equal(f.q('.navigation button:last-child').dataset.index,'76');
+  ids=go(77);assert.equal(f.d.querySelectorAll('#task-figure [data-hundred-number]').length,100);set(ids[0],8);set(ids[1],8);set(ids[3],1);assert(result().includes('89 + 100 = 189'));
+  set(ids[2],1);assert.equal(f.q(ids[3]).value,'0');set(ids[3],1);assert(result().includes('90 + 99 = 189'));
+  ids=go(78);set(ids[0],7);set(ids[1],7);const groups=new Set();
+  for(let i=0;i<8;i++){
+   set(ids[2],i);set(ids[3],1);
+   const numbers=[...f.d.querySelectorAll('#model [data-in-group="true"]')].map(el=>Number(el.dataset.cellNumber));
+   assert.equal(numbers.length,3);assert.equal(numbers.reduce((a,b)=>a+b),267);groups.add(numbers.join(','));assert(result().includes('= 267'));
+  }
+  assert.equal(groups.size,8);
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

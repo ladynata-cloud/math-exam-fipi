@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,469);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,505);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -336,6 +336,53 @@ const p33=D.lessons.find(l=>l.id==='p33');
  assert.equal(at(43).answer, 'Ставка выше в первом, сумма больше во втором');
  assert.equal(actual(at(44,'а').answer), 400*20/100);
  assert.equal(actual(at(44,'б').answer), 100*30/(1.2*1000));
+}
+
+{
+ const scale = D.lessons.find(lesson => lesson.id === 'p16');
+ assert.deepEqual(Array.from(Object.values(scale.completeSourceSection)), [28,56,12,15]);
+ assert.equal(scale.tasks.length,79);
+ const source = (number,part='') => scale.tasks.find(t => t.source.exercise === number && (t.source.subpart||'') === part);
+ const ending = [[45,'1234'],[46,'1234'],[47,'123456'],[48,'1234'],[49,''],[50,''],[51,''],[52,''],[53,'123'],[54,'1234'],[55,'1234'],[56,'12']];
+ for(const [number,letters] of ending) {
+  const parts=Array.from(scale.tasks.filter(t=>t.source.exercise===number), t=>t.source.subpart||'').sort();
+  const wanted=letters ? [...letters] : [''];if(number===55)wanted.unshift('');
+  assert.deepEqual(parts,wanted);
+  assert.equal(source(number,letters[0]||'').source.page,number<=51?14:15);
+ }
+ const roots = [
+  [48,1,'32',x=>[x/7.2,(1+1/9)/.25]],
+  [48,2,'2',x=>[(2+1/3)/(.6*x),2.5/(1+2/7)]],
+  [48,3,'2/5',x=>[(7/12)/.14,(50*x)/4.8]],
+  [48,4,'17/2',x=>[(1+3/17)/13.75,(2+2/11)/(3*x)]],
+  [54,1,'1/4',x=>[x/6.3,(1/9)/2.8]],
+  [54,2,'1',x=>[(1+1/3)/(2+5/6),(2/17)/(.25*x)]],
+  [54,3,'5/4',x=>[6.125/(4*x),.35/(2/7)]],
+  [54,4,'30',x=>[(2+1/4)/1.6,.125*x/(2+2/3)]]
+ ];
+ for(const [number,part,expected,equalities] of roots){
+  const t=source(number,String(part)),root=M.parse(t.answer),x=root.n/root.d;
+  assert.equal(t.crossScale.solution,expected);assert(M.equal(t.answer,expected));
+  const [left,right]=equalities(x),[otherLeft,otherRight]=equalities(2*x);
+  assert(Math.abs(left-right)<1e-9);assert(Math.abs(otherLeft-otherRight)>.001);
+  assert(M.equal(M.operation('multiply',t.crossScale.factor,t.answer),t.crossScale.constant));
+ }
+ assert.equal(source(46,'1').answer,'(7a + 8)/(2a²)');
+ assert.equal(source(46,'2').answer,'(b − 5)/b');assert.equal(source(46,'3').answer,'12c/d²');assert.equal(source(46,'4').answer,'2n/k');
+ for(const x of [-5,-2,1,3,7])for(const y of [-3,2,4]){
+  for(const [v,w]of [[7/(2*x)+4/x**2,(7*x+8)/(2*x**2)],[1-5/x,(x-5)/x],[3*x/(x**3/(4*y)),12*y/x**2],[y/(5*x**2)*10*x,2*y/x]])assert(Math.abs(v-w)<1e-10);
+ }
+ assert.deepEqual(Array.from(scale.tasks.filter(t=>t.source.exercise===47), t=>t.answer),['4a/5','3b/5','100(x − y)/x','3,4c и 0,7c²','1,2d','1,0609k']);
+ for(const start of [20,80,300]){
+  assert.equal((4*start/5)*1.25,start);assert.equal(.2*start+.5*.8*start,3*start/5);
+  assert.equal(Math.round(10000*1.03*1.03*start),10609*start);
+ }
+ assert.equal(source(49).answer,'80000');
+ assert.equal(1.5/1.2>2.4/2,true);assert.equal(source(52).answer,'Первая лестница');
+ for(const [n,expected]of [[1,'100b/a'],[2,'5c'],[3,'0,3d']])assert.equal(source(53,String(n)).answer,expected);
+ const printed=[(4.5+3+5/6)*.6,3.7/(1+2/9-.4),(4/(4/7)*.3)/(2.88/4.8),(.5+1/18)/((1+1/6-7/18)/2.8)];
+ for(const [i,val]of printed.entries()){const r=M.parse(source(55,String(i+1)).answer);assert(Math.abs(r.n/r.d-val)<1e-9);}
+ assert.equal(source(55).source.readingKey,5);assert.equal(source(55).answer,'0');assert.equal(2-2,0);
 }
 
 const printedColumns=['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб'];
