@@ -6,7 +6,29 @@
   const bar=(x,y,w,fill)=>'<rect x="'+x+'" y="'+y+'" width="'+Math.max(w,1)+'" height="12" rx="2" fill="'+fill+'"/>';
   function figure(data){
     const m=data.marks;let title,body='';
-    if(data.chart==='minimax'){
+    if(data.chart==='openInterval'){
+      title='Открытые границы и области решения на оси';
+      const {kind,A,B,x,shownA,shownB}=m,two=kind==='between'||kind==='outside';
+      const lo=Math.min(A,B,x),hi=Math.max(A,B,x),pad=Math.max((hi-lo)*0.18,0.5),min=lo-pad,max=hi+pad;
+      const at=v=>32+(v-min)*212/(max-min),u=at(A),v=at(B),w=at(x);
+      body=line(8,53,268,53);
+      const stripe=(from,to)=>'<rect x="'+from+'" y="48" width="'+Math.max(0,to-from)+'" height="9" fill="#487d69"/>';
+      if(kind==='all')body+=stripe(8,268);
+      else if(kind==='left')body+=stripe(8,u);
+      else if(kind==='right')body+=stripe(u,268);
+      else if(kind==='between')body+=stripe(u,v);
+      else body+=stripe(8,u)+stripe(v,268);
+      const circle=p=>'<circle cx="'+p+'" cy="53" r="4" stroke="#365c50" fill="white" stroke-width="2"/>';
+      const label=(p,y,t)=>'<text text-anchor="middle" x="'+p+'" y="'+y+'">'+t+'</text>';
+      if(kind!=='all')body+=circle(u)+label(u,30,shownA);
+      if(two)body+=circle(v)+label(v,82,shownB);
+      body+=line(w,61,w,69)+label(w,103,'x');
+    }else if(data.chart==='orderStep'){
+      title='Ориентированный сдвиг между двумя числами';
+      const [a,b]=m,x=a===b?136:a<b?45:226,y=a===b?136:a<b?226:45;
+      body=line(17,61,263,61)+line(x,48,x,68)+line(y,48,y,68)+text(x-4,36,a)+text(y-4,94,b);
+      if(a!==b){const dir=Math.sign(y-x);body+=line(x,50,y,50)+line(y,50,y-7*dir,43)+line(y,50,y-7*dir,57);}
+    }else if(data.chart==='minimax'){
       title='Пересечение выбранного ряда и шеренги';
       const largest=m.map(row=>Math.max(...row)),smallest=m[0].map((_,j)=>Math.min(...m.map(row=>row[j])));
       const r=largest.indexOf(Math.min(...largest)),c=smallest.indexOf(Math.max(...smallest));
@@ -63,8 +85,8 @@
     return '<svg viewBox="0 0 280 112" role="img" aria-label="'+title+'"><g font-family="sans-serif" font-size="12" fill="#193e32">'+body+'</g></svg>';
   }
   window.MathExamTopicEdition={
-    trainerId:'nikolsky-algebra-7-9',storePrefix:'math:nikolsky-algebra-7-9:v1:',authors:'Никольский и соавторы',grade:book=>book===75?'8 класс · 2014':'7 класс · 2013',unit:'упражнение',figure,
-    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+(book===75?'00000055':'00000077')+'.pdf#page='+(page+1),
+    trainerId:'nikolsky-algebra-7-9',storePrefix:'math:nikolsky-algebra-7-9:v1:',authors:'Никольский и соавторы',grade:book=>book===57?'9 класс · 2014':book===75?'8 класс · 2014':'7 класс · 2013',unit:'упражнение',figure,
+    source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/'+(book===57?'00000046':book===75?'00000055':'00000077')+'.pdf#page='+(page+1),
     nextId(l){const next=order[order.indexOf(l.id)+1];return next&&window.MathExamTopicPractice.lessons.get(next).book===l.book?next:undefined;}
   };
 })();

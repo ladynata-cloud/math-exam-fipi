@@ -59,6 +59,7 @@ jobs:
           node tools/peterson8-2017.test.cjs
           node tools/peterson8-2017-powers.test.cjs
           node tools/peterson8-2017-fractions.test.cjs
+          node tools/nikolsky-algebra-7-9-linear.test.cjs
           node tools/nikolsky-algebra-7-9-inequalities.test.cjs
           node tools/nikolsky-algebra-7-9.test.cjs
           node tools/alimov-algebra-7-9.test.cjs
@@ -84,6 +85,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --peterson8-2017 --printed-identity --logic
           node tools/tyurin-statistics.board.browser.cjs --peterson8-part2 --printed-identity --interval
           node tools/tyurin-statistics.board.browser.cjs --peterson8-part3 --printed-identity --domains
+          node tools/tyurin-statistics.board.browser.cjs --nikolsky9-linear --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --nikolsky8-inequalities --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --nikolsky7-natural --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --alimov-school-2011 --printed-identity
