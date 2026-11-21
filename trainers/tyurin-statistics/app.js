@@ -97,7 +97,8 @@
       w.innerHTML='<section class="panel"><h2 tabindex="-1">'+(first>=2?'Тема пройдена':'Стоит повторить')+'</h2><p>Самостоятельно с первой попытки: '+first+' из 3. Для прохождения нужны два таких ответа.</p><ol>'+state.results.map(r=>'<li>'+labels[r]+'</li>').join('')+'</ol>'+button('again','Повторить с новыми данными')+(first>=2&&next?' '+button('advance','Перейти к § '+next.point+' · '+escape(next.title)):'')+'</section>';
     }else{
       const {data,question:q}=active(state),ready=state.feedback==='right',check=state.stage==='check';
-      const feedback=ready?'Верно. '+(state.hint?'Ты воспользовался разбором.':state.attempts>1?'Получилось после исправления.':'Получилось с первой попытки.'):state.feedback==='wrong'?'Проверь ещё раз. '+q.error:'';
+      const diagnosis=q.mistakes?.find(([value])=>matches(state.draft,value))?.[1] || q.error;
+      const feedback=ready?'Верно. '+(state.hint?'Ты воспользовался разбором.':state.attempts>1?'Получилось после исправления.':'Получилось с первой попытки.'):state.feedback==='wrong'?'Проверь ещё раз. '+diagnosis:'';
       w.innerHTML='<section class="panel"><h2 tabindex="-1">'+(check?'Проверка · задание '+(state.results.length+1)+' из 3':'Тренировка с разбором')+'</h2>'+table(data)+'<p class="prompt">'+escape(q.prompt)+'</p>'+
         '<form><label for="answer">Твой ответ</label><p class="tiny">Введи число или дробь через /. Десятичный ответ можно округлить до шестого знака.</p><div class="row"><input type="text" id="answer" maxlength="70" autocomplete="off" value="'+escape(state.draft)+'" '+(ready?'readonly':'')+'>'+
         (ready?button('next',check?(state.results.length===2?'Посмотреть результат':'Следующая задача'):'Начать проверку'):'<button>Проверить ответ</button>')+'</div></form><p class="feedback" id="feedback" role="status">'+escape(feedback)+'</p>'+

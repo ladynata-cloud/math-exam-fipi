@@ -531,9 +531,15 @@
     function emitWriter(name,data={}){if(shared.connected&&canWrite())shared.socket.emit(name,roomPayload(data))}
     function emitSnapshot(){if(shared.connected&&shared.role==='teacher')shared.socket.emit('board:snapshot',roomPayload({state:publicSnapshot()}))}
 
+    function protectedPetersonId(url){
+      const file=canonicalTrainerFileFromUrl(url);
+      return /^trainers\/(peterson6-(?:complete|textbook|workshop))\.html$/.exec(file)?.[1]||'';
+    }
     function trainerSelectionForRegistry(url){
-      if(canonicalTrainerFileFromUrl(url)!=='trainers/peterson6-complete.html')return url;
-      return BoardPicker.petersonSelection(url,id=>trainerRegistry.byId.has(id),location.origin);
+      const id=protectedPetersonId(url);
+      if(id==='peterson6-complete')return BoardPicker.petersonSelection(url,key=>trainerRegistry.byId.has(key),location.origin);
+      if(id&&!trainerRegistry.byId.has(id))throw Error('Этот раздел Петерсона пока недоступен на сервере общей доски. Текущее занятие сохранено.');
+      return url;
     }
     function pickerMirrorCapability(url){
       if(trainerRegistry.status!=='ready')return 'unknown';
@@ -542,7 +548,7 @@
     }
     let trainerSelectionRequest=0;
     function openTrainer(u){if(shared.role!=='teacher')return false;const request=++trainerSelectionRequest;let next;try{next=normalizeTrainer(u||trainerUrl.value);
-      if(canonicalTrainerFileFromUrl(next)==='trainers/peterson6-complete.html'&&trainerRegistry.status==='pending'){
+      if(protectedPetersonId(next)&&trainerRegistry.status==='pending'){
         const room=shared.roomId,previous=state.trainerUrl;
         loadTrainerRegistry().then(()=>{
           if(request===trainerSelectionRequest&&room===shared.roomId&&previous===state.trainerUrl&&openTrainer(next)){
@@ -553,7 +559,7 @@
       }
       if(trainerRegistry.status==='ready'){
         next=trainerSelectionForRegistry(next);
-      }else if(shared.roomId&&canonicalTrainerFileFromUrl(next)==='trainers/peterson6-complete.html'){
+      }else if(shared.roomId&&protectedPetersonId(next)){
         throw Error('Доска уточняет доступную версию курса. Повторите выбор после подключения. Текущее занятие сохранено.');
       }
       next=addBoardSeedToTrainerUrl(next,shared.roomId)}catch(e){BoardPicker.error(e.message);return false}BoardPicker.clearError();trainerUrl.value=next;state.trainerUrl=next;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(next,{selection:true});save();emit('board:trainer-url-change',{trainerUrl:next});return true}
@@ -615,10 +621,11 @@
       $('guestRoomRetry').hidden=!retry;
     }
     async function checkServer(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}loadTrainerRegistry({force:trainerRegistry.server!==shared.server});setStatus('проверка сервера','wait');try{const res=await fetch(`${shared.server}/health`,{cache:'no-store'});const data=await res.json();if(!res.ok||data?.ok!==true)throw new Error('health');localStorage.setItem(SERVER_KEY,shared.server);setStatus('Сервер доступен','ok')}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
-    async function createRoom(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}const registryReady=loadTrainerRegistry({force:trainerRegistry.server!==shared.server});if(canonicalTrainerFileFromUrl(state.trainerUrl)==='trainers/peterson6-complete.html'){
-        await registryReady;
-        if(!trainerRegistry.byId.has('peterson6-complete')){
-          setStatus('Полная версия Петерсона пока недоступна на этом сервере. Откройте первую часть для общего урока. Текущая работа сохранена.','bad');
+    async function createRoom(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}const registryReady=loadTrainerRegistry({force:trainerRegistry.server!==shared.server});const requestedPeterson=protectedPetersonId(state.trainerUrl);if(requestedPeterson){
+        const previous=state.trainerUrl;await registryReady;
+        if(state.trainerUrl!==previous)return;
+        if(!trainerRegistry.byId.has(requestedPeterson)){
+          setStatus(requestedPeterson==='peterson6-complete'?'Полная версия Петерсона пока недоступна на этом сервере. Откройте первую часть для общего урока. Текущая работа сохранена.':'Этот раздел Петерсона пока недоступен на сервере общей доски. Текущая работа сохранена.','bad');
           return;
         }
       }

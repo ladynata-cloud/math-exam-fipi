@@ -11,7 +11,7 @@
       return '<svg viewBox="0 0 280 120" role="img" aria-label="Два луча: x не меньше '+a+' и x строго меньше '+b+'"><g font-size="12" fill="#203948"><text x="5" y="15">x ≥ '+a+'</text>'+range(a,true,32)+'<text x="5" y="72">x &lt; '+b+'</text>'+range(b,false,88)+'</g></svg>';
     }
     const ps=data.plot;if(!ps||!ps.length)return '';
-    const xs=ps.map(p=>p[0]),ys=[...ps,...(data.second||[])].map(p=>p[1]),xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...ys,0),ymax=Math.max(...ys,0);
+    const xs=ps.map(p=>p[0]),ys=[...ps,...(data.second||[])].map(p=>p[1]),xmin=Math.min(...xs,0),xmax=Math.max(...xs,0),ymin=Math.min(...ys,0),ymax=Math.max(...ys,0);
     const X=n=>36+220*(n-xmin)/(xmax-xmin||1),Y=n=>145-112*(n-ymin)/(ymax-ymin||1);
     const horizontal=Y(0),vertical=X(Math.max(xmin,Math.min(0,xmax)));
     const axes='<path d="M30 '+horizontal+'H263 M'+vertical+' 18V150" fill="none" stroke="#516a76"/>';

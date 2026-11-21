@@ -1063,8 +1063,8 @@ async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
 }
 
 async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
-  assert.equal(registry.trainers.length, 67, 'runtime registry exposes exactly 67 mirror entries');
-  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['atanasyan-stereo-textbook', 'atanasyan-grade7', 'geometry7-practice', 'geometry7-control-work', 'geometry7-rebuild', 'atanasyan-7-9', 'college-functions', 'college-logarithms', 'vilenkin6-percent', 'vpr-math', 'ege-baza-11', 'ege-baza-13', 'ege-methods', 'ege-profile-circle', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-log-trig', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'sections-from-zero', 'stereo-literacy-atanasyan', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'peterson5', 'peterson6', 'peterson6-complete', 'vilenkin5', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example'].concat(require('./fixtures/oge-course-board-entries.json').map(entry => entry.trainerId)).sort());
+  assert.equal(registry.trainers.length, 73, 'runtime registry exposes exactly 73 mirror entries');
+  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['atanasyan-stereo-textbook', 'atanasyan-grade7', 'geometry7-practice', 'geometry7-control-work', 'geometry7-rebuild', 'atanasyan-7-9', 'college-functions', 'college-logarithms', 'vilenkin6-percent', 'vpr-math', 'ege-baza-11', 'ege-baza-13', 'ege-methods', 'ege-profile-circle', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-log-trig', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'merzlyak9-2014', 'sections-from-zero', 'stereo-literacy-atanasyan', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'school-workshop-check', 'peterson5', 'peterson6', 'peterson6-complete', 'peterson6-textbook', 'peterson6-workshop', 'vilenkin5', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example', 'tyurin-statistics', 'makarychev8'].concat(require('./fixtures/oge-course-board-entries.json').map(entry => entry.trainerId)).sort());
   const catalog = await (await fetch(`${siteOrigin}/trainers/board-compat.json`)).json();
   const expectedCatalog = JSON.parse(readFileSync(resolve(REPO_ROOT, 'trainers', 'board-compat.json'), 'utf8'));
   assert.deepEqual(catalog, expectedCatalog, 'served catalog exactly matches the committed manifest');
@@ -1077,7 +1077,7 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
     catalogIds.add(entry.trainerId);
     catalogFiles.add(entry.file.toLowerCase());
   }
-  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 67, 'catalog exposes exactly 67 mirrors');
+  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 73, 'catalog exposes exactly 73 mirrors');
   assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same mirror ids');
 
   const teacherContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });

@@ -65,6 +65,18 @@ for(const [i,page] of expectedPages.entries()){
   }
  }
  if(i===5||i>=6&&i<=12||i>=20)assert(w.document.querySelector('#work svg'),id+' visual');
+ if(l.point===9){
+   const scaled=l.make(3);
+   const [[factor,argument]]=scaled.rows;
+   assert.equal(w.document.querySelectorAll('#work svg polyline').length,2);
+   assert.deepEqual(Array.from(scaled.second,p=>p[1]),Array.from(scaled.plot,p=>factor*p[1]));
+   const exercise=open(id,JSON.stringify({id,variant:1,stage:'practice',model:0,results:[],draft:'',attempts:0,hint:0,feedback:''}));
+   answer(exercise.window,argument*argument);
+   assert.match(exercise.window.document.getElementById('feedback').textContent,/сплошной параболе/);
+   answer(exercise.window,factor*argument*argument);
+   assert.match(exercise.window.document.getElementById('feedback').textContent,/после исправления/);
+   exercise.window.close();
+ }
  click(w,'practice');answer(w,'9999999');assert.match(w.document.querySelector('#feedback').textContent,/Проверь/);
  const key='math:merzlyak9-2014:v1:'+id,raw=w.localStorage.getItem(key);dom.window.close();dom=open(id,raw);w=dom.window;
  assert.equal(w.document.querySelector('#answer').value,'9999999');click(w,'hint');click(w,'hint');

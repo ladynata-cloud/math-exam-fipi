@@ -74,7 +74,12 @@ async function run(browser, origin, serverOrigin) {
     phase='joint room';
     await teacher.goto(origin+'/trainers/trainer-board.html?server='+encodeURIComponent(serverOrigin));
     await teacher.locator('#openShare').click();await teacher.locator('#createRoom').click();
-    await teacher.waitForFunction(()=>document.querySelector('#studentLink')?.value.includes('role=student'));
+    try {
+      await teacher.waitForFunction(()=>document.querySelector('#studentLink')?.value.includes('role=student'));
+    } catch (error) {
+      const status=await teacher.locator('#shareStatus').innerText();
+      throw new Error('Unable to open the test room: '+status,{cause:error});
+    }
     const invite=await teacher.locator('#studentLink').inputValue();await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(invite);
     await teacher.locator('#chooseTrainer').click();await teacher.locator('#pickerSearch').fill(catalogue.search);
     await teacher.locator('#pickerResults .picker-item').filter({hasText:catalogue.match}).first().click();
@@ -91,6 +96,15 @@ async function run(browser, origin, serverOrigin) {
     await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();
     await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
     await s.locator('[data-action=hint]').click();await t.locator('#work ol li').nth(1).waitFor();
+    await teacher.reload();
+    await connected(teacher);
+    await value(teacher,'answer','1234');
+    await t.locator('#work ol li').nth(1).waitFor();
+    await s.locator('#answer').fill('4321');await value(teacher,'answer','4321');
+    await student.reload();
+    await connected(student);
+    await value(student,'answer','4321');
+    await s.locator('#work ol li').nth(1).waitFor();
     assert.equal(await student.evaluate(key=>JSON.parse(localStorage.getItem(key)).draft,catalogue.storage+catalogue.lesson),'9999999');
     console.log(catalogue.directory+' mobile practice entries; real teacher/student model, draft, error, help, transfer and personal storage passed.');
   } finally {await tc.close();await sc.close();}
