@@ -95,16 +95,19 @@ async function retainedWork(page,lesson,pending,width){
  browser=await chromium.launch({headless:true,...(process.env.GEOMETRY_CHROMIUM?{executablePath:process.env.GEOMETRY_CHROMIUM}:{})});evidence.browser=browser.version();
  for(const width of [320,1280]){
   // Nonpersistent, empty contexts: no real account, cookie, learner state or disk profile.
-  const context=await browser.newContext({viewport:{width,height:900},extraHTTPHeaders:{'Cache-Control':'no-cache'}}),page=await context.newPage(),pending=[];
-  // Routing disables the HTTP cache while preserving real responses for exact body verification.
-  await context.route('**/*',route=>route.continue());
-  page.setDefaultTimeout(15000);page.on('pageerror',error=>evidence.errors.push(error.message));
-  page.on('response',response=>{const url=new URL(response.url()),name=url.pathname.replace(/\/$/,'/index.html');if(!(name in expected))return;
-   pending.push((async()=>{assert.equal(url.origin,new URL(base).origin,'Resource origin');assert.equal(response.status(),200,name+' browser HTTP');
-    const actual=sha(await response.body());assert.equal(actual,expected[name],name+' browser received exact committed bytes');evidence.browserMatchedHashes[name]=actual;
-   })().catch(error=>{evidence.errors.push(error.message);}));});
-  for(const lesson of lessons)await visit(page,lesson,pending,width);
-  await retainedWork(page,sample,pending,width);await context.close();
+  for (const [index, lesson] of [...lessons,sample].entries()) {
+   const context=await browser.newContext({viewport:{width,height:900},extraHTTPHeaders:{'Cache-Control':'no-cache'}}),page=await context.newPage(),pending=[];
+   // Routing disables the HTTP cache while preserving real responses for exact body verification.
+   await context.route('**/*',route=>route.continue());
+   page.setDefaultTimeout(15000);page.on('pageerror',error=>evidence.errors.push(error.message));
+   page.on('response',response=>{const url=new URL(response.url()),name=url.pathname.replace(/\/$/,'/index.html');if(!(name in expected))return;
+    pending.push((async()=>{assert.equal(url.origin,new URL(base).origin,'Resource origin');assert.equal(response.status(),200,name+' browser HTTP');
+     const actual=sha(await response.body());assert.equal(actual,expected[name],name+' browser received exact committed bytes');evidence.browserMatchedHashes[name]=actual;
+    })().catch(error=>{evidence.errors.push(error.message);}));});
+   if (index===lessons.length) await retainedWork(page,lesson,pending,width);
+   else await visit(page,lesson,pending,width);
+   await context.close();
+  }
  }
  for(const name of resources.filter(n=>n!==prefix+'source-inventory.json'))assert.equal(evidence.browserMatchedHashes[name],expected[name],'Browser loaded '+name);
  await verifyBytes();assert.deepEqual(evidence.errors,[]);evidence.completed=true;

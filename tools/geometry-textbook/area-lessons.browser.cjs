@@ -17,11 +17,14 @@ const server=http.createServer((req,res)=>{
  try {
  const answers={842:'8',843:'3',844:'64',845:'9',846:'40',847:'49',848:'19',849:'20',850:'40',851:'19',852:'15',853:'6',854:'24',855:'9',856:'37',857:'51',858:'61',859:'125','860-1':'108','860-2':'12,96',861:'6',862:'32',863:'9',864:'50',865:'3',866:'2',867:'1,44','868-1':'4,8','868-2':'100','868-3':'4','869-1':'135','869-2':'30',870:'14',871:'10',872:'10',873:'10',874:'7',875:'9',876:'2',877:'2',878:'12',879:'21',880:'9',881:'6',882:'16',883:'10',884:'8',885:'4',886:'15',887:'8',888:'8',889:'6',890:'6',891:'0,25',892:'1',893:'1,5',894:'6',895:'2,4',896:'5',897:'1,4',898:'1,5',899:'4'};
  for(const width of [320,1280]) {
-  const page=await browser.newPage({viewport:{width,height:900}});
-  const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(base);
-  await page.getByText(/Полностью доступны задачи: 899/).waitFor();
+  const catalog=await browser.newPage({viewport:{width,height:900}});
+  const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
+  await catalog.goto(base);
+  await catalog.getByText(/Полностью доступны задачи: 899/).waitFor();
+  await catalog.close();
   for(const [n,value] of Object.entries(answers)) {
+   const page=await browser.newPage({viewport:{width,height:900}});
+   page.on('pageerror',e=>errors.push(e.message));
    const [number,part='1']=n.split('-');
    const id='atanasyan-7-9-main-'+number+'-part-'+part;
    await page.goto(base+'#'+id);
@@ -42,9 +45,9 @@ const server=http.createServer((req,res)=>{
     await page.locator('[data-main-model]').screenshot({path:artifact+'/plot-'+n+'-'+width+'.png'});
    }
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+   await page.close();
   }
   assert.deepEqual(errors,[]);
-  await page.close();
  }
  } finally { await browser.close(); server.close(); }
 })().catch(error=>{console.error(error);server.close();process.exitCode=1});
