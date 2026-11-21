@@ -14,6 +14,10 @@ const misconceptions = new Map([
   ['ex-main-0436-b/step-4', '6*sqrt(3)'],
   ['ex-main-0444/step-4', '3900'], // Grams instead of kilograms.
   ['theory-053/step-2', '1440'], // Counted the small cubes without converting their volume.
+  ['ex-main-0456-d/step-4', '45'], // Central angle before drawing its bisector.
+  ['ex-main-0461/step-4', '8500'], // Kilograms in the field asking for tonnes.
+  ['ex-main-0463/step-4', '2.25'], // Outer cross-section without subtracting the hole.
+  ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 
 function wrongStepAnswers(lessonId, step) {
