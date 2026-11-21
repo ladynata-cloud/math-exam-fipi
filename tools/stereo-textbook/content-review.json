@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T21:28:45Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–612 and the 15 printed chapter VI self-check questions, with 1,055 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T21:42:14Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–618 and the full chapter VI self-check, with 1,069 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1806,6 +1806,29 @@
       ],
       "evidence": "tools/stereo-textbook/vector-chapter-selfcheck.json",
       "mathematicalReport": "tools/stereo-textbook/vector-chapter-selfcheck.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 157, printed page 157, figure 173 for exercise 614, key 269 where supplied; independent directed edge sums and original polyhedral models.",
+      "reviewedAt": "2026-11-21T21:42:14Z",
+      "scope": "All six initial additional tasks of chapter VI with 14 complete source-level questions on original spatial models, including all edges and opposite vertices of printed figure 173, every equivalent box-vector name, a zero closed path and preservation of sides under translation",
+      "cardIds": [
+        "ex-main-0613-a",
+        "ex-main-0613-b",
+        "ex-main-0613-c",
+        "ex-main-0614-a",
+        "ex-main-0614-b",
+        "ex-main-0614-c",
+        "ex-main-0615",
+        "ex-main-0616-a",
+        "ex-main-0616-b",
+        "ex-main-0616-c",
+        "ex-main-0617-a",
+        "ex-main-0617-b",
+        "ex-main-0617-c",
+        "ex-main-0618"
+      ],
+      "evidence": "tools/stereo-textbook/additional-directed-edge-sums.json",
+      "mathematicalReport": "tools/stereo-textbook/additional-directed-edge-sums.test.cjs"
     }
   ],
   "cards": [
@@ -6028,6 +6051,62 @@
     {
       "id": "ex-selfcheck-vi-15",
       "sha256": "b278a9fcef2fc790303b2f78903971d1f1f836a61991e4f650f76cb9c9ab5103"
+    },
+    {
+      "id": "ex-main-0613-a",
+      "sha256": "6407ac6e323a054331118d07e2b358dbb693ff5105ecb5e0edb33d866c99b4bf"
+    },
+    {
+      "id": "ex-main-0613-b",
+      "sha256": "01ac14cf776ac7490b04a359b97384f3bc5da2763f60eed6eae3236eddbcd069"
+    },
+    {
+      "id": "ex-main-0613-c",
+      "sha256": "e0bf2320ec8b06165d7301392e3f3b4583fff7916617d46d64d18608cae09034"
+    },
+    {
+      "id": "ex-main-0614-a",
+      "sha256": "bf73d6cc9a720265eea97e64add376bcfcc15765a3768ac4eb6ce43e8f83bfec"
+    },
+    {
+      "id": "ex-main-0614-b",
+      "sha256": "24ac9850996b8c7df2a79d96501404876209f6a1c2ceae312aec52a48608dd4c"
+    },
+    {
+      "id": "ex-main-0614-c",
+      "sha256": "5fd83ec6667e895a57bc5ccb3ef2a9cfcad78e0acf5faee73e57f450bf9677ec"
+    },
+    {
+      "id": "ex-main-0615",
+      "sha256": "e9ab1ef1da91e7de98273d5b011de75ba2beeb7ef0518ecee11d004f10c844b3"
+    },
+    {
+      "id": "ex-main-0616-a",
+      "sha256": "5e0c6bc1553b589d21dbf9824163211f65df13ceb5c2124d82bccc724f5e0d7e"
+    },
+    {
+      "id": "ex-main-0616-b",
+      "sha256": "241ca6ab5121e9d82643b249f44338c4b3099c2c7994657f7b72a7b094ca086c"
+    },
+    {
+      "id": "ex-main-0616-c",
+      "sha256": "c1d18b0d24663e1b60e61ccd05411f260713c7e3b4b9052adbf4b353caea75d4"
+    },
+    {
+      "id": "ex-main-0617-a",
+      "sha256": "e7d136de7a0895b8dc398ea6c460a826baa5c309ccd59af95280f3cc4fc667f0"
+    },
+    {
+      "id": "ex-main-0617-b",
+      "sha256": "b4aca17a23bebeb6c04db6997bc857d17f4dd7f4fb800eb6671fda54bd43561e"
+    },
+    {
+      "id": "ex-main-0617-c",
+      "sha256": "a1ee06ccffea467bfadc924f4b0d013f77dad48c767dc5d8ed4ebebfdbfb7f57"
+    },
+    {
+      "id": "ex-main-0618",
+      "sha256": "cabf487d5ef0641b3b72d69fc0118ea94d807fdd6678343db1ad0fa544e886b1"
     }
   ]
 }

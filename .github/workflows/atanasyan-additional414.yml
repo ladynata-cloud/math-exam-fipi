@@ -79,6 +79,7 @@ jobs:
           node tools/stereo-textbook/centroids-in-tetrahedra.test.cjs
           node tools/stereo-textbook/height-and-midpoint-proofs.test.cjs
           node tools/stereo-textbook/vector-chapter-selfcheck.test.cjs
+          node tools/stereo-textbook/additional-directed-edge-sums.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -290,6 +291,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: vectorChapterSelfcheck
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-chapter-selfcheck
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all affine edge sums and the directed octahedron in printed figure 173
+        env:
+          TEXTBOOK_PRACTICE_GROUP: additionalDirectedEdgeSums
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/additional-directed-edge-sums
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -365,5 +371,6 @@ jobs:
             artifacts/centroids-in-tetrahedra/
             artifacts/height-and-midpoint-proofs/
             artifacts/vector-chapter-selfcheck/
+            artifacts/additional-directed-edge-sums/
           retention-days: 14
           if-no-files-found: error
