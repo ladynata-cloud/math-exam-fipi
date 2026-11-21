@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T18:00:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 546, points 52–62 and all chapter V self-checks, with 886 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T18:11:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 550, points 52–62 and all chapter V self-checks, with 890 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1457,6 +1457,19 @@
       ],
       "evidence": "tools/stereo-textbook/inscribed-volume-applications.json",
       "mathematicalReport": "tools/stereo-textbook/inscribed-volume-applications.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:11:00Z",
+      "scope": "Inscribed sphere volumes and both axial rectangles for a fixed angle between diagonals in exercises 547–550",
+      "cardIds": [
+        "ex-main-0547",
+        "ex-main-0548",
+        "ex-main-0549",
+        "ex-main-0550"
+      ],
+      "evidence": "tools/stereo-textbook/sphere-volume-angles.json",
+      "mathematicalReport": "tools/stereo-textbook/sphere-volume-angles.test.cjs"
     }
   ],
   "cards": [
@@ -5003,6 +5016,22 @@
     {
       "id": "ex-main-0546",
       "sha256": "620972dc089f509fe8c68b53a97b39c2afda3c4327b3bd2e5ebabc6edf42ca02"
+    },
+    {
+      "id": "ex-main-0547",
+      "sha256": "90b15edfd97cd625c157f3e8be26ad507acfb7b08f00146785fa1c372cfc4615"
+    },
+    {
+      "id": "ex-main-0548",
+      "sha256": "d4466599a19f6baa38d2142f4ef07a82ce707a93d518b6362bb328fc3f911b77"
+    },
+    {
+      "id": "ex-main-0549",
+      "sha256": "f450dbeab3a0d4efc6223170650cdcc2ba694c671571206f766e1a2fa42ec72d"
+    },
+    {
+      "id": "ex-main-0550",
+      "sha256": "032a9e3db0f6972588a36d807fb8c5721e1b54ff7ecdf6601e483112bc26b30f"
     }
   ]
 }

@@ -26,7 +26,8 @@ const groups = {
   pyramidAngleApplications: {manifests:[require('./pyramid-angle-applications.json')],count:5},
   pyramidComparisonApplications: {manifests:[require('./pyramid-comparison-applications.json')],count:5},
   cylinderApplications: {manifests:[require('./cylinder-applications.json')],count:5},
-  inscribedVolumeApplications: {manifests:[require('./inscribed-volume-applications.json')],count:6}
+  inscribedVolumeApplications: {manifests:[require('./inscribed-volume-applications.json')],count:6},
+  sphereVolumeAngles: {manifests:[require('./sphere-volume-angles.json')],count:4}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

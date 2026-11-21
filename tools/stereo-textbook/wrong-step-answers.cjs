@@ -183,6 +183,17 @@ const misconceptions = new Map([
   ['ex-main-0545/step-3', '6/5'], // Omitted the factor two in the circumference.
   ['ex-main-0546/step-1', '3'], // Submitted the slant projection.
   ['ex-main-0546/step-3', '8/21'], // Reversed the volume ratio.
+  ['ex-main-0547/step-1', '1/2'], // Multiplied by the tangent instead of dividing.
+  ['ex-main-0547/step-3', '32*sqrt(3)'], // Used a prism instead of a pyramid.
+  ['ex-main-0547/step-4', '32*sqrt(3)/3'], // Kept the original volume.
+  ['ex-main-0548/step-1', '2'], // Submitted the rhombus altitude.
+  ['ex-main-0548/step-2', '4/3'], // Used the entire base dihedral angle.
+  ['ex-main-0549/step-1', '8'], // Used the diameter.
+  ['ex-main-0549/step-3', '24'], // Used the radius in the first power.
+  ['ex-main-0550/step-1', '36'], // Selected the horizontal bisector for the key diagram.
+  ['ex-main-0550/step-2', '288'], // Used the second admissible case instead of the key.
+  ['ex-main-0550/step-3', '2*sqrt(3)'], // Kept the tall case after rotating the bisector.
+  ['ex-main-0550/step-4', '32*sqrt(3)'], // Reused the tall-cylinder volume.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

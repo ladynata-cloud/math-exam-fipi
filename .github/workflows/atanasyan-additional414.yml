@@ -59,6 +59,7 @@ jobs:
           node tools/stereo-textbook/pyramid-comparison-applications.test.cjs
           node tools/stereo-textbook/cylinder-applications.test.cjs
           node tools/stereo-textbook/inscribed-volume-applications.test.cjs
+          node tools/stereo-textbook/sphere-volume-angles.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -170,6 +171,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: inscribedVolumeApplications
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/inscribed-volume-applications
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check sphere volumes, bisected dihedral angles and both axial rectangles for problem 550
+        env:
+          TEXTBOOK_PRACTICE_GROUP: sphereVolumeAngles
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/sphere-volume-angles
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -225,5 +231,6 @@ jobs:
             artifacts/pyramid-comparison-applications/
             artifacts/cylinder-applications/
             artifacts/inscribed-volume-applications/
+            artifacts/sphere-volume-angles/
           retention-days: 14
           if-no-files-found: error
