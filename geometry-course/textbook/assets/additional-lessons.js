@@ -79,7 +79,15 @@
       ['/geometry-course/textbook/data/triangle-section-applications.json', '№1118–1122'],
       ['/geometry-course/textbook/data/field-trigonometry.json', '№1123–1127'],
       ['/geometry-course/textbook/data/scalar-product.json', 'пп. 109–112 и №1128–1132'],
-      ['/geometry-course/textbook/data/scalar-coordinates.json', '№1133–1138']
+      ['/geometry-course/textbook/data/scalar-coordinates.json', '№1133–1138'],
+      ['/geometry-course/textbook/data/scalar-geometry.json', '№1139–1145'],
+      ['/geometry-course/textbook/data/trigonometry-review.json', 'вопросы 1–7 главы XII'],
+      ['/geometry-course/textbook/data/triangle-review.json', 'вопросы 8–13 главы XII'],
+      ['/geometry-course/textbook/data/vector-product-review.json', 'вопросы 14–22 главы XII'],
+      ['/geometry-course/textbook/data/additional-triangle-area.json', '№1146–1148'],
+      ['/geometry-course/textbook/data/additional-solve-triangles.json', '№1149–1153'],
+      ['/geometry-course/textbook/data/additional-scalar-vectors.json', '№1154–1158'],
+      ['/geometry-course/textbook/data/chapter-twelve-finale.json', '№1159–1166']
   ];
 
   async function forCourse(base) {
