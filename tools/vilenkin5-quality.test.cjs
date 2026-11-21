@@ -152,6 +152,27 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function boxDivisorsAndLayersRegression(){
+  const f=boot(),a='v5f-printed-5-35',b='v5f-printed-5-36',module=f.w.Vilenkin5GroupsAndLayers;
+  const answers=t=>plain([...t.steps,t].map(x=>x.answer));
+  equal(answers(f.M.generate(a,0)),[23,24,[15,6],[23,15,24,6]]);
+  equal(answers(f.M.generate(b,0)),[4,24,10,100,100,1000,70,700]);
+  for(let seed=0;seed<100;seed++){
+    const t=f.M.generate(a,seed),{n,q,first,last}=t.data.fixedQuotient,u=f.M.generate(b,seed);
+    const valid=Array.from({length:n},(_,i)=>i+1).filter(d=>Math.floor(n/d)===q);
+    equal(valid[0],first);equal(valid.at(-1),last);equal(plain(t.answer),valid.flatMap(d=>[d,n%d]));
+    ok(f.M.accepts(t.answer.join(';'),t));ok(!f.M.accepts(t.answer.slice().reverse().join(';'),t));
+    for(let offset=0;offset<7;offset++)for(let measure=0;measure<2;measure++){
+      const d=first+offset-2;equal(module.explore(t,{offset,measure}).answer,measure?n%d:Math.floor(n/d));
+    }
+    for(const [solid,shape] of u.data.layerSolids.entries()){
+      const [w,h,d]=shape;
+      for(let measure=0;measure<2;measure++)for(let layer=0;layer<3;layer++)equal(module.explore(u,{solid,measure,layer}).answer,measure?w*h*d:w*d);
+    }
+  }
+  f.close();const g=boot('#lesson/'+a);g.submit('22');ok(g.snapshot().scene.message.includes('№10'));ok(!g.snapshot().scene.assisted);g.submit('23');ok(g.snapshot().scene.correct&&!g.snapshot().scene.assisted);g.click('[data-cmd=next]');g.click('[data-cmd=hint]');g.submit('24');ok(g.snapshot().scene.correct&&g.snapshot().scene.assisted);g.close();
+}
+
 function radiusEquationsRegression(){
   const f=boot(),e='v5f-printed-5-34',a='v5f-printed-5-33',v=f.w.Vilenkin5RadiusEquations;
   const answers=t=>plain([...t.steps,t].map(x=>x.answer));equal(answers(f.M.generate(e,0)),[202,313,13,628,30855,46,33,926]);equal(answers(f.M.generate(a,0)),[24,72,28,14]);
@@ -649,7 +670,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34'));
+  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -1253,7 +1274,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
