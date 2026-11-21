@@ -91,4 +91,5 @@ require('./signed-vector-combinations.test.cjs');
 require('./prism-vector-equations.test.cjs');
 require('./pyramid-vector-midpoints.test.cjs');
 require('./midlines-vector-coefficients.test.cjs');
+require('./collinearity-vector-conditions.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

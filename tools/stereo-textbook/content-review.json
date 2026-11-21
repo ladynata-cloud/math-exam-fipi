@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T20:00:18Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–585, with 975 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T20:18:12Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–591, with 985 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1663,6 +1663,25 @@
       ],
       "evidence": "tools/stereo-textbook/midlines-vector-coefficients.json",
       "mathematicalReport": "tools/stereo-textbook/midlines-vector-coefficients.test.cjs"
+    },
+    {
+      "reviewer": "Codex: printed page 150 in the supplied 2024 edition, sign and affine identities; explicit counterexample to printed exercise 587",
+      "reviewedAt": "2026-11-21T20:18:12Z",
+      "scope": "Exercises 586–591: affine division, explicit counterexample to the printed equality in 587, and both directions of collinearity arguments",
+      "cardIds": [
+        "ex-main-0586",
+        "ex-main-0587",
+        "ex-main-0588-a",
+        "ex-main-0588-b",
+        "ex-main-0588-c",
+        "ex-main-0588-d",
+        "ex-main-0589",
+        "ex-main-0590",
+        "ex-main-0591-a",
+        "ex-main-0591-b"
+      ],
+      "evidence": "tools/stereo-textbook/collinearity-vector-conditions.json",
+      "mathematicalReport": "tools/stereo-textbook/collinearity-vector-conditions.test.cjs"
     }
   ],
   "cards": [
@@ -5565,6 +5584,46 @@
     {
       "id": "ex-main-0585",
       "sha256": "9b82b09854fd255978c6fa4866d35c49b31014672a86da6457cd69cfe72104c6"
+    },
+    {
+      "id": "ex-main-0586",
+      "sha256": "dd95b48a068f10cb48ad1796b74e84885abdb3ca3f99377addc786386c38fc9a"
+    },
+    {
+      "id": "ex-main-0587",
+      "sha256": "c7b5f9424f23cc21f0c9736374aa05f90d2ff869a511093238e2ca09fd421c51"
+    },
+    {
+      "id": "ex-main-0588-a",
+      "sha256": "6f2b561da888ab6fc88866f9e9aa21a3327d0367cead74841a921499e0b84348"
+    },
+    {
+      "id": "ex-main-0588-b",
+      "sha256": "5d23e44fa1316850fcf08c41c1eed20bde7ec3de27b04a31cdbc8bac4ae0b2cb"
+    },
+    {
+      "id": "ex-main-0588-c",
+      "sha256": "f30c51cee6699144f28fb02cc408bbacdadf4b5baef76273ffbbbc817d72b485"
+    },
+    {
+      "id": "ex-main-0588-d",
+      "sha256": "228dfe61969c19c57af2f065d1977a6ea9042ab3d6fedf482467094ad41c3a35"
+    },
+    {
+      "id": "ex-main-0589",
+      "sha256": "6d6213927dc59b61763cb70dfca2b583bf176e9c80c0babc1bfda4d780773ee2"
+    },
+    {
+      "id": "ex-main-0590",
+      "sha256": "e1f4d228601e649200126da7255b0546339c9d9872ddcdee2150efa70918ff68"
+    },
+    {
+      "id": "ex-main-0591-a",
+      "sha256": "2d5175646fae9bb1a22d63491f2855d4f07e42b59018b35b5e98d03a4e5570a0"
+    },
+    {
+      "id": "ex-main-0591-b",
+      "sha256": "2acdb1f5a47738d4db181f14c8c364136944916a6f3cf961667ba301ec60c2f7"
     }
   ]
 }
