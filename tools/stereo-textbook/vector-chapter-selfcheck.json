@@ -488,9 +488,9 @@
       "integrated": "4e3e687efbd9d389d9c7640ad850049b0be7d421221a619b467c1f33428132fa"
     },
     "ex-selfcheck-vi-12-b": {
-      "raw": "e598dda9ef1efb79658db55e1aca59841c5e080f9704b9e76d76a03a58ab1e73",
-      "authored": "a0638893980183ba96b465596a6ce49d50e718b88791c95fd75f4079f8f57651",
-      "integrated": "b353c391dc83677fe551a51786b36a22db143389d2be068043126c0bc5e59bf4"
+      "raw": "c36f697ebfd7377ebfdae68eb4f9922f9643b626d8c6dcee27c2a2d34d748091",
+      "authored": "49925edcdd05f4c7818a74b7b6e72be009f0ffed0abf4d77f6d0c4c4d2fe6b39",
+      "integrated": "b3b13da1343880b16a03158815f4ab41e7ff1924c63c3ad3b3ca501f7af4a84a"
     },
     "ex-selfcheck-vi-13-a": {
       "raw": "da577e08b0814d80342f88b6c0ccc9a74fd0cd7652209ca6c349ea40a8fc00c4",
@@ -1203,7 +1203,7 @@
   "files": {
     "stereo-course/textbook/data/course.json": {
       "beforeSHA256": "ed1e6616ac32f74cac13b5dd5907a6c7c3c72a3e8ce05d2efa5d9a3558db4ec5",
-      "afterSHA256": "e600e7703ed0445d6e102da3ce85b61b57b1b7fa43f7d3e32271694f646cf342"
+      "afterSHA256": "fe5ac6b41be57fe5db9cff02f2c34c0b4889145cc186f1fa4a87a4128e300f1f"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "d2bee8f8d5b06e4c878265db237e950c649bedd68f540083cc0f856c88e45767",
