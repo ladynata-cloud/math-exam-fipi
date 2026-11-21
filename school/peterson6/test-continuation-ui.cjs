@@ -1737,3 +1737,15 @@ test('check quantifiers and boundary inclusions, both progressions, eight Euclid
   });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('evaluate all signed word expressions, powers, mixed proportions and nine dependency classifications',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=['= -7/4.','= 2.','= 1.','= -18.','= 2/5.','= -4.','Значение 20.','Значение -8.','Значение 5.','Значение 3.','Значение -17.','Значение 2.','x = 3/5.','x = -5/7.','x = -3/20.','x = 5.','отношение равно 3.','произведение равно 12.','произведение равно 40.','отношение равно 7.','отношение равно 1/3.','отношение равно 2/5.','отношение равно 4.','произведение равно 6/5.','Ни прямая','Ни прямая','произведение равно 5.'];
+  expected.forEach((printed,i)=>{
+   f.nav('#lesson/p39/'+(96+i));f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(printed),[i,f.q('#model .pm-result').textContent]);
+   if(i>=12&&i<16){const values=[...f.d.querySelectorAll('#model tbody tr')].map(row=>row.cells[1].textContent);assert.equal(values[0],values[1]);}
+   const original=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.notEqual(f.q('#model').textContent,original);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
