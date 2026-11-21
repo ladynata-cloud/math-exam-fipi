@@ -137,6 +137,17 @@ function numberLine(config){
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
  if(config.type==='number-line'){host.className='task-graphs number-line';host.append(numberLine(config));if(config.caption){const caption=document.createElement('p');caption.className='small';caption.textContent=config.caption;host.append(caption);}
+ }else if(config.type==='line-example'){
+  host.className='task-graphs root-graph';
+  const line=parseLine(value);
+  const caption=document.createElement('p');caption.className='small';
+  caption.textContent=line?'Сравни наклон и пересечение с осью y с условием.':'Введи коэффициенты k и b, чтобы построить свою прямую.';
+  const plane={...config,type:'root-plane',curves:line?[{kind:'line',...line}]:[]};
+  if(line){
+   const bound=Math.max(6,Math.abs(line.b),Math.abs(line.b+line.k),Math.abs(line.b-line.k));
+   plane.xRange=[-3,3];plane.yRange=[-bound,bound];
+  }
+  host.append(rootGraph(plane,''),caption);
  }else if(config.type==='root-line'){
   host.className='task-graphs root-graph';const line=parseLine(value),plane={...config,type:'root-plane',curves:[{kind:'sqrt'},...(line?[{kind:'line',...line}]:[])]};host.append(rootGraph(plane,''));
   const caption=document.createElement('p');caption.className='small';caption.textContent='Показана часть графиков. Введи k; b, чтобы добавить свою прямую y=kx+b. Число пересечений проверяется по уравнению.';host.append(caption);
