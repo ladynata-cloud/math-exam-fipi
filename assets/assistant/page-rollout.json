@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "a7bdbcb71d486bfb57e24b3316c12efa39099421e627c63c677b62ad83228a82",
-      "afterSha256": "07450c9f389b8468c3c704ef203586d73d1b18d639ec57294db3fd0a61a3c961",
+      "beforeSha256": "61fc4e01e6c5d73acfbc787fc839523a5ff9392b654f6e70ee4edcb19e812e2e",
+      "afterSha256": "b8128f39796aa3711b49f3d7d1081ba5d17fecf0dbf436bd2c676f851e85f4dc",
       "placement": "before-head-close",
-      "sourceSha": "61a245df14fbd4d71ec659462f94053845f9b21e"
+      "sourceSha": "972d64936768deedcfa0bb3a04f08b27ba9338ef"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6804,6 +6804,15 @@
         "school/index.html"
       ],
       "boundary": "Часть 2, §25, с. 11, №5.37–5.39: литры и граммы, неполное частное и остаток, четыре вычисления со степенями. Номера после этого блока и проверочная работа учитываются отдельно."
+    },
+    {
+      "previousBaseSha": "61a245df14fbd4d71ec659462f94053845f9b21e",
+      "sourceBaseSha": "972d64936768deedcfa0bb3a04f08b27ba9338ef",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Три отдельных задания одной печатной проверочной работы §25, часть 2, с. 11. Рисунок ученика сохранён и передаётся на доску. Список сквозных номеров заканчивается перед работой на №5.39."
     }
   ],
   "coverageUpdates": [
