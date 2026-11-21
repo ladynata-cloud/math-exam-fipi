@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T06:20:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 465 and points 52–55, with 766 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T19:00:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 468 and points 52–55, with 769 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1193,6 +1193,18 @@
       ],
       "evidence": "tools/stereo-textbook/prism-volumes.json",
       "mathematicalReport": "tools/stereo-textbook/prism-volumes.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:00:00Z",
+      "scope": "Volume by cross sections, exercises 466–468 with diagrams 146–148",
+      "cardIds": [
+        "ex-main-0466",
+        "ex-main-0467",
+        "ex-main-0468"
+      ],
+      "evidence": "tools/stereo-textbook/cross-sections.json",
+      "mathematicalReport": "tools/stereo-textbook/cross-sections.test.cjs"
     }
   ],
   "cards": [
@@ -4259,6 +4271,18 @@
     {
       "id": "theory-055",
       "sha256": "0270e199ed5f5901361e7d6cbe82d7f02bb3351465cab564a23d22fd690b7d13"
+    },
+    {
+      "id": "ex-main-0466",
+      "sha256": "f340231d33931ffea597ea9ac8b5080dab3c0ca1ed6bdd84fdc9724510c50584"
+    },
+    {
+      "id": "ex-main-0467",
+      "sha256": "31ed42763f976edb158c219c47a1758455c4da6a9a3a74730b549a54f9dc7b44"
+    },
+    {
+      "id": "ex-main-0468",
+      "sha256": "3e2c5570908d8ada7a0458b65ea7f1ccdf3f65531257ac1ca3228f7caea9db88"
     }
   ]
 }
