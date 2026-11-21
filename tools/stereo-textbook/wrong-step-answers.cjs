@@ -17,6 +17,11 @@ const misconceptions = new Map([
   ['ex-main-0456-d/step-4', '45'], // Central angle before drawing its bisector.
   ['ex-main-0461/step-4', '8500'], // Kilograms in the field asking for tonnes.
   ['ex-main-0463/step-4', '2.25'], // Outer cross-section without subtracting the hole.
+  ['ex-main-0466/step-2', '2/3'], // Side before squaring.
+  ['ex-main-0467/step-2', '1/2'], // Radius in the area field.
+  ['ex-main-0468/step-1', '1/2'], // Height in place of horizontal radius.
+  ['ex-main-0468/step-2', '1/4'], // Radius before squaring it.
+  ['ex-main-0468/step-3', '1/3'], // Integrating the radius instead of its square.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 
