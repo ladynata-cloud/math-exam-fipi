@@ -7,6 +7,40 @@
 
   const key = 'mathexam.arzhenikov.workshop.v1';
   const seriesLength = 3;
+  const rewards = {
+    picnic: {
+      title: 'Пикник готов!', postcard: 'Дружный пикник', thanks: ['Яблоки поделены, бутерброды упакованы, кружки приготовлены.', 'Мандарины поделены, ягоды собраны в баночки, ложки на столиках.'],
+      payoffs: ['У всех друзей есть яблоки для пикника.', 'Бутерброды упакованы — можно отправляться в дорогу.', 'Кружки готовы для общего чаепития.', 'У обеих компаний одинаковое угощение.', 'Баночки с ягодами готовы стать гостинцами.', 'На каждом столике есть ложки к чаю.']
+    },
+    yard: {
+      title: 'Двор готов к игре!', postcard: 'Двор играет', thanks: ['Мелки поделены, ворота собраны, кольца ждут игроков.', 'Мячи у команд, призы в конвертах, вёдра в песочницах.'],
+      payoffs: ['У команд поровну мелков для рисунков.', 'Ворота готовы к тренировке.', 'Кольца ждут игроков у каждой стойки.', 'Команды начнут эстафету с равными запасами.', 'Призовые конверты готовы для победителей.', 'В обеих песочницах можно строить крепости.']
+    },
+    classroom: {
+      title: 'Класс готов к работе!', postcard: 'Класс друзей', thanks: ['Карандаши и книги на столах, рисунки упакованы для выставки.', 'Листы поделены, магниты собраны, загадки в конвертах.'],
+      payoffs: ['За каждым столом поровну карандашей для художников.', 'Рисунки упакованы для выставки.', 'У всех читателей есть книги.', 'Обе команды могут начинать школьную газету.', 'Рисунки можно закрепить на доске.', 'Карточки с загадками готовы к викторине.']
+    },
+    atelier: {
+      title: 'Мастерская ожила!', postcard: 'Мастерская чудес', thanks: ['Бусины поделены, колёса для машинок собраны, открытки украшены.', 'Ленты поделены, свечи упакованы, гирлянды готовы.'],
+      payoffs: ['У обоих друзей поровну бусин для подвесок.', 'У собранных машинок есть все колёса.', 'Открытки украшены для именинников.', 'У каждого мастера поровну лент для закладок.', 'Подарочные коробки со свечами готовы.', 'Гирлянды украшают мастерскую.']
+    },
+    kitchen: {
+      title: 'На кухне всё готово!', postcard: 'Уютная кухня', thanks: ['Сырники поделены, овощи подготовлены, печенье ждёт гостей.', 'Груши поделены, тосты собраны, пирожные украшены.'],
+      payoffs: ['Завтрак поделен поровну — никому не досталось меньше.', 'Овощи для каждого котелка подготовлены.', 'На обоих столах есть печенье к чаю.', 'Для каждого кувшина приготовлено поровну груш.', 'Тосты собраны для полдника.', 'Все пирожные украшены ягодами.']
+    },
+    garden: {
+      title: 'Сад стал ещё уютнее!', postcard: 'Цветущий сад', thanks: ['Подсолнухи и тюльпаны посажены, букетики для ярмарки собраны.', 'Персики поделены, морковь собрана, ростки на грядках.'],
+      payoffs: ['По обе стороны крыльца поровну подсолнухов.', 'Букетики готовы к школьной ярмарке.', 'Тюльпаны посажены вдоль дорожки.', 'Оба соседа получат поровну персиков.', 'Морковь собрана в сетки для столовой.', 'На каждой грядке подрастают ростки.']
+    },
+    theatre: {
+      title: 'Можно поднимать занавес!', postcard: 'Наш спектакль', thanks: ['Билеты поделены, пуговицы для жилетов собраны, стулья ждут зрителей.', 'Цветы поделены, куклам нашлись роли, вход украшен шарами.'],
+      payoffs: ['Каждый класс получил поровну билетов.', 'Для готовых жилетов собраны все пуговицы.', 'Стулья ждут зрителей в зале.', 'У обоих артистов одинаковые букеты.', 'У каждой куклы теперь есть роль.', 'Воздушные шары украшают обе арки.']
+    },
+    trip: {
+      title: 'Друзья готовы к походу!', postcard: 'Вместе в поход', thanks: ['Фонарики поделены, батарейки собраны, ложки на местах.', 'Открытки поделены, припасы упакованы, карты у команд.'],
+      payoffs: ['У каждой дежурной смены поровну фонариков.', 'Для собранных раций хватает батареек.', 'В каждой палатке есть ложки для обеда.', 'У каждого друга поровну открыток на память.', 'Припасы уложены в полные рюкзаки.', 'У обеих команд есть карты для своего пути.']
+    }
+  };
   const stages = ['layout', 'answer', 'practice-done', 'notation', 'notation-done', 'complete'];
   const newRun = (round = 0) => ({
     round, step: 0, stage: 'layout', piles: [], moves: [], solved: [], answer: '', hint: false
@@ -49,12 +83,37 @@
       });
     }
   }
+  function solvedCount(place) {
+    return place.scenes.filter((_, index) => answered.has(storyId(place, index))).length;
+  }
+  function hasUnfinishedRun(place) {
+    const run = state.runs[place.id];
+    return Boolean(run && stages.includes(run.stage) && run.stage !== 'complete');
+  }
+  function nextPlace() {
+    const index = places.findIndex(place => place.id === state.active);
+    const following = places.slice(index + 1).concat(places.slice(0, index + 1));
+    return following.find(place => !state.completed.includes(place.id)) ||
+      following.find(hasUnfinishedRun) ||
+      following.find(place => solvedCount(place) < place.scenes.length);
+  }
   window.ArzhenikovWorkshopProgress = () => {
     const skills = {share: 0, pack: 0, count: 0};
     for (const id of answered) skills[storyKinds.get(id)]++;
-    return {active: state.active, completed: [...state.completed], skills};
+    const run = state.runs[state.active] || newRun();
+    return {
+      active: state.active, completed: [...state.completed], skills,
+      storyCount: answered.size, storyTotal: storyKinds.size,
+      placeCounts: Object.fromEntries(places.map(place => [place.id, {solved: solvedCount(place), total: place.scenes.length}])),
+      postcards: Object.fromEntries(places.map(place => [place.id, rewards[place.id]?.postcard || place.name])),
+      currentRun: {stage: run.stage, step: run.step, round: run.round},
+      nextPlace: nextPlace()?.id || null
+    };
   };
   function announceProgress() { window.dispatchEvent(new Event('workshop-progress')); }
+  function finishRender() {
+    window.dispatchEvent(new CustomEvent('workshop-render', {detail: window.ArzhenikovWorkshopProgress()}));
+  }
   function save() {
     state.answeredStories = [...answered];
     try { localStorage.setItem(key, JSON.stringify(state)); }
@@ -84,7 +143,11 @@
   function icons(symbol, count) {
     const wrap = element('span', 'ws-tokens');
     wrap.setAttribute('aria-hidden', 'true');
-    for (let i = 0; i < count; i++) wrap.append(element('span', 'ws-token', symbol));
+    for (let i = 0; i < count; i++) {
+      const token = element('span', 'ws-token', symbol);
+      window.ArzhenikovArt?.decorate(token, symbol);
+      wrap.append(token);
+    }
     return wrap;
   }
   function currentPlace() {
@@ -134,6 +197,58 @@
     parent.append(list);
   }
 
+  function routeProgress(run) {
+    const complete = run.stage === 'complete';
+    const notation = run.stage.startsWith('notation');
+    const concreteDone = complete || notation ? seriesLength : run.step + Number(run.stage === 'practice-done');
+    const notationDone = complete ? seriesLength : notation ? run.step + Number(run.stage === 'notation-done') : 0;
+    const route = element('div', 'ws-route-progress');
+    route.setAttribute('role', 'group');
+    route.setAttribute('aria-label', 'Сначала три дела с предметами, затем три записи');
+    for (const [label, done, active] of [['Дела', concreteDone, !notation && !complete], ['Записи', notationDone, notation && !complete]]) {
+      const phase = element('div', 'ws-route-phase');
+      phase.dataset.state = done === seriesLength ? 'done' : active ? 'current' : 'future';
+      phase.setAttribute('role', 'group');
+      phase.setAttribute('aria-label', label + ': завершено ' + done + ' из ' + seriesLength);
+      const dots = element('span', 'ws-route-dots');
+      dots.setAttribute('aria-hidden', 'true');
+      for (let index = 0; index < seriesLength; index++) {
+        const dot = element('span', 'ws-route-dot', index < done ? '✓' : String(index + 1));
+        dot.dataset.state = index < done ? 'done' : active && index === done ? 'current' : 'future';
+        dots.append(dot);
+      }
+      phase.append(element('span', 'ws-route-label', label), dots);
+      route.append(phase);
+    }
+    return route;
+  }
+
+  function onwardLink(place, allHelped) {
+    const label = allHelped ? (hasUnfinishedRun(place) ? 'Продолжить: ' : 'Новые истории: ') : 'Дальше: ';
+    const onward = link(label + place.name, 'workshop-' + place.id);
+    onward.classList.add('ws-next', 'primary');
+    onward.dataset.action = 'next-place';
+    onward.addEventListener('click', event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const saved = state.runs[place.id];
+      // A completed postcard may still have an unseen trio. Keep unfinished work intact.
+      if (saved?.stage === 'complete') {
+        const rounds = Math.floor(place.scenes.length / seriesLength);
+        for (let round = 0; round < rounds; round++) {
+          if (place.scenes.slice(round * seriesLength, (round + 1) * seriesLength)
+            .some((_, index) => !answered.has(storyId(place, round * seriesLength + index)))) {
+            state.runs[place.id] = newRun(round);
+            save();
+            break;
+          }
+        }
+      }
+      // The last unfinished place can be the current one, so its hash need not change.
+      if (location.hash === onward.hash) render(true);
+    });
+    return onward;
+  }
+
   function render(focus = false) {
     const place = currentPlace();
     if (!place) return;
@@ -148,18 +263,21 @@
     }
     const scenes = place.scenes.slice(run.round * seriesLength, (run.round + 1) * seriesLength);
     const scene = scenes[run.step];
+    const reward = rewards[place.id];
     if (!run.piles.length) run.piles = scene.targets.map(() => 0);
     save();
     if (changedPlace) announceProgress();
 
     host.replaceChildren();
     host.dataset.stage = run.stage;
+    host.dataset.place = place.id;
+    host.dataset.kind = scene.kind;
     const notation = run.stage.startsWith('notation');
     const complete = run.stage === 'complete';
     const step = element('p', 'ws-step', complete ? place.name : place.name + ' · ' + (notation ? 'Запись ' : 'История ') + (run.step + 1) + ' из ' + seriesLength);
-    const title = element('h3', 'ws-title', complete ? 'Три истории решены и записаны' : scene.title);
+    const title = element('h3', 'ws-title', complete ? reward?.title || 'Три дела сделаны!' : scene.title);
     title.tabIndex = -1;
-    host.append(step, title);
+    host.append(step, routeProgress(run), title);
     if (focus) title.focus();
     function advance(stage) { run.stage = stage; save(); render(true); }
     function nextButton(label, fn) {
@@ -172,6 +290,36 @@
     }
 
     if (complete) {
+      const postcard = element('div', 'ws-postcard');
+      postcard.dataset.place = place.id;
+      const emblem = element('span', 'ws-postcard-icon adv-scene', place.icon);
+      emblem.dataset.place = place.id;
+      emblem.setAttribute('aria-hidden', 'true');
+      postcard.append(emblem, element('strong', 'ws-postcard-title', 'Открытка «' + (reward?.postcard || place.name) + '»'),
+        element('p', 'ws-postcard-copy', (reward?.thanks[run.round] || 'Три дела сделаны.') + ' Три решения записаны числами.'));
+      const solved = solvedCount(place);
+      const placeProgress = solved < place.scenes.length
+        ? 'Здесь решено историй: ' + solved + ' из ' + place.scenes.length + '. Можно помочь ещё в трёх историях.'
+        : 'Здесь решены все ' + place.scenes.length + ' историй. Открытка остаётся в твоём альбоме.';
+      postcard.append(element('p', 'ws-place-progress', placeProgress));
+      host.append(postcard);
+      const actions = element('div', 'ws-actions');
+      const next = nextPlace();
+      const allHelped = places.every(item => state.completed.includes(item.id));
+      if (next) actions.append(onwardLink(next, allHelped));
+      else {
+        host.append(element('p', 'ws-place-progress', 'Все ' + storyKinds.size + ' историй с предметами решены. Можно попробовать новые задачи в оранжерее.'));
+        const garden = link('Вырастить свою оранжерею', 'garden-count');
+        garden.classList.add('ws-next', 'primary');
+        actions.append(garden);
+      }
+      if (rounds > 1) actions.append(action('Ещё три истории здесь', 'replay', () => {
+        state.runs[place.id] = newRun((run.round + 1) % rounds);
+        save(); render(true);
+      }));
+      if (next) actions.append(link('В оранжерею равных групп', 'garden-count'));
+      actions.append(link('К делению уголком по шагам', 'count'));
+      host.append(actions);
       const summary = element('div', 'ws-results');
       for (const example of scenes) {
         const row = element('div', 'ws-result');
@@ -188,13 +336,7 @@
           element('p', '', 'В истории «' + pack.title + '» число ' + pack.size + ' на том же месте показывает, сколько предметов ты клал в одну группу.'));
         host.append(comparison);
       }
-      const actions = element('div', 'ws-actions');
-      if (rounds > 1) actions.append(action('Ещё три истории здесь', 'replay', () => {
-        state.runs[place.id] = newRun((run.round + 1) % rounds);
-        save(); render(true);
-      }));
-      actions.append(link('В оранжерею равных групп', 'garden-count'), link('К делению уголком по шагам', 'count'));
-      host.append(actions);
+      finishRender();
       return;
     }
     if (notation) {
@@ -210,6 +352,7 @@
             advance('complete'); announceProgress();
           }
         });
+        finishRender();
         return;
       }
       host.append(element('p', 'ws-instruction', 'Выбери запись, которая отвечает на этот вопрос.'));
@@ -227,6 +370,7 @@
             'Ты раздавал предметы поровну. Какая запись показывает, сколько получил каждый?';
       }, 'ws-option')));
       host.append(options, report);
+      finishRender();
       return;
     }
     host.append(element('p', 'ws-prompt', scene.prompt));
@@ -234,6 +378,15 @@
     if (run.stage === 'practice-done') {
       picture(host, scene, run.piles);
       host.append(element('p', 'ws-meaning', 'Получилось! ' + answerFor(scene) + ' ' + scene.unit + '.'));
+      const payoff = reward?.payoffs[run.round * seriesLength + run.step];
+      if (payoff) {
+        const message = element('p', 'ws-payoff');
+        const guide = element('span', 'adv-companion', '🦊');
+        guide.setAttribute('aria-hidden', 'true');
+        window.ArzhenikovArt?.decorate(guide, 'fox');
+        message.append(guide, element('span', '', payoff));
+        host.append(message);
+      }
       nextButton(run.step < seriesLength - 1 ? 'К следующей истории' : 'Записать три решения', () => {
         run.piles = []; run.moves = []; run.answer = ''; run.hint = false;
         if (run.step < seriesLength - 1) {
@@ -242,6 +395,7 @@
           run.step = 0; advance('notation');
         }
       });
+      finishRender();
       return;
     }
     if (run.stage === 'answer') {
@@ -269,10 +423,11 @@
       });
       form.append(label, check, action('Вернуться к предметам', 'edit', () => advance('layout')), report);
       host.append(form);
+      finishRender();
       return;
     }
 
-    const instruction = element('p', 'ws-instruction', 'Нажимай на место, куда хочешь положить один предмет.');
+    const instruction = element('p', 'ws-instruction', 'Нажимай +, чтобы класть по одному.');
     const stock = element('div', 'ws-stock');
     const targets = element('div', 'ws-targets');
     const actions = element('div', 'ws-actions');
@@ -323,6 +478,7 @@
       run.piles[to] += delta;
       if (remember) run.moves.push({to, delta});
       redraw(); save();
+      if (delta > 0) placesUI[to].add.querySelector('.ws-token:last-child')?.classList.add('adv-token-arrive');
       const left = remaining(scene, run.piles);
       const update = scene.kind === 'count' ? (left ? 'На столе ещё есть предметы.' : 'Все предметы разложены.') : 'На столе осталось ' + left + '.';
       report.textContent = scene.targets[to] + ' — ' + run.piles[to] + '. ' + update;
@@ -331,6 +487,7 @@
     actions.append(check, undo, showHint);
     host.append(instruction, stock, targets, actions, report, hint);
     redraw();
+    finishRender();
   }
 
   window.addEventListener('hashchange', () => render(true));
