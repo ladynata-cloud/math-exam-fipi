@@ -1610,3 +1610,13 @@ test('enumerate the complete two-digit source lists and all allowed leading-plac
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('distinguish each of the twelve printed law forms and both speed, productivity, price and concentration bases',()=>{
+ const f=fixture(null,null,true);try{
+  const go=i=>{f.nav('#lesson/p20/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [i,topic]of [[6,'Прямая связь'],[7,'Обратная связь']]){const c=go(i);for(let j=0;j<6;j++){set(c,0,j);set(c,2,2);assert(out().includes(i===7&&j===3?'Свободное слагаемое':topic),out());set(c,1,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert.equal(f.q('#model tbody tr td').textContent,'3');set(c,1,0);}}
+  for(const [i,original,fresh]of [[0,'10','5'],[1,'15','30'],[8,'42','84'],[9,'20','10'],[10,'360','720'],[11,'8','4'],[12,'12','6'],[13,'30','60'],[2,'90','180'],[3,'2/5','4/5'],[14,'30','60'],[15,'6/5','12/5'],[16,'9','18'],[17,'24','48'],[18,'800','1600'],[19,'100','200']]){
+   const c=go(i),prefix=[0,1,8,9,10,11,12,13].includes(i)?'Искомая величина ':'Новый результат ';set(c,1,2);assert(out().includes(prefix+original+'.'),[i,out()]);set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(prefix+fresh+'.'),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
