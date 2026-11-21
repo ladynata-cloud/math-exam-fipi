@@ -34,6 +34,7 @@
   },
   "remainder": {
     "id": "remainder",
+    "foundationPractice": {"title": "Оранжерея Арженикова · Разобраться с остатком", "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-remainder"},
     "title": "Целое частное и остаток",
     "description": "Определить, сколько полных групп получается и что остаётся.",
     "practiceIds": [
@@ -43,6 +44,7 @@
   },
   "round-up": {
     "id": "round-up",
+    "foundationPractice": {"title": "Оранжерея Арженикова · Разобраться с остатком", "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-remainder"},
     "title": "Округление вверх по смыслу",
     "description": "Округлить частное вверх, если целого количества должно хватить для выполнения условия.",
     "practiceIds": [
@@ -52,6 +54,7 @@
   },
   "round-down": {
     "id": "round-down",
+    "foundationPractice": {"title": "Оранжерея Арженикова · Собрать полные пакеты", "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-pack"},
     "title": "Округление вниз по смыслу",
     "description": "Выбрать наибольшее целое количество, не превышающее вычисленного значения.",
     "practiceIds": [
@@ -60,6 +63,7 @@
   },
   "count-check": {
     "id": "count-check",
+    "foundationPractice": {"title": "Оранжерея Арженикова · Восстановить множитель", "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-inverse"},
     "title": "Проверка целого количества",
     "description": "Умножить выбранное количество на цену или вместимость и сравнить с условием.",
     "practiceIds": [
