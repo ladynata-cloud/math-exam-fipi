@@ -27,6 +27,22 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const url='http://127.0.0.1:'+server.address().port+'/school/makarychev8/';
  browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});fs.mkdirSync(shots,{recursive:true});
+ const formatContext=await browser.newContext({viewport:{width:320,height:900}});
+ try{
+  const page=await formatContext.newPage();observe(page);
+  for(const [id,invalid]of [['roots-353-e','1;'],['roots-288-main','0;1;'],['roots-287-build','0;1;'],['roots-268-a','abc'],['roots-268-b','sqrt('],['roots-461-a','1/'],['roots-452-a','1/3;1/']]){
+   const v=added.find(v=>v.t.id===id);assert(v,id+' has a source route');await page.goto(url+route(v));await page.waitForFunction(hash=>window.MakarychevApp?.getState().last?.hash===hash,route(v));await page.waitForSelector('#final-answer');
+   await page.locator('#final-answer').fill(invalid);await page.locator('#answer-form button[type=submit]').click();
+   const state=await page.evaluate(taskId=>window.MakarychevApp.getState().tasks[taskId],id);
+   assert.equal(state.attempts,0,id+' malformed input is not mathematics');assert.equal(state.firstAttempt,null);assert(!state.events.some(e=>e.type==='answer'));assert(!state.assisted);
+   assert.match(await page.locator('#answer-form').innerText(),/уточнение записи/);
+   await page.screenshot({path:path.join(shots,'roots-format-'+id+'-320.png'),fullPage:true});
+   await page.reload();await page.waitForSelector('#final-answer');assert.equal(await page.locator('#final-answer').inputValue(),invalid,id+' malformed draft survives reload');
+   await page.locator('#final-answer').fill(v.t.answer);await page.locator('#answer-form button[type=submit]').click();
+   const done=await page.evaluate(taskId=>window.MakarychevApp.getState().tasks[taskId],id);assert(done.correct&&done.independent&&done.attempts===1,id+' correction retains first success');
+  }
+  console.log('ROOTS_FORMAT_RELOAD '+JSON.stringify({status:'PASS',cases:7,width:320}));
+ }finally{await formatContext.close();}
  // Seed previous-release records once, before loading the current app. Reloads
  // must restore its persisted results; no init script may replace them again.
  const legacyRecords={
@@ -213,5 +229,5 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
   await page.reload();await page.waitForSelector('#final-answer');assert.equal(await page.locator('#final-answer').inputValue(),right,kind+' alternate retained');assert(await page.evaluate(id=>window.MakarychevApp.getState().tasks[id].correct,v.t.id),kind+' alternate revalidated');
  }
  await context.close();assert.deepEqual(errors,[]);
- console.log(JSON.stringify({status:'PASS',chapterCards:chapterCards.length,addedCards:added.length,views,walkedSteps:walked,searches,legacyReloadCases:2,viewports:[320,390,768,1280],layoutEvidence,flows:['all chapter conditions and figures','all worked steps retained','all 242 searches','old independent result','previous-release spaced sqrt and assisted-step reload','notes/reload/import priority','unfilled learner construction','wrong branch','radical keyboard','source-ordered entry/search/next','free examples and line alternatives/reload','no browser errors']}));
+ console.log(JSON.stringify({status:'PASS',chapterCards:chapterCards.length,addedCards:added.length,views,walkedSteps:walked,searches,legacyReloadCases:2,formatReloadCases:7,viewports:[320,390,768,1280],layoutEvidence,flows:['all chapter conditions and figures','all worked steps retained','all 242 searches','old independent result','previous-release spaced sqrt and assisted-step reload','notes/reload/import priority','unfilled learner construction','wrong branch','radical keyboard','source-ordered entry/search/next','free examples and line alternatives/reload','format correction preserves first attempt','no browser errors']}));
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();server.close();});
