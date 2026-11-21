@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "8d95fd176a7cbb4424732a4273e03e0378b3de6d",
+  "baseSha": "775719b0f767bc4bf3920e5d5153feff226ecbd0",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2234,10 +2234,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "c8d6a71ffdcb6b9d0d667443fdb855fd7e99037ffa358758f29d416a6fb7ea79",
-      "afterSha256": "7e8650692578e7476584a13935d14130ac4ab6f43890768784edd03daae58c91",
+      "beforeSha256": "d11fbb21129dca8f1fcdf5b469815ed042978df8b38e1254fadce7e4bd1f214f",
+      "afterSha256": "2785f2e94995c23a1444a84a3690af01f82fd01564a5253608c1635a5c7827e2",
       "placement": "before-head-close",
-      "sourceSha": "8d95fd176a7cbb4424732a4273e03e0378b3de6d"
+      "sourceSha": "775719b0f767bc4bf3920e5d5153feff226ecbd0"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6747,6 +6747,15 @@
       "previousBaseSha": "76ec1af3dab4f349b41d464ebf1bc02927ccb693",
       "sourceBaseSha": "8d95fd176a7cbb4424732a4273e03e0378b3de6d",
       "task": "docs/tasks/MAKARYCHEV8_846_859.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8d95fd176a7cbb4424732a4273e03e0378b3de6d",
+      "sourceBaseSha": "775719b0f767bc4bf3920e5d5153feff226ecbd0",
+      "task": "docs/tasks/MAKARYCHEV8_860_868.md",
       "changedPaths": [
         "school/makarychev8/index.html"
       ],

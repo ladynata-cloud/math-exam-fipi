@@ -66,6 +66,7 @@ jobs:
           python school/makarychev8/test-exercises-832-837.py
           python school/makarychev8/test-exercises-838-845.py
           python school/makarychev8/test-exercises-846-859.py
+          python school/makarychev8/test-exercises-860-868.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -92,6 +93,7 @@ jobs:
           node school/makarychev8/test-lines-review.cjs
           node school/makarychev8/test-inequality-evidence.cjs
           node school/makarychev8/test-comparison-proofs.cjs
+          node school/makarychev8/test-order-rules.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -160,6 +162,8 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-inequality-evidence.cjs
       - name: Chromium paired comparisons, allowed examples and square-root means
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-comparison-proofs.cjs
+      - name: Chromium ordering, free rational coordinates and comparison rules
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-order-rules.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction

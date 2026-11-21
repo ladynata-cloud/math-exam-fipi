@@ -56,9 +56,9 @@ const squarePractice=window.MakarychevModels?.squarePractice;
 const appliedPractice=window.MakarychevModels?.appliedPractice;
 const invariantPractice=window.MakarychevModels?.invariantPractice;
 const fractionDomainPractice=window.MakarychevModels?.fractionDomainPractice;
-const {mixturePractice,jointPractice,inequalityPractice}=window.MakarychevModels||{};
+const {mixturePractice,jointPractice,inequalityPractice,orderPractice}=window.MakarychevModels||{};
 const auditPractice=window.MakarychevModels?.auditPractice;
-const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice,invariantPractice,fractionDomainPractice,auditPractice,mixturePractice,jointPractice,inequalityPractice].filter(Boolean)];
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice,invariantPractice,fractionDomainPractice,auditPractice,mixturePractice,jointPractice,inequalityPractice,orderPractice].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
@@ -66,6 +66,7 @@ function taskSignature(t){return t.prompt+(t.mathExpression?'\u241f'+JSON.string
 function generatePractice(id,seed,level){
  if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
  if(id===mixturePractice?.id)return window.MakarychevModels.practiceMixture(seed,level);
+ if(id===orderPractice?.id)return window.MakarychevModels.practiceOrder(seed,level);
  if(id===inequalityPractice?.id)return window.MakarychevModels.practiceInequality(seed,level);
  if(id===jointPractice?.id)return window.MakarychevModels.practiceJoint(seed,level);
  if(id===auditPractice?.id)return window.MakarychevModels.practiceRationalAudit(seed,level);
@@ -161,6 +162,9 @@ function formatProblem(value,q){
  if(q.kind==='line-pair-equation'&&window.MakarychevCheck.equationPlaneStatus(text,q.answer)==='format')return message;
  if(q.kind==='algebra-pairs'&&!window.MakarychevCheck.algebraPairs(text))return q.inputNote||message;
  if(q.kind==='graph-root-reading'&&!window.MakarychevCheck.graphRootEntries(text))return inputNote(q);
+ if(q.kind==='ordered-coordinates'&&!window.MakarychevTaskGraphs.coordinateEvidence(text,q.coordinateSymbols,q.coordinateOrder,q.coordinateBounds))return 'Введи по одной рациональной координате на каждую букву, через точку с запятой.';
+ if(q.kind==='ordered-comparison-sample'&&(text.split(';').length!==2||text.split(';').some(v=>!M.parse(v.trim()))))return 'Введи два рациональных числа a; b.';
+ if(q.kind==='transformed-order'&&!window.MakarychevCheck.orderInput(text,q))return q.numericSides?'Введи два вычисленных числа и знак < или > между ними.':'Введи два алгебраических выражения и знак < или > между ними.';
  if(q.kind==='inequality-counterexample'&&!/^(всегда|да)$/i.test(text.trim())&&!M.parse(text))return q.inputNote||'Введи рациональный контрпример.';
  if(q.kind==='source-domain-sample'&&(String(text).split(';').length!==q.probeCount||String(text).split(';').some(v=>!M.parse(v.trim()))))return q.inputNote||'Введи по одному рациональному числу для каждой переменной.';
  if(q.kind==='unique-system-triple'&&!window.MakarychevCheck.systemTriple(text))return q.inputNote;
@@ -210,6 +214,9 @@ function naturalCase(term,rule){
 }
 function feedbackFor(value,q){
  if(q.kind==='inequality-counterexample')return M.parse(value)?'При этой подстановке исходный знак выполняется. Проверь, может ли разность стать нулевой или изменить знак.':'Проверь знак разности при других значениях переменной. Для вывода «всегда» нужна общая причина.';
+ if(q.kind==='ordered-coordinates'){const result=window.MakarychevTaskGraphs.coordinateEvidence(value,q.coordinateSymbols,q.coordinateOrder,q.coordinateBounds),wrong=result?.pairs.find(row=>!row.ok);return wrong?'На прямой '+wrong.left+' должно быть строго левее '+wrong.right+'. Измени соответствующую координату.':'Проверь числовую границу вместе с порядком букв.';}
+ if(q.kind==='transformed-order'){if(q.numericSides){const match=/^([^<>]+)([<>])([^<>]+)$/.exec(value);if(match&&M.equal(match[1],match[3]))return 'Ты получил равные стороны. Одинаковое ненулевое масштабирование или сдвиг сохраняют различие исходных чисел.';}return 'Проверь отдельно новые левую и правую стороны, затем направление знака.';}
+ if(q.kind==='ordered-comparison-sample')return 'Сначала проверь исходное a < b, затем сравни промежуток b − a с 5 для требуемого знака.';
  if(q.kind==='source-domain-sample')return 'Проверь знак, указанную область и, для натуральной дроби, порядок числителя и знаменателя.';
  if(q.kind==='unique-system-triple'){
   const row=window.MakarychevCheck.systemTriple(value);if(row&&row.values[0]===0&&row.values[1]===0)return 'При a = b = 0 вторая строка не задаёт прямую. Измени хотя бы один коэффициент при переменной.';
@@ -522,6 +529,8 @@ if(t.graph){
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(graph.type))graph=rationalEvidence(graph,s.value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(graph.type))graph={...graph,trial:s.values[0]};
  if(graph.fixedInput)graph={...graph,partial:s.values,showValue:Boolean(s.correct)};
+ if(graph.type==='labelled-order')graph={...graph,trial:s.values[0]};
+ if(graph.stepTrials){const index=Math.min(s.step,graph.stepTrials.length-1);graph={...graph,trial:s.values[index]||s.values[0]};}
  if(graph.type==='factor-witness')graph=factorEvidence(graph,s.value);
  if(graph.type==='vieta-audit')graph={...graph,audit:window.MakarychevCheck.vietaAudit(s.value,graph)};
  if(graph.type==='root-residual')graph={...graph,checks:window.MakarychevCheck.quadraticTrial(s.value,graph.coefficients)};
@@ -538,7 +547,7 @@ if(t.graph){
  if(modelInput&&graph.type==='natural-values')graph={...graph,rows:(window.MakarychevCheck.setEntries(modelInput)||[]).map(term=>({term,pair:naturalCase(term,t.naturalRule)}))};
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
-document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
+document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
 function rationalEvidence(graph,value){
  const C=window.MakarychevCheck;
  if(graph.type==='rational-root-audit')return {...graph,checks:C.rationalRootTrial(value,graph)};
@@ -550,13 +559,15 @@ function factorEvidence(graph,value){
  const [a,...roots]=String(value||'').split(';');
  return {...graph,rightLeading:M.equal(a,graph.leading),audit:window.MakarychevCheck.vietaAudit(roots.join(';'),graph)};
 }
-function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
+function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
  const state=ts(active.task.id),base=active.task.graph;
  let graph=['vertex-form','coefficient-example'].includes(base.type)?{...base,evaluated:Boolean(state.attempts||state.correct)}:base;
  if(['own-lines','own-points'].includes(base.type))graph={...base,groups:window.MakarychevCheck.pointGroups(value)};
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(base.type))graph=rationalEvidence(base,value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(base.type))graph={...base,trial:state.values[0]};
  if(base.fixedInput)graph={...graph,partial:state.values,showValue:Boolean(state.correct)};
+ if(base.type==='labelled-order')graph={...base,trial:state.values[0]};
+ if(base.stepTrials){const index=Math.min(state.step,base.stepTrials.length-1);graph={...graph,trial:state.values[index]||state.values[0]};}
  if(base.type==='factor-witness')graph=factorEvidence(base,value);
  if(base.type==='vieta-audit')graph={...base,audit:window.MakarychevCheck.vietaAudit(value,base)};
  if(base.type==='root-residual')graph={...base,checks:window.MakarychevCheck.quadraticTrial(value,base.coefficients)};

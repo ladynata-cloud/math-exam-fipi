@@ -834,5 +834,16 @@
       graph,hint,correction:hint,explanation:level===3?'Любое x ≤ '+(h-k)+' опровергает строгий знак.':'Ноль достигается при x = '+h+'. Подстановка x = '+(h+k)+' даёт '+k*k+'.',skills:[inequalityPractice.id],source:{type:'authored',reference:'Тренировка по сравнению выражений'}};
   }
 
-  return { mount, experiment, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const orderPractice={id:'order-preserving',title:'Как меняется знак при преобразовании',description:'Преобразуй обе стороны неравенства и проверь направление знака.'};
+  function practiceOrder(seed,level){
+    const a=seed%17-8,b=a+1+Math.floor(seed/2)%7,k=2+Math.floor(seed/3)%5;
+    const action=level===1?'прибавь '+k:level===2?'умножь на '+k:'умножь на −'+k;
+    const left=level===1?a+k:level===2?a*k:-a*k,right=level===1?b+k:level===2?b*k:-b*k;
+    const sign=left<right?'<':'>',hint='Применяй одно действие к обеим сторонам. Отрицательный множитель разворачивает знак.';
+    return {title:orderPractice.title,prompt:'К обеим сторонам '+a+' < '+b+' примени действие: '+action+'. Запиши числовой результат.',kind:'transformed-order',numericSides:true,answer:left+sign+right,hint,correction:hint,explanation:'Получаем '+left+' '+sign+' '+right+'.',graph:{type:'transformed-numbers',original:a+' < '+b,action},
+      steps:[{prompt:'Чему равна новая левая сторона?',kind:'number',answer:String(left),hint,explanation:hint},{prompt:'Чему равна новая правая сторона?',kind:'number',answer:String(right),hint,explanation:hint}],
+      skills:[orderPractice.id],source:{type:'authored',reference:'Тренировка преобразований неравенств'}};
+  }
+
+  return { mount, experiment, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

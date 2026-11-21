@@ -770,10 +770,49 @@ function equationExamples(host,value){
  }
  host.append(note);
 }
+function coordinateEvidence(raw,symbols,expected,bounds=[]){
+ const fields=String(raw??'').split(';').map(s=>M.parse(s.trim()));
+ if(fields.length!==symbols.length||fields.some(v=>!v))return null;
+ const by=new Map(symbols.map((s,i)=>[s,fields[i]]));
+ const difference=(v,w)=>BigInt(v.n)*BigInt(w.d)-BigInt(w.n)*BigInt(v.d);
+ const pairs=expected.slice(1).map((s,i)=>({left:expected[i],right:s,ok:difference(by.get(expected[i]),by.get(s))<0n}));
+ const admitted=bounds.every(([symbol,sign,bound])=>sign==='<'?difference(by.get(symbol),M.parse(bound))<0n:difference(by.get(symbol),M.parse(bound))>0n);
+ return {fields,pairs,admitted,valid:admitted&&pairs.every(row=>row.ok)};
+}
+function labelledOrder(host,g,value){
+ host.className='task-graphs quantity-model';
+ const raw=g.useStep?g.trial:value,check=coordinateEvidence(raw,g.symbols,g.ordered,g.coordinateBounds);
+ const p=document.createElement('p');p.className='small';
+ if(!check){p.textContent='Введи числовые координаты в порядке '+g.symbols.join('; ')+'. На прямой большее число находится правее.';host.append(p);return;}
+ const axis=node('svg',{viewBox:'0 0 360 148',role:'img','aria-label':'Предложенная координатная прямая и метки '+g.symbols.join(', ')});
+ const values=check.fields.map(v=>v.n/v.d),min=Math.min(...values),max=Math.max(...values);
+ const position=y=>min===max?180:26+308*(y-min)/(max-min);
+ axis.append(node('line',{x1:12,x2:349,y1:50,y2:50,stroke:'#435d52','stroke-width':2}),node('path',{d:'M341 45 L349 50 L341 55',stroke:'#435d52',fill:'none'}));
+ // Labels use their own rows even if neighbouring rational coordinates crowd.
+ check.fields.forEach((v,i)=>{const at=position(values[i]),down=69+15*i;
+  axis.append(node('line',{x1:at,x2:at,y1:50,y2:down-7,stroke:'#58877d','stroke-dasharray':'2 2'}),node('circle',{cx:at,cy:50,r:3,fill:'#087981'}),node('text',{x:at,y:down,'text-anchor':'middle','font-size':14},g.symbols[i]));
+ });
+ p.textContent=g.symbols.map((c,i)=>c+' = '+M.answer(check.fields[i])).join(', ')+'.';host.append(axis,p);
+ for(const row of check.pairs){const line=document.createElement('p');line.className='small';line.dataset.coordinatePair=row.ok?'yes':'no';line.textContent=row.left+' < '+row.right+(row.ok?' выполняется.':' нарушено: проверь координаты этих точек.');host.append(line);}
+ if(g.coordinateBounds?.length){const line=document.createElement('p');line.className='small';line.dataset.coordinateBound=check.admitted?'yes':'no';line.textContent=g.coordinateBounds.map(r=>r.join(' ')).join(', ')+(check.admitted?' выполнено.':' нарушено.');host.append(line);}
+}
+function transformedNumbers(host,g,value){
+ host.className='task-graphs quantity-model';const caption=document.createElement('p');caption.className='small';caption.textContent='Исходное сравнение: '+g.original+'. Действие с обеими сторонами: '+g.action+'.';host.append(caption);
+ const m=/^\s*([^<>]+)\s*([<>])\s*([^<>]+)\s*$/.exec(String(value??''));if(!m)return;
+ const left=M.parse(m[1]),right=M.parse(m[3]);if(!left||!right)return;
+ const delta=BigInt(left.n)*BigInt(right.d)-BigInt(right.n)*BigInt(left.d),sign=delta<0n?'<':delta>0n?'>':'=';
+ const p=document.createElement('p');p.className='small';p.dataset.proposedOrder=sign===m[2]?'true':'false';
+ p.textContent='Между твоими числами верна запись '+M.answer(left)+' '+sign+' '+M.answer(right)+'. Сверь обе полученные стороны с действием задания.';host.append(p);
+}
+
 function admissibleSample(raw,domain,count){
  const xs=String(raw??'').split(';').map(v=>M.parse(v.trim()));
  if(xs.length!==count||xs.some(v=>!v))return false;
  const [a,b]=xs;
+ if(domain==='lt-pair'||domain==='gt-pair'){
+  if(xs.length!==2)return false;
+  const delta=BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);return domain==='lt-pair'?delta<0n:delta>0n;
+ }
  if(domain==='nonnegative')return xs.every(v=>v.n>=0);
  if(xs.some(v=>v.n<=0))return false;
  if(domain==='positive')return true;
@@ -811,7 +850,7 @@ function inequalityScene(host,config,value){
  const add=(txt,key,state)=>{const p=document.createElement('p');p.className='small';p.textContent=txt;if(key)p.dataset[key]=state;host.append(p);};
  if(!input){add('На числовой прямой большее значение располагается правее. Подставь число в первом шаге и сравни обе стороны.');return;}
  if(config.sourceDomain&&!admissibleSample(input,config.sourceDomain,config.symbols.length)){
-  const constraints={'natural-gt':'нужны натуральные a > b','natural-lt':'нужны натуральные a < b','positive':'каждая величина должна быть положительна','nonnegative':'нужны неотрицательные величины','positive-unequal':'нужны положительные и разные a и b'};
+  const constraints={'lt-pair':'первое число должно быть меньше второго','gt-pair':'первое число должно быть больше второго','natural-gt':'нужны натуральные a > b','natural-lt':'нужны натуральные a < b','positive':'каждая величина должна быть положительна','nonnegative':'нужны неотрицательные величины','positive-unequal':'нужны положительные и разные a и b'};
   add('Подстановка вне условия: '+constraints[config.sourceDomain]+'.','inequalityDomain','invalid');return;
  }
  if(config.compareSquares)add('На оси показаны квадраты двух неотрицательных сторон.');
@@ -1224,6 +1263,8 @@ function render(host,config,value){
  if(config.type==='parameter-polynomial'){parameterScene(host,config);return;}
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
+ if(config.type==='labelled-order'){labelledOrder(host,config,value);return;}
+ if(config.type==='transformed-numbers'){transformedNumbers(host,config,value);return;}
  if(config.type==='radical-comparison'){radicalComparison(host,config,value);return;}
  if(config.type==='inequality-evidence'){inequalityScene(host,config,value);return;}
  if(config.type==='linear-review'){linearReview(host,config,value);return;}
@@ -1290,5 +1331,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {coordinateEvidence,admissibleSample,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

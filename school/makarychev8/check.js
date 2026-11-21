@@ -567,6 +567,20 @@ function sameAlgebraPairs(raw,expected){
  }
  return true;
 }
+function orderInput(raw,target){
+ const parts=/^\s*([^<>]+)\s*([<>])\s*([^<>]+)\s*$/.exec(String(raw??''));if(!parts)return null;
+ const sides=[parts[1],parts[3]];
+ if(target.numericSides)return sides.every(v=>M.parse(v))?parts:null;
+ const symbols=new Set(String(target.answer).match(/[a-z]/g)||[]);
+ try{for(const side of sides)polynomialFraction(normalize(side),symbols);return parts;}catch(_){return null;}
+}
+function transformedOrder(input,target){
+ const split=v=>/^\s*([^<>]+)\s*([<>])\s*([^<>]+)\s*$/.exec(String(v??''));
+ const user=split(input),goal=split(target.answer);if(!user||!goal)return false;
+ const equal=target.numericSides?M.equal:sameReducedExpression;
+ if(target.numericSides&&(!M.parse(user[1])||!M.parse(user[3])))return false;
+ return user[2]===goal[2]?equal(user[1],goal[1])&&equal(user[3],goal[3]):equal(user[1],goal[3])&&equal(user[3],goal[1]);
+}
 function systemTriple(raw){
  const parts=String(raw??'').split(';').map(p=>M.parse(p.trim()));
  if(parts.length!==3||parts.some(p=>!p))return null;
@@ -750,6 +764,9 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='ordered-coordinates')return Boolean(G.coordinateEvidence(user,target.coordinateSymbols,target.coordinateOrder,target.coordinateBounds)?.valid);
+ if(target.kind==='ordered-comparison-sample')return G.admissibleSample(user,target.graph.sourceDomain,2)&&G.inequalityTrial(target.graph,user,true)?.sign===target.requiredSign;
+ if(target.kind==='transformed-order')return transformedOrder(user,target);
  if(target.kind==='source-domain-sample')return G.admissibleSample(user,target.sourceDomain,target.probeCount);
  if(target.kind==='inequality-counterexample'){const probe=G.inequalityTrial(target.graph,user,true);return Boolean(probe&&probe.sign!==target.graph.operator);}
  if(target.kind==='unique-system-triple')return Boolean(systemTriple(user)?.nonzero);
@@ -820,5 +837,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });
