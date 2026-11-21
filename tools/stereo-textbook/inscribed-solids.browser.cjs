@@ -17,7 +17,8 @@ const groups = {
   projections: {manifests:[require('./pyramid-projections.json')],count:10},
   frusta: {manifests:[require('./pyramid-frusta.json')],count:4},
   cones: {manifests:[require('./cone-volumes.json')],count:7},
-  sectors: {manifests:[require('./cone-nets-and-frusta.json')],count:4}
+  sectors: {manifests:[require('./cone-nets-and-frusta.json')],count:4},
+  spheres: {manifests:[require('./sphere-measures.json')],count:13}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

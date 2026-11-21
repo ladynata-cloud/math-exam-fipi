@@ -82,6 +82,20 @@ const misconceptions = new Map([
   ['ex-main-0501/step-3', '60'], // Omitted the mixed radius product.
   ['ex-main-0502/step-3', '18'], // Used radii, not diameters, as trapezoid bases.
   ['ex-main-0502/step-4', '60'], // Forgot the mixed product.
+  ['theory-060/step-3', '18'], // Integrated half the ball.
+  ['theory-061-a/step-1', '1'], // Used the cap height as the lower coordinate.
+  ['theory-061-b/step-3', '12'], // Added the overlapping caps.
+  ['theory-061-c/step-3', '8/3'], // Omitted the cone below the cap.
+  ['theory-062/step-3', '4'], // Used one central disk as the surface.
+  ['ex-main-0503-a/step-2', '16*pi'], // Central disk instead of the sphere.
+  ['ex-main-0503-a/step-3', '256*pi'], // Omitted the factor one third.
+  ['ex-main-0503-b/step-2', '9'], // Square root of the cubic radius.
+  ['ex-main-0503-c/step-3', '64*pi'], // Repeated the area instead of the volume.
+  ['ex-main-0504/step-3', '16'], // Squared the diameter ratio.
+  ['ex-main-0505/step-3', '12'], // Used three times the cylinder height.
+  ['ex-main-0506/step-2', '125/3'], // Counted both portions as full balls.
+  ['ex-main-0507/step-3', '8/75'], // Counted just one ball.
+  ['ex-main-0508/step-2', '5'], // Confused the base and sphere radii.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 
