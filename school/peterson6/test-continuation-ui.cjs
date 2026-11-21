@@ -1552,3 +1552,13 @@ test('verify the three printed area outlines, both numerical patterns, and perpe
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('read every formula and distinguish all moving, resting and overlapping intervals on the station graph',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [ix,original,changed]of [[84,'24 см²','27 см²'],[85,'20 см','24 см'],[86,'14 км','27 км'],[87,'30 км','26 км'],[88,'60 см³','84 см³'],[89,'94 см²','136 см²'],[90,'38.','37.'],[91,'13 км/ч','17 км/ч']]){const c=open(ix);set(c,1,2);assert(out().includes(original),[ix,out()]);set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(changed),[ix,out()]);}
+  for(const [ix,before,after]of [[92,'09:00, велосипедиста 09:30','09:30, велосипедиста 10:00'],[93,'12 км от деревни с 12:00 до 13:00','6 км от деревни с 12:30 до 13:30'],[94,'4, 6 и 6 км/ч','2, 3 и 3 км/ч'],[95,'60 и 30 мин','60 и 30 мин']]){
+   const c=open(ix);assert.equal(f.d.querySelectorAll('#task-figure [data-source-series]').length,2);const lines=[...f.d.querySelectorAll('#model [data-source-series]')];assert.deepEqual(lines.map(n=>n.getAttribute('points').split(' ').length),[6,4]);set(c,1,3);assert(out().includes('12:30'));set(c,2,2);assert(out().includes(before),out());set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes(after),out());assert(out().includes('13:00'));
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

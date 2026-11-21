@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1112);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1124);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1025,6 +1025,11 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  const g=n=>Array.from(D.lessons.find(l=>l.id==='p38').tasks.filter(t=>t.source.exercise===n));
  assert.deepEqual(g(141).map(t=>t.answer),['7','1/2']);assert.deepEqual(g(142).map(t=>t.figure.variant),['squareHole','oneStep','twoSteps']);
  assert.deepEqual(g(143).map(t=>Array.from(t.steps,s=>s.answer)),[['-55','-30','-5','25'],['-77/50','-77/5','-154','10']]);assert.deepEqual(Array.from(g(144)[0].steps,s=>s.answer),['6','4','40','160','32']);assert.equal(g(144)[0].source.page,34);
+}
+{
+ const l=D.lessons.find(t=>t.id==='p38'),group=n=>Array.from(l.tasks.filter(t=>t.source.exercise===n));
+ assert.deepEqual(group(145).map(t=>t.formulaWords),['area','perimeter','distance','closure','volume','surface','remainder','current']);assert.deepEqual(group(146).map(t=>t.stationGraph),['starts','meeting','speeds','stops']);
+ assert.deepEqual(group(146).map(t=>Array.from(t.steps,s=>s.answer)),[['9','30','36'],['12','12','60'],['4','6','12','12','0'],['60','30','90']]);assert(group(146).every(t=>t.source.page===34&&t.figure.type==='p38-station-graph'));
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
