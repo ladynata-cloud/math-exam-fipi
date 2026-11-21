@@ -49,6 +49,7 @@ jobs:
           node tools/stereo-textbook/pyramid-projections.test.cjs
           node tools/stereo-textbook/pyramid-frusta.test.cjs
           node tools/stereo-textbook/cone-volumes.test.cjs
+          node tools/stereo-textbook/cone-nets-and-frusta.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -110,6 +111,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: cones
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cone-volumes
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify cone nets, axial trapezoids and disk volumes
+        env:
+          TEXTBOOK_PRACTICE_GROUP: sectors
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cone-nets-and-frusta
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -155,5 +161,6 @@ jobs:
             artifacts/pyramid-projections/
             artifacts/pyramid-frusta/
             artifacts/cone-volumes/
+            artifacts/cone-nets-and-frusta/
           retention-days: 14
           if-no-files-found: error

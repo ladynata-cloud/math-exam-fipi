@@ -74,6 +74,14 @@ const misconceptions = new Map([
   ['ex-main-0497/step-2', '100'], // Squared the diameter.
   ['ex-main-0498/step-3', '240'], // Swapped radius and height in the narrow cone.
   ['ex-main-0498/step-4', '100'], // Swapped radius and height in the wide cone.
+  ['ex-main-0499/step-2', '9'], // Used the base radius as the net radius.
+  ['ex-main-0499/step-3', '144'], // Used the complementary sector.
+  ['ex-main-0500/step-1', '1/6'], // Reversed the radius ratio.
+  ['ex-main-0500/step-2', '15/2'], // Treated the full area as lateral area.
+  ['ex-main-0501/step-1', '9'], // Added radii instead of subtracting.
+  ['ex-main-0501/step-3', '60'], // Omitted the mixed radius product.
+  ['ex-main-0502/step-3', '18'], // Used radii, not diameters, as trapezoid bases.
+  ['ex-main-0502/step-4', '60'], // Forgot the mixed product.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

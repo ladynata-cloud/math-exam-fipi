@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T15:41:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 498 and points 52–59, with 811 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T15:47:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 502 and points 52–59, with 815 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1292,6 +1292,19 @@
       ],
       "evidence": "tools/stereo-textbook/cone-volumes.json",
       "mathematicalReport": "tools/stereo-textbook/cone-volumes.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T15:47:00Z",
+      "scope": "Cone sector nets and volume of truncated cones, exercises 499–502",
+      "cardIds": [
+        "ex-main-0499",
+        "ex-main-0500",
+        "ex-main-0501",
+        "ex-main-0502"
+      ],
+      "evidence": "tools/stereo-textbook/cone-nets-and-frusta.json",
+      "mathematicalReport": "tools/stereo-textbook/cone-nets-and-frusta.test.cjs"
     }
   ],
   "cards": [
@@ -4538,6 +4551,22 @@
     {
       "id": "ex-main-0498",
       "sha256": "704be6c32f462ba049d4926f7e4f11c8b982c6cf523eebbedea8d4da1997bdb3"
+    },
+    {
+      "id": "ex-main-0499",
+      "sha256": "ceee36bbe61ee8dbc6b4dcc381f858b2520ffcce834d151913d24ae8f80ef9a6"
+    },
+    {
+      "id": "ex-main-0500",
+      "sha256": "ef1e799525ce7e1eba449ce30829b9b13997a178adc3e3ca153eb03412e62f71"
+    },
+    {
+      "id": "ex-main-0501",
+      "sha256": "33d3083713c6c21e7e8207a0ebf35a6989afe17ed6751cc00865d5ffd620b807"
+    },
+    {
+      "id": "ex-main-0502",
+      "sha256": "5fbf09c1d0e339202418ab8e406921789ef3f95118bbcc86e7100821e02c6688"
     }
   ]
 }
