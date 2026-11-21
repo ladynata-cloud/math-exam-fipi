@@ -891,7 +891,7 @@ async function run(browser, origin, backend, failures) {
   for(const value of ['48','8','60','30','70']){await studentFrame.locator('#answer').fill(value);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();}
   await studentFrame.locator('#answer').fill('K');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'lower coordinate chosen')).scene.message,/левее/);
   await studentFrame.locator('#answer').fill('с');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
-  const marked=await same(studentFrame,teacherFrame,'draft and half-step markings restored');assert.equal(marked.scene.savedInput,'с');assert.equal(marked.scene.model.halves,1);assert.equal(marked.scene.model.point,3);assert.equal(marked.scene.step,5);
+  const rulerHalfSteps=await same(studentFrame,teacherFrame,'draft and half-step markings restored');assert.equal(rulerHalfSteps.scene.savedInput,'с');assert.equal(rulerHalfSteps.scene.model.halves,1);assert.equal(rulerHalfSteps.scene.model.point,3);assert.equal(rulerHalfSteps.scene.step,5);
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both sides restored at the comparison');
   await teacherFrame.locator('#answer-form button').click();const greater=await same(teacherFrame,studentFrame,'C is to the right of K');assert(greater.scene.correct);assert.deepEqual(greater.scene.hintLevels,{});await narrow(student,studentFrame,'ray-with-half-cells');
 
@@ -924,6 +924,7 @@ async function run(browser, origin, backend, failures) {
   phase = 'square layers, a rule in the pupil’s own words and seven cubes';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-21"]').click();await studentFrame.locator('h1').filter({hasText:'№5.21'}).waitFor();
   await teacherFrame.locator('summary').filter({hasText:'Моя формулировка правила'}).click();await teacherFrame.locator('#v5-quality-note').fill('Сторона большого квадрата равна сумме оснований.');
+  await teacherFrame.waitForFunction(() => window.__vilenkin5Board.getState().scene?.panels.notes === true);
   const ownRule=await same(teacherFrame,studentFrame,'writing the rule does not mark any step complete');assert.equal(ownRule.scene.attempt,0);assert.equal(ownRule.scene.firstAttempt,null);
   await teacherFrame.locator('#answer').fill('3');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'side mistaken for area')).scene.message,/сторону квадрата/);await ownership(teacher,student,true);
   await studentFrame.locator('[data-v5-param=rank]').fill('7');await studentFrame.locator('[data-v5-param=rank]').press('Tab');await studentFrame.locator('[data-v5-param=measure]').selectOption({value:'1'});
@@ -1117,6 +1118,16 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const oral=await same(studentFrame,teacherFrame,'words and denominator after teacher reload');assert.equal(oral.scene.model.row,1);assert.equal(oral.scene.savedInput,'треть кру');
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'same unfinished final phrase');await teacherFrame.locator('#answer').fill('треть круга');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'natural name for one third')).scene.correct);await narrow(student,studentFrame,'reading-fractions');
 
+  phase = 'source 5.46: thirteen figures, the hundred-cell square and both fractions';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-46"]').click();await studentFrame.locator('h1').filter({hasText:'№5.46'}).waitFor();
+  await teacherFrame.locator('#answer').fill('2/3');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'colour versus the free part of the disk')).scene.message,/свободную долю/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption({value:'7'});await studentFrame.locator('[data-v5-param=focus]').selectOption({value:'1'});await studentFrame.locator('[data-v5-prediction]').fill('9/50');await studentFrame.locator('[data-v5-predict] button').click();await studentFrame.locator('[data-v5-prediction]').fill('41/50');await studentFrame.locator('[data-v5-predict] button').click();
+  const hundred=await same(studentFrame,teacherFrame,'18 shaded and 82 free out of 100');assert(hundred.scene.model.seen);assert.equal(hundred.scene.model.first,'9/50');
+  for(const val of ['1/3','5/8','1','1/2','2/5','1/2','1/2','41/50','1/8;7/8','1/4;3/4','2/3;1/3','1/3;2/3']){await studentFrame.locator('#answer').fill(val);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();}
+  await studentFrame.locator('#answer').fill('5/7;2/7');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'both correct fractions in reverse order')).scene.message,/поменялись/);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const restoredAtlas=await same(studentFrame,teacherFrame,'hundred-cell investigation restored');assert.equal(restoredAtlas.scene.model.row,7);assert.equal(restoredAtlas.scene.model.first,'9/50');assert.equal(restoredAtlas.scene.savedInput,'5/7;2/7');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'learner sees the last two-fraction answer');await teacherFrame.locator('#answer').fill('2/7;5/7');await teacherFrame.locator('#answer-form button').click();const atlasComplete=await same(teacherFrame,studentFrame,'coloured and free sevenths');assert(atlasComplete.scene.correct);assert.equal(atlasComplete.scene.attempt,2);await narrow(student,studentFrame,'thirteen-shaded-figures');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
@@ -1169,7 +1180,7 @@ async function run(browser, origin, backend, failures) {
     child = spawn(process.execPath, ['index.js'], { cwd: join(ROOT, 'board-server'), env, stdio: ['ignore', 'ignore', 'pipe'] });
     child.stderr.on('data', chunk => { serverErrors = (serverErrors + String(chunk)).slice(-4000); }); await waitForHealth(backend, child, () => serverErrors);
     browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'], timeout: 15000 });
-    await Promise.race([run(browser, origin, backend, []), new Promise((_, fail) => { watchdog = setTimeout(() => fail(new Error('Browser gate exceeded 240 seconds at ' + phase)), 240000); })]);
+    await Promise.race([run(browser, origin, backend, []), new Promise((_, fail) => { watchdog = setTimeout(() => fail(new Error('Browser gate exceeded 15 minutes at ' + phase)), 15 * 60_000); })]);
   } finally {
     clearTimeout(watchdog); await browser?.close(); if (child && child.exitCode === null) child.kill('SIGTERM'); await new Promise(done => server.close(done));
   }
