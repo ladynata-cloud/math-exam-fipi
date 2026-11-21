@@ -144,7 +144,7 @@
    if(point&&source.point!==point)continue;
    const label='Часть '+source.part+', пункт '+source.point;
    if(!groups.has(label))groups.set(label,[]);
-   groups.get(label).push('<li><a href="#lesson/'+id+'">'+esc(lesson.title)+'</a> · с. '+source.page+'</li>');
+   groups.get(label).push('<li><a href="#lesson/'+id+'">'+esc(lesson.title)+'</a> · с. '+source.page+(source.pageEnd?'–'+source.pageEnd:'')+'</li>');
   }
   if(!groups.size)return '';
   return '<section class="panel"><h2>Решаем по номерам учебника</h2><p>Виленкин, 5 класс, издание 2023 года.</p>'+Array.from(groups,([label,items])=>'<h3>'+label+'</h3><ul>'+items.join('')+'</ul>').join('')+'</section>';
@@ -301,7 +301,7 @@
   session.correct=correct;if(session.task.m9Full){session.answers=session.answers||[];if(correct&&isLearn)session.answers[session.step]=value;session.attemptLog=session.attemptLog||[];if(!session.firstAttempt)session.firstAttempt={value:value.slice(0,400),correct:correct,assisted:session.assisted};session.attemptLog.push({value:value.slice(0,400),step:session.step,correct:correct,assisted:session.assisted,time:Date.now()});if(session.attemptLog.length>20)session.attemptLog.shift();}
   session.message=correct?(isLearn?steps()[session.step].why:'Ответ верный. '+(session.assisted?'Использована помощь.':session.exposed?'Условие уже было знакомо.':session.attempt>1?'Решено после исправления.':'Получилось с первой попытки без помощи.')):(target.answerFormat&&M.equal(value,target.answer)?'Значение верное, теперь выполни требуемое преобразование. '+formatNote(target):'Пока не совпало. Проверь смысл действия, знак и единицы. Подсказка поможет разобрать именно этот шаг.');
   if(V5Q&&boardFrame&&C.byId[session.id]?.v5Course&&correct&&!isLearn)session.message='Верно. Совместный разбор.';
-  session.remedy='';if(!correct&&session.task.v6Full){var err=(target.errors||[]).find(function(e){return M.equal(value,e.value);});if(target.answerFormat==='v5-classes'){
+  session.remedy='';if(!correct&&session.task.v6Full){var errorInput=target.answerFormat==='v5-natural'?(window.Vilenkin5PrintedDigits.natural(value)??value):value;var err=(target.errors||[]).find(function(e){return M.equal(errorInput,e.value);});if(target.answerFormat==='v5-classes'){
     session.message=value.replace(/[\s|]/g,'')===String(target.answer).replace(/\s/g,'')?'Цифры сохранены. Отсчитай тройки с правого края и отметь границы всех классов.':'После удаления пробелов должны остаться все исходные цифры в прежнем порядке. Проверь, не исчез ли внутренний ноль.';
   }if(target.answerFormat==='v5-reading'){
     if(/ноль|нуль/i.test(value))session.message='Нулевая цифра сохраняет место в записи. При чтении большого числа отдельно слово «ноль» не произносят.';

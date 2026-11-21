@@ -453,6 +453,17 @@ async function run(browser, origin, backend, failures) {
   await studentFrame.locator('#answer').fill('666;606;660;600');await studentFrame.locator('#answer-form button').click();const perm=await same(studentFrame,teacherFrame,'list in a different valid order');assert(perm.scene.correct);
   await narrow(student,studentFrame,'leading-choice-tree');await ownership(teacher,student,false);
 
+  phase = 'two legal beginnings in separate brackets';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-30"]').click();await studentFrame.locator('h1').filter({hasText:'№1.30'}).waitFor();
+  for(let i=0;i<2;i++){await solve(teacherFrame);await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'completed first expression '+i);}
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('3');await studentFrame.locator('#answer-form button').click();
+  const alternative=await same(studentFrame,teacherFrame,'right bracket is also a legal beginning');assert(alternative.scene.correct);assert.equal(alternative.scene.answers[2],'3');
+  await studentFrame.locator('[data-v5-param=row]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=op]').selectOption({value:'2'});
+  await studentFrame.locator('[data-v5-prediction]').fill('0');await studentFrame.locator('[data-v5-predict] button').click();
+  const zero=await same(studentFrame,teacherFrame,'right difference makes the whole product zero');assert(zero.scene.model.seen);
+  await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();

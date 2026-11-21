@@ -165,7 +165,7 @@
     if(target.answerFormat==='v5-reading'&&!/^[а-яёА-ЯЁ.,!?\s-]+$/.test(value))return 'Прочитай число и запиши словами. Цифрами здесь уже дано условие.';
     if(target.answerFormat==='v5-list'){
       const parts=value.split(';');
-      if(parts.length!==target.answer.length||parts.some(part=>M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
+      if(parts.length!==target.answer.length||parts.some(part=>root.Vilenkin5PrintedDigits.natural(part)===null&&M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
     }
     if(target.answerFormat==='v5-point-set'&&!root.Vilenkin5Numbered.readPointSet(value))return 'Введи буквы точек с рисунка. Запись можно поправить без потери попытки.';
     const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
@@ -231,7 +231,7 @@
     }
     const modes={learn:'1 · Разберись',practice:'2 · Потренируйся',check:'3 · Проверь себя'};
     head.querySelectorAll('[data-cmd=mode]').forEach(b=>{b.textContent=modes[b.dataset.value];b.classList.add('v5q-mode');b.classList.toggle('is-current',b.dataset.value===session.mode);b.setAttribute('aria-pressed',String(b.dataset.value===session.mode));});
-    head.insertAdjacentHTML('beforeend','<p class="v5q-source">Часть '+lesson.source.part+' · '+(lesson.point<=51?'пункт '+lesson.point:'дополнительный практикум')+' · '+(lesson.source.page!=='—'?'страница '+lesson.source.page:'переход в шестой класс')+'</p>');
+    head.insertAdjacentHTML('beforeend','<p class="v5q-source">Часть '+lesson.source.part+' · '+(lesson.point<=51?'пункт '+lesson.point:'дополнительный практикум')+' · '+(lesson.source.page!=='—'?(lesson.source.pageEnd?'страницы '+lesson.source.page+'–'+lesson.source.pageEnd:'страница '+lesson.source.page):'переход в шестой класс')+'</p>');
     if(theory){const box=root.document.createElement('details');box.className='v5q-theory';box.innerHTML='<summary>Правило и разобранный пример</summary>';theory.before(box);box.append(theory);}
     if(claim){const box=root.document.createElement('details');box.className='v5q-theory';box.innerHTML='<summary>Объясни правило своими словами</summary>';claim.before(box);box.append(claim);if(d.claim)claim.querySelector('#claim-feedback').textContent=(String(lesson.claimTrue)===d.claim?'Да, верно определено. ':'Посмотри ещё раз на объяснение. ')+lesson.explanation;}
     const workspace=root.document.createElement('div');workspace.className='v5q-workspace';head.after(workspace);if(model)workspace.append(model);workspace.append(task);if(!model)workspace.classList.add('v5q-solo');
