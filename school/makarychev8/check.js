@@ -376,7 +376,11 @@ function setEntries(value){
   const term=token.trim().replace(/[−–—]/g,'-').replace(/^([+-])\s+/,'$1');
   if(!term)continue;
   const pair=/^(?:±|\+\/-)\s*(.*)$/.exec(term);
-  if(!pair){entries.push(term);continue;}
+  if(!pair){
+   const rational=M.parse(term);
+   if(!rational&&/\d\s+\d/.test(term))return null;
+   entries.push(rational?M.answer(rational):term);continue;
+  }
   const magnitude=M.parse(pair[1]);
   if(!magnitude){
    const radical=signedSquare(pair[1]);if(!radical)return null;
@@ -886,6 +890,7 @@ function check(user,target){
  if(target.kind==='ordered-coordinates')return Boolean(G.coordinateEvidence(user,target.coordinateSymbols,target.coordinateOrder,target.coordinateBounds)?.valid);
  if(target.kind==='ordered-comparison-sample')return G.admissibleSample(user,target.graph.sourceDomain,2)&&G.inequalityTrial(target.graph,user,true)?.sign===target.requiredSign;
  if(target.kind==='transformed-order')return transformedOrder(user,target);
+ if(target.kind==='bounded-point')return G.withinBounds(user,target.limits);
  if(target.kind==='source-domain-sample')return G.admissibleSample(user,target.sourceDomain,target.probeCount);
  if(target.kind==='inequality-counterexample'){const probe=G.inequalityTrial(target.graph,user,true);return Boolean(probe&&probe.sign!==target.graph.operator);}
  if(target.kind==='unique-system-triple')return Boolean(systemTriple(user)?.nonzero);
