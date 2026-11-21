@@ -177,7 +177,7 @@
  function verifiedBook(b){
   var rows=b.mapping.map(function(m){
    var label=m.sectionLabel?esc(m.sectionLabel)+' · с. '+esc(m.page):(m.paragraph?'§ '+m.paragraph+' · ':m.supplementaryChapter?'Глава '+m.supplementaryChapter+' · Для тех, кто хочет знать больше · ':'')+'Пункт '+m.section+' · с. '+m.page;
-   var entry=m.bookOnly?'<a class="button quiet" href="'+esc(m.sourcePath)+'">Сверить страницу в книге</a>':m.externalPath?'<a class="button" href="'+esc(m.externalPath)+'">Разобрать и решить</a>':button('Разобрать и решить','book-skill',b.id+'/'+m.section);
+   var entry=m.bookOnly?'<a class="button quiet" href="'+esc(m.sourcePath)+'">'+esc(m.sourceLinkLabel||'Сверить страницу в книге')+'</a>':m.externalPath?'<a class="button" href="'+esc(m.externalPath)+'">Разобрать и решить</a>':button('Разобрать и решить','book-skill',b.id+'/'+m.section);
    var boardUrl=m.boardPath;
    var mirror=boardUrl?'<a class="button quiet" href="../trainers/trainer-board.html?trainer='+encodeURIComponent(boardUrl)+'">Решать на общей доске</a>':'';
    return '<article class="skill-row"><div><p class="eyebrow">'+label+'</p><h3>'+esc(m.title||m.focus)+'</h3>'+(m.title&&m.focus?'<p>'+esc(m.focus)+'</p>':'')+'</div><div class="row">'+entry+mirror+'</div></article>';

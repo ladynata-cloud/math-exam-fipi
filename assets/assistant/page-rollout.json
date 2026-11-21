@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 637,
-    "covered": 635,
+    "total": 638,
+    "covered": 636,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -46,7 +46,8 @@
     "trainers/mordkovich-2020/index.html",
     "trainers/peterson7-2011/index.html",
     "trainers/makarychev8-2018/index.html",
-    "trainers/peterson8-2017/index.html"
+    "trainers/peterson8-2017/index.html",
+    "trainers/vilenkin8-2010/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4039,7 +4040,8 @@
     "trainers/mordkovich-2020/index.html": "school/index.html",
     "trainers/peterson7-2011/index.html": "school/index.html",
     "trainers/makarychev8-2018/index.html": "school/index.html",
-    "trainers/peterson8-2017/index.html": "school/index.html"
+    "trainers/peterson8-2017/index.html": "school/index.html",
+    "trainers/vilenkin8-2010/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6835,6 +6837,14 @@
         "trainers/peterson8-2017/index.html"
       ],
       "reason": "Первые задачи об аналогии и разбиении на шаги из первого тома алгебры Петерсона для восьмого класса, с отдельным указанием печатных подпунктов."
+    },
+    {
+      "sourceBaseSha": "437d276ebdde3301c464e52dc7cf5313e52c3fc6",
+      "task": "docs/tasks/WORKSHOP_VILENKIN8_2010.md",
+      "addedPages": [
+        "trainers/vilenkin8-2010/index.html"
+      ],
+      "reason": "Виленкин, углублённая алгебра 8 класса 2010 года. Сопоставление дробей и вложенных делений по напечатанным номерам и подпунктам."
     }
   ]
 }
