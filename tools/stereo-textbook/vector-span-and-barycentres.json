@@ -1,0 +1,650 @@
+{
+  "parts": {
+    "619": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "620": [
+      "а",
+      "б"
+    ],
+    "621": [
+      null
+    ],
+    "622": [
+      null
+    ],
+    "623": [
+      null
+    ],
+    "624": [
+      "а",
+      "б",
+      "в"
+    ],
+    "625": [
+      "а",
+      "б"
+    ],
+    "626": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "619": {
+      "id": "source-main-0619",
+      "kind": "exercise",
+      "title": "Задача № 619",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "619",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "620": {
+      "id": "source-main-0620",
+      "kind": "exercise",
+      "title": "Задача № 620",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "620",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "621": {
+      "id": "source-main-0621",
+      "kind": "exercise",
+      "title": "Задача № 621",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "621",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "622": {
+      "id": "source-main-0622",
+      "kind": "exercise",
+      "title": "Задача № 622",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "622",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "623": {
+      "id": "source-main-0623",
+      "kind": "exercise",
+      "title": "Задача № 623",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "623",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "624": {
+      "id": "source-main-0624",
+      "kind": "exercise",
+      "title": "Задача № 624",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "624",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "625": {
+      "id": "source-main-0625",
+      "kind": "exercise",
+      "title": "Задача № 625",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "625",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "626": {
+      "id": "source-main-0626",
+      "kind": "exercise",
+      "title": "Задача № 626",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "626",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0619-a": {
+      "raw": "b35886b27a2ace1e0491992563cbdb250542584ebb840b95aa7faa948e37e16b",
+      "authored": "87dea07ebac3c785a84ed2a300f51255ec2292faf2eccddbc4db83af0386322f",
+      "integrated": "c4eaecc5856bc1ba30d7dcf3f3a71c8463a9266aabf8228b6eb8a5d36c8c1e4a"
+    },
+    "ex-main-0619-b": {
+      "raw": "6c3a40f3b40a950892b48cc8b0e4a4898576f63eabb2beb783df75429e1bac47",
+      "authored": "ae9bfacd63874d3f783b76d8cb41ac302fb1dc74f3237684f9e9d64897ad7ee6",
+      "integrated": "3169b6505012f02b6d277e741fe37f95497696b053e3771a00a49da12e6d3f87"
+    },
+    "ex-main-0619-c": {
+      "raw": "f29b0d8154bb72d08f6a244851855a5f47e795c9bee367974df55bd7e96c7d54",
+      "authored": "165fed0813a285e1dc6d372f3ff2ee2db5666ab1cc1d63ae62f4ac64f9342cc7",
+      "integrated": "fa24cb151c3314423ba12c812918970730a417f3d44abaf8527382060d1e3405"
+    },
+    "ex-main-0619-d": {
+      "raw": "1b7fd826b5edfbf7597cd356555fc1e77b9d7efea2ce05a3e5c727358ea06dd7",
+      "authored": "220585d1d8c966bc9c10c5f5cc90fe3d93f804e9a6fa98a22e80ba8aaa32bcb7",
+      "integrated": "5e30f869a699e7a9bb4a97195ccfbde97476ed6622e5d66b72b0bf7b7dfa60c4"
+    },
+    "ex-main-0620-a": {
+      "raw": "3b8720b2e786cf09b00c39b83d66c0835022f2c45bc1e9d95d8c31fff24586ad",
+      "authored": "4117b9a426c383c3b0b411ed1d91b846acd7e1c7ec75044a4bf6c8260d218342",
+      "integrated": "857f6766f5f2be14217a1adaa1f145e34130f288f4afd7f28a5e046b7ff3e5b8"
+    },
+    "ex-main-0620-b": {
+      "raw": "a5f2b741f5dd90c298f74d0803e002e7822b0e5c592245e7992d88b0233af615",
+      "authored": "731098e375793a703e3323d6a4ce74b17a294bba0753129444a3f9a6ea8ef5fd",
+      "integrated": "8fc68c7ea379638f62b38b32d1287417c9a45658b294bb9e7bc735aa7e325f79"
+    },
+    "ex-main-0621": {
+      "raw": "4f23843f66db3b9d9347828dcfd7def9d5ef3cf07d61981186c7a2ce21f4465c",
+      "authored": "8c0018d85647fca20af33af52b5dbc6fd74bb205f52b45024eb70d4204a3eb6f",
+      "integrated": "3de56b168db32e78091e8a101c019f44401763d977be0ef387aa9e189335d0ae"
+    },
+    "ex-main-0622": {
+      "raw": "8697479103d5005e68926332808548262ae41adde75b2dd237d8ab95bc811ab4",
+      "authored": "7dc40ba283a90ede859613022ae906af0792953704d4c65c91dc14476f3c8f91",
+      "integrated": "ab6925a1899ad76e5fe6ca569a78935fa73b8aea65aada933db6e4af637fe4c6"
+    },
+    "ex-main-0623": {
+      "raw": "03c1ad5010cbe8d386cf11df621252d53aa013b87a7ed7b671f5173bf08dae6c",
+      "authored": "55988000e74a6f02da6502492881e3009def792fb9523cd6dccdee977b98aebc",
+      "integrated": "24215954898a8ac1f0cdef97711fb937a46921f055cdf71b6b300a03b1703555"
+    },
+    "ex-main-0624-a": {
+      "raw": "68c11e0a015a78f8de4b49a70f62df624b2a9bf9cf86457dff71d9492225846a",
+      "authored": "17962add5df74c42eaeac5f6f7a7a4efb51a52260371e2333d047a01eb2b5d2a",
+      "integrated": "73e1ed2838d39f58c71aad773865ff1002dbcc7c4fba45eec917444fd424fb40"
+    },
+    "ex-main-0624-b": {
+      "raw": "aa121d1fdbfc40a398f17b602b0207abb8b5da36bca79757c9d9d798a7a2b32c",
+      "authored": "61ab7027e7652dd2479a12d1856709713acd01684db25775b9d8b1a4dfcdb1c3",
+      "integrated": "5f70aabdd33efd210283182f8f27e76a7aa709cba6ca02d71cfe18504dd564ae"
+    },
+    "ex-main-0624-c": {
+      "raw": "3ce01d86cfe7f888833f54a1bbfbf9cad70f5ef056f8f4575abc77f98af62fef",
+      "authored": "83f3411d094ccd2110100866eba5733d499b0a798da0848e7688914eee470e9a",
+      "integrated": "705b1d3060e1dd10e22c08c7045366c821505ec0b5a8591845962ea0a7b9b0a1"
+    },
+    "ex-main-0625-a": {
+      "raw": "9cb84758e436f726e234ff4882375b2e769d7f9027fccb70b258f4c1ab25854b",
+      "authored": "1d4e1149e5bb94f2a10c8e2ade3d78654ea928db927ab803505596ab80a45ce0",
+      "integrated": "c73c09c3f38e701c317465cacfb77910f55fff4eeb59840573669cf2e93b4a22"
+    },
+    "ex-main-0625-b": {
+      "raw": "27ccf2d125bcb6155aad06ecea4e8907aba098d40194b49e0b9a2d73c227d235",
+      "authored": "c09b7d1a439667a8290e6b797d71b7c004c6000387b8ffb95df8cf7b0d0b18ca",
+      "integrated": "6be3fc32823d4950d97a9d42085d52fe410653bc3f942abffb14482c418f8d04"
+    },
+    "ex-main-0626": {
+      "raw": "fd9e02b79ae1c647cc1f3f8e6271f404af27e70c5ad4e3c801f774e1b7c2ba47",
+      "authored": "f4cac46168cba0cd571b65e19fa8e830da640c1d57480c13338d5ce901748b9f",
+      "integrated": "a313a262e773669996c5cfd1d2414935ba485202318b36dc9bd9cbddd73593de"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0619-a|condition",
+      "vector-span-and-barycentres-ex-main-0619-a-condition"
+    ],
+    [
+      "ex-main-0619-a|help:h1",
+      "vector-span-and-barycentres-ex-main-0619-a-help-h1"
+    ],
+    [
+      "ex-main-0619-a|help:h2",
+      "vector-span-and-barycentres-ex-main-0619-a-help-h2"
+    ],
+    [
+      "ex-main-0619-a|step-1",
+      "vector-span-and-barycentres-ex-main-0619-a-step-1"
+    ],
+    [
+      "ex-main-0619-a|step-2",
+      "vector-span-and-barycentres-ex-main-0619-a-step-2"
+    ],
+    [
+      "ex-main-0619-a|step-3",
+      "vector-span-and-barycentres-ex-main-0619-a-step-3"
+    ],
+    [
+      "ex-main-0619-b|condition",
+      "vector-span-and-barycentres-ex-main-0619-b-condition"
+    ],
+    [
+      "ex-main-0619-b|help:h1",
+      "vector-span-and-barycentres-ex-main-0619-b-help-h1"
+    ],
+    [
+      "ex-main-0619-b|help:h2",
+      "vector-span-and-barycentres-ex-main-0619-b-help-h2"
+    ],
+    [
+      "ex-main-0619-b|step-1",
+      "vector-span-and-barycentres-ex-main-0619-b-step-1"
+    ],
+    [
+      "ex-main-0619-b|step-2",
+      "vector-span-and-barycentres-ex-main-0619-b-step-2"
+    ],
+    [
+      "ex-main-0619-b|step-3",
+      "vector-span-and-barycentres-ex-main-0619-b-step-3"
+    ],
+    [
+      "ex-main-0619-c|condition",
+      "vector-span-and-barycentres-ex-main-0619-c-condition"
+    ],
+    [
+      "ex-main-0619-c|help:h1",
+      "vector-span-and-barycentres-ex-main-0619-c-help-h1"
+    ],
+    [
+      "ex-main-0619-c|help:h2",
+      "vector-span-and-barycentres-ex-main-0619-c-help-h2"
+    ],
+    [
+      "ex-main-0619-c|step-1",
+      "vector-span-and-barycentres-ex-main-0619-c-step-1"
+    ],
+    [
+      "ex-main-0619-c|step-2",
+      "vector-span-and-barycentres-ex-main-0619-c-step-2"
+    ],
+    [
+      "ex-main-0619-c|step-3",
+      "vector-span-and-barycentres-ex-main-0619-c-step-3"
+    ],
+    [
+      "ex-main-0619-d|condition",
+      "vector-span-and-barycentres-ex-main-0619-d-condition"
+    ],
+    [
+      "ex-main-0619-d|help:h1",
+      "vector-span-and-barycentres-ex-main-0619-d-help-h1"
+    ],
+    [
+      "ex-main-0619-d|help:h2",
+      "vector-span-and-barycentres-ex-main-0619-d-help-h2"
+    ],
+    [
+      "ex-main-0619-d|step-1",
+      "vector-span-and-barycentres-ex-main-0619-d-step-1"
+    ],
+    [
+      "ex-main-0619-d|step-2",
+      "vector-span-and-barycentres-ex-main-0619-d-step-2"
+    ],
+    [
+      "ex-main-0619-d|step-3",
+      "vector-span-and-barycentres-ex-main-0619-d-step-3"
+    ],
+    [
+      "ex-main-0620-a|condition",
+      "vector-span-and-barycentres-ex-main-0620-a-condition"
+    ],
+    [
+      "ex-main-0620-a|help:h1",
+      "vector-span-and-barycentres-ex-main-0620-a-help-h1"
+    ],
+    [
+      "ex-main-0620-a|help:h2",
+      "vector-span-and-barycentres-ex-main-0620-a-help-h2"
+    ],
+    [
+      "ex-main-0620-a|step-1",
+      "vector-span-and-barycentres-ex-main-0620-a-step-1"
+    ],
+    [
+      "ex-main-0620-a|step-2",
+      "vector-span-and-barycentres-ex-main-0620-a-step-2"
+    ],
+    [
+      "ex-main-0620-a|step-3",
+      "vector-span-and-barycentres-ex-main-0620-a-step-3"
+    ],
+    [
+      "ex-main-0620-b|condition",
+      "vector-span-and-barycentres-ex-main-0620-b-condition"
+    ],
+    [
+      "ex-main-0620-b|help:h1",
+      "vector-span-and-barycentres-ex-main-0620-b-help-h1"
+    ],
+    [
+      "ex-main-0620-b|help:h2",
+      "vector-span-and-barycentres-ex-main-0620-b-help-h2"
+    ],
+    [
+      "ex-main-0620-b|step-1",
+      "vector-span-and-barycentres-ex-main-0620-b-step-1"
+    ],
+    [
+      "ex-main-0620-b|step-2",
+      "vector-span-and-barycentres-ex-main-0620-b-step-2"
+    ],
+    [
+      "ex-main-0620-b|step-3",
+      "vector-span-and-barycentres-ex-main-0620-b-step-3"
+    ],
+    [
+      "ex-main-0621|condition",
+      "vector-span-and-barycentres-ex-main-0621-condition"
+    ],
+    [
+      "ex-main-0621|help:h1",
+      "vector-span-and-barycentres-ex-main-0621-help-h1"
+    ],
+    [
+      "ex-main-0621|help:h2",
+      "vector-span-and-barycentres-ex-main-0621-help-h2"
+    ],
+    [
+      "ex-main-0621|step-1",
+      "vector-span-and-barycentres-ex-main-0621-step-1"
+    ],
+    [
+      "ex-main-0621|step-2",
+      "vector-span-and-barycentres-ex-main-0621-step-2"
+    ],
+    [
+      "ex-main-0621|step-3",
+      "vector-span-and-barycentres-ex-main-0621-step-3"
+    ],
+    [
+      "ex-main-0622|condition",
+      "vector-span-and-barycentres-ex-main-0622-condition"
+    ],
+    [
+      "ex-main-0622|help:h1",
+      "vector-span-and-barycentres-ex-main-0622-help-h1"
+    ],
+    [
+      "ex-main-0622|help:h2",
+      "vector-span-and-barycentres-ex-main-0622-help-h2"
+    ],
+    [
+      "ex-main-0622|step-1",
+      "vector-span-and-barycentres-ex-main-0622-step-1"
+    ],
+    [
+      "ex-main-0622|step-2",
+      "vector-span-and-barycentres-ex-main-0622-step-2"
+    ],
+    [
+      "ex-main-0622|step-3",
+      "vector-span-and-barycentres-ex-main-0622-step-3"
+    ],
+    [
+      "ex-main-0623|condition",
+      "vector-span-and-barycentres-ex-main-0623-condition"
+    ],
+    [
+      "ex-main-0623|help:h1",
+      "vector-span-and-barycentres-ex-main-0623-help-h1"
+    ],
+    [
+      "ex-main-0623|help:h2",
+      "vector-span-and-barycentres-ex-main-0623-help-h2"
+    ],
+    [
+      "ex-main-0623|step-1",
+      "vector-span-and-barycentres-ex-main-0623-step-1"
+    ],
+    [
+      "ex-main-0623|step-2",
+      "vector-span-and-barycentres-ex-main-0623-step-2"
+    ],
+    [
+      "ex-main-0623|step-3",
+      "vector-span-and-barycentres-ex-main-0623-step-3"
+    ],
+    [
+      "ex-main-0624-a|condition",
+      "vector-span-and-barycentres-ex-main-0624-a-condition"
+    ],
+    [
+      "ex-main-0624-a|help:h1",
+      "vector-span-and-barycentres-ex-main-0624-a-help-h1"
+    ],
+    [
+      "ex-main-0624-a|help:h2",
+      "vector-span-and-barycentres-ex-main-0624-a-help-h2"
+    ],
+    [
+      "ex-main-0624-a|step-1",
+      "vector-span-and-barycentres-ex-main-0624-a-step-1"
+    ],
+    [
+      "ex-main-0624-a|step-2",
+      "vector-span-and-barycentres-ex-main-0624-a-step-2"
+    ],
+    [
+      "ex-main-0624-a|step-3",
+      "vector-span-and-barycentres-ex-main-0624-a-step-3"
+    ],
+    [
+      "ex-main-0624-b|condition",
+      "vector-span-and-barycentres-ex-main-0624-b-condition"
+    ],
+    [
+      "ex-main-0624-b|help:h1",
+      "vector-span-and-barycentres-ex-main-0624-b-help-h1"
+    ],
+    [
+      "ex-main-0624-b|help:h2",
+      "vector-span-and-barycentres-ex-main-0624-b-help-h2"
+    ],
+    [
+      "ex-main-0624-b|step-1",
+      "vector-span-and-barycentres-ex-main-0624-b-step-1"
+    ],
+    [
+      "ex-main-0624-b|step-2",
+      "vector-span-and-barycentres-ex-main-0624-b-step-2"
+    ],
+    [
+      "ex-main-0624-b|step-3",
+      "vector-span-and-barycentres-ex-main-0624-b-step-3"
+    ],
+    [
+      "ex-main-0624-c|condition",
+      "vector-span-and-barycentres-ex-main-0624-c-condition"
+    ],
+    [
+      "ex-main-0624-c|help:h1",
+      "vector-span-and-barycentres-ex-main-0624-c-help-h1"
+    ],
+    [
+      "ex-main-0624-c|help:h2",
+      "vector-span-and-barycentres-ex-main-0624-c-help-h2"
+    ],
+    [
+      "ex-main-0624-c|step-1",
+      "vector-span-and-barycentres-ex-main-0624-c-step-1"
+    ],
+    [
+      "ex-main-0624-c|step-2",
+      "vector-span-and-barycentres-ex-main-0624-c-step-2"
+    ],
+    [
+      "ex-main-0624-c|step-3",
+      "vector-span-and-barycentres-ex-main-0624-c-step-3"
+    ],
+    [
+      "ex-main-0625-a|condition",
+      "vector-span-and-barycentres-ex-main-0625-a-condition"
+    ],
+    [
+      "ex-main-0625-a|help:h1",
+      "vector-span-and-barycentres-ex-main-0625-a-help-h1"
+    ],
+    [
+      "ex-main-0625-a|help:h2",
+      "vector-span-and-barycentres-ex-main-0625-a-help-h2"
+    ],
+    [
+      "ex-main-0625-a|step-1",
+      "vector-span-and-barycentres-ex-main-0625-a-step-1"
+    ],
+    [
+      "ex-main-0625-a|step-2",
+      "vector-span-and-barycentres-ex-main-0625-a-step-2"
+    ],
+    [
+      "ex-main-0625-a|step-3",
+      "vector-span-and-barycentres-ex-main-0625-a-step-3"
+    ],
+    [
+      "ex-main-0625-b|condition",
+      "vector-span-and-barycentres-ex-main-0625-b-condition"
+    ],
+    [
+      "ex-main-0625-b|help:h1",
+      "vector-span-and-barycentres-ex-main-0625-b-help-h1"
+    ],
+    [
+      "ex-main-0625-b|help:h2",
+      "vector-span-and-barycentres-ex-main-0625-b-help-h2"
+    ],
+    [
+      "ex-main-0625-b|step-1",
+      "vector-span-and-barycentres-ex-main-0625-b-step-1"
+    ],
+    [
+      "ex-main-0625-b|step-2",
+      "vector-span-and-barycentres-ex-main-0625-b-step-2"
+    ],
+    [
+      "ex-main-0625-b|step-3",
+      "vector-span-and-barycentres-ex-main-0625-b-step-3"
+    ],
+    [
+      "ex-main-0626|condition",
+      "vector-span-and-barycentres-ex-main-0626-condition"
+    ],
+    [
+      "ex-main-0626|help:h1",
+      "vector-span-and-barycentres-ex-main-0626-help-h1"
+    ],
+    [
+      "ex-main-0626|help:h2",
+      "vector-span-and-barycentres-ex-main-0626-help-h2"
+    ],
+    [
+      "ex-main-0626|step-1",
+      "vector-span-and-barycentres-ex-main-0626-step-1"
+    ],
+    [
+      "ex-main-0626|step-2",
+      "vector-span-and-barycentres-ex-main-0626-step-2"
+    ],
+    [
+      "ex-main-0626|step-3",
+      "vector-span-and-barycentres-ex-main-0626-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "88a5e25e7a1cfce0724bed23c2c9cca1b4ef76a6b1db22fc8f68000cdd577110",
+      "afterSHA256": "768f251ba3691bbf81d74ff997e42cdf14c335b60a4d83300903c2f529d3bb9b"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "a2b7072f2a2efc0acab839f4ab4c42c051a28b959be62d68f1db9282bfcd1770",
+      "afterSHA256": "6c49988707170bc0066837b6c2dc3094d97d4558d162e9e414c01e465ce5cf80"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T21:42:14Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–618 and the full chapter VI self-check, with 1,069 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "90558fe70fcf822a74a01b6735728cf9f738ab1ac608a266b2e66fd700496f67",
+    "index": "7fc471bb2231a739302c9675ce8f73a540e03eec90c9f2078a0b628197633093",
+    "registry": "7fa06ceb50e8d57c64dd3e593afb5c133b712558b01d2ec18ca08d324fd44d79",
+    "cases": "ab5ef6255195801593874f724dbb492655708dbb1678c5e4cef3ba2001bc74a0"
+  }
+}

@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T21:28:45Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–612 and the 15 printed chapter VI self-check questions, with 1,055 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T22:49:04Z",
+  "scope": "Chapters I–VI and complete chapter VII paragraph 1: points 71–75 and all 45 exercises 637–681, with 1,221 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1806,6 +1806,271 @@
       ],
       "evidence": "tools/stereo-textbook/vector-chapter-selfcheck.json",
       "mathematicalReport": "tools/stereo-textbook/vector-chapter-selfcheck.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 157, printed page 157, figure 173 for exercise 614, key 269 where supplied; independent directed edge sums and original polyhedral models.",
+      "reviewedAt": "2026-11-21T21:42:14Z",
+      "scope": "All six initial additional tasks of chapter VI with 14 complete source-level questions on original spatial models, including all edges and opposite vertices of printed figure 173, every equivalent box-vector name, a zero closed path and preservation of sides under translation",
+      "cardIds": [
+        "ex-main-0613-a",
+        "ex-main-0613-b",
+        "ex-main-0613-c",
+        "ex-main-0614-a",
+        "ex-main-0614-b",
+        "ex-main-0614-c",
+        "ex-main-0615",
+        "ex-main-0616-a",
+        "ex-main-0616-b",
+        "ex-main-0616-c",
+        "ex-main-0617-a",
+        "ex-main-0617-b",
+        "ex-main-0617-c",
+        "ex-main-0618"
+      ],
+      "evidence": "tools/stereo-textbook/additional-directed-edge-sums.json",
+      "mathematicalReport": "tools/stereo-textbook/additional-directed-edge-sums.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 158, printed page 158, the zero-vector convention on 142, and keys 269 where supplied; independent directed edge sums and original polyhedral models.",
+      "reviewedAt": "2026-11-21T21:48:53Z",
+      "scope": "Every printed part of exercises 619–626, including the exact Atanasyan nonnegative co-direction convention, arbitrary origin, strict inequality, extrapolated affine points and an actually disjoint plane for three skew-line connectors",
+      "cardIds": [
+        "ex-main-0619-a",
+        "ex-main-0619-b",
+        "ex-main-0619-c",
+        "ex-main-0619-d",
+        "ex-main-0620-a",
+        "ex-main-0620-b",
+        "ex-main-0621",
+        "ex-main-0622",
+        "ex-main-0623",
+        "ex-main-0624-a",
+        "ex-main-0624-b",
+        "ex-main-0624-c",
+        "ex-main-0625-a",
+        "ex-main-0625-b",
+        "ex-main-0626"
+      ],
+      "evidence": "tools/stereo-textbook/vector-span-and-barycentres.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-span-and-barycentres.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 158, source problems and answers on 269, vector superposition, independent affine identities and original models.",
+      "reviewedAt": "2026-11-21T21:59:56Z",
+      "scope": "All ten remaining chapter VI problems, every lettered item, four unequal-charge fields and their superposed vector arrows, eight oriented diagonals, affine basis changes, disjoint parallel planes, all centroid identities and the final tetrahedron homothety",
+      "cardIds": [
+        "ex-main-0627-a",
+        "ex-main-0627-b",
+        "ex-main-0627-c",
+        "ex-main-0627-d",
+        "ex-main-0628",
+        "ex-main-0629",
+        "ex-main-0630-a",
+        "ex-main-0630-b",
+        "ex-main-0631",
+        "ex-main-0632",
+        "ex-main-0633",
+        "ex-main-0634",
+        "ex-main-0635",
+        "ex-main-0636"
+      ],
+      "evidence": "tools/stereo-textbook/vector-chapter-six-end.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-chapter-six-end.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 160, 161, coordinate definitions on 160–166, all radicals and directions checked visually on issued 166 and answer key 269 where present.",
+      "reviewedAt": "2026-11-21T22:11:08Z",
+      "scope": "Full rectangular coordinate system, vectors, midpoints and sphere foundations with the authentic coordinate triples, all six membership groups, all 18 projections preserving each radical, and four remaining cube coordinates.",
+      "cardIds": [
+        "theory-071",
+        "theory-072",
+        "theory-073",
+        "theory-074",
+        "theory-075",
+        "ex-main-0637-a",
+        "ex-main-0637-b",
+        "ex-main-0637-c",
+        "ex-main-0637-d",
+        "ex-main-0637-e",
+        "ex-main-0637-f",
+        "ex-main-0638-a",
+        "ex-main-0638-b",
+        "ex-main-0639"
+      ],
+      "evidence": "tools/stereo-textbook/cartesian-coordinate-start.json",
+      "mathematicalReport": "tools/stereo-textbook/cartesian-coordinate-start.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 167, coordinate constructions checked against both printed figures 185/186 and steps on 167, with answers on 269 where supplied.",
+      "reviewedAt": "2026-11-21T22:15:19Z",
+      "scope": "All six coordinate-vector tasks, eight lettered vector sums and all 16 arrow endpoints originating in printed figures 185 and 186, including arbitrary orientation and fractional midpoint displacements.",
+      "cardIds": [
+        "ex-main-0640",
+        "ex-main-0641",
+        "ex-main-0642",
+        "ex-main-0643",
+        "ex-main-0644-a",
+        "ex-main-0644-b",
+        "ex-main-0644-c",
+        "ex-main-0644-d",
+        "ex-main-0644-e",
+        "ex-main-0644-f",
+        "ex-main-0644-g",
+        "ex-main-0644-h",
+        "ex-main-0645"
+      ],
+      "evidence": "tools/stereo-textbook/coordinate-vectors-and-diagrams.json",
+      "mathematicalReport": "tools/stereo-textbook/coordinate-vectors-and-diagrams.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 167, the four original sets of vector coordinates, exact signed decimal and fractional multipliers on printed 167, printed 269–270 where answers provided.",
+      "reviewedAt": "2026-11-21T22:19:54Z",
+      "scope": "All twelve variants of 646, both signed combinations of 647, the four independent formulas of 648, all six opposite vectors in 649, and printed keys on pages 269–270, with distinct new-data retries.",
+      "cardIds": [
+        "ex-main-0646-a",
+        "ex-main-0646-b",
+        "ex-main-0646-c",
+        "ex-main-0646-d",
+        "ex-main-0646-e",
+        "ex-main-0646-f",
+        "ex-main-0646-g",
+        "ex-main-0646-h",
+        "ex-main-0646-i",
+        "ex-main-0646-j",
+        "ex-main-0646-k",
+        "ex-main-0646-l",
+        "ex-main-0647",
+        "ex-main-0648-a",
+        "ex-main-0648-b",
+        "ex-main-0648-c",
+        "ex-main-0648-d",
+        "ex-main-0649"
+      ],
+      "evidence": "tools/stereo-textbook/signed-coordinate-arithmetic.json",
+      "mathematicalReport": "tools/stereo-textbook/signed-coordinate-arithmetic.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 168, all ratios, zero components, strict span tests and the worked examples on printed 168, with official answers on 270 where supplied.",
+      "reviewedAt": "2026-11-21T22:25:21Z",
+      "scope": "Five vector collinearity decisions including zero and mismatched ratios, both parameter pairs, and six independent plane-span constructions with explicit witnesses or contradictions on printed page 168.",
+      "cardIds": [
+        "ex-main-0650-a",
+        "ex-main-0650-b",
+        "ex-main-0650-c",
+        "ex-main-0650-d",
+        "ex-main-0650-e",
+        "ex-main-0651-a",
+        "ex-main-0651-b",
+        "ex-main-0652-a",
+        "ex-main-0652-b",
+        "ex-main-0652-c",
+        "ex-main-0652-d",
+        "ex-main-0652-e",
+        "ex-main-0652-f"
+      ],
+      "evidence": "tools/stereo-textbook/coordinate-span-ratios.json",
+      "mathematicalReport": "tools/stereo-textbook/coordinate-span-ratios.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 169, source triples on printed page 169 and keys on 270, independent directed differences, collinearity, planes and affine barycentres.",
+      "reviewedAt": "2026-11-21T22:29:04Z",
+      "scope": "All original position vectors, directed triangle and parallelogram paths, three exact line and three plane decisions, with the centroid median theorem and transferred-origin examples from printed page 169.",
+      "cardIds": [
+        "ex-main-0653",
+        "ex-main-0654",
+        "ex-main-0655-a",
+        "ex-main-0655-b",
+        "ex-main-0655-c",
+        "ex-main-0656",
+        "ex-main-0657",
+        "ex-main-0658-a",
+        "ex-main-0658-b",
+        "ex-main-0658-c",
+        "ex-main-0659-a",
+        "ex-main-0659-b",
+        "ex-main-0659-c",
+        "ex-main-0660"
+      ],
+      "evidence": "tools/stereo-textbook/spatial-points-and-centroid.json",
+      "mathematicalReport": "tools/stereo-textbook/spatial-points-and-centroid.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 169, source point triples on pages 169 and 170; all radical signs and interpretations of vector magnitude verified in the issued page images and printed keys 270.",
+      "reviewedAt": "2026-11-21T22:36:21Z",
+      "scope": "Every printed case of 661–667, including mixed coordinate midpoint constraints, independent scaling, exact radical norms, differences of lengths, perimeter and all three triangle medians, with original diagram states.",
+      "cardIds": [
+        "ex-main-0661-a",
+        "ex-main-0661-b",
+        "ex-main-0661-c",
+        "ex-main-0662-a",
+        "ex-main-0662-b",
+        "ex-main-0662-c",
+        "ex-main-0662-d",
+        "ex-main-0663-a",
+        "ex-main-0663-b",
+        "ex-main-0664",
+        "ex-main-0665-a",
+        "ex-main-0665-b",
+        "ex-main-0665-c",
+        "ex-main-0665-d",
+        "ex-main-0665-e",
+        "ex-main-0665-f",
+        "ex-main-0665-g",
+        "ex-main-0666",
+        "ex-main-0667-a",
+        "ex-main-0667-b"
+      ],
+      "evidence": "tools/stereo-textbook/midpoints-and-vector-lengths.json",
+      "mathematicalReport": "tools/stereo-textbook/midpoints-and-vector-lengths.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 170, supplied source 170 including radicals in 668, 670 and 671, all equal-distance and isosceles cases checked against the complete printed answer on 270.",
+      "reviewedAt": "2026-11-21T22:42:51Z",
+      "scope": "Every case of 668–676 on printed page 170, including the negative radical height, exact orthogonal projections and least distances, all five isosceles parameters, nondegenerate trapezoid, six equal-distance intersections, and both circumcentres.",
+      "cardIds": [
+        "ex-main-0668-a",
+        "ex-main-0668-b",
+        "ex-main-0668-c",
+        "ex-main-0668-d",
+        "ex-main-0669-a",
+        "ex-main-0669-b",
+        "ex-main-0670",
+        "ex-main-0671",
+        "ex-main-0672",
+        "ex-main-0673",
+        "ex-main-0674-a",
+        "ex-main-0674-b",
+        "ex-main-0674-c",
+        "ex-main-0675-a",
+        "ex-main-0675-b",
+        "ex-main-0675-c",
+        "ex-main-0676-a",
+        "ex-main-0676-b"
+      ],
+      "evidence": "tools/stereo-textbook/spatial-distances-and-equal-loci.json",
+      "mathematicalReport": "tools/stereo-textbook/spatial-distances-and-equal-loci.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 170, original printed pages 170–171 and answer key 270 compared visually, including R=√2 and the three half-coefficients in 681г.",
+      "reviewedAt": "2026-11-21T22:49:04Z",
+      "scope": "Every printed part of 677–681, the hypotenuse midpoint with independent height and both half-coefficients, six complete sphere equations, six centre/radius readings and positive RHS proofs, all source pages 170–171 and printed answer 270.",
+      "cardIds": [
+        "ex-main-0677",
+        "ex-main-0678-a",
+        "ex-main-0678-b",
+        "ex-main-0678-c",
+        "ex-main-0679-a",
+        "ex-main-0679-b",
+        "ex-main-0679-c",
+        "ex-main-0680-a",
+        "ex-main-0680-b",
+        "ex-main-0681-a",
+        "ex-main-0681-b",
+        "ex-main-0681-c",
+        "ex-main-0681-d"
+      ],
+      "evidence": "tools/stereo-textbook/coordinate-spheres-section-end.json",
+      "mathematicalReport": "tools/stereo-textbook/coordinate-spheres-section-end.test.cjs"
     }
   ],
   "cards": [
@@ -6028,6 +6293,670 @@
     {
       "id": "ex-selfcheck-vi-15",
       "sha256": "b278a9fcef2fc790303b2f78903971d1f1f836a61991e4f650f76cb9c9ab5103"
+    },
+    {
+      "id": "ex-main-0613-a",
+      "sha256": "6407ac6e323a054331118d07e2b358dbb693ff5105ecb5e0edb33d866c99b4bf"
+    },
+    {
+      "id": "ex-main-0613-b",
+      "sha256": "01ac14cf776ac7490b04a359b97384f3bc5da2763f60eed6eae3236eddbcd069"
+    },
+    {
+      "id": "ex-main-0613-c",
+      "sha256": "e0bf2320ec8b06165d7301392e3f3b4583fff7916617d46d64d18608cae09034"
+    },
+    {
+      "id": "ex-main-0614-a",
+      "sha256": "bf73d6cc9a720265eea97e64add376bcfcc15765a3768ac4eb6ce43e8f83bfec"
+    },
+    {
+      "id": "ex-main-0614-b",
+      "sha256": "24ac9850996b8c7df2a79d96501404876209f6a1c2ceae312aec52a48608dd4c"
+    },
+    {
+      "id": "ex-main-0614-c",
+      "sha256": "5fd83ec6667e895a57bc5ccb3ef2a9cfcad78e0acf5faee73e57f450bf9677ec"
+    },
+    {
+      "id": "ex-main-0615",
+      "sha256": "e9ab1ef1da91e7de98273d5b011de75ba2beeb7ef0518ecee11d004f10c844b3"
+    },
+    {
+      "id": "ex-main-0616-a",
+      "sha256": "5e0c6bc1553b589d21dbf9824163211f65df13ceb5c2124d82bccc724f5e0d7e"
+    },
+    {
+      "id": "ex-main-0616-b",
+      "sha256": "241ca6ab5121e9d82643b249f44338c4b3099c2c7994657f7b72a7b094ca086c"
+    },
+    {
+      "id": "ex-main-0616-c",
+      "sha256": "c1d18b0d24663e1b60e61ccd05411f260713c7e3b4b9052adbf4b353caea75d4"
+    },
+    {
+      "id": "ex-main-0617-a",
+      "sha256": "e7d136de7a0895b8dc398ea6c460a826baa5c309ccd59af95280f3cc4fc667f0"
+    },
+    {
+      "id": "ex-main-0617-b",
+      "sha256": "b4aca17a23bebeb6c04db6997bc857d17f4dd7f4fb800eb6671fda54bd43561e"
+    },
+    {
+      "id": "ex-main-0617-c",
+      "sha256": "a1ee06ccffea467bfadc924f4b0d013f77dad48c767dc5d8ed4ebebfdbfb7f57"
+    },
+    {
+      "id": "ex-main-0618",
+      "sha256": "cabf487d5ef0641b3b72d69fc0118ea94d807fdd6678343db1ad0fa544e886b1"
+    },
+    {
+      "id": "ex-main-0619-a",
+      "sha256": "87dea07ebac3c785a84ed2a300f51255ec2292faf2eccddbc4db83af0386322f"
+    },
+    {
+      "id": "ex-main-0619-b",
+      "sha256": "ae9bfacd63874d3f783b76d8cb41ac302fb1dc74f3237684f9e9d64897ad7ee6"
+    },
+    {
+      "id": "ex-main-0619-c",
+      "sha256": "165fed0813a285e1dc6d372f3ff2ee2db5666ab1cc1d63ae62f4ac64f9342cc7"
+    },
+    {
+      "id": "ex-main-0619-d",
+      "sha256": "220585d1d8c966bc9c10c5f5cc90fe3d93f804e9a6fa98a22e80ba8aaa32bcb7"
+    },
+    {
+      "id": "ex-main-0620-a",
+      "sha256": "4117b9a426c383c3b0b411ed1d91b846acd7e1c7ec75044a4bf6c8260d218342"
+    },
+    {
+      "id": "ex-main-0620-b",
+      "sha256": "731098e375793a703e3323d6a4ce74b17a294bba0753129444a3f9a6ea8ef5fd"
+    },
+    {
+      "id": "ex-main-0621",
+      "sha256": "8c0018d85647fca20af33af52b5dbc6fd74bb205f52b45024eb70d4204a3eb6f"
+    },
+    {
+      "id": "ex-main-0622",
+      "sha256": "7dc40ba283a90ede859613022ae906af0792953704d4c65c91dc14476f3c8f91"
+    },
+    {
+      "id": "ex-main-0623",
+      "sha256": "55988000e74a6f02da6502492881e3009def792fb9523cd6dccdee977b98aebc"
+    },
+    {
+      "id": "ex-main-0624-a",
+      "sha256": "17962add5df74c42eaeac5f6f7a7a4efb51a52260371e2333d047a01eb2b5d2a"
+    },
+    {
+      "id": "ex-main-0624-b",
+      "sha256": "61ab7027e7652dd2479a12d1856709713acd01684db25775b9d8b1a4dfcdb1c3"
+    },
+    {
+      "id": "ex-main-0624-c",
+      "sha256": "83f3411d094ccd2110100866eba5733d499b0a798da0848e7688914eee470e9a"
+    },
+    {
+      "id": "ex-main-0625-a",
+      "sha256": "1d4e1149e5bb94f2a10c8e2ade3d78654ea928db927ab803505596ab80a45ce0"
+    },
+    {
+      "id": "ex-main-0625-b",
+      "sha256": "c09b7d1a439667a8290e6b797d71b7c004c6000387b8ffb95df8cf7b0d0b18ca"
+    },
+    {
+      "id": "ex-main-0626",
+      "sha256": "f4cac46168cba0cd571b65e19fa8e830da640c1d57480c13338d5ce901748b9f"
+    },
+    {
+      "id": "ex-main-0627-a",
+      "sha256": "db5b48f2a037a0d9866ec2ff72ff8a08ac589c6ef54b6e378a02ef966a9dfd17"
+    },
+    {
+      "id": "ex-main-0627-b",
+      "sha256": "b4ebc4205f9342bcf4b469a4dcf9a6c376d03dae6a2bd501fd44f8c14314d71e"
+    },
+    {
+      "id": "ex-main-0627-c",
+      "sha256": "f18a351ad3ded412c982da13998b6fc7ab1a5f73012c90656b199eaf425906c1"
+    },
+    {
+      "id": "ex-main-0627-d",
+      "sha256": "4a3396fbd2144f29aea935d1326d2322181d80158a73165121e290f7437b840e"
+    },
+    {
+      "id": "ex-main-0628",
+      "sha256": "d6b92f40149f546938453076dc771db1835ac3d6925618c186de8a20a3d6ca0d"
+    },
+    {
+      "id": "ex-main-0629",
+      "sha256": "0b78061006b2c060f8fe8e2cbd4c06416030c6bd9e5b043fe7823317460786e9"
+    },
+    {
+      "id": "ex-main-0630-a",
+      "sha256": "af19d99f903a6b5d5edf745e87de7092a9be1d1cb9f4df93604b0848064d7ec8"
+    },
+    {
+      "id": "ex-main-0630-b",
+      "sha256": "58766d127806994eaf5fb5406f536741351dde5dad8779a6818b687bb5bd9e13"
+    },
+    {
+      "id": "ex-main-0631",
+      "sha256": "7321990fa1327d55504968f03756992d4a68e491fc78369f32ca431b097aaf40"
+    },
+    {
+      "id": "ex-main-0632",
+      "sha256": "11c8bac0153862b65ccd64513319977c532f52cba5f8e788a0c745aaa1f835dd"
+    },
+    {
+      "id": "ex-main-0633",
+      "sha256": "78a93682188deaf68dc2648164f9b54f78bd35ecdf70db739e9fb97a1f95fdf9"
+    },
+    {
+      "id": "ex-main-0634",
+      "sha256": "641e722757a29696ecf83a72fa3f46cffd5e16eff1c15d8ab5977a19f8a234c8"
+    },
+    {
+      "id": "ex-main-0635",
+      "sha256": "636289c3f4f88ed9000530a2c212310206a1f599b055bd94fc6a105a4b6c669c"
+    },
+    {
+      "id": "ex-main-0636",
+      "sha256": "bb8406088042c0ad046702dc9e0e6fdf1ddd3a4182989a40cd6e27fb4801485c"
+    },
+    {
+      "id": "theory-071",
+      "sha256": "d42a2146cd3dfa7b9f61a7cb2b5b5b275399300cef3858c4d5f09a4ea71c4443"
+    },
+    {
+      "id": "theory-072",
+      "sha256": "655f1c9d91dab2e9d7cb093dabd40f732c2cbcc38a1cda728ff461f885189db6"
+    },
+    {
+      "id": "theory-073",
+      "sha256": "5f570185eae7209c853dc2eb1f0c1149ccc1096f9be88e401f2b424cbb619ed3"
+    },
+    {
+      "id": "theory-074",
+      "sha256": "24709bcdc4b7dc114a010458e340ee32ffbb2704892aed3955c6950bbba3844d"
+    },
+    {
+      "id": "theory-075",
+      "sha256": "0568e93de3539cef2eb5d0731a6d53ce28190db6d2731754713008ffdf4d8c56"
+    },
+    {
+      "id": "ex-main-0637-a",
+      "sha256": "3e807684ea2e2f3877cd146189ba878e943cd666a5c85354f7293b937ea982ff"
+    },
+    {
+      "id": "ex-main-0637-b",
+      "sha256": "fcc9c2271d306d21e3ea0c38ffc1708d23f60e968b6db36083378cd53dc98ee2"
+    },
+    {
+      "id": "ex-main-0637-c",
+      "sha256": "63d675ca25d5efd04360aeee73ff5eef25e3bbaa7a17d1221cd94b3ae33199f6"
+    },
+    {
+      "id": "ex-main-0637-d",
+      "sha256": "9483cbb34e3771334634b0a04bdd67d214f27064f7cad18006ebbf920743460a"
+    },
+    {
+      "id": "ex-main-0637-e",
+      "sha256": "feed6f1d4f052d1b34cad154be6ba35c49ad886dde9756fee0c20ba4b6b6c362"
+    },
+    {
+      "id": "ex-main-0637-f",
+      "sha256": "8364448f8550c7079c32886de86fd4742c942a64f6b6a6135efcf8c13126f9aa"
+    },
+    {
+      "id": "ex-main-0638-a",
+      "sha256": "da1ec3a629c57b95b612ae91fcc32a865581c422e060db5031bf2fe01c377e1a"
+    },
+    {
+      "id": "ex-main-0638-b",
+      "sha256": "5cd1268a7e3d42d1b83983e62defe5d3b7c37f82001f1d402338a27920e3a60e"
+    },
+    {
+      "id": "ex-main-0639",
+      "sha256": "ca4ad2ff4d5f9d81b066d5e34aa8b92bc3262e0b3c2fb0f976b250c589c82c6a"
+    },
+    {
+      "id": "ex-main-0640",
+      "sha256": "121bda6153432885cb4593e80d717987a83fd15a4765bfdfd7f304f43754905b"
+    },
+    {
+      "id": "ex-main-0641",
+      "sha256": "b3574b4b23179c2ce4ded3d4b7f5113aa7e8c477d0a8c12e8d1f7a4080648e56"
+    },
+    {
+      "id": "ex-main-0642",
+      "sha256": "dee44e7750fecbba4e2fad96a0340fb160a1a3291755587043281d0dd3853497"
+    },
+    {
+      "id": "ex-main-0643",
+      "sha256": "fbaee94c41671f8130ec6c988b669df169d27755c29a4dd87259453c3be7ef5e"
+    },
+    {
+      "id": "ex-main-0644-a",
+      "sha256": "0982a17db5ce0e2140cbf3d035d9a1daee981030a0bb60187c4a37c875d20389"
+    },
+    {
+      "id": "ex-main-0644-b",
+      "sha256": "e4d749d5f041f19ab28bbceaee5d4fa021facdaeab6d9c679e2f37d8a8a19cb0"
+    },
+    {
+      "id": "ex-main-0644-c",
+      "sha256": "70bab4f0008fb960a136bac0a9fc15c00c868a37eb726968a59481cd2af58e07"
+    },
+    {
+      "id": "ex-main-0644-d",
+      "sha256": "3794885cb13f78de8fdaeb316a02f3ddaf318b40c119bc5ab439c43a49df285a"
+    },
+    {
+      "id": "ex-main-0644-e",
+      "sha256": "900b60bedfb93ca3b283a9284d44d0b3df9864efa72e2b993025b7d511c16e26"
+    },
+    {
+      "id": "ex-main-0644-f",
+      "sha256": "a3e6fe7b43ef756c476584cfc1eb66316c6466103eb2faaa4ea6745be994af83"
+    },
+    {
+      "id": "ex-main-0644-g",
+      "sha256": "8be8cb797f7536dbabddaccff8877368da105fceb391255bba919b6371ff2ac8"
+    },
+    {
+      "id": "ex-main-0644-h",
+      "sha256": "02b06fb471481c2124222768573e34bb22b9fd1fdfa2bc99dbd76cacadc83fe7"
+    },
+    {
+      "id": "ex-main-0645",
+      "sha256": "4f89aa7f7d672e66dc09e96cb8f8d1b4a88149c21e2d6504ead0f7c3925e3a53"
+    },
+    {
+      "id": "ex-main-0646-a",
+      "sha256": "1127d4a583c6d905e7846dfc15a7629ac55cd3790d3dfb6ff68acbb64ad1f41f"
+    },
+    {
+      "id": "ex-main-0646-b",
+      "sha256": "2c9678bae061580ae095478beb1fadc60d1864e2d203a3036dcde2e6918a14bf"
+    },
+    {
+      "id": "ex-main-0646-c",
+      "sha256": "2dc946cd2d4ad2e07604a793ce30d426feb24b8bc7b514272ec17a50acecb1d8"
+    },
+    {
+      "id": "ex-main-0646-d",
+      "sha256": "b0ffcf9434acf0e4c13d3314760d4d91b02da4aa2beca93f0f382313518a0c28"
+    },
+    {
+      "id": "ex-main-0646-e",
+      "sha256": "48b5efd6479a3860307d3cf6d6be69478a6add61dbfadbb3fa39059e3892eedb"
+    },
+    {
+      "id": "ex-main-0646-f",
+      "sha256": "6cd6d07ac0a23955d4c3b814b5f653985b891edb9b4143c4a6ac3bcbd6fe5d5e"
+    },
+    {
+      "id": "ex-main-0646-g",
+      "sha256": "ba7adb826f73e0aed85f5f20e552902583dad1db659e00c18abeac7aaa51d1bf"
+    },
+    {
+      "id": "ex-main-0646-h",
+      "sha256": "6f171e6091a04ea6dbd517484be52ddae6e81f6596c26f47e2d818d762536e56"
+    },
+    {
+      "id": "ex-main-0646-i",
+      "sha256": "e5dd4514d22d63d93c4b15d8b00f68c1b43b27a5f0932ef39a9266f6d0d6deee"
+    },
+    {
+      "id": "ex-main-0646-j",
+      "sha256": "86ebcfb6d5368cab22e06c2cfcdfd13617ece32c24a6d04409e5f446fd778b6e"
+    },
+    {
+      "id": "ex-main-0646-k",
+      "sha256": "1a91d50ebd667f54940cf335b19e79ea09f8eaeb3174bdcbb1f2dc2709bfa5be"
+    },
+    {
+      "id": "ex-main-0646-l",
+      "sha256": "4f4d7588f3823922ec66b44b23df550c49dbe66e258bf8ba0af3151c4a121881"
+    },
+    {
+      "id": "ex-main-0647",
+      "sha256": "7b843d61e4a2b0044a2202e7dd66db6f36c475507b38d78d04be9a4a362e6b79"
+    },
+    {
+      "id": "ex-main-0648-a",
+      "sha256": "64560d313602bcb58ac51984097fe3edbeccfad571f722d249d0fcfb20515fbc"
+    },
+    {
+      "id": "ex-main-0648-b",
+      "sha256": "abcd4ae493b09af8a915179f62c70b0103e3f63f600a6a91d35f2c5d136de4a0"
+    },
+    {
+      "id": "ex-main-0648-c",
+      "sha256": "97e4897cf6b76a9bc312fe05867de0047f9d0eaf967878979a334ffcd0245ffc"
+    },
+    {
+      "id": "ex-main-0648-d",
+      "sha256": "3ffb5ebbdbb0f57c9ad35da52f3ab9645cc1ffc6837bc09b2a9b524e5f23056b"
+    },
+    {
+      "id": "ex-main-0649",
+      "sha256": "f92030988c6ded86f4b523eb3f89298f6598ca71a4212afb4a5636d615b97865"
+    },
+    {
+      "id": "ex-main-0650-a",
+      "sha256": "bfaff69138409df44e7fee46045c5deab807e094fd9eded3d4e230e554a75630"
+    },
+    {
+      "id": "ex-main-0650-b",
+      "sha256": "1a01ac7daae5d771ce16ef0cd9c56efa799bdd4f32579010004d35876ba2844e"
+    },
+    {
+      "id": "ex-main-0650-c",
+      "sha256": "faae5e43cff863eae2da622d299f13843bd837401ae75e5597a3c6663ff3dbc4"
+    },
+    {
+      "id": "ex-main-0650-d",
+      "sha256": "5303d4e5e0aad5ab9be32496a25409879883eb8b0c6bd25f5f644dcf21a8d7b6"
+    },
+    {
+      "id": "ex-main-0650-e",
+      "sha256": "0cd2c6c0d62e0efeda3c4be9b05a4e46f85fcbf73565e7c592e8ab6f90179bc1"
+    },
+    {
+      "id": "ex-main-0651-a",
+      "sha256": "2275de7f207219b49ac32e33505cf8e020f64ddf67f5255db99b2ea7d625fe7c"
+    },
+    {
+      "id": "ex-main-0651-b",
+      "sha256": "fd45f2f73f7e1c5771fe98229a2bb44e3f6e80099a1698a71c7edfd0b9a859b1"
+    },
+    {
+      "id": "ex-main-0652-a",
+      "sha256": "0d7597cab3b44e0ac26619e61da16eb851f995129ad91c625890f818327e91b3"
+    },
+    {
+      "id": "ex-main-0652-b",
+      "sha256": "b57154c9596f55b20cb43071cff06c2dff78e1d86a2d134eabd2525df7ad4f47"
+    },
+    {
+      "id": "ex-main-0652-c",
+      "sha256": "32419ac9e7239966e6654b662e91492a8d05d268acaf1f7d66f2e3f5bdb86471"
+    },
+    {
+      "id": "ex-main-0652-d",
+      "sha256": "76a75fdb49caf7426b7911070af4c0416a4158769a912febd14fa6b0d099681c"
+    },
+    {
+      "id": "ex-main-0652-e",
+      "sha256": "082387c523ea9eba7f9c93d1a13d92230e20dd28a3351453293c8d2bd784a0f4"
+    },
+    {
+      "id": "ex-main-0652-f",
+      "sha256": "dd256bb456a0761cf58788772fe9a5703f02ec81930c31d3e88e5e49513c04a4"
+    },
+    {
+      "id": "ex-main-0653",
+      "sha256": "2c8703fb1b1814cd19bdc163a5c4b9a82aa45e34676c274db95a85f59de7756e"
+    },
+    {
+      "id": "ex-main-0654",
+      "sha256": "18384e90753a821d9ca96b48abc5675a7d5fd369ae0816f930f41d9d3f30574c"
+    },
+    {
+      "id": "ex-main-0655-a",
+      "sha256": "7d66217864d438aa0f2a297dcc272dc58bbaa5db8eca0b61b82278b57ab8a908"
+    },
+    {
+      "id": "ex-main-0655-b",
+      "sha256": "c9de62b5355607ddbca5b6a4b5c9fc06e45862908858c272507ff5dec466cdbb"
+    },
+    {
+      "id": "ex-main-0655-c",
+      "sha256": "42cad5a8b81fc176c0a57e52f6b8f6664821d16785e76f2a5f1abaf3fef2834d"
+    },
+    {
+      "id": "ex-main-0656",
+      "sha256": "769290ec6bd254bab057838d6b1fc1fd0f9f21af8c15f5cfa52e7589892b9c8e"
+    },
+    {
+      "id": "ex-main-0657",
+      "sha256": "c2109759035300fe1760fa95aa01605cba81c1586247817555d9e58e3d3613c9"
+    },
+    {
+      "id": "ex-main-0658-a",
+      "sha256": "5df08e3d94aabe8d3528bdf5a1292f4c9fd47eb9ca9a35eee18cf9f8de4c187f"
+    },
+    {
+      "id": "ex-main-0658-b",
+      "sha256": "ae25554ae89aea2d0102243c3245ce7bec9d888ddec9df1661e6f63a22fc8f23"
+    },
+    {
+      "id": "ex-main-0658-c",
+      "sha256": "44ec19a95d4081f7bb294aafa99a1ea8e0afd29cf606509f247e3ef54600556e"
+    },
+    {
+      "id": "ex-main-0659-a",
+      "sha256": "4b61d394d21d61f9eeb923ccd4e064845aced0dc34ea7ce5dcf3882c04a3554a"
+    },
+    {
+      "id": "ex-main-0659-b",
+      "sha256": "9a23c46304052fc56735196c95e266b93b53a4579d1344a24d7cd48338af3033"
+    },
+    {
+      "id": "ex-main-0659-c",
+      "sha256": "48a078928ec607c7eb8f9785cf413d9ee60048c551c5d4f7d1e467219aa6d355"
+    },
+    {
+      "id": "ex-main-0660",
+      "sha256": "4dd6b9faf7f2da45190005eb14716c395f37c55e2024f3adc64f7896e4388d84"
+    },
+    {
+      "id": "ex-main-0661-a",
+      "sha256": "c47ca09af30071dee4db6720bc621042917df9abe27873c7e3553e47adfe60ae"
+    },
+    {
+      "id": "ex-main-0661-b",
+      "sha256": "aa528bd52b4ff4f8ce2cca0b5d53693644109ec361aaf6bbd30b462b251f881c"
+    },
+    {
+      "id": "ex-main-0661-c",
+      "sha256": "bd04dbd0b812caf4f97ad20a98db4f94e0a6b823a7d797eb8ee0c0a3d25cafce"
+    },
+    {
+      "id": "ex-main-0662-a",
+      "sha256": "1fe2ce0e828fd33a1f8f75aa61c011770e7767bcc94e3345877f8aa12acafefe"
+    },
+    {
+      "id": "ex-main-0662-b",
+      "sha256": "976f7cf6ab7ba1324e5e14108c8ba4a53f5f10b80dd1d18db369c90462c0c5aa"
+    },
+    {
+      "id": "ex-main-0662-c",
+      "sha256": "67f4381dd69caf8d1649bc50c8667380c4f09393617a9af637747e1d38d8ba51"
+    },
+    {
+      "id": "ex-main-0662-d",
+      "sha256": "516d19f152f8138b8b63f648f2c49cd9a79960caaa97e524c113983091f23c2b"
+    },
+    {
+      "id": "ex-main-0663-a",
+      "sha256": "c4efe9de84a1c32c54ba36b4d2ad01a6f99ed206eaa17701f7239657579f273c"
+    },
+    {
+      "id": "ex-main-0663-b",
+      "sha256": "94264efeebb7f620f4c43f7951858d4a09cd7441a3f3bf338f60ef5d419e3767"
+    },
+    {
+      "id": "ex-main-0664",
+      "sha256": "1b717ad3ef3580d2b2e860e422c89a6311d38c47918f4ccdc859a1e6a203c095"
+    },
+    {
+      "id": "ex-main-0665-a",
+      "sha256": "cdc7cbdccad17891dc0d7b6f356e20fcb610b99156fead3e4c5faa03c0bcc032"
+    },
+    {
+      "id": "ex-main-0665-b",
+      "sha256": "58d07ede6359c114d2f442179ba189d96e4c0050946012ba86d035443a2eb6d1"
+    },
+    {
+      "id": "ex-main-0665-c",
+      "sha256": "1a7be872f7be795792126f5517f80e3c12aa2f383b4799a50edf75bddfdccf1d"
+    },
+    {
+      "id": "ex-main-0665-d",
+      "sha256": "fc10596e3d1155e6ff91b16844689b695653d2032e315f1fed32708af18ddf30"
+    },
+    {
+      "id": "ex-main-0665-e",
+      "sha256": "1d617f601110c15d60fba4a5a7400b7ff1a30497a41224c87c365abb1a27787c"
+    },
+    {
+      "id": "ex-main-0665-f",
+      "sha256": "84aa682ddbd13184d139623bf2b42a089eba795e89f4b85a34891594ad1e0e23"
+    },
+    {
+      "id": "ex-main-0665-g",
+      "sha256": "fb100be69b7339ddc8b9fbec2a4337e29a2c56a587189bd9711d1719917310ba"
+    },
+    {
+      "id": "ex-main-0666",
+      "sha256": "d8c513f236a3b97ac58e3aec91ca56a90c0b4ae2b318ebabeaa6570309759b38"
+    },
+    {
+      "id": "ex-main-0667-a",
+      "sha256": "65d66510be5fbe438c42a84c715e8ee005362048609c047f261ab28d328f8b06"
+    },
+    {
+      "id": "ex-main-0667-b",
+      "sha256": "1c700c0583fe21ec109125a90f1b29cfc4ea9de53c0b2c55d0903638e43d586a"
+    },
+    {
+      "id": "ex-main-0668-a",
+      "sha256": "989ecff6fcdc02abf172c8ff3e86952581fad2e46c686d2c70560742e45098cb"
+    },
+    {
+      "id": "ex-main-0668-b",
+      "sha256": "b813224623c594894db439ffde7fe85adbd9dd2b562699ad8ddd3ecb5cb88556"
+    },
+    {
+      "id": "ex-main-0668-c",
+      "sha256": "7601008e48d7aa8f8427aa57a35a29595213a87285606a8267764c8286823dcc"
+    },
+    {
+      "id": "ex-main-0668-d",
+      "sha256": "941ebddd61599ad788c61bdc7929dbd7822be1c2b50c8c954ec78a6e931c2e36"
+    },
+    {
+      "id": "ex-main-0669-a",
+      "sha256": "ba84fc720053850d904c6507bf4b065872081307061932c96b62a96f5ff581be"
+    },
+    {
+      "id": "ex-main-0669-b",
+      "sha256": "b285b1c3740184d329911902b788b3e94d7c6f19380e09dc2056ca97dd2da6ec"
+    },
+    {
+      "id": "ex-main-0670",
+      "sha256": "d257c998c72374b6dbb26463e14f30c869257593bfc1c1fffc70c258272182e9"
+    },
+    {
+      "id": "ex-main-0671",
+      "sha256": "9451a7df89aefd7cbf5f5059b2fad531d53bf45a5c4c903d67a61ecadad91d57"
+    },
+    {
+      "id": "ex-main-0672",
+      "sha256": "deb943d8bb3a670c8d5aa2c9fe1729a31feb1bc9a36ca3489640287b269b53aa"
+    },
+    {
+      "id": "ex-main-0673",
+      "sha256": "545b7799bc6d1da826e4dc3299bbd3af87cdcfa095bffc7356afec63fe800b8e"
+    },
+    {
+      "id": "ex-main-0674-a",
+      "sha256": "47a33fd73864dc01cc298d763f5f2cdfc5b22fc6d5396157e165030ce23ad1ff"
+    },
+    {
+      "id": "ex-main-0674-b",
+      "sha256": "6de854f26870b4a2807e4e9db06b0480282eeda41448a1c622b5d8e156ae31c9"
+    },
+    {
+      "id": "ex-main-0674-c",
+      "sha256": "fd3de4073d4600d51d073eb9de09fd65d1ca19d4347bb82f705079ec5b38f7d6"
+    },
+    {
+      "id": "ex-main-0675-a",
+      "sha256": "8e4bad1216b77c94b57c570308b90eb8dd1d30985fe67252396a2aec0b1b449d"
+    },
+    {
+      "id": "ex-main-0675-b",
+      "sha256": "6495370abbd567ab2ad06815d56f32b20d7e33545960654dc5a428b12fa196f1"
+    },
+    {
+      "id": "ex-main-0675-c",
+      "sha256": "0bda1dc9e389d4e286282a01de82804d4fd7a2bd16d8bb06edee3f103ad5d7ae"
+    },
+    {
+      "id": "ex-main-0676-a",
+      "sha256": "e0bbd5a9041dc3eba5cfe44a95f89fdeb056930ca05b3abf4d7f0dba2f0db7cc"
+    },
+    {
+      "id": "ex-main-0676-b",
+      "sha256": "32bf1a78ee943d55c7ce273474ade4065ae0c03ff93e67fddd2a043ce59082cf"
+    },
+    {
+      "id": "ex-main-0677",
+      "sha256": "c1e29951f3ada8101f2f7549414c3e205b046ecb5b75c06e13daf42d2033a45e"
+    },
+    {
+      "id": "ex-main-0678-a",
+      "sha256": "668c8585f04992b6b6cc2621fa0d4ec8c48de2ecff0fb0be38c71c779c05e446"
+    },
+    {
+      "id": "ex-main-0678-b",
+      "sha256": "886b8511f30f2bce9e3d6937e9ac8c4af6b8330e9249627d1efb3957792fa231"
+    },
+    {
+      "id": "ex-main-0678-c",
+      "sha256": "cde92b129fd717d56782180bca9d627960b1c92e8cd6bfea05981e7ba507fce4"
+    },
+    {
+      "id": "ex-main-0679-a",
+      "sha256": "caa7dedb4256c1086a60d8967d18d242e572f32e119dd37a172a9b9c7628420a"
+    },
+    {
+      "id": "ex-main-0679-b",
+      "sha256": "a5d206d0a2fd459c1c659e94445e62b344458f7a8eb4643add28df8db2f2935d"
+    },
+    {
+      "id": "ex-main-0679-c",
+      "sha256": "fd8e94042a99595a53741a2a79cfda6692e27f69b865ef54ac0830c4202dc547"
+    },
+    {
+      "id": "ex-main-0680-a",
+      "sha256": "b00f5edab8416b5d99a359393199a7fca7822f5e26988db85029196ce6ae3bf9"
+    },
+    {
+      "id": "ex-main-0680-b",
+      "sha256": "7e5941b83937547539e47122d77dfc84e1d178f4b35cc321f50a606639f57ca7"
+    },
+    {
+      "id": "ex-main-0681-a",
+      "sha256": "c11103c06358c428bd1e5988a98486720a7d1616c742e87b75c45c2880df39de"
+    },
+    {
+      "id": "ex-main-0681-b",
+      "sha256": "47c944078e2e0cd22effc1bd08c78b9e1f68a75594be2cc04a2553534978e548"
+    },
+    {
+      "id": "ex-main-0681-c",
+      "sha256": "4bde28831d98f5229ddd86015a1f4a928f0b427ada69cd2aa2b5240ec1f73005"
+    },
+    {
+      "id": "ex-main-0681-d",
+      "sha256": "1d1dd614da08156317b38a2a7dc89094da5f6e0402236ebcb17d7e2cac43d971"
     }
   ]
 }

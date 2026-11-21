@@ -79,6 +79,17 @@ jobs:
           node tools/stereo-textbook/centroids-in-tetrahedra.test.cjs
           node tools/stereo-textbook/height-and-midpoint-proofs.test.cjs
           node tools/stereo-textbook/vector-chapter-selfcheck.test.cjs
+          node tools/stereo-textbook/additional-directed-edge-sums.test.cjs
+          node tools/stereo-textbook/vector-span-and-barycentres.test.cjs
+          node tools/stereo-textbook/vector-chapter-six-end.test.cjs
+          node tools/stereo-textbook/cartesian-coordinate-start.test.cjs
+          node tools/stereo-textbook/coordinate-vectors-and-diagrams.test.cjs
+          node tools/stereo-textbook/signed-coordinate-arithmetic.test.cjs
+          node tools/stereo-textbook/coordinate-span-ratios.test.cjs
+          node tools/stereo-textbook/spatial-points-and-centroid.test.cjs
+          node tools/stereo-textbook/midpoints-and-vector-lengths.test.cjs
+          node tools/stereo-textbook/spatial-distances-and-equal-loci.test.cjs
+          node tools/stereo-textbook/coordinate-spheres-section-end.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -290,6 +301,61 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: vectorChapterSelfcheck
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-chapter-selfcheck
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all affine edge sums and the directed octahedron in printed figure 173
+        env:
+          TEXTBOOK_PRACTICE_GROUP: additionalDirectedEdgeSums
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/additional-directed-edge-sums
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check exact scalar boundary, affine weights and the strictly disjoint plane for every connector
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorSpanAndBarycentres
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-span-and-barycentres
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Exercise every chapter VI closing field and centroid task on phone and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorChapterSixEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-chapter-six-end
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check coordinate axes, planes, all eighteen projections and each cube point on small and large screens
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cartesianCoordinateStart
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cartesian-coordinate-start
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Read the exact orientations of figures 185 and 186 and exercise every signed vector sum
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coordinateVectorsAndDiagrams
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-vectors-and-diagrams
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Exercise twelve signed and fractional vector entries and the general combination and reversal cases
+        env:
+          TEXTBOOK_PRACTICE_GROUP: signedCoordinateArithmetic
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/signed-coordinate-arithmetic
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify signed ratios, zero and plane membership in every corresponding coordinate exercise
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coordinateSpanRatios
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-span-ratios
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify position vectors, oriented paths, three lines and planes and the centroid median on three screen widths
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialPointsAndCentroid
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-points-and-centroid
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Teach the seven distinctions between vector length expressions and check all midpoint, perimeter and median cases
+        env:
+          TEXTBOOK_PRACTICE_GROUP: midpointsAndVectorLengths
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/midpoints-and-vector-lengths
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check spatial projections, triangle classification, every isosceles root and all equal-distance loci and circumcentres
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialDistancesAndEqualLoci
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-distances-and-equal-loci
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check full sphere equations, completing the square and both spatial distances to the midpoint
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coordinateSpheresSectionEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-spheres-section-end
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -365,5 +431,16 @@ jobs:
             artifacts/centroids-in-tetrahedra/
             artifacts/height-and-midpoint-proofs/
             artifacts/vector-chapter-selfcheck/
+            artifacts/additional-directed-edge-sums/
+            artifacts/vector-span-and-barycentres/
+            artifacts/vector-chapter-six-end/
+            artifacts/cartesian-coordinate-start/
+            artifacts/coordinate-vectors-and-diagrams/
+            artifacts/signed-coordinate-arithmetic/
+            artifacts/coordinate-span-ratios/
+            artifacts/spatial-points-and-centroid/
+            artifacts/midpoints-and-vector-lengths/
+            artifacts/spatial-distances-and-equal-loci/
+            artifacts/coordinate-spheres-section-end/
           retention-days: 14
           if-no-files-found: error

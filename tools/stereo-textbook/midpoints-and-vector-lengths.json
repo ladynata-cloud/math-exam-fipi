@@ -1,0 +1,791 @@
+{
+  "parts": {
+    "661": [
+      "а",
+      "б",
+      "в"
+    ],
+    "662": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "663": [
+      "а",
+      "б"
+    ],
+    "664": [
+      null
+    ],
+    "665": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж"
+    ],
+    "666": [
+      null
+    ],
+    "667": [
+      "а",
+      "б"
+    ]
+  },
+  "previousCatalog": {
+    "661": {
+      "id": "source-main-0661",
+      "kind": "exercise",
+      "title": "Задача № 661",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "661",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "662": {
+      "id": "source-main-0662",
+      "kind": "exercise",
+      "title": "Задача № 662",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "662",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "663": {
+      "id": "source-main-0663",
+      "kind": "exercise",
+      "title": "Задача № 663",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "663",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "664": {
+      "id": "source-main-0664",
+      "kind": "exercise",
+      "title": "Задача № 664",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "664",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "665": {
+      "id": "source-main-0665",
+      "kind": "exercise",
+      "title": "Задача № 665",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "665",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "666": {
+      "id": "source-main-0666",
+      "kind": "exercise",
+      "title": "Задача № 666",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "666",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "667": {
+      "id": "source-main-0667",
+      "kind": "exercise",
+      "title": "Задача № 667",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "667",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0661-a": {
+      "raw": "217e5ad1c507f4709766ced163f5d63431f3b74857b18606481179ccb1bef438",
+      "authored": "c47ca09af30071dee4db6720bc621042917df9abe27873c7e3553e47adfe60ae",
+      "integrated": "c557526b093f3c943f49af9fe63d722caf03bafe2b8156625008c12b987f5203"
+    },
+    "ex-main-0661-b": {
+      "raw": "b9108304167be30ac71726935d275a6c3c5db2dcc06240fa28f565650e492cac",
+      "authored": "aa528bd52b4ff4f8ce2cca0b5d53693644109ec361aaf6bbd30b462b251f881c",
+      "integrated": "7dd45b2e906ec7f503612fe7c16f5fc84e5118d9e75066759addda37b9d17c26"
+    },
+    "ex-main-0661-c": {
+      "raw": "fd7eefa3ec8f9fbb1cc3c67c41a87b5a1e73540ac862b2826ae39644946511a9",
+      "authored": "bd04dbd0b812caf4f97ad20a98db4f94e0a6b823a7d797eb8ee0c0a3d25cafce",
+      "integrated": "a980da353bd25094b2e2cb429bc0c685aef44c5badd4ccb7c8096c4d8bbf821f"
+    },
+    "ex-main-0662-a": {
+      "raw": "8de8c2e3890590b6169368427e255a9af609f9082f8c2ac615694ed1c06d7bf1",
+      "authored": "1fe2ce0e828fd33a1f8f75aa61c011770e7767bcc94e3345877f8aa12acafefe",
+      "integrated": "8715cf32ee2817937320e4609e47a74e427c68948865c8685c4a893025ac4fab"
+    },
+    "ex-main-0662-b": {
+      "raw": "f051f6b616c60f60a345733f7464279c735a44fdeb5464ce11e567e1d5ec3200",
+      "authored": "976f7cf6ab7ba1324e5e14108c8ba4a53f5f10b80dd1d18db369c90462c0c5aa",
+      "integrated": "22dffe7af73511fc6e1475f8b9f5680ebc40f555fe12aad6ebfe85f9f837f4d3"
+    },
+    "ex-main-0662-c": {
+      "raw": "fda2a7a5ba98bafd0143a4a978cc9cfc40d759aa2b261c413b234aa26a64c7c7",
+      "authored": "67f4381dd69caf8d1649bc50c8667380c4f09393617a9af637747e1d38d8ba51",
+      "integrated": "a10514548e0317f5ddf6244d8091ab73928cbbaf9b1ec81030dd1c91ccad428b"
+    },
+    "ex-main-0662-d": {
+      "raw": "96151d73fd2c0808ecef64cc8ca943246f61d7ef46dc5b305caa3ec86d3a772c",
+      "authored": "516d19f152f8138b8b63f648f2c49cd9a79960caaa97e524c113983091f23c2b",
+      "integrated": "0cb7150dd31284501347ce1c92b40dcd62554e709b853325d57f6dbd549e3e0d"
+    },
+    "ex-main-0663-a": {
+      "raw": "feae0c0712aa117244c3b5d0615050654ce61c8911fa7c3854c6e4858e458c0c",
+      "authored": "c4efe9de84a1c32c54ba36b4d2ad01a6f99ed206eaa17701f7239657579f273c",
+      "integrated": "1f06fc60ef68eef3b9d6631a6e1a508ef519018f9a067e56024ac17600cf286e"
+    },
+    "ex-main-0663-b": {
+      "raw": "118bdd1aa9677b766de70ffe3d3a662d36f1d4efb6200437dfc588d4b7029a04",
+      "authored": "94264efeebb7f620f4c43f7951858d4a09cd7441a3f3bf338f60ef5d419e3767",
+      "integrated": "c745faf38be4b6c72e84b6afd6bf3571c588c0f7716e7bc1adf5e6568f933f24"
+    },
+    "ex-main-0664": {
+      "raw": "45145d778cbd77ab57bd64fc3831eb117867e791188fa2ea8e68681e03920ef5",
+      "authored": "1b717ad3ef3580d2b2e860e422c89a6311d38c47918f4ccdc859a1e6a203c095",
+      "integrated": "9576a80f38f8d8219f63496ecb104c336d6ff515f24996f0aec8638ddce2d0b4"
+    },
+    "ex-main-0665-a": {
+      "raw": "fc803f66de5e5d7108cf6bd22e5e68523dc7529666a7ea44c04857b0b5356b8d",
+      "authored": "cdc7cbdccad17891dc0d7b6f356e20fcb610b99156fead3e4c5faa03c0bcc032",
+      "integrated": "2ed3686bdb09606538945a6bef009af98c4b2c8c16b3903344b2add7c6573fed"
+    },
+    "ex-main-0665-b": {
+      "raw": "3ae1da004195973eca733e0dcb9fbc6b6e1990274709e18184c4c74bc08ac1c6",
+      "authored": "58d07ede6359c114d2f442179ba189d96e4c0050946012ba86d035443a2eb6d1",
+      "integrated": "4ab0643cbd58bb4cb2b59efa5f95cfffd87b513ce0c82990b1c9cac112ba32dd"
+    },
+    "ex-main-0665-c": {
+      "raw": "046a888fffa6cbc2aa30f15160539096847669cda30a9e269257962e29665d29",
+      "authored": "1a7be872f7be795792126f5517f80e3c12aa2f383b4799a50edf75bddfdccf1d",
+      "integrated": "36d62894a386021971446bcd9b135dfa3665184354bc64e2411d1a2bffc7e9d9"
+    },
+    "ex-main-0665-d": {
+      "raw": "ed2c779204f341ce192107d6621b01ff71f967c595752503f35df43364ccc943",
+      "authored": "fc10596e3d1155e6ff91b16844689b695653d2032e315f1fed32708af18ddf30",
+      "integrated": "2358426b4a873836608f8b845dfb60a15da2c0d015c42d31e88f743b061a766d"
+    },
+    "ex-main-0665-e": {
+      "raw": "d7bd0958cdd72403896c53f5878c2baa903d668ba3b9e704c4a7dc4492426dee",
+      "authored": "1d617f601110c15d60fba4a5a7400b7ff1a30497a41224c87c365abb1a27787c",
+      "integrated": "baf4c68664a64a066877e51c72c813f58ca684a9cfbccb83d98db4f3b0251e90"
+    },
+    "ex-main-0665-f": {
+      "raw": "6e177d0b54a2f2408c3722eeba2354b693ef63b700ad781570dae1c235c20626",
+      "authored": "84aa682ddbd13184d139623bf2b42a089eba795e89f4b85a34891594ad1e0e23",
+      "integrated": "31de705fd01febc5ca7e1c9e548e7958cb3d30fa58106df3ebb4fcf206f8d2ea"
+    },
+    "ex-main-0665-g": {
+      "raw": "882f32c1688f9b786995edebf2516ad4df5e22c4cd2ed0265f404892cdda8734",
+      "authored": "fb100be69b7339ddc8b9fbec2a4337e29a2c56a587189bd9711d1719917310ba",
+      "integrated": "ee53e07e6dbd04b7f9b98ab564ddba25a14f78d098addec6cedc5c625709b026"
+    },
+    "ex-main-0666": {
+      "raw": "ba1a4e53e29ef41d0c90a693f913af47d1375788f99cbf9b9cebef0866a025b6",
+      "authored": "d8c513f236a3b97ac58e3aec91ca56a90c0b4ae2b318ebabeaa6570309759b38",
+      "integrated": "ccef3576e062a99b69873cee7e6e6539b15a48059a8bff54f38ef530f76b008c"
+    },
+    "ex-main-0667-a": {
+      "raw": "5de805707b162fbd20093a65fce674d6d13c8d38ad2319cd43ee55ee5ff45f6d",
+      "authored": "65d66510be5fbe438c42a84c715e8ee005362048609c047f261ab28d328f8b06",
+      "integrated": "f84edee0c315125b78fc9c9e66a0c21d6ae99b0d688c69496cbf240fca35e42c"
+    },
+    "ex-main-0667-b": {
+      "raw": "7655d6ae7d67e8b88c31766923811bd4d7beb05a6546e43a6cc8a925243c59b0",
+      "authored": "1c700c0583fe21ec109125a90f1b29cfc4ea9de53c0b2c55d0903638e43d586a",
+      "integrated": "85f1013b387efce19c2d3a84162fb22af4130f218e04a79efcea7bf9c42b6f6c"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0661-a|condition",
+      "midpoints-and-vector-lengths-ex-main-0661-a-condition"
+    ],
+    [
+      "ex-main-0661-a|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0661-a-help-h1"
+    ],
+    [
+      "ex-main-0661-a|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0661-a-help-h2"
+    ],
+    [
+      "ex-main-0661-a|step-1",
+      "midpoints-and-vector-lengths-ex-main-0661-a-step-1"
+    ],
+    [
+      "ex-main-0661-a|step-2",
+      "midpoints-and-vector-lengths-ex-main-0661-a-step-2"
+    ],
+    [
+      "ex-main-0661-a|step-3",
+      "midpoints-and-vector-lengths-ex-main-0661-a-step-3"
+    ],
+    [
+      "ex-main-0661-b|condition",
+      "midpoints-and-vector-lengths-ex-main-0661-b-condition"
+    ],
+    [
+      "ex-main-0661-b|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0661-b-help-h1"
+    ],
+    [
+      "ex-main-0661-b|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0661-b-help-h2"
+    ],
+    [
+      "ex-main-0661-b|step-1",
+      "midpoints-and-vector-lengths-ex-main-0661-b-step-1"
+    ],
+    [
+      "ex-main-0661-b|step-2",
+      "midpoints-and-vector-lengths-ex-main-0661-b-step-2"
+    ],
+    [
+      "ex-main-0661-b|step-3",
+      "midpoints-and-vector-lengths-ex-main-0661-b-step-3"
+    ],
+    [
+      "ex-main-0661-c|condition",
+      "midpoints-and-vector-lengths-ex-main-0661-c-condition"
+    ],
+    [
+      "ex-main-0661-c|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0661-c-help-h1"
+    ],
+    [
+      "ex-main-0661-c|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0661-c-help-h2"
+    ],
+    [
+      "ex-main-0661-c|step-1",
+      "midpoints-and-vector-lengths-ex-main-0661-c-step-1"
+    ],
+    [
+      "ex-main-0661-c|step-2",
+      "midpoints-and-vector-lengths-ex-main-0661-c-step-2"
+    ],
+    [
+      "ex-main-0661-c|step-3",
+      "midpoints-and-vector-lengths-ex-main-0661-c-step-3"
+    ],
+    [
+      "ex-main-0662-a|condition",
+      "midpoints-and-vector-lengths-ex-main-0662-a-condition"
+    ],
+    [
+      "ex-main-0662-a|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0662-a-help-h1"
+    ],
+    [
+      "ex-main-0662-a|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0662-a-help-h2"
+    ],
+    [
+      "ex-main-0662-a|step-1",
+      "midpoints-and-vector-lengths-ex-main-0662-a-step-1"
+    ],
+    [
+      "ex-main-0662-a|step-2",
+      "midpoints-and-vector-lengths-ex-main-0662-a-step-2"
+    ],
+    [
+      "ex-main-0662-a|step-3",
+      "midpoints-and-vector-lengths-ex-main-0662-a-step-3"
+    ],
+    [
+      "ex-main-0662-b|condition",
+      "midpoints-and-vector-lengths-ex-main-0662-b-condition"
+    ],
+    [
+      "ex-main-0662-b|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0662-b-help-h1"
+    ],
+    [
+      "ex-main-0662-b|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0662-b-help-h2"
+    ],
+    [
+      "ex-main-0662-b|step-1",
+      "midpoints-and-vector-lengths-ex-main-0662-b-step-1"
+    ],
+    [
+      "ex-main-0662-b|step-2",
+      "midpoints-and-vector-lengths-ex-main-0662-b-step-2"
+    ],
+    [
+      "ex-main-0662-b|step-3",
+      "midpoints-and-vector-lengths-ex-main-0662-b-step-3"
+    ],
+    [
+      "ex-main-0662-c|condition",
+      "midpoints-and-vector-lengths-ex-main-0662-c-condition"
+    ],
+    [
+      "ex-main-0662-c|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0662-c-help-h1"
+    ],
+    [
+      "ex-main-0662-c|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0662-c-help-h2"
+    ],
+    [
+      "ex-main-0662-c|step-1",
+      "midpoints-and-vector-lengths-ex-main-0662-c-step-1"
+    ],
+    [
+      "ex-main-0662-c|step-2",
+      "midpoints-and-vector-lengths-ex-main-0662-c-step-2"
+    ],
+    [
+      "ex-main-0662-c|step-3",
+      "midpoints-and-vector-lengths-ex-main-0662-c-step-3"
+    ],
+    [
+      "ex-main-0662-d|condition",
+      "midpoints-and-vector-lengths-ex-main-0662-d-condition"
+    ],
+    [
+      "ex-main-0662-d|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0662-d-help-h1"
+    ],
+    [
+      "ex-main-0662-d|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0662-d-help-h2"
+    ],
+    [
+      "ex-main-0662-d|step-1",
+      "midpoints-and-vector-lengths-ex-main-0662-d-step-1"
+    ],
+    [
+      "ex-main-0662-d|step-2",
+      "midpoints-and-vector-lengths-ex-main-0662-d-step-2"
+    ],
+    [
+      "ex-main-0662-d|step-3",
+      "midpoints-and-vector-lengths-ex-main-0662-d-step-3"
+    ],
+    [
+      "ex-main-0663-a|condition",
+      "midpoints-and-vector-lengths-ex-main-0663-a-condition"
+    ],
+    [
+      "ex-main-0663-a|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0663-a-help-h1"
+    ],
+    [
+      "ex-main-0663-a|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0663-a-help-h2"
+    ],
+    [
+      "ex-main-0663-a|step-1",
+      "midpoints-and-vector-lengths-ex-main-0663-a-step-1"
+    ],
+    [
+      "ex-main-0663-a|step-2",
+      "midpoints-and-vector-lengths-ex-main-0663-a-step-2"
+    ],
+    [
+      "ex-main-0663-a|step-3",
+      "midpoints-and-vector-lengths-ex-main-0663-a-step-3"
+    ],
+    [
+      "ex-main-0663-b|condition",
+      "midpoints-and-vector-lengths-ex-main-0663-b-condition"
+    ],
+    [
+      "ex-main-0663-b|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0663-b-help-h1"
+    ],
+    [
+      "ex-main-0663-b|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0663-b-help-h2"
+    ],
+    [
+      "ex-main-0663-b|step-1",
+      "midpoints-and-vector-lengths-ex-main-0663-b-step-1"
+    ],
+    [
+      "ex-main-0663-b|step-2",
+      "midpoints-and-vector-lengths-ex-main-0663-b-step-2"
+    ],
+    [
+      "ex-main-0663-b|step-3",
+      "midpoints-and-vector-lengths-ex-main-0663-b-step-3"
+    ],
+    [
+      "ex-main-0664|condition",
+      "midpoints-and-vector-lengths-ex-main-0664-condition"
+    ],
+    [
+      "ex-main-0664|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0664-help-h1"
+    ],
+    [
+      "ex-main-0664|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0664-help-h2"
+    ],
+    [
+      "ex-main-0664|step-1",
+      "midpoints-and-vector-lengths-ex-main-0664-step-1"
+    ],
+    [
+      "ex-main-0664|step-2",
+      "midpoints-and-vector-lengths-ex-main-0664-step-2"
+    ],
+    [
+      "ex-main-0664|step-3",
+      "midpoints-and-vector-lengths-ex-main-0664-step-3"
+    ],
+    [
+      "ex-main-0664|step-4",
+      "midpoints-and-vector-lengths-ex-main-0664-step-4"
+    ],
+    [
+      "ex-main-0664|step-5",
+      "midpoints-and-vector-lengths-ex-main-0664-step-5"
+    ],
+    [
+      "ex-main-0665-a|condition",
+      "midpoints-and-vector-lengths-ex-main-0665-a-condition"
+    ],
+    [
+      "ex-main-0665-a|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0665-a-help-h1"
+    ],
+    [
+      "ex-main-0665-a|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0665-a-help-h2"
+    ],
+    [
+      "ex-main-0665-a|step-1",
+      "midpoints-and-vector-lengths-ex-main-0665-a-step-1"
+    ],
+    [
+      "ex-main-0665-a|step-2",
+      "midpoints-and-vector-lengths-ex-main-0665-a-step-2"
+    ],
+    [
+      "ex-main-0665-a|step-3",
+      "midpoints-and-vector-lengths-ex-main-0665-a-step-3"
+    ],
+    [
+      "ex-main-0665-b|condition",
+      "midpoints-and-vector-lengths-ex-main-0665-b-condition"
+    ],
+    [
+      "ex-main-0665-b|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0665-b-help-h1"
+    ],
+    [
+      "ex-main-0665-b|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0665-b-help-h2"
+    ],
+    [
+      "ex-main-0665-b|step-1",
+      "midpoints-and-vector-lengths-ex-main-0665-b-step-1"
+    ],
+    [
+      "ex-main-0665-b|step-2",
+      "midpoints-and-vector-lengths-ex-main-0665-b-step-2"
+    ],
+    [
+      "ex-main-0665-b|step-3",
+      "midpoints-and-vector-lengths-ex-main-0665-b-step-3"
+    ],
+    [
+      "ex-main-0665-c|condition",
+      "midpoints-and-vector-lengths-ex-main-0665-c-condition"
+    ],
+    [
+      "ex-main-0665-c|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0665-c-help-h1"
+    ],
+    [
+      "ex-main-0665-c|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0665-c-help-h2"
+    ],
+    [
+      "ex-main-0665-c|step-1",
+      "midpoints-and-vector-lengths-ex-main-0665-c-step-1"
+    ],
+    [
+      "ex-main-0665-c|step-2",
+      "midpoints-and-vector-lengths-ex-main-0665-c-step-2"
+    ],
+    [
+      "ex-main-0665-c|step-3",
+      "midpoints-and-vector-lengths-ex-main-0665-c-step-3"
+    ],
+    [
+      "ex-main-0665-d|condition",
+      "midpoints-and-vector-lengths-ex-main-0665-d-condition"
+    ],
+    [
+      "ex-main-0665-d|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0665-d-help-h1"
+    ],
+    [
+      "ex-main-0665-d|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0665-d-help-h2"
+    ],
+    [
+      "ex-main-0665-d|step-1",
+      "midpoints-and-vector-lengths-ex-main-0665-d-step-1"
+    ],
+    [
+      "ex-main-0665-d|step-2",
+      "midpoints-and-vector-lengths-ex-main-0665-d-step-2"
+    ],
+    [
+      "ex-main-0665-d|step-3",
+      "midpoints-and-vector-lengths-ex-main-0665-d-step-3"
+    ],
+    [
+      "ex-main-0665-e|condition",
+      "midpoints-and-vector-lengths-ex-main-0665-e-condition"
+    ],
+    [
+      "ex-main-0665-e|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0665-e-help-h1"
+    ],
+    [
+      "ex-main-0665-e|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0665-e-help-h2"
+    ],
+    [
+      "ex-main-0665-e|step-1",
+      "midpoints-and-vector-lengths-ex-main-0665-e-step-1"
+    ],
+    [
+      "ex-main-0665-e|step-2",
+      "midpoints-and-vector-lengths-ex-main-0665-e-step-2"
+    ],
+    [
+      "ex-main-0665-e|step-3",
+      "midpoints-and-vector-lengths-ex-main-0665-e-step-3"
+    ],
+    [
+      "ex-main-0665-f|condition",
+      "midpoints-and-vector-lengths-ex-main-0665-f-condition"
+    ],
+    [
+      "ex-main-0665-f|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0665-f-help-h1"
+    ],
+    [
+      "ex-main-0665-f|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0665-f-help-h2"
+    ],
+    [
+      "ex-main-0665-f|step-1",
+      "midpoints-and-vector-lengths-ex-main-0665-f-step-1"
+    ],
+    [
+      "ex-main-0665-f|step-2",
+      "midpoints-and-vector-lengths-ex-main-0665-f-step-2"
+    ],
+    [
+      "ex-main-0665-f|step-3",
+      "midpoints-and-vector-lengths-ex-main-0665-f-step-3"
+    ],
+    [
+      "ex-main-0665-g|condition",
+      "midpoints-and-vector-lengths-ex-main-0665-g-condition"
+    ],
+    [
+      "ex-main-0665-g|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0665-g-help-h1"
+    ],
+    [
+      "ex-main-0665-g|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0665-g-help-h2"
+    ],
+    [
+      "ex-main-0665-g|step-1",
+      "midpoints-and-vector-lengths-ex-main-0665-g-step-1"
+    ],
+    [
+      "ex-main-0665-g|step-2",
+      "midpoints-and-vector-lengths-ex-main-0665-g-step-2"
+    ],
+    [
+      "ex-main-0665-g|step-3",
+      "midpoints-and-vector-lengths-ex-main-0665-g-step-3"
+    ],
+    [
+      "ex-main-0666|condition",
+      "midpoints-and-vector-lengths-ex-main-0666-condition"
+    ],
+    [
+      "ex-main-0666|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0666-help-h1"
+    ],
+    [
+      "ex-main-0666|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0666-help-h2"
+    ],
+    [
+      "ex-main-0666|step-1",
+      "midpoints-and-vector-lengths-ex-main-0666-step-1"
+    ],
+    [
+      "ex-main-0666|step-2",
+      "midpoints-and-vector-lengths-ex-main-0666-step-2"
+    ],
+    [
+      "ex-main-0666|step-3",
+      "midpoints-and-vector-lengths-ex-main-0666-step-3"
+    ],
+    [
+      "ex-main-0667-a|condition",
+      "midpoints-and-vector-lengths-ex-main-0667-a-condition"
+    ],
+    [
+      "ex-main-0667-a|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0667-a-help-h1"
+    ],
+    [
+      "ex-main-0667-a|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0667-a-help-h2"
+    ],
+    [
+      "ex-main-0667-a|step-1",
+      "midpoints-and-vector-lengths-ex-main-0667-a-step-1"
+    ],
+    [
+      "ex-main-0667-a|step-2",
+      "midpoints-and-vector-lengths-ex-main-0667-a-step-2"
+    ],
+    [
+      "ex-main-0667-a|step-3",
+      "midpoints-and-vector-lengths-ex-main-0667-a-step-3"
+    ],
+    [
+      "ex-main-0667-b|condition",
+      "midpoints-and-vector-lengths-ex-main-0667-b-condition"
+    ],
+    [
+      "ex-main-0667-b|help:h1",
+      "midpoints-and-vector-lengths-ex-main-0667-b-help-h1"
+    ],
+    [
+      "ex-main-0667-b|help:h2",
+      "midpoints-and-vector-lengths-ex-main-0667-b-help-h2"
+    ],
+    [
+      "ex-main-0667-b|step-1",
+      "midpoints-and-vector-lengths-ex-main-0667-b-step-1"
+    ],
+    [
+      "ex-main-0667-b|step-2",
+      "midpoints-and-vector-lengths-ex-main-0667-b-step-2"
+    ],
+    [
+      "ex-main-0667-b|step-3",
+      "midpoints-and-vector-lengths-ex-main-0667-b-step-3"
+    ],
+    [
+      "ex-main-0667-b|step-4",
+      "midpoints-and-vector-lengths-ex-main-0667-b-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "0b4cf34dd1a36252ccadc717b315e2bc6e8c1ff336d8e8c27d4dbb7665c5c784",
+      "afterSHA256": "a48b1f1204214948c270816a93f408f4eaea4de05e8b5147b89a1ffdd3053d40"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "096ff8153a993b61eb825336dfe625006222f6bfc86d5e00b9f2d80824e04b1b",
+      "afterSHA256": "1a2cd350d3ed4c9f750b6c374fc631fb5d216953948853a001b8728f196fae6a"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T22:29:04Z",
+    "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–660, with 1,170 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "210542f9636a7c3307137ef47036f8fc158d088520d2060519b9d86eb41b5eb5",
+    "index": "4fdf211e84733f060b8e3aa82a27ee3b7a80fd046859b7d655ba41887c684fcb",
+    "registry": "5600eb4790b28ae45c59b0d4cf19d3069c89897e7b1ca95ec0076e7ced4d00d1",
+    "cases": "7f419f82cc35b8550d85c90ecc24d171ba6a9fa3c16e6241854e060a07d35322"
+  }
+}

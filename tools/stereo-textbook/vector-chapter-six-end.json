@@ -1,0 +1,670 @@
+{
+  "parts": {
+    "627": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "628": [
+      null
+    ],
+    "629": [
+      null
+    ],
+    "630": [
+      "а",
+      "б"
+    ],
+    "631": [
+      null
+    ],
+    "632": [
+      null
+    ],
+    "633": [
+      null
+    ],
+    "634": [
+      null
+    ],
+    "635": [
+      null
+    ],
+    "636": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "627": {
+      "id": "source-main-0627",
+      "kind": "exercise",
+      "title": "Задача № 627",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "627",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "628": {
+      "id": "source-main-0628",
+      "kind": "exercise",
+      "title": "Задача № 628",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "628",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "629": {
+      "id": "source-main-0629",
+      "kind": "exercise",
+      "title": "Задача № 629",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "629",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          158
+        ],
+        "pdfPages": [
+          160
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "630": {
+      "id": "source-main-0630",
+      "kind": "exercise",
+      "title": "Задача № 630",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "630",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          159
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "631": {
+      "id": "source-main-0631",
+      "kind": "exercise",
+      "title": "Задача № 631",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "631",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          159
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "632": {
+      "id": "source-main-0632",
+      "kind": "exercise",
+      "title": "Задача № 632",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "632",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          159
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "633": {
+      "id": "source-main-0633",
+      "kind": "exercise",
+      "title": "Задача № 633",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "633",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          159
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "634": {
+      "id": "source-main-0634",
+      "kind": "exercise",
+      "title": "Задача № 634",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "634",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          159
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "635": {
+      "id": "source-main-0635",
+      "kind": "exercise",
+      "title": "Задача № 635",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "635",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          159
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "636": {
+      "id": "source-main-0636",
+      "kind": "exercise",
+      "title": "Задача № 636",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "636",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          159
+        ],
+        "pdfPages": [
+          161
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0627-a": {
+      "raw": "69fa801944e4375f01f7b88f7dfdbbfd8484513f39a605d8c1ea130e7e2b1a8a",
+      "authored": "db5b48f2a037a0d9866ec2ff72ff8a08ac589c6ef54b6e378a02ef966a9dfd17",
+      "integrated": "5c663fbcc7c4e836f5311bb851b0559d503e9a99680625e0f09d3dc41b3a5656"
+    },
+    "ex-main-0627-b": {
+      "raw": "3f047f5d87db56f0cac392cb007c956ff0517797157ed03c4cdb2d7f7581dd85",
+      "authored": "b4ebc4205f9342bcf4b469a4dcf9a6c376d03dae6a2bd501fd44f8c14314d71e",
+      "integrated": "c5400f53c5316ed7ba77c22142df01720516deb8170b4ea521e41cf6de4150f8"
+    },
+    "ex-main-0627-c": {
+      "raw": "234b433c32808582fce2b68a23a5c1313db3532d6980e4049712453d39902c89",
+      "authored": "f18a351ad3ded412c982da13998b6fc7ab1a5f73012c90656b199eaf425906c1",
+      "integrated": "2f9252a066d299f6f8e809e2488e0ba323d32f3a1be0c2f5b06e0dcf13d789fd"
+    },
+    "ex-main-0627-d": {
+      "raw": "04c899273c8d5716712b98fbe89c8217124698713480d8aa7363c8ddf87a408b",
+      "authored": "4a3396fbd2144f29aea935d1326d2322181d80158a73165121e290f7437b840e",
+      "integrated": "a7436fe25b6591a0b73653c3ca17f58782e35987edefc428fab5a75dcaa66eb2"
+    },
+    "ex-main-0628": {
+      "raw": "c9036e447a3d20bfa988d0dc09e9c227f5ad8a5f70259f514078d528b4146c11",
+      "authored": "d6b92f40149f546938453076dc771db1835ac3d6925618c186de8a20a3d6ca0d",
+      "integrated": "d623a41ac4369aabcf82f4471cc362bf4dd109d68fcad6d44c7207bf3b3e00af"
+    },
+    "ex-main-0629": {
+      "raw": "b70506f3594f1dd3eb5dab8eb9b3f17af3acee94bd635e560dd9c9272552749b",
+      "authored": "0b78061006b2c060f8fe8e2cbd4c06416030c6bd9e5b043fe7823317460786e9",
+      "integrated": "931043b54202e56814fd0babd10d429f0c4bc182e422a9fd2fb83741a87246b5"
+    },
+    "ex-main-0630-a": {
+      "raw": "cb2e7f5755ef136aad0bcbe74962fc49cd57d51fb260eeb9c7dbe8fc1b1270d8",
+      "authored": "af19d99f903a6b5d5edf745e87de7092a9be1d1cb9f4df93604b0848064d7ec8",
+      "integrated": "d346b0798e9b676e2d4f62a739d2f5ab7df722c9586821e172a4734121107fd4"
+    },
+    "ex-main-0630-b": {
+      "raw": "6a3f0cc7ea81e7f04eb48fa0fcff5fb124f279d584e65dd3eeebfe4fa0d19b1d",
+      "authored": "58766d127806994eaf5fb5406f536741351dde5dad8779a6818b687bb5bd9e13",
+      "integrated": "017f0b4b30a92c97d61658658788859d7bd9db0a1a68af5ea7f0382f538885d0"
+    },
+    "ex-main-0631": {
+      "raw": "30e4a174ab70ef7869945d6f16e4ff269616487c9c1153de7ff3d9ee1531bc48",
+      "authored": "7321990fa1327d55504968f03756992d4a68e491fc78369f32ca431b097aaf40",
+      "integrated": "e0ba8c5b20d1c4b269d1a12ed9cd4ec1fb0e2aa89a1d4048a161e0bc6f1d6a38"
+    },
+    "ex-main-0632": {
+      "raw": "7cdec12f17cceedb4cb1017809db296f114c4a103a89e58aa4f2fcd3a2f68571",
+      "authored": "11c8bac0153862b65ccd64513319977c532f52cba5f8e788a0c745aaa1f835dd",
+      "integrated": "be5a0b25fc2a7c5595e20c69c40e54da2e8e85d247e910a13d1a46475716d31a"
+    },
+    "ex-main-0633": {
+      "raw": "e923b349814ed6d9b7d4647e348cf7dcd4bda26c04505c9f80676546edb4b484",
+      "authored": "78a93682188deaf68dc2648164f9b54f78bd35ecdf70db739e9fb97a1f95fdf9",
+      "integrated": "c1e876999c003e606898e0d7e4e45b78100657f853bc8071d4261139b67b1469"
+    },
+    "ex-main-0634": {
+      "raw": "c3cd6391efb92d40760ac2fc86834ae05209178e82b67c17325a9b1c706ea3c8",
+      "authored": "641e722757a29696ecf83a72fa3f46cffd5e16eff1c15d8ab5977a19f8a234c8",
+      "integrated": "87961daa80d1649375e61616325ba72d461960827cf9359d849e1e9d0fbf6046"
+    },
+    "ex-main-0635": {
+      "raw": "c0915017d8abfabbad8500870834e6f731442f912cb8392c19b1a0f74c19f7af",
+      "authored": "636289c3f4f88ed9000530a2c212310206a1f599b055bd94fc6a105a4b6c669c",
+      "integrated": "83a8c86839b5c1baebf1e960c46dd1cefeeaaf28507f24efc89746ebae5f1f94"
+    },
+    "ex-main-0636": {
+      "raw": "dfd39f6d7b9dfe3e10b4d0baf3df3cf28292d102977f7b9076c2503de7866baf",
+      "authored": "bb8406088042c0ad046702dc9e0e6fdf1ddd3a4182989a40cd6e27fb4801485c",
+      "integrated": "70a17deda0ff6063ee56b0b7b92d94943a903ba1a07a316cc3a026b3a4c3c034"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0627-a|condition",
+      "vector-chapter-six-end-ex-main-0627-a-condition"
+    ],
+    [
+      "ex-main-0627-a|help:h1",
+      "vector-chapter-six-end-ex-main-0627-a-help-h1"
+    ],
+    [
+      "ex-main-0627-a|help:h2",
+      "vector-chapter-six-end-ex-main-0627-a-help-h2"
+    ],
+    [
+      "ex-main-0627-a|step-1",
+      "vector-chapter-six-end-ex-main-0627-a-step-1"
+    ],
+    [
+      "ex-main-0627-a|step-2",
+      "vector-chapter-six-end-ex-main-0627-a-step-2"
+    ],
+    [
+      "ex-main-0627-a|step-3",
+      "vector-chapter-six-end-ex-main-0627-a-step-3"
+    ],
+    [
+      "ex-main-0627-b|condition",
+      "vector-chapter-six-end-ex-main-0627-b-condition"
+    ],
+    [
+      "ex-main-0627-b|help:h1",
+      "vector-chapter-six-end-ex-main-0627-b-help-h1"
+    ],
+    [
+      "ex-main-0627-b|help:h2",
+      "vector-chapter-six-end-ex-main-0627-b-help-h2"
+    ],
+    [
+      "ex-main-0627-b|step-1",
+      "vector-chapter-six-end-ex-main-0627-b-step-1"
+    ],
+    [
+      "ex-main-0627-b|step-2",
+      "vector-chapter-six-end-ex-main-0627-b-step-2"
+    ],
+    [
+      "ex-main-0627-b|step-3",
+      "vector-chapter-six-end-ex-main-0627-b-step-3"
+    ],
+    [
+      "ex-main-0627-c|condition",
+      "vector-chapter-six-end-ex-main-0627-c-condition"
+    ],
+    [
+      "ex-main-0627-c|help:h1",
+      "vector-chapter-six-end-ex-main-0627-c-help-h1"
+    ],
+    [
+      "ex-main-0627-c|help:h2",
+      "vector-chapter-six-end-ex-main-0627-c-help-h2"
+    ],
+    [
+      "ex-main-0627-c|step-1",
+      "vector-chapter-six-end-ex-main-0627-c-step-1"
+    ],
+    [
+      "ex-main-0627-c|step-2",
+      "vector-chapter-six-end-ex-main-0627-c-step-2"
+    ],
+    [
+      "ex-main-0627-c|step-3",
+      "vector-chapter-six-end-ex-main-0627-c-step-3"
+    ],
+    [
+      "ex-main-0627-d|condition",
+      "vector-chapter-six-end-ex-main-0627-d-condition"
+    ],
+    [
+      "ex-main-0627-d|help:h1",
+      "vector-chapter-six-end-ex-main-0627-d-help-h1"
+    ],
+    [
+      "ex-main-0627-d|help:h2",
+      "vector-chapter-six-end-ex-main-0627-d-help-h2"
+    ],
+    [
+      "ex-main-0627-d|step-1",
+      "vector-chapter-six-end-ex-main-0627-d-step-1"
+    ],
+    [
+      "ex-main-0627-d|step-2",
+      "vector-chapter-six-end-ex-main-0627-d-step-2"
+    ],
+    [
+      "ex-main-0627-d|step-3",
+      "vector-chapter-six-end-ex-main-0627-d-step-3"
+    ],
+    [
+      "ex-main-0628|condition",
+      "vector-chapter-six-end-ex-main-0628-condition"
+    ],
+    [
+      "ex-main-0628|help:h1",
+      "vector-chapter-six-end-ex-main-0628-help-h1"
+    ],
+    [
+      "ex-main-0628|help:h2",
+      "vector-chapter-six-end-ex-main-0628-help-h2"
+    ],
+    [
+      "ex-main-0628|step-1",
+      "vector-chapter-six-end-ex-main-0628-step-1"
+    ],
+    [
+      "ex-main-0628|step-2",
+      "vector-chapter-six-end-ex-main-0628-step-2"
+    ],
+    [
+      "ex-main-0628|step-3",
+      "vector-chapter-six-end-ex-main-0628-step-3"
+    ],
+    [
+      "ex-main-0629|condition",
+      "vector-chapter-six-end-ex-main-0629-condition"
+    ],
+    [
+      "ex-main-0629|help:h1",
+      "vector-chapter-six-end-ex-main-0629-help-h1"
+    ],
+    [
+      "ex-main-0629|help:h2",
+      "vector-chapter-six-end-ex-main-0629-help-h2"
+    ],
+    [
+      "ex-main-0629|step-1",
+      "vector-chapter-six-end-ex-main-0629-step-1"
+    ],
+    [
+      "ex-main-0629|step-2",
+      "vector-chapter-six-end-ex-main-0629-step-2"
+    ],
+    [
+      "ex-main-0629|step-3",
+      "vector-chapter-six-end-ex-main-0629-step-3"
+    ],
+    [
+      "ex-main-0629|step-4",
+      "vector-chapter-six-end-ex-main-0629-step-4"
+    ],
+    [
+      "ex-main-0630-a|condition",
+      "vector-chapter-six-end-ex-main-0630-a-condition"
+    ],
+    [
+      "ex-main-0630-a|help:h1",
+      "vector-chapter-six-end-ex-main-0630-a-help-h1"
+    ],
+    [
+      "ex-main-0630-a|help:h2",
+      "vector-chapter-six-end-ex-main-0630-a-help-h2"
+    ],
+    [
+      "ex-main-0630-a|step-1",
+      "vector-chapter-six-end-ex-main-0630-a-step-1"
+    ],
+    [
+      "ex-main-0630-a|step-2",
+      "vector-chapter-six-end-ex-main-0630-a-step-2"
+    ],
+    [
+      "ex-main-0630-a|step-3",
+      "vector-chapter-six-end-ex-main-0630-a-step-3"
+    ],
+    [
+      "ex-main-0630-b|condition",
+      "vector-chapter-six-end-ex-main-0630-b-condition"
+    ],
+    [
+      "ex-main-0630-b|help:h1",
+      "vector-chapter-six-end-ex-main-0630-b-help-h1"
+    ],
+    [
+      "ex-main-0630-b|help:h2",
+      "vector-chapter-six-end-ex-main-0630-b-help-h2"
+    ],
+    [
+      "ex-main-0630-b|step-1",
+      "vector-chapter-six-end-ex-main-0630-b-step-1"
+    ],
+    [
+      "ex-main-0630-b|step-2",
+      "vector-chapter-six-end-ex-main-0630-b-step-2"
+    ],
+    [
+      "ex-main-0630-b|step-3",
+      "vector-chapter-six-end-ex-main-0630-b-step-3"
+    ],
+    [
+      "ex-main-0631|condition",
+      "vector-chapter-six-end-ex-main-0631-condition"
+    ],
+    [
+      "ex-main-0631|help:h1",
+      "vector-chapter-six-end-ex-main-0631-help-h1"
+    ],
+    [
+      "ex-main-0631|help:h2",
+      "vector-chapter-six-end-ex-main-0631-help-h2"
+    ],
+    [
+      "ex-main-0631|step-1",
+      "vector-chapter-six-end-ex-main-0631-step-1"
+    ],
+    [
+      "ex-main-0631|step-2",
+      "vector-chapter-six-end-ex-main-0631-step-2"
+    ],
+    [
+      "ex-main-0631|step-3",
+      "vector-chapter-six-end-ex-main-0631-step-3"
+    ],
+    [
+      "ex-main-0632|condition",
+      "vector-chapter-six-end-ex-main-0632-condition"
+    ],
+    [
+      "ex-main-0632|help:h1",
+      "vector-chapter-six-end-ex-main-0632-help-h1"
+    ],
+    [
+      "ex-main-0632|help:h2",
+      "vector-chapter-six-end-ex-main-0632-help-h2"
+    ],
+    [
+      "ex-main-0632|step-1",
+      "vector-chapter-six-end-ex-main-0632-step-1"
+    ],
+    [
+      "ex-main-0632|step-2",
+      "vector-chapter-six-end-ex-main-0632-step-2"
+    ],
+    [
+      "ex-main-0632|step-3",
+      "vector-chapter-six-end-ex-main-0632-step-3"
+    ],
+    [
+      "ex-main-0633|condition",
+      "vector-chapter-six-end-ex-main-0633-condition"
+    ],
+    [
+      "ex-main-0633|help:h1",
+      "vector-chapter-six-end-ex-main-0633-help-h1"
+    ],
+    [
+      "ex-main-0633|help:h2",
+      "vector-chapter-six-end-ex-main-0633-help-h2"
+    ],
+    [
+      "ex-main-0633|step-1",
+      "vector-chapter-six-end-ex-main-0633-step-1"
+    ],
+    [
+      "ex-main-0633|step-2",
+      "vector-chapter-six-end-ex-main-0633-step-2"
+    ],
+    [
+      "ex-main-0633|step-3",
+      "vector-chapter-six-end-ex-main-0633-step-3"
+    ],
+    [
+      "ex-main-0633|step-4",
+      "vector-chapter-six-end-ex-main-0633-step-4"
+    ],
+    [
+      "ex-main-0634|condition",
+      "vector-chapter-six-end-ex-main-0634-condition"
+    ],
+    [
+      "ex-main-0634|help:h1",
+      "vector-chapter-six-end-ex-main-0634-help-h1"
+    ],
+    [
+      "ex-main-0634|help:h2",
+      "vector-chapter-six-end-ex-main-0634-help-h2"
+    ],
+    [
+      "ex-main-0634|step-1",
+      "vector-chapter-six-end-ex-main-0634-step-1"
+    ],
+    [
+      "ex-main-0634|step-2",
+      "vector-chapter-six-end-ex-main-0634-step-2"
+    ],
+    [
+      "ex-main-0634|step-3",
+      "vector-chapter-six-end-ex-main-0634-step-3"
+    ],
+    [
+      "ex-main-0635|condition",
+      "vector-chapter-six-end-ex-main-0635-condition"
+    ],
+    [
+      "ex-main-0635|help:h1",
+      "vector-chapter-six-end-ex-main-0635-help-h1"
+    ],
+    [
+      "ex-main-0635|help:h2",
+      "vector-chapter-six-end-ex-main-0635-help-h2"
+    ],
+    [
+      "ex-main-0635|step-1",
+      "vector-chapter-six-end-ex-main-0635-step-1"
+    ],
+    [
+      "ex-main-0635|step-2",
+      "vector-chapter-six-end-ex-main-0635-step-2"
+    ],
+    [
+      "ex-main-0635|step-3",
+      "vector-chapter-six-end-ex-main-0635-step-3"
+    ],
+    [
+      "ex-main-0636|condition",
+      "vector-chapter-six-end-ex-main-0636-condition"
+    ],
+    [
+      "ex-main-0636|help:h1",
+      "vector-chapter-six-end-ex-main-0636-help-h1"
+    ],
+    [
+      "ex-main-0636|help:h2",
+      "vector-chapter-six-end-ex-main-0636-help-h2"
+    ],
+    [
+      "ex-main-0636|step-1",
+      "vector-chapter-six-end-ex-main-0636-step-1"
+    ],
+    [
+      "ex-main-0636|step-2",
+      "vector-chapter-six-end-ex-main-0636-step-2"
+    ],
+    [
+      "ex-main-0636|step-3",
+      "vector-chapter-six-end-ex-main-0636-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "768f251ba3691bbf81d74ff997e42cdf14c335b60a4d83300903c2f529d3bb9b",
+      "afterSHA256": "cf8e20a744708f3d1d9b1fec725f377c3fe36808e3445cc1c32950be795aafa4"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "6c49988707170bc0066837b6c2dc3094d97d4558d162e9e414c01e465ce5cf80",
+      "afterSHA256": "42b2942af98d5d8b900e67e502de80f4af8545a20abc2038720c106c6f870d4e"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T21:48:53Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–626 and the full chapter VI self-check, with 1,084 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "0097a018201af2f18e83a2b2f28f50240c21d9c24086a79300cc89b570604ecb",
+    "index": "95a79076ca234fa38afabddc97fae7bca8585e634974b735d6a4d9053b9a438d",
+    "registry": "d642e17a3d6eeb2b7c14a7d229517377e62dd030f9e3fa54f4e0297b5fc41164",
+    "cases": "548b525be37d6837d28b514b0b024fc70558a4a4bd2f62a404db25e386734c89"
+  }
+}
