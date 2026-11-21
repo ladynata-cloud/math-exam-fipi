@@ -1,0 +1,481 @@
+{
+  "parts": {
+    "561": [
+      "а",
+      "б",
+      "в"
+    ],
+    "562": [
+      "а",
+      "б",
+      "в"
+    ],
+    "563": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ]
+  },
+  "previousCatalog": {
+    "561": {
+      "id": "source-main-0561",
+      "kind": "exercise",
+      "title": "Задача № 561",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "561",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          144
+        ],
+        "pdfPages": [
+          146
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "562": {
+      "id": "source-main-0562",
+      "kind": "exercise",
+      "title": "Задача № 562",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "562",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          144
+        ],
+        "pdfPages": [
+          146
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "563": {
+      "id": "source-main-0563",
+      "kind": "exercise",
+      "title": "Задача № 563",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "563",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          144
+        ],
+        "pdfPages": [
+          146
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0561-a": {
+      "raw": "a39ba0e6fdb057cb027b074382879c63dcf248d456a90f4fbe27f40b2204075e",
+      "authored": "9d37951d77a9d1770581e8cc388940ec8b1e4c52da287138f060f2a0e8e64a8c",
+      "integrated": "c78ee21d4f31435560b12db989b5473fae5df1e2254f492b27fd72e84b71a311"
+    },
+    "ex-main-0561-b": {
+      "raw": "9c795e6629b81cc2b8d4a63151a248d75795b716bc5580b1a5c056304e9e38dc",
+      "authored": "207619fbe6cce7bbb122e0b552bedc37672dbf4b865dea259d7153620b822897",
+      "integrated": "086054fa42a56e84191c6987aa571cd66db5398d1be0139eca70cf8677610828"
+    },
+    "ex-main-0561-c": {
+      "raw": "d38777932b4f58915c0b0afcb6e8e27e06a37aa00bb68e2dd0b20adf408aeebf",
+      "authored": "899981257f67e9a526a2808028a13af989eecd98e6654b518fa2e8bbe88db79c",
+      "integrated": "91afbaa8b02b7022e597947cc5ddedc65b35baf73ee59e4e9250c5e7e4c18e27"
+    },
+    "ex-main-0562-a": {
+      "raw": "c502b415f083713a0a2d97644f3a41784cc3afa775fc224b79d81e7235a83887",
+      "authored": "5d2fd1e07c6194746c2932a1c8af6d31d498c676d2388fa6a6cb75c6c96587ea",
+      "integrated": "8e9b3048acb6ae3cccb1a59095d0e650f5c4275c0339b70216406d99e30b87f5"
+    },
+    "ex-main-0562-b": {
+      "raw": "c59547a6706f1cc62546ecce65c6f4da57dde361b8cfdfa1975a4497ada1351e",
+      "authored": "124482f901d94e6a6faab4cb879d174d0986c93aae72ddff3e11652a87491b96",
+      "integrated": "95087a2f8f0a14201bf306e2523b62cbe70b219e9880f7ed0652f679039cdd04"
+    },
+    "ex-main-0562-c": {
+      "raw": "9518986f45c83d499232b236f999a3b8957c13f8087ed7b622a8a5dece86871a",
+      "authored": "2177b48770e9b7d5af03d88233a5829f29df11e90768ea95ad1309719d14080d",
+      "integrated": "a158e893aff94fd4ab2d8c039e48c52649ff3dbd9888a68b966f5bb25b314fc2"
+    },
+    "ex-main-0563-a": {
+      "raw": "62e699debb640b4d8cd298667c0f59330f739d242f0fa919c8ad3061d6169fbf",
+      "authored": "9b3f79173d48c11319a6f6944416572c3607b4aba02fe8bab40faae6a29cd865",
+      "integrated": "10628f82cefecf133ccf2b0c09165884154ad7ed27faa380a6531bbe7b70260e"
+    },
+    "ex-main-0563-b": {
+      "raw": "af06d794d7be4c6e4a8b44df693ae531efed678bce62305c09abb2323ca4bb59",
+      "authored": "029162d0a9eaa92d992c7c331605d376bf5896e5aaf80adc64b0dd186c1c2f2d",
+      "integrated": "3c6304074acfe62425e884189b9c9416418297aa59cb57be4687ac09a7dfe5ff"
+    },
+    "ex-main-0563-c": {
+      "raw": "f5a6adaac2ae57cba1d17dba0c20160b5da915535ef6693e5c937f4a66c44b57",
+      "authored": "ae8b06929c2db72dab2cb98d468236cc516d54bddc61f9b9288f1c681ae76daa",
+      "integrated": "63966420cdce011264bc38859f4c234c8ba8a1748d42777342948584f06ec7c7"
+    },
+    "ex-main-0563-d": {
+      "raw": "e781dae970789450286b67a19be8b7ce8ece524d4be9e9d28fed1a1337a93537",
+      "authored": "f504f4c97538f3f555346a11e2472329376f510c19e56889315de14329a2e611",
+      "integrated": "545d47e0e3c463386e005090639671f8db23e390b4da1e2d3831802e2cf6b3b0"
+    },
+    "ex-main-0563-e": {
+      "raw": "09daced6c79f2afc12b868b40a9cc975f0c576905dea5c650eb9084c1e92f684",
+      "authored": "e7651fedcadb539df08f281876a5fdc15e3393c9551cc0990509ec2689006e86",
+      "integrated": "a1170eb515447381a12486680f0b638d93c078a37856bbf34aeba355637ce7c2"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0561-a|condition",
+      "vector-properties-ex-main-0561-a-condition"
+    ],
+    [
+      "ex-main-0561-a|help:h1",
+      "vector-properties-ex-main-0561-a-help-h1"
+    ],
+    [
+      "ex-main-0561-a|help:h2",
+      "vector-properties-ex-main-0561-a-help-h2"
+    ],
+    [
+      "ex-main-0561-a|step-1",
+      "vector-properties-ex-main-0561-a-step-1"
+    ],
+    [
+      "ex-main-0561-a|step-2",
+      "vector-properties-ex-main-0561-a-step-2"
+    ],
+    [
+      "ex-main-0561-a|step-3",
+      "vector-properties-ex-main-0561-a-step-3"
+    ],
+    [
+      "ex-main-0561-a|step-4",
+      "vector-properties-ex-main-0561-a-step-4"
+    ],
+    [
+      "ex-main-0561-b|condition",
+      "vector-properties-ex-main-0561-b-condition"
+    ],
+    [
+      "ex-main-0561-b|help:h1",
+      "vector-properties-ex-main-0561-b-help-h1"
+    ],
+    [
+      "ex-main-0561-b|help:h2",
+      "vector-properties-ex-main-0561-b-help-h2"
+    ],
+    [
+      "ex-main-0561-b|step-1",
+      "vector-properties-ex-main-0561-b-step-1"
+    ],
+    [
+      "ex-main-0561-b|step-2",
+      "vector-properties-ex-main-0561-b-step-2"
+    ],
+    [
+      "ex-main-0561-b|step-3",
+      "vector-properties-ex-main-0561-b-step-3"
+    ],
+    [
+      "ex-main-0561-b|step-4",
+      "vector-properties-ex-main-0561-b-step-4"
+    ],
+    [
+      "ex-main-0561-c|condition",
+      "vector-properties-ex-main-0561-c-condition"
+    ],
+    [
+      "ex-main-0561-c|help:h1",
+      "vector-properties-ex-main-0561-c-help-h1"
+    ],
+    [
+      "ex-main-0561-c|help:h2",
+      "vector-properties-ex-main-0561-c-help-h2"
+    ],
+    [
+      "ex-main-0561-c|step-1",
+      "vector-properties-ex-main-0561-c-step-1"
+    ],
+    [
+      "ex-main-0561-c|step-2",
+      "vector-properties-ex-main-0561-c-step-2"
+    ],
+    [
+      "ex-main-0561-c|step-3",
+      "vector-properties-ex-main-0561-c-step-3"
+    ],
+    [
+      "ex-main-0561-c|step-4",
+      "vector-properties-ex-main-0561-c-step-4"
+    ],
+    [
+      "ex-main-0562-a|condition",
+      "vector-properties-ex-main-0562-a-condition"
+    ],
+    [
+      "ex-main-0562-a|help:h1",
+      "vector-properties-ex-main-0562-a-help-h1"
+    ],
+    [
+      "ex-main-0562-a|help:h2",
+      "vector-properties-ex-main-0562-a-help-h2"
+    ],
+    [
+      "ex-main-0562-a|help:h3",
+      "vector-properties-ex-main-0562-a-help-h3"
+    ],
+    [
+      "ex-main-0562-a|help:h4",
+      "vector-properties-ex-main-0562-a-help-h4"
+    ],
+    [
+      "ex-main-0562-a|step-1",
+      "vector-properties-ex-main-0562-a-step-1"
+    ],
+    [
+      "ex-main-0562-a|step-2",
+      "vector-properties-ex-main-0562-a-step-2"
+    ],
+    [
+      "ex-main-0562-a|step-3",
+      "vector-properties-ex-main-0562-a-step-3"
+    ],
+    [
+      "ex-main-0562-a|step-4",
+      "vector-properties-ex-main-0562-a-step-4"
+    ],
+    [
+      "ex-main-0562-b|condition",
+      "vector-properties-ex-main-0562-b-condition"
+    ],
+    [
+      "ex-main-0562-b|help:h1",
+      "vector-properties-ex-main-0562-b-help-h1"
+    ],
+    [
+      "ex-main-0562-b|help:h2",
+      "vector-properties-ex-main-0562-b-help-h2"
+    ],
+    [
+      "ex-main-0562-b|help:h3",
+      "vector-properties-ex-main-0562-b-help-h3"
+    ],
+    [
+      "ex-main-0562-b|step-1",
+      "vector-properties-ex-main-0562-b-step-1"
+    ],
+    [
+      "ex-main-0562-b|step-2",
+      "vector-properties-ex-main-0562-b-step-2"
+    ],
+    [
+      "ex-main-0562-b|step-3",
+      "vector-properties-ex-main-0562-b-step-3"
+    ],
+    [
+      "ex-main-0562-b|step-4",
+      "vector-properties-ex-main-0562-b-step-4"
+    ],
+    [
+      "ex-main-0562-c|condition",
+      "vector-properties-ex-main-0562-c-condition"
+    ],
+    [
+      "ex-main-0562-c|help:h1",
+      "vector-properties-ex-main-0562-c-help-h1"
+    ],
+    [
+      "ex-main-0562-c|help:h2",
+      "vector-properties-ex-main-0562-c-help-h2"
+    ],
+    [
+      "ex-main-0562-c|step-1",
+      "vector-properties-ex-main-0562-c-step-1"
+    ],
+    [
+      "ex-main-0562-c|step-2",
+      "vector-properties-ex-main-0562-c-step-2"
+    ],
+    [
+      "ex-main-0562-c|step-3",
+      "vector-properties-ex-main-0562-c-step-3"
+    ],
+    [
+      "ex-main-0562-c|step-4",
+      "vector-properties-ex-main-0562-c-step-4"
+    ],
+    [
+      "ex-main-0563-a|condition",
+      "vector-properties-ex-main-0563-a-condition"
+    ],
+    [
+      "ex-main-0563-a|help:h1",
+      "vector-properties-ex-main-0563-a-help-h1"
+    ],
+    [
+      "ex-main-0563-a|help:h2",
+      "vector-properties-ex-main-0563-a-help-h2"
+    ],
+    [
+      "ex-main-0563-a|step-1",
+      "vector-properties-ex-main-0563-a-step-1"
+    ],
+    [
+      "ex-main-0563-a|step-2",
+      "vector-properties-ex-main-0563-a-step-2"
+    ],
+    [
+      "ex-main-0563-a|step-3",
+      "vector-properties-ex-main-0563-a-step-3"
+    ],
+    [
+      "ex-main-0563-a|step-4",
+      "vector-properties-ex-main-0563-a-step-4"
+    ],
+    [
+      "ex-main-0563-b|condition",
+      "vector-properties-ex-main-0563-b-condition"
+    ],
+    [
+      "ex-main-0563-b|help:h1",
+      "vector-properties-ex-main-0563-b-help-h1"
+    ],
+    [
+      "ex-main-0563-b|help:h2",
+      "vector-properties-ex-main-0563-b-help-h2"
+    ],
+    [
+      "ex-main-0563-b|step-1",
+      "vector-properties-ex-main-0563-b-step-1"
+    ],
+    [
+      "ex-main-0563-b|step-2",
+      "vector-properties-ex-main-0563-b-step-2"
+    ],
+    [
+      "ex-main-0563-b|step-3",
+      "vector-properties-ex-main-0563-b-step-3"
+    ],
+    [
+      "ex-main-0563-b|step-4",
+      "vector-properties-ex-main-0563-b-step-4"
+    ],
+    [
+      "ex-main-0563-c|condition",
+      "vector-properties-ex-main-0563-c-condition"
+    ],
+    [
+      "ex-main-0563-c|help:h1",
+      "vector-properties-ex-main-0563-c-help-h1"
+    ],
+    [
+      "ex-main-0563-c|help:h2",
+      "vector-properties-ex-main-0563-c-help-h2"
+    ],
+    [
+      "ex-main-0563-c|step-1",
+      "vector-properties-ex-main-0563-c-step-1"
+    ],
+    [
+      "ex-main-0563-c|step-2",
+      "vector-properties-ex-main-0563-c-step-2"
+    ],
+    [
+      "ex-main-0563-c|step-3",
+      "vector-properties-ex-main-0563-c-step-3"
+    ],
+    [
+      "ex-main-0563-c|step-4",
+      "vector-properties-ex-main-0563-c-step-4"
+    ],
+    [
+      "ex-main-0563-d|condition",
+      "vector-properties-ex-main-0563-d-condition"
+    ],
+    [
+      "ex-main-0563-d|help:h1",
+      "vector-properties-ex-main-0563-d-help-h1"
+    ],
+    [
+      "ex-main-0563-d|help:h2",
+      "vector-properties-ex-main-0563-d-help-h2"
+    ],
+    [
+      "ex-main-0563-d|step-1",
+      "vector-properties-ex-main-0563-d-step-1"
+    ],
+    [
+      "ex-main-0563-d|step-2",
+      "vector-properties-ex-main-0563-d-step-2"
+    ],
+    [
+      "ex-main-0563-d|step-3",
+      "vector-properties-ex-main-0563-d-step-3"
+    ],
+    [
+      "ex-main-0563-d|step-4",
+      "vector-properties-ex-main-0563-d-step-4"
+    ],
+    [
+      "ex-main-0563-e|condition",
+      "vector-properties-ex-main-0563-e-condition"
+    ],
+    [
+      "ex-main-0563-e|help:h1",
+      "vector-properties-ex-main-0563-e-help-h1"
+    ],
+    [
+      "ex-main-0563-e|help:h2",
+      "vector-properties-ex-main-0563-e-help-h2"
+    ],
+    [
+      "ex-main-0563-e|step-1",
+      "vector-properties-ex-main-0563-e-step-1"
+    ],
+    [
+      "ex-main-0563-e|step-2",
+      "vector-properties-ex-main-0563-e-step-2"
+    ],
+    [
+      "ex-main-0563-e|step-3",
+      "vector-properties-ex-main-0563-e-step-3"
+    ],
+    [
+      "ex-main-0563-e|step-4",
+      "vector-properties-ex-main-0563-e-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "23738783a52a6c5b9822be0ecd8644421e9dee9b872db7ce96f9d99b7713a651",
+      "afterSHA256": "a976d2e81a1bcabb7af8b92f0a332f75c6b7a0ac7cf21cfd5ae3b9cdca0cb11e"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "fb3ca9c3b709c5d6b5649ed339bdebce88a688902ef720d1ea8a7ba4228a4ab9",
+      "afterSHA256": "172caf36101e63fa871dc2c38a8ba559230dadf1228fb46151a8d7152abad33d"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T18:35:00Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–64 and source exercises 557–560, with 908 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "afe206a6a65eab1e3cdc981b39101e01b99ade79dadabf92028c07a0492fe59c",
+    "index": "ff70679fd4b58f681e07e159519d1da583ed0c1c596fcbeeeba05c9e219ff517",
+    "registry": "3784236598837d19a68464ae48277589f97e7e6aa791d307bb93aa9d93d1253a",
+    "cases": "27c5faeab23ee8ae77fb826d8ae6a8ee5ad61bc89e40a4df82e2ee2edf03db3d"
+  }
+}

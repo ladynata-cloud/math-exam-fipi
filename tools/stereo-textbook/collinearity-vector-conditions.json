@@ -1,0 +1,498 @@
+{
+  "parts": {
+    "586": [
+      null
+    ],
+    "587": [
+      null
+    ],
+    "588": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "589": [
+      null
+    ],
+    "590": [
+      null
+    ],
+    "591": [
+      "а",
+      "б"
+    ]
+  },
+  "previousCatalog": {
+    "586": {
+      "id": "source-main-0586",
+      "kind": "exercise",
+      "title": "Задача № 586",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "586",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          150
+        ],
+        "pdfPages": [
+          152
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "587": {
+      "id": "source-main-0587",
+      "kind": "exercise",
+      "title": "Задача № 587",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "587",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          150
+        ],
+        "pdfPages": [
+          152
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "588": {
+      "id": "source-main-0588",
+      "kind": "exercise",
+      "title": "Задача № 588",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "588",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          150
+        ],
+        "pdfPages": [
+          152
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "589": {
+      "id": "source-main-0589",
+      "kind": "exercise",
+      "title": "Задача № 589",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "589",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          150
+        ],
+        "pdfPages": [
+          152
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "590": {
+      "id": "source-main-0590",
+      "kind": "exercise",
+      "title": "Задача № 590",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "590",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          150
+        ],
+        "pdfPages": [
+          152
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "591": {
+      "id": "source-main-0591",
+      "kind": "exercise",
+      "title": "Задача № 591",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "591",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          150
+        ],
+        "pdfPages": [
+          152
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0586": {
+      "raw": "109a7d23c0f13805fb98d0d016ee7bd9a6448fe8331a35b1e3bbe53a56c9343f",
+      "authored": "2aa448b1eedf1bd855e4dab55d18aeca44b3716f57b6bf5a9db9a30043dbb6b5",
+      "integrated": "2ed5e1f0e78343c8387016892b06b5a4ae9d96200447b865951d593269ebc3f1"
+    },
+    "ex-main-0587": {
+      "raw": "e297d26946216d9dc367cde5bd67001646e003eb81e6c8f0d7281e601aa622b9",
+      "authored": "4a8fdd82e7a7b9be989f34d832570bd80623673d62f5f590e6c47b7127d8021c",
+      "integrated": "56246f686f52e00ca0024323764b1a44c7efc91106d807f4022418c1113ee8fb"
+    },
+    "ex-main-0588-a": {
+      "raw": "a9e655322df32b8b360d89d77fc331574f6b055f0d6550dd8828adecdda8e11c",
+      "authored": "3d89ac29e3dc79df926b227922333824620aeea4bd6e1aeb3eaa9c0dfc869886",
+      "integrated": "56c9e58f598108d527b6dc503642c08325dcc574b49a06d11394d79b29015c20"
+    },
+    "ex-main-0588-b": {
+      "raw": "d04ca3f9c601966d33cb784122065e034083b888f9fbc8d0e0a2e5ad626a75cb",
+      "authored": "dd390652bb71098ea5ca9254dcc4ee96cea932a33dddc8cd4179cd82be3c3230",
+      "integrated": "5cefe6ccf766aef8c6aaf47e7a3dea87a0c0f6290f190b06dd27abd8ec8ea27c"
+    },
+    "ex-main-0588-c": {
+      "raw": "aeeb8e5cba0d8bbb639453f6592129cdce3cceea57fac7b13e8fef1573e5fafc",
+      "authored": "46a912ca6908ffcdfca949a3bcbd5dad62c6940d01449fd97986d5a0e808b7b8",
+      "integrated": "7e97397e0d7b282f8b21e3eecb6f6cd1e3f40d52ce1f35122c7f1ad512af77ad"
+    },
+    "ex-main-0588-d": {
+      "raw": "778ed3f25db6428d87a6b707706e390ef09df27a60e0f6ab2030166a3518d4df",
+      "authored": "b42e4658908af9af49f3d1ce3a7ff2ae3e7c420f2fbb6c14e42ecf1660ceb382",
+      "integrated": "0503a1edaa0cde32f3557999a8c32e903c53dc93e83e7d485db9e0278b5f71ee"
+    },
+    "ex-main-0589": {
+      "raw": "c841204ed7cdfb9d2376cc2aad361bd3f7284b630e766854c9db239f7911bfac",
+      "authored": "859a05b686948324613de258498d0926cf4854d5fda781d317bd4d81e55c6cdb",
+      "integrated": "20543597da183c9615954fcffc0721838e6ba7ee840fbde5c1a6c2578052a167"
+    },
+    "ex-main-0590": {
+      "raw": "e1087918767435132b9e403dee1f230e72d0258e56c8570440961bca1c0ac25c",
+      "authored": "fb5217f278ef41463c2a44f5aa73b147fab957b2d32fe13e93365cfd95ebc58a",
+      "integrated": "87c9865082ffa29f5725bfe6a58abcd4ed4acc234a14c15ca082667330776d71"
+    },
+    "ex-main-0591-a": {
+      "raw": "f7fbad83ce79291e94981e878ca330ae49eea32a5fdca82ea119f0df1875a02f",
+      "authored": "562a9c197d9dbc21e2508fe605f49dff2f31fda5998b99148a3f9a6032d6901e",
+      "integrated": "732b69784f4577e66e729b4e1db127f7db821ba4fb6dfbf028e82cd126deac31"
+    },
+    "ex-main-0591-b": {
+      "raw": "d4420af72dbf24c0f1b5e9e52e3a3d01438c810fc35fc69f4b00b14a446ca9b0",
+      "authored": "e55b40ec90ec2002ebde2a156de351bde7a2fc2e1e8a25af5f597e103e8e0818",
+      "integrated": "5b40b58c83fbd4c3464fa27e2f9ddc6664dd574b26158895f767924507ce43d4"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0586|condition",
+      "collinearity-vector-conditions-ex-main-0586-condition"
+    ],
+    [
+      "ex-main-0586|help:h1",
+      "collinearity-vector-conditions-ex-main-0586-help-h1"
+    ],
+    [
+      "ex-main-0586|help:h2",
+      "collinearity-vector-conditions-ex-main-0586-help-h2"
+    ],
+    [
+      "ex-main-0586|step-1",
+      "collinearity-vector-conditions-ex-main-0586-step-1"
+    ],
+    [
+      "ex-main-0586|step-2",
+      "collinearity-vector-conditions-ex-main-0586-step-2"
+    ],
+    [
+      "ex-main-0586|step-3",
+      "collinearity-vector-conditions-ex-main-0586-step-3"
+    ],
+    [
+      "ex-main-0586|step-4",
+      "collinearity-vector-conditions-ex-main-0586-step-4"
+    ],
+    [
+      "ex-main-0587|condition",
+      "collinearity-vector-conditions-ex-main-0587-condition"
+    ],
+    [
+      "ex-main-0587|help:h1",
+      "collinearity-vector-conditions-ex-main-0587-help-h1"
+    ],
+    [
+      "ex-main-0587|help:h2",
+      "collinearity-vector-conditions-ex-main-0587-help-h2"
+    ],
+    [
+      "ex-main-0587|step-1",
+      "collinearity-vector-conditions-ex-main-0587-step-1"
+    ],
+    [
+      "ex-main-0587|step-2",
+      "collinearity-vector-conditions-ex-main-0587-step-2"
+    ],
+    [
+      "ex-main-0587|step-3",
+      "collinearity-vector-conditions-ex-main-0587-step-3"
+    ],
+    [
+      "ex-main-0587|step-4",
+      "collinearity-vector-conditions-ex-main-0587-step-4"
+    ],
+    [
+      "ex-main-0588-a|condition",
+      "collinearity-vector-conditions-ex-main-0588-a-condition"
+    ],
+    [
+      "ex-main-0588-a|help:h1",
+      "collinearity-vector-conditions-ex-main-0588-a-help-h1"
+    ],
+    [
+      "ex-main-0588-a|help:h2",
+      "collinearity-vector-conditions-ex-main-0588-a-help-h2"
+    ],
+    [
+      "ex-main-0588-a|step-1",
+      "collinearity-vector-conditions-ex-main-0588-a-step-1"
+    ],
+    [
+      "ex-main-0588-a|step-2",
+      "collinearity-vector-conditions-ex-main-0588-a-step-2"
+    ],
+    [
+      "ex-main-0588-a|step-3",
+      "collinearity-vector-conditions-ex-main-0588-a-step-3"
+    ],
+    [
+      "ex-main-0588-a|step-4",
+      "collinearity-vector-conditions-ex-main-0588-a-step-4"
+    ],
+    [
+      "ex-main-0588-b|condition",
+      "collinearity-vector-conditions-ex-main-0588-b-condition"
+    ],
+    [
+      "ex-main-0588-b|help:h1",
+      "collinearity-vector-conditions-ex-main-0588-b-help-h1"
+    ],
+    [
+      "ex-main-0588-b|help:h2",
+      "collinearity-vector-conditions-ex-main-0588-b-help-h2"
+    ],
+    [
+      "ex-main-0588-b|step-1",
+      "collinearity-vector-conditions-ex-main-0588-b-step-1"
+    ],
+    [
+      "ex-main-0588-b|step-2",
+      "collinearity-vector-conditions-ex-main-0588-b-step-2"
+    ],
+    [
+      "ex-main-0588-b|step-3",
+      "collinearity-vector-conditions-ex-main-0588-b-step-3"
+    ],
+    [
+      "ex-main-0588-b|step-4",
+      "collinearity-vector-conditions-ex-main-0588-b-step-4"
+    ],
+    [
+      "ex-main-0588-c|condition",
+      "collinearity-vector-conditions-ex-main-0588-c-condition"
+    ],
+    [
+      "ex-main-0588-c|help:h1",
+      "collinearity-vector-conditions-ex-main-0588-c-help-h1"
+    ],
+    [
+      "ex-main-0588-c|help:h2",
+      "collinearity-vector-conditions-ex-main-0588-c-help-h2"
+    ],
+    [
+      "ex-main-0588-c|step-1",
+      "collinearity-vector-conditions-ex-main-0588-c-step-1"
+    ],
+    [
+      "ex-main-0588-c|step-2",
+      "collinearity-vector-conditions-ex-main-0588-c-step-2"
+    ],
+    [
+      "ex-main-0588-c|step-3",
+      "collinearity-vector-conditions-ex-main-0588-c-step-3"
+    ],
+    [
+      "ex-main-0588-c|step-4",
+      "collinearity-vector-conditions-ex-main-0588-c-step-4"
+    ],
+    [
+      "ex-main-0588-d|condition",
+      "collinearity-vector-conditions-ex-main-0588-d-condition"
+    ],
+    [
+      "ex-main-0588-d|help:h1",
+      "collinearity-vector-conditions-ex-main-0588-d-help-h1"
+    ],
+    [
+      "ex-main-0588-d|help:h2",
+      "collinearity-vector-conditions-ex-main-0588-d-help-h2"
+    ],
+    [
+      "ex-main-0588-d|step-1",
+      "collinearity-vector-conditions-ex-main-0588-d-step-1"
+    ],
+    [
+      "ex-main-0588-d|step-2",
+      "collinearity-vector-conditions-ex-main-0588-d-step-2"
+    ],
+    [
+      "ex-main-0588-d|step-3",
+      "collinearity-vector-conditions-ex-main-0588-d-step-3"
+    ],
+    [
+      "ex-main-0588-d|step-4",
+      "collinearity-vector-conditions-ex-main-0588-d-step-4"
+    ],
+    [
+      "ex-main-0589|condition",
+      "collinearity-vector-conditions-ex-main-0589-condition"
+    ],
+    [
+      "ex-main-0589|help:h1",
+      "collinearity-vector-conditions-ex-main-0589-help-h1"
+    ],
+    [
+      "ex-main-0589|help:h2",
+      "collinearity-vector-conditions-ex-main-0589-help-h2"
+    ],
+    [
+      "ex-main-0589|step-1",
+      "collinearity-vector-conditions-ex-main-0589-step-1"
+    ],
+    [
+      "ex-main-0589|step-2",
+      "collinearity-vector-conditions-ex-main-0589-step-2"
+    ],
+    [
+      "ex-main-0589|step-3",
+      "collinearity-vector-conditions-ex-main-0589-step-3"
+    ],
+    [
+      "ex-main-0589|step-4",
+      "collinearity-vector-conditions-ex-main-0589-step-4"
+    ],
+    [
+      "ex-main-0590|condition",
+      "collinearity-vector-conditions-ex-main-0590-condition"
+    ],
+    [
+      "ex-main-0590|help:h1",
+      "collinearity-vector-conditions-ex-main-0590-help-h1"
+    ],
+    [
+      "ex-main-0590|help:h2",
+      "collinearity-vector-conditions-ex-main-0590-help-h2"
+    ],
+    [
+      "ex-main-0590|step-1",
+      "collinearity-vector-conditions-ex-main-0590-step-1"
+    ],
+    [
+      "ex-main-0590|step-2",
+      "collinearity-vector-conditions-ex-main-0590-step-2"
+    ],
+    [
+      "ex-main-0590|step-3",
+      "collinearity-vector-conditions-ex-main-0590-step-3"
+    ],
+    [
+      "ex-main-0590|step-4",
+      "collinearity-vector-conditions-ex-main-0590-step-4"
+    ],
+    [
+      "ex-main-0591-a|condition",
+      "collinearity-vector-conditions-ex-main-0591-a-condition"
+    ],
+    [
+      "ex-main-0591-a|help:h1",
+      "collinearity-vector-conditions-ex-main-0591-a-help-h1"
+    ],
+    [
+      "ex-main-0591-a|help:h2",
+      "collinearity-vector-conditions-ex-main-0591-a-help-h2"
+    ],
+    [
+      "ex-main-0591-a|step-1",
+      "collinearity-vector-conditions-ex-main-0591-a-step-1"
+    ],
+    [
+      "ex-main-0591-a|step-2",
+      "collinearity-vector-conditions-ex-main-0591-a-step-2"
+    ],
+    [
+      "ex-main-0591-a|step-3",
+      "collinearity-vector-conditions-ex-main-0591-a-step-3"
+    ],
+    [
+      "ex-main-0591-a|step-4",
+      "collinearity-vector-conditions-ex-main-0591-a-step-4"
+    ],
+    [
+      "ex-main-0591-b|condition",
+      "collinearity-vector-conditions-ex-main-0591-b-condition"
+    ],
+    [
+      "ex-main-0591-b|help:h1",
+      "collinearity-vector-conditions-ex-main-0591-b-help-h1"
+    ],
+    [
+      "ex-main-0591-b|help:h2",
+      "collinearity-vector-conditions-ex-main-0591-b-help-h2"
+    ],
+    [
+      "ex-main-0591-b|step-1",
+      "collinearity-vector-conditions-ex-main-0591-b-step-1"
+    ],
+    [
+      "ex-main-0591-b|step-2",
+      "collinearity-vector-conditions-ex-main-0591-b-step-2"
+    ],
+    [
+      "ex-main-0591-b|step-3",
+      "collinearity-vector-conditions-ex-main-0591-b-step-3"
+    ],
+    [
+      "ex-main-0591-b|step-4",
+      "collinearity-vector-conditions-ex-main-0591-b-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "455135f3db49b6bebe9f0558dac22669cff3c79dc9dcbbcabef361b8cf9493a5",
+      "afterSHA256": "1d7f3775d96dd04b2ece16400c1952ee4785f7e8f914a98de0fd00fd9e61cb96"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "5a13fe32eba928c5bcbf247a96b83dc03f9a8d4a88cd9df5761e94b950d3e05f",
+      "afterSHA256": "598bdb2a77a8c00bc77d144b1a0f00a8c30255a0f648719342f03c01ddd2a115"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T20:00:18Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–585, with 975 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "76f33cc0df0682e143a268a35e6af210f2c6f6590d3b832568ad0a15e25fbc16",
+    "index": "cceb62bbef4116de68877229afda306e917b1259ea66c4d917b427f97d5f074b",
+    "registry": "f71a9579d1a5b9e1fa6119044de6835aa39e10b6b42241936abf395eed731cb6",
+    "cases": "cd4e2c910f661fab2ee7b058ace3d9441d59f8a99ae86bb00e88c937efb18a87"
+  }
+}

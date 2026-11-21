@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0582-a",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Обратная диагональ и средняя линия",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "582",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      149
+    ],
+    "pdfPages": [
+      151
+    ],
+    "subpart": "а"
+  },
+  "statement": {
+    "text": "ABCD — параллелограмм, E и F — середины AB и BC. Точка O произвольна.",
+    "goal": "Вырази OA−OC через EF."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "E и F делят AB и BC пополам. В книге эти отрезки названы основаниями; в порядке вершин ABCD это соседние стороны.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          1.5,
+          3,
+          0
+        ],
+        "C": [
+          6.5,
+          3,
+          0
+        ],
+        "D": [
+          5,
+          0,
+          0
+        ],
+        "O": [
+          2,
+          -2,
+          4
+        ],
+        "E": [
+          0.75,
+          1.5,
+          0.0
+        ],
+        "F": [
+          4.0,
+          3.0,
+          0.0
+        ]
+      },
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "O",
+        "E",
+        "F"
+      ],
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "E",
+          "F"
+        ],
+        [
+          "O",
+          "A"
+        ]
+      ],
+      "arrows": [
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "E",
+          "F"
+        ]
+      ],
+      "faces": [],
+      "views": {
+        "neutral": {
+          "label": "E и F делят AB и BC пополам. В книге эти отрезки названы основаниями; в порядке вершин ABCD это соседние стороны.",
+          "segments": [
+            [
+              "A",
+              "E"
+            ],
+            [
+              "E",
+              "B"
+            ],
+            [
+              "B",
+              "F"
+            ],
+            [
+              "F",
+              "C"
+            ]
+          ]
+        },
+        "diff": {
+          "label": "Разность стрелок с общим началом соединяет их концы. Первой буквой станет конец вычитаемого.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "O",
+              "C"
+            ],
+            [
+              "C",
+              "A"
+            ],
+            [
+              "E",
+              "F"
+            ]
+          ]
+        },
+        "compare": {
+          "label": "EF соединяет середины в треугольнике ABC. Сравни её с AC.",
+          "segments": [
+            [
+              "E",
+              "F"
+            ],
+            [
+              "A",
+              "C"
+            ],
+            [
+              "C",
+              "A"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Как убрать O?",
+      "text": "Вычитаем OC из OA. Чтобы дополнить OC до OA, из C идём в A.",
+      "view": "diff"
+    },
+    {
+      "id": "h2",
+      "question": "Как связан EF с диагональю?",
+      "text": "В треугольнике ABC это средняя линия, расположенная вдоль AC.",
+      "view": "compare"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Разность",
+      "prompt": "Какой вектор равен OA−OC?",
+      "explanation": "Из конца OC идём в A, поэтому OA−OC=CA.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Правило треугольника даёт OC+CA=OA."
+        }
+      ],
+      "view": "diff",
+      "input": {
+        "prompt": "Разность",
+        "accepted": [
+          "CA",
+          "СА"
+        ],
+        "feedback": "Начало искомой стрелки находится в C."
+      }
+    },
+    {
+      "id": "step-2",
+      "title": "Масштаб",
+      "prompt": "Во сколько раз AC длиннее EF?",
+      "explanation": "Средняя линия EF параллельна AC и составляет её половину.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Средняя линия соединяет середины двух сторон треугольника."
+        }
+      ],
+      "view": "compare",
+      "input": {
+        "prompt": "Масштаб",
+        "accepted": [
+          "2"
+        ],
+        "feedback": "Сравнивай EF с третьей стороной AC."
+      }
+    },
+    {
+      "id": "step-3",
+      "title": "Направление",
+      "prompt": "Найди k в OA−OC=k·EF.",
+      "explanation": "CA направлена против EF и вдвое длиннее. Выходит OA−OC=−2EF.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "У отрицательно кратного вектора направление обращается.",
+          "theoryId": "theory-067"
+        }
+      ],
+      "view": "neutral",
+      "input": {
+        "prompt": "Направление",
+        "accepted": [
+          "-2"
+        ],
+        "feedback": "Следи за порядком букв в CA."
+      }
+    },
+    {
+      "id": "step-4",
+      "title": "Другая фигура",
+      "prompt": "В новом параллелограмме |EF|=4. Каков модуль OA−OC?",
+      "explanation": "|−2EF|=2·4=8.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Длина k·v равна |k|·|v|."
+        }
+      ],
+      "view": "compare",
+      "input": {
+        "prompt": "Другая фигура",
+        "accepted": [
+          "8"
+        ],
+        "feedback": "Длина положительная, даже если коэффициент отрицателен."
+      }
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "-2"
+    ],
+    "prompt": "Введи коэффициент при EF.",
+    "feedback": "OA−OC=CA=−2EF."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: printed page 149 and key 268; directed midpoint identities, algebraic expansion and a prism identity",
+    "at": "2026-11-21T20:00:18Z"
+  }
+}

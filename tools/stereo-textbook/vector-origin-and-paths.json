@@ -1,0 +1,265 @@
+{
+  "parts": {
+    "568": [
+      "а",
+      "б"
+    ],
+    "569": [
+      null
+    ],
+    "570": [
+      "а",
+      "б"
+    ]
+  },
+  "previousCatalog": {
+    "568": {
+      "id": "source-main-0568",
+      "kind": "exercise",
+      "title": "Задача № 568",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "568",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          148
+        ],
+        "pdfPages": [
+          150
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "569": {
+      "id": "source-main-0569",
+      "kind": "exercise",
+      "title": "Задача № 569",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "569",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          148
+        ],
+        "pdfPages": [
+          150
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "570": {
+      "id": "source-main-0570",
+      "kind": "exercise",
+      "title": "Задача № 570",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "570",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          148
+        ],
+        "pdfPages": [
+          150
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0568-a": {
+      "raw": "4a96d90d3a913b85f3dcd15a60ff81fddc870e2790ba45f732ec6dfcdff656fe",
+      "authored": "9178a654442098b21817fbb9c97df17e3a7d010d3d50f44e4a4a411c95ea8967",
+      "integrated": "e1a017825094d4e2e193bb51cca1c5b2bd1852ff0a3656c1e7c21f16dfda8d06"
+    },
+    "ex-main-0568-b": {
+      "raw": "64a0d1a5e19754d86c69a2239a93879c29fb1cd2818b0320587dd9b9378f93eb",
+      "authored": "304648c6fd0bef7201cf108b4b69bee3b2bf3b349ac2cf0a700f1c3da030bcf7",
+      "integrated": "bcecd91c4fa86c21369f19d1601b27442cce5281a43f4a22d0a8ad2293ed07bc"
+    },
+    "ex-main-0569": {
+      "raw": "2302b68c782eb76b7d63153cd52324ce19780a234715221ed5f6d3ccc504133c",
+      "authored": "4e8610472b6bf2a47c7b0ddfc54645727bda5edaa4ae1bcf8010a43917d92120",
+      "integrated": "509c5f5fa6c4b62bdb1ea92fa70f463d27602724e4f277711accfef04acd34a4"
+    },
+    "ex-main-0570-a": {
+      "raw": "026fa68728beb9c8804b526d62d155e8ab96b04d372d871e09081e1bfa112a5a",
+      "authored": "70a5b9b33f261506005509697ebd43c04be46aa412e15a285053dda77b9ceabb",
+      "integrated": "a31d4fad84ef598b244887c8fb60a017d416efed130d401baa3b34a831722005"
+    },
+    "ex-main-0570-b": {
+      "raw": "b51fb65fca1f2e6b5088b8131e26f7521c4a2041a866f317d245a910ca19d0f9",
+      "authored": "0188082db506914e95e48e5fdadea3e0c4a94597b8e9b427af76f2b6538b988d",
+      "integrated": "3dbb7c95e7aeec411bd1b8b096970a8c4b6fcc1ed37d9fae4f22db8c35260270"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0568-a|condition",
+      "vector-origin-and-paths-ex-main-0568-a-condition"
+    ],
+    [
+      "ex-main-0568-a|help:h1",
+      "vector-origin-and-paths-ex-main-0568-a-help-h1"
+    ],
+    [
+      "ex-main-0568-a|help:h2",
+      "vector-origin-and-paths-ex-main-0568-a-help-h2"
+    ],
+    [
+      "ex-main-0568-a|step-1",
+      "vector-origin-and-paths-ex-main-0568-a-step-1"
+    ],
+    [
+      "ex-main-0568-a|step-2",
+      "vector-origin-and-paths-ex-main-0568-a-step-2"
+    ],
+    [
+      "ex-main-0568-a|step-3",
+      "vector-origin-and-paths-ex-main-0568-a-step-3"
+    ],
+    [
+      "ex-main-0568-a|step-4",
+      "vector-origin-and-paths-ex-main-0568-a-step-4"
+    ],
+    [
+      "ex-main-0568-b|condition",
+      "vector-origin-and-paths-ex-main-0568-b-condition"
+    ],
+    [
+      "ex-main-0568-b|help:h1",
+      "vector-origin-and-paths-ex-main-0568-b-help-h1"
+    ],
+    [
+      "ex-main-0568-b|help:h2",
+      "vector-origin-and-paths-ex-main-0568-b-help-h2"
+    ],
+    [
+      "ex-main-0568-b|step-1",
+      "vector-origin-and-paths-ex-main-0568-b-step-1"
+    ],
+    [
+      "ex-main-0568-b|step-2",
+      "vector-origin-and-paths-ex-main-0568-b-step-2"
+    ],
+    [
+      "ex-main-0568-b|step-3",
+      "vector-origin-and-paths-ex-main-0568-b-step-3"
+    ],
+    [
+      "ex-main-0568-b|step-4",
+      "vector-origin-and-paths-ex-main-0568-b-step-4"
+    ],
+    [
+      "ex-main-0569|condition",
+      "vector-origin-and-paths-ex-main-0569-condition"
+    ],
+    [
+      "ex-main-0569|help:h1",
+      "vector-origin-and-paths-ex-main-0569-help-h1"
+    ],
+    [
+      "ex-main-0569|help:h2",
+      "vector-origin-and-paths-ex-main-0569-help-h2"
+    ],
+    [
+      "ex-main-0569|step-1",
+      "vector-origin-and-paths-ex-main-0569-step-1"
+    ],
+    [
+      "ex-main-0569|step-2",
+      "vector-origin-and-paths-ex-main-0569-step-2"
+    ],
+    [
+      "ex-main-0569|step-3",
+      "vector-origin-and-paths-ex-main-0569-step-3"
+    ],
+    [
+      "ex-main-0569|step-4",
+      "vector-origin-and-paths-ex-main-0569-step-4"
+    ],
+    [
+      "ex-main-0570-a|condition",
+      "vector-origin-and-paths-ex-main-0570-a-condition"
+    ],
+    [
+      "ex-main-0570-a|help:h1",
+      "vector-origin-and-paths-ex-main-0570-a-help-h1"
+    ],
+    [
+      "ex-main-0570-a|help:h2",
+      "vector-origin-and-paths-ex-main-0570-a-help-h2"
+    ],
+    [
+      "ex-main-0570-a|step-1",
+      "vector-origin-and-paths-ex-main-0570-a-step-1"
+    ],
+    [
+      "ex-main-0570-a|step-2",
+      "vector-origin-and-paths-ex-main-0570-a-step-2"
+    ],
+    [
+      "ex-main-0570-a|step-3",
+      "vector-origin-and-paths-ex-main-0570-a-step-3"
+    ],
+    [
+      "ex-main-0570-a|step-4",
+      "vector-origin-and-paths-ex-main-0570-a-step-4"
+    ],
+    [
+      "ex-main-0570-b|condition",
+      "vector-origin-and-paths-ex-main-0570-b-condition"
+    ],
+    [
+      "ex-main-0570-b|help:h1",
+      "vector-origin-and-paths-ex-main-0570-b-help-h1"
+    ],
+    [
+      "ex-main-0570-b|help:h2",
+      "vector-origin-and-paths-ex-main-0570-b-help-h2"
+    ],
+    [
+      "ex-main-0570-b|step-1",
+      "vector-origin-and-paths-ex-main-0570-b-step-1"
+    ],
+    [
+      "ex-main-0570-b|step-2",
+      "vector-origin-and-paths-ex-main-0570-b-step-2"
+    ],
+    [
+      "ex-main-0570-b|step-3",
+      "vector-origin-and-paths-ex-main-0570-b-step-3"
+    ],
+    [
+      "ex-main-0570-b|step-4",
+      "vector-origin-and-paths-ex-main-0570-b-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "80a45ba0532dca2f22237d428b06c77942e6120b3428635c5b9bf61b7c6db97f",
+      "afterSHA256": "2689e679f76e350dc13b5120eafef10482043f733e2188b851f06e8c0efd6fd7"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "b6e9bce57e3259a19236539f1bceeb41369199c8b5676e44826edbc54ce77b69",
+      "afterSHA256": "44fce2e16bbf572a800248a04fce6151c8b102e2a743e2f0b37f65adcb03b901"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T18:56:00Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–567, with 939 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "4308c937da8ba7c5b73ad6659b54ea5e401e9a2f6941dea794a72410469f8392",
+    "index": "732988ed99afd0c65fbc210a73470055c2aad76cbbda266fa5c46d9d192959ca",
+    "registry": "2dd3ed1ed5483eccdad15bd99d733b37f7860f699e3d9df6db97dea1b9bfa571",
+    "cases": "343c47a5fbaf3c20c978f2202915c160dec43ca4f4e1b1174d88a36ba3aaa97e"
+  }
+}

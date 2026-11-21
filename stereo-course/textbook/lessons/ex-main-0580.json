@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0580",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Узнай центр симметрии по направленной половине",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "580",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      149
+    ],
+    "pdfPages": [
+      151
+    ]
+  },
+  "statement": {
+    "text": "В пространстве дано векторное равенство AO=½AB.",
+    "goal": "Докажи, что отражение в точке O меняет A и B местами."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Из A отложены две сонаправленные стрелки. AO вдвое короче AB.",
+    "model": {
+      "points": {
+        "A": [
+          -3,
+          -1,
+          0
+        ],
+        "O": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          3,
+          1,
+          0
+        ]
+      },
+      "labelNames": [
+        "A",
+        "B",
+        "O"
+      ],
+      "edges": [
+        [
+          "A",
+          "B"
+        ]
+      ],
+      "arrows": [
+        [
+          "A",
+          "O"
+        ],
+        [
+          "A",
+          "B"
+        ],
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "B"
+        ]
+      ],
+      "faces": [],
+      "views": {
+        "neutral": {
+          "label": "Из A отложены две сонаправленные стрелки. AO вдвое короче AB.",
+          "segments": [
+            [
+              "A",
+              "O"
+            ],
+            [
+              "A",
+              "B"
+            ]
+          ]
+        },
+        "center": {
+          "label": "Две стрелки OA и OB идут из O в разные стороны и имеют равные длины.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "O",
+              "B"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Где лежит O?",
+      "text": "Множитель между 0 и 1 означает движение из A к B ровно до половины пути при A≠B.",
+      "view": "neutral"
+    },
+    {
+      "id": "h2",
+      "question": "Что проверить при отражении?",
+      "text": "Сравни OA и OB: у отражённых точек это противоположные векторы.",
+      "view": "center"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Сложи путь",
+      "prompt": "Какой коэффициент стоит при AO в AB из условия?",
+      "explanation": "Умножив исходное равенство на 2, получаем AB=2AO.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Умножаем обе части векторного равенства на одно число."
+        }
+      ],
+      "view": "neutral",
+      "input": {
+        "prompt": "Сложи путь",
+        "accepted": [
+          "2"
+        ],
+        "feedback": "В выражении для полной AB половина превращается в удвоение."
+      }
+    },
+    {
+      "id": "step-2",
+      "title": "От O к B",
+      "prompt": "Из AB=AO+OB и AB=2AO вырази OB одной стрелкой из A.",
+      "explanation": "После вычитания AO останется OB=AO.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Правило треугольника выполняется также для сонаправленных стрелок на прямой."
+        }
+      ],
+      "view": "neutral",
+      "input": {
+        "prompt": "От O к B",
+        "accepted": [
+          "AO",
+          "АО"
+        ],
+        "feedback": "У AO и OB совпадают направления от A в сторону B."
+      }
+    },
+    {
+      "id": "step-3",
+      "title": "Сравни направления",
+      "prompt": "Укажи коэффициент k в OA=k·OB при A≠B.",
+      "explanation": "OA=−AO=−OB. Это и есть условие центральной симметрии с центром O.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Вектор с переставленными концами получает знак минус.",
+          "theoryId": "theory-067"
+        }
+      ],
+      "view": "center",
+      "input": {
+        "prompt": "Сравни направления",
+        "accepted": [
+          "-1"
+        ],
+        "feedback": "Модули равны, но от O стрелки направлены в разные стороны."
+      }
+    },
+    {
+      "id": "step-4",
+      "title": "Проверь крайний случай",
+      "prompt": "Если A и B совпали, чему равна длина AO?",
+      "explanation": "AB=0, поэтому AO=0 и все три точки совпадают. Центр симметрии переходит сам в себя.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Нулевой вектор можно отложить только от точки в неё саму."
+        }
+      ],
+      "view": "center",
+      "input": {
+        "prompt": "Проверь крайний случай",
+        "accepted": [
+          "0"
+        ],
+        "feedback": "Половина нулевого вектора тоже нулевая."
+      }
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "Докажи симметрию для всех допустимых точек.",
+    "feedback": "Из AO=½AB и AB=AO+OB следует AO=OB. Поэтому OA=−OB, в том числе когда все три точки совпали."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: printed page 149, pairs of midpoints, directed coefficients and limiting configuration",
+    "at": "2026-11-21T19:39:22Z"
+  }
+}

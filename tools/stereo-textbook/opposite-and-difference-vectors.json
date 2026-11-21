@@ -1,0 +1,380 @@
+{
+  "parts": {
+    "566": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "567": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ]
+  },
+  "previousCatalog": {
+    "566": {
+      "id": "source-main-0566",
+      "kind": "exercise",
+      "title": "Задача № 566",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "566",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          148
+        ],
+        "pdfPages": [
+          150
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "567": {
+      "id": "source-main-0567",
+      "kind": "exercise",
+      "title": "Задача № 567",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "567",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          148
+        ],
+        "pdfPages": [
+          150
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0566-a": {
+      "raw": "4d6acba3a210cb3317c07e29bae39dbe00c7d755621439145537aa9f5955e551",
+      "authored": "7ddb23cb132a49fa7d0e15fca88d4bffa8b22c180de56cc232e7ea8a2cabbe8e",
+      "integrated": "e7b783de291c46288a13c7b2a8f0479e745dd553ee3207fb6ef1ee5b00abcf48"
+    },
+    "ex-main-0566-b": {
+      "raw": "83f8ca7049899dd5de548d07162d5a212154fd682ccd4e338b87e6fe398767d7",
+      "authored": "242d40eadce144f6e757e2c6e37524d97ee48e9ce9fa72e9c881fba57643f8ac",
+      "integrated": "b8b6284ae0a12eb45eee77365189895df56e74a99ef51b9b6a3cfd61ab8db92b"
+    },
+    "ex-main-0566-c": {
+      "raw": "250aa156cf6972ed8b4db8e9b5dab3a5080bca02e352460411119ce07d66bfa7",
+      "authored": "fe5b2276e15ccd9a1d3332399a4b3b1faeb7c781c255aab31fb2caa12a4a7814",
+      "integrated": "e6a05a4323d2afd31c2cdaad9884473a3e0be61f4d61efded6cd09807239107d"
+    },
+    "ex-main-0566-d": {
+      "raw": "e774bf87a68dbecf59f677c35dff2add3a3b397b689281f24a1ee057d0835f16",
+      "authored": "5051ff4a561b59cea219bbe7c16ffc2d9a49f2cdc8f85ee8466e24a34af9681a",
+      "integrated": "391155f252a322a905ccdd6b9a2117eb7fd2d1008ea40a63f5fc1185b6a655d2"
+    },
+    "ex-main-0567-a": {
+      "raw": "baf24270f98277f5ad847edd4dd79fe760af0736701f854bd741aac4c34d1889",
+      "authored": "2f051c81b72a697eba24b8d8fb87e8b5bde793b38d71fcb7082fcc02f47c32b1",
+      "integrated": "ffb0693af91e9b32f550e9042aab41ddcb995e458519c04cb0d08f9ef6fc0f64"
+    },
+    "ex-main-0567-b": {
+      "raw": "2deeb29b4a62393b050d32c86fcc51364e0ebc78829ca015e894279afe0390cd",
+      "authored": "95621810bb34d584ca789d99eb8d4af1d4adfb09577b8b03ee3e809934c8e2f4",
+      "integrated": "7636e8232a82a28ec119d6bea7a51af3fb55fa05146198547959dd59d1430d82"
+    },
+    "ex-main-0567-c": {
+      "raw": "dfc1407904b66f466eff8ea243818c8192979609f1a547fb94b98035380505f3",
+      "authored": "af8abba90d54e7584bd3fefb0679eb82b7b16d75c9c064ddfa6abde0da4fb436",
+      "integrated": "ed1071d3cc4aededf618599a4206be5c861aae50f4e6ca7326ef1db0ccdb35e7"
+    },
+    "ex-main-0567-d": {
+      "raw": "44d1c28fa035a615dbe050a8fd4a917ad736acc0bc901b5f42f9739e58c43cb3",
+      "authored": "1a87d53415bd7c05c77dc5fb82e2c298165d2b35d8846739d832968abfb97fa9",
+      "integrated": "c2a13d2d383206d1414b9cdf6511d668fa000261264d0346b1d8f32e5a882446"
+    },
+    "ex-main-0567-e": {
+      "raw": "dbd2036cb15f1c18560215e1b1aebcae9e94f6e26e01ae4d23518db7fe278be6",
+      "authored": "e00d59f1cd42419ed322d0a625727d2680d0e387631cee5bbcef864bcb358aa6",
+      "integrated": "460356580f62e2f35e5c538e65a5fe6c5f2c1bf21810a8ea5a7a418bb39777ee"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0566-a|condition",
+      "opposite-and-difference-vectors-ex-main-0566-a-condition"
+    ],
+    [
+      "ex-main-0566-a|help:h1",
+      "opposite-and-difference-vectors-ex-main-0566-a-help-h1"
+    ],
+    [
+      "ex-main-0566-a|help:h2",
+      "opposite-and-difference-vectors-ex-main-0566-a-help-h2"
+    ],
+    [
+      "ex-main-0566-a|step-1",
+      "opposite-and-difference-vectors-ex-main-0566-a-step-1"
+    ],
+    [
+      "ex-main-0566-a|step-2",
+      "opposite-and-difference-vectors-ex-main-0566-a-step-2"
+    ],
+    [
+      "ex-main-0566-a|step-3",
+      "opposite-and-difference-vectors-ex-main-0566-a-step-3"
+    ],
+    [
+      "ex-main-0566-a|step-4",
+      "opposite-and-difference-vectors-ex-main-0566-a-step-4"
+    ],
+    [
+      "ex-main-0566-b|condition",
+      "opposite-and-difference-vectors-ex-main-0566-b-condition"
+    ],
+    [
+      "ex-main-0566-b|help:h1",
+      "opposite-and-difference-vectors-ex-main-0566-b-help-h1"
+    ],
+    [
+      "ex-main-0566-b|help:h2",
+      "opposite-and-difference-vectors-ex-main-0566-b-help-h2"
+    ],
+    [
+      "ex-main-0566-b|step-1",
+      "opposite-and-difference-vectors-ex-main-0566-b-step-1"
+    ],
+    [
+      "ex-main-0566-b|step-2",
+      "opposite-and-difference-vectors-ex-main-0566-b-step-2"
+    ],
+    [
+      "ex-main-0566-b|step-3",
+      "opposite-and-difference-vectors-ex-main-0566-b-step-3"
+    ],
+    [
+      "ex-main-0566-b|step-4",
+      "opposite-and-difference-vectors-ex-main-0566-b-step-4"
+    ],
+    [
+      "ex-main-0566-c|condition",
+      "opposite-and-difference-vectors-ex-main-0566-c-condition"
+    ],
+    [
+      "ex-main-0566-c|help:h1",
+      "opposite-and-difference-vectors-ex-main-0566-c-help-h1"
+    ],
+    [
+      "ex-main-0566-c|help:h2",
+      "opposite-and-difference-vectors-ex-main-0566-c-help-h2"
+    ],
+    [
+      "ex-main-0566-c|step-1",
+      "opposite-and-difference-vectors-ex-main-0566-c-step-1"
+    ],
+    [
+      "ex-main-0566-c|step-2",
+      "opposite-and-difference-vectors-ex-main-0566-c-step-2"
+    ],
+    [
+      "ex-main-0566-c|step-3",
+      "opposite-and-difference-vectors-ex-main-0566-c-step-3"
+    ],
+    [
+      "ex-main-0566-c|step-4",
+      "opposite-and-difference-vectors-ex-main-0566-c-step-4"
+    ],
+    [
+      "ex-main-0566-d|condition",
+      "opposite-and-difference-vectors-ex-main-0566-d-condition"
+    ],
+    [
+      "ex-main-0566-d|help:h1",
+      "opposite-and-difference-vectors-ex-main-0566-d-help-h1"
+    ],
+    [
+      "ex-main-0566-d|help:h2",
+      "opposite-and-difference-vectors-ex-main-0566-d-help-h2"
+    ],
+    [
+      "ex-main-0566-d|step-1",
+      "opposite-and-difference-vectors-ex-main-0566-d-step-1"
+    ],
+    [
+      "ex-main-0566-d|step-2",
+      "opposite-and-difference-vectors-ex-main-0566-d-step-2"
+    ],
+    [
+      "ex-main-0566-d|step-3",
+      "opposite-and-difference-vectors-ex-main-0566-d-step-3"
+    ],
+    [
+      "ex-main-0566-d|step-4",
+      "opposite-and-difference-vectors-ex-main-0566-d-step-4"
+    ],
+    [
+      "ex-main-0567-a|condition",
+      "opposite-and-difference-vectors-ex-main-0567-a-condition"
+    ],
+    [
+      "ex-main-0567-a|help:h1",
+      "opposite-and-difference-vectors-ex-main-0567-a-help-h1"
+    ],
+    [
+      "ex-main-0567-a|help:h2",
+      "opposite-and-difference-vectors-ex-main-0567-a-help-h2"
+    ],
+    [
+      "ex-main-0567-a|step-1",
+      "opposite-and-difference-vectors-ex-main-0567-a-step-1"
+    ],
+    [
+      "ex-main-0567-a|step-2",
+      "opposite-and-difference-vectors-ex-main-0567-a-step-2"
+    ],
+    [
+      "ex-main-0567-a|step-3",
+      "opposite-and-difference-vectors-ex-main-0567-a-step-3"
+    ],
+    [
+      "ex-main-0567-a|step-4",
+      "opposite-and-difference-vectors-ex-main-0567-a-step-4"
+    ],
+    [
+      "ex-main-0567-b|condition",
+      "opposite-and-difference-vectors-ex-main-0567-b-condition"
+    ],
+    [
+      "ex-main-0567-b|help:h1",
+      "opposite-and-difference-vectors-ex-main-0567-b-help-h1"
+    ],
+    [
+      "ex-main-0567-b|help:h2",
+      "opposite-and-difference-vectors-ex-main-0567-b-help-h2"
+    ],
+    [
+      "ex-main-0567-b|step-1",
+      "opposite-and-difference-vectors-ex-main-0567-b-step-1"
+    ],
+    [
+      "ex-main-0567-b|step-2",
+      "opposite-and-difference-vectors-ex-main-0567-b-step-2"
+    ],
+    [
+      "ex-main-0567-b|step-3",
+      "opposite-and-difference-vectors-ex-main-0567-b-step-3"
+    ],
+    [
+      "ex-main-0567-b|step-4",
+      "opposite-and-difference-vectors-ex-main-0567-b-step-4"
+    ],
+    [
+      "ex-main-0567-c|condition",
+      "opposite-and-difference-vectors-ex-main-0567-c-condition"
+    ],
+    [
+      "ex-main-0567-c|help:h1",
+      "opposite-and-difference-vectors-ex-main-0567-c-help-h1"
+    ],
+    [
+      "ex-main-0567-c|help:h2",
+      "opposite-and-difference-vectors-ex-main-0567-c-help-h2"
+    ],
+    [
+      "ex-main-0567-c|step-1",
+      "opposite-and-difference-vectors-ex-main-0567-c-step-1"
+    ],
+    [
+      "ex-main-0567-c|step-2",
+      "opposite-and-difference-vectors-ex-main-0567-c-step-2"
+    ],
+    [
+      "ex-main-0567-c|step-3",
+      "opposite-and-difference-vectors-ex-main-0567-c-step-3"
+    ],
+    [
+      "ex-main-0567-c|step-4",
+      "opposite-and-difference-vectors-ex-main-0567-c-step-4"
+    ],
+    [
+      "ex-main-0567-d|condition",
+      "opposite-and-difference-vectors-ex-main-0567-d-condition"
+    ],
+    [
+      "ex-main-0567-d|help:h1",
+      "opposite-and-difference-vectors-ex-main-0567-d-help-h1"
+    ],
+    [
+      "ex-main-0567-d|help:h2",
+      "opposite-and-difference-vectors-ex-main-0567-d-help-h2"
+    ],
+    [
+      "ex-main-0567-d|step-1",
+      "opposite-and-difference-vectors-ex-main-0567-d-step-1"
+    ],
+    [
+      "ex-main-0567-d|step-2",
+      "opposite-and-difference-vectors-ex-main-0567-d-step-2"
+    ],
+    [
+      "ex-main-0567-d|step-3",
+      "opposite-and-difference-vectors-ex-main-0567-d-step-3"
+    ],
+    [
+      "ex-main-0567-d|step-4",
+      "opposite-and-difference-vectors-ex-main-0567-d-step-4"
+    ],
+    [
+      "ex-main-0567-e|condition",
+      "opposite-and-difference-vectors-ex-main-0567-e-condition"
+    ],
+    [
+      "ex-main-0567-e|help:h1",
+      "opposite-and-difference-vectors-ex-main-0567-e-help-h1"
+    ],
+    [
+      "ex-main-0567-e|help:h2",
+      "opposite-and-difference-vectors-ex-main-0567-e-help-h2"
+    ],
+    [
+      "ex-main-0567-e|step-1",
+      "opposite-and-difference-vectors-ex-main-0567-e-step-1"
+    ],
+    [
+      "ex-main-0567-e|step-2",
+      "opposite-and-difference-vectors-ex-main-0567-e-step-2"
+    ],
+    [
+      "ex-main-0567-e|step-3",
+      "opposite-and-difference-vectors-ex-main-0567-e-step-3"
+    ],
+    [
+      "ex-main-0567-e|step-4",
+      "opposite-and-difference-vectors-ex-main-0567-e-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "76c6ebcbce1a77cffeba4b50ff24f2db38671cf2b2d8c23388c0769ac7f2a9a9",
+      "afterSHA256": "80a45ba0532dca2f22237d428b06c77942e6120b3428635c5b9bf61b7c6db97f"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "24b2780f0d348a86f699b5af5af8fa30626b1914b79149cc1e568875ec220fe7",
+      "afterSHA256": "b6e9bce57e3259a19236539f1bceeb41369199c8b5676e44826edbc54ce77b69"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T18:48:00Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–565, with 930 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "c6115aabd1bf256835566e2f7d3c2d022ece1a59ea10aa660f51704341302cf6",
+    "index": "544e4cbf7d25286b5d14f4ad27032cf51e77c4113546d238ca504859b53dced5",
+    "registry": "62b94aa0323a84b95bb991e868c27023b0472d6d06d2a01cf8dd971f86753d42",
+    "cases": "c4de2dd0c19fc17e08578ccee6534ff2e0364980c02efa325e455e06d0d401a5"
+  }
+}

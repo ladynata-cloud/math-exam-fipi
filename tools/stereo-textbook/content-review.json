@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T18:18:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 556, points 52–62 and all chapter V self-checks, with 897 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T20:48:13Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–596, with 1,001 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1486,6 +1486,236 @@
       ],
       "evidence": "tools/stereo-textbook/volume-chapter-end.json",
       "mathematicalReport": "tools/stereo-textbook/volume-chapter-end.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:28:00Z",
+      "scope": "Introduction to spatial vectors, points 63–64 and both printed parts of exercises 557–558",
+      "cardIds": [
+        "ex-main-0557-a",
+        "ex-main-0557-b",
+        "ex-main-0558-a",
+        "ex-main-0558-b",
+        "theory-063",
+        "theory-064"
+      ],
+      "evidence": "tools/stereo-textbook/vector-basics.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-basics.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:35:00Z",
+      "scope": "Printed directed segments on figures 157–158, all three vector relations of 559 and both parts of 560",
+      "cardIds": [
+        "ex-main-0559-a",
+        "ex-main-0559-b",
+        "ex-main-0559-c",
+        "ex-main-0560-a",
+        "ex-main-0560-b"
+      ],
+      "evidence": "tools/stereo-textbook/vector-pairs.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-pairs.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:42:00Z",
+      "scope": "All 11 printed subparts of exercises 561–563: directions, incidence and prescribed vector translations",
+      "cardIds": [
+        "ex-main-0561-a",
+        "ex-main-0561-b",
+        "ex-main-0561-c",
+        "ex-main-0562-a",
+        "ex-main-0562-b",
+        "ex-main-0562-c",
+        "ex-main-0563-a",
+        "ex-main-0563-b",
+        "ex-main-0563-c",
+        "ex-main-0563-d",
+        "ex-main-0563-e"
+      ],
+      "evidence": "tools/stereo-textbook/vector-properties.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-properties.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:48:00Z",
+      "scope": "Points 65–67 and eight source subparts 564–565: all vertex-to-vertex vector sums and three proofs in an arbitrary tetrahedron",
+      "cardIds": [
+        "ex-main-0564-a",
+        "ex-main-0564-b",
+        "ex-main-0564-c",
+        "ex-main-0564-d",
+        "ex-main-0564-e",
+        "ex-main-0565-a",
+        "ex-main-0565-b",
+        "ex-main-0565-c",
+        "theory-065",
+        "theory-066",
+        "theory-067"
+      ],
+      "evidence": "tools/stereo-textbook/spatial-vector-sums.json",
+      "mathematicalReport": "tools/stereo-textbook/spatial-vector-sums.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:56:00Z",
+      "scope": "All nine source subparts 566–567: opposite vectors, the special edge wording in 566b and all directed difference endpoints",
+      "cardIds": [
+        "ex-main-0566-a",
+        "ex-main-0566-b",
+        "ex-main-0566-c",
+        "ex-main-0566-d",
+        "ex-main-0567-a",
+        "ex-main-0567-b",
+        "ex-main-0567-c",
+        "ex-main-0567-d",
+        "ex-main-0567-e"
+      ],
+      "evidence": "tools/stereo-textbook/opposite-and-difference-vectors.json",
+      "mathematicalReport": "tools/stereo-textbook/opposite-and-difference-vectors.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:02:00Z",
+      "scope": "All source parts of 568–570: arbitrary origins, every correct marked-point difference and two spatial vector paths",
+      "cardIds": [
+        "ex-main-0568-a",
+        "ex-main-0568-b",
+        "ex-main-0569",
+        "ex-main-0570-a",
+        "ex-main-0570-b"
+      ],
+      "evidence": "tools/stereo-textbook/vector-origin-and-paths.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-origin-and-paths.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:08:00Z",
+      "scope": "Seven source parts of 571–572: equality of prism diagonal norms and exact telescoping sums",
+      "cardIds": [
+        "ex-main-0571-a",
+        "ex-main-0571-b",
+        "ex-main-0571-c",
+        "ex-main-0572-a",
+        "ex-main-0572-b",
+        "ex-main-0572-c",
+        "ex-main-0572-d"
+      ],
+      "evidence": "tools/stereo-textbook/prism-diagonals-and-vector-paths.json",
+      "mathematicalReport": "tools/stereo-textbook/prism-diagonals-and-vector-paths.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:13:00Z",
+      "scope": "All six source parts of 573–574: signed combinations and every two-vector sum for arbitrary vertices",
+      "cardIds": [
+        "ex-main-0573-a",
+        "ex-main-0573-b",
+        "ex-main-0573-c",
+        "ex-main-0574-a",
+        "ex-main-0574-b",
+        "ex-main-0574-c"
+      ],
+      "evidence": "tools/stereo-textbook/signed-vector-combinations.json",
+      "mathematicalReport": "tools/stereo-textbook/signed-vector-combinations.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:17:00Z",
+      "scope": "Source 575 and all five equations of 576–577: arbitrary origin identity and every valid prism endpoint",
+      "cardIds": [
+        "ex-main-0575",
+        "ex-main-0576-a",
+        "ex-main-0576-b",
+        "ex-main-0577-a",
+        "ex-main-0577-b",
+        "ex-main-0577-c"
+      ],
+      "evidence": "tools/stereo-textbook/prism-vector-equations.json",
+      "mathematicalReport": "tools/stereo-textbook/prism-vector-equations.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T19:39:22Z",
+      "scope": "Exercises 578–581: paired pyramid vectors, central symmetry and all three signed cube ratios",
+      "cardIds": [
+        "ex-main-0578",
+        "ex-main-0579",
+        "ex-main-0580",
+        "ex-main-0581-a",
+        "ex-main-0581-b",
+        "ex-main-0581-c"
+      ],
+      "evidence": "tools/stereo-textbook/pyramid-vector-midpoints.json",
+      "mathematicalReport": "tools/stereo-textbook/pyramid-vector-midpoints.test.cjs"
+    },
+    {
+      "reviewer": "Codex: printed page 149 and key 268; directed midpoint identities, algebraic expansion and a prism identity",
+      "reviewedAt": "2026-11-21T20:00:18Z",
+      "scope": "Exercises 582–585: directed differences, midpoints, signed expansion and diagonal vectors in a parallelepiped",
+      "cardIds": [
+        "ex-main-0582-a",
+        "ex-main-0582-b",
+        "ex-main-0583",
+        "ex-main-0584-a",
+        "ex-main-0584-b",
+        "ex-main-0585"
+      ],
+      "evidence": "tools/stereo-textbook/midlines-vector-coefficients.json",
+      "mathematicalReport": "tools/stereo-textbook/midlines-vector-coefficients.test.cjs"
+    },
+    {
+      "reviewer": "Codex: printed page 150 in the supplied 2024 edition, sign and affine identities; explicit counterexample to printed exercise 587",
+      "reviewedAt": "2026-11-21T20:18:12Z",
+      "scope": "Exercises 586–591: affine division, explicit counterexample to the printed equality in 587, and both directions of collinearity arguments",
+      "cardIds": [
+        "ex-main-0586",
+        "ex-main-0587",
+        "ex-main-0588-a",
+        "ex-main-0588-b",
+        "ex-main-0588-c",
+        "ex-main-0588-d",
+        "ex-main-0589",
+        "ex-main-0590",
+        "ex-main-0591-a",
+        "ex-main-0591-b"
+      ],
+      "evidence": "tools/stereo-textbook/collinearity-vector-conditions.json",
+      "mathematicalReport": "tools/stereo-textbook/collinearity-vector-conditions.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied 2024 volume, printed pages 150–153 and key 268. Affine coordinate, source-part and model review.",
+      "reviewedAt": "2026-11-21T20:40:53Z",
+      "scope": "Points 68–70 and exercises 592–594: coplanarity after translation, an oblique parallelepiped basis, tetrahedral midpoints and two parallelograms",
+      "cardIds": [
+        "theory-068",
+        "theory-069",
+        "theory-070",
+        "ex-main-0592-a",
+        "ex-main-0592-b",
+        "ex-main-0592-c",
+        "ex-main-0592-d",
+        "ex-main-0593",
+        "ex-main-0594"
+      ],
+      "evidence": "tools/stereo-textbook/coplanar-vector-directions.json",
+      "mathematicalReport": "tools/stereo-textbook/coplanar-vector-directions.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied 2024 volume, printed page 154 and key 268. All five directed paths and both oblique coordinate decompositions.",
+      "reviewedAt": "2026-11-21T20:48:13Z",
+      "scope": "All five vertex-to-vertex sums in exercise 595 and both oblique vector decompositions in exercise 596, including a descending basis diagonal",
+      "cardIds": [
+        "ex-main-0595-a",
+        "ex-main-0595-b",
+        "ex-main-0595-c",
+        "ex-main-0595-d",
+        "ex-main-0595-e",
+        "ex-main-0596-a",
+        "ex-main-0596-b"
+      ],
+      "evidence": "tools/stereo-textbook/parallelepiped-directed-bases.json",
+      "mathematicalReport": "tools/stereo-textbook/parallelepiped-directed-bases.test.cjs"
     }
   ],
   "cards": [
@@ -5076,6 +5306,422 @@
     {
       "id": "ex-main-0556-b",
       "sha256": "2021187572ebb735297928adf0524cc1630fda942970ae6d3b6b2df107d337c6"
+    },
+    {
+      "id": "ex-main-0557-a",
+      "sha256": "01e423592f02a7c1022d1e1a29e12ed4e8b8c1a8cb91af4fec657553ee08f91b"
+    },
+    {
+      "id": "ex-main-0557-b",
+      "sha256": "ddac15e981872eb985070e1063c910ca64f7e42ef144132dc5296356af4632f6"
+    },
+    {
+      "id": "ex-main-0558-a",
+      "sha256": "e8c84141360e4d5cb6c119228b848d7a21c3a73219baa9dd7b451637165455b9"
+    },
+    {
+      "id": "ex-main-0558-b",
+      "sha256": "1b3140e29e89d0604bc8e03667724c2801a04e4b906384413baae79a1567b55d"
+    },
+    {
+      "id": "theory-063",
+      "sha256": "a94edcb779916138ffad8988c324694300256ec6bc7233896974cdf9ea02a694"
+    },
+    {
+      "id": "theory-064",
+      "sha256": "1d827d3f9e3ece6a8e7aad20fb86a91501786ee3c80c86be480cfe796c47f9d3"
+    },
+    {
+      "id": "ex-main-0559-a",
+      "sha256": "169e49899bd2bb1ae68b58af3a184bc06689a2421543df8d299d70b66de5a18d"
+    },
+    {
+      "id": "ex-main-0559-b",
+      "sha256": "2681a5dcbb5b708d4a6a04dbba1d109345436203c57ef4687911a89354654b2c"
+    },
+    {
+      "id": "ex-main-0559-c",
+      "sha256": "b74110ee054a7de7b7873eb1251dbf5a7924e1160a340d33c9c9b4c9ee9c3a04"
+    },
+    {
+      "id": "ex-main-0560-a",
+      "sha256": "4affadc65e28ac5ae57056b4b7bae2c42f3d484ebeb597963327c5c30b0c45eb"
+    },
+    {
+      "id": "ex-main-0560-b",
+      "sha256": "99d9203c8225d2c97f5e42bed0860a909c26e5bca072bbc78f16386f44d76d54"
+    },
+    {
+      "id": "ex-main-0561-a",
+      "sha256": "9d37951d77a9d1770581e8cc388940ec8b1e4c52da287138f060f2a0e8e64a8c"
+    },
+    {
+      "id": "ex-main-0561-b",
+      "sha256": "207619fbe6cce7bbb122e0b552bedc37672dbf4b865dea259d7153620b822897"
+    },
+    {
+      "id": "ex-main-0561-c",
+      "sha256": "899981257f67e9a526a2808028a13af989eecd98e6654b518fa2e8bbe88db79c"
+    },
+    {
+      "id": "ex-main-0562-a",
+      "sha256": "5d2fd1e07c6194746c2932a1c8af6d31d498c676d2388fa6a6cb75c6c96587ea"
+    },
+    {
+      "id": "ex-main-0562-b",
+      "sha256": "124482f901d94e6a6faab4cb879d174d0986c93aae72ddff3e11652a87491b96"
+    },
+    {
+      "id": "ex-main-0562-c",
+      "sha256": "2177b48770e9b7d5af03d88233a5829f29df11e90768ea95ad1309719d14080d"
+    },
+    {
+      "id": "ex-main-0563-a",
+      "sha256": "9b3f79173d48c11319a6f6944416572c3607b4aba02fe8bab40faae6a29cd865"
+    },
+    {
+      "id": "ex-main-0563-b",
+      "sha256": "029162d0a9eaa92d992c7c331605d376bf5896e5aaf80adc64b0dd186c1c2f2d"
+    },
+    {
+      "id": "ex-main-0563-c",
+      "sha256": "ae8b06929c2db72dab2cb98d468236cc516d54bddc61f9b9288f1c681ae76daa"
+    },
+    {
+      "id": "ex-main-0563-d",
+      "sha256": "f504f4c97538f3f555346a11e2472329376f510c19e56889315de14329a2e611"
+    },
+    {
+      "id": "ex-main-0563-e",
+      "sha256": "e7651fedcadb539df08f281876a5fdc15e3393c9551cc0990509ec2689006e86"
+    },
+    {
+      "id": "ex-main-0564-a",
+      "sha256": "eba30a657229d21f09c9174f492987e43a1283dc6eb9b1d87f1cef20c1193f63"
+    },
+    {
+      "id": "ex-main-0564-b",
+      "sha256": "b54821f9964c8090ddab3f266c9c96079879116092a33d542ca208fc66e4fad7"
+    },
+    {
+      "id": "ex-main-0564-c",
+      "sha256": "25f75a3cd24de2fe601b0d3e48798498810856d84f2323c36334ab836c59b9be"
+    },
+    {
+      "id": "ex-main-0564-d",
+      "sha256": "ea26558b97df887a52d0d09339dbe570cf4263cca7aa0a265015f39d350219b7"
+    },
+    {
+      "id": "ex-main-0564-e",
+      "sha256": "c9806ba43974bfc4a7baf95444a157089cfa847e7f944a7719ad9dc3b599b2ce"
+    },
+    {
+      "id": "ex-main-0565-a",
+      "sha256": "3819bfc41d0db1513355233e51eb3303107d6417a263be8045f4ba3a11ed12c2"
+    },
+    {
+      "id": "ex-main-0565-b",
+      "sha256": "e7eab2aca5061d9834190ba5c62f60df1f73b36d2f4e27e7257dd652d4c3f353"
+    },
+    {
+      "id": "ex-main-0565-c",
+      "sha256": "b892695f8af1329126394dc1dae3672fbab859e76b3ceb577010aac3241eeb9d"
+    },
+    {
+      "id": "theory-065",
+      "sha256": "5a2b507681a774099c9bedeef7a1e4f32a7841b7123d568fc435d5e8cc3a14cc"
+    },
+    {
+      "id": "theory-066",
+      "sha256": "cef2b943e3ca21ec719205bf7d0c8b60bb0be7d9cf07f5ffc8f66ce5cee56211"
+    },
+    {
+      "id": "theory-067",
+      "sha256": "1700cad9da00d5961043e98c2f3c893819e5192c4ec84b186b5f8e3b2b838d12"
+    },
+    {
+      "id": "ex-main-0566-a",
+      "sha256": "7ddb23cb132a49fa7d0e15fca88d4bffa8b22c180de56cc232e7ea8a2cabbe8e"
+    },
+    {
+      "id": "ex-main-0566-b",
+      "sha256": "242d40eadce144f6e757e2c6e37524d97ee48e9ce9fa72e9c881fba57643f8ac"
+    },
+    {
+      "id": "ex-main-0566-c",
+      "sha256": "fe5b2276e15ccd9a1d3332399a4b3b1faeb7c781c255aab31fb2caa12a4a7814"
+    },
+    {
+      "id": "ex-main-0566-d",
+      "sha256": "5051ff4a561b59cea219bbe7c16ffc2d9a49f2cdc8f85ee8466e24a34af9681a"
+    },
+    {
+      "id": "ex-main-0567-a",
+      "sha256": "2f051c81b72a697eba24b8d8fb87e8b5bde793b38d71fcb7082fcc02f47c32b1"
+    },
+    {
+      "id": "ex-main-0567-b",
+      "sha256": "95621810bb34d584ca789d99eb8d4af1d4adfb09577b8b03ee3e809934c8e2f4"
+    },
+    {
+      "id": "ex-main-0567-c",
+      "sha256": "af8abba90d54e7584bd3fefb0679eb82b7b16d75c9c064ddfa6abde0da4fb436"
+    },
+    {
+      "id": "ex-main-0567-d",
+      "sha256": "1a87d53415bd7c05c77dc5fb82e2c298165d2b35d8846739d832968abfb97fa9"
+    },
+    {
+      "id": "ex-main-0567-e",
+      "sha256": "e00d59f1cd42419ed322d0a625727d2680d0e387631cee5bbcef864bcb358aa6"
+    },
+    {
+      "id": "ex-main-0568-a",
+      "sha256": "9178a654442098b21817fbb9c97df17e3a7d010d3d50f44e4a4a411c95ea8967"
+    },
+    {
+      "id": "ex-main-0568-b",
+      "sha256": "304648c6fd0bef7201cf108b4b69bee3b2bf3b349ac2cf0a700f1c3da030bcf7"
+    },
+    {
+      "id": "ex-main-0569",
+      "sha256": "4e8610472b6bf2a47c7b0ddfc54645727bda5edaa4ae1bcf8010a43917d92120"
+    },
+    {
+      "id": "ex-main-0570-a",
+      "sha256": "70a5b9b33f261506005509697ebd43c04be46aa412e15a285053dda77b9ceabb"
+    },
+    {
+      "id": "ex-main-0570-b",
+      "sha256": "0188082db506914e95e48e5fdadea3e0c4a94597b8e9b427af76f2b6538b988d"
+    },
+    {
+      "id": "ex-main-0571-a",
+      "sha256": "d0af8f330f78652a667a5cef4540753819521999ebd5dbb34912154b10ddb0c8"
+    },
+    {
+      "id": "ex-main-0571-b",
+      "sha256": "3af2237c61d9d6df9f3a99c27b49e1e2a51aab9e2e97da4e5a70ecd31f1469f9"
+    },
+    {
+      "id": "ex-main-0571-c",
+      "sha256": "95071aa5b87268e4f40e37d5f52fbff890acd91e298b5dd56e97c627da1f2562"
+    },
+    {
+      "id": "ex-main-0572-a",
+      "sha256": "678de7b487fd608596dc59b7df399503a88d2eccc86c0798c8944e144424c189"
+    },
+    {
+      "id": "ex-main-0572-b",
+      "sha256": "dd5be56e0b23656cfa3e4f85f4822ffbd7b2bde0909804f19f3c3bd9b37551ef"
+    },
+    {
+      "id": "ex-main-0572-c",
+      "sha256": "cb225b7be05087d2241b8ab89ea2b5d6f8214ba3693fb5a0948e44ac84d9baf8"
+    },
+    {
+      "id": "ex-main-0572-d",
+      "sha256": "115654b3e5d8eee18e5dc16ce86dec3a534a0fb5020e821a15a3170e7ae1a4f2"
+    },
+    {
+      "id": "ex-main-0573-a",
+      "sha256": "087eebc55282da303e3a63562f7d5334f31732643fbc892e4e621244bc4801ad"
+    },
+    {
+      "id": "ex-main-0573-b",
+      "sha256": "ff60fd084fab115be769f79b07e14a967adad96f4a1301bc2f940f8c70c81d57"
+    },
+    {
+      "id": "ex-main-0573-c",
+      "sha256": "c03c8623daf248da6caf48eb52e34708cab2d6582bc758926a9524dfcf8c0027"
+    },
+    {
+      "id": "ex-main-0574-a",
+      "sha256": "dd4d93750006ec577d0e0c08a24eedf701d68fa83274f801ca40f472170a8d7c"
+    },
+    {
+      "id": "ex-main-0574-b",
+      "sha256": "918f75e5481f7e1052c5d09ef5386bb0faf8063ba1a2487920bc200d87120700"
+    },
+    {
+      "id": "ex-main-0574-c",
+      "sha256": "fcd1cb1d770ce03065fdd8a56184f4827ba046c6811d3979c6e656a844563962"
+    },
+    {
+      "id": "ex-main-0575",
+      "sha256": "7ce12c41e6163c64b42fe167fffbbb9e81c5dab1494730c5f0b4dec0de178eb0"
+    },
+    {
+      "id": "ex-main-0576-a",
+      "sha256": "fa22354c74fe76bf851a0091b87cf14e164a4c015e63be7b8c1eb4acaae99a38"
+    },
+    {
+      "id": "ex-main-0576-b",
+      "sha256": "b97ca34e7891a6a4b667b1857ff8b6d197a358b21d8f3d5b05c639f754f359b0"
+    },
+    {
+      "id": "ex-main-0577-a",
+      "sha256": "06013e2e085a91ca13cc9ac2f53db1b3a8b164f8699bb10180e79793fff9f5b0"
+    },
+    {
+      "id": "ex-main-0577-b",
+      "sha256": "2e346b6480b73379856c026f7617426debccc017be036dcc93dc85a0408d864d"
+    },
+    {
+      "id": "ex-main-0577-c",
+      "sha256": "8b2118d42bd6e077c056dcfdf633d26c5ad48415915119f7219e93f97c1168b1"
+    },
+    {
+      "id": "ex-main-0578",
+      "sha256": "2e1065563d556f7b02519ae5bc7be63acd482d3ace0c7d73079939f619d0fd29"
+    },
+    {
+      "id": "ex-main-0579",
+      "sha256": "33ea746ccec17dcf1013fcd19af4bdf50bbabc1d06bfb50c50ca206671c1d7db"
+    },
+    {
+      "id": "ex-main-0580",
+      "sha256": "cf9a282d65934768cfa3007f1112d08fdd110553cf51a802ec9ddfafbe37a4b8"
+    },
+    {
+      "id": "ex-main-0581-a",
+      "sha256": "d00a28ed736c1b5ea7cbbb5fdccc664872f42789ae486f7073ba9b977fabc99d"
+    },
+    {
+      "id": "ex-main-0581-b",
+      "sha256": "c2dd322c4ba9979b757d7df203270094c40f31595f7d40be7d338f960c88d08c"
+    },
+    {
+      "id": "ex-main-0581-c",
+      "sha256": "16273fa21320e76b8e22fe7568dcd84b3b5ca75b481ac4c961eedf88ccd1aacb"
+    },
+    {
+      "id": "ex-main-0582-a",
+      "sha256": "da865eba227ff144ef40f0ae0d929aa2dadcbca771e4aa5ec8ebf0fd82f248a2"
+    },
+    {
+      "id": "ex-main-0582-b",
+      "sha256": "b512d242b5ff6d32d2aaad967aabe1ef5109b8c94ae0705c725516089f2872a6"
+    },
+    {
+      "id": "ex-main-0583",
+      "sha256": "05195e299d2e2b088246230e6641a0e25ada44b7bf7f638a0b7b93e34328399f"
+    },
+    {
+      "id": "ex-main-0584-a",
+      "sha256": "355d6cd1fcc9033c8562de37dd54af74c4dd0f938c710f0c89267b8fea85d95f"
+    },
+    {
+      "id": "ex-main-0584-b",
+      "sha256": "e18c28fffc8dc34b107201f6bdceba88fe260a29699291c8efa22cb2cf0d9cc6"
+    },
+    {
+      "id": "ex-main-0585",
+      "sha256": "9b82b09854fd255978c6fa4866d35c49b31014672a86da6457cd69cfe72104c6"
+    },
+    {
+      "id": "ex-main-0586",
+      "sha256": "2aa448b1eedf1bd855e4dab55d18aeca44b3716f57b6bf5a9db9a30043dbb6b5"
+    },
+    {
+      "id": "ex-main-0587",
+      "sha256": "4a8fdd82e7a7b9be989f34d832570bd80623673d62f5f590e6c47b7127d8021c"
+    },
+    {
+      "id": "ex-main-0588-a",
+      "sha256": "3d89ac29e3dc79df926b227922333824620aeea4bd6e1aeb3eaa9c0dfc869886"
+    },
+    {
+      "id": "ex-main-0588-b",
+      "sha256": "dd390652bb71098ea5ca9254dcc4ee96cea932a33dddc8cd4179cd82be3c3230"
+    },
+    {
+      "id": "ex-main-0588-c",
+      "sha256": "46a912ca6908ffcdfca949a3bcbd5dad62c6940d01449fd97986d5a0e808b7b8"
+    },
+    {
+      "id": "ex-main-0588-d",
+      "sha256": "b42e4658908af9af49f3d1ce3a7ff2ae3e7c420f2fbb6c14e42ecf1660ceb382"
+    },
+    {
+      "id": "ex-main-0589",
+      "sha256": "859a05b686948324613de258498d0926cf4854d5fda781d317bd4d81e55c6cdb"
+    },
+    {
+      "id": "ex-main-0590",
+      "sha256": "fb5217f278ef41463c2a44f5aa73b147fab957b2d32fe13e93365cfd95ebc58a"
+    },
+    {
+      "id": "ex-main-0591-a",
+      "sha256": "562a9c197d9dbc21e2508fe605f49dff2f31fda5998b99148a3f9a6032d6901e"
+    },
+    {
+      "id": "ex-main-0591-b",
+      "sha256": "e55b40ec90ec2002ebde2a156de351bde7a2fc2e1e8a25af5f597e103e8e0818"
+    },
+    {
+      "id": "theory-068",
+      "sha256": "7b600fea3068d0233f8ee982fa3364ffe7a5863cc6f396cf555cc9ecd0193782"
+    },
+    {
+      "id": "theory-069",
+      "sha256": "8a2f5ee85556c65d8fce5b99fa7948f81270fd9ce5a8e501eb75034df294756a"
+    },
+    {
+      "id": "theory-070",
+      "sha256": "bbb030874829318f5d74ab2d3ac715d817838e1dfb72ed5ac212dc9561c78474"
+    },
+    {
+      "id": "ex-main-0592-a",
+      "sha256": "7f47aa72abd44ac692867dc6709875ab516b929f2e14d1efedff709874465658"
+    },
+    {
+      "id": "ex-main-0592-b",
+      "sha256": "b404856c9aec92529640e333decd212c8bfee8758e7be8abfbfe2fd176687b2b"
+    },
+    {
+      "id": "ex-main-0592-c",
+      "sha256": "fb828cfea3e18d504f4c666542c09ec03246e1dada8fd626c7d4a96bbde474fd"
+    },
+    {
+      "id": "ex-main-0592-d",
+      "sha256": "d95e3e0ad633a394d91ddb559c9ab5265d8b8a031b5a8f581d07b72c05920503"
+    },
+    {
+      "id": "ex-main-0593",
+      "sha256": "6163621d2db9e515b7dfca685052ee7fd7fdb8faba9b8f6b7b0f54e35638b001"
+    },
+    {
+      "id": "ex-main-0594",
+      "sha256": "674c7a8092062cad91f9d191a5b461a7dbb368dbad1cf02f900837c51a080a45"
+    },
+    {
+      "id": "ex-main-0595-a",
+      "sha256": "44f5ae40881ef700596b3dc0ef556583a2c1f5fe8d5e1fe50cbf1c4a643ec880"
+    },
+    {
+      "id": "ex-main-0595-b",
+      "sha256": "d3c519b4ac5c750328bc1625e45707534d64244349799fe8cb3fb1ce69327f33"
+    },
+    {
+      "id": "ex-main-0595-c",
+      "sha256": "ea3512c51ef6d283ff500e3bd1cb98368108cbe7975a608427b70f9aa971eb52"
+    },
+    {
+      "id": "ex-main-0595-d",
+      "sha256": "6f7156b0b4cdf0203df152cd4434f5fffa6579a48739b7957989187d25bda17f"
+    },
+    {
+      "id": "ex-main-0595-e",
+      "sha256": "b7155a3d84bc1388bdebf595e5b915b985e37c0820328ed8fb22c551e721261d"
+    },
+    {
+      "id": "ex-main-0596-a",
+      "sha256": "e32d0246c3a86cddc0481fd5a5b25b8affe8a67bc02e720c5bbb5d184d12efa7"
+    },
+    {
+      "id": "ex-main-0596-b",
+      "sha256": "ba121838433c48ae2a2dea087240ab7871682cf05cf350fae685a3d9439905b3"
     }
   ]
 }
