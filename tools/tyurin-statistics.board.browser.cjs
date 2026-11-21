@@ -51,8 +51,26 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--vilenkin-analysis-2014')?{
-  directory:'vilenkin-analysis-2014',entries:[[30,123,31]],uniqueLessons:30,search:'vilenkin-analysis-2014',match:'действительные числа и рациональные корни',lesson:process.argv.includes('--digits')?'30-14':'30-7-6',chart:process.argv.includes('--digits')?'svg[aria-label*="Префикс и повторяющаяся"]':'svg[aria-label*="Две десятичные границы"]',storage:'math:vilenkin-analysis-2014:v1:'
+const catalogue=process.argv.includes('--makarychev9-2018')?{
+  directory:'makarychev8-2018',entries:[[49,80,35]],uniqueLessons:34,search:'makarychev8-2018',match:'углублённый уровень',lesson:'49-4b',chart:'svg[aria-label*="График функции с отдельными ветвями"]',storage:'math:makarychev8-2018:v1:'
+}:process.argv.includes('--makarychev7-2018')?{
+  directory:'makarychev8-2018',entries:[[91,61,57]],uniqueLessons:56,search:'makarychev8-2018',match:'углублённый уровень',lesson:'91-18',chart:'svg[aria-label*="Изменение величины по этапам"]',storage:'math:makarychev8-2018:v1:'
+}:process.argv.includes('--nikolsky9-linear')?{
+  directory:'nikolsky-algebra-7-9',entries:[[57,78,135]],uniqueLessons:134,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:'57-3-l',chart:'svg[aria-label*="Открытые границы и области решения"]',storage:'math:nikolsky-algebra-7-9:v1:'
+}:process.argv.includes('--nikolsky8-inequalities')?{
+  directory:'nikolsky-algebra-7-9',entries:[[75,69,88]],uniqueLessons:87,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:process.argv.includes('--tallest')?'75-18':'75-5-f',chart:process.argv.includes('--tallest')?'svg[aria-label*="Пересечение выбранного ряда и шеренги"]':'svg[aria-label*="Числовая прямая с точками сравнения"]',storage:'math:nikolsky-algebra-7-9:v1:'
+}:process.argv.includes('--nikolsky7-natural')?{
+  directory:'nikolsky-algebra-7-9',entries:[[99,77,35]],uniqueLessons:34,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:'99-19-c',chart:'svg[aria-label*="Пятёрки из кратных"]',storage:'math:nikolsky-algebra-7-9:v1:'
+}:process.argv.includes('--alimov9-division')?{
+  directory:'alimov-algebra-7-9',entries:[[58,48,39]],uniqueLessons:38,search:'alimov-algebra-7-9',match:'выражения, знаки и многочлены',lesson:'58-7-3',chart:'svg[aria-label*="Коэффициенты остатка при пробном параметре"]',storage:'math:alimov-algebra-7-9:v1:'
+}:process.argv.includes('--alimov8-signs')?{
+  directory:'alimov-algebra-7-9',entries:[[81,55,51]],uniqueLessons:50,search:'alimov-algebra-7-9',match:'выражения, знаки и многочлены',lesson:process.argv.includes('--strict-sign')?'81-12-4':'81-5-3',chart:process.argv.includes('--strict-sign')?'svg[aria-label*="Две части доказательства"]':'svg[aria-label*="Знаки трёх степеней"]',storage:'math:alimov-algebra-7-9:v1:'
+}:process.argv.includes('--alimov-school-2011')?{
+  directory:'alimov-algebra-7-9',entries:[[104,53,44]],uniqueLessons:43,search:'alimov-algebra-7-9',match:'выражения, знаки и многочлены',lesson:process.argv.includes('--hike')?'104-10':'104-5-2',chart:process.argv.includes('--hike')?'svg[aria-label*="Временная шкала ходьбы"]':'svg[aria-label*="Уровни порядка"]',storage:'math:alimov-algebra-7-9:v1:'
+}:process.argv.includes('--vilenkin11-antiderivatives')?{
+  directory:'vilenkin-analysis-2014',entries:[[6,95,25]],uniqueLessons:24,search:'vilenkin-analysis-2014',match:'действительные числа и первообразная',lesson:process.argv.includes('--hole')?'6-4-4':'6-2-4',chart:process.argv.includes('--hole')?'svg[aria-label*="Два промежутка с независимыми"]':'svg[aria-label*="Шаги дифференцирования"]',storage:'math:vilenkin-analysis-2014:v1:'
+}:process.argv.includes('--vilenkin-analysis-2014')?{
+  directory:'vilenkin-analysis-2014',entries:[[30,123,31]],uniqueLessons:30,search:'vilenkin-analysis-2014',match:'действительные числа и первообразная',lesson:process.argv.includes('--digits')?'30-14':'30-7-6',chart:process.argv.includes('--digits')?'svg[aria-label*="Префикс и повторяющаяся"]':'svg[aria-label*="Две десятичные границы"]',storage:'math:vilenkin-analysis-2014:v1:'
 }:process.argv.includes('--peterson9-roots')?{
   directory:'peterson9-2017',entries:[[52,40,14]],uniqueLessons:13,search:'peterson9-2017',match:'корни высших степеней',lesson:'52-5-2',chart:'svg[aria-label*="Пересечение возрастающей нечётной степени"]',storage:'math:peterson9-2017:v1:'
 }:process.argv.includes('--peterson9-2017')?{

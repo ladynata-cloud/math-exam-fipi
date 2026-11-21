@@ -13,7 +13,7 @@ for(const [i,r] of book.mapping.entries()){
  assert.equal(r.sourcePath,'https://pdf.my-uchebnik.ru/pdf/algebra/00000023.pdf#page='+(r.page+1));
  if(i){assert(r.bookOnly);assert(!r.boardPath&&!r.externalPath);}else{assert.equal(r.coverage,'module');assert.equal(r.boardPath,book.exercises[0].path);}
 }
-const scripts=['trainers/tyurin-statistics/content.js',dir+'irrationality.js',dir+'decimal-bounds.js','trainers/tyurin-statistics/app.js'].map(read);
+const scripts=['trainers/tyurin-statistics/content.js',dir+'irrationality.js',dir+'decimal-bounds.js',dir+'antiderivatives.js',dir+'direct-integration.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,stash){
  const dom=new JSDOM(read(dir+'index.html'),{url:'https://math.example'+entry.path,runScripts:'outside-only'}),w=dom.window,doc=w.document;
  w.Math.random=()=>0;w.TextEncoder=TextEncoder;const id=entry.path.split('/').at(-1),key='math:vilenkin-analysis-2014:v1:'+id;
@@ -47,7 +47,7 @@ assert.equal(book.exercises.length,ids.length);
 for(const [i,r] of book.exercises.entries()){
  const id='30-'+ids[i];assert.equal(r.path,'/'+dir+'index.html#lesson/'+id);assert.equal(r.boardPath,r.path);assert.equal(r.printed,printed[i]);assert.equal(r.page,i<18?8:9);
  let {dom,w,doc,key,l}=open(r);
- assert.equal(doc.querySelector('#lesson').value,id);assert.equal(doc.querySelectorAll('#lesson option').length,30);
+ assert.equal(doc.querySelector('#lesson').value,id);assert.equal(doc.querySelectorAll('#lesson option').length,54);
  assert.equal(doc.querySelector('#source').href,'https://pdf.my-uchebnik.ru/pdf/algebra/00000023.pdf#page='+(r.page+1));assert.equal(doc.querySelector('#back').hash,'#book/source-30');
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),r.path);assert.equal(w.MathExamTopicEdition.nextId(l),ids[i+1]&&'30-'+ids[i+1]);assert.equal(r.title,l.title);
  const variants=new Set();for(let s=1;s<=11;s++){
