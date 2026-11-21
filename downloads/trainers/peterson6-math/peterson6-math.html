@@ -1195,6 +1195,21 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+function sourceTerms(item,fresh){
+ const M=root.PetersonMath;
+ if(item.symbolic)return {names:item.terms,values:[fresh?4:2,fresh?7:3,fresh?12:6,fresh?21:9].map(v=>M.parse(v))};
+ const values=item.terms.map((v,i)=>fresh&&i<2?M.operation('multiply',v,3):M.parse(v));
+ return {names:values.map(M.answer),values};
+}
+function orderRatio(names,order){const wrap=v=>v.includes('/')?'('+v+')':v;const [a,b,c,d]=order.map(i=>wrap(names[i]));return a+' : '+b+' = '+c+' : '+d;}
+function preservesProducts(order){
+ const set=[order[0],order[3]].sort().join('');
+ return set==='03'||set==='12';
+}
+function storyRateRows(task,fresh){
+ const M=root.PetersonMath,rate=M.operation('multiply',task.rate,fresh?2:1),use=task.inputs.map(v=>fresh?v+v/2:v);
+ return {rate,amounts:use,outputs:use.map(v=>M.operation('multiply',v,rate))};
+}
 const quantifiedReadings = {
  inverseTotal:'Для каждого рационального a существует обратное и их произведение равно 1.',
  nonzeroProduct:'Произведение любых двух рациональных чисел отлично от нуля.',
@@ -1918,6 +1933,8 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p18' && task?.sourceRearrangement)return {title:'Какие из 24 перестановок сохраняют равенство?',controls:[c('Порядок четырёх мест',quartetOrders.map((v,i)=>[i,v.map(j=>String.fromCharCode(65+j)).join(' · ')])),c('Значения',[[0,'Исходные'],[1,'Новые числа']]),c('Проверка',[[0,'Составлю сам'],[1,'Перекрёстные произведения'],[2,'Все допустимые записи']])],initial:[0,0,0]};
+ if(lesson?.id==='p18' && task?.constantRateStory)return {title:'Две величины при одном коэффициенте',controls:[c('Данные',[[0,'Первый пример'],[1,'Другой коэффициент и числа']]),c('Что сравнить?',[[0,'Посчитаю сам'],[1,'Обе величины'],[2,'Отношения']])],initial:[0,0]};
  if(lesson?.id==='p36' && task?.quantifiedEquation){const pair=task.quantifiedEquation==='nonzeroProduct';return {title:'Свидетель и контрпример',controls:[c('Число a',range(-3,3)),...(pair?[c('Число b',range(-2,2))]:[]),c('Проверка',[[0,'Сначала сформулирую'],[1,'Подстановка'],[2,'Общая формулировка']])],initial:pair?[1,1,0]:[1,0]};}
  if(lesson?.id==='p36' && task?.storyBalance)return {title:'Одна операция на обеих чашах',controls:[c('Задача',[[0,'Из книги'],[1,'Новые данные']]),c('Мой кандидат',balanceCandidates.map((v,i)=>[i,v])),c('Состояние равенства',[[0,'Исходное'],[1,'Первое преобразование'],[2,'Перенос слагаемых'],[3,'Результат и проверка']])],initial:[0,1,0]};
  if(lesson?.id==='p36' && task?.naturalTrials)return {title:'Испытай натуральное число',controls:[c('Правая часть',[[0,String(task.naturalTrials.rhs)],[1,String(extraTrials[task.naturalTrials.rule])]]),c('Кандидат x',range(1,17)),c('Подстановка',[[0,'Предскажу'],[1,'Вычислить'],[2,'Границы перебора']])],initial:[0,1,0]};
@@ -2073,7 +2090,7 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2084,8 +2101,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2320,6 +2337,25 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===18 && task.sourceRearrangement){
+  const item=task.sourceRearrangement,M=root.PetersonMath,s=sourceTerms(item,b),ord=quartetOrders[a],mode=state.values[2];
+  show(table(['Место','Член',...(item.symbolic?['Для подстановки']:[])],s.names.map((v,i)=>[String.fromCharCode(65+i),v,...(item.symbolic?[M.answer(s.values[i])]:[])])));
+  formula(orderRatio(s.names,ord));
+  if(item.symbolic)say('Для перестановок считаем все буквы ненулевыми. Числа в таблице — один пример допустимой подстановки.');
+  if(mode>=1){
+   const [v,w,x,y]=ord.map(j=>s.values[j]),outer=M.operation('multiply',v,y),inner=M.operation('multiply',w,x),ok=preservesProducts(ord);
+   say('Крайние дают '+M.answer(outer)+', средние '+M.answer(inner)+'. '+(ok?'Порядок сохраняет исходные пары множителей.':'Здесь множители исходных пар перемешаны.'));
+  }
+  if(mode===2){show(table(['Все восемь записей'],quartetOrders.filter(preservesProducts).map(v=>[orderRatio(s.names,v)])));say('Для крайних есть две пары. Два порядка в каждой паре дают 2 × 2 × 2 = 8.');}
+  stepList(['Выбери порядок и составь два отношения.','Сравни произведение крайних с произведением средних.','Запиши все варианты без повторений.']);
+ }
+ else if(n===18 && task.constantRateStory){
+  const t=task.constantRateStory,M=root.PetersonMath,s=storyRateRows(t,a),[u,v]=s.amounts,[y,z]=s.outputs.map(M.answer);
+  say('Постоянный коэффициент: '+t.name+' = '+M.answer(s.rate)+'.');show(table(['Случай',t.x,t.y],[['I',num(u),b?y:'?'],['II',num(v),b?z:'?']]));
+  if(b===2){const ratio=M.answer(M.operation('divide',v,u));formula(y+' : '+u+' = '+z+' : '+v);formula(v+' : '+u+' = '+z+' : '+y);say('От первого случая ко второму обе величины выросли в '+ratio+' раза.');}
+  stepList(['Определи, что осталось постоянным.','Найди вторые значения обеих пар.','Сравни стоимости, работы, площади или массы в том же порядке.']);
  }
  else
  if(n===36 && task.quantifiedEquation){
@@ -30810,6 +30846,15 @@ window.PetersonCourse = {
       "rightTop": "5",
       "rightBottom": "10",
       "caption": "Исходная пропорция 1 : 2 = 5 : 10."
+     },
+     "sourceRearrangement": {
+      "terms": [
+       "1",
+       "2",
+       "5",
+       "10"
+      ],
+      "symbolic": false
      }
     },
     {
@@ -30866,6 +30911,15 @@ window.PetersonCourse = {
       "rightTop": "2",
       "rightBottom": "8",
       "caption": "Исходная пропорция 3/12 = 2/8."
+     },
+     "sourceRearrangement": {
+      "terms": [
+       "3",
+       "12",
+       "2",
+       "8"
+      ],
+      "symbolic": false
      }
     },
     {
@@ -30914,7 +30968,16 @@ window.PetersonCourse = {
       "subpart": "а",
       "reference": "№97а"
      },
-     "finalLabel": "Запиши решение в черновике и покажи учителю."
+     "finalLabel": "Запиши решение в черновике и покажи учителю.",
+     "sourceRearrangement": {
+      "terms": [
+       "2",
+       "3",
+       "6",
+       "9"
+      ],
+      "symbolic": false
+     }
     },
     {
      "id": "p18-t04",
@@ -31133,6 +31196,709 @@ window.PetersonCourse = {
        ]
       ],
       "caption": "Схема расположения точек по условию."
+     }
+    },
+    {
+     "id": "p18-t07",
+     "title": "К задаче №96в",
+     "kind": "manual",
+     "prompt": "Для пропорции (2/3) : (1/6) = (3/5) : (3/20) найди все различные перестановки, сохраняющие её основное свойство.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Чему равно единое перекрёстное произведение исходных чисел?",
+       "answer": "1/10",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 2/3 и 3/20, тогда посередине стоят 1/6 и 3/5, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "Сколько различных форм после учёта обеих пар и сторон?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 2/3 и 3/20, тогда посередине стоят 1/6 и 3/5, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+     "explanation": "Крайними можно поставить 2/3 и 3/20, тогда посередине стоят 1/6 и 3/5, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 96,
+      "subpart": "в",
+      "reference": "№96в"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "2/3",
+       "1/6",
+       "3/5",
+       "3/20"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t08",
+     "title": "К задаче №96г",
+     "kind": "manual",
+     "prompt": "Для пропорции (0,4) : (0,8) = (1,6) : (3,2) найди все различные перестановки, сохраняющие её основное свойство.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Чему равно единое перекрёстное произведение исходных чисел?",
+       "answer": "32/25",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 0,4 и 3,2, тогда посередине стоят 0,8 и 1,6, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "Сколько различных форм после учёта обеих пар и сторон?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 0,4 и 3,2, тогда посередине стоят 0,8 и 1,6, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+     "explanation": "Крайними можно поставить 0,4 и 3,2, тогда посередине стоят 0,8 и 1,6, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 96,
+      "subpart": "г",
+      "reference": "№96г"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "0.4",
+       "0.8",
+       "1.6",
+       "3.2"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t09",
+     "title": "К задаче №96д",
+     "kind": "manual",
+     "prompt": "Для пропорции (m) : (n) = (k) : (p) найди все различные перестановки, сохраняющие её основное свойство. Рассмотри общий случай ненулевых букв с заданной связью.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько разных порядков у двух различных членов одной пары?",
+       "answer": "2",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей. Для всех восьми формальных записей нужны ненулевые буквы.",
+       "explanation": "Крайними можно поставить m и p, тогда посередине стоят n и k, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "После выбора пары крайних и двух независимых порядков сколько получится записей?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей. Для всех восьми формальных записей нужны ненулевые буквы.",
+       "explanation": "Крайними можно поставить m и p, тогда посередине стоят n и k, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей. Для всех восьми формальных записей нужны ненулевые буквы.",
+     "explanation": "Крайними можно поставить m и p, тогда посередине стоят n и k, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 96,
+      "subpart": "д",
+      "reference": "№96д"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "m",
+       "n",
+       "k",
+       "p"
+      ],
+      "symbolic": true
+     }
+    },
+    {
+     "id": "p18-t10",
+     "title": "К задаче №96е",
+     "kind": "manual",
+     "prompt": "Для пропорции (x) : (y) = (z) : (t) найди все различные перестановки, сохраняющие её основное свойство. Рассмотри общий случай ненулевых букв с заданной связью.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько разных порядков у двух различных членов одной пары?",
+       "answer": "2",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей. Для всех восьми формальных записей нужны ненулевые буквы.",
+       "explanation": "Крайними можно поставить x и t, тогда посередине стоят y и z, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "После выбора пары крайних и двух независимых порядков сколько получится записей?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей. Для всех восьми формальных записей нужны ненулевые буквы.",
+       "explanation": "Крайними можно поставить x и t, тогда посередине стоят y и z, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей. Для всех восьми формальных записей нужны ненулевые буквы.",
+     "explanation": "Крайними можно поставить x и t, тогда посередине стоят y и z, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 96,
+      "subpart": "е",
+      "reference": "№96е"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "x",
+       "y",
+       "z",
+       "t"
+      ],
+      "symbolic": true
+     }
+    },
+    {
+     "id": "p18-t11",
+     "title": "К задаче №97б",
+     "kind": "manual",
+     "prompt": "Из равенства (4) × (0,5) = (2) × (1) составь пропорцию. Перечисли все варианты с этими четырьмя членами.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Чему равно единое перекрёстное произведение исходных чисел?",
+       "answer": "2",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 4 и 0,5, тогда посередине стоят 2 и 1, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "Сколько различных форм после учёта обеих пар и сторон?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 4 и 0,5, тогда посередине стоят 2 и 1, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+     "explanation": "Крайними можно поставить 4 и 0,5, тогда посередине стоят 2 и 1, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 97,
+      "subpart": "б",
+      "reference": "№97б"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "4",
+       "2",
+       "1",
+       "0.5"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t12",
+     "title": "К задаче №97в",
+     "kind": "manual",
+     "prompt": "Из равенства (2⅓) × (3) = (3½) × (2) составь пропорцию. Перечисли все варианты с этими четырьмя членами.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Чему равно единое перекрёстное произведение исходных чисел?",
+       "answer": "7",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 2⅓ и 3, тогда посередине стоят 3½ и 2, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "Сколько различных форм после учёта обеих пар и сторон?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 2⅓ и 3, тогда посередине стоят 3½ и 2, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+     "explanation": "Крайними можно поставить 2⅓ и 3, тогда посередине стоят 3½ и 2, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 97,
+      "subpart": "в",
+      "reference": "№97в"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "7/3",
+       "7/2",
+       "2",
+       "3"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t13",
+     "title": "К задаче №97г",
+     "kind": "manual",
+     "prompt": "Из равенства (a) × (b) = (x) × (y) составь пропорцию. Перечисли все варианты с этими четырьмя членами. Рассмотри общий случай ненулевых букв с заданной связью.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько разных порядков у двух различных членов одной пары?",
+       "answer": "2",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей. Для всех восьми формальных записей нужны ненулевые буквы.",
+       "explanation": "Крайними можно поставить a и b, тогда посередине стоят x и y, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "После выбора пары крайних и двух независимых порядков сколько получится записей?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей. Для всех восьми формальных записей нужны ненулевые буквы.",
+       "explanation": "Крайними можно поставить a и b, тогда посередине стоят x и y, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей. Для всех восьми формальных записей нужны ненулевые буквы.",
+     "explanation": "Крайними можно поставить a и b, тогда посередине стоят x и y, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 97,
+      "subpart": "г",
+      "reference": "№97г"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "a",
+       "x",
+       "y",
+       "b"
+      ],
+      "symbolic": true
+     }
+    },
+    {
+     "id": "p18-t14",
+     "title": "К задаче №98а",
+     "kind": "manual",
+     "prompt": "Даны четыре числа: 2, 3, 4, 6. Найди пары с равным произведением и выпиши все пропорции, где каждый член используется один раз.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Чему равно единое перекрёстное произведение исходных чисел?",
+       "answer": "12",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 2 и 6, тогда посередине стоят 3 и 4, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "Сколько различных форм после учёта обеих пар и сторон?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 2 и 6, тогда посередине стоят 3 и 4, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+     "explanation": "Крайними можно поставить 2 и 6, тогда посередине стоят 3 и 4, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 98,
+      "subpart": "а",
+      "reference": "№98а"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "2",
+       "3",
+       "4",
+       "6"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t15",
+     "title": "К задаче №98б",
+     "kind": "manual",
+     "prompt": "Даны четыре числа: 3, 5, 12, 20. Найди пары с равным произведением и выпиши все пропорции, где каждый член используется один раз.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Чему равно единое перекрёстное произведение исходных чисел?",
+       "answer": "60",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 3 и 20, тогда посередине стоят 5 и 12, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "Сколько различных форм после учёта обеих пар и сторон?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 3 и 20, тогда посередине стоят 5 и 12, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+     "explanation": "Крайними можно поставить 3 и 20, тогда посередине стоят 5 и 12, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 98,
+      "subpart": "б",
+      "reference": "№98б"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "3",
+       "5",
+       "12",
+       "20"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t16",
+     "title": "К задаче №98в",
+     "kind": "manual",
+     "prompt": "Даны четыре числа: 0,5, 4, 1,6, 0,2. Найди пары с равным произведением и выпиши все пропорции, где каждый член используется один раз.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Чему равно единое перекрёстное произведение исходных чисел?",
+       "answer": "4/5",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 0,5 и 1,6, тогда посередине стоят 4 и 0,2, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "Сколько различных форм после учёта обеих пар и сторон?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 0,5 и 1,6, тогда посередине стоят 4 и 0,2, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+     "explanation": "Крайними можно поставить 0,5 и 1,6, тогда посередине стоят 4 и 0,2, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 98,
+      "subpart": "в",
+      "reference": "№98в"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "0.5",
+       "4",
+       "0.2",
+       "1.6"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t17",
+     "title": "К задаче №98г",
+     "kind": "manual",
+     "prompt": "Даны четыре числа: 1/5, 1/8, 5, 8. Найди пары с равным произведением и выпиши все пропорции, где каждый член используется один раз.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Чему равно единое перекрёстное произведение исходных чисел?",
+       "answer": "1",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 1/5 и 5, тогда посередине стоят 1/8 и 8, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      },
+      {
+       "prompt": "Сколько различных форм после учёта обеих пар и сторон?",
+       "answer": "8",
+       "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+       "explanation": "Крайними можно поставить 1/5 и 5, тогда посередине стоят 1/8 и 8, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей."
+      }
+     ],
+     "hint": "Размести два множителя одного произведения по краям записи, а два других — посередине. Учитывай также обратный порядок обеих частей.",
+     "explanation": "Крайними можно поставить 1/5 и 5, тогда посередине стоят 1/8 и 8, или выбрать наоборот. Порядок внутри любой из двух пар допускает две возможности. Итого 2 × 2 × 2 = 8 записей.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 98,
+      "subpart": "г",
+      "reference": "№98г"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "1/5",
+       "1/8",
+       "8",
+       "5"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t18",
+     "title": "К задаче №99(1)",
+     "kind": "manual",
+     "prompt": "При одной цене сопоставь количество покупки с её стоимостью. Для своего примера возьми 2 и 5 тетрадей по 40 рублей. Построй разные пропорции и сформулируй общий вывод.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Для первого случая чему равна вторая величина?",
+       "answer": "80",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 200, в первом 80. Отношения 80/2 и 200/5 задают одну величину: цена одной тетради. Ещё одна запись: 5/2 = 200/80. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      },
+      {
+       "prompt": "А для второго случая?",
+       "answer": "200",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 200, в первом 80. Отношения 80/2 и 200/5 задают одну величину: цена одной тетради. Ещё одна запись: 5/2 = 200/80. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Сформулируй вывод для любых положительных исходных величин.",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 200, в первом 80. Отношения 80/2 и 200/5 задают одну величину: цена одной тетради. Ещё одна запись: 5/2 = 200/80. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      }
+     ],
+     "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+     "explanation": "Во втором столбце получается 200, в первом 80. Отношения 80/2 и 200/5 задают одну величину: цена одной тетради. Ещё одна запись: 5/2 = 200/80. При постоянном коэффициенте обе величины меняются в одинаковое число раз.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 99,
+      "subpart": "1",
+      "reference": "№99(1)"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "constantRateStory": {
+      "x": "Количество, шт.",
+      "y": "Стоимость, руб.",
+      "rate": "40",
+      "inputs": [
+       2,
+       5
+      ],
+      "name": "цена одной тетради"
+     }
+    },
+    {
+     "id": "p18-t19",
+     "title": "К задаче №99(2)",
+     "kind": "manual",
+     "prompt": "При неизменной производительности сопоставь длительность работы с числом готовых деталей. Возьми 2 и 5 часов при 6 деталях в час. Построй разные пропорции и сформулируй общий вывод.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Для первого случая чему равна вторая величина?",
+       "answer": "12",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 30, в первом 12. Отношения 12/2 и 30/5 задают одну величину: производительность. Ещё одна запись: 5/2 = 30/12. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      },
+      {
+       "prompt": "А для второго случая?",
+       "answer": "30",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 30, в первом 12. Отношения 12/2 и 30/5 задают одну величину: производительность. Ещё одна запись: 5/2 = 30/12. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Сформулируй вывод для любых положительных исходных величин.",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 30, в первом 12. Отношения 12/2 и 30/5 задают одну величину: производительность. Ещё одна запись: 5/2 = 30/12. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      }
+     ],
+     "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+     "explanation": "Во втором столбце получается 30, в первом 12. Отношения 12/2 и 30/5 задают одну величину: производительность. Ещё одна запись: 5/2 = 30/12. При постоянном коэффициенте обе величины меняются в одинаковое число раз.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 99,
+      "subpart": "2",
+      "reference": "№99(2)"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "constantRateStory": {
+      "x": "Время, ч",
+      "y": "Деталей, шт.",
+      "rate": "6",
+      "inputs": [
+       2,
+       5
+      ],
+      "name": "производительность"
+     }
+    },
+    {
+     "id": "p18-t20",
+     "title": "К задаче №99(3)",
+     "kind": "manual",
+     "prompt": "У прямоугольников одинакова ширина. Сопоставь длину с площадью для ширины 3 см и длин 2 и 5 см. Построй разные пропорции и сформулируй общий вывод.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Для первого случая чему равна вторая величина?",
+       "answer": "6",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 15, в первом 6. Отношения 6/2 и 15/5 задают одну величину: ширина прямоугольника. Ещё одна запись: 5/2 = 15/6. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      },
+      {
+       "prompt": "А для второго случая?",
+       "answer": "15",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 15, в первом 6. Отношения 6/2 и 15/5 задают одну величину: ширина прямоугольника. Ещё одна запись: 5/2 = 15/6. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Сформулируй вывод для любых положительных исходных величин.",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 15, в первом 6. Отношения 6/2 и 15/5 задают одну величину: ширина прямоугольника. Ещё одна запись: 5/2 = 15/6. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      }
+     ],
+     "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+     "explanation": "Во втором столбце получается 15, в первом 6. Отношения 6/2 и 15/5 задают одну величину: ширина прямоугольника. Ещё одна запись: 5/2 = 15/6. При постоянном коэффициенте обе величины меняются в одинаковое число раз.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 99,
+      "subpart": "3",
+      "reference": "№99(3)"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "constantRateStory": {
+      "x": "Длина, см",
+      "y": "Площадь, см²",
+      "rate": "3",
+      "inputs": [
+       2,
+       5
+      ],
+      "name": "ширина прямоугольника"
+     }
+    },
+    {
+     "id": "p18-t21",
+     "title": "К задаче №99(4)",
+     "kind": "manual",
+     "prompt": "При одной массовой доле сравни массы раствора с массами растворённого вещества. Возьми 40 и 100 г раствора концентрации 25%. Построй разные пропорции и сформулируй общий вывод.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Для первого случая чему равна вторая величина?",
+       "answer": "10",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 25, в первом 10. Отношения 10/40 и 25/100 задают одну величину: массовая доля вещества. Ещё одна запись: 100/40 = 25/10. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      },
+      {
+       "prompt": "А для второго случая?",
+       "answer": "25",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 25, в первом 10. Отношения 10/40 и 25/100 задают одну величину: массовая доля вещества. Ещё одна запись: 100/40 = 25/10. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Сформулируй вывод для любых положительных исходных величин.",
+       "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+       "explanation": "Во втором столбце получается 25, в первом 10. Отношения 10/40 и 25/100 задают одну величину: массовая доля вещества. Ещё одна запись: 100/40 = 25/10. При постоянном коэффициенте обе величины меняются в одинаковое число раз."
+      }
+     ],
+     "hint": "Составь таблицу для двух случаев. Сравни значение второй величины, делённое на первую, в каждом столбце. Затем сравни изменения обеих величин.",
+     "explanation": "Во втором столбце получается 25, в первом 10. Отношения 10/40 и 25/100 задают одну величину: массовая доля вещества. Ещё одна запись: 100/40 = 25/10. При постоянном коэффициенте обе величины меняются в одинаковое число раз.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 26,
+      "exercise": 99,
+      "subpart": "4",
+      "reference": "№99(4)"
+     },
+     "finalLabel": "Запиши свои пропорции и объяснение для проверки.",
+     "constantRateStory": {
+      "x": "Раствор, г",
+      "y": "Вещество, г",
+      "rate": "1/4",
+      "inputs": [
+       40,
+       100
+      ],
+      "name": "массовая доля вещества"
      }
     }
    ]

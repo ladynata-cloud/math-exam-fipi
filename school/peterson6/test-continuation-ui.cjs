@@ -1180,3 +1180,26 @@ test('finish the equation chapter with counterexamples, natural trials and three
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('construct all eight valid source rearrangements and compare rates in all four settings',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const j of [0,1,2,6,7,8,9,10,11,12,13,14,15,16]){
+   const c=go(j);
+   for(const second of [0,1]){
+    set(c[1],second);
+    const orders=j===6&&second===0?Array.from({length:24},(_,i)=>i):[0,1];
+    const valid=orders.filter(i=>{set(c[0],i);set(c[2],1);return out().includes('сохраняет исходные пары');});
+    assert.equal(valid.length,orders.length===24?8:1,j);
+    set(c[2],2);const tab=f.d.querySelectorAll('#model table')[1];assert.equal(tab.tBodies[0].rows.length,8);
+   }
+  }
+  for(const j of [17,18,19,20]){
+   const c=go(j);set(c[1],2);assert(out().includes('5/2 раза'));const before=f.q('#model tbody').textContent;
+   set(c[0],1);assert(!out().includes('раза'));set(c[1],2);assert(out().includes('5/2 раза'));assert.notEqual(f.q('#model tbody').textContent,before);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
