@@ -141,6 +141,32 @@ function decimalStepInstructions(){
   ok(product.$('label[for=answer]').textContent.includes('до сокращения'));
   equal(product.errors,[]);product.close();
 }
+function chordRegression(){
+  const f=boot(),disk='v5f-printed-5-4',secant='v5f-printed-5-5';
+  f.route('#v5-unit/25');
+  for(const id of [disk,secant]){ok(f.$('a[href="#lesson/'+id+'"]'));equal(f.C.byId[id].source.page,8);}
+  const fresh=f.M.generate(disk,0);equal(plain(fresh.steps.map(t=>t.answer)),[12,8,10,10,27,7,30,10,0,1]);
+  equal(fresh.answer,1);
+  const traces=new Set(),radii=new Set();
+  for(let seed=0;seed<80;seed++){
+    const t=f.M.generate(disk,seed),d=t.data.diskDistances;
+    traces.add(t.conditionKey);
+    const other=f.M.generate(secant,seed);radii.add(other.answer);
+    for(let i=0;i<4;i++){
+      equal(d.lengths[i]<d.r,i<2);equal(t.steps[2*i+1].answer,Math.abs(d.r-d.lengths[i]));
+      equal(f.w.Vilenkin5Numbered.explore(f.C.byId[disk],{mode:0,point:i},t).answer,Math.abs(d.r-d.lengths[i]));
+      equal(f.w.Vilenkin5Numbered.explore(f.C.byId[secant],{point:i},other).answer,other.data.secantRadii.r);
+    }
+    for(let i=0;i<3;i++)equal(f.w.Vilenkin5Numbered.explore(f.C.byId[disk],{mode:1,segment:i},t).answer,[0,1,1][i]);
+    equal(plain(other.steps.map(s=>s.answer)),Array(4).fill(other.answer));ok(f.M.accepts(other.answer,other));
+  }
+  ok(traces.size>70);ok(radii.size>15);
+  f.route('#lesson/'+disk);f.submit('20');ok(f.snapshot().scene.message.includes('радиус'));f.submit('12');
+  ok(f.snapshot().scene.correct);equal(f.snapshot().scene.assisted,false);f.click('[data-cmd=next]');
+  const again=boot('#lesson/'+disk,f.saved());equal(again.snapshot().scene.step,1);again.close();
+  f.route('#lesson/'+secant);f.submit('7');ok(f.snapshot().scene.message.includes('единиц'));f.submit('25');ok(f.snapshot().scene.correct);
+  equal(f.errors,[]);f.close();
+}
 function compassRegression(){
   const f=boot(),measure='v5f-printed-5-2',arcs='v5f-printed-5-3';
   f.route('#v5-unit/25');ok(f.$('a[href="#lesson/'+measure+'"]'));ok(f.$('a[href="#lesson/'+arcs+'"]'));
@@ -195,7 +221,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:19},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3'));
+  equal(plain(path.numbered),Array.from({length:19},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -439,7 +465,7 @@ function printedClassesRegression(){
   equal(f.errors,[]);f.close();
 }
 async function run(){
-  compassRegression();circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();
+  chordRegression();compassRegression();circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
