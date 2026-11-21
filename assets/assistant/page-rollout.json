@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "324e99e6ca698cf04fc84c2a4d374c2bc71d5ec820ed7733e5096ee6ee12861a",
-      "afterSha256": "37244cdf0c511a51281ccbc7d14c042bb7ff1ba233597890902893fb4c8e2993",
+      "beforeSha256": "b4b7f33139c648fa628070bf73ffa23aa662c8cb78c24e8b0ba891a4fec2612a",
+      "afterSha256": "d4f1ad2983763fb1983762fc323bf9d9573715ad03e147ea61c9c849366a6cd2",
       "placement": "before-head-close",
-      "sourceSha": "a80aac50cefdc4b2101dff08ebea6b47ffab7c12"
+      "sourceSha": "15a6cc0e3c787efbc8a63d7fdf5c523415a1f2df"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6723,6 +6723,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в №5.1–5.23 второй части. В №5.22 показаны отдельно 3626 г при окраске одной стороны крышки и 4130 г при окраске обеих, включая пояснение к печатному ключу на с. 172."
+    },
+    {
+      "previousBaseSha": "a80aac50cefdc4b2101dff08ebea6b47ffab7c12",
+      "sourceBaseSha": "15a6cc0e3c787efbc8a63d7fdf5c523415a1f2df",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, №5.24–5.25. Шаблон по клеткам и масса мёда."
     }
   ],
   "coverageUpdates": [
