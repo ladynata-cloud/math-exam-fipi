@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T20:48:13Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–596, with 1,001 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T21:05:43Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–603, with 1,009 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1716,6 +1716,23 @@
       ],
       "evidence": "tools/stereo-textbook/parallelepiped-directed-bases.json",
       "mathematicalReport": "tools/stereo-textbook/parallelepiped-directed-bases.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 154, answer key 268 and printed derivations where given; independent field and vector computations.",
+      "reviewedAt": "2026-11-21T21:05:43Z",
+      "scope": "Both printed parts of exercise 597 with fields at six cube positions, and every vector decomposition, length and midpoint proof in 598–603",
+      "cardIds": [
+        "ex-main-0597-a",
+        "ex-main-0597-b",
+        "ex-main-0598",
+        "ex-main-0599",
+        "ex-main-0600",
+        "ex-main-0601",
+        "ex-main-0602",
+        "ex-main-0603"
+      ],
+      "evidence": "tools/stereo-textbook/fields-and-midpoint-vectors.json",
+      "mathematicalReport": "tools/stereo-textbook/fields-and-midpoint-vectors.test.cjs"
     }
   ],
   "cards": [
@@ -5722,6 +5739,38 @@
     {
       "id": "ex-main-0596-b",
       "sha256": "ba121838433c48ae2a2dea087240ab7871682cf05cf350fae685a3d9439905b3"
+    },
+    {
+      "id": "ex-main-0597-a",
+      "sha256": "0d66420b8e47b3a3cae278346117f3d77dd31332081e8f57e1c6f64eaf539664"
+    },
+    {
+      "id": "ex-main-0597-b",
+      "sha256": "383ddeb20e6e71b8a3d2860e4bfe6b4a9f3c538bddae743aa070cea6efe69daf"
+    },
+    {
+      "id": "ex-main-0598",
+      "sha256": "f32dc9d18120e2b2b79d269af2b6638d9e050be8844c28b6d36e0b8e176d9218"
+    },
+    {
+      "id": "ex-main-0599",
+      "sha256": "654fa9118452c596fc9b089703e95c6fc221cf39fcd51194c091d34a9c25cbb8"
+    },
+    {
+      "id": "ex-main-0600",
+      "sha256": "76b1e11570c239307be05a886de620c371f0e090d45638f6f84e7f2541136b5a"
+    },
+    {
+      "id": "ex-main-0601",
+      "sha256": "cc4034e4c900ef3c8dea557df4dedd9df73e49cb57981acbe9c36ac91ef514c7"
+    },
+    {
+      "id": "ex-main-0602",
+      "sha256": "43f4de3fe62e3065e1a2e99f1fb6ae7bbb7445867f237bdeb23bf056d649f741"
+    },
+    {
+      "id": "ex-main-0603",
+      "sha256": "9a42d2b93099937ec0c46be0f527219a426454e698fa390de6831eeb3c84180c"
     }
   ]
 }

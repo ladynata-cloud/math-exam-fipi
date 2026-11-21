@@ -94,4 +94,5 @@ require('./midlines-vector-coefficients.test.cjs');
 require('./collinearity-vector-conditions.test.cjs');
 require('./coplanar-vector-directions.test.cjs');
 require('./parallelepiped-directed-bases.test.cjs');
+require('./fields-and-midpoint-vectors.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);
