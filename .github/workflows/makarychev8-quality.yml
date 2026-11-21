@@ -104,7 +104,7 @@ jobs:
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --expose-gc school/makarychev8/test-audit-learning.cjs
       - name: Square roots and two board participants
         run: |
-          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-roots-engine.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --expose-gc --max-old-space-size=250 school/makarychev8/test-roots-engine.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-board.cjs
       - name: Numbered fractions, self-drawn graphs and saved notes
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-fractions.cjs

@@ -45,7 +45,7 @@ async function verify(width,url){
   const cards=await page.evaluate(()=>MakarychevCourse.lessons.flatMap(l=>l.tasks.map((t,i)=>({l:l.id,i,title:t.title,section:t.source.section}))).filter(t=>/^№\s*(83[8-9]|84[0-5])(?:$|[^0-9])/.test(t.title)));
   assert.equal(cards.length,32);
   for(const [index,card] of cards.entries()){
-    if(index&&index%8===0){await page.close();page=await fresh();}
+    if(index&&index%4===0){await page.close();page=await fresh();}
     await page.evaluate(({l,i})=>{history.replaceState(null,'','#lesson/'+l+'/'+i);MakarychevApp.route();},card);
     assert.equal(await page.locator('.task-heading h2').innerText(),card.title);
     assert.match(await page.locator('.source-note').first().textContent(),/188/);
@@ -72,9 +72,13 @@ async function verify(width,url){
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const url = 'http://127.0.0.1:' + server.address().port + '/school/makarychev8/';
-  browser = await chromium.launch({ headless: true, args: ['--disable-dev-shm-usage'], ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) });
   const views = [];
-  for (const width of [320, 390, 1024]) views.push(await verify(width, url));
+  const widths=process.env.M8_VIEWPORT?[Number(process.env.M8_VIEWPORT)]:[320,390,1024];
+  for(const width of widths){
+    assert([320,390,1024].includes(width));
+    browser = await chromium.launch({ headless:true, args:['--disable-dev-shm-usage','--renderer-process-limit=2','--js-flags=--max-old-space-size=200'], ...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{}) });
+    try { views.push(await verify(width,url)); } finally { await browser.close();browser=null; }
+  }
   console.log(JSON.stringify({ status: 'PASS', views }));
 })().catch(err => { console.error(err); process.exitCode = 1; }).finally(async () => {
   if (browser) await browser.close();
