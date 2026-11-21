@@ -308,7 +308,7 @@ test('read both opening sections in print order while old links retain their tas
  try {
   const parts=[
    {part:2,id:'p15',first:32,subparts:['аб','','абвгдежз','','абвг','абвгдежз','абвг','абвгде','12','123','абвгде','1234','1234','12','12345','1234','123456','','абвг']},
-   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб']},
+   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб','абв','аб','аб']},
   ];
   for(const {part,id,first,subparts} of parts) {
    const lesson=f.w.PetersonCourse.lessons.find(item=>item.id===id);
@@ -329,6 +329,40 @@ test('read both opening sections in print order while old links retain their tas
    f.nav('#lesson/'+id);
    assert.equal(f.q('[aria-current="step"]').dataset.index,'0');
    assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+  }
+ }finally{f.close();}
+});
+
+test('inner groups, incomplete rows and bracket placement remain meaningful when numbers change',()=>{
+ const f=fixture(null,null,true);
+ try{
+  for(const [offset,evaluate] of [(x)=>1-x,(x)=>2*x-4,()=>5].entries()){
+   f.nav('#lesson/p33/'+(49+offset));f.click('[data-lesson-help="model"] > summary');
+   const id='#'+f.q('#model select').id;
+   for(const value of [-2,0,1,3,5]){
+    f.event(id,String(value),'change');
+    const rows=[...f.d.querySelectorAll('#model table tbody tr td:last-child')];
+    assert.equal(Number(rows.at(-1).textContent),evaluate(value));
+   }
+  }
+  for(const [index,divisor,remainder] of [[52,5,1],[53,12,6]]){
+   f.nav('#lesson/p33/'+index);f.click('[data-lesson-help="model"] > summary');
+   const id='#'+f.q('#model select').id;
+   for(let v=1;v<=5;v++){
+    f.event(id,String(v),'change');
+    const total=divisor===5?5*v+1:12*v+18;
+    const rows=[...f.d.querySelectorAll('#model [data-remainder-row]')].map(n=>Number(n.dataset.remainderRow));
+    assert.deepEqual(rows,[...Array(Math.floor(total/divisor)).fill(divisor),remainder]);
+    assert.equal(f.d.querySelectorAll('#model circle').length,total);
+   }
+   assert.equal(f.d.querySelector('#answer-form'),null);
+  }
+  f.nav('#lesson/p33/55');f.click('[data-lesson-help="model"] > summary');
+  const ids=[...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);
+  for(const m of [-2,0,2,4])for(const n of [-1,0,1,3])for(const option of [0,1,2]){
+   [m,n,option].forEach((v,i)=>f.event(ids[i],String(v),'change'));
+   const values=[...f.d.querySelectorAll('#model table tbody tr td:last-child')].map(c=>Number(c.textContent));
+   assert.deepEqual(values,[[m-n-m+n,m-(n-m)+n,m-(n-m+n)][option],2*m]);
   }
  }finally{f.close();}
 });

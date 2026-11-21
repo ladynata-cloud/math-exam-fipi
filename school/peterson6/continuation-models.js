@@ -231,6 +231,25 @@ function compareBars(left,right,first,second) {
  }
  return picture;
 }
+const nestedRules={
+ 'simplify-x':{variable:'x',expression:'4x − (3x + (2x − 1))',simplified:'1 − x',
+  stages:x=>[['2x − 1',2*x-1],['3x + (2x − 1)',3*x+(2*x-1)],['4x − (5x − 1)',4*x-(5*x-1)]],value:x=>1-x},
+ 'simplify-y':{variable:'y',expression:'y − (2y − (3y − 4))',simplified:'2y − 4',
+  stages:y=>[['3y − 4',3*y-4],['2y − (3y − 4)',2*y-(3*y-4)],['y − (−y + 4)',y-(-y+4)]],value:y=>2*y-4},
+ 'simplify-z':{variable:'z',expression:'z − (2z + (3z − (4z + 5)))',simplified:'5',
+  stages:z=>[['4z + 5',4*z+5],['3z − (4z + 5)',3*z-(4*z+5)],['2z + (−z − 5)',2*z+(-z-5)],['z − (z − 5)',z-(z-5)]],value:()=>5},
+};
+function remainderGroups(total,divisor) {
+ const rows=Math.ceil(total/divisor),w=260,pitch=18;
+ const chart=svg('svg',{viewBox:'0 0 '+w+' '+(rows*26+12),role:'img',class:'pm-chart pcm-group-rule',
+  'aria-label':total+' точек, ряды по '+divisor+'. Остаток '+(total%divisor)+'.'});
+ for(let row=0;row<rows;row++){
+  const count=Math.min(divisor,total-row*divisor),y=7+row*26;
+  chart.append(svg('rect',{x:5,y,width:divisor*pitch+8,height:22,rx:4,fill:count===divisor?'#e4f0e8':'#fcf0dc',stroke:count===divisor?'#4c775f':'#91632f','data-remainder-row':count}));
+  for(let dot=0;dot<count;dot++)chart.append(svg('circle',{cx:18+dot*pitch,cy:y+11,r:5.5,fill:count===divisor?'#2c7451':'#94511e'}));
+ }
+ return chart;
+}
 const pythagorasCases=[[3,4,5],[5,12,13],[8,15,17]];
 function dissectionFigure(a,b,central) {
  const size=a+b,side=150,x0=15,y0=12,unit=side/size;
@@ -269,6 +288,17 @@ function changeBars(before,after) {
  return pic;
 }
 function configFor(lesson,task){
+ if(lesson?.id==='p33' && Object.hasOwn(nestedRules,task?.nestStudy)){
+  const rule=nestedRules[task.nestStudy];
+  return {title:'От внутренней группы к внешней',controls:[c('Значение '+rule.variable,[-2,0,1,3,5])],initial:[1]};
+ }
+ if(lesson?.id==='p33' && ['remainder-five','remainder-twelve'].includes(task?.nestStudy)){
+  const five=task.nestStudy==='remainder-five';
+  return {title:'Целые группы и остаток',controls:[c(five?'Натуральное n':'Натуральное k',[1,2,3,4,5])],initial:[2]};
+ }
+ if(lesson?.id==='p33' && ['place-one','place-two'].includes(task?.nestStudy))
+  return {title:'Граница скобки меняет знаки',controls:[c('Число m',[-2,0,2,4]),c('Число n',[-1,0,1,3]),c('Положение скобки',[[0,'Без скобок'],[1,'До последнего n'],[2,'С последним n']])],initial:[4,1,0]};
+
  if (lesson?.id==='p15' && task?.pythagorasStudy) return {
   title:'Две раскладки четырёх одинаковых треугольников',
   controls:[c('Длины катетов',pythagorasCases.map(([a,b],i)=>[i,a+' и '+b])),c('Раскладка',[[0,'Два белых квадрата'],[1,'Один белый квадрат']])],
@@ -328,13 +358,38 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if (n===15 && task.pythagorasStudy) {
+ if(n===33 && Object.hasOwn(nestedRules,task.nestStudy)) {
+  const rule=nestedRules[task.nestStudy],stages=rule.stages(a);
+  show(table(['Что вычисляем','Значение'],stages));
+  formula(rule.variable+' = '+a+'.   '+rule.simplified+' = '+rule.value(a));
+  say('Для подстановки получились одинаковые результаты. Чтобы обосновать равенство для любого числа, раскрой группы по порядку.');
+  stepList(['Определи внутреннюю группу.','Найди знак непосредственно перед ней.','Собери отдельно коэффициенты и свободные члены.']);
+ }
+ else if(n===33 && ['remainder-five','remainder-twelve'].includes(task.nestStudy)) {
+  const five=task.nestStudy==='remainder-five',divisor=five?5:12;
+  const terms=five?[2*(a-1),3*(a+1)]:[3*a,3*a+3,3*a+6,3*a+9];
+  const total=terms.reduce((sum,v)=>sum+v,0),quotient=Math.floor(total/divisor),rem=total%divisor;
+  show(remainderGroups(total,divisor));
+  formula(terms.join(' + ')+' = '+total);
+  formula(total+' = '+divisor+' × '+quotient+' + '+rem);
+  say('Полных рядов: '+quotient+'. В последнем ряду '+rem+' из '+divisor+' мест заняты.');
+  stepList(['Сосчитай только полные ряды.','Измени исходное число. Что происходит с неполным рядом?','Докажи постоянство остатка формулой из записи к задаче.']);
+ }
+ else if(n===33 && ['place-one','place-two'].includes(task.nestStudy)) {
+  const position=state.values[2],expressions=['m − n − m + n','m − (n − m) + n','m − (n − m + n)'];
+  const values=[a-b-a+b,a-(b-a)+b,a-(b-a+b)],goal=task.nestStudy==='place-one'?2*a:2*a-2*b;
+  show(table(['Запись','При этих m и n'],[[expressions[position],values[position]],[task.nestStudy==='place-one'?'2m':'2m − 2n',goal]]));
+  formula('m = '+a+', n = '+b+'.   '+values[position]+(values[position]===goal?' = ':' ≠ ')+goal);
+  say('Совпадения на одном наборе недостаточно. Для всех m и n сравни коэффициенты после раскрытия скобок.');
+  stepList(['Определи, входит ли последнее n в вычитаемую группу.','Перепиши знаки каждого слагаемого.','Объедини два члена с m и два члена с n.']);
+ }
+ else if (n===15 && task.pythagorasStudy) {
   const [legA,legB,hyp]=pythagorasCases[a];
   show(dissectionFigure(legA,legB,b===1));
   const remaining=legA*legA+legB*legB,covered=2*legA*legB,outer=(legA+legB)**2;

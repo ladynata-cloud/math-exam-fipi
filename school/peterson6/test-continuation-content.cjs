@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,318);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,325);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -206,6 +206,20 @@ for(const [i,letters] of ratioColumns.entries()) {
  assert(rows.every(t=>t.source.page===(i<8?6:i<14?7:8)));
 }
 assert.equal(p15.tasks.length,75);
+const nested=D.lessons.find(l=>l.id==='p33').tasks.filter(t=>t.source.exercise>=11&&t.source.exercise<=13);
+assert.deepEqual(Array.from(nested,t=>[t.source.exercise,t.source.subpart,t.source.page,t.kind]),[
+ [11,'а',6,'choice'],[11,'б',6,'choice'],[11,'в',6,'choice'],[12,'а',6,'manual'],[12,'б',6,'manual'],[13,'а',6,'manual'],[13,'б',6,'manual'],
+]);
+assert.deepEqual(Array.from(nested.slice(0,3),t=>t.answer),['1 − x','2y − 4','5']);
+for(let x=-12;x<=12;x++){
+ assert.equal(4*x-(3*x+(2*x-1)),1-x);
+ assert.equal(x-(2*x-(3*x-4)),2*x-4);
+ assert.equal(x-(2*x+(3*x-(4*x+5))),5);
+ if(x>0){assert.equal((2*(x-1)+3*(x+1))%5,1);assert.equal((3*x+(3*x+3)+(3*x+6)+(3*x+9))%12,6);}
+ for(let y=-6;y<=6;y++){
+  assert.equal(x-(y-x+y),2*x-2*y);assert.equal(x-(y-x)+y,2*x);assert.equal(x-(y-(x+y)),2*x);
+ }
+}
 const proofs=p15.tasks.filter(t=>t.source.exercise===18);
 assert.equal(proofs.length,1);assert.equal(proofs[0].kind,'manual');assert.equal(proofs[0].figure.type,'pythagoras-dissection');
 const equations19=p15.tasks.filter(t=>t.source.exercise===19);

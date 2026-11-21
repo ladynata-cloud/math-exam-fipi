@@ -675,6 +675,34 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
     assert.equal(secondInPrint.route, '#lesson/' + id + '/' + (index + 1));
   }
 
+  phase = 'nested signs and a general remainder proof on both screens';
+  await lesson(teacherFrame,'p33',51);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Значение z',{exact:true}).selectOption('-2');
+  await synchronized(teacherFrame,studentFrame,'inner and outer groups update for a negative value');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/5 = 5/);
+  await lesson(teacherFrame,'p33',53);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Натуральное k',{exact:true}).selectOption('3');
+  const exampleRemainder=await synchronized(teacherFrame,studentFrame,'four full dozens and six remaining');
+  assert.deepEqual(exampleRemainder.view.model.values,[3]);
+  assert.equal(await studentFrame.locator('#model circle').count(),54);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-remainder','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Натуральное k',{exact:true}).selectOption('5');
+  await studentFrame.locator('#notebook').fill('Сумма 12(k + 1) + 6, остаток 6 меньше делителя.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const proofRemainder=await synchronized(studentFrame,teacherFrame,'changed sample and the general proof travel together');
+  await manualWithoutCredit(teacherFrame,'p33-t54',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,proofRemainder,'restored remainder proof');
+  await lesson(teacherFrame,'p33',55);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Положение скобки',{exact:true}).selectOption('1');
+  await synchronized(teacherFrame,studentFrame,'moving only the bracket changes the signs');
+  assert.deepEqual(await studentFrame.locator('#model tbody tr td:last-child').allTextContents(),['8','8']);
+
   phase = 'compare equal areas and the same root in both equation sides';
   await lesson(teacherFrame,'p15',70);
   assert.equal(await teacherFrame.locator('#task-figure [data-triangle]').count(),8);
