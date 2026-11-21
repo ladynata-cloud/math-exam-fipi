@@ -12,6 +12,9 @@
       ['У 15 − 7 отними сначала 5 до числа 10, затем ещё 2. Останется 8.','Для 54 : 6 проверь обратное действие: 6 × 9 = 54.'], 'При делении натурального числа на несколько равных групп в ответ всегда записывают число всех предметов.','Каким обратным действием ты можешь проверить ответ каждой строки?'],
     ['1.70','Два способа сделать сумму удобной','Можно округлить оба слагаемых вверх, сложить их и снять обе прибавки. Другой путь — перенести из второго слагаемого в первое ровно столько единиц, сколько первому не хватает до круглого числа.',
       ['Для 197 + 68 первый путь даёт 200 + 70 − 3 − 2 = 265.','Если перенести тройку из 68 к 197, получается та же сумма: 200 + 65 = 265.'], 'Если перенести единицы из одного слагаемого в другое, сумма увеличится.','Почему нужно вычесть обе добавки, если оба числа округлили вверх?']
+,
+    ['1.71','Пройди по пяти стрелкам','Цепочку читают слева направо. Результат каждого действия становится началом следующего. После каждой стрелки впиши новое число.',
+      ['От числа 20 стрелки «: 4», «+ 7», «× 3» ведут к 5, затем к 12 и 36.','Чтобы проверить последнюю стрелку, раздели 36 на 3. Ты возвращаешься в клетку 12.'], 'Каждая стрелка применяется к одному и тому же первоначальному числу.', 'Как проверить действие стрелки по двум соседним клеткам?']
   ];
   const lessons = info.map(([number,title,explanation,worked,misconception,reflect])=>({
     number,key:'printed-'+number.replace('.','-'),part:1,point:3,page:20,title,explanation,worked,misconception,reflect,
@@ -72,6 +75,55 @@
     return {prompt:steps[chosen].prompt+' В разборе посчитай все три суммы. В модели можно выбрать каждый из двух способов.',inputPrompt:'Сумма',answer:steps[chosen].answer,answerFormat:'v5-natural',steps,errors:steps[chosen].errors,
       data:{pairs},table:{caption:'Удобное сложение',headers:['Часть','Число 1','Число 2'],rows:pairs.map(([a,b],i)=>[labels[i],a,b]),columnWidths:[32,34,34]},conditionKey:pairs.map(p=>p.join(',')).join('/')+'-'+chosen};
   }
+  function chainData(seed, random) {
+    if (!seed) return [
+      [63, [[':',9], ['+',23], [':',6], ['×',7], ['+',15]]],
+      [72, [[':',9], ['+',12], ['×',5], [':',10], ['+',18]]],
+      [42, [[':',7], ['×',9], ['+',6], [':',10], ['+',24]]],
+      [54, [[':',9], ['×',8], ['+',2], [':',5], ['+',90]]]
+    ];
+    return labels.slice(0,4).map((_, i) => {
+      const q=random(3,9), firstDiv=random(3,9), factor=random(3,9), last=random(8,75), start=q*firstDiv;
+      if(i===0){const d=random(4,8), target=random(3,8);return [start,[[':',firstDiv],['+',d*target-q],[':',d],['×',factor],['+',last]]];}
+      if(i===1){const even=2*random(7,15);return [start,[[':',firstDiv],['+',even-q],['×',5],[':',10],['+',last]]];}
+      const d=i===2?10:5, increment=d-(q*factor)%d;
+      return [start,[[':',firstDiv],['×',factor],['+',increment],[':',d],['+',last]]];
+    });
+  }
+  const chainHints={'+':'Прибавь число у стрелки к значению слева.','×':'Умножь число в клетке на указанное число равных групп.',':':'Раздели число слева. Проверь результат умножением на число у стрелки.'};
+  function chains(seed, random, step) {
+    const entries=chainData(seed,random).map(([start,operations])=>{
+      let current=start;
+      const route=operations.map(([op,n])=>{
+        const before=current;
+        current=op==='+'?before+n:op==='×'?before*n:before/n;
+        return {op,n,before,after:current};
+      });
+      return {start,route,result:current};
+    });
+    const steps=entries.flatMap((entry,row)=>entry.route.map((move,arrow)=>{
+      const wrong=move.op===':'?move.before*move.n:move.op==='×'?move.before+move.n:move.before-move.n;
+      const errors=[error(wrong,'Проверь знак «'+move.op+'». '+chainHints[move.op])];
+      if(arrow&&entry.start!==move.before)errors.push(error(entry.start,'Это первоначальное число. К текущей стрелке ты дошёл с числом '+move.before+'.'));
+      const prompt=labels[row]+', стрелка '+(arrow+1)+'. Сейчас '+move.before+'. Куда ведёт «'+move.op+' '+move.n+'»?';
+      return formatStep(step,'v5-natural',prompt,move.after,chainHints[move.op],errors.filter(e=>e.value!==move.after));
+    }));
+    const rows=entries.map((e,i)=>[labels[i],e.start,e.route.map(m=>m.op+' '+m.n).join(' → ')]);
+    return {prompt:'Найди конечную клетку в каждой цепочке. Запиши четыре числа через точку с запятой в порядке а, б, в, г.',inputPrompt:'Ответы четырёх цепочек',
+      answer:entries.map(e=>e.result),answerFormat:'v5-list',steps,errors:[],data:{chains:entries},
+      table:{caption:'От старта к последней клетке',headers:['Ряд','Старт','Стрелки по порядку'],rows,columnWidths:[15,20,65]},conditionKey:JSON.stringify(rows)};
+  }
+  function exploreChain(state, task, table) {
+    const entry=task.data.chains[state.row], current=entry.route[state.arrow];
+    const done=entry.route.slice(0,state.arrow).map((move,i)=>[i+1,move.before+' '+move.op+' '+move.n,String(move.after)]);
+    const controls=[{key:'row',title:'Цепочка',values:labels.slice(0,4).map((label,i)=>[i,label])},
+      {key:'arrow',title:'Стрелка',values:entry.route.map((_,i)=>[i,String(i+1)])}];
+    const visual=(done.length?table('Как дошли до выбранной стрелки',['Шаг','Действие','Итог'],done):'<p>Стартовая клетка: <strong>'+entry.start+'</strong>.</p>')+
+      '<p>Сейчас в клетке <strong>'+current.before+'</strong>. Следующая стрелка <strong>'+current.op+' '+current.n+'</strong>.</p>';
+    return {title:'Перемещайся по цепочке',controls,visual,question:'Какое число окажется сразу за выбранной стрелкой?',answer:current.after,
+      why:current.before+' '+current.op+' '+current.n+' = '+current.after+'. Это начало следующего шага, если в цепочке есть ещё одна стрелка.'};
+  }
+
   function dots(n,perRow,markFrom,markEnd){
     const rows=Math.ceil(n/perRow);
     const points=Array.from({length:n},(_,i)=>'<circle cx="'+(12+(i%perRow)*15)+'" cy="'+(12+Math.floor(i/perRow)*15)+'" r="4.8" fill="'+(i>=markFrom&&i<markEnd?'#ad440e':'#21685c')+'"/>').join('');
@@ -79,6 +131,7 @@
   }
   function explore(lesson,state,task,table) {
     const d=task.data;
+    if(d.chains)return exploreChain(state,task,table);
     if(d.values)return digits.explore(lesson,state,task,table);
     if(d.operations){
       const c=d.operations[state.row],{a,b,g}=c;
@@ -95,8 +148,8 @@
       question:transfer?'Сколько осталось во втором слагаемом после переноса?':'Сколько лишних единиц оказалось в общей сумме?',
       answer:transfer?b-addA:addA+addB,why:transfer?'Первое стало '+upA+', а второе стало '+(b-addA)+'. Их сумма равна прежней.':'Прибавили '+addA+' и '+addB+'. Из суммы округлённых чисел надо убрать '+(addA+addB)+'.'};
   }
-  const generators={'1.67':(s,r,t)=>readOrWrite(false,s,r,t),'1.68':(s,r,t)=>readOrWrite(true,s,r,t),'1.69':setOperations,'1.70':sums};
-  const bounds={'1.67':{row:[0,5,0],place:[0,11,0]},'1.68':{row:[0,6,0],place:[0,11,0]},'1.69':{row:[0,19,0]},'1.70':{row:[0,2,0],method:[0,1,0]}};
+  const generators={'1.67':(s,r,t)=>readOrWrite(false,s,r,t),'1.68':(s,r,t)=>readOrWrite(true,s,r,t),'1.69':setOperations,'1.70':sums,'1.71':chains};
+  const bounds={'1.67':{row:[0,5,0],place:[0,11,0]},'1.68':{row:[0,6,0],place:[0,11,0]},'1.69':{row:[0,19,0]},'1.70':{row:[0,2,0],method:[0,1,0]},'1.71':{row:[0,3,0],arrow:[0,4,0]}};
   const api={lessons,generators,bounds,explore};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.Vilenkin5PrintedReview=api;
 })(typeof window!=='undefined'?window:globalThis);

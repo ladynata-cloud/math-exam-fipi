@@ -488,6 +488,20 @@ async function run(browser, origin, backend, failures) {
   const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
   await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
 
+  phase = 'five arrows, fourth chain of printed exercise 1.71';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-71"]').click();await studentFrame.locator('h1').filter({hasText:'№1.71'}).waitFor();
+  await teacherFrame.locator('#answer').fill('567');await teacherFrame.locator('#answer-form button').click();
+  const productInstead=await same(teacherFrame,studentFrame,'division was replaced with multiplication');assert.match(productInstead.scene.message,/Раздели/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=row]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=arrow]').selectOption({value:'4'});
+  await studentFrame.locator('[data-v5-prediction]').fill('100');await studentFrame.locator('[data-v5-predict] button').click();
+  const lastArrow=await same(studentFrame,teacherFrame,'fourth chain ends at one hundred');assert.equal(lastArrow.scene.model.row,3);assert.equal(lastArrow.scene.model.arrow,4);assert(lastArrow.scene.model.seen);
+  await studentFrame.locator('#answer').fill('7');await studentFrame.locator('#answer-form button').click();const fixedArrow=await same(studentFrame,teacherFrame,'corrected first printed arrow');assert(fixedArrow.scene.correct);assert.deepEqual(fixedArrow.scene.hintLevels,{});
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('3');await same(studentFrame,teacherFrame,'partially entered second arrow');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'pupil restored the same arrow and draft');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restored the same diagram');assert.equal(await teacherFrame.locator('#answer').inputValue(),'3');
+
   phase = 'compensation of a rounded sum, printed part 1 page 20';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-1-70"]').click();await studentFrame.locator('h1').filter({hasText:'№1.70'}).waitFor();
