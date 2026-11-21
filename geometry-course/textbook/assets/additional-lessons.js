@@ -84,7 +84,8 @@
       ['/geometry-course/textbook/data/trigonometry-review.json', 'вопросы 1–7 главы XII'],
       ['/geometry-course/textbook/data/triangle-review.json', 'вопросы 8–13 главы XII'],
       ['/geometry-course/textbook/data/vector-product-review.json', 'вопросы 14–22 главы XII'],
-      ['/geometry-course/textbook/data/additional-triangle-area.json', '№1146–1148']
+      ['/geometry-course/textbook/data/additional-triangle-area.json', '№1146–1148'],
+      ['/geometry-course/textbook/data/additional-solve-triangles.json', '№1149–1153']
   ];
 
   async function forCourse(base) {
