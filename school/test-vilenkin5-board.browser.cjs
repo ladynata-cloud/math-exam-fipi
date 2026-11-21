@@ -794,6 +794,32 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
   await same(teacherFrame,studentFrame,'pupil recovers same inverse estimate');await narrow(student,studentFrame,'circumference-estimates');
 
+  phase = 'fuel-gauge intervals and a clock moving backwards';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-13"]').click();await studentFrame.locator('h1').filter({hasText:'№5.13'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=marks]').selectOption({value:'1'});
+  await teacherFrame.locator('#answer').fill('20');await teacherFrame.locator('#answer-form button').click();
+  assert.match((await same(teacherFrame,studentFrame,'confused adjacent labels with one interval')).scene.message,/разность между подписями/);
+  await teacherFrame.locator('#answer').fill('5');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await ownership(teacher,student,true);
+  await studentFrame.locator('#answer').fill('50');await studentFrame.locator('#answer-form button').click();
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('65');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('#answer').fill('40');await studentFrame.locator('#answer-form button').click();
+  assert.match((await same(studentFrame,teacherFrame,'each fuel change starts at the original indication')).scene.message,/от результата заправки/);
+  await studentFrame.locator('#answer').fill('25');await studentFrame.locator('#answer-form button').click();
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-14"]').click();
+  await teacherFrame.locator('h1').filter({hasText:'№5.14'}).waitFor();
+  await studentFrame.locator('[data-v5-param=back]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-param=ticks]').fill('3');await studentFrame.locator('[data-v5-param=ticks]').press('Tab');
+  await studentFrame.locator('#answer').fill('02:25');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('#answer').fill('2:');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const clockCopy=await same(studentFrame,teacherFrame,'backwards hour hand and unfinished minutes survive teacher reload');
+  assert.equal(clockCopy.scene.savedInput,'2:');assert.equal(clockCopy.scene.step,1);assert.equal(clockCopy.scene.model.ticks,3);assert.equal(clockCopy.scene.model.back,1);
+  assert.equal(await teacherFrame.locator('#model svg').getAttribute('aria-label'),'Аналоговые часы: 1:45');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'both participants recover clock and separate checked task');await narrow(student,studentFrame,'scale-and-clock');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');

@@ -169,6 +169,7 @@
       const parts=value.split(';');
       if(parts.length!==target.answer.length||parts.some(part=>root.Vilenkin5PrintedDigits.natural(part)===null&&M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
     }
+    if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
     if(target.answerFormat==='v5-object-shape'&&!root.Vilenkin5RoundObjects.read(value))return 'В ответе к рисунку нужно название формы: окружность, круг, цилиндр или шар. Свои предметы запиши в «Мои четыре примера». Написанное можно уточнить.';
     if(target.answerFormat==='v5-arc'&&!/^[ABCDKMPST]{3}$/.test(root.Vilenkin5Numbered.readArc(value)))return 'Нужны три буквы. Сначала запиши начало дуги, затем промежуточную метку и конец.';
     if(target.answerFormat==='v5-point-set'&&!root.Vilenkin5Numbered.readPointSet(value))return 'Введи буквы точек с рисунка. Запись можно поправить без потери попытки.';
