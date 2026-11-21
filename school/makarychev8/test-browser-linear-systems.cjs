@@ -66,8 +66,8 @@ async function verify(width,url){
   assert.equal(await page.evaluate(()=>MakarychevApp.getState().tasks['p29-source-692-count-2'].independent),false);
   await page.close();page=await fresh();await openNumber(page,694,'№ 694');
   await page.locator('#final-answer').fill('0;2,5;5;7,5');assert.equal(await page.locator('#task-graph [data-root-curve=line]').count(),0);
-  await page.locator('#answer-form button[type=submit]').click();assert.equal(await page.locator('[data-axis-label=x]').innerText(),'t, мин');
-  assert.equal(await page.locator('[data-axis-label=y]').innerText(),'s, м');
+  await page.locator('#answer-form button[type=submit]').click();assert.equal(await page.locator('[data-axis-label=x]').textContent(),'t, мин');
+  assert.equal(await page.locator('[data-axis-label=y]').textContent(),'s, м');
   assert.equal(await page.locator('[data-point-x="30"]').getAttribute('data-point-y'),'7.5');
   await openNumber(page,695,'№ 695а');await submit(page,'16m^2-25n^4');
   assert.match(await page.locator('#answer-form .feedback').innerText(),/Уточнение формы/);
