@@ -36,6 +36,20 @@ function snapshot(state, task = numeric) {
 }
 function home(state = blank()) { return { route: '#home', work: session.pack(state), view: { model: null, details: [false], stepFeedback: '', number: numberView() } }; }
 
+test('published course routes use the actual bank even when a topic exceeds one hundred tasks', () => {
+  const books = ['part2', 'part3'].flatMap(name => JSON.parse(readFileSync(resolve(__dirname, '../school/peterson6/' + name + '.json'))));
+  const real = adapter.create({ lessons: [...original, ...books], math, models });
+  const topic = books.find(lesson => lesson.id === 'p17');
+  assert(topic.tasks.length > 100);
+  for (const lesson of books) {
+    for (let i = 0; i < lesson.tasks.length; i++) assert(real.validRoute('#lesson/' + lesson.id + '/' + i));
+    assert.equal(real.validRoute('#lesson/' + lesson.id + '/' + lesson.tasks.length), false);
+  }
+  for (const suffix of ['00100', '100extra', '-1', '9e1', '9007199254740993', '1/2', '100\n']) {
+    assert.equal(real.validRoute('#lesson/p17/' + suffix), false, suffix);
+  }
+});
+
 test('v2 admits all 58 known contiguous lessons and check/diagnostic routes only', () => {
   for (const l of lessons) for (let i = 0; i < l.tasks.length; i++) assert(session.validRoute('#lesson/' + l.id + '/' + i));
   assert(session.validRoute('#check/fraction-add/1')); assert(session.validRoute('#diagnostic'));
