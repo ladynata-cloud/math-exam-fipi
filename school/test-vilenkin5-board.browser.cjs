@@ -476,6 +476,18 @@ async function run(browser, origin, backend, failures) {
   const horses=await same(studentFrame,teacherFrame,'two proportional bars counted together');assert.equal(horses.scene.model.view,3);assert(horses.scene.model.seen);
   await narrow(student,studentFrame,'two-herds');await ownership(teacher,student,false);
 
+  phase = 'points beyond a segment and off the line';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-44"]').click();await studentFrame.locator('h1').filter({hasText:'№1.44'}).waitFor();
+  await teacherFrame.locator('#answer').fill('MC');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('D N');await teacherFrame.locator('#answer-form button').click();
+  const absentEnds=await same(teacherFrame,studentFrame,'strictly between omits the two ends');assert.match(absentEnds.scene.message,/Оба конца/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('MCND');await studentFrame.locator('#answer-form button').click();
+  const restored=await same(studentFrame,teacherFrame,'pupil includes the endpoints');assert(restored.scene.correct);assert.deepEqual(restored.scene.hintLevels,{});
+  await studentFrame.locator('[data-v5-param=mark]').selectOption({value:'4'});await studentFrame.locator('[data-v5-prediction]').fill('0');await studentFrame.locator('[data-v5-predict] button').click();
+  const extension=await same(studentFrame,teacherFrame,'a point on the extension is outside');assert.equal(extension.scene.model.mark,4);assert(extension.scene.model.seen);
+  await narrow(student,studentFrame,'segment-membership');await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();

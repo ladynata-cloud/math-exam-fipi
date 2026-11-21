@@ -170,7 +170,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:41},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:45},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -553,8 +553,38 @@ function printedPageFifteenRegression(){
   equal(f.errors,[]);f.close();
 }
 
+
+function printedSegmentRegression(){
+  const f=boot(),ids=[42,43,44,45].map(n=>'v5f-printed-1-'+n),src=ids.map(id=>f.M.generate(id,0)),[split,measures,member,between]=src;
+  ok(f.M.accepts('MC DC DN',split));ok(f.M.accepts('DM CD NC',split));ok(!f.M.accepts('MC MN DN',split));ok(!f.M.accepts('MC DD NC',split));
+  equal(plain(measures.answer),[2,5,10,3,8,5]);ok(f.M.accepts('РO QP RO RQ PO RP',measures.steps[0])===false);
+  ok(f.M.accepts('QP OR RP QO OP RQ',measures.steps[0]));ok(f.M.accepts('HBRPX',member));ok(f.M.accepts('CDNM',member.steps[1]));
+  equal(plain(between.steps.map(s=>s.answer)),['K S P','S P','K','P']);
+  for(let seed=0;seed<100;seed++){
+    for(const [i,id] of ids.entries()){
+      const t=f.M.generate(id,seed),d=t.data,l=f.C.byId[id];equal(l.point,3);equal(l.source.page,18);
+      const exploration=(state)=>f.w.Vilenkin5Numbered.explore(l,state,t);
+      if(i===0){for(const swap of [0,1])for(const piece of [0,1,2])equal(exploration({swap,piece}).answer,swap?[3,2,4][piece]:[2,3,4][piece]);}
+      if(i===1){for(let j=0;j<6;j++){const [p,q]=d.pairs[j].split('').map(v=>d.positions[d.order.indexOf(v)]);equal(t.answer[j],q-p);equal(exploration({pair:j}).answer,q-p);}}
+      if(i===2){for(let j=0;j<9;j++)equal(exploration({mark:j}).answer,j>=d.left&&j<=d.right?1:0);}
+      if(i===3){for(let pair=0;pair<4;pair++){const [a,b]=d.pairs[pair];equal(exploration({pair}).answer,b-a-1);ok(f.M.accepts(d.order.slice(a+1,b).reverse().join(' '),t.steps[pair]));}}
+    }
+  }
+  for(const [i,id] of ids.entries()){
+    f.route('#lesson/'+id);ok(f.$('#task-panel svg[role=img]'));ok(f.$('#model svg[role=img]'));
+    for(const [j,step]of src[i].steps.entries()){f.submit(value(f.M,step));const scene=f.snapshot().scene;ok(scene.correct,id+' / '+j+' / '+scene.step+': '+scene.message);f.click('[data-cmd=next]');}
+    f.submit(value(f.M,src[i]));ok(f.snapshot().scene.correct);f.click('[data-cmd=mode][data-value=practice]');
+    ok(f.M.generate(id,f.snapshot().scene.seed).conditionKey!==src[i].conditionKey);
+  }
+  equal(f.errors,[]);f.close();
+  const fresh=boot();
+  fresh.route('#lesson/'+ids[2]);fresh.submit('MC');fresh.click('[data-cmd=next]');fresh.submit('DN');ok(fresh.snapshot().scene.message.includes('Оба конца'));
+  fresh.submit('MCND');ok(fresh.snapshot().scene.correct);fresh.click('[data-cmd=next]');fresh.submit('HPXR');ok(fresh.snapshot().scene.message.includes('за концами'));
+  equal(fresh.errors,[]);fresh.close();
+}
+
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();printedSegmentRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
