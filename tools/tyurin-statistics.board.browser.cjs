@@ -51,7 +51,9 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--merzlyak7-2015')?{
+const catalogue=process.argv.includes('--dorofeev7')?{
+  directory:'dorofeev-algebra-7-9',entries:[[96,73,58]],uniqueLessons:57,search:'dorofeev-algebra-7-9',match:'сравнение дробей',lesson:'96-12',chart:'svg[aria-label*="Сравнение долей годной продукции"]',storage:'math:dorofeev-algebra-7-9:v1:'
+}:process.argv.includes('--merzlyak7-2015')?{
   directory:'merzlyak9-2014',entries:[[93,51,125]],uniqueLessons:124,search:'merzlyak9-2014',match:'введение',lesson:process.argv.includes('--boundary')?'93-20-2':'93-6-3',chart:process.argv.includes('--boundary')?'svg[aria-label*="Контур фигуры с размерами"]':'svg[aria-label*="Дерево выражения"]',storage:'math:merzlyak9-2014:v1:'
 }:process.argv.includes('--makarychev9-2018')?{
   directory:'makarychev8-2018',entries:[[49,80,35]],uniqueLessons:34,search:'makarychev8-2018',match:'углублённый уровень',lesson:'49-4b',chart:'svg[aria-label*="График функции с отдельными ветвями"]',storage:'math:makarychev8-2018:v1:'
