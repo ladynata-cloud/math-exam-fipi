@@ -73,7 +73,7 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
-  "geometry-course/textbook/data/coordinate-curves.json": "c15c542793c8c2f7b742b19dad3886688296699e68664736a39627810eb45ddf",
+  "geometry-course/textbook/data/coordinate-curves.json": "c6afceb8b62420414f4bd31e88a1aa9be4be0055e9b4314037fdc81dd2c2604d",
   "geometry-course/textbook/data/coordinate-proof-method.json": "cb033807782332a0fc1a34b741ad6eece5d91cddf9c905091202347f2a331176",
   "geometry-course/textbook/data/coordinate-couriers.json": "3c35d0c58d6209093288a7795daf40e538b1d68f00f9f0dc4fa21832a780d246",
   "geometry-course/textbook/data/coordinate-figures.json": "ceace97699b6519fb7b9e5559efb01853574d18fd5c2e437f7860b233eefa996",

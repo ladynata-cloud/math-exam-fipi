@@ -45,6 +45,7 @@ for i,(card,(n,part,pages),values) in enumerate(zip(cards,expected,probes,strict
                 for x,y in (p,q):assert abs((x-.5)**2-y*y-.25)<2e-5,(key,x,y)
             if key in ('step-3','case-4'):
                 x,y=pts['U'];assert eq((x-.5)**2-y*y,.25) and eq((x-.5)**2+y*y,4.25)
+                vx,vy=pts['V'];assert eq((vx-.5)**2-vy*vy,1.25) and abs(vy-y)>2
         if n==1046 and key=='neutral':
             for name,p in source_pts.items():assert all(eq(a,b) for a,b in zip(pts[name],p,strict=True))
         if n==97 and key=='case-3':assert eq(pts['A'][0],-1) and eq(pts['B'][0],-1) and not eq(pts['N'][0],-1)
