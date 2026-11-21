@@ -19,9 +19,44 @@
     if (saved && findPlace(saved.active) && Array.isArray(saved.completed) && saved.runs && typeof saved.runs === 'object') state = saved;
   } catch { /* The workshop also works for the current tab. */ }
 
-  window.ArzhenikovWorkshopProgress = () => ({active: state.active, completed: [...state.completed]});
+  const storyId = (place, index) => place.id + '/' + index;
+  const storyKinds = new Map();
+  for (const place of places) place.scenes.forEach((scene, index) => storyKinds.set(storyId(place, index), scene.kind));
+  const answered = new Set();
+  if (Array.isArray(state.answeredStories)) {
+    for (const id of state.answeredStories) if (storyKinds.has(id)) answered.add(id);
+  } else {
+    for (const place of places) {
+      const run = state.runs[place.id];
+      const finished = state.completed.includes(place.id);
+      // The old format marked a place only at the end of its first series.
+      if (finished) {
+        for (let i = 0; i < seriesLength; i++) answered.add(storyId(place, i));
+      }
+      if (!run || !Number.isInteger(run.round) || run.round < 0 || !Array.isArray(run.solved)) continue;
+      const offset = run.round * seriesLength;
+      if (offset + seriesLength > place.scenes.length) continue;
+      // Returning to an unfinished first series implies a full cycle of replays.
+      if (finished && run.round === 0 && run.stage !== 'complete' && stages.includes(run.stage)) {
+        place.scenes.forEach((_, i) => answered.add(storyId(place, i)));
+      }
+      run.solved.slice(0, seriesLength).forEach((piles, i) => {
+        const scene = place.scenes[offset + i];
+        if (Array.isArray(piles) && piles.length === scene.targets.length &&
+            piles.every(n => Number.isInteger(n) && n >= 0) && remaining(scene, piles) === 0 && !validateLayout(scene, piles)) {
+          answered.add(storyId(place, offset + i));
+        }
+      });
+    }
+  }
+  window.ArzhenikovWorkshopProgress = () => {
+    const skills = {share: 0, pack: 0, count: 0};
+    for (const id of answered) skills[storyKinds.get(id)]++;
+    return {active: state.active, completed: [...state.completed], skills};
+  };
   function announceProgress() { window.dispatchEvent(new Event('workshop-progress')); }
   function save() {
+    state.answeredStories = [...answered];
     try { localStorage.setItem(key, JSON.stringify(state)); }
     catch {
       const status = document.getElementById('storage');
@@ -229,7 +264,8 @@
           input.setAttribute('aria-invalid', 'true'); input.focus(); return;
         }
         run.solved[run.step] = [...run.piles];
-        advance('practice-done');
+        answered.add(storyId(place, run.round * seriesLength + run.step));
+        advance('practice-done'); announceProgress();
       });
       form.append(label, check, action('Вернуться к предметам', 'edit', () => advance('layout')), report);
       host.append(form);

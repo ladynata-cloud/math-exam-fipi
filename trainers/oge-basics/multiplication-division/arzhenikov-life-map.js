@@ -44,8 +44,28 @@
     return stop;
   });
 
+  const skills = element('details', 'wm-skills');
+  skills.append(element('summary', '', 'Мои навыки'));
+  const skillRows = [
+    ['share', 'Раздаю поровну'],
+    ['pack', 'Собираю полные наборы'],
+    ['count', 'Считаю равными группами']
+  ].map(([kind, name]) => {
+    const total = places.reduce((sum, place) => sum + place.scenes.filter(scene => scene.kind === kind).length, 0);
+    const row = element('div', 'wm-skill-row');
+    row.dataset.skill = kind;
+    const title = element('strong', '', name);
+    const value = element('span', 'wm-skill-count');
+    const meter = element('progress', 'wm-skill-meter');
+    meter.max = total;
+    meter.setAttribute('aria-label', name + '. Решено историй');
+    row.append(title, value, meter);
+    skills.append(row);
+    return {kind, total, value, meter};
+  });
+
   board.append(canvas, grid);
-  drawer.append(summary, board);
+  drawer.append(summary, board, skills);
   nav.replaceChildren(drawer);
 
   function reflect() {
@@ -53,6 +73,12 @@
     const active = record.active || places[0].id;
     const done = places.filter(p => record.completed?.includes(p.id));
     progress.textContent = 'Пройдено ' + done.length + ' из ' + places.length;
+    for (const {kind, total, value, meter} of skillRows) {
+      const solved = Math.min(total, Math.max(0, Number(record.skills?.[kind]) || 0));
+      value.textContent = 'Решено ' + solved + ' из ' + total;
+      meter.value = solved;
+      meter.setAttribute('aria-valuetext', solved + ' из ' + total + ' историй');
+    }
     places.forEach((place, i) => {
       const stop = stops[i], current = active === place.id;
       const complete = done.includes(place);

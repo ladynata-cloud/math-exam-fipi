@@ -57,9 +57,26 @@ async function exercise(browser, width, fullBank) {
   const stage = name => page.locator('#workshop-play[data-stage="' + name + '"]').waitFor();
   const work = () => page.locator('#workshop').isVisible();
   const fits = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth);
-  async function openMap() {
-    const details = map.locator('details');
-    if (!await details.evaluate(el => el.open)) await details.locator('summary').click();
+  const earned = {share:0,pack:0,count:0};
+  const finished = new Set();
+  let totals;
+  async function openDetails(details) {
+    if (!await details.evaluate(el => el.open)) await details.locator(':scope > summary').click();
+  }
+  async function openMap() { await openDetails(map.locator('.wm-drawer')); }
+  async function checkSkills(showRows = false) {
+    assert.deepEqual(await page.evaluate(() => window.ArzhenikovWorkshopProgress().skills),earned);
+    if (!showRows) return;
+    await openMap();
+    const skills = map.locator('.wm-skills');
+    assert.equal(await skills.locator('summary').innerText(),'Мои навыки');
+    await openDetails(skills);
+    for (const kind of Object.keys(earned)) {
+      const row = skills.locator('[data-skill="'+kind+'"]');
+      assert(await row.isVisible());
+      assert.equal(await row.locator('.wm-skill-count').innerText(),'Решено '+earned[kind]+' из '+totals[kind]);
+      assert.deepEqual(await row.locator('progress').evaluate(p => [p.value,p.max]),[earned[kind],totals[kind]]);
+    }
   }
   async function visit(place) {
     await openMap();
@@ -128,10 +145,16 @@ async function exercise(browser, width, fullBank) {
       await act('check-answer').press('Enter');
       await stage('answer');
       assert((await board.locator('.ws-feedback').innerText()).trim());
+      await checkSkills();
     }
     await input.fill(String(answer(scene)));
     await act('check-answer').press('Enter');
     await stage('practice-done');
+    if (!finished.has(scene.prompt)) {
+      finished.add(scene.prompt);
+      earned[scene.kind]++;
+    }
+    await checkSkills(probe);
     assert.equal(await board.locator('.ws-option:visible,.ws-equation:visible').count(),0);
     await act('next').press('Enter');
   }
@@ -159,6 +182,9 @@ async function exercise(browser, width, fullBank) {
     await stage('layout');
     const places = await page.evaluate(() => window.ArzhenikovLife.places);
     const total = checkBank(places);
+    totals = Object.fromEntries(Object.keys(earned).map(kind =>
+      [kind,places.flatMap(place => place.scenes).filter(scene => scene.kind === kind).length]));
+    await checkSkills(true);
     assert(await work());
     assert(await fits(), 'Landing page overflows at '+width);
     await openMap();
@@ -185,8 +211,10 @@ async function exercise(browser, width, fullBank) {
         assert.equal(await stop.getAttribute('data-complete'),'true');
       }
     }
+    if (fullBank) assert.deepEqual(earned,totals);
     await page.reload();
     await stage('complete');
+    await checkSkills(true);
     for (const hash of ['#count','#garden-count']) {
       const link=board.locator('a[href="'+hash+'"]');
       await link.click();
@@ -194,6 +222,13 @@ async function exercise(browser, width, fullBank) {
       assert(await page.locator(hash==='#count'?'#sheet':'#garden-play').isVisible());
       await page.goBack();
       await stage('complete');
+    }
+    if (fullBank) {
+      await act('replay').press('Enter');
+      await solveScene(places.at(-1).scenes[0],false);
+      await page.reload();
+      await stage('layout');
+      await checkSkills(true);
     }
     assert.deepEqual(errors,[]);
     return fullBank ? total : 3;
