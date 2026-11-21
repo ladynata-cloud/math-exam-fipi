@@ -1,0 +1,630 @@
+{
+  "parts": {
+    "613": [
+      "а",
+      "б",
+      "в"
+    ],
+    "614": [
+      "а",
+      "б",
+      "в"
+    ],
+    "615": [
+      null
+    ],
+    "616": [
+      "а",
+      "б",
+      "в"
+    ],
+    "617": [
+      "а",
+      "б",
+      "в"
+    ],
+    "618": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "613": {
+      "id": "source-main-0613",
+      "kind": "exercise",
+      "title": "Задача № 613",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "613",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "614": {
+      "id": "source-main-0614",
+      "kind": "exercise",
+      "title": "Задача № 614",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "614",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "615": {
+      "id": "source-main-0615",
+      "kind": "exercise",
+      "title": "Задача № 615",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "615",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "616": {
+      "id": "source-main-0616",
+      "kind": "exercise",
+      "title": "Задача № 616",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "616",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "617": {
+      "id": "source-main-0617",
+      "kind": "exercise",
+      "title": "Задача № 617",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "617",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "618": {
+      "id": "source-main-0618",
+      "kind": "exercise",
+      "title": "Задача № 618",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "618",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          157
+        ],
+        "pdfPages": [
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0613-a": {
+      "raw": "2ff23163f445818da6ce260d5169d535e11da7d67175eef85a3b6b56a894f06b",
+      "authored": "6407ac6e323a054331118d07e2b358dbb693ff5105ecb5e0edb33d866c99b4bf",
+      "integrated": "d3d919d10ea5eb123be7a13ba6910ea83962d8a06c38c963cd0e51148bc46930"
+    },
+    "ex-main-0613-b": {
+      "raw": "f09c59c267923138381834d58a131127c425f3774b6bc1dc4bf88eeac9b3fabe",
+      "authored": "01ac14cf776ac7490b04a359b97384f3bc5da2763f60eed6eae3236eddbcd069",
+      "integrated": "7b509a330e8863871d42656690f1f127807c3bf280cf196d0c5aaa49f8625748"
+    },
+    "ex-main-0613-c": {
+      "raw": "97c9bd134915d60222c56f136437bf85fb1a33810dd639ee5476618d6a4d660c",
+      "authored": "e0bf2320ec8b06165d7301392e3f3b4583fff7916617d46d64d18608cae09034",
+      "integrated": "856067fed2e32c6592195d1897c878868d78f0cbf6811e97eaea1fad129b9e30"
+    },
+    "ex-main-0614-a": {
+      "raw": "1751ec9a9f3bd317ac439a3b093288f65daa3034881b60dfb5fdebcbe7fb2805",
+      "authored": "bf73d6cc9a720265eea97e64add376bcfcc15765a3768ac4eb6ce43e8f83bfec",
+      "integrated": "8a1f1b69879a0b18944d611a17a77509bc03583ecdc67ec2a292f150b0ea4bee"
+    },
+    "ex-main-0614-b": {
+      "raw": "5c3defebe7ca3dae13796e5d52f818509f85a3ea29f782fd0831b46d6a665298",
+      "authored": "24ac9850996b8c7df2a79d96501404876209f6a1c2ceae312aec52a48608dd4c",
+      "integrated": "934fc9bdaac3a2250586c4061248e96075ddbdccc3f6eedee937fcbc9178a7e1"
+    },
+    "ex-main-0614-c": {
+      "raw": "6fa22c89140c42abc1d95571e4d0ae64ef41bb5a6786abfa269a581c3deef76f",
+      "authored": "5fd83ec6667e895a57bc5ccb3ef2a9cfcad78e0acf5faee73e57f450bf9677ec",
+      "integrated": "581df13df4e357b040ce0b049055a5906e592595098c9af1f8f8aa8511537309"
+    },
+    "ex-main-0615": {
+      "raw": "3f3f0051e51d74532a9e8d3cfa2e5b2657b66500ae7066c58a3b2d25f0cf513b",
+      "authored": "e9ab1ef1da91e7de98273d5b011de75ba2beeb7ef0518ecee11d004f10c844b3",
+      "integrated": "240941fa6b3c0f789a441592db12989c8291719df686469f83ac211878fa60ea"
+    },
+    "ex-main-0616-a": {
+      "raw": "22e7aed96d1772e94889c0508e32275aaebbf057a83c1f22a7abc8414437ddbf",
+      "authored": "5e0c6bc1553b589d21dbf9824163211f65df13ceb5c2124d82bccc724f5e0d7e",
+      "integrated": "cfd6bc91ecfd5aef46b11ae5d09235dee5d836836bb87fc1cf41bdf20a05511c"
+    },
+    "ex-main-0616-b": {
+      "raw": "374c000c0a955557ab446d26d8a3e8dd4060c9053a6ddf162976d9a1096ffeb9",
+      "authored": "241ca6ab5121e9d82643b249f44338c4b3099c2c7994657f7b72a7b094ca086c",
+      "integrated": "3f6f9912f71d75398d9df86296b2f12957ba11120e1ce6b6da58b32c9e859c66"
+    },
+    "ex-main-0616-c": {
+      "raw": "788af64f342cd2f6116aa1687b0613a056af4c37b174cf7059b42e7a5fb5622c",
+      "authored": "c1d18b0d24663e1b60e61ccd05411f260713c7e3b4b9052adbf4b353caea75d4",
+      "integrated": "ad8b223bd2513d76524b0cb7740d64d8cdd27fb4ff4bbb9cca0d149c484c311e"
+    },
+    "ex-main-0617-a": {
+      "raw": "5ec3a8c89b7daf736e1df981d2336d059be4c7f59a7b292b645b238d7092d874",
+      "authored": "e7d136de7a0895b8dc398ea6c460a826baa5c309ccd59af95280f3cc4fc667f0",
+      "integrated": "e1c60d1a6155175353bbe0fefab3c06f0ef5ece40cbff96f5dffb84e07f0b271"
+    },
+    "ex-main-0617-b": {
+      "raw": "9bc8966fb583cda1ec9102d2e78a0c1308593b8bf72c988a720b474ee31cca78",
+      "authored": "b4aca17a23bebeb6c04db6997bc857d17f4dd7f4fb800eb6671fda54bd43561e",
+      "integrated": "a679dad5eb57e3ce8a1458c5a1108ab35d117618a6bb602c4ab3de34b01b4ddf"
+    },
+    "ex-main-0617-c": {
+      "raw": "a9f688d5b0a524139bd783f07401f9f83e24d87ba66c92bc51f6355a4eff9547",
+      "authored": "a1ee06ccffea467bfadc924f4b0d013f77dad48c767dc5d8ed4ebebfdbfb7f57",
+      "integrated": "d7830f96b0591070379ddb2c6701a40f4f632e6de768a9e83a433bd7a27b8209"
+    },
+    "ex-main-0618": {
+      "raw": "2e160d4320eb356211382fa86e440d14f00153330dcd828624a281976e1fa102",
+      "authored": "cabf487d5ef0641b3b72d69fc0118ea94d807fdd6678343db1ad0fa544e886b1",
+      "integrated": "e8be7e30d5a84f8418542bfb873d068d834683bd9ca09cfb49d6641cc62eb9bb"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0613-a|condition",
+      "additional-directed-edge-sums-ex-main-0613-a-condition"
+    ],
+    [
+      "ex-main-0613-a|help:h1",
+      "additional-directed-edge-sums-ex-main-0613-a-help-h1"
+    ],
+    [
+      "ex-main-0613-a|help:h2",
+      "additional-directed-edge-sums-ex-main-0613-a-help-h2"
+    ],
+    [
+      "ex-main-0613-a|step-1",
+      "additional-directed-edge-sums-ex-main-0613-a-step-1"
+    ],
+    [
+      "ex-main-0613-a|step-2",
+      "additional-directed-edge-sums-ex-main-0613-a-step-2"
+    ],
+    [
+      "ex-main-0613-a|step-3",
+      "additional-directed-edge-sums-ex-main-0613-a-step-3"
+    ],
+    [
+      "ex-main-0613-a|step-4",
+      "additional-directed-edge-sums-ex-main-0613-a-step-4"
+    ],
+    [
+      "ex-main-0613-b|condition",
+      "additional-directed-edge-sums-ex-main-0613-b-condition"
+    ],
+    [
+      "ex-main-0613-b|help:h1",
+      "additional-directed-edge-sums-ex-main-0613-b-help-h1"
+    ],
+    [
+      "ex-main-0613-b|help:h2",
+      "additional-directed-edge-sums-ex-main-0613-b-help-h2"
+    ],
+    [
+      "ex-main-0613-b|step-1",
+      "additional-directed-edge-sums-ex-main-0613-b-step-1"
+    ],
+    [
+      "ex-main-0613-b|step-2",
+      "additional-directed-edge-sums-ex-main-0613-b-step-2"
+    ],
+    [
+      "ex-main-0613-b|step-3",
+      "additional-directed-edge-sums-ex-main-0613-b-step-3"
+    ],
+    [
+      "ex-main-0613-b|step-4",
+      "additional-directed-edge-sums-ex-main-0613-b-step-4"
+    ],
+    [
+      "ex-main-0613-c|condition",
+      "additional-directed-edge-sums-ex-main-0613-c-condition"
+    ],
+    [
+      "ex-main-0613-c|help:h1",
+      "additional-directed-edge-sums-ex-main-0613-c-help-h1"
+    ],
+    [
+      "ex-main-0613-c|help:h2",
+      "additional-directed-edge-sums-ex-main-0613-c-help-h2"
+    ],
+    [
+      "ex-main-0613-c|step-1",
+      "additional-directed-edge-sums-ex-main-0613-c-step-1"
+    ],
+    [
+      "ex-main-0613-c|step-2",
+      "additional-directed-edge-sums-ex-main-0613-c-step-2"
+    ],
+    [
+      "ex-main-0613-c|step-3",
+      "additional-directed-edge-sums-ex-main-0613-c-step-3"
+    ],
+    [
+      "ex-main-0613-c|step-4",
+      "additional-directed-edge-sums-ex-main-0613-c-step-4"
+    ],
+    [
+      "ex-main-0614-a|condition",
+      "additional-directed-edge-sums-ex-main-0614-a-condition"
+    ],
+    [
+      "ex-main-0614-a|help:h1",
+      "additional-directed-edge-sums-ex-main-0614-a-help-h1"
+    ],
+    [
+      "ex-main-0614-a|help:h2",
+      "additional-directed-edge-sums-ex-main-0614-a-help-h2"
+    ],
+    [
+      "ex-main-0614-a|step-1",
+      "additional-directed-edge-sums-ex-main-0614-a-step-1"
+    ],
+    [
+      "ex-main-0614-a|step-2",
+      "additional-directed-edge-sums-ex-main-0614-a-step-2"
+    ],
+    [
+      "ex-main-0614-a|step-3",
+      "additional-directed-edge-sums-ex-main-0614-a-step-3"
+    ],
+    [
+      "ex-main-0614-a|step-4",
+      "additional-directed-edge-sums-ex-main-0614-a-step-4"
+    ],
+    [
+      "ex-main-0614-b|condition",
+      "additional-directed-edge-sums-ex-main-0614-b-condition"
+    ],
+    [
+      "ex-main-0614-b|help:h1",
+      "additional-directed-edge-sums-ex-main-0614-b-help-h1"
+    ],
+    [
+      "ex-main-0614-b|help:h2",
+      "additional-directed-edge-sums-ex-main-0614-b-help-h2"
+    ],
+    [
+      "ex-main-0614-b|step-1",
+      "additional-directed-edge-sums-ex-main-0614-b-step-1"
+    ],
+    [
+      "ex-main-0614-b|step-2",
+      "additional-directed-edge-sums-ex-main-0614-b-step-2"
+    ],
+    [
+      "ex-main-0614-b|step-3",
+      "additional-directed-edge-sums-ex-main-0614-b-step-3"
+    ],
+    [
+      "ex-main-0614-b|step-4",
+      "additional-directed-edge-sums-ex-main-0614-b-step-4"
+    ],
+    [
+      "ex-main-0614-c|condition",
+      "additional-directed-edge-sums-ex-main-0614-c-condition"
+    ],
+    [
+      "ex-main-0614-c|help:h1",
+      "additional-directed-edge-sums-ex-main-0614-c-help-h1"
+    ],
+    [
+      "ex-main-0614-c|help:h2",
+      "additional-directed-edge-sums-ex-main-0614-c-help-h2"
+    ],
+    [
+      "ex-main-0614-c|step-1",
+      "additional-directed-edge-sums-ex-main-0614-c-step-1"
+    ],
+    [
+      "ex-main-0614-c|step-2",
+      "additional-directed-edge-sums-ex-main-0614-c-step-2"
+    ],
+    [
+      "ex-main-0614-c|step-3",
+      "additional-directed-edge-sums-ex-main-0614-c-step-3"
+    ],
+    [
+      "ex-main-0614-c|step-4",
+      "additional-directed-edge-sums-ex-main-0614-c-step-4"
+    ],
+    [
+      "ex-main-0615|condition",
+      "additional-directed-edge-sums-ex-main-0615-condition"
+    ],
+    [
+      "ex-main-0615|help:h1",
+      "additional-directed-edge-sums-ex-main-0615-help-h1"
+    ],
+    [
+      "ex-main-0615|help:h2",
+      "additional-directed-edge-sums-ex-main-0615-help-h2"
+    ],
+    [
+      "ex-main-0615|step-1",
+      "additional-directed-edge-sums-ex-main-0615-step-1"
+    ],
+    [
+      "ex-main-0615|step-2",
+      "additional-directed-edge-sums-ex-main-0615-step-2"
+    ],
+    [
+      "ex-main-0615|step-3",
+      "additional-directed-edge-sums-ex-main-0615-step-3"
+    ],
+    [
+      "ex-main-0616-a|condition",
+      "additional-directed-edge-sums-ex-main-0616-a-condition"
+    ],
+    [
+      "ex-main-0616-a|help:h1",
+      "additional-directed-edge-sums-ex-main-0616-a-help-h1"
+    ],
+    [
+      "ex-main-0616-a|help:h2",
+      "additional-directed-edge-sums-ex-main-0616-a-help-h2"
+    ],
+    [
+      "ex-main-0616-a|step-1",
+      "additional-directed-edge-sums-ex-main-0616-a-step-1"
+    ],
+    [
+      "ex-main-0616-a|step-2",
+      "additional-directed-edge-sums-ex-main-0616-a-step-2"
+    ],
+    [
+      "ex-main-0616-a|step-3",
+      "additional-directed-edge-sums-ex-main-0616-a-step-3"
+    ],
+    [
+      "ex-main-0616-a|step-4",
+      "additional-directed-edge-sums-ex-main-0616-a-step-4"
+    ],
+    [
+      "ex-main-0616-b|condition",
+      "additional-directed-edge-sums-ex-main-0616-b-condition"
+    ],
+    [
+      "ex-main-0616-b|help:h1",
+      "additional-directed-edge-sums-ex-main-0616-b-help-h1"
+    ],
+    [
+      "ex-main-0616-b|help:h2",
+      "additional-directed-edge-sums-ex-main-0616-b-help-h2"
+    ],
+    [
+      "ex-main-0616-b|step-1",
+      "additional-directed-edge-sums-ex-main-0616-b-step-1"
+    ],
+    [
+      "ex-main-0616-b|step-2",
+      "additional-directed-edge-sums-ex-main-0616-b-step-2"
+    ],
+    [
+      "ex-main-0616-b|step-3",
+      "additional-directed-edge-sums-ex-main-0616-b-step-3"
+    ],
+    [
+      "ex-main-0616-b|step-4",
+      "additional-directed-edge-sums-ex-main-0616-b-step-4"
+    ],
+    [
+      "ex-main-0616-c|condition",
+      "additional-directed-edge-sums-ex-main-0616-c-condition"
+    ],
+    [
+      "ex-main-0616-c|help:h1",
+      "additional-directed-edge-sums-ex-main-0616-c-help-h1"
+    ],
+    [
+      "ex-main-0616-c|help:h2",
+      "additional-directed-edge-sums-ex-main-0616-c-help-h2"
+    ],
+    [
+      "ex-main-0616-c|step-1",
+      "additional-directed-edge-sums-ex-main-0616-c-step-1"
+    ],
+    [
+      "ex-main-0616-c|step-2",
+      "additional-directed-edge-sums-ex-main-0616-c-step-2"
+    ],
+    [
+      "ex-main-0616-c|step-3",
+      "additional-directed-edge-sums-ex-main-0616-c-step-3"
+    ],
+    [
+      "ex-main-0616-c|step-4",
+      "additional-directed-edge-sums-ex-main-0616-c-step-4"
+    ],
+    [
+      "ex-main-0617-a|condition",
+      "additional-directed-edge-sums-ex-main-0617-a-condition"
+    ],
+    [
+      "ex-main-0617-a|help:h1",
+      "additional-directed-edge-sums-ex-main-0617-a-help-h1"
+    ],
+    [
+      "ex-main-0617-a|help:h2",
+      "additional-directed-edge-sums-ex-main-0617-a-help-h2"
+    ],
+    [
+      "ex-main-0617-a|step-1",
+      "additional-directed-edge-sums-ex-main-0617-a-step-1"
+    ],
+    [
+      "ex-main-0617-a|step-2",
+      "additional-directed-edge-sums-ex-main-0617-a-step-2"
+    ],
+    [
+      "ex-main-0617-a|step-3",
+      "additional-directed-edge-sums-ex-main-0617-a-step-3"
+    ],
+    [
+      "ex-main-0617-a|step-4",
+      "additional-directed-edge-sums-ex-main-0617-a-step-4"
+    ],
+    [
+      "ex-main-0617-b|condition",
+      "additional-directed-edge-sums-ex-main-0617-b-condition"
+    ],
+    [
+      "ex-main-0617-b|help:h1",
+      "additional-directed-edge-sums-ex-main-0617-b-help-h1"
+    ],
+    [
+      "ex-main-0617-b|help:h2",
+      "additional-directed-edge-sums-ex-main-0617-b-help-h2"
+    ],
+    [
+      "ex-main-0617-b|step-1",
+      "additional-directed-edge-sums-ex-main-0617-b-step-1"
+    ],
+    [
+      "ex-main-0617-b|step-2",
+      "additional-directed-edge-sums-ex-main-0617-b-step-2"
+    ],
+    [
+      "ex-main-0617-b|step-3",
+      "additional-directed-edge-sums-ex-main-0617-b-step-3"
+    ],
+    [
+      "ex-main-0617-b|step-4",
+      "additional-directed-edge-sums-ex-main-0617-b-step-4"
+    ],
+    [
+      "ex-main-0617-c|condition",
+      "additional-directed-edge-sums-ex-main-0617-c-condition"
+    ],
+    [
+      "ex-main-0617-c|help:h1",
+      "additional-directed-edge-sums-ex-main-0617-c-help-h1"
+    ],
+    [
+      "ex-main-0617-c|help:h2",
+      "additional-directed-edge-sums-ex-main-0617-c-help-h2"
+    ],
+    [
+      "ex-main-0617-c|step-1",
+      "additional-directed-edge-sums-ex-main-0617-c-step-1"
+    ],
+    [
+      "ex-main-0617-c|step-2",
+      "additional-directed-edge-sums-ex-main-0617-c-step-2"
+    ],
+    [
+      "ex-main-0617-c|step-3",
+      "additional-directed-edge-sums-ex-main-0617-c-step-3"
+    ],
+    [
+      "ex-main-0617-c|step-4",
+      "additional-directed-edge-sums-ex-main-0617-c-step-4"
+    ],
+    [
+      "ex-main-0618|condition",
+      "additional-directed-edge-sums-ex-main-0618-condition"
+    ],
+    [
+      "ex-main-0618|help:h1",
+      "additional-directed-edge-sums-ex-main-0618-help-h1"
+    ],
+    [
+      "ex-main-0618|help:h2",
+      "additional-directed-edge-sums-ex-main-0618-help-h2"
+    ],
+    [
+      "ex-main-0618|step-1",
+      "additional-directed-edge-sums-ex-main-0618-step-1"
+    ],
+    [
+      "ex-main-0618|step-2",
+      "additional-directed-edge-sums-ex-main-0618-step-2"
+    ],
+    [
+      "ex-main-0618|step-3",
+      "additional-directed-edge-sums-ex-main-0618-step-3"
+    ],
+    [
+      "ex-main-0618|step-4",
+      "additional-directed-edge-sums-ex-main-0618-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "fe5ac6b41be57fe5db9cff02f2c34c0b4889145cc186f1fa4a87a4128e300f1f",
+      "afterSHA256": "88a5e25e7a1cfce0724bed23c2c9cca1b4ef76a6b1db22fc8f68000cdd577110"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "2b9a0b971e3ee3c4a7d672d7af26529c2e9247094fc60e8e08f9a7e25a2e4233",
+      "afterSHA256": "a2b7072f2a2efc0acab839f4ab4c42c051a28b959be62d68f1db9282bfcd1770"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T21:28:45Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–612 and the 15 printed chapter VI self-check questions, with 1,055 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "c09fa089dfd944de22f9138b7b7549d14b773137889030116f993efeeaf8950e",
+    "index": "e3331f0e38ab7a84a9cd5874d2f046b4414d9d7a0f4e9255e5c4da86b966d01c",
+    "registry": "768ce41c6fe62454d125500a9f303b5e7207ec1f3ec3e8bebe11a9e318566535",
+    "cases": "ba187b853cc9a33ebad066e9ad3fa30753a8b9bc2a5a762f17f0ca1d2541d19b"
+  }
+}

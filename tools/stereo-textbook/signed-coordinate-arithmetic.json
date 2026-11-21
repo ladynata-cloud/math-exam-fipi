@@ -1,0 +1,668 @@
+{
+  "parts": {
+    "646": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж",
+      "з",
+      "и",
+      "к",
+      "л",
+      "м"
+    ],
+    "647": [
+      null
+    ],
+    "648": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "649": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "646": {
+      "id": "source-main-0646",
+      "kind": "exercise",
+      "title": "Задача № 646",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "646",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "647": {
+      "id": "source-main-0647",
+      "kind": "exercise",
+      "title": "Задача № 647",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "647",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "648": {
+      "id": "source-main-0648",
+      "kind": "exercise",
+      "title": "Задача № 648",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "648",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "649": {
+      "id": "source-main-0649",
+      "kind": "exercise",
+      "title": "Задача № 649",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "649",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0646-a": {
+      "raw": "749ee94ab72b6187cf73722a726611159d7b9ebdd9bd21195235c6cd9f2e01c4",
+      "authored": "1127d4a583c6d905e7846dfc15a7629ac55cd3790d3dfb6ff68acbb64ad1f41f",
+      "integrated": "da546e8065891747a44831693b9b3f556d33ca93799f19cfb577d82e92b69a62"
+    },
+    "ex-main-0646-b": {
+      "raw": "936404f184ea4e16e2ed9d1e311b8fd4a3994117c78825d7def403dfcfa66545",
+      "authored": "2c9678bae061580ae095478beb1fadc60d1864e2d203a3036dcde2e6918a14bf",
+      "integrated": "ed6824119cdac13af95edb0211aebb234988f9d820d0edc14854167a81084f5c"
+    },
+    "ex-main-0646-c": {
+      "raw": "9c3f93bca32be9ca51c1a7a18b6ca327dddbbc3b069cbd5d132d36f33cdbddfa",
+      "authored": "2dc946cd2d4ad2e07604a793ce30d426feb24b8bc7b514272ec17a50acecb1d8",
+      "integrated": "9916d3474f38887b33e6237d39b79465181b4d976e2d2bf6eed4e8a2a7655495"
+    },
+    "ex-main-0646-d": {
+      "raw": "55184d81cbe04b7a33a1f4df849f5beb9002438f3d322b2a9a9aacbb69cb2e16",
+      "authored": "b0ffcf9434acf0e4c13d3314760d4d91b02da4aa2beca93f0f382313518a0c28",
+      "integrated": "4e7a488c8295b503df6072616b7e2c14768b3a453acca6d419f07b80f7494515"
+    },
+    "ex-main-0646-e": {
+      "raw": "9c94ad2923e15572b64978ca997f9583112e9e597af7cc92ad6a4a5c1f21740b",
+      "authored": "48b5efd6479a3860307d3cf6d6be69478a6add61dbfadbb3fa39059e3892eedb",
+      "integrated": "bd27f9077a348b9f01017987e745e8b7c0b87ea3b8f556ce9db0a3d1ac9c28b8"
+    },
+    "ex-main-0646-f": {
+      "raw": "289df4cd98673ec2085850b612fba392560f9d008964c999a0790b53d89a3119",
+      "authored": "6cd6d07ac0a23955d4c3b814b5f653985b891edb9b4143c4a6ac3bcbd6fe5d5e",
+      "integrated": "915288f0c6306f3019dbddf86d218953bab76d8bdb7a14bc1afe34bb2d133bc3"
+    },
+    "ex-main-0646-g": {
+      "raw": "da24b7be2096224e894b33ceb6909bd8ab6bc7c68358b69e9727495840b98376",
+      "authored": "ba7adb826f73e0aed85f5f20e552902583dad1db659e00c18abeac7aaa51d1bf",
+      "integrated": "d96039ecfe785e045d1b815efb9838e64d09d677b7fdf65d17656e488d4c88cd"
+    },
+    "ex-main-0646-h": {
+      "raw": "be946a67bf529c6e33e556f21c85e7e9e1f20a03905eec825826249a6ac3f5a7",
+      "authored": "6f171e6091a04ea6dbd517484be52ddae6e81f6596c26f47e2d818d762536e56",
+      "integrated": "4d25314f09ae614418d499f3f3272943b2ec5204a3b4bc6ea32d6463242283b2"
+    },
+    "ex-main-0646-i": {
+      "raw": "b4502330c29df75c0b0f389d87a6846333f1d6ca9f0ed62979e83e8cc2010de0",
+      "authored": "e5dd4514d22d63d93c4b15d8b00f68c1b43b27a5f0932ef39a9266f6d0d6deee",
+      "integrated": "35614fca1dd3a161bd90d759887538b33d5b510435bc97e466e463306a518338"
+    },
+    "ex-main-0646-j": {
+      "raw": "f1c5775ea27a9081327f2324045ee74a3d38fba2dcb579ec590ea14d8e5195ab",
+      "authored": "86ebcfb6d5368cab22e06c2cfcdfd13617ece32c24a6d04409e5f446fd778b6e",
+      "integrated": "2462996273f385b66b4838701efaf7e2c4e91f2276d0a9df6e95d124246601ba"
+    },
+    "ex-main-0646-k": {
+      "raw": "964e7b6a814792113b8095e68ca5b4489e8faffdd91711b5d66f511225604ada",
+      "authored": "1a91d50ebd667f54940cf335b19e79ea09f8eaeb3174bdcbb1f2dc2709bfa5be",
+      "integrated": "2c13438cf4abdb18e34ab49f01a2d02cdb07135d9e81f0a1786ba8a9145c0d2f"
+    },
+    "ex-main-0646-l": {
+      "raw": "3616930878f760af539833d8b7168571057c1282827b0206b523e4fc67714607",
+      "authored": "4f4d7588f3823922ec66b44b23df550c49dbe66e258bf8ba0af3151c4a121881",
+      "integrated": "657a67292f9c6b0dbd8642f71b72490c39b4e5a15df8b6b7cbdf4e67c2fd45ed"
+    },
+    "ex-main-0647": {
+      "raw": "ff91853984bd65f1ee59f908a29fd7b25a96c2fa3ef7b9007cc80a4c8ad963cc",
+      "authored": "7b843d61e4a2b0044a2202e7dd66db6f36c475507b38d78d04be9a4a362e6b79",
+      "integrated": "c88aa68457ae23609b931dfa22632ed684482bd252497352dc3fd7a48194c14f"
+    },
+    "ex-main-0648-a": {
+      "raw": "9f88ad076f7506735aec0d4fdb597cf7c8c0ce10bba2f377216b1df0a1b026be",
+      "authored": "64560d313602bcb58ac51984097fe3edbeccfad571f722d249d0fcfb20515fbc",
+      "integrated": "cc4904aadcad6f7eaad291c093996112ac1e2388b1e1fa420893a72f49d31958"
+    },
+    "ex-main-0648-b": {
+      "raw": "d2409f3ac2870ad1df08077356c695df0f755e7502c78238d5dfdcbd18686e39",
+      "authored": "abcd4ae493b09af8a915179f62c70b0103e3f63f600a6a91d35f2c5d136de4a0",
+      "integrated": "b7dabbcf40566d5627ab5fcded22ad4affb987a26860bd57cbf0fb3e6898bde5"
+    },
+    "ex-main-0648-c": {
+      "raw": "49d744626541e52936984a9a898bbc61e403e668cbc69135f057e6734e06bc22",
+      "authored": "97e4897cf6b76a9bc312fe05867de0047f9d0eaf967878979a334ffcd0245ffc",
+      "integrated": "91b44f5ab8d5911d6739ccf88742b2dd8dc4ea94995228ac7d8b61f1bbfd1a53"
+    },
+    "ex-main-0648-d": {
+      "raw": "dd2e39bc34efd1c94c1f5e45ffeb5860fd128c482428dfb0dcf861463e0f1e0c",
+      "authored": "3ffb5ebbdbb0f57c9ad35da52f3ab9645cc1ffc6837bc09b2a9b524e5f23056b",
+      "integrated": "dedf521958f0dd67c223c67e8205548db447a8ee96c0ba1287e64526d7bd9bf1"
+    },
+    "ex-main-0649": {
+      "raw": "6b78d1db8a298ae2f1778b0ae6506a59fa7697a394c50d128a6064fd545d230e",
+      "authored": "f92030988c6ded86f4b523eb3f89298f6598ca71a4212afb4a5636d615b97865",
+      "integrated": "beaa02facb0b2e667efc6ff8ca9926aecf537150aba12f3b12a262e3f9e2ae94"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0646-a|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-a-condition"
+    ],
+    [
+      "ex-main-0646-a|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-a-help-h1"
+    ],
+    [
+      "ex-main-0646-a|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-a-help-h2"
+    ],
+    [
+      "ex-main-0646-a|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-a-step-1"
+    ],
+    [
+      "ex-main-0646-a|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-a-step-2"
+    ],
+    [
+      "ex-main-0646-a|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-a-step-3"
+    ],
+    [
+      "ex-main-0646-b|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-b-condition"
+    ],
+    [
+      "ex-main-0646-b|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-b-help-h1"
+    ],
+    [
+      "ex-main-0646-b|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-b-help-h2"
+    ],
+    [
+      "ex-main-0646-b|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-b-step-1"
+    ],
+    [
+      "ex-main-0646-b|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-b-step-2"
+    ],
+    [
+      "ex-main-0646-b|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-b-step-3"
+    ],
+    [
+      "ex-main-0646-c|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-c-condition"
+    ],
+    [
+      "ex-main-0646-c|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-c-help-h1"
+    ],
+    [
+      "ex-main-0646-c|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-c-help-h2"
+    ],
+    [
+      "ex-main-0646-c|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-c-step-1"
+    ],
+    [
+      "ex-main-0646-c|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-c-step-2"
+    ],
+    [
+      "ex-main-0646-c|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-c-step-3"
+    ],
+    [
+      "ex-main-0646-d|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-d-condition"
+    ],
+    [
+      "ex-main-0646-d|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-d-help-h1"
+    ],
+    [
+      "ex-main-0646-d|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-d-help-h2"
+    ],
+    [
+      "ex-main-0646-d|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-d-step-1"
+    ],
+    [
+      "ex-main-0646-d|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-d-step-2"
+    ],
+    [
+      "ex-main-0646-d|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-d-step-3"
+    ],
+    [
+      "ex-main-0646-e|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-e-condition"
+    ],
+    [
+      "ex-main-0646-e|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-e-help-h1"
+    ],
+    [
+      "ex-main-0646-e|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-e-help-h2"
+    ],
+    [
+      "ex-main-0646-e|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-e-step-1"
+    ],
+    [
+      "ex-main-0646-e|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-e-step-2"
+    ],
+    [
+      "ex-main-0646-e|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-e-step-3"
+    ],
+    [
+      "ex-main-0646-f|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-f-condition"
+    ],
+    [
+      "ex-main-0646-f|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-f-help-h1"
+    ],
+    [
+      "ex-main-0646-f|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-f-help-h2"
+    ],
+    [
+      "ex-main-0646-f|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-f-step-1"
+    ],
+    [
+      "ex-main-0646-f|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-f-step-2"
+    ],
+    [
+      "ex-main-0646-f|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-f-step-3"
+    ],
+    [
+      "ex-main-0646-g|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-g-condition"
+    ],
+    [
+      "ex-main-0646-g|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-g-help-h1"
+    ],
+    [
+      "ex-main-0646-g|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-g-help-h2"
+    ],
+    [
+      "ex-main-0646-g|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-g-step-1"
+    ],
+    [
+      "ex-main-0646-g|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-g-step-2"
+    ],
+    [
+      "ex-main-0646-g|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-g-step-3"
+    ],
+    [
+      "ex-main-0646-h|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-h-condition"
+    ],
+    [
+      "ex-main-0646-h|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-h-help-h1"
+    ],
+    [
+      "ex-main-0646-h|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-h-help-h2"
+    ],
+    [
+      "ex-main-0646-h|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-h-step-1"
+    ],
+    [
+      "ex-main-0646-h|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-h-step-2"
+    ],
+    [
+      "ex-main-0646-h|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-h-step-3"
+    ],
+    [
+      "ex-main-0646-i|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-i-condition"
+    ],
+    [
+      "ex-main-0646-i|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-i-help-h1"
+    ],
+    [
+      "ex-main-0646-i|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-i-help-h2"
+    ],
+    [
+      "ex-main-0646-i|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-i-step-1"
+    ],
+    [
+      "ex-main-0646-i|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-i-step-2"
+    ],
+    [
+      "ex-main-0646-i|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-i-step-3"
+    ],
+    [
+      "ex-main-0646-j|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-j-condition"
+    ],
+    [
+      "ex-main-0646-j|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-j-help-h1"
+    ],
+    [
+      "ex-main-0646-j|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-j-help-h2"
+    ],
+    [
+      "ex-main-0646-j|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-j-step-1"
+    ],
+    [
+      "ex-main-0646-j|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-j-step-2"
+    ],
+    [
+      "ex-main-0646-j|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-j-step-3"
+    ],
+    [
+      "ex-main-0646-k|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-k-condition"
+    ],
+    [
+      "ex-main-0646-k|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-k-help-h1"
+    ],
+    [
+      "ex-main-0646-k|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-k-help-h2"
+    ],
+    [
+      "ex-main-0646-k|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-k-step-1"
+    ],
+    [
+      "ex-main-0646-k|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-k-step-2"
+    ],
+    [
+      "ex-main-0646-k|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-k-step-3"
+    ],
+    [
+      "ex-main-0646-l|condition",
+      "signed-coordinate-arithmetic-ex-main-0646-l-condition"
+    ],
+    [
+      "ex-main-0646-l|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0646-l-help-h1"
+    ],
+    [
+      "ex-main-0646-l|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0646-l-help-h2"
+    ],
+    [
+      "ex-main-0646-l|step-1",
+      "signed-coordinate-arithmetic-ex-main-0646-l-step-1"
+    ],
+    [
+      "ex-main-0646-l|step-2",
+      "signed-coordinate-arithmetic-ex-main-0646-l-step-2"
+    ],
+    [
+      "ex-main-0646-l|step-3",
+      "signed-coordinate-arithmetic-ex-main-0646-l-step-3"
+    ],
+    [
+      "ex-main-0647|condition",
+      "signed-coordinate-arithmetic-ex-main-0647-condition"
+    ],
+    [
+      "ex-main-0647|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0647-help-h1"
+    ],
+    [
+      "ex-main-0647|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0647-help-h2"
+    ],
+    [
+      "ex-main-0647|step-1",
+      "signed-coordinate-arithmetic-ex-main-0647-step-1"
+    ],
+    [
+      "ex-main-0647|step-2",
+      "signed-coordinate-arithmetic-ex-main-0647-step-2"
+    ],
+    [
+      "ex-main-0647|step-3",
+      "signed-coordinate-arithmetic-ex-main-0647-step-3"
+    ],
+    [
+      "ex-main-0648-a|condition",
+      "signed-coordinate-arithmetic-ex-main-0648-a-condition"
+    ],
+    [
+      "ex-main-0648-a|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0648-a-help-h1"
+    ],
+    [
+      "ex-main-0648-a|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0648-a-help-h2"
+    ],
+    [
+      "ex-main-0648-a|step-1",
+      "signed-coordinate-arithmetic-ex-main-0648-a-step-1"
+    ],
+    [
+      "ex-main-0648-a|step-2",
+      "signed-coordinate-arithmetic-ex-main-0648-a-step-2"
+    ],
+    [
+      "ex-main-0648-a|step-3",
+      "signed-coordinate-arithmetic-ex-main-0648-a-step-3"
+    ],
+    [
+      "ex-main-0648-b|condition",
+      "signed-coordinate-arithmetic-ex-main-0648-b-condition"
+    ],
+    [
+      "ex-main-0648-b|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0648-b-help-h1"
+    ],
+    [
+      "ex-main-0648-b|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0648-b-help-h2"
+    ],
+    [
+      "ex-main-0648-b|step-1",
+      "signed-coordinate-arithmetic-ex-main-0648-b-step-1"
+    ],
+    [
+      "ex-main-0648-b|step-2",
+      "signed-coordinate-arithmetic-ex-main-0648-b-step-2"
+    ],
+    [
+      "ex-main-0648-b|step-3",
+      "signed-coordinate-arithmetic-ex-main-0648-b-step-3"
+    ],
+    [
+      "ex-main-0648-c|condition",
+      "signed-coordinate-arithmetic-ex-main-0648-c-condition"
+    ],
+    [
+      "ex-main-0648-c|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0648-c-help-h1"
+    ],
+    [
+      "ex-main-0648-c|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0648-c-help-h2"
+    ],
+    [
+      "ex-main-0648-c|step-1",
+      "signed-coordinate-arithmetic-ex-main-0648-c-step-1"
+    ],
+    [
+      "ex-main-0648-c|step-2",
+      "signed-coordinate-arithmetic-ex-main-0648-c-step-2"
+    ],
+    [
+      "ex-main-0648-c|step-3",
+      "signed-coordinate-arithmetic-ex-main-0648-c-step-3"
+    ],
+    [
+      "ex-main-0648-d|condition",
+      "signed-coordinate-arithmetic-ex-main-0648-d-condition"
+    ],
+    [
+      "ex-main-0648-d|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0648-d-help-h1"
+    ],
+    [
+      "ex-main-0648-d|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0648-d-help-h2"
+    ],
+    [
+      "ex-main-0648-d|step-1",
+      "signed-coordinate-arithmetic-ex-main-0648-d-step-1"
+    ],
+    [
+      "ex-main-0648-d|step-2",
+      "signed-coordinate-arithmetic-ex-main-0648-d-step-2"
+    ],
+    [
+      "ex-main-0648-d|step-3",
+      "signed-coordinate-arithmetic-ex-main-0648-d-step-3"
+    ],
+    [
+      "ex-main-0649|condition",
+      "signed-coordinate-arithmetic-ex-main-0649-condition"
+    ],
+    [
+      "ex-main-0649|help:h1",
+      "signed-coordinate-arithmetic-ex-main-0649-help-h1"
+    ],
+    [
+      "ex-main-0649|help:h2",
+      "signed-coordinate-arithmetic-ex-main-0649-help-h2"
+    ],
+    [
+      "ex-main-0649|step-1",
+      "signed-coordinate-arithmetic-ex-main-0649-step-1"
+    ],
+    [
+      "ex-main-0649|step-2",
+      "signed-coordinate-arithmetic-ex-main-0649-step-2"
+    ],
+    [
+      "ex-main-0649|step-3",
+      "signed-coordinate-arithmetic-ex-main-0649-step-3"
+    ],
+    [
+      "ex-main-0649|step-4",
+      "signed-coordinate-arithmetic-ex-main-0649-step-4"
+    ],
+    [
+      "ex-main-0649|step-5",
+      "signed-coordinate-arithmetic-ex-main-0649-step-5"
+    ],
+    [
+      "ex-main-0649|step-6",
+      "signed-coordinate-arithmetic-ex-main-0649-step-6"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "ee734b239d978d3da0c334556eddb8bcda4f00b7a57728eacf8286d6ee42146d",
+      "afterSHA256": "411774da79cb7b798e295bb43a8e43f4fed7e5989b1ac911fbba06a44de1221a"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "04e9ac3191bf168a947092e65ee6d75945daa8ed50d3e56c551dc3ea3ea19163",
+      "afterSHA256": "220df2ac2a5951d51eb7b3c4aa76cc2fb95bf8af41be954e470cf409264c91a7"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T22:15:19Z",
+    "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–645, with 1,125 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "19b8673ab19f65c62388caf309168fd3d9ecb561f07fc63802f6fcf3ef9568d4",
+    "index": "7d02cf97ac7f2a76bdc7e6721014e88330bbe727bf520f68c8211a2f9a41c3b7",
+    "registry": "4970b67cbeb512b4c92e958d59a524913c569200c66c58410c3a63263be45775",
+    "cases": "8865dc187dff51b51e5d67488b808aab946cb6bd4ba43e2319177aa97b6b6a02"
+  }
+}

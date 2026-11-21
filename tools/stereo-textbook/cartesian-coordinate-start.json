@@ -1,0 +1,682 @@
+{
+  "parts": {
+    "637": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е"
+    ],
+    "638": [
+      "а",
+      "б"
+    ],
+    "639": [
+      null
+    ],
+    "theory-71": [
+      null
+    ],
+    "theory-72": [
+      null
+    ],
+    "theory-73": [
+      null
+    ],
+    "theory-74": [
+      null
+    ],
+    "theory-75": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "637": {
+      "id": "source-main-0637",
+      "kind": "exercise",
+      "title": "Задача № 637",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "637",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "638": {
+      "id": "source-main-0638",
+      "kind": "exercise",
+      "title": "Задача № 638",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "638",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "639": {
+      "id": "source-main-0639",
+      "kind": "exercise",
+      "title": "Задача № 639",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "639",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-71": {
+      "id": "source-theory-071",
+      "kind": "theory",
+      "title": "71. Прямоугольная система координат в пространстве",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "71",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          160,
+          161
+        ],
+        "pdfPages": [
+          162,
+          163
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-72": {
+      "id": "source-theory-072",
+      "kind": "theory",
+      "title": "72. Координаты вектора",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "72",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          161,
+          162,
+          163
+        ],
+        "pdfPages": [
+          163,
+          164,
+          165
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-73": {
+      "id": "source-theory-073",
+      "kind": "theory",
+      "title": "73. Связь между координатами векторов и координатами точек",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "73",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          163,
+          164
+        ],
+        "pdfPages": [
+          165,
+          166
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-74": {
+      "id": "source-theory-074",
+      "kind": "theory",
+      "title": "74. Простейшие задачи в координатах",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "74",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          164,
+          165
+        ],
+        "pdfPages": [
+          166,
+          167
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-75": {
+      "id": "source-theory-075",
+      "kind": "theory",
+      "title": "75. Уравнение сферы",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "75",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "theory-071": {
+      "raw": "aa47dcb94f27982cb4fc17afdc2f78b46f91ce0b77145340447d45e6d516ce21",
+      "authored": "d42a2146cd3dfa7b9f61a7cb2b5b5b275399300cef3858c4d5f09a4ea71c4443",
+      "integrated": "cf97dc4b2db80850a342a0d02eb2de44e3ddd461d5a1c3e18746c2050da13315"
+    },
+    "theory-072": {
+      "raw": "e82daaa8db05b195a03a0d519f14db590901310571463f8c11ef2ba4f3c5f145",
+      "authored": "655f1c9d91dab2e9d7cb093dabd40f732c2cbcc38a1cda728ff461f885189db6",
+      "integrated": "7e8c3eafc6353b30280c0d2863248d627210f241ae5d2fa677db35ef63c50078"
+    },
+    "theory-073": {
+      "raw": "4dc1cd90bf3a4d231757f7010e9d3182bd7e37fbee1b517511b5479572cdfa94",
+      "authored": "5f570185eae7209c853dc2eb1f0c1149ccc1096f9be88e401f2b424cbb619ed3",
+      "integrated": "ccd0401406a79eca82b935be0b09f24d0749a93898bc8561d2fd0ba1635ac1e5"
+    },
+    "theory-074": {
+      "raw": "8fd6ae1c3e247b5f17424750b6ebbc2b2ff9fbea5099eaed115d2c47717870f3",
+      "authored": "24709bcdc4b7dc114a010458e340ee32ffbb2704892aed3955c6950bbba3844d",
+      "integrated": "6e090ec6c4b2ca445bf48929e432a53cfbe214a41609b5fbadb0fa09075d6c60"
+    },
+    "theory-075": {
+      "raw": "f6162978cecd86161f9fe8acb9578c7a12c2030fd833c7b22d7e890de8f90f37",
+      "authored": "0568e93de3539cef2eb5d0731a6d53ce28190db6d2731754713008ffdf4d8c56",
+      "integrated": "91a8f8a7af2afd7479202417329da9940a9c9abe6db22edac1b7fe6f0b74e9ed"
+    },
+    "ex-main-0637-a": {
+      "raw": "f04e170377c38f40bcdc0d6666f0366e53d6cb4489178a4a2851cd6596657214",
+      "authored": "3e807684ea2e2f3877cd146189ba878e943cd666a5c85354f7293b937ea982ff",
+      "integrated": "5c1fd6b49d71ccacd0fb62f3a3fd3ad9951e7fbbab4388644c60839c390bfa20"
+    },
+    "ex-main-0637-b": {
+      "raw": "d11bbd991adadc777e3b51285b4d4d1582b4eec112ef90c4dd2c585020847070",
+      "authored": "fcc9c2271d306d21e3ea0c38ffc1708d23f60e968b6db36083378cd53dc98ee2",
+      "integrated": "4f4dd922d2379e25940b7657ed36a7227e0b9aa4ef77cf734659659eec7e2afa"
+    },
+    "ex-main-0637-c": {
+      "raw": "7a1e0721ce19369e6e5c7d6b9d0db118dc86d68113e354f1728956e063bfd860",
+      "authored": "63d675ca25d5efd04360aeee73ff5eef25e3bbaa7a17d1221cd94b3ae33199f6",
+      "integrated": "6e0b70d8af082bff2c86383efed8f85615bfb734d84974b3580e743d7308b20e"
+    },
+    "ex-main-0637-d": {
+      "raw": "1f447bf336a199d5a9a49cb0a78ca270af62be5baa83cdb368974c97448a8d42",
+      "authored": "9483cbb34e3771334634b0a04bdd67d214f27064f7cad18006ebbf920743460a",
+      "integrated": "7df32bf15f70c3556243bd76013c134a099c8cd8afa1a00616387713bf198ead"
+    },
+    "ex-main-0637-e": {
+      "raw": "615c72a17a4f25d62c189531dd5caab68d26ab858e35d900c3935ae4bf911406",
+      "authored": "feed6f1d4f052d1b34cad154be6ba35c49ad886dde9756fee0c20ba4b6b6c362",
+      "integrated": "d8b48e0a766d61e0e2a4a29fe36a9341eaa2eddc8fb6f3fa2ddf872ea832ea9f"
+    },
+    "ex-main-0637-f": {
+      "raw": "bc51c89dc70aef4cbd7837fbf2e761f00f3925f0c7d9d7d44fdbd42bdad29579",
+      "authored": "8364448f8550c7079c32886de86fd4742c942a64f6b6a6135efcf8c13126f9aa",
+      "integrated": "7bf6410d5832b55043699d32ba6bb8f5ccd6571de5040f4be78912d901a1143f"
+    },
+    "ex-main-0638-a": {
+      "raw": "c974e1c5c2e39e0dad3ca19638c1d628c568d30ed64f513c4e5d00f73097ae5d",
+      "authored": "da1ec3a629c57b95b612ae91fcc32a865581c422e060db5031bf2fe01c377e1a",
+      "integrated": "2ed9139c1bb67f1f96c4a3b3e5e50865c0145e55d4ad81550a4bb2479bdd0029"
+    },
+    "ex-main-0638-b": {
+      "raw": "4ea412b6470a1bbbf33a84e76eb877355263fea4de80543a4c7a2a7aa3a05983",
+      "authored": "5cd1268a7e3d42d1b83983e62defe5d3b7c37f82001f1d402338a27920e3a60e",
+      "integrated": "4ada77eca07f1d8d5c3cf4293382aad5fa710e353a035f85548bea83aba9cda4"
+    },
+    "ex-main-0639": {
+      "raw": "28f3bdc1337f9d8a792a0cfdf10a6dd8b7fd0dc1e785e724fe75835fe10ab29c",
+      "authored": "ca4ad2ff4d5f9d81b066d5e34aa8b92bc3262e0b3c2fb0f976b250c589c82c6a",
+      "integrated": "96a0602f6440da8f0c7c60a1940cb776be30dfb32cb6da78c72e5cdd0e1d85a4"
+    }
+  },
+  "cases": [
+    [
+      "theory-071|condition",
+      "cartesian-coordinate-start-theory-071-condition"
+    ],
+    [
+      "theory-071|help:h1",
+      "cartesian-coordinate-start-theory-071-help-h1"
+    ],
+    [
+      "theory-071|help:h2",
+      "cartesian-coordinate-start-theory-071-help-h2"
+    ],
+    [
+      "theory-071|step-1",
+      "cartesian-coordinate-start-theory-071-step-1"
+    ],
+    [
+      "theory-071|step-2",
+      "cartesian-coordinate-start-theory-071-step-2"
+    ],
+    [
+      "theory-071|step-3",
+      "cartesian-coordinate-start-theory-071-step-3"
+    ],
+    [
+      "theory-072|condition",
+      "cartesian-coordinate-start-theory-072-condition"
+    ],
+    [
+      "theory-072|help:h1",
+      "cartesian-coordinate-start-theory-072-help-h1"
+    ],
+    [
+      "theory-072|help:h2",
+      "cartesian-coordinate-start-theory-072-help-h2"
+    ],
+    [
+      "theory-072|step-1",
+      "cartesian-coordinate-start-theory-072-step-1"
+    ],
+    [
+      "theory-072|step-2",
+      "cartesian-coordinate-start-theory-072-step-2"
+    ],
+    [
+      "theory-072|step-3",
+      "cartesian-coordinate-start-theory-072-step-3"
+    ],
+    [
+      "theory-073|condition",
+      "cartesian-coordinate-start-theory-073-condition"
+    ],
+    [
+      "theory-073|help:h1",
+      "cartesian-coordinate-start-theory-073-help-h1"
+    ],
+    [
+      "theory-073|help:h2",
+      "cartesian-coordinate-start-theory-073-help-h2"
+    ],
+    [
+      "theory-073|step-1",
+      "cartesian-coordinate-start-theory-073-step-1"
+    ],
+    [
+      "theory-073|step-2",
+      "cartesian-coordinate-start-theory-073-step-2"
+    ],
+    [
+      "theory-073|step-3",
+      "cartesian-coordinate-start-theory-073-step-3"
+    ],
+    [
+      "theory-074|condition",
+      "cartesian-coordinate-start-theory-074-condition"
+    ],
+    [
+      "theory-074|help:h1",
+      "cartesian-coordinate-start-theory-074-help-h1"
+    ],
+    [
+      "theory-074|help:h2",
+      "cartesian-coordinate-start-theory-074-help-h2"
+    ],
+    [
+      "theory-074|step-1",
+      "cartesian-coordinate-start-theory-074-step-1"
+    ],
+    [
+      "theory-074|step-2",
+      "cartesian-coordinate-start-theory-074-step-2"
+    ],
+    [
+      "theory-074|step-3",
+      "cartesian-coordinate-start-theory-074-step-3"
+    ],
+    [
+      "theory-075|condition",
+      "cartesian-coordinate-start-theory-075-condition"
+    ],
+    [
+      "theory-075|help:h1",
+      "cartesian-coordinate-start-theory-075-help-h1"
+    ],
+    [
+      "theory-075|help:h2",
+      "cartesian-coordinate-start-theory-075-help-h2"
+    ],
+    [
+      "theory-075|step-1",
+      "cartesian-coordinate-start-theory-075-step-1"
+    ],
+    [
+      "theory-075|step-2",
+      "cartesian-coordinate-start-theory-075-step-2"
+    ],
+    [
+      "theory-075|step-3",
+      "cartesian-coordinate-start-theory-075-step-3"
+    ],
+    [
+      "ex-main-0637-a|condition",
+      "cartesian-coordinate-start-ex-main-0637-a-condition"
+    ],
+    [
+      "ex-main-0637-a|help:h1",
+      "cartesian-coordinate-start-ex-main-0637-a-help-h1"
+    ],
+    [
+      "ex-main-0637-a|help:h2",
+      "cartesian-coordinate-start-ex-main-0637-a-help-h2"
+    ],
+    [
+      "ex-main-0637-a|step-1",
+      "cartesian-coordinate-start-ex-main-0637-a-step-1"
+    ],
+    [
+      "ex-main-0637-a|step-2",
+      "cartesian-coordinate-start-ex-main-0637-a-step-2"
+    ],
+    [
+      "ex-main-0637-a|step-3",
+      "cartesian-coordinate-start-ex-main-0637-a-step-3"
+    ],
+    [
+      "ex-main-0637-b|condition",
+      "cartesian-coordinate-start-ex-main-0637-b-condition"
+    ],
+    [
+      "ex-main-0637-b|help:h1",
+      "cartesian-coordinate-start-ex-main-0637-b-help-h1"
+    ],
+    [
+      "ex-main-0637-b|help:h2",
+      "cartesian-coordinate-start-ex-main-0637-b-help-h2"
+    ],
+    [
+      "ex-main-0637-b|step-1",
+      "cartesian-coordinate-start-ex-main-0637-b-step-1"
+    ],
+    [
+      "ex-main-0637-b|step-2",
+      "cartesian-coordinate-start-ex-main-0637-b-step-2"
+    ],
+    [
+      "ex-main-0637-b|step-3",
+      "cartesian-coordinate-start-ex-main-0637-b-step-3"
+    ],
+    [
+      "ex-main-0637-c|condition",
+      "cartesian-coordinate-start-ex-main-0637-c-condition"
+    ],
+    [
+      "ex-main-0637-c|help:h1",
+      "cartesian-coordinate-start-ex-main-0637-c-help-h1"
+    ],
+    [
+      "ex-main-0637-c|help:h2",
+      "cartesian-coordinate-start-ex-main-0637-c-help-h2"
+    ],
+    [
+      "ex-main-0637-c|step-1",
+      "cartesian-coordinate-start-ex-main-0637-c-step-1"
+    ],
+    [
+      "ex-main-0637-c|step-2",
+      "cartesian-coordinate-start-ex-main-0637-c-step-2"
+    ],
+    [
+      "ex-main-0637-c|step-3",
+      "cartesian-coordinate-start-ex-main-0637-c-step-3"
+    ],
+    [
+      "ex-main-0637-d|condition",
+      "cartesian-coordinate-start-ex-main-0637-d-condition"
+    ],
+    [
+      "ex-main-0637-d|help:h1",
+      "cartesian-coordinate-start-ex-main-0637-d-help-h1"
+    ],
+    [
+      "ex-main-0637-d|help:h2",
+      "cartesian-coordinate-start-ex-main-0637-d-help-h2"
+    ],
+    [
+      "ex-main-0637-d|step-1",
+      "cartesian-coordinate-start-ex-main-0637-d-step-1"
+    ],
+    [
+      "ex-main-0637-d|step-2",
+      "cartesian-coordinate-start-ex-main-0637-d-step-2"
+    ],
+    [
+      "ex-main-0637-d|step-3",
+      "cartesian-coordinate-start-ex-main-0637-d-step-3"
+    ],
+    [
+      "ex-main-0637-e|condition",
+      "cartesian-coordinate-start-ex-main-0637-e-condition"
+    ],
+    [
+      "ex-main-0637-e|help:h1",
+      "cartesian-coordinate-start-ex-main-0637-e-help-h1"
+    ],
+    [
+      "ex-main-0637-e|help:h2",
+      "cartesian-coordinate-start-ex-main-0637-e-help-h2"
+    ],
+    [
+      "ex-main-0637-e|step-1",
+      "cartesian-coordinate-start-ex-main-0637-e-step-1"
+    ],
+    [
+      "ex-main-0637-e|step-2",
+      "cartesian-coordinate-start-ex-main-0637-e-step-2"
+    ],
+    [
+      "ex-main-0637-e|step-3",
+      "cartesian-coordinate-start-ex-main-0637-e-step-3"
+    ],
+    [
+      "ex-main-0637-f|condition",
+      "cartesian-coordinate-start-ex-main-0637-f-condition"
+    ],
+    [
+      "ex-main-0637-f|help:h1",
+      "cartesian-coordinate-start-ex-main-0637-f-help-h1"
+    ],
+    [
+      "ex-main-0637-f|help:h2",
+      "cartesian-coordinate-start-ex-main-0637-f-help-h2"
+    ],
+    [
+      "ex-main-0637-f|step-1",
+      "cartesian-coordinate-start-ex-main-0637-f-step-1"
+    ],
+    [
+      "ex-main-0637-f|step-2",
+      "cartesian-coordinate-start-ex-main-0637-f-step-2"
+    ],
+    [
+      "ex-main-0637-f|step-3",
+      "cartesian-coordinate-start-ex-main-0637-f-step-3"
+    ],
+    [
+      "ex-main-0638-a|condition",
+      "cartesian-coordinate-start-ex-main-0638-a-condition"
+    ],
+    [
+      "ex-main-0638-a|help:h1",
+      "cartesian-coordinate-start-ex-main-0638-a-help-h1"
+    ],
+    [
+      "ex-main-0638-a|help:h2",
+      "cartesian-coordinate-start-ex-main-0638-a-help-h2"
+    ],
+    [
+      "ex-main-0638-a|step-1",
+      "cartesian-coordinate-start-ex-main-0638-a-step-1"
+    ],
+    [
+      "ex-main-0638-a|step-2",
+      "cartesian-coordinate-start-ex-main-0638-a-step-2"
+    ],
+    [
+      "ex-main-0638-a|step-3",
+      "cartesian-coordinate-start-ex-main-0638-a-step-3"
+    ],
+    [
+      "ex-main-0638-a|step-4",
+      "cartesian-coordinate-start-ex-main-0638-a-step-4"
+    ],
+    [
+      "ex-main-0638-a|step-5",
+      "cartesian-coordinate-start-ex-main-0638-a-step-5"
+    ],
+    [
+      "ex-main-0638-a|step-6",
+      "cartesian-coordinate-start-ex-main-0638-a-step-6"
+    ],
+    [
+      "ex-main-0638-a|step-7",
+      "cartesian-coordinate-start-ex-main-0638-a-step-7"
+    ],
+    [
+      "ex-main-0638-a|step-8",
+      "cartesian-coordinate-start-ex-main-0638-a-step-8"
+    ],
+    [
+      "ex-main-0638-a|step-9",
+      "cartesian-coordinate-start-ex-main-0638-a-step-9"
+    ],
+    [
+      "ex-main-0638-b|condition",
+      "cartesian-coordinate-start-ex-main-0638-b-condition"
+    ],
+    [
+      "ex-main-0638-b|help:h1",
+      "cartesian-coordinate-start-ex-main-0638-b-help-h1"
+    ],
+    [
+      "ex-main-0638-b|help:h2",
+      "cartesian-coordinate-start-ex-main-0638-b-help-h2"
+    ],
+    [
+      "ex-main-0638-b|step-1",
+      "cartesian-coordinate-start-ex-main-0638-b-step-1"
+    ],
+    [
+      "ex-main-0638-b|step-2",
+      "cartesian-coordinate-start-ex-main-0638-b-step-2"
+    ],
+    [
+      "ex-main-0638-b|step-3",
+      "cartesian-coordinate-start-ex-main-0638-b-step-3"
+    ],
+    [
+      "ex-main-0638-b|step-4",
+      "cartesian-coordinate-start-ex-main-0638-b-step-4"
+    ],
+    [
+      "ex-main-0638-b|step-5",
+      "cartesian-coordinate-start-ex-main-0638-b-step-5"
+    ],
+    [
+      "ex-main-0638-b|step-6",
+      "cartesian-coordinate-start-ex-main-0638-b-step-6"
+    ],
+    [
+      "ex-main-0638-b|step-7",
+      "cartesian-coordinate-start-ex-main-0638-b-step-7"
+    ],
+    [
+      "ex-main-0638-b|step-8",
+      "cartesian-coordinate-start-ex-main-0638-b-step-8"
+    ],
+    [
+      "ex-main-0638-b|step-9",
+      "cartesian-coordinate-start-ex-main-0638-b-step-9"
+    ],
+    [
+      "ex-main-0639|condition",
+      "cartesian-coordinate-start-ex-main-0639-condition"
+    ],
+    [
+      "ex-main-0639|help:h1",
+      "cartesian-coordinate-start-ex-main-0639-help-h1"
+    ],
+    [
+      "ex-main-0639|help:h2",
+      "cartesian-coordinate-start-ex-main-0639-help-h2"
+    ],
+    [
+      "ex-main-0639|step-1",
+      "cartesian-coordinate-start-ex-main-0639-step-1"
+    ],
+    [
+      "ex-main-0639|step-2",
+      "cartesian-coordinate-start-ex-main-0639-step-2"
+    ],
+    [
+      "ex-main-0639|step-3",
+      "cartesian-coordinate-start-ex-main-0639-step-3"
+    ],
+    [
+      "ex-main-0639|step-4",
+      "cartesian-coordinate-start-ex-main-0639-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "cf8e20a744708f3d1d9b1fec725f377c3fe36808e3445cc1c32950be795aafa4",
+      "afterSHA256": "fffd539679b55d53a4624cca18e9024d39c7315b1f0ec76262f80c15422dcd61"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "42b2942af98d5d8b900e67e502de80f4af8545a20abc2038720c106c6f870d4e",
+      "afterSHA256": "5ac0c8230f5385eb21fe3fa0e95ca33d7de57c3dc3f2e0c8e05d11fe81668b58"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T21:59:56Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–636 and the full chapter VI self-check, with 1,098 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "1e7c7808ad41be79786eb254b379cf668aaa1eb6adbe5793b1c760a1b9861b8d",
+    "index": "c70db86e6391bfa8f7bd5b59942d0ef43e5e67dee1be86c9a70a94be1eb119ea",
+    "registry": "1f4665a8b347dd603d355203445850461a11b4dc321696f012e5fbb872ee9a3d",
+    "cases": "a249a995d1424f4577f7715c9056b5bef5286341ec4aa850f7b10f9ed874d39d"
+  }
+}

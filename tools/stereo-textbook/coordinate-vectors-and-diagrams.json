@@ -1,0 +1,604 @@
+{
+  "parts": {
+    "640": [
+      null
+    ],
+    "641": [
+      null
+    ],
+    "642": [
+      null
+    ],
+    "643": [
+      null
+    ],
+    "644": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж",
+      "з"
+    ],
+    "645": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "640": {
+      "id": "source-main-0640",
+      "kind": "exercise",
+      "title": "Задача № 640",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "640",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "641": {
+      "id": "source-main-0641",
+      "kind": "exercise",
+      "title": "Задача № 641",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "641",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "642": {
+      "id": "source-main-0642",
+      "kind": "exercise",
+      "title": "Задача № 642",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "642",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "643": {
+      "id": "source-main-0643",
+      "kind": "exercise",
+      "title": "Задача № 643",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "643",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "644": {
+      "id": "source-main-0644",
+      "kind": "exercise",
+      "title": "Задача № 644",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "644",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "645": {
+      "id": "source-main-0645",
+      "kind": "exercise",
+      "title": "Задача № 645",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "645",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0640": {
+      "raw": "13daa36cfaf35e0b6a9cd78bac17d42f56aa6ad4133a71f5e3b013bfd65914a4",
+      "authored": "121bda6153432885cb4593e80d717987a83fd15a4765bfdfd7f304f43754905b",
+      "integrated": "30eb744350c2c4ccec9372e550656191078addcbbb612d52a116fa27b6fc06d1"
+    },
+    "ex-main-0641": {
+      "raw": "870699c4aae4d9335806f78852d9d237bc084532c22f65435551468f48cfb227",
+      "authored": "b3574b4b23179c2ce4ded3d4b7f5113aa7e8c477d0a8c12e8d1f7a4080648e56",
+      "integrated": "a61e65e3c5e209c2108604521101500dea595bb3311936ceace899f15843f665"
+    },
+    "ex-main-0642": {
+      "raw": "7edb82e523160f2c81b0f33c8f5cc002d5fdfeac1402132b3830935e24e5d10b",
+      "authored": "dee44e7750fecbba4e2fad96a0340fb160a1a3291755587043281d0dd3853497",
+      "integrated": "a0c95fdcfbd8855a92ff2da874a79e6ea8a3cfd37eced937d4e9f1063bc4524a"
+    },
+    "ex-main-0643": {
+      "raw": "d3628056218f0eca172ad7016af7eaf0e5c6ebfc499efac844269a56d89bfa13",
+      "authored": "fbaee94c41671f8130ec6c988b669df169d27755c29a4dd87259453c3be7ef5e",
+      "integrated": "739bd4c79c10cb2b04a39eb9c47bc27abda1c8d332e7355c012952f2bc850faf"
+    },
+    "ex-main-0644-a": {
+      "raw": "76bf1407828eaebec7bd4161664765f9e438c07f42eca1e3969b423793d431dd",
+      "authored": "0982a17db5ce0e2140cbf3d035d9a1daee981030a0bb60187c4a37c875d20389",
+      "integrated": "1c96bba765d1c468a77ddeaf2c2eb8e46ff4b744583877c5bd3091b4f45623ba"
+    },
+    "ex-main-0644-b": {
+      "raw": "7f2143ab31e54abce94c4699190c7ad542d1e80f1a71c010629a5cf10ffa5b49",
+      "authored": "e4d749d5f041f19ab28bbceaee5d4fa021facdaeab6d9c679e2f37d8a8a19cb0",
+      "integrated": "ae6d4ac08489d6560162f9f00175d0b8a3c59ff72c3c461f83c2da8616a54bc8"
+    },
+    "ex-main-0644-c": {
+      "raw": "77922af898e0f14ce566678e83ad6a760a26e612f5122db97d0f15d43c722d62",
+      "authored": "70bab4f0008fb960a136bac0a9fc15c00c868a37eb726968a59481cd2af58e07",
+      "integrated": "b77b67c56a2b7cfac38f3a9de99d5bebebca1b9384e77d18143ef32068817b58"
+    },
+    "ex-main-0644-d": {
+      "raw": "77b55172aa7a6d0b0d3e4c37fa035c7cc1ac14f12e82d21840e8e0fecbfa630e",
+      "authored": "3794885cb13f78de8fdaeb316a02f3ddaf318b40c119bc5ab439c43a49df285a",
+      "integrated": "22931b977fd4dd18cc1aa479fe1494a82db0094714c3fa2b1e5b0bbe11264ea1"
+    },
+    "ex-main-0644-e": {
+      "raw": "9d2e570bd6873fa052b105b51a76fb71e8d3b68dbc2c2ed89724e1182005cb71",
+      "authored": "900b60bedfb93ca3b283a9284d44d0b3df9864efa72e2b993025b7d511c16e26",
+      "integrated": "2ff1027d5e105659c7aaf4a794ab24d965647b34a374515665e09d0ea2b82a85"
+    },
+    "ex-main-0644-f": {
+      "raw": "b5127333774691232ff15cf329d881631c038fb15ba726a9e3f6c03897adb70d",
+      "authored": "a3e6fe7b43ef756c476584cfc1eb66316c6466103eb2faaa4ea6745be994af83",
+      "integrated": "4076091b707db65f27814d3329f76a0a0b3b94fc006904cb5f2bd69d97c70b79"
+    },
+    "ex-main-0644-g": {
+      "raw": "351f7cd8f7e15c75381f95836aaf77f2fd5ac59f9f7a7cb92fa9916f15d89d54",
+      "authored": "8be8cb797f7536dbabddaccff8877368da105fceb391255bba919b6371ff2ac8",
+      "integrated": "6b36f981acfc6b7ca6ea2b7dcfd6c5f0b96fe020980e674f988b1829c545e838"
+    },
+    "ex-main-0644-h": {
+      "raw": "4d2f191add2687f7738a12b0d57e8c763b59b590e199cd8eb6737ae5084ad48c",
+      "authored": "02b06fb471481c2124222768573e34bb22b9fd1fdfa2bc99dbd76cacadc83fe7",
+      "integrated": "1a1253e1a4a84534e2b6c8846165618f5127362aeff0df2e936fd00154c2483a"
+    },
+    "ex-main-0645": {
+      "raw": "8c73ee7b9ebdd724d78c9908bb85229a11f41fbe7c94a710de41ac02de590f35",
+      "authored": "4f89aa7f7d672e66dc09e96cb8f8d1b4a88149c21e2d6504ead0f7c3925e3a53",
+      "integrated": "8666c120df2bae1c16673e33b03455e086adc168cfe44d053fa4d7f9af9c9af1"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0640|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0640-condition"
+    ],
+    [
+      "ex-main-0640|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0640-help-h1"
+    ],
+    [
+      "ex-main-0640|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0640-help-h2"
+    ],
+    [
+      "ex-main-0640|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0640-step-1"
+    ],
+    [
+      "ex-main-0640|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0640-step-2"
+    ],
+    [
+      "ex-main-0640|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0640-step-3"
+    ],
+    [
+      "ex-main-0640|step-4",
+      "coordinate-vectors-and-diagrams-ex-main-0640-step-4"
+    ],
+    [
+      "ex-main-0640|step-5",
+      "coordinate-vectors-and-diagrams-ex-main-0640-step-5"
+    ],
+    [
+      "ex-main-0640|step-6",
+      "coordinate-vectors-and-diagrams-ex-main-0640-step-6"
+    ],
+    [
+      "ex-main-0641|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0641-condition"
+    ],
+    [
+      "ex-main-0641|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0641-help-h1"
+    ],
+    [
+      "ex-main-0641|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0641-help-h2"
+    ],
+    [
+      "ex-main-0641|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0641-step-1"
+    ],
+    [
+      "ex-main-0641|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0641-step-2"
+    ],
+    [
+      "ex-main-0641|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0641-step-3"
+    ],
+    [
+      "ex-main-0641|step-4",
+      "coordinate-vectors-and-diagrams-ex-main-0641-step-4"
+    ],
+    [
+      "ex-main-0642|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0642-condition"
+    ],
+    [
+      "ex-main-0642|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0642-help-h1"
+    ],
+    [
+      "ex-main-0642|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0642-help-h2"
+    ],
+    [
+      "ex-main-0642|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0642-step-1"
+    ],
+    [
+      "ex-main-0642|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0642-step-2"
+    ],
+    [
+      "ex-main-0642|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0642-step-3"
+    ],
+    [
+      "ex-main-0642|step-4",
+      "coordinate-vectors-and-diagrams-ex-main-0642-step-4"
+    ],
+    [
+      "ex-main-0642|step-5",
+      "coordinate-vectors-and-diagrams-ex-main-0642-step-5"
+    ],
+    [
+      "ex-main-0642|step-6",
+      "coordinate-vectors-and-diagrams-ex-main-0642-step-6"
+    ],
+    [
+      "ex-main-0642|step-7",
+      "coordinate-vectors-and-diagrams-ex-main-0642-step-7"
+    ],
+    [
+      "ex-main-0642|step-8",
+      "coordinate-vectors-and-diagrams-ex-main-0642-step-8"
+    ],
+    [
+      "ex-main-0643|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0643-condition"
+    ],
+    [
+      "ex-main-0643|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0643-help-h1"
+    ],
+    [
+      "ex-main-0643|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0643-help-h2"
+    ],
+    [
+      "ex-main-0643|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0643-step-1"
+    ],
+    [
+      "ex-main-0643|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0643-step-2"
+    ],
+    [
+      "ex-main-0643|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0643-step-3"
+    ],
+    [
+      "ex-main-0644-a|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0644-a-condition"
+    ],
+    [
+      "ex-main-0644-a|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-a-help-h1"
+    ],
+    [
+      "ex-main-0644-a|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-a-help-h2"
+    ],
+    [
+      "ex-main-0644-a|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-a-step-1"
+    ],
+    [
+      "ex-main-0644-a|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-a-step-2"
+    ],
+    [
+      "ex-main-0644-a|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0644-a-step-3"
+    ],
+    [
+      "ex-main-0644-b|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0644-b-condition"
+    ],
+    [
+      "ex-main-0644-b|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-b-help-h1"
+    ],
+    [
+      "ex-main-0644-b|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-b-help-h2"
+    ],
+    [
+      "ex-main-0644-b|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-b-step-1"
+    ],
+    [
+      "ex-main-0644-b|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-b-step-2"
+    ],
+    [
+      "ex-main-0644-b|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0644-b-step-3"
+    ],
+    [
+      "ex-main-0644-c|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0644-c-condition"
+    ],
+    [
+      "ex-main-0644-c|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-c-help-h1"
+    ],
+    [
+      "ex-main-0644-c|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-c-help-h2"
+    ],
+    [
+      "ex-main-0644-c|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-c-step-1"
+    ],
+    [
+      "ex-main-0644-c|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-c-step-2"
+    ],
+    [
+      "ex-main-0644-c|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0644-c-step-3"
+    ],
+    [
+      "ex-main-0644-d|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0644-d-condition"
+    ],
+    [
+      "ex-main-0644-d|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-d-help-h1"
+    ],
+    [
+      "ex-main-0644-d|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-d-help-h2"
+    ],
+    [
+      "ex-main-0644-d|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-d-step-1"
+    ],
+    [
+      "ex-main-0644-d|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-d-step-2"
+    ],
+    [
+      "ex-main-0644-d|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0644-d-step-3"
+    ],
+    [
+      "ex-main-0644-e|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0644-e-condition"
+    ],
+    [
+      "ex-main-0644-e|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-e-help-h1"
+    ],
+    [
+      "ex-main-0644-e|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-e-help-h2"
+    ],
+    [
+      "ex-main-0644-e|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-e-step-1"
+    ],
+    [
+      "ex-main-0644-e|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-e-step-2"
+    ],
+    [
+      "ex-main-0644-e|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0644-e-step-3"
+    ],
+    [
+      "ex-main-0644-f|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0644-f-condition"
+    ],
+    [
+      "ex-main-0644-f|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-f-help-h1"
+    ],
+    [
+      "ex-main-0644-f|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-f-help-h2"
+    ],
+    [
+      "ex-main-0644-f|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-f-step-1"
+    ],
+    [
+      "ex-main-0644-f|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-f-step-2"
+    ],
+    [
+      "ex-main-0644-f|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0644-f-step-3"
+    ],
+    [
+      "ex-main-0644-g|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0644-g-condition"
+    ],
+    [
+      "ex-main-0644-g|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-g-help-h1"
+    ],
+    [
+      "ex-main-0644-g|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-g-help-h2"
+    ],
+    [
+      "ex-main-0644-g|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-g-step-1"
+    ],
+    [
+      "ex-main-0644-g|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-g-step-2"
+    ],
+    [
+      "ex-main-0644-g|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0644-g-step-3"
+    ],
+    [
+      "ex-main-0644-h|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0644-h-condition"
+    ],
+    [
+      "ex-main-0644-h|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-h-help-h1"
+    ],
+    [
+      "ex-main-0644-h|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-h-help-h2"
+    ],
+    [
+      "ex-main-0644-h|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0644-h-step-1"
+    ],
+    [
+      "ex-main-0644-h|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0644-h-step-2"
+    ],
+    [
+      "ex-main-0644-h|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0644-h-step-3"
+    ],
+    [
+      "ex-main-0645|condition",
+      "coordinate-vectors-and-diagrams-ex-main-0645-condition"
+    ],
+    [
+      "ex-main-0645|help:h1",
+      "coordinate-vectors-and-diagrams-ex-main-0645-help-h1"
+    ],
+    [
+      "ex-main-0645|help:h2",
+      "coordinate-vectors-and-diagrams-ex-main-0645-help-h2"
+    ],
+    [
+      "ex-main-0645|step-1",
+      "coordinate-vectors-and-diagrams-ex-main-0645-step-1"
+    ],
+    [
+      "ex-main-0645|step-2",
+      "coordinate-vectors-and-diagrams-ex-main-0645-step-2"
+    ],
+    [
+      "ex-main-0645|step-3",
+      "coordinate-vectors-and-diagrams-ex-main-0645-step-3"
+    ],
+    [
+      "ex-main-0645|step-4",
+      "coordinate-vectors-and-diagrams-ex-main-0645-step-4"
+    ],
+    [
+      "ex-main-0645|step-5",
+      "coordinate-vectors-and-diagrams-ex-main-0645-step-5"
+    ],
+    [
+      "ex-main-0645|step-6",
+      "coordinate-vectors-and-diagrams-ex-main-0645-step-6"
+    ],
+    [
+      "ex-main-0645|step-7",
+      "coordinate-vectors-and-diagrams-ex-main-0645-step-7"
+    ],
+    [
+      "ex-main-0645|step-8",
+      "coordinate-vectors-and-diagrams-ex-main-0645-step-8"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "fffd539679b55d53a4624cca18e9024d39c7315b1f0ec76262f80c15422dcd61",
+      "afterSHA256": "ee734b239d978d3da0c334556eddb8bcda4f00b7a57728eacf8286d6ee42146d"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "5ac0c8230f5385eb21fe3fa0e95ca33d7de57c3dc3f2e0c8e05d11fe81668b58",
+      "afterSHA256": "04e9ac3191bf168a947092e65ee6d75945daa8ed50d3e56c551dc3ea3ea19163"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T22:11:08Z",
+    "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–639, with 1,112 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "4e24779417cff4c1b84762990437e182b499307774e2fc53fb258c43169296cc",
+    "index": "11fbf6fbbc06230c7af9e3517979fdd92b71c070967de58f3fad96acbbf5444f",
+    "registry": "58ad55981c545e719b3b304b015e95b723602988d111881dc8360d5ff7d425e5",
+    "cases": "450e86f879cc0aa37687d293801151c03d6b863392f9f4e57f85b36199e24d4f"
+  }
+}

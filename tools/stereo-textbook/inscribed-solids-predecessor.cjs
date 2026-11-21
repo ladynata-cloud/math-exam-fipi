@@ -2,7 +2,18 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const vectorChapterSelfcheck = makeReviewedIncrement(require('./vector-chapter-selfcheck.json'), closedSections);
+const coordinateSpheresSectionEnd = makeReviewedIncrement(require('./coordinate-spheres-section-end.json'), closedSections);
+const spatialDistancesAndEqualLoci = makeReviewedIncrement(require('./spatial-distances-and-equal-loci.json'), coordinateSpheresSectionEnd);
+const midpointsAndVectorLengths = makeReviewedIncrement(require('./midpoints-and-vector-lengths.json'), spatialDistancesAndEqualLoci);
+const spatialPointsAndCentroid = makeReviewedIncrement(require('./spatial-points-and-centroid.json'), midpointsAndVectorLengths);
+const coordinateSpanRatios = makeReviewedIncrement(require('./coordinate-span-ratios.json'), spatialPointsAndCentroid);
+const signedCoordinateArithmetic = makeReviewedIncrement(require('./signed-coordinate-arithmetic.json'), coordinateSpanRatios);
+const coordinateVectorsAndDiagrams = makeReviewedIncrement(require('./coordinate-vectors-and-diagrams.json'), signedCoordinateArithmetic);
+const cartesianCoordinateStart = makeReviewedIncrement(require('./cartesian-coordinate-start.json'), coordinateVectorsAndDiagrams);
+const vectorChapterSixEnd = makeReviewedIncrement(require('./vector-chapter-six-end.json'), cartesianCoordinateStart);
+const vectorSpanAndBarycentres = makeReviewedIncrement(require('./vector-span-and-barycentres.json'), vectorChapterSixEnd);
+const additionalDirectedEdgeSums = makeReviewedIncrement(require('./additional-directed-edge-sums.json'), vectorSpanAndBarycentres);
+const vectorChapterSelfcheck = makeReviewedIncrement(require('./vector-chapter-selfcheck.json'), additionalDirectedEdgeSums);
 const heightAndMidpointProofs = makeReviewedIncrement(require('./height-and-midpoint-proofs.json'), vectorChapterSelfcheck);
 const centroidsInTetrahedra = makeReviewedIncrement(require('./centroids-in-tetrahedra.json'), heightAndMidpointProofs);
 const fieldsAndMidpointVectors = makeReviewedIncrement(require('./fields-and-midpoint-vectors.json'), centroidsInTetrahedra);

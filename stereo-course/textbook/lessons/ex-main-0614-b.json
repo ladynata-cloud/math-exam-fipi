@@ -1,0 +1,405 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0614-b",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Разность рёбер и противоположная вершина",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "614",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      157
+    ],
+    "pdfPages": [
+      159
+    ],
+    "subpart": "б"
+  },
+  "statement": {
+    "text": "В правильном октаэдре с вершинами A,F сверху и снизу и поясом BCDE докажи AC−CF=EC.",
+    "goal": "Используй центр O и противоположные вершины."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Вершины отмечены как на рисунке 173. O — центр. AC−CF=EC.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0,
+          2
+        ],
+        "F": [
+          0,
+          0,
+          -2
+        ],
+        "B": [
+          -2,
+          0,
+          0
+        ],
+        "D": [
+          2,
+          0,
+          0
+        ],
+        "C": [
+          0,
+          2,
+          0
+        ],
+        "E": [
+          0,
+          -2,
+          0
+        ],
+        "O": [
+          0,
+          0,
+          0
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "A",
+          "D"
+        ],
+        [
+          "A",
+          "E"
+        ],
+        [
+          "F",
+          "B"
+        ],
+        [
+          "F",
+          "C"
+        ],
+        [
+          "F",
+          "D"
+        ],
+        [
+          "F",
+          "E"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "E"
+        ],
+        [
+          "E",
+          "B"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "C",
+          "D"
+        ],
+        [
+          "A",
+          "D",
+          "E"
+        ],
+        [
+          "A",
+          "E",
+          "B"
+        ],
+        [
+          "F",
+          "C",
+          "B"
+        ],
+        [
+          "F",
+          "D",
+          "C"
+        ],
+        [
+          "F",
+          "E",
+          "D"
+        ],
+        [
+          "F",
+          "B",
+          "E"
+        ]
+      ],
+      "arrows": [
+        [
+          "A",
+          "C"
+        ],
+        [
+          "C",
+          "F"
+        ],
+        [
+          "E",
+          "C"
+        ],
+        [
+          "F",
+          "C"
+        ],
+        [
+          "O",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "C",
+          "E"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "F",
+        "B",
+        "D",
+        "C",
+        "E",
+        "O"
+      ],
+      "views": {
+        "neutral": {
+          "label": "Вершины отмечены как на рисунке 173. O — центр. AC−CF=EC.",
+          "segments": [
+            [
+              "A",
+              "C"
+            ],
+            [
+              "C",
+              "F"
+            ],
+            [
+              "E",
+              "C"
+            ]
+          ]
+        },
+        "opposites": {
+          "label": "Три пары противоположных вершин: A и F, B и D, C и E.",
+          "segments": [
+            [
+              "A",
+              "O"
+            ],
+            [
+              "O",
+              "F"
+            ],
+            [
+              "B",
+              "O"
+            ],
+            [
+              "O",
+              "D"
+            ],
+            [
+              "C",
+              "O"
+            ],
+            [
+              "O",
+              "E"
+            ]
+          ]
+        },
+        "sum": {
+          "label": "Замени −CF на FC. В сумме AC+FC остаются два OC, а EC=2OC.",
+          "segments": [
+            [
+              "A",
+              "C"
+            ],
+            [
+              "F",
+              "C"
+            ],
+            [
+              "O",
+              "C"
+            ]
+          ]
+        },
+        "transfer": {
+          "label": "Сравни направление результата с противоположным диаметром.",
+          "segments": [
+            [
+              "C",
+              "A"
+            ],
+            [
+              "C",
+              "F"
+            ],
+            [
+              "C",
+              "E"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Что даёт центральная симметрия?",
+      "text": "Из O к противоположным вершинам идут векторы одной длины с обратными направлениями.",
+      "view": "opposites"
+    },
+    {
+      "id": "h2",
+      "question": "Где удобнее сложить слагаемые?",
+      "text": "Замени −CF на FC. В сумме AC+FC остаются два OC, а EC=2OC.",
+      "view": "sum"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Обращение вычитаемого",
+      "prompt": "Запиши −CF как вектор по концам.",
+      "input": {
+        "prompt": "Обращение вычитаемого",
+        "accepted": [
+          "FC",
+          "FС",
+          "ФC",
+          "ФС"
+        ],
+        "feedback": "Обращение меняет порядок букв."
+      },
+      "explanation": "Замени −CF на FC. В сумме AC+FC остаются два OC, а EC=2OC.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Радиус-векторы противоположных вершин из центра дают нулевую сумму.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "opposites"
+    },
+    {
+      "id": "step-2",
+      "title": "Коэффициент при OC",
+      "prompt": "Сколько OC образуют AC+FC?",
+      "input": {
+        "prompt": "Коэффициент при OC",
+        "accepted": [
+          "2"
+        ],
+        "feedback": "Вклад вертикальных OA и OF сокращается."
+      },
+      "explanation": "Замени −CF на FC. В сумме AC+FC остаются два OC, а EC=2OC.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Радиус-векторы противоположных вершин из центра дают нулевую сумму.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "sum"
+    },
+    {
+      "id": "step-3",
+      "title": "Искомый диаметр",
+      "prompt": "Назови из E вектор, равный AC−CF.",
+      "input": {
+        "prompt": "Искомый диаметр",
+        "accepted": [
+          "EC",
+          "EС",
+          "ЕC",
+          "ЕС"
+        ],
+        "feedback": "Из E через центр идём к C."
+      },
+      "explanation": "Замени −CF на FC. В сумме AC+FC остаются два OC, а EC=2OC.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Радиус-векторы противоположных вершин из центра дают нулевую сумму.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "sum"
+    },
+    {
+      "id": "step-4",
+      "title": "Новые направления",
+      "prompt": "В новом выражении обращены обе стрелки: чему равен коэффициент CA+CF при CE?",
+      "input": {
+        "prompt": "Новые направления",
+        "accepted": [
+          "1"
+        ],
+        "feedback": "При обращении каждой стрелки вся сумма меняет знак; проверь также заданный диаметр."
+      },
+      "explanation": "Коэффициент в новом выражении равен 1.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Обращение любого вектора умножает его на −1.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "transfer"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "EC",
+      "EС",
+      "ЕC",
+      "ЕС"
+    ],
+    "prompt": "Назови из E вектор, равный AC−CF.",
+    "feedback": "Замени −CF на FC. В сумме AC+FC остаются два OC, а EC=2OC."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 157, printed page 157, figure 173 for exercise 614, key 269 where supplied; independent directed edge sums and original polyhedral models.",
+    "at": "2026-11-21T21:42:14Z"
+  }
+}
