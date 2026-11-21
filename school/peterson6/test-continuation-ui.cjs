@@ -3,14 +3,14 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {test}=require('node:test'),{JSDOM}=require('jsdom');
 const KEY='mathexam.peterson6.part1.v1',copy=v=>JSON.parse(JSON.stringify(v));
-function fixture(saved,help){
+function fixture(saved,help,realCourse=false){
  const errors=[],dom=new JSDOM(fs.readFileSync(path.join(__dirname,'index.html'),'utf8'),{url:'https://peterson.test/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window,d=w.document;
  w.scrollTo=()=>{};w.console.error=(...v)=>errors.push(v.join(' '));
  for(const f of ['math.js','continuation-models.js','models.js','data.js'])w.eval(fs.readFileSync(path.join(__dirname,f),'utf8'));
  // Isolated authored fixture exercises the public continuation contract while real content is verified in test-ui.
  const task={id:'p15-ui-manual',kind:'manual',title:'Построение',prompt:'Объясни, почему a/b = (3 · 2)/(4 · 2).',answer:'',finalLabel:'Запиши объяснение равенства.',skills:['fraction-multiply'],hint:'Вспомни основное свойство дроби.',steps:[{kind:'number',prompt:'Сколько будет 3 · 2?',answer:'6'},{kind:'instruction',prompt:'Запиши равенство отношений.'},{kind:'instruction',prompt:'Объясни, почему знаменатель не равен нулю.'}],source:{type:'textbook',part:2,number:'1',page:3,reference:'№ 1'},figure:{type:'line',min:-3,max:3,points:[{name:'A',x:1}],caption:'Исходный чертёж'}};
  const lesson={id:'p15',part:2,order:15,title:'Тест продолжения',chapter:'Отношения',page:3,sourceRange:'1–2',model:'continuation',theory:[{title:'Правило',text:'a/b = (a · 2)/(b · 2)'}],skills:['fraction-multiply'],tasks:[task,{...copy(task),id:'p15-ui-second'}]};
- w.PetersonCourse.lessons=w.PetersonCourse.lessons.filter(l=>l.id!=='p15').concat(lesson);
+ if(!realCourse)w.PetersonCourse.lessons=w.PetersonCourse.lessons.filter(l=>l.id!=='p15').concat(lesson);
  if(saved)w.localStorage.setItem(KEY,JSON.stringify(saved));if(help)w.localStorage.setItem(KEY+'.help',JSON.stringify(help));
  w.eval(fs.readFileSync(path.join(__dirname,'app.js'),'utf8'));
  const q=s=>{const n=d.querySelector(s);assert(n,'Missing '+s);return n;},state=()=>copy(w.PetersonApp.getState());
@@ -22,6 +22,86 @@ function fixture(saved,help){
  async function importData(data){nav('#progress');await q('#import-file').onchange({target:{files:[{size:JSON.stringify(data).length,text:async()=>JSON.stringify(data)}]}});}
  return {w,d,q,state,nav,event,click,submit,settle,close,importData};
 }
+
+test('source ratios and brackets diagnose the entered error and restore the work',async()=>{
+ const f=fixture(null,null,true);
+ try {
+  const numeric=(route,value,expected)=>{
+   f.nav(route); f.event('#final-answer',value); f.submit('#answer-form');
+   assert.match(f.q('.answer-form .feedback').textContent,expected);
+  };
+  numeric('#lesson/p15/0','2',/обратном порядке/);
+  assert.equal(f.state().tasks['p15-t01'].assisted,false);
+  assert.equal(f.state().tasks['p15-t01'].correct,false);
+  assert.equal(f.d.querySelectorAll('meter').length,0);
+  f.event('#final-answer','15/30');assert.equal(f.q('.answer-form .feedback').textContent,'');
+  f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/Значение верно.*общий делитель/);
+  f.event('#final-answer','1/2');f.submit('#answer-form');
+  assert.match(f.q('.task-heading').textContent,/Исправлено без подсказки/);
+  assert.equal(f.state().tasks['p15-t01'].independent,false);
+  numeric('#lesson/p15/1','7/3',/обратном порядке/);
+  numeric('#lesson/p15/2','0,8',/нашёл долю/);
+  numeric('#lesson/p15/4','250',/единицы/);
+  f.click('[data-action="hint"]');
+  assert.deepEqual([...f.d.querySelectorAll('.help meter')].map(m=>[m.value,m.max]),[[8,32],[32,32]]);
+  assert.equal(f.state().tasks['p15-t05'].assisted,true);
+  numeric('#lesson/p15/5','300',/и часы, и минуты/);
+  f.nav('#lesson/p15/3');f.click('[data-choice="1"]');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/порядок двух результатов/);
+  f.click('[data-choice="2"]');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/оба отношения/);
+  f.nav('#lesson/p33/0');f.click('[data-choice="2"]');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/второго слагаемого/);
+  f.click('[data-action="hint"]');assert.match(f.q('.help figure').textContent,/−1 × \(a\) и −1 × \(−b\)/);
+  f.click('[data-action="detour"][data-skill="bracket-evaluate"]');await f.settle();
+  assert.equal(f.w.location.hash,'#practice/bracket-evaluate/1');
+  const first=f.q('.prompt').textContent;f.click('[data-action="new"]');assert.notEqual(f.q('.prompt').textContent,first);
+  f.click('[data-action="return"]');await f.settle();
+  assert.equal(f.w.location.hash,'#lesson/p33/0');
+  assert.match(f.q('.answer-form .feedback').textContent,/второго слагаемого/);
+  f.click('[data-choice="0"]');f.submit('#answer-form');
+  f.click('[data-action="independent-check"]');await f.settle();
+  assert.equal(f.w.location.hash,'#check/bracket-evaluate/1');
+  assert.equal(f.d.querySelector('[data-action="hint"]'),null);
+  numeric('#lesson/p33/1','-19,73',/последнее слагаемое/);
+  numeric('#lesson/p33/1','5,17',/знак перед всеми скобками/);
+  f.nav('#lesson/p33/2');f.click('[data-choice="0"]');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/постоянную часть/);
+  numeric('#lesson/p33/3','-14',/постоянную часть/);
+  const restored=fixture(f.state(),null,true);
+  try {restored.nav('#lesson/p33/3');assert.match(restored.q('.answer-form .feedback').textContent,/постоянную часть/);}
+  finally {restored.close();}
+ } finally {f.close();}
+});
+
+test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
+ const f=fixture(null,null,true);
+ try {
+  for(const level of [1,2,3]) {
+   for(const skill of ['ratio','bracket-evaluate']) {
+    f.nav('#practice/'+skill+'/'+level);
+    for(let example=0;example<3;example++) {
+     const seed=f.state().practice[skill+':'+level].seed;
+     const t=f.w.PetersonMath.generate(skill,seed,level,2),{left,right,third}=t.calculation;
+     const [a,b,c]=[left,right,third].map(Number);
+     const wrong=skill==='ratio'?b+'/'+a:String(a-b-c);
+     if(!f.w.PetersonMath.equal(wrong,t.answer)){
+      f.event('#final-answer',wrong);f.submit('#answer-form');
+      assert.match(f.q('.answer-form .feedback').textContent,skill==='ratio'?/обратном порядке/:/скобками|слагаемое/);
+     }
+     f.click('[data-action="hint"]');
+     if(skill==='ratio')assert.deepEqual([...f.d.querySelectorAll('.help meter')].map(m=>m.value),[a,b]);
+     else assert.ok(f.q('.help figure').textContent.includes('−('+third+')'));
+     f.click('[data-action="new"]');
+    }
+   }
+  }
+  f.nav('#check/ratio/1');
+  f.event('#final-answer','12345');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/Пока не совпало/);
+  assert.equal(f.d.querySelector('.help figure'),null);
+ }finally{f.close();}
+});
 
 test('manual mixed steps, required figure, notes and explicit review survive reload without credit',()=>{
  const f=fixture();let saved;

@@ -474,6 +474,34 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await synchronized(teacherFrame, studentFrame, 'original participant follows teacher');
   assert.deepEqual(afterLate.view.model.piles, [5, 5, 5]);
 
+  phase = 'feedback for ratio order and distributed signs';
+  await lesson(teacherFrame, 'p15', 0);
+  await teacherFrame.locator('#final-answer').fill('2');
+  await teacherFrame.locator('#answer-form button[type="submit"]').click();
+  await synchronized(teacherFrame, studentFrame, 'reciprocal ratio diagnosed');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(), /обратном порядке/);
+  await ownership(teacher, student, true);
+  await studentFrame.locator('[data-action="hint"]').click();
+  await synchronized(studentFrame, teacherFrame, 'ratio model opened by pupil');
+  assert.deepEqual(await teacherFrame.locator('.help meter').evaluateAll(ms=>ms.map(m=>[m.value,m.max])), [[15,30],[30,30]]);
+  await narrowShot(teacher, teacherFrame, 'peterson-board-320-ratio-feedback', '.help figure');
+  await student.reload({waitUntil:'domcontentloaded'});
+  await waitConnected(student);
+  studentFrame=await courseFrame(student);
+  await synchronized(teacherFrame, studentFrame, 'ratio and draft restored after pupil reload');
+  assert.equal(await studentFrame.locator('#final-answer').inputValue(),'2');
+  assert.equal(await studentFrame.locator('.help meter').count(),2);
+  await ownership(teacher, student, false);
+  await lesson(teacherFrame, 'p33', 0);
+  await teacherFrame.locator('[data-choice="2"]').click();
+  await teacherFrame.locator('#answer-form button[type="submit"]').click();
+  await synchronized(teacherFrame, studentFrame, 'second term sign diagnosed');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(), /второго слагаемого/);
+  await teacherFrame.locator('[data-action="hint"]').click();
+  await synchronized(teacherFrame, studentFrame, 'each product shown to pupil');
+  assert.match(await studentFrame.locator('.help figure').innerText(), /−1 × \(a\) и −1 × \(−b\)/);
+  await narrowShot(teacher, teacherFrame, 'peterson-board-320-bracket-feedback', '.help figure');
+
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
   await teacherFrame.locator('#book-part').selectOption('2');
