@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "e9980808d28de5bcf6af3145fa442d3a3a34e2f8df0fb50ba4dd4572571eb0a5",
-      "afterSha256": "cfdf4db37607652db515995ec57c56bf9f5f2ad26a909cb8b80272f42e6714ad",
+      "beforeSha256": "25fe0faa37b1b6d7802f34214da53247f278af2d450c7ffb30cbd8f85ac77e92",
+      "afterSha256": "a02797dd9e5af15606cc8d2961b14f4e04f6b17db17172af77bd707f10eb9b49",
       "placement": "before-head-close",
-      "sourceSha": "efcdf5589786a8a4eb64ac4307c7ea2414893ee3"
+      "sourceSha": "57f08aa4568f97635b6e7da5c22fc31dd860098a"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6712,6 +6712,16 @@
         "school/index.html"
       ],
       "boundary": "Проверен общий вход в новые книги Мастерской и Виленкина. Два авторских опыта различают исправление прогноза и открытие полного объяснения."
+    },
+    {
+      "previousBaseSha": "efcdf5589786a8a4eb64ac4307c7ea2414893ee3",
+      "sourceBaseSha": "57f08aa4568f97635b6e7da5c22fc31dd860098a",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha for the combined Workshop and Vilenkin entry, numeric lessons and corrected forecast.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
