@@ -30,12 +30,13 @@
     return append(base, await fetchUnit(supplementUrl, fetchFile));
   }
 
-  async function forCourse(base) {
-    const units = [
+  const units = [
       ['/geometry-course/textbook/data/area-lessons.json', '№842–853'],
       ['/geometry-course/textbook/data/area-similarity-lessons.json', '№854–871'],
       ['/geometry-course/textbook/data/midpoint-lessons.json', '№872–899']
-    ];
+  ];
+
+  async function forCourse(base) {
     const results = await Promise.allSettled(units.map(([url]) => fetchUnit(url, root.fetch.bind(root))));
     let combined = base;
     for (const [i, result] of results.entries()) {
@@ -52,5 +53,7 @@
   }
 
   root.GeometryAdditionalLessons = { append, load, forCourse };
-  if (typeof module !== 'undefined' && module.exports) module.exports = {append, load};
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {append, load, unitFiles: units.map(([url]) => url)};
+  }
 })(typeof window === 'undefined' ? globalThis : window);
