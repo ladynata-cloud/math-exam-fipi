@@ -23,5 +23,5 @@
   }
   function example(caption, headers, rows, questions, chart) { return {caption, headers, rows, questions, chart}; }
   function task(prompt, answer, calculation, error) { return {prompt, answer, calculation, error}; }
-  window.TyurinStats = {lessons, add, choose, f, example, task};
+  window.MathExamTopicPractice = window.TyurinStats = {lessons, add, choose, f, example, task};
 })();

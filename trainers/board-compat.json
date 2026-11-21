@@ -1274,6 +1274,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общие условия, чертёж, введённые ответы, принятые шаги, подсказки и записи."
+    },
+    {
+      "trainerId": "merzlyak9-2014",
+      "file": "trainers/merzlyak9-2014/index.html",
+      "title": "Мерзляк · алгебра 9 · 2014 · все параграфы",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
     }
   ]
 }
