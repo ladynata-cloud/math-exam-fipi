@@ -1,0 +1,219 @@
+{
+  "sourceCommit": "1d6168b2ffbf6cefdb4d8cc87e323f2c0e8a4619",
+  "cards": {
+    "ex-main-0509": {
+      "restore": [
+        [
+          "lens",
+          65,
+          "_b0",
+          "_a64"
+        ],
+        [
+          "lens",
+          129,
+          "_b64",
+          "_a0"
+        ]
+      ],
+      "before": {
+        "raw": "adb0287d44195196f0527fa53943157dbe1a946b65bfbf9ed4797edde918dced",
+        "authored": "bd5e3fe8aaf01a5850bf58727daea4abf0b0339cb26c7e817c0ed1d75277eb1d",
+        "integrated": "919d67efece542d82b914a9162f2624b3d98415de84ad87f8caad83c29f4e650"
+      },
+      "after": {
+        "raw": "f8c67595e9246ba7763f8385c755e798ad1da2247af188134184d70827cd293c",
+        "authored": "a1ece7ed2da05c1438e0511bc4db476c9021134748e0deb59c08bf72ecad3590",
+        "integrated": "22f711b990398d27f3fad03ca8a9cb3c7b0a48afb2b860d101a3b6a05a7dc45b"
+      }
+    },
+    "ex-selfcheck-v-09-a": {
+      "restore": [
+        [
+          "second",
+          64,
+          "_b64",
+          "_b0"
+        ],
+        [
+          "first",
+          64,
+          "_a64",
+          "_a0"
+        ]
+      ],
+      "before": {
+        "raw": "7625e3cf0bf434f1d1fec70208f19f06aa1778eb6afc68a5c63e2e3b4d3de3d2",
+        "authored": "e64c0a3f82c12d24dd81ffb78792742c624420f8352e234f17ad3acd10c942cc",
+        "integrated": "1434825c419c42db7e108962de0135382d29942ec2273c539337f8ee529281b0"
+      },
+      "after": {
+        "raw": "4275afe9469042de9629a801a8e16547e892480fbf8c2ed2ccb294325b14eac5",
+        "authored": "30d2719c68d4313d24d059607f01c4e891a6f7953245b21a0c8b71d49fdf4c8d",
+        "integrated": "3adedb860b7470e6c24f0e52fb112a126b3fb44d38b88adc12e1c03a976737a4"
+      }
+    },
+    "ex-selfcheck-v-09-b": {
+      "restore": [
+        [
+          "second",
+          64,
+          "_b64",
+          "_b0"
+        ],
+        [
+          "first",
+          64,
+          "_a64",
+          "_a0"
+        ]
+      ],
+      "before": {
+        "raw": "614c9b3eabb4ee0e1674d80f04e9d7af5f7c086cbf92fb7ebb51f264cc942b91",
+        "authored": "254797f9404c1d39268bc02e8cbbee4227b77a3adbd5c4f5cb78dae2a40fe5c2",
+        "integrated": "e1836d8c4204e557f7eec6bd1f468d92667ab9817162848ae151859f70a61e2f"
+      },
+      "after": {
+        "raw": "cd4627077a658cc574aa6e91f8fe4a568dba8d83b56226d792688791d1e0eee2",
+        "authored": "085a1473fd83b9af4deb8805e6ee6f384dc207cf15a23293c986d95ee0d80025",
+        "integrated": "cc30c6a95895e17c7997bc79a44c0be102e4ca2b591c81b6b7364168c03d2a4a"
+      }
+    },
+    "ex-selfcheck-v-10": {
+      "restore": [
+        [
+          "second",
+          64,
+          "_b64",
+          "_b0"
+        ],
+        [
+          "first",
+          64,
+          "_a64",
+          "_a0"
+        ]
+      ],
+      "before": {
+        "raw": "a231a33c8073e0a40a1d595671f6ebe1d69b2f015b6ceb3847547988c5a31d27",
+        "authored": "0d36b04fa4049a6e22a9195469fd0241370110b9d5bf47e48f7b8f7cc874741e",
+        "integrated": "6dc1db46b4d79f2168e7db2840f438bb36c33e19d3cc4859b5430c375b9a0830"
+      },
+      "after": {
+        "raw": "819bb7548927df63637ef736bc04d862c1dfbac6864076bd2909b9b0ef8f81ce",
+        "authored": "acac4f1d35f52dee8307b82b1f9e8bcb82d12229c48d5c4d49e7bb31814ad158",
+        "integrated": "62a76c906099186a4cdc5cf81dcfe0fe8f90a9358e59b541a53c44adcf15fd95"
+      }
+    },
+    "ex-selfcheck-v-12-a": {
+      "restore": [
+        [
+          "second",
+          64,
+          "_b64",
+          "_b0"
+        ],
+        [
+          "first",
+          64,
+          "_a64",
+          "_a0"
+        ]
+      ],
+      "before": {
+        "raw": "39bd1e9955d2eb99b1607f53e924fe798145c56aeb6ce5355f9da557c8458fb0",
+        "authored": "eee30efc3393c306c73b17372b1633a7d83f0abc84ccbf2233ce7c21f934fc66",
+        "integrated": "f8312f18e47d991c5d6618e63c597cdc6a1f6f8da1e753e33ee88d58189f51a7"
+      },
+      "after": {
+        "raw": "bcc4f40240ef338382636f3f4a1a88ee3958cf9397813e9ced2c66d41cd0737b",
+        "authored": "1193eeb3866c03e7090b6cee2ccd935e6f5897b00755922cba40a74f0df6e8a7",
+        "integrated": "83699fd91fc075d5c9c5e7f210582170b7e366a7822903f11523476164418fa2"
+      }
+    },
+    "ex-selfcheck-v-12-b": {
+      "restore": [
+        [
+          "second",
+          64,
+          "_b64",
+          "_b0"
+        ],
+        [
+          "first",
+          64,
+          "_a64",
+          "_a0"
+        ]
+      ],
+      "before": {
+        "raw": "bddc67cebad730e6d30e3d831c5b7bcec0a19cfc22b077aa66a8a34231f0b727",
+        "authored": "38a37f8a81cf8d4d10e8bc3ca4a59b3798d2a38ac571c4c843540893ae37301c",
+        "integrated": "d1a8ed9b8e10c6db80bf2df85bb5750c1c10ea7a9f523b658d21e58f9109a174"
+      },
+      "after": {
+        "raw": "ff7c2e599cf248d9c6a21dca7bb5e05000e73d7569235183a3e4a2474f98aad0",
+        "authored": "98508492af680faad554b8d86179c74b595bb3386082481b15772035a0e1b2dc",
+        "integrated": "3c01684a5dab831705fb21cd924ae7380b2bffedf9a72f9a5ea5f6715c9f555d"
+      }
+    },
+    "ex-selfcheck-v-13": {
+      "restore": [
+        [
+          "second",
+          64,
+          "_b64",
+          "_b0"
+        ],
+        [
+          "first",
+          64,
+          "_a64",
+          "_a0"
+        ]
+      ],
+      "before": {
+        "raw": "7e6f97626223a5555b39cf87c183bdd3dc7d267ab2bead729bc95eb861d26c2f",
+        "authored": "ac95de078e8a59343f3e4d198ac446169a7d3f11b64ff3d7e761540cf64efd33",
+        "integrated": "70d3d2542873e244c111a646a5976cb127b43253d6171029d5b73665883012cc"
+      },
+      "after": {
+        "raw": "34c81c8665db3c1608f0e013518a30fbb7d4570403dbaac8e9fab24b7f34332a",
+        "authored": "83be648d1504eb1f5779e68d61807bb65d8c5318cfbcea6a1093d76dd467644f",
+        "integrated": "506a64097164a5205f140e91c6adf9e1efae7426d3c3e34494cb76f2fb77d734"
+      }
+    },
+    "ex-selfcheck-v-14": {
+      "restore": [
+        [
+          "second",
+          64,
+          "_b64",
+          "_b0"
+        ],
+        [
+          "first",
+          64,
+          "_a64",
+          "_a0"
+        ]
+      ],
+      "before": {
+        "raw": "2f6a63609b6bcb85c630c8bdaa56ecf91363c21a53ea756fc886cc618268dfc1",
+        "authored": "c45cacae81e8d5c14f2f6967a627c93fd7d06e5dd047f334b35a468865ccf2e6",
+        "integrated": "fccfc03220cc0554928e317b2025c9216e73cc2d2e1aca232f1f9bec038be3b6"
+      },
+      "after": {
+        "raw": "3240bb643fd2bcbe1a8a37a4f80ba66fde816f456ce9544a9cc396f80411a33e",
+        "authored": "e5886f116e958576c4fa38344d2988a821f33ae9a773574cf384d04f62f42081",
+        "integrated": "56cf9aa19c28b147852dd3709ae801aec3c4c99ba4e88340c3628efabb3daab8"
+      }
+    }
+  },
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "5da5586aa6a320cb57d6d7e614655b26b88146a8064ef3f1a4d10c5234309721",
+      "afterSHA256": "3e2209258a693e99fdd12cb39ffb998d2262c60fb94a159cbb86918543621e95"
+    }
+  }
+}
