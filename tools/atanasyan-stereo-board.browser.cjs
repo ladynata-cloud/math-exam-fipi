@@ -101,6 +101,29 @@ async function ready(host, id) {
     await right.locator('#find-number').press('Enter');
     await left.waitForFunction(() => document.querySelector('#card').value === 'ex-main-0017');
     await right.getByRole('button', {name:'Следующий шаг', exact:true}).click();
+    const sectionSelector = '[data-step-id="step-1"]';
+    const question = left.locator(sectionSelector);
+    await question.waitFor();
+    assert.equal(await question.locator('[aria-expanded]').getAttribute('aria-expanded'), 'false');
+    for (const frame of [left,right]) {
+      assert.equal(await frame.locator('#explanation-step-1').textContent(), '');
+      assert.equal(await frame.locator('#hint h3').count(), 0);
+      assert.equal(await frame.locator('[data-step-feedback="step-1"]').textContent(), '');
+      assert.equal(await frame.locator('#work').inputValue(), '');
+      assert.equal(await frame.locator('[data-final-feedback]').textContent(), '');
+    }
+    await right.getByRole('button', {name:'Подсказка', exact:true}).click();
+    await left.waitForFunction(() => document.querySelector('#hint h3'));
+    assert.equal(await left.locator('#explanation-step-1').textContent(), '');
+    await right.getByRole('button', {name:'Показать объяснение', exact:true}).click();
+    await left.waitForFunction(() => document.querySelector('#explanation-step-1 p') &&
+      document.querySelector('[aria-controls="explanation-step-1"]').getAttribute('aria-expanded') === 'true');
+    assert.equal(await left.locator('[data-step-feedback="step-1"]').textContent(), '');
+    assert.equal(await left.locator('#work-step-1').inputValue(), '');
+    assert.equal(await left.locator('[data-final-feedback]').textContent(), '');
+    assert.equal(await left.evaluate(() => localStorage.getItem('mathExamTextbook.v1:atanasyan-2024-10-11:ex-main-0017:r1')), null);
+    await right.getByRole('button', {name:'Скрыть объяснение', exact:true}).click();
+    await left.waitForFunction(() => document.querySelector('#explanation-step-1').textContent === '');
     await right.locator('#work-step-1').fill('8');
     await right.getByRole('button', {name:'Проверить этот шаг', exact:true}).click();
     await left.waitForFunction(() => document.querySelector('[data-step-feedback="step-1"]')?.dataset.answerStatus === 'wrong');
@@ -108,13 +131,17 @@ async function ready(host, id) {
     await right.locator('#work-step-1').fill('7');
     await right.getByRole('button', {name:'Проверить этот шаг', exact:true}).click();
     await left.waitForFunction(() => document.querySelector('[data-step-feedback="step-1"]')?.dataset.answerStatus === 'correct');
+    await right.getByRole('button', {name:'Показать объяснение', exact:true}).click();
+    await left.waitForFunction(() => !!document.querySelector('#explanation-step-1 p'));
     await pupil.reload();
     right = await ready(pupil, 'ex-main-0017');
+    assert.equal(await right.locator('[aria-controls="explanation-step-1"]').getAttribute('aria-expanded'), 'true');
+    assert((await right.locator('#explanation-step-1').textContent()).length > 15);
     assert.equal(await right.locator('#work-step-1').inputValue(), '7');
     assert.equal(await right.locator('[data-step-feedback="step-1"]').getAttribute('data-answer-status'), 'correct');
     for (const frame of [left,right]) assert.equal(await frame.evaluate(key => localStorage.getItem(key), localKey), 'isolated-personal-record');
     assert.deepEqual(errors, []);
-    console.log('ATANASYAN_STEREO_BOARD_OK: two room participants, rotated 3D, hints, checked step answers, final draft, transfer of control, reload, personal records isolated');
+    console.log('ATANASYAN_STEREO_BOARD_OK: two room participants, rotated 3D, questions first, separate hints and explanations, checked step answers, final draft, transfer of control, reload, personal records isolated');
   } finally {
     await browser?.close();
     room?.kill();

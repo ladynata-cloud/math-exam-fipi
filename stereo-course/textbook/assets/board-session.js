@@ -73,13 +73,19 @@
     }
     function validate(value) {
       if (!value) return false;
-      const keys = Object.keys(value).sort().join(',');
+      const keys = Object.keys(value).filter(key => key !== 'explanations').sort().join(',');
       if (keys !== 'camera,checked,hint,id,step,stepAnswers,view,work' &&
           keys !== 'camera,checked,hint,id,step,view,work') return false;
       const row = cards.get(value.id);
       if (!row || typeof value.checked !== 'boolean' || !validText(value.work, 3000) ||
           !bounded(value.hint, 0, row.hints.length) || !bounded(value.step, 0, row.card.steps.length) ||
           !Object.hasOwn(row.card.visualization.model.views, value.view)) return false;
+      if (Object.hasOwn(value, 'explanations')) {
+        const ids = value.explanations;
+        const revealed = row.card.steps.slice(0, value.step).map(step => step.id);
+        if (!Array.isArray(ids) || ids.length > revealed.length || new Set(ids).size !== ids.length ||
+            !ids.every(id => revealed.includes(id))) return false;
+      }
       if (Object.hasOwn(value, 'stepAnswers')) {
         const answers = value.stepAnswers;
         if (!answers || typeof answers !== 'object' || Array.isArray(answers)) return false;
@@ -126,7 +132,7 @@
       const work = el('textarea');
       work.id = 'work'; work.rows = 4; work.maxLength = 3000; work.value = plainText(state.work);
       const check = el('button', card.answer?.mode === 'exact' ? 'Проверить ответ' : 'Сверить рассуждение');
-      const feedback = el('p'); feedback.setAttribute('role', 'status');
+      const feedback = el('p'); feedback.setAttribute('role', 'status'); feedback.dataset.finalFeedback = '';
       function showFeedback() {
         feedback.replaceChildren();
         if (!state.checked) return;
@@ -145,14 +151,14 @@
       const hintButton = el('button', 'Подсказка', actions), stepButton = el('button', 'Следующий шаг', actions);
       const help = el('section'), steps = el('section');
       help.id = 'hint'; steps.id = 'step';
-      function stepPractice(step) {
-        const label = el('label', step.input.prompt, steps);
-        const field = el('input', '', steps);
+      function stepPractice(step, section) {
+        const label = el('label', step.input.prompt, section);
+        const field = el('input', '', section);
         field.id = 'work-' + step.id; field.maxLength = 300; label.htmlFor = field.id;
         const answer = state.stepAnswers[step.id] || {work:'', checked:false};
         field.value = plainText(answer.work);
-        const button = el('button', 'Проверить этот шаг', steps);
-        const feedback = el('p', '', steps);
+        const button = el('button', 'Проверить этот шаг', section);
+        const feedback = el('p', '', section);
         feedback.setAttribute('role', 'status');
         feedback.dataset.stepFeedback = step.id;
         function showResult() {
@@ -181,10 +187,35 @@
           el('h3', hint.question, help); el('p', hint.text, help);
         }
         for (const step of card.steps.slice(0, state.step)) {
-          el('h3', step.title, steps); el('p', step.prompt, steps);
-          el('p', step.explanation, steps);
-          for (const reason of step.justifications || []) el('p', reason.text, steps);
-          if (step.input) stepPractice(step);
+          const section = el('section', '', steps);
+          section.dataset.stepId = step.id;
+          el('h3', step.title, section); el('p', step.prompt, section);
+          if (step.input) stepPractice(step, section);
+          const toggle = el('button', '', section);
+          const explanation = el('div', '', section);
+          explanation.id = 'explanation-' + step.id;
+          toggle.setAttribute('aria-controls', explanation.id);
+          function showExplanation() {
+            const open = !!state.explanations?.includes(step.id);
+            toggle.setAttribute('aria-expanded', String(open));
+            toggle.textContent = open ? 'Скрыть объяснение' : 'Показать объяснение';
+            explanation.hidden = !open;
+            explanation.replaceChildren();
+            if (open) {
+              el('p', step.explanation, explanation);
+              for (const reason of step.justifications || []) el('p', reason.text, explanation);
+            }
+          }
+          toggle.addEventListener('click', () => {
+            const opened = state.explanations || [];
+            const next = opened.includes(step.id)
+              ? opened.filter(id => id !== step.id) : [...opened, step.id];
+            if (next.length) state.explanations = next;
+            else delete state.explanations;
+            showExplanation();
+            publish();
+          });
+          showExplanation();
         }
         hintButton.disabled = state.hint >= hints.length;
         stepButton.disabled = state.step >= card.steps.length;
