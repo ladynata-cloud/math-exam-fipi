@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T14:20:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 476 and points 52–55, with 777 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T14:45:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 476 and points 52–59, with 781 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1208,8 +1208,8 @@
     },
     {
       "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
-      "reviewedAt": "2026-11-21T14:20:00Z",
-      "scope": "Oblique prisms and normal sections, exercises 469–476, including projection and dihedral conditions",
+      "reviewedAt": "2026-11-21T14:45:00Z",
+      "scope": "Volume by slicing, points 56–59, and oblique prisms and normal sections, exercises 469–476",
       "cardIds": [
         "ex-main-0469",
         "ex-main-0470",
@@ -1218,7 +1218,11 @@
         "ex-main-0473",
         "ex-main-0474",
         "ex-main-0475",
-        "ex-main-0476"
+        "ex-main-0476",
+        "theory-056",
+        "theory-057",
+        "theory-058",
+        "theory-059"
       ],
       "evidence": "tools/stereo-textbook/oblique-prisms.json",
       "mathematicalReport": "tools/stereo-textbook/oblique-prisms.test.cjs"
@@ -4332,6 +4336,22 @@
     {
       "id": "ex-main-0476",
       "sha256": "c3e59509c7f54a6b95ad9e6f0ee5858167297b6cfaa3ac00c0ecd9f34edbad1b"
+    },
+    {
+      "id": "theory-056",
+      "sha256": "88a20540da95f4643b5ec490b5c4f2a4ebc17464032358906aaf43bf6dde75cc"
+    },
+    {
+      "id": "theory-057",
+      "sha256": "6f683a90cbfbc47e13ba49cf143bdf4925f4538aff6032279353f92295389bb5"
+    },
+    {
+      "id": "theory-058",
+      "sha256": "0987364066e20f844cc7b2e5d383a794640fa92e04aec279c703315c736ad052"
+    },
+    {
+      "id": "theory-059",
+      "sha256": "52e867ebd3311a958be86e5aec6a42d70b09a4bb8164e957d35907aa0559d577"
     }
   ]
 }

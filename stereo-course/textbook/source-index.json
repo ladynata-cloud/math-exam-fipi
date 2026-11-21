@@ -23283,7 +23283,10 @@
           127,
           128
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-057",
@@ -23302,7 +23305,10 @@
           128,
           129
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-058",
@@ -23321,7 +23327,10 @@
           130,
           131
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-059",
@@ -23340,7 +23349,10 @@
           131,
           132
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-060",

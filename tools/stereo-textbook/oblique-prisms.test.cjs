@@ -146,5 +146,50 @@ for(let n=473;n<=476;n++){
     for(const wrong of wrongStepAnswers(c.id,s))assert.equal(api.classifyAnswer(wrong,s.input.accepted).status,'wrong');
   });
 }
-assert.equal(Object.keys(manifest.cards).length,8);
-console.log('ATANASYAN_OBLIQUE_PRISMS_OK 8 source exercises, 33 checked fields, 80 parameter models, two noncongruent rhombohedra, projection and section-volume identities');
+const theorySteps=[[2,1,4,9],[6,4,24,30],[0.5,0.25,8,28],[1,0.25,16/3,26]];
+const expectedPages=[[125,126],[126,127],[128,129],[129,130]];
+const area=(a,b,c)=>norm(cross(vec(b,a),vec(c,a)))/2;
+function integrate(f,h){
+  const n=120,hStep=h/n;let sum=f(0)+f(h);
+  for(let i=1;i<n;i++)sum+=(i%2?4:2)*f(i*hStep);
+  return hStep*sum/3;
+}
+for(let no=56;no<=59;no++){
+ const c=available.get('theory-0'+no),m=c.visualization.model,p=m.points;
+ assert(Object.hasOwn(manifest.cards,c.id));assert.equal(c.kind,'theory');assert.equal(c.answer.mode,'manual');
+ assert.deepEqual(c.source.printedPages,expectedPages[no-56]);assert.deepEqual(c.source.pdfPages,expectedPages[no-56].map(x=>x+2));viewer.prepare(m);
+ if(no===56){
+  for(let i=0;i<=8;i++){
+   const ring=Array.from({length:4},(_,k)=>p['_s'+i+'_'+k]);
+   const S=area(ring[0],ring[1],ring[2])+area(ring[0],ring[2],ring[3]);
+   ring.forEach(point=>close(point[0],i/4));close(S,1+i/4);
+  }
+  close(integrate(x=>1+x,2),4);close(integrate(x=>2*x,3),9);
+ }
+ if(no===57){
+  const bottom=[p.A,p.B,p.C],middle=[p.P,p.Q,p.R],top=[p.A1,p.B1,p.C1];
+  close(area(...bottom),6);close(area(...middle),6);close(area(...top),6);
+  bottom.forEach((v,i)=>v.forEach((x,j)=>close(middle[i][j],(x+top[i][j])/2)));
+  close(dist(p.A1,p.H),4);close(dot(vec(p.A1,p.H),vec(p.B,p.A)),0);
+  close(integrate(()=>area(...middle),4),24);
+ }
+ if(no>=58){
+  const count=no===58?3:24;
+  const mid=Array.from({length:count},(_,i)=>p['_r0_'+i]),base=Array.from({length:count},(_,i)=>p['_r1_'+i]);
+  mid.forEach((v,i)=>v.forEach((x,j)=>close(x,base[i][j]/2)));
+  const h=dist(p.O,p.H),S=no===58?area(...base):Math.PI*dist(base[0],p.H)**2;
+  close(integrate(x=>S*(x/h)**2,h),no===58?8:16*Math.PI/3);
+  if(no===58){
+   close(area(...mid),S/4);close(integrate(z=>(2+2*z/3)**2,3),28);
+  }else{
+   base.forEach(v=>close(dist(v,p.H),2));mid.forEach(v=>close(dist(v,p.M),1));
+   close(integrate(z=>(1+2*z/6)**2,6),26);
+  }
+ }
+ c.steps.forEach((step,i)=>{
+  assert.equal(api.classifyAnswer(String(theorySteps[no-56][i]),step.input.accepted).status,'correct');
+  for(const wrong of wrongStepAnswers(c.id,step))assert.equal(api.classifyAnswer(wrong,step.input.accepted).status,'wrong');
+ });
+}
+assert.equal(Object.keys(manifest.cards).length,12);
+console.log('ATANASYAN_OBLIQUE_PRISMS_OK 8 source exercises and 4 volume theorems, 49 checked fields, 80 parameter models, two rhombohedra, exact slices, integrals and both frustum transfers');

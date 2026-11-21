@@ -23,6 +23,18 @@
     ],
     "476": [
       null
+    ],
+    "theory-56": [
+      null
+    ],
+    "theory-57": [
+      null
+    ],
+    "theory-58": [
+      null
+    ],
+    "theory-59": [
+      null
     ]
   },
   "previousCatalog": {
@@ -177,6 +189,90 @@
       },
       "revision": 1,
       "status": "draft"
+    },
+    "theory-56": {
+      "id": "source-theory-056",
+      "kind": "theory",
+      "title": "56. Вычисление объёмов тел с помощью определённого интеграла",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "56",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          125,
+          126
+        ],
+        "pdfPages": [
+          127,
+          128
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-57": {
+      "id": "source-theory-057",
+      "kind": "theory",
+      "title": "57. Объём наклонной призмы",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "57",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          126,
+          127
+        ],
+        "pdfPages": [
+          128,
+          129
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-58": {
+      "id": "source-theory-058",
+      "kind": "theory",
+      "title": "58. Объём пирамиды",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "58",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          128,
+          129
+        ],
+        "pdfPages": [
+          130,
+          131
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-59": {
+      "id": "source-theory-059",
+      "kind": "theory",
+      "title": "59. Объём конуса",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "59",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          129,
+          130
+        ],
+        "pdfPages": [
+          131,
+          132
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
     }
   },
   "cards": {
@@ -219,6 +315,26 @@
       "raw": "0093b36edf5b76fcb150a5e8fc5d351bc80850a923e740939e03b97e3a155639",
       "authored": "c3e59509c7f54a6b95ad9e6f0ee5858167297b6cfaa3ac00c0ecd9f34edbad1b",
       "integrated": "8f7c2c2e61ca053b92c384466b2f7c21e7bc918abb060c6678b0e5c2033f6c11"
+    },
+    "theory-056": {
+      "raw": "53e0e48049566db919b1c7661178005b4217ddddb1870adff13ed29225d6fb45",
+      "authored": "88a20540da95f4643b5ec490b5c4f2a4ebc17464032358906aaf43bf6dde75cc",
+      "integrated": "94d99582380a95984433db6a1016ef847490be05c9b6de5a869ebd8ab0445448"
+    },
+    "theory-057": {
+      "raw": "4f2ec724b6e75eadf7759e2e156d52b3392ee8368c12c650a76c37c27a1a768c",
+      "authored": "6f683a90cbfbc47e13ba49cf143bdf4925f4538aff6032279353f92295389bb5",
+      "integrated": "3b2b74adc5644534ad5b7bdffd8552f6ef728a1f79700572cdc146c63f4e62d7"
+    },
+    "theory-058": {
+      "raw": "20835bfe68ce93d7fedb870ffebe0028b375a9a9121b4ab8fb0dc935efbb1d8d",
+      "authored": "0987364066e20f844cc7b2e5d383a794640fa92e04aec279c703315c736ad052",
+      "integrated": "f9c9e7cd5a5de56f45e5677900676e7f4844cdc5f777c72ee4cb9fb820eb2774"
+    },
+    "theory-059": {
+      "raw": "2dbc742a2d86a017ecf7d5851e131654d00eb32ad84dae4a1988551480b0b837",
+      "authored": "52e867ebd3311a958be86e5aec6a42d70b09a4bb8164e957d35907aa0559d577",
+      "integrated": "61fee135251ca5c9cb512e49dfda4fdd6722bc633e6ff86d1df8bd9b6c327b25"
     }
   },
   "cases": [
@@ -449,16 +565,128 @@
     [
       "ex-main-0476|step-4",
       "oblique-prism-ex-main-0476-step-4"
+    ],
+    [
+      "theory-056|condition",
+      "oblique-prism-theory-056-condition"
+    ],
+    [
+      "theory-056|help:h1",
+      "oblique-prism-theory-056-help-h1"
+    ],
+    [
+      "theory-056|help:h2",
+      "oblique-prism-theory-056-help-h2"
+    ],
+    [
+      "theory-056|step-1",
+      "oblique-prism-theory-056-step-1"
+    ],
+    [
+      "theory-056|step-2",
+      "oblique-prism-theory-056-step-2"
+    ],
+    [
+      "theory-056|step-3",
+      "oblique-prism-theory-056-step-3"
+    ],
+    [
+      "theory-056|step-4",
+      "oblique-prism-theory-056-step-4"
+    ],
+    [
+      "theory-057|condition",
+      "oblique-prism-theory-057-condition"
+    ],
+    [
+      "theory-057|help:h1",
+      "oblique-prism-theory-057-help-h1"
+    ],
+    [
+      "theory-057|help:h2",
+      "oblique-prism-theory-057-help-h2"
+    ],
+    [
+      "theory-057|step-1",
+      "oblique-prism-theory-057-step-1"
+    ],
+    [
+      "theory-057|step-2",
+      "oblique-prism-theory-057-step-2"
+    ],
+    [
+      "theory-057|step-3",
+      "oblique-prism-theory-057-step-3"
+    ],
+    [
+      "theory-057|step-4",
+      "oblique-prism-theory-057-step-4"
+    ],
+    [
+      "theory-058|condition",
+      "oblique-prism-theory-058-condition"
+    ],
+    [
+      "theory-058|help:h1",
+      "oblique-prism-theory-058-help-h1"
+    ],
+    [
+      "theory-058|help:h2",
+      "oblique-prism-theory-058-help-h2"
+    ],
+    [
+      "theory-058|step-1",
+      "oblique-prism-theory-058-step-1"
+    ],
+    [
+      "theory-058|step-2",
+      "oblique-prism-theory-058-step-2"
+    ],
+    [
+      "theory-058|step-3",
+      "oblique-prism-theory-058-step-3"
+    ],
+    [
+      "theory-058|step-4",
+      "oblique-prism-theory-058-step-4"
+    ],
+    [
+      "theory-059|condition",
+      "oblique-prism-theory-059-condition"
+    ],
+    [
+      "theory-059|help:h1",
+      "oblique-prism-theory-059-help-h1"
+    ],
+    [
+      "theory-059|help:h2",
+      "oblique-prism-theory-059-help-h2"
+    ],
+    [
+      "theory-059|step-1",
+      "oblique-prism-theory-059-step-1"
+    ],
+    [
+      "theory-059|step-2",
+      "oblique-prism-theory-059-step-2"
+    ],
+    [
+      "theory-059|step-3",
+      "oblique-prism-theory-059-step-3"
+    ],
+    [
+      "theory-059|step-4",
+      "oblique-prism-theory-059-step-4"
     ]
   ],
   "files": {
     "stereo-course/textbook/data/course.json": {
       "beforeSHA256": "aa07f9da103956b590e7995ed40dd098cdc9e2469968c2b31eed4156afec7676",
-      "afterSHA256": "2c453e99429e021309c30a51ff39e77d75c6baaf82e170c3c8eeaa9fdb4ee907"
+      "afterSHA256": "63c1ba8ea4b6fa6b6ac011055dcbac49110f731f4819e63e8ec14946cc75ab6e"
     },
     "stereo-course/textbook/source-index.json": {
       "beforeSHA256": "87b6188a3a522859130bb847649f0f5f9eab2798207023d2b0ce160561dee3ab",
-      "afterSHA256": "adb5f8cc8e682e46b5f7a1b78e9793caa3acb18ab2f96f51d121e7d0a5e73a49"
+      "afterSHA256": "5d9c65dfd7780f19112832421aabfd13c2a877a04419a48db667767ceb9e90b8"
     }
   },
   "registryMetadata": {

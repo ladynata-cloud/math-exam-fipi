@@ -28,6 +28,12 @@ const misconceptions = new Map([
   ['ex-main-0471/step-1', '27'], // Squared median before taking two thirds.
   ['ex-main-0472/step-2', '25'], // Diameter instead of radius.
   ['ex-main-0472/step-3', '168'], // Area of the enclosing rectangle.
+  ['theory-056/step-2', '2'], // Area without multiplying by layer thickness.
+  ['theory-057/step-3', '6'], // Area in the volume field.
+  ['theory-058/step-2', '1/2'], // Length ratio before squaring.
+  ['theory-058/step-3', '24'], // Volume of the corresponding prism.
+  ['theory-059/step-2', '1/2'], // Radius ratio in place of the area ratio.
+  ['theory-059/step-3', '16'], // Volume coefficient for a full cylinder.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 
