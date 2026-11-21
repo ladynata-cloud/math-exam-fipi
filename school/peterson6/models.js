@@ -63,7 +63,8 @@
     Object.entries(attrs || {}).forEach(([k, v]) => n.setAttribute(k, String(v)));
     return n;
   }
-  function number(n) { return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(n); }
+  const modelNumberFormat = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 });
+  function number(n) { return modelNumberFormat.format(n); }
   function fraction(a, b) {
     const wrap = el('span', 'pm-fraction');
     wrap.setAttribute('aria-label', a + ' делить на ' + b);
