@@ -79,7 +79,22 @@
       ['/geometry-course/textbook/data/triangle-section-applications.json', '№1118–1122'],
       ['/geometry-course/textbook/data/field-trigonometry.json', '№1123–1127'],
       ['/geometry-course/textbook/data/scalar-product.json', 'пп. 109–112 и №1128–1132'],
-      ['/geometry-course/textbook/data/scalar-coordinates.json', '№1133–1138']
+      ['/geometry-course/textbook/data/scalar-coordinates.json', '№1133–1138'],
+      ['/geometry-course/textbook/data/scalar-geometry.json', '№1139–1145'],
+      ['/geometry-course/textbook/data/trigonometry-review.json', 'вопросы 1–7 главы XII'],
+      ['/geometry-course/textbook/data/triangle-review.json', 'вопросы 8–13 главы XII'],
+      ['/geometry-course/textbook/data/vector-product-review.json', 'вопросы 14–22 главы XII'],
+      ['/geometry-course/textbook/data/additional-triangle-area.json', '№1146–1148'],
+      ['/geometry-course/textbook/data/additional-solve-triangles.json', '№1149–1153'],
+      ['/geometry-course/textbook/data/additional-scalar-vectors.json', '№1154–1158'],
+      ['/geometry-course/textbook/data/chapter-twelve-finale.json', '№1159–1166'],
+      ['/geometry-course/textbook/data/regular-polygon-definition.json', 'п. 113 и №1167–1169'],
+      ['/geometry-course/textbook/data/regular-polygon-angles.json', 'п. 114 и №1170–1173'],
+      ['/geometry-course/textbook/data/regular-polygon-centers.json', 'п. 115 и №1174–1175'],
+      ['/geometry-course/textbook/data/regular-polygon-tables.json', 'п. 116 и №1176–1177'],
+      ['/geometry-course/textbook/data/polygon-circle-applications.json', 'п. 117 и №1178–1182'],
+      ['/geometry-course/textbook/data/regular-polygon-areas.json', '№1183–1187'],
+      ['/geometry-course/textbook/data/regular-polygon-constructions.json', '№1188–1189']
   ];
 
   async function forCourse(base) {
