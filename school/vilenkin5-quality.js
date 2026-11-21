@@ -167,6 +167,7 @@
       const parts=value.split(';');
       if(parts.length!==target.answer.length||parts.some(part=>M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
     }
+    if(target.answerFormat==='v5-arc'&&!/^[ABCDKMPST]{3}$/.test(root.Vilenkin5Numbered.readArc(value)))return 'Нужны три буквы. Сначала запиши начало дуги, затем промежуточную метку и конец.';
     if(target.answerFormat==='v5-point-set'&&!root.Vilenkin5Numbered.readPointSet(value))return 'Введи буквы точек с рисунка. Запись можно поправить без потери попытки.';
     const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
     if(clarification)return clarification.text;
