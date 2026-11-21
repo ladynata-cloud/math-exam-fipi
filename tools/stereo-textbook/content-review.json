@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T22:11:08Z",
-  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–639, with 1,112 reviewed cards. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T22:15:19Z",
+  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–645, with 1,125 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1899,6 +1899,28 @@
       ],
       "evidence": "tools/stereo-textbook/cartesian-coordinate-start.json",
       "mathematicalReport": "tools/stereo-textbook/cartesian-coordinate-start.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 167, coordinate constructions checked against both printed figures 185/186 and steps on 167, with answers on 269 where supplied.",
+      "reviewedAt": "2026-11-21T22:15:19Z",
+      "scope": "All six coordinate-vector tasks, eight lettered vector sums and all 16 arrow endpoints originating in printed figures 185 and 186, including arbitrary orientation and fractional midpoint displacements.",
+      "cardIds": [
+        "ex-main-0640",
+        "ex-main-0641",
+        "ex-main-0642",
+        "ex-main-0643",
+        "ex-main-0644-a",
+        "ex-main-0644-b",
+        "ex-main-0644-c",
+        "ex-main-0644-d",
+        "ex-main-0644-e",
+        "ex-main-0644-f",
+        "ex-main-0644-g",
+        "ex-main-0644-h",
+        "ex-main-0645"
+      ],
+      "evidence": "tools/stereo-textbook/coordinate-vectors-and-diagrams.json",
+      "mathematicalReport": "tools/stereo-textbook/coordinate-vectors-and-diagrams.test.cjs"
     }
   ],
   "cards": [
@@ -6349,6 +6371,58 @@
     {
       "id": "ex-main-0639",
       "sha256": "ca4ad2ff4d5f9d81b066d5e34aa8b92bc3262e0b3c2fb0f976b250c589c82c6a"
+    },
+    {
+      "id": "ex-main-0640",
+      "sha256": "121bda6153432885cb4593e80d717987a83fd15a4765bfdfd7f304f43754905b"
+    },
+    {
+      "id": "ex-main-0641",
+      "sha256": "b3574b4b23179c2ce4ded3d4b7f5113aa7e8c477d0a8c12e8d1f7a4080648e56"
+    },
+    {
+      "id": "ex-main-0642",
+      "sha256": "dee44e7750fecbba4e2fad96a0340fb160a1a3291755587043281d0dd3853497"
+    },
+    {
+      "id": "ex-main-0643",
+      "sha256": "fbaee94c41671f8130ec6c988b669df169d27755c29a4dd87259453c3be7ef5e"
+    },
+    {
+      "id": "ex-main-0644-a",
+      "sha256": "0982a17db5ce0e2140cbf3d035d9a1daee981030a0bb60187c4a37c875d20389"
+    },
+    {
+      "id": "ex-main-0644-b",
+      "sha256": "e4d749d5f041f19ab28bbceaee5d4fa021facdaeab6d9c679e2f37d8a8a19cb0"
+    },
+    {
+      "id": "ex-main-0644-c",
+      "sha256": "70bab4f0008fb960a136bac0a9fc15c00c868a37eb726968a59481cd2af58e07"
+    },
+    {
+      "id": "ex-main-0644-d",
+      "sha256": "3794885cb13f78de8fdaeb316a02f3ddaf318b40c119bc5ab439c43a49df285a"
+    },
+    {
+      "id": "ex-main-0644-e",
+      "sha256": "900b60bedfb93ca3b283a9284d44d0b3df9864efa72e2b993025b7d511c16e26"
+    },
+    {
+      "id": "ex-main-0644-f",
+      "sha256": "a3e6fe7b43ef756c476584cfc1eb66316c6466103eb2faaa4ea6745be994af83"
+    },
+    {
+      "id": "ex-main-0644-g",
+      "sha256": "8be8cb797f7536dbabddaccff8877368da105fceb391255bba919b6371ff2ac8"
+    },
+    {
+      "id": "ex-main-0644-h",
+      "sha256": "02b06fb471481c2124222768573e34bb22b9fd1fdfa2bc99dbd76cacadc83fe7"
+    },
+    {
+      "id": "ex-main-0645",
+      "sha256": "4f89aa7f7d672e66dc09e96cb8f8d1b4a88149c21e2d6504ead0f7c3925e3a53"
     }
   ]
 }

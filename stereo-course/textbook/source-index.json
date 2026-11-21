@@ -14531,7 +14531,10 @@
           169
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0641",
@@ -14549,7 +14552,10 @@
           169
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0642",
@@ -14567,7 +14573,10 @@
           169
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0643",
@@ -14585,7 +14594,10 @@
           169
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0644",
@@ -14612,6 +14624,16 @@
         "е",
         "ж",
         "з"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "ж",
+        "з"
       ]
     },
     {
@@ -14630,7 +14652,10 @@
           169
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0646",
