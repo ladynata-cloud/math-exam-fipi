@@ -1558,7 +1558,7 @@ test('read every formula and distinguish all moving, resting and overlapping int
   const open=i=>{f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
   for(const [ix,original,changed]of [[84,'24 см²','27 см²'],[85,'20 см','24 см'],[86,'14 км','27 км'],[87,'30 км','26 км'],[88,'60 см³','84 см³'],[89,'94 см²','136 см²'],[90,'38.','37.'],[91,'13 км/ч','17 км/ч']]){const c=open(ix);set(c,1,2);assert(out().includes(original),[ix,out()]);set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(changed),[ix,out()]);}
   for(const [ix,before,after]of [[92,'09:00, велосипедиста 09:30','09:30, велосипедиста 10:00'],[93,'12 км от деревни с 12:00 до 13:00','6 км от деревни с 12:30 до 13:30'],[94,'4, 6 и 6 км/ч','2, 3 и 3 км/ч'],[95,'60 и 30 мин','60 и 30 мин']]){
-   const c=open(ix);assert.equal(f.d.querySelectorAll('#task-figure [data-source-series]').length,2);const lines=[...f.d.querySelectorAll('#model [data-source-series]')];assert.deepEqual(lines.map(n=>n.getAttribute('points').split(' ').length),[6,4]);set(c,1,3);assert(out().includes('12:30'));set(c,2,2);assert(out().includes(before),out());set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes(after),out());assert(out().includes('13:00'));
+   const c=open(ix);assert.equal(f.d.querySelectorAll('#task-figure [data-source-series]').length,2);assert.deepEqual([...f.d.querySelectorAll('#task-figure details table')].map(table=>table.tBodies[0].rows.length),[6,4]);const lines=[...f.d.querySelectorAll('#model [data-source-series]')];assert.deepEqual(lines.map(n=>n.getAttribute('points').split(' ').length),[6,4]);set(c,1,3);assert(out().includes('12:30'));set(c,2,2);assert(out().includes(before),out());set(c,0,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert(out().includes(after),out());assert(out().includes('13:00'));
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
@@ -1596,6 +1596,17 @@ test('trace all thirty-seven labelled points, museum arrival and every exact nes
   for(const [i,first,second]of [[124,'150','300'],[125,'24','72'],[126,'15/2','5/2']]){c=open(i);set(c,2,2);assert(out().includes('Результат '+first+' '));set(c,1,1);set(c,2,2);assert(out().includes('Результат '+second+' '));}
   for(const [i,source,alt,e,changed]of [[127,'50','40','11/2','6'],[128,'63/25','66/25','28/5','33/5'],[129,'25%','50%','108/5','114/5']]){
    c=open(i);set(c,1,2);assert(out().includes('E = '+e+'. Ответ '+source+'.'),out());set(c,0,1);set(c,1,2);assert(out().includes('E = '+changed+'. Ответ '+alt+'.'),out());
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('enumerate the complete two-digit source lists and all allowed leading-place and unordered cases through 167',()=>{
+ const f=fixture(null,null,true);try{
+  for(const [i,answer,fresh,groups]of [[130,'пар 6, только из разных видов 3','пар 10, только из разных видов 6',6],[131,'16 чисел','16 чисел',4],[132,'12 чисел','12 чисел',4],[133,'трёхзначных чисел равно 60.','трёхзначных чисел равно 24.',5],[134,'трёхзначных чисел равно 125.','трёхзначных чисел равно 64.',5],[135,'трёхзначных чисел равно 48.','трёхзначных чисел равно 18.',4],[136,'трёхзначных чисел равно 100.','трёхзначных чисел равно 48.',4],[137,'костюмов равно 40.','костюмов равно 54.',3]]){
+   f.nav('#lesson/p38/'+i);f.click('[data-lesson-help="model"] > summary');const c=[...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id),set=(j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+   set(1,1);assert.equal(f.d.querySelectorAll('#model tbody tr').length,1);set(1,2);assert(out().includes(answer),[i,out()]);assert.equal(f.d.querySelectorAll('#model tbody tr').length,groups);
+   if(i===131||i===132){const list=[...f.d.querySelectorAll('#model tbody tr td:nth-child(2)')].flatMap(td=>td.textContent.split(', ').map(Number));assert.equal(list.length,i===131?16:12);assert.deepEqual(list,[...new Set(list)].sort((a,b)=>a-b));}
+   set(0,1);assert.equal(f.q(c[1]).value,'0');set(1,2);assert(out().includes(fresh),[i,out()]);
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
