@@ -79,7 +79,7 @@ async function verify(width, url) {
   }
   assert.deepEqual(stats.errors, []);
   assert.equal(stats.cards, 286);
-  for (let n = 110; n <= 200; n++) {
+  for (let n = 110; n <= 211; n++) {
     if ((n - 110) % 24 === 0) {
       await page.close();
       page = await freshPage();
@@ -87,6 +87,28 @@ async function verify(width, url) {
     await openNumber(page, n);
     assert(await page.locator('#number-result a.button:not(.quiet)').count() > 0, 'source number ' + n);
   }
+  await openNumber(page, 206, '№ 206а');
+  const pairRows = page.locator('#task-graph li');
+  const pairState = () => page.evaluate(() => MakarychevApp.getState().tasks['p09-source-206-a']);
+  assert.equal((await pairState()).correct, false);
+  await page.locator('#final-answer').fill('(-2;4)');
+  assert.equal(await pairRows.count(), 0);
+  await submit(page, '(-2;4)');
+  assert.match(await page.locator('#problem').innerText(), /Все указанные пары подходят/);
+  assert.match(await pairRows.first().innerText(), /Слева 2, справа 2/);
+  await submit(page, '(-2;4),(-2;4)');
+  assert.match(await page.locator('#problem').innerText(), /пара указана дважды/);
+  await submit(page, '(1;2)');
+  assert.match(await pairRows.first().innerText(), /Слева 5, справа 2/);
+  await page.reload();
+  assert.equal(await page.locator('#final-answer').inputValue(), '(1;2)');
+  assert.match(await pairRows.first().innerText(), /значения различаются/);
+  await submit(page, '(4;6), (2;8), (0;2), (−2;4)');
+  assert.equal((await pairState()).correct, true);
+  assert.equal((await pairState()).assisted, false);
+  assert.equal((await pairState()).independent, false);
+  assert.equal(await pairRows.count(), 4);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
   await openNumber(page, 178, '№ 178в');
   assert.equal(await page.locator('#task-graph [data-root-curve]').count(), 0);
   await submit(page, '2;-3');
@@ -115,7 +137,7 @@ async function verify(width, url) {
   assert.equal(await page.locator('#notebook').inputValue(), 'Проверка своих точек');
   assert.deepEqual(errors, []);
   await page.close();
-  return { width, cards: stats.cards, figures: stats.figures, searches: 91 };
+  return { width, cards: stats.cards, figures: stats.figures, searches: 102 };
 }
 
 (async () => {

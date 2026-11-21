@@ -136,6 +136,12 @@ function rootLineCount(user){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='integer-pairs'){
+  const pairs=G.parseIntegerPairs(user),expected=G.parseIntegerPairs(target.answer);
+  if(!pairs||!expected||pairs.length!==expected.length)return false;
+  const keys=new Set(pairs.map(pair=>pair.join(';')));
+  return keys.size===expected.length&&expected.every(pair=>keys.has(pair.join(';')));
+ }
  if(target.kind==='rational-example')return !!M.parse(user);
  if(target.kind==='irrational-example'){
   const value=normalize(user);if(value==='π')return true;
