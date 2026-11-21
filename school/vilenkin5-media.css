@@ -1,0 +1,12 @@
+.v5-media{border:1px solid #cbded0;border-radius:16px;background:#fffefa;margin:20px 0;padding:18px 22px}
+.v5-media>summary{font-size:18px;font-weight:650;line-height:1.5;cursor:pointer}
+.v5-media-body{max-width:750px;margin:22px auto 0}
+.v5-media-body h3{font-size:24px;line-height:1.35;margin:8px 0 18px}
+.v5-media-body img{display:block;width:100%;height:auto;max-width:640px;margin:0 auto 20px;border-radius:12px;border:1px solid #d6e2d7;background:#f5f6ef}
+.v5-media-body [data-v5-gif-toggle]{min-height:46px;padding:10px 18px;font-size:17px}
+.v5-media-body [data-v5-media-status]{font-size:14px;color:#4d675a;line-height:1.65}
+.v5-board-banner{max-width:1204px;margin:16px auto;padding:13px 18px;border:1px solid #b5d4c3;border-radius:12px;color:#234b38;background:#e6f0e4;font-size:16px;line-height:1.6}
+body[data-vilenkin5-board] .layout{display:block;max-width:1260px;margin:auto;padding:0 28px}
+body[data-vilenkin5-board] .workspace{width:100%;min-width:0}
+@media(max-width:600px){.v5-media{padding:15px 12px}.v5-media>summary{font-size:17px}.v5-media-body h3{font-size:21px}.v5-board-banner{margin:12px;font-size:14px}body[data-vilenkin5-board] .layout{padding:0 12px}}
+@media print{.v5-media-body button,.v5-board-banner{display:none}}

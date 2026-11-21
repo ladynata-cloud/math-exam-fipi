@@ -15,3 +15,5 @@
 - Перезагрузка сохраняет набранный ответ и результат. Общая доска обменивается только учебным состоянием. Личные журналы учителя и ученика остаются на их устройствах.
 - Проверки: node tools/school-final-work.browser-dom.test.cjs (с jsdom), node tools/workshop-state.test.cjs, node tools/textbook-core.test.cjs, node tools/textbook-secondary.test.cjs, python3 tools/workshop-reference-check.py, python3 tools/build-sitemap.py --check, валидатор board-server/trainer-registry.js.
 - Откат: убрать входы итоговых работ и запись в реестре. Прежние школьные уроки используют свои ключи сохранения. Новый ключ можно оставить до исправления.
+
+Живой браузер Chromium при 360 px прошёл все 13 входов. Отдельные контексты учителя, ученика и позднего наблюдателя проверяют общий Socket.IO сервер, передачу управления, исправление поля, модель и сохранность личного черновика. Включён вход в публичную навигацию и sitemap. Сценарий: node tools/school-final-work.board.browser.cjs.

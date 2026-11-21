@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 623,
-    "covered": 621,
+    "total": 624,
+    "covered": 622,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -35,7 +35,8 @@
     "trainers/index.html",
     "trainers/long-division-claude.html",
     "trainers/oge-basics/multiplication-division/division-checkpoint.html",
-    "trainers/oge-basics/multiplication-division/division-path.html"
+    "trainers/oge-basics/multiplication-division/division-path.html",
+    "trainers/school-workshop-check/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -901,9 +902,10 @@
       "placement": "before-head-close"
     },
     "geometry-course/textbook/index.html": {
-      "beforeSha256": "c26e8f026e5560c39bd0f9a841c0458b7ff4d260c038a42b4ccb2ed7a060ec2e",
-      "afterSha256": "706cd7def6810a4692834081378f1d994a804e073709f8f209ecf2ca4a9d119d",
-      "placement": "before-head-close"
+      "beforeSha256": "215296704e24b496cc6ab9b6c48c243d04ddb19becc0129c5d63565393b709cc",
+      "afterSha256": "f3ac86319ecb5c0a8bae00b67ef356cc5f9a52e7b49690edba167842fa0ac5e6",
+      "placement": "before-head-close",
+      "sourceSha": "4a7c2d1f1ef1c8fa7e97263269a74ce8df899772"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
       "beforeSha256": "b79e90862fdcfead5543fb6bf42bd031913635f28e3896f7d4951d6004c8bc61",
@@ -2214,9 +2216,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "359864447bcaa6f710c66dd6194f3258146293ce1dbb8c572f4a02d3de45b9cc",
-      "afterSha256": "95b8e6e435b9b9e0ae56db46658b5a2ddced4762f1f9ed36644f71d2e9c76d52",
-      "placement": "before-head-close"
+      "beforeSha256": "e62c215edef7095d55e52aaa0cf843d5f502384e8cf901ae55268d70ab131e26",
+      "afterSha256": "01691e00e18e65fe9ac3f272f017e7a1b0cd06ec0f53b94cf9694d05ee3cb3db",
+      "placement": "before-head-close",
+      "sourceSha": "a772c84c92a64553f3a4da099718ef527c0a9aa8"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -3992,7 +3995,8 @@
     "trainers/geometry-7/control-work.html": "sitemap",
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": "sitemap",
     "trainers/practice-topics/index.html": "sitemap",
-    "trainers/vilenkin6-percent/index.html": "sitemap"
+    "trainers/vilenkin6-percent/index.html": "sitemap",
+    "trainers/school-workshop-check/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6448,6 +6452,26 @@
       ],
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "903c8a4b37b671c88e0b19d6dbd4b4dc2f7f7147",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "4a7c2d1f1ef1c8fa7e97263269a74ce8df899772",
+      "task": "docs/tasks/ATANASYAN_7_9_AREAS_842_847.md",
+      "changedPaths": [
+        "geometry-course/textbook/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     }
   ],
   "coverageUpdates": [

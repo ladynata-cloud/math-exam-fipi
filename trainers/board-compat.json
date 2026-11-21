@@ -1164,9 +1164,10 @@
       "notes": "Совместная текущая сцена: исследование, практика, проверка, модели, GIF и выбранные номера. Личные результаты не читаются и не изменяются."
     },
     {
-      "trainerId": "school-workshop-check",
-      "file": "trainers/school-workshop-check/index.html",
-      "title": "Школьная мастерская · итоговые работы 5–11 классов",
+      "trainerId": "vilenkin5",
+      "file": "trainers/vilenkin5.html",
+      "title": "Виленкин · 5 класс · обе части",
+      "group": "Школа · математика · 5 класс",
       "boardCompatibility": "board-mirror",
       "supportsSeed": false,
       "supportsBoardMirror": true,
@@ -1174,8 +1175,21 @@
       "stateSchemaVersion": 1,
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
-      "notes": "Синхронизируются курс, вариант, ответы, подсказки, модель и итог.",
-      "group": "Школьная мастерская"
+      "notes": "Общий урок: 134 занятия, текущие шаги, ответы, модели, записи и GIF. Личный прогресс не читается и не изменяется."
+    },
+    {
+      "trainerId": "school-workshop-check",
+      "file": "trainers/school-workshop-check/index.html",
+      "title": "Итоговая работа школьной мастерской · 5–11 классы",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
     }
   ]
 }

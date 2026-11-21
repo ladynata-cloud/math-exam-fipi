@@ -22,9 +22,9 @@
       "href": "/trainers/ege-baza-13.html#map"
     },
     {
-      "title": "Виленкин · 5 класс · весь курс",
+      "title": "Виленкин · 5 класс · весь курс и общая доска",
       "group": "Виленкин · 5 класс",
-      "href": "/school/index.html?course=vilenkin5#course/vilenkin5"
+      "href": "/trainers/vilenkin5.html#course/vilenkin5"
     },
     {
       "title": "Пункт 1 · Находим нужную клетку таблицы",
@@ -7312,6 +7312,11 @@
       "href": "/trainers/college-functions/index.html"
     },
     {
+      "title": "Атанасян · задачник 7–9 классов по номерам",
+      "group": "Геометрия / 7–9 классы",
+      "href": "/trainers/atanasyan-grade7.html?scope=book"
+    },
+    {
       "title": "Атанасян · 7 класс · главы I–IV и задачи повышенной трудности",
       "group": "Геометрия / 7 класс",
       "href": "/trainers/atanasyan-grade7.html"
@@ -7837,7 +7842,7 @@
       "href": "/trainers/peterson5.html#home"
     },
     {
-      "title": "Школьная мастерская · итоговые работы 5–11",
+      "title": "Итоговая работа школьной мастерской · 5–11 классы",
       "group": "Школьная мастерская",
       "href": "/trainers/school-workshop-check/index.html"
     }

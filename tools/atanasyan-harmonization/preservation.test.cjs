@@ -13,7 +13,8 @@ const supplements = [
   require('./preservation-supplement-658.json'),
   require('./preservation-supplement-651.json'),
   require('./preservation-supplement-651-ci.json'),
-  require('./preservation-supplement-651-legacy-segments.json')
+  require('./preservation-supplement-651-legacy-segments.json'),
+  require('./preservation-supplement-693-board.json')
 ];
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 assert.equal(baseline.schemaVersion, 1);
@@ -47,6 +48,7 @@ assert.deepEqual(Object.keys(ciSupplement.files), [
 assert.equal(legacySegmentsSupplement.sourceCommit, '78853df87a48dddd5a96bf5f2ad4947a9016225b');
 assert.equal(legacySegmentsSupplement.task, 'FINAL651_LEGACY_VIEW_SEGMENTS_20261119');
 assert.deepEqual(Object.keys(legacySegmentsSupplement.files), ['ege-profil/atanasyan-10-11/model.js']);
+assert.deepEqual(Object.keys(supplements[4].files), ['geometry-course/textbook/assets/grade7-board-session.js']);
 const amendmentChains = {};
 for (const supplement of supplements) {
   for (const [file, amendment] of Object.entries(supplement.files)) {
@@ -64,8 +66,19 @@ function filesAt(relative) {
     return filesAt(path.posix.join(relative, entry.name));
   });
 }
+// Independently authored assets in source commit 4a7c2d1; the old textbook bank stays byte-identical.
+const approvedAreaFiles = {
+  "geometry-course/textbook/assets/additional-lessons.js": "82e927e05ed568da30843ad7f79d4a75463e0fc096c827aa6cba2551b2ee68eb",
+  "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4"
+};
 function verify(group, read = file => fs.readFileSync(path.join(root, file)), extra = []) {
-  const files = [...new Set(group.paths.flatMap(filesAt).concat(extra))].filter(file => !group.excluded.includes(file)).sort();
+  const inventory = [...new Set(group.paths.flatMap(filesAt).concat(extra))].filter(file => !group.excluded.includes(file)).sort();
+  const additions = group.group === 'geometry_textbook' ? approvedAreaFiles : {};
+  for (const [file, expected] of Object.entries(additions)) {
+    assert(inventory.includes(file), 'required new numbered-area resource: ' + file);
+    assert.equal(hash(read(file)), expected, 'exact numbered-area resource: ' + file);
+  }
+  const files = inventory.filter(file => !Object.hasOwn(additions, file));
   assert.equal(files.length, group.fileCount, group.group + ': exact protected file set size');
   const digest = crypto.createHash('sha256');
   for (const file of files) {

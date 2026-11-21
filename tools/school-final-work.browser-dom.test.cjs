@@ -3,7 +3,7 @@ const {JSDOM}=require('jsdom');
 const root=path.resolve(__dirname,'..');
 const base='https://math.test',dir='trainers/school-workshop-check';
 const html=fs.readFileSync(path.join(root,dir,'index.html'),'utf8');
-const scripts=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>path.normalize(path.join(root,dir,m[1])));
+const scripts=[...html.matchAll(/<script defer src="([^"]+)"/g)].filter(m=>!m[1].startsWith('/assets/assistant/')).map(m=>path.normalize(path.join(root,dir,m[1])));
 function scriptFor(w,privateBlock,clearStore){
  if(clearStore) w.localStorage.setItem(clearStore[0],clearStore[1]);
  w.TextEncoder=TextEncoder;w.HTMLElement.prototype.scrollIntoView=function(){};
