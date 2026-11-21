@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "0bf8ed6eb851dff521b0823f1ce1a4f565939232a005cc8b0c6557278bebcfae",
-      "afterSha256": "d665ba0c2176bb840658737f9afc0ad9d2391130a383f3189bc20711735f1331",
+      "beforeSha256": "ab2434e0b967dc76eaed061c1fd13f9f2f5a42007ac92a70b61d067453ea8ecb",
+      "afterSha256": "4f51719c847561e464aed5bcf9a098ceb33b5466932c6844a6023f3374ea1d27",
       "placement": "before-head-close",
-      "sourceSha": "ae832cd8cabdce859aca250fe5f85d5c2fd26be2"
+      "sourceSha": "7442a597b30f40d6a3f8f69cbd7b987b31778644"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6867,6 +6867,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, часть 2, §26, с. 15. По №5.51 и №5.52 проверены каждое чтение, исходная пара чисел и различие верной величины с продиктованной записью. Мобильные занятия на двух размерах и математическая проверка прошли."
+    },
+    {
+      "previousBaseSha": "ae832cd8cabdce859aca250fe5f85d5c2fd26be2",
+      "sourceBaseSha": "7442a597b30f40d6a3f8f69cbd7b987b31778644",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "II часть, §26, с. 15. В №5.53–5.56 подтверждены исходные данные, личные уроки на 320 и 375 пикселях и совместный урок о доле високосного года с ошибкой, исправлением, передачей управления и двойной перезагрузкой."
     }
   ],
   "coverageUpdates": [
