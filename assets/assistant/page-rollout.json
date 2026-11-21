@@ -2235,10 +2235,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "6c5d80666c8b31bb78389ad3633c6430eba123df46937edc100ce6ba5fb57d0d",
-      "afterSha256": "ea1705a7a923c92d633ef3743edefcd53e258f5c5131d82dd455fd42c72f2ef7",
+      "beforeSha256": "3dfdb44de8e7e7e36df6eb9da1ebba43bc83509c739ff14b112cf2f3577cc706",
+      "afterSha256": "3edf4462b6048c2c6396aadf2c35fdf072b3f7ecd49fbc5bda9bf70db1a44e89",
       "placement": "before-head-close",
-      "sourceSha": "1d197956d3242000364d5662547b6d6810979399"
+      "sourceSha": "3f44a9dcf58949e872bb3c7617cc757768450564"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7269,6 +7269,16 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, II часть, §26, с. 15–16. Исходные №5.57–5.60: Проверены индивидуальные мобильные уроки и исследование в новой комнате, где каждая точка обозначает одну собаку, включая две перезагрузки и исправление без подсказки."
+    },
+    {
+      "previousBaseSha": "1d197956d3242000364d5662547b6d6810979399",
+      "sourceBaseSha": "3f44a9dcf58949e872bb3c7617cc757768450564",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "First-volume printed Vilenkin exercises through 1.134 and second-volume exercises through 5.66.",
+      "boundary": "Only the combined school entry receives this page binding."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
