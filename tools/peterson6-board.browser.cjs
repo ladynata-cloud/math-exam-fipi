@@ -477,9 +477,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   const afterLate = await synchronized(teacherFrame, lateFrame, 'late participant follows teacher');
   await synchronized(teacherFrame, studentFrame, 'original participant follows teacher');
   assert.deepEqual(afterLate.view.model.piles, [5, 5, 5]);
-  await assertPersonalStorage(lateSession,lateFrame);
-  // This observer leaves and later rejoins the same room with the same browser storage.
-  await lateSession.page.goto('about:blank',{waitUntil:'commit'});
+
 
 
   phase = 'feedback for ratio order and distributed signs';
@@ -509,6 +507,10 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await synchronized(teacherFrame, studentFrame, 'each product shown to pupil');
   assert.match(await studentFrame.locator('.help figure').innerText(), /−1 × \(a\) и −1 × \(−b\)/);
   await narrowShot(teacher, teacherFrame, 'peterson-board-320-bracket-feedback', '.help figure');
+
+  await assertPersonalStorage(lateSession,lateFrame);
+  // This observer leaves and later rejoins the same room with the same browser storage.
+  await lateSession.page.goto('about:blank',{waitUntil:'commit'});
 
   phase = 'exact salt concentration and feedback on the shared board';
   await lesson(teacherFrame, 'p15', 9);
@@ -924,7 +926,22 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await synchronized(teacherFrame, studentFrame, 'multiple-choice solution');
   assert.equal(await studentFrame.locator('#answer-form button[type="submit"]').isDisabled(), true);
   const authoredWorkBeforeTour = Object.keys((await snapshot(teacherFrame)).work.tasks).filter(id => /^p\d\d-/.test(id)).sort();
+  // Rejoin the same room between groups of routes. The full route audit
+  // also checks that browser navigation can resume from the stored board state.
+  async function resumeRouteTour(label) {
+    const checkpoint = await snapshot(teacherFrame);
+    await student.reload({ waitUntil: 'domcontentloaded' });
+    await waitConnected(student);
+    studentFrame = await courseFrame(student);
+    await waitSnapshot(studentFrame, checkpoint, label + ' pupil returns');
+    await teacher.reload({ waitUntil: 'domcontentloaded' });
+    await waitConnected(teacher);
+    teacherFrame = await courseFrame(teacher);
+    await waitSnapshot(teacherFrame, checkpoint, label + ' teacher returns');
+    await synchronized(teacherFrame, studentFrame, label + ' rendered state');
+  }
   for (let n = 1; n <= 58; n++) {
+    if (n > 1 && (n - 1) % 15 === 0) await resumeRouteTour('topic ' + n);
     const id = 'p' + String(n).padStart(2, '0');
     await lesson(teacherFrame, id);
     const topic = await synchronized(teacherFrame, studentFrame, 'lesson ' + id);
@@ -941,6 +958,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.equal(skills.length, 43);
   let practiceScreens = 0;
   for (const skill of skills) {
+    if (practiceScreens % 24 === 0) await resumeRouteTour('training ' + skill);
     await teacherFrame.locator('header nav a[href="#skills"]').click();
     await teacherFrame.locator('a[href="#practice/' + skill + '/1"]').click();
     for (const level of ['1', '2', '3']) {
