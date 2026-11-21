@@ -106,7 +106,7 @@
       const pivot=start+copy;
       planes.push('<path d="M'+start+' '+y+'L'+pivot+' '+(y-30)+'L'+(start+copy*2)+' '+y+'" fill="none" stroke="#405e7c" stroke-width="2"/><circle cx="'+pivot+'" cy="'+(y-30)+'" r="3" fill="#405e7c"/><line x1="'+(start+opened*2)+'" y1="'+(y-9)+'" x2="'+(start+opened*2)+'" y2="'+(y+9)+'" stroke="#426353" stroke-dasharray="2 2"/><line x1="20" y1="'+y+'" x2="255" y2="'+y+'" stroke="#8d998e"/><line x1="'+start+'" y1="'+y+'" x2="'+(start+copy*2)+'" y2="'+y+'" stroke="#ae6736" stroke-width="4"/><path d="M'+start+' '+(y-8)+'v16 M'+(start+copy*2)+' '+(y-8)+'v16" stroke="#7c4827"/>');
     }
-    return '<svg viewBox="0 0 270 '+(state?312:263)+'" style="display:block;width:100%;max-width:360px" role="img" aria-label="Пять отрезков для переноса общего раствора циркуля"><g font-size="14" fill="#21382c">'+planes.join('')+'</g></svg>';
+    return '<svg class="v5q-printed-compass-figure" viewBox="0 0 270 '+(state?312:263)+'" style="display:block;width:100%;max-width:360px" role="img" aria-label="Пять отрезков для переноса общего раствора циркуля"><g font-size="14" fill="#21382c">'+planes.join('')+'</g></svg>';
   }
 
   function drawing(d,options={}){
@@ -125,7 +125,7 @@
     }
     order.forEach((p,i)=>{art+=dot(p,x(d.positions[i]),y,y-8,p===marked);});
     if(d.extra){const off=[[.15,23], [.44,84], [.76,23], [.94,84]];d.extra.forEach((p,i)=>{const [portion,h]=off[i];art+=dot(p,pad+portion*(W-2*pad),h,h-6,p===marked);});}
-    return '<svg viewBox="0 0 '+W+' '+(showRuler?112:90)+'" role="img" aria-label="'+(d.kind==='split'?'Один возможный чертёж со сменой порядка точек':d.kind==='lengths'?'Четыре отмеченные точки на сантиметровой шкале':d.kind==='membership'?'Отрезок с точками внутри, за концом и в стороне от прямой':'Пять точек в порядке слева направо')+'" style="display:block;width:100%;max-width:420px;margin:0 auto">'+art+'</svg>';
+    return '<svg class="v5q-printed-line-figure" viewBox="0 0 '+W+' '+(showRuler?112:90)+'" role="img" aria-label="'+(d.kind==='split'?'Один возможный чертёж со сменой порядка точек':d.kind==='lengths'?'Четыре отмеченные точки на сантиметровой шкале':d.kind==='membership'?'Отрезок с точками внутри, за концом и в стороне от прямой':'Пять точек в порядке слева направо')+'" style="display:block;width:100%;max-width:420px;margin:0 auto">'+art+'</svg>';
   }
   function explore(l,s,t){
     const d=t.data;

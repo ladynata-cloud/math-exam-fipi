@@ -226,6 +226,19 @@
     active=session;host.dataset.v5Quality='lesson';root.document.body.classList.add('v5-quality-active');
     const head=host.querySelector('.lesson-head'),task=host.querySelector('#task-panel'),model=host.querySelector('#model'),theory=host.querySelector('.v6-theory'),claim=host.querySelector('#claim-feedback')?.closest('section'),d=detail(session);
     if(lesson.number)task.querySelector('.question').insertAdjacentHTML('afterend',root.Vilenkin5Numbered.taskTable(session.task,session));
+    if(lesson.fullKey==='printed-check-2-2'&&['learn','practice'].includes(session.mode)){
+      const choose=root.document.createElement('form');
+      choose.setAttribute('data-v5-print-number','');
+      choose.innerHTML='<label>Трёхзначное число для моей работы <input type="text" inputmode="numeric" maxlength="3" autocomplete="off"></label> <button class="button quiet">Начать с этим числом</button><p data-v5-own-note aria-live="polite">Можно оставить предложенное число. При смене числа решение начинается с первого шага.</p>';
+      choose.querySelector('input').value=String(session.task.data.original);head.append(choose);
+      choose.onsubmit=event=>{
+        event.preventDefault();if(readOnly)return;
+        const value=choose.querySelector('input').value.trim(),note=choose.querySelector('[data-v5-own-note]');
+        if(!/^[1-9][0-9]{2}$/.test(value)){note.textContent='Введи ровно три цифры. Первая цифра должна быть от 1 до 9.';return;}
+        if(Number(value)===session.task.data.original){note.textContent='Это число уже выбрано. Можно продолжить текущий шаг.';return;}
+        connection?.choosePrintedNumber?.(Number(value));
+      };
+    }
     if(['table-read','table-total','circle-shapes','circle-radius'].includes(lesson.fullKey)&&C.pathById.vilenkin5.numbered?.length){
       const numbered=C.pathById.vilenkin5.numbered.filter(id=>C.byId[id].point===lesson.point).map(id=>'<a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a>');
       if(numbered.length)head.insertAdjacentHTML('beforeend','<p>Задания из этого пункта учебника. '+numbered.join(' · ')+'</p>');

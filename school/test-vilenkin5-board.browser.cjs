@@ -502,6 +502,21 @@ async function run(browser, origin, backend, failures) {
   const replica=await same(studentFrame,teacherFrame,'unchanged compass opening reproduces the length');assert.equal(replica.scene.model.delta,2);assert(replica.scene.model.seen);
   await narrow(student,studentFrame,'equal-segment-with-compass');await ownership(teacher,student,false);
 
+  phase = 'choose a three-digit number in the second printed self-check';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-check-2-2"]').click();await studentFrame.locator('[data-v5-print-number]').waitFor();
+  await teacherFrame.locator('[data-v5-print-number] input').fill('707');await teacherFrame.locator('[data-v5-print-number] button').click();
+  const ownNumber=await same(teacherFrame,studentFrame,'new pupil-selected number is part of the task state');assert.equal(ownNumber.scene.seed,707);
+  assert.equal(await studentFrame.locator('[data-v5-print-number] input').inputValue(),'707');
+  await teacherFrame.locator('#answer').fill('6');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('7');await teacherFrame.locator('#answer-form button').click();
+  const oneDigit=await same(teacherFrame,studentFrame,'the units class and units digit are distinguished');assert.match(oneDigit.scene.message,/тройку/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('707');await studentFrame.locator('#answer-form button').click();
+  const ownCorrection=await same(studentFrame,teacherFrame,'pupil corrects their own generated class');assert(ownCorrection.scene.correct);assert.deepEqual(ownCorrection.scene.hintLevels,{});
+  await studentFrame.locator('[data-v5-param=place]').selectOption({value:'3'});await studentFrame.locator('[data-v5-prediction]').fill('7');await studentFrame.locator('[data-v5-predict] button').click();
+  const ownPlace=await same(studentFrame,teacherFrame,'the fourth digit from the right belongs to the same private choice');assert.equal(ownPlace.scene.model.place,3);assert(ownPlace.scene.model.seen);
+  await narrow(student,studentFrame,'self-check-with-selected-number');await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();

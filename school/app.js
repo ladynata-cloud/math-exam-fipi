@@ -134,7 +134,7 @@
   main.querySelector('.v5-hero h1').insertAdjacentHTML('afterend',finalCheckLink(p.id));
   if(V5Q)V5Q.courseView(main,p);
   main.querySelector('.v5-hero').insertAdjacentHTML('afterend',v5NumberedLinks(p));
-  document.getElementById('v5-search').oninput=function(e){var q=e.target.value.trim().toLowerCase();document.getElementById('v5-search-results').innerHTML=q.length<2?'':p.ids.concat(p.numbered||[]).filter(function(id){var l=C.byId[id];return (l.title+' '+l.explanation+' пункт '+l.point).toLowerCase().includes(q);}).map(function(id){return '<p><a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a></p>';}).join('');};
+  document.getElementById('v5-search').oninput=function(e){var q=e.target.value.trim().toLowerCase();document.getElementById('v5-search-results').innerHTML=q.length<2?'':p.ids.concat(p.numbered||[],p.printedChecks||[]).filter(function(id){var l=C.byId[id];return (l.title+' '+l.explanation+' пункт '+l.point).toLowerCase().includes(q);}).map(function(id){return '<p><a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a></p>';}).join('');};
  }
  function v5NumberedLinks(path,point){
   if(!path.numbered?.length)return '';
@@ -146,8 +146,10 @@
    if(!groups.has(label))groups.set(label,[]);
    groups.get(label).push('<li><a href="#lesson/'+id+'">'+esc(lesson.title)+'</a> · с. '+source.page+(source.pageEnd?'–'+source.pageEnd:'')+'</li>');
   }
-  if(!groups.size)return '';
-  return '<section class="panel"><h2>Решаем по номерам учебника</h2><p>Виленкин, 5 класс, издание 2023 года.</p>'+Array.from(groups,([label,items])=>'<h3>'+label+'</h3><ul>'+items.join('')+'</ul>').join('')+'</section>';
+  const checks=(path.printedChecks||[]).filter(id=>!point||C.byId[id].point===point);
+  const checkLinks=checks.length?'<h3>Проверочные работы из учебника</h3><ul>'+checks.map(id=>{const l=C.byId[id];return '<li><a href="#lesson/'+id+'">'+esc(l.title)+'</a> · часть '+l.source.part+', с. '+l.source.page+'</li>';}).join('')+'</ul>':'';
+  if(!groups.size&&!checks.length)return '';
+  return '<section class="panel"><h2>Решаем по номерам учебника</h2><p>Виленкин, 5 класс, издание 2023 года.</p>'+Array.from(groups,([label,items])=>'<h3>'+label+'</h3><ul>'+items.join('')+'</ul>').join('')+checkLinks+'</section>';
  }
  function v5Unit(point){enterBoardFrame();var p=C.pathById.vilenkin5,u=p&&p.units[Number(point)-1];if(!u)return course('vilenkin5');selectCourse('vilenkin5');main.innerHTML='<a href="#course/vilenkin5">← Весь курс Виленкина 5</a><p class="eyebrow section">'+(u.point<=51?'Пункт '+u.point+' · часть '+u.part+' · с. '+u.page:'Практикум')+'</p><h1>'+esc(u.title)+'</h1><p class="lead">Смысл → модель → шаги решения → новая самостоятельная задача.</p><div class="skill-list">'+u.ids.map(skillRow).join('')+'</div>'+v5NumberedLinks(p,u.point)+boardLink('#v5-unit/'+u.point)+(u.point<p.units.length?'<p><a href="#v5-unit/'+(u.point+1)+'">Следующий пункт →</a></p>':'');}
  function v6Course(p){
@@ -440,7 +442,10 @@
  if(exerciseReturn&&/^\d{1,3}\.\d{1,3}$/.test(exerciseReturn)){
   var returnLink=document.createElement('a');returnLink.className='button quiet';returnLink.href='m9-exercises/index.html#'+exerciseReturn.replace('.','/');returnLink.textContent='← Вернуться к задаче и сохранённому шагу';main.parentNode.insertBefore(returnLink,main);
  }
- if(V5Q)V5Q.connect({getSession:function(){return session;},canUsePersonal:canUsePersonalVilenkin,canPersistSession:function(draft){return draft===session&&personalVilenkin();},reconcilePersonal:reconcileVilenkinQuality,save:saveLesson,applyScene:function(route,draft){clearTimeout(draftTimer);session=draft;returns=[];if(draft?.mode==='practice')practiceSeeds[draft.id]=draft.seed;if(boardFrame)state=S.blank();activeCourse='vilenkin5';history.replaceState(null,'',location.pathname+location.search+route);render();}});
+ if(V5Q)V5Q.connect({choosePrintedNumber:function(number){
+  if(session?.id!=='v5f-printed-check-2-2'||!['learn','practice'].includes(session.mode)||!Number.isInteger(number)||number<100||number>999||session.task.data.original===number)return;
+  begin(session.id,session.mode,{seed:number});
+ },getSession:function(){return session;},canUsePersonal:canUsePersonalVilenkin,canPersistSession:function(draft){return draft===session&&personalVilenkin();},reconcilePersonal:reconcileVilenkinQuality,save:saveLesson,applyScene:function(route,draft){clearTimeout(draftTimer);session=draft;returns=[];if(draft?.mode==='practice')practiceSeeds[draft.id]=draft.seed;if(boardFrame)state=S.blank();activeCourse='vilenkin5';history.replaceState(null,'',location.pathname+location.search+route);render();}});
  render();
  }
 })();

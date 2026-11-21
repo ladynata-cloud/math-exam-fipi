@@ -601,8 +601,33 @@ function compassAndCompoundRegression(){
   equal(f.errors,[]);f.close();
 }
 
+
+function printedChecksRegression(){
+  const f=boot(),ids=['v5f-printed-check-2-1','v5f-printed-check-2-2'],fl=f.C.pathById.vilenkin5;
+  equal(plain(fl.printedChecks),ids);ok(!fl.numbered.some(id=>ids.includes(id)));equal(fl.ids.length,134);ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));
+  const buy=f.M.generate(ids[0],0);equal(plain(buy.steps.map(s=>s.answer)),[56,3,130,655]);equal(buy.answer,700);
+  for(let seed=0;seed<220;seed++){
+    const t=f.M.generate(ids[0],seed),d=t.data;
+    equal(d.total,d.mass.reduce((sum,kg,i)=>sum+kg*d.prices[i],0));
+    equal(t.answer,d.total-d.prices[0]+d.prices[1]-d.prices[2]+(d.changed[3]-d.mass[3])*d.prices[3]);
+  }
+  for(let own=100;own<=999;own++){
+    const t=f.M.generate(ids[1],own),d=t.data;equal(d.original,own);equal(String(d.n),String(own)+own);
+    equal(plain(t.steps.map(s=>s.answer)),[6,own,own%10,own%10,d.n+1,d.n-1,d.n+1000]);equal(t.answer,d.n/1001);
+  }
+  f.route('#lesson/'+ids[0]);
+  for(const q of buy.steps){f.submit(value(f.M,q));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
+  f.submit('655');ok(f.snapshot().scene.message.includes('первоначальный'));f.submit('700');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[1]);const choose='[data-v5-print-number]';f.input(choose+' input','07');f.click(choose+' button');equal(f.snapshot().scene.seed,0);equal(f.snapshot().scene.attempt,0);ok(f.$('[data-v5-own-note]').textContent.includes('три цифры'));
+  f.input(choose+' input','909');f.click(choose+' button');equal(f.snapshot().scene.seed,909);f.submit('6');f.click('[data-cmd=next]');f.submit('9');ok(f.snapshot().scene.message.includes('тройку'));
+  f.submit('909');ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');const state=f.snapshot(),stored=f.saved();f.close();
+  const resumed=boot('#lesson/'+ids[1],stored);equal(resumed.snapshot().scene.seed,909);equal(resumed.snapshot().scene.step,state.scene.step);equal(resumed.$(choose+' input').value,'909');
+  resumed.input(choose+' input','909');resumed.click(choose+' button');equal(resumed.snapshot().scene.step,state.scene.step);
+  equal(resumed.errors,[]);resumed.close();
+}
+
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();printedSegmentRegression();compassAndCompoundRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();printedSegmentRegression();compassAndCompoundRegression();printedChecksRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);

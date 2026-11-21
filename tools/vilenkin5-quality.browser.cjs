@@ -178,6 +178,22 @@ const server=http.createServer((req,res)=>{
       assert.match(await page.locator('#task-panel .question').innerText(),/Новый авторский опрос|Новое авторское задание|Новые вымышленные наблюдения|Вымышленные данные исследовательской игры/);
       assert(await page.locator('#task-panel table').isVisible());
     }
-    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:47,screenshots:72,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
+
+    for(const width of [320,375]){
+      await page.setViewportSize({width,height:840});await go('#lesson/v5f-printed-check-2-1');
+      const modes=await page.locator('.lesson-head .v5q-mode').evaluateAll(items=>items.map(b=>({width:b.offsetWidth,height:b.offsetHeight})));
+      assert.equal(modes.length,3);assert(modes.every(b=>b.width>=130&&b.height<=60),'all three mode labels remain whole at '+width+' px');
+      const receipt=page.locator('#task-panel table');assert.equal(await receipt.locator('tbody tr').count(),4);
+      assert.equal(await receipt.locator('tbody td').filter({hasText:/^\?$/}).count(),3);await receipt.scrollIntoViewIfNeeded();
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(shots,'printed-receipt-'+width+'.png')});
+      await go('#lesson/v5f-printed-check-2-2');const own=page.locator('[data-v5-print-number]');
+      await own.locator('input').fill(width===320?'909':'404');await own.locator('button').click();
+      const number=width===320?'909':'404';await page.waitForFunction(n=>Vilenkin5Quality.getState().scene.seed===Number(n),number);
+      await page.locator('#answer').fill('6');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();
+      await page.reload();await own.locator('input').waitFor();assert.equal(await own.locator('input').inputValue(),number);
+      assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.step),1);await own.scrollIntoViewIfNeeded();
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(shots,'printed-chosen-number-'+width+'.png')});
+    }
+    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:47,printedChecks:2,screenshots:76,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});
