@@ -1443,3 +1443,19 @@ test('read four signed gaps, compound versus simple increases and all six geomet
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('read both real flight tracks and separately recover the two printed surveys numbered 143',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p19/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(5);set(c[1],60);set(c[2],2);assert(out().includes('24/5 л'));assert.equal(f.d.querySelectorAll('#model tbody tr').length,10);set(c[0],10);set(c[2],1);assert(out().includes('6 л'));
+  c=go(32);assert.equal(f.d.querySelectorAll('#task-figure [data-source-series]').length,2);
+  for(const [time,black,pink]of [[720,'1600','800'],[860,'2400','1600'],[1000,'3200/3','800']]){set(c[1],time);set(c[2],1);assert(out().includes('A: '+black+' км'));assert(out().includes('Б: '+pink+' км'));if(time===860)assert(out().includes('Б: 1600 км, окончание стоянки'));if(time===1000)assert(out().includes('Б: 800 км, на земле'));}
+  set(c[0],1);set(c[1],860);set(c[2],2);assert(out().includes('Б: 1600 км, на земле'));assert.equal(f.d.querySelectorAll('#model [data-source-series]').length,2);
+  c=go(34);set(c[1],96);set(c[2],2);assert(out().includes('1/4 м/с'));set(c[0],30);set(c[2],2);assert(out().includes('5/16 м/с'));
+  c=go(35);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,8);set(c[1],5);set(c[2],2);assert(out().includes('114'));set(c[0],1);set(c[2],2);assert(out().includes('117'));
+  c=go(40);set(c[1],2);set(c[2],2);assert(out().includes('17%'));assert.equal(f.d.querySelectorAll('#model tbody tr').length,7);set(c[0],1);set(c[1],6);set(c[2],2);assert(out().includes('7%'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

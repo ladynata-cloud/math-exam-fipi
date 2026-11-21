@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,987);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,999);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -966,6 +966,13 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  for(const [n,total]of [[136,4],[137,4],[138,1],[139,6]]){assert.equal(by(n).length,total);assert(by(n).every(t=>t.source.page===35));}
  assert.deepEqual(by(136).map(t=>t.steps[1].answer),['40','160','80','120']);assert.deepEqual(by(137).map(t=>t.steps[1].answer),['2','80','1200','1210']);
  assert.deepEqual(by(139).map(t=>t.steps[1].answer),['27','6','6','21','54','94']);
+}
+{
+ const t=D.lessons.find(l=>l.id==='p19'),by=n=>Array.from(t.tasks.filter(k=>k.source.exercise===n));
+ for(const [n,k]of [[140,1],[141,5],[142,1],[143,6]])assert.equal(by(n).length,k);
+ assert.equal(by(140)[0].steps.length,12);assert.deepEqual(Array.from(by(141)[2].steps,s=>s.answer),['800','800','1200','800','600','600','600']);
+ assert.deepEqual(Array.from(by(141)[3].steps,s=>s.answer).slice(0,6),['1600','800','2400','1600','3200/3','800']);assert.deepEqual(Array.from(by(141)[4].steps,s=>s.answer),['09:30','17:30','11:20','18:00']);
+ const surveys=by(143);assert.equal(surveys.filter(k=>k.hobbySurvey).length,5);assert.equal(surveys.filter(k=>k.legoSurvey).length,1);assert.deepEqual(Array.from(surveys[5].steps,s=>s.answer).slice(0,8),['30','30','20','17','10','10','10','3']);assert(D.exerciseIndexByPart[2][144].missing);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
