@@ -11,7 +11,11 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
  const go=async hash=>{await page.goto(base+'#'+hash);await page.locator('h1').waitFor();};
  await go('books');assert.equal(await page.evaluate(()=>WorkshopCurriculum.sources.length),77);
  await page.locator('#book-search').fill('Рубин');assert(await page.locator('.card').count()>=5);
- await go('book/source-64');await page.locator('[data-cmd=learn]').first().waitFor();
+ await go('book/source-64');
+ const parabolaEntry=page.locator('[data-cmd="book-skill"][data-value="source-64/11"]');
+ await parabolaEntry.click();
+ await page.waitForURL(base+'#lesson/sec-parabola');
+ await page.locator('#model svg').waitFor();
  const ids=await page.evaluate(()=>WorkshopCurriculum.lessons.filter(l=>/^(sec-|alg-)/.test(l.id)).map(l=>l.id));assert.equal(ids.length,30);
  await page.evaluate(()=>localStorage.setItem('older-trainer-sentinel','preserve'));
  for(const id of ids){
