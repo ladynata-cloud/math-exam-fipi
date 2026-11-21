@@ -59,7 +59,8 @@
       ['/geometry-course/textbook/data/coordinate-proof-method.json', '№1038–1044'],
       ['/geometry-course/textbook/data/coordinate-curves.json', 'пункты 97–99, №1045–1046'],
       ['/geometry-course/textbook/data/circle-intersections.json', '№1047–1050'],
-      ['/geometry-course/textbook/data/circle-equations.json', '№1051–1057']
+      ['/geometry-course/textbook/data/circle-equations.json', '№1051–1057'],
+      ['/geometry-course/textbook/data/coordinate-lines.json', '№1058–1064']
   ];
 
   async function forCourse(base) {

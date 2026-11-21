@@ -29,14 +29,15 @@ const server=http.createServer((req,res)=>{
  const curveAnswers={t97:['-2','-1'],t98:['9','5'],t99:['1','4'],'1045-1':['0','0'],'1045-2':['-2','-2'],'1045-3':['3','-4'],'1045-4':['0','3'],'1045-5':['-2','2'],'1046-1':['2','4'],'1046-2':['1','1'],'1046-3':['2','2']};
  const intersectionAnswers={'1047-1':['13','2'],'1047-2':['13','9'],'1047-3':['13','10'],1048:['25','18'],'1049-1':['9','2'],'1049-2':['16','1'],'1050-1':['25','0'],'1050-2':['25','-6']};
  const equationAnswers={1051:['2','13'],'1052-1':['5','4'],'1052-2':['2','9'],'1052-3':['-7','9/4'],'1052-4':['-3','25'],1053:['10','13'],1054:['25','25'],'1055-1':['2','13'],'1055-2':['3','10'],1056:['16','1'],1057:['4','3']};
+ const lineAnswers={'1058-1':['3','-1'],'1058-2':['-3','-3'],'1058-3':['-6','-1'],1059:['3','2'],'1060-1':['1','-6'],'1060-2':['5','3'],1061:['5','-3'],'1062-1':['3','-2'],'1062-2':['-2','3'],'1062-3':['-4','1'],'1062-4':['7','-1'],1063:['5','4'],1064:['5','6']};
  const reviewAnswers={r1:['7','0'],r2:['-3','0'],r3:['5','13'],r4:['2','5'],r5:['2','4'],r6:['4','6'],r7:['2','3'],r8:['3','8'],r9:['2','3'],r10:['4','-2'],r11:['3','-5'],r12:['3','-3'],r13:['-3','3'],r14:['-3','2'],'r15-1':['0','12'],'r15-2':['0','5'],r16:['-3','0'],r17:['-6','6'],r18:['-2','14'],r19:['5','7'],r20:['6','15']};
  for(const width of [320,1280]) {
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1057/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1064/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -50,6 +51,9 @@ const server=http.createServer((req,res)=>{
     '998-1':['4','-4','отрицательный','−4,0'],'998-2':['2','20','в сантиметры','+20'],'998-3':['1','-1','противоположные','−1.0'],'998-4':['25','5','возведения в квадрат','+5'],
     '999-1':['0,5','2','обратный переход','2.0'],'999-2':['2','1/2','короче','½'],'999-3':['1/2','-1/2','отрицательным','−0,5'],'999-4':['-1','1','D→C','+1'],'999-5':['1','-1','направлению','−1.0'],
     '1045-1':['0;0;9','0;0;3','квадрат радиуса','(0; 0); 3'],'1045-2':['-1;2;2','1;-2;2','знаки у центра','(1; −2); 2'],'1045-3':['5;-3;5','-5;3;5','знаки у центра','(−5; 3); 5'],'1045-4':['1;0;4','1;0;2','квадрат радиуса','(1; 0); 2'],'1045-5':['0;-2;2','0;-2;√2','квадрат радиуса','(0; −2); sqrt(2)'],
+    '1058-1':['1;1;0','3x+4y+1=0','обе точки','3; 4; 1'],'1058-2':['1;-1;0','x+y−7=0','обе точки','1; 1; −7'],'1058-3':['3;2;2','3x−2y+2=0','обе точки','3; −2; 2'],
+    1059:['7;1;3','7x−y+3=0','обе точки','7; −1; 3'],'1060-1':['1;-1;0','1;-1;0 | 0;1;-1','каждую прямую','y−1=0; x−y=0'],'1060-2':['3;5;5','3x−5y+5=0','обе точки','3; −5; 5'],
+    1061:['0;1;-5','1;0;-2 | 0;1;-5','каждую прямую','y−5=0; x−2=0'],'1062-1':['Oy','Ox','с осями','ОХ'],'1062-2':['Ox','Oy','с осями','оу'],'1062-3':['Oy','Ox','с осями','ось Ox'],'1062-4':['Ox','Oy','с осями','оси Oy'],1063:['5','7','y−x=2','7,0'],1064:['2x+5y=10','2;5;10','положительные вершины','2x±5y=±10'],
     1051:['3;2;5/2','9;2;25/4','знаменателю','9; 2; 6,25'],
     '1052-1':['0;5;3','x²+(y−5)²=9','квадрат радиуса','0; 5; 9'],'1052-2':['1;-2;4','(x+1)²+(y−2)²=4','координаты центра','−1; 2; 4'],'1052-3':['-3;-7;1/2','(x+3)^2+(y+7)^2=1/4','квадрат радиуса','(x+3)²+(y+7)²=0,25'],'1052-4':['4;-3;10','(x−4)²+(y+3)²=100','квадрат радиуса','4; −3; 100'],
     1053:['0;0;3','x²+y²=10','квадрат радиуса','0; 0; 10'],1054:['-3;2;25','x²+(y−6)²=25','координаты центра','0; 6; 25'],
@@ -133,7 +137,7 @@ const server=http.createServer((req,res)=>{
    const courierCase=Object.hasOwn(courierAnswers,n)?'case-'+(n==='1036'?4:5):null;
    const methodCase=Object.hasOwn(methodAnswers,n)?'case-'+(['1043','1044'].includes(n)?4:3):null;
    const curveCase=Object.hasOwn(curveAnswers,n)?'case-'+(n==='t99'||n.startsWith('1046-')?4:3):null;
-   const switchCase=Object.hasOwn(equationAnswers,n)||Object.hasOwn(intersectionAnswers,n)?'case-3':curveCase||methodCase||courierCase||figureCase||distanceCase||tableCase||positionCase||actionCase||gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
+   const switchCase=Object.hasOwn(lineAnswers,n)?(n==='1064'?'case-4':'case-3'):Object.hasOwn(equationAnswers,n)||Object.hasOwn(intersectionAnswers,n)?'case-3':curveCase||methodCase||courierCase||figureCase||distanceCase||tableCase||positionCase||actionCase||gridCase||extraCase||(lengthCases[n]?'case-'+lengthCases[n]:null)||(appliedCases[n]?'case-'+appliedCases[n]:null)||(midpointCases[n]?'case-'+midpointCases[n]:null)||(n==='969-3'?'case-3':algebraCases[number]?'case-'+algebraCases[number]:null)||(scaleCases[theory?n:number]?'case-'+scaleCases[theory?n:number]:null)||(identityCases[number]?'case-'+identityCases[number]:null)||vectorProofCase||vectorCases[n]||(n==='918'?'case-all-nine':n==='926'?'case-2':n==='933'?'case-4':n==='934'?'case-3':n.startsWith('935-')?'case-2':n.startsWith('937-')||n==='938'||n==='939-1'?'case-2':null);
    if(switchCase) {
     await page.locator('[data-case="'+switchCase+'"]').click();
     assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),switchCase);
