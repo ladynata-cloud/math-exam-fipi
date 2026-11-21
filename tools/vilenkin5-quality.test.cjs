@@ -152,6 +152,17 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function namedMeasuresQuarterRegression(){
+  const f=boot(),v=f.w.Vilenkin5NamedParts,a='v5f-printed-5-43',b='v5f-printed-5-44',u=f.M.generate(a,0),square=f.M.generate(b,0);
+  const rows=[...u.steps,u],accepted=[['дециметр','1дм'],['10 кг','10кг'],['копейка','коп.'],['ч','час'],['секунда','сек.'],['мм²','кв. мм','1 мм^2'],['см³','см3','мл'],['ар','сотка','100 м²']];
+  rows.forEach((row,i)=>{for(const val of accepted[i])ok(f.M.accepts(val,row));ok(!f.M.accepts(accepted[(i+1)%8][0],row));});
+  equal(plain([...square.steps,square].map(x=>x.answer)),[64,16,32,48]);
+  for(let seed=0;seed<80;seed++){const z=f.M.generate(b,seed),s=z.data.quarterPicture.side,t=f.M.generate(a,seed);equal(new Set(t.data.namedUnits).size,8);
+    for(let count=1;count<=3;count++)for(const kind of [0,1])for(const angle of [0,17,45])equal(v.explore(z,{kind,angle,count}).answer*4,s*s*count);}
+  const sample=f.M.generate(b,0);for(let angle=0;angle<=45;angle++){const holder=f.w.document.createElement('div');holder.innerHTML=v.explore(sample,{kind:1,angle,count:2}).visual;const polys=holder.querySelectorAll('polygon');equal(polys.length,4);for(const poly of polys){const pts=poly.getAttribute('points').split(' ').map(p=>p.split(',').map(Number));const area=Math.abs(pts.reduce((sum,[x,y],i)=>{const [nx,ny]=pts[(i+1)%pts.length];return sum+x*ny-y*nx;},0))/2;ok(Math.abs(area-6400)<0.01);}}
+  f.close();const g=boot('#lesson/'+a);g.submit('см');ok(g.snapshot().scene.message.includes('Сантиметров'));g.submit('дм');ok(g.snapshot().scene.correct&&!g.snapshot().scene.assisted);g.close();
+}
+
 function equalPartsRegression(){
   const f=boot(),v=f.w.Vilenkin5EqualParts,ids=[40,41,42].map(n=>'v5f-printed-5-'+n);
   const answers=t=>plain([...t.steps,t].map(x=>x.answer));equal(answers(f.M.generate(ids[0],0)),[1,3,{n:3,d:7},4,{n:4,d:7}]);equal(answers(f.M.generate(ids[1],0)),[1,3,{n:3,d:8}]);equal(answers(f.M.generate(ids[2],0)),[324,3,54]);
@@ -721,7 +732,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42'));
+  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -1325,7 +1336,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
