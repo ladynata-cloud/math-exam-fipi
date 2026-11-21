@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T22:19:54Z",
-  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–649, with 1,143 reviewed cards. Other inventoried source positions remain drafts.",
+  "registeredAt": "2026-11-21T22:25:21Z",
+  "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–652, with 1,156 reviewed cards. Other inventoried source positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1948,6 +1948,28 @@
       ],
       "evidence": "tools/stereo-textbook/signed-coordinate-arithmetic.json",
       "mathematicalReport": "tools/stereo-textbook/signed-coordinate-arithmetic.test.cjs"
+    },
+    {
+      "reviewer": "Codex: supplied Atanasyan 2024, printed 168, all ratios, zero components, strict span tests and the worked examples on printed 168, with official answers on 270 where supplied.",
+      "reviewedAt": "2026-11-21T22:25:21Z",
+      "scope": "Five vector collinearity decisions including zero and mismatched ratios, both parameter pairs, and six independent plane-span constructions with explicit witnesses or contradictions on printed page 168.",
+      "cardIds": [
+        "ex-main-0650-a",
+        "ex-main-0650-b",
+        "ex-main-0650-c",
+        "ex-main-0650-d",
+        "ex-main-0650-e",
+        "ex-main-0651-a",
+        "ex-main-0651-b",
+        "ex-main-0652-a",
+        "ex-main-0652-b",
+        "ex-main-0652-c",
+        "ex-main-0652-d",
+        "ex-main-0652-e",
+        "ex-main-0652-f"
+      ],
+      "evidence": "tools/stereo-textbook/coordinate-span-ratios.json",
+      "mathematicalReport": "tools/stereo-textbook/coordinate-span-ratios.test.cjs"
     }
   ],
   "cards": [
@@ -6522,6 +6544,58 @@
     {
       "id": "ex-main-0649",
       "sha256": "f92030988c6ded86f4b523eb3f89298f6598ca71a4212afb4a5636d615b97865"
+    },
+    {
+      "id": "ex-main-0650-a",
+      "sha256": "bfaff69138409df44e7fee46045c5deab807e094fd9eded3d4e230e554a75630"
+    },
+    {
+      "id": "ex-main-0650-b",
+      "sha256": "1a01ac7daae5d771ce16ef0cd9c56efa799bdd4f32579010004d35876ba2844e"
+    },
+    {
+      "id": "ex-main-0650-c",
+      "sha256": "faae5e43cff863eae2da622d299f13843bd837401ae75e5597a3c6663ff3dbc4"
+    },
+    {
+      "id": "ex-main-0650-d",
+      "sha256": "5303d4e5e0aad5ab9be32496a25409879883eb8b0c6bd25f5f644dcf21a8d7b6"
+    },
+    {
+      "id": "ex-main-0650-e",
+      "sha256": "0cd2c6c0d62e0efeda3c4be9b05a4e46f85fcbf73565e7c592e8ab6f90179bc1"
+    },
+    {
+      "id": "ex-main-0651-a",
+      "sha256": "2275de7f207219b49ac32e33505cf8e020f64ddf67f5255db99b2ea7d625fe7c"
+    },
+    {
+      "id": "ex-main-0651-b",
+      "sha256": "fd45f2f73f7e1c5771fe98229a2bb44e3f6e80099a1698a71c7edfd0b9a859b1"
+    },
+    {
+      "id": "ex-main-0652-a",
+      "sha256": "0d7597cab3b44e0ac26619e61da16eb851f995129ad91c625890f818327e91b3"
+    },
+    {
+      "id": "ex-main-0652-b",
+      "sha256": "b57154c9596f55b20cb43071cff06c2dff78e1d86a2d134eabd2525df7ad4f47"
+    },
+    {
+      "id": "ex-main-0652-c",
+      "sha256": "32419ac9e7239966e6654b662e91492a8d05d268acaf1f7d66f2e3f5bdb86471"
+    },
+    {
+      "id": "ex-main-0652-d",
+      "sha256": "76a75fdb49caf7426b7911070af4c0416a4158769a912febd14fa6b0d099681c"
+    },
+    {
+      "id": "ex-main-0652-e",
+      "sha256": "082387c523ea9eba7f9c93d1a13d92230e20dd28a3351453293c8d2bd784a0f4"
+    },
+    {
+      "id": "ex-main-0652-f",
+      "sha256": "dd256bb456a0761cf58788772fe9a5703f02ec81930c31d3e88e5e49513c04a4"
     }
   ]
 }
