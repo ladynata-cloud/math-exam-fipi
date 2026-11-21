@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T17:20:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 537, points 52–62 and all chapter V self-checks, with 875 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T17:43:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 540, points 52–62 and all chapter V self-checks, with 880 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1428,6 +1428,20 @@
       ],
       "evidence": "tools/stereo-textbook/pyramid-comparison-applications.json",
       "mathematicalReport": "tools/stereo-textbook/pyramid-comparison-applications.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T17:43:00Z",
+      "scope": "Three cylinder data sets, a volume-ratio proof and cone capacity in litres, exercises 538–540",
+      "cardIds": [
+        "ex-main-0538-a",
+        "ex-main-0538-b",
+        "ex-main-0538-c",
+        "ex-main-0539",
+        "ex-main-0540"
+      ],
+      "evidence": "tools/stereo-textbook/cylinder-applications.json",
+      "mathematicalReport": "tools/stereo-textbook/cylinder-applications.test.cjs"
     }
   ],
   "cards": [
@@ -4930,6 +4944,26 @@
     {
       "id": "ex-main-0537",
       "sha256": "667e7deb2509260ac406100c50fe5304156ecbf3af6d40b3b1b687aed0c607de"
+    },
+    {
+      "id": "ex-main-0538-a",
+      "sha256": "1941a6c34829ec4e06acafc01ae91e5e8c30423b07a2a5662d942fbe3478063c"
+    },
+    {
+      "id": "ex-main-0538-b",
+      "sha256": "b3c606bb75774b5567eb5bf748d06aa05b3f19e62d31d6bcf952c697cc8c6d90"
+    },
+    {
+      "id": "ex-main-0538-c",
+      "sha256": "35c008325533ef4fdaf069ff68355169152562306e30acde276e80a24604e5a5"
+    },
+    {
+      "id": "ex-main-0539",
+      "sha256": "848806a0ae45e3c5795b344a8b3d3200d9114b8fdd4ddc6c90e496407aad4e51"
+    },
+    {
+      "id": "ex-main-0540",
+      "sha256": "581a44be3ca17ad690974f5a167c3662c8c728ac8f39675b74b0399ac11f45bd"
     }
   ]
 }

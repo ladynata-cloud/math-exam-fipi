@@ -1,0 +1,261 @@
+{
+  "parts": {
+    "538": [
+      "а",
+      "б",
+      "в"
+    ],
+    "539": [
+      null
+    ],
+    "540": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "538": {
+      "id": "source-main-0538",
+      "kind": "exercise",
+      "title": "Задача № 538",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "538",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          140
+        ],
+        "pdfPages": [
+          142
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "539": {
+      "id": "source-main-0539",
+      "kind": "exercise",
+      "title": "Задача № 539",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "539",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          140
+        ],
+        "pdfPages": [
+          142
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "540": {
+      "id": "source-main-0540",
+      "kind": "exercise",
+      "title": "Задача № 540",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "540",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          140
+        ],
+        "pdfPages": [
+          142
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0538-a": {
+      "raw": "1a1666377578bb0463f93eae1dbd4ff8a53e72668f26abe66700576fd19d6ec7",
+      "authored": "1941a6c34829ec4e06acafc01ae91e5e8c30423b07a2a5662d942fbe3478063c",
+      "integrated": "66fbf88597d30e18420a413c157cb5ba6a3827a19e05b9a53f56aced73baf898"
+    },
+    "ex-main-0538-b": {
+      "raw": "76121652ee3407b3bdc2df6203554f7b61f5b7fa781ac5ae6dfbf6b6de298807",
+      "authored": "b3c606bb75774b5567eb5bf748d06aa05b3f19e62d31d6bcf952c697cc8c6d90",
+      "integrated": "fd3d55d94d315bdb64bb10ee26665168674c5472a4bd3a06b1c7eec12a155052"
+    },
+    "ex-main-0538-c": {
+      "raw": "83e8aa27905ae1a40e00f0fad0a91127053cdb8c766bd8fb2a936dd5b22b9842",
+      "authored": "35c008325533ef4fdaf069ff68355169152562306e30acde276e80a24604e5a5",
+      "integrated": "fe58bee72e11eea3b223b93e9a4735f8be0b9c88e10ca145ae2ec3cdba31288b"
+    },
+    "ex-main-0539": {
+      "raw": "2d918e542fcfcc4fe601ed1acf873f3bca341667d334105e728c8357555f6192",
+      "authored": "848806a0ae45e3c5795b344a8b3d3200d9114b8fdd4ddc6c90e496407aad4e51",
+      "integrated": "b7fa74e57f3fa2b75d04e558adae1780a5c668b956e52a96cb9bc921a7fa68b2"
+    },
+    "ex-main-0540": {
+      "raw": "7169cc475f796e8fb4694fbcf045ca901499502bb0a7fb107c88a0642ea6ffca",
+      "authored": "581a44be3ca17ad690974f5a167c3662c8c728ac8f39675b74b0399ac11f45bd",
+      "integrated": "b8b88d0dc5756c3cb3ab31f37b4c99148c9e74337f9458a00782168b6c54e6a9"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0538-a|condition",
+      "cylinder-ex-main-0538-a-condition"
+    ],
+    [
+      "ex-main-0538-a|help:h1",
+      "cylinder-ex-main-0538-a-help-h1"
+    ],
+    [
+      "ex-main-0538-a|help:h2",
+      "cylinder-ex-main-0538-a-help-h2"
+    ],
+    [
+      "ex-main-0538-a|step-1",
+      "cylinder-ex-main-0538-a-step-1"
+    ],
+    [
+      "ex-main-0538-a|step-2",
+      "cylinder-ex-main-0538-a-step-2"
+    ],
+    [
+      "ex-main-0538-a|step-3",
+      "cylinder-ex-main-0538-a-step-3"
+    ],
+    [
+      "ex-main-0538-a|step-4",
+      "cylinder-ex-main-0538-a-step-4"
+    ],
+    [
+      "ex-main-0538-b|condition",
+      "cylinder-ex-main-0538-b-condition"
+    ],
+    [
+      "ex-main-0538-b|help:h1",
+      "cylinder-ex-main-0538-b-help-h1"
+    ],
+    [
+      "ex-main-0538-b|help:h2",
+      "cylinder-ex-main-0538-b-help-h2"
+    ],
+    [
+      "ex-main-0538-b|step-1",
+      "cylinder-ex-main-0538-b-step-1"
+    ],
+    [
+      "ex-main-0538-b|step-2",
+      "cylinder-ex-main-0538-b-step-2"
+    ],
+    [
+      "ex-main-0538-b|step-3",
+      "cylinder-ex-main-0538-b-step-3"
+    ],
+    [
+      "ex-main-0538-b|step-4",
+      "cylinder-ex-main-0538-b-step-4"
+    ],
+    [
+      "ex-main-0538-c|condition",
+      "cylinder-ex-main-0538-c-condition"
+    ],
+    [
+      "ex-main-0538-c|help:h1",
+      "cylinder-ex-main-0538-c-help-h1"
+    ],
+    [
+      "ex-main-0538-c|help:h2",
+      "cylinder-ex-main-0538-c-help-h2"
+    ],
+    [
+      "ex-main-0538-c|step-1",
+      "cylinder-ex-main-0538-c-step-1"
+    ],
+    [
+      "ex-main-0538-c|step-2",
+      "cylinder-ex-main-0538-c-step-2"
+    ],
+    [
+      "ex-main-0538-c|step-3",
+      "cylinder-ex-main-0538-c-step-3"
+    ],
+    [
+      "ex-main-0538-c|step-4",
+      "cylinder-ex-main-0538-c-step-4"
+    ],
+    [
+      "ex-main-0539|condition",
+      "cylinder-ex-main-0539-condition"
+    ],
+    [
+      "ex-main-0539|help:h1",
+      "cylinder-ex-main-0539-help-h1"
+    ],
+    [
+      "ex-main-0539|help:h2",
+      "cylinder-ex-main-0539-help-h2"
+    ],
+    [
+      "ex-main-0539|step-1",
+      "cylinder-ex-main-0539-step-1"
+    ],
+    [
+      "ex-main-0539|step-2",
+      "cylinder-ex-main-0539-step-2"
+    ],
+    [
+      "ex-main-0539|step-3",
+      "cylinder-ex-main-0539-step-3"
+    ],
+    [
+      "ex-main-0540|condition",
+      "cylinder-ex-main-0540-condition"
+    ],
+    [
+      "ex-main-0540|help:h1",
+      "cylinder-ex-main-0540-help-h1"
+    ],
+    [
+      "ex-main-0540|help:h2",
+      "cylinder-ex-main-0540-help-h2"
+    ],
+    [
+      "ex-main-0540|step-1",
+      "cylinder-ex-main-0540-step-1"
+    ],
+    [
+      "ex-main-0540|step-2",
+      "cylinder-ex-main-0540-step-2"
+    ],
+    [
+      "ex-main-0540|step-3",
+      "cylinder-ex-main-0540-step-3"
+    ],
+    [
+      "ex-main-0540|step-4",
+      "cylinder-ex-main-0540-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "04f406d46e8df14dec8189da058c2fe236c086ac4ee7393074dfe540ae73d381",
+      "afterSHA256": "ac716f183351fed46748b8185024d65dff0cbd3e43deb6c0bbc3814b6e62b51e"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "289fffce2e8f286ed2b41dc1d7d00fe10a38402e6f42134b98c12eb1e151b590",
+      "afterSHA256": "29ff6ca87e60cc706d37a5c70525bcdb922d9e8ecc53ebe59cbeb807262dafac"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T17:20:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 537, points 52–62 and all chapter V self-checks, with 875 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "7d04085544cc8f24bc5db4e075590c49cf9370908271fc7a68170a5276353d7a",
+    "index": "82bc47a1456debfa877300390e87a6a49176501b4c2e2cae0f32df2d0f9f0e75",
+    "registry": "4d624e96fd61f8b613d02271f3fceac679634bc1b4210212131f9f6a53722d8c",
+    "cases": "6b79c2292c9e5ca8e7d4b323c692a9b10023f191b2caabde2cbce5e1774b91e6"
+  }
+}

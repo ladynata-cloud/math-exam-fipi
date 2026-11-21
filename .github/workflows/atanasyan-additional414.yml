@@ -57,6 +57,7 @@ jobs:
           node tools/stereo-textbook/normal-prism-applications.test.cjs
           node tools/stereo-textbook/pyramid-angle-applications.test.cjs
           node tools/stereo-textbook/pyramid-comparison-applications.test.cjs
+          node tools/stereo-textbook/cylinder-applications.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -158,6 +159,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: pyramidComparisonApplications
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-comparison-applications
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check cylinder areas, a constant lateral surface and litres in a conical tank
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cylinderApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cylinder-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -211,5 +217,6 @@ jobs:
             artifacts/normal-prism-applications/
             artifacts/pyramid-angle-applications/
             artifacts/pyramid-comparison-applications/
+            artifacts/cylinder-applications/
           retention-days: 14
           if-no-files-found: error

@@ -160,6 +160,16 @@ const misconceptions = new Map([
   ['ex-main-0536-b/step-4', 'sqrt(3)/3'], // Counted only half of the tetrahedron.
   ['ex-main-0537/step-2', '27'], // Cubed a height difference.
   ['ex-main-0537/step-4', '31/73'], // Reused the initial sides after transfer.
+  ['ex-main-0538-a/step-1', '9'], // Submitted the square of the radius.
+  ['ex-main-0538-a/step-4', '36'], // Used the preceding base.
+  ['ex-main-0538-b/step-1', '4'], // Treated the side of the axial square as a radius.
+  ['ex-main-0538-c/step-1', '6'], // Omitted the two base disks.
+  ['ex-main-0539/step-1', '9'], // Scaled the height with the radius.
+  ['ex-main-0539/step-2', '4/9'], // Compared base areas without compensating heights.
+  ['ex-main-0540/step-1', '0.5625'], // Halved a given radius.
+  ['ex-main-0540/step-2', '6.75'], // Computed the cylinder volume.
+  ['ex-main-0540/step-3', '7069'], // Used full precision after the prompt set pi to 3.14.
+  ['ex-main-0540/step-4', '7065'], // Kept the original radius.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 
