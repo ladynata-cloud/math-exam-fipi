@@ -70,7 +70,7 @@
     });
     const chosen=seed?random(0,2):2;
     return {prompt:steps[chosen].prompt+' В разборе посчитай все три суммы. В модели можно выбрать каждый из двух способов.',inputPrompt:'Сумма',answer:steps[chosen].answer,answerFormat:'v5-natural',steps,errors:steps[chosen].errors,
-      data:{pairs},table:{caption:'Удобное сложение',headers:['Подпункт','Первое число','Второе число'],rows:pairs.map(([a,b],i)=>[labels[i],a,b]),columnWidths:[32,34,34]},conditionKey:pairs.map(p=>p.join(',')).join('/')+'-'+chosen};
+      data:{pairs},table:{caption:'Удобное сложение',headers:['Часть','Число 1','Число 2'],rows:pairs.map(([a,b],i)=>[labels[i],a,b]),columnWidths:[32,34,34]},conditionKey:pairs.map(p=>p.join(',')).join('/')+'-'+chosen};
   }
   function dots(n,perRow,markFrom,markEnd){
     const rows=Math.ceil(n/perRow);
