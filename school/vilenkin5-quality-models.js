@@ -219,6 +219,8 @@
       if(d.kind==='arithmetic'){drawArithmetic();return;}
       const view=d.kind==='numbered'?root.Vilenkin5Numbered.explore(lesson,s,options.task):describe(lesson,s,M);
       host.innerHTML='<section class="v5q-model"><p class="eyebrow">'+(d.kind==='numbered'?'Исследуй данные этого задания':'Исследуй на отдельном примере')+'</p><h2>'+view.title+'</h2>'+controls(view.controls)+'<div class="v5q-visual">'+view.visual+'</div><form data-v5-predict><label>'+mathHTML(view.question)+'<input data-v5-prediction autocomplete="off" value="'+esc(s.prediction)+'"'+(s.seen?' disabled':'')+'></label><button'+(s.seen?' disabled':'')+'>Проверить прогноз</button></form><p class="v5q-model-feedback" role="status">'+mathHTML(s.notice)+'</p>'+(s.seen?'<p class="v5q-model-why">'+mathHTML(view.why)+'</p>':'<button type="button" class="quiet" data-v5-reveal>Посмотреть объяснение</button>')+'<p class="tiny">Меняй числа и проверяй закономерность. Исследование помогает понять правило; самостоятельный результат проверяется на новой задаче.</p></section>';
+      const applyDrawing=host.querySelector('[data-v5-apply-drawing]');
+      if(applyDrawing)applyDrawing.onclick=()=>options.onDrawing?.(s);
       host.querySelectorAll('[data-v5-param]').forEach(input=>input.onchange=()=>{
         const key=input.dataset.v5Param,raw={...s,[key]:key==='shape'?input.value:Number(input.value),prediction:'',first:'',seen:false,notice:''};
         try{s=normalize(lesson,raw);publish();draw();host.querySelector('[data-v5-param="'+key+'"]').focus();}catch(_){s.notice='Проверь допустимый диапазон. Для вычитания первая величина должна быть не меньше второй.';publish();host.querySelector('[role=status]').textContent=s.notice;input.value=s[key];}

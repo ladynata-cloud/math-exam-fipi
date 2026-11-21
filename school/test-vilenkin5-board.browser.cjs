@@ -527,6 +527,19 @@ async function run(browser, origin, backend, failures) {
   await studentFrame.locator('[data-v5-param=side]').selectOption({value:'0'});await studentFrame.locator('[data-v5-prediction]').fill('42');await studentFrame.locator('[data-v5-predict] button').click();await same(studentFrame,teacherFrame,'near-side distance is a difference');
   await narrow(student,studentFrame,'two-possible-distances');await ownership(teacher,student,false);
 
+  phase = 'freeze a pupil-built seven-link closed polyline';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-59"]').click();await studentFrame.locator('h1').filter({hasText:'№1.59'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=vertex]').selectOption({value:'5'});await teacherFrame.locator('[data-v5-param=p5]').selectOption({value:'3'});
+  const moved=await same(teacherFrame,studentFrame,'one saved vertex of the pupil drawing moves');assert.equal(moved.scene.model.p5,3);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-apply-drawing]').click();
+  const frozen=await same(studentFrame,teacherFrame,'both roles solve exactly the selected geometry');assert.equal(frozen.scene.seed,106250);assert.equal(frozen.scene.step,0);
+  await studentFrame.locator('#answer').fill('AH FH EF DE CD BC AB');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('[data-v5-param=edge]').selectOption({value:'6'});const sourceEdge=await studentFrame.evaluate(()=>{const s=Vilenkin5Quality.getState().scene;return WorkshopMath.generate(s.id,s.seed).data.fig.edges[6].length;});
+  await studentFrame.locator('[data-v5-prediction]').fill(String(sourceEdge));await studentFrame.locator('[data-v5-predict] button').click();
+  const last=await same(studentFrame,teacherFrame,'closing edge measured to the nearest millimetre');assert.equal(last.scene.model.edge,6);assert(last.scene.model.seen);
+  await narrow(student,studentFrame,'pupil-built-seven-edges');await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();

@@ -214,7 +214,11 @@
     const cleanInput=event=>{if('value'in event.target&&event.target.type!=='number'&&event.target.type!=='range'){const safe=safeDraft(event.target.value);if(safe!==event.target.value)event.target.value=safe;}};
     host.addEventListener('input',cleanInput,true);
     const d=detail(session),captured=session;
-    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,onChange:value=>{
+    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,onDrawing:value=>{
+      if(readOnly||captured!==connection?.getSession?.()||!['learn','practice'].includes(session.mode))return;
+      const next=root.Vilenkin5PrintedBuildablePaths.selection(session.task,value);
+      if(next!==null&&M.generate(session.id,next).conditionKey!==session.task.conditionKey)connection?.chooseSourceDrawing?.(next);
+    },onChange:value=>{
       if(readOnly||captured!==connection?.getSession?.())return;
       d.model=Models.normalize(lesson,value);connection.save?.();
     }});
