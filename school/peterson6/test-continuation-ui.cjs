@@ -303,6 +303,66 @@ test('opening printed rules use directed distances, common cells and every signe
  } finally {f.close();}
 });
 
+test('read both opening sections in print order while old links retain their task', () => {
+ const f=fixture(null,null,true);
+ try {
+  const parts=[
+   {part:2,id:'p15',first:32,subparts:['аб','','абвгдежз','','абвг','абвгдежз','абвг','абвгде','12','123','абвгде','1234','1234','12','12345']},
+   {part:3,id:'p33',first:31,subparts:['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб']},
+  ];
+  for(const {part,id,first,subparts} of parts) {
+   const lesson=f.w.PetersonCourse.lessons.find(item=>item.id===id);
+   const expected=subparts.flatMap((letters,i)=>(letters ? [...letters] : ['']).map(letter=>[i+1,letter]));
+   const source=index=>{const s=lesson.tasks[index].source;return [s.exercise,String(s.subpart||'')];};
+   f.nav('#home');
+   const start=f.q('a[href="#lesson/'+id+'/'+first+'"]');
+   assert.match(start.textContent,new RegExp('С начала части '+part));
+   f.nav(start.hash);
+   const indices=[...f.d.querySelectorAll('.side-list [data-index]')].map(b=>Number(b.dataset.index));
+   assert.deepEqual(indices.map(source),expected);
+   for(const [ordinal,index] of indices.entries()) {
+    f.nav('#lesson/'+id+'/'+index);
+    assert.equal(f.q('[aria-current="step"]').dataset.index,String(index));
+    const adjacent=[...f.d.querySelectorAll('.navigation [data-action="task"]')].map(b=>Number(b.dataset.index));
+    assert.deepEqual(adjacent,[indices[ordinal-1],indices[ordinal+1]].filter(i=>i!==undefined));
+   }
+   f.nav('#lesson/'+id);
+   assert.equal(f.q('[aria-current="step"]').dataset.index,'0');
+   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+  }
+ }finally{f.close();}
+});
+
+test('both parts and the whole use a single scale with an explicit denominator',()=>{
+ const f=fixture(null,null,true);
+ try {
+  const sets=[[[6,12],[9,6]],[[10,15],[14,16]],[[4,8],[8,4]],[[3,2],[7,3]],[[50,150],[60,140]]];
+  for(const [i,examples]of sets.entries()) {
+   f.nav('#lesson/p15/'+(41+i));
+   if(!f.q('[data-lesson-help="model"]').open)f.click('[data-lesson-help="model"] > summary');
+   const ids=[...f.d.querySelectorAll('#model select')].map(s=>'#'+s.id);
+   for(const [example,[left,right]] of examples.entries()) {
+    f.event(ids[0],String(example),'change');
+    const n=[left,right,left+right];
+    for(let a=0;a<3;a++)for(let b=0;b<3;b++) {
+     f.event(ids[1],String(a),'change');f.event(ids[2],String(b),'change');
+     const first=+f.q('#model [data-measure="first"]').getAttribute('width');
+     const base=+f.q('#model [data-measure="base"]').getAttribute('width');
+     assert(Math.abs(first/base-n[a]/n[b])<1e-10);
+     assert.equal(f.q('#model .pm-result').textContent.includes('больше 100 %'),n[a]>n[b]);
+     assert.equal(f.d.querySelector('#answer-form'),null);
+    }
+   }
+   assert.equal(f.state().tasks['p15-t'+(42+i)].correct,false);
+  }
+  f.nav('#lesson/p15/58');f.event('#final-answer','0,17');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/нашёл долю|частное до перевода/);
+  f.click('[data-action="hint"]');
+  assert.match(f.q('.help figure').textContent,/3,4 кг/);
+  assert.deepEqual([...f.d.querySelectorAll('.help meter')].map(m=>[m.value,m.max]),[[3.4,20],[20,20]]);
+ }finally{f.close();}
+});
+
 test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
  const f=fixture(null,null,true);
  try {

@@ -664,6 +664,47 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await synchronized(teacherFrame,studentFrame,'all three signed products are present for 2e');
   assert.match(await studentFrame.locator('.help figure').innerText(),/−1 × \(−n\).*−1 × \(\+r\).*−1 × \(−s\)/s);
 
+  phase = 'printed entry and next subpart keep the stored board task index';
+  for (const [part, id, index] of [[2, 'p15', 32], [3, 'p33', 31]]) {
+    await teacherFrame.locator('header nav a[href="#home"]').click();
+    await teacherFrame.getByRole('link', { name: 'С начала части ' + part + ' · №1а', exact: true }).click();
+    const firstInPrint = await synchronized(teacherFrame, studentFrame, 'printed first subpart in part ' + part);
+    assert.equal(firstInPrint.route, '#lesson/' + id + '/' + index);
+    await teacherFrame.locator('.navigation').getByRole('button', { name: 'Следующая задача →' }).click();
+    const secondInPrint = await synchronized(teacherFrame, studentFrame, 'printed second subpart in part ' + part);
+    assert.equal(secondInPrint.route, '#lesson/' + id + '/' + (index + 1));
+  }
+
+  phase = 'first part-two pages compare two groups with a chosen reference';
+  await lesson(teacherFrame,'p15',41);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Первая величина',{exact:true}).selectOption('2');
+  await teacherFrame.getByLabel('Вторая величина — основание',{exact:true}).selectOption('1');
+  const roses=await synchronized(teacherFrame,studentFrame,'all 18 roses compared to 12 red roses');
+  assert.deepEqual(roses.view.model.values,[0,2,1]);
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/больше 100 %/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-rose-baseline','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Набор чисел',{exact:true}).selectOption('1');
+  await studentFrame.getByLabel('Первая величина',{exact:true}).selectOption('0');
+  await studentFrame.getByLabel('Вторая величина — основание',{exact:true}).selectOption('2');
+  await studentFrame.locator('#notebook').fill('В своём примере 9 белых из 15, это 3/5 всех роз.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const fresh=await synchronized(studentFrame,teacherFrame,'new rose counts, denominator and notebook travel together');
+  assert.deepEqual(fresh.view.model.values,[1,0,2]);
+  await manualWithoutCredit(teacherFrame,'p15-t42',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,fresh,'chosen groups and new source values restored after reload');
+  await lesson(teacherFrame,'p15',58);
+  await teacherFrame.locator('#final-answer').fill('0,17');
+  await teacherFrame.locator('#answer-form button[type=submit]').click();
+  await teacherFrame.locator('[data-action=hint]').click();
+  await synchronized(teacherFrame,studentFrame,'centners and kilograms on a shared scale');
+  assert.deepEqual(await studentFrame.locator('.help meter').evaluateAll(ms=>ms.map(m=>[m.value,m.max])),[[3.4,20],[20,20]]);
+  assert.match(await studentFrame.locator('.help figure').innerText(),/3,4 кг/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-mass-ratio','.help figure');
+
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
   await teacherFrame.locator('#book-part').selectOption('2');

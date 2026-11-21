@@ -209,7 +209,30 @@ function drawGroupRule(rule,b,c) {
  arrow(middle,end,104,amber,'second');
  return picture;
 }
+function compareConfig(task) {
+ const choices=task.partComparison.labels.map((label,i)=>[i,label]);
+ return {
+  title:'Что берём за основание отношения?',
+  controls:[c('Набор чисел',[[0,'Из задачи'],[1,'Другой пример']]),c('Первая величина',choices),c('Вторая величина — основание',choices)],
+  initial:[0,0,2],
+ };
+}
+function compareBars(left,right,first,second) {
+ const total=left+right;
+ const picture=svg('svg',{viewBox:'0 0 350 193',role:'img',class:'pm-chart pcm-group-rule',
+  'aria-label':'Две части: '+left+' и '+right+'. Сравниваются '+first+' и '+second+' в одном масштабе.'});
+ const x=16,width=308;
+ picture.append(svg('rect',{x,y:13,width:width*left/total,height:17,fill:'#99c8af',stroke:'#315649','data-portion':'left'}));
+ picture.append(svg('rect',{x:x+width*left/total,y:13,width:width*right/total,height:17,fill:'#ebc9a1',stroke:'#775530','data-portion':'right'}));
+ for(const [id,title,amount,y,color] of [['first','Первая',first,77,'#197354'],['base','Основание',second,150,'#97531b']]) {
+  txt(picture,x,y-10,title+': '+amount,{'font-size':21,'text-anchor':'start'});
+  picture.append(svg('rect',{x,y,width,height:13,fill:'#e2ebe5'}));
+  picture.append(svg('rect',{x,y,width:width*amount/total,height:13,fill:color,'data-measure':id}));
+ }
+ return picture;
+}
 function configFor(lesson,task){
+ if (lesson?.id==='p15' && task?.partComparison) return compareConfig(task);
  if (lesson?.id==='p33' && Object.hasOwn(groupRules,task?.groupRule)) return {
   title:groupRules[task.groupRule],controls:[c('Число b',[1,2,3,4]),c('Число c',[1,2,3,4])],initial:[2,3],
  };
@@ -259,13 +282,28 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if (n===33 && Object.hasOwn(groupRules,task.groupRule)) {
+ if (n===15 && task.partComparison) {
+  const [example,firstIndex,baseIndex]=state.values;
+  const spec=task.partComparison;
+  const [left,right]=spec.sets[example],sizes=[left,right,left+right];
+  const first=sizes[firstIndex],base=sizes[baseIndex];
+  show(compareBars(left,right,first,base));
+  say(spec.labels[0]+': '+left+'. '+spec.labels[1]+': '+right+'. '+spec.labels[2]+': '+(left+right)+'.');
+  formula(spec.labels[firstIndex]+' / '+spec.labels[baseIndex]+' = ',exactRatio(first,base));
+  formula('В процентах: ',exactRatio(100*first,base),' %');
+  if(firstIndex===baseIndex) say('Сравнивается одна группа с собой. Измени первое или второе поле, чтобы ответить на другой вопрос.');
+  else if(first===base) say('Группы имеют равную численность. Одна составляет 100 % другой.');
+  else if(first>base) say('Числитель больше выбранного основания, поэтому получилось больше 100 %.');
+  else say('Сравни полосы: первая величина составляет только часть выбранного основания.');
+  stepList(['Сначала назови, о какой группе задаётся вопрос.','Выбери основание: с чем сравнивается первая группа?','Поменяй группы местами или выбери другой пример. Предскажи, окажется ли новое отношение больше единицы.']);
+ }
+ else if (n===33 && Object.hasOwn(groupRules,task.groupRule)) {
   const rule=task.groupRule;
   show(drawGroupRule(rule,a,b));
   if (rule==='distribute') {

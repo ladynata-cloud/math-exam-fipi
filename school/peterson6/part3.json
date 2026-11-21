@@ -3,6 +3,7 @@
     "id": "p33",
     "order": 33,
     "part": 3,
+    "orderBySource": true,
     "title": "Раскрытие скобок",
     "chapter": "Уравнения",
     "page": 3,
