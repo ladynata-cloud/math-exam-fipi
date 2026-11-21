@@ -51,7 +51,9 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--peterson9-roots')?{
+const catalogue=process.argv.includes('--vilenkin-analysis-2014')?{
+  directory:'vilenkin-analysis-2014',entries:[[30,123,19]],uniqueLessons:18,search:'vilenkin-analysis-2014',match:'действительные числа и рациональные корни',lesson:'30-7-6',chart:'svg[aria-label*="Две десятичные границы"]',storage:'math:vilenkin-analysis-2014:v1:'
+}:process.argv.includes('--peterson9-roots')?{
   directory:'peterson9-2017',entries:[[52,40,14]],uniqueLessons:13,search:'peterson9-2017',match:'корни высших степеней',lesson:'52-5-2',chart:'svg[aria-label*="Пересечение возрастающей нечётной степени"]',storage:'math:peterson9-2017:v1:'
 }:process.argv.includes('--peterson9-2017')?{
   directory:'peterson9-2017',entries:[[51,34,25]],uniqueLessons:24,search:'peterson9-2017',match:'множества и графики функций',lesson:process.argv.includes('--hotel')?'51-9-3':'51-2-4',chart:process.argv.includes('--hotel')?'svg[aria-label*="Сдвиг мест в счётной гостинице"]':'svg[aria-label*="График функции и три контрольные точки"]',storage:'math:peterson9-2017:v1:'

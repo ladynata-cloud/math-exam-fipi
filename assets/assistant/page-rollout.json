@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 639,
-    "covered": 637,
+    "total": 640,
+    "covered": 638,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -48,7 +48,8 @@
     "trainers/makarychev8-2018/index.html",
     "trainers/peterson8-2017/index.html",
     "trainers/vilenkin8-2010/index.html",
-    "trainers/peterson9-2017/index.html"
+    "trainers/peterson9-2017/index.html",
+    "trainers/vilenkin-analysis-2014/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4043,7 +4044,8 @@
     "trainers/makarychev8-2018/index.html": "school/index.html",
     "trainers/peterson8-2017/index.html": "school/index.html",
     "trainers/vilenkin8-2010/index.html": "school/index.html",
-    "trainers/peterson9-2017/index.html": "school/index.html"
+    "trainers/peterson9-2017/index.html": "school/index.html",
+    "trainers/vilenkin-analysis-2014/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6971,6 +6973,14 @@
         "trainers/peterson9-2017/index.html"
       ],
       "reason": "Первый том Петерсона для девятого класса. Десятичные записи, четыре графика и оба включения в задачах о равенстве множеств."
+    },
+    {
+      "sourceBaseSha": "fa88cb87a510afa9dde9f59a011c7448f6c577a8",
+      "task": "docs/tasks/WORKSHOP_VILENKIN_ANALYSIS_2014.md",
+      "addedPages": [
+        "trainers/vilenkin-analysis-2014/index.html"
+      ],
+      "reason": "Углублённый Виленкин для 10 класса, издание 2014 года. Доказательство иррациональности по простым множителям и две десятичные границы со знаком."
     }
   ]
 }
