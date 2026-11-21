@@ -2228,10 +2228,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8b4d25b67769f48bd58511d05fae64344d70844db208d84aa3995d4e9ecdb6dc",
-      "afterSha256": "fa7989f7521733cf4ce151f5a92e74a0316bb9706f4911a6338c7ed17fd721fe",
+      "beforeSha256": "e9980808d28de5bcf6af3145fa442d3a3a34e2f8df0fb50ba4dd4572571eb0a5",
+      "afterSha256": "cfdf4db37607652db515995ec57c56bf9f5f2ad26a909cb8b80272f42e6714ad",
       "placement": "before-head-close",
-      "sourceSha": "4b27ad9f958c74e9978811d35919b3f3f72998f8"
+      "sourceSha": "efcdf5589786a8a4eb64ac4307c7ea2414893ee3"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6684,6 +6684,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в печатные задания первого тома и в построение циркулем второго тома Виленкина."
+    },
+    {
+      "previousBaseSha": "4b27ad9f958c74e9978811d35919b3f3f72998f8",
+      "sourceBaseSha": "efcdf5589786a8a4eb64ac4307c7ea2414893ee3",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверена страница с разборчивой шкалой, дугами и буквами точек при передаче управления."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
