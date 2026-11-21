@@ -5,6 +5,7 @@ from math import dist
 from build_area_lessons import BOOK, ROOT, lesson
 from circle_lessons import beginning
 from chord_followup import follow
+from circle_bisectors import final_four
 
 OUT = ROOT / 'geometry-course/textbook/data/circle-lessons.json'
 # A child can test the same geometric relation with different data in a later step.
@@ -21,6 +22,10 @@ REPEATS = {
     (907, ''): ('В той же конфигурации замени 17° на 20°. Сколько градусов составит угол BAM?', '140', 'AB=AM. В треугольнике ABM вычти из 180° два равных угла по 20°.'),
     (908, ''): ('В другой вершине угол между внешней биссектрисой и продолжением стороны равен 64°. Сколько градусов во внутреннем угле?', '52', 'Удвой 64°, чтобы получить внешний угол. Соседний внутренний дополняет его до 180°.'),
     (909, ''): ('Ортоцентр отразили относительно середины BC в точку Y. Если AY=18, чему равен радиус описанной окружности?', '9', 'Концы AY диаметрально противоположны. Радиус — половина диаметра.'),
+    (910, ''): ('В новом треугольнике AB=6, BC=8; биссектриса разделила AC на отрезки 3 и 4. Найди BD².', '36', 'Сначала перемножь AB и BC. Затем вычти произведение двух частей AC.'),
+    (911, ''): ('В другой конфигурации угол OBH равен 34°. Сколько градусов в угле между BE и BH?', '17', 'Луч BE делит угол между BO и BH на две равные части.'),
+    (912, ''): ('Теперь X на дуге AC без B. Если BX=13 и AX=5, найди CX.', '8', 'Для этой дуги самая длинная линия идёт к B. Из BX=AX+CX вырази CX.'),
+    (913, ''): ('У другого вписанного четырёхугольника с перпендикулярными диагоналями BC=8, DA=15. Найди диаметр.', '17', 'Сумма квадратов противоположных сторон даёт квадрат диаметра. Проверь 8²+15².'),
 }
 
 
@@ -63,6 +68,8 @@ def add_markers(number, model):
         906: [(range(4), 'H', 'M', 'O'), (range(1, 4), 'P', 'U', 'O')],
         908: [(range(1, 4), 'A', 'I', 'V'), (range(1, 4), 'B', 'I', 'W'),
               (range(1, 4), 'C', 'I', 'U')],
+        911: [([0, 2, 3], 'H', 'B', 'A')],
+        913: [(range(4), 'H', 'A', 'D'), ([1, 3], 'C', 'D', 'Y'), ([1], 'B', 'D', 'Y')],
         909: [([0, 1], 'U', 'A', 'B'), ([0], 'V', 'B', 'A'),
               ([0], 'W', 'C', 'A'), ([2], 'B', 'A', 'Y'), ([2], 'C', 'A', 'Y')],
     }
@@ -72,7 +79,7 @@ def add_markers(number, model):
 
 def build():
     items = []
-    for card in beginning() + follow():
+    for card in beginning() + follow() + final_four():
         item = lesson(card)
         question, answer, hint = REPEATS[card['number'], card.get('sourcePart', '')]
         target = item['steps'][-1]
