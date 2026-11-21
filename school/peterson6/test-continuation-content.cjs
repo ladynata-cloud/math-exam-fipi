@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1180);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1192);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1058,6 +1058,11 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  assert(l.orderBySource);assert.equal(g(160).length,1);assert.equal(g(161).length,1);assert.equal(g(162).length,8);assert.equal(g(163).length,8);
  assert.deepEqual(g(162).map(t=>t.physicalLaw.k),['50','3','7','300','120','24','60','2']);
  assert.deepEqual(g(163).map(t=>t.answer).sort(),['90','2/5','30','6/5','9','24','800','100'].sort());
+}
+{
+ const l=D.lessons.find(t=>t.id==='p20'),group=n=>Array.from(l.tasks.filter(t=>t.source.exercise===n)).sort((a,b)=>Number(a.source.subpart)-Number(b.source.subpart));
+ assert.equal(group(164).length,10);assert.deepEqual(group(164).map(t=>t.classifyLaw.kind),['direct','affine','direct','inverse','inverse','inverse','direct','inverse','inverse','square']);
+ assert.deepEqual(group(165).map(t=>t.fillProportionTable.k),['14/5','30','5','8']);for(const t of group(165)){assert.equal(t.fillProportionTable.blank.filter(Boolean).length,4);assert.equal(t.figure.type,'p20-paper-table');}
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

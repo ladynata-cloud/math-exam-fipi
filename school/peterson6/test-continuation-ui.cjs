@@ -1620,3 +1620,14 @@ test('distinguish each of the twelve printed law forms and both speed, productiv
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('identify all ten laws and fill the correct x or y cell of each of the four printed proportionality tables',()=>{
+ const f=fixture(null,null,true);try{
+  const go=i=>{f.nav('#lesson/p20/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [i,expected]of [[20,'Прямая'],[21,'Оба признака'],[22,'Прямая'],[23,'Обратная'],[24,'Обратная'],[25,'Обратная'],[26,'Прямая'],[27,'Обратная'],[28,'Обратная'],[4,'Оба признака']]){const c=go(i);set(c,1,2);assert(out().includes(expected));set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert.equal(f.q('#model tbody tr td').textContent,'3');}
+  for(const [i,k,changed,filled]of [[29,'14/5','21/5',['42/5','56/5','14','84/5']],[5,'30','180',['20','15','12','10']],[30,'5','15/2',['24','4','12','8/5']],[31,'8','48',['16','8','5/2','10']]]){
+   const c=go(i),original=[...f.d.querySelectorAll('#task-figure tbody tr')].map(row=>[...row.querySelectorAll('td')].map(cell=>cell.textContent));
+   assert.equal(original.flat().filter(x=>x==='□').length,4);set(c,1,2);const rows=[...f.d.querySelectorAll('#model tbody tr')].map(row=>[...row.querySelectorAll('td')].map(cell=>cell.textContent));assert.deepEqual(original.flatMap((row,j)=>row.flatMap((x,ix)=>x==='□'?[rows[j][ix]]:[])),filled);assert(out().includes('Коэффициент '+k+'.'));set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes('Коэффициент '+changed+'.'));
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
