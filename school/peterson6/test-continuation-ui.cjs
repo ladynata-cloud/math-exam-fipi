@@ -986,3 +986,23 @@ test('decode all nine equalities and check each unknown in both oral proportions
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('retain excluded denominators, both linked unknowns and the direction of a copier scale',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(41);const select=(value)=>{const option=[...f.q(c[1]).options].find(el=>el.textContent===value);assert(option,value);set(c[1],option.value);};
+  for(const forbidden of ['1/4','-4']){select(forbidden);set(c[2],1);assert(out().includes('не допускается'),forbidden);}
+  select('64');set(c[2],2);assert(out().includes('Это корень.'));set(c[0],1);select('65');set(c[2],1);assert(out().includes('Это корень.'));select('5/4');set(c[2],2);assert(out().includes('не допускается'));
+  c=go(43);set(c[1],2);assert(out().includes('= 32.'));assert(out().includes('= 12.'));set(c[0],1);set(c[1],2);assert(out().includes('= 20.'));assert(out().includes('= 15/2.'));
+  c=go(44);set(c[1],2);assert(out().includes('= 2/5.'));assert(out().includes('= 1/5.'));set(c[0],1);set(c[1],2);assert(out().includes('= 3/5.'));assert(out().includes('= 3/10.'));
+  c=go(45);let retained=0;for(let j=1;j<=8;j++){set(c[0],j);set(c[1],1);if(out().includes('Обе дроби равны нулю'))retained++;}assert.equal(retained,2);
+  for(const [i,original,copy,again]of [[46,12.5,7.5,15],[47,8,4.8,12]]){
+   c=go(i);set(c[1],1);const spans=()=>[...f.d.querySelectorAll('#model [data-length]')];
+   const [a,b]=spans();assert.equal(Number(a.dataset.length),original);assert.equal(Number(b.dataset.length),copy);const len=v=>Number(v.getAttribute('x2'))-Number(v.getAttribute('x1'));assert(Math.abs(len(b)/len(a)-.6)<1e-10);
+   set(c[0],1);set(c[1],1);assert.equal(Number(spans()[0].dataset.length),again);
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

@@ -492,6 +492,28 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+function affineRatioCandidates(task){
+ const M=root.PetersonMath,data=task.affineRatios,values=new Set(['0']);
+ for(const offset of [-1,0,1,2])values.add(M.answer(M.operation('add',data.root,offset)));
+ for(const slot of [1,3]){
+  const term=data.terms[slot];
+  if(Array.isArray(term)){
+   const forbidden=M.operation('divide',M.operation('subtract',0,term[1]),term[0]);
+   values.add(M.answer(forbidden));values.add(M.answer(M.operation('add',forbidden,1)));
+  }
+ }
+ return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
+}
+function copiedSegment(original){
+ const copy=original*.6,view=svg('svg',{viewBox:'0 0 225 104',role:'img',class:'pm-chart pcm-group-rule','aria-label':'Отрезки оригинала и копии в одном масштабе.'});
+ const left=17,unit=183/original;
+ for(const [y,value,label]of [[30,original,'Оригинал'],[80,copy,'Копия']]){
+  txt(view,left,y-10,label+' · '+num(value)+' см',{'font-size':13,'text-anchor':'start'});
+  ln(view,left,y,left+value*unit,y,{stroke:'#287061','stroke-width':3,'data-length':value});
+  for(const x of [left,left+value*unit])ln(view,x,y-4,x,y+4,{stroke:'#287061','stroke-width':2});
+ }
+ return view;
+}
 function codedRatioTable(rows){
  const printed=v=>String(v).replace(/^\./,'0.').replace('.',',');
  return table(['Буква','Левое отношение','Правое отношение'],rows.map(([letter,a,b,c,d])=>[letter,printed(a)+' : '+printed(b),printed(c)+' : '+printed(d)]));
@@ -926,6 +948,10 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p17' && task?.affineRatios)return {title:'Проверь обе стороны при выбранном числе',controls:[c('Уравнение',[[0,'Из упражнения'],[1,'Со сдвигом неизвестного']]),c('Пробное число',affineRatioCandidates(task).map((v,i)=>[i,v])),c('Способ проверки',[[0,'Сначала вычислю'],[1,'Два отношения'],[2,'Два произведения']])],initial:[0,0,0]};
+ if(lesson?.id==='p17' && task?.linkedRatios)return {title:'От второй пропорции к первой',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новая вторая пропорция']]),c('Вычисления',[[0,'Сначала решу'],[1,'Промежуточное y'],[2,'Пара x и y']])],initial:[0,0]};
+ if(lesson?.id==='p17' && task?.reorderSymbols)return {title:'Обе диагонали после перестановки',controls:[c('Расположение букв',range(1,8)),c('Проверка',[[0,'Ненулевые буквы'],[1,'Нулевые числители']])],initial:[1,0]};
+ if(lesson?.id==='p17' && task?.copierRatio)return {title:'Оригинал и копия в одном масштабе',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новая длина']]),c('Сравнение',[[0,'Сначала решу'],[1,'Вычисления и чертёж']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.codedRatios)return {title:'Проверь строку шифра',controls:[c('Строка',task.codedRatios.map(([letter],i)=>[i,letter])),c('Сравнить',[[0,'Сначала вычислю'],[1,'Два произведения'],[2,'Хорда на окружности']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.missingRatio)return {title:'Подставь число на место неизвестного',controls:[c('Числа',[[0,'Из задачи'],[1,'Новый пример']]),c('Пробное число',ratioCandidates(task).map((v,i)=>[i,v])),c('Проверка',[[0,'Сначала вычислю'],[1,'Сравню отношения'],[2,'Сравню произведения']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.ratioCollection){
@@ -1042,7 +1068,7 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.squareGridStudy && index<3)hiddenControl=3;
@@ -1052,8 +1078,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if(task.codedRatios && index===0)hiddenControl=1;
-  if(task.missingRatio && index<2)hiddenControl=2;
+  if((task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -1288,6 +1314,45 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===17 && task.affineRatios){
+  const t=task.affineRatios,M=root.PetersonMath,z=M.parse(affineRatioCandidates(task)[b]),effective=M.operation('subtract',z,a),mode=state.values[2];
+  say('Исходное равенство: '+t.printed+'.');
+  if(a===1)say('Новый пример: в каждом месте вместо '+t.letter+' поставь ('+t.letter+' − 1).');
+  say('Пробуем '+t.letter+' = '+M.answer(z)+'.');
+  const cells=t.terms.map(v=>Array.isArray(v)?M.operation('add',M.operation('multiply',v[0],effective),v[1]):M.parse(v));
+  if(cells[1].n===0||cells[3].n===0){
+   show(quartetFigure(cells,0));if(mode>0)say('Один из знаменателей равен нулю. Этот кандидат не допускается.');
+  }else{
+   const r=compareQuartet(cells);show(quartetFigure(cells,mode));
+   if(mode===1)say('Отношения '+M.answer(r.lhs)+' и '+M.answer(r.rhs)+'.');
+   if(mode===2)say('Перекрёстные произведения '+M.answer(r.outer)+' и '+M.answer(r.inner)+'.');
+   if(mode>0)say(r.same?'Оба отношения совпали. Это корень.':'При этом значении равенство не выполняется.');
+  }
+  stepList(['Проверь знаменатели.','Подставь число в каждое выражение целиком.','Сравни результаты и объясни выбор.']);
+ }
+ else if(n===17 && task.linkedRatios){
+  const M=root.PetersonMath,first=task.linkedRatios===1,divisor=first?25:(a===0?'1.5':'2.25'),r=first?(a===0?'32/25':'4/5'):'4/15',ratio=first?'3/8':'1/2',y=M.operation('multiply',r,divisor),x=M.operation('multiply',y,ratio);
+  say(first?'x/y = 3/8 и y/25 = '+(a===0?'6,4/5.':'4/5.'):'x : 1 ⅔ = y : 3 ⅓ и y : '+(a===0?'1,5':'2,25')+' = 0,2 : 0,75.');
+  if(b>=1)say('Во второй пропорции y = '+M.answer(M.parse(divisor))+' × '+r+' = '+M.answer(y)+'.');
+  if(b===2)say('По первой пропорции x = '+ratio+' × '+M.answer(y)+' = '+M.answer(x)+'.');
+  stepList(['Выбери равенство с одной неизвестной.','Подставь найденное значение во второе уравнение.','Проверь оба равенства с одной парой чисел.']);
+ }
+ else if(n===17 && task.reorderSymbols){
+  const forms=['abcd','cdab','badc','dcba','acbd','bdac','cadb','dbca'],order=forms[a-1].split('');
+  if(b===0){show(quartetFigure(order,2));say('Крайние: '+order[0]+order[3]+'. Средние: '+order[1]+order[2]+'. Произведения равны по условию.');}
+  else{
+   const values=order.map(k=>k==='a'||k==='c'?'0':k==='b'?'2':'3'),invalid=values[1]==='0'||values[3]==='0';
+   show(quartetFigure(values.map(v=>root.PetersonMath.parse(v)),invalid?0:2));say(invalid?'Такое расположение содержит деление на нуль.':'Обе дроби равны нулю, знаменатели ненулевые.');
+  }
+  stepList(['Поставь буквы в два отношения.','Сравни произведения по диагонали.','Перед делением проверь каждый знаменатель.']);
+ }
+ else if(n===17 && task.copierRatio){
+  const M=root.PetersonMath,back=task.copierRatio===1,given=back?(a===0?'7.5':'9'):(a===0?'8':'12'),origin=back?M.operation('multiply',given,'5/3'):M.parse(given),copy=M.operation('multiply',origin,'3/5');
+  say((back?'Длина копии ':'Длина оригинала ')+num(M.parse(given).n/M.parse(given).d)+' см. Полученная копия составляет 3/5 первоначальной длины.');
+  if(b===1){show(copiedSegment(origin.n/origin.d));say('Оригинал '+M.answer(origin)+' см, копия '+M.answer(copy)+' см. Множитель нужного направления '+(back?'5/3':'3/5')+'.');}
+  stepList(['Обозначь оригинал пятью равными частями.','На копии остаются три такие части.','Определи направление вычисления.']);
  }
  else
  if(n===17 && task.codedRatios){

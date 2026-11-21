@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,625);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,641);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -710,6 +710,28 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
    const q=M.parse(t.missingRatio.answers[variant]);assert(Math.abs(q.n/q.d-expected[j][variant])<1e-9);
   }
  }
+}
+{
+ const chapter=D.lessons.find(l=>l.id==='p17'),rows=chapter.tasks.filter(t=>t.source.exercise===67);
+ const keyed=new Map(Array.from(rows,t=>[t.source.subpart,t]));assert.equal(keyed.size,12);
+ const functions=[a=>[5.4/a,1.8/6.8],b=>[b/(6/7),(5+4/9)/(4+2/3)],c=>[720/91.2,c/.513],
+  d=>[4.2/(7+5/7),(3+1/9)/d],k=>[2.4/(.5*k),3.6/(1+2/3)],m=>[7/(4/11*m),56/3.2],
+  n=>[8*n/9,6.4/.45],p=>[2.1/27,(2+1/3)/(.3*p)],x=>[4/(x-3),2/3],
+  y=>[(2*y+1.6)/.8,30/2.5],x=>[1.5/(4*x-1),.4/(x+4)],y=>[5*y/(1+1/3),(y-.9)/.2]];
+ for(const [index,evaluate]of functions.entries()){
+  const row=keyed.get(String(index+1)),q=M.parse(row.answer),value=q.n/q.d,[a,b]=evaluate(value);
+  assert(Math.abs(a-b)<1e-9,row.source.reference);const [l,r]=evaluate(value+1);assert(Math.abs(l-r)>1e-8,row.source.reference);
+  if(row.affineRatios){
+   const t=row.affineRatios,real=s=>{const r=M.parse(s);return r.n/r.d;};
+   for(const x of [value,0,1.5]){const cells=t.terms.map(v=>Array.isArray(v)?real(v[0])*x+real(v[1]):real(v));const numeric=evaluate(x);
+    for(const [j,quotient]of [cells[0]/cells[1],cells[2]/cells[3]].entries())if(Number.isFinite(numeric[j]))assert(Math.abs(quotient-numeric[j])<1e-8,row.source.reference);
+   }
+  }
+ }
+ const other=n=>chapter.tasks.filter(t=>t.source.exercise===n);
+ assert.equal(other(68).length,2);assert.equal(other(69)[0].kind,'manual');assert.equal(other(70).length,2);
+ const answers=[...other(68),...other(70)].map(t=>{const r=M.parse(t.answer);return r.n/r.d;});
+ assert.deepEqual(answers,[12,.2,12.5,4.8]);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
