@@ -2240,10 +2240,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "df661a303e82089235044e5c1d373357958317b2467f0e0e6a74361e0cff0831",
-      "afterSha256": "a53aa4164874dead5317af90b2c4f427decc8cc4e59696088d3ff0d0351528e4",
+      "beforeSha256": "fd6531ed04d845b57ad1d5c364474ed3dd161031849322a406e9ea8e6fd06d2c",
+      "afterSha256": "47dd6866cd62c8ce1c48419d9fd24d5585d97aa57bdb606dca7829811a0dc3e2",
       "placement": "before-head-close",
-      "sourceSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60"
+      "sourceSha": "a7dbcc7b0a2be11d7dbf6e969ff5f905bcbfef01"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6546,6 +6546,33 @@
       ],
       "bindingScope": "Per-page sourceSha for the reviewed Vilenkin 5 laboratory cache version.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60",
+      "sourceBaseSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520",
+      "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
+      "previousBaseSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520",
+      "sourceBaseSha": "2dcdaa2b0b0c0ab7d3bcd13eb32d88788ffc3416",
+      "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
+      "previousBaseSha": "2dcdaa2b0b0c0ab7d3bcd13eb32d88788ffc3416",
+      "sourceBaseSha": "a7dbcc7b0a2be11d7dbf6e969ff5f905bcbfef01",
+      "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",

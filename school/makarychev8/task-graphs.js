@@ -139,7 +139,7 @@ function render(host,config,value){
  if(config.type==='number-line'){host.className='task-graphs number-line';host.append(numberLine(config));if(config.caption){const caption=document.createElement('p');caption.className='small';caption.textContent=config.caption;host.append(caption);}
  }else if(config.type==='root-line'){
   host.className='task-graphs root-graph';const line=parseLine(value),plane={...config,type:'root-plane',curves:[{kind:'sqrt'},...(line?[{kind:'line',...line}]:[])]};host.append(rootGraph(plane,''));
-  const caption=document.createElement('p');caption.className='small';caption.textContent='Показана часть графиков. Введи k; b, чтобы добавить свою прямую y=kx+b. Число пересечений проверяется по уравнению.';host.append(caption);
+  const caption=document.createElement('p');caption.className='small';caption.textContent='Видна часть графиков. Число пересечений проверь по уравнению.';host.append(caption);
  }else if(['root-plane','root-build','curve-build'].includes(config.type)){
   host.className='task-graphs root-graph';host.append(rootGraph(config,value));
   const caption=document.createElement('p');caption.className='small';
