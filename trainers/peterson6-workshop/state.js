@@ -10,7 +10,18 @@ function sanitize(raw){if(!raw||raw.schema!==1||raw.version!==G.VERSION||!raw.re
  if(raw.last&&validSkill(raw.last.skill)&&[1,2,3].includes(raw.last.level))clean.last={skill:raw.last.skill,level:raw.last.level};
  if(raw.origin&&Number.isInteger(raw.origin.number)&&raw.origin.number>=1&&raw.origin.number<=497&&typeof raw.origin.part==='string'&&/^[a-zA-Z0-9_-]{1,80}$/.test(raw.origin.part))clean.origin={number:raw.origin.number,part:raw.origin.part};return clean;
 }
-function stats(state,skill){const rows=Object.values(state.records).filter(r=>r.skill===skill&&r.completion?.work?.correct===true),solved=rows.length,independent=rows.filter(r=>r.completion.work.independent).length;return {solved,independent,assisted:solved-independent,ready:solved>=5&&independent>=3};}
+function stats(state, skill) {
+ const result = {solved: 0, independent: 0, corrected: 0, assisted: 0, ready: false};
+ for (const record of Object.values(state.records)) {
+  if (record.skill !== skill || !record.completion) continue;
+  const outcome = E.solutionOutcome(record.completion.work);
+  if (!outcome) continue;
+  result.solved++;
+  result[outcome]++;
+ }
+ result.ready = result.solved >= 5 && result.independent >= 3;
+ return result;
+}
 function merge(current,incoming){if(new Set([...Object.keys(current.records),...Object.keys(incoming.records)]).size>LIMIT)throw Error('После объединения будет слишком много вариантов. Текущие записи не изменены.');const result=blank();Object.assign(result,current,{records:{...current.records},current:{...current.current}});for(const [k,b] of Object.entries(incoming.records)){const a=result.records[k];if(!a){result.records[k]=b;continue;}const p=G.generate(a.skill,a.level,a.seed),preferred=b.work.updated>=a.work.updated?b.work:a.work,work=E.sanitize(p,preferred);work.assisted=a.work.assisted||b.work.assisted||work.assisted;work.errors=Math.max(a.work.errors,b.work.errors);E.mergeErrors(work,a.work.firstErrors,b.work.firstErrors);work.independent=work.correct&&!work.assisted&&work.errors===0;let completion=a.completion||b.completion;if(!a.completion&&completion){const snapshot=E.sanitize(p,completion.work);snapshot.assisted=!!(snapshot.assisted||a.work.assisted);snapshot.errors=Math.max(snapshot.errors,a.work.errors);snapshot.independent=snapshot.correct&&!snapshot.assisted&&snapshot.errors===0;completion=snapshot.correct?{work:snapshot,at:completion.at}:null;}result.records[k]={...a,work,completion};}for(const [k,v] of Object.entries(incoming.current))if(!result.current[k])result.current[k]=v;result.serial=Math.max(current.serial,incoming.serial);return result;}
 return {LIMIT,blank,record,complete,sanitize,stats,merge,key};
 });

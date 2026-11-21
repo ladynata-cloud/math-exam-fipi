@@ -25,6 +25,14 @@ function firstMistakes(state){
  for(const [step,value] of Object.entries(errors.steps||{}))items.push('<li>Шаг '+(Number(step)+1)+': '+fmt(value)+'</li>');
  return items.length?'<details class="help-box first-errors"><summary>Моя первая ошибка</summary><ul>'+items.join('')+'</ul><p class="small">Сравни первую попытку с исправленным решением.</p></details>':'';
 }
-function status(s){return s.independent?'Решено самостоятельно':s.correct?'Решено с помощью':s.submitted?'Записано · нужна проверка':s.draft||s.note||s.stepDrafts?.some(Boolean)?'В работе':'Ещё не решали';}
+function status(work) {
+ if (work.correct && document.body.dataset.petersonBoard) return 'Решено на общей доске';
+ const outcome = root.PetersonBook.solutionOutcome(work);
+ if (outcome === 'independent') return 'Решено самостоятельно';
+ if (outcome === 'corrected') return 'Исправлено без подсказки';
+ if (outcome === 'assisted') return 'Решено с помощью';
+ if (work.submitted) return 'Записано · нужна проверка';
+ return work.draft || work.note || work.stepDrafts?.some(Boolean) ? 'В работе' : 'Ещё не решали';
+}
 root.PetersonUI={esc,fmt,frac,expression,diagram,download,status,firstMistakes};
 })(globalThis);

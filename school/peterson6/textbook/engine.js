@@ -70,7 +70,22 @@ function submitStep(part,state,index,input){const ss=steps(part),s=ss[index];if(
  const wrong=firstError(s.kind,s.choices,v=>checkStep(s,v),input);
  if(wrong){state.errors++;if(!state.firstErrors.steps[index])state.firstErrors.steps[index]=wrong;}
  return false;}state.checked[index]=true;state.step=Math.min(index+1,ss.length-1);state.updated=Date.now();return true;}
-function summarize(parts,states){const result={total:parts.length,independent:0,assisted:0,forReview:0,started:0};for(const part of parts){const s=sanitize(part,states[part.id]);if(s.independent)result.independent++;else if(s.correct)result.assisted++;else if(s.submitted)result.forReview++;else if(s.draft||s.note||s.stepDrafts.some(Boolean))result.started++;}return result;}
+function solutionOutcome(work) {
+ if (!work.correct) return null;
+ if (work.assisted) return 'assisted';
+ return work.errors > 0 ? 'corrected' : 'independent';
+}
+function summarize(parts, states) {
+ const result = {total: parts.length, independent: 0, corrected: 0, assisted: 0, forReview: 0, started: 0};
+ for (const part of parts) {
+  const work = sanitize(part, states[part.id]);
+  const outcome = solutionOutcome(work);
+  if (outcome) result[outcome]++;
+  else if (work.submitted) result.forReview++;
+  else if (work.draft || work.note || work.stepDrafts.some(Boolean)) result.started++;
+ }
+ return result;
+}
 function importState(raw,parts,source){if(!raw||raw.schema!==1||raw.source!==source||!raw.parts||typeof raw.parts!=='object'||Array.isArray(raw.parts))throw Error('Это файл другого курса или другой версии.');if(Object.keys(raw.parts).length>MAX_PARTS)throw Error('Слишком большой файл прогресса.');const map=new Map(parts.map(p=>[p.id,p]));for(const id of Object.keys(raw.parts))if(!map.has(id))throw Error('Неизвестный подпункт: '+id);const clean={schema:1,source,parts:{},last:null};for(const [id,p] of map)if(Object.hasOwn(raw.parts,id))clean.parts[id]=sanitize(p,raw.parts[id]);if(raw.last&&map.has(raw.last.partId)&&Number.isInteger(raw.last.number))clean.last={number:raw.last.number,partId:raw.last.partId};return clean;}
 function mergeState(current,incoming,parts){const output={...current,parts:{...current.parts}};for(const p of parts){const a=current.parts[p.id],b=incoming.parts[p.id];if(!b)continue;if(!a){output.parts[p.id]=b;continue;}const s=sanitize(p,b.updated>=a.updated?b:a);s.assisted=!!(a.assisted||b.assisted||s.assisted);s.errors=Math.max(a.errors||0,b.errors||0);mergeErrors(s,a.firstErrors,b.firstErrors);s.independent=s.correct&&!s.assisted&&s.errors===0;output.parts[p.id]=s;}return output;}
 function microSteps(calculation){
@@ -92,5 +107,5 @@ function microSteps(calculation){
  }
  put('Сократи результат и запиши число или дробь.',M.operation(calculation.op,a,b),'Раздели числитель и знаменатель на их общий делитель.');return out;
 }
-return {M,OPS,hash,exact,value,rounded,expressionText,expressionSteps,steps,finalAnswer,check,checkStep,signature,blank,sanitize,mergeErrors,assist,submit,submitStep,summarize,importState,mergeState,microSteps,MAX_PARTS};
+return {M,OPS,hash,exact,value,rounded,expressionText,expressionSteps,steps,finalAnswer,check,checkStep,signature,blank,sanitize,mergeErrors,assist,submit,submitStep,solutionOutcome,summarize,importState,mergeState,microSteps,MAX_PARTS};
 });
