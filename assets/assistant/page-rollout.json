@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "9562a346f2789c63ca17658d6081472c1db549e8fbe84614492d69a1a7f7ba1b",
-      "afterSha256": "bff88148c049e0bda154e29a18e73212420d57b8ce91128491ad1b1221697c11",
+      "beforeSha256": "9bacedac8193721dc7595839709050c541d0907def347d32802783dac6ae1858",
+      "afterSha256": "04816a199d44b52dff2ad5ac90e4e463a8e2bbc55296ce916dbfe2480e1bcad3",
       "placement": "before-head-close",
-      "sourceSha": "c5c31827c94551bf8b6ffafb4bb0b155abb85e2f"
+      "sourceSha": "004233728f1cdcf8619f466c29b15b74c0249c86"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6678,6 +6678,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также шестнадцать номеров второй части, включая пять арифметических цепочек и две команды для одного миллиона, с обеими ролями."
+    },
+    {
+      "previousBaseSha": "c5c31827c94551bf8b6ffafb4bb0b155abb85e2f",
+      "sourceBaseSha": "004233728f1cdcf8619f466c29b15b74c0249c86",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также семнадцать номеров второй части, включая все пять точек и оба сравнения координат на авторском чертеже луча, с обеими ролями."
     }
   ],
   "coverageUpdates": [
